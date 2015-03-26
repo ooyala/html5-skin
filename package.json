@@ -1,0 +1,22 @@
+{
+  "name": "html5-skin",
+  "version": "0.0.1",
+  "description": "HTML5 skin over a video tag",
+  "main": "html5-skin.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ooyala/html5-skin.git"
+  },
+  "dependencies": {
+    "react-tools":"*"
+  },
+  "author": "Aldi Gunawan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ooyala/html5-skin/issues"
+  },
+  "homepage": "https://github.com/ooyala/html5-skin"
+}
