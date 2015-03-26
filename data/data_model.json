@@ -1,20 +1,20 @@
 {
   "skin": {
     "playButton": {
-      "icon":"glyphicon glyphicon-facetime-video",
+      "icon":"glyphicon glyphicon-play",
       "style": {
         "fontSize": "72",
-        "top": "80%",
-        "left": "10%",
+        "top": "50%",
+        "left": "50%",
         "transform": "translate(-50%, -50%)",
         "position": "absolute",
         "opacity": 1,
         "transition": "opacity .25s ease-in-out",
-        "color":"red"
+        "color":"white"
       }
     },
     "pauseButton": {
-      "icon":"glyphicon glyphicon-stop",
+      "icon":"glyphicon glyphicon-pause",
       "style": {
         "fontSize": "72*2",
         "top": "50%",

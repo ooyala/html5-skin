@@ -19,13 +19,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     // player upon creation.
     // In this section, we use this opportunity to create the custom UI
     onPlayerCreate: function (event, elementId, params) {
-      this.playerRoot = $("#" + elementId);
-      console.log(this.playerRoot);
       $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%'></div>");
 
-      React.render(
-        React.createElement(Skin, {}), document.getElementById("skin")
-      );
+      // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
+      $.getJSON("data/data_model.json", _.bind(function(data) {
+        React.render(
+          React.createElement(Skin, {data: data, mb: this.mb}), document.getElementById("skin")
+        );
+      }, this));
     }
   };
 
@@ -35,7 +36,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
 var Skin = React.createClass({
   getInitialState: function() {
-    return {};
+    return { playing: false, playhead: 0, duration: 1};
   },
 
   componentDidMount: function() {
@@ -46,17 +47,51 @@ var Skin = React.createClass({
 
   },
 
+  handleMouseMove: function() {
+    this.setState({showControls : true});
+  },
+
+  handleMouseOut: function() {
+    this.setState({showControls : false});
+  },
+
+  handleClick: function() {
+    if (this.state.playing) {
+      this.props.mb.publish(OO.EVENTS.PAUSE);
+    } else {
+      this.props.mb.publish(OO.EVENTS.INITIAL_PLAY);
+    }
+    this.setState({playing: !this.state.playing});
+  },
+
   render: function() {
     var style = {
-      width : this.props.width,
-      height : this.props.height,
+      width : "100%",
+      height : "100%",
       position : "absolute",
-      zIndex : 1,
+      zIndex : 20000,
       overflow: "hidden",
     };
 
+    var skinSetting = (this.props.data.skin);
+    if (skinSetting) {
+      // Use user configured setting from metadata
+      if(this.state.playing) {
+        var playClass = skinSetting.pauseButton.icon;
+        var playStyle = skinSetting.pauseButton.style;
+      } else {
+        var playClass = skinSetting.playButton.icon;
+        var playStyle = skinSetting.playButton.style;
+      }
+      playStyle.opacity = this.state.showControls ? 1 : 0;
+    } else {
+      // default setting, need to be static in alice package
+      var playClass = (this.state.playing) ? "glyphicon glyphicon-pause" : "glyphicon glyphicon-play";
+    }
+
     return (
-      <div>
+      <div style={style} onMouseMove={this.handleMouseMove} onMouseOut={this.handleMouseOut}>
+        <span className={playClass} style={playStyle} aria-hidden="true" onClick={this.handleClick}></span>
       </div>
     );
   }
