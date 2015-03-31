@@ -1,27 +1,38 @@
-// STATE MACHINE
+// TODO: Need to separate these into their own respective files, then combine with build script
+/********************************************************************
+  CONSTANT
+*********************************************************************/
+STATE = {
+  START : "start",
+  PLAYING : "playing",
+  PAUSE : "pause",
+  END : "end",
+  ERROR : "error"
+};
 
-// CONTROLLER
+/********************************************************************
+  CONTROLLER
+*********************************************************************/
 OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   Html5Skin = function (mb, id) {
-    var START = "start",
-        PLAYING = "playing",
-        PAUSE = "pause"
-        END = "end";
     this.mb = mb;
     this.id = id;
-    this.playerState = this.START;
 
     this.init();
   };
 
   Html5Skin.prototype = {
     init: function () {
-        this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
-        this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
+      this.stateMachine = new stateMachine();
+      this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
+      this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
+      this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
     },
 
-    // EVENT listener to control RENDERER
+    /*
+      Put core player event listeners here and regulate STATE machine. State Machine will then try to control skin renderer
+    */
     onPlayerCreated: function (event, elementId, params) {
       $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%'></div>");
 
@@ -34,28 +45,31 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaying: function() {
-      // Need to display PAUSE button
+      this.stateMachine.setState(STATE.PLAYING);
     },
 
-    // ACTION from UI event or skin render
+    onPaused: function() {
+      this.stateMachine.setState(STATE.PAUSE);
+    },
+
+    /*
+      Action from UI event. Will publish to message bus to control core player
+    */
     play: function() {
-      switch (this.playerState) {
-        case this.START:
-        case this.END:
+      switch (this.stateMachine.getState()) {
+        case STATE.START:
+        case STATE.END:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
-          this.playerState = this.PLAYING;
           break;
-        case this.PAUSE:
+        case STATE.PAUSE:
           this.mb.publish(OO.EVENTS.PLAY);
-          this.playerState = this.PLAYING;
           break
       }
     },
 
     pause: function() {
-      if (this.playerState == this.PLAYING) {
+      if (this.stateMachine.getState() == STATE.PLAYING) {
         this.mb.publish(OO.EVENTS.PAUSE);
-        this.playerState = this.PAUSE;
       }
     }
   };
@@ -63,18 +77,53 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   return Html5Skin;
 });
 
+/********************************************************************
+  STATE MACHINE
+*********************************************************************/
+stateMachine = function() {
+  this.state = STATE.START;
+  this.transitionRules = {};
+  this.transitionRules[STATE.START] = [STATE.PLAYING, STATE.ERROR];
+  this.transitionRules[STATE.PLAYING] = [STATE.PAUSE, STATE.END, STATE.ERROR];
+  this.transitionRules[STATE.PAUSE] = [STATE.PLAYING, STATE.ERROR];
+  this.transitionRules[STATE.END] = [STATE.PLAYING, STATE.ERROR];
+  this.transitionRules[STATE.ERROR] = [STATE.ERROR];
+};
 
-// RENDERER
+stateMachine.prototype = {
+  checkTransitionState: function(state) {
+    // return true if current state can transition to new state
+    return this.transitionRules[this.getState()].indexOf(state) > -1;
+  },
+
+  getState: function() {
+    return this.state;
+  },
+
+  setState: function(state) {
+    if (this.checkTransitionState(state)) {
+      this.state = state;
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  // Need to be changed later on
+  renderSkin: function(state) {
+
+  }
+};
+
+/********************************************************************
+  RENDERER
+*********************************************************************/
 var Skin = React.createClass({
   getInitialState: function() {
     return { playing: false, playhead: 0, duration: 1};
   },
 
   componentDidMount: function() {
-
-  },
-
-  onPlaybackReady: function() {
 
   },
 
