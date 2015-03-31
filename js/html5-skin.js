@@ -1,8 +1,13 @@
 OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   Html5Skin = function (mb, id) {
+    var START = "start",
+        PLAYING = "playing",
+        PAUSE = "pause"
+        END = "end";
     this.mb = mb;
     this.id = id;
+    this.playerState = this.START;
 
     this.init();
   };
@@ -24,9 +29,31 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON("data/data_model.json", _.bind(function(data) {
         React.render(
-          React.createElement(Skin, {data: data, mb: this.mb}), document.getElementById("skin")
+          React.createElement(Skin, {data: data, controller: this}), document.getElementById("skin")
         );
       }, this));
+    },
+
+    // ACTION
+    play: function() {
+      switch (this.playerState) {
+        case this.START:
+        case this.END:
+          this.mb.publish(OO.EVENTS.INITIAL_PLAY);
+          this.playerState = this.PLAYING;
+          break;
+        case this.PAUSE:
+          this.mb.publish(OO.EVENTS.PLAY);
+          this.playerState = this.PLAYING;
+          break
+      }
+    },
+
+    pause: function() {
+      if (this.playerState == this.PLAYING) {
+        this.mb.publish(OO.EVENTS.PAUSE);
+        this.playerState = this.PAUSE;
+      }
     }
   };
 
@@ -57,10 +84,11 @@ var Skin = React.createClass({
 
   handleClick: function() {
     if (this.state.playing) {
-      this.props.mb.publish(OO.EVENTS.PAUSE);
+      this.props.controller.pause();
     } else {
-      this.props.mb.publish(OO.EVENTS.INITIAL_PLAY);
+      this.props.controller.play();
     }
+    // this need to listen from MB or directed by HTML5Skin controller
     this.setState({playing: !this.state.playing});
   },
 
