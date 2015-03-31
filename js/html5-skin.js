@@ -26,6 +26,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     init: function () {
       this.stateMachine = new stateMachine();
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
+      this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
     },
@@ -42,6 +43,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           React.createElement(Skin, {data: data, controller: this}), document.getElementById("skin")
         );
       }, this));
+    },
+
+    onContentTreeFetched: function (event, contentTree) {
+      this.stateMachine.setState(STATE.START, contentTree);
     },
 
     onPlaying: function() {
@@ -83,7 +88,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 stateMachine = function() {
   this.state = STATE.START;
   this.transitionRules = {};
-  this.transitionRules[STATE.START] = [STATE.PLAYING, STATE.ERROR];
+  this.transitionRules[STATE.START] = [STATE.START, STATE.PLAYING, STATE.ERROR];
   this.transitionRules[STATE.PLAYING] = [STATE.PAUSE, STATE.END, STATE.ERROR];
   this.transitionRules[STATE.PAUSE] = [STATE.PLAYING, STATE.ERROR];
   this.transitionRules[STATE.END] = [STATE.PLAYING, STATE.ERROR];
@@ -100,9 +105,10 @@ stateMachine.prototype = {
     return this.state;
   },
 
-  setState: function(state) {
+  setState: function(state, args) {
     if (this.checkTransitionState(state)) {
       this.state = state;
+      this.renderSkin(args);
       return true;
     } else {
       return false;
@@ -110,8 +116,15 @@ stateMachine.prototype = {
   },
 
   // Need to be changed later on
-  renderSkin: function(state) {
-
+  renderSkin: function(args) {
+    switch(this.getState()) {
+      case STATE.START:
+        break;
+      case STATE.PLAYING:
+        break;
+      case STATE.PAUSE:
+        break;
+    }
   }
 };
 
