@@ -1,3 +1,6 @@
+// STATE MACHINE
+
+// CONTROLLER
 OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   Html5Skin = function (mb, id) {
@@ -14,16 +17,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   Html5Skin.prototype = {
     init: function () {
-        this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreate, this));
+        this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
+        this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
     },
 
-    // Handles the PLAYER_CREATED event
-    // First parameter is the event name
-    // Second parameter is the elementId of player container
-    // Third parameter is the list of parameters which were passed into
-    // player upon creation.
-    // In this section, we use this opportunity to create the custom UI
-    onPlayerCreate: function (event, elementId, params) {
+    // EVENT listener to control RENDERER
+    onPlayerCreated: function (event, elementId, params) {
       $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%'></div>");
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
@@ -34,7 +33,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }, this));
     },
 
-    // ACTION
+    onPlaying: function() {
+      // Need to display PAUSE button
+    },
+
+    // ACTION from UI event or skin render
     play: function() {
       switch (this.playerState) {
         case this.START:
@@ -61,6 +64,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 });
 
 
+// RENDERER
 var Skin = React.createClass({
   getInitialState: function() {
     return { playing: false, playhead: 0, duration: 1};
