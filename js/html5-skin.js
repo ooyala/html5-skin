@@ -38,9 +38,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
     },
 
-    /*
-      Put core player event listeners here and regulate STATE machine. State Machine will then try to control skin renderer
-    */
+    /*--------------------------------------------------------------------
+      event listeners from core player -> regulate skin STATE
+    ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
       $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%'></div>");
 
@@ -53,22 +53,39 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
-
+      this.state = STATE.START;
+      this.renderSkin();
     },
 
     onPlaying: function() {
-      this.skin.setState({playing: true});
       this.state = STATE.PLAYING;
+      this.renderSkin();
     },
 
     onPaused: function() {
-      this.skin.setState({playing: false});
       this.state = STATE.PAUSE;
+      this.renderSkin();
     },
 
-    /*
-      Action from UI event. Will publish to message bus to control core player
-    */
+    /*--------------------------------------------------------------------
+      Skin state -> control skin
+    ---------------------------------------------------------------------*/
+    renderSkin: function() {
+      switch (this.state) {
+        case STATE.START:
+          break;
+        case STATE.PLAYING:
+          this.skin.setState({playing: true});
+          break;
+        case STATE.PAUSE:
+          this.skin.setState({playing: false});
+          break;
+      }
+    },
+
+    /*--------------------------------------------------------------------
+      skin UI-action -> publish event to core player
+    ---------------------------------------------------------------------*/
     play: function() {
       switch (this.state) {
         case STATE.START:
@@ -112,14 +129,11 @@ var Skin = React.createClass({
   },
 
   handleClick: function() {
-    console.log("@@@@@@@@@@@@@@@@ state:" + this.state.playing);
     if (this.state.playing) {
       this.props.controller.pause();
     } else {
       this.props.controller.play();
     }
-    // this need to listen from MB or directed by HTML5Skin controller
-    //this.setState({playing: !this.state.playing});
   },
 
   render: function() {
