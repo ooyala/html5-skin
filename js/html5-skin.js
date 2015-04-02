@@ -18,13 +18,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
+    this.state = STATE.START;
+    // Leave this here, might be useful..
+    // this.transitionRules = {};
+    // this.transitionRules[STATE.START] = [STATE.START, STATE.PLAYING, STATE.ERROR];
+    // this.transitionRules[STATE.PLAYING] = [STATE.PAUSE, STATE.END, STATE.ERROR];
+    // this.transitionRules[STATE.PAUSE] = [STATE.PLAYING, STATE.ERROR];
+    // this.transitionRules[STATE.END] = [STATE.PLAYING, STATE.ERROR];
+    // this.transitionRules[STATE.ERROR] = [STATE.ERROR];
 
     this.init();
   };
 
   Html5Skin.prototype = {
     init: function () {
-      this.stateMachine = new stateMachine();
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
@@ -39,29 +46,31 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON("data/data_model.json", _.bind(function(data) {
-        React.render(
+        this.skin = React.render(
           React.createElement(Skin, {data: data, controller: this}), document.getElementById("skin")
         );
       }, this));
     },
 
     onContentTreeFetched: function (event, contentTree) {
-      this.stateMachine.setState(STATE.START, contentTree);
+
     },
 
     onPlaying: function() {
-      this.stateMachine.setState(STATE.PLAYING);
+      this.skin.setState({playing: true});
+      this.state = STATE.PLAYING;
     },
 
     onPaused: function() {
-      this.stateMachine.setState(STATE.PAUSE);
+      this.skin.setState({playing: false});
+      this.state = STATE.PAUSE;
     },
 
     /*
       Action from UI event. Will publish to message bus to control core player
     */
     play: function() {
-      switch (this.stateMachine.getState()) {
+      switch (this.state) {
         case STATE.START:
         case STATE.END:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
@@ -73,7 +82,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     pause: function() {
-      if (this.stateMachine.getState() == STATE.PLAYING) {
+      if (this.state == STATE.PLAYING) {
         this.mb.publish(OO.EVENTS.PAUSE);
       }
     }
@@ -81,52 +90,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   return Html5Skin;
 });
-
-/********************************************************************
-  STATE MACHINE
-*********************************************************************/
-stateMachine = function() {
-  this.state = STATE.START;
-  this.transitionRules = {};
-  this.transitionRules[STATE.START] = [STATE.START, STATE.PLAYING, STATE.ERROR];
-  this.transitionRules[STATE.PLAYING] = [STATE.PAUSE, STATE.END, STATE.ERROR];
-  this.transitionRules[STATE.PAUSE] = [STATE.PLAYING, STATE.ERROR];
-  this.transitionRules[STATE.END] = [STATE.PLAYING, STATE.ERROR];
-  this.transitionRules[STATE.ERROR] = [STATE.ERROR];
-};
-
-stateMachine.prototype = {
-  checkTransitionState: function(state) {
-    // return true if current state can transition to new state
-    return this.transitionRules[this.getState()].indexOf(state) > -1;
-  },
-
-  getState: function() {
-    return this.state;
-  },
-
-  setState: function(state, args) {
-    if (this.checkTransitionState(state)) {
-      this.state = state;
-      this.renderSkin(args);
-      return true;
-    } else {
-      return false;
-    }
-  },
-
-  // Need to be changed later on
-  renderSkin: function(args) {
-    switch(this.getState()) {
-      case STATE.START:
-        break;
-      case STATE.PLAYING:
-        break;
-      case STATE.PAUSE:
-        break;
-    }
-  }
-};
 
 /********************************************************************
   RENDERER
@@ -149,13 +112,14 @@ var Skin = React.createClass({
   },
 
   handleClick: function() {
+    console.log("@@@@@@@@@@@@@@@@ state:" + this.state.playing);
     if (this.state.playing) {
       this.props.controller.pause();
     } else {
       this.props.controller.play();
     }
     // this need to listen from MB or directed by HTML5Skin controller
-    this.setState({playing: !this.state.playing});
+    //this.setState({playing: !this.state.playing});
   },
 
   render: function() {
