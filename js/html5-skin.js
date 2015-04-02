@@ -53,7 +53,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
-      this.renderSkin(STATE.START);
+      this.renderSkin(STATE.START, contentTree);
     },
 
     onPlaying: function() {
@@ -67,11 +67,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /*--------------------------------------------------------------------
       Skin state -> control skin
     ---------------------------------------------------------------------*/
-    renderSkin: function(newState) {
+    renderSkin: function(newState, args) {
       this.state = newState;
       switch (this.state) {
         case STATE.START:
-          this.skin.switchComponent(STATE.START);
+          this.skin.switchComponent(STATE.START, args);
           break;
         case STATE.PLAYING:
           this.skin.switchComponent(STATE.PLAYING);
@@ -112,29 +112,29 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 *********************************************************************/
 var Skin = React.createClass({
   getInitialState: function() {
-    return {screen: STATE.START};
+    return {screen: "null"};
   },
 
-  switchComponent: function(newState) {
-    this.setState({screen: newState});
+  switchComponent: function(newState, args) {
+    this.setState({screen: newState, args: args});
   },
 
   render: function() {
     switch (this.state.screen) {
       case STATE.START:
         return (
-          <PauseScreen data={this.props.data} controller={this.props.controller} playing={false}/>
+          <StartScreen data={this.props.data} controller={this.props.controller} contentTree={this.state.args} />
         );
       case STATE.PLAYING:
         return (
-          <PlayingScreen data={this.props.data} controller={this.props.controller} playing={true}/>
+          <PlayingScreen data={this.props.data} controller={this.props.controller} />
         );
       case STATE.PAUSE:
         return (
-          <PauseScreen data={this.props.data} controller={this.props.controller} playing={false}/>
+          <PauseScreen data={this.props.data} controller={this.props.controller} />
         );
       default:
-        return "";
+        return false;
     }
   }
 });
@@ -144,8 +144,34 @@ var Skin = React.createClass({
 *********************************************************************/
 
 var StartScreen = React.createClass({
+  getInitialState: function() {
+    return {showControls : true};
+  },
+
+  handleClick: function() {
+    this.props.controller.play();
+  },
+
   render: function() {
-    return "";
+    var style = {
+      width : "100%",
+      height : "100%",
+      position : "absolute",
+      zIndex : 20000,
+      overflow: "hidden",
+    };
+
+    var skinSetting = this.props.data.skin;
+    var playClass = skinSetting.playButton.icon;
+    var playStyle = skinSetting.playButton.style;
+    playStyle.zIndex = 21000;
+
+    return (
+      <div style={style}>
+        <img src={this.props.contentTree.promo_image} style={style} />
+        <span className={playClass} style={playStyle} aria-hidden="true" onClick={this.handleClick}></span>
+      </div>
+    );
   }
 });
 
@@ -241,7 +267,7 @@ var PauseScreen = React.createClass({
 
 var EndScreen = React.createClass({
   render: function() {
-    return "";
+    return false;
   }
 });
 
@@ -251,6 +277,6 @@ var EndScreen = React.createClass({
 
 var ErrorScreen = React.createClass({
   render: function() {
-    return "";
+    return false;
   }
 });
