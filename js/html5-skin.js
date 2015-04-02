@@ -53,32 +53,30 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
-      this.state = STATE.START;
-      this.renderSkin();
+      this.renderSkin(STATE.START);
     },
 
     onPlaying: function() {
-      this.state = STATE.PLAYING;
-      this.renderSkin();
+      this.renderSkin(STATE.PLAYING);
     },
 
     onPaused: function() {
-      this.state = STATE.PAUSE;
-      this.renderSkin();
+      this.renderSkin(STATE.PAUSE);
     },
 
     /*--------------------------------------------------------------------
       Skin state -> control skin
     ---------------------------------------------------------------------*/
-    renderSkin: function() {
+    renderSkin: function(newState) {
+      this.state = newState;
       switch (this.state) {
         case STATE.START:
           break;
         case STATE.PLAYING:
-          this.skin.setState({playing: true});
+          this.skin.switchComponent(STATE.PLAYING);
           break;
         case STATE.PAUSE:
-          this.skin.setState({playing: false});
+          this.skin.switchComponent(STATE.PAUSE);
           break;
       }
     },
@@ -109,15 +107,41 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 });
 
 /********************************************************************
-  RENDERER
+  RENDERER PLACEHOLDER
 *********************************************************************/
 var Skin = React.createClass({
   getInitialState: function() {
-    return { playing: false, playhead: 0, duration: 1};
+    return {screen: STATE.START};
   },
 
-  componentDidMount: function() {
+  switchComponent: function(newState) {
+    this.setState({screen: newState});
+  },
 
+  render: function() {
+    switch (this.state.screen) {
+      case STATE.START:
+      case STATE.PAUSE:
+        return (
+          <StartScreen data={this.props.data} controller={this.props.controller} playing={false}/>
+        );
+      case STATE.PLAYING:
+        return (
+          <StartScreen data={this.props.data} controller={this.props.controller} playing={true}/>
+        );
+      default:
+        return null;
+    }
+  }
+});
+
+/********************************************************************
+  START SCREEN
+*********************************************************************/
+
+var StartScreen = React.createClass({
+  getInitialState: function() {
+    return {};
   },
 
   handleMouseMove: function() {
@@ -129,7 +153,7 @@ var Skin = React.createClass({
   },
 
   handleClick: function() {
-    if (this.state.playing) {
+    if (this.props.playing) {
       this.props.controller.pause();
     } else {
       this.props.controller.play();
@@ -148,7 +172,7 @@ var Skin = React.createClass({
     var skinSetting = (this.props.data.skin);
     if (skinSetting) {
       // Use user configured setting from metadata
-      if(this.state.playing) {
+      if(this.props.playing) {
         var playClass = skinSetting.pauseButton.icon;
         var playStyle = skinSetting.pauseButton.style;
       } else {
@@ -156,9 +180,6 @@ var Skin = React.createClass({
         var playStyle = skinSetting.playButton.style;
       }
       playStyle.opacity = this.state.showControls ? 1 : 0;
-    } else {
-      // default setting, need to be static in alice package
-      var playClass = (this.state.playing) ? "glyphicon glyphicon-pause" : "glyphicon glyphicon-play";
     }
 
     return (
@@ -166,5 +187,45 @@ var Skin = React.createClass({
         <span className={playClass} style={playStyle} aria-hidden="true" onClick={this.handleClick}></span>
       </div>
     );
+  }
+});
+
+/********************************************************************
+  PLAYING SCREEN
+*********************************************************************/
+
+var PlayingScreen = React.createClass({
+  render: function() {
+    return null;
+  }
+});
+
+/********************************************************************
+  PAUSE SCREEN
+*********************************************************************/
+
+var PauseScreen = React.createClass({
+  render: function() {
+    return null;
+  }
+});
+
+/********************************************************************
+  END SCREEN
+*********************************************************************/
+
+var EndScreen = React.createClass({
+  render: function() {
+    return null;
+  }
+});
+
+/********************************************************************
+  ERROR SCREEN
+*********************************************************************/
+
+var ErrorScreen = React.createClass({
+  render: function() {
+    return null;
   }
 });
