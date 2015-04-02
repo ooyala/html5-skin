@@ -71,6 +71,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state = newState;
       switch (this.state) {
         case STATE.START:
+          this.skin.switchComponent(STATE.START);
           break;
         case STATE.PLAYING:
           this.skin.switchComponent(STATE.PLAYING);
@@ -121,16 +122,19 @@ var Skin = React.createClass({
   render: function() {
     switch (this.state.screen) {
       case STATE.START:
-      case STATE.PAUSE:
         return (
-          <StartScreen data={this.props.data} controller={this.props.controller} playing={false}/>
+          <PauseScreen data={this.props.data} controller={this.props.controller} playing={false}/>
         );
       case STATE.PLAYING:
         return (
-          <StartScreen data={this.props.data} controller={this.props.controller} playing={true}/>
+          <PlayingScreen data={this.props.data} controller={this.props.controller} playing={true}/>
+        );
+      case STATE.PAUSE:
+        return (
+          <PauseScreen data={this.props.data} controller={this.props.controller} playing={false}/>
         );
       default:
-        return null;
+        return "";
     }
   }
 });
@@ -140,8 +144,18 @@ var Skin = React.createClass({
 *********************************************************************/
 
 var StartScreen = React.createClass({
+  render: function() {
+    return "";
+  }
+});
+
+/********************************************************************
+  PLAYING SCREEN
+*********************************************************************/
+
+var PlayingScreen = React.createClass({
   getInitialState: function() {
-    return {};
+    return {showControls : true};
   },
 
   handleMouseMove: function() {
@@ -153,11 +167,7 @@ var StartScreen = React.createClass({
   },
 
   handleClick: function() {
-    if (this.props.playing) {
-      this.props.controller.pause();
-    } else {
-      this.props.controller.play();
-    }
+    this.props.controller.pause();
   },
 
   render: function() {
@@ -169,18 +179,10 @@ var StartScreen = React.createClass({
       overflow: "hidden",
     };
 
-    var skinSetting = (this.props.data.skin);
-    if (skinSetting) {
-      // Use user configured setting from metadata
-      if(this.props.playing) {
-        var playClass = skinSetting.pauseButton.icon;
-        var playStyle = skinSetting.pauseButton.style;
-      } else {
-        var playClass = skinSetting.playButton.icon;
-        var playStyle = skinSetting.playButton.style;
-      }
-      playStyle.opacity = this.state.showControls ? 1 : 0;
-    }
+    var skinSetting = this.props.data.skin;
+    var playClass = skinSetting.pauseButton.icon;
+    var playStyle = skinSetting.pauseButton.style;
+    playStyle.opacity = this.state.showControls ? 1 : 0;
 
     return (
       <div style={style} onMouseMove={this.handleMouseMove} onMouseOut={this.handleMouseOut}>
@@ -191,22 +193,45 @@ var StartScreen = React.createClass({
 });
 
 /********************************************************************
-  PLAYING SCREEN
-*********************************************************************/
-
-var PlayingScreen = React.createClass({
-  render: function() {
-    return null;
-  }
-});
-
-/********************************************************************
   PAUSE SCREEN
 *********************************************************************/
 
 var PauseScreen = React.createClass({
+  getInitialState: function() {
+    return {showControls : true};
+  },
+
+  handleMouseMove: function() {
+    this.setState({showControls : true});
+  },
+
+  handleMouseOut: function() {
+    this.setState({showControls : false});
+  },
+
+  handleClick: function() {
+    this.props.controller.play();
+  },
+
   render: function() {
-    return null;
+    var style = {
+      width : "100%",
+      height : "100%",
+      position : "absolute",
+      zIndex : 20000,
+      overflow: "hidden",
+    };
+
+    var skinSetting = this.props.data.skin;
+    var playClass = skinSetting.playButton.icon;
+    var playStyle = skinSetting.playButton.style;
+    playStyle.opacity = this.state.showControls ? 1 : 0;
+
+    return (
+      <div style={style} onMouseMove={this.handleMouseMove} onMouseOut={this.handleMouseOut}>
+        <span className={playClass} style={playStyle} aria-hidden="true" onClick={this.handleClick}></span>
+      </div>
+    );
   }
 });
 
@@ -216,7 +241,7 @@ var PauseScreen = React.createClass({
 
 var EndScreen = React.createClass({
   render: function() {
-    return null;
+    return "";
   }
 });
 
@@ -226,6 +251,6 @@ var EndScreen = React.createClass({
 
 var ErrorScreen = React.createClass({
   render: function() {
-    return null;
+    return "";
   }
 });

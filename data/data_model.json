@@ -16,7 +16,7 @@
     "pauseButton": {
       "icon":"glyphicon glyphicon-pause",
       "style": {
-        "fontSize": "72*2",
+        "fontSize": "72",
         "top": "50%",
         "left": "50%",
         "transform": "translate(-50%, -50%)",
