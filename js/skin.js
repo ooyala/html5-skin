@@ -7,7 +7,7 @@ var Skin = React.createClass({
   },
 
   switchComponent: function(screen, args) {
-    var newState = args;
+    var newState = args || {};
     newState.screen = screen;
     this.setState(newState);
   },
