@@ -1,15 +1,14 @@
 <html>
   <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
-    <script src="https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xpa1/t39.3284-6/11057105_1610731242494235_1148661094_n.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
     <script language="javascript" src="//player.ooyala.com/v3/6440813504804d76ba35c8c787a4b33c?debug=true&platform=html5"></script>
-    <script type="text/jsx" src="js/html5-skin.js"></script>
+    <script src="build/html5-skin.js"></script>
   </head>
   <body>
     <div id='container' style='width:640px;height:480px'></div>
-    <script type="text/jsx">
+    <script>
       var playerParam = { layout:'chromeless' };
       OO.ready(function() {
         window.pp = OO.Player.create('container', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
