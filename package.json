@@ -1,7 +1,12 @@
 {
   "name": "html5-skin",
   "version": "0.0.1",
-  "description": "HTML5 skin over a video tag",
+  "description": "HTML5 skin over an Ooyala video player",
+  "keywords": [
+    "html5",
+    "react",
+    "ooyala"
+  ],
   "main": "html5-skin.js",
   "scripts": {
     "build": "",
@@ -21,7 +26,10 @@
     "gulp-jshint": "1.10.0",
     "gulp-react": "3.0.1"
   },
-  "author": "Aldi Gunawan",
+  "author": "Ooyala",
+  "contributors": [
+    "Aldi Gunawan <agunawan@ooyala.com>"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ooyala/html5-skin/issues"
