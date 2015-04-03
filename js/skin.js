@@ -6,23 +6,25 @@ var Skin = React.createClass({
     return {screen: "null"};
   },
 
-  switchComponent: function(newState, args) {
-    this.setState({screen: newState, args: args});
+  switchComponent: function(screen, args) {
+    var newState = args;
+    newState.screen = screen;
+    this.setState(newState);
   },
 
   render: function() {
     switch (this.state.screen) {
       case STATE.START:
         return (
-          <StartScreen data={this.props.data} controller={this.props.controller} contentTree={this.state.args} />
+          <StartScreen {...this.props} contentTree={this.state.contentTree} />
         );
       case STATE.PLAYING:
         return (
-          <PlayingScreen data={this.props.data} controller={this.props.controller} />
+          <PlayingScreen {...this.props} />
         );
       case STATE.PAUSE:
         return (
-          <PauseScreen data={this.props.data} controller={this.props.controller} />
+          <PauseScreen {...this.props} />
         );
       default:
         return false;

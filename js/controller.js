@@ -41,7 +41,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
-      this.renderSkin(STATE.START, contentTree);
+      this.renderSkin(STATE.START, {"contentTree": contentTree});
     },
 
     onPlaying: function() {
@@ -94,3 +94,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   return Html5Skin;
 });
+
+// DEBUG only. Remove after usage
+var printlog = function(text) {
+  console.log("@@@@@@@@@@@");
+  console.log(text);
+  console.log("@@@@@@@@@@@");
+};
