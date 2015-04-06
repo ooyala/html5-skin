@@ -57,17 +57,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     ---------------------------------------------------------------------*/
     renderSkin: function(newState, args) {
       this.state = newState;
-      switch (this.state) {
-        case STATE.START:
-          this.skin.switchComponent(STATE.START, args);
-          break;
-        case STATE.PLAYING:
-          this.skin.switchComponent(STATE.PLAYING);
-          break;
-        case STATE.PAUSE:
-          this.skin.switchComponent(STATE.PAUSE);
-          break;
-      }
+      this.skin.switchComponent(this.state, args);
     },
 
     /*--------------------------------------------------------------------
