@@ -6,14 +6,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
-    this.state = STATE.START;
-    // Leave this here, might be useful..
-    // this.transitionRules = {};
-    // this.transitionRules[STATE.START] = [STATE.START, STATE.PLAYING, STATE.ERROR];
-    // this.transitionRules[STATE.PLAYING] = [STATE.PAUSE, STATE.END, STATE.ERROR];
-    // this.transitionRules[STATE.PAUSE] = [STATE.PLAYING, STATE.ERROR];
-    // this.transitionRules[STATE.END] = [STATE.PLAYING, STATE.ERROR];
-    // this.transitionRules[STATE.ERROR] = [STATE.ERROR];
+    this.state = {
+      "module" : [],
+    };
 
     this.init();
   };
@@ -41,30 +36,31 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
-      this.renderSkin(STATE.START, {"contentTree": contentTree});
+      this.renderSkin(["start"], {"contentTree": contentTree});
     },
 
     onPlaying: function() {
-      this.renderSkin(STATE.PLAYING);
+      this.renderSkin(["playing"]);
     },
 
     onPaused: function() {
-      this.renderSkin(STATE.PAUSE);
+      this.renderSkin(["pause"]);
     },
 
     /*--------------------------------------------------------------------
       Skin state -> control skin
     ---------------------------------------------------------------------*/
-    renderSkin: function(newState, args) {
-      this.state = newState;
-      this.skin.switchComponent(this.state, args);
+    renderSkin: function(modules, args) {
+      this.state.module = modules;
+      _.extend(this.state, args);
+      this.skin.switchComponent(this.state);
     },
 
     /*--------------------------------------------------------------------
       skin UI-action -> publish event to core player
     ---------------------------------------------------------------------*/
     play: function() {
-      switch (this.state) {
+      switch (this.state.module[0]) {
         case STATE.START:
         case STATE.END:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
@@ -76,9 +72,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     pause: function() {
-      if (this.state == STATE.PLAYING) {
-        this.mb.publish(OO.EVENTS.PAUSE);
-      }
+      this.mb.publish(OO.EVENTS.PAUSE);
     }
   };
 

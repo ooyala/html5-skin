@@ -3,17 +3,16 @@
 *********************************************************************/
 var Skin = React.createClass({
   getInitialState: function() {
-    return {screen: "null"};
+    return {module: []};
   },
 
-  switchComponent: function(screen, args) {
+  switchComponent: function(args) {
     var newState = args || {};
-    newState.screen = screen;
     this.setState(newState);
   },
 
   render: function() {
-    switch (this.state.screen) {
+    switch (this.state.module[0]) {
       case STATE.START:
         return (
           <StartScreen {...this.props} contentTree={this.state.contentTree} />
