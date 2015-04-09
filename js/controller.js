@@ -28,7 +28,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%'></div>");
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
-      $.getJSON("data/data_model.json", _.bind(function(data) {
+      $.getJSON("config/skin.json", _.bind(function(data) {
         this.skin = React.render(
           React.createElement(Skin, {data: data, controller: this}), document.getElementById("skin")
         );
