@@ -12,22 +12,14 @@ var StartScreen = React.createClass({
   },
 
   render: function() {
-    var style = {
-      width : "100%",
-      height : "100%",
-      position : "absolute",
-      zIndex : 20000,
-      overflow: "hidden",
-    };
-
     var skinSetting = this.props.data.skin;
-    var playClass = skinSetting.playButton.icon;
-    var playStyle = skinSetting.playButton.style;
-    playStyle.zIndex = 21000;
+    var playClass = skinSetting.startScreen.playButton.icon;
+    var playStyle = skinSetting.startScreen.playButton.style;
+    playStyle.zIndex = skinSetting.startScreen.style.zIndex + 1;
 
     return (
-      <div style={style}>
-        <img src={this.props.contentTree.promo_image} style={style} />
+      <div style={skinSetting.startScreen.style}>
+        <img src={this.props.contentTree.promo_image} />
         <span className={playClass} style={playStyle} aria-hidden="true" onClick={this.handleClick}></span>
       </div>
     );
