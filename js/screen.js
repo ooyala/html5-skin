@@ -17,9 +17,14 @@ var StartScreen = React.createClass({
     var playStyle = skinSetting.startScreen.playButton.style;
     playStyle.zIndex = skinSetting.startScreen.style.zIndex + 1;
 
+    var backgroundStyle = skinSetting.startScreen.background.style;
+    _.extend(backgroundStyle, {"background": "url(" + this.props.contentTree.promo_image + ") no-repeat center center;"});
+
     return (
       <div style={skinSetting.startScreen.style}>
-        <img src={this.props.contentTree.promo_image} />
+        <div style={backgroundStyle} />
+        <p style={skinSetting.startScreen.infoPanel.title.style}>{this.props.contentTree.title}</p>
+        <p style={skinSetting.startScreen.infoPanel.description.style}>{this.props.contentTree.description}</p>
         <span className={playClass} style={playStyle} aria-hidden="true" onClick={this.handleClick}></span>
       </div>
     );
