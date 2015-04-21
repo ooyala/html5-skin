@@ -67,12 +67,16 @@ var StartScreen = React.createClass({
     };
   },
 
+  // Fetch the image so we can get the actual dimensions to determine which
+  // preview layout we need to use.
   componentWillMount: function() {
     var posterImage = document.createElement("img");
-    posterImage.addEventListener("load", this.props._.bind(this.renderPoster, this, posterImage));
+    posterImage.addEventListener("load", _.bind(this.renderPoster, this, posterImage));
     posterImage.src = this.props.contentTree.promo_image;
   },
 
+  // CSS doesn't support "truncate N lines" so we need to do DOM width
+  // calculations to figure out where to truncate the description
   componentDidMount: function() {
     var actualNode = this.getDOMNode();
     var testText = document.createElement("span");
@@ -103,7 +107,7 @@ var StartScreen = React.createClass({
     var elemHeight = actualNode.clientHeight;
     var infoBox = actualNode.getElementsByClassName("startscreen-info")[0];
     if (posterImage.height < elemHeight && posterImage.width < elemWidth) {
-      var newPosterStyle = this.props._.clone(this.state);
+      var newPosterStyle = _.clone(this.state);
       newPosterStyle.posterFullsize = false;
       newPosterStyle.posterStyle.backgroundSize = "auto";
       newPosterStyle.posterStyle.backgroundPosition = "left " +
@@ -119,6 +123,7 @@ var StartScreen = React.createClass({
     var playStyle = this.state.playButton.style;
 
     if (this.state.posterFullsize) {
+      // If the image is large enough, cover the entire player div
       return (
         <div style={this.state.style}>
           <div className="startscreen-poster" style={this.state.posterStyle}></div>
@@ -130,6 +135,8 @@ var StartScreen = React.createClass({
         </div>
       );
     } else {
+      // If the image is smaller than the player, have it layout with the
+      // title and description
       return (
         <div style={this.state.style}>
           <div className="startscreen-info" style={this.state.infoPanel.style}>
