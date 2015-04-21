@@ -54,5 +54,8 @@ This will install gulp module globally. Then, simply run this command:
 
 This will perform an initial build and start a watch that will update build/html5-skin.js with any changes you wish to make in js folder.
 
+If you have the forever module installed, you can use the following command to keep gulp running:
+    forever --spinSleepTime 5000 --workingDir <path to your project directory> /usr/local/bin/gulp
+
 ## Publisher and Ooyala Customer
 Able to fork git repo and build the skin at will. Terms and condition apply. Please read [Ooyala open-source onboarding guide](http:www.ooyala.com)
