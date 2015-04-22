@@ -4,7 +4,6 @@
 
 var StartScreen = React.createClass({
   getInitialState: function() {
-    printlog(this.props);
     return {
       posterFullsize: true,
       description: this.props.contentTree.description
@@ -77,7 +76,6 @@ var StartScreen = React.createClass({
     } else {
       // If the image is smaller than the player, have it layout with the
       // title and description
-      printlog(posterStyle);
       posterStyle.backgroundSize = "auto";
       posterStyle.backgroundPosition = "left " + this.props.style.infoPanel.style.left + " bottom " +
         this.getDOMNode().getElementsByClassName("startscreen-info")[0].clientHeight + "px";
