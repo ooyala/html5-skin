@@ -45,8 +45,6 @@ startScreenStyle = {
     icon: "glyphicon glyphicon-play",
     style: {
       fontSize: "72",
-      top: "50%",
-      left: "50%",
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
