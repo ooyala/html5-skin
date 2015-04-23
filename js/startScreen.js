@@ -60,6 +60,7 @@ var StartScreen = React.createClass({
     var playClass = screenStyle.playButton.icon;
     var playStyle = screenStyle.playButton.style;
     var posterStyle = screenStyle.posterStyle;
+    playStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.accentColor;
 
     if (this.state.posterFullsize) {
       // If the image is large enough, cover the entire player div

@@ -24,20 +24,20 @@ startScreenStyle = {
     title: {
       style: {
         fontSize: "32px",
-        color: "rgba(255, 255, 255, 1)",
         fontWeight: "bold",
         maxWidth: "70%",
         whiteSpace: "nowrap",
         overflow: "hidden",
-        textOverflow: "ellipsis"
+        textOverflow: "ellipsis",
+        color: "inherit"
       }
     },
     description: {
       style: {
         fontSize: "24",
-        color: "rgba(255, 255, 255, 1)",
         maxWidth: "70%",
-        overflow: "visible"
+        overflow: "visible",
+        color: "inherit"
       }
     }
   },
@@ -50,8 +50,7 @@ startScreenStyle = {
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
-      transition: "opacity .25s ease-in-out",
-      color:"white"
+      transition: "opacity .25s ease-in-out"
     }
   }
 };
