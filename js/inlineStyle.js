@@ -11,14 +11,13 @@ startScreenStyle = {
     position: "absolute",
     backgroundSize: "contain",
     backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    visibility: "hidden"
+    backgroundPosition: "center"
   },
   infoPanel: {
     style: {
       position: "absolute",
-      bottom: "3%",
-      left: "3%",
+      bottom: "5%",
+      left: "5%",
       width: "100%"
     },
     title: {
