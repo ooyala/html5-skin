@@ -60,6 +60,14 @@ var StartScreen = React.createClass({
         break;
     }
 
+    // metadata visibility
+    var titleMetadata;
+    var descriptionMetadata;
+    if (this.props.skinConfig.startScreen.showMetadata) {
+      titleMetadata = <div className="startscreen-title" style={screenStyle.infoPanel.title.style}>{this.props.contentTree.title}</div>;
+      descriptionMetadata = <div className="startscreen-description" style={screenStyle.infoPanel.description.style}>{this.state.description}</div>;
+    }
+
     if (this.props.skinConfig.startScreen.mode == "smallPromo") {
       // Small Promo Image configuration
       posterStyle.backgroundSize = "auto";
@@ -67,8 +75,8 @@ var StartScreen = React.createClass({
         <div style={screenStyle.style}>
           <div className="startscreen-info" style={screenStyle.infoPanel.style}>
             <img className="startscreen-poster" src={this.props.contentTree.promo_image}/>
-            <div className="startscreen-title" style={screenStyle.infoPanel.title.style}>{this.props.contentTree.title}</div>
-            <div className="startscreen-description" style={screenStyle.infoPanel.description.style}>{this.state.description}</div>
+            {titleMetadata}
+            {descriptionMetadata}
           </div>
           <span className={playClass} style={playStyle} aria-hidden="true" onClick={this.handleClick}></span>
         </div>
@@ -82,8 +90,8 @@ var StartScreen = React.createClass({
           <div className="startscreen-poster" style={screenStyle.posterStyle}></div>
           <span className={playClass} style={playStyle} aria-hidden="true" onClick={this.handleClick}></span>
           <div className="startscreen-info" style={screenStyle.infoPanel.style}>
-            <div className="startscreen-title" style={screenStyle.infoPanel.title.style}>{this.props.contentTree.title}</div>
-            <div className="startscreen-description" style={screenStyle.infoPanel.description.style}>{this.state.description}</div>
+            {titleMetadata}
+            {descriptionMetadata}
           </div>
         </div>
       );
