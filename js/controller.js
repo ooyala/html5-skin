@@ -3,7 +3,7 @@
 *********************************************************************/
 OO.plugin("Html5Skin", function (OO, _, $, W) {
 
-  Html5Skin = function (mb, id) {
+  var Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
     this.state = {
