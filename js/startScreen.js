@@ -21,23 +21,9 @@ var StartScreen = React.createClass({
   // CSS doesn't support "truncate N lines" so we need to do DOM width
   // calculations to figure out where to truncate the description
   componentDidMount: function() {
-    var actualNode = this.getDOMNode();
-    var testText = document.createElement("span");
-    testText.style.visibility = "hidden";
-    testText.style.position = "absolute";
-    testText.style.whiteSpace = "nowrap";
-    testText.style.fontSize = this.props.style.infoPanel.description.style.fontSize;
-    testText.innerHTML = this.state.description;
-    actualNode.appendChild(testText);
-    var actualWidth = actualNode.getElementsByClassName("startscreen-description")[0].clientWidth;
-    var textWidth = testText.scrollWidth;
-
-    if (textWidth > (actualWidth * 1.8)){
-      var truncPercent = actualWidth / textWidth;
-      var newWidth = (Math.floor(truncPercent * this.state.description.length) * 1.8) - 3;
-      this.setState({description: (this.state.description.slice(0,newWidth) + "...")});
-    }
-    testText.parentNode.removeChild(testText);
+    var descriptionNode = this.getDOMNode().getElementsByClassName("startscreen-description")[0];
+    var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
+    this.setState({description: shortDesc});
   },
 
   handleClick: function() {
@@ -50,7 +36,7 @@ var StartScreen = React.createClass({
     var elemHeight = actualNode.clientHeight;
     var infoBox = actualNode.getElementsByClassName("startscreen-info")[0];
     if (posterImage.height < elemHeight && posterImage.width < elemWidth) {
-      this.setState({ posterFullsize : false });
+      //this.setState({ posterFullsize : false });
     }
     actualNode.getElementsByClassName("startscreen-poster")[0].style.visibility = "visible";
   },
