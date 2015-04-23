@@ -9,7 +9,7 @@ var gulp = require('gulp'),
     react = require('gulp-react');
 
 var path = {
-  scripts: ['./js/*.js'],
+  scripts: ['./js/include/header.js', './js/*.js', './js/include/footer.js'],
   css: ['./css/*.css'],
 };
 
