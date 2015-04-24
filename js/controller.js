@@ -30,7 +30,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON("config/skin.json", _.bind(function(data) {
         this.skin = React.render(
-          React.createElement(Skin, {skinConfig: data, controller: this, _: _}), document.getElementById("skin")
+          React.createElement(Skin, {skinConfig: data, controller: this}), document.getElementById("skin")
         );
       }, this));
     },

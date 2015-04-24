@@ -6,10 +6,6 @@ var Skin = React.createClass({
     return {module: []};
   },
 
-  componentDidMount: function() {
-    _ = this.props._;
-  },
-
   switchComponent: function(args) {
     var newState = args || {};
     this.setState(newState);
