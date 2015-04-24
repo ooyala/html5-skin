@@ -39,5 +39,11 @@ gulp.task('watch', function() {
   gulp.watch(path.scripts, ['buildScript']);
 });
 
+// Just concat the files
+gulp.task('concat', function() {
+  gulp.src(path.scripts)
+  .pipe(concat('html5-skin-concat.js'))
+  .pipe(gulp.dest('build'));
+});
 // The default task (called when you run `gulp` from cli)
 gulp.task('default', ['build', 'watch']);
