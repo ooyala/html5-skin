@@ -13,9 +13,11 @@ var StartScreen = React.createClass({
   // CSS doesn't support "truncate N lines" so we need to do DOM width
   // calculations to figure out where to truncate the description
   componentDidMount: function() {
-    var descriptionNode = this.getDOMNode().getElementsByClassName("startscreen-description")[0];
-    var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
-    this.setState({description: shortDesc});
+    if (this.props.skinConfig.startScreen.showMetadata) {
+      var descriptionNode = this.getDOMNode().getElementsByClassName("startscreen-description")[0];
+      var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
+      this.setState({description: shortDesc});
+    }
   },
 
   handleClick: function() {
