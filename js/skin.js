@@ -3,27 +3,35 @@
 *********************************************************************/
 var Skin = React.createClass({
   getInitialState: function() {
-    return {module: []};
+    return {
+      screenToShow : null
+    };
   },
 
   switchComponent: function(args) {
     var newState = args || {};
     this.setState(newState);
+
+    if (this.refs.playScreen) {
+      this.refs.playScreen.setState({
+        playerState: this.state.playerState
+      });
+    }
+  },
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return nextState.screenToShow != this.state.screenToShow;
   },
 
   render: function() {
-    switch (this.state.module[0]) {
+    switch (this.state.screenToShow) {
       case STATE.START:
         return (
           <StartScreen {...this.props} contentTree={this.state.contentTree} />
         );
       case STATE.PLAYING:
         return (
-          <PlayingScreen {...this.props} />
-        );
-      case STATE.PAUSE:
-        return (
-          <PauseScreen {...this.props} />
+          <PlayingScreen {...this.props} ref="playScreen" />
         );
       default:
         return false;

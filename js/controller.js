@@ -7,7 +7,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.mb = mb;
     this.id = id;
     this.state = {
-      "module" : [],
+      "screenToShow": null,
+      "playerState": null
     };
 
     this.init();
@@ -36,22 +37,27 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
-      this.renderSkin(["start"], {"contentTree": contentTree});
+      this.state.screenToShow = STATE.START;
+      this.state.playerState = STATE.START;
+      this.renderSkin({"contentTree": contentTree});
     },
 
     onPlaying: function() {
-      this.renderSkin(["playing"]);
+      this.state.screenToShow = STATE.PLAYING;
+      this.state.playerState = STATE.PLAYING;
+      this.renderSkin();
     },
 
     onPaused: function() {
-      this.renderSkin(["pause"]);
+      this.state.screenToShow = STATE.PLAYING;
+      this.state.playerState = STATE.PAUSE;
+      this.renderSkin();
     },
 
     /*--------------------------------------------------------------------
       Skin state -> control skin
     ---------------------------------------------------------------------*/
-    renderSkin: function(modules, args) {
-      this.state.module = modules;
+    renderSkin: function(args) {
       _.extend(this.state, args);
       this.skin.switchComponent(this.state);
     },
@@ -59,8 +65,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /*--------------------------------------------------------------------
       skin UI-action -> publish event to core player
     ---------------------------------------------------------------------*/
-    play: function() {
-      switch (this.state.module[0]) {
+    togglePlayPause: function() {
+      switch (this.state.playerState) {
         case STATE.START:
         case STATE.END:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
@@ -68,11 +74,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         case STATE.PAUSE:
           this.mb.publish(OO.EVENTS.PLAY);
           break;
+        case STATE.PLAYING:
+          this.mb.publish(OO.EVENTS.PAUSE);
+          break;
       }
-    },
-
-    pause: function() {
-      this.mb.publish(OO.EVENTS.PAUSE);
     }
   };
 
