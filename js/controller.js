@@ -3,7 +3,7 @@
 *********************************************************************/
 OO.plugin("Html5Skin", function (OO, _, $, W) {
 
-  Html5Skin = function (mb, id) {
+  var Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
     this.state = {
@@ -31,7 +31,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON("config/skin.json", _.bind(function(data) {
         this.skin = React.render(
-          React.createElement(Skin, {data: data, controller: this}), document.getElementById("skin")
+          React.createElement(Skin, {skinConfig: data, controller: this}), document.getElementById("skin")
         );
       }, this));
     },
