@@ -78,6 +78,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.publish(OO.EVENTS.PAUSE);
           break;
       }
+    },
+
+    toggleMute: function(muted) {
+      this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
+    },
+
+    setVolume: function(volume){
+      this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
     }
   };
 
