@@ -4,7 +4,8 @@
 var Skin = React.createClass({
   getInitialState: function() {
     return {
-      screenToShow : null
+      screenToShow : null,
+      currentPlayhead: 0
     };
   },
 
@@ -23,6 +24,11 @@ var Skin = React.createClass({
     return nextState.screenToShow != this.state.screenToShow;
   },
 
+  updatePlayhead: function(newPlayhead) {
+    this.setState({currentPlayhead: newPlayhead});
+    this.forceUpdate();
+  },
+
   render: function() {
     switch (this.state.screenToShow) {
       case STATE.START:
@@ -31,7 +37,7 @@ var Skin = React.createClass({
         );
       case STATE.PLAYING:
         return (
-          <PlayingScreen {...this.props} ref="playScreen" />
+          <PlayingScreen {...this.props} contentTree={this.state.contentTree} currentPlayhead={this.state.currentPlayhead} ref="playScreen" />
         );
       default:
         return false;

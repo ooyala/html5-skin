@@ -20,6 +20,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
+      this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
     },
 
     /*--------------------------------------------------------------------
@@ -40,6 +41,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = STATE.START;
       this.state.playerState = STATE.START;
       this.renderSkin({"contentTree": contentTree});
+    },
+
+    onPlayheadTimeChanged: function(event, currentPlayhead) {
+      this.skin.updatePlayhead(currentPlayhead);
     },
 
     onPlaying: function() {
@@ -65,6 +70,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /*--------------------------------------------------------------------
       skin UI-action -> publish event to core player
     ---------------------------------------------------------------------*/
+    toggleFullscreen: function(fullscreen) {
+      this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, fullscreen);
+    },
+
+    toggleMute: function(muted) {
+      this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
+    },
+
     togglePlayPause: function() {
       switch (this.state.playerState) {
         case STATE.START:
@@ -78,10 +91,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.publish(OO.EVENTS.PAUSE);
           break;
       }
-    },
-
-    toggleMute: function(muted) {
-      this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
     },
 
     setVolume: function(volume){

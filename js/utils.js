@@ -18,5 +18,35 @@ var Utils = {
     }
     element.removeChild(testText);
     return truncatedText;
-  }
+  },
+
+  clone: function(object) {
+    var clonedObj = {};
+    for (var key in object) {
+      if (object.hasOwnProperty(key)) {
+        clonedObj[key] = object[key];
+      }
+    }
+    return clonedObj;
+  },
+
+  formatSeconds: function(timeInSeconds) {
+      var seconds = parseInt(timeInSeconds,10) % 60;
+      var hours = parseInt(timeInSeconds / 3600, 10);
+      var minutes = parseInt((timeInSeconds - hours * 3600) / 60, 10);
+
+      if (hours < 10) {
+        hours = '0' + hours;
+      }
+
+      if (minutes < 10) {
+        minutes = '0' + minutes;
+      }
+
+      if (seconds < 10) {
+        seconds = '0' + seconds;
+      }
+
+      return (parseInt(hours,10) > 0) ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
+    }
 };
