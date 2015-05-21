@@ -24,8 +24,12 @@ var Skin = React.createClass({
     return nextState.screenToShow != this.state.screenToShow;
   },
 
-  updatePlayhead: function(newPlayhead) {
-    this.setState({currentPlayhead: newPlayhead});
+  updatePlayhead: function(newPlayhead, newDuration, newBuffered) {
+    this.setState({
+      currentPlayhead: newPlayhead,
+      duration: newDuration,
+      buffered: newBuffered
+    });
     this.forceUpdate();
   },
 
@@ -37,7 +41,11 @@ var Skin = React.createClass({
         );
       case STATE.PLAYING:
         return (
-          <PlayingScreen {...this.props} contentTree={this.state.contentTree} currentPlayhead={this.state.currentPlayhead} ref="playScreen" />
+          <PlayingScreen {...this.props} contentTree={this.state.contentTree}
+          currentPlayhead={this.state.currentPlayhead}
+          duration={this.state.duration}
+          buffered={this.state.buffered}
+          ref="playScreen" />
         );
       default:
         return false;

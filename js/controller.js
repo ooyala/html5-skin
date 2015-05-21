@@ -27,7 +27,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       event listeners from core player -> regulate skin STATE
     ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
-      $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%'></div>");
+      $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%; position: absolute; z-index: 10000;'></div>");
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON("config/skin.json", _.bind(function(data) {
@@ -43,8 +43,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin({"contentTree": contentTree});
     },
 
-    onPlayheadTimeChanged: function(event, currentPlayhead) {
-      this.skin.updatePlayhead(currentPlayhead);
+    onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
+      console.log(arguments);
+      this.skin.updatePlayhead(currentPlayhead, duration, buffered);
     },
 
     onPlaying: function() {
@@ -91,6 +92,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.publish(OO.EVENTS.PAUSE);
           break;
       }
+    },
+
+    seek: function(seconds) {
+      this.mb.publish(OO.EVENTS.SEEK, seconds);
     },
 
     setVolume: function(volume){
