@@ -68,18 +68,14 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayheadMouseUp: function(evt) {
-    console.log("playhead");
     evt.chibble = "rawr";
     evt.stopPropagation();
-    console.dir(evt);
     var newPlayheadX = evt.screenX;
     var diffX = newPlayheadX - this.state.startingPlayheadX;
     var diffTime = (diffX / this.state.controlBarWidth) * this.state.duration;
-    console.log("diffTime", diffTime, "currentPlayhead", this.state.currentPlayhead);
     var newPlayheadTime = this.state.currentPlayhead + diffTime;
     this.getDOMNode().parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
     document.removeEventListener("mouseup", this.handlePlayheadMouseUp, true);
-    console.log("seeking to " + newPlayheadTime);
     this.props.controller.seek(newPlayheadTime);
     this.setState({
       scrubbing: false,
@@ -88,7 +84,6 @@ var PlayingScreen = React.createClass({
   },
 
   handleScrubberBarMouseUp: function(evt) {
-    console.log("scrubber up");
     var offset = evt.clientX - evt.target.getBoundingClientRect().left;
     var newPlayheadTime = (offset / this.state.controlBarWidth) * this.state.duration;
     this.props.controller.seek(newPlayheadTime);
@@ -100,9 +95,13 @@ var PlayingScreen = React.createClass({
   handleVolumeClick: function(evt) {
     var newVolume = parseFloat(evt.target.dataset.volume);
     this.props.controller.setVolume(newVolume);
-    this.setState({volume: newVolume});
+    this.setState({
+      volume: newVolume,
+      muted: false
+    });
   },
 
+  //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
     evt.target.style.color = "rgba(255, 255, 255, 1.0)";
   },
@@ -112,117 +111,31 @@ var PlayingScreen = React.createClass({
   },
 
   render: function() {
-    //var skinSetting = this.props.data.skin;
     var playClass = (this.state.playerState == STATE.PLAYING) ? "glyphicon glyphicon-pause" : "glyphicon glyphicon-play";
     var muteClass = (this.state.muted) ? "glyphicon glyphicon-volume-off" : "glyphicon glyphicon-volume-down";
     var fullscreenClass = (this.state.fullscreen) ? "glyphicon glyphicon-resize-small" : "glyphicon glyphicon-resize-full";
 
+    //Fill in all the dynamic style values we need
     var controlBarHeight = 32;
+    playingScreenStyle.controlBarSetting.height = controlBarHeight;
+    playingScreenStyle.controlBarSetting.transform = "translate(0,-" + (this.state.showControls ? playingScreenStyle.controlBarSetting.height : 0) + "px)";
+    playingScreenStyle.durationIndicatorSetting.lineHeight = controlBarHeight + "px";
+    playingScreenStyle.iconSetting.lineHeight = controlBarHeight + "px";
+    playingScreenStyle.scrubberBarSetting.bottom = controlBarHeight;
+    playingScreenStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) / parseFloat(this.props.duration)) * 100 + "%";
+    playingScreenStyle.playedIndicatorStyle.width = (parseFloat(this.props.buffered) / parseFloat(this.props.duration)) * 100 + "%";
 
-    var controlBarSetting = {
-      "background": "rgba(48, 48, 48, 0.8)",
-      "width": "100%",
-      "height": controlBarHeight,
-      "top": "100%",
-      "position": "absolute",
-      "padding": 0,
-      "margin": 0,
-      "listStyle": "none",
-      "display": "flex",
-      "flexFlow": "row nowrap",
-      "justifyContent": "flex-start",
-      "-webkit-user-select": "none",
-      "-moz-user-select": "none",
-      "-ms-user-select": "none",
-      "user-select": "none"
-    };
-    controlBarSetting.transform = "translate(0,-" + (this.state.showControls ? controlBarSetting.height : 0) + "px)";
-
-    var controlItemSetting = {
-      "height": "100%",
-      "color": "rgba(255, 255, 255, 0.6)",
-      "fontWeight": "bold",
-      "fontSize": "18",
-      "textAlign": "center",
-      "paddingLeft": "8px",
-      "paddingRight": "8px"
-    };
-
-    var controlItemSetting2 = {
-      "height": "100%",
-      "color": "#ffffff",
-      "opacity": 0.6,
-      "fontWeight": "bold",
-      "fontSize": 14,
-      "textAlign": "left",
-      "flex": 1,
-      "lineHeight": controlBarHeight+"px"
-    };
-
-    var iconSetting = {
-      "lineHeight": controlBarHeight+"px"
-    };
-
-    var volumeBarStyle = {
-      "display": "inline-block",
-      "height": "12px",
-      "width": "4px",
-      "paddingRight": "2px",
-      "backgroundClip": "content-box",
-      "position": "relative",
-      "top": "-1px"
-    };
-
-    var scrubberBarSetting = {
-      "background": "#afafaf",
-      "width": "100%",
-      "height": "4px",
-      "padding": 0,
-      "margin": 0,
-      "-webkit-user-select": "none",
-      "-moz-user-select": "none",
-      "-ms-user-select": "none",
-      "user-select": "none",
-      "position": "absolute",
-      "bottom": controlBarHeight
-    };
-
-    var bufferedIndicatorStyle = {
-      "background": "#7f7f7f",
-      "width": (parseFloat(this.props.buffered) / parseFloat(this.props.duration)) * 100 + "%",
-      "height": "100%",
-      "position": "absolute"
-    };
-
-    var playedIndicatorStyle = {
-      "background": "#4389ff",
-      "width": (parseFloat(this.props.currentPlayhead) / parseFloat(this.props.duration)) * 100 + "%",
-      "height": "100%",
-      "position": "absolute"
-    };
-
-    var playheadStyle = {
-      "background": "#ffffff",
-      "width": "10px",
-      "height": "10px",
-      "border": "solid white 1px",
-      "borderRadius": "10px",
-      "position": "absolute",
-      "zIndex": 1,
-      "top": "50%",
-      "transform": "translateY(-50%)",
-      "left": (parseFloat(this.props.currentPlayhead) / parseFloat(this.props.duration)) * this.state.controlBarWidth
-    };
+    playingScreenStyle.playheadStyle.left = ((parseFloat(this.props.currentPlayhead) / parseFloat(this.props.duration)) * this.state.controlBarWidth);
 
     if (this.state.scrubbing) {
-      playheadStyle.left = playheadStyle.left + (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
+      playingScreenStyle.playheadStyle.left = playingScreenStyle.playheadStyle.left + (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
     }
-    playheadStyle.left = Math.max(Math.min(this.state.controlBarWidth, playheadStyle.left), 0);
+    playingScreenStyle.playheadStyle.left = Math.max(Math.min(this.state.controlBarWidth, playingScreenStyle.playheadStyle.left), 0);
 
     var volumeBars = [];
     for (var i=0; i<10; i++) {
       var turnedOn = this.state.volume >= (i+1) / 10;
-      var singleBarStyle = Utils.clone(volumeBarStyle);
+      var singleBarStyle = Utils.clone(playingScreenStyle.volumeBarStyle);
       singleBarStyle.backgroundColor = (turnedOn ? "rgba(67, 137, 255, 0.6)" : "rgba(255, 255, 255, 0.6)");
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle} onClick={this.handleVolumeClick}></span>);
     }
@@ -230,27 +143,37 @@ var PlayingScreen = React.createClass({
     var totalTime = 0;
     if (this.props.contentTree && this.props.contentTree.duration) totalTime = Utils.formatSeconds(this.props.contentTree.duration / 1000);
 
+    var controlItemTemplates = {
+      "playPause": <div className="play" style={playingScreenStyle.controlBarItemSetting} onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        <span className={playClass} style={playingScreenStyle.iconSetting}></span>
+      </div>,
+      "volume": <div className="volume" style={playingScreenStyle.controlBarItemSetting}>
+        <span className={muteClass} style={playingScreenStyle.iconSetting} onClick={this.handleMuteClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+        {volumeBars}
+        </div>,
+      "timeDuration": <div className="time-duration" style={playingScreenStyle.durationIndicatorSetting}>{Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}</div>,
+      "discovery": <div className="discovery" style={playingScreenStyle.controlBarItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-cd" style={playingScreenStyle.iconSetting}></span></div>,
+      "bitrateSelector": <div className="bitrate-selector" style={playingScreenStyle.controlBarItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-equalizer" style={playingScreenStyle.iconSetting}></span></div>,
+      "closedCaption": <div className="closed-caption" style={playingScreenStyle.controlBarItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-subtitles" style={playingScreenStyle.iconSetting}></span></div>,
+      "share": <div className="share" style={playingScreenStyle.controlBarItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-share" style={playingScreenStyle.iconSetting}></span></div>,
+      "fullScreen": <div className="fullscreen" style={playingScreenStyle.controlBarItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}><span className={fullscreenClass} style={playingScreenStyle.iconSetting}></span></div>
+    };
+
+    var controlBarItems = [];
+    var controlBarSetting = this.props.skinConfig.controlBar;
+    for (i=0; i < controlBarSetting.items.length; i++) {
+      controlBarItems.push(controlItemTemplates[controlBarSetting.items[i]]);
+    }
+
     return (
       <div>
-        <div className="scrubberBar" style={scrubberBarSetting} onMouseUp={this.handleScrubberBarMouseUp}>
-          <div className="bufferedIndicator" style={bufferedIndicatorStyle}></div>
-          <div className="playedIndicator" style={playedIndicatorStyle}></div>
-          <div className="playhead" style={playheadStyle} onMouseDown={this.handlePlayheadMouseDown}></div>
+        <div className="scrubberBar" style={playingScreenStyle.scrubberBarSetting} onMouseUp={this.handleScrubberBarMouseUp}>
+          <div className="bufferedIndicator" style={playingScreenStyle.bufferedIndicatorStyle}></div>
+          <div className="playedIndicator" style={playingScreenStyle.playedIndicatorStyle}></div>
+          <div className="playhead" style={playingScreenStyle.playheadStyle} onMouseDown={this.handlePlayheadMouseDown}></div>
         </div>
-        <div className="controlBar" style={controlBarSetting}>
-          <div className="play" style={controlItemSetting} onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-            <span className={playClass} style={iconSetting}></span>
-          </div>
-          <div className="volume" style={controlItemSetting}>
-            <span className={muteClass} style={iconSetting} onClick={this.handleMuteClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
-            {volumeBars}
-            </div>
-          <div className="time-duration" style={controlItemSetting2}>{Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}</div>
-          <div className="discovery" style={controlItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-cd" style={iconSetting}></span></div>
-          <div className="bitrate-selector" style={controlItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-equalizer" style={iconSetting}></span></div>
-          <div className="closed-caption" style={controlItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-subtitles" style={iconSetting}></span></div>
-          <div className="share" style={controlItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-share" style={iconSetting}></span></div>
-          <div className="fullscreen" style={controlItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}><span className={fullscreenClass} style={iconSetting}></span></div>
+        <div className="controlBar" style={playingScreenStyle.controlBarSetting}>
+          {controlBarItems}
         </div>
       </div>
     );
