@@ -65,11 +65,13 @@ This will install gulp module globally. Then, simply run this command:
 This will perform an initial build and start a watch that will update build/html5-skin.js with any changes you wish to make in js folder.
 
 If you have the forever module installed, you can use the following command to keep gulp running:
+
     forever --spinSleepTime 5000 --workingDir <path to your project directory> /usr/local/bin/gulp
 
 Once you've built the Javascript with gulp, you'll need to run a webserver in order to serve sample.html.
 The simplest way to do this is with python's built in server, but you can use any server you like.
 To start a python server, cd into the repo directory and run:
+
     python -m SimpleHTTPServer
 
 You should now be able to load the sample page by hitting http://localhost:8000/sample.html
