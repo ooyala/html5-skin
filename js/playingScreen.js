@@ -123,7 +123,7 @@ var PlayingScreen = React.createClass({
     playingScreenStyle.iconSetting.lineHeight = controlBarHeight + "px";
     playingScreenStyle.scrubberBarSetting.bottom = controlBarHeight;
     playingScreenStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) / parseFloat(this.props.duration)) * 100 + "%";
-    playingScreenStyle.playedIndicatorStyle.width = (parseFloat(this.props.buffered) / parseFloat(this.props.duration)) * 100 + "%";
+    playingScreenStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) / parseFloat(this.props.duration)) * 100 + "%";
 
     playingScreenStyle.playheadStyle.left = ((parseFloat(this.props.currentPlayhead) / parseFloat(this.props.duration)) * this.state.controlBarWidth);
 
