@@ -153,17 +153,17 @@ var PlayingScreen = React.createClass({
     if (this.props.contentTree && this.props.contentTree.duration) totalTime = Utils.formatSeconds(this.props.contentTree.duration / 1000);
 
     var controlItemTemplates = {
-      "playPause": <div className="play" style={playingScreenStyle.controlBarItemSetting} onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+      "playPause": <div className="playPause" style={playingScreenStyle.controlBarItemSetting} onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <span className={playClass} style={playingScreenStyle.iconSetting}></span>
       </div>,
       "volume": <div className="volume" style={playingScreenStyle.controlBarItemSetting}>
         <span className={muteClass} style={playingScreenStyle.iconSetting} onClick={this.handleMuteClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
         {volumeBars}
         </div>,
-      "timeDuration": <div className="time-duration" style={playingScreenStyle.durationIndicatorSetting}>{Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}</div>,
+      "timeDuration": <div className="timeDuration" style={playingScreenStyle.durationIndicatorSetting}>{Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}</div>,
       "discovery": <div className="discovery" style={playingScreenStyle.controlBarItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-cd" style={playingScreenStyle.iconSetting}></span></div>,
-      "bitrateSelector": <div className="bitrate-selector" style={playingScreenStyle.controlBarItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-equalizer" style={playingScreenStyle.iconSetting}></span></div>,
-      "closedCaption": <div className="closed-caption" style={playingScreenStyle.controlBarItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-subtitles" style={playingScreenStyle.iconSetting}></span></div>,
+      "bitrateSelector": <div className="bitrateSelector" style={playingScreenStyle.controlBarItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-equalizer" style={playingScreenStyle.iconSetting}></span></div>,
+      "closedCaption": <div className="closedCaption" style={playingScreenStyle.controlBarItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-subtitles" style={playingScreenStyle.iconSetting}></span></div>,
       "share": <div className="share" style={playingScreenStyle.controlBarItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-share" style={playingScreenStyle.iconSetting}></span></div>,
       "fullScreen": <div className="fullscreen" style={playingScreenStyle.controlBarItemSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}><span className={fullscreenClass} style={playingScreenStyle.iconSetting}></span></div>
     };
