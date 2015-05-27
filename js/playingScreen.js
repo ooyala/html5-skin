@@ -14,14 +14,18 @@ var PlayingScreen = React.createClass({
       currentPlayheadX: 0,
       startingPlayheadX: 0,
       scrubbingPlayheadX: 0,
-      duration: this.props.duration,
       scrubbing: false,
-      controlBarWidth: 0
+      controlBarWidth: 0,
+      controlBarVisible: true
     };
   },
 
   componentDidMount: function () {
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+  },
+
+  handleControlBarMouseUp: function(evt) {
+    evt.stopPropagation();
   },
 
   handleFullscreenClick: function() {
@@ -37,16 +41,12 @@ var PlayingScreen = React.createClass({
     });
   },
 
-  handleMouseMove: function() {
-    this.setState({showControls : true});
-  },
-
-  handleMouseOut: function() {
-    this.setState({showControls : false});
-  },
-
   handlePlayClick: function() {
       this.props.controller.togglePlayPause();
+  },
+
+  handlePlayerMouseUp: function() {
+    this.props.controller.togglePlayPause();
   },
 
   handlePlayheadMouseDown: function(evt) {
@@ -68,11 +68,10 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayheadMouseUp: function(evt) {
-    evt.chibble = "rawr";
     evt.stopPropagation();
     var newPlayheadX = evt.screenX;
     var diffX = newPlayheadX - this.state.startingPlayheadX;
-    var diffTime = (diffX / this.state.controlBarWidth) * this.state.duration;
+    var diffTime = (diffX / this.state.controlBarWidth) * this.props.duration;
     var newPlayheadTime = this.state.currentPlayhead + diffTime;
     this.getDOMNode().parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
     document.removeEventListener("mouseup", this.handlePlayheadMouseUp, true);
@@ -84,8 +83,9 @@ var PlayingScreen = React.createClass({
   },
 
   handleScrubberBarMouseUp: function(evt) {
+    evt.stopPropagation();
     var offset = evt.clientX - evt.target.getBoundingClientRect().left;
-    var newPlayheadTime = (offset / this.state.controlBarWidth) * this.state.duration;
+    var newPlayheadTime = (offset / this.state.controlBarWidth) * this.props.duration;
     this.props.controller.seek(newPlayheadTime);
     this.setState({
       currentPlayhead: newPlayheadTime
@@ -110,6 +110,14 @@ var PlayingScreen = React.createClass({
     evt.target.style.color = "rgba(255, 255, 255, 0.6)";
   },
 
+  showControlBar: function() {
+    this.setState({controlBarVisible: true});
+  },
+
+  hideControlBar: function() {
+    this.setState({controlBarVisible: false});
+  },
+
   render: function() {
     var playClass = (this.state.playerState == STATE.PLAYING) ? "glyphicon glyphicon-pause" : "glyphicon glyphicon-play";
     var muteClass = (this.state.muted) ? "glyphicon glyphicon-volume-off" : "glyphicon glyphicon-volume-down";
@@ -118,14 +126,15 @@ var PlayingScreen = React.createClass({
     //Fill in all the dynamic style values we need
     var controlBarHeight = 32;
     playingScreenStyle.controlBarSetting.height = controlBarHeight;
-    playingScreenStyle.controlBarSetting.transform = "translate(0,-" + (this.state.showControls ? playingScreenStyle.controlBarSetting.height : 0) + "px)";
+    playingScreenStyle.controlBarSetting.transform = "translate(0,-" + (this.state.controlBarVisible ? playingScreenStyle.controlBarSetting.height : 0) + "px)";
     playingScreenStyle.durationIndicatorSetting.lineHeight = controlBarHeight + "px";
     playingScreenStyle.iconSetting.lineHeight = controlBarHeight + "px";
-    playingScreenStyle.scrubberBarSetting.bottom = controlBarHeight;
+    playingScreenStyle.scrubberBarSetting.bottom = (this.state.controlBarVisible ? controlBarHeight : 0);
+    playingScreenStyle.scrubberBarSetting.height = (this.state.controlBarVisible ? "6px" : "4px");
     playingScreenStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) / parseFloat(this.props.duration)) * 100 + "%";
     playingScreenStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) / parseFloat(this.props.duration)) * 100 + "%";
-
     playingScreenStyle.playheadStyle.left = ((parseFloat(this.props.currentPlayhead) / parseFloat(this.props.duration)) * this.state.controlBarWidth);
+    playingScreenStyle.playheadStyle.opacity = (this.state.controlBarVisible ? 1 : 0);
 
     if (this.state.scrubbing) {
       playingScreenStyle.playheadStyle.left = playingScreenStyle.playheadStyle.left + (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
@@ -166,13 +175,13 @@ var PlayingScreen = React.createClass({
     }
 
     return (
-      <div>
+      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
         <div className="scrubberBar" style={playingScreenStyle.scrubberBarSetting} onMouseUp={this.handleScrubberBarMouseUp}>
           <div className="bufferedIndicator" style={playingScreenStyle.bufferedIndicatorStyle}></div>
           <div className="playedIndicator" style={playingScreenStyle.playedIndicatorStyle}></div>
           <div className="playhead" style={playingScreenStyle.playheadStyle} onMouseDown={this.handlePlayheadMouseDown}></div>
         </div>
-        <div className="controlBar" style={playingScreenStyle.controlBarSetting}>
+        <div className="controlBar" onMouseUp={this.handleControlBarMouseUp} style={playingScreenStyle.controlBarSetting}>
           {controlBarItems}
         </div>
       </div>

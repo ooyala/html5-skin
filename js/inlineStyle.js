@@ -67,7 +67,8 @@ var playingScreenStyle = {
     "-webkit-user-select": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
-    "user-select": "none"
+    "user-select": "none",
+    "transition": "transform 0.5s"
   },
 
   controlBarItemSetting: {
@@ -83,8 +84,7 @@ var playingScreenStyle = {
   durationIndicatorSetting: {
     "height": "100%",
     "color": "#ffffff",
-    "opacity": 0.6,
-    "fontWeight": "bold",
+    "opacity": 1,
     "fontSize": 14,
     "textAlign": "left",
     "flex": 1
@@ -106,14 +106,15 @@ var playingScreenStyle = {
   scrubberBarSetting: {
     "background": "#afafaf",
     "width": "100%",
-    "height": "4px",
+    "height": "6px",
     "padding": 0,
     "margin": 0,
     "-webkit-user-select": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
     "user-select": "none",
-    "position": "absolute"
+    "position": "absolute",
+    "transition": "bottom 0.5s, height 0.25s"
   },
 
   bufferedIndicatorStyle: {
@@ -137,6 +138,7 @@ var playingScreenStyle = {
     "position": "absolute",
     "zIndex": 1,
     "top": "50%",
-    "transform": "translateY(-50%)"
+    "transform": "translateY(-50%)",
+    "transition": "opacity 0.25s"
   }
 };
