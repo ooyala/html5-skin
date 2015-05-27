@@ -9,7 +9,7 @@ var gulp = require('gulp'),
     react = require('gulp-react');
 
 var path = {
-  scripts: ['./js/include/header.js', './js/*.js', './js/include/footer.js'],
+  scripts: ['./js/include/header.js', './js/components/*.js', './js/*.js', './js/include/footer.js'],
   css: ['./css/*.css'],
 };
 
@@ -36,7 +36,7 @@ gulp.task('buildCss', function() {
 
 // Initiate a watch
 gulp.task('watch', function() {
-  gulp.watch(path.scripts, ['buildScript']);
+  gulp.watch(path.scripts, ['concat', 'buildScript']);
 });
 
 // Just concat the files
