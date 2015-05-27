@@ -171,7 +171,10 @@ var PlayingScreen = React.createClass({
     var controlBarItems = [];
     var controlBarSetting = this.props.skinConfig.controlBar;
     for (i=0; i < controlBarSetting.items.length; i++) {
-      controlBarItems.push(controlItemTemplates[controlBarSetting.items[i]]);
+        if (typeof controlItemTemplates[controlBarSetting.items[i]] === "undefined") {
+          continue;
+        }
+        controlBarItems.push(controlItemTemplates[controlBarSetting.items[i]]);
     }
 
     return (
