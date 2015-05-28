@@ -5,6 +5,7 @@
 var PlayingScreen = React.createClass({
   getInitialState: function() {
     return {
+      controlBarVisible: true,
       playerState : STATE.PLAYING
     };
   },
@@ -35,8 +36,8 @@ var PlayingScreen = React.createClass({
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controLBarWidth} controlBarHeight={controlBarHeight}
-          playerState={this.state.playerState} muted={this.state.muted}/>
+          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
+          playerState={this.state.playerState} />
       </div>
     );
   }
