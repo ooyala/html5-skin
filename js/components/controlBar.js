@@ -80,7 +80,7 @@ var ControlBar = React.createClass({
     var volumeBars = [];
     for (var i=0; i<10; i++) {
       var turnedOn = this.state.volume >= (i+1) / 10;
-      var singleBarStyle = Utils.clone(playingScreenStyle.volumeBarStyle);
+      var singleBarStyle = Utils.clone(controlBarStyle.volumeBarStyle);
       singleBarStyle.backgroundColor = (turnedOn ?
         "rgba(67, 137, 255, 0.6)" : "rgba(255, 255, 255, 0.6)");
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
@@ -88,32 +88,32 @@ var ControlBar = React.createClass({
     }
 
     var controlItemTemplates = {
-      "playPause": <div className="playPause" style={playingScreenStyle.controlBarItemSetting}
+      "playPause": <div className="playPause" style={controlBarStyle.controlBarItemSetting}
         onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        <span className={playClass} style={playingScreenStyle.iconSetting}></span>
+        <span className={playClass} style={controlBarStyle.iconSetting}></span>
       </div>,
-      "volume": <div className="volume" style={playingScreenStyle.controlBarItemSetting}>
-        <span className={muteClass} style={playingScreenStyle.iconSetting} onClick={this.handleMuteClick}
+      "volume": <div className="volume" style={controlBarStyle.controlBarItemSetting}>
+        <span className={muteClass} style={controlBarStyle.iconSetting} onClick={this.handleMuteClick}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
         {volumeBars}
         </div>,
-      "timeDuration": <div className="timeDuration" style={playingScreenStyle.durationIndicatorSetting}>
+      "timeDuration": <div className="timeDuration" style={controlBarStyle.durationIndicatorSetting}>
         {Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}</div>,
-      "discovery": <div className="discovery" style={playingScreenStyle.controlBarItemSetting}
+      "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        <span className="glyphicon glyphicon-cd" style={playingScreenStyle.iconSetting}></span></div>,
-      "bitrateSelector": <div className="bitrateSelector" style={playingScreenStyle.controlBarItemSetting}
+        <span className="glyphicon glyphicon-cd" style={controlBarStyle.iconSetting}></span></div>,
+      "bitrateSelector": <div className="bitrateSelector" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-equalizer"
-        style={playingScreenStyle.iconSetting}></span></div>,
-      "closedCaption": <div className="closedCaption" style={playingScreenStyle.controlBarItemSetting}
+        style={controlBarStyle.iconSetting}></span></div>,
+      "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-subtitles"
-        style={playingScreenStyle.iconSetting}></span></div>,
-      "share": <div className="share" style={playingScreenStyle.controlBarItemSetting}
+        style={controlBarStyle.iconSetting}></span></div>,
+      "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-share"
-        style={playingScreenStyle.iconSetting}></span></div>,
-      "fullScreen": <div className="fullscreen" style={playingScreenStyle.controlBarItemSetting}
+        style={controlBarStyle.iconSetting}></span></div>,
+      "fullScreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
-        <span className={fullscreenClass} style={playingScreenStyle.iconSetting}></span></div>
+        <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>
     };
 
     var controlBarItems = [];
@@ -130,17 +130,17 @@ var ControlBar = React.createClass({
   render: function() {
     //Fill in all the dynamic style values we need
     var controlBarHeight = this.props.controlBarHeight;
-    playingScreenStyle.controlBarSetting.height = controlBarHeight;
-    playingScreenStyle.controlBarSetting.transform = "translate(0,-" +
-      (this.props.controlBarVisible ? playingScreenStyle.controlBarSetting.height : 0) + "px)";
-    playingScreenStyle.durationIndicatorSetting.lineHeight = controlBarHeight + "px";
-    playingScreenStyle.iconSetting.lineHeight = controlBarHeight + "px";
+    controlBarStyle.controlBarSetting.height = controlBarHeight;
+    controlBarStyle.controlBarSetting.transform = "translate(0,-" +
+      (this.props.controlBarVisible ? controlBarStyle.controlBarSetting.height : 0) + "px)";
+    controlBarStyle.durationIndicatorSetting.lineHeight = controlBarHeight + "px";
+    controlBarStyle.iconSetting.lineHeight = controlBarHeight + "px";
 
     var controlBarItems = this.populateControlBar();
 
     return (
       <div className="controlBar" onMouseUp={this.handleControlBarMouseUp}
-        style={playingScreenStyle.controlBarSetting}>
+        style={controlBarStyle.controlBarSetting}>
         {controlBarItems}
       </div>
     );

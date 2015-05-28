@@ -5,8 +5,7 @@
 var PlayingScreen = React.createClass({
   getInitialState: function() {
     return {
-      controlBarVisible: true,
-      playerState : STATE.PLAYING
+      controlBarVisible: true
     };
   },
 

@@ -56,31 +56,31 @@ var ScrubberBar = React.createClass({
   },
 
   render: function() {
-    playingScreenStyle.scrubberBarSetting.bottom = (this.props.controlBarVisible ?
+    scrubberBarStyle.scrubberBarSetting.bottom = (this.props.controlBarVisible ?
       this.props.controlBarHeight : 0);
-    playingScreenStyle.scrubberBarSetting.height = (this.props.controlBarVisible ?
+    scrubberBarStyle.scrubberBarSetting.height = (this.props.controlBarVisible ?
       "6px" : "4px");
-    playingScreenStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
+    scrubberBarStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
       parseFloat(this.props.duration)) * 100 + "%";
-    playingScreenStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
+    scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
       parseFloat(this.props.duration)) * 100 + "%";
-    playingScreenStyle.playheadStyle.left = ((parseFloat(this.props.currentPlayhead) /
+    scrubberBarStyle.playheadStyle.left = ((parseFloat(this.props.currentPlayhead) /
       parseFloat(this.props.duration)) * this.props.controlBarWidth);
-    playingScreenStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
+    scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
 
     if (this.state.scrubbing) {
-      playingScreenStyle.playheadStyle.left = playingScreenStyle.playheadStyle.left +
+      scrubberBarStyle.playheadStyle.left = scrubberBarStyle.playheadStyle.left +
         (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
     }
-    playingScreenStyle.playheadStyle.left = Math.max(Math.min(this.props.controlBarWidth,
-      playingScreenStyle.playheadStyle.left), 0);
+    scrubberBarStyle.playheadStyle.left = Math.max(Math.min(this.props.controlBarWidth - parseInt(scrubberBarStyle.playheadStyle.width),
+      scrubberBarStyle.playheadStyle.left), 0);
 
     return (
-      <div className="scrubberBar" style={playingScreenStyle.scrubberBarSetting}
+      <div className="scrubberBar" style={scrubberBarStyle.scrubberBarSetting}
         onMouseUp={this.handleScrubberBarMouseUp}>
-        <div className="bufferedIndicator" style={playingScreenStyle.bufferedIndicatorStyle}></div>
-        <div className="playedIndicator" style={playingScreenStyle.playedIndicatorStyle}></div>
-        <div className="playhead" style={playingScreenStyle.playheadStyle}
+        <div className="bufferedIndicator" style={scrubberBarStyle.bufferedIndicatorStyle}></div>
+        <div className="playedIndicator" style={scrubberBarStyle.playedIndicatorStyle}></div>
+        <div className="playhead" style={scrubberBarStyle.playheadStyle}
           onMouseDown={this.handlePlayheadMouseDown}></div>
       </div>
     );
