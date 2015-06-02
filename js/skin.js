@@ -25,6 +25,10 @@ var Skin = React.createClass({
         return (
           <PauseScreen {...this.props} />
         );
+      case STATE.END:
+        return (
+          <EndScreen {...this.props} contentTree={this.state.contentTree} style={endScreenStyle}/>
+        );
       default:
         return false;
     }

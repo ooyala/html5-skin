@@ -17,8 +17,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     init: function () {
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
-      this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
+      this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
+      this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
     },
 
     /*--------------------------------------------------------------------
@@ -45,6 +46,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPaused: function() {
       this.renderSkin(["pause"]);
+    },
+
+    onPlayed: function(event, contentTree) {
+      this.renderSkin(["end"], {"contentTree": contentTree});
     },
 
     /*--------------------------------------------------------------------

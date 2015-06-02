@@ -6,6 +6,7 @@ var StartScreen = React.createClass({
   getInitialState: function() {
     return {
       description: this.props.contentTree.description
+      title: this.props.contentTree.title
     };
   },
 
