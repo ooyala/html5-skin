@@ -5,9 +5,7 @@
 var EndScreen = React.createClass({
   getInitialState: function() {
     return {
-      description: this.props.contentTree.description,
-      title: this.props.contentTree.title,
-      promo_image: this.props.contentTree.promo_image
+      description: this.props.contentTree.description
     };
   },
 
@@ -39,7 +37,7 @@ var EndScreen = React.createClass({
     var titleMetadata;
     var descriptionMetadata;
     if (this.props.skinConfig.endScreen.mode != "discovery") {
-      titleMetadata = <div className="endscreen-title" style={screenStyle.infoPanel.title.style}>{this.state.title}</div>;
+      titleMetadata = <div className="endscreen-title" style={screenStyle.infoPanel.title.style}>{this.props.contentTree.title}</div>;
       descriptionMetadata = <div className="endscreen-description" style={screenStyle.infoPanel.description.style}>{this.state.description}</div>;
     }
 
@@ -49,7 +47,7 @@ var EndScreen = React.createClass({
       return (
         <div style={screenStyle.style}>
           <div className="endscreen-info" style={screenStyle.infoPanel.style}>
-            <img className="endscreen-poster" src={this.state.promo_image}/>
+            <img className="endscreen-poster" src={this.props.contentTree.promo_image}/>
             {titleMetadata}
             {descriptionMetadata}
           </div>
@@ -59,7 +57,7 @@ var EndScreen = React.createClass({
     }
     else {
       // Default configuration
-      posterStyle.backgroundImage = "url('" + this.state.promo_image + "')";
+      posterStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
       return (
         <div style={screenStyle.style}>
           <div className="endscreen-poster" style={screenStyle.posterStyle}></div>

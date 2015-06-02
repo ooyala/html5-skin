@@ -8,6 +8,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.id = id;
     this.state = {
       "module" : [],
+      "contentTree": {},
     };
 
     this.init();
@@ -37,8 +38,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
-      // this.renderSkin(["start"], {"contentTree": contentTree});
-      this.renderSkin(["end"], {"contentTree": contentTree});
+      this.state.contentTree = contentTree;
+      this.renderSkin(["start"], {"contentTree": contentTree});
     },
 
     onPlaying: function() {
@@ -49,7 +50,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin(["pause"]);
     },
 
-    onPlayed: function(event, contentTree) {
+    onPlayed: function() {
       this.renderSkin(["end"], {"contentTree": contentTree});
     },
 
