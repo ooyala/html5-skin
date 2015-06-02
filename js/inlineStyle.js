@@ -97,6 +97,8 @@ endScreenStyle = {
   repeatButton: {
     icon: "glyphicon glyphicon-repeat",
     style: {
+      top: "50%",
+      left: "50%",
       fontSize: "18",
       transform: "translate(-50%, -50%)",
       position: "absolute",

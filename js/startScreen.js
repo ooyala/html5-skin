@@ -5,8 +5,9 @@
 var StartScreen = React.createClass({
   getInitialState: function() {
     return {
-      description: this.props.contentTree.description
-      title: this.props.contentTree.title
+      description: this.props.contentTree.description,
+      title: this.props.contentTree.title,
+      promo_image: this.props.contentTree.promo_image
     };
   },
 
@@ -67,7 +68,7 @@ var StartScreen = React.createClass({
     var titleMetadata;
     var descriptionMetadata;
     if (this.props.skinConfig.startScreen.showMetadata) {
-      titleMetadata = <div className="startscreen-title" style={screenStyle.infoPanel.title.style}>{this.props.contentTree.title}</div>;
+      titleMetadata = <div className="startscreen-title" style={screenStyle.infoPanel.title.style}>{this.state.title}</div>;
       descriptionMetadata = <div className="startscreen-description" style={screenStyle.infoPanel.description.style}>{this.state.description}</div>;
     }
 
@@ -77,7 +78,7 @@ var StartScreen = React.createClass({
       return (
         <div style={screenStyle.style}>
           <div className="startscreen-info" style={screenStyle.infoPanel.style}>
-            <img className="startscreen-poster" src={this.props.contentTree.promo_image}/>
+            <img className="startscreen-poster" src={this.state.promo_image}/>
             {titleMetadata}
             {descriptionMetadata}
           </div>
@@ -87,7 +88,7 @@ var StartScreen = React.createClass({
     }
     else {
       // Default configuration
-      posterStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
+      posterStyle.backgroundImage = "url('" + this.state.promo_image + "')";
       return (
         <div style={screenStyle.style}>
           <div className="startscreen-poster" style={screenStyle.posterStyle}></div>
