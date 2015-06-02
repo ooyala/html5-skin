@@ -30,6 +30,8 @@ var Skin = React.createClass({
       duration: newDuration,
       buffered: newBuffered
     });
+    //for playhead updates we are likely in the same state, so skip the
+    // shouldComponentUpdate check
     this.forceUpdate();
   },
 

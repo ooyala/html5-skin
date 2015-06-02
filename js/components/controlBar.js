@@ -25,6 +25,8 @@ var ControlBar = React.createClass({
     var newVolumeSettings = {};
     if (!this.state.muted) {
       this.props.controller.setVolume(0);
+      //if we're muting, save the current volume so we can
+      //restore it when we un-mute
       newVolumeSettings = {
         oldVolume: this.state.volume,
         volume: 0,
@@ -32,6 +34,7 @@ var ControlBar = React.createClass({
       };
     }
     else {
+      //restore the volume to the previous setting
       this.props.controller.setVolume(this.state.oldVolume);
       newVolumeSettings = {
         oldVolume: 0,
@@ -79,10 +82,12 @@ var ControlBar = React.createClass({
 
     var volumeBars = [];
     for (var i=0; i<10; i++) {
+      //create each volume tick separetely
       var turnedOn = this.state.volume >= (i+1) / 10;
       var singleBarStyle = Utils.clone(controlBarStyle.volumeBarStyle);
       singleBarStyle.backgroundColor = (turnedOn ?
         "rgba(67, 137, 255, 0.6)" : "rgba(255, 255, 255, 0.6)");
+      //we store which value the tick correlates to via a data attribute on the element
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
         onClick={this.handleVolumeClick}></span>);
     }
@@ -119,6 +124,7 @@ var ControlBar = React.createClass({
     var controlBarItems = [];
     var controlBarSetting = this.props.skinConfig.controlBar;
     for (i=0; i < controlBarSetting.items.length; i++) {
+      //filter out unrecognized button names
       if (typeof controlItemTemplates[controlBarSetting.items[i]] === "undefined") {
         continue;
       }
