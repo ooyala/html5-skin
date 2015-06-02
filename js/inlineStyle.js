@@ -52,7 +52,7 @@ var startScreenStyle = {
   }
 };
 
-var playingScreenStyle = {
+var controlBarStyle = {
   controlBarSetting: {
     "background": "rgba(48, 48, 48, 0.8)",
     "width": "100%",
@@ -101,8 +101,10 @@ var playingScreenStyle = {
     "backgroundClip": "content-box",
     "position": "relative",
     "top": "-1px"
-  },
+  }
+};
 
+var scrubberBarStyle = {
   scrubberBarSetting: {
     "background": "#afafaf",
     "width": "100%",
