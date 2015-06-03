@@ -7,8 +7,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.mb = mb;
     this.id = id;
     this.state = {
-      "module" : [],
       "contentTree": {},
+      "screenToShow": null,
+      "playerState": null
     };
 
     this.init();
@@ -21,13 +22,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
+      this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
     },
 
     /*--------------------------------------------------------------------
       event listeners from core player -> regulate skin STATE
     ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
-      $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%'></div>");
+      $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%; position: absolute; z-index: 10000;'></div>");
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON("config/skin.json", _.bind(function(data) {
@@ -38,16 +40,26 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
-      this.state.contentTree = contentTree;
-      this.renderSkin(["start"], {"contentTree": contentTree});
+      this.state.screenToShow = STATE.START;
+      this.state.playerState = STATE.START;
+      this.renderSkin({"contentTree": contentTree});
+    },
+
+    onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
+      console.log(arguments);
+      this.skin.updatePlayhead(currentPlayhead, duration, buffered);
     },
 
     onPlaying: function() {
-      this.renderSkin(["playing"]);
+      this.state.screenToShow = STATE.PLAYING;
+      this.state.playerState = STATE.PLAYING;
+      this.renderSkin();
     },
 
     onPaused: function() {
-      this.renderSkin(["pause"]);
+      this.state.screenToShow = STATE.PLAYING;
+      this.state.playerState = STATE.PAUSE;
+      this.renderSkin();
     },
 
     onPlayed: function() {
@@ -57,8 +69,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /*--------------------------------------------------------------------
       Skin state -> control skin
     ---------------------------------------------------------------------*/
-    renderSkin: function(modules, args) {
-      this.state.module = modules;
+    renderSkin: function(args) {
       _.extend(this.state, args);
       this.skin.switchComponent(this.state);
     },
@@ -66,8 +77,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /*--------------------------------------------------------------------
       skin UI-action -> publish event to core player
     ---------------------------------------------------------------------*/
-    play: function() {
-      switch (this.state.module[0]) {
+    toggleFullscreen: function(fullscreen) {
+      this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, fullscreen);
+    },
+
+    toggleMute: function(muted) {
+      this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
+    },
+
+    togglePlayPause: function() {
+      switch (this.state.playerState) {
         case STATE.START:
         case STATE.END:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
@@ -75,11 +94,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         case STATE.PAUSE:
           this.mb.publish(OO.EVENTS.PLAY);
           break;
+        case STATE.PLAYING:
+          this.mb.publish(OO.EVENTS.PAUSE);
+          break;
       }
     },
 
-    pause: function() {
-      this.mb.publish(OO.EVENTS.PAUSE);
+    seek: function(seconds) {
+      this.mb.publish(OO.EVENTS.SEEK, seconds);
+    },
+
+    setVolume: function(volume){
+      this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
     }
   };
 
