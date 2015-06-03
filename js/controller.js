@@ -40,6 +40,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
+      this.state.contentTree = contentTree;
       this.state.screenToShow = STATE.START;
       this.state.playerState = STATE.START;
       this.renderSkin({"contentTree": contentTree});
@@ -63,7 +64,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayed: function() {
-      this.renderSkin(["end"], {"contentTree": contentTree});
+      this.state.screenToShow = STATE.END;
+      this.state.playerState = STATE.END;
+      this.renderSkin();
     },
 
     /*--------------------------------------------------------------------
