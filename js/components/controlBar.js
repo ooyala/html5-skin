@@ -43,7 +43,11 @@ var ControlBar = React.createClass({
   },
 
   handlePlayClick: function() {
-      this.props.controller.togglePlayPause();
+    this.props.controller.togglePlayPause();
+  },
+
+  handleShareClick: function() {
+    this.props.controller.showShareScreen();
   },
 
   handleVolumeClick: function(evt) {
@@ -110,7 +114,7 @@ var ControlBar = React.createClass({
         style={controlBarStyle.iconSetting}></span></div>,
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-share"
-        style={controlBarStyle.iconSetting}></span></div>,
+        onClick={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
       "fullScreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
         <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>

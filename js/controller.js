@@ -100,6 +100,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     setVolume: function(volume){
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
+    },
+
+    showShareScreen: function() {
+      console.log("showShareScreen");
+      this.mb.publish(OO.EVENTS.PAUSE);
+      setTimeout(function() {
+        this.state.screenToShow = STATE.SHARE_SCREEN;
+        this.state.playerState = STATE.PAUSE;
+        this.renderSkin();
+        console.log("finish showShareScreen");
+      }.bind(this), 1);
     }
   };
 

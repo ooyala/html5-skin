@@ -34,6 +34,13 @@ var Skin = React.createClass({
   },
 
   render: function() {
+    return (
+      <ShareScreen {...this.props} contentTree={this.state.contentTree}
+      currentPlayhead={this.state.currentPlayhead}
+      duration={this.state.duration}
+      buffered={this.state.buffered}
+      ref="shareScreen" />
+    );
     switch (this.state.screenToShow) {
       case STATE.START:
         return (
@@ -46,6 +53,14 @@ var Skin = React.createClass({
           duration={this.state.duration}
           buffered={this.state.buffered}
           ref="playScreen" />
+        );
+      case STATE.SHARE_SCREEN:
+        return (
+          <ShareScreen {...this.props} contentTree={this.state.contentTree}
+          currentPlayhead={this.state.currentPlayhead}
+          duration={this.state.duration}
+          buffered={this.state.buffered}
+          ref="shareScreen" />
         );
       default:
         return false;

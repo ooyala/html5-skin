@@ -1,12 +1,16 @@
 /********************************************************************
-  PLAYING SCREEN
+  SHARING SCREEN
 *********************************************************************/
-
-var PlayingScreen = React.createClass({
+/**
+* The screen used while the video is playing.
+*
+* @class PlayingScreen
+* @constructor
+*/
+var ShareScreen = React.createClass({
   getInitialState: function() {
     return {
-      controlBarVisible: true,
-      controlBarWidth: 0
+      controlBarVisible: true
     };
   },
 
@@ -14,25 +18,16 @@ var PlayingScreen = React.createClass({
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
   },
 
-  handlePlayerMouseUp: function() {
-    this.props.controller.togglePlayPause();
-  },
-
-  showControlBar: function() {
-    this.setState({controlBarVisible: true});
-  },
-
-  hideControlBar: function() {
-    this.setState({controlBarVisible: false});
-  },
-
   render: function() {
     //Fill in all the dynamic style values we need
     var controlBarHeight = 32;
 
+    var tabStyle  = {display: "inline-block", width: "100px", "height": "50px", color: "white",
+      "lineHeight": "50px", borderBottom: "1px solid white", borderRight: "1px solid white", textAlign: "center"};
+
     return (
-      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
+      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
+        <SharePanel />
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
