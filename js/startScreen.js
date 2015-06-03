@@ -21,7 +21,7 @@ var StartScreen = React.createClass({
   },
 
   handleClick: function() {
-    this.props.controller.play();
+    this.props.controller.togglePlayPause();
   },
 
   render: function() {
