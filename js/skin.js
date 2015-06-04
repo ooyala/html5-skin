@@ -39,7 +39,12 @@ var Skin = React.createClass({
     switch (this.state.screenToShow) {
       case STATE.START:
         return (
-          <StartScreen {...this.props} contentTree={this.state.contentTree} style={startScreenStyle}/>
+          // <StartScreen {...this.props} contentTree={this.state.contentTree} style={startScreenStyle}/>
+          <DiscoveryScreen {...this.props} contentTree={this.state.contentTree}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            ref="DiscoveryScreen" />
         );
       case STATE.PLAYING:
         return (
