@@ -47,7 +47,7 @@ var DiscoveryPanel = React.createClass({
 
 
     var discoveryToasterStyle = {position: "absolute", backgroundColor: "#444444", top: "0", height: "90%", width: "1000px",
-        left: this.state.discoveryToasterLeftOffset, right: 0, display: "flex", flexDirection: "row", transition: "0.5s"};
+        left: this.state.discoveryToasterLeftOffset, right: 0, display: "flex", flexDirection: "row", transition: "1s"};
 
     var contentBlockStyle = {position: "relative", width: "100px", height: "80%", margin: "1%", backgroundColor: "white"};
 
@@ -72,7 +72,7 @@ var DiscoveryPanel = React.createClass({
 
         <div id="discovery_toaster_cintainer" style={discoveryToasterContainerStyle}>
 
-          <div id="discovery_toaster" style={discoveryToasterStyle}>
+          <div id="discovery_toaster" style={{discoveryToasterStyle, left: this.state.discoveryToasterLeftOffset}}>
             <div style={contentBlockStyle}>
              <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
              <div style={contentTitleStyle}>Contetn Title</div>
@@ -145,32 +145,3 @@ var DiscoveryPanel = React.createClass({
     );
   }
 });
-
-var discoveryScreenStyle = {
-  
-  chevronLeftButton: {
-    icon: "glyphicon glyphicon-chevron-left",
-    style: {
-      top: "50%",
-      left: "50%",
-      fontSize: "18",
-      transform: "translate(-50%, -50%)",
-      position: "absolute",
-      opacity: 1,
-      transition: "opacity .25s ease-in-out"
-    }
-  },
-
-  chevronRightButton: {
-    icon: "glyphicon glyphicon-chevron-right",
-    style: {
-      top: "50%",
-      left: "50%",
-      fontSize: "18",
-      transform: "translate(-50%, -50%)",
-      position: "absolute",
-      opacity: 1,
-      transition: "opacity .25s ease-in-out"
-    }
-  } 
-};

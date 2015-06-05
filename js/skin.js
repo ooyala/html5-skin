@@ -44,6 +44,7 @@ var Skin = React.createClass({
             currentPlayhead={this.state.currentPlayhead}
             duration={this.state.duration}
             buffered={this.state.buffered}
+            style={discoveryScreenStyle}/
             ref="DiscoveryScreen" />
         );
       case STATE.PLAYING:

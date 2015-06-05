@@ -27,7 +27,7 @@ var DiscoveryScreen = React.createClass({
 
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
-        <DiscoveryPanel />
+        <DiscoveryPanel style={discoveryScreenStyle}/>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}

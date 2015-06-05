@@ -200,3 +200,104 @@ var scrubberBarStyle = {
     "transition": "opacity 0.25s"
   }
 };
+
+
+var discoveryScreenStyle: {
+  panelStyle: {
+    position: "absolute", 
+    top: "50%", 
+    bottom: "32px", 
+    backgroundColor: "#444444",
+    left: 0, 
+    right: 0, 
+    display: "flex", 
+    flexDirection: "row"
+  },
+
+  panelTitleBarStyle: {
+    position: "absolute", 
+    backgroundColor: "#444444",
+    left: 0, 
+    right: 0, 
+    height: "20%", 
+    width: "100%", 
+    display: "inline-block"
+  },
+
+
+  panelTitleTextStyle: {
+    position: "absolute", 
+    left: "25px", 
+    fontSize: "20", 
+    color: "white", 
+    margin: "1%"
+  },
+
+  discoveryToasterContainerStyle: {
+    position: "absolute", 
+    backgroundColor: "#444444", 
+    top: "20%", 
+    height: "70%", 
+    width: "100%"
+  },
+
+  discoveryToasterStyle: {
+    position: "absolute", 
+    backgroundColor: "#444444", 
+    top: "0", 
+    height: "90%", 
+    width: "1000px", 
+    right: 0, 
+    display: "flex", 
+    flexDirection: "row", 
+    transition: "1s"
+  },
+
+  chevronLeftButton: {
+    icon: "glyphicon glyphicon-chevron-left",
+    style: {
+      top: "50%",
+      left: "50%",
+      fontSize: "18",
+      transform: "translate(-50%, -50%)",
+      position: "absolute",
+      opacity: 1,
+      transition: "opacity .25s ease-in-out"
+    }
+  },
+
+  chevronRightButton: {
+    icon: "glyphicon glyphicon-chevron-right",
+    style: {
+      top: "50%",
+      left: "50%",
+      fontSize: "18",
+      transform: "translate(-50%, -50%)",
+      position: "absolute",
+      opacity: 1,
+      transition: "opacity .25s ease-in-out"
+    }
+  },
+
+  contentBlockStyle: {
+    position: "relative", 
+    width: "100px", 
+    height: "80%", 
+    margin: "1%", 
+    backgroundColor: "white"
+  },
+
+  imageStyle: {
+    position: "absolute", 
+    width: "100%", 
+    height: "70%"
+  },
+  
+  contentTitleStyle: {
+    fontSize: "10"
+  },
+  
+  contentPlaysStyle: {
+    {fontSize: "8"}
+  }
+};
