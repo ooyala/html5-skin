@@ -313,10 +313,14 @@ var discoveryScreenStyle = {
   },
   
   discoveryContentTitleStyle: {
+    position: "absolute",
+    top: "70%",
     fontSize: "10"
   },
   
   discoveryContentPlaysStyle: {
-    fontSize: "8"
+    position: "absolute",
+    bottom: "0",
+    fontSize: "6"
   }
 };
