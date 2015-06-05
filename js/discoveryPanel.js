@@ -8,8 +8,6 @@
 * @constructor
 */
 
-// http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg
-// icon-chevron-right
 var DiscoveryPanel = React.createClass({
   getInitialState: function() {
     return {
@@ -18,7 +16,7 @@ var DiscoveryPanel = React.createClass({
   },
 
   handleLeftButtonClick: function() {
-    this.state.discoveryToasterLeftOffset += 250;
+    this.state.discoveryToasterLeftOffset += 400;
     if (this.state.discoveryToasterLeftOffset > 25) {
       this.state.discoveryToasterLeftOffset = 25;
     }
@@ -32,6 +30,9 @@ var DiscoveryPanel = React.createClass({
     if (this.state.discoveryToasterLeftOffset < toasterContainerWidth - toasterWidth) {
       this.state.discoveryToasterLeftOffset = toasterContainerWidth - toasterWidth;
     }
+    console.log("toasterContainerWidth = " + toasterContainerWidth);
+    console.log("toasterWidth = " + toasterWidth);
+    console.log("discoveryToasterLeftOffset = " + this.state.discoveryToasterLeftOffset);
     this.setState({discoveryToasterLeftOffset: this.state.discoveryToasterLeftOffset});
 
   },
@@ -128,6 +129,41 @@ var DiscoveryPanel = React.createClass({
              <div style={contentPlaysStyle}>141 plays</div>
             </div> 
 
+            <div style={contentBlockStyle}>
+             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
+             <div style={contentTitleStyle}>Contetn Title</div>
+             <div style={contentPlaysStyle}>141 plays</div>
+            </div> 
+            <div style={contentBlockStyle}>
+             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
+             <div style={contentTitleStyle}>Contetn Title</div>
+             <div style={contentPlaysStyle}>141 plays</div>
+            </div> 
+
+            <div style={contentBlockStyle}>
+             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
+             <div style={contentTitleStyle}>Contetn Title</div>
+             <div style={contentPlaysStyle}>141 plays</div>
+            </div> 
+
+            <div style={contentBlockStyle}>
+             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
+             <div style={contentTitleStyle}>Contetn Title</div>
+             <div style={contentPlaysStyle}>141 plays</div>
+            </div> 
+
+            <div style={contentBlockStyle}>
+             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
+             <div style={contentTitleStyle}>Contetn Title</div>
+             <div style={contentPlaysStyle}>141 plays</div>
+            </div>  
+
+            <div style={contentBlockStyle}>
+             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
+             <div style={contentTitleStyle}>Contetn Title</div>
+             <div style={contentPlaysStyle}>141 plays</div>
+            </div> 
+           
           </div>
           <div style={chevronLeftButtonContainer}>
             <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} aria-hidden="true" onClick={this.handleLeftButtonClick}></span>

@@ -9,8 +9,13 @@
 */
 var DiscoveryScreen = React.createClass({
   getInitialState: function() {
+    var screenToShow = STATE.PLAYING;
+    if (this.props.currentPlayhead == this.props.duration) {
+       screenToShow = STATE.END; 
+    }
     return {
-      controlBarVisible: true
+      controlBarVisible: true,
+      screenToShow: screenToShow
     };
   },
 
@@ -21,10 +26,6 @@ var DiscoveryScreen = React.createClass({
   render: function() {
     //Fill in all the dynamic style values we need
     var controlBarHeight = 32;
-
-    var tabStyle  = {display: "inline-block", width: "100px", "height": "50px", color: "white",
-      "lineHeight": "50px", borderBottom: "1px solid white", borderRight: "1px solid white", textAlign: "center"};
-
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
         <DiscoveryPanel style={discoveryScreenStyle}/>
@@ -32,7 +33,7 @@ var DiscoveryScreen = React.createClass({
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
-          playerState={this.state.playerState} />
+          playerState={this.state.playerState} screenToShow={this.state.screenToShow}/>
       </div>
     );
   }

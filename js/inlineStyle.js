@@ -246,12 +246,12 @@ var discoveryScreenStyle = {
     backgroundColor: "#444444", 
     top: "0", 
     height: "90%", 
-    width: "1000px", 
+    width: "2000px", 
     right: 0,
     left: 25,
     display: "flex", 
     flexDirection: "row", 
-    transition: "1s"
+    transition: "0.5s"
   },
 
   discoveryChevronLeftButtonContainer: {
@@ -302,7 +302,7 @@ var discoveryScreenStyle = {
     position: "relative", 
     width: "100px", 
     height: "80%", 
-    margin: "1%", 
+    margin: "10px",
     backgroundColor: "white"
   },
 

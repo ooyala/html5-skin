@@ -50,16 +50,19 @@ var EndScreen = React.createClass({
     // metadata visibility
     var titleMetadata;
     var descriptionMetadata;
-    if (this.props.skinConfig.endScreen.mode != "discovery") {
-      titleMetadata = <div className="endscreen-title" style={screenStyle.infoPanel.title.style}>{this.props.contentTree.title}</div>;
-      descriptionMetadata = <div className="endscreen-description" style={screenStyle.infoPanel.description.style}>{this.state.description}</div>;
-    }
+    // if (this.props.skinConfig.endScreen.mode != "discovery") {
+    //   titleMetadata = <div className="endscreen-title" style={screenStyle.infoPanel.title.style}>{this.props.contentTree.title}</div>;
+    //   descriptionMetadata = <div className="endscreen-description" style={screenStyle.infoPanel.description.style}>{this.state.description}</div>;
+    // }
 
     if (this.props.skinConfig.endScreen.mode == "discovery") {
-      posterStyle.backgroundSize = "auto";
       return (
-        <div style={screenStyle.style}>
-        </div>
+        <DiscoveryScreen {...this.props} contentTree={this.state.contentTree}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            style={discoveryScreenStyle}
+            ref="DiscoveryScreen" />
       );
     }
     else {
