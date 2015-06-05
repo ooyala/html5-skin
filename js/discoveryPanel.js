@@ -33,46 +33,43 @@ var DiscoveryPanel = React.createClass({
       this.state.discoveryToasterLeftOffset = toasterContainerWidth - toasterWidth;
     }
     this.setState({discoveryToasterLeftOffset: this.state.discoveryToasterLeftOffset});
+
   },
 
   render: function() {
-    var panelTitleBarStyle = {position: "absolute", backgroundColor: "#444444",
-        left: 0, right: 0, height: "20%", width: "100%", display: "inline-block"};
-    var panelTitleTextStyle = {position: "absolute", left: "25px", fontSize: "20", color: "white", margin: "1%"};
+    var panelStyle = discoveryScreenStyle.panelStyle;
 
-    var discoveryToasterContainerStyle = {position: "absolute", backgroundColor: "#444444", top: "20%", height: "70%", width: "100%"};
+    var panelTitleBarStyle = discoveryScreenStyle.panelTitleBarStyle;
+    var panelTitleTextStyle = discoveryScreenStyle.panelTitleTextStyle;
 
-    var chevronLeftButtonContainer = {position: "absolute",  backgroundColor: "transparent", height: "100%", width: "25px", color:"white", left: "0"};
-    var chevronRightButtonContainer = {position: "absolute", backgroundColor: "transparent", height: "100%", width: "25px", color:"white", right: "0"};
+    var discoveryToasterContainerStyle = discoveryScreenStyle.discoveryToasterContainerStyle;
+    var discoveryToasterStyle = discoveryScreenStyle.discoveryToasterStyle;
+    discoveryToasterStyle.left = this.state.discoveryToasterLeftOffset;
 
+    var contentBlockStyle = discoveryScreenStyle.discoveryContentBlockStyle;
+    var imageStyle = discoveryScreenStyle.discoveryImageStyle;
 
-    var discoveryToasterStyle = {position: "absolute", backgroundColor: "#444444", top: "0", height: "90%", width: "1000px",
-        left: this.state.discoveryToasterLeftOffset, right: 0, display: "flex", flexDirection: "row", transition: "1s"};
-
-    var contentBlockStyle = {position: "relative", width: "100px", height: "80%", margin: "1%", backgroundColor: "white"};
-
-    var imageStyle = {position: "absolute", width: "100%", height: "70%"};
-
-    var contentTitleStyle = {fontSize: "10"};
-    var contentPlaysStyle = {fontSize: "8"};
+    var contentTitleStyle = discoveryScreenStyle.discoveryContentTitleStyle;
+    var contentPlaysStyle = discoveryScreenStyle.discoveryContentPlaysStyle;
     
 
-    var chevronLeftButtonClass = discoveryScreenStyle.chevronLeftButton.icon;
-    var chevronLeftButtonStyle = discoveryScreenStyle.chevronLeftButton.style;
+    var chevronLeftButtonContainer = discoveryScreenStyle.discoveryChevronLeftButtonContainer;
+    var chevronLeftButtonClass = discoveryScreenStyle.discoveryChevronLeftButton.icon;
+    var chevronLeftButtonStyle = discoveryScreenStyle.discoveryChevronLeftButton.style;
 
-    var chevronRightButtonClass = discoveryScreenStyle.chevronRightButton.icon;
-    var chevronRightButtonStyle = discoveryScreenStyle.chevronRightButton.style;
+    var chevronRightButtonContainer = discoveryScreenStyle.discoveryChevronRightButtonContainer;
+    var chevronRightButtonClass = discoveryScreenStyle.discoveryChevronRightButton.icon;
+    var chevronRightButtonStyle = discoveryScreenStyle.discoveryChevronRightButton.style;
+
     return (
-      <div style={{position: "absolute", "top": "50%", bottom: "32px", backgroundColor: "#444444",
-        left: 0, right: 0, display: "flex", flexDirection: "row"}}>
+      <div style={panelStyle}>
 
         <div style={panelTitleBarStyle}>
           <h1 style={panelTitleTextStyle}>DISCOVERY</h1>
         </div>
-
         <div id="discovery_toaster_cintainer" style={discoveryToasterContainerStyle}>
 
-          <div id="discovery_toaster" style={{discoveryToasterStyle, left: this.state.discoveryToasterLeftOffset}}>
+          <div id="discovery_toaster" style={discoveryToasterStyle}>
             <div style={contentBlockStyle}>
              <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
              <div style={contentTitleStyle}>Contetn Title</div>
@@ -131,9 +128,7 @@ var DiscoveryPanel = React.createClass({
              <div style={contentPlaysStyle}>141 plays</div>
             </div> 
 
-
           </div>
-
           <div style={chevronLeftButtonContainer}>
             <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} aria-hidden="true" onClick={this.handleLeftButtonClick}></span>
           </div>

@@ -57,7 +57,7 @@ var endScreenStyle = {
     width: "100%",
     height: "100%",
     position: "absolute",
-    overflow: "hidden",
+    overflow: "hidden"
   },
   posterStyle: {
     height: "100%",
@@ -202,9 +202,9 @@ var scrubberBarStyle = {
 };
 
 
-var discoveryScreenStyle: {
+var discoveryScreenStyle = {
   panelStyle: {
-    position: "absolute", 
+    position: "absolute",
     top: "50%", 
     bottom: "32px", 
     backgroundColor: "#444444",
@@ -247,13 +247,32 @@ var discoveryScreenStyle: {
     top: "0", 
     height: "90%", 
     width: "1000px", 
-    right: 0, 
+    right: 0,
+    left: 25,
     display: "flex", 
     flexDirection: "row", 
     transition: "1s"
   },
 
-  chevronLeftButton: {
+  discoveryChevronLeftButtonContainer: {
+    position: "absolute",  
+    backgroundColor: "transparent", 
+    height: "100%", 
+    width: "25px", 
+    color:"white", 
+    left: "0"
+  },
+
+  discoveryChevronRightButtonContainer: {
+    position: "absolute", 
+    backgroundColor: "transparent", 
+    height: "100%", 
+    width: "25px", 
+    color:"white", 
+    right: "0"
+  },
+
+  discoveryChevronLeftButton: {
     icon: "glyphicon glyphicon-chevron-left",
     style: {
       top: "50%",
@@ -266,7 +285,7 @@ var discoveryScreenStyle: {
     }
   },
 
-  chevronRightButton: {
+  discoveryChevronRightButton: {
     icon: "glyphicon glyphicon-chevron-right",
     style: {
       top: "50%",
@@ -279,7 +298,7 @@ var discoveryScreenStyle: {
     }
   },
 
-  contentBlockStyle: {
+  discoveryContentBlockStyle: {
     position: "relative", 
     width: "100px", 
     height: "80%", 
@@ -287,17 +306,17 @@ var discoveryScreenStyle: {
     backgroundColor: "white"
   },
 
-  imageStyle: {
+  discoveryImageStyle: {
     position: "absolute", 
     width: "100%", 
     height: "70%"
   },
   
-  contentTitleStyle: {
+  discoveryContentTitleStyle: {
     fontSize: "10"
   },
   
-  contentPlaysStyle: {
-    {fontSize: "8"}
+  discoveryContentPlaysStyle: {
+    fontSize: "8"
   }
 };
