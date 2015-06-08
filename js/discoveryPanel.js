@@ -27,7 +27,7 @@ var DiscoveryPanel = React.createClass({
 
   handleRightButtonClick: function() {
     var toasterContainerWidth = document.getElementById("discovery_toaster_cintainer").clientWidth;
-    var toasterWidth = document.getElementById("discovery_toaster").clientWidth;
+    var toasterWidth = document.getElementById("discovery_toaster_alice").clientWidth;
     this.state.discoveryToasterLeftOffset -= 250;
     if (this.state.discoveryToasterLeftOffset < toasterContainerWidth - toasterWidth) {
       this.state.discoveryToasterLeftOffset = toasterContainerWidth - toasterWidth;
@@ -39,12 +39,15 @@ var DiscoveryPanel = React.createClass({
 
   },
 
+  handleDiscoveryContentClick: function() {
+    console.log("discovery content is clicked!!!!!!!!!!!!!!!!!!!!!!!!");
+    
+    var eventData = { "bucket_info" : bucketInfo, "custom" : eventData.custom };
+  },
+
   render: function() {
-    var discoveryData = this.props.discoveryData;
-    if (discoveryData !== null)  {
-        console.log("get discoveryData!!!!!!!!!!!!!" + discoveryData.relatedVideos);
-        // this.buildDiscoveryDataStructureWithData(discoveryData.relatedVideos);
-    }
+
+
     var panelStyle = discoveryScreenStyle.panelStyle;
 
     var panelTitleBarStyle = discoveryScreenStyle.panelTitleBarStyle;
@@ -69,6 +72,27 @@ var DiscoveryPanel = React.createClass({
     var chevronRightButtonClass = discoveryScreenStyle.discoveryChevronRightButton.icon;
     var chevronRightButtonStyle = discoveryScreenStyle.discoveryChevronRightButton.style;
 
+
+
+    var discoveryData = this.props.discoveryData;
+    var discoveryContentBlocks = [];
+
+    document.getElementsByClassName("discovery_toaster")[0].style.display="none";
+    if (discoveryData !== null)  {
+        console.log("get discoveryData!!!!!!!!!!!!!" + discoveryData.relatedVideos);
+        console.log("length = " + discoveryData.relatedVideos.length);
+        discoveryToasterStyle.width = 150 * discoveryData.relatedVideos.length;
+        for (var i = 0; i < this.props.discoveryData.relatedVideos.length; i++) {
+          discoveryContentBlocks.push(
+            <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick}>
+                 <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
+                 <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
+                 <div style={contentPlaysStyle}>141 plays</div>
+            </div> );
+        }
+    }
+
+
     return (
       <div style={panelStyle}>
 
@@ -76,102 +100,11 @@ var DiscoveryPanel = React.createClass({
           <h1 style={panelTitleTextStyle}>DISCOVERY</h1>
         </div>
         <div id="discovery_toaster_cintainer" style={discoveryToasterContainerStyle}>
-
-          <div id="discovery_toaster" style={discoveryToasterStyle}>
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div> 
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div> 
-
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div> 
-
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div> 
-
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div>  
-
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div> 
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div> 
-
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div> 
-
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div> 
-
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div> 
-
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div> 
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div> 
-
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div> 
-
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div> 
-
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div>  
-
-            <div style={contentBlockStyle}>
-             <img style={imageStyle} src="http://www.markszulc.com/blog/wp-content/uploads/2012/10/CQOoyala.jpg"></img>
-             <div style={contentTitleStyle}>Contetn Title</div>
-             <div style={contentPlaysStyle}>141 plays</div>
-            </div> 
-           
+        <div id="discovery_toaster_alice" style={discoveryToasterStyle}>
+            {discoveryContentBlocks}
+          
           </div>
+          
           <div style={chevronLeftButtonContainer}>
             <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} aria-hidden="true" onClick={this.handleLeftButtonClick}></span>
           </div>
