@@ -4,15 +4,15 @@
 var Skin = React.createClass({
   getInitialState: function() {
     return {
-      screenToShow : null,
-      currentPlayhead: 0
+      screenToShow: null,
+      currentPlayhead: 0,
+      discoveryData: null 
     };
   },
 
   switchComponent: function(args) {
     var newState = args || {};
     this.setState(newState);
-
     if (this.refs.playScreen) {
       this.refs.playScreen.setState({
         playerState: this.state.playerState
@@ -21,7 +21,7 @@ var Skin = React.createClass({
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
-    return nextState.screenToShow != this.state.screenToShow;
+    return true;
   },
 
   updatePlayhead: function(newPlayhead, newDuration, newBuffered) {
@@ -39,6 +39,7 @@ var Skin = React.createClass({
     switch (this.state.screenToShow) {
       case STATE.START:
         return (
+          // <EndScreen {...this.props} contentTree={this.state.contentTree} style={endScreenStyle}/>
           <StartScreen {...this.props} contentTree={this.state.contentTree} style={startScreenStyle}/>
         );
       case STATE.PLAYING:
@@ -51,7 +52,11 @@ var Skin = React.createClass({
         );
       case STATE.END:
         return (
-          <EndScreen {...this.props} contentTree={this.state.contentTree} style={endScreenStyle}/>
+          <EndScreen {...this.props} 
+          contentTree={this.state.contentTree} 
+          discoveryData={this.state.discoveryData} 
+          style={endScreenStyle}
+          ref="endScreen" />
         );
       default:
         return false;

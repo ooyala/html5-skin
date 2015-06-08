@@ -11,7 +11,9 @@
 var DiscoveryPanel = React.createClass({
   getInitialState: function() {
     return {
-      discoveryToasterLeftOffset: 25
+      discoveryToasterLeftOffset: 25,
+      discoveryDataStructure: {},
+      relatedVideos: {}
     };
   },
 
@@ -38,6 +40,11 @@ var DiscoveryPanel = React.createClass({
   },
 
   render: function() {
+    var discoveryData = this.props.discoveryData;
+    if (discoveryData !== null)  {
+        console.log("get discoveryData!!!!!!!!!!!!!" + discoveryData.relatedVideos);
+        // this.buildDiscoveryDataStructureWithData(discoveryData.relatedVideos);
+    }
     var panelStyle = discoveryScreenStyle.panelStyle;
 
     var panelTitleBarStyle = discoveryScreenStyle.panelTitleBarStyle;

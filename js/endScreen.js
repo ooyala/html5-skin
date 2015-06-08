@@ -57,11 +57,13 @@ var EndScreen = React.createClass({
 
     if (this.props.skinConfig.endScreen.mode == "discovery") {
       return (
-        <DiscoveryScreen {...this.props} contentTree={this.state.contentTree}
+        <DiscoveryScreen {...this.props} 
+            contentTree={this.state.contentTree}
             currentPlayhead={this.state.currentPlayhead}
             duration={this.state.duration}
             buffered={this.state.buffered}
             style={discoveryScreenStyle}
+            discoveryData ={this.props.discoveryData}
             ref="DiscoveryScreen" />
       );
     }

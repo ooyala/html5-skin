@@ -9,7 +9,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.state = {
       "contentTree": {},
       "screenToShow": null,
-      "playerState": null
+      "playerState": null,
+      "discoveryData": null,
     };
 
     this.init();
@@ -23,6 +24,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
+      this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
     },
 
     /*--------------------------------------------------------------------
@@ -66,6 +68,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPlayed: function() {
       this.state.screenToShow = STATE.END;
       this.state.playerState = STATE.END;
+      this.renderSkin();
+    },
+
+    onReportDiscoveryImpression: function(event, discoveryData) {
+      console.log("onReportDiscoveryImpression is called");
+      this.state.discoveryData = discoveryData;
       this.renderSkin();
     },
 
