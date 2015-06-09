@@ -14,6 +14,10 @@ var ShareScreen = React.createClass({
     };
   },
 
+  closeSharePanel: function() {
+    this.props.controller.closeShareScreen();
+  },
+
   componentDidMount: function () {
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
   },
@@ -22,17 +26,15 @@ var ShareScreen = React.createClass({
     //Fill in all the dynamic style values we need
     var controlBarHeight = 32;
 
-    var tabStyle  = {display: "inline-block", width: "100px", "height": "50px", color: "white",
-      "lineHeight": "50px", borderBottom: "1px solid white", borderRight: "1px solid white", textAlign: "center"};
-
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
-        <SharePanel />
+        <SharePanel {...this.props}/>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
           playerState={this.state.playerState} />
+        <div onClick={this.closeSharePanel} style={{position: "absolute", top:0, right: 0, height: "25px", width: "25px", backgroundColor: "#4389ff", color: "white", textAlign: "center", lineHeight: "25px"}}>X</div>
       </div>
     );
   }

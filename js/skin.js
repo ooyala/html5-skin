@@ -34,19 +34,13 @@ var Skin = React.createClass({
   },
 
   render: function() {
-    return (
-      <ShareScreen {...this.props} contentTree={this.state.contentTree}
-      currentPlayhead={this.state.currentPlayhead}
-      duration={this.state.duration}
-      buffered={this.state.buffered}
-      ref="shareScreen" />
-    );
     switch (this.state.screenToShow) {
       case STATE.START:
         return (
           <StartScreen {...this.props} contentTree={this.state.contentTree} style={startScreenStyle}/>
         );
       case STATE.PLAYING:
+      case STATE.PAUSE:
         return (
           <PlayingScreen {...this.props} contentTree={this.state.contentTree}
           currentPlayhead={this.state.currentPlayhead}

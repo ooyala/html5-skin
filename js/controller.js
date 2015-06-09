@@ -8,7 +8,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.id = id;
     this.state = {
       "screenToShow": null,
-      "playerState": null
+      "playerState": null,
+      "contentTree": {}
     };
 
     this.init();
@@ -40,11 +41,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onContentTreeFetched: function (event, contentTree) {
       this.state.screenToShow = STATE.START;
       this.state.playerState = STATE.START;
-      this.renderSkin({"contentTree": contentTree});
+      this.state.contentTree = contentTree;
+      this.renderSkin({"contentTree": this.state.contentTree});
     },
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
-      console.log(arguments);
+      //console.log(arguments);
       this.skin.updatePlayhead(currentPlayhead, duration, buffered);
     },
 
@@ -103,14 +105,24 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     showShareScreen: function() {
-      console.log("showShareScreen");
-      this.mb.publish(OO.EVENTS.PAUSE);
-      setTimeout(function() {
-        this.state.screenToShow = STATE.SHARE_SCREEN;
-        this.state.playerState = STATE.PAUSE;
-        this.renderSkin();
-        console.log("finish showShareScreen");
-      }.bind(this), 1);
+      if (this.state.screenToShow == STATE.SHARE_SCREEN) {
+        this.closeShareScreen();
+      }
+      else {
+        this.mb.publish(OO.EVENTS.PAUSE);
+        setTimeout(function() {
+          this.state.screenToShow = STATE.SHARE_SCREEN;
+          this.state.playerState = STATE.PAUSE;
+          this.renderSkin();
+          console.log("finish showShareScreen");
+        }.bind(this), 1);
+      }
+    },
+
+    closeShareScreen: function() {
+      console.log(this.state.screenToShow, this.state.playerState);
+      this.state.screenToShow = this.state.playerState;
+      this.renderSkin();
     }
   };
 
