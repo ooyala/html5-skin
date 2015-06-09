@@ -203,6 +203,30 @@ var scrubberBarStyle = {
 
 
 var discoveryScreenStyle = {
+
+  dismissButtonContainerStyle: {
+    position: "absolute",  
+    backgroundColor: "transparent", 
+    height: "100%", 
+    width: "25px", 
+    color:"white", 
+    left: "0"
+  },
+
+
+  dismissButtonStyle: {
+    icon: "glyphicon glyphicon-remove",
+    style: {
+      top: "50%",
+      left: "50%",
+      fontSize: "18",
+      transform: "translate(-50%, -50%)",
+      position: "absolute",
+      opacity: 1,
+      transition: "opacity .25s ease-in-out"
+    }
+  },
+
   panelStyle: {
     position: "absolute",
     top: "50%", 

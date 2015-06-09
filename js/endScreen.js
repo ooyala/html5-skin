@@ -10,7 +10,6 @@ var EndScreen = React.createClass({
     };
   },
 
-
   // CSS doesn't support "truncate N lines" so we need to do DOM width
   // calculations to figure out where to truncate the description
   componentDidMount: function() {
@@ -50,11 +49,6 @@ var EndScreen = React.createClass({
     // metadata visibility
     var titleMetadata;
     var descriptionMetadata;
-    // if (this.props.skinConfig.endScreen.mode != "discovery") {
-    //   titleMetadata = <div className="endscreen-title" style={screenStyle.infoPanel.title.style}>{this.props.contentTree.title}</div>;
-    //   descriptionMetadata = <div className="endscreen-description" style={screenStyle.infoPanel.description.style}>{this.state.description}</div>;
-    // }
-
     
     // Default configuration
     posterStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";

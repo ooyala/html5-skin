@@ -49,6 +49,10 @@ var DiscoveryPanel = React.createClass({
   },
 
   render: function() {
+    var dismissButtonContainerStyle = discoveryScreenStyle.dismissButtonContainerStyle;
+    var dismissButtonClass = discoveryScreenStyle.dismissButtonStyle.icon;
+    var dismissButtonStyle = discoveryScreenStyle.dismissButtonStyle.style;
+
     var panelStyle = discoveryScreenStyle.panelStyle;
 
     var panelTitleBarStyle = discoveryScreenStyle.panelTitleBarStyle;
@@ -89,9 +93,11 @@ var DiscoveryPanel = React.createClass({
     }
     return (
       <div style={panelStyle}>
-
         <div style={panelTitleBarStyle}>
           <h1 style={panelTitleTextStyle}>DISCOVERY</h1>
+          <div style={dismissButtonContainerStyle}>
+            <span className={dismissButtonClass} style={dismissButtonStyle} aria-hidden="true"></span>
+          </div>
         </div>
         <div id="discovery_toaster_cintainer" style={discoveryToasterContainerStyle}>
           <div id="discovery_toaster_alice" style={discoveryToasterStyle}>
