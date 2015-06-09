@@ -117,6 +117,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     setVolume: function(volume){
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
+    },
+
+    sendDiscoveryClickEvent: function(selectedContentData) {
+      this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
+      this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
     }
   };
 
