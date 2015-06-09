@@ -7,8 +7,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.mb = mb;
     this.id = id;
     this.state = {
+      "contentTree": {},
       "screenToShow": null,
-      "playerState": null
+      "playerState": null,
+      "discoveryData": null,
     };
 
     this.init();
@@ -20,7 +22,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
+      this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
+      this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
     },
 
     /*--------------------------------------------------------------------
@@ -38,7 +42,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
-      this.state.screenToShow = STATE.START;
+      this.state.contentTree = contentTree;
+      this.state.screenToShow = SCREEN.START_SCREEN;
       this.state.playerState = STATE.START;
       this.renderSkin({"contentTree": contentTree});
     },
@@ -49,14 +54,27 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaying: function() {
-      this.state.screenToShow = STATE.PLAYING;
+      this.state.screenToShow = SCREEN.PLAYING_SCREEN;
       this.state.playerState = STATE.PLAYING;
       this.renderSkin();
     },
 
     onPaused: function() {
-      this.state.screenToShow = STATE.PLAYING;
+      this.state.screenToShow = SCREEN.PAUSE_SCREEN;
       this.state.playerState = STATE.PAUSE;
+      this.renderSkin();
+    },
+
+    onPlayed: function() {
+      this.state.screenToShow = SCREEN.END_SCREEN;
+      this.state.playerState = STATE.END;
+      this.renderSkin();
+    },
+
+    onReportDiscoveryImpression: function(event, discoveryData) {
+      console.log("onReportDiscoveryImpression is called");
+      this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+      this.state.discoveryData = discoveryData;
       this.renderSkin();
     },
 
@@ -100,6 +118,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     setVolume: function(volume){
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
+    },
+
+    sendDiscoveryClickEvent: function(selectedContentData) {
+      this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
+      this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
     }
   };
 

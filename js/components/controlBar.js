@@ -68,8 +68,13 @@ var ControlBar = React.createClass({
   },
 
   populateControlBar: function() {
-    var playClass = (this.props.playerState == STATE.PLAYING) ?
-      "glyphicon glyphicon-pause" : "glyphicon glyphicon-play";
+    if (this.props.playerState == STATE.PLAYING) {
+        playClass = "glyphicon glyphicon-pause";
+    } else if (this.props.playerState == STATE.END) {
+        playClass = "glyphicon glyphicon-repeat";
+    } else {
+        playClass = "glyphicon glyphicon-play";
+    }
     var muteClass = (this.state.muted) ?
       "glyphicon glyphicon-volume-off" : "glyphicon glyphicon-volume-down";
     var fullscreenClass = (this.state.fullscreen) ?
