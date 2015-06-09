@@ -12,9 +12,6 @@ var DiscoveryPanel = React.createClass({
   getInitialState: function() {
     return {
       discoveryToasterLeftOffset: 25,
-      discoveryDataStructure: {},
-      relatedVideos: {},
-      tempContentInfo: {}
     };
   },
 
@@ -33,27 +30,25 @@ var DiscoveryPanel = React.createClass({
     if (this.state.discoveryToasterLeftOffset < toasterContainerWidth - toasterWidth) {
       this.state.discoveryToasterLeftOffset = toasterContainerWidth - toasterWidth;
     }
-    console.log("toasterContainerWidth = " + toasterContainerWidth);
-    console.log("toasterWidth = " + toasterWidth);
-    console.log("discoveryToasterLeftOffset = " + this.state.discoveryToasterLeftOffset);
     this.setState({discoveryToasterLeftOffset: this.state.discoveryToasterLeftOffset});
   },
 
   handleDiscoveryContentClick: function(index) {
     var eventData = {
           "clickedVideo" : this.props.discoveryData.relatedVideos[index],
-          "custom" : { "source" : "endScreen" }
+          "custom" : this.props.discoveryData.custom
         };
+    // TODO: figure out countdown value
     eventData.custom.countdown = 0;
     this.props.controller.sendDiscoveryClickEvent(eventData);
   },
 
   render: function() {
+    var panelStyle = discoveryScreenStyle.panelStyle;
+
     var dismissButtonContainerStyle = discoveryScreenStyle.dismissButtonContainerStyle;
     var dismissButtonClass = discoveryScreenStyle.dismissButtonStyle.icon;
     var dismissButtonStyle = discoveryScreenStyle.dismissButtonStyle.style;
-
-    var panelStyle = discoveryScreenStyle.panelStyle;
 
     var panelTitleBarStyle = discoveryScreenStyle.panelTitleBarStyle;
     var panelTitleTextStyle = discoveryScreenStyle.panelTitleTextStyle;
@@ -79,6 +74,7 @@ var DiscoveryPanel = React.createClass({
     var discoveryData = this.props.discoveryData;
     var discoveryContentBlocks = [];
 
+    // Build discovery content blocks
     document.getElementsByClassName("discovery_toaster")[0].style.display="none";
     if (discoveryData !== null)  {
         discoveryToasterStyle.width = 150 * discoveryData.relatedVideos.length;
@@ -93,13 +89,18 @@ var DiscoveryPanel = React.createClass({
     }
     return (
       <div style={panelStyle}>
+
         <div style={panelTitleBarStyle}>
           <h1 style={panelTitleTextStyle}>DISCOVERY</h1>
+          
           <div style={dismissButtonContainerStyle}>
             <span className={dismissButtonClass} style={dismissButtonStyle} aria-hidden="true"></span>
           </div>
+          
         </div>
+
         <div id="discovery_toaster_cintainer" style={discoveryToasterContainerStyle}>
+          
           <div id="discovery_toaster_alice" style={discoveryToasterStyle}>
               {discoveryContentBlocks}
           </div>
@@ -107,9 +108,11 @@ var DiscoveryPanel = React.createClass({
           <div style={chevronLeftButtonContainer}>
             <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} aria-hidden="true" onClick={this.handleLeftButtonClick}></span>
           </div>
+          
           <div style={chevronRightButtonContainer}>
             <span className={chevronRightButtonClass} style={chevronRightButtonStyle} aria-hidden="true" onClick={this.handleRightButtonClick}></span>
           </div>
+
         </div>
       </div>
     );
