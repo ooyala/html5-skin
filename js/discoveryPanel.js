@@ -1,10 +1,10 @@
 /********************************************************************
-  DISCOVERY SCREEN
+  DISCOVERY PANEL
 *********************************************************************/
 /**
 * The screen used while the video is playing.
 *
-* @class PlayingScreen
+* @class DiscoveryPanel
 * @constructor
 */
 

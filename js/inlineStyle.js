@@ -325,26 +325,28 @@ var discoveryScreenStyle = {
   discoveryContentBlockStyle: {
     position: "relative", 
     width: "100px", 
-    height: "80%", 
+    height: "95%", 
     margin: "10px",
-    backgroundColor: "white"
+    backgroundColor: "#444444"
   },
 
   discoveryImageStyle: {
     position: "absolute", 
     width: "100%", 
-    height: "70%"
+    height: "75%"
   },
   
   discoveryContentTitleStyle: {
     position: "absolute",
-    top: "70%",
+    top: "75%",
+    color: "white",
     fontSize: "10"
   },
   
   discoveryContentPlaysStyle: {
     position: "absolute",
     bottom: "0",
+    color: "lightgray",
     fontSize: "6"
   }
 };
