@@ -43,7 +43,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onContentTreeFetched: function (event, contentTree) {
       this.state.contentTree = contentTree;
-      this.state.screenToShow = STATE.START;
+      this.state.screenToShow = SCREEN.START_SCREEN;
       this.state.playerState = STATE.START;
       this.renderSkin({"contentTree": contentTree});
     },
@@ -54,25 +54,26 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaying: function() {
-      this.state.screenToShow = STATE.PLAYING;
+      this.state.screenToShow = SCREEN.PLAYING_SCREEN;
       this.state.playerState = STATE.PLAYING;
       this.renderSkin();
     },
 
     onPaused: function() {
-      this.state.screenToShow = STATE.PLAYING;
+      this.state.screenToShow = SCREEN.PAUSE_SCREEN;
       this.state.playerState = STATE.PAUSE;
       this.renderSkin();
     },
 
     onPlayed: function() {
-      this.state.screenToShow = STATE.END;
+      this.state.screenToShow = SCREEN.END_SCREEN;
       this.state.playerState = STATE.END;
       this.renderSkin();
     },
 
     onReportDiscoveryImpression: function(event, discoveryData) {
       console.log("onReportDiscoveryImpression is called");
+      this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
       this.state.discoveryData = discoveryData;
       this.renderSkin();
     },

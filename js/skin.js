@@ -37,12 +37,12 @@ var Skin = React.createClass({
 
   render: function() {
     switch (this.state.screenToShow) {
-      case STATE.START:
+      case SCREEN.START_SCREEN:
         return (
           // <EndScreen {...this.props} contentTree={this.state.contentTree} style={endScreenStyle}/>
           <StartScreen {...this.props} contentTree={this.state.contentTree} style={startScreenStyle}/>
         );
-      case STATE.PLAYING:
+      case SCREEN.PLAYING_SCREEN:
         return (
           <PlayingScreen {...this.props} contentTree={this.state.contentTree}
           currentPlayhead={this.state.currentPlayhead}
@@ -50,13 +50,25 @@ var Skin = React.createClass({
           buffered={this.state.buffered}
           ref="playScreen" />
         );
-      case STATE.END:
+      case SCREEN.END_SCREEN:
         return (
           <EndScreen {...this.props} 
           contentTree={this.state.contentTree} 
           discoveryData={this.state.discoveryData} 
           style={endScreenStyle}
           ref="endScreen" />
+        );
+      case SCREEN.DISCOVERY_SCREEN:
+        return (
+          <DiscoveryScreen {...this.props} 
+              contentTree={this.state.contentTree}
+              currentPlayhead={this.state.currentPlayhead}
+              duration={this.state.duration}
+              buffered={this.state.buffered}
+              style={discoveryScreenStyle}
+              discoveryData={this.state.discoveryData}
+              playerState={this.state.playerState}
+              ref="DiscoveryScreen" />
         );
       default:
         return false;

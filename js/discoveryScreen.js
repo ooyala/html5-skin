@@ -1,5 +1,5 @@
 /********************************************************************
-  DISCovery SCREEN
+  DISCOVERY SCREEN
 *********************************************************************/
 /**
 * The screen used while the video is playing.
@@ -9,13 +9,8 @@
 */
 var DiscoveryScreen = React.createClass({
   getInitialState: function() {
-    var screenToShow = STATE.PLAYING;
-    if (this.props.currentPlayhead == this.props.duration) {
-       screenToShow = STATE.END; 
-    }
     return {
-      controlBarVisible: true,
-      screenToShow: screenToShow
+      controlBarVisible: true
     };
   },
 
@@ -35,7 +30,7 @@ var DiscoveryScreen = React.createClass({
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
-          playerState={this.state.playerState} screenToShow={this.state.screenToShow}/>
+          playerState={this.props.playerState} />
       </div>
     );
   }

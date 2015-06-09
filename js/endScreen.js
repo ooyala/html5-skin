@@ -55,40 +55,27 @@ var EndScreen = React.createClass({
     //   descriptionMetadata = <div className="endscreen-description" style={screenStyle.infoPanel.description.style}>{this.state.description}</div>;
     // }
 
-    if (this.props.skinConfig.endScreen.mode == "discovery") {
-      return (
-        <DiscoveryScreen {...this.props} 
-            contentTree={this.state.contentTree}
-            currentPlayhead={this.state.currentPlayhead}
-            duration={this.state.duration}
-            buffered={this.state.buffered}
-            style={discoveryScreenStyle}
-            discoveryData ={this.props.discoveryData}
-            ref="DiscoveryScreen" />
-      );
-    }
-    else {
-      // Default configuration
-      posterStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
-      var controlBarHeight = 32;
-      return (
-        <div onMouseOver={this.showControlBar} 
-              onMouseOut={this.hideControlBar}
-               onMouseUp={this.handlePlayerMouseUp} 
-               style={{height: "100%", width: "100%"}}>
-        <div className="endscreen-poster" style={screenStyle.posterStyle}></div>
-        <span className={repeatClass} style={repeatStyle} aria-hidden="true" onClick={this.handleClick}></span>
-        <div className="endscreen-info" style={screenStyle.infoPanel.style}>
-          {titleMetadata}
-          {descriptionMetadata}
-        </div>
-        <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
-        <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
-          playerState={this.state.playerState} screenToShow={STATE.END} />
+    
+    // Default configuration
+    posterStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
+    var controlBarHeight = 32;
+    return (
+      <div onMouseOver={this.showControlBar} 
+            onMouseOut={this.hideControlBar}
+             onMouseUp={this.handlePlayerMouseUp} 
+             style={{height: "100%", width: "100%"}}>
+      <div className="endscreen-poster" style={screenStyle.posterStyle}></div>
+      <span className={repeatClass} style={repeatStyle} aria-hidden="true" onClick={this.handleClick}></span>
+      <div className="endscreen-info" style={screenStyle.infoPanel.style}>
+        {titleMetadata}
+        {descriptionMetadata}
       </div>
-      );
-    }
+      <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
+        controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
+      <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
+        controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
+        playerState={this.props.playerState} />
+    </div>
+    );
   }
 });
