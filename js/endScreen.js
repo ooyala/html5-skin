@@ -54,8 +54,7 @@ var EndScreen = React.createClass({
     posterStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
     var controlBarHeight = 32;
     return (
-      <div onMouseOver={this.showControlBar} 
-            onMouseOut={this.hideControlBar}
+      <div onMouseOver={this.showControlBar}
              onMouseUp={this.handlePlayerMouseUp} 
              style={{height: "100%", width: "100%"}}>
       <div className="endscreen-poster" style={screenStyle.posterStyle}></div>

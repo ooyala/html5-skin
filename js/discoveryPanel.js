@@ -16,21 +16,24 @@ var DiscoveryPanel = React.createClass({
   },
 
   handleLeftButtonClick: function() {
-    this.state.discoveryToasterLeftOffset += 400;
-    if (this.state.discoveryToasterLeftOffset > 25) {
-      this.state.discoveryToasterLeftOffset = 25;
+    var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
+    newDiscoveryToasterLeftOffset += 400;
+    if (newDiscoveryToasterLeftOffset > 25) {
+      newDiscoveryToasterLeftOffset = 25;
     }
-    this.setState({discoveryToasterLeftOffset: this.state.discoveryToasterLeftOffset});
+    this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
   },
 
   handleRightButtonClick: function() {
-    var toasterContainerWidth = document.getElementById("discovery_toaster_cintainer").clientWidth;
-    var toasterWidth = document.getElementById("discovery_toaster_alice").clientWidth;
-    this.state.discoveryToasterLeftOffset -= 250;
-    if (this.state.discoveryToasterLeftOffset < toasterContainerWidth - toasterWidth) {
-      this.state.discoveryToasterLeftOffset = toasterContainerWidth - toasterWidth;
+    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+
+    var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
+    newDiscoveryToasterLeftOffset -= 400;
+    if (newDiscoveryToasterLeftOffset < toasterContainerWidth - toasterWidth) {
+      newDiscoveryToasterLeftOffset = toasterContainerWidth - toasterWidth;
     }
-    this.setState({discoveryToasterLeftOffset: this.state.discoveryToasterLeftOffset});
+    this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
   },
 
   handleDiscoveryContentClick: function(index) {
@@ -46,10 +49,6 @@ var DiscoveryPanel = React.createClass({
   render: function() {
     var panelStyle = discoveryScreenStyle.panelStyle;
 
-    var dismissButtonContainerStyle = discoveryScreenStyle.dismissButtonContainerStyle;
-    var dismissButtonClass = discoveryScreenStyle.dismissButtonStyle.icon;
-    var dismissButtonStyle = discoveryScreenStyle.dismissButtonStyle.style;
-
     var panelTitleBarStyle = discoveryScreenStyle.panelTitleBarStyle;
     var panelTitleTextStyle = discoveryScreenStyle.panelTitleTextStyle;
 
@@ -61,7 +60,6 @@ var DiscoveryPanel = React.createClass({
     var imageStyle = discoveryScreenStyle.discoveryImageStyle;
 
     var contentTitleStyle = discoveryScreenStyle.discoveryContentTitleStyle;
-    var contentPlaysStyle = discoveryScreenStyle.discoveryContentPlaysStyle; 
 
     var chevronLeftButtonContainer = discoveryScreenStyle.discoveryChevronLeftButtonContainer;
     var chevronLeftButtonClass = discoveryScreenStyle.discoveryChevronLeftButton.icon;
@@ -74,8 +72,11 @@ var DiscoveryPanel = React.createClass({
     var discoveryData = this.props.discoveryData;
     var discoveryContentBlocks = [];
 
+    // This is for turning off the old discovery panel.
+    // TODO: Remove the following line when we drop the old discovery panel in mjolnir side.
+    document.getElementsByClassName("discovery_toaster")[0].style.display="none"; 
+
     // Build discovery content blocks
-    document.getElementsByClassName("discovery_toaster")[0].style.display="none";
     if (discoveryData !== null)  {
         discoveryToasterStyle.width = 150 * discoveryData.relatedVideos.length;
         for (var i = 0; i < this.props.discoveryData.relatedVideos.length; i++) {
@@ -83,7 +84,6 @@ var DiscoveryPanel = React.createClass({
             <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
                  <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
                  <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
-                 <div style={contentPlaysStyle}>141 plays</div>
             </div> );
         }
     }
@@ -92,16 +92,11 @@ var DiscoveryPanel = React.createClass({
 
         <div style={panelTitleBarStyle}>
           <h1 style={panelTitleTextStyle}>DISCOVERY</h1>
-          
-          <div style={dismissButtonContainerStyle}>
-            <span className={dismissButtonClass} style={dismissButtonStyle} aria-hidden="true"></span>
-          </div>
-          
         </div>
 
-        <div id="discovery_toaster_cintainer" style={discoveryToasterContainerStyle}>
+        <div style={discoveryToasterContainerStyle} ref="DiscoveryToasterContainer" >
           
-          <div id="discovery_toaster_alice" style={discoveryToasterStyle}>
+          <div style={discoveryToasterStyle} ref="DiscoveryToaster">
               {discoveryContentBlocks}
           </div>
             
