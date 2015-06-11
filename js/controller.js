@@ -60,10 +60,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPaused: function() {
-      if (this.skin.props.skinConfig.pauseScreen.mode == "discovery") {
+      if (this.skin.props.skinConfig.pauseScreen.mode === "discovery") {
       console.log("Should display DISCOVERY_SCREEN on pause");
         this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
-      } else if (this.skin.props.skinConfig.pauseScreen.mode == "social") {
+      } else if (this.skin.props.skinConfig.pauseScreen.mode === "social") {
         // Remove this comment once pause screen implemented
       } else {
         // default
@@ -74,10 +74,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayed: function() {
-      if (this.skin.props.skinConfig.endScreen.mode == "discovery") {
+      if (this.skin.props.skinConfig.endScreen.mode === "discovery") {
         console.log("Should display DISCOVERY_SCREEN on end");
         this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
-      } else if (this.skin.props.skinConfig.endScreen.mode == "social") {
+      } else if (this.skin.props.skinConfig.endScreen.mode === "social") {
         // Remove this comment once pause screen implemented
       } else {
         // default
