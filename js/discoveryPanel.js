@@ -50,6 +50,7 @@ var DiscoveryPanel = React.createClass({
     var panelStyle = discoveryScreenStyle.panelStyle;
 
     var panelTitleBarStyle = discoveryScreenStyle.panelTitleBarStyle;
+    var panelTitle = this.props.skinConfig.discoveryScreen.title;
     var panelTitleTextStyle = discoveryScreenStyle.panelTitleTextStyle;
 
     var discoveryToasterContainerStyle = discoveryScreenStyle.discoveryToasterContainerStyle;
@@ -91,7 +92,7 @@ var DiscoveryPanel = React.createClass({
       <div style={panelStyle}>
 
         <div style={panelTitleBarStyle}>
-          <h1 style={panelTitleTextStyle}>DISCOVERY</h1>
+          <h1 style={panelTitleTextStyle}>{panelTitle}</h1>
         </div>
 
         <div style={discoveryToasterContainerStyle} ref="DiscoveryToasterContainer" >
