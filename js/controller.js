@@ -11,6 +11,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
+      "isPlayingAd": false,
+      "adItem": null
     };
 
     this.init();
@@ -24,7 +26,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
-      this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
+      this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));      this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
+      this.mb.subscribe(OO.EVENTS.WILL_PLAY_ADS, "customerUi", _.bind(this.onWillPlayAds, this));
+      this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
     },
 
     /*--------------------------------------------------------------------
@@ -44,6 +48,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onContentTreeFetched: function (event, contentTree) {
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
+      // this.state.screenToShow = SCREEN.AD_SCREEN;
       this.state.playerState = STATE.START;
       this.renderSkin({"contentTree": contentTree});
     },
@@ -54,7 +59,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaying: function() {
-      this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+      if (!this.state.isPlayingAd) {
+        this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+      }
       this.state.playerState = STATE.PLAYING;
       this.renderSkin();
     },
@@ -75,6 +82,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       console.log("onReportDiscoveryImpression is called");
       this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
       this.state.discoveryData = discoveryData;
+      this.renderSkin();
+    },
+
+    onWillPlayAds: function(event, adItem) {
+      console.log("onWillPlayAds is called");
+      this.state.adItem = adItem;
+      this.state.isPlayingAd = true;
+      this.state.screenToShow = SCREEN.AD_SCREEN; 
+      this.renderSkin();
+    },
+
+    onAdsPlayed: function(event, adItem) {
+      console.log("onAdsPlayed is called");
+      this.state.isPlayingAd = false;
+      this.state.screenToShow = SCREEN.PLAYING_SCREEN;
       this.renderSkin();
     },
 

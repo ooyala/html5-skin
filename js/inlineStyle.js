@@ -320,3 +320,82 @@ var discoveryScreenStyle = {
     fontSize: "10"
   }
 };
+
+var adScreenStyle = {
+  panelStyle: {
+    position: "absolute",
+    top: "0",
+    bottom: "32px",
+    width: "100%"
+  },
+
+  topBarStyle: {
+    position: "absolute",
+    top: 0,
+    left: 0, 
+    right: 0, 
+    height: "10%",
+    width: "100%",
+    "background-color":"rgba(0, 0, 0, 0.5)",
+    display: "flex", 
+    flexDirection: "row"
+  },
+
+  adPlaybackInfoTextStyle: {
+    position: "absolute",
+    top: "50%",
+    height: "40%",
+    width: "100%",
+    fontSize: "10",
+    color: "white",
+    "-webkit-transform": "translateY(-50%)",
+    "-ms-transform": "translateY(-50%)",
+    "transform": "translateY(-50%)",
+  },
+
+  learnMoreButtonStyle: {
+    position: "absolute",
+    right: "2%",  
+    top: "15%",
+    height: "70%",
+    width: "13%",
+    fontSize: "10",
+    backgroundColor: "white" ,
+    "border-radius": "5px"
+  },  
+
+  learnMoreButtonTextStyle: {
+    position: "absolute",
+    top: "50%",
+    width: "100%",
+    fontSize: "10",
+    "text-align": "center",
+    color: "black",
+    "-webkit-transform": "translateY(-50%)",
+    "-ms-transform": "translateY(-50%)",
+    "transform": "translateY(-50%)",
+  },
+
+  skipButtonStyle: {
+    position: "absolute",
+    right: "2%",  
+    bottom: "5%",
+    height: "10%",
+    width: "15%",
+    backgroundColor: "white",
+    opacity: 0.5,
+    "border-radius": "5px"
+  },
+
+  skipButtonTextStyle: {
+    position: "absolute",
+    top: "50%",
+    width: "100%",
+    fontSize: "15",
+    "text-align": "center",
+    color: "black",
+    "-webkit-transform": "translateY(-50%)",
+    "-ms-transform": "translateY(-50%)",
+    "transform": "translateY(-50%)",
+  }, 
+};

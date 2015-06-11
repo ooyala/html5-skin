@@ -17,6 +17,10 @@ var Skin = React.createClass({
       this.refs.playScreen.setState({
         playerState: this.state.playerState
       });
+    } else if (this.refs.adScreen) {
+      this.refs.adScreen.setState({
+        playerState: this.state.playerState
+      });
     }
   },
 
@@ -39,7 +43,6 @@ var Skin = React.createClass({
     switch (this.state.screenToShow) {
       case SCREEN.START_SCREEN:
         return (
-          // <EndScreen {...this.props} contentTree={this.state.contentTree} style={endScreenStyle}/>
           <StartScreen {...this.props} contentTree={this.state.contentTree} style={startScreenStyle}/>
         );
       case SCREEN.PLAYING_SCREEN:
@@ -57,6 +60,15 @@ var Skin = React.createClass({
           discoveryData={this.state.discoveryData} 
           style={endScreenStyle}
           ref="endScreen" />
+        );
+      case SCREEN.AD_SCREEN: 
+        return (
+          <AdScreen {...this.props} contentTree={this.state.contentTree}
+          adItem={this.state.adItem}
+          currentPlayhead={this.state.currentPlayhead}
+          duration={this.state.duration}
+          buffered={this.state.buffered}
+          ref="adScreen" />
         );
       case SCREEN.DISCOVERY_SCREEN:
         return (
