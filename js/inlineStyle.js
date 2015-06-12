@@ -351,6 +351,7 @@ var adScreenStyle = {
     "-webkit-transform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
+    "white-space": "pre" 
   },
 
   learnMoreButtonStyle: {

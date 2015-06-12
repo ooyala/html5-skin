@@ -44,7 +44,7 @@ var AdPanel = React.createClass({
 
         <div style={topBarStyle}>
           <div style={adPlaybackInfoTextStyle}>
-            {remainTime}
+            Ad Playing: Cute Cat:) (1/1)  |   {remainTime}
           </div>
 
           <div style={learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
