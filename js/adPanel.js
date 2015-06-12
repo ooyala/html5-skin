@@ -14,6 +14,18 @@ var AdPanel = React.createClass({
     };
   },
 
+  handleLearnMoreButtonClick: function() {
+    var clickThroughUrl = this.props.adsItem.click_url;
+    this.openUrl(clickThroughUrl);
+  },
+
+  openUrl: function(url) {
+    if (url === null) { 
+      return; 
+    }
+    window.open(url);
+  },
+
   render: function() {
     var panelStyle = adScreenStyle.panelStyle;
 
@@ -35,7 +47,7 @@ var AdPanel = React.createClass({
             {remainTime}
           </div>
 
-          <div style={learnMoreButtonStyle}>
+          <div style={learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
             <div style={learnMoreButtonTextStyle}>
              Learn More
             </div>

@@ -12,7 +12,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "playerState": null,
       "discoveryData": null,
       "isPlayingAd": false,
-      "adItem": null
+      "adsItem": null
     };
 
     this.init();
@@ -54,7 +54,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
-      console.log(arguments);
+      // console.log(arguments);
       this.skin.updatePlayhead(currentPlayhead, duration, buffered);
     },
 
@@ -85,15 +85,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onWillPlayAds: function(event, adItem) {
+    onWillPlayAds: function(event, adsItem) {
       console.log("onWillPlayAds is called");
-      this.state.adItem = adItem;
+      this.state.adsItem = adsItem;
       this.state.isPlayingAd = true;
       this.state.screenToShow = SCREEN.AD_SCREEN; 
       this.renderSkin();
     },
 
-    onAdsPlayed: function(event, adItem) {
+    onAdsPlayed: function(event, adsItem) {
       console.log("onAdsPlayed is called");
       this.state.isPlayingAd = false;
       this.state.screenToShow = SCREEN.PLAYING_SCREEN;
