@@ -15,7 +15,7 @@ var AdPanel = React.createClass({
   },
 
   handleLearnMoreButtonClick: function() {
-    var clickThroughUrl = this.props.adsItem.click_url;
+    var clickThroughUrl = this.props.currentAdItem.click_url;
     this.openUrl(clickThroughUrl);
   },
 
@@ -26,7 +26,25 @@ var AdPanel = React.createClass({
     window.open(url);
   },
 
+  isPlayingPreroll: function() {
+    return (this.props.currentAdItem && this.props.currentAdItem.time < 250);
+  },
+
+  isPlayingMidroll: function() {
+    return (this.props.currentAdItem && 
+      !this._isPreRollAd(this.props.currentAdItem) && 
+      !this._isPostRollAd(this.props.currentAdItem));
+  },
+
+  isPlayingPostroll: function() {
+    return (this.props.currentAdItem && this.props.currentAdItem.time == 1000000000);
+  },
+
+
   render: function() {
+    var currentAdIndex = this.props.adsPlaybackProgress[this.props.currentAdItem.time].played;
+    var totalNumberOfAds = this.props.adsPlaybackProgress[this.props.currentAdItem.time].total;
+
     var panelStyle = adScreenStyle.panelStyle;
 
     var topBarStyle = adScreenStyle.topBarStyle;
@@ -44,7 +62,7 @@ var AdPanel = React.createClass({
 
         <div style={topBarStyle}>
           <div style={adPlaybackInfoTextStyle}>
-            Ad Playing: Cute Cat:) (1/1)  |   {remainTime}
+            Ad Playing: Cute Cat:) ({currentAdIndex}/{totalNumberOfAds})  |   {remainTime}
           </div>
 
           <div style={learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>

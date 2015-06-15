@@ -64,7 +64,8 @@ var Skin = React.createClass({
       case SCREEN.AD_SCREEN: 
         return (
           <AdScreen {...this.props} contentTree={this.state.contentTree}
-          adsItem={this.state.adsItem}
+          currentAdItem={this.state.currentAdItem}
+          adsPlaybackProgress={this.state.adsPlaybackProgress}
           currentPlayhead={this.state.currentPlayhead}
           playerState={this.state.playerState}
           duration={this.state.duration}

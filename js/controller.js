@@ -12,7 +12,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "playerState": null,
       "discoveryData": null,
       "isPlayingAd": false,
-      "adsItem": null
+      "currentAdItem": null,
+      "adsPlaybackProgress": {}
     };
 
     this.init();
@@ -30,6 +31,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.WILL_PLAY_ADS, "customerUi", _.bind(this.onWillPlayAds, this));
       this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
       this.mb.subscribe(OO.EVENTS.PAUSE_STREAM, "customerUi", _.bind(this.onWillPauseAds, this));
+      this.mb.subscribe(OO.EVENTS.PLAY_STREAM, "customerUi", _.bind(this.onPlayStream, this));
       this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
     },
 
@@ -50,9 +52,25 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onContentTreeFetched: function (event, contentTree) {
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
-      // this.state.screenToShow = SCREEN.AD_SCREEN;
+      this.initAdsInfoStructure();
       this.state.playerState = STATE.START;
       this.renderSkin({"contentTree": contentTree});
+    },
+
+    initAdsInfoStructure: function (contentTree) {
+      for (var i = 0; i < this.state.contentTree.ads.length; i++) {
+        var ad = this.state.contentTree.ads[i];
+        var time = ad.time;
+        var adPlaybackProgress = {};
+        if (!(time in this.state.adsPlaybackProgress)) {
+            this.state.adsPlaybackProgress[time] = {};
+            adPlaybackProgress = {"total": 1, "played": 0};
+        } else {
+          var newTotal = this.state.adsPlaybackProgress[time].total + 1;
+          adPlaybackProgress = {"total": newTotal, "played": 0};
+        }
+        this.state.adsPlaybackProgress[time] = adPlaybackProgress;
+      }
     },
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
@@ -89,13 +107,46 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onWillPlayAds: function(event, adsItem) {
+    onPlayStream: function(event, currentItemUrl, currentItem) {
+      if (!this.state.isPlayingAd) {
+
+      } else if (this.state.isPlayingAd) {
+        if (this.state.currentAdItem === null || 
+            currentItem.item.ad_embed_code != this.state.currentAdItem.ad_embed_code) {
+        var time = currentItem.item.time;
+        var newPlayed = this.state.adsPlaybackProgress[time].played + 1;
+        adPlaybackProgress = {"total": this.state.adsPlaybackProgress[time].total, "played": newPlayed};
+        this.state.adsPlaybackProgress[time] = adPlaybackProgress;
+        this.state.currentAdItem = currentItem.item;  
+        this.renderSkin();
+      }
+      }
+    },
+
+    onWillPlayAds: function(event, adItem) {
       console.log("onWillPlayAds is called");
-      this.state.adsItem = adsItem;
+      // var previousAdItem = this.state.currentAdItem;
+      if (this.state.currentAdItem === null || adItem.ad_embed_code != this.state.currentAdItem.ad_embed_code) {
+        var time = adItem.time;
+        var newPlayed = this.state.adsPlaybackProgress[time].played + 1;
+        adPlaybackProgress = {"total": this.state.adsPlaybackProgress[time].total, "played": newPlayed};
+        this.state.adsPlaybackProgress[time] = adPlaybackProgress;
+      }
+      this.state.currentAdItem = adItem;  
       this.state.isPlayingAd = true;
       this.state.screenToShow = SCREEN.AD_SCREEN;
       this.state.playerState = STATE.PLAYING; 
       this.renderSkin();
+    },
+
+    updateAdsPlaybackProgress: function(adItem) {
+      if (this.state.currentAdItem === null || adItem.ad_embed_code != this.state.currentAdItem.ad_embed_code) {
+        var time = adItem.time;
+        var newPlayed = this.state.adsPlaybackProgress[time].played + 1;
+        adPlaybackProgress = {"total": this.state.adsPlaybackProgress[time].total, "played": newPlayed};
+        this.state.adsPlaybackProgress[time] = adPlaybackProgress;
+      }
+      console.log("updateAdsPlaybackProgress is called for adItem = " + adItem);
     },
 
     onWillPauseAds: function(event) {
@@ -105,7 +156,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onAdsPlayed: function(event, adsItem) {
+    onAdsPlayed: function(event) {
       console.log("onAdsPlayed is called from event = " + event);
       this.state.isPlayingAd = false;
       this.state.screenToShow = SCREEN.PLAYING_SCREEN;
