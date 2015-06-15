@@ -35,6 +35,9 @@ var AdPanel = React.createClass({
     var topBarStyle = adScreenStyle.topBarStyle;
     var adPlaybackInfoTextStyle = adScreenStyle.adPlaybackInfoTextStyle;
     var learnMoreButtonStyle = adScreenStyle.learnMoreButtonStyle;
+    if (this.props.currentAdItem.click_url === "") {
+      learnMoreButtonStyle.visibility = "hidden";
+    }
     var learnMoreButtonTextStyle = adScreenStyle.learnMoreButtonTextStyle;
 
     var skipButtonStyle = adScreenStyle.skipButtonStyle;
