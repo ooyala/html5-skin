@@ -29,6 +29,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));      
       this.mb.subscribe(OO.EVENTS.WILL_PLAY_ADS, "customerUi", _.bind(this.onWillPlayAds, this));
       this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
+      this.mb.subscribe(OO.EVENTS.PAUSE_STREAM, "customerUi", _.bind(this.onWillPauseAds, this));
       this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
     },
 
@@ -62,15 +63,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPlaying: function() {
       if (!this.state.isPlayingAd) {
         this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+        this.state.playerState = STATE.PLAYING;
+        this.renderSkin();
       }
-      this.state.playerState = STATE.PLAYING;
-      this.renderSkin();
     },
 
     onPaused: function() {
-      this.state.screenToShow = SCREEN.PAUSE_SCREEN;
-      this.state.playerState = STATE.PAUSE;
-      this.renderSkin();
+      if (!this.state.isPlayingAd) {
+        this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+        this.state.playerState = STATE.PAUSE;
+        this.renderSkin();
+      }
     },
 
     onPlayed: function() {
@@ -90,20 +93,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       console.log("onWillPlayAds is called");
       this.state.adsItem = adsItem;
       this.state.isPlayingAd = true;
-      this.state.screenToShow = SCREEN.AD_SCREEN; 
+      this.state.screenToShow = SCREEN.AD_SCREEN;
+      this.state.playerState = STATE.PLAYING; 
       this.renderSkin();
     },
 
     onWillPauseAds: function(event) {
-      console.log("onWillPauseAds is called");
+      console.log("onWillPauseAds is called from event = " + event);
       this.state.playerState = STATE.PAUSE;
+      this.state.screenToShow = SCREEN.AD_SCREEN;
       this.renderSkin();
     },
 
     onAdsPlayed: function(event, adsItem) {
-      console.log("onAdsPlayed is called");
+      console.log("onAdsPlayed is called from event = " + event);
       this.state.isPlayingAd = false;
       this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+      this.state.playerState = STATE.PLAYING;
       this.renderSkin();
     },
 

@@ -41,7 +41,7 @@ var AdScreen = React.createClass({
         
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
-          playerState={this.state.playerState} />
+          playerState={this.props.playerState} />
       </div>
     );
   }
