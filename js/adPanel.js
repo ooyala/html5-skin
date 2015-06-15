@@ -26,21 +26,6 @@ var AdPanel = React.createClass({
     window.open(url);
   },
 
-  isPlayingPreroll: function() {
-    return (this.props.currentAdItem && this.props.currentAdItem.time < 250);
-  },
-
-  isPlayingMidroll: function() {
-    return (this.props.currentAdItem && 
-      !this._isPreRollAd(this.props.currentAdItem) && 
-      !this._isPostRollAd(this.props.currentAdItem));
-  },
-
-  isPlayingPostroll: function() {
-    return (this.props.currentAdItem && this.props.currentAdItem.time == 1000000000);
-  },
-
-
   render: function() {
     var currentAdIndex = this.props.adsPlaybackProgress[this.props.currentAdItem.time].played;
     var totalNumberOfAds = this.props.adsPlaybackProgress[this.props.currentAdItem.time].total;

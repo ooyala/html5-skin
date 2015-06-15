@@ -52,12 +52,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onContentTreeFetched: function (event, contentTree) {
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
-      this.initAdsInfoStructure();
+      this.initAdsPlaybackProgressStructure();
       this.state.playerState = STATE.START;
       this.renderSkin({"contentTree": contentTree});
     },
 
-    initAdsInfoStructure: function (contentTree) {
+    initAdsPlaybackProgressStructure: function (contentTree) {
       for (var i = 0; i < this.state.contentTree.ads.length; i++) {
         var ad = this.state.contentTree.ads[i];
         var time = ad.time;
@@ -107,32 +107,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    /*
+    OO.EVENTS.PLAY_STREAM will be published when the non-first ad in an ad pod starts playback. However, OO.EVENTS.WILL_PLAY_AD will not be triggered.
+    */
     onPlayStream: function(event, currentItemUrl, currentItem) {
       if (!this.state.isPlayingAd) {
 
       } else if (this.state.isPlayingAd) {
-        if (this.state.currentAdItem === null || 
-            currentItem.item.ad_embed_code != this.state.currentAdItem.ad_embed_code) {
-        var time = currentItem.item.time;
-        var newPlayed = this.state.adsPlaybackProgress[time].played + 1;
-        adPlaybackProgress = {"total": this.state.adsPlaybackProgress[time].total, "played": newPlayed};
-        this.state.adsPlaybackProgress[time] = adPlaybackProgress;
-        this.state.currentAdItem = currentItem.item;  
-        this.renderSkin();
-      }
+        this.updateAdsPlaybackProgress(currentItem.item);
       }
     },
 
     onWillPlayAds: function(event, adItem) {
       console.log("onWillPlayAds is called");
-      // var previousAdItem = this.state.currentAdItem;
-      if (this.state.currentAdItem === null || adItem.ad_embed_code != this.state.currentAdItem.ad_embed_code) {
-        var time = adItem.time;
-        var newPlayed = this.state.adsPlaybackProgress[time].played + 1;
-        adPlaybackProgress = {"total": this.state.adsPlaybackProgress[time].total, "played": newPlayed};
-        this.state.adsPlaybackProgress[time] = adPlaybackProgress;
-      }
-      this.state.currentAdItem = adItem;  
+      this.updateAdsPlaybackProgress(adItem);
       this.state.isPlayingAd = true;
       this.state.screenToShow = SCREEN.AD_SCREEN;
       this.state.playerState = STATE.PLAYING; 
@@ -140,15 +128,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     updateAdsPlaybackProgress: function(adItem) {
-      if (this.state.currentAdItem === null || adItem.ad_embed_code != this.state.currentAdItem.ad_embed_code) {
+      if (this.currentAdItemIsChanged(adItem)) {
+        this.state.currentAdItem = adItem;  
         var time = adItem.time;
         var newPlayed = this.state.adsPlaybackProgress[time].played + 1;
         adPlaybackProgress = {"total": this.state.adsPlaybackProgress[time].total, "played": newPlayed};
         this.state.adsPlaybackProgress[time] = adPlaybackProgress;
+        console.log("Ads playback progress is updated for adItem = " + adItem);
       }
-      console.log("updateAdsPlaybackProgress is called for adItem = " + adItem);
     },
 
+    currentAdItemIsChanged: function(adItem) {
+      return (this.state.currentAdItem === null || adItem.ad_embed_code != this.state.currentAdItem.ad_embed_code);
+    },
+
+    /*
+    OO.EVENTS.WILL_PAUSE_AD will not be triggered for pause action except for IMA Ads.
+    */
     onWillPauseAds: function(event) {
       console.log("onWillPauseAds is called from event = " + event);
       this.state.playerState = STATE.PAUSE;
