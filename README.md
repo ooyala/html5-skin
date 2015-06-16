@@ -44,6 +44,16 @@ From the root project directory run these commands from the command line:
 
 This will install all dependencies.
 
+This project also makes use of a git submodule for the config file. This needs to be initialized
+using the git submodule commands:
+
+    git submodule init
+    git submodule update
+    git pull
+
+The init and update should only need to be run once, afterward git pull will
+update the submodule as well as the parent repo.
+
 To build the project, first run this command:
 
     sudo npm install -g gulp
@@ -55,7 +65,16 @@ This will install gulp module globally. Then, simply run this command:
 This will perform an initial build and start a watch that will update build/html5-skin.js with any changes you wish to make in js folder.
 
 If you have the forever module installed, you can use the following command to keep gulp running:
+
     forever --spinSleepTime 5000 --workingDir <path to your project directory> /usr/local/bin/gulp
 
+Once you've built the Javascript with gulp, you'll need to run a webserver in order to serve sample.html.
+The simplest way to do this is with python's built in server, but you can use any server you like.
+To start a python server, cd into the repo directory and run:
+
+    python -m SimpleHTTPServer
+
+You should now be able to load the sample page by hitting http://localhost:8000/sample.html
+
 ## Publisher and Ooyala Customer
-Able to fork git repo and build the skin at will. Terms and condition apply. Please read [Ooyala open-source onboarding guide](http:www.ooyala.com)
+Able to fork git repo and build the skin at will. Terms and condition apply. Please read [Ooyala open-source onboarding guide](http://www.ooyala.com)
