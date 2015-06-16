@@ -60,20 +60,35 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPaused: function() {
-      this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+      if (this.skin.props.skinConfig.pauseScreen.mode === "discovery") {
+      console.log("Should display DISCOVERY_SCREEN on pause");
+        this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+      } else if (this.skin.props.skinConfig.pauseScreen.mode === "social") {
+        // Remove this comment once pause screen implemented
+      } else {
+        // default
+        this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+      }
       this.state.playerState = STATE.PAUSE;
       this.renderSkin();
     },
 
     onPlayed: function() {
-      this.state.screenToShow = SCREEN.END_SCREEN;
+      if (this.skin.props.skinConfig.endScreen.mode === "discovery") {
+        console.log("Should display DISCOVERY_SCREEN on end");
+        this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+      } else if (this.skin.props.skinConfig.endScreen.mode === "social") {
+        // Remove this comment once pause screen implemented
+      } else {
+        // default
+        this.state.screenToShow = SCREEN.END_SCREEN;
+      }
       this.state.playerState = STATE.END;
       this.renderSkin();
     },
 
     onReportDiscoveryImpression: function(event, discoveryData) {
       console.log("onReportDiscoveryImpression is called");
-      this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
       this.state.discoveryData = discoveryData;
       this.renderSkin();
     },
