@@ -40,11 +40,14 @@ var Skin = React.createClass({
       case SCREEN.START_SCREEN:
         return (
           // <EndScreen {...this.props} contentTree={this.state.contentTree} style={endScreenStyle}/>
-          <StartScreen {...this.props} contentTree={this.state.contentTree} style={startScreenStyle}/>
+          <StartScreen {...this.props} contentTree={this.state.contentTree} 
+          authorization={this.state.authorization} 
+          style={startScreenStyle}/>
         );
       case SCREEN.PLAYING_SCREEN:
         return (
-          <PlayingScreen {...this.props} contentTree={this.state.contentTree}
+          <PlayingScreen {...this.props} contentTree={this.state.contentTree} 
+          authorization={this.state.authorization} 
           currentPlayhead={this.state.currentPlayhead}
           duration={this.state.duration}
           buffered={this.state.buffered}
@@ -54,7 +57,8 @@ var Skin = React.createClass({
       case SCREEN.END_SCREEN:
         return (
           <EndScreen {...this.props} 
-          contentTree={this.state.contentTree} 
+          contentTree={this.state.contentTree}  
+          authorization={this.state.authorization} 
           discoveryData={this.state.discoveryData} 
           style={endScreenStyle}
           ref="endScreen" />
@@ -62,7 +66,8 @@ var Skin = React.createClass({
       case SCREEN.DISCOVERY_SCREEN:
         return (
           <DiscoveryScreen {...this.props} 
-              contentTree={this.state.contentTree}
+              contentTree={this.state.contentTree} 
+              authorization={this.state.authorization} 
               currentPlayhead={this.state.currentPlayhead}
               duration={this.state.duration}
               buffered={this.state.buffered}

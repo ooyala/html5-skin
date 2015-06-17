@@ -146,8 +146,12 @@ var ControlBar = React.createClass({
     var controlBarItems = [];
     var controlBarSetting = this.props.skinConfig.controlBar;
     for (i=0; i < controlBarSetting.items.length; i++) {
-      //filter out unrecognized button names
+      // filter out unrecognized button names
       if (typeof controlItemTemplates[controlBarSetting.items[i]] === "undefined") {
+        continue;
+      }
+      // Not sure what to do when there are multi streams 
+      if (controlBarSetting.items[i] === "live" && this.props.authorization.streams[0].delivery_type !== "live") {
         continue;
       }
       controlBarItems.push(controlItemTemplates[controlBarSetting.items[i]]);

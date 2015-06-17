@@ -8,6 +8,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.id = id;
     this.state = {
       "contentTree": {},
+      "authorization": {},
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
@@ -20,6 +21,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     init: function () {
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
+      this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
@@ -39,6 +41,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           React.createElement(Skin, {skinConfig: data, controller: this}), document.getElementById("skin")
         );
       }, this));
+    },
+
+    onAuthorizationFetched: function(event, authorization) {
+      this.state.authorization = authorization;
     },
 
     onContentTreeFetched: function (event, contentTree) {
