@@ -153,24 +153,24 @@ var controlBarStyle = {
     position: "relative",
     width: "70",
     height: "50%",
-    top: "25%",
+    top: "30%",
     "border-radius": "3px"
   },
 
   liveCircleStyle: {
     position: "relative",
-    width: "10",
-    height: "10",
+    width: "10px",
+    height: "10px",
     top: "25%",
-    left: "5%",
+    left: "5%"
   },
 
   liveTextStyle: {
     position: "absolute",
     width: "60%",
     height: "80%",
-    top: "10%",
-    right: "0",
+    top: "15%",
+    left: "30%",
     fontSize: "10"
   },
 
