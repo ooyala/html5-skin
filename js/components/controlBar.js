@@ -97,6 +97,11 @@ var ControlBar = React.createClass({
         onClick={this.handleVolumeClick}></span>);
     }
 
+    var watermarkUrl = this.props.skinConfig.controlBar.watermark.url;
+    var watermarkImageStyle = controlBarStyle.watermarkImageStyle;
+    // 16 is 50% of control bar height right now. Will be fetched from config file later
+    watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.widthHeightRatio * 16;
+    
     var controlItemTemplates = {
       "playPause": <div className="playPause" style={controlBarStyle.controlBarItemSetting}
         onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
@@ -123,7 +128,10 @@ var ControlBar = React.createClass({
         style={controlBarStyle.iconSetting}></span></div>,
       "fullScreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
-        <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>
+        <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>,
+      "watermark": <div className="watermark" style={controlBarStyle.controlBarItemSetting}
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        <img src={watermarkUrl} style={controlBarStyle.watermarkImageStyle}></img></div>
     };
 
     var controlBarItems = [];

@@ -157,7 +157,14 @@ var controlBarStyle = {
     "backgroundClip": "content-box",
     "position": "relative",
     "top": "-1px"
+  },
+
+  watermarkImageStyle: {
+    position: "relative",
+    height: "50%",
+    top: "25%"
   }
+
 };
 
 var scrubberBarStyle = {
