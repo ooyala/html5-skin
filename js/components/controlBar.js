@@ -151,7 +151,7 @@ var ControlBar = React.createClass({
         continue;
       }
       // Not sure what to do when there are multi streams 
-      if (controlBarSetting.items[i] === "live" && this.props.authorization.streams[0].is_live_stream) {
+      if (controlBarSetting.items[i] === "live" && !this.props.authorization.streams[0].is_live_stream) {
         continue;
       }
       controlBarItems.push(controlItemTemplates[controlBarSetting.items[i]]);
