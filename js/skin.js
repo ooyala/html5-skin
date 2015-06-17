@@ -48,6 +48,7 @@ var Skin = React.createClass({
           currentPlayhead={this.state.currentPlayhead}
           duration={this.state.duration}
           buffered={this.state.buffered}
+          playerState={this.state.playerState}
           ref="playScreen" />
         );
       case SCREEN.END_SCREEN:

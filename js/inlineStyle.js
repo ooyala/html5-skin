@@ -149,6 +149,31 @@ var controlBarStyle = {
   iconSetting: {
   },
 
+  liveItemStyle: {
+    position: "relative",
+    width: "70",
+    height: "50%",
+    top: "25%",
+    "border-radius": "3px"
+  },
+
+  liveCircleStyle: {
+    position: "relative",
+    width: "10",
+    height: "10",
+    top: "25%",
+    left: "5%",
+  },
+
+  liveTextStyle: {
+    position: "absolute",
+    width: "60%",
+    height: "80%",
+    top: "10%",
+    right: "0",
+    fontSize: "10"
+  },
+
   volumeBarStyle: {
     "display": "inline-block",
     "height": "12px",
