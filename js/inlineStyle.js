@@ -151,7 +151,7 @@ var controlBarStyle = {
 
   liveItemStyle: {
     position: "relative",
-    width: "70",
+    width: "50",
     height: "50%",
     top: "30%",
     "border-radius": "3px"
@@ -169,9 +169,10 @@ var controlBarStyle = {
     position: "absolute",
     width: "60%",
     height: "80%",
-    top: "15%",
-    left: "30%",
-    fontSize: "10"
+    top: "10%",
+    left: "40%",
+    fontSize: "10",
+    color: "LightGray"
   },
 
   volumeBarStyle: {

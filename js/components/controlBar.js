@@ -102,18 +102,9 @@ var ControlBar = React.createClass({
     // 16 is 50% of control bar height right now. Will be fetched from config file later
     watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.widthHeightRatio * 16;
 
-    var liveItemStyle = controlBarStyle.liveItemStyle;
-    liveItemStyle.backgroundColor = "";
-    var liveTextStyle = controlBarStyle.liveTextStyle;
-    liveTextStyle.color = "LightGray";
+    // TODO: update to the icon from UX once they get it done
     var liveCirleImageUrl = "http://upload.wikimedia.org/wikipedia/commons/f/f1/Ski_trail_rating_symbol_red_circle.png";
     var liveText = "LIVE";
-    if (this.props.playerState === STATE.PAUSE) {
-      liveCirleImageUrl =  "http://sidigital.co/download/sochi/images/silver_medal.png";
-      liveText = "GO LIVE";
-      liveTextStyle.color = "black";
-      liveItemStyle.backgroundColor = "DarkTurquoise";
-    }
 
     var controlItemTemplates = {
       "playPause": <div className="playPause" style={controlBarStyle.controlBarItemSetting}
@@ -123,7 +114,7 @@ var ControlBar = React.createClass({
       "live": <div className="live" style={controlBarStyle.liveItemStyle}
         onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>     
         <img src={liveCirleImageUrl} style={controlBarStyle.liveCircleStyle}></img>
-        <div style={liveTextStyle}>{liveText}</div>
+        <div style={controlBarStyle.liveTextStyle}>{liveText}</div>
       </div>,
       "volume": <div className="volume" style={controlBarStyle.controlBarItemSetting}>
         <span className={muteClass} style={controlBarStyle.iconSetting} onClick={this.handleMuteClick}
