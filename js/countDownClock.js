@@ -15,15 +15,13 @@ var CountDownClock = React.createClass({
       radius: 50,
       fraction: 0,
       seconds: this.props.seconds,
-      context: null
+      context: null,
+      interval: 0.05
     };
   },
 
   componentWillReceiveProps: function(props) {
-    // this.seconds = this.props.seconds;
     this.state.radius = this.props.radius;
-    // this.clearTimer();
-    // return this.setupCountDownTimer();
   },
 
   componentDidMount: function() {
@@ -31,16 +29,10 @@ var CountDownClock = React.createClass({
   },
 
   setupCountDownTimer: function() {
-    // this.setupScale();
-
     this.setupCanvas();
     this.drawBackground();
     this.drawTimer();
     this.startTimer();
-  },
-
-  setupScale: function() {
-    this.tickPeriod = this.state.seconds * 1.8;
   },
 
   setupCanvas: function() {
@@ -57,13 +49,12 @@ var CountDownClock = React.createClass({
     this.state.context.fillStyle = 'red';
     this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius, 0, Math.PI * 2, false);
     this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius / 1.2, Math.PI * 2, 0, true);
-    return this.state.context.fill();
+    this.state.context.fill();
   },
 
   drawTimer: function() {
-     var decimals, percent, ref;
-      percent = 0.4 * this.state.seconds + 1.5;
-    console.log("draw timer with percentage" + percent);
+    var decimals;
+    var percent = 0.4 * this.state.seconds + 1.5;
 
     this.state.context.fillStyle = 'white';
 
@@ -71,30 +62,29 @@ var CountDownClock = React.createClass({
     this.state.context.beginPath();
     this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius, Math.PI * 1.5, Math.PI * percent, false);
     this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius / 1.2, Math.PI * percent, Math.PI * 1.5, true);
-    return this.state.context.fill();  
+    this.state.context.fill();  
   },
 
   startTimer: function() {
-    this.interval = setInterval(this.tick, 50);
+    this.interval = setInterval(this.tick, interval * 1000);
   },
 
   tick: function() {
-     this.state.seconds -= 0.05;
+    this.state.seconds -= interval; // update every 50 ms
     if (this.state.seconds <= 0) {
       this.state.seconds = 0;
       clearInterval(this.interval);
     }
-    console.log("tick tick ..." + this.state.seconds);
     this.updateCanvas();
   },
 
   updateCanvas: function() {
-    this.clearTimer();
+    this.clearCanvas();
     this.drawTimer();
   },
 
 
-  clearTimer: function() {
+  clearCanvas: function() {
     this.state.context = this.canvas.getContext("2d");
     this.state.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawBackground();

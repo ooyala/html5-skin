@@ -11,13 +11,15 @@
 var UpNextPanel = React.createClass({
   getInitialState: function() {
     return {
-      radius: 0
+      radius: 0,
+      width: 0
     };
   },
 
 
   componentDidMount: function () {
     this.state.radius = this.getDOMNode().clientHeight * 0.4;
+    this.state.width = this.getDOMNode().clientWidth * 0.6 * 0.8;
   },
   
 
@@ -39,7 +41,8 @@ var UpNextPanel = React.createClass({
           <div style={countDownClock}>
             <CountDownClock {...this.props} 
             radius={this.state.radius}
-            seconds={seconds}/>
+            seconds={seconds}
+            width={this.state.width}/>
           </div>
         </div>
       </div>
