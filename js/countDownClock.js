@@ -14,14 +14,14 @@ var CountDownClock = React.createClass({
       canvas: null,
       radius: 50,
       fraction: 0,
-      seconds: 5,
+      seconds: this.props.seconds,
       context: null
     };
   },
 
-   componentWillReceiveProps: function(props) {
+  componentWillReceiveProps: function(props) {
     // this.seconds = this.props.seconds;
-    this.radius = this.props.radius;
+    this.state.radius = this.props.radius;
     // this.clearTimer();
     // return this.setupCountDownTimer();
   },
