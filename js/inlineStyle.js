@@ -363,6 +363,16 @@ var upNextPanelStyle = {
     right: "0",
     backgroundColor: "gray"
   },
+
+  countDownClock: {
+    position: "absolute",
+    top: "10%",
+    left: "10%",
+    width: "80%",
+    height: "80%",
+    right: "0",
+    backgroundColor: "green"
+  },
 };
 
 

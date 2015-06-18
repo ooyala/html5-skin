@@ -11,10 +11,14 @@
 var UpNextPanel = React.createClass({
   getInitialState: function() {
     return {
-      
+      radius: 0
     };
   },
 
+
+  componentDidMount: function () {
+    this.state.radius = this.getDOMNode().clientHeight * 0.4;
+  },
   
 
   render: function() {
@@ -23,7 +27,8 @@ var UpNextPanel = React.createClass({
     var upNextTitleStyle = upNextPanelStyle.upNextTitle;
     var contentNameStyle = upNextPanelStyle.contentName;
     var contentBlockStyle = upNextPanelStyle.contentBlock;
-        
+    var countDownClock = upNextPanelStyle.countDownClock;
+    var seconds = 5;
     return (
       <div style={panelStyle}>
         <div style={upNextInfoStyle}>
@@ -31,7 +36,11 @@ var UpNextPanel = React.createClass({
           <div style={contentNameStyle}>Content Name</div>
         </div>
         <div style={contentBlockStyle}>
-          <CountDownClock {...this.props} />
+          <div style={countDownClock}>
+            <CountDownClock {...this.props} 
+            radius={this.state.radius}
+            seconds={seconds}/>
+          </div>
         </div>
       </div>
     );
