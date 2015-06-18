@@ -320,3 +320,73 @@ var discoveryScreenStyle = {
     fontSize: "10"
   }
 };
+
+
+var upNextPanelStyle = {
+  panelStyle: {
+    position: "absolute",
+    width: "30%",
+    height: "25%",
+    right: "0",
+    bottom: "32px",
+    backgroundColor: "red"
+  },
+
+  upNextInfo: {
+    position: "absolute",
+    height: "100%",
+    width: "40%",
+    left: "0",
+    backgroundColor: "green"
+  },
+
+  upNextTitle: {
+    position:"relative",
+    width: "100%",
+    height: "20%",
+    backgroundColor: "yellow",
+    fontSize: "15"
+  },
+
+  contentName: {
+    position:"relative",
+    width: "100%",
+    height: "80%",
+    backgroundColor: "blue",
+    fontSize: "10"
+  },
+
+  contentBlock: {
+    position: "absolute",
+    width: "60%",
+    height: "100%",
+    right: "0",
+    backgroundColor: "gray"
+  },
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

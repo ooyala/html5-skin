@@ -39,7 +39,6 @@ var Skin = React.createClass({
     switch (this.state.screenToShow) {
       case SCREEN.START_SCREEN:
         return (
-          // <EndScreen {...this.props} contentTree={this.state.contentTree} style={endScreenStyle}/>
           <StartScreen {...this.props} contentTree={this.state.contentTree} style={startScreenStyle}/>
         );
       case SCREEN.PLAYING_SCREEN:
