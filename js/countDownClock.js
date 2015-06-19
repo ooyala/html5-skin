@@ -74,6 +74,7 @@ var CountDownClock = React.createClass({
     if (this.state.seconds <= 0) {
       this.state.seconds = 0;
       clearInterval(this.interval);
+      this.startUpNext();
     }
     this.updateCanvas();
   },
@@ -88,6 +89,15 @@ var CountDownClock = React.createClass({
     this.state.context = this.canvas.getContext("2d");
     this.state.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawBackground();
+  },
+
+  startUpNext: function() {
+    console.log("startUpNext");
+    var eventData = {
+      "clickedVideo" : this.props.upNextData,
+      "custom" : {"source": SCREEN.UP_NEXT_SCREEN}
+    };
+    this.props.controller.sendDiscoveryClickEvent(eventData);
   },
 
   render: function() {

@@ -17,11 +17,17 @@ var UpNextPanel = React.createClass({
   },
 
 
-  componentDidMount: function () {
+  componentDidMount: function() {
     this.state.radius = this.getDOMNode().clientHeight * 0.4;
     this.state.width = this.getDOMNode().clientWidth * 0.6 * 0.8;
   },
   
+  handleUpNextPanelClick: function(event) {
+    event.stopPropagation(); // W3C
+    event.cancelBubble = true; // IE
+
+    console.log("up next panel clicked");
+  },
 
   render: function() {
     var panelStyle = upNextPanelStyle.panelStyle;
@@ -39,7 +45,7 @@ var UpNextPanel = React.createClass({
           <div style={upNextTitleStyle}>Up Next</div>
           <div style={contentNameStyle}>{contentName}</div>
         </div>
-        <div style={contentBlockStyle}>
+        <div style={contentBlockStyle} onClick={this.handleUpNextPanelClick}>
           <div style={contentBlockImageContainerStyle}>
              <img style={contentBlockImageStyle} src={this.props.upNextData.preview_image_url}></img>
           </div>

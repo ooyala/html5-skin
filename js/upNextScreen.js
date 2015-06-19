@@ -13,9 +13,11 @@ var UpNextScreen = React.createClass({
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
   },
 
-  handlePlayerMouseUp: function() {
+  handlePlayerMouseUp: function(event) {
     // pause or play the video if the skin is clicked
+    
     this.props.controller.togglePlayPause();
+
   },
 
   render: function() {
@@ -24,7 +26,7 @@ var UpNextScreen = React.createClass({
 
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
+        onClick={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
         <UpNextPanel {...this.props} />
 
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
