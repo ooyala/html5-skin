@@ -14,7 +14,7 @@ var CountDownClock = React.createClass({
       canvas: null,
       radius: 50,
       fraction: 0,
-      seconds: this.props.seconds,
+      seconds: 5,
       context: null,
       counterInterval: 0.05
     };

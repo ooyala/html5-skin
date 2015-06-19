@@ -11,6 +11,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
+      "upNextData": null,
     };
 
     this.init();
@@ -25,6 +26,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
       this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
+      this.mb.subscribe(OO.EVENTS.DISPLAY_UP_NEXT, "customerUi", _.bind(this.onDisplayUpNext, this));
     },
 
     /*--------------------------------------------------------------------
@@ -45,6 +47,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
       this.state.playerState = STATE.START;
+      this.upNextData = null;
       this.renderSkin({"contentTree": contentTree});
     },
 
@@ -91,6 +94,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       console.log("onReportDiscoveryImpression is called");
       this.state.discoveryData = discoveryData;
       this.renderSkin();
+    },
+
+    onDisplayUpNext: function(event, upNextData) {
+      console.log("onDisplayUpNext is called");
+      if (this.skin.props.skinConfig.upNextScreen.mode === "on") {
+        this.state.screenToShow = SCREEN.UP_NEXT_SCREEN;
+        this.state.upNextData = upNextData;
+        this.renderSkin();
+      }
     },
 
     /*--------------------------------------------------------------------

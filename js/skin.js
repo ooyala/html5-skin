@@ -69,6 +69,16 @@ var Skin = React.createClass({
               playerState={this.state.playerState}
               ref="DiscoveryScreen" />
         );
+      case SCREEN.UP_NEXT_SCREEN:
+        return (
+          <UpNextScreen {...this.props} 
+          contentTree={this.state.contentTree}
+          currentPlayhead={this.state.currentPlayhead}
+          duration={this.state.duration}
+          buffered={this.state.buffered}
+          upNextData={this.state.upNextData}
+          ref="playScreen" />
+        );
       default:
         return false;
     }
