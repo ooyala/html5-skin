@@ -13,8 +13,8 @@ var CountDownClock = React.createClass({
     return {
       canvas: null,
       radius: 50,
-      fraction: 0,
-      seconds: 5,
+      fraction: 2 / this.props.skinConfig.upNextScreen.countDownTime,
+      seconds: this.props.skinConfig.upNextScreen.countDownTime,
       context: null,
       counterInterval: 0.05
     };
@@ -54,7 +54,7 @@ var CountDownClock = React.createClass({
 
   drawTimer: function() {
     var decimals;
-    var percent = 0.4 * this.state.seconds + 1.5;
+    var percent = this.state.fraction * this.state.seconds + 1.5;
 
     this.state.context.fillStyle = 'white';
 
@@ -92,7 +92,7 @@ var CountDownClock = React.createClass({
 
   render: function() {
       return React.createElement("canvas", {
-        "className": "react-countdown-clock"
+        "className": "alice-countdown-clock"
     });
   }
 });

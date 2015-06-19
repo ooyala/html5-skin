@@ -329,39 +329,55 @@ var upNextPanelStyle = {
     height: "25%",
     right: "0",
     bottom: "32px",
-    backgroundColor: "red"
+    backgroundColor: "#444444"
   },
 
   upNextInfo: {
     position: "absolute",
     height: "100%",
     width: "40%",
-    left: "0",
-    backgroundColor: "green"
+    left: "0"
   },
 
   upNextTitle: {
     position:"relative",
+    margin: "10px",
     width: "100%",
     height: "20%",
-    backgroundColor: "yellow",
-    fontSize: "15"
+    fontSize: "15",
+    color: "white"
   },
 
   contentName: {
     position:"relative",
+    margin: "10px",
     width: "100%",
     height: "80%",
-    backgroundColor: "blue",
-    fontSize: "10"
+    fontSize: "10",
+    color: "white"
   },
 
   contentBlock: {
     position: "absolute",
     width: "60%",
     height: "100%",
-    right: "0",
-    backgroundColor: "gray"
+    right: "0"
+  },
+
+  contentBlockImageContainer: {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%"
+  },
+
+  contentBlockImage: {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%"
   },
 
   countDownClock: {
@@ -370,8 +386,7 @@ var upNextPanelStyle = {
     left: "10%",
     width: "80%",
     height: "80%",
-    right: "0",
-    backgroundColor: "green"
+    right: "0"
   },
 };
 
