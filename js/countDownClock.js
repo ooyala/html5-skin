@@ -16,7 +16,7 @@ var CountDownClock = React.createClass({
       fraction: 0,
       seconds: this.props.seconds,
       context: null,
-      interval: 0.05
+      counterInterval: 0.05
     };
   },
 
@@ -66,11 +66,11 @@ var CountDownClock = React.createClass({
   },
 
   startTimer: function() {
-    this.interval = setInterval(this.tick, interval * 1000);
+    this.interval = setInterval(this.tick, this.state.counterInterval * 1000);
   },
 
   tick: function() {
-    this.state.seconds -= interval; // update every 50 ms
+    this.state.seconds -= this.state.counterInterval; // update every 50 ms
     if (this.state.seconds <= 0) {
       this.state.seconds = 0;
       clearInterval(this.interval);
