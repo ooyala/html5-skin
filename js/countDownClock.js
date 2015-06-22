@@ -16,7 +16,8 @@ var CountDownClock = React.createClass({
       fraction: 2 / this.props.skinConfig.upNextScreen.countDownTime,
       seconds: this.props.skinConfig.upNextScreen.countDownTime,
       context: null,
-      counterInterval: 0.05
+      counterInterval: this.props.skinConfig.upNextScreen.counterInterval,
+      countDownState: this.props.countDownState,
     };
   },
 
@@ -25,7 +26,7 @@ var CountDownClock = React.createClass({
   },
 
   componentDidMount: function() {
-    this.setupCountDownTimer();
+      this.setupCountDownTimer();
   },
 
   setupCountDownTimer: function() {
@@ -46,7 +47,7 @@ var CountDownClock = React.createClass({
   drawBackground: function() {
     this.state.context.beginPath();
     this.state.context.globalAlpha = 1;
-    this.state.context.fillStyle = 'red';
+    this.state.context.fillStyle = 'gray';
     this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius, 0, Math.PI * 2, false);
     this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius / 1.2, Math.PI * 2, 0, true);
     this.state.context.fill();
@@ -57,8 +58,11 @@ var CountDownClock = React.createClass({
     var percent = this.state.fraction * this.state.seconds + 1.5;
 
     this.state.context.fillStyle = 'white';
+    if (this.props.countDownState === "counting") {
+      this.state.context.fillText(this.state.seconds.toFixed(decimals), this.props.width / 2, this.state.radius);
+    } else {
 
-    this.state.context.fillText(this.state.seconds.toFixed(decimals), this.props.width / 2, this.state.radius);
+    }
     this.state.context.beginPath();
     this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius, Math.PI * 1.5, Math.PI * percent, false);
     this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius / 1.2, Math.PI * percent, Math.PI * 1.5, true);
@@ -75,6 +79,8 @@ var CountDownClock = React.createClass({
       this.state.seconds = 0;
       clearInterval(this.interval);
       this.startUpNext();
+    } else if (this.props.countDownState !== "counting") {
+      clearInterval(this.interval);
     }
     this.updateCanvas();
   },

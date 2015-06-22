@@ -9,26 +9,11 @@
 */
 
 var UpNextPanel = React.createClass({
-  getInitialState: function() {
-    return {
-      radius: 0,
-      width: 0
-    };
-  },
-
-
   componentDidMount: function() {
-    this.state.radius = this.getDOMNode().clientHeight * 0.4;
-    this.state.width = this.getDOMNode().clientWidth * 0.6 * 0.8;
+    // this.state.radius = this.getDOMNode().clientHeight * 0.4;
+    // this.state.width = this.getDOMNode().clientWidth * 0.6 * 0.8;
   },
   
-  handleUpNextPanelClick: function(event) {
-    event.stopPropagation(); // W3C
-    event.cancelBubble = true; // IE
-
-    console.log("up next panel clicked");
-  },
-
   render: function() {
     var panelStyle = upNextPanelStyle.panelStyle;
     var upNextInfoStyle = upNextPanelStyle.upNextInfo;
@@ -39,21 +24,22 @@ var UpNextPanel = React.createClass({
     var contentBlockImageContainerStyle = upNextPanelStyle.contentBlockImageContainer;
     var contentBlockImageStyle = upNextPanelStyle.contentBlockImage;
     var contentName = this.props.upNextData.name;
+
+    // This is for turning off the old discovery panel.
+    // TODO: Remove the following line when we drop the old discovery panel in mjolnir side.
+    document.getElementsByClassName("discovery_toaster")[0].style.display="none"; 
     return (
       <div style={panelStyle}>
         <div style={upNextInfoStyle}>
           <div style={upNextTitleStyle}>Up Next</div>
           <div style={contentNameStyle}>{contentName}</div>
         </div>
-        <div style={contentBlockStyle} onClick={this.handleUpNextPanelClick}>
+        <div style={contentBlockStyle}>
           <div style={contentBlockImageContainerStyle}>
              <img style={contentBlockImageStyle} src={this.props.upNextData.preview_image_url}></img>
           </div>
-          <div style={countDownClockStyle}>
-            <CountDownClock {...this.props} 
-            radius={this.state.radius}
-            width={this.state.width}/>
-          </div>
+          
+          <UpNextClockBlock {...this.props} />
         </div>
       </div>
     );

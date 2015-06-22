@@ -388,6 +388,14 @@ var upNextPanelStyle = {
     height: "80%",
     right: "0"
   },
+
+  playPauseImage: {
+    position: "absolute",
+    top: "20%",
+    left: "30%",
+    width: "40%",
+    height: "60%",
+  },
 };
 
 
