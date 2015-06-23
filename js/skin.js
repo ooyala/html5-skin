@@ -32,6 +32,13 @@ var Skin = React.createClass({
     });
     //for playhead updates we are likely in the same state, so skip the
     // shouldComponentUpdate check
+    var remainingTime = this.state.duration - this.state.currentPlayhead;
+    console.log("remainingTime = " + remainingTime);
+    if (this.props.skinConfig.upNextScreen.mode === "on" && 
+        remainingTime <= this.props.skinConfig.upNextScreen.countDownTime &&
+        remainingTime >= 0)  {
+      this.state.screenToShow = SCREEN.UP_NEXT_SCREEN;
+    }
     this.forceUpdate();
   },
 

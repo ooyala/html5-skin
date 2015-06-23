@@ -26,7 +26,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
       this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
-      this.mb.subscribe(OO.EVENTS.DISPLAY_UP_NEXT, "customerUi", _.bind(this.onDisplayUpNext, this));
+      this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
     },
 
     /*--------------------------------------------------------------------
@@ -96,13 +96,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onDisplayUpNext: function(event, upNextData) {
-      console.log("onDisplayUpNext is called");
-      if (this.skin.props.skinConfig.upNextScreen.mode === "on") {
-        this.state.screenToShow = SCREEN.UP_NEXT_SCREEN;
-        this.state.upNextData = upNextData;
-        this.renderSkin();
-      }
+    onRelatedVideosFetched: function(event, relatedVideos) {
+      console.log("onRelatedVideosFetched is called");
+      this.state.upNextData = relatedVideos.videos[0];
+      this.renderSkin();
     },
 
     /*--------------------------------------------------------------------

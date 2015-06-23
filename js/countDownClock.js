@@ -14,7 +14,7 @@ var CountDownClock = React.createClass({
       canvas: null,
       radius: 50,
       fraction: 2 / this.props.skinConfig.upNextScreen.countDownTime,
-      seconds: this.props.skinConfig.upNextScreen.countDownTime,
+      seconds: this.props.duration - this.props.currentPlayhead,
       context: null,
       counterInterval: this.props.skinConfig.upNextScreen.counterInterval,
       countDownState: this.props.countDownState,
