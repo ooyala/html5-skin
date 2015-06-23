@@ -25,7 +25,17 @@ var UpNextClockBlock = React.createClass({
     console.log("up next panel clicked");
     event.stopPropagation(); // W3C
     event.cancelBubble = true; // IE
-    this.state.countDownState = "paused";
+    this.state.countDownState = "finished";
+  },
+
+  handleUpNextPanelMouseEnter: function () {
+    console.log("up next panel mouse enter");
+
+  },
+
+  handleUpNextPanelMouseLeave: function () {
+    console.log("up next panel mouse leave");
+
   },
 
   onCountDownFinished: function(event) {
@@ -40,7 +50,7 @@ var UpNextClockBlock = React.createClass({
     var playPauseImageStyle = upNextPanelStyle.playPauseImage;
     if (this.state.countDownState === "counting") {
       return (
-        <div style={countDownClockStyle} onClick={this.handleUpNextPanelClick}>
+        <div style={countDownClockStyle} onClick={this.handleUpNextPanelClick} onMouseEnter={this.handleUpNextPanelMouseEnter} onMouseLeave={this.handleUpNextPanelMouseLeave}>
           <CountDownClock {...this.props} 
             radius={this.state.radius}
             width={this.state.width}

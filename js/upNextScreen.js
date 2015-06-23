@@ -33,7 +33,7 @@ var UpNextScreen = React.createClass({
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
-          playerState={this.state.playerState} />
+          playerState={this.props.playerState} />
       </div>
     );
   }

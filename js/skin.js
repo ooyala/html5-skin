@@ -36,7 +36,7 @@ var Skin = React.createClass({
     console.log("remainingTime = " + remainingTime);
     if (this.props.skinConfig.upNextScreen.mode === "on" && 
         remainingTime <= this.props.skinConfig.upNextScreen.countDownTime &&
-        remainingTime >= 0)  {
+        this.state.duration > this.props.skinConfig.upNextScreen.countDownTime)  {
       this.state.screenToShow = SCREEN.UP_NEXT_SCREEN;
     }
     this.forceUpdate();
@@ -84,6 +84,7 @@ var Skin = React.createClass({
           duration={this.state.duration}
           buffered={this.state.buffered}
           upNextData={this.state.upNextData}
+          playerState={this.state.playerState}
           ref="playScreen" />
         );
       default:
