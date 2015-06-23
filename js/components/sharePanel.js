@@ -8,13 +8,32 @@
 * @constructor
 */
 var SharePanel = React.createClass({
+  tabs: {SHARE: "share", EMBED: "embed", EMAIL: "email"},
+
   getInitialState: function() {
     return {
       activeTab: this.tabs.SHARE
     };
   },
 
-  tabs: {SHARE: "share", EMBED: "embed", EMAIL: "email"},
+  handleFacebookClick: function() {
+    var facebookUrl = "http://www.facebook.com/sharer.php";
+    facebookUrl += "?u=" + encodeURIComponent(location.href);
+    window.open(facebookUrl, "facebook window", "height=315,width=780");
+  },
+
+  handleGPlusClick: function() {
+    var gPlusUrl = "https://plus.google.com/share";
+    gPlusUrl += "?url=" + encodeURIComponent(location.href);
+    window.open(gPlusUrl, "google+ window", "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600");
+  },
+
+  handleTwitterClick: function() {
+    var twitterUrl = "https://twitter.com/intent/tweet";
+    twitterUrl += "?text=" + encodeURIComponent(this.props.contentTree.title+": ");
+    twitterUrl += "&url=" + encodeURIComponent(location.href);
+    window.open(twitterUrl, "twitter window", "height=300,width=750");
+  },
 
   showPanel: function(panelToShow) {
     this.setState({activeTab: panelToShow});
@@ -57,9 +76,9 @@ var SharePanel = React.createClass({
         </div>
         <div style={(this.state.activeTab == this.tabs.SHARE) ? Utils.extend(panelStyle, {display: ""}) : panelStyle}>
           <div style={titleStyle}>{(this.props.contentTree && this.props.contentTree.title) || ""}</div>
-          <div style={twitterIconStyle}>t</div>
-          <div style={facebookIconStyle}>f</div>
-          <div style={plusIconStyle}>g+</div><br/>
+          <div onClick={this.handleTwitterClick} style={twitterIconStyle}>t</div>
+          <div onClick={this.handleFacebookClick} style={facebookIconStyle}>f</div>
+          <div onClick={this.handleGPlusClick} style={plusIconStyle}>g+</div><br/>
           <input style={embedUrlStyle} type='text' defaultValue={location.href}/><br/>
           <input style={{marginBottom: "15px"}}type='checkbox'/> Start at <input style={{color:"black", borderRadius: "6px", borderStyle: "none", width: "60px", height: "26px", paddingLeft: "10px"}} type='text' defaultValue={Utils.formatSeconds(this.props.currentPlayhead)}/><br/>
         </div>
