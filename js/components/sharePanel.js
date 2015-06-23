@@ -16,10 +16,23 @@ var SharePanel = React.createClass({
     };
   },
 
+  handleEmailClick: function() {
+    var mailToUrl = "mailto:";
+    mailToUrl += this.refs.sharePanelTo.getDOMNode().value;
+    mailToUrl += "?subject=" + encodeURIComponent(this.refs.sharePanelSubject.getDOMNode().value);
+    mailToUrl += "&body=" + encodeURIComponent(this.refs.sharePanelMessage.getDOMNode().value);
+    location.href = mailToUrl;
+  },
+
   handleFacebookClick: function() {
     var facebookUrl = "http://www.facebook.com/sharer.php";
     facebookUrl += "?u=" + encodeURIComponent(location.href);
     window.open(facebookUrl, "facebook window", "height=315,width=780");
+  },
+
+  handleFieldFocus: function(evt) {
+    evt.target.style.color = "black";
+    evt.target.value = "";
   },
 
   handleGPlusClick: function() {
@@ -84,7 +97,7 @@ var SharePanel = React.createClass({
         </div>
         <div style={(this.state.activeTab == this.tabs.EMBED) ? Utils.extend(panelStyle, {display: ""}) : panelStyle}>
           <textarea style={{height: "60%", width: "70%", color: "black", borderRadius: "6px"}}>
-            http://somekindofURL.Gov
+            &lt;script src="//player.ooyala.com/v4/"&gt;&lt;/script&gt;
           </textarea>
         </div>
         <div style={(this.state.activeTab == this.tabs.EMAIL) ? Utils.extend(panelStyle, {display: ""}) : panelStyle}>
@@ -92,24 +105,24 @@ var SharePanel = React.createClass({
             <tr>
               <td style={{paddingLeft: "5px"}}>To</td>
               <td style={{width: "10px"}}></td>
-              <td><input style={{color:"black", marginBottom: "15px", borderRadius: "6px", borderStyle: "none", width: "300px", height: "32px", paddingLeft: "15px"}} type='text' defaultValue='recipient'/></td>
+              <td><input ref="sharePanelTo" onFocus={this.handleFieldFocus} style={{color:"gray", marginBottom: "15px", borderRadius: "6px", borderStyle: "none", width: "300px", height: "32px", paddingLeft: "15px"}} type='text' defaultValue='recipient'/></td>
             </tr>
             <tr>
               <td>Subject</td>
               <td style={{width: "10px"}}></td>
-              <td><input style={{color:"black", marginBottom: "15px", borderRadius: "6px", borderStyle: "none", width: "300px", height: "32px", paddingLeft: "15px"}} type='text' defaultValue='subject'/><br/></td>
+              <td><input ref="sharePanelSubject" onFocus={this.handleFieldFocus} style={{color:"gray", marginBottom: "15px", borderRadius: "6px", borderStyle: "none", width: "300px", height: "32px", paddingLeft: "15px"}} type='text' defaultValue='subject'/><br/></td>
             </tr>
             <tr>
               <td>Message</td>
               <td style={{width: "10px"}}></td>
-              <td><textarea style={{height: "80px", width: "300px", color: "black", borderRadius: "6px"}}>
+              <td><textarea ref="sharePanelMessage" onFocus={this.handleFieldFocus} style={{color: "gray", height: "80px", width: "300px", borderRadius: "6px"}}>
                 Optional Message
               </textarea></td>
             </tr>
             <tr>
               <td></td>
               <td style={{width: "10px"}}></td>
-              <td style={{textAlign: "right"}}><button style={{backgroundColor:"#4389ff", border: "0px none transparent", borderRadius: "6px", height: "40px", width: "70px", marginTop: "8px"}}>Send</button></td>
+              <td style={{textAlign: "right"}}><button onClick={this.handleEmailClick} style={{backgroundColor:"#4389ff", border: "0px none transparent", borderRadius: "6px", height: "40px", width: "70px", marginTop: "8px"}}>Send</button></td>
             </tr>
           </table>
         </div>
