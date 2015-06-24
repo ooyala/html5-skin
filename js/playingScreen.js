@@ -15,6 +15,7 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseUp: function() {
+    // pause or play the video if the skin is clicked
     this.props.controller.togglePlayPause();
   },
 

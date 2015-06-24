@@ -14,7 +14,11 @@ var ScrubberBar = React.createClass({
 
   handlePlayheadMouseDown: function(evt) {
     this.getDOMNode().parentNode.addEventListener("mousemove", this.handlePlayheadMouseMove);
+    // attach a mouseup listener to the document for usability, otherwise scrubbing
+    // breaks if your cursor leaves the player element
     document.addEventListener("mouseup", this.handlePlayheadMouseUp, true);
+    // we enter the scrubbing state to prevent constantly seeking while dragging
+    // the playhead icon
     this.setState({
       scrubbing: true,
       startingPlayheadX: evt.screenX
@@ -31,7 +35,10 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseUp: function(evt) {
+    // stop propagation to prevent it from bubbling up to the skin and pausing
     evt.stopPropagation();
+    //use the difference in x coordinates of the start and end points of the
+    // mouse events to calculate the amount of time to seek
     var newPlayheadX = evt.screenX;
     var diffX = newPlayheadX - this.state.startingPlayheadX;
     var diffTime = (diffX / this.props.controlBarWidth) * this.props.duration;
@@ -46,6 +53,8 @@ var ScrubberBar = React.createClass({
   },
 
   handleScrubberBarMouseUp: function(evt) {
+    // this method is used to seek when the scrubber bar is clicked. We stop propagation
+    // to prevent it from bubbling up to the skin which would pause the player
     evt.stopPropagation();
     var offset = evt.clientX - evt.target.getBoundingClientRect().left;
     var newPlayheadTime = (offset / this.props.controlBarWidth) * this.props.duration;
@@ -68,10 +77,12 @@ var ScrubberBar = React.createClass({
       parseFloat(this.props.duration)) * this.props.controlBarWidth);
     scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
 
+    // if we're scrubbing, use the coordinates from the latest mouse events
     if (this.state.scrubbing) {
       scrubberBarStyle.playheadStyle.left = scrubberBarStyle.playheadStyle.left +
         (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
     }
+    //prevent the playhead from moving beyond the player element
     scrubberBarStyle.playheadStyle.left = Math.max(Math.min(this.props.controlBarWidth - parseInt(scrubberBarStyle.playheadStyle.width),
       scrubberBarStyle.playheadStyle.left), 0);
 
