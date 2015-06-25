@@ -12,15 +12,24 @@ var DiscoveryPanel = React.createClass({
   getInitialState: function() {
     return {
       discoveryToasterLeftOffset: 25,
+      //discoveryToasterRightOffset: 0,
     };
   },
 
   handleLeftButtonClick: function() {
+    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
-    newDiscoveryToasterLeftOffset += 400;
-    if (newDiscoveryToasterLeftOffset > 25) {
-      newDiscoveryToasterLeftOffset = 25;
+
+    if(toasterContainerWidth <= toasterWidth || newDiscoveryToasterLeftOffset < 0) {
+      newDiscoveryToasterLeftOffset -= 400;
+      var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
+      if(rightOffset > 25) {
+        newDiscoveryToasterLeftOffset = toasterContainerWidth - 25 - toasterWidth;
+      }
     }
+    
     this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
   },
 
@@ -29,10 +38,14 @@ var DiscoveryPanel = React.createClass({
     var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
 
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
-    newDiscoveryToasterLeftOffset -= 400;
-    if (newDiscoveryToasterLeftOffset < toasterContainerWidth - toasterWidth) {
-      newDiscoveryToasterLeftOffset = toasterContainerWidth - toasterWidth;
+
+    if(toasterContainerWidth <= toasterWidth || newDiscoveryToasterLeftOffset < 0) {
+      newDiscoveryToasterLeftOffset += 400;
+      if(newDiscoveryToasterLeftOffset > 25) {
+        newDiscoveryToasterLeftOffset = 25;
+      }
     }
+   
     this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
   },
 
