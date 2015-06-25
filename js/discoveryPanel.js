@@ -12,7 +12,6 @@ var DiscoveryPanel = React.createClass({
   getInitialState: function() {
     return {
       discoveryToasterLeftOffset: 25,
-      //discoveryToasterRightOffset: 0,
     };
   },
 
