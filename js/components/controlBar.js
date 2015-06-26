@@ -58,6 +58,10 @@ var ControlBar = React.createClass({
     });
   },
 
+  handleDiscoveryClick: function() {
+    this.props.controller.toggleDiscoveryScreen();
+  },
+
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
     evt.target.style.color = "rgba(255, 255, 255, 1.0)";
@@ -110,7 +114,7 @@ var ControlBar = React.createClass({
       "timeDuration": <div className="timeDuration" style={controlBarStyle.durationIndicatorSetting}>
         {Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}</div>,
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
         <span className="glyphicon glyphicon-cd" style={controlBarStyle.iconSetting}></span></div>,
       "bitrateSelector": <div className="bitrateSelector" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-equalizer"
