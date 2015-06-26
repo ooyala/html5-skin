@@ -22,29 +22,30 @@ var DiscoveryPanel = React.createClass({
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
 
     if(toasterContainerWidth <= toasterWidth || newDiscoveryToasterLeftOffset < 0) {
-      newDiscoveryToasterLeftOffset -= 400;
-      var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
-      if(rightOffset > 25) {
-        newDiscoveryToasterLeftOffset = toasterContainerWidth - 25 - toasterWidth;
-      }
-    }
-    
-    this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
-  },
-
-  handleRightButtonClick: function() {
-    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
-    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
-
-    var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
-
-    if(toasterContainerWidth <= toasterWidth || newDiscoveryToasterLeftOffset < 0) {
       newDiscoveryToasterLeftOffset += 400;
       if(newDiscoveryToasterLeftOffset > 25) {
         newDiscoveryToasterLeftOffset = 25;
       }
     }
    
+    this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
+  },
+
+  handleRightButtonClick: function() {
+    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+  
+    var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
+    var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
+    if(toasterContainerWidth <= toasterWidth || rightOffset <= 25) {
+      newDiscoveryToasterLeftOffset -= 400;
+      rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
+      
+      if(rightOffset > 25) {
+        newDiscoveryToasterLeftOffset = toasterContainerWidth - 25 - toasterWidth;
+      } 
+    }
+    
     this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
   },
 
