@@ -34,7 +34,7 @@ var ShareScreen = React.createClass({
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
           playerState={this.state.playerState} />
-        <div onClick={this.closeSharePanel} style={{position: "absolute", top:0, right: 0, height: "25px", width: "25px", backgroundColor: "#4389ff", color: "white", textAlign: "center", lineHeight: "25px"}}>X</div>
+        <div onClick={this.closeSharePanel} style={shareScreenStyle.closeButton}>X</div>
       </div>
     );
   }

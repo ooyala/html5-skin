@@ -203,7 +203,7 @@ var scrubberBarStyle = {
   }
 };
 
-var sharePanelStyle = {
+var shareScreenStyle = {
   tabStyle: {
     display: "inline-block",
     width: "100px",
@@ -331,6 +331,18 @@ var sharePanelStyle = {
     width: "70%",
     color: "black",
     borderRadius: "6px"
+  },
+
+  closeButton: {
+    position: "absolute",
+    top:0,
+    right: 0,
+    height: "25px",
+    width: "25px",
+    backgroundColor: "#4389ff",
+    color: "white",
+    textAlign: "center",
+    lineHeight: "25px"
   }
 };
 
