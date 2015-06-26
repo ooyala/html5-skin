@@ -117,7 +117,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           break;
         case STATE.PAUSE:
           if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
-            this.state.screenToShow = SCREEN.PLAY_SCREEN;
+            this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+          }
+          else {
+            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          }
+          this.renderSkin();
+          break;
+        case STATE.END:
+          if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+            this.state.screenToShow = SCREEN.END_SCREEN;
           }
           else {
             this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
