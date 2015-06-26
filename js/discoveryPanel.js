@@ -18,7 +18,7 @@ var DiscoveryPanel = React.createClass({
   handleLeftButtonClick: function() {
     var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
     var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
-
+    // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
 
     if(toasterContainerWidth <= toasterWidth || newDiscoveryToasterLeftOffset < 0) {
@@ -34,8 +34,9 @@ var DiscoveryPanel = React.createClass({
   handleRightButtonClick: function() {
     var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
     var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
-  
+    // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
+    // rightOffset = right border of discovery toaster container - right border of discovery toaster
     var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
     if(toasterContainerWidth <= toasterWidth || rightOffset <= 25) {
       newDiscoveryToasterLeftOffset -= 400;
