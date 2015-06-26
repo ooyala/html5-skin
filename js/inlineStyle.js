@@ -207,12 +207,22 @@ var discoveryScreenStyle = {
   panelStyle: {
     position: "absolute",
     top: "50%", 
-    bottom: "32px", 
+    bottom: "32px",
     backgroundColor: "#444444",
     left: 0, 
     right: 0, 
     display: "flex", 
     flexDirection: "row"
+  },
+
+  promoStyle: {
+    visibility: "none",
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center"
   },
 
   panelTitleBarStyle: {

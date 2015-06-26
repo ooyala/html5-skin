@@ -21,8 +21,17 @@ var DiscoveryScreen = React.createClass({
   render: function() {
     //Fill in all the dynamic style values we need
     var controlBarHeight = 32;
+    var promoStyle = discoveryScreenStyle.promoStyle;
+    if(this.props.playerState === STATE.END) {
+      promoStyle.visibility = "visible";
+    }
+    else {
+      promoStyle.visibility = "none";
+    }
+    promoStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
+        <div style={discoveryScreenStyle.promoStyle}></div>
         <DiscoveryPanel 
         {...this.props} 
         discoveryData={this.props.discoveryData} />
