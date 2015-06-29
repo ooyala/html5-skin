@@ -33,34 +33,18 @@ var StartScreen = React.createClass({
     // Accent Color
     playStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.accentColor;
 
-    // PlayButton position
-    switch (this.props.skinConfig.startScreen.playButtonPosition) {
-      case "center":
-      case "CENTER":
-        playStyle.top = "50%";
-        playStyle.left = "50%";
-        break;
-      case "NW":
-      case "nw":
-        playStyle.top = "15%";
-        playStyle.left = "10%";
-        break;
-      case "NE":
-      case "ne":
-        playStyle.top = "15%";
-        playStyle.left = "90%";
-        break;
-      case "SE":
-      case "se":
-        playStyle.top = "80%";
-        playStyle.left = "90%";
-        break;
-      case "SW":
-      case "sw":
-        playStyle.top = "80%";
-        playStyle.left = "10%";
-        break;
-    }
+
+    // PlayButton position, defaulting to centered
+    playStyle.top = "50%";
+    playStyle.left = "50%";
+    if (this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("top") > -1)
+      playStyle.top = "15%";
+    if (this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("bottom") > -1)
+      playStyle.top = "80%";
+    if (this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("left") > -1)
+      playStyle.left = "10%";
+    if (this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("right") > -1)
+      playStyle.left = "90%";
 
     // metadata visibility
     var titleMetadata;
