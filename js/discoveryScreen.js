@@ -26,7 +26,7 @@ var DiscoveryScreen = React.createClass({
       promoStyle.visibility = "visible";
     }
     else {
-      promoStyle.visibility = "none";
+      promoStyle.visibility = "hidden";
     }
     promoStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
     return (

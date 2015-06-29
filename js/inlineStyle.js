@@ -216,7 +216,7 @@ var discoveryScreenStyle = {
   },
 
   promoStyle: {
-    visibility: "none",
+    visibility: "hidden",
     position: "absolute",
     height: "100%",
     width: "100%",
