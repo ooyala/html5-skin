@@ -113,7 +113,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         case STATE.PLAYING:
           this.togglePlayPause();
           this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
-          this.renderSkin();
           break;
         case STATE.PAUSE:
           if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
@@ -122,7 +121,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           else {
             this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
           }
-          this.renderSkin();
           break;
         case STATE.END:
           if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
@@ -131,9 +129,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           else {
             this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
           }
-          this.renderSkin();
           break; 
       }
+      this.renderSkin();
     },
 
     toggleMute: function(muted) {
