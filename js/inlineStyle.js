@@ -254,8 +254,7 @@ var shareScreenStyle = {
     bottom: 0,
     flex: 1,
     color: "white",
-    padding: "20px",
-    display: "none"
+    padding: "20px"
   },
 
   containerStyle: {

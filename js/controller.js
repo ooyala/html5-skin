@@ -45,7 +45,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
       this.state.playerState = STATE.START;
-      this.state.contentTree = contentTree;
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
@@ -136,7 +135,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
     },
 
-    showShareScreen: function() {
+    toggleShareScreen: function() {
       if (this.state.screenToShow == SCREEN.SHARE_SCREEN) {
         this.closeShareScreen();
       }

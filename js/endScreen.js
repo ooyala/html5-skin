@@ -43,8 +43,6 @@ var EndScreen = React.createClass({
     var repeatStyle = screenStyle.repeatButton.style;
     var posterStyle = screenStyle.posterStyle;
 
-    console.dir(this.props);
-
     // Accent Color
     repeatStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.accentColor;
 
