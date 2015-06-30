@@ -16,8 +16,6 @@ var startScreenStyle = {
   infoPanel: {
     style: {
       position: "absolute",
-      bottom: "5%",
-      left: "5%",
       width: "100%"
     },
     title: {
@@ -105,7 +103,7 @@ var endScreenStyle = {
       opacity: 1,
       transition: "opacity .25s ease-in-out"
     }
-  } 
+  }
 };
 
 var controlBarStyle = {
@@ -203,73 +201,73 @@ var scrubberBarStyle = {
 
 
 var discoveryScreenStyle = {
-  
+
   panelStyle: {
     position: "absolute",
-    top: "50%", 
-    bottom: "32px", 
+    top: "50%",
+    bottom: "32px",
     backgroundColor: "#444444",
-    left: 0, 
-    right: 0, 
-    display: "flex", 
+    left: 0,
+    right: 0,
+    display: "flex",
     flexDirection: "row"
   },
 
   panelTitleBarStyle: {
-    position: "absolute", 
+    position: "absolute",
     backgroundColor: "#444444",
-    left: 0, 
-    right: 0, 
-    height: "20%", 
-    width: "100%", 
+    left: 0,
+    right: 0,
+    height: "20%",
+    width: "100%",
     display: "inline-block"
   },
 
 
   panelTitleTextStyle: {
-    position: "absolute", 
-    left: "25px", 
-    fontSize: "20", 
-    color: "white", 
+    position: "absolute",
+    left: "25px",
+    fontSize: "20",
+    color: "white",
     margin: "1%"
   },
 
   discoveryToasterContainerStyle: {
-    position: "absolute", 
-    backgroundColor: "#444444", 
-    top: "20%", 
-    height: "70%", 
+    position: "absolute",
+    backgroundColor: "#444444",
+    top: "20%",
+    height: "70%",
     width: "100%"
   },
 
   discoveryToasterStyle: {
-    position: "absolute", 
-    backgroundColor: "#444444", 
-    top: "0", 
-    height: "90%", 
-    width: "2000px", 
+    position: "absolute",
+    backgroundColor: "#444444",
+    top: "0",
+    height: "90%",
+    width: "2000px",
     right: 0,
     left: 25,
-    display: "flex", 
-    flexDirection: "row", 
+    display: "flex",
+    flexDirection: "row",
     transition: "0.5s"
   },
 
   discoveryChevronLeftButtonContainer: {
-    position: "absolute",  
-    backgroundColor: "transparent", 
-    height: "100%", 
-    width: "25px", 
-    color:"white", 
+    position: "absolute",
+    backgroundColor: "transparent",
+    height: "100%",
+    width: "25px",
+    color:"white",
     left: "0"
   },
 
   discoveryChevronRightButtonContainer: {
-    position: "absolute", 
-    backgroundColor: "transparent", 
-    height: "100%", 
-    width: "25px", 
-    color:"white", 
+    position: "absolute",
+    backgroundColor: "transparent",
+    height: "100%",
+    width: "25px",
+    color:"white",
     right: "0"
   },
 
@@ -300,19 +298,19 @@ var discoveryScreenStyle = {
   },
 
   discoveryContentBlockStyle: {
-    position: "relative", 
-    width: "100px", 
-    height: "95%", 
+    position: "relative",
+    width: "100px",
+    height: "95%",
     margin: "10px",
     backgroundColor: "#444444"
   },
 
   discoveryImageStyle: {
-    position: "absolute", 
-    width: "100%", 
+    position: "absolute",
+    width: "100%",
     height: "75%"
   },
-  
+
   discoveryContentTitleStyle: {
     position: "absolute",
     top: "75%",
