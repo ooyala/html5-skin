@@ -96,12 +96,7 @@ var ControlBar = React.createClass({
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
         onClick={this.handleVolumeClick}></span>);
     }
-
-    var currentTimeDuration = Utils.formatSeconds(parseInt(this.props.currentPlayhead));
-    if(currentTimeDuration == "NaN:NaN") {
-      currentTimeDuration = totalTime;
-    }
-    
+   
     var controlItemTemplates = {
       "playPause": <div className="playPause" style={controlBarStyle.controlBarItemSetting}
         onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
@@ -113,7 +108,7 @@ var ControlBar = React.createClass({
         {volumeBars}
         </div>,
       "timeDuration": <div className="timeDuration" style={controlBarStyle.durationIndicatorSetting}>
-        {currentTimeDuration} / {totalTime}</div>,
+        {Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}</div>,
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <span className="glyphicon glyphicon-cd" style={controlBarStyle.iconSetting}></span></div>,
