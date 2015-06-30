@@ -54,7 +54,10 @@ var Skin = React.createClass({
         return (
           <EndScreen {...this.props} 
           contentTree={this.state.contentTree} 
-          discoveryData={this.state.discoveryData} 
+          discoveryData={this.state.discoveryData}
+          currentPlayhead={this.state.currentPlayhead}
+          duration={this.state.duration}
+          buffered={this.state.buffered} 
           style={endScreenStyle}
           ref="endScreen" />
         );
