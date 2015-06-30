@@ -34,6 +34,7 @@ var StartScreen = React.createClass({
 
     // Accent Color
     playStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.accentColor;
+    infoStyle.style.color = this.props.skinConfig.accentColor;
 
     // PlayButton position, defaulting to centered
     if (this.props.skinConfig.startScreen.showPlayButton) {
