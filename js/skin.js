@@ -40,6 +40,7 @@ var Skin = React.createClass({
   },
 
   render: function() {
+    console.log("screenToShow = " + this.state.screenToShow);
     switch (this.state.screenToShow) {
       case SCREEN.START_SCREEN:
         return (
@@ -57,7 +58,10 @@ var Skin = React.createClass({
         return (
           <EndScreen {...this.props} 
           contentTree={this.state.contentTree} 
-          discoveryData={this.state.discoveryData} 
+          discoveryData={this.state.discoveryData}
+          currentPlayhead={this.state.currentPlayhead}
+          duration={this.state.duration}
+          buffered={this.state.buffered} 
           style={endScreenStyle}
           ref="endScreen" />
         );
@@ -65,7 +69,6 @@ var Skin = React.createClass({
         return (
           <AdScreen {...this.props} contentTree={this.state.contentTree}
           currentAdItem={this.state.currentAdItem}
-          adsPlaybackProgress={this.state.adsPlaybackProgress}
           currentPlayhead={this.state.currentPlayhead}
           playerState={this.state.playerState}
           duration={this.state.duration}

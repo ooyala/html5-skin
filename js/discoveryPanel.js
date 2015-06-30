@@ -16,23 +16,37 @@ var DiscoveryPanel = React.createClass({
   },
 
   handleLeftButtonClick: function() {
+    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+    // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
-    newDiscoveryToasterLeftOffset += 400;
-    if (newDiscoveryToasterLeftOffset > 25) {
-      newDiscoveryToasterLeftOffset = 25;
+
+    if(toasterContainerWidth <= toasterWidth || newDiscoveryToasterLeftOffset < 0) {
+      newDiscoveryToasterLeftOffset += 400;
+      if(newDiscoveryToasterLeftOffset > 25) {
+        newDiscoveryToasterLeftOffset = 25;
+      }
     }
+   
     this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
   },
 
   handleRightButtonClick: function() {
     var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
     var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
-
+    // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
-    newDiscoveryToasterLeftOffset -= 400;
-    if (newDiscoveryToasterLeftOffset < toasterContainerWidth - toasterWidth) {
-      newDiscoveryToasterLeftOffset = toasterContainerWidth - toasterWidth;
+    // rightOffset = right border of discovery toaster container - right border of discovery toaster
+    var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
+    if(toasterContainerWidth <= toasterWidth || rightOffset <= 25) {
+      newDiscoveryToasterLeftOffset -= 400;
+      rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
+      
+      if(rightOffset > 25) {
+        newDiscoveryToasterLeftOffset = toasterContainerWidth - 25 - toasterWidth;
+      } 
     }
+    
     this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
   },
 
@@ -75,7 +89,7 @@ var DiscoveryPanel = React.createClass({
 
     // This is for turning off the old discovery panel.
     // TODO: Remove the following line when we drop the old discovery panel in mjolnir side.
-    document.getElementsByClassName("discovery_toaster")[0].style.display="none"; 
+    // document.getElementsByClassName("discovery_toaster")[0].style.display="none"; 
 
     // Build discovery content blocks
     if (discoveryData !== null)  {
