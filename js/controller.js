@@ -108,6 +108,32 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, fullscreen);
     },
 
+    toggleDiscoveryScreen: function() {
+      switch(this.state.playerState) {
+        case STATE.PLAYING:
+          this.togglePlayPause();
+          this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          break;
+        case STATE.PAUSE:
+          if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+            this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+          }
+          else {
+            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          }
+          break;
+        case STATE.END:
+          if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+            this.state.screenToShow = SCREEN.END_SCREEN;
+          }
+          else {
+            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          }
+          break; 
+      }
+      this.renderSkin();
+    },
+
     toggleMute: function(muted) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
     },

@@ -213,6 +213,16 @@ var discoveryScreenStyle = {
     flexDirection: "row"
   },
 
+  promoStyle: {
+    visibility: "hidden",
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center"
+  },
+
   panelTitleBarStyle: {
     position: "absolute",
     backgroundColor: "#444444",
