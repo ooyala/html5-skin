@@ -50,7 +50,7 @@ var ControlBar = React.createClass({
   },
 
   handleShareClick: function() {
-    this.props.controller.showShareScreen();
+    this.props.controller.toggleShareScreen();
   },
 
   handleVolumeClick: function(evt) {
