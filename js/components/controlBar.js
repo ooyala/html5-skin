@@ -58,6 +58,10 @@ var ControlBar = React.createClass({
     });
   },
 
+  handleClosedCaptionClick: function() {
+    this.props.controller.showClosedCaptionScreen();
+  },
+
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
     evt.target.style.color = "rgba(255, 255, 255, 1.0)";
@@ -117,7 +121,7 @@ var ControlBar = React.createClass({
         style={controlBarStyle.iconSetting}></span></div>,
       "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-subtitles"
-        style={controlBarStyle.iconSetting}></span></div>,
+        onClick={this.handleClosedCaptionClick} style={controlBarStyle.iconSetting}></span></div>,
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-share"
         style={controlBarStyle.iconSetting}></span></div>,

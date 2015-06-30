@@ -15,5 +15,6 @@ var SCREEN = {
   PAUSE_SCREEN: "pauseScreen",
   END_SCREEN: "endScreen",
   SHARE_SCREEN: "shareScreen",
-  DISCOVERY_SCREEN: "discoveryScreen"
+  DISCOVERY_SCREEN: "discoveryScreen",
+  CLOSEDCAPTION_SCREEN: "closedCaptionScreen"
 };

@@ -11,6 +11,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
+      "ccOptions":{
+        "language": null,
+        "text":{
+          "font":null,
+          "size":null,
+          "color":null,
+          "opacity":null,
+          "shadow":null
+        },
+        "window": {
+          "backgroundColor":null,
+          "backgroundOpacity":null,
+          "borderColor":null,
+          "borderOpacity":null
+        },
+       "transition": null
+      }
     };
 
     this.init();
@@ -32,7 +49,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
       $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%; position: absolute; z-index: 10000;'></div>");
-
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON("config/skin.json", _.bind(function(data) {
         this.skin = React.render(
@@ -133,6 +149,31 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     setVolume: function(volume){
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
+    },
+
+    showClosedCaptionScreen: function() {
+      if (this.state.screenToShow == SCREEN.CLOSEDCAPTION_SCREEN) {
+        this.closeClosedCaptionScreen();
+      }
+      else {
+        this.mb.publish(OO.EVENTS.PAUSE);
+        setTimeout(function() {
+          this.state.screenToShow = SCREEN.CLOSEDCAPTION_SCREEN;
+          this.state.playerState = STATE.PAUSE;
+          this.renderSkin();
+        }.bind(this), 1);
+      }
+    },
+
+    closeClosedCaptionScreen: function() {
+      console.log(this.state.screenToShow, this.state.playerState);
+      this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+      this.renderSkin();
+    },
+
+    onClosedCaptionChange: function(options) {//probably remove (options) as well, if don't need the line belov
+      //this.state.ccOptions = options.ccOptions;
+      this.renderSkin();
     },
 
     sendDiscoveryClickEvent: function(selectedContentData) {
