@@ -72,24 +72,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin({"contentTree": contentTree});
     },
 
-    initAdsPlaybackProgressStructure: function (contentTree) {
-      for (var i = 0; i < this.state.contentTree.ads.length; i++) {
-        var ad = this.state.contentTree.ads[i];
-        var time = ad.time;
-        var adPlaybackProgress = {};
-        if (!(time in this.state.adsPlaybackProgress)) {
-            this.state.adsPlaybackProgress[time] = {};
-            adPlaybackProgress = {"total": 1, "played": 0};
-        } else {
-          var newTotal = this.state.adsPlaybackProgress[time].total + 1;
-          adPlaybackProgress = {"total": newTotal, "played": 0};
-        }
-        this.state.adsPlaybackProgress[time] = adPlaybackProgress;
-      }
-    },
-
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
       // console.log(arguments);
+
+      // this.setVolume(0);
       this.skin.updatePlayhead(currentPlayhead, duration, buffered);
     },
 
