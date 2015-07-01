@@ -94,17 +94,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaying: function() {
-      if (this.state.isPlayingAd) {
-        this.state.screenToShow = SCREEN.AD_SCREEN;
-      } else {
+      if (this.state.screenToShow != SCREEN.AD_SCREEN) {
         this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+        this.state.playerState = STATE.PLAYING;
+        this.renderSkin();
       }
-      this.state.playerState = STATE.PLAYING;
-      this.renderSkin();
     },
 
     onPaused: function() {
-      if (!this.state.isPlayingAd) {
+      // pause/resume of Ad playback is handled by different events
+      if (this.state.screenToShow != SCREEN.AD_SCREEN) {
         if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
           console.log("Should display DISCOVERY_SCREEN on pause");
           this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
@@ -145,18 +144,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onWillPlayAds: function(event) {
       console.log("onWillPlayAds is called");
+      this.state.screenToShow = SCREEN.AD_SCREEN;
       this.state.isPlayingAd = true;
     },
 
     onAdsPlayed: function(event) {
       console.log("onAdsPlayed is called from event = " + event);
-      this.state.isPlayingAd = false;
       this.state.screenToShow = SCREEN.PLAYING_SCREEN;
-      this.state.playerState = STATE.PLAYING;
       this.renderSkin();
     },
 
     onAdPodStarted: function(event, numberOfAds) {
+      console.log("onAdPodStarted is called from event = " + event + "with " + numberOfAds + "ads");
       this.state.currentAdsInfo.numberOfAds = numberOfAds;
       this.renderSkin();
     },
@@ -165,7 +164,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onWillPlaySingleAd: function(event, adItem) {
-      console.log("onWillPlaySingleAd is called"); this.state.screenToShow = SCREEN.AD_SCREEN;
+      console.log("onWillPlaySingleAd is called with adItem = " + adItem); 
       this.state.currentAdsInfo.currentAdItem = adItem;
       this.state.playerState = STATE.PLAYING; 
       this.renderSkin();
