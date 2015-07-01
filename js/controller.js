@@ -30,13 +30,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
       this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));    
+
+
+      /********************************************************************
+        ADS RELATED EVENTS
+      *********************************************************************/
+
       this.mb.subscribe(OO.EVENTS.WILL_PLAY_ADS, "customerUi", _.bind(this.onWillPlayAds, this));
-      this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
-      this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
-      // this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
-      // this.mb.subscribe(OO.EVENTS.PAUSE_STREAM, "customerUi", _.bind(this.onWillPauseAds, this));
-      this.mb.subscribe(OO.EVENTS.PLAY_STREAM, "customerUi", _.bind(this.onPlayStream, this));
       this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
+
+      this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
+      this.mb.subscribe(OO.EVENTS.AD_POD_ENDED, "customerUi", _.bind(this.onAdPodEnded, this));
+
+      this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
+      this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
+
+      this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
+      this.mb.subscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi", _.bind(this.onWillResumeAds, this));
     },
 
     /*--------------------------------------------------------------------
@@ -94,23 +104,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPaused: function() {
-      if (this.state.playerState == STATE.PAUSE) {
-        debugger;
-        return;
+      if (!this.state.isPlayingAd) {
+        if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
+          console.log("Should display DISCOVERY_SCREEN on pause");
+          this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+        } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
+          // Remove this comment once pause screen implemented
+        } else {
+          // default
+          this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+        }
+        this.state.playerState = STATE.PAUSE;
+        this.renderSkin();
       }
-      if (this.state.isPlayingAd) {
-        // this.state.screenToShow = SCREEN.PAUSE_SCREEN;
-      } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
-      console.log("Should display DISCOVERY_SCREEN on pause");
-        this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
-      } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
-        // Remove this comment once pause screen implemented
-      } else {
-        // default
-        this.state.screenToShow = SCREEN.PLAYING_SCREEN;
-      }
-      this.state.playerState = STATE.PAUSE;
-      this.renderSkin();
     },
 
     onPlayed: function() {
@@ -133,69 +139,50 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    /*
-    OO.EVENTS.PLAY_STREAM will be published when the non-first ad in an ad pod starts playback. However, OO.EVENTS.WILL_PLAY_AD will not be triggered.
-    */
-    onPlayStream: function(event, currentItemUrl, currentItem) {
-      if (!this.state.isPlayingAd) {
-
-      } else if (this.state.isPlayingAd) {
-        // this.updateAdsPlaybackProgress(currentItem.item);
-      }
-    },
+    /********************************************************************
+      ADS RELATED EVENTS
+    *********************************************************************/
 
     onWillPlayAds: function(event) {
       console.log("onWillPlayAds is called");
-      // this.renderSkin();
+      this.state.isPlayingAd = true;
     },
-
-    onAdPodStarted: function(event, numberOfAds) {
-      this.state.currentAdsInfo.numberOfAds = numberOfAds;
-    },
-
-    onWillPlaySingleAd: function(event, adItem) {
-      console.log("onWillPlaySingleAd is called");
-      setTimeout(function() {
-        
-        this.state.isPlayingAd = true;
-        this.state.screenToShow = SCREEN.AD_SCREEN;
-        this.state.currentAdsInfo.currentAdItem = adItem;
-        this.state.playerState = STATE.PLAYING; 
-        this.renderSkin();
-        console.log("onWillPlaySingleAd is called");
-      }.bind(this), 1);
-      // this.updateAdsPlaybackProgress(adItem);
-    },
-
-    // updateAdsPlaybackProgress: function(adItem) {
-    //   if (this.currentAdItemIsChanged(adItem)) {
-    //     this.state.currentAdItem = adItem;  
-    //     var time = adItem.time;
-    //     var newPlayed = this.state.adsPlaybackProgress[time].played + 1;
-    //     adPlaybackProgress = {"total": this.state.adsPlaybackProgress[time].total, "played": newPlayed};
-    //     this.state.adsPlaybackProgress[time] = adPlaybackProgress;
-    //     console.log("Ads playback progress is updated for adItem = " + adItem);
-    //   }
-    // },
-
-    // currentAdItemIsChanged: function(adItem) {
-    //   return (this.state.currentAdItem === null || adItem.ad_embed_code != this.state.currentAdItem.ad_embed_code);
-    // },
-
-    /*
-    OO.EVENTS.WILL_PAUSE_AD will not be triggered for pause action except for IMA Ads.
-    */
-    // onWillPauseAds: function(event) {
-    //   console.log("onWillPauseAds is called from event = " + event);
-    //   this.state.playerState = STATE.PAUSE;
-    //   this.state.screenToShow = SCREEN.AD_SCREEN;
-    //   this.renderSkin();
-    // },
 
     onAdsPlayed: function(event) {
       console.log("onAdsPlayed is called from event = " + event);
       this.state.isPlayingAd = false;
       this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+      this.state.playerState = STATE.PLAYING;
+      this.renderSkin();
+    },
+
+    onAdPodStarted: function(event, numberOfAds) {
+      this.state.currentAdsInfo.numberOfAds = numberOfAds;
+      this.renderSkin();
+    },
+
+    onAdPodEnded: function(event, numberOfAds) {
+    },
+
+    onWillPlaySingleAd: function(event, adItem) {
+      console.log("onWillPlaySingleAd is called"); this.state.screenToShow = SCREEN.AD_SCREEN;
+      this.state.currentAdsInfo.currentAdItem = adItem;
+      this.state.playerState = STATE.PLAYING; 
+      this.renderSkin();
+    },
+
+    onSingleAdPlayed: function(event) {
+      console.log("onSingleAdPlayed is called");
+    },
+
+    onWillPauseAds: function(event) {
+      console.log("onWillPauseAds is called");
+      this.state.playerState = STATE.PAUSE;
+      this.renderSkin();
+    },
+
+    onWillResumeAds: function(event) {
+      console.log("onWillResumeAds is called");
       this.state.playerState = STATE.PLAYING;
       this.renderSkin();
     },
