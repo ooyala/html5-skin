@@ -137,6 +137,12 @@ var ControlBar = React.createClass({
       if (typeof controlItemTemplates[controlBarSetting.items[i]] === "undefined") {
         continue;
       }
+
+      //do not show CC button if no CC available
+      if (!this.props.contentTree.closed_captions && (controlBarSetting.items[i] === "closedCaption")){
+        continue;
+      }
+
       controlBarItems.push(controlItemTemplates[controlBarSetting.items[i]]);
     }
     return controlBarItems;

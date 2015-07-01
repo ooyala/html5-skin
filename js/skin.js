@@ -21,9 +21,9 @@ var Skin = React.createClass({
          this.props.controller.state.ccOptions.window.backgroundColor = this.props.skinConfig.ccOptions.window.defaultBackgroundColor;
          this.props.controller.state.ccOptions.window.borderColor = this.props.skinConfig.ccOptions.window.defaultBorderColor;
          this.props.controller.state.ccOptions.window.backgroundOpacity = this.props.skinConfig.ccOptions.window.defaultBackgroundOpacity;
-         this.props.controller.state.ccOptions.window.borderOpacity= this.props.skinConfig.ccOptions.window.defaultBorderOpacity;
-         this.props.controller.state.ccOptions.transition= this.props.skinConfig.ccOptions.defaultTransition;
-        }
+         this.props.controller.state.ccOptions.window.borderOpacity = this.props.skinConfig.ccOptions.window.defaultBorderOpacity;
+         this.props.controller.state.ccOptions.transition = this.props.skinConfig.ccOptions.defaultTransition;
+    }
   },
 
   switchComponent: function(args) {
@@ -52,7 +52,6 @@ var Skin = React.createClass({
   },
 
   render: function() {
-    console.log("xenia skin.js", this.props);
     switch (this.state.screenToShow) {
       case SCREEN.START_SCREEN:
         return (
@@ -93,8 +92,6 @@ var Skin = React.createClass({
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
               ccOptions={this.props.controller.state.ccOptions}
-
-              //not sure what is needed from here
               duration={this.state.duration}
               buffered={this.state.buffered}
               playerState={this.state.playerState}

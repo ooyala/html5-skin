@@ -27,13 +27,13 @@ var ClosedCaptionScreen = React.createClass({
     var controlBarHeight = 32;
 
     return (
-      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
+      <div style={{height: "100%", width: "100%"}}>
         <ClosedCaptionPanel {...this.props}/>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
+          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
-          playerState={this.state.playerState} />
+          playerState={this.state.playerState}/>
         <div onClick={this.closeClosedCaptionPanel} style={{position: "absolute", top:0, right: 0, height: "25px", width: "25px", backgroundColor: "#4389ff", color: "white", textAlign: "center", lineHeight: "25px"}}>X</div>
       </div>
     );

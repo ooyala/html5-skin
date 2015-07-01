@@ -20,42 +20,40 @@ var tabList = [
 ];
 
 var ClosedCaptionPanel = React.createClass({
-  getInitialState: function () {
-        return {
-            tabList: tabList,
-            activeTab: 'language'
-        };
-    },
+  getInitialState: function(){
+    return {
+        tabList: tabList,
+        activeTab: 'language'
+    };
+  },
 
-  changeTab: function(tab) {
-        this.setState({ activeTab: tab.id });
-    },
+  changeTab: function(tab){
+    this.setState({activeTab: tab.id});
+  },
   
-  render: function() {
-    
+  render: function(){
     return (
-      <div style={{backgroundColor: "#444444", height:"100%"}}>
+      <div style = {closedCaptionScreenStyles.screenStyle}>
         <Tabs
           activeTab = {this.state.activeTab}
-          changeTab={this.changeTab} 
-          data={tabList}/>
+          changeTab = {this.changeTab} 
+          data = {tabList}/>
         <TabContent {...this.props}
-          activeTab={this.state.activeTab} />
+          activeTab = {this.state.activeTab}/>
         <CCPreviewPanel {...this.props} data = {this.state}/> 
-
       </div>
     );
   }
 });
 
 var Tabs = React.createClass({
-  getInitialState: function () {
+  getInitialState: function (){
     return {activeTab: this.props.activeTab};
   },
 
   tabClick: function(tab){
-        this.props.changeTab(tab);
-        this.setState({activeTab: tab.id});
+    this.props.changeTab(tab);
+    this.setState({activeTab: tab.id});
   },
 
   render: function() {
@@ -63,9 +61,9 @@ var Tabs = React.createClass({
       <div>
         <div style = {closedCaptionScreenStyles.captionStyle}>CC Options</div>
         {
-          this.props.data.map(function(tab, i) {
+          this.props.data.map(function(tab, i){
             var tStyle = null;
-            if (i == this.props.data.length-1){//style for last tab, without the border on the right
+            if (i == this.props.data.length - 1){//style for last tab, without the border on the right
               tStyle = (this.props.activeTab == tab.id) ? closedCaptionScreenStyles.lastTabSelectedStyle : closedCaptionScreenStyles.lastTabStyle;
             }
             else{//style for the rest of the tabs
@@ -73,9 +71,9 @@ var Tabs = React.createClass({
             }
             return(
               <div key = {i} 
-                style={tStyle} 
+                style = {tStyle} 
                 onClick = {this.tabClick.bind(this,tab)}>
-                {tab.caption}
+                  {tab.caption}
               </div>
             );
           }.bind(this))
@@ -87,71 +85,85 @@ var Tabs = React.createClass({
 
 var TabContent = React.createClass({
   render: function(){
-      return(
+    return(
+      <div>
+          {this.props.activeTab === 'language' ?
+              <LanguageTabContent {...this.props}/>
+          :null}
+
+          {this.props.activeTab === 'font' ?
           <div>
-              {this.props.activeTab === 'language' ?
-                  <LanguageTabContent {...this.props}/>
-              :null}
-
-              {this.props.activeTab === 'font' ?
-              <div>
-                  <FontTabContent {...this.props}/>
-              </div>
-              :null}
-
-              {this.props.activeTab === 'size' ?
-              <div>
-                  <SizeTabContent {...this.props}/>
-              </div>
-              :null}
-
-              {this.props.activeTab === 'color' ?
-              <div>
-                  <ColorTabContent {...this.props}/>
-              </div>
-              :null}
-
-              {this.props.activeTab === 'backgroundColor' ?
-              <div>
-                  <BackgroundColorTabContent {...this.props}/>
-              </div>
-              :null}
-
-              {this.props.activeTab === 'borderColor' ?
-              <div>
-                  <BorderColorTabContent {...this.props}/>
-              </div>
-              :null}
-
-              {this.props.activeTab === 'shadow' ?
-              <div>
-                  <ShadowTabContent {...this.props}/>
-              </div>
-              :null}
-
-              {this.props.activeTab === 'transition' ?
-              <div>
-                  <TransitionTabContent {...this.props}/>
-              </div>
-              :null}
+              <FontTabContent {...this.props}/>
           </div>
-      );
+          :null}
+
+          {this.props.activeTab === 'size' ?
+          <div>
+              <SizeTabContent {...this.props}/>
+          </div>
+          :null}
+
+          {this.props.activeTab === 'color' ?
+          <div>
+              <ColorTabContent {...this.props}/>
+          </div>
+          :null}
+
+          {this.props.activeTab === 'backgroundColor' ?
+          <div>
+              <BackgroundColorTabContent {...this.props}/>
+          </div>
+          :null}
+
+          {this.props.activeTab === 'borderColor' ?
+          <div>
+              <BorderColorTabContent {...this.props}/>
+          </div>
+          :null}
+
+          {this.props.activeTab === 'shadow' ?
+          <div>
+              <ShadowTabContent {...this.props}/>
+          </div>
+          :null}
+
+          {this.props.activeTab === 'transition' ?
+          <div>
+              <TransitionTabContent {...this.props}/>
+          </div>
+          :null}
+      </div>
+    );
   }
 });
 var CCPreviewPanel = React.createClass({
   render: function(){
+
     var backColor = this.props.ccOptions.window.backgroundColor;
-    var backColorOpacity = backColor.substring(0, backColor.length - 2) + this.props.ccOptions.window.backgroundOpacity +")";
+    var backColorOpacity = backColor.substring(0, backColor.length - 2) + this.props.ccOptions.window.backgroundOpacity +")";//translating into rgba(R,G,B,o) format
 
     var borderColor = this.props.ccOptions.window.borderColor;
-    var borderColorOpacity = borderColor.substring(0, borderColor.length - 2) + this.props.ccOptions.window.borderOpacity +")";
+    var borderColorOpacity = borderColor.substring(0, borderColor.length - 2) + this.props.ccOptions.window.borderOpacity +")";//translating into rgba(R,G,B,o) format
 
 
     var SampleText = {"en":"English Sample Text", "fr":"French Sample Text", "es":"Spanish Sample Text", "ru":"Russian Sample Text", "de":"German Sample Text", "pt":"Portuguese Sample Text", "el":"Greek Sample Text"};
     return (
       <div style = {closedCaptionScreenStyles.CCPreviewPanelStyle}>
-      <div style={closedCaptionScreenStyles.CCPreviewCaptionStyle}>CLOSED CAPTION PREVIEW</div>
-        <div style = {closedCaptionScreenStyles.CCPreviewContainerStyle}><div style={{backgroundColor:backColorOpacity, borderStyle:"solid", borderWidth:"1px", borderColor:borderColorOpacity, padding: "10", fontFamily:this.props.ccOptions.text.font, fontSize: this.props.ccOptions.text.size, color: this.props.ccOptions.text.color, opacity:this.props.ccOptions.text.opacity, textShadow:this.props.ccOptions.text.shadow}}>{SampleText[this.props.ccOptions.language]}</div></div>
+      <div style = {closedCaptionScreenStyles.CCPreviewCaptionStyle}>CLOSED CAPTION PREVIEW</div>
+      <div style = {closedCaptionScreenStyles.CCPreviewContainerStyle}>
+        <div style = {{
+          padding: "10",
+          backgroundColor:backColorOpacity, 
+          borderStyle:"solid", 
+          borderWidth:"1", 
+          borderColor:borderColorOpacity, 
+          borderRadius:closedCaptionScreenStyles.CCPreviewContainerStyle.borderRadius, 
+          fontFamily:this.props.ccOptions.text.font, 
+          fontSize: this.props.ccOptions.text.size, 
+          color: this.props.ccOptions.text.color, 
+          opacity:this.props.ccOptions.text.opacity, 
+          textShadow:this.props.ccOptions.text.shadow}}>
+            {SampleText[this.props.ccOptions.language]}</div></div>
       </div>
     );
   }
@@ -164,25 +176,49 @@ var LanguageTabContent = React.createClass({
     };
   },
 
-  handleClick: function(i) {
-    console.log("xenia ",this.props.ccOptions);
-    this.props.ccOptions.language = this.props.contentTree.closed_captions[0].languages[i];
-    this.props.controller.onClosedCaptionChange({"ccOptions":this.props.ccOptions});
+  handleClick: function(item){
+    this.props.ccOptions.language = item;
+    this.props.controller.onClosedCaptionChange();
   },
 
   render: function(){
-    var items = this.props.contentTree.closed_captions[0].languages;
-    var longLanguage = {"en":"English", "fr":"French", "es":"Spanish", "ru":"Russian", "de":"German", "pt":"Portuguese", "el":"Greek"};
-    // var rows = 4;
-    // var columns = Math.floor(items.length/rows) + 1;
-    // console.log (columns);
+    var items = this.props.contentTree.closed_captions[0].languages; //getting list of languages from contentTree
+    var longLanguage = {"en":"English", "fr":"French", "es":"Spanish", "ru":"Russian", "de":"German", "pt":"Portuguese", "el":"Greek"};//mapping language codes and names
+    
+    var rows = 3;//number of rows in a table to display
+    var columns = Math.floor(items.length/rows) + 1;
+
+    var table = new Array(rows); //creating an array for easier rendering
+    for (var i = 0; i < table.length; i++){
+      table[i] = new Array(columns);
+    }
+
+    for (var j = 0; j < items.length; j++){//putting elements into that array
+      var rownum = j%rows;
+      var colnum = Math.floor(j/rows);
+      table[rownum][colnum] = items[j];
+    }
+
     return(
-        <div>
-        {items.map(function(item, i) {
-          return (
-            <div style={(this.props.ccOptions.language == items[i]) ? closedCaptionScreenStyles.languageSelectedStyle : closedCaptionScreenStyles.languageStyle} onClick={this.handleClick.bind(this, i)} key={i}>{longLanguage[item]}</div>
-          );
-        }, this)}
+      <div>
+        <table style = {closedCaptionScreenStyles.tableStyle}>
+          { 
+            table.map(function(row,i){
+              return (
+                <tr key = {i}>
+                  {row.map(function(item, j){
+                    return (
+                      <td key = {j}>
+                        <div style = {(this.props.ccOptions.language == item) ? closedCaptionScreenStyles.itemSelectedStyle : closedCaptionScreenStyles.itemStyle} 
+                        onClick = {this.handleClick.bind(this, item)}>{longLanguage[item]}</div>
+                      </td>
+                    );
+                  },this)}
+                </tr>
+              );
+            },this)
+          }
+        </table>
       </div>
     );
   }
@@ -194,32 +230,40 @@ var FontTabContent = React.createClass({
     this.fonts = {"Arial":"Arial", "Verdana":"Verdana", "Lucida":"Lucida Grande", "Times":"Times", "Courier":"Courier", "Impact":"Impact", "Trebuchet":"Trebuchet MS", "Georgia":"Georgia"};
   },
 
-  handleClick: function(item) {
+  handleClick: function(item){
     this.props.ccOptions.text.font = this.fonts[item];
-    this.props.controller.onClosedCaptionChange({"ccOptions":this.props.ccOptions});
+    this.props.controller.onClosedCaptionChange();
   },
 
   render: function(){
     var items = Object.keys(this.fonts);
     return(
       <div>
-        <table height = "150" >
+        <table style = {closedCaptionScreenStyles.tableStyle}>
           <tr height = "50%">
           {
-            items.map(function(item, i) {
+            items.map(function(item, i){
               if (i < items.length/2)
               return(
-                <td key = {i} onClick={this.handleClick.bind(this,item)}><div style = {(this.props.ccOptions.text.font == this.fonts[item])?closedCaptionScreenStyles.fontSelectedStyle:closedCaptionScreenStyles.fontStyle}><div style={{fontFamily:this.fonts[item]}}>{item}</div></div></td>
+                <td key = {i} onClick = {this.handleClick.bind(this,item)}>
+                  <div style = {(this.props.ccOptions.text.font == this.fonts[item])?closedCaptionScreenStyles.itemSelectedStyle:closedCaptionScreenStyles.itemStyle}>
+                    <div style = {{fontFamily:this.fonts[item]}}>{item}</div>
+                  </div>
+                </td>
               );
             },this)
           }
           </tr>
           <tr height = "50%">
           {
-            items.map(function(item, i) {
+            items.map(function(item, i){
               if (i >= items.length/2)
               return(
-                <td key = {i} onClick={this.handleClick.bind(this,item)}><div style = {(this.props.ccOptions.text.font == this.fonts[item])?closedCaptionScreenStyles.fontSelectedStyle:closedCaptionScreenStyles.fontStyle}><div style={{fontFamily:this.fonts[item]}}>{item}</div></div></td>
+                <td key = {i} onClick = {this.handleClick.bind(this,item)}>
+                  <div style = {(this.props.ccOptions.text.font == this.fonts[item])?closedCaptionScreenStyles.itemSelectedStyle:closedCaptionScreenStyles.itemStyle}>
+                    <div style = {{fontFamily:this.fonts[item]}}>{item}</div>
+                  </div>
+                </td>
               );
             },this)
           }
@@ -232,21 +276,22 @@ var FontTabContent = React.createClass({
 
 var SizeTabContent = React.createClass({
   componentWillMount: function() {
-    this.fontSize = ["10", "15", "20", "25"];
+    this.fontSize = ["10","15","20","25"];//different font sizes
   },
 
-  handleClick: function(i) {
+  handleClick: function(i){
     this.props.ccOptions.text.size = this.fontSize[i];
-    this.props.controller.onClosedCaptionChange({"ccOptions":this.props.ccOptions});
+    this.props.controller.onClosedCaptionChange();
   },
 
   render: function(){
     var items = this.fontSize;
     return(
       <div>
-        {items.map(function(item, i) {
+        {items.map(function(item, i){
           return (
-            <div style={(this.props.ccOptions.text.size == items[i]) ? closedCaptionScreenStyles.languageSelectedStyle : closedCaptionScreenStyles.languageStyle} onClick={this.handleClick.bind(this, i)} key={i}><div style={{fontSize:items[i]}}>Aa</div></div>
+            <div style = {(this.props.ccOptions.text.size == items[i]) ? closedCaptionScreenStyles.itemSelectedStyle : closedCaptionScreenStyles.itemStyle} 
+              onClick = {this.handleClick.bind(this, i)} key = {i}><div style = {{fontSize:items[i]}}>Aa</div></div>
           );
         }, this)}
       </div>
@@ -255,52 +300,70 @@ var SizeTabContent = React.createClass({
 });
 
 var ColorTabContent = React.createClass({
-  componentWillMount: function() {
+  componentWillMount: function(){
     this.colors = ["rgba(255,255,255,1)","rgba(0,0,255,1)","rgba(255,0,0,1)","rgba(0,255,0,1)","rgba(255,0,255,1)","rgba(255,255,0,1)","rgba(0,255,255,1)","rgba(0,0,0,1)"];
   },
 
-  handleColorClick: function(i) {
+  handleColorClick: function(i){
     this.props.ccOptions.text.color = this.colors[i];
-    this.props.controller.onClosedCaptionChange({"ccOptions":this.props.ccOptions});
+    this.props.controller.onClosedCaptionChange();
   },
 
-  handleOpaqueClick: function(i) {
+  handleOpaqueClick: function(i){
     this.props.ccOptions.text.opacity = i;
-    this.props.controller.onClosedCaptionChange({"ccOptions":this.props.ccOptions});
+    this.props.controller.onClosedCaptionChange();
   },
 
   render: function(){
     var items = this.colors;
     return(
       <div>
-        <div style={{display:"inline-block"}}>
-          <table height = "100" >
+        <div style = {{display:"inline-block"}}>
+          <table style = {closedCaptionScreenStyles.tableStyle}>
             <tr height = "50%">
             {
-              items.map(function(item, i) {
+              items.map(function(item, i){
                 if (i < items.length/2)
                 return(
-                  <td key = {i} onClick={this.handleColorClick.bind(this,i)}><div style = {(this.props.ccOptions.text.color == items[i])?closedCaptionScreenStyles.languageSelectedStyle:closedCaptionScreenStyles.languageStyle}><div style={{backgroundColor:items[i], height: "30", width: "30"}}> </div></div></td>
+                  <td key = {i} onClick = {this.handleColorClick.bind(this,i)}>
+                    <div style = {(this.props.ccOptions.text.color == items[i])?closedCaptionScreenStyles.itemSelectedStyle:closedCaptionScreenStyles.itemStyle}>
+                      <div style = {{backgroundColor:items[i], borderRadius:closedCaptionScreenStyles.colorItem.borderRadius}}>
+                        <div style = {closedCaptionScreenStyles.colorItem}> </div>
+                      </div>
+                    </div>
+                  </td>
                 );
               },this)
             }
             </tr>
             <tr height = "50%">
             {
-              items.map(function(item, i) {
+              items.map(function(item, i){
                 if (i >= items.length/2)
                 return(
-                  <td key = {i} onClick={this.handleColorClick.bind(this,i)}><div style = {(this.props.ccOptions.text.color == items[i])?closedCaptionScreenStyles.languageSelectedStyle:closedCaptionScreenStyles.languageStyle}><div style={{backgroundColor:items[i], height: "30", width: "30"}}> </div></div></td>
+                  <td key = {i} onClick = {this.handleColorClick.bind(this,i)}>
+                    <div style = {(this.props.ccOptions.text.color == items[i])?closedCaptionScreenStyles.itemSelectedStyle:closedCaptionScreenStyles.itemStyle}>
+                      <div style = {{backgroundColor:items[i], borderRadius:closedCaptionScreenStyles.colorItem.borderRadius}}>
+                        <div style = {closedCaptionScreenStyles.colorItem}> </div>
+                      </div>
+                    </div>
+                  </td>
                 );
               },this)
             }
             </tr>
           </table>
         </div>
-        <div style={{display:"inline-block"}}>
-        <table height = "100">
-          <tr height = "50%"><td><div style={this.props.ccOptions.text.opacity == "1" ? closedCaptionScreenStyles.languageSelectedStyle : closedCaptionScreenStyles.languageStyle} onClick={this.handleOpaqueClick.bind(this,"1")}>Opaque</div></td></tr>
-          <tr height = "50%"><td><div style={this.props.ccOptions.text.opacity == "0.5" ? closedCaptionScreenStyles.languageSelectedStyle : closedCaptionScreenStyles.languageStyle} onClick={this.handleOpaqueClick.bind(this,"0.5")}>Semi-Transparent</div></td></tr>
+        <div style = {{display:"inline-block"}}>
+        <table style = {closedCaptionScreenStyles.tableStyle}>
+          <tr height = "50%">
+            <td><div style = {this.props.ccOptions.text.opacity == "1" ? closedCaptionScreenStyles.itemSelectedStyle : closedCaptionScreenStyles.itemStyle} 
+              onClick = {this.handleOpaqueClick.bind(this,"1")}>Opaque</div></td>
+          </tr>
+          <tr height = "50%">
+            <td><div style = {this.props.ccOptions.text.opacity == "0.5" ? closedCaptionScreenStyles.itemSelectedStyle : closedCaptionScreenStyles.itemStyle} 
+              onClick = {this.handleOpaqueClick.bind(this,"0.5")}>Semi-Transparent</div></td>
+          </tr>
         </table>
         </div>
       </div>
@@ -309,53 +372,68 @@ var ColorTabContent = React.createClass({
 });
 
 var BackgroundColorTabContent = React.createClass({
-  componentWillMount: function() {
+  componentWillMount: function(){
     this.colors = ["rgba(255,255,255,1)","rgba(0,0,255,1)","rgba(255,0,0,1)","rgba(0,255,0,1)","rgba(255,0,255,1)","rgba(255,255,0,1)","rgba(0,255,255,1)","rgba(0,0,0,1)"];
   },
 
-  handleColorClick: function(i) {
+  handleColorClick: function(i){
     this.props.ccOptions.window.backgroundColor = this.colors[i];
-    this.props.controller.onClosedCaptionChange({"ccOptions":this.props.ccOptions});
+    this.props.controller.onClosedCaptionChange();
   },
 
-  handleOpaqueClick: function(i) {
+  handleOpaqueClick: function(i){
     this.props.ccOptions.window.backgroundOpacity = i;
-    this.props.controller.onClosedCaptionChange({"ccOptions":this.props.ccOptions});
+    this.props.controller.onClosedCaptionChange();
   },
 
   render: function(){
     var items = this.colors;
     return(
       <div>
-        <div style={{display:"inline-block"}}>
-          <table height = "100" >
+        <div style = {{display:"inline-block"}}>
+          <table style = {closedCaptionScreenStyles.tableStyle}>
             <tr height = "50%">
             {
-              items.map(function(item, i) {
+              items.map(function(item, i){
                 if (i < items.length/2)
                 return(
-                  <td key = {i} onClick={this.handleColorClick.bind(this,i)}><div style = {(this.props.ccOptions.window.backgroundColor == items[i])?closedCaptionScreenStyles.languageSelectedStyle:closedCaptionScreenStyles.languageStyle}><div style={{backgroundColor:items[i], height: "30", width: "30"}}> </div></div></td>
+                  <td key = {i} onClick = {this.handleColorClick.bind(this,i)}>
+                    <div style = {(this.props.ccOptions.window.backgroundColor == items[i])?closedCaptionScreenStyles.itemSelectedStyle:closedCaptionScreenStyles.itemStyle}>
+                      <div style = {{backgroundColor:items[i], borderRadius:closedCaptionScreenStyles.colorItem.borderRadius}}>
+                        <div style = {closedCaptionScreenStyles.colorItem}> </div>
+                      </div>
+                    </div>
+                  </td>
                 );
               },this)
             }
             </tr>
             <tr height = "50%">
             {
-              items.map(function(item, i) {
+              items.map(function(item, i){
                 if (i >= items.length/2)
                 return(
-                  <td key = {i} onClick={this.handleColorClick.bind(this,i)}><div style = {(this.props.ccOptions.window.backgroundColor == items[i])?closedCaptionScreenStyles.languageSelectedStyle:closedCaptionScreenStyles.languageStyle}><div style={{backgroundColor:items[i], height: "30", width: "30"}}> </div></div></td>
+                  <td key = {i} onClick = {this.handleColorClick.bind(this,i)}>
+                    <div style = {(this.props.ccOptions.window.backgroundColor == items[i])?closedCaptionScreenStyles.itemSelectedStyle:closedCaptionScreenStyles.itemStyle}>
+                      <div style = {{backgroundColor:items[i], borderRadius:closedCaptionScreenStyles.colorItem.borderRadius}}>
+                        <div style = {closedCaptionScreenStyles.colorItem}> </div>
+                      </div>
+                    </div>
+                  </td>
                 );
               },this)
             }
             </tr>
           </table>
         </div>
-        <div style={{display:"inline-block"}}>
-        <table height = "100">
-          <tr height = "33.33%"><td><div style={this.props.ccOptions.window.backgroundOpacity == "1" ? closedCaptionScreenStyles.languageSelectedStyle : closedCaptionScreenStyles.languageStyle} onClick={this.handleOpaqueClick.bind(this,"1")}>Opaque</div></td></tr>
-          <tr height = "33.33%"><td><div style={this.props.ccOptions.window.backgroundOpacity == "0.5" ? closedCaptionScreenStyles.languageSelectedStyle : closedCaptionScreenStyles.languageStyle} onClick={this.handleOpaqueClick.bind(this,"0.5")}>Semi-Transparent</div></td></tr>
-          <tr height = "33.33%"><td><div style={this.props.ccOptions.window.backgroundOpacity == "0" ? closedCaptionScreenStyles.languageSelectedStyle : closedCaptionScreenStyles.languageStyle} onClick={this.handleOpaqueClick.bind(this,"0")}>Transparent</div></td></tr>
+        <div style = {{display:"inline-block"}}>
+        <table style = {closedCaptionScreenStyles.tableStyle}>
+          <tr height = "33.33%"><td><div style = {this.props.ccOptions.window.backgroundOpacity == "1" ? closedCaptionScreenStyles.itemSelectedStyle : closedCaptionScreenStyles.itemStyle} 
+            onClick = {this.handleOpaqueClick.bind(this,"1")}>Opaque</div></td></tr>
+          <tr height = "33.33%"><td><div style = {this.props.ccOptions.window.backgroundOpacity == "0.5" ? closedCaptionScreenStyles.itemSelectedStyle : closedCaptionScreenStyles.itemStyle} 
+            onClick = {this.handleOpaqueClick.bind(this,"0.5")}>Semi-Transparent</div></td></tr>
+          <tr height = "33.33%"><td><div style = {this.props.ccOptions.window.backgroundOpacity == "0" ? closedCaptionScreenStyles.itemSelectedStyle : closedCaptionScreenStyles.itemStyle} 
+            onClick = {this.handleOpaqueClick.bind(this,"0")}>Transparent</div></td></tr>
         </table>
         </div>
       </div>
@@ -364,53 +442,71 @@ var BackgroundColorTabContent = React.createClass({
 });
 
 var BorderColorTabContent = React.createClass({
-  componentWillMount: function() {
+  componentWillMount: function(){
     this.colors = ["rgba(255,255,255,1)","rgba(0,0,255,1)","rgba(255,0,0,1)","rgba(0,255,0,1)","rgba(255,0,255,1)","rgba(255,255,0,1)","rgba(0,255,255,1)","rgba(0,0,0,1)"];
   },
 
-  handleColorClick: function(i) {
+  handleColorClick: function(i){
     this.props.ccOptions.window.borderColor = this.colors[i];
-    this.props.controller.onClosedCaptionChange({"ccOptions":this.props.ccOptions});
+    this.props.controller.onClosedCaptionChange();
   },
 
-  handleOpaqueClick: function(i) {
+  handleOpaqueClick: function(i){
     this.props.ccOptions.window.borderOpacity = i;
-    this.props.controller.onClosedCaptionChange({"ccOptions":this.props.ccOptions});
+    this.props.controller.onClosedCaptionChange();
   },
 
   render: function(){
     var items = this.colors;
     return(
       <div>
-        <div style={{display:"inline-block"}}>
-          <table height = "100" >
+        <div style = {{display:"inline-block"}}>
+          <table style = {closedCaptionScreenStyles.tableStyle}>
             <tr height = "50%">
             {
-              items.map(function(item, i) {
+              items.map(function(item, i){
                 if (i < items.length/2)
                 return(
-                  <td key = {i} onClick={this.handleColorClick.bind(this,i)}><div style = {(this.props.ccOptions.window.borderColor == items[i])?closedCaptionScreenStyles.languageSelectedStyle:closedCaptionScreenStyles.languageStyle}><div style={{backgroundColor:items[i], height: "30", width: "30"}}> </div></div></td>
+                  <td key = {i} onClick = {this.handleColorClick.bind(this,i)}>
+                    <div style = {(this.props.ccOptions.window.borderColor == items[i])?closedCaptionScreenStyles.itemSelectedStyle:closedCaptionScreenStyles.itemStyle}>
+                      <div style = {{backgroundColor:items[i], borderRadius:closedCaptionScreenStyles.colorItem.borderRadius}}>
+                        <div style = {closedCaptionScreenStyles.colorItem}> </div>
+                      </div>
+                    </div>
+                  </td>
                 );
               },this)
             }
             </tr>
             <tr height = "50%">
             {
-              items.map(function(item, i) {
+              items.map(function(item, i){
                 if (i >= items.length/2)
                 return(
-                  <td key = {i} onClick={this.handleColorClick.bind(this,i)}><div style = {(this.props.ccOptions.window.borderColor == items[i])?closedCaptionScreenStyles.languageSelectedStyle:closedCaptionScreenStyles.languageStyle}><div style={{backgroundColor:items[i], height: "30", width: "30"}}> </div></div></td>
+                  <td key = {i} onClick = {this.handleColorClick.bind(this,i)}>
+                    <div style = {(this.props.ccOptions.window.borderColor == items[i])?closedCaptionScreenStyles.itemSelectedStyle:closedCaptionScreenStyles.itemStyle}>
+                      <div style = {{backgroundColor:items[i], borderRadius:closedCaptionScreenStyles.colorItem.borderRadius}}>
+                        <div style = {closedCaptionScreenStyles.colorItem}> </div>
+                      </div>
+                    </div>
+                  </td>
                 );
               },this)
             }
             </tr>
           </table>
         </div>
-        <div style={{display:"inline-block"}}>
-        <table height = "100">
-          <tr height = "33.33%"><td><div style={this.props.ccOptions.window.borderOpacity == "1" ? closedCaptionScreenStyles.languageSelectedStyle : closedCaptionScreenStyles.languageStyle} onClick={this.handleOpaqueClick.bind(this,"1")}>Opaque</div></td></tr>
-          <tr height = "33.33%"><td><div style={this.props.ccOptions.window.borderOpacity == "0.5" ? closedCaptionScreenStyles.languageSelectedStyle : closedCaptionScreenStyles.languageStyle} onClick={this.handleOpaqueClick.bind(this,"0.5")}>Semi-Transparent</div></td></tr>
-          <tr height = "33.33%"><td><div style={this.props.ccOptions.window.borderOpacity == "0" ? closedCaptionScreenStyles.languageSelectedStyle : closedCaptionScreenStyles.languageStyle} onClick={this.handleOpaqueClick.bind(this,"0")}>Transparent</div></td></tr>
+        <div style = {{display:"inline-block"}}>
+        <table style = {closedCaptionScreenStyles.tableStyle}>
+          <tr height = "33.33%"><td>
+            <div style = {this.props.ccOptions.window.borderOpacity == "1" ? closedCaptionScreenStyles.itemSelectedStyle : closedCaptionScreenStyles.itemStyle} 
+              onClick = {this.handleOpaqueClick.bind(this,"1")}>Opaque</div></td></tr>
+          <tr height = "33.33%"><td>
+            <div style = {this.props.ccOptions.window.borderOpacity == "0.5" ? closedCaptionScreenStyles.itemSelectedStyle : closedCaptionScreenStyles.itemStyle} 
+              onClick = {this.handleOpaqueClick.bind(this,"0.5")}>Semi-Transparent</div></td></tr>
+          <tr height = "33.33%"><td>
+            <div style = {this.props.ccOptions.window.borderOpacity == "0" ? closedCaptionScreenStyles.itemSelectedStyle : closedCaptionScreenStyles.itemStyle} 
+              onClick = {this.handleOpaqueClick.bind(this,"0")}>Transparent</div></td></tr>
         </table>
         </div>
       </div>
@@ -419,22 +515,23 @@ var BorderColorTabContent = React.createClass({
 });
 
 var ShadowTabContent = React.createClass({
-  componentWillMount: function() {
-    this.shadows = ["","2px 2px 8px","-2px -2px 8px", "1px 1px 4px","-1px -1px 4px"];
+  componentWillMount: function(){
+    this.shadows = ["","2px 2px 8px","-2px -2px 8px","1px 1px 4px","-1px -1px 4px"];
   },
 
   handleClick: function(i) {
     this.props.ccOptions.text.shadow = this.shadows[i];
-    this.props.controller.onClosedCaptionChange({"ccOptions":this.props.ccOptions});
+    this.props.controller.onClosedCaptionChange();
   },
 
   render: function(){
     var items = this.shadows;
     return(
-      <div style={{margin:"50"}}>
-        {items.map(function(item, i) {
+      <div style = {{margin:"50"}}>
+        {items.map(function(item, i){
           return (
-            <div style={(this.props.ccOptions.text.shadow == items[i]) ? closedCaptionScreenStyles.languageSelectedStyle : closedCaptionScreenStyles.languageStyle} onClick={this.handleClick.bind(this, i)} key={i}><div style={{textShadow:items[i]}}>A</div></div>
+            <div style = {(this.props.ccOptions.text.shadow == items[i]) ? closedCaptionScreenStyles.itemSelectedStyle : closedCaptionScreenStyles.itemStyle} 
+              onClick = {this.handleClick.bind(this, i)} key = {i}><div style = {{textShadow:items[i]}}>A</div></div>
           );
         }, this)}
       </div>
@@ -443,36 +540,40 @@ var ShadowTabContent = React.createClass({
 });
 
 var TransitionTabContent = React.createClass({
-  componentWillMount: function() {
+  componentWillMount: function(){
     this.transitions = {"tr1":"Transition 1","tr2":"Transition 2","tr3":"Transition 3","tr4":"Transition 4"};
   },
 
-  handleClick: function(item) {
+  handleClick: function(item){
     this.props.ccOptions.transition = item;
-    this.props.controller.onClosedCaptionChange({"ccOptions":this.props.ccOptions});
+    this.props.controller.onClosedCaptionChange();
   },
 
   render: function(){
     var items = Object.keys(this.transitions);
     return(
       <div>
-        <table height = "150" >
+        <table style = {closedCaptionScreenStyles.tableStyle}>
           <tr height = "50%">
           {
             items.map(function(item, i) {
               if (i < items.length/2)
               return(
-                <td key = {i} onClick={this.handleClick.bind(this,item)}><div style = {(this.props.ccOptions.transition == item)?closedCaptionScreenStyles.fontSelectedStyle:closedCaptionScreenStyles.fontStyle}>{this.transitions[item]}</div></td>
+                <td key = {i} onClick = {this.handleClick.bind(this,item)}>
+                  <div style = {(this.props.ccOptions.transition == item)?closedCaptionScreenStyles.itemSelectedStyle:closedCaptionScreenStyles.itemStyle}>{this.transitions[item]}</div>
+                </td>
               );
             },this)
           }
           </tr>
           <tr height = "50%">
           {
-            items.map(function(item, i) {
+            items.map(function(item, i){
               if (i >= items.length/2)
               return(
-                <td key = {i} onClick={this.handleClick.bind(this,item)}><div style = {(this.props.ccOptions.transition == item)?closedCaptionScreenStyles.fontSelectedStyle:closedCaptionScreenStyles.fontStyle}>{this.transitions[item]}</div></td>
+                <td key = {i} onClick = {this.handleClick.bind(this,item)}>
+                  <div style = {(this.props.ccOptions.transition == item)?closedCaptionScreenStyles.itemSelectedStyle:closedCaptionScreenStyles.itemStyle}>{this.transitions[item]}</div>
+                </td>
               );
             },this)
           }
@@ -482,130 +583,3 @@ var TransitionTabContent = React.createClass({
     );
   }
 });
-
-
-var closedCaptionScreenStyles ={
-
-  captionStyle: {
-    display: "inline-block", 
-    height: "30",
-    textAlign: "center", 
-    fontSize: "20",
-    color: "white", 
-    margin: "15"},
-
-  tabStyle: {
-    display: "inline-block", 
-    height: "15",
-    borderRight: "1px solid #afafaf", 
-    textAlign: "center", 
-    fontSize: "12", 
-    paddingRight: "3", 
-    paddingLeft: "3",
-    //this one is changed for tabSelectedStyle
-    color: "#DDDDDD"},
-
-  tabSelectedStyle: {
-    display: "inline-block", 
-    height: "15",
-    borderRight: "1px solid #afafaf", 
-    textAlign: "center",
-    fontSize: "12", 
-    paddingRight: "3", 
-    paddingLeft: "3",
-    //properties different from tabStyle
-    color: "#0FDDAF", 
-    borderTop: "1px solid #13BF99"},
-
-  lastTabStyle: {
-    display: "inline-block", 
-    height: "15",
-    //removed the border on the right
-    textAlign: "center", 
-    fontSize: "12", 
-    paddingRight: "3", 
-    paddingLeft: "3",
-    color: "#DDDDDD"},
-
-  lastTabSelectedStyle: {
-    display: "inline-block", 
-    height: "15",
-    //removed the border on the right 
-    textAlign: "center",
-    fontSize: "12", 
-    paddingRight: "3", 
-    paddingLeft: "3",
-    //properties different from tabStyle
-    color: "#0FDDAF", 
-    borderTop: "1px solid #13BF99"},
-
-  languageStyle: {
-    display: "inline-block",
-    textAlign: "center", 
-    minWidth :"50", 
-    color: "#DDDDDD", 
-    marginLeft: "25", 
-
-    padding: "5", 
-    paddingLeft: "10",
-    paddingRight: "10"},
-  
-  languageSelectedStyle: {
-    display: "inline-block",
-    textAlign: "center", 
-    minWidth :"50", 
-    color: "#DDDDDD", 
-    marginLeft: "25", 
- 
-    padding: "5", 
-    paddingLeft: "10",
-    paddingRight: "10",
-    //properties different from languageStyle
-    backgroundColor: "#13BF99", 
-    borderRadius: "4"},
-
-  fontStyle: {
-    textAlign: "center", 
-    minWidth :"100", 
-    color: "#DDDDDD", 
-    marginLeft: "25", 
-    marginTop: "15", 
-    padding: "15"
-    },
-  
-  fontSelectedStyle: {
-    textAlign: "center", 
-    minWidth :"100", 
-    color: "#DDDDDD", 
-    marginLeft: "25", 
-    marginTop: "15", 
-    padding: "15",
-    //properties diff from fontStyle
-    backgroundColor: "#13BF99", 
-    borderRadius: "4"},
-
-  CCPreviewPanelStyle:{
-    height: "120", 
-    width:"100%", 
-    backgroundColor: "black", 
-    position:"absolute", 
-    bottom:"0"
-  },
-
-  CCPreviewCaptionStyle: {
-    color:"white",
-    marginLeft: "20", 
-    fontSize:"10", 
-    paddingTop:"5", 
-    paddingBottom:"5"
-  },
-
-  CCPreviewContainerStyle:{
-    marginRight: "20", 
-    marginLeft: "20", 
-    backgroundColor: "grey", 
-    borderRadius: "4"
-  }
-};
-
-

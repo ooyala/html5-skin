@@ -29,7 +29,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
        "transition": null
       }
     };
-
     this.init();
   };
 
@@ -166,13 +165,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     closeClosedCaptionScreen: function() {
-      console.log(this.state.screenToShow, this.state.playerState);
       this.state.screenToShow = SCREEN.PLAYING_SCREEN;
       this.renderSkin();
     },
 
-    onClosedCaptionChange: function(options) {//probably remove (options) as well, if don't need the line belov
-      //this.state.ccOptions = options.ccOptions;
+    onClosedCaptionChange: function() {
       this.renderSkin();
     },
 

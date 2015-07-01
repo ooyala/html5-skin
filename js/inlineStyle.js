@@ -320,3 +320,128 @@ var discoveryScreenStyle = {
     fontSize: "10"
   }
 };
+
+
+var closedCaptionScreenStyles ={
+
+  screenStyle: {
+    backgroundColor: "#444444", 
+    height:"100%"
+  },
+
+  captionStyle: {
+    display: "inline-block",
+    height: "30",
+    textAlign: "center",
+    fontSize: "20",
+    color: "white",
+    margin: "15"
+  },
+
+  tabStyle: {
+    display: "inline-block",
+    height: "15",
+    borderRight: "1px solid #afafaf",
+    textAlign: "center",
+    fontSize: "12",
+    paddingRight: "3", 
+    paddingLeft: "3",
+    //this one is changed for tabSelectedStyle
+    color: "#DDDDDD"
+  },
+
+  tabSelectedStyle: {
+    display: "inline-block",
+    height: "15",
+    borderRight: "1px solid #afafaf",
+    textAlign: "center",
+    fontSize: "12",
+    paddingRight: "3",
+    paddingLeft: "3",
+    //properties different from tabStyle
+    color: "#0FDDAF",
+    borderTop: "1px solid #13BF99"
+  },
+
+  lastTabStyle: {
+    display: "inline-block",
+    height: "15",
+    //removed the border on the right
+    textAlign: "center",
+    fontSize: "12",
+    paddingRight: "3",
+    paddingLeft: "3",
+    color: "#DDDDDD"
+  },
+
+  lastTabSelectedStyle: {
+    display: "inline-block",
+    height: "15",
+    //removed the border on the right 
+    textAlign: "center",
+    fontSize: "12",
+    paddingRight: "3",
+    paddingLeft: "3",
+    //properties different from lastTabStyle
+    color: "#0FDDAF", 
+    borderTop: "1px solid #13BF99"
+  },
+
+  itemStyle: {
+    display: "inline-block",
+    textAlign: "center",
+    minWidth :"50",
+    color: "#DDDDDD",
+    marginLeft: "25",
+    padding: "5",
+    paddingLeft: "10",
+    paddingRight: "10"
+  },
+  
+  itemSelectedStyle: {
+    display: "inline-block",
+    textAlign: "center",
+    minWidth :"50",
+    color: "#DDDDDD",
+    marginLeft: "25",
+    padding: "5",
+    paddingLeft: "10",
+    paddingRight: "10",
+    //properties different from itemStyle
+    backgroundColor: "#13BF99",
+    borderRadius: "4"
+  },
+
+  tableStyle:{
+    height: "150"
+  },
+
+  colorItem:{
+    height: "30", 
+    width: "30", 
+    borderRadius:"5"
+  },
+
+  CCPreviewPanelStyle:{
+    height: "120",
+    width:"100%",
+    backgroundColor: "black",
+    position:"absolute",
+    bottom:"0"
+  },
+
+  CCPreviewCaptionStyle: {
+    color:"white",
+    marginLeft: "20",
+    fontSize:"10",
+    paddingTop:"5",
+    paddingBottom:"5"
+  },
+
+  CCPreviewContainerStyle:{
+    marginRight: "20",
+    marginLeft: "20",
+    backgroundColor: "grey",
+    borderRadius: "5"
+  }
+};
