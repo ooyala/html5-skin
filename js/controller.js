@@ -11,6 +11,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
+      "configLoaded": false
     };
 
     this.init();
@@ -38,6 +39,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.skin = React.render(
           React.createElement(Skin, {skinConfig: data, controller: this}), document.getElementById("skin")
         );
+        this.state.configLoaded = true;
+        this.renderSkin();
       }, this));
     },
 
@@ -97,8 +100,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       Skin state -> control skin
     ---------------------------------------------------------------------*/
     renderSkin: function(args) {
-      _.extend(this.state, args);
-      this.skin.switchComponent(this.state);
+      if (this.state.configLoaded) {
+        _.extend(this.state, args);
+        this.skin.switchComponent(this.state);
+      }
     },
 
     /*--------------------------------------------------------------------
@@ -129,7 +134,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           else {
             this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
           }
-          break; 
+          break;
       }
       this.renderSkin();
     },
