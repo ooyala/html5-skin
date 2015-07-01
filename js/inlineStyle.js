@@ -370,7 +370,8 @@ var adScreenStyle = {
     width: "13%",
     fontSize: "10",
     backgroundColor: "white" ,
-    "border-radius": "5px"
+    "border-radius": "5px",
+    "cursor": "pointer",
   },  
 
   learnMoreButtonTextStyle: {
@@ -380,6 +381,10 @@ var adScreenStyle = {
     fontSize: "10",
     "text-align": "center",
     color: "black",
+    "-webkit-user-select": "none",
+    "-moz-user-select": "none",
+    "-ms-user-select": "none",
+    "user-select": "none",
     "-webkit-transform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
@@ -403,6 +408,10 @@ var adScreenStyle = {
     fontSize: "15",
     "text-align": "center",
     color: "black",
+    "-webkit-user-select": "none",
+    "-moz-user-select": "none",
+    "-ms-user-select": "none",
+    "user-select": "none",
     "-webkit-transform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",

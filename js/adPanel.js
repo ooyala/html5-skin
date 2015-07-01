@@ -15,7 +15,7 @@ var AdPanel = React.createClass({
   },
 
   handleLearnMoreButtonClick: function() {
-    var clickThroughUrl = this.props.currentAdItem.click_url;
+    var clickThroughUrl = this.props.currentAdsInfo.currentAdItem.clickUrl;
     this.openUrl(clickThroughUrl);
   },
 
@@ -27,13 +27,22 @@ var AdPanel = React.createClass({
   },
 
   render: function() {
-    var currentAdIndex = 1;//this.props.adsPlaybackProgress[this.props.currentAdItem.time].played;
-    var totalNumberOfAds = 1;//this.props.adsPlaybackProgress[this.props.currentAdItem.time].total;
+    var currentAdIndex = this.props.currentAdsInfo.numberOfPlayedAd;
+    var totalNumberOfAds = this.props.currentAdsInfo.numberOfAds;
 
     var panelStyle = adScreenStyle.panelStyle;
 
     var topBarStyle = adScreenStyle.topBarStyle;
     var adPlaybackInfoTextStyle = adScreenStyle.adPlaybackInfoTextStyle;
+    if (totalNumberOfAds === 0) {
+      adPlaybackInfoTextStyle.visibility = "hidden";
+    }
+
+    var topBarTitle = "Ad Playing";
+    if (this.props.currentAdsInfo.currentAdItem.name !== "Unknown") {
+      topBarTitle = topBarTitle + ": " + this.props.currentAdsInfo.currentAdItem.name;
+    }
+
     var learnMoreButtonStyle = adScreenStyle.learnMoreButtonStyle;
     if (this.props.currentAdsInfo.currentAdItem !== null && 
         this.props.currentAdsInfo.currentAdItem.clickUrl === "") {
@@ -42,6 +51,9 @@ var AdPanel = React.createClass({
     var learnMoreButtonTextStyle = adScreenStyle.learnMoreButtonTextStyle;
 
     var skipButtonStyle = adScreenStyle.skipButtonStyle;
+    if (!this.props.currentAdsInfo.currentAdItem.skippable) {
+      skipButtonStyle.visibility = "hidden";
+    }
     var skipButtonTextStyle = adScreenStyle.skipButtonTextStyle;
 
   
@@ -51,7 +63,7 @@ var AdPanel = React.createClass({
 
         <div style={topBarStyle}>
           <div style={adPlaybackInfoTextStyle}>
-            Ad Playing: Cute Cat:) ({currentAdIndex}/{totalNumberOfAds})  |   {remainTime}
+            {topBarTitle} ({currentAdIndex}/{totalNumberOfAds})  |   {remainTime}
           </div>
 
           <div style={learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
