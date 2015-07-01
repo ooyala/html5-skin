@@ -100,7 +100,7 @@ var ControlBar = React.createClass({
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.url;
     var watermarkImageStyle = controlBarStyle.watermarkImageStyle;
     // 16 is 50% of control bar height right now. Will be fetched from config file later
-    watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.widthHeightRatio * 16;
+    watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * 16;
 
     // TODO: update to the icon from UX once they get it done
     var liveCirleImageUrl = "http://upload.wikimedia.org/wikipedia/commons/f/f1/Ski_trail_rating_symbol_red_circle.png";
