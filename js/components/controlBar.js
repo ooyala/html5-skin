@@ -73,10 +73,12 @@ var ControlBar = React.createClass({
 
   populateControlBar: function() {
     if (this.props.playerState == STATE.PLAYING) {
+        console.log("STATE.PLAYING");
         playClass = "glyphicon glyphicon-pause";
     } else if (this.props.playerState == STATE.END) {
         playClass = "glyphicon glyphicon-repeat";
     } else {
+        console.log("STATE.PAUSE");
         playClass = "glyphicon glyphicon-play";
     }
     var muteClass = (this.state.muted) ?
@@ -100,7 +102,8 @@ var ControlBar = React.createClass({
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
         onClick={this.handleVolumeClick}></span>);
     }
-   
+    
+
     var controlItemTemplates = {
       "playPause": <div className="playPause" style={controlBarStyle.controlBarItemSetting}
         onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>

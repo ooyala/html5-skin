@@ -12,8 +12,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "playerState": null,
       "discoveryData": null,
       "isPlayingAd": false,
-      "currentAdItem": null,
-      "adsPlaybackProgress": {}
+      "currentAdsInfo": {
+        "currentAdItem": null,
+        "numberOfAds": 0
+      },
     };
 
     this.init();
@@ -27,10 +29,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
-      this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));      
+      this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));    
       this.mb.subscribe(OO.EVENTS.WILL_PLAY_ADS, "customerUi", _.bind(this.onWillPlayAds, this));
-      this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
-      this.mb.subscribe(OO.EVENTS.PAUSE_STREAM, "customerUi", _.bind(this.onWillPauseAds, this));
+      this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
+      this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
+      // this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
+      // this.mb.subscribe(OO.EVENTS.PAUSE_STREAM, "customerUi", _.bind(this.onWillPauseAds, this));
       this.mb.subscribe(OO.EVENTS.PLAY_STREAM, "customerUi", _.bind(this.onPlayStream, this));
       this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
     },
@@ -46,13 +50,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.skin = React.render(
           React.createElement(Skin, {skinConfig: data, controller: this}), document.getElementById("skin")
         );
+        this.mb.publish(OO.EVENTS.PLAYER_EMBEDDED);
       }, this));
     },
 
     onContentTreeFetched: function (event, contentTree) {
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
-      this.initAdsPlaybackProgressStructure();
+      // this.initAdsPlaybackProgressStructure();
       this.state.playerState = STATE.START;
       this.renderSkin({"contentTree": contentTree});
     },
@@ -79,30 +84,51 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaying: function() {
-      if (!this.state.isPlayingAd) {
+      if (this.state.isPlayingAd) {
+        this.state.screenToShow = SCREEN.AD_SCREEN;
+      } else {
         this.state.screenToShow = SCREEN.PLAYING_SCREEN;
-        this.state.playerState = STATE.PLAYING;
-        this.renderSkin();
       }
+      this.state.playerState = STATE.PLAYING;
+      this.renderSkin();
     },
 
     onPaused: function() {
-      if (!this.state.isPlayingAd) {
-        this.state.screenToShow = SCREEN.PAUSE_SCREEN;
-        this.state.playerState = STATE.PAUSE;
-        this.renderSkin();
+      if (this.state.playerState == STATE.PAUSE) {
+        debugger;
+        return;
       }
+      if (this.state.isPlayingAd) {
+        // this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+      } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
+      console.log("Should display DISCOVERY_SCREEN on pause");
+        this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+      } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
+        // Remove this comment once pause screen implemented
+      } else {
+        // default
+        this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+      }
+      this.state.playerState = STATE.PAUSE;
+      this.renderSkin();
     },
 
     onPlayed: function() {
-      this.state.screenToShow = SCREEN.END_SCREEN;
+      if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery") {
+        console.log("Should display DISCOVERY_SCREEN on end");
+        this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+      } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "social") {
+        // Remove this comment once pause screen implemented
+      } else {
+        // default
+        this.state.screenToShow = SCREEN.END_SCREEN;
+      }
       this.state.playerState = STATE.END;
       this.renderSkin();
     },
 
     onReportDiscoveryImpression: function(event, discoveryData) {
       console.log("onReportDiscoveryImpression is called");
-      this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
       this.state.discoveryData = discoveryData;
       this.renderSkin();
     },
@@ -114,43 +140,57 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (!this.state.isPlayingAd) {
 
       } else if (this.state.isPlayingAd) {
-        this.updateAdsPlaybackProgress(currentItem.item);
+        // this.updateAdsPlaybackProgress(currentItem.item);
       }
     },
 
-    onWillPlayAds: function(event, adItem) {
+    onWillPlayAds: function(event) {
       console.log("onWillPlayAds is called");
-      this.updateAdsPlaybackProgress(adItem);
-      this.state.isPlayingAd = true;
-      this.state.screenToShow = SCREEN.AD_SCREEN;
-      this.state.playerState = STATE.PLAYING; 
-      this.renderSkin();
+      // this.renderSkin();
     },
 
-    updateAdsPlaybackProgress: function(adItem) {
-      if (this.currentAdItemIsChanged(adItem)) {
-        this.state.currentAdItem = adItem;  
-        var time = adItem.time;
-        var newPlayed = this.state.adsPlaybackProgress[time].played + 1;
-        adPlaybackProgress = {"total": this.state.adsPlaybackProgress[time].total, "played": newPlayed};
-        this.state.adsPlaybackProgress[time] = adPlaybackProgress;
-        console.log("Ads playback progress is updated for adItem = " + adItem);
-      }
+    onAdPodStarted: function(event, numberOfAds) {
+      this.state.currentAdsInfo.numberOfAds = numberOfAds;
     },
 
-    currentAdItemIsChanged: function(adItem) {
-      return (this.state.currentAdItem === null || adItem.ad_embed_code != this.state.currentAdItem.ad_embed_code);
+    onWillPlaySingleAd: function(event, adItem) {
+      console.log("onWillPlaySingleAd is called");
+      setTimeout(function() {
+        
+        this.state.isPlayingAd = true;
+        this.state.screenToShow = SCREEN.AD_SCREEN;
+        this.state.currentAdsInfo.currentAdItem = adItem;
+        this.state.playerState = STATE.PLAYING; 
+        this.renderSkin();
+        console.log("onWillPlaySingleAd is called");
+      }.bind(this), 1);
+      // this.updateAdsPlaybackProgress(adItem);
     },
+
+    // updateAdsPlaybackProgress: function(adItem) {
+    //   if (this.currentAdItemIsChanged(adItem)) {
+    //     this.state.currentAdItem = adItem;  
+    //     var time = adItem.time;
+    //     var newPlayed = this.state.adsPlaybackProgress[time].played + 1;
+    //     adPlaybackProgress = {"total": this.state.adsPlaybackProgress[time].total, "played": newPlayed};
+    //     this.state.adsPlaybackProgress[time] = adPlaybackProgress;
+    //     console.log("Ads playback progress is updated for adItem = " + adItem);
+    //   }
+    // },
+
+    // currentAdItemIsChanged: function(adItem) {
+    //   return (this.state.currentAdItem === null || adItem.ad_embed_code != this.state.currentAdItem.ad_embed_code);
+    // },
 
     /*
     OO.EVENTS.WILL_PAUSE_AD will not be triggered for pause action except for IMA Ads.
     */
-    onWillPauseAds: function(event) {
-      console.log("onWillPauseAds is called from event = " + event);
-      this.state.playerState = STATE.PAUSE;
-      this.state.screenToShow = SCREEN.AD_SCREEN;
-      this.renderSkin();
-    },
+    // onWillPauseAds: function(event) {
+    //   console.log("onWillPauseAds is called from event = " + event);
+    //   this.state.playerState = STATE.PAUSE;
+    //   this.state.screenToShow = SCREEN.AD_SCREEN;
+    //   this.renderSkin();
+    // },
 
     onAdsPlayed: function(event) {
       console.log("onAdsPlayed is called from event = " + event);
@@ -173,6 +213,32 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     ---------------------------------------------------------------------*/
     toggleFullscreen: function(fullscreen) {
       this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, fullscreen);
+    },
+
+    toggleDiscoveryScreen: function() {
+      switch(this.state.playerState) {
+        case STATE.PLAYING:
+          this.togglePlayPause();
+          this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          break;
+        case STATE.PAUSE:
+          if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+            this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+          }
+          else {
+            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          }
+          break;
+        case STATE.END:
+          if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+            this.state.screenToShow = SCREEN.END_SCREEN;
+          }
+          else {
+            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          }
+          break; 
+      }
+      this.renderSkin();
     },
 
     toggleMute: function(muted) {
