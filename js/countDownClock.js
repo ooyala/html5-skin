@@ -13,10 +13,10 @@ var CountDownClock = React.createClass({
     return {
       canvas: null,
       radius: 50,
-      fraction: 2 / this.props.skinConfig.upNextScreen.countDownTime,
+      fraction: 0,
       seconds: (this.props.duration - this.props.currentPlayhead),
       context: null,
-      counterInterval: this.props.skinConfig.upNextScreen.counterInterval,
+      counterInterval: 0.05,
       countDownState: this.props.countDownState,
     };
   },
@@ -24,6 +24,15 @@ var CountDownClock = React.createClass({
   componentWillReceiveProps: function(props) {
     this.state.radius = this.props.radius;
     this.state.seconds = this.props.duration - this.props.currentPlayhead;
+    var timeToShow = 0;
+    if (this.props.skinConfig.upNextScreen.timeToShow > 1) {
+      // time to show is based on seconds
+      this.state.fraction = 2 / this.props.skinConfig.upNextScreen.timeToShow;
+    } else {
+      // time to show is based on percetage of duration
+      this.state.fraction = 2 / (this.props.skinConfig.upNextScreen.timeToShow * this.props.duration);
+    }
+    
   },
 
   componentDidMount: function() {
@@ -42,7 +51,7 @@ var CountDownClock = React.createClass({
     this.state.context = this.canvas.getContext("2d");
     this.state.context.textAlign = 'center';
     this.state.context.textBaseline = 'middle';
-    this.state.context.font = "bold " + (this.state.radius / 2) + "px Arial";
+    this.state.context.font = "bold " + (this.state.radius / 4) + "px Arial";
   },
 
   drawBackground: function() {
@@ -57,13 +66,9 @@ var CountDownClock = React.createClass({
   drawTimer: function() {
     var decimals;
     var percent = this.state.fraction * this.state.seconds + 1.5;
-    console.log("countdown time = " + this.state.seconds);
     this.state.context.fillStyle = 'white';
-    if (this.props.countDownState === "counting") {
-      this.state.context.fillText(this.state.seconds.toFixed(decimals), this.props.width / 2, this.state.radius);
-    } else {
+    this.state.context.fillText(this.state.seconds.toFixed(decimals), this.props.width / 2, this.state.radius);
 
-    }
     this.state.context.beginPath();
     this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius, Math.PI * 1.5, Math.PI * percent, false);
     this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius / 1.2, Math.PI * percent, Math.PI * 1.5, true);
@@ -75,7 +80,7 @@ var CountDownClock = React.createClass({
   },
 
   tick: function() {
-    this.state.seconds -= this.state.counterInterval; // update every 50 ms
+    this.state.seconds -= 0.05; // update every 50 ms
     if (this.state.seconds <= 0) {
       this.state.seconds = 0;
       clearInterval(this.interval);
@@ -87,6 +92,7 @@ var CountDownClock = React.createClass({
   },
 
   updateCanvas: function() {
+    console.log("updateCanvas is called");
     this.clearCanvas();
     this.drawTimer();
   },
