@@ -27,7 +27,7 @@ var AdPanel = React.createClass({
   },
 
   render: function() {
-    var currentAdIndex = this.props.currentAdsInfo.numberOfPlayedAd;
+    var currentAdIndex = this.props.currentAdsInfo.currentAdItem.indexInPod;
     var totalNumberOfAds = this.props.currentAdsInfo.numberOfAds;
 
     var panelStyle = adScreenStyle.panelStyle;

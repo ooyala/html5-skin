@@ -14,7 +14,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isPlayingAd": false,
       "currentAdsInfo": {
         "currentAdItem": null,
-        "numberOfPlayedAd": 0,
         "numberOfAds": 0
       },
     };
@@ -152,7 +151,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onWillPlaySingleAd: function(event, adItem) {
       console.log("onWillPlaySingleAd is called with adItem = " + adItem); 
       this.state.currentAdsInfo.currentAdItem = adItem;
-      this.state.currentAdsInfo.numberOfPlayedAd += 1;
       this.state.playerState = STATE.PLAYING; 
       this.renderSkin();
     },
