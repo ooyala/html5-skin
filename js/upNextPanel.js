@@ -14,6 +14,10 @@ var UpNextPanel = React.createClass({
     this.state.width = 20;
   },
   
+  handleDismissButtonClick: function() {
+    console.log("Up next panel dismiss button clicked");
+  },
+
   render: function() {
     var panelStyle = upNextPanelStyle.panelStyle;
 
@@ -36,7 +40,8 @@ var UpNextPanel = React.createClass({
     var contentDescription = "There’s a lot going on in space. More than you can imagine. This movie for example. This movie happens in space. It’s pretty ama....";//this.props.upNextInfo.upNextData.description;
     
     var dismissButtonStyle = upNextPanelStyle.dismissButton;
-    
+    var dismissButtonTextStyle = upNextPanelStyle.dismissButtonText;
+
     document.getElementsByClassName("discovery_toaster")[0].style.display="none"; 
     return (
       <div style={panelStyle}>
@@ -62,7 +67,12 @@ var UpNextPanel = React.createClass({
           </div>
         </div>
 
-        <div onClick={this.closeUpNextPanel} style={dismissButtonStyle}>X</div>
+        <div style={dismissButtonStyle} onClick={this.handleDismissButtonClick}>
+          <div style={dismissButtonTextStyle}>
+           Dismiss
+          </div>
+        </div>
+
       </div>
     );
   }

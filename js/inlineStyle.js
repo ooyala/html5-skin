@@ -414,15 +414,27 @@ var upNextPanelStyle = {
   },
 
   dismissButton: {
-    position: "absolute", 
-    top:0, 
-    right: 0, 
-    height: "25px", 
-    width: "25px", 
-    backgroundColor: "#4389ff", 
-    color: "white", 
-    textAlign: "center",
-    lineHeight: "25px"
+    position: "absolute",
+    right: "2%",  
+    top: "15%",
+    height: "40%",
+    width: "13%",
+    fontSize: "10",
+    backgroundColor: "black",
+    "border": "1px solid white",
+    "border-radius": "5px"
+  },  
+
+  dismissButtonText: {
+    position: "absolute",
+    top: "50%",
+    width: "100%",
+    fontSize: "20",
+    color: "white",
+    "text-align": "center",
+    "-webkit-transform": "translateY(-50%)",
+    "-ms-transform": "translateY(-50%)",
+    "transform": "translateY(-50%)",
   },
 };
 
