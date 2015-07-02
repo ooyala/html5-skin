@@ -333,76 +333,96 @@ var discoveryScreenStyle = {
 var upNextPanelStyle = {
   panelStyle: {
     position: "absolute",
-    width: "30%",
+    width: "100%",
     height: "25%",
     right: "0",
     bottom: "32px",
-    backgroundColor: "#444444"
+    backgroundColor: "black"
   },
 
-  upNextInfo: {
+  contentImageContainer: {
     position: "absolute",
+    top: "0",
+    left: "0",
+    width: "20%",
+    height: "100%"
+  },
+
+  contentImage: {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%"
+  },
+
+  playButton: {
+    icon: "glyphicon glyphicon-play",
+    style: {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      fontSize: "25",
+      transform: "translate(-50%, -50%)",
+      opacity: 1,
+      color: "white",
+      transition: "opacity .25s ease-in-out"
+    }
+  },
+
+  contentMetadataContainer: {
+    position: "absolute",
+    top: "0",
+    left: "22%",
+    width: "78%",
     height: "100%",
-    width: "40%",
-    left: "0"
   },
 
   upNextTitle: {
-    position:"relative",
-    margin: "10px",
-    width: "100%",
-    height: "20%",
-    fontSize: "15",
-    color: "white"
-  },
-
-  contentName: {
-    position:"relative",
-    margin: "10px",
-    width: "100%",
-    height: "80%",
-    fontSize: "10",
-    color: "white"
-  },
-
-  contentBlock: {
     position: "absolute",
-    width: "60%",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "40%",
+    color: "white",
+  },
+
+  clockContainerStyle: {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "34.5",
+    height: "34.5",
+  },
+
+  upNextTitleText: {
+    position:"absolute",
+    left:40,
+    right: 0,
     height: "100%",
-    right: "0"
+    fontSize: 20,
   },
 
-  contentBlockImageContainer: {
+  contentDescription: {
     position: "absolute",
-    top: "0",
+    bottom: "0",
     left: "0",
-    width: "100%",
-    height: "100%"
-  },
-
-  contentBlockImage: {
-    position: "absolute",
-    top: "0",
-    left: "0",
-    width: "100%",
-    height: "100%"
-  },
-
-  countDownClock: {
-    position: "absolute",
-    top: "10%",
-    left: "10%",
-    width: "80%",
-    height: "80%",
-    right: "0"
-  },
-
-  playPauseImage: {
-    position: "absolute",
-    top: "20%",
-    left: "30%",
-    width: "40%",
+    width: "70%",
     height: "60%",
+    color: "white",
+    fontSize: 10,
+  },
+
+  dismissButton: {
+    position: "absolute", 
+    top:0, 
+    right: 0, 
+    height: "25px", 
+    width: "25px", 
+    backgroundColor: "#4389ff", 
+    color: "white", 
+    textAlign: "center",
+    lineHeight: "25px"
   },
 };
 

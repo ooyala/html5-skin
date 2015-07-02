@@ -30,19 +30,11 @@ var Skin = React.createClass({
       duration: newDuration,
       buffered: newBuffered
     });
-    //for playhead updates we are likely in the same state, so skip the
-    // shouldComponentUpdate check
-    var remainingTime = this.state.duration - this.state.currentPlayhead;
-    console.log("remainingTime = " + remainingTime);
-    if (this.props.skinConfig.upNextScreen.mode === "on" && 
-        remainingTime <= this.props.skinConfig.upNextScreen.countDownTime &&
-        this.state.duration > this.props.skinConfig.upNextScreen.countDownTime)  {
-      this.state.screenToShow = SCREEN.UP_NEXT_SCREEN;
-    }
     this.forceUpdate();
   },
 
   render: function() {
+    console.log("screenToShow = " + this.state.screenToShow);
     switch (this.state.screenToShow) {
       case SCREEN.START_SCREEN:
         return (
@@ -85,8 +77,7 @@ var Skin = React.createClass({
           contentTree={this.state.contentTree}
           currentPlayhead={this.state.currentPlayhead}
           duration={this.state.duration}
-          buffered={this.state.buffered}
-          upNextData={this.state.upNextData}
+          upNextInfo={this.state.upNextInfo}
           playerState={this.state.playerState}
           ref="playScreen" />
         );

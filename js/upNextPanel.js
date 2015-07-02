@@ -10,37 +10,59 @@
 
 var UpNextPanel = React.createClass({
   componentDidMount: function() {
-    // this.state.radius = this.getDOMNode().clientHeight * 0.4;
-    // this.state.width = this.getDOMNode().clientWidth * 0.6 * 0.8;
+    this.state.radius = this.getDOMNode().clientHeight * 0.4;
+    this.state.width = 20;
   },
   
   render: function() {
     var panelStyle = upNextPanelStyle.panelStyle;
-    var upNextInfoStyle = upNextPanelStyle.upNextInfo;
-    var upNextTitleStyle = upNextPanelStyle.upNextTitle;
-    var contentNameStyle = upNextPanelStyle.contentName;
-    var contentBlockStyle = upNextPanelStyle.contentBlock;
-    var countDownClockStyle = upNextPanelStyle.countDownClock;
-    var contentBlockImageContainerStyle = upNextPanelStyle.contentBlockImageContainer;
-    var contentBlockImageStyle = upNextPanelStyle.contentBlockImage;
-    var contentName = this.props.upNextData.name;
 
-    // This is for turning off the old discovery panel.
-    // TODO: Remove the following line when we drop the old discovery panel in mjolnir side.
+    var contentImageContainerStyle = upNextPanelStyle.contentImageContainer;
+    var contentImageStyle = upNextPanelStyle.contentImage;
+
+    var playButtonClass = upNextPanelStyle.playButton.icon;
+    var playButtonStyle = upNextPanelStyle.playButton.style;
+
+
+    var contentMetadataContainerStyle = upNextPanelStyle.contentMetadataContainer;
+    var upNextTitleStyle = upNextPanelStyle.upNextTitle;
+
+    var clockContainerStyle = upNextPanelStyle.clockContainerStyle;
+    var upNextTitleTextStyle = upNextPanelStyle.upNextTitleText;
+    var contentTile = this.props.upNextInfo.upNextData.name;
+
+
+    var contentDescriptionStyle = upNextPanelStyle.contentDescription;
+    var contentDescription = "There’s a lot going on in space. More than you can imagine. This movie for example. This movie happens in space. It’s pretty ama....";//this.props.upNextInfo.upNextData.description;
+    
+    var dismissButtonStyle = upNextPanelStyle.dismissButton;
+    
     document.getElementsByClassName("discovery_toaster")[0].style.display="none"; 
     return (
       <div style={panelStyle}>
-        <div style={upNextInfoStyle}>
-          <div style={upNextTitleStyle}>Up Next</div>
-          <div style={contentNameStyle}>{contentName}</div>
+        <div style={contentImageContainerStyle}>
+          <img style={contentImageStyle} src={this.props.upNextInfo.upNextData.preview_image_url}></img>          
+          <span className={playButtonClass} style={playButtonStyle} aria-hidden="true" onClick={this.handleClick}></span>
         </div>
-        <div style={contentBlockStyle}>
-          <div style={contentBlockImageContainerStyle}>
-             <img style={contentBlockImageStyle} src={this.props.upNextData.preview_image_url}></img>
+
+        <div style={contentMetadataContainerStyle}>
+          <div style={upNextTitleStyle}>
+            <div style={upNextTitleTextStyle}>
+              Up Next: {contentTile}
+            </div>
+
+            <CountDownClock {...this.props} 
+            radius={16}
+            width={38} 
+            countDownState={"counting"}/>
           </div>
-          
-          <UpNextClockBlock {...this.props} />
+
+          <div style={contentDescriptionStyle}>
+            {contentDescription}
+          </div>
         </div>
+
+        <div onClick={this.closeUpNextPanel} style={dismissButtonStyle}>X</div>
       </div>
     );
   }

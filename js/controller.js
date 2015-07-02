@@ -11,7 +11,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
-      "upNextData": null,
+      "upNextInfo": {
+        "upNextData": null,
+        "countDownFinished": false
+      },
       "configLoaded": false
     };
 
@@ -50,16 +53,35 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
       this.state.playerState = STATE.START;
-      this.upNextData = null;
+      this.state.upNextInfo.upNextData = null;
       this.renderSkin({"contentTree": contentTree});
     },
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
-      console.log(arguments);
+      if ( this.state.screenToShow !== SCREEN.AD_SCREEN &&
+          this.skin.props.skinConfig.upNextScreen.showUpNext)  {
+        var timeToShow = 0;
+        if (this.skin.props.skinConfig.upNextScreen.timeToShow > 1) {
+          // time to show is based on seconds
+          timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
+        } else {
+          // time to show is based on percetage of duration
+          timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow * duration;
+        }
+        if (duration - currentPlayhead <= timeToShow) {
+          this.state.screenToShow = SCREEN.UP_NEXT_SCREEN;
+        }
+      } else if (this.state.playerState === STATE.PLAYING) {
+        this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+      } else if (this.state.playerState === STATE.PAUSE) {
+        this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+      }
       this.skin.updatePlayhead(currentPlayhead, duration, buffered);
+      this.renderSkin();
     },
 
     onPlaying: function() {
+      this.setVolume(0);
       this.state.screenToShow = SCREEN.PLAYING_SCREEN;
       this.state.playerState = STATE.PLAYING;
       this.renderSkin();
@@ -67,7 +89,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPaused: function() {
       if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
-      console.log("Should display DISCOVERY_SCREEN on pause");
         this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
       } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
         // Remove this comment once pause screen implemented
@@ -101,7 +122,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onRelatedVideosFetched: function(event, relatedVideos) {
       console.log("onRelatedVideosFetched is called");
-      this.state.upNextData = relatedVideos.videos[0];
+      this.state.upNextInfo.upNextData = relatedVideos.videos[0];
       this.renderSkin();
     },
 

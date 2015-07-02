@@ -14,7 +14,7 @@ var CountDownClock = React.createClass({
       canvas: null,
       radius: 50,
       fraction: 2 / this.props.skinConfig.upNextScreen.countDownTime,
-      seconds: this.props.duration - this.props.currentPlayhead,
+      seconds: (this.props.duration - this.props.currentPlayhead),
       context: null,
       counterInterval: this.props.skinConfig.upNextScreen.counterInterval,
       countDownState: this.props.countDownState,
@@ -23,6 +23,7 @@ var CountDownClock = React.createClass({
 
   componentWillReceiveProps: function(props) {
     this.state.radius = this.props.radius;
+    this.state.seconds = this.props.duration - this.props.currentPlayhead;
   },
 
   componentDidMount: function() {
@@ -56,7 +57,7 @@ var CountDownClock = React.createClass({
   drawTimer: function() {
     var decimals;
     var percent = this.state.fraction * this.state.seconds + 1.5;
-
+    console.log("countdown time = " + this.state.seconds);
     this.state.context.fillStyle = 'white';
     if (this.props.countDownState === "counting") {
       this.state.context.fillText(this.state.seconds.toFixed(decimals), this.props.width / 2, this.state.radius);
@@ -100,7 +101,7 @@ var CountDownClock = React.createClass({
   startUpNext: function() {
     console.log("startUpNext");
     var eventData = {
-      "clickedVideo" : this.props.upNextData,
+      "clickedVideo" : this.props.upNextInfo.upNextData,
       "custom" : {"source": SCREEN.UP_NEXT_SCREEN}
     };
     this.props.controller.sendDiscoveryClickEvent(eventData);
