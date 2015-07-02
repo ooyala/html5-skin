@@ -50,6 +50,59 @@ var startScreenStyle = {
   }
 };
 
+var pauseScreenStyle = {
+  style: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    overflow: "hidden",
+  },
+  infoPanel: {
+    style: {
+      position: "absolute",
+      width: "100%"
+    },
+    title: {
+      style: {
+        fontSize: "32px",
+        fontWeight: "bold",
+        maxWidth: "70%",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        color: "inherit"
+      }
+    },
+    description: {
+      style: {
+        fontSize: "24",
+        maxWidth: "70%",
+        overflow: "visible",
+        color: "inherit"
+      }
+    }
+  },
+  pauseIcon: {
+    icon: "glyphicon glyphicon-pause",
+    style: {
+      fontSize: "24",
+      transform: "translate(-50%, -50%)",
+      position: "absolute",
+      opacity: 1,
+      transition: "font 2s, opacity 2s"
+    }
+  },
+  fading: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    overflow: "hidden",
+    backgroundColor: "black",
+    opacity: "0",
+    transition: "opacity 2s"
+  }
+};
+
 var endScreenStyle = {
   style: {
     width: "100%",
