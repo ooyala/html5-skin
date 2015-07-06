@@ -12,7 +12,7 @@ var CountDownClock = React.createClass({
   getInitialState: function() {
     return {
       canvas: null,
-      radius: 50,
+      radius: 16,
       fraction: 0,
       seconds: (this.props.duration - this.props.currentPlayhead),
       context: null,
@@ -39,6 +39,11 @@ var CountDownClock = React.createClass({
       this.setupCountDownTimer();
   },
 
+  componentWillUnmount: function() {
+    console.log("CountDownClock is componentWillUnmount");
+    clearInterval(this.interval);
+  },
+
   setupCountDownTimer: function() {
     this.setupCanvas();
     this.drawBackground();
@@ -51,7 +56,7 @@ var CountDownClock = React.createClass({
     this.state.context = this.canvas.getContext("2d");
     this.state.context.textAlign = 'center';
     this.state.context.textBaseline = 'middle';
-    this.state.context.font = "bold " + (this.state.radius / 4) + "px Arial";
+    this.state.context.font = "bold 12px Arial";
   },
 
   drawBackground: function() {
@@ -67,7 +72,7 @@ var CountDownClock = React.createClass({
     var decimals;
     var percent = this.state.fraction * this.state.seconds + 1.5;
     this.state.context.fillStyle = 'white';
-    this.state.context.fillText(this.state.seconds.toFixed(decimals), this.props.width / 2, this.state.radius);
+    this.state.context.fillText(this.state.seconds.toFixed(decimals), this.props.width / 2, this.state.radius, 100);
 
     this.state.context.beginPath();
     this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius, Math.PI * 1.5, Math.PI * percent, false);
@@ -80,15 +85,15 @@ var CountDownClock = React.createClass({
   },
 
   tick: function() {
-    this.state.seconds -= 0.05; // update every 50 ms
-    if (this.state.seconds <= 0) {
+    if (this.state.seconds <= 0 || this.props.playerState === STATE.END) {
       this.state.seconds = 0;
       clearInterval(this.interval);
       this.startUpNext();
-    } else if (this.props.countDownState !== "counting") {
-      clearInterval(this.interval);
+    } 
+    else if (this.props.playerState === STATE.PLAYING) {
+      this.state.seconds -= 0.05; // update every 50 ms
+      this.updateCanvas();
     }
-    this.updateCanvas();
   },
 
   updateCanvas: function() {
