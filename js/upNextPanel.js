@@ -13,9 +13,11 @@ var UpNextPanel = React.createClass({
     this.state.radius = this.getDOMNode().clientHeight * 0.4;
     this.state.width = 20;
   },
-  
-  handleDismissButtonClick: function() {
+    
+  handleDismissButtonClick: function(event) {
     console.log("Up next panel dismiss button clicked");
+    event.stopPropagation(); // W3C
+    event.cancelBubble = true; // IE
   },
 
   render: function() {
@@ -37,7 +39,7 @@ var UpNextPanel = React.createClass({
 
 
     var contentDescriptionStyle = upNextPanelStyle.contentDescription;
-    var contentDescription = "There’s a lot going on in space. More than you can imagine. This movie for example. This movie happens in space. It’s pretty ama....";//this.props.upNextInfo.upNextData.description;
+    var contentDescription = "There is a lot going on in space. More than you can imagine. This movie for example. This movie happens in space. It’s pretty ama....";//this.props.upNextInfo.upNextData.description;
     
     var dismissButtonStyle = upNextPanelStyle.dismissButton;
     var dismissButtonTextStyle = upNextPanelStyle.dismissButtonText;
@@ -58,8 +60,7 @@ var UpNextPanel = React.createClass({
 
             <CountDownClock {...this.props} 
             radius={16}
-            width={38} 
-            countDownState={"counting"}/>
+            width={38}/>
           </div>
 
           <div style={contentDescriptionStyle}>
