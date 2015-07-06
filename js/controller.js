@@ -16,7 +16,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "countDownFinished": false,
         "countDownCancelled": false,
       },
-      "configLoaded": false
+      "configLoaded": false,
+      "autoplay": false,
     };
 
     this.init();
@@ -26,6 +27,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     init: function () {
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
+      this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
@@ -58,6 +60,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin({"contentTree": contentTree});
     },
 
+    onPlaybackReady: function (event) {
+      if (this.state.autoplay) {
+        this.togglePlayPause();
+      }
+    },
+
     resetUpNextInfo: function () {
       this.state.upNextInfo.upNextData = null;
       this.state.upNextInfo.countDownFinished = false;
@@ -76,7 +84,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow * duration;
         }
         if (duration - currentPlayhead <= timeToShow &&
-            !this.state.upNextInfo.countDownCancelled) {
+            !this.state.upNextInfo.countDownCancelled &&
+            this.state.upNextInfo.upNextData !== null) {
           this.state.screenToShow = SCREEN.UP_NEXT_SCREEN;
         }
       } else if (this.state.playerState === STATE.PLAYING) {
@@ -207,6 +216,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     sendDiscoveryClickEvent: function(selectedContentData) {
       this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
+      this.state.autoplay = true;
     },
 
     upNextDismissButtonClicked: function() {

@@ -16,6 +16,21 @@ var UpNextPanel = React.createClass({
     this.props.controller.upNextDismissButtonClicked();
   },
 
+  handleStartUpNextClick: function(event) {
+    console.log("Up next panel start button clicked");
+    event.stopPropagation(); // W3C
+    event.cancelBubble = true; // IE
+
+    // Use the same way as sending out the click event on discovery content
+    var eventData = {
+          "clickedVideo" : this.props.upNextInfo.upNextData,
+          "custom" : {"source": "upNextScreen", 
+                      "countdown": 0,
+                      "autoplay": true }
+        };
+    this.props.controller.sendDiscoveryClickEvent(eventData);
+  },
+
   render: function() {
     var panelStyle = upNextPanelStyle.panelStyle;
 
@@ -43,7 +58,7 @@ var UpNextPanel = React.createClass({
     document.getElementsByClassName("discovery_toaster")[0].style.display="none"; 
     return (
       <div style={panelStyle}>
-        <div style={contentImageContainerStyle}>
+        <div style={contentImageContainerStyle} onClick={this.handleStartUpNextClick}>
           <img style={contentImageStyle} src={this.props.upNextInfo.upNextData.preview_image_url}></img>          
           <span className={playButtonClass} style={playButtonStyle} aria-hidden="true" onClick={this.handleClick}></span>
         </div>
