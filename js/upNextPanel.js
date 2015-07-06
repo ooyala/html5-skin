@@ -50,7 +50,7 @@ var UpNextPanel = React.createClass({
 
 
     var contentDescriptionStyle = upNextPanelStyle.contentDescription;
-    var contentDescription = "There is a lot going on in space. More than you can imagine. This movie for example. This movie happens in space. It’s pretty ama....";//this.props.upNextInfo.upNextData.description;
+    var contentDescription = this.props.upNextInfo.upNextData.description;
     
     var dismissButtonStyle = upNextPanelStyle.dismissButton;
     var dismissButtonTextStyle = upNextPanelStyle.dismissButtonText;
