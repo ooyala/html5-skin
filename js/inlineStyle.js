@@ -373,18 +373,18 @@ var upNextPanelStyle = {
   contentMetadataContainer: {
     position: "absolute",
     top: "0",
-    left: "22%",
+    left: "20%",
     width: "78%",
     height: "100%",
   },
 
   upNextTitle: {
     position: "absolute",
-    top: "0",
-    left: "0",
+    top: "5",
+    left: "10",
     width: "100%",
     height: "40%",
-    color: "white",
+    color: "white"
   },
 
   clockContainerStyle: {
