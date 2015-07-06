@@ -431,6 +431,8 @@ var upNextPanelStyle = {
     width: "100%",
     fontSize: "20",
     color: "white",
+    "cursor": "pointer",
+
     "text-align": "center",
     "-webkit-transform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",

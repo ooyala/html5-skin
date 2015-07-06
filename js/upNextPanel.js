@@ -9,15 +9,11 @@
 */
 
 var UpNextPanel = React.createClass({
-  componentDidMount: function() {
-    this.state.radius = this.getDOMNode().clientHeight * 0.4;
-    this.state.width = 20;
-  },
-    
   handleDismissButtonClick: function(event) {
     console.log("Up next panel dismiss button clicked");
     event.stopPropagation(); // W3C
     event.cancelBubble = true; // IE
+    this.props.controller.upNextDismissButtonClicked();
   },
 
   render: function() {

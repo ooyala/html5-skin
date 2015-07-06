@@ -13,7 +13,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "discoveryData": null,
       "upNextInfo": {
         "upNextData": null,
-        "countDownFinished": false
+        "countDownFinished": false,
+        "countDownCancelled": false,
       },
       "configLoaded": false
     };
@@ -50,11 +51,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
+      this.resetUpNextInfo();
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
       this.state.playerState = STATE.START;
-      this.state.upNextInfo.upNextData = null;
       this.renderSkin({"contentTree": contentTree});
+    },
+
+    resetUpNextInfo: function () {
+      this.state.upNextInfo.upNextData = null;
+      this.state.upNextInfo.countDownFinished = false;
+      this.state.upNextInfo.countDownCancelled = false;
     },
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
@@ -68,7 +75,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           // time to show is based on percetage of duration
           timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow * duration;
         }
-        if (duration - currentPlayhead <= timeToShow) {
+        if (duration - currentPlayhead <= timeToShow &&
+            !this.state.upNextInfo.countDownCancelled) {
           this.state.screenToShow = SCREEN.UP_NEXT_SCREEN;
         }
       } else if (this.state.playerState === STATE.PLAYING) {
@@ -199,7 +207,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     sendDiscoveryClickEvent: function(selectedContentData) {
       this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
-    }
+    },
+
+    upNextDismissButtonClicked: function() {
+      this.state.upNextInfo.countDownCancelled = true;
+      this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+      this.state.playerState = STATE.PLAYING;
+      this.renderSkin();
+    },
   };
 
   return Html5Skin;
