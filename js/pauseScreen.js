@@ -44,7 +44,7 @@ var PauseScreen = React.createClass({
   },
 
   render: function() {
-    var screenStyle = this.props.style;
+    var screenStyle = pauseScreenStyle;
     var pauseClass = screenStyle.pauseIcon.icon;
     var pauseStyle = screenStyle.pauseIcon.style;
     var infoStyle = screenStyle.infoPanel;
