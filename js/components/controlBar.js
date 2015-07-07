@@ -87,9 +87,7 @@ var ControlBar = React.createClass({
       "glyphicon glyphicon-resize-small" : "glyphicon glyphicon-resize-full";
 
     var totalTime = 0;
-    if (this.props.contentTree && this.props.contentTree.duration) {
-      totalTime = Utils.formatSeconds(this.props.contentTree.duration / 1000);
-    }
+    totalTime = Utils.formatSeconds(this.props.duration);
 
     var volumeBars = [];
     for (var i=0; i<10; i++) {
@@ -103,7 +101,6 @@ var ControlBar = React.createClass({
         onClick={this.handleVolumeClick}></span>);
     }
     
-
     var controlItemTemplates = {
       "playPause": <div className="playPause" style={controlBarStyle.controlBarItemSetting}
         onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>

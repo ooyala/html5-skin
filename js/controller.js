@@ -74,7 +74,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
       // console.log(arguments);
-      this.setVolume(0);
       this.skin.updatePlayhead(currentPlayhead, duration, buffered);
     },
 
@@ -129,8 +128,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onWillPlayAds: function(event) {
       console.log("onWillPlayAds is called");
+      /*
       this.state.screenToShow = SCREEN.AD_SCREEN;
       this.state.isPlayingAd = true;
+      */
     },
 
     onAdsPlayed: function(event) {
@@ -149,9 +150,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onWillPlaySingleAd: function(event, adItem) {
-      console.log("onWillPlaySingleAd is called with adItem = " + adItem); 
+      console.log("onWillPlaySingleAd is called with adItem = " + adItem);
+      this.state.screenToShow = SCREEN.AD_SCREEN;
+      this.state.isPlayingAd = true;
       this.state.currentAdsInfo.currentAdItem = adItem;
-      this.state.playerState = STATE.PLAYING; 
+      this.state.playerState = STATE.PLAYING;
+      this.skin.state.currentPlayhead = 0; 
       this.renderSkin();
     },
 
@@ -194,7 +198,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           break;
         case STATE.PAUSE:
           if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
-            this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+            this.state.screenToShow = SCREEN.PAUSE_SCREEN;
           }
           else {
             this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;

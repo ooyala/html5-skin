@@ -56,14 +56,13 @@ var AdPanel = React.createClass({
     }
     var skipButtonTextStyle = adScreenStyle.skipButtonTextStyle;
 
-  
-    var remainTime = Utils.formatSeconds(parseInt(this.props.currentPlayhead));//Utils.formatSeconds(parseInt(this.props.currentAdsInfo.currentAdItem.duration / 1000 -  this.props.currentPlayhead));
+    var remainingTime = Utils.formatSeconds(parseInt(this.props.currentAdsInfo.currentAdItem.duration -  this.props.currentPlayhead));
     return (
       <div style={panelStyle}>
 
         <div style={topBarStyle}>
           <div style={adPlaybackInfoTextStyle}>
-            {topBarTitle} ({currentAdIndex}/{totalNumberOfAds})  |   {remainTime}
+            {topBarTitle} ({currentAdIndex}/{totalNumberOfAds})  |   {remainingTime}
           </div>
 
           <div style={learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>

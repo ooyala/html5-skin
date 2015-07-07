@@ -58,8 +58,8 @@ var Skin = React.createClass({
           <EndScreen {...this.props} 
           contentTree={this.state.contentTree} 
           discoveryData={this.state.discoveryData}
-          currentPlayhead={this.state.currentPlayhead}
-          duration={this.state.duration}
+          currentPlayhead={this.state.contentTree.duration/1000}
+          duration={this.state.contentTree.duration/1000}
           buffered={this.state.buffered} 
           style={endScreenStyle}
           ref="endScreen" />
@@ -75,11 +75,15 @@ var Skin = React.createClass({
           ref="adScreen" />
         );
       case SCREEN.DISCOVERY_SCREEN:
+        var tempCurrPlayhead = this.state.currentPlayhead;
+        if(this.state.playerState === STATE.END) {
+            tempCurrPlayhead =  this.state.contentTree.duration/1000;
+        }
         return (
           <DiscoveryScreen {...this.props} 
               contentTree={this.state.contentTree}
-              currentPlayhead={this.state.currentPlayhead}
-              duration={this.state.duration}
+              currentPlayhead={tempCurrPlayhead}
+              duration={this.state.contentTree.duration/1000}
               buffered={this.state.buffered}
               style={discoveryScreenStyle}
               discoveryData={this.state.discoveryData}
