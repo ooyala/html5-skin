@@ -14,10 +14,7 @@ var UpNextScreen = React.createClass({
   },
 
   handlePlayerMouseUp: function(event) {
-    // pause or play the video if the skin is clicked
-    console.log("Screen clicked on UpNextScreen");
     this.props.controller.togglePlayPause();
-
   },
   
   showControlBar: function() {
@@ -28,11 +25,9 @@ var UpNextScreen = React.createClass({
     this.setState({controlBarVisible: false});
   },
 
-
   render: function() {
     //Fill in all the dynamic style values we need
     var controlBarHeight = 32;
-
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
         onClick={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>

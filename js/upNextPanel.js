@@ -41,14 +41,14 @@ var UpNextPanel = React.createClass({
     var playButtonClass = upNextPanelStyle.playButton.icon;
     var playButtonStyle = upNextPanelStyle.playButton.style;
 
-
     var contentMetadataContainerStyle = upNextPanelStyle.contentMetadataContainer;
+    
     var upNextTitleStyle = upNextPanelStyle.upNextTitle;
 
     var clockContainerStyle = upNextPanelStyle.clockContainerStyle;
+    
     var upNextTitleTextStyle = upNextPanelStyle.upNextTitleText;
     var contentTile = this.props.upNextInfo.upNextData.name;
-
 
     var contentDescriptionStyle = upNextPanelStyle.contentDescription;
     var contentDescription = this.props.upNextInfo.upNextData.description;
@@ -56,7 +56,6 @@ var UpNextPanel = React.createClass({
     var dismissButtonStyle = upNextPanelStyle.dismissButton;
     var dismissButtonTextStyle = upNextPanelStyle.dismissButtonText;
 
-    document.getElementsByClassName("discovery_toaster")[0].style.display="none"; 
     return (
       <div style={panelStyle}>
         <div style={contentImageContainerStyle} onClick={this.handleStartUpNextClick}>
@@ -70,9 +69,7 @@ var UpNextPanel = React.createClass({
               Up Next: {contentTile}
             </div>
 
-            <CountDownClock {...this.props} 
-            radius={16}
-            width={38}/>
+            <CountDownClock {...this.props} />
           </div>
 
           <div style={contentDescriptionStyle}>
