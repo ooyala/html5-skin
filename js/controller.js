@@ -55,7 +55,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
       this.state.playerState = STATE.START;
-      this.renderSkin({"contentTree": contentTree});
+      this.renderSkin({"contentTree": contentTree});  
     },
 
     resetUpNextInfo: function () {
@@ -67,19 +67,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
       if ( this.state.screenToShow !== SCREEN.AD_SCREEN &&
           this.skin.props.skinConfig.upNextScreen.showUpNext)  {
-        var timeToShow = 0;
-        if (this.skin.props.skinConfig.upNextScreen.timeToShow > 1) {
-          // time to show is based on seconds
-          timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
-        } else {
-          // time to show is based on percetage of duration
-          timeToShow = (1 - this.skin.props.skinConfig.upNextScreen.timeToShow) * duration;
-        }
-        if (duration - currentPlayhead <= timeToShow &&
-            !this.state.upNextInfo.countDownCancelled &&
-            this.state.upNextInfo.upNextData !== null) {
-          this.state.screenToShow = SCREEN.UP_NEXT_SCREEN;
-        }
+        this.showUpNextScreenWhenReady(currentPlayhead, duration);
       } else if (this.state.playerState === STATE.PLAYING) {
         this.state.screenToShow = SCREEN.PLAYING_SCREEN;
       } else if (this.state.playerState === STATE.PAUSE) {
@@ -87,6 +75,22 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       this.skin.updatePlayhead(currentPlayhead, duration, buffered);
       this.renderSkin();
+    },
+
+    showUpNextScreenWhenReady: function(currentPlayhead, duration) {
+      var timeToShow = 0;
+      if (this.skin.props.skinConfig.upNextScreen.timeToShow > 1) {
+        // time to show is based on seconds
+        timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
+      } else {
+        // time to show is based on percetage of duration
+        timeToShow = (1 - this.skin.props.skinConfig.upNextScreen.timeToShow) * duration;
+      }
+      if (duration - currentPlayhead <= timeToShow &&
+          !this.state.upNextInfo.countDownCancelled &&
+          this.state.upNextInfo.upNextData !== null) {
+        this.state.screenToShow = SCREEN.UP_NEXT_SCREEN;
+      }
     },
 
     onPlaying: function() {
