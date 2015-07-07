@@ -89,7 +89,7 @@ var pauseScreenStyle = {
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
-      transition: "font 2s, opacity 2s"
+      transition: "font 1s, opacity 1s"
     }
   },
   fading: {
@@ -99,7 +99,7 @@ var pauseScreenStyle = {
     overflow: "hidden",
     backgroundColor: "black",
     opacity: "0",
-    transition: "opacity 2s"
+    transition: "opacity 1s"
   }
 };
 

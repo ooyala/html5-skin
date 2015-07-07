@@ -45,29 +45,29 @@ var PauseScreen = React.createClass({
 
   render: function() {
     var screenStyle = this.props.style;
-    var playClass = screenStyle.pauseIcon.icon;
-    var playStyle = screenStyle.pauseIcon.style;
+    var pauseClass = screenStyle.pauseIcon.icon;
+    var pauseStyle = screenStyle.pauseIcon.style;
     var infoStyle = screenStyle.infoPanel;
 
     // Accent Color
-    playStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.accentColor;
+    pauseStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.accentColor;
     infoStyle.style.color = this.props.skinConfig.accentColor;
 
     // PlayButton position, defaulting to centered
     if (this.props.skinConfig.pauseScreen.showPauseIcon) {
-      playStyle.top = "50%";
-      playStyle.left = "50%";
+      pauseStyle.top = "50%";
+      pauseStyle.left = "50%";
       if (this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("top") > -1)
-        playStyle.top = "15%";
+        pauseStyle.top = "15%";
       if (this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1)
-        playStyle.top = "80%";
+        pauseStyle.top = "80%";
       if (this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1)
-        playStyle.left = "10%";
+        pauseStyle.left = "10%";
       if (this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1)
-        playStyle.left = "90%";
+        pauseStyle.left = "90%";
     }
     else {
-      playStyle.display = "none";
+      pauseStyle.display = "none";
     }
 
     // metadata visibility
@@ -101,7 +101,7 @@ var PauseScreen = React.createClass({
     return (
       <div onMouseUp={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>
-        <span className={playClass} style={playStyle} aria-hidden="true"></span>
+        <span className={pauseClass} style={pauseStyle} aria-hidden="true"></span>
         <div style={screenStyle.infoPanel.style}>
           {titleMetadata}
           {descriptionMetadata}
