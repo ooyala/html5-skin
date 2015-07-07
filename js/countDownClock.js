@@ -13,16 +13,15 @@ var CountDownClock = React.createClass({
     return {
       canvas: null,
       radius: 16,
+      width: 38,
       fraction: 0,
       seconds: (this.props.duration - this.props.currentPlayhead),
       context: null,
       counterInterval: 0.05,
-      countDownState: this.props.countDownState,
     };
   },
 
   componentWillReceiveProps: function(props) {
-    this.state.radius = this.props.radius;
     this.state.seconds = this.props.duration - this.props.currentPlayhead;
     var timeToShow = 0;
     if (this.props.skinConfig.upNextScreen.timeToShow > 1) {
@@ -30,17 +29,15 @@ var CountDownClock = React.createClass({
       this.state.fraction = 2 / this.props.skinConfig.upNextScreen.timeToShow;
     } else {
       // time to show is based on percetage of duration
-      this.state.fraction = 2 / (this.props.skinConfig.upNextScreen.timeToShow * this.props.duration);
+      this.state.fraction = 2 / ((1 - this.props.skinConfig.upNextScreen.timeToShow) * this.props.duration);
     }
-    
   },
 
   componentDidMount: function() {
-      this.setupCountDownTimer();
+    this.setupCountDownTimer();
   },
 
   componentWillUnmount: function() {
-    console.log("CountDownClock is componentWillUnmount");
     clearInterval(this.interval);
   },
 
@@ -63,8 +60,8 @@ var CountDownClock = React.createClass({
     this.state.context.beginPath();
     this.state.context.globalAlpha = 1;
     this.state.context.fillStyle = 'gray';
-    this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius, 0, Math.PI * 2, false);
-    this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius / 1.2, Math.PI * 2, 0, true);
+    this.state.context.arc(this.state.width / 2, this.state.radius, this.state.radius, 0, Math.PI * 2, false);
+    this.state.context.arc(this.state.width / 2, this.state.radius, this.state.radius / 1.2, Math.PI * 2, 0, true);
     this.state.context.fill();
   },
 
@@ -72,11 +69,12 @@ var CountDownClock = React.createClass({
     var decimals;
     var percent = this.state.fraction * this.state.seconds + 1.5;
     this.state.context.fillStyle = 'white';
-    this.state.context.fillText(this.state.seconds.toFixed(decimals), this.props.width / 2, this.state.radius, 100);
+    this.state.context.fillText(this.state.seconds.toFixed(decimals), this.state.width / 2, this.state.radius, 100);
 
     this.state.context.beginPath();
-    this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius, Math.PI * 1.5, Math.PI * percent, false);
-    this.state.context.arc(this.props.width / 2, this.state.radius, this.state.radius / 1.2, Math.PI * percent, Math.PI * 1.5, true);
+    console.log("percent: " + percent);
+    this.state.context.arc(this.state.width / 2, this.state.radius, this.state.radius, Math.PI * 1.5, Math.PI * percent, false);
+    this.state.context.arc(this.state.width / 2, this.state.radius, this.state.radius / 1.2, Math.PI * percent, Math.PI * 1.5, true);
     this.state.context.fill();  
   },
 
