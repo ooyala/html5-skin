@@ -114,7 +114,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       switch(this.state.playerState) {
         case STATE.PLAYING:
           this.togglePlayPause();
-          this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          setTimeout(function() {
+            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+            this.state.playerState = STATE.PAUSE;
+            this.renderSkin();
+            console.log("finished toggleDiscoveryScreen");
+          }.bind(this), 1);
           break;
         case STATE.PAUSE:
           if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
