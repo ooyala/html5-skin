@@ -43,14 +43,6 @@ var PauseScreen = React.createClass({
     this.props.controller.togglePlayPause();
   },
 
-  showControlBar: function() {
-    this.setState({controlBarVisible: true});
-  },
-
-  hideControlBar: function() {
-    this.setState({controlBarVisible: false});
-  },
-
   render: function() {
     var screenStyle = this.props.style;
     var playClass = screenStyle.pauseIcon.icon;
@@ -107,7 +99,7 @@ var PauseScreen = React.createClass({
     var controlBarHeight = 32;
 
     return (
-      <div onMouseUp={this.handleClick} style={screenStyle.style} onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}>
+      <div onMouseUp={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>
         <span className={playClass} style={playStyle} aria-hidden="true"></span>
         <div style={screenStyle.infoPanel.style}>
