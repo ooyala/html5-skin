@@ -337,7 +337,8 @@ var upNextPanelStyle = {
     height: "25%",
     right: "0",
     bottom: "32px",
-    backgroundColor: "black"
+    backgroundColor: "black",
+    "transition": "bottom 0.5s"
   },
 
   contentImageContainer: {
