@@ -34,7 +34,6 @@ var Skin = React.createClass({
   },
 
   render: function() {
-    console.log("screenToShow = " + this.state.screenToShow);
     switch (this.state.screenToShow) {
       case SCREEN.START_SCREEN:
         return (

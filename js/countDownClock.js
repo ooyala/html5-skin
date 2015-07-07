@@ -72,7 +72,6 @@ var CountDownClock = React.createClass({
     this.state.context.fillText(this.state.seconds.toFixed(decimals), this.state.width / 2, this.state.radius, 100);
 
     this.state.context.beginPath();
-    console.log("percent: " + percent);
     this.state.context.arc(this.state.width / 2, this.state.radius, this.state.radius, Math.PI * 1.5, Math.PI * percent, false);
     this.state.context.arc(this.state.width / 2, this.state.radius, this.state.radius / 1.2, Math.PI * percent, Math.PI * 1.5, true);
     this.state.context.fill();  
@@ -83,13 +82,13 @@ var CountDownClock = React.createClass({
   },
 
   tick: function() {
-    if (this.state.seconds <= 0 || this.props.playerState === STATE.END) {
+    if (this.state.seconds < 1 || this.props.playerState === STATE.END) {
       this.state.seconds = 0;
       clearInterval(this.interval);
       this.startUpNext();
     } 
     else if (this.props.playerState === STATE.PLAYING) {
-      this.state.seconds -= 0.05; // update every 50 ms
+      this.state.seconds -= this.state.counterInterval;
       this.updateCanvas();
     }
   },
