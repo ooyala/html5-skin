@@ -42,43 +42,43 @@ var Skin = React.createClass({
       case SCREEN.PLAYING_SCREEN:
         return (
           <PlayingScreen {...this.props} contentTree={this.state.contentTree}
-          currentPlayhead={this.state.currentPlayhead}
-          duration={this.state.duration}
-          buffered={this.state.buffered}
-          ref="playScreen" />
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            ref="playScreen" />
         );
       case SCREEN.END_SCREEN:
         return (
           <EndScreen {...this.props} 
-          contentTree={this.state.contentTree} 
-          discoveryData={this.state.discoveryData}
-          currentPlayhead={this.state.currentPlayhead}
-          duration={this.state.duration}
-          buffered={this.state.buffered} 
-          style={endScreenStyle}
-          ref="endScreen" />
+            contentTree={this.state.contentTree} 
+            discoveryData={this.state.discoveryData}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered} 
+            style={endScreenStyle}
+            ref="endScreen" />
         );
       case SCREEN.DISCOVERY_SCREEN:
         return (
           <DiscoveryScreen {...this.props} 
-              contentTree={this.state.contentTree}
-              currentPlayhead={this.state.currentPlayhead}
-              duration={this.state.duration}
-              buffered={this.state.buffered}
-              style={discoveryScreenStyle}
-              discoveryData={this.state.discoveryData}
-              playerState={this.state.playerState}
-              ref="DiscoveryScreen" />
+            contentTree={this.state.contentTree}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            style={discoveryScreenStyle}
+            discoveryData={this.state.discoveryData}
+            playerState={this.state.playerState}
+            ref="DiscoveryScreen" />
         );
       case SCREEN.UP_NEXT_SCREEN:
         return (
           <UpNextScreen {...this.props} 
-          contentTree={this.state.contentTree}
-          currentPlayhead={this.state.currentPlayhead}
-          duration={this.state.duration}
-          upNextInfo={this.state.upNextInfo}
-          playerState={this.state.playerState}
-          ref="playScreen" />
+            contentTree={this.state.contentTree}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            upNextInfo={this.state.upNextInfo}
+            playerState={this.state.playerState}
+            ref="playScreen" />
         );
       default:
         return false;
