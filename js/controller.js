@@ -11,6 +11,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
+      "configLoaded": false
     };
 
     this.init();
@@ -38,6 +39,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.skin = React.render(
           React.createElement(Skin, {skinConfig: data, controller: this}), document.getElementById("skin")
         );
+        this.state.configLoaded = true;
+        this.renderSkin();
       }, this));
     },
 
@@ -60,10 +63,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPaused: function() {
-      if (this.skin.props.skinConfig.pauseScreen.mode === "discovery") {
-        console.log("Should display DISCOVERY_SCREEN on pause");
+      if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
+      console.log("Should display DISCOVERY_SCREEN on pause");
         this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
-      } else if (this.skin.props.skinConfig.pauseScreen.mode === "social") {
+      } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
         // Remove this comment once pause screen implemented
       } else {
         // default
@@ -74,10 +77,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayed: function() {
-      if (this.skin.props.skinConfig.endScreen.mode === "discovery") {
+      if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery") {
         console.log("Should display DISCOVERY_SCREEN on end");
         this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
-      } else if (this.skin.props.skinConfig.endScreen.mode === "social") {
+      } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "social") {
         // Remove this comment once pause screen implemented
       } else {
         // default
@@ -97,8 +100,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       Skin state -> control skin
     ---------------------------------------------------------------------*/
     renderSkin: function(args) {
-      _.extend(this.state, args);
-      this.skin.switchComponent(this.state);
+      if (this.state.configLoaded) {
+        _.extend(this.state, args);
+        this.skin.switchComponent(this.state);
+      }
     },
 
     /*--------------------------------------------------------------------
@@ -106,6 +111,32 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     ---------------------------------------------------------------------*/
     toggleFullscreen: function(fullscreen) {
       this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, fullscreen);
+    },
+
+    toggleDiscoveryScreen: function() {
+      switch(this.state.playerState) {
+        case STATE.PLAYING:
+          this.togglePlayPause();
+          this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          break;
+        case STATE.PAUSE:
+          if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+            this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+          }
+          else {
+            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          }
+          break;
+        case STATE.END:
+          if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+            this.state.screenToShow = SCREEN.END_SCREEN;
+          }
+          else {
+            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          }
+          break;
+      }
+      this.renderSkin();
     },
 
     toggleMute: function(muted) {

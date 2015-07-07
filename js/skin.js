@@ -58,13 +58,24 @@ var Skin = React.createClass({
           buffered={this.state.buffered}
           ref="shareScreen" />
         );
+      case SCREEN.PAUSE_SCREEN:
+        return (
+          <PauseScreen {...this.props}
+            contentTree={this.state.contentTree}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            playerState={this.state.playerState}
+            ref="pauseScreen" />
+        );
       case SCREEN.END_SCREEN:
         return (
           <EndScreen {...this.props}
-          currentPlayhead={this.state.currentPlayhead}
-          duration={this.state.duration}
           contentTree={this.state.contentTree}
           discoveryData={this.state.discoveryData}
+          currentPlayhead={this.state.currentPlayhead}
+          duration={this.state.duration}
+          buffered={this.state.buffered} 
           style={endScreenStyle}
           ref="endScreen" />
         );

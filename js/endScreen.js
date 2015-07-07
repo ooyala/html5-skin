@@ -13,7 +13,7 @@ var EndScreen = React.createClass({
   // CSS doesn't support "truncate N lines" so we need to do DOM width
   // calculations to figure out where to truncate the description
   componentDidMount: function() {
-    if (this.props.skinConfig.endScreen.mode != "discovery") {
+    if (this.props.skinConfig.endScreen.screenToShowOnEnd === "default") {
       var descriptionNode = this.getDOMNode().getElementsByClassName("endscreen-description")[0];
       var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
       this.setState({description: shortDesc});

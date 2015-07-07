@@ -16,8 +16,6 @@ var startScreenStyle = {
   infoPanel: {
     style: {
       position: "absolute",
-      bottom: "5%",
-      left: "5%",
       width: "100%"
     },
     title: {
@@ -49,6 +47,59 @@ var startScreenStyle = {
       opacity: 1,
       transition: "opacity .25s ease-in-out"
     }
+  }
+};
+
+var pauseScreenStyle = {
+  style: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    overflow: "hidden",
+  },
+  infoPanel: {
+    style: {
+      position: "absolute",
+      width: "100%"
+    },
+    title: {
+      style: {
+        fontSize: "32px",
+        fontWeight: "bold",
+        maxWidth: "70%",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        color: "inherit"
+      }
+    },
+    description: {
+      style: {
+        fontSize: "24",
+        maxWidth: "70%",
+        overflow: "visible",
+        color: "inherit"
+      }
+    }
+  },
+  pauseIcon: {
+    icon: "glyphicon glyphicon-pause",
+    style: {
+      fontSize: "24",
+      transform: "translate(-50%, -50%)",
+      position: "absolute",
+      opacity: 1,
+      transition: "font 1s, opacity 1s"
+    }
+  },
+  fading: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    overflow: "hidden",
+    backgroundColor: "black",
+    opacity: "0",
+    transition: "opacity 1s"
   }
 };
 
@@ -356,6 +407,16 @@ var discoveryScreenStyle = {
     right: 0,
     display: "flex",
     flexDirection: "row"
+  },
+
+  promoStyle: {
+    visibility: "hidden",
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center"
   },
 
   panelTitleBarStyle: {
