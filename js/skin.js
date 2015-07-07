@@ -6,7 +6,7 @@ var Skin = React.createClass({
     return {
       screenToShow: null,
       currentPlayhead: 0,
-      discoveryData: null 
+      discoveryData: null
     };
   },
 
@@ -50,6 +50,14 @@ var Skin = React.createClass({
           buffered={this.state.buffered}
           ref="playScreen" />
         );
+      case SCREEN.SHARE_SCREEN:
+        return (
+          <ShareScreen {...this.props} contentTree={this.state.contentTree}
+          currentPlayhead={this.state.currentPlayhead}
+          duration={this.state.duration}
+          buffered={this.state.buffered}
+          ref="shareScreen" />
+        );
       case SCREEN.PAUSE_SCREEN:
         return (
           <PauseScreen {...this.props}
@@ -62,8 +70,8 @@ var Skin = React.createClass({
         );
       case SCREEN.END_SCREEN:
         return (
-          <EndScreen {...this.props} 
-          contentTree={this.state.contentTree} 
+          <EndScreen {...this.props}
+          contentTree={this.state.contentTree}
           discoveryData={this.state.discoveryData}
           currentPlayhead={this.state.currentPlayhead}
           duration={this.state.duration}
@@ -73,7 +81,7 @@ var Skin = React.createClass({
         );
       case SCREEN.DISCOVERY_SCREEN:
         return (
-          <DiscoveryScreen {...this.props} 
+          <DiscoveryScreen {...this.props}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
               duration={this.state.duration}
