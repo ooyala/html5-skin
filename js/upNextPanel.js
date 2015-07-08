@@ -45,8 +45,6 @@ var UpNextPanel = React.createClass({
     
     var upNextTitleStyle = upNextPanelStyle.upNextTitle;
 
-    var clockContainerStyle = upNextPanelStyle.clockContainerStyle;
-    
     var upNextTitleTextStyle = upNextPanelStyle.upNextTitleText;
     var contentTile = this.props.upNextInfo.upNextData.name;
 

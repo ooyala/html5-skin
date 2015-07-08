@@ -441,14 +441,6 @@ var upNextPanelStyle = {
     color: "white"
   },
 
-  clockContainerStyle: {
-    position: "absolute",
-    top: "0",
-    left: "0",
-    width: "34.5",
-    height: "34.5",
-  },
-
   upNextTitleText: {
     position:"absolute",
     left:40,
@@ -493,29 +485,3 @@ var upNextPanelStyle = {
     "transform": "translateY(-50%)",
   },
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -65,8 +65,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
-      if ( this.state.screenToShow !== SCREEN.AD_SCREEN &&
-          this.skin.props.skinConfig.upNextScreen.showUpNext)  {
+      if (this.state.screenToShow !== SCREEN.AD_SCREEN &&
+        this.skin.props.skinConfig.upNextScreen.showUpNext)  {
         this.showUpNextScreenWhenReady(currentPlayhead, duration);
       } else if (this.state.playerState === STATE.PLAYING) {
         this.state.screenToShow = SCREEN.PLAYING_SCREEN;
@@ -83,7 +83,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         // time to show is based on seconds
         timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
       } else {
-        // time to show is based on percetage of duration
+        // time to show is based on percentage of duration
         timeToShow = (1 - this.skin.props.skinConfig.upNextScreen.timeToShow) * duration;
       }
       if (duration - currentPlayhead <= timeToShow &&
@@ -94,7 +94,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaying: function() {
-      this.setVolume(0);
       this.state.screenToShow = SCREEN.PLAYING_SCREEN;
       this.state.playerState = STATE.PLAYING;
       this.renderSkin();

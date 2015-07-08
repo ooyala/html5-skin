@@ -10,26 +10,28 @@
 
 var CountDownClock = React.createClass({
   getInitialState: function() {
+    // canvas, interval, and context are changing based on time instead of user interaction
+    this.canvas = null;
+    this.context = null;      
+    interval = null;
     return {
-      canvas: null,
-      radius: 16,
-      width: 38,
-      fraction: 0,
-      seconds: (this.props.duration - this.props.currentPlayhead),
-      context: null,
+      clockRadius: 16,
+      clockContainerWidth: 38,
       counterInterval: 0.05,
+      fraction: 0, // fraction = 2 / (skinConfig.upNextScreen.timeToShow) so "fraction * pi" is how much we want to fill the circle for each second
+      remainSeconds: (this.props.duration - this.props.currentPlayhead),
     };
   },
 
   componentWillReceiveProps: function(props) {
-    this.state.seconds = this.props.duration - this.props.currentPlayhead;
+    this.setState({remainSeconds: (this.props.duration - this.props.currentPlayhead)});
     var timeToShow = 0;
     if (this.props.skinConfig.upNextScreen.timeToShow > 1) {
       // time to show is based on seconds
-      this.state.fraction = 2 / this.props.skinConfig.upNextScreen.timeToShow;
+      this.setState({fraction: (2 / this.props.skinConfig.upNextScreen.timeToShow)});
     } else {
       // time to show is based on percetage of duration
-      this.state.fraction = 2 / ((1 - this.props.skinConfig.upNextScreen.timeToShow) * this.props.duration);
+      this.setState({fraction: (2 / ((1 - this.props.skinConfig.upNextScreen.timeToShow) * this.props.duration))});
     }
   },
 
@@ -50,31 +52,31 @@ var CountDownClock = React.createClass({
 
   setupCanvas: function() {
     this.canvas = this.getDOMNode();
-    this.state.context = this.canvas.getContext("2d");
-    this.state.context.textAlign = 'center';
-    this.state.context.textBaseline = 'middle';
-    this.state.context.font = "bold 12px Arial";
+    this.context = this.canvas.getContext("2d");
+    this.context.textAlign = 'center';
+    this.context.textBaseline = 'middle';
+    this.context.font = "bold 12px Arial";
   },
 
   drawBackground: function() {
-    this.state.context.beginPath();
-    this.state.context.globalAlpha = 1;
-    this.state.context.fillStyle = 'gray';
-    this.state.context.arc(this.state.width / 2, this.state.radius, this.state.radius, 0, Math.PI * 2, false);
-    this.state.context.arc(this.state.width / 2, this.state.radius, this.state.radius / 1.2, Math.PI * 2, 0, true);
-    this.state.context.fill();
+    this.context.beginPath();
+    this.context.globalAlpha = 1;
+    this.context.fillStyle = 'gray';
+    this.context.arc(this.state.clockContainerWidth / 2, this.state.clockRadius, this.state.clockRadius, 0, Math.PI * 2, false);
+    this.context.arc(this.state.clockContainerWidth / 2, this.state.clockRadius, this.state.clockRadius / 1.2, Math.PI * 2, 0, true);
+    this.context.fill();
   },
 
   drawTimer: function() {
     var decimals;
-    var percent = this.state.fraction * this.state.seconds + 1.5;
-    this.state.context.fillStyle = 'white';
-    this.state.context.fillText(this.state.seconds.toFixed(decimals), this.state.width / 2, this.state.radius, 100);
+    var percent = this.state.fraction * this.state.remainSeconds + 1.5;
+    this.context.fillStyle = 'white';
+    this.context.fillText(this.state.remainSeconds.toFixed(decimals), this.state.clockContainerWidth / 2, this.state.clockRadius, 100);
 
-    this.state.context.beginPath();
-    this.state.context.arc(this.state.width / 2, this.state.radius, this.state.radius, Math.PI * 1.5, Math.PI * percent, false);
-    this.state.context.arc(this.state.width / 2, this.state.radius, this.state.radius / 1.2, Math.PI * percent, Math.PI * 1.5, true);
-    this.state.context.fill();  
+    this.context.beginPath();
+    this.context.arc(this.state.clockContainerWidth / 2, this.state.clockRadius, this.state.clockRadius, Math.PI * 1.5, Math.PI * percent, false);
+    this.context.arc(this.state.clockContainerWidth / 2, this.state.clockRadius, this.state.clockRadius / 1.2, Math.PI * percent, Math.PI * 1.5, true);
+    this.context.fill();  
   },
 
   startTimer: function() {
@@ -82,27 +84,25 @@ var CountDownClock = React.createClass({
   },
 
   tick: function() {
-    if (this.state.seconds < 1 || this.props.playerState === STATE.END) {
-      this.state.seconds = 0;
-      clearInterval(this.interval);
+    if (this.state.remainSeconds < 1 || this.props.playerState === STATE.END) {
+      this.setState({remainSeconds: 0});
+      clearInterval(this.state.interval);
       this.startUpNext();
     } 
     else if (this.props.playerState === STATE.PLAYING) {
-      this.state.seconds -= this.state.counterInterval;
+      this.setState({remainSeconds: this.state.remainSeconds - this.state.counterInterval});
       this.updateCanvas();
     }
   },
 
   updateCanvas: function() {
-    console.log("updateCanvas is called");
     this.clearCanvas();
     this.drawTimer();
   },
 
-
   clearCanvas: function() {
-    this.state.context = this.canvas.getContext("2d");
-    this.state.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.context = this.canvas.getContext("2d");
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawBackground();
   },
 
