@@ -3,16 +3,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
-    <script language="javascript" src="//localhost:1337/dev/v3/f34784cb010846369c31af0bdd0ec83e?debug=true&platform=html5&debug=true&version=dev"></script>
+    <script language="javascript" src="//localhost:1337/dev/v3/4b68adc756fb46adb4145b5f51025088?debug=true&platform=html5&debug=true&version=dev"></script>
 
     <script src="build/html5-skin.js"></script>
   </head>
   <body>
     <div id='container' style='width:640px; height:360px; overflow: scroll; resize: both;'></div>
     <script>
-      var playerParam = { layout:'chromeless' };
+      var playerParam = { layout:'chromeless',
+      "freewheel-ads-manager":{
+          "fw_video_asset_id":"NwcGg4bzrwxc6rqAZbYij4pWivBsX57a",
+          "html5_ad_server":"http://g1.v.fwmrm.net",
+          "fw_android_ad_server":"http://g1.v.fwmrm.net/",
+          "html5_player_profile":"90750:ooyala_html5",
+          "fw_android_player_profile":"90750:ooyala_android",
+          "fw_mrm_network_id":"380912",
+        } 
+      };
       OO.ready(function() {
-        window.pp = OO.Player.create('container', 'Zpcmp0ZDpaB-90xK8MIV9QF973r1ZdUf', playerParam);
+        window.pp = OO.Player.create('container', 'trZ3VwcDrqUXQyyBhfGYDzh_NtHL3Bgz', playerParam);
       });
     </script>
   </body>
