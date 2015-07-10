@@ -39,7 +39,7 @@ var startScreenStyle = {
     }
   },
   playButton: {
-    icon: "glyphicon glyphicon-play",
+    icon: "icon icon-play",
     style: {
       fontSize: "72",
       transform: "translate(-50%, -50%)",
@@ -83,7 +83,7 @@ var pauseScreenStyle = {
     }
   },
   pauseIcon: {
-    icon: "glyphicon glyphicon-pause",
+    icon: "icon icon-pause",
     style: {
       fontSize: "24",
       transform: "translate(-50%, -50%)",
@@ -146,7 +146,7 @@ var endScreenStyle = {
     }
   },
   repeatButton: {
-    icon: "glyphicon glyphicon-repeat",
+    icon: "icon icon-upnext-replay",
     style: {
       top: "50%",
       left: "50%",
@@ -554,7 +554,7 @@ var upNextPanelStyle = {
   },
 
   playButton: {
-    icon: "glyphicon glyphicon-play",
+    icon: "icon icon-play",
     style: {
       position: "absolute",
       top: "50%",
@@ -604,7 +604,7 @@ var upNextPanelStyle = {
 
   dismissButton: {
     position: "absolute",
-    right: "2%",  
+    right: "2%",
     top: "15%",
     height: "40%",
     width: "13%",
@@ -612,7 +612,7 @@ var upNextPanelStyle = {
     backgroundColor: "black",
     "border": "1px solid white",
     "border-radius": "5px"
-  },  
+  },
 
   dismissButtonText: {
     position: "absolute",
