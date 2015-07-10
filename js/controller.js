@@ -16,7 +16,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "countDownFinished": false,
         "countDownCancelled": false,
       },
-      "configLoaded": false
+      "configLoaded": false,
+      "fullscreen": false
     };
 
     this.init();
@@ -55,7 +56,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
       this.state.playerState = STATE.START;
-      this.renderSkin({"contentTree": contentTree});  
+      this.renderSkin({"contentTree": contentTree});
     },
 
     resetUpNextInfo: function () {
@@ -149,8 +150,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /*--------------------------------------------------------------------
       skin UI-action -> publish event to core player
     ---------------------------------------------------------------------*/
-    toggleFullscreen: function(fullscreen) {
-      this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, fullscreen);
+    toggleFullscreen: function() {
+      this.state.fullscreen = !this.state.fullscreen;
+      this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, this.state.fullscreen);
+      this.renderSkin();
     },
 
     toggleDiscoveryScreen: function() {

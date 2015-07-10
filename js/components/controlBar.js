@@ -5,7 +5,6 @@
 var ControlBar = React.createClass({
   getInitialState: function() {
     return {
-      fullscreen: false,
       muted: false,
       oldVolume: 1.0,
       volume: 1.0
@@ -17,8 +16,7 @@ var ControlBar = React.createClass({
   },
 
   handleFullscreenClick: function() {
-    this.props.controller.toggleFullscreen(!this.state.fullscreen);
-    this.setState({fullscreen: !this.state.fullscreen});
+    this.props.controller.toggleFullscreen();
   },
 
   handleMuteClick: function() {
@@ -85,7 +83,7 @@ var ControlBar = React.createClass({
     }
     var muteClass = (this.state.muted) ?
       "glyphicon glyphicon-volume-off" : "glyphicon glyphicon-volume-down";
-    var fullscreenClass = (this.state.fullscreen) ?
+    var fullscreenClass = (this.props.fullscreen) ?
       "glyphicon glyphicon-resize-small" : "glyphicon glyphicon-resize-full";
 
     var totalTime = 0;
@@ -104,7 +102,7 @@ var ControlBar = React.createClass({
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
         onClick={this.handleVolumeClick}></span>);
     }
-   
+
     var controlItemTemplates = {
       "playPause": <div className="playPause" style={controlBarStyle.controlBarItemSetting}
         onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
