@@ -21,6 +21,7 @@ var PauseScreen = React.createClass({
     pauseScreenStyle.pauseIcon.style.opacity = 0;
     pauseScreenStyle.pauseIcon.style.fontSize = "72";
     pauseScreenStyle.fading.opacity = 0.5;
+    pauseScreenStyle.fading.transition = (this.props.controller.state.pauseAnimation === false ? "opacity 0s" : "opacity 1s");
 
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
 
@@ -37,6 +38,7 @@ var PauseScreen = React.createClass({
     pauseScreenStyle.pauseIcon.style.opacity = 1;
     pauseScreenStyle.pauseIcon.style.fontSize = "24";
     pauseScreenStyle.fading.opacity = 0;
+    this.props.controller.state.pauseAnimation = true;
   },
 
   handleClick: function() {
@@ -101,7 +103,7 @@ var PauseScreen = React.createClass({
     return (
       <div onMouseUp={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>
-        <span className={pauseClass} style={pauseStyle} aria-hidden="true"></span>
+        <span className={this.props.controller.state.pauseAnimation === false ? null : pauseClass} style={pauseStyle} aria-hidden="true"></span>
         <div style={screenStyle.infoPanel.style}>
           {titleMetadata}
           {descriptionMetadata}

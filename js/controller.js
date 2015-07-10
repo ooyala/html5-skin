@@ -11,6 +11,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
+      "pauseAnimation":null,
       "upNextInfo": {
         "upNextData": null,
         "countDownFinished": false,
@@ -227,6 +228,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     closeShareScreen: function() {
+      this.state.pauseAnimation = false;
       this.state.screenToShow = SCREEN.PAUSE_SCREEN;
       this.state.playerState = STATE.PAUSE;
       this.renderSkin();
