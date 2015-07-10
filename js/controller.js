@@ -11,7 +11,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
-      "configLoaded": false
+      "configLoaded": false,
+      "ccOptions":{
+        "enabled": null,
+        "language": null,
+        "availableLanguages": null
+      }
     };
 
     this.init();
@@ -26,6 +31,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
       this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
+      this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
+      this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
     },
 
     /*--------------------------------------------------------------------
@@ -91,6 +98,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       console.log("onReportDiscoveryImpression is called");
       this.state.discoveryData = discoveryData;
       this.renderSkin();
+    },
+
+    onClosedCaptionsInfoAvailable: function(event, languages) {
+      this.state.ccOptions.availableLanguages = languages;
+      if (this.state.ccOptions.enabled){
+        this.setClosedCaptionsLanguage();
+      }
+    },
+
+    onClosedCaptionCueChanged: function(event, data) {
+      console.log("onClosedCaptionsInfoAvailable is called", data);
     },
 
     /*--------------------------------------------------------------------
@@ -192,7 +210,38 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     sendDiscoveryClickEvent: function(selectedContentData) {
       this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
-    }
+    },
+
+    setClosedCaptionsLanguage: function(){
+      var language = this.state.ccOptions.enabled ? this.state.ccOptions.language : "";
+      var mode = this.state.ccOptions.enabled ? "showing" : "disabled";
+      this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
+    },
+
+    showClosedCaptionScreen: function() {
+      if (this.state.screenToShow == SCREEN.CLOSEDCAPTION_SCREEN) {
+        this.closeClosedCaptionScreen();
+      }
+      else {
+        this.mb.publish(OO.EVENTS.PAUSE);
+        setTimeout(function() {
+          this.state.screenToShow = SCREEN.CLOSEDCAPTION_SCREEN;
+          this.state.playerState = STATE.PAUSE;
+          this.renderSkin();
+        }.bind(this), 1);
+      }
+    },
+
+    closeClosedCaptionScreen: function() {
+      this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+      this.state.playerState = STATE.PAUSE;
+      this.renderSkin();
+    },
+
+    onClosedCaptionChange: function() {
+      this.setClosedCaptionsLanguage();
+      this.renderSkin();
+    },
   };
 
   return Html5Skin;

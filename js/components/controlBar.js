@@ -66,6 +66,9 @@ var ControlBar = React.createClass({
     this.props.controller.toggleDiscoveryScreen();
   },
 
+  handleClosedCaptionClick: function() {
+    this.props.controller.showClosedCaptionScreen();
+  },
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
     evt.target.style.color = "rgba(255, 255, 255, 1.0)";
@@ -125,7 +128,7 @@ var ControlBar = React.createClass({
         style={controlBarStyle.iconSetting}></span></div>,
       "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-subtitles"
-        style={controlBarStyle.iconSetting}></span></div>,
+        onClick={this.handleClosedCaptionClick} style={controlBarStyle.iconSetting}></span></div>,
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-share"
         onClick={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
@@ -141,6 +144,12 @@ var ControlBar = React.createClass({
       if (typeof controlItemTemplates[controlBarSetting.items[i]] === "undefined") {
         continue;
       }
+
+      //do not show CC button if no CC available
+      if (!this.props.controller.state.ccOptions.availableLanguages && (controlBarSetting.items[i] === "closedCaption")){
+        continue;
+      }
+
       controlBarItems.push(controlItemTemplates[controlBarSetting.items[i]]);
     }
     return controlBarItems;

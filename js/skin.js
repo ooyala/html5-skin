@@ -10,6 +10,17 @@ var Skin = React.createClass({
     };
   },
 
+  componentWillMount: function() {
+    if (this.props.skinConfig.ccOptions){
+         this.props.controller.state.ccOptions.language = (this.props.skinConfig.ccOptions.defaultLanguage ? this.props.skinConfig.ccOptions.defaultLanguage : "en" );
+         this.props.controller.state.ccOptions.enabled = (this.props.skinConfig.ccOptions.defaultEnabled ? this.props.skinConfig.ccOptions.defaultEnabled : false);
+    }
+    else {
+      this.props.controller.state.ccOptions.language = "en";
+      this.props.controller.state.ccOptions.enabled = false;
+    }
+  },
+
   switchComponent: function(args) {
     var newState = args || {};
     this.setState(newState);
@@ -90,6 +101,16 @@ var Skin = React.createClass({
               discoveryData={this.state.discoveryData}
               playerState={this.state.playerState}
               ref="DiscoveryScreen" />
+        );
+      case SCREEN.CLOSEDCAPTION_SCREEN:
+        return (
+          <ClosedCaptionScreen {...this.props}
+              contentTree={this.state.contentTree}
+              currentPlayhead={this.state.currentPlayhead}
+              duration={this.state.duration}
+              buffered={this.state.buffered}
+              playerState={this.state.playerState}
+              ref="closedCaptionScreen" />
         );
       default:
         return false;

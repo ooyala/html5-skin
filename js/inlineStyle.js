@@ -524,3 +524,142 @@ var discoveryScreenStyle = {
     fontSize: "10"
   }
 };
+
+var closedCaptionScreenStyles ={
+
+  screenStyle: {
+    backgroundColor: "#000000",
+    height: "100%",
+    width: "100%"
+  },
+
+  captionStyle: {
+    display: "inline-block",
+    height: "30",
+    textAlign: "center",
+    fontSize: "20",
+    color: "#ffffff",
+    marginLeft: "25",
+    marginTop: "20",
+    fontWeight: "bold"
+  },
+
+  onOffSwitchStyle:{
+    height: "24",
+    textAlign: "left",
+    fontSize: "10",
+    color: "#FFFFFF",
+    marginLeft: "25",
+    marginTop: "20",
+    marginBottom: "20",
+    position: "relative"
+  },
+
+  onOffSwitchContainer: {
+    display: "inline-block",
+    cursor: "pointer",
+    width: "40",
+    height: "24",
+    position: "relative",
+    marginLeft: "20",
+    border: "1px solid #000000",
+    borderRadius: "100%",
+  },
+  onOffSwitchInner: {
+    display: "block",
+    width: "100%",
+    height: "75%",
+    position: "absolute",
+    left: "",
+    right: "0",
+    top: "12.5%",
+    borderRadius: "20",
+    onBackground: "#50AE54",
+    transition: "all 0.5s ease-in-out"
+  },
+  onOffSwitchSwitch: {
+    display: "block",
+    width: "60%",
+    height: "100%",
+    position: "absolute",
+    top: "0",
+    left: "",
+    right: "0",
+    background: "#FFFFFF",
+    borderRadius: "100%",
+    transition: "all 0.1s ease-in 0s"
+  },
+
+  onStyle:{
+    position: "absolute",
+    top: "20%",
+    left: "70",
+    display:"inline-block",
+    color: "grey"
+  },
+
+  offStyle:{
+    position: "absolute",
+    top: "20%",
+    display:"inline-block",
+    color: "grey"
+  },
+
+  itemStyle: {
+    display: "inline-block",
+    textAlign: "center",
+    fontSize: "12",
+    minWidth :"50",
+    color: "#DDDDDD",
+    marginLeft: "25",
+    padding: "5",
+    paddingLeft: "10",
+    paddingRight: "10",
+    transition: "all 0.0s ease"
+  },
+
+  itemSelectedStyle: {
+    display: "inline-block",
+    textAlign: "center",
+    fontSize: "12",
+    minWidth :"50",
+    color: "white",
+    marginLeft: "25",
+    padding: "5",
+    paddingLeft: "10",
+    paddingRight: "10",
+    //properties different from itemStyle
+    backgroundColor: "#4389ff",
+    borderRadius: "4"
+  },
+
+  CCPreviewPanelStyle:{
+    width: "100%",
+    backgroundColor: "black",
+    position: "absolute",
+    bottom: "20",
+    transition: "all 1s ease"
+  },
+
+  CCPreviewCaptionStyle: {
+    color: "white",
+    marginLeft: "20",
+    fontSize: "10",
+    paddingTop: "0",
+    paddingBottom: "0"
+  },
+
+  CCPreviewTextStyle:{
+    color: "white",
+    marginLeft: "25",
+    fontSize: "15",
+    paddingTop: "5",
+    paddingBottom: "0"
+  },
+
+  tableStyle:{
+    width: "100%",
+    height: "25%",
+    paddingRight: "15"
+  }
+};
