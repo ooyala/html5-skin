@@ -5,7 +5,6 @@
 var ControlBar = React.createClass({
   getInitialState: function() {
     return {
-      fullscreen: false,
       muted: false,
       oldVolume: 1.0,
       volume: 1.0
@@ -17,8 +16,7 @@ var ControlBar = React.createClass({
   },
 
   handleFullscreenClick: function() {
-    this.props.controller.toggleFullscreen(!this.state.fullscreen);
-    this.setState({fullscreen: !this.state.fullscreen});
+    this.props.controller.toggleFullscreen();
   },
 
   handleMuteClick: function() {
