@@ -102,10 +102,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPaused: function() {
       if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
         this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
-      } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
-        // Remove this comment once pause screen implemented
+      } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "share") {
+        this.state.screenToShow = SCREEN.SHARE_SCREEN;
       } else {
-        // default
         this.state.screenToShow = SCREEN.PAUSE_SCREEN;
       }
       this.state.playerState = STATE.PAUSE;
@@ -116,10 +115,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery") {
         console.log("Should display DISCOVERY_SCREEN on end");
         this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
-      } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "social") {
-        // Remove this comment once pause screen implemented
+      } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "share") {
+        this.state.screenToShow = SCREEN.SHARE_SCREEN;
       } else {
-        // default
         this.state.screenToShow = SCREEN.END_SCREEN;
       }
       this.state.playerState = STATE.END;
@@ -159,11 +157,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       switch(this.state.playerState) {
         case STATE.PLAYING:
           this.togglePlayPause();
-          this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          setTimeout(function() {
+            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+            this.state.playerState = STATE.PAUSE;
+            this.renderSkin();
+            console.log("finished toggleDiscoveryScreen");
+          }.bind(this), 1);
           break;
         case STATE.PAUSE:
           if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
-            this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+            this.state.screenToShow = SCREEN.PAUSE_SCREEN;
           }
           else {
             this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
@@ -206,6 +209,27 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     setVolume: function(volume){
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
+    },
+
+    toggleShareScreen: function() {
+      if (this.state.screenToShow == SCREEN.SHARE_SCREEN) {
+        this.closeShareScreen();
+      }
+      else {
+        this.mb.publish(OO.EVENTS.PAUSE);
+        setTimeout(function() {
+          this.state.screenToShow = SCREEN.SHARE_SCREEN;
+          this.state.playerState = STATE.PAUSE;
+          this.renderSkin();
+          console.log("finish showShareScreen");
+        }.bind(this), 1);
+      }
+    },
+
+    closeShareScreen: function() {
+      this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+      this.state.playerState = STATE.PAUSE;
+      this.renderSkin();
     },
 
     sendDiscoveryClickEvent: function(selectedContentData) {

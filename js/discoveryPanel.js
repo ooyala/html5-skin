@@ -64,7 +64,7 @@ var DiscoveryPanel = React.createClass({
     var panelStyle = discoveryScreenStyle.panelStyle;
 
     var panelTitleBarStyle = discoveryScreenStyle.panelTitleBarStyle;
-    var panelTitle = this.props.skinConfig.discoveryScreen.title;
+    var panelTitle = this.props.skinConfig.discoveryScreen.panelTitle.text;
     var panelTitleTextStyle = discoveryScreenStyle.panelTitleTextStyle;
 
     var discoveryToasterContainerStyle = discoveryScreenStyle.discoveryToasterContainerStyle;
@@ -75,6 +75,9 @@ var DiscoveryPanel = React.createClass({
     var imageStyle = discoveryScreenStyle.discoveryImageStyle;
 
     var contentTitleStyle = discoveryScreenStyle.discoveryContentTitleStyle;
+    if (!this.props.skinConfig.discoveryScreen.showContentTitle) {
+       contentTitleStyle.display = "none";
+    }
 
     var chevronLeftButtonContainer = discoveryScreenStyle.discoveryChevronLeftButtonContainer;
     var chevronLeftButtonClass = discoveryScreenStyle.discoveryChevronLeftButton.icon;

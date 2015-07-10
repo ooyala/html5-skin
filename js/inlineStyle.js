@@ -242,7 +242,9 @@ var scrubberBarStyle = {
     "background": "#ffffff",
     "width": "10px",
     "height": "10px",
-    "border": "solid white 1px",
+    "borderStyle": "solid",
+    "borderColor": "white",
+    "borderWidth": "1px",
     "borderRadius": "10px",
     "position": "absolute",
     "zIndex": 1,
@@ -252,6 +254,147 @@ var scrubberBarStyle = {
   }
 };
 
+var shareScreenStyle = {
+  tabStyle: {
+    display: "inline-block",
+    width: "100px",
+    height: "50px",
+    lineHeight: "50px",
+    borderRight: "1px solid #afafaf",
+    textAlign: "center",
+    backgroundColor: "#444444",
+    color: "#afafaf",
+    fontWeight: "bold"
+  },
+
+  lastTabStyle: {
+    display: "inline-block",
+    width: "100px",
+    height: "50px",
+    lineHeight: "50px",
+    backgroundColor: "#444444",
+    color: "#afafaf",
+    fontWeight: "bold",
+    borderRight: "0px none",
+    flex: 1,
+    textAlign: "left",
+    paddingLeft: "25px"
+  },
+
+  activeTab: {
+    color: "#4389ff",
+    backgroundColor: "#3a3a3a"
+  },
+
+  socialIconStyle: {
+    display: "inline-block",
+    height: "30px",
+    width: "30px",
+    marginBottom: "15px",
+    marginRight: "15px",
+    backgroundColor: "aqua",
+    textAlign: "center",
+    fontSize: "22px",
+    fontWeight: "bold",
+    lineHeight: "30px",
+    borderRadius: "6px"
+  },
+
+  panelStyle: {
+    backgroundColor: "#3a3a3a",
+    bottom: 0,
+    flex: 1,
+    color: "white",
+    padding: "20px"
+  },
+
+  containerStyle: {
+    position: "absolute",
+    "top": 0,
+    bottom: "32px",
+    backgroundColor: "#444444",
+    left: 0,
+    right: 0,
+    display: "flex",
+    flexDirection: "column"
+  },
+
+  tabRowStyle: {
+    borderBottom: "1px solid #afafaf",
+    display: "flex",
+    flexDirection: "row"
+  },
+
+  titleStyle: {
+    fontSize: "18px",
+    fontWeight: "bold",
+    marginBottom: "15px"
+  },
+
+  embedUrlStyle: {
+    color:"black",
+    marginBottom: "15px",
+    borderRadius: "6px",
+    borderStyle: "none",
+    width: "300px",
+    height: "36px",
+    paddingLeft: "15px"
+  },
+
+  emailSendButton: {
+    backgroundColor:"#4389ff",
+    border: "0px none transparent",
+    borderRadius: "6px",
+    height: "40px",
+    width: "70px",
+    marginTop: "8px"
+  },
+
+  emailInputField: {
+    color:"gray",
+    marginBottom: "15px",
+    borderRadius: "6px",
+    borderStyle: "none",
+    width: "300px",
+    height: "32px",
+    paddingLeft: "15px"
+  },
+
+  emailTextArea: {
+    color: "gray",
+    height: "80px",
+    width: "300px",
+    borderRadius: "6px"
+  },
+
+  startAtInput: {
+    color:"black",
+    borderRadius: "6px",
+    borderStyle: "none",
+    width: "60px",
+    height: "26px",
+    paddingLeft: "10px"
+  },
+
+  embedTextArea: {
+    height: "60%",
+    width: "70%",
+    color: "black",
+    borderRadius: "6px"
+  },
+
+  closeButton: {
+    position: "absolute",
+    top:0,
+    right: 0,
+    height: "25px",
+    width: "25px",
+    backgroundColor: "#4389ff",
+    color: "white",
+    textAlign: "center",
+    lineHeight: "25px"
+  }
+};
 
 var discoveryScreenStyle = {
 
