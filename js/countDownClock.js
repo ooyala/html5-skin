@@ -13,7 +13,7 @@ var CountDownClock = React.createClass({
     // canvas, interval, and context are changing based on time instead of user interaction
     this.canvas = null;
     this.context = null;      
-    interval = null;
+    this.interval = null;
     return {
       clockRadius: 16,
       clockContainerWidth: 38,
@@ -86,7 +86,7 @@ var CountDownClock = React.createClass({
   tick: function() {
     if (this.state.remainSeconds < 1 || this.props.playerState === STATE.END) {
       this.setState({remainSeconds: 0});
-      clearInterval(this.state.interval);
+      clearInterval(this.interval);
       this.startUpNext();
     } 
     else if (this.props.playerState === STATE.PLAYING) {
