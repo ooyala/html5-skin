@@ -75,16 +75,16 @@ var ControlBar = React.createClass({
 
   populateControlBar: function() {
     if (this.props.playerState == STATE.PLAYING) {
-        playClass = "glyphicon glyphicon-pause";
+        playClass = "icon icon-pause";
     } else if (this.props.playerState == STATE.END) {
-        playClass = "glyphicon glyphicon-repeat";
+        playClass = "icon icon-upnext-replay";
     } else {
-        playClass = "glyphicon glyphicon-play";
+        playClass = "icon icon-play";
     }
     var muteClass = (this.state.muted) ?
-      "glyphicon glyphicon-volume-off" : "glyphicon glyphicon-volume-down";
-    var fullscreenClass = (this.props.fullscreen) ?
-      "glyphicon glyphicon-resize-small" : "glyphicon glyphicon-resize-full";
+      "icon icon-volume-desktop" : "icon icon-volume-desktop";
+    var fullscreenClass = (this.state.fullscreen) ?
+      "icon icon-resize-small" : "icon icon-resize-large";
 
     var totalTime = 0;
     if (this.props.contentTree && this.props.contentTree.duration) {
@@ -117,15 +117,15 @@ var ControlBar = React.createClass({
         {Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}</div>,
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
-        <span className="glyphicon glyphicon-cd" style={controlBarStyle.iconSetting}></span></div>,
+        <span className="icon icon-topmenu-discovery" style={controlBarStyle.iconSetting}></span></div>,
       "bitrateSelector": <div className="bitrateSelector" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-equalizer"
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-quality"
         style={controlBarStyle.iconSetting}></span></div>,
       "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-subtitles"
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-cc"
         style={controlBarStyle.iconSetting}></span></div>,
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-share"
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-share"
         onClick={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
       "fullScreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
