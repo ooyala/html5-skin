@@ -38,7 +38,7 @@ var OnOffSwitch = React.createClass({
     closedCaptionScreenStyles.onOffSwitchInner.background = this.props.controller.state.ccOptions.enabled ? closedCaptionScreenStyles.onOffSwitchInner.onBackground : "grey";
     closedCaptionScreenStyles.onOffSwitchSwitch.left = this.props.controller.state.ccOptions.enabled ? "" : "0";
     closedCaptionScreenStyles.onOffSwitchSwitch.right = this.props.controller.state.ccOptions.enabled ? "0" : "";
-    closedCaptionScreenStyles.CCPreviewPanelStyle.height = this.props.controller.state.ccOptions.enabled ? "120" : "0";
+    closedCaptionScreenStyles.CCPreviewPanelStyle.height = this.props.controller.state.ccOptions.enabled ? "100" : "0";
     closedCaptionScreenStyles.itemStyle.color = this.props.controller.state.ccOptions.enabled ? "white" : "grey";
     closedCaptionScreenStyles.onStyle.color = this.props.controller.state.ccOptions.enabled ? "white" : "grey";
     closedCaptionScreenStyles.offStyle.color = this.props.controller.state.ccOptions.enabled ? "grey" : "white";
@@ -64,7 +64,6 @@ var CCPreviewPanel = React.createClass({
   render: function(){
     return (
       <div style = {closedCaptionScreenStyles.CCPreviewPanelStyle}>
-        <hr style={{borderColor:"grey"}}/>
         <div style = {closedCaptionScreenStyles.CCPreviewCaptionStyle}>CLOSED CAPTION PREVIEW</div>
         <div style = {closedCaptionScreenStyles.CCPreviewTextStyle}>Sample Text</div>
       </div>

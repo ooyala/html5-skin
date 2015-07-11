@@ -528,7 +528,7 @@ var discoveryScreenStyle = {
 var closedCaptionScreenStyles ={
 
   screenStyle: {
-    backgroundColor: "#000000",
+    backgroundColor: "rgba(0,0,0,0.6)",
     height: "100%",
     width: "100%"
   },
@@ -635,15 +635,17 @@ var closedCaptionScreenStyles ={
 
   CCPreviewPanelStyle:{
     width: "100%",
-    backgroundColor: "black",
+    backgroundColor: "rgba(0,0,0,0.7)",
     position: "absolute",
     bottom: "20",
-    transition: "all 1s ease"
+    transition: "all 1s ease",
+    borderTop: "1px solid grey"
   },
 
   CCPreviewCaptionStyle: {
     color: "white",
     marginLeft: "20",
+    marginTop: "20",
     fontSize: "10",
     paddingTop: "0",
     paddingBottom: "0"
