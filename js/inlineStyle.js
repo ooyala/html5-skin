@@ -562,7 +562,6 @@ var closedCaptionScreenStyles ={
     height: "24",
     position: "relative",
     marginLeft: "20",
-    border: "1px solid #000000",
     borderRadius: "100%",
   },
   onOffSwitchInner: {
