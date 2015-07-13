@@ -67,18 +67,19 @@ var Skin = React.createClass({
         );
       case SCREEN.END_SCREEN:
         return (
-          <EndScreen {...this.props} 
-            contentTree={this.state.contentTree} 
+          <EndScreen {...this.props}
+            contentTree={this.state.contentTree}
             discoveryData={this.state.discoveryData}
             currentPlayhead={this.state.currentPlayhead}
             duration={this.state.duration}
-            buffered={this.state.buffered} 
+            buffered={this.state.buffered}
             style={endScreenStyle}
+            playerState={this.state.playerState}
             ref="endScreen" />
         );
       case SCREEN.DISCOVERY_SCREEN:
         return (
-          <DiscoveryScreen {...this.props} 
+          <DiscoveryScreen {...this.props}
             contentTree={this.state.contentTree}
             currentPlayhead={this.state.currentPlayhead}
             duration={this.state.duration}
@@ -90,7 +91,7 @@ var Skin = React.createClass({
         );
       case SCREEN.UP_NEXT_SCREEN:
         return (
-          <UpNextScreen {...this.props} 
+          <UpNextScreen {...this.props}
             contentTree={this.state.contentTree}
             currentPlayhead={this.state.currentPlayhead}
             duration={this.state.duration}

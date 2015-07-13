@@ -55,7 +55,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
       this.state.playerState = STATE.START;
-      this.renderSkin({"contentTree": contentTree});  
+      this.renderSkin({"contentTree": contentTree});
     },
 
     resetUpNextInfo: function () {

@@ -435,7 +435,8 @@ var discoveryScreenStyle = {
     left: "25px",
     fontSize: "20",
     color: "white",
-    margin: "1%"
+    margin: "1%",
+    display: "inline-block"
   },
 
   discoveryToasterContainerStyle: {
@@ -522,6 +523,18 @@ var discoveryScreenStyle = {
     top: "75%",
     color: "white",
     fontSize: "10"
+  },
+
+  closeButton: {
+    position: "absolute",
+    top:0,
+    right: 0,
+    height: "25px",
+    width: "25px",
+    backgroundColor: "#4389ff",
+    color: "white",
+    textAlign: "center",
+    lineHeight: "25px"
   }
 };
 
