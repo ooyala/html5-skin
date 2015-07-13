@@ -39,6 +39,7 @@ var AdPanel = React.createClass({
     }
 
     var topBarTitle = "Ad Playing";
+    // AMC puts "Unknown" in the name field if ad name unavailable 
     if (this.props.currentAdsInfo.currentAdItem.name !== "Unknown") {
       topBarTitle = topBarTitle + ": " + this.props.currentAdsInfo.currentAdItem.name;
     }
