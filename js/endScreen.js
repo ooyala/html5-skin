@@ -13,7 +13,7 @@ var EndScreen = React.createClass({
   // CSS doesn't support "truncate N lines" so we need to do DOM width
   // calculations to figure out where to truncate the description
   componentDidMount: function() {
-    if (this.props.skinConfig.endScreen.mode != "discovery") {
+    if (this.props.skinConfig.endScreen.screenToShowOnEnd === "default") {
       var descriptionNode = this.getDOMNode().getElementsByClassName("endscreen-description")[0];
       var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
       this.setState({description: shortDesc});
@@ -49,13 +49,13 @@ var EndScreen = React.createClass({
     // metadata visibility
     var titleMetadata;
     var descriptionMetadata;
-    
+
     // Default configuration
     posterStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
     var controlBarHeight = 32;
     return (
       <div onMouseOver={this.showControlBar}
-             onMouseUp={this.handlePlayerMouseUp} 
+             onMouseUp={this.handlePlayerMouseUp}
              style={{height: "100%", width: "100%"}}>
       <div className="endscreen-poster" style={screenStyle.posterStyle}></div>
       <span className={repeatClass} style={repeatStyle} aria-hidden="true" onClick={this.handleClick}></span>
