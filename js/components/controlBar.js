@@ -117,8 +117,7 @@ var ControlBar = React.createClass({
         onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <span className={playClass} style={controlBarStyle.iconSetting}></span>
       </div>,
-      "live": <div className="live" style={controlBarStyle.liveItemStyle}
-        onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>     
+      "live": <div className="live" style={controlBarStyle.liveItemStyle}>     
         <img src={liveCirleImageUrl} style={controlBarStyle.liveCircleStyle}></img>
         <div style={controlBarStyle.liveTextStyle}>{liveText}</div>
       </div>,
