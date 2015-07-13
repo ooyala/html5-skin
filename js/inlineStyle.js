@@ -612,6 +612,7 @@ var adScreenStyle = {
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
   }, 
+};
 
 var upNextPanelStyle = {
   panelStyle: {

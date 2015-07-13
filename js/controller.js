@@ -55,7 +55,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi", _.bind(this.onWillResumeAds, this));
 
       this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
-      this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
+      
+      if (OO.EVENTS.DISCOVERY_API) {
+        this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
+      }
     },
 
     /*--------------------------------------------------------------------
@@ -268,32 +271,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
           }
           break;
-      }
-      this.renderSkin();
-    },
-
-    toggleDiscoveryScreen: function() {
-      switch(this.state.playerState) {
-        case STATE.PLAYING:
-          this.togglePlayPause();
-          this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
-          break;
-        case STATE.PAUSE:
-          if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
-            this.state.screenToShow = SCREEN.PAUSE_SCREEN;
-          }
-          else {
-            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
-          }
-          break;
-        case STATE.END:
-          if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
-            this.state.screenToShow = SCREEN.END_SCREEN;
-          }
-          else {
-            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
-          }
-          break; 
       }
       this.renderSkin();
     },

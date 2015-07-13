@@ -17,6 +17,5 @@ var SCREEN = {
   AD_SCREEN: "adScreen",
   SHARE_SCREEN: "shareScreen",
   DISCOVERY_SCREEN: "discoveryScreen",
-  UP_NEXT_SCREEN: "upNextScreen",
-  AD_SCREEN: "adScreen",
+  UP_NEXT_SCREEN: "upNextScreen"
 };
