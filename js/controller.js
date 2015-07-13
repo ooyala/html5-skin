@@ -16,6 +16,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "currentAdItem": null,
         "numberOfAds": 0
       },
+      "upNextInfo": {
+        "upNextData": null,
+        "countDownFinished": false,
+        "countDownCancelled": false,
+      },
+      "configLoaded": false,
+      "fullscreen": false
     };
 
     this.init();
@@ -29,7 +36,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
-      this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));    
 
 
       /********************************************************************
@@ -47,6 +53,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
       this.mb.subscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi", _.bind(this.onWillResumeAds, this));
+
+      this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
+      this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
     },
 
     /*--------------------------------------------------------------------
@@ -61,10 +70,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           React.createElement(Skin, {skinConfig: data, controller: this}), document.getElementById("skin")
         );
         this.mb.publish(OO.EVENTS.PLAYER_EMBEDDED);
+        this.state.configLoaded = true;
+        this.renderSkin();
       }, this));
     },
 
     onContentTreeFetched: function (event, contentTree) {
+      this.resetUpNextInfo();
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
       // this.initAdsPlaybackProgressStructure();
@@ -72,9 +84,40 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin({"contentTree": contentTree});
     },
 
+    resetUpNextInfo: function () {
+      this.state.upNextInfo.upNextData = null;
+      this.state.upNextInfo.countDownFinished = false;
+      this.state.upNextInfo.countDownCancelled = false;
+    },
+
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
-      // console.log(arguments);
+      if (this.state.screenToShow !== SCREEN.AD_SCREEN ) {
+        if (this.skin.props.skinConfig.upNextScreen.showUpNext)  {
+          this.showUpNextScreenWhenReady(currentPlayhead, duration);
+        } else if (this.state.playerState === STATE.PLAYING) {
+          this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+        } else if (this.state.playerState === STATE.PAUSE) {
+          this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+        }
+      }
       this.skin.updatePlayhead(currentPlayhead, duration, buffered);
+      this.renderSkin();
+    },
+
+    showUpNextScreenWhenReady: function(currentPlayhead, duration) {
+      var timeToShow = 0;
+      if (this.skin.props.skinConfig.upNextScreen.timeToShow > 1) {
+        // time to show is based on seconds
+        timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
+      } else {
+        // time to show is based on percentage of duration
+        timeToShow = (1 - this.skin.props.skinConfig.upNextScreen.timeToShow) * duration;
+      }
+      if (duration - currentPlayhead <= timeToShow &&
+          !this.state.upNextInfo.countDownCancelled &&
+          this.state.upNextInfo.upNextData !== null) {
+        this.state.screenToShow = SCREEN.UP_NEXT_SCREEN;
+      }
     },
 
     onPlaying: function() {
@@ -106,10 +149,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery") {
         console.log("Should display DISCOVERY_SCREEN on end");
         this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
-      } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "social") {
-        // Remove this comment once pause screen implemented
+      } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "share") {
+        this.state.screenToShow = SCREEN.SHARE_SCREEN;
       } else {
-        // default
         this.state.screenToShow = SCREEN.END_SCREEN;
       }
       this.state.playerState = STATE.END;
@@ -172,6 +214,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onWillResumeAds: function(event) {
       console.log("onWillResumeAds is called");
       this.state.playerState = STATE.PLAYING;
+    },
+
+    onRelatedVideosFetched: function(event, relatedVideos) {
+      console.log("onRelatedVideosFetched is called");
+      this.state.upNextInfo.upNextData = relatedVideos.videos[0];
       this.renderSkin();
     },
 
@@ -179,15 +226,50 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       Skin state -> control skin
     ---------------------------------------------------------------------*/
     renderSkin: function(args) {
-      _.extend(this.state, args);
-      this.skin.switchComponent(this.state);
+      if (this.state.configLoaded) {
+        _.extend(this.state, args);
+        this.skin.switchComponent(this.state);
+      }
     },
 
     /*--------------------------------------------------------------------
       skin UI-action -> publish event to core player
     ---------------------------------------------------------------------*/
-    toggleFullscreen: function(fullscreen) {
-      this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, fullscreen);
+    toggleFullscreen: function() {
+      this.state.fullscreen = !this.state.fullscreen;
+      this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, this.state.fullscreen);
+      this.renderSkin();
+    },
+
+    toggleDiscoveryScreen: function() {
+      switch(this.state.playerState) {
+        case STATE.PLAYING:
+          this.togglePlayPause();
+          setTimeout(function() {
+            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+            this.state.playerState = STATE.PAUSE;
+            this.renderSkin();
+            console.log("finished toggleDiscoveryScreen");
+          }.bind(this), 1);
+          break;
+        case STATE.PAUSE:
+          if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+            this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+          }
+          else {
+            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          }
+          break;
+        case STATE.END:
+          if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+            this.state.screenToShow = SCREEN.END_SCREEN;
+          }
+          else {
+            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          }
+          break;
+      }
+      this.renderSkin();
     },
 
     toggleDiscoveryScreen: function() {
@@ -243,10 +325,38 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
     },
 
+    toggleShareScreen: function() {
+      if (this.state.screenToShow == SCREEN.SHARE_SCREEN) {
+        this.closeShareScreen();
+      }
+      else {
+        this.mb.publish(OO.EVENTS.PAUSE);
+        setTimeout(function() {
+          this.state.screenToShow = SCREEN.SHARE_SCREEN;
+          this.state.playerState = STATE.PAUSE;
+          this.renderSkin();
+          console.log("finish showShareScreen");
+        }.bind(this), 1);
+      }
+    },
+
+    closeShareScreen: function() {
+      this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+      this.state.playerState = STATE.PAUSE;
+      this.renderSkin();
+    },
+
     sendDiscoveryClickEvent: function(selectedContentData) {
       this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
-    }
+    },
+
+    upNextDismissButtonClicked: function() {
+      this.state.upNextInfo.countDownCancelled = true;
+      this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+      this.state.playerState = STATE.PLAYING;
+      this.renderSkin();
+    },
   };
 
   return Html5Skin;

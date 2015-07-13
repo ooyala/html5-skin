@@ -6,7 +6,7 @@ var Skin = React.createClass({
     return {
       screenToShow: null,
       currentPlayhead: 0,
-      discoveryData: null 
+      discoveryData: null
     };
   },
 
@@ -34,8 +34,6 @@ var Skin = React.createClass({
       duration: newDuration,
       buffered: newBuffered
     });
-    //for playhead updates we are likely in the same state, so skip the
-    // shouldComponentUpdate check
     this.forceUpdate();
   },
 
@@ -48,21 +46,43 @@ var Skin = React.createClass({
       case SCREEN.PLAYING_SCREEN:
         return (
           <PlayingScreen {...this.props} contentTree={this.state.contentTree}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            fullscreen={this.state.fullscreen}
+            ref="playScreen" />
+        );
+      case SCREEN.SHARE_SCREEN:
+        return (
+          <ShareScreen {...this.props} contentTree={this.state.contentTree}
           currentPlayhead={this.state.currentPlayhead}
           duration={this.state.duration}
           buffered={this.state.buffered}
-          ref="playScreen" />
+          fullscreen={this.state.fullscreen}
+          ref="shareScreen" />
+        );
+      case SCREEN.PAUSE_SCREEN:
+        return (
+          <PauseScreen {...this.props}
+            contentTree={this.state.contentTree}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            playerState={this.state.playerState}
+            fullscreen={this.state.fullscreen}
+            ref="pauseScreen" />
         );
       case SCREEN.END_SCREEN:
         return (
-          <EndScreen {...this.props} 
-          contentTree={this.state.contentTree} 
-          discoveryData={this.state.discoveryData}
-          currentPlayhead={this.state.contentTree.duration/1000}
-          duration={this.state.contentTree.duration/1000}
-          buffered={this.state.buffered} 
-          style={endScreenStyle}
-          ref="endScreen" />
+          <EndScreen {...this.props}
+            contentTree={this.state.contentTree}
+            discoveryData={this.state.discoveryData}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            style={endScreenStyle}
+            fullscreen={this.state.fullscreen}
+            ref="endScreen" />
         );
       case SCREEN.AD_SCREEN: 
         return (
@@ -80,15 +100,27 @@ var Skin = React.createClass({
             tempCurrPlayhead =  this.state.contentTree.duration/1000;
         }
         return (
-          <DiscoveryScreen {...this.props} 
-              contentTree={this.state.contentTree}
-              currentPlayhead={tempCurrPlayhead}
-              duration={this.state.contentTree.duration/1000}
-              buffered={this.state.buffered}
-              style={discoveryScreenStyle}
-              discoveryData={this.state.discoveryData}
-              playerState={this.state.playerState}
-              ref="DiscoveryScreen" />
+          <DiscoveryScreen {...this.props}
+            contentTree={this.state.contentTree}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            style={discoveryScreenStyle}
+            discoveryData={this.state.discoveryData}
+            playerState={this.state.playerState}
+            fullscreen={this.state.fullscreen}
+            ref="DiscoveryScreen" />
+        );
+      case SCREEN.UP_NEXT_SCREEN:
+        return (
+          <UpNextScreen {...this.props}
+            contentTree={this.state.contentTree}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            upNextInfo={this.state.upNextInfo}
+            playerState={this.state.playerState}
+            fullscreen={this.state.fullscreen}
+            ref="playScreen" />
         );
       default:
         return false;

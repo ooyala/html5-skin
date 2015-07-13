@@ -30,6 +30,21 @@ var Utils = {
     return clonedObj;
   },
 
+  extend: function(original, toMerge) {
+    var extendedObject = Utils.clone(original);
+    for (var key in toMerge) {
+      if (toMerge.hasOwnProperty(key)) {
+        extendedObject[key] = toMerge[key];
+      }
+    }
+    return extendedObject;
+  },
+  /**
+    Convert raw seconds into human friendly HH:MM format
+    @method formatSeconds
+    @param {integer} timeInSeconds The time to format in seconds
+    @return {String} The time as a string in the HH:MM format
+  */
   formatSeconds: function(timeInSeconds) {
       var seconds = parseInt(timeInSeconds,10) % 60;
       var hours = parseInt(timeInSeconds / 3600, 10);
