@@ -11,6 +11,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
+      "volume" :null,
       "upNextInfo": {
         "upNextData": null,
         "countDownFinished": false,
@@ -33,6 +34,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
       this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
       this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
+      this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
     },
 
     /*--------------------------------------------------------------------
@@ -57,6 +59,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = SCREEN.START_SCREEN;
       this.state.playerState = STATE.START;
       this.renderSkin({"contentTree": contentTree});
+    },
+
+    onVolumeChanged: function (event, newVolume){
+      this.state.volume = newVolume;
     },
 
     resetUpNextInfo: function () {

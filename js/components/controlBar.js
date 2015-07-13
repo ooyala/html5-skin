@@ -7,7 +7,7 @@ var ControlBar = React.createClass({
     return {
       muted: false,
       oldVolume: 1.0,
-      volume: 1.0
+      volume: this.props.controller.state.volume
     };
   },
 
