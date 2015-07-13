@@ -48,6 +48,7 @@ var DiscoveryPanel = React.createClass({
     }
     
     this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
+    debugger;
   },
 
   handleDiscoveryContentClick: function(index) {
@@ -58,6 +59,13 @@ var DiscoveryPanel = React.createClass({
     // TODO: figure out countdown value
     eventData.custom.countdown = 0;
     this.props.controller.sendDiscoveryClickEvent(eventData);
+  },
+
+  shouldShowCountdownTimer: function() {
+    if(this.props.skinConfig.showCountdownTimer && this.state.playerState === STATE.END) {
+      return true;
+    }
+    return false;
   },
 
   render: function() {
@@ -94,10 +102,25 @@ var DiscoveryPanel = React.createClass({
     // TODO: Remove the following line when we drop the old discovery panel in mjolnir side.
     document.getElementsByClassName("discovery_toaster")[0].style.display="none"; 
 
+    //temporary
+     var discoveryCountDownStyle = discoveryScreenStyle.discoveryCountDownStyle;
+
     // Build discovery content blocks
     if (discoveryData !== null)  {
         discoveryToasterStyle.width = 150 * discoveryData.relatedVideos.length;
         for (var i = 0; i < this.props.discoveryData.relatedVideos.length; i++) {
+          if(this.shouldShowCountdownTimer && i === 0) {
+            discoveryContentBlocks.push(
+            <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
+                 <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
+                     <div style={{height:"100%", width:"100%"}}>
+                     <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow} countDownStyle={discoveryCountDownStyle}/>
+                     </div>
+                 </img>
+                 <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
+            </div> );
+          }
+          //add else statement here
           discoveryContentBlocks.push(
             <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
                  <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
