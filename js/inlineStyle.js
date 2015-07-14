@@ -212,8 +212,10 @@ var controlBarStyle = {
     position: "relative",
     width: "10px",
     height: "10px",
+    "border-radius": "50%",
     top: "25%",
-    left: "5%"
+    left: "5%",
+    backgroundColor: "red",
   },
 
   liveTextStyle: {

@@ -108,8 +108,7 @@ var ControlBar = React.createClass({
     // 16 is 50% of control bar height right now. Will be fetched from config file later
     watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * 16;
 
-    // TODO: update to the icon from UX once they get it done
-    var liveCirleImageUrl = "http://upload.wikimedia.org/wikipedia/commons/f/f1/Ski_trail_rating_symbol_red_circle.png";
+    // TODO: Update when implementing localization
     var liveText = "LIVE";
 
     var controlItemTemplates = {
@@ -118,7 +117,7 @@ var ControlBar = React.createClass({
         <span className={playClass} style={controlBarStyle.iconSetting}></span>
       </div>,
       "live": <div className="live" style={controlBarStyle.liveItemStyle}>     
-        <img src={liveCirleImageUrl} style={controlBarStyle.liveCircleStyle}></img>
+        <div style={controlBarStyle.liveCircleStyle}></div>
         <div style={controlBarStyle.liveTextStyle}>{liveText}</div>
       </div>,
       "volume": <div className="volume" style={controlBarStyle.controlBarItemSetting}>
@@ -156,7 +155,9 @@ var ControlBar = React.createClass({
         continue;
       }
       // Not sure what to do when there are multi streams 
-      if (controlBarSetting.items[i] === "live" && !this.props.authorization.streams[0].is_live_stream) {
+      if (controlBarSetting.items[i] === "live" && 
+          (typeof this.props.authorization === 'undefined' || 
+          !(this.props.authorization.streams[0].is_live_stream))) {
         continue;
       }
       controlBarItems.push(controlItemTemplates[controlBarSetting.items[i]]);
