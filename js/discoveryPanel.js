@@ -115,6 +115,7 @@ var DiscoveryPanel = React.createClass({
                  <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
                      <div style={{height:"100%", width:"100%"}}>
                      <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow} countDownStyle={discoveryCountDownStyle}/>
+                     <span className="glyphicon glyphicon-pause" style={{position: "absolute", top: "37.5%", left: "50%", transform: "translate(-50%, -37.5%)", "line-height":"32px", "z-index":10005, "color":"white"}}></span>
                      </div>
                  </img>
                  <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>

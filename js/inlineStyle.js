@@ -540,7 +540,6 @@ var discoveryScreenStyle = {
     width: "50%",
     height: "50%",
     icon: "glyphicon glyphicon-pause",
-    style:
   }
 };
 

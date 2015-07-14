@@ -71,8 +71,9 @@ var CountDownClock = React.createClass({
     var decimals;
     var percent = this.state.fraction * this.state.remainSeconds + 1.5;
     this.context.fillStyle = 'white';
-    this.context.fillText(this.state.remainSeconds.toFixed(decimals), this.state.clockContainerWidth / 2, this.state.clockRadius, 100);
-
+    if(this.props.showText) {
+      this.context.fillText(this.state.remainSeconds.toFixed(decimals), this.state.clockContainerWidth / 2, this.state.clockRadius, 100);
+    }
     this.context.beginPath();
     this.context.arc(this.state.clockContainerWidth / 2, this.state.clockRadius, this.state.clockRadius, Math.PI * 1.5, Math.PI * percent, false);
     this.context.arc(this.state.clockContainerWidth / 2, this.state.clockRadius, this.state.clockRadius / 1.2, Math.PI * percent, Math.PI * 1.5, true);
@@ -89,7 +90,7 @@ var CountDownClock = React.createClass({
       clearInterval(this.interval);
       //this.startUpNext();
     } 
-    else if (this.props.playerState === STATE.PLAYING) {
+    else if (this.props.playerState === STATE.PLAYING || this.props.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
       this.setState({remainSeconds: this.state.remainSeconds - this.state.counterInterval});
       this.updateCanvas();
     }
