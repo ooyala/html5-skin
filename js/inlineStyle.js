@@ -39,7 +39,7 @@ var startScreenStyle = {
     }
   },
   playButton: {
-    icon: "glyphicon glyphicon-play",
+    icon: "icon icon-play",
     style: {
       fontSize: "72",
       transform: "translate(-50%, -50%)",
@@ -83,7 +83,7 @@ var pauseScreenStyle = {
     }
   },
   pauseIcon: {
-    icon: "glyphicon glyphicon-pause",
+    icon: "icon icon-pause",
     style: {
       fontSize: "24",
       transform: "translate(-50%, -50%)",
@@ -146,7 +146,7 @@ var endScreenStyle = {
     }
   },
   repeatButton: {
-    icon: "glyphicon glyphicon-repeat",
+    icon: "icon icon-upnext-replay",
     style: {
       top: "50%",
       left: "50%",
@@ -663,4 +663,107 @@ var closedCaptionScreenStyles ={
     height: "25%",
     paddingRight: "15"
   }
+};
+
+var upNextPanelStyle = {
+  panelStyle: {
+    position: "absolute",
+    width: "100%",
+    height: "25%",
+    right: "0",
+    bottom: "32px",
+    backgroundColor: "black",
+    "transition": "bottom 0.5s"
+  },
+
+  contentImageContainer: {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "20%",
+    height: "100%"
+  },
+
+  contentImage: {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%"
+  },
+
+  playButton: {
+    icon: "icon icon-play",
+    style: {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      fontSize: "25",
+      transform: "translate(-50%, -50%)",
+      opacity: 1,
+      color: "white",
+      transition: "opacity .25s ease-in-out"
+    }
+  },
+
+  contentMetadataContainer: {
+    position: "absolute",
+    top: "0",
+    left: "20%",
+    width: "78%",
+    height: "100%",
+  },
+
+  upNextTitle: {
+    position: "absolute",
+    top: "5",
+    left: "10",
+    width: "100%",
+    height: "40%",
+    color: "white"
+  },
+
+  upNextTitleText: {
+    position:"absolute",
+    left:40,
+    right: 0,
+    height: "100%",
+    fontSize: 20,
+  },
+
+  contentDescription: {
+    position: "absolute",
+    bottom: "0",
+    left: "0",
+    width: "70%",
+    height: "60%",
+    color: "white",
+    fontSize: 10,
+  },
+
+  dismissButton: {
+    position: "absolute",
+    right: "2%",
+    top: "15%",
+    height: "40%",
+    width: "13%",
+    fontSize: "10",
+    backgroundColor: "black",
+    "border": "1px solid white",
+    "border-radius": "5px"
+  },
+
+  dismissButtonText: {
+    position: "absolute",
+    top: "50%",
+    width: "100%",
+    fontSize: "20",
+    color: "white",
+    "cursor": "pointer",
+
+    "text-align": "center",
+    "-webkit-transform": "translateY(-50%)",
+    "-ms-transform": "translateY(-50%)",
+    "transform": "translateY(-50%)",
+  },
 };

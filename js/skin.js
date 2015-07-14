@@ -41,8 +41,6 @@ var Skin = React.createClass({
       duration: newDuration,
       buffered: newBuffered
     });
-    //for playhead updates we are likely in the same state, so skip the
-    // shouldComponentUpdate check
     this.forceUpdate();
   },
 
@@ -50,16 +48,16 @@ var Skin = React.createClass({
     switch (this.state.screenToShow) {
       case SCREEN.START_SCREEN:
         return (
-          // <EndScreen {...this.props} contentTree={this.state.contentTree} style={endScreenStyle}/>
           <StartScreen {...this.props} contentTree={this.state.contentTree} style={startScreenStyle}/>
         );
       case SCREEN.PLAYING_SCREEN:
         return (
           <PlayingScreen {...this.props} contentTree={this.state.contentTree}
-          currentPlayhead={this.state.currentPlayhead}
-          duration={this.state.duration}
-          buffered={this.state.buffered}
-          ref="playScreen" />
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            fullscreen={this.state.fullscreen}
+            ref="playScreen" />
         );
       case SCREEN.SHARE_SCREEN:
         return (
@@ -67,6 +65,7 @@ var Skin = React.createClass({
           currentPlayhead={this.state.currentPlayhead}
           duration={this.state.duration}
           buffered={this.state.buffered}
+          fullscreen={this.state.fullscreen}
           ref="shareScreen" />
         );
       case SCREEN.PAUSE_SCREEN:
@@ -77,30 +76,44 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             playerState={this.state.playerState}
+            fullscreen={this.state.fullscreen}
             ref="pauseScreen" />
         );
       case SCREEN.END_SCREEN:
         return (
           <EndScreen {...this.props}
-          contentTree={this.state.contentTree}
-          discoveryData={this.state.discoveryData}
-          currentPlayhead={this.state.currentPlayhead}
-          duration={this.state.duration}
-          buffered={this.state.buffered} 
-          style={endScreenStyle}
-          ref="endScreen" />
+            contentTree={this.state.contentTree}
+            discoveryData={this.state.discoveryData}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            style={endScreenStyle}
+            fullscreen={this.state.fullscreen}
+            ref="endScreen" />
         );
       case SCREEN.DISCOVERY_SCREEN:
         return (
           <DiscoveryScreen {...this.props}
-              contentTree={this.state.contentTree}
-              currentPlayhead={this.state.currentPlayhead}
-              duration={this.state.duration}
-              buffered={this.state.buffered}
-              style={discoveryScreenStyle}
-              discoveryData={this.state.discoveryData}
-              playerState={this.state.playerState}
-              ref="DiscoveryScreen" />
+            contentTree={this.state.contentTree}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            style={discoveryScreenStyle}
+            discoveryData={this.state.discoveryData}
+            playerState={this.state.playerState}
+            fullscreen={this.state.fullscreen}
+            ref="DiscoveryScreen" />
+        );
+      case SCREEN.UP_NEXT_SCREEN:
+        return (
+          <UpNextScreen {...this.props}
+            contentTree={this.state.contentTree}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            upNextInfo={this.state.upNextInfo}
+            playerState={this.state.playerState}
+            fullscreen={this.state.fullscreen}
+            ref="playScreen" />
         );
       case SCREEN.CLOSEDCAPTION_SCREEN:
         return (

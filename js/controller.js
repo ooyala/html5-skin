@@ -11,12 +11,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
-      "configLoaded": false,
       "ccOptions":{
         "enabled": null,
         "language": null,
         "availableLanguages": null
-      }
+      },
+
+      "upNextInfo": {
+        "upNextData": null,
+        "countDownFinished": false,
+        "countDownCancelled": false,
+      },
+      "configLoaded": false,
+      "fullscreen": false
     };
 
     this.init();
@@ -33,6 +40,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
+      this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
     },
 
     /*--------------------------------------------------------------------
@@ -52,14 +60,46 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
+      this.resetUpNextInfo();
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
       this.state.playerState = STATE.START;
-      this.renderSkin({"contentTree": this.state.contentTree});
+      this.renderSkin({"contentTree": contentTree});
+    },
+
+    resetUpNextInfo: function () {
+      this.state.upNextInfo.upNextData = null;
+      this.state.upNextInfo.countDownFinished = false;
+      this.state.upNextInfo.countDownCancelled = false;
     },
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
+      if (this.state.screenToShow !== SCREEN.AD_SCREEN &&
+        this.skin.props.skinConfig.upNextScreen.showUpNext)  {
+        this.showUpNextScreenWhenReady(currentPlayhead, duration);
+      } else if (this.state.playerState === STATE.PLAYING) {
+        this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+      } else if (this.state.playerState === STATE.PAUSE) {
+        this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+      }
       this.skin.updatePlayhead(currentPlayhead, duration, buffered);
+      this.renderSkin();
+    },
+
+    showUpNextScreenWhenReady: function(currentPlayhead, duration) {
+      var timeToShow = 0;
+      if (this.skin.props.skinConfig.upNextScreen.timeToShow > 1) {
+        // time to show is based on seconds
+        timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
+      } else {
+        // time to show is based on percentage of duration
+        timeToShow = (1 - this.skin.props.skinConfig.upNextScreen.timeToShow) * duration;
+      }
+      if (duration - currentPlayhead <= timeToShow &&
+          !this.state.upNextInfo.countDownCancelled &&
+          this.state.upNextInfo.upNextData !== null) {
+        this.state.screenToShow = SCREEN.UP_NEXT_SCREEN;
+      }
     },
 
     onPlaying: function() {
@@ -70,7 +110,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPaused: function() {
       if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
-      console.log("Should display DISCOVERY_SCREEN on pause");
         this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
       } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "share") {
         this.state.screenToShow = SCREEN.SHARE_SCREEN;
@@ -111,6 +150,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       //for the future use
     },
 
+    onRelatedVideosFetched: function(event, relatedVideos) {
+      console.log("onRelatedVideosFetched is called");
+      this.state.upNextInfo.upNextData = relatedVideos.videos[0];
+      this.renderSkin();
+    },
+
     /*--------------------------------------------------------------------
       Skin state -> control skin
     ---------------------------------------------------------------------*/
@@ -124,8 +169,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /*--------------------------------------------------------------------
       skin UI-action -> publish event to core player
     ---------------------------------------------------------------------*/
-    toggleFullscreen: function(fullscreen) {
-      this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, fullscreen);
+    toggleFullscreen: function() {
+      this.state.fullscreen = !this.state.fullscreen;
+      this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, this.state.fullscreen);
+      this.renderSkin();
     },
 
     toggleDiscoveryScreen: function() {
@@ -248,7 +295,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.ccOptions.enabled = !this.state.ccOptions.enabled;
       this.setClosedCaptionsLanguage();
       this.renderSkin();
-    }
+    },
+
+    upNextDismissButtonClicked: function() {
+      this.state.upNextInfo.countDownCancelled = true;
+      this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+      this.state.playerState = STATE.PLAYING;
+      this.renderSkin();
+    },
   };
 
   return Html5Skin;
