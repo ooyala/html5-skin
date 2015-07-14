@@ -5,10 +5,9 @@
 var ControlBar = React.createClass({
   getInitialState: function() {
     return {
-      fullscreen: false,
       muted: false,
       oldVolume: 1.0,
-      volume: 1.0
+      volume: this.props.controller.state.volume
     };
   },
 
@@ -17,8 +16,7 @@ var ControlBar = React.createClass({
   },
 
   handleFullscreenClick: function() {
-    this.props.controller.toggleFullscreen(!this.state.fullscreen);
-    this.setState({fullscreen: !this.state.fullscreen});
+    this.props.controller.toggleFullscreen();
   },
 
   handleMuteClick: function() {
@@ -77,16 +75,16 @@ var ControlBar = React.createClass({
 
   populateControlBar: function() {
     if (this.props.playerState == STATE.PLAYING) {
-        playClass = "glyphicon glyphicon-pause";
+        playClass = "icon icon-pause";
     } else if (this.props.playerState == STATE.END) {
-        playClass = "glyphicon glyphicon-repeat";
+        playClass = "icon icon-upnext-replay";
     } else {
-        playClass = "glyphicon glyphicon-play";
+        playClass = "icon icon-play";
     }
     var muteClass = (this.state.muted) ?
-      "glyphicon glyphicon-volume-off" : "glyphicon glyphicon-volume-down";
+      "icon icon-volume-desktop" : "icon icon-volume-desktop";
     var fullscreenClass = (this.state.fullscreen) ?
-      "glyphicon glyphicon-resize-small" : "glyphicon glyphicon-resize-full";
+      "icon icon-resize-small" : "icon icon-resize-large";
 
     var totalTime = 0;
     if (this.props.contentTree && this.props.contentTree.duration) {
@@ -104,11 +102,23 @@ var ControlBar = React.createClass({
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
         onClick={this.handleVolumeClick}></span>);
     }
-   
+
+    var watermarkUrl = this.props.skinConfig.controlBar.watermark.url;
+    var watermarkImageStyle = controlBarStyle.watermarkImageStyle;
+    // 16 is 50% of control bar height right now. Will be fetched from config file later
+    watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * 16;
+
+    // TODO: Update when implementing localization
+    var liveText = "LIVE";
+
     var controlItemTemplates = {
       "playPause": <div className="playPause" style={controlBarStyle.controlBarItemSetting}
         onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <span className={playClass} style={controlBarStyle.iconSetting}></span>
+      </div>,
+      "live": <div className="live" style={controlBarStyle.liveItemStyle}>     
+        <div style={controlBarStyle.liveCircleStyle}></div>
+        <div style={controlBarStyle.liveTextStyle}>{liveText}</div>
       </div>,
       "volume": <div className="volume" style={controlBarStyle.controlBarItemSetting}>
         <span className={muteClass} style={controlBarStyle.iconSetting} onClick={this.handleMuteClick}
@@ -119,26 +129,35 @@ var ControlBar = React.createClass({
         {Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}</div>,
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
-        <span className="glyphicon glyphicon-cd" style={controlBarStyle.iconSetting}></span></div>,
+        <span className="icon icon-topmenu-discovery" style={controlBarStyle.iconSetting}></span></div>,
       "bitrateSelector": <div className="bitrateSelector" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-equalizer"
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-quality"
         style={controlBarStyle.iconSetting}></span></div>,
       "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-subtitles"
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-cc"
         style={controlBarStyle.iconSetting}></span></div>,
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="glyphicon glyphicon-share"
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-share"
         onClick={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
       "fullScreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
-        <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>
+        <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>,
+      "watermark": <div className="watermark" style={controlBarStyle.controlBarItemSetting}
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        <img src={watermarkUrl} style={controlBarStyle.watermarkImageStyle}></img></div>
     };
 
     var controlBarItems = [];
     var controlBarSetting = this.props.skinConfig.controlBar;
     for (i=0; i < controlBarSetting.items.length; i++) {
-      //filter out unrecognized button names
+      // filter out unrecognized button names
       if (typeof controlItemTemplates[controlBarSetting.items[i]] === "undefined") {
+        continue;
+      }
+      // Not sure what to do when there are multi streams 
+      if (controlBarSetting.items[i] === "live" && 
+          (typeof this.props.authorization === 'undefined' || 
+          !(this.props.authorization.streams[0].is_live_stream))) {
         continue;
       }
       controlBarItems.push(controlItemTemplates[controlBarSetting.items[i]]);
