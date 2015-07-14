@@ -528,7 +528,7 @@ var discoveryScreenStyle = {
 var closedCaptionScreenStyles ={
 
   screenStyle: {
-    backgroundColor: "rgba(0,0,0,0.6)",
+    backgroundColor: "rgba(0,0,0,0.8)",
     height: "100%",
     width: "100%"
   },
@@ -544,7 +544,7 @@ var closedCaptionScreenStyles ={
     fontWeight: "bold"
   },
 
-  onOffSwitchStyle:{
+  switchStyle:{
     height: "24",
     textAlign: "left",
     fontSize: "10",
@@ -555,7 +555,7 @@ var closedCaptionScreenStyles ={
     position: "relative"
   },
 
-  onOffSwitchContainer: {
+  switchContainer: {
     display: "inline-block",
     cursor: "pointer",
     width: "40",
@@ -564,7 +564,7 @@ var closedCaptionScreenStyles ={
     marginLeft: "20",
     borderRadius: "100%",
   },
-  onOffSwitchInner: {
+  switch: {
     display: "block",
     width: "100%",
     height: "75%",
@@ -576,7 +576,7 @@ var closedCaptionScreenStyles ={
     onBackground: "#50AE54",
     transition: "all 0.5s ease-in-out"
   },
-  onOffSwitchSwitch: {
+  switchThumb: {
     display: "block",
     width: "60%",
     height: "100%",

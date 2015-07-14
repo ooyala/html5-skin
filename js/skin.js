@@ -106,6 +106,7 @@ var Skin = React.createClass({
         return (
           <ClosedCaptionScreen {...this.props}
               contentTree={this.state.contentTree}
+              ccOptions = {this.props.ccOptions}
               currentPlayhead={this.state.currentPlayhead}
               duration={this.state.duration}
               buffered={this.state.buffered}

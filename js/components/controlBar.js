@@ -67,7 +67,7 @@ var ControlBar = React.createClass({
   },
 
   handleClosedCaptionClick: function() {
-    this.props.controller.showClosedCaptionScreen();
+    this.props.controller.toggleClosedCaptionScreen();
   },
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {

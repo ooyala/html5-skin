@@ -14,8 +14,8 @@ var ClosedCaptionScreen = React.createClass({
     };
   },
 
-  closeClosedCaptionPanel: function() {
-    this.props.controller.closeClosedCaptionScreen();
+  toggleClosedCaptionPanel: function() {
+    this.props.controller.toggleClosedCaptionScreen();
   },
 
   componentDidMount: function () {
@@ -27,7 +27,7 @@ var ClosedCaptionScreen = React.createClass({
     var controlBarHeight = 32;
     return (
       <div style={{height: "100%", width: "100%"}}>
-        <ClosedCaptionPanel {...this.props}/>
+        <ClosedCaptionPanel {...this.props} ccOptions = {this.props.ccOptions}/>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}

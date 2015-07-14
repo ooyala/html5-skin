@@ -25,33 +25,32 @@ var ClosedCaptionPanel = React.createClass({
 var OnOffSwitch = React.createClass({
 
   componentWillMount: function(){
-    this.setCCOptionsStyle();
+    this.toggleCCStyles();
   },
 
   handleOnOffSwitch: function(){
-    this.props.controller.state.ccOptions.enabled = !this.props.controller.state.ccOptions.enabled;
-    this.setCCOptionsStyle();
-    this.props.controller.onClosedCaptionChange();
+    this.props.controller.toggleClosedCaptionEnabled();
+    this.toggleCCStyles();
   },
 
-  setCCOptionsStyle: function(){
-    closedCaptionScreenStyles.onOffSwitchInner.background = this.props.controller.state.ccOptions.enabled ? closedCaptionScreenStyles.onOffSwitchInner.onBackground : "grey";
-    closedCaptionScreenStyles.onOffSwitchSwitch.left = this.props.controller.state.ccOptions.enabled ? "" : "0";
-    closedCaptionScreenStyles.onOffSwitchSwitch.right = this.props.controller.state.ccOptions.enabled ? "0" : "";
-    closedCaptionScreenStyles.CCPreviewPanelStyle.height = this.props.controller.state.ccOptions.enabled ? "100" : "0";
-    closedCaptionScreenStyles.itemStyle.color = this.props.controller.state.ccOptions.enabled ? "white" : "grey";
-    closedCaptionScreenStyles.onStyle.color = this.props.controller.state.ccOptions.enabled ? "white" : "grey";
-    closedCaptionScreenStyles.offStyle.color = this.props.controller.state.ccOptions.enabled ? "grey" : "white";
+  toggleCCStyles: function(){
+    closedCaptionScreenStyles.switch.background = this.props.ccOptions.enabled ? closedCaptionScreenStyles.switch.onBackground : "grey";
+    closedCaptionScreenStyles.switchThumb.left = this.props.ccOptions.enabled ? "" : "0";
+    closedCaptionScreenStyles.switchThumb.right = this.props.ccOptions.enabled ? "0" : "";
+    closedCaptionScreenStyles.CCPreviewPanelStyle.height = this.props.ccOptions.enabled ? "100" : "0";
+    closedCaptionScreenStyles.itemStyle.color = this.props.ccOptions.enabled ? "white" : "grey";
+    closedCaptionScreenStyles.onStyle.color = this.props.ccOptions.enabled ? "white" : "grey";
+    closedCaptionScreenStyles.offStyle.color = this.props.ccOptions.enabled ? "grey" : "white";
 
   },
 
   render: function(){
     return (
-        <div style={closedCaptionScreenStyles.onOffSwitchStyle}>
+        <div style={closedCaptionScreenStyles.switchStyle}>
           <span style={closedCaptionScreenStyles.offStyle}>Off</span>
-          <div style={closedCaptionScreenStyles.onOffSwitchContainer} onClick = {this.handleOnOffSwitch}>
-            <span style={closedCaptionScreenStyles.onOffSwitchInner}></span>
-            <span style={closedCaptionScreenStyles.onOffSwitchSwitch}></span>
+          <div style={closedCaptionScreenStyles.switchContainer} onClick = {this.handleOnOffSwitch}>
+            <span style={closedCaptionScreenStyles.switch}></span>
+            <span style={closedCaptionScreenStyles.switchThumb}></span>
           </div>
           <span style={closedCaptionScreenStyles.onStyle}>On</span>
         </div>
@@ -74,18 +73,17 @@ var CCPreviewPanel = React.createClass({
 var LanguageTabContent = React.createClass({
   getInitialState: function() {
     return {
-      selectedLanguage: this.props.controller.state.ccOptions.language
+      selectedLanguage: this.props.ccOptions.language
     };
   },
 
   changeLanguage: function(language){
-    this.props.controller.state.ccOptions.language = language;
-    this.props.controller.onClosedCaptionChange();
+    this.props.controller.onClosedCaptionLanguageChange(language);
   },
 
 
   render: function(){
-    var availableLanguages = this.props.controller.state.ccOptions.availableLanguages; //getting list of languages
+    var availableLanguages = this.props.ccOptions.availableLanguages; //getting list of languages
 
     var languageCodes = availableLanguages.languages; // getting an array of all the codes
 
@@ -114,8 +112,8 @@ var LanguageTabContent = React.createClass({
                   {row.map(function(item, j){
                     return (
                       <td key = {j}>
-                        <div style = {(this.props.controller.state.ccOptions.language == item && this.props.controller.state.ccOptions.enabled) ? closedCaptionScreenStyles.itemSelectedStyle : closedCaptionScreenStyles.itemStyle} 
-                        onClick = {this.props.controller.state.ccOptions.enabled ? this.changeLanguage.bind(this, item) : null}>{availableLanguages.locale[item]}</div>
+                        <div style = {(this.props.ccOptions.language == item && this.props.ccOptions.enabled) ? closedCaptionScreenStyles.itemSelectedStyle : closedCaptionScreenStyles.itemStyle} 
+                        onClick = {this.props.ccOptions.enabled ? this.changeLanguage.bind(this, item) : null}>{availableLanguages.locale[item]}</div>
                       </td>
                     );
                   },this)}

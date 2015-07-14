@@ -44,7 +44,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON("config/skin.json", _.bind(function(data) {
         this.skin = React.render(
-          React.createElement(Skin, {skinConfig: data, controller: this}), document.getElementById("skin")
+          React.createElement(Skin, {skinConfig: data, controller: this, ccOptions: this.state.ccOptions}), document.getElementById("skin")
         );
         this.state.configLoaded = true;
         this.renderSkin();
@@ -108,7 +108,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onClosedCaptionCueChanged: function(event, data) {
-      console.log("onClosedCaptionsInfoAvailable is called", data);
+      //for the future use
     },
 
     /*--------------------------------------------------------------------
@@ -218,7 +218,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
     },
 
-    showClosedCaptionScreen: function() {
+    toggleClosedCaptionScreen: function() {
       if (this.state.screenToShow == SCREEN.CLOSEDCAPTION_SCREEN) {
         this.closeClosedCaptionScreen();
       }
@@ -238,10 +238,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onClosedCaptionChange: function() {
+    onClosedCaptionLanguageChange: function(language) {
+      this.state.ccOptions.language = language;
       this.setClosedCaptionsLanguage();
       this.renderSkin();
     },
+
+    toggleClosedCaptionEnabled: function() {
+      this.state.ccOptions.enabled = !this.state.ccOptions.enabled;
+      this.setClosedCaptionsLanguage();
+      this.renderSkin();
+    }
   };
 
   return Html5Skin;
