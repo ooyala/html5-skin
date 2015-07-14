@@ -18,4 +18,5 @@ var SCREEN = {
   DISCOVERY_SCREEN: "discoveryScreen",
   UP_NEXT_SCREEN: "upNextScreen",
   AD_SCREEN: "adScreen",
+  MORE_OPTION_SCREEN: "moreOptionScreen",
 };

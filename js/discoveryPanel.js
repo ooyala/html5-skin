@@ -2,8 +2,6 @@
   DISCOVERY PANEL
 *********************************************************************/
 /**
-* The screen used while the video is playing.
-*
 * @class DiscoveryPanel
 * @constructor
 */

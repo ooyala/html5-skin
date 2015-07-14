@@ -102,7 +102,17 @@ var Skin = React.createClass({
             upNextInfo={this.state.upNextInfo}
             playerState={this.state.playerState}
             fullscreen={this.state.fullscreen}
-            ref="playScreen" />
+            ref="UpNextScreen" />
+        );
+      case SCREEN.MORE_OPTIONS_SCREEN:
+        return (
+          <MoreOptionsScreen {...this.props}
+            contentTree={this.state.contentTree}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            playerState={this.state.playerState}
+            fullscreen={this.state.fullscreen}
+            ref="moreOptionsScreen" />
         );
       default:
         return false;

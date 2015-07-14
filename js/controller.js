@@ -258,6 +258,29 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.playerState = STATE.PLAYING;
       this.renderSkin();
     },
+
+    toggleMoreOptionsScreen: function() {
+      if (this.state.screenToShow == SCREEN.MORE_OPTIONS_SCREEN) {
+        this.closeMoreOptionsScreen();
+      } else {
+        this.displayMoreOptionsScreen();
+      }
+    },
+
+    closeMoreOptionsScreen: function() {
+      this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+      this.state.playerState = STATE.PAUSE;
+      this.renderSkin();
+    },
+
+    displayMoreOptionsScreen: function() {
+      this.mb.publish(OO.EVENTS.PAUSE);
+      setTimeout(function() {
+        this.state.screenToShow = SCREEN.MORE_OPTIONS_SCREEN;
+        this.state.playerState = STATE.PAUSE;
+        this.renderSkin();
+      }.bind(this), 1);
+    },
   };
 
   return Html5Skin;
