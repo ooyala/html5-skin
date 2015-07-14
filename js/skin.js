@@ -63,6 +63,7 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             playerState={this.state.playerState}
+            noPauseAnimation = {this.state.noPauseAnimation}
             ref="pauseScreen" />
         );
       case SCREEN.END_SCREEN:
