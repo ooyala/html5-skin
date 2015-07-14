@@ -713,26 +713,3 @@ var MoreOptionsScreenStyle = {
     "color": "lightgray"
   },
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
