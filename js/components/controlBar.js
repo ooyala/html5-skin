@@ -146,7 +146,7 @@ var ControlBar = React.createClass({
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-share"
         onClick={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
-      "fullScreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
+      "fullscreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
         <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>,
       "watermark": <div className="watermark" style={controlBarStyle.controlBarItemSetting}
