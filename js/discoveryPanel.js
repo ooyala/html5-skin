@@ -12,6 +12,7 @@ var DiscoveryPanel = React.createClass({
   getInitialState: function() {
     return {
       discoveryToasterLeftOffset: 25,
+      showDiscoveryCountDown: true
     };
   },
 
@@ -62,10 +63,16 @@ var DiscoveryPanel = React.createClass({
   },
 
   shouldShowCountdownTimer: function() {
-    if(this.props.skinConfig.showCountdownTimer && this.state.playerState === STATE.END) {
+    if(this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen && this.props.playerState === STATE.END) {
       return true;
     }
     return false;
+  },
+
+  handleDiscoveryCountDownClick: function(event) {
+    event.stopPropagation();
+    var discoveryCountDownStyle = discoveryScreenStyle.discoveryCountDownStyle;
+    this.setState({showDiscoveryCountDown: false});
   },
 
   render: function() {
@@ -102,31 +109,35 @@ var DiscoveryPanel = React.createClass({
     // TODO: Remove the following line when we drop the old discovery panel in mjolnir side.
     document.getElementsByClassName("discovery_toaster")[0].style.display="none"; 
 
-    //temporary
-     var discoveryCountDownStyle = discoveryScreenStyle.discoveryCountDownStyle;
-
+    var discoveryCountDownStyle = discoveryScreenStyle.discoveryCountDownStyle;
+    var discoveryCountDownIconStyle = discoveryScreenStyle.discoveryCountDownIconStyle;
+    if(!this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen || !this.state.showDiscoveryCountDown) {
+      discoveryCountDownStyle.display="none";
+      discoveryCountDownIconStyle.display="none";
+    }
     // Build discovery content blocks
     if (discoveryData !== null)  {
         discoveryToasterStyle.width = 150 * discoveryData.relatedVideos.length;
         for (var i = 0; i < this.props.discoveryData.relatedVideos.length; i++) {
-          if(this.shouldShowCountdownTimer && i === 0) {
+          if(this.shouldShowCountdownTimer() && i === 0) {
             discoveryContentBlocks.push(
             <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
                  <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
                      <div style={{height:"100%", width:"100%"}}>
-                     <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow} countDownStyle={discoveryCountDownStyle}/>
-                     <span className="glyphicon glyphicon-pause" style={{position: "absolute", top: "37.5%", left: "50%", transform: "translate(-50%, -37.5%)", "line-height":"32px", "z-index":10005, "color":"white"}}></span>
+                     <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow} countDownStyle={discoveryCountDownStyle} showTimerText={false} onClick={this.handleDiscoveryCountDownClick}/>
+                     <span className="icon icon-pause" style={discoveryCountDownIconStyle} onClick={this.handleDiscoveryCountDownClick}></span>
                      </div>
                  </img>
                  <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
             </div> );
           }
-          //add else statement here
-          discoveryContentBlocks.push(
-            <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
-                 <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
-                 <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
-            </div> );
+          else {
+            discoveryContentBlocks.push(
+              <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
+                   <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
+                   <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
+              </div> );
+          }
         }
     }
     return (
