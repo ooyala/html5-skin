@@ -7,6 +7,12 @@
 */
 
 var MoreOptionsPanel = React.createClass({
+  componentDidMount: function () {
+    // Fade-in & bottom-up animation
+    MoreOptionsScreenStyle.buttonListStyle.bottom = "50%";
+    MoreOptionsScreenStyle.buttonListStyle.opacity = "1";
+  },
+
   closeMoreOptionsScreen: function() {
     this.props.controller.closeMoreOptionsScreen();
   },

@@ -677,11 +677,12 @@ var MoreOptionsScreenStyle = {
 
   buttonListStyle: {
     "position": "absolute",
-    "top": "40%",
+    "bottom": "0%",
     "left": "30%",
     "right": "30%",
     "width": "40%",
     "height": "32",
+    "opacity": "0",
     "listStyle": "none",
     "display": "flex",
     "flexFlow": "row nowrap",
@@ -692,6 +693,7 @@ var MoreOptionsScreenStyle = {
     "user-select": "none",
     "-webkit-flex-direction": "row",
     "flex-direction": "row",
+    "transition": "bottom 0.7s, opacity 0.7s",
   },
 
   buttonStyle: {
