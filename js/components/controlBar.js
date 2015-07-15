@@ -53,6 +53,10 @@ var ControlBar = React.createClass({
 
   handleVolumeClick: function(evt) {
     var newVolume = parseFloat(evt.target.dataset.volume);
+    this.setVolume(newVolume);
+  },
+
+  setVolume: function(newVolume) {
     this.props.controller.setVolume(newVolume);
     this.setState({
       volume: newVolume,
@@ -177,9 +181,12 @@ var ControlBar = React.createClass({
     var controlBarItems = this.populateControlBar();
 
     return (
-      <div className="controlBar" onMouseUp={this.handleControlBarMouseUp}
-        style={controlBarStyle.controlBarSetting}>
-        {controlBarItems}
+      <div>
+        <AccessibilityControls {...this.props} volume={this.state.volume} controlBar={this}/>
+        <div className="controlBar" onMouseUp={this.handleControlBarMouseUp}
+          style={controlBarStyle.controlBarSetting}>
+          {controlBarItems}
+        </div>
       </div>
     );
   }
