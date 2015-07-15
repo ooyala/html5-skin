@@ -17,6 +17,10 @@ var Skin = React.createClass({
       this.refs.playScreen.setState({
         playerState: this.state.playerState
       });
+    } else if (this.refs.adScreen) {
+      this.refs.adScreen.setState({
+        playerState: this.state.playerState
+      });
     }
   },
 
@@ -80,7 +84,21 @@ var Skin = React.createClass({
             fullscreen={this.state.fullscreen}
             ref="endScreen" />
         );
+      case SCREEN.AD_SCREEN: 
+        return (
+          <AdScreen {...this.props} contentTree={this.state.contentTree}
+          currentAdsInfo={this.state.currentAdsInfo}
+          currentPlayhead={this.state.currentPlayhead}
+          playerState={this.state.playerState}
+          duration={this.state.duration}
+          buffered={this.state.buffered}
+          ref="adScreen" />
+        );
       case SCREEN.DISCOVERY_SCREEN:
+        var tempCurrPlayhead = this.state.currentPlayhead;
+        if(this.state.playerState === STATE.END) {
+            tempCurrPlayhead =  this.state.contentTree.duration/1000;
+        }
         return (
           <DiscoveryScreen {...this.props}
             contentTree={this.state.contentTree}

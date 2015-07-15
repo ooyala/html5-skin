@@ -92,7 +92,7 @@ var DiscoveryPanel = React.createClass({
 
     // This is for turning off the old discovery panel.
     // TODO: Remove the following line when we drop the old discovery panel in mjolnir side.
-    document.getElementsByClassName("discovery_toaster")[0].style.display="none"; 
+    // document.getElementsByClassName("discovery_toaster")[0].style.display="none"; 
 
     // Build discovery content blocks
     if (discoveryData !== null)  {
