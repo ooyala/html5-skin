@@ -8,6 +8,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.id = id;
     this.state = {
       "contentTree": {},
+      "authorization": {},
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
@@ -16,6 +17,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "currentAdItem": null,
         "numberOfAds": 0
       },
+      "volume" :null,
       "upNextInfo": {
         "upNextData": null,
         "countDownFinished": false,
@@ -32,6 +34,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     init: function () {
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
+      this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
@@ -55,7 +58,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi", _.bind(this.onWillResumeAds, this));
 
       this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
-      
+      this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
+
       if (OO.EVENTS.DISCOVERY_API) {
         this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
       }
@@ -77,12 +81,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }, this));
     },
 
+    onAuthorizationFetched: function(event, authorization) {
+      this.state.authorization = authorization;
+    },
+
     onContentTreeFetched: function (event, contentTree) {
       this.resetUpNextInfo();
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
       this.state.playerState = STATE.START;
       this.renderSkin({"contentTree": contentTree});
+    },
+
+    onVolumeChanged: function (event, newVolume){
+      this.state.volume = newVolume;
     },
 
     resetUpNextInfo: function () {
