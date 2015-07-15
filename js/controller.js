@@ -12,7 +12,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
-      "noPauseAnimation":null,
+      "pauseAnimationDisabled":null,
       "ccOptions":{
         "enabled": null,
         "language": null,
@@ -56,7 +56,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON("config/skin.json", _.bind(function(data) {
         this.skin = React.render(
-          React.createElement(Skin, {skinConfig: data, controller: this, ccOptions: this.state.ccOptions, noPauseAnimation: this.state.noPauseAnimation}), document.getElementById("skin")
+          React.createElement(Skin, {skinConfig: data, controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.getElementById("skin")
         );
         this.state.configLoaded = true;
         this.renderSkin();
@@ -200,7 +200,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           break;
         case STATE.PAUSE:
           if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
-            this.state.noPauseAnimation = true;
+            this.state.pauseAnimationDisabled = true;
             this.state.screenToShow = SCREEN.PAUSE_SCREEN;
           }
           else {
@@ -262,7 +262,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     closeShareScreen: function() {
-      this.state.noPauseAnimation = true;
+      this.state.pauseAnimationDisabled = true;
       this.state.screenToShow = SCREEN.PAUSE_SCREEN;
       this.state.playerState = STATE.PAUSE;
       this.renderSkin();
@@ -294,7 +294,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     closeClosedCaptionScreen: function() {
-      this.state.noPauseAnimation = true;
+      this.state.pauseAnimationDisabled = true;
       this.state.screenToShow = SCREEN.PAUSE_SCREEN;
       this.state.playerState = STATE.PAUSE;
       this.renderSkin();
@@ -318,8 +318,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.playerState = STATE.PLAYING;
       this.renderSkin();
     },
-    setNoPauseAnimation: function(value){
-      this.state.noPauseAnimation = value;
+    enablePauseAnimation: function(){
+      this.state.pauseAnimationDisabled = false;
     }
   };
 
