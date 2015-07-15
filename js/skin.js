@@ -76,6 +76,7 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             playerState={this.state.playerState}
+            pauseAnimationDisabled = {this.state.pauseAnimationDisabled}
             fullscreen={this.state.fullscreen}
             ref="pauseScreen" />
         );
