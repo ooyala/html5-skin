@@ -81,7 +81,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.resetUpNextInfo();
       this.state.contentTree = contentTree;
       this.state.screenToShow = SCREEN.START_SCREEN;
-      // this.initAdsPlaybackProgressStructure();
       this.state.playerState = STATE.START;
       this.renderSkin({"contentTree": contentTree});
     },
@@ -93,6 +92,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
+      // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
+      // So we only need to update the playhead for ad screen.
       if (this.state.screenToShow !== SCREEN.AD_SCREEN ) {
         if (this.skin.props.skinConfig.upNextScreen.showUpNext)  {
           this.showUpNextScreenWhenReady(currentPlayhead, duration);
@@ -123,6 +124,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaying: function() {
+      // pause/resume of Ad playback is handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
       if (this.state.screenToShow != SCREEN.AD_SCREEN) {
         this.state.screenToShow = SCREEN.PLAYING_SCREEN;
         this.state.playerState = STATE.PLAYING;
@@ -131,7 +133,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPaused: function() {
-      // pause/resume of Ad playback is handled by different events
+      // pause/resume of Ad playback is handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
       if (this.state.screenToShow != SCREEN.AD_SCREEN) {
         if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
           console.log("Should display DISCOVERY_SCREEN on pause");
