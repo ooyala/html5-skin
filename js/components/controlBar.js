@@ -7,7 +7,7 @@ var ControlBar = React.createClass({
     return {
       muted: false,
       oldVolume: 1.0,
-      volume: 1.0
+      volume: this.props.controller.state.volume
     };
   },
 
@@ -103,10 +103,22 @@ var ControlBar = React.createClass({
         onClick={this.handleVolumeClick}></span>);
     }
 
+    var watermarkUrl = this.props.skinConfig.controlBar.watermark.url;
+    var watermarkImageStyle = controlBarStyle.watermarkImageStyle;
+    // 16 is 50% of control bar height right now. Will be fetched from config file later
+    watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * 16;
+
+    // TODO: Update when implementing localization
+    var liveText = "LIVE";
+
     var controlItemTemplates = {
       "playPause": <div className="playPause" style={controlBarStyle.controlBarItemSetting}
         onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <span className={playClass} style={controlBarStyle.iconSetting}></span>
+      </div>,
+      "live": <div className="live" style={controlBarStyle.liveItemStyle}>     
+        <div style={controlBarStyle.liveCircleStyle}></div>
+        <div style={controlBarStyle.liveTextStyle}>{liveText}</div>
       </div>,
       "volume": <div className="volume" style={controlBarStyle.controlBarItemSetting}>
         <span className={muteClass} style={controlBarStyle.iconSetting} onClick={this.handleMuteClick}
@@ -129,14 +141,23 @@ var ControlBar = React.createClass({
         onClick={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
       "fullScreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
-        <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>
+        <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>,
+      "watermark": <div className="watermark" style={controlBarStyle.controlBarItemSetting}
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        <img src={watermarkUrl} style={controlBarStyle.watermarkImageStyle}></img></div>
     };
 
     var controlBarItems = [];
     var controlBarSetting = this.props.skinConfig.controlBar;
     for (i=0; i < controlBarSetting.items.length; i++) {
-      //filter out unrecognized button names
+      // filter out unrecognized button names
       if (typeof controlItemTemplates[controlBarSetting.items[i]] === "undefined") {
+        continue;
+      }
+      // Not sure what to do when there are multi streams 
+      if (controlBarSetting.items[i] === "live" && 
+          (typeof this.props.authorization === 'undefined' || 
+          !(this.props.authorization.streams[0].is_live_stream))) {
         continue;
       }
       controlBarItems.push(controlItemTemplates[controlBarSetting.items[i]]);

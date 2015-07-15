@@ -200,6 +200,34 @@ var controlBarStyle = {
   iconSetting: {
   },
 
+  liveItemStyle: {
+    position: "relative",
+    width: "50",
+    height: "50%",
+    top: "30%",
+    "border-radius": "3px"
+  },
+
+  liveCircleStyle: {
+    position: "relative",
+    width: "10px",
+    height: "10px",
+    "border-radius": "50%",
+    top: "25%",
+    left: "5%",
+    backgroundColor: "red",
+  },
+
+  liveTextStyle: {
+    position: "absolute",
+    width: "60%",
+    height: "80%",
+    top: "10%",
+    left: "40%",
+    fontSize: "10",
+    color: "LightGray"
+  },
+
   volumeBarStyle: {
     "display": "inline-block",
     "height": "12px",
@@ -208,7 +236,14 @@ var controlBarStyle = {
     "backgroundClip": "content-box",
     "position": "relative",
     "top": "-1px"
+  },
+
+  watermarkImageStyle: {
+    position: "relative",
+    height: "50%",
+    top: "25%"
   }
+
 };
 
 var scrubberBarStyle = {
