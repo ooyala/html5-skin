@@ -87,7 +87,8 @@ var MoreOptionsPanel = React.createClass({
     var moreOptionsItems = this.buildMoreOptionsButtonList();
     return (
       <div style={MoreOptionsScreenStyle.panelStyle}>
-        <div onClick={this.closeMoreOptionsScreen} style={MoreOptionsScreenStyle.closeButtonStyle}>
+        <div onMouseOver={this.highlight} onMouseOut={this.removeHighlight} 
+          onClick={this.closeMoreOptionsScreen} style={MoreOptionsScreenStyle.closeButtonStyle}>
           <span className="icon icon-close"></span>
         </div>
         <div style={MoreOptionsScreenStyle.buttonListStyle}>
