@@ -72,7 +72,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.skin = React.render(
           React.createElement(Skin, {skinConfig: data, controller: this}), document.getElementById("skin")
         );
-        this.mb.publish(OO.EVENTS.PLAYER_EMBEDDED);
         this.state.configLoaded = true;
         this.renderSkin();
       }, this));
