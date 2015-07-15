@@ -45,11 +45,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         ADS RELATED EVENTS
       *********************************************************************/
 
-      this.mb.subscribe(OO.EVENTS.WILL_PLAY_ADS, "customerUi", _.bind(this.onWillPlayAds, this));
       this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
 
       this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
-      this.mb.subscribe(OO.EVENTS.AD_POD_ENDED, "customerUi", _.bind(this.onAdPodEnded, this));
 
       this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
       this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
@@ -184,14 +182,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       ADS RELATED EVENTS
     *********************************************************************/
 
-    onWillPlayAds: function(event) {
-      console.log("onWillPlayAds is called");
-      /*
-      this.state.screenToShow = SCREEN.AD_SCREEN;
-      this.state.isPlayingAd = true;
-      */
-    },
-
     onAdsPlayed: function(event) {
       console.log("onAdsPlayed is called from event = " + event);
       this.state.screenToShow = SCREEN.PLAYING_SCREEN;
@@ -202,9 +192,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       console.log("onAdPodStarted is called from event = " + event + "with " + numberOfAds + "ads");
       this.state.currentAdsInfo.numberOfAds = numberOfAds;
       this.renderSkin();
-    },
-
-    onAdPodEnded: function(event, numberOfAds) {
     },
 
     onWillPlaySingleAd: function(event, adItem) {

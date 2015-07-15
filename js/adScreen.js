@@ -31,7 +31,7 @@ var AdScreen = React.createClass({
     var controlBarHeight = 32;
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
+        onMouseUp={this.handlePlayerMouseUp} style={defaultScreenStyle.style}>
         
         <AdPanel 
         {...this.props} />
