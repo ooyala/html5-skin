@@ -25,6 +25,10 @@ var MoreOptionsPanel = React.createClass({
     this.props.controller.toggleDiscoveryScreen();
   },
 
+  handleClosedCaptionClick: function() {
+    this.props.controller.toggleClosedCaptionScreen();
+  },
+
   highlight: function(evt) {
     evt.target.style.color = "rgba(255, 255, 255, 1.0)";
   },
@@ -47,7 +51,7 @@ var MoreOptionsPanel = React.createClass({
         <span className="icon icon-topmenu-quality"></span></div>,
       
       "closedCaption": <div className="closedCaption" style={MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleClosedCaptionClick}> 
         <span className="icon icon-topmenu-cc"></span></div>,
       
       "share": <div className="share" style={MoreOptionsScreenStyle.buttonStyle}
@@ -67,6 +71,11 @@ var MoreOptionsPanel = React.createClass({
     var moreOptions = this.props.skinConfig.moreOptions;
     for (i = 0; i < moreOptions.length; i++) {
       if (typeof optionsItemsTemplates[moreOptions[i]] === "undefined") {
+        continue;
+      }
+
+      //do not show CC button if no CC available
+      if (!this.props.controller.state.ccOptions.availableLanguages && (moreOptions[i] === "closedCaption")){
         continue;
       }
       moreOptionsItems.push(optionsItemsTemplates[moreOptions[i]]);
