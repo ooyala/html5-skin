@@ -34,7 +34,7 @@ var AccessibilityControls = React.createClass({
       else {
         newVolume = (this.props.volume * 10 + 1)/10;
       }
-      
+
       this.props.controlBar.setVolume(newVolume);
     }
 
@@ -62,7 +62,7 @@ var AccessibilityControls = React.createClass({
     }
   },
   render: function() {
-    
+
     return (
       <div style={{height:'0', width:'0'}}></div>
     );
