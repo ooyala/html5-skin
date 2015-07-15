@@ -12,7 +12,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
-      "pauseAnimationDisabled":null,
+      "pauseAnimationDisabled": false,
       "ccOptions":{
         "enabled": null,
         "language": null,
