@@ -49,7 +49,6 @@ var DiscoveryPanel = React.createClass({
     }
     
     this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
-    debugger;
   },
 
   handleDiscoveryContentClick: function(index) {
