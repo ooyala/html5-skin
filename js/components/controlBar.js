@@ -119,32 +119,45 @@ var ControlBar = React.createClass({
         onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <span className={playClass} style={controlBarStyle.iconSetting}></span>
       </div>,
+      
       "live": <div className="live" style={controlBarStyle.liveItemStyle}>     
         <div style={controlBarStyle.liveCircleStyle}></div>
         <div style={controlBarStyle.liveTextStyle}>{liveText}</div>
       </div>,
+      
       "volume": <div className="volume" style={controlBarStyle.controlBarItemSetting}>
         <span className={muteClass} style={controlBarStyle.iconSetting} onClick={this.handleMuteClick}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
         {volumeBars}
-        </div>,
+      </div>,
+      
       "timeDuration": <div className="timeDuration" style={controlBarStyle.durationIndicatorSetting}>
         {Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}</div>,
+      
+      "moreOptions": <div className="moreOptions" style={controlBarStyle.controlBarItemSetting}
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}>
+        <span className="icon icon-menu" style={controlBarStyle.iconSetting}></span></div>,
+
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
         <span className="icon icon-topmenu-discovery" style={controlBarStyle.iconSetting}></span></div>,
+      
       "bitrateSelector": <div className="bitrateSelector" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-quality"
         style={controlBarStyle.iconSetting}></span></div>,
+      
       "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-cc"
         onClick={this.handleClosedCaptionClick} style={controlBarStyle.iconSetting}></span></div>,
+      
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-share"
         onClick={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
-      "fullScreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
+      
+      "fullscreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
         <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>,
+      
       "watermark": <div className="watermark" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <img src={watermarkUrl} style={controlBarStyle.watermarkImageStyle}></img></div>
@@ -177,12 +190,13 @@ var ControlBar = React.createClass({
 
   render: function() {
     //Fill in all the dynamic style values we need
-    var controlBarHeight = this.props.controlBarHeight;
+    var controlBarHeight = this.props.skinConfig.controlBar.height;
     controlBarStyle.controlBarSetting.height = controlBarHeight;
     controlBarStyle.controlBarSetting.transform = "translate(0,-" +
       (this.props.controlBarVisible ? controlBarStyle.controlBarSetting.height : 0) + "px)";
     controlBarStyle.durationIndicatorSetting.lineHeight = controlBarHeight + "px";
     controlBarStyle.iconSetting.lineHeight = controlBarHeight + "px";
+    controlBarStyle.watermarkImageStyle.top = (controlBarHeight - controlBarStyle.watermarkImageStyle.height) / 2 + "px";
 
     var controlBarItems = this.populateControlBar();
 

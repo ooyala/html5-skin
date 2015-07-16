@@ -54,6 +54,7 @@ var Skin = React.createClass({
         return (
           <PlayingScreen {...this.props} contentTree={this.state.contentTree}
             currentPlayhead={this.state.currentPlayhead}
+            playerState={this.state.playerState}
             duration={this.state.duration}
             buffered={this.state.buffered}
             fullscreen={this.state.fullscreen}
@@ -63,6 +64,7 @@ var Skin = React.createClass({
         return (
           <ShareScreen {...this.props} contentTree={this.state.contentTree}
           currentPlayhead={this.state.currentPlayhead}
+          playerState={this.state.playerState}
           duration={this.state.duration}
           buffered={this.state.buffered}
           fullscreen={this.state.fullscreen}
@@ -73,9 +75,9 @@ var Skin = React.createClass({
           <PauseScreen {...this.props}
             contentTree={this.state.contentTree}
             currentPlayhead={this.state.currentPlayhead}
+            playerState={this.state.playerState}
             duration={this.state.duration}
             buffered={this.state.buffered}
-            playerState={this.state.playerState}
             pauseAnimationDisabled = {this.state.pauseAnimationDisabled}
             fullscreen={this.state.fullscreen}
             ref="pauseScreen" />
@@ -86,6 +88,7 @@ var Skin = React.createClass({
             contentTree={this.state.contentTree}
             discoveryData={this.state.discoveryData}
             currentPlayhead={this.state.currentPlayhead}
+            playerState={this.state.playerState}
             duration={this.state.duration}
             buffered={this.state.buffered}
             style={endScreenStyle}
