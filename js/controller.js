@@ -44,6 +44,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
       //this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
       this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
+      this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
     },
 
     /*--------------------------------------------------------------------
@@ -164,6 +165,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onRelatedVideosFetched: function(event, relatedVideos) {
       console.log("onRelatedVideosFetched is called");
       this.state.upNextInfo.upNextData = relatedVideos.videos[0];
+      this.renderSkin();
+    },
+
+    onFullscreenChanged: function(event, fullscreen) {
+      this.state.fullscreen = fullscreen;
       this.renderSkin();
     },
 
