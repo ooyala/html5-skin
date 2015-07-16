@@ -10,10 +10,24 @@
 
 
 var ClosedCaptionPanel = React.createClass({
+  responsiveStyleSet: function(clientWidth){
+    var scale = clientWidth/1280;
+    console.log("xenia clientWidth", clientWidth);
+    console.log("xenia scale", scale);
+    closedCaptionScreenStyles.captionStyle.fontSize = 32*scale;
+
+    
+    console.log("xenia fontSize", closedCaptionScreenStyles.captionStyle.fontSize);
+
+
+  },
+
   render: function(){
+    this.responsiveStyleSet(this.props.clientWidth);
+
     return (
       <div style = {closedCaptionScreenStyles.screenStyle}>
-        <div style = {closedCaptionScreenStyles.captionStyle}>CC Options</div>
+        <div style = {closedCaptionScreenStyles.captionStyle}>CC Options <span className="icon icon-topmenu-cc"></span></div>
         <OnOffSwitch {...this.props} />
         <LanguageTabContent {...this.props}/>
         <CCPreviewPanel {...this.props} />

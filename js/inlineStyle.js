@@ -565,18 +565,19 @@ var closedCaptionScreenStyles ={
   screenStyle: {
     backgroundColor: "rgba(0,0,0,0.8)",
     height: "100%",
-    width: "100%"
+    width: "100%",
+    border: "1px solid blue"
   },
 
   captionStyle: {
     display: "inline-block",
-    height: "30",
-    textAlign: "center",
-    fontSize: "20",
+    textAlign: "left",
+    fontSize: "32pt",
     color: "#ffffff",
-    marginLeft: "25",
-    marginTop: "20",
-    fontWeight: "bold"
+    marginLeft: "35",
+    marginTop: "35",
+    fontWeight: "bold",
+    border: "1px solid red"
   },
 
   switchStyle:{
