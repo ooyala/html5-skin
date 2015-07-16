@@ -10,9 +10,13 @@
 
 var DiscoveryPanel = React.createClass({
   getInitialState: function() {
+    var tmpShowDiscoveryCountDown = true;
+    if(!this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen) {
+      tmpShowDiscoveryCountDown = false;
+    }
     return {
       discoveryToasterLeftOffset: 25,
-      showDiscoveryCountDown: true
+      showDiscoveryCountDown: tmpShowDiscoveryCountDown
     };
   },
 
@@ -70,7 +74,6 @@ var DiscoveryPanel = React.createClass({
 
   handleDiscoveryCountDownClick: function(event) {
     event.stopPropagation();
-    var discoveryCountDownStyle = discoveryScreenStyle.discoveryCountDownStyle;
     this.setState({showDiscoveryCountDown: false});
   },
 
@@ -106,8 +109,7 @@ var DiscoveryPanel = React.createClass({
 
     var discoveryCountDownStyle = discoveryScreenStyle.discoveryCountDownStyle;
     var discoveryCountDownIconStyle = discoveryScreenStyle.discoveryCountDownIconStyle;
-    if(!this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen || !this.state.showDiscoveryCountDown) {
-      discoveryCountDownStyle.display="none";
+    if(!this.state.showDiscoveryCountDown) {
       discoveryCountDownIconStyle.display="none";
     }
     // Build discovery content blocks
@@ -119,7 +121,7 @@ var DiscoveryPanel = React.createClass({
             <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
                  <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
                      <div style={{height:"100%", width:"100%"}}>
-                     <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.timeToShow} countDownStyle={discoveryCountDownStyle} showTimerText={false} onClick={this.handleDiscoveryCountDownClick} discoveryMode={true}/>
+                     <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.timeToShow} showDiscoveryCountDown={this.state.showDiscoveryCountDown} onClick={this.handleDiscoveryCountDownClick}/>
                      <span className="icon icon-pause" style={discoveryCountDownIconStyle} onClick={this.handleDiscoveryCountDownClick}></span>
                      </div>
                  </img>

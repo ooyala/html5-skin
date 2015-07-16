@@ -14,9 +14,22 @@ var CountDownClock = React.createClass({
     this.canvas = null;
     this.context = null;      
     this.interval = null;
+    this.countDownStyle = null;
     var tmpFraction = 0;
-    var tmpRemainSeconds = this.props.duration - this.props.currentPlayhead;
-    if(this.props.discoveryMode) {
+    var tmpRemainSeconds = 0;
+    if(this.props.controller.state.screenToShow === SCREEN.UP_NEXT_SCREEN) {
+      this.countDownStyle = upNextPanelStyle.upNextCountDownStyle; 
+      tmpRemainSeconds = this.props.duration - this.props.currentPlayhead;
+      if (this.props.timeToShow > 1) {
+        // time to show is based on seconds
+        tmpFraction = 2 / this.props.timeToShow;
+      } else {
+        // time to show is based on percetage of duration
+        tmpFraction = (2 / ((1 - this.props.timeToShow) * this.props.duration));
+      }
+    }
+    else if(this.props.controller.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+      this.countDownStyle = discoveryScreenStyle.discoveryCountDownStyle;
       tmpFraction = 2 / this.props.timeToShow;
       tmpRemainSeconds = this.props.timeToShow;
     } 
@@ -31,23 +44,11 @@ var CountDownClock = React.createClass({
   },
 
   componentWillReceiveProps: function(props) {
-    if(this.props.countDownStyle.display === "none") {
+    if(this.props.controller.state.screenToShow === SCREEN.DISCOVERY_SCREEN && !props.showDiscoveryCountDown) {
+      this.countDownStyle.display = "none";
       clearInterval(this.interval);
     }
-    if(!this.props.discoveryMode) {
-      this.setState({remainSeconds: (this.props.duration - this.props.currentPlayhead)});
-      if (this.state.timeToShow > 1) {
-        // time to show is based on seconds
-        this.setState({fraction: (2 / this.state.timeToShow)});
-      } else {
-        // time to show is based on percetage of duration
-        this.setState({fraction: (2 / ((1 - timeToShow) * this.props.duration))});
-      }
-    }
-    else {
-      this.setState({fraction: (2 / this.state.timeToShow)});
-    }
-  },
+  }, 
 
   componentDidMount: function() {
     this.setupCountDownTimer();
@@ -85,7 +86,7 @@ var CountDownClock = React.createClass({
     var decimals;
     var percent = this.state.fraction * this.state.remainSeconds + 1.5;
     this.context.fillStyle = 'white';
-    if(this.props.showTimerText) {
+    if(this.props.controller.state.screenToShow === SCREEN.UP_NEXT_SCREEN) {
       this.context.fillText(this.state.remainSeconds.toFixed(decimals), this.state.clockContainerWidth / 2, this.state.clockRadius, 100);
     }
     this.context.beginPath();
@@ -99,7 +100,7 @@ var CountDownClock = React.createClass({
   },
 
   tick: function() {
-    if(this.props.discoveryMode) {
+    if(this.props.controller.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
       if(this.state.remainSeconds < 1) {
         this.setState({remainSeconds: 0});
         clearInterval(this.interval);
@@ -110,14 +111,16 @@ var CountDownClock = React.createClass({
         this.updateCanvas();
       }
     }
-    else if (this.state.remainSeconds < 1 || this.props.playerState === STATE.END) {
-      this.setState({remainSeconds: 0});
-      clearInterval(this.interval);
-      this.startUpNext();
-    } 
-    else if (this.props.playerState === STATE.PLAYING) {
-      this.setState({remainSeconds: this.state.remainSeconds - this.state.counterInterval});
-      this.updateCanvas();
+    else if(this.props.controller.state.screenToShow === SCREEN.UP_NEXT_SCREEN) {
+      if (this.state.remainSeconds < 1 || this.props.playerState === STATE.END) {
+        this.setState({remainSeconds: 0});
+        clearInterval(this.interval);
+        this.startUpNextVideo();
+      } 
+      else if (this.props.playerState === STATE.PLAYING) {
+        this.setState({remainSeconds: this.state.remainSeconds - this.state.counterInterval});
+        this.updateCanvas();
+      }
     }
   },
 
@@ -140,7 +143,7 @@ var CountDownClock = React.createClass({
     this.props.controller.sendDiscoveryClickEvent(eventData);
   },
 
-  startUpNext: function() {
+  startUpNextVideo: function() {
     console.log("startUpNext");
     var eventData = {
       "clickedVideo" : this.props.upNextInfo.upNextData,
@@ -154,7 +157,7 @@ var CountDownClock = React.createClass({
         "className": "alice-countdown-clock",
         height: "38px",
         width: "38px",
-        style: this.props.countDownStyle
+        style: this.countDownStyle,
     });
   }
 });
