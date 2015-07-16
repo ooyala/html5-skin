@@ -12,6 +12,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
+      "pauseAnimationDisabled": false,
       "ccOptions":{
         "enabled": null,
         "language": null,
@@ -42,7 +43,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
-      //this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
+      this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
       this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
     },
 
@@ -55,7 +56,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON("config/skin.json", _.bind(function(data) {
         this.skin = React.render(
-          React.createElement(Skin, {skinConfig: data, controller: this, ccOptions: this.state.ccOptions}), document.getElementById("skin")
+          React.createElement(Skin, {skinConfig: data, controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.getElementById("skin")
         );
         this.state.configLoaded = true;
         this.renderSkin();
@@ -199,6 +200,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           break;
         case STATE.PAUSE:
           if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+            this.state.pauseAnimationDisabled = true;
             this.state.screenToShow = SCREEN.PAUSE_SCREEN;
           }
           else {
@@ -260,6 +262,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     closeShareScreen: function() {
+      this.state.pauseAnimationDisabled = true;
       this.state.screenToShow = SCREEN.PAUSE_SCREEN;
       this.state.playerState = STATE.PAUSE;
       this.renderSkin();
@@ -291,6 +294,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     closeClosedCaptionScreen: function() {
+      this.state.pauseAnimationDisabled = true;
       this.state.screenToShow = SCREEN.PAUSE_SCREEN;
       this.state.playerState = STATE.PAUSE;
       this.renderSkin();
@@ -337,6 +341,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }.bind(this), 1);
     },
+
+    enablePauseAnimation: function(){
+      this.state.pauseAnimationDisabled = false;
+    }
   };
 
   return Html5Skin;
