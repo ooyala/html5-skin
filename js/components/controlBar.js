@@ -3,13 +3,6 @@
 *********************************************************************/
 
 var ControlBar = React.createClass({
-  getInitialState: function() {
-    return {
-      muted: false,
-      oldVolume: 1.0,
-      volume: this.props.controller.state.volume
-    };
-  },
 
   handleControlBarMouseUp: function(evt) {
     evt.stopPropagation();
@@ -20,27 +13,7 @@ var ControlBar = React.createClass({
   },
 
   handleMuteClick: function() {
-    var newVolumeSettings = {};
-    if (!this.state.muted) {
-      this.props.controller.setVolume(0);
-      //if we're muting, save the current volume so we can
-      //restore it when we un-mute
-      newVolumeSettings = {
-        oldVolume: this.state.volume,
-        volume: 0,
-        muted: !this.state.muted
-      };
-    }
-    else {
-      //restore the volume to the previous setting
-      this.props.controller.setVolume(this.state.oldVolume);
-      newVolumeSettings = {
-        oldVolume: 0,
-        volume: this.state.oldVolume,
-        muted: !this.state.muted
-      };
-    }
-    this.setState(newVolumeSettings);
+    this.props.controller.handleMuteClick();
   },
 
   handlePlayClick: function() {
@@ -53,15 +26,7 @@ var ControlBar = React.createClass({
 
   handleVolumeClick: function(evt) {
     var newVolume = parseFloat(evt.target.dataset.volume);
-    this.setVolume(newVolume);
-  },
-
-  setVolume: function(newVolume) {
     this.props.controller.setVolume(newVolume);
-    this.setState({
-      volume: newVolume,
-      muted: false
-    });
   },
 
   handleDiscoveryClick: function() {
@@ -88,9 +53,9 @@ var ControlBar = React.createClass({
     } else {
         playClass = "icon icon-play";
     }
-    var muteClass = (this.state.muted) ?
+    var muteClass = (this.props.controller.state.muted) ?
       "icon icon-volume-desktop" : "icon icon-volume-desktop";
-    var fullscreenClass = (this.state.fullscreen) ?
+    var fullscreenClass = (this.props.controller.state.fullscreen) ?
       "icon icon-resize-small" : "icon icon-resize-large";
 
     var totalTime = 0;
@@ -101,7 +66,7 @@ var ControlBar = React.createClass({
     var volumeBars = [];
     for (var i=0; i<10; i++) {
       //create each volume tick separetely
-      var turnedOn = this.state.volume >= (i+1) / 10;
+      var turnedOn = this.props.controller.state.volume >= (i+1) / 10;
       var singleBarStyle = Utils.clone(controlBarStyle.volumeBarStyle);
       singleBarStyle.backgroundColor = (turnedOn ?
         "rgba(67, 137, 255, 0.6)" : "rgba(255, 255, 255, 0.6)");
@@ -146,7 +111,7 @@ var ControlBar = React.createClass({
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-share"
         onClick={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
-      "fullScreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
+      "fullscreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
         <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>,
       "watermark": <div className="watermark" style={controlBarStyle.controlBarItemSetting}
@@ -191,12 +156,9 @@ var ControlBar = React.createClass({
     var controlBarItems = this.populateControlBar();
 
     return (
-      <div>
-        <AccessibilityControls {...this.props} volume={this.state.volume} controlBar={this}/>
-        <div className="controlBar" onMouseUp={this.handleControlBarMouseUp}
-          style={controlBarStyle.controlBarSetting}>
-          {controlBarItems}
-        </div>
+      <div className="controlBar" onMouseUp={this.handleControlBarMouseUp}
+        style={controlBarStyle.controlBarSetting}>
+        {controlBarItems}
       </div>
     );
   }

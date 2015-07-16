@@ -17,7 +17,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "language": null,
         "availableLanguages": null
       },
+
       "volume" :null,
+      "muted": false,
+      "oldVolume": 1,
+
       "upNextInfo": {
         "upNextData": null,
         "countDownFinished": false,
@@ -42,7 +46,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
-      //this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
+      this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
       this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
     },
 
@@ -57,6 +61,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.skin = React.render(
           React.createElement(Skin, {skinConfig: data, controller: this, ccOptions: this.state.ccOptions}), document.getElementById("skin")
         );
+        var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
         this.renderSkin();
       }, this));
@@ -241,7 +246,34 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     setVolume: function(volume){
+      this.state.muted = false;
+      this.state.volume = volume;
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
+      this.renderSkin();
+    },
+
+    handleMuteClick: function() {
+      var newVolumeSettings = {};
+      if (!this.state.muted) {
+        //if we're muting, save the current volume so we can
+        //restore it when we un-mute
+        newVolumeSettings = {
+          oldVolume: this.state.volume,
+          muted: !this.state.muted
+        };
+        this.setVolume(0);
+      }
+      else {
+        //restore the volume to the previous setting
+        newVolumeSettings = {
+          oldVolume: 0,
+          muted: !this.state.muted
+        };
+        this.setVolume(this.state.oldVolume);
+      }
+
+      this.state.oldVolume = newVolumeSettings.oldVolume;
+      this.state.muted = newVolumeSettings.muted;
     },
 
     toggleShareScreen: function() {

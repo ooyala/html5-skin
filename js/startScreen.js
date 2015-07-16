@@ -19,17 +19,6 @@ var StartScreen = React.createClass({
       var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
       this.setState({description: shortDesc});
     }
-    window.addEventListener('keydown', this.handleKey);
-  },
-
-   componentWillUnmount: function() {
-    window.removeEventListener('keydown', this.handleKey);
-  },
-
-  handleKey: function(e) {
-    if (e.keyCode === 32){
-      this.props.controller.togglePlayPause();
-    }
   },
 
   handleClick: function() {

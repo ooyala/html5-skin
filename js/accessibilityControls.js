@@ -1,70 +1,63 @@
-/********************************************************************
-  ACCESSIBILITY CONTROLS
-*********************************************************************/
-
-var AccessibilityControls = React.createClass({
-  getInitialState: function() {
-    return {
-      fastMultiple: 1,
-      fastLast: null
+var AccessibilityControls = function (controller) {
+    this.controller = controller;
+    this.state = {
+      "fastForwardRate": 1,
+      "lastKeyDownTime": null
     };
-  },
+    document.addEventListener("keydown", this.handleKey.bind(this));
+};
 
-  componentDidMount: function () {
-    window.addEventListener('keydown', this.handleKey);
-  },
-
-   componentWillUnmount: function() {
-    window.removeEventListener('keydown', this.handleKey);
-  },
-
+AccessibilityControls.prototype = {
   handleKey: function(e) {
-    var now;
+    var currentTime;
     var newPlayheadTime;
     var newVolume;
 
-    if (e.keyCode === 32){
-      this.props.controller.togglePlayPause();
+    if (e.keyCode === KEYCODES.SPACE_KEY){
+      this.controller.togglePlayPause();
     }
 
-    if ((e.keyCode === 40 && this.props.volume > 0) || (e.keyCode === 38 && this.props.volume < 1)){
-      if (e.keyCode === 40){
-        newVolume = (this.props.volume * 10 - 1)/10;
+    if ((e.keyCode === KEYCODES.DOWN_ARROW_KEY && this.controller.state.volume > 0) || (e.keyCode === KEYCODES.UP_ARROW_KEY && this.controller.state.volume < 1)){
+      var volumeSign = 1; // positive 1 for volume increase, negative for decrease
+
+      if (e.keyCode === KEYCODES.DOWN_ARROW_KEY){
+        volumeSign = -1;
       }
       else {
-        newVolume = (this.props.volume * 10 + 1)/10;
+        volumeSign = 1;
       }
 
-      this.props.controlBar.setVolume(newVolume);
+      newVolume = (this.controller.state.volume * 10 + 1*volumeSign)/10;
+      this.controller.setVolume(newVolume);
     }
 
-    if (e.keyCode === 39 || e.keyCode === 37){
-      var shift = 1;
-      var fastMultipleIncrease = 1.1;
-      now = Date.now();
-      if (this.state.fastLast && now - this.state.fastLast < 500){
-        //increasing the multiple to go faster if key is pressed often
-        if (this.state.fastMultiple < 300){
-          this.state.fastMultiple = this.state.fastMultiple * fastMultipleIncrease;
+    if (e.keyCode === KEYCODES.RIGHT_ARROW_KEY || e.keyCode === KEYCODES.LEFT_ARROW_KEY){
+      var shiftSign = 1; // positive 1 for fast forward, negative for rewind back
+
+      var shiftSeconds = 1;
+      var fastForwardRateIncrease = 1.1;
+
+      currentTime = Date.now();
+      if (this.state.lastKeyDownTime && currentTime - this.state.lastKeyDownTime < 500){
+        //increasing the fast forward rate to go faster if key is pressed often
+        if (this.state.fastForwardRate < 300){
+          this.state.fastForwardRate *= fastForwardRateIncrease;
         }
       }
       else {
-        this.state.fastMultiple = 1;
+        this.state.fastForwardRate = 1;
       }
-      this.state.fastLast = now;
-      if (e.keyCode === 39){
-        newPlayheadTime = this.props.currentPlayhead + shift * this.state.fastMultiple;
-      }
-      if (e.keyCode === 37){
-        newPlayheadTime = this.props.currentPlayhead - shift * this.state.fastMultiple;
-      }
-      this.props.controller.seek(newPlayheadTime);
-    }
-  },
-  render: function() {
 
-    return (
-      <div style={{height:'0', width:'0'}}></div>
-    );
+      this.state.lastKeyDownTime = currentTime;
+      if (e.keyCode === KEYCODES.RIGHT_ARROW_KEY){
+        shiftSign = 1;
+      }
+      else {
+        shiftSign = -1;
+      }
+
+      newPlayheadTime = this.controller.skin.state.currentPlayhead + shiftSign*shiftSeconds * this.state.fastForwardRate;
+      this.controller.seek(newPlayheadTime);
+    }
   }
-});
+};

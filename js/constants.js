@@ -19,3 +19,11 @@ var SCREEN = {
   UP_NEXT_SCREEN: "upNextScreen",
   AD_SCREEN: "adScreen",
 };
+
+var KEYCODES = {
+  SPACE_KEY: 32,
+  LEFT_ARROW_KEY: 37,
+  RIGHT_ARROW_KEY: 39,
+  UP_ARROW_KEY: 38,
+  DOWN_ARROW_KEY: 40
+};
