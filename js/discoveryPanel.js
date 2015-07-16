@@ -104,10 +104,6 @@ var DiscoveryPanel = React.createClass({
     var discoveryData = this.props.discoveryData;
     var discoveryContentBlocks = [];
 
-    // This is for turning off the old discovery panel.
-    // TODO: Remove the following line when we drop the old discovery panel in mjolnir side.
-    document.getElementsByClassName("discovery_toaster")[0].style.display="none"; 
-
     var discoveryCountDownStyle = discoveryScreenStyle.discoveryCountDownStyle;
     var discoveryCountDownIconStyle = discoveryScreenStyle.discoveryCountDownIconStyle;
     if(!this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen || !this.state.showDiscoveryCountDown) {
@@ -123,7 +119,7 @@ var DiscoveryPanel = React.createClass({
             <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
                  <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
                      <div style={{height:"100%", width:"100%"}}>
-                     <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow} countDownStyle={discoveryCountDownStyle} showTimerText={false} onClick={this.handleDiscoveryCountDownClick}/>
+                     <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.timeToShow} countDownStyle={discoveryCountDownStyle} showTimerText={false} onClick={this.handleDiscoveryCountDownClick} discoveryMode={true}/>
                      <span className="icon icon-pause" style={discoveryCountDownIconStyle} onClick={this.handleDiscoveryCountDownClick}></span>
                      </div>
                  </img>
