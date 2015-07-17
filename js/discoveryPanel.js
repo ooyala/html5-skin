@@ -119,7 +119,7 @@ var DiscoveryPanel = React.createClass({
             <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
                  <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
                      <div style={discoveryCountDownWrapperStyle} onClick={this.handleDiscoveryCountDownClick}>
-                     <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.timeToShow} ref="CountDownClock" />
+                     <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
                      <span className="icon icon-pause" style={discoveryCountDownIconStyle}></span>
                      </div>
                  </img>
