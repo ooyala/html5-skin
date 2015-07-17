@@ -1,21 +1,21 @@
 /********************************************************************
-  SHARING SCREEN
+  CLOSED CAPTION SCREEN
 *********************************************************************/
 /**
 * The screen used while the video is playing.
 *
-* @class PlayingScreen
+* @class ClosedCaptionScreen
 * @constructor
 */
-var ShareScreen = React.createClass({
+var ClosedCaptionScreen = React.createClass({
   getInitialState: function() {
     return {
       controlBarVisible: true
     };
   },
 
-  closeSharePanel: function() {
-    this.props.controller.closeShareScreen();
+  toggleClosedCaptionPanel: function() {
+    this.props.controller.toggleClosedCaptionScreen();
   },
 
   componentDidMount: function () {
@@ -25,16 +25,15 @@ var ShareScreen = React.createClass({
   render: function() {
     //Fill in all the dynamic style values we need
     var controlBarHeight = 32;
-
     return (
-      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
-        <SharePanel {...this.props}/>
+      <div style={{height: "100%", width: "100%"}}>
+        <ClosedCaptionPanel {...this.props} ccOptions = {this.props.ccOptions}/>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
+          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
-          playerState={this.state.playerState} />
-        <div onClick={this.closeSharePanel} style={shareScreenStyle.closeButton} className="icon icon-close"></div>
+          playerState={this.state.playerState}/>
+        <div onClick={this.toggleClosedCaptionPanel} style={{position: "absolute", top:0, right: 0, color: "lightgray"}}><span className="icon icon-close"></span></div>
       </div>
     );
   }

@@ -12,6 +12,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
+      "pauseAnimationDisabled": false,
+      "ccOptions":{
+        "enabled": null,
+        "language": null,
+        "availableLanguages": null
+      },
       "volume" :null,
       "upNextInfo": {
         "upNextData": null,
@@ -35,8 +41,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
       this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
+      this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
+      this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
       this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
       this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
+      this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
     },
 
     /*--------------------------------------------------------------------
@@ -48,7 +57,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON("config/skin.json", _.bind(function(data) {
         this.skin = React.render(
-          React.createElement(Skin, {skinConfig: data, controller: this}), document.getElementById("skin")
+          React.createElement(Skin, {skinConfig: data, controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.getElementById("skin")
         );
         this.state.configLoaded = true;
         this.renderSkin();
@@ -143,9 +152,25 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onClosedCaptionsInfoAvailable: function(event, languages) {
+      this.state.ccOptions.availableLanguages = languages;
+      if (this.state.ccOptions.enabled){
+        this.setClosedCaptionsLanguage();
+      }
+    },
+
+    onClosedCaptionCueChanged: function(event, data) {
+      //for the future use
+    },
+
     onRelatedVideosFetched: function(event, relatedVideos) {
       console.log("onRelatedVideosFetched is called");
       this.state.upNextInfo.upNextData = relatedVideos.videos[0];
+      this.renderSkin();
+    },
+
+    onFullscreenChanged: function(event, fullscreen) {
+      this.state.fullscreen = fullscreen;
       this.renderSkin();
     },
 
@@ -181,6 +206,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           break;
         case STATE.PAUSE:
           if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+            this.state.pauseAnimationDisabled = true;
             this.state.screenToShow = SCREEN.PAUSE_SCREEN;
           }
           else {
@@ -242,6 +268,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     closeShareScreen: function() {
+      this.state.pauseAnimationDisabled = true;
       this.state.screenToShow = SCREEN.PAUSE_SCREEN;
       this.state.playerState = STATE.PAUSE;
       this.renderSkin();
@@ -252,12 +279,78 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
     },
 
+    setClosedCaptionsLanguage: function(){
+      var language = this.state.ccOptions.enabled ? this.state.ccOptions.language : "";
+      var mode = this.state.ccOptions.enabled ? "showing" : "disabled";
+      this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
+    },
+
+    toggleClosedCaptionScreen: function() {
+      if (this.state.screenToShow == SCREEN.CLOSEDCAPTION_SCREEN) {
+        this.closeClosedCaptionScreen();
+      }
+      else {
+        this.mb.publish(OO.EVENTS.PAUSE);
+        setTimeout(function() {
+          this.state.screenToShow = SCREEN.CLOSEDCAPTION_SCREEN;
+          this.state.playerState = STATE.PAUSE;
+          this.renderSkin();
+        }.bind(this), 1);
+      }
+    },
+
+    closeClosedCaptionScreen: function() {
+      this.state.pauseAnimationDisabled = true;
+      this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+      this.state.playerState = STATE.PAUSE;
+      this.renderSkin();
+    },
+
+    onClosedCaptionLanguageChange: function(language) {
+      this.state.ccOptions.language = language;
+      this.setClosedCaptionsLanguage();
+      this.renderSkin();
+    },
+
+    toggleClosedCaptionEnabled: function() {
+      this.state.ccOptions.enabled = !this.state.ccOptions.enabled;
+      this.setClosedCaptionsLanguage();
+      this.renderSkin();
+    },
+
     upNextDismissButtonClicked: function() {
       this.state.upNextInfo.countDownCancelled = true;
       this.state.screenToShow = SCREEN.PLAYING_SCREEN;
       this.state.playerState = STATE.PLAYING;
       this.renderSkin();
     },
+
+    toggleMoreOptionsScreen: function() {
+      if (this.state.screenToShow == SCREEN.MORE_OPTIONS_SCREEN) {
+        this.closeMoreOptionsScreen();
+      } else {
+        this.displayMoreOptionsScreen();
+      }
+    },
+
+    closeMoreOptionsScreen: function() {
+      this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+      this.state.playerState = STATE.PAUSE;
+      this.renderSkin();
+    },
+
+    displayMoreOptionsScreen: function() {
+      this.mb.publish(OO.EVENTS.PAUSE);
+      setTimeout(function() {
+        this.state.screenToShow = SCREEN.MORE_OPTIONS_SCREEN;
+        this.state.playerState = STATE.PAUSE;
+        this.renderSkin();
+      }.bind(this), 1);
+    },
+
+    enablePauseAnimation: function(){
+      this.state.pauseAnimationDisabled = false;
+    }
   };
 
   return Html5Skin;

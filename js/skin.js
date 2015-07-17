@@ -10,6 +10,17 @@ var Skin = React.createClass({
     };
   },
 
+  componentWillMount: function() {
+    if (this.props.skinConfig.ccOptions){
+         this.props.controller.state.ccOptions.language = (this.props.skinConfig.ccOptions.defaultLanguage ? this.props.skinConfig.ccOptions.defaultLanguage : "en" );
+         this.props.controller.state.ccOptions.enabled = (this.props.skinConfig.ccOptions.defaultEnabled ? this.props.skinConfig.ccOptions.defaultEnabled : false);
+    }
+    else {
+      this.props.controller.state.ccOptions.language = "en";
+      this.props.controller.state.ccOptions.enabled = false;
+    }
+  },
+
   switchComponent: function(args) {
     var newState = args || {};
     this.setState(newState);
@@ -46,6 +57,7 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             fullscreen={this.state.fullscreen}
+            playerState={this.state.playerState}
             ref="playScreen" />
         );
       case SCREEN.SHARE_SCREEN:
@@ -55,6 +67,7 @@ var Skin = React.createClass({
           duration={this.state.duration}
           buffered={this.state.buffered}
           fullscreen={this.state.fullscreen}
+          playerState={this.state.playerState}
           ref="shareScreen" />
         );
       case SCREEN.PAUSE_SCREEN:
@@ -65,6 +78,7 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             playerState={this.state.playerState}
+            pauseAnimationDisabled = {this.state.pauseAnimationDisabled}
             fullscreen={this.state.fullscreen}
             ref="pauseScreen" />
         );
@@ -77,7 +91,9 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             style={endScreenStyle}
+            playerState={this.state.playerState}
             fullscreen={this.state.fullscreen}
+            playerState={this.state.playerState}
             ref="endScreen" />
         );
       case SCREEN.DISCOVERY_SCREEN:
@@ -102,7 +118,29 @@ var Skin = React.createClass({
             upNextInfo={this.state.upNextInfo}
             playerState={this.state.playerState}
             fullscreen={this.state.fullscreen}
-            ref="playScreen" />
+            ref="UpNextScreen" />
+        );
+      case SCREEN.MORE_OPTIONS_SCREEN:
+        return (
+          <MoreOptionsScreen {...this.props}
+            contentTree={this.state.contentTree}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            playerState={this.state.playerState}
+            fullscreen={this.state.fullscreen}
+            ref="moreOptionsScreen" />
+        );
+      case SCREEN.CLOSEDCAPTION_SCREEN:
+        return (
+          <ClosedCaptionScreen {...this.props}
+              contentTree={this.state.contentTree}
+              ccOptions = {this.props.ccOptions}
+              currentPlayhead={this.state.currentPlayhead}
+              duration={this.state.duration}
+              buffered={this.state.buffered}
+              playerState={this.state.playerState}
+              fullscreen={this.state.fullscreen}
+              ref="closedCaptionScreen" />
         );
       default:
         return false;
