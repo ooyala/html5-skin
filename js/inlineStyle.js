@@ -559,13 +559,16 @@ var discoveryScreenStyle = {
     fontSize: "10"
   },
 
-  discoveryCountDownStyle: {
+  discoveryCountDownWrapperStyle: {
     position: "absolute",
     top: "37.5%",
     left: "50%",
-    transform: "translate(-50%, -37.5%)",
-    width: "50%",
-    height: "50%",
+    transform: "translate(-50%, -37.5%)"
+  },
+
+  discoveryCountDownStyle: {
+    width: "38px",
+    height: "38px"
   },
 
   discoveryCountDownIconStyle: {

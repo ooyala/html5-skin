@@ -39,16 +39,18 @@ var CountDownClock = React.createClass({
       counterInterval: 0.05,
       fraction: tmpFraction, // fraction = 2 / (skinConfig.upNextScreen.timeToShow) so "fraction * pi" is how much we want to fill the circle for each second
       remainSeconds: tmpRemainSeconds,
-      timeToShow: this.props.timeToShow
+      timeToShow: this.props.timeToShow,
+      showDiscoveryCountDown: true
     };
   },
 
-  componentWillReceiveProps: function(props) {
-    if(this.props.controller.state.screenToShow === SCREEN.DISCOVERY_SCREEN && !props.showDiscoveryCountDown) {
+  handleClick: function(event) {
+    if(this.props.controller.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
       this.countDownStyle.display = "none";
       clearInterval(this.interval);
-    }
-  }, 
+      this.setState({showDiscoveryCountDown: false});
+    } 
+  },
 
   componentDidMount: function() {
     this.setupCountDownTimer();
@@ -158,6 +160,7 @@ var CountDownClock = React.createClass({
         height: "38px",
         width: "38px",
         style: this.countDownStyle,
+        onClick: this.handleClick
     });
   }
 });

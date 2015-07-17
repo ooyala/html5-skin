@@ -9,14 +9,10 @@
 */
 
 var DiscoveryPanel = React.createClass({
-  getInitialState: function() {
-    var tmpShowDiscoveryCountDown = true;
-    if(!this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen) {
-      tmpShowDiscoveryCountDown = false;
-    }
+  getInitialState: function() { 
     return {
       discoveryToasterLeftOffset: 25,
-      showDiscoveryCountDown: tmpShowDiscoveryCountDown
+      showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen
     };
   },
 
@@ -66,15 +62,13 @@ var DiscoveryPanel = React.createClass({
   },
 
   shouldShowCountdownTimer: function() {
-    if(this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen && this.props.playerState === STATE.END) {
-      return true;
-    }
-    return false;
+    return this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen && this.props.playerState === STATE.END; 
   },
 
   handleDiscoveryCountDownClick: function(event) {
-    event.stopPropagation();
     this.setState({showDiscoveryCountDown: false});
+    this.refs.CountDownClock.handleClick(event);
+    event.stopPropagation();
   },
 
   render: function() {
@@ -109,9 +103,11 @@ var DiscoveryPanel = React.createClass({
 
     var discoveryCountDownStyle = discoveryScreenStyle.discoveryCountDownStyle;
     var discoveryCountDownIconStyle = discoveryScreenStyle.discoveryCountDownIconStyle;
+    var discoveryCountDownWrapperStyle = discoveryScreenStyle.discoveryCountDownWrapperStyle;
     if(!this.state.showDiscoveryCountDown) {
-      discoveryCountDownIconStyle.display="none";
+      discoveryCountDownWrapperStyle.display="none";
     }
+
     // Build discovery content blocks
     if (discoveryData !== null)  {
         discoveryToasterStyle.width = 150 * discoveryData.relatedVideos.length;
@@ -120,9 +116,9 @@ var DiscoveryPanel = React.createClass({
             discoveryContentBlocks.push(
             <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
                  <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
-                     <div style={{height:"100%", width:"100%"}}>
-                     <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.timeToShow} showDiscoveryCountDown={this.state.showDiscoveryCountDown} onClick={this.handleDiscoveryCountDownClick}/>
-                     <span className="icon icon-pause" style={discoveryCountDownIconStyle} onClick={this.handleDiscoveryCountDownClick}></span>
+                     <div style={discoveryCountDownWrapperStyle} onClick={this.handleDiscoveryCountDownClick}>
+                     <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.timeToShow} ref="CountDownClock" />
+                     <span className="icon icon-pause" style={discoveryCountDownIconStyle}></span>
                      </div>
                  </img>
                  <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
