@@ -470,7 +470,8 @@ var discoveryScreenStyle = {
     left: "25px",
     fontSize: "20",
     color: "white",
-    margin: "1%"
+    margin: "1%",
+    display: "inline-block"
   },
 
   discoveryToasterContainerStyle: {
@@ -579,9 +580,160 @@ var discoveryScreenStyle = {
     "line-height":"32px",
     "z-index":10005,
     "color":"white"
+  },
+
+  closeButton: {
+    position: "absolute",
+    top:0,
+    right: 0,
+    height: "25px",
+    width: "25px",
+    backgroundColor: "#4389ff",
+    color: "white",
+    textAlign: "center",
+    lineHeight: "25px"
   }
 };
 
+var closedCaptionScreenStyles ={
+
+  screenStyle: {
+    backgroundColor: "rgba(0,0,0,0.8)",
+    height: "100%",
+    width: "100%"
+  },
+
+  captionStyle: {
+    display: "inline-block",
+    height: "30",
+    textAlign: "center",
+    fontSize: "20",
+    color: "#ffffff",
+    marginLeft: "25",
+    marginTop: "20",
+    fontWeight: "bold"
+  },
+
+  switchStyle:{
+    height: "24",
+    textAlign: "left",
+    fontSize: "10",
+    color: "#FFFFFF",
+    marginLeft: "25",
+    marginTop: "20",
+    marginBottom: "20",
+    position: "relative"
+  },
+
+  switchContainer: {
+    display: "inline-block",
+    cursor: "pointer",
+    width: "40",
+    height: "24",
+    position: "relative",
+    marginLeft: "20",
+    borderRadius: "100%",
+  },
+  switch: {
+    display: "block",
+    width: "100%",
+    height: "75%",
+    position: "absolute",
+    left: "",
+    right: "0",
+    top: "12.5%",
+    borderRadius: "20",
+    onBackground: "#50AE54",
+    transition: "all 0.5s ease-in-out"
+  },
+  switchThumb: {
+    display: "block",
+    width: "60%",
+    height: "100%",
+    position: "absolute",
+    top: "0",
+    left: "",
+    right: "0",
+    background: "#FFFFFF",
+    borderRadius: "100%",
+    transition: "all 0.1s ease-in 0s"
+  },
+
+  onStyle:{
+    position: "absolute",
+    top: "20%",
+    left: "70",
+    display:"inline-block",
+    color: "grey"
+  },
+
+  offStyle:{
+    position: "absolute",
+    top: "20%",
+    display:"inline-block",
+    color: "grey"
+  },
+
+  itemStyle: {
+    display: "inline-block",
+    textAlign: "center",
+    fontSize: "12",
+    minWidth :"50",
+    color: "#DDDDDD",
+    marginLeft: "25",
+    padding: "5",
+    paddingLeft: "10",
+    paddingRight: "10",
+    transition: "all 0.0s ease"
+  },
+
+  itemSelectedStyle: {
+    display: "inline-block",
+    textAlign: "center",
+    fontSize: "12",
+    minWidth :"50",
+    color: "white",
+    marginLeft: "25",
+    padding: "5",
+    paddingLeft: "10",
+    paddingRight: "10",
+    //properties different from itemStyle
+    backgroundColor: "#4389ff",
+    borderRadius: "4"
+  },
+
+  CCPreviewPanelStyle:{
+    width: "100%",
+    backgroundColor: "rgba(0,0,0,0.7)",
+    position: "absolute",
+    bottom: "20",
+    transition: "all 1s ease",
+    borderTop: "1px solid grey"
+  },
+
+  CCPreviewCaptionStyle: {
+    color: "white",
+    marginLeft: "20",
+    marginTop: "20",
+    fontSize: "10",
+    paddingTop: "0",
+    paddingBottom: "0"
+  },
+
+  CCPreviewTextStyle:{
+    color: "white",
+    marginLeft: "25",
+    fontSize: "15",
+    paddingTop: "5",
+    paddingBottom: "0"
+  },
+
+  tableStyle:{
+    width: "100%",
+    height: "25%",
+    paddingRight: "15"
+  }
+};
 
 var upNextPanelStyle = {
   panelStyle: {
@@ -689,4 +841,56 @@ var upNextPanelStyle = {
     height: "38px",
     width: "38px"
   }
+};
+
+var MoreOptionsScreenStyle = {
+  panelStyle: {
+    "position": "absolute",
+    "top": "0",
+    "left": "0",
+    "width": "100%",
+    "height": "100%",
+    "opacity": "0.7",
+    "backgroundColor": "black"
+  },
+
+  buttonListStyle: {
+    "position": "absolute",
+    "bottom": "0%",
+    "left": "30%",
+    "right": "30%",
+    "width": "40%",
+    "height": "32",
+    "opacity": "0",
+    "listStyle": "none",
+    "display": "flex",
+    "flexFlow": "row nowrap",
+    "justifyContent": "flex-start",
+    "-webkit-user-select": "none",
+    "-moz-user-select": "none",
+    "-ms-user-select": "none",
+    "user-select": "none",
+    "-webkit-flex-direction": "row",
+    "flex-direction": "row",
+    "transition": "bottom 0.7s, opacity 0.7s",
+  },
+
+  buttonStyle: {
+    "height": "100%",
+    "color": "rgba(255, 255, 255, 0.6)",
+    "fontWeight": "bold",
+    "fontSize": "18",
+    "textAlign": "center",
+    "paddingLeft": "8px",
+    "paddingRight": "8px",
+    "margin": "0 auto",
+    "opacity": "1",
+  },
+
+  closeButtonStyle: {
+    "position": "absolute", 
+    "top": "10", 
+    "right": "10", 
+    "color": "lightgray"
+  },
 };

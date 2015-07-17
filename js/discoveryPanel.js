@@ -2,8 +2,6 @@
   DISCOVERY PANEL
 *********************************************************************/
 /**
-* The screen used while the video is playing.
-*
 * @class DiscoveryPanel
 * @constructor
 */
@@ -14,6 +12,10 @@ var DiscoveryPanel = React.createClass({
       discoveryToasterLeftOffset: 25,
       showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen
     };
+  },
+
+  closeDiscoveryPanel: function() {
+    this.props.controller.toggleDiscoveryScreen();
   },
 
   handleLeftButtonClick: function() {
@@ -28,7 +30,7 @@ var DiscoveryPanel = React.createClass({
         newDiscoveryToasterLeftOffset = 25;
       }
     }
-   
+
     this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
   },
 
@@ -42,12 +44,12 @@ var DiscoveryPanel = React.createClass({
     if(toasterContainerWidth <= toasterWidth || rightOffset <= 25) {
       newDiscoveryToasterLeftOffset -= 400;
       rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
-      
+
       if(rightOffset > 25) {
         newDiscoveryToasterLeftOffset = toasterContainerWidth - 25 - toasterWidth;
-      } 
+      }
     }
-    
+
     this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
   },
 
@@ -137,24 +139,26 @@ var DiscoveryPanel = React.createClass({
       <div style={panelStyle}>
 
         <div style={panelTitleBarStyle}>
-          <h1 style={panelTitleTextStyle}>{panelTitle}</h1>
+          <h1 style={panelTitleTextStyle}>{panelTitle}
+            <span style={{top: "3px", position: "relative", marginLeft: "7px"}} className="icon icon-topmenu-discovery"></span>
+          </h1>
         </div>
 
         <div style={discoveryToasterContainerStyle} ref="DiscoveryToasterContainer" >
-          
+
           <div style={discoveryToasterStyle} ref="DiscoveryToaster">
               {discoveryContentBlocks}
           </div>
-            
+
           <div style={chevronLeftButtonContainer}>
             <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} aria-hidden="true" onClick={this.handleLeftButtonClick}></span>
           </div>
-          
+
           <div style={chevronRightButtonContainer}>
             <span className={chevronRightButtonClass} style={chevronRightButtonStyle} aria-hidden="true" onClick={this.handleRightButtonClick}></span>
           </div>
-
         </div>
+        <div onClick={this.closeDiscoveryPanel} style={discoveryScreenStyle.closeButton} className="icon icon-close"></div>
       </div>
     );
   }

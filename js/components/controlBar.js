@@ -64,6 +64,14 @@ var ControlBar = React.createClass({
     this.props.controller.toggleDiscoveryScreen();
   },
 
+  handleMoreOptionsClick: function() {
+    this.props.controller.toggleMoreOptionsScreen();
+  },
+
+  handleClosedCaptionClick: function() {
+    this.props.controller.toggleClosedCaptionScreen();
+  },
+  
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
     evt.target.style.color = "rgba(255, 255, 255, 1.0)";
@@ -83,7 +91,7 @@ var ControlBar = React.createClass({
     }
     var muteClass = (this.state.muted) ?
       "icon icon-volume-desktop" : "icon icon-volume-desktop";
-    var fullscreenClass = (this.state.fullscreen) ?
+    var fullscreenClass = (this.props.fullscreen) ?
       "icon icon-resize-small" : "icon icon-resize-large";
 
     var totalTime = 0;
@@ -116,7 +124,7 @@ var ControlBar = React.createClass({
         onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <span className={playClass} style={controlBarStyle.iconSetting}></span>
       </div>,
-      "live": <div className="live" style={controlBarStyle.liveItemStyle}>     
+      "live": <div className="live" style={controlBarStyle.liveItemStyle}>
         <div style={controlBarStyle.liveCircleStyle}></div>
         <div style={controlBarStyle.liveTextStyle}>{liveText}</div>
       </div>,
@@ -127,6 +135,9 @@ var ControlBar = React.createClass({
         </div>,
       "timeDuration": <div className="timeDuration" style={controlBarStyle.durationIndicatorSetting}>
         {Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}</div>,
+      "moreOptions": <div className="moreOptions" style={controlBarStyle.controlBarItemSetting}
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}>
+        <span className="icon icon-menu" style={controlBarStyle.iconSetting}></span></div>,
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
         <span className="icon icon-topmenu-discovery" style={controlBarStyle.iconSetting}></span></div>,
@@ -135,11 +146,11 @@ var ControlBar = React.createClass({
         style={controlBarStyle.iconSetting}></span></div>,
       "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-cc"
-        style={controlBarStyle.iconSetting}></span></div>,
+        onClick={this.handleClosedCaptionClick} style={controlBarStyle.iconSetting}></span></div>,
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-share"
         onClick={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
-      "fullScreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
+      "fullscreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
         <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>,
       "watermark": <div className="watermark" style={controlBarStyle.controlBarItemSetting}
@@ -154,12 +165,19 @@ var ControlBar = React.createClass({
       if (typeof controlItemTemplates[controlBarSetting.items[i]] === "undefined") {
         continue;
       }
-      // Not sure what to do when there are multi streams 
-      if (controlBarSetting.items[i] === "live" && 
-          (typeof this.props.authorization === 'undefined' || 
+
+      //do not show CC button if no CC available
+      if (!this.props.controller.state.ccOptions.availableLanguages && (controlBarSetting.items[i] === "closedCaption")){
+        continue;
+      }
+
+      // Not sure what to do when there are multi streams
+      if (controlBarSetting.items[i] === "live" &&
+          (typeof this.props.authorization === 'undefined' ||
           !(this.props.authorization.streams[0].is_live_stream))) {
         continue;
       }
+
       controlBarItems.push(controlItemTemplates[controlBarSetting.items[i]]);
     }
     return controlBarItems;
