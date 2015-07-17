@@ -235,7 +235,7 @@ var controlBarStyle = {
     "paddingRight": "2px",
     "backgroundClip": "content-box",
     "position": "relative",
-    "top": "-1px"
+    "top": "-3px"
   },
 
   watermarkImageStyle: {
@@ -514,7 +514,7 @@ var discoveryScreenStyle = {
   },
 
   discoveryChevronLeftButton: {
-    icon: "glyphicon glyphicon-chevron-left",
+    icon: "icon icon-left",
     style: {
       top: "50%",
       left: "50%",
@@ -527,7 +527,7 @@ var discoveryScreenStyle = {
   },
 
   discoveryChevronRightButton: {
-    icon: "glyphicon glyphicon-chevron-right",
+    icon: "icon icon-right",
     style: {
       top: "50%",
       left: "50%",
