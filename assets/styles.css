@@ -82,9 +82,6 @@
 .icon-topmenu-share:before {
   content: "o";
 }
-.icon-upnext-dismiss:before {
-  content: "p";
-}
 .icon-ooyala:before {
   content: "q";
 }
@@ -93,4 +90,7 @@
 }
 .icon-right:before {
   content: "s";
+}
+.icon-volume-mobile-mute:before {
+  content: "p";
 }
