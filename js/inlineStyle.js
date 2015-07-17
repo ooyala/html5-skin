@@ -802,3 +802,55 @@ var upNextPanelStyle = {
     "transform": "translateY(-50%)",
   },
 };
+
+var MoreOptionsScreenStyle = {
+  panelStyle: {
+    "position": "absolute",
+    "top": "0",
+    "left": "0",
+    "width": "100%",
+    "height": "100%",
+    "opacity": "0.7",
+    "backgroundColor": "black"
+  },
+
+  buttonListStyle: {
+    "position": "absolute",
+    "bottom": "0%",
+    "left": "30%",
+    "right": "30%",
+    "width": "40%",
+    "height": "32",
+    "opacity": "0",
+    "listStyle": "none",
+    "display": "flex",
+    "flexFlow": "row nowrap",
+    "justifyContent": "flex-start",
+    "-webkit-user-select": "none",
+    "-moz-user-select": "none",
+    "-ms-user-select": "none",
+    "user-select": "none",
+    "-webkit-flex-direction": "row",
+    "flex-direction": "row",
+    "transition": "bottom 0.7s, opacity 0.7s",
+  },
+
+  buttonStyle: {
+    "height": "100%",
+    "color": "rgba(255, 255, 255, 0.6)",
+    "fontWeight": "bold",
+    "fontSize": "18",
+    "textAlign": "center",
+    "paddingLeft": "8px",
+    "paddingRight": "8px",
+    "margin": "0 auto",
+    "opacity": "1",
+  },
+
+  closeButtonStyle: {
+    "position": "absolute", 
+    "top": "10", 
+    "right": "10", 
+    "color": "lightgray"
+  },
+};
