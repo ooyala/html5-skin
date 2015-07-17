@@ -560,6 +560,28 @@ var discoveryScreenStyle = {
     fontSize: "10"
   },
 
+  discoveryCountDownWrapperStyle: {
+    position: "absolute",
+    top: "37.5%",
+    left: "50%",
+    transform: "translate(-50%, -37.5%)"
+  },
+
+  discoveryCountDownStyle: {
+    width: "38px",
+    height: "38px"
+  },
+
+  discoveryCountDownIconStyle: {
+    position: "absolute",
+    top: "37.5%",
+    left: "50%",
+    transform: "translate(-50%, -37.5%)",
+    "line-height":"32px",
+    "z-index":10005,
+    "color":"white"
+  },
+
   closeButton: {
     position: "absolute",
     top:0,
@@ -791,7 +813,7 @@ var upNextPanelStyle = {
 
   dismissButton: {
     position: "absolute",
-    right: "2%",
+    right: "2%",  
     top: "15%",
     height: "40%",
     width: "13%",
@@ -799,7 +821,7 @@ var upNextPanelStyle = {
     backgroundColor: "black",
     "border": "1px solid white",
     "border-radius": "5px"
-  },
+  },  
 
   dismissButtonText: {
     position: "absolute",
@@ -814,6 +836,11 @@ var upNextPanelStyle = {
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
   },
+
+  upNextCountDownStyle: {
+    height: "38px",
+    width: "38px"
+  }
 };
 
 var MoreOptionsScreenStyle = {
