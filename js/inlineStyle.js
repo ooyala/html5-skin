@@ -611,7 +611,7 @@ var upNextPanelStyle = {
   },
 
   playButton: {
-    icon: "glyphicon glyphicon-play",
+    icon: "icon icon-play",
     style: {
       position: "absolute",
       top: "50%",
