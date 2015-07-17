@@ -57,6 +57,7 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             fullscreen={this.state.fullscreen}
+            playerState={this.state.playerState}
             ref="playScreen" />
         );
       case SCREEN.SHARE_SCREEN:
@@ -66,6 +67,7 @@ var Skin = React.createClass({
           duration={this.state.duration}
           buffered={this.state.buffered}
           fullscreen={this.state.fullscreen}
+          playerState={this.state.playerState}
           ref="shareScreen" />
         );
       case SCREEN.PAUSE_SCREEN:
@@ -90,6 +92,7 @@ var Skin = React.createClass({
             buffered={this.state.buffered}
             style={endScreenStyle}
             fullscreen={this.state.fullscreen}
+            playerState={this.state.playerState}
             ref="endScreen" />
         );
       case SCREEN.DISCOVERY_SCREEN:
@@ -135,6 +138,7 @@ var Skin = React.createClass({
               duration={this.state.duration}
               buffered={this.state.buffered}
               playerState={this.state.playerState}
+              fullscreen={this.state.fullscreen}
               ref="closedCaptionScreen" />
         );
       default:
