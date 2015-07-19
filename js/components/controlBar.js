@@ -194,14 +194,31 @@ var ControlBar = React.createClass({
   },
 
   render: function() {
+    var controlBarHeight = 0;
+    if (this.props.controlBarWidth > 1280) {
+      // Scaling up
+      controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280
+      controlBarStyle.controlBarItemSetting.fontSize = 18 * this.props.controlBarWidth / 1280 + "px";
+    } else if (this.props.controlBarWidth < 560) {
+      controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 560
+      controlBarStyle.controlBarItemSetting.fontSize = 18 * this.props.controlBarWidth / 560 + "px";
+    } else {
+      controlBarHeight = this.props.skinConfig.controlBar.height;
+      controlBarStyle.controlBarItemSetting.fontSize = "18px";
+    }
+    
     //Fill in all the dynamic style values we need
-    var controlBarHeight = this.props.skinConfig.controlBar.height;
     controlBarStyle.controlBarSetting.height = controlBarHeight;
     controlBarStyle.controlBarSetting.transform = "translate(0,-" +
       (this.props.controlBarVisible ? controlBarStyle.controlBarSetting.height : 0) + "px)";
     controlBarStyle.durationIndicatorSetting.lineHeight = controlBarHeight + "px";
     controlBarStyle.iconSetting.lineHeight = controlBarHeight + "px";
+
+    
+
+
     controlBarStyle.watermarkImageStyle.top = (controlBarHeight - controlBarStyle.watermarkImageStyle.height) / 2 + "px";
+
 
     var controlBarItems = this.populateControlBar();
 

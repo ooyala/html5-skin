@@ -65,8 +65,17 @@ var ScrubberBar = React.createClass({
   },
 
   render: function() {
+    var controlBarHeight = 0;
+    if (this.props.controlBarWidth > 1280) {
+      controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280
+    } else if (this.props.controlBarWidth < 560) {
+      controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 560
+    } else {
+      controlBarHeight = this.props.skinConfig.controlBar.height;
+    }
+
     scrubberBarStyle.scrubberBarSetting.bottom = (this.props.controlBarVisible ?
-      this.props.skinConfig.controlBar.height : 0);
+      controlBarHeight : 0);
     scrubberBarStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
       parseFloat(this.props.duration)) * 100 + "%";
     scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
