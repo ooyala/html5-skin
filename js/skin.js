@@ -99,12 +99,12 @@ var Skin = React.createClass({
       case SCREEN.AD_SCREEN: 
         return (
           <AdScreen {...this.props} contentTree={this.state.contentTree}
-          currentAdsInfo={this.state.currentAdsInfo}
-          currentPlayhead={this.state.currentPlayhead}
-          playerState={this.state.playerState}
-          duration={this.state.duration}
-          buffered={this.state.buffered}
-          ref="adScreen" />
+            currentAdsInfo={this.state.currentAdsInfo}
+            currentPlayhead={this.state.currentPlayhead}
+            playerState={this.state.playerState}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            ref="adScreen" />
         );
       case SCREEN.DISCOVERY_SCREEN:
         var tempCurrPlayhead = this.state.currentPlayhead;
@@ -137,13 +137,13 @@ var Skin = React.createClass({
       case SCREEN.CLOSEDCAPTION_SCREEN:
         return (
           <ClosedCaptionScreen {...this.props}
-              contentTree={this.state.contentTree}
-              ccOptions = {this.props.ccOptions}
-              currentPlayhead={this.state.currentPlayhead}
-              duration={this.state.duration}
-              buffered={this.state.buffered}
-              playerState={this.state.playerState}
-              ref="closedCaptionScreen" />
+            contentTree={this.state.contentTree}
+            ccOptions = {this.props.ccOptions}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            playerState={this.state.playerState}
+            ref="closedCaptionScreen" />
         );
       default:
         return false;
