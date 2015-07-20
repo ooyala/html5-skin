@@ -197,10 +197,10 @@ var ControlBar = React.createClass({
     var controlBarHeight = 0;
     if (this.props.controlBarWidth > 1280) {
       // Scaling up
-      controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280
+      controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280;
       controlBarStyle.controlBarItemSetting.fontSize = 18 * this.props.controlBarWidth / 1280 + "px";
     } else if (this.props.controlBarWidth < 560) {
-      controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 560
+      controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 560;
       controlBarStyle.controlBarItemSetting.fontSize = 18 * this.props.controlBarWidth / 560 + "px";
     } else {
       controlBarHeight = this.props.skinConfig.controlBar.height;

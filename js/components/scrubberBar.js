@@ -67,9 +67,9 @@ var ScrubberBar = React.createClass({
   render: function() {
     var controlBarHeight = 0;
     if (this.props.controlBarWidth > 1280) {
-      controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280
+      controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280;
     } else if (this.props.controlBarWidth < 560) {
-      controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 560
+      controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 560;
     } else {
       controlBarHeight = this.props.skinConfig.controlBar.height;
     }

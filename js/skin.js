@@ -54,7 +54,6 @@ var Skin = React.createClass({
         return (
           <PlayingScreen {...this.props} contentTree={this.state.contentTree}
             currentPlayhead={this.state.currentPlayhead}
-            playerState={this.state.playerState}
             duration={this.state.duration}
             buffered={this.state.buffered}
             fullscreen={this.state.fullscreen}
@@ -65,7 +64,6 @@ var Skin = React.createClass({
         return (
           <ShareScreen {...this.props} contentTree={this.state.contentTree}
           currentPlayhead={this.state.currentPlayhead}
-          playerState={this.state.playerState}
           duration={this.state.duration}
           buffered={this.state.buffered}
           fullscreen={this.state.fullscreen}
@@ -94,9 +92,7 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             style={endScreenStyle}
-            playerState={this.state.playerState}
             fullscreen={this.state.fullscreen}
-            playerState={this.state.playerState}
             ref="endScreen" />
         );
       case SCREEN.DISCOVERY_SCREEN:
