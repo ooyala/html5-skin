@@ -95,12 +95,11 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             style={endScreenStyle}
-            playerState={this.state.playerState}
             fullscreen={this.state.fullscreen}
             playerState={this.state.playerState}
             ref="endScreen" />
         );
-      case SCREEN.AD_SCREEN: 
+      case SCREEN.AD_SCREEN:
         return (
           <AdScreen {...this.props} contentTree={this.state.contentTree}
             currentAdsInfo={this.state.currentAdsInfo}
