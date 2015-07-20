@@ -75,7 +75,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       event listeners from core player -> regulate skin STATE
     ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
-      $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%; position: absolute; z-index: 10000;'></div>");
+      $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%; position: absolute; z-index: 10000; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON("config/skin.json", _.bind(function(data) {
@@ -208,7 +208,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isPlayingAd = true;
       this.state.currentAdsInfo.currentAdItem = adItem;
       this.state.playerState = STATE.PLAYING;
-      this.skin.state.currentPlayhead = 0; 
+      this.skin.state.currentPlayhead = 0;
       this.renderSkin();
     },
 

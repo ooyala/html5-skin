@@ -613,12 +613,12 @@ var adScreenStyle = {
   topBarStyle: {
     position: "absolute",
     top: 0,
-    left: 0, 
-    right: 0, 
+    left: 0,
+    right: 0,
     height: "10%",
     width: "100%",
     backgroundColor:"rgba(0, 0, 0, 0.5)",
-    display: "flex", 
+    display: "flex",
     flexDirection: "row"
   },
 
@@ -632,12 +632,12 @@ var adScreenStyle = {
     "-webkit-transform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
-    "white-space": "pre" 
+    "white-space": "pre"
   },
 
   learnMoreButtonStyle: {
     position: "absolute",
-    right: "2%",  
+    right: "2%",
     top: "15%",
     height: "70%",
     width: "13%",
@@ -645,7 +645,7 @@ var adScreenStyle = {
     backgroundColor: "white" ,
     "border-radius": "5px",
     "cursor": "pointer",
-  },  
+  },
 
   learnMoreButtonTextStyle: {
     position: "absolute",
@@ -665,7 +665,7 @@ var adScreenStyle = {
 
   skipButtonStyle: {
     position: "absolute",
-    right: "2%",  
+    right: "2%",
     bottom: "5%",
     height: "10%",
     width: "15%",
@@ -909,7 +909,7 @@ var upNextPanelStyle = {
 
   dismissButton: {
     position: "absolute",
-    right: "2%",  
+    right: "2%",
     top: "15%",
     height: "40%",
     width: "13%",
@@ -917,7 +917,7 @@ var upNextPanelStyle = {
     backgroundColor: "black",
     "border": "1px solid white",
     "border-radius": "5px"
-  },  
+  },
 
   dismissButtonText: {
     position: "absolute",
@@ -984,9 +984,9 @@ var MoreOptionsScreenStyle = {
   },
 
   closeButtonStyle: {
-    "position": "absolute", 
-    "top": "10", 
-    "right": "10", 
+    "position": "absolute",
+    "top": "10",
+    "right": "10",
     "color": "lightgray"
   },
 };
