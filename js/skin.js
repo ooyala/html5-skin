@@ -61,6 +61,7 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             fullscreen={this.state.fullscreen}
+            playerState={this.state.playerState}
             ref="playScreen" />
         );
       case SCREEN.SHARE_SCREEN:
@@ -70,6 +71,7 @@ var Skin = React.createClass({
           duration={this.state.duration}
           buffered={this.state.buffered}
           fullscreen={this.state.fullscreen}
+          playerState={this.state.playerState}
           ref="shareScreen" />
         );
       case SCREEN.PAUSE_SCREEN:
@@ -93,7 +95,9 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             style={endScreenStyle}
+            playerState={this.state.playerState}
             fullscreen={this.state.fullscreen}
+            playerState={this.state.playerState}
             ref="endScreen" />
         );
       case SCREEN.AD_SCREEN: 
@@ -132,7 +136,17 @@ var Skin = React.createClass({
             upNextInfo={this.state.upNextInfo}
             playerState={this.state.playerState}
             fullscreen={this.state.fullscreen}
-            ref="playScreen" />
+            ref="UpNextScreen" />
+        );
+      case SCREEN.MORE_OPTIONS_SCREEN:
+        return (
+          <MoreOptionsScreen {...this.props}
+            contentTree={this.state.contentTree}
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            playerState={this.state.playerState}
+            fullscreen={this.state.fullscreen}
+            ref="moreOptionsScreen" />
         );
       case SCREEN.CLOSEDCAPTION_SCREEN:
         return (

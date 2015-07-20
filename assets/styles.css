@@ -1,31 +1,33 @@
 @charset "UTF-8";
 
 @font-face {
-  font-family: "ooyala-icons";
-  src:url("fonts/ooyala_icons.eot");
-  src:url("fonts/ooyala_icons.eot?#iefix") format("embedded-opentype"),
-    url("fonts/ooyala_icons.woff") format("woff"),
-    url("fonts/ooyala_icons.ttf") format("truetype"),
-    url("fonts/ooyala_icons.svg#ooyala_icons") format("svg");
+  font-family: "alice";
+  src:url("fonts/alice.eot");
+  src:url("fonts/alice.eot?#iefix") format("embedded-opentype"),
+    url("fonts/alice.woff") format("woff"),
+    url("fonts/alice.ttf") format("truetype"),
+    url("fonts/alice.svg#alice") format("svg");
   font-weight: normal;
   font-style: normal;
+
 }
 
 [data-icon]:before {
-  font-family: "ooyala-icons" !important;
+  font-family: "alice" !important;
   content: attr(data-icon);
   font-style: normal !important;
   font-weight: normal !important;
   font-variant: normal !important;
   text-transform: none !important;
   speak: none;
+  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
-  font-family: "ooyala-icons" !important;
+  font-family: "alice" !important;
   font-style: normal !important;
   font-weight: normal !important;
   font-variant: normal !important;
@@ -80,6 +82,15 @@
 .icon-topmenu-share:before {
   content: "o";
 }
-.icon-upnext-dismiss:before {
+.icon-ooyala:before {
+  content: "q";
+}
+.icon-left:before {
+  content: "r";
+}
+.icon-right:before {
+  content: "s";
+}
+.icon-volume-mobile-mute:before {
   content: "p";
 }

@@ -65,10 +65,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
       this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
-
       if (OO.EVENTS.DISCOVERY_API) {
         this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
       }
+      this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
     },
 
     /*--------------------------------------------------------------------
@@ -244,6 +244,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onFullscreenChanged: function(event, fullscreen) {
+      this.state.fullscreen = fullscreen;
+      this.renderSkin();
+    },
+
     /*--------------------------------------------------------------------
       Skin state -> control skin
     ---------------------------------------------------------------------*/
@@ -394,6 +399,30 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.playerState = STATE.PLAYING;
       this.renderSkin();
     },
+
+    toggleMoreOptionsScreen: function() {
+      if (this.state.screenToShow == SCREEN.MORE_OPTIONS_SCREEN) {
+        this.closeMoreOptionsScreen();
+      } else {
+        this.displayMoreOptionsScreen();
+      }
+    },
+
+    closeMoreOptionsScreen: function() {
+      this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+      this.state.playerState = STATE.PAUSE;
+      this.renderSkin();
+    },
+
+    displayMoreOptionsScreen: function() {
+      this.mb.publish(OO.EVENTS.PAUSE);
+      setTimeout(function() {
+        this.state.screenToShow = SCREEN.MORE_OPTIONS_SCREEN;
+        this.state.playerState = STATE.PAUSE;
+        this.renderSkin();
+      }.bind(this), 1);
+    },
+
     enablePauseAnimation: function(){
       this.state.pauseAnimationDisabled = false;
     }
