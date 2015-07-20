@@ -12,6 +12,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
+      "isPlayingAd": false,
+      "currentAdsInfo": {
+        "currentAdItem": null,
+        "numberOfAds": 0
+      },
       "pauseAnimationDisabled": false,
       "ccOptions":{
         "enabled": null,
@@ -40,11 +45,29 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
+
+
+      /********************************************************************
+        ADS RELATED EVENTS
+      *********************************************************************/
+
+      this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
+
+      this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
+
+      this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
+      this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
+
+      this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
+      this.mb.subscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi", _.bind(this.onWillResumeAds, this));
+
       this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
-      this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
       this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
+      if (OO.EVENTS.DISCOVERY_API) {
+        this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
+      }
       this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
     },
 
@@ -87,13 +110,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
-      if (this.state.screenToShow !== SCREEN.AD_SCREEN &&
-        this.skin.props.skinConfig.upNextScreen.showUpNext)  {
-        this.showUpNextScreenWhenReady(currentPlayhead, duration);
-      } else if (this.state.playerState === STATE.PLAYING) {
-        this.state.screenToShow = SCREEN.PLAYING_SCREEN;
-      } else if (this.state.playerState === STATE.PAUSE) {
-        this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+      // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
+      // So we only need to update the playhead for ad screen.
+      if (this.state.screenToShow !== SCREEN.AD_SCREEN ) {
+        if (this.skin.props.skinConfig.upNextScreen.showUpNext)  {
+          this.showUpNextScreenWhenReady(currentPlayhead, duration);
+        } else if (this.state.playerState === STATE.PLAYING) {
+          this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+        } else if (this.state.playerState === STATE.PAUSE) {
+          this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+        }
       }
       this.skin.updatePlayhead(currentPlayhead, duration, buffered);
       this.renderSkin();
@@ -116,21 +142,29 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaying: function() {
-      this.state.screenToShow = SCREEN.PLAYING_SCREEN;
-      this.state.playerState = STATE.PLAYING;
-      this.renderSkin();
+      // pause/resume of Ad playback is handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
+      if (this.state.screenToShow != SCREEN.AD_SCREEN) {
+        this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+        this.state.playerState = STATE.PLAYING;
+        this.renderSkin();
+      }
     },
 
     onPaused: function() {
-      if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
-        this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
-      } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "share") {
-        this.state.screenToShow = SCREEN.SHARE_SCREEN;
-      } else {
-        this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+      // pause/resume of Ad playback is handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
+      if (this.state.screenToShow != SCREEN.AD_SCREEN) {
+        if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
+          console.log("Should display DISCOVERY_SCREEN on pause");
+          this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+        } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
+          // Remove this comment once pause screen implemented
+        } else {
+          // default
+          this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+        }
+        this.state.playerState = STATE.PAUSE;
+        this.renderSkin();
       }
-      this.state.playerState = STATE.PAUSE;
-      this.renderSkin();
     },
 
     onPlayed: function() {
@@ -152,6 +186,47 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    /********************************************************************
+      ADS RELATED EVENTS
+    *********************************************************************/
+
+    onAdsPlayed: function(event) {
+      console.log("onAdsPlayed is called from event = " + event);
+      this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+      this.renderSkin();
+    },
+
+    onAdPodStarted: function(event, numberOfAds) {
+      console.log("onAdPodStarted is called from event = " + event + "with " + numberOfAds + "ads");
+      this.state.currentAdsInfo.numberOfAds = numberOfAds;
+      this.renderSkin();
+    },
+
+    onWillPlaySingleAd: function(event, adItem) {
+      console.log("onWillPlaySingleAd is called with adItem = " + adItem);
+      this.state.screenToShow = SCREEN.AD_SCREEN;
+      this.state.isPlayingAd = true;
+      this.state.currentAdsInfo.currentAdItem = adItem;
+      this.state.playerState = STATE.PLAYING;
+      this.skin.state.currentPlayhead = 0; 
+      this.renderSkin();
+    },
+
+    onSingleAdPlayed: function(event) {
+      console.log("onSingleAdPlayed is called");
+    },
+
+    onWillPauseAds: function(event) {
+      console.log("onWillPauseAds is called");
+      this.state.playerState = STATE.PAUSE;
+      this.renderSkin();
+    },
+
+    onWillResumeAds: function(event) {
+      console.log("onWillResumeAds is called");
+      this.state.playerState = STATE.PLAYING;
+    },
+
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.ccOptions.availableLanguages = languages;
       if (this.state.ccOptions.enabled){
@@ -160,7 +235,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onClosedCaptionCueChanged: function(event, data) {
-      //for the future use
+      // saved for the future use
     },
 
     onRelatedVideosFetched: function(event, relatedVideos) {

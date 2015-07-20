@@ -14,6 +14,7 @@ var SCREEN = {
   PLAYING_SCREEN: "playingScreen",
   PAUSE_SCREEN: "pauseScreen",
   END_SCREEN: "endScreen",
+  AD_SCREEN: "adScreen",
   SHARE_SCREEN: "shareScreen",
   DISCOVERY_SCREEN: "discoveryScreen",
   UP_NEXT_SCREEN: "upNextScreen",

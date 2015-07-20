@@ -83,11 +83,11 @@ var ControlBar = React.createClass({
 
   populateControlBar: function() {
     if (this.props.playerState == STATE.PLAYING) {
-        playClass = "icon icon-pause";
+      playClass = "icon icon-pause";
     } else if (this.props.playerState == STATE.END) {
-        playClass = "icon icon-upnext-replay";
+      playClass = "icon icon-upnext-replay";
     } else {
-        playClass = "icon icon-play";
+      playClass = "icon icon-play";
     }
     var muteClass = (this.state.muted) ?
       "icon icon-volume-desktop" : "icon icon-volume-desktop";
@@ -95,9 +95,7 @@ var ControlBar = React.createClass({
       "icon icon-resize-small" : "icon icon-resize-large";
 
     var totalTime = 0;
-    if (this.props.contentTree && this.props.contentTree.duration) {
-      totalTime = Utils.formatSeconds(this.props.contentTree.duration / 1000);
-    }
+    totalTime = Utils.formatSeconds(this.props.duration);
 
     var volumeBars = [];
     for (var i=0; i<10; i++) {
@@ -110,7 +108,6 @@ var ControlBar = React.createClass({
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
         onClick={this.handleVolumeClick}></span>);
     }
-
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.url;
     var watermarkImageStyle = controlBarStyle.watermarkImageStyle;
     // 16 is 50% of control bar height right now. Will be fetched from config file later
@@ -118,7 +115,7 @@ var ControlBar = React.createClass({
 
     // TODO: Update when implementing localization
     var liveText = "LIVE";
-
+    
     var controlItemTemplates = {
       "playPause": <div className="playPause" style={controlBarStyle.controlBarItemSetting}
         onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
