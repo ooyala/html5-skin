@@ -565,40 +565,36 @@ var closedCaptionScreenStyles ={
   screenStyle: {
     backgroundColor: "rgba(0,0,0,0.8)",
     height: "100%",
-    width: "100%",
-    border: "1px solid blue"
+    width: "100%"
+  },
+
+  innerPanelStyle :{
+    padding: "35"
   },
 
   captionStyle: {
-    display: "inline-block",
-    textAlign: "left",
-    fontSize: "32pt",
+    fontSize: "32",
+    fontFamily: "Roboto Condensed",
     color: "#ffffff",
-    marginLeft: "35",
-    marginTop: "35",
-    fontWeight: "bold",
-    border: "1px solid red"
+    fontWeight: "bold"
   },
 
   switchStyle:{
-    height: "24",
-    textAlign: "left",
-    fontSize: "10",
+    cursor: "pointer",
+    marginTop: "35",
+    height: "28",
+    width: "140",
     color: "#FFFFFF",
-    marginLeft: "25",
-    marginTop: "20",
-    marginBottom: "20",
     position: "relative"
   },
 
   switchContainer: {
     display: "inline-block",
-    cursor: "pointer",
-    width: "40",
-    height: "24",
+    width: "33%",
+    height: "100%",
     position: "relative",
-    marginLeft: "20",
-    borderRadius: "100%",
+    marginLeft: "33%",
+    borderRadius: "100%"
   },
   switch: {
     display: "block",
@@ -627,42 +623,35 @@ var closedCaptionScreenStyles ={
 
   onStyle:{
     position: "absolute",
-    top: "20%",
-    left: "70",
+    right: "0",
     display:"inline-block",
     color: "grey"
   },
 
   offStyle:{
     position: "absolute",
-    top: "20%",
     display:"inline-block",
+    left: "0",
     color: "grey"
   },
 
   itemStyle: {
-    display: "inline-block",
+    fontSize: "22",
+    marginRight: "140",
+    marginTop: "40",
     textAlign: "center",
-    fontSize: "12",
-    minWidth :"50",
+    padding: "3",
     color: "#DDDDDD",
-    marginLeft: "25",
-    padding: "5",
-    paddingLeft: "10",
-    paddingRight: "10",
     transition: "all 0.0s ease"
   },
 
   itemSelectedStyle: {
-    display: "inline-block",
+    fontSize: "22",
+    marginRight: "140",
+    marginTop: "40",
     textAlign: "center",
-    fontSize: "12",
-    minWidth :"50",
+    padding: "3",
     color: "white",
-    marginLeft: "25",
-    padding: "5",
-    paddingLeft: "10",
-    paddingRight: "10",
     //properties different from itemStyle
     backgroundColor: "#4389ff",
     borderRadius: "4"
@@ -670,35 +659,31 @@ var closedCaptionScreenStyles ={
 
   CCPreviewPanelStyle:{
     width: "100%",
-    backgroundColor: "rgba(0,0,0,0.7)",
+    backgroundColor: "rgba(0,0,0,0.5)",
     position: "absolute",
-    bottom: "20",
-    transition: "all 1s ease",
-    borderTop: "1px solid grey"
+    bottom: "60",
+    left: "0",
+    height: "70",
+    borderTop: "1px solid grey",
+    visibility: "visible"
   },
 
   CCPreviewCaptionStyle: {
+    marginTop: "0",
     color: "white",
-    marginLeft: "20",
-    marginTop: "20",
-    fontSize: "10",
-    paddingTop: "0",
-    paddingBottom: "0"
+    fontSize: "12",
+    fontFamily: "Roboto",
+    marginLeft: "35"
   },
 
-  CCPreviewTextStyle:{
+  CCPreviewTextStyle: {
+    marginTop: "0",
     color: "white",
-    marginLeft: "25",
-    fontSize: "15",
-    paddingTop: "5",
-    paddingBottom: "0"
+    fontSize: "24",
+    fontWeight: "bold",
+    fontFamily: "Verdana",
+    marginLeft: "35"
   },
-
-  tableStyle:{
-    width: "100%",
-    height: "25%",
-    paddingRight: "15"
-  }
 };
 
 var upNextPanelStyle = {
