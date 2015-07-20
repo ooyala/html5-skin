@@ -209,7 +209,6 @@ var ControlBar = React.createClass({
   scaleControlBarItemsBasedOnWidth: function(width) {
     controlBarStyle.controlBarItemSetting.fontSize = 18 * this.props.controlBarWidth / width + "px";
     controlBarStyle.volumeBarStyle.height = 18 * this.props.controlBarWidth / width + "px";
-    controlBarStyle.volumeBarStyle.paddingRight = 3 * this.props.controlBarWidth / width + "px";
   },
 
   scaleControlBarItemsBasedOnHeight: function(controlBarHeight) {

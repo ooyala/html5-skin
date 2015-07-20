@@ -231,11 +231,10 @@ var controlBarStyle = {
 
   volumeBarStyle: {
     "display": "inline-block",
-    "height": "18",
-    "width": "4px",
-    "paddingRight": "3px",
     "backgroundClip": "content-box",
-    "position": "relative"
+    "position": "relative",
+    "width": "4px",
+    "paddingRight": "3px"
   },
 
   watermarkImageStyle: {
