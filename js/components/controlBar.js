@@ -113,8 +113,6 @@ var ControlBar = React.createClass({
 
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.url;
     var watermarkImageStyle = controlBarStyle.watermarkImageStyle;
-    // 16 is 50% of control bar height right now. Will be fetched from config file later
-    watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * 16;
 
     // TODO: Update when implementing localization
     var liveText = "LIVE";
@@ -193,35 +191,45 @@ var ControlBar = React.createClass({
     return controlBarItems;
   },
 
-  render: function() {
+  getScaledControlBarHeight: function() {
     var controlBarHeight = 0;
-    if (this.props.controlBarWidth > 1280) {
-      // Scaling up
+    if (this.props.controlBarWidth >= 1280) {
       controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280;
-      controlBarStyle.controlBarItemSetting.fontSize = 18 * this.props.controlBarWidth / 1280 + "px";
-    } else if (this.props.controlBarWidth < 560) {
+      this.scaleControlBarItemsBasedOnWidth(1280);
+    } else if (this.props.controlBarWidth <= 560) {
       controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 560;
-      controlBarStyle.controlBarItemSetting.fontSize = 18 * this.props.controlBarWidth / 560 + "px";
+      this.scaleControlBarItemsBasedOnWidth(560);
     } else {
       controlBarHeight = this.props.skinConfig.controlBar.height;
-      controlBarStyle.controlBarItemSetting.fontSize = "18px";
+      this.scaleControlBarItemsBasedOnWidth(this.props.controlBarWidth);
     }
-    
-    //Fill in all the dynamic style values we need
+    return controlBarHeight;   
+  },
+
+  scaleControlBarItemsBasedOnWidth: function(width) {
+    controlBarStyle.controlBarItemSetting.fontSize = 18 * this.props.controlBarWidth / width + "px";
+    controlBarStyle.volumeBarStyle.height = 18 * this.props.controlBarWidth / width + "px";
+    controlBarStyle.volumeBarStyle.paddingRight = 3 * this.props.controlBarWidth / width + "px";
+  },
+
+  scaleControlBarItemsBasedOnHeight: function(controlBarHeight) {
     controlBarStyle.controlBarSetting.height = controlBarHeight;
     controlBarStyle.controlBarSetting.transform = "translate(0,-" +
       (this.props.controlBarVisible ? controlBarStyle.controlBarSetting.height : 0) + "px)";
     controlBarStyle.durationIndicatorSetting.lineHeight = controlBarHeight + "px";
     controlBarStyle.iconSetting.lineHeight = controlBarHeight + "px";
+    controlBarStyle.volumeBarStyle.lineHeight = controlBarHeight + "px";
 
-    
-
-
+    // watermark
+    controlBarStyle.watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * (controlBarHeight / 2) + "px";
+    controlBarStyle.watermarkImageStyle.height = controlBarHeight / 2;
     controlBarStyle.watermarkImageStyle.top = (controlBarHeight - controlBarStyle.watermarkImageStyle.height) / 2 + "px";
+  },
 
-
+  render: function() {
+    var controlBarHeight = this.getScaledControlBarHeight();
+    this.scaleControlBarItemsBasedOnHeight(controlBarHeight);
     var controlBarItems = this.populateControlBar();
-
     return (
       <div className="controlBar" onMouseUp={this.handleControlBarMouseUp}
         style={controlBarStyle.controlBarSetting}>
