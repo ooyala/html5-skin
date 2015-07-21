@@ -137,6 +137,8 @@ var ControlBar = React.createClass({
       "timeDuration": <div className="timeDuration" style={controlBarStyle.durationIndicatorSetting}>
         {Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}</div>,
 
+      "flexibleSpace": <div className="flexibleSpace" style={controlBarStyle.flexibleSpace}></div>,
+
       "moreOptions": <div className="moreOptions" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}>
         <span className="icon icon-menu" style={controlBarStyle.iconSetting}></span></div>,
@@ -167,8 +169,10 @@ var ControlBar = React.createClass({
     };
 
     var controlBarItems = [];
-    var collapsedItems = (CollapsingBarUtils.collapse(this.props.controlBarWidth, Array.prototype.slice.call(this.props.skinConfig.controlBar.items), "webMinWidth")).fit;
+    var collapsedItems = (CollapsingBarUtils.collapse(this.props.controlBarWidth, Array.prototype.slice.call(this.props.skinConfig.controlBar.items), "webMinWidth")).fit; 
+
     for (i = 0; i < collapsedItems.length; i++) {
+
       // filter out unrecognized button names
       if (typeof controlItemTemplates[collapsedItems[i].name] === "undefined") {
         continue;
@@ -185,8 +189,6 @@ var ControlBar = React.createClass({
           !(this.props.authorization.streams[0].is_live_stream))) {
         continue;
       }
-
-
       controlBarItems.push(controlItemTemplates[collapsedItems[i].name]);
     }
     return controlBarItems;

@@ -29,7 +29,7 @@ var CollapsingBarUtils = {
     for( var i = orderedItems.length-1; i >= 0 && usedWidth > barWidth; --i ) {
       var item = orderedItems[ i ];
       if( !this._isValid( item, minName ) || item.collapsable ) {
-        usedWidth = this._dropLastItemMatching(r, item);
+        usedWidth = this._dropLastItemMatching(r, item, minName, usedWidth);
       }
     }
     return r;

@@ -194,11 +194,14 @@ var controlBarStyle = {
     "color": "#ffffff",
     "opacity": 1,
     "fontSize": 14,
-    "textAlign": "left",
-    "flex": 1
+    "textAlign": "left"
   },
 
   iconSetting: {
+  },
+
+  flexibleSpace: {
+    "flex": 1
   },
 
   liveItemStyle: {
