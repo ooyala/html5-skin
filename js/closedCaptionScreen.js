@@ -31,7 +31,7 @@ var ClosedCaptionScreen = React.createClass({
       clientWidth: this.getDOMNode().clientWidth,
       clientHeight: this.getDOMNode().clientHeight
     });
-    window.addEventListener('resize', this.handleResize.bind(this));
+    window.addEventListener('resize', this.handleResize);
   },
 
   render: function() {

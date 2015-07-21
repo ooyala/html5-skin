@@ -13,6 +13,7 @@ var ClosedCaptionPanel = React.createClass({
 
   setResponsiveStyle: function(clientWidth, clientHeight){
     var scale = Math.max(clientWidth/1280, 0.3);
+    //scale = Math.min(clientWidth/1280, 1); // if do not scale above
     var controlBarHeight = 60;
     closedCaptionScreenStyles.CCPreviewPanelStyle.bottom = controlBarHeight;
 
@@ -39,6 +40,7 @@ var ClosedCaptionPanel = React.createClass({
     closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop = 1/3*(closedCaptionScreenStyles.CCPreviewPanelStyle.height - 4/3*closedCaptionScreenStyles.CCPreviewTextStyle.fontSize-4/3*closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize);
     closedCaptionScreenStyles.CCPreviewCaptionStyle.marginBottom = closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop;
 
+    //var panelHeight = Math.min(clientHeight, 720) - controlBarHeight; // if do not scale above 720 height
     var panelHeight = clientHeight - controlBarHeight; //calculating the height of the panel where table with languages goes
     panelHeight -= 4/3*closedCaptionScreenStyles.captionStyle.fontSize;
     panelHeight -= 2*closedCaptionScreenStyles.innerPanelStyle.padding;
@@ -46,6 +48,8 @@ var ClosedCaptionPanel = React.createClass({
     panelHeight -= closedCaptionScreenStyles.switchStyle.marginTop;
     panelHeight -= closedCaptionScreenStyles.itemStyle.marginTop + 2*closedCaptionScreenStyles.itemSelectedStyle.padding;
     panelHeight -= closedCaptionScreenStyles.CCPreviewPanelStyle.height;
+
+    //closedCaptionScreenStyles.innerPanelStyle.padding += (clientHeight - Math.min(clientHeight, 720))/2; // if do not scale above 720 height
 
     //number of table rows that can fit into the panel
     var numRows = Math.floor(panelHeight/(4/3*closedCaptionScreenStyles.itemSelectedStyle.fontSize+closedCaptionScreenStyles.itemStyle.marginTop + 2*closedCaptionScreenStyles.itemSelectedStyle.padding));
