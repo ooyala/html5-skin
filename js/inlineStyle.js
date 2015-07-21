@@ -435,13 +435,13 @@ var discoveryScreenStyle = {
 
   panelStyle: {
     position: "absolute",
-    top: "50%",
-    bottom: "32px",
-    backgroundColor: "#444444",
+    bottom: "48px",
+    backgroundColor: "rgba(0,0,0, 0.7)",
     left: 0,
     right: 0,
-    display: "flex",
-    flexDirection: "row"
+    /* display: "flex", */
+    flexDirection: "row",
+    height: "255px"
   },
 
   promoStyle: {
@@ -456,7 +456,7 @@ var discoveryScreenStyle = {
 
   panelTitleBarStyle: {
     position: "absolute",
-    backgroundColor: "#444444",
+    backgroundColor: "transparent",
     left: 0,
     right: 0,
     height: "20%",
@@ -468,31 +468,36 @@ var discoveryScreenStyle = {
   panelTitleTextStyle: {
     position: "absolute",
     left: "25px",
-    fontSize: "20",
+    fontSize: "32",
     color: "white",
     margin: "1%",
-    display: "inline-block"
+    display: "inline-block",
+    marginBottom: "35px",
+    opacity: 1
   },
 
   discoveryToasterContainerStyle: {
     position: "absolute",
-    backgroundColor: "#444444",
+    backgroundColor: "transparent",
     top: "20%",
     height: "70%",
     width: "100%"
   },
 
   discoveryToasterStyle: {
-    position: "absolute",
-    backgroundColor: "#444444",
+    position: "relative",
     top: "0",
     height: "90%",
-    width: "2000px",
+    width: "100%",
     right: 0,
     left: 25,
     display: "flex",
     flexDirection: "row",
-    transition: "0.5s"
+    /* overflow: "hidden" */
+    /*
+    "overflow-x": "scroll",
+    "overflow-y": "hidden",
+    */
   },
 
   discoveryChevronLeftButtonContainer: {
@@ -530,6 +535,7 @@ var discoveryScreenStyle = {
     icon: "icon icon-right",
     style: {
       top: "50%",
+
       left: "50%",
       fontSize: "18",
       transform: "translate(-50%, -50%)",
@@ -541,20 +547,25 @@ var discoveryScreenStyle = {
 
   discoveryContentBlockStyle: {
     position: "relative",
-    width: "100px",
-    height: "95%",
-    margin: "10px",
-    backgroundColor: "#444444"
+    margin: "30px",
+    backgroundColor: "transparent",
+    overflow: "hidden",
+    height: "150px",
+    width: "214px",
+    "flex-shrink": 0
   },
 
   discoveryImageStyle: {
-    position: "absolute",
-    width: "100%",
-    height: "75%"
+    position: "relative",
+    width: "214px",
+    height: "120px",
+    "background-size": "contain",
+    "background-repeat": "no-repeat",
+    opacity: 1
   },
 
   discoveryContentTitleStyle: {
-    position: "absolute",
+    position: "relative",
     top: "75%",
     color: "white",
     fontSize: "10"

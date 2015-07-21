@@ -93,7 +93,6 @@ var Skin = React.createClass({
             style={endScreenStyle}
             playerState={this.state.playerState}
             fullscreen={this.state.fullscreen}
-            playerState={this.state.playerState}
             ref="endScreen" />
         );
       case SCREEN.DISCOVERY_SCREEN:

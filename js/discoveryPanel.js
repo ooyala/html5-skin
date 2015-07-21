@@ -114,22 +114,23 @@ var DiscoveryPanel = React.createClass({
     if (discoveryData !== null)  {
         discoveryToasterStyle.width = 150 * discoveryData.relatedVideos.length;
         for (var i = 0; i < this.props.discoveryData.relatedVideos.length; i++) {
+          imageStyle.backgroundImage = 'url('+this.props.discoveryData.relatedVideos[i].preview_image_url+')';
           if(this.shouldShowCountdownTimer() && i === 0) {
             discoveryContentBlocks.push(
             <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
-                 <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
-                     <div style={discoveryCountDownWrapperStyle} onClick={this.handleDiscoveryCountDownClick}>
+                 <div style={imageStyle}>
+                 </div>
+                 <div style={discoveryCountDownWrapperStyle} onClick={this.handleDiscoveryCountDownClick}>
                      <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
                      <span className="icon icon-pause" style={discoveryCountDownIconStyle}></span>
-                     </div>
-                 </img>
+                </div>
                  <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
             </div> );
           }
           else {
             discoveryContentBlocks.push(
               <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
-                   <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
+                   <div style={imageStyle}></div>
                    <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
               </div> );
           }
