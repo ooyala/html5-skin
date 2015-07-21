@@ -168,14 +168,22 @@ var ControlBar = React.createClass({
 
     var controlBarItems = [];
     var controlBarSetting = this.props.skinConfig.controlBar;
+    var test = [];
     for (i = 0; i < controlBarSetting.items.length; i++) {
+      test.push(controlBarSetting.items[i]);
+    }
+    var collapsedItems = (CollapsingBarUtils.collapse(this.props.controlBarWidth, test, "webMinWidth")).fit;
+    for (i = 0; i < collapsedItems.length; i++) {
+      console.log("collapsedItems = " + collapsedItems[i].name);
+    }
+    for (i = 0; i < collapsedItems.length; i++) {
       // filter out unrecognized button names
-      if (typeof controlItemTemplates[controlBarSetting.items[i].name] === "undefined") {
+      if (typeof controlItemTemplates[collapsedItems[i].name] === "undefined") {
         continue;
       }
 
       //do not show CC button if no CC available
-      if (!this.props.controller.state.ccOptions.availableLanguages && (controlBarSetting.items[i].name === "closedCaption")){
+      if (!this.props.controller.state.ccOptions.availableLanguages && (collapsedItems[i].name === "closedCaption")){
         continue;
       }
 
@@ -186,7 +194,8 @@ var ControlBar = React.createClass({
         continue;
       }
 
-      controlBarItems.push(controlItemTemplates[controlBarSetting.items[i].name]);
+
+      controlBarItems.push(controlItemTemplates[collapsedItems[i].name]);
     }
     return controlBarItems;
   },
