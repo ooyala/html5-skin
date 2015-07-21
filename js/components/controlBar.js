@@ -168,25 +168,25 @@ var ControlBar = React.createClass({
 
     var controlBarItems = [];
     var controlBarSetting = this.props.skinConfig.controlBar;
-    for (i=0; i < controlBarSetting.items.length; i++) {
+    for (i = 0; i < controlBarSetting.items.length; i++) {
       // filter out unrecognized button names
-      if (typeof controlItemTemplates[controlBarSetting.items[i]] === "undefined") {
+      if (typeof controlItemTemplates[controlBarSetting.items[i].name] === "undefined") {
         continue;
       }
 
       //do not show CC button if no CC available
-      if (!this.props.controller.state.ccOptions.availableLanguages && (controlBarSetting.items[i] === "closedCaption")){
+      if (!this.props.controller.state.ccOptions.availableLanguages && (controlBarSetting.items[i].name === "closedCaption")){
         continue;
       }
 
       // Not sure what to do when there are multi streams
-      if (controlBarSetting.items[i] === "live" &&
+      if (controlBarSetting.items[i].name === "live" &&
           (typeof this.props.authorization === 'undefined' ||
           !(this.props.authorization.streams[0].is_live_stream))) {
         continue;
       }
 
-      controlBarItems.push(controlItemTemplates[controlBarSetting.items[i]]);
+      controlBarItems.push(controlItemTemplates[controlBarSetting.items[i].name]);
     }
     return controlBarItems;
   },
@@ -216,11 +216,11 @@ var ControlBar = React.createClass({
     } else {
       controlBarWidthBase = controlBarWidth;
     }
-    controlBarStyle.controlBarItemSetting.fontSize = 18 * controlBarWidth / controlBarWidth + "px";
-    controlBarStyle.volumeBarStyle.height = 18 * controlBarWidth / controlBarWidth + "px";
+    controlBarStyle.controlBarItemSetting.fontSize = 18 * controlBarWidth / controlBarWidthBase + "px";
+    controlBarStyle.volumeBarStyle.height = 18 * controlBarWidth / controlBarWidthBase + "px";
     
     // watermark
-    var watermarkHeight = 18 * this.controlBarWidth / controlBarWidth;
+    var watermarkHeight = 18 * controlBarWidth / controlBarWidthBase;
     controlBarStyle.watermarkImageStyle.top = (controlBarHeight - watermarkHeight) / 2 + "px";
     controlBarStyle.watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * watermarkHeight + "px";
     controlBarStyle.watermarkImageStyle.height = watermarkHeight + "px";
