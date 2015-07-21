@@ -1,3 +1,10 @@
+var defaultScreenStyle = {
+  style: {
+    width: "100%",
+    height:"100%"
+  }
+};
+
 var startScreenStyle = {
   style: {
     width: "100%",
@@ -595,6 +602,95 @@ var discoveryScreenStyle = {
   }
 };
 
+var adScreenStyle = {
+  panelStyle: {
+    position: "absolute",
+    top: "0",
+    bottom: "32px",
+    width: "100%"
+  },
+
+  topBarStyle: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: "10%",
+    width: "100%",
+    backgroundColor:"rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    flexDirection: "row"
+  },
+
+  adPlaybackInfoTextStyle: {
+    position: "absolute",
+    top: "50%",
+    height: "40%",
+    width: "100%",
+    fontSize: "10",
+    color: "white",
+    "-webkit-transform": "translateY(-50%)",
+    "-ms-transform": "translateY(-50%)",
+    "transform": "translateY(-50%)",
+    "white-space": "pre"
+  },
+
+  learnMoreButtonStyle: {
+    position: "absolute",
+    right: "2%",
+    top: "15%",
+    height: "70%",
+    width: "13%",
+    fontSize: "10",
+    backgroundColor: "white" ,
+    "border-radius": "5px",
+    "cursor": "pointer",
+  },
+
+  learnMoreButtonTextStyle: {
+    position: "absolute",
+    top: "50%",
+    width: "100%",
+    fontSize: "10",
+    "text-align": "center",
+    color: "black",
+    "-webkit-user-select": "none",
+    "-moz-user-select": "none",
+    "-ms-user-select": "none",
+    "user-select": "none",
+    "-webkit-transform": "translateY(-50%)",
+    "-ms-transform": "translateY(-50%)",
+    "transform": "translateY(-50%)",
+  },
+
+  skipButtonStyle: {
+    position: "absolute",
+    right: "2%",
+    bottom: "5%",
+    height: "10%",
+    width: "15%",
+    backgroundColor: "white",
+    opacity: 0.5,
+    "border-radius": "5px"
+  },
+
+  skipButtonTextStyle: {
+    position: "absolute",
+    top: "50%",
+    width: "100%",
+    fontSize: "15",
+    "text-align": "center",
+    color: "black",
+    "-webkit-user-select": "none",
+    "-moz-user-select": "none",
+    "-ms-user-select": "none",
+    "user-select": "none",
+    "-webkit-transform": "translateY(-50%)",
+    "-ms-transform": "translateY(-50%)",
+    "transform": "translateY(-50%)",
+  }
+};
+
 var closedCaptionScreenStyles ={
 
   screenStyle: {
@@ -799,7 +895,7 @@ var upNextPanelStyle = {
 
   dismissButton: {
     position: "absolute",
-    right: "2%",  
+    right: "2%",
     top: "15%",
     height: "40%",
     width: "13%",
@@ -807,7 +903,7 @@ var upNextPanelStyle = {
     backgroundColor: "black",
     "border": "1px solid white",
     "border-radius": "5px"
-  },  
+  },
 
   dismissButtonText: {
     position: "absolute",
@@ -874,9 +970,9 @@ var MoreOptionsScreenStyle = {
   },
 
   closeButtonStyle: {
-    "position": "absolute", 
-    "top": "10", 
-    "right": "10", 
+    "position": "absolute",
+    "top": "10",
+    "right": "10",
     "color": "lightgray"
   },
 };
