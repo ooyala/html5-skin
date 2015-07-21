@@ -195,20 +195,35 @@ var ControlBar = React.createClass({
     var controlBarHeight = 0;
     if (this.props.controlBarWidth >= 1280) {
       controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280;
-      this.scaleControlBarItemsBasedOnWidth(1280);
+      this.scaleControlBarItemsBasedOnControlBarSize(1280, controlBarHeight);
     } else if (this.props.controlBarWidth <= 560) {
       controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 560;
-      this.scaleControlBarItemsBasedOnWidth(560);
+      this.scaleControlBarItemsBasedOnControlBarSize(560, controlBarHeight);
     } else {
       controlBarHeight = this.props.skinConfig.controlBar.height;
-      this.scaleControlBarItemsBasedOnWidth(this.props.controlBarWidth);
+      this.scaleControlBarItemsBasedOnControlBarSize(this.props.controlBarWidth, controlBarHeight);
     }
     return controlBarHeight;   
   },
 
-  scaleControlBarItemsBasedOnWidth: function(width) {
-    controlBarStyle.controlBarItemSetting.fontSize = 18 * this.props.controlBarWidth / width + "px";
-    controlBarStyle.volumeBarStyle.height = 18 * this.props.controlBarWidth / width + "px";
+  scaleControlBarItemsBasedOnControlBarSize: function(controlBarHeight) {
+    var controlBarWidth = this.props.controlBarWidth;
+    var controlBarWidthBase = 0;
+    if (controlBarWidth >= 1280) {
+      controlBarWidthBase = 1280;
+    } else if (controlBarWidth <= 560) {
+      controlBarWidthBase = 560;
+    } else {
+      controlBarWidthBase = controlBarWidth;
+    }
+    controlBarStyle.controlBarItemSetting.fontSize = 18 * controlBarWidth / controlBarWidth + "px";
+    controlBarStyle.volumeBarStyle.height = 18 * controlBarWidth / controlBarWidth + "px";
+    
+    // watermark
+    var watermarkHeight = 18 * this.controlBarWidth / controlBarWidth;
+    controlBarStyle.watermarkImageStyle.top = (controlBarHeight - watermarkHeight) / 2 + "px";
+    controlBarStyle.watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * watermarkHeight + "px";
+    controlBarStyle.watermarkImageStyle.height = watermarkHeight + "px";
   },
 
   scaleControlBarItemsBasedOnHeight: function(controlBarHeight) {
@@ -216,17 +231,13 @@ var ControlBar = React.createClass({
     controlBarStyle.controlBarSetting.transform = "translate(0,-" +
       (this.props.controlBarVisible ? controlBarStyle.controlBarSetting.height : 0) + "px)";
     controlBarStyle.durationIndicatorSetting.lineHeight = controlBarHeight + "px";
-    controlBarStyle.iconSetting.lineHeight = controlBarHeight + "px";
+    controlBarStyle.iconSetting.lineHeight = controlBarHeight + "px"; 
     controlBarStyle.volumeBarStyle.lineHeight = controlBarHeight + "px";
-
-    // watermark
-    controlBarStyle.watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * (controlBarHeight / 2) + "px";
-    controlBarStyle.watermarkImageStyle.height = controlBarHeight / 2;
-    controlBarStyle.watermarkImageStyle.top = (controlBarHeight - controlBarStyle.watermarkImageStyle.height) / 2 + "px";
   },
 
   render: function() {
-    var controlBarHeight = this.getScaledControlBarHeight();
+    var controlBarHeight = this.getScaledControlBarHeight(this.props.controlBarWidth);
+    this.scaleControlBarItemsBasedOnControlBarSize(controlBarHeight);
     this.scaleControlBarItemsBasedOnHeight(controlBarHeight);
     var controlBarItems = this.populateControlBar();
     return (

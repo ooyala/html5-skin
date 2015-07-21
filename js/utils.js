@@ -46,22 +46,38 @@ var Utils = {
     @return {String} The time as a string in the HH:MM format
   */
   formatSeconds: function(timeInSeconds) {
-      var seconds = parseInt(timeInSeconds,10) % 60;
-      var hours = parseInt(timeInSeconds / 3600, 10);
-      var minutes = parseInt((timeInSeconds - hours * 3600) / 60, 10);
+    var seconds = parseInt(timeInSeconds,10) % 60;
+    var hours = parseInt(timeInSeconds / 3600, 10);
+    var minutes = parseInt((timeInSeconds - hours * 3600) / 60, 10);
 
-      if (hours < 10) {
-        hours = '0' + hours;
-      }
-
-      if (minutes < 10) {
-        minutes = '0' + minutes;
-      }
-
-      if (seconds < 10) {
-        seconds = '0' + seconds;
-      }
-
-      return (parseInt(hours,10) > 0) ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
+    if (hours < 10) {
+      hours = '0' + hours;
     }
+
+    if (minutes < 10) {
+      minutes = '0' + minutes;
+    }
+
+    if (seconds < 10) {
+      seconds = '0' + seconds;
+    }
+
+    return (parseInt(hours,10) > 0) ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
+  },
+
+  getScaledControlBarHeight: function(controlBarWidth) {
+    var controlBarHeightBase = this.props.skinConfig.controlBar.height;
+    var controlBarHeight = 0;
+    if (controlBarWidth >= 1280) {
+      controlBarHeight = controlBarHeightBase * controlBarWidth / 1280;
+    } else if (controlBarWidth <= 560) {
+      controlBarHeight = controlBarHeightBase * controlBarWidth / 560;
+    } else {
+      controlBarHeight = controlBarHeightBase;
+    }
+    return controlBarHeight;   
+  },
+
+
+
 };
