@@ -167,15 +167,7 @@ var ControlBar = React.createClass({
     };
 
     var controlBarItems = [];
-    var controlBarSetting = this.props.skinConfig.controlBar;
-    var test = [];
-    for (i = 0; i < controlBarSetting.items.length; i++) {
-      test.push(controlBarSetting.items[i]);
-    }
-    var collapsedItems = (CollapsingBarUtils.collapse(this.props.controlBarWidth, test, "webMinWidth")).fit;
-    for (i = 0; i < collapsedItems.length; i++) {
-      console.log("collapsedItems = " + collapsedItems[i].name);
-    }
+    var collapsedItems = (CollapsingBarUtils.collapse(this.props.controlBarWidth, Array.prototype.slice.call(this.props.skinConfig.controlBar.items), "webMinWidth")).fit;
     for (i = 0; i < collapsedItems.length; i++) {
       // filter out unrecognized button names
       if (typeof controlItemTemplates[collapsedItems[i].name] === "undefined") {
@@ -188,7 +180,7 @@ var ControlBar = React.createClass({
       }
 
       // Not sure what to do when there are multi streams
-      if (controlBarSetting.items[i].name === "live" &&
+      if (collapsedItems[i].name === "live" &&
           (typeof this.props.authorization === 'undefined' ||
           !(this.props.authorization.streams[0].is_live_stream))) {
         continue;
