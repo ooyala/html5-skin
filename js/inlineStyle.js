@@ -1,3 +1,10 @@
+var defaultScreenStyle = {
+  style: {
+    width: "100%",
+    height:"100%"
+  }
+};
+
 var startScreenStyle = {
   style: {
     width: "100%",
@@ -235,7 +242,7 @@ var controlBarStyle = {
     "paddingRight": "2px",
     "backgroundClip": "content-box",
     "position": "relative",
-    "top": "-1px"
+    "top": "-3px"
   },
 
   watermarkImageStyle: {
@@ -470,7 +477,8 @@ var discoveryScreenStyle = {
     left: "25px",
     fontSize: "20",
     color: "white",
-    margin: "1%"
+    margin: "1%",
+    display: "inline-block"
   },
 
   discoveryToasterContainerStyle: {
@@ -513,7 +521,7 @@ var discoveryScreenStyle = {
   },
 
   discoveryChevronLeftButton: {
-    icon: "glyphicon glyphicon-chevron-left",
+    icon: "icon icon-left",
     style: {
       top: "50%",
       left: "50%",
@@ -526,7 +534,7 @@ var discoveryScreenStyle = {
   },
 
   discoveryChevronRightButton: {
-    icon: "glyphicon glyphicon-chevron-right",
+    icon: "icon icon-right",
     style: {
       top: "50%",
       left: "50%",
@@ -557,6 +565,129 @@ var discoveryScreenStyle = {
     top: "75%",
     color: "white",
     fontSize: "10"
+  },
+
+  discoveryCountDownWrapperStyle: {
+    position: "absolute",
+    top: "37.5%",
+    left: "50%",
+    transform: "translate(-50%, -37.5%)"
+  },
+
+  discoveryCountDownStyle: {
+    width: "38px",
+    height: "38px"
+  },
+
+  discoveryCountDownIconStyle: {
+    position: "absolute",
+    top: "37.5%",
+    left: "50%",
+    transform: "translate(-50%, -37.5%)",
+    "line-height":"32px",
+    "z-index":10005,
+    "color":"white"
+  },
+
+  closeButton: {
+    position: "absolute",
+    top:0,
+    right: 0,
+    height: "25px",
+    width: "25px",
+    backgroundColor: "#4389ff",
+    color: "white",
+    textAlign: "center",
+    lineHeight: "25px"
+  }
+};
+
+var adScreenStyle = {
+  panelStyle: {
+    position: "absolute",
+    top: "0",
+    bottom: "32px",
+    width: "100%"
+  },
+
+  topBarStyle: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: "10%",
+    width: "100%",
+    backgroundColor:"rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    flexDirection: "row"
+  },
+
+  adPlaybackInfoTextStyle: {
+    position: "absolute",
+    top: "50%",
+    height: "40%",
+    width: "100%",
+    fontSize: "10",
+    color: "white",
+    "-webkit-transform": "translateY(-50%)",
+    "-ms-transform": "translateY(-50%)",
+    "transform": "translateY(-50%)",
+    "white-space": "pre"
+  },
+
+  learnMoreButtonStyle: {
+    position: "absolute",
+    right: "2%",
+    top: "15%",
+    height: "70%",
+    width: "13%",
+    fontSize: "10",
+    backgroundColor: "white" ,
+    "border-radius": "5px",
+    "cursor": "pointer",
+  },
+
+  learnMoreButtonTextStyle: {
+    position: "absolute",
+    top: "50%",
+    width: "100%",
+    fontSize: "10",
+    "text-align": "center",
+    color: "black",
+    "-webkit-user-select": "none",
+    "-moz-user-select": "none",
+    "-ms-user-select": "none",
+    "user-select": "none",
+    "-webkit-transform": "translateY(-50%)",
+    "-ms-transform": "translateY(-50%)",
+    "transform": "translateY(-50%)",
+  },
+
+  skipButtonStyle: {
+    position: "absolute",
+    right: "2%",
+    bottom: "5%",
+    height: "10%",
+    width: "15%",
+    backgroundColor: "white",
+    opacity: 0.5,
+    "border-radius": "5px"
+  },
+
+  skipButtonTextStyle: {
+    position: "absolute",
+    top: "50%",
+    width: "100%",
+    fontSize: "15",
+    "text-align": "center",
+    color: "black",
+    "-webkit-user-select": "none",
+    "-moz-user-select": "none",
+    "-ms-user-select": "none",
+    "user-select": "none",
+    "-webkit-transform": "translateY(-50%)",
+    "-ms-transform": "translateY(-50%)",
+    "transform": "translateY(-50%)",
   }
 };
 
@@ -800,5 +931,62 @@ var upNextPanelStyle = {
     "-webkit-transform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
+  },
+
+  upNextCountDownStyle: {
+    height: "38px",
+    width: "38px"
+  }
+};
+
+var MoreOptionsScreenStyle = {
+  panelStyle: {
+    "position": "absolute",
+    "top": "0",
+    "left": "0",
+    "width": "100%",
+    "height": "100%",
+    "opacity": "0.7",
+    "backgroundColor": "black"
+  },
+
+  buttonListStyle: {
+    "position": "absolute",
+    "bottom": "0%",
+    "left": "30%",
+    "right": "30%",
+    "width": "40%",
+    "height": "32",
+    "opacity": "0",
+    "listStyle": "none",
+    "display": "flex",
+    "flexFlow": "row nowrap",
+    "justifyContent": "flex-start",
+    "-webkit-user-select": "none",
+    "-moz-user-select": "none",
+    "-ms-user-select": "none",
+    "user-select": "none",
+    "-webkit-flex-direction": "row",
+    "flex-direction": "row",
+    "transition": "bottom 0.7s, opacity 0.7s",
+  },
+
+  buttonStyle: {
+    "height": "100%",
+    "color": "rgba(255, 255, 255, 0.6)",
+    "fontWeight": "bold",
+    "fontSize": "18",
+    "textAlign": "center",
+    "paddingLeft": "8px",
+    "paddingRight": "8px",
+    "margin": "0 auto",
+    "opacity": "1",
+  },
+
+  closeButtonStyle: {
+    "position": "absolute",
+    "top": "10",
+    "right": "10",
+    "color": "lightgray"
   },
 };

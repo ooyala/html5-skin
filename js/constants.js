@@ -18,6 +18,7 @@ var SCREEN = {
   DISCOVERY_SCREEN: "discoveryScreen",
   UP_NEXT_SCREEN: "upNextScreen",
   AD_SCREEN: "adScreen",
+  MORE_OPTIONS_SCREEN: "moreOptionsScreen",
 };
 
 var KEYCODES = {

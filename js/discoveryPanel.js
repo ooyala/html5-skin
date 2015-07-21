@@ -2,17 +2,20 @@
   DISCOVERY PANEL
 *********************************************************************/
 /**
-* The screen used while the video is playing.
-*
 * @class DiscoveryPanel
 * @constructor
 */
 
 var DiscoveryPanel = React.createClass({
-  getInitialState: function() {
+  getInitialState: function() { 
     return {
       discoveryToasterLeftOffset: 25,
+      showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen
     };
+  },
+
+  closeDiscoveryPanel: function() {
+    this.props.controller.toggleDiscoveryScreen();
   },
 
   handleLeftButtonClick: function() {
@@ -27,7 +30,7 @@ var DiscoveryPanel = React.createClass({
         newDiscoveryToasterLeftOffset = 25;
       }
     }
-   
+
     this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
   },
 
@@ -41,12 +44,12 @@ var DiscoveryPanel = React.createClass({
     if(toasterContainerWidth <= toasterWidth || rightOffset <= 25) {
       newDiscoveryToasterLeftOffset -= 400;
       rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
-      
+
       if(rightOffset > 25) {
         newDiscoveryToasterLeftOffset = toasterContainerWidth - 25 - toasterWidth;
-      } 
+      }
     }
-    
+
     this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
   },
 
@@ -58,6 +61,16 @@ var DiscoveryPanel = React.createClass({
     // TODO: figure out countdown value
     eventData.custom.countdown = 0;
     this.props.controller.sendDiscoveryClickEvent(eventData);
+  },
+
+  shouldShowCountdownTimer: function() {
+    return this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen && this.props.playerState === STATE.END; 
+  },
+
+  handleDiscoveryCountDownClick: function(event) {
+    this.setState({showDiscoveryCountDown: false});
+    this.refs.CountDownClock.handleClick(event);
+    event.stopPropagation();
   },
 
   render: function() {
@@ -90,43 +103,62 @@ var DiscoveryPanel = React.createClass({
     var discoveryData = this.props.discoveryData;
     var discoveryContentBlocks = [];
 
-    // This is for turning off the old discovery panel.
-    // TODO: Remove the following line when we drop the old discovery panel in mjolnir side.
-    document.getElementsByClassName("discovery_toaster")[0].style.display="none"; 
+    var discoveryCountDownStyle = discoveryScreenStyle.discoveryCountDownStyle;
+    var discoveryCountDownIconStyle = discoveryScreenStyle.discoveryCountDownIconStyle;
+    var discoveryCountDownWrapperStyle = discoveryScreenStyle.discoveryCountDownWrapperStyle;
+    if(!this.state.showDiscoveryCountDown) {
+      discoveryCountDownWrapperStyle.display="none";
+    }
 
     // Build discovery content blocks
     if (discoveryData !== null)  {
         discoveryToasterStyle.width = 150 * discoveryData.relatedVideos.length;
         for (var i = 0; i < this.props.discoveryData.relatedVideos.length; i++) {
-          discoveryContentBlocks.push(
+          if(this.shouldShowCountdownTimer() && i === 0) {
+            discoveryContentBlocks.push(
             <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
-                 <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
+                 <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
+                     <div style={discoveryCountDownWrapperStyle} onClick={this.handleDiscoveryCountDownClick}>
+                     <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
+                     <span className="icon icon-pause" style={discoveryCountDownIconStyle}></span>
+                     </div>
+                 </img>
                  <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
             </div> );
+          }
+          else {
+            discoveryContentBlocks.push(
+              <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
+                   <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
+                   <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
+              </div> );
+          }
         }
     }
     return (
       <div style={panelStyle}>
 
         <div style={panelTitleBarStyle}>
-          <h1 style={panelTitleTextStyle}>{panelTitle}</h1>
+          <h1 style={panelTitleTextStyle}>{panelTitle}
+            <span style={{top: "3px", position: "relative", marginLeft: "7px"}} className="icon icon-topmenu-discovery"></span>
+          </h1>
         </div>
 
         <div style={discoveryToasterContainerStyle} ref="DiscoveryToasterContainer" >
-          
+
           <div style={discoveryToasterStyle} ref="DiscoveryToaster">
               {discoveryContentBlocks}
           </div>
-            
+
           <div style={chevronLeftButtonContainer}>
             <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} aria-hidden="true" onClick={this.handleLeftButtonClick}></span>
           </div>
-          
+
           <div style={chevronRightButtonContainer}>
             <span className={chevronRightButtonClass} style={chevronRightButtonStyle} aria-hidden="true" onClick={this.handleRightButtonClick}></span>
           </div>
-
         </div>
+        <div onClick={this.closeDiscoveryPanel} style={discoveryScreenStyle.closeButton} className="icon icon-close"></div>
       </div>
     );
   }
