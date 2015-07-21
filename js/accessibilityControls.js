@@ -17,21 +17,21 @@ AccessibilityControls.prototype = {
       this.controller.togglePlayPause();
     }
 
-    if ((e.keyCode === KEYCODES.DOWN_ARROW_KEY && this.controller.state.volume > 0) || (e.keyCode === KEYCODES.UP_ARROW_KEY && this.controller.state.volume < 1)){
-      var volumeSign = 1; // positive 1 for volume increase, negative for decrease
+    else if ((e.keyCode === KEYCODES.DOWN_ARROW_KEY && this.controller.state.volumeState.volume > 0) || (e.keyCode === KEYCODES.UP_ARROW_KEY && this.controller.state.volumeState.volume < 1)){
+      var deltaVolumeSign = 1; // positive 1 for volume increase, negative for decrease
 
       if (e.keyCode === KEYCODES.DOWN_ARROW_KEY){
-        volumeSign = -1;
+        deltaVolumeSign = -1;
       }
       else {
-        volumeSign = 1;
+        deltaVolumeSign = 1;
       }
 
-      newVolume = (this.controller.state.volume * 10 + 1*volumeSign)/10;
+      newVolume = (this.controller.state.volumeState.volume * 10 + 1*deltaVolumeSign)/10;
       this.controller.setVolume(newVolume);
     }
 
-    if (e.keyCode === KEYCODES.RIGHT_ARROW_KEY || e.keyCode === KEYCODES.LEFT_ARROW_KEY){
+    else if (e.keyCode === KEYCODES.RIGHT_ARROW_KEY || e.keyCode === KEYCODES.LEFT_ARROW_KEY){
       var shiftSign = 1; // positive 1 for fast forward, negative for rewind back
 
       var shiftSeconds = 1;

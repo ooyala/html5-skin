@@ -19,9 +19,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "availableLanguages": null
       },
 
-      "volume" :null,
-      "muted": false,
-      "oldVolume": 1,
+      volumeState:{
+        "volume" :null,
+        "muted": false,
+        "oldVolume": 1,
+      },
 
       "upNextInfo": {
         "upNextData": null,
@@ -81,7 +83,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVolumeChanged: function (event, newVolume){
-      this.state.volume = newVolume;
+      this.state.volumeState.volume = newVolume;
     },
 
     resetUpNextInfo: function () {
@@ -248,20 +250,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     setVolume: function(volume){
-      this.state.muted = false;
-      this.state.volume = volume;
+      this.state.volumeState.muted = false;
+      this.state.volumeState.volume = volume;
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
       this.renderSkin();
     },
 
     handleMuteClick: function() {
       var newVolumeSettings = {};
-      if (!this.state.muted) {
+      if (!this.state.volumeState.muted) {
         //if we're muting, save the current volume so we can
         //restore it when we un-mute
         newVolumeSettings = {
-          oldVolume: this.state.volume,
-          muted: !this.state.muted
+          oldVolume: this.state.volumeState.volume,
+          muted: !this.state.volumeState.muted
         };
         this.setVolume(0);
       }
@@ -269,13 +271,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         //restore the volume to the previous setting
         newVolumeSettings = {
           oldVolume: 0,
-          muted: !this.state.muted
+          muted: !this.state.volumeState.muted
         };
-        this.setVolume(this.state.oldVolume);
+        this.setVolume(this.state.volumeState.oldVolume);
       }
 
-      this.state.oldVolume = newVolumeSettings.oldVolume;
-      this.state.muted = newVolumeSettings.muted;
+      this.state.volumeState.oldVolume = newVolumeSettings.oldVolume;
+      this.state.volumeState.muted = newVolumeSettings.muted;
     },
 
     toggleShareScreen: function() {

@@ -66,7 +66,7 @@ var ControlBar = React.createClass({
     var volumeBars = [];
     for (var i=0; i<10; i++) {
       //create each volume tick separetely
-      var turnedOn = this.props.controller.state.volume >= (i+1) / 10;
+      var turnedOn = this.props.controller.state.volumeState.volume >= (i+1) / 10;
       var singleBarStyle = Utils.clone(controlBarStyle.volumeBarStyle);
       singleBarStyle.backgroundColor = (turnedOn ?
         "rgba(67, 137, 255, 0.6)" : "rgba(255, 255, 255, 0.6)");
