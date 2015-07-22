@@ -3,13 +3,6 @@
 *********************************************************************/
 
 var ControlBar = React.createClass({
-  getInitialState: function() {
-    return {
-      muted: false,
-      oldVolume: 1.0,
-      volume: this.props.controller.state.volume
-    };
-  },
 
   handleControlBarMouseUp: function(evt) {
     evt.stopPropagation();
@@ -20,27 +13,7 @@ var ControlBar = React.createClass({
   },
 
   handleMuteClick: function() {
-    var newVolumeSettings = {};
-    if (!this.state.muted) {
-      this.props.controller.setVolume(0);
-      //if we're muting, save the current volume so we can
-      //restore it when we un-mute
-      newVolumeSettings = {
-        oldVolume: this.state.volume,
-        volume: 0,
-        muted: !this.state.muted
-      };
-    }
-    else {
-      //restore the volume to the previous setting
-      this.props.controller.setVolume(this.state.oldVolume);
-      newVolumeSettings = {
-        oldVolume: 0,
-        volume: this.state.oldVolume,
-        muted: !this.state.muted
-      };
-    }
-    this.setState(newVolumeSettings);
+    this.props.controller.handleMuteClick();
   },
 
   handlePlayClick: function() {
@@ -54,10 +27,6 @@ var ControlBar = React.createClass({
   handleVolumeClick: function(evt) {
     var newVolume = parseFloat(evt.target.dataset.volume);
     this.props.controller.setVolume(newVolume);
-    this.setState({
-      volume: newVolume,
-      muted: false
-    });
   },
 
   handleDiscoveryClick: function() {
@@ -89,9 +58,10 @@ var ControlBar = React.createClass({
     } else {
       playClass = "icon icon-play";
     }
-    var muteClass = (this.state.muted) ?
+    var muteClass = (this.props.controller.state.muted) ?
       "icon icon-volume-desktop" : "icon icon-volume-desktop";
-    var fullscreenClass = (this.props.fullscreen) ?
+
+    var fullscreenClass = (this.props.controller.state.fullscreen) ?
       "icon icon-resize-small" : "icon icon-resize-large";
 
     var totalTime = 0;
@@ -100,7 +70,7 @@ var ControlBar = React.createClass({
     var volumeBars = [];
     for (var i=0; i<10; i++) {
       //create each volume tick separetely
-      var turnedOn = this.state.volume >= (i+1) / 10;
+      var turnedOn = this.props.controller.state.volumeState.volume >= (i+1) / 10;
       var singleBarStyle = Utils.clone(controlBarStyle.volumeBarStyle);
       singleBarStyle.backgroundColor = (turnedOn ?
         "rgba(67, 137, 255, 0.6)" : "rgba(255, 255, 255, 0.6)");
