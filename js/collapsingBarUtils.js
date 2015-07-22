@@ -10,7 +10,7 @@ var CollapsingBarUtils = {
   //  * Note: items which do not meet the item spec will be removed and not appear in the results.
   //  */
   collapse: function( barWidth, orderedItems, minName ) {
-    if( Number.isNaN( barWidth ) || barWidth === undefined ) { return orderedItems; }
+    if( isNaN( barWidth ) || barWidth === undefined ) { return orderedItems; }
     if( ! orderedItems ) { return []; }
     if( minName === undefined ) { return orderedItems; }
     var self = this;
