@@ -167,7 +167,6 @@ var ControlBar = React.createClass({
 
     var controlBarItems = [];
     var collapsedItems = (CollapsingBarUtils.collapse(this.props.controlBarWidth, Array.prototype.slice.call(this.props.skinConfig.controlBar.items), "webMinWidth")).fit; 
-
     for (i = 0; i < collapsedItems.length; i++) {
 
       // filter out unrecognized button names
@@ -191,21 +190,8 @@ var ControlBar = React.createClass({
     return controlBarItems;
   },
 
-  getScaledControlBarHeight: function() {
-    var controlBarHeight = 0;
-    if (this.props.controlBarWidth >= 1280) {
-      controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280;
-      this.scaleControlBarItemsBasedOnControlBarSize(1280, controlBarHeight);
-    } else if (this.props.controlBarWidth <= 560) {
-      controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 560;
-      this.scaleControlBarItemsBasedOnControlBarSize(560, controlBarHeight);
-    } else {
-      controlBarHeight = this.props.skinConfig.controlBar.height;
-      this.scaleControlBarItemsBasedOnControlBarSize(this.props.controlBarWidth, controlBarHeight);
-    }
-    return controlBarHeight;   
-  },
 
+  // Saved for responsive control bar
   scaleControlBarItemsBasedOnControlBarSize: function(controlBarHeight) {
     var controlBarWidth = this.props.controlBarWidth;
     var controlBarWidthBase = 0;
@@ -226,6 +212,7 @@ var ControlBar = React.createClass({
     controlBarStyle.watermarkImageStyle.height = watermarkHeight + "px";
   },
 
+  // Saved for responsive control bar
   scaleControlBarItemsBasedOnHeight: function(controlBarHeight) {
     controlBarStyle.controlBarSetting.height = controlBarHeight;
     controlBarStyle.controlBarSetting.transform = "translate(0,-" +
@@ -235,10 +222,27 @@ var ControlBar = React.createClass({
     controlBarStyle.volumeBarStyle.lineHeight = controlBarHeight + "px";
   },
 
+
+  setupControlBarItemForConstantHeight: function(constantControlBarHeight) {
+    controlBarStyle.watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * 18 + "px";
+
+    controlBarStyle.controlBarSetting.height = constantControlBarHeight;
+    controlBarStyle.controlBarSetting.transform = "translate(0,-" +
+      (this.props.controlBarVisible ? controlBarStyle.controlBarSetting.height : 0) + "px)";
+    controlBarStyle.durationIndicatorSetting.lineHeight = constantControlBarHeight + "px";
+    controlBarStyle.iconSetting.lineHeight = constantControlBarHeight + "px"; 
+    controlBarStyle.volumeBarStyle.lineHeight = constantControlBarHeight + "px";
+  },
+
+
   render: function() {
-    var controlBarHeight = this.getScaledControlBarHeight(this.props.controlBarWidth);
-    this.scaleControlBarItemsBasedOnControlBarSize(controlBarHeight);
-    this.scaleControlBarItemsBasedOnHeight(controlBarHeight);
+    // Uncomment the following code to support "threshold scaling control bar implementation"
+    // var controlBarHeight = Utils.getScaledControlBarHeight(this.props.controlBarWidth);
+    // this.scaleControlBarItemsBasedOnControlBarSize(controlBarHeight);
+    // this.scaleControlBarItemsBasedOnHeight(controlBarHeight);
+
+    this.setupControlBarItemForConstantHeight(60);
+
     var controlBarItems = this.populateControlBar();
     return (
       <div className="controlBar" onMouseUp={this.handleControlBarMouseUp}

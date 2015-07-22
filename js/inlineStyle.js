@@ -175,6 +175,7 @@ var controlBarStyle = {
     "paddingLeft": "7.5px",
     "paddingRight": "7.5px",
     "margin": 0,
+    "fontSize": "18px",
     "listStyle": "none",
     "display": "flex",
     "flexFlow": "row nowrap",
@@ -244,12 +245,14 @@ var controlBarStyle = {
     "backgroundClip": "content-box",
     "position": "relative",
     "width": "4px",
+    "height": "18px",
     "paddingRight": "3px"
   },
 
   watermarkImageStyle: {
-    position: "relative",
-    height: "18",
+    "position": "relative",
+    "height": "18px",
+    "top": "21px",
   }
 };
 

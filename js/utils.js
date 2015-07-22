@@ -66,7 +66,7 @@ var Utils = {
   },
 
   getScaledControlBarHeight: function(controlBarWidth) {
-    var controlBarHeightBase = this.props.skinConfig.controlBar.height;
+    var controlBarHeightBase = 60;
     var controlBarHeight = 0;
     if (controlBarWidth >= 1280) {
       controlBarHeight = controlBarHeightBase * controlBarWidth / 1280;
