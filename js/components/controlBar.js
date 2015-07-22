@@ -140,18 +140,14 @@ var ControlBar = React.createClass({
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}>
         <span className="icon icon-menu" style={controlBarStyle.iconSetting}></span></div>,
 
-      "quality": <div className="discoqualityvery" style={controlBarStyle.controlBarItemSetting}
+      "quality": <div className="quality" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <span className="icon icon-topmenu-quality" style={controlBarStyle.iconSetting}></span></div>,
 
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
         <span className="icon icon-topmenu-discovery" style={controlBarStyle.iconSetting}></span></div>,
-      
-      "bitrateSelector": <div className="bitrateSelector" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-quality"
-        style={controlBarStyle.iconSetting}></span></div>,
-      
+    
       "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-cc"
         onClick={this.handleClosedCaptionClick} style={controlBarStyle.iconSetting}></span></div>,
