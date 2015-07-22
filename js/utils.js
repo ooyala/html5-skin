@@ -65,6 +65,8 @@ var Utils = {
     return (parseInt(hours,10) > 0) ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
   },
 
+
+  // Liusha: saved for resizing control bar
   getScaledControlBarHeight: function(controlBarWidth) {
     var controlBarHeightBase = 60;
     var controlBarHeight = 0;
