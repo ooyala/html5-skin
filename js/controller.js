@@ -160,7 +160,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           // Remove this comment once pause screen implemented
         } else {
           // default
-          this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+          this.state.screenToShow = SCREEN.PAUSE_SCREEN;
         }
         this.state.playerState = STATE.PAUSE;
         this.renderSkin();
