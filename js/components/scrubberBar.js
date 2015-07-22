@@ -67,7 +67,7 @@ var ScrubberBar = React.createClass({
   render: function() {
     var controlBarHeight = 60;
 
-    // Uncomment the following code when we need to support resizing control bar with threshold and scaling.
+    // Liusha: Uncomment the following code when we need to support resizing control bar with threshold and scaling.
     // if (this.props.controlBarWidth > 1280) {
     //   controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280;
     // } else if (this.props.controlBarWidth < 560) {

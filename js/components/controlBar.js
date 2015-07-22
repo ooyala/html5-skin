@@ -140,6 +140,10 @@ var ControlBar = React.createClass({
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}>
         <span className="icon icon-menu" style={controlBarStyle.iconSetting}></span></div>,
 
+      "quality": <div className="discoqualityvery" style={controlBarStyle.controlBarItemSetting}
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        <span className="icon icon-topmenu-quality" style={controlBarStyle.iconSetting}></span></div>,
+
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
         <span className="icon icon-topmenu-discovery" style={controlBarStyle.iconSetting}></span></div>,
@@ -242,7 +246,6 @@ var ControlBar = React.createClass({
     // this.scaleControlBarItemsBasedOnHeight(controlBarHeight);
 
     this.setupControlBarItemForConstantHeight(60);
-
     var controlBarItems = this.populateControlBar();
     return (
       <div className="controlBar" onMouseUp={this.handleControlBarMouseUp}
