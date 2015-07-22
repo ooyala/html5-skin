@@ -68,17 +68,17 @@ var MoreOptionsPanel = React.createClass({
     };
 
     var moreOptionsItems = [];
-    var moreOptions = this.props.skinConfig.moreOptions;
-    for (i = 0; i < moreOptions.length; i++) {
-      if (typeof optionsItemsTemplates[moreOptions[i]] === "undefined") {
+    var moreOptionsButtons = this.props.skinConfig.moreOptions.buttons;
+    for (i = 0; i < moreOptionsButtons.length; i++) {
+      if (typeof optionsItemsTemplates[moreOptionsButtons[i]] === "undefined") {
         continue;
       }
 
       //do not show CC button if no CC available
-      if (!this.props.controller.state.ccOptions.availableLanguages && (moreOptions[i] === "closedCaption")){
+      if (!this.props.controller.state.ccOptions.availableLanguages && (moreOptionsButtons[i] === "closedCaption")){
         continue;
       }
-      moreOptionsItems.push(optionsItemsTemplates[moreOptions[i]]);
+      moreOptionsItems.push(optionsItemsTemplates[moreOptionsButtons[i]]);
     }
     return moreOptionsItems;
   },
