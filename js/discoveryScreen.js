@@ -10,7 +10,8 @@
 var DiscoveryScreen = React.createClass({
   getInitialState: function() {
     return {
-      controlBarVisible: true
+      controlBarVisible: true,
+      controlBarWidth: 0
     };
   },
 
@@ -37,14 +38,12 @@ var DiscoveryScreen = React.createClass({
         <ScrubberBar
           {...this.props}
           controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}
-          controlBarHeight={controlBarHeight} />
+          controlBarWidth={this.state.controlBarWidth} />
 
         <ControlBar
           {...this.props}
           controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}
-          controlBarHeight={controlBarHeight}
           playerState={this.props.playerState} />
       </div>
     );
