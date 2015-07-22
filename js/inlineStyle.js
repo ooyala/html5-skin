@@ -485,7 +485,7 @@ var discoveryScreenStyle = {
   },
 
   discoveryToasterStyle: {
-    position: "relative",
+    position: "absolute",
     top: "0",
     height: "90%",
     width: "100%",
@@ -547,28 +547,37 @@ var discoveryScreenStyle = {
 
   discoveryContentBlockStyle: {
     position: "relative",
-    margin: "30px",
+    marginLeft: "30px",
+    marginRight: "30px",
+    marginTop: "35px",
+    /*
     backgroundColor: "transparent",
-    overflow: "hidden",
-    height: "150px",
+    overflow: "hidden", */
+    height: "120px",
     width: "214px",
     "flex-shrink": 0
   },
+  
+  discoveryImageWrapperStyle: {
+    position: "relative",
+    height: "120px",
+    width: "214px"
+  },
 
   discoveryImageStyle: {
-    position: "relative",
-    width: "214px",
-    height: "120px",
+    position: "absolute",
+    width: "100%",
+    height: "100%"
+    /*
     "background-size": "contain",
     "background-repeat": "no-repeat",
-    opacity: 1
+    opacity: 1 */
   },
 
   discoveryContentTitleStyle: {
     position: "relative",
-    top: "75%",
     color: "white",
-    fontSize: "10"
+    fontSize: "22"
   },
 
   discoveryCountDownWrapperStyle: {

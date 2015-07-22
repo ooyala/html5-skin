@@ -112,25 +112,27 @@ var DiscoveryPanel = React.createClass({
 
     // Build discovery content blocks
     if (discoveryData !== null)  {
-        discoveryToasterStyle.width = 150 * discoveryData.relatedVideos.length;
+        discoveryToasterStyle.width = 214 * discoveryData.relatedVideos.length + 60*(discoveryData.relatedVideos.length-1);
         for (var i = 0; i < this.props.discoveryData.relatedVideos.length; i++) {
-          imageStyle.backgroundImage = 'url('+this.props.discoveryData.relatedVideos[i].preview_image_url+')';
+          //imageStyle.backgroundImage = 'url('+this.props.discoveryData.relatedVideos[i].preview_image_url+')';
           if(this.shouldShowCountdownTimer() && i === 0) {
             discoveryContentBlocks.push(
             <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
-                 <div style={imageStyle}>
-                 </div>
-                 <div style={discoveryCountDownWrapperStyle} onClick={this.handleDiscoveryCountDownClick}>
+                <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
+                     <div style={discoveryCountDownWrapperStyle} onClick={this.handleDiscoveryCountDownClick}>
                      <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
                      <span className="icon icon-pause" style={discoveryCountDownIconStyle}></span>
-                </div>
+                     </div>
+                 </img>
                  <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
             </div> );
           }
           else {
             discoveryContentBlocks.push(
               <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
-                   <div style={imageStyle}></div>
+                  <div style={discoveryScreenStyle.discoveryImageWrapperStyle}>
+                  <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
+                  </div>
                    <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
               </div> );
           }
