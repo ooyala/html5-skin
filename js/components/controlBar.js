@@ -236,7 +236,7 @@ var ControlBar = React.createClass({
 
 
   render: function() {
-    // Uncomment the following code to support "threshold scaling control bar implementation"
+    // Liusha: Uncomment the following code to support "threshold scaling control bar implementation"
     // var controlBarHeight = Utils.getScaledControlBarHeight(this.props.controlBarWidth);
     // this.scaleControlBarItemsBasedOnControlBarSize(controlBarHeight);
     // this.scaleControlBarItemsBasedOnHeight(controlBarHeight);
