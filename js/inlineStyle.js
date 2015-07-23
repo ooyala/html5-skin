@@ -570,24 +570,25 @@ var discoveryScreenStyle = {
 
   discoveryCountDownWrapperStyle: {
     position: "absolute",
-    top: "37.5%",
+    top: "50%",
     left: "50%",
-    transform: "translate(-50%, -37.5%)"
+    transform: "translate(-50%, -45%)"
   },
 
   discoveryCountDownStyle: {
-    width: "38px",
-    height: "38px"
+    width: "75px",
+    height: "75px"
   },
 
   discoveryCountDownIconStyle: {
     position: "absolute",
-    top: "37.5%",
+    top: "50%",
     left: "50%",
-    transform: "translate(-50%, -37.5%)",
-    "line-height":"32px",
+    transform: "translate(-50%, -57%)",
+    "line-height":"40px",
     "z-index":10005,
-    "color":"white"
+    "color":"white",
+    fontSize: 25
   },
 
   closeButton: {
