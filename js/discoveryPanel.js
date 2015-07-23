@@ -10,8 +10,7 @@ var DiscoveryPanel = React.createClass({
   getInitialState: function() { 
     return {
       discoveryToasterLeftOffset: 25,
-      showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen,
-      testFlag: true
+      showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen
     };
   },
 
@@ -98,16 +97,6 @@ var DiscoveryPanel = React.createClass({
     }
     else {
       chevronRightButtonStyle.visibility = "hidden";
-    }
-  },
-
-  componentDidMount: function() {
-    //var contentBlocksNode = React.findDOMNode(this.refs.DiscoveryContentBlocks);
-    var contentBlockNodes = this.getDOMNode().getElementsByClassName("discoveryContentName");
-    for(var i = 0; i < contentBlockNodes.length; i++) {
-      var contentBlockNode = contentBlockNodes[i];
-      var shortDesc = Utils.truncateTextToWidth(contentBlockNode, contentBlockNode);
-      //contentBlockNode.
     }
   },
 
