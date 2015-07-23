@@ -481,7 +481,8 @@ var discoveryScreenStyle = {
     backgroundColor: "transparent",
     top: "20%",
     height: "70%",
-    width: "100%"
+    width: "100%",
+    overflow: "hidden"
   },
 
   discoveryToasterStyle: {
