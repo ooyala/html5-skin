@@ -13,8 +13,19 @@ var AdScreen = React.createClass({
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
   },
 
+  openUrl: function(url) {
+    if (url === null) { 
+      return; 
+    }
+    window.open(url);
+  },
+
   handlePlayerMouseUp: function() {
-    // pause or play the video if the skin is clicked
+    console.log("AdScreen clicked!!!!!!!!!");
+    if (this.props.playerState ===  STATE.PLAYING) {
+      var clickThroughUrl = this.props.currentAdsInfo.currentAdItem.clickUrl;
+      this.openUrl(clickThroughUrl);
+    }
     this.props.controller.togglePlayPause();
   },
 
