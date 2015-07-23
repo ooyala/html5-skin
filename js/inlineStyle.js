@@ -439,7 +439,6 @@ var discoveryScreenStyle = {
     backgroundColor: "rgba(0,0,0, 0.7)",
     left: 0,
     right: 0,
-    /* display: "flex", */
     flexDirection: "row",
     height: "255px"
   },
@@ -469,6 +468,7 @@ var discoveryScreenStyle = {
     position: "absolute",
     left: "25px",
     fontSize: "32",
+    fontWeight: "bold",
     color: "white",
     margin: "1%",
     display: "inline-block",
@@ -493,11 +493,6 @@ var discoveryScreenStyle = {
     left: 25,
     display: "flex",
     flexDirection: "row",
-    /* overflow: "hidden" */
-    /*
-    "overflow-x": "scroll",
-    "overflow-y": "hidden",
-    */
   },
 
   discoveryChevronLeftButtonContainer: {
@@ -535,7 +530,6 @@ var discoveryScreenStyle = {
     icon: "icon icon-right",
     style: {
       top: "50%",
-
       left: "50%",
       fontSize: "18",
       transform: "translate(-50%, -50%)",
@@ -550,9 +544,6 @@ var discoveryScreenStyle = {
     marginLeft: "30px",
     marginRight: "30px",
     marginTop: "35px",
-    /*
-    backgroundColor: "transparent",
-    overflow: "hidden", */
     height: "120px",
     width: "214px",
     "flex-shrink": 0
@@ -568,10 +559,6 @@ var discoveryScreenStyle = {
     position: "absolute",
     width: "100%",
     height: "100%"
-    /*
-    "background-size": "contain",
-    "background-repeat": "no-repeat",
-    opacity: 1 */
   },
 
   discoveryContentTitleStyle: {
