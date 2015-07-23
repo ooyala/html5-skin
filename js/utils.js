@@ -20,6 +20,29 @@ var Utils = {
     return truncatedText;
   },
 
+   calculateTextWidth: function(text, font) {
+    var canvas = this.canvas || (this.canvas = document.createElement("canvas"));
+    var context = canvas.getContext("2d");
+    context.font = font;
+    var textWidth = context.measureText(text);
+    return textWidth.width;
+  },
+
+  truncateTextToSpecifiedWidth: function(width, text, textFont) {
+    var actualWidth = width;
+    var textWidth = Utils.calculateTextWidth(text, textFont);
+    var truncatedText = "";
+    if (textWidth > (actualWidth * 1.5)){
+      var truncPercent = actualWidth / textWidth;
+      var newWidth = (Math.floor(truncPercent * text.length) * 1.5) - 3;
+      truncatedText = text.slice(0,newWidth) + "...";
+    }
+    else {
+      truncatedText = text;
+    }
+    return truncatedText;
+  },
+
   clone: function(object) {
     var clonedObj = {};
     for (var key in object) {

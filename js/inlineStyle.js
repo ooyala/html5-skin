@@ -565,7 +565,13 @@ var discoveryScreenStyle = {
   discoveryContentTitleStyle: {
     position: "relative",
     color: "white",
-    fontSize: "22"
+    fontSize: "22",
+    fontWeight: "regular",
+    textOverflow: "ellipsis",
+    width: "214px",
+    height: "31px",
+    overflow: "hidden",
+    whiteSpace: "nowrap"    
   },
 
   discoveryCountDownWrapperStyle: {

@@ -101,6 +101,16 @@ var DiscoveryPanel = React.createClass({
     }
   },
 
+  componentDidMount: function() {
+    //var contentBlocksNode = React.findDOMNode(this.refs.DiscoveryContentBlocks);
+    var contentBlockNodes = this.getDOMNode().getElementsByClassName("discoveryContentName");
+    for(var i = 0; i < contentBlockNodes.length; i++) {
+      var contentBlockNode = contentBlockNodes[i];
+      var shortDesc = Utils.truncateTextToWidth(contentBlockNode, contentBlockNode);
+      //contentBlockNode.
+    }
+  },
+
   handleDiscoveryContentClick: function(index) {
     var eventData = {
           "clickedVideo" : this.props.discoveryData.relatedVideos[index],
@@ -157,11 +167,16 @@ var DiscoveryPanel = React.createClass({
     if(!this.state.showDiscoveryCountDown) {
       discoveryCountDownWrapperStyle.display="none";
     }
-
+/*
+    if this.isMounted() {
+      calcuate the text
+    }
+*/
     // Build discovery content blocks
     if (discoveryData !== null)  {
         discoveryToasterStyle.width = 214 * discoveryData.relatedVideos.length + 60*(discoveryData.relatedVideos.length-1);
         for (var i = 0; i < this.props.discoveryData.relatedVideos.length; i++) {
+          var shortTitle = Utils.truncateTextToSpecifiedWidth(214, this.props.discoveryData.relatedVideos[i].name+"%%%%%%%5", contentTitleStyle.fontWeight+" "+contentTitleStyle.fontSize+"pt arial");
           if(this.shouldShowCountdownTimer() && i === 0) {
             discoveryContentBlocks.push(
             <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
@@ -173,7 +188,7 @@ var DiscoveryPanel = React.createClass({
                      </div>
                  </img>
               </div>
-                 <div className="discoveryContentName" style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
+                 <div className="discoveryContentName" style={contentTitleStyle}>{shortTitle}</div>
             </div> );
           }
           else {
@@ -182,7 +197,7 @@ var DiscoveryPanel = React.createClass({
                 <div style={discoveryScreenStyle.discoveryImageWrapperStyle}>
                   <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
                 </div>
-                   <div className="discoveryContentName" style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
+                   <div className="discoveryContentName" style={contentTitleStyle}>{shortTitle}</div>
               </div> );
           }
         }
