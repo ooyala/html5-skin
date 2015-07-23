@@ -17,79 +17,76 @@ var ClosedCaptionPanel = React.createClass({
     panelHeight -= 2*closedCaptionScreenStyles.innerPanelStyle.padding;
     panelHeight -= closedCaptionScreenStyles.switchStyle.height;
     panelHeight -= closedCaptionScreenStyles.switchStyle.marginTop;
-    panelHeight -= closedCaptionScreenStyles.itemStyle.marginTop + 2*closedCaptionScreenStyles.itemSelectedStyle.padding;
+    panelHeight -= 1*closedCaptionScreenStyles.itemStyle.marginTop + 2*closedCaptionScreenStyles.itemSelectedStyle.padding;
     panelHeight -= closedCaptionScreenStyles.CCPreviewPanelStyle.height;
 
     //number of table rows that can fit into the panel
-    var numRows = Math.floor(panelHeight/(4/3*closedCaptionScreenStyles.itemSelectedStyle.fontSize+closedCaptionScreenStyles.itemStyle.marginTop + 2*closedCaptionScreenStyles.itemSelectedStyle.padding));
+    var numRows = Math.floor(panelHeight/(4/3*closedCaptionScreenStyles.itemSelectedStyle.fontSize+1*closedCaptionScreenStyles.itemStyle.marginTop + 2*closedCaptionScreenStyles.itemSelectedStyle.padding));
     return numRows;
   },
 
-  setResponsiveStyle: function(clientWidth, controlBarHeight){
-    var scale = Math.min(1, Math.max(clientWidth/1280, 0.3));
-    var elementColor = this.props.ccOptions.enabled ? "white" : "grey";
+  //Responsive design code for later
 
-    closedCaptionScreenStyles.CCPreviewPanelStyle.bottom = controlBarHeight;
+  // setResponsiveStyle: function(clientWidth, controlBarHeight){
+  //   var scale = Math.min(1, Math.max(clientWidth/1280, 0.3));
 
-    closedCaptionScreenStyles.innerPanelStyle.padding = 35 * scale;
+  //   closedCaptionScreenStyles.CCPreviewPanelStyle.bottom = controlBarHeight;
 
-    closedCaptionScreenStyles.captionStyle.fontSize = 32 * scale;
+  //   closedCaptionScreenStyles.innerPanelStyle.padding = 35 * scale;
 
-    closedCaptionScreenStyles.switchStyle.marginTop = 35 * scale;
-    closedCaptionScreenStyles.switchStyle.height = 28 * scale;
-    closedCaptionScreenStyles.switchStyle.width = 140 * scale;
-    closedCaptionScreenStyles.switchStyle.fontSize = 20 * scale;
+  //   closedCaptionScreenStyles.captionStyle.fontSize = 32 * scale;
 
-    closedCaptionScreenStyles.CCPreviewPanelStyle.height = 70 * scale;
+  //   closedCaptionScreenStyles.switchStyle.marginTop = 35 * scale;
+  //   closedCaptionScreenStyles.switchStyle.height = 28 * scale;
+  //   closedCaptionScreenStyles.switchStyle.width = 140 * scale;
+  //   closedCaptionScreenStyles.switchStyle.fontSize = 20 * scale;
 
-    closedCaptionScreenStyles.CCPreviewTextStyle.fontSize = 24 * scale;
-    closedCaptionScreenStyles.CCPreviewTextStyle.marginLeft = closedCaptionScreenStyles.innerPanelStyle.padding;
-    closedCaptionScreenStyles.CCPreviewTextStyle.color = elementColor;
+  //   closedCaptionScreenStyles.CCPreviewPanelStyle.height = 70 * scale;
 
-    closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize = 12 * scale;
-    closedCaptionScreenStyles.CCPreviewCaptionStyle.marginLeft = closedCaptionScreenStyles.innerPanelStyle.padding;
-    closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop = 1/3*(closedCaptionScreenStyles.CCPreviewPanelStyle.height - 4/3*closedCaptionScreenStyles.CCPreviewTextStyle.fontSize-4/3*closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize);
-    closedCaptionScreenStyles.CCPreviewCaptionStyle.marginBottom = closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop;
-    closedCaptionScreenStyles.CCPreviewCaptionStyle.color = elementColor;
+  //   closedCaptionScreenStyles.CCPreviewTextStyle.fontSize = 24 * scale;
+  //   closedCaptionScreenStyles.CCPreviewTextStyle.marginLeft = closedCaptionScreenStyles.innerPanelStyle.padding;
 
-    closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.color = closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.color = elementColor;
+  //   closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize = 12 * scale;
+  //   closedCaptionScreenStyles.CCPreviewCaptionStyle.marginLeft = closedCaptionScreenStyles.innerPanelStyle.padding;
+  //   closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop = 1/3*(closedCaptionScreenStyles.CCPreviewPanelStyle.height - 4/3*closedCaptionScreenStyles.CCPreviewTextStyle.fontSize-4/3*closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize);
+  //   closedCaptionScreenStyles.CCPreviewCaptionStyle.marginBottom = closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop;
 
-    this.setResponsiveStyleCCLanguages(clientWidth);
-  },
+  //   this.setResponsiveStyleCCLanguages(clientWidth);
+  // },
 
-  setResponsiveStyleCCLanguages: function(clientWidth){
-    var scale = Math.max(clientWidth/1280, 0.3);
+  // setResponsiveStyleCCLanguages: function(clientWidth){
+  //   var scale = Math.max(clientWidth/1280, 0.3);
 
-    closedCaptionScreenStyles.itemStyle.fontSize = 22 * scale;
-    closedCaptionScreenStyles.itemStyle.padding = 3;
-    closedCaptionScreenStyles.itemStyle.marginRight = 140 * scale - 2*closedCaptionScreenStyles.itemStyle.padding;
-    closedCaptionScreenStyles.itemStyle.marginTop = 40 * scale - 2*closedCaptionScreenStyles.itemStyle.padding;
+  //   closedCaptionScreenStyles.itemStyle.fontSize = 22 * scale;
+  //   closedCaptionScreenStyles.itemStyle.padding = 3;
+  //   closedCaptionScreenStyles.itemStyle.marginRight = 140 * scale - 2*closedCaptionScreenStyles.itemStyle.padding;
+  //   closedCaptionScreenStyles.itemStyle.marginTop = 40 * scale - 2*closedCaptionScreenStyles.itemStyle.padding;
 
-    closedCaptionScreenStyles.lastColItemStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
-    closedCaptionScreenStyles.lastColItemStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
-    closedCaptionScreenStyles.lastColItemStyle.marginRight = 0;
-    closedCaptionScreenStyles.lastColItemStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
+  //   closedCaptionScreenStyles.lastColItemStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
+  //   closedCaptionScreenStyles.lastColItemStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
+  //   closedCaptionScreenStyles.lastColItemStyle.marginRight = 0;
+  //   closedCaptionScreenStyles.lastColItemStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
 
-    closedCaptionScreenStyles.itemSelectedStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
-    closedCaptionScreenStyles.itemSelectedStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
-    closedCaptionScreenStyles.itemSelectedStyle.marginRight = closedCaptionScreenStyles.itemStyle.marginRight;
-    closedCaptionScreenStyles.itemSelectedStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
+  //   closedCaptionScreenStyles.itemSelectedStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
+  //   closedCaptionScreenStyles.itemSelectedStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
+  //   closedCaptionScreenStyles.itemSelectedStyle.marginRight = closedCaptionScreenStyles.itemStyle.marginRight;
+  //   closedCaptionScreenStyles.itemSelectedStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
 
-    closedCaptionScreenStyles.lastColItemSelectedStyle.fontSize = closedCaptionScreenStyles.lastColItemStyle.fontSize;
-    closedCaptionScreenStyles.lastColItemSelectedStyle.padding = closedCaptionScreenStyles.lastColItemStyle.padding;
-    closedCaptionScreenStyles.lastColItemSelectedStyle.marginRight = closedCaptionScreenStyles.lastColItemStyle.marginRight;
-    closedCaptionScreenStyles.lastColItemSelectedStyle.marginTop = closedCaptionScreenStyles.lastColItemStyle.marginTop;
+  //   closedCaptionScreenStyles.lastColItemSelectedStyle.fontSize = closedCaptionScreenStyles.lastColItemStyle.fontSize;
+  //   closedCaptionScreenStyles.lastColItemSelectedStyle.padding = closedCaptionScreenStyles.lastColItemStyle.padding;
+  //   closedCaptionScreenStyles.lastColItemSelectedStyle.marginRight = closedCaptionScreenStyles.lastColItemStyle.marginRight;
+  //   closedCaptionScreenStyles.lastColItemSelectedStyle.marginTop = closedCaptionScreenStyles.lastColItemStyle.marginTop;
 
-    closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.width = 50 * scale;
-    closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.width = closedCaptionScreenStyles.tableLanguageStyle.marginLeft = closedCaptionScreenStyles.tableLanguageStyle.marginRight = closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.width;
-    closedCaptionScreenStyles.closedCaptionChevronLeftButton.style.fontSize = 32 * scale;
-    closedCaptionScreenStyles.closedCaptionChevronRightButton.style.fontSize = closedCaptionScreenStyles.closedCaptionChevronLeftButton.style.fontSize;
-   },
+  //   closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.width = 50 * scale;
+  //   closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.width = closedCaptionScreenStyles.tableLanguageStyle.marginLeft = closedCaptionScreenStyles.tableLanguageStyle.marginRight = closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.width;
+  //   closedCaptionScreenStyles.closedCaptionChevronLeftButton.style.fontSize = 32 * scale;
+  //   closedCaptionScreenStyles.closedCaptionChevronRightButton.style.fontSize = closedCaptionScreenStyles.closedCaptionChevronLeftButton.style.fontSize;
+  //  },
 
   render: function(){
     var controlBarHeight = 60;
 
-    this.setResponsiveStyle(this.props.clientWidth, controlBarHeight);
+    //this.setResponsiveStyle(this.props.clientWidth, controlBarHeight); //Leave this for later when we use the resizing
     var numRows = this.calculateNumberOfRows(this.props.clientWidth, this.props.clientHeight, controlBarHeight);
 
     return (
@@ -120,9 +117,15 @@ var OnOffSwitch = React.createClass({
     closedCaptionScreenStyles.switch.background = this.props.ccOptions.enabled ? closedCaptionScreenStyles.switch.onBackground : "grey";
     closedCaptionScreenStyles.switchThumb.left = this.props.ccOptions.enabled ? "" : "0";
     closedCaptionScreenStyles.switchThumb.right = this.props.ccOptions.enabled ? "0" : "";
-    closedCaptionScreenStyles.itemStyle.color = this.props.ccOptions.enabled ? "white" : "grey";
-    closedCaptionScreenStyles.lastColItemStyle.color = closedCaptionScreenStyles.itemStyle.color;
-    closedCaptionScreenStyles.onStyle.color = this.props.ccOptions.enabled ? "white" : "grey";
+
+    var elementColor = this.props.ccOptions.enabled ? "white" : "grey";
+    closedCaptionScreenStyles.itemStyle.color = elementColor;
+    closedCaptionScreenStyles.lastColItemStyle.color = elementColor;
+    closedCaptionScreenStyles.CCPreviewTextStyle.color = elementColor;
+    closedCaptionScreenStyles.CCPreviewCaptionStyle.color = elementColor;
+    closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.color = closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.color = elementColor;
+
+    closedCaptionScreenStyles.onStyle.color = elementColor;
     closedCaptionScreenStyles.offStyle.color = this.props.ccOptions.enabled ? "grey" : "white";
 
   },
@@ -228,7 +231,7 @@ var LanguageTabContent = React.createClass({
                       return (
                         <td key = {j} onClick = {this.props.ccOptions.enabled ? this.changeLanguage.bind(this, item) : null}>
                           <div style = {(this.props.ccOptions.language == item && this.props.ccOptions.enabled) ? ((j == colnum) ? closedCaptionScreenStyles.lastColItemSelectedStyle : closedCaptionScreenStyles.itemSelectedStyle) : ((j == colnum) ? closedCaptionScreenStyles.lastColItemStyle : closedCaptionScreenStyles.itemStyle)} 
-                          ><div style={(j == colnum) ? {marginRight: "0"} : null}>{availableLanguages.locale[item]}</div></div>
+                          ><div>{availableLanguages.locale[item]}</div></div>
                         </td>
                       );
                     },this)}

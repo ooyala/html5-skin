@@ -700,11 +700,11 @@ var closedCaptionScreenStyles ={
   },
 
   innerPanelStyle :{
-    padding: "35"
+    padding: "17.5"
   },
 
   captionStyle: {
-    fontSize: "32",
+    fontSize: "16",
     fontFamily: "Roboto Condensed",
     color: "#ffffff",
     fontWeight: "bold"
@@ -712,9 +712,10 @@ var closedCaptionScreenStyles ={
 
   switchStyle:{
     cursor: "pointer",
-    marginTop: "35",
-    height: "28",
-    width: "140",
+    marginTop: "17.5",
+    height: "14",
+    width: "70",
+    fontSize: "10",
     color: "#FFFFFF",
     position: "relative"
   },
@@ -767,9 +768,9 @@ var closedCaptionScreenStyles ={
   },
 
   itemStyle: {
-    fontSize: "22",
-    marginRight: "140",
-    marginTop: "40",
+    fontSize: "11",
+    marginRight: "64",
+    marginTop: "14",
     textAlign: "center",
     padding: "3",
     color: "white",
@@ -777,9 +778,9 @@ var closedCaptionScreenStyles ={
   },
 
   lastColItemStyle: {
-    fontSize: "22",
+    fontSize: "11",
     marginRight: "0",
-    marginTop: "40",
+    marginTop: "14",
     textAlign: "center",
     padding: "3",
     color: "white",
@@ -787,9 +788,9 @@ var closedCaptionScreenStyles ={
   },
 
   itemSelectedStyle: {
-    fontSize: "22",
-    marginRight: "140",
-    marginTop: "40",
+    fontSize: "11",
+    marginRight: "64",
+    marginTop: "14",
     textAlign: "center",
     padding: "3",
     color: "white",
@@ -799,9 +800,9 @@ var closedCaptionScreenStyles ={
   },
 
   lastColItemSelectedStyle:{
-    fontSize: "22",
+    fontSize: "11",
     marginRight: "0",
-    marginTop: "40",
+    marginTop: "14",
     textAlign: "center",
     padding: "3",
     color: "white",
@@ -833,7 +834,7 @@ var closedCaptionScreenStyles ={
     style: {
       top: "50%",
       left: "50%",
-      fontSize: "18",
+      fontSize: "16",
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
@@ -846,7 +847,7 @@ var closedCaptionScreenStyles ={
     style: {
       top: "50%",
       left: "50%",
-      fontSize: "18",
+      fontSize: "16",
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
@@ -866,26 +867,27 @@ var closedCaptionScreenStyles ={
     position: "absolute",
     bottom: "60",
     left: "0",
-    height: "70",
+    height: "35",
     borderTop: "1px solid grey",
     visibility: "visible"
   },
 
   CCPreviewCaptionStyle: {
-    marginTop: "0",
     color: "white",
-    fontSize: "12",
+    fontSize: "6",
     fontFamily: "Roboto",
-    marginLeft: "35"
+    marginLeft: "17.5",
+    marginBottom: "3.66",
+    marginTop: "3.66",
   },
 
   CCPreviewTextStyle: {
     marginTop: "0",
     color: "white",
-    fontSize: "24",
+    fontSize: "12",
     fontWeight: "bold",
     fontFamily: "Verdana",
-    marginLeft: "35"
+    marginLeft: "17.5"
   },
 };
 
