@@ -466,7 +466,7 @@ var discoveryScreenStyle = {
 
   panelTitleTextStyle: {
     position: "absolute",
-    left: "25px",
+    left: "40px",
     fontSize: "32",
     fontWeight: "bold",
     color: "white",
