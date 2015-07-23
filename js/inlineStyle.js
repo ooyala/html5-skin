@@ -772,7 +772,17 @@ var closedCaptionScreenStyles ={
     marginTop: "40",
     textAlign: "center",
     padding: "3",
-    color: "#DDDDDD",
+    color: "white",
+    transition: "all 0.0s ease"
+  },
+
+  lastColItemStyle: {
+    fontSize: "22",
+    marginRight: "0",
+    marginTop: "40",
+    textAlign: "center",
+    padding: "3",
+    color: "white",
     transition: "all 0.0s ease"
   },
 
@@ -786,6 +796,68 @@ var closedCaptionScreenStyles ={
     //properties different from itemStyle
     backgroundColor: "#4389ff",
     borderRadius: "4"
+  },
+
+  lastColItemSelectedStyle:{
+    fontSize: "22",
+    marginRight: "0",
+    marginTop: "40",
+    textAlign: "center",
+    padding: "3",
+    color: "white",
+    //properties different from itemStyle
+    backgroundColor: "#4389ff",
+    borderRadius: "4"
+  },
+
+  closedCaptionChevronLeftButtonContainer: {
+    position: "absolute",
+    backgroundColor: "transparent",
+    height: "100%",
+    width: "25px",
+    color:"white",
+    left: "0"
+  },
+
+  closedCaptionChevronRightButtonContainer: {
+    position: "absolute",
+    backgroundColor: "transparent",
+    height: "100%",
+    width: "25px",
+    color:"white",
+    right: "0"
+  },
+
+  closedCaptionChevronLeftButton: {
+    icon: "icon icon-left",
+    style: {
+      top: "50%",
+      left: "50%",
+      fontSize: "18",
+      transform: "translate(-50%, -50%)",
+      position: "absolute",
+      opacity: 1,
+      transition: "opacity .25s ease-in-out"
+    }
+  },
+
+  closedCaptionChevronRightButton: {
+    icon: "icon icon-right",
+    style: {
+      top: "50%",
+      left: "50%",
+      fontSize: "18",
+      transform: "translate(-50%, -50%)",
+      position: "absolute",
+      opacity: 1,
+      transition: "opacity .25s ease-in-out"
+    }
+  },
+
+  tableLanguageStyle: {
+    overflowX:"scroll",
+    marginLeft: "25",
+    marginRight: "25"
   },
 
   CCPreviewPanelStyle:{
