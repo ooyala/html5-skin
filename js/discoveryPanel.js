@@ -10,7 +10,8 @@ var DiscoveryPanel = React.createClass({
   getInitialState: function() { 
     return {
       discoveryToasterLeftOffset: 25,
-      showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen
+      showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen,
+      testFlag: true
     };
   },
 
@@ -51,6 +52,53 @@ var DiscoveryPanel = React.createClass({
     }
 
     this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
+  },
+
+  shouldShowLeftButton: function(newstate) {
+    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+    // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
+    var newDiscoveryToasterLeftOffset = newstate.discoveryToasterLeftOffset;//this.state.discoveryToasterLeftOffset;
+
+    if(toasterContainerWidth <= toasterWidth || newDiscoveryToasterLeftOffset < 0) {
+      if(newDiscoveryToasterLeftOffset !== 25) {
+        return true;
+      }
+    }
+    return false;
+  },
+
+  shouldShowRightButton: function(newstate) {
+    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+    // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
+    var newDiscoveryToasterLeftOffset = newstate.discoveryToasterLeftOffset;//this.state.discoveryToasterLeftOffset;
+    // rightOffset = right border of discovery toaster container - right border of discovery toaster
+    var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
+    if(toasterContainerWidth <= toasterWidth || rightOffset <= 25) {
+      rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
+      if(rightOffset !== 25) {
+        return true;          
+      }
+    }
+    return false;
+  },
+  
+  componentWillUpdate: function(propsParam, newstate){
+    var chevronLeftButtonStyle = discoveryScreenStyle.discoveryChevronLeftButton.style;
+    var chevronRightButtonStyle = discoveryScreenStyle.discoveryChevronRightButton.style;
+    if(this.shouldShowLeftButton(newstate)) {
+      chevronLeftButtonStyle.visibility = "visible";
+    }
+    else {
+      chevronLeftButtonStyle.visibility = "hidden";
+    }
+    if(this.shouldShowRightButton(newstate)) {
+      chevronRightButtonStyle.visibility = "visible";
+    }
+    else {
+      chevronRightButtonStyle.visibility = "hidden";
+    }
   },
 
   handleDiscoveryContentClick: function(index) {
@@ -154,11 +202,11 @@ var DiscoveryPanel = React.createClass({
           </div>
 
           <div style={chevronLeftButtonContainer}>
-            <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} aria-hidden="true" onClick={this.handleLeftButtonClick}></span>
+            <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} ref="ChevronLeftButton" aria-hidden="true" onClick={this.handleLeftButtonClick}></span>
           </div>
 
           <div style={chevronRightButtonContainer}>
-            <span className={chevronRightButtonClass} style={chevronRightButtonStyle} aria-hidden="true" onClick={this.handleRightButtonClick}></span>
+            <span className={chevronRightButtonClass} style={chevronRightButtonStyle} ref="ChevronRightButton" aria-hidden="true" onClick={this.handleRightButtonClick}></span>
           </div>
         </div>
         <div onClick={this.closeDiscoveryPanel} style={discoveryScreenStyle.closeButton} className="icon icon-close"></div>
