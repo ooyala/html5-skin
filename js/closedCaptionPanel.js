@@ -170,7 +170,7 @@ var LanguageTabContent = React.createClass({
     this.refs.tableLanguageContainer.getDOMNode().scrollLeft = this.state.scrollLeftDistance;
 
     if (oldChevronRightVisibility != closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.visibility || oldChevronLeftVisibility != closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.visibility){
-      this.setState();//to update the screen if chevron buttons changed visibility
+      this.forceUpdate();//to update the screen if chevron buttons changed visibility
     }
   },
 
