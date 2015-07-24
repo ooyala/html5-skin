@@ -154,8 +154,9 @@ var ControlBar = React.createClass({
     //Fill in all the dynamic style values we need
     var controlBarHeight = this.props.controlBarHeight;
     controlBarStyle.controlBarSetting.height = controlBarHeight;
-    controlBarStyle.controlBarSetting.transform = "translate(0,-" +
-      (this.props.controlBarVisible ? controlBarStyle.controlBarSetting.height : 0) + "px)";
+    controlBarStyle.controlBarSetting.bottom = (this.props.controlBarVisible ?
+      0 : -1*this.props.controlBarHeight);
+
     controlBarStyle.durationIndicatorSetting.lineHeight = controlBarHeight + "px";
     controlBarStyle.iconSetting.lineHeight = controlBarHeight + "px";
 

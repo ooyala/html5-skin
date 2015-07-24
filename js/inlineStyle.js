@@ -49,6 +49,7 @@ var startScreenStyle = {
     icon: "icon icon-play",
     style: {
       fontSize: "72",
+      WebkitTransform: "translate(-50%, -50%)",
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
@@ -93,10 +94,11 @@ var pauseScreenStyle = {
     icon: "icon icon-pause",
     style: {
       fontSize: "24",
-      transform: "translate(-50%, -50%)",
       position: "absolute",
+      WebkitTransform: "translate(-50%, -50%)",
+      transform: "translate(-50%, -50%)",
       opacity: 1,
-      transition: "font 1s, opacity 1s"
+      transition: "all 1s"
     }
   },
   fading: {
@@ -158,6 +160,7 @@ var endScreenStyle = {
       top: "50%",
       left: "50%",
       fontSize: "18",
+      WebkitTransform: "translate(-50%, -50%)",
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
@@ -170,19 +173,19 @@ var controlBarStyle = {
   controlBarSetting: {
     "background": "rgba(48, 48, 48, 0.8)",
     "width": "100%",
-    "top": "100%",
+    "bottom": "0%",
     "position": "absolute",
     "padding": 0,
     "margin": 0,
     "listStyle": "none",
-    "display": "flex",
+    "display": "-webkit-flex",
     "flexFlow": "row nowrap",
-    "justifyContent": "flex-start",
-    "-webkit-user-select": "none",
+    "justifyContent": "flex-end",
+    "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
-    "user-select": "none",
-    "transition": "transform 0.5s"
+    "userSelect": "none",
+    "transition": "bottom 0.5s, height 0.25s"
   },
 
   controlBarItemSetting: {
@@ -201,7 +204,8 @@ var controlBarStyle = {
     "opacity": 1,
     "fontSize": 14,
     "textAlign": "left",
-    "flex": 1
+    "flex": 1,
+    "WebkitFlex": 1
   },
 
   iconSetting: {
@@ -291,6 +295,7 @@ var scrubberBarStyle = {
     "position": "absolute",
     "zIndex": 1,
     "top": "50%",
+    "WebkitTransform": "translateY(-50%)",
     "transform": "translateY(-50%)",
     "transition": "opacity 0.25s"
   }
@@ -319,6 +324,7 @@ var shareScreenStyle = {
     fontWeight: "bold",
     borderRight: "0px none",
     flex: 1,
+    WebkitFlex: 1,
     textAlign: "left",
     paddingLeft: "25px"
   },
@@ -346,6 +352,7 @@ var shareScreenStyle = {
     backgroundColor: "#3a3a3a",
     bottom: 0,
     flex: 1,
+    WebkitFlex: 1,
     color: "white",
     padding: "20px"
   },
@@ -357,14 +364,16 @@ var shareScreenStyle = {
     backgroundColor: "#444444",
     left: 0,
     right: 0,
-    display: "flex",
-    flexDirection: "column"
+    display: "-webkit-flex",
+    flexDirection: "column",
+    WebkitFlexDirection: "column"
   },
 
   tabRowStyle: {
     borderBottom: "1px solid #afafaf",
-    display: "flex",
-    flexDirection: "row"
+    display: "-webkit-flex",
+    flexDirection: "row",
+    WebkitFlexDirection: "row"
   },
 
   titleStyle: {
@@ -447,7 +456,7 @@ var discoveryScreenStyle = {
     backgroundColor: "#444444",
     left: 0,
     right: 0,
-    display: "flex",
+    display: "-webkit-flex",
     flexDirection: "row"
   },
 
@@ -497,7 +506,7 @@ var discoveryScreenStyle = {
     width: "2000px",
     right: 0,
     left: 25,
-    display: "flex",
+    display: "-webkit-flex",
     flexDirection: "row",
     transition: "0.5s"
   },
@@ -526,6 +535,7 @@ var discoveryScreenStyle = {
       top: "50%",
       left: "50%",
       fontSize: "18",
+      WebkitTransform: "translate(-50%, -50%)",
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
@@ -539,6 +549,7 @@ var discoveryScreenStyle = {
       top: "50%",
       left: "50%",
       fontSize: "18",
+      WebkitTransform: "translate(-50%, -50%)",
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
@@ -571,6 +582,7 @@ var discoveryScreenStyle = {
     position: "absolute",
     top: "37.5%",
     left: "50%",
+    WebkitTransform: "translate(-50%, -37.5%)",
     transform: "translate(-50%, -37.5%)"
   },
 
@@ -583,6 +595,7 @@ var discoveryScreenStyle = {
     position: "absolute",
     top: "37.5%",
     left: "50%",
+    WebkitTransform: "translate(-50%, -37.5%)",
     transform: "translate(-50%, -37.5%)",
     "line-height":"32px",
     "z-index":10005,
@@ -618,7 +631,7 @@ var adScreenStyle = {
     height: "10%",
     width: "100%",
     backgroundColor:"rgba(0, 0, 0, 0.5)",
-    display: "flex",
+    display: "-webkit-flex",
     flexDirection: "row"
   },
 
@@ -629,7 +642,7 @@ var adScreenStyle = {
     width: "100%",
     fontSize: "10",
     color: "white",
-    "-webkit-transform": "translateY(-50%)",
+    "WebkitTransform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
     "white-space": "pre"
@@ -658,7 +671,7 @@ var adScreenStyle = {
     "-moz-user-select": "none",
     "-ms-user-select": "none",
     "user-select": "none",
-    "-webkit-transform": "translateY(-50%)",
+    "WebkitTransform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
   },
@@ -685,7 +698,7 @@ var adScreenStyle = {
     "-moz-user-select": "none",
     "-ms-user-select": "none",
     "user-select": "none",
-    "-webkit-transform": "translateY(-50%)",
+    "WebkitTransform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
   }
@@ -865,6 +878,7 @@ var upNextPanelStyle = {
       top: "50%",
       left: "50%",
       fontSize: "25",
+      WebkitTransform: "translate(-50%, -50%)",
       transform: "translate(-50%, -50%)",
       opacity: 1,
       color: "white",
@@ -928,7 +942,7 @@ var upNextPanelStyle = {
     "cursor": "pointer",
 
     "text-align": "center",
-    "-webkit-transform": "translateY(-50%)",
+    "WebkitTransform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
   },
