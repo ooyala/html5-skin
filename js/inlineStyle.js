@@ -838,7 +838,7 @@ var upNextPanelStyle = {
     height: "80px",
     right: "0",
     bottom: "32px",
-    backgroundColor: "black",
+    backgroundColor: "rgba(22, 22, 22, 0.9)",
     "transition": "bottom 0.5s"
   },
 
