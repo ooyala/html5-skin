@@ -835,7 +835,7 @@ var upNextPanelStyle = {
   panelStyle: {
     position: "absolute",
     width: "100%",
-    height: "25%",
+    height: "80px",
     right: "0",
     bottom: "32px",
     backgroundColor: "black",
@@ -846,7 +846,7 @@ var upNextPanelStyle = {
     position: "absolute",
     top: "0",
     left: "0",
-    width: "20%",
+    width: "140px",
     height: "100%"
   },
 
@@ -864,7 +864,7 @@ var upNextPanelStyle = {
       position: "absolute",
       top: "50%",
       left: "50%",
-      fontSize: "25",
+      fontSize: "23",
       transform: "translate(-50%, -50%)",
       opacity: 1,
       color: "white",
