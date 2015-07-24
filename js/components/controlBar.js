@@ -80,8 +80,6 @@ var ControlBar = React.createClass({
     }
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.url;
     var watermarkImageStyle = controlBarStyle.watermarkImageStyle;
-    // 16 is 50% of control bar height right now. Will be fetched from config file later
-    watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * 16;
 
     // TODO: Update when implementing localization
     var liveText = "LIVE";
@@ -91,76 +89,130 @@ var ControlBar = React.createClass({
         onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <span className={playClass} style={controlBarStyle.iconSetting}></span>
       </div>,
+
       "live": <div className="live" style={controlBarStyle.liveItemStyle}>
         <div style={controlBarStyle.liveCircleStyle}></div>
         <div style={controlBarStyle.liveTextStyle}>{liveText}</div>
       </div>,
+      
       "volume": <div className="volume" style={controlBarStyle.controlBarItemSetting}>
         <span className={muteClass} style={controlBarStyle.iconSetting} onClick={this.handleMuteClick}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
         {volumeBars}
-        </div>,
+      </div>,
+      
       "timeDuration": <div className="timeDuration" style={controlBarStyle.durationIndicatorSetting}>
         {Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}</div>,
+
+      "flexibleSpace": <div className="flexibleSpace" style={controlBarStyle.flexibleSpace}></div>,
+
       "moreOptions": <div className="moreOptions" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}>
         <span className="icon icon-menu" style={controlBarStyle.iconSetting}></span></div>,
+
+      "quality": <div className="quality" style={controlBarStyle.controlBarItemSetting}
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        <span className="icon icon-topmenu-quality" style={controlBarStyle.iconSetting}></span></div>,
+
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
         <span className="icon icon-topmenu-discovery" style={controlBarStyle.iconSetting}></span></div>,
-      "bitrateSelector": <div className="bitrateSelector" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-quality"
-        style={controlBarStyle.iconSetting}></span></div>,
+    
       "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-cc"
         onClick={this.handleClosedCaptionClick} style={controlBarStyle.iconSetting}></span></div>,
+      
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-share"
         onClick={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
+
       "fullscreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
         <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>,
+      
       "watermark": <div className="watermark" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <img src={watermarkUrl} style={controlBarStyle.watermarkImageStyle}></img></div>
     };
 
     var controlBarItems = [];
-    var controlBarSetting = this.props.skinConfig.controlBar;
-    for (i=0; i < controlBarSetting.items.length; i++) {
+    var collapsedItems = (CollapsingBarUtils.collapse(this.props.controlBarWidth, Array.prototype.slice.call(this.props.skinConfig.controlBar.items), "webMinWidth")).fit; 
+    for (i = 0; i < collapsedItems.length; i++) {
+
       // filter out unrecognized button names
-      if (typeof controlItemTemplates[controlBarSetting.items[i].name] === "undefined") {
+      if (typeof controlItemTemplates[collapsedItems[i].name] === "undefined") {
         continue;
       }
 
       //do not show CC button if no CC available
-      if (!this.props.controller.state.ccOptions.availableLanguages && (controlBarSetting.items[i].name === "closedCaption")){
+      if (!this.props.controller.state.ccOptions.availableLanguages && (collapsedItems[i].name === "closedCaption")){
         continue;
       }
 
       // Not sure what to do when there are multi streams
-      if (controlBarSetting.items[i].name === "live" &&
+      if (collapsedItems[i].name === "live" &&
           (typeof this.props.authorization === 'undefined' ||
           !(this.props.authorization.streams[0].is_live_stream))) {
         continue;
       }
-
-      controlBarItems.push(controlItemTemplates[controlBarSetting.items[i].name]);
+      controlBarItems.push(controlItemTemplates[collapsedItems[i].name]);
     }
     return controlBarItems;
   },
 
-  render: function() {
-    //Fill in all the dynamic style values we need
-    var controlBarHeight = this.props.controlBarHeight;
+
+  // Saved for responsive control bar
+  scaleControlBarItemsBasedOnControlBarSize: function(controlBarHeight) {
+    var controlBarWidth = this.props.controlBarWidth;
+    var controlBarWidthBase = 0;
+    if (controlBarWidth >= 1280) {
+      controlBarWidthBase = 1280;
+    } else if (controlBarWidth <= 560) {
+      controlBarWidthBase = 560;
+    } else {
+      controlBarWidthBase = controlBarWidth;
+    }
+    controlBarStyle.controlBarItemSetting.fontSize = 18 * controlBarWidth / controlBarWidthBase + "px";
+    controlBarStyle.volumeBarStyle.height = 18 * controlBarWidth / controlBarWidthBase + "px";
+    
+    // watermark
+    var watermarkHeight = 18 * controlBarWidth / controlBarWidthBase;
+    controlBarStyle.watermarkImageStyle.top = (controlBarHeight - watermarkHeight) / 2 + "px";
+    controlBarStyle.watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * watermarkHeight + "px";
+    controlBarStyle.watermarkImageStyle.height = watermarkHeight + "px";
+  },
+
+  // Saved for responsive control bar
+  scaleControlBarItemsBasedOnHeight: function(controlBarHeight) {
     controlBarStyle.controlBarSetting.height = controlBarHeight;
     controlBarStyle.controlBarSetting.transform = "translate(0,-" +
       (this.props.controlBarVisible ? controlBarStyle.controlBarSetting.height : 0) + "px)";
     controlBarStyle.durationIndicatorSetting.lineHeight = controlBarHeight + "px";
-    controlBarStyle.iconSetting.lineHeight = controlBarHeight + "px";
+    controlBarStyle.iconSetting.lineHeight = controlBarHeight + "px"; 
+    controlBarStyle.volumeBarStyle.lineHeight = controlBarHeight + "px";
+  },
 
+
+  setupControlBarItemForConstantHeight: function(constantControlBarHeight) {
+    controlBarStyle.watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * 18 + "px";
+
+    controlBarStyle.controlBarSetting.height = constantControlBarHeight;
+    controlBarStyle.controlBarSetting.transform = "translate(0,-" +
+      (this.props.controlBarVisible ? controlBarStyle.controlBarSetting.height : 0) + "px)";
+    controlBarStyle.durationIndicatorSetting.lineHeight = constantControlBarHeight + "px";
+    controlBarStyle.iconSetting.lineHeight = constantControlBarHeight + "px"; 
+    controlBarStyle.volumeBarStyle.lineHeight = constantControlBarHeight + "px";
+  },
+
+
+  render: function() {
+    // Liusha: Uncomment the following code to support "threshold scaling control bar implementation"
+    // var controlBarHeight = Utils.getScaledControlBarHeight(this.props.controlBarWidth);
+    // this.scaleControlBarItemsBasedOnControlBarSize(controlBarHeight);
+    // this.scaleControlBarItemsBasedOnHeight(controlBarHeight);
+
+    this.setupControlBarItemForConstantHeight(60);
     var controlBarItems = this.populateControlBar();
-
     return (
       <div className="controlBar" onMouseUp={this.handleControlBarMouseUp}
         style={controlBarStyle.controlBarSetting}>

@@ -61,7 +61,6 @@ var EndScreen = React.createClass({
 
     // Default configuration
     posterStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
-    var controlBarHeight = 32;
     return (
       <div onMouseOver={this.showControlBar}
              onMouseUp={this.handlePlayerMouseUp}
@@ -73,9 +72,9 @@ var EndScreen = React.createClass({
         {descriptionMetadata}
       </div>
       <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-        controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
+        controlBarWidth={this.state.controlBarWidth} />
       <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-        controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
+        controlBarWidth={this.state.controlBarWidth}
         playerState={this.props.playerState} />
     </div>
     );

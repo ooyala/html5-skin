@@ -104,9 +104,7 @@ var PauseScreen = React.createClass({
         infoStyle.description.style.float = "right";
       }
     }
-
-    //Fill in all the dynamic style values we need
-    var controlBarHeight = 32;
+    
     return (
       <div onMouseUp={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>
@@ -116,9 +114,9 @@ var PauseScreen = React.createClass({
           {descriptionMetadata}
         </div>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
+          controlBarWidth={this.state.controlBarWidth}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
+          controlBarWidth={this.state.controlBarWidth}
           playerState={this.state.playerState} />
       </div>
     );

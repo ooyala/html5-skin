@@ -65,10 +65,19 @@ var ScrubberBar = React.createClass({
   },
 
   render: function() {
+    var controlBarHeight = 60;
+
+    // Liusha: Uncomment the following code when we need to support resizing control bar with threshold and scaling.
+    // if (this.props.controlBarWidth > 1280) {
+    //   controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280;
+    // } else if (this.props.controlBarWidth < 560) {
+    //   controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 560;
+    // } else {
+    //   controlBarHeight = this.props.skinConfig.controlBar.height;
+    // }
+
     scrubberBarStyle.scrubberBarSetting.bottom = (this.props.controlBarVisible ?
-      this.props.controlBarHeight : 0);
-    scrubberBarStyle.scrubberBarSetting.height = (this.props.controlBarVisible ?
-      "6px" : "4px");
+      controlBarHeight : 0);
     scrubberBarStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
       parseFloat(this.props.duration)) * 100 + "%";
     scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /

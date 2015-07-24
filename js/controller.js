@@ -443,6 +443,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     closeMoreOptionsScreen: function() {
+      this.state.pauseAnimationDisabled = true;
       this.state.screenToShow = SCREEN.PAUSE_SCREEN;
       this.state.playerState = STATE.PAUSE;
       this.renderSkin();

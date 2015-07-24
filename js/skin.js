@@ -79,9 +79,9 @@ var Skin = React.createClass({
           <PauseScreen {...this.props}
             contentTree={this.state.contentTree}
             currentPlayhead={this.state.currentPlayhead}
+            playerState={this.state.playerState}
             duration={this.state.duration}
             buffered={this.state.buffered}
-            playerState={this.state.playerState}
             pauseAnimationDisabled = {this.state.pauseAnimationDisabled}
             fullscreen={this.state.fullscreen}
             ref="pauseScreen" />
@@ -92,11 +92,11 @@ var Skin = React.createClass({
             contentTree={this.state.contentTree}
             discoveryData={this.state.discoveryData}
             currentPlayhead={this.state.currentPlayhead}
+            playerState={this.state.playerState}
             duration={this.state.duration}
             buffered={this.state.buffered}
             style={endScreenStyle}
             fullscreen={this.state.fullscreen}
-            playerState={this.state.playerState}
             ref="endScreen" />
         );
       case SCREEN.AD_SCREEN:
