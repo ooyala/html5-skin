@@ -9,10 +9,6 @@
 */
 
 var AdPanel = React.createClass({
-  getInitialState: function() {
-    return {
-    };
-  },
 
   handleLearnMoreButtonClick: function() {
     var clickThroughUrl = this.props.currentAdsInfo.currentAdItem.clickUrl;

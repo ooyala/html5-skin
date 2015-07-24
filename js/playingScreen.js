@@ -12,6 +12,15 @@ var PlayingScreen = React.createClass({
 
   componentDidMount: function () {
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+
+    // Make sure component resize correctly after switch to fullscreen/inline screen
+    window.addEventListener('resize', this.handleResize);
+  },
+
+  handleResize: function(e) {
+    if (this.isMounted()) {
+      this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+    }
   },
 
   handlePlayerMouseUp: function() {

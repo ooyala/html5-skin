@@ -19,6 +19,14 @@ var EndScreen = React.createClass({
       var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
       this.setState({description: shortDesc});
     }
+    // Make sure component resize correctly after switch to fullscreen/inline screen
+    window.addEventListener('resize', this.handleResize);
+  },  
+
+  handleResize: function(e) {
+    if (this.isMounted()) {
+      this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+    }
   },
 
   handlePlayerMouseUp: function() {
