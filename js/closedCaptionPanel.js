@@ -171,7 +171,9 @@ var LanguageTabContent = React.createClass({
     var oldChevronRightVisibility = closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.visibility;
     var oldChevronLeftVisibility = closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.visibility;
 
+    //right chevron button is visible if (scrollLeftDistance + table container) are less than table width
     closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.visibility = (Math.ceil(this.refs.tableLanguageContainer.getDOMNode().clientWidth + this.state.scrollLeftDistance) < this.refs.tableLanguage.getDOMNode().clientWidth) ? "visible" : "hidden";
+    //left chevron button is visible if scrollLeftDistance is > 0 and table does not fit into the container
     closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.visibility = (this.state.scrollLeftDistance > 0 && this.refs.tableLanguageContainer.getDOMNode().clientWidth < this.refs.tableLanguage.getDOMNode().clientWidth) ? "visible" : "hidden";
     this.refs.tableLanguageContainer.getDOMNode().scrollLeft = this.state.scrollLeftDistance;
 
