@@ -264,7 +264,7 @@ var LanguageTabContent = React.createClass({
                     {row.map(function(item, j){
                       return (
                         <td key = {j} onClick = {this.props.ccOptions.enabled ? this.changeLanguage.bind(this, item) : null} style = {closedCaptionScreenStyles.tdLanguageStyle}>
-                          <div style = {this.setStyle(item, j, colnum)}><div>{availableLanguages.locale[item]}</div></div>
+                          <div style = {this.setStyle(item, j, colnum)}>{availableLanguages.locale[item]}</div>
                         </td>
                       );
                     },this)}

@@ -770,6 +770,9 @@ var closedCaptionScreenStyles ={
   itemStyle: {
     fontSize: "11",
     width: "70",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
     marginRight: "64",
     marginTop: "14",
     textAlign: "center",
@@ -781,6 +784,9 @@ var closedCaptionScreenStyles ={
   lastColItemStyle: {
     fontSize: "11",
     width: "70",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
     marginRight: "0",
     marginTop: "14",
     textAlign: "center",
@@ -792,6 +798,9 @@ var closedCaptionScreenStyles ={
   itemSelectedStyle: {
     fontSize: "11",
     width: "70",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
     marginRight: "64",
     marginTop: "14",
     textAlign: "center",
@@ -805,6 +814,9 @@ var closedCaptionScreenStyles ={
   lastColItemSelectedStyle:{
     fontSize: "11",
     width: "70",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
     marginRight: "0",
     marginTop: "14",
     textAlign: "center",
