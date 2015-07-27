@@ -32,10 +32,16 @@ var CountDownClock = React.createClass({
       this.countDownStyle = discoveryScreenStyle.discoveryCountDownStyle;
       tmpFraction = 2 / this.props.timeToShow;
       tmpRemainSeconds = this.props.timeToShow;
-    } 
+    }
+    var tmpClockRadius = 16;
+    var tmpClockContainerWidth = 38;
+    if(this.countDownStyle) {
+      tmpClockRadius = parseInt(this.countDownStyle.width, 10)/2;
+      tmpClockContainerWidth = parseInt(this.countDownStyle.width, 10);
+    }
     return {
-      clockRadius: 16,
-      clockContainerWidth: 38,
+      clockRadius: tmpClockRadius,
+      clockContainerWidth: tmpClockContainerWidth,
       counterInterval: 0.05,
       fraction: tmpFraction, // fraction = 2 / (skinConfig.upNextScreen.timeToShow) so "fraction * pi" is how much we want to fill the circle for each second
       remainSeconds: tmpRemainSeconds,
@@ -72,7 +78,7 @@ var CountDownClock = React.createClass({
     this.context = this.canvas.getContext("2d");
     this.context.textAlign = 'center';
     this.context.textBaseline = 'middle';
-    this.context.font = "bold 12px Arial";
+    this.context.font = "regular 12px Arial";
   },
 
   drawBackground: function() {
@@ -157,8 +163,8 @@ var CountDownClock = React.createClass({
   render: function() {
       return React.createElement("canvas", {
         "className": "alice-countdown-clock",
-        height: "38px",
-        width: "38px",
+        height: this.state.clockContainerWidth,
+        width: this.state.clockContainerWidth,
         style: this.countDownStyle,
         onClick: this.handleClick
     });

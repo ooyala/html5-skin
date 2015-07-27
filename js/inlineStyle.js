@@ -875,7 +875,7 @@ var upNextPanelStyle = {
   contentMetadataContainer: {
     position: "absolute",
     top: "0",
-    left: "20%",
+    left: "140px",
     width: "78%",
     height: "100%",
   },
@@ -883,10 +883,10 @@ var upNextPanelStyle = {
   upNextTitle: {
     position: "absolute",
     top: "5",
-    left: "10",
+    left: "15px",
     width: "100%",
-    height: "40%",
-    color: "white"
+    height: "27px",
+    color: "#FFFFFF"
   },
 
   upNextTitleText: {
@@ -894,7 +894,11 @@ var upNextPanelStyle = {
     left:40,
     right: 0,
     height: "100%",
-    fontSize: 20,
+    fontSize: 18,
+    fontWeight: "bold",
+    display: "flex",
+    "align-items": "center",
+    whiteSpace: "pre-wrap"
   },
 
   contentDescription: {
@@ -934,8 +938,8 @@ var upNextPanelStyle = {
   },
 
   upNextCountDownStyle: {
-    height: "38px",
-    width: "38px"
+    height: "27px",
+    width: "27px"
   }
 };
 
