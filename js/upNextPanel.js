@@ -35,24 +35,24 @@ var UpNextPanel = React.createClass({
     var panelStyle = upNextPanelStyle.panelStyle;
     panelStyle.bottom = bottom = (this.props.controlBarVisible ? this.props.controlBarHeight : 0);
 
-    var contentImageContainerStyle = upNextPanelStyle.contentImageContainer;
-    var contentImageStyle = upNextPanelStyle.contentImage;
+    var contentImageContainerStyle = upNextPanelStyle.contentImageContainerStyle;
+    var contentImageStyle = upNextPanelStyle.contentImageStyle;
 
     var playButtonClass = upNextPanelStyle.playButton.icon;
     var playButtonStyle = upNextPanelStyle.playButton.style;
 
-    var contentMetadataContainerStyle = upNextPanelStyle.contentMetadataContainer;
+    var contentMetadataContainerStyle = upNextPanelStyle.contentMetadataContainerStyle;
     
-    var upNextTitleStyle = upNextPanelStyle.upNextTitle;
+    var upNextTitleStyle = upNextPanelStyle.upNextTitleStyle;
 
-    var upNextTitleTextStyle = upNextPanelStyle.upNextTitleText;
+    var upNextTitleTextStyle = upNextPanelStyle.upNextTitleTextStyle;
     var contentTile = this.props.upNextInfo.upNextData.name;
 
-    var contentDescriptionStyle = upNextPanelStyle.contentDescription;
+    var contentDescriptionStyle = upNextPanelStyle.contentDescriptionStyle;
     var contentDescription = this.props.upNextInfo.upNextData.description;
     
-    var dismissButtonStyle = upNextPanelStyle.dismissButton;
-    var dismissButtonTextStyle = upNextPanelStyle.dismissButtonText;
+    var dismissButtonStyle = upNextPanelStyle.dismissButtonStyle;
+    var dismissButtonTextStyle = upNextPanelStyle.dismissButtonTextStyle;
 
     return (
       <div style={panelStyle}>

@@ -842,7 +842,7 @@ var upNextPanelStyle = {
     "transition": "bottom 0.5s"
   },
 
-  contentImageContainer: {
+  contentImageContainerStyle: {
     position: "absolute",
     top: "0",
     left: "0",
@@ -850,7 +850,7 @@ var upNextPanelStyle = {
     height: "100%"
   },
 
-  contentImage: {
+  contentImageStyle: {
     position: "absolute",
     top: "0",
     left: "0",
@@ -872,7 +872,7 @@ var upNextPanelStyle = {
     }
   },
 
-  contentMetadataContainer: {
+  contentMetadataContainerStyle: {
     position: "absolute",
     top: "0",
     left: "140px",
@@ -880,7 +880,7 @@ var upNextPanelStyle = {
     height: "100%",
   },
 
-  upNextTitle: {
+  upNextTitleStyle: {
     position: "absolute",
     top: "5",
     left: "15px",
@@ -889,7 +889,7 @@ var upNextPanelStyle = {
     color: "#FFFFFF"
   },
 
-  upNextTitleText: {
+  upNextTitleTextStyle: {
     position:"absolute",
     left:40,
     right: 0,
@@ -901,7 +901,7 @@ var upNextPanelStyle = {
     whiteSpace: "pre-wrap"
   },
 
-  contentDescription: {
+  contentDescriptionStyle: {
     position: "absolute",
     bottom: "0",
     left: "0",
@@ -911,7 +911,7 @@ var upNextPanelStyle = {
     fontSize: 10,
   },
 
-  dismissButton: {
+  dismissButtonStyle: {
     position: "absolute",
     right: "2%",
     top: "15%",
@@ -923,7 +923,7 @@ var upNextPanelStyle = {
     "border-radius": "5px"
   },
 
-  dismissButtonText: {
+  dismissButtonTextStyle: {
     position: "absolute",
     top: "50%",
     width: "100%",
