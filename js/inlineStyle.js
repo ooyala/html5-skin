@@ -769,30 +769,33 @@ var closedCaptionScreenStyles ={
 
   itemStyle: {
     fontSize: "11",
+    width: "70",
     marginRight: "64",
     marginTop: "14",
     textAlign: "center",
-    padding: "3",
+    padding: "2",
     color: "white",
     transition: "all 0.0s ease"
   },
 
   lastColItemStyle: {
     fontSize: "11",
+    width: "70",
     marginRight: "0",
     marginTop: "14",
     textAlign: "center",
-    padding: "3",
+    padding: "2",
     color: "white",
     transition: "all 0.0s ease"
   },
 
   itemSelectedStyle: {
     fontSize: "11",
+    width: "70",
     marginRight: "64",
     marginTop: "14",
     textAlign: "center",
-    padding: "3",
+    padding: "2",
     color: "white",
     //properties different from itemStyle
     backgroundColor: "#4389ff",
@@ -801,10 +804,11 @@ var closedCaptionScreenStyles ={
 
   lastColItemSelectedStyle:{
     fontSize: "11",
+    width: "70",
     marginRight: "0",
     marginTop: "14",
     textAlign: "center",
-    padding: "3",
+    padding: "2",
     color: "white",
     //properties different from itemStyle
     backgroundColor: "#4389ff",
@@ -855,10 +859,19 @@ var closedCaptionScreenStyles ={
     }
   },
 
-  tableLanguageStyle: {
-    overflowX:"scroll",
+  tableLanguageContainerStyle: {
+    overflowX:"hidden",
     marginLeft: "25",
     marginRight: "25"
+  },
+
+  tableLanguageStyle: {
+    borderCollapse: "collapse"
+  },
+
+  tdLanguageStyle: {
+    paddingLeft: "0",
+    paddingRight: "0"
   },
 
   CCPreviewPanelStyle:{
@@ -889,6 +902,10 @@ var closedCaptionScreenStyles ={
     fontFamily: "Verdana",
     marginLeft: "17.5"
   },
+
+  positionRelativeStyle: {
+    position: "relative"
+  }
 };
 
 var upNextPanelStyle = {

@@ -27,7 +27,6 @@ var ClosedCaptionScreen = React.createClass({
 
   componentDidMount: function () {
     this.setState({
-      controlBarWidth: this.getDOMNode().clientWidth,
       clientWidth: this.getDOMNode().clientWidth,
       clientHeight: this.getDOMNode().clientHeight
     });
@@ -41,9 +40,9 @@ var ClosedCaptionScreen = React.createClass({
       <div style={{height: "100%", width: "100%"}}>
         <ClosedCaptionPanel {...this.props} ccOptions = {this.props.ccOptions} clientWidth = {this.state.clientWidth} clientHeight = {this.state.clientHeight}/>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}/>
+          controlBarWidth={this.state.clientWidth} controlBarHeight={controlBarHeight}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
+          controlBarWidth={this.state.clientWidth} controlBarHeight={controlBarHeight}
           playerState={this.state.playerState}/>
       </div>
     );
