@@ -28,63 +28,63 @@ var ClosedCaptionPanel = React.createClass({
 
   // Responsive design code for later
 
-  setResponsiveStyle: function(clientWidth, controlBarHeight){
-    var scale = Math.min(1, Math.max(clientWidth/1280, 0.3));
+  // setResponsiveStyle: function(clientWidth, controlBarHeight){
+  //   var scale = Math.min(1, Math.max(clientWidth/1280, 0.3));
 
-    closedCaptionScreenStyles.CCPreviewPanelStyle.bottom = controlBarHeight;
+  //   closedCaptionScreenStyles.CCPreviewPanelStyle.bottom = controlBarHeight;
 
-    closedCaptionScreenStyles.innerPanelStyle.padding = 35 * scale;
+  //   closedCaptionScreenStyles.innerPanelStyle.padding = 35 * scale;
 
-    closedCaptionScreenStyles.captionStyle.fontSize = 32 * scale;
+  //   closedCaptionScreenStyles.captionStyle.fontSize = 32 * scale;
 
-    closedCaptionScreenStyles.switchStyle.marginTop = 35 * scale;
-    closedCaptionScreenStyles.switchStyle.height = 28 * scale;
-    closedCaptionScreenStyles.switchStyle.width = 140 * scale;
-    closedCaptionScreenStyles.switchStyle.fontSize = 20 * scale;
+  //   closedCaptionScreenStyles.switchStyle.marginTop = 35 * scale;
+  //   closedCaptionScreenStyles.switchStyle.height = 28 * scale;
+  //   closedCaptionScreenStyles.switchStyle.width = 140 * scale;
+  //   closedCaptionScreenStyles.switchStyle.fontSize = 20 * scale;
 
-    closedCaptionScreenStyles.CCPreviewPanelStyle.height = 70 * scale;
+  //   closedCaptionScreenStyles.CCPreviewPanelStyle.height = 70 * scale;
 
-    closedCaptionScreenStyles.CCPreviewTextStyle.fontSize = 24 * scale;
-    closedCaptionScreenStyles.CCPreviewTextStyle.marginLeft = closedCaptionScreenStyles.innerPanelStyle.padding;
+  //   closedCaptionScreenStyles.CCPreviewTextStyle.fontSize = 24 * scale;
+  //   closedCaptionScreenStyles.CCPreviewTextStyle.marginLeft = closedCaptionScreenStyles.innerPanelStyle.padding;
 
-    closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize = 12 * scale;
-    closedCaptionScreenStyles.CCPreviewCaptionStyle.marginLeft = closedCaptionScreenStyles.innerPanelStyle.padding;
-    closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop = 1/3*(closedCaptionScreenStyles.CCPreviewPanelStyle.height - 4/3*closedCaptionScreenStyles.CCPreviewTextStyle.fontSize-4/3*closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize);
-    closedCaptionScreenStyles.CCPreviewCaptionStyle.marginBottom = closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop;
+  //   closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize = 12 * scale;
+  //   closedCaptionScreenStyles.CCPreviewCaptionStyle.marginLeft = closedCaptionScreenStyles.innerPanelStyle.padding;
+  //   closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop = 1/3*(closedCaptionScreenStyles.CCPreviewPanelStyle.height - 4/3*closedCaptionScreenStyles.CCPreviewTextStyle.fontSize-4/3*closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize);
+  //   closedCaptionScreenStyles.CCPreviewCaptionStyle.marginBottom = closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop;
 
-    this.setResponsiveStyleCCLanguages(clientWidth);
-  },
+  //   this.setResponsiveStyleCCLanguages(clientWidth);
+  // },
 
-  setResponsiveStyleCCLanguages: function(clientWidth){
-    var scale = Math.max(clientWidth/1280, 0.3);
+  // setResponsiveStyleCCLanguages: function(clientWidth){
+  //   var scale = Math.max(clientWidth/1280, 0.3);
 
-    closedCaptionScreenStyles.itemStyle.fontSize = 22 * scale;
-    closedCaptionScreenStyles.itemStyle.padding = 3;
-    closedCaptionScreenStyles.itemStyle.width = 100 * scale;
-    closedCaptionScreenStyles.itemStyle.marginRight = 140 * scale - 2*closedCaptionScreenStyles.itemStyle.padding;
-    closedCaptionScreenStyles.itemStyle.marginTop = 40 * scale - 2*closedCaptionScreenStyles.itemStyle.padding;
+  //   closedCaptionScreenStyles.itemStyle.fontSize = 22 * scale;
+  //   closedCaptionScreenStyles.itemStyle.padding = 3;
+  //   closedCaptionScreenStyles.itemStyle.width = 140 * scale;
+  //   closedCaptionScreenStyles.itemStyle.marginRight = 140 * scale - 2*closedCaptionScreenStyles.itemStyle.padding;
+  //   closedCaptionScreenStyles.itemStyle.marginTop = 40 * scale - 2*closedCaptionScreenStyles.itemStyle.padding;
 
-    closedCaptionScreenStyles.lastColItemStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
-    closedCaptionScreenStyles.lastColItemStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
-    closedCaptionScreenStyles.lastColItemStyle.marginRight = 0;
-    closedCaptionScreenStyles.lastColItemStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
+  //   closedCaptionScreenStyles.lastColItemStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
+  //   closedCaptionScreenStyles.lastColItemStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
+  //   closedCaptionScreenStyles.lastColItemStyle.marginRight = 0;
+  //   closedCaptionScreenStyles.lastColItemStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
 
-    closedCaptionScreenStyles.itemSelectedStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
-    closedCaptionScreenStyles.itemSelectedStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
-    closedCaptionScreenStyles.itemSelectedStyle.width = closedCaptionScreenStyles.itemStyle.width;
-    closedCaptionScreenStyles.itemSelectedStyle.marginRight = closedCaptionScreenStyles.itemStyle.marginRight;
-    closedCaptionScreenStyles.itemSelectedStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
+  //   closedCaptionScreenStyles.itemSelectedStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
+  //   closedCaptionScreenStyles.itemSelectedStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
+  //   closedCaptionScreenStyles.itemSelectedStyle.width = closedCaptionScreenStyles.itemStyle.width;
+  //   closedCaptionScreenStyles.itemSelectedStyle.marginRight = closedCaptionScreenStyles.itemStyle.marginRight;
+  //   closedCaptionScreenStyles.itemSelectedStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
 
-    closedCaptionScreenStyles.lastColItemSelectedStyle.fontSize = closedCaptionScreenStyles.lastColItemStyle.fontSize;
-    closedCaptionScreenStyles.lastColItemSelectedStyle.padding = closedCaptionScreenStyles.lastColItemStyle.padding;
-    closedCaptionScreenStyles.lastColItemSelectedStyle.marginRight = closedCaptionScreenStyles.lastColItemStyle.marginRight;
-    closedCaptionScreenStyles.lastColItemSelectedStyle.marginTop = closedCaptionScreenStyles.lastColItemStyle.marginTop;
+  //   closedCaptionScreenStyles.lastColItemSelectedStyle.fontSize = closedCaptionScreenStyles.lastColItemStyle.fontSize;
+  //   closedCaptionScreenStyles.lastColItemSelectedStyle.padding = closedCaptionScreenStyles.lastColItemStyle.padding;
+  //   closedCaptionScreenStyles.lastColItemSelectedStyle.marginRight = closedCaptionScreenStyles.lastColItemStyle.marginRight;
+  //   closedCaptionScreenStyles.lastColItemSelectedStyle.marginTop = closedCaptionScreenStyles.lastColItemStyle.marginTop;
 
-    closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.width = 50 * scale;
-    closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.width = closedCaptionScreenStyles.tableLanguageContainerStyle.marginLeft = closedCaptionScreenStyles.tableLanguageContainerStyle.marginRight = closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.width;
-    closedCaptionScreenStyles.closedCaptionChevronLeftButton.style.fontSize = 32 * scale;
-    closedCaptionScreenStyles.closedCaptionChevronRightButton.style.fontSize = closedCaptionScreenStyles.closedCaptionChevronLeftButton.style.fontSize;
-   },
+  //   closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.width = 50 * scale;
+  //   closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.width = closedCaptionScreenStyles.tableLanguageContainerStyle.marginLeft = closedCaptionScreenStyles.tableLanguageContainerStyle.marginRight = closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.width;
+  //   closedCaptionScreenStyles.closedCaptionChevronLeftButton.style.fontSize = 32 * scale;
+  //   closedCaptionScreenStyles.closedCaptionChevronRightButton.style.fontSize = closedCaptionScreenStyles.closedCaptionChevronLeftButton.style.fontSize;
+  //  },
 
   render: function(){
     var controlBarHeight = 60;
