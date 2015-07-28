@@ -159,6 +159,7 @@ var DiscoveryPanel = React.createClass({
 
     // Build discovery content blocks
     if (discoveryData !== null)  {
+        // 214 is width of content images and 60 is horizontal space between each content image
         discoveryToasterStyle.width = 214 * discoveryData.relatedVideos.length + 60*(discoveryData.relatedVideos.length-1);
         for (var i = 0; i < this.props.discoveryData.relatedVideos.length; i++) {
           if(this.shouldShowCountdownTimer() && i === 0) {
@@ -172,7 +173,7 @@ var DiscoveryPanel = React.createClass({
                      </div>
                  </img>
               </div>
-                 <div className="discoveryContentName" style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
+              <div className="discoveryContentName" style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
             </div> );
           }
           else {
@@ -181,7 +182,7 @@ var DiscoveryPanel = React.createClass({
                 <div style={discoveryScreenStyle.discoveryImageWrapperStyle}>
                   <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
                 </div>
-                   <div className="discoveryContentName" style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
+                <div className="discoveryContentName" style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
               </div> );
           }
         }
