@@ -19,12 +19,10 @@ var DiscoveryPanel = React.createClass({
   },
 
   handleLeftButtonClick: function() {
-    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
-    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
     // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
 
-    if(toasterContainerWidth <= toasterWidth || newDiscoveryToasterLeftOffset < 0) {
+    if(!this.allToasterItemsDisplayed() || newDiscoveryToasterLeftOffset < 0) {
       newDiscoveryToasterLeftOffset += 400;
       if(newDiscoveryToasterLeftOffset > 25) {
         newDiscoveryToasterLeftOffset = 25;
@@ -54,12 +52,10 @@ var DiscoveryPanel = React.createClass({
   },
 
   shouldShowLeftButton: function(newstate) {
-    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
-    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
     // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
     var newDiscoveryToasterLeftOffset = newstate.discoveryToasterLeftOffset;//this.state.discoveryToasterLeftOffset;
 
-    if(toasterContainerWidth <= toasterWidth || newDiscoveryToasterLeftOffset < 0) {
+    if(!this.allToasterItemsDisplayed() || newDiscoveryToasterLeftOffset < 0) {
       if(newDiscoveryToasterLeftOffset !== 25) {
         return true;
       }
@@ -75,12 +71,17 @@ var DiscoveryPanel = React.createClass({
     // rightOffset = right border of discovery toaster container - right border of discovery toaster
     var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
     if(toasterContainerWidth <= toasterWidth || rightOffset <= 25) {
-      rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
       if(rightOffset !== 25) {
         return true;          
       }
     }
     return false;
+  },
+
+  allToasterItemsDisplayed: function() {
+    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+    return toasterContainerWidth >= toasterWidth;
   },
   
   componentWillUpdate: function(propsParam, newstate){
