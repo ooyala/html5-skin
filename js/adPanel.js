@@ -9,6 +9,16 @@
 */
 
 var AdPanel = React.createClass({
+
+  componentDidMount: function(){
+    if (Utils.isSafari()){
+      adScreenStyle.topBarStyle.display = "-webkit-flex";
+    }
+    else {
+      adScreenStyle.topBarStyle.display = "flex";
+    }
+  },
+
   getInitialState: function() {
     return {
     };

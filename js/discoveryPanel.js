@@ -7,6 +7,18 @@
 */
 
 var DiscoveryPanel = React.createClass({
+
+  componentDidMount: function(){
+    if (Utils.isSafari()){
+      discoveryScreenStyle.panelStyle.display = "-webkit-flex";
+      discoveryScreenStyle.discoveryToasterStyle.display = "-webkit-flex";
+    }
+    else {
+      discoveryScreenStyle.panelStyle.display = "flex";
+      discoveryScreenStyle.discoveryToasterStyle.display = "flex";
+    }
+  },
+
   getInitialState: function() { 
     return {
       discoveryToasterLeftOffset: 25,

@@ -33,7 +33,8 @@ var startScreenStyle = {
         whiteSpace: "nowrap",
         overflow: "hidden",
         textOverflow: "ellipsis",
-        color: "inherit"
+        color: "inherit",
+        resize: "none"
       }
     },
     description: {
@@ -78,7 +79,8 @@ var pauseScreenStyle = {
         whiteSpace: "nowrap",
         overflow: "hidden",
         textOverflow: "ellipsis",
-        color: "inherit"
+        color: "inherit",
+        resize: "none"
       }
     },
     description: {
@@ -178,7 +180,7 @@ var controlBarStyle = {
     "padding": 0,
     "margin": 0,
     "listStyle": "none",
-    "display": "-webkit-flex",
+    "display": "flex",
     "flexFlow": "row nowrap",
     "justifyContent": "flex-end",
     "WebkitUserSelect": "none",
@@ -364,14 +366,14 @@ var shareScreenStyle = {
     backgroundColor: "#444444",
     left: 0,
     right: 0,
-    display: "-webkit-flex",
+    display: "flex",
     flexDirection: "column",
     WebkitFlexDirection: "column"
   },
 
   tabRowStyle: {
     borderBottom: "1px solid #afafaf",
-    display: "-webkit-flex",
+    display: "flex",
     flexDirection: "row",
     WebkitFlexDirection: "row"
   },
@@ -389,7 +391,8 @@ var shareScreenStyle = {
     borderStyle: "none",
     width: "300px",
     height: "36px",
-    paddingLeft: "15px"
+    paddingLeft: "15px",
+    resize: "none"
   },
 
   emailSendButton: {
@@ -408,14 +411,16 @@ var shareScreenStyle = {
     borderStyle: "none",
     width: "300px",
     height: "32px",
-    paddingLeft: "15px"
+    paddingLeft: "15px",
+    resize: "none"
   },
 
   emailTextArea: {
     color: "gray",
     height: "80px",
     width: "300px",
-    borderRadius: "6px"
+    borderRadius: "6px",
+    resize: "none"
   },
 
   startAtInput: {
@@ -424,14 +429,16 @@ var shareScreenStyle = {
     borderStyle: "none",
     width: "60px",
     height: "26px",
-    paddingLeft: "10px"
+    paddingLeft: "10px",
+    resize: "none"
   },
 
   embedTextArea: {
     height: "60%",
     width: "70%",
     color: "black",
-    borderRadius: "6px"
+    borderRadius: "6px",
+    resize: "none"
   },
 
   closeButton: {
@@ -456,7 +463,7 @@ var discoveryScreenStyle = {
     backgroundColor: "#444444",
     left: 0,
     right: 0,
-    display: "-webkit-flex",
+    display: "flex",
     flexDirection: "row"
   },
 
@@ -506,7 +513,7 @@ var discoveryScreenStyle = {
     width: "2000px",
     right: 0,
     left: 25,
-    display: "-webkit-flex",
+    display: "flex",
     flexDirection: "row",
     transition: "0.5s"
   },
@@ -631,7 +638,7 @@ var adScreenStyle = {
     height: "10%",
     width: "100%",
     backgroundColor:"rgba(0, 0, 0, 0.5)",
-    display: "-webkit-flex",
+    display: "flex",
     flexDirection: "row"
   },
 

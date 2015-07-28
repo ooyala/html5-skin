@@ -40,6 +40,7 @@ var Skin = React.createClass({
   },
 
   updatePlayhead: function(newPlayhead, newDuration, newBuffered) {
+    console.log("new duration:",newDuration);
     this.setState({
       currentPlayhead: newPlayhead,
       duration: newDuration,
