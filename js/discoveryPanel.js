@@ -21,8 +21,7 @@ var DiscoveryPanel = React.createClass({
   handleLeftButtonClick: function() {
     // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
-
-    if(!this.allToasterItemsDisplayed() || newDiscoveryToasterLeftOffset < 0) {
+    if(this.itemsToShowOnLeftSide(newDiscoveryToasterLeftOffset)) {
       newDiscoveryToasterLeftOffset += 400;
       if(newDiscoveryToasterLeftOffset > 25) {
         newDiscoveryToasterLeftOffset = 25;
@@ -33,13 +32,13 @@ var DiscoveryPanel = React.createClass({
   },
 
   handleRightButtonClick: function() {
-    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
-    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
     // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
-    // rightOffset = right border of discovery toaster container - right border of discovery toaster
-    var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
-    if(toasterContainerWidth <= toasterWidth || rightOffset <= 25) {
+    if(this.itemsToShowOnRightSide(newDiscoveryToasterLeftOffset)) {
+      var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+      var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+      // rightOffset = right border of discovery toaster container - right border of discovery toaster
+      var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
       newDiscoveryToasterLeftOffset -= 400;
       rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
 
@@ -51,49 +50,53 @@ var DiscoveryPanel = React.createClass({
     this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
   },
 
-  shouldShowLeftButton: function(newstate) {
-    // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
-    var newDiscoveryToasterLeftOffset = newstate.discoveryToasterLeftOffset;//this.state.discoveryToasterLeftOffset;
-
-    if(!this.allToasterItemsDisplayed() || newDiscoveryToasterLeftOffset < 0) {
-      if(newDiscoveryToasterLeftOffset !== 25) {
+  shouldShowLeftButton: function(newState) {
+    if(this.itemsToShowOnLeftSide(newState.discoveryToasterLeftOffset)) {
+      if(newState.discoveryToasterLeftOffset !== 25) {
         return true;
       }
     }
     return false;
   },
 
-  shouldShowRightButton: function(newstate) {
-    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
-    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
-    // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
-    var newDiscoveryToasterLeftOffset = newstate.discoveryToasterLeftOffset;//this.state.discoveryToasterLeftOffset;
-    // rightOffset = right border of discovery toaster container - right border of discovery toaster
-    var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
-    if(toasterContainerWidth <= toasterWidth || rightOffset <= 25) {
+  shouldShowRightButton: function(newState) {
+    if(this.itemsToShowOnRightSide(newState.discoveryToasterLeftOffset)) {
+      var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+      var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+      // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
+      var newDiscoveryToasterLeftOffset = newState.discoveryToasterLeftOffset;//this.state.discoveryToasterLeftOffset;
+      // rightOffset = right border of discovery toaster container - right border of discovery toaster
+      var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
       if(rightOffset !== 25) {
-        return true;          
+        return true;
       }
     }
     return false;
   },
 
-  allToasterItemsDisplayed: function() {
+  itemsToShowOnLeftSide: function(newLeftOffset) {
     var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
     var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
-    return toasterContainerWidth >= toasterWidth;
+    return (toasterContainerWidth <= toasterWidth) || (newLeftOffset < 0);
+  },
+
+  itemsToShowOnRightSide: function(newLeftOffset) {
+    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+    var rightOffset = toasterContainerWidth  - (newLeftOffset + toasterWidth);
+    return (toasterContainerWidth <= toasterWidth) || (rightOffset <= 25);
   },
   
-  componentWillUpdate: function(propsParam, newstate){
+  componentWillUpdate: function(propsParam, newState){
     var chevronLeftButtonStyle = discoveryScreenStyle.discoveryChevronLeftButton.style;
     var chevronRightButtonStyle = discoveryScreenStyle.discoveryChevronRightButton.style;
-    if(this.shouldShowLeftButton(newstate)) {
+    if(this.shouldShowLeftButton(newState)) {
       chevronLeftButtonStyle.visibility = "visible";
     }
     else {
       chevronLeftButtonStyle.visibility = "hidden";
     }
-    if(this.shouldShowRightButton(newstate)) {
+    if(this.shouldShowRightButton(newState)) {
       chevronRightButtonStyle.visibility = "visible";
     }
     else {
