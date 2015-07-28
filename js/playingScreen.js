@@ -31,10 +31,6 @@ var PlayingScreen = React.createClass({
     //Fill in all the dynamic style values we need
     var controlBarHeight = 32;
 
-    console.log("#######3");
-    console.log(this.props);
-    console.log("#######3");
-
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
         onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>

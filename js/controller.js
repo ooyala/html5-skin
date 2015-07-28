@@ -392,8 +392,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var language = this.state.ccOptions.enabled ? this.state.ccOptions.language : "";
       var mode = this.state.ccOptions.enabled ? "showing" : "disabled";
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
-      console.log("xenia language", language);
-      console.log("xenia mode", mode);
     },
 
     toggleClosedCaptionScreen: function() {

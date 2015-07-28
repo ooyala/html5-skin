@@ -74,9 +74,6 @@ var ControlBar = React.createClass({
       "icon icon-resize-small" : "icon icon-resize-large";
 
     var totalTime = 0;
-    console.log("***************");
-    console.log(this.props.duration);
-    console.log("***************");
     totalTime = Utils.formatSeconds(this.props.duration);
 
     var volumeBars = [];
