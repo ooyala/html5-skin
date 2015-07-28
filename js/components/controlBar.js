@@ -202,7 +202,7 @@ var ControlBar = React.createClass({
   scaleControlBarItemsBasedOnHeight: function(controlBarHeight) {
     controlBarStyle.controlBarSetting.height = controlBarHeight;
     controlBarStyle.controlBarSetting.bottom = (this.props.controlBarVisible ?
-      0 : -1*this.props.controlBarHeight);
+      0 : -1*controlBarStyle.controlBarSetting.height);
     controlBarStyle.durationIndicatorSetting.lineHeight = controlBarHeight + "px";
     controlBarStyle.iconSetting.lineHeight = controlBarHeight + "px"; 
     controlBarStyle.volumeBarStyle.lineHeight = controlBarHeight + "px";
@@ -214,7 +214,7 @@ var ControlBar = React.createClass({
 
     controlBarStyle.controlBarSetting.height = constantControlBarHeight;
     controlBarStyle.controlBarSetting.bottom = (this.props.controlBarVisible ?
-      0 : -1*this.props.controlBarHeight);
+      0 : -1*controlBarStyle.controlBarSetting.height);
     controlBarStyle.durationIndicatorSetting.lineHeight = constantControlBarHeight + "px";
     controlBarStyle.iconSetting.lineHeight = constantControlBarHeight + "px"; 
     controlBarStyle.volumeBarStyle.lineHeight = constantControlBarHeight + "px";

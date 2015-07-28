@@ -217,7 +217,8 @@ var controlBarStyle = {
   },
 
   flexibleSpace: {
-    "flex": 1
+    "flex": 1,
+    "WebkitFlex": 1
   },
 
   liveItemStyle: {
@@ -271,10 +272,10 @@ var scrubberBarStyle = {
     "height": "5px",
     "padding": 0,
     "margin": 0,
-    "-webkit-user-select": "none",
+    "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
-    "user-select": "none",
+    "userSelect": "none",
     "position": "absolute",
     "transition": "bottom 0.5s, height 0.25s"
   },
@@ -468,7 +469,8 @@ var discoveryScreenStyle = {
     left: 0,
     right: 0,
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
+    WebkitFlexDirection: "row"
   },
 
   promoStyle: {
@@ -519,6 +521,7 @@ var discoveryScreenStyle = {
     left: 25,
     display: "flex",
     flexDirection: "row",
+    WebkitFlexDirection: "row",
     transition: "0.5s"
   },
 
@@ -643,7 +646,8 @@ var adScreenStyle = {
     width: "100%",
     backgroundColor:"rgba(0, 0, 0, 0.5)",
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
+    WebkitFlexDirection: "row"
   },
 
   adPlaybackInfoTextStyle: {
@@ -678,10 +682,10 @@ var adScreenStyle = {
     fontSize: "10",
     "text-align": "center",
     color: "black",
-    "-webkit-user-select": "none",
+    "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
-    "user-select": "none",
+    "userSelect": "none",
     "WebkitTransform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
@@ -705,10 +709,10 @@ var adScreenStyle = {
     fontSize: "15",
     "text-align": "center",
     color: "black",
-    "-webkit-user-select": "none",
+    "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
-    "user-select": "none",
+    "userSelect": "none",
     "WebkitTransform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
@@ -951,7 +955,6 @@ var upNextPanelStyle = {
     fontSize: "20",
     color: "white",
     "cursor": "pointer",
-
     "text-align": "center",
     "WebkitTransform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
@@ -987,12 +990,12 @@ var MoreOptionsScreenStyle = {
     "display": "flex",
     "flexFlow": "row nowrap",
     "justifyContent": "flex-start",
-    "-webkit-user-select": "none",
+    "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
-    "user-select": "none",
-    "-webkit-flex-direction": "row",
-    "flex-direction": "row",
+    "userSelect": "none",
+    "WebkitFlexDirection": "row",
+    "flexDirection": "row",
     "transition": "bottom 0.7s, opacity 0.7s",
   },
 
