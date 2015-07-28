@@ -33,7 +33,8 @@ var MoreOptionsScreen = React.createClass({
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} 
         onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
         
-        <MoreOptionsPanel {...this.props} />
+        <MoreOptionsPanel {...this.props} 
+          controlBarWidth={this.state.controlBarWidth}/>
         
         <ScrubberBar 
           {...this.props} 

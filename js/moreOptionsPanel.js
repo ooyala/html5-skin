@@ -68,17 +68,18 @@ var MoreOptionsPanel = React.createClass({
     };
 
     var moreOptionsItems = [];
-    var moreOptionsButtons = this.props.skinConfig.moreOptions.buttons;
-    for (i = 0; i < moreOptionsButtons.length; i++) {
-      if (typeof optionsItemsTemplates[moreOptionsButtons[i]] === "undefined") {
+    var collapsedResult = CollapsingBarUtils.collapse(this.props.controlBarWidth, Array.prototype.slice.call(this.props.skinConfig.buttons.desktop));
+    var collapsedMoreOptionsItems = collapsedResult.overflow;
+    for (i = 0; i < collapsedMoreOptionsItems.length; i++) {
+      if (typeof optionsItemsTemplates[collapsedMoreOptionsItems[i].name] === "undefined") {
         continue;
       }
 
       //do not show CC button if no CC available
-      if (!this.props.controller.state.ccOptions.availableLanguages && (moreOptionsButtons[i] === "closedCaption")){
+      if (!this.props.controller.state.ccOptions.availableLanguages && (collapsedMoreOptionsItems[i].name === "closedCaption")){
         continue;
       }
-      moreOptionsItems.push(optionsItemsTemplates[moreOptionsButtons[i]]);
+      moreOptionsItems.push(optionsItemsTemplates[collapsedMoreOptionsItems[i].name]);
     }
     return moreOptionsItems;
   },
