@@ -172,8 +172,6 @@ var controlBarStyle = {
     "width": "100%",
     "top": "100%",
     "position": "absolute",
-    "paddingLeft": "7.5px",
-    "paddingRight": "7.5px",
     "margin": 0,
     "fontSize": "18px",
     "listStyle": "none",
