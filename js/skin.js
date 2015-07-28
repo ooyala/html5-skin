@@ -35,10 +35,6 @@ var Skin = React.createClass({
     }
   },
 
-  shouldComponentUpdate: function(nextProps, nextState) {
-    return true;
-  },
-
   updatePlayhead: function(newPlayhead, newDuration, newBuffered) {
     this.setState({
       currentPlayhead: newPlayhead,
@@ -62,6 +58,7 @@ var Skin = React.createClass({
             buffered={this.state.buffered}
             fullscreen={this.state.fullscreen}
             playerState={this.state.playerState}
+            seeking={this.state.seeking}
             ref="playScreen" />
         );
       case SCREEN.SHARE_SCREEN:
@@ -72,6 +69,7 @@ var Skin = React.createClass({
           buffered={this.state.buffered}
           fullscreen={this.state.fullscreen}
           playerState={this.state.playerState}
+          seeking={this.state.seeking}
           ref="shareScreen" />
         );
       case SCREEN.PAUSE_SCREEN:
@@ -84,6 +82,7 @@ var Skin = React.createClass({
             buffered={this.state.buffered}
             pauseAnimationDisabled = {this.state.pauseAnimationDisabled}
             fullscreen={this.state.fullscreen}
+            seeking={this.state.seeking}
             ref="pauseScreen" />
         );
       case SCREEN.END_SCREEN:
@@ -92,11 +91,12 @@ var Skin = React.createClass({
             contentTree={this.state.contentTree}
             discoveryData={this.state.discoveryData}
             currentPlayhead={this.state.currentPlayhead}
-            playerState={this.state.playerState}
             duration={this.state.duration}
             buffered={this.state.buffered}
             style={endScreenStyle}
             fullscreen={this.state.fullscreen}
+            playerState={this.state.playerState}
+            seeking={this.state.seeking}
             ref="endScreen" />
         );
       case SCREEN.AD_SCREEN:
@@ -107,6 +107,7 @@ var Skin = React.createClass({
             playerState={this.state.playerState}
             duration={this.state.duration}
             buffered={this.state.buffered}
+            seeking={this.state.seeking}
             ref="adScreen" />
         );
       case SCREEN.DISCOVERY_SCREEN:
@@ -124,6 +125,7 @@ var Skin = React.createClass({
             discoveryData={this.state.discoveryData}
             playerState={this.state.playerState}
             fullscreen={this.state.fullscreen}
+            seeking={this.state.seeking}
             ref="DiscoveryScreen" />
         );
       case SCREEN.UP_NEXT_SCREEN:
@@ -135,6 +137,7 @@ var Skin = React.createClass({
             upNextInfo={this.state.upNextInfo}
             playerState={this.state.playerState}
             fullscreen={this.state.fullscreen}
+            seeking={this.state.seeking}
             ref="UpNextScreen" />
         );
       case SCREEN.MORE_OPTIONS_SCREEN:
@@ -145,6 +148,7 @@ var Skin = React.createClass({
             duration={this.state.duration}
             playerState={this.state.playerState}
             fullscreen={this.state.fullscreen}
+            seeking={this.state.seeking}
             ref="moreOptionsScreen" />
         );
       case SCREEN.CLOSEDCAPTION_SCREEN:
@@ -156,6 +160,7 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             playerState={this.state.playerState}
+            seeking={this.state.seeking}
             ref="closedCaptionScreen" />
         );
       default:
