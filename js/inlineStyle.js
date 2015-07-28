@@ -874,7 +874,8 @@ var closedCaptionScreenStyles ={
   tableLanguageContainerStyle: {
     overflowX:"hidden",
     marginLeft: "25",
-    marginRight: "25"
+    marginRight: "25",
+    resize: "none"
   },
 
   tableLanguageStyle: {
