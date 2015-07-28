@@ -8,7 +8,7 @@ var PauseScreen = React.createClass({
     return {
       description: this.props.contentTree.description,
       controlBarVisible: true,
-      controlBarWidth: null //is set in componentDidMount
+      controlBarWidth: 0
     };
   },
 
@@ -16,6 +16,8 @@ var PauseScreen = React.createClass({
   // CSS doesn't support "truncate N lines" so we need to do DOM width
   // calculations to figure out where to truncate the description
   componentDidMount: function() {
+    // Make sure component resize correctly after switch to fullscreen/inline screen
+    window.addEventListener('resize', this.handleResize);
 
     //need this to display fading pause button and dimming the screen
     pauseScreenStyle.pauseIcon.style.opacity = 0;
@@ -30,6 +32,12 @@ var PauseScreen = React.createClass({
       var descriptionNode = this.getDOMNode().getElementsByClassName("pauseScreen-description")[0];
       var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
       this.setState({description: shortDesc});
+    }
+  },
+
+  handleResize: function(e) {     
+    if (this.isMounted()) {
+      this.setState({controlBarWidth: this.getDOMNode().clientWidth});
     }
   },
 
@@ -99,7 +107,6 @@ var PauseScreen = React.createClass({
 
     //Fill in all the dynamic style values we need
     var controlBarHeight = 32;
-
     return (
       <div onMouseUp={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>

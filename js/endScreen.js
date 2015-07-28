@@ -6,7 +6,8 @@ var EndScreen = React.createClass({
   getInitialState: function() {
     return {
       description: this.props.contentTree.description,
-      controlBarVisible: true
+      controlBarVisible: true,
+      controlBarWidth: 0
     };
   },
 
@@ -17,6 +18,14 @@ var EndScreen = React.createClass({
       var descriptionNode = this.getDOMNode().getElementsByClassName("endscreen-description")[0];
       var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
       this.setState({description: shortDesc});
+    }
+    // Make sure component resize correctly after switch to fullscreen/inline screen
+    window.addEventListener('resize', this.handleResize);
+  },  
+
+  handleResize: function(e) {
+    if (this.isMounted()) {
+      this.setState({controlBarWidth: this.getDOMNode().clientWidth});
     }
   },
 

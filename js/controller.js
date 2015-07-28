@@ -13,18 +13,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "playerState": null,
       "discoveryData": null,
       "isPlayingAd": false,
+      "configLoaded": false,
+      "fullscreen": false,
+      "pauseAnimationDisabled": false,
+      "seeking": false,
+
       "currentAdsInfo": {
         "currentAdItem": null,
         "numberOfAds": 0
       },
-      "pauseAnimationDisabled": false,
+
       "ccOptions":{
         "enabled": null,
         "language": null,
         "availableLanguages": null
       },
 
-      volumeState:{
+      "volumeState":{
         "volume" :null,
         "muted": false,
         "oldVolume": 1,
@@ -34,9 +39,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "upNextData": null,
         "countDownFinished": false,
         "countDownCancelled": false,
-      },
-      "configLoaded": false,
-      "fullscreen": false
+      }
     };
 
     this.init();
@@ -51,6 +54,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
+      this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
 
 
       /********************************************************************
@@ -191,6 +195,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       console.log("onReportDiscoveryImpression is called");
       this.state.discoveryData = discoveryData;
       this.renderSkin();
+    },
+
+    onSeeked: function(event) {
+      this.state.seeking = false;
     },
 
     /********************************************************************
@@ -459,6 +467,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     enablePauseAnimation: function(){
       this.state.pauseAnimationDisabled = false;
+    },
+
+    beginSeeking: function() {
+      this.state.seeking = true;
     }
   };
 
