@@ -75,7 +75,8 @@ var DiscoveryPanel = React.createClass({
 
   render: function() {
     var panelStyle = discoveryScreenStyle.panelStyle;    
-    panelStyle.bottom = (this.props.controlBarVisible ? this.props.skinConfig.controlBar.height : 0);
+    var controlBarHeight = 60;
+    panelStyle.bottom = (this.props.controlBarVisible ? controlBarHeight: 0);
 
 
     var panelTitleBarStyle = discoveryScreenStyle.panelTitleBarStyle;
