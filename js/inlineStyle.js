@@ -603,18 +603,6 @@ var discoveryScreenStyle = {
     "color":"white",
     fontSize: 25
   },
-
-  closeButton: {
-    position: "absolute",
-    top:0,
-    right: 0,
-    height: "25px",
-    width: "25px",
-    backgroundColor: "#4389ff",
-    color: "white",
-    textAlign: "center",
-    lineHeight: "25px"
-  }
 };
 
 var adScreenStyle = {

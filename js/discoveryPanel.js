@@ -14,10 +14,6 @@ var DiscoveryPanel = React.createClass({
     };
   },
 
-  closeDiscoveryPanel: function() {
-    this.props.controller.toggleDiscoveryScreen();
-  },
-
   handleLeftButtonClick: function() {
     // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
@@ -214,7 +210,6 @@ var DiscoveryPanel = React.createClass({
             <span className={chevronRightButtonClass} style={chevronRightButtonStyle} ref="ChevronRightButton" aria-hidden="true" onClick={this.handleRightButtonClick}></span>
           </div>
         </div>
-        <div onClick={this.closeDiscoveryPanel} style={discoveryScreenStyle.closeButton} className="icon icon-close"></div>
       </div>
     );
   }
