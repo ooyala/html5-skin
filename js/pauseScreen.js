@@ -60,8 +60,7 @@ var PauseScreen = React.createClass({
     var infoStyle = screenStyle.infoPanel;
 
     // Accent Color
-    pauseStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.accentColor;
-    infoStyle.style.color = this.props.skinConfig.accentColor;
+    pauseStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.pauseScreen.PauseIconStyle.color;
 
     // PlayButton position, defaulting to centered
     if (this.props.skinConfig.pauseScreen.showPauseIcon) {
