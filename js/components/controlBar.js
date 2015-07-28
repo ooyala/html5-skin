@@ -78,7 +78,7 @@ var ControlBar = React.createClass({
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
         onClick={this.handleVolumeClick}></span>);
     }
-    var watermarkUrl = this.props.skinConfig.controlBar.watermark.url;
+    var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
     var watermarkImageStyle = controlBarStyle.watermarkImageStyle;
 
     // TODO: Update when implementing localization
@@ -136,26 +136,33 @@ var ControlBar = React.createClass({
     };
 
     var controlBarItems = [];
-    var collapsedItems = (CollapsingBarUtils.collapse(this.props.controlBarWidth, Array.prototype.slice.call(this.props.skinConfig.controlBar.items), "webMinWidth")).fit; 
-    for (i = 0; i < collapsedItems.length; i++) {
+    var collapsedResult = CollapsingBarUtils.collapse(this.props.controlBarWidth, Array.prototype.slice.call(this.props.skinConfig.buttons.desktop));
+    var collapsedControlBarItems = collapsedResult.fit; 
+    var collapsedMoreOptionsItems = collapsedResult.overflow;
+
+    for (i = 0; i < collapsedControlBarItems.length; i++) {
 
       // filter out unrecognized button names
-      if (typeof controlItemTemplates[collapsedItems[i].name] === "undefined") {
+      if (typeof controlItemTemplates[collapsedControlBarItems[i].name] === "undefined") {
         continue;
       }
 
       //do not show CC button if no CC available
-      if (!this.props.controller.state.ccOptions.availableLanguages && (collapsedItems[i].name === "closedCaption")){
+      if (!this.props.controller.state.ccOptions.availableLanguages && (collapsedControlBarItems[i].name === "closedCaption")){
+        continue;
+      }
+
+      if (collapsedControlBarItems[i].name === "moreOptions" && collapsedMoreOptionsItems.length === 0) {
         continue;
       }
 
       // Not sure what to do when there are multi streams
-      if (collapsedItems[i].name === "live" &&
+      if (collapsedControlBarItems[i].name === "live" &&
           (typeof this.props.authorization === 'undefined' ||
           !(this.props.authorization.streams[0].is_live_stream))) {
         continue;
       }
-      controlBarItems.push(controlItemTemplates[collapsedItems[i].name]);
+      controlBarItems.push(controlItemTemplates[collapsedControlBarItems[i].name]);
     }
     return controlBarItems;
   },
