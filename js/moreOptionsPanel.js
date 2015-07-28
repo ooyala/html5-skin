@@ -68,7 +68,7 @@ var MoreOptionsPanel = React.createClass({
     };
 
     var moreOptionsItems = [];
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth, Array.prototype.slice.call(this.props.skinConfig.buttons.desktop));
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth, this.props.skinConfig.buttons.desktop);
     var collapsedMoreOptionsItems = collapsedResult.overflow;
     for (i = 0; i < collapsedMoreOptionsItems.length; i++) {
       if (typeof optionsItemsTemplates[collapsedMoreOptionsItems[i].name] === "undefined") {
