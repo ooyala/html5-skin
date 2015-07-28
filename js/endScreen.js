@@ -15,12 +15,14 @@ var EndScreen = React.createClass({
   // calculations to figure out where to truncate the description
   componentDidMount: function() {
     if (this.props.skinConfig.endScreen.screenToShowOnEnd === "default") {
-      var descriptionNode = this.getDOMNode().getElementsByClassName("endscreen-description")[0];
-      var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
-      this.setState({description: shortDesc});
+      // var descriptionNode = this.refs.endScreenInfoPanel;
+      // var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
+      // this.setState({description: shortDesc});
     }
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
+
+    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
   },  
 
   handleResize: function(e) {
@@ -52,8 +54,7 @@ var EndScreen = React.createClass({
     var repeatStyle = screenStyle.repeatButton.style;
     var posterStyle = screenStyle.posterStyle;
 
-    // Accent Color
-    repeatStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.accentColor;
+    repeatStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.endScreen.replayIconStyle.color;
 
     // metadata visibility
     var titleMetadata;
@@ -61,21 +62,20 @@ var EndScreen = React.createClass({
 
     // Default configuration
     posterStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
-    var controlBarHeight = 32;
     return (
       <div onMouseOver={this.showControlBar}
              onMouseUp={this.handlePlayerMouseUp}
              style={{height: "100%", width: "100%"}}>
-      <div className="endscreen-poster" style={screenStyle.posterStyle}></div>
+      <div style={screenStyle.posterStyle}></div>
       <span className={repeatClass} style={repeatStyle} aria-hidden="true" onClick={this.handleClick}></span>
-      <div className="endscreen-info" style={screenStyle.infoPanel.style}>
+      <div style={screenStyle.infoPanel.style} ref="endScreenInfoPanel">
         {titleMetadata}
         {descriptionMetadata}
       </div>
       <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-        controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
+        controlBarWidth={this.state.controlBarWidth} />
       <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-        controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
+        controlBarWidth={this.state.controlBarWidth}
         playerState={this.props.playerState} />
     </div>
     );

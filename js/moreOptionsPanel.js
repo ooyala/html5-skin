@@ -46,7 +46,7 @@ var MoreOptionsPanel = React.createClass({
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
         <span className="icon icon-topmenu-discovery"></span></div>,
       
-      "bitrateSelector": <div className="bitrateSelector" style={MoreOptionsScreenStyle.buttonStyle}
+      "quality": <div className="quality" style={MoreOptionsScreenStyle.buttonStyle}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <span className="icon icon-topmenu-quality"></span></div>,
       
@@ -68,17 +68,18 @@ var MoreOptionsPanel = React.createClass({
     };
 
     var moreOptionsItems = [];
-    var moreOptions = this.props.skinConfig.moreOptions;
-    for (i = 0; i < moreOptions.length; i++) {
-      if (typeof optionsItemsTemplates[moreOptions[i]] === "undefined") {
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth, this.props.skinConfig.buttons.desktop);
+    var collapsedMoreOptionsItems = collapsedResult.overflow;
+    for (i = 0; i < collapsedMoreOptionsItems.length; i++) {
+      if (typeof optionsItemsTemplates[collapsedMoreOptionsItems[i].name] === "undefined") {
         continue;
       }
 
       //do not show CC button if no CC available
-      if (!this.props.controller.state.ccOptions.availableLanguages && (moreOptions[i] === "closedCaption")){
+      if (!this.props.controller.state.ccOptions.availableLanguages && (collapsedMoreOptionsItems[i].name === "closedCaption")){
         continue;
       }
-      moreOptionsItems.push(optionsItemsTemplates[moreOptions[i]]);
+      moreOptionsItems.push(optionsItemsTemplates[collapsedMoreOptionsItems[i].name]);
     }
     return moreOptionsItems;
   },

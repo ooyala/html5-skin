@@ -60,8 +60,7 @@ var PauseScreen = React.createClass({
     var infoStyle = screenStyle.infoPanel;
 
     // Accent Color
-    pauseStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.accentColor;
-    infoStyle.style.color = this.props.skinConfig.accentColor;
+    pauseStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.pauseScreen.PauseIconStyle.color;
 
     // PlayButton position, defaulting to centered
     if (this.props.skinConfig.pauseScreen.showPauseIcon) {
@@ -104,9 +103,7 @@ var PauseScreen = React.createClass({
         infoStyle.description.style.float = "right";
       }
     }
-
-    //Fill in all the dynamic style values we need
-    var controlBarHeight = 32;
+    
     return (
       <div onMouseUp={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>
@@ -116,9 +113,9 @@ var PauseScreen = React.createClass({
           {descriptionMetadata}
         </div>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
+          controlBarWidth={this.state.controlBarWidth}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
+          controlBarWidth={this.state.controlBarWidth}
           playerState={this.state.playerState} />
       </div>
     );
