@@ -34,15 +34,14 @@ var ClosedCaptionScreen = React.createClass({
   },
 
   render: function() {
-    //Fill in all the dynamic style values we need
-    var controlBarHeight = 32;
+    
     return (
       <div style={{height: "100%", width: "100%"}}>
         <ClosedCaptionPanel {...this.props} ccOptions = {this.props.ccOptions} clientWidth = {this.state.clientWidth} clientHeight = {this.state.clientHeight}/>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.clientWidth} controlBarHeight={controlBarHeight}/>
+          controlBarWidth={this.state.controlBarWidth}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.clientWidth} controlBarHeight={controlBarHeight}
+          controlBarWidth={this.state.controlBarWidth}
           playerState={this.state.playerState}/>
       </div>
     );

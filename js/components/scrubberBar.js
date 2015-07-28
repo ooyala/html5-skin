@@ -7,12 +7,12 @@ var ScrubberBar = React.createClass({
     return {
       startingPlayheadX: 0,
       scrubbingPlayheadX: 0,
-      currentPlayhead: 0,
-      scrubbing: false
+      currentPlayhead: 0
     };
   },
 
   handlePlayheadMouseDown: function(evt) {
+    this.props.controller.beginSeeking();
     this.getDOMNode().parentNode.addEventListener("mousemove", this.handlePlayheadMouseMove);
     // attach a mouseup listener to the document for usability, otherwise scrubbing
     // breaks if your cursor leaves the player element
@@ -20,13 +20,12 @@ var ScrubberBar = React.createClass({
     // we enter the scrubbing state to prevent constantly seeking while dragging
     // the playhead icon
     this.setState({
-      scrubbing: true,
       startingPlayheadX: evt.screenX
     });
   },
 
   handlePlayheadMouseMove: function(evt) {
-    if (this.state.scrubbing) {
+    if (this.props.seeking) {
       var scrubberWidth = evt.target.parentNode.clientWidth;
       this.setState({
         scrubbingPlayheadX: evt.screenX
@@ -47,7 +46,6 @@ var ScrubberBar = React.createClass({
     document.removeEventListener("mouseup", this.handlePlayheadMouseUp, true);
     this.props.controller.seek(newPlayheadTime);
     this.setState({
-      scrubbing: false,
       currentPlayhead: newPlayheadTime
     });
   },
@@ -65,10 +63,19 @@ var ScrubberBar = React.createClass({
   },
 
   render: function() {
+    var controlBarHeight = 60;
+
+    // Liusha: Uncomment the following code when we need to support resizing control bar with threshold and scaling.
+    // if (this.props.controlBarWidth > 1280) {
+    //   controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280;
+    // } else if (this.props.controlBarWidth < 560) {
+    //   controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 560;
+    // } else {
+    //   controlBarHeight = this.props.skinConfig.controlBar.height;
+    // }
+
     scrubberBarStyle.scrubberBarSetting.bottom = (this.props.controlBarVisible ?
-      this.props.controlBarHeight : 0);
-    scrubberBarStyle.scrubberBarSetting.height = (this.props.controlBarVisible ?
-      "6px" : "4px");
+      controlBarHeight : 0);
     scrubberBarStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
       parseFloat(this.props.duration)) * 100 + "%";
     scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
@@ -78,7 +85,7 @@ var ScrubberBar = React.createClass({
     scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
 
     // if we're scrubbing, use the coordinates from the latest mouse events
-    if (this.state.scrubbing) {
+    if (this.props.seeking) {
       scrubberBarStyle.playheadStyle.left = scrubberBarStyle.playheadStyle.left +
         (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
     }

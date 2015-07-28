@@ -8,7 +8,7 @@ var PauseScreen = React.createClass({
     return {
       description: this.props.contentTree.description,
       controlBarVisible: true,
-      controlBarWidth: null //is set in componentDidMount
+      controlBarWidth: 0
     };
   },
 
@@ -16,6 +16,8 @@ var PauseScreen = React.createClass({
   // CSS doesn't support "truncate N lines" so we need to do DOM width
   // calculations to figure out where to truncate the description
   componentDidMount: function() {
+    // Make sure component resize correctly after switch to fullscreen/inline screen
+    window.addEventListener('resize', this.handleResize);
 
     //need this to display fading pause button and dimming the screen
     pauseScreenStyle.pauseIcon.style.opacity = 0;
@@ -30,6 +32,12 @@ var PauseScreen = React.createClass({
       var descriptionNode = this.getDOMNode().getElementsByClassName("pauseScreen-description")[0];
       var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
       this.setState({description: shortDesc});
+    }
+  },
+
+  handleResize: function(e) {     
+    if (this.isMounted()) {
+      this.setState({controlBarWidth: this.getDOMNode().clientWidth});
     }
   },
 
@@ -52,8 +60,7 @@ var PauseScreen = React.createClass({
     var infoStyle = screenStyle.infoPanel;
 
     // Accent Color
-    pauseStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.accentColor;
-    infoStyle.style.color = this.props.skinConfig.accentColor;
+    pauseStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.pauseScreen.PauseIconStyle.color;
 
     // PlayButton position, defaulting to centered
     if (this.props.skinConfig.pauseScreen.showPauseIcon) {
@@ -96,10 +103,7 @@ var PauseScreen = React.createClass({
         infoStyle.description.style.float = "right";
       }
     }
-
-    //Fill in all the dynamic style values we need
-    var controlBarHeight = 32;
-
+    
     return (
       <div onMouseUp={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>
@@ -109,9 +113,9 @@ var PauseScreen = React.createClass({
           {descriptionMetadata}
         </div>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
+          controlBarWidth={this.state.controlBarWidth}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
+          controlBarWidth={this.state.controlBarWidth}
           playerState={this.state.playerState} />
       </div>
     );

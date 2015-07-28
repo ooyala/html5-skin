@@ -52,7 +52,8 @@ var startScreenStyle = {
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
-      transition: "opacity .25s ease-in-out"
+      transition: "opacity .25s ease-in-out",
+      "cursor": "pointer" 
     }
   }
 };
@@ -96,7 +97,8 @@ var pauseScreenStyle = {
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
-      transition: "font 1s, opacity 1s"
+      transition: "font 1s, opacity 1s",
+      "cursor": "pointer" 
     }
   },
   fading: {
@@ -140,7 +142,7 @@ var endScreenStyle = {
         whiteSpace: "nowrap",
         overflow: "hidden",
         textOverflow: "ellipsis",
-        color: "inherit"
+        color: "white"
       }
     },
     description: {
@@ -148,7 +150,7 @@ var endScreenStyle = {
         fontSize: "24",
         maxWidth: "70%",
         overflow: "visible",
-        color: "inherit"
+        color: "white" 
       }
     }
   },
@@ -161,19 +163,20 @@ var endScreenStyle = {
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
-      transition: "opacity .25s ease-in-out"
+      transition: "opacity .25s ease-in-out",
+      "cursor": "pointer"
     }
   }
 };
 
 var controlBarStyle = {
   controlBarSetting: {
-    "background": "rgba(48, 48, 48, 0.8)",
+    "background": "rgba(0, 0, 0, 0.3)",
     "width": "100%",
     "top": "100%",
     "position": "absolute",
-    "padding": 0,
     "margin": 0,
+    "fontSize": "18px",
     "listStyle": "none",
     "display": "flex",
     "flexFlow": "row nowrap",
@@ -189,10 +192,11 @@ var controlBarStyle = {
     "height": "100%",
     "color": "rgba(255, 255, 255, 0.6)",
     "fontWeight": "bold",
-    "fontSize": "18",
+    "fontSize": "18px",
     "textAlign": "center",
-    "paddingLeft": "8px",
-    "paddingRight": "8px"
+    "paddingLeft": "7.5px",
+    "paddingRight": "7.5px",
+    "cursor": "pointer"
   },
 
   durationIndicatorSetting: {
@@ -200,11 +204,14 @@ var controlBarStyle = {
     "color": "#ffffff",
     "opacity": 1,
     "fontSize": 14,
-    "textAlign": "left",
-    "flex": 1
+    "textAlign": "left"
   },
 
   iconSetting: {
+  },
+
+  flexibleSpace: {
+    "flex": 1
   },
 
   liveItemStyle: {
@@ -237,27 +244,25 @@ var controlBarStyle = {
 
   volumeBarStyle: {
     "display": "inline-block",
-    "height": "12px",
-    "width": "4px",
-    "paddingRight": "2px",
     "backgroundClip": "content-box",
     "position": "relative",
-    "top": "-3px"
+    "width": "4px",
+    "height": "18px",
+    "paddingRight": "3px"
   },
 
   watermarkImageStyle: {
-    position: "relative",
-    height: "50%",
-    top: "25%"
+    "position": "relative",
+    "height": "18px",
+    "top": "21px",
   }
-
 };
 
 var scrubberBarStyle = {
   scrubberBarSetting: {
     "background": "#afafaf",
     "width": "100%",
-    "height": "6px",
+    "height": "5px",
     "padding": 0,
     "margin": 0,
     "-webkit-user-select": "none",
@@ -443,7 +448,6 @@ var discoveryScreenStyle = {
   panelStyle: {
     position: "absolute",
     top: "50%",
-    bottom: "32px",
     backgroundColor: "#444444",
     left: 0,
     right: 0,

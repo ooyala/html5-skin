@@ -5,16 +5,37 @@
 var AdScreen = React.createClass({
   getInitialState: function() {
     return {
-      controlBarVisible: true
+      controlBarVisible: true,
+      controlBarWidth: 0
     };
   },
 
   componentDidMount: function () {
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+
+    // Make sure component resize correctly after switch to fullscreen/inline screen
+    window.addEventListener('resize', this.handleResize);
+  },
+
+  handleResize: function(e) {
+    if (this.isMounted()) {
+      this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+    }
+  },
+
+  openUrl: function(url) {
+    if (url === null) { 
+      return; 
+    }
+    window.open(url);
   },
 
   handlePlayerMouseUp: function() {
-    // pause or play the video if the skin is clicked
+    console.log("AdScreen clicked!!!!!!!!!");
+    if (this.props.playerState ===  STATE.PLAYING) {
+      var clickThroughUrl = this.props.currentAdsInfo.currentAdItem.clickUrl;
+      this.openUrl(clickThroughUrl);
+    }
     this.props.controller.togglePlayPause();
   },
 
@@ -27,20 +48,17 @@ var AdScreen = React.createClass({
   },
 
   render: function() {
-    //Fill in all the dynamic style values we need
-    var controlBarHeight = 32;
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
         onMouseUp={this.handlePlayerMouseUp} style={defaultScreenStyle.style}>
         
-        <AdPanel 
-        {...this.props} />
+        <AdPanel {...this.props} />
 
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
+          controlBarWidth={this.state.controlBarWidth} />
         
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
+          controlBarWidth={this.state.controlBarWidth}
           playerState={this.props.playerState} />
       </div>
     );
