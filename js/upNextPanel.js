@@ -16,7 +16,7 @@ var UpNextPanel = React.createClass({
   },
 
   componentDidMount: function() {
-    var descriptionNode = this.getDOMNode().getElementsByClassName("content-description")[0];
+    var descriptionNode = this.refs.ContentDescription.getDOMNode();
     var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.contentDescription);
     this.setState({contentDescription: shortDesc});
   },
@@ -61,7 +61,6 @@ var UpNextPanel = React.createClass({
     var contentTile = this.props.upNextInfo.upNextData.name;
 
     var contentDescriptionStyle = upNextPanelStyle.contentDescriptionStyle;
-    //var contentDescription = this.props.upNextInfo.upNextData.description;
     
     var dismissButtonStyle = upNextPanelStyle.dismissButtonStyle;
     var dismissButtonTextStyle = upNextPanelStyle.dismissButtonTextStyle;
@@ -83,7 +82,7 @@ var UpNextPanel = React.createClass({
 
           </div>
 
-          <div className="content-description" style={contentDescriptionStyle}>
+          <div ref="ContentDescription" style={contentDescriptionStyle}>
             {this.state.contentDescription}
           </div>
         </div>
