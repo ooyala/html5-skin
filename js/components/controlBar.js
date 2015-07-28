@@ -3,13 +3,6 @@
 *********************************************************************/
 
 var ControlBar = React.createClass({
-  getInitialState: function() {
-    return {
-      muted: false,
-      oldVolume: 1.0,
-      volume: this.props.controller.state.volume
-    };
-  },
 
   handleControlBarMouseUp: function(evt) {
     evt.stopPropagation();
@@ -20,27 +13,7 @@ var ControlBar = React.createClass({
   },
 
   handleMuteClick: function() {
-    var newVolumeSettings = {};
-    if (!this.state.muted) {
-      this.props.controller.setVolume(0);
-      //if we're muting, save the current volume so we can
-      //restore it when we un-mute
-      newVolumeSettings = {
-        oldVolume: this.state.volume,
-        volume: 0,
-        muted: !this.state.muted
-      };
-    }
-    else {
-      //restore the volume to the previous setting
-      this.props.controller.setVolume(this.state.oldVolume);
-      newVolumeSettings = {
-        oldVolume: 0,
-        volume: this.state.oldVolume,
-        muted: !this.state.muted
-      };
-    }
-    this.setState(newVolumeSettings);
+    this.props.controller.handleMuteClick();
   },
 
   handlePlayClick: function() {
@@ -54,10 +27,6 @@ var ControlBar = React.createClass({
   handleVolumeClick: function(evt) {
     var newVolume = parseFloat(evt.target.dataset.volume);
     this.props.controller.setVolume(newVolume);
-    this.setState({
-      volume: newVolume,
-      muted: false
-    });
   },
 
   handleDiscoveryClick: function() {
@@ -71,7 +40,7 @@ var ControlBar = React.createClass({
   handleClosedCaptionClick: function() {
     this.props.controller.toggleClosedCaptionScreen();
   },
-  
+
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
     evt.target.style.color = "rgba(255, 255, 255, 1.0)";
@@ -83,26 +52,25 @@ var ControlBar = React.createClass({
 
   populateControlBar: function() {
     if (this.props.playerState == STATE.PLAYING) {
-        playClass = "icon icon-pause";
+      playClass = "icon icon-pause";
     } else if (this.props.playerState == STATE.END) {
-        playClass = "icon icon-upnext-replay";
+      playClass = "icon icon-upnext-replay";
     } else {
-        playClass = "icon icon-play";
+      playClass = "icon icon-play";
     }
-    var muteClass = (this.state.muted) ?
+    var muteClass = (this.props.controller.state.muted) ?
       "icon icon-volume-desktop" : "icon icon-volume-desktop";
-    var fullscreenClass = (this.props.fullscreen) ?
+
+    var fullscreenClass = (this.props.controller.state.fullscreen) ?
       "icon icon-resize-small" : "icon icon-resize-large";
 
     var totalTime = 0;
-    if (this.props.contentTree && this.props.contentTree.duration) {
-      totalTime = Utils.formatSeconds(this.props.contentTree.duration / 1000);
-    }
+    totalTime = Utils.formatSeconds(this.props.duration);
 
     var volumeBars = [];
     for (var i=0; i<10; i++) {
       //create each volume tick separetely
-      var turnedOn = this.state.volume >= (i+1) / 10;
+      var turnedOn = this.props.controller.state.volumeState.volume >= (i+1) / 10;
       var singleBarStyle = Utils.clone(controlBarStyle.volumeBarStyle);
       singleBarStyle.backgroundColor = (turnedOn ?
         "rgba(67, 137, 255, 0.6)" : "rgba(255, 255, 255, 0.6)");
@@ -110,7 +78,6 @@ var ControlBar = React.createClass({
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
         onClick={this.handleVolumeClick}></span>);
     }
-
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.url;
     var watermarkImageStyle = controlBarStyle.watermarkImageStyle;
     // 16 is 50% of control bar height right now. Will be fetched from config file later
@@ -162,23 +129,23 @@ var ControlBar = React.createClass({
     var controlBarSetting = this.props.skinConfig.controlBar;
     for (i=0; i < controlBarSetting.items.length; i++) {
       // filter out unrecognized button names
-      if (typeof controlItemTemplates[controlBarSetting.items[i]] === "undefined") {
+      if (typeof controlItemTemplates[controlBarSetting.items[i].name] === "undefined") {
         continue;
       }
 
       //do not show CC button if no CC available
-      if (!this.props.controller.state.ccOptions.availableLanguages && (controlBarSetting.items[i] === "closedCaption")){
+      if (!this.props.controller.state.ccOptions.availableLanguages && (controlBarSetting.items[i].name === "closedCaption")){
         continue;
       }
 
       // Not sure what to do when there are multi streams
-      if (controlBarSetting.items[i] === "live" &&
+      if (controlBarSetting.items[i].name === "live" &&
           (typeof this.props.authorization === 'undefined' ||
           !(this.props.authorization.streams[0].is_live_stream))) {
         continue;
       }
 
-      controlBarItems.push(controlItemTemplates[controlBarSetting.items[i]]);
+      controlBarItems.push(controlItemTemplates[controlBarSetting.items[i].name]);
     }
     return controlBarItems;
   },
