@@ -5,7 +5,8 @@
 var UpNextScreen = React.createClass({
   getInitialState: function() {
     return {
-      controlBarVisible: true
+      controlBarVisible: true,
+      controlBarWidth: 0
     };
   },
 
