@@ -52,7 +52,8 @@ var startScreenStyle = {
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
-      transition: "opacity .25s ease-in-out"
+      transition: "opacity .25s ease-in-out",
+      "cursor": "pointer" 
     }
   }
 };
@@ -96,7 +97,8 @@ var pauseScreenStyle = {
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
-      transition: "font 1s, opacity 1s"
+      transition: "font 1s, opacity 1s",
+      "cursor": "pointer" 
     }
   },
   fading: {
@@ -140,7 +142,7 @@ var endScreenStyle = {
         whiteSpace: "nowrap",
         overflow: "hidden",
         textOverflow: "ellipsis",
-        color: "inherit"
+        color: "white"
       }
     },
     description: {
@@ -148,7 +150,7 @@ var endScreenStyle = {
         fontSize: "24",
         maxWidth: "70%",
         overflow: "visible",
-        color: "inherit"
+        color: "white" 
       }
     }
   },
@@ -161,7 +163,8 @@ var endScreenStyle = {
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
-      transition: "opacity .25s ease-in-out"
+      transition: "opacity .25s ease-in-out",
+      "cursor": "pointer"
     }
   }
 };
@@ -192,7 +195,8 @@ var controlBarStyle = {
     "fontSize": "18px",
     "textAlign": "center",
     "paddingLeft": "7.5px",
-    "paddingRight": "7.5px"
+    "paddingRight": "7.5px",
+    "cursor": "pointer"
   },
 
   durationIndicatorSetting: {
