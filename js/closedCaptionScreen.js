@@ -10,7 +10,8 @@
 var ClosedCaptionScreen = React.createClass({
   getInitialState: function() {
     return {
-      controlBarVisible: true
+      controlBarVisible: true,
+      controlBarWidth: 0
     };
   },
 
@@ -23,6 +24,7 @@ var ClosedCaptionScreen = React.createClass({
   },
 
   render: function() {
+    
     return (
       <div style={{height: "100%", width: "100%"}}>
         <ClosedCaptionPanel {...this.props} ccOptions = {this.props.ccOptions}/>
