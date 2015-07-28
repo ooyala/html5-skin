@@ -913,30 +913,16 @@ var upNextPanelStyle = {
     fontWeight: "bold"
   },
 
-  dismissButtonStyle: {
+  closeButton: {
     position: "absolute",
-    right: "2%",
-    top: "15%",
-    height: "40%",
-    width: "13%",
-    fontSize: "10",
-    backgroundColor: "black",
-    "border": "1px solid white",
-    "border-radius": "5px"
-  },
-
-  dismissButtonTextStyle: {
-    position: "absolute",
-    top: "50%",
-    width: "100%",
-    fontSize: "20",
+    top:"10px",
+    right: "10px",
+    height: "10px",
+    width: "10px",
+    backgroundColor: "transparent",
     color: "white",
-    "cursor": "pointer",
-
-    "text-align": "center",
-    "-webkit-transform": "translateY(-50%)",
-    "-ms-transform": "translateY(-50%)",
-    "transform": "translateY(-50%)",
+    textAlign: "center",
+    fontSize: "10px"
   },
 
   upNextCountDownStyle: {

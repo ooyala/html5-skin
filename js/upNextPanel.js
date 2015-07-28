@@ -20,9 +20,9 @@ var UpNextPanel = React.createClass({
     var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.contentDescription);
     this.setState({contentDescription: shortDesc});
   },
-
-  handleDismissButtonClick: function(event) {
-    console.log("Up next panel dismiss button clicked");
+   
+  closeUpNextPanel: function(event) {
+    console.log("Up next panel close button clicked");
     event.stopPropagation(); // W3C
     event.cancelBubble = true; // IE
     this.props.controller.upNextDismissButtonClicked();
@@ -87,13 +87,9 @@ var UpNextPanel = React.createClass({
             {this.state.contentDescription}
           </div>
         </div>
-
-        <div style={dismissButtonStyle} onClick={this.handleDismissButtonClick}>
-          <div style={dismissButtonTextStyle}>
-           Dismiss
-          </div>
-        </div>
-
+        
+        <div onClick={this.closeUpNextPanel} style={upNextPanelStyle.closeButton} className="icon icon-close"></div>
+        
       </div>
     );
   }
