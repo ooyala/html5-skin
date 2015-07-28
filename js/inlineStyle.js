@@ -182,7 +182,7 @@ var controlBarStyle = {
     "listStyle": "none",
     "display": "flex",
     "flexFlow": "row nowrap",
-    "justifyContent": "flex-end",
+    "justifyContent": "flex-start",
     "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
