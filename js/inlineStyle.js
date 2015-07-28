@@ -904,11 +904,13 @@ var upNextPanelStyle = {
   contentDescriptionStyle: {
     position: "absolute",
     bottom: "0",
-    left: "0",
+    left: "15px",
     width: "70%",
-    height: "60%",
-    color: "white",
-    fontSize: 10,
+    height: "40px",
+    marginTop: "10px",
+    color: "rgba(255, 255, 255, 0.6)",
+    fontSize: 12,
+    fontWeight: "bold"
   },
 
   dismissButtonStyle: {
