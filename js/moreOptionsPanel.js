@@ -11,6 +11,13 @@ var MoreOptionsPanel = React.createClass({
     // Fade-in & bottom-up animation
     MoreOptionsScreenStyle.buttonListStyle.bottom = "50%";
     MoreOptionsScreenStyle.buttonListStyle.opacity = "1";
+
+    if (Utils.isSafari()){
+      MoreOptionsScreenStyle.buttonListStyle.display = "-webkit-flex";
+    }
+    else {
+      MoreOptionsScreenStyle.buttonListStyle.display = "flex";
+    }
   },
 
   closeMoreOptionsScreen: function() {

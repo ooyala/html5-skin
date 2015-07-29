@@ -10,6 +10,17 @@
 var SharePanel = React.createClass({
   tabs: {SHARE: "share", EMBED: "embed", EMAIL: "email"},
 
+  componentDidMount: function(){
+    if (Utils.isSafari()){
+      shareScreenStyle.containerStyle.display = "-webkit-flex";
+      shareScreenStyle.tabRowStyle.display = "-webkit-flex";
+    }
+    else {
+      shareScreenStyle.containerStyle.display = "flex";
+      shareScreenStyle.tabRowStyle.display = "flex";
+    }
+  },
+
   getInitialState: function() {
     return {
       activeTab: this.tabs.SHARE
