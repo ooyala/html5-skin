@@ -107,7 +107,7 @@ var PauseScreen = React.createClass({
     return (
       <div onMouseUp={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>
-        <div className={this.props.pauseAnimationDisabled === true ? null : pauseClass} style={pauseStyle} aria-hidden="true"></div>
+        <span className={this.props.pauseAnimationDisabled === true ? null : pauseClass} style={pauseStyle} aria-hidden="true"></span>
         <div style={screenStyle.infoPanel.style}>
           {titleMetadata}
           {descriptionMetadata}
