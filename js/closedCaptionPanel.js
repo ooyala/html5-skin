@@ -21,11 +21,10 @@ var ClosedCaptionPanel = React.createClass({
     //height of the panel that should fit the table
     var panelHeight = clientHeight - controlBarHeight - scrubberBarHeight - CCPreviewPanelHeight - captionHeight - innerPanelPaddingHeight - switchHeight;
     //height of a table row
-    var tabelRowHeight = 4/3*parseInt(closedCaptionScreenStyles.itemSelectedStyle.fontSize) + 1*closedCaptionScreenStyles.itemStyle.marginTop + 2*closedCaptionScreenStyles.itemSelectedStyle.padding;
+    var tableRowHeight = 2*parseInt(closedCaptionScreenStyles.itemSelectedStyle.fontSize) + 1*closedCaptionScreenStyles.itemStyle.marginTop + 2*closedCaptionScreenStyles.itemSelectedStyle.padding;
 
-    var numRows = Math.floor(panelHeight/tabelRowHeight);
+    var numRows = Math.floor(panelHeight/tableRowHeight);
 
-    console.log("xenia", captionHeight);
     return numRows;
   },
 
@@ -37,7 +36,6 @@ var ClosedCaptionPanel = React.createClass({
   //   var scrubberBarHeight = 1*scrubberBarStyle.scrubberBarSetting.height + (1*scrubberBarStyle.playheadStyle.height - 1*scrubberBarStyle.scrubberBarSetting.height)/2;
 
   //   closedCaptionScreenStyles.CCPreviewPanelStyle.bottom = controlBarHeight + scrubberBarHeight;
-  //   console.log("xenia bottom",closedCaptionScreenStyles.CCPreviewPanelStyle.bottom);
 
   //   closedCaptionScreenStyles.innerPanelStyle.padding = 35 * scale;
 
