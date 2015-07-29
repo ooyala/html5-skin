@@ -464,13 +464,14 @@ var discoveryScreenStyle = {
 
   panelStyle: {
     position: "absolute",
-    top: "50%",
-    backgroundColor: "#444444",
+    bottom: "60px",
+    backgroundColor: "rgba(0,0,0, 0.7)",
     left: 0,
     right: 0,
     display: "flex",
     flexDirection: "row",
     WebkitFlexDirection: "row"
+    height: "255px"
   },
 
   promoStyle: {
@@ -485,7 +486,7 @@ var discoveryScreenStyle = {
 
   panelTitleBarStyle: {
     position: "absolute",
-    backgroundColor: "#444444",
+    backgroundColor: "transparent",
     left: 0,
     right: 0,
     height: "20%",
@@ -493,36 +494,37 @@ var discoveryScreenStyle = {
     display: "inline-block"
   },
 
-
   panelTitleTextStyle: {
     position: "absolute",
-    left: "25px",
-    fontSize: "20",
+    left: "40px",
+    fontSize: "32",
+    fontWeight: "bold",
     color: "white",
     margin: "1%",
-    display: "inline-block"
+    display: "inline-block",
+    marginBottom: "35px",
+    opacity: 1
   },
 
   discoveryToasterContainerStyle: {
     position: "absolute",
-    backgroundColor: "#444444",
+    backgroundColor: "transparent",
     top: "20%",
     height: "70%",
-    width: "100%"
+    width: "100%",
+    overflow: "hidden"
   },
 
   discoveryToasterStyle: {
     position: "absolute",
-    backgroundColor: "#444444",
     top: "0",
     height: "90%",
-    width: "2000px",
+    width: "100%",
     right: 0,
     left: 25,
     display: "flex",
     flexDirection: "row",
     WebkitFlexDirection: "row",
-    transition: "0.5s"
   },
 
   discoveryChevronLeftButtonContainer: {
@@ -573,60 +575,62 @@ var discoveryScreenStyle = {
 
   discoveryContentBlockStyle: {
     position: "relative",
-    width: "100px",
-    height: "95%",
-    margin: "10px",
-    backgroundColor: "#444444"
+    marginLeft: "30px",
+    marginRight: "30px",
+    marginTop: "35px",
+    height: "120px",
+    width: "214px",
+    "flex-shrink": 0
+  },
+  
+  discoveryImageWrapperStyle: {
+    position: "relative",
+    height: "120px",
+    width: "214px"
   },
 
   discoveryImageStyle: {
     position: "absolute",
     width: "100%",
-    height: "75%"
+    height: "100%"
   },
 
   discoveryContentTitleStyle: {
-    position: "absolute",
-    top: "75%",
+    position: "relative",
     color: "white",
-    fontSize: "10"
+    fontSize: "22",
+    fontWeight: "regular",
+    textOverflow: "ellipsis",
+    width: "214px",
+    height: "31px",
+    overflow: "hidden",
+    whiteSpace: "nowrap"    
   },
 
   discoveryCountDownWrapperStyle: {
     position: "absolute",
-    top: "37.5%",
+    top: "50%",
     left: "50%",
-    WebkitTransform: "translate(-50%, -37.5%)",
-    transform: "translate(-50%, -37.5%)"
+    WebkitTransform: "translate(-50%, -45%)",
+    transform: "translate(-50%, -45%)"
   },
 
   discoveryCountDownStyle: {
-    width: "38px",
-    height: "38px"
+    width: "75px",
+    height: "75px"
   },
 
   discoveryCountDownIconStyle: {
     position: "absolute",
-    top: "37.5%",
+    top: "50%",
     left: "50%",
-    WebkitTransform: "translate(-50%, -37.5%)",
-    transform: "translate(-50%, -37.5%)",
-    "line-height":"32px",
+    WebkitTransform: "translate(-50%, -57%)",
+    transform: "translate(-50%, -57%)",
+    "line-height":"40px",
     "z-index":10005,
-    "color":"white"
+    "color":"white",
+    fontSize: 25
   },
-
-  closeButton: {
-    position: "absolute",
-    top:0,
-    right: 0,
-    height: "25px",
-    width: "25px",
-    backgroundColor: "#4389ff",
-    color: "white",
-    textAlign: "center",
-    lineHeight: "25px"
-  }
 };
 
 var adScreenStyle = {
