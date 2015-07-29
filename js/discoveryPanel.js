@@ -17,7 +17,7 @@ var DiscoveryPanel = React.createClass({
   handleLeftButtonClick: function() {
     // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
-    if(this.itemsToShowOnLeftSide(newDiscoveryToasterLeftOffset)) {
+    if(this.hasItemsToShowOnLeftSide(newDiscoveryToasterLeftOffset)) {
       newDiscoveryToasterLeftOffset += 400;
       if(newDiscoveryToasterLeftOffset > 25) {
         newDiscoveryToasterLeftOffset = 25;
@@ -30,7 +30,7 @@ var DiscoveryPanel = React.createClass({
   handleRightButtonClick: function() {
     // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
-    if(this.itemsToShowOnRightSide(newDiscoveryToasterLeftOffset)) {
+    if(this.hasItemsToShowOnRightSide(newDiscoveryToasterLeftOffset)) {
       var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
       var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
       // rightOffset = right border of discovery toaster container - right border of discovery toaster
@@ -47,7 +47,7 @@ var DiscoveryPanel = React.createClass({
   },
 
   shouldShowLeftButton: function(newState) {
-    if(this.itemsToShowOnLeftSide(newState.discoveryToasterLeftOffset)) {
+    if(this.hasItemsToShowOnLeftSide(newState.discoveryToasterLeftOffset)) {
       if(newState.discoveryToasterLeftOffset !== 25) {
         return true;
       }
@@ -56,7 +56,7 @@ var DiscoveryPanel = React.createClass({
   },
 
   shouldShowRightButton: function(newState) {
-    if(this.itemsToShowOnRightSide(newState.discoveryToasterLeftOffset)) {
+    if(this.hasItemsToShowOnRightSide(newState.discoveryToasterLeftOffset)) {
       var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
       var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
       // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
@@ -70,13 +70,13 @@ var DiscoveryPanel = React.createClass({
     return false;
   },
 
-  itemsToShowOnLeftSide: function(newLeftOffset) {
+  hasItemsToShowOnLeftSide: function(newLeftOffset) {
     var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
     var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
     return (toasterContainerWidth <= toasterWidth) || (newLeftOffset < 0);
   },
 
-  itemsToShowOnRightSide: function(newLeftOffset) {
+  hasItemsToShowOnRightSide: function(newLeftOffset) {
     var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
     var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
     var rightOffset = toasterContainerWidth  - (newLeftOffset + toasterWidth);
