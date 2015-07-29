@@ -54,24 +54,31 @@ var EndScreen = React.createClass({
     var repeatStyle = screenStyle.repeatButton.style;
     var posterStyle = screenStyle.posterStyle;
 
-    repeatStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.endScreen.replayIconStyle.color;
+    repeatStyle.color = this.props.skinConfig.endScreen.replayIconStyle.color;
 
-    // metadata visibility
-    var titleMetadata;
-    var descriptionMetadata;
+    // ReplayButton position, defaulting to centered
+    if (this.props.skinConfig.endScreen.showReplayButton) {
+      repeatStyle.top = "50%";
+      repeatStyle.left = "50%";
+      if (this.props.skinConfig.endScreen.replayButtonPosition.toLowerCase().indexOf("top") > -1)
+        repeatStyle.top = "15%";
+      if (this.props.skinConfig.endScreen.replayButtonPosition.toLowerCase().indexOf("bottom") > -1)
+        repeatStyle.top = "80%";
+      if (this.props.skinConfig.endScreen.replayButtonPosition.toLowerCase().indexOf("left") > -1)
+        repeatStyle.left = "10%";
+      if (this.props.skinConfig.endScreen.replayButtonPosition.toLowerCase().indexOf("right") > -1)
+        repeatStyle.left = "90%";
+    }
+    else {
+      repeatStyle.display = "none";
+    }
 
-    // Default configuration
-    posterStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
     return (
       <div onMouseOver={this.showControlBar}
              onMouseUp={this.handlePlayerMouseUp}
              style={{height: "100%", width: "100%"}}>
       <div style={screenStyle.posterStyle}></div>
       <span className={repeatClass} style={repeatStyle} aria-hidden="true" onClick={this.handleClick}></span>
-      <div style={screenStyle.infoPanel.style} ref="endScreenInfoPanel">
-        {titleMetadata}
-        {descriptionMetadata}
-      </div>
       <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
         controlBarWidth={this.state.controlBarWidth} />
       <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}

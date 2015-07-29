@@ -125,41 +125,15 @@ var endScreenStyle = {
     position: "absolute",
     backgroundSize: "contain",
     backgroundRepeat: "no-repeat",
-    backgroundPosition: "center"
-  },
-  infoPanel: {
-    style: {
-      position: "absolute",
-      top: "5%",
-      left: "5%",
-      width: "100%"
-    },
-    title: {
-      style: {
-        fontSize: "32px",
-        fontWeight: "bold",
-        maxWidth: "70%",
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        color: "white"
-      }
-    },
-    description: {
-      style: {
-        fontSize: "24",
-        maxWidth: "70%",
-        overflow: "visible",
-        color: "white" 
-      }
-    }
+    backgroundPosition: "center",
+    background: "linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%)"
   },
   repeatButton: {
     icon: "icon icon-upnext-replay",
     style: {
       top: "50%",
       left: "50%",
-      fontSize: "18",
+      fontSize: "75px",
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
