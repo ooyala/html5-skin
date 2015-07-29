@@ -262,7 +262,7 @@ var scrubberBarStyle = {
   scrubberBarSetting: {
     "background": "#afafaf",
     "width": "100%",
-    "height": "5px",
+    "height": "5",
     "padding": 0,
     "margin": 0,
     "-webkit-user-select": "none",
@@ -288,7 +288,7 @@ var scrubberBarStyle = {
   playheadStyle: {
     "background": "#ffffff",
     "width": "10px",
-    "height": "10px",
+    "height": "10",
     "borderStyle": "solid",
     "borderColor": "white",
     "borderWidth": "1px",
@@ -708,7 +708,7 @@ var closedCaptionScreenStyles ={
   },
 
   captionStyle: {
-    fontSize: "16",
+    fontSize: "16pt",
     fontFamily: "Roboto Condensed",
     color: "#ffffff",
     fontWeight: "bold"
@@ -719,7 +719,7 @@ var closedCaptionScreenStyles ={
     marginTop: "17.5",
     height: "14",
     width: "70",
-    fontSize: "10",
+    fontSize: "10pt",
     color: "#FFFFFF",
     position: "relative"
   },
@@ -772,7 +772,7 @@ var closedCaptionScreenStyles ={
   },
 
   itemStyle: {
-    fontSize: "11",
+    fontSize: "11pt",
     width: "70",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
@@ -786,8 +786,9 @@ var closedCaptionScreenStyles ={
   },
 
   lastColItemStyle: {
-    fontSize: "11",
+    fontSize: "11pt",
     width: "70",
+    minwidth: "50",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
     overflow: "hidden",
@@ -800,7 +801,7 @@ var closedCaptionScreenStyles ={
   },
 
   itemSelectedStyle: {
-    fontSize: "11",
+    fontSize: "11pt",
     width: "70",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
@@ -816,7 +817,7 @@ var closedCaptionScreenStyles ={
   },
 
   lastColItemSelectedStyle:{
-    fontSize: "11",
+    fontSize: "11pt",
     width: "70",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
@@ -854,7 +855,7 @@ var closedCaptionScreenStyles ={
     style: {
       top: "50%",
       left: "50%",
-      fontSize: "16",
+      fontSize: "16pt",
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
@@ -867,7 +868,7 @@ var closedCaptionScreenStyles ={
     style: {
       top: "50%",
       left: "50%",
-      fontSize: "16",
+      fontSize: "16pt",
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
@@ -895,7 +896,7 @@ var closedCaptionScreenStyles ={
     width: "100%",
     backgroundColor: "rgba(0,0,0,0.5)",
     position: "absolute",
-    bottom: "60",
+    bottom: "67.5",
     left: "0",
     height: "35",
     borderTop: "1px solid grey",
@@ -904,17 +905,17 @@ var closedCaptionScreenStyles ={
 
   CCPreviewCaptionStyle: {
     color: "white",
-    fontSize: "6",
+    fontSize: "6pt",
     fontFamily: "Roboto",
     marginLeft: "17.5",
-    marginBottom: "3.66",
-    marginTop: "3.66",
+    marginBottom: "2.75",
+    marginTop: "2.75",
   },
 
   CCPreviewTextStyle: {
     marginTop: "0",
     color: "white",
-    fontSize: "12",
+    fontSize: "12pt",
     fontWeight: "bold",
     fontFamily: "Verdana",
     marginLeft: "17.5"

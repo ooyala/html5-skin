@@ -14,15 +14,18 @@ var ClosedCaptionPanel = React.createClass({
   calculateNumberOfRows: function(clientWidth, clientHeight, controlBarHeight){
     var switchHeight = 1*closedCaptionScreenStyles.switchStyle.height + 1*closedCaptionScreenStyles.switchStyle.marginTop;
     var CCPreviewPanelHeight = 1*closedCaptionScreenStyles.CCPreviewPanelStyle.height;
-    var captionHeight = 4/3*closedCaptionScreenStyles.captionStyle.fontSize;
+    var captionHeight = 4/3*parseInt(closedCaptionScreenStyles.captionStyle.fontSize);
     var innerPanelPaddingHeight = 2*closedCaptionScreenStyles.innerPanelStyle.padding;
+    var scrubberBarHeight = 1*scrubberBarStyle.scrubberBarSetting.height + (1*scrubberBarStyle.playheadStyle.height - 1*scrubberBarStyle.scrubberBarSetting.height)/2;
 
     //height of the panel that should fit the table
-    var panelHeight = clientHeight - controlBarHeight - CCPreviewPanelHeight - captionHeight - innerPanelPaddingHeight - switchHeight;
+    var panelHeight = clientHeight - controlBarHeight - scrubberBarHeight - CCPreviewPanelHeight - captionHeight - innerPanelPaddingHeight - switchHeight;
     //height of a table row
-    var tabelRowHeight = 4/3*closedCaptionScreenStyles.itemSelectedStyle.fontSize + 1*closedCaptionScreenStyles.itemStyle.marginTop + 2*closedCaptionScreenStyles.itemSelectedStyle.padding;
+    var tabelRowHeight = 4/3*parseInt(closedCaptionScreenStyles.itemSelectedStyle.fontSize) + 1*closedCaptionScreenStyles.itemStyle.marginTop + 2*closedCaptionScreenStyles.itemSelectedStyle.padding;
 
     var numRows = Math.floor(panelHeight/tabelRowHeight);
+
+    console.log("xenia", captionHeight);
     return numRows;
   },
 
@@ -31,25 +34,28 @@ var ClosedCaptionPanel = React.createClass({
   // setResponsiveStyle: function(clientWidth, controlBarHeight){
   //   var scale = Math.min(1, Math.max(clientWidth/1280, 0.3));
 
-  //   closedCaptionScreenStyles.CCPreviewPanelStyle.bottom = controlBarHeight;
+  //   var scrubberBarHeight = 1*scrubberBarStyle.scrubberBarSetting.height + (1*scrubberBarStyle.playheadStyle.height - 1*scrubberBarStyle.scrubberBarSetting.height)/2;
+
+  //   closedCaptionScreenStyles.CCPreviewPanelStyle.bottom = controlBarHeight + scrubberBarHeight;
+  //   console.log("xenia bottom",closedCaptionScreenStyles.CCPreviewPanelStyle.bottom);
 
   //   closedCaptionScreenStyles.innerPanelStyle.padding = 35 * scale;
 
-  //   closedCaptionScreenStyles.captionStyle.fontSize = 32 * scale;
+  //   closedCaptionScreenStyles.captionStyle.fontSize = 32 * scale + "pt";
 
   //   closedCaptionScreenStyles.switchStyle.marginTop = 35 * scale;
   //   closedCaptionScreenStyles.switchStyle.height = 28 * scale;
   //   closedCaptionScreenStyles.switchStyle.width = 140 * scale;
-  //   closedCaptionScreenStyles.switchStyle.fontSize = 20 * scale;
+  //   closedCaptionScreenStyles.switchStyle.fontSize = 20 * scale + "pt";
 
   //   closedCaptionScreenStyles.CCPreviewPanelStyle.height = 70 * scale;
 
-  //   closedCaptionScreenStyles.CCPreviewTextStyle.fontSize = 24 * scale;
+  //   closedCaptionScreenStyles.CCPreviewTextStyle.fontSize = 24 * scale + "pt";
   //   closedCaptionScreenStyles.CCPreviewTextStyle.marginLeft = closedCaptionScreenStyles.innerPanelStyle.padding;
 
-  //   closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize = 12 * scale;
+  //   closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize = 12 * scale + "pt";
   //   closedCaptionScreenStyles.CCPreviewCaptionStyle.marginLeft = closedCaptionScreenStyles.innerPanelStyle.padding;
-  //   closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop = 1/3*(closedCaptionScreenStyles.CCPreviewPanelStyle.height - 4/3*closedCaptionScreenStyles.CCPreviewTextStyle.fontSize-4/3*closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize);
+  //   closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop = 1/4*(closedCaptionScreenStyles.CCPreviewPanelStyle.height - 4/3*parseInt(closedCaptionScreenStyles.CCPreviewTextStyle.fontSize)-4/3*parseInt(closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize));
   //   closedCaptionScreenStyles.CCPreviewCaptionStyle.marginBottom = closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop;
 
   //   this.setResponsiveStyleCCLanguages(clientWidth);
@@ -58,7 +64,7 @@ var ClosedCaptionPanel = React.createClass({
   // setResponsiveStyleCCLanguages: function(clientWidth){
   //   var scale = Math.max(clientWidth/1280, 0.3);
 
-  //   closedCaptionScreenStyles.itemStyle.fontSize = 22 * scale;
+  //   closedCaptionScreenStyles.itemStyle.fontSize = 22 * scale + "pt";
   //   closedCaptionScreenStyles.itemStyle.padding = 3;
   //   closedCaptionScreenStyles.itemStyle.width = 140 * scale;
   //   closedCaptionScreenStyles.itemStyle.marginRight = 140 * scale - 2*closedCaptionScreenStyles.itemStyle.padding;
@@ -66,6 +72,7 @@ var ClosedCaptionPanel = React.createClass({
 
   //   closedCaptionScreenStyles.lastColItemStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
   //   closedCaptionScreenStyles.lastColItemStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
+  //   closedCaptionScreenStyles.lastColItemStyle.width = closedCaptionScreenStyles.itemStyle.width;
   //   closedCaptionScreenStyles.lastColItemStyle.marginRight = 0;
   //   closedCaptionScreenStyles.lastColItemStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
 
@@ -77,12 +84,13 @@ var ClosedCaptionPanel = React.createClass({
 
   //   closedCaptionScreenStyles.lastColItemSelectedStyle.fontSize = closedCaptionScreenStyles.lastColItemStyle.fontSize;
   //   closedCaptionScreenStyles.lastColItemSelectedStyle.padding = closedCaptionScreenStyles.lastColItemStyle.padding;
+  //   closedCaptionScreenStyles.lastColItemSelectedStyle.width = closedCaptionScreenStyles.itemSelectedStyle.width;
   //   closedCaptionScreenStyles.lastColItemSelectedStyle.marginRight = closedCaptionScreenStyles.lastColItemStyle.marginRight;
   //   closedCaptionScreenStyles.lastColItemSelectedStyle.marginTop = closedCaptionScreenStyles.lastColItemStyle.marginTop;
 
   //   closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.width = 50 * scale;
   //   closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.width = closedCaptionScreenStyles.tableLanguageContainerStyle.marginLeft = closedCaptionScreenStyles.tableLanguageContainerStyle.marginRight = closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.width;
-  //   closedCaptionScreenStyles.closedCaptionChevronLeftButton.style.fontSize = 32 * scale;
+  //   closedCaptionScreenStyles.closedCaptionChevronLeftButton.style.fontSize = 32 * scale + "pt";
   //   closedCaptionScreenStyles.closedCaptionChevronRightButton.style.fontSize = closedCaptionScreenStyles.closedCaptionChevronLeftButton.style.fontSize;
   //  },
 

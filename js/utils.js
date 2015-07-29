@@ -150,8 +150,5 @@ var Utils = {
 
   _isOverflow: function( item ) {
     return item.whenDoesNotFit && item.whenDoesNotFit == "moveToMoreOptions";
-  },
-
-
-
+  }
 };
