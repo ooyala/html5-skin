@@ -143,7 +143,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       if (duration - currentPlayhead <= timeToShow &&
           !this.state.upNextInfo.countDownCancelled &&
-          this.state.upNextInfo.upNextData !== null) {
+          this.state.upNextInfo.upNextData !== null && this.state.playerState === STATE.PLAYING) {
         this.state.screenToShow = SCREEN.UP_NEXT_SCREEN;
       }
     },

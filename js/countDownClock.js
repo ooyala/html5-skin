@@ -33,12 +33,10 @@ var CountDownClock = React.createClass({
       tmpFraction = 2 / this.props.timeToShow;
       tmpRemainSeconds = this.props.timeToShow;
     }
-    var tmpClockRadius = 16;
-    var tmpClockContainerWidth = 38;
-    if(this.countDownStyle) {
-      tmpClockRadius = parseInt(this.countDownStyle.width, 10)/2;
-      tmpClockContainerWidth = parseInt(this.countDownStyle.width, 10);
-    }
+
+    tmpClockRadius = parseInt(this.countDownStyle.width, 10)/2;
+    tmpClockContainerWidth = parseInt(this.countDownStyle.width, 10);
+
     return {
       clockRadius: tmpClockRadius,
       clockContainerWidth: tmpClockContainerWidth,
