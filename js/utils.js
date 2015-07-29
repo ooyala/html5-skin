@@ -65,6 +65,11 @@ var Utils = {
     return (parseInt(hours,10) > 0) ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
   },
 
+    //check if browser is Safari
+  isSafari: function () {
+      return !!window.navigator.userAgent.match(/AppleWebKit/);
+  },
+
 
   // Liusha: saved for resizing control bar
   getScaledControlBarHeight: function(controlBarWidth) {
@@ -151,7 +156,4 @@ var Utils = {
   _isOverflow: function( item ) {
     return item.whenDoesNotFit && item.whenDoesNotFit == "moveToMoreOptions";
   },
-
-
-
 };

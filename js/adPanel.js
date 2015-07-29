@@ -9,6 +9,14 @@
 */
 
 var AdPanel = React.createClass({
+  componentDidMount: function(){
+    if (Utils.isSafari()){
+      adScreenStyle.topBarStyle.display = "-webkit-flex";
+    }
+    else {
+      adScreenStyle.topBarStyle.display = "flex";
+    }
+  },
 
   handleLearnMoreButtonClick: function() {
     var clickThroughUrl = this.props.currentAdsInfo.currentAdItem.clickUrl;
