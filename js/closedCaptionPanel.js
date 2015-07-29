@@ -92,6 +92,10 @@ var ClosedCaptionPanel = React.createClass({
   //   closedCaptionScreenStyles.closedCaptionChevronRightButton.style.fontSize = closedCaptionScreenStyles.closedCaptionChevronLeftButton.style.fontSize;
   //  },
 
+  toggleClosedCaptionPanel: function() {
+    this.props.controller.toggleClosedCaptionScreen();
+  },
+
   render: function(){
     var controlBarHeight = 60;
 
@@ -101,7 +105,9 @@ var ClosedCaptionPanel = React.createClass({
     return (
       <div style = {closedCaptionScreenStyles.screenStyle}>
         <div style = {closedCaptionScreenStyles.innerPanelStyle}>
-          <div style = {closedCaptionScreenStyles.captionStyle}>CC Options <span className="icon icon-topmenu-cc"></span></div>
+          <div style = {closedCaptionScreenStyles.captionStyle}>CC Options <span className="icon icon-topmenu-cc"></span>
+            <span className="icon icon-close" style={closedCaptionScreenStyles.closeButtonStyle} onClick={this.toggleClosedCaptionPanel}></span>
+          </div>
           <OnOffSwitch {...this.props} />
           <LanguageTabContent {...this.props} numRows = {numRows} />
           <CCPreviewPanel {...this.props} />

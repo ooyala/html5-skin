@@ -731,6 +731,11 @@ var closedCaptionScreenStyles ={
     width: "100%"
   },
 
+  closeButtonStyle: {
+    float: "right",
+    color: "lightgray"
+  },
+
   innerPanelStyle :{
     padding: "17.5"
   },
