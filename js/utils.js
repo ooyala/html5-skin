@@ -16,6 +16,9 @@ var Utils = {
       var newWidth = (Math.floor(truncPercent * text.length) * 1.8) - 3;
       truncatedText = text.slice(0,newWidth) + "...";
     }
+    else {
+      truncatedText = text;
+    }
     element.removeChild(testText);
     return truncatedText;
   },

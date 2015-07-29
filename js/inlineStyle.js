@@ -867,22 +867,22 @@ var upNextPanelStyle = {
   panelStyle: {
     position: "absolute",
     width: "100%",
-    height: "25%",
+    height: "80px",
     right: "0",
     bottom: "32px",
-    backgroundColor: "black",
+    backgroundColor: "rgba(22, 22, 22, 0.9)",
     "transition": "bottom 0.5s"
   },
 
-  contentImageContainer: {
+  contentImageContainerStyle: {
     position: "absolute",
     top: "0",
     left: "0",
-    width: "20%",
+    width: "140px",
     height: "100%"
   },
 
-  contentImage: {
+  contentImageStyle: {
     position: "absolute",
     top: "0",
     left: "0",
@@ -905,59 +905,56 @@ var upNextPanelStyle = {
     }
   },
 
-  contentMetadataContainer: {
+  contentMetadataContainerStyle: {
     position: "absolute",
     top: "0",
-    left: "20%",
+    left: "140px",
     width: "78%",
     height: "100%",
   },
 
-  upNextTitle: {
+  upNextTitleStyle: {
     position: "absolute",
     top: "5",
-    left: "10",
+    left: "15px",
     width: "100%",
-    height: "40%",
-    color: "white"
+    height: "27px",
+    color: "#FFFFFF"
   },
 
-  upNextTitleText: {
+  upNextTitleTextStyle: {
     position:"absolute",
     left:40,
     right: 0,
     height: "100%",
-    fontSize: 20,
+    fontSize: 18,
+    fontWeight: "bold",
+    display: "flex",
+    "align-items": "center",
+    whiteSpace: "pre-wrap"
   },
 
-  contentDescription: {
+  contentDescriptionStyle: {
     position: "absolute",
     bottom: "0",
-    left: "0",
+    left: "15px",
     width: "70%",
-    height: "60%",
-    color: "white",
-    fontSize: 10,
+    height: "40px",
+    marginTop: "10px",
+    color: "rgba(255, 255, 255, 0.6)",
+    fontSize: 12,
+    fontWeight: "bold"
   },
 
-  dismissButton: {
+  closeButton: {
     position: "absolute",
-    right: "2%",
-    top: "15%",
-    height: "40%",
-    width: "13%",
-    fontSize: "10",
-    backgroundColor: "black",
-    "border": "1px solid white",
-    "border-radius": "5px"
-  },
-
-  dismissButtonText: {
-    position: "absolute",
-    top: "50%",
-    width: "100%",
-    fontSize: "20",
+    top:"10px",
+    right: "10px",
+    height: "10px",
+    width: "10px",
+    backgroundColor: "transparent",
     color: "white",
+    fontSize: "10px",
     "cursor": "pointer",
     "text-align": "center",
     "WebkitTransform": "translateY(-50%)",
@@ -966,8 +963,8 @@ var upNextPanelStyle = {
   },
 
   upNextCountDownStyle: {
-    height: "38px",
-    width: "38px"
+    height: "27px",
+    width: "27px"
   }
 };
 
