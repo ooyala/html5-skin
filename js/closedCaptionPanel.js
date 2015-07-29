@@ -12,16 +12,16 @@
 var ClosedCaptionPanel = React.createClass({
 
   calculateNumberOfRows: function(clientWidth, clientHeight, controlBarHeight){
-    var switchHeight = 1*closedCaptionScreenStyles.switchStyle.height + 1*closedCaptionScreenStyles.switchStyle.marginTop;
-    var CCPreviewPanelHeight = 1*closedCaptionScreenStyles.CCPreviewPanelStyle.height;
+    var switchHeight = parseInt(closedCaptionScreenStyles.switchStyle.height) + parseInt(closedCaptionScreenStyles.switchStyle.marginTop);
+    var CCPreviewPanelHeight = parseInt(closedCaptionScreenStyles.CCPreviewPanelStyle.height);
     var captionHeight = 4/3*parseInt(closedCaptionScreenStyles.captionStyle.fontSize);
-    var innerPanelPaddingHeight = 2*closedCaptionScreenStyles.innerPanelStyle.padding;
-    var scrubberBarHeight = 1*scrubberBarStyle.scrubberBarSetting.height + (1*scrubberBarStyle.playheadStyle.height - 1*scrubberBarStyle.scrubberBarSetting.height)/2;
+    var innerPanelPaddingHeight = 2*parseInt(closedCaptionScreenStyles.innerPanelStyle.padding);
+    var scrubberBarHeight = parseInt(scrubberBarStyle.scrubberBarSetting.height) + (parseInt(scrubberBarStyle.playheadStyle.height) - parseInt(scrubberBarStyle.scrubberBarSetting.height))/2;
 
     //height of the panel that should fit the table
     var panelHeight = clientHeight - controlBarHeight - scrubberBarHeight - CCPreviewPanelHeight - captionHeight - innerPanelPaddingHeight - switchHeight;
     //height of a table row
-    var tableRowHeight = 2*parseInt(closedCaptionScreenStyles.itemSelectedStyle.fontSize) + 1*closedCaptionScreenStyles.itemStyle.marginTop + 2*closedCaptionScreenStyles.itemSelectedStyle.padding;
+    var tableRowHeight = 2*parseInt(closedCaptionScreenStyles.itemSelectedStyle.fontSize) + parseInt(closedCaptionScreenStyles.itemStyle.marginTop) + 2*parseInt(closedCaptionScreenStyles.itemSelectedStyle.padding);
 
     var numRows = Math.floor(panelHeight/tableRowHeight);
 
@@ -33,7 +33,7 @@ var ClosedCaptionPanel = React.createClass({
   // setResponsiveStyle: function(clientWidth, controlBarHeight){
   //   var scale = Math.min(1, Math.max(clientWidth/1280, 0.3));
 
-  //   var scrubberBarHeight = 1*scrubberBarStyle.scrubberBarSetting.height + (1*scrubberBarStyle.playheadStyle.height - 1*scrubberBarStyle.scrubberBarSetting.height)/2;
+  //   var scrubberBarHeight = parseInt(scrubberBarStyle.scrubberBarSetting.height) + (parseInt(scrubberBarStyle.playheadStyle.height) - parseInt(scrubberBarStyle.scrubberBarSetting.height))/2;
 
   //   closedCaptionScreenStyles.CCPreviewPanelStyle.bottom = controlBarHeight + scrubberBarHeight;
 
@@ -53,7 +53,7 @@ var ClosedCaptionPanel = React.createClass({
 
   //   closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize = 12 * scale + "pt";
   //   closedCaptionScreenStyles.CCPreviewCaptionStyle.marginLeft = closedCaptionScreenStyles.innerPanelStyle.padding;
-  //   closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop = 1/4*(closedCaptionScreenStyles.CCPreviewPanelStyle.height - 4/3*parseInt(closedCaptionScreenStyles.CCPreviewTextStyle.fontSize)-4/3*parseInt(closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize));
+  //   closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop = 1/4*(parseInt(closedCaptionScreenStyles.CCPreviewPanelStyle.height) - 4/3*parseInt(closedCaptionScreenStyles.CCPreviewTextStyle.fontSize)-4/3*parseInt(closedCaptionScreenStyles.CCPreviewCaptionStyle.fontSize));
   //   closedCaptionScreenStyles.CCPreviewCaptionStyle.marginBottom = closedCaptionScreenStyles.CCPreviewCaptionStyle.marginTop;
 
   //   this.setResponsiveStyleCCLanguages(clientWidth);
@@ -65,8 +65,8 @@ var ClosedCaptionPanel = React.createClass({
   //   closedCaptionScreenStyles.itemStyle.fontSize = 22 * scale + "pt";
   //   closedCaptionScreenStyles.itemStyle.padding = 3;
   //   closedCaptionScreenStyles.itemStyle.width = 140 * scale;
-  //   closedCaptionScreenStyles.itemStyle.marginRight = 140 * scale - 2*closedCaptionScreenStyles.itemStyle.padding;
-  //   closedCaptionScreenStyles.itemStyle.marginTop = 40 * scale - 2*closedCaptionScreenStyles.itemStyle.padding;
+  //   closedCaptionScreenStyles.itemStyle.marginRight = 140 * scale - 2*parseInt(closedCaptionScreenStyles.itemStyle.padding);
+  //   closedCaptionScreenStyles.itemStyle.marginTop = 40 * scale - 2*parseInt(closedCaptionScreenStyles.itemStyle.padding);
 
   //   closedCaptionScreenStyles.lastColItemStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
   //   closedCaptionScreenStyles.lastColItemStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
@@ -190,8 +190,8 @@ var LanguageTabContent = React.createClass({
   },
 
   calculateScrollDistance: function(){
-    var colWidth = 1*closedCaptionScreenStyles.itemStyle.width + 1*closedCaptionScreenStyles.itemStyle.marginRight + 2*closedCaptionScreenStyles.itemStyle.padding;
-    var numCols =  Math.floor((this.refs.tableLanguageContainer.getDOMNode().clientWidth + 1*closedCaptionScreenStyles.itemStyle.marginRight) / (colWidth));
+    var colWidth = parseInt(closedCaptionScreenStyles.itemStyle.width) + parseInt(closedCaptionScreenStyles.itemStyle.marginRight) + 2*parseInt(closedCaptionScreenStyles.itemStyle.padding);
+    var numCols =  Math.floor((this.refs.tableLanguageContainer.getDOMNode().clientWidth + parseInt(closedCaptionScreenStyles.itemStyle.marginRight)) / (colWidth));
     var scrollDistance = numCols * colWidth;
 
     return scrollDistance;
@@ -207,7 +207,7 @@ var LanguageTabContent = React.createClass({
   },
 
   handleRightChevronClick: function(){
-    this.refs.tableLanguageContainer.getDOMNode().scrollLeft += 1*this.calculateScrollDistance();
+    this.refs.tableLanguageContainer.getDOMNode().scrollLeft += this.calculateScrollDistance();
     this.setState({scrollLeftDistance: this.refs.tableLanguageContainer.getDOMNode().scrollLeft});
   },
 
