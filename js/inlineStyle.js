@@ -470,7 +470,7 @@ var discoveryScreenStyle = {
     right: 0,
     display: "flex",
     flexDirection: "row",
-    WebkitFlexDirection: "row"
+    WebkitFlexDirection: "row",
     height: "255px"
   },
 
@@ -524,7 +524,7 @@ var discoveryScreenStyle = {
     left: 25,
     display: "flex",
     flexDirection: "row",
-    WebkitFlexDirection: "row",
+    WebkitFlexDirection: "row"
   },
 
   discoveryChevronLeftButtonContainer: {
