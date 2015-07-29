@@ -17,8 +17,7 @@ var ClosedCaptionScreen = React.createClass({
   },
 
   handleResize: function(e) {
-    this.setState({clientWidth: this.getDOMNode().clientWidth});
-    this.setState({clientHeight: this.getDOMNode().clientHeight});
+    this.setState({clientWidth: this.getDOMNode().clientWidth, clientHeight: this.getDOMNode().clientHeight});
   },
 
   toggleClosedCaptionPanel: function() {
