@@ -4,6 +4,15 @@
 
 var ControlBar = React.createClass({
 
+  componentDidMount: function(){
+    if (Utils.isSafari()){
+      controlBarStyle.controlBarSetting.display = "-webkit-flex";
+    }
+    else {
+      controlBarStyle.controlBarSetting.display = "flex";
+    }
+  },
+
   handleControlBarMouseUp: function(evt) {
     evt.stopPropagation();
   },
@@ -192,8 +201,8 @@ var ControlBar = React.createClass({
   // Saved for responsive control bar
   scaleControlBarItemsBasedOnHeight: function(controlBarHeight) {
     controlBarStyle.controlBarSetting.height = controlBarHeight;
-    controlBarStyle.controlBarSetting.transform = "translate(0,-" +
-      (this.props.controlBarVisible ? controlBarStyle.controlBarSetting.height : 0) + "px)";
+    controlBarStyle.controlBarSetting.bottom = (this.props.controlBarVisible ?
+      0 : -1*controlBarStyle.controlBarSetting.height);
     controlBarStyle.durationIndicatorSetting.lineHeight = controlBarHeight + "px";
     controlBarStyle.iconSetting.lineHeight = controlBarHeight + "px"; 
     controlBarStyle.volumeBarStyle.lineHeight = controlBarHeight + "px";
@@ -204,8 +213,8 @@ var ControlBar = React.createClass({
     controlBarStyle.watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * 18 + "px";
 
     controlBarStyle.controlBarSetting.height = constantControlBarHeight;
-    controlBarStyle.controlBarSetting.transform = "translate(0,-" +
-      (this.props.controlBarVisible ? controlBarStyle.controlBarSetting.height : 0) + "px)";
+    controlBarStyle.controlBarSetting.bottom = (this.props.controlBarVisible ?
+      0 : -1*controlBarStyle.controlBarSetting.height);
     controlBarStyle.durationIndicatorSetting.lineHeight = constantControlBarHeight + "px";
     controlBarStyle.iconSetting.lineHeight = constantControlBarHeight + "px"; 
     controlBarStyle.volumeBarStyle.lineHeight = constantControlBarHeight + "px";

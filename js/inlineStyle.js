@@ -33,7 +33,8 @@ var startScreenStyle = {
         whiteSpace: "nowrap",
         overflow: "hidden",
         textOverflow: "ellipsis",
-        color: "inherit"
+        color: "inherit",
+        resize: "none"
       }
     },
     description: {
@@ -49,6 +50,7 @@ var startScreenStyle = {
     icon: "icon icon-play",
     style: {
       fontSize: "72",
+      WebkitTransform: "translate(-50%, -50%)",
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
@@ -78,7 +80,8 @@ var pauseScreenStyle = {
         whiteSpace: "nowrap",
         overflow: "hidden",
         textOverflow: "ellipsis",
-        color: "inherit"
+        color: "inherit",
+        resize: "none"
       }
     },
     description: {
@@ -94,11 +97,11 @@ var pauseScreenStyle = {
     icon: "icon icon-pause",
     style: {
       fontSize: "24",
-      transform: "translate(-50%, -50%)",
       position: "absolute",
+      WebkitTransform: "translate(-50%, -50%)",
+      transform: "translate(-50%, -50%)",
       opacity: 1,
-      transition: "font 1s, opacity 1s",
-      "cursor": "pointer" 
+      transition: "all 1s"
     }
   },
   fading: {
@@ -134,6 +137,7 @@ var endScreenStyle = {
       top: "50%",
       left: "50%",
       fontSize: "75px",
+      WebkitTransform: "translate(-50%, -50%)",
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
@@ -147,7 +151,7 @@ var controlBarStyle = {
   controlBarSetting: {
     "background": "rgba(0, 0, 0, 0.3)",
     "width": "100%",
-    "top": "100%",
+    "bottom": "0%",
     "position": "absolute",
     "margin": 0,
     "fontSize": "18px",
@@ -155,11 +159,11 @@ var controlBarStyle = {
     "display": "flex",
     "flexFlow": "row nowrap",
     "justifyContent": "flex-start",
-    "-webkit-user-select": "none",
+    "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
-    "user-select": "none",
-    "transition": "transform 0.5s"
+    "userSelect": "none",
+    "transition": "bottom 0.5s, height 0.25s"
   },
 
   controlBarItemSetting: {
@@ -178,14 +182,17 @@ var controlBarStyle = {
     "color": "#ffffff",
     "opacity": 1,
     "fontSize": 14,
-    "textAlign": "left"
+    "textAlign": "left",
+    "flex": 1,
+    "WebkitFlex": 1
   },
 
   iconSetting: {
   },
 
   flexibleSpace: {
-    "flex": 1
+    "flex": 1,
+    "WebkitFlex": 1
   },
 
   liveItemStyle: {
@@ -239,10 +246,10 @@ var scrubberBarStyle = {
     "height": "5px",
     "padding": 0,
     "margin": 0,
-    "-webkit-user-select": "none",
+    "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
-    "user-select": "none",
+    "userSelect": "none",
     "position": "absolute",
     "transition": "bottom 0.5s, height 0.25s"
   },
@@ -270,6 +277,7 @@ var scrubberBarStyle = {
     "position": "absolute",
     "zIndex": 1,
     "top": "50%",
+    "WebkitTransform": "translateY(-50%)",
     "transform": "translateY(-50%)",
     "transition": "opacity 0.25s"
   }
@@ -298,6 +306,7 @@ var shareScreenStyle = {
     fontWeight: "bold",
     borderRight: "0px none",
     flex: 1,
+    WebkitFlex: 1,
     textAlign: "left",
     paddingLeft: "25px"
   },
@@ -325,6 +334,7 @@ var shareScreenStyle = {
     backgroundColor: "#3a3a3a",
     bottom: 0,
     flex: 1,
+    WebkitFlex: 1,
     color: "white",
     padding: "20px"
   },
@@ -337,13 +347,15 @@ var shareScreenStyle = {
     left: 0,
     right: 0,
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    WebkitFlexDirection: "column"
   },
 
   tabRowStyle: {
     borderBottom: "1px solid #afafaf",
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
+    WebkitFlexDirection: "row"
   },
 
   titleStyle: {
@@ -359,7 +371,8 @@ var shareScreenStyle = {
     borderStyle: "none",
     width: "300px",
     height: "36px",
-    paddingLeft: "15px"
+    paddingLeft: "15px",
+    resize: "none"
   },
 
   emailSendButton: {
@@ -378,14 +391,16 @@ var shareScreenStyle = {
     borderStyle: "none",
     width: "300px",
     height: "32px",
-    paddingLeft: "15px"
+    paddingLeft: "15px",
+    resize: "none"
   },
 
   emailTextArea: {
     color: "gray",
     height: "80px",
     width: "300px",
-    borderRadius: "6px"
+    borderRadius: "6px",
+    resize: "none"
   },
 
   startAtInput: {
@@ -394,14 +409,16 @@ var shareScreenStyle = {
     borderStyle: "none",
     width: "60px",
     height: "26px",
-    paddingLeft: "10px"
+    paddingLeft: "10px",
+    resize: "none"
   },
 
   embedTextArea: {
     height: "60%",
     width: "70%",
     color: "black",
-    borderRadius: "6px"
+    borderRadius: "6px",
+    resize: "none"
   },
 
   closeButton: {
@@ -421,12 +438,14 @@ var discoveryScreenStyle = {
 
   panelStyle: {
     position: "absolute",
-    top: "50%",
-    backgroundColor: "#444444",
+    bottom: "60px",
+    backgroundColor: "rgba(0,0,0, 0.7)",
     left: 0,
     right: 0,
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
+    WebkitFlexDirection: "row",
+    height: "255px"
   },
 
   promoStyle: {
@@ -441,7 +460,7 @@ var discoveryScreenStyle = {
 
   panelTitleBarStyle: {
     position: "absolute",
-    backgroundColor: "#444444",
+    backgroundColor: "transparent",
     left: 0,
     right: 0,
     height: "20%",
@@ -449,35 +468,37 @@ var discoveryScreenStyle = {
     display: "inline-block"
   },
 
-
   panelTitleTextStyle: {
     position: "absolute",
-    left: "25px",
-    fontSize: "20",
+    left: "40px",
+    fontSize: "32",
+    fontWeight: "bold",
     color: "white",
     margin: "1%",
-    display: "inline-block"
+    display: "inline-block",
+    marginBottom: "35px",
+    opacity: 1
   },
 
   discoveryToasterContainerStyle: {
     position: "absolute",
-    backgroundColor: "#444444",
+    backgroundColor: "transparent",
     top: "20%",
     height: "70%",
-    width: "100%"
+    width: "100%",
+    overflow: "hidden"
   },
 
   discoveryToasterStyle: {
     position: "absolute",
-    backgroundColor: "#444444",
     top: "0",
     height: "90%",
-    width: "2000px",
+    width: "100%",
     right: 0,
     left: 25,
     display: "flex",
     flexDirection: "row",
-    transition: "0.5s"
+    WebkitFlexDirection: "row"
   },
 
   discoveryChevronLeftButtonContainer: {
@@ -504,6 +525,7 @@ var discoveryScreenStyle = {
       top: "50%",
       left: "50%",
       fontSize: "18",
+      WebkitTransform: "translate(-50%, -50%)",
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
@@ -517,6 +539,7 @@ var discoveryScreenStyle = {
       top: "50%",
       left: "50%",
       fontSize: "18",
+      WebkitTransform: "translate(-50%, -50%)",
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
@@ -526,58 +549,62 @@ var discoveryScreenStyle = {
 
   discoveryContentBlockStyle: {
     position: "relative",
-    width: "100px",
-    height: "95%",
-    margin: "10px",
-    backgroundColor: "#444444"
+    marginLeft: "30px",
+    marginRight: "30px",
+    marginTop: "35px",
+    height: "120px",
+    width: "214px",
+    "flex-shrink": 0
+  },
+  
+  discoveryImageWrapperStyle: {
+    position: "relative",
+    height: "120px",
+    width: "214px"
   },
 
   discoveryImageStyle: {
     position: "absolute",
     width: "100%",
-    height: "75%"
+    height: "100%"
   },
 
   discoveryContentTitleStyle: {
-    position: "absolute",
-    top: "75%",
+    position: "relative",
     color: "white",
-    fontSize: "10"
+    fontSize: "22",
+    fontWeight: "regular",
+    textOverflow: "ellipsis",
+    width: "214px",
+    height: "31px",
+    overflow: "hidden",
+    whiteSpace: "nowrap"    
   },
 
   discoveryCountDownWrapperStyle: {
     position: "absolute",
-    top: "37.5%",
+    top: "50%",
     left: "50%",
-    transform: "translate(-50%, -37.5%)"
+    WebkitTransform: "translate(-50%, -45%)",
+    transform: "translate(-50%, -45%)"
   },
 
   discoveryCountDownStyle: {
-    width: "38px",
-    height: "38px"
+    width: "75px",
+    height: "75px"
   },
 
   discoveryCountDownIconStyle: {
     position: "absolute",
-    top: "37.5%",
+    top: "50%",
     left: "50%",
-    transform: "translate(-50%, -37.5%)",
-    "line-height":"32px",
+    WebkitTransform: "translate(-50%, -57%)",
+    transform: "translate(-50%, -57%)",
+    "line-height":"40px",
     "z-index":10005,
-    "color":"white"
+    "color":"white",
+    fontSize: 25
   },
-
-  closeButton: {
-    position: "absolute",
-    top:0,
-    right: 0,
-    height: "25px",
-    width: "25px",
-    backgroundColor: "#4389ff",
-    color: "white",
-    textAlign: "center",
-    lineHeight: "25px"
-  }
 };
 
 var adScreenStyle = {
@@ -597,7 +624,8 @@ var adScreenStyle = {
     width: "100%",
     backgroundColor:"rgba(0, 0, 0, 0.5)",
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
+    WebkitFlexDirection: "row"
   },
 
   adPlaybackInfoTextStyle: {
@@ -607,7 +635,7 @@ var adScreenStyle = {
     width: "100%",
     fontSize: "10",
     color: "white",
-    "-webkit-transform": "translateY(-50%)",
+    "WebkitTransform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
     "white-space": "pre"
@@ -632,11 +660,11 @@ var adScreenStyle = {
     fontSize: "10",
     "text-align": "center",
     color: "black",
-    "-webkit-user-select": "none",
+    "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
-    "user-select": "none",
-    "-webkit-transform": "translateY(-50%)",
+    "userSelect": "none",
+    "WebkitTransform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
   },
@@ -659,11 +687,11 @@ var adScreenStyle = {
     fontSize: "15",
     "text-align": "center",
     color: "black",
-    "-webkit-user-select": "none",
+    "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
-    "user-select": "none",
-    "-webkit-transform": "translateY(-50%)",
+    "userSelect": "none",
+    "WebkitTransform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
   }
@@ -843,6 +871,7 @@ var upNextPanelStyle = {
       top: "50%",
       left: "50%",
       fontSize: "25",
+      WebkitTransform: "translate(-50%, -50%)",
       transform: "translate(-50%, -50%)",
       opacity: 1,
       color: "white",
@@ -904,9 +933,8 @@ var upNextPanelStyle = {
     fontSize: "20",
     color: "white",
     "cursor": "pointer",
-
     "text-align": "center",
-    "-webkit-transform": "translateY(-50%)",
+    "WebkitTransform": "translateY(-50%)",
     "-ms-transform": "translateY(-50%)",
     "transform": "translateY(-50%)",
   },
@@ -940,12 +968,12 @@ var MoreOptionsScreenStyle = {
     "display": "flex",
     "flexFlow": "row nowrap",
     "justifyContent": "flex-start",
-    "-webkit-user-select": "none",
+    "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
-    "user-select": "none",
-    "-webkit-flex-direction": "row",
-    "flex-direction": "row",
+    "userSelect": "none",
+    "WebkitFlexDirection": "row",
+    "flexDirection": "row",
     "transition": "bottom 0.7s, opacity 0.7s",
   },
 
