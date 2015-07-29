@@ -28,6 +28,10 @@ var ClosedCaptionScreen = React.createClass({
     window.addEventListener('resize', this.handleResize);
   },
 
+  closeClosedCaptionPanel: function() {
+    this.props.controller.toggleClosedCaptionScreen();
+  },
+
   render: function() {
     
     return (
@@ -38,6 +42,7 @@ var ClosedCaptionScreen = React.createClass({
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.clientWidth}
           playerState={this.state.playerState}/>
+        <div className="icon icon-close" style={closedCaptionScreenStyles.closeButtonStyle} onClick={this.closeClosedCaptionPanel}></div>
       </div>
     );
   }
