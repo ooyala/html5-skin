@@ -7,6 +7,18 @@
 */
 
 var DiscoveryPanel = React.createClass({
+
+  componentDidMount: function(){
+    if (Utils.isSafari()){
+      discoveryScreenStyle.panelStyle.display = "-webkit-flex";
+      discoveryScreenStyle.discoveryToasterStyle.display = "-webkit-flex";
+    }
+    else {
+      discoveryScreenStyle.panelStyle.display = "flex";
+      discoveryScreenStyle.discoveryToasterStyle.display = "flex";
+    }
+  },
+
   getInitialState: function() { 
     return {
       discoveryToasterLeftOffset: 25,
@@ -14,17 +26,10 @@ var DiscoveryPanel = React.createClass({
     };
   },
 
-  closeDiscoveryPanel: function() {
-    this.props.controller.toggleDiscoveryScreen();
-  },
-
   handleLeftButtonClick: function() {
-    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
-    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
     // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
-
-    if(toasterContainerWidth <= toasterWidth || newDiscoveryToasterLeftOffset < 0) {
+    if(this.hasItemsToShowOnLeftSide(newDiscoveryToasterLeftOffset)) {
       newDiscoveryToasterLeftOffset += 400;
       if(newDiscoveryToasterLeftOffset > 25) {
         newDiscoveryToasterLeftOffset = 25;
@@ -35,13 +40,13 @@ var DiscoveryPanel = React.createClass({
   },
 
   handleRightButtonClick: function() {
-    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
-    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
     // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
     var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
-    // rightOffset = right border of discovery toaster container - right border of discovery toaster
-    var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
-    if(toasterContainerWidth <= toasterWidth || rightOffset <= 25) {
+    if(this.hasItemsToShowOnRightSide(newDiscoveryToasterLeftOffset)) {
+      var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+      var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+      // rightOffset = right border of discovery toaster container - right border of discovery toaster
+      var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
       newDiscoveryToasterLeftOffset -= 400;
       rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
 
@@ -51,6 +56,60 @@ var DiscoveryPanel = React.createClass({
     }
 
     this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
+  },
+
+  shouldShowLeftButton: function(newState) {
+    if(this.hasItemsToShowOnLeftSide(newState.discoveryToasterLeftOffset)) {
+      if(newState.discoveryToasterLeftOffset !== 25) {
+        return true;
+      }
+    }
+    return false;
+  },
+
+  shouldShowRightButton: function(newState) {
+    if(this.hasItemsToShowOnRightSide(newState.discoveryToasterLeftOffset)) {
+      var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+      var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+      // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
+      var newDiscoveryToasterLeftOffset = newState.discoveryToasterLeftOffset;//this.state.discoveryToasterLeftOffset;
+      // rightOffset = right border of discovery toaster container - right border of discovery toaster
+      var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
+      if(rightOffset !== 25) {
+        return true;
+      }
+    }
+    return false;
+  },
+
+  hasItemsToShowOnLeftSide: function(newLeftOffset) {
+    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+    return (toasterContainerWidth <= toasterWidth) || (newLeftOffset < 0);
+  },
+
+  hasItemsToShowOnRightSide: function(newLeftOffset) {
+    var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+    var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+    var rightOffset = toasterContainerWidth  - (newLeftOffset + toasterWidth);
+    return (toasterContainerWidth <= toasterWidth) || (rightOffset <= 25);
+  },
+  
+  componentWillUpdate: function(propsParam, newState){
+    var chevronLeftButtonStyle = discoveryScreenStyle.discoveryChevronLeftButton.style;
+    var chevronRightButtonStyle = discoveryScreenStyle.discoveryChevronRightButton.style;
+    if(this.shouldShowLeftButton(newState)) {
+      chevronLeftButtonStyle.visibility = "visible";
+    }
+    else {
+      chevronLeftButtonStyle.visibility = "hidden";
+    }
+    if(this.shouldShowRightButton(newState)) {
+      chevronRightButtonStyle.visibility = "visible";
+    }
+    else {
+      chevronRightButtonStyle.visibility = "hidden";
+    }
   },
 
   handleDiscoveryContentClick: function(index) {
@@ -76,8 +135,7 @@ var DiscoveryPanel = React.createClass({
   render: function() {
     var panelStyle = discoveryScreenStyle.panelStyle;    
     var controlBarHeight = 60;
-    panelStyle.bottom = (this.props.controlBarVisible ? controlBarHeight: 0);
-
+    panelStyle.bottom = controlBarHeight + "px"; 
 
     var panelTitleBarStyle = discoveryScreenStyle.panelTitleBarStyle;
     var panelTitle = this.props.skinConfig.discoveryScreen.panelTitle.text;
@@ -115,25 +173,30 @@ var DiscoveryPanel = React.createClass({
 
     // Build discovery content blocks
     if (discoveryData !== null)  {
-        discoveryToasterStyle.width = 150 * discoveryData.relatedVideos.length;
+        // 214 is width of content images and 60 is horizontal space between each content image
+        discoveryToasterStyle.width = 214 * discoveryData.relatedVideos.length + 60*(discoveryData.relatedVideos.length-1);
         for (var i = 0; i < this.props.discoveryData.relatedVideos.length; i++) {
           if(this.shouldShowCountdownTimer() && i === 0) {
             discoveryContentBlocks.push(
             <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
-                 <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
+              <div style={discoveryScreenStyle.discoveryImageWrapperStyle}>
+                <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
                      <div style={discoveryCountDownWrapperStyle} onClick={this.handleDiscoveryCountDownClick}>
                      <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
                      <span className="icon icon-pause" style={discoveryCountDownIconStyle}></span>
                      </div>
                  </img>
-                 <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
+              </div>
+              <div className="discoveryContentName" style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
             </div> );
           }
           else {
             discoveryContentBlocks.push(
               <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
-                   <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
-                   <div style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
+                <div style={discoveryScreenStyle.discoveryImageWrapperStyle}>
+                  <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
+                </div>
+                <div className="discoveryContentName" style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
               </div> );
           }
         }
@@ -154,14 +217,13 @@ var DiscoveryPanel = React.createClass({
           </div>
 
           <div style={chevronLeftButtonContainer}>
-            <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} aria-hidden="true" onClick={this.handleLeftButtonClick}></span>
+            <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} ref="ChevronLeftButton" aria-hidden="true" onClick={this.handleLeftButtonClick}></span>
           </div>
 
           <div style={chevronRightButtonContainer}>
-            <span className={chevronRightButtonClass} style={chevronRightButtonStyle} aria-hidden="true" onClick={this.handleRightButtonClick}></span>
+            <span className={chevronRightButtonClass} style={chevronRightButtonStyle} ref="ChevronRightButton" aria-hidden="true" onClick={this.handleRightButtonClick}></span>
           </div>
         </div>
-        <div onClick={this.closeDiscoveryPanel} style={discoveryScreenStyle.closeButton} className="icon icon-close"></div>
       </div>
     );
   }
