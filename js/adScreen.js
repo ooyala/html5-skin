@@ -48,20 +48,17 @@ var AdScreen = React.createClass({
   },
 
   render: function() {
-    //Fill in all the dynamic style values we need
-    var controlBarHeight = 32;
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
         onMouseUp={this.handlePlayerMouseUp} style={defaultScreenStyle.style}>
         
-        <AdPanel 
-        {...this.props} />
+        <AdPanel {...this.props} />
 
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight} />
+          controlBarWidth={this.state.controlBarWidth} />
         
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} controlBarHeight={controlBarHeight}
+          controlBarWidth={this.state.controlBarWidth}
           playerState={this.props.playerState} />
       </div>
     );
