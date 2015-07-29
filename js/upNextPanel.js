@@ -45,7 +45,9 @@ var UpNextPanel = React.createClass({
 
   render: function() {
     var panelStyle = upNextPanelStyle.panelStyle;
-    panelStyle.bottom = bottom = (this.props.controlBarVisible ? this.props.controlBarHeight : 0);
+
+    var controlBarHeight = 60;
+    panelStyle.bottom = (this.props.controlBarVisible ? controlBarHeight : 0);
 
     var contentImageContainerStyle = upNextPanelStyle.contentImageContainerStyle;
     var contentImageStyle = upNextPanelStyle.contentImageStyle;
