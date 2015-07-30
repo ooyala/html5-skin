@@ -73,6 +73,19 @@ var Utils = {
       return !!window.navigator.userAgent.match(/AppleWebKit/);
   },
 
+  isAndroid: function() {
+    var os = window.navigator.appVersion;
+    return !!os.match(/Android/);
+  },
+
+  isIos: function() {
+    var platform = window.navigator.platform;
+    return !!(platform.match(/iPhone/) || platform.match(/iPad/) || platform.match(/iPod/));
+  },
+
+  isMobile: function() {
+    return (this.isAndroid() || this.isIos());
+  },
 
   // Liusha: saved for resizing control bar
   getScaledControlBarHeight: function(controlBarWidth) {
@@ -85,7 +98,7 @@ var Utils = {
     } else {
       controlBarHeight = controlBarHeightBase;
     }
-    return controlBarHeight;   
+    return controlBarHeight;
   },
 
 
