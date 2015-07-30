@@ -95,6 +95,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
         this.renderSkin();
+
+        // Notify AMC the correct overlay rendering info
+        this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, {"marginHeight":60});
       }, this));
     },
 
