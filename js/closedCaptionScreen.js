@@ -33,7 +33,6 @@ var ClosedCaptionScreen = React.createClass({
   },
 
   render: function() {
-    
     return (
       <div style={{height: "100%", width: "100%"}}>
         <ClosedCaptionPanel {...this.props} ccOptions = {this.props.ccOptions} clientWidth = {this.state.clientWidth} clientHeight = {this.state.clientHeight}/>

@@ -6,7 +6,8 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     return {
       controlBarVisible: true,
-      controlBarWidth: 0
+      controlBarWidth: 0,
+      timer: null
     };
   },
 
@@ -17,21 +18,24 @@ var PlayingScreen = React.createClass({
     window.addEventListener('resize', this.handleResize);
 
     //for mobile, hide control bar after 3 seconds
-    this.hideControlBarTimerMobile();
-  },
-
-  hideControlBarTimerMobile: function(){
     if (Utils.isMobile()){
-      setTimeout(function(){
-        if(this.state.controlBarVisible){
-          this.hideControlBar();
-        }
-      }.bind(this), 3000);
+      this.startHideControlBarTimer();
     }
   },
 
-  componentDidUpdate: function () {
+  startHideControlBarTimer: function(){
+    var timer = setTimeout(function(){
+      if(this.state.controlBarVisible){
+        this.hideControlBar();
+      }
+    }.bind(this), 3000);
+    this.setState({timer: timer});
+  },
 
+  componentWillUnmount: function () {
+    if (this.state.timer !== null){
+      clearTimeout(this.state.timer);
+    }
   },
 
   handleResize: function(e) {
@@ -45,13 +49,14 @@ var PlayingScreen = React.createClass({
     if (!Utils.isMobile()){
       this.props.controller.togglePlayPause();
     }
+
     // for mobile, touch is handled in handleTouchEnd
   },
 
   handleTouchEnd: function() {
     if (!this.state.controlBarVisible){
       this.showControlBar();
-      this.hideControlBarTimerMobile();
+      this.startHideControlBarTimer();
     }
   },
 
