@@ -160,6 +160,7 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             playerState={this.state.playerState}
+            fullscreen={this.state.fullscreen}
             seeking={this.state.seeking}
             ref="closedCaptionScreen" />
         );

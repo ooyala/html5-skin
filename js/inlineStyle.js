@@ -269,7 +269,7 @@ var scrubberBarStyle = {
   scrubberBarSetting: {
     "background": "#afafaf",
     "width": "100%",
-    "height": "5px",
+    "height": "5",
     "padding": 0,
     "margin": 0,
     "WebkitUserSelect": "none",
@@ -295,7 +295,7 @@ var scrubberBarStyle = {
   playheadStyle: {
     "background": "#ffffff",
     "width": "10px",
-    "height": "10px",
+    "height": "10",
     "borderStyle": "solid",
     "borderColor": "white",
     "borderWidth": "1px",
@@ -731,36 +731,43 @@ var closedCaptionScreenStyles ={
     width: "100%"
   },
 
+  closeButtonStyle: {
+    position: "absolute",
+    right: "17.5",
+    top: "17.5",
+    height: "25",
+    width: "25",
+    color: "lightgray"
+  },
+
+  innerPanelStyle :{
+    padding: "17.5"
+  },
+
   captionStyle: {
-    display: "inline-block",
-    height: "30",
-    textAlign: "center",
-    fontSize: "20",
+    fontSize: "16pt",
+    fontFamily: "Roboto Condensed",
     color: "#ffffff",
-    marginLeft: "25",
-    marginTop: "20",
     fontWeight: "bold"
   },
 
   switchStyle:{
-    height: "24",
-    textAlign: "left",
-    fontSize: "10",
+    cursor: "pointer",
+    marginTop: "17.5",
+    height: "14",
+    width: "70",
+    fontSize: "10pt",
     color: "#FFFFFF",
-    marginLeft: "25",
-    marginTop: "20",
-    marginBottom: "20",
     position: "relative"
   },
 
   switchContainer: {
     display: "inline-block",
-    cursor: "pointer",
-    width: "40",
-    height: "24",
+    width: "33%",
+    height: "100%",
     position: "relative",
-    marginLeft: "20",
-    borderRadius: "100%",
+    marginLeft: "33%",
+    borderRadius: "100%"
   },
   switch: {
     display: "block",
@@ -789,77 +796,170 @@ var closedCaptionScreenStyles ={
 
   onStyle:{
     position: "absolute",
-    top: "20%",
-    left: "70",
+    right: "0",
     display:"inline-block",
     color: "grey"
   },
 
   offStyle:{
     position: "absolute",
-    top: "20%",
     display:"inline-block",
+    left: "0",
     color: "grey"
   },
 
   itemStyle: {
-    display: "inline-block",
+    fontSize: "11pt",
+    width: "70",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    marginRight: "64",
+    marginTop: "14",
     textAlign: "center",
-    fontSize: "12",
-    minWidth :"50",
-    color: "#DDDDDD",
-    marginLeft: "25",
-    padding: "5",
-    paddingLeft: "10",
-    paddingRight: "10",
+    padding: "2",
+    color: "white",
+    transition: "all 0.0s ease"
+  },
+
+  lastColItemStyle: {
+    fontSize: "11pt",
+    width: "70",
+    minwidth: "50",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    marginRight: "0",
+    marginTop: "14",
+    textAlign: "center",
+    padding: "2",
+    color: "white",
     transition: "all 0.0s ease"
   },
 
   itemSelectedStyle: {
-    display: "inline-block",
+    fontSize: "11pt",
+    width: "70",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    marginRight: "64",
+    marginTop: "14",
     textAlign: "center",
-    fontSize: "12",
-    minWidth :"50",
+    padding: "2",
     color: "white",
-    marginLeft: "25",
-    padding: "5",
-    paddingLeft: "10",
-    paddingRight: "10",
     //properties different from itemStyle
     backgroundColor: "#4389ff",
     borderRadius: "4"
   },
 
+  lastColItemSelectedStyle:{
+    fontSize: "11pt",
+    width: "70",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    marginRight: "0",
+    marginTop: "14",
+    textAlign: "center",
+    padding: "2",
+    color: "white",
+    //properties different from itemStyle
+    backgroundColor: "#4389ff",
+    borderRadius: "4"
+  },
+
+  closedCaptionChevronLeftButtonContainer: {
+    position: "absolute",
+    backgroundColor: "transparent",
+    height: "100%",
+    width: "25px",
+    color:"white",
+    left: "0"
+  },
+
+  closedCaptionChevronRightButtonContainer: {
+    position: "absolute",
+    backgroundColor: "transparent",
+    height: "100%",
+    width: "25px",
+    color:"white",
+    right: "0"
+  },
+
+  closedCaptionChevronLeftButton: {
+    icon: "icon icon-left",
+    style: {
+      top: "50%",
+      left: "50%",
+      fontSize: "16pt",
+      transform: "translate(-50%, -50%)",
+      position: "absolute",
+      opacity: 1,
+      transition: "opacity .25s ease-in-out"
+    }
+  },
+
+  closedCaptionChevronRightButton: {
+    icon: "icon icon-right",
+    style: {
+      top: "50%",
+      left: "50%",
+      fontSize: "16pt",
+      transform: "translate(-50%, -50%)",
+      position: "absolute",
+      opacity: 1,
+      transition: "opacity .25s ease-in-out"
+    }
+  },
+
+  tableLanguageContainerStyle: {
+    overflowX:"hidden",
+    marginLeft: "25",
+    marginRight: "25",
+    resize: "none"
+  },
+
+  tableLanguageStyle: {
+    borderCollapse: "collapse"
+  },
+
+  tdLanguageStyle: {
+    paddingLeft: "0",
+    paddingRight: "0"
+  },
+
   CCPreviewPanelStyle:{
     width: "100%",
-    backgroundColor: "rgba(0,0,0,0.7)",
+    backgroundColor: "rgba(0,0,0,0.5)",
     position: "absolute",
-    bottom: "20",
-    transition: "all 1s ease",
-    borderTop: "1px solid grey"
+    bottom: "67.5",
+    left: "0",
+    height: "35",
+    borderTop: "1px solid grey",
+    visibility: "visible"
   },
 
   CCPreviewCaptionStyle: {
     color: "white",
-    marginLeft: "20",
-    marginTop: "20",
-    fontSize: "10",
-    paddingTop: "0",
-    paddingBottom: "0"
+    fontSize: "6pt",
+    fontFamily: "Roboto",
+    marginLeft: "17.5",
+    marginBottom: "2.75",
+    marginTop: "2.75",
   },
 
-  CCPreviewTextStyle:{
+  CCPreviewTextStyle: {
+    marginTop: "0",
     color: "white",
-    marginLeft: "25",
-    fontSize: "15",
-    paddingTop: "5",
-    paddingBottom: "0"
+    fontSize: "12pt",
+    fontWeight: "bold",
+    fontFamily: "Verdana",
+    marginLeft: "17.5"
   },
 
-  tableStyle:{
-    width: "100%",
-    height: "25%",
-    paddingRight: "15"
+  positionRelativeStyle: {
+    position: "relative"
   }
 };
 

@@ -11,29 +11,38 @@ var ClosedCaptionScreen = React.createClass({
   getInitialState: function() {
     return {
       controlBarVisible: true,
-      controlBarWidth: 0
+      clientWidth: null,
+      clientHeight: null
     };
   },
 
-  toggleClosedCaptionPanel: function() {
-    this.props.controller.toggleClosedCaptionScreen();
+  handleResize: function(e) {
+    this.setState({clientWidth: this.getDOMNode().clientWidth, clientHeight: this.getDOMNode().clientHeight});
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+    this.setState({
+      clientWidth: this.getDOMNode().clientWidth,
+      clientHeight: this.getDOMNode().clientHeight
+    });
+    window.addEventListener('resize', this.handleResize);
+  },
+
+  closeClosedCaptionPanel: function() {
+    this.props.controller.toggleClosedCaptionScreen();
   },
 
   render: function() {
     
     return (
       <div style={{height: "100%", width: "100%"}}>
-        <ClosedCaptionPanel {...this.props} ccOptions = {this.props.ccOptions}/>
+        <ClosedCaptionPanel {...this.props} ccOptions = {this.props.ccOptions} clientWidth = {this.state.clientWidth} clientHeight = {this.state.clientHeight}/>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}/>
+          controlBarWidth={this.state.clientWidth}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}
+          controlBarWidth={this.state.clientWidth}
           playerState={this.state.playerState}/>
-        <div onClick={this.toggleClosedCaptionPanel} style={{position: "absolute", top:0, right: 0, color: "lightgray"}}><span className="icon icon-close"></span></div>
+        <div className="icon icon-close" style={closedCaptionScreenStyles.closeButtonStyle} onClick={this.closeClosedCaptionPanel}></div>
       </div>
     );
   }
