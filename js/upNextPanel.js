@@ -9,8 +9,20 @@
 */
 
 var UpNextPanel = React.createClass({
-  handleDismissButtonClick: function(event) {
-    console.log("Up next panel dismiss button clicked");
+  getInitialState: function() {
+    return {
+      contentDescription: this.props.upNextInfo.upNextData.description
+    };
+  },
+
+  componentDidMount: function() {
+    var descriptionNode = this.refs.ContentDescription.getDOMNode();
+    var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.contentDescription);
+    this.setState({contentDescription: shortDesc});
+  },
+   
+  closeUpNextPanel: function(event) {
+    console.log("Up next panel close button clicked");
     event.stopPropagation(); // W3C
     event.cancelBubble = true; // IE
     this.props.controller.upNextDismissButtonClicked();
@@ -37,24 +49,23 @@ var UpNextPanel = React.createClass({
     var controlBarHeight = 60;
     panelStyle.bottom = (this.props.controlBarVisible ? controlBarHeight : 0);
 
-    var contentImageContainerStyle = upNextPanelStyle.contentImageContainer;
-    var contentImageStyle = upNextPanelStyle.contentImage;
+    var contentImageContainerStyle = upNextPanelStyle.contentImageContainerStyle;
+    var contentImageStyle = upNextPanelStyle.contentImageStyle;
 
     var playButtonClass = upNextPanelStyle.playButton.icon;
     var playButtonStyle = upNextPanelStyle.playButton.style;
 
-    var contentMetadataContainerStyle = upNextPanelStyle.contentMetadataContainer;
+    var contentMetadataContainerStyle = upNextPanelStyle.contentMetadataContainerStyle;
     
-    var upNextTitleStyle = upNextPanelStyle.upNextTitle;
+    var upNextTitleStyle = upNextPanelStyle.upNextTitleStyle;
 
-    var upNextTitleTextStyle = upNextPanelStyle.upNextTitleText;
+    var upNextTitleTextStyle = upNextPanelStyle.upNextTitleTextStyle;
     var contentTile = this.props.upNextInfo.upNextData.name;
 
-    var contentDescriptionStyle = upNextPanelStyle.contentDescription;
-    var contentDescription = this.props.upNextInfo.upNextData.description;
+    var contentDescriptionStyle = upNextPanelStyle.contentDescriptionStyle;
     
-    var dismissButtonStyle = upNextPanelStyle.dismissButton;
-    var dismissButtonTextStyle = upNextPanelStyle.dismissButtonText;
+    var dismissButtonStyle = upNextPanelStyle.dismissButtonStyle;
+    var dismissButtonTextStyle = upNextPanelStyle.dismissButtonTextStyle;
 
     return (
       <div style={panelStyle}>
@@ -73,17 +84,13 @@ var UpNextPanel = React.createClass({
 
           </div>
 
-          <div style={contentDescriptionStyle}>
-            {contentDescription}
+          <div ref="ContentDescription" style={contentDescriptionStyle}>
+            {this.state.contentDescription}
           </div>
         </div>
-
-        <div style={dismissButtonStyle} onClick={this.handleDismissButtonClick}>
-          <div style={dismissButtonTextStyle}>
-           Dismiss
-          </div>
-        </div>
-
+        
+        <div onClick={this.closeUpNextPanel} style={upNextPanelStyle.closeButton} className="icon icon-close"></div>
+        
       </div>
     );
   }
