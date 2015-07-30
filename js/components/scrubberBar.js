@@ -13,6 +13,7 @@ var ScrubberBar = React.createClass({
 
   handlePlayheadMouseDown: function(evt) {
     this.props.controller.beginSeeking();
+    this.props.controller.renderSkin();
     this.getDOMNode().parentNode.addEventListener("mousemove", this.handlePlayheadMouseMove);
     // attach a mouseup listener to the document for usability, otherwise scrubbing
     // breaks if your cursor leaves the player element
