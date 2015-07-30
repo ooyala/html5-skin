@@ -52,7 +52,7 @@ var AdScreen = React.createClass({
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
         onMouseUp={this.handlePlayerMouseUp} style={defaultScreenStyle.style}>
         
-        <AdPanel {...this.props} />
+        <AdPanel {...this.props} controlBarWidth={this.state.controlBarWidth}/>
 
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} />

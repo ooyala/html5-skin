@@ -42,10 +42,10 @@ var AdPanel = React.createClass({
       adPlaybackInfoTextStyle.visibility = "hidden";
     }
 
-    var topBarTitle = "Ad Playing";
+    var topBarTitle = "Ad: ";
     // AMC puts "Unknown" in the name field if ad name unavailable 
-    if (this.props.currentAdsInfo.currentAdItem.name !== "Unknown") {
-      topBarTitle = topBarTitle + ": " + this.props.currentAdsInfo.currentAdItem.name;
+    if (this.props.currentAdsInfo.currentAdItem.name !== "Unknown" && this.props.controlBarWidth > 560) {
+      topBarTitle = topBarTitle + this.props.currentAdsInfo.currentAdItem.name;
     }
 
     var learnMoreButtonStyle = adScreenStyle.learnMoreButtonStyle;
