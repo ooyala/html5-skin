@@ -11,14 +11,7 @@ var EndScreen = React.createClass({
     };
   },
 
-  // CSS doesn't support "truncate N lines" so we need to do DOM width
-  // calculations to figure out where to truncate the description
   componentDidMount: function() {
-    if (this.props.skinConfig.endScreen.screenToShowOnEnd === "default") {
-      // var descriptionNode = this.refs.endScreenInfoPanel;
-      // var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
-      // this.setState({description: shortDesc});
-    }
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
 
@@ -52,32 +45,30 @@ var EndScreen = React.createClass({
     var screenStyle = this.props.style;
     var repeatClass = screenStyle.repeatButton.icon;
     var repeatStyle = screenStyle.repeatButton.style;
-    var posterStyle = screenStyle.posterStyle;
 
-    repeatStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.endScreen.replayIconStyle.color;
+    repeatStyle.color = this.props.skinConfig.endScreen.replayIconStyle.color;
 
-    // metadata visibility
-    var titleMetadata;
-    var descriptionMetadata;
+    // ReplayButton position, defaulting to centered
+    if (this.props.skinConfig.endScreen.showReplayButton) {
+      repeatStyle.top = "50%";
+      repeatStyle.left = "50%";
+    }
+    else {
+      repeatStyle.display = "none";
+    }
 
-    // Default configuration
-    posterStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
     return (
       <div onMouseOver={this.showControlBar}
-             onMouseUp={this.handlePlayerMouseUp}
-             style={{height: "100%", width: "100%"}}>
-      <div style={screenStyle.posterStyle}></div>
-      <span className={repeatClass} style={repeatStyle} aria-hidden="true" onClick={this.handleClick}></span>
-      <div style={screenStyle.infoPanel.style} ref="endScreenInfoPanel">
-        {titleMetadata}
-        {descriptionMetadata}
+           onMouseUp={this.handlePlayerMouseUp}
+           style={{height: "100%", width: "100%"}}>
+        <div style={screenStyle.backgroundStyle}></div>
+        <span className={repeatClass} style={repeatStyle} aria-hidden="true" onClick={this.handleClick}></span>
+        <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
+          controlBarWidth={this.state.controlBarWidth} />
+        <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
+          controlBarWidth={this.state.controlBarWidth}
+          playerState={this.props.playerState} />
       </div>
-      <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-        controlBarWidth={this.state.controlBarWidth} />
-      <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-        controlBarWidth={this.state.controlBarWidth}
-        playerState={this.props.playerState} />
-    </div>
     );
   }
 });
