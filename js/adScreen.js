@@ -23,20 +23,11 @@ var AdScreen = React.createClass({
     }
   },
 
-  openUrl: function(url) {
-    if (url === null) { 
-      return; 
-    }
-    window.open(url);
-  },
-
-  handlePlayerMouseUp: function() {
-    console.log("AdScreen clicked!!!!!!!!!");
-    if (this.props.playerState ===  STATE.PLAYING) {
-      var clickThroughUrl = this.props.currentAdsInfo.currentAdItem.clickUrl;
-      this.openUrl(clickThroughUrl);
-    }
-    this.props.controller.togglePlayPause();
+  handlePlayerClicked: function() {    
+    console.log("ad screen clicked");
+    event.stopPropagation(); // W3C
+    event.cancelBubble = true; // IE
+    this.props.controller.onAdsClicked();
   },
 
   showControlBar: function() {
@@ -50,7 +41,7 @@ var AdScreen = React.createClass({
   render: function() {
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onMouseUp={this.handlePlayerMouseUp} style={defaultScreenStyle.style}>
+        onClick={this.handlePlayerClicked} style={defaultScreenStyle.style}>
         
         <AdPanel {...this.props} />
 
