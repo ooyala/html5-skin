@@ -12,6 +12,11 @@ var PauseScreen = React.createClass({
     };
   },
 
+  componentWillMount: function () {
+    if (!Utils.isMobile()){
+      React.initializeTouchEvents(true);
+    }
+  },
 
   // CSS doesn't support "truncate N lines" so we need to do DOM width
   // calculations to figure out where to truncate the description
@@ -50,6 +55,7 @@ var PauseScreen = React.createClass({
   },
 
   handleClick: function() {
+    console.log("xenia handle click from pause screen");
     this.props.controller.togglePlayPause();
   },
 
@@ -105,7 +111,7 @@ var PauseScreen = React.createClass({
     }
     
     return (
-      <div onMouseUp={this.handleClick} style={screenStyle.style}>
+      <div onMouseUp={Utils.isMobile()?null:this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>
         <span className={this.props.pauseAnimationDisabled === true ? null : pauseClass} style={pauseStyle} aria-hidden="true"></span>
         <div style={screenStyle.infoPanel.style}>

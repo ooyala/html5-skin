@@ -3,6 +3,11 @@
 *********************************************************************/
 
 var ControlBar = React.createClass({
+  componentWillMount: function () {
+    if (!Utils.isMobile()){
+      React.initializeTouchEvents(true);
+    }
+  },
 
   componentDidMount: function(){
     if (Utils.isSafari()){
@@ -230,7 +235,7 @@ var ControlBar = React.createClass({
     this.setupControlBarItemForConstantHeight(60);
     var controlBarItems = this.populateControlBar();
     return (
-      <div className="controlBar" onMouseUp={this.handleControlBarMouseUp}
+      <div className="controlBar" onMouseUp={Utils.isMobile()?null:this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}
         style={controlBarStyle.controlBarSetting}>
         {controlBarItems}
       </div>

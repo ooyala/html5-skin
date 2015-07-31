@@ -65,7 +65,7 @@ var pauseScreenStyle = {
     width: "100%",
     height: "100%",
     position: "absolute",
-    overflow: "hidden",
+    overflow: "hidden"
   },
   infoPanel: {
     style: {
@@ -101,7 +101,8 @@ var pauseScreenStyle = {
       WebkitTransform: "translate(-50%, -50%)",
       transform: "translate(-50%, -50%)",
       opacity: 1,
-      transition: "all 1s"
+      transition: "all 1s",
+      "cursor": "pointer"
     }
   },
   fading: {
@@ -293,7 +294,8 @@ var shareScreenStyle = {
     textAlign: "center",
     backgroundColor: "#444444",
     color: "#afafaf",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    cursor: "pointer"
   },
 
   lastTabStyle: {
@@ -308,7 +310,8 @@ var shareScreenStyle = {
     flex: 1,
     WebkitFlex: 1,
     textAlign: "left",
-    paddingLeft: "25px"
+    paddingLeft: "25px",
+    cursor: "pointer"
   },
 
   activeTab: {
@@ -327,7 +330,8 @@ var shareScreenStyle = {
     fontSize: "22px",
     fontWeight: "bold",
     lineHeight: "30px",
-    borderRadius: "6px"
+    borderRadius: "6px",
+    cursor: "pointer"
   },
 
   panelStyle: {
@@ -381,7 +385,8 @@ var shareScreenStyle = {
     borderRadius: "6px",
     height: "40px",
     width: "70px",
-    marginTop: "8px"
+    marginTop: "8px",
+    cursor: "pointer"
   },
 
   emailInputField: {
@@ -430,7 +435,8 @@ var shareScreenStyle = {
     backgroundColor: "#4389ff",
     color: "white",
     textAlign: "center",
-    lineHeight: "25px"
+    lineHeight: "25px",
+    cursor: "pointer"
   }
 };
 
@@ -711,7 +717,8 @@ var closedCaptionScreenStyles ={
     top: "17.5",
     height: "25",
     width: "25",
-    color: "lightgray"
+    color: "lightgray",
+    cursor: "pointer"
   },
 
   innerPanelStyle :{
@@ -793,7 +800,8 @@ var closedCaptionScreenStyles ={
     textAlign: "center",
     padding: "2",
     color: "white",
-    transition: "all 0.0s ease"
+    transition: "all 0.0s ease",
+    cursor: "pointer"
   },
 
   lastColItemStyle: {
@@ -808,7 +816,8 @@ var closedCaptionScreenStyles ={
     textAlign: "center",
     padding: "2",
     color: "white",
-    transition: "all 0.0s ease"
+    transition: "all 0.0s ease",
+    cursor: "pointer"
   },
 
   itemSelectedStyle: {
@@ -824,7 +833,8 @@ var closedCaptionScreenStyles ={
     color: "white",
     //properties different from itemStyle
     backgroundColor: "#4389ff",
-    borderRadius: "4"
+    borderRadius: "4",
+    cursor: "pointer"
   },
 
   lastColItemSelectedStyle:{
@@ -840,7 +850,8 @@ var closedCaptionScreenStyles ={
     color: "white",
     //properties different from itemStyle
     backgroundColor: "#4389ff",
-    borderRadius: "4"
+    borderRadius: "4",
+    cursor: "pointer"
   },
 
   closedCaptionChevronLeftButtonContainer: {
@@ -849,7 +860,8 @@ var closedCaptionScreenStyles ={
     height: "100%",
     width: "25px",
     color:"white",
-    left: "0"
+    left: "0",
+    cursor: "pointer"
   },
 
   closedCaptionChevronRightButtonContainer: {
@@ -858,7 +870,8 @@ var closedCaptionScreenStyles ={
     height: "100%",
     width: "25px",
     color:"white",
-    right: "0"
+    right: "0",
+    cursor: "pointer"
   },
 
   closedCaptionChevronLeftButton: {

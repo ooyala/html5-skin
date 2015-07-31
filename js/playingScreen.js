@@ -11,6 +11,12 @@ var PlayingScreen = React.createClass({
     };
   },
 
+  componentWillMount: function () {
+    if (!Utils.isMobile()){
+      React.initializeTouchEvents(true);
+    }
+  },
+
   componentDidMount: function () {
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
 

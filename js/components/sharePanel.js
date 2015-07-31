@@ -10,6 +10,12 @@
 var SharePanel = React.createClass({
   tabs: {SHARE: "share", EMBED: "embed", EMAIL: "email"},
 
+  componentWillMount: function () {
+    if (!Utils.isMobile()){
+      React.initializeTouchEvents(true);
+    }
+  },
+
   componentDidMount: function(){
     if (Utils.isSafari()){
       shareScreenStyle.containerStyle.display = "-webkit-flex";
@@ -39,9 +45,9 @@ var SharePanel = React.createClass({
       return (
         <div style={shareScreenStyle.panelStyle}>
           <div style={shareScreenStyle.titleStyle}>{(this.props.contentTree && this.props.contentTree.title) || ""}</div>
-          <div onClick={this.handleTwitterClick} style={twitterIconStyle}>t</div>
-          <div onClick={this.handleFacebookClick} style={facebookIconStyle}>f</div>
-          <div onClick={this.handleGPlusClick} style={plusIconStyle}>g+</div><br/>
+          <div onClick={this.handleTwitterClick} onTouchEnd={this.handleTwitterClick} style={twitterIconStyle}>t</div>
+          <div onClick={this.handleFacebookClick} onTouchEnd={this.handleFacebookClick} style={facebookIconStyle}>f</div>
+          <div onClick={this.handleGPlusClick} onTouchEnd={this.handleGPlusClick} style={plusIconStyle}>g+</div><br/>
           <input style={shareScreenStyle.embedUrlStyle} type='text' defaultValue={location.href}/><br/>
           <input style={{marginBottom: "15px"}}type='checkbox'/>
             Start at <input style={shareScreenStyle.startAtInput} type='text'
@@ -85,7 +91,7 @@ var SharePanel = React.createClass({
               <td></td>
               <td style={{width: "10px"}}></td>
               <td style={{textAlign: "right"}}>
-                <button onClick={this.handleEmailClick} style={shareScreenStyle.emailSendButton}>Send</button></td>
+                <button onClick={this.handleEmailClick} onTouchEnd={this.handleEmailClick} style={shareScreenStyle.emailSendButton}>Send</button></td>
             </tr>
           </table>
         </div>
@@ -136,11 +142,14 @@ var SharePanel = React.createClass({
     return (
       <div style={shareScreenStyle.containerStyle}>
         <div style={shareScreenStyle.tabRowStyle}>
-          <span onClick={this.showPanel.bind(this, this.tabs.SHARE)}
+          <span onClick={Utils.isMobile()?null:this.showPanel.bind(this, this.tabs.SHARE)}
+            onTouchEnd={this.showPanel.bind(this, this.tabs.SHARE)}
             style={(this.state.activeTab == this.tabs.SHARE) ? activeTabStyle : shareScreenStyle.tabStyle}>Share</span>
-          <span onClick={this.showPanel.bind(this, this.tabs.EMBED)}
+          <span onClick={Utils.isMobile()?null:this.showPanel.bind(this, this.tabs.EMBED)}
+            onTouchEnd={this.showPanel.bind(this, this.tabs.EMBED)}
             style={(this.state.activeTab == this.tabs.EMBED) ? activeTabStyle : shareScreenStyle.tabStyle}>Embed</span>
-          <span onClick={this.showPanel.bind(this, this.tabs.EMAIL)}
+          <span onClick={Utils.isMobile()?null:this.showPanel.bind(this, this.tabs.EMAIL)}
+            onTouchEnd={this.showPanel.bind(this, this.tabs.EMAIL)}
             style={(this.state.activeTab == this.tabs.EMAIL) ? activeLastTabStyle : shareScreenStyle.lastTabStyle}>Email</span>
         </div>
         {this.getActivePanel()}
