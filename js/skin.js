@@ -64,13 +64,13 @@ var Skin = React.createClass({
       case SCREEN.SHARE_SCREEN:
         return (
           <ShareScreen {...this.props} contentTree={this.state.contentTree}
-          currentPlayhead={this.state.currentPlayhead}
-          duration={this.state.duration}
-          buffered={this.state.buffered}
-          fullscreen={this.state.fullscreen}
-          playerState={this.state.playerState}
-          seeking={this.state.seeking}
-          ref="shareScreen" />
+            currentPlayhead={this.state.currentPlayhead}
+            duration={this.state.duration}
+            buffered={this.state.buffered}
+            fullscreen={this.state.fullscreen}
+            playerState={this.state.playerState}
+            seeking={this.state.seeking}
+            ref="shareScreen" />
         );
       case SCREEN.PAUSE_SCREEN:
         return (
