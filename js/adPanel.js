@@ -67,20 +67,21 @@ var AdPanel = React.createClass({
 
         <div style={topBarStyle}>
           <div style={adPlaybackInfoTextStyle}>
-            {topBarTitle} ({currentAdIndex}/{totalNumberOfAds})  -   {remainingTime}
+            {topBarTitle}  ({currentAdIndex}/{totalNumberOfAds})  -   {remainingTime}
+          </div>
+
+
+          <div style={skipButtonStyle}>
+            <div style={skipButtonTextStyle}>
+              Skip Ad
+            </div>
           </div>
 
           <div style={learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
             <div style={learnMoreButtonTextStyle}>
              Learn More
             </div>
-          </div>
-        </div>
-
-        <div style={skipButtonStyle}>
-          <div style={skipButtonTextStyle}>
-           Skip Ad
-          </div>
+          </div>  
         </div>
 
       </div>
