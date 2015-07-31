@@ -101,7 +101,7 @@ var StartScreen = React.createClass({
       return (
         <div onClick={this.handleClick} style={screenStyle.style}>
           <div className="startscreen-poster" style={screenStyle.posterStyle}></div>
-          <span className={playClass} style={playStyle} aria-hidden="true" onClick={this.handleClick}></span>
+          <span className={playClass} style={playStyle} aria-hidden="true"></span>
           <div className="startscreen-info" style={screenStyle.infoPanel.style}>
             {titleMetadata}
             {descriptionMetadata}
