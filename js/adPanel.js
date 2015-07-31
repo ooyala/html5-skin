@@ -45,7 +45,7 @@ var AdPanel = React.createClass({
     var topBarTitle = "Ad: ";
     // AMC puts "Unknown" in the name field if ad name unavailable 
     if (this.props.currentAdsInfo.currentAdItem.name !== "Unknown" && this.props.controlBarWidth > 560) {
-      topBarTitle = topBarTitle + this.props.currentAdsInfo.currentAdItem.name;
+      topBarTitle = this.props.currentAdsInfo.currentAdItem.name + " " + topBarTitle;
     }
 
     var learnMoreButtonStyle = adScreenStyle.learnMoreButtonStyle;
@@ -67,7 +67,7 @@ var AdPanel = React.createClass({
 
         <div style={topBarStyle}>
           <div style={adPlaybackInfoTextStyle}>
-            {topBarTitle} ({currentAdIndex}/{totalNumberOfAds})  |   {remainingTime}
+            {topBarTitle} ({currentAdIndex}/{totalNumberOfAds})  -   {remainingTime}
           </div>
 
           <div style={learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
