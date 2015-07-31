@@ -242,6 +242,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.playerState = STATE.PLAYING;
     },
 
+    onAdsClicked: function() {
+      console.log("on ads clicked is called");
+      this.mb.publish(OO.EVENTS.ADS_CLICKED);
+    },
+
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.ccOptions.availableLanguages = languages;
       if (this.state.ccOptions.enabled){
