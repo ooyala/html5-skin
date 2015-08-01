@@ -187,8 +187,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       } else {
         this.state.screenToShow = SCREEN.END_SCREEN;
       }
-      this.state.currentPlayhead = this.state.contentTree.duration/1000;
-      this.state.duration = this.state.contentTree.duration/1000; 
+      this.skin.updatePlayhead(this.state.contentTree.duration/1000, this.state.contentTree.duration/1000, this.state.contentTree.duration/1000); 
       this.state.playerState = STATE.END;
       this.renderSkin();
     },
