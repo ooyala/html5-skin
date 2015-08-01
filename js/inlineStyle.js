@@ -493,7 +493,7 @@ var discoveryScreenStyle = {
     position: "absolute",
     top: "0",
     height: "90%",
-    width: "100%",
+    width: "0",
     right: 0,
     left: 25,
     display: "flex",
