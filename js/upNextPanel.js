@@ -10,6 +10,7 @@
 
 var UpNextPanel = React.createClass({
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       contentDescription: this.props.upNextInfo.upNextData.description
     };
@@ -69,9 +70,9 @@ var UpNextPanel = React.createClass({
 
     return (
       <div style={panelStyle}>
-        <div style={contentImageContainerStyle} onClick={this.handleStartUpNextClick}>
-          <img style={contentImageStyle} src={this.props.upNextInfo.upNextData.preview_image_url}></img>          
-          <span className={playButtonClass} style={playButtonStyle} aria-hidden="true" onClick={this.handleClick}></span>
+        <div style={contentImageContainerStyle} onClick={this.isMobile?null:this.handleStartUpNextClick} onTouchEnd={this.handleStartUpNextClick}>
+          <img style={contentImageStyle} src={this.props.upNextInfo.upNextData.preview_image_url}></img>
+          <span className={playButtonClass} style={playButtonStyle} aria-hidden="true" onClick={this.isMobile?null:this.handleClick} onTouchEnd={this.handleClick}></span>
         </div>
 
         <div style={contentMetadataContainerStyle}>
@@ -89,7 +90,7 @@ var UpNextPanel = React.createClass({
           </div>
         </div>
         
-        <div onClick={this.closeUpNextPanel} style={upNextPanelStyle.closeButton} className="icon icon-close"></div>
+        <div onClick={this.isMobile?null:this.closeUpNextPanel} onTouchEnd={this.closeUpNextPanel} style={upNextPanelStyle.closeButton} className="icon icon-close"></div>
         
       </div>
     );

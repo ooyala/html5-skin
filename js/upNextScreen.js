@@ -4,6 +4,7 @@
 
 var UpNextScreen = React.createClass({
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       controlBarVisible: true,
       controlBarWidth: 0
@@ -29,7 +30,7 @@ var UpNextScreen = React.createClass({
   render: function() {
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onClick={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
+        onClick={this.isMobile?null:this.handlePlayerMouseUp} onTouchEnd={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
         <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}

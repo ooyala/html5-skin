@@ -3,10 +3,9 @@
 *********************************************************************/
 
 var ControlBar = React.createClass({
-  componentWillMount: function () {
-    if (!Utils.isMobile()){
-      React.initializeTouchEvents(true);
-    }
+  getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
+    return null;
   },
 
   componentDidMount: function(){
@@ -90,7 +89,7 @@ var ControlBar = React.createClass({
         "rgba(67, 137, 255, 0.6)" : "rgba(255, 255, 255, 0.6)");
       //we store which value the tick correlates to via a data attribute on the element
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
-        onClick={this.handleVolumeClick}></span>);
+        onClick={this.isMobile?null:this.handleVolumeClick} onTouchEnd={this.handleVolumeClick}></span>);
     }
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
     var watermarkImageStyle = controlBarStyle.watermarkImageStyle;
@@ -100,7 +99,7 @@ var ControlBar = React.createClass({
 
     var controlItemTemplates = {
       "playPause": <div className="playPause" style={controlBarStyle.controlBarItemSetting}
-        onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        onClick={this.isMobile?null:this.handlePlayClick} onTouchEnd={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <span className={playClass} style={controlBarStyle.iconSetting}></span>
       </div>,
 
@@ -110,7 +109,7 @@ var ControlBar = React.createClass({
       </div>,
       
       "volume": <div className="volume" style={controlBarStyle.controlBarItemSetting}>
-        <span className={muteClass} style={controlBarStyle.iconSetting} onClick={this.handleMuteClick}
+        <span className={muteClass} style={controlBarStyle.iconSetting} onClick={this.isMobile?null:this.handleMuteClick} onTouchEnd={this.handleMuteClick}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
         {volumeBars}
       </div>,
@@ -121,7 +120,8 @@ var ControlBar = React.createClass({
       "flexibleSpace": <div className="flexibleSpace" style={controlBarStyle.flexibleSpace}></div>,
 
       "moreOptions": <div className="moreOptions" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}>
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.isMobile?null:this.handleMoreOptionsClick}
+        onTouchEnd={this.handleMoreOptionsClick}>
         <span className="icon icon-menu" style={controlBarStyle.iconSetting}></span></div>,
 
       "quality": <div className="quality" style={controlBarStyle.controlBarItemSetting}
@@ -129,19 +129,21 @@ var ControlBar = React.createClass({
         <span className="icon icon-topmenu-quality" style={controlBarStyle.iconSetting}></span></div>,
 
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.isMobile?null:this.handleDiscoveryClick}
+        onTouchEnd={this.handleDiscoveryClick}>
         <span className="icon icon-topmenu-discovery" style={controlBarStyle.iconSetting}></span></div>,
     
       "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-cc"
-        onClick={this.handleClosedCaptionClick} style={controlBarStyle.iconSetting}></span></div>,
+        onClick={this.isMobile?null:this.handleClosedCaptionClick} onTouchEnd={this.handleClosedCaptionClick} style={controlBarStyle.iconSetting}></span></div>,
       
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-share"
-        onClick={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
+        onClick={this.isMobile?null:this.handleShareClick} onTouchEnd={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
 
       "fullscreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.isMobile?null:this.handleFullscreenClick}
+        onTouchEnd={this.handleFullscreenClick}>
         <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>,
       
       "watermark": <div className="watermark" style={controlBarStyle.controlBarItemSetting}

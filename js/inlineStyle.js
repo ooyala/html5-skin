@@ -535,7 +535,8 @@ var discoveryScreenStyle = {
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
-      transition: "opacity .25s ease-in-out"
+      transition: "opacity .25s ease-in-out",
+      cursor: "pointer"
     }
   },
 
@@ -549,7 +550,8 @@ var discoveryScreenStyle = {
       transform: "translate(-50%, -50%)",
       position: "absolute",
       opacity: 1,
-      transition: "opacity .25s ease-in-out"
+      transition: "opacity .25s ease-in-out",
+      cursor: "pointer"
     }
   },
 
@@ -609,7 +611,8 @@ var discoveryScreenStyle = {
     "line-height":"40px",
     "z-index":10005,
     "color":"white",
-    fontSize: 25
+    fontSize: 25,
+    cursor: "pointer"
   },
 };
 
@@ -966,7 +969,8 @@ var upNextPanelStyle = {
     top: "0",
     left: "0",
     width: "140px",
-    height: "100%"
+    height: "100%",
+    cursor: "pointer"
   },
 
   contentImageStyle: {
@@ -979,6 +983,7 @@ var upNextPanelStyle = {
 
   playButton: {
     icon: "icon icon-play",
+    cursor: "pointer",
     style: {
       position: "absolute",
       top: "50%",
@@ -1097,12 +1102,14 @@ var MoreOptionsScreenStyle = {
     "paddingRight": "8px",
     "margin": "0 auto",
     "opacity": "1",
+    "cursor": "pointer"
   },
 
   closeButtonStyle: {
     "position": "absolute",
     "top": "10",
     "right": "10",
-    "color": "lightgray"
+    "color": "lightgray",
+    "cursor": "pointer"
   },
 };

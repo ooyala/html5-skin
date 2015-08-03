@@ -60,6 +60,7 @@ var AdPanel = React.createClass({
       skipButtonStyle.visibility = "hidden";
     }
     var skipButtonTextStyle = adScreenStyle.skipButtonTextStyle;
+    console.log("xenia in AdPanel");
 
     var remainingTime = Utils.formatSeconds(parseInt(this.props.currentAdsInfo.currentAdItem.duration -  this.props.currentPlayhead));
     return (

@@ -3,18 +3,15 @@
 *********************************************************************/
 
 var PlayingScreen = React.createClass({
+
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
+
     return {
       controlBarVisible: true,
       controlBarWidth: 0,
       timer: null
     };
-  },
-
-  componentWillMount: function () {
-    if (!Utils.isMobile()){
-      React.initializeTouchEvents(true);
-    }
   },
 
   componentDidMount: function () {
@@ -24,7 +21,7 @@ var PlayingScreen = React.createClass({
     window.addEventListener('resize', this.handleResize);
 
     //for mobile, hide control bar after 3 seconds
-    if (Utils.isMobile()){
+    if (this.isMobile){
       this.startHideControlBarTimer();
     }
   },
@@ -52,9 +49,7 @@ var PlayingScreen = React.createClass({
 
   handlePlayerMouseUp: function() {
     // pause or play the video if the skin is clicked on desktop
-    if (!Utils.isMobile()){
       this.props.controller.togglePlayPause();
-    }
 
     // for mobile, touch is handled in handleTouchEnd
   },
@@ -77,7 +72,7 @@ var PlayingScreen = React.createClass({
   render: function() {
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd} style={{height: "100%", width: "100%"}}>
+        onMouseUp={this.isMobile?null:this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd} style={{height: "100%", width: "100%"}}>
 
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} />

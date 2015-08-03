@@ -19,7 +19,8 @@ var DiscoveryPanel = React.createClass({
     }
   },
 
-  getInitialState: function() { 
+  getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       discoveryToasterLeftOffset: 25,
       showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen
@@ -178,10 +179,10 @@ var DiscoveryPanel = React.createClass({
         for (var i = 0; i < this.props.discoveryData.relatedVideos.length; i++) {
           if(this.shouldShowCountdownTimer() && i === 0) {
             discoveryContentBlocks.push(
-            <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
+            <div style={contentBlockStyle} onClick={this.isMobile?null:this.handleDiscoveryContentClick.bind(this, i)} onTouchEnd={this.handleDiscoveryContentClick.bind(this, i)}>
               <div style={discoveryScreenStyle.discoveryImageWrapperStyle}>
                 <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
-                     <div style={discoveryCountDownWrapperStyle} onClick={this.handleDiscoveryCountDownClick}>
+                     <div style={discoveryCountDownWrapperStyle} onClick={this.isMobile?null:this.handleDiscoveryCountDownClick} onTouchEnd={this.handleDiscoveryCountDownClick}>
                      <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
                      <span className="icon icon-pause" style={discoveryCountDownIconStyle}></span>
                      </div>
@@ -192,7 +193,7 @@ var DiscoveryPanel = React.createClass({
           }
           else {
             discoveryContentBlocks.push(
-              <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)}>
+              <div style={contentBlockStyle} onClick={this.isMobile?null:this.handleDiscoveryContentClick.bind(this, i)} onTouchEnd={this.handleDiscoveryContentClick.bind(this, i)}>
                 <div style={discoveryScreenStyle.discoveryImageWrapperStyle}>
                   <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
                 </div>
@@ -217,11 +218,11 @@ var DiscoveryPanel = React.createClass({
           </div>
 
           <div style={chevronLeftButtonContainer}>
-            <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} ref="ChevronLeftButton" aria-hidden="true" onClick={this.handleLeftButtonClick}></span>
+            <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} ref="ChevronLeftButton" aria-hidden="true" onClick={this.isMobile?null:this.handleLeftButtonClick} onTouchEnd={this.handleRightButtonClick}></span>
           </div>
 
           <div style={chevronRightButtonContainer}>
-            <span className={chevronRightButtonClass} style={chevronRightButtonStyle} ref="ChevronRightButton" aria-hidden="true" onClick={this.handleRightButtonClick}></span>
+            <span className={chevronRightButtonClass} style={chevronRightButtonStyle} ref="ChevronRightButton" aria-hidden="true" onClick={this.isMobile?null:this.handleRightButtonClick} onTouchEnd={this.handleRightButtonClick}></span>
           </div>
         </div>
       </div>

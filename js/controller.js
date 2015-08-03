@@ -39,7 +39,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "upNextData": null,
         "countDownFinished": false,
         "countDownCancelled": false,
-      }
+      },
+
+      "isMobile": false
     };
 
     this.init();
@@ -96,6 +98,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.configLoaded = true;
         this.renderSkin();
       }, this));
+
+      this.state.isMobile = Utils.isMobile();
     },
 
     onAuthorizationFetched: function(event, authorization) {

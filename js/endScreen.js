@@ -4,6 +4,7 @@
 
 var EndScreen = React.createClass({
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       description: this.props.contentTree.description,
       controlBarVisible: true,
@@ -59,10 +60,12 @@ var EndScreen = React.createClass({
 
     return (
       <div onMouseOver={this.showControlBar}
-           onMouseUp={this.handlePlayerMouseUp}
+           onMouseUp={this.isMobile?null:this.handlePlayerMouseUp}
+           onTouchEnd={this.handlePlayerMouseUp}
            style={{height: "100%", width: "100%"}}>
         <div style={screenStyle.backgroundStyle}></div>
-        <span className={repeatClass} style={repeatStyle} aria-hidden="true" onClick={this.handleClick}></span>
+        <span className={repeatClass} style={repeatStyle} aria-hidden="true"
+        onClick={this.isMobile?null:this.handleClick} onTouchEnd={this.handleClick}></span>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}

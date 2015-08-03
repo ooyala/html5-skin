@@ -5,17 +5,12 @@
 
 var PauseScreen = React.createClass({
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       description: this.props.contentTree.description,
       controlBarVisible: true,
       controlBarWidth: 0
     };
-  },
-
-  componentWillMount: function () {
-    if (!Utils.isMobile()){
-      React.initializeTouchEvents(true);
-    }
   },
 
   // CSS doesn't support "truncate N lines" so we need to do DOM width
@@ -55,7 +50,6 @@ var PauseScreen = React.createClass({
   },
 
   handleClick: function() {
-    console.log("xenia handle click from pause screen");
     this.props.controller.togglePlayPause();
   },
 
@@ -109,9 +103,10 @@ var PauseScreen = React.createClass({
         infoStyle.description.style.float = "right";
       }
     }
-    
+
+
     return (
-      <div onMouseUp={Utils.isMobile()?null:this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
+      <div onMouseUp={this.isMobile?null:this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>
         <span className={this.props.pauseAnimationDisabled === true ? null : pauseClass} style={pauseStyle} aria-hidden="true"></span>
         <div style={screenStyle.infoPanel.style}>

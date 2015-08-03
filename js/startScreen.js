@@ -4,6 +4,7 @@
 
 var StartScreen = React.createClass({
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       description: this.props.contentTree.description
     };
@@ -85,7 +86,7 @@ var StartScreen = React.createClass({
       // Small Promo Image configuration
       posterStyle.backgroundSize = "auto";
       return (
-        <div onClick={this.handleClick} style={screenStyle.style}>
+        <div onClick={this.isMobile?null:this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
           <div className="startscreen-info" style={screenStyle.infoPanel.style}>
             <img className="startscreen-poster" src={posterImageUrl}/>
             {titleMetadata}
@@ -99,9 +100,9 @@ var StartScreen = React.createClass({
       // Default configuration
       posterStyle.backgroundImage = "url('" + posterImageUrl + "')";
       return (
-        <div onClick={this.handleClick} style={screenStyle.style}>
+        <div onClick={this.isMobile?null:this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
           <div className="startscreen-poster" style={screenStyle.posterStyle}></div>
-          <span className={playClass} style={playStyle} aria-hidden="true" onClick={this.handleClick}></span>
+          <span className={playClass} style={playStyle} aria-hidden="true" onClick={this.isMobile?null:this.handleClick} onTouchEnd={this.handleClick}></span>
           <div className="startscreen-info" style={screenStyle.infoPanel.style}>
             {titleMetadata}
             {descriptionMetadata}

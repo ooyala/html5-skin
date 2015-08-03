@@ -9,6 +9,7 @@
 */
 var ClosedCaptionScreen = React.createClass({
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       controlBarVisible: true,
       clientWidth: null,
@@ -41,7 +42,7 @@ var ClosedCaptionScreen = React.createClass({
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.clientWidth}
           playerState={this.state.playerState}/>
-        <div className="icon icon-close" style={closedCaptionScreenStyles.closeButtonStyle} onClick={this.closeClosedCaptionPanel}></div>
+        <div className="icon icon-close" style={closedCaptionScreenStyles.closeButtonStyle} onClick={this.isMobile?null:this.closeClosedCaptionPanel} onTouchEnd={this.closeClosedCaptionPanel}></div>
       </div>
     );
   }

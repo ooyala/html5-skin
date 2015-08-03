@@ -9,6 +9,7 @@
 */
 var ShareScreen = React.createClass({
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       controlBarVisible: true,
       controlBarWidth: 0
@@ -32,7 +33,7 @@ var ShareScreen = React.createClass({
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}
           playerState={this.state.playerState} />
-        <div onClick={this.closeSharePanel} style={shareScreenStyle.closeButton} className="icon icon-close"></div>
+        <div onClick={this.isMobile?null:this.closeSharePanel} onTouchEnd={this.closeSharePanel} style={shareScreenStyle.closeButton} className="icon icon-close"></div>
       </div>
     );
   }
