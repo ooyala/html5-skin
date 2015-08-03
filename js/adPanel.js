@@ -71,27 +71,25 @@ var AdPanel = React.createClass({
     // Learn more
     if (this.props.currentAdsInfo.currentAdItem !== null && 
         this.props.currentAdsInfo.currentAdItem.clickUrl !== "") {
+      var learnMoreText = "Learn More";
       var learMoreButtonDiv = {
         "learnMoreButton" : <div className="learnMoreButton" style={adScreenStyle.learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
-            <div style={adScreenStyle.learnMoreButtonTextStyle}>
-             Learn More
-            </div>
+             {learnMoreText}
           </div>  
       };
       adTopBarItems.push(learMoreButtonDiv.learnMoreButton);
     }
 
     // Skip
-    // if (this.props.currentAdsInfo.currentAdItem.skippable) {
+    if (this.props.currentAdsInfo.currentAdItem.skippable) {
+      var skipButtonText = "Skip Ad";
       var skipButtonDiv = {
         "skipButton" : <div className="skipButton" style={adScreenStyle.skipButtonStyle}>
-            <div style={adScreenStyle.skipButtonTextStyle}>
-              Skip Ad
-            </div>
+            {skipButtonText}
           </div>
       };
       adTopBarItems.push(skipButtonDiv.skipButton);
-    // }
+    }
 
 
     return adTopBarItems;
@@ -102,11 +100,9 @@ var AdPanel = React.createClass({
     var adTopBarItems = this.populateAdTopBar();
     return (
       <div style={adScreenStyle.panelStyle}>
-
         <div style={adScreenStyle.topBarStyle}>
           {adTopBarItems}
         </div>
-
       </div>
     );
   }

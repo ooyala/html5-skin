@@ -635,18 +635,18 @@ var discoveryScreenStyle = {
 
 var adScreenStyle = {
   panelStyle: {
-    position: "absolute",
-    top: "0",
-    bottom: "32px",
-    width: "100%"
+    "position": "absolute",
+    "top": "0",
+    "bottom": "32px",
+    "width": "100%"
   },
 
   topBarStyle: {
-    position: "absolute",
-    top: "0%",
-    height: "34px",
-    width: "100%",
-    backgroundColor:"rgba(0, 0, 0, 0.5)",
+    "position": "absolute",
+    "top": "0%",
+    "height": "34px",
+    "width": "100%",
+    "backgroundColor": "rgba(0, 0, 0, 0.5)",
     "margin": 0,
     "fontSize": "18px",
     "listStyle": "none",
@@ -657,12 +657,12 @@ var adScreenStyle = {
     "-moz-user-select": "none",
     "-ms-user-select": "none",
     "userSelect": "none",
-    "transition": "bottom 0.5s, height 0.25s"
+    "transition": "bottom 0.5s, height 0.2 5s"
   },
 
   adPanelTopBarTextStyle: {
-    fontSize: "12pt",
-    color: "white",
+    "fontSize": "12pt",
+    "color": "white",
     "margin": "auto",
     "textAlign": "center",
     "paddingLeft": "7.5px",
@@ -677,47 +677,26 @@ var adScreenStyle = {
   },
 
   learnMoreButtonStyle: {
-    "height": "24px",
-    "width": "80px",
-    "margin": "auto",
-    "backgroundColor": "white",
-    "border-radius": "5px",
-    "cursor": "pointer",
-    "marginLeft": "7.5px",
-    "marginRight": "7.5px",
-  },
-
-  learnMoreButtonTextStyle: {
-    "height": "100%",
-    "fontSize": "10pt",
-    "textAlign": "center",
+    "fontSize": "12pt",
     "color": "black",
-    "WebkitUserSelect": "none",
-    "-moz-user-select": "none",
-    "-ms-user-select": "none",
-    "userSelect": "none",
+    "backgroundColor": "white",
+    "margin": "auto",
+    "marginRight": "15px",
+    "textAlign": "center",
+    "padding": "4px",
+    "border-radius": "5px",
   },
 
   skipButtonStyle: {
-    "height": "24px",
-    "width": "60px",
-    "margin": "auto",
-    "backgroundColor": "white",
-    "border-radius": "5px",
-    "cursor": "pointer",
-    "marginLeft": "7.5px",
-    "marginRight": "7.5px",
-  },
-
-  skipButtonTextStyle: {
-    "fontSize": "10pt",
-    "textAlign": "center",
+    "fontSize": "12pt",
     "color": "black",
-    "WebkitUserSelect": "none",
-    "-moz-user-select": "none",
-    "-ms-user-select": "none",
-    "userSelect": "none"
-  }
+    "backgroundColor": "white",
+    "margin": "auto",
+    "marginRight": "15px",
+    "textAlign": "center",
+    "padding": "4px",
+    "border-radius": "5px",
+  },
 };
 
 var closedCaptionScreenStyles ={
