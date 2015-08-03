@@ -191,6 +191,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       } else {
         this.state.screenToShow = SCREEN.END_SCREEN;
       }
+      this.skin.updatePlayhead(this.state.contentTree.duration/1000, this.state.contentTree.duration/1000, this.state.contentTree.duration/1000); 
       this.state.playerState = STATE.END;
       this.renderSkin();
     },
@@ -244,6 +245,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onWillResumeAds: function(event) {
       console.log("onWillResumeAds is called");
       this.state.playerState = STATE.PLAYING;
+    },
+
+    onAdsClicked: function() {
+      console.log("on ads clicked is called");
+      this.mb.publish(OO.EVENTS.ADS_CLICKED);
     },
 
     onClosedCaptionsInfoAvailable: function(event, languages) {

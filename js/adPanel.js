@@ -18,16 +18,11 @@ var AdPanel = React.createClass({
     }
   },
 
-  handleLearnMoreButtonClick: function() {
-    var clickThroughUrl = this.props.currentAdsInfo.currentAdItem.clickUrl;
-    this.openUrl(clickThroughUrl);
-  },
-
-  openUrl: function(url) {
-    if (url === null) { 
-      return; 
-    }
-    window.open(url);
+  handleLearnMoreButtonClick: function(event) {
+    console.log("Learn more button clicked");
+    event.stopPropagation(); // W3C
+    event.cancelBubble = true; // IE
+    this.props.controller.onAdsClicked();
   },
 
   render: function() {
