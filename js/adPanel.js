@@ -30,58 +30,81 @@ var AdPanel = React.createClass({
     window.open(url);
   },
 
-  render: function() {
+  populateAdTopBar: function() {
+
+    var adTopBarItems = [];
+
+    // Ad title
+    var adTitle = this.props.currentAdsInfo.currentAdItem.name;
+    // AMC puts "Unknown" in the name field if ad name unavailable 
+    if (adTitle !== "Unknown" && this.props.controlBarWidth > 560) {      
+      var adTitleDiv = {
+        "adTitle" : <div className="adTitle" style={adScreenStyle.adPanelTopBarTextStyle}>
+          {adTitle}
+        </div>
+      };
+      adTopBarItems.push(adTitleDiv.adTitle);
+    }
+
+    
+    // Ad playback Info
     var currentAdIndex = this.props.currentAdsInfo.currentAdItem.indexInPod;
     var totalNumberOfAds = this.props.currentAdsInfo.numberOfAds;
-
-    var panelStyle = adScreenStyle.panelStyle;
-
-    var topBarStyle = adScreenStyle.topBarStyle;
-    var adPlaybackInfoTextStyle = adScreenStyle.adPlaybackInfoTextStyle;
-    if (totalNumberOfAds === 0) {
-      adPlaybackInfoTextStyle.visibility = "hidden";
-    }
-
-    var topBarTitle = "Ad: ";
-    // AMC puts "Unknown" in the name field if ad name unavailable 
-    if (this.props.currentAdsInfo.currentAdItem.name !== "Unknown" && this.props.controlBarWidth > 560) {
-      topBarTitle = this.props.currentAdsInfo.currentAdItem.name + " " + topBarTitle;
-    }
-
-    var learnMoreButtonStyle = adScreenStyle.learnMoreButtonStyle;
-    if (this.props.currentAdsInfo.currentAdItem !== null && 
-        this.props.currentAdsInfo.currentAdItem.clickUrl === "") {
-      learnMoreButtonStyle.visibility = "hidden";
-    }
-    var learnMoreButtonTextStyle = adScreenStyle.learnMoreButtonTextStyle;
-
-    var skipButtonStyle = adScreenStyle.skipButtonStyle;
-    if (!this.props.currentAdsInfo.currentAdItem.skippable) {
-      skipButtonStyle.visibility = "hidden";
-    }
-    var skipButtonTextStyle = adScreenStyle.skipButtonTextStyle;
-
     var remainingTime = Utils.formatSeconds(parseInt(this.props.currentAdsInfo.currentAdItem.duration -  this.props.currentPlayhead));
-    return (
-      <div style={panelStyle}>
+    var adPlaybackInfo = "Ad: (" + currentAdIndex + "/" + totalNumberOfAds + ") - " + remainingTime;
 
-        <div style={topBarStyle}>
-          <div style={adPlaybackInfoTextStyle}>
-            {topBarTitle}  ({currentAdIndex}/{totalNumberOfAds})  -   {remainingTime}
-          </div>
+    var adPlaybackInfoDiv = {
+      "adPlaybackInfo" : <div className="adPlaybackInfo" style={adScreenStyle.adPanelTopBarTextStyle}>
+        {adPlaybackInfo}
+      </div>
+    };
+    adTopBarItems.push(adPlaybackInfoDiv.adPlaybackInfo);  
 
 
-          <div style={skipButtonStyle}>
-            <div style={skipButtonTextStyle}>
-              Skip Ad
-            </div>
-          </div>
+    // Flexible space 
+    var flexibleSpaceDiv = {
+      "flexibleSpace" : <div className="flexibleSpace" style={controlBarStyle.flexibleSpace}></div>
+    };
+    adTopBarItems.push(flexibleSpaceDiv.flexibleSpace);
 
-          <div style={learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
-            <div style={learnMoreButtonTextStyle}>
+
+    // Learn more
+    if (this.props.currentAdsInfo.currentAdItem !== null && 
+        this.props.currentAdsInfo.currentAdItem.clickUrl !== "") {
+      var learMoreButtonDiv = {
+        "learnMoreButton" : <div className="learnMoreButton" style={adScreenStyle.learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
+            <div style={adScreenStyle.learnMoreButtonTextStyle}>
              Learn More
             </div>
           </div>  
+      };
+      adTopBarItems.push(learMoreButtonDiv.learnMoreButton);
+    }
+
+    // Skip
+    // if (this.props.currentAdsInfo.currentAdItem.skippable) {
+      var skipButtonDiv = {
+        "skipButton" : <div className="skipButton" style={adScreenStyle.skipButtonStyle}>
+            <div style={adScreenStyle.skipButtonTextStyle}>
+              Skip Ad
+            </div>
+          </div>
+      };
+      adTopBarItems.push(skipButtonDiv.skipButton);
+    // }
+
+
+    return adTopBarItems;
+  },
+
+  render: function() {
+    
+    var adTopBarItems = this.populateAdTopBar();
+    return (
+      <div style={adScreenStyle.panelStyle}>
+
+        <div style={adScreenStyle.topBarStyle}>
+          {adTopBarItems}
         </div>
 
       </div>

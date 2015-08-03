@@ -643,82 +643,80 @@ var adScreenStyle = {
 
   topBarStyle: {
     position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
+    top: "0%",
     height: "34px",
     width: "100%",
     backgroundColor:"rgba(0, 0, 0, 0.5)",
-    display: "flex",
-    flexDirection: "row",
-    WebkitFlexDirection: "row"
+    "margin": 0,
+    "fontSize": "18px",
+    "listStyle": "none",
+    "display": "flex",
+    "flexFlow": "row nowrap",
+    "justifyContent": "flex-start",
+    "WebkitUserSelect": "none",
+    "-moz-user-select": "none",
+    "-ms-user-select": "none",
+    "userSelect": "none",
+    "transition": "bottom 0.5s, height 0.25s"
   },
 
-  adPlaybackInfoTextStyle: {
-    position: "absolute",
-    top: "50%",
-    height: "40%",
-    width: "100%",
+  adPanelTopBarTextStyle: {
     fontSize: "12pt",
     color: "white",
-    "WebkitTransform": "translateY(-50%)",
-    "-ms-transform": "translateY(-50%)",
-    "transform": "translateY(-50%)",
+    "margin": "auto",
+    "textAlign": "center",
+    "paddingLeft": "7.5px",
+    "paddingRight": "7.5px",
     "white-space": "pre"
   },
 
+
+  flexibleSpace: {
+    "flex": 1,
+    "WebkitFlex": 1
+  },
+
   learnMoreButtonStyle: {
-    position: "absolute",
-    right: "90px",
-    top: "5px",
     "height": "24px",
     "width": "80px",
-    "backgroundColor": "white" ,
+    "margin": "auto",
+    "backgroundColor": "white",
     "border-radius": "5px",
     "cursor": "pointer",
+    "marginLeft": "7.5px",
+    "marginRight": "7.5px",
   },
 
   learnMoreButtonTextStyle: {
-    "position": "absolute",
-    "top": "50%",
-    "width": "100%",
+    "height": "100%",
     "fontSize": "10pt",
-    "text-align": "center",
+    "textAlign": "center",
     "color": "black",
     "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
     "userSelect": "none",
-    "WebkitTransform": "translateY(-50%)",
-    "-ms-transform": "translateY(-50%)",
-    "transform": "translateY(-50%)",
   },
 
   skipButtonStyle: {
-    position: "absolute",
-    right: "15px",
-    top: "5px",
     "height": "24px",
     "width": "60px",
-    "backgroundColor": "white" ,
+    "margin": "auto",
+    "backgroundColor": "white",
     "border-radius": "5px",
     "cursor": "pointer",
+    "marginLeft": "7.5px",
+    "marginRight": "7.5px",
   },
 
   skipButtonTextStyle: {
-    "position": "absolute",
-    "top": "50%",
-    "width": "100%",
     "fontSize": "10pt",
-    "text-align": "center",
+    "textAlign": "center",
     "color": "black",
     "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
-    "userSelect": "none",
-    "WebkitTransform": "translateY(-50%)",
-    "-ms-transform": "translateY(-50%)",
-    "transform": "translateY(-50%)",
+    "userSelect": "none"
   }
 };
 
