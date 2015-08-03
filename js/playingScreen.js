@@ -6,7 +6,8 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     return {
       controlBarVisible: true,
-      controlBarWidth: 0
+      controlBarWidth: 0,
+      timer: null
     };
   },
 
@@ -15,6 +16,26 @@ var PlayingScreen = React.createClass({
 
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
+
+    //for mobile, hide control bar after 3 seconds
+    if (Utils.isMobile()){
+      this.startHideControlBarTimer();
+    }
+  },
+
+  startHideControlBarTimer: function(){
+    var timer = setTimeout(function(){
+      if(this.state.controlBarVisible){
+        this.hideControlBar();
+      }
+    }.bind(this), 3000);
+    this.setState({timer: timer});
+  },
+
+  componentWillUnmount: function () {
+    if (this.state.timer !== null){
+      clearTimeout(this.state.timer);
+    }
   },
 
   handleResize: function(e) {
@@ -24,8 +45,19 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseUp: function() {
-    // pause or play the video if the skin is clicked
-    this.props.controller.togglePlayPause();
+    // pause or play the video if the skin is clicked on desktop
+    if (!Utils.isMobile()){
+      this.props.controller.togglePlayPause();
+    }
+
+    // for mobile, touch is handled in handleTouchEnd
+  },
+
+  handleTouchEnd: function() {
+    if (!this.state.controlBarVisible){
+      this.showControlBar();
+      this.startHideControlBarTimer();
+    }
   },
 
   showControlBar: function() {
@@ -39,7 +71,7 @@ var PlayingScreen = React.createClass({
   render: function() {
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
+        onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd} style={{height: "100%", width: "100%"}}>
 
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} />
