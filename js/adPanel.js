@@ -31,7 +31,6 @@ var AdPanel = React.createClass({
   },
 
   populateAdTopBar: function() {
-
     var adTopBarItems = [];
 
     // Ad title
@@ -45,7 +44,6 @@ var AdPanel = React.createClass({
       };
       adTopBarItems.push(adTitleDiv.adTitle);
     }
-
     
     // Ad playback Info
     var currentAdIndex = this.props.currentAdsInfo.currentAdItem.indexInPod;
@@ -60,13 +58,11 @@ var AdPanel = React.createClass({
     };
     adTopBarItems.push(adPlaybackInfoDiv.adPlaybackInfo);  
 
-
     // Flexible space 
     var flexibleSpaceDiv = {
       "flexibleSpace" : <div className="flexibleSpace" style={controlBarStyle.flexibleSpace}></div>
     };
     adTopBarItems.push(flexibleSpaceDiv.flexibleSpace);
-
 
     // Learn more
     if (this.props.currentAdsInfo.currentAdItem !== null && 
@@ -90,13 +86,10 @@ var AdPanel = React.createClass({
       };
       adTopBarItems.push(skipButtonDiv.skipButton);
     }
-
-
     return adTopBarItems;
   },
 
   render: function() {
-    
     var adTopBarItems = this.populateAdTopBar();
     return (
       <div style={adScreenStyle.panelStyle}>
