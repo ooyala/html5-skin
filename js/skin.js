@@ -111,10 +111,6 @@ var Skin = React.createClass({
             ref="adScreen" />
         );
       case SCREEN.DISCOVERY_SCREEN:
-        var tempCurrPlayhead = this.state.currentPlayhead;
-        if(this.state.playerState === STATE.END) {
-            tempCurrPlayhead =  this.state.contentTree.duration/1000;
-        }
         return (
           <DiscoveryScreen {...this.props}
             contentTree={this.state.contentTree}

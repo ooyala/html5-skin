@@ -493,7 +493,7 @@ var discoveryScreenStyle = {
     position: "absolute",
     top: "0",
     height: "90%",
-    width: "100%",
+    width: "0",
     right: 0,
     left: 25,
     display: "flex",
@@ -585,8 +585,8 @@ var discoveryScreenStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
-    WebkitTransform: "translate(-50%, -45%)",
-    transform: "translate(-50%, -45%)"
+    WebkitTransform: "translate(-50%, -50%)",
+    transform: "translate(-50%, -50%)"
   },
 
   discoveryCountDownStyle: {
@@ -598,8 +598,8 @@ var discoveryScreenStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
-    WebkitTransform: "translate(-50%, -57%)",
-    transform: "translate(-50%, -57%)",
+    WebkitTransform: "translate(-50%, -50%)",
+    transform: "translate(-50%, -50%)",
     "line-height":"40px",
     "z-index":10005,
     "color":"white",
