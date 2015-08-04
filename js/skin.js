@@ -24,15 +24,6 @@ var Skin = React.createClass({
   switchComponent: function(args) {
     var newState = args || {};
     this.setState(newState);
-    if (this.refs.playScreen) {
-      this.refs.playScreen.setState({
-        playerState: this.state.playerState
-      });
-    } else if (this.refs.adScreen) {
-      this.refs.adScreen.setState({
-        playerState: this.state.playerState
-      });
-    }
   },
 
   updatePlayhead: function(newPlayhead, newDuration, newBuffered) {

@@ -12,22 +12,22 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseDown: function(evt) {
+    // we enter the scrubbing state to prevent constantly seeking while dragging
+    // the playhead icon
     this.props.controller.beginSeeking();
     this.props.controller.renderSkin();
     this.getDOMNode().parentNode.addEventListener("mousemove", this.handlePlayheadMouseMove);
     // attach a mouseup listener to the document for usability, otherwise scrubbing
     // breaks if your cursor leaves the player element
     document.addEventListener("mouseup", this.handlePlayheadMouseUp, true);
-    // we enter the scrubbing state to prevent constantly seeking while dragging
-    // the playhead icon
     this.setState({
-      startingPlayheadX: evt.screenX
+      startingPlayheadX: evt.screenX,
+      scrubbingPlayheadX: evt.screenX
     });
   },
 
   handlePlayheadMouseMove: function(evt) {
     if (this.props.seeking) {
-      var scrubberWidth = evt.target.parentNode.clientWidth;
       this.setState({
         scrubbingPlayheadX: evt.screenX
       });
@@ -46,9 +46,6 @@ var ScrubberBar = React.createClass({
     this.getDOMNode().parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
     document.removeEventListener("mouseup", this.handlePlayheadMouseUp, true);
     this.props.controller.seek(newPlayheadTime);
-    this.setState({
-      currentPlayhead: newPlayheadTime
-    });
   },
 
   handleScrubberBarMouseUp: function(evt) {
