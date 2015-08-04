@@ -83,6 +83,11 @@ var Utils = {
     return !!(platform.match(/iPhone/) || platform.match(/iPad/) || platform.match(/iPod/));
   },
 
+  isIPhone: function() {
+    var platform = window.navigator.platform;
+    return !!(platform.match(/iPhone/) || platform.match(/iPod/));
+  },
+
   isMobile: function() {
     return (this.isAndroid() || this.isIos());
   },

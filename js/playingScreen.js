@@ -6,7 +6,6 @@ var PlayingScreen = React.createClass({
 
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
-
     return {
       controlBarVisible: true,
       controlBarWidth: 0,
@@ -58,6 +57,9 @@ var PlayingScreen = React.createClass({
     if (!this.state.controlBarVisible){
       this.showControlBar();
       this.startHideControlBarTimer();
+    }
+    else {
+      this.props.controller.togglePlayPause();
     }
   },
 

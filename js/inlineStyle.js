@@ -280,7 +280,8 @@ var scrubberBarStyle = {
     "top": "50%",
     "WebkitTransform": "translateY(-50%)",
     "transform": "translateY(-50%)",
-    "transition": "opacity 0.25s"
+    "transition": "opacity 0.25s",
+    "cursor":"pointer"
   }
 };
 
