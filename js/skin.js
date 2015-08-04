@@ -3,11 +3,21 @@
 *********************************************************************/
 var Skin = React.createClass({
   getInitialState: function() {
+    this.overlayRenderingEventSent = false;
     return {
       screenToShow: null,
       currentPlayhead: 0,
       discoveryData: null
     };
+  },
+
+  componentDidUpdate: function() {
+    // Notify AMC the correct overlay rendering info
+    if (this.state.screenToShow !== null && !this.overlayRenderingEventSent) {
+      var marginHeight = Utils.getScaledControlBarHeight(this.getDOMNode().clientWidth) + UI.defaultScrubberBarHeight;
+      this.props.controller.publishOverlayRenderingEvent(marginHeight);
+      this.overlayRenderingEventSent = true;
+    }
   },
 
   componentWillMount: function() {

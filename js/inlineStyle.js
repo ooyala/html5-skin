@@ -619,92 +619,68 @@ var discoveryScreenStyle = {
 
 var adScreenStyle = {
   panelStyle: {
-    position: "absolute",
-    top: "0",
-    bottom: "32px",
-    width: "100%"
+    "position": "absolute",
+    "top": "0",
+    "bottom": "32px",
+    "width": "100%"
   },
 
   topBarStyle: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    height: "10%",
-    width: "100%",
-    backgroundColor:"rgba(0, 0, 0, 0.5)",
-    display: "flex",
-    flexDirection: "row",
-    WebkitFlexDirection: "row"
+    "position": "absolute",
+    "top": "0%",
+    "height": "34px",
+    "width": "100%",
+    "backgroundColor": "rgba(0, 0, 0, 0.5)",
+    "margin": 0,
+    "fontSize": "18px",
+    "listStyle": "none",
+    "display": "flex",
+    "flexFlow": "row nowrap",
+    "justifyContent": "flex-start",
+    "WebkitUserSelect": "none",
+    "-moz-user-select": "none",
+    "-ms-user-select": "none",
+    "userSelect": "none",
+    "transition": "bottom 0.5s, height 0.2 5s"
   },
 
-  adPlaybackInfoTextStyle: {
-    position: "absolute",
-    top: "50%",
-    height: "40%",
-    width: "100%",
-    fontSize: "10",
-    color: "white",
-    "WebkitTransform": "translateY(-50%)",
-    "-ms-transform": "translateY(-50%)",
-    "transform": "translateY(-50%)",
+  adPanelTopBarTextStyle: {
+    "fontSize": "12pt",
+    "color": "white",
+    "margin": "auto",
+    "textAlign": "center",
+    "paddingLeft": "7.5px",
+    "paddingRight": "7.5px",
     "white-space": "pre"
   },
 
-  learnMoreButtonStyle: {
-    position: "absolute",
-    right: "2%",
-    top: "15%",
-    height: "70%",
-    width: "13%",
-    fontSize: "10",
-    backgroundColor: "white" ,
-    "border-radius": "5px",
-    "cursor": "pointer",
+
+  flexibleSpace: {
+    "flex": 1,
+    "WebkitFlex": 1
   },
 
-  learnMoreButtonTextStyle: {
-    position: "absolute",
-    top: "50%",
-    width: "100%",
-    fontSize: "10",
-    "text-align": "center",
-    color: "black",
-    "WebkitUserSelect": "none",
-    "-moz-user-select": "none",
-    "-ms-user-select": "none",
-    "userSelect": "none",
-    "WebkitTransform": "translateY(-50%)",
-    "-ms-transform": "translateY(-50%)",
-    "transform": "translateY(-50%)",
+  learnMoreButtonStyle: {
+    "fontSize": "12pt",
+    "color": "black",
+    "backgroundColor": "white",
+    "margin": "auto",
+    "marginRight": "15px",
+    "textAlign": "center",
+    "padding": "4px",
+    "border-radius": "5px",
   },
 
   skipButtonStyle: {
-    position: "absolute",
-    right: "2%",
-    bottom: "5%",
-    height: "10%",
-    width: "15%",
-    backgroundColor: "white",
-    opacity: 0.5,
-    "border-radius": "5px"
+    "fontSize": "12pt",
+    "color": "black",
+    "backgroundColor": "white",
+    "margin": "auto",
+    "marginRight": "15px",
+    "textAlign": "center",
+    "padding": "4px",
+    "border-radius": "5px",
   },
-
-  skipButtonTextStyle: {
-    position: "absolute",
-    top: "50%",
-    width: "100%",
-    fontSize: "15",
-    "text-align": "center",
-    color: "black",
-    "WebkitUserSelect": "none",
-    "-moz-user-select": "none",
-    "-ms-user-select": "none",
-    "userSelect": "none",
-    "WebkitTransform": "translateY(-50%)",
-    "-ms-transform": "translateY(-50%)",
-    "transform": "translateY(-50%)",
-  }
 };
 
 var closedCaptionScreenStyles ={

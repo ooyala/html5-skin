@@ -25,60 +25,73 @@ var AdPanel = React.createClass({
     this.props.controller.onAdsClicked();
   },
 
-  render: function() {
+  populateAdTopBar: function() {
+    var adTopBarItems = [];
+
+    // Ad title
+    var adTitle = this.props.currentAdsInfo.currentAdItem.name;
+    // AMC puts "Unknown" in the name field if ad name unavailable 
+    if (adTitle !== "Unknown" && this.props.controlBarWidth > 560) {      
+      var adTitleDiv = {
+        "adTitle" : <div className="adTitle" style={adScreenStyle.adPanelTopBarTextStyle}>
+          {adTitle}
+        </div>
+      };
+      adTopBarItems.push(adTitleDiv.adTitle);
+    }
+    
+    // Ad playback Info
     var currentAdIndex = this.props.currentAdsInfo.currentAdItem.indexInPod;
     var totalNumberOfAds = this.props.currentAdsInfo.numberOfAds;
-
-    var panelStyle = adScreenStyle.panelStyle;
-
-    var topBarStyle = adScreenStyle.topBarStyle;
-    var adPlaybackInfoTextStyle = adScreenStyle.adPlaybackInfoTextStyle;
-    if (totalNumberOfAds === 0) {
-      adPlaybackInfoTextStyle.visibility = "hidden";
-    }
-
-    var topBarTitle = "Ad Playing";
-    // AMC puts "Unknown" in the name field if ad name unavailable 
-    if (this.props.currentAdsInfo.currentAdItem.name !== "Unknown") {
-      topBarTitle = topBarTitle + ": " + this.props.currentAdsInfo.currentAdItem.name;
-    }
-
-    var learnMoreButtonStyle = adScreenStyle.learnMoreButtonStyle;
-    if (this.props.currentAdsInfo.currentAdItem !== null && 
-        this.props.currentAdsInfo.currentAdItem.clickUrl === "") {
-      learnMoreButtonStyle.visibility = "hidden";
-    }
-    var learnMoreButtonTextStyle = adScreenStyle.learnMoreButtonTextStyle;
-
-    var skipButtonStyle = adScreenStyle.skipButtonStyle;
-    if (!this.props.currentAdsInfo.currentAdItem.skippable) {
-      skipButtonStyle.visibility = "hidden";
-    }
-    var skipButtonTextStyle = adScreenStyle.skipButtonTextStyle;
-    console.log("xenia in AdPanel");
-
     var remainingTime = Utils.formatSeconds(parseInt(this.props.currentAdsInfo.currentAdItem.duration -  this.props.currentPlayhead));
+    var adPlaybackInfo = "Ad: (" + currentAdIndex + "/" + totalNumberOfAds + ") - " + remainingTime;
+
+    var adPlaybackInfoDiv = {
+      "adPlaybackInfo" : <div className="adPlaybackInfo" style={adScreenStyle.adPanelTopBarTextStyle}>
+        {adPlaybackInfo}
+      </div>
+    };
+    adTopBarItems.push(adPlaybackInfoDiv.adPlaybackInfo);  
+
+    // Flexible space 
+    var flexibleSpaceDiv = {
+      "flexibleSpace" : <div className="flexibleSpace" style={controlBarStyle.flexibleSpace}></div>
+    };
+    adTopBarItems.push(flexibleSpaceDiv.flexibleSpace);
+
+    // Learn more
+    if (this.props.currentAdsInfo.currentAdItem !== null && 
+        this.props.currentAdsInfo.currentAdItem.clickUrl !== "") {
+      var learnMoreText = "Learn More";
+      var learMoreButtonDiv = {
+        "learnMoreButton" : <div className="learnMoreButton" style={adScreenStyle.learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
+             {learnMoreText}
+          </div>  
+      };
+      adTopBarItems.push(learMoreButtonDiv.learnMoreButton);
+    }
+
+    // Skip
+    if (this.props.currentAdsInfo.currentAdItem.skippable) {
+      var skipButtonText = "Skip Ad";
+      var skipButtonDiv = {
+        "skipButton" : <div className="skipButton" style={adScreenStyle.skipButtonStyle}>
+            {skipButtonText}
+          </div>
+      };
+      adTopBarItems.push(skipButtonDiv.skipButton);
+    }
+    return adTopBarItems;
+  },
+
+
+  render: function() {
+    var adTopBarItems = this.populateAdTopBar();
     return (
-      <div style={panelStyle}>
-
-        <div style={topBarStyle}>
-          <div style={adPlaybackInfoTextStyle}>
-            {topBarTitle} ({currentAdIndex}/{totalNumberOfAds})  |   {remainingTime}
-          </div>
-
-          <div style={learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
-            <div style={learnMoreButtonTextStyle}>
-             Learn More
-            </div>
-          </div>
+      <div style={adScreenStyle.panelStyle}>
+        <div style={adScreenStyle.topBarStyle}>
+          {adTopBarItems}
         </div>
-
-        <div style={skipButtonStyle}>
-          <div style={skipButtonTextStyle}>
-           Skip Ad
-          </div>
-        </div>
-
       </div>
     );
   }
