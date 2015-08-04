@@ -41,17 +41,22 @@ var AdPanel = React.createClass({
     }
     
     // Ad playback Info
+    var adPlaybackInfo = "Ad:";
     var currentAdIndex = this.props.currentAdsInfo.currentAdItem.indexInPod;
     var totalNumberOfAds = this.props.currentAdsInfo.numberOfAds;
+    if (currentAdIndex != null && totalNumberOfAds != null) {
+      var adPlaybackInfo = adPlaybackInfo + " (" + currentAdIndex + "/" + totalNumberOfAds + ") - ";
+    }
+
     var remainingTime = Utils.formatSeconds(parseInt(this.props.currentAdsInfo.currentAdItem.duration -  this.props.currentPlayhead));
-    var adPlaybackInfo = "Ad: (" + currentAdIndex + "/" + totalNumberOfAds + ") - " + remainingTime;
+    var adPlaybackInfo = adPlaybackInfo + remainingTime;
 
     var adPlaybackInfoDiv = {
       "adPlaybackInfo" : <div className="adPlaybackInfo" style={adScreenStyle.adPanelTopBarTextStyle}>
         {adPlaybackInfo}
       </div>
     };
-    adTopBarItems.push(adPlaybackInfoDiv.adPlaybackInfo);  
+    adTopBarItems.push(adPlaybackInfoDiv.adPlaybackInfo);    
 
     // Flexible space 
     var flexibleSpaceDiv = {
