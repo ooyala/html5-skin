@@ -88,7 +88,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%; position: absolute; z-index: 10000; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
-      $.getJSON("config/skin.json", _.bind(function(data) {
+      $.getJSON(params.skin.config, _.bind(function(data) {
+        //Override data in skin config with possible inline data input by the user
+        $.extend(data, params.skin.inline);
+
         this.skin = React.render(
           React.createElement(Skin, {skinConfig: data, controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.getElementById("skin")
         );

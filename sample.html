@@ -12,7 +12,12 @@
   <body>
     <div id='container' style='width:640px; height:360px; overflow: scroll; resize: both;'></div>
     <script>
-      var playerParam = { layout:'chromeless' };
+      var playerParam = {
+        layout:'chromeless',
+        skin: {
+          config: "config/skin.json"
+        }
+      };
       OO.ready(function() {
         window.pp = OO.Player.create('container', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
       });
