@@ -206,6 +206,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       ADS RELATED EVENTS
     *********************************************************************/
 
+    publishOverlayRenderingEvent: function(marginHeight) {
+      this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, {"marginHeight": marginHeight});
+    },
+
     onAdsPlayed: function(event) {
       console.log("onAdsPlayed is called from event = " + event);
       this.state.screenToShow = SCREEN.PLAYING_SCREEN;

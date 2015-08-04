@@ -89,16 +89,15 @@ var Utils = {
 
   // Liusha: saved for resizing control bar
   getScaledControlBarHeight: function(controlBarWidth) {
-    var controlBarHeightBase = 60;
-    var controlBarHeight = 0;
-    if (controlBarWidth >= 1280) {
-      controlBarHeight = controlBarHeightBase * controlBarWidth / 1280;
-    } else if (controlBarWidth <= 560) {
-      controlBarHeight = controlBarHeightBase * controlBarWidth / 560;
-    } else {
-      controlBarHeight = controlBarHeightBase;
-    }
-    return controlBarHeight;
+    var controlBarHeightBase = UI.defaultControlBarHeight;
+    // if (controlBarWidth >= 1280) {
+    //   controlBarHeight = controlBarHeightBase * controlBarWidth / 1280;
+    // } else if (controlBarWidth <= 560) {
+    //   controlBarHeight = controlBarHeightBase * controlBarWidth / 560;
+    // } else {
+    //   controlBarHeight = controlBarHeightBase;
+    // }
+    return controlBarHeightBase;   
   },
 
 

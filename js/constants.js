@@ -28,3 +28,8 @@ var KEYCODES = {
   UP_ARROW_KEY: 38,
   DOWN_ARROW_KEY: 40
 };
+
+var UI = {
+  defaultControlBarHeight: 60,
+  defaultScrubberBarHeight: 5
+};
