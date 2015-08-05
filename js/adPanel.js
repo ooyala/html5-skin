@@ -59,10 +59,10 @@ var AdPanel = React.createClass({
     if (this.props.currentAdsInfo.currentAdItem !== null && 
         this.props.currentAdsInfo.currentAdItem.clickUrl !== "") {
       var learnMoreText = "Learn More";
-      var learMoreButtonDiv = <div className="learnMoreButton" style={adScreenStyle.learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
+      var learnMoreButtonDiv = <div className="learnMoreButton" style={adScreenStyle.learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
              {learnMoreText}
           </div>;
-      adTopBarItems.push(learMoreButtonDiv);
+      adTopBarItems.push(learnMoreButtonDiv);
     }
 
     // Skip
