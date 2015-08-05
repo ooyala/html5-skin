@@ -145,7 +145,8 @@ var ControlBar = React.createClass({
     };
 
     var controlBarItems = [];
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth, this.props.skinConfig.buttons.desktop);
+    var configgedItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth, configgedItems);
     var collapsedControlBarItems = collapsedResult.fit; 
     var collapsedMoreOptionsItems = collapsedResult.overflow;
 
