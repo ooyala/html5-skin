@@ -248,6 +248,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onWillResumeAds: function(event) {
       console.log("onWillResumeAds is called");
       this.state.playerState = STATE.PLAYING;
+      this.state.screenToShow = SCREEN.AD_SCREEN;
     },
 
     onAdsClicked: function() {
