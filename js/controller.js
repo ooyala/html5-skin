@@ -169,7 +169,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPaused: function() {
-      console.log("xenia in onPaused");
       // pause/resume of Ad playback is handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
       if (this.state.screenToShow != SCREEN.AD_SCREEN) {
         if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
@@ -277,12 +276,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onFullscreenChanged: function(event, fullscreen) {
-      console.log("xenia is iphone", Utils.isIPhone());
-      if (this.state.fullscreen && this.state.screenToShow == SCREEN.PLAYING_SCREEN && Utils.isIPhone()){
-        console.log("xenia inside if",this.state.playerState);
-        this.onPaused();
+    onFullscreenChanged: function(event, fullscreen, paused) {
+      if (paused && this.state.playerState == STATE.PLAYING){
+        this.mb.publish(OO.EVENTS.PAUSED);
       }
+      else if (!paused && this.state.playerState == STATE.PAUSE){
+        this.mb.publish(OO.EVENTS.PLAYING);
+      }
+
       this.state.fullscreen = fullscreen;
       this.renderSkin();
     },
@@ -343,7 +344,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     togglePlayPause: function() {
-      console.log("xenia inside togglePlayPause");
       switch (this.state.playerState) {
         case STATE.START:
         case STATE.END:
