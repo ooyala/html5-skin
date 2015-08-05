@@ -25,13 +25,19 @@ var AdPanel = React.createClass({
     this.props.controller.onAdsClicked();
   },
 
+  isValidAdPlaybackInfo: function(playbackInfo) {
+    return (playbackInfo !== null &&
+            typeof playbackInfo !== 'undefined' &&
+            playbackInfo !== "");
+  },
+
   populateAdTopBar: function() {
     var adTopBarItems = [];
 
     // Ad title
     var adTitle = this.props.currentAdsInfo.currentAdItem.name;
     // AMC puts "Unknown" in the name field if ad name unavailable 
-    if (adTitle !== "Unknown" && this.props.controlBarWidth > 560) {      
+    if (this.isValidAdPlaybackInfo(adTitle) && this.props.controlBarWidth > 560) {      
       var adTitleDiv = {
         "adTitle" : <div className="adTitle" style={adScreenStyle.adPanelTopBarTextStyle}>
           {adTitle}
@@ -41,45 +47,41 @@ var AdPanel = React.createClass({
     }
     
     // Ad playback Info
+    var adPlaybackInfo = "Ad Playing";
     var currentAdIndex = this.props.currentAdsInfo.currentAdItem.indexInPod;
     var totalNumberOfAds = this.props.currentAdsInfo.numberOfAds;
-    var remainingTime = Utils.formatSeconds(parseInt(this.props.currentAdsInfo.currentAdItem.duration -  this.props.currentPlayhead));
-    var adPlaybackInfo = "Ad: (" + currentAdIndex + "/" + totalNumberOfAds + ") - " + remainingTime;
+    if (this.isValidAdPlaybackInfo(currentAdIndex) && this.isValidAdPlaybackInfo(totalNumberOfAds)) {
+      adPlaybackInfo = adPlaybackInfo + ": (" + currentAdIndex + "/" + totalNumberOfAds + ")";
+    }
 
-    var adPlaybackInfoDiv = {
-      "adPlaybackInfo" : <div className="adPlaybackInfo" style={adScreenStyle.adPanelTopBarTextStyle}>
+    var remainingTime = Utils.formatSeconds(parseInt(this.props.currentAdsInfo.currentAdItem.duration -  this.props.currentPlayhead));
+    adPlaybackInfo = adPlaybackInfo + " - " + remainingTime;
+
+    var adPlaybackInfoDiv = <div className="adPlaybackInfo" style={adScreenStyle.adPanelTopBarTextStyle}>
         {adPlaybackInfo}
-      </div>
-    };
-    adTopBarItems.push(adPlaybackInfoDiv.adPlaybackInfo);  
+      </div>;
+    adTopBarItems.push(adPlaybackInfoDiv);  
 
     // Flexible space 
-    var flexibleSpaceDiv = {
-      "flexibleSpace" : <div className="flexibleSpace" style={controlBarStyle.flexibleSpace}></div>
-    };
-    adTopBarItems.push(flexibleSpaceDiv.flexibleSpace);
+    var flexibleSpaceDiv = <div className="flexibleSpace" style={controlBarStyle.flexibleSpace}></div>;
+    adTopBarItems.push(flexibleSpaceDiv);
 
     // Learn more
-    if (this.props.currentAdsInfo.currentAdItem !== null && 
-        this.props.currentAdsInfo.currentAdItem.clickUrl !== "") {
+    if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.clickUrl)) {
       var learnMoreText = "Learn More";
-      var learMoreButtonDiv = {
-        "learnMoreButton" : <div className="learnMoreButton" style={adScreenStyle.learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
+      var learnMoreButtonDiv = <div className="learnMoreButton" style={adScreenStyle.learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
              {learnMoreText}
-          </div>  
-      };
-      adTopBarItems.push(learMoreButtonDiv.learnMoreButton);
+          </div>;
+      adTopBarItems.push(learnMoreButtonDiv);
     }
 
     // Skip
     if (this.props.currentAdsInfo.currentAdItem.skippable) {
       var skipButtonText = "Skip Ad";
-      var skipButtonDiv = {
-        "skipButton" : <div className="skipButton" style={adScreenStyle.skipButtonStyle}>
+      var skipButtonDiv = <div className="skipButton" style={adScreenStyle.skipButtonStyle}>
             {skipButtonText}
-          </div>
-      };
-      adTopBarItems.push(skipButtonDiv.skipButton);
+          </div>;
+      adTopBarItems.push(skipButtonDiv);
     }
     return adTopBarItems;
   },
