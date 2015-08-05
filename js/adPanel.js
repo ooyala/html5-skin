@@ -57,39 +57,31 @@ var AdPanel = React.createClass({
     var remainingTime = Utils.formatSeconds(parseInt(this.props.currentAdsInfo.currentAdItem.duration -  this.props.currentPlayhead));
     adPlaybackInfo = adPlaybackInfo + " - " + remainingTime;
 
-    var adPlaybackInfoDiv = {
-      "adPlaybackInfo" : <div className="adPlaybackInfo" style={adScreenStyle.adPanelTopBarTextStyle}>
+    var adPlaybackInfoDiv = <div className="adPlaybackInfo" style={adScreenStyle.adPanelTopBarTextStyle}>
         {adPlaybackInfo}
-      </div>
-    };
-    adTopBarItems.push(adPlaybackInfoDiv.adPlaybackInfo);    
+      </div>;
+    adTopBarItems.push(adPlaybackInfoDiv);  
 
     // Flexible space 
-    var flexibleSpaceDiv = {
-      "flexibleSpace" : <div className="flexibleSpace" style={controlBarStyle.flexibleSpace}></div>
-    };
-    adTopBarItems.push(flexibleSpaceDiv.flexibleSpace);
+    var flexibleSpaceDiv = <div className="flexibleSpace" style={controlBarStyle.flexibleSpace}></div>;
+    adTopBarItems.push(flexibleSpaceDiv);
 
     // Learn more
     if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.clickUrl)) {
       var learnMoreText = "Learn More";
-      var learMoreButtonDiv = {
-        "learnMoreButton" : <div className="learnMoreButton" style={adScreenStyle.learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
+      var learnMoreButtonDiv = <div className="learnMoreButton" style={adScreenStyle.learnMoreButtonStyle} onClick={this.handleLearnMoreButtonClick}>
              {learnMoreText}
-          </div>  
-      };
-      adTopBarItems.push(learMoreButtonDiv.learnMoreButton);
+          </div>;
+      adTopBarItems.push(learnMoreButtonDiv);
     }
 
     // Skip
     if (this.props.currentAdsInfo.currentAdItem.skippable) {
       var skipButtonText = "Skip Ad";
-      var skipButtonDiv = {
-        "skipButton" : <div className="skipButton" style={adScreenStyle.skipButtonStyle}>
+      var skipButtonDiv = <div className="skipButton" style={adScreenStyle.skipButtonStyle}>
             {skipButtonText}
-          </div>
-      };
-      adTopBarItems.push(skipButtonDiv.skipButton);
+          </div>;
+      adTopBarItems.push(skipButtonDiv);
     }
     return adTopBarItems;
   },
