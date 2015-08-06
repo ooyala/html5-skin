@@ -139,7 +139,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.screenToShow = SCREEN.PAUSE_SCREEN;
         }
       }
-      this.skin.updatePlayhead(currentPlayhead, duration, buffered);
+      if (!this.state.seeking) {
+        this.skin.updatePlayhead(currentPlayhead, duration, buffered);
+      }
       this.renderSkin();
     },
 

@@ -13,6 +13,8 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseDown: function(evt) {
+    // we enter the scrubbing state to prevent constantly seeking while dragging
+    // the playhead icon
     evt.stopPropagation();
     this.props.controller.beginSeeking();
     this.props.controller.renderSkin();
@@ -21,14 +23,12 @@ var ScrubberBar = React.createClass({
       // attach a mouseup listener to the document for usability, otherwise scrubbing
       // breaks if your cursor leaves the player element
       document.addEventListener("mouseup", this.handlePlayheadMouseUp, true);
-      // we enter the scrubbing state to prevent constantly seeking while dragging
-      // the playhead icon
       this.setState({
-        startingPlayheadX: evt.screenX
+        startingPlayheadX: evt.screenX,
+        scrubbingPlayheadX: evt.screenX
       });
     }
-    else{
-      // console.log("xenia in mobile handlePlayheadMouseDown");
+    else {
       this.getDOMNode().parentNode.addEventListener("touchmove", this.handlePlayheadMouseMove);
       document.addEventListener("touchend", this.handlePlayheadMouseUp, true);
       this.setState({
@@ -40,15 +40,12 @@ var ScrubberBar = React.createClass({
   handlePlayheadMouseMove: function(evt) {
     evt.stopPropagation();
     if (this.props.seeking) {
-      var scrubberWidth = evt.target.parentNode.clientWidth;
       if (!this.isMobile){
         this.setState({
           scrubbingPlayheadX: evt.screenX
         });
       }
       else {
-        // console.log("xenia in mobile handlePlayheadMouseMove", evt.pageX);
-        // console.log("xenia scrubbingPlayheadX", this.state.scrubbingPlayheadX);
         this.setState({
           scrubbingPlayheadX: evt.pageX
         });
@@ -76,9 +73,6 @@ var ScrubberBar = React.createClass({
     }
 
     this.props.controller.seek(newPlayheadTime);
-    this.setState({
-      currentPlayhead: newPlayheadTime
-    });
   },
 
   handleScrubberBarMouseUp: function(evt) {
