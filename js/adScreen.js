@@ -38,10 +38,30 @@ var AdScreen = React.createClass({
     this.setState({controlBarVisible: false});
   },
 
+  getPlaybackControlItems: function() {
+    var playbackControlItems = [];
+    var scrubberBar = {
+      "scrubberBar": <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
+        controlBarWidth={this.state.controlBarWidth} />
+    };
+    playbackControlItems.push(scrubberBar);
+    var controlBar = {
+      "controlBar": <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
+        controlBarWidth={this.state.controlBarWidth}
+        playerState={this.props.playerState} />
+    };
+    playbackControlItems.push(controlBar);
+    return playbackControlItems;
+  },
+
   render: function() {
     var adPanel = null;
     if (this.props.skinConfig.adScreen.showAdMarquee) {
       adPanel = <AdPanel {...this.props} controlBarWidth={this.state.controlBarWidth}/>;
+    }
+    var playbackControlItems = null;
+    if(this.props.skinConfig.adScreen.showControlBar) {
+      playbackControlItems = this.getPlaybackControlItems();
     }
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
@@ -49,12 +69,7 @@ var AdScreen = React.createClass({
         
         {adPanel}
 
-        <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} />
-        
-        <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}
-          playerState={this.props.playerState} />
+        {playbackControlItems}
       </div>
     );
   }
