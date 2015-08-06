@@ -49,7 +49,6 @@ var CountDownClock = React.createClass({
   },
 
   handleClick: function(event) {
-    console.log("xenia", event);
     if(this.props.controller.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
       this.countDownStyle.display = "none";
       clearInterval(this.interval);

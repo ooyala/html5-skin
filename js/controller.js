@@ -279,10 +279,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onFullscreenChanged: function(event, fullscreen, paused) {
       if (paused && this.state.playerState == STATE.PLAYING){
-        this.mb.publish(OO.EVENTS.PAUSED);
+        if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_PAUSE_ADS);}
+        else {this.mb.publish(OO.EVENTS.PAUSED);}
       }
       else if (!paused && this.state.playerState == STATE.PAUSE){
-        this.mb.publish(OO.EVENTS.PLAYING);
+        if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_RESUME_ADS);}
+        else {this.mb.publish(OO.EVENTS.PLAYING);}
       }
 
       this.state.fullscreen = fullscreen;
