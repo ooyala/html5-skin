@@ -203,6 +203,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onSeeked: function(event) {
       this.state.seeking = false;
+      this.renderSkin();
     },
 
     /********************************************************************
