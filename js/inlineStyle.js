@@ -54,7 +54,7 @@ var startScreenStyle = {
       position: "absolute",
       opacity: 1,
       transition: "opacity .25s ease-in-out",
-      "cursor": "pointer" 
+      "cursor": "pointer"
     }
   }
 };
@@ -243,12 +243,22 @@ var scrubberBarStyle = {
     "height": "5",
     "padding": 0,
     "margin": 0,
+    "top": "50%",
+    "position": "absolute"
+  },
+
+  scrubberBarPadding: {
+    "padding": "0",
+    "margin": "0",
     "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
     "userSelect": "none",
     "position": "absolute",
-    "transition": "bottom 0.5s, height 0.25s"
+    "transition": "bottom 0.5s, height 0.25s",
+    "width": "100%",
+    "height": "30px",
+    "z-index": "1"
   },
 
   bufferedIndicatorStyle: {
@@ -551,7 +561,7 @@ var discoveryScreenStyle = {
     width: "214px",
     "flex-shrink": 0
   },
-  
+
   discoveryImageWrapperStyle: {
     position: "relative",
     height: "120px",
@@ -573,7 +583,7 @@ var discoveryScreenStyle = {
     width: "214px",
     height: "31px",
     overflow: "hidden",
-    whiteSpace: "nowrap"    
+    whiteSpace: "nowrap"
   },
 
   discoveryCountDownWrapperStyle: {
