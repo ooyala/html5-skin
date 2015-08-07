@@ -39,18 +39,20 @@ var AdScreen = React.createClass({
   },
 
   getPlaybackControlItems: function() {
+    var playbackControlItemTemplates = {
+     "scrubberBar": <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
+       controlBarWidth={this.state.controlBarWidth} />,
+
+     "controlBar": <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
+       controlBarWidth={this.state.controlBarWidth}
+       playerState={this.props.playerState} />
+    };
+
     var playbackControlItems = [];
-    var scrubberBar = {
-      "scrubberBar": <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-        controlBarWidth={this.state.controlBarWidth} />
-    };
-    playbackControlItems.push(scrubberBar);
-    var controlBar = {
-      "controlBar": <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-        controlBarWidth={this.state.controlBarWidth}
-        playerState={this.props.playerState} />
-    };
-    playbackControlItems.push(controlBar);
+    for(var item in playbackControlItemTemplates) {
+      playbackControlItems.push(playbackControlItemTemplates[item]);
+    }
+
     return playbackControlItems;
   },
 
