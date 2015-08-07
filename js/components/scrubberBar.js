@@ -62,7 +62,6 @@ var ScrubberBar = React.createClass({
 
   render: function() {
     var controlBarHeight = 60;
-
     // Liusha: Uncomment the following code when we need to support resizing control bar with threshold and scaling.
     // if (this.props.controlBarWidth > 1280) {
     //   controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280;
@@ -72,8 +71,11 @@ var ScrubberBar = React.createClass({
     //   controlBarHeight = this.props.skinConfig.controlBar.height;
     // }
 
-    scrubberBarStyle.scrubberBarSetting.bottom = (this.props.controlBarVisible ?
-      controlBarHeight : 0);
+    var scrubberPaddingHeight = parseInt(scrubberBarStyle.scrubberBarPadding.height);
+    var scrubberBarHeight = parseInt(scrubberBarStyle.scrubberBarSetting.height);
+
+    scrubberBarStyle.scrubberBarPadding.bottom = (this.props.controlBarVisible ?
+      controlBarHeight - (scrubberPaddingHeight / 2) : scrubberBarHeight - (scrubberPaddingHeight / 2));
     scrubberBarStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
       parseFloat(this.props.duration)) * 100 + "%";
     scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
@@ -92,12 +94,14 @@ var ScrubberBar = React.createClass({
       scrubberBarStyle.playheadStyle.left), 0);
 
     return (
-      <div className="scrubberBar" style={scrubberBarStyle.scrubberBarSetting}
-        onMouseUp={this.handleScrubberBarMouseUp}>
-        <div className="bufferedIndicator" style={scrubberBarStyle.bufferedIndicatorStyle}></div>
-        <div className="playedIndicator" style={scrubberBarStyle.playedIndicatorStyle}></div>
-        <div className="playhead" style={scrubberBarStyle.playheadStyle}
-          onMouseDown={this.handlePlayheadMouseDown}></div>
+      <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp}
+        style={scrubberBarStyle.scrubberBarPadding}>
+        <div className="scrubberBar" style={scrubberBarStyle.scrubberBarSetting}>
+          <div className="bufferedIndicator" style={scrubberBarStyle.bufferedIndicatorStyle}></div>
+          <div className="playedIndicator" style={scrubberBarStyle.playedIndicatorStyle}></div>
+          <div className="playhead" style={scrubberBarStyle.playheadStyle}
+            onMouseDown={this.handlePlayheadMouseDown}></div>
+        </div>
       </div>
     );
   }
