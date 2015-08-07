@@ -87,7 +87,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       event listeners from core player -> regulate skin STATE
     ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
-      $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%; position: absolute; z-index: 10000; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
+      $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%; overflow:hidden; position: absolute; z-index: 10000; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON(params.skin.config, _.bind(function(data) {
@@ -209,6 +209,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onSeeked: function(event) {
       this.state.seeking = false;
+      this.renderSkin();
     },
 
     /********************************************************************
@@ -255,6 +256,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onWillResumeAds: function(event) {
       console.log("onWillResumeAds is called");
       this.state.playerState = STATE.PLAYING;
+      //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
+      this.state.screenToShow = SCREEN.AD_SCREEN;
     },
 
     onAdsClicked: function() {

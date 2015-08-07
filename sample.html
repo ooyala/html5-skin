@@ -3,10 +3,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
     <link rel="stylesheet" href="/assets/styles.css"/>
 
-    <script language="javascript" src="//player.ooyala.com/v3/26e2e3c1049c4e70ae08a242638b5c40?debug=true&platform=html5"></script>
+    <script language="javascript" src="//10.11.69.102:1337/dev/v4/26e2e3c1049c4e70ae08a242638b5c40?debug=true&platform=html5&version=dev&tweaks=html5-force-mp4"></script>
     <script src="build/html5-skin.js"></script>
     <style>
       .discovery_toaster {display: none;}
+      video::-webkit-media-controls {display:none !important;}
     </style>
   </head>
   <body>
@@ -20,6 +21,12 @@
       };
       OO.ready(function() {
         window.pp = OO.Player.create('container', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
+        pp.mb.subscribe(OO.EVENTS.PAUSED, "test", function(){
+          console.log("message bus: paused");
+        });
+        pp.mb.subscribe(OO.EVENTS.PLAYING, "test", function(){
+          console.log("message bus: playing");
+        });
       });
     </script>
   </body>
