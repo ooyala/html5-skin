@@ -250,6 +250,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onWillResumeAds: function(event) {
       console.log("onWillResumeAds is called");
       this.state.playerState = STATE.PLAYING;
+      //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
       this.state.screenToShow = SCREEN.AD_SCREEN;
     },
 
