@@ -238,6 +238,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onSingleAdPlayed: function(event) {
       console.log("onSingleAdPlayed is called");
+      this.state.isPlayingAd = false;
     },
 
     onWillPauseAds: function(event) {
