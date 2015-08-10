@@ -283,13 +283,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onFullscreenChanged: function(event, fullscreen, paused) {
-      if (paused && this.state.playerState == STATE.PLAYING){
-        if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_PAUSE_ADS);}
-        else {this.mb.publish(OO.EVENTS.PAUSED);}
-      }
-      else if (!paused && this.state.playerState == STATE.PAUSE){
-        if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_RESUME_ADS);}
-        else {this.mb.publish(OO.EVENTS.PLAYING);}
+      //since iOS devices have their own controls in fullscreen mode,
+      //we need to synchronize our skin state with the player state
+      if (Utils.isIos()){
+        if (paused && this.state.playerState == STATE.PLAYING){
+          if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_PAUSE_ADS);}
+          else {this.mb.publish(OO.EVENTS.PAUSED);}
+        }
+        else if (!paused && this.state.playerState == STATE.PAUSE){
+          if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_RESUME_ADS);}
+          else {this.mb.publish(OO.EVENTS.PLAYING);}
+        }
       }
 
       this.state.fullscreen = fullscreen;
