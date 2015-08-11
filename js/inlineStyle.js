@@ -784,7 +784,7 @@ var closedCaptionScreenStyles ={
     cursor: "pointer"
   },
 
-  lastColItemStyle: {
+  lastColumnItemStyle: {
     fontSize: "11pt",
     width: "70",
     minwidth: "50",
@@ -817,7 +817,7 @@ var closedCaptionScreenStyles ={
     cursor: "pointer"
   },
 
-  lastColItemSelectedStyle:{
+  lastColumnItemSelectedStyle:{
     fontSize: "11pt",
     width: "70",
     textOverflow: "ellipsis",

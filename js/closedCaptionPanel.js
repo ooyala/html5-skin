@@ -10,7 +10,6 @@
 
 
 var ClosedCaptionPanel = React.createClass({
-
   calculateNumberOfRows: function(clientWidth, clientHeight, controlBarHeight){
     var switchHeight = parseInt(closedCaptionScreenStyles.switchStyle.height) + parseInt(closedCaptionScreenStyles.switchStyle.marginTop);
     var CCPreviewPanelHeight = parseInt(closedCaptionScreenStyles.CCPreviewPanelStyle.height);
@@ -71,11 +70,11 @@ var ClosedCaptionPanel = React.createClass({
   //   closedCaptionScreenStyles.itemStyle.marginRight = 140 * scale - 2*parseInt(closedCaptionScreenStyles.itemStyle.padding);
   //   closedCaptionScreenStyles.itemStyle.marginTop = 40 * scale - 2*parseInt(closedCaptionScreenStyles.itemStyle.padding);
 
-  //   closedCaptionScreenStyles.lastColItemStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
-  //   closedCaptionScreenStyles.lastColItemStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
-  //   closedCaptionScreenStyles.lastColItemStyle.width = closedCaptionScreenStyles.itemStyle.width;
-  //   closedCaptionScreenStyles.lastColItemStyle.marginRight = 0;
-  //   closedCaptionScreenStyles.lastColItemStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
+  //   closedCaptionScreenStyles.lastColumnItemStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
+  //   closedCaptionScreenStyles.lastColumnItemStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
+  //   closedCaptionScreenStyles.lastColumnItemStyle.width = closedCaptionScreenStyles.itemStyle.width;
+  //   closedCaptionScreenStyles.lastColumnItemStyle.marginRight = 0;
+  //   closedCaptionScreenStyles.lastColumnItemStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
 
   //   closedCaptionScreenStyles.itemSelectedStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
   //   closedCaptionScreenStyles.itemSelectedStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
@@ -83,11 +82,11 @@ var ClosedCaptionPanel = React.createClass({
   //   closedCaptionScreenStyles.itemSelectedStyle.marginRight = closedCaptionScreenStyles.itemStyle.marginRight;
   //   closedCaptionScreenStyles.itemSelectedStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
 
-  //   closedCaptionScreenStyles.lastColItemSelectedStyle.fontSize = closedCaptionScreenStyles.lastColItemStyle.fontSize;
-  //   closedCaptionScreenStyles.lastColItemSelectedStyle.padding = closedCaptionScreenStyles.lastColItemStyle.padding;
-  //   closedCaptionScreenStyles.lastColItemSelectedStyle.width = closedCaptionScreenStyles.itemSelectedStyle.width;
-  //   closedCaptionScreenStyles.lastColItemSelectedStyle.marginRight = closedCaptionScreenStyles.lastColItemStyle.marginRight;
-  //   closedCaptionScreenStyles.lastColItemSelectedStyle.marginTop = closedCaptionScreenStyles.lastColItemStyle.marginTop;
+  //   closedCaptionScreenStyles.lastColumnItemSelectedStyle.fontSize = closedCaptionScreenStyles.lastColumnItemStyle.fontSize;
+  //   closedCaptionScreenStyles.lastColumnItemSelectedStyle.padding = closedCaptionScreenStyles.lastColumnItemStyle.padding;
+  //   closedCaptionScreenStyles.lastColumnItemSelectedStyle.width = closedCaptionScreenStyles.itemSelectedStyle.width;
+  //   closedCaptionScreenStyles.lastColumnItemSelectedStyle.marginRight = closedCaptionScreenStyles.lastColumnItemStyle.marginRight;
+  //   closedCaptionScreenStyles.lastColumnItemSelectedStyle.marginTop = closedCaptionScreenStyles.lastColumnItemStyle.marginTop;
 
   //   closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.width = 50 * scale;
   //   closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.width = closedCaptionScreenStyles.tableLanguageContainerStyle.marginLeft = closedCaptionScreenStyles.tableLanguageContainerStyle.marginRight = closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.width;
@@ -137,8 +136,8 @@ var OnOffSwitch = React.createClass({
     var elementColor = this.props.ccOptions.enabled ? "white" : "grey";
     closedCaptionScreenStyles.itemStyle.color = elementColor;
     closedCaptionScreenStyles.itemStyle.cursor = this.props.ccOptions.enabled ? "pointer" : "default";
-    closedCaptionScreenStyles.lastColItemStyle.color = elementColor;
-    closedCaptionScreenStyles.lastColItemStyle.cursor = this.props.ccOptions.enabled ? "pointer" : "default";
+    closedCaptionScreenStyles.lastColumnItemStyle.color = elementColor;
+    closedCaptionScreenStyles.lastColumnItemStyle.cursor = this.props.ccOptions.enabled ? "pointer" : "default";
     closedCaptionScreenStyles.CCPreviewTextStyle.color = elementColor;
     closedCaptionScreenStyles.CCPreviewCaptionStyle.color = elementColor;
     closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.color = closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.color = elementColor;
@@ -231,7 +230,7 @@ var LanguageTabContent = React.createClass({
     var style;
     if (this.props.ccOptions.language == item && this.props.ccOptions.enabled){
       if (j == colnum){
-        style = closedCaptionScreenStyles.lastColItemSelectedStyle;
+        style = closedCaptionScreenStyles.lastColumnItemSelectedStyle;
       }
       else {
         style = closedCaptionScreenStyles.itemSelectedStyle;
@@ -239,7 +238,7 @@ var LanguageTabContent = React.createClass({
     }
     else {
       if (j == colnum){
-        style = closedCaptionScreenStyles.lastColItemStyle;
+        style = closedCaptionScreenStyles.lastColumnItemStyle;
       }
       else {
         style = closedCaptionScreenStyles.itemStyle;
