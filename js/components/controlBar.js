@@ -3,6 +3,10 @@
 *********************************************************************/
 
 var ControlBar = React.createClass({
+  getInitialState: function() {
+    this.icons = this.props.skinConfig.desktopIcons;
+    return {};
+  },
 
   componentDidMount: function(){
     if (Utils.isSafari()){
@@ -61,24 +65,24 @@ var ControlBar = React.createClass({
 
   populateControlBar: function() {
     if (this.props.playerState == STATE.PLAYING) {
-      playClass = "icon icon-pause";
+      playClass = this.icons.pause;
     } else if (this.props.playerState == STATE.END) {
-      playClass = "icon icon-upnext-replay";
+      playClass = this.icons.replay;
     } else {
-      playClass = "icon icon-play";
+      playClass = this.icons.play;
     }
     var muteClass = (this.props.controller.state.muted) ?
-      "icon icon-volume-desktop" : "icon icon-volume-desktop";
+      this.icons.volume : this.icons.volumeMute;
 
     var fullscreenClass = (this.props.controller.state.fullscreen) ?
-      "icon icon-resize-small" : "icon icon-resize-large";
+      this.icons.compress : this.icons.expand;
 
     var totalTime = 0;
     totalTime = Utils.formatSeconds(this.props.duration);
 
     var volumeBars = [];
     for (var i=0; i<10; i++) {
-      //create each volume tick separetely
+      //create each volume tick separately
       var turnedOn = this.props.controller.state.volumeState.volume >= (i+1) / 10;
       var singleBarStyle = Utils.clone(controlBarStyle.volumeBarStyle);
       singleBarStyle.backgroundColor = (turnedOn ?
@@ -117,22 +121,22 @@ var ControlBar = React.createClass({
 
       "moreOptions": <div className="moreOptions" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}>
-        <span className="icon icon-menu" style={controlBarStyle.iconSetting}></span></div>,
+        <span className={this.icons.moreOptions} style={controlBarStyle.iconSetting}></span></div>,
 
       "quality": <div className="quality" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        <span className="icon icon-topmenu-quality" style={controlBarStyle.iconSetting}></span></div>,
+        <span className={this.icons.quality} style={controlBarStyle.iconSetting}></span></div>,
 
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
-        <span className="icon icon-topmenu-discovery" style={controlBarStyle.iconSetting}></span></div>,
+        <span className={this.icons.discovery} style={controlBarStyle.iconSetting}></span></div>,
     
       "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-cc"
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className={this.icons.cc}
         onClick={this.handleClosedCaptionClick} style={controlBarStyle.iconSetting}></span></div>,
       
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-share"
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className={this.icons.share}
         onClick={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
 
       "fullscreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
