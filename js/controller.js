@@ -341,8 +341,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     togglePlayPause: function() {
       switch (this.state.playerState) {
         case STATE.START:
+          this.mb.publish(OO.EVENTS.INITIAL_PLAY);
+          break;
         case STATE.END:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
+          this.mb.publish(OO.EVENTS.REPLAY);
           break;
         case STATE.PAUSE:
           this.mb.publish(OO.EVENTS.PLAY);
