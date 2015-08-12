@@ -66,7 +66,7 @@ var PauseScreen = React.createClass({
 
   render: function() {
     var screenStyle = pauseScreenStyle;
-    var pauseClass = this.props.skinConfig.desktopIcons.pause;
+    var pauseClass = this.props.skinConfig.icons.pause.fontStyleClass;
     var pauseStyle = screenStyle.pauseIcon.style;
     var infoStyle = screenStyle.infoPanel;
 
