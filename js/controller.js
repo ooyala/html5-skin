@@ -344,7 +344,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
           break;
         case STATE.END:
-          this.mb.publish(OO.EVENTS.INITIAL_PLAY);
           this.mb.publish(OO.EVENTS.REPLAY);
           break;
         case STATE.PAUSE:
