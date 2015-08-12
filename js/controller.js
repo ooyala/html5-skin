@@ -283,9 +283,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onFullscreenChanged: function(event, fullscreen, paused) {
-      //since iOS devices have their own controls in fullscreen mode,
-      //we need to synchronize our skin state with the player state
+      //The logic below synchronizes the state of the UI and the state of the video.
+      //If native controls on iOS were used to change the state of the video, our UI doesn't know about it.
       if (Utils.isIos()){
+        //check if UI state is out of sync with video state
         if (paused && this.state.playerState == STATE.PLAYING){
           if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_PAUSE_ADS);}
           else {this.mb.publish(OO.EVENTS.PAUSED);}
