@@ -154,11 +154,11 @@ var DiscoveryPanel = React.createClass({
     }
 
     var chevronLeftButtonContainer = discoveryScreenStyle.discoveryChevronLeftButtonContainer;
-    var chevronLeftButtonClass = discoveryScreenStyle.discoveryChevronLeftButton.icon;
+    var chevronLeftButtonClass = this.props.skinConfig.desktopIcons.left;
     var chevronLeftButtonStyle = discoveryScreenStyle.discoveryChevronLeftButton.style;
 
     var chevronRightButtonContainer = discoveryScreenStyle.discoveryChevronRightButtonContainer;
-    var chevronRightButtonClass = discoveryScreenStyle.discoveryChevronRightButton.icon;
+    var chevronRightButtonClass = this.props.skinConfig.desktopIcons.right;
     var chevronRightButtonStyle = discoveryScreenStyle.discoveryChevronRightButton.style;
 
     var discoveryData = this.props.discoveryData;
@@ -183,7 +183,7 @@ var DiscoveryPanel = React.createClass({
                 <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
                      <div style={discoveryCountDownWrapperStyle} onClick={this.handleDiscoveryCountDownClick}>
                      <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
-                     <span className="icon icon-pause" style={discoveryCountDownIconStyle}></span>
+                     <span className={this.props.skinConfig.desktopIcons.pause} style={discoveryCountDownIconStyle}></span>
                      </div>
                  </img>
               </div>
@@ -206,7 +206,7 @@ var DiscoveryPanel = React.createClass({
 
         <div style={panelTitleBarStyle}>
           <h1 style={panelTitleTextStyle}>{panelTitle}
-            <span style={{top: "3px", position: "relative", marginLeft: "7px"}} className="icon icon-topmenu-discovery"></span>
+            <span style={{top: "3px", position: "relative", marginLeft: "7px"}} className={this.props.skinConfig.desktopIcons.discovery}></span>
           </h1>
         </div>
 

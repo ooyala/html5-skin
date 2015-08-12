@@ -121,7 +121,7 @@ var ControlBar = React.createClass({
 
       "moreOptions": <div className="moreOptions" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}>
-        <span className={this.icons.moreOptions} style={controlBarStyle.iconSetting}></span></div>,
+        <span className={this.icons.settings} style={controlBarStyle.iconSetting}></span></div>,
 
       "quality": <div className="quality" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>

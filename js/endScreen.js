@@ -43,7 +43,7 @@ var EndScreen = React.createClass({
 
   render: function() {
     var screenStyle = this.props.style;
-    var repeatClass = screenStyle.repeatButton.icon;
+    var repeatClass = this.props.desktopIcons.replay;
     var repeatStyle = screenStyle.repeatButton.style;
 
     repeatStyle.color = this.props.skinConfig.endScreen.replayIconStyle.color;

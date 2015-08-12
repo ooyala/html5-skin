@@ -7,6 +7,11 @@
 */
 
 var MoreOptionsPanel = React.createClass({
+  getInitialState: function() {
+    this.icons = this.props.skinConfig.desktopIcons;
+    return {};
+  },
+
   componentDidMount: function () {
     // Fade-in & bottom-up animation
     MoreOptionsScreenStyle.buttonListStyle.bottom = "50%";
@@ -46,24 +51,24 @@ var MoreOptionsPanel = React.createClass({
 
   buildMoreOptionsButtonList: function() {
     var fullscreenClass = (this.props.fullscreen) ?
-      "icon icon-resize-small" : "icon icon-resize-large";
+      this.icons.compress : this.icons.expand;
 
     var optionsItemsTemplates = {
       "discovery": <div className="discovery" style={MoreOptionsScreenStyle.buttonStyle}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
-        <span className="icon icon-topmenu-discovery"></span></div>,
+        <span className={this.icons.discovery}></span></div>,
       
       "quality": <div className="quality" style={MoreOptionsScreenStyle.buttonStyle}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        <span className="icon icon-topmenu-quality"></span></div>,
+        <span className={this.icons.quality}></span></div>,
       
       "closedCaption": <div className="closedCaption" style={MoreOptionsScreenStyle.buttonStyle}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleClosedCaptionClick}> 
-        <span className="icon icon-topmenu-cc"></span></div>,
+        <span className={this.icons.cc}></span></div>,
       
       "share": <div className="share" style={MoreOptionsScreenStyle.buttonStyle}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleShareClick}>
-        <span className="icon icon-topmenu-share"></span></div>,
+        <span className={this.icons.share}></span></div>,
       
       "fullscreen": <div className="fullscreen" style={MoreOptionsScreenStyle.buttonStyle}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
@@ -71,7 +76,7 @@ var MoreOptionsPanel = React.createClass({
 
       "settings": <div className="settings" style={MoreOptionsScreenStyle.buttonStyle}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        <span className="icon-topmenu-settings"></span></div>,
+        <span className={this.icons.settings}></span></div>,
     };
 
     var moreOptionsItems = [];
@@ -98,7 +103,7 @@ var MoreOptionsPanel = React.createClass({
       <div style={MoreOptionsScreenStyle.panelStyle}>
         <div onMouseOver={this.highlight} onMouseOut={this.removeHighlight} 
           onClick={this.closeMoreOptionsScreen} style={MoreOptionsScreenStyle.closeButtonStyle}>
-          <span className="icon icon-close"></span>
+          <span className={this.icons.dismiss}></span>
         </div>
         <div style={MoreOptionsScreenStyle.buttonListStyle}>
           {moreOptionsItems}

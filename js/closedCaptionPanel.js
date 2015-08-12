@@ -104,7 +104,7 @@ var ClosedCaptionPanel = React.createClass({
     return (
       <div style = {closedCaptionScreenStyles.screenStyle}>
         <div style = {closedCaptionScreenStyles.innerPanelStyle}>
-          <div style = {closedCaptionScreenStyles.captionStyle}>CC Options <span className="icon icon-topmenu-cc"></span></div>
+          <div style = {closedCaptionScreenStyles.captionStyle}>CC Options <span className={this.props.skinConfig.desktopIcons.cc}></span></div>
           <OnOffSwitch {...this.props} />
           <LanguageTabContent {...this.props} numRows = {numRows} />
           <CCPreviewPanel {...this.props} />
@@ -261,10 +261,10 @@ var LanguageTabContent = React.createClass({
     return(
       <div style={closedCaptionScreenStyles.positionRelativeStyle}>
         <div style={closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer} onClick={this.props.ccOptions.enabled ? this.handleLeftChevronClick : null}>
-          <span className={closedCaptionScreenStyles.closedCaptionChevronLeftButton.icon} style={closedCaptionScreenStyles.closedCaptionChevronLeftButton.style} aria-hidden="true"></span>
+          <span className={this.props.skinConfig.desktopIcons.left} style={closedCaptionScreenStyles.closedCaptionChevronLeftButton.style} aria-hidden="true"></span>
         </div>
         <div style={closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer} onClick={this.props.ccOptions.enabled ? this.handleRightChevronClick : null}>
-          <span className={closedCaptionScreenStyles.closedCaptionChevronRightButton.icon} style={closedCaptionScreenStyles.closedCaptionChevronRightButton.style} aria-hidden="true"></span>
+          <span className={this.props.skinConfig.desktopIcons.right} style={closedCaptionScreenStyles.closedCaptionChevronRightButton.style} aria-hidden="true"></span>
         </div>
         <div style = {closedCaptionScreenStyles.tableLanguageContainerStyle} ref="tableLanguageContainer">
           <table ref = "tableLanguage" style = {closedCaptionScreenStyles.tableLanguageStyle}>
