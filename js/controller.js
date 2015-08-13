@@ -234,12 +234,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onWillPlaySingleAd: function(event, adItem) {
       console.log("onWillPlaySingleAd is called with adItem = " + adItem);
-      this.state.screenToShow = SCREEN.AD_SCREEN;
-      this.state.isPlayingAd = true;
-      this.state.currentAdsInfo.currentAdItem = adItem;
-      this.state.playerState = STATE.PLAYING;
-      this.skin.state.currentPlayhead = 0;
-      this.renderSkin();
+      if (adItem !== null) {
+        this.state.screenToShow = SCREEN.AD_SCREEN;
+        this.state.isPlayingAd = true;
+        this.state.currentAdsInfo.currentAdItem = adItem;
+        this.state.playerState = STATE.PLAYING;
+        this.skin.state.currentPlayhead = 0;
+        this.renderSkin();
+      }
     },
 
     onSingleAdPlayed: function(event) {
@@ -255,9 +257,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onWillResumeAds: function(event) {
       console.log("onWillResumeAds is called");
+      if (this.state.currentAdsInfo.currentAdItem !== null) {
       this.state.playerState = STATE.PLAYING;
       //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
       this.state.screenToShow = SCREEN.AD_SCREEN;
+      }
     },
 
     onAdsClicked: function() {
