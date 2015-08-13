@@ -41,7 +41,7 @@ var ClosedCaptionScreen = React.createClass({
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.clientWidth}
           playerState={this.state.playerState}/>
-        <div className="icon icon-close" style={closedCaptionScreenStyles.closeButtonStyle} onClick={this.closeClosedCaptionPanel}></div>
+        <div className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={closedCaptionScreenStyles.closeButtonStyle} onClick={this.closeClosedCaptionPanel}></div>
       </div>
     );
   }
