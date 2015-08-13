@@ -3,11 +3,6 @@
 *********************************************************************/
 
 var ControlBar = React.createClass({
-  getInitialState: function() {
-    this.icons = this.props.skinConfig.icons;
-    return {};
-  },
-
   componentDidMount: function(){
     if (Utils.isSafari()){
       controlBarStyle.controlBarSetting.display = "-webkit-flex";
@@ -65,17 +60,17 @@ var ControlBar = React.createClass({
 
   populateControlBar: function() {
     if (this.props.playerState == STATE.PLAYING) {
-      playClass = this.icons.pause.fontStyleClass;
+      playClass = this.props.skinConfig.icons.pause.fontStyleClass;
     } else if (this.props.playerState == STATE.END) {
-      playClass = this.icons.replay.fontStyleClass;
+      playClass = this.props.skinConfig.icons.replay.fontStyleClass;
     } else {
-      playClass = this.icons.play.fontStyleClass;
+      playClass = this.props.skinConfig.icons.play.fontStyleClass;
     }
     var muteClass = (this.props.controller.state.muted) ?
-      this.icons.volume.fontStyleClass : this.icons.volumeOff.fontStyleClass;
+      this.props.skinConfig.icons.volume.fontStyleClass : this.props.skinConfig.icons.volumeOff.fontStyleClass;
 
     var fullscreenClass = (this.props.controller.state.fullscreen) ?
-      this.icons.compress.fontStyleClass : this.icons.expand.fontStyleClass;
+      this.props.skinConfig.icons.compress.fontStyleClass : this.props.skinConfig.icons.expand.fontStyleClass;
 
     var totalTime = 0;
     totalTime = Utils.formatSeconds(this.props.duration);
@@ -121,22 +116,22 @@ var ControlBar = React.createClass({
 
       "moreOptions": <div className="moreOptions" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}>
-        <span className={this.icons.setting.fontStyleClass} style={controlBarStyle.iconSetting}></span></div>,
+        <span className={this.props.skinConfig.icons.setting.fontStyleClass} style={controlBarStyle.iconSetting}></span></div>,
 
       "quality": <div className="quality" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        <span className={this.icons.quality.fontStyleClass} style={controlBarStyle.iconSetting}></span></div>,
+        <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={controlBarStyle.iconSetting}></span></div>,
 
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
-        <span className={this.icons.discovery.fontStyleClass} style={controlBarStyle.iconSetting}></span></div>,
+        <span className={this.props.skinConfig.icons.discovery.fontStyleClass} style={controlBarStyle.iconSetting}></span></div>,
     
       "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className={this.icons.cc.fontStyleClass}
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className={this.props.skinConfig.icons.cc.fontStyleClass}
         onClick={this.handleClosedCaptionClick} style={controlBarStyle.iconSetting}></span></div>,
       
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className={this.icons.share.fontStyleClass}
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className={this.props.skinConfig.icons.share.fontStyleClass}
         onClick={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
 
       "fullscreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
