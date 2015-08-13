@@ -62,7 +62,6 @@ var ScrubberBar = React.createClass({
 
   render: function() {
     var controlBarHeight = 60;
-
     // Liusha: Uncomment the following code when we need to support resizing control bar with threshold and scaling.
     // if (this.props.controlBarWidth > 1280) {
     //   controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280;
@@ -72,32 +71,39 @@ var ScrubberBar = React.createClass({
     //   controlBarHeight = this.props.skinConfig.controlBar.height;
     // }
 
-    scrubberBarStyle.scrubberBarSetting.bottom = (this.props.controlBarVisible ?
-      controlBarHeight : 0);
+    var scrubberPaddingHeight = parseInt(scrubberBarStyle.scrubberBarPadding.height);
+    var scrubberBarHeight = parseInt(scrubberBarStyle.scrubberBarSetting.height);
+
+    scrubberBarStyle.scrubberBarPadding.bottom = (this.props.controlBarVisible ?
+      controlBarHeight - (scrubberPaddingHeight / 2) : scrubberBarHeight - (scrubberPaddingHeight / 2));
     scrubberBarStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
       parseFloat(this.props.duration)) * 100 + "%";
     scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
       parseFloat(this.props.duration)) * 100 + "%";
-    scrubberBarStyle.playheadStyle.left = ((parseFloat(this.props.currentPlayhead) /
+    scrubberBarStyle.playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
       parseFloat(this.props.duration)) * this.props.controlBarWidth);
     scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
 
     // if we're scrubbing, use the coordinates from the latest mouse events
     if (this.props.seeking) {
-      scrubberBarStyle.playheadStyle.left = scrubberBarStyle.playheadStyle.left +
+      scrubberBarStyle.playheadPaddingStyle.left = scrubberBarStyle.playheadPaddingStyle.left +
         (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
     }
     //prevent the playhead from moving beyond the player element
-    scrubberBarStyle.playheadStyle.left = Math.max(Math.min(this.props.controlBarWidth - parseInt(scrubberBarStyle.playheadStyle.width),
-      scrubberBarStyle.playheadStyle.left), 0);
+    scrubberBarStyle.playheadPaddingStyle.left = Math.max(Math.min(this.props.controlBarWidth - parseInt(scrubberBarStyle.playheadPaddingStyle.width),
+      scrubberBarStyle.playheadPaddingStyle.left), 0);
 
     return (
-      <div className="scrubberBar" style={scrubberBarStyle.scrubberBarSetting}
-        onMouseUp={this.handleScrubberBarMouseUp}>
-        <div className="bufferedIndicator" style={scrubberBarStyle.bufferedIndicatorStyle}></div>
-        <div className="playedIndicator" style={scrubberBarStyle.playedIndicatorStyle}></div>
-        <div className="playhead" style={scrubberBarStyle.playheadStyle}
-          onMouseDown={this.handlePlayheadMouseDown}></div>
+      <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp}
+        style={scrubberBarStyle.scrubberBarPadding}>
+        <div className="scrubberBar" style={scrubberBarStyle.scrubberBarSetting}>
+          <div className="bufferedIndicator" style={scrubberBarStyle.bufferedIndicatorStyle}></div>
+          <div className="playedIndicator" style={scrubberBarStyle.playedIndicatorStyle}></div>
+          <div className="playheadPadding" style={scrubberBarStyle.playheadPaddingStyle}
+            onMouseDown={this.handlePlayheadMouseDown}>
+            <div className="playhead" style={scrubberBarStyle.playheadStyle}></div>
+          </div>
+        </div>
       </div>
     );
   }
