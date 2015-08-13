@@ -123,18 +123,18 @@ var ScrubberBar = React.createClass({
       parseFloat(this.props.duration)) * 100 + "%";
     scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
       parseFloat(this.props.duration)) * 100 + "%";
-    scrubberBarStyle.playheadStyle.left = ((parseFloat(this.props.currentPlayhead) /
+    scrubberBarStyle.playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
       parseFloat(this.props.duration)) * this.props.controlBarWidth);
     scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
 
     // if we're scrubbing, use the coordinates from the latest mouse events
     if (this.props.seeking) {
-      scrubberBarStyle.playheadStyle.left = scrubberBarStyle.playheadStyle.left +
+      scrubberBarStyle.playheadPaddingStyle.left = scrubberBarStyle.playheadPaddingStyle.left +
         (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
     }
     //prevent the playhead from moving beyond the player element
-    scrubberBarStyle.playheadStyle.left = Math.max(Math.min(this.props.controlBarWidth - parseInt(scrubberBarStyle.playheadStyle.width),
-      scrubberBarStyle.playheadStyle.left), 0);
+    scrubberBarStyle.playheadPaddingStyle.left = Math.max(Math.min(this.props.controlBarWidth - parseInt(scrubberBarStyle.playheadPaddingStyle.width),
+      scrubberBarStyle.playheadPaddingStyle.left), 0);
 
 
     return (
@@ -143,8 +143,10 @@ var ScrubberBar = React.createClass({
         <div className="scrubberBar" style={scrubberBarStyle.scrubberBarSetting}>
           <div className="bufferedIndicator" style={scrubberBarStyle.bufferedIndicatorStyle}></div>
           <div className="playedIndicator" style={scrubberBarStyle.playedIndicatorStyle}></div>
-          <div className="playhead" style={scrubberBarStyle.playheadStyle}
-            onMouseDown={this.handlePlayheadMouseDown}></div>
+          <div className="playheadPadding" style={scrubberBarStyle.playheadPaddingStyle}
+            onMouseDown={this.handlePlayheadMouseDown}>
+            <div className="playhead" style={scrubberBarStyle.playheadStyle}></div>
+          </div>
         </div>
       </div>
     );
