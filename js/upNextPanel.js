@@ -53,7 +53,7 @@ var UpNextPanel = React.createClass({
     var contentImageContainerStyle = upNextPanelStyle.contentImageContainerStyle;
     var contentImageStyle = upNextPanelStyle.contentImageStyle;
 
-    var playButtonClass = upNextPanelStyle.playButton.icon;
+    var playButtonClass = this.props.skinConfig.icons.play.fontStyleClass;
     var playButtonStyle = upNextPanelStyle.playButton.style;
 
     var contentMetadataContainerStyle = upNextPanelStyle.contentMetadataContainerStyle;
@@ -89,9 +89,7 @@ var UpNextPanel = React.createClass({
             {this.state.contentDescription}
           </div>
         </div>
-        
-        <div onClick={this.isMobile?null:this.closeUpNextPanel} onTouchEnd={this.closeUpNextPanel} style={upNextPanelStyle.closeButton} className="icon icon-close"></div>
-        
+        <div onClick={this.isMobile?null:this.closeUpNextPanel} onTouchEnd={this.closeUpNextPanel} style={upNextPanelStyle.closeButton} className={this.props.skinConfig.icons.dismiss.fontStyleClass}></div>
       </div>
     );
   }

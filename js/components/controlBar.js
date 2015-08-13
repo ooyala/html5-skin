@@ -7,7 +7,6 @@ var ControlBar = React.createClass({
     this.isMobile = this.props.controller.state.isMobile;
     return null;
   },
-
   componentDidMount: function(){
     if (Utils.isSafari()){
       controlBarStyle.controlBarSetting.display = "-webkit-flex";
@@ -65,24 +64,24 @@ var ControlBar = React.createClass({
 
   populateControlBar: function() {
     if (this.props.playerState == STATE.PLAYING) {
-      playClass = "icon icon-pause";
+      playClass = this.props.skinConfig.icons.pause.fontStyleClass;
     } else if (this.props.playerState == STATE.END) {
-      playClass = "icon icon-upnext-replay";
+      playClass = this.props.skinConfig.icons.replay.fontStyleClass;
     } else {
-      playClass = "icon icon-play";
+      playClass = this.props.skinConfig.icons.play.fontStyleClass;
     }
     var muteClass = (this.props.controller.state.muted) ?
-      "icon icon-volume-desktop" : "icon icon-volume-desktop";
+      this.props.skinConfig.icons.volume.fontStyleClass : this.props.skinConfig.icons.volumeOff.fontStyleClass;
 
     var fullscreenClass = (this.props.controller.state.fullscreen) ?
-      "icon icon-resize-small" : "icon icon-resize-large";
+      this.props.skinConfig.icons.compress.fontStyleClass : this.props.skinConfig.icons.expand.fontStyleClass;
 
     var totalTime = 0;
     totalTime = Utils.formatSeconds(this.props.duration);
 
     var volumeBars = [];
     for (var i=0; i<10; i++) {
-      //create each volume tick separetely
+      //create each volume tick separately
       var turnedOn = this.props.controller.state.volumeState.volume >= (i+1) / 10;
       var singleBarStyle = Utils.clone(controlBarStyle.volumeBarStyle);
       singleBarStyle.backgroundColor = (turnedOn ?
@@ -122,23 +121,23 @@ var ControlBar = React.createClass({
       "moreOptions": <div className="moreOptions" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.isMobile?null:this.handleMoreOptionsClick}
         onTouchEnd={this.handleMoreOptionsClick}>
-        <span className="icon icon-menu" style={controlBarStyle.iconSetting}></span></div>,
+        <span className={this.props.skinConfig.icons.setting.fontStyleClass} style={controlBarStyle.iconSetting}></span></div>,
 
       "quality": <div className="quality" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        <span className="icon icon-topmenu-quality" style={controlBarStyle.iconSetting}></span></div>,
+        <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={controlBarStyle.iconSetting}></span></div>,
 
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.isMobile?null:this.handleDiscoveryClick}
         onTouchEnd={this.handleDiscoveryClick}>
-        <span className="icon icon-topmenu-discovery" style={controlBarStyle.iconSetting}></span></div>,
+        <span className={this.props.skinConfig.icons.discovery.fontStyleClass} style={controlBarStyle.iconSetting}></span></div>,
     
       "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-cc"
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className={this.props.skinConfig.icons.cc.fontStyleClass}
         onClick={this.isMobile?null:this.handleClosedCaptionClick} onTouchEnd={this.handleClosedCaptionClick} style={controlBarStyle.iconSetting}></span></div>,
       
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className="icon icon-topmenu-share"
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className={this.props.skinConfig.icons.share.fontStyleClass}
         onClick={this.isMobile?null:this.handleShareClick} onTouchEnd={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
 
       "fullscreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}

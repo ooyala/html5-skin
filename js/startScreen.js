@@ -28,7 +28,7 @@ var StartScreen = React.createClass({
 
   render: function() {
     var screenStyle = this.props.style;
-    var playClass = screenStyle.playButton.icon;
+    var playClass = this.props.skinConfig.icons.play.fontStyleClass;
     var playStyle = screenStyle.playButton.style;
     var posterStyle = screenStyle.posterStyle;
     var infoStyle = screenStyle.infoPanel;

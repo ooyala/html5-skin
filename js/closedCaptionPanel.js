@@ -103,7 +103,7 @@ var ClosedCaptionPanel = React.createClass({
     return (
       <div style = {closedCaptionScreenStyles.screenStyle}>
         <div style = {closedCaptionScreenStyles.innerPanelStyle}>
-          <div style = {closedCaptionScreenStyles.captionStyle}>CC Options <span className="icon icon-topmenu-cc"></span></div>
+          <div style = {closedCaptionScreenStyles.captionStyle}>CC Options <span className={this.props.skinConfig.icons.cc.fontStyleClass}></span></div>
           <OnOffSwitch {...this.props} />
           <LanguageTabContent {...this.props} numRows = {numRows} />
           <CCPreviewPanel {...this.props} />
@@ -273,10 +273,10 @@ var LanguageTabContent = React.createClass({
     return(
       <div style={closedCaptionScreenStyles.positionRelativeStyle}>
         <div style={closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer} onClick={this.isMobile?null:this.handleLeftChevronClick} onTouchEnd={this.handleLeftChevronClick}>
-          <span className={closedCaptionScreenStyles.closedCaptionChevronLeftButton.icon} style={closedCaptionScreenStyles.closedCaptionChevronLeftButton.style} aria-hidden="true"></span>
+          <span className={this.props.skinConfig.icons.left.fontStyleClass} style={closedCaptionScreenStyles.closedCaptionChevronLeftButton.style} aria-hidden="true"></span>
         </div>
         <div style={closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer} onClick={this.isMobile?null:this.handleRightChevronClick} onTouchEnd={this.handleRightChevronClick}>
-          <span className={closedCaptionScreenStyles.closedCaptionChevronRightButton.icon} style={closedCaptionScreenStyles.closedCaptionChevronRightButton.style} aria-hidden="true"></span>
+          <span className={this.props.skinConfig.icons.right.fontStyleClass} style={closedCaptionScreenStyles.closedCaptionChevronRightButton.style} aria-hidden="true"></span>
         </div>
         <div style = {closedCaptionScreenStyles.tableLanguageContainerStyle} ref="tableLanguageContainer">
           <table ref = "tableLanguage" style = {closedCaptionScreenStyles.tableLanguageStyle}>

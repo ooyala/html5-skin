@@ -33,7 +33,7 @@ var ShareScreen = React.createClass({
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}
           playerState={this.state.playerState} />
-        <div onClick={this.isMobile?null:this.closeSharePanel} onTouchEnd={this.closeSharePanel} style={shareScreenStyle.closeButton} className="icon icon-close"></div>
+        <div onClick={this.isMobile?null:this.closeSharePanel} onTouchEnd={this.closeSharePanel} style={shareScreenStyle.closeButton} className={this.props.skinConfig.icons.dismiss.fontStyleClass}></div>
       </div>
     );
   }
