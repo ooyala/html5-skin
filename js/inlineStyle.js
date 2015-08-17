@@ -283,34 +283,22 @@ var scrubberBarStyle = {
 var shareScreenStyle = {
   tabStyle: {
     display: "inline-block",
-    width: "100px",
-    height: "50px",
-    lineHeight: "50px",
-    borderRight: "1px solid #afafaf",
-    textAlign: "center",
-    backgroundColor: "#444444",
     color: "#afafaf",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    paddingRight: "25px"
   },
 
   lastTabStyle: {
     display: "inline-block",
-    width: "100px",
-    height: "50px",
-    lineHeight: "50px",
-    backgroundColor: "#444444",
     color: "#afafaf",
     fontWeight: "bold",
-    borderRight: "0px none",
     flex: 1,
     WebkitFlex: 1,
-    textAlign: "left",
-    paddingLeft: "25px"
+    paddingLeft: "0"
   },
 
   activeTab: {
-    color: "#4389ff",
-    backgroundColor: "#3a3a3a"
+    color: "white"
   },
 
   socialIconStyle: {
@@ -328,37 +316,38 @@ var shareScreenStyle = {
   },
 
   panelStyle: {
-    backgroundColor: "#3a3a3a",
-    bottom: 0,
     flex: 1,
     WebkitFlex: 1,
     color: "white",
-    padding: "20px"
+    textAlign: "center"
   },
 
   containerStyle: {
+    padding: "35px",
     position: "absolute",
-    "top": 0,
-    bottom: "32px",
-    backgroundColor: "#444444",
+    top: 0,
+    bottom: "0",
+    background: "rgba(0, 0, 0, 0.75)",
     left: 0,
     right: 0,
     display: "flex",
-    flexDirection: "column",
-    WebkitFlexDirection: "column"
+    alignItems: "center",
+    WebkitAlignItems: "center",
+    justifyContent: "center"
   },
 
   tabRowStyle: {
-    borderBottom: "1px solid #afafaf",
-    display: "flex",
-    flexDirection: "row",
-    WebkitFlexDirection: "row"
+    position: "absolute",
+    top: "35px",
+    left: "35px"
   },
 
   titleStyle: {
+    fontFamily: "'Roboto Condensed', sans-serif",
     fontSize: "18px",
     fontWeight: "bold",
-    marginBottom: "15px"
+    marginBottom: "15px",
+    textTransform: "capitalize"
   },
 
   embedUrlStyle: {
@@ -420,14 +409,13 @@ var shareScreenStyle = {
 
   closeButton: {
     position: "absolute",
-    top:0,
-    right: 0,
-    height: "25px",
-    width: "25px",
-    backgroundColor: "#4389ff",
-    color: "white",
+    top: "35px",
+    right: "35px",
+    height: "15px",
+    width: "15px",
+    color: "#afafaf",
     textAlign: "center",
-    lineHeight: "25px"
+    lineHeight: "15px"
   }
 };
 

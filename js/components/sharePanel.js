@@ -38,11 +38,11 @@ var SharePanel = React.createClass({
 
       return (
         <div style={shareScreenStyle.panelStyle}>
-          <div style={shareScreenStyle.titleStyle}>{(this.props.contentTree && this.props.contentTree.title) || ""}</div>
+          <div style={shareScreenStyle.titleStyle}>Invest In Social Change</div>
           <div onClick={this.handleTwitterClick} style={twitterIconStyle}>t</div>
           <div onClick={this.handleFacebookClick} style={facebookIconStyle}>f</div>
           <div onClick={this.handleGPlusClick} style={plusIconStyle}>g+</div><br/>
-          <input style={shareScreenStyle.embedUrlStyle} type='text' defaultValue={location.href}/><br/>
+          <input style={shareScreenStyle.embedUrlStyle} type='text' defaultValue={location.href}/>
           <input style={{marginBottom: "15px"}}type='checkbox'/>
             Start at <input style={shareScreenStyle.startAtInput} type='text'
             defaultValue={Utils.formatSeconds(this.props.currentPlayhead)}/><br/>
