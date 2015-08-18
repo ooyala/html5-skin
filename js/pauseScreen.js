@@ -60,8 +60,14 @@ var PauseScreen = React.createClass({
     this.props.controller.enablePauseAnimation();
   },
 
-  handleClick: function() {
-    this.props.controller.togglePlayPause();
+  handleClick: function(evt) {
+    if (evt.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
+    }
+    else {
+      this.props.controller.togglePlayPause();
+    }
   },
 
   render: function() {
@@ -116,7 +122,7 @@ var PauseScreen = React.createClass({
     }
 
     return (
-      <div onMouseUp={this.isMobile?null:this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
+      <div onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>
         <span className={this.props.pauseAnimationDisabled === true ? null : pauseClass} style={pauseStyle} aria-hidden="true"></span>
         <div style={screenStyle.infoPanel.style}>

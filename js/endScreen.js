@@ -25,9 +25,15 @@ var EndScreen = React.createClass({
     }
   },
 
-  handlePlayerMouseUp: function() {
-    // pause or play the video if the skin is clicked
-    this.props.controller.togglePlayPause();
+  handlePlayerMouseUp: function(evt) {
+    if (evt.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
+    }
+    else {
+      // pause or play the video if the skin is clicked
+      this.props.controller.togglePlayPause();
+    }
   },
 
   showControlBar: function() {
@@ -36,10 +42,6 @@ var EndScreen = React.createClass({
 
   hideControlBar: function() {
     this.setState({controlBarVisible: false});
-  },
-
-  handleClick: function() {
-    this.props.controller.togglePlayPause();
   },
 
   render: function() {
@@ -60,12 +62,11 @@ var EndScreen = React.createClass({
 
     return (
       <div onMouseOver={this.showControlBar}
-           onMouseUp={this.isMobile?null:this.handlePlayerMouseUp}
+           onMouseUp={this.handlePlayerMouseUp}
            onTouchEnd={this.handlePlayerMouseUp}
            style={{height: "100%", width: "100%"}}>
         <div style={screenStyle.backgroundStyle}></div>
-        <span className={repeatClass} style={repeatStyle} aria-hidden="true"
-        onClick={this.isMobile?null:this.handleClick} onTouchEnd={this.handleClick}></span>
+        <span className={repeatClass} style={repeatStyle} aria-hidden="true"></span>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}

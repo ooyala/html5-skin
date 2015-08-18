@@ -46,16 +46,22 @@ var AdScreen = React.createClass({
   },
 
   handlePlayerClicked: function(event) {
-    //since after exiting the full screen, iPhone pauses the video and places an overlay play button in the middle
-    //of the screen (which we can't remove), clicking the screen would start the video.
-    if (Utils.isIPhone() && this.state.playerState == STATE.PAUSE){
-      this.props.controller.togglePlayPause();
+    if (event.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
     }
     else {
-      console.log("ad screen clicked");
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
-      this.props.controller.onAdsClicked();
+      //since after exiting the full screen, iPhone pauses the video and places an overlay play button in the middle
+      //of the screen (which we can't remove), clicking the screen would start the video.
+      if (Utils.isIPhone() && this.state.playerState == STATE.PAUSE){
+        this.props.controller.togglePlayPause();
+      }
+      else {
+        console.log("ad screen clicked");
+        event.stopPropagation(); // W3C
+        event.cancelBubble = true; // IE
+        this.props.controller.onAdsClicked();
+      }
     }
   },
 
@@ -106,7 +112,7 @@ var AdScreen = React.createClass({
     }
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onClick={this.isMobile?null:this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd} style={defaultScreenStyle.style}>
+        onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd} style={defaultScreenStyle.style}>
         
         {adPanel}
 

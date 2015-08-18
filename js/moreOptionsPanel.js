@@ -24,20 +24,44 @@ var MoreOptionsPanel = React.createClass({
     }
   },
 
-  closeMoreOptionsScreen: function() {
-    this.props.controller.closeMoreOptionsScreen();
+  closeMoreOptionsScreen: function(evt) {
+    if (evt.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
+    }
+    else {
+      this.props.controller.closeMoreOptionsScreen();
+    }
   },
 
-  handleShareClick: function() {
-    this.props.controller.toggleShareScreen();
+  handleShareClick: function(evt) {
+    if (evt.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
+    }
+    else {
+      this.props.controller.toggleShareScreen();
+    }
   },
 
-  handleDiscoveryClick: function() {
-    this.props.controller.toggleDiscoveryScreen();
+  handleDiscoveryClick: function(evt) {
+    if (evt.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
+    }
+    else {
+      this.props.controller.toggleDiscoveryScreen();
+    }
   },
 
-  handleClosedCaptionClick: function() {
-    this.props.controller.toggleClosedCaptionScreen();
+  handleClosedCaptionClick: function(evt) {
+    if (evt.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
+    }
+    else {
+      this.props.controller.toggleClosedCaptionScreen();
+    }
   },
 
   highlight: function(evt) {
@@ -54,7 +78,7 @@ var MoreOptionsPanel = React.createClass({
 
     var optionsItemsTemplates = {
       "discovery": <div className="discovery" style={MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.isMobile?null:this.handleDiscoveryClick} onTouchEnd={this.handleDiscoveryClick}>
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick} onTouchEnd={this.handleDiscoveryClick}>
         <span className={this.props.skinConfig.icons.discovery.fontStyleClass}></span></div>,
     
       "quality": <div className="quality" style={MoreOptionsScreenStyle.buttonStyle}
@@ -62,15 +86,15 @@ var MoreOptionsPanel = React.createClass({
         <span className={this.props.skinConfig.icons.quality.fontStyleClass}></span></div>,
       
       "closedCaption": <div className="closedCaption" style={MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.isMobile?null:this.handleClosedCaptionClick} onTouchEnd={this.handleClosedCaptionClick}> 
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleClosedCaptionClick} onTouchEnd={this.handleClosedCaptionClick}> 
         <span className={this.props.skinConfig.icons.cc.fontStyleClass}></span></div>,
       
       "share": <div className="share" style={MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.isMobile?null:this.handleShareClick} onTouchEnd={this.handleShareClick}>
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleShareClick} onTouchEnd={this.handleShareClick}>
         <span className={this.props.skinConfig.icons.share.fontStyleClass}></span></div>,
       
       "fullscreen": <div className="fullscreen" style={MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.isMobile?null:this.handleFullscreenClick} onTouchEnd={this.handleFullscreenClick}>
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick} onTouchEnd={this.handleFullscreenClick}>
         <span className={fullscreenClass}></span></div>,
 
       "settings": <div className="settings" style={MoreOptionsScreenStyle.buttonStyle}
@@ -101,7 +125,7 @@ var MoreOptionsPanel = React.createClass({
     return (
       <div style={MoreOptionsScreenStyle.panelStyle}>
         <div onMouseOver={this.highlight} onMouseOut={this.removeHighlight} 
-          onClick={this.isMobile?null:this.closeMoreOptionsScreen} onTouchEnd={this.closeMoreOptionsScreen} style={MoreOptionsScreenStyle.closeButtonStyle}>
+          onClick={this.closeMoreOptionsScreen} onTouchEnd={this.closeMoreOptionsScreen} style={MoreOptionsScreenStyle.closeButtonStyle}>
           <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
         </div>
         <div style={MoreOptionsScreenStyle.buttonListStyle}>

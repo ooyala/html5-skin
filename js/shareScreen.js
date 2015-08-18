@@ -16,8 +16,14 @@ var ShareScreen = React.createClass({
     };
   },
 
-  closeSharePanel: function() {
-    this.props.controller.closeShareScreen();
+  closeSharePanel: function(evt) {
+    if (evt.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
+    }
+    else {
+      this.props.controller.closeShareScreen();
+    }
   },
 
   componentDidMount: function () {
@@ -33,7 +39,7 @@ var ShareScreen = React.createClass({
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}
           playerState={this.state.playerState} />
-        <div onClick={this.isMobile?null:this.closeSharePanel} onTouchEnd={this.closeSharePanel} style={shareScreenStyle.closeButton} className={this.props.skinConfig.icons.dismiss.fontStyleClass}></div>
+        <div onClick={this.closeSharePanel} onTouchEnd={this.closeSharePanel} style={shareScreenStyle.closeButton} className={this.props.skinConfig.icons.dismiss.fontStyleClass}></div>
       </div>
     );
   }

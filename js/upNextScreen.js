@@ -16,7 +16,13 @@ var UpNextScreen = React.createClass({
   },
 
   handlePlayerMouseUp: function(event) {
-    this.props.controller.togglePlayPause();
+    if (event.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
+    }
+    else {
+      this.props.controller.togglePlayPause();
+    }
   },
   
   showControlBar: function() {
@@ -30,7 +36,7 @@ var UpNextScreen = React.createClass({
   render: function() {
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onClick={this.isMobile?null:this.handlePlayerMouseUp} onTouchEnd={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
+        onClick={this.handlePlayerMouseUp} onTouchEnd={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
         <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}

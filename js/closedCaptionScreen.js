@@ -29,8 +29,14 @@ var ClosedCaptionScreen = React.createClass({
     window.addEventListener('resize', this.handleResize);
   },
 
-  closeClosedCaptionPanel: function() {
-    this.props.controller.toggleClosedCaptionScreen();
+  closeClosedCaptionPanel: function(evt) {
+    if (evt.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
+    }
+    else {
+      this.props.controller.toggleClosedCaptionScreen();
+    }
   },
 
   render: function() {
@@ -42,7 +48,7 @@ var ClosedCaptionScreen = React.createClass({
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.clientWidth}
           playerState={this.state.playerState}/>
-        <div className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={closedCaptionScreenStyles.closeButtonStyle} onClick={this.isMobile?null:this.closeClosedCaptionPanel} onTouchEnd={this.closeClosedCaptionPanel}></div>
+        <div className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={closedCaptionScreenStyles.closeButtonStyle} onClick={this.closeClosedCaptionPanel} onTouchEnd={this.closeClosedCaptionPanel}></div>
       </div>
     );
   }

@@ -49,11 +49,17 @@ var CountDownClock = React.createClass({
   },
 
   handleClick: function(event) {
-    if(this.props.controller.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
-      this.countDownStyle.display = "none";
-      clearInterval(this.interval);
-      this.setState({showDiscoveryCountDown: false});
-    } 
+    if (event.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
+    }
+    else {
+      if(this.props.controller.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+        this.countDownStyle.display = "none";
+        clearInterval(this.interval);
+        this.setState({showDiscoveryCountDown: false});
+      } 
+    }
   },
 
   componentDidMount: function() {
@@ -164,7 +170,8 @@ var CountDownClock = React.createClass({
         height: this.state.clockContainerWidth,
         width: this.state.clockContainerWidth,
         style: this.countDownStyle,
-        onClick: this.handleClick
+        onClick: this.handleClick,
+        onTouchEnd: this.handleClick
     });
   }
 });

@@ -27,36 +27,48 @@ var DiscoveryPanel = React.createClass({
     };
   },
 
-  handleLeftButtonClick: function() {
-    // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
-    var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
-    if(this.hasItemsToShowOnLeftSide(newDiscoveryToasterLeftOffset)) {
-      newDiscoveryToasterLeftOffset += 400;
-      if(newDiscoveryToasterLeftOffset > 25) {
-        newDiscoveryToasterLeftOffset = 25;
-      }
+  handleLeftButtonClick: function(evt) {
+    if (evt.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
     }
+    else {
+      // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
+      var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
+      if(this.hasItemsToShowOnLeftSide(newDiscoveryToasterLeftOffset)) {
+        newDiscoveryToasterLeftOffset += 400;
+        if(newDiscoveryToasterLeftOffset > 25) {
+          newDiscoveryToasterLeftOffset = 25;
+        }
+      }
 
-    this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
+      this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
+    }
   },
 
-  handleRightButtonClick: function() {
-    // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
-    var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
-    if(this.hasItemsToShowOnRightSide(newDiscoveryToasterLeftOffset)) {
-      var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
-      var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
-      // rightOffset = right border of discovery toaster container - right border of discovery toaster
-      var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
-      newDiscoveryToasterLeftOffset -= 400;
-      rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
-
-      if(rightOffset > 25) {
-        newDiscoveryToasterLeftOffset = toasterContainerWidth - 25 - toasterWidth;
-      }
+  handleRightButtonClick: function(evt) {
+    if (evt.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
     }
+    else {
+      // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
+      var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
+      if(this.hasItemsToShowOnRightSide(newDiscoveryToasterLeftOffset)) {
+        var toasterContainerWidth = this.refs.DiscoveryToasterContainer.getDOMNode().clientWidth;
+        var toasterWidth = this.refs.DiscoveryToaster.getDOMNode().clientWidth;
+        // rightOffset = right border of discovery toaster container - right border of discovery toaster
+        var rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
+        newDiscoveryToasterLeftOffset -= 400;
+        rightOffset = toasterContainerWidth  - (newDiscoveryToasterLeftOffset + toasterWidth);
 
-    this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
+        if(rightOffset > 25) {
+          newDiscoveryToasterLeftOffset = toasterContainerWidth - 25 - toasterWidth;
+        }
+      }
+
+      this.setState({discoveryToasterLeftOffset: newDiscoveryToasterLeftOffset});
+    }
   },
 
   shouldShowLeftButton: function(newState) {
@@ -113,14 +125,20 @@ var DiscoveryPanel = React.createClass({
     }
   },
 
-  handleDiscoveryContentClick: function(index) {
-    var eventData = {
-          "clickedVideo" : this.props.discoveryData.relatedVideos[index],
-          "custom" : this.props.discoveryData.custom
-        };
-    // TODO: figure out countdown value
-    eventData.custom.countdown = 0;
-    this.props.controller.sendDiscoveryClickEvent(eventData);
+  handleDiscoveryContentClick: function(index, event) {
+    if (event.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
+    }
+    else {
+      var eventData = {
+        "clickedVideo" : this.props.discoveryData.relatedVideos[index],
+        "custom" : this.props.discoveryData.custom
+      };
+      // TODO: figure out countdown value
+      eventData.custom.countdown = 0;
+      this.props.controller.sendDiscoveryClickEvent(eventData);
+    }
   },
 
   shouldShowCountdownTimer: function() {
@@ -128,9 +146,15 @@ var DiscoveryPanel = React.createClass({
   },
 
   handleDiscoveryCountDownClick: function(event) {
-    this.setState({showDiscoveryCountDown: false});
-    this.refs.CountDownClock.handleClick(event);
-    event.stopPropagation();
+    if (event.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
+    }
+    else {
+      this.setState({showDiscoveryCountDown: false});
+      this.refs.CountDownClock.handleClick(event);
+      event.stopPropagation();
+    }
   },
 
   render: function() {
@@ -179,10 +203,10 @@ var DiscoveryPanel = React.createClass({
         for (var i = 0; i < this.props.discoveryData.relatedVideos.length; i++) {
           if(this.shouldShowCountdownTimer() && i === 0) {
             discoveryContentBlocks.push(
-            <div style={contentBlockStyle} onClick={this.isMobile?null:this.handleDiscoveryContentClick.bind(this, i)} onTouchEnd={this.handleDiscoveryContentClick.bind(this, i)}>
+            <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)} onTouchEnd={this.handleDiscoveryContentClick.bind(this, i)}>
               <div style={discoveryScreenStyle.discoveryImageWrapperStyle}>
                 <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
-                     <div style={discoveryCountDownWrapperStyle} onClick={this.isMobile?null:this.handleDiscoveryCountDownClick} onTouchEnd={this.handleDiscoveryCountDownClick}>
+                     <div style={discoveryCountDownWrapperStyle} onClick={this.handleDiscoveryCountDownClick} onTouchEnd={this.handleDiscoveryCountDownClick}>
                      <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
                      <span className={this.props.skinConfig.icons.pause.fontStyleClass} style={discoveryCountDownIconStyle}></span>
                      </div>
@@ -193,7 +217,7 @@ var DiscoveryPanel = React.createClass({
           }
           else {
             discoveryContentBlocks.push(
-              <div style={contentBlockStyle} onClick={this.isMobile?null:this.handleDiscoveryContentClick.bind(this, i)} onTouchEnd={this.handleDiscoveryContentClick.bind(this, i)}>
+              <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)} onTouchEnd={this.handleDiscoveryContentClick.bind(this, i)}>
                 <div style={discoveryScreenStyle.discoveryImageWrapperStyle}>
                   <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
                 </div>
@@ -218,11 +242,11 @@ var DiscoveryPanel = React.createClass({
           </div>
 
           <div style={chevronLeftButtonContainer}>
-            <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} ref="ChevronLeftButton" aria-hidden="true" onClick={this.isMobile?null:this.handleLeftButtonClick} onTouchEnd={this.handleRightButtonClick}></span>
+            <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} ref="ChevronLeftButton" aria-hidden="true" onClick={this.handleLeftButtonClick} onTouchEnd={this.handleLeftButtonClick}></span>
           </div>
 
           <div style={chevronRightButtonContainer}>
-            <span className={chevronRightButtonClass} style={chevronRightButtonStyle} ref="ChevronRightButton" aria-hidden="true" onClick={this.isMobile?null:this.handleRightButtonClick} onTouchEnd={this.handleRightButtonClick}></span>
+            <span className={chevronRightButtonClass} style={chevronRightButtonStyle} ref="ChevronRightButton" aria-hidden="true" onClick={this.handleRightButtonClick} onTouchEnd={this.handleRightButtonClick}></span>
           </div>
         </div>
       </div>

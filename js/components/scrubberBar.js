@@ -13,32 +13,38 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseDown: function(evt) {
-    evt.preventDefault();
-    if (this.isMobile){
-      evt = evt.nativeEvent;
-    }
-    // we enter the scrubbing state to prevent constantly seeking while dragging
-    // the playhead icon
-    this.props.controller.beginSeeking();
-    this.props.controller.renderSkin();
-
-    if (!this.isMobile){
-      this.getDOMNode().parentNode.addEventListener("mousemove", this.handlePlayheadMouseMove);
-      // attach a mouseup listener to the document for usability, otherwise scrubbing
-      // breaks if your cursor leaves the player element
-      document.addEventListener("mouseup", this.handlePlayheadMouseUp, true);
-      this.setState({
-        startingPlayheadX: evt.screenX,
-        scrubbingPlayheadX: evt.screenX
-      });
+    if (evt.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
     }
     else {
-      this.getDOMNode().parentNode.addEventListener("touchmove", this.handlePlayheadMouseMove);
-      document.addEventListener("touchend", this.handlePlayheadMouseUp, true);
-      this.setState({
-        startingPlayheadX: evt.changedTouches[0].screenX,
-        scrubbingPlayheadX: evt.changedTouches[0].screenX
-      });
+      evt.preventDefault();
+      if (this.isMobile){
+        evt = evt.nativeEvent;
+      }
+      // we enter the scrubbing state to prevent constantly seeking while dragging
+      // the playhead icon
+      this.props.controller.beginSeeking();
+      this.props.controller.renderSkin();
+
+      if (!this.isMobile){
+        this.getDOMNode().parentNode.addEventListener("mousemove", this.handlePlayheadMouseMove);
+        // attach a mouseup listener to the document for usability, otherwise scrubbing
+        // breaks if your cursor leaves the player element
+        document.addEventListener("mouseup", this.handlePlayheadMouseUp, true);
+        this.setState({
+          startingPlayheadX: evt.screenX,
+          scrubbingPlayheadX: evt.screenX
+        });
+      }
+      else {
+        this.getDOMNode().parentNode.addEventListener("touchmove", this.handlePlayheadMouseMove);
+        document.addEventListener("touchend", this.handlePlayheadMouseUp, true);
+        this.setState({
+          startingPlayheadX: evt.changedTouches[0].screenX,
+          scrubbingPlayheadX: evt.changedTouches[0].screenX
+        });
+      }
     }
   },
 
@@ -77,21 +83,27 @@ var ScrubberBar = React.createClass({
   },
 
   handleScrubberBarMouseUp: function(evt) {
-    evt.preventDefault();
-    
-    // this method is used to seek when the scrubber bar is clicked. We stop propagation
-    // to prevent it from bubbling up to the skin which would pause the player
-    evt.stopPropagation();
-
-    if (this.isMobile){
-      evt = evt.nativeEvent;
+    if (evt.type !== 'touchend' && this.isMobile){
+      //do nothing to prevent double firing of events
+      //from touchend and click on mobile devices
     }
-    var offset = this.isMobile?evt.changedTouches[0].clientX:evt.clientX - evt.target.getBoundingClientRect().left;
-    var newPlayheadTime = (offset / this.props.controlBarWidth) * this.props.duration;
-    this.props.controller.seek(newPlayheadTime);
-    this.setState({
-      currentPlayhead: newPlayheadTime
-    });
+    else {
+      evt.preventDefault();
+    
+      // this method is used to seek when the scrubber bar is clicked. We stop propagation
+      // to prevent it from bubbling up to the skin which would pause the player
+      evt.stopPropagation();
+
+      if (this.isMobile){
+        evt = evt.nativeEvent;
+      }
+      var offset = this.isMobile?evt.changedTouches[0].clientX:evt.clientX - evt.target.getBoundingClientRect().left;
+      var newPlayheadTime = (offset / this.props.controlBarWidth) * this.props.duration;
+      this.props.controller.seek(newPlayheadTime);
+      this.setState({
+        currentPlayhead: newPlayheadTime
+      });
+    }
   },
 
   render: function() {
@@ -127,11 +139,11 @@ var ScrubberBar = React.createClass({
 
     return (
       <div className="scrubberBar" style={scrubberBarStyle.scrubberBarSetting}
-        onMouseUp={this.isMobile?null:this.handleScrubberBarMouseUp} onTouchEnd={this.handleScrubberBarMouseUp}>
+        onMouseUp={this.handleScrubberBarMouseUp} onTouchEnd={this.handleScrubberBarMouseUp}>
         <div className="bufferedIndicator" style={scrubberBarStyle.bufferedIndicatorStyle}></div>
         <div className="playedIndicator" style={scrubberBarStyle.playedIndicatorStyle}></div>
         <div className="playhead" style={scrubberBarStyle.playheadStyle}
-          onMouseDown={this.isMobile?null:this.handlePlayheadMouseDown} onTouchStart={this.handlePlayheadMouseDown}></div>
+          onMouseDown={this.handlePlayheadMouseDown} onTouchStart={this.handlePlayheadMouseDown}></div>
       </div>
     );
   }

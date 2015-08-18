@@ -48,8 +48,9 @@ var PlayingScreen = React.createClass({
 
   handlePlayerMouseUp: function() {
     // pause or play the video if the skin is clicked on desktop
+    if (!this.isMobile) {
       this.props.controller.togglePlayPause();
-
+    }
     // for mobile, touch is handled in handleTouchEnd
   },
 
@@ -74,7 +75,7 @@ var PlayingScreen = React.createClass({
   render: function() {
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onMouseUp={this.isMobile?null:this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd} style={{height: "100%", width: "100%"}}>
+        onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd} style={{height: "100%", width: "100%"}}>
 
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} />
