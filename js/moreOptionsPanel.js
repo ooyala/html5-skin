@@ -7,6 +7,10 @@
 */
 
 var MoreOptionsPanel = React.createClass({
+  getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
+    return null;
+  },
   componentDidMount: function () {
     // Fade-in & bottom-up animation
     MoreOptionsScreenStyle.buttonListStyle.bottom = "50%";
@@ -20,20 +24,40 @@ var MoreOptionsPanel = React.createClass({
     }
   },
 
-  closeMoreOptionsScreen: function() {
-    this.props.controller.closeMoreOptionsScreen();
+  closeMoreOptionsScreen: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.closeMoreOptionsScreen();
+    }
   },
 
-  handleShareClick: function() {
-    this.props.controller.toggleShareScreen();
+  handleShareClick: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.toggleShareScreen();
+    }
   },
 
-  handleDiscoveryClick: function() {
-    this.props.controller.toggleDiscoveryScreen();
+  handleDiscoveryClick: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.toggleDiscoveryScreen();
+    }
   },
 
-  handleClosedCaptionClick: function() {
-    this.props.controller.toggleClosedCaptionScreen();
+  handleClosedCaptionClick: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.toggleClosedCaptionScreen();
+    }
   },
 
   highlight: function(evt) {
@@ -50,23 +74,23 @@ var MoreOptionsPanel = React.createClass({
 
     var optionsItemsTemplates = {
       "discovery": <div className="discovery" style={MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick} onTouchEnd={this.handleDiscoveryClick}>
         <span className={this.props.skinConfig.icons.discovery.fontStyleClass}></span></div>,
-      
+    
       "quality": <div className="quality" style={MoreOptionsScreenStyle.buttonStyle}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <span className={this.props.skinConfig.icons.quality.fontStyleClass}></span></div>,
       
       "closedCaption": <div className="closedCaption" style={MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleClosedCaptionClick}> 
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleClosedCaptionClick} onTouchEnd={this.handleClosedCaptionClick}> 
         <span className={this.props.skinConfig.icons.cc.fontStyleClass}></span></div>,
       
       "share": <div className="share" style={MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleShareClick}>
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleShareClick} onTouchEnd={this.handleShareClick}>
         <span className={this.props.skinConfig.icons.share.fontStyleClass}></span></div>,
       
       "fullscreen": <div className="fullscreen" style={MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick} onTouchEnd={this.handleFullscreenClick}>
         <span className={fullscreenClass}></span></div>,
 
       "settings": <div className="settings" style={MoreOptionsScreenStyle.buttonStyle}
@@ -97,7 +121,7 @@ var MoreOptionsPanel = React.createClass({
     return (
       <div style={MoreOptionsScreenStyle.panelStyle}>
         <div onMouseOver={this.highlight} onMouseOut={this.removeHighlight} 
-          onClick={this.closeMoreOptionsScreen} style={MoreOptionsScreenStyle.closeButtonStyle}>
+          onClick={this.closeMoreOptionsScreen} onTouchEnd={this.closeMoreOptionsScreen} style={MoreOptionsScreenStyle.closeButtonStyle}>
           <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
         </div>
         <div style={MoreOptionsScreenStyle.buttonListStyle}>

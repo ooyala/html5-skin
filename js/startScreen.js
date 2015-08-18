@@ -4,6 +4,7 @@
 
 var StartScreen = React.createClass({
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       description: this.props.contentTree.description
     };
@@ -21,8 +22,13 @@ var StartScreen = React.createClass({
     }
   },
 
-  handleClick: function() {
-    this.props.controller.togglePlayPause();
+  handleClick: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.togglePlayPause();
+    }
   },
 
   render: function() {
@@ -85,7 +91,7 @@ var StartScreen = React.createClass({
       // Small Promo Image configuration
       posterStyle.backgroundSize = "auto";
       return (
-        <div onClick={this.handleClick} style={screenStyle.style}>
+        <div onClick={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
           <div className="startscreen-info" style={screenStyle.infoPanel.style}>
             <img className="startscreen-poster" src={posterImageUrl}/>
             {titleMetadata}
@@ -99,7 +105,7 @@ var StartScreen = React.createClass({
       // Default configuration
       posterStyle.backgroundImage = "url('" + posterImageUrl + "')";
       return (
-        <div onClick={this.handleClick} style={screenStyle.style}>
+        <div onClick={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
           <div className="startscreen-poster" style={screenStyle.posterStyle}></div>
           <span className={playClass} style={playStyle} aria-hidden="true"></span>
           <div className="startscreen-info" style={screenStyle.infoPanel.style}>

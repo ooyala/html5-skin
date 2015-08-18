@@ -3,6 +3,10 @@
 *********************************************************************/
 
 var ControlBar = React.createClass({
+  getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
+    return null;
+  },
   componentDidMount: function(){
     if (Utils.isSafari()){
       controlBarStyle.controlBarSetting.display = "-webkit-flex";
@@ -16,37 +20,77 @@ var ControlBar = React.createClass({
     evt.stopPropagation();
   },
 
-  handleFullscreenClick: function() {
-    this.props.controller.toggleFullscreen();
+  handleFullscreenClick: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.toggleFullscreen();
+    }
   },
 
-  handleMuteClick: function() {
-    this.props.controller.handleMuteClick();
+  handleMuteClick: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.handleMuteClick();
+    }
   },
 
-  handlePlayClick: function() {
-    this.props.controller.togglePlayPause();
+  handlePlayClick: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.togglePlayPause();
+    }
   },
 
-  handleShareClick: function() {
-    this.props.controller.toggleShareScreen();
+  handleShareClick: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.toggleShareScreen();
+    }
   },
 
   handleVolumeClick: function(evt) {
-    var newVolume = parseFloat(evt.target.dataset.volume);
-    this.props.controller.setVolume(newVolume);
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      var newVolume = parseFloat(evt.target.dataset.volume);
+      this.props.controller.setVolume(newVolume);
+    }
   },
 
-  handleDiscoveryClick: function() {
-    this.props.controller.toggleDiscoveryScreen();
+  handleDiscoveryClick: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.toggleDiscoveryScreen();
+    }
   },
 
-  handleMoreOptionsClick: function() {
-    this.props.controller.toggleMoreOptionsScreen();
+  handleMoreOptionsClick: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.toggleMoreOptionsScreen();
+    }
   },
 
-  handleClosedCaptionClick: function() {
-    this.props.controller.toggleClosedCaptionScreen();
+  handleClosedCaptionClick: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.toggleClosedCaptionScreen();
+    }
   },
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
@@ -84,7 +128,7 @@ var ControlBar = React.createClass({
         "rgba(67, 137, 255, 0.6)" : "rgba(255, 255, 255, 0.6)");
       //we store which value the tick correlates to via a data attribute on the element
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
-        onClick={this.handleVolumeClick}></span>);
+        onClick={this.handleVolumeClick} onTouchEnd={this.handleVolumeClick}></span>);
     }
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
     var watermarkImageStyle = controlBarStyle.watermarkImageStyle;
@@ -94,7 +138,7 @@ var ControlBar = React.createClass({
 
     var controlItemTemplates = {
       "playPause": <div className="playPause" style={controlBarStyle.controlBarItemSetting}
-        onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        onClick={this.handlePlayClick} onTouchEnd={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         <span className={playClass} style={controlBarStyle.iconSetting}></span>
       </div>,
 
@@ -104,7 +148,7 @@ var ControlBar = React.createClass({
       </div>,
       
       "volume": <div className="volume" style={controlBarStyle.controlBarItemSetting}>
-        <span className={muteClass} style={controlBarStyle.iconSetting} onClick={this.handleMuteClick}
+        <span className={muteClass} style={controlBarStyle.iconSetting} onClick={this.handleMuteClick} onTouchEnd={this.handleMuteClick}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
         {volumeBars}
       </div>,
@@ -115,7 +159,8 @@ var ControlBar = React.createClass({
       "flexibleSpace": <div className="flexibleSpace" style={controlBarStyle.flexibleSpace}></div>,
 
       "moreOptions": <div className="moreOptions" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}>
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}
+        onTouchEnd={this.handleMoreOptionsClick}>
         <span className={this.props.skinConfig.icons.ellipsis.fontStyleClass} style={controlBarStyle.iconSetting}></span></div>,
 
       "quality": <div className="quality" style={controlBarStyle.controlBarItemSetting}
@@ -123,19 +168,21 @@ var ControlBar = React.createClass({
         <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={controlBarStyle.iconSetting}></span></div>,
 
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}
+        onTouchEnd={this.handleDiscoveryClick}>
         <span className={this.props.skinConfig.icons.discovery.fontStyleClass} style={controlBarStyle.iconSetting}></span></div>,
     
       "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className={this.props.skinConfig.icons.cc.fontStyleClass}
-        onClick={this.handleClosedCaptionClick} style={controlBarStyle.iconSetting}></span></div>,
+        onClick={this.handleClosedCaptionClick} onTouchEnd={this.handleClosedCaptionClick} style={controlBarStyle.iconSetting}></span></div>,
       
       "share": <div className="share" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className={this.props.skinConfig.icons.share.fontStyleClass}
-        onClick={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
+        onClick={this.handleShareClick} onTouchEnd={this.handleShareClick} style={controlBarStyle.iconSetting}></span></div>,
 
       "fullscreen": <div className="fullscreen" style={controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}>
+        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}
+        onTouchEnd={this.handleFullscreenClick}>
         <span className={fullscreenClass} style={controlBarStyle.iconSetting}></span></div>,
       
       "watermark": <div className="watermark" style={controlBarStyle.controlBarItemSetting}
@@ -230,7 +277,7 @@ var ControlBar = React.createClass({
     this.setupControlBarItemForConstantHeight(60);
     var controlBarItems = this.populateControlBar();
     return (
-      <div className="controlBar" onMouseUp={this.handleControlBarMouseUp}
+      <div className="controlBar" onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}
         style={controlBarStyle.controlBarSetting}>
         {controlBarItems}
       </div>

@@ -3,7 +3,9 @@
 *********************************************************************/
 
 var PlayingScreen = React.createClass({
+
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       controlBarVisible: true,
       controlBarWidth: 0,
@@ -18,7 +20,7 @@ var PlayingScreen = React.createClass({
     window.addEventListener('resize', this.handleResize);
 
     //for mobile, hide control bar after 3 seconds
-    if (Utils.isMobile()){
+    if (this.isMobile){
       this.startHideControlBarTimer();
     }
   },
@@ -46,10 +48,9 @@ var PlayingScreen = React.createClass({
 
   handlePlayerMouseUp: function() {
     // pause or play the video if the skin is clicked on desktop
-    if (!Utils.isMobile()){
+    if (!this.isMobile) {
       this.props.controller.togglePlayPause();
     }
-
     // for mobile, touch is handled in handleTouchEnd
   },
 
@@ -57,6 +58,9 @@ var PlayingScreen = React.createClass({
     if (!this.state.controlBarVisible){
       this.showControlBar();
       this.startHideControlBarTimer();
+    }
+    else {
+      this.props.controller.togglePlayPause();
     }
   },
 
