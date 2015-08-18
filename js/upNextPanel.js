@@ -77,19 +77,18 @@ var UpNextPanel = React.createClass({
 
     return (
       <div style={panelStyle}>
-        <div style={contentImageContainerStyle} onClick={this.handleStartUpNextClick}>
+        <div className="upNextContent" style={contentImageContainerStyle} onClick={this.handleStartUpNextClick}>
           <img style={contentImageStyle} src={this.props.upNextInfo.upNextData.preview_image_url}></img>          
-          <span className={playButtonClass} style={playButtonStyle} aria-hidden="true" onClick={this.handleClick}></span>
+          <span className={playButtonClass} style={playButtonStyle} aria-hidden="true"></span>
         </div>
 
-        <div style={contentMetadataContainerStyle}>
+        <div className="contentMetadata" style={contentMetadataContainerStyle}>
           <div style={upNextTitleStyle}>
             <div style={upNextTitleTextStyle}>
               Up Next: {contentTile}
             </div>
 
             <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow}/>
-
           </div>
 
           <div ref="ContentDescription" style={contentDescriptionStyle}>
