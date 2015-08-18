@@ -54,7 +54,7 @@ var startScreenStyle = {
       position: "absolute",
       opacity: 1,
       transition: "opacity .25s ease-in-out",
-      "cursor": "pointer" 
+      "cursor": "pointer"
     }
   }
 };
@@ -244,12 +244,22 @@ var scrubberBarStyle = {
     "height": "5",
     "padding": 0,
     "margin": 0,
+    "top": "50%",
+    "position": "absolute"
+  },
+
+  scrubberBarPadding: {
+    "padding": "0",
+    "margin": "0",
     "WebkitUserSelect": "none",
     "-moz-user-select": "none",
     "-ms-user-select": "none",
     "userSelect": "none",
     "position": "absolute",
-    "transition": "bottom 0.5s, height 0.25s"
+    "transition": "bottom 0.5s, height 0.25s",
+    "width": "100%",
+    "height": "30px",
+    "zIndex": "1"
   },
 
   bufferedIndicatorStyle: {
@@ -264,21 +274,32 @@ var scrubberBarStyle = {
     "position": "absolute"
   },
 
+  playheadPaddingStyle: {
+    "width": "25px",
+    "height": "25px",
+    "position": "absolute",
+    "zIndex": "1",
+    "top": "50%",
+    "WebkitTransform": "translateY(-50%) translateX(-50%)",
+    "transform": "translateY(-50%) translateX(-50%)",
+    "transition": "opacity 0.25s"
+  },
+
   playheadStyle: {
     "background": "#ffffff",
     "width": "10px",
-    "height": "10",
+    "height": "10px",
     "borderStyle": "solid",
     "borderColor": "white",
     "borderWidth": "1px",
     "borderRadius": "10px",
     "position": "absolute",
-    "zIndex": 1,
-    "top": "50%",
-    "WebkitTransform": "translateY(-50%)",
-    "transform": "translateY(-50%)",
     "transition": "opacity 0.25s",
-    "cursor":"pointer"
+    "top": "50%",
+    "cursor":"pointer",
+    "left": "50%",
+    "WebkitTransform": "translateY(-50%) translateX(-50%)",
+    "transform": "translateY(-50%) translateX(-50%)"
   }
 };
 
@@ -560,7 +581,7 @@ var discoveryScreenStyle = {
     width: "214px",
     "flex-shrink": 0
   },
-  
+
   discoveryImageWrapperStyle: {
     position: "relative",
     height: "120px",
@@ -582,7 +603,7 @@ var discoveryScreenStyle = {
     width: "214px",
     height: "31px",
     overflow: "hidden",
-    whiteSpace: "nowrap"    
+    whiteSpace: "nowrap"
   },
 
   discoveryCountDownWrapperStyle: {
