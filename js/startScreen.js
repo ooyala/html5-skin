@@ -85,7 +85,7 @@ var StartScreen = React.createClass({
       // Small Promo Image configuration
       posterStyle.backgroundSize = "auto";
       return (
-        <div onClick={this.handleClick} style={screenStyle.style}>
+        <div className="startScreen" onClick={this.handleClick} style={screenStyle.style}>
           <div className="startScreenInfo" style={screenStyle.infoPanel.style}>
             <img className="startScreenPoster" src={posterImageUrl}/>
             {titleMetadata}
@@ -99,7 +99,7 @@ var StartScreen = React.createClass({
       // Default configuration
       posterStyle.backgroundImage = "url('" + posterImageUrl + "')";
       return (
-        <div onClick={this.handleClick} style={screenStyle.style}>
+        <div className="startScreen" onClick={this.handleClick} style={screenStyle.style}>
           <div className="startScreenPoster" style={screenStyle.posterStyle}></div>
           <div className="play">
             <span className={playClass} style={playStyle} aria-hidden="true"></span>

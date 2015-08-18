@@ -76,7 +76,7 @@ var UpNextPanel = React.createClass({
     var dismissButtonTextStyle = upNextPanelStyle.dismissButtonTextStyle;
 
     return (
-      <div style={panelStyle}>
+      <div className="upNextPanel" style={panelStyle}>
         <div className="upNextContent" style={contentImageContainerStyle} onClick={this.handleStartUpNextClick}>
           <img style={contentImageStyle} src={this.props.upNextInfo.upNextData.preview_image_url}></img>          
           <span className={playButtonClass} style={playButtonStyle} aria-hidden="true"></span>

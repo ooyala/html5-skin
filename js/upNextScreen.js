@@ -28,7 +28,7 @@ var UpNextScreen = React.createClass({
 
   render: function() {
     return (
-      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
+      <div className="upNextScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
         onClick={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
         <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
