@@ -15,7 +15,7 @@ var StartScreen = React.createClass({
   componentDidMount: function() {
     if (this.props.skinConfig.startScreen.showTitle ||
       this.props.skinConfig.startScreen.showDescription) {
-      var descriptionNode = this.getDOMNode().getElementsByClassName("startscreen-description")[0];
+      var descriptionNode = this.getDOMNode().getElementsByClassName("startScreenDescription")[0];
       var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
       this.setState({description: shortDesc});
     }
@@ -55,10 +55,10 @@ var StartScreen = React.createClass({
     var titleMetadata = null;
     var descriptionMetadata = null;
     if (this.props.skinConfig.startScreen.showTitle) {
-      titleMetadata = <div className="startscreen-title" style={screenStyle.infoPanel.title.style}>{this.props.contentTree.title}</div>;
+      titleMetadata = <div className="startScreenTitle" style={screenStyle.infoPanel.title.style}>{this.props.contentTree.title}</div>;
     }
     if (this.props.skinConfig.startScreen.showDescription) {
-      descriptionMetadata = <div className="startscreen-description" style={screenStyle.infoPanel.description.style}>{this.state.description}</div>;
+      descriptionMetadata = <div className="startScreenDescription" style={screenStyle.infoPanel.description.style}>{this.state.description}</div>;
     }
 
     if (this.props.skinConfig.startScreen.showTitle ||
@@ -86,8 +86,8 @@ var StartScreen = React.createClass({
       posterStyle.backgroundSize = "auto";
       return (
         <div onClick={this.handleClick} style={screenStyle.style}>
-          <div className="startscreen-info" style={screenStyle.infoPanel.style}>
-            <img className="startscreen-poster" src={posterImageUrl}/>
+          <div className="startScreenInfo" style={screenStyle.infoPanel.style}>
+            <img className="startScreenPoster" src={posterImageUrl}/>
             {titleMetadata}
             {descriptionMetadata}
           </div>
@@ -100,9 +100,11 @@ var StartScreen = React.createClass({
       posterStyle.backgroundImage = "url('" + posterImageUrl + "')";
       return (
         <div onClick={this.handleClick} style={screenStyle.style}>
-          <div className="startscreen-poster" style={screenStyle.posterStyle}></div>
-          <span className={playClass} style={playStyle} aria-hidden="true"></span>
-          <div className="startscreen-info" style={screenStyle.infoPanel.style}>
+          <div className="startScreenPoster" style={screenStyle.posterStyle}></div>
+          <div className="play">
+            <span className={playClass} style={playStyle} aria-hidden="true"></span>
+          </div>
+          <div className="startScreenInfo" style={screenStyle.infoPanel.style}>
             {titleMetadata}
             {descriptionMetadata}
           </div>
