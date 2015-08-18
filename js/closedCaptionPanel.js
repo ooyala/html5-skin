@@ -144,7 +144,7 @@ var OnOffSwitch = React.createClass({
 
   render: function(){
     return (
-        <div style={closedCaptionScreenStyles.switchStyle} onClick = {this.handleOnOffSwitch}>
+        <div className="CCSwitch" style={closedCaptionScreenStyles.switchStyle} onClick = {this.handleOnOffSwitch}>
           <span style={closedCaptionScreenStyles.offStyle}>Off</span>
           <div style={closedCaptionScreenStyles.switchContainer}>
             <span style={closedCaptionScreenStyles.switch}></span>
@@ -259,11 +259,11 @@ var LanguageTabContent = React.createClass({
     }
 
     return(
-      <div style={closedCaptionScreenStyles.positionRelativeStyle}>
-        <div style={closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer} onClick={this.props.ccOptions.enabled ? this.handleLeftChevronClick : null}>
+      <div className="ClosedCaptionsPanel" style={closedCaptionScreenStyles.positionRelativeStyle}>
+        <div className="CCLeft" style={closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer} onClick={this.props.ccOptions.enabled ? this.handleLeftChevronClick : null}>
           <span className={this.props.skinConfig.icons.left.fontStyleClass} style={closedCaptionScreenStyles.closedCaptionChevronLeftButton.style} aria-hidden="true"></span>
         </div>
-        <div style={closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer} onClick={this.props.ccOptions.enabled ? this.handleRightChevronClick : null}>
+        <div className="CCRight" style={closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer} onClick={this.props.ccOptions.enabled ? this.handleRightChevronClick : null}>
           <span className={this.props.skinConfig.icons.right.fontStyleClass} style={closedCaptionScreenStyles.closedCaptionChevronRightButton.style} aria-hidden="true"></span>
         </div>
         <div style = {closedCaptionScreenStyles.tableLanguageContainerStyle} ref="tableLanguageContainer">
@@ -274,7 +274,7 @@ var LanguageTabContent = React.createClass({
                   <tr key = {i}>
                     {row.map(function(item, j){
                       return (
-                        <td key = {j} onClick = {this.props.ccOptions.enabled ? this.changeLanguage.bind(this, item) : null} style = {closedCaptionScreenStyles.tdLanguageStyle}>
+                        <td className={availableLanguages.locale[item]} key = {j} onClick = {this.props.ccOptions.enabled ? this.changeLanguage.bind(this, item) : null} style = {closedCaptionScreenStyles.tdLanguageStyle}>
                           <div style = {this.setStyle(item, j, colnum)}>{availableLanguages.locale[item]}</div>
                         </td>
                       );
