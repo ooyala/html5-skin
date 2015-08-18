@@ -43,6 +43,14 @@ var UpNextPanel = React.createClass({
     this.props.controller.sendDiscoveryClickEvent(eventData);
   },
 
+  highlight: function(evt) {
+    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
+  },
+
+  removeHighlight: function(evt) {
+    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
+  },
+
   render: function() {
     var panelStyle = upNextPanelStyle.panelStyle;
 
@@ -89,8 +97,10 @@ var UpNextPanel = React.createClass({
           </div>
         </div>
         
-        <div onClick={this.closeUpNextPanel} style={upNextPanelStyle.closeButton} className={this.props.skinConfig.icons.dismiss.fontStyleClass}></div>
-        
+        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight} 
+          onClick={this.closeUpNextPanel} style={upNextPanelStyle.closeButton}>
+          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
+        </div>
       </div>
     );
   }
