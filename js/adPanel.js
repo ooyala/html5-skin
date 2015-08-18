@@ -51,7 +51,7 @@ var AdPanel = React.createClass({
     }
 
     // Ad playback Info
-    var adPlaybackInfo = "Ad Playing";
+    var adPlaybackInfo = Utils.getLocalizedString(this.props.preferredLanguage, "Ad Playing", this.props.localizableStrings, this.props.skinConfig);
     var currentAdIndex = this.props.currentAdsInfo.currentAdItem.indexInPod;
     var totalNumberOfAds = this.props.currentAdsInfo.numberOfAds;
     if (this.isValidAdPlaybackInfo(currentAdIndex) && this.isValidAdPlaybackInfo(totalNumberOfAds)) {
@@ -70,14 +70,14 @@ var AdPanel = React.createClass({
 
     // Learn more
     if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.clickUrl)) {
-      var learnMoreText = "Learn More";
+      var learnMoreText = Utils.getLocalizedString(this.props.preferredLanguage, "Learn More", this.props.localizableStrings, this.props.skinConfig);
       var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" onLearnMoreButtonClicked={this.handleLearnMoreButtonClick} style={adScreenStyle.learnMoreButtonStyle} data={learnMoreText} />;
       adTopBarItems.push(learnMoreButtonDiv);
     }
 
     // Skip
     if (this.props.currentAdsInfo.currentAdItem.skippable) {
-      var skipButtonText = "Skip Ad";
+      var skipButtonText = Utils.getLocalizedString(this.props.preferredLanguage, "Skip Ad", this.props.localizableStrings, this.props.skinConfig);
       var skipButtonDiv = <AdPanelTopBarItem key="skipButton" style={adScreenStyle.skipButtonStyle} data={skipButtonText} />;
       adTopBarItems.push(skipButtonDiv);
     }

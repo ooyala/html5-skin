@@ -61,6 +61,7 @@ var UpNextPanel = React.createClass({
 
     var upNextTitleTextStyle = upNextPanelStyle.upNextTitleTextStyle;
     var contentTile = this.props.upNextInfo.upNextData.name;
+    var upNextString = Utils.getLocalizedString(this.props.preferredLanguage, "Up next", this.props.localizableStrings, this.props.skinConfig);
 
     var contentDescriptionStyle = upNextPanelStyle.contentDescriptionStyle;
     
@@ -77,7 +78,7 @@ var UpNextPanel = React.createClass({
         <div style={contentMetadataContainerStyle}>
           <div style={upNextTitleStyle}>
             <div style={upNextTitleTextStyle}>
-              Up Next: {contentTile}
+              {upNextString}: {contentTile}
             </div>
 
             <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow}/>

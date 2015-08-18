@@ -100,11 +100,11 @@ var ClosedCaptionPanel = React.createClass({
 
     // this.setResponsiveStyle(this.props.clientWidth, controlBarHeight); //Leave this for later when we use the resizing
     var numRows = this.calculateNumberOfRows(this.props.clientWidth, this.props.clientHeight, controlBarHeight);
-
+    var ccOptionsString = Utils.getLocalizedString(this.props.preferredLanguage, "CC Options", this.props.localizableStrings, this.props.skinConfig);
     return (
       <div style = {closedCaptionScreenStyles.screenStyle}>
         <div style = {closedCaptionScreenStyles.innerPanelStyle}>
-          <div style = {closedCaptionScreenStyles.captionStyle}>CC Options <span className={this.props.skinConfig.icons.cc.fontStyleClass}></span></div>
+          <div style = {closedCaptionScreenStyles.captionStyle}>{ccOptionsString}<span className={this.props.skinConfig.icons.cc.fontStyleClass}></span></div>
           <OnOffSwitch {...this.props} />
           <LanguageTabContent {...this.props} numRows = {numRows} />
           <CCPreviewPanel {...this.props} />
@@ -143,14 +143,16 @@ var OnOffSwitch = React.createClass({
   },
 
   render: function(){
+    var offString = Utils.getLocalizedString(this.props.preferredLanguage, "Off", this.props.localizableStrings, this.props.skinConfig);
+    var onString = Utils.getLocalizedString(this.props.preferredLanguage, "On", this.props.localizableStrings, this.props.skinConfig);
     return (
         <div style={closedCaptionScreenStyles.switchStyle} onClick = {this.handleOnOffSwitch}>
-          <span style={closedCaptionScreenStyles.offStyle}>Off</span>
+          <span style={closedCaptionScreenStyles.offStyle}>{offString}</span>
           <div style={closedCaptionScreenStyles.switchContainer}>
             <span style={closedCaptionScreenStyles.switch}></span>
             <span style={closedCaptionScreenStyles.switchThumb}></span>
           </div>
-          <span style={closedCaptionScreenStyles.onStyle}>On</span>
+          <span style={closedCaptionScreenStyles.onStyle}>{onString}</span>
         </div>
     );
   }
@@ -159,10 +161,12 @@ var OnOffSwitch = React.createClass({
 
 var CCPreviewPanel = React.createClass({
   render: function(){
+    var closedCaptionPreviewTitle = Utils.getLocalizedString(this.props.preferredLanguage, "CLOSED CAPTION PREVIEW", this.props.localizableStrings, this.props.skinConfig);
+    var closedCaptionSampleText =Utils.getLocalizedString(this.props.preferredLanguage, "Sample Text", this.props.localizableStrings, this.props.skinConfig);
     return (
       <div style = {closedCaptionScreenStyles.CCPreviewPanelStyle}>
-        <div style = {closedCaptionScreenStyles.CCPreviewCaptionStyle}>CLOSED CAPTION PREVIEW</div>
-        <div style = {closedCaptionScreenStyles.CCPreviewTextStyle}>Sample Text</div>
+        <div style = {closedCaptionScreenStyles.CCPreviewCaptionStyle}>{closedCaptionPreviewTitle}</div>
+        <div style = {closedCaptionScreenStyles.CCPreviewTextStyle}>{closedCaptionSampleText}</div>
       </div>
     );
   }

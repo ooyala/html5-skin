@@ -100,9 +100,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $.getJSON(params.skin.config, _.bind(function(data) {
         //Override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
-
+        
         this.skin = React.render(
-          React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.getElementById("skin")
+          React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, preferredLanguage: Utils.getPreferredLanguage(data), controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.getElementById("skin")
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
