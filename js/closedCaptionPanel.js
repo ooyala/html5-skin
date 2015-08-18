@@ -124,11 +124,10 @@ var OnOffSwitch = React.createClass({
   },
 
   handleOnOffSwitch: function(evt){
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       this.props.controller.toggleClosedCaptionEnabled();
       this.toggleCCStyles();
     }
@@ -213,11 +212,10 @@ var LanguageTabContent = React.createClass({
   },
 
   changeLanguage: function(language, evt){
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       if (this.props.ccOptions.enabled){
         this.props.controller.onClosedCaptionLanguageChange(language);
       }
@@ -225,11 +223,10 @@ var LanguageTabContent = React.createClass({
   },
 
   handleLeftChevronClick: function(evt){
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       if (this.props.ccOptions.enabled){
         this.refs.tableLanguageContainer.getDOMNode().scrollLeft += -1*this.calculateScrollDistance();
         this.setState({scrollLeftDistance: this.refs.tableLanguageContainer.getDOMNode().scrollLeft});
@@ -238,11 +235,10 @@ var LanguageTabContent = React.createClass({
   },
 
   handleRightChevronClick: function(evt){
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       if (this.props.ccOptions.enabled){
         this.refs.tableLanguageContainer.getDOMNode().scrollLeft += this.calculateScrollDistance();
         this.setState({scrollLeftDistance: this.refs.tableLanguageContainer.getDOMNode().scrollLeft});

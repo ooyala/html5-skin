@@ -21,82 +21,74 @@ var ControlBar = React.createClass({
   },
 
   handleFullscreenClick: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       this.props.controller.toggleFullscreen();
     }
   },
 
   handleMuteClick: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       this.props.controller.handleMuteClick();
     }
   },
 
   handlePlayClick: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       this.props.controller.togglePlayPause();
     }
   },
 
   handleShareClick: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       this.props.controller.toggleShareScreen();
     }
   },
 
   handleVolumeClick: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       var newVolume = parseFloat(evt.target.dataset.volume);
       this.props.controller.setVolume(newVolume);
     }
   },
 
   handleDiscoveryClick: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       this.props.controller.toggleDiscoveryScreen();
     }
   },
 
   handleMoreOptionsClick: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       this.props.controller.toggleMoreOptionsScreen();
     }
   },
 
   handleClosedCaptionClick: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       this.props.controller.toggleClosedCaptionScreen();
     }
   },

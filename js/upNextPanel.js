@@ -23,11 +23,10 @@ var UpNextPanel = React.createClass({
   },
    
   closeUpNextPanel: function(event) {
-    if (event.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (event.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       console.log("Up next panel close button clicked");
       event.stopPropagation(); // W3C
       event.cancelBubble = true; // IE
@@ -36,11 +35,10 @@ var UpNextPanel = React.createClass({
   },
 
   handleStartUpNextClick: function(event) {
-    if (event.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (event.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       console.log("Up next panel start button clicked");
       event.stopPropagation(); // W3C
       event.cancelBubble = true; // IE

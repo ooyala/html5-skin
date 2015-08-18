@@ -13,11 +13,10 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseDown: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       evt.preventDefault();
       if (this.isMobile){
         evt = evt.nativeEvent;
@@ -83,11 +82,10 @@ var ScrubberBar = React.createClass({
   },
 
   handleScrubberBarMouseUp: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       evt.preventDefault();
     
       // this method is used to seek when the scrubber bar is clicked. We stop propagation

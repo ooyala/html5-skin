@@ -27,11 +27,10 @@ var AdPanel = React.createClass({
   },
 
   handleLearnMoreButtonClick: function(event) {
-    if (event.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (event.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       console.log("Learn more button clicked");
       event.stopPropagation(); // W3C
       event.cancelBubble = true; // IE

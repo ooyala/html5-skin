@@ -26,11 +26,10 @@ var EndScreen = React.createClass({
   },
 
   handlePlayerMouseUp: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       // pause or play the video if the skin is clicked
       this.props.controller.togglePlayPause();
     }

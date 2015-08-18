@@ -28,11 +28,10 @@ var DiscoveryPanel = React.createClass({
   },
 
   handleLeftButtonClick: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
       var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
       if(this.hasItemsToShowOnLeftSide(newDiscoveryToasterLeftOffset)) {
@@ -47,11 +46,10 @@ var DiscoveryPanel = React.createClass({
   },
 
   handleRightButtonClick: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       // discoveryToasterLeftOffset = left border of discovery toaster container - left border of discovery toaster
       var newDiscoveryToasterLeftOffset = this.state.discoveryToasterLeftOffset;
       if(this.hasItemsToShowOnRightSide(newDiscoveryToasterLeftOffset)) {
@@ -126,11 +124,10 @@ var DiscoveryPanel = React.createClass({
   },
 
   handleDiscoveryContentClick: function(index, event) {
-    if (event.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (event.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       var eventData = {
         "clickedVideo" : this.props.discoveryData.relatedVideos[index],
         "custom" : this.props.discoveryData.custom
@@ -146,11 +143,10 @@ var DiscoveryPanel = React.createClass({
   },
 
   handleDiscoveryCountDownClick: function(event) {
-    if (event.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (event.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       this.setState({showDiscoveryCountDown: false});
       this.refs.CountDownClock.handleClick(event);
       event.stopPropagation();

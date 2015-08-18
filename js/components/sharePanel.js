@@ -95,11 +95,10 @@ var SharePanel = React.createClass({
   },
 
   handleEmailClick: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       var mailToUrl = "mailto:";
       mailToUrl += this.refs.sharePanelTo.getDOMNode().value;
       mailToUrl += "?subject=" + encodeURIComponent(this.refs.sharePanelSubject.getDOMNode().value);
@@ -109,11 +108,10 @@ var SharePanel = React.createClass({
   },
 
   handleFacebookClick: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       var facebookUrl = "http://www.facebook.com/sharer.php";
       facebookUrl += "?u=" + encodeURIComponent(location.href);
       window.open(facebookUrl, "facebook window", "height=315,width=780");
@@ -126,11 +124,10 @@ var SharePanel = React.createClass({
   },
 
   handleGPlusClick: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       var gPlusUrl = "https://plus.google.com/share";
       gPlusUrl += "?url=" + encodeURIComponent(location.href);
       window.open(gPlusUrl, "google+ window", "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600");
@@ -138,11 +135,10 @@ var SharePanel = React.createClass({
   },
 
   handleTwitterClick: function(evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+     if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       var twitterUrl = "https://twitter.com/intent/tweet";
       twitterUrl += "?text=" + encodeURIComponent(this.props.contentTree.title+": ");
       twitterUrl += "&url=" + encodeURIComponent(location.href);
@@ -151,11 +147,10 @@ var SharePanel = React.createClass({
   },
 
   showPanel: function(panelToShow, evt) {
-    if (evt.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       this.setState({activeTab: panelToShow});
     }
   },

@@ -46,11 +46,10 @@ var AdScreen = React.createClass({
   },
 
   handlePlayerClicked: function(event) {
-    if (event.type !== 'touchend' && this.isMobile){
-      //do nothing to prevent double firing of events
-      //from touchend and click on mobile devices
-    }
-    else {
+    if (event.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
       //since after exiting the full screen, iPhone pauses the video and places an overlay play button in the middle
       //of the screen (which we can't remove), clicking the screen would start the video.
       if (Utils.isIPhone() && this.state.playerState == STATE.PAUSE){
