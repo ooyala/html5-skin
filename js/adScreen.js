@@ -23,7 +23,7 @@ var AdScreen = React.createClass({
     }
   },
 
-  handlePlayerClicked: function() {    
+  handlePlayerClicked: function(event) {    
     console.log("ad screen clicked");
     event.stopPropagation(); // W3C
     event.cancelBubble = true; // IE

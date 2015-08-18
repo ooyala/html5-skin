@@ -47,7 +47,6 @@ var startScreenStyle = {
     }
   },
   playButton: {
-    icon: "icon icon-play",
     style: {
       fontSize: "72",
       WebkitTransform: "translate(-50%, -50%)",
@@ -94,7 +93,6 @@ var pauseScreenStyle = {
     }
   },
   pauseIcon: {
-    icon: "icon icon-pause",
     style: {
       fontSize: "24",
       position: "absolute",
@@ -132,7 +130,6 @@ var endScreenStyle = {
     background: "linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%)"
   },
   repeatButton: {
-    icon: "icon icon-upnext-replay",
     style: {
       top: "50%",
       left: "50%",
@@ -541,7 +538,6 @@ var discoveryScreenStyle = {
   },
 
   discoveryChevronLeftButton: {
-    icon: "icon icon-left",
     style: {
       top: "50%",
       left: "50%",
@@ -555,7 +551,6 @@ var discoveryScreenStyle = {
   },
 
   discoveryChevronRightButton: {
-    icon: "icon icon-right",
     style: {
       top: "50%",
       left: "50%",
@@ -859,7 +854,6 @@ var closedCaptionScreenStyles ={
   },
 
   closedCaptionChevronLeftButton: {
-    icon: "icon icon-left",
     style: {
       top: "50%",
       left: "50%",
@@ -872,7 +866,6 @@ var closedCaptionScreenStyles ={
   },
 
   closedCaptionChevronRightButton: {
-    icon: "icon icon-right",
     style: {
       top: "50%",
       left: "50%",
@@ -962,7 +955,6 @@ var upNextPanelStyle = {
   },
 
   playButton: {
-    icon: "icon icon-play",
     style: {
       position: "absolute",
       top: "50%",

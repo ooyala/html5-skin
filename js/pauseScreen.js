@@ -25,19 +25,30 @@ var PauseScreen = React.createClass({
     pauseScreenStyle.fading.opacity = 0.5;
     pauseScreenStyle.fading.transition = (this.props.pauseAnimationDisabled === true ? "opacity 0s" : "opacity 1s");
 
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+    this.setState({
+      controlBarWidth: this.getDOMNode().clientWidth,
+      description: this.getShortenedDescription()
+    });
+  },
 
+  handleResize: function(e) {
+    if (this.isMounted()) {
+      this.setState({
+        controlBarWidth: this.getDOMNode().clientWidth,
+        description: this.getShortenedDescription()
+      });
+    }
+  },
+
+  getShortenedDescription: function() {
     if (this.props.skinConfig.pauseScreen.showTitle ||
       this.props.skinConfig.pauseScreen.showDescription) {
       var descriptionNode = this.getDOMNode().getElementsByClassName("pauseScreen-description")[0];
       var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
-      this.setState({description: shortDesc});
+      return shortDesc;
     }
-  },
-
-  handleResize: function(e) {     
-    if (this.isMounted()) {
-      this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+    else {
+      return this.state.description;
     }
   },
 
@@ -55,7 +66,7 @@ var PauseScreen = React.createClass({
 
   render: function() {
     var screenStyle = pauseScreenStyle;
-    var pauseClass = screenStyle.pauseIcon.icon;
+    var pauseClass = this.props.skinConfig.icons.pause.fontStyleClass;
     var pauseStyle = screenStyle.pauseIcon.style;
     var infoStyle = screenStyle.infoPanel;
 
@@ -103,7 +114,7 @@ var PauseScreen = React.createClass({
         infoStyle.description.style.float = "right";
       }
     }
-    
+
     return (
       <div onMouseUp={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>

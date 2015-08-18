@@ -85,12 +85,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       event listeners from core player -> regulate skin STATE
     ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
-      $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%; position: absolute; z-index: 10000; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
-
+      $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
+      $("#skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
+      
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON(params.skin.config, _.bind(function(data) {
         //Override data in skin config with possible inline data input by the user
-        $.extend(data, params.skin.inline);
+        $.extend(true, data, params.skin.inline);
 
         this.skin = React.render(
           React.createElement(Skin, {skinConfig: data, controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.getElementById("skin")
@@ -192,7 +193,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       } else {
         this.state.screenToShow = SCREEN.END_SCREEN;
       }
-      this.skin.updatePlayhead(this.state.contentTree.duration/1000, this.state.contentTree.duration/1000, this.state.contentTree.duration/1000); 
+      this.skin.updatePlayhead(this.state.contentTree.duration/1000, this.state.contentTree.duration/1000, this.state.contentTree.duration/1000);
       this.state.playerState = STATE.END;
       this.renderSkin();
     },
@@ -205,6 +206,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onSeeked: function(event) {
       this.state.seeking = false;
+      this.renderSkin();
     },
 
     /********************************************************************
@@ -229,12 +231,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onWillPlaySingleAd: function(event, adItem) {
       console.log("onWillPlaySingleAd is called with adItem = " + adItem);
-      this.state.screenToShow = SCREEN.AD_SCREEN;
-      this.state.isPlayingAd = true;
-      this.state.currentAdsInfo.currentAdItem = adItem;
-      this.state.playerState = STATE.PLAYING;
-      this.skin.state.currentPlayhead = 0;
-      this.renderSkin();
+      if (adItem !== null) {
+        this.state.screenToShow = SCREEN.AD_SCREEN;
+        this.state.isPlayingAd = true;
+        this.state.currentAdsInfo.currentAdItem = adItem;
+        this.state.playerState = STATE.PLAYING;
+        this.skin.state.currentPlayhead = 0;
+        this.renderSkin();
+      }
     },
 
     onSingleAdPlayed: function(event) {
@@ -250,7 +254,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onWillResumeAds: function(event) {
       console.log("onWillResumeAds is called");
+      if (this.state.currentAdsInfo.currentAdItem !== null) {
       this.state.playerState = STATE.PLAYING;
+      //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
+      this.state.screenToShow = SCREEN.AD_SCREEN;
+      }
     },
 
     onAdsClicked: function() {
@@ -338,8 +346,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     togglePlayPause: function() {
       switch (this.state.playerState) {
         case STATE.START:
-        case STATE.END:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
+          break;
+        case STATE.END:
+          this.mb.publish(OO.EVENTS.REPLAY);
           break;
         case STATE.PAUSE:
           this.mb.publish(OO.EVENTS.PLAY);
