@@ -125,7 +125,7 @@ var ControlBar = React.createClass({
       "discovery": <div className="discovery" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}>
         <span className={this.props.skinConfig.icons.discovery.fontStyleClass} style={controlBarStyle.iconSetting}></span></div>,
-        
+
       "closedCaption": <div className="closedCaption" style={controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className={this.props.skinConfig.icons.cc.fontStyleClass}
         onClick={this.handleClosedCaptionClick} style={controlBarStyle.iconSetting}></span></div>,
