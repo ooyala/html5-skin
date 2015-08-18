@@ -10,7 +10,6 @@
 
 
 var ClosedCaptionPanel = React.createClass({
-
   calculateNumberOfRows: function(clientWidth, clientHeight, controlBarHeight){
     var switchHeight = parseInt(closedCaptionScreenStyles.switchStyle.height) + parseInt(closedCaptionScreenStyles.switchStyle.marginTop);
     var CCPreviewPanelHeight = parseInt(closedCaptionScreenStyles.CCPreviewPanelStyle.height);
@@ -71,11 +70,11 @@ var ClosedCaptionPanel = React.createClass({
   //   closedCaptionScreenStyles.itemStyle.marginRight = 140 * scale - 2*parseInt(closedCaptionScreenStyles.itemStyle.padding);
   //   closedCaptionScreenStyles.itemStyle.marginTop = 40 * scale - 2*parseInt(closedCaptionScreenStyles.itemStyle.padding);
 
-  //   closedCaptionScreenStyles.lastColItemStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
-  //   closedCaptionScreenStyles.lastColItemStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
-  //   closedCaptionScreenStyles.lastColItemStyle.width = closedCaptionScreenStyles.itemStyle.width;
-  //   closedCaptionScreenStyles.lastColItemStyle.marginRight = 0;
-  //   closedCaptionScreenStyles.lastColItemStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
+  //   closedCaptionScreenStyles.lastColumnItemStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
+  //   closedCaptionScreenStyles.lastColumnItemStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
+  //   closedCaptionScreenStyles.lastColumnItemStyle.width = closedCaptionScreenStyles.itemStyle.width;
+  //   closedCaptionScreenStyles.lastColumnItemStyle.marginRight = 0;
+  //   closedCaptionScreenStyles.lastColumnItemStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
 
   //   closedCaptionScreenStyles.itemSelectedStyle.fontSize = closedCaptionScreenStyles.itemStyle.fontSize;
   //   closedCaptionScreenStyles.itemSelectedStyle.padding = closedCaptionScreenStyles.itemStyle.padding;
@@ -83,11 +82,11 @@ var ClosedCaptionPanel = React.createClass({
   //   closedCaptionScreenStyles.itemSelectedStyle.marginRight = closedCaptionScreenStyles.itemStyle.marginRight;
   //   closedCaptionScreenStyles.itemSelectedStyle.marginTop = closedCaptionScreenStyles.itemStyle.marginTop;
 
-  //   closedCaptionScreenStyles.lastColItemSelectedStyle.fontSize = closedCaptionScreenStyles.lastColItemStyle.fontSize;
-  //   closedCaptionScreenStyles.lastColItemSelectedStyle.padding = closedCaptionScreenStyles.lastColItemStyle.padding;
-  //   closedCaptionScreenStyles.lastColItemSelectedStyle.width = closedCaptionScreenStyles.itemSelectedStyle.width;
-  //   closedCaptionScreenStyles.lastColItemSelectedStyle.marginRight = closedCaptionScreenStyles.lastColItemStyle.marginRight;
-  //   closedCaptionScreenStyles.lastColItemSelectedStyle.marginTop = closedCaptionScreenStyles.lastColItemStyle.marginTop;
+  //   closedCaptionScreenStyles.lastColumnItemSelectedStyle.fontSize = closedCaptionScreenStyles.lastColumnItemStyle.fontSize;
+  //   closedCaptionScreenStyles.lastColumnItemSelectedStyle.padding = closedCaptionScreenStyles.lastColumnItemStyle.padding;
+  //   closedCaptionScreenStyles.lastColumnItemSelectedStyle.width = closedCaptionScreenStyles.itemSelectedStyle.width;
+  //   closedCaptionScreenStyles.lastColumnItemSelectedStyle.marginRight = closedCaptionScreenStyles.lastColumnItemStyle.marginRight;
+  //   closedCaptionScreenStyles.lastColumnItemSelectedStyle.marginTop = closedCaptionScreenStyles.lastColumnItemStyle.marginTop;
 
   //   closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.width = 50 * scale;
   //   closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.width = closedCaptionScreenStyles.tableLanguageContainerStyle.marginLeft = closedCaptionScreenStyles.tableLanguageContainerStyle.marginRight = closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.width;
@@ -115,14 +114,23 @@ var ClosedCaptionPanel = React.createClass({
 });
 
 var OnOffSwitch = React.createClass({
+  getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
+    return null;
+  },
 
   componentWillMount: function(){
     this.toggleCCStyles();
   },
 
-  handleOnOffSwitch: function(){
-    this.props.controller.toggleClosedCaptionEnabled();
-    this.toggleCCStyles();
+  handleOnOffSwitch: function(evt){
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.toggleClosedCaptionEnabled();
+      this.toggleCCStyles();
+    }
   },
 
   toggleCCStyles: function(){
@@ -132,7 +140,9 @@ var OnOffSwitch = React.createClass({
 
     var elementColor = this.props.ccOptions.enabled ? "white" : "grey";
     closedCaptionScreenStyles.itemStyle.color = elementColor;
-    closedCaptionScreenStyles.lastColItemStyle.color = elementColor;
+    closedCaptionScreenStyles.itemStyle.cursor = this.props.ccOptions.enabled ? "pointer" : "default";
+    closedCaptionScreenStyles.lastColumnItemStyle.color = elementColor;
+    closedCaptionScreenStyles.lastColumnItemStyle.cursor = this.props.ccOptions.enabled ? "pointer" : "default";
     closedCaptionScreenStyles.CCPreviewTextStyle.color = elementColor;
     closedCaptionScreenStyles.CCPreviewCaptionStyle.color = elementColor;
     closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.color = closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.color = elementColor;
@@ -144,7 +154,7 @@ var OnOffSwitch = React.createClass({
 
   render: function(){
     return (
-        <div className="CCSwitch" style={closedCaptionScreenStyles.switchStyle} onClick = {this.handleOnOffSwitch}>
+        <div className="CCSwitch" style={closedCaptionScreenStyles.switchStyle} onClick={this.handleOnOffSwitch} onTouchEnd={this.handleOnOffSwitch}>
           <span style={closedCaptionScreenStyles.offStyle}>Off</span>
           <div style={closedCaptionScreenStyles.switchContainer}>
             <span style={closedCaptionScreenStyles.switch}></span>
@@ -170,6 +180,7 @@ var CCPreviewPanel = React.createClass({
 
 var LanguageTabContent = React.createClass({
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       selectedLanguage: this.props.ccOptions.language,
       scrollLeftDistance: 0
@@ -200,25 +211,46 @@ var LanguageTabContent = React.createClass({
     return scrollDistance;
   },
 
-  changeLanguage: function(language){
-    this.props.controller.onClosedCaptionLanguageChange(language);
+  changeLanguage: function(language, evt){
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      if (this.props.ccOptions.enabled){
+        this.props.controller.onClosedCaptionLanguageChange(language);
+      }
+    }
   },
 
-  handleLeftChevronClick: function(){
-    this.refs.tableLanguageContainer.getDOMNode().scrollLeft += -1*this.calculateScrollDistance();
-    this.setState({scrollLeftDistance: this.refs.tableLanguageContainer.getDOMNode().scrollLeft});
+  handleLeftChevronClick: function(evt){
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      if (this.props.ccOptions.enabled){
+        this.refs.tableLanguageContainer.getDOMNode().scrollLeft += -1*this.calculateScrollDistance();
+        this.setState({scrollLeftDistance: this.refs.tableLanguageContainer.getDOMNode().scrollLeft});
+      }
+    }
   },
 
-  handleRightChevronClick: function(){
-    this.refs.tableLanguageContainer.getDOMNode().scrollLeft += this.calculateScrollDistance();
-    this.setState({scrollLeftDistance: this.refs.tableLanguageContainer.getDOMNode().scrollLeft});
+  handleRightChevronClick: function(evt){
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      if (this.props.ccOptions.enabled){
+        this.refs.tableLanguageContainer.getDOMNode().scrollLeft += this.calculateScrollDistance();
+        this.setState({scrollLeftDistance: this.refs.tableLanguageContainer.getDOMNode().scrollLeft});
+      }
+    }
   },
 
   setStyle: function(item, j, colnum){
     var style;
     if (this.props.ccOptions.language == item && this.props.ccOptions.enabled){
       if (j == colnum){
-        style = closedCaptionScreenStyles.lastColItemSelectedStyle;
+        style = closedCaptionScreenStyles.lastColumnItemSelectedStyle;
       }
       else {
         style = closedCaptionScreenStyles.itemSelectedStyle;
@@ -226,7 +258,7 @@ var LanguageTabContent = React.createClass({
     }
     else {
       if (j == colnum){
-        style = closedCaptionScreenStyles.lastColItemStyle;
+        style = closedCaptionScreenStyles.lastColumnItemStyle;
       }
       else {
         style = closedCaptionScreenStyles.itemStyle;
@@ -260,10 +292,10 @@ var LanguageTabContent = React.createClass({
 
     return(
       <div className="ClosedCaptionsPanel" style={closedCaptionScreenStyles.positionRelativeStyle}>
-        <div className="CCLeft" style={closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer} onClick={this.props.ccOptions.enabled ? this.handleLeftChevronClick : null}>
+        <div className="CCLeft" style={closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer} onClick={this.handleLeftChevronClick} onTouchEnd={this.handleLeftChevronClick}>
           <span className={this.props.skinConfig.icons.left.fontStyleClass} style={closedCaptionScreenStyles.closedCaptionChevronLeftButton.style} aria-hidden="true"></span>
         </div>
-        <div className="CCRight" style={closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer} onClick={this.props.ccOptions.enabled ? this.handleRightChevronClick : null}>
+        <div className="CCRight" style={closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer} onClick={this.handleRightChevronClick} onTouchEnd={this.handleRightChevronClick}>
           <span className={this.props.skinConfig.icons.right.fontStyleClass} style={closedCaptionScreenStyles.closedCaptionChevronRightButton.style} aria-hidden="true"></span>
         </div>
         <div style = {closedCaptionScreenStyles.tableLanguageContainerStyle} ref="tableLanguageContainer">
@@ -274,7 +306,7 @@ var LanguageTabContent = React.createClass({
                   <tr key = {i}>
                     {row.map(function(item, j){
                       return (
-                        <td className={availableLanguages.locale[item]} key = {j} onClick = {this.props.ccOptions.enabled ? this.changeLanguage.bind(this, item) : null} style = {closedCaptionScreenStyles.tdLanguageStyle}>
+                        <td className={availableLanguages.locale[item]} key = {j} onClick={this.changeLanguage.bind(this, item)} onTouchEnd={this.changeLanguage.bind(this, item)} style = {closedCaptionScreenStyles.tdLanguageStyle}>
                           <div style = {this.setStyle(item, j, colnum)}>{availableLanguages.locale[item]}</div>
                         </td>
                       );

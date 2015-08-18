@@ -39,7 +39,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "upNextData": null,
         "countDownFinished": false,
         "countDownCancelled": false,
-      }
+      },
+
+      "isMobile": false
     };
 
     this.init();
@@ -100,6 +102,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.configLoaded = true;
         this.renderSkin();
       }, this));
+
+      this.state.isMobile = Utils.isMobile();
     },
 
     onAuthorizationFetched: function(event, authorization) {
@@ -283,7 +287,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onFullscreenChanged: function(event, fullscreen) {
+    onFullscreenChanged: function(event, fullscreen, paused) {
+      //The logic below synchronizes the state of the UI and the state of the video.
+      //If native controls on iOS were used to change the state of the video, our UI doesn't know about it.
+      if (Utils.isIos()){
+        //check if UI state is out of sync with video state
+        if (paused && this.state.playerState == STATE.PLAYING){
+          if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_PAUSE_ADS);}
+          else {this.mb.publish(OO.EVENTS.PAUSED);}
+        }
+        else if (!paused && this.state.playerState == STATE.PAUSE){
+          if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_RESUME_ADS);}
+          else {this.mb.publish(OO.EVENTS.PLAYING);}
+        }
+      }
+
       this.state.fullscreen = fullscreen;
       this.renderSkin();
     },

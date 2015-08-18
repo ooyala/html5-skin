@@ -9,6 +9,7 @@
 */
 var ClosedCaptionScreen = React.createClass({
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       controlBarVisible: true,
       clientWidth: null,
@@ -28,9 +29,23 @@ var ClosedCaptionScreen = React.createClass({
     window.addEventListener('resize', this.handleResize);
   },
 
-  closeClosedCaptionPanel: function() {
-    this.props.controller.toggleClosedCaptionScreen();
+  closeClosedCaptionPanel: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.toggleClosedCaptionScreen();
+    }
   },
+  
+  highlight: function(evt) {
+    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
+  },
+
+  removeHighlight: function(evt) {
+    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
+  },
+
 
   render: function() {
     return (
@@ -43,7 +58,8 @@ var ClosedCaptionScreen = React.createClass({
           playerState={this.state.playerState}/>
           
         <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight} 
-          onClick={this.closeClosedCaptionPanel} style={closedCaptionScreenStyles.closeButtonStyle}>
+          onClick={this.closeClosedCaptionPanel} style={closedCaptionScreenStyles.closeButtonStyle}
+          onTouchEnd={this.closeClosedCaptionPanel}>
           <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
         </div>
       </div>

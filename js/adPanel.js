@@ -10,7 +10,7 @@
 
 var AdPanelTopBarItem = React.createClass({
   render: function() {
-    return <div className={this.props.itemClassName} style={this.props.style} onClick={this.props.onLearnMoreButtonClicked}>
+    return <div className={this.props.itemClassName} style={this.props.style} onClick={this.props.onLearnMoreButtonClicked} onTouchEnd={this.props.onLearnMoreButtonClicked}>
           {this.props.data}
         </div>;
   }
@@ -27,10 +27,15 @@ var AdPanel = React.createClass({
   },
 
   handleLearnMoreButtonClick: function(event) {
-    console.log("Learn more button clicked");
-    event.stopPropagation(); // W3C
-    event.cancelBubble = true; // IE
-    this.props.controller.onAdsClicked();
+    if (event.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      console.log("Learn more button clicked");
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
+      this.props.controller.onAdsClicked();
+    }
   },
 
   isValidAdPlaybackInfo: function(playbackInfo) {
@@ -83,6 +88,7 @@ var AdPanel = React.createClass({
     }
     return adTopBarItems;
   },
+
 
   render: function() {
     var adTopBarItems = this.populateAdTopBar();

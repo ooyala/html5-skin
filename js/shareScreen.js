@@ -9,14 +9,20 @@
 */
 var ShareScreen = React.createClass({
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       controlBarVisible: true,
       controlBarWidth: 0
     };
   },
 
-  closeSharePanel: function() {
-    this.props.controller.closeShareScreen();
+  closeSharePanel: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.closeShareScreen();
+    }
   },
 
   componentDidMount: function () {
