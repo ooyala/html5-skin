@@ -87,12 +87,11 @@ var UpNextPanel = React.createClass({
 
         <div style={contentMetadataContainerStyle}>
           <div style={upNextTitleStyle}>
+            <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow}/>
+
             <div style={upNextTitleTextStyle}>
               Up Next: {contentTile}
             </div>
-
-            <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow}/>
-
           </div>
 
           <div ref="ContentDescription" style={contentDescriptionStyle}>
