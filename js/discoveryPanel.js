@@ -19,7 +19,7 @@ var DiscoveryPanel = React.createClass({
     }
   },
 
-  getInitialState: function() { 
+  getInitialState: function() {
     return {
       discoveryToasterLeftOffset: 25,
       showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen
@@ -94,7 +94,7 @@ var DiscoveryPanel = React.createClass({
     var rightOffset = toasterContainerWidth  - (newLeftOffset + toasterWidth);
     return (toasterContainerWidth <= toasterWidth) || (rightOffset <= 25);
   },
-  
+
   componentWillUpdate: function(propsParam, newState){
     var chevronLeftButtonStyle = discoveryScreenStyle.discoveryChevronLeftButton.style;
     var chevronRightButtonStyle = discoveryScreenStyle.discoveryChevronRightButton.style;
@@ -123,7 +123,7 @@ var DiscoveryPanel = React.createClass({
   },
 
   shouldShowCountdownTimer: function() {
-    return this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen && this.props.playerState === STATE.END; 
+    return this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen && this.props.playerState === STATE.END;
   },
 
   handleDiscoveryCountDownClick: function(event) {
@@ -133,9 +133,9 @@ var DiscoveryPanel = React.createClass({
   },
 
   render: function() {
-    var panelStyle = discoveryScreenStyle.panelStyle;    
+    var panelStyle = discoveryScreenStyle.panelStyle;
     var controlBarHeight = 60;
-    panelStyle.bottom = controlBarHeight + "px"; 
+    panelStyle.bottom = controlBarHeight + "px";
 
     var panelTitleBarStyle = discoveryScreenStyle.panelTitleBarStyle;
     var panelTitle = this.props.skinConfig.discoveryScreen.panelTitle.text;
