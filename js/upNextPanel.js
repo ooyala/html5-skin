@@ -10,6 +10,7 @@
 
 var UpNextPanel = React.createClass({
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       contentDescription: this.props.upNextInfo.upNextData.description
     };
@@ -22,25 +23,35 @@ var UpNextPanel = React.createClass({
   },
    
   closeUpNextPanel: function(event) {
-    console.log("Up next panel close button clicked");
-    event.stopPropagation(); // W3C
-    event.cancelBubble = true; // IE
-    this.props.controller.upNextDismissButtonClicked();
+    if (event.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      console.log("Up next panel close button clicked");
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
+      this.props.controller.upNextDismissButtonClicked();
+    }
   },
 
   handleStartUpNextClick: function(event) {
-    console.log("Up next panel start button clicked");
-    event.stopPropagation(); // W3C
-    event.cancelBubble = true; // IE
+    if (event.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
 
-    // Use the same way as sending out the click event on discovery content
-    var eventData = {
-          "clickedVideo" : this.props.upNextInfo.upNextData,
-          "custom" : {"source": "upNextScreen", 
-                      "countdown": 0,
-                      "autoplay": true }
-        };
-    this.props.controller.sendDiscoveryClickEvent(eventData);
+      console.log("Up next panel start button clicked");
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
+
+      // Use the same way as sending out the click event on discovery content
+      var eventData = {
+            "clickedVideo" : this.props.upNextInfo.upNextData,
+            "custom" : {"source": "upNextScreen",
+                        "countdown": 0,
+                        "autoplay": true }
+          };
+      this.props.controller.sendDiscoveryClickEvent(eventData);
+    }
   },
 
   render: function() {
@@ -70,9 +81,9 @@ var UpNextPanel = React.createClass({
 
     return (
       <div style={panelStyle}>
-        <div style={contentImageContainerStyle} onClick={this.handleStartUpNextClick}>
-          <img style={contentImageStyle} src={this.props.upNextInfo.upNextData.preview_image_url}></img>          
-          <span className={playButtonClass} style={playButtonStyle} aria-hidden="true" onClick={this.handleClick}></span>
+        <div style={contentImageContainerStyle} onClick={this.handleStartUpNextClick} onTouchEnd={this.handleStartUpNextClick}>
+          <img style={contentImageStyle} src={this.props.upNextInfo.upNextData.preview_image_url}></img>
+          <span className={playButtonClass} style={playButtonStyle} aria-hidden="true"></span>
         </div>
 
         <div style={contentMetadataContainerStyle}>
@@ -89,9 +100,7 @@ var UpNextPanel = React.createClass({
             {this.state.contentDescription}
           </div>
         </div>
-        
-        <div onClick={this.closeUpNextPanel} style={upNextPanelStyle.closeButton} className={this.props.skinConfig.icons.dismiss.fontStyleClass}></div>
-        
+        <div onClick={this.closeUpNextPanel} onTouchEnd={this.closeUpNextPanel} style={upNextPanelStyle.closeButton} className={this.props.skinConfig.icons.dismiss.fontStyleClass}></div>
       </div>
     );
   }

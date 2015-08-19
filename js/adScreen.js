@@ -4,9 +4,11 @@
 
 var AdScreen = React.createClass({
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       controlBarVisible: true,
-      controlBarWidth: 0
+      controlBarWidth: 0,
+      timer: null
     };
   },
 
@@ -15,6 +17,26 @@ var AdScreen = React.createClass({
 
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
+
+    //for mobile, hide control bar after 3 seconds
+    if (this.isMobile){
+      this.startHideControlBarTimer();
+    }
+  },
+
+  componentWillUnmount: function () {
+    if (this.state.timer !== null){
+      clearTimeout(this.state.timer);
+    }
+  },
+
+  startHideControlBarTimer: function(){
+    var timer = setTimeout(function(){
+      if(this.state.controlBarVisible){
+        this.hideControlBar();
+      }
+    }.bind(this), 3000);
+    this.setState({timer: timer});
   },
 
   handleResize: function(e) {
@@ -23,11 +45,23 @@ var AdScreen = React.createClass({
     }
   },
 
-  handlePlayerClicked: function(event) {    
-    console.log("ad screen clicked");
-    event.stopPropagation(); // W3C
-    event.cancelBubble = true; // IE
-    this.props.controller.onAdsClicked();
+  handlePlayerClicked: function(event) {
+    if (event.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      //since after exiting the full screen, iPhone pauses the video and places an overlay play button in the middle
+      //of the screen (which we can't remove), clicking the screen would start the video.
+      if (Utils.isIPhone() && this.state.playerState == STATE.PAUSE){
+        this.props.controller.togglePlayPause();
+      }
+      else {
+        console.log("ad screen clicked");
+        event.stopPropagation(); // W3C
+        event.cancelBubble = true; // IE
+        this.props.controller.onAdsClicked();
+      }
+    }
   },
 
   showControlBar: function() {
@@ -36,6 +70,16 @@ var AdScreen = React.createClass({
 
   hideControlBar: function() {
     this.setState({controlBarVisible: false});
+  },
+
+  handleTouchEnd: function() {
+    if (!this.state.controlBarVisible){
+      this.showControlBar();
+      this.startHideControlBarTimer();
+    }
+    else {
+      this.handlePlayerClicked();
+    }
   },
 
   getPlaybackControlItems: function() {
@@ -67,7 +111,7 @@ var AdScreen = React.createClass({
     }
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onClick={this.handlePlayerClicked} style={defaultScreenStyle.style}>
+        onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd} style={defaultScreenStyle.style}>
         
         {adPanel}
 

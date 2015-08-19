@@ -39,7 +39,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "upNextData": null,
         "countDownFinished": false,
         "countDownCancelled": false,
-      }
+      },
+
+      "isMobile": false
     };
 
     this.init();
@@ -87,20 +89,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPlayerCreated: function (event, elementId, params) {
       $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
       $("#skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
-      
+
       var tmpLocalizableStrings = {};
       //load language jsons
       params.skin.languages.forEach(function(languageObj){
         $.getJSON(languageObj.languageFile, function(data) {
             tmpLocalizableStrings[languageObj.language] = data;
-        });  
+        });
       });
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON(params.skin.config, _.bind(function(data) {
         //Override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
-        
+
         this.skin = React.render(
           React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, preferredLanguage: Utils.getPreferredLanguage(data), controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.getElementById("skin")
         );
@@ -108,13 +110,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.configLoaded = true;
         this.renderSkin();
       }, this));
-      console.log("Preferred language: " + Utils.getPreferredLanguage());
-    },
 
-    processLanguageJSON: function(languages, languageObj) {
-      $.getJSON(languageObj.languageFile, function(data) {
-            languages[languageObj.language] = data;
-      });  
+      this.state.isMobile = Utils.isMobile();
     },
 
     onAuthorizationFetched: function(event, authorization) {
@@ -298,7 +295,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onFullscreenChanged: function(event, fullscreen) {
+    onFullscreenChanged: function(event, fullscreen, paused) {
+      //The logic below synchronizes the state of the UI and the state of the video.
+      //If native controls on iOS were used to change the state of the video, our UI doesn't know about it.
+      if (Utils.isIos()){
+        //check if UI state is out of sync with video state
+        if (paused && this.state.playerState == STATE.PLAYING){
+          if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_PAUSE_ADS);}
+          else {this.mb.publish(OO.EVENTS.PAUSED);}
+        }
+        else if (!paused && this.state.playerState == STATE.PAUSE){
+          if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_RESUME_ADS);}
+          else {this.mb.publish(OO.EVENTS.PLAYING);}
+        }
+      }
+
       this.state.fullscreen = fullscreen;
       this.renderSkin();
     },

@@ -5,13 +5,13 @@
 
 var PauseScreen = React.createClass({
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
     return {
       description: this.props.contentTree.description,
       controlBarVisible: true,
       controlBarWidth: 0
     };
   },
-
 
   // CSS doesn't support "truncate N lines" so we need to do DOM width
   // calculations to figure out where to truncate the description
@@ -60,8 +60,13 @@ var PauseScreen = React.createClass({
     this.props.controller.enablePauseAnimation();
   },
 
-  handleClick: function() {
-    this.props.controller.togglePlayPause();
+  handleClick: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      this.props.controller.togglePlayPause();
+    }
   },
 
   render: function() {
@@ -116,7 +121,7 @@ var PauseScreen = React.createClass({
     }
 
     return (
-      <div onMouseUp={this.handleClick} style={screenStyle.style}>
+      <div onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>
         <span className={this.props.pauseAnimationDisabled === true ? null : pauseClass} style={pauseStyle} aria-hidden="true"></span>
         <div style={screenStyle.infoPanel.style}>
