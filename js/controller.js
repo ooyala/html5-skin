@@ -197,11 +197,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayed: function() {
-      // if (Utils.isIPhone()){
-      //   console.log("xenia end screen");
-      //   this.state.screenToShow = SCREEN.END_SCREEN;
-      // }
-      // else 
       if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery") {
         console.log("Should display DISCOVERY_SCREEN on end");
         this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
@@ -301,9 +296,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onFullscreenChanged: function(event, fullscreen, paused) {
-      // iPhone end screen related code
+      // iPhone end screen is the same as start screen, except for the replay button
       if (Utils.isIPhone() && this.state.playerState == STATE.END){
-        this.state.screenToShow = SCREEN.END_SCREEN;
+        this.state.screenToShow = SCREEN.START_SCREEN;
       }
 
       //The logic below synchronizes the state of the UI and the state of the video.

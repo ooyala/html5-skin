@@ -120,8 +120,7 @@ var endScreenStyle = {
     width: "100%",
     height: "100%",
     position: "absolute",
-    overflow: "hidden",
-    background: "black"
+    overflow: "hidden"
   },
   backgroundStyle: {
     height: "100%",
@@ -143,40 +142,6 @@ var endScreenStyle = {
       opacity: 1,
       transition: "opacity .25s ease-in-out",
       "cursor": "pointer"
-    }
-  },
-  posterStyle: {
-    height: "100%",
-    width: "100%",
-    position: "absolute",
-    backgroundSize: "contain",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center"
-  },
-  infoPanel: {
-    style: {
-      position: "absolute",
-      width: "100%"
-    },
-    title: {
-      style: {
-        fontSize: "32px",
-        fontWeight: "bold",
-        maxWidth: "70%",
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        color: "inherit",
-        resize: "none"
-      }
-    },
-    description: {
-      style: {
-        fontSize: "24",
-        maxWidth: "70%",
-        overflow: "visible",
-        color: "inherit"
-      }
     }
   }
 };
