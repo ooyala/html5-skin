@@ -62,18 +62,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       /********************************************************************
         ADS RELATED EVENTS
       *********************************************************************/
+      if (!Utils.isIPhone()) {
+        //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
+        this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
 
-      this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
+        this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
 
-      this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
+        this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
+        this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
 
-      this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
-      this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
+        this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
+        this.mb.subscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi", _.bind(this.onWillResumeAds, this));
+        //since iPhone does not show discover
+        this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
+      }
 
-      this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
-      this.mb.subscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi", _.bind(this.onWillResumeAds, this));
-
-      this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
       this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
@@ -132,8 +135,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
       // So we only need to update the playhead for ad screen.
       if (this.state.screenToShow !== SCREEN.AD_SCREEN ) {
-        if (this.skin.props.skinConfig.upNextScreen.showUpNext)  {
-          this.showUpNextScreenWhenReady(currentPlayhead, duration);
+        if (this.skin.props.skinConfig.upNextScreen.showUpNext) {
+          if (!Utils.isIPhone()){//no UpNext for iPhone
+            this.showUpNextScreenWhenReady(currentPlayhead, duration);
+          }
         } else if (this.state.playerState === STATE.PLAYING) {
           this.state.screenToShow = SCREEN.PLAYING_SCREEN;
         } else if (this.state.playerState === STATE.PAUSE) {
@@ -173,8 +178,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPaused: function() {
       // pause/resume of Ad playback is handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
+
       if (this.state.screenToShow != SCREEN.AD_SCREEN) {
-        if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
+        if (Utils.isIPhone()){//pause screen for iPhone is the same as start screen
+          this.state.screenToShow = SCREEN.START_SCREEN;
+        } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
           console.log("Should display DISCOVERY_SCREEN on pause");
           this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
         } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
@@ -189,6 +197,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayed: function() {
+      // if (Utils.isIPhone()){
+      //   console.log("xenia end screen");
+      //   this.state.screenToShow = SCREEN.END_SCREEN;
+      // }
+      // else 
       if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery") {
         console.log("Should display DISCOVERY_SCREEN on end");
         this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
@@ -288,6 +301,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onFullscreenChanged: function(event, fullscreen, paused) {
+      // iPhone end screen related code
+      if (Utils.isIPhone() && this.state.playerState == STATE.END){
+        this.state.screenToShow = SCREEN.END_SCREEN;
+      }
+
       //The logic below synchronizes the state of the UI and the state of the video.
       //If native controls on iOS were used to change the state of the video, our UI doesn't know about it.
       if (Utils.isIos()){

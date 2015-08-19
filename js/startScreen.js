@@ -32,6 +32,8 @@ var StartScreen = React.createClass({
   },
 
   render: function() {
+    console.log("xenia playerState", this.props.controller.state.playerState);
+    console.log("xenia screenStyle", screenStyle);
     var screenStyle = this.props.style;
     var playClass = this.props.skinConfig.icons.play.fontStyleClass;
     var playStyle = screenStyle.playButton.style;
