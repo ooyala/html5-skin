@@ -37,6 +37,15 @@ var ClosedCaptionScreen = React.createClass({
       this.props.controller.toggleClosedCaptionScreen();
     }
   },
+  
+  highlight: function(evt) {
+    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
+  },
+
+  removeHighlight: function(evt) {
+    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
+  },
+
 
   render: function() {
     return (
@@ -47,7 +56,12 @@ var ClosedCaptionScreen = React.createClass({
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.clientWidth}
           playerState={this.state.playerState}/>
-        <div className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={closedCaptionScreenStyles.closeButtonStyle} onClick={this.closeClosedCaptionPanel} onTouchEnd={this.closeClosedCaptionPanel}></div>
+          
+        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight} 
+          onClick={this.closeClosedCaptionPanel} style={closedCaptionScreenStyles.closeButtonStyle}
+          onTouchEnd={this.closeClosedCaptionPanel}>
+          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
+        </div>
       </div>
     );
   }

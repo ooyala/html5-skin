@@ -156,7 +156,7 @@ var OnOffSwitch = React.createClass({
     var offString = Utils.getLocalizedString(this.props.language, SKIN_TEXT.OFF, this.props.localizableStrings);
     var onString = Utils.getLocalizedString(this.props.language, SKIN_TEXT.ON, this.props.localizableStrings);
     return (
-        <div style={closedCaptionScreenStyles.switchStyle} onClick={this.handleOnOffSwitch} onTouchEnd={this.handleOnOffSwitch}>
+        <div className="CCSwitch" style={closedCaptionScreenStyles.switchStyle} onClick={this.handleOnOffSwitch} onTouchEnd={this.handleOnOffSwitch}>
           <span style={closedCaptionScreenStyles.offStyle}>{offString}</span>
           <div style={closedCaptionScreenStyles.switchContainer}>
             <span style={closedCaptionScreenStyles.switch}></span>
@@ -295,11 +295,11 @@ var LanguageTabContent = React.createClass({
     }
 
     return(
-      <div style={closedCaptionScreenStyles.positionRelativeStyle}>
-        <div style={closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer} onClick={this.handleLeftChevronClick} onTouchEnd={this.handleLeftChevronClick}>
+      <div className="ClosedCaptionsPanel" style={closedCaptionScreenStyles.positionRelativeStyle}>
+        <div className="CCLeft" style={closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer} onClick={this.handleLeftChevronClick} onTouchEnd={this.handleLeftChevronClick}>
           <span className={this.props.skinConfig.icons.left.fontStyleClass} style={closedCaptionScreenStyles.closedCaptionChevronLeftButton.style} aria-hidden="true"></span>
         </div>
-        <div style={closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer} onClick={this.handleRightChevronClick} onTouchEnd={this.handleRightChevronClick}>
+        <div className="CCRight" style={closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer} onClick={this.handleRightChevronClick} onTouchEnd={this.handleRightChevronClick}>
           <span className={this.props.skinConfig.icons.right.fontStyleClass} style={closedCaptionScreenStyles.closedCaptionChevronRightButton.style} aria-hidden="true"></span>
         </div>
         <div style = {closedCaptionScreenStyles.tableLanguageContainerStyle} ref="tableLanguageContainer">
@@ -310,7 +310,7 @@ var LanguageTabContent = React.createClass({
                   <tr key = {i}>
                     {row.map(function(item, j){
                       return (
-                        <td key = {j} onClick={this.changeLanguage.bind(this, item)} onTouchEnd={this.changeLanguage.bind(this, item)} style = {closedCaptionScreenStyles.tdLanguageStyle}>
+                        <td className={availableLanguages.locale[item]} key = {j} onClick={this.changeLanguage.bind(this, item)} onTouchEnd={this.changeLanguage.bind(this, item)} style = {closedCaptionScreenStyles.tdLanguageStyle}>
                           <div style = {this.setStyle(item, j, colnum)}>{availableLanguages.locale[item]}</div>
                         </td>
                       );

@@ -198,14 +198,15 @@ var DiscoveryPanel = React.createClass({
         // 214 is width of content images and 60 is horizontal space between each content image
         discoveryToasterStyle.width = 214 * discoveryData.relatedVideos.length + 60*(discoveryData.relatedVideos.length-1);
         for (var i = 0; i < this.props.discoveryData.relatedVideos.length; i++) {
+          var contentBlockClassName = "content" + i;
           if(this.shouldShowCountdownTimer() && i === 0) {
             discoveryContentBlocks.push(
-            <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)} onTouchEnd={this.handleDiscoveryContentClick.bind(this, i)}>
+            <div className="contentBlockClassName" style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)} onTouchEnd={this.handleDiscoveryContentClick.bind(this, i)}>
               <div style={discoveryScreenStyle.discoveryImageWrapperStyle}>
                 <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
-                     <div style={discoveryCountDownWrapperStyle} onClick={this.handleDiscoveryCountDownClick} onTouchEnd={this.handleDiscoveryCountDownClick}>
-                     <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
-                     <span className={this.props.skinConfig.icons.pause.fontStyleClass} style={discoveryCountDownIconStyle}></span>
+                     <div className="countdownClock" style={discoveryCountDownWrapperStyle} onClick={this.handleDiscoveryCountDownClick} onTouchEnd={this.handleDiscoveryCountDownClick}>
+                       <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
+                       <span className={this.props.skinConfig.icons.pause.fontStyleClass} style={discoveryCountDownIconStyle}></span>
                      </div>
                  </img>
               </div>
@@ -214,7 +215,7 @@ var DiscoveryPanel = React.createClass({
           }
           else {
             discoveryContentBlocks.push(
-              <div style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)} onTouchEnd={this.handleDiscoveryContentClick.bind(this, i)}>
+              <div className={contentBlockClassName} style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)} onTouchEnd={this.handleDiscoveryContentClick.bind(this, i)}>
                 <div style={discoveryScreenStyle.discoveryImageWrapperStyle}>
                   <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
                 </div>
@@ -224,9 +225,9 @@ var DiscoveryPanel = React.createClass({
         }
     }
     return (
-      <div style={panelStyle}>
+      <div className="discoveryPanel" style={panelStyle}>
 
-        <div style={panelTitleBarStyle}>
+        <div className="discoveryPanelTitle" style={panelTitleBarStyle}>
           <h1 style={panelTitleTextStyle}>{panelTitle}
             <span style={{top: "3px", position: "relative", marginLeft: "7px"}} className={this.props.skinConfig.icons.discovery.fontStyleClass}></span>
           </h1>
@@ -234,15 +235,15 @@ var DiscoveryPanel = React.createClass({
 
         <div style={discoveryToasterContainerStyle} ref="DiscoveryToasterContainer" >
 
-          <div style={discoveryToasterStyle} ref="DiscoveryToaster">
+          <div className="discoveryToaster" style={discoveryToasterStyle} ref="DiscoveryToaster">
               {discoveryContentBlocks}
           </div>
 
-          <div style={chevronLeftButtonContainer}>
+          <div className="leftButton" style={chevronLeftButtonContainer}>
             <span className={chevronLeftButtonClass} style={chevronLeftButtonStyle} ref="ChevronLeftButton" aria-hidden="true" onClick={this.handleLeftButtonClick} onTouchEnd={this.handleLeftButtonClick}></span>
           </div>
 
-          <div style={chevronRightButtonContainer}>
+          <div className="rightButton" style={chevronRightButtonContainer}>
             <span className={chevronRightButtonClass} style={chevronRightButtonStyle} ref="ChevronRightButton" aria-hidden="true" onClick={this.handleRightButtonClick} onTouchEnd={this.handleRightButtonClick}></span>
           </div>
         </div>

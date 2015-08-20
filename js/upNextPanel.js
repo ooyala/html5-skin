@@ -54,6 +54,14 @@ var UpNextPanel = React.createClass({
     }
   },
 
+  highlight: function(evt) {
+    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
+  },
+
+  removeHighlight: function(evt) {
+    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
+  },
+
   render: function() {
     var panelStyle = upNextPanelStyle.panelStyle;
 
@@ -80,27 +88,30 @@ var UpNextPanel = React.createClass({
     var dismissButtonTextStyle = upNextPanelStyle.dismissButtonTextStyle;
 
     return (
-      <div style={panelStyle}>
-        <div style={contentImageContainerStyle} onClick={this.handleStartUpNextClick} onTouchEnd={this.handleStartUpNextClick}>
-          <img style={contentImageStyle} src={this.props.upNextInfo.upNextData.preview_image_url}></img>
+      <div className="upNextPanel" style={panelStyle}>
+        <div className="upNextContent" style={contentImageContainerStyle} onClick={this.handleStartUpNextClick} onTouchEnd={this.handleStartUpNextClick}>
+          <img style={contentImageStyle} src={this.props.upNextInfo.upNextData.preview_image_url}></img>          
           <span className={playButtonClass} style={playButtonStyle} aria-hidden="true"></span>
         </div>
 
-        <div style={contentMetadataContainerStyle}>
+        <div className="contentMetadata" style={contentMetadataContainerStyle}>
           <div style={upNextTitleStyle}>
             <div style={upNextTitleTextStyle}>
               {upNextString}: {contentTile}
             </div>
 
             <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow}/>
-
           </div>
 
           <div ref="ContentDescription" style={contentDescriptionStyle}>
             {this.state.contentDescription}
           </div>
         </div>
-        <div onClick={this.closeUpNextPanel} onTouchEnd={this.closeUpNextPanel} style={upNextPanelStyle.closeButton} className={this.props.skinConfig.icons.dismiss.fontStyleClass}></div>
+        
+        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight} 
+          onClick={this.closeUpNextPanel} style={upNextPanelStyle.closeButton} onTouchEnd={this.closeUpNextPanel}>
+          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
+        </div>
       </div>
     );
   }
