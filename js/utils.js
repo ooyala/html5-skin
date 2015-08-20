@@ -102,10 +102,10 @@ var Utils = {
     // } else {
     //   controlBarHeight = controlBarHeightBase;
     // }
-    return controlBarHeightBase;   
+    return controlBarHeightBase;
   },
 
-  getPreferredLanguage: function(skinConfig) {
+  getLanguageToUse: function(skinConfig) {
     var language;
     language = skinConfig.localizableStrings.language;
     var index = -1;
@@ -124,15 +124,8 @@ var Utils = {
     return language;
   },
 
-  getLocalizedString: function(preferredLanguage, stringId, localizedStrings, skinConfig) {
-    var defaultLanguage = skinConfig.localizableStrings.default;
-    if(localizedStrings[preferredLanguage] && localizedStrings[preferredLanguage][stringId]) {
-      return localizedStrings[preferredLanguage][stringId];
-    }
-    if(localizedStrings[defaultLanguage] && localizedStrings[defaultLanguage][stringId]) {
-      return localizedStrings[defaultLanguage][stringId];
-    }
-    return stringId;
+  getLocalizedString: function(language, stringId, localizedStrings) {
+      return localizedStrings[language][stringId];
   },
 
   /********************************************************************

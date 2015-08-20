@@ -99,7 +99,7 @@ var ClosedCaptionPanel = React.createClass({
 
     // this.setResponsiveStyle(this.props.clientWidth, controlBarHeight); //Leave this for later when we use the resizing
     var numRows = this.calculateNumberOfRows(this.props.clientWidth, this.props.clientHeight, controlBarHeight);
-    var ccOptionsString = Utils.getLocalizedString(this.props.preferredLanguage, "CC Options", this.props.localizableStrings, this.props.skinConfig);
+    var ccOptionsString = Utils.getLocalizedString(this.props.language, SKIN_TEXT.CC_OPTIONS, this.props.localizableStrings);
     return (
       <div style = {closedCaptionScreenStyles.screenStyle}>
         <div style = {closedCaptionScreenStyles.innerPanelStyle}>
@@ -153,8 +153,8 @@ var OnOffSwitch = React.createClass({
   },
 
   render: function(){
-    var offString = Utils.getLocalizedString(this.props.preferredLanguage, "Off", this.props.localizableStrings, this.props.skinConfig);
-    var onString = Utils.getLocalizedString(this.props.preferredLanguage, "On", this.props.localizableStrings, this.props.skinConfig);
+    var offString = Utils.getLocalizedString(this.props.language, SKIN_TEXT.OFF, this.props.localizableStrings);
+    var onString = Utils.getLocalizedString(this.props.language, SKIN_TEXT.ON, this.props.localizableStrings);
     return (
         <div style={closedCaptionScreenStyles.switchStyle} onClick={this.handleOnOffSwitch} onTouchEnd={this.handleOnOffSwitch}>
           <span style={closedCaptionScreenStyles.offStyle}>{offString}</span>
@@ -171,8 +171,8 @@ var OnOffSwitch = React.createClass({
 
 var CCPreviewPanel = React.createClass({
   render: function(){
-    var closedCaptionPreviewTitle = Utils.getLocalizedString(this.props.preferredLanguage, "CLOSED CAPTION PREVIEW", this.props.localizableStrings, this.props.skinConfig);
-    var closedCaptionSampleText =Utils.getLocalizedString(this.props.preferredLanguage, "Sample Text", this.props.localizableStrings, this.props.skinConfig);
+    var closedCaptionPreviewTitle = Utils.getLocalizedString(this.props.language, SKIN_TEXT.CLOSED_CAPTION_PREVIEW, this.props.localizableStrings);
+    var closedCaptionSampleText =Utils.getLocalizedString(this.props.language, SKIN_TEXT.SAMPLE_TEXT, this.props.localizableStrings);
     return (
       <div style = {closedCaptionScreenStyles.CCPreviewPanelStyle}>
         <div style = {closedCaptionScreenStyles.CCPreviewCaptionStyle}>{closedCaptionPreviewTitle}</div>

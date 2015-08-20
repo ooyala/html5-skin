@@ -159,8 +159,8 @@ var DiscoveryPanel = React.createClass({
     panelStyle.bottom = controlBarHeight + "px";
 
     var panelTitleBarStyle = discoveryScreenStyle.panelTitleBarStyle;
-    var panelTitle = this.props.skinConfig.discoveryScreen.panelTitle.text;
-    panelTitle = Utils.getLocalizedString(this.props.preferredLanguage, panelTitle, this.props.localizableStrings, this.props.skinConfig);
+    var panelTitle = SKIN_TEXT.DISCOVER;
+    panelTitle = Utils.getLocalizedString(this.props.language, panelTitle, this.props.localizableStrings);
     var panelTitleTextStyle = discoveryScreenStyle.panelTitleTextStyle;
 
     var discoveryToasterContainerStyle = discoveryScreenStyle.discoveryToasterContainerStyle;
