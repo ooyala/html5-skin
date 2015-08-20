@@ -92,13 +92,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $("#"+elementId).find(".innerWrapper").append("<div id='"+skinId+"' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
       $("#"+skinId).css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
 
+      var tmpLocalizableStrings = {};
+      //load language jsons
+      params.skin.languages.forEach(function(languageObj){
+        $.getJSON(languageObj.languageFile, function(data) {
+            tmpLocalizableStrings[languageObj.language] = data;
+        });
+      });
+
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON(params.skin.config, _.bind(function(data) {
         //Override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
 
         this.skin = React.render(
-          React.createElement(Skin, {skinConfig: data, controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.getElementById(skinId)
+          React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.getElementById(skinId)
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;

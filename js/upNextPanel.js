@@ -21,7 +21,7 @@ var UpNextPanel = React.createClass({
     var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.contentDescription);
     this.setState({contentDescription: shortDesc});
   },
-   
+
   closeUpNextPanel: function(event) {
     if (event.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,
@@ -75,14 +75,15 @@ var UpNextPanel = React.createClass({
     var playButtonStyle = upNextPanelStyle.playButton.style;
 
     var contentMetadataContainerStyle = upNextPanelStyle.contentMetadataContainerStyle;
-    
+
     var upNextTitleStyle = upNextPanelStyle.upNextTitleStyle;
 
     var upNextTitleTextStyle = upNextPanelStyle.upNextTitleTextStyle;
     var contentTile = this.props.upNextInfo.upNextData.name;
+    var upNextString = Utils.getLocalizedString(this.props.language, SKIN_TEXT.UP_NEXT, this.props.localizableStrings);
 
     var contentDescriptionStyle = upNextPanelStyle.contentDescriptionStyle;
-    
+
     var dismissButtonStyle = upNextPanelStyle.dismissButtonStyle;
     var dismissButtonTextStyle = upNextPanelStyle.dismissButtonTextStyle;
 
@@ -96,7 +97,7 @@ var UpNextPanel = React.createClass({
         <div className="contentMetadata" style={contentMetadataContainerStyle}>
           <div style={upNextTitleStyle}>
             <div style={upNextTitleTextStyle}>
-              Up Next: {contentTile}
+              {upNextString}: {contentTile}
             </div>
 
             <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow}/>

@@ -99,11 +99,11 @@ var ClosedCaptionPanel = React.createClass({
 
     // this.setResponsiveStyle(this.props.clientWidth, controlBarHeight); //Leave this for later when we use the resizing
     var numRows = this.calculateNumberOfRows(this.props.clientWidth, this.props.clientHeight, controlBarHeight);
-
+    var ccOptionsString = Utils.getLocalizedString(this.props.language, SKIN_TEXT.CC_OPTIONS, this.props.localizableStrings);
     return (
       <div style = {closedCaptionScreenStyles.screenStyle}>
         <div style = {closedCaptionScreenStyles.innerPanelStyle}>
-          <div style = {closedCaptionScreenStyles.captionStyle}>CC Options <span className={this.props.skinConfig.icons.cc.fontStyleClass}></span></div>
+          <div style = {closedCaptionScreenStyles.captionStyle}>{ccOptionsString}<span className={this.props.skinConfig.icons.cc.fontStyleClass}></span></div>
           <OnOffSwitch {...this.props} />
           <LanguageTabContent {...this.props} numRows = {numRows} />
           <CCPreviewPanel {...this.props} />
@@ -153,14 +153,16 @@ var OnOffSwitch = React.createClass({
   },
 
   render: function(){
+    var offString = Utils.getLocalizedString(this.props.language, SKIN_TEXT.OFF, this.props.localizableStrings);
+    var onString = Utils.getLocalizedString(this.props.language, SKIN_TEXT.ON, this.props.localizableStrings);
     return (
         <div className="CCSwitch" style={closedCaptionScreenStyles.switchStyle} onClick={this.handleOnOffSwitch} onTouchEnd={this.handleOnOffSwitch}>
-          <span style={closedCaptionScreenStyles.offStyle}>Off</span>
+          <span style={closedCaptionScreenStyles.offStyle}>{offString}</span>
           <div style={closedCaptionScreenStyles.switchContainer}>
             <span style={closedCaptionScreenStyles.switch}></span>
             <span style={closedCaptionScreenStyles.switchThumb}></span>
           </div>
-          <span style={closedCaptionScreenStyles.onStyle}>On</span>
+          <span style={closedCaptionScreenStyles.onStyle}>{onString}</span>
         </div>
     );
   }
@@ -169,10 +171,12 @@ var OnOffSwitch = React.createClass({
 
 var CCPreviewPanel = React.createClass({
   render: function(){
+    var closedCaptionPreviewTitle = Utils.getLocalizedString(this.props.language, SKIN_TEXT.CLOSED_CAPTION_PREVIEW, this.props.localizableStrings);
+    var closedCaptionSampleText =Utils.getLocalizedString(this.props.language, SKIN_TEXT.SAMPLE_TEXT, this.props.localizableStrings);
     return (
       <div style = {closedCaptionScreenStyles.CCPreviewPanelStyle}>
-        <div style = {closedCaptionScreenStyles.CCPreviewCaptionStyle}>CLOSED CAPTION PREVIEW</div>
-        <div style = {closedCaptionScreenStyles.CCPreviewTextStyle}>Sample Text</div>
+        <div style = {closedCaptionScreenStyles.CCPreviewCaptionStyle}>{closedCaptionPreviewTitle}</div>
+        <div style = {closedCaptionScreenStyles.CCPreviewTextStyle}>{closedCaptionSampleText}</div>
       </div>
     );
   }
@@ -197,7 +201,7 @@ var LanguageTabContent = React.createClass({
     closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.visibility = (this.state.scrollLeftDistance > 0 && this.refs.tableLanguageContainer.getDOMNode().clientWidth < this.refs.tableLanguage.getDOMNode().clientWidth) ? "visible" : "hidden";
     this.refs.tableLanguageContainer.getDOMNode().scrollLeft = this.state.scrollLeftDistance;
 
-    if (oldChevronRightVisibility != closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.visibility || 
+    if (oldChevronRightVisibility != closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.visibility ||
       oldChevronLeftVisibility != closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.visibility){
       this.forceUpdate();//to update the screen if chevron buttons changed visibility
     }
