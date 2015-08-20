@@ -87,16 +87,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       event listeners from core player -> regulate skin STATE
     ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
-      $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
-      $("#skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
-      
+      var skinId = elementId+"-"+"skin";
+
+      $("#"+elementId).find(".innerWrapper").append("<div id='"+skinId+"' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
+      $("#"+skinId).css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
+
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON(params.skin.config, _.bind(function(data) {
         //Override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
 
         this.skin = React.render(
-          React.createElement(Skin, {skinConfig: data, controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.getElementById("skin")
+          React.createElement(Skin, {skinConfig: data, controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.getElementById(skinId)
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
