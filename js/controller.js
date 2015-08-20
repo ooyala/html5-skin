@@ -87,7 +87,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       event listeners from core player -> regulate skin STATE
     ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
-      var skinId = elementId+"-"+"skin";
+      var skinId = elementId+"-skin";
 
       $("#"+elementId).find(".innerWrapper").append("<div id='"+skinId+"' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
       $("#"+skinId).css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
