@@ -99,11 +99,11 @@ var ClosedCaptionPanel = React.createClass({
 
     // this.setResponsiveStyle(this.props.clientWidth, controlBarHeight); //Leave this for later when we use the resizing
     var numRows = this.calculateNumberOfRows(this.props.clientWidth, this.props.clientHeight, controlBarHeight);
-
+    var ccOptionsString = Utils.getLocalizedString(this.props.language, SKIN_TEXT.CC_OPTIONS, this.props.localizableStrings);
     return (
       <div style = {closedCaptionScreenStyles.screenStyle}>
         <div style = {closedCaptionScreenStyles.innerPanelStyle}>
-          <div style = {closedCaptionScreenStyles.captionStyle}>CC Options <span className={this.props.skinConfig.icons.cc.fontStyleClass}></span></div>
+          <div style = {closedCaptionScreenStyles.captionStyle}>{ccOptionsString}<span className={this.props.skinConfig.icons.cc.fontStyleClass}></span></div>
           <OnOffSwitch {...this.props} />
           <LanguageTabContent {...this.props} numRows = {numRows} />
           <CCPreviewPanel {...this.props} />
@@ -153,14 +153,16 @@ var OnOffSwitch = React.createClass({
   },
 
   render: function(){
+    var offString = Utils.getLocalizedString(this.props.language, SKIN_TEXT.OFF, this.props.localizableStrings);
+    var onString = Utils.getLocalizedString(this.props.language, SKIN_TEXT.ON, this.props.localizableStrings);
     return (
-        <div style={closedCaptionScreenStyles.switchStyle} onClick={this.handleOnOffSwitch} onTouchEnd={this.handleOnOffSwitch}>
-          <span style={closedCaptionScreenStyles.offStyle}>Off</span>
+        <div className="CCSwitch" style={closedCaptionScreenStyles.switchStyle} onClick={this.handleOnOffSwitch} onTouchEnd={this.handleOnOffSwitch}>
+          <span style={closedCaptionScreenStyles.offStyle}>{offString}</span>
           <div style={closedCaptionScreenStyles.switchContainer}>
             <span style={closedCaptionScreenStyles.switch}></span>
             <span style={closedCaptionScreenStyles.switchThumb}></span>
           </div>
-          <span style={closedCaptionScreenStyles.onStyle}>On</span>
+          <span style={closedCaptionScreenStyles.onStyle}>{onString}</span>
         </div>
     );
   }
@@ -169,10 +171,12 @@ var OnOffSwitch = React.createClass({
 
 var CCPreviewPanel = React.createClass({
   render: function(){
+    var closedCaptionPreviewTitle = Utils.getLocalizedString(this.props.language, SKIN_TEXT.CLOSED_CAPTION_PREVIEW, this.props.localizableStrings);
+    var closedCaptionSampleText =Utils.getLocalizedString(this.props.language, SKIN_TEXT.SAMPLE_TEXT, this.props.localizableStrings);
     return (
       <div style = {closedCaptionScreenStyles.CCPreviewPanelStyle}>
-        <div style = {closedCaptionScreenStyles.CCPreviewCaptionStyle}>CLOSED CAPTION PREVIEW</div>
-        <div style = {closedCaptionScreenStyles.CCPreviewTextStyle}>Sample Text</div>
+        <div style = {closedCaptionScreenStyles.CCPreviewCaptionStyle}>{closedCaptionPreviewTitle}</div>
+        <div style = {closedCaptionScreenStyles.CCPreviewTextStyle}>{closedCaptionSampleText}</div>
       </div>
     );
   }
@@ -197,7 +201,7 @@ var LanguageTabContent = React.createClass({
     closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.visibility = (this.state.scrollLeftDistance > 0 && this.refs.tableLanguageContainer.getDOMNode().clientWidth < this.refs.tableLanguage.getDOMNode().clientWidth) ? "visible" : "hidden";
     this.refs.tableLanguageContainer.getDOMNode().scrollLeft = this.state.scrollLeftDistance;
 
-    if (oldChevronRightVisibility != closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.visibility || 
+    if (oldChevronRightVisibility != closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer.visibility ||
       oldChevronLeftVisibility != closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer.visibility){
       this.forceUpdate();//to update the screen if chevron buttons changed visibility
     }
@@ -291,11 +295,11 @@ var LanguageTabContent = React.createClass({
     }
 
     return(
-      <div style={closedCaptionScreenStyles.positionRelativeStyle}>
-        <div style={closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer} onClick={this.handleLeftChevronClick} onTouchEnd={this.handleLeftChevronClick}>
+      <div className="ClosedCaptionsPanel" style={closedCaptionScreenStyles.positionRelativeStyle}>
+        <div className="CCLeft" style={closedCaptionScreenStyles.closedCaptionChevronLeftButtonContainer} onClick={this.handleLeftChevronClick} onTouchEnd={this.handleLeftChevronClick}>
           <span className={this.props.skinConfig.icons.left.fontStyleClass} style={closedCaptionScreenStyles.closedCaptionChevronLeftButton.style} aria-hidden="true"></span>
         </div>
-        <div style={closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer} onClick={this.handleRightChevronClick} onTouchEnd={this.handleRightChevronClick}>
+        <div className="CCRight" style={closedCaptionScreenStyles.closedCaptionChevronRightButtonContainer} onClick={this.handleRightChevronClick} onTouchEnd={this.handleRightChevronClick}>
           <span className={this.props.skinConfig.icons.right.fontStyleClass} style={closedCaptionScreenStyles.closedCaptionChevronRightButton.style} aria-hidden="true"></span>
         </div>
         <div style = {closedCaptionScreenStyles.tableLanguageContainerStyle} ref="tableLanguageContainer">
@@ -306,7 +310,7 @@ var LanguageTabContent = React.createClass({
                   <tr key = {i}>
                     {row.map(function(item, j){
                       return (
-                        <td key = {j} onClick={this.changeLanguage.bind(this, item)} onTouchEnd={this.changeLanguage.bind(this, item)} style = {closedCaptionScreenStyles.tdLanguageStyle}>
+                        <td className={availableLanguages.locale[item]} key = {j} onClick={this.changeLanguage.bind(this, item)} onTouchEnd={this.changeLanguage.bind(this, item)} style = {closedCaptionScreenStyles.tdLanguageStyle}>
                           <div style = {this.setStyle(item, j, colnum)}>{availableLanguages.locale[item]}</div>
                         </td>
                       );

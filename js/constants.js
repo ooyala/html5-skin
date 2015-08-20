@@ -21,6 +21,22 @@ var SCREEN = {
   MORE_OPTIONS_SCREEN: "moreOptionsScreen",
 };
 
+var SKIN_TEXT = {
+  LEARN_MORE: "Learn More",
+  CLOSED_CAPTION_PREVIEW: "CLOSED CAPTION PREVIEW",
+  SAMPLE_TEXT: "Sample Text",
+  AD: "Ad",
+  SKIP_AD: "Skip Ad",
+  LIVE: "LIVE",
+  GO_LIVE: "GO LIVE",
+  CC_OPTIONS: "CC Options",
+  ON: "On",
+  OFF: "Off",
+  DISCOVER: "Discover",
+  UP_NEXT: "Up next",
+  INVEST_IN_SOCIAL_CHANGE: "Invest In Social Change"
+};
+
 var KEYCODES = {
   SPACE_KEY: 32,
   LEFT_ARROW_KEY: 37,

@@ -37,7 +37,7 @@ var DiscoveryScreen = React.createClass({
     }
     promoStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
     return (
-      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
+      <div className="discoveryScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
         <div style={discoveryScreenStyle.promoStyle}></div>
         <DiscoveryPanel
           {...this.props}
