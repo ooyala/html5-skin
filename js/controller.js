@@ -2,6 +2,11 @@
   CONTROLLER
 *********************************************************************/
 OO.plugin("Html5Skin", function (OO, _, $, W) {
+  //Check if the player is at least v4. If not, the skin cannot load.
+  if (!OO.playerParams.core_version || OO.playerParams.core_version <= 3) {
+    console.error("Html5Skin requires at least player version 4.");
+    return null;
+  }
 
   var Html5Skin = function (mb, id) {
     this.mb = mb;
@@ -89,7 +94,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPlayerCreated: function (event, elementId, params) {
       $(".innerWrapper").append("<div id='skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
       $("#skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
-      
+
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON(params.skin.config, _.bind(function(data) {
         //Override data in skin config with possible inline data input by the user
