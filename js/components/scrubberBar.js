@@ -133,8 +133,8 @@ var ScrubberBar = React.createClass({
         (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
     }
     //prevent the playhead from moving beyond the player element
-    scrubberBarStyle.playheadPaddingStyle.left = Math.min(this.props.controlBarWidth, scrubberBarStyle.playheadPaddingStyle.left);
-
+    scrubberBarStyle.playheadPaddingStyle.left = Math.max(Math.min(this.props.controlBarWidth - parseInt(scrubberBarStyle.playheadStyle.width)/2,
+      scrubberBarStyle.playheadPaddingStyle.left), 0);
 
     return (
       <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp}
