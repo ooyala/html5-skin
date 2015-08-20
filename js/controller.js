@@ -175,6 +175,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.screenToShow != SCREEN.AD_SCREEN) {
         this.state.screenToShow = SCREEN.PLAYING_SCREEN;
         this.state.playerState = STATE.PLAYING;
+        if (Utils.isSafari()){
+          //Safari only can set cc when the video is playing, not before
+          this.setClosedCaptionsLanguage();
+        }
         this.renderSkin();
       }
     },
@@ -280,6 +284,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.ccOptions.availableLanguages = languages;
+
+      if (languages.languages.length == 1){//if only one language, set it as default language
+        this.state.ccOptions.language = languages.languages[0];
+      }
+
       if (this.state.ccOptions.enabled){
         this.setClosedCaptionsLanguage();
       }

@@ -274,24 +274,27 @@ var LanguageTabContent = React.createClass({
 
 
   render: function(){
+    var table = [];
     var availableLanguages = this.props.ccOptions.availableLanguages; //getting list of languages
 
-    var languageCodes = availableLanguages.languages; // getting an array of all the codes
-    var maxNumberOfRows = 5; // per specs
+    if (availableLanguages.languages.length > 1){//if there is only one element, do not show it at all
+      var languageCodes = availableLanguages.languages; // getting an array of all the codes
+      var maxNumberOfRows = 5; // per specs
 
-    //number of columns and rows in a table to display
-    var rows = Math.min(maxNumberOfRows,(this.props.numRows > 0) ? this.props.numRows : 1);
-    var columns = Math.floor(languageCodes.length/rows) + 1;
+      //number of columns and rows in a table to display
+      var rows = Math.min(maxNumberOfRows,(this.props.numRows > 0) ? this.props.numRows : 1);
+      var columns = Math.floor(languageCodes.length/rows) + 1;
 
-    var table = new Array(rows); //creating an array for easier rendering (have to do this to fill the table by columns)
-    for (var i = 0; i < table.length; i++){
-      table[i] = new Array(columns);
-    }
+      table = new Array(rows); //creating an array for easier rendering (have to do this to fill the table by columns)
+      for (var i = 0; i < table.length; i++){
+        table[i] = new Array(columns);
+      }
 
-    for (var j = 0; j < languageCodes.length; j++){//putting elements into that array
-      var rownum = j%rows;
-      var colnum = Math.floor(j/rows);
-      table[rownum][colnum] = languageCodes[j];
+      for (var j = 0; j < languageCodes.length; j++){//putting elements into that array
+        var rownum = j%rows;
+        var colnum = Math.floor(j/rows);
+        table[rownum][colnum] = languageCodes[j];
+      }
     }
 
     return(
