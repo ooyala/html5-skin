@@ -27,10 +27,18 @@ var MoreOptionsScreen = React.createClass({
       this.setState({controlBarWidth: this.getDOMNode().clientWidth});
     }
   },
+  
+  highlight: function(evt) {
+    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
+  },
+
+  removeHighlight: function(evt) {
+    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
+  },
 
   render: function() {
     return (
-      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} 
+      <div className="MoreOptionsScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} 
         onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
         
         <MoreOptionsPanel {...this.props} 

@@ -38,22 +38,22 @@ var SharePanel = React.createClass({
       plusIconStyle.backgroundColor = "#ff6267";
 
       return (
-        <div style={shareScreenStyle.panelStyle}>
+        <div className="shareTabPanel" style={shareScreenStyle.panelStyle}>
           <div style={shareScreenStyle.titleStyle}>{(this.props.contentTree && this.props.contentTree.title) || ""}</div>
-          <div onClick={this.handleTwitterClick} onTouchEnd={this.handleTwitterClick} style={twitterIconStyle}>t</div>
-          <div onClick={this.handleFacebookClick} onTouchEnd={this.handleFacebookClick} style={facebookIconStyle}>f</div>
-          <div onClick={this.handleGPlusClick} onTouchEnd={this.handleGPlusClick} style={plusIconStyle}>g+</div><br/>
-          <input style={shareScreenStyle.embedUrlStyle} type='text' defaultValue={location.href}/><br/>
-          <input style={{marginBottom: "15px"}}type='checkbox'/>
-            Start at <input style={shareScreenStyle.startAtInput} type='text'
+          <div className="twitter" onClick={this.handleTwitterClick} onTouchEnd={this.handleTwitterClick} style={twitterIconStyle}>t</div>
+          <div className="facebook" onClick={this.handleFacebookClick} onTouchEnd={this.handleFacebookClick} style={facebookIconStyle}>f</div>
+          <div className="googlePlus" onClick={this.handleGPlusClick} onTouchEnd={this.handleGPlusClick} style={plusIconStyle}>g+</div><br/>
+          <input className="embedUrl" style={shareScreenStyle.embedUrlStyle} type='text' defaultValue={location.href}/><br/>
+          <input className="startPointCheckBox" style={{marginBottom: "15px"}}type='checkbox'/>
+            Start at <input className="startPointTextField" style={shareScreenStyle.startAtInput} type='text'
             defaultValue={Utils.formatSeconds(this.props.currentPlayhead)}/><br/>
         </div>
       );
     }
     else if (this.state.activeTab === this.tabs.EMBED) {
       return (
-        <div style={shareScreenStyle.panelStyle}>
-          <textarea style={shareScreenStyle.embedTextArea}>
+        <div className="shareTabPanel" style={shareScreenStyle.panelStyle}>
+          <textarea className="embedTextArea" style={shareScreenStyle.embedTextArea}>
             &lt;script src="//player.ooyala.com/v4/"&gt;&lt;/script&gt;
           </textarea>
         </div>
@@ -61,7 +61,7 @@ var SharePanel = React.createClass({
     }
     else if (this.state.activeTab === this.tabs.EMAIL) {
       return (
-        <div style={shareScreenStyle.panelStyle}>
+        <div className="shareTabPanel" style={shareScreenStyle.panelStyle}>
           <table style={{color: "white"}}>
             <tr>
               <td style={{paddingLeft: "5px"}}>To</td>
@@ -78,7 +78,7 @@ var SharePanel = React.createClass({
             <tr>
               <td>Message</td>
               <td style={{width: "10px"}}></td>
-              <td><textarea ref="sharePanelMessage" onFocus={this.handleFieldFocus} style={shareScreenStyle.emailTextArea}>
+              <td><textarea className="sharePanelMessage" ref="sharePanelMessage" onFocus={this.handleFieldFocus} style={shareScreenStyle.emailTextArea}>
                 Optional Message
               </textarea></td>
             </tr>
@@ -86,7 +86,7 @@ var SharePanel = React.createClass({
               <td></td>
               <td style={{width: "10px"}}></td>
               <td style={{textAlign: "right"}}>
-                <button onClick={this.handleEmailClick} onTouchEnd={this.handleEmailClick} style={shareScreenStyle.emailSendButton}>Send</button></td>
+                <button className="emailSendButton" onClick={this.handleEmailClick} onTouchEnd={this.handleEmailClick} style={shareScreenStyle.emailSendButton}>Send</button></td>
             </tr>
           </table>
         </div>
@@ -161,14 +161,14 @@ var SharePanel = React.createClass({
 
     return (
       <div style={shareScreenStyle.containerStyle}>
-        <div style={shareScreenStyle.tabRowStyle}>
-          <span onClick={this.showPanel.bind(this, this.tabs.SHARE)}
+        <div className="tabRow" style={shareScreenStyle.tabRowStyle}>
+          <span className="shareTab" onClick={this.showPanel.bind(this, this.tabs.SHARE)}
             onTouchEnd={this.showPanel.bind(this, this.tabs.SHARE)}
             style={(this.state.activeTab == this.tabs.SHARE) ? activeTabStyle : shareScreenStyle.tabStyle}>Share</span>
-          <span onClick={this.showPanel.bind(this, this.tabs.EMBED)}
+          <span className="embedTab" onClick={this.showPanel.bind(this, this.tabs.EMBED)}
             onTouchEnd={this.showPanel.bind(this, this.tabs.EMBED)}
             style={(this.state.activeTab == this.tabs.EMBED) ? activeTabStyle : shareScreenStyle.tabStyle}>Embed</span>
-          <span onClick={this.showPanel.bind(this, this.tabs.EMAIL)}
+          <span className="emailTab" onClick={this.showPanel.bind(this, this.tabs.EMAIL)}
             onTouchEnd={this.showPanel.bind(this, this.tabs.EMAIL)}
             style={(this.state.activeTab == this.tabs.EMAIL) ? activeLastTabStyle : shareScreenStyle.lastTabStyle}>Email</span>
         </div>

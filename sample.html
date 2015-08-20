@@ -3,7 +3,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
     <link rel="stylesheet" href="/assets/styles.css"/>
 
-    <script language="javascript" src="//player.ooyala.com/v3/26e2e3c1049c4e70ae08a242638b5c40?debug=true&platform=html5"></script>
+    <script language="javascript" src="//localhost:1337/dev/v4/26e2e3c1049c4e70ae08a242638b5c40?debug=true&platform=html5&version=dev"></script>
     <script src="build/html5-skin.js"></script>
     <style>
       .discovery_toaster {display: none;}
@@ -13,9 +13,12 @@
     <div id='container' style='width:640px; height:360px; overflow: scroll; resize: both;'></div>
     <script>
       var playerParam = {
-        layout:'chromeless',
-        skin: {
-          config: "config/skin.json"
+        "layout":"chromeless",
+         "discovery-ui": {
+            "layout": "chromeless"
+         },
+         "skin": {
+          "config:" "config/skin.json"
         }
       };
       OO.ready(function() {

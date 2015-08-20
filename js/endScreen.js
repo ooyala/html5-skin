@@ -60,12 +60,14 @@ var EndScreen = React.createClass({
     }
 
     return (
-      <div onMouseOver={this.showControlBar}
+      <div className="endScreen" onMouseOver={this.showControlBar}
            onMouseUp={this.handlePlayerMouseUp}
            onTouchEnd={this.handlePlayerMouseUp}
            style={{height: "100%", width: "100%"}}>
         <div style={screenStyle.backgroundStyle}></div>
-        <span className={repeatClass} style={repeatStyle} aria-hidden="true"></span>
+        <div className="replay">
+          <span className={repeatClass} style={repeatStyle} aria-hidden="true" onClick={this.handleClick}></span>
+        </div>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
