@@ -111,7 +111,12 @@ var Utils = {
     var index = -1;
 
     if(!language) {
-      language = navigator.userLanguage || navigator.language;
+      if(window.navigator.languages){
+        language = window.navigator.languages[0];
+      }
+      else {
+        language = window.navigator.browserLanguage || window.navigator.userLanguage || window.navigator.language;
+      }
       language = language.substr(0,2);
       index = skinConfig.localizableStrings.languages.indexOf(language);
       if(index === -1) {
