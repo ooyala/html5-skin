@@ -7,6 +7,7 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     jshint = require('gulp-jshint'),
     react = require('gulp-react');
+    shell = require('gulp-shell');
 
 var path = {
   scripts: ['./js/include/header.js', './js/components/*.js', './js/*.js', './js/include/footer.js'],
@@ -34,6 +35,9 @@ gulp.task('buildCss', function() {
   .pipe(gulp.dest('build'));
 });
 
+// Run tests
+gulp.task('test', shell.task(['npm test']));
+
 // Initiate a watch
 gulp.task('watch', function() {
   gulp.watch(path.scripts, ['concat', 'buildScript']);
@@ -45,5 +49,6 @@ gulp.task('concat', function() {
   .pipe(concat('html5-skin-concat.js'))
   .pipe(gulp.dest('build'));
 });
+
 // The default task (called when you run `gulp` from cli)
 gulp.task('default', ['build', 'watch']);
