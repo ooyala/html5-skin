@@ -112,9 +112,14 @@ var Utils = {
 
     if(!language) {
       if(window.navigator.languages){
+        // A String, representing the language version of the browser.
+        // Examples of valid language codes are: "en", "en-US", "de", "fr", etc.
         language = window.navigator.languages[0];
       }
       else {
+        // window.navigator.browserLanguage: current operating system language
+        // window.navigator.userLanguage: operating system's natural language setting
+        // window.navigator.language: the preferred language of the user, usually the language of the browser UI
         language = window.navigator.browserLanguage || window.navigator.userLanguage || window.navigator.language;
       }
       language = language.substr(0,2);
