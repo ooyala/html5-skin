@@ -2,6 +2,11 @@
   CONTROLLER
 *********************************************************************/
 OO.plugin("Html5Skin", function (OO, _, $, W) {
+  //Check if the player is at least v4. If not, the skin cannot load.
+  if (!OO.playerParams.core_version || OO.playerParams.core_version <= 3) {
+    console.error("Html5Skin requires at least player version 4.");
+    return null;
+  }
 
   var Html5Skin = function (mb, id) {
     this.mb = mb;
