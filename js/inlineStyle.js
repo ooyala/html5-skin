@@ -11,6 +11,7 @@ var startScreenStyle = {
     height: "100%",
     position: "absolute",
     overflow: "hidden",
+    background: "black"
   },
   posterStyle: {
     height: "100%",
@@ -996,23 +997,24 @@ var upNextPanelStyle = {
 
   upNextTitleStyle: {
     position: "absolute",
+    display: "flex",
     top: "5",
     left: "15px",
     width: "100%",
     height: "27px",
-    color: "#FFFFFF"
+    color: "#FFFFFF",
   },
 
   upNextTitleTextStyle: {
-    position:"absolute",
-    left:40,
-    right: 0,
-    height: "100%",
-    fontSize: 18,
+    fontSize: "18",
     fontWeight: "bold",
-    display: "flex",
-    "align-items": "center",
-    whiteSpace: "pre-wrap"
+    maxWidth: "70%",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    color: "inherit",
+    resize: "none",
+    "padding-left": "10",
   },
 
   contentDescriptionStyle: {

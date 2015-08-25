@@ -90,12 +90,13 @@ var UpNextPanel = React.createClass({
     return (
       <div className="upNextPanel" style={panelStyle}>
         <div className="upNextContent" style={contentImageContainerStyle} onClick={this.handleStartUpNextClick} onTouchEnd={this.handleStartUpNextClick}>
-          <img style={contentImageStyle} src={this.props.upNextInfo.upNextData.preview_image_url}></img>          
+          <img style={contentImageStyle} src={this.props.upNextInfo.upNextData.preview_image_url}></img>
           <span className={playButtonClass} style={playButtonStyle} aria-hidden="true"></span>
         </div>
 
         <div className="contentMetadata" style={contentMetadataContainerStyle}>
           <div style={upNextTitleStyle}>
+
             <div style={upNextTitleTextStyle}>
               {upNextString}: {contentTile}
             </div>
@@ -107,8 +108,8 @@ var UpNextPanel = React.createClass({
             {this.state.contentDescription}
           </div>
         </div>
-        
-        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight} 
+
+        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
           onClick={this.closeUpNextPanel} style={upNextPanelStyle.closeButton} onTouchEnd={this.closeUpNextPanel}>
           <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
         </div>
