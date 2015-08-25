@@ -110,15 +110,24 @@ var Utils = {
     language = skinConfig.localizableStrings.language;
     var index = -1;
     if(!language) {
-      for(var i = 0; i < window.navigator.languages.length; i++) {
-        language = window.navigator.languages[i].substr(0,2);
-        index = skinConfig.localizableStrings.languages.indexOf(language);
-        if(index !== -1) {
-          break;
+      if (window.navigator.languages) {
+        for(var i = 0; i < window.navigator.languages.length; i++) {
+          language = window.navigator.languages[i].substr(0,2);
+          index = skinConfig.localizableStrings.languages.indexOf(language);
+          if(index !== -1) {
+            break;
+          }
+        }
+        if(index === -1) {
+          language = skinConfig.localizableStrings.default;
         }
       }
-      if(index === -1) {
-        language = skinConfig.localizableStrings.default;
+      else {
+        language = window.navigator.language.substr(0,2);
+        index = skinConfig.localizableStrings.languages.indexOf(language);
+        if(index === -1) {
+          language = skinConfig.localizableStrings.default;
+        }
       }
     }
     return language;
