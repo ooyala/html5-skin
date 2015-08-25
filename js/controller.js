@@ -120,6 +120,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }, this));
 
       this.state.isMobile = Utils.isMobile();
+
+      if (Utils.isIE10()) {
+        $("#" + elementId + " .video").attr("controls", "controls");
+      }
     },
 
     onAuthorizationFetched: function(event, authorization) {

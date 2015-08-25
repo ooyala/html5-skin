@@ -46,6 +46,16 @@ var Skin = React.createClass({
   },
 
   render: function() {
+    //For IE10, use the start screen and that's it.
+    if (Utils.isIE10()){
+      if (this.state.screenToShow == SCREEN.START_SCREEN){
+        return (<StartScreen {...this.props} contentTree={this.state.contentTree} style={startScreenStyle}/>);
+      }
+      else {
+        return React.createElement("div");
+      }
+    }
+
     switch (this.state.screenToShow) {
       case SCREEN.START_SCREEN:
         return (
