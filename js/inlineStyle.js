@@ -11,6 +11,7 @@ var startScreenStyle = {
     height: "100%",
     position: "absolute",
     overflow: "hidden",
+    background: "black"
   },
   posterStyle: {
     height: "100%",

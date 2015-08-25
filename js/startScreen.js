@@ -33,7 +33,13 @@ var StartScreen = React.createClass({
 
   render: function() {
     var screenStyle = this.props.style;
-    var playClass = this.props.skinConfig.icons.play.fontStyleClass;
+    var playClass;
+    if (this.props.controller.state.playerState == STATE.END){//for iPhone, start screen is shown instead of end screen, with a 'replay' button
+      playClass = this.props.skinConfig.icons.replay.fontStyleClass;
+    }
+    else {
+      playClass = this.props.skinConfig.icons.play.fontStyleClass;
+    }
     var playStyle = screenStyle.playButton.style;
     var posterStyle = screenStyle.posterStyle;
     var infoStyle = screenStyle.infoPanel;
