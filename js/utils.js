@@ -92,6 +92,10 @@ var Utils = {
     return (this.isAndroid() || this.isIos());
   },
 
+  isIE10: function() {
+    return !!window.navigator.userAgent.match(/MSIE 10/);
+  },
+
   // Liusha: saved for resizing control bar
   getScaledControlBarHeight: function(controlBarWidth) {
     var controlBarHeightBase = UI.defaultControlBarHeight;
@@ -122,7 +126,7 @@ var Utils = {
           language = skinConfig.localizableStrings.default;
         }
       }
-      else {
+      else if (window.navigator.language) {
         language = window.navigator.language.substr(0,2);
         index = skinConfig.localizableStrings.languages.indexOf(language);
         if(index === -1) {
