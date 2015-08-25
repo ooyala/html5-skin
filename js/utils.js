@@ -92,10 +92,6 @@ var Utils = {
     return (this.isAndroid() || this.isIos());
   },
 
-  isIE10: function() {
-    return !!window.navigator.userAgent.match(/MSIE 10/);
-  },
-
   // Liusha: saved for resizing control bar
   getScaledControlBarHeight: function(controlBarWidth) {
     var controlBarHeightBase = UI.defaultControlBarHeight;
@@ -113,25 +109,23 @@ var Utils = {
     var language;
     language = skinConfig.localizableStrings.language;
     var index = -1;
+
     if(!language) {
-      if (window.navigator.languages) {
-        for(var i = 0; i < window.navigator.languages.length; i++) {
-          language = window.navigator.languages[i].substr(0,2);
-          index = skinConfig.localizableStrings.languages.indexOf(language);
-          if(index !== -1) {
-            break;
-          }
-        }
-        if(index === -1) {
-          language = skinConfig.localizableStrings.default;
-        }
+      if(window.navigator.languages){
+        // A String, representing the language version of the browser.
+        // Examples of valid language codes are: "en", "en-US", "de", "fr", etc.
+        language = window.navigator.languages[0];
       }
-      else if (window.navigator.language) {
-        language = window.navigator.language.substr(0,2);
-        index = skinConfig.localizableStrings.languages.indexOf(language);
-        if(index === -1) {
-          language = skinConfig.localizableStrings.default;
-        }
+      else {
+        // window.navigator.browserLanguage: current operating system language
+        // window.navigator.userLanguage: operating system's natural language setting
+        // window.navigator.language: the preferred language of the user, usually the language of the browser UI
+        language = window.navigator.browserLanguage || window.navigator.userLanguage || window.navigator.language;
+      }
+      language = language.substr(0,2);
+      index = skinConfig.localizableStrings.languages.indexOf(language);
+      if(index === -1) {
+        language = skinConfig.localizableStrings.default;
       }
     }
     return language;
