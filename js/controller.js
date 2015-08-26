@@ -112,7 +112,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         $.extend(true, data, params.skin.inline);
 
         this.skin = React.render(
-        React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + elementId + " .player_skin")
+          React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + elementId + " .player_skin")
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
@@ -120,6 +120,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }, this));
 
       this.state.isMobile = Utils.isMobile();
+
+      if (Utils.isIE10()) {
+        $("#" + elementId + " .video").attr("controls", "controls");
+      }
     },
 
     onAuthorizationFetched: function(event, authorization) {
