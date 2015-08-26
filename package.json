@@ -19,7 +19,7 @@
   "dependencies": {
     "gulp": "3.8.11",
     "react": "0.12.2",
-    "react-tools":"*"
+    "react-tools": "*"
   },
   "devDependencies": {
     "gulp-concat": "2.5.2",

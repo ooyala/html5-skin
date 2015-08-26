@@ -7,7 +7,6 @@
 * @class PlayingScreen
 * @constructor
 */
-var React = require('react/addons');
 
 var SharePanel = React.createClass({
   tabs: {SHARE: "share", EMBED: "embed", EMAIL: "email"},
