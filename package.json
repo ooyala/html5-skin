@@ -10,7 +10,7 @@
   "main": "html5-skin.js",
   "scripts": {
     "build": "",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -18,13 +18,16 @@
   },
   "dependencies": {
     "gulp": "3.8.11",
-    "react-tools":"*"
+    "react": "0.12.2",
+    "react-tools": "*"
   },
   "devDependencies": {
     "gulp-concat": "2.5.2",
     "gulp-uglify": "1.1.0",
     "gulp-jshint": "1.10.0",
-    "gulp-react": "3.0.1"
+    "gulp-react": "3.0.1",
+    "gulp-shell": "0.4.2",
+    "jest-cli": "0.4.18"
   },
   "author": "Ooyala",
   "contributors": [
@@ -34,5 +37,28 @@
   "bugs": {
     "url": "https://github.com/ooyala/html5-skin/issues"
   },
-  "homepage": "https://github.com/ooyala/html5-skin"
+  "homepage": "https://github.com/ooyala/html5-skin",
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "/build/",
+      "/node_modules/"
+    ],
+    "persistModuleRegistryBetweenSpecs": true,
+    "preprocessorIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "rootDir": "",
+    "scriptPreprocessor": "scripts/jest/preprocessor.js",
+    "setupEnvScriptFile": "scripts/jest/environment.js",
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/react",
+      "react"
+    ],
+
+    "testPathDirs": [
+      "<rootDir>"
+    ],
+    "testDirectoryName": "tests",
+    "collectCoverage": true
+  }
 }
