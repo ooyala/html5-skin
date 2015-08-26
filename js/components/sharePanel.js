@@ -7,7 +7,6 @@
 * @class PlayingScreen
 * @constructor
 */
-
 var SharePanel = React.createClass({
   tabs: {SHARE: "share", EMBED: "embed", EMAIL: "email"},
 
