@@ -137,7 +137,7 @@ var ScrubberBar = React.createClass({
       scrubberBarStyle.playheadPaddingStyle.left), 0);
 
     return (
-      <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp}
+      <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp} onTouchEnd={this.handleScrubberBarMouseUp}
         style={scrubberBarStyle.scrubberBarPadding}>
         <div className="scrubberBar" style={scrubberBarStyle.scrubberBarSetting}>
           <div className="bufferedIndicator" style={scrubberBarStyle.bufferedIndicatorStyle}></div>

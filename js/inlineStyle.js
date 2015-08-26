@@ -231,6 +231,42 @@ var controlBarStyle = {
     "paddingRight": "3px"
   },
 
+  volumeSliderStyle: {
+    volumeBarSetting: {
+      "display": "inline-block",
+      "backgroundClip": "content-box",
+      "position": "relative",
+      "background": "#afafaf",
+      "width": "75px",
+      "height": "4px",
+      "bottom": "10%"
+    },
+
+    volumeIndicatorStyle: {
+      "background": "#4389ff",
+      "height": "100%",
+      "width": "50%",
+      "position": "absolute"
+    },
+
+    volumeHeadStyle: {
+      "background": "#ffffff",
+      "width": "10px",
+      "height": "10px",
+      "borderStyle": "solid",
+      "borderColor": "white",
+      "borderWidth": "1px",
+      "borderRadius": "10px",
+      "position": "absolute",
+      "transition": "opacity 0.25s",
+      "top": "50%",
+      "cursor":"pointer",
+      "left": "50%",
+      "WebkitTransform": "translateY(-50%) translateX(-50%)",
+      "transform": "translateY(-50%) translateX(-50%)"
+    }
+  },
+
   watermarkImageStyle: {
     "position": "relative",
     "height": "18px",

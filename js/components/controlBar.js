@@ -5,7 +5,10 @@
 var ControlBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
-    return null;
+    return {
+      showVolumeSlider: false
+    };
+
   },
   componentDidMount: function(){
     if (Utils.isSafari()){
@@ -33,8 +36,29 @@ var ControlBar = React.createClass({
     if (evt.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
+      if (this.isMobile){
+        this.setState({
+          showVolumeSlider: true
+        });
+      }
+      else{
+        this.props.controller.handleMuteClick();
+      }
+    }
+  },
 
-      this.props.controller.handleMuteClick();
+  handleVolumeHeadClick: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+      if (this.isMobile){
+        this.setState({
+          showVolumeSlider: true
+        });
+      }
+      else{
+        this.props.controller.handleMuteClick();
+      }
     }
   },
 
@@ -130,6 +154,20 @@ var ControlBar = React.createClass({
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
         onClick={this.handleVolumeClick} onTouchEnd={this.handleVolumeClick}></span>);
     }
+
+    //Xenia: volume slider related code
+
+    var volumeSlider = [];
+    volumeSlider.push(
+      <div style={controlBarStyle.volumeSliderStyle.volumeBarSetting}>
+        <div className="volumeIndicator" style={controlBarStyle.volumeSliderStyle.volumeIndicatorStyle}></div>
+        <div className="volumeHead" style={controlBarStyle.volumeSliderStyle.volumeHeadStyle} onMouseDown={this.handleVolumeHeadMouseDown}></div>
+      </div>);
+
+
+    //Xenia: volume slider related code
+
+
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
     var watermarkImageStyle = controlBarStyle.watermarkImageStyle;
 
@@ -150,7 +188,7 @@ var ControlBar = React.createClass({
       "volume": <div className="volume" style={controlBarStyle.controlBarItemSetting}>
         <span className={muteClass} style={controlBarStyle.iconSetting} onClick={this.handleMuteClick} onTouchEnd={this.handleMuteClick}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
-        {volumeBars}
+        {this.isMobile?(this.state.showVolumeSlider?volumeSlider:null):volumeBars}
       </div>,
 
       "timeDuration": <div className="timeDuration" style={controlBarStyle.durationIndicatorSetting}>
@@ -192,7 +230,10 @@ var ControlBar = React.createClass({
 
     var controlBarItems = [];
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth, defaultItems);
+    
+    //if mobile and not showing the slider, extra space can be added to control bar width:
+    var extraSpace = ((this.Mobile&&!this.showVolumeSlider)?parseInt(controlBarStyle.volumeSliderStyle.volumeBarSetting.width):0);
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpace, defaultItems);
     var collapsedControlBarItems = collapsedResult.fit;
     var collapsedMoreOptionsItems = collapsedResult.overflow;
 
@@ -218,6 +259,7 @@ var ControlBar = React.createClass({
           !(this.props.authorization.streams[0].is_live_stream))) {
         continue;
       }
+
       controlBarItems.push(controlItemTemplates[collapsedControlBarItems[i].name]);
     }
     return controlBarItems;
