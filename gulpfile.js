@@ -3,11 +3,11 @@
 // For dev, initiate watch by executing either `gulp` or `gulp watch`
 
 var gulp = require('gulp'),
-  concat = require('gulp-concat'),
-  uglify = require('gulp-uglify'),
-  jshint = require('gulp-jshint'),
-  react = require('gulp-react');
-shell = require('gulp-shell');
+    concat = require('gulp-concat'),
+    uglify = require('gulp-uglify'),
+    jshint = require('gulp-jshint'),
+    react = require('gulp-react');
+    shell = require('gulp-shell');
 
 var path = {
   scripts: ['./js/include/header.js', './js/components/*.js', './js/*.js', './js/include/footer.js'],
