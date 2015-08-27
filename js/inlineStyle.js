@@ -181,9 +181,9 @@ var controlBarStyle = {
     "color": "#ffffff",
     "opacity": 1,
     "fontSize": 14,
-    "textAlign": "left",
-    "flex": 1,
-    "WebkitFlex": 1
+    "paddingLeft": "7.5px",
+    "paddingRight": "7.5px",
+    "textAlign": "left"
   },
 
   iconSetting: {
@@ -237,7 +237,7 @@ var controlBarStyle = {
       "backgroundClip": "content-box",
       "position": "relative",
       "background": "#afafaf",
-      "width": "75px",
+      "width": "70px",
       "height": "4px",
       "bottom": "10%"
     },
