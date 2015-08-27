@@ -12,7 +12,7 @@ var UpNextScreen = React.createClass({
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
   },
 
   handlePlayerMouseUp: function(event) {
@@ -23,7 +23,7 @@ var UpNextScreen = React.createClass({
       this.props.controller.togglePlayPause();
     }
   },
-  
+
   showControlBar: function() {
     this.setState({controlBarVisible: true});
   },

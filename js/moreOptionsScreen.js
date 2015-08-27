@@ -16,7 +16,7 @@ var MoreOptionsScreen = React.createClass({
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
 
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
@@ -27,7 +27,7 @@ var MoreOptionsScreen = React.createClass({
       this.setState({controlBarWidth: this.getDOMNode().clientWidth});
     }
   },
-  
+
   highlight: function(evt) {
     evt.target.style.color = "rgba(255, 255, 255, 1.0)";
   },
@@ -38,21 +38,21 @@ var MoreOptionsScreen = React.createClass({
 
   render: function() {
     return (
-      <div className="MoreOptionsScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} 
+      <div className="MoreOptionsScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
         onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
-        
-        <MoreOptionsPanel {...this.props} 
+
+        <MoreOptionsPanel {...this.props}
           controlBarWidth={this.state.controlBarWidth}/>
-        
-        <ScrubberBar 
-          {...this.props} 
+
+        <ScrubberBar
+          {...this.props}
           controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth} />
-        
-        <ControlBar 
-          {...this.props} 
+
+        <ControlBar
+          {...this.props}
           controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} 
+          controlBarWidth={this.state.controlBarWidth}
           playerState={this.props.playerState} />
       </div>
     );
