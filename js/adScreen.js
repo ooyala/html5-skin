@@ -85,7 +85,7 @@ var AdScreen = React.createClass({
   getPlaybackControlItems: function() {
     var playbackControlItemTemplates = {
      "scrubberBar": <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-       controlBarWidth={this.state.controlBarWidth} />,
+       scrubberBarWidth={this.state.controlBarWidth} />,
 
      "controlBar": <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
        controlBarWidth={this.state.controlBarWidth}

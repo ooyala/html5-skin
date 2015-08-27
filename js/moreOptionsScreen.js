@@ -47,7 +47,7 @@ var MoreOptionsScreen = React.createClass({
         <ScrubberBar
           {...this.props}
           controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} />
+          scrubberBarWidth={this.state.controlBarWidth} />
 
         <ControlBar
           {...this.props}

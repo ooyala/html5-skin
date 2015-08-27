@@ -69,7 +69,7 @@ var EndScreen = React.createClass({
           <span className={repeatClass} style={repeatStyle} aria-hidden="true" onClick={this.handleClick}></span>
         </div>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} />
+          scrubberBarWidth={this.state.controlBarWidth} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}
           playerState={this.props.playerState} />

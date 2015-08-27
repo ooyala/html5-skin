@@ -64,7 +64,7 @@ var ScrubberBar = React.createClass({
     // mouse events to calculate the amount of time to seek
     var newPlayheadX = this.isMobile?evt.changedTouches[0].screenX:evt.screenX;
     var diffX = newPlayheadX - this.state.startingPlayheadX;
-    var diffTime = (diffX / this.props.controlBarWidth) * this.props.duration;
+    var diffTime = (diffX / this.props.scrubberBarWidth) * this.props.duration;
     var newPlayheadTime = this.props.currentPlayhead + diffTime;
 
     if (!this.isMobile){
@@ -96,7 +96,7 @@ var ScrubberBar = React.createClass({
         evt = evt.nativeEvent;
       }
       var offset = this.isMobile?evt.changedTouches[0].clientX:evt.clientX - evt.target.getBoundingClientRect().left;
-      var newPlayheadTime = (offset / this.props.controlBarWidth) * this.props.duration;
+      var newPlayheadTime = (offset / this.props.scrubberBarWidth) * this.props.duration;
       this.props.controller.seek(newPlayheadTime);
       this.setState({
         currentPlayhead: newPlayheadTime
@@ -116,7 +116,7 @@ var ScrubberBar = React.createClass({
     // }
     var scrubberPaddingHeight = parseInt(scrubberBarStyle.scrubberBarPadding.height);
     var scrubberBarHeight = parseInt(scrubberBarStyle.scrubberBarSetting.height);
-    scrubberBarStyle.scrubberBarSetting.width = this.props.controlBarWidth;
+    scrubberBarStyle.scrubberBarSetting.width = this.props.scrubberBarWidth;
 
     scrubberBarStyle.scrubberBarPadding.bottom = (this.props.controlBarVisible ?
       controlBarHeight - (scrubberPaddingHeight / 2) : scrubberBarHeight - (scrubberPaddingHeight / 2));
@@ -125,7 +125,7 @@ var ScrubberBar = React.createClass({
     scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
       parseFloat(this.props.duration)) * 100 + "%";
     scrubberBarStyle.playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
-      parseFloat(this.props.duration)) * this.props.controlBarWidth);
+      parseFloat(this.props.duration)) * this.props.scrubberBarWidth);
     scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
 
     // if we're scrubbing, use the coordinates from the latest mouse events
@@ -134,7 +134,7 @@ var ScrubberBar = React.createClass({
         (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
     }
     //prevent the playhead from moving beyond the player element
-    scrubberBarStyle.playheadPaddingStyle.left = Math.max(Math.min(this.props.controlBarWidth - parseInt(scrubberBarStyle.playheadStyle.width)/2,
+    scrubberBarStyle.playheadPaddingStyle.left = Math.max(Math.min(this.props.scrubberBarWidth - parseInt(scrubberBarStyle.playheadStyle.width)/2,
       scrubberBarStyle.playheadPaddingStyle.left), 0);
 
     return (
