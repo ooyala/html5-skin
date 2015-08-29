@@ -100,7 +100,13 @@ var MoreOptionsPanel = React.createClass({
 
     var moreOptionsItems = [];
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth, defaultItems);
+    
+    // //if no hours or minutes, add extra space to control bar width
+    var hours = parseInt(this.props.duration / 3600, 10);
+    var minutes = parseInt((this.props.duration - hours * 3600) / 60, 10);
+    var extraSpaceDuration = (hours>0)?0:((minutes>0)?45:90);
+
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration, defaultItems);
     var collapsedMoreOptionsItems = collapsedResult.overflow;
     for (i = 0; i < collapsedMoreOptionsItems.length; i++) {
       if (typeof optionsItemsTemplates[collapsedMoreOptionsItems[i].name] === "undefined") {

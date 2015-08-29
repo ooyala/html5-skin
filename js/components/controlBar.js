@@ -6,7 +6,11 @@ var ControlBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
-      showVolumeSlider: false
+      showVolumeSlider: false,
+      startingVolumeHeadX: 0,
+      scrubbingVolumeHeadX: 0,
+      currentVolumeHead: 0,
+      volumeSliderTimer: null
     };
 
   },
@@ -16,6 +20,16 @@ var ControlBar = React.createClass({
     }
     else {
       controlBarStyle.controlBarSetting.display = "flex";
+    }
+  },
+
+  componentWillUnmount: function () {
+    this.cancelVolumeSliderTimer();
+  },
+
+  cancelVolumeSliderTimer: function () {
+    if (this.state.volumeSliderTimer !== null){
+      clearTimeout(this.state.volumeSliderTimer);
     }
   },
 
@@ -32,13 +46,15 @@ var ControlBar = React.createClass({
     }
   },
 
-  handleMuteClick: function(evt) {
+  handleVolumeIconClick: function(evt) {
+    this.cancelVolumeSliderTimer();
+    this.startHideControlBarTimer();
     if (evt.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
       if (this.isMobile){
         this.setState({
-          showVolumeSlider: true
+          showVolumeSlider: !this.state.showVolumeSlider
         });
       }
       else{
@@ -47,19 +63,62 @@ var ControlBar = React.createClass({
     }
   },
 
-  handleVolumeHeadClick: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-      if (this.isMobile){
-        this.setState({
-          showVolumeSlider: true
-        });
+  handleVolumeHeadTouchStart: function(evt) {
+    this.cancelVolumeSliderTimer();
+    evt.preventDefault();
+    evt = evt.nativeEvent;
+
+    // we enter the scrubbing state to prevent constantly seeking while dragging
+    // the playhead icon
+
+    this.getDOMNode().parentNode.addEventListener("touchmove", this.handleVolumeHeadMove);
+    document.addEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
+
+    this.setState({
+      startingVolumeHeadX: evt.changedTouches[0].screenX,
+      currentVolumeHead: evt.changedTouches[0].screenX,
+      scrubbingVolumeHeadX: evt.changedTouches[0].screenX
+    });
+  },
+
+  handleVolumeHeadMove: function(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
+    this.setNewVolume(evt);
+  },
+
+  setNewVolume: function(evt) {
+    var newVolumeHeadX = this.isMobile?evt.changedTouches[0].screenX:evt.screenX;
+    var diffX = newVolumeHeadX - this.state.currentVolumeHead;
+    var diffVolume = (diffX / parseInt(controlBarStyle.volumeSliderStyle.volumeBarSetting.width));
+    var newVolume = this.props.controller.state.volumeState.volume + diffVolume;
+    newVolume = Math.min(newVolume, 1);
+    newVolume = Math.max(newVolume, 0);
+
+    this.props.controller.setVolume(newVolume);
+    this.setState({
+      currentVolumeHead: newVolumeHeadX
+    });
+  },
+
+  handleVolumeHeadTouchEnd: function(evt) {
+    this.cancelVolumeSliderTimer();
+
+    this.setNewVolume(evt);
+    this.getDOMNode().parentNode.removeEventListener("touchmove", this.handleVolumeHeadMove);
+    document.removeEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
+
+    this.startHideControlBarTimer();
+  },
+
+  startHideControlBarTimer: function(){
+    var timer = setTimeout(function(){
+      if(this.state.showVolumeSlider){
+        this.setState({showVolumeSlider:false});
       }
-      else{
-        this.props.controller.handleMuteClick();
-      }
-    }
+    }.bind(this), 3000);
+    this.setState({volumeSliderTimer: timer});
   },
 
   handlePlayClick: function(evt) {
@@ -155,17 +214,18 @@ var ControlBar = React.createClass({
         onClick={this.handleVolumeClick} onTouchEnd={this.handleVolumeClick}></span>);
     }
 
-    //Xenia: volume slider related code
+    controlBarStyle.volumeSliderStyle.volumeHeadPaddingStyle.left = parseFloat(this.props.controller.state.volumeState.volume) * 100 + "%";
+    controlBarStyle.volumeSliderStyle.volumeIndicatorStyle.width = parseFloat(this.props.controller.state.volumeState.volume) * 100 + "%";
 
     var volumeSlider = [];
     volumeSlider.push(
-      <div style={controlBarStyle.volumeSliderStyle.volumeBarSetting}>
+      <div className="volumeBar" style={controlBarStyle.volumeSliderStyle.volumeBarSetting}>
         <div className="volumeIndicator" style={controlBarStyle.volumeSliderStyle.volumeIndicatorStyle}></div>
-        <div className="volumeHead" style={controlBarStyle.volumeSliderStyle.volumeHeadStyle} onMouseDown={this.handleVolumeHeadMouseDown}></div>
+        <div className="playheadPadding" style={controlBarStyle.volumeSliderStyle.volumeHeadPaddingStyle}
+          onTouchStart={this.handleVolumeHeadTouchStart}>
+          <div className="volumeHead" style={controlBarStyle.volumeSliderStyle.volumeHeadStyle}></div>
+        </div>
       </div>);
-
-
-    //Xenia: volume slider related code
 
 
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
@@ -186,7 +246,8 @@ var ControlBar = React.createClass({
       </div>,
 
       "volume": <div className="volume" style={controlBarStyle.controlBarItemSetting}>
-        <span className={muteClass} style={controlBarStyle.iconSetting} onClick={this.handleMuteClick} onTouchEnd={this.handleMuteClick}
+        <span className={muteClass} style={controlBarStyle.iconSetting} 
+        onClick={this.handleVolumeIconClick} onTouchEnd={this.handleVolumeIconClick}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
         {this.isMobile?(this.state.showVolumeSlider?volumeSlider:null):volumeBars}
       </div>,
@@ -230,18 +291,16 @@ var ControlBar = React.createClass({
 
     var controlBarItems = [];
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
-    
+
     //if mobile and not showing the slider, extra space can be added to control bar width:
-    var extraSpaceVolumeSlider = ((this.Mobile&&!this.showVolumeSlider)?parseInt(controlBarStyle.volumeSliderStyle.volumeBarSetting.width):0);
-    console.log("xenia extraSpaceVolumeSlider",extraSpaceVolumeSlider);
-    
+    var extraSpaceVolumeSlider = ((this.isMobile&&!this.state.showVolumeSlider)?parseInt(controlBarStyle.volumeSliderStyle.volumeBarSetting.width):0);
+
     // //if no hours or minutes, add extra space to control bar width
     var hours = parseInt(this.props.duration / 3600, 10);
-    var minutes = parseInt((this.props.duration - hours * 3600) / 60, 10);;
+    var minutes = parseInt((this.props.duration - hours * 3600) / 60, 10);
     var extraSpaceDuration = (hours>0)?0:((minutes>0)?45:90);
-    console.log("xenia extraSpaceDuration",extraSpaceDuration);
 
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceVolumeSlider+extraSpaceDuration, defaultItems);
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider, defaultItems);
     var collapsedControlBarItems = collapsedResult.fit;
     var collapsedMoreOptionsItems = collapsedResult.overflow;
 

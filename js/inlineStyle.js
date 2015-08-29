@@ -237,22 +237,35 @@ var controlBarStyle = {
       "backgroundClip": "content-box",
       "position": "relative",
       "background": "#afafaf",
-      "width": "70px",
-      "height": "4px",
-      "bottom": "10%"
+      "width": "135px",
+      "height": "5px",
+      "bottom": "10%",
+      "marginLeft":"5px",
+      "borderRadius": "2px"
     },
 
     volumeIndicatorStyle: {
       "background": "#4389ff",
       "height": "100%",
       "width": "50%",
-      "position": "absolute"
+      "position": "absolute",
+      "borderRadius": "2px"
+    },
+
+    volumeHeadPaddingStyle: {
+      "width": "25px",
+      "height": "25px",
+      "position": "absolute",
+      "zIndex": "1",
+      "top": "50%",
+      "WebkitTransform": "translateY(-50%) translateX(-50%)",
+      "transform": "translateY(-50%) translateX(-50%)"
     },
 
     volumeHeadStyle: {
       "background": "#ffffff",
-      "width": "10px",
-      "height": "10px",
+      "width": "8px",
+      "height": "8px",
       "borderStyle": "solid",
       "borderColor": "white",
       "borderWidth": "1px",
