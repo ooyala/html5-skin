@@ -5,7 +5,12 @@
 var ControlBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
-    return null;
+    return {
+      volumeSliderVisible: false,
+      volumeSliderTimer: null,
+      currentVolumeHead: 0
+    };
+
   },
   componentDidMount: function(){
     if (Utils.isSafari()){
@@ -13,6 +18,16 @@ var ControlBar = React.createClass({
     }
     else {
       controlBarStyle.controlBarSetting.display = "flex";
+    }
+  },
+
+  componentWillUnmount: function () {
+    this.cancelVolumeSliderTimer();
+  },
+
+  cancelVolumeSliderTimer: function () {
+    if (this.state.volumeSliderTimer !== null){
+      clearTimeout(this.state.volumeSliderTimer);
     }
   },
 
@@ -29,13 +44,72 @@ var ControlBar = React.createClass({
     }
   },
 
-  handleMuteClick: function(evt) {
+  handleVolumeIconClick: function(evt) {
+    this.startHideVolumeSliderTimer();
     if (evt.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
-
-      this.props.controller.handleMuteClick();
+      if (this.isMobile){
+        this.setState({
+          volumeSliderVisible: !this.state.volumeSliderVisible
+        });
+      }
+      else{
+        this.props.controller.handleMuteClick();
+      }
     }
+  },
+
+  handleVolumeHeadTouchStart: function(evt) {
+    this.cancelVolumeSliderTimer();
+    evt.preventDefault();
+    evt = evt.nativeEvent;
+
+    this.getDOMNode().parentNode.addEventListener("touchmove", this.handleVolumeHeadMove);
+    document.addEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
+
+    this.setState({
+      currentVolumeHead: evt.changedTouches[0].screenX
+    });
+  },
+
+  handleVolumeHeadMove: function(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
+    this.setNewVolume(evt);
+  },
+
+  setNewVolume: function(evt) {
+    var newVolumeHeadX = this.isMobile?evt.changedTouches[0].screenX:evt.screenX;
+    var diffX = newVolumeHeadX - this.state.currentVolumeHead;
+    var diffVolume = (diffX / parseInt(controlBarStyle.volumeSliderStyle.volumeBarSetting.width));
+    var newVolume = this.props.controller.state.volumeState.volume + diffVolume;
+    newVolume = Math.min(newVolume, 1);
+    newVolume = Math.max(newVolume, 0);
+
+    this.props.controller.setVolume(newVolume);
+    this.setState({
+      currentVolumeHead: newVolumeHeadX
+    });
+  },
+
+  handleVolumeHeadTouchEnd: function(evt) {
+    this.setNewVolume(evt);
+    this.getDOMNode().parentNode.removeEventListener("touchmove", this.handleVolumeHeadMove);
+    document.removeEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
+
+    this.startHideVolumeSliderTimer();
+  },
+
+  startHideVolumeSliderTimer: function(){
+    this.cancelVolumeSliderTimer();
+    var timer = setTimeout(function(){
+      if(this.state.volumeSliderVisible){
+        this.setState({volumeSliderVisible:false});
+      }
+    }.bind(this), 2000);
+    this.setState({volumeSliderTimer: timer});
   },
 
   handlePlayClick: function(evt) {
@@ -130,6 +204,21 @@ var ControlBar = React.createClass({
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
         onClick={this.handleVolumeClick} onTouchEnd={this.handleVolumeClick}></span>);
     }
+
+    controlBarStyle.volumeSliderStyle.volumeHeadPaddingStyle.left = parseFloat(this.props.controller.state.volumeState.volume) * 100 + "%";
+    controlBarStyle.volumeSliderStyle.volumeIndicatorStyle.width = controlBarStyle.volumeSliderStyle.volumeHeadPaddingStyle.left;
+
+    var volumeSlider = [];
+    volumeSlider.push(
+      <div className="volumeBar" style={controlBarStyle.volumeSliderStyle.volumeBarSetting}>
+        <div className="volumeIndicator" style={controlBarStyle.volumeSliderStyle.volumeIndicatorStyle}></div>
+        <div className="playheadPadding" style={controlBarStyle.volumeSliderStyle.volumeHeadPaddingStyle}
+          onTouchStart={this.handleVolumeHeadTouchStart}>
+          <div className="volumeHead" style={controlBarStyle.volumeSliderStyle.volumeHeadStyle}></div>
+        </div>
+      </div>);
+
+
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
     var watermarkImageStyle = controlBarStyle.watermarkImageStyle;
 
@@ -148,9 +237,10 @@ var ControlBar = React.createClass({
       </div>,
 
       "volume": <div className="volume" style={controlBarStyle.controlBarItemSetting}>
-        <span className={muteClass} style={controlBarStyle.iconSetting} onClick={this.handleMuteClick} onTouchEnd={this.handleMuteClick}
+        <span className={muteClass} style={controlBarStyle.iconSetting}
+        onClick={this.handleVolumeIconClick} onTouchEnd={this.handleVolumeIconClick}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
-        {volumeBars}
+        {this.isMobile?(this.state.volumeSliderVisible?volumeSlider:null):volumeBars}
       </div>,
 
       "timeDuration": <div className="timeDuration" style={controlBarStyle.durationIndicatorSetting}>
@@ -192,7 +282,21 @@ var ControlBar = React.createClass({
 
     var controlBarItems = [];
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth, defaultItems);
+
+    //if mobile and not showing the slider or the icon, extra space can be added to control bar width:
+    var extraSpaceVolumeSlider = ((this.isMobile&&!this.state.volumeSliderVisible)?parseInt(controlBarStyle.volumeSliderStyle.volumeBarSetting.width):0);
+    var extraSpaceVolumeIcon = ((Utils.isIos())?
+                                parseInt(controlBarStyle.controlBarItemSetting.fontSize)+
+                                parseInt(controlBarStyle.controlBarItemSetting.paddingLeft)+
+                                parseInt(controlBarStyle.controlBarItemSetting.paddingRight)
+                                :0);
+
+    //if no hours or minutes, add extra space to control bar width:
+    var hours = parseInt(this.props.duration / 3600, 10);
+    var minutes = parseInt((this.props.duration - hours * 3600) / 60, 10);
+    var extraSpaceDuration = (hours>0)?0:((minutes>0)?45:90);
+
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider+extraSpaceVolumeIcon, defaultItems);
     var collapsedControlBarItems = collapsedResult.fit;
     var collapsedMoreOptionsItems = collapsedResult.overflow;
 
@@ -208,6 +312,10 @@ var ControlBar = React.createClass({
         continue;
       }
 
+      if (Utils.isIos() && (collapsedControlBarItems[i].name === "volume")){
+        continue;
+      }
+
       if (collapsedControlBarItems[i].name === "moreOptions" && collapsedMoreOptionsItems.length === 0) {
         continue;
       }
@@ -218,6 +326,7 @@ var ControlBar = React.createClass({
           !(this.props.authorization.streams[0].is_live_stream))) {
         continue;
       }
+
       controlBarItems.push(controlItemTemplates[collapsedControlBarItems[i].name]);
     }
     return controlBarItems;

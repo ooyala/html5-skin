@@ -13,7 +13,7 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseDown: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
+    if (evt.type == 'touchstart' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
@@ -137,13 +137,13 @@ var ScrubberBar = React.createClass({
       scrubberBarStyle.playheadPaddingStyle.left), 0);
 
     return (
-      <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp}
+      <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp} onTouchEnd={this.handleScrubberBarMouseUp}
         style={scrubberBarStyle.scrubberBarPadding}>
         <div className="scrubberBar" style={scrubberBarStyle.scrubberBarSetting}>
           <div className="bufferedIndicator" style={scrubberBarStyle.bufferedIndicatorStyle}></div>
           <div className="playedIndicator" style={scrubberBarStyle.playedIndicatorStyle}></div>
           <div className="playheadPadding" style={scrubberBarStyle.playheadPaddingStyle}
-            onMouseDown={this.handlePlayheadMouseDown}>
+            onMouseDown={this.handlePlayheadMouseDown} onTouchStart={this.handlePlayheadMouseDown}>
             <div className="playhead" style={scrubberBarStyle.playheadStyle}></div>
           </div>
         </div>
