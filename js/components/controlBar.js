@@ -6,11 +6,9 @@ var ControlBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
-      showVolumeSlider: false,
-      startingVolumeHeadX: 0,
-      scrubbingVolumeHeadX: 0,
-      currentVolumeHead: 0,
-      volumeSliderTimer: null
+      volumeSliderVisible: false,
+      volumeSliderTimer: null,
+      currentVolumeHead: 0
     };
 
   },
@@ -47,14 +45,13 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeIconClick: function(evt) {
-    this.cancelVolumeSliderTimer();
-    this.startHideControlBarTimer();
+    this.startHideVolumeSliderTimer();
     if (evt.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
       if (this.isMobile){
         this.setState({
-          showVolumeSlider: !this.state.showVolumeSlider
+          volumeSliderVisible: !this.state.volumeSliderVisible
         });
       }
       else{
@@ -68,16 +65,11 @@ var ControlBar = React.createClass({
     evt.preventDefault();
     evt = evt.nativeEvent;
 
-    // we enter the scrubbing state to prevent constantly seeking while dragging
-    // the playhead icon
-
     this.getDOMNode().parentNode.addEventListener("touchmove", this.handleVolumeHeadMove);
     document.addEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
 
     this.setState({
-      startingVolumeHeadX: evt.changedTouches[0].screenX,
-      currentVolumeHead: evt.changedTouches[0].screenX,
-      scrubbingVolumeHeadX: evt.changedTouches[0].screenX
+      currentVolumeHead: evt.changedTouches[0].screenX
     });
   },
 
@@ -103,21 +95,20 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeHeadTouchEnd: function(evt) {
-    this.cancelVolumeSliderTimer();
-
     this.setNewVolume(evt);
     this.getDOMNode().parentNode.removeEventListener("touchmove", this.handleVolumeHeadMove);
     document.removeEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
 
-    this.startHideControlBarTimer();
+    this.startHideVolumeSliderTimer();
   },
 
-  startHideControlBarTimer: function(){
+  startHideVolumeSliderTimer: function(){
+    this.cancelVolumeSliderTimer();
     var timer = setTimeout(function(){
-      if(this.state.showVolumeSlider){
-        this.setState({showVolumeSlider:false});
+      if(this.state.volumeSliderVisible){
+        this.setState({volumeSliderVisible:false});
       }
-    }.bind(this), 3000);
+    }.bind(this), 2000);
     this.setState({volumeSliderTimer: timer});
   },
 
@@ -215,7 +206,7 @@ var ControlBar = React.createClass({
     }
 
     controlBarStyle.volumeSliderStyle.volumeHeadPaddingStyle.left = parseFloat(this.props.controller.state.volumeState.volume) * 100 + "%";
-    controlBarStyle.volumeSliderStyle.volumeIndicatorStyle.width = parseFloat(this.props.controller.state.volumeState.volume) * 100 + "%";
+    controlBarStyle.volumeSliderStyle.volumeIndicatorStyle.width = controlBarStyle.volumeSliderStyle.volumeHeadPaddingStyle.left;
 
     var volumeSlider = [];
     volumeSlider.push(
@@ -246,10 +237,10 @@ var ControlBar = React.createClass({
       </div>,
 
       "volume": <div className="volume" style={controlBarStyle.controlBarItemSetting}>
-        <span className={muteClass} style={controlBarStyle.iconSetting} 
+        <span className={muteClass} style={controlBarStyle.iconSetting}
         onClick={this.handleVolumeIconClick} onTouchEnd={this.handleVolumeIconClick}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
-        {this.isMobile?(this.state.showVolumeSlider?volumeSlider:null):volumeBars}
+        {this.isMobile?(this.state.volumeSliderVisible?volumeSlider:null):volumeBars}
       </div>,
 
       "timeDuration": <div className="timeDuration" style={controlBarStyle.durationIndicatorSetting}>
@@ -292,15 +283,20 @@ var ControlBar = React.createClass({
     var controlBarItems = [];
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
-    //if mobile and not showing the slider, extra space can be added to control bar width:
-    var extraSpaceVolumeSlider = ((this.isMobile&&!this.state.showVolumeSlider)?parseInt(controlBarStyle.volumeSliderStyle.volumeBarSetting.width):0);
+    //if mobile and not showing the slider or the icon, extra space can be added to control bar width:
+    var extraSpaceVolumeSlider = ((this.isMobile&&!this.state.volumeSliderVisible)?parseInt(controlBarStyle.volumeSliderStyle.volumeBarSetting.width):0);
+    var extraSpaceVolumeIcon = ((Utils.isIos())?
+                                parseInt(controlBarStyle.controlBarItemSetting.fontSize)+
+                                parseInt(controlBarStyle.controlBarItemSetting.paddingLeft)+
+                                parseInt(controlBarStyle.controlBarItemSetting.paddingRight)
+                                :0);
 
-    // //if no hours or minutes, add extra space to control bar width
+    //if no hours or minutes, add extra space to control bar width:
     var hours = parseInt(this.props.duration / 3600, 10);
     var minutes = parseInt((this.props.duration - hours * 3600) / 60, 10);
     var extraSpaceDuration = (hours>0)?0:((minutes>0)?45:90);
 
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider, defaultItems);
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider+extraSpaceVolumeIcon, defaultItems);
     var collapsedControlBarItems = collapsedResult.fit;
     var collapsedMoreOptionsItems = collapsedResult.overflow;
 
@@ -313,6 +309,10 @@ var ControlBar = React.createClass({
 
       //do not show CC button if no CC available
       if (!this.props.controller.state.ccOptions.availableLanguages && (collapsedControlBarItems[i].name === "closedCaption")){
+        continue;
+      }
+
+      if (Utils.isIos() && (collapsedControlBarItems[i].name === "volume")){
         continue;
       }
 

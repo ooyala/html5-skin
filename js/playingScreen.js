@@ -26,12 +26,12 @@ var PlayingScreen = React.createClass({
   },
 
   startHideControlBarTimer: function(){
-    // var timer = setTimeout(function(){
-    //   if(this.state.controlBarVisible){
-    //     this.hideControlBar();
-    //   }
-    // }.bind(this), 3000);
-    // this.setState({timer: timer});
+    var timer = setTimeout(function(){
+      if(this.state.controlBarVisible){
+        this.hideControlBar();
+      }
+    }.bind(this), 3000);
+    this.setState({timer: timer});
   },
 
   componentWillUnmount: function () {
