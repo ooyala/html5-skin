@@ -237,7 +237,7 @@ var controlBarStyle = {
       "backgroundClip": "content-box",
       "position": "relative",
       "background": "#afafaf",
-      "width": "135px",
+      "width": "65px",
       "height": "5px",
       "bottom": "10%",
       "marginLeft":"5px",

@@ -291,10 +291,9 @@ var ControlBar = React.createClass({
                                 parseInt(controlBarStyle.controlBarItemSetting.paddingRight)
                                 :0);
 
-    //if no hours or minutes, add extra space to control bar width:
+    //if no hours, add extra space to control bar width:
     var hours = parseInt(this.props.duration / 3600, 10);
-    var minutes = parseInt((this.props.duration - hours * 3600) / 60, 10);
-    var extraSpaceDuration = (hours>0)?0:((minutes>0)?45:90);
+    var extraSpaceDuration = (hours>0)?0:45;
 
     var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider+extraSpaceVolumeIcon, defaultItems);
     var collapsedControlBarItems = collapsedResult.fit;
