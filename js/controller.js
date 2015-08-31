@@ -78,16 +78,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
         this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
         this.mb.subscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi", _.bind(this.onWillResumeAds, this));
-        //since iPhone does not show discover
-        this.mb.subscribe(OO.EVENTS.REPORT_DISCOVERY_IMPRESSION, "customerUi", _.bind(this.onReportDiscoveryImpression, this));
+        if (OO.EVENTS.DISCOVERY_API) {
+          this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
+        }
       }
 
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
       this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
-      if (OO.EVENTS.DISCOVERY_API) {
-        this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
-      }
       this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
     },
 
@@ -112,7 +110,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         $.extend(true, data, params.skin.inline);
 
         this.skin = React.render(
-        React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + elementId + " .player_skin")
+          React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + elementId + " .player_skin")
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
@@ -120,6 +118,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }, this));
 
       this.state.isMobile = Utils.isMobile();
+
+      if (Utils.isIE10()) {
+        $("#" + elementId + " .video").attr("controls", "controls");
+      }
     },
 
     onAuthorizationFetched: function(event, authorization) {
@@ -201,6 +203,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.screenToShow = SCREEN.START_SCREEN;
         } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
           console.log("Should display DISCOVERY_SCREEN on pause");
+          this.sendDiscoveryDisplayEvent("pauseScreen");
           this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
         } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
           // Remove this comment once pause screen implemented
@@ -216,6 +219,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPlayed: function() {
       if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery") {
         console.log("Should display DISCOVERY_SCREEN on end");
+        this.sendDiscoveryDisplayEvent("endScreen");
         this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
       } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "share") {
         this.state.screenToShow = SCREEN.SHARE_SCREEN;
@@ -224,12 +228,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       this.skin.updatePlayhead(this.state.contentTree.duration/1000, this.state.contentTree.duration/1000, this.state.contentTree.duration/1000);
       this.state.playerState = STATE.END;
-      this.renderSkin();
-    },
-
-    onReportDiscoveryImpression: function(event, discoveryData) {
-      console.log("onReportDiscoveryImpression is called");
-      this.state.discoveryData = discoveryData;
       this.renderSkin();
     },
 
@@ -312,6 +310,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onRelatedVideosFetched: function(event, relatedVideos) {
       console.log("onRelatedVideosFetched is called");
+      this.state.discoveryData = {relatedVideos: relatedVideos.videos};
       this.state.upNextInfo.upNextData = relatedVideos.videos[0];
       this.renderSkin();
     },
@@ -363,6 +362,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       switch(this.state.playerState) {
         case STATE.PLAYING:
           this.togglePlayPause();
+          this.sendDiscoveryDisplayEvent("pauseScreen");
           setTimeout(function() {
             this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
             this.state.playerState = STATE.PAUSE;
@@ -376,6 +376,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             this.state.screenToShow = SCREEN.PAUSE_SCREEN;
           }
           else {
+            this.sendDiscoveryDisplayEvent("pauseScreen");
             this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
           }
           break;
@@ -384,6 +385,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             this.state.screenToShow = SCREEN.END_SCREEN;
           }
           else {
+            this.sendDiscoveryDisplayEvent("endScreen");
             this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
           }
           break;
@@ -472,6 +474,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     sendDiscoveryClickEvent: function(selectedContentData) {
       this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
+    },
+
+    sendDiscoveryDisplayEvent: function(screen) {
+      var eventData = {
+        "relatedVideos" : this.state.discoveryData.relatedVideos,
+        "custom" : { "source" : screen}
+      };
+      this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
     },
 
     setClosedCaptionsLanguage: function(){

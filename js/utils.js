@@ -92,6 +92,10 @@ var Utils = {
     return (this.isAndroid() || this.isIos());
   },
 
+  isIE10: function() {
+    return !!window.navigator.userAgent.match(/MSIE 10/);
+  },
+
   // Liusha: saved for resizing control bar
   getScaledControlBarHeight: function(controlBarWidth) {
     var controlBarHeightBase = UI.defaultControlBarHeight;
