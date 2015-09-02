@@ -16,14 +16,14 @@ var Spinner = React.createClass({
   },
 
   render: function() {
-  	var thisSpinnerStyle = spinnerStyle.style;
-  	spinnerStyle.WebkitTransform = "translate(-50%, -50%) rotate(" + this.state.spinnerAngle + "deg)";
-  	spinnerStyle.MozTransform = "translate(-50%, -50%) rotate(" + this.state.spinnerAngle + "deg)";
-  	spinnerStyle.msTransform = "translate(-50%, -50%) rotate(" + this.state.spinnerAngle + "deg)";
+  	var mSpinnerStyle = spinnerStyle.style;
+  	mSpinnerStyle.WebkitTransform = "translate(-50%, -50%) rotate(" + this.state.spinnerAngle + "deg)";
+  	mSpinnerStyle.MozTransform = "translate(-50%, -50%) rotate(" + this.state.spinnerAngle + "deg)";
+  	mSpinnerStyle.msTransform = "translate(-50%, -50%) rotate(" + this.state.spinnerAngle + "deg)";
   	return (
   	  <div className="loadingScreen" style={startScreenStyle.style}>
         <div className="spinner">
-          <img src="http://www.clipro.tv/demo_request/_assets/images/icons/ooyala_ico.png" style={thisSpinnerStyle}></img>
+          <img src="http://www.clipro.tv/demo_request/_assets/images/icons/ooyala_ico.png" style={mSpinnerStyle}></img>
         </div>
       </div>
   	);
