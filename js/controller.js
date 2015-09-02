@@ -62,7 +62,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
       this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
-
+      this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
 
       /********************************************************************
         ADS RELATED EVENTS
@@ -114,6 +114,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
+        this.state.screenToShow = SCREEN.LOADING_SCREEN;
         this.renderSkin();
       }, this));
 
@@ -131,9 +132,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onContentTreeFetched: function (event, contentTree) {
       this.resetUpNextInfo();
       this.state.contentTree = contentTree;
-      this.state.screenToShow = SCREEN.START_SCREEN;
       this.state.playerState = STATE.START;
-      this.renderSkin({"contentTree": contentTree});
     },
 
     onVolumeChanged: function (event, newVolume){
@@ -233,6 +232,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onSeeked: function(event) {
       this.state.seeking = false;
+    },
+
+    onPlaybackReady: function(event) {
+      this.state.screenToShow = SCREEN.START_SCREEN;
+      this.renderSkin({"contentTree": this.state.contentTree});
     },
 
     /********************************************************************

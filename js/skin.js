@@ -57,6 +57,10 @@ var Skin = React.createClass({
     }
 
     switch (this.state.screenToShow) {
+      case SCREEN.LOADING_SCREEN:
+        return (
+          <Spinner />
+        );
       case SCREEN.START_SCREEN:
         return (
           <StartScreen {...this.props} contentTree={this.state.contentTree} style={startScreenStyle}/>

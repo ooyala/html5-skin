@@ -60,6 +60,26 @@ var startScreenStyle = {
   }
 };
 
+var spinnerStyle = {
+  style: {
+    width: "40%",
+    WebkitTransform: "translate(-50%, -50%) rotate(90deg)",
+    MozTransform: "translate(-50%, -50%) rotate(90deg)",
+    msTransform: "translate(-50%, -50%) rotate(90deg)",
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    opacity: 1,
+    color: "white",
+    transition: "opacity .25s ease-in-out",
+    "cursor": "pointer",
+    WebkitAnimation: "spin 4s linear infinite",
+    MozAnimation: "spin 4s linear infinite",
+    msAnimation: "spin 4s linear infinite",
+    animation: "spin 4s linear infinite"
+  }
+};
+
 var pauseScreenStyle = {
   style: {
     width: "100%",
