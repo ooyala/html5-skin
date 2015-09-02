@@ -146,6 +146,50 @@ var endScreenStyle = {
   }
 };
 
+var errorScreenStyle = {
+  style: {
+    "width": "100%",
+    "height": "100%",
+    "position": "absolute",
+    "overflow": "hidden",
+    "background": "black"
+  },
+  contentStyle: {
+    "width": "80%",
+    "position": "relative",
+    "top": "50%",
+    "textAlign": "left",
+    "transform": "translateY(-50%)",
+    "WebkitTransform": "translateY(-50%)",
+    "wordWrap": "break-word",
+    "display": "block",
+    "marginLeft": "auto",
+    "marginRight": "auto"
+  },
+  titleStyle: {
+    "color": "white",
+    "fontSize": "20pt",
+    "fontFamily": "Roboto",
+    "fontWeight": "bold",
+    "textTransform": "uppercase",
+    "marginBottom": "30"
+  },
+  descriptionStyle: {
+    "color": "white",
+    "fontSize": "14pt",
+    "fontFamily": "Open Sans",
+    "fontWeight": "regular",
+    "marginBottom": "30"
+  },
+  actionStyle: {
+    "color": "#4389FF",
+    "fontSize": "14pt",
+    "fontFamily": "Open Sans",
+    "fontWeight": "regular",
+    "textTransform": "uppercase"
+  }
+};
+
 var controlBarStyle = {
   controlBarSetting: {
     "background": "rgba(0, 0, 0, 0.3)",

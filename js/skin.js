@@ -171,6 +171,10 @@ var Skin = React.createClass({
             seeking={this.state.seeking}
             ref="closedCaptionScreen" />
         );
+      case SCREEN.ERROR_SCREEN:
+        return (
+          <ErrorScreen {...this.props} errorCode={this.props.controller.state.errorCode} style={errorScreenStyle}/>
+        );
       default:
         return false;
     }
