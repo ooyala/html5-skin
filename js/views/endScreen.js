@@ -1,6 +1,9 @@
 /********************************************************************
   END SCREEN
 *********************************************************************/
+var React = require('react'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar');
 
 var EndScreen = React.createClass({
   getInitialState: function() {
@@ -77,3 +80,4 @@ var EndScreen = React.createClass({
     );
   }
 });
+module.exports = EndScreen;

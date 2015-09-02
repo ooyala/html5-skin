@@ -5,7 +5,9 @@
   "keywords": [
     "html5",
     "react",
-    "ooyala"
+    "ooyala",
+    "video",
+    "player"
   ],
   "main": "html5-skin.js",
   "scripts": {
@@ -17,17 +19,20 @@
     "url": "https://github.com/ooyala/html5-skin.git"
   },
   "dependencies": {
-    "gulp": "3.8.11",
-    "react": "0.12.2",
-    "react-tools":"*"
+    "react": "0.13.3"
   },
   "devDependencies": {
-    "gulp-concat": "2.5.2",
-    "gulp-uglify": "1.1.0",
-    "gulp-jshint": "1.10.0",
-    "gulp-react": "3.0.1",
+    "browserify": "11.0.1",
+    "gulp": "3.8.11",
     "gulp-shell": "0.4.2",
-    "jest-cli": "0.4.18"
+    "gulp-sourcemaps": "1.5.2",
+    "gulp-uglify": "1.1.0",
+    "gulp-util": "3.0.6",
+    "jest-cli": "0.4.18",
+    "react-tools":"*",
+    "reactify": "1.1.1",
+    "vinyl-source-stream": "^1.0.0",
+    "vinyl-buffer": "^1.0.0"
   },
   "author": "Ooyala",
   "contributors": [

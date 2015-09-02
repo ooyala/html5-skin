@@ -1,6 +1,21 @@
 /********************************************************************
   RENDERER PLACEHOLDER
 *********************************************************************/
+var React = require('react'),
+    Utils = require('./components/utils'),
+    InlineStyle = require('./styles/inlineStyle'),
+    CONSTANTS = require('./constants/constants'),
+    AdScreen = require('./views/adScreen'),
+    ClosedCaptionScreen = require('./views/closedCaptionScreen'),
+    DiscoveryScreen = require('./views/discoveryScreen'),
+    EndScreen = require('./views/endScreen'),
+    MoreOptionsScreen = require('./views/moreOptionsScreen'),
+    ShareScreen = require('./views/shareScreen'),
+    StartScreen = require('./views/startScreen'),
+    PauseScreen = require('./views/pauseScreen'),
+    PlayingScreen = require('./views/playingScreen'),
+    UpNextScreen = require('./views/upNextScreen');
+
 var Skin = React.createClass({
   getInitialState: function() {
     this.overlayRenderingEventSent = false;
@@ -14,7 +29,7 @@ var Skin = React.createClass({
   componentDidUpdate: function() {
     // Notify AMC the correct overlay rendering info
     if (this.state.screenToShow !== null && !this.overlayRenderingEventSent) {
-      var marginHeight = Utils.getScaledControlBarHeight(this.getDOMNode().clientWidth) + UI.defaultScrubberBarHeight;
+      var marginHeight = Utils.getScaledControlBarHeight(this.getDOMNode().clientWidth) + CONSTANTS.UI.defaultScrubberBarHeight;
       this.props.controller.publishOverlayRenderingEvent(marginHeight);
       this.overlayRenderingEventSent = true;
     }
@@ -48,8 +63,8 @@ var Skin = React.createClass({
   render: function() {
     //For IE10, use the start screen and that's it.
     if (Utils.isIE10()){
-      if (this.state.screenToShow == SCREEN.START_SCREEN){
-        return (<StartScreen {...this.props} contentTree={this.state.contentTree} style={startScreenStyle}/>);
+      if (this.state.screenToShow == CONSTANTS.SCREEN.START_SCREEN){
+        return (<StartScreen {...this.props} contentTree={this.state.contentTree} style={InlineStyle.startScreenStyle}/>);
       }
       else {
         return React.createElement("div");
@@ -57,11 +72,11 @@ var Skin = React.createClass({
     }
 
     switch (this.state.screenToShow) {
-      case SCREEN.START_SCREEN:
+      case CONSTANTS.SCREEN.START_SCREEN:
         return (
-          <StartScreen {...this.props} contentTree={this.state.contentTree} style={startScreenStyle}/>
+          <StartScreen {...this.props} contentTree={this.state.contentTree} style={InlineStyle.startScreenStyle}/>
         );
-      case SCREEN.PLAYING_SCREEN:
+      case CONSTANTS.SCREEN.PLAYING_SCREEN:
         return (
           <PlayingScreen {...this.props} contentTree={this.state.contentTree}
             currentPlayhead={this.state.currentPlayhead}
@@ -72,7 +87,7 @@ var Skin = React.createClass({
             seeking={this.state.seeking}
             ref="playScreen" />
         );
-      case SCREEN.SHARE_SCREEN:
+      case CONSTANTS.SCREEN.SHARE_SCREEN:
         return (
           <ShareScreen {...this.props} contentTree={this.state.contentTree}
             currentPlayhead={this.state.currentPlayhead}
@@ -83,7 +98,7 @@ var Skin = React.createClass({
             seeking={this.state.seeking}
             ref="shareScreen" />
         );
-      case SCREEN.PAUSE_SCREEN:
+      case CONSTANTS.SCREEN.PAUSE_SCREEN:
         return (
           <PauseScreen {...this.props}
             contentTree={this.state.contentTree}
@@ -96,7 +111,7 @@ var Skin = React.createClass({
             seeking={this.state.seeking}
             ref="pauseScreen" />
         );
-      case SCREEN.END_SCREEN:
+      case CONSTANTS.SCREEN.END_SCREEN:
         return (
           <EndScreen {...this.props}
             contentTree={this.state.contentTree}
@@ -110,7 +125,7 @@ var Skin = React.createClass({
             seeking={this.state.seeking}
             ref="endScreen" />
         );
-      case SCREEN.AD_SCREEN:
+      case CONSTANTS.SCREEN.AD_SCREEN:
         return (
           <AdScreen {...this.props} contentTree={this.state.contentTree}
             currentAdsInfo={this.state.currentAdsInfo}
@@ -121,7 +136,7 @@ var Skin = React.createClass({
             seeking={this.state.seeking}
             ref="adScreen" />
         );
-      case SCREEN.DISCOVERY_SCREEN:
+      case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
         return (
           <DiscoveryScreen {...this.props}
             contentTree={this.state.contentTree}
@@ -135,7 +150,7 @@ var Skin = React.createClass({
             seeking={this.state.seeking}
             ref="DiscoveryScreen" />
         );
-      case SCREEN.UP_NEXT_SCREEN:
+      case CONSTANTS.SCREEN.UP_NEXT_SCREEN:
         return (
           <UpNextScreen {...this.props}
             contentTree={this.state.contentTree}
@@ -147,7 +162,7 @@ var Skin = React.createClass({
             seeking={this.state.seeking}
             ref="UpNextScreen" />
         );
-      case SCREEN.MORE_OPTIONS_SCREEN:
+      case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
         return (
           <MoreOptionsScreen {...this.props}
             contentTree={this.state.contentTree}
@@ -158,7 +173,7 @@ var Skin = React.createClass({
             seeking={this.state.seeking}
             ref="moreOptionsScreen" />
         );
-      case SCREEN.CLOSEDCAPTION_SCREEN:
+      case CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN:
         return (
           <ClosedCaptionScreen {...this.props}
             contentTree={this.state.contentTree}
@@ -176,3 +191,4 @@ var Skin = React.createClass({
     }
   }
 });
+module.exports = Skin;

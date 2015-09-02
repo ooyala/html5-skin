@@ -1,6 +1,12 @@
 /********************************************************************
   AD SCREEN
 *********************************************************************/
+var React = require('react'),
+    CONSTANTS = require('../constants/constants'),
+    InlineStyle = require('../styles/inlineStyle'),
+    AdPanel = require('../components/adPanel'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar');
 
 var AdScreen = React.createClass({
   getInitialState: function() {
@@ -52,7 +58,7 @@ var AdScreen = React.createClass({
 
       //since after exiting the full screen, iPhone pauses the video and places an overlay play button in the middle
       //of the screen (which we can't remove), clicking the screen would start the video.
-      if (Utils.isIPhone() && this.state.playerState == STATE.PAUSE){
+      if (Utils.isIPhone() && this.state.playerState == CONSTANTS.STATE.PAUSE){
         this.props.controller.togglePlayPause();
       }
       else {
@@ -111,7 +117,7 @@ var AdScreen = React.createClass({
     }
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd} style={defaultScreenStyle.style}>
+        onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd} style={InlineStyle.defaultScreenStyle.style}>
         
         {adPanel}
 
@@ -120,3 +126,4 @@ var AdScreen = React.createClass({
     );
   }
 });
+module.exports = AdScreen;

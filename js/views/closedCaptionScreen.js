@@ -7,6 +7,12 @@
 * @class ClosedCaptionScreen
 * @constructor
 */
+var React = require('react'),
+    InlineStyle = require('../styles/inlineStyle'),
+    ClosedCaptionPanel = require('../components/closedCaptionPanel'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar');
+
 var ClosedCaptionScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
@@ -58,7 +64,7 @@ var ClosedCaptionScreen = React.createClass({
           playerState={this.state.playerState}/>
           
         <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight} 
-          onClick={this.closeClosedCaptionPanel} style={closedCaptionScreenStyles.closeButtonStyle}
+          onClick={this.closeClosedCaptionPanel} style={InlineStyle.closedCaptionScreenStyles.closeButtonStyle}
           onTouchEnd={this.closeClosedCaptionPanel}>
           <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
         </div>
@@ -66,3 +72,4 @@ var ClosedCaptionScreen = React.createClass({
     );
   }
 });
+module.exports = ClosedCaptionScreen;

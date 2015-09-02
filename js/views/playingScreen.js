@@ -1,9 +1,11 @@
 /********************************************************************
   PLAYING SCREEN
 *********************************************************************/
+var React = require('react'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar');
 
 var PlayingScreen = React.createClass({
-
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
@@ -86,3 +88,4 @@ var PlayingScreen = React.createClass({
     );
   }
 });
+module.exports = PlayingScreen;

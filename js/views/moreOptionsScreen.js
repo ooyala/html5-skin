@@ -7,6 +7,11 @@
 * @class MoreOptionsScreen
 * @constructor
 */
+var React = require('react'),
+    MoreOptionsPanel = require('../components/moreOptionsPanel'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar');
+
 var MoreOptionsScreen = React.createClass({
   getInitialState: function() {
     return {
@@ -58,3 +63,4 @@ var MoreOptionsScreen = React.createClass({
     );
   }
 });
+module.exports = MoreOptionsScreen;

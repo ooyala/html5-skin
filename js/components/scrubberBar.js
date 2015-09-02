@@ -1,6 +1,8 @@
 /********************************************************************
   SCRUBBER BAR
 *********************************************************************/
+var React = require('react'),
+    InlineStyle = require('../styles/inlineStyle');
 
 var ScrubberBar = React.createClass({
   getInitialState: function() {
@@ -114,40 +116,41 @@ var ScrubberBar = React.createClass({
     // } else {
     //   controlBarHeight = this.props.skinConfig.controlBar.height;
     // }
-    var scrubberPaddingHeight = parseInt(scrubberBarStyle.scrubberBarPadding.height);
-    var scrubberBarHeight = parseInt(scrubberBarStyle.scrubberBarSetting.height);
+    var scrubberPaddingHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarPadding.height);
+    var scrubberBarHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarSetting.height);
 
-    scrubberBarStyle.scrubberBarPadding.bottom = (this.props.controlBarVisible ?
+    InlineStyle.scrubberBarStyle.scrubberBarPadding.bottom = (this.props.controlBarVisible ?
       controlBarHeight - (scrubberPaddingHeight / 2) : scrubberBarHeight - (scrubberPaddingHeight / 2));
-    scrubberBarStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
+    InlineStyle.scrubberBarStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
       parseFloat(this.props.duration)) * 100 + "%";
-    scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
+    InlineStyle.scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
       parseFloat(this.props.duration)) * 100 + "%";
-    scrubberBarStyle.playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
+    InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
       parseFloat(this.props.duration)) * this.props.controlBarWidth);
-    scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
+    InlineStyle.scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
 
     // if we're scrubbing, use the coordinates from the latest mouse events
     if (this.props.seeking) {
-      scrubberBarStyle.playheadPaddingStyle.left = scrubberBarStyle.playheadPaddingStyle.left +
+      InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = InlineStyle.scrubberBarStyle.playheadPaddingStyle.left +
         (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
     }
     //prevent the playhead from moving beyond the player element
-    scrubberBarStyle.playheadPaddingStyle.left = Math.max(Math.min(this.props.controlBarWidth - parseInt(scrubberBarStyle.playheadStyle.width)/2,
-      scrubberBarStyle.playheadPaddingStyle.left), 0);
+    InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = Math.max(Math.min(this.props.controlBarWidth - parseInt(InlineStyle.scrubberBarStyle.playheadStyle.width)/2,
+      InlineStyle.scrubberBarStyle.playheadPaddingStyle.left), 0);
 
     return (
       <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp}
-        style={scrubberBarStyle.scrubberBarPadding}>
-        <div className="scrubberBar" style={scrubberBarStyle.scrubberBarSetting}>
-          <div className="bufferedIndicator" style={scrubberBarStyle.bufferedIndicatorStyle}></div>
-          <div className="playedIndicator" style={scrubberBarStyle.playedIndicatorStyle}></div>
-          <div className="playheadPadding" style={scrubberBarStyle.playheadPaddingStyle}
+        style={InlineStyle.scrubberBarStyle.scrubberBarPadding}>
+        <div className="scrubberBar" style={InlineStyle.scrubberBarStyle.scrubberBarSetting}>
+          <div className="bufferedIndicator" style={InlineStyle.scrubberBarStyle.bufferedIndicatorStyle}></div>
+          <div className="playedIndicator" style={InlineStyle.scrubberBarStyle.playedIndicatorStyle}></div>
+          <div className="playheadPadding" style={InlineStyle.scrubberBarStyle.playheadPaddingStyle}
             onMouseDown={this.handlePlayheadMouseDown}>
-            <div className="playhead" style={scrubberBarStyle.playheadStyle}></div>
+            <div className="playhead" style={InlineStyle.scrubberBarStyle.playheadStyle}></div>
           </div>
         </div>
       </div>
     );
   }
 });
+module.exports = ScrubberBar;

@@ -1,6 +1,10 @@
 /********************************************************************
   UP NEXT SCREEN
 *********************************************************************/
+var React = require('react'),
+    UpNextPanel = require('../components/upNextPanel'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar');
 
 var UpNextScreen = React.createClass({
   getInitialState: function() {
@@ -47,3 +51,4 @@ var UpNextScreen = React.createClass({
     );
   }
 });
+module.exports = UpNextScreen;
