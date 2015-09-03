@@ -81,7 +81,7 @@ var ControlBar = React.createClass({
   },
 
   setNewVolume: function(evt) {
-    var newVolumeHeadX = this.isMobile?evt.changedTouches[0].screenX:evt.screenX;
+    var newVolumeHeadX = this.isMobile ? evt.changedTouches[0].screenX : evt.screenX;
     var diffX = newVolumeHeadX - this.state.currentVolumeHead;
     var diffVolume = (diffX / parseInt(controlBarStyle.volumeSliderStyle.volumeBarSetting.width));
     var newVolume = this.props.controller.state.volumeState.volume + diffVolume;
@@ -218,6 +218,13 @@ var ControlBar = React.createClass({
         </div>
       </div>);
 
+    var volumeControls;
+    if (!this.isMobile){
+      volumeControls = volumeBars;
+    }
+    else {
+      volumeControls = this.state.volumeSliderVisible ? volumeSlider : null;
+    }
 
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
     var watermarkImageStyle = controlBarStyle.watermarkImageStyle;
@@ -240,7 +247,7 @@ var ControlBar = React.createClass({
         <span className={muteClass} style={controlBarStyle.iconSetting}
         onClick={this.handleVolumeIconClick} onTouchEnd={this.handleVolumeIconClick}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
-        {this.isMobile?(this.state.volumeSliderVisible?volumeSlider:null):volumeBars}
+        {volumeControls}
       </div>,
 
       "timeDuration": <div className="timeDuration" style={controlBarStyle.durationIndicatorSetting}>
@@ -284,16 +291,16 @@ var ControlBar = React.createClass({
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
     //if mobile and not showing the slider or the icon, extra space can be added to control bar width:
-    var extraSpaceVolumeSlider = ((this.isMobile&&!this.state.volumeSliderVisible)?parseInt(controlBarStyle.volumeSliderStyle.volumeBarSetting.width):0);
-    var extraSpaceVolumeIcon = ((Utils.isIos())?
+    var extraSpaceVolumeSlider = ((this.isMobile && !this.state.volumeSliderVisible) ? parseInt(controlBarStyle.volumeSliderStyle.volumeBarSetting.width) : 0);
+    var extraSpaceVolumeIcon = ((Utils.isIos()) ?
                                 parseInt(controlBarStyle.controlBarItemSetting.fontSize)+
                                 parseInt(controlBarStyle.controlBarItemSetting.paddingLeft)+
                                 parseInt(controlBarStyle.controlBarItemSetting.paddingRight)
-                                :0);
+                                : 0);
 
     //if no hours, add extra space to control bar width:
     var hours = parseInt(this.props.duration / 3600, 10);
-    var extraSpaceDuration = (hours>0)?0:45;
+    var extraSpaceDuration = (hours > 0) ? 0 : 45;
 
     var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider+extraSpaceVolumeIcon, defaultItems);
     var collapsedControlBarItems = collapsedResult.fit;
