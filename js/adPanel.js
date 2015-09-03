@@ -10,7 +10,7 @@
 
 var AdPanelTopBarItem = React.createClass({
   render: function() {
-    return <div className={this.props.itemClassName} style={this.props.style} onClick={this.props.onLearnMoreButtonClicked} onTouchEnd={this.props.onLearnMoreButtonClicked}>
+    return <div className={this.props.itemClassName} style={this.props.style} onClick={this.props.onButtonClicked} onTouchEnd={this.props.onButtonClicked}>
           {this.props.data}
         </div>;
   }
@@ -23,6 +23,18 @@ var AdPanel = React.createClass({
     }
     else {
       adScreenStyle.topBarStyle.display = "flex";
+    }
+  },
+
+  handleSkipAdButtonClick: function(event) {
+    if (event.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      console.log("Skip Ad button clicked");
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
+      this.props.controller.onSkipAdClicked();
     }
   },
 
@@ -76,16 +88,29 @@ var AdPanel = React.createClass({
     // Learn more
     if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.clickUrl)) {
       var learnMoreText = Utils.getLocalizedString(this.props.language, SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
-      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" onLearnMoreButtonClicked={this.handleLearnMoreButtonClick} style={adScreenStyle.learnMoreButtonStyle} data={learnMoreText} itemClassName="learnMore"/>;
+      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" onButtonClicked={this.handleLearnMoreButtonClick} style={adScreenStyle.learnMoreButtonStyle} data={learnMoreText} itemClassName="learnMore"/>;
       adTopBarItems.push(learnMoreButtonDiv);
     }
 
     // Skip
-    if (this.props.currentAdsInfo.currentAdItem.skippable) {
-      var skipButtonText = Utils.getLocalizedString(this.props.language, SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
-      var skipButtonDiv = <AdPanelTopBarItem key="skipButton" style={adScreenStyle.skipButtonStyle} data={skipButtonText} itemClassName="skip"/>;
-      adTopBarItems.push(skipButtonDiv);
+    //if (!this.props.currentAdsInfo.currentAdItem.skippable) { xenia
+    var handleButtonClick;
+    if (!this.props.currentAdsInfo.skipAdButtonVisible) {
+      adScreenStyle.skipButtonStyle.opacity = "0.3";
+      handleButtonClick = null;
+      adScreenStyle.skipButtonStyle.cursor = "default";
     }
+    else {
+      adScreenStyle.skipButtonStyle.opacity = "1";
+      handleButtonClick = this.handleSkipAdButtonClick;
+      adScreenStyle.skipButtonStyle.cursor = "pointer";
+    }
+    console.log("xenia currentAdsInfo.skipAdButtonVisible", this.props.currentAdsInfo.skipAdButtonVisible);
+
+    var skipButtonText = Utils.getLocalizedString(this.props.language, SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
+    var skipButtonDiv = <AdPanelTopBarItem key="skipButton" onButtonClicked={handleButtonClick} style={adScreenStyle.skipButtonStyle} data={skipButtonText} itemClassName="skip"/>;
+    adTopBarItems.push(skipButtonDiv);
+  
     return adTopBarItems;
   },
 

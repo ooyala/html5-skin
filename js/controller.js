@@ -25,7 +25,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       "currentAdsInfo": {
         "currentAdItem": null,
-        "numberOfAds": 0
+        "numberOfAds": 0,
+        "skipAdButtonVisible": false
       },
 
       "ccOptions":{
@@ -78,6 +79,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
         this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
         this.mb.subscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi", _.bind(this.onWillResumeAds, this));
+        this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
         if (OO.EVENTS.DISCOVERY_API) {
           this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
         }
@@ -270,6 +272,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onSingleAdPlayed: function(event) {
       console.log("onSingleAdPlayed is called");
       this.state.isPlayingAd = false;
+      this.state.currentAdsInfo.skipAdButtonVisible = false;
     },
 
     onWillPauseAds: function(event) {
@@ -285,6 +288,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
       this.state.screenToShow = SCREEN.AD_SCREEN;
       }
+    },
+
+    onShowAdSkipButton: function(event) {
+      console.log("xenia in onShowAdSkipButton");
+      this.state.currentAdsInfo.skipAdButtonVisible = true;
+      this.renderSkin();
+    },
+
+    onSkipAdClicked: function(event) {
+      console.log("onSkipAdClicked is called");
+      this.state.currentAdsInfo.skipAdButtonVisible = false;
+      this.mb.publish(OO.EVENTS.SKIP_AD);
     },
 
     onAdsClicked: function() {

@@ -4,7 +4,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
     <link rel="stylesheet" href="/assets/styles.css"/>
 
-    <script language="javascript" src="//localhost:1337/dev/v4/26e2e3c1049c4e70ae08a242638b5c40?debug=true&platform=html5&version=dev"></script>
+    <script language="javascript" src="//localhost:1337/dev/v4/61a6680fda594246acb729d0fd206264?debug=true&platform=html5&version=dev"></script>
     <script src="build/html5-skin.js"></script>
     <style>
       .discovery_toaster {display: none;}
@@ -21,10 +21,27 @@
         "skin": {
           "config": "config/skin.json",
            "languages": [{language: "en", languageFile: "config/en.json"}, {language: "es", languageFile: "config/es.json"}, {language: "zh", languageFile: "config/zh.json"}]
-        }
+        },
+        "freewheel-ads-manager": {
+            "fw_video_asset_id":"NscGg4bzpO9s5rUMyW-AAfoeEA7CX6hP",
+            "html5_ad_server":"http://g1.v.fwmrm.net",
+            "fw_android_ad_server":"http://g1.v.fwmrm.net/",
+            "html5_player_profile":"90750:ooyala_html5",
+            "fw_android_player_profile":"90750:ooyala_android",
+            "fw_mrm_network_id":"380912"
+          },
+        "replayAds":true
       };
       OO.ready(function() {
-        window.pp = OO.Player.create('container', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
+        window.pp = OO.Player.create('container', 'trZ3VwcDrqUXQyyBhfGYDzh_NtHL3Bgz', playerParam);
+
+        pp.mb.subscribe(OO.EVENTS.SKIP_AD, "test", function(){
+          console.log("message bus: SKIP_AD");
+        });
+
+        pp.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "test", function(){
+          console.log("message bus: SHOW_AD_SKIP_BUTTON");
+        });
       });
     </script>
   </body>

@@ -686,6 +686,7 @@ var adScreenStyle = {
     "textAlign": "center",
     "padding": "4px",
     "border-radius": "5px",
+    "cursor": "pointer",
   },
 
   skipButtonStyle: {
@@ -697,6 +698,8 @@ var adScreenStyle = {
     "textAlign": "center",
     "padding": "4px",
     "border-radius": "5px",
+    "opacity": "1",
+    "cursor": "default"
   },
 };
 
