@@ -13,7 +13,7 @@ var AdScreen = React.createClass({
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
 
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
@@ -85,7 +85,7 @@ var AdScreen = React.createClass({
   getPlaybackControlItems: function() {
     var playbackControlItemTemplates = {
      "scrubberBar": <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-       controlBarWidth={this.state.controlBarWidth} />,
+       scrubberBarWidth={this.state.controlBarWidth} />,
 
      "controlBar": <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
        controlBarWidth={this.state.controlBarWidth}
@@ -112,7 +112,7 @@ var AdScreen = React.createClass({
     return (
       <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
         onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd} style={defaultScreenStyle.style}>
-        
+
         {adPanel}
 
         {playbackControlItems}
