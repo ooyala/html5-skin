@@ -66,6 +66,7 @@ var spinnerStyle = {
     WebkitTransform: "translate(-50%, -50%) rotate(90deg)",
     MozTransform: "translate(-50%, -50%) rotate(90deg)",
     msTransform: "translate(-50%, -50%) rotate(90deg)",
+    transform: "translate(-50%, -50%) rotate(90deg)",
     position: "absolute",
     left: "50%",
     top: "50%",
