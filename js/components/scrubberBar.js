@@ -32,16 +32,16 @@ var ScrubberBar = React.createClass({
         // breaks if your cursor leaves the player element
         document.addEventListener("mouseup", this.handlePlayheadMouseUp, true);
         this.setState({
-          startingPlayheadX: evt.screenX,
-          scrubbingPlayheadX: evt.screenX
+          startingPlayheadX: evt.clientX,
+          scrubbingPlayheadX: evt.clientX
         });
       }
       else {
         this.getDOMNode().parentNode.addEventListener("touchmove", this.handlePlayheadMouseMove);
         document.addEventListener("touchend", this.handlePlayheadMouseUp, true);
         this.setState({
-          startingPlayheadX: evt.changedTouches[0].screenX,
-          scrubbingPlayheadX: evt.changedTouches[0].screenX
+          startingPlayheadX: evt.changedTouches[0].clientX,
+          scrubbingPlayheadX: evt.changedTouches[0].clientX
         });
       }
     }
@@ -51,7 +51,7 @@ var ScrubberBar = React.createClass({
     evt.preventDefault();
     if (this.props.seeking) {
       this.setState({
-        scrubbingPlayheadX: this.isMobile?evt.changedTouches[0].screenX:evt.screenX
+        scrubbingPlayheadX: this.isMobile?evt.changedTouches[0].clientX:evt.clientX
       });
     }
   },
@@ -62,9 +62,9 @@ var ScrubberBar = React.createClass({
     evt.stopPropagation();
     //use the difference in x coordinates of the start and end points of the
     // mouse events to calculate the amount of time to seek
-    var newPlayheadX = this.isMobile?evt.changedTouches[0].screenX:evt.screenX;
+    var newPlayheadX = this.isMobile?evt.changedTouches[0].clientX:evt.clientX;
     var diffX = newPlayheadX - this.state.startingPlayheadX;
-    var diffTime = (diffX / this.props.controlBarWidth) * this.props.duration;
+    var diffTime = (diffX / this.props.scrubberBarWidth) * this.props.duration;
     var newPlayheadTime = this.props.currentPlayhead + diffTime;
 
     if (!this.isMobile){
@@ -96,7 +96,7 @@ var ScrubberBar = React.createClass({
         evt = evt.nativeEvent;
       }
       var offset = this.isMobile?evt.changedTouches[0].clientX:evt.clientX - evt.target.getBoundingClientRect().left;
-      var newPlayheadTime = (offset / this.props.controlBarWidth) * this.props.duration;
+      var newPlayheadTime = (offset / this.props.scrubberBarWidth) * this.props.duration;
       this.props.controller.seek(newPlayheadTime);
       this.setState({
         currentPlayhead: newPlayheadTime
@@ -116,6 +116,7 @@ var ScrubberBar = React.createClass({
     // }
     var scrubberPaddingHeight = parseInt(scrubberBarStyle.scrubberBarPadding.height);
     var scrubberBarHeight = parseInt(scrubberBarStyle.scrubberBarSetting.height);
+    scrubberBarStyle.scrubberBarSetting.width = this.props.scrubberBarWidth;
 
     scrubberBarStyle.scrubberBarPadding.bottom = (this.props.controlBarVisible ?
       controlBarHeight - (scrubberPaddingHeight / 2) : scrubberBarHeight - (scrubberPaddingHeight / 2));
@@ -124,7 +125,7 @@ var ScrubberBar = React.createClass({
     scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
       parseFloat(this.props.duration)) * 100 + "%";
     scrubberBarStyle.playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
-      parseFloat(this.props.duration)) * this.props.controlBarWidth);
+      parseFloat(this.props.duration)) * this.props.scrubberBarWidth);
     scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
 
     // if we're scrubbing, use the coordinates from the latest mouse events
@@ -133,7 +134,7 @@ var ScrubberBar = React.createClass({
         (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
     }
     //prevent the playhead from moving beyond the player element
-    scrubberBarStyle.playheadPaddingStyle.left = Math.max(Math.min(this.props.controlBarWidth - parseInt(scrubberBarStyle.playheadStyle.width)/2,
+    scrubberBarStyle.playheadPaddingStyle.left = Math.max(Math.min(this.props.scrubberBarWidth - parseInt(scrubberBarStyle.playheadStyle.width)/2,
       scrubberBarStyle.playheadPaddingStyle.left), 0);
 
     return (

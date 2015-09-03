@@ -197,6 +197,7 @@ var controlBarStyle = {
     "bottom": "0%",
     "position": "absolute",
     "margin": 0,
+    "padding": 0,
     "fontSize": "18px",
     "listStyle": "none",
     "display": "flex",
@@ -206,7 +207,7 @@ var controlBarStyle = {
     "-moz-user-select": "none",
     "-ms-user-select": "none",
     "userSelect": "none",
-    "transition": "bottom 0.5s, height 0.25s"
+    "transition": "bottom 0.5s, height 0.25s",
   },
 
   controlBarItemSetting: {
@@ -217,6 +218,8 @@ var controlBarStyle = {
     "textAlign": "center",
     "paddingLeft": "7.5px",
     "paddingRight": "7.5px",
+    "paddingTop": "0",
+    "marginTop": "0",
     "cursor": "pointer"
   },
 
@@ -285,11 +288,12 @@ var controlBarStyle = {
 var scrubberBarStyle = {
   scrubberBarSetting: {
     "background": "#afafaf",
-    "width": "100%",
     "height": "5",
-    "padding": 0,
     "margin": 0,
-    "top": "50%",
+    "padding": 0,
+    "left": "15px",
+    "right": "15px",
+    "bottom": "50%",
     "position": "absolute"
   },
 
@@ -303,7 +307,7 @@ var scrubberBarStyle = {
     "position": "absolute",
     "transition": "bottom 0.5s, height 0.25s",
     "width": "100%",
-    "height": "30px",
+    "height": "24px",
     "zIndex": "1"
   },
 
@@ -1108,7 +1112,7 @@ var MoreOptionsScreenStyle = {
 
   buttonListStyle: {
     "position": "absolute",
-    "bottom": "0%",
+    "bottom": "0",
     "left": "30%",
     "right": "30%",
     "width": "40%",

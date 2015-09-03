@@ -16,8 +16,8 @@ var EndScreen = React.createClass({
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
 
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
-  },  
+    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
+  },
 
   handleResize: function(e) {
     if (this.isMounted()) {
@@ -69,7 +69,7 @@ var EndScreen = React.createClass({
           <span className={repeatClass} style={repeatStyle} aria-hidden="true" onClick={this.handleClick}></span>
         </div>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} />
+          scrubberBarWidth={this.state.controlBarWidth} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}
           playerState={this.props.playerState} />
