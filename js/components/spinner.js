@@ -29,6 +29,6 @@ var Spinner = React.createClass({
           <img src="http://www.clipro.tv/demo_request/_assets/images/icons/ooyala_ico.png" style={mSpinnerStyle}></img>
         </div>
       </div>
-  	);
+    );
   }
 });
