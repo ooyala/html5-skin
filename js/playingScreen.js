@@ -14,7 +14,7 @@ var PlayingScreen = React.createClass({
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
+    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
 
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
@@ -78,7 +78,7 @@ var PlayingScreen = React.createClass({
         onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd} style={{height: "100%", width: "100%"}}>
 
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          scrubberBarWidth={this.state.controlBarWidth} />
+          controlBarWidth={this.state.controlBarWidth} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}
           playerState={this.props.playerState} />
