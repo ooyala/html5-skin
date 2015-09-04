@@ -26,7 +26,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "currentAdsInfo": {
         "currentAdItem": null,
         "numberOfAds": 0,
-        "skipAdButtonVisible": false
+        "skipAdButtonEnabled": false
       },
 
       "ccOptions":{
@@ -272,7 +272,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onSingleAdPlayed: function(event) {
       console.log("onSingleAdPlayed is called");
       this.state.isPlayingAd = false;
-      this.state.currentAdsInfo.skipAdButtonVisible = false;
+      this.state.currentAdsInfo.skipAdButtonEnabled = false;
     },
 
     onWillPauseAds: function(event) {
@@ -291,14 +291,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onShowAdSkipButton: function(event) {
-      console.log("xenia in onShowAdSkipButton");
-      this.state.currentAdsInfo.skipAdButtonVisible = true;
+      this.state.currentAdsInfo.skipAdButtonEnabled = true;
       this.renderSkin();
     },
 
     onSkipAdClicked: function(event) {
       console.log("onSkipAdClicked is called");
-      this.state.currentAdsInfo.skipAdButtonVisible = false;
+      this.state.currentAdsInfo.skipAdButtonEnabled = false;
       this.mb.publish(OO.EVENTS.SKIP_AD);
     },
 

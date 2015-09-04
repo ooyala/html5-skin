@@ -93,9 +93,8 @@ var AdPanel = React.createClass({
     }
 
     // Skip
-    //if (!this.props.currentAdsInfo.currentAdItem.skippable) { xenia
     var handleButtonClick;
-    if (!this.props.currentAdsInfo.skipAdButtonVisible) {
+    if (!this.props.currentAdsInfo.skipAdButtonEnabled) {
       adScreenStyle.skipButtonStyle.opacity = "0.3";
       handleButtonClick = null;
       adScreenStyle.skipButtonStyle.cursor = "default";
@@ -105,12 +104,11 @@ var AdPanel = React.createClass({
       handleButtonClick = this.handleSkipAdButtonClick;
       adScreenStyle.skipButtonStyle.cursor = "pointer";
     }
-    console.log("xenia currentAdsInfo.skipAdButtonVisible", this.props.currentAdsInfo.skipAdButtonVisible);
 
     var skipButtonText = Utils.getLocalizedString(this.props.language, SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
     var skipButtonDiv = <AdPanelTopBarItem key="skipButton" onButtonClicked={handleButtonClick} style={adScreenStyle.skipButtonStyle} data={skipButtonText} itemClassName="skip"/>;
     adTopBarItems.push(skipButtonDiv);
-  
+
     return adTopBarItems;
   },
 
