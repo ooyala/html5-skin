@@ -18,6 +18,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "playerState": null,
       "discoveryData": null,
       "isPlayingAd": false,
+      "adOverlayUrl": null,
       "configLoaded": false,
       "fullscreen": false,
       "pauseAnimationDisabled": false,
@@ -78,6 +79,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
         this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
         this.mb.subscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi", _.bind(this.onWillResumeAds, this));
+        this.mb.subscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi", _.bind(this.onWillPlayNonlinearAd, this));
+
         if (OO.EVENTS.DISCOVERY_API) {
           this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
         }
@@ -241,6 +244,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     publishOverlayRenderingEvent: function(marginHeight) {
       this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, {"marginHeight": marginHeight});
+    },
+
+    onWillPlayNonlinearAd: function(event, url) {
+      console.log("received play overlay event");
+      if(url.url) {
+        this.state.adOverlayUrl = url.url;
+      }
     },
 
     onAdsPlayed: function(event) {

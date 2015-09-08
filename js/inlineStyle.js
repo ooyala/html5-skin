@@ -151,6 +151,7 @@ var controlBarStyle = {
     "background": "rgba(0, 0, 0, 0.3)",
     "width": "100%",
     "bottom": "0%",
+    "height": 60,
     "position": "absolute",
     "margin": 0,
     "padding": 0,
@@ -704,7 +705,18 @@ var adScreenStyle = {
   },
 };
 
-var closedCaptionScreenStyles ={
+var adOverlayStyle = {
+  style: {
+    display: "inline-block",
+    bottom: "50%",
+    position: "absolute",
+    transition: "bottom 0.5s, height 0.25s",
+    margin: 0,
+    padding: 0
+  }
+};
+
+var closedCaptionScreenStyles = {
 
   screenStyle: {
     backgroundColor: "rgba(0,0,0,0.8)",

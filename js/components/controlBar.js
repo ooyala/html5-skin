@@ -274,7 +274,7 @@ var ControlBar = React.createClass({
     // this.scaleControlBarItemsBasedOnControlBarSize(controlBarHeight);
     // this.scaleControlBarItemsBasedOnHeight(controlBarHeight);
 
-    this.setupControlBarItemForConstantHeight(60);
+    this.setupControlBarItemForConstantHeight(controlBarStyle.controlBarSetting.height);
     var controlBarItems = this.populateControlBar();
     return (
       <div className="controlBar" onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}
