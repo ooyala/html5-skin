@@ -1,7 +1,7 @@
 // Deploy v4 plugins to s3.
 var TOKEN = process.env.AWS_ACCESS_KEY_ID;
 var SECRET = process.env.AWS_SECRET_ACCESS_KEY;
-var BUCKET = "static.ooyala.com";
+var BUCKET = "xd-team.ooyala.com";
 
 var fs = require('fs'),
     mime = require('mime'),
@@ -10,7 +10,7 @@ var fs = require('fs'),
 aws.config.update({accessKeyId: TOKEN, secretAccessKey: SECRET});
 var s3 = new aws.S3();
 
-var s3Path = "v4";
+var s3Path = "v4-plugins";
 var deployToSandbox = process.env.deploy_to == "sandbox";
 
 //List of files to upload
