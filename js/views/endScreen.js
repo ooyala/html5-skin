@@ -3,7 +3,8 @@
 *********************************************************************/
 var React = require('react'),
     ControlBar = require('../components/controlBar'),
-    ScrubberBar = require('../components/scrubberBar');
+    ScrubberBar = require('../components/scrubberBar'),
+    CONSTANTS = require('../constants/constants');
 
 var EndScreen = React.createClass({
   getInitialState: function() {
@@ -19,7 +20,7 @@ var EndScreen = React.createClass({
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
 
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
+    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
   },
 
   handleResize: function(e) {

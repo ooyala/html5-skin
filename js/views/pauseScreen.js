@@ -5,7 +5,8 @@ var React = require('react'),
     InlineStyle = require('../styles/inlineStyle'),
     Utils = require('../components/utils'),
     ControlBar = require('../components/controlBar'),
-    ScrubberBar = require('../components/scrubberBar');
+    ScrubberBar = require('../components/scrubberBar'),
+    CONSTANTS = require('../constants/constants');
 
 var PauseScreen = React.createClass({
   getInitialState: function() {
@@ -30,7 +31,7 @@ var PauseScreen = React.createClass({
     InlineStyle.pauseScreenStyle.fading.transition = (this.props.pauseAnimationDisabled === true ? "opacity 0s" : "opacity 1s");
 
     this.setState({
-      controlBarWidth: this.getDOMNode().clientWidth - 2 * UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING,
+      controlBarWidth: this.getDOMNode().clientWidth - 2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING,
       description: this.getShortenedDescription()
     });
 

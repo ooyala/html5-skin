@@ -1064,7 +1064,7 @@ module.exports = {
 
     buttonListStyle: {
       "position": "absolute",
-      "bottom": "0%",
+      "bottom": "0",
       "left": "30%",
       "right": "30%",
       "width": "40%",
