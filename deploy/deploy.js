@@ -13,22 +13,17 @@ var fs = require('fs'),
 aws.config.update({accessKeyId: TOKEN, secretAccessKey: SECRET});
 var s3 = new aws.S3();
 
+var deployToSandbox = process.env.deploy_to == "sandbox";
+
 //List of files to upload
 var deployPath;
-if (process.env.deploy_to == "sandbox") {
-  deployPath = "sandbox/" + process.env.sandbox_folder;
+if (deployToSandbox) {
+  deployPath = process.env.deploy_to + "/" + process.env.sandbox_folder;
 } else {
   deployPath = process.env.deploy_to;
 }
 
 var filePaths = [
-  {
-    localPath: __dirname + "/../build/html5-skin.js",
-    remotePaths: [
-      deployPath + "/html5-skin.js",
-      process.env.version + "/html5-skin.js"
-    ]
-  },
   {
     localPath: __dirname + "/../build/html5-skin.js",
     remotePaths: [
@@ -45,14 +40,14 @@ try {
     var fileBuffer = fs.readFileSync(localFilePath);
 
     //If we are deploying to sandbox, we don't want to deploy it to its own version folder
-    if (process.env.deploy_to == "sandbox") {
+    if (deployToSandbox) {
       remotePaths.splice(1, 1);
     }
 
     for (var j = 0; j < remotePaths.length; j++) {
       var remoteFilePath = remotePaths[j];
 
-      // Set CacheControl to 10 minutes
+      console.log("Deploying " + localFilePath + " to " + BUCKET + "/" + remoteFilePath);
       var params = {
         Bucket: BUCKET,
         Key: remoteFilePath,
@@ -62,16 +57,12 @@ try {
         CacheControl: "max-age=600",
         ACL: 'public-read'
       };
-
-      console.log("Deploying " + localFilePath + " to " + BUCKET + "/" + remoteFilePath);
-
       s3.putObject(params, function(err, data) {
         if (err) {
           throw "Error in deploy:" + err;
         }
       });
     }
-
   }
 } catch (e) {
   throw e;
