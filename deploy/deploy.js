@@ -1,10 +1,7 @@
 // Deploy v4 plugins to s3.
-
 var TOKEN = process.env.AWS_ACCESS_KEY_ID;
 var SECRET = process.env.AWS_SECRET_ACCESS_KEY;
-
-//TODO: modify this to not include any folders and add the folders later. Will fix when correct s3 bucket is being used.
-var BUCKET = "xd-team.ooyala.com/v4-plugins";
+var BUCKET = "static.ooyala.com";
 
 var fs = require('fs'),
     mime = require('mime'),
@@ -13,6 +10,7 @@ var fs = require('fs'),
 aws.config.update({accessKeyId: TOKEN, secretAccessKey: SECRET});
 var s3 = new aws.S3();
 
+var s3Path = "v4";
 var deployToSandbox = process.env.deploy_to == "sandbox";
 
 //List of files to upload
@@ -27,8 +25,8 @@ var filePaths = [
   {
     localPath: __dirname + "/../build/html5-skin.js",
     remotePaths: [
-      deployPath + "/html5-skin.js",
-      process.env.version + "/html5-skin.js"
+      s3Path + "/" + deployPath + "/html5-skin.js",
+      s3Path + "/" + process.env.version + "/html5-skin.js"
     ]
   }
 ];
