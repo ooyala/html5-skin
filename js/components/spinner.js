@@ -18,6 +18,7 @@ var Spinner = React.createClass({
   },
 
   render: function() {
+    var mSpinner = spinnerStyle.spinner;
     var mSpinnerStyle = spinnerStyle.style;
     mSpinnerStyle.WebkitTransform = "translate(-50%, -50%) rotate(" + this.state.spinnerAngle + "deg)";
     mSpinnerStyle.MozTransform = "translate(-50%, -50%) rotate(" + this.state.spinnerAngle + "deg)";
@@ -26,7 +27,7 @@ var Spinner = React.createClass({
     return (
       <div className="loadingScreen" style={startScreenStyle.style}>
         <div className="spinner">
-          <img src="http://www.clipro.tv/demo_request/_assets/images/icons/ooyala_ico.png" style={mSpinnerStyle}></img>
+          <img src={mSpinner} style={mSpinnerStyle}></img>
         </div>
       </div>
     );
