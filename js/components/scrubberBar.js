@@ -116,6 +116,9 @@ var ScrubberBar = React.createClass({
     // }
     var scrubberPaddingHeight = parseInt(scrubberBarStyle.scrubberBarPadding.height);
     var scrubberBarHeight = parseInt(scrubberBarStyle.scrubberBarSetting.height);
+    scrubberBarStyle.scrubberBarSetting.width = this.props.controlBarWidth - (2 * UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING);
+    scrubberBarStyle.scrubberBarSetting.left = UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
+    scrubberBarStyle.scrubberBarSetting.right = 2 * UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
 
     scrubberBarStyle.scrubberBarPadding.bottom = (this.props.controlBarVisible ?
       controlBarHeight - (scrubberPaddingHeight / 2) : scrubberBarHeight - (scrubberPaddingHeight / 2));
@@ -133,8 +136,10 @@ var ScrubberBar = React.createClass({
         (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
     }
     //prevent the playhead from moving beyond the player element
-    scrubberBarStyle.playheadPaddingStyle.left = Math.max(Math.min(this.props.controlBarWidth - parseInt(scrubberBarStyle.playheadStyle.width)/2,
-      scrubberBarStyle.playheadPaddingStyle.left), 0);
+    scrubberBarStyle.playheadPaddingStyle.left = Math.max(
+      Math.min(scrubberBarStyle.scrubberBarSetting.width - parseInt(scrubberBarStyle.playheadStyle.width)/2,
+        scrubberBarStyle.playheadPaddingStyle.left)
+      , 0);
 
     return (
       <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp}
