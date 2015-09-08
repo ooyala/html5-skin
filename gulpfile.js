@@ -18,7 +18,7 @@ var path = {
 };
 
 // Build All
-gulp.task('build', ['browserify', 'buildCss']);
+gulp.task('build', ['browserify', 'pretty', 'buildCss']);
 
 // Browserify JS
 gulp.task('browserify', function () {
@@ -31,13 +31,30 @@ gulp.task('browserify', function () {
   });
 
   return b.bundle()
-    .pipe(source('html5-skin.js'))
+    .pipe(source('html5-skin.min.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
     // Add transformation tasks to the pipeline here.
     .pipe(uglify())
     .on('error', gutil.log)
     .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('./build/'));
+});
+
+// Unminified JS
+gulp.task('pretty', function () {
+  // set up the browserify instance on a task basis
+  var b = browserify({
+    entries: './js/controller.js',
+    debug: false,
+    // defining transforms here will avoid crashing your stream
+    transform: [reactify]
+  });
+
+  return b.bundle()
+    .pipe(source('html5-skin.js'))
+    .pipe(buffer())
+    .on('error', gutil.log)
     .pipe(gulp.dest('./build/'));
 });
 
