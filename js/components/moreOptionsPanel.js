@@ -27,6 +27,10 @@ var MoreOptionsPanel = React.createClass({
     }
   },
 
+  componentWillUnmount: function () {
+    InlineStyle.MoreOptionsScreenStyle.buttonListStyle.bottom = "0";
+  },
+
   closeMoreOptionsScreen: function(evt) {
     if (evt.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,

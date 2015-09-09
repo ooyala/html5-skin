@@ -174,6 +174,8 @@ module.exports = {
       "textAlign": "center",
       "paddingLeft": "7.5px",
       "paddingRight": "7.5px",
+      "paddingTop": "0",
+      "marginTop": "0",
       "cursor": "pointer"
     },
 
@@ -234,19 +236,20 @@ module.exports = {
     watermarkImageStyle: {
       "position": "relative",
       "height": "18px",
-      "top": "21px",
+      "top": "21px"
     }
   },
 
   scrubberBarStyle: {
     scrubberBarSetting: {
       "background": "#afafaf",
-      "width": "100%",
       "height": "5",
-      "padding": 0,
       "margin": 0,
-      "top": "50%",
-      "position": "absolute"
+      "position": "absolute",
+      "padding": 0,
+      "left": "15px",
+      "right": "15px",
+      "bottom": "50%"
     },
 
     scrubberBarPadding: {
@@ -259,7 +262,7 @@ module.exports = {
       "position": "absolute",
       "transition": "bottom 0.5s, height 0.25s",
       "width": "100%",
-      "height": "30px",
+      "height": "24px",
       "zIndex": "1"
     },
 
@@ -580,7 +583,7 @@ module.exports = {
       marginTop: "35px",
       height: "120px",
       width: "214px",
-      "flex-shrink": 0
+      flexShrink: "0"
     },
 
     discoveryImageWrapperStyle: {

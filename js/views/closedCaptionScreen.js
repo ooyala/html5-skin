@@ -11,7 +11,8 @@ var React = require('react'),
     InlineStyle = require('../styles/inlineStyle'),
     ClosedCaptionPanel = require('../components/closedCaptionPanel'),
     ControlBar = require('../components/controlBar'),
-    ScrubberBar = require('../components/scrubberBar');
+    ScrubberBar = require('../components/scrubberBar'),
+    CONSTANTS = require('../constants/constants');
 
 var ClosedCaptionScreen = React.createClass({
   getInitialState: function() {
@@ -24,7 +25,8 @@ var ClosedCaptionScreen = React.createClass({
   },
 
   handleResize: function(e) {
-    this.setState({clientWidth: this.getDOMNode().clientWidth, clientHeight: this.getDOMNode().clientHeight});
+    this.setState({clientWidth: this.getDOMNode().clientWidth - 2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING,
+      clientHeight: this.getDOMNode().clientHeight});
   },
 
   componentDidMount: function () {
@@ -58,7 +60,7 @@ var ClosedCaptionScreen = React.createClass({
       <div style={{height: "100%", width: "100%"}}>
         <ClosedCaptionPanel {...this.props} ccOptions = {this.props.ccOptions} clientWidth = {this.state.clientWidth} clientHeight = {this.state.clientHeight}/>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.clientWidth}/>
+          scrubberBarWidth={this.state.clientWidth}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.clientWidth}
           playerState={this.state.playerState}/>
