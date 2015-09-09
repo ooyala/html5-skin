@@ -1,6 +1,11 @@
 /********************************************************************
   UP NEXT SCREEN
 *********************************************************************/
+var React = require('react'),
+    UpNextPanel = require('../components/upNextPanel'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar'),
+    CONSTANTS = require('../constants/constants');
 
 var UpNextScreen = React.createClass({
   getInitialState: function() {
@@ -12,7 +17,7 @@ var UpNextScreen = React.createClass({
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
+    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
   },
 
   handlePlayerMouseUp: function(event) {
@@ -47,3 +52,4 @@ var UpNextScreen = React.createClass({
     );
   }
 });
+module.exports = UpNextScreen;

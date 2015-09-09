@@ -5,17 +5,20 @@
 * @class DiscoveryPanel
 * @constructor
 */
+var React = require('react'),
+    CONSTANTS = require('../constants/constants'),
+    InlineStyle = require('../styles/inlineStyle'),
+    Utils = require('./utils');
 
 var DiscoveryPanel = React.createClass({
-
   componentDidMount: function(){
     if (Utils.isSafari()){
-      discoveryScreenStyle.panelStyle.display = "-webkit-flex";
-      discoveryScreenStyle.discoveryToasterStyle.display = "-webkit-flex";
+      InlineStyle.discoveryScreenStyle.panelStyle.display = "-webkit-flex";
+      InlineStyle.discoveryScreenStyle.discoveryToasterStyle.display = "-webkit-flex";
     }
     else {
-      discoveryScreenStyle.panelStyle.display = "flex";
-      discoveryScreenStyle.discoveryToasterStyle.display = "flex";
+      InlineStyle.discoveryScreenStyle.panelStyle.display = "flex";
+      InlineStyle.discoveryScreenStyle.discoveryToasterStyle.display = "flex";
     }
   },
 
@@ -107,8 +110,8 @@ var DiscoveryPanel = React.createClass({
   },
 
   componentWillUpdate: function(propsParam, newState){
-    var chevronLeftButtonStyle = discoveryScreenStyle.discoveryChevronLeftButton.style;
-    var chevronRightButtonStyle = discoveryScreenStyle.discoveryChevronRightButton.style;
+    var chevronLeftButtonStyle = InlineStyle.discoveryScreenStyle.discoveryChevronLeftButton.style;
+    var chevronRightButtonStyle = InlineStyle.discoveryScreenStyle.discoveryChevronRightButton.style;
     if(this.shouldShowLeftButton(newState)) {
       chevronLeftButtonStyle.visibility = "visible";
     }
@@ -139,7 +142,7 @@ var DiscoveryPanel = React.createClass({
   },
 
   shouldShowCountdownTimer: function() {
-    return this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen && this.props.playerState === STATE.END;
+    return this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen && this.props.playerState === CONSTANTS.STATE.END;
   },
 
   handleDiscoveryCountDownClick: function(event) {
@@ -154,41 +157,41 @@ var DiscoveryPanel = React.createClass({
   },
 
   render: function() {
-    var panelStyle = discoveryScreenStyle.panelStyle;
+    var panelStyle = InlineStyle.discoveryScreenStyle.panelStyle;
     var controlBarHeight = 60;
     panelStyle.bottom = controlBarHeight + "px";
 
-    var panelTitleBarStyle = discoveryScreenStyle.panelTitleBarStyle;
-    var panelTitle = SKIN_TEXT.DISCOVER;
+    var panelTitleBarStyle = InlineStyle.discoveryScreenStyle.panelTitleBarStyle;
+    var panelTitle = CONSTANTS.SKIN_TEXT.DISCOVER;
     panelTitle = Utils.getLocalizedString(this.props.language, panelTitle, this.props.localizableStrings);
-    var panelTitleTextStyle = discoveryScreenStyle.panelTitleTextStyle;
+    var panelTitleTextStyle = InlineStyle.discoveryScreenStyle.panelTitleTextStyle;
 
-    var discoveryToasterContainerStyle = discoveryScreenStyle.discoveryToasterContainerStyle;
-    var discoveryToasterStyle = discoveryScreenStyle.discoveryToasterStyle;
+    var discoveryToasterContainerStyle = InlineStyle.discoveryScreenStyle.discoveryToasterContainerStyle;
+    var discoveryToasterStyle = InlineStyle.discoveryScreenStyle.discoveryToasterStyle;
     discoveryToasterStyle.left = this.state.discoveryToasterLeftOffset;
 
-    var contentBlockStyle = discoveryScreenStyle.discoveryContentBlockStyle;
-    var imageStyle = discoveryScreenStyle.discoveryImageStyle;
+    var contentBlockStyle = InlineStyle.discoveryScreenStyle.discoveryContentBlockStyle;
+    var imageStyle = InlineStyle.discoveryScreenStyle.discoveryImageStyle;
 
-    var contentTitleStyle = discoveryScreenStyle.discoveryContentTitleStyle;
+    var contentTitleStyle = InlineStyle.discoveryScreenStyle.discoveryContentTitleStyle;
     if (!this.props.skinConfig.discoveryScreen.showContentTitle) {
        contentTitleStyle.display = "none";
     }
 
-    var chevronLeftButtonContainer = discoveryScreenStyle.discoveryChevronLeftButtonContainer;
+    var chevronLeftButtonContainer = InlineStyle.discoveryScreenStyle.discoveryChevronLeftButtonContainer;
     var chevronLeftButtonClass = this.props.skinConfig.icons.left.fontStyleClass;
-    var chevronLeftButtonStyle = discoveryScreenStyle.discoveryChevronLeftButton.style;
+    var chevronLeftButtonStyle = InlineStyle.discoveryScreenStyle.discoveryChevronLeftButton.style;
 
-    var chevronRightButtonContainer = discoveryScreenStyle.discoveryChevronRightButtonContainer;
+    var chevronRightButtonContainer = InlineStyle.discoveryScreenStyle.discoveryChevronRightButtonContainer;
     var chevronRightButtonClass = this.props.skinConfig.icons.right.fontStyleClass;
-    var chevronRightButtonStyle = discoveryScreenStyle.discoveryChevronRightButton.style;
+    var chevronRightButtonStyle = InlineStyle.discoveryScreenStyle.discoveryChevronRightButton.style;
 
     var discoveryData = this.props.discoveryData;
     var discoveryContentBlocks = [];
 
-    var discoveryCountDownStyle = discoveryScreenStyle.discoveryCountDownStyle;
-    var discoveryCountDownIconStyle = discoveryScreenStyle.discoveryCountDownIconStyle;
-    var discoveryCountDownWrapperStyle = discoveryScreenStyle.discoveryCountDownWrapperStyle;
+    var discoveryCountDownStyle = InlineStyle.discoveryScreenStyle.discoveryCountDownStyle;
+    var discoveryCountDownIconStyle = InlineStyle.discoveryScreenStyle.discoveryCountDownIconStyle;
+    var discoveryCountDownWrapperStyle = InlineStyle.discoveryScreenStyle.discoveryCountDownWrapperStyle;
     if(!this.state.showDiscoveryCountDown) {
       discoveryCountDownWrapperStyle.display="none";
     }
@@ -202,7 +205,7 @@ var DiscoveryPanel = React.createClass({
           if(this.shouldShowCountdownTimer() && i === 0) {
             discoveryContentBlocks.push(
             <div className="contentBlockClassName" style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)} onTouchEnd={this.handleDiscoveryContentClick.bind(this, i)}>
-              <div style={discoveryScreenStyle.discoveryImageWrapperStyle}>
+              <div style={InlineStyle.discoveryScreenStyle.discoveryImageWrapperStyle}>
                 <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}>
                      <div className="countdownClock" style={discoveryCountDownWrapperStyle} onClick={this.handleDiscoveryCountDownClick} onTouchEnd={this.handleDiscoveryCountDownClick}>
                        <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
@@ -216,7 +219,7 @@ var DiscoveryPanel = React.createClass({
           else {
             discoveryContentBlocks.push(
               <div className={contentBlockClassName} style={contentBlockStyle} onClick={this.handleDiscoveryContentClick.bind(this, i)} onTouchEnd={this.handleDiscoveryContentClick.bind(this, i)}>
-                <div style={discoveryScreenStyle.discoveryImageWrapperStyle}>
+                <div style={InlineStyle.discoveryScreenStyle.discoveryImageWrapperStyle}>
                   <img style={imageStyle} src={this.props.discoveryData.relatedVideos[i].preview_image_url}></img>
                 </div>
                 <div className="discoveryContentName" style={contentTitleStyle}>{this.props.discoveryData.relatedVideos[i].name}</div>
@@ -251,3 +254,4 @@ var DiscoveryPanel = React.createClass({
     );
   }
 });
+module.exports = DiscoveryPanel;

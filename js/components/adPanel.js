@@ -7,6 +7,10 @@
 * @class AdPanel
 * @constructor
 */
+var React = require('react'),
+    CONSTANTS = require('../constants/constants'),
+    InlineStyle = require('../styles/inlineStyle'),
+    Utils = require('./utils');
 
 var AdPanelTopBarItem = React.createClass({
   render: function() {
@@ -19,10 +23,10 @@ var AdPanelTopBarItem = React.createClass({
 var AdPanel = React.createClass({
   componentDidMount: function(){
     if (Utils.isSafari()){
-      adScreenStyle.topBarStyle.display = "-webkit-flex";
+      InlineStyle.adScreenStyle.topBarStyle.display = "-webkit-flex";
     }
     else {
-      adScreenStyle.topBarStyle.display = "flex";
+      InlineStyle.adScreenStyle.topBarStyle.display = "flex";
     }
   },
 
@@ -51,12 +55,12 @@ var AdPanel = React.createClass({
     var adTitle = this.props.currentAdsInfo.currentAdItem.name;
     // AMC puts "Unknown" in the name field if ad name unavailable
     if (this.isValidAdPlaybackInfo(adTitle) && this.props.controlBarWidth > 560) {
-      var adTitleDiv = <AdPanelTopBarItem key="AdTitle" style={adScreenStyle.adPanelTopBarTextStyle} data={adTitle} itemClassName="adTitle"/>;
+      var adTitleDiv = <AdPanelTopBarItem key="AdTitle" style={InlineStyle.adScreenStyle.adPanelTopBarTextStyle} data={adTitle} itemClassName="adTitle"/>;
       adTopBarItems.push(adTitleDiv);
     }
 
     // Ad playback Info
-    var adPlaybackInfo = Utils.getLocalizedString(this.props.language, SKIN_TEXT.AD, this.props.localizableStrings);
+    var adPlaybackInfo = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.AD, this.props.localizableStrings);
     var currentAdIndex = this.props.currentAdsInfo.currentAdItem.indexInPod;
     var totalNumberOfAds = this.props.currentAdsInfo.numberOfAds;
     if (this.isValidAdPlaybackInfo(currentAdIndex) && this.isValidAdPlaybackInfo(totalNumberOfAds)) {
@@ -66,24 +70,24 @@ var AdPanel = React.createClass({
     var remainingTime = Utils.formatSeconds(parseInt(this.props.currentAdsInfo.currentAdItem.duration - this.props.currentPlayhead));
     adPlaybackInfo = adPlaybackInfo + " - " + remainingTime;
 
-    var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" style={adScreenStyle.adPanelTopBarTextStyle} data={adPlaybackInfo} itemClassName="adPlaybackInfo"/>;
+    var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" style={InlineStyle.adScreenStyle.adPanelTopBarTextStyle} data={adPlaybackInfo} itemClassName="adPlaybackInfo"/>;
     adTopBarItems.push(adPlaybackInfoDiv);
 
     // Flexible space
-    var flexibleSpaceDiv = <AdPanelTopBarItem key="flexibleSpace" style={adScreenStyle.flexibleSpace} itemClassName="flexibleSpace"/>;
+    var flexibleSpaceDiv = <AdPanelTopBarItem key="flexibleSpace" style={InlineStyle.adScreenStyle.flexibleSpace} itemClassName="flexibleSpace"/>;
     adTopBarItems.push(flexibleSpaceDiv);
 
     // Learn more
     if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.clickUrl)) {
-      var learnMoreText = Utils.getLocalizedString(this.props.language, SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
-      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" onLearnMoreButtonClicked={this.handleLearnMoreButtonClick} style={adScreenStyle.learnMoreButtonStyle} data={learnMoreText} itemClassName="learnMore"/>;
+      var learnMoreText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
+      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" onLearnMoreButtonClicked={this.handleLearnMoreButtonClick} style={InlineStyle.adScreenStyle.learnMoreButtonStyle} data={learnMoreText} itemClassName="learnMore"/>;
       adTopBarItems.push(learnMoreButtonDiv);
     }
 
     // Skip
     if (this.props.currentAdsInfo.currentAdItem.skippable) {
-      var skipButtonText = Utils.getLocalizedString(this.props.language, SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
-      var skipButtonDiv = <AdPanelTopBarItem key="skipButton" style={adScreenStyle.skipButtonStyle} data={skipButtonText} itemClassName="skip"/>;
+      var skipButtonText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
+      var skipButtonDiv = <AdPanelTopBarItem key="skipButton" style={InlineStyle.adScreenStyle.skipButtonStyle} data={skipButtonText} itemClassName="skip"/>;
       adTopBarItems.push(skipButtonDiv);
     }
     return adTopBarItems;
@@ -93,11 +97,12 @@ var AdPanel = React.createClass({
   render: function() {
     var adTopBarItems = this.populateAdTopBar();
     return (
-      <div style={adScreenStyle.panelStyle}>
-        <div className="adTopBar" style={adScreenStyle.topBarStyle}>
+      <div style={InlineStyle.adScreenStyle.panelStyle}>
+        <div className="adTopBar" style={InlineStyle.adScreenStyle.topBarStyle}>
           {adTopBarItems}
         </div>
       </div>
     );
   }
 });
+module.exports = AdPanel;
