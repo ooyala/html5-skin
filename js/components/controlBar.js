@@ -87,7 +87,7 @@ var ControlBar = React.createClass({
   setNewVolume: function(evt) {
     var newVolumeHeadX = this.isMobile ? evt.changedTouches[0].screenX : evt.screenX;
     var diffX = newVolumeHeadX - this.state.currentVolumeHead;
-    var diffVolume = (diffX / parseInt(InlineStyle.controlBarStyle.volumeSliderStyle.volumeBarSetting.width));
+    var diffVolume = (diffX / parseInt(InlineStyle.volumeSliderStyle.volumeBarSetting.width));
     var newVolume = this.props.controller.state.volumeState.volume + diffVolume;
     newVolume = Math.min(newVolume, 1);
     newVolume = Math.max(newVolume, 0);
@@ -295,7 +295,7 @@ var ControlBar = React.createClass({
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
     //if mobile and not showing the slider or the icon, extra space can be added to control bar width:
-    var extraSpaceVolumeSlider = ((this.isMobile && !this.state.volumeSliderVisible) ? parseInt(InlineStyle.controlBarStyle.volumeSliderStyle.volumeBarSetting.width) : 0);
+    var extraSpaceVolumeSlider = ((this.isMobile && !this.state.volumeSliderVisible) ? parseInt(InlineStyle.volumeSliderStyle.volumeBarSetting.width) : 0);
     var extraSpaceVolumeIcon = ((Utils.isIos()) ?
                                 parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.fontSize)+
                                 parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.paddingLeft)+

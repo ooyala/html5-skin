@@ -109,11 +109,11 @@ var MoreOptionsPanel = React.createClass({
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
     //if mobile and not showing the slider or the icon, extra space can be added to control bar width:
-    var extraSpaceVolumeSlider = ((this.isMobile)?parseInt(controlBarStyle.volumeSliderStyle.volumeBarSetting.width):0);
+    var extraSpaceVolumeSlider = ((this.isMobile)?parseInt(InlineStyle.volumeSliderStyle.volumeBarSetting.width):0);
     var extraSpaceVolumeIcon = ((Utils.isIos())?
-                                parseInt(controlBarStyle.controlBarItemSetting.fontSize)+
-                                parseInt(controlBarStyle.controlBarItemSetting.paddingLeft)+
-                                parseInt(controlBarStyle.controlBarItemSetting.paddingRight)
+                                parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.fontSize)+
+                                parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.paddingLeft)+
+                                parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.paddingRight)
                                 :0);
 
     //if no hours, add extra space to control bar width:
