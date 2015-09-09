@@ -76,5 +76,16 @@ To start a python server, cd into the repo directory and run:
 
 You should now be able to load the sample page by hitting http://localhost:8000/sample.html
 
+## Testing
+To run tests, run this command:
+
+    npm test
+    
+Add test files to directory `tests/`.
+
+Test file should have same location and name as `js/` file with `-test` after test file name.
+
+For example, component file `js/components/sharePanel.js` will have test file `tests/components/sharePanel-test.js`.
+
 ## Publisher and Ooyala Customer
 Able to fork git repo and build the skin at will. Terms and condition apply. Please read [Ooyala open-source onboarding guide](http://www.ooyala.com)

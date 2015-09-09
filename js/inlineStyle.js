@@ -61,7 +61,7 @@ var startScreenStyle = {
 };
 
 var spinnerStyle = {
-  spinner: "assets/images/loading.svg",
+  spinner: "assets/images/loading.png",
   style: {
     width: "10%",
     WebkitTransform: "translate(-50%, -50%) rotate(90deg)",

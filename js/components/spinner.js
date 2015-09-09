@@ -1,3 +1,6 @@
+var React = require('react'),
+    InlineStyle = require('../styles/inlineStyle');
+
 var Spinner = React.createClass({
   getInitialState: function() {
     return {
@@ -18,8 +21,8 @@ var Spinner = React.createClass({
   },
 
   render: function() {
-    var mSpinner = spinnerStyle.spinner;
-    var mSpinnerStyle = spinnerStyle.style;
+    var mSpinner = InlineStyle.spinnerStyle.spinner;
+    var mSpinnerStyle = InlineStyle.spinnerStyle.style;
     mSpinnerStyle.WebkitTransform = "translate(-50%, -50%) rotate(" + this.state.spinnerAngle + "deg)";
     mSpinnerStyle.MozTransform = "translate(-50%, -50%) rotate(" + this.state.spinnerAngle + "deg)";
     mSpinnerStyle.msTransform = "translate(-50%, -50%) rotate(" + this.state.spinnerAngle + "deg)";
@@ -33,3 +36,4 @@ var Spinner = React.createClass({
     );
   }
 });
+module.exports = Spinner;

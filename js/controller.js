@@ -1,6 +1,12 @@
 /********************************************************************
   CONTROLLER
 *********************************************************************/
+var React = require('react'),
+    Utils = require('./components/utils'),
+    CONSTANTS = require('./constants/constants'),
+    AccessibilityControls = require('./components/accessibilityControls'),
+    Skin = require('./skin');
+
 OO.plugin("Html5Skin", function (OO, _, $, W) {
   //Check if the player is at least v4. If not, the skin cannot load.
   if (!OO.playerParams.core_version || OO.playerParams.core_version <= 3) {
@@ -112,9 +118,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.skin = React.render(
           React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + elementId + " .player_skin")
         );
-        var accessibilityControls = new AccessibilityControls(this); //keyboard support
+        //var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
-        this.state.screenToShow = SCREEN.LOADING_SCREEN;
+        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
       }, this));
 
@@ -132,7 +138,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onContentTreeFetched: function (event, contentTree) {
       this.resetUpNextInfo();
       this.state.contentTree = contentTree;
-      this.state.playerState = STATE.START;
+      this.state.playerState = CONSTANTS.STATE.START;
     },
 
     onVolumeChanged: function (event, newVolume){
@@ -148,15 +154,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
       // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
       // So we only need to update the playhead for ad screen.
-      if (this.state.screenToShow !== SCREEN.AD_SCREEN ) {
+      if (this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN ) {
         if (this.skin.props.skinConfig.upNextScreen.showUpNext) {
           if (!Utils.isIPhone()){//no UpNext for iPhone
             this.showUpNextScreenWhenReady(currentPlayhead, duration);
           }
-        } else if (this.state.playerState === STATE.PLAYING) {
-          this.state.screenToShow = SCREEN.PLAYING_SCREEN;
-        } else if (this.state.playerState === STATE.PAUSE) {
-          this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+        } else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
+          this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+        } else if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
+          this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
       }
       if (!this.state.seeking) {
@@ -176,16 +182,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       if (duration - currentPlayhead <= timeToShow &&
           !this.state.upNextInfo.countDownCancelled &&
-          this.state.upNextInfo.upNextData !== null && this.state.playerState === STATE.PLAYING) {
-        this.state.screenToShow = SCREEN.UP_NEXT_SCREEN;
+          this.state.upNextInfo.upNextData !== null && this.state.playerState === CONSTANTS.STATE.PLAYING) {
+        this.state.screenToShow = CONSTANTS.SCREEN.UP_NEXT_SCREEN;
       }
     },
 
     onPlaying: function() {
       // pause/resume of Ad playback is handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
-      if (this.state.screenToShow != SCREEN.AD_SCREEN) {
-        this.state.screenToShow = SCREEN.PLAYING_SCREEN;
-        this.state.playerState = STATE.PLAYING;
+      if (this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN) {
+        this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+        this.state.playerState = CONSTANTS.STATE.PLAYING;
         if (Utils.isSafari()){
           //Safari only can set cc when the video is playing, not before
           this.setClosedCaptionsLanguage();
@@ -197,20 +203,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPaused: function() {
       // pause/resume of Ad playback is handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
 
-      if (this.state.screenToShow != SCREEN.AD_SCREEN) {
+      if (this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN) {
         if (Utils.isIPhone()){//pause screen for iPhone is the same as start screen
-          this.state.screenToShow = SCREEN.START_SCREEN;
+          this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
         } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
           console.log("Should display DISCOVERY_SCREEN on pause");
           this.sendDiscoveryDisplayEvent("pauseScreen");
-          this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+          this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
         } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
           // Remove this comment once pause screen implemented
         } else {
           // default
-          this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+          this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
-        this.state.playerState = STATE.PAUSE;
+        this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
       }
     },
@@ -219,14 +225,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery") {
         console.log("Should display DISCOVERY_SCREEN on end");
         this.sendDiscoveryDisplayEvent("endScreen");
-        this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+        this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
       } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "share") {
-        this.state.screenToShow = SCREEN.SHARE_SCREEN;
+        this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
       } else {
-        this.state.screenToShow = SCREEN.END_SCREEN;
+        this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
       }
       this.skin.updatePlayhead(this.state.contentTree.duration/1000, this.state.contentTree.duration/1000, this.state.contentTree.duration/1000);
-      this.state.playerState = STATE.END;
+      this.state.playerState = CONSTANTS.STATE.END;
       this.renderSkin();
     },
 
@@ -235,7 +241,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaybackReady: function(event) {
-      this.state.screenToShow = SCREEN.START_SCREEN;
+      this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
@@ -249,7 +255,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onAdsPlayed: function(event) {
       console.log("onAdsPlayed is called from event = " + event);
-      this.state.screenToShow = SCREEN.PLAYING_SCREEN;
+      this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       this.renderSkin();
     },
 
@@ -262,10 +268,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onWillPlaySingleAd: function(event, adItem) {
       console.log("onWillPlaySingleAd is called with adItem = " + adItem);
       if (adItem !== null) {
-        this.state.screenToShow = SCREEN.AD_SCREEN;
+        this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
         this.state.isPlayingAd = true;
         this.state.currentAdsInfo.currentAdItem = adItem;
-        this.state.playerState = STATE.PLAYING;
+        this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.skin.state.currentPlayhead = 0;
         this.renderSkin();
       }
@@ -278,16 +284,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onWillPauseAds: function(event) {
       console.log("onWillPauseAds is called");
-      this.state.playerState = STATE.PAUSE;
+      this.state.playerState = CONSTANTS.STATE.PAUSE;
       this.renderSkin();
     },
 
     onWillResumeAds: function(event) {
       console.log("onWillResumeAds is called");
       if (this.state.currentAdsInfo.currentAdItem !== null) {
-      this.state.playerState = STATE.PLAYING;
+      this.state.playerState = CONSTANTS.STATE.PLAYING;
       //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
-      this.state.screenToShow = SCREEN.AD_SCREEN;
+      this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
       }
     },
 
@@ -321,19 +327,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onFullscreenChanged: function(event, fullscreen, paused) {
       // iPhone end screen is the same as start screen, except for the replay button
-      if (Utils.isIPhone() && this.state.playerState == STATE.END){
-        this.state.screenToShow = SCREEN.START_SCREEN;
+      if (Utils.isIPhone() && this.state.playerState == CONSTANTS.STATE.END){
+        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       }
 
       //The logic below synchronizes the state of the UI and the state of the video.
       //If native controls on iOS were used to change the state of the video, our UI doesn't know about it.
       if (Utils.isIos()){
         //check if UI state is out of sync with video state
-        if (paused && this.state.playerState == STATE.PLAYING){
+        if (paused && this.state.playerState == CONSTANTS.STATE.PLAYING){
           if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_PAUSE_ADS);}
           else {this.mb.publish(OO.EVENTS.PAUSED);}
         }
-        else if (!paused && this.state.playerState == STATE.PAUSE){
+        else if (!paused && this.state.playerState == CONSTANTS.STATE.PAUSE){
           if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_RESUME_ADS);}
           else {this.mb.publish(OO.EVENTS.PLAYING);}
         }
@@ -364,33 +370,33 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     toggleDiscoveryScreen: function() {
       switch(this.state.playerState) {
-        case STATE.PLAYING:
+        case CONSTANTS.STATE.PLAYING:
           this.togglePlayPause();
           this.sendDiscoveryDisplayEvent("pauseScreen");
           setTimeout(function() {
-            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
-            this.state.playerState = STATE.PAUSE;
+            this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
+            this.state.playerState = CONSTANTS.STATE.PAUSE;
             this.renderSkin();
             console.log("finished toggleDiscoveryScreen");
           }.bind(this), 1);
           break;
-        case STATE.PAUSE:
-          if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+        case CONSTANTS.STATE.PAUSE:
+          if(this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
             this.state.pauseAnimationDisabled = true;
-            this.state.screenToShow = SCREEN.PAUSE_SCREEN;
+            this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
           }
           else {
             this.sendDiscoveryDisplayEvent("pauseScreen");
-            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+            this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
           }
           break;
-        case STATE.END:
-          if(this.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
-            this.state.screenToShow = SCREEN.END_SCREEN;
+        case CONSTANTS.STATE.END:
+          if(this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
+            this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
           }
           else {
             this.sendDiscoveryDisplayEvent("endScreen");
-            this.state.screenToShow = SCREEN.DISCOVERY_SCREEN;
+            this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
           }
           break;
       }
@@ -403,16 +409,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     togglePlayPause: function() {
       switch (this.state.playerState) {
-        case STATE.START:
+        case CONSTANTS.STATE.START:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
           break;
-        case STATE.END:
+        case CONSTANTS.STATE.END:
           this.mb.publish(OO.EVENTS.REPLAY);
           break;
-        case STATE.PAUSE:
+        case CONSTANTS.STATE.PAUSE:
           this.mb.publish(OO.EVENTS.PLAY);
           break;
-        case STATE.PLAYING:
+        case CONSTANTS.STATE.PLAYING:
           this.mb.publish(OO.EVENTS.PAUSE);
           break;
       }
@@ -454,14 +460,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleShareScreen: function() {
-      if (this.state.screenToShow == SCREEN.SHARE_SCREEN) {
+      if (this.state.screenToShow == CONSTANTS.SCREEN.SHARE_SCREEN) {
         this.closeShareScreen();
       }
       else {
         this.mb.publish(OO.EVENTS.PAUSE);
         setTimeout(function() {
-          this.state.screenToShow = SCREEN.SHARE_SCREEN;
-          this.state.playerState = STATE.PAUSE;
+          this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
+          this.state.playerState = CONSTANTS.STATE.PAUSE;
           this.renderSkin();
           console.log("finish showShareScreen");
         }.bind(this), 1);
@@ -470,8 +476,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     closeShareScreen: function() {
       this.state.pauseAnimationDisabled = true;
-      this.state.screenToShow = SCREEN.PAUSE_SCREEN;
-      this.state.playerState = STATE.PAUSE;
+      this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+      this.state.playerState = CONSTANTS.STATE.PAUSE;
       this.renderSkin();
     },
 
@@ -495,14 +501,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleClosedCaptionScreen: function() {
-      if (this.state.screenToShow == SCREEN.CLOSEDCAPTION_SCREEN) {
+      if (this.state.screenToShow == CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN) {
         this.closeClosedCaptionScreen();
       }
       else {
         this.mb.publish(OO.EVENTS.PAUSE);
         setTimeout(function() {
-          this.state.screenToShow = SCREEN.CLOSEDCAPTION_SCREEN;
-          this.state.playerState = STATE.PAUSE;
+          this.state.screenToShow = CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN;
+          this.state.playerState = CONSTANTS.STATE.PAUSE;
           this.renderSkin();
         }.bind(this), 1);
       }
@@ -510,8 +516,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     closeClosedCaptionScreen: function() {
       this.state.pauseAnimationDisabled = true;
-      this.state.screenToShow = SCREEN.PAUSE_SCREEN;
-      this.state.playerState = STATE.PAUSE;
+      this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+      this.state.playerState = CONSTANTS.STATE.PAUSE;
       this.renderSkin();
     },
 
@@ -529,13 +535,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     upNextDismissButtonClicked: function() {
       this.state.upNextInfo.countDownCancelled = true;
-      this.state.screenToShow = SCREEN.PLAYING_SCREEN;
-      this.state.playerState = STATE.PLAYING;
+      this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+      this.state.playerState = CONSTANTS.STATE.PLAYING;
       this.renderSkin();
     },
 
     toggleMoreOptionsScreen: function() {
-      if (this.state.screenToShow == SCREEN.MORE_OPTIONS_SCREEN) {
+      if (this.state.screenToShow == CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN) {
         this.closeMoreOptionsScreen();
       } else {
         this.displayMoreOptionsScreen();
@@ -544,16 +550,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     closeMoreOptionsScreen: function() {
       this.state.pauseAnimationDisabled = true;
-      this.state.screenToShow = SCREEN.PAUSE_SCREEN;
-      this.state.playerState = STATE.PAUSE;
+      this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+      this.state.playerState = CONSTANTS.STATE.PAUSE;
       this.renderSkin();
     },
 
     displayMoreOptionsScreen: function() {
       this.mb.publish(OO.EVENTS.PAUSE);
       setTimeout(function() {
-        this.state.screenToShow = SCREEN.MORE_OPTIONS_SCREEN;
-        this.state.playerState = STATE.PAUSE;
+        this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
+        this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
       }.bind(this), 1);
     },

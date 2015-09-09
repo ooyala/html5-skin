@@ -1,3 +1,5 @@
+var CONSTANTS = require('./../constants/constants');
+
 var AccessibilityControls = function (controller) {
     this.controller = controller;
     this.state = {
@@ -13,14 +15,14 @@ AccessibilityControls.prototype = {
     var newPlayheadTime;
     var newVolume;
 
-    if (e.keyCode === KEYCODES.SPACE_KEY){
+    if (e.keyCode === CONSTANTS.KEYCODES.SPACE_KEY){
       this.controller.togglePlayPause();
     }
 
-    else if ((e.keyCode === KEYCODES.DOWN_ARROW_KEY && this.controller.state.volumeState.volume > 0) || (e.keyCode === KEYCODES.UP_ARROW_KEY && this.controller.state.volumeState.volume < 1)){
+    else if ((e.keyCode === CONSTANTS.KEYCODES.DOWN_ARROW_KEY && this.controller.state.volumeState.volume > 0) || (e.keyCode === CONSTANTS.KEYCODES.UP_ARROW_KEY && this.controller.state.volumeState.volume < 1)){
       var deltaVolumeSign = 1; // positive 1 for volume increase, negative for decrease
 
-      if (e.keyCode === KEYCODES.DOWN_ARROW_KEY){
+      if (e.keyCode === CONSTANTS.KEYCODES.DOWN_ARROW_KEY){
         deltaVolumeSign = -1;
       }
       else {
@@ -31,7 +33,7 @@ AccessibilityControls.prototype = {
       this.controller.setVolume(newVolume);
     }
 
-    else if (e.keyCode === KEYCODES.RIGHT_ARROW_KEY || e.keyCode === KEYCODES.LEFT_ARROW_KEY){
+    else if (e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY || e.keyCode === CONSTANTS.KEYCODES.LEFT_ARROW_KEY){
       var shiftSign = 1; // positive 1 for fast forward, negative for rewind back
 
       var shiftSeconds = 1;
@@ -49,7 +51,7 @@ AccessibilityControls.prototype = {
       }
 
       this.state.lastKeyDownTime = currentTime;
-      if (e.keyCode === KEYCODES.RIGHT_ARROW_KEY){
+      if (e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY){
         shiftSign = 1;
       }
       else {

@@ -1,6 +1,10 @@
 /********************************************************************
   END SCREEN
 *********************************************************************/
+var React = require('react'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar'),
+    CONSTANTS = require('../constants/constants');
 
 var EndScreen = React.createClass({
   getInitialState: function() {
@@ -16,8 +20,8 @@ var EndScreen = React.createClass({
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
 
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
-  },  
+    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
+  },
 
   handleResize: function(e) {
     if (this.isMounted()) {
@@ -69,7 +73,7 @@ var EndScreen = React.createClass({
           <span className={repeatClass} style={repeatStyle} aria-hidden="true" onClick={this.handleClick}></span>
         </div>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} />
+          scrubberBarWidth={this.state.controlBarWidth} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}
           playerState={this.props.playerState} />
@@ -77,3 +81,4 @@ var EndScreen = React.createClass({
     );
   }
 });
+module.exports = EndScreen;
