@@ -15,7 +15,7 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseDown: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
+    if (evt.type == 'touchstart' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
@@ -118,6 +118,7 @@ var ScrubberBar = React.createClass({
     // }
     var scrubberPaddingHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarPadding.height);
     var scrubberBarHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarSetting.height);
+    InlineStyle.scrubberBarStyle.scrubberBarSetting.width = this.props.scrubberBarWidth;
 
     InlineStyle.scrubberBarStyle.scrubberBarPadding.bottom = (this.props.controlBarVisible ?
       controlBarHeight - (scrubberPaddingHeight / 2) : scrubberBarHeight - (scrubberPaddingHeight / 2));
@@ -126,7 +127,7 @@ var ScrubberBar = React.createClass({
     InlineStyle.scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
       parseFloat(this.props.duration)) * 100 + "%";
     InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
-      parseFloat(this.props.duration)) * this.props.controlBarWidth);
+      parseFloat(this.props.duration)) * this.props.scrubberBarWidth);
     InlineStyle.scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
 
     // if we're scrubbing, use the coordinates from the latest mouse events
@@ -135,17 +136,17 @@ var ScrubberBar = React.createClass({
         (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
     }
     //prevent the playhead from moving beyond the player element
-    InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = Math.max(Math.min(this.props.controlBarWidth - parseInt(InlineStyle.scrubberBarStyle.playheadStyle.width)/2,
+    InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = Math.max(Math.min(this.props.scrubberBarWidth - parseInt(InlineStyle.scrubberBarStyle.playheadStyle.width)/2,
       InlineStyle.scrubberBarStyle.playheadPaddingStyle.left), 0);
 
     return (
-      <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp}
+      <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp} onTouchEnd={this.handleScrubberBarMouseUp}
         style={InlineStyle.scrubberBarStyle.scrubberBarPadding}>
         <div className="scrubberBar" style={InlineStyle.scrubberBarStyle.scrubberBarSetting}>
           <div className="bufferedIndicator" style={InlineStyle.scrubberBarStyle.bufferedIndicatorStyle}></div>
           <div className="playedIndicator" style={InlineStyle.scrubberBarStyle.playedIndicatorStyle}></div>
           <div className="playheadPadding" style={InlineStyle.scrubberBarStyle.playheadPaddingStyle}
-            onMouseDown={this.handlePlayheadMouseDown}>
+            onMouseDown={this.handlePlayheadMouseDown} onTouchStart={this.handlePlayheadMouseDown}>
             <div className="playhead" style={InlineStyle.scrubberBarStyle.playheadStyle}></div>
           </div>
         </div>

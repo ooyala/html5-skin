@@ -184,9 +184,9 @@ module.exports = {
       "color": "#ffffff",
       "opacity": 1,
       "fontSize": 14,
-      "textAlign": "left",
-      "flex": 1,
-      "WebkitFlex": 1
+      "paddingLeft": "7.5px",
+      "paddingRight": "7.5px",
+      "textAlign": "left"
     },
 
     iconSetting: {},
@@ -237,6 +237,61 @@ module.exports = {
       "position": "relative",
       "height": "18px",
       "top": "21px"
+    },
+
+    watermarkImageStyle: {
+      "position": "relative",
+      "height": "18px",
+      "top": "21px"
+    }
+  },
+
+  volumeSliderStyle: {
+    volumeBarSetting: {
+      "display": "inline-block",
+      "backgroundClip": "content-box",
+      "position": "relative",
+      "background": "#afafaf",
+      "width": "65px",
+      "height": "5px",
+      "bottom": "10%",
+      "marginLeft": "5px",
+      "borderRadius": "2px"
+    },
+
+    volumeIndicatorStyle: {
+      "background": "#4389ff",
+      "height": "100%",
+      "width": "50%",
+      "position": "absolute",
+      "borderRadius": "2px"
+    },
+
+    volumeHeadPaddingStyle: {
+      "width": "25px",
+      "height": "25px",
+      "position": "absolute",
+      "zIndex": "1",
+      "top": "50%",
+      "WebkitTransform": "translateY(-50%) translateX(-50%)",
+      "transform": "translateY(-50%) translateX(-50%)"
+    },
+
+    volumeHeadStyle: {
+      "background": "#ffffff",
+      "width": "8px",
+      "height": "8px",
+      "borderStyle": "solid",
+      "borderColor": "white",
+      "borderWidth": "1px",
+      "borderRadius": "10px",
+      "position": "absolute",
+      "transition": "opacity 0.25s",
+      "top": "50%",
+      "cursor": "pointer",
+      "left": "50%",
+      "WebkitTransform": "translateY(-50%) translateX(-50%)",
+      "transform": "translateY(-50%) translateX(-50%)"
     }
   },
 
