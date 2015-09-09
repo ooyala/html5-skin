@@ -1,6 +1,8 @@
 /********************************************************************
   SCRUBBER BAR
 *********************************************************************/
+var React = require('react'),
+    InlineStyle = require('../styles/inlineStyle');
 
 var ScrubberBar = React.createClass({
   getInitialState: function() {
@@ -32,16 +34,16 @@ var ScrubberBar = React.createClass({
         // breaks if your cursor leaves the player element
         document.addEventListener("mouseup", this.handlePlayheadMouseUp, true);
         this.setState({
-          startingPlayheadX: evt.screenX,
-          scrubbingPlayheadX: evt.screenX
+          startingPlayheadX: evt.clientX,
+          scrubbingPlayheadX: evt.clientX
         });
       }
       else {
         this.getDOMNode().parentNode.addEventListener("touchmove", this.handlePlayheadMouseMove);
         document.addEventListener("touchend", this.handlePlayheadMouseUp, true);
         this.setState({
-          startingPlayheadX: evt.changedTouches[0].screenX,
-          scrubbingPlayheadX: evt.changedTouches[0].screenX
+          startingPlayheadX: evt.changedTouches[0].clientX,
+          scrubbingPlayheadX: evt.changedTouches[0].clientX
         });
       }
     }
@@ -51,7 +53,7 @@ var ScrubberBar = React.createClass({
     evt.preventDefault();
     if (this.props.seeking) {
       this.setState({
-        scrubbingPlayheadX: this.isMobile?evt.changedTouches[0].screenX:evt.screenX
+        scrubbingPlayheadX: this.isMobile?evt.changedTouches[0].clientX:evt.clientX
       });
     }
   },
@@ -62,9 +64,9 @@ var ScrubberBar = React.createClass({
     evt.stopPropagation();
     //use the difference in x coordinates of the start and end points of the
     // mouse events to calculate the amount of time to seek
-    var newPlayheadX = this.isMobile?evt.changedTouches[0].screenX:evt.screenX;
+    var newPlayheadX = this.isMobile?evt.changedTouches[0].clientX:evt.clientX;
     var diffX = newPlayheadX - this.state.startingPlayheadX;
-    var diffTime = (diffX / this.props.scrubberBarWidth) * this.props.duration;
+    var diffTime = (diffX / this.props.controlBarWidth) * this.props.duration;
     var newPlayheadTime = this.props.currentPlayhead + diffTime;
 
     if (!this.isMobile){
@@ -96,7 +98,7 @@ var ScrubberBar = React.createClass({
         evt = evt.nativeEvent;
       }
       var offset = this.isMobile?evt.changedTouches[0].clientX:evt.clientX - evt.target.getBoundingClientRect().left;
-      var newPlayheadTime = (offset / this.props.scrubberBarWidth) * this.props.duration;
+      var newPlayheadTime = (offset / this.props.controlBarWidth) * this.props.duration;
       this.props.controller.seek(newPlayheadTime);
       this.setState({
         currentPlayhead: newPlayheadTime
@@ -152,3 +154,4 @@ var ScrubberBar = React.createClass({
     );
   }
 });
+module.exports = ScrubberBar;
