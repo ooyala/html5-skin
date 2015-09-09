@@ -7,6 +7,12 @@
 * @class MoreOptionsScreen
 * @constructor
 */
+var React = require('react'),
+    MoreOptionsPanel = require('../components/moreOptionsPanel'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar'),
+    CONSTANTS = require('../constants/constants');
+
 var MoreOptionsScreen = React.createClass({
   getInitialState: function() {
     return {
@@ -16,7 +22,7 @@ var MoreOptionsScreen = React.createClass({
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
+    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
 
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
@@ -58,3 +64,4 @@ var MoreOptionsScreen = React.createClass({
     );
   }
 });
+module.exports = MoreOptionsScreen;

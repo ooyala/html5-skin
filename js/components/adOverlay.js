@@ -1,12 +1,15 @@
 /********************************************************************
   AD OVERLAY
 *********************************************************************/
+var React = require('react'),
+    InlineStyle = require('../styles/inlineStyle');
+
 var AdOverlay = React.createClass({
   render: function() {
-  	overlayStyle = adOverlayStyle.style;
-  	var scrubberPaddingHeight = parseInt(scrubberBarStyle.scrubberBarPadding.height);
-  	var scrubberBarHeight = parseInt(scrubberBarStyle.scrubberBarSetting.height);
-  	var controlBarHeight = controlBarStyle.controlBarSetting.height;
+  	overlayStyle = InlineStyle.adOverlayStyle.style;
+  	var scrubberPaddingHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarPadding.height);
+  	var scrubberBarHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarSetting.height);
+  	var controlBarHeight = InlineStyle.controlBarStyle.controlBarSetting.height;
   	if(this.props.overlay && this.props.showOverlay) {
       overlayStyle.display = "inline-block";
       overlayStyle.bottom = this.props.controlBarVisible ?
@@ -23,3 +26,4 @@ var AdOverlay = React.createClass({
     );
   }
 });
+module.exports = AdOverlay;

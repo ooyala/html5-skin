@@ -7,6 +7,11 @@
 * @class UpNextPanel
 * @constructor
 */
+var React = require('react'),
+    CONSTANTS = require('./../constants/constants'),
+    Utils = require('./utils'),
+    InlineStyle = require('../styles/inlineStyle'),
+    CountDownClock = require('./countDownClock');
 
 var UpNextPanel = React.createClass({
   getInitialState: function() {
@@ -63,29 +68,29 @@ var UpNextPanel = React.createClass({
   },
 
   render: function() {
-    var panelStyle = upNextPanelStyle.panelStyle;
+    var panelStyle = InlineStyle.upNextPanelStyle.panelStyle;
 
     var controlBarHeight = 60;
     panelStyle.bottom = (this.props.controlBarVisible ? controlBarHeight : 0);
 
-    var contentImageContainerStyle = upNextPanelStyle.contentImageContainerStyle;
-    var contentImageStyle = upNextPanelStyle.contentImageStyle;
+    var contentImageContainerStyle = InlineStyle.upNextPanelStyle.contentImageContainerStyle;
+    var contentImageStyle = InlineStyle.upNextPanelStyle.contentImageStyle;
 
     var playButtonClass = this.props.skinConfig.icons.play.fontStyleClass;
-    var playButtonStyle = upNextPanelStyle.playButton.style;
+    var playButtonStyle = InlineStyle.upNextPanelStyle.playButton.style;
 
-    var contentMetadataContainerStyle = upNextPanelStyle.contentMetadataContainerStyle;
+    var contentMetadataContainerStyle = InlineStyle.upNextPanelStyle.contentMetadataContainerStyle;
 
-    var upNextTitleStyle = upNextPanelStyle.upNextTitleStyle;
+    var upNextTitleStyle = InlineStyle.upNextPanelStyle.upNextTitleStyle;
 
-    var upNextTitleTextStyle = upNextPanelStyle.upNextTitleTextStyle;
+    var upNextTitleTextStyle = InlineStyle.upNextPanelStyle.upNextTitleTextStyle;
     var contentTile = this.props.upNextInfo.upNextData.name;
-    var upNextString = Utils.getLocalizedString(this.props.language, SKIN_TEXT.UP_NEXT, this.props.localizableStrings);
+    var upNextString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UP_NEXT, this.props.localizableStrings);
 
-    var contentDescriptionStyle = upNextPanelStyle.contentDescriptionStyle;
+    var contentDescriptionStyle = InlineStyle.upNextPanelStyle.contentDescriptionStyle;
 
-    var dismissButtonStyle = upNextPanelStyle.dismissButtonStyle;
-    var dismissButtonTextStyle = upNextPanelStyle.dismissButtonTextStyle;
+    var dismissButtonStyle = InlineStyle.upNextPanelStyle.dismissButtonStyle;
+    var dismissButtonTextStyle = InlineStyle.upNextPanelStyle.dismissButtonTextStyle;
 
     return (
       <div className="upNextPanel" style={panelStyle}>
@@ -110,10 +115,11 @@ var UpNextPanel = React.createClass({
         </div>
 
         <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
-          onClick={this.closeUpNextPanel} style={upNextPanelStyle.closeButton} onTouchEnd={this.closeUpNextPanel}>
+          onClick={this.closeUpNextPanel} style={InlineStyle.upNextPanelStyle.closeButton} onTouchEnd={this.closeUpNextPanel}>
           <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
         </div>
       </div>
     );
   }
 });
+module.exports = UpNextPanel;

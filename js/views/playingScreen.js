@@ -1,9 +1,13 @@
 /********************************************************************
   PLAYING SCREEN
 *********************************************************************/
+var React = require('react'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar'),
+    AdOverlay = require('../components/adOverlay'),
+    CONSTANTS = require('../constants/constants');
 
 var PlayingScreen = React.createClass({
-
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
@@ -14,7 +18,7 @@ var PlayingScreen = React.createClass({
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
+    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
 
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
@@ -86,3 +90,4 @@ var PlayingScreen = React.createClass({
     );
   }
 });
+module.exports = PlayingScreen;
