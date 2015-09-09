@@ -53,7 +53,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "countDownCancelled": false,
       },
 
-      "isMobile": false
+      "isMobile": false,
+      "errorCode": null
     };
 
     this.init();
@@ -69,6 +70,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
       this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
+      this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
 
 
       /********************************************************************
@@ -95,6 +97,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
       this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
       this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
+      this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
     },
 
     /*--------------------------------------------------------------------
@@ -122,6 +125,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         );
         //var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
+        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
       }, this));
 
@@ -243,6 +247,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.seeking = false;
     },
 
+    onPlaybackReady: function(event) {
+      this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      this.renderSkin({"contentTree": this.state.contentTree});
+    },
+
     /********************************************************************
      ADS RELATED EVENTS
      *********************************************************************/
@@ -356,6 +365,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
 
       this.state.fullscreen = fullscreen;
+      this.renderSkin();
+    },
+
+    onErrorEvent: function(event, errorCode){
+      this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
+      this.state.playerState = CONSTANTS.STATE.ERROR;
+      this.state.errorCode = errorCode;
       this.renderSkin();
     },
 

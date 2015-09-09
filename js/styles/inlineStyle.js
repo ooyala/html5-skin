@@ -62,26 +62,26 @@ module.exports = {
   },
 
   spinnerStyle: {
-  spinner: "assets/images/loading.png",
-  style: {
-    width: "10%",
-    WebkitTransform: "translate(-50%, -50%) rotate(90deg)",
-    MozTransform: "translate(-50%, -50%) rotate(90deg)",
-    msTransform: "translate(-50%, -50%) rotate(90deg)",
-    transform: "translate(-50%, -50%) rotate(90deg)",
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    opacity: 1,
-    color: "white",
-    transition: "opacity .25s ease-in-out",
-    "cursor": "pointer",
-    WebkitAnimation: "spin 4s linear infinite",
-    MozAnimation: "spin 4s linear infinite",
-    msAnimation: "spin 4s linear infinite",
-    animation: "spin 4s linear infinite"
-  }
-},
+    spinner: "assets/images/loading.png",
+    style: {
+      width: "10%",
+      WebkitTransform: "translate(-50%, -50%) rotate(90deg)",
+      MozTransform: "translate(-50%, -50%) rotate(90deg)",
+      msTransform: "translate(-50%, -50%) rotate(90deg)",
+      transform: "translate(-50%, -50%) rotate(90deg)",
+      position: "absolute",
+      left: "50%",
+      top: "50%",
+      opacity: 1,
+      color: "white",
+      transition: "opacity .25s ease-in-out",
+      "cursor": "pointer",
+      WebkitAnimation: "spin 4s linear infinite",
+      MozAnimation: "spin 4s linear infinite",
+      msAnimation: "spin 4s linear infinite",
+      animation: "spin 4s linear infinite"
+    }
+  },
 
   pauseScreenStyle: {
     style: {
@@ -176,6 +176,7 @@ module.exports = {
       "bottom": "0%",
       "position": "absolute",
       "margin": 0,
+
       "fontSize": "18px",
       "listStyle": "none",
       "display": "flex",
@@ -260,12 +261,6 @@ module.exports = {
       "height": "18px",
       "top": "21px"
     },
-
-    watermarkImageStyle: {
-      "position": "relative",
-      "height": "18px",
-      "top": "21px"
-    }
   },
 
   volumeSliderStyle: {
@@ -1182,6 +1177,50 @@ module.exports = {
       "right": "10",
       "color": "lightgray",
       "cursor": "pointer"
+    }
+  },
+
+  errorScreenStyle: {
+    style: {
+      "width": "100%",
+      "height": "100%",
+      "position": "absolute",
+      "overflow": "hidden",
+      "background": "black"
+    },
+    contentStyle: {
+      "width": "80%",
+      "position": "relative",
+      "top": "50%",
+      "textAlign": "left",
+      "transform": "translateY(-50%)",
+      "WebkitTransform": "translateY(-50%)",
+      "wordWrap": "break-word",
+      "display": "block",
+      "marginLeft": "auto",
+      "marginRight": "auto"
+    },
+    titleStyle: {
+      "color": "white",
+      "fontSize": "20pt",
+      "fontFamily": "Roboto",
+      "fontWeight": "bold",
+      "textTransform": "uppercase",
+      "marginBottom": "30"
+    },
+    descriptionStyle: {
+      "color": "white",
+      "fontSize": "14pt",
+      "fontFamily": "Open Sans",
+      "fontWeight": "regular",
+      "marginBottom": "30"
+    },
+    actionStyle: {
+      "color": "#4389FF",
+      "fontSize": "14pt",
+      "fontFamily": "Open Sans",
+      "fontWeight": "regular",
+      "textTransform": "uppercase"
     }
   }
 };
