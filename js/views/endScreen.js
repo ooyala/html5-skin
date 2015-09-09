@@ -1,6 +1,10 @@
 /********************************************************************
   END SCREEN
 *********************************************************************/
+var React = require('react'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar'),
+    CONSTANTS = require('../constants/constants');
 
 var EndScreen = React.createClass({
   getInitialState: function() {
@@ -17,7 +21,7 @@ var EndScreen = React.createClass({
     window.addEventListener('resize', this.handleResize);
 
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
-  },  
+  },
 
   handleResize: function(e) {
     if (this.isMounted()) {
@@ -77,3 +81,4 @@ var EndScreen = React.createClass({
     );
   }
 });
+module.exports = EndScreen;

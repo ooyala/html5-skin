@@ -1,7 +1,12 @@
 /********************************************************************
   PAUSE SCREEN
 *********************************************************************/
-
+var React = require('react'),
+    InlineStyle = require('../styles/inlineStyle'),
+    Utils = require('../components/utils'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar'),
+    CONSTANTS = require('../constants/constants');
 
 var PauseScreen = React.createClass({
   getInitialState: function() {
@@ -20,10 +25,10 @@ var PauseScreen = React.createClass({
     window.addEventListener('resize', this.handleResize);
 
     //need this to display fading pause button and dimming the screen
-    pauseScreenStyle.pauseIcon.style.opacity = 0;
-    pauseScreenStyle.pauseIcon.style.fontSize = "72";
-    pauseScreenStyle.fading.opacity = 0.5;
-    pauseScreenStyle.fading.transition = (this.props.pauseAnimationDisabled === true ? "opacity 0s" : "opacity 1s");
+    InlineStyle.pauseScreenStyle.pauseIcon.style.opacity = 0;
+    InlineStyle.pauseScreenStyle.pauseIcon.style.fontSize = "72";
+    InlineStyle.pauseScreenStyle.fading.opacity = 0.5;
+    InlineStyle.pauseScreenStyle.fading.transition = (this.props.pauseAnimationDisabled === true ? "opacity 0s" : "opacity 1s");
 
     this.setState({
       controlBarWidth: this.getDOMNode().clientWidth,
@@ -53,10 +58,10 @@ var PauseScreen = React.createClass({
   },
 
   componentWillUnmount: function() {
-    //setting style back to normal, for fading the pause button and dimming the screen next time
-    pauseScreenStyle.pauseIcon.style.opacity = 1;
-    pauseScreenStyle.pauseIcon.style.fontSize = "24";
-    pauseScreenStyle.fading.opacity = 0;
+    //setting styles back to normal, for fading the pause button and dimming the screen next time
+    InlineStyle.pauseScreenStyle.pauseIcon.style.opacity = 1;
+    InlineStyle.pauseScreenStyle.pauseIcon.style.fontSize = "24";
+    InlineStyle.pauseScreenStyle.fading.opacity = 0;
     this.props.controller.enablePauseAnimation();
   },
 
@@ -70,7 +75,7 @@ var PauseScreen = React.createClass({
   },
 
   render: function() {
-    var screenStyle = pauseScreenStyle;
+    var screenStyle = InlineStyle.pauseScreenStyle;
     var pauseClass = this.props.skinConfig.icons.pause.fontStyleClass;
     var pauseStyle = screenStyle.pauseIcon.style;
     var infoStyle = screenStyle.infoPanel;
@@ -137,3 +142,4 @@ var PauseScreen = React.createClass({
     );
   }
 });
+module.exports = PauseScreen;

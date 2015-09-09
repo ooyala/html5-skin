@@ -7,6 +7,14 @@
 * @class DiscoveryScreen
 * @constructor
 */
+var React = require('react'),
+    CONSTANTS = require('../constants/constants'),
+    InlineStyle = require('../styles/inlineStyle'),
+    DiscoveryPanel = require('../components/discoveryPanel'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar'),
+    CONSTANTS = require('../constants/constants');
+
 var DiscoveryScreen = React.createClass({
   getInitialState: function() {
     return {
@@ -28,8 +36,8 @@ var DiscoveryScreen = React.createClass({
   },
 
   render: function() {
-    var promoStyle = discoveryScreenStyle.promoStyle;
-    if(this.props.playerState === STATE.END) {
+    var promoStyle = InlineStyle.discoveryScreenStyle.promoStyle;
+    if(this.props.playerState === CONSTANTS.STATE.END) {
       promoStyle.visibility = "visible";
     }
     else {
@@ -38,7 +46,7 @@ var DiscoveryScreen = React.createClass({
     promoStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
     return (
       <div className="discoveryScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
-        <div style={discoveryScreenStyle.promoStyle}></div>
+        <div style={InlineStyle.discoveryScreenStyle.promoStyle}></div>
         <DiscoveryPanel
           {...this.props}
           discoveryData={this.props.discoveryData} />
@@ -57,3 +65,4 @@ var DiscoveryScreen = React.createClass({
     );
   }
 });
+module.exports = DiscoveryScreen;

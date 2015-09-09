@@ -7,6 +7,13 @@
 * @class PlayingScreen
 * @constructor
 */
+var React = require('react'),
+    InlineStyle = require('../styles/inlineStyle'),
+    SharePanel = require('../components/sharePanel'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar'),
+    CONSTANTS = require('../constants/constants');
+
 var ShareScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
@@ -27,7 +34,7 @@ var ShareScreen = React.createClass({
 
   componentDidMount: function () {
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
-  },  
+  },
 
   highlight: function(evt) {
     evt.target.style.color = "rgba(255, 255, 255, 1.0)";
@@ -46,11 +53,12 @@ var ShareScreen = React.createClass({
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}
           playerState={this.state.playerState} />
-        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight} 
-          onClick={this.closeSharePanel} style={shareScreenStyle.closeButton}>
+        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+          onClick={this.closeSharePanel} style={InlineStyle.shareScreenStyle.closeButton}>
           <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
         </div>
       </div>
     );
   }
 });
+module.exports = ShareScreen;
