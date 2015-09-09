@@ -173,7 +173,8 @@ var controlBarStyle = {
     "textAlign": "center",
     "paddingLeft": "7.5px",
     "paddingRight": "7.5px",
-    "cursor": "pointer"
+    "cursor": "pointer",
+    "paddingTop": "6px"
   },
 
   durationIndicatorSetting: {
@@ -183,7 +184,8 @@ var controlBarStyle = {
     "fontSize": 14,
     "textAlign": "left",
     "flex": 1,
-    "WebkitFlex": 1
+    "WebkitFlex": 1,
+    "paddingTop": "6px"
   },
 
   iconSetting: {
@@ -233,8 +235,8 @@ var controlBarStyle = {
 
   watermarkImageStyle: {
     "position": "relative",
-    "height": "18px",
-    "top": "21px",
+    "top": "50%",
+    "transform": "translateY(-50%);"
   }
 };
 
@@ -245,8 +247,8 @@ var scrubberBarStyle = {
     "height": "5",
     "padding": 0,
     "margin": 0,
-    "top": "50%",
-    "position": "absolute"
+    "position": "absolute",
+    "top": "12px"
   },
 
   scrubberBarPadding: {
@@ -259,8 +261,8 @@ var scrubberBarStyle = {
     "position": "absolute",
     "transition": "bottom 0.5s, height 0.25s",
     "width": "100%",
-    "height": "30px",
-    "zIndex": "1"
+    "height": "29px",
+    "zIndex": "1",
   },
 
   bufferedIndicatorStyle: {
