@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="assets/styles.css"/>
-    <script language="javascript" src="//localhost:1337/dev/v4/26e2e3c1049c4e70ae08a242638b5c40?debug=true&platform=html5&version=dev"></script>
-    <style>
-      .discovery_toaster {display: none;}
-    </style>
-  </head>
+<head>
+  <link rel="stylesheet" href="assets/styles.css"/>
+  <script language="javascript" src="//localhost:1337/dev/v4/26e2e3c1049c4e70ae08a242638b5c40?debug=true&platform=html5&version=dev"></script>
+  <style>
+    .discovery_toaster {display: none;}
+  </style>
+</head>
 
-  <body>
-    <div id='container' style='width:640px; height:360px; overflow: scroll; resize: both;'></div>
-    <script>
-      var playerParam = {
-        "layout":"chromeless",
-        "discovery-ui": {
-          "layout": "chromeless"
-        },
-        "skin": {
-          "config": "config/skin.json",
-           "languages": [{language: "en", languageFile: "config/en.json"}, {language: "es", languageFile: "config/es.json"}, {language: "zh", languageFile: "config/zh.json"}]
-        }
-      };
-      OO.ready(function() {
-        window.pp = OO.Player.create('container', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
-      });
-    </script>
-    <script src="build/html5-skin.min.js"></script>
-  </body>
+<body>
+<div id='container' style='width:640px; height:360px; overflow: scroll; resize: both;'></div>
+<script>
+  var playerParam = {
+    "layout":"chromeless",
+    "discovery-ui": {
+      "layout": "chromeless"
+    },
+    "skin": {
+      "config": "config/skin.json",
+      "languages": [{language: "en", languageFile: "config/en.json"}, {language: "es", languageFile: "config/es.json"}, {language: "zh", languageFile: "config/zh.json"}]
+    }
+  };
+  OO.ready(function() {
+    window.pp = OO.Player.create('container', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
+  });
+</script>
+<script src="build/html5-skin.min.js"></script>
+</body>
 
 </html>
