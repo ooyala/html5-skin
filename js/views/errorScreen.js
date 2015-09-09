@@ -1,6 +1,9 @@
 /********************************************************************
   ERROR SCREEN
 *********************************************************************/
+var React = require('react'),
+    CONSTANTS = require('../constants/constants'),
+    InlineStyle = require('../styles/inlineStyle');
 
 var ErrorScreen = React.createClass({
 
@@ -32,3 +35,4 @@ var ErrorScreen = React.createClass({
     );
   }
 });
+module.exports = ErrorScreen;

@@ -1,3 +1,5 @@
+CONSTANTS = require('./../constants/constants');
+
 var Utils = {
   truncateTextToWidth: function(element, text) {
     var testText = document.createElement("span");
@@ -98,7 +100,7 @@ var Utils = {
 
   // Liusha: saved for resizing control bar
   getScaledControlBarHeight: function(controlBarWidth) {
-    var controlBarHeightBase = UI.defaultControlBarHeight;
+    var controlBarHeightBase = CONSTANTS.UI.defaultControlBarHeight;
     // if (controlBarWidth >= 1280) {
     //   controlBarHeight = controlBarHeightBase * controlBarWidth / 1280;
     // } else if (controlBarWidth <= 560) {
@@ -209,3 +211,4 @@ var Utils = {
     return item.whenDoesNotFit && item.whenDoesNotFit == "moveToMoreOptions";
   }
 };
+module.exports = Utils;
