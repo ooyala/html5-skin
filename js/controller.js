@@ -1,11 +1,11 @@
 /********************************************************************
-  CONTROLLER
-*********************************************************************/
+ CONTROLLER
+ *********************************************************************/
 var React = require('react'),
-    Utils = require('./components/utils'),
-    CONSTANTS = require('./constants/constants'),
-    AccessibilityControls = require('./components/accessibilityControls'),
-    Skin = require('./skin');
+  Utils = require('./components/utils'),
+  CONSTANTS = require('./constants/constants'),
+  AccessibilityControls = require('./components/accessibilityControls'),
+  Skin = require('./skin');
 
 OO.plugin("Html5Skin", function (OO, _, $, W) {
   //Check if the player is at least v4. If not, the skin cannot load.
@@ -69,11 +69,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
       this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
-      this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
+
 
       /********************************************************************
-        ADS RELATED EVENTS
-      *********************************************************************/
+       ADS RELATED EVENTS
+       *********************************************************************/
       if (!Utils.isIPhone()) {
         //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
         this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
@@ -98,8 +98,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     /*--------------------------------------------------------------------
-      event listeners from core player -> regulate skin STATE
-    ---------------------------------------------------------------------*/
+     event listeners from core player -> regulate skin STATE
+     ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
       $("#" + elementId + " .innerWrapper").append("<div class='player_skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
       $("#" + elementId + " .player_skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
@@ -108,7 +108,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       //load language jsons
       params.skin.languages.forEach(function(languageObj){
         $.getJSON(languageObj.languageFile, function(data) {
-            tmpLocalizableStrings[languageObj.language] = data;
+          tmpLocalizableStrings[languageObj.language] = data;
         });
       });
 
@@ -122,7 +122,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         );
         //var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
-        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
       }, this));
 
@@ -140,7 +139,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onContentTreeFetched: function (event, contentTree) {
       this.resetUpNextInfo();
       this.state.contentTree = contentTree;
+      this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       this.state.playerState = CONSTANTS.STATE.START;
+      this.renderSkin({"contentTree": contentTree});
     },
 
     onVolumeChanged: function (event, newVolume){
@@ -183,8 +184,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         timeToShow = (1 - this.skin.props.skinConfig.upNextScreen.timeToShow) * duration;
       }
       if (duration - currentPlayhead <= timeToShow &&
-          !this.state.upNextInfo.countDownCancelled &&
-          this.state.upNextInfo.upNextData !== null && this.state.playerState === CONSTANTS.STATE.PLAYING) {
+        !this.state.upNextInfo.countDownCancelled &&
+        this.state.upNextInfo.upNextData !== null && this.state.playerState === CONSTANTS.STATE.PLAYING) {
         this.state.screenToShow = CONSTANTS.SCREEN.UP_NEXT_SCREEN;
       }
     },
@@ -242,14 +243,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.seeking = false;
     },
 
-    onPlaybackReady: function(event) {
-      this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
-      this.renderSkin({"contentTree": this.state.contentTree});
-    },
-
     /********************************************************************
-      ADS RELATED EVENTS
-    *********************************************************************/
+     ADS RELATED EVENTS
+     *********************************************************************/
 
     publishOverlayRenderingEvent: function(marginHeight) {
       this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, {"marginHeight": marginHeight});
@@ -294,9 +290,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onWillResumeAds: function(event) {
       console.log("onWillResumeAds is called");
       if (this.state.currentAdsInfo.currentAdItem !== null) {
-      this.state.playerState = CONSTANTS.STATE.PLAYING;
-      //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
-      this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
+        this.state.playerState = CONSTANTS.STATE.PLAYING;
+        //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
+        this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
       }
     },
 
@@ -364,8 +360,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     /*--------------------------------------------------------------------
-      Skin state -> control skin
-    ---------------------------------------------------------------------*/
+     Skin state -> control skin
+     ---------------------------------------------------------------------*/
     renderSkin: function(args) {
       if (this.state.configLoaded) {
         _.extend(this.state, args);
@@ -374,8 +370,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     /*--------------------------------------------------------------------
-      skin UI-action -> publish event to core player
-    ---------------------------------------------------------------------*/
+     skin UI-action -> publish event to core player
+     ---------------------------------------------------------------------*/
     toggleFullscreen: function() {
       this.state.fullscreen = !this.state.fullscreen;
       this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, this.state.fullscreen);
