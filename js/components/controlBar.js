@@ -87,7 +87,7 @@ var ControlBar = React.createClass({
   setNewVolume: function(evt) {
     var newVolumeHeadX = this.isMobile ? evt.changedTouches[0].screenX : evt.screenX;
     var diffX = newVolumeHeadX - this.state.currentVolumeHead;
-    var diffVolume = (diffX / parseInt(controlBarStyle.volumeSliderStyle.volumeBarSetting.width));
+    var diffVolume = (diffX / parseInt(InlineStyle.controlBarStyle.volumeSliderStyle.volumeBarSetting.width));
     var newVolume = this.props.controller.state.volumeState.volume + diffVolume;
     newVolume = Math.min(newVolume, 1);
     newVolume = Math.max(newVolume, 0);
@@ -209,16 +209,16 @@ var ControlBar = React.createClass({
         onClick={this.handleVolumeClick} onTouchEnd={this.handleVolumeClick}></span>);
     }
 
-    controlBarStyle.volumeSliderStyle.volumeHeadPaddingStyle.left = parseFloat(this.props.controller.state.volumeState.volume) * 100 + "%";
-    controlBarStyle.volumeSliderStyle.volumeIndicatorStyle.width = controlBarStyle.volumeSliderStyle.volumeHeadPaddingStyle.left;
+    InlineStyle.volumeSliderStyle.volumeHeadPaddingStyle.left = parseFloat(this.props.controller.state.volumeState.volume) * 100 + "%";
+    InlineStyle.volumeSliderStyle.volumeIndicatorStyle.width = InlineStyle.volumeSliderStyle.volumeHeadPaddingStyle.left;
 
     var volumeSlider = [];
     volumeSlider.push(
-      <div className="volumeBar" style={controlBarStyle.volumeSliderStyle.volumeBarSetting}>
-        <div className="volumeIndicator" style={controlBarStyle.volumeSliderStyle.volumeIndicatorStyle}></div>
-        <div className="playheadPadding" style={controlBarStyle.volumeSliderStyle.volumeHeadPaddingStyle}
+      <div className="volumeBar" style={InlineStyle.volumeSliderStyle.volumeBarSetting}>
+        <div className="volumeIndicator" style={InlineStyle.volumeSliderStyle.volumeIndicatorStyle}></div>
+        <div className="playheadPadding" style={InlineStyle.volumeSliderStyle.volumeHeadPaddingStyle}
           onTouchStart={this.handleVolumeHeadTouchStart}>
-          <div className="volumeHead" style={controlBarStyle.volumeSliderStyle.volumeHeadStyle}></div>
+          <div className="volumeHead" style={InlineStyle.volumeSliderStyle.volumeHeadStyle}></div>
         </div>
       </div>);
 
@@ -295,11 +295,11 @@ var ControlBar = React.createClass({
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
     //if mobile and not showing the slider or the icon, extra space can be added to control bar width:
-    var extraSpaceVolumeSlider = ((this.isMobile && !this.state.volumeSliderVisible) ? parseInt(controlBarStyle.volumeSliderStyle.volumeBarSetting.width) : 0);
+    var extraSpaceVolumeSlider = ((this.isMobile && !this.state.volumeSliderVisible) ? parseInt(InlineStyle.controlBarStyle.volumeSliderStyle.volumeBarSetting.width) : 0);
     var extraSpaceVolumeIcon = ((Utils.isIos()) ?
-                                parseInt(controlBarStyle.controlBarItemSetting.fontSize)+
-                                parseInt(controlBarStyle.controlBarItemSetting.paddingLeft)+
-                                parseInt(controlBarStyle.controlBarItemSetting.paddingRight)
+                                parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.fontSize)+
+                                parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.paddingLeft)+
+                                parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.paddingRight)
                                 : 0);
 
     //if no hours, add extra space to control bar width:
