@@ -14,7 +14,8 @@ var React = require('react'),
     StartScreen = require('./views/startScreen'),
     PauseScreen = require('./views/pauseScreen'),
     PlayingScreen = require('./views/playingScreen'),
-    UpNextScreen = require('./views/upNextScreen'),
+    UpNextScreen = require('./views/upNextScreen')
+    Spinner = require('./components/spinner');
     ErrorScreen = require('./views/errorScreen');
 
 var Skin = React.createClass({
@@ -73,6 +74,10 @@ var Skin = React.createClass({
     }
 
     switch (this.state.screenToShow) {
+      case CONSTANTS.SCREEN.LOADING_SCREEN:
+        return (
+          <Spinner />
+        );
       case CONSTANTS.SCREEN.START_SCREEN:
         return (
           <StartScreen {...this.props} contentTree={this.state.contentTree} style={InlineStyle.startScreenStyle}/>
