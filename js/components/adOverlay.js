@@ -7,7 +7,7 @@ var AdOverlay = React.createClass({
   	var scrubberPaddingHeight = parseInt(scrubberBarStyle.scrubberBarPadding.height);
   	var scrubberBarHeight = parseInt(scrubberBarStyle.scrubberBarSetting.height);
   	var controlBarHeight = controlBarStyle.controlBarSetting.height;
-  	if(this.props.overlay) {
+  	if(this.props.overlay && this.props.showOverlay) {
       overlayStyle.display = "inline-block";
       overlayStyle.bottom = this.props.controlBarVisible ?
       controlBarHeight + scrubberPaddingHeight/2 : scrubberPaddingHeight/2;

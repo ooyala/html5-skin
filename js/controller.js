@@ -19,6 +19,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "discoveryData": null,
       "isPlayingAd": false,
       "adOverlayUrl": null,
+      "showAdOverlay": false,
       "configLoaded": false,
       "fullscreen": false,
       "pauseAnimationDisabled": false,
@@ -29,13 +30,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "numberOfAds": 0
       },
 
-      "ccOptions":{
+      "ccOptions": {
         "enabled": null,
         "language": null,
         "availableLanguages": null
       },
 
-      "volumeState":{
+      "volumeState": {
         "volume" :null,
         "muted": false,
         "oldVolume": 1,
@@ -80,6 +81,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
         this.mb.subscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi", _.bind(this.onWillResumeAds, this));
         this.mb.subscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi", _.bind(this.onWillPlayNonlinearAd, this));
+        this.mb.subscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi", _.bind(this.closeNonlinearAd, this));
+        this.mb.subscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi", _.bind(this.hideNonlinearAd, this));
+        this.mb.subscribe(OO.EVENTS.RESHOW_NONLINEAR_AD, "customerUi", _.bind(this.showNonlinearAd, this));
 
         if (OO.EVENTS.DISCOVERY_API) {
           this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
@@ -241,18 +245,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /********************************************************************
       ADS RELATED EVENTS
     *********************************************************************/
-
-    publishOverlayRenderingEvent: function(marginHeight) {
-      this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, {"marginHeight": marginHeight});
-    },
-
-    onWillPlayNonlinearAd: function(event, url) {
-      console.log("received play overlay event");
-      if(url.url) {
-        this.state.adOverlayUrl = url.url;
-      }
-    },
-
     onAdsPlayed: function(event) {
       console.log("onAdsPlayed is called from event = " + event);
       this.state.screenToShow = SCREEN.PLAYING_SCREEN;
@@ -300,6 +292,32 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onAdsClicked: function() {
       console.log("on ads clicked is called");
       this.mb.publish(OO.EVENTS.ADS_CLICKED);
+    },
+
+    publishOverlayRenderingEvent: function(marginHeight) {
+      this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, {"marginHeight": marginHeight});
+    },
+
+    onWillPlayNonlinearAd: function(event, url) {
+      console.log("received play overlay event");
+      if(url.url) {
+        this.state.adOverlayUrl = url.url;
+        this.state.showAdOverlay = true;
+      }
+    },
+
+    closeNonlinearAd: function(event) {
+      this.state.adOverlayUrl = null;
+      this.state.showAdOverlay = false;
+      //this.renderSkin();
+    },
+
+    hideNonlinearAd: function(event) {
+      this.state.showAdOverlay = false;
+    },
+
+    showNonlinearAd: function(event) {
+      this.state.showAdOverlay = true;
     },
 
     onClosedCaptionsInfoAvailable: function(event, languages) {
