@@ -28,7 +28,7 @@ var Spinner = React.createClass({
     mSpinnerStyle.msTransform = "translate(-50%, -50%) rotate(" + this.state.spinnerAngle + "deg)";
     mSpinnerStyle.transform = "translate(-50%, -50%) rotate(" + this.state.spinnerAngle + "deg)";
     return (
-      <div className="loadingScreen" style={startScreenStyle.style}>
+      <div className="loadingScreen" style={InlineStyle.startScreenStyle.style}>
         <div className="spinner">
           <img src={mSpinner} style={mSpinnerStyle}></img>
         </div>

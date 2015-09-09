@@ -20,6 +20,7 @@ module.exports = {
     UP_NEXT_SCREEN: "upNextScreen",
     AD_SCREEN: "adScreen",
     MORE_OPTIONS_SCREEN: "moreOptionsScreen",
+    LOADING_SCREEN: "loadingScreen"
   },
 
   SKIN_TEXT: {
