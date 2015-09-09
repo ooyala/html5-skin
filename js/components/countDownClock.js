@@ -7,6 +7,9 @@
 * @class CountDownClock
 * @constructor
 */
+var React = require('react'),
+    CONSTANTS = require('../constants/constants'),
+    InlineStyle = require('../styles/inlineStyle');
 
 var CountDownClock = React.createClass({
   getInitialState: function() {
@@ -17,8 +20,8 @@ var CountDownClock = React.createClass({
     this.countDownStyle = null;
     var tmpFraction = 0;
     var tmpRemainSeconds = 0;
-    if(this.props.controller.state.screenToShow === SCREEN.UP_NEXT_SCREEN) {
-      this.countDownStyle = upNextPanelStyle.upNextCountDownStyle; 
+    if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.UP_NEXT_SCREEN) {
+      this.countDownStyle = InlineStyle.upNextPanelStyle.upNextCountDownStyle; 
       tmpRemainSeconds = this.props.duration - this.props.currentPlayhead;
       if (this.props.timeToShow > 1) {
         // time to show is based on seconds
@@ -28,8 +31,8 @@ var CountDownClock = React.createClass({
         tmpFraction = (2 / ((1 - this.props.timeToShow) * this.props.duration));
       }
     }
-    else if(this.props.controller.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
-      this.countDownStyle = discoveryScreenStyle.discoveryCountDownStyle;
+    else if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
+      this.countDownStyle = InlineStyle.discoveryScreenStyle.discoveryCountDownStyle;
       tmpFraction = 2 / this.props.timeToShow;
       tmpRemainSeconds = this.props.timeToShow;
     }
@@ -53,7 +56,7 @@ var CountDownClock = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
-      if(this.props.controller.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+      if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
         this.countDownStyle.display = "none";
         clearInterval(this.interval);
         this.setState({showDiscoveryCountDown: false});
@@ -97,7 +100,7 @@ var CountDownClock = React.createClass({
     var decimals;
     var percent = this.state.fraction * this.state.remainSeconds + 1.5;
     this.context.fillStyle = 'white';
-    if(this.props.controller.state.screenToShow === SCREEN.UP_NEXT_SCREEN) {
+    if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.UP_NEXT_SCREEN) {
       this.context.fillText(this.state.remainSeconds.toFixed(decimals), this.state.clockContainerWidth / 2, this.state.clockRadius, 100);
     }
     this.context.beginPath();
@@ -111,7 +114,7 @@ var CountDownClock = React.createClass({
   },
 
   tick: function() {
-    if(this.props.controller.state.screenToShow === SCREEN.DISCOVERY_SCREEN) {
+    if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
       if(this.state.remainSeconds < 1) {
         this.setState({remainSeconds: 0});
         clearInterval(this.interval);
@@ -122,13 +125,13 @@ var CountDownClock = React.createClass({
         this.updateCanvas();
       }
     }
-    else if(this.props.controller.state.screenToShow === SCREEN.UP_NEXT_SCREEN) {
-      if (this.state.remainSeconds < 1 || this.props.playerState === STATE.END) {
+    else if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.UP_NEXT_SCREEN) {
+      if (this.state.remainSeconds < 1 || this.props.playerState === CONSTANTS.STATE.END) {
         this.setState({remainSeconds: 0});
         clearInterval(this.interval);
         this.startUpNextVideo();
       } 
-      else if (this.props.playerState === STATE.PLAYING) {
+      else if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
         this.setState({remainSeconds: this.state.remainSeconds - this.state.counterInterval});
         this.updateCanvas();
       }
@@ -158,7 +161,7 @@ var CountDownClock = React.createClass({
     console.log("startUpNext");
     var eventData = {
       "clickedVideo" : this.props.upNextInfo.upNextData,
-      "custom" : {"source": SCREEN.UP_NEXT_SCREEN}
+      "custom" : {"source": CONSTANTS.SCREEN.UP_NEXT_SCREEN}
     };
     this.props.controller.sendDiscoveryClickEvent(eventData);
   },
@@ -174,3 +177,4 @@ var CountDownClock = React.createClass({
     });
   }
 });
+module.exports = CountDownClock;

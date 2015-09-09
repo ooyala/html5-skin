@@ -1,6 +1,9 @@
 /********************************************************************
   START SCREEN
 *********************************************************************/
+var React = require('react'),
+    CONSTANTS = require('../constants/constants'),
+    Utils = require('../components/utils');
 
 var StartScreen = React.createClass({
   getInitialState: function() {
@@ -34,7 +37,7 @@ var StartScreen = React.createClass({
   render: function() {
     var screenStyle = this.props.style;
     var playClass;
-    if (this.props.controller.state.playerState == STATE.END){//for iPhone, start screen is shown instead of end screen, with a 'replay' button
+    if (this.props.controller.state.playerState == CONSTANTS.STATE.END){//for iPhone, start screen is shown instead of end screen, with a 'replay' button
       playClass = this.props.skinConfig.icons.replay.fontStyleClass;
     }
     else {
@@ -125,3 +128,4 @@ var StartScreen = React.createClass({
     }
   }
 });
+module.exports = StartScreen;
