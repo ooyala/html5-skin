@@ -15,7 +15,7 @@ var React = require('react'),
     PauseScreen = require('./views/pauseScreen'),
     PlayingScreen = require('./views/playingScreen'),
     UpNextScreen = require('./views/upNextScreen')
-    Spinner = require('./components/spinner');
+    Spinner = require('./components/spinner'),
     ErrorScreen = require('./views/errorScreen');
 
 var Skin = React.createClass({
@@ -194,7 +194,9 @@ var Skin = React.createClass({
         );
       case CONSTANTS.SCREEN.ERROR_SCREEN:
         return (
-          <ErrorScreen {...this.props} errorCode={this.props.controller.state.errorCode} style={errorScreenStyle}/>
+          <ErrorScreen {...this.props}
+            errorCode={this.props.controller.state.errorCode}
+            style={InlineStyle.errorScreenStyle}/>
         );
       default:
         return false;

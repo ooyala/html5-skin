@@ -9,17 +9,17 @@ var ErrorScreen = React.createClass({
 
   render: function() {
     var errorTitle, errorDescription, errorAction;
-    if (ERROR_MESSAGE.hasOwnProperty(this.props.errorCode.code)){
-      errorTitle = ERROR_MESSAGE[this.props.errorCode.code].title;
-      errorDescription = ERROR_MESSAGE[this.props.errorCode.code].description;
-      errorAction = SKIN_TEXT.ERROR_ACTION;
-      errorScreenStyle.contentStyle.textAlign = "left";
+    if (CONSTANTS.ERROR_MESSAGE.hasOwnProperty(this.props.errorCode.code)){
+      errorTitle = CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].title;
+      errorDescription = CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].description;
+      errorAction = CONSTANTS.SKIN_TEXT.ERROR_ACTION;
+      InlineStyle.errorScreenStyle.contentStyle.textAlign = "left";
     }
     else {
-      errorTitle = SKIN_TEXT.UNKNOWN_ERROR;
+      errorTitle = CONSTANTS.SKIN_TEXT.UNKNOWN_ERROR;
       errorDescription = null;
       errorAction = null;
-      errorScreenStyle.contentStyle.textAlign = "center";
+      InlineStyle.errorScreenStyle.contentStyle.textAlign = "center";
     }
 
     var screenStyle = this.props.style;

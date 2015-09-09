@@ -20,7 +20,9 @@ module.exports = {
     UP_NEXT_SCREEN: "upNextScreen",
     AD_SCREEN: "adScreen",
     MORE_OPTIONS_SCREEN: "moreOptionsScreen",
-    LOADING_SCREEN: "loadingScreen"
+    LOADING_SCREEN: "loadingScreen",
+    CLOSEDCAPTION_SCREEN: "closedCaptionScreen",
+    ERROR_SCREEN: "errorScreen"
   },
 
   SKIN_TEXT: {
@@ -36,7 +38,9 @@ module.exports = {
     OFF: "Off",
     DISCOVER: "Discover",
     UP_NEXT: "Up next",
-    INVEST_IN_SOCIAL_CHANGE: "Invest In Social Change"
+    INVEST_IN_SOCIAL_CHANGE: "Invest In Social Change",
+    ERROR_ACTION: "RELOAD YOUR SCREEN OR TRY SELECTING A DIFFERENT VIDEO",
+    UNKNOWN_ERROR: "THIS IS NOT WORKING! :("
   },
 
   KEYCODES: {
