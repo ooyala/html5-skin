@@ -134,7 +134,8 @@ var PauseScreen = React.createClass({
           {titleMetadata}
           {descriptionMetadata}
         </div>
-        <AdOverlay overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay} controlBarVisible={this.state.controlBarVisible} />
+        <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
+          showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}

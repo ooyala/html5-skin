@@ -798,6 +798,18 @@ module.exports = {
       transition: "bottom 0.5s, height 0.25s",
       margin: 0,
       padding: 0
+    },
+
+    overlayImageStyle: {
+      display: "block"
+    },
+
+    closeButtonStyle: {
+      display: "inline",
+      position: "absolute",
+      cursor: "pointer",
+      top: "0px",
+      right: "0px"
     }
   },
 
