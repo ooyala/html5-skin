@@ -36,6 +36,10 @@ var ClosedCaptionScreen = React.createClass({
     window.addEventListener('resize', this.handleResize);
   },
 
+  componentWillUnmount: function () {
+    window.removeEventListener('resize', this.handleResize);
+  },
+
   closeClosedCaptionPanel: function(evt) {
     if (evt.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,
