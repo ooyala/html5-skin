@@ -25,8 +25,7 @@ var ClosedCaptionScreen = React.createClass({
   },
 
   handleResize: function(e) {
-    this.setState({clientWidth: this.getDOMNode().clientWidth - 2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING,
-      clientHeight: this.getDOMNode().clientHeight});
+    this.setState({clientWidth: this.getDOMNode().clientWidth, clientHeight: this.getDOMNode().clientHeight});
   },
 
   componentDidMount: function () {
@@ -45,7 +44,7 @@ var ClosedCaptionScreen = React.createClass({
       this.props.controller.toggleClosedCaptionScreen();
     }
   },
-  
+
   highlight: function(evt) {
     evt.target.style.color = "rgba(255, 255, 255, 1.0)";
   },
@@ -60,12 +59,12 @@ var ClosedCaptionScreen = React.createClass({
       <div style={{height: "100%", width: "100%"}}>
         <ClosedCaptionPanel {...this.props} ccOptions = {this.props.ccOptions} clientWidth = {this.state.clientWidth} clientHeight = {this.state.clientHeight}/>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          scrubberBarWidth={this.state.clientWidth}/>
+          controlBarWidth={this.state.clientWidth}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.clientWidth}
           playerState={this.state.playerState}/>
-          
-        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight} 
+
+        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
           onClick={this.closeClosedCaptionPanel} style={InlineStyle.closedCaptionScreenStyles.closeButtonStyle}
           onTouchEnd={this.closeClosedCaptionPanel}>
           <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>

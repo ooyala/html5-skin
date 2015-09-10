@@ -32,10 +32,9 @@ var PauseScreen = React.createClass({
     InlineStyle.pauseScreenStyle.fading.transition = (this.props.pauseAnimationDisabled === true ? "opacity 0s" : "opacity 1s");
 
     this.setState({
-      controlBarWidth: this.getDOMNode().clientWidth - 2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING,
+      controlBarWidth: this.getDOMNode().clientWidth,
       description: this.getShortenedDescription()
     });
-
   },
 
   handleResize: function(e) {
@@ -137,7 +136,7 @@ var PauseScreen = React.createClass({
         </div>
         <AdOverlay overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay} controlBarVisible={this.state.controlBarVisible} />
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          scrubberBarWidth={this.state.controlBarWidth}/>
+          controlBarWidth={this.state.controlBarWidth}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}
           playerState={this.state.playerState} />
