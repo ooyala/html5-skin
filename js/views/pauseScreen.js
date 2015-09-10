@@ -6,6 +6,7 @@ var React = require('react'),
     Utils = require('../components/utils'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
+    AdOverlay = require('../components/adOverlay'),
     CONSTANTS = require('../constants/constants');
 
 var PauseScreen = React.createClass({
@@ -134,6 +135,7 @@ var PauseScreen = React.createClass({
           {titleMetadata}
           {descriptionMetadata}
         </div>
+        <AdOverlay overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay} controlBarVisible={this.state.controlBarVisible} />
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           scrubberBarWidth={this.state.controlBarWidth}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
