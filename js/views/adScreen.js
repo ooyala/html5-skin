@@ -7,7 +7,8 @@ var React = require('react'),
     AdPanel = require('../components/adPanel'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
-    CONSTANTS = require('../constants/constants');
+    CONSTANTS = require('../constants/constants'),
+    Utils = require('../components/utils');
 
 var AdScreen = React.createClass({
   getInitialState: function() {

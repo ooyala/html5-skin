@@ -36,6 +36,10 @@ var EndScreen = React.createClass({
 
       // pause or play the video if the skin is clicked
       this.props.controller.togglePlayPause();
+
+      if (this.props.controller.state.volumeState.volumeSliderVisible) {
+        this.props.controller.hideVolumeSliderBar();
+      }
     }
   },
 

@@ -10,8 +10,6 @@ var ControlBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
-      volumeSliderVisible: false,
-      volumeSliderTimer: null,
       currentVolumeHead: 0
     };
 
@@ -25,18 +23,13 @@ var ControlBar = React.createClass({
     }
   },
 
-  componentWillUnmount: function () {
-    this.cancelVolumeSliderTimer();
-  },
-
-  cancelVolumeSliderTimer: function () {
-    if (this.state.volumeSliderTimer !== null){
-      clearTimeout(this.state.volumeSliderTimer);
-    }
-  },
-
   handleControlBarMouseUp: function(evt) {
-    evt.stopPropagation();
+    if (evt.type == 'touchend' || !this.isMobile){
+      evt.stopPropagation();
+      if (this.props.controller.state.volumeState.volumeSliderVisible){
+        this.props.controller.hideVolumeSliderBar();
+      }
+    }
   },
 
   handleFullscreenClick: function(evt) {
@@ -49,14 +42,17 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeIconClick: function(evt) {
-    this.startHideVolumeSliderTimer();
     if (evt.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
       if (this.isMobile){
-        this.setState({
-          volumeSliderVisible: !this.state.volumeSliderVisible
-        });
+        evt.stopPropagation();
+        if (this.props.controller.state.volumeState.volumeSliderVisible){
+          this.props.controller.hideVolumeSliderBar();
+        }
+        else {
+          this.props.controller.showVolumeSliderBar();
+        }
       }
       else{
         this.props.controller.handleMuteClick();
@@ -64,9 +60,14 @@ var ControlBar = React.createClass({
     }
   },
 
+  handleVolumeBarTouchEnd: function(evt) {
+    //to prevent volume slider from hiding when clicking on volume slider
+    evt.stopPropagation();
+  },
+
   handleVolumeHeadTouchStart: function(evt) {
-    this.cancelVolumeSliderTimer();
     evt.preventDefault();
+    evt.stopPropagation();
     evt = evt.nativeEvent;
 
     this.getDOMNode().parentNode.addEventListener("touchmove", this.handleVolumeHeadMove);
@@ -99,21 +100,10 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeHeadTouchEnd: function(evt) {
+    evt.stopPropagation();
     this.setNewVolume(evt);
     this.getDOMNode().parentNode.removeEventListener("touchmove", this.handleVolumeHeadMove);
     document.removeEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
-
-    this.startHideVolumeSliderTimer();
-  },
-
-  startHideVolumeSliderTimer: function(){
-    this.cancelVolumeSliderTimer();
-    var timer = setTimeout(function(){
-      if(this.state.volumeSliderVisible){
-        this.setState({volumeSliderVisible:false});
-      }
-    }.bind(this), 2000);
-    this.setState({volumeSliderTimer: timer});
   },
 
   handlePlayClick: function(evt) {
@@ -158,6 +148,7 @@ var ControlBar = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
+      evt.stopPropagation();
       this.props.controller.toggleMoreOptionsScreen();
     }
   },
@@ -214,7 +205,7 @@ var ControlBar = React.createClass({
 
     var volumeSlider = [];
     volumeSlider.push(
-      <div className="volumeBar" style={InlineStyle.volumeSliderStyle.volumeBarSetting}>
+      <div className="volumeBar" style={InlineStyle.volumeSliderStyle.volumeBarSetting} onTouchEnd={this.handleVolumeBarTouchEnd}>
         <div className="volumeIndicator" style={InlineStyle.volumeSliderStyle.volumeIndicatorStyle}></div>
         <div className="playheadPadding" style={InlineStyle.volumeSliderStyle.volumeHeadPaddingStyle}
           onTouchStart={this.handleVolumeHeadTouchStart}>
@@ -227,7 +218,7 @@ var ControlBar = React.createClass({
       volumeControls = volumeBars;
     }
     else {
-      volumeControls = this.state.volumeSliderVisible ? volumeSlider : null;
+      volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
     }
 
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
@@ -295,7 +286,7 @@ var ControlBar = React.createClass({
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
     //if mobile and not showing the slider or the icon, extra space can be added to control bar width:
-    var extraSpaceVolumeSlider = ((this.isMobile && !this.state.volumeSliderVisible) ? parseInt(InlineStyle.volumeSliderStyle.volumeBarSetting.width) : 0);
+    var extraSpaceVolumeSlider = ((this.isMobile && !this.props.controller.state.volumeState.volumeSliderVisible) ? parseInt(InlineStyle.volumeSliderStyle.volumeBarSetting.width) : 0);
     var extraSpaceVolumeIcon = ((Utils.isIos()) ?
                                 parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.fontSize)+
                                 parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.paddingLeft)+

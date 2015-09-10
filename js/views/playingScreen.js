@@ -58,6 +58,9 @@ var PlayingScreen = React.createClass({
   },
 
   handleTouchEnd: function() {
+    if (this.props.controller.state.volumeState.volumeSliderVisible) {
+      this.props.controller.hideVolumeSliderBar();
+    }
     if (!this.state.controlBarVisible){
       this.showControlBar();
       this.startHideControlBarTimer();
