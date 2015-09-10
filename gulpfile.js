@@ -70,7 +70,7 @@ gulp.task('test', shell.task(['npm test']));
 
 // Initiate a watch
 gulp.task('watch', function() {
-  gulp.watch(path.scripts, ['browserify']);
+  gulp.watch(path.scripts, ['browserify', 'pretty']);
 });
 
 // The default task (called when you run `gulp` from cli)

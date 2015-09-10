@@ -2,10 +2,10 @@
  CONTROLLER
  *********************************************************************/
 var React = require('react'),
-  Utils = require('./components/utils'),
-  CONSTANTS = require('./constants/constants'),
-  AccessibilityControls = require('./components/accessibilityControls'),
-  Skin = require('./skin');
+    Utils = require('./components/utils'),
+    CONSTANTS = require('./constants/constants'),
+    AccessibilityControls = require('./components/accessibilityControls'),
+    Skin = require('./skin');
 
 OO.plugin("Html5Skin", function (OO, _, $, W) {
   //Check if the player is at least v4. If not, the skin cannot load.
@@ -24,6 +24,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "playerState": null,
       "discoveryData": null,
       "isPlayingAd": false,
+      "adOverlayUrl": null,
+      "showAdOverlay": false,
       "configLoaded": false,
       "fullscreen": false,
       "pauseAnimationDisabled": false,
@@ -35,13 +37,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "skipAdButtonEnabled": false
       },
 
-      "ccOptions":{
+      "ccOptions": {
         "enabled": null,
         "language": null,
         "availableLanguages": null
       },
 
-      "volumeState":{
+      "volumeState": {
         "volume" :null,
         "muted": false,
         "oldVolume": 1,
@@ -85,10 +87,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
         this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
         this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
-
         this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
         this.mb.subscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi", _.bind(this.onWillResumeAds, this));
+
+        this.mb.subscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi", _.bind(this.onWillPlayNonlinearAd, this));
+        this.mb.subscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi", _.bind(this.closeNonlinearAd, this));
+        this.mb.subscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi", _.bind(this.hideNonlinearAd, this));
+        this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi", _.bind(this.showNonlinearAd, this));
+
         this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
+
         if (OO.EVENTS.DISCOVERY_API) {
           this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
         }
@@ -144,7 +152,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onContentTreeFetched: function (event, contentTree) {
       this.resetUpNextInfo();
       this.state.contentTree = contentTree;
-      this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       this.state.playerState = CONSTANTS.STATE.START;
       this.renderSkin({"contentTree": contentTree});
     },
@@ -254,12 +261,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     /********************************************************************
-     ADS RELATED EVENTS
-     *********************************************************************/
-
-    publishOverlayRenderingEvent: function(marginHeight) {
-      this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, {"marginHeight": marginHeight});
-    },
+      ADS RELATED EVENTS
+    *********************************************************************/
 
     onAdsPlayed: function(event) {
       console.log("onAdsPlayed is called from event = " + event);
@@ -321,6 +324,34 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onAdsClicked: function() {
       console.log("on ads clicked is called");
       this.mb.publish(OO.EVENTS.ADS_CLICKED);
+    },
+
+    publishOverlayRenderingEvent: function(marginHeight) {
+      this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, {"marginHeight": marginHeight});
+    },
+
+    onWillPlayNonlinearAd: function(event, url) {
+      if(url.url) {
+        this.state.adOverlayUrl = url.url;
+        this.state.showAdOverlay = true;
+      }
+      this.renderSkin();
+    },
+
+    closeNonlinearAd: function(event) {
+      this.state.adOverlayUrl = null;
+      this.state.showAdOverlay = false;
+      this.renderSkin();
+    },
+
+    hideNonlinearAd: function(event) {
+      this.state.showAdOverlay = false;
+      this.renderSkin();
+    },
+
+    showNonlinearAd: function(event) {
+      this.state.showAdOverlay = true;
+      this.renderSkin();
     },
 
     onClosedCaptionsInfoAvailable: function(event, languages) {

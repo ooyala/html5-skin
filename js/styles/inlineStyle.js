@@ -174,6 +174,7 @@ module.exports = {
       "background": "rgba(0, 0, 0, 0.3)",
       "width": "100%",
       "bottom": "0%",
+      "height": 60,
       "position": "absolute",
       "margin": 0,
 
@@ -198,7 +199,7 @@ module.exports = {
       "paddingLeft": "7.5px",
       "paddingRight": "7.5px",
       "paddingTop": "0",
-      "marginTop": "0",
+      "marginTop": "6px",
       "cursor": "pointer"
     },
 
@@ -209,7 +210,8 @@ module.exports = {
       "fontSize": 14,
       "paddingLeft": "7.5px",
       "paddingRight": "7.5px",
-      "textAlign": "left"
+      "textAlign": "left",
+      "marginTop": "6px"
     },
 
     iconSetting: {},
@@ -321,7 +323,8 @@ module.exports = {
       "padding": 0,
       "left": "15px",
       "right": "15px",
-      "bottom": "50%"
+      "bottom": "50%",
+      "transform": "translateY(50%)"
     },
 
     scrubberBarPadding: {
@@ -427,6 +430,18 @@ module.exports = {
       lineHeight: "30px",
       borderRadius: "6px",
       cursor: "pointer"
+    },
+
+    twitterIconStyle: {
+      backgroundColor: "#64ccea"
+    },
+
+    facebookIconStyle: {
+      backgroundColor: "#517db8"
+    },
+
+    plusIconStyle: {
+      backgroundColor: "#ff6267"
     },
 
     panelStyle: {
@@ -773,6 +788,17 @@ module.exports = {
       "padding": "4px",
       "border-radius": "5px",
     },
+  },
+
+  adOverlayStyle: {
+    style: {
+      display: "inline-block",
+      bottom: "50%",
+      position: "absolute",
+      transition: "bottom 0.5s, height 0.25s",
+      margin: 0,
+      padding: 0
+    }
   },
 
   closedCaptionScreenStyles: {

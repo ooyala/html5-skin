@@ -24,7 +24,7 @@ var DiscoveryScreen = React.createClass({
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth - 2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING});
+    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
   },
@@ -59,7 +59,7 @@ var DiscoveryScreen = React.createClass({
         <ControlBar
           {...this.props}
           controlBarVisible={this.state.controlBarVisible}
-          scrubberBarWidth={this.state.controlBarWidth}
+          controlBarWidth={this.state.controlBarWidth}
           playerState={this.props.playerState} />
       </div>
     );
