@@ -430,6 +430,18 @@ module.exports = {
       cursor: "pointer"
     },
 
+    twitterIconStyle: {
+      backgroundColor: "#64ccea"
+    },
+
+    facebookIconStyle: {
+      backgroundColor: "#517db8"
+    },
+
+    plusIconStyle: {
+      backgroundColor: "#ff6267"
+    },
+
     panelStyle: {
       backgroundColor: "#3a3a3a",
       bottom: 0,

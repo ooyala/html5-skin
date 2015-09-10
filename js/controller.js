@@ -2,10 +2,10 @@
  CONTROLLER
  *********************************************************************/
 var React = require('react'),
-  Utils = require('./components/utils'),
-  CONSTANTS = require('./constants/constants'),
-  AccessibilityControls = require('./components/accessibilityControls'),
-  Skin = require('./skin');
+    Utils = require('./components/utils'),
+    CONSTANTS = require('./constants/constants'),
+    AccessibilityControls = require('./components/accessibilityControls'),
+    Skin = require('./skin');
 
 OO.plugin("Html5Skin", function (OO, _, $, W) {
   //Check if the player is at least v4. If not, the skin cannot load.

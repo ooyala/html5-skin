@@ -110,7 +110,7 @@ var AdPanel = React.createClass({
     }
 
     var skipButtonText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
-    var skipButtonDiv = <AdPanelTopBarItem key="skipButton" onButtonClicked={handleButtonClick} style={adScreenStyle.skipButtonStyle} data={skipButtonText} itemClassName="skip"/>;
+    var skipButtonDiv = <AdPanelTopBarItem key="skipButton" onButtonClicked={handleButtonClick} style={InlineStyle.adScreenStyle.skipButtonStyle} data={skipButtonText} itemClassName="skip"/>;
     adTopBarItems.push(skipButtonDiv);
 
     return adTopBarItems;

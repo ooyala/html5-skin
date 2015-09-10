@@ -14,7 +14,7 @@ var React = require('react'),
     StartScreen = require('./views/startScreen'),
     PauseScreen = require('./views/pauseScreen'),
     PlayingScreen = require('./views/playingScreen'),
-    UpNextScreen = require('./views/upNextScreen')
+    UpNextScreen = require('./views/upNextScreen'),
     Spinner = require('./components/spinner'),
     ErrorScreen = require('./views/errorScreen');
 
