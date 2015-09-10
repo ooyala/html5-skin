@@ -197,7 +197,7 @@ module.exports = {
       "paddingLeft": "7.5px",
       "paddingRight": "7.5px",
       "paddingTop": "0",
-      "marginTop": "0",
+      "marginTop": "6px",
       "cursor": "pointer"
     },
 
@@ -208,7 +208,8 @@ module.exports = {
       "fontSize": 14,
       "paddingLeft": "7.5px",
       "paddingRight": "7.5px",
-      "textAlign": "left"
+      "textAlign": "left",
+      "marginTop": "6px"
     },
 
     iconSetting: {},
@@ -326,7 +327,8 @@ module.exports = {
       "padding": 0,
       "left": "15px",
       "right": "15px",
-      "bottom": "50%"
+      "bottom": "50%",
+      "transform": "translateY(50%)"
     },
 
     scrubberBarPadding: {
