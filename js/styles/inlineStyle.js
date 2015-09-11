@@ -385,36 +385,22 @@ module.exports = {
   shareScreenStyle: {
     tabStyle: {
       display: "inline-block",
-      width: "100px",
-      height: "50px",
-      lineHeight: "50px",
-      borderRight: "1px solid #afafaf",
-      textAlign: "center",
-      backgroundColor: "#444444",
       color: "#afafaf",
       fontWeight: "bold",
-      cursor: "pointer"
+      paddingRight: "25px"
     },
 
     lastTabStyle: {
       display: "inline-block",
-      width: "100px",
-      height: "50px",
-      lineHeight: "50px",
-      backgroundColor: "#444444",
       color: "#afafaf",
       fontWeight: "bold",
-      borderRight: "0px none",
       flex: 1,
       WebkitFlex: 1,
-      textAlign: "left",
-      paddingLeft: "25px",
-      cursor: "pointer"
+      paddingLeft: "0"
     },
 
     activeTab: {
-      color: "#4389ff",
-      backgroundColor: "#3a3a3a"
+      color: "white"
     },
 
     socialIconStyle: {
@@ -428,8 +414,7 @@ module.exports = {
       fontSize: "22px",
       fontWeight: "bold",
       lineHeight: "30px",
-      borderRadius: "6px",
-      cursor: "pointer"
+      borderRadius: "6px"
     },
 
     twitterIconStyle: {
@@ -445,41 +430,42 @@ module.exports = {
     },
 
     panelStyle: {
-      backgroundColor: "#3a3a3a",
-      bottom: 0,
       flex: 1,
       WebkitFlex: 1,
       color: "white",
-      padding: "20px"
+      textAlign: "center"
     },
 
     containerStyle: {
+      padding: "35px",
       position: "absolute",
-      "top": 0,
-      bottom: "32px",
-      backgroundColor: "#444444",
+      top: 0,
+      bottom: "0",
+      background: "rgba(0, 0, 0, 0.75)",
       left: 0,
       right: 0,
       display: "flex",
-      flexDirection: "column",
-      WebkitFlexDirection: "column"
+      alignItems: "center",
+      WebkitAlignItems: "center",
+      justifyContent: "center"
     },
 
     tabRowStyle: {
-      borderBottom: "1px solid #afafaf",
-      display: "flex",
-      flexDirection: "row",
-      WebkitFlexDirection: "row"
+      position: "absolute",
+      top: "35px",
+      left: "35px"
     },
 
     titleStyle: {
+      fontFamily: "'Roboto Condensed', sans-serif",
       fontSize: "18px",
       fontWeight: "bold",
-      marginBottom: "15px"
+      marginBottom: "15px",
+      textTransform: "capitalize"
     },
 
     embedUrlStyle: {
-      color: "black",
+      color:"black",
       marginBottom: "15px",
       borderRadius: "6px",
       borderStyle: "none",
@@ -490,17 +476,16 @@ module.exports = {
     },
 
     emailSendButton: {
-      backgroundColor: "#4389ff",
+      backgroundColor:"#4389ff",
       border: "0px none transparent",
       borderRadius: "6px",
       height: "40px",
       width: "70px",
-      marginTop: "8px",
-      cursor: "pointer"
+      marginTop: "8px"
     },
 
     emailInputField: {
-      color: "gray",
+      color:"gray",
       marginBottom: "15px",
       borderRadius: "6px",
       borderStyle: "none",
@@ -519,7 +504,7 @@ module.exports = {
     },
 
     startAtInput: {
-      color: "black",
+      color:"black",
       borderRadius: "6px",
       borderStyle: "none",
       width: "60px",
@@ -538,15 +523,13 @@ module.exports = {
 
     closeButton: {
       position: "absolute",
-      top: 0,
-      right: 0,
-      height: "25px",
-      width: "25px",
-      backgroundColor: "#4389ff",
-      color: "white",
+      top: "35px",
+      right: "35px",
+      height: "15px",
+      width: "15px",
+      color: "#afafaf",
       textAlign: "center",
-      lineHeight: "25px",
-      cursor: "pointer"
+      lineHeight: "15px"
     }
   },
 

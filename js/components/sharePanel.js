@@ -9,6 +9,7 @@
 */
 var React = require('react'),
     Utils = require('./utils'),
+    CONSTANTS = require('../constants/constants'),
     InlineStyle = require('../styles/inlineStyle');
 
 var SharePanel = React.createClass({
@@ -53,11 +54,11 @@ var SharePanel = React.createClass({
 
       return (
         <div className="shareTabPanel" style={shareStyle.panelStyle}>
-          <div style={shareStyle.titleStyle}>{(this.props.contentTree && this.props.contentTree.title) || ""}</div>
+          <div style={shareStyle.titleStyle}>{CONSTANTS.SKIN_TEXT.INVEST_IN_SOCIAL_CHANGE}</div>
           <div className="twitter" onClick={this.handleTwitterClick} onTouchEnd={this.handleTwitterClick} style={twitterIconStyle}>t</div>
           <div className="facebook" onClick={this.handleFacebookClick} onTouchEnd={this.handleFacebookClick} style={facebookIconStyle}>f</div>
           <div className="googlePlus" onClick={this.handleGPlusClick} onTouchEnd={this.handleGPlusClick} style={plusIconStyle}>g+</div><br/>
-          <input className="embedUrl" style={shareStyle.embedUrlStyle} type='text' defaultValue={location.href}/><br/>
+          <input className="embedUrl" style={shareStyle.embedUrlStyle} type='text' defaultValue={location.href}/>
           <input className="startPointCheckBox" style={{marginBottom: "15px"}}type='checkbox'/>
             Start at <input className="startPointTextField" style={shareStyle.startAtInput} type='text'
             defaultValue={Utils.formatSeconds(this.props.currentPlayhead)}/><br/>
@@ -67,9 +68,11 @@ var SharePanel = React.createClass({
     else if (this.state.activeTab === this.tabs.EMBED) {
       return (
         <div className="shareTabPanel" style={shareStyle.panelStyle}>
-          <textarea className="embedTextArea" style={shareStyle.embedTextArea}>
-            &lt;script src="//player.ooyala.com/v4/"&gt;&lt;/script&gt;
-          </textarea>
+          <textarea
+            className="embedTextArea"
+            value="&lt;script src=&quot;//player.ooyala.com/v4/&quot;&gt;&lt;/script&gt;"
+            style={shareStyle.embedTextArea}
+            />
         </div>
       );
     }
@@ -92,9 +95,15 @@ var SharePanel = React.createClass({
             <tr>
               <td>Message</td>
               <td style={{width: "10px"}}></td>
-              <td><textarea className="sharePanelMessage" ref="sharePanelMessage" onFocus={this.handleFieldFocus} style={shareStyle.emailTextArea}>
-                Optional Message
-              </textarea></td>
+              <td>
+                <textarea
+                  className="sharePanelMessage"
+                  value="Optional Message"
+                  ref="sharePanelMessage"
+                  onFocus={this.handleFieldFocus}
+                  style={shareStyle.emailTextArea}
+                  />
+              </td>
             </tr>
             <tr>
               <td></td>

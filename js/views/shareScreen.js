@@ -18,7 +18,7 @@ var ShareScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
-      controlBarVisible: true,
+      controlBarVisible: false,
       controlBarWidth: 0
     };
   },
