@@ -62,24 +62,7 @@ try {
       });
     }
 
-    if (!deployToSandbox) {
-      var remotePath = s3Path + "/" + deployPath + "/version.txt";
-      console.log("Deploying version.txt to " + BUCKET + "/" + remotePath);
-      var params = {
-        Bucket: BUCKET,
-        Key: remotePath,
-        Body: process.env.version,
-        ContentLength: process.env.version.length,
-        ContentType: "text/plain",
-        CacheControl: "max-age=600",
-        ACL: 'public-read'
-      };
-      s3.putObject(params, function(err, data) {
-        if (err) {
-          throw "Error in deploy:" + err;
-        }
-      });
-    }
+
   }
 } catch (e) {
   throw e;
