@@ -1,6 +1,11 @@
 /********************************************************************
   UP NEXT SCREEN
 *********************************************************************/
+var React = require('react'),
+    UpNextPanel = require('../components/upNextPanel'),
+    ControlBar = require('../components/controlBar'),
+    ScrubberBar = require('../components/scrubberBar'),
+    CONSTANTS = require('../constants/constants');
 
 var UpNextScreen = React.createClass({
   getInitialState: function() {
@@ -23,7 +28,7 @@ var UpNextScreen = React.createClass({
       this.props.controller.togglePlayPause();
     }
   },
-  
+
   showControlBar: function() {
     this.setState({controlBarVisible: true});
   },
@@ -47,3 +52,4 @@ var UpNextScreen = React.createClass({
     );
   }
 });
+module.exports = UpNextScreen;

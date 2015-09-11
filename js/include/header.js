@@ -1,2 +1,0 @@
-try {
-  (function(window, document) {

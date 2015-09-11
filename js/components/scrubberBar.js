@@ -1,6 +1,8 @@
 /********************************************************************
   SCRUBBER BAR
 *********************************************************************/
+var React = require('react'),
+    InlineStyle = require('../styles/inlineStyle');
 
 var ScrubberBar = React.createClass({
   getInitialState: function() {
@@ -13,7 +15,7 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseDown: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
+    if (evt.type == 'touchstart' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
@@ -32,16 +34,16 @@ var ScrubberBar = React.createClass({
         // breaks if your cursor leaves the player element
         document.addEventListener("mouseup", this.handlePlayheadMouseUp, true);
         this.setState({
-          startingPlayheadX: evt.screenX,
-          scrubbingPlayheadX: evt.screenX
+          startingPlayheadX: evt.clientX,
+          scrubbingPlayheadX: evt.clientX
         });
       }
       else {
         this.getDOMNode().parentNode.addEventListener("touchmove", this.handlePlayheadMouseMove);
         document.addEventListener("touchend", this.handlePlayheadMouseUp, true);
         this.setState({
-          startingPlayheadX: evt.changedTouches[0].screenX,
-          scrubbingPlayheadX: evt.changedTouches[0].screenX
+          startingPlayheadX: evt.changedTouches[0].clientX,
+          scrubbingPlayheadX: evt.changedTouches[0].clientX
         });
       }
     }
@@ -51,7 +53,7 @@ var ScrubberBar = React.createClass({
     evt.preventDefault();
     if (this.props.seeking) {
       this.setState({
-        scrubbingPlayheadX: this.isMobile?evt.changedTouches[0].screenX:evt.screenX
+        scrubbingPlayheadX: this.isMobile?evt.changedTouches[0].clientX:evt.clientX
       });
     }
   },
@@ -62,7 +64,7 @@ var ScrubberBar = React.createClass({
     evt.stopPropagation();
     //use the difference in x coordinates of the start and end points of the
     // mouse events to calculate the amount of time to seek
-    var newPlayheadX = this.isMobile?evt.changedTouches[0].screenX:evt.screenX;
+    var newPlayheadX = this.isMobile?evt.changedTouches[0].clientX:evt.clientX;
     var diffX = newPlayheadX - this.state.startingPlayheadX;
     var diffTime = (diffX / this.props.controlBarWidth) * this.props.duration;
     var newPlayheadTime = this.props.currentPlayhead + diffTime;
@@ -95,8 +97,10 @@ var ScrubberBar = React.createClass({
       if (this.isMobile){
         evt = evt.nativeEvent;
       }
-      var offset = this.isMobile?evt.changedTouches[0].clientX:evt.clientX - evt.target.getBoundingClientRect().left;
-      var newPlayheadTime = (offset / this.props.controlBarWidth) * this.props.duration;
+      var offset = this.isMobile ? evt.changedTouches[0].clientX : evt.clientX - evt.target.getBoundingClientRect().left;
+      if (evt.target.className.match(/scrubberBarPadding/))
+        offset -= CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
+      var newPlayheadTime = (offset / (this.props.controlBarWidth - (2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING))) * this.props.duration;
       this.props.controller.seek(newPlayheadTime);
       this.setState({
         currentPlayhead: newPlayheadTime
@@ -105,7 +109,7 @@ var ScrubberBar = React.createClass({
   },
 
   render: function() {
-    var controlBarHeight = 60;
+    var controlBarHeight = InlineStyle.controlBarStyle.controlBarSetting.height;
     // Liusha: Uncomment the following code when we need to support resizing control bar with threshold and scaling.
     // if (this.props.controlBarWidth > 1280) {
     //   controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280;
@@ -114,40 +118,46 @@ var ScrubberBar = React.createClass({
     // } else {
     //   controlBarHeight = this.props.skinConfig.controlBar.height;
     // }
-    var scrubberPaddingHeight = parseInt(scrubberBarStyle.scrubberBarPadding.height);
-    var scrubberBarHeight = parseInt(scrubberBarStyle.scrubberBarSetting.height);
+    var scrubberPaddingHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarPadding.height);
+    var scrubberBarHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarSetting.height);
+    var scrubberBarWidth = this.props.controlBarWidth - (2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING);
+    InlineStyle.scrubberBarStyle.scrubberBarSetting.width = scrubberBarWidth;
+    InlineStyle.scrubberBarStyle.scrubberBarSetting.left = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
+    InlineStyle.scrubberBarStyle.scrubberBarSetting.right = 2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
 
-    scrubberBarStyle.scrubberBarPadding.bottom = (this.props.controlBarVisible ?
-      controlBarHeight - (scrubberPaddingHeight / 2) : scrubberBarHeight - (scrubberPaddingHeight / 2));
-    scrubberBarStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
+    InlineStyle.scrubberBarStyle.scrubberBarPadding.bottom = (this.props.controlBarVisible ?
+      (controlBarHeight - scrubberPaddingHeight) :  ((-1 * scrubberPaddingHeight) / 2));
+    InlineStyle.scrubberBarStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
       parseFloat(this.props.duration)) * 100 + "%";
-    scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
+    InlineStyle.scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
       parseFloat(this.props.duration)) * 100 + "%";
-    scrubberBarStyle.playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
-      parseFloat(this.props.duration)) * this.props.controlBarWidth);
-    scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
+    InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
+      parseFloat(this.props.duration)) * scrubberBarWidth);
+    InlineStyle.scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
 
     // if we're scrubbing, use the coordinates from the latest mouse events
     if (this.props.seeking) {
-      scrubberBarStyle.playheadPaddingStyle.left = scrubberBarStyle.playheadPaddingStyle.left +
+      InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = InlineStyle.scrubberBarStyle.playheadPaddingStyle.left +
         (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
     }
     //prevent the playhead from moving beyond the player element
-    scrubberBarStyle.playheadPaddingStyle.left = Math.max(Math.min(this.props.controlBarWidth - parseInt(scrubberBarStyle.playheadStyle.width)/2,
-      scrubberBarStyle.playheadPaddingStyle.left), 0);
+    InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = Math.max(
+      Math.min(InlineStyle.scrubberBarStyle.scrubberBarSetting.width - parseInt(InlineStyle.scrubberBarStyle.playheadStyle.width)/2,
+        InlineStyle.scrubberBarStyle.playheadPaddingStyle.left), 0);
 
     return (
-      <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp}
-        style={scrubberBarStyle.scrubberBarPadding}>
-        <div className="scrubberBar" style={scrubberBarStyle.scrubberBarSetting}>
-          <div className="bufferedIndicator" style={scrubberBarStyle.bufferedIndicatorStyle}></div>
-          <div className="playedIndicator" style={scrubberBarStyle.playedIndicatorStyle}></div>
-          <div className="playheadPadding" style={scrubberBarStyle.playheadPaddingStyle}
-            onMouseDown={this.handlePlayheadMouseDown}>
-            <div className="playhead" style={scrubberBarStyle.playheadStyle}></div>
+      <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp} onTouchEnd={this.handleScrubberBarMouseUp}
+        style={InlineStyle.scrubberBarStyle.scrubberBarPadding}>
+        <div className="scrubberBar" style={InlineStyle.scrubberBarStyle.scrubberBarSetting}>
+          <div className="bufferedIndicator" style={InlineStyle.scrubberBarStyle.bufferedIndicatorStyle}></div>
+          <div className="playedIndicator" style={InlineStyle.scrubberBarStyle.playedIndicatorStyle}></div>
+          <div className="playheadPadding" style={InlineStyle.scrubberBarStyle.playheadPaddingStyle}
+            onMouseDown={this.handlePlayheadMouseDown} onTouchStart={this.handlePlayheadMouseDown}>
+            <div className="playhead" style={InlineStyle.scrubberBarStyle.playheadStyle}></div>
           </div>
         </div>
       </div>
     );
   }
 });
+module.exports = ScrubberBar;
