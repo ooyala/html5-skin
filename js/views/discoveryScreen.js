@@ -17,21 +17,15 @@ var React = require('react'),
 
 var DiscoveryScreen = React.createClass({
   getInitialState: function() {
-    return {
-      controlBarVisible: true,
-      controlBarWidth: 0
-    };
+    return null;
   },
 
-  componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
-    // Make sure component resize correctly after switch to fullscreen/inline screen
-    window.addEventListener('resize', this.handleResize);
-  },
+  closeDiscoveryPanel: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
 
-  handleResize: function(e) {
-    if (this.isMounted()) {
-      this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+      this.props.controller.toggleDiscoveryScreen();
     }
   },
 
@@ -45,22 +39,17 @@ var DiscoveryScreen = React.createClass({
     }
     promoStyle.backgroundImage = "url('" + this.props.contentTree.promo_image + "')";
     return (
-      <div className="discoveryScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
+      <div className="discoveryScreen" style={{height: "100%", width: "100%"}}>
         <div style={InlineStyle.discoveryScreenStyle.promoStyle}></div>
         <DiscoveryPanel
           {...this.props}
           discoveryData={this.props.discoveryData} />
+        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+            onClick={this.closeDiscoveryPanel} style={InlineStyle.discoveryScreenStyle.closeButtonStyle}
+            onTouchEnd={this.closeDiscoveryPanel}>
+          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
+        </div>
 
-        <ScrubberBar
-          {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} />
-
-        <ControlBar
-          {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}
-          playerState={this.props.playerState} />
       </div>
     );
   }

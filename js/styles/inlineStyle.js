@@ -226,14 +226,14 @@ module.exports = {
       width: "50",
       height: "50%",
       top: "30%",
-      "border-radius": "3px"
+      borderRadius: "3px"
     },
 
     liveCircleStyle: {
       position: "relative",
       width: "10px",
       height: "10px",
-      "border-radius": "50%",
+      borderRadius: "50%",
       top: "25%",
       left: "5%",
       backgroundColor: "red",
@@ -442,6 +442,9 @@ module.exports = {
       top: 0,
       bottom: "0",
       background: "rgba(0, 0, 0, 0.75)",
+      top: 0,
+      bottom: 0,
+      backgroundColor: "#444444",
       left: 0,
       right: 0,
       display: "flex",
@@ -528,6 +531,10 @@ module.exports = {
       height: "15px",
       width: "15px",
       color: "#afafaf",
+      top: 0,
+      right: 0,
+      backgroundColor: "#4389ff",
+      color: "white",
       textAlign: "center",
       lineHeight: "15px"
     }
@@ -537,14 +544,14 @@ module.exports = {
 
     panelStyle: {
       position: "absolute",
-      bottom: "60px",
+      bottom: "0px",
       backgroundColor: "rgba(0,0,0, 0.7)",
       left: 0,
       right: 0,
       display: "flex",
       flexDirection: "row",
       WebkitFlexDirection: "row",
-      height: "255px"
+      height: "100%"
     },
 
     promoStyle: {
@@ -582,8 +589,8 @@ module.exports = {
     discoveryToasterContainerStyle: {
       position: "absolute",
       backgroundColor: "transparent",
-      top: "20%",
-      height: "70%",
+      top: "40%",
+      height: "60%",
       width: "100%",
       overflow: "hidden"
     },
@@ -705,6 +712,14 @@ module.exports = {
       fontSize: 25,
       cursor: "pointer"
     },
+
+    closeButtonStyle: {
+      position: "absolute",
+      right: "17.5",
+      top: "17.5",
+      color: "lightgray",
+      cursor: "pointer"
+    }
   },
 
   adScreenStyle: {
@@ -758,7 +773,7 @@ module.exports = {
       "marginRight": "15px",
       "textAlign": "center",
       "padding": "4px",
-      "border-radius": "5px",
+      "borderRadius": "5px"
     },
 
     skipButtonStyle: {
@@ -769,7 +784,7 @@ module.exports = {
       "marginRight": "15px",
       "textAlign": "center",
       "padding": "4px",
-      "border-radius": "5px",
+      "borderRadius": "5px"
     },
   },
 
@@ -796,8 +811,6 @@ module.exports = {
       position: "absolute",
       right: "17.5",
       top: "17.5",
-      height: "25",
-      width: "25",
       color: "lightgray",
       cursor: "pointer"
     },
@@ -999,7 +1012,7 @@ module.exports = {
       width: "100%",
       backgroundColor: "rgba(0,0,0,0.5)",
       position: "absolute",
-      bottom: "67.5",
+      bottom: "7.5",
       left: "0",
       height: "35",
       borderTop: "1px solid grey",
@@ -1012,7 +1025,7 @@ module.exports = {
       fontFamily: "Roboto",
       marginLeft: "17.5",
       marginBottom: "2.75",
-      marginTop: "2.75",
+      marginTop: "2.75"
     },
 
     CCPreviewTextStyle: {
@@ -1086,7 +1099,7 @@ module.exports = {
       left: "15px",
       width: "100%",
       height: "27px",
-      color: "#FFFFFF",
+      color: "#FFFFFF"
     },
 
     upNextTitleTextStyle: {
@@ -1098,7 +1111,7 @@ module.exports = {
       textOverflow: "ellipsis",
       color: "inherit",
       resize: "none",
-      "padding-left": "10",
+      paddingLeft: "10"
     },
 
     contentDescriptionStyle: {
@@ -1123,10 +1136,10 @@ module.exports = {
       color: "white",
       fontSize: "10px",
       "cursor": "pointer",
-      "text-align": "center",
+      "textAlign": "center",
       "WebkitTransform": "translateY(-50%)",
-      "-ms-transform": "translateY(-50%)",
-      "transform": "translateY(-50%)",
+      "msTransform": "translateY(-50%)",
+      "transform": "translateY(-50%)"
     },
 
     upNextCountDownStyle: {
@@ -1164,7 +1177,7 @@ module.exports = {
       "userSelect": "none",
       "WebkitFlexDirection": "row",
       "flexDirection": "row",
-      "transition": "bottom 0.7s, opacity 0.7s",
+      "transition": "bottom 0.7s, opacity 0.7s"
     },
 
     buttonStyle: {
@@ -1182,8 +1195,8 @@ module.exports = {
 
     closeButtonStyle: {
       "position": "absolute",
-      "top": "10",
-      "right": "10",
+      "top": "17.5",
+      "right": "17.5",
       "color": "lightgray",
       "cursor": "pointer"
     }

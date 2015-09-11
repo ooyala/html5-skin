@@ -13,15 +13,14 @@ var React = require('react'),
     Utils = require('./utils');
 
 var ClosedCaptionPanel = React.createClass({
-  calculateNumberOfRows: function(clientWidth, clientHeight, controlBarHeight){
+  calculateNumberOfRows: function(clientWidth, clientHeight){
     var switchHeight = parseInt(InlineStyle.closedCaptionScreenStyles.switchStyle.height) + parseInt(InlineStyle.closedCaptionScreenStyles.switchStyle.marginTop);
     var CCPreviewPanelHeight = parseInt(InlineStyle.closedCaptionScreenStyles.CCPreviewPanelStyle.height);
     var captionHeight = 4/3*parseInt(InlineStyle.closedCaptionScreenStyles.captionStyle.fontSize);
     var innerPanelPaddingHeight = 2*parseInt(InlineStyle.closedCaptionScreenStyles.innerPanelStyle.padding);
-    var scrubberBarHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarSetting.height) + (parseInt(InlineStyle.scrubberBarStyle.playheadStyle.height) - parseInt(InlineStyle.scrubberBarStyle.scrubberBarSetting.height))/2;
 
     //height of the panel that should fit the table
-    var panelHeight = clientHeight - controlBarHeight - scrubberBarHeight - CCPreviewPanelHeight - captionHeight - innerPanelPaddingHeight - switchHeight;
+    var panelHeight = clientHeight - CCPreviewPanelHeight - captionHeight - innerPanelPaddingHeight - switchHeight;
     //height of a table row
     var tableRowHeight = 2*parseInt(InlineStyle.closedCaptionScreenStyles.itemSelectedStyle.fontSize) + parseInt(InlineStyle.closedCaptionScreenStyles.itemStyle.marginTop) + 2*parseInt(InlineStyle.closedCaptionScreenStyles.itemSelectedStyle.padding);
 
@@ -32,12 +31,10 @@ var ClosedCaptionPanel = React.createClass({
 
   // Responsive design code for later
 
-  // setResponsiveStyle: function(clientWidth, controlBarHeight){
+  // setResponsiveStyle: function(clientWidth){
   //   var scale = Math.min(1, Math.max(clientWidth/1280, 0.3));
 
-  //   var scrubberBarHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarSetting.height) + (parseInt(InlineStyle.scrubberBarStyle.playheadStyle.height) - parseInt(InlineStyle.scrubberBarStyle.scrubberBarSetting.height))/2;
-
-  //   InlineStyle.closedCaptionScreenStyles.CCPreviewPanelStyle.bottom = controlBarHeight + scrubberBarHeight;
+  //   InlineStyle.closedCaptionScreenStyles.CCPreviewPanelStyle.bottom = 15 * scale;
 
   //   InlineStyle.closedCaptionScreenStyles.innerPanelStyle.padding = 35 * scale;
 
@@ -98,10 +95,8 @@ var ClosedCaptionPanel = React.createClass({
   //  },
 
   render: function(){
-    var controlBarHeight = 60;
-
-    // this.setResponsiveStyle(this.props.clientWidth, controlBarHeight); //Leave this for later when we use the resizing
-    var numRows = this.calculateNumberOfRows(this.props.clientWidth, this.props.clientHeight, controlBarHeight);
+    // this.setResponsiveStyle(this.props.clientWidth); //Leave this for later when we use the resizing
+    var numRows = this.calculateNumberOfRows(this.props.clientWidth, this.props.clientHeight);
     var ccOptionsString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CC_OPTIONS, this.props.localizableStrings);
     return (
       <div style = {InlineStyle.closedCaptionScreenStyles.screenStyle}>
