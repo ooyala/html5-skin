@@ -781,7 +781,7 @@ module.exports = {
       "marginRight": "15px",
       "textAlign": "center",
       "padding": "4px",
-      "borderRadius": "5px",
+      "borderRadius": "5px"
     },
 
     skipButtonStyle: {
@@ -792,7 +792,7 @@ module.exports = {
       "marginRight": "15px",
       "textAlign": "center",
       "padding": "4px",
-      "borderRadius": "5px",
+      "borderRadius": "5px"
     },
   },
 
@@ -1033,7 +1033,7 @@ module.exports = {
       fontFamily: "Roboto",
       marginLeft: "17.5",
       marginBottom: "2.75",
-      marginTop: "2.75",
+      marginTop: "2.75"
     },
 
     CCPreviewTextStyle: {
@@ -1107,7 +1107,7 @@ module.exports = {
       left: "15px",
       width: "100%",
       height: "27px",
-      color: "#FFFFFF",
+      color: "#FFFFFF"
     },
 
     upNextTitleTextStyle: {
@@ -1119,7 +1119,7 @@ module.exports = {
       textOverflow: "ellipsis",
       color: "inherit",
       resize: "none",
-      paddingLeft: "10",
+      paddingLeft: "10"
     },
 
     contentDescriptionStyle: {
@@ -1147,7 +1147,7 @@ module.exports = {
       "textAlign": "center",
       "WebkitTransform": "translateY(-50%)",
       "msTransform": "translateY(-50%)",
-      "transform": "translateY(-50%)",
+      "transform": "translateY(-50%)"
     },
 
     upNextCountDownStyle: {
@@ -1185,7 +1185,7 @@ module.exports = {
       "userSelect": "none",
       "WebkitFlexDirection": "row",
       "flexDirection": "row",
-      "transition": "bottom 0.7s, opacity 0.7s",
+      "transition": "bottom 0.7s, opacity 0.7s"
     },
 
     buttonStyle: {
