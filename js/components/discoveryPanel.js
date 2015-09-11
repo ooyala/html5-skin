@@ -158,8 +158,6 @@ var DiscoveryPanel = React.createClass({
 
   render: function() {
     var panelStyle = InlineStyle.discoveryScreenStyle.panelStyle;
-    var controlBarHeight = 60;
-    panelStyle.bottom = controlBarHeight + "px";
 
     var panelTitleBarStyle = InlineStyle.discoveryScreenStyle.panelTitleBarStyle;
     var panelTitle = CONSTANTS.SKIN_TEXT.DISCOVER;
