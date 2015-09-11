@@ -236,7 +236,7 @@ module.exports = {
       borderRadius: "50%",
       top: "25%",
       left: "5%",
-      backgroundColor: "red",
+      backgroundColor: "red"
     },
 
     liveTextStyle: {
@@ -262,7 +262,7 @@ module.exports = {
       "position": "relative",
       "height": "18px",
       "top": "21px"
-    },
+    }
   },
 
   volumeSliderStyle: {
@@ -442,9 +442,6 @@ module.exports = {
       top: 0,
       bottom: "0",
       background: "rgba(0, 0, 0, 0.75)",
-      top: 0,
-      bottom: 0,
-      backgroundColor: "#444444",
       left: 0,
       right: 0,
       display: "flex",
@@ -531,10 +528,6 @@ module.exports = {
       height: "15px",
       width: "15px",
       color: "#afafaf",
-      top: 0,
-      right: 0,
-      backgroundColor: "#4389ff",
-      color: "white",
       textAlign: "center",
       lineHeight: "15px"
     }
@@ -785,7 +778,7 @@ module.exports = {
       "textAlign": "center",
       "padding": "4px",
       "borderRadius": "5px"
-    },
+    }
   },
 
   adOverlayStyle: {
@@ -1089,7 +1082,7 @@ module.exports = {
       top: "0",
       left: "140px",
       width: "78%",
-      height: "100%",
+      height: "100%"
     },
 
     upNextTitleStyle: {
