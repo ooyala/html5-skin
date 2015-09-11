@@ -17,7 +17,9 @@ var React = require('react'),
 var ShareScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
-    return null;
+    return {
+      controlBarVisible: false
+    };
   },
 
   closeSharePanel: function(evt) {
