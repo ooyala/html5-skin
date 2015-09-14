@@ -18,8 +18,7 @@ var ShareScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
-      controlBarVisible: true,
-      controlBarWidth: 0
+      controlBarVisible: false
     };
   },
 
@@ -32,10 +31,6 @@ var ShareScreen = React.createClass({
     }
   },
 
-  componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
-  },
-
   highlight: function(evt) {
     evt.target.style.color = "rgba(255, 255, 255, 1.0)";
   },
@@ -46,15 +41,10 @@ var ShareScreen = React.createClass({
 
   render: function() {
     return (
-      <div className="ShareScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
+      <div className="ShareScreen" style={{height: "100%", width: "100%"}}>
         <SharePanel {...this.props}/>
-        <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}/>
-        <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}
-          playerState={this.state.playerState} />
         <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
-          onClick={this.closeSharePanel} style={InlineStyle.shareScreenStyle.closeButton}>
+          onClick={this.closeSharePanel} onTouchEnd={this.closeSharePanel} style={InlineStyle.shareScreenStyle.closeButton}>
           <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
         </div>
       </div>

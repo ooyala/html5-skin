@@ -16,7 +16,6 @@ var React = require('react'),
 var MoreOptionsScreen = React.createClass({
   getInitialState: function() {
     return {
-      controlBarVisible: true,
       controlBarWidth: 0
     };
   },
@@ -44,22 +43,11 @@ var MoreOptionsScreen = React.createClass({
 
   render: function() {
     return (
-      <div className="MoreOptionsScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onMouseUp={this.handlePlayerMouseUp} style={{height: "100%", width: "100%"}}>
+      <div className="MoreOptionsScreen" style={{height: "100%", width: "100%"}}>
 
         <MoreOptionsPanel {...this.props}
           controlBarWidth={this.state.controlBarWidth}/>
 
-        <ScrubberBar
-          {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} />
-
-        <ControlBar
-          {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}
-          playerState={this.props.playerState} />
       </div>
     );
   }

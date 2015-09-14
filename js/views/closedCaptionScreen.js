@@ -18,7 +18,6 @@ var ClosedCaptionScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
-      controlBarVisible: true,
       clientWidth: null,
       clientHeight: null
     };
@@ -58,11 +57,6 @@ var ClosedCaptionScreen = React.createClass({
     return (
       <div style={{height: "100%", width: "100%"}}>
         <ClosedCaptionPanel {...this.props} ccOptions = {this.props.ccOptions} clientWidth = {this.state.clientWidth} clientHeight = {this.state.clientHeight}/>
-        <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.clientWidth}/>
-        <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.clientWidth}
-          playerState={this.state.playerState}/>
 
         <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
           onClick={this.closeClosedCaptionPanel} style={InlineStyle.closedCaptionScreenStyles.closeButtonStyle}
