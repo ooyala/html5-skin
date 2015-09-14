@@ -21,15 +21,12 @@ if (deployToSandbox) {
   deployPath = process.env.deploy_to;
 }
 
-var filePaths = [
-  {
-    localPath: __dirname + "/../build/html5-skin.js",
-    remotePaths: [
-      s3Path + "/" + deployPath + "/html5-skin.js",
-      s3Path + "/" + process.env.version + "/html5-skin.js"
-    ]
-  }
-];
+var filePaths = [];
+
+//Add all files needed to upload to S3
+addFilesFromFolder(__dirname + "/../build/", filePaths, "");
+addFilesFromFolder(__dirname + "/../config/", filePaths, "");
+addFilesFromFolder(__dirname + "/../assets/", filePaths, "");
 
 try {
   for (var i = 0; i < filePaths.length; i++) {
@@ -61,11 +58,26 @@ try {
         }
       });
     }
-
-
   }
 } catch (e) {
   throw e;
 }
 
+function addFilesFromFolder(dir, filePaths, innerPath) {
+  fs.readdirSync(dir + innerPath).forEach(function(filename) {
+    var localPath = dir + innerPath + filename;
+    var stat = fs.statSync(localPath);
 
+    if (stat && stat.isDirectory()) {
+      addFilesFromFolder(dir, filePaths, innerPath + filename + "/")
+    } else {
+      filePaths.push({
+        localPath: localPath,
+        remotePaths: [
+          s3Path + "/" + deployPath + "/" + innerPath + filename,
+          s3Path + "/" + process.env.version + "/" + innerPath + filename
+        ]
+      });
+    }
+  });
+}
