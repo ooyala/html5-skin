@@ -26,6 +26,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isPlayingAd": false,
       "adOverlayUrl": null,
       "showAdOverlay": false,
+      "showAdOverlayCloseButton": false,
       "configLoaded": false,
       "fullscreen": false,
       "pauseAnimationDisabled": false,
@@ -94,6 +95,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi", _.bind(this.closeNonlinearAd, this));
         this.mb.subscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi", _.bind(this.hideNonlinearAd, this));
         this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi", _.bind(this.showNonlinearAd, this));
+        this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD_CLOSE_BUTTON, "customerUi", _.bind(this.showNonlinearAdCloseButton, this));
 
         this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
 
@@ -341,6 +343,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     closeNonlinearAd: function(event) {
       this.state.adOverlayUrl = null;
       this.state.showAdOverlay = false;
+      this.state.showAdOverlayCloseButton = false;
       this.renderSkin();
     },
 
@@ -351,6 +354,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     showNonlinearAd: function(event) {
       this.state.showAdOverlay = true;
+      this.renderSkin();
+    },
+
+    showNonlinearAdCloseButton: function(event) {
+      this.state.showAdOverlayCloseButton = true;
       this.renderSkin();
     },
 
