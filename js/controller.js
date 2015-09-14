@@ -341,7 +341,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     closeNonlinearAd: function(event) {
       this.state.adOverlayUrl = null;
       this.state.showAdOverlay = false;
-      this.state.showAdOverlayCloseButton = true;
+      this.state.showAdOverlayCloseButton = false;
       this.renderSkin();
     },
 
