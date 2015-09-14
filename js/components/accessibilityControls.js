@@ -8,6 +8,7 @@ var AccessibilityControls = function (controller) {
     };
     document.addEventListener("keydown", this.handleKey.bind(this));
 };
+module.exports = AccessibilityControls;
 
 AccessibilityControls.prototype = {
   handleKey: function(e) {

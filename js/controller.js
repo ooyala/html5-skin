@@ -131,7 +131,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.skin = React.render(
           React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + elementId + " .player_skin")
         );
-        //var accessibilityControls = new AccessibilityControls(this); //keyboard support
+        var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
@@ -400,10 +400,53 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onErrorEvent: function(event, errorCode){
+      this.unsubscribeFromMessageBus();
+
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.state.playerState = CONSTANTS.STATE.ERROR;
       this.state.errorCode = errorCode;
       this.renderSkin();
+    },
+
+    unsubscribeFromMessageBus: function(){
+      this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYING, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PAUSED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
+
+      if (!Utils.isIPhone()) {
+        //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
+        this.mb.unsubscribe(OO.EVENTS.ADS_PLAYED, "customerUi");
+
+        this.mb.unsubscribe(OO.EVENTS.AD_POD_STARTED, "customerUi");
+
+        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi");
+
+        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi");
+
+        this.mb.unsubscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi");
+
+        if (OO.EVENTS.DISCOVERY_API) {
+          this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi");
+        }
+      }
+
+      this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
     },
 
     /*--------------------------------------------------------------------

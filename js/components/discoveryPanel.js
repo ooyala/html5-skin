@@ -8,7 +8,8 @@
 var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     InlineStyle = require('../styles/inlineStyle'),
-    Utils = require('./utils');
+    Utils = require('./utils'),
+    CountDownClock = require('./countDownClock');
 
 var DiscoveryPanel = React.createClass({
   componentDidMount: function(){
