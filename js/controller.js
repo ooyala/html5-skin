@@ -79,13 +79,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       /********************************************************************
        ADS RELATED EVENTS
-       *********************************************************************/
+       ********************************************************************/
       if (!Utils.isIPhone()) {
         //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
         this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
-
         this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
-
         this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
         this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
         this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
@@ -98,10 +96,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD_CLOSE_BUTTON, "customerUi", _.bind(this.showNonlinearAdCloseButton, this));
 
         this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
-
-        if (OO.EVENTS.DISCOVERY_API) {
-          this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
-        }
       }
 
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
@@ -109,6 +103,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
       this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
+    },
+
+    externalPluginSubscription: function() {
+      if (OO.EVENTS.DISCOVERY_API) {
+        this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
+      }
     },
 
     /*--------------------------------------------------------------------
@@ -145,6 +145,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (Utils.isIE10()) {
         $("#" + elementId + " .video").attr("controls", "controls");
       }
+
+      this.externalPluginSubscription();
     },
 
     onAuthorizationFetched: function(event, authorization) {
@@ -695,10 +697,3 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   return Html5Skin;
 });
-
-// DEBUG only. Remove after usage
-var printlog = function(text) {
-  console.log("@@@@@@@@@@@");
-  console.log(text);
-  console.log("@@@@@@@@@@@");
-};
