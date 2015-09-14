@@ -72,6 +72,10 @@ var PauseScreen = React.createClass({
       //we need to make sure only one actually does the work
 
       this.props.controller.togglePlayPause();
+
+      if (this.props.controller.state.volumeState.volumeSliderVisible) {
+        this.props.controller.hideVolumeSliderBar();
+      }
     }
   },
 

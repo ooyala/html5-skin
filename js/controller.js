@@ -47,6 +47,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "volume" :null,
         "muted": false,
         "oldVolume": 1,
+        "volumeSliderVisible": false
       },
 
       "upNextInfo": {
@@ -317,6 +318,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       console.log("onSkipAdClicked is called");
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
       this.mb.publish(OO.EVENTS.SKIP_AD);
+      this.renderSkin();
     },
 
     onAdsClicked: function() {
@@ -627,6 +629,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     beginSeeking: function() {
       this.state.seeking = true;
+    },
+
+    hideVolumeSliderBar: function() {
+      this.state.volumeState.volumeSliderVisible = false;
+      this.renderSkin();
+    },
+
+    showVolumeSliderBar: function() {
+      this.state.volumeState.volumeSliderVisible = true;
+      this.renderSkin();
     }
   };
 
