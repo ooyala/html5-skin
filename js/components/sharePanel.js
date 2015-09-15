@@ -72,6 +72,7 @@ var SharePanel = React.createClass({
             className="embedTextArea"
             value="&lt;script src=&quot;//player.ooyala.com/v4/&quot;&gt;&lt;/script&gt;"
             style={shareStyle.embedTextArea}
+            readOnly
             />
         </div>
       );
@@ -98,7 +99,7 @@ var SharePanel = React.createClass({
               <td>
                 <textarea
                   className="sharePanelMessage"
-                  value="Optional Message"
+                  defaultValue="Optional Message"
                   ref="sharePanelMessage"
                   onFocus={this.handleFieldFocus}
                   style={shareStyle.emailTextArea}
