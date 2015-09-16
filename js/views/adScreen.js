@@ -89,6 +89,21 @@ var AdScreen = React.createClass({
     }
   },
 
+  handlePlayerMouseMove: function() {
+    if(this.props.playerState === CONSTANTS.STATE.PAUSE) {
+      if (this.state.timer !== null){
+        clearTimeout(this.state.timer);
+      }
+    }
+    else if(!this.isMobile && this.props.fullscreen) {
+      this.showControlBar();
+      if (this.state.timer !== null){
+        clearTimeout(this.state.timer);
+      }
+      this.startHideControlBarTimer();
+    }
+  },
+
   getPlaybackControlItems: function() {
     var playbackControlItemTemplates = {
      "scrubberBar": <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
@@ -117,7 +132,7 @@ var AdScreen = React.createClass({
       playbackControlItems = this.getPlaybackControlItems();
     }
     return (
-      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
+      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseMove={this.handlePlayerMouseMove}
         onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd} style={InlineStyle.defaultScreenStyle.style}>
         {adPanel}
         {playbackControlItems}
