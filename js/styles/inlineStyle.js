@@ -759,8 +759,8 @@ module.exports = {
 
 
     flexibleSpace: {
-      "flex": "0 1 0%",
-      "WebkitFlex": "0 1 0%",
+      "flex": 1,
+      "WebkitFlex": 1,
     },
 
     learnMoreButtonStyle: {
