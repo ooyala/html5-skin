@@ -790,6 +790,34 @@ module.exports = {
       transition: "bottom 0.5s, height 0.25s",
       margin: 0,
       padding: 0
+    },
+
+    overlayImageStyle: {
+      display: "block"
+    },
+
+    closeButtonStyle: {
+      display: "inline",
+      position: "absolute",
+      cursor: "pointer",
+      height: "28px",
+      width: "28px",
+      top: "0px",
+      right: "0px",
+      backgroundColor: "rgb(0,0,0)",
+      opacity: 0.5
+    },
+
+    closeButtonIconStyle: {
+      position: "absolute",
+      fontSize: "8px",
+      color: "rgb(255,255,255)",
+      backgroundColor: "transparent",
+      top: "50%",
+      left: "50%",
+      WebkitTransform: "translate(-50%, -50%)",
+      msTransform: "translate(-50%, -50%)",
+      transform: "translate(-50%, -50%)"
     }
   },
 

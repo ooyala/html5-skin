@@ -26,6 +26,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isPlayingAd": false,
       "adOverlayUrl": null,
       "showAdOverlay": false,
+      "showAdOverlayCloseButton": false,
       "configLoaded": false,
       "fullscreen": false,
       "pauseAnimationDisabled": false,
@@ -78,13 +79,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       /********************************************************************
        ADS RELATED EVENTS
-       *********************************************************************/
+       ********************************************************************/
       if (!Utils.isIPhone()) {
         //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
         this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
-
         this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
-
         this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
         this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
         this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
@@ -94,12 +93,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi", _.bind(this.closeNonlinearAd, this));
         this.mb.subscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi", _.bind(this.hideNonlinearAd, this));
         this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi", _.bind(this.showNonlinearAd, this));
+        this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD_CLOSE_BUTTON, "customerUi", _.bind(this.showNonlinearAdCloseButton, this));
 
         this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
-
-        if (OO.EVENTS.DISCOVERY_API) {
-          this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
-        }
       }
 
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
@@ -107,6 +103,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
       this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
+    },
+
+    externalPluginSubscription: function() {
+      if (OO.EVENTS.DISCOVERY_API) {
+        this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
+      }
     },
 
     /*--------------------------------------------------------------------
@@ -143,6 +145,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (Utils.isIE10()) {
         $("#" + elementId + " .video").attr("controls", "controls");
       }
+
+      this.externalPluginSubscription();
     },
 
     onAuthorizationFetched: function(event, authorization) {
@@ -341,6 +345,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     closeNonlinearAd: function(event) {
       this.state.adOverlayUrl = null;
       this.state.showAdOverlay = false;
+      this.state.showAdOverlayCloseButton = false;
       this.renderSkin();
     },
 
@@ -351,6 +356,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     showNonlinearAd: function(event) {
       this.state.showAdOverlay = true;
+      this.renderSkin();
+    },
+
+    showNonlinearAdCloseButton: function(event) {
+      this.state.showAdOverlayCloseButton = true;
       this.renderSkin();
     },
 
@@ -402,10 +412,53 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onErrorEvent: function(event, errorCode){
+      this.unsubscribeFromMessageBus();
+
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.state.playerState = CONSTANTS.STATE.ERROR;
       this.state.errorCode = errorCode;
       this.renderSkin();
+    },
+
+    unsubscribeFromMessageBus: function(){
+      this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYING, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PAUSED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
+
+      if (!Utils.isIPhone()) {
+        //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
+        this.mb.unsubscribe(OO.EVENTS.ADS_PLAYED, "customerUi");
+
+        this.mb.unsubscribe(OO.EVENTS.AD_POD_STARTED, "customerUi");
+
+        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi");
+
+        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi");
+
+        this.mb.unsubscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi");
+
+        if (OO.EVENTS.DISCOVERY_API) {
+          this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi");
+        }
+      }
+
+      this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
     },
 
     /*--------------------------------------------------------------------
@@ -644,10 +697,3 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   return Html5Skin;
 });
-
-// DEBUG only. Remove after usage
-var printlog = function(text) {
-  console.log("@@@@@@@@@@@");
-  console.log(text);
-  console.log("@@@@@@@@@@@");
-};
