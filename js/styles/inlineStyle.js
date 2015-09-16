@@ -177,17 +177,22 @@ module.exports = {
       "height": 60,
       "position": "absolute",
       "margin": 0,
-
       "fontSize": "18px",
       "listStyle": "none",
-      "display": "flex",
-      "flexFlow": "row nowrap",
-      "justifyContent": "flex-start",
       "WebkitUserSelect": "none",
       "MozUserSelect": "none",
       "msUserSelect": "none",
       "userSelect": "none",
       "transition": "bottom 0.5s, height 0.25s"
+    },
+
+    controlBarItemsWrapper: {
+      "display": "flex",
+      "flexFlow": "row nowrap",
+      "justifyContent": "flex-start",
+      "width": "100%",
+      "paddingRight": "7.5px",
+      "paddingLeft": "7.5px"
     },
 
     controlBarItemSetting: {
@@ -217,8 +222,8 @@ module.exports = {
     iconSetting: {},
 
     flexibleSpace: {
-      "flex": 1,
-      "WebkitFlex": 1
+      "flex": "2",
+      "WebkitFlex": "2"
     },
 
     liveItemStyle: {
@@ -754,8 +759,8 @@ module.exports = {
 
 
     flexibleSpace: {
-      "flex": 1,
-      "WebkitFlex": 1
+      "flex": "0 1 0%",
+      "WebkitFlex": "0 1 0%",
     },
 
     learnMoreButtonStyle: {

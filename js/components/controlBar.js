@@ -389,7 +389,9 @@ var ControlBar = React.createClass({
     return (
       <div className="controlBar" onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}
         style={InlineStyle.controlBarStyle.controlBarSetting}>
-        {controlBarItems}
+        <div className="controlBarItemsWrapper" style={InlineStyle.controlBarStyle.controlBarItemsWrapper}>
+          {controlBarItems}
+        </div>
       </div>
     );
   }
