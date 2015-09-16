@@ -760,7 +760,7 @@ module.exports = {
 
     flexibleSpace: {
       "flex": 1,
-      "WebkitFlex": 1,
+      "WebkitFlex": 1
     },
 
     learnMoreButtonStyle: {
