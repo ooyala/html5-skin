@@ -120,6 +120,8 @@ var MoreOptionsPanel = React.createClass({
     var hours = parseInt(this.props.duration / 3600, 10);
     var extraSpaceDuration = (hours > 0) ? 0 : 45;
 
+   var controlBarLeftRightPadding = 2*parseFloat(InlineStyle.controlBarStyle.controlBarItemsWrapper.paddingLeft)+2*parseFloat(InlineStyle.controlBarStyle.controlBarItemsWrapper.paddingRight);
+
     var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider+extraSpaceVolumeIcon, defaultItems);
     var collapsedMoreOptionsItems = collapsedResult.overflow;
     for (i = 0; i < collapsedMoreOptionsItems.length; i++) {
