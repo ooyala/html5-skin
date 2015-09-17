@@ -21,6 +21,11 @@ var AdPanelTopBarItem = React.createClass({
 });
 
 var AdPanel = React.createClass({
+  getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
+    return null;
+  },
+
   componentDidMount: function(){
     if (Utils.isSafari()){
       InlineStyle.adScreenStyle.topBarStyle.display = "-webkit-flex";
@@ -35,7 +40,6 @@ var AdPanel = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
-      console.log("Skip Ad button clicked");
       event.stopPropagation(); // W3C
       event.cancelBubble = true; // IE
       this.props.controller.onSkipAdClicked();
@@ -47,10 +51,18 @@ var AdPanel = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
-      console.log("Learn more button clicked");
       event.stopPropagation(); // W3C
       event.cancelBubble = true; // IE
-      this.props.controller.onAdsClicked();
+      this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.LEARN_MORE_BUTTON);
+    }
+  },
+
+  handleAdTopBarClick: function(event){
+    if (event.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
     }
   },
 
@@ -97,20 +109,20 @@ var AdPanel = React.createClass({
     }
 
     // Skip
-    var handleButtonClick;
+    var handleSkipAdButtonClick;
     if (!this.props.currentAdsInfo.skipAdButtonEnabled) {
       InlineStyle.adScreenStyle.skipButtonStyle.opacity = "0.3";
-      handleButtonClick = null;
+      handleSkipAdButtonClick = null;
       InlineStyle.adScreenStyle.skipButtonStyle.cursor = "default";
     }
     else {
       InlineStyle.adScreenStyle.skipButtonStyle.opacity = "1";
-      handleButtonClick = this.handleSkipAdButtonClick;
+      handleSkipAdButtonClick = this.handleSkipAdButtonClick;
       InlineStyle.adScreenStyle.skipButtonStyle.cursor = "pointer";
     }
 
     var skipButtonText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
-    var skipButtonDiv = <AdPanelTopBarItem key="skipButton" onButtonClicked={handleButtonClick} style={InlineStyle.adScreenStyle.skipButtonStyle} data={skipButtonText} itemClassName="skip"/>;
+    var skipButtonDiv = <AdPanelTopBarItem key="skipButton" onButtonClicked={handleSkipAdButtonClick} style={InlineStyle.adScreenStyle.skipButtonStyle} data={skipButtonText} itemClassName="skip"/>;
     adTopBarItems.push(skipButtonDiv);
 
     return adTopBarItems;
@@ -121,7 +133,7 @@ var AdPanel = React.createClass({
     var adTopBarItems = this.populateAdTopBar();
     return (
       <div style={InlineStyle.adScreenStyle.panelStyle}>
-        <div className="adTopBar" style={InlineStyle.adScreenStyle.topBarStyle}>
+        <div className="adTopBar" style={InlineStyle.adScreenStyle.topBarStyle} onClick={this.handleAdTopBarClick} onTouchEnd={this.handleAdTopBarClick}>
           {adTopBarItems}
         </div>
       </div>

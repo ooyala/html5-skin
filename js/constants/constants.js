@@ -57,6 +57,11 @@ module.exports = {
     DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15
   },
 
+  AD_CLICK_SOURCE:{
+    VIDEO_WINDOW: "videoWindow",
+    LEARN_MORE_BUTTON: "learnMoreButton"
+  },
+
   ERROR_MESSAGE: {
     "network":{
       name: "OO.ERROR.API.NETWORK",

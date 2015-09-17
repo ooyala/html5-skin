@@ -63,10 +63,9 @@ var AdScreen = React.createClass({
         this.props.controller.togglePlayPause();
       }
       else {
-        console.log("ad screen clicked");
         event.stopPropagation(); // W3C
         event.cancelBubble = true; // IE
-        this.props.controller.onAdsClicked();
+        this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.VIDEO_WINDOW);
       }
     }
   },
@@ -79,13 +78,13 @@ var AdScreen = React.createClass({
     this.setState({controlBarVisible: false});
   },
 
-  handleTouchEnd: function() {
+  handleTouchEnd: function(event) {
     if (!this.state.controlBarVisible){
       this.showControlBar();
       this.startHideControlBarTimer();
     }
     else {
-      this.handlePlayerClicked();
+      this.handlePlayerClicked(event);
     }
   },
 
@@ -117,10 +116,16 @@ var AdScreen = React.createClass({
       playbackControlItems = this.getPlaybackControlItems();
     }
     return (
-      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd} style={InlineStyle.defaultScreenStyle.style}>
-        {adPanel}
-        {playbackControlItems}
+      <div className="adScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
+        style={InlineStyle.defaultScreenStyle.style}>
+
+        <div className="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
+          {adPanel}
+        </div>
+        <div>
+          {playbackControlItems}
+        </div>
+
       </div>
     );
   }
