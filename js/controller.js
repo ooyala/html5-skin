@@ -328,7 +328,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onAdsClicked: function(source) {
       console.log("on ads clicked is called", source);
       this.mb.publish(OO.EVENTS.ADS_CLICKED, {"source": source});
-     },
+    },
 
     publishOverlayRenderingEvent: function(marginHeight) {
       this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, {"marginHeight": marginHeight});

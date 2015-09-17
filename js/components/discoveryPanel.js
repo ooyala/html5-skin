@@ -153,7 +153,8 @@ var DiscoveryPanel = React.createClass({
 
       this.setState({showDiscoveryCountDown: false});
       this.refs.CountDownClock.handleClick(event);
-      event.stopPropagation();
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
     }
   },
 
