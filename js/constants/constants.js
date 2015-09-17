@@ -59,7 +59,8 @@ module.exports = {
 
   AD_CLICK_SOURCE:{
     VIDEO_WINDOW: "videoWindow",
-    LEARN_MORE_BUTTON: "learnMoreButton"
+    LEARN_MORE_BUTTON: "learnMoreButton",
+    OVERLAY: "overlay"
   },
 
   ERROR_MESSAGE: {
