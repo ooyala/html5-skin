@@ -26,7 +26,7 @@ var AdScreen = React.createClass({
     window.addEventListener('resize', this.handleResize);
 
     //for mobile, hide control bar after 3 seconds
-    if (this.isMobile){
+    if (this.isMobile || this.props.fullscreen){
       this.startHideControlBarTimer();
     }
   },
@@ -73,10 +73,12 @@ var AdScreen = React.createClass({
 
   showControlBar: function() {
     this.setState({controlBarVisible: true});
+    this.refs.AdScreen.getDOMNode().style.cursor="auto";
   },
 
   hideControlBar: function() {
     this.setState({controlBarVisible: false});
+    this.refs.AdScreen.getDOMNode().style.cursor="none";
   },
 
   handleTouchEnd: function() {
@@ -132,7 +134,7 @@ var AdScreen = React.createClass({
       playbackControlItems = this.getPlaybackControlItems();
     }
     return (
-      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseMove={this.handlePlayerMouseMove}
+      <div ref="AdScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseMove={this.handlePlayerMouseMove}
         onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd} style={InlineStyle.defaultScreenStyle.style}>
         {adPanel}
         {playbackControlItems}

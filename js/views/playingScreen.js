@@ -24,7 +24,7 @@ var PlayingScreen = React.createClass({
     window.addEventListener('resize', this.handleResize);
 
     //for mobile, hide control bar after 3 seconds
-    if (this.isMobile){
+    if (this.isMobile || this.props.fullscreen){
       this.startHideControlBarTimer();
     }
   },
@@ -83,15 +83,17 @@ var PlayingScreen = React.createClass({
 
   showControlBar: function() {
     this.setState({controlBarVisible: true});
+    this.refs.PlayingScreen.getDOMNode().style.cursor="auto";
   },
 
   hideControlBar: function() {
     this.setState({controlBarVisible: false});
+    this.refs.PlayingScreen.getDOMNode().style.cursor="none";
   },
 
   render: function() {
     return (
-      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseMove={this.handlePlayerMouseMove}
+      <div ref="PlayingScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseMove={this.handlePlayerMouseMove}
         onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd} style={{height: "100%", width: "100%"}}>
         <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
           showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
