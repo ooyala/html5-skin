@@ -51,16 +51,18 @@ var SharePanel = React.createClass({
       var twitterIconStyle = Utils.extend(shareStyle.socialIconStyle, shareStyle.twitterIconStyle);
       var facebookIconStyle = Utils.extend(shareStyle.socialIconStyle, shareStyle.facebookIconStyle);
       var plusIconStyle = Utils.extend(shareStyle.socialIconStyle, shareStyle.plusIconStyle);
+      var titleString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.INVEST_IN_SOCIAL_CHANGE, this.props.localizableStrings);
+      var startAtString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.START_AT, this.props.localizableStrings);
 
       return (
         <div className="shareTabPanel" style={shareStyle.panelStyle}>
-          <div style={shareStyle.titleStyle}>{CONSTANTS.SKIN_TEXT.INVEST_IN_SOCIAL_CHANGE}</div>
+          <div style={shareStyle.titleStyle}>{titleString}</div>
           <div className="twitter" onClick={this.handleTwitterClick} onTouchEnd={this.handleTwitterClick} style={twitterIconStyle}>t</div>
           <div className="facebook" onClick={this.handleFacebookClick} onTouchEnd={this.handleFacebookClick} style={facebookIconStyle}>f</div>
           <div className="googlePlus" onClick={this.handleGPlusClick} onTouchEnd={this.handleGPlusClick} style={plusIconStyle}>g+</div><br/>
           <input className="embedUrl" style={shareStyle.embedUrlStyle} type='text' defaultValue={location.href}/>
           <input className="startPointCheckBox" style={{marginBottom: "15px"}}type='checkbox'/>
-            Start at <input className="startPointTextField" style={shareStyle.startAtInput} type='text'
+          {startAtString} <input className="startPointTextField" style={shareStyle.startAtInput} type='text'
             defaultValue={Utils.formatSeconds(this.props.currentPlayhead)}/><br/>
         </div>
       );
@@ -78,31 +80,50 @@ var SharePanel = React.createClass({
       );
     }
     else if (this.state.activeTab === this.tabs.EMAIL) {
+      var toString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.TO, this.props.localizableStrings),
+          subjectString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SUBJECT, this.props.localizableStrings),
+          messageString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.MESSAGE, this.props.localizableStrings),
+          recipientString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.RECIPIENT, this.props.localizableStrings),
+          optionalMessageString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.OPTIONAL_MESSAGE, this.props.localizableStrings),
+          sendString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SEND, this.props.localizableStrings);
+
       return (
         <div className="shareTabPanel" style={shareStyle.panelStyle}>
           <table style={{color: "white"}}>
             <tr>
-              <td style={{paddingLeft: "5px"}}>To</td>
+              <td style={{paddingLeft: "5px"}}>{toString}</td>
               <td style={{width: "10px"}}></td>
-              <td><input ref="sharePanelTo" onFocus={this.handleFieldFocus}
-                style={shareStyle.emailInputField} type='text' defaultValue='recipient'/></td>
+              <td>
+                <input ref="sharePanelTo"
+                       onFocus={this.handleFieldFocus}
+                       style={shareStyle.emailInputField}
+                       type='text'
+                       placeholder={recipientString}
+                  />
+              </td>
             </tr>
             <tr>
-              <td>Subject</td>
+              <td>{subjectString}</td>
               <td style={{width: "10px"}}></td>
-              <td><input ref="sharePanelSubject" onFocus={this.handleFieldFocus}
-                style={shareStyle.emailInputField} type='text' defaultValue='subject'/><br/></td>
+              <td>
+                <input ref="sharePanelSubject"
+                       onFocus={this.handleFieldFocus}
+                       style={shareStyle.emailInputField}
+                       type='text'
+                       placeholder={subjectString}
+                  />
+                <br/>
+              </td>
             </tr>
             <tr>
-              <td>Message</td>
+              <td>{messageString}</td>
               <td style={{width: "10px"}}></td>
               <td>
                 <textarea
-                  className="sharePanelMessage"
-                  defaultValue="Optional Message"
                   ref="sharePanelMessage"
                   onFocus={this.handleFieldFocus}
                   style={shareStyle.emailTextArea}
+                  placeholder={optionalMessageString}
                   />
               </td>
             </tr>
@@ -110,7 +131,13 @@ var SharePanel = React.createClass({
               <td></td>
               <td style={{width: "10px"}}></td>
               <td style={{textAlign: "right"}}>
-                <button className="emailSendButton" onClick={this.handleEmailClick} onTouchEnd={this.handleEmailClick} style={shareStyle.emailSendButton}>Send</button></td>
+                <button className="emailSendButton"
+                        onClick={this.handleEmailClick}
+                        onTouchEnd={this.handleEmailClick}
+                        style={shareStyle.emailSendButton}>
+                  {sendString}
+                </button>
+              </td>
             </tr>
           </table>
         </div>
@@ -183,19 +210,22 @@ var SharePanel = React.createClass({
     var shareStyle = InlineStyle.shareScreenStyle;
     var activeTabStyle = Utils.extend(shareStyle.tabStyle, shareStyle.activeTab);
     var activeLastTabStyle = Utils.extend(shareStyle.lastTabStyle, shareStyle.activeTab);
+    var shareString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings),
+        embedString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMBED, this.props.localizableStrings),
+        emailString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMAIL, this.props.localizableStrings);
 
     return (
       <div style={shareStyle.containerStyle}>
         <div className="tabRow" style={shareStyle.tabRowStyle}>
           <span className="shareTab" onClick={this.showPanel.bind(this, this.tabs.SHARE)}
             onTouchEnd={this.showPanel.bind(this, this.tabs.SHARE)}
-            style={(this.state.activeTab == this.tabs.SHARE) ? activeTabStyle : shareStyle.tabStyle}>Share</span>
+            style={(this.state.activeTab == this.tabs.SHARE) ? activeTabStyle : shareStyle.tabStyle}>{shareString}</span>
           <span className="embedTab" onClick={this.showPanel.bind(this, this.tabs.EMBED)}
             onTouchEnd={this.showPanel.bind(this, this.tabs.EMBED)}
-            style={(this.state.activeTab == this.tabs.EMBED) ? activeTabStyle : shareStyle.tabStyle}>Embed</span>
+            style={(this.state.activeTab == this.tabs.EMBED) ? activeTabStyle : shareStyle.tabStyle}>{embedString}</span>
           <span className="emailTab" onClick={this.showPanel.bind(this, this.tabs.EMAIL)}
             onTouchEnd={this.showPanel.bind(this, this.tabs.EMAIL)}
-            style={(this.state.activeTab == this.tabs.EMAIL) ? activeLastTabStyle : shareStyle.lastTabStyle}>Email</span>
+            style={(this.state.activeTab == this.tabs.EMAIL) ? activeLastTabStyle : shareStyle.lastTabStyle}>{emailString}</span>
         </div>
         {this.getActivePanel()}
       </div>
