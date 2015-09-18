@@ -44,6 +44,14 @@ var PlayingScreen = React.createClass({
     }
   },
 
+  componentWillUpdate: function(nextProps, nextState) {
+    if(nextProps) {
+      if(!this.props.fullscreen && nextProps.fullscreen) {
+        this.startHideControlBarTimer();
+      }
+    }
+  },
+
   handleResize: function(e) {
     if (this.isMounted()) {
       this.setState({controlBarWidth: this.getDOMNode().clientWidth});
@@ -58,12 +66,12 @@ var PlayingScreen = React.createClass({
     // for mobile, touch is handled in handleTouchEnd
   },
 
-  handleTouchEnd: function() {
+  handleTouchEnd: function(event) {
     if (this.props.controller.state.volumeState.volumeSliderVisible) {
       this.props.controller.hideVolumeSliderBar();
     }
     if (!this.state.controlBarVisible){
-      this.showControlBar();
+      this.showControlBar(event);
       this.startHideControlBarTimer();
     }
     else {
@@ -81,14 +89,18 @@ var PlayingScreen = React.createClass({
     }
   },
 
-  showControlBar: function() {
-    this.setState({controlBarVisible: true});
-    this.refs.PlayingScreen.getDOMNode().style.cursor="auto";
+  showControlBar: function(event) {
+    if (!this.isMobile || event.type == 'touchend') {
+      this.setState({controlBarVisible: true});
+      this.refs.PlayingScreen.getDOMNode().style.cursor="auto";
+    }
   },
 
-  hideControlBar: function() {
-    this.setState({controlBarVisible: false});
-    this.refs.PlayingScreen.getDOMNode().style.cursor="none";
+  hideControlBar: function(event) {
+    if (!this.isMobile || !event) {
+      this.setState({controlBarVisible: false});
+      this.refs.PlayingScreen.getDOMNode().style.cursor="none";
+    }
   },
 
   render: function() {

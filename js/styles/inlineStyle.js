@@ -771,7 +771,8 @@ module.exports = {
       "marginRight": "15px",
       "textAlign": "center",
       "padding": "4px",
-      "borderRadius": "5px"
+      "borderRadius": "5px",
+      "cursor": "pointer"
     },
 
     skipButtonStyle: {

@@ -43,14 +43,6 @@ var EndScreen = React.createClass({
     }
   },
 
-  showControlBar: function() {
-    this.setState({controlBarVisible: true});
-  },
-
-  hideControlBar: function() {
-    this.setState({controlBarVisible: false});
-  },
-
   render: function() {
     var screenStyle = this.props.style;
     var repeatClass = this.props.skinConfig.icons.replay.fontStyleClass;
@@ -68,7 +60,7 @@ var EndScreen = React.createClass({
     }
 
     return (
-      <div className="endScreen" onMouseOver={this.showControlBar}
+      <div className="endScreen"
            onMouseUp={this.handlePlayerMouseUp}
            onTouchEnd={this.handlePlayerMouseUp}
            style={{height: "100%", width: "100%"}}>

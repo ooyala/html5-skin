@@ -32,8 +32,16 @@ var AdScreen = React.createClass({
   },
 
   componentWillUnmount: function () {
-    if (this.state.timer !== null){
+    if (this.state.timer !== null) {
       clearTimeout(this.state.timer);
+    }
+  },
+
+  componentWillUpdate: function(nextProps, nextState) {
+    if(nextProps) {
+      if(!this.props.fullscreen && nextProps.fullscreen) {
+        this.startHideControlBarTimer();
+      }
     }
   },
 
@@ -63,10 +71,9 @@ var AdScreen = React.createClass({
         this.props.controller.togglePlayPause();
       }
       else {
-        console.log("ad screen clicked");
         event.stopPropagation(); // W3C
         event.cancelBubble = true; // IE
-        this.props.controller.onAdsClicked();
+        this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.VIDEO_WINDOW);
       }
     }
   },
@@ -81,13 +88,13 @@ var AdScreen = React.createClass({
     this.refs.AdScreen.getDOMNode().style.cursor="none";
   },
 
-  handleTouchEnd: function() {
+  handleTouchEnd: function(event) {
     if (!this.state.controlBarVisible){
       this.showControlBar();
       this.startHideControlBarTimer();
     }
     else {
-      this.handlePlayerClicked();
+      this.handlePlayerClicked(event);
     }
   },
 
@@ -134,10 +141,16 @@ var AdScreen = React.createClass({
       playbackControlItems = this.getPlaybackControlItems();
     }
     return (
-      <div ref="AdScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseMove={this.handlePlayerMouseMove}
-        onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd} style={InlineStyle.defaultScreenStyle.style}>
-        {adPanel}
-        {playbackControlItems}
+      <div ref="AdScreen" className="adScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseMove={this.handlePlayerMouseMove}
+        style={InlineStyle.defaultScreenStyle.style}>
+
+        <div className="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
+          {adPanel}
+        </div>
+        <div>
+          {playbackControlItems}
+        </div>
+
       </div>
     );
   }

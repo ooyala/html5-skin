@@ -61,7 +61,8 @@ var ScrubberBar = React.createClass({
   handlePlayheadMouseUp: function(evt) {
     evt.preventDefault();
     // stop propagation to prevent it from bubbling up to the skin and pausing
-    evt.stopPropagation();
+    evt.stopPropagation(); // W3C
+    evt.cancelBubble = true; // IE
     //use the difference in x coordinates of the start and end points of the
     // mouse events to calculate the amount of time to seek
     var newPlayheadX = this.isMobile?evt.changedTouches[0].clientX:evt.clientX;
@@ -92,7 +93,8 @@ var ScrubberBar = React.createClass({
 
       // this method is used to seek when the scrubber bar is clicked. We stop propagation
       // to prevent it from bubbling up to the skin which would pause the player
-      evt.stopPropagation();
+      evt.stopPropagation(); // W3C
+      evt.cancelBubble = true; // IE
 
       if (this.isMobile){
         evt = evt.nativeEvent;
