@@ -278,7 +278,7 @@ module.exports = {
       "background": "#afafaf",
       "width": "65px",
       "height": "5px",
-      "bottom": "10%",
+      "WebkitTransform": "translateY(-120%)",
       "marginLeft": "5px",
       "borderRadius": "2px"
     },
