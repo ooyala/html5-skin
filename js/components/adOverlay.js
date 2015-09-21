@@ -16,6 +16,14 @@ var AdOverlay = React.createClass({
     }
   },
 
+  handleOverlayClick: function(event) {
+    if (event.type == 'touchend' || !this.props.controller.state.isMobile){
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
+      this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.OVERLAY);
+    }
+  },
+
   render: function() {
     var overlayStyle = InlineStyle.adOverlayStyle.style;
     var overlayImageStyle = InlineStyle.adOverlayStyle.overlayImageStyle;
@@ -40,7 +48,8 @@ var AdOverlay = React.createClass({
       overlayStyle.display = "none";
     }
     return (
-      <div className="adOverlay" style={overlayStyle}>
+      <div className="adOverlay" style={overlayStyle} onMouseUp={this.handleOverlayClick}
+          onTouchEnd={this.handleOverlayClick}>
         <img src={this.props.overlay} style={overlayImageStyle}></img>
         <div className="adOverlayCloseButton" style={closeButtonStyle} onMouseUp={this.closeOverlay}
           onTouchEnd={this.closeOverlay}>

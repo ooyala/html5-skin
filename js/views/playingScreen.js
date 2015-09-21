@@ -58,12 +58,12 @@ var PlayingScreen = React.createClass({
     // for mobile, touch is handled in handleTouchEnd
   },
 
-  handleTouchEnd: function() {
+  handleTouchEnd: function(event) {
     if (this.props.controller.state.volumeState.volumeSliderVisible) {
       this.props.controller.hideVolumeSliderBar();
     }
     if (!this.state.controlBarVisible){
-      this.showControlBar();
+      this.showControlBar(event);
       this.startHideControlBarTimer();
     }
     else {
@@ -71,12 +71,16 @@ var PlayingScreen = React.createClass({
     }
   },
 
-  showControlBar: function() {
-    this.setState({controlBarVisible: true});
+  showControlBar: function(event) {
+    if (!this.isMobile || event.type == 'touchend') {
+      this.setState({controlBarVisible: true});
+    }
   },
 
-  hideControlBar: function() {
-    this.setState({controlBarVisible: false});
+  hideControlBar: function(event) {
+    if (!this.isMobile || !event) {
+      this.setState({controlBarVisible: false});
+    }
   },
 
   render: function() {

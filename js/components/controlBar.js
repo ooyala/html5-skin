@@ -25,7 +25,8 @@ var ControlBar = React.createClass({
 
   handleControlBarMouseUp: function(evt) {
     if (evt.type == 'touchend' || !this.isMobile){
-      evt.stopPropagation();
+      evt.stopPropagation(); // W3C
+      evt.cancelBubble = true; // IE
       if (this.props.controller.state.volumeState.volumeSliderVisible){
         this.props.controller.hideVolumeSliderBar();
       }
@@ -46,7 +47,8 @@ var ControlBar = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
       if (this.isMobile){
-        evt.stopPropagation();
+        evt.stopPropagation(); // W3C
+        evt.cancelBubble = true; // IE
         if (this.props.controller.state.volumeState.volumeSliderVisible){
           this.props.controller.hideVolumeSliderBar();
         }
@@ -62,12 +64,14 @@ var ControlBar = React.createClass({
 
   handleVolumeBarTouchEnd: function(evt) {
     //to prevent volume slider from hiding when clicking on volume slider
-    evt.stopPropagation();
+    evt.stopPropagation(); // W3C
+    evt.cancelBubble = true; // IE
   },
 
   handleVolumeHeadTouchStart: function(evt) {
     evt.preventDefault();
-    evt.stopPropagation();
+    evt.stopPropagation(); // W3C
+    evt.cancelBubble = true; // IE
     evt = evt.nativeEvent;
 
     this.getDOMNode().parentNode.addEventListener("touchmove", this.handleVolumeHeadMove);
@@ -80,7 +84,8 @@ var ControlBar = React.createClass({
 
   handleVolumeHeadMove: function(evt) {
     evt.preventDefault();
-    evt.stopPropagation();
+    evt.stopPropagation(); // W3C
+    evt.cancelBubble = true; // IE
 
     this.setNewVolume(evt);
   },
@@ -100,7 +105,8 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeHeadTouchEnd: function(evt) {
-    evt.stopPropagation();
+    evt.stopPropagation(); // W3C
+    evt.cancelBubble = true; // IE
     this.setNewVolume(evt);
     this.getDOMNode().parentNode.removeEventListener("touchmove", this.handleVolumeHeadMove);
     document.removeEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
@@ -148,7 +154,8 @@ var ControlBar = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
-      evt.stopPropagation();
+      evt.stopPropagation(); // W3C
+      evt.cancelBubble = true; // IE
       this.props.controller.toggleMoreOptionsScreen();
     }
   },
