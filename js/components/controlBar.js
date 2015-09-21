@@ -16,10 +16,10 @@ var ControlBar = React.createClass({
   },
   componentDidMount: function(){
     if (Utils.isSafari()){
-      InlineStyle.controlBarStyle.controlBarSetting.display = "-webkit-flex";
+      InlineStyle.controlBarStyle.controlBarItemsWrapper.display = "-webkit-flex";
     }
     else {
-      InlineStyle.controlBarStyle.controlBarSetting.display = "flex";
+      InlineStyle.controlBarStyle.controlBarItemsWrapper.display = "flex";
     }
   },
 

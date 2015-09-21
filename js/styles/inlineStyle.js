@@ -190,7 +190,6 @@ module.exports = {
       "display": "flex",
       "flexFlow": "row nowrap",
       "justifyContent": "flex-start",
-      "width": "100%",
       "paddingRight": "7.5px",
       "paddingLeft": "7.5px"
     },
@@ -222,8 +221,8 @@ module.exports = {
     iconSetting: {},
 
     flexibleSpace: {
-      "flex": "2",
-      "WebkitFlex": "2"
+      "flex": "1",
+      "WebkitFlex": "1"
     },
 
     liveItemStyle: {
