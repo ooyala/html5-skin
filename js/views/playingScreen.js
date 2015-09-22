@@ -23,13 +23,16 @@ var PlayingScreen = React.createClass({
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
 
-    //for mobile, hide control bar after 3 seconds
+    //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen){
       this.startHideControlBarTimer();
     }
   },
 
   startHideControlBarTimer: function(){
+    if (this.state.timer !== null){
+      clearTimeout(this.state.timer);
+    }
     var timer = setTimeout(function(){
       if(this.state.controlBarVisible){
         this.hideControlBar();
@@ -42,6 +45,7 @@ var PlayingScreen = React.createClass({
     if (this.state.timer !== null){
       clearTimeout(this.state.timer);
     }
+    window.removeEventListener('resize', this.handleResize);
   },
 
   componentWillUpdate: function(nextProps, nextState) {
@@ -82,9 +86,6 @@ var PlayingScreen = React.createClass({
   handlePlayerMouseMove: function() {
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
-      if (this.state.timer !== null){
-        clearTimeout(this.state.timer);
-      }
       this.startHideControlBarTimer();
     }
   },

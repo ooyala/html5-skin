@@ -16,10 +16,10 @@ var ControlBar = React.createClass({
   },
   componentDidMount: function(){
     if (Utils.isSafari()){
-      InlineStyle.controlBarStyle.controlBarSetting.display = "-webkit-flex";
+      InlineStyle.controlBarStyle.controlBarItemsWrapper.display = "-webkit-flex";
     }
     else {
-      InlineStyle.controlBarStyle.controlBarSetting.display = "flex";
+      InlineStyle.controlBarStyle.controlBarItemsWrapper.display = "flex";
     }
   },
 
@@ -304,7 +304,7 @@ var ControlBar = React.createClass({
     var hours = parseInt(this.props.duration / 3600, 10);
     var extraSpaceDuration = (hours > 0) ? 0 : 45;
 
-    var controlBarLeftRightPadding = 2*parseFloat(InlineStyle.controlBarStyle.controlBarItemsWrapper.paddingLeft)+2*parseFloat(InlineStyle.controlBarStyle.controlBarItemsWrapper.paddingRight);
+    var controlBarLeftRightPadding = parseFloat(InlineStyle.controlBarStyle.controlBarItemsWrapper.paddingLeft)+parseFloat(InlineStyle.controlBarStyle.controlBarItemsWrapper.paddingRight);
 
     var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider+extraSpaceVolumeIcon-controlBarLeftRightPadding, defaultItems);
     var collapsedControlBarItems = collapsedResult.fit;

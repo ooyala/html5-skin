@@ -25,7 +25,7 @@ var AdScreen = React.createClass({
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
 
-    //for mobile, hide control bar after 3 seconds
+    //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen){
       this.startHideControlBarTimer();
     }
@@ -35,17 +35,21 @@ var AdScreen = React.createClass({
     if (this.state.timer !== null) {
       clearTimeout(this.state.timer);
     }
+    window.removeEventListener('resize', this.handleResize);
   },
 
   componentWillUpdate: function(nextProps, nextState) {
     if(nextProps) {
-      if(!this.props.fullscreen && nextProps.fullscreen) {
+      if(!this.props.fullscreen && nextProps.fullscreen && this.state.playerState != CONSTANTS.STATE.PAUSE) {
         this.startHideControlBarTimer();
       }
     }
   },
 
   startHideControlBarTimer: function(){
+    if (this.state.timer !== null) {
+      clearTimeout(this.state.timer);
+    }
     var timer = setTimeout(function(){
       if(this.state.controlBarVisible){
         this.hideControlBar();
@@ -106,9 +110,6 @@ var AdScreen = React.createClass({
     }
     else if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
-      if (this.state.timer !== null){
-        clearTimeout(this.state.timer);
-      }
       this.startHideControlBarTimer();
     }
   },
