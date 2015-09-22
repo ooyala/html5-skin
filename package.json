@@ -38,7 +38,8 @@
   },
   "author": "Ooyala",
   "contributors": [
-    "Aldi Gunawan <agunawan@ooyala.com>"
+    "Aldi Gunawan <agunawan@ooyala.com>",
+    "Timothy Chang <tchang@ooyala.com>"
   ],
   "license": "ISC",
   "bugs": {
