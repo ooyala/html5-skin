@@ -136,6 +136,7 @@ var Skin = React.createClass({
           <AdScreen {...this.props} contentTree={this.state.contentTree}
             currentAdsInfo={this.state.currentAdsInfo}
             currentPlayhead={this.state.currentPlayhead}
+            fullscreen={this.state.fullscreen}
             playerState={this.state.playerState}
             duration={this.state.duration}
             buffered={this.state.buffered}

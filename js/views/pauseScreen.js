@@ -64,6 +64,7 @@ var PauseScreen = React.createClass({
     InlineStyle.pauseScreenStyle.pauseIcon.style.fontSize = "24";
     InlineStyle.pauseScreenStyle.fading.opacity = 0;
     this.props.controller.enablePauseAnimation();
+    window.removeEventListener('resize', this.handleResize);
   },
 
   handleClick: function(evt) {

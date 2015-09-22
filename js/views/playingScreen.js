@@ -23,13 +23,16 @@ var PlayingScreen = React.createClass({
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
 
-    //for mobile, hide control bar after 3 seconds
-    if (this.isMobile){
+    //for mobile or desktop fullscreen, hide control bar after 3 seconds
+    if (this.isMobile || this.props.fullscreen){
       this.startHideControlBarTimer();
     }
   },
 
   startHideControlBarTimer: function(){
+    if (this.state.timer !== null){
+      clearTimeout(this.state.timer);
+    }
     var timer = setTimeout(function(){
       if(this.state.controlBarVisible){
         this.hideControlBar();
@@ -41,6 +44,15 @@ var PlayingScreen = React.createClass({
   componentWillUnmount: function () {
     if (this.state.timer !== null){
       clearTimeout(this.state.timer);
+    }
+    window.removeEventListener('resize', this.handleResize);
+  },
+
+  componentWillUpdate: function(nextProps, nextState) {
+    if(nextProps) {
+      if(!this.props.fullscreen && nextProps.fullscreen) {
+        this.startHideControlBarTimer();
+      }
     }
   },
 
@@ -71,21 +83,30 @@ var PlayingScreen = React.createClass({
     }
   },
 
+  handlePlayerMouseMove: function() {
+    if(!this.isMobile && this.props.fullscreen) {
+      this.showControlBar();
+      this.startHideControlBarTimer();
+    }
+  },
+
   showControlBar: function(event) {
     if (!this.isMobile || event.type == 'touchend') {
       this.setState({controlBarVisible: true});
+      this.refs.PlayingScreen.getDOMNode().style.cursor="auto";
     }
   },
 
   hideControlBar: function(event) {
     if (!this.isMobile || !event) {
       this.setState({controlBarVisible: false});
+      this.refs.PlayingScreen.getDOMNode().style.cursor="none";
     }
   },
 
   render: function() {
     return (
-      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
+      <div ref="PlayingScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseMove={this.handlePlayerMouseMove}
         onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd} style={{height: "100%", width: "100%"}}>
         <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
           showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
