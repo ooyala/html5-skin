@@ -16,10 +16,10 @@ var ControlBar = React.createClass({
   },
   componentDidMount: function(){
     if (Utils.isSafari()){
-      InlineStyle.controlBarStyle.controlBarSetting.display = "-webkit-flex";
+      InlineStyle.controlBarStyle.controlBarItemsWrapper.display = "-webkit-flex";
     }
     else {
-      InlineStyle.controlBarStyle.controlBarSetting.display = "flex";
+      InlineStyle.controlBarStyle.controlBarItemsWrapper.display = "flex";
     }
   },
 
@@ -304,7 +304,9 @@ var ControlBar = React.createClass({
     var hours = parseInt(this.props.duration / 3600, 10);
     var extraSpaceDuration = (hours > 0) ? 0 : 45;
 
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider+extraSpaceVolumeIcon, defaultItems);
+    var controlBarLeftRightPadding = parseFloat(InlineStyle.controlBarStyle.controlBarItemsWrapper.paddingLeft)+parseFloat(InlineStyle.controlBarStyle.controlBarItemsWrapper.paddingRight);
+
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider+extraSpaceVolumeIcon-controlBarLeftRightPadding, defaultItems);
     var collapsedControlBarItems = collapsedResult.fit;
     var collapsedMoreOptionsItems = collapsedResult.overflow;
 
@@ -396,7 +398,9 @@ var ControlBar = React.createClass({
     return (
       <div className="controlBar" onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}
         style={InlineStyle.controlBarStyle.controlBarSetting}>
-        {controlBarItems}
+        <div className="controlBarItemsWrapper" style={InlineStyle.controlBarStyle.controlBarItemsWrapper}>
+          {controlBarItems}
+        </div>
       </div>
     );
   }

@@ -177,17 +177,21 @@ module.exports = {
       "height": 60,
       "position": "absolute",
       "margin": 0,
-
       "fontSize": "18px",
       "listStyle": "none",
-      "display": "flex",
-      "flexFlow": "row nowrap",
-      "justifyContent": "flex-start",
       "WebkitUserSelect": "none",
       "MozUserSelect": "none",
       "msUserSelect": "none",
       "userSelect": "none",
       "transition": "bottom 0.5s, height 0.25s"
+    },
+
+    controlBarItemsWrapper: {
+      "display": "flex",
+      "flexFlow": "row nowrap",
+      "justifyContent": "flex-start",
+      "paddingRight": "7.5px",
+      "paddingLeft": "7.5px"
     },
 
     controlBarItemSetting: {
@@ -217,8 +221,8 @@ module.exports = {
     iconSetting: {},
 
     flexibleSpace: {
-      "flex": 1,
-      "WebkitFlex": 1
+      "flex": "1",
+      "WebkitFlex": "1"
     },
 
     liveItemStyle: {
@@ -273,7 +277,7 @@ module.exports = {
       "background": "#afafaf",
       "width": "65px",
       "height": "5px",
-      "bottom": "10%",
+      "WebkitTransform": "translateY(-120%)",
       "marginLeft": "5px",
       "borderRadius": "2px"
     },

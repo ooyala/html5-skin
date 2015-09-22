@@ -128,7 +128,7 @@ var ScrubberBar = React.createClass({
     InlineStyle.scrubberBarStyle.scrubberBarSetting.right = 2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
 
     InlineStyle.scrubberBarStyle.scrubberBarPadding.bottom = (this.props.controlBarVisible ?
-      (controlBarHeight - scrubberPaddingHeight) :  ((-1 * scrubberPaddingHeight) / 2));
+      (controlBarHeight - scrubberPaddingHeight) :  (-1 * scrubberPaddingHeight));
     InlineStyle.scrubberBarStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
       parseFloat(this.props.duration)) * 100 + "%";
     InlineStyle.scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
