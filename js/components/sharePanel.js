@@ -51,7 +51,7 @@ var SharePanel = React.createClass({
       var twitterIconStyle = Utils.extend(shareStyle.socialIconStyle, shareStyle.twitterIconStyle);
       var facebookIconStyle = Utils.extend(shareStyle.socialIconStyle, shareStyle.facebookIconStyle);
       var plusIconStyle = Utils.extend(shareStyle.socialIconStyle, shareStyle.plusIconStyle);
-      var titleString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.INVEST_IN_SOCIAL_CHANGE, this.props.localizableStrings);
+      var titleString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION, this.props.localizableStrings);
       var startAtString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.START_AT, this.props.localizableStrings);
 
       return (

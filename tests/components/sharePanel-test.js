@@ -41,7 +41,7 @@ describe('SharePanel', function () {
         var shareTab = TestUtils.findRenderedDOMComponentWithClass(DOM, 'shareTab');
         expect(React.findDOMNode(shareTab).textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
         TestUtils.Simulate.click(shareTab);
-        expect(React.findDOMNode(shareTabPanel).textContent).toContain(localizableStrings[key][CONSTANTS.SKIN_TEXT.INVEST_IN_SOCIAL_CHANGE]);
+        expect(React.findDOMNode(shareTabPanel).textContent).toContain(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION]);
 
         // test embed tab
         var embedTab = TestUtils.findRenderedDOMComponentWithClass(DOM, 'embedTab');
