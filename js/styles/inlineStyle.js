@@ -748,7 +748,8 @@ module.exports = {
 
     adPanelTopBarTextStyle: {
       "fontSize": "12pt",
-      "color": "white",
+      "color": "#ffffff",
+      "fontFamily": "Roboto",
       "margin": "auto",
       "textAlign": "center",
       "paddingLeft": "7.5px",
@@ -763,26 +764,32 @@ module.exports = {
     },
 
     learnMoreButtonStyle: {
-      "fontSize": "12pt",
+      "fontSize": "9pt",
+      "fontFamily": "Roboto",
       "color": "black",
       "backgroundColor": "white",
       "margin": "auto",
-      "marginRight": "15px",
+      "marginRight": "10px",
       "textAlign": "center",
-      "padding": "4px",
-      "borderRadius": "5px",
-      "cursor": "pointer"
+      "borderRadius": "3px",
+      "cursor": "pointer",
+      "width": "80px",
+      "height": "24px",
+      "lineHeight": "24px"
     },
 
     skipButtonStyle: {
-      "fontSize": "12pt",
+      "fontSize": "9pt",
+      "fontFamily": "Roboto",
       "color": "black",
       "backgroundColor": "white",
       "margin": "auto",
       "marginRight": "15px",
       "textAlign": "center",
-      "padding": "4px",
-      "borderRadius": "5px"
+      "borderRadius": "3px",
+      "width": "60px",
+      "height": "24px",
+      "lineHeight": "24px"
     }
   },
 

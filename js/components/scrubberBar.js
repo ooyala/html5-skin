@@ -147,6 +147,15 @@ var ScrubberBar = React.createClass({
       Math.min(InlineStyle.scrubberBarStyle.scrubberBarSetting.width - parseInt(InlineStyle.scrubberBarStyle.playheadStyle.width)/2,
         InlineStyle.scrubberBarStyle.playheadPaddingStyle.left), 0);
 
+    if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN){
+      InlineStyle.scrubberBarStyle.playheadStyle.visibility = "hidden";
+      InlineStyle.scrubberBarStyle.playedIndicatorStyle.background = "#FF3F80";
+    }
+    else {
+      InlineStyle.scrubberBarStyle.playheadStyle.visibility = "visibile";
+      InlineStyle.scrubberBarStyle.playedIndicatorStyle.background = "#4389ff";
+    }
+
     return (
       <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp} onTouchEnd={this.handleScrubberBarMouseUp}
         style={InlineStyle.scrubberBarStyle.scrubberBarPadding}>
