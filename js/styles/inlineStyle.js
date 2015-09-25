@@ -1070,97 +1070,99 @@ module.exports = {
 
   upNextPanelStyle: {
     panelStyle: {
-      position: "absolute",
-      width: "100%",
-      height: "80px",
-      right: "0",
-      bottom: "32px",
-      backgroundColor: "rgba(22, 22, 22, 0.9)",
+      "position": "absolute",
+      "width": "100%",
+      "height": "80px",
+      "right": "0",
+      "bottom": "32px",
+      "backgroundColor": "rgba(22, 22, 22, 0.9)",
       "transition": "bottom 0.5s"
     },
 
     contentImageContainerStyle: {
-      position: "absolute",
-      top: "0",
-      left: "0",
-      width: "140px",
-      height: "100%",
-      cursor: "pointer"
+      "position": "absolute",
+      "top": "0",
+      "left": "0",
+      "width": "140px",
+      "height": "100%",
+      "cursor": "pointer"
     },
 
     contentImageStyle: {
-      position: "absolute",
-      top: "0",
-      left: "0",
-      width: "100%",
-      height: "100%"
+      "position": "absolute",
+      "top": "0",
+      "left": "0",
+      "width": "100%",
+      "height": "100%"
     },
 
     playButton: {
       style: {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        fontSize: "25",
-        WebkitTransform: "translate(-50%, -50%)",
-        transform: "translate(-50%, -50%)",
-        opacity: 1,
-        color: "white",
-        transition: "opacity .25s ease-in-out"
+        "position": "absolute",
+        "top": "50%",
+        "left": "50%",
+        "fontSize": "25",
+        "WebkitTransform": "translate(-50%, -50%)",
+        "transform": "translate(-50%, -50%)",
+        "opacity": 1,
+        "color": "white",
+        "transition": "opacity .25s ease-in-out"
       }
     },
 
     contentMetadataContainerStyle: {
-      position: "absolute",
-      top: "0",
-      left: "140px",
-      width: "78%",
-      height: "100%"
+      "position": "absolute",
+      "top": "0",
+      "left": "140px",
+      "width": "78%",
+      "height": "100%"
     },
 
     upNextTitleStyle: {
-      position: "absolute",
-      display: "flex",
-      top: "5",
-      left: "15px",
-      width: "100%",
-      height: "27px",
-      color: "#FFFFFF"
+      "position": "absolute",
+      "display": "flex",
+      "top": "3px",
+      "left": "15px",
+      "width": "100%",
+      "height": "27px",
+      "color": "#FFFFFF"
     },
 
     upNextTitleTextStyle: {
-      fontSize: "18",
-      fontWeight: "bold",
-      maxWidth: "70%",
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      color: "inherit",
-      resize: "none",
-      paddingLeft: "10"
+      "fontSize": "18pt",
+      "fontFamily": "'Roboto Condensed', sans-serif",
+      "fontWeight": "bold",
+      "maxWidth": "70%",
+      "whiteSpace": "nowrap",
+      "overflow": "hidden",
+      "textOverflow": "ellipsis",
+      "color": "inherit",
+      "resize": "none"
     },
 
     contentDescriptionStyle: {
-      position: "absolute",
-      bottom: "0",
-      left: "15px",
-      width: "70%",
-      height: "40px",
-      marginTop: "10px",
-      color: "rgba(255, 255, 255, 0.6)",
-      fontSize: 12,
-      fontWeight: "bold"
+      "position": "absolute",
+      "bottom": "5px",
+      "left": "15px",
+      "width": "70%",
+      "marginTop": "10px",
+      "color": "rgba(255, 255, 255, 0.6)",
+      "fontSize": "12pt",
+      "fontFamily": "'Open Sans', sans-serif",
+      "fontWeight": "regular",
+      "overflow": "hidden",
+      "textOverflow": "ellipsis"
     },
 
     closeButton: {
-      position: "absolute",
-      top: "10px",
-      right: "10px",
-      height: "10px",
-      width: "10px",
-      backgroundColor: "transparent",
-      color: "white",
-      fontSize: "10px",
+      "position": "absolute",
+      "top": "10px",
+      "right": "10px",
+      "height": "10px",
+      "width": "10px",
+      "backgroundColor": "transparent",
+      "color": "white",
+      "fontSize": "10px",
       "cursor": "pointer",
       "textAlign": "center",
       "WebkitTransform": "translateY(-50%)",
@@ -1169,8 +1171,9 @@ module.exports = {
     },
 
     upNextCountDownStyle: {
-      height: "27px",
-      width: "27px"
+      "height": "27px",
+      "width": "27px",
+      "marginRight": "10px"
     }
   },
 

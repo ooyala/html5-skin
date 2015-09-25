@@ -15,7 +15,7 @@ var CountDownClock = React.createClass({
   getInitialState: function() {
     // canvas, interval, and context are changing based on time instead of user interaction
     this.canvas = null;
-    this.context = null;      
+    this.context = null;
     this.interval = null;
     this.countDownStyle = null;
     var tmpFraction = 0;

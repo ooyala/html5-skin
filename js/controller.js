@@ -197,7 +197,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
       } else {
         // time to show is based on percentage of duration
-        timeToShow = (1 - this.skin.props.skinConfig.upNextScreen.timeToShow) * duration;
+        timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow * duration;
       }
       if (duration - currentPlayhead <= timeToShow &&
         !this.state.upNextInfo.countDownCancelled &&
