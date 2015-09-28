@@ -207,6 +207,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.upNextInfo.upNextData !== null && this.state.playerState === CONSTANTS.STATE.PLAYING) {
         this.state.screenToShow = CONSTANTS.SCREEN.UP_NEXT_SCREEN;
       }
+      else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
+        this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+      }
     },
 
     onPlaying: function() {
