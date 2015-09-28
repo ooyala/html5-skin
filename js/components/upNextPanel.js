@@ -25,6 +25,13 @@ var UpNextPanel = React.createClass({
     var descriptionNode = this.refs.ContentDescription.getDOMNode();
     var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.contentDescription);
     this.setState({contentDescription: shortDesc});
+
+    if (Utils.isSafari()){
+     InlineStyle.upNextPanelStyle.upNextTitleStyle.display = "-webkit-flex";
+    }
+    else {
+     InlineStyle.upNextPanelStyle.upNextTitleStyle.display = "flex";
+    }
   },
 
   closeUpNextPanel: function(event) {
@@ -101,7 +108,7 @@ var UpNextPanel = React.createClass({
 
         <div className="contentMetadata" style={contentMetadataContainerStyle}>
           <div style={upNextTitleStyle}>
-            <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow}/>
+            <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow} currentPlayhead={this.props.currentPlayhead}/>
 
             <div style={upNextTitleTextStyle}>
               {upNextString}: {contentTile}

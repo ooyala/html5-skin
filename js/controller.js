@@ -192,13 +192,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     showUpNextScreenWhenReady: function(currentPlayhead, duration) {
       var timeToShow = 0;
-      if (this.skin.props.skinConfig.upNextScreen.timeToShow > 1) {
-        // time to show is based on seconds
-        timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
+      var stringTimeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
+
+      if (stringTimeToShow.indexOf('%') === -1){
+        // time to show is based on seconds from the end
+        timeToShow = parseInt(stringTimeToShow);
       } else {
-        // time to show is based on percentage of duration
-        timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow * duration;
+        // time to show is based on percentage of duration from the beginning
+        timeToShow = (1 - parseInt(stringTimeToShow)/100) * duration;
       }
+
       if (duration - currentPlayhead <= timeToShow &&
         !this.state.upNextInfo.countDownCancelled &&
         this.state.upNextInfo.upNextData !== null && this.state.playerState === CONSTANTS.STATE.PLAYING) {

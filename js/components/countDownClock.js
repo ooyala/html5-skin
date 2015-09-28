@@ -23,12 +23,13 @@ var CountDownClock = React.createClass({
     if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.UP_NEXT_SCREEN) {
       this.countDownStyle = InlineStyle.upNextPanelStyle.upNextCountDownStyle; 
       tmpRemainSeconds = this.props.duration - this.props.currentPlayhead;
-      if (this.props.timeToShow > 1) {
-        // time to show is based on seconds
-        tmpFraction = 2 / this.props.timeToShow;
+
+      if (this.props.timeToShow.indexOf('%') === -1){
+        // time to show is based on seconds from the end
+        tmpFraction = 2 / parseInt(this.props.timeToShow);
       } else {
-        // time to show is based on percetage of duration
-        tmpFraction = (2 / ((1 - this.props.timeToShow) * this.props.duration));
+        // time to show is based on percentage of duration from the beginning
+        tmpFraction = (2 / ((1 - parseInt(this.props.timeToShow)/100) * this.props.duration));
       }
     }
     else if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
@@ -132,7 +133,7 @@ var CountDownClock = React.createClass({
         this.startUpNextVideo();
       } 
       else if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
-        this.setState({remainSeconds: this.state.remainSeconds - this.state.counterInterval});
+        this.setState({remainSeconds: this.props.duration - this.props.currentPlayhead});
         this.updateCanvas();
       }
     }
