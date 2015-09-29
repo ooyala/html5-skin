@@ -188,6 +188,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.skin.updatePlayhead(currentPlayhead, duration, buffered);
       }
       this.renderSkin();
+      console.log("xenia duration from onPlayheadTimeChanged", duration);
+      console.log("xenia currentPlayhead from onPlayheadTimeChanged", currentPlayhead);
     },
 
     showUpNextScreenWhenReady: function(currentPlayhead, duration) {
