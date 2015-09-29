@@ -25,19 +25,31 @@ var AdScreen = React.createClass({
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
 
-    //for mobile, hide control bar after 3 seconds
-    if (this.isMobile){
+    //for mobile or desktop fullscreen, hide control bar after 3 seconds
+    if (this.isMobile || this.props.fullscreen){
       this.startHideControlBarTimer();
     }
   },
 
   componentWillUnmount: function () {
-    if (this.state.timer !== null){
+    if (this.state.timer !== null) {
       clearTimeout(this.state.timer);
+    }
+    window.removeEventListener('resize', this.handleResize);
+  },
+
+  componentWillUpdate: function(nextProps, nextState) {
+    if(nextProps) {
+      if(!this.props.fullscreen && nextProps.fullscreen && this.state.playerState != CONSTANTS.STATE.PAUSE) {
+        this.startHideControlBarTimer();
+      }
     }
   },
 
   startHideControlBarTimer: function(){
+    if (this.state.timer !== null) {
+      clearTimeout(this.state.timer);
+    }
     var timer = setTimeout(function(){
       if(this.state.controlBarVisible){
         this.hideControlBar();
@@ -63,29 +75,42 @@ var AdScreen = React.createClass({
         this.props.controller.togglePlayPause();
       }
       else {
-        console.log("ad screen clicked");
         event.stopPropagation(); // W3C
         event.cancelBubble = true; // IE
-        this.props.controller.onAdsClicked();
+        this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.VIDEO_WINDOW);
       }
     }
   },
 
   showControlBar: function() {
     this.setState({controlBarVisible: true});
+    this.refs.AdScreen.getDOMNode().style.cursor="auto";
   },
 
   hideControlBar: function() {
     this.setState({controlBarVisible: false});
+    this.refs.AdScreen.getDOMNode().style.cursor="none";
   },
 
-  handleTouchEnd: function() {
+  handleTouchEnd: function(event) {
     if (!this.state.controlBarVisible){
       this.showControlBar();
       this.startHideControlBarTimer();
     }
     else {
-      this.handlePlayerClicked();
+      this.handlePlayerClicked(event);
+    }
+  },
+
+  handlePlayerMouseMove: function() {
+    if(this.props.playerState === CONSTANTS.STATE.PAUSE) {
+      if (this.state.timer !== null){
+        clearTimeout(this.state.timer);
+      }
+    }
+    else if(!this.isMobile && this.props.fullscreen) {
+      this.showControlBar();
+      this.startHideControlBarTimer();
     }
   },
 
@@ -117,10 +142,16 @@ var AdScreen = React.createClass({
       playbackControlItems = this.getPlaybackControlItems();
     }
     return (
-      <div onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd} style={InlineStyle.defaultScreenStyle.style}>
-        {adPanel}
-        {playbackControlItems}
+      <div ref="AdScreen" className="adScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseMove={this.handlePlayerMouseMove}
+        style={InlineStyle.defaultScreenStyle.style}>
+
+        <div className="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
+          {adPanel}
+        </div>
+        <div>
+          {playbackControlItems}
+        </div>
+
       </div>
     );
   }

@@ -16,16 +16,17 @@ var ControlBar = React.createClass({
   },
   componentDidMount: function(){
     if (Utils.isSafari()){
-      InlineStyle.controlBarStyle.controlBarSetting.display = "-webkit-flex";
+      InlineStyle.controlBarStyle.controlBarItemsWrapper.display = "-webkit-flex";
     }
     else {
-      InlineStyle.controlBarStyle.controlBarSetting.display = "flex";
+      InlineStyle.controlBarStyle.controlBarItemsWrapper.display = "flex";
     }
   },
 
   handleControlBarMouseUp: function(evt) {
     if (evt.type == 'touchend' || !this.isMobile){
-      evt.stopPropagation();
+      evt.stopPropagation(); // W3C
+      evt.cancelBubble = true; // IE
       if (this.props.controller.state.volumeState.volumeSliderVisible){
         this.props.controller.hideVolumeSliderBar();
       }
@@ -46,7 +47,8 @@ var ControlBar = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
       if (this.isMobile){
-        evt.stopPropagation();
+        evt.stopPropagation(); // W3C
+        evt.cancelBubble = true; // IE
         if (this.props.controller.state.volumeState.volumeSliderVisible){
           this.props.controller.hideVolumeSliderBar();
         }
@@ -62,12 +64,14 @@ var ControlBar = React.createClass({
 
   handleVolumeBarTouchEnd: function(evt) {
     //to prevent volume slider from hiding when clicking on volume slider
-    evt.stopPropagation();
+    evt.stopPropagation(); // W3C
+    evt.cancelBubble = true; // IE
   },
 
   handleVolumeHeadTouchStart: function(evt) {
     evt.preventDefault();
-    evt.stopPropagation();
+    evt.stopPropagation(); // W3C
+    evt.cancelBubble = true; // IE
     evt = evt.nativeEvent;
 
     this.getDOMNode().parentNode.addEventListener("touchmove", this.handleVolumeHeadMove);
@@ -80,7 +84,8 @@ var ControlBar = React.createClass({
 
   handleVolumeHeadMove: function(evt) {
     evt.preventDefault();
-    evt.stopPropagation();
+    evt.stopPropagation(); // W3C
+    evt.cancelBubble = true; // IE
 
     this.setNewVolume(evt);
   },
@@ -100,7 +105,8 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeHeadTouchEnd: function(evt) {
-    evt.stopPropagation();
+    evt.stopPropagation(); // W3C
+    evt.cancelBubble = true; // IE
     this.setNewVolume(evt);
     this.getDOMNode().parentNode.removeEventListener("touchmove", this.handleVolumeHeadMove);
     document.removeEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
@@ -148,7 +154,8 @@ var ControlBar = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
-      evt.stopPropagation();
+      evt.stopPropagation(); // W3C
+      evt.cancelBubble = true; // IE
       this.props.controller.toggleMoreOptionsScreen();
     }
   },
@@ -297,7 +304,9 @@ var ControlBar = React.createClass({
     var hours = parseInt(this.props.duration / 3600, 10);
     var extraSpaceDuration = (hours > 0) ? 0 : 45;
 
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider+extraSpaceVolumeIcon, defaultItems);
+    var controlBarLeftRightPadding = parseFloat(InlineStyle.controlBarStyle.controlBarItemsWrapper.paddingLeft)+parseFloat(InlineStyle.controlBarStyle.controlBarItemsWrapper.paddingRight);
+
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider+extraSpaceVolumeIcon-controlBarLeftRightPadding, defaultItems);
     var collapsedControlBarItems = collapsedResult.fit;
     var collapsedMoreOptionsItems = collapsedResult.overflow;
 
@@ -389,7 +398,9 @@ var ControlBar = React.createClass({
     return (
       <div className="controlBar" onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}
         style={InlineStyle.controlBarStyle.controlBarSetting}>
-        {controlBarItems}
+        <div className="controlBarItemsWrapper" style={InlineStyle.controlBarStyle.controlBarItemsWrapper}>
+          {controlBarItems}
+        </div>
       </div>
     );
   }
