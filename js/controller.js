@@ -55,6 +55,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "upNextData": null,
         "countDownFinished": false,
         "countDownCancelled": false,
+        "timeToShow": 0
       },
 
       "isMobile": false,
@@ -201,6 +202,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         // time to show is based on percentage of duration from the beginning
         timeToShow = (1 - parseInt(stringTimeToShow)/100) * duration;
       }
+
+      this.state.upNextInfo.timeToShow = timeToShow;
 
       if (duration - currentPlayhead <= timeToShow &&
         !this.state.upNextInfo.countDownCancelled &&
