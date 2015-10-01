@@ -137,7 +137,7 @@ var DiscoveryPanel = React.createClass({
         "custom" : this.props.discoveryData.custom
       };
       // TODO: figure out countdown value
-      eventData.custom.countdown = 0;
+      // eventData.custom.countdown = 0;
       this.props.controller.sendDiscoveryClickEvent(eventData);
     }
   },

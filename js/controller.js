@@ -55,6 +55,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "upNextData": null,
         "countDownFinished": false,
         "countDownCancelled": false,
+        "timeToShow": 0
       },
 
       "isMobile": false,
@@ -192,17 +193,25 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     showUpNextScreenWhenReady: function(currentPlayhead, duration) {
       var timeToShow = 0;
-      if (this.skin.props.skinConfig.upNextScreen.timeToShow > 1) {
-        // time to show is based on seconds
-        timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
+      var stringTimeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
+
+      if (stringTimeToShow.indexOf('%') === -1){
+        // time to show is based on seconds from the end
+        timeToShow = parseInt(stringTimeToShow);
       } else {
-        // time to show is based on percentage of duration
-        timeToShow = (1 - this.skin.props.skinConfig.upNextScreen.timeToShow) * duration;
+        // time to show is based on percentage of duration from the beginning
+        timeToShow = (1 - parseInt(stringTimeToShow)/100) * duration;
       }
+
+      this.state.upNextInfo.timeToShow = timeToShow;
+
       if (duration - currentPlayhead <= timeToShow &&
         !this.state.upNextInfo.countDownCancelled &&
         this.state.upNextInfo.upNextData !== null && this.state.playerState === CONSTANTS.STATE.PLAYING) {
         this.state.screenToShow = CONSTANTS.SCREEN.UP_NEXT_SCREEN;
+      }
+      else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
+        this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       }
     },
 
