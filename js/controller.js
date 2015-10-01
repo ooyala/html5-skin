@@ -136,7 +136,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
-        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
       }, this));
 
@@ -147,6 +146,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
 
       this.externalPluginSubscription();
+      this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
     },
 
     onAuthorizationFetched: function(event, authorization) {
