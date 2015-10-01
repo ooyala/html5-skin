@@ -106,7 +106,7 @@ var PlayingScreen = React.createClass({
 
   render: function() {
     return (
-      <div ref="PlayingScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseMove={this.handlePlayerMouseMove}
+      <div className="playingScreen" ref="PlayingScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseMove={this.handlePlayerMouseMove}
         onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd} style={{height: "100%", width: "100%"}}>
         <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
           showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
