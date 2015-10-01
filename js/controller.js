@@ -72,6 +72,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
+      this.mb.subscribe(OO.EVENTS.PAUSE, 'customerUi', _.bind(this.onPause, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
       this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
@@ -225,6 +226,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.setClosedCaptionsLanguage();
         }
         this.renderSkin();
+      }
+    },
+
+    onPause: function(event, props) {
+      if (props === CONSTANTS.PAUSE_REASON.AD_PLAYBACK){
+        this.state.pauseAnimationDisabled = true;
       }
     },
 

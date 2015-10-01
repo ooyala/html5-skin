@@ -73,6 +73,10 @@ module.exports = {
     OVERLAY: "overlay"
   },
 
+  PAUSE_REASON: {
+    AD_PLAYBACK: "pauseForAdPlayback"
+  },
+
   ERROR_MESSAGE: {
     "network":{
       name: "OO.ERROR.API.NETWORK",
