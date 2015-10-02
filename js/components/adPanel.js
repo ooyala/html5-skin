@@ -105,9 +105,10 @@ var AdPanel = React.createClass({
     if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.clickUrl)) {
       var learnMoreText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
       var learnMoreClass = this.props.skinConfig.icons.learn.fontStyleClass;
-      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" onButtonClicked={this.handleLearnMoreButtonClick} style={InlineStyle.adScreenStyle.learnMoreButtonStyle} data={learnMoreText}
-      icon ={<span className={learnMoreClass} style={InlineStyle.adScreenStyle.learnMoreButtonStyle.icon}></span>}
-      itemClassName="learnMore"/>;
+      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" onButtonClicked={this.handleLearnMoreButtonClick} 
+                                style={InlineStyle.adScreenStyle.learnMoreButtonStyle} data={learnMoreText}
+                                icon ={<span className={learnMoreClass} style={InlineStyle.adScreenStyle.learnMoreButtonStyle.icon}></span>}
+                                itemClassName="learnMore"/>;
       adTopBarItems.push(learnMoreButtonDiv);
     }
 
@@ -126,8 +127,10 @@ var AdPanel = React.createClass({
 
     var skipButtonText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
     var skipAdClass = this.props.skinConfig.icons.skip.fontStyleClass;
-    var skipButtonDiv = <AdPanelTopBarItem key="skipButton" onButtonClicked={handleSkipAdButtonClick} style={InlineStyle.adScreenStyle.skipButtonStyle} data={skipButtonText}
-    icon ={<span className={skipAdClass} style={InlineStyle.adScreenStyle.skipButtonStyle.icon}></span>} itemClassName="skip"/>;
+    var skipButtonDiv = <AdPanelTopBarItem key="skipButton" onButtonClicked={handleSkipAdButtonClick}
+                        style={InlineStyle.adScreenStyle.skipButtonStyle} data={skipButtonText}
+                        icon ={<span className={skipAdClass} style={InlineStyle.adScreenStyle.skipButtonStyle.icon}></span>}
+                        itemClassName="skip"/>;
     adTopBarItems.push(skipButtonDiv);
 
     return adTopBarItems;
