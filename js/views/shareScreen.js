@@ -27,7 +27,7 @@ var ShareScreen = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
-      this.props.controller.closeShareScreen();
+      this.props.controller.closeScreen();
     }
   },
 
