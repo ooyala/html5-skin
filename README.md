@@ -11,7 +11,7 @@ An open-source HTML5 UI skin based on [ReactJS](https://github.com/facebook/reac
 <html>
 <head>
   <script language="javascript" src="//player.ooyala.com/static/v4/latest/core.min.js"></script>
-  <script language="javascript" src="//player.ooyala.com/static/v4/latest/discovery_api-min.js"></script>
+  <script language="javascript" src="//player.ooyala.com/static/v4/latest/discovery_api.min.js"></script>
   <link rel="stylesheet" href="//player.ooyala.com/static/v4/latest/html5-skin/assets/styles.css"/>
   <script src="//player.ooyala.com/static/v4/latest/html5-skin/build/html5-skin.min.js"></script>
 </head>
@@ -94,7 +94,7 @@ You should now be able to load the sample page by hitting http://localhost:8000/
 To run tests, run this command:
 
     npm test
-    
+
 Add test files to directory `tests/`.
 
 Test file should have same location and name as `js/` file with `-test` after test file name.
