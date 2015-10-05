@@ -7,23 +7,37 @@ An open-source HTML5 UI skin based on [ReactJS](https://github.com/facebook/reac
 
 ## Examples
 ```javascript
+<!DOCTYPE html>
 <html>
-  <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<head>
+  <script language="javascript" src="//player.ooyala.com/static/v4/latest/core.min.js"></script>
+  <script language="javascript" src="//player.ooyala.com/static/v4/latest/discovery_api-min.js"></script>
+  <link rel="stylesheet" href="//player.ooyala.com/static/v4/latest/html5-skin/assets/styles.css"/>
+  <script src="//player.ooyala.com/static/v4/latest/html5-skin/build/html5-skin.min.js"></script>
+</head>
 
-    <script language="javascript" src="//player.ooyala.com/v3/6440813504804d76ba35c8c787a4b33c?debug=true&platform=html5"></script>
-    <script src="build/html5-skin.js"></script>
-  </head>
-  <body>
-    <div id='container' style='width:640px;height:480px'></div>
-    <script>
-      var playerParam = { layout:'chromeless' };
-      OO.ready(function() {
-        window.pp = OO.Player.create('container', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
-      });
-    </script>
-  </body>
+<body>
+<div id='container' style='width:640px; height:360px;'></div>
+<script>
+  var playerParam = {
+    "pcode": "YOUR_PCODE",
+    "playerBrandingId": "YOUR_PLAYER_ID",
+    'debug':true,
+    "skin": {
+      "config": "//player.ooyala.com/static/v4/latest/html5-skin/config/skin.json",
+      "languages": [
+        {language: "en", languageFile: "config/en.json"},
+        {language: "es", languageFile: "config/es.json"},
+        {language: "zh", languageFile: "config/zh.json"}
+      ]
+    }
+  };
+  OO.ready(function() {
+    window.pp = OO.Player.create('container', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
+  });
+</script>
+
+</body>
 </html>
 ```
 
