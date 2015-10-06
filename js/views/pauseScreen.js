@@ -12,6 +12,7 @@ var React = require('react'),
 var PauseScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
+    this.isSafari = Utils.isSafari();
     return {
       description: this.props.contentTree.description,
       controlBarVisible: true,
@@ -131,6 +132,14 @@ var PauseScreen = React.createClass({
       }
     }
 
+    var controlBarWidth;
+    if (this.isSafari) {
+      controlBarWidth = this.getDOMNode().clientWidth;
+    }
+    else {
+      controlBarWidth = this.state.controlBarWidth;
+    }
+
     return (
       <div className="pauseScreen" onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>
@@ -142,9 +151,9 @@ var PauseScreen = React.createClass({
         <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
           showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}/>
+          controlBarWidth={controlBarWidth}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}
+          controlBarWidth={controlBarWidth}
           playerState={this.state.playerState} />
       </div>
     );

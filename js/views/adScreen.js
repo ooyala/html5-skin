@@ -12,6 +12,7 @@ var React = require('react'),
 var AdScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
+    this.isSafari = Utils.isSafari();
     return {
       controlBarVisible: true,
       controlBarWidth: 0,
@@ -115,12 +116,20 @@ var AdScreen = React.createClass({
   },
 
   getPlaybackControlItems: function() {
+    var controlBarWidth;
+    if (this.isSafari) {
+      controlBarWidth = this.getDOMNode().clientWidth;
+    }
+    else {
+      controlBarWidth = this.state.controlBarWidth;
+    }
+
     var playbackControlItemTemplates = {
      "scrubberBar": <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-       controlBarWidth={this.state.controlBarWidth} />,
+       controlBarWidth={controlBarWidth} />,
 
      "controlBar": <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-       controlBarWidth={this.state.controlBarWidth}
+       controlBarWidth={controlBarWidth}
        playerState={this.props.playerState} />
     };
 
