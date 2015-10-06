@@ -594,7 +594,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING){
           this.mb.publish(OO.EVENTS.PAUSE);
-          this.state.playerState = CONSTANTS.STATE.PAUSE;
         }
         setTimeout(function() {
           this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
@@ -629,7 +628,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING){
           this.mb.publish(OO.EVENTS.PAUSE);
-          this.state.playerState = CONSTANTS.STATE.PAUSE;
         }
         setTimeout(function() {
           this.state.screenToShow = CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN;
@@ -687,7 +685,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.PAUSE);
       setTimeout(function() {
         this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
-        this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
       }.bind(this), 1);
     },
