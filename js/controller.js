@@ -31,6 +31,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "fullscreen": false,
       "pauseAnimationDisabled": false,
       "seeking": false,
+      "queuedPlayheadUpdate": null,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -188,6 +189,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       if (!this.state.seeking) {
         this.skin.updatePlayhead(currentPlayhead, duration, buffered);
+      } else {
+        this.state.queuedPlayheadUpdate = [currentPlayhead, duration, buffered];
       }
       this.renderSkin();
     },
@@ -273,6 +276,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onSeeked: function(event) {
       this.state.seeking = false;
+      if (this.state.queuedPlayheadUpdate) {
+        console.log("popping queued update");
+        this.skin.updatePlayhead.apply(this.skin, this.state.queuedPlayheadUpdate);
+        this.state.queuedPlayheadUpdate = null;
+        this.renderSkin();
+      }
     },
 
     onPlaybackReady: function(event) {
