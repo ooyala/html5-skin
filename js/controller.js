@@ -31,6 +31,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "fullscreen": false,
       "pauseAnimationDisabled": false,
       "seeking": false,
+      "queuedPlayheadUpdate": null,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -55,6 +56,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "upNextData": null,
         "countDownFinished": false,
         "countDownCancelled": false,
+        "timeToShow": 0
       },
 
       "isMobile": false,
@@ -71,6 +73,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
       this.mb.subscribe(OO.EVENTS.PAUSED, 'customerUi', _.bind(this.onPaused, this));
+      this.mb.subscribe(OO.EVENTS.PAUSE, 'customerUi', _.bind(this.onPause, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
       this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
@@ -136,7 +139,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
-        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
       }, this));
 
@@ -147,6 +149,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
 
       this.externalPluginSubscription();
+      this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
     },
 
     onAuthorizationFetched: function(event, authorization) {
@@ -186,23 +189,33 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       if (!this.state.seeking) {
         this.skin.updatePlayhead(currentPlayhead, duration, buffered);
+      } else {
+        this.state.queuedPlayheadUpdate = [currentPlayhead, duration, buffered];
       }
       this.renderSkin();
     },
 
     showUpNextScreenWhenReady: function(currentPlayhead, duration) {
       var timeToShow = 0;
-      if (this.skin.props.skinConfig.upNextScreen.timeToShow > 1) {
-        // time to show is based on seconds
-        timeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
+      var stringTimeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
+
+      if (stringTimeToShow.indexOf('%') === -1){
+        // time to show is based on seconds from the end
+        timeToShow = parseInt(stringTimeToShow);
       } else {
-        // time to show is based on percentage of duration
-        timeToShow = (1 - this.skin.props.skinConfig.upNextScreen.timeToShow) * duration;
+        // time to show is based on percentage of duration from the beginning
+        timeToShow = (1 - parseInt(stringTimeToShow)/100) * duration;
       }
+
+      this.state.upNextInfo.timeToShow = timeToShow;
+
       if (duration - currentPlayhead <= timeToShow &&
         !this.state.upNextInfo.countDownCancelled &&
         this.state.upNextInfo.upNextData !== null && this.state.playerState === CONSTANTS.STATE.PLAYING) {
         this.state.screenToShow = CONSTANTS.SCREEN.UP_NEXT_SCREEN;
+      }
+      else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
+        this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       }
     },
 
@@ -216,6 +229,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.setClosedCaptionsLanguage();
         }
         this.renderSkin();
+      }
+    },
+
+    onPause: function(event, props) {
+      if (props === CONSTANTS.PAUSE_REASON.AD_PLAYBACK){
+        this.state.pauseAnimationDisabled = true;
       }
     },
 
@@ -257,6 +276,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onSeeked: function(event) {
       this.state.seeking = false;
+      if (this.state.queuedPlayheadUpdate) {
+        console.log("popping queued update");
+        this.skin.updatePlayhead.apply(this.skin, this.state.queuedPlayheadUpdate);
+        this.state.queuedPlayheadUpdate = null;
+        this.renderSkin();
+      }
     },
 
     onPlaybackReady: function(event) {

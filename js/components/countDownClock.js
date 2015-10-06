@@ -15,21 +15,17 @@ var CountDownClock = React.createClass({
   getInitialState: function() {
     // canvas, interval, and context are changing based on time instead of user interaction
     this.canvas = null;
-    this.context = null;      
+    this.context = null;
     this.interval = null;
     this.countDownStyle = null;
     var tmpFraction = 0;
     var tmpRemainSeconds = 0;
+    var upNextTimeToShow = this.props.controller.state.upNextInfo.timeToShow;
+
     if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.UP_NEXT_SCREEN) {
       this.countDownStyle = InlineStyle.upNextPanelStyle.upNextCountDownStyle; 
       tmpRemainSeconds = this.props.duration - this.props.currentPlayhead;
-      if (this.props.timeToShow > 1) {
-        // time to show is based on seconds
-        tmpFraction = 2 / this.props.timeToShow;
-      } else {
-        // time to show is based on percetage of duration
-        tmpFraction = (2 / ((1 - this.props.timeToShow) * this.props.duration));
-      }
+      tmpFraction = 2 / upNextTimeToShow;
     }
     else if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
       this.countDownStyle = InlineStyle.discoveryScreenStyle.discoveryCountDownStyle;
@@ -45,9 +41,7 @@ var CountDownClock = React.createClass({
       clockContainerWidth: tmpClockContainerWidth,
       counterInterval: 0.05,
       fraction: tmpFraction, // fraction = 2 / (skinConfig.upNextScreen.timeToShow) so "fraction * pi" is how much we want to fill the circle for each second
-      remainSeconds: tmpRemainSeconds,
-      timeToShow: this.props.timeToShow,
-      showDiscoveryCountDown: true
+      remainSeconds: tmpRemainSeconds
     };
   },
 
@@ -59,7 +53,6 @@ var CountDownClock = React.createClass({
       if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
         this.countDownStyle.display = "none";
         clearInterval(this.interval);
-        this.setState({showDiscoveryCountDown: false});
       } 
     }
   },
@@ -132,7 +125,7 @@ var CountDownClock = React.createClass({
         this.startUpNextVideo();
       } 
       else if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
-        this.setState({remainSeconds: this.state.remainSeconds - this.state.counterInterval});
+        this.setState({remainSeconds: this.props.duration - this.props.currentPlayhead});
         this.updateCanvas();
       }
     }
