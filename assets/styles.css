@@ -11,13 +11,62 @@
   font-style: normal;
 
 }
-
-/* roboto condensed */
+/* roboto condensed regular */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'),
+       url(fonts/RobotoCondensed-Regular.woff2) format('woff2'),
+       url(fonts/RobotoCondensed-Regular.woff) format('woff'),
+       url(fonts/RobotoCondensed-Regular.ttf) format('truetype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* roboto condensed bold */
 @font-face {
   font-family: 'Roboto Condensed';
   font-style: normal;
   font-weight: 700;
-  src: local('Roboto Condensed Bold'), local('RobotoCondensed-Bold'), url(fonts/roboto-condensed.woff2) format('woff2');
+  src: local('Roboto Condensed Bold'), local('RobotoCondensed-Bold'),
+       url(fonts/RobotoCondensed-Bold.woff2) format('woff2'),
+       url(fonts/RobotoCondensed-Bold.woff) format('woff'),
+       url(fonts/RobotoCondensed-Bold.ttf) format('truetype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+/* roboto regular */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'),
+       url(fonts/Roboto-Regular.woff2) format('woff2'),
+       url(fonts/Roboto-Regular.ttf) format('truetype'),
+       url(fonts/Roboto-Regular.woff) format('woff');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+/* roboto bold */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Roboto Bold'), local('Roboto-Bold'),
+       url(fonts/Roboto-Bold.woff2) format('woff2'),
+       url(fonts/Roboto-Bold.ttf) format('truetype'),
+       url(fonts/Roboto-Bold.woff) format('woff');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+/* Open Sans regular */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'),
+       url(fonts/OpenSans.woff2) format('woff2'),
+       url(fonts/OpenSans.woff) format('woff'),
+       url(fonts/OpenSans.ttf) format('truetype');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
 }
 
@@ -54,6 +103,7 @@
   font-variant: normal !important;
   text-transform: none !important;
   speak: none;
+  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -114,4 +164,19 @@
 }
 .icon-volume-mobile-mute:before {
   content: "p";
+}
+.icon-learn:before {
+  content: "t";
+}
+.icon-skip:before {
+  content: "u";
+}
+/* WebVTT cues */
+::cue {
+  font-size: 2em;
+  color:#ff9933;
+  background-color:transparent;
+  white-space:normal;
+  text-shadow: 1px 1px 2px black;
+  line-height: 3.9em;
 }
