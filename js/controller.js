@@ -56,7 +56,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "upNextData": null,
         "countDownFinished": false,
         "countDownCancelled": false,
-        "timeToShow": 0
+        "timeToShow": 0,
+        "showing": false
       },
 
       "isMobile": false,
@@ -211,11 +212,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       if (duration - currentPlayhead <= timeToShow &&
         !this.state.upNextInfo.countDownCancelled &&
-        this.state.upNextInfo.upNextData !== null && this.state.playerState === CONSTANTS.STATE.PLAYING) {
-        this.state.screenToShow = CONSTANTS.SCREEN.UP_NEXT_SCREEN;
+        this.state.upNextInfo.upNextData !== null && (this.state.playerState === CONSTANTS.STATE.PLAYING || this.state.playerState === CONSTANTS.STATE.PAUSE)) {
+        this.state.upNextInfo.showing = true;
       }
-      else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
-        this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+      else {
+        // if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
+        //   this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+        // }
+        this.state.upNextInfo.showing = false;
       }
     },
 
@@ -672,9 +676,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     upNextDismissButtonClicked: function() {
       this.state.upNextInfo.countDownCancelled = true;
-      this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
-      this.state.playerState = CONSTANTS.STATE.PLAYING;
-      this.renderSkin();
+      // this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN; //xenia
+      // this.state.playerState = CONSTANTS.STATE.PLAYING;
+      // this.renderSkin();
     },
 
     toggleMoreOptionsScreen: function() {

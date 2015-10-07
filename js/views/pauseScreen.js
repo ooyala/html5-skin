@@ -7,6 +7,7 @@ var React = require('react'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
     AdOverlay = require('../components/adOverlay'),
+    UpNextPanel = require('../components/upNextPanel'),
     CONSTANTS = require('../constants/constants');
 
 var PauseScreen = React.createClass({
@@ -131,6 +132,10 @@ var PauseScreen = React.createClass({
       }
     }
 
+    var upNext = null;
+    if (this.props.controller.state.upNextInfo.showing) {
+      upNext = <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/>;
+    }
     return (
       <div className="pauseScreen" onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
         <div style ={screenStyle.fading}></div>
@@ -141,6 +146,7 @@ var PauseScreen = React.createClass({
         </div>
         <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
           showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
+        {upNext}
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}/>
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
