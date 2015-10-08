@@ -676,7 +676,6 @@ module.exports = {
       position: "relative",
       color: "white",
       fontSize: "22",
-      fontWeight: "regular",
       textOverflow: "ellipsis",
       width: "214px",
       height: "31px",
@@ -748,7 +747,8 @@ module.exports = {
 
     adPanelTopBarTextStyle: {
       "fontSize": "12pt",
-      "color": "white",
+      "color": "#ffffff",
+      "fontFamily": "'Roboto', sans-serif",
       "margin": "auto",
       "textAlign": "center",
       "paddingLeft": "7.5px",
@@ -764,25 +764,30 @@ module.exports = {
 
     learnMoreButtonStyle: {
       "fontSize": "12pt",
-      "color": "black",
-      "backgroundColor": "white",
+      "fontFamily": "'Roboto Condensed', sans-serif",
+      "color": "#ffffff",
       "margin": "auto",
-      "marginRight": "15px",
+      "marginRight": "30px",
       "textAlign": "center",
-      "padding": "4px",
-      "borderRadius": "5px",
-      "cursor": "pointer"
+      "cursor": "pointer",
+      "icon": {
+        "fontSize": "9px",
+        "marginRight": "5px"
+      }
     },
 
     skipButtonStyle: {
       "fontSize": "12pt",
-      "color": "black",
-      "backgroundColor": "white",
+      "fontFamily": "'Roboto Condensed', sans-serif",
+      "color": "#ffffff",
       "margin": "auto",
       "marginRight": "15px",
       "textAlign": "center",
-      "padding": "4px",
-      "borderRadius": "5px"
+      "cursor": "pointer",
+      "icon": {
+        "fontSize": "9px",
+        "marginRight": "5px"
+      }
     }
   },
 
@@ -847,7 +852,7 @@ module.exports = {
 
     captionStyle: {
       fontSize: "16pt",
-      fontFamily: "Roboto Condensed",
+      fontFamily: "'Roboto Condensed', sans-serif",
       color: "#ffffff",
       fontWeight: "bold"
     },
@@ -942,6 +947,7 @@ module.exports = {
 
     itemSelectedStyle: {
       fontSize: "11pt",
+      fontFamily: "'Roboto Condensed', sans-serif",
       width: "70",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
@@ -959,6 +965,7 @@ module.exports = {
 
     lastColumnItemSelectedStyle: {
       fontSize: "11pt",
+      fontFamily: "'Roboto Condensed', sans-serif",
       width: "70",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
@@ -1048,7 +1055,7 @@ module.exports = {
     CCPreviewCaptionStyle: {
       color: "white",
       fontSize: "6pt",
-      fontFamily: "Roboto",
+      fontFamily: "'Roboto', sans-serif",
       marginLeft: "17.5",
       marginBottom: "2.75",
       marginTop: "2.75"
@@ -1266,15 +1273,13 @@ module.exports = {
     descriptionStyle: {
       "color": "white",
       "fontSize": "14pt",
-      "fontFamily": "Open Sans",
-      "fontWeight": "regular",
+      "fontFamily": "'Open Sans', sans-serif",
       "marginBottom": "30"
     },
     actionStyle: {
       "color": "#4389FF",
       "fontSize": "14pt",
-      "fontFamily": "Open Sans",
-      "fontWeight": "regular",
+      "fontFamily": "'Open Sans', sans-serif",
       "textTransform": "uppercase"
     }
   }
