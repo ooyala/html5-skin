@@ -1,5 +1,5 @@
 # html5-skin
-An open-source HTML5 UI skin based on [ReactJS](https://github.com/facebook/react) that overlays Ooyala core player.
+An open-source HTML5 UI skin based on [ReactJS](https://github.com/facebook/react) that overlays Ooyala V4 core player.
 
 ## Requirement
 - Ooyala player is a requirement. To know more, visit: [www.ooyala.com](http://www.ooyala.com)
@@ -22,13 +22,11 @@ An open-source HTML5 UI skin based on [ReactJS](https://github.com/facebook/reac
   var playerParam = {
     "pcode": "YOUR_PCODE",
     "playerBrandingId": "YOUR_PLAYER_ID",
-    'debug':true,
+    "debug":true,
     "skin": {
       "config": "//player.ooyala.com/static/v4/latest/html5-skin/config/skin.json",
       "languages": [
-        {language: "en", languageFile: "config/en.json"},
-        {language: "es", languageFile: "config/es.json"},
-        {language: "zh", languageFile: "config/zh.json"}
+        {language: "en", languageFile: "//player.ooyala.com/static/v4/latest/html5-skin/config/en.json"},
       ]
     }
   };
@@ -102,4 +100,30 @@ Test file should have same location and name as `js/` file with `-test` after te
 For example, component file `js/components/sharePanel.js` will have test file `tests/components/sharePanel-test.js`.
 
 ## Publisher and Ooyala Customer
-Able to fork git repo and build the skin at will. Terms and condition apply. Please read [Ooyala open-source onboarding guide](http://www.ooyala.com)
+Able to fork git repo, build and host V4 plugins at will. Terms and condition apply.
+
+## Advance
+### Location
+Latest V4 core player and plugins, including ads, discovery and skin, are served in player.ooyala.com/static/v4/latest/*. This is equivalent to the most up-to-date vX_Y_Z release version served in player.ooyala.com/static/v4/vX_Y_Z/*.
+
+### Plug and Play capability
+core.js is a lightweight core player that enables basic video playback functionality and provides Message Bus environment. Most of additional capabilities such as ads, discovery and skin are separated from core. You may wish to load additional plugin.
+
+### Skin Customization
+Simple customization can be achieved by modifying skin.json setting. Furthermore, you are able to override skin setting during player create time. The example below hides Play button on start screen.
+
+```javascript
+var playerParam = {
+  "skin": {
+    "config": "//player.ooyala.com/static/v4/latest/html5-skin/config/skin.json",
+    "languages": [
+      {language: "en", languageFile: "//player.ooyala.com/static/v4/latest/html5-skin/config/en.json"},
+    ],
+    "inline": {
+      "startScreen": {"showPlayButton": false}
+    }
+  }
+};
+```
+
+For advance customization requires developer to fork open-source skin repository. Any code, setting and behavior can be altered.
