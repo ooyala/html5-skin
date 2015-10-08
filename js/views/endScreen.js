@@ -2,7 +2,6 @@
   END SCREEN
 *********************************************************************/
 var React = require('react'),
-    Utils = require('../components/utils'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
     CONSTANTS = require('../constants/constants');
@@ -10,7 +9,6 @@ var React = require('react'),
 var EndScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
-    this.isSafari = Utils.isSafari();
     return {
       description: this.props.contentTree.description,
       controlBarVisible: true,
@@ -21,8 +19,20 @@ var EndScreen = React.createClass({
   componentDidMount: function() {
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('webkitfullscreenchange', this.handleResize);
+    window.addEventListener('mozfullscreenchange', this.handleResize);
+    window.addEventListener('fullscreenchange', this.handleResize);
+    window.addEventListener('msfullscreenchange', this.handleResize);
 
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+  },
+
+  componentWillUnmount: function () {
+    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('webkitfullscreenchange', this.handleResize);
+    window.removeEventListener('mozfullscreenchange', this.handleResize);
+    window.removeEventListener('fullscreenchange', this.handleResize);
+    window.removeEventListener('msfullscreenchange', this.handleResize);
   },
 
   handleResize: function(e) {
@@ -61,14 +71,6 @@ var EndScreen = React.createClass({
       repeatStyle.display = "none";
     }
 
-    var controlBarWidth;
-    if (this.isSafari) {
-      controlBarWidth = this.getDOMNode().clientWidth;
-    }
-    else {
-      controlBarWidth = this.state.controlBarWidth;
-    }
-
     return (
       <div className="endScreen"
            onMouseUp={this.handlePlayerMouseUp}
@@ -79,9 +81,9 @@ var EndScreen = React.createClass({
           <span className={repeatClass} style={repeatStyle} aria-hidden="true" onClick={this.handleClick}></span>
         </div>
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={controlBarWidth} />
+          controlBarWidth={this.state.controlBarWidth} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={controlBarWidth}
+          controlBarWidth={this.state.controlBarWidth}
           playerState={this.props.playerState} />
       </div>
     );

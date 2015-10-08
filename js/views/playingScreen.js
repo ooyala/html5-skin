@@ -2,7 +2,6 @@
   PLAYING SCREEN
 *********************************************************************/
 var React = require('react'),
-    Utils = require('../components/utils'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
     AdOverlay = require('../components/adOverlay'),
@@ -11,7 +10,6 @@ var React = require('react'),
 var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
-    this.isSafari = Utils.isSafari();
     return {
       controlBarVisible: true,
       controlBarWidth: 0,
@@ -24,6 +22,10 @@ var PlayingScreen = React.createClass({
 
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('webkitfullscreenchange', this.handleResize);
+    window.addEventListener('mozfullscreenchange', this.handleResize);
+    window.addEventListener('fullscreenchange', this.handleResize);
+    window.addEventListener('msfullscreenchange', this.handleResize);
 
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen){
@@ -48,6 +50,10 @@ var PlayingScreen = React.createClass({
       clearTimeout(this.state.timer);
     }
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('webkitfullscreenchange', this.handleResize);
+    window.removeEventListener('mozfullscreenchange', this.handleResize);
+    window.removeEventListener('fullscreenchange', this.handleResize);
+    window.removeEventListener('msfullscreenchange', this.handleResize);
   },
 
   componentWillUpdate: function(nextProps, nextState) {
@@ -107,22 +113,15 @@ var PlayingScreen = React.createClass({
   },
 
   render: function() {
-    var controlBarWidth;
-    if (this.isSafari) {
-      controlBarWidth = this.getDOMNode().clientWidth;
-    }
-    else {
-      controlBarWidth = this.state.controlBarWidth;
-    }
     return (
       <div className="playingScreen" ref="PlayingScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseMove={this.handlePlayerMouseMove}
         onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd} style={{height: "100%", width: "100%"}}>
         <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
           showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
         <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={controlBarWidth} />
+          controlBarWidth={this.state.controlBarWidth} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={controlBarWidth}
+          controlBarWidth={this.state.controlBarWidth}
           playerState={this.props.playerState} />
       </div>
     );
