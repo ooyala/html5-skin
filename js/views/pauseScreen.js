@@ -133,25 +133,27 @@ var PauseScreen = React.createClass({
     }
 
     var upNext = null;
-    if (this.props.controller.state.upNextInfo.showing) {
+    if (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) {
       upNext = <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/>;
     }
     return (
-      <div className="pauseScreen" onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
-        <div style ={screenStyle.fading}></div>
-        <span className={this.props.pauseAnimationDisabled === true ? null : pauseClass} style={pauseStyle} aria-hidden="true"></span>
-        <div style={screenStyle.infoPanel.style}>
-          {titleMetadata}
-          {descriptionMetadata}
+      <div className="pauseScreen" style={InlineStyle.defaultScreenStyle.style}>
+        <div onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
+          <div style ={screenStyle.fading}></div>
+          <span className={this.props.pauseAnimationDisabled === true ? null : pauseClass} style={pauseStyle} aria-hidden="true"></span>
+          <div style={screenStyle.infoPanel.style}>
+            {titleMetadata}
+            {descriptionMetadata}
+          </div>
+          <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
+            showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
+          <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
+            controlBarWidth={this.state.controlBarWidth}/>
+          <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
+            controlBarWidth={this.state.controlBarWidth}
+            playerState={this.state.playerState} />
         </div>
-        <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
-          showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
         {upNext}
-        <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}/>
-        <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}
-          playerState={this.state.playerState} />
       </div>
     );
   }

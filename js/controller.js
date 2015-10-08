@@ -216,9 +216,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.upNextInfo.showing = true;
       }
       else {
-        // if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
-        //   this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
-        // }
         this.state.upNextInfo.showing = false;
       }
     },
@@ -623,6 +620,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     sendDiscoveryClickEvent: function(selectedContentData) {
+      this.state.upNextInfo.showing = false;
       this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
     },
@@ -676,9 +674,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     upNextDismissButtonClicked: function() {
       this.state.upNextInfo.countDownCancelled = true;
-      // this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN; //xenia
-      // this.state.playerState = CONSTANTS.STATE.PLAYING;
-      // this.renderSkin();
+      this.state.upNextInfo.showing = false;
+      this.renderSkin();
     },
 
     toggleMoreOptionsScreen: function() {
