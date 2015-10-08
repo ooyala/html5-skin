@@ -599,24 +599,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     toggleShareScreen: function() {
       if (this.state.screenToShow == CONSTANTS.SCREEN.SHARE_SCREEN) {
-        this.closeShareScreen();
+        this.closeScreen();
       }
       else {
-        this.mb.publish(OO.EVENTS.PAUSE);
+        if (this.state.playerState == CONSTANTS.STATE.PLAYING){
+          this.mb.publish(OO.EVENTS.PAUSE);
+        }
         setTimeout(function() {
           this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
-          this.state.playerState = CONSTANTS.STATE.PAUSE;
           this.renderSkin();
-          console.log("finish showShareScreen");
         }.bind(this), 1);
       }
-    },
-
-    closeShareScreen: function() {
-      this.state.pauseAnimationDisabled = true;
-      this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
-      this.state.playerState = CONSTANTS.STATE.PAUSE;
-      this.renderSkin();
     },
 
     sendDiscoveryClickEvent: function(selectedContentData) {
@@ -641,22 +634,27 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     toggleClosedCaptionScreen: function() {
       if (this.state.screenToShow == CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN) {
-        this.closeClosedCaptionScreen();
+        this.closeScreen();
       }
       else {
-        this.mb.publish(OO.EVENTS.PAUSE);
+        if (this.state.playerState == CONSTANTS.STATE.PLAYING){
+          this.mb.publish(OO.EVENTS.PAUSE);
+        }
         setTimeout(function() {
           this.state.screenToShow = CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN;
-          this.state.playerState = CONSTANTS.STATE.PAUSE;
           this.renderSkin();
         }.bind(this), 1);
       }
     },
 
-    closeClosedCaptionScreen: function() {
+    closeScreen: function() {
       this.state.pauseAnimationDisabled = true;
-      this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
-      this.state.playerState = CONSTANTS.STATE.PAUSE;
+      if (this.state.playerState == CONSTANTS.STATE.PAUSE) {
+        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+      }
+      else if (this.state.playerState == CONSTANTS.STATE.END) {
+        this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
+      }
       this.renderSkin();
     },
 
@@ -697,7 +695,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.PAUSE);
       setTimeout(function() {
         this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
-        this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
       }.bind(this), 1);
     },
