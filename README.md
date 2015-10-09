@@ -39,7 +39,7 @@ An open-source HTML5 UI skin based on [ReactJS](https://github.com/facebook/reac
 </html>
 ```
 
-We have a sample HTML page ready for you. Check out [sample page](./sample.html)
+We have a sample HTML page ready for you. Check out [sample page](http://debug.ooyala.com/ea/index.html?ec=RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2&pbid=26e2e3c1049c4e70ae08a242638b5c40&pcode=5zb2wxOlZcNCe_HVT3a6cawW298X&core_player=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Flatest%2Fcore.min.js&html5_skin=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Flatest%2Fhtml5-skin%2Fbuild%2Fhtml5-skin.min.js&skin_asset=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Flatest%2Fhtml5-skin%2Fassets%2Fstyles.css&languages=%5B%7B%22language%22%3A%22en%22%2C%22languageFile%22%3A%22http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Flatest%2Fhtml5-skin%2Fconfig%2Fen.json%22%7D%5D&skin_config=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Flatest%2Fhtml5-skin%2Fconfig%2Fskin.json&ad_plugin=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Flatest%2Ffreewheel-min.js&additional_plugins=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Flatest%2Fdiscovery_api-min.js&options=%7B%22freewheel-ads-manager%22%3A%7B%22fw_video_asset_id%22%3A%22NqcGg4bzoOmMiV35ZttQDtBX1oNQBnT-%22%2C%22html5_ad_server%22%3A%22http%3A%2F%2Fg1.v.fwmrm.net%22%2C%22fw_android_ad_server%22%3A%22http%3A%2F%2Fg1.v.fwmrm.net%2F%22%2C%22html5_player_profile%22%3A%2290750%3Aooyala_html5%22%2C%22fw_android_player_profile%22%3A%2290750%3Aooyala_android%22%2C%22fw_mrm_network_id%22%3A%22380912%22%7D%7D)
 
 ## Structure and Data Flow
 Html5-skin application has 2 major parts: the __controller__ and the __skin-placeholder__ (Modular React Component). The controller serves as a __Message Bus__ bridge between the core player and the UI skin, by publishing and listening the corresponding events from the player. It will then decide necessary components for skin-placeholder to show.
@@ -110,7 +110,7 @@ Latest V4 core player and plugins, including ads, discovery and skin, are served
 core.js is a lightweight core player that enables basic video playback functionality and provides Message Bus environment. Most of additional capabilities such as ads, discovery and skin are separated from core. You may wish to load additional plugin.
 
 ### Skin Customization
-Simple customization can be achieved by modifying skin.json setting. Furthermore, you are able to override skin setting during player create time. The example below hides Play button on start screen.
+Simple customization can be achieved by modifying skin.json setting. Furthermore, you are able to override skin setting during player create time. The example below hides description text and render playButton blue on start screen.
 
 ```javascript
 var playerParam = {
@@ -120,10 +120,8 @@ var playerParam = {
       {language: "en", languageFile: "//player.ooyala.com/static/v4/latest/html5-skin/config/en.json"},
     ],
     "inline": {
-      "startScreen": {"showPlayButton": false}
+      "startScreen": {"showDescription": false, "playIconStyle": {"color": "blue"}}
     }
   }
 };
 ```
-
-For advance customization requires developer to fork open-source skin repository. Any code, setting and behavior can be altered.
