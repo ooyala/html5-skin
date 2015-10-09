@@ -104,7 +104,7 @@ Able to fork git repo, build and host V4 plugins at will. Terms and condition ap
 
 ## Advance
 ### Location
-Latest V4 core player and plugins, including ads, discovery and skin, are served in player.ooyala.com/static/v4/latest/*. This is equivalent to the most up-to-date vX_Y_Z release version served in player.ooyala.com/static/v4/vX_Y_Z/*.
+Latest V4 core player and plugins, including ads, discovery and skin, are served in [player.ooyala.com/static/v4/latest/*](). This is equivalent to the most up-to-date vX_Y_Z release version served in [player.ooyala.com/static/v4/vX_Y_Z/*]().
 
 ### Plug and Play capability
 core.js is a lightweight core player that enables basic video playback functionality and provides Message Bus environment. Most of additional capabilities such as ads, discovery and skin are separated from core. You may wish to load additional plugin.
