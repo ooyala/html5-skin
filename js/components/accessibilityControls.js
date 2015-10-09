@@ -12,6 +12,14 @@ module.exports = AccessibilityControls;
 
 AccessibilityControls.prototype = {
   handleKey: function(e) {
+    if (!this.controller.state.accessibilityControlsEnabled){
+      return;
+    }      
+
+    // e.stopPropagation(); // W3C
+    // e.cancelBubble = true; // IE
+    e.preventDefault();
+
     var currentTime;
     var newPlayheadTime;
     var newVolume;

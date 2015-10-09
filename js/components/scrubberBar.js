@@ -96,6 +96,7 @@ var ScrubberBar = React.createClass({
       evt.stopPropagation(); // W3C
       evt.cancelBubble = true; // IE
 
+      this.props.controller.state.accessibilityControlsEnabled = true;
       if (this.isMobile){
         evt = evt.nativeEvent;
       }

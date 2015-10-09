@@ -6,6 +6,9 @@ var React = require('react'),
     InlineStyle = require('../styles/inlineStyle');
 
 var ErrorScreen = React.createClass({
+  componentDidMount: function () {
+    this.props.controller.state.accessibilityControlsEnabled = false;
+  },
 
   render: function() {
     var errorTitle, errorDescription, errorAction;

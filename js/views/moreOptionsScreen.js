@@ -25,6 +25,11 @@ var MoreOptionsScreen = React.createClass({
 
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
+    this.props.controller.state.accessibilityControlsEnabled = false;
+  },
+
+  componentWillUnmount: function () {
+    this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
   handleResize: function(e) {
