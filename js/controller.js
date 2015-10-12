@@ -563,6 +563,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     seek: function(seconds) {
       this.mb.publish(OO.EVENTS.SEEK, seconds);
+      if (this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN) {
+        this.state.pauseAnimationDisabled = true;
+        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+        this.state.playerState = CONSTANTS.STATE.PAUSE;
+        this.renderSkin();
+      }
     },
 
     setVolume: function(volume){

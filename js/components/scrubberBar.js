@@ -10,8 +10,21 @@ var ScrubberBar = React.createClass({
     return {
       startingPlayheadX: 0,
       scrubbingPlayheadX: 0,
-      currentPlayhead: 0
+      currentPlayhead: 0,
+      transitionedDuringSeek: false
     };
+  },
+
+  componentWillMount: function() {
+    if (this.props.seeking) {
+      this.setState({transitionedDuringSeek: true});
+    }
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    if (this.transitionedDuringSeek && !nextProps.seeking) {
+      this.setState({transitionedDuringSeek: false});
+    }
   },
 
   handlePlayheadMouseDown: function(evt) {
@@ -133,19 +146,21 @@ var ScrubberBar = React.createClass({
       parseFloat(this.props.duration)) * 100 + "%";
     InlineStyle.scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
       parseFloat(this.props.duration)) * 100 + "%";
-    InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
-      parseFloat(this.props.duration)) * scrubberBarWidth);
     InlineStyle.scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
 
-    // if we're scrubbing, use the coordinates from the latest mouse events
-    if (this.props.seeking) {
-      InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = InlineStyle.scrubberBarStyle.playheadPaddingStyle.left +
-        (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
+    if (!this.state.transitionedDuringSeek) {
+      InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
+        parseFloat(this.props.duration)) * scrubberBarWidth);
+
+        if (this.props.seeking) {
+          InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = InlineStyle.scrubberBarStyle.playheadPaddingStyle.left +
+            (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
+        }
+
+        InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = Math.max(
+          Math.min(InlineStyle.scrubberBarStyle.scrubberBarSetting.width - parseInt(InlineStyle.scrubberBarStyle.playheadStyle.width)/2,
+            InlineStyle.scrubberBarStyle.playheadPaddingStyle.left), 0);
     }
-    //prevent the playhead from moving beyond the player element
-    InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = Math.max(
-      Math.min(InlineStyle.scrubberBarStyle.scrubberBarSetting.width - parseInt(InlineStyle.scrubberBarStyle.playheadStyle.width)/2,
-        InlineStyle.scrubberBarStyle.playheadPaddingStyle.left), 0);
 
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN){
       InlineStyle.scrubberBarStyle.playheadStyle.visibility = "hidden";
