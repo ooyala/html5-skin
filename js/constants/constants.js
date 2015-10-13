@@ -161,7 +161,8 @@ module.exports = {
     "invalid_heartbeat":{
       name: "OO.ERROR.API.SAS.INVALID_HEARTBEAT",
       title: "INVALID HEARTBEAT",
-      description: "Invalid heartbeat response"},
+      description: "Invalid heartbeat response"
+    },
     "content_tree":{
       name: "OO.ERROR.API.CONTENT_TREE",
       title: "INVALID CONTENT",

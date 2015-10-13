@@ -122,15 +122,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $("#" + elementId + " .player_skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
 
       var tmpLocalizableStrings = {};
-      //load language jsons
-      params.skin.languages.forEach(function(languageObj){
-        $.getJSON(languageObj.languageFile, function(data) {
-          tmpLocalizableStrings[languageObj.language] = data;
-        });
-      });
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON(params.skin.config, _.bind(function(data) {
+        //load language jsons
+        data.localization.availableLanguageFile.forEach(function(languageObj){
+          $.getJSON(languageObj.languageFile, function(data) {
+            tmpLocalizableStrings[languageObj.language] = data;
+          });
+        });
+
         //Override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
 
