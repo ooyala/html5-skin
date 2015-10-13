@@ -24,6 +24,10 @@ var PauseScreen = React.createClass({
   componentDidMount: function() {
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('webkitfullscreenchange', this.handleResize);
+    window.addEventListener('mozfullscreenchange', this.handleResize);
+    window.addEventListener('fullscreenchange', this.handleResize);
+    window.addEventListener('msfullscreenchange', this.handleResize);
 
     //need this to display fading pause button and dimming the screen
     InlineStyle.pauseScreenStyle.pauseIcon.style.opacity = 0;
@@ -65,6 +69,10 @@ var PauseScreen = React.createClass({
     InlineStyle.pauseScreenStyle.fading.opacity = 0;
     this.props.controller.enablePauseAnimation();
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('webkitfullscreenchange', this.handleResize);
+    window.removeEventListener('mozfullscreenchange', this.handleResize);
+    window.removeEventListener('fullscreenchange', this.handleResize);
+    window.removeEventListener('msfullscreenchange', this.handleResize);
   },
 
   handleClick: function(evt) {
