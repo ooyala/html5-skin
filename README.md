@@ -16,11 +16,11 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 <html>
 <head>
   <!-- V4 JS core is required. Plugins such as skin, discovery and Advertising need to be loaded separately -->
-  <script language="javascript" src="//player.ooyala.com/static/v4/latest/core.min.js"></script>
-  <script language="javascript" src="//player.ooyala.com/static/v4/latest/discovery_api.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/latest/core.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/latest/discovery_api.min.js"></script>
   <!-- Change these styles.css and html5-skin.js to your local build if necessary -->
-  <link rel="stylesheet" href="//player.ooyala.com/static/v4/latest/html5-skin/assets/styles.css"/>
   <script src="//player.ooyala.com/static/v4/latest/html5-skin/build/html5-skin.min.js"></script>
+  <link rel="stylesheet" href="//player.ooyala.com/static/v4/latest/html5-skin/assets/styles.css"/>
 </head>
 
 <body>
@@ -32,10 +32,7 @@ This simple test HTML page can also be hosted on your environment to showcase ht
     "debug":true,
     "skin": {
       // Config contains the configuration setting for player skin. Change to your local config when necessary.
-      "config": "//player.ooyala.com/static/v4/latest/html5-skin/config/skin.json",
-      "languages": [
-        {language: "en", languageFile: "//player.ooyala.com/static/v4/latest/html5-skin/config/en.json"},
-      ]
+      "config": "//player.ooyala.com/static/v4/latest/html5-skin/config/skin.json"
     }
   };
   OO.ready(function() {
@@ -108,9 +105,6 @@ Simple customization can be achieved by modifying skin.json setting. Furthermore
 var playerParam = {
   "skin": {
     "config": "//player.ooyala.com/static/v4/latest/html5-skin/config/skin.json",
-    "languages": [
-      {language: "en", languageFile: "//player.ooyala.com/static/v4/latest/html5-skin/config/en.json"},
-    ],
     "inline": {
       "startScreen": {"showDescription": false, "playIconStyle": {"color": "blue"}}
     }
