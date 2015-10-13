@@ -10,10 +10,10 @@ An open-source HTML5 UI skin based on [ReactJS](https://github.com/facebook/reac
 <!DOCTYPE html>
 <html>
 <head>
-  <script language="javascript" src="//player.ooyala.com/static/v4/latest/core.min.js"></script>
-  <script language="javascript" src="//player.ooyala.com/static/v4/latest/discovery_api.min.js"></script>
-  <link rel="stylesheet" href="//player.ooyala.com/static/v4/latest/html5-skin/assets/styles.css"/>
-  <script src="//player.ooyala.com/static/v4/latest/html5-skin/build/html5-skin.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/latest/core.min.js"></script>
+    <script src="//player.ooyala.com/static/v4/latest/discovery_api.min.js"></script>
+    <script src="//player.ooyala.com/static/v4/latest/html5-skin/build/html5-skin.min.js"></script>
+    <link rel="stylesheet" href="//player.ooyala.com/static/v4/latest/html5-skin/assets/styles.css"/>
 </head>
 
 <body>
@@ -24,12 +24,7 @@ An open-source HTML5 UI skin based on [ReactJS](https://github.com/facebook/reac
     "playerBrandingId": "YOUR_PLAYER_ID",
     'debug':true,
     "skin": {
-      "config": "//player.ooyala.com/static/v4/latest/html5-skin/config/skin.json",
-      "languages": [
-        {language: "en", languageFile: "config/en.json"},
-        {language: "es", languageFile: "config/es.json"},
-        {language: "zh", languageFile: "config/zh.json"}
-      ]
+      "config": "//player.ooyala.com/static/v4/latest/html5-skin/config/skin.json"
     }
   };
   OO.ready(function() {
