@@ -196,7 +196,6 @@ module.exports = {
 
     controlBarItemSetting: {
       "height": "100%",
-      "color": "rgba(255, 255, 255, 0.6)",
       "fontWeight": "bold",
       "fontSize": "18px",
       "textAlign": "center",
