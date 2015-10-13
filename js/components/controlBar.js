@@ -172,10 +172,12 @@ var ControlBar = React.createClass({
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
     evt.target.style.color = "rgba(255, 255, 255, 1.0)";
+    evt.target.style.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
   },
 
   removeHighlight: function(evt) {
     evt.target.style.color = "rgba(255, 255, 255, 0.6)";
+    evt.target.style.WebkitFilter = "";
   },
 
   populateControlBar: function() {

@@ -220,6 +220,11 @@ module.exports = {
 
     iconSetting: {},
 
+    iconGlowSetting: {
+      "WebkitFilter": "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))",
+      "filter": "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))"
+    },
+
     flexibleSpace: {
       "flex": "1",
       "WebkitFlex": "1"
