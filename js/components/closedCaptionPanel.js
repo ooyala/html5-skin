@@ -43,6 +43,7 @@ var ClosedCaptionPanel = React.createClass({
      ccStyle.closeButtonStyle.top = ccStyle.innerPanelStyle.padding;
 
      ccStyle.captionStyle.fontSize = 32 * scale + "pt";
+     ccStyle.captionIconStyle.fontSize = 25 * scale + "px";
 
      ccStyle.switchStyle.marginTop = 35 * scale;
      ccStyle.switchStyle.height = 28 * scale;
@@ -102,7 +103,7 @@ var ClosedCaptionPanel = React.createClass({
     return (
       <div style = {ccStyle.screenStyle}>
         <div style = {ccStyle.innerPanelStyle}>
-          <div style = {ccStyle.captionStyle}>{ccOptionsString}<span className={this.props.skinConfig.icons.cc.fontStyleClass}></span></div>
+          <div style = {ccStyle.captionStyle}>{ccOptionsString} <span className={this.props.skinConfig.icons.cc.fontStyleClass} style={ccStyle.captionIconStyle}></span></div>
           <OnOffSwitch {...this.props} />
           <LanguageTabContent {...this.props} numRows = {numRows} />
           <CCPreviewPanel {...this.props} />
