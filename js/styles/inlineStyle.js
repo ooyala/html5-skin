@@ -5,6 +5,11 @@ module.exports = {
       height: "100%"
     }
   },
+  highlightedItem: {
+      "WebkitFilter": "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))",
+      "filter": "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))",
+      "msFilter": "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')"
+  },
 
   startScreenStyle: {
     style: {
@@ -219,10 +224,11 @@ module.exports = {
     },
 
     iconSetting: {},
-
-    iconGlowSetting: {
+    volumeIconSetting: {
+      "color": "rgba(255, 255, 255, 0.8)",
       "WebkitFilter": "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))",
-      "filter": "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))"
+      "filter": "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))",
+      "msFilter": "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')"
     },
 
     flexibleSpace: {
@@ -1200,8 +1206,7 @@ module.exports = {
       "left": "0",
       "width": "100%",
       "height": "100%",
-      "opacity": "0.7",
-      "backgroundColor": "black"
+      "background": "rgba(0, 0, 0, 0.7)"
     },
 
     buttonListStyle: {
@@ -1240,8 +1245,8 @@ module.exports = {
 
     closeButtonStyle: {
       "position": "absolute",
-      "top": "17.5",
-      "right": "17.5",
+      "top": "35",
+      "right": "35",
       "color": "lightgray",
       "cursor": "pointer"
     }
