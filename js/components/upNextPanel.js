@@ -58,12 +58,17 @@ var UpNextPanel = React.createClass({
       // Use the same way as sending out the click event on discovery content
       var eventData = {
             "clickedVideo" : this.props.upNextInfo.upNextData,
-            "custom" : {"source": "upNextScreen",
+            "custom" : {"source": CONSTANTS.SCREEN.UP_NEXT_SCREEN,
                         "countdown": 0,
                         "autoplay": true }
           };
       this.props.controller.sendDiscoveryClickEvent(eventData);
     }
+  },
+
+  handleUpNextPanelClick: function(event) {
+    event.stopPropagation(); // W3C
+    event.cancelBubble = true; // IE
   },
 
   highlight: function(evt) {
@@ -91,6 +96,7 @@ var UpNextPanel = React.createClass({
     var upNextTitleStyle = InlineStyle.upNextPanelStyle.upNextTitleStyle;
 
     var upNextTitleTextStyle = InlineStyle.upNextPanelStyle.upNextTitleTextStyle;
+
     var contentTile = this.props.upNextInfo.upNextData.name;
     var upNextString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UP_NEXT, this.props.localizableStrings);
 
@@ -100,7 +106,7 @@ var UpNextPanel = React.createClass({
     var dismissButtonTextStyle = InlineStyle.upNextPanelStyle.dismissButtonTextStyle;
 
     return (
-      <div className="upNextPanel" style={panelStyle}>
+      <div className="upNextPanel" style={panelStyle} onClick={this.handleUpNextPanelClick} onTouchEnd={this.handleUpNextPanelClick}>
         <div className="upNextContent" style={contentImageContainerStyle} onClick={this.handleStartUpNextClick} onTouchEnd={this.handleStartUpNextClick}>
           <img style={contentImageStyle} src={this.props.upNextInfo.upNextData.preview_image_url}></img>
           <span className={playButtonClass} style={playButtonStyle} aria-hidden="true"></span>

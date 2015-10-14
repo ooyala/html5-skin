@@ -56,7 +56,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "upNextData": null,
         "countDownFinished": false,
         "countDownCancelled": false,
-        "timeToShow": 0
+        "timeToShow": 0,
+        "showing": false
       },
 
       "isMobile": false,
@@ -212,11 +213,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       if (duration - currentPlayhead <= timeToShow &&
         !this.state.upNextInfo.countDownCancelled &&
-        this.state.upNextInfo.upNextData !== null && this.state.playerState === CONSTANTS.STATE.PLAYING) {
-        this.state.screenToShow = CONSTANTS.SCREEN.UP_NEXT_SCREEN;
+        this.state.upNextInfo.upNextData !== null && (this.state.playerState === CONSTANTS.STATE.PLAYING || this.state.playerState === CONSTANTS.STATE.PAUSE)) {
+        this.state.upNextInfo.showing = true;
       }
-      else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
-        this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+      else {
+        this.state.upNextInfo.showing = false;
       }
     },
 
@@ -613,6 +614,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     sendDiscoveryClickEvent: function(selectedContentData) {
+      this.state.upNextInfo.showing = false;
       this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
     },
@@ -671,8 +673,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     upNextDismissButtonClicked: function() {
       this.state.upNextInfo.countDownCancelled = true;
-      this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
-      this.state.playerState = CONSTANTS.STATE.PLAYING;
+      this.state.upNextInfo.showing = false;
       this.renderSkin();
     },
 

@@ -7,6 +7,7 @@ var React = require('react'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
     AdOverlay = require('../components/adOverlay'),
+    UpNextPanel = require('../components/upNextPanel'),
     CONSTANTS = require('../constants/constants');
 
 var PauseScreen = React.createClass({
@@ -24,6 +25,10 @@ var PauseScreen = React.createClass({
   componentDidMount: function() {
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('webkitfullscreenchange', this.handleResize);
+    window.addEventListener('mozfullscreenchange', this.handleResize);
+    window.addEventListener('fullscreenchange', this.handleResize);
+    window.addEventListener('msfullscreenchange', this.handleResize);
 
     //need this to display fading pause button and dimming the screen
     InlineStyle.pauseScreenStyle.pauseIcon.style.opacity = 0;
@@ -65,6 +70,10 @@ var PauseScreen = React.createClass({
     InlineStyle.pauseScreenStyle.fading.opacity = 0;
     this.props.controller.enablePauseAnimation();
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('webkitfullscreenchange', this.handleResize);
+    window.removeEventListener('mozfullscreenchange', this.handleResize);
+    window.removeEventListener('fullscreenchange', this.handleResize);
+    window.removeEventListener('msfullscreenchange', this.handleResize);
   },
 
   handleClick: function(evt) {
@@ -131,21 +140,28 @@ var PauseScreen = React.createClass({
       }
     }
 
+    var upNext = null;
+    if (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) {
+      upNext = <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/>;
+    }
     return (
-      <div className="pauseScreen" onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
-        <div style ={screenStyle.fading}></div>
-        <span className={this.props.pauseAnimationDisabled === true ? null : pauseClass} style={pauseStyle} aria-hidden="true"></span>
-        <div style={screenStyle.infoPanel.style}>
-          {titleMetadata}
-          {descriptionMetadata}
+      <div className="pauseScreen" style={InlineStyle.defaultScreenStyle.style}>
+        <div onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
+          <div style ={screenStyle.fading}></div>
+          <span className={this.props.pauseAnimationDisabled === true ? null : pauseClass} style={pauseStyle} aria-hidden="true"></span>
+          <div style={screenStyle.infoPanel.style}>
+            {titleMetadata}
+            {descriptionMetadata}
+          </div>
+          <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
+            showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
+          <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
+            controlBarWidth={this.state.controlBarWidth}/>
+          <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
+            controlBarWidth={this.state.controlBarWidth}
+            playerState={this.state.playerState} />
         </div>
-        <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
-          showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
-        <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}/>
-        <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}
-          playerState={this.state.playerState} />
+        {upNext}
       </div>
     );
   }
