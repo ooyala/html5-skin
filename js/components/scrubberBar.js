@@ -126,7 +126,7 @@ var ScrubberBar = React.createClass({
     var scrubberBarWidth = this.props.controlBarWidth - (2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING);
     InlineStyle.scrubberBarStyle.scrubberBarSetting.width = scrubberBarWidth;
     InlineStyle.scrubberBarStyle.scrubberBarSetting.left = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
-    InlineStyle.scrubberBarStyle.scrubberBarSetting.right = 2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
+    InlineStyle.scrubberBarStyle.scrubberBarSetting.right = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
 
     InlineStyle.scrubberBarStyle.scrubberBarPadding.bottom = (this.props.controlBarVisible ?
       (controlBarHeight - scrubberPaddingHeight) :  (-1 * scrubberPaddingHeight));

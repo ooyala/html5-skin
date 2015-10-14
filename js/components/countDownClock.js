@@ -22,15 +22,15 @@ var CountDownClock = React.createClass({
     var tmpRemainSeconds = 0;
     var upNextTimeToShow = this.props.controller.state.upNextInfo.timeToShow;
 
-    if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.UP_NEXT_SCREEN) {
-      this.countDownStyle = InlineStyle.upNextPanelStyle.upNextCountDownStyle; 
-      tmpRemainSeconds = this.props.duration - this.props.currentPlayhead;
-      tmpFraction = 2 / upNextTimeToShow;
-    }
-    else if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
+    if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
       this.countDownStyle = InlineStyle.discoveryScreenStyle.discoveryCountDownStyle;
       tmpFraction = 2 / this.props.timeToShow;
       tmpRemainSeconds = this.props.timeToShow;
+    }
+    else {
+      this.countDownStyle = InlineStyle.upNextPanelStyle.upNextCountDownStyle; 
+      tmpRemainSeconds = this.props.duration - this.props.currentPlayhead;
+      tmpFraction = 2 / upNextTimeToShow;
     }
 
     tmpClockRadius = parseInt(this.countDownStyle.width, 10)/2;
@@ -93,7 +93,7 @@ var CountDownClock = React.createClass({
     var decimals;
     var percent = this.state.fraction * this.state.remainSeconds + 1.5;
     this.context.fillStyle = 'white';
-    if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.UP_NEXT_SCREEN) {
+    if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PLAYING_SCREEN || this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PAUSE_SCREEN) {
       this.context.fillText(this.state.remainSeconds.toFixed(decimals), this.state.clockContainerWidth / 2, this.state.clockRadius, 100);
     }
     this.context.beginPath();
@@ -118,13 +118,13 @@ var CountDownClock = React.createClass({
         this.updateCanvas();
       }
     }
-    else if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.UP_NEXT_SCREEN) {
+    else if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PLAYING_SCREEN || this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PAUSE_SCREEN) {
       if (this.state.remainSeconds < 1 || this.props.playerState === CONSTANTS.STATE.END) {
         this.setState({remainSeconds: 0});
         clearInterval(this.interval);
         this.startUpNextVideo();
       } 
-      else if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
+      else {
         this.setState({remainSeconds: this.props.duration - this.props.currentPlayhead});
         this.updateCanvas();
       }

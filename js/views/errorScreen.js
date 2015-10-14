@@ -3,7 +3,8 @@
 *********************************************************************/
 var React = require('react'),
     CONSTANTS = require('../constants/constants'),
-    InlineStyle = require('../styles/inlineStyle');
+    InlineStyle = require('../styles/inlineStyle'),
+    Utils = require('../components/utils');
 
 var ErrorScreen = React.createClass({
   componentDidMount: function () {
@@ -13,13 +14,13 @@ var ErrorScreen = React.createClass({
   render: function() {
     var errorTitle, errorDescription, errorAction;
     if (CONSTANTS.ERROR_MESSAGE.hasOwnProperty(this.props.errorCode.code)){
-      errorTitle = CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].title;
-      errorDescription = CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].description;
-      errorAction = CONSTANTS.SKIN_TEXT.ERROR_ACTION;
+      errorTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].title, this.props.localizableStrings)
+      errorDescription = Utils.getLocalizedString(this.props.language, CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].description, this.props.localizableStrings);
+      errorAction = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.ERROR_ACTION, this.props.localizableStrings);
       InlineStyle.errorScreenStyle.contentStyle.textAlign = "left";
     }
     else {
-      errorTitle = CONSTANTS.SKIN_TEXT.UNKNOWN_ERROR;
+      errorTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UNKNOWN_ERROR, this.props.localizableStrings);
       errorDescription = null;
       errorAction = null;
       InlineStyle.errorScreenStyle.contentStyle.textAlign = "center";

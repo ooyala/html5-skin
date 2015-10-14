@@ -57,7 +57,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "upNextData": null,
         "countDownFinished": false,
         "countDownCancelled": false,
-        "timeToShow": 0
+        "timeToShow": 0,
+        "showing": false
       },
 
       "isMobile": false,
@@ -123,15 +124,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $("#" + elementId + " .player_skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
 
       var tmpLocalizableStrings = {};
-      //load language jsons
-      params.skin.languages.forEach(function(languageObj){
-        $.getJSON(languageObj.languageFile, function(data) {
-          tmpLocalizableStrings[languageObj.language] = data;
-        });
-      });
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON(params.skin.config, _.bind(function(data) {
+        //load language jsons
+        data.localization.availableLanguageFile.forEach(function(languageObj){
+          $.getJSON(languageObj.languageFile, function(data) {
+            tmpLocalizableStrings[languageObj.language] = data;
+          });
+        });
+
         //Override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
 
@@ -212,11 +214,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       if (duration - currentPlayhead <= timeToShow &&
         !this.state.upNextInfo.countDownCancelled &&
-        this.state.upNextInfo.upNextData !== null && this.state.playerState === CONSTANTS.STATE.PLAYING) {
-        this.state.screenToShow = CONSTANTS.SCREEN.UP_NEXT_SCREEN;
+        this.state.upNextInfo.upNextData !== null && (this.state.playerState === CONSTANTS.STATE.PLAYING || this.state.playerState === CONSTANTS.STATE.PAUSE)) {
+        this.state.upNextInfo.showing = true;
       }
-      else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
-        this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+      else {
+        this.state.upNextInfo.showing = false;
       }
     },
 
@@ -613,6 +615,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     sendDiscoveryClickEvent: function(selectedContentData) {
+      this.state.upNextInfo.showing = false;
       this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
     },
@@ -671,8 +674,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     upNextDismissButtonClicked: function() {
       this.state.upNextInfo.countDownCancelled = true;
-      this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
-      this.state.playerState = CONSTANTS.STATE.PLAYING;
+      this.state.upNextInfo.showing = false;
       this.renderSkin();
     },
 

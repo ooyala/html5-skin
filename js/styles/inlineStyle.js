@@ -196,7 +196,6 @@ module.exports = {
 
     controlBarItemSetting: {
       "height": "100%",
-      "color": "rgba(255, 255, 255, 0.6)",
       "fontWeight": "bold",
       "fontSize": "18px",
       "textAlign": "center",
@@ -211,6 +210,7 @@ module.exports = {
       "height": "100%",
       "color": "#ffffff",
       "opacity": 1,
+      "fontFamily": "'Roboto', sans-serif",
       "fontSize": 14,
       "paddingLeft": "7.5px",
       "paddingRight": "7.5px",
@@ -575,6 +575,7 @@ module.exports = {
       position: "absolute",
       left: "40px",
       fontSize: "32",
+      fontFamily: "'Roboto Condensed', sans-serif",
       fontWeight: "bold",
       color: "white",
       margin: "1%",
@@ -840,29 +841,33 @@ module.exports = {
 
     closeButtonStyle: {
       position: "absolute",
-      right: "17.5",
-      top: "17.5",
+      right: "35px",
+      top: "35px",
       color: "lightgray",
       cursor: "pointer"
     },
 
     innerPanelStyle: {
-      padding: "17.5"
+      padding: "35px"
     },
 
     captionStyle: {
-      fontSize: "16pt",
+      fontSize: "32px",
       fontFamily: "'Roboto Condensed', sans-serif",
       color: "#ffffff",
       fontWeight: "bold"
     },
 
+    captionIconStyle: {
+      fontSize: "25px",
+    },
+
     switchStyle: {
       cursor: "pointer",
-      marginTop: "17.5",
-      height: "14",
-      width: "70",
-      fontSize: "10pt",
+      marginTop: "35px",
+      height: "28px",
+      width: "140px",
+      fontSize: "20pt",
       color: "#FFFFFF",
       position: "relative"
     },
@@ -883,7 +888,7 @@ module.exports = {
       left: "",
       right: "0",
       top: "12.5%",
-      borderRadius: "20",
+      borderRadius: "40",
       onBackground: "#50AE54",
       transition: "all 0.5s ease-in-out"
     },
@@ -915,69 +920,71 @@ module.exports = {
     },
 
     itemStyle: {
-      fontSize: "11pt",
-      width: "70",
+      fontSize: "22pt",
+      fontFamily: "'Roboto Condensed', sans-serif",
+      width: "140px",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
       overflow: "hidden",
-      marginRight: "64",
-      marginTop: "14",
+      marginRight: "128px",
+      marginTop: "28px",
       textAlign: "center",
-      padding: "2",
+      padding: "4px",
       color: "white",
       transition: "all 0.0s ease",
       cursor: "pointer"
     },
 
     lastColumnItemStyle: {
-      fontSize: "11pt",
-      width: "70",
-      minwidth: "50",
+      fontSize: "22pt",
+      fontFamily: "'Roboto Condensed', sans-serif",
+      width: "140px",
+      minwidth: "100px",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
       overflow: "hidden",
-      marginRight: "0",
-      marginTop: "14",
+      marginRight: "0px",
+      marginTop: "28px",
       textAlign: "center",
-      padding: "2",
+      padding: "4px",
       color: "white",
       transition: "all 0.0s ease",
       cursor: "pointer"
     },
 
     itemSelectedStyle: {
-      fontSize: "11pt",
+      fontSize: "22pt",
       fontFamily: "'Roboto Condensed', sans-serif",
-      width: "70",
+      width: "140px",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
       overflow: "hidden",
-      marginRight: "64",
-      marginTop: "14",
+      marginRight: "128px",
+      marginTop: "28px",
       textAlign: "center",
-      padding: "2",
+      padding: "4px",
       color: "white",
       //properties different from itemStyle
       backgroundColor: "#4389ff",
-      borderRadius: "4",
+      borderRadius: "8px",
       cursor: "pointer"
     },
 
     lastColumnItemSelectedStyle: {
-      fontSize: "11pt",
+      fontSize: "22pt",
       fontFamily: "'Roboto Condensed', sans-serif",
-      width: "70",
+      width: "140px",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
       overflow: "hidden",
-      marginRight: "0",
-      marginTop: "14",
+      marginRight: "0px",
+      marginTop: "28px",
       textAlign: "center",
-      padding: "2",
+      padding: "4px",
       color: "white",
       //properties different from itemStyle
       backgroundColor: "#4389ff",
-      borderRadius: "4",
+      borderRadius: "8px",
       cursor: "pointer"
     },
 
@@ -985,9 +992,9 @@ module.exports = {
       position: "absolute",
       backgroundColor: "transparent",
       height: "100%",
-      width: "25px",
+      width: "50px",
       color: "white",
-      left: "0",
+      left: "0px",
       cursor: "pointer"
     },
 
@@ -995,9 +1002,9 @@ module.exports = {
       position: "absolute",
       backgroundColor: "transparent",
       height: "100%",
-      width: "25px",
+      width: "50px",
       color: "white",
-      right: "0",
+      right: "0px",
       cursor: "pointer"
     },
 
@@ -1005,7 +1012,7 @@ module.exports = {
       style: {
         top: "50%",
         left: "50%",
-        fontSize: "16pt",
+        fontSize: "32pt",
         transform: "translate(-50%, -50%)",
         position: "absolute",
         opacity: 1,
@@ -1017,7 +1024,7 @@ module.exports = {
       style: {
         top: "50%",
         left: "50%",
-        fontSize: "16pt",
+        fontSize: "32pt",
         transform: "translate(-50%, -50%)",
         position: "absolute",
         opacity: 1,
@@ -1027,8 +1034,8 @@ module.exports = {
 
     tableLanguageContainerStyle: {
       overflowX: "hidden",
-      marginLeft: "25",
-      marginRight: "25",
+      marginLeft: "50px",
+      marginRight: "50px",
       resize: "none"
     },
 
@@ -1037,37 +1044,37 @@ module.exports = {
     },
 
     tdLanguageStyle: {
-      paddingLeft: "0",
-      paddingRight: "0"
+      paddingLeft: "0px",
+      paddingRight: "0px"
     },
 
     CCPreviewPanelStyle: {
       width: "100%",
       backgroundColor: "rgba(0,0,0,0.5)",
       position: "absolute",
-      bottom: "7.5",
+      bottom: "15px",
       left: "0",
-      height: "35",
+      height: "70px",
       borderTop: "1px solid grey",
       visibility: "visible"
     },
 
     CCPreviewCaptionStyle: {
       color: "white",
-      fontSize: "6pt",
+      fontSize: "12pt",
       fontFamily: "'Roboto', sans-serif",
-      marginLeft: "17.5",
-      marginBottom: "2.75",
-      marginTop: "2.75"
+      marginLeft: "35px",
+      marginBottom: "5.5px",
+      marginTop: "5.5px"
     },
 
     CCPreviewTextStyle: {
-      marginTop: "0",
+      marginTop: "0px",
       color: "white",
-      fontSize: "12pt",
+      fontSize: "24pt",
       fontWeight: "bold",
       fontFamily: "Verdana",
-      marginLeft: "17.5"
+      marginLeft: "35px"
     },
 
     positionRelativeStyle: {

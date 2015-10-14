@@ -172,11 +172,11 @@ var ControlBar = React.createClass({
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
+    evt.target.style.opacity = "1.0";
   },
 
   removeHighlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
+    evt.target.style.opacity = this.props.skinConfig.controlBar.iconStyle.opacity;
   },
 
   populateControlBar: function() {
@@ -229,6 +229,9 @@ var ControlBar = React.createClass({
       volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
     }
 
+    var iconSetting = Utils.extend(InlineStyle.controlBarStyle.iconSetting, this.props.skinConfig.controlBar.iconStyle);
+    var durationSetting = Utils.extend(InlineStyle.controlBarStyle.durationIndicatorSetting, {color: this.props.skinConfig.controlBar.iconStyle.color});
+
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
     var watermarkImageStyle = InlineStyle.controlBarStyle.watermarkImageStyle;
 
@@ -236,9 +239,10 @@ var ControlBar = React.createClass({
     var liveText = "LIVE";
 
     var controlItemTemplates = {
-      "playPause": <div className="playPause" style={InlineStyle.controlBarStyle.controlBarItemSetting}
-        onClick={this.handlePlayClick} onTouchEnd={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        <span className={playClass} style={InlineStyle.controlBarStyle.iconSetting}></span>
+      "playPause": <div className="playPause" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
+        <span className={playClass} style={iconSetting}
+          onClick={this.handlePlayClick} onTouchEnd={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        </span>
       </div>,
 
       "live": <div className="live" style={InlineStyle.controlBarStyle.liveItemStyle}>
@@ -247,47 +251,58 @@ var ControlBar = React.createClass({
       </div>,
 
       "volume": <div className="volume" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
-        <span className={muteClass} style={InlineStyle.controlBarStyle.iconSetting}
-        onClick={this.handleVolumeIconClick} onTouchEnd={this.handleVolumeIconClick}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+        <span className={muteClass} style={iconSetting}
+          onClick={this.handleVolumeIconClick} onTouchEnd={this.handleVolumeIconClick}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        </span>
         {volumeControls}
       </div>,
 
-      "timeDuration": <div className="timeDuration" style={InlineStyle.controlBarStyle.durationIndicatorSetting}>
-        {Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}</div>,
+      "timeDuration": <div className="timeDuration" style={durationSetting}>
+        {Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}
+      </div>,
 
       "flexibleSpace": <div className="flexibleSpace" style={InlineStyle.controlBarStyle.flexibleSpace}></div>,
 
       "moreOptions": <div className="moreOptions" style={InlineStyle.controlBarStyle.controlBarItemSetting}
         onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}
         onTouchEnd={this.handleMoreOptionsClick}>
-        <span className={this.props.skinConfig.icons.ellipsis.fontStyleClass} style={InlineStyle.controlBarStyle.iconSetting}></span></div>,
+        <span className={this.props.skinConfig.icons.ellipsis.fontStyleClass} style={iconSetting}></span>
+      </div>,
 
-      "quality": <div className="quality" style={InlineStyle.controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={InlineStyle.controlBarStyle.iconSetting}></span></div>,
+      "quality": <div className="quality" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
+        <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={iconSetting}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        </span>
+      </div>,
 
       "discovery": <div className="discovery" style={InlineStyle.controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick}
-        onTouchEnd={this.handleDiscoveryClick}>
-        <span className={this.props.skinConfig.icons.discovery.fontStyleClass} style={InlineStyle.controlBarStyle.iconSetting}></span></div>,
+        onClick={this.handleDiscoveryClick} onTouchEnd={this.handleDiscoveryClick}>
+        <span className={this.props.skinConfig.icons.discovery.fontStyleClass} style={iconSetting}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        </span>
+      </div>,
 
-      "closedCaption": <div className="closedCaption" style={InlineStyle.controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className={this.props.skinConfig.icons.cc.fontStyleClass}
-        onClick={this.handleClosedCaptionClick} onTouchEnd={this.handleClosedCaptionClick} style={InlineStyle.controlBarStyle.iconSetting}></span></div>,
+      "closedCaption": <div className="closedCaption" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
+        <span className={this.props.skinConfig.icons.cc.fontStyleClass} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+          onClick={this.handleClosedCaptionClick} onTouchEnd={this.handleClosedCaptionClick} style={iconSetting}>
+        </span>
+      </div>,
 
-      "share": <div className="share" style={InlineStyle.controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}><span className={this.props.skinConfig.icons.share.fontStyleClass}
-        onClick={this.handleShareClick} onTouchEnd={this.handleShareClick} style={InlineStyle.controlBarStyle.iconSetting}></span></div>,
+      "share": <div className="share" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
+        <span className={this.props.skinConfig.icons.share.fontStyleClass} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+          onClick={this.handleShareClick} onTouchEnd={this.handleShareClick} style={iconSetting}>
+        </span>
+      </div>,
 
       "fullscreen": <div className="fullscreen" style={InlineStyle.controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick}
-        onTouchEnd={this.handleFullscreenClick}>
-        <span className={fullscreenClass} style={InlineStyle.controlBarStyle.iconSetting}></span></div>,
+        onClick={this.handleFullscreenClick} onTouchEnd={this.handleFullscreenClick}>
+        <span className={fullscreenClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+      </div>,
 
-      "watermark": <div className="watermark" style={InlineStyle.controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        <img src={watermarkUrl} style={InlineStyle.controlBarStyle.watermarkImageStyle}></img></div>
+      "watermark": <div className="watermark" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
+        <img src={watermarkUrl} style={InlineStyle.controlBarStyle.watermarkImageStyle}></img>
+      </div>
     };
 
     var controlBarItems = [];

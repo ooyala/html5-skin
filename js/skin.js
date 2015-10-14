@@ -14,7 +14,6 @@ var React = require('react'),
     StartScreen = require('./views/startScreen'),
     PauseScreen = require('./views/pauseScreen'),
     PlayingScreen = require('./views/playingScreen'),
-    UpNextScreen = require('./views/upNextScreen'),
     Spinner = require('./components/spinner'),
     ErrorScreen = require('./views/errorScreen');
 
@@ -104,6 +103,7 @@ var Skin = React.createClass({
             fullscreen={this.state.fullscreen}
             playerState={this.state.playerState}
             seeking={this.state.seeking}
+            upNextInfo={this.state.upNextInfo}
             ref="playScreen" />
         );
       case CONSTANTS.SCREEN.SHARE_SCREEN:
@@ -128,6 +128,7 @@ var Skin = React.createClass({
             pauseAnimationDisabled = {this.state.pauseAnimationDisabled}
             fullscreen={this.state.fullscreen}
             seeking={this.state.seeking}
+            upNextInfo={this.state.upNextInfo}
             ref="pauseScreen" />
         );
       case CONSTANTS.SCREEN.END_SCREEN:
@@ -169,18 +170,6 @@ var Skin = React.createClass({
             fullscreen={this.state.fullscreen}
             seeking={this.state.seeking}
             ref="DiscoveryScreen" />
-        );
-      case CONSTANTS.SCREEN.UP_NEXT_SCREEN:
-        return (
-          <UpNextScreen {...this.props}
-            contentTree={this.state.contentTree}
-            currentPlayhead={this.state.currentPlayhead}
-            duration={this.state.duration}
-            upNextInfo={this.state.upNextInfo}
-            playerState={this.state.playerState}
-            fullscreen={this.state.fullscreen}
-            seeking={this.state.seeking}
-            ref="UpNextScreen" />
         );
       case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
         return (
