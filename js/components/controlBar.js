@@ -176,7 +176,6 @@ var ControlBar = React.createClass({
     evt.target.style.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
     evt.target.style.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
     evt.target.style.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
-    //for older IE:filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=12, OffY=12, Color='#444')";
   },
 
   removeHighlight: function(evt) {
@@ -245,6 +244,7 @@ var ControlBar = React.createClass({
     }
 
     var iconSetting = Utils.extend(InlineStyle.controlBarStyle.iconSetting, this.props.skinConfig.controlBar.iconStyle);
+    var volumeIconSetting = Utils.extend(InlineStyle.controlBarStyle.volumeIconSetting, this.props.skinConfig.controlBar.iconStyle);
     var durationSetting = Utils.extend(InlineStyle.controlBarStyle.durationIndicatorSetting, {color: this.props.skinConfig.controlBar.iconStyle.color});
 
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
@@ -253,19 +253,18 @@ var ControlBar = React.createClass({
     // TODO: Update when implementing localization
     var liveText = "LIVE";
 
-    var volumeIconStyle = InlineStyle.controlBarStyle.volumeIconSetting;
     var volumeBarStyle = InlineStyle.controlBarStyle.volumeBarStyle;
     if (this.state.mouseOverVolume) {
-      volumeIconStyle.color = "rgba(255, 255, 255, 1.0)";
-      volumeIconStyle.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
-      volumeIconStyle.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
-      volumeIconStyle.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
+      volumeIconSetting.opacity = "1";
+      volumeIconSetting.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
+      volumeIconSetting.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
+      volumeIconSetting.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
     }
     else {
-      volumeIconStyle.color = "";
-      volumeIconStyle.WebkitFilter = "";
-      volumeIconStyle.filter = "";
-      volumeIconStyle.msFilter = "";
+      volumeIconSetting.opacity = this.props.skinConfig.controlBar.iconStyle.opacity;
+      volumeIconSetting.WebkitFilter = "";
+      volumeIconSetting.filter = "";
+      volumeIconSetting.msFilter = "";
     }
 
     var controlItemTemplates = {
@@ -281,7 +280,7 @@ var ControlBar = React.createClass({
       </div>,
 
       "volume": <div className="volume" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
-        <span className={muteClass} style={iconSetting}
+        <span className={muteClass} style={volumeIconSetting}
           onClick={this.handleVolumeIconClick} onTouchEnd={this.handleVolumeIconClick}
           onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}>
         </span>
@@ -294,10 +293,11 @@ var ControlBar = React.createClass({
 
       "flexibleSpace": <div className="flexibleSpace" style={InlineStyle.controlBarStyle.flexibleSpace}></div>,
 
-      "moreOptions": <div className="moreOptions" style={InlineStyle.controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}
-        onTouchEnd={this.handleMoreOptionsClick}>
-        <span className={this.props.skinConfig.icons.ellipsis.fontStyleClass} style={iconSetting}></span>
+      "moreOptions": <div className="moreOptions" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
+        <span className={this.props.skinConfig.icons.ellipsis.fontStyleClass} style={iconSetting}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}
+          onTouchEnd={this.handleMoreOptionsClick}>
+        </span>
       </div>,
 
       "quality": <div className="quality" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
@@ -333,7 +333,6 @@ var ControlBar = React.createClass({
       "watermark": <div className="watermark" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
         <img src={watermarkUrl} style={InlineStyle.controlBarStyle.watermarkImageStyle}></img>
       </div>
-
     };
 
     var controlBarItems = [];
