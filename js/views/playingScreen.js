@@ -2,9 +2,11 @@
   PLAYING SCREEN
 *********************************************************************/
 var React = require('react'),
+    InlineStyle = require('../styles/inlineStyle'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
     AdOverlay = require('../components/adOverlay'),
+    UpNextPanel = require('../components/upNextPanel'),
     CONSTANTS = require('../constants/constants');
 
 var PlayingScreen = React.createClass({
@@ -113,16 +115,23 @@ var PlayingScreen = React.createClass({
   },
 
   render: function() {
+    var upNext = null;
+    if (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) {
+      upNext = <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/>;
+    }
     return (
-      <div className="playingScreen" ref="PlayingScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseMove={this.handlePlayerMouseMove}
-        onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd} style={{height: "100%", width: "100%"}}>
-        <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
-          showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
-        <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} />
-        <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}
-          playerState={this.props.playerState} />
+      <div className="playingScreen" ref="PlayingScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
+        onMouseMove={this.handlePlayerMouseMove} style={InlineStyle.defaultScreenStyle.style}>
+        <div onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd} style={InlineStyle.defaultScreenStyle.style}>
+          <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
+            showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
+          <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
+            controlBarWidth={this.state.controlBarWidth} />
+          <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
+            controlBarWidth={this.state.controlBarWidth}
+            playerState={this.props.playerState} />
+        </div>
+        {upNext}
       </div>
     );
   }
