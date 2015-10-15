@@ -14,21 +14,19 @@ AccessibilityControls.prototype = {
   handleKey: function(e) {
     if (!this.controller.state.accessibilityControlsEnabled){
       return;
-    }      
-
-    // e.stopPropagation(); // W3C
-    // e.cancelBubble = true; // IE
-    e.preventDefault();
+    }
 
     var currentTime;
     var newPlayheadTime;
     var newVolume;
 
     if (e.keyCode === CONSTANTS.KEYCODES.SPACE_KEY){
+      e.preventDefault();
       this.controller.togglePlayPause();
     }
 
     else if ((e.keyCode === CONSTANTS.KEYCODES.DOWN_ARROW_KEY && this.controller.state.volumeState.volume > 0) || (e.keyCode === CONSTANTS.KEYCODES.UP_ARROW_KEY && this.controller.state.volumeState.volume < 1)){
+      e.preventDefault();
       var deltaVolumeSign = 1; // positive 1 for volume increase, negative for decrease
 
       if (e.keyCode === CONSTANTS.KEYCODES.DOWN_ARROW_KEY){
@@ -43,6 +41,7 @@ AccessibilityControls.prototype = {
     }
 
     else if (e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY || e.keyCode === CONSTANTS.KEYCODES.LEFT_ARROW_KEY){
+      e.preventDefault();
       var shiftSign = 1; // positive 1 for fast forward, negative for rewind back
 
       var shiftSeconds = 1;

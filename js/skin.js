@@ -56,7 +56,6 @@ var Skin = React.createClass({
   },
 
   handleClickOutsidePlayer: function() {
-    console.log("xenia click outside");
     this.props.controller.state.accessibilityControlsEnabled = false;
   },
 

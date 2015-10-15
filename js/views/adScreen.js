@@ -77,7 +77,6 @@ var AdScreen = React.createClass({
     event.cancelBubble = true; // IE
 
     this.props.controller.state.accessibilityControlsEnabled = true;
-    console.log("xenia click inside");
   },
 
   handlePlayerClicked: function(event) {

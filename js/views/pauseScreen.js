@@ -86,7 +86,6 @@ var PauseScreen = React.createClass({
 
       this.props.controller.togglePlayPause();
       this.props.controller.state.accessibilityControlsEnabled = true;
-      console.log("xenia click inside");
 
       if (this.props.controller.state.volumeState.volumeSliderVisible) {
         this.props.controller.hideVolumeSliderBar();

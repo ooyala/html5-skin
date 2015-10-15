@@ -80,7 +80,6 @@ var PlayingScreen = React.createClass({
 
       this.props.controller.togglePlayPause();
       this.props.controller.state.accessibilityControlsEnabled = true;
-      console.log("xenia click inside");
     }
     // for mobile, touch is handled in handleTouchEnd
   },
