@@ -22,6 +22,14 @@ var ShareScreen = React.createClass({
     };
   },
 
+  componentDidMount: function () {
+    this.props.controller.state.accessibilityControlsEnabled = false;
+  },
+
+  componentWillUnmount: function () {
+    this.props.controller.state.accessibilityControlsEnabled = true;
+  },
+
   closeSharePanel: function(evt) {
     if (evt.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,

@@ -47,6 +47,10 @@ var EndScreen = React.createClass({
       //we need to make sure only one actually does the work
 
       // pause or play the video if the skin is clicked
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
+      this.props.controller.state.accessibilityControlsEnabled = true;
+
       this.props.controller.togglePlayPause();
 
       if (this.props.controller.state.volumeState.volumeSliderVisible) {

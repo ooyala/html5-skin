@@ -30,7 +30,10 @@ var StartScreen = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
       this.props.controller.togglePlayPause();
+      this.props.controller.state.accessibilityControlsEnabled = true;
     }
   },
 
@@ -114,7 +117,7 @@ var StartScreen = React.createClass({
       // Default configuration
       posterStyle.backgroundImage = "url('" + posterImageUrl + "')";
       return (
-        <div className="startScreen" onClick={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
+        <div className="startScreen" onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
           <div className="startScreenPoster" style={screenStyle.posterStyle}></div>
           <div className="play">
             <span className={playClass} style={playStyle} aria-hidden="true"></span>

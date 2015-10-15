@@ -27,6 +27,7 @@ var ControlBar = React.createClass({
     if (evt.type == 'touchend' || !this.isMobile){
       evt.stopPropagation(); // W3C
       evt.cancelBubble = true; // IE
+      this.props.controller.state.accessibilityControlsEnabled = true;
       if (this.props.controller.state.volumeState.volumeSliderVisible){
         this.props.controller.hideVolumeSliderBar();
       }
