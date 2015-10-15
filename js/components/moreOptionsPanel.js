@@ -81,6 +81,20 @@ var MoreOptionsPanel = React.createClass({
     evt.target.style.msFilter = "";
   },
 
+  dismissButtonHighlight: function(evt) {
+    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
+    evt.target.style.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
+    evt.target.style.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
+    evt.target.style.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
+  },
+
+  removeDismissButtonHighlight: function(evt) {
+    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
+    evt.target.style.WebkitFilter = "";
+    evt.target.style.filter = "";
+    evt.target.style.msFilter = "";
+  },
+
   buildMoreOptionsButtonList: function() {
     var fullscreenClass = (this.props.fullscreen) ?
       this.props.skinConfig.icons.compress.fontStyleClass : this.props.skinConfig.icons.expand.fontStyleClass;
@@ -160,7 +174,7 @@ var MoreOptionsPanel = React.createClass({
     return (
       <div className="moreOptionsPanel" style={InlineStyle.MoreOptionsScreenStyle.panelStyle}>
         <div onClick={this.closeMoreOptionsScreen} onTouchEnd={this.closeMoreOptionsScreen} style={InlineStyle.MoreOptionsScreenStyle.closeButtonStyle}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} onMouseOver={this.dismissButtonHighlight} onMouseOut={this.removeDismissButtonHighlight}>
           </span>
         </div>
         <div className="moreOptionsItems" style={InlineStyle.MoreOptionsScreenStyle.buttonListStyle}>
