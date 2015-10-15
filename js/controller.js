@@ -32,6 +32,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "pauseAnimationDisabled": false,
       "seeking": false,
       "queuedPlayheadUpdate": null,
+      "accessibilityControlsEnabled": false,
 
       "currentAdsInfo": {
         "currentAdItem": null,

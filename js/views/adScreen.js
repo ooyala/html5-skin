@@ -72,6 +72,13 @@ var AdScreen = React.createClass({
     }
   },
 
+  handleClick: function(e) {
+    event.stopPropagation(); // W3C
+    event.cancelBubble = true; // IE
+
+    this.props.controller.state.accessibilityControlsEnabled = true;
+  },
+
   handlePlayerClicked: function(event) {
     if (event.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,
@@ -150,8 +157,8 @@ var AdScreen = React.createClass({
       playbackControlItems = this.getPlaybackControlItems();
     }
     return (
-      <div ref="AdScreen" className="adScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar} onMouseMove={this.handlePlayerMouseMove}
-        style={InlineStyle.defaultScreenStyle.style}>
+      <div ref="AdScreen" className="adScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
+        onMouseMove={this.handlePlayerMouseMove} onMouseUp={this.handleClick} style={InlineStyle.defaultScreenStyle.style}>
 
         <div className="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
           {adPanel}

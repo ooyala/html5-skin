@@ -7,6 +7,9 @@ var React = require('react'),
     Utils = require('../components/utils');
 
 var ErrorScreen = React.createClass({
+  componentDidMount: function () {
+    this.props.controller.state.accessibilityControlsEnabled = false;
+  },
 
   render: function() {
     var errorTitle, errorDescription, errorAction;

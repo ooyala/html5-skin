@@ -72,10 +72,14 @@ var PlayingScreen = React.createClass({
     }
   },
 
-  handlePlayerMouseUp: function() {
+  handlePlayerMouseUp: function(event) {
     // pause or play the video if the skin is clicked on desktop
     if (!this.isMobile) {
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
+
       this.props.controller.togglePlayPause();
+      this.props.controller.state.accessibilityControlsEnabled = true;
     }
     // for mobile, touch is handled in handleTouchEnd
   },

@@ -25,10 +25,13 @@ var MoreOptionsPanel = React.createClass({
     else {
       InlineStyle.MoreOptionsScreenStyle.buttonListStyle.display = "flex";
     }
+
+    this.props.controller.state.accessibilityControlsEnabled = false;
   },
 
   componentWillUnmount: function () {
     InlineStyle.MoreOptionsScreenStyle.buttonListStyle.bottom = "0";
+    this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
   closeMoreOptionsScreen: function(evt) {

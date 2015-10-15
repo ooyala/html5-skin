@@ -20,6 +20,14 @@ var DiscoveryScreen = React.createClass({
     return null;
   },
 
+  componentDidMount: function () {
+    this.props.controller.state.accessibilityControlsEnabled = false;
+  },
+
+  componentWillUnmount: function () {
+    this.props.controller.state.accessibilityControlsEnabled = true;
+  },
+
   closeDiscoveryPanel: function(evt) {
     if (evt.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,

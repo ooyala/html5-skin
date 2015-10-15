@@ -69,6 +69,8 @@ var UpNextPanel = React.createClass({
   handleUpNextPanelClick: function(event) {
     event.stopPropagation(); // W3C
     event.cancelBubble = true; // IE
+
+    this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
   highlight: function(evt) {
