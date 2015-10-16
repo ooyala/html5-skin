@@ -58,7 +58,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "countDownFinished": false,
         "countDownCancelled": false,
         "timeToShow": 0,
-        "showing": false
+        "showing": false,
+        "delayedSetEmbedCodeEvent": false,
+        "selectedContentData": null
       },
 
       "isMobile": false,
@@ -263,7 +265,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayed: function() {
-      if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery") {
+      if (this.state.upNextInfo.delayedSetEmbedCodeEvent) {
+        var selectedContentData = this.state.upNextInfo.selectedContentData;
+        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
+        this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
+        this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
+      }
+      else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery") {
         console.log("Should display DISCOVERY_SCREEN on end");
         this.sendDiscoveryDisplayEvent("endScreen");
         this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
@@ -620,10 +629,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    sendDiscoveryClickEvent: function(selectedContentData) {
+    sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
       this.state.upNextInfo.showing = false;
-      this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
-      this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
+      if (isAutoUpNext){
+        this.state.upNextInfo.selectedContentData = selectedContentData;
+        this.state.upNextInfo.delayedSetEmbedCodeEvent = true;
+      }
+      else {
+        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
+        this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
+      }
     },
 
     sendDiscoveryDisplayEvent: function(screen) {

@@ -156,7 +156,8 @@ var CountDownClock = React.createClass({
       "clickedVideo" : this.props.upNextInfo.upNextData,
       "custom" : {"source": CONSTANTS.SCREEN.UP_NEXT_SCREEN}
     };
-    this.props.controller.sendDiscoveryClickEvent(eventData);
+    var isAutoUpNext = true;
+    this.props.controller.sendDiscoveryClickEvent(eventData, isAutoUpNext);
   },
 
   render: function() {
