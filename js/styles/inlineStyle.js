@@ -226,31 +226,20 @@ module.exports = {
     },
 
     liveItemStyle: {
-      position: "relative",
-      width: "50",
-      height: "50%",
-      top: "30%",
-      borderRadius: "3px"
     },
 
     liveCircleStyle: {
-      position: "relative",
-      width: "10px",
-      height: "10px",
-      borderRadius: "50%",
-      top: "25%",
-      left: "5%",
-      backgroundColor: "red"
+      "display": "inline-block",
+      "width": "10px",
+      "height": "10px",
+      "borderRadius": "50%",
+      "backgroundColor": "red",
+      "marginRight": "2px"
     },
 
     liveTextStyle: {
-      position: "absolute",
-      width: "60%",
-      height: "80%",
-      top: "10%",
-      left: "40%",
-      fontSize: "10",
-      color: "LightGray"
+      "fontSize": "10",
+      "color": "LightGray"
     },
 
     volumeBarStyle: {

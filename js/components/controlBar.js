@@ -245,9 +245,11 @@ var ControlBar = React.createClass({
         </span>
       </div>,
 
-      "live": <div className="live" style={InlineStyle.controlBarStyle.liveItemStyle}>
-        <div style={InlineStyle.controlBarStyle.liveCircleStyle}></div>
-        <div style={InlineStyle.controlBarStyle.liveTextStyle}>{liveText}</div>
+      "live": <div className="live" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
+        <div style={InlineStyle.controlBarStyle.liveItemStyle}>
+          <div style={InlineStyle.controlBarStyle.liveCircleStyle}></div>
+          <span style={InlineStyle.controlBarStyle.liveTextStyle}> {liveText}</span>
+        </div>
       </div>,
 
       "volume": <div className="volume" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
@@ -400,6 +402,8 @@ var ControlBar = React.createClass({
     InlineStyle.controlBarStyle.durationIndicatorSetting.lineHeight = constantControlBarHeight + "px";
     InlineStyle.controlBarStyle.iconSetting.lineHeight = constantControlBarHeight + "px";
     InlineStyle.controlBarStyle.volumeBarStyle.lineHeight = constantControlBarHeight + "px";
+    InlineStyle.controlBarStyle.liveItemStyle.lineHeight =
+      (constantControlBarHeight - parseInt(InlineStyle.controlBarStyle.liveCircleStyle.height)) + "px";
   },
 
 

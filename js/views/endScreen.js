@@ -88,7 +88,8 @@ var EndScreen = React.createClass({
           controlBarWidth={this.state.controlBarWidth} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}
-          playerState={this.props.playerState} />
+          playerState={this.props.playerState}
+          authorization={this.props.authorization} />
       </div>
     );
   }

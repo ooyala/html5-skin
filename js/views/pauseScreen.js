@@ -163,7 +163,8 @@ var PauseScreen = React.createClass({
             controlBarWidth={this.state.controlBarWidth}/>
           <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
             controlBarWidth={this.state.controlBarWidth}
-            playerState={this.state.playerState} />
+            playerState={this.state.playerState}
+            authorization={this.props.authorization} />
         </div>
         {upNext}
       </div>
