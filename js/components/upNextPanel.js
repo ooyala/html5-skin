@@ -62,7 +62,7 @@ var UpNextPanel = React.createClass({
                         "countdown": 0,
                         "autoplay": true }
           };
-      this.props.controller.sendDiscoveryClickEvent(eventData);
+      this.props.controller.sendDiscoveryClickEvent(eventData, false);
     }
   },
 
