@@ -772,7 +772,7 @@ module.exports = {
       "textAlign": "center",
       "cursor": "pointer",
       "icon": {
-        "fontSize": "9px",
+        "fontSize": "13px",
         "marginRight": "5px"
       }
     },
@@ -786,7 +786,7 @@ module.exports = {
       "textAlign": "center",
       "cursor": "pointer",
       "icon": {
-        "fontSize": "9px",
+        "fontSize": "13px",
         "marginRight": "5px"
       }
     }

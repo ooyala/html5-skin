@@ -81,7 +81,11 @@ var PauseScreen = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
+
       this.props.controller.togglePlayPause();
+      this.props.controller.state.accessibilityControlsEnabled = true;
 
       if (this.props.controller.state.volumeState.volumeSliderVisible) {
         this.props.controller.hideVolumeSliderBar();

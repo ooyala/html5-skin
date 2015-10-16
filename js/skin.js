@@ -36,6 +36,10 @@ var Skin = React.createClass({
     }
   },
 
+  componentDidMount: function () {
+    window.addEventListener('mouseup', this.handleClickOutsidePlayer);
+  },
+
   componentWillMount: function() {
     if (this.props.skinConfig.ccOptions){
          this.props.controller.state.ccOptions.language = (this.props.skinConfig.ccOptions.defaultLanguage ? this.props.skinConfig.ccOptions.defaultLanguage : "en" );
@@ -45,6 +49,14 @@ var Skin = React.createClass({
       this.props.controller.state.ccOptions.language = "en";
       this.props.controller.state.ccOptions.enabled = false;
     }
+  },
+
+  componentWillUnmount: function () {
+    window.removeEventListener('mouseup', this.handleClickOutsidePlayer);
+  },
+
+  handleClickOutsidePlayer: function() {
+    this.props.controller.state.accessibilityControlsEnabled = false;
   },
 
   switchComponent: function(args) {
