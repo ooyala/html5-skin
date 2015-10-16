@@ -622,6 +622,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     sendDiscoveryClickEvent: function(selectedContentData) {
       this.state.upNextInfo.showing = false;
+      this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+      this.renderSkin();
       this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
     },
