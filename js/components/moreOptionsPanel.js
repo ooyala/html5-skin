@@ -71,31 +71,21 @@ var MoreOptionsPanel = React.createClass({
   },
 
   highlight: function(evt) {
-    evt.target.style.opacity = "1";
-    evt.target.style.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
-    evt.target.style.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
-    evt.target.style.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
+    Utils.highlight(evt.target);
   },
 
   removeHighlight: function(evt) {
-    evt.target.style.opacity = this.props.skinConfig.moreOptions.iconStyle.opacity;
-    evt.target.style.WebkitFilter = "";
-    evt.target.style.filter = "";
-    evt.target.style.msFilter = "";
+    var opacity = this.props.skinConfig.controlBar.iconStyle.opacity;
+    Utils.removeHighlight(evt.target, opacity);
   },
 
   dismissButtonHighlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
-    evt.target.style.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
-    evt.target.style.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
-    evt.target.style.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
+    Utils.highlight(evt.target);
   },
 
   removeDismissButtonHighlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
-    evt.target.style.WebkitFilter = "";
-    evt.target.style.filter = "";
-    evt.target.style.msFilter = "";
+    var opacity = "0.6";
+    Utils.removeHighlight(evt.target, opacity);
   },
 
   buildMoreOptionsButtonList: function() {
@@ -175,13 +165,16 @@ var MoreOptionsPanel = React.createClass({
   render: function() {
     var moreOptionsItems = this.buildMoreOptionsButtonList();
     return (
-      <div className="moreOptionsPanel" style={InlineStyle.MoreOptionsScreenStyle.panelStyle}>
-        <div onClick={this.closeMoreOptionsScreen} onTouchEnd={this.closeMoreOptionsScreen} style={InlineStyle.MoreOptionsScreenStyle.closeButtonStyle}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} onMouseOver={this.dismissButtonHighlight} onMouseOut={this.removeDismissButtonHighlight}>
-          </span>
+      <div>
+        <div className="moreOptionsPanel" style={InlineStyle.MoreOptionsScreenStyle.panelStyle}>
+          <div className="moreOptionsItems" style={InlineStyle.MoreOptionsScreenStyle.buttonListStyle}>
+            {moreOptionsItems}
+          </div>
         </div>
-        <div className="moreOptionsItems" style={InlineStyle.MoreOptionsScreenStyle.buttonListStyle}>
-          {moreOptionsItems}
+        <div onClick={this.closeMoreOptionsScreen} onTouchEnd={this.closeMoreOptionsScreen} style={InlineStyle.MoreOptionsScreenStyle.closeButtonStyle}>
+          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} onMouseOver={this.dismissButtonHighlight}
+            onMouseOut={this.removeDismissButtonHighlight} style={InlineStyle.defaultScreenStyle.closeButtonStyle}>
+          </span>
         </div>
       </div>
     );

@@ -151,6 +151,20 @@ var Utils = {
       return localizedStrings[language][stringId];
   },
 
+  highlight: function(target) {
+    target.style.opacity = "1.0";
+    target.style.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
+    target.style.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
+    target.style.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
+  },
+
+  removeHighlight: function(target, opacity) {
+    target.style.opacity = opacity;
+    target.style.WebkitFilter = "";
+    target.style.filter = "";
+    target.style.msFilter = "";
+  },
+
   /********************************************************************
   Collapsing control bar related code
   *********************************************************************/

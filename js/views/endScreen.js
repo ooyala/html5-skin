@@ -41,8 +41,8 @@ var EndScreen = React.createClass({
     }
   },
 
-  handlePlayerMouseUp: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
+  handlePlayerMouseUp: function(event) {
+    if (event.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 

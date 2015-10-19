@@ -173,21 +173,18 @@ var ControlBar = React.createClass({
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
-    evt.target.style.opacity = "1.0";
-    evt.target.style.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
-    evt.target.style.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
-    evt.target.style.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
+    Utils.highlight(evt.target);
   },
 
   removeHighlight: function(evt) {
-    evt.target.style.opacity = this.props.skinConfig.controlBar.iconStyle.opacity;
-    evt.target.style.WebkitFilter = "";
-    evt.target.style.filter = "";
-    evt.target.style.msFilter = "";
+    var opacity = this.props.skinConfig.controlBar.iconStyle.opacity;
+    Utils.removeHighlight(evt.target, opacity);
   },
+
   volumeHighlight:function() {
     this.setState({mouseOverVolume: true});
   },
+
   volumeRemoveHighlight:function() {
     this.setState({mouseOverVolume: false});
   },

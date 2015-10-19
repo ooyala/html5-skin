@@ -14,6 +14,7 @@ var React = require('react'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
     CONSTANTS = require('../constants/constants');
+    Utils = require('../components/utils');
 
 var DiscoveryScreen = React.createClass({
   getInitialState: function() {
@@ -38,17 +39,12 @@ var DiscoveryScreen = React.createClass({
   },
 
   highlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
-    evt.target.style.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
-    evt.target.style.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
-    evt.target.style.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
+    Utils.highlight(evt.target);
   },
 
   removeHighlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
-    evt.target.style.WebkitFilter = "";
-    evt.target.style.filter = "";
-    evt.target.style.msFilter = "";
+    var opacity = "0.6";
+    Utils.removeHighlight(evt.target, opacity);
   },
 
   render: function() {
@@ -69,7 +65,7 @@ var DiscoveryScreen = React.createClass({
         <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
             onClick={this.closeDiscoveryPanel} style={InlineStyle.discoveryScreenStyle.closeButtonStyle}
             onTouchEnd={this.closeDiscoveryPanel}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
+          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={InlineStyle.defaultScreenStyle.closeButtonStyle}></span>
         </div>
 
       </div>

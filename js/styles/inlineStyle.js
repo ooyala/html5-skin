@@ -3,6 +3,10 @@ module.exports = {
     style: {
       width: "100%",
       height: "100%"
+    },
+    closeButtonStyle: {
+      "opacity":"0.6",
+      "color": "#ffffff"
     }
   },
 
@@ -537,7 +541,7 @@ module.exports = {
       right: "35px",
       height: "15px",
       width: "15px",
-      color: "#afafaf",
+      color: "#ffffff",
       textAlign: "center",
       lineHeight: "15px"
     }
@@ -720,7 +724,7 @@ module.exports = {
       position: "absolute",
       right: "17.5",
       top: "17.5",
-      color: "lightgray",
+      color: "#ffffff",
       cursor: "pointer"
     }
   },
@@ -819,21 +823,19 @@ module.exports = {
       height: "28px",
       width: "28px",
       top: "0px",
-      right: "0px",
-      backgroundColor: "rgb(0,0,0)",
-      opacity: 0.5
+      right: "0px"
     },
 
     closeButtonIconStyle: {
       position: "absolute",
       fontSize: "8px",
-      color: "rgb(255,255,255)",
-      backgroundColor: "transparent",
       top: "50%",
       left: "50%",
       WebkitTransform: "translate(-50%, -50%)",
       msTransform: "translate(-50%, -50%)",
-      transform: "translate(-50%, -50%)"
+      transform: "translate(-50%, -50%)",
+      color: "#ffffff",
+      opacity: "0.6"
     }
   },
 
@@ -849,7 +851,6 @@ module.exports = {
       position: "absolute",
       right: "35px",
       top: "35px",
-      color: "lightgray",
       cursor: "pointer"
     },
 
@@ -1250,7 +1251,6 @@ module.exports = {
       "position": "absolute",
       "top": "35",
       "right": "35",
-      "color": "lightgray",
       "cursor": "pointer"
     }
   },
