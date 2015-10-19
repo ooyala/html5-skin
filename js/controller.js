@@ -14,6 +14,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     return null;
   }
 
+  if (OO.publicApi && OO.publicApi.VERSION) {
+    // This variable gets filled in by the build script in the insertVersion step
+    OO.publicApi.VERSION.skin_version = "<SKIN_VERSION>";
+  }
+
   var Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
