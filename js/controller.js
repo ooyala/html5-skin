@@ -65,7 +65,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "timeToShow": 0,
         "showing": false,
         "delayedSetEmbedCodeEvent": false,
-        "selectedContentData": null
+        "delayedContentData": null
       },
 
       "isMobile": false,
@@ -271,11 +271,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlayed: function() {
       if (this.state.upNextInfo.delayedSetEmbedCodeEvent) {
-        var selectedContentData = this.state.upNextInfo.selectedContentData;
+        var delayedContentData = this.state.upNextInfo.delayedContentData;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
-        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
-        this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
+        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, delayedContentData.clickedVideo.embed_code);
+        this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, delayedContentData);
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
+        this.state.upNextInfo.delayedContentData = null;
       }
       else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery") {
         console.log("Should display DISCOVERY_SCREEN on end");
@@ -637,7 +638,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
       this.state.upNextInfo.showing = false;
       if (isAutoUpNext){
-        this.state.upNextInfo.selectedContentData = selectedContentData;
+        this.state.upNextInfo.delayedContentData = selectedContentData;
         this.state.upNextInfo.delayedSetEmbedCodeEvent = true;
       }
       else {
