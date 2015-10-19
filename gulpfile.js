@@ -18,7 +18,7 @@ var path = {
 };
 
 // Build All
-gulp.task('build', ['browserify', 'pretty', 'buildCss']);
+gulp.task('build', ['browserify', 'pretty', 'buildCss', 'insertVersion']);
 
 // Browserify JS
 gulp.task('browserify', function () {
@@ -75,3 +75,7 @@ gulp.task('watch', function() {
 
 // The default task (called when you run `gulp` from cli)
 gulp.task('default', ['build', 'watch']);
+
+
+gulp.task("insertVersion", shell.task(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
+                                        'sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));

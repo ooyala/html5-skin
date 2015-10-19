@@ -76,8 +76,8 @@ var PauseScreen = React.createClass({
     window.removeEventListener('msfullscreenchange', this.handleResize);
   },
 
-  handleClick: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
+  handleClick: function(event) {
+    if (event.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
