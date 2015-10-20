@@ -5,7 +5,8 @@ var React = require('react'),
     Utils = require('./components/utils'),
     CONSTANTS = require('./constants/constants'),
     AccessibilityControls = require('./components/accessibilityControls'),
-    Skin = require('./skin');
+    Skin = require('./skin'),
+    InlineStyle = require('./styles/inlineStyle');
 
 OO.plugin("Html5Skin", function (OO, _, $, W) {
   //Check if the player is at least v4. If not, the skin cannot load.
@@ -233,7 +234,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           //Safari only can set cc when the video is playing, not before
           this.setClosedCaptionsLanguage();
         }
-        this.state.mainVideoElement.css({"-webkit-filter": "", "-moz-filter": "", "filter": ""});
+        this.state.mainVideoElement.css(InlineStyle.pauseScreenStyle.videoUnblur);
         this.renderSkin();
       }
     },
@@ -261,7 +262,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
-        this.state.mainVideoElement.css({"-webkit-filter": "blur(3px)", "-moz-filter": "blur(3px)", "filter": "blur(3px)"});
+        this.state.mainVideoElement.css(InlineStyle.pauseScreenStyle.videoBlur);
         this.renderSkin();
       }
     },
