@@ -13,6 +13,7 @@ var React = require('react'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
     CONSTANTS = require('../constants/constants');
+    Utils = require('../components/utils');
 
 var ClosedCaptionScreen = React.createClass({
   getInitialState: function() {
@@ -52,11 +53,12 @@ var ClosedCaptionScreen = React.createClass({
   },
 
   highlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
+    Utils.highlight(evt.target);
   },
 
   removeHighlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
+    var opacity = "0.6";
+    Utils.removeHighlight(evt.target, opacity);
   },
 
 
@@ -68,7 +70,7 @@ var ClosedCaptionScreen = React.createClass({
         <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
           onClick={this.closeClosedCaptionPanel} style={InlineStyle.closedCaptionScreenStyles.closeButtonStyle}
           onTouchEnd={this.closeClosedCaptionPanel}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
+          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={InlineStyle.defaultScreenStyle.closeButtonStyle}></span>
         </div>
       </div>
     );

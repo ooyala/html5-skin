@@ -14,6 +14,7 @@ var React = require('react'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
     CONSTANTS = require('../constants/constants');
+    Utils = require('../components/utils');
 
 var DiscoveryScreen = React.createClass({
   getInitialState: function() {
@@ -37,6 +38,15 @@ var DiscoveryScreen = React.createClass({
     }
   },
 
+  highlight: function(evt) {
+    Utils.highlight(evt.target);
+  },
+
+  removeHighlight: function(evt) {
+    var opacity = "0.6";
+    Utils.removeHighlight(evt.target, opacity);
+  },
+
   render: function() {
     var promoStyle = InlineStyle.discoveryScreenStyle.promoStyle;
     if(this.props.playerState === CONSTANTS.STATE.END) {
@@ -55,7 +65,7 @@ var DiscoveryScreen = React.createClass({
         <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
             onClick={this.closeDiscoveryPanel} style={InlineStyle.discoveryScreenStyle.closeButtonStyle}
             onTouchEnd={this.closeDiscoveryPanel}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
+          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={InlineStyle.defaultScreenStyle.closeButtonStyle}></span>
         </div>
 
       </div>

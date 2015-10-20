@@ -3,6 +3,7 @@
 *********************************************************************/
 var React = require('react'),
   InlineStyle = require('../styles/inlineStyle');
+  Utils = require('../components/utils');
 
 var AdOverlay = React.createClass({
   closeOverlay: function(event) {
@@ -22,6 +23,15 @@ var AdOverlay = React.createClass({
       event.cancelBubble = true; // IE
       this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.OVERLAY);
     }
+  },
+
+  highlight: function(evt) {
+    Utils.highlight(evt.target);
+  },
+
+  removeHighlight: function(evt) {
+    var opacity = "0.6";
+    Utils.removeHighlight(evt.target, opacity);
   },
 
   render: function() {
@@ -53,7 +63,9 @@ var AdOverlay = React.createClass({
         <img src={this.props.overlay} style={overlayImageStyle}></img>
         <div className="adOverlayCloseButton" style={closeButtonStyle} onMouseUp={this.closeOverlay}
           onTouchEnd={this.closeOverlay}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={closeButtonIconStyle}></span>
+          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} onMouseOver={this.highlight}
+            onMouseOut={this.removeHighlight} style={closeButtonIconStyle}>
+          </span>
         </div>
       </div>
     );

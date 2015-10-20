@@ -3,6 +3,10 @@ module.exports = {
     style: {
       width: "100%",
       height: "100%"
+    },
+    closeButtonStyle: {
+      "opacity":"0.6",
+      "color": "#ffffff"
     }
   },
 
@@ -219,6 +223,12 @@ module.exports = {
     },
 
     iconSetting: {},
+    volumeIconSetting: {
+      "opacity": "1",
+      "WebkitFilter": "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))",
+      "filter": "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))",
+      "msFilter": "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')"
+    },
 
     flexibleSpace: {
       "flex": "1",
@@ -531,7 +541,7 @@ module.exports = {
       right: "35px",
       height: "15px",
       width: "15px",
-      color: "#afafaf",
+      color: "#ffffff",
       textAlign: "center",
       lineHeight: "15px"
     }
@@ -714,7 +724,7 @@ module.exports = {
       position: "absolute",
       right: "17.5",
       top: "17.5",
-      color: "lightgray",
+      color: "#ffffff",
       cursor: "pointer"
     }
   },
@@ -813,21 +823,19 @@ module.exports = {
       height: "28px",
       width: "28px",
       top: "0px",
-      right: "0px",
-      backgroundColor: "rgb(0,0,0)",
-      opacity: 0.5
+      right: "0px"
     },
 
     closeButtonIconStyle: {
       position: "absolute",
       fontSize: "8px",
-      color: "rgb(255,255,255)",
-      backgroundColor: "transparent",
       top: "50%",
       left: "50%",
       WebkitTransform: "translate(-50%, -50%)",
       msTransform: "translate(-50%, -50%)",
-      transform: "translate(-50%, -50%)"
+      transform: "translate(-50%, -50%)",
+      color: "#ffffff",
+      opacity: "0.6"
     }
   },
 
@@ -843,7 +851,6 @@ module.exports = {
       position: "absolute",
       right: "35px",
       top: "35px",
-      color: "lightgray",
       cursor: "pointer"
     },
 
@@ -1202,8 +1209,7 @@ module.exports = {
       "left": "0",
       "width": "100%",
       "height": "100%",
-      "opacity": "0.7",
-      "backgroundColor": "black"
+      "background": "rgba(0, 0, 0, 0.7)"
     },
 
     buttonListStyle: {
@@ -1229,22 +1235,22 @@ module.exports = {
 
     buttonStyle: {
       "height": "100%",
-      "color": "rgba(255, 255, 255, 0.6)",
       "fontWeight": "bold",
-      "fontSize": "18",
+      "fontSize": "30px",
       "textAlign": "center",
-      "paddingLeft": "8px",
-      "paddingRight": "8px",
+      "paddingLeft": "13px",
+      "paddingRight": "13px",
       "margin": "0 auto",
       "opacity": "1",
       "cursor": "pointer"
     },
 
+    iconStyle: {},
+
     closeButtonStyle: {
       "position": "absolute",
-      "top": "17.5",
-      "right": "17.5",
-      "color": "lightgray",
+      "top": "35",
+      "right": "35",
       "cursor": "pointer"
     }
   },

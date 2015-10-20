@@ -38,14 +38,6 @@ var MoreOptionsScreen = React.createClass({
     }
   },
 
-  highlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
-  },
-
-  removeHighlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
-  },
-
   render: function() {
     return (
       <div className="MoreOptionsScreen" style={{height: "100%", width: "100%"}}>

@@ -40,11 +40,12 @@ var ShareScreen = React.createClass({
   },
 
   highlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
+    Utils.highlight(evt.target);
   },
 
   removeHighlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
+    var opacity = "0.6";
+    Utils.removeHighlight(evt.target, opacity);
   },
 
   render: function() {
@@ -53,7 +54,7 @@ var ShareScreen = React.createClass({
         <SharePanel {...this.props}/>
         <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
           onClick={this.closeSharePanel} onTouchEnd={this.closeSharePanel} style={InlineStyle.shareScreenStyle.closeButton}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
+          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={InlineStyle.defaultScreenStyle.closeButtonStyle}></span>
         </div>
       </div>
     );

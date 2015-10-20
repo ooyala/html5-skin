@@ -10,7 +10,8 @@ var ControlBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
-      currentVolumeHead: 0
+      currentVolumeHead: 0,
+      mouseOverVolume: false
     };
 
   },
@@ -172,11 +173,20 @@ var ControlBar = React.createClass({
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
-    evt.target.style.opacity = "1.0";
+    Utils.highlight(evt.target);
   },
 
   removeHighlight: function(evt) {
-    evt.target.style.opacity = this.props.skinConfig.controlBar.iconStyle.opacity;
+    var opacity = this.props.skinConfig.controlBar.iconStyle.opacity;
+    Utils.removeHighlight(evt.target, opacity);
+  },
+
+  volumeHighlight:function() {
+    this.setState({mouseOverVolume: true});
+  },
+
+  volumeRemoveHighlight:function() {
+    this.setState({mouseOverVolume: false});
   },
 
   populateControlBar: function() {
@@ -200,11 +210,13 @@ var ControlBar = React.createClass({
     for (var i=0; i<10; i++) {
       //create each volume tick separately
       var turnedOn = this.props.controller.state.volumeState.volume >= (i+1) / 10;
+      var highlighted = this.state.mouseOverVolume;
       var singleBarStyle = Utils.clone(InlineStyle.controlBarStyle.volumeBarStyle);
       singleBarStyle.backgroundColor = (turnedOn ?
-        "rgba(67, 137, 255, 0.6)" : "rgba(255, 255, 255, 0.6)");
+        (highlighted?"rgba(67, 137, 255, 1)":"rgba(67, 137, 255, 0.6)") : (highlighted?"rgba(255, 255, 255, 1)":"rgba(255, 255, 255, 0.6)"));
       //we store which value the tick correlates to via a data attribute on the element
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
+        onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}
         onClick={this.handleVolumeClick} onTouchEnd={this.handleVolumeClick}></span>);
     }
 
@@ -230,6 +242,7 @@ var ControlBar = React.createClass({
     }
 
     var iconSetting = Utils.extend(InlineStyle.controlBarStyle.iconSetting, this.props.skinConfig.controlBar.iconStyle);
+    var volumeIconSetting = Utils.extend(InlineStyle.controlBarStyle.volumeIconSetting, this.props.skinConfig.controlBar.iconStyle);
     var durationSetting = Utils.extend(InlineStyle.controlBarStyle.durationIndicatorSetting, {color: this.props.skinConfig.controlBar.iconStyle.color});
 
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
@@ -237,6 +250,20 @@ var ControlBar = React.createClass({
 
     // TODO: Update when implementing localization
     var liveText = "LIVE";
+
+    var volumeBarStyle = InlineStyle.controlBarStyle.volumeBarStyle;
+    if (this.state.mouseOverVolume) {
+      volumeIconSetting.opacity = "1";
+      volumeIconSetting.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
+      volumeIconSetting.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
+      volumeIconSetting.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
+    }
+    else {
+      volumeIconSetting.opacity = this.props.skinConfig.controlBar.iconStyle.opacity;
+      volumeIconSetting.WebkitFilter = "";
+      volumeIconSetting.filter = "";
+      volumeIconSetting.msFilter = "";
+    }
 
     var controlItemTemplates = {
       "playPause": <div className="playPause" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
@@ -251,9 +278,9 @@ var ControlBar = React.createClass({
       </div>,
 
       "volume": <div className="volume" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
-        <span className={muteClass} style={iconSetting}
+        <span className={muteClass} style={volumeIconSetting}
           onClick={this.handleVolumeIconClick} onTouchEnd={this.handleVolumeIconClick}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}>
         </span>
         {volumeControls}
       </div>,
@@ -264,10 +291,11 @@ var ControlBar = React.createClass({
 
       "flexibleSpace": <div className="flexibleSpace" style={InlineStyle.controlBarStyle.flexibleSpace}></div>,
 
-      "moreOptions": <div className="moreOptions" style={InlineStyle.controlBarStyle.controlBarItemSetting}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}
-        onTouchEnd={this.handleMoreOptionsClick}>
-        <span className={this.props.skinConfig.icons.ellipsis.fontStyleClass} style={iconSetting}></span>
+      "moreOptions": <div className="moreOptions" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
+        <span className={this.props.skinConfig.icons.ellipsis.fontStyleClass} style={iconSetting}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}
+          onTouchEnd={this.handleMoreOptionsClick}>
+        </span>
       </div>,
 
       "quality": <div className="quality" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
@@ -387,6 +415,7 @@ var ControlBar = React.createClass({
       0 : -1*InlineStyle.controlBarStyle.controlBarSetting.height);
     InlineStyle.controlBarStyle.durationIndicatorSetting.lineHeight = controlBarHeight + "px";
     InlineStyle.controlBarStyle.iconSetting.lineHeight = controlBarHeight + "px";
+    InlineStyle.controlBarStyle.volumeIconSetting.lineHeight = controlBarHeight + "px";
     InlineStyle.controlBarStyle.volumeBarStyle.lineHeight = controlBarHeight + "px";
   },
 
@@ -399,6 +428,7 @@ var ControlBar = React.createClass({
       0 : -1*InlineStyle.controlBarStyle.controlBarSetting.height);
     InlineStyle.controlBarStyle.durationIndicatorSetting.lineHeight = constantControlBarHeight + "px";
     InlineStyle.controlBarStyle.iconSetting.lineHeight = constantControlBarHeight + "px";
+    InlineStyle.controlBarStyle.volumeIconSetting.lineHeight = constantControlBarHeight + "px";
     InlineStyle.controlBarStyle.volumeBarStyle.lineHeight = constantControlBarHeight + "px";
   },
 
