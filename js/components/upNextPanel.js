@@ -40,8 +40,6 @@ var UpNextPanel = React.createClass({
       //we need to make sure only one actually does the work
 
       console.log("Up next panel close button clicked");
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
       this.props.controller.upNextDismissButtonClicked();
     }
   },
@@ -52,8 +50,6 @@ var UpNextPanel = React.createClass({
       //we need to make sure only one actually does the work
 
       console.log("Up next panel start button clicked");
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
 
       // Use the same way as sending out the click event on discovery content
       var eventData = {
