@@ -172,11 +172,14 @@
   content: "u";
 }
 /* WebVTT cues */
-::cue {
-  font-size: 1.4em;
-  color:#FFFFE6;
-  background-color:transparent;
+video::cue {
+  font: 16px/7 Arial, Helvetica, sans-serif;
+  color: #fff !important;
+  background:transparent;
   white-space:normal;
   text-shadow: 1px 1px 2px black;
-  line-height: 1.8em;
+}
+/* Safari Live Stream */
+video::-webkit-media-text-track-container {
+  margin-bottom: 60px !important;
 }
