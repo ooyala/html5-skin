@@ -236,7 +236,7 @@ var ControlBar = React.createClass({
     var watermarkImageStyle = InlineStyle.controlBarStyle.watermarkImageStyle;
 
     // TODO: Update when implementing localization
-    var liveText = "LIVE";
+    var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
 
     var controlItemTemplates = {
       "playPause": <div className="playPause" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
