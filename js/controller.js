@@ -38,6 +38,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "seeking": false,
       "queuedPlayheadUpdate": null,
       "accessibilityControlsEnabled": false,
+      "duration": 0,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -187,6 +188,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
       // So we only need to update the playhead for ad screen.
       if (this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN ) {
+        this.state.duration = duration;
         if (this.skin.props.skinConfig.upNextScreen.showUpNext) {
           if (!Utils.isIPhone()){//no UpNext for iPhone
             this.showUpNextScreenWhenReady(currentPlayhead, duration);
@@ -287,7 +289,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       } else {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
       }
-      this.skin.updatePlayhead(this.state.contentTree.duration/1000, this.state.contentTree.duration/1000, this.state.contentTree.duration/1000);
+      this.skin.updatePlayhead(this.state.duration, this.state.duration, this.state.duration);
       this.state.playerState = CONSTANTS.STATE.END;
       this.renderSkin();
     },
