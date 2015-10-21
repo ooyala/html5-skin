@@ -204,7 +204,12 @@ var ControlBar = React.createClass({
       this.props.skinConfig.icons.compress.fontStyleClass : this.props.skinConfig.icons.expand.fontStyleClass;
 
     var totalTime = 0;
-    totalTime = Utils.formatSeconds(this.props.duration);
+    if (this.props.duration == null || typeof this.props.duration == 'undefined' || this.props.duration == ""){
+      totalTime = Utils.formatSeconds(0);
+    }
+    else {
+      totalTime = Utils.formatSeconds(this.props.duration);
+    }
 
     var volumeBars = [];
     for (var i=0; i<10; i++) {
