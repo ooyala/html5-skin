@@ -92,8 +92,8 @@ var MoreOptionsPanel = React.createClass({
     var fullscreenClass = (this.props.fullscreen) ?
       this.props.skinConfig.icons.compress.fontStyleClass : this.props.skinConfig.icons.expand.fontStyleClass;
 
-    InlineStyle.MoreOptionsScreenStyle.buttonStyle.fontSize = this.props.skinConfig.moreOptions.iconSize+"px";
-    var iconSetting = Utils.extend(InlineStyle.MoreOptionsScreenStyle.iconStyle, this.props.skinConfig.moreOptions.iconStyle);
+    InlineStyle.MoreOptionsScreenStyle.buttonStyle.fontSize = this.props.skinConfig.moreOptionsScreen.iconSize+"px";
+    var iconSetting = Utils.extend(InlineStyle.MoreOptionsScreenStyle.iconStyle, this.props.skinConfig.moreOptionsScreen.iconStyle);
     var optionsItemsTemplates = {
       "discovery": <div className="discovery" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}
         onClick={this.handleDiscoveryClick} onTouchEnd={this.handleDiscoveryClick}>
@@ -154,7 +154,7 @@ var MoreOptionsPanel = React.createClass({
       }
 
       //do not show CC button if no CC available
-      if (!this.props.controller.state.ccOptions.availableLanguages && (collapsedMoreOptionsItems[i].name === "closedCaption")){
+      if (!this.props.controller.state.closedCaptionOptions.availableLanguages && (collapsedMoreOptionsItems[i].name === "closedCaption")){
         continue;
       }
       moreOptionsItems.push(optionsItemsTemplates[collapsedMoreOptionsItems[i].name]);

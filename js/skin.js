@@ -41,13 +41,13 @@ var Skin = React.createClass({
   },
 
   componentWillMount: function() {
-    if (this.props.skinConfig.ccOptions){
-         this.props.controller.state.ccOptions.language = (this.props.skinConfig.ccOptions.defaultLanguage ? this.props.skinConfig.ccOptions.defaultLanguage : "en" );
-         this.props.controller.state.ccOptions.enabled = (this.props.skinConfig.ccOptions.defaultEnabled ? this.props.skinConfig.ccOptions.defaultEnabled : false);
+    if (this.props.skinConfig.closedCaptionOptions){
+         this.props.controller.state.closedCaptionOptions.language = (this.props.skinConfig.closedCaptionOptions.defaultLanguage ? this.props.skinConfig.closedCaptionOptions.defaultLanguage : "en" );
+         this.props.controller.state.closedCaptionOptions.enabled = (this.props.skinConfig.closedCaptionOptions.defaultEnabled ? this.props.skinConfig.closedCaptionOptions.defaultEnabled : false);
     }
     else {
-      this.props.controller.state.ccOptions.language = "en";
-      this.props.controller.state.ccOptions.enabled = false;
+      this.props.controller.state.closedCaptionOptions.language = "en";
+      this.props.controller.state.closedCaptionOptions.enabled = false;
     }
   },
 
@@ -185,7 +185,7 @@ var Skin = React.createClass({
         return (
           <ClosedCaptionScreen {...this.props}
             contentTree={this.state.contentTree}
-            ccOptions = {this.props.ccOptions}
+            closedCaptionOptions = {this.props.closedCaptionOptions}
             currentPlayhead={this.state.currentPlayhead}
             duration={this.state.duration}
             buffered={this.state.buffered}

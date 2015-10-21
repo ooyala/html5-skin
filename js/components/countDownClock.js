@@ -40,7 +40,7 @@ var CountDownClock = React.createClass({
       clockRadius: tmpClockRadius,
       clockContainerWidth: tmpClockContainerWidth,
       counterInterval: 0.05,
-      fraction: tmpFraction, // fraction = 2 / (skinConfig.upNextScreen.timeToShow) so "fraction * pi" is how much we want to fill the circle for each second
+      fraction: tmpFraction, // fraction = 2 / (skinConfig.upNext.timeToShow) so "fraction * pi" is how much we want to fill the circle for each second
       remainSeconds: tmpRemainSeconds
     };
   },

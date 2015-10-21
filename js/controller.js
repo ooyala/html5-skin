@@ -47,7 +47,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "skipAdButtonEnabled": false
       },
 
-      "ccOptions": {
+      "closedCaptionOptions": {
         "enabled": null,
         "language": null,
         "availableLanguages": null
@@ -148,7 +148,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         $.extend(true, data, params.skin.inline);
 
         this.skin = React.render(
-          React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, ccOptions: this.state.ccOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + elementId + " .player_skin")
+          React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + elementId + " .player_skin")
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
@@ -190,7 +190,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
       // So we only need to update the playhead for ad screen.
       if (this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN ) {
-        if (this.skin.props.skinConfig.upNextScreen.showUpNext) {
+        if (this.skin.props.skinConfig.upNext.showUpNext) {
           if (!Utils.isIPhone()){//no UpNext for iPhone
             this.showUpNextScreenWhenReady(currentPlayhead, duration);
           }
@@ -210,7 +210,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     showUpNextScreenWhenReady: function(currentPlayhead, duration) {
       var timeToShow = 0;
-      var stringTimeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
+      var stringTimeToShow = this.skin.props.skinConfig.upNext.timeToShow;
 
       if (stringTimeToShow.indexOf('%') === -1){
         // time to show is based on seconds from the end
@@ -413,13 +413,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onClosedCaptionsInfoAvailable: function(event, languages) {
-      this.state.ccOptions.availableLanguages = languages;
+      this.state.closedCaptionOptions.availableLanguages = languages;
 
       if (languages.languages.length == 1){//if only one language, set it as default language
-        this.state.ccOptions.language = languages.languages[0];
+        this.state.closedCaptionOptions.language = languages.languages[0];
       }
 
-      if (this.state.ccOptions.enabled){
+      if (this.state.closedCaptionOptions.enabled){
         this.setClosedCaptionsLanguage();
       }
     },
@@ -663,8 +663,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     setClosedCaptionsLanguage: function(){
-      var language = this.state.ccOptions.enabled ? this.state.ccOptions.language : "";
-      var mode = this.state.ccOptions.enabled ? "showing" : "disabled";
+      var language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : "";
+      var mode = this.state.closedCaptionOptions.enabled ? "showing" : "disabled";
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
     },
 
@@ -695,13 +695,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onClosedCaptionLanguageChange: function(language) {
-      this.state.ccOptions.language = language;
+      this.state.closedCaptionOptions.language = language;
       this.setClosedCaptionsLanguage();
       this.renderSkin();
     },
 
     toggleClosedCaptionEnabled: function() {
-      this.state.ccOptions.enabled = !this.state.ccOptions.enabled;
+      this.state.closedCaptionOptions.enabled = !this.state.closedCaptionOptions.enabled;
       this.setClosedCaptionsLanguage();
       this.renderSkin();
     },
