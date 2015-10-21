@@ -249,7 +249,7 @@ var ControlBar = React.createClass({
     var watermarkImageStyle = InlineStyle.controlBarStyle.watermarkImageStyle;
 
     // TODO: Update when implementing localization
-    var liveText = "LIVE";
+    var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
 
     var volumeBarStyle = InlineStyle.controlBarStyle.volumeBarStyle;
     if (this.state.mouseOverVolume) {
@@ -272,9 +272,11 @@ var ControlBar = React.createClass({
         </span>
       </div>,
 
-      "live": <div className="live" style={InlineStyle.controlBarStyle.liveItemStyle}>
-        <div style={InlineStyle.controlBarStyle.liveCircleStyle}></div>
-        <div style={InlineStyle.controlBarStyle.liveTextStyle}>{liveText}</div>
+      "live": <div className="live" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
+        <div style={InlineStyle.controlBarStyle.liveItemStyle}>
+          <div style={InlineStyle.controlBarStyle.liveCircleStyle}></div>
+          <span style={InlineStyle.controlBarStyle.liveTextStyle}> {liveText}</span>
+        </div>
       </div>,
 
       "volume": <div className="volume" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
@@ -430,6 +432,8 @@ var ControlBar = React.createClass({
     InlineStyle.controlBarStyle.iconSetting.lineHeight = constantControlBarHeight + "px";
     InlineStyle.controlBarStyle.volumeIconSetting.lineHeight = constantControlBarHeight + "px";
     InlineStyle.controlBarStyle.volumeBarStyle.lineHeight = constantControlBarHeight + "px";
+    InlineStyle.controlBarStyle.liveItemStyle.lineHeight =
+      (constantControlBarHeight - parseInt(InlineStyle.controlBarStyle.liveCircleStyle.height)) + "px";
   },
 
 
