@@ -139,6 +139,16 @@ module.exports = {
       backgroundColor: "black",
       opacity: "0",
       transition: "opacity 1s"
+    },
+    videoBlur: {
+      "-webkit-filter": "blur(3px)",
+      "-moz-filter": "blur(3px)",
+      "filter": "blur(3px)"
+    },
+    videoUnblur: {
+      "-webkit-filter": "",
+      "-moz-filter": "",
+      "filter": ""
     }
   },
 

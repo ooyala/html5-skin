@@ -5,7 +5,8 @@ var React = require('react'),
     Utils = require('./components/utils'),
     CONSTANTS = require('./constants/constants'),
     AccessibilityControls = require('./components/accessibilityControls'),
-    Skin = require('./skin');
+    Skin = require('./skin'),
+    InlineStyle = require('./styles/inlineStyle');
 
 OO.plugin("Html5Skin", function (OO, _, $, W) {
   //Check if the player is at least v4. If not, the skin cannot load.
@@ -39,6 +40,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "queuedPlayheadUpdate": null,
       "accessibilityControlsEnabled": false,
       "duration": 0,
+      "mainVideoElement": null,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -130,6 +132,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPlayerCreated: function (event, elementId, params) {
       $("#" + elementId + " .innerWrapper").append("<div class='player_skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
       $("#" + elementId + " .player_skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
+      this.state.mainVideoElement = $("#" + elementId + " .video");
 
       var tmpLocalizableStrings = {};
 
@@ -156,7 +159,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isMobile = Utils.isMobile();
 
       if (Utils.isIE10()) {
-        $("#" + elementId + " .video").attr("controls", "controls");
+        this.state.mainVideoElement.attr("controls", "controls");
       }
 
       this.externalPluginSubscription();
@@ -240,6 +243,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           //Safari only can set cc when the video is playing, not before
           this.setClosedCaptionsLanguage();
         }
+        this.state.mainVideoElement.css(InlineStyle.pauseScreenStyle.videoUnblur);
         this.renderSkin();
       }
     },
@@ -267,6 +271,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
+        this.state.mainVideoElement.css(InlineStyle.pauseScreenStyle.videoBlur);
         this.renderSkin();
       }
     },
