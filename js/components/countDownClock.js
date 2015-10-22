@@ -151,7 +151,7 @@ var CountDownClock = React.createClass({
   },
 
   startUpNextVideo: function() {
-    console.log("startUpNext");
+    OO.log("startUpNext");
     var eventData = {
       "clickedVideo" : this.props.upNextInfo.upNextData,
       "custom" : {"source": CONSTANTS.SCREEN.UP_NEXT_SCREEN}
