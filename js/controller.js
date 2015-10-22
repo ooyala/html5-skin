@@ -261,7 +261,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         if (Utils.isIPhone()){//pause screen for iPhone is the same as start screen
           this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
         } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
-          console.log("Should display DISCOVERY_SCREEN on pause");
+          OO.log("Should display DISCOVERY_SCREEN on pause");
           this.sendDiscoveryDisplayEvent("pauseScreen");
           this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
         } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
@@ -286,7 +286,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.upNextInfo.delayedContentData = null;
       }
       else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery") {
-        console.log("Should display DISCOVERY_SCREEN on end");
+        OO.log("Should display DISCOVERY_SCREEN on end");
         this.sendDiscoveryDisplayEvent("endScreen");
         this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
       } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "share") {
@@ -302,7 +302,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onSeeked: function(event) {
       this.state.seeking = false;
       if (this.state.queuedPlayheadUpdate) {
-        console.log("popping queued update");
+        OO.log("popping queued update");
         this.skin.updatePlayhead.apply(this.skin, this.state.queuedPlayheadUpdate);
         this.state.queuedPlayheadUpdate = null;
         this.renderSkin();
@@ -319,19 +319,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     *********************************************************************/
 
     onAdsPlayed: function(event) {
-      console.log("onAdsPlayed is called from event = " + event);
+      OO.log("onAdsPlayed is called from event = " + event);
       this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       this.renderSkin();
     },
 
     onAdPodStarted: function(event, numberOfAds) {
-      console.log("onAdPodStarted is called from event = " + event + "with " + numberOfAds + "ads");
+      OO.log("onAdPodStarted is called from event = " + event + "with " + numberOfAds + "ads");
       this.state.currentAdsInfo.numberOfAds = numberOfAds;
       this.renderSkin();
     },
 
     onWillPlaySingleAd: function(event, adItem) {
-      console.log("onWillPlaySingleAd is called with adItem = " + adItem);
+      OO.log("onWillPlaySingleAd is called with adItem = " + adItem);
       if (adItem !== null) {
         this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
         this.state.isPlayingAd = true;
@@ -343,19 +343,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onSingleAdPlayed: function(event) {
-      console.log("onSingleAdPlayed is called");
+      OO.log("onSingleAdPlayed is called");
       this.state.isPlayingAd = false;
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
     },
 
     onWillPauseAds: function(event) {
-      console.log("onWillPauseAds is called");
+      OO.log("onWillPauseAds is called");
       this.state.playerState = CONSTANTS.STATE.PAUSE;
       this.renderSkin();
     },
 
     onWillResumeAds: function(event) {
-      console.log("onWillResumeAds is called");
+      OO.log("onWillResumeAds is called");
       if (this.state.currentAdsInfo.currentAdItem !== null) {
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
@@ -369,14 +369,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onSkipAdClicked: function(event) {
-      console.log("onSkipAdClicked is called");
+      OO.log("onSkipAdClicked is called");
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
       this.mb.publish(OO.EVENTS.SKIP_AD);
       this.renderSkin();
     },
 
     onAdsClicked: function(source) {
-      console.log("on ads clicked is called", source);
+      OO.log("on ads clicked is called", source);
       this.mb.publish(OO.EVENTS.ADS_CLICKED, {"source": source});
     },
 
@@ -431,7 +431,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onRelatedVideosFetched: function(event, relatedVideos) {
-      console.log("onRelatedVideosFetched is called");
+      OO.log("onRelatedVideosFetched is called");
       this.state.discoveryData = {relatedVideos: relatedVideos.videos};
       this.state.upNextInfo.upNextData = relatedVideos.videos[0];
       this.renderSkin();
@@ -539,7 +539,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
             this.state.playerState = CONSTANTS.STATE.PAUSE;
             this.renderSkin();
-            console.log("finished toggleDiscoveryScreen");
+            OO.log("finished toggleDiscoveryScreen");
           }.bind(this), 1);
           break;
         case CONSTANTS.STATE.PAUSE:

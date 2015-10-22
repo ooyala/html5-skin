@@ -39,7 +39,7 @@ var UpNextPanel = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
-      console.log("Up next panel close button clicked");
+      OO.log("Up next panel close button clicked");
       this.props.controller.upNextDismissButtonClicked();
     }
   },
@@ -49,7 +49,7 @@ var UpNextPanel = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
-      console.log("Up next panel start button clicked");
+      OO.log("Up next panel start button clicked");
 
       // Use the same way as sending out the click event on discovery content
       var eventData = {
