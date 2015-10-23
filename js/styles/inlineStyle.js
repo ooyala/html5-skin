@@ -488,6 +488,11 @@ module.exports = {
       resize: "none"
     },
 
+    emailTable: {
+      color: "white",
+      margin: "0 auto"
+    },
+
     emailSendButton: {
       backgroundColor:"#4389ff",
       border: "0px none transparent",
