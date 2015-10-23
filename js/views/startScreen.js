@@ -115,7 +115,7 @@ var StartScreen = React.createClass({
     }
     else {
       // Default configuration
-      posterStyle.backgroundImage = "url('" + posterImageUrl + "')";
+      posterStyle.backgroundImage = "linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%), url('" + posterImageUrl + "')";
       return (
         <div className="startScreen" onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
           <div className="startScreenPoster" style={screenStyle.posterStyle}></div>
