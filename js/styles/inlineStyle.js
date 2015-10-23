@@ -18,13 +18,21 @@ module.exports = {
       overflow: "hidden",
       background: "black"
     },
+    gradient: {
+      width: "100%",
+      height: "100%",
+      backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.3))"
+    },
+
     posterStyle: {
       height: "100%",
       width: "100%",
       position: "absolute",
       backgroundSize: "contain",
       backgroundRepeat: "no-repeat",
-      backgroundPosition: "center"
+      backgroundPosition: "center",
+
+     
     },
     infoPanel: {
       style: {
