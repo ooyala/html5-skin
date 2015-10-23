@@ -33,7 +33,7 @@ module.exports = {
       },
       title: {
         style: {
-          fontSize: "32px",
+          fontSize: "20pt",
           fontWeight: "bold",
           maxWidth: "70%",
           whiteSpace: "nowrap",
@@ -45,7 +45,7 @@ module.exports = {
       },
       description: {
         style: {
-          fontSize: "24",
+          fontSize: "15pt",
           maxWidth: "70%",
           overflow: "visible",
           color: "inherit"
@@ -101,7 +101,7 @@ module.exports = {
       },
       title: {
         style: {
-          fontSize: "32px",
+          fontSize: "20pt",
           fontWeight: "bold",
           maxWidth: "70%",
           whiteSpace: "nowrap",
@@ -113,7 +113,7 @@ module.exports = {
       },
       description: {
         style: {
-          fontSize: "24",
+          fontSize: "15pt",
           maxWidth: "70%",
           overflow: "visible",
           color: "inherit"
@@ -267,8 +267,9 @@ module.exports = {
       "backgroundClip": "content-box",
       "position": "relative",
       "width": "4px",
-      "height": "18px",
-      "paddingRight": "3px"
+      "height": "15px",
+      "paddingRight": "3px",
+      "paddingBottom": "1px"
     },
 
     watermarkImageStyle: {
@@ -871,9 +872,8 @@ module.exports = {
     switchStyle: {
       cursor: "pointer",
       marginTop: "35px",
-      height: "28px",
-      width: "140px",
-      fontSize: "20pt",
+      height: "21px",
+      width: "105px",
       color: "#FFFFFF",
       position: "relative"
     },
@@ -915,14 +915,18 @@ module.exports = {
       position: "absolute",
       right: "0",
       display: "inline-block",
-      color: "grey"
+      color: "grey",
+      fontSize: "15pt",
+      fontFamily: "'Roboto', sans-serif"
     },
 
     offStyle: {
       position: "absolute",
       display: "inline-block",
       left: "0",
-      color: "grey"
+      color: "grey",
+      fontSize: "15pt",
+      fontFamily: "'Roboto', sans-serif"
     },
 
     itemStyle: {
@@ -1213,10 +1217,10 @@ module.exports = {
 
     buttonListStyle: {
       "position": "absolute",
-      "bottom": "0",
-      "left": "30%",
-      "right": "30%",
-      "width": "40%",
+      "top": "50%",
+      "left": "50%",
+      "-webkit-transform": "translate(-50%, -50%)",
+      "transform": "translate(-50%, -50%)",
       "height": "32",
       "opacity": "0",
       "listStyle": "none",
