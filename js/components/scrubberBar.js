@@ -7,6 +7,7 @@ var React = require('react'),
 var ScrubberBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
+    this.lastClickTime = 0;
     return {
       startingPlayheadX: 0,
       scrubbingPlayheadX: 0,
@@ -109,6 +110,12 @@ var ScrubberBar = React.createClass({
       evt.stopPropagation(); // W3C
       evt.cancelBubble = true; // IE
 
+      //prevent double clicks from causing undesired seek behavior
+      if ((Date.now() - this.lastClickTime) < 300) {
+        return;
+      }
+
+      this.lastClickTime = Date.now();
       this.props.controller.state.accessibilityControlsEnabled = true;
       if (this.isMobile){
         evt = evt.nativeEvent;
