@@ -133,7 +133,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $("#" + elementId + " .innerWrapper").append("<div class='player_skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
       $("#" + elementId + " .player_skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
       this.state.mainVideoElement = $("#" + elementId + " .video");
-      OO.log("xenia main video element", this.state.mainVideoElement);
 
       var tmpLocalizableStrings = {};
 
@@ -312,7 +311,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlaybackReady: function(event) {
       this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
-      this.state.mainVideoElement.css(InlineStyle.startScreenStyle.videoGradient);
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
