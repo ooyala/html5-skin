@@ -102,10 +102,10 @@ var AdPanel = React.createClass({
     adTopBarItems.push(flexibleSpaceDiv);
 
     // Learn more
-    if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.clickUrl)) {
+    if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.hasClickUrl)) {
       var learnMoreText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
       var learnMoreClass = this.props.skinConfig.icons.learn.fontStyleClass;
-      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" onButtonClicked={this.handleLearnMoreButtonClick} 
+      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" onButtonClicked={this.handleLearnMoreButtonClick}
                                 style={InlineStyle.adScreenStyle.learnMoreButtonStyle} data={learnMoreText}
                                 icon ={<span className={learnMoreClass} style={InlineStyle.adScreenStyle.learnMoreButtonStyle.icon}></span>}
                                 itemClassName="learnMore"/>;
