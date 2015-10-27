@@ -321,6 +321,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onAdsPlayed: function(event) {
       OO.log("onAdsPlayed is called from event = " + event);
       this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+      this.state.duration = 0;
+      this.skin.updatePlayhead(0, 0, 0);
       this.renderSkin();
     },
 
