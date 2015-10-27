@@ -65,9 +65,9 @@ var ClosedCaptionScreen = React.createClass({
   render: function() {
     return (
       <div style={{height: "100%", width: "100%"}}>
-        <ClosedCaptionPanel {...this.props} ccOptions = {this.props.ccOptions} clientWidth = {this.state.clientWidth} clientHeight = {this.state.clientHeight}/>
+        <ClosedCaptionPanel {...this.props} closedCaptionOptions = {this.props.closedCaptionOptions} clientWidth = {this.state.clientWidth} clientHeight = {this.state.clientHeight}/>
 
-        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+        <div className="closeButton" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
           onClick={this.closeClosedCaptionPanel} style={InlineStyle.closedCaptionScreenStyles.closeButtonStyle}
           onTouchEnd={this.closeClosedCaptionPanel}>
           <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={InlineStyle.defaultScreenStyle.closeButtonStyle}></span>

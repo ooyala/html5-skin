@@ -99,11 +99,11 @@ var ClosedCaptionPanel = React.createClass({
   render: function(){
     // this.setResponsiveStyle(this.props.clientWidth); //Leave this for later when we use the resizing
     var numRows = this.calculateNumberOfRows(this.props.clientWidth, this.props.clientHeight);
-    var ccOptionsString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CC_OPTIONS, this.props.localizableStrings);
+    var closedCaptionOptionsString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CC_OPTIONS, this.props.localizableStrings);
     return (
       <div style = {ccStyle.screenStyle}>
         <div style = {ccStyle.innerPanelStyle}>
-          <div style = {ccStyle.captionStyle}>{ccOptionsString} <span className={this.props.skinConfig.icons.cc.fontStyleClass} style={ccStyle.captionIconStyle}></span></div>
+          <div style = {ccStyle.captionStyle}>{closedCaptionOptionsString} <span className={this.props.skinConfig.icons.cc.fontStyleClass} style={ccStyle.captionIconStyle}></span></div>
           <OnOffSwitch {...this.props} />
           <LanguageTabContent {...this.props} numRows = {numRows} />
           <CCPreviewPanel {...this.props} />
@@ -136,21 +136,21 @@ var OnOffSwitch = React.createClass({
   },
 
   toggleCCStyles: function(){
-    ccStyle.switch.background = this.props.ccOptions.enabled ? ccStyle.switch.onBackground : "grey";
-    ccStyle.switchThumb.left = this.props.ccOptions.enabled ? "" : "0";
-    ccStyle.switchThumb.right = this.props.ccOptions.enabled ? "0" : "";
+    ccStyle.switch.background = this.props.closedCaptionOptions.enabled ? ccStyle.switch.onBackground : "grey";
+    ccStyle.switchThumb.left = this.props.closedCaptionOptions.enabled ? "" : "0";
+    ccStyle.switchThumb.right = this.props.closedCaptionOptions.enabled ? "0" : "";
 
-    var elementColor = this.props.ccOptions.enabled ? "white" : "grey";
+    var elementColor = this.props.closedCaptionOptions.enabled ? "white" : "grey";
     ccStyle.itemStyle.color = elementColor;
-    ccStyle.itemStyle.cursor = this.props.ccOptions.enabled ? "pointer" : "default";
+    ccStyle.itemStyle.cursor = this.props.closedCaptionOptions.enabled ? "pointer" : "default";
     ccStyle.lastColumnItemStyle.color = elementColor;
-    ccStyle.lastColumnItemStyle.cursor = this.props.ccOptions.enabled ? "pointer" : "default";
+    ccStyle.lastColumnItemStyle.cursor = this.props.closedCaptionOptions.enabled ? "pointer" : "default";
     ccStyle.CCPreviewTextStyle.color = elementColor;
     ccStyle.CCPreviewCaptionStyle.color = elementColor;
     ccStyle.closedCaptionChevronLeftButtonContainer.color = ccStyle.closedCaptionChevronRightButtonContainer.color = elementColor;
 
     ccStyle.onStyle.color = elementColor;
-    ccStyle.offStyle.color = this.props.ccOptions.enabled ? "grey" : "white";
+    ccStyle.offStyle.color = this.props.closedCaptionOptions.enabled ? "grey" : "white";
 
   },
 
@@ -188,7 +188,7 @@ var LanguageTabContent = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
-      selectedLanguage: this.props.ccOptions.language,
+      selectedLanguage: this.props.closedCaptionOptions.language,
       scrollLeftDistance: 0
     };
   },
@@ -222,7 +222,7 @@ var LanguageTabContent = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
-      if (this.props.ccOptions.enabled){
+      if (this.props.closedCaptionOptions.enabled){
         this.props.controller.onClosedCaptionLanguageChange(language);
       }
     }
@@ -233,7 +233,7 @@ var LanguageTabContent = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
-      if (this.props.ccOptions.enabled){
+      if (this.props.closedCaptionOptions.enabled){
         this.refs.tableLanguageContainer.getDOMNode().scrollLeft += -1*this.calculateScrollDistance();
         this.setState({scrollLeftDistance: this.refs.tableLanguageContainer.getDOMNode().scrollLeft});
       }
@@ -245,7 +245,7 @@ var LanguageTabContent = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
-      if (this.props.ccOptions.enabled){
+      if (this.props.closedCaptionOptions.enabled){
         this.refs.tableLanguageContainer.getDOMNode().scrollLeft += this.calculateScrollDistance();
         this.setState({scrollLeftDistance: this.refs.tableLanguageContainer.getDOMNode().scrollLeft});
       }
@@ -254,7 +254,7 @@ var LanguageTabContent = React.createClass({
 
   setStyle: function(item, j, colnum){
     var style;
-    if (this.props.ccOptions.language == item && this.props.ccOptions.enabled){
+    if (this.props.closedCaptionOptions.language == item && this.props.closedCaptionOptions.enabled){
       if (j == colnum){
         style = ccStyle.lastColumnItemSelectedStyle;
       }
@@ -277,7 +277,7 @@ var LanguageTabContent = React.createClass({
 
   render: function(){
     var table = [];
-    var availableLanguages = this.props.ccOptions.availableLanguages; //getting list of languages
+    var availableLanguages = this.props.closedCaptionOptions.availableLanguages; //getting list of languages
 
     if (availableLanguages.languages.length > 1){//if there is only one element, do not show it at all
       var languageCodes = availableLanguages.languages; // getting an array of all the codes
