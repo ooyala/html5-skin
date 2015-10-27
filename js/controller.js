@@ -192,7 +192,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // So we only need to update the playhead for ad screen.
       if (this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN ) {
         this.state.duration = duration;
-        if (this.skin.props.skinConfig.upNextScreen.showUpNext) {
+        if (this.skin.props.skinConfig.upNext.showUpNext) {
           if (!(Utils.isIPhone() || (Utils.isIos && this.state.fullscreen))){//no UpNext for iPhone or fullscreen iPad
             this.showUpNextScreenWhenReady(currentPlayhead, duration);
           }
