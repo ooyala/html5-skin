@@ -103,6 +103,7 @@ var Skin = React.createClass({
             playerState={this.state.playerState}
             seeking={this.state.seeking}
             upNextInfo={this.state.upNextInfo}
+            authorization={this.state.authorization}
             ref="playScreen" />
         );
       case CONSTANTS.SCREEN.SHARE_SCREEN:
@@ -128,6 +129,7 @@ var Skin = React.createClass({
             fullscreen={this.state.fullscreen}
             seeking={this.state.seeking}
             upNextInfo={this.state.upNextInfo}
+            authorization={this.state.authorization}
             ref="pauseScreen" />
         );
       case CONSTANTS.SCREEN.END_SCREEN:
@@ -142,6 +144,7 @@ var Skin = React.createClass({
             fullscreen={this.state.fullscreen}
             playerState={this.state.playerState}
             seeking={this.state.seeking}
+            authorization={this.state.authorization}
             ref="endScreen" />
         );
       case CONSTANTS.SCREEN.AD_SCREEN:
