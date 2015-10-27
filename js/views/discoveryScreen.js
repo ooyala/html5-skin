@@ -62,7 +62,7 @@ var DiscoveryScreen = React.createClass({
         <DiscoveryPanel
           {...this.props}
           discoveryData={this.props.discoveryData} />
-        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+        <div className="closeButton" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
             onClick={this.closeDiscoveryPanel} style={InlineStyle.discoveryScreenStyle.closeButtonStyle}
             onTouchEnd={this.closeDiscoveryPanel}>
           <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={InlineStyle.defaultScreenStyle.closeButtonStyle}></span>
