@@ -41,6 +41,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "accessibilityControlsEnabled": false,
       "duration": 0,
       "mainVideoElement": null,
+      "elementId": null,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -81,6 +82,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   Html5Skin.prototype = {
     init: function () {
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
+      this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
@@ -153,6 +155,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
+        this.state.elementId = elementId;
         this.renderSkin();
       }, this));
 
@@ -164,6 +167,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.externalPluginSubscription();
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+    },
+
+    onPlayerDestroy: function (event) {
+      var elementId = this.state.elementId;
+      var mountNode = document.querySelector('#' + elementId + ' .player_skin');
+      // remove mounted Skin component
+      React.unmountComponentAtNode(mountNode);
+      this.mb = null;
     },
 
     onAuthorizationFetched: function(event, authorization) {
