@@ -52,7 +52,7 @@ var ShareScreen = React.createClass({
     return (
       <div className="ShareScreen" style={{height: "100%", width: "100%"}}>
         <SharePanel {...this.props}/>
-        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+        <div className="closeButton" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
           onClick={this.closeSharePanel} onTouchEnd={this.closeSharePanel} style={InlineStyle.shareScreenStyle.closeButton}>
           <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={InlineStyle.defaultScreenStyle.closeButtonStyle}></span>
         </div>

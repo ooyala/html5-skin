@@ -75,7 +75,7 @@ var MoreOptionsPanel = React.createClass({
   },
 
   removeHighlight: function(evt) {
-    var opacity = this.props.skinConfig.moreOptions.iconStyle.opacity;
+    var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.opacity;
     Utils.removeHighlight(evt.target, opacity);
   },
 
