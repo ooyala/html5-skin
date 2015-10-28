@@ -207,12 +207,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       } else {
         this.state.queuedPlayheadUpdate = [currentPlayhead, duration, buffered];
       }
-      this.renderSkin();
     },
 
-    showUpNextScreenWhenReady: function(currentPlayhead, duration) {
+    showupNextWhenReady: function(currentPlayhead, duration) {
       var timeToShow = 0;
-      var stringTimeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
+      var stringTimeToShow = this.skin.props.skinConfig.upNext.timeToShow;
 
       if (stringTimeToShow.indexOf('%') === -1){
         // time to show is based on seconds from the end
