@@ -193,7 +193,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN ) {
         this.state.duration = duration;
         if (this.skin.props.skinConfig.upNext.showUpNext) {
-          if (!(Utils.isIPhone() || (Utils.isIos && this.state.fullscreen))){//no UpNext for iPhone or fullscreen iPad
+          if (!(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))){//no UpNext for iPhone or fullscreen iPad
             this.showUpNextScreenWhenReady(currentPlayhead, duration);
           }
         } else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
