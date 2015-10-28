@@ -209,9 +209,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    showupNextWhenReady: function(currentPlayhead, duration) {
+    showUpNextScreenWhenReady: function(currentPlayhead, duration) {
       var timeToShow = 0;
-      var stringTimeToShow = this.skin.props.skinConfig.upNext.timeToShow;
+      var stringTimeToShow = this.skin.props.skinConfig.upNextScreen.timeToShow;
 
       if (stringTimeToShow.indexOf('%') === -1){
         // time to show is based on seconds from the end
