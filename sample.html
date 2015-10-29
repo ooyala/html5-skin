@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="//player.ooyala.com/static/v4/latest/core.min.js"></script>
-  <script src="//player.ooyala.com/static/v4/latest/discovery_api.min.js"></script>
-  <script src="//player.ooyala.com/static/v4/latest/html5-skin/build/html5-skin.min.js"></script>
+  <script src="//localhost:1337/dev/v4/7324f0fcd4f45edacc5646d7a6ae394?debug=true&version=dev"></script>
+  <script src="//localhost:8000/build/html5-skin.min.js"></script>
+  <script src="http://player.ooyala.com/static/v4/staging/freewheel.min.js"></script>
   <link rel="stylesheet" href="//player.ooyala.com/static/v4/latest/html5-skin/assets/styles.css"/>
 </head>
 
@@ -15,11 +15,12 @@
     "playerBrandingId": "26e2e3c1049c4e70ae08a242638b5c40",
     'debug':true,
     "skin": {
-      "config": "//player.ooyala.com/static/v4/latest/html5-skin/config/skin.json"
-    }
+      "config": "config/skin.json"
+    },
+    "freewheel-ads-manager":{"fw_video_asset_id":"Fqa2tmcjrWml7baw9R0-RD5aT-2ku-LJ","html5_ad_server":"http://g1.v.fwmrm.net","html5_player_profile":"90750:ooyala_html5","showInAdControlBar":true}
   };
   OO.ready(function() {
-    window.pp = OO.Player.create('container', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
+    window.pp = OO.Player.create('container', 'RmbHlycTpp3D2ARo5QGzrQa5cMtGSc2m', playerParam);
   });
 </script>
 
