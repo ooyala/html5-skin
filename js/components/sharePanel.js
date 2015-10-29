@@ -171,7 +171,6 @@ var SharePanel = React.createClass({
 
   handleFieldFocus: function(evt) {
     evt.target.style.color = "black";
-    evt.target.value = "";
   },
 
   handleGPlusClick: function(evt) {
