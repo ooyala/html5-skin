@@ -120,7 +120,7 @@ var ScrubberBar = React.createClass({
       if (this.isMobile){
         evt = evt.nativeEvent;
       }
-      var offset = this.isMobile ? evt.changedTouches[0].clientX : evt.clientX - evt.target.getBoundingClientRect().left;
+      var offset = (this.isMobile ? evt.changedTouches[0].clientX : evt.clientX) - evt.target.getBoundingClientRect().left;
       if (evt.target.className.match(/scrubberBarPadding/))
         offset -= CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
       var newPlayheadTime = (offset / (this.props.controlBarWidth - (2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING))) * this.props.duration;
