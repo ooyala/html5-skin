@@ -218,7 +218,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       } else {
         this.state.queuedPlayheadUpdate = [currentPlayhead, duration, buffered];
       }
-      this.renderSkin();
     },
 
     showUpNextScreenWhenReady: function(currentPlayhead, duration) {

@@ -152,8 +152,8 @@ var ScrubberBar = React.createClass({
       (controlBarHeight - scrubberPaddingHeight) :  (-1 * scrubberPaddingHeight));
     InlineStyle.scrubberBarStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
       parseFloat(this.props.duration)) * 100 + "%";
-    InlineStyle.scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
-      parseFloat(this.props.duration)) * 100 + "%";
+    InlineStyle.scrubberBarStyle.playedIndicatorStyle.width = Math.min((parseFloat(this.props.currentPlayhead) /
+      parseFloat(this.props.duration)) * 100, 100) + "%";
     InlineStyle.scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
 
     if (!this.state.transitionedDuringSeek) {
