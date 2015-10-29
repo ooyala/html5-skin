@@ -673,7 +673,8 @@ module.exports = {
       marginTop: "35px",
       height: "120px",
       width: "214px",
-      flexShrink: "0"
+      flexShrink: "0",
+      cursor: "pointer"
     },
 
     discoveryImageWrapperStyle: {
