@@ -123,7 +123,7 @@ var StartScreen = React.createClass({
             <span className={playClass} style={playStyle} aria-hidden="true"></span>
           </div>
           <div className="startScreenInfo" style={screenStyle.infoPanel.style}>
-            {titleMetadata}<div style={{clear: "both"}}></div>
+            {titleMetadata}
             {descriptionMetadata}
           </div>
         </div>
