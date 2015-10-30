@@ -154,7 +154,7 @@ var SharePanel = React.createClass({
       mailToUrl += this.refs.sharePanelTo.getDOMNode().value;
       mailToUrl += "?subject=" + encodeURIComponent(this.refs.sharePanelSubject.getDOMNode().value);
       mailToUrl += "&body=" + encodeURIComponent(this.refs.sharePanelMessage.getDOMNode().value);
-      location.href = mailToUrl;
+      window.open(mailToUrl, '_blank');
     }
   },
 
