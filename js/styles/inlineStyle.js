@@ -49,7 +49,8 @@ module.exports = {
           fontSize: "24",
           maxWidth: "70%",
           overflow: "visible",
-          color: "inherit"
+          color: "inherit",
+          clear: "both"
         }
       }
     },
@@ -117,7 +118,8 @@ module.exports = {
           fontSize: "24",
           maxWidth: "70%",
           overflow: "visible",
-          color: "inherit"
+          color: "inherit",
+          clear: "both"
         }
       }
     },
