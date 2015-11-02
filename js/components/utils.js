@@ -148,7 +148,7 @@ var Utils = {
   },
 
   getLocalizedString: function(language, stringId, localizedStrings) {
-     try {
+    try {
       return localizedStrings[language][stringId];
     } catch (e) {
       return "";
