@@ -142,10 +142,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $.getJSON(params.skin.config, _.bind(function(data) {
         //load language jsons
         data.localization.availableLanguageFile.forEach(function(languageObj){
-          $.getJSON(languageObj.languageFile, function(data) {
+          $.getJSON(languageObj.languageFile, _.bind(function(data) {
             tmpLocalizableStrings[languageObj.language] = data;
-          });
-        });
+            this.renderSkin();
+          }, this));
+        }, this);
 
         //Override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
