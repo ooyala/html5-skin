@@ -164,7 +164,11 @@ var DiscoveryPanel = React.createClass({
     var panelTitleBarStyle = InlineStyle.discoveryScreenStyle.panelTitleBarStyle;
     var panelTitle = CONSTANTS.SKIN_TEXT.DISCOVER;
     panelTitle = Utils.getLocalizedString(this.props.language, panelTitle, this.props.localizableStrings);
+
     var panelTitleTextStyle = InlineStyle.discoveryScreenStyle.panelTitleTextStyle;
+    panelTitleTextStyle.fontSize = this.props.skinConfig.discoveryScreen.panelTitle.titleFont.fontSize + "pt";
+    panelTitleTextStyle.fontFamily = this.props.skinConfig.discoveryScreen.panelTitle.titleFont.fontFamily;
+    panelTitleTextStyle.color = this.props.skinConfig.discoveryScreen.panelTitle.titleFont.color;
 
     var discoveryToasterContainerStyle = InlineStyle.discoveryScreenStyle.discoveryToasterContainerStyle;
     var discoveryToasterStyle = InlineStyle.discoveryScreenStyle.discoveryToasterStyle;
