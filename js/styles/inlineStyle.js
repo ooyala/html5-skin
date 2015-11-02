@@ -46,6 +46,7 @@ module.exports = {
         style: {
           maxWidth: "70%",
           overflow: "visible",
+          clear: "both"
         }
       }
     },
@@ -110,6 +111,7 @@ module.exports = {
         style: {
           maxWidth: "70%",
           overflow: "visible",
+          clear: "both"
         }
       }
     },
