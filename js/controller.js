@@ -268,7 +268,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPaused: function() {
       // pause/resume of Ad playback is handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
 
-      if (this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN) {
+      if (this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
         if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
             && !(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))) {
           OO.log("Should display DISCOVERY_SCREEN on pause");
@@ -672,6 +672,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       else {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
+        this.mb.publish(OO.EVENTS.PAUSE);
         this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
       }
