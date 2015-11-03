@@ -142,10 +142,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $.getJSON(params.skin.config, _.bind(function(data) {
         //load language jsons
         data.localization.availableLanguageFile.forEach(function(languageObj){
-          $.getJSON(languageObj.languageFile, function(data) {
+          $.getJSON(languageObj.languageFile, _.bind(function(data) {
             tmpLocalizableStrings[languageObj.language] = data;
-          });
-        });
+            this.renderSkin();
+          }, this));
+        }, this);
 
         //Override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
@@ -204,7 +205,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN ) {
         this.state.duration = duration;
         if (this.skin.props.skinConfig.upNext.showUpNext) {
-          if (!Utils.isIPhone()){//no UpNext for iPhone
+          if (!(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))){//no UpNext for iPhone or fullscreen iPad
             this.showUpNextScreenWhenReady(currentPlayhead, duration);
           }
         } else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
@@ -267,10 +268,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPaused: function() {
       // pause/resume of Ad playback is handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
 
-      if (this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN) {
-        if (Utils.isIPhone()){//pause screen for iPhone is the same as start screen
-          this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
-        } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery") {
+      if (this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
+        if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
+            && !(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))) {
           OO.log("Should display DISCOVERY_SCREEN on pause");
           this.sendDiscoveryDisplayEvent("pauseScreen");
           this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
@@ -295,7 +295,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
         this.state.upNextInfo.delayedContentData = null;
       }
-      else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery") {
+      else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery"
+               && !(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))) {
         OO.log("Should display DISCOVERY_SCREEN on end");
         this.sendDiscoveryDisplayEvent("endScreen");
         this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
@@ -316,6 +317,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.skin.updatePlayhead.apply(this.skin, this.state.queuedPlayheadUpdate);
         this.state.queuedPlayheadUpdate = null;
         this.renderSkin();
+      }
+      if (Utils.isIos() && this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN && this.state.fullscreen) {
+        this.state.pauseAnimationDisabled = true;
+        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+        this.state.playerState = CONSTANTS.STATE.PAUSE;
       }
     },
 
@@ -451,7 +457,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onFullscreenChanged: function(event, fullscreen, paused) {
       // iPhone end screen is the same as start screen, except for the replay button
-      if (Utils.isIPhone() && this.state.playerState == CONSTANTS.STATE.END){
+      if (Utils.isIPhone() && (this.state.playerState == CONSTANTS.STATE.END || this.state.playerState == CONSTANTS.STATE.PAUSE)){
         this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       }
 
@@ -461,7 +467,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         //check if UI state is out of sync with video state
         if (paused && this.state.playerState == CONSTANTS.STATE.PLAYING){
           if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_PAUSE_ADS);}
-          else {this.mb.publish(OO.EVENTS.PAUSED);}
+          else {
+            this.state.pauseAnimationDisabled = true;
+            this.mb.publish(OO.EVENTS.STREAM_PAUSED);
+          }
         }
         else if (!paused && this.state.playerState == CONSTANTS.STATE.PAUSE){
           if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_RESUME_ADS);}
@@ -487,7 +496,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYING, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.PAUSED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.STREAM_PAUSED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
@@ -663,6 +672,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       else {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
+        this.mb.publish(OO.EVENTS.PAUSE);
         this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
       }

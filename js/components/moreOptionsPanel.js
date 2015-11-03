@@ -75,7 +75,7 @@ var MoreOptionsPanel = React.createClass({
   },
 
   removeHighlight: function(evt) {
-    var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.opacity;
+    var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.active.opacity;
     Utils.removeHighlight(evt.target, opacity);
   },
 
@@ -93,7 +93,7 @@ var MoreOptionsPanel = React.createClass({
       this.props.skinConfig.icons.compress.fontStyleClass : this.props.skinConfig.icons.expand.fontStyleClass;
 
     InlineStyle.MoreOptionsScreenStyle.buttonStyle.fontSize = this.props.skinConfig.moreOptionsScreen.iconSize+"px";
-    var iconSetting = Utils.extend(InlineStyle.MoreOptionsScreenStyle.iconStyle, this.props.skinConfig.moreOptionsScreen.iconStyle);
+    var iconSetting = Utils.extend(InlineStyle.MoreOptionsScreenStyle.iconStyle, this.props.skinConfig.moreOptionsScreen.iconStyle.active);
     var optionsItemsTemplates = {
       "discovery": <div className="discovery" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}
         onClick={this.handleDiscoveryClick} onTouchEnd={this.handleDiscoveryClick}>

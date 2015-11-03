@@ -49,7 +49,8 @@ module.exports = {
           fontSize: "24",
           maxWidth: "70%",
           overflow: "visible",
-          color: "inherit"
+          color: "inherit",
+          clear: "both"
         }
       }
     },
@@ -117,7 +118,8 @@ module.exports = {
           fontSize: "24",
           maxWidth: "70%",
           overflow: "visible",
-          color: "inherit"
+          color: "inherit",
+          clear: "both"
         }
       }
     },
@@ -673,7 +675,8 @@ module.exports = {
       marginTop: "35px",
       height: "120px",
       width: "214px",
-      flexShrink: "0"
+      flexShrink: "0",
+      cursor: "pointer"
     },
 
     discoveryImageWrapperStyle: {

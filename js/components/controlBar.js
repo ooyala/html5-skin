@@ -177,7 +177,7 @@ var ControlBar = React.createClass({
   },
 
   removeHighlight: function(evt) {
-    var opacity = this.props.skinConfig.controlBar.iconStyle.opacity;
+    var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
     Utils.removeHighlight(evt.target, opacity);
   },
 
@@ -246,9 +246,9 @@ var ControlBar = React.createClass({
       volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
     }
 
-    var iconSetting = Utils.extend(InlineStyle.controlBarStyle.iconSetting, this.props.skinConfig.controlBar.iconStyle);
-    var volumeIconSetting = Utils.extend(InlineStyle.controlBarStyle.volumeIconSetting, this.props.skinConfig.controlBar.iconStyle);
-    var durationSetting = Utils.extend(InlineStyle.controlBarStyle.durationIndicatorSetting, {color: this.props.skinConfig.controlBar.iconStyle.color});
+    var iconSetting = Utils.extend(InlineStyle.controlBarStyle.iconSetting, this.props.skinConfig.controlBar.iconStyle.active);
+    var volumeIconSetting = Utils.extend(InlineStyle.controlBarStyle.volumeIconSetting, this.props.skinConfig.controlBar.iconStyle.active);
+    var durationSetting = Utils.extend(InlineStyle.controlBarStyle.durationIndicatorSetting, {color: this.props.skinConfig.controlBar.iconStyle.active.color});
 
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
     var watermarkImageStyle = InlineStyle.controlBarStyle.watermarkImageStyle;
@@ -264,7 +264,7 @@ var ControlBar = React.createClass({
       volumeIconSetting.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
     }
     else {
-      volumeIconSetting.opacity = this.props.skinConfig.controlBar.iconStyle.opacity;
+      volumeIconSetting.opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
       volumeIconSetting.WebkitFilter = "";
       volumeIconSetting.filter = "";
       volumeIconSetting.msFilter = "";

@@ -19,12 +19,10 @@
     "url": "https://github.com/ooyala/html5-skin.git"
   },
   "dependencies": {
-    "aws-sdk": "^2.1.49",
-    "mime": "^1.3.4",
     "react": "0.13.3"
   },
   "devDependencies": {
-    "browserify": "11.0.1",
+    "browserify": "12.0.1",
     "gulp": "3.8.11",
     "gulp-shell": "0.4.2",
     "gulp-sourcemaps": "1.5.2",
@@ -39,7 +37,8 @@
   "author": "Ooyala",
   "contributors": [
     "Aldi Gunawan <agunawan@ooyala.com>",
-    "Timothy Chang <tchang@ooyala.com>"
+    "Timothy Chang <tchang@ooyala.com>",
+    "Jeoffrey Mendez <jmendez@ooyala.com>"
   ],
   "license": "ISC",
   "bugs": {
