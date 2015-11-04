@@ -70,12 +70,12 @@ gulp.task('test', shell.task(['npm test']));
 
 // Initiate a watch
 gulp.task('watch', function() {
-  gulp.watch(path.scripts, ['browserify', 'pretty']);
+  gulp.watch(path.scripts, ['build']);
 });
 
 // The default task (called when you run `gulp` from cli)
 gulp.task('default', ['build', 'watch']);
 
 
-gulp.task("insertVersion", shell.task(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
+gulp.task("insertVersion", ['browserify', 'pretty', 'buildCss'], shell.task(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
                                         'sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
