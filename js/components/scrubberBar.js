@@ -37,6 +37,11 @@ var ScrubberBar = React.createClass({
       if (this.isMobile){
         evt = evt.nativeEvent;
       }
+
+      if (this.props.currentAdsInfo && !this.props.currentAdsInfo.currentAdItem.skippable) {
+        return;
+      }
+
       // we enter the scrubbing state to prevent constantly seeking while dragging
       // the playhead icon
       this.props.controller.beginSeeking();
@@ -65,6 +70,9 @@ var ScrubberBar = React.createClass({
 
   handlePlayheadMouseMove: function(evt) {
     evt.preventDefault();
+    if (this.props.currentAdsInfo && !this.props.currentAdsInfo.currentAdItem.skippable) {
+      return;
+    }
     if (this.props.seeking) {
       this.setState({
         scrubbingPlayheadX: this.isMobile?evt.changedTouches[0].clientX:evt.clientX
@@ -77,6 +85,9 @@ var ScrubberBar = React.createClass({
     // stop propagation to prevent it from bubbling up to the skin and pausing
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
+    if (this.props.currentAdsInfo && !this.props.currentAdsInfo.currentAdItem.skippable) {
+      return;
+    }
     //use the difference in x coordinates of the start and end points of the
     // mouse events to calculate the amount of time to seek
     var newPlayheadX = this.isMobile?evt.changedTouches[0].clientX:evt.clientX;
