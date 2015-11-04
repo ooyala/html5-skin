@@ -50,8 +50,20 @@ var StartScreen = React.createClass({
     var posterStyle = screenStyle.posterStyle;
     var infoStyle = screenStyle.infoPanel;
 
+    //title style
+    infoStyle.title.style.fontSize = this.props.skinConfig.startScreen.titleFont.fontSize + "pt";
+    infoStyle.title.style.fontFamily = this.props.skinConfig.startScreen.titleFont.fontFamily;
+    infoStyle.title.style.color = this.props.skinConfig.startScreen.titleFont.color;
+
+    //description style
+    infoStyle.description.style.fontSize = this.props.skinConfig.startScreen.descriptionFont.fontSize + "pt";
+    infoStyle.description.style.fontFamily = this.props.skinConfig.startScreen.descriptionFont.fontFamily;
+    infoStyle.description.style.color = this.props.skinConfig.startScreen.descriptionFont.color;
+
     // Accent Color
-    playStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.startScreen.playIconStyle.color;
+    playStyle.color = this.props.skinConfig.startScreen.playIconStyle.color;
+    playStyle.opacity = this.props.skinConfig.startScreen.playIconStyle.opacity;
+
     // PlayButton position, defaulting to centered
     if (this.props.skinConfig.startScreen.showPlayButton) {
       playStyle.top = "50%";

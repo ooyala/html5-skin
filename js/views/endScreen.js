@@ -65,6 +65,7 @@ var EndScreen = React.createClass({
     var repeatStyle = screenStyle.repeatButton.style;
 
     repeatStyle.color = this.props.skinConfig.endScreen.replayIconStyle.color;
+    repeatStyle.opacity = this.props.skinConfig.endScreen.replayIconStyle.opacity;
 
     // ReplayButton position, defaulting to centered
     if (this.props.skinConfig.endScreen.showReplayButton) {
