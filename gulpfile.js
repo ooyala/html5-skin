@@ -76,6 +76,6 @@ gulp.task('watch', function() {
 // The default task (called when you run `gulp` from cli)
 gulp.task('default', ['build', 'watch']);
 
-
+//Insert version needs the other build steps to finish first, so we mark them as dependent tasks
 gulp.task("insertVersion", ['browserify', 'pretty', 'buildCss'], shell.task(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
                                         'sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
