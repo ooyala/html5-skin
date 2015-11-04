@@ -378,6 +378,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
         this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
+        this.renderSkin();
       }
     },
 
