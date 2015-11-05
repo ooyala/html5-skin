@@ -79,3 +79,6 @@ gulp.task('default', ['build', 'watch']);
 
 gulp.task("insertVersion", shell.task(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
                                         'sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
+
+// Generate documentation
+gulp.task("docs", shell.task("./node_modules/.bin/jsdoc -c ./jsdoc_conf.json"));

@@ -1,11 +1,24 @@
+/**
+* Utility class that holds helper functions
+*
+* @module Utils
+*/
 CONSTANTS = require('./../constants/constants');
 
 var Utils = {
+  /**
+  * Trims the given text to fit inside of the given element, truncating with ellipsis.
+  *
+  * @function truncateTextToWidth
+  * @param {DOMElement} element - The DOM Element to fit text inside
+  * @param {String} text - The string to trim
+  * @returns {String} String truncated to fit the width of the element
+  */
   truncateTextToWidth: function(element, text) {
     var testText = document.createElement("span");
     testText.style.visibility = "hidden";
     testText.style.position = "absolute";
-    testText.style.top = "0";
+  testText.style.top = "0";
     testText.style.left = "0";
     testText.style.whiteSpace = "nowrap";
     testText.innerHTML = text;
@@ -25,6 +38,14 @@ var Utils = {
     return truncatedText;
   },
 
+  /**
+  * Returns a shallow clone of the object given
+  *
+  * @function clone
+  * @param {Object} object - Object to be cloned
+  * @returns {Object} Clone of the given object
+  */
+
   clone: function(object) {
     var clonedObj = {};
     for (var key in object) {
@@ -35,6 +56,16 @@ var Utils = {
     return clonedObj;
   },
 
+  /**
+  * Clones the given object and merges in the keys and values of the second object.
+  * Attributes in the cloned original will be overwritten.
+  *
+  * @function extend
+  * @param {Object} original - Object to be extended
+  * @param {Object} toMerge - Object with properties to be merged in
+  * @returns {Object} Cloned and merged object
+  */
+
   extend: function(original, toMerge) {
     var extendedObject = Utils.clone(original);
     for (var key in toMerge) {
@@ -44,11 +75,13 @@ var Utils = {
     }
     return extendedObject;
   },
+
   /**
-    Convert raw seconds into human friendly HH:MM format
-    @method formatSeconds
-    @param {integer} timeInSeconds The time to format in seconds
-    @return {String} The time as a string in the HH:MM format
+  * Convert raw seconds into human friendly HH:MM format
+  *
+  * @function formatSeconds
+  * @param {integer} timeInSeconds The time to format in seconds
+  * @return {String} The time as a string in the HH:MM format
   */
   formatSeconds: function(timeInSeconds) {
     var seconds = parseInt(timeInSeconds,10) % 60;
@@ -70,30 +103,65 @@ var Utils = {
     return (parseInt(hours,10) > 0) ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
   },
 
-    //check if browser is Safari
+  /**
+  * Check if the current browser is Safari
+  *
+  * @function isSafari
+  * @returns {Boolean} Whether the browser is Safari or not
+  */
   isSafari: function () {
       return !!window.navigator.userAgent.match(/AppleWebKit/);
   },
 
+  /**
+  * Check if the current device is Android
+  *
+  * @function isAndroid
+  * @returns {Boolean} Whether the browser is running on Android or not
+  */
   isAndroid: function() {
     var os = window.navigator.appVersion;
     return !!os.match(/Android/);
   },
 
+  /**
+  * Check if the current device is iOS
+  *
+  * @function isIos
+  * @returns {Boolean} Whether the device is iOS or not
+  */
   isIos: function() {
     var platform = window.navigator.platform;
     return !!(platform.match(/iPhone/) || platform.match(/iPad/) || platform.match(/iPod/));
   },
 
+  /**
+  * Check if the current device is an iPhone
+  *
+  * @function isIPhone
+  * @returns {Boolean} Whether the device is an iPhone or not
+  */
   isIPhone: function() {
     var platform = window.navigator.platform;
     return !!(platform.match(/iPhone/) || platform.match(/iPod/));
   },
 
+  /**
+  * Check if the current device is a mobile device
+  *
+  * @function isMobile
+  * @returns {Boolean} Whether the browser device a mobile device or not
+  */
   isMobile: function() {
     return (this.isAndroid() || this.isIos());
   },
 
+  /**
+  * Check if the current browser is Internet Explorer 10
+  *
+  * @function isIE10
+  * @returns {Boolean} Whether the browser is IE10 or not
+  */
   isIE10: function() {
     return !!window.navigator.userAgent.match(/MSIE 10/);
   },
@@ -111,6 +179,13 @@ var Utils = {
     return controlBarHeightBase;
   },
 
+  /**
+  * Determine the best language to use for localization
+  *
+  * @function getLanguageToUse
+  * @param {Object} skinConfig - The skin configuration file to read languages from
+  * @returns {String} The ISO code of the language to use
+  */
   getLanguageToUse: function(skinConfig) {
     var localization = skinConfig.localization;
     var language, availableLanguages;
@@ -147,6 +222,15 @@ var Utils = {
     return language;
   },
 
+  /**
+  * Get the localized string for a given localization key
+  *
+  * @function getLocalizedString
+  * @param {String} language - ISO code of the language to use
+  * @param {String} stringId - The key of the localized string to retrieve
+  * @param {Object} localizedStrings - Mapping of string keys to localized values
+  * @returns {String} The localizted string
+  */
   getLocalizedString: function(language, stringId, localizedStrings) {
     try {
       return localizedStrings[language][stringId];
@@ -156,13 +240,26 @@ var Utils = {
 
   },
 
+  /**
+  * Highlight the given element for hover effects
+  *
+  * @function Highlight
+  * @param {DOMElement} target - The element to Highlight
+  */
+
   highlight: function(target) {
     target.style.opacity = "1.0";
     target.style.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
     target.style.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
     target.style.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
   },
-
+  /**
+  * Remove the highlight effect of the given element
+  *
+  * @function removeHighlight
+  * @param {DOMElement} target - The element to remove the highlight effect from
+  * @param {DOMElement} opacity - The opacity to return the element to
+  */
   removeHighlight: function(target, opacity) {
     target.style.opacity = opacity;
     target.style.WebkitFilter = "";
@@ -170,14 +267,16 @@ var Utils = {
     target.style.msFilter = "";
   },
 
-  /********************************************************************
-  Collapsing control bar related code
-  *********************************************************************/
-
-  // @param barWidth numeric.
-  // @param orderedItems array of left to right ordered items. Each item meets the skin's "button" schema.
-  // @return {fit:[items that fit in the barWidth], overflow:[items that did not fit]}.
-  // Note: items which do not meet the item spec will be removed and not appear in the results.
+  /**
+  * Determine which buttons should be shown in the control bar given the width of the player<br/>
+  * Note: items which do not meet the item spec will be removed and not appear in the results.
+  *
+  * @function collapse
+  * @param {Number} barWidth - Width of the control bar
+  * @param {Object[]} orderedItems - array of left to right ordered items. Each item meets the skin's "button" schema.
+  * @returns {Object} An object of the structure {fit:[], overflow:[]} where the fit object is
+  *   an array of buttons that fit in the control bar and overflow are the ones that should be hidden
+  */
   collapse: function( barWidth, orderedItems ) {
     if( isNaN( barWidth ) || barWidth === undefined ) { return orderedItems; }
     if( ! orderedItems ) { return []; }
