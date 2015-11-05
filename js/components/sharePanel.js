@@ -1,13 +1,5 @@
-/********************************************************************
-  SHARING SCREEN
-*********************************************************************/
-/**
-* The screen used while the video is playing.
-*
-* @class PlayingScreen
-* @constructor
-*/
 var React = require('react'),
+    ClassNames = require('classnames'),
     Utils = require('./utils'),
     CONSTANTS = require('../constants/constants'),
     InlineStyle = require('../styles/inlineStyle');
@@ -15,70 +7,54 @@ var React = require('react'),
 var SharePanel = React.createClass({
   tabs: {SHARE: "share", EMBED: "embed", EMAIL: "email"},
 
-  componentDidMount: function(){
-    if (Utils.isSafari()){
-      InlineStyle.shareScreenStyle.containerStyle.display = "-webkit-flex";
-      InlineStyle.shareScreenStyle.tabRowStyle.display = "-webkit-flex";
-    }
-    else {
-      InlineStyle.shareScreenStyle.containerStyle.display = "flex";
-      InlineStyle.shareScreenStyle.tabRowStyle.display = "flex";
-    }
-  },
-
-
-  getDefaultProps: function() {
-    return {
-      controller: {
-        state: {
-          isMobile: false
-        }
-      }
-    };
-  },
-
-
   getInitialState: function() {
-    this.isMobile = this.props.controller.state.isMobile;
     return {
-      activeTab: this.tabs.SHARE,
+      activeTab: this.tabs.SHARE
     };
   },
 
   getActivePanel: function() {
-    var shareStyle = InlineStyle.shareScreenStyle;
     if (this.state.activeTab === this.tabs.SHARE) {
-      var twitterIconStyle = Utils.extend(shareStyle.socialIconStyle, shareStyle.twitterIconStyle);
-      var facebookIconStyle = Utils.extend(shareStyle.socialIconStyle, shareStyle.facebookIconStyle);
-      var plusIconStyle = Utils.extend(shareStyle.socialIconStyle, shareStyle.plusIconStyle);
       var titleString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION, this.props.localizableStrings);
       var startAtString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.START_AT, this.props.localizableStrings);
 
       return (
-        <div className="shareTabPanel" style={shareStyle.panelStyle}>
-          <div style={shareStyle.titleStyle}>{titleString}</div>
-          <div className="twitter" onClick={this.handleTwitterClick} onTouchEnd={this.handleTwitterClick} style={twitterIconStyle}>t</div>
-          <div className="facebook" onClick={this.handleFacebookClick} onTouchEnd={this.handleFacebookClick} style={facebookIconStyle}>f</div>
-          <div className="googlePlus" onClick={this.handleGPlusClick} onTouchEnd={this.handleGPlusClick} style={plusIconStyle}>g+</div><br/>
-          <input className="embedUrl" style={shareStyle.embedUrlStyle} type='text' defaultValue={location.href}/>
-          <input className="startPointCheckBox" style={{marginBottom: "15px"}}type='checkbox'/>
-          {startAtString} <input className="startPointTextField" style={shareStyle.startAtInput} type='text'
-            defaultValue={Utils.formatSeconds(this.props.currentPlayhead)}/><br/>
+        <div className="shareTabPanel">
+          <div className="social-action-text text-capitalize">{titleString}</div>
+          <a className="twitter" onClick={this.handleTwitterClick}>t</a>
+          <a className="facebook" onClick={this.handleFacebookClick}>f</a>
+          <a className="googlePlus" onClick={this.handleGPlusClick}>g+</a><br/>
+
+          <form className="form-inline">
+            <div className="form-group">
+              <label className="sr-only" for="oo-url">url</label>
+              <input className="form-control" type='url' defaultValue={location.href} id="oo-url"/>
+            </div>
+
+            <label className="checkbox-inline">
+              <input type="checkbox" />{startAtString}
+            </label>
+
+            <div className="form-group">
+              <label className="sr-only" for="oo-start-at">{startAtString}</label>
+              <input className="form-control start-at" type='text' id="oo-start-at" defaultValue={Utils.formatSeconds(this.props.currentPlayhead)} />
+            </div>
+          </form>
         </div>
       );
     }
+
     else if (this.state.activeTab === this.tabs.EMBED) {
       return (
-        <div className="shareTabPanel" style={shareStyle.panelStyle}>
-          <textarea
-            className="embedTextArea"
-            value="&lt;script src=&quot;//player.ooyala.com/v4/&quot;&gt;&lt;/script&gt;"
-            style={shareStyle.embedTextArea}
-            readOnly
-            />
+        <div className="shareTabPanel">
+          <textarea className="form-control"
+                    rows="3"
+                    value="&lt;script src=&quot;//player.ooyala.com/v4/&quot;&gt;&lt;/script&gt;"
+                    readOnly />
         </div>
       );
     }
+
     else if (this.state.activeTab === this.tabs.EMAIL) {
       var toString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.TO, this.props.localizableStrings),
           subjectString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SUBJECT, this.props.localizableStrings),
@@ -88,143 +64,110 @@ var SharePanel = React.createClass({
           sendString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SEND, this.props.localizableStrings);
 
       return (
-        <div className="shareTabPanel" style={shareStyle.panelStyle}>
-          <table style={shareStyle.emailTable}>
-            <tr>
-              <td style={{paddingLeft: "5px"}}>{toString}</td>
-              <td style={{width: "10px"}}></td>
-              <td>
+        <div className="shareTabPanel">
+          <form className="form-horizontal">
+            <div className="form-group clearfix">
+              <label htmlFor="oo-email" className="col-sm-2 form-control-label">{toString}</label>
+              <div className="col-sm-10">
                 <input ref="sharePanelTo"
-                       onFocus={this.handleFieldFocus}
-                       style={shareStyle.emailInputField}
-                       type='text'
-                       placeholder={recipientString}
-                  />
-              </td>
-            </tr>
-            <tr>
-              <td>{subjectString}</td>
-              <td style={{width: "10px"}}></td>
-              <td>
+                       id="oo-email"
+                       type="email"
+                       className="form-control"
+                       placeholder={recipientString} />
+              </div>
+            </div>
+
+            <div className="form-group clearfix">
+              <label htmlFor="oo-subject" className="col-sm-2 form-control-label">{subjectString}</label>
+              <div className="col-sm-10">
                 <input ref="sharePanelSubject"
-                       onFocus={this.handleFieldFocus}
-                       style={shareStyle.emailInputField}
-                       type='text'
-                       placeholder={subjectString}
-                  />
-                <br/>
-              </td>
-            </tr>
-            <tr>
-              <td>{messageString}</td>
-              <td style={{width: "10px"}}></td>
-              <td>
-                <textarea
-                  ref="sharePanelMessage"
-                  onFocus={this.handleFieldFocus}
-                  style={shareStyle.emailTextArea}
-                  placeholder={optionalMessageString}
-                  />
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td style={{width: "10px"}}></td>
-              <td style={{textAlign: "right"}}>
-                <button className="emailSendButton"
-                        onClick={this.handleEmailClick}
-                        onTouchEnd={this.handleEmailClick}
-                        style={shareStyle.emailSendButton}>
-                  {sendString}
-                </button>
-              </td>
-            </tr>
-          </table>
+                       id="oo-subject"
+                       type="text"
+                       className="form-control"
+                       placeholder={subjectString} />
+              </div>
+            </div>
+
+            <div className="form-group clearfix">
+              <label htmlFor="oo-message" className="col-sm-2 form-control-label">{messageString}</label>
+              <div className="col-sm-10">
+                <textarea ref="sharePanelMessage"
+                          id="oo-message"
+                          className="form-control"
+                          rows="2"
+                          placeholder={optionalMessageString} />
+              </div>
+            </div>
+
+            <div className="form-group clearfix">
+              <div className="col-sm-offset-2 col-sm-10">
+                <button type="submit"
+                        className="btn btn-primary pull-left"
+                        onClick={this.handleEmailClick}>{sendString}</button>
+              </div>
+            </div>
+
+          </form>
         </div>
       );
     }
   },
 
   handleEmailClick: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      var mailToUrl = "mailto:";
-      mailToUrl += this.refs.sharePanelTo.getDOMNode().value;
-      mailToUrl += "?subject=" + encodeURIComponent(this.refs.sharePanelSubject.getDOMNode().value);
-      mailToUrl += "&body=" + encodeURIComponent(this.refs.sharePanelMessage.getDOMNode().value);
-      location.href = mailToUrl;
-    }
+    var mailToUrl = "mailto:";
+    mailToUrl += this.refs.sharePanelTo.getDOMNode().value;
+    mailToUrl += "?subject=" + encodeURIComponent(this.refs.sharePanelSubject.getDOMNode().value);
+    mailToUrl += "&body=" + encodeURIComponent(this.refs.sharePanelMessage.getDOMNode().value);
+    location.href = mailToUrl;
   },
 
   handleFacebookClick: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      var facebookUrl = "http://www.facebook.com/sharer.php";
-      facebookUrl += "?u=" + encodeURIComponent(location.href);
-      window.open(facebookUrl, "facebook window", "height=315,width=780");
-    }
-  },
-
-  handleFieldFocus: function(evt) {
-    evt.target.style.color = "black";
+    var facebookUrl = "http://www.facebook.com/sharer.php";
+    facebookUrl += "?u=" + encodeURIComponent(location.href);
+    window.open(facebookUrl, "facebook window", "height=315,width=780");
   },
 
   handleGPlusClick: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      var gPlusUrl = "https://plus.google.com/share";
-      gPlusUrl += "?url=" + encodeURIComponent(location.href);
-      window.open(gPlusUrl, "google+ window", "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600");
-    }
+    var gPlusUrl = "https://plus.google.com/share";
+    gPlusUrl += "?url=" + encodeURIComponent(location.href);
+    window.open(gPlusUrl, "google+ window", "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600");
   },
 
   handleTwitterClick: function(evt) {
-     if (evt.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      var twitterUrl = "https://twitter.com/intent/tweet";
-      twitterUrl += "?text=" + encodeURIComponent(this.props.contentTree.title+": ");
-      twitterUrl += "&url=" + encodeURIComponent(location.href);
-      window.open(twitterUrl, "twitter window", "height=300,width=750");
-    }
+    var twitterUrl = "https://twitter.com/intent/tweet";
+    twitterUrl += "?text=" + encodeURIComponent(this.props.contentTree.title+": ");
+    twitterUrl += "&url=" + encodeURIComponent(location.href);
+    window.open(twitterUrl, "twitter window", "height=300,width=750");
   },
 
   showPanel: function(panelToShow, evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      this.setState({activeTab: panelToShow});
-    }
+    this.setState({activeTab: panelToShow});
   },
 
   render: function() {
-    var shareStyle = InlineStyle.shareScreenStyle;
-    var activeTabStyle = Utils.extend(shareStyle.tabStyle, shareStyle.activeTab);
-    var activeLastTabStyle = Utils.extend(shareStyle.lastTabStyle, shareStyle.activeTab);
+    var shareTab = ClassNames({
+      'tab': true,
+      'active': this.state.activeTab == this.tabs.SHARE
+    });
+    var embedTab = ClassNames({
+      'tab': true,
+      'active': this.state.activeTab == this.tabs.EMBED
+    });
+    var emailTab = ClassNames({
+      'tab': true,
+      'active': this.state.activeTab == this.tabs.EMAIL
+    });
+
     var shareString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings),
         embedString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMBED, this.props.localizableStrings),
         emailString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMAIL, this.props.localizableStrings);
 
     return (
-      <div style={shareStyle.containerStyle}>
-        <div className="tabRow" style={shareStyle.tabRowStyle}>
-          <span className="shareTab" onClick={this.showPanel.bind(this, this.tabs.SHARE)}
-            onTouchEnd={this.showPanel.bind(this, this.tabs.SHARE)}
-            style={(this.state.activeTab == this.tabs.SHARE) ? activeTabStyle : shareStyle.tabStyle}>{shareString}</span>
-          <span className="embedTab" onClick={this.showPanel.bind(this, this.tabs.EMBED)}
-            onTouchEnd={this.showPanel.bind(this, this.tabs.EMBED)}
-            style={(this.state.activeTab == this.tabs.EMBED) ? activeTabStyle : shareStyle.tabStyle}>{embedString}</span>
-          <span className="emailTab" onClick={this.showPanel.bind(this, this.tabs.EMAIL)}
-            onTouchEnd={this.showPanel.bind(this, this.tabs.EMAIL)}
-            style={(this.state.activeTab == this.tabs.EMAIL) ? activeLastTabStyle : shareStyle.lastTabStyle}>{emailString}</span>
+      <div className="share-container">
+        <div className="tabRow">
+          <a className={shareTab} onClick={this.showPanel.bind(this, this.tabs.SHARE)}>{shareString}</a>
+          <a className={embedTab} onClick={this.showPanel.bind(this, this.tabs.EMBED)}>{embedString}</a>
+          <a className={emailTab} onClick={this.showPanel.bind(this, this.tabs.EMAIL)}>{emailString}</a>
         </div>
         {this.getActivePanel()}
       </div>
