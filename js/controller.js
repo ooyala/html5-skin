@@ -237,6 +237,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       if (duration - currentPlayhead <= timeToShow &&
         !this.state.upNextInfo.countDownCancelled &&
+        this.state.isPlayingAd !== true &&
         this.state.upNextInfo.upNextData !== null && (this.state.playerState === CONSTANTS.STATE.PLAYING || this.state.playerState === CONSTANTS.STATE.PAUSE)) {
         this.state.upNextInfo.showing = true;
       }
@@ -261,6 +262,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPause: function(event, props) {
       if (props === CONSTANTS.PAUSE_REASON.AD_PLAYBACK){
+        this.state.isPlayingAd = true;
         this.state.pauseAnimationDisabled = true;
       }
     },
