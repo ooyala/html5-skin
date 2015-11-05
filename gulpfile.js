@@ -10,15 +10,16 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
-    shell = require('gulp-shell');
+    shell = require('gulp-shell'),
+    sass = require('gulp-sass');
 
 var path = {
   scripts: ['./js/components/*.js', './js/constants/*.js', './js/styles/*.js', './js/views/*.js', './js/*.js'],
-  css: ['./css/*.css'],
+  sass: ['./scss/**/*.scss'],
 };
 
 // Build All
-gulp.task('build', ['browserify', 'pretty', 'buildCss', 'insertVersion']);
+gulp.task('build', ['browserify', 'pretty', 'sass', 'insertVersion']);
 
 // Browserify JS
 gulp.task('browserify', function () {
@@ -58,11 +59,11 @@ gulp.task('pretty', function () {
     .pipe(gulp.dest('./build/'));
 });
 
-// Build CSS
-gulp.task('buildCss', function() {
-  gulp.src(path.css)
-  //.pipe(concat('html5-skin.css'))
-  .pipe(gulp.dest('build'));
+// Build Sass
+gulp.task('sass', function () {
+  gulp.src(path.sass)
+    .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+    .pipe(gulp.dest('./build'));
 });
 
 // Run tests
@@ -71,6 +72,7 @@ gulp.task('test', shell.task(['npm test']));
 // Initiate a watch
 gulp.task('watch', function() {
   gulp.watch(path.scripts, ['browserify', 'pretty']);
+  gulp.watch(path.sass, ['sass']);
 });
 
 // The default task (called when you run `gulp` from cli)
