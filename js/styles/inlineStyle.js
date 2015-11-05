@@ -34,22 +34,18 @@ module.exports = {
       },
       title: {
         style: {
-          fontSize: "32px",
           fontWeight: "bold",
           maxWidth: "70%",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          color: "inherit",
           resize: "none"
         }
       },
       description: {
         style: {
-          fontSize: "24",
           maxWidth: "70%",
           overflow: "visible",
-          color: "inherit",
           clear: "both"
         }
       }
@@ -103,22 +99,18 @@ module.exports = {
       },
       title: {
         style: {
-          fontSize: "32px",
           fontWeight: "bold",
           maxWidth: "70%",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          color: "inherit",
           resize: "none"
         }
       },
       description: {
         style: {
-          fontSize: "24",
           maxWidth: "70%",
           overflow: "visible",
-          color: "inherit",
           clear: "both"
         }
       }
@@ -591,10 +583,7 @@ module.exports = {
     panelTitleTextStyle: {
       position: "absolute",
       left: "40px",
-      fontSize: "32",
-      fontFamily: "'Roboto Condensed', sans-serif",
       fontWeight: "bold",
-      color: "white",
       margin: "1%",
       display: "inline-block",
       marginBottom: "35px",
