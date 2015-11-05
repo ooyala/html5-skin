@@ -7,6 +7,7 @@ var React = require('react'),
 var ScrubberBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
+    this.lastClickTime = 0;
     return {
       startingPlayheadX: 0,
       scrubbingPlayheadX: 0,
@@ -109,11 +110,17 @@ var ScrubberBar = React.createClass({
       evt.stopPropagation(); // W3C
       evt.cancelBubble = true; // IE
 
+      //prevent double clicks from causing undesired seek behavior
+      if ((Date.now() - this.lastClickTime) < 300) {
+        return;
+      }
+
+      this.lastClickTime = Date.now();
       this.props.controller.state.accessibilityControlsEnabled = true;
       if (this.isMobile){
         evt = evt.nativeEvent;
       }
-      var offset = this.isMobile ? evt.changedTouches[0].clientX : evt.clientX - evt.target.getBoundingClientRect().left;
+      var offset = (this.isMobile ? evt.changedTouches[0].clientX : evt.clientX) - evt.target.getBoundingClientRect().left;
       if (evt.target.className.match(/scrubberBarPadding/))
         offset -= CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
       var newPlayheadTime = (offset / (this.props.controlBarWidth - (2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING))) * this.props.duration;
@@ -145,8 +152,8 @@ var ScrubberBar = React.createClass({
       (controlBarHeight - scrubberPaddingHeight) :  (-1 * scrubberPaddingHeight));
     InlineStyle.scrubberBarStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
       parseFloat(this.props.duration)) * 100 + "%";
-    InlineStyle.scrubberBarStyle.playedIndicatorStyle.width = (parseFloat(this.props.currentPlayhead) /
-      parseFloat(this.props.duration)) * 100 + "%";
+    InlineStyle.scrubberBarStyle.playedIndicatorStyle.width = Math.min((parseFloat(this.props.currentPlayhead) /
+      parseFloat(this.props.duration)) * 100, 100) + "%";
     InlineStyle.scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
 
     if (!this.state.transitionedDuringSeek) {

@@ -89,7 +89,7 @@ var SharePanel = React.createClass({
 
       return (
         <div className="shareTabPanel" style={shareStyle.panelStyle}>
-          <table style={{color: "white"}}>
+          <table style={shareStyle.emailTable}>
             <tr>
               <td style={{paddingLeft: "5px"}}>{toString}</td>
               <td style={{width: "10px"}}></td>
@@ -171,7 +171,6 @@ var SharePanel = React.createClass({
 
   handleFieldFocus: function(evt) {
     evt.target.style.color = "black";
-    evt.target.value = "";
   },
 
   handleGPlusClick: function(evt) {

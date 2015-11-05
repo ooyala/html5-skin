@@ -113,7 +113,7 @@ var UpNextPanel = React.createClass({
 
         <div className="contentMetadata" style={contentMetadataContainerStyle}>
           <div style={upNextTitleStyle}>
-            <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow} currentPlayhead={this.props.currentPlayhead}/>
+            <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNext.timeToShow} currentPlayhead={this.props.currentPlayhead}/>
 
             <div style={upNextTitleTextStyle}>
               {upNextString}: {contentTile}
@@ -125,7 +125,7 @@ var UpNextPanel = React.createClass({
           </div>
         </div>
 
-        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+        <div className="closeButton" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
           onClick={this.closeUpNextPanel} style={InlineStyle.upNextPanelStyle.closeButton} onTouchEnd={this.closeUpNextPanel}>
           <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={InlineStyle.defaultScreenStyle.closeButtonStyle}></span>
         </div>

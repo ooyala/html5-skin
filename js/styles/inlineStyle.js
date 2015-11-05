@@ -18,6 +18,7 @@ module.exports = {
       overflow: "hidden",
       background: "black"
     },
+
     posterStyle: {
       height: "100%",
       width: "100%",
@@ -33,22 +34,19 @@ module.exports = {
       },
       title: {
         style: {
-          fontSize: "20pt",
           fontWeight: "bold",
           maxWidth: "70%",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          color: "inherit",
           resize: "none"
         }
       },
       description: {
         style: {
-          fontSize: "15pt",
           maxWidth: "70%",
           overflow: "visible",
-          color: "inherit"
+          clear: "both"
         }
       }
     },
@@ -101,22 +99,19 @@ module.exports = {
       },
       title: {
         style: {
-          fontSize: "20pt",
           fontWeight: "bold",
           maxWidth: "70%",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          color: "inherit",
           resize: "none"
         }
       },
       description: {
         style: {
-          fontSize: "15pt",
           maxWidth: "70%",
           overflow: "visible",
-          color: "inherit"
+          clear: "both"
         }
       }
     },
@@ -489,6 +484,11 @@ module.exports = {
       resize: "none"
     },
 
+    emailTable: {
+      color: "white",
+      margin: "0 auto"
+    },
+
     emailSendButton: {
       backgroundColor:"#4389ff",
       border: "0px none transparent",
@@ -584,10 +584,7 @@ module.exports = {
     panelTitleTextStyle: {
       position: "absolute",
       left: "40px",
-      fontSize: "32",
-      fontFamily: "'Roboto Condensed', sans-serif",
       fontWeight: "bold",
-      color: "white",
       margin: "1%",
       display: "inline-block",
       marginBottom: "35px",
@@ -668,7 +665,8 @@ module.exports = {
       marginTop: "35px",
       height: "120px",
       width: "214px",
-      flexShrink: "0"
+      flexShrink: "0",
+      cursor: "pointer"
     },
 
     discoveryImageWrapperStyle: {

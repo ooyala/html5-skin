@@ -148,7 +148,12 @@ var Utils = {
   },
 
   getLocalizedString: function(language, stringId, localizedStrings) {
+    try {
       return localizedStrings[language][stringId];
+    } catch (e) {
+      return "";
+    }
+
   },
 
   highlight: function(target) {
