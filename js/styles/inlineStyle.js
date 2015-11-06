@@ -39,7 +39,8 @@ module.exports = {
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          resize: "none"
+          resize: "none",
+          marginBottom: "15px"
         }
       },
       description: {
@@ -104,7 +105,8 @@ module.exports = {
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          resize: "none"
+          resize: "none",
+          marginBottom: "15px"
         }
       },
       description: {
@@ -262,9 +264,8 @@ module.exports = {
       "backgroundClip": "content-box",
       "position": "relative",
       "width": "4px",
-      "height": "15px",
-      "paddingRight": "3px",
-      "paddingBottom": "1px"
+      "height": "18px",
+      "paddingRight": "3px"
     },
 
     watermarkImageStyle: {
