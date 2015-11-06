@@ -144,7 +144,7 @@ var PauseScreen = React.createClass({
       if (this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("top") > -1)
         infoStyle.style.top = "5%";
       if (this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("bottom") > -1)
-        infoStyle.style.bottom = "5%";
+        infoStyle.style.bottom = InlineStyle.controlBarStyle.controlBarSetting.height;
       if (this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("left") > -1)
         infoStyle.style.left = "5%";
       if (this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1) {
