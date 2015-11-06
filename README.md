@@ -85,6 +85,45 @@ To start a python server, cd into the repo directory and run:
 
 You should now be able to load the sample page by hitting http://localhost:8000/sample.html
 
+## Style
+We use [Sass](http://sass-lang.com/)(SCSS) for CSS preprocessor and [Bootstrap](http://getbootstrap.com/) for responsive, mobile design.
+
+Our [4-1 architecture pattern](http://sass-guidelin.es/#the-7-1-pattern) splits the Sass codebase over several files that are compiled into a single, minified stylesheet deployed to production.
+
+This approach maintains modular, decoupled style without impacting performance.
+
+```
+scss/
+|
+|– base/
+|   |– _normalize.scss   # makes browsers render elements more consistently
+|   |– _reset.scss       # resets to common HTML elements, Adds additional rules on top of _normalize.scss
+|   |– _variables.scss   # variables, colors, measurements, flags to enable/disable features
+|   |– _base.scss        # boilerplate, app level styles
+|   |– _grid.scss        # responsive Bootstrap grid system
+|   |– _type.scss        # typography rules, fonts, icons
+|   ...                  # Etc…
+|
+|– components/           # style to correspond to app views and components
+|   |– _buttons.scss
+|   |– _forms.scss
+|   |– _[screen].scss
+|   |– _[component].scss
+|   ...                  # Etc…
+|
+|– mixins/               # Sass tools and helpers used across project
+|   |– _mixins.scss      # groups of reusable CSS functions
+|   ...                  # Etc…
+|
+|– skins/
+|   |– _default.scss     # default skin, values pulled from /html5-skin/config/skin.json
+|   |– _alien.scss       # :alien: skin
+|   ...                  # Etc…
+|
+|
+`– html5-skin.scss       # main Sass file
+```
+
 ## Testing
 To run tests, run this command:
 
