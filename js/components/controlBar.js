@@ -443,6 +443,7 @@ var ControlBar = React.createClass({
 
 
   render: function() {
+    console.log("xenia in CB render this.props.controlBarVisible",this.props.controlBarVisible);
     // Liusha: Uncomment the following code to support "threshold scaling control bar implementation"
     // var controlBarHeight = Utils.getScaledControlBarHeight(this.props.controlBarWidth);
     // this.scaleControlBarItemsBasedOnControlBarSize(controlBarHeight);

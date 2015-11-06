@@ -31,26 +31,26 @@ var PlayingScreen = React.createClass({
 
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen){
-      this.startHideControlBarTimer();
+      this.props.controller.startHideControlBarTimer();
     }
   },
 
-  startHideControlBarTimer: function(){
-    if (this.state.timer !== null){
-      clearTimeout(this.state.timer);
-    }
-    var timer = setTimeout(function(){
-      if(this.state.controlBarVisible){
-        this.hideControlBar();
-      }
-    }.bind(this), 3000);
-    this.setState({timer: timer});
-  },
+  // startHideControlBarTimer: function(){
+  //   if (this.state.timer !== null){
+  //     clearTimeout(this.state.timer);
+  //   }
+  //   var timer = setTimeout(function(){
+  //     if(this.state.controlBarVisible){
+  //       this.hideControlBar();
+  //     }
+  //   }.bind(this), 3000);
+  //   this.setState({timer: timer});
+  // },
 
   componentWillUnmount: function () {
-    if (this.state.timer !== null){
-      clearTimeout(this.state.timer);
-    }
+    // if (this.state.timer !== null){
+    //   clearTimeout(this.state.timer);
+    // }
     window.removeEventListener('resize', this.handleResize);
     window.removeEventListener('webkitfullscreenchange', this.handleResize);
     window.removeEventListener('mozfullscreenchange', this.handleResize);
@@ -59,9 +59,13 @@ var PlayingScreen = React.createClass({
   },
 
   componentWillUpdate: function(nextProps, nextState) {
+    console.log("xenia in nextProps",nextProps.controller.state.controlBarVisible);
+    if (nextProps.controller.state.controlBarVisible == false && this.state.controlBarVisible == true) {
+      this.hideControlBar();
+    }
     if(nextProps) {
       if(!this.props.fullscreen && nextProps.fullscreen) {
-        this.startHideControlBarTimer();
+        this.props.controller.startHideControlBarTimer();
       }
     }
   },
@@ -90,7 +94,7 @@ var PlayingScreen = React.createClass({
     }
     if (!this.state.controlBarVisible){
       this.showControlBar(event);
-      this.startHideControlBarTimer();
+      this.props.controller.startHideControlBarTimer();
     }
     else {
       this.props.controller.togglePlayPause();
@@ -100,25 +104,34 @@ var PlayingScreen = React.createClass({
   handlePlayerMouseMove: function() {
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
-      this.startHideControlBarTimer();
+      this.props.controller.startHideControlBarTimer();
     }
   },
 
   showControlBar: function(event) {
     if (!this.isMobile || event.type == 'touchend') {
       this.setState({controlBarVisible: true});
+      this.props.controller.state.controlBarVisible = true; //xenia change to controller method
       this.refs.PlayingScreen.getDOMNode().style.cursor="auto";
     }
   },
 
   hideControlBar: function(event) {
+    console.log("xenia in hideControlBar");
     if (!this.isMobile || !event) {
+      console.log("xenia in hideControlBar2");
       this.setState({controlBarVisible: false});
       this.refs.PlayingScreen.getDOMNode().style.cursor="none";
     }
   },
 
   render: function() {
+    console.log("xenia in render, this.props.controller.state.controlBarVisible",this.props.controller.state.controlBarVisible);
+    console.log("xenia in render, this.state.controlBarVisible",this.state.controlBarVisible);
+    // if (this.props.controller.state.controlBarVisible === false) {
+    //   this.hideControlBar();
+    // }
+
     var upNext = null;
     if (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) {
       upNext = <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/>;
