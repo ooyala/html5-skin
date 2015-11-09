@@ -10,7 +10,8 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
-    shell = require('gulp-shell');
+    shell = require('gulp-shell'),
+    sequence = require('gulp-sequence');
 
 var path = {
   scripts: ['./js/components/*.js', './js/constants/*.js', './js/styles/*.js', './js/views/*.js', './js/*.js'],
@@ -18,7 +19,7 @@ var path = {
 };
 
 // Build All
-gulp.task('build', ['browserify', 'pretty', 'buildCss', 'insertVersion']);
+gulp.task('build', sequence(['browserify', 'pretty', 'buildCss'], 'insertVersion'));
 
 // Browserify JS
 gulp.task('browserify', function () {
