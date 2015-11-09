@@ -170,6 +170,8 @@ var DiscoveryPanel = React.createClass({
     panelTitleTextStyle.fontFamily = this.props.skinConfig.discoveryScreen.panelTitle.titleFont.fontFamily;
     panelTitleTextStyle.color = this.props.skinConfig.discoveryScreen.panelTitle.titleFont.color;
 
+    var panelTitleIconStyle = InlineStyle.discoveryScreenStyle.panelTitleIconStyle;
+
     var discoveryToasterContainerStyle = InlineStyle.discoveryScreenStyle.discoveryToasterContainerStyle;
     var discoveryToasterStyle = InlineStyle.discoveryScreenStyle.discoveryToasterStyle;
     discoveryToasterStyle.left = this.state.discoveryToasterLeftOffset;
@@ -236,7 +238,7 @@ var DiscoveryPanel = React.createClass({
 
         <div className="discoveryPanelTitle" style={panelTitleBarStyle}>
           <h1 style={panelTitleTextStyle}>{panelTitle}
-            <span style={{top: "3px", position: "relative", marginLeft: "7px"}} className={this.props.skinConfig.icons.discovery.fontStyleClass}></span>
+            <span style={panelTitleIconStyle} className={this.props.skinConfig.icons.discovery.fontStyleClass}></span>
           </h1>
         </div>
 
