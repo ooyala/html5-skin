@@ -58,7 +58,7 @@ using the git submodule commands:
 
     git submodule init
     git submodule update
-    git pull
+    git submodule foreach git pull origin master
 
 The init and update should only need to be run once, afterward git pull will
 update the submodule as well as the parent repo.
