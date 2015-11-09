@@ -592,6 +592,13 @@ module.exports = {
       opacity: 1
     },
 
+    panelTitleIconStyle: {
+      top: "3px",
+      position: "relative",
+      marginLeft: "7px",
+      fontSize: "22pt"
+    },
+
     discoveryToasterContainerStyle: {
       position: "absolute",
       backgroundColor: "transparent",
@@ -858,14 +865,14 @@ module.exports = {
     },
 
     captionStyle: {
-      fontSize: "32px",
+      fontSize: "28pt",
       fontFamily: "'Roboto Condensed', sans-serif",
       color: "#ffffff",
       fontWeight: "bold"
     },
 
     captionIconStyle: {
-      fontSize: "25px",
+      fontSize: "25pt",
     },
 
     switchStyle: {
