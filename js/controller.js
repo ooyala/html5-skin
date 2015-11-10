@@ -782,19 +782,29 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    startHideControlBarTimer: function(){
-      console.log("xenia in startHideControlBarTimer");
-      if (this.state.timer !== null){
-        clearTimeout(this.state.timer);
-      }
-      var timer = setTimeout(function(){
+    startHideControlBarTimer: function() {
+      this.cancelTimer();
+      var timer = setTimeout(function() {
         if(this.state.controlBarVisible === true){
-          this.state.controlBarVisible = false;
+          this.hideControlBar();
         }
       }.bind(this), 3000);
       this.state.timer = timer;
-    }
+    },
 
+    showControlBar: function() {
+      this.state.controlBarVisible = true;
+    },
+
+    hideControlBar: function() {
+      this.state.controlBarVisible = false;
+    },
+
+    cancelTimer: function() {
+      if (this.state.timer !== null){
+        clearTimeout(this.state.timer);
+      }
+    }
   };
 
   return Html5Skin;

@@ -24,6 +24,10 @@ var ControlBar = React.createClass({
     }
   },
 
+  componentWillUnmount: function () {
+    this.props.controller.cancelTimer();
+  },
+
   handleControlBarMouseUp: function(evt) {
     if (evt.type == 'touchend' || !this.isMobile){
       evt.stopPropagation(); // W3C
@@ -32,6 +36,7 @@ var ControlBar = React.createClass({
       if (this.props.controller.state.volumeState.volumeSliderVisible){
         this.props.controller.hideVolumeSliderBar();
       }
+      this.props.controller.startHideControlBarTimer();
     }
   },
 
@@ -49,6 +54,7 @@ var ControlBar = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
       if (this.isMobile){
+        this.props.controller.startHideControlBarTimer();
         evt.stopPropagation(); // W3C
         evt.cancelBubble = true; // IE
         if (this.props.controller.state.volumeState.volumeSliderVisible){
@@ -65,12 +71,14 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeBarTouchEnd: function(evt) {
+    this.props.controller.startHideControlBarTimer();
     //to prevent volume slider from hiding when clicking on volume slider
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
   },
 
   handleVolumeHeadTouchStart: function(evt) {
+    this.props.controller.startHideControlBarTimer();
     evt.preventDefault();
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
@@ -85,6 +93,7 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeHeadMove: function(evt) {
+    this.props.controller.startHideControlBarTimer();
     evt.preventDefault();
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
@@ -107,6 +116,7 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeHeadTouchEnd: function(evt) {
+    this.props.controller.startHideControlBarTimer();
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
     this.setNewVolume(evt);
@@ -443,7 +453,6 @@ var ControlBar = React.createClass({
 
 
   render: function() {
-    console.log("xenia in CB render this.props.controlBarVisible",this.props.controlBarVisible);
     // Liusha: Uncomment the following code to support "threshold scaling control bar implementation"
     // var controlBarHeight = Utils.getScaledControlBarHeight(this.props.controlBarWidth);
     // this.scaleControlBarItemsBasedOnControlBarSize(controlBarHeight);
