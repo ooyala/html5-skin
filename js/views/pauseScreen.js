@@ -99,8 +99,18 @@ var PauseScreen = React.createClass({
     var pauseStyle = screenStyle.pauseIcon.style;
     var infoStyle = screenStyle.infoPanel;
 
+    //title style
+    infoStyle.title.style.fontSize = this.props.skinConfig.startScreen.titleFont.fontSize + "pt";
+    infoStyle.title.style.fontFamily = this.props.skinConfig.startScreen.titleFont.fontFamily;
+    infoStyle.title.style.color = this.props.skinConfig.startScreen.titleFont.color;
+
+    //description style
+    infoStyle.description.style.fontSize = this.props.skinConfig.startScreen.descriptionFont.fontSize + "pt";
+    infoStyle.description.style.fontFamily = this.props.skinConfig.startScreen.descriptionFont.fontFamily;
+    infoStyle.description.style.color = this.props.skinConfig.startScreen.descriptionFont.color;
+
     // Accent Color
-    pauseStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.pauseScreen.PauseIconStyle.color;
+    pauseStyle.color = this.props.skinConfig.pauseScreen.PauseIconStyle.color;
 
     // PlayButton position, defaulting to centered
     if (this.props.skinConfig.pauseScreen.showPauseIcon) {
@@ -134,7 +144,7 @@ var PauseScreen = React.createClass({
       if (this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("top") > -1)
         infoStyle.style.top = "5%";
       if (this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("bottom") > -1)
-        infoStyle.style.bottom = "5%";
+        infoStyle.style.bottom = InlineStyle.controlBarStyle.controlBarSetting.height;
       if (this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("left") > -1)
         infoStyle.style.left = "5%";
       if (this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1) {

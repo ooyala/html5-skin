@@ -34,22 +34,19 @@ module.exports = {
       },
       title: {
         style: {
-          fontSize: "32px",
           fontWeight: "bold",
           maxWidth: "70%",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          color: "inherit",
-          resize: "none"
+          resize: "none",
+          marginBottom: "15px"
         }
       },
       description: {
         style: {
-          fontSize: "24",
           maxWidth: "70%",
           overflow: "visible",
-          color: "inherit",
           clear: "both"
         }
       }
@@ -103,22 +100,19 @@ module.exports = {
       },
       title: {
         style: {
-          fontSize: "32px",
           fontWeight: "bold",
           maxWidth: "70%",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          color: "inherit",
-          resize: "none"
+          resize: "none",
+          marginBottom: "15px"
         }
       },
       description: {
         style: {
-          fontSize: "24",
           maxWidth: "70%",
           overflow: "visible",
-          color: "inherit",
           clear: "both"
         }
       }
@@ -591,14 +585,18 @@ module.exports = {
     panelTitleTextStyle: {
       position: "absolute",
       left: "40px",
-      fontSize: "32",
-      fontFamily: "'Roboto Condensed', sans-serif",
       fontWeight: "bold",
-      color: "white",
       margin: "1%",
       display: "inline-block",
       marginBottom: "35px",
       opacity: 1
+    },
+
+    panelTitleIconStyle: {
+      top: "3px",
+      position: "relative",
+      marginLeft: "7px",
+      fontSize: "22pt"
     },
 
     discoveryToasterContainerStyle: {
@@ -867,22 +865,21 @@ module.exports = {
     },
 
     captionStyle: {
-      fontSize: "32px",
+      fontSize: "28pt",
       fontFamily: "'Roboto Condensed', sans-serif",
       color: "#ffffff",
       fontWeight: "bold"
     },
 
     captionIconStyle: {
-      fontSize: "25px",
+      fontSize: "25pt",
     },
 
     switchStyle: {
       cursor: "pointer",
       marginTop: "35px",
-      height: "28px",
-      width: "140px",
-      fontSize: "20pt",
+      height: "21px",
+      width: "105px",
       color: "#FFFFFF",
       position: "relative"
     },
@@ -924,14 +921,18 @@ module.exports = {
       position: "absolute",
       right: "0",
       display: "inline-block",
-      color: "grey"
+      color: "grey",
+      fontSize: "15pt",
+      fontFamily: "'Roboto', sans-serif"
     },
 
     offStyle: {
       position: "absolute",
       display: "inline-block",
       left: "0",
-      color: "grey"
+      color: "grey",
+      fontSize: "15pt",
+      fontFamily: "'Roboto', sans-serif"
     },
 
     itemStyle: {
@@ -1222,10 +1223,10 @@ module.exports = {
 
     buttonListStyle: {
       "position": "absolute",
-      "bottom": "0",
-      "left": "30%",
-      "right": "30%",
-      "width": "40%",
+      "top": "50%",
+      "left": "50%",
+      "-webkit-transform": "translate(-50%, -50%)",
+      "transform": "translate(-50%, -50%)",
       "height": "32",
       "opacity": "0",
       "listStyle": "none",

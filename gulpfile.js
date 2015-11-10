@@ -19,7 +19,7 @@ var path = {
 };
 
 // Build All
-gulp.task('build', ['browserify', 'pretty', 'sass', 'insertVersion']);
+gulp.task('build', ['browserify', 'pretty', 'insertVersion']);
 
 // Browserify JS
 gulp.task('browserify', function () {
@@ -71,13 +71,13 @@ gulp.task('test', shell.task(['npm test']));
 
 // Initiate a watch
 gulp.task('watch', function() {
-  gulp.watch(path.scripts, ['browserify', 'pretty']);
+  gulp.watch(path.scripts, ['build']);
   gulp.watch(path.sass, ['sass']);
 });
 
 // The default task (called when you run `gulp` from cli)
 gulp.task('default', ['build', 'watch']);
 
-
-gulp.task("insertVersion", shell.task(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
+//Insert version needs the other build steps to finish first, so we mark them as dependent tasks
+gulp.task('insertVersion', ['browserify', 'pretty', 'sass'], shell.task(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
                                         'sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
