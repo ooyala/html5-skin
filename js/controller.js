@@ -803,6 +803,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     cancelTimer: function() {
       if (this.state.timer !== null){
         clearTimeout(this.state.timer);
+        this.state.timer = null;
       }
     }
   };
