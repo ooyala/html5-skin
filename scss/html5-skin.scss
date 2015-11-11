@@ -1,4 +1,4 @@
-@charset 'utf-8';
+@charset "utf-8";
 
 // namespace root
 #ooyala-inner-wrapper {
@@ -14,11 +14,11 @@
   //@import "mixins/grid";
 
   // Normalize and reset
-  //@import "base/normalize";
-  //@import "base/reset";
+  @import "base/normalize";
+  @import "base/reset";
 
   // Core CSS
-  //@import "base/base";
+  @import "base/base";
   @import "base/type";
   //@import "base/grid";
 

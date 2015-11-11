@@ -24,19 +24,19 @@
 // Correct `block` display not defined for `main` in IE 11.
 //
 
-article,
-aside,
-details,
-figcaption,
+//article,
+//aside,
+//details,
+//figcaption,
 figure,
-footer,
-header,
-hgroup,
-main,
+//footer,
+//header,
+//hgroup,
+//main,
 menu,
-nav,
-section,
-summary {
+//nav,
+//summary,
+section {
   display: block;
 }
 
@@ -45,9 +45,9 @@ summary {
 // 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
 //
 
-audio,
-canvas,
-progress,
+//audio,
+//canvas,
+//progress,
 video {
   display: inline-block; // 1
   vertical-align: baseline; // 2
@@ -58,10 +58,10 @@ video {
 // Remove excess height in iOS 5 devices.
 //
 
-audio:not([controls]) {
-  display: none;
-  height: 0;
-}
+//audio:not([controls]) {
+//  display: none;
+//  height: 0;
+//}
 
 //
 // Address `[hidden]` styling not present in IE 8/9/10.
@@ -105,9 +105,9 @@ a {
 // Address styling not present in IE 8/9/10/11, Safari, and Chrome.
 //
 
-abbr[title] {
-  border-bottom: 1px dotted;
-}
+//abbr[title] {
+//  border-bottom: 1px dotted;
+//}
 
 //
 // Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
@@ -122,9 +122,9 @@ strong {
 // Address styling not present in Safari and Chrome.
 //
 
-dfn {
-  font-style: italic;
-}
+//dfn {
+//  font-style: italic;
+//}
 
 //
 // Address variable `h1` font-size and margin within `section` and `article`
@@ -140,10 +140,10 @@ h1 {
 // Address styling not present in IE 8/9.
 //
 
-mark {
-  background: #ff0;
-  color: #000;
-}
+//mark {
+//  background: #ff0;
+//  color: #000;
+//}
 
 //
 // Address inconsistent and variable font size in all browsers.
@@ -157,21 +157,21 @@ small {
 // Prevent `sub` and `sup` affecting `line-height` in all browsers.
 //
 
-sub,
-sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
-}
-
-sup {
-  top: -0.5em;
-}
-
-sub {
-  bottom: -0.25em;
-}
+//sub,
+//sup {
+//  font-size: 75%;
+//  line-height: 0;
+//  position: relative;
+//  vertical-align: baseline;
+//}
+//
+//sup {
+//  top: -0.5em;
+//}
+//
+//sub {
+//  bottom: -0.25em;
+//}
 
 // Embedded content
 // ==========================================================================
@@ -216,21 +216,21 @@ hr {
 // Contain overflow in all browsers.
 //
 
-pre {
-  overflow: auto;
-}
+//pre {
+//  overflow: auto;
+//}
 
 //
 // Address odd `em`-unit font size rendering in all browsers.
 //
 
-code,
-kbd,
-pre,
-samp {
-  font-family: monospace, monospace;
-  font-size: 1em;
-}
+//code,
+//kbd,
+//pre,
+//samp {
+//  font-family: monospace, monospace;
+//  font-size: 1em;
+//}
 
 // Forms
 // ==========================================================================
@@ -252,7 +252,7 @@ input,
 optgroup,
 select,
 textarea {
-  color: inherit; // 1
+  color: $input-color; // 1
   font: inherit; // 2
   margin: 0; // 3
 }
@@ -371,21 +371,21 @@ input[type="search"]::-webkit-search-decoration {
 // Define consistent border, margin, and padding.
 //
 
-fieldset {
-  border: 1px solid #c0c0c0;
-  margin: 0 2px;
-  padding: 0.35em 0.625em 0.75em;
-}
+//fieldset {
+//  border: 1px solid #c0c0c0;
+//  margin: 0 2px;
+//  padding: 0.35em 0.625em 0.75em;
+//}
 
 //
 // 1. Correct `color` not being inherited in IE 8/9/10/11.
 // 2. Remove padding so people aren't caught out if they zero out fieldsets.
 //
 
-legend {
-  border: 0; // 1
-  padding: 0; // 2
-}
+//legend {
+//  border: 0; // 1
+//  padding: 0; // 2
+//}
 
 //
 // Remove default vertical scrollbar in IE 8/9/10/11.
@@ -400,9 +400,9 @@ textarea {
 // NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
 //
 
-optgroup {
-  font-weight: bold;
-}
+//optgroup {
+//  font-weight: bold;
+//}
 
 // Tables
 // ==========================================================================

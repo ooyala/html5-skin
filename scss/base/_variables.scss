@@ -1,16 +1,14 @@
 // Credit: https://github.com/twbs/bootstrap/blob/v4-dev/scss/_variables.scss
 
-$white:                     #fff !default;
-$spacer-close-btn:           -18px !default;
-
 //// Colors
-//$gray-dark:                 #373a3c !default;
-//$gray:                      #55595c !default;
+$gray-dark:                 #373a3c !default;
+$gray:                      #55595c !default;
 //$gray-light:                #818a91 !default;
 //$gray-lighter:              #eceeef !default;
 //$gray-lightest:             #f7f7f9 !default;
+$white:                     #fff !default;
 //
-//$brand-primary:             #0275d8 !default;
+$brand-primary:             #0275d8 !default;
 //$brand-success:             #5cb85c !default;
 //$brand-info:                #5bc0de !default;
 //$brand-warning:             #f0ad4e !default;
@@ -26,7 +24,7 @@ $spacer-close-btn:           -18px !default;
 //$enable-shadows:            false !default;
 //$enable-gradients:          false !default;
 //$enable-transitions:        false !default;
-//$enable-hover-media-query:  false !default;
+$enable-hover-media-query:  false !default;
 //$enable-grid-classes:       true !default;
 //
 //
@@ -38,6 +36,7 @@ $spacer-close-btn:           -18px !default;
 //$spacer:                     1em !default;
 //$spacer-x:                   $spacer !default;
 //$spacer-y:                   $spacer !default;
+$spacer-close-btn:           -18px !default;
 //$border-width:               1px !default;
 //
 //
@@ -45,18 +44,18 @@ $spacer-close-btn:           -18px !default;
 ////
 //// Settings for the `<body>` element.
 //
-//$body-bg:                    #fff !default;
-//$body-color:                 $gray-dark !default;
+$body-bg:                    #fff !default;
+$body-color:                 $gray-dark !default;
 //
 //
 //// Links
 ////
 //// Style anchor elements.
 //
-//$link-color:                 $brand-primary !default;
-//$link-decoration:            none !default;
-//$link-hover-color:           darken($link-color, 15%) !default;
-//$link-hover-decoration:      none !default;
+$link-color:                 $brand-primary !default;
+$link-decoration:            none !default;
+$link-hover-color:           darken($link-color, 15%) !default;
+$link-hover-decoration:      none !default;
 //
 //
 //// Grid breakpoints
@@ -102,15 +101,14 @@ $spacer-close-btn:           -18px !default;
 ////
 //// Font, line-height, and color for body text, headings, and more.
 //
-//$font-family-sans-serif:     "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$font-family-sans-serif:     "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 //$font-family-serif:          Georgia, "Times New Roman", Times, serif !default;
 //$font-family-monospace:      Menlo, Monaco, Consolas, "Courier New", monospace !default;
-//$font-family-base:           $font-family-sans-serif !default;
+$font-family-base:           $font-family-sans-serif !default;
 //
 //// Pixel value used to responsively scale all typography. Applied to the `<html>` element.
-//$font-size-root:             16px !default;
-//
-//$font-size-base:             1em !default;
+$font-size-root:             16px !default;
+$font-size-base:             1em !default;
 //$font-size-lg:               1.25em !default;
 //$font-size-sm:               .85em !default;
 //$font-size-xs:               .75em !default;
@@ -132,7 +130,7 @@ $spacer-close-btn:           -18px !default;
 //$display3-weight:             300 !default;
 //$display4-weight:             300 !default;
 //
-//$line-height:                1.5 !default;
+$line-height:                1.5 !default;
 //
 //$headings-margin-bottom:     ($spacer / 2) !default;
 //$headings-font-family:       inherit !default;
@@ -242,7 +240,7 @@ $spacer-close-btn:           -18px !default;
 //$input-bg:                       #fff !default;
 //$input-bg-disabled:              $gray-lighter !default;
 //
-//$input-color:                    $gray !default;
+$input-color:                    $gray !default;
 //$input-border:                   #ccc !default;
 //$input-box-shadow:               inset 0 1px 1px rgba(0,0,0,.075) !default;
 //
