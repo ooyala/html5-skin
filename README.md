@@ -19,8 +19,8 @@ This simple test HTML page can also be hosted on your environment to showcase ht
   <script src="//player.ooyala.com/static/v4/latest/core.min.js"></script>
   <script src="//player.ooyala.com/static/v4/latest/discovery_api.min.js"></script>
   <!-- Change these styles.css and html5-skin.js to your local build if necessary -->
-  <script src="//player.ooyala.com/static/v4/latest/html5-skin/build/html5-skin.min.js"></script>
-  <link rel="stylesheet" href="//player.ooyala.com/static/v4/latest/html5-skin/assets/styles.css"/>
+  <script src="//player.ooyala.com/static/v4/latest/html5-skin/html5-skin.min.js"></script>
+  <link rel="stylesheet" href="//player.ooyala.com/static/v4/latest/html5-skin/html5-skin.min.css"/>
 </head>
 
 <body>
@@ -32,7 +32,7 @@ This simple test HTML page can also be hosted on your environment to showcase ht
     "debug":true,
     "skin": {
       // Config contains the configuration setting for player skin. Change to your local config when necessary.
-      "config": "//player.ooyala.com/static/v4/latest/html5-skin/config/skin.json"
+      "config": "//player.ooyala.com/static/v4/latest/html5-skin/skin.json"
     }
   };
   OO.ready(function() {
@@ -71,7 +71,7 @@ This will install gulp module globally. Then, simply run this command:
 
     gulp
 
-This will perform an initial build and start a watch that will update build/html5-skin.js with any changes you wish to make in js folder.
+This will perform an initial build and start a watch that will update `build/js/*` and `build/css/*` with any changes made in 'js/' or 'scss/' folder.
 
 If you have the forever module installed, you can use the following command to keep gulp running:
 
@@ -143,7 +143,7 @@ Simple customization can be achieved by modifying skin.json setting. Furthermore
 ```javascript
 var playerParam = {
   "skin": {
-    "config": "//player.ooyala.com/static/v4/latest/html5-skin/config/skin.json",
+    "config": "//player.ooyala.com/static/v4/latest/html5-skin/skin.json",
     "inline": {
       "startScreen": {"showDescription": false, "playIconStyle": {"color": "blue"}}
     }
