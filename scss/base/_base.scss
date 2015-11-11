@@ -35,3 +35,15 @@ a {
     @include tab-focus();
   }
 }
+
+.col-sm-2 {
+  width: (100/12)*2%;
+}
+
+.col-sm-10 {
+  width: (100/12)*10%;
+}
+
+.col-sm-offset-2 {
+  margin-left: (100/12)*2%;
+}

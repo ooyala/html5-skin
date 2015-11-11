@@ -3,9 +3,9 @@
 //// Colors
 $gray-dark:                 #373a3c !default;
 $gray:                      #55595c !default;
-//$gray-light:                #818a91 !default;
-//$gray-lighter:              #eceeef !default;
-//$gray-lightest:             #f7f7f9 !default;
+$gray-light:                #818a91 !default;
+$gray-lighter:              #eceeef !default;
+$gray-lightest:             #f7f7f9 !default;
 $white:                     #fff !default;
 //
 $brand-primary:             #0275d8 !default;
@@ -20,10 +20,10 @@ $brand-primary:             #0275d8 !default;
 //// Quickly modify global styling by enabling or disabling optional features.
 //
 //$enable-flex:               false !default;
-//$enable-rounded:            true !default;
-//$enable-shadows:            false !default;
+$enable-rounded:            true !default;
+$enable-shadows:            false !default;
 //$enable-gradients:          false !default;
-//$enable-transitions:        false !default;
+$enable-transitions:        false !default;
 $enable-hover-media-query:  false !default;
 //$enable-grid-classes:       true !default;
 //
@@ -37,7 +37,7 @@ $enable-hover-media-query:  false !default;
 //$spacer-x:                   $spacer !default;
 //$spacer-y:                   $spacer !default;
 $spacer-close-btn:           -18px !default;
-//$border-width:               1px !default;
+$border-width:               1px !default;
 //
 //
 //// Body
@@ -160,7 +160,7 @@ $line-height:                1.5 !default;
 //$line-height-lg:         (4 / 3) !default;
 //$line-height-sm:         1.5 !default;
 //
-//$border-radius:          .25em !default;
+$border-radius:          .25em !default;
 //$border-radius-lg:       .3em !default;
 //$border-radius-sm:       .2em !default;
 //
@@ -234,24 +234,24 @@ $line-height:                1.5 !default;
 //
 //// Forms
 //
-//$input-padding-x:                .75em !default;
-//$input-padding-y:                .375em !default;
+$input-padding-x:                .75em !default;
+$input-padding-y:                .375em !default;
 //
-//$input-bg:                       #fff !default;
-//$input-bg-disabled:              $gray-lighter !default;
+$input-bg:                       #fff !default;
+$input-bg-disabled:              $gray-lighter !default;
 //
 $input-color:                    $gray !default;
-//$input-border:                   #ccc !default;
-//$input-box-shadow:               inset 0 1px 1px rgba(0,0,0,.075) !default;
+$input-border:                   #ccc !default;
+$input-box-shadow:               inset 0 1px 1px rgba(0,0,0,.075) !default;
 //
-//$input-border-radius:            $border-radius !default;
+$input-border-radius:            $border-radius !default;
 //$input-border-radius-lg:         $border-radius-lg !default;
 //$input-border-radius-sm:         $border-radius-sm !default;
 //
 //$input-border-focus:             #66afe9 !default;
 //$input-box-shadow-focus:         rgba(102,175,233,.6) !default;
 //
-//$input-color-placeholder:        #999 !default;
+$input-color-placeholder:        #999 !default;
 //
 //$input-padding-x-sm:             .75em !default;
 //$input-padding-y-sm:             .275em !default;
@@ -268,7 +268,7 @@ $input-color:                    $gray !default;
 //$input-group-addon-bg:           $gray-lighter !default;
 //$input-group-addon-border-color: $input-border !default;
 //
-//$cursor-disabled:                not-allowed !default;
+$cursor-disabled:                not-allowed !default;
 //
 //// Form validation icons
 //$form-icon-success: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkNoZWNrIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDYxMiA3OTIiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDYxMiA3OTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxwYXRoIGZpbGw9IiM1Q0I4NUMiIGQ9Ik0yMzMuOCw2MTAuMWMtMTMuMywwLTI1LjktNi4yLTM0LTE2LjlMOTAuNSw0NDguOEM3Ni4zLDQzMCw4MCw0MDMuMyw5OC44LDM4OS4xYzE4LjgtMTQuMyw0NS41LTEwLjUsNTkuOCw4LjNsNzEuOSw5NWwyMjAuOS0yNTAuNWMxMi41LTIwLDM4LjgtMjYuMSw1OC44LTEzLjZjMjAsMTIuNCwyNi4xLDM4LjcsMTMuNiw1OC44TDI3MCw1OTBjLTcuNCwxMi0yMC4yLDE5LjQtMzQuMywyMC4xQzIzNS4xLDYxMC4xLDIzNC41LDYxMC4xLDIzMy44LDYxMC4xeiIvPjwvc3ZnPg==" !default;

@@ -8,23 +8,23 @@
   }
 }
 
-//@mixin border-radius($radius: $border-radius) {
-//  @if $enable-rounded {
-//    border-radius: $radius;
-//  }
-//}
-//
-//@mixin box-shadow($shadow...) {
-//  @if $enable-shadows {
-//    box-shadow: $shadow;
-//  }
-//}
-//
-//@mixin transition($transition...) {
-//  @if $enable-transitions {
-//    transition: $transition;
-//  }
-//}
+@mixin border-radius($radius: $border-radius) {
+  @if $enable-rounded {
+    border-radius: $radius;
+  }
+}
+
+@mixin box-shadow($shadow...) {
+  @if $enable-shadows {
+    box-shadow: $shadow;
+  }
+}
+
+@mixin transition($transition...) {
+  @if $enable-transitions {
+    transition: $transition;
+  }
+}
 
 @mixin clearfix() {
   &::after {
