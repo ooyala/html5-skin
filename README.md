@@ -71,7 +71,7 @@ This will install gulp module globally. Then, simply run this command:
 
     gulp
 
-This will perform an initial build and start a watch that will update `build/js/*` and `build/css/*` with any changes made in 'js/' or 'scss/' folder.
+This will perform an initial build and start a watch that will update the `build/` folder with any changes made in 'js/' or 'scss/' folders.
 
 If you have the forever module installed, you can use the following command to keep gulp running:
 
