@@ -18,9 +18,9 @@ This simple test HTML page can also be hosted on your environment to showcase ht
   <!-- V4 JS core is required. Plugins such as skin, discovery and Advertising need to be loaded separately -->
   <script src="//player.ooyala.com/static/v4/latest/core.min.js"></script>
   <script src="//player.ooyala.com/static/v4/latest/discovery_api.min.js"></script>
-  <!-- Change these styles.css and html5-skin.js to your local build if necessary -->
-  <script src="//player.ooyala.com/static/v4/latest/html5-skin/html5-skin.min.js"></script>
-  <link rel="stylesheet" href="//player.ooyala.com/static/v4/latest/html5-skin/html5-skin.min.css"/>
+  <!-- Change these html5-skin.min.css and html5-skin.min.js to your local build if necessary -->
+  <script src="//player.ooyala.com/static/v4/latest/skin-plugin/html5-skin.min.js"></script>
+  <link rel="stylesheet" href="//player.ooyala.com/static/v4/latest/skin-plugin/html5-skin.min.css"/>
 </head>
 
 <body>
@@ -32,7 +32,7 @@ This simple test HTML page can also be hosted on your environment to showcase ht
     "debug":true,
     "skin": {
       // Config contains the configuration setting for player skin. Change to your local config when necessary.
-      "config": "//player.ooyala.com/static/v4/latest/html5-skin/skin.json"
+      "config": "//player.ooyala.com/static/v4/latest/skin-plugin/skin.json"
     }
   };
   OO.ready(function() {
@@ -116,7 +116,7 @@ scss/
 |   ...
 |
 |– skins/
-|   |– _default.scss     # default skin, values pulled from /html5-skin/config/skin.json
+|   |– _default.scss     # default skin, values pulled from /skin-plugin/config/skin.json
 |   |– _alien.scss       # :alien: skin
 |   ...
 |
@@ -143,7 +143,7 @@ Simple customization can be achieved by modifying skin.json setting. Furthermore
 ```javascript
 var playerParam = {
   "skin": {
-    "config": "//player.ooyala.com/static/v4/latest/html5-skin/skin.json",
+    "config": "//player.ooyala.com/static/v4/latest/skin-plugin/skin.json",
     "inline": {
       "startScreen": {"showDescription": false, "playIconStyle": {"color": "blue"}}
     }
