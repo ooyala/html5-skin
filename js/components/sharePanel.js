@@ -1,8 +1,16 @@
+/********************************************************************
+ SHARE PANEL
+ *********************************************************************/
+/**
+ * Panel component for Share Screen.
+ *
+ * @class SharePanel
+ * @constructor
+ */
 var React = require('react'),
     ClassNames = require('classnames'),
     Utils = require('./utils'),
-    CONSTANTS = require('../constants/constants'),
-    InlineStyle = require('../styles/inlineStyle');
+    CONSTANTS = require('../constants/constants');
 
 var SharePanel = React.createClass({
   tabs: {SHARE: "share", EMBED: "embed", EMAIL: "email"},
@@ -27,7 +35,7 @@ var SharePanel = React.createClass({
 
           <form className="form-inline">
             <div className="form-group">
-              <label className="sr-only" for="oo-url">url</label>
+              <label className="sr-only" htmlFor="oo-url">url</label>
               <input className="form-control" type='url' defaultValue={location.href} id="oo-url"/>
             </div>
 
@@ -36,7 +44,7 @@ var SharePanel = React.createClass({
             </label>
 
             <div className="form-group">
-              <label className="sr-only" for="oo-start-at">{startAtString}</label>
+              <label className="sr-only" htmlFor="oo-start-at">{startAtString}</label>
               <input className="form-control start-at" type='text' id="oo-start-at" defaultValue={Utils.formatSeconds(this.props.currentPlayhead)} />
             </div>
           </form>
@@ -101,7 +109,7 @@ var SharePanel = React.createClass({
 
             <div className="form-group clearfix">
               <div className="col-sm-offset-2 col-sm-10">
-                <button type="submit"
+                <button type="button"
                         className="btn btn-primary pull-left"
                         onClick={this.handleEmailClick}>{sendString}</button>
               </div>
@@ -113,34 +121,38 @@ var SharePanel = React.createClass({
     }
   },
 
-  handleEmailClick: function(evt) {
-    var mailToUrl = "mailto:";
-    mailToUrl += this.refs.sharePanelTo.getDOMNode().value;
-    mailToUrl += "?subject=" + encodeURIComponent(this.refs.sharePanelSubject.getDOMNode().value);
-    mailToUrl += "&body=" + encodeURIComponent(this.refs.sharePanelMessage.getDOMNode().value);
-    location.href = mailToUrl;
+  handleEmailClick: function() {
+    var mailto = this.refs.sharePanelTo.getDOMNode().value;
+    var subject = encodeURIComponent(this.refs.sharePanelSubject.getDOMNode().value);
+    var body = encodeURIComponent(this.refs.sharePanelMessage.getDOMNode().value);
+    var mailToUrl = "mailto:" + mailto;
+    mailToUrl += "?subject=" + subject;
+    mailToUrl += "&body=" + body;
+    if (mailto) {
+      location.href = mailToUrl;
+    }
   },
 
-  handleFacebookClick: function(evt) {
+  handleFacebookClick: function() {
     var facebookUrl = "http://www.facebook.com/sharer.php";
     facebookUrl += "?u=" + encodeURIComponent(location.href);
     window.open(facebookUrl, "facebook window", "height=315,width=780");
   },
 
-  handleGPlusClick: function(evt) {
+  handleGPlusClick: function() {
     var gPlusUrl = "https://plus.google.com/share";
     gPlusUrl += "?url=" + encodeURIComponent(location.href);
     window.open(gPlusUrl, "google+ window", "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600");
   },
 
-  handleTwitterClick: function(evt) {
+  handleTwitterClick: function() {
     var twitterUrl = "https://twitter.com/intent/tweet";
     twitterUrl += "?text=" + encodeURIComponent(this.props.contentTree.title+": ");
     twitterUrl += "&url=" + encodeURIComponent(location.href);
     window.open(twitterUrl, "twitter window", "height=300,width=750");
   },
 
-  showPanel: function(panelToShow, evt) {
+  showPanel: function(panelToShow) {
     this.setState({activeTab: panelToShow});
   },
 
