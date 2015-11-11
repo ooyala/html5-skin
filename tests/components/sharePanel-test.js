@@ -34,24 +34,25 @@ describe('SharePanel', function () {
           <SharePanel language={key} localizableStrings={localizableStrings}/>
         );
 
-        // parent div
+        // parent elements
         var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'shareTabPanel');
+        var tabs = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
 
         // test share tab
-        var shareTab = TestUtils.findRenderedDOMComponentWithClass(DOM, 'shareTab');
+        var shareTab = tabs[0];
         expect(React.findDOMNode(shareTab).textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
         TestUtils.Simulate.click(shareTab);
         expect(React.findDOMNode(shareTabPanel).textContent).toContain(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION]);
 
         // test embed tab
-        var embedTab = TestUtils.findRenderedDOMComponentWithClass(DOM, 'embedTab');
+        var embedTab = tabs[1];
         expect(React.findDOMNode(embedTab).textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.EMBED]);
         TestUtils.Simulate.click(embedTab);
         var textArea = TestUtils.findRenderedDOMComponentWithTag(shareTabPanel, 'textarea');
         expect(React.findDOMNode(textArea).value).toContain('//player.ooyala.com/v4/');
 
         // test email tab
-        var emailTab = TestUtils.findRenderedDOMComponentWithClass(DOM, 'emailTab');
+        var emailTab = tabs[2];
         expect(React.findDOMNode(emailTab).textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.EMAIL]);
         TestUtils.Simulate.click(emailTab);
         expect(React.findDOMNode(DOM.refs.sharePanelTo).getAttribute('placeholder')).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.RECIPIENT]);
