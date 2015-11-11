@@ -19,12 +19,13 @@
     "url": "https://github.com/ooyala/html5-skin.git"
   },
   "dependencies": {
+    "classnames": "*",
     "react": "0.13.3"
   },
   "devDependencies": {
     "browserify": "12.0.1",
-    "classnames": "*",
     "gulp": "3.8.11",
+    "gulp-rename": "*",
     "gulp-sass": "2.1.0",
     "gulp-shell": "0.4.2",
     "gulp-sourcemaps": "1.5.2",
