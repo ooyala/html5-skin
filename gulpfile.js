@@ -35,7 +35,7 @@ gulp.task('browserify', function () {
     .pipe(source('html5-skin.js'))
     .pipe(buffer())
     .on('error', gutil.log)
-    .pipe(gulp.dest('./build/js'));
+    .pipe(gulp.dest('./build'));
 });
 
 // Browserify Minified JS
@@ -55,14 +55,14 @@ gulp.task('browserify-min', function () {
     .pipe(uglify())
     .on('error', gutil.log)
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('./build/js'));
+    .pipe(gulp.dest('./build'));
 });
 
 // Build Sass
 gulp.task('sass', function () {
   gulp.src(path.sass)
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('./build/css'))
+    .pipe(gulp.dest('./build'))
 });
 
 // Build Minified Sass
@@ -72,7 +72,7 @@ gulp.task('sass-min', function () {
     .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
     .pipe(rename({suffix: '.min'}))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('./build/css'))
+    .pipe(gulp.dest('./build'))
 });
 
 // Run tests
@@ -89,5 +89,5 @@ gulp.task('default', ['build', 'watch']);
 
 //Insert version needs the other build steps to finish first, so we mark them as dependent tasks
 gulp.task('insertVersion', ['browserify', 'browserify-min'],
-  shell.task(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/js/html5-skin.js',
-    'sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/js/html5-skin.min.js']));
+  shell.task(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
+    'sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
