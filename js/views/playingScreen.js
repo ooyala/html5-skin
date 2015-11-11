@@ -31,26 +31,12 @@ var PlayingScreen = React.createClass({
 
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen){
-      this.startHideControlBarTimer();
+      this.props.controller.startHideControlBarTimer();
     }
-  },
-
-  startHideControlBarTimer: function(){
-    if (this.state.timer !== null){
-      clearTimeout(this.state.timer);
-    }
-    var timer = setTimeout(function(){
-      if(this.state.controlBarVisible){
-        this.hideControlBar();
-      }
-    }.bind(this), 3000);
-    this.setState({timer: timer});
   },
 
   componentWillUnmount: function () {
-    if (this.state.timer !== null){
-      clearTimeout(this.state.timer);
-    }
+    this.props.controller.cancelTimer();
     window.removeEventListener('resize', this.handleResize);
     window.removeEventListener('webkitfullscreenchange', this.handleResize);
     window.removeEventListener('mozfullscreenchange', this.handleResize);
@@ -60,8 +46,16 @@ var PlayingScreen = React.createClass({
 
   componentWillUpdate: function(nextProps, nextState) {
     if(nextProps) {
+      if (nextProps.controller.state.controlBarVisible == false && this.state.controlBarVisible == true) {
+        this.hideControlBar();
+      }
       if(!this.props.fullscreen && nextProps.fullscreen) {
-        this.startHideControlBarTimer();
+        this.props.controller.startHideControlBarTimer();
+      }
+      if(this.props.fullscreen && !nextProps.fullscreen && this.isMobile) {
+        this.setState({controlBarVisible: true});
+        this.props.controller.showControlBar();
+        this.props.controller.startHideControlBarTimer();
       }
     }
   },
@@ -69,6 +63,7 @@ var PlayingScreen = React.createClass({
   handleResize: function(e) {
     if (this.isMounted()) {
       this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+      this.props.controller.startHideControlBarTimer();
     }
   },
 
@@ -90,7 +85,7 @@ var PlayingScreen = React.createClass({
     }
     if (!this.state.controlBarVisible){
       this.showControlBar(event);
-      this.startHideControlBarTimer();
+      this.props.controller.startHideControlBarTimer();
     }
     else {
       this.props.controller.togglePlayPause();
@@ -100,13 +95,14 @@ var PlayingScreen = React.createClass({
   handlePlayerMouseMove: function() {
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
-      this.startHideControlBarTimer();
+      this.props.controller.startHideControlBarTimer();
     }
   },
 
   showControlBar: function(event) {
     if (!this.isMobile || event.type == 'touchend') {
       this.setState({controlBarVisible: true});
+      this.props.controller.showControlBar();
       this.refs.PlayingScreen.getDOMNode().style.cursor="auto";
     }
   },
@@ -114,6 +110,7 @@ var PlayingScreen = React.createClass({
   hideControlBar: function(event) {
     if (!this.isMobile || !event) {
       this.setState({controlBarVisible: false});
+      this.props.controller.hideControlBar();
       this.refs.PlayingScreen.getDOMNode().style.cursor="none";
     }
   },
