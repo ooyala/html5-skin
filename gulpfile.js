@@ -88,7 +88,8 @@ gulp.task('watch', function() {
 gulp.task('default', ['build', 'watch']);
 
 //Insert version needs the other build steps to finish first, so we mark them as dependent tasks
-gulp.task('insertVersion', ['browserify', 'browserify-min'], shell.task(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
+gulp.task('insertVersion', ['browserify', 'browserify-min'],
+  shell.task(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
     'sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
 
 // //Assets
