@@ -73,6 +73,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       },
 
       "isMobile": false,
+      "controlBarVisible": true,
+      "timer": null,
       "errorCode": null
     };
 
@@ -778,6 +780,31 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     showVolumeSliderBar: function() {
       this.state.volumeState.volumeSliderVisible = true;
       this.renderSkin();
+    },
+
+    startHideControlBarTimer: function() {
+      this.cancelTimer();
+      var timer = setTimeout(function() {
+        if(this.state.controlBarVisible === true){
+          this.hideControlBar();
+        }
+      }.bind(this), 3000);
+      this.state.timer = timer;
+    },
+
+    showControlBar: function() {
+      this.state.controlBarVisible = true;
+    },
+
+    hideControlBar: function() {
+      this.state.controlBarVisible = false;
+    },
+
+    cancelTimer: function() {
+      if (this.state.timer !== null){
+        clearTimeout(this.state.timer);
+        this.state.timer = null;
+      }
     }
   };
 

@@ -29,6 +29,7 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseDown: function(evt) {
+    this.props.controller.startHideControlBarTimer();
     if (evt.type == 'touchstart' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
@@ -65,6 +66,7 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseMove: function(evt) {
+    this.props.controller.startHideControlBarTimer();
     evt.preventDefault();
     if (this.props.seeking) {
       this.setState({
@@ -74,6 +76,7 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseUp: function(evt) {
+    this.props.controller.startHideControlBarTimer();
     evt.preventDefault();
     // stop propagation to prevent it from bubbling up to the skin and pausing
     evt.stopPropagation(); // W3C
@@ -101,6 +104,8 @@ var ScrubberBar = React.createClass({
 
   handleScrubberBarMouseUp: function(evt) {
     if (evt.type == 'touchend' || !this.isMobile){
+      this.props.controller.startHideControlBarTimer();
+
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
