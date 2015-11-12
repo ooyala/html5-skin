@@ -12,15 +12,17 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     shell = require('gulp-shell'),
     sass = require('gulp-sass'),
-    rename = require('gulp-rename');
+    rename = require('gulp-rename'),
+    imagemin = require('gulp-imagemin'),
+    pngquant = require('imagemin-pngquant');
 
 var path = {
-  scripts: ['./js/components/*.js', './js/constants/*.js', './js/styles/*.js', './js/views/*.js', './js/*.js'],
-  sass: ['./scss/**/*.scss'],
+  scripts: ['./js/**/*.js'],
+  sass: ['./scss/**/*.scss']
 };
 
 // Build All
-gulp.task('build', ['browserify', 'browserify-min', 'insertVersion', 'sass', 'sass-min']);
+gulp.task('build', ['browserify', 'browserify-min', 'insertVersion', 'sass', 'sass-min', 'assets']);
 
 // Browserify JS
 gulp.task('browserify', function () {
@@ -91,3 +93,16 @@ gulp.task('default', ['build', 'watch']);
 gulp.task('insertVersion', ['browserify', 'browserify-min'],
   shell.task(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
     'sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
+
+// Lossless image compression of assets
+// Unsupported files are ignored
+// Select an optimization level between 0 and 7. Default is 3
+gulp.task('assets', function () {
+  gulp.src(['assets/**/*'])
+    .pipe(imagemin({
+      progressive: true,
+      svgoPlugins: [{removeViewBox: false}],
+      use: [pngquant()]
+    }))
+    .pipe(gulp.dest('./build/assets'));
+});
