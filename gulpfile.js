@@ -12,9 +12,9 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     shell = require('gulp-shell'),
     sass = require('gulp-sass'),
-    rename = require('gulp-rename'),
-    imagemin = require('gulp-imagemin'),
-    pngquant = require('imagemin-pngquant');
+    rename = require('gulp-rename');
+    // imagemin = require('gulp-imagemin'),
+    // pngquant = require('imagemin-pngquant');
 
 var path = {
   scripts: ['./js/**/*.js'],
@@ -22,7 +22,7 @@ var path = {
 };
 
 // Build All
-gulp.task('build', ['browserify', 'browserify-min', 'insertVersion', 'sass', 'sass-min', 'assets']);
+gulp.task('build', ['browserify', 'browserify-min', 'insertVersion', 'sass', 'sass-min']);
 
 // Browserify JS
 gulp.task('browserify', function () {
@@ -97,12 +97,12 @@ gulp.task('insertVersion', ['browserify', 'browserify-min'],
 // Lossless image compression of assets
 // Unsupported files are ignored
 // Select an optimization level between 0 and 7. Default is 3
-gulp.task('assets', function () {
-  gulp.src(['assets/**/*'])
-    .pipe(imagemin({
-      progressive: true,
-      svgoPlugins: [{removeViewBox: false}],
-      use: [pngquant()]
-    }))
-    .pipe(gulp.dest('./build/assets'));
-});
+// gulp.task('assets', function () {
+//   gulp.src(['assets/**/*'])
+//     .pipe(imagemin({
+//       progressive: true,
+//       svgoPlugins: [{removeViewBox: false}],
+//       use: [pngquant()]
+//     }))
+//     .pipe(gulp.dest('./build/assets'));
+// });
