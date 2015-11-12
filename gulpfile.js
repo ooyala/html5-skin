@@ -20,7 +20,7 @@ var path = {
 };
 
 // Build All
-gulp.task('build', ['browserify', 'browserify-min', 'insertVersion', 'sass', 'sass-min']);
+gulp.task('build', ['browserify', 'browserify-min', 'insertVersion', 'sass', 'sass-min', 'assets']);
 
 // Browserify JS
 gulp.task('browserify', function () {
@@ -93,7 +93,7 @@ gulp.task('insertVersion', ['browserify', 'browserify-min'],
     'sed -i "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
 
 // //Assets
-// gulp.task('assets', function () {
-//   gulp.src(['assets/**/*'])
-//     .pipe(gulp.dest('./build/assets'));
-// });
+gulp.task('assets', function () {
+  gulp.src(['assets/**/*'])
+    .pipe(gulp.dest('./build/assets'));
+});
