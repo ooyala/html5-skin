@@ -13,8 +13,6 @@ var gulp = require('gulp'),
     shell = require('gulp-shell'),
     sass = require('gulp-sass'),
     rename = require('gulp-rename');
-    // imagemin = require('gulp-imagemin'),
-    // pngquant = require('imagemin-pngquant');
 
 var path = {
   scripts: ['./js/**/*.js'],
@@ -91,18 +89,11 @@ gulp.task('default', ['build', 'watch']);
 
 //Insert version needs the other build steps to finish first, so we mark them as dependent tasks
 gulp.task('insertVersion', ['browserify', 'browserify-min'],
-  shell.task(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
-    'sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
+  shell.task(['sed -i "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
+    'sed -i "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
 
-// Lossless image compression of assets
-// Unsupported files are ignored
-// Select an optimization level between 0 and 7. Default is 3
+// //Assets
 // gulp.task('assets', function () {
 //   gulp.src(['assets/**/*'])
-//     .pipe(imagemin({
-//       progressive: true,
-//       svgoPlugins: [{removeViewBox: false}],
-//       use: [pngquant()]
-//     }))
 //     .pipe(gulp.dest('./build/assets'));
 // });
