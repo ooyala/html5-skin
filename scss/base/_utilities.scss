@@ -1,0 +1,39 @@
+.clearfix {
+  @include clearfix();
+}
+
+.center-block {
+  @include center-block();
+}
+
+.pull-right {
+  @include pull-right();
+}
+
+.pull-left {
+  @include pull-left();
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+//.text-truncate {
+//  @include text-truncate;
+//}
+
+.text-lowercase      { text-transform: lowercase; }
+.text-uppercase      { text-transform: uppercase; }
+.text-capitalize     { text-transform: capitalize; }
+
+//
+// Screenreaders
+//
+
+.sr-only {
+  @include sr-only();
+}

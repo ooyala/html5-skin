@@ -271,7 +271,7 @@ module.exports = {
     watermarkImageStyle: {
       "position": "relative",
       "height": "18px",
-      "top": "21px"
+      "top": "14px"
     }
   },
 

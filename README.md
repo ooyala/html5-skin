@@ -1,5 +1,5 @@
 # html5-skin
-An open-source HTML5 UI skin based on [ReactJS](https://github.com/facebook/react) that overlays Ooyala V4 core player. This README contains introduction, setup and customization sections.
+An open-source HTML5 UI skin based on [React.js](https://github.com/facebook/react) that overlays Ooyala V4 core player. This README contains introduction, setup and customization sections.
 
 ## High Level Overview
 html5-skin is a js file that is made available externally to Ooyala core V4 player. It accepts and triggers general Ooyala Message Bus events from and to core player to change the behavior of video playback. All static files necessary to create and run video playback are hosted and can be accessed publicly. This skin repo are available to be git cloned or forked and be modified by developers (terms and condition apply).
@@ -18,9 +18,9 @@ This simple test HTML page can also be hosted on your environment to showcase ht
   <!-- V4 JS core is required. Plugins such as skin, discovery and Advertising need to be loaded separately -->
   <script src="//player.ooyala.com/static/v4/latest/core.min.js"></script>
   <script src="//player.ooyala.com/static/v4/latest/discovery_api.min.js"></script>
-  <!-- Change these styles.css and html5-skin.js to your local build if necessary -->
-  <script src="//player.ooyala.com/static/v4/latest/html5-skin/build/html5-skin.min.js"></script>
-  <link rel="stylesheet" href="//player.ooyala.com/static/v4/latest/html5-skin/assets/styles.css"/>
+  <!-- Change these html5-skin.min.css and html5-skin.min.js to your local build if necessary -->
+  <script src="//player.ooyala.com/static/v4/latest/skin-plugin/html5-skin.min.js"></script>
+  <link rel="stylesheet" href="//player.ooyala.com/static/v4/latest/skin-plugin/html5-skin.min.css"/>
 </head>
 
 <body>
@@ -32,7 +32,7 @@ This simple test HTML page can also be hosted on your environment to showcase ht
     "debug":true,
     "skin": {
       // Config contains the configuration setting for player skin. Change to your local config when necessary.
-      "config": "//player.ooyala.com/static/v4/latest/html5-skin/config/skin.json"
+      "config": "//player.ooyala.com/static/v4/latest/skin-plugin/skin.json"
     }
   };
   OO.ready(function() {
@@ -71,7 +71,7 @@ This will install gulp module globally. Then, simply run this command:
 
     gulp
 
-This will perform an initial build and start a watch that will update build/html5-skin.js with any changes you wish to make in js folder.
+This will perform an initial build and start a watch that will update the `build/` folder with any changes made in 'js/' or 'scss/' folders.
 
 If you have the forever module installed, you can use the following command to keep gulp running:
 
@@ -84,6 +84,45 @@ To start a python server, cd into the repo directory and run:
     python -m SimpleHTTPServer
 
 You should now be able to load the sample page by hitting http://localhost:8000/sample.html
+
+## Style
+We use [Sass](http://sass-lang.com/) (SCSS) for CSS preprocessor and [Bootstrap](http://getbootstrap.com/) for responsive, mobile design.
+
+Our [4-1 architecture pattern](http://sass-guidelin.es/#the-7-1-pattern) splits the Sass codebase over several files that are compiled into a single, minified stylesheet deployed to production.
+
+This approach maintains modular, decoupled style without impacting performance.
+
+```
+scss/
+|
+|– base/
+|   |– _normalize.scss   # makes browsers render elements more consistently
+|   |– _reset.scss       # resets to common HTML elements, Adds additional rules on top of _normalize.scss
+|   |– _variables.scss   # variables, colors, measurements, flags to enable/disable features
+|   |– _base.scss        # boilerplate, app level styles
+|   |– _grid.scss        # responsive Bootstrap grid system
+|   |– _type.scss        # typography rules, fonts, icons
+|   ...
+|
+|– components/           # style to correspond to app views and components
+|   |– _buttons.scss
+|   |– _forms.scss
+|   |– _[screen].scss
+|   |– _[component].scss
+|   ...
+|
+|– mixins/               # Sass tools and helpers used across project
+|   |– _mixins.scss      # groups of reusable CSS functions
+|   ...
+|
+|– skins/
+|   |– _default.scss     # default skin, values pulled from /skin-plugin/config/skin.json
+|   |– _alien.scss       # :alien: skin
+|   ...
+|
+|
+`– html5-skin.scss       # main Sass file
+```
 
 ## Testing
 To run tests, run this command:
@@ -104,7 +143,7 @@ Simple customization can be achieved by modifying skin.json setting. Furthermore
 ```javascript
 var playerParam = {
   "skin": {
-    "config": "//player.ooyala.com/static/v4/latest/html5-skin/config/skin.json",
+    "config": "//player.ooyala.com/static/v4/latest/skin-plugin/skin.json",
     "inline": {
       "startScreen": {"showDescription": false, "playIconStyle": {"color": "blue"}}
     }
