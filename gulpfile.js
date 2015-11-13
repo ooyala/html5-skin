@@ -88,11 +88,19 @@ gulp.task('watch', function() {
 gulp.task('default', ['build', 'watch']);
 
 //Insert version needs the other build steps to finish first, so we mark them as dependent tasks
-gulp.task('insertVersion', ['browserify', 'browserify-min'],
-  shell.task(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
-    'sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
+gulp.task('insertVersion', ['browserify', 'browserify-min'], function () {
+  if (process.platform == "darwin") {
+    return gulp.src('')
+      .pipe(shell(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
+      'sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
+  } else {
+    return gulp.src('')
+      .pipe(shell(['sed -i "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
+      'sed -i "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
+  }
+});
 
-// //Assets
+//Assets
 gulp.task('assets', function () {
   gulp.src(['assets/**/*'])
     .pipe(gulp.dest('./build/assets'));
