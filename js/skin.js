@@ -104,6 +104,7 @@ var Skin = React.createClass({
             seeking={this.state.seeking}
             upNextInfo={this.state.upNextInfo}
             authorization={this.state.authorization}
+            controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
             ref="playScreen" />
         );
       case CONSTANTS.SCREEN.SHARE_SCREEN:
@@ -157,6 +158,7 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             seeking={this.state.seeking}
+            controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
             ref="adScreen" />
         );
       case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
