@@ -2,19 +2,14 @@ var React = require('react')
 
 var CloseButton = React.createClass({
   propTypes: {
-    controller: React.PropTypes.shape({
-      closeScreen: React.PropTypes.func
-    })
-  },
-
-  close: function(evt) {
-    this.props.controller.closeScreen();
+    closeAction: React.PropTypes.func,
+    fontStyleClass: React.PropTypes.string
   },
 
   render: function() {
     return (
-        <button className="close" onClick={this.close}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
+        <button className="closeBtn" onClick={this.props.closeAction}>
+          <span className={this.props.fontStyleClass}></span>
         </button>
     );
   }
