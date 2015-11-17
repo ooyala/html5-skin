@@ -14,7 +14,7 @@
   @include pull-left();
 }
 
-[hidden] {
+[hidden], .hidden {
   display: none !important;
 }
 
