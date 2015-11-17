@@ -780,13 +780,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     startHideControlBarTimer: function() {
-      this.cancelTimer();
-      var timer = setTimeout(function() {
-        if(this.state.controlBarVisible === true){
-          this.hideControlBar();
-        }
-      }.bind(this), 3000);
-      this.state.timer = timer;
+      if (this.skin.props.skinConfig.controlBar.autoHide == true) {
+        this.cancelTimer();
+        var timer = setTimeout(function() {
+          if(this.state.controlBarVisible === true){
+            this.hideControlBar();
+          }
+        }.bind(this), 3000);
+        this.state.timer = timer;
+      }
     },
 
     showControlBar: function() {
