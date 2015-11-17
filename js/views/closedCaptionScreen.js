@@ -8,11 +8,8 @@
 * @constructor
 */
 var React = require('react'),
-    InlineStyle = require('../styles/inlineStyle'),
     ClosedCaptionPanel = require('../components/closedCaptionPanel'),
-    ControlBar = require('../components/controlBar'),
-    ScrubberBar = require('../components/scrubberBar'),
-    CONSTANTS = require('../constants/constants');
+    CloseButton = require('../components/closeButton'),
     Utils = require('../components/utils');
 
 var ClosedCaptionScreen = React.createClass({
@@ -42,16 +39,6 @@ var ClosedCaptionScreen = React.createClass({
     this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
-  closeClosedCaptionPanel: function(event) {
-    if (event.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
-      this.props.controller.toggleClosedCaptionScreen();
-    }
-  },
-
   highlight: function(evt) {
     Utils.highlight(evt.target);
   },
@@ -61,17 +48,15 @@ var ClosedCaptionScreen = React.createClass({
     Utils.removeHighlight(evt.target, opacity);
   },
 
+  handleClose: function() {
+    this.props.controller.toggleClosedCaptionScreen();
+  },
 
   render: function() {
     return (
       <div style={{height: "100%", width: "100%"}}>
         <ClosedCaptionPanel {...this.props} closedCaptionOptions = {this.props.closedCaptionOptions} clientWidth = {this.state.clientWidth} clientHeight = {this.state.clientHeight}/>
-
-        <div className="closeButton" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
-          onClick={this.closeClosedCaptionPanel} style={InlineStyle.closedCaptionScreenStyles.closeButtonStyle}
-          onTouchEnd={this.closeClosedCaptionPanel}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={InlineStyle.defaultScreenStyle.closeButtonStyle}></span>
-        </div>
+        <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>
     );
   }
