@@ -331,10 +331,9 @@ module.exports = {
       "margin": 0,
       "position": "absolute",
       "padding": 0,
-      "left": "15px",
-      "right": "15px",
       "bottom": "50%",
-      "transform": "translateY(50%)"
+      "transform": "translateY(50%)",
+      "width": "100%"
     },
 
     scrubberBarPadding: {

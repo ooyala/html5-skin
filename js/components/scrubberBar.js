@@ -8,8 +8,8 @@ var ScrubberBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.lastClickTime = 0;
+    this.lastScrubX = null;
     return {
-      startingPlayheadX: 0,
       scrubbingPlayheadX: 0,
       currentPlayhead: 0,
       transitionedDuringSeek: false
@@ -44,23 +44,19 @@ var ScrubberBar = React.createClass({
       this.props.controller.beginSeeking();
       this.props.controller.renderSkin();
 
+      if (!this.lastScrubX) {
+        this.lastScrubX = evt.clientX;
+      }
+
       if (!this.isMobile){
         this.getDOMNode().parentNode.addEventListener("mousemove", this.handlePlayheadMouseMove);
         // attach a mouseup listener to the document for usability, otherwise scrubbing
         // breaks if your cursor leaves the player element
         document.addEventListener("mouseup", this.handlePlayheadMouseUp, true);
-        this.setState({
-          startingPlayheadX: evt.clientX,
-          scrubbingPlayheadX: evt.clientX
-        });
       }
       else {
         this.getDOMNode().parentNode.addEventListener("touchmove", this.handlePlayheadMouseMove);
         document.addEventListener("touchend", this.handlePlayheadMouseUp, true);
-        this.setState({
-          startingPlayheadX: evt.changedTouches[0].clientX,
-          scrubbingPlayheadX: evt.changedTouches[0].clientX
-        });
       }
     }
   },
@@ -69,9 +65,11 @@ var ScrubberBar = React.createClass({
     this.props.controller.startHideControlBarTimer();
     evt.preventDefault();
     if (this.props.seeking) {
+      var deltaX = evt.clientX - this.lastScrubX;
       this.setState({
-        scrubbingPlayheadX: this.isMobile?evt.changedTouches[0].clientX:evt.clientX
+        scrubbingPlayheadX: InlineStyle.scrubberBarStyle.playheadPaddingStyle.left + deltaX
       });
+      this.lastScrubX = evt.clientX;
     }
   },
 
@@ -81,13 +79,8 @@ var ScrubberBar = React.createClass({
     // stop propagation to prevent it from bubbling up to the skin and pausing
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
-    //use the difference in x coordinates of the start and end points of the
-    // mouse events to calculate the amount of time to seek
-    var newPlayheadX = this.isMobile?evt.changedTouches[0].clientX:evt.clientX;
-    var diffX = newPlayheadX - this.state.startingPlayheadX;
-    var diffTime = (diffX / this.props.controlBarWidth) * this.props.duration;
-    var newPlayheadTime = this.props.currentPlayhead + diffTime;
 
+    this.lastScrubX = null;
     if (!this.isMobile){
       this.getDOMNode().parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
       document.removeEventListener("mouseup", this.handlePlayheadMouseUp, true);
@@ -96,45 +89,23 @@ var ScrubberBar = React.createClass({
       this.getDOMNode().parentNode.removeEventListener("touchmove", this.handlePlayheadMouseMove);
       document.removeEventListener("touchend", this.handlePlayheadMouseUp, true);
     }
+    var newPlayheadTime =
+      (this.state.scrubbingPlayheadX /
+      (this.props.controlBarWidth - (2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING)))
+      * this.props.duration;
     this.props.controller.seek(newPlayheadTime);
     this.setState({
       currentPlayhead: newPlayheadTime
     });
   },
 
-  handleScrubberBarMouseUp: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
-      this.props.controller.startHideControlBarTimer();
-
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      evt.preventDefault();
-
-      // this method is used to seek when the scrubber bar is clicked. We stop propagation
-      // to prevent it from bubbling up to the skin which would pause the player
-      evt.stopPropagation(); // W3C
-      evt.cancelBubble = true; // IE
-
-      //prevent double clicks from causing undesired seek behavior
-      if ((Date.now() - this.lastClickTime) < 300) {
-        return;
-      }
-
-      this.lastClickTime = Date.now();
-      this.props.controller.state.accessibilityControlsEnabled = true;
-      if (this.isMobile){
-        evt = evt.nativeEvent;
-      }
-      var offset = (this.isMobile ? evt.changedTouches[0].clientX : evt.clientX) - evt.target.getBoundingClientRect().left;
-      if (evt.target.className.match(/scrubberBarPadding/))
-        offset -= CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
-      var newPlayheadTime = (offset / (this.props.controlBarWidth - (2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING))) * this.props.duration;
-      this.props.controller.seek(newPlayheadTime);
-      this.setState({
-        currentPlayhead: newPlayheadTime
-      });
-    }
+  handleScrubberBarMouseDown: function(evt) {
+    if (evt.target.className.match("playhead")) { return; }
+    InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = evt.nativeEvent.offsetX;
+    this.setState({
+      scrubbingPlayheadX: evt.nativeEvent.offsetX
+    });
+    this.handlePlayheadMouseDown(evt);
   },
 
   render: function() {
@@ -151,8 +122,8 @@ var ScrubberBar = React.createClass({
     var scrubberBarHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarSetting.height);
     var scrubberBarWidth = this.props.controlBarWidth - (2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING);
     InlineStyle.scrubberBarStyle.scrubberBarSetting.width = scrubberBarWidth;
-    InlineStyle.scrubberBarStyle.scrubberBarSetting.left = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
-    InlineStyle.scrubberBarStyle.scrubberBarSetting.right = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
+    //InlineStyle.scrubberBarStyle.scrubberBarSetting.left = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
+    //InlineStyle.scrubberBarStyle.scrubberBarSetting.right = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
 
     InlineStyle.scrubberBarStyle.scrubberBarPadding.bottom = (this.props.controlBarVisible ?
       (controlBarHeight - scrubberPaddingHeight) :  (-1 * scrubberPaddingHeight));
@@ -163,12 +134,11 @@ var ScrubberBar = React.createClass({
     InlineStyle.scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
 
     if (!this.state.transitionedDuringSeek) {
-      InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
-        parseFloat(this.props.duration)) * scrubberBarWidth);
-
-        if (this.props.seeking) {
-          InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = InlineStyle.scrubberBarStyle.playheadPaddingStyle.left +
-            (this.state.scrubbingPlayheadX - this.state.startingPlayheadX);
+        if (!this.props.seeking) {
+          InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
+            parseFloat(this.props.duration)) * scrubberBarWidth);
+        } else if (this.state.scrubbingPlayheadX) {
+          InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = this.state.scrubbingPlayheadX;
         }
 
         InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = Math.max(
@@ -178,6 +148,7 @@ var ScrubberBar = React.createClass({
 
     var scrubberBarMouseUp = this.handleScrubberBarMouseUp;
     var playheadMouseDown = this.handlePlayheadMouseDown;
+    var scrubberBarMouseDown = this.handleScrubberBarMouseDown;
 
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN){
       InlineStyle.scrubberBarStyle.playheadStyle.visibility = "hidden";
@@ -191,14 +162,17 @@ var ScrubberBar = React.createClass({
     }
 
     return (
-      <div className="scrubberBarPadding" onMouseUp={scrubberBarMouseUp} onTouchEnd={scrubberBarMouseUp}
-        style={InlineStyle.scrubberBarStyle.scrubberBarPadding}>
-        <div className="scrubberBar" style={InlineStyle.scrubberBarStyle.scrubberBarSetting}>
-          <div className="bufferedIndicator" style={InlineStyle.scrubberBarStyle.bufferedIndicatorStyle}></div>
-          <div className="playedIndicator" style={InlineStyle.scrubberBarStyle.playedIndicatorStyle}></div>
-          <div className="playheadPadding" style={InlineStyle.scrubberBarStyle.playheadPaddingStyle}
-            onMouseDown={playheadMouseDown} onTouchStart={playheadMouseDown}>
-            <div className="playhead" style={InlineStyle.scrubberBarStyle.playheadStyle}></div>
+      <div className="scrubberBarContainer" style={InlineStyle.scrubberBarStyle.scrubberBarPadding}>
+        <div className="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}
+          style={{"height": "100%", "left": CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING,
+            "right": CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING, "position": "absolute"}}>
+          <div className="scrubberBar" style={InlineStyle.scrubberBarStyle.scrubberBarSetting}>
+            <div className="bufferedIndicator" style={InlineStyle.scrubberBarStyle.bufferedIndicatorStyle}></div>
+            <div className="playedIndicator" style={InlineStyle.scrubberBarStyle.playedIndicatorStyle}></div>
+            <div className="playheadPadding" style={InlineStyle.scrubberBarStyle.playheadPaddingStyle}
+              onMouseDown={playheadMouseDown} onTouchStart={playheadMouseDown}>
+              <div className="playhead" style={InlineStyle.scrubberBarStyle.playheadStyle}></div>
+            </div>
           </div>
         </div>
       </div>
