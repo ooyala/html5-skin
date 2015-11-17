@@ -263,7 +263,7 @@ module.exports = {
       "display": "inline-block",
       "backgroundClip": "content-box",
       "position": "relative",
-      "width": "4px",
+      "width": "6px",
       "height": "18px",
       "paddingRight": "3px"
     },

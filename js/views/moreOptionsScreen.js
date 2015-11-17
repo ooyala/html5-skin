@@ -11,6 +11,7 @@ var React = require('react'),
     MoreOptionsPanel = require('../components/moreOptionsPanel'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
+    CloseButton = require('../components/closeButton'),
     CONSTANTS = require('../constants/constants');
 
 var MoreOptionsScreen = React.createClass({
@@ -41,10 +42,9 @@ var MoreOptionsScreen = React.createClass({
   render: function() {
     return (
       <div className="MoreOptionsScreen" style={{height: "100%", width: "100%"}}>
-
         <MoreOptionsPanel {...this.props}
           controlBarWidth={this.state.controlBarWidth}/>
-
+        <CloseButton {...this.props} />
       </div>
     );
   }
