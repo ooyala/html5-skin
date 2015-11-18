@@ -118,6 +118,7 @@ var ScrubberBar = React.createClass({
     this.setState({
       scrubbingPlayheadX: evt.nativeEvent.offsetX
     });
+    this.props.controller.updateSeekingPlayhead((evt.nativeEvent.offsetX / this.scrubberBarWidth) * this.props.duration);
     this.handlePlayheadMouseDown(evt);
   },
 
