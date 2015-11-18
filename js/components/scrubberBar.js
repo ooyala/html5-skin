@@ -77,8 +77,10 @@ var ScrubberBar = React.createClass({
     evt.preventDefault();
     if (this.props.seeking) {
       var deltaX = evt.clientX - this.lastScrubX;
+      var scrubbingPlayheadX = this.state.scrubbingPlayheadX + deltaX;
+      this.props.controller.updateSeekingPlayhead((scrubbingPlayheadX / this.scrubberBarWidth) * this.props.duration);
       this.setState({
-        scrubbingPlayheadX: this.state.scrubbingPlayheadX + deltaX
+        scrubbingPlayheadX: scrubbingPlayheadX
       });
       this.lastScrubX = evt.clientX;
     }
@@ -102,7 +104,7 @@ var ScrubberBar = React.createClass({
     }
     var newPlayheadTime =
       (this.state.scrubbingPlayheadX /
-      (this.props.controlBarWidth - (2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING)))
+        (this.props.controlBarWidth - (2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING)))
       * this.props.duration;
     this.props.controller.seek(newPlayheadTime);
     this.setState({
