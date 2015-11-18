@@ -3,7 +3,8 @@
 *********************************************************************/
 var React = require('react'),
   InlineStyle = require('../styles/inlineStyle');
-  Utils = require('../components/utils');
+  Utils = require('../components/utils'),
+  CONSTANTS = require('../constants/constants');
 
 var AdOverlay = React.createClass({
   closeOverlay: function(event) {
@@ -40,8 +41,8 @@ var AdOverlay = React.createClass({
     var closeButtonStyle = InlineStyle.adOverlayStyle.closeButtonStyle;
     var closeButtonIconStyle = InlineStyle.adOverlayStyle.closeButtonIconStyle;
 
-    var scrubberPaddingHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarPadding.height);
-    var scrubberBarHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarSetting.height);
+    var scrubberPaddingHeight = parseInt(CONSTANTS.UI.defaultScrubberBarPaddingHeight);
+    var scrubberBarHeight = parseInt(CONSTANTS.UI.defaultScrubberBarHeight);
     var controlBarHeight = InlineStyle.controlBarStyle.controlBarSetting.height;
 
     if(this.props.overlay && this.props.showOverlay) {

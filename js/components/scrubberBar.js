@@ -2,13 +2,18 @@
   SCRUBBER BAR
 *********************************************************************/
 var React = require('react'),
-    InlineStyle = require('../styles/inlineStyle');
+    CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.lastClickTime = 0;
     this.lastScrubX = null;
+    this.playheadLeft = 0;
+    this.scrubberBarWidth = 0;
+    this.scrubberBarHeight = 0;
+    this.scrubberBarContainerHeight = CONSTANTS.UI.defaultScrubberBarPaddingHeight;
+    this.playheadWidth = 0;
     return {
       scrubbingPlayheadX: 0,
       currentPlayhead: 0,
@@ -26,6 +31,12 @@ var ScrubberBar = React.createClass({
     if (this.transitionedDuringSeek && !nextProps.seeking) {
       this.setState({transitionedDuringSeek: false});
     }
+  },
+
+  componentDidMount: function() {
+    this.scrubberBarWidth = this.getDOMNode().querySelector(".scrubberBar").clientWidth;
+    this.scrubberBarHeight = this.getDOMNode().querySelector(".scrubberBar").clientHeight;
+    this.playheadWidth = this.getDOMNode().querySelector(".playhead").clientWidth;
   },
 
   handlePlayheadMouseDown: function(evt) {
@@ -67,7 +78,7 @@ var ScrubberBar = React.createClass({
     if (this.props.seeking) {
       var deltaX = evt.clientX - this.lastScrubX;
       this.setState({
-        scrubbingPlayheadX: InlineStyle.scrubberBarStyle.playheadPaddingStyle.left + deltaX
+        scrubbingPlayheadX: this.state.scrubbingPlayheadX + deltaX
       });
       this.lastScrubX = evt.clientX;
     }
@@ -101,7 +112,7 @@ var ScrubberBar = React.createClass({
 
   handleScrubberBarMouseDown: function(evt) {
     if (evt.target.className.match("playhead")) { return; }
-    InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = evt.nativeEvent.offsetX;
+    this.playheadLeft = evt.nativeEvent.offsetX;
     this.setState({
       scrubbingPlayheadX: evt.nativeEvent.offsetX
     });
@@ -109,7 +120,7 @@ var ScrubberBar = React.createClass({
   },
 
   render: function() {
-    var controlBarHeight = InlineStyle.controlBarStyle.controlBarSetting.height;
+    var controlBarHeight = CONSTANTS.UI.defaultControlBarHeight;
     // Liusha: Uncomment the following code when we need to support resizing control bar with threshold and scaling.
     // if (this.props.controlBarWidth > 1280) {
     //   controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280;
@@ -118,32 +129,27 @@ var ScrubberBar = React.createClass({
     // } else {
     //   controlBarHeight = this.props.skinConfig.controlBar.height;
     // }
-    var scrubberPaddingHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarPadding.height);
-    var scrubberBarHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarSetting.height);
-    var scrubberBarWidth = this.props.controlBarWidth - (2 * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING);
-    InlineStyle.scrubberBarStyle.scrubberBarSetting.width = scrubberBarWidth;
-    //InlineStyle.scrubberBarStyle.scrubberBarSetting.left = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
-    //InlineStyle.scrubberBarStyle.scrubberBarSetting.right = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING;
+    var scrubberPaddingHeight = this.scrubberBarContainerHeight;
+    var scrubberBarHeight = this.scrubberBarHeight;
 
-    InlineStyle.scrubberBarStyle.scrubberBarPadding.bottom = (this.props.controlBarVisible ?
-      (controlBarHeight - scrubberPaddingHeight) :  (-1 * scrubberPaddingHeight));
-    InlineStyle.scrubberBarStyle.bufferedIndicatorStyle.width = (parseFloat(this.props.buffered) /
-      parseFloat(this.props.duration)) * 100 + "%";
-    InlineStyle.scrubberBarStyle.playedIndicatorStyle.width = Math.min((parseFloat(this.props.currentPlayhead) /
-      parseFloat(this.props.duration)) * 100, 100) + "%";
-    InlineStyle.scrubberBarStyle.playheadStyle.opacity = (this.props.controlBarVisible ? 1 : 0);
+    var bufferedIndicatorStyle = {width: (parseFloat(this.props.buffered) /
+      parseFloat(this.props.duration)) * 100 + "%"};
+    var playedIndicatorStyle = {width: Math.min((parseFloat(this.props.currentPlayhead) /
+      parseFloat(this.props.duration)) * 100, 100) + "%"};
+    var playheadStyle = {};
+    var playheadPaddingStyle = {};
 
     if (!this.state.transitionedDuringSeek) {
         if (!this.props.seeking) {
-          InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
-            parseFloat(this.props.duration)) * scrubberBarWidth);
+          playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
+            parseFloat(this.props.duration)) * this.scrubberBarWidth);
         } else if (this.state.scrubbingPlayheadX) {
-          InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = this.state.scrubbingPlayheadX;
+          playheadPaddingStyle.left = this.state.scrubbingPlayheadX;
         }
 
-        InlineStyle.scrubberBarStyle.playheadPaddingStyle.left = Math.max(
-          Math.min(InlineStyle.scrubberBarStyle.scrubberBarSetting.width - parseInt(InlineStyle.scrubberBarStyle.playheadStyle.width)/2,
-            InlineStyle.scrubberBarStyle.playheadPaddingStyle.left), 0);
+        playheadPaddingStyle.left = Math.max(
+          Math.min(this.scrubberBarWidth - parseInt(this.playheadWidth)/2,
+            playheadPaddingStyle.left), 0);
     }
 
     var scrubberBarMouseUp = this.handleScrubberBarMouseUp;
@@ -151,27 +157,30 @@ var ScrubberBar = React.createClass({
     var scrubberBarMouseDown = this.handleScrubberBarMouseDown;
 
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN){
-      InlineStyle.scrubberBarStyle.playheadStyle.visibility = "hidden";
-      InlineStyle.scrubberBarStyle.playedIndicatorStyle.background = "#FF3F80";
+      playheadStyle.visibility = "hidden";
+      playedIndicatorStyle.backgroundColor = "#FF3F80";
       scrubberBarMouseUp = null;
       playheadMouseDown = null;
     }
     else {
-      InlineStyle.scrubberBarStyle.playheadStyle.visibility = "visible";
-      InlineStyle.scrubberBarStyle.playedIndicatorStyle.background = "#4389ff";
+      playheadStyle.visibility = "visible";
+      playedIndicatorStyle.backgroundColor = "#4389ff";
     }
 
+    var scrubberBarContainerStyle = {
+      bottom: (this.props.controlBarVisible ?
+        (controlBarHeight - scrubberPaddingHeight) :  (-1 * scrubberPaddingHeight))
+    };
+
     return (
-      <div className="scrubberBarContainer" style={InlineStyle.scrubberBarStyle.scrubberBarPadding}>
-        <div className="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}
-          style={{"height": "100%", "left": CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING,
-            "right": CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING, "position": "absolute"}}>
-          <div className="scrubberBar" style={InlineStyle.scrubberBarStyle.scrubberBarSetting}>
-            <div className="bufferedIndicator" style={InlineStyle.scrubberBarStyle.bufferedIndicatorStyle}></div>
-            <div className="playedIndicator" style={InlineStyle.scrubberBarStyle.playedIndicatorStyle}></div>
-            <div className="playheadPadding" style={InlineStyle.scrubberBarStyle.playheadPaddingStyle}
+      <div className="scrubberBarContainer" style={scrubberBarContainerStyle}>
+        <div className="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
+          <div ref="scrubberBar" className="scrubberBar">
+            <div className="bufferedIndicator" style={bufferedIndicatorStyle}></div>
+            <div className="playedIndicator" style={playedIndicatorStyle}></div>
+            <div className="playheadPadding" style={playheadPaddingStyle}
               onMouseDown={playheadMouseDown} onTouchStart={playheadMouseDown}>
-              <div className="playhead" style={InlineStyle.scrubberBarStyle.playheadStyle}></div>
+              <div className="playhead"></div>
             </div>
           </div>
         </div>
