@@ -887,10 +887,10 @@ module.exports = {
 
     buttonListStyle: {
       "position": "absolute",
-      "top": "50%",
+      "bottom": "0%",
       "left": "50%",
-      "-webkit-transform": "translate(-50%, -50%)",
-      "transform": "translate(-50%, -50%)",
+      "-webkit-transform": "translate(-50%, 50%)",
+      "transform": "translate(-50%, 50%)",
       "height": "32",
       "opacity": "0",
       "listStyle": "none",
