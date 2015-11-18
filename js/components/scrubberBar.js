@@ -29,6 +29,7 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseDown: function(evt) {
+    this.props.controller.startHideControlBarTimer();
     if (evt.type == 'touchstart' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
@@ -37,6 +38,7 @@ var ScrubberBar = React.createClass({
       if (this.isMobile){
         evt = evt.nativeEvent;
       }
+
       // we enter the scrubbing state to prevent constantly seeking while dragging
       // the playhead icon
       this.props.controller.beginSeeking();
@@ -64,6 +66,7 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseMove: function(evt) {
+    this.props.controller.startHideControlBarTimer();
     evt.preventDefault();
     if (this.props.seeking) {
       this.setState({
@@ -73,6 +76,7 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseUp: function(evt) {
+    this.props.controller.startHideControlBarTimer();
     evt.preventDefault();
     // stop propagation to prevent it from bubbling up to the skin and pausing
     evt.stopPropagation(); // W3C
@@ -100,6 +104,8 @@ var ScrubberBar = React.createClass({
 
   handleScrubberBarMouseUp: function(evt) {
     if (evt.type == 'touchend' || !this.isMobile){
+      this.props.controller.startHideControlBarTimer();
+
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
@@ -170,23 +176,28 @@ var ScrubberBar = React.createClass({
             InlineStyle.scrubberBarStyle.playheadPaddingStyle.left), 0);
     }
 
+    var scrubberBarMouseUp = this.handleScrubberBarMouseUp;
+    var playheadMouseDown = this.handlePlayheadMouseDown;
+
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN){
       InlineStyle.scrubberBarStyle.playheadStyle.visibility = "hidden";
       InlineStyle.scrubberBarStyle.playedIndicatorStyle.background = "#FF3F80";
+      scrubberBarMouseUp = null;
+      playheadMouseDown = null;
     }
     else {
-      InlineStyle.scrubberBarStyle.playheadStyle.visibility = "visibile";
+      InlineStyle.scrubberBarStyle.playheadStyle.visibility = "visible";
       InlineStyle.scrubberBarStyle.playedIndicatorStyle.background = "#4389ff";
     }
 
     return (
-      <div className="scrubberBarPadding" onMouseUp={this.handleScrubberBarMouseUp} onTouchEnd={this.handleScrubberBarMouseUp}
+      <div className="scrubberBarPadding" onMouseUp={scrubberBarMouseUp} onTouchEnd={scrubberBarMouseUp}
         style={InlineStyle.scrubberBarStyle.scrubberBarPadding}>
         <div className="scrubberBar" style={InlineStyle.scrubberBarStyle.scrubberBarSetting}>
           <div className="bufferedIndicator" style={InlineStyle.scrubberBarStyle.bufferedIndicatorStyle}></div>
           <div className="playedIndicator" style={InlineStyle.scrubberBarStyle.playedIndicatorStyle}></div>
           <div className="playheadPadding" style={InlineStyle.scrubberBarStyle.playheadPaddingStyle}
-            onMouseDown={this.handlePlayheadMouseDown} onTouchStart={this.handlePlayheadMouseDown}>
+            onMouseDown={playheadMouseDown} onTouchStart={playheadMouseDown}>
             <div className="playhead" style={InlineStyle.scrubberBarStyle.playheadStyle}></div>
           </div>
         </div>

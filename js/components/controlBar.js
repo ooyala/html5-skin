@@ -24,6 +24,10 @@ var ControlBar = React.createClass({
     }
   },
 
+  componentWillUnmount: function () {
+    this.props.controller.cancelTimer();
+  },
+
   handleControlBarMouseUp: function(evt) {
     if (evt.type == 'touchend' || !this.isMobile){
       evt.stopPropagation(); // W3C
@@ -32,6 +36,7 @@ var ControlBar = React.createClass({
       if (this.props.controller.state.volumeState.volumeSliderVisible){
         this.props.controller.hideVolumeSliderBar();
       }
+      this.props.controller.startHideControlBarTimer();
     }
   },
 
@@ -49,6 +54,7 @@ var ControlBar = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
       if (this.isMobile){
+        this.props.controller.startHideControlBarTimer();
         evt.stopPropagation(); // W3C
         evt.cancelBubble = true; // IE
         if (this.props.controller.state.volumeState.volumeSliderVisible){
@@ -65,12 +71,14 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeBarTouchEnd: function(evt) {
+    this.props.controller.startHideControlBarTimer();
     //to prevent volume slider from hiding when clicking on volume slider
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
   },
 
   handleVolumeHeadTouchStart: function(evt) {
+    this.props.controller.startHideControlBarTimer();
     evt.preventDefault();
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
@@ -85,6 +93,7 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeHeadMove: function(evt) {
+    this.props.controller.startHideControlBarTimer();
     evt.preventDefault();
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
@@ -107,6 +116,7 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeHeadTouchEnd: function(evt) {
+    this.props.controller.startHideControlBarTimer();
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
     this.setNewVolume(evt);
@@ -173,12 +183,15 @@ var ControlBar = React.createClass({
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
-    Utils.highlight(evt.target);
+    var color = this.props.skinConfig.controlBar.iconStyle.active.color;
+    var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
+    Utils.highlight(evt.target, opacity, color);
   },
 
   removeHighlight: function(evt) {
+    var color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
     var opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
-    Utils.removeHighlight(evt.target, opacity);
+    Utils.removeHighlight(evt.target, opacity, color);
   },
 
   volumeHighlight:function() {
@@ -258,13 +271,15 @@ var ControlBar = React.createClass({
 
     var volumeBarStyle = InlineStyle.controlBarStyle.volumeBarStyle;
     if (this.state.mouseOverVolume) {
-      volumeIconSetting.opacity = "1";
+      volumeIconSetting.opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
+      volumeIconSetting.color = this.props.skinConfig.controlBar.iconStyle.active.color;
       volumeIconSetting.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
       volumeIconSetting.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
       volumeIconSetting.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
     }
     else {
       volumeIconSetting.opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
+      volumeIconSetting.color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
       volumeIconSetting.WebkitFilter = "";
       volumeIconSetting.filter = "";
       volumeIconSetting.msFilter = "";

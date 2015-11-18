@@ -71,12 +71,15 @@ var MoreOptionsPanel = React.createClass({
   },
 
   highlight: function(evt) {
-    Utils.highlight(evt.target);
+    var color = this.props.skinConfig.moreOptionsScreen.iconStyle.active.color;
+    var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.active.opacity;
+    Utils.highlight(evt.target, opacity, color);
   },
 
   removeHighlight: function(evt) {
+    var color = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.color;
     var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.opacity;
-    Utils.removeHighlight(evt.target, opacity);
+    Utils.removeHighlight(evt.target, opacity, color);
   },
 
   dismissButtonHighlight: function(evt) {
@@ -170,11 +173,6 @@ var MoreOptionsPanel = React.createClass({
           <div className="moreOptionsItems" style={InlineStyle.MoreOptionsScreenStyle.buttonListStyle}>
             {moreOptionsItems}
           </div>
-        </div>
-        <div onClick={this.closeMoreOptionsScreen} onTouchEnd={this.closeMoreOptionsScreen} style={InlineStyle.MoreOptionsScreenStyle.closeButtonStyle}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} onMouseOver={this.dismissButtonHighlight}
-            onMouseOut={this.removeDismissButtonHighlight} style={InlineStyle.defaultScreenStyle.closeButtonStyle}>
-          </span>
         </div>
       </div>
     );

@@ -246,13 +246,14 @@ var Utils = {
   * @function Highlight
   * @param {DOMElement} target - The element to Highlight
   */
-
-  highlight: function(target) {
-    target.style.opacity = "1.0";
+  highlight: function(target, opacity, color) {
+    target.style.opacity = opacity;
+    target.style.color = color;
     target.style.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
     target.style.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
     target.style.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
   },
+
   /**
   * Remove the highlight effect of the given element
   *
@@ -260,8 +261,9 @@ var Utils = {
   * @param {DOMElement} target - The element to remove the highlight effect from
   * @param {DOMElement} opacity - The opacity to return the element to
   */
-  removeHighlight: function(target, opacity) {
+  removeHighlight: function(target, opacity, color) {
     target.style.opacity = opacity;
+    target.style.color = color;
     target.style.WebkitFilter = "";
     target.style.filter = "";
     target.style.msFilter = "";

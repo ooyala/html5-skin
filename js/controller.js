@@ -73,6 +73,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       },
 
       "isMobile": false,
+      "controlBarVisible": true,
+      "timer": null,
       "errorCode": null
     };
 
@@ -86,7 +88,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
-      this.mb.subscribe(OO.EVENTS.STREAM_PAUSED, 'customerUi', _.bind(this.onPaused, this));
+      this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PAUSE, 'customerUi', _.bind(this.onPause, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
@@ -100,6 +102,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (!Utils.isIPhone()) {
         //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
         this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
+        this.mb.subscribe(OO.EVENTS.WILL_PLAY_ADS , "customerUi", _.bind(this.onWillPlayAds, this));
         this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
         this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
         this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
@@ -237,6 +240,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       if (duration - currentPlayhead <= timeToShow &&
         !this.state.upNextInfo.countDownCancelled &&
+        this.state.isPlayingAd !== true &&
         this.state.upNextInfo.upNextData !== null && (this.state.playerState === CONSTANTS.STATE.PLAYING || this.state.playerState === CONSTANTS.STATE.PAUSE)) {
         this.state.upNextInfo.showing = true;
       }
@@ -261,14 +265,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPause: function(event, props) {
       if (props === CONSTANTS.PAUSE_REASON.AD_PLAYBACK){
+        this.state.isPlayingAd = true;
         this.state.pauseAnimationDisabled = true;
       }
     },
 
-    onPaused: function() {
-      // pause/resume of Ad playback is handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
-
-      if (this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
+    onPaused: function(eventname, videoId) {
+      // pause/resume of Ad playback can be handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
+      if (videoId == OO.VIDEO.MAIN && this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
         if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
             && !(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))) {
           OO.log("Should display DISCOVERY_SCREEN on pause");
@@ -339,7 +343,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       this.state.duration = 0;
       this.skin.updatePlayhead(0, 0, 0);
+      this.state.isPlayingAd = false;
       this.renderSkin();
+    },
+
+    onWillPlayAds: function(event) {
+      OO.log("onWillPlayAds is called from event = " + event);
+      this.state.isPlayingAd = true;
     },
 
     onAdPodStarted: function(event, numberOfAds) {
@@ -356,6 +366,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.currentAdsInfo.currentAdItem = adItem;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.skin.state.currentPlayhead = 0;
+        this.state.mainVideoElement.css(InlineStyle.pauseScreenStyle.videoUnblur);
         this.renderSkin();
       }
     },
@@ -470,12 +481,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_PAUSE_ADS);}
           else {
             this.state.pauseAnimationDisabled = true;
-            this.mb.publish(OO.EVENTS.STREAM_PAUSED);
           }
         }
         else if (!paused && this.state.playerState == CONSTANTS.STATE.PAUSE){
           if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_RESUME_ADS);}
-          else {this.mb.publish(OO.EVENTS.PLAYING);}
         }
       }
 
@@ -497,7 +506,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYING, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.STREAM_PAUSED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VC_PAUSED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
@@ -506,6 +515,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (!Utils.isIPhone()) {
         //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
         this.mb.unsubscribe(OO.EVENTS.ADS_PLAYED, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_ADS , "customerUi");
 
         this.mb.unsubscribe(OO.EVENTS.AD_POD_STARTED, "customerUi");
 
@@ -776,6 +786,33 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     showVolumeSliderBar: function() {
       this.state.volumeState.volumeSliderVisible = true;
       this.renderSkin();
+    },
+
+    startHideControlBarTimer: function() {
+      if (this.skin.props.skinConfig.controlBar.autoHide == true) {
+        this.cancelTimer();
+        var timer = setTimeout(function() {
+          if(this.state.controlBarVisible === true){
+            this.hideControlBar();
+          }
+        }.bind(this), 3000);
+        this.state.timer = timer;
+      }
+    },
+
+    showControlBar: function() {
+      this.state.controlBarVisible = true;
+    },
+
+    hideControlBar: function() {
+      this.state.controlBarVisible = false;
+    },
+
+    cancelTimer: function() {
+      if (this.state.timer !== null){
+        clearTimeout(this.state.timer);
+        this.state.timer = null;
+      }
     }
   };
 
