@@ -17,7 +17,8 @@ var SharePanel = React.createClass({
 
   getInitialState: function() {
     return {
-      activeTab: this.tabs.SHARE
+      activeTab: this.tabs.SHARE,
+      hasError: false
     };
   },
 
@@ -64,6 +65,12 @@ var SharePanel = React.createClass({
     }
 
     else if (this.state.activeTab === this.tabs.EMAIL) {
+      var emailInput = ClassNames({
+        'form-group': true,
+        'clearfix': true,
+        'has-error': this.state.hasError
+      });
+
       var toString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.TO, this.props.localizableStrings),
           subjectString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SUBJECT, this.props.localizableStrings),
           messageString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.MESSAGE, this.props.localizableStrings),
@@ -74,7 +81,7 @@ var SharePanel = React.createClass({
       return (
         <div className="shareTabPanel">
           <form className="form-horizontal">
-            <div className="form-group clearfix">
+            <div className={emailInput}>
               <label htmlFor="oo-email" className="col-sm-2 form-control-label">{toString}</label>
               <div className="col-sm-10">
                 <input ref="sharePanelTo"
@@ -125,11 +132,15 @@ var SharePanel = React.createClass({
     var mailto = this.refs.sharePanelTo.getDOMNode().value;
     var subject = encodeURIComponent(this.refs.sharePanelSubject.getDOMNode().value);
     var body = encodeURIComponent(this.refs.sharePanelMessage.getDOMNode().value);
-    var mailToUrl = "mailto:" + mailto;
-    mailToUrl += "?subject=" + subject;
-    mailToUrl += "&body=" + body;
-    if (mailto) {
+
+    if (Utils.validateEmail(mailto)) {
+      this.setState({hasError: false});
+      var mailToUrl = "mailto:" + mailto.trim();
+      mailToUrl += "?subject=" + subject;
+      mailToUrl += "&body=" + body;
       location.href = mailToUrl;
+    } else {
+      this.setState({hasError: true});
     }
   },
 
