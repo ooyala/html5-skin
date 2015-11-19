@@ -102,6 +102,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (!Utils.isIPhone()) {
         //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
         this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
+        this.mb.subscribe(OO.EVENTS.WILL_PLAY_ADS , "customerUi", _.bind(this.onWillPlayAds, this));
         this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
         this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
         this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
@@ -342,7 +343,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       this.state.duration = 0;
       this.skin.updatePlayhead(0, 0, 0);
+      this.state.isPlayingAd = false;
       this.renderSkin();
+    },
+
+    onWillPlayAds: function(event) {
+      OO.log("onWillPlayAds is called from event = " + event);
+      this.state.isPlayingAd = true;
     },
 
     onAdPodStarted: function(event, numberOfAds) {
@@ -359,6 +366,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.currentAdsInfo.currentAdItem = adItem;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.skin.state.currentPlayhead = 0;
+        this.state.mainVideoElement.css(InlineStyle.pauseScreenStyle.videoUnblur);
         this.renderSkin();
       }
     },
@@ -507,6 +515,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (!Utils.isIPhone()) {
         //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
         this.mb.unsubscribe(OO.EVENTS.ADS_PLAYED, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_ADS , "customerUi");
 
         this.mb.unsubscribe(OO.EVENTS.AD_POD_STARTED, "customerUi");
 
@@ -784,13 +793,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     startHideControlBarTimer: function() {
-      this.cancelTimer();
-      var timer = setTimeout(function() {
-        if(this.state.controlBarVisible === true){
-          this.hideControlBar();
-        }
-      }.bind(this), 3000);
-      this.state.timer = timer;
+      if (this.skin.props.skinConfig.controlBar.autoHide == true) {
+        this.cancelTimer();
+        var timer = setTimeout(function() {
+          if(this.state.controlBarVisible === true){
+            this.hideControlBar();
+          }
+        }.bind(this), 3000);
+        this.state.timer = timer;
+      }
     },
 
     showControlBar: function() {

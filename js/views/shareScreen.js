@@ -2,7 +2,7 @@
   SHARING SCREEN
 *********************************************************************/
 /**
-* The screen displays when user selects share.
+* This screen displays when user selects share.
 *
 * @class ShareScreen
 * @constructor
@@ -20,11 +20,15 @@ var ShareScreen = React.createClass({
     this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
+  handleClose: function() {
+    this.props.controller.closeScreen();
+  },
+
   render: function() {
     return (
       <div className="share-screen">
         <SharePanel {...this.props} />
-        <CloseButton {...this.props} />
+        <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>
     );
   }

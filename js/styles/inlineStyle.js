@@ -263,7 +263,7 @@ module.exports = {
       "display": "inline-block",
       "backgroundClip": "content-box",
       "position": "relative",
-      "width": "4px",
+      "width": "6px",
       "height": "18px",
       "paddingRight": "3px"
     },
@@ -481,189 +481,9 @@ module.exports = {
   },
 
   discoveryScreenStyle: {
-
-    panelStyle: {
-      position: "absolute",
-      bottom: "0px",
-      backgroundColor: "rgba(0,0,0, 0.7)",
-      left: 0,
-      right: 0,
-      display: "flex",
-      flexDirection: "row",
-      WebkitFlexDirection: "row",
-      height: "100%"
-    },
-
-    promoStyle: {
-      visibility: "hidden",
-      position: "absolute",
-      height: "100%",
-      width: "100%",
-      backgroundSize: "contain",
-      backgroundRepeat: "no-repeat",
-      backgroundPosition: "center"
-    },
-
-    panelTitleBarStyle: {
-      position: "absolute",
-      backgroundColor: "transparent",
-      left: 0,
-      right: 0,
-      height: "20%",
-      width: "100%",
-      display: "inline-block"
-    },
-
-    panelTitleTextStyle: {
-      position: "absolute",
-      left: "40px",
-      fontWeight: "bold",
-      margin: "1%",
-      display: "inline-block",
-      marginBottom: "35px",
-      opacity: 1
-    },
-
-    panelTitleIconStyle: {
-      top: "3px",
-      position: "relative",
-      marginLeft: "7px",
-      fontSize: "22pt"
-    },
-
-    discoveryToasterContainerStyle: {
-      position: "absolute",
-      backgroundColor: "transparent",
-      top: "40%",
-      height: "60%",
-      width: "100%",
-      overflow: "hidden"
-    },
-
-    discoveryToasterStyle: {
-      position: "absolute",
-      top: "0",
-      height: "90%",
-      width: "0",
-      right: 0,
-      left: 25,
-      display: "flex",
-      flexDirection: "row",
-      WebkitFlexDirection: "row"
-    },
-
-    discoveryChevronLeftButtonContainer: {
-      position: "absolute",
-      backgroundColor: "transparent",
-      height: "100%",
-      width: "25px",
-      color: "white",
-      left: "0"
-    },
-
-    discoveryChevronRightButtonContainer: {
-      position: "absolute",
-      backgroundColor: "transparent",
-      height: "100%",
-      width: "25px",
-      color: "white",
-      right: "0"
-    },
-
-    discoveryChevronLeftButton: {
-      style: {
-        top: "50%",
-        left: "50%",
-        fontSize: "18",
-        WebkitTransform: "translate(-50%, -50%)",
-        transform: "translate(-50%, -50%)",
-        position: "absolute",
-        opacity: 1,
-        transition: "opacity .25s ease-in-out",
-        cursor: "pointer"
-      }
-    },
-
-    discoveryChevronRightButton: {
-      style: {
-        top: "50%",
-        left: "50%",
-        fontSize: "18",
-        WebkitTransform: "translate(-50%, -50%)",
-        transform: "translate(-50%, -50%)",
-        position: "absolute",
-        opacity: 1,
-        transition: "opacity .25s ease-in-out",
-        cursor: "pointer"
-      }
-    },
-
-    discoveryContentBlockStyle: {
-      position: "relative",
-      marginLeft: "30px",
-      marginRight: "30px",
-      marginTop: "35px",
-      height: "120px",
-      width: "214px",
-      flexShrink: "0",
-      cursor: "pointer"
-    },
-
-    discoveryImageWrapperStyle: {
-      position: "relative",
-      height: "120px",
-      width: "214px"
-    },
-
-    discoveryImageStyle: {
-      position: "absolute",
-      width: "100%",
-      height: "100%"
-    },
-
-    discoveryContentTitleStyle: {
-      position: "relative",
-      color: "white",
-      fontSize: "22",
-      textOverflow: "ellipsis",
-      width: "214px",
-      height: "31px",
-      overflow: "hidden",
-      whiteSpace: "nowrap"
-    },
-
-    discoveryCountDownWrapperStyle: {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      WebkitTransform: "translate(-50%, -50%)",
-      transform: "translate(-50%, -50%)"
-    },
-
     discoveryCountDownStyle: {
       width: "75px",
       height: "75px"
-    },
-
-    discoveryCountDownIconStyle: {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      WebkitTransform: "translate(-50%, -50%)",
-      transform: "translate(-50%, -50%)",
-      "line-height": "40px",
-      "z-index": 10005,
-      "color": "white",
-      fontSize: 25,
-      cursor: "pointer"
-    },
-
-    closeButtonStyle: {
-      position: "absolute",
-      right: "17.5",
-      top: "17.5",
-      color: "#ffffff",
-      cursor: "pointer"
     }
   },
 
@@ -804,7 +624,7 @@ module.exports = {
     },
 
     captionIconStyle: {
-      fontSize: "25pt",
+      fontSize: "25pt"
     },
 
     switchStyle: {
@@ -1155,10 +975,10 @@ module.exports = {
 
     buttonListStyle: {
       "position": "absolute",
-      "top": "50%",
+      "bottom": "0%",
       "left": "50%",
-      "-webkit-transform": "translate(-50%, -50%)",
-      "transform": "translate(-50%, -50%)",
+      "WebkitTransform": "translate(-50%, 50%)",
+      "transform": "translate(-50%, 50%)",
       "height": "32",
       "opacity": "0",
       "listStyle": "none",

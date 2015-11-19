@@ -108,7 +108,7 @@ var PlayingScreen = React.createClass({
   },
 
   hideControlBar: function(event) {
-    if (!this.isMobile || !event) {
+    if (this.props.controlBarAutoHide == true && !(this.isMobile && event)) {
       this.setState({controlBarVisible: false});
       this.props.controller.hideControlBar();
       this.refs.PlayingScreen.getDOMNode().style.cursor="none";
