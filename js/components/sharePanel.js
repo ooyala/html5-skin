@@ -13,6 +13,14 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants');
 
 var SharePanel = React.createClass({
+  getDefaultProps: function () {
+    return {
+      contentTree: {
+        title: ''
+      }
+    };
+  },
+
   tabs: {SHARE: "share", EMBED: "embed", EMAIL: "email"},
 
   getInitialState: function() {
