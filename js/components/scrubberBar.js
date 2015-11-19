@@ -155,14 +155,12 @@ var ScrubberBar = React.createClass({
             playheadPaddingStyle.left), 0);
     }
 
-    var scrubberBarMouseUp = this.handleScrubberBarMouseUp;
     var playheadMouseDown = this.handlePlayheadMouseDown;
     var scrubberBarMouseDown = this.handleScrubberBarMouseDown;
 
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN){
       playheadStyle.visibility = "hidden";
       playedIndicatorStyle.backgroundColor = "#FF3F80";
-      scrubberBarMouseUp = null;
       playheadMouseDown = null;
     }
     else {
@@ -183,7 +181,7 @@ var ScrubberBar = React.createClass({
             <div className="playedIndicator" style={playedIndicatorStyle}></div>
             <div className="playheadPadding" style={playheadPaddingStyle}
               onMouseDown={playheadMouseDown} onTouchStart={playheadMouseDown}>
-              <div className="playhead"></div>
+              <div className="playhead" style={playheadStyle}></div>
             </div>
           </div>
         </div>
