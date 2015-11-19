@@ -1,15 +1,13 @@
-/********************************************************************
-  DISCOVERY PANEL
-*********************************************************************/
 /**
-* @class DiscoveryPanel
-* @constructor
-*/
+ * Panel component for Discovery Screen
+ *
+ * @module DiscoveryPanel
+ */
 var React = require('react'),
-    ClassNames = require('classnames'),
-    CONSTANTS = require('../constants/constants'),
-    Utils = require('./utils'),
-    CountDownClock = require('./countDownClock');
+  ClassNames = require('classnames'),
+  CONSTANTS = require('../constants/constants'),
+  Utils = require('./utils'),
+  CountDownClock = require('./countDownClock');
 
 var DiscoveryPanel = React.createClass({
   propTypes: {
@@ -28,7 +26,37 @@ var DiscoveryPanel = React.createClass({
         })
       }),
       icons: React.PropTypes.objectOf(React.PropTypes.object)
+    }),
+    controller: React.PropTypes.shape({
+      sendDiscoveryClickEvent: React.PropTypes.func
     })
+  },
+
+  getDefaultProps: function () {
+    return {
+      skinConfig: {
+        discoveryScreen: {
+          showCountDownTimerOnEndScreen: true,
+          countDownTime: 10,
+          contentTitle: {
+            show: true
+          }
+        },
+        icons: {
+          pause:{fontStyleClass:'icon icon-pause'},
+          discovery:{fontStyleClass:'icon icon-topmenu-discovery'},
+          left:{fontStyleClass:'icon icon-left'},
+          right:{fontStyleClass:'icon icon-right'}
+
+        }
+      },
+      discoveryData: {
+        relatedVideos: []
+      },
+      controller: {
+        sendDiscoveryClickEvent: function(a,b){}
+      }
+    };
   },
 
   getInitialState: function() {
@@ -68,9 +96,9 @@ var DiscoveryPanel = React.createClass({
   render: function() {
     var relatedVideos = this.props.discoveryData.relatedVideos;
 
-    // if no discovery data render nothing
+    // if no discovery data render message
     if (relatedVideos.length < 1) {
-      return null;
+      // TODO: get msg if no discovery related videos
     }
 
     var panelTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.DISCOVER, this.props.localizableStrings);
@@ -116,11 +144,11 @@ var DiscoveryPanel = React.createClass({
           {discoveryContentBlocks}
         </div>
 
-        <a className="leftButton">
-          <span className={this.props.skinConfig.icons.left.fontStyleClass} ref="ChevronLeftButton" aria-hidden="true" onClick={this.handleLeftButtonClick}></span>
+        <a className="leftButton" ref="ChevronLeftButton" onClick={this.handleLeftButtonClick}>
+          <span className={this.props.skinConfig.icons.left.fontStyleClass} aria-hidden="true"></span>
         </a>
-        <a className="rightButton">
-          <span className={this.props.skinConfig.icons.right.fontStyleClass} ref="ChevronRightButton" aria-hidden="true" onClick={this.handleRightButtonClick}></span>
+        <a className="rightButton" ref="ChevronRightButton" onClick={this.handleRightButtonClick}>
+          <span className={this.props.skinConfig.icons.right.fontStyleClass}  aria-hidden="true"></span>
         </a>
       </div>
     );
