@@ -481,3 +481,12 @@
     }
   }
 }
+
+.has-error .form-control {
+  border-color: $state-danger-text;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+.has-error .form-control-label {
+  color: $state-danger-text;
+}
