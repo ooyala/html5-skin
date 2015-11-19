@@ -157,15 +157,13 @@ var ScrubberBar = React.createClass({
 
     var playheadMouseDown = this.handlePlayheadMouseDown;
     var scrubberBarMouseDown = this.handleScrubberBarMouseDown;
+    var playedIndicatorClassName = "playedIndicator";
+    var playheadClassName = "playhead"
 
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN){
-      playheadStyle.visibility = "hidden";
-      playedIndicatorStyle.backgroundColor = "#FF3F80";
+      playheadClassName += " adPlayhead";
+      playedIndicatorClassName += " playedAdIndicator";
       playheadMouseDown = null;
-    }
-    else {
-      playheadStyle.visibility = "visible";
-      playedIndicatorStyle.backgroundColor = "#4389ff";
     }
 
     var scrubberBarContainerStyle = {
@@ -178,10 +176,10 @@ var ScrubberBar = React.createClass({
         <div className="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
           <div ref="scrubberBar" className="scrubberBar">
             <div className="bufferedIndicator" style={bufferedIndicatorStyle}></div>
-            <div className="playedIndicator" style={playedIndicatorStyle}></div>
+            <div className={playedIndicatorClassName} style={playedIndicatorStyle}></div>
             <div className="playheadPadding" style={playheadPaddingStyle}
               onMouseDown={playheadMouseDown} onTouchStart={playheadMouseDown}>
-              <div className="playhead" style={playheadStyle}></div>
+              <div className={playheadClassName} style={playheadStyle}></div>
             </div>
           </div>
         </div>
