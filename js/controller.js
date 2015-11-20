@@ -42,6 +42,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "duration": 0,
       "mainVideoElement": null,
       "elementId": null,
+      "mainVideoPlayhead": null,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -202,7 +203,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.upNextInfo.countDownCancelled = false;
     },
 
-    onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
+    onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered, startEnd, videoId) {
+      if (videoId == OO.VIDEO.MAIN) {
+        this.state.mainVideoPlayhead = currentPlayhead;
+      }
       // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
       // So we only need to update the playhead for ad screen.
       if (this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN ) {
@@ -273,6 +277,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPaused: function(eventname, videoId) {
       // pause/resume of Ad playback can be handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
       if (videoId == OO.VIDEO.MAIN && this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
+        if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
+          this.state.pauseAnimationDisabled = true;
+        }
         if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
             && !(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))) {
           OO.log("Should display DISCOVERY_SCREEN on pause");

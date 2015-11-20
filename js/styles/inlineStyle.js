@@ -822,7 +822,6 @@ module.exports = {
       "top": "3px",
       "left": "15px",
       "width": "100%",
-      "height": "27px",
       "color": "#FFFFFF"
     },
 
