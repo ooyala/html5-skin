@@ -57,7 +57,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       },
 
       "volumeState": {
-        "volume" :null,
+        "volume": 1,
         "muted": false,
         "oldVolume": 1,
         "volumeSliderVisible": false
