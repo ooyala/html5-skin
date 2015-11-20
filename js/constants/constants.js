@@ -77,11 +77,6 @@ module.exports = {
     AD_PLAYBACK: "pauseForAdPlayback"
   },
 
-  VIDEO: {
-    MAIN: "main",
-    ADS: "ads"
-  },
-
   ERROR_MESSAGE: {
     "network":{
       name: "OO.ERROR.API.NETWORK",
