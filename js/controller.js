@@ -84,6 +84,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   Html5Skin.prototype = {
     init: function () {
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
+      this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_CREATED, 'customerUi', _.bind(this.onVcVideoElementCreated, this));
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
@@ -165,12 +166,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.state.isMobile = Utils.isMobile();
 
+      this.externalPluginSubscription();
+      this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+    },
+
+    onVcVideoElementCreated: function() {
+      this.state.mainVideoElement = $("#" + this.state.elementId + " .video");
       if (Utils.isIE10()) {
         this.state.mainVideoElement.attr("controls", "controls");
       }
-
-      this.externalPluginSubscription();
-      this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
     },
 
     onPlayerDestroy: function (event) {
