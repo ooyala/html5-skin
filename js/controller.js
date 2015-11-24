@@ -215,8 +215,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
       // So we only need to update the playhead for ad screen.
+      this.state.duration = duration;
       if (this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN ) {
-        this.state.duration = duration;
         if (this.skin.props.skinConfig.upNext.showUpNext) {
           if (!(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))){//no UpNext for iPhone or fullscreen iPad
             this.showUpNextScreenWhenReady(currentPlayhead, duration);
