@@ -141,7 +141,7 @@ describe('ScrubberBar', function () {
     );
 
     var playhead = TestUtils.findRenderedDOMComponentWithClass(DOM, 'playhead').getDOMNode();
-    expect(playhead.style.visibility).toBe('hidden');
+    expect(playhead.className).toMatch('adPlayhead');
   });
 
 });
