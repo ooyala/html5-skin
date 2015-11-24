@@ -43,6 +43,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoDuration": 0,
       "mainVideoElement": null,
       "elementId": null,
+      "buffering": false,
       "mainVideoPlayhead": null,
 
       "currentAdsInfo": {
@@ -98,6 +99,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
       this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
+      this.mb.subscribe(OO.EVENTS.BUFFERING, 'customerUi', _.bind(this.onBuffering, this));
+      this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
 
 
       /********************************************************************
@@ -357,6 +360,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
+    onBuffering: function(event) {
+      this.state.buffering = true;
+      this.renderSkin();
+    },
+
+    onBuffered: function(event) {
+      if (this.state.buffering === true) {
+        this.state.buffering = false;
+        this.renderSkin();
+      }
+    },
+
     /********************************************************************
       ADS RELATED EVENTS
     *********************************************************************/
@@ -535,6 +550,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
 
       if (!Utils.isIPhone()) {
         //since iPhone is always playing in full screen and not showing our skin, don't need to render skin

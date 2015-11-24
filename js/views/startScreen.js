@@ -3,6 +3,7 @@
 *********************************************************************/
 var React = require('react'),
     CONSTANTS = require('../constants/constants'),
+    Spinner = require('../components/spinner'),
     Utils = require('../components/utils');
 
 var StartScreen = React.createClass({
@@ -111,6 +112,14 @@ var StartScreen = React.createClass({
       posterImageUrl = this.props.contentTree.promo_image;
     }
 
+    var button = null;
+    if (this.props.controller.state.buffering === true) {
+      button = <Spinner />;
+    }
+    else {
+      button = <span className={playClass} style={playStyle} aria-hidden="true"></span>;
+    }
+
     if (this.props.skinConfig.startScreen.promoImageSize == "small") {
       // Small Promo Image configuration
       posterStyle.backgroundSize = "auto";
@@ -121,7 +130,7 @@ var StartScreen = React.createClass({
             {titleMetadata}
             {descriptionMetadata}
           </div>
-          <span className={playClass} style={playStyle} aria-hidden="true"></span>
+          {button}
         </div>
       );
     }
@@ -136,7 +145,7 @@ var StartScreen = React.createClass({
             {descriptionMetadata}
           </div>
           <div className="play">
-            <span className={playClass} style={playStyle} aria-hidden="true"></span>
+            {button}
           </div>
         </div>
       );
