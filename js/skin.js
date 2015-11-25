@@ -70,7 +70,6 @@ var Skin = React.createClass({
       duration: newDuration,
       buffered: newBuffered
     });
-    this.forceUpdate();
   },
 
   render: function() {
