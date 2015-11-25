@@ -4,10 +4,10 @@
  * @module DiscoveryPanel
  */
 var React = require('react'),
-  ClassNames = require('classnames'),
-  CONSTANTS = require('../constants/constants'),
-  Utils = require('./utils'),
-  CountDownClock = require('./countDownClock');
+    ClassNames = require('classnames'),
+    CONSTANTS = require('../constants/constants'),
+    Utils = require('./utils'),
+    CountDownClock = require('./countDownClock');
 
 var DiscoveryPanel = React.createClass({
   propTypes: {
@@ -27,9 +27,7 @@ var DiscoveryPanel = React.createClass({
       }),
       icons: React.PropTypes.objectOf(React.PropTypes.object)
     }),
-    controller: React.PropTypes.shape({
-      sendDiscoveryClickEvent: React.PropTypes.func
-    })
+    controller: React.PropTypes.objectOf(React.PropTypes.func)
   },
 
   getDefaultProps: function () {
@@ -111,7 +109,7 @@ var DiscoveryPanel = React.createClass({
       'hidden': !this.state.showDiscoveryCountDown
     });
     var countDownClock = (
-      <div className={discoveryCountDownWrapperStyle} >
+      <div className={discoveryCountDownWrapperStyle}>
         <a className="discoveryCountDownIconStyle" onClick={this.handleDiscoveryCountDownClick}>
           <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
           <span className={this.props.skinConfig.icons.pause.fontStyleClass}></span>
