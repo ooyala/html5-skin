@@ -10,6 +10,7 @@
 var React = require('react'),
     ClosedCaptionPanel = require('../components/closedCaptionPanel'),
     CloseButton = require('../components/closeButton'),
+    InlineStyle = require('../styles/inlineStyle'),
     Utils = require('../components/utils');
 
 var ClosedCaptionScreen = React.createClass({
@@ -52,9 +53,14 @@ var ClosedCaptionScreen = React.createClass({
     this.props.controller.toggleClosedCaptionScreen();
   },
 
+  handleMouseDown: function(event) {
+    //to prevent cursor changing to text curson if click and drag
+    event.preventDefault();
+  },
+
   render: function() {
     return (
-      <div style={{height: "100%", width: "100%"}}>
+      <div style={InlineStyle.defaultScreenStyle.style} onMouseDown={this.handleMouseDown}>
         <ClosedCaptionPanel {...this.props} closedCaptionOptions = {this.props.closedCaptionOptions} clientWidth = {this.state.clientWidth} clientHeight = {this.state.clientHeight}/>
         <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>

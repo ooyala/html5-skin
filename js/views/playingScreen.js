@@ -80,6 +80,11 @@ var PlayingScreen = React.createClass({
     // for mobile, touch is handled in handleTouchEnd
   },
 
+  handlePlayerMouseDown: function(event) {
+    //to prevent cursor changing to text curson if click and drag
+    event.preventDefault();
+  },
+
   handleTouchEnd: function(event) {
     if (this.props.controller.state.volumeState.volumeSliderVisible) {
       this.props.controller.hideVolumeSliderBar();
@@ -130,7 +135,7 @@ var PlayingScreen = React.createClass({
       <div className="playingScreen" ref="PlayingScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
         onMouseMove={this.handlePlayerMouseMove} style={InlineStyle.defaultScreenStyle.style}>
         {spinner}
-        <div onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd} style={InlineStyle.defaultScreenStyle.style}>
+        <div onMouseUp={this.handlePlayerMouseUp} onMouseDown={this.handlePlayerMouseDown} onTouchEnd={this.handleTouchEnd} style={InlineStyle.defaultScreenStyle.style}>
           <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
             showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
           <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
