@@ -324,71 +324,159 @@ module.exports = {
     }
   },
 
-  scrubberBarStyle: {
-    scrubberBarSetting: {
-      "background": "#afafaf",
-      "height": "5",
-      "margin": 0,
-      "position": "absolute",
-      "padding": 0,
-      "left": "15px",
-      "right": "15px",
-      "bottom": "50%",
-      "transform": "translateY(50%)"
+  shareScreenStyle: {
+    tabStyle: {
+      display: "inline-block",
+      color: "#afafaf",
+      fontWeight: "bold",
+      paddingRight: "25px"
     },
 
-    scrubberBarPadding: {
-      "padding": "0",
-      "margin": "0",
-      "WebkitUserSelect": "none",
-      "MozUserSelect": "none",
-      "msUserSelect": "none",
-      "userSelect": "none",
-      "position": "absolute",
-      "transition": "bottom 0.5s, height 0.25s",
-      "width": "100%",
-      "height": "24px",
-      "zIndex": "1"
+    lastTabStyle: {
+      display: "inline-block",
+      color: "#afafaf",
+      fontWeight: "bold",
+      flex: 1,
+      WebkitFlex: 1,
+      paddingLeft: "0"
     },
 
-    bufferedIndicatorStyle: {
-      "background": "#7f7f7f",
-      "height": "100%",
-      "position": "absolute"
+    activeTab: {
+      color: "white"
     },
 
-    playedIndicatorStyle: {
-      "background": "#4389ff",
-      "height": "100%",
-      "position": "absolute"
+    socialIconStyle: {
+      display: "inline-block",
+      height: "30px",
+      width: "30px",
+      marginBottom: "15px",
+      marginRight: "15px",
+      backgroundColor: "aqua",
+      textAlign: "center",
+      fontSize: "22px",
+      fontWeight: "bold",
+      lineHeight: "30px",
+      borderRadius: "6px"
     },
 
-    playheadPaddingStyle: {
-      "width": "25px",
-      "height": "25px",
-      "position": "absolute",
-      "zIndex": "1",
-      "top": "50%",
-      "WebkitTransform": "translateY(-50%) translateX(-50%)",
-      "transform": "translateY(-50%) translateX(-50%)",
-      "transition": "opacity 0.25s"
+    twitterIconStyle: {
+      backgroundColor: "#64ccea"
     },
 
-    playheadStyle: {
-      "background": "#ffffff",
-      "width": "10px",
-      "height": "10px",
-      "borderStyle": "solid",
-      "borderColor": "white",
-      "borderWidth": "1px",
-      "borderRadius": "10px",
-      "position": "absolute",
-      "transition": "opacity 0.25s",
-      "top": "50%",
-      "cursor": "pointer",
-      "left": "50%",
-      "WebkitTransform": "translateY(-50%) translateX(-50%)",
-      "transform": "translateY(-50%) translateX(-50%)"
+    facebookIconStyle: {
+      backgroundColor: "#517db8"
+    },
+
+    plusIconStyle: {
+      backgroundColor: "#ff6267"
+    },
+
+    panelStyle: {
+      flex: 1,
+      WebkitFlex: 1,
+      color: "white",
+      textAlign: "center"
+    },
+
+    containerStyle: {
+      padding: "35px",
+      position: "absolute",
+      top: 0,
+      bottom: "0",
+      background: "rgba(0, 0, 0, 0.75)",
+      left: 0,
+      right: 0,
+      display: "flex",
+      alignItems: "center",
+      WebkitAlignItems: "center",
+      justifyContent: "center"
+    },
+
+    tabRowStyle: {
+      position: "absolute",
+      top: "35px",
+      left: "35px"
+    },
+
+    titleStyle: {
+      fontFamily: "'Roboto Condensed', sans-serif",
+      fontSize: "18px",
+      fontWeight: "bold",
+      marginBottom: "15px",
+      textTransform: "capitalize"
+    },
+
+    embedUrlStyle: {
+      color:"black",
+      marginBottom: "15px",
+      borderRadius: "6px",
+      borderStyle: "none",
+      width: "300px",
+      height: "36px",
+      paddingLeft: "15px",
+      resize: "none"
+    },
+
+    emailTable: {
+      color: "white",
+      margin: "0 auto"
+    },
+
+    emailSendButton: {
+      backgroundColor:"#4389ff",
+      border: "0px none transparent",
+      borderRadius: "6px",
+      height: "40px",
+      width: "70px",
+      marginTop: "8px"
+    },
+
+    emailInputField: {
+      color:"gray",
+      marginBottom: "15px",
+      borderRadius: "6px",
+      borderStyle: "none",
+      width: "300px",
+      height: "32px",
+      paddingLeft: "15px",
+      resize: "none"
+    },
+
+    emailTextArea: {
+      color: "gray",
+      height: "80px",
+      width: "300px",
+      borderRadius: "6px",
+      resize: "none"
+    },
+
+    startAtInput: {
+      color:"black",
+      borderRadius: "6px",
+      borderStyle: "none",
+      width: "60px",
+      height: "26px",
+      paddingLeft: "10px",
+      resize: "none"
+    },
+
+    embedTextArea: {
+      height: "60%",
+      width: "70%",
+      color: "black",
+      borderRadius: "6px",
+      resize: "none"
+    },
+
+    closeButton: {
+      position: "absolute",
+      top: "35px",
+      right: "35px",
+      height: "15px",
+      width: "15px",
+      color: "#ffffff",
+      textAlign: "center",
+      lineHeight: "15px"
     }
   },
 

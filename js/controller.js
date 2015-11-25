@@ -819,6 +819,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.seeking = true;
     },
 
+    updateSeekingPlayhead: function(playhead) {
+      this.skin.updatePlayhead(playhead, this.skin.state.duration, this.skin.state.buffered);
+    },
+
     hideVolumeSliderBar: function() {
       this.state.volumeState.volumeSliderVisible = false;
       this.renderSkin();
