@@ -81,7 +81,7 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseDown: function(event) {
-    //to prevent cursor changing to text curson if click and drag
+    //to prevent cursor changing to text cursor if click and drag
     event.preventDefault();
   },
 
