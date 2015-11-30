@@ -231,7 +231,7 @@ var ControlBar = React.createClass({
       var highlighted = this.state.mouseOverVolume;
       var singleBarStyle = Utils.clone(InlineStyle.controlBarStyle.volumeBarStyle);
       singleBarStyle.backgroundColor = (turnedOn ?
-        (highlighted?"rgba(67, 137, 255, 1)":"rgba(67, 137, 255, 0.6)") : (highlighted?"rgba(255, 255, 255, 1)":"rgba(255, 255, 255, 0.6)"));
+        (highlighted?"rgba(255, 165, 0, 1)":"rgba(255, 165, 0, 0.6)") : (highlighted?"rgba(255, 255, 255, 1)":"rgba(255, 255, 255, 0.6)"));
       //we store which value the tick correlates to via a data attribute on the element
       volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
         onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}
