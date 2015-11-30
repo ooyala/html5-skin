@@ -25,6 +25,13 @@ var UpNextPanel = React.createClass({
     var descriptionNode = this.refs.ContentDescription.getDOMNode();
     var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.contentDescription);
     this.setState({contentDescription: shortDesc});
+
+    if (Utils.isSafari()){
+     InlineStyle.upNextPanelStyle.upNextTitleStyle.display = "-webkit-flex";
+    }
+    else {
+     InlineStyle.upNextPanelStyle.upNextTitleStyle.display = "flex";
+    }
   },
 
   closeUpNextPanel: function(event) {
@@ -32,9 +39,7 @@ var UpNextPanel = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
-      console.log("Up next panel close button clicked");
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
+      OO.log("Up next panel close button clicked");
       this.props.controller.upNextDismissButtonClicked();
     }
   },
@@ -44,27 +49,33 @@ var UpNextPanel = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
-      console.log("Up next panel start button clicked");
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
+      OO.log("Up next panel start button clicked");
 
       // Use the same way as sending out the click event on discovery content
       var eventData = {
             "clickedVideo" : this.props.upNextInfo.upNextData,
-            "custom" : {"source": "upNextScreen",
+            "custom" : {"source": CONSTANTS.SCREEN.UP_NEXT_SCREEN,
                         "countdown": 0,
                         "autoplay": true }
           };
-      this.props.controller.sendDiscoveryClickEvent(eventData);
+      this.props.controller.sendDiscoveryClickEvent(eventData, false);
     }
   },
 
+  handleUpNextPanelClick: function(event) {
+    event.stopPropagation(); // W3C
+    event.cancelBubble = true; // IE
+
+    this.props.controller.state.accessibilityControlsEnabled = true;
+  },
+
   highlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
+    Utils.highlight(evt.target);
   },
 
   removeHighlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
+    var opacity = "0.6";
+    Utils.removeHighlight(evt.target, opacity);
   },
 
   render: function() {
@@ -84,6 +95,7 @@ var UpNextPanel = React.createClass({
     var upNextTitleStyle = InlineStyle.upNextPanelStyle.upNextTitleStyle;
 
     var upNextTitleTextStyle = InlineStyle.upNextPanelStyle.upNextTitleTextStyle;
+
     var contentTile = this.props.upNextInfo.upNextData.name;
     var upNextString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UP_NEXT, this.props.localizableStrings);
 
@@ -93,7 +105,7 @@ var UpNextPanel = React.createClass({
     var dismissButtonTextStyle = InlineStyle.upNextPanelStyle.dismissButtonTextStyle;
 
     return (
-      <div className="upNextPanel" style={panelStyle}>
+      <div className="upNextPanel" style={panelStyle} onClick={this.handleUpNextPanelClick} onTouchEnd={this.handleUpNextPanelClick}>
         <div className="upNextContent" style={contentImageContainerStyle} onClick={this.handleStartUpNextClick} onTouchEnd={this.handleStartUpNextClick}>
           <img style={contentImageStyle} src={this.props.upNextInfo.upNextData.preview_image_url}></img>
           <span className={playButtonClass} style={playButtonStyle} aria-hidden="true"></span>
@@ -101,12 +113,11 @@ var UpNextPanel = React.createClass({
 
         <div className="contentMetadata" style={contentMetadataContainerStyle}>
           <div style={upNextTitleStyle}>
+            <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNext.timeToShow} currentPlayhead={this.props.currentPlayhead}/>
 
             <div style={upNextTitleTextStyle}>
               {upNextString}: {contentTile}
             </div>
-
-            <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNextScreen.timeToShow}/>
           </div>
 
           <div ref="ContentDescription" style={contentDescriptionStyle}>
@@ -114,9 +125,9 @@ var UpNextPanel = React.createClass({
           </div>
         </div>
 
-        <div className="close" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+        <div className="closeButton" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
           onClick={this.closeUpNextPanel} style={InlineStyle.upNextPanelStyle.closeButton} onTouchEnd={this.closeUpNextPanel}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
+          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={InlineStyle.defaultScreenStyle.closeButtonStyle}></span>
         </div>
       </div>
     );

@@ -14,7 +14,6 @@ var React = require('react'),
     StartScreen = require('./views/startScreen'),
     PauseScreen = require('./views/pauseScreen'),
     PlayingScreen = require('./views/playingScreen'),
-    UpNextScreen = require('./views/upNextScreen'),
     Spinner = require('./components/spinner'),
     ErrorScreen = require('./views/errorScreen');
 
@@ -37,15 +36,27 @@ var Skin = React.createClass({
     }
   },
 
+  componentDidMount: function () {
+    window.addEventListener('mouseup', this.handleClickOutsidePlayer);
+  },
+
   componentWillMount: function() {
-    if (this.props.skinConfig.ccOptions){
-         this.props.controller.state.ccOptions.language = (this.props.skinConfig.ccOptions.defaultLanguage ? this.props.skinConfig.ccOptions.defaultLanguage : "en" );
-         this.props.controller.state.ccOptions.enabled = (this.props.skinConfig.ccOptions.defaultEnabled ? this.props.skinConfig.ccOptions.defaultEnabled : false);
+    if (this.props.skinConfig.closedCaptionOptions){
+         this.props.controller.state.closedCaptionOptions.language = (this.props.skinConfig.closedCaptionOptions.defaultLanguage ? this.props.skinConfig.closedCaptionOptions.defaultLanguage : "en" );
+         this.props.controller.state.closedCaptionOptions.enabled = (this.props.skinConfig.closedCaptionOptions.defaultEnabled ? this.props.skinConfig.closedCaptionOptions.defaultEnabled : false);
     }
     else {
-      this.props.controller.state.ccOptions.language = "en";
-      this.props.controller.state.ccOptions.enabled = false;
+      this.props.controller.state.closedCaptionOptions.language = "en";
+      this.props.controller.state.closedCaptionOptions.enabled = false;
     }
+  },
+
+  componentWillUnmount: function () {
+    window.removeEventListener('mouseup', this.handleClickOutsidePlayer);
+  },
+
+  handleClickOutsidePlayer: function() {
+    this.props.controller.state.accessibilityControlsEnabled = false;
   },
 
   switchComponent: function(args) {
@@ -59,7 +70,6 @@ var Skin = React.createClass({
       duration: newDuration,
       buffered: newBuffered
     });
-    this.forceUpdate();
   },
 
   render: function() {
@@ -91,6 +101,9 @@ var Skin = React.createClass({
             fullscreen={this.state.fullscreen}
             playerState={this.state.playerState}
             seeking={this.state.seeking}
+            upNextInfo={this.state.upNextInfo}
+            authorization={this.state.authorization}
+            controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
             ref="playScreen" />
         );
       case CONSTANTS.SCREEN.SHARE_SCREEN:
@@ -115,6 +128,8 @@ var Skin = React.createClass({
             pauseAnimationDisabled = {this.state.pauseAnimationDisabled}
             fullscreen={this.state.fullscreen}
             seeking={this.state.seeking}
+            upNextInfo={this.state.upNextInfo}
+            authorization={this.state.authorization}
             ref="pauseScreen" />
         );
       case CONSTANTS.SCREEN.END_SCREEN:
@@ -129,6 +144,7 @@ var Skin = React.createClass({
             fullscreen={this.state.fullscreen}
             playerState={this.state.playerState}
             seeking={this.state.seeking}
+            authorization={this.state.authorization}
             ref="endScreen" />
         );
       case CONSTANTS.SCREEN.AD_SCREEN:
@@ -141,6 +157,7 @@ var Skin = React.createClass({
             duration={this.state.duration}
             buffered={this.state.buffered}
             seeking={this.state.seeking}
+            controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
             ref="adScreen" />
         );
       case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
@@ -157,18 +174,6 @@ var Skin = React.createClass({
             seeking={this.state.seeking}
             ref="DiscoveryScreen" />
         );
-      case CONSTANTS.SCREEN.UP_NEXT_SCREEN:
-        return (
-          <UpNextScreen {...this.props}
-            contentTree={this.state.contentTree}
-            currentPlayhead={this.state.currentPlayhead}
-            duration={this.state.duration}
-            upNextInfo={this.state.upNextInfo}
-            playerState={this.state.playerState}
-            fullscreen={this.state.fullscreen}
-            seeking={this.state.seeking}
-            ref="UpNextScreen" />
-        );
       case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
         return (
           <MoreOptionsScreen {...this.props}
@@ -184,7 +189,7 @@ var Skin = React.createClass({
         return (
           <ClosedCaptionScreen {...this.props}
             contentTree={this.state.contentTree}
-            ccOptions = {this.props.ccOptions}
+            closedCaptionOptions = {this.props.closedCaptionOptions}
             currentPlayhead={this.state.currentPlayhead}
             duration={this.state.duration}
             buffered={this.state.buffered}

@@ -70,6 +70,12 @@ var Utils = {
     return (parseInt(hours,10) > 0) ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
   },
 
+  validateEmail: function(email) {
+    // RFC 2822 compliant regex
+    var regEx = /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/i;
+    return regEx.test(email);
+  },
+
     //check if browser is Safari
   isSafari: function () {
       return !!window.navigator.userAgent.match(/AppleWebKit/);
@@ -112,10 +118,13 @@ var Utils = {
   },
 
   getLanguageToUse: function(skinConfig) {
-    var language;
-    language = skinConfig.localizableStrings.language;
-    var index = -1;
+    var localization = skinConfig.localization;
+    var language, availableLanguages;
 
+    // set lang to default lang in skin config
+    language = localization.defaultLanguage;
+
+    // if no default lang in skin config check browser lang settings
     if(!language) {
       if(window.navigator.languages){
         // A String, representing the language version of the browser.
@@ -128,17 +137,45 @@ var Utils = {
         // window.navigator.language: the preferred language of the user, usually the language of the browser UI
         language = window.navigator.browserLanguage || window.navigator.userLanguage || window.navigator.language;
       }
-      language = language.substr(0,2);
-      index = skinConfig.localizableStrings.languages.indexOf(language);
-      if(index === -1) {
-        language = skinConfig.localizableStrings.default;
+
+      // remove lang sub-code
+      var primaryLanguage = language.substr(0,2);
+
+      // check available lang file for browser lang
+      for(var i = 0; i < localization.availableLanguageFile.length; i++) {
+        availableLanguages = localization.availableLanguageFile[i];
+        // if lang file available set lang to browser primary lang
+        if (primaryLanguage == availableLanguages.language){
+          language = primaryLanguage;
+        }
       }
     }
     return language;
   },
 
   getLocalizedString: function(language, stringId, localizedStrings) {
+    try {
       return localizedStrings[language][stringId];
+    } catch (e) {
+      return "";
+    }
+
+  },
+
+  highlight: function(target, opacity, color) {
+    target.style.opacity = opacity;
+    target.style.color = color;
+    target.style.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
+    target.style.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
+    target.style.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
+  },
+
+  removeHighlight: function(target, opacity, color) {
+    target.style.opacity = opacity;
+    target.style.color = color;
+    target.style.WebkitFilter = "";
+    target.style.filter = "";
+    target.style.msFilter = "";
   },
 
   /********************************************************************

@@ -3,6 +3,10 @@ module.exports = {
     style: {
       width: "100%",
       height: "100%"
+    },
+    closeButtonStyle: {
+      "opacity":"0.6",
+      "color": "#ffffff"
     }
   },
 
@@ -11,9 +15,9 @@ module.exports = {
       width: "100%",
       height: "100%",
       position: "absolute",
-      overflow: "hidden",
-      background: "black"
+      overflow: "hidden"
     },
+
     posterStyle: {
       height: "100%",
       width: "100%",
@@ -29,22 +33,20 @@ module.exports = {
       },
       title: {
         style: {
-          fontSize: "32px",
           fontWeight: "bold",
           maxWidth: "70%",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          color: "inherit",
-          resize: "none"
+          resize: "none",
+          marginBottom: "15px"
         }
       },
       description: {
         style: {
-          fontSize: "24",
           maxWidth: "70%",
           overflow: "visible",
-          color: "inherit"
+          clear: "both"
         }
       }
     },
@@ -97,22 +99,20 @@ module.exports = {
       },
       title: {
         style: {
-          fontSize: "32px",
           fontWeight: "bold",
           maxWidth: "70%",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          color: "inherit",
-          resize: "none"
+          resize: "none",
+          marginBottom: "15px"
         }
       },
       description: {
         style: {
-          fontSize: "24",
           maxWidth: "70%",
           overflow: "visible",
-          color: "inherit"
+          clear: "both"
         }
       }
     },
@@ -135,6 +135,16 @@ module.exports = {
       backgroundColor: "black",
       opacity: "0",
       transition: "opacity 1s"
+    },
+    videoBlur: {
+      "-webkit-filter": "blur(3px)",
+      "-moz-filter": "blur(3px)",
+      "filter": "blur(3px)"
+    },
+    videoUnblur: {
+      "-webkit-filter": "",
+      "-moz-filter": "",
+      "filter": ""
     }
   },
 
@@ -196,7 +206,6 @@ module.exports = {
 
     controlBarItemSetting: {
       "height": "100%",
-      "color": "rgba(255, 255, 255, 0.6)",
       "fontWeight": "bold",
       "fontSize": "18px",
       "textAlign": "center",
@@ -211,6 +220,7 @@ module.exports = {
       "height": "100%",
       "color": "#ffffff",
       "opacity": 1,
+      "fontFamily": "'Roboto', sans-serif",
       "fontSize": 14,
       "paddingLeft": "7.5px",
       "paddingRight": "7.5px",
@@ -219,6 +229,12 @@ module.exports = {
     },
 
     iconSetting: {},
+    volumeIconSetting: {
+      "opacity": "1",
+      "WebkitFilter": "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))",
+      "filter": "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))",
+      "msFilter": "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')"
+    },
 
     flexibleSpace: {
       "flex": "1",
@@ -226,38 +242,27 @@ module.exports = {
     },
 
     liveItemStyle: {
-      position: "relative",
-      width: "50",
-      height: "50%",
-      top: "30%",
-      borderRadius: "3px"
     },
 
     liveCircleStyle: {
-      position: "relative",
-      width: "10px",
-      height: "10px",
-      borderRadius: "50%",
-      top: "25%",
-      left: "5%",
-      backgroundColor: "red"
+      "display": "inline-block",
+      "width": "10px",
+      "height": "10px",
+      "borderRadius": "50%",
+      "backgroundColor": "red",
+      "marginRight": "2px"
     },
 
     liveTextStyle: {
-      position: "absolute",
-      width: "60%",
-      height: "80%",
-      top: "10%",
-      left: "40%",
-      fontSize: "10",
-      color: "LightGray"
+      "fontSize": "10",
+      "color": "LightGray"
     },
 
     volumeBarStyle: {
       "display": "inline-block",
       "backgroundClip": "content-box",
       "position": "relative",
-      "width": "4px",
+      "width": "6px",
       "height": "18px",
       "paddingRight": "3px"
     },
@@ -265,7 +270,7 @@ module.exports = {
     watermarkImageStyle: {
       "position": "relative",
       "height": "18px",
-      "top": "21px"
+      "top": "14px"
     }
   },
 
@@ -304,74 +309,6 @@ module.exports = {
       "background": "#ffffff",
       "width": "8px",
       "height": "8px",
-      "borderStyle": "solid",
-      "borderColor": "white",
-      "borderWidth": "1px",
-      "borderRadius": "10px",
-      "position": "absolute",
-      "transition": "opacity 0.25s",
-      "top": "50%",
-      "cursor": "pointer",
-      "left": "50%",
-      "WebkitTransform": "translateY(-50%) translateX(-50%)",
-      "transform": "translateY(-50%) translateX(-50%)"
-    }
-  },
-
-  scrubberBarStyle: {
-    scrubberBarSetting: {
-      "background": "#afafaf",
-      "height": "5",
-      "margin": 0,
-      "position": "absolute",
-      "padding": 0,
-      "left": "15px",
-      "right": "15px",
-      "bottom": "50%",
-      "transform": "translateY(50%)"
-    },
-
-    scrubberBarPadding: {
-      "padding": "0",
-      "margin": "0",
-      "WebkitUserSelect": "none",
-      "MozUserSelect": "none",
-      "msUserSelect": "none",
-      "userSelect": "none",
-      "position": "absolute",
-      "transition": "bottom 0.5s, height 0.25s",
-      "width": "100%",
-      "height": "24px",
-      "zIndex": "1"
-    },
-
-    bufferedIndicatorStyle: {
-      "background": "#7f7f7f",
-      "height": "100%",
-      "position": "absolute"
-    },
-
-    playedIndicatorStyle: {
-      "background": "#4389ff",
-      "height": "100%",
-      "position": "absolute"
-    },
-
-    playheadPaddingStyle: {
-      "width": "25px",
-      "height": "25px",
-      "position": "absolute",
-      "zIndex": "1",
-      "top": "50%",
-      "WebkitTransform": "translateY(-50%) translateX(-50%)",
-      "transform": "translateY(-50%) translateX(-50%)",
-      "transition": "opacity 0.25s"
-    },
-
-    playheadStyle: {
-      "background": "#ffffff",
-      "width": "10px",
-      "height": "10px",
       "borderStyle": "solid",
       "borderColor": "white",
       "borderWidth": "1px",
@@ -479,6 +416,11 @@ module.exports = {
       resize: "none"
     },
 
+    emailTable: {
+      color: "white",
+      margin: "0 auto"
+    },
+
     emailSendButton: {
       backgroundColor:"#4389ff",
       border: "0px none transparent",
@@ -531,191 +473,16 @@ module.exports = {
       right: "35px",
       height: "15px",
       width: "15px",
-      color: "#afafaf",
+      color: "#ffffff",
       textAlign: "center",
       lineHeight: "15px"
     }
   },
 
   discoveryScreenStyle: {
-
-    panelStyle: {
-      position: "absolute",
-      bottom: "0px",
-      backgroundColor: "rgba(0,0,0, 0.7)",
-      left: 0,
-      right: 0,
-      display: "flex",
-      flexDirection: "row",
-      WebkitFlexDirection: "row",
-      height: "100%"
-    },
-
-    promoStyle: {
-      visibility: "hidden",
-      position: "absolute",
-      height: "100%",
-      width: "100%",
-      backgroundSize: "contain",
-      backgroundRepeat: "no-repeat",
-      backgroundPosition: "center"
-    },
-
-    panelTitleBarStyle: {
-      position: "absolute",
-      backgroundColor: "transparent",
-      left: 0,
-      right: 0,
-      height: "20%",
-      width: "100%",
-      display: "inline-block"
-    },
-
-    panelTitleTextStyle: {
-      position: "absolute",
-      left: "40px",
-      fontSize: "32",
-      fontWeight: "bold",
-      color: "white",
-      margin: "1%",
-      display: "inline-block",
-      marginBottom: "35px",
-      opacity: 1
-    },
-
-    discoveryToasterContainerStyle: {
-      position: "absolute",
-      backgroundColor: "transparent",
-      top: "40%",
-      height: "60%",
-      width: "100%",
-      overflow: "hidden"
-    },
-
-    discoveryToasterStyle: {
-      position: "absolute",
-      top: "0",
-      height: "90%",
-      width: "0",
-      right: 0,
-      left: 25,
-      display: "flex",
-      flexDirection: "row",
-      WebkitFlexDirection: "row"
-    },
-
-    discoveryChevronLeftButtonContainer: {
-      position: "absolute",
-      backgroundColor: "transparent",
-      height: "100%",
-      width: "25px",
-      color: "white",
-      left: "0"
-    },
-
-    discoveryChevronRightButtonContainer: {
-      position: "absolute",
-      backgroundColor: "transparent",
-      height: "100%",
-      width: "25px",
-      color: "white",
-      right: "0"
-    },
-
-    discoveryChevronLeftButton: {
-      style: {
-        top: "50%",
-        left: "50%",
-        fontSize: "18",
-        WebkitTransform: "translate(-50%, -50%)",
-        transform: "translate(-50%, -50%)",
-        position: "absolute",
-        opacity: 1,
-        transition: "opacity .25s ease-in-out",
-        cursor: "pointer"
-      }
-    },
-
-    discoveryChevronRightButton: {
-      style: {
-        top: "50%",
-        left: "50%",
-        fontSize: "18",
-        WebkitTransform: "translate(-50%, -50%)",
-        transform: "translate(-50%, -50%)",
-        position: "absolute",
-        opacity: 1,
-        transition: "opacity .25s ease-in-out",
-        cursor: "pointer"
-      }
-    },
-
-    discoveryContentBlockStyle: {
-      position: "relative",
-      marginLeft: "30px",
-      marginRight: "30px",
-      marginTop: "35px",
-      height: "120px",
-      width: "214px",
-      flexShrink: "0"
-    },
-
-    discoveryImageWrapperStyle: {
-      position: "relative",
-      height: "120px",
-      width: "214px"
-    },
-
-    discoveryImageStyle: {
-      position: "absolute",
-      width: "100%",
-      height: "100%"
-    },
-
-    discoveryContentTitleStyle: {
-      position: "relative",
-      color: "white",
-      fontSize: "22",
-      fontWeight: "regular",
-      textOverflow: "ellipsis",
-      width: "214px",
-      height: "31px",
-      overflow: "hidden",
-      whiteSpace: "nowrap"
-    },
-
-    discoveryCountDownWrapperStyle: {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      WebkitTransform: "translate(-50%, -50%)",
-      transform: "translate(-50%, -50%)"
-    },
-
     discoveryCountDownStyle: {
       width: "75px",
       height: "75px"
-    },
-
-    discoveryCountDownIconStyle: {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      WebkitTransform: "translate(-50%, -50%)",
-      transform: "translate(-50%, -50%)",
-      "line-height": "40px",
-      "z-index": 10005,
-      "color": "white",
-      fontSize: 25,
-      cursor: "pointer"
-    },
-
-    closeButtonStyle: {
-      position: "absolute",
-      right: "17.5",
-      top: "17.5",
-      color: "lightgray",
-      cursor: "pointer"
     }
   },
 
@@ -748,7 +515,8 @@ module.exports = {
 
     adPanelTopBarTextStyle: {
       "fontSize": "12pt",
-      "color": "white",
+      "color": "#ffffff",
+      "fontFamily": "'Roboto', sans-serif",
       "margin": "auto",
       "textAlign": "center",
       "paddingLeft": "7.5px",
@@ -764,25 +532,30 @@ module.exports = {
 
     learnMoreButtonStyle: {
       "fontSize": "12pt",
-      "color": "black",
-      "backgroundColor": "white",
+      "fontFamily": "'Roboto Condensed', sans-serif",
+      "color": "#ffffff",
       "margin": "auto",
-      "marginRight": "15px",
+      "marginRight": "30px",
       "textAlign": "center",
-      "padding": "4px",
-      "borderRadius": "5px",
-      "cursor": "pointer"
+      "cursor": "pointer",
+      "icon": {
+        "fontSize": "13px",
+        "marginRight": "5px"
+      }
     },
 
     skipButtonStyle: {
       "fontSize": "12pt",
-      "color": "black",
-      "backgroundColor": "white",
+      "fontFamily": "'Roboto Condensed', sans-serif",
+      "color": "#ffffff",
       "margin": "auto",
       "marginRight": "15px",
       "textAlign": "center",
-      "padding": "4px",
-      "borderRadius": "5px"
+      "cursor": "pointer",
+      "icon": {
+        "fontSize": "13px",
+        "marginRight": "5px"
+      }
     }
   },
 
@@ -807,21 +580,19 @@ module.exports = {
       height: "28px",
       width: "28px",
       top: "0px",
-      right: "0px",
-      backgroundColor: "rgb(0,0,0)",
-      opacity: 0.5
+      right: "0px"
     },
 
     closeButtonIconStyle: {
       position: "absolute",
       fontSize: "8px",
-      color: "rgb(255,255,255)",
-      backgroundColor: "transparent",
       top: "50%",
       left: "50%",
       WebkitTransform: "translate(-50%, -50%)",
       msTransform: "translate(-50%, -50%)",
-      transform: "translate(-50%, -50%)"
+      transform: "translate(-50%, -50%)",
+      color: "#ffffff",
+      opacity: "0.6"
     }
   },
 
@@ -835,29 +606,31 @@ module.exports = {
 
     closeButtonStyle: {
       position: "absolute",
-      right: "17.5",
-      top: "17.5",
-      color: "lightgray",
+      right: "35px",
+      top: "35px",
       cursor: "pointer"
     },
 
     innerPanelStyle: {
-      padding: "17.5"
+      padding: "35px"
     },
 
     captionStyle: {
-      fontSize: "16pt",
-      fontFamily: "Roboto Condensed",
+      fontSize: "28pt",
+      fontFamily: "'Roboto Condensed', sans-serif",
       color: "#ffffff",
       fontWeight: "bold"
     },
 
+    captionIconStyle: {
+      fontSize: "25pt"
+    },
+
     switchStyle: {
       cursor: "pointer",
-      marginTop: "17.5",
-      height: "14",
-      width: "70",
-      fontSize: "10pt",
+      marginTop: "35px",
+      height: "21px",
+      width: "105px",
       color: "#FFFFFF",
       position: "relative"
     },
@@ -878,7 +651,7 @@ module.exports = {
       left: "",
       right: "0",
       top: "12.5%",
-      borderRadius: "20",
+      borderRadius: "40",
       onBackground: "#50AE54",
       transition: "all 0.5s ease-in-out"
     },
@@ -899,78 +672,86 @@ module.exports = {
       position: "absolute",
       right: "0",
       display: "inline-block",
-      color: "grey"
+      color: "grey",
+      fontSize: "15pt",
+      fontFamily: "'Roboto', sans-serif"
     },
 
     offStyle: {
       position: "absolute",
       display: "inline-block",
       left: "0",
-      color: "grey"
+      color: "grey",
+      fontSize: "15pt",
+      fontFamily: "'Roboto', sans-serif"
     },
 
     itemStyle: {
-      fontSize: "11pt",
-      width: "70",
+      fontSize: "22pt",
+      fontFamily: "'Roboto Condensed', sans-serif",
+      width: "140px",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
       overflow: "hidden",
-      marginRight: "64",
-      marginTop: "14",
+      marginRight: "128px",
+      marginTop: "28px",
       textAlign: "center",
-      padding: "2",
+      padding: "4px",
       color: "white",
       transition: "all 0.0s ease",
       cursor: "pointer"
     },
 
     lastColumnItemStyle: {
-      fontSize: "11pt",
-      width: "70",
-      minwidth: "50",
+      fontSize: "22pt",
+      fontFamily: "'Roboto Condensed', sans-serif",
+      width: "140px",
+      minwidth: "100px",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
       overflow: "hidden",
-      marginRight: "0",
-      marginTop: "14",
+      marginRight: "0px",
+      marginTop: "28px",
       textAlign: "center",
-      padding: "2",
+      padding: "4px",
       color: "white",
       transition: "all 0.0s ease",
       cursor: "pointer"
     },
 
     itemSelectedStyle: {
-      fontSize: "11pt",
-      width: "70",
+      fontSize: "22pt",
+      fontFamily: "'Roboto Condensed', sans-serif",
+      width: "140px",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
       overflow: "hidden",
-      marginRight: "64",
-      marginTop: "14",
+      marginRight: "128px",
+      marginTop: "28px",
       textAlign: "center",
-      padding: "2",
+      padding: "4px",
       color: "white",
       //properties different from itemStyle
       backgroundColor: "#4389ff",
-      borderRadius: "4",
+      borderRadius: "8px",
       cursor: "pointer"
     },
 
     lastColumnItemSelectedStyle: {
-      fontSize: "11pt",
-      width: "70",
+      fontSize: "22pt",
+      fontFamily: "'Roboto Condensed', sans-serif",
+      width: "140px",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
       overflow: "hidden",
-      marginRight: "0",
-      marginTop: "14",
+      marginRight: "0px",
+      marginTop: "28px",
       textAlign: "center",
-      padding: "2",
+      padding: "4px",
       color: "white",
       //properties different from itemStyle
       backgroundColor: "#4389ff",
-      borderRadius: "4",
+      borderRadius: "8px",
       cursor: "pointer"
     },
 
@@ -978,9 +759,9 @@ module.exports = {
       position: "absolute",
       backgroundColor: "transparent",
       height: "100%",
-      width: "25px",
+      width: "50px",
       color: "white",
-      left: "0",
+      left: "0px",
       cursor: "pointer"
     },
 
@@ -988,9 +769,9 @@ module.exports = {
       position: "absolute",
       backgroundColor: "transparent",
       height: "100%",
-      width: "25px",
+      width: "50px",
       color: "white",
-      right: "0",
+      right: "0px",
       cursor: "pointer"
     },
 
@@ -998,7 +779,7 @@ module.exports = {
       style: {
         top: "50%",
         left: "50%",
-        fontSize: "16pt",
+        fontSize: "32pt",
         transform: "translate(-50%, -50%)",
         position: "absolute",
         opacity: 1,
@@ -1010,7 +791,7 @@ module.exports = {
       style: {
         top: "50%",
         left: "50%",
-        fontSize: "16pt",
+        fontSize: "32pt",
         transform: "translate(-50%, -50%)",
         position: "absolute",
         opacity: 1,
@@ -1020,8 +801,8 @@ module.exports = {
 
     tableLanguageContainerStyle: {
       overflowX: "hidden",
-      marginLeft: "25",
-      marginRight: "25",
+      marginLeft: "50px",
+      marginRight: "50px",
       resize: "none"
     },
 
@@ -1030,37 +811,37 @@ module.exports = {
     },
 
     tdLanguageStyle: {
-      paddingLeft: "0",
-      paddingRight: "0"
+      paddingLeft: "0px",
+      paddingRight: "0px"
     },
 
     CCPreviewPanelStyle: {
       width: "100%",
       backgroundColor: "rgba(0,0,0,0.5)",
       position: "absolute",
-      bottom: "7.5",
+      bottom: "15px",
       left: "0",
-      height: "35",
+      height: "70px",
       borderTop: "1px solid grey",
       visibility: "visible"
     },
 
     CCPreviewCaptionStyle: {
       color: "white",
-      fontSize: "6pt",
-      fontFamily: "Roboto",
-      marginLeft: "17.5",
-      marginBottom: "2.75",
-      marginTop: "2.75"
+      fontSize: "12pt",
+      fontFamily: "'Roboto', sans-serif",
+      marginLeft: "35px",
+      marginBottom: "5.5px",
+      marginTop: "5.5px"
     },
 
     CCPreviewTextStyle: {
-      marginTop: "0",
+      marginTop: "0px",
       color: "white",
-      fontSize: "12pt",
+      fontSize: "24pt",
       fontWeight: "bold",
       fontFamily: "Verdana",
-      marginLeft: "17.5"
+      marginLeft: "35px"
     },
 
     positionRelativeStyle: {
@@ -1070,97 +851,102 @@ module.exports = {
 
   upNextPanelStyle: {
     panelStyle: {
-      position: "absolute",
-      width: "100%",
-      height: "80px",
-      right: "0",
-      bottom: "32px",
-      backgroundColor: "rgba(22, 22, 22, 0.9)",
+      "position": "absolute",
+      "width": "100%",
+      "height": "80px",
+      "right": "0",
+      "bottom": "32px",
+      "backgroundColor": "rgba(22, 22, 22, 0.9)",
       "transition": "bottom 0.5s"
     },
 
     contentImageContainerStyle: {
-      position: "absolute",
-      top: "0",
-      left: "0",
-      width: "140px",
-      height: "100%",
-      cursor: "pointer"
+      "position": "absolute",
+      "top": "0",
+      "left": "0",
+      "width": "140px",
+      "height": "100%",
+      "cursor": "pointer"
     },
 
     contentImageStyle: {
-      position: "absolute",
-      top: "0",
-      left: "0",
-      width: "100%",
-      height: "100%"
+      "position": "absolute",
+      "top": "50%",
+      "left": "50%",
+      "WebkitTransform": "translate(-50%, -50%)",
+      "transform": "translate(-50%, -50%)",
+      "maxWidth":"100%",
+      "maxHeight":"100%",
+      "width": "auto",
+      "height": "auto"
     },
 
     playButton: {
       style: {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        fontSize: "25",
-        WebkitTransform: "translate(-50%, -50%)",
-        transform: "translate(-50%, -50%)",
-        opacity: 1,
-        color: "white",
-        transition: "opacity .25s ease-in-out"
+        "position": "absolute",
+        "top": "50%",
+        "left": "50%",
+        "fontSize": "25",
+        "WebkitTransform": "translate(-50%, -50%)",
+        "transform": "translate(-50%, -50%)",
+        "opacity": 1,
+        "color": "white",
+        "transition": "opacity .25s ease-in-out"
       }
     },
 
     contentMetadataContainerStyle: {
-      position: "absolute",
-      top: "0",
-      left: "140px",
-      width: "78%",
-      height: "100%"
+      "position": "absolute",
+      "top": "0",
+      "left": "140px",
+      "width": "78%",
+      "height": "100%"
     },
 
     upNextTitleStyle: {
-      position: "absolute",
-      display: "flex",
-      top: "5",
-      left: "15px",
-      width: "100%",
-      height: "27px",
-      color: "#FFFFFF"
+      "position": "absolute",
+      "display": "flex",
+      "top": "3px",
+      "left": "15px",
+      "width": "100%",
+      "color": "#FFFFFF"
     },
 
     upNextTitleTextStyle: {
-      fontSize: "18",
-      fontWeight: "bold",
-      maxWidth: "70%",
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      color: "inherit",
-      resize: "none",
-      paddingLeft: "10"
+      "fontSize": "18pt",
+      "fontFamily": "'Roboto Condensed', sans-serif",
+      "fontWeight": "bold",
+      "maxWidth": "70%",
+      "whiteSpace": "nowrap",
+      "overflow": "hidden",
+      "textOverflow": "ellipsis",
+      "color": "inherit",
+      "resize": "none"
     },
 
     contentDescriptionStyle: {
-      position: "absolute",
-      bottom: "0",
-      left: "15px",
-      width: "70%",
-      height: "40px",
-      marginTop: "10px",
-      color: "rgba(255, 255, 255, 0.6)",
-      fontSize: 12,
-      fontWeight: "bold"
+      "position": "absolute",
+      "bottom": "5px",
+      "left": "15px",
+      "width": "70%",
+      "marginTop": "10px",
+      "color": "rgba(255, 255, 255, 0.6)",
+      "fontSize": "12pt",
+      "fontFamily": "'Open Sans', sans-serif",
+      "fontWeight": "regular",
+      "overflow": "hidden",
+      "textOverflow": "ellipsis"
     },
 
     closeButton: {
-      position: "absolute",
-      top: "10px",
-      right: "10px",
-      height: "10px",
-      width: "10px",
-      backgroundColor: "transparent",
-      color: "white",
-      fontSize: "10px",
+      "position": "absolute",
+      "top": "10px",
+      "right": "10px",
+      "height": "10px",
+      "width": "10px",
+      "backgroundColor": "transparent",
+      "color": "white",
+      "fontSize": "10px",
       "cursor": "pointer",
       "textAlign": "center",
       "WebkitTransform": "translateY(-50%)",
@@ -1169,8 +955,9 @@ module.exports = {
     },
 
     upNextCountDownStyle: {
-      height: "27px",
-      width: "27px"
+      "height": "27px",
+      "width": "27px",
+      "marginRight": "10px"
     }
   },
 
@@ -1181,16 +968,15 @@ module.exports = {
       "left": "0",
       "width": "100%",
       "height": "100%",
-      "opacity": "0.7",
-      "backgroundColor": "black"
+      "background": "rgba(0, 0, 0, 0.7)"
     },
 
     buttonListStyle: {
       "position": "absolute",
-      "bottom": "0",
-      "left": "30%",
-      "right": "30%",
-      "width": "40%",
+      "bottom": "0%",
+      "left": "50%",
+      "WebkitTransform": "translate(-50%, 50%)",
+      "transform": "translate(-50%, 50%)",
       "height": "32",
       "opacity": "0",
       "listStyle": "none",
@@ -1208,22 +994,22 @@ module.exports = {
 
     buttonStyle: {
       "height": "100%",
-      "color": "rgba(255, 255, 255, 0.6)",
       "fontWeight": "bold",
-      "fontSize": "18",
+      "fontSize": "30px",
       "textAlign": "center",
-      "paddingLeft": "8px",
-      "paddingRight": "8px",
+      "paddingLeft": "13px",
+      "paddingRight": "13px",
       "margin": "0 auto",
       "opacity": "1",
       "cursor": "pointer"
     },
 
+    iconStyle: {},
+
     closeButtonStyle: {
       "position": "absolute",
-      "top": "17.5",
-      "right": "17.5",
-      "color": "lightgray",
+      "top": "35",
+      "right": "35",
       "cursor": "pointer"
     }
   },
@@ -1259,15 +1045,13 @@ module.exports = {
     descriptionStyle: {
       "color": "white",
       "fontSize": "14pt",
-      "fontFamily": "Open Sans",
-      "fontWeight": "regular",
+      "fontFamily": "'Open Sans', sans-serif",
       "marginBottom": "30"
     },
     actionStyle: {
       "color": "#4389FF",
       "fontSize": "14pt",
-      "fontFamily": "Open Sans",
-      "fontWeight": "regular",
+      "fontFamily": "'Open Sans', sans-serif",
       "textTransform": "uppercase"
     }
   }

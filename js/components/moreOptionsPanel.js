@@ -25,10 +25,13 @@ var MoreOptionsPanel = React.createClass({
     else {
       InlineStyle.MoreOptionsScreenStyle.buttonListStyle.display = "flex";
     }
+
+    this.props.controller.state.accessibilityControlsEnabled = false;
   },
 
   componentWillUnmount: function () {
     InlineStyle.MoreOptionsScreenStyle.buttonListStyle.bottom = "0";
+    this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
   closeMoreOptionsScreen: function(evt) {
@@ -68,41 +71,65 @@ var MoreOptionsPanel = React.createClass({
   },
 
   highlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
+    var color = this.props.skinConfig.moreOptionsScreen.iconStyle.active.color;
+    var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.active.opacity;
+    Utils.highlight(evt.target, opacity, color);
   },
 
   removeHighlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
+    var color = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.color;
+    var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.opacity;
+    Utils.removeHighlight(evt.target, opacity, color);
+  },
+
+  dismissButtonHighlight: function(evt) {
+    Utils.highlight(evt.target);
+  },
+
+  removeDismissButtonHighlight: function(evt) {
+    var opacity = "0.6";
+    Utils.removeHighlight(evt.target, opacity);
   },
 
   buildMoreOptionsButtonList: function() {
     var fullscreenClass = (this.props.fullscreen) ?
       this.props.skinConfig.icons.compress.fontStyleClass : this.props.skinConfig.icons.expand.fontStyleClass;
 
+    InlineStyle.MoreOptionsScreenStyle.buttonStyle.fontSize = this.props.skinConfig.moreOptionsScreen.iconSize+"px";
+    var iconSetting = Utils.extend(InlineStyle.MoreOptionsScreenStyle.iconStyle, this.props.skinConfig.moreOptionsScreen.iconStyle.inactive);
     var optionsItemsTemplates = {
       "discovery": <div className="discovery" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleDiscoveryClick} onTouchEnd={this.handleDiscoveryClick}>
-        <span className={this.props.skinConfig.icons.discovery.fontStyleClass}></span></div>,
+        onClick={this.handleDiscoveryClick} onTouchEnd={this.handleDiscoveryClick}>
+        <span className={this.props.skinConfig.icons.discovery.fontStyleClass}
+          style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        </span></div>,
 
-      "quality": <div className="quality" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        <span className={this.props.skinConfig.icons.quality.fontStyleClass}></span></div>,
+      "quality": <div className="quality" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}>
+        <span className={this.props.skinConfig.icons.quality.fontStyleClass}
+          style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        </span></div>,
 
-      "closedCaption": <div className="closedCaption" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleClosedCaptionClick} onTouchEnd={this.handleClosedCaptionClick}>
-        <span className={this.props.skinConfig.icons.cc.fontStyleClass}></span></div>,
+      "closedCaption": <div className="closedCaption" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle} onClick={this.handleClosedCaptionClick} onTouchEnd={this.handleClosedCaptionClick}>
+        <span className={this.props.skinConfig.icons.cc.fontStyleClass}
+          style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        </span></div>,
 
       "share": <div className="share" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleShareClick} onTouchEnd={this.handleShareClick}>
-        <span className={this.props.skinConfig.icons.share.fontStyleClass}></span></div>,
+        onClick={this.handleShareClick} onTouchEnd={this.handleShareClick}>
+        <span className={this.props.skinConfig.icons.share.fontStyleClass}
+          style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        </span></div>,
 
       "fullscreen": <div className="fullscreen" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleFullscreenClick} onTouchEnd={this.handleFullscreenClick}>
-        <span className={fullscreenClass}></span></div>,
+        onClick={this.handleFullscreenClick} onTouchEnd={this.handleFullscreenClick}>
+        <span className={fullscreenClass}
+          style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        </span></div>,
 
-      "settings": <div className="settings" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        <span className={this.props.skinConfig.icons.setting.fontStyleClass}></span></div>,
+      "settings": <div className="settings" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}>
+        <span className={this.props.skinConfig.icons.setting.fontStyleClass}
+          style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+        </span></div>,
     };
 
     var moreOptionsItems = [];
@@ -130,7 +157,7 @@ var MoreOptionsPanel = React.createClass({
       }
 
       //do not show CC button if no CC available
-      if (!this.props.controller.state.ccOptions.availableLanguages && (collapsedMoreOptionsItems[i].name === "closedCaption")){
+      if (!this.props.controller.state.closedCaptionOptions.availableLanguages && (collapsedMoreOptionsItems[i].name === "closedCaption")){
         continue;
       }
       moreOptionsItems.push(optionsItemsTemplates[collapsedMoreOptionsItems[i].name]);
@@ -141,13 +168,11 @@ var MoreOptionsPanel = React.createClass({
   render: function() {
     var moreOptionsItems = this.buildMoreOptionsButtonList();
     return (
-      <div className="moreOptionsPanel" style={InlineStyle.MoreOptionsScreenStyle.panelStyle}>
-        <div onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
-          onClick={this.closeMoreOptionsScreen} onTouchEnd={this.closeMoreOptionsScreen} style={InlineStyle.MoreOptionsScreenStyle.closeButtonStyle}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass}></span>
-        </div>
-        <div className="moreOptionsItems" style={InlineStyle.MoreOptionsScreenStyle.buttonListStyle}>
-          {moreOptionsItems}
+      <div>
+        <div className="moreOptionsPanel" style={InlineStyle.MoreOptionsScreenStyle.panelStyle}>
+          <div className="moreOptionsItems" style={InlineStyle.MoreOptionsScreenStyle.buttonListStyle}>
+            {moreOptionsItems}
+          </div>
         </div>
       </div>
     );

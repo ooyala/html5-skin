@@ -38,7 +38,17 @@ module.exports = {
     OFF: "Off",
     DISCOVER: "Discover",
     UP_NEXT: "Up next",
-    INVEST_IN_SOCIAL_CHANGE: "Invest In Social Change",
+    SHARE_CALL_TO_ACTION: "Invest In Social Change",
+    SHARE: "Share",
+    START_AT: "Start at",
+    EMBED: "Embed",
+    EMAIL: "Email",
+    TO: "To",
+    SUBJECT: "Subject",
+    MESSAGE: "Message",
+    RECIPIENT: "name@email.com",
+    OPTIONAL_MESSAGE: "Optional Message",
+    SEND: "Send",
     ERROR_ACTION: "RELOAD YOUR SCREEN OR TRY SELECTING A DIFFERENT VIDEO",
     UNKNOWN_ERROR: "THIS IS NOT WORKING! :("
   },
@@ -54,6 +64,7 @@ module.exports = {
   UI: {
     defaultControlBarHeight: 60,
     defaultScrubberBarHeight: 5,
+    defaultScrubberBarPaddingHeight: 24,
     DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15
   },
 
@@ -61,6 +72,10 @@ module.exports = {
     VIDEO_WINDOW: "videoWindow",
     LEARN_MORE_BUTTON: "learnMoreButton",
     OVERLAY: "overlay"
+  },
+
+  PAUSE_REASON: {
+    AD_PLAYBACK: "pauseForAdPlayback"
   },
 
   ERROR_MESSAGE: {
@@ -147,7 +162,8 @@ module.exports = {
     "invalid_heartbeat":{
       name: "OO.ERROR.API.SAS.INVALID_HEARTBEAT",
       title: "INVALID HEARTBEAT",
-      description: "Invalid heartbeat response"},
+      description: "Invalid heartbeat response"
+    },
     "content_tree":{
       name: "OO.ERROR.API.CONTENT_TREE",
       title: "INVALID CONTENT",

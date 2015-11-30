@@ -3,6 +3,7 @@
 *********************************************************************/
 var React = require('react'),
     CONSTANTS = require('../constants/constants'),
+    Spinner = require('../components/spinner'),
     Utils = require('../components/utils');
 
 var StartScreen = React.createClass({
@@ -25,12 +26,15 @@ var StartScreen = React.createClass({
     }
   },
 
-  handleClick: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
+  handleClick: function(event) {
+    if (event.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
       this.props.controller.togglePlayPause();
+      this.props.controller.state.accessibilityControlsEnabled = true;
     }
   },
 
@@ -47,8 +51,20 @@ var StartScreen = React.createClass({
     var posterStyle = screenStyle.posterStyle;
     var infoStyle = screenStyle.infoPanel;
 
+    //title style
+    infoStyle.title.style.fontSize = this.props.skinConfig.startScreen.titleFont.fontSize + "pt";
+    infoStyle.title.style.fontFamily = this.props.skinConfig.startScreen.titleFont.fontFamily;
+    infoStyle.title.style.color = this.props.skinConfig.startScreen.titleFont.color;
+
+    //description style
+    infoStyle.description.style.fontSize = this.props.skinConfig.startScreen.descriptionFont.fontSize + "pt";
+    infoStyle.description.style.fontFamily = this.props.skinConfig.startScreen.descriptionFont.fontFamily;
+    infoStyle.description.style.color = this.props.skinConfig.startScreen.descriptionFont.color;
+
     // Accent Color
-    playStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.startScreen.playIconStyle.color;
+    playStyle.color = this.props.skinConfig.startScreen.playIconStyle.color;
+    playStyle.opacity = this.props.skinConfig.startScreen.playIconStyle.opacity;
+
     // PlayButton position, defaulting to centered
     if (this.props.skinConfig.startScreen.showPlayButton) {
       playStyle.top = "50%";
@@ -96,6 +112,14 @@ var StartScreen = React.createClass({
       posterImageUrl = this.props.contentTree.promo_image;
     }
 
+    var button = null;
+    if (this.props.controller.state.buffering === true) {
+      button = <Spinner />;
+    }
+    else {
+      button = <span className={playClass} style={playStyle} aria-hidden="true"></span>;
+    }
+
     if (this.props.skinConfig.startScreen.promoImageSize == "small") {
       // Small Promo Image configuration
       posterStyle.backgroundSize = "auto";
@@ -106,22 +130,22 @@ var StartScreen = React.createClass({
             {titleMetadata}
             {descriptionMetadata}
           </div>
-          <span className={playClass} style={playStyle} aria-hidden="true"></span>
+          {button}
         </div>
       );
     }
     else {
       // Default configuration
-      posterStyle.backgroundImage = "url('" + posterImageUrl + "')";
+      posterStyle.backgroundImage = "linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%), url('" + posterImageUrl + "')";
       return (
-        <div className="startScreen" onClick={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
+        <div className="startScreen" onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
           <div className="startScreenPoster" style={screenStyle.posterStyle}></div>
-          <div className="play">
-            <span className={playClass} style={playStyle} aria-hidden="true"></span>
-          </div>
           <div className="startScreenInfo" style={screenStyle.infoPanel.style}>
             {titleMetadata}
             {descriptionMetadata}
+          </div>
+          <div className="play">
+            {button}
           </div>
         </div>
       );

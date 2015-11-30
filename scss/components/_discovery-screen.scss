@@ -1,0 +1,129 @@
+.discoveryScreen {
+  height:100%;
+  width:100%;
+
+  .promo-style {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    //background-image: url('this.props.contentTree.promo_image');
+  }
+
+  .discovery-panel {
+    padding: 35px;
+    //position: absolute;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    left: 0;
+    right: 0;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    height: 100%;
+
+    .discovery-panel-title {
+      position: absolute;
+      line-height: 1;
+      font-size: 1.6em; //this.props.skinConfig.discoveryScreen.panelTitle.titleFont.fontSize
+      font-family: 'Roboto Condensed', sans-serif; //this.props.skinConfig.discoveryScreen.panelTitle.titleFont.fontFamily
+      color: $white; //this.props.skinConfig.discoveryScreen.panelTitle.titleFont.color
+      span.icon {
+        top: 1px;
+        position: relative;
+        margin-left: 7px;
+        font-size: 0.8em;
+      }
+    }
+    .discoveryToasterContainerStyle {
+      background-color: transparent;
+      min-height: 200px;
+      height: 320px;
+      width: 600px;
+      overflow: auto;
+      white-space: nowrap;
+      margin: auto;
+    }
+
+    .flexcontainer {
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-flow: column wrap;
+      flex-flow: column wrap;
+      overflow-y: hidden;
+      overflow-x: scroll;
+      align-items: center;
+      -webkit-align-items: center;
+      justify-content: center;
+    }
+
+    .discoveryImageWrapperStyle {
+      position: relative;
+      height: 84px;
+      width: 150px;
+      margin: 24px;
+      flex-shrink: 0;
+    }
+
+    img.imageStyle {
+      //position: absolute;
+      width: 150px;
+      height: 84px;
+      display: block;
+    }
+
+    .discoveryContentName {
+      color: white;
+      font-size: 1em;
+      width: 150px;
+      //height: 30px;
+      display: inline-block;
+      text-transform: capitalize;
+      @include text-truncate();
+    }
+
+    .discoverBtn {
+      position: absolute;
+      top: 50%;
+      background-color: transparent;
+      height: 10%;
+      width: 25px;
+      color: white;
+      display: none; //hide arrows until 1.7
+    }
+
+    .leftButton {
+      @extend .discoverBtn;
+      left: 0;
+      text-align: right;
+    }
+
+    .rightButton {
+      @extend .discoverBtn;
+      right: 0;
+      text-align: left;
+    }
+    .discoveryCountDownWrapperStyle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+    .discoveryCountDownWrapperStyle a.discoveryCountDownIconStyle span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      line-height: 40px;
+      z-index: 10005;
+      color: white;
+      font-size: 25px;
+      cursor: pointer
+    }
+  }
+}

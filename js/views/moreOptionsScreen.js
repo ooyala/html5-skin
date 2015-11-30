@@ -9,9 +9,7 @@
 */
 var React = require('react'),
     MoreOptionsPanel = require('../components/moreOptionsPanel'),
-    ControlBar = require('../components/controlBar'),
-    ScrubberBar = require('../components/scrubberBar'),
-    CONSTANTS = require('../constants/constants');
+    CloseButton = require('../components/closeButton');
 
 var MoreOptionsScreen = React.createClass({
   getInitialState: function() {
@@ -25,6 +23,11 @@ var MoreOptionsScreen = React.createClass({
 
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
+    this.props.controller.state.accessibilityControlsEnabled = false;
+  },
+
+  componentWillUnmount: function () {
+    this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
   handleResize: function(e) {
@@ -33,21 +36,15 @@ var MoreOptionsScreen = React.createClass({
     }
   },
 
-  highlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 1.0)";
-  },
-
-  removeHighlight: function(evt) {
-    evt.target.style.color = "rgba(255, 255, 255, 0.6)";
+  handleClose: function() {
+    this.props.controller.closeScreen();
   },
 
   render: function() {
     return (
       <div className="MoreOptionsScreen" style={{height: "100%", width: "100%"}}>
-
-        <MoreOptionsPanel {...this.props}
-          controlBarWidth={this.state.controlBarWidth}/>
-
+        <MoreOptionsPanel {...this.props} controlBarWidth={this.state.controlBarWidth} />
+        <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>
     );
   }

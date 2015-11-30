@@ -3,6 +3,8 @@
 *********************************************************************/
 var React = require('react'),
   InlineStyle = require('../styles/inlineStyle');
+  Utils = require('../components/utils'),
+  CONSTANTS = require('../constants/constants');
 
 var AdOverlay = React.createClass({
   closeOverlay: function(event) {
@@ -24,14 +26,23 @@ var AdOverlay = React.createClass({
     }
   },
 
+  highlight: function(evt) {
+    Utils.highlight(evt.target);
+  },
+
+  removeHighlight: function(evt) {
+    var opacity = "0.6";
+    Utils.removeHighlight(evt.target, opacity);
+  },
+
   render: function() {
     var overlayStyle = InlineStyle.adOverlayStyle.style;
     var overlayImageStyle = InlineStyle.adOverlayStyle.overlayImageStyle;
     var closeButtonStyle = InlineStyle.adOverlayStyle.closeButtonStyle;
     var closeButtonIconStyle = InlineStyle.adOverlayStyle.closeButtonIconStyle;
 
-    var scrubberPaddingHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarPadding.height);
-    var scrubberBarHeight = parseInt(InlineStyle.scrubberBarStyle.scrubberBarSetting.height);
+    var scrubberPaddingHeight = parseInt(CONSTANTS.UI.defaultScrubberBarPaddingHeight);
+    var scrubberBarHeight = parseInt(CONSTANTS.UI.defaultScrubberBarHeight);
     var controlBarHeight = InlineStyle.controlBarStyle.controlBarSetting.height;
 
     if(this.props.overlay && this.props.showOverlay) {
@@ -53,7 +64,9 @@ var AdOverlay = React.createClass({
         <img src={this.props.overlay} style={overlayImageStyle}></img>
         <div className="adOverlayCloseButton" style={closeButtonStyle} onMouseUp={this.closeOverlay}
           onTouchEnd={this.closeOverlay}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} style={closeButtonIconStyle}></span>
+          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} onMouseOver={this.highlight}
+            onMouseOut={this.removeHighlight} style={closeButtonIconStyle}>
+          </span>
         </div>
       </div>
     );

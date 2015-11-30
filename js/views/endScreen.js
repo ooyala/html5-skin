@@ -19,8 +19,20 @@ var EndScreen = React.createClass({
   componentDidMount: function() {
     // Make sure component resize correctly after switch to fullscreen/inline screen
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('webkitfullscreenchange', this.handleResize);
+    window.addEventListener('mozfullscreenchange', this.handleResize);
+    window.addEventListener('fullscreenchange', this.handleResize);
+    window.addEventListener('msfullscreenchange', this.handleResize);
 
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+  },
+
+  componentWillUnmount: function () {
+    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('webkitfullscreenchange', this.handleResize);
+    window.removeEventListener('mozfullscreenchange', this.handleResize);
+    window.removeEventListener('fullscreenchange', this.handleResize);
+    window.removeEventListener('msfullscreenchange', this.handleResize);
   },
 
   handleResize: function(e) {
@@ -29,12 +41,16 @@ var EndScreen = React.createClass({
     }
   },
 
-  handlePlayerMouseUp: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
+  handlePlayerMouseUp: function(event) {
+    if (event.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
       // pause or play the video if the skin is clicked
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
+      this.props.controller.state.accessibilityControlsEnabled = true;
+
       this.props.controller.togglePlayPause();
 
       if (this.props.controller.state.volumeState.volumeSliderVisible) {
@@ -49,6 +65,7 @@ var EndScreen = React.createClass({
     var repeatStyle = screenStyle.repeatButton.style;
 
     repeatStyle.color = this.props.skinConfig.endScreen.replayIconStyle.color;
+    repeatStyle.opacity = this.props.skinConfig.endScreen.replayIconStyle.opacity;
 
     // ReplayButton position, defaulting to centered
     if (this.props.skinConfig.endScreen.showReplayButton) {
@@ -72,7 +89,8 @@ var EndScreen = React.createClass({
           controlBarWidth={this.state.controlBarWidth} />
         <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}
-          playerState={this.props.playerState} />
+          playerState={this.props.playerState}
+          authorization={this.props.authorization} />
       </div>
     );
   }

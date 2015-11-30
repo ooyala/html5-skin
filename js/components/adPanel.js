@@ -10,12 +10,13 @@
 var React = require('react'),
   CONSTANTS = require('../constants/constants'),
   InlineStyle = require('../styles/inlineStyle'),
+  Spinner = require('./spinner'),
   Utils = require('./utils');
 
 var AdPanelTopBarItem = React.createClass({
   render: function() {
     return <div className={this.props.itemClassName} style={this.props.style} onClick={this.props.onButtonClicked} onTouchEnd={this.props.onButtonClicked}>
-      {this.props.data}
+      {this.props.icon}{this.props.data}
     </div>;
   }
 });
@@ -103,9 +104,13 @@ var AdPanel = React.createClass({
     adTopBarItems.push(flexibleSpaceDiv);
 
     // Learn more
-    if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.clickUrl)) {
+    if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.hasClickUrl)) {
       var learnMoreText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
-      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" onButtonClicked={this.handleLearnMoreButtonClick} style={InlineStyle.adScreenStyle.learnMoreButtonStyle} data={learnMoreText} itemClassName="learnMore"/>;
+      var learnMoreClass = this.props.skinConfig.icons.learn.fontStyleClass;
+      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" onButtonClicked={this.handleLearnMoreButtonClick}
+                                style={InlineStyle.adScreenStyle.learnMoreButtonStyle} data={learnMoreText}
+                                icon ={<span className={learnMoreClass} style={InlineStyle.adScreenStyle.learnMoreButtonStyle.icon}></span>}
+                                itemClassName="learnMore"/>;
       adTopBarItems.push(learnMoreButtonDiv);
     }
 
@@ -123,7 +128,11 @@ var AdPanel = React.createClass({
     }
 
     var skipButtonText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
-    var skipButtonDiv = <AdPanelTopBarItem key="skipButton" onButtonClicked={handleSkipAdButtonClick} style={InlineStyle.adScreenStyle.skipButtonStyle} data={skipButtonText} itemClassName="skip"/>;
+    var skipAdClass = this.props.skinConfig.icons.skip.fontStyleClass;
+    var skipButtonDiv = <AdPanelTopBarItem key="skipButton" onButtonClicked={handleSkipAdButtonClick}
+                        style={InlineStyle.adScreenStyle.skipButtonStyle} data={skipButtonText}
+                        icon ={<span className={skipAdClass} style={InlineStyle.adScreenStyle.skipButtonStyle.icon}></span>}
+                        itemClassName="skip"/>;
     adTopBarItems.push(skipButtonDiv);
 
     return adTopBarItems;
@@ -131,9 +140,14 @@ var AdPanel = React.createClass({
 
 
   render: function() {
+    var spinner = null;
+    if (this.props.controller.state.buffering === true) {
+      spinner = <Spinner />;
+    }
     var adTopBarItems = this.populateAdTopBar();
     return (
       <div style={InlineStyle.adScreenStyle.panelStyle}>
+        {spinner}
         <div className="adTopBar" style={InlineStyle.adScreenStyle.topBarStyle} onClick={this.handleAdTopBarClick} onTouchEnd={this.handleAdTopBarClick}>
           {adTopBarItems}
         </div>
