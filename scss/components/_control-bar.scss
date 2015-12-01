@@ -1,0 +1,86 @@
+.controlBar {
+  background: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  bottom: 0%;
+  height: 60;
+  position: absolute;
+  margin: 0;
+  font-size: 18px;
+  list-style: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  transition: bottom 0.5s, height 0.25s;
+}
+
+.controlBarItemsWrapper {
+  display: -webkit-flex;
+  display: flex;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  padding-right: 7.5px;
+  padding-left: 7.5px;
+}
+
+.controlBarItem {
+  height: 100%;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  padding-left: 7.5px;
+  padding-right: 7.5px;
+  padding-top: 0;
+  margin-top: 6px;
+  cursor: pointer;
+}
+
+.controlBarItem.watermark {
+  cursor: auto;
+}
+
+.controlBarDuration {
+  height: 100%;
+  color: #ffffff;
+  opacity: 1;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14;
+  padding-left: 7.5px;
+  padding-right: 7.5px;
+  text-align: left;
+  margin-top: 6px;
+}
+
+.controlBarFlexSpace {
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+.watermark img {
+  position: relative;
+  height: 18px;
+  top: 14px;
+}
+
+.volumeBar {
+  display: inline-block;
+  background-clip: content-box;
+  position: relative;
+  width: 6px;
+  height: 18px;
+  padding-right: 3px;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.volumeBar.on {
+  background-color: rgba(67, 137, 255, 0.6);
+}
+
+.volumeBar.highlighted {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.volumeBar.highlighted.on {
+  background-color: rgba(67, 137, 255, 1);
+}

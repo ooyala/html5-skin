@@ -213,7 +213,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered, startEnd, videoId) {
-      if (videoId == OO.VIDEO.MAIN) {
+      if (videoId == "main") {
         this.state.mainVideoPlayhead = currentPlayhead;
       }
       // The code inside if statement is only for up next, however, up next does not apply to Ad screen.

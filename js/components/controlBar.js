@@ -13,15 +13,6 @@ var ControlBar = React.createClass({
       currentVolumeHead: 0,
       mouseOverVolume: false
     };
-
-  },
-  componentDidMount: function(){
-    if (Utils.isSafari()){
-      InlineStyle.controlBarStyle.controlBarItemsWrapper.display = "-webkit-flex";
-    }
-    else {
-      InlineStyle.controlBarStyle.controlBarItemsWrapper.display = "flex";
-    }
   },
 
   componentWillUnmount: function () {
@@ -196,13 +187,17 @@ var ControlBar = React.createClass({
 
   volumeHighlight:function() {
     this.setState({mouseOverVolume: true});
+    this.highlight({target: this.refs.volumeIcon.getDOMNode()});
   },
 
   volumeRemoveHighlight:function() {
     this.setState({mouseOverVolume: false});
+    this.removeHighlight({target: this.refs.volumeIcon.getDOMNode()});
   },
 
   populateControlBar: function() {
+    var dynamicStyles = this.setupControlBarItemForConstantHeight(CONSTANTS.UI.defaultControlBarHeight);
+    var playClass = "";
     if (this.props.playerState == CONSTANTS.STATE.PLAYING) {
       playClass = this.props.skinConfig.icons.pause.fontStyleClass;
     } else if (this.props.playerState == CONSTANTS.STATE.END) {
@@ -229,11 +224,10 @@ var ControlBar = React.createClass({
       //create each volume tick separately
       var turnedOn = this.props.controller.state.volumeState.volume >= (i+1) / 10;
       var highlighted = this.state.mouseOverVolume;
-      var singleBarStyle = Utils.clone(InlineStyle.controlBarStyle.volumeBarStyle);
-      singleBarStyle.backgroundColor = (turnedOn ?
-        (highlighted?"rgba(67, 137, 255, 1)":"rgba(67, 137, 255, 0.6)") : (highlighted?"rgba(255, 255, 255, 1)":"rgba(255, 255, 255, 0.6)"));
-      //we store which value the tick correlates to via a data attribute on the element
-      volumeBars.push(<span data-volume={(i+1)/10} style={singleBarStyle}
+      var volumeClass = "volumeBar";
+      if (turnedOn) volumeClass += " on";
+      if (highlighted) volumeClass += " highlighted";
+      volumeBars.push(<span data-volume={(i+1)/10} className={volumeClass}
         onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}
         onClick={this.handleVolumeClick} onTouchEnd={this.handleVolumeClick}></span>);
     }
@@ -259,12 +253,11 @@ var ControlBar = React.createClass({
       volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
     }
 
-    var iconSetting = Utils.extend(InlineStyle.controlBarStyle.iconSetting, this.props.skinConfig.controlBar.iconStyle.inactive);
+    var iconSetting = {};
     var volumeIconSetting = Utils.extend(InlineStyle.controlBarStyle.volumeIconSetting, this.props.skinConfig.controlBar.iconStyle.inactive);
-    var durationSetting = Utils.extend(InlineStyle.controlBarStyle.durationIndicatorSetting, {color: this.props.skinConfig.controlBar.iconStyle.inactive.color});
+    var durationSetting = Utils.extend({color: this.props.skinConfig.controlBar.iconStyle.inactive.color}, dynamicStyles.generalIconSetting);
 
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
-    var watermarkImageStyle = InlineStyle.controlBarStyle.watermarkImageStyle;
 
     // TODO: Update when implementing localization
     var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
@@ -273,85 +266,82 @@ var ControlBar = React.createClass({
     if (this.state.mouseOverVolume) {
       volumeIconSetting.opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
       volumeIconSetting.color = this.props.skinConfig.controlBar.iconStyle.active.color;
-      volumeIconSetting.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
-      volumeIconSetting.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
-      volumeIconSetting.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
     }
     else {
       volumeIconSetting.opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
       volumeIconSetting.color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
-      volumeIconSetting.WebkitFilter = "";
-      volumeIconSetting.filter = "";
-      volumeIconSetting.msFilter = "";
     }
 
     var controlItemTemplates = {
-      "playPause": <div className="playPause" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
-        <span className={playClass} style={iconSetting}
+      "playPause": <div className="playPause controlBarItem" style={dynamicStyles.generalIconSetting}>
+        <span className={playClass} style={dynamicStyles.iconCharacter}
           onClick={this.handlePlayClick} onTouchEnd={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         </span>
       </div>,
 
-      "live": <div className="live" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
+      "live": <div className="live controlBarItem">
         <div style={InlineStyle.controlBarStyle.liveItemStyle}>
           <div style={InlineStyle.controlBarStyle.liveCircleStyle}></div>
           <span style={InlineStyle.controlBarStyle.liveTextStyle}> {liveText}</span>
         </div>
       </div>,
 
-      "volume": <div className="volume" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
-        <span className={muteClass} style={volumeIconSetting}
+      "volume": <div className="volume controlBarItem" style={dynamicStyles.generalIconSetting}>
+        <span className={muteClass} style={volumeIconSetting} ref="volumeIcon"
           onClick={this.handleVolumeIconClick} onTouchEnd={this.handleVolumeIconClick}
           onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}>
         </span>
         {volumeControls}
       </div>,
 
-      "timeDuration": <div className="timeDuration" style={durationSetting}>
+      "timeDuration": <div className="timeDuration controlBarDuration" style={durationSetting}>
         {Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}
       </div>,
 
-      "flexibleSpace": <div className="flexibleSpace" style={InlineStyle.controlBarStyle.flexibleSpace}></div>,
+      "flexibleSpace": <div className="flexibleSpace controlBarFlexSpace" ></div>,
 
-      "moreOptions": <div className="moreOptions" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
-        <span className={this.props.skinConfig.icons.ellipsis.fontStyleClass} style={iconSetting}
+      "moreOptions": <div className="moreOptions controlBarItem" style={dynamicStyles.generalIconSetting}>
+        <span className={this.props.skinConfig.icons.ellipsis.fontStyleClass} style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}
           onTouchEnd={this.handleMoreOptionsClick}>
         </span>
       </div>,
 
-      "quality": <div className="quality" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
-        <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={iconSetting}
+      "quality": <div className="quality controlBarItem" style={dynamicStyles.generalIconSetting}>
+        <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         </span>
       </div>,
 
-      "discovery": <div className="discovery" style={InlineStyle.controlBarStyle.controlBarItemSetting}
+      "discovery": <div className="discovery controlBarItem" style={dynamicStyles.generalIconSetting}
         onClick={this.handleDiscoveryClick} onTouchEnd={this.handleDiscoveryClick}>
-        <span className={this.props.skinConfig.icons.discovery.fontStyleClass} style={iconSetting}
+        <span className={this.props.skinConfig.icons.discovery.fontStyleClass} style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         </span>
       </div>,
 
-      "closedCaption": <div className="closedCaption" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
-        <span className={this.props.skinConfig.icons.cc.fontStyleClass} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
-          onClick={this.handleClosedCaptionClick} onTouchEnd={this.handleClosedCaptionClick} style={iconSetting}>
+      "closedCaption": <div className="closedCaption controlBarItem" style={dynamicStyles.generalIconSetting}>
+        <span className={this.props.skinConfig.icons.cc.fontStyleClass} style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+          onClick={this.handleClosedCaptionClick} onTouchEnd={this.handleClosedCaptionClick}>
         </span>
       </div>,
 
-      "share": <div className="share" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
-        <span className={this.props.skinConfig.icons.share.fontStyleClass} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
-          onClick={this.handleShareClick} onTouchEnd={this.handleShareClick} style={iconSetting}>
+      "share": <div className="share controlBarItem" style={dynamicStyles.generalIconSetting}>
+        <span className={this.props.skinConfig.icons.share.fontStyleClass} style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+          onClick={this.handleShareClick} onTouchEnd={this.handleShareClick}>
         </span>
       </div>,
 
-      "fullscreen": <div className="fullscreen" style={InlineStyle.controlBarStyle.controlBarItemSetting}
+      "fullscreen": <div className="fullscreen controlBarItem" style={dynamicStyles.generalIconSetting}
         onClick={this.handleFullscreenClick} onTouchEnd={this.handleFullscreenClick}>
-        <span className={fullscreenClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+        <span className={fullscreenClass} style={iconSetting} style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
       </div>,
 
-      "watermark": <div className="watermark" style={InlineStyle.controlBarStyle.controlBarItemSetting}>
-        <img src={watermarkUrl} style={InlineStyle.controlBarStyle.watermarkImageStyle}></img>
+      "watermark": <div className="watermark controlBarItem">
+        <img src={watermarkUrl}></img>
       </div>
     };
 
@@ -370,7 +360,7 @@ var ControlBar = React.createClass({
     var hours = parseInt(this.props.duration / 3600, 10);
     var extraSpaceDuration = (hours > 0) ? 0 : 45;
 
-    var controlBarLeftRightPadding = parseFloat(InlineStyle.controlBarStyle.controlBarItemsWrapper.paddingLeft)+parseFloat(InlineStyle.controlBarStyle.controlBarItemsWrapper.paddingRight);
+    var controlBarLeftRightPadding = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
 
     var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider+extraSpaceVolumeIcon-controlBarLeftRightPadding, defaultItems);
     var collapsedControlBarItems = collapsedResult.fit;
@@ -443,17 +433,29 @@ var ControlBar = React.createClass({
 
 
   setupControlBarItemForConstantHeight: function(constantControlBarHeight) {
-    InlineStyle.controlBarStyle.watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * 18 + "px";
+    var returnStyles = {};
+    returnStyles.watermarkImageStyle = {
+      width: this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * 18 + "px"
+    };
 
-    InlineStyle.controlBarStyle.controlBarSetting.height = constantControlBarHeight;
-    InlineStyle.controlBarStyle.controlBarSetting.bottom = (this.props.controlBarVisible ?
-      0 : -1*InlineStyle.controlBarStyle.controlBarSetting.height);
-    InlineStyle.controlBarStyle.durationIndicatorSetting.lineHeight = constantControlBarHeight + "px";
-    InlineStyle.controlBarStyle.iconSetting.lineHeight = constantControlBarHeight + "px";
-    InlineStyle.controlBarStyle.volumeIconSetting.lineHeight = constantControlBarHeight + "px";
-    InlineStyle.controlBarStyle.volumeBarStyle.lineHeight = constantControlBarHeight + "px";
-    InlineStyle.controlBarStyle.liveItemStyle.lineHeight =
-      (constantControlBarHeight - parseInt(InlineStyle.controlBarStyle.liveCircleStyle.height)) + "px";
+    returnStyles.controlBarSetting= {
+      height: constantControlBarHeight,
+      bottom: (this.props.controlBarVisible ? 0 : -1 * CONSTANTS.UI.defaultControlBarHeight)
+    };
+    returnStyles.generalIconSetting = {lineHeight: constantControlBarHeight + "px"};
+    returnStyles.durationIndicatorSetting = {lineHeight: constantControlBarHeight + "px"};
+    returnStyles.iconSetting = {lineHeight: constantControlBarHeight + "px"};
+    returnStyles.volumeIconSetting = {lineHeight: constantControlBarHeight + "px"};
+    returnStyles.volumeBarStyle = {lineHeight: constantControlBarHeight + "px"};
+    returnStyles.liveItemStyle = {
+      lineHeight: constantControlBarHeight + "px"
+    };
+
+    returnStyles.iconCharacter = {
+      color: this.props.skinConfig.controlBar.iconStyle.inactive.color,
+      opacity: this.props.skinConfig.controlBar.iconStyle.inactive.opacity
+    };
+    return returnStyles;
   },
 
 
@@ -462,13 +464,16 @@ var ControlBar = React.createClass({
     // var controlBarHeight = Utils.getScaledControlBarHeight(this.props.controlBarWidth);
     // this.scaleControlBarItemsBasedOnControlBarSize(controlBarHeight);
     // this.scaleControlBarItemsBasedOnHeight(controlBarHeight);
+    var controlBarStyle = {
+      height: CONSTANTS.UI.defaultControlBarHeight,
+      bottom: (this.props.controlBarVisible ? 0 : -1 * CONSTANTS.UI.defaultControlBarHeight)
+    }
 
-    this.setupControlBarItemForConstantHeight(InlineStyle.controlBarStyle.controlBarSetting.height);
     var controlBarItems = this.populateControlBar();
     return (
       <div className="controlBar" onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}
-        style={InlineStyle.controlBarStyle.controlBarSetting}>
-        <div className="controlBarItemsWrapper" style={InlineStyle.controlBarStyle.controlBarItemsWrapper}>
+        style={controlBarStyle}>
+        <div className="controlBarItemsWrapper">
           {controlBarItems}
         </div>
       </div>
