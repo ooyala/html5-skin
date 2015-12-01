@@ -92,8 +92,7 @@ var AdPanel = React.createClass({
       adPlaybackInfo = adPlaybackInfo + ": (" + currentAdIndex + "/" + totalNumberOfAds + ")";
     }
 
-    console.log("xenia currentAdItem.duration",this.props.currentAdsInfo.currentAdItem.duration);
-    var remainingTime = Utils.formatSeconds(parseInt(this.props.currentAdsInfo.currentAdItem.duration - this.props.currentPlayhead));
+    var remainingTime = Utils.formatSeconds(Math.max(0, parseInt(this.props.duration - this.props.currentPlayhead)));
     adPlaybackInfo = adPlaybackInfo + " - " + remainingTime;
 
     var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" style={InlineStyle.adScreenStyle.adPanelTopBarTextStyle} data={adPlaybackInfo} itemClassName="adPlaybackInfo"/>;

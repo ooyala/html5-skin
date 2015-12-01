@@ -123,7 +123,6 @@ var ScrubberBar = React.createClass({
   },
 
   render: function() {
-    console.log("xenia scrubber duration", this.props.duration);
     var controlBarHeight = CONSTANTS.UI.defaultControlBarHeight;
     // Liusha: Uncomment the following code when we need to support resizing control bar with threshold and scaling.
     // if (this.props.controlBarWidth > 1280) {
