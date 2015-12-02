@@ -22,9 +22,9 @@
   visibility: hidden;
 }
 
-//.text-truncate {
-//  @include text-truncate;
-//}
+.text-truncate {
+  @include text-truncate;
+}
 
 .text-lowercase      { text-transform: lowercase; }
 .text-uppercase      { text-transform: uppercase; }
