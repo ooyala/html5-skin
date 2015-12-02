@@ -57,6 +57,24 @@
   flex: 1;
 }
 
+.liveCircle {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: red;
+  margin-right: 2px;
+}
+
+.liveIndicator {
+  transform: translateY(50%);
+}
+
+.liveText {
+  font-size: 10px;
+  color: LightGray;
+}
+
 .watermark img {
   position: relative;
   height: 18px;
@@ -83,4 +101,51 @@
 
 .volumeBar.highlighted.on {
   background-color: rgba(67, 137, 255, 1);
+}
+
+.volumeSlider {
+  display: inline-block;
+  background-clip: content-box;
+  position: relative;
+  background: #afafaf;
+  height: 5px;
+  -webkit-transform: translateY(-120%);
+  transform: translateY(-120%);
+  margin-left: 5px;
+  border-radius: 2px;
+
+  .volumeIndicator {
+    background: #4389ff;
+    height: 100%;
+    width: 50%;
+    position: absolute;
+    border-radius: 2px;
+  }
+
+  .playheadPadding {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    -webkit-transform: translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-50%);
+
+    .volumeHead {
+      background: #ffffff;
+      width: 8px;
+      height: 8px;
+      border-style: solid;
+      border-color: white;
+      border-width: 1px;
+      border-radius: 10px;
+      position: absolute;
+      transition: opacity 0.25s;
+      top: 50%;
+      cursor: pointer;
+      left: 50%;
+      -webkit-transform: translateY(-50%) translateX(-50%);
+      transform: translateY(-50%) translateX(-50%);
+    }
+  }
 }

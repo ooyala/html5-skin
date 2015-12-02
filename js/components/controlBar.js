@@ -95,7 +95,7 @@ var ControlBar = React.createClass({
   setNewVolume: function(evt) {
     var newVolumeHeadX = this.isMobile ? evt.changedTouches[0].screenX : evt.screenX;
     var diffX = newVolumeHeadX - this.state.currentVolumeHead;
-    var diffVolume = (diffX / parseInt(InlineStyle.volumeSliderStyle.volumeBarSetting.width));
+    var diffVolume = (diffX / parseInt(this.refs.volumeSlider.getDOMNode().clientWidth));
     var newVolume = this.props.controller.state.volumeState.volume + diffVolume;
     newVolume = Math.min(newVolume, 1);
     newVolume = Math.max(newVolume, 0);
@@ -232,16 +232,18 @@ var ControlBar = React.createClass({
         onClick={this.handleVolumeClick} onTouchEnd={this.handleVolumeClick}></span>);
     }
 
-    InlineStyle.volumeSliderStyle.volumeHeadPaddingStyle.left = parseFloat(this.props.controller.state.volumeState.volume) * 100 + "%";
-    InlineStyle.volumeSliderStyle.volumeIndicatorStyle.width = InlineStyle.volumeSliderStyle.volumeHeadPaddingStyle.left;
+    var volumeHeadPaddingStyle = {};
+    volumeHeadPaddingStyle.left = parseFloat(this.props.controller.state.volumeState.volume) * 100 + "%";
+    var volumeIndicatorStyle = {};
+    volumeIndicatorStyle.width = volumeHeadPaddingStyle.left;
 
     var volumeSlider = [];
     volumeSlider.push(
-      <div className="volumeBar" style={InlineStyle.volumeSliderStyle.volumeBarSetting} onTouchEnd={this.handleVolumeBarTouchEnd}>
-        <div className="volumeIndicator" style={InlineStyle.volumeSliderStyle.volumeIndicatorStyle}></div>
-        <div className="playheadPadding" style={InlineStyle.volumeSliderStyle.volumeHeadPaddingStyle}
+      <div className="volumeSlider" ref="volumeSlider" style={{width: CONSTANTS.UI.VOLUME_SLIDER_WIDTH + "px"}} onTouchEnd={this.handleVolumeBarTouchEnd}>
+        <div className="volumeIndicator" style={volumeIndicatorStyle}></div>
+        <div className="playheadPadding" style={volumeHeadPaddingStyle}
           onTouchStart={this.handleVolumeHeadTouchStart}>
-          <div className="volumeHead" style={InlineStyle.volumeSliderStyle.volumeHeadStyle}></div>
+          <div className="volumeHead"></div>
         </div>
       </div>);
 
@@ -254,7 +256,7 @@ var ControlBar = React.createClass({
     }
 
     var iconSetting = {};
-    var volumeIconSetting = Utils.extend(InlineStyle.controlBarStyle.volumeIconSetting, this.props.skinConfig.controlBar.iconStyle.inactive);
+    var volumeIconSetting = Utils.clone(this.props.skinConfig.controlBar.iconStyle.inactive);
     var durationSetting = Utils.extend({color: this.props.skinConfig.controlBar.iconStyle.inactive.color}, dynamicStyles.generalIconSetting);
 
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
@@ -262,7 +264,6 @@ var ControlBar = React.createClass({
     // TODO: Update when implementing localization
     var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
 
-    var volumeBarStyle = InlineStyle.controlBarStyle.volumeBarStyle;
     if (this.state.mouseOverVolume) {
       volumeIconSetting.opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
       volumeIconSetting.color = this.props.skinConfig.controlBar.iconStyle.active.color;
@@ -280,9 +281,9 @@ var ControlBar = React.createClass({
       </div>,
 
       "live": <div className="live controlBarItem">
-        <div style={InlineStyle.controlBarStyle.liveItemStyle}>
-          <div style={InlineStyle.controlBarStyle.liveCircleStyle}></div>
-          <span style={InlineStyle.controlBarStyle.liveTextStyle}> {liveText}</span>
+        <div className="liveIndicator">
+          <div className="liveCircle"></div>
+          <span className="liveText"> {liveText}</span>
         </div>
       </div>,
 
