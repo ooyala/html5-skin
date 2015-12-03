@@ -103,6 +103,12 @@ var AdPanel = React.createClass({
     adTopBarItems.push(flexibleSpaceDiv);
 
     // Learn more
+    if (this.props.currentAdsInfo.currentAdItem.hasClickUrl === false) {
+      InlineStyle.adScreenStyle.learnMoreButtonStyle.visibility = "hidden";
+    }
+    else {
+      InlineStyle.adScreenStyle.learnMoreButtonStyle.visibility = "visible";
+    }
     if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.hasClickUrl)) {
       var learnMoreText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
       var learnMoreClass = this.props.skinConfig.icons.learn.fontStyleClass;
@@ -115,15 +121,26 @@ var AdPanel = React.createClass({
 
     // Skip
     var handleSkipAdButtonClick;
-    if (!this.props.currentAdsInfo.skipAdButtonEnabled) {
-      InlineStyle.adScreenStyle.skipButtonStyle.opacity = "0.3";
-      handleSkipAdButtonClick = null;
-      InlineStyle.adScreenStyle.skipButtonStyle.cursor = "default";
+    if (this.props.currentAdsInfo.currentAdItem.skippable === false && !this.props.currentAdsInfo.skipAdButtonEnabled) {
+      InlineStyle.adScreenStyle.skipButtonStyle.visibility = "hidden";
+      InlineStyle.adScreenStyle.skipButtonStyle.width = "0";
+      InlineStyle.adScreenStyle.skipButtonStyle.marginLeft = "0";
     }
     else {
-      InlineStyle.adScreenStyle.skipButtonStyle.opacity = "1";
-      handleSkipAdButtonClick = this.handleSkipAdButtonClick;
-      InlineStyle.adScreenStyle.skipButtonStyle.cursor = "pointer";
+      InlineStyle.adScreenStyle.skipButtonStyle.visibility = "visible";
+      InlineStyle.adScreenStyle.skipButtonStyle.width = "initial";
+      InlineStyle.adScreenStyle.skipButtonStyle.marginLeft = "30";
+
+      if (!this.props.currentAdsInfo.skipAdButtonEnabled) {
+        InlineStyle.adScreenStyle.skipButtonStyle.opacity = "0.3";
+        handleSkipAdButtonClick = null;
+        InlineStyle.adScreenStyle.skipButtonStyle.cursor = "default";
+      }
+      else {
+        InlineStyle.adScreenStyle.skipButtonStyle.opacity = "1";
+        handleSkipAdButtonClick = this.handleSkipAdButtonClick;
+        InlineStyle.adScreenStyle.skipButtonStyle.cursor = "pointer";
+      }
     }
 
     var skipButtonText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SKIP_AD, this.props.localizableStrings);

@@ -45,6 +45,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "elementId": null,
       "buffering": false,
       "mainVideoPlayhead": null,
+      "disableClickLayer":false,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -123,6 +124,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD_CLOSE_BUTTON, "customerUi", _.bind(this.showNonlinearAdCloseButton, this));
 
         this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
+        this.mb.subscribe(OO.EVENTS.DISABLE_CLICK_LAYER, "customerUi", _.bind(this.onDisableClickLayer, this));
+        this.mb.subscribe(OO.EVENTS.ENABLE_CLICK_LAYER, "customerUi", _.bind(this.onEnableClickLayer, this));
       }
 
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
@@ -482,6 +485,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onDisableClickLayer: function(event) {
+      this.state.disableClickLayer = true;
+      this.renderSkin();
+    },
+
+    onEnableClickLayer: function(event) {
+      this.state.disableClickLayer = false;
+      this.renderSkin();
+    },
+
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.closedCaptionOptions.availableLanguages = languages;
 
@@ -571,6 +584,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi");
 
         this.mb.unsubscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.DISABLE_CLICK_LAYER, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.ENABLE_CLICK_LAYER, "customerUi");
 
         if (OO.EVENTS.DISCOVERY_API) {
           this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi");
