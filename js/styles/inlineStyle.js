@@ -2,7 +2,8 @@ module.exports = {
   defaultScreenStyle: {
     style: {
       width: "100%",
-      height: "100%"
+      height: "100%",
+      cursor: "default"
     },
     closeButtonStyle: {
       "opacity":"0.6",
@@ -123,8 +124,7 @@ module.exports = {
         WebkitTransform: "translate(-50%, -50%)",
         transform: "translate(-50%, -50%)",
         opacity: 1,
-        transition: "all 1s",
-        "cursor": "pointer"
+        transition: "all 1s"
       }
     },
     fading: {
@@ -225,7 +225,8 @@ module.exports = {
       "paddingLeft": "7.5px",
       "paddingRight": "7.5px",
       "textAlign": "left",
-      "marginTop": "6px"
+      "marginTop": "6px",
+      "cursor": "default"
     },
 
     iconSetting: {},
