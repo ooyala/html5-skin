@@ -1,6 +1,7 @@
 .discoveryScreen {
   height:100%;
   width:100%;
+  cursor: default;
 
   .promo-style {
     position: absolute;
@@ -41,11 +42,11 @@
     .discoveryToasterContainerStyle {
       background-color: transparent;
       min-height: 200px;
-      //max-height: 280px;
+      height: 320px;
       width: 600px;
       overflow: auto;
       white-space: nowrap;
-      margin: 0 auto;
+      margin: auto;
     }
 
     .flexcontainer {
@@ -53,13 +54,18 @@
       display: flex;
       -webkit-flex-flow: column wrap;
       flex-flow: column wrap;
+      overflow-y: hidden;
+      overflow-x: scroll;
+      align-items: center;
+      -webkit-align-items: center;
+      justify-content: center;
     }
 
     .discoveryImageWrapperStyle {
       position: relative;
       height: 84px;
       width: 150px;
-      margin: 50px 21px 0 0;
+      margin: 24px;
       flex-shrink: 0;
     }
 
@@ -76,6 +82,7 @@
       width: 150px;
       //height: 30px;
       display: inline-block;
+      text-transform: capitalize;
       @include text-truncate();
     }
 
@@ -86,16 +93,19 @@
       height: 10%;
       width: 25px;
       color: white;
+      display: none; //hide arrows until 1.7
     }
 
     .leftButton {
       @extend .discoverBtn;
       left: 0;
+      text-align: right;
     }
 
     .rightButton {
       @extend .discoverBtn;
       right: 0;
+      text-align: left;
     }
     .discoveryCountDownWrapperStyle {
       position: absolute;

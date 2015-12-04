@@ -93,6 +93,11 @@ var PauseScreen = React.createClass({
     }
   },
 
+  handlePlayerMouseDown: function(event) {
+    //to prevent cursor changing to text cursor if click and drag
+    event.preventDefault();
+  },
+
   render: function() {
     var screenStyle = InlineStyle.pauseScreenStyle;
     var pauseClass = this.props.skinConfig.icons.pause.fontStyleClass;
@@ -160,7 +165,7 @@ var PauseScreen = React.createClass({
     }
     return (
       <div className="pauseScreen" style={InlineStyle.defaultScreenStyle.style}>
-        <div onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
+        <div onMouseUp={this.handleClick} onMouseDown={this.handlePlayerMouseDown} onTouchEnd={this.handleClick} style={screenStyle.style}>
           <div style ={screenStyle.fading}></div>
           <span className={this.props.pauseAnimationDisabled === true ? null : pauseClass} style={pauseStyle} aria-hidden="true"></span>
           <div style={screenStyle.infoPanel.style}>

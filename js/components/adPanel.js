@@ -10,6 +10,7 @@
 var React = require('react'),
   CONSTANTS = require('../constants/constants'),
   InlineStyle = require('../styles/inlineStyle'),
+  Spinner = require('./spinner'),
   Utils = require('./utils');
 
 var AdPanelTopBarItem = React.createClass({
@@ -91,7 +92,7 @@ var AdPanel = React.createClass({
       adPlaybackInfo = adPlaybackInfo + ": (" + currentAdIndex + "/" + totalNumberOfAds + ")";
     }
 
-    var remainingTime = Utils.formatSeconds(parseInt(this.props.currentAdsInfo.currentAdItem.duration - this.props.currentPlayhead));
+    var remainingTime = Utils.formatSeconds(Math.max(0, parseInt(this.props.duration - this.props.currentPlayhead)));
     adPlaybackInfo = adPlaybackInfo + " - " + remainingTime;
 
     var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" style={InlineStyle.adScreenStyle.adPanelTopBarTextStyle} data={adPlaybackInfo} itemClassName="adPlaybackInfo"/>;
@@ -138,9 +139,14 @@ var AdPanel = React.createClass({
 
 
   render: function() {
+    var spinner = null;
+    if (this.props.controller.state.buffering === true) {
+      spinner = <Spinner />;
+    }
     var adTopBarItems = this.populateAdTopBar();
     return (
       <div style={InlineStyle.adScreenStyle.panelStyle}>
+        {spinner}
         <div className="adTopBar" style={InlineStyle.adScreenStyle.topBarStyle} onClick={this.handleAdTopBarClick} onTouchEnd={this.handleAdTopBarClick}>
           {adTopBarItems}
         </div>

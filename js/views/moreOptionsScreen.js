@@ -9,6 +9,7 @@
 */
 var React = require('react'),
     MoreOptionsPanel = require('../components/moreOptionsPanel'),
+    InlineStyle = require('../styles/inlineStyle'),
     CloseButton = require('../components/closeButton');
 
 var MoreOptionsScreen = React.createClass({
@@ -40,9 +41,14 @@ var MoreOptionsScreen = React.createClass({
     this.props.controller.closeScreen();
   },
 
+  handleMouseDown: function(event) {
+    //to prevent cursor changing to text cursor if click and drag
+    event.preventDefault();
+  },
+
   render: function() {
     return (
-      <div className="MoreOptionsScreen" style={{height: "100%", width: "100%"}}>
+      <div className="MoreOptionsScreen" style={InlineStyle.defaultScreenStyle.style} onMouseDown={this.handleMouseDown}>
         <MoreOptionsPanel {...this.props} controlBarWidth={this.state.controlBarWidth} />
         <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>

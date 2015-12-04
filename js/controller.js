@@ -40,8 +40,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "queuedPlayheadUpdate": null,
       "accessibilityControlsEnabled": false,
       "duration": 0,
+      "mainVideoDuration": 0,
       "mainVideoElement": null,
       "elementId": null,
+      "buffering": false,
+      "mainVideoPlayhead": null,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -56,7 +59,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       },
 
       "volumeState": {
-        "volume" :null,
+        "volume": 1,
         "muted": false,
         "oldVolume": 1,
         "volumeSliderVisible": false
@@ -84,16 +87,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   Html5Skin.prototype = {
     init: function () {
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
+      this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_CREATED, 'customerUi', _.bind(this.onVcVideoElementCreated, this));
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
+      this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
       this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PAUSE, 'customerUi', _.bind(this.onPause, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
       this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
       this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
+      this.mb.subscribe(OO.EVENTS.BUFFERING, 'customerUi', _.bind(this.onBuffering, this));
+      this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
 
 
       /********************************************************************
@@ -165,12 +172,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.state.isMobile = Utils.isMobile();
 
+      this.externalPluginSubscription();
+      this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+    },
+
+    onVcVideoElementCreated: function() {
+      this.state.mainVideoElement = $("#" + this.state.elementId + " .video");
       if (Utils.isIE10()) {
         this.state.mainVideoElement.attr("controls", "controls");
       }
-
-      this.externalPluginSubscription();
-      this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
     },
 
     onPlayerDestroy: function (event) {
@@ -202,11 +212,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.upNextInfo.countDownCancelled = false;
     },
 
-    onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered) {
+    onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered, startEnd, videoId) {
+      if (videoId == OO.VIDEO.MAIN) {
+        this.state.mainVideoPlayhead = currentPlayhead;
+      }
       // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
       // So we only need to update the playhead for ad screen.
+      this.state.duration = duration;
       if (this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN ) {
-        this.state.duration = duration;
         if (this.skin.props.skinConfig.upNext.showUpNext) {
           if (!(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))){//no UpNext for iPhone or fullscreen iPad
             this.showUpNextScreenWhenReady(currentPlayhead, duration);
@@ -273,6 +286,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPaused: function(eventname, videoId) {
       // pause/resume of Ad playback can be handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
       if (videoId == OO.VIDEO.MAIN && this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
+        if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
+          this.state.pauseAnimationDisabled = true;
+        }
         if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
             && !(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))) {
           OO.log("Should display DISCOVERY_SCREEN on pause");
@@ -291,6 +307,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayed: function() {
+      var duration = this.state.mainVideoDuration;
+      this.state.duration = duration;
+      this.skin.updatePlayhead(duration, duration, duration);
+
       if (this.state.upNextInfo.delayedSetEmbedCodeEvent) {
         var delayedContentData = this.state.upNextInfo.delayedContentData;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
@@ -314,6 +334,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onVcPlayed: function(event, source) {
+      if (source == OO.VIDEO.MAIN) {
+        this.state.mainVideoDuration = this.state.duration;
+      }
+    },
+
     onSeeked: function(event) {
       this.state.seeking = false;
       if (this.state.queuedPlayheadUpdate) {
@@ -332,6 +358,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPlaybackReady: function(event) {
       this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       this.renderSkin({"contentTree": this.state.contentTree});
+    },
+
+    onBuffering: function(event) {
+      this.state.buffering = true;
+      this.renderSkin();
+    },
+
+    onBuffered: function(event) {
+      if (this.state.buffering === true) {
+        this.state.buffering = false;
+        this.renderSkin();
+      }
     },
 
     /********************************************************************
@@ -506,11 +544,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYING, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VC_PLAYED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PAUSED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
 
       if (!Utils.isIPhone()) {
         //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
@@ -776,6 +817,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     beginSeeking: function() {
       this.state.seeking = true;
+    },
+
+    updateSeekingPlayhead: function(playhead) {
+      this.skin.updatePlayhead(playhead, this.skin.state.duration, this.skin.state.buffered);
     },
 
     hideVolumeSliderBar: function() {
