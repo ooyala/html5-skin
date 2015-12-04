@@ -1,6 +1,11 @@
 .share-screen {
   height: 100%;
   width: 100%;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
   .share-container {
     padding: 35px;
