@@ -91,6 +91,11 @@ var Utils = {
     return !!(platform.match(/iPhone/) || platform.match(/iPad/) || platform.match(/iPod/));
   },
 
+  isIPad: function() {
+    var platform = window.navigator.platform;
+    return !!(platform.match(/iPad/));
+  },
+
   isIPhone: function() {
     var platform = window.navigator.platform;
     return !!(platform.match(/iPhone/) || platform.match(/iPod/));

@@ -45,6 +45,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "elementId": null,
       "buffering": false,
       "mainVideoPlayhead": null,
+      "playerHeight": null,
+      "playerWidth": null,
+      "iPadVideoPositionSet": false,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -92,6 +95,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
+      this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, 'customerUi', _.bind(this.onVideoControllerVideoElementInFocus, this));
       this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
       this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PAUSE, 'customerUi', _.bind(this.onPause, this));
@@ -145,6 +149,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $("#" + elementId + " .innerWrapper").append("<div class='player_skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
       $("#" + elementId + " .player_skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
       this.state.mainVideoElement = $("#" + elementId + " .video");
+
+      console.log("xenia player width",$("#" + elementId + " .innerWrapper").width());
+      console.log("xenia player height",$("#" + elementId + " .innerWrapper").height());
+
+      this.state.playerHeight = $("#" + elementId + " .innerWrapper").height();
+      this.state.playerWidth = $("#" + elementId + " .innerWrapper").width();
 
       var tmpLocalizableStrings = {};
 
@@ -262,8 +272,34 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    setIPadVideoPosition: function() {
+      if (Utils.isIPad()) {
+        var videoHeight = this.state.mainVideoElement[0].videoHeight;
+        var videoWidth = this.state.mainVideoElement[0].videoWidth;
+
+        if (videoHeight/videoWidth > this.state.playerHeight/this.state.playerWidth) {
+          this.state.mainVideoElement.css(InlineStyle.iPadVerticalVideoStyle);
+        }
+        else {
+          this.state.mainVideoElement.css(InlineStyle.iPadHorizontalVideoStyle);
+        }
+        this.state.iPadVideoPositionSet = true;
+      }
+    },
+
+    onVideoControllerVideoElementInFocus: function() {
+      if (Utils.isIPad() && this.state.iPadVideoPositionSet == false) {
+        //hiding the video before it is positioned correctly by setIPadVideoPosition
+        this.state.mainVideoElement.css({"visibility":"hidden"});
+      }
+    },
+
     onPlaying: function() {
       // pause/resume of Ad playback is handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
+      if (Utils.isIPad() && this.state.iPadVideoPositionSet == false) {
+        this.setIPadVideoPosition();
+      }
+
       if (this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN) {
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
@@ -399,6 +435,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onWillPlaySingleAd: function(event, adItem) {
       OO.log("onWillPlaySingleAd is called with adItem = " + adItem);
       if (adItem !== null) {
+
+        if (Utils.isIPad()) {
+          this.setIPadVideoPosition();
+        }
+
         this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
         this.state.isPlayingAd = true;
         this.state.currentAdsInfo.currentAdItem = adItem;
@@ -413,6 +454,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       OO.log("onSingleAdPlayed is called");
       this.state.isPlayingAd = false;
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
+      if (Utils.isIPad()) {
+        this.state.iPadVideoPositionSet = false;
+      }
     },
 
     onWillPauseAds: function(event) {
@@ -645,6 +689,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     togglePlayPause: function() {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
+          if (Utils.isIPad()) {
+            this.state.iPadVideoPositionSet = false;
+          }
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
           break;
         case CONSTANTS.STATE.END:
