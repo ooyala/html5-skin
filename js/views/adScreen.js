@@ -146,6 +146,11 @@ var AdScreen = React.createClass({
     return playbackControlItems;
   },
 
+  handleMouseDown: function(event) {
+    //to prevent cursor changing to text cursor if click and drag
+    event.preventDefault();
+  },
+
   render: function() {
     var adPanel = null;
     if (this.props.skinConfig.adScreen.showAdMarquee) {
@@ -157,7 +162,8 @@ var AdScreen = React.createClass({
     }
     return (
       <div ref="AdScreen" className="adScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onMouseMove={this.handlePlayerMouseMove} onMouseUp={this.handleClick} style={InlineStyle.defaultScreenStyle.style}>
+        onMouseMove={this.handlePlayerMouseMove} onMouseUp={this.handleClick} onMouseDown={this.handleMouseDown}
+        style={InlineStyle.defaultScreenStyle.style}>
 
         <div className="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
           {adPanel}

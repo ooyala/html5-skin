@@ -38,6 +38,11 @@ var StartScreen = React.createClass({
     }
   },
 
+  handleMouseDown: function(event) {
+    //to prevent cursor changing to text cursor if click and drag
+    event.preventDefault();
+  },
+
   render: function() {
     var screenStyle = this.props.style;
     var playClass;
@@ -124,7 +129,7 @@ var StartScreen = React.createClass({
       // Small Promo Image configuration
       posterStyle.backgroundSize = "auto";
       return (
-        <div className="startScreen" onClick={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
+        <div className="startScreen" onClick={this.handleClick} onTouchEnd={this.handleClick} onMouseDown={this.handleMouseDown} style={screenStyle.style}>
           <div className="startScreenInfo" style={screenStyle.infoPanel.style}>
             <img className="startScreenPoster" src={posterImageUrl}/>
             {titleMetadata}
@@ -138,7 +143,7 @@ var StartScreen = React.createClass({
       // Default configuration
       posterStyle.backgroundImage = "linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%), url('" + posterImageUrl + "')";
       return (
-        <div className="startScreen" onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
+        <div className="startScreen" onMouseUp={this.handleClick} onTouchEnd={this.handleClick} onMouseDown={this.handleMouseDown} style={screenStyle.style}>
           <div className="startScreenPoster" style={screenStyle.posterStyle}></div>
           <div className="startScreenInfo" style={screenStyle.infoPanel.style}>
             {titleMetadata}

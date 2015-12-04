@@ -59,6 +59,11 @@ var EndScreen = React.createClass({
     }
   },
 
+  handleMouseDown: function(event) {
+    //to prevent cursor changing to text cursor if click and drag
+    event.preventDefault();
+  },
+  
   render: function() {
     var screenStyle = this.props.style;
     var repeatClass = this.props.skinConfig.icons.replay.fontStyleClass;
@@ -80,6 +85,7 @@ var EndScreen = React.createClass({
       <div className="endScreen"
            onMouseUp={this.handlePlayerMouseUp}
            onTouchEnd={this.handlePlayerMouseUp}
+           onMouseDown={this.handleMouseDown}
            style={{height: "100%", width: "100%"}}>
         <div style={screenStyle.backgroundStyle}></div>
         <div className="replay">
