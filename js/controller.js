@@ -96,6 +96,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
       this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, 'customerUi', _.bind(this.onVideoControllerVideoElementInFocus, this));
+      this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_LOST_FOCUS, 'customerUi', _.bind(this.onVideoControllerVideoElementLostFocus, this));
       this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
       this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PAUSE, 'customerUi', _.bind(this.onPause, this));
@@ -149,9 +150,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $("#" + elementId + " .innerWrapper").append("<div class='player_skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
       $("#" + elementId + " .player_skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
       this.state.mainVideoElement = $("#" + elementId + " .video");
-
-      console.log("xenia player width",$("#" + elementId + " .innerWrapper").width());
-      console.log("xenia player height",$("#" + elementId + " .innerWrapper").height());
 
       this.state.playerHeight = $("#" + elementId + " .innerWrapper").height();
       this.state.playerWidth = $("#" + elementId + " .innerWrapper").width();
@@ -284,6 +282,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.mainVideoElement.css(InlineStyle.iPadHorizontalVideoStyle);
         }
         this.state.iPadVideoPositionSet = true;
+      }
+    },
+
+    onVideoControllerVideoElementLostFocus: function() {
+      if (Utils.isIPad() && this.state.iPadVideoPositionSet == true) {
+        this.state.iPadVideoPositionSet = false;
       }
     },
 
@@ -588,6 +592,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYING, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VC_VIDEO_ELEMENT_LOST_FOCUS, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PLAYED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PAUSED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
