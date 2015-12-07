@@ -21,7 +21,7 @@ var CountDownClock = React.createClass({
   getDefaultProps: function () {
     return {
       timeToShow: 10, //seconds
-      clockWidth: 27,
+      clockWidth: 36,
       currentPlayhead: 0
     }
   },
