@@ -16,7 +16,7 @@ var Utils = {
     if (textWidth > (actualWidth * 1.8)){
       var truncPercent = actualWidth / textWidth;
       var newWidth = (Math.floor(truncPercent * text.length) * 1.8) - 3;
-      truncatedText = text.slice(0,newWidth) + "...";
+      truncatedText = text.slice(0,newWidth) + "&hellip;";
     }
     else {
       truncatedText = text;

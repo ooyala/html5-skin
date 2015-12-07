@@ -4,7 +4,8 @@
 var React = require('react'),
     ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants'),
-    Spinner = require('../components/spinner');
+    Spinner = require('../components/spinner'),
+    Utils = require('../components/utils');
 
 var StartScreen = React.createClass({
   propTypes: {
@@ -63,6 +64,13 @@ var StartScreen = React.createClass({
         title:''
       }
     };
+  },
+
+  componentDidMount: function() {
+    // CSS doesn't support "truncate N lines" so we need to do DOM width
+    // calculations to figure out where to truncate the description
+    var descriptionNode = React.findDOMNode(this.refs.description);
+    descriptionNode.innerHTML = Utils.truncateTextToWidth(descriptionNode, this.props.contentTree.description);
   },
 
   handleClick: function(event) {
@@ -124,7 +132,7 @@ var StartScreen = React.createClass({
     });
 
     var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
-    var descriptionMetadata = (<div className={descriptionClass} style={descriptionStyle}>{this.props.contentTree.description.substring(0,90)}&hellip;</div>);
+    var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.props.contentTree.description}</div>);
     var actionIcon = (
       <a className={actionIconClass} onClick={this.handleClick}>
         <span className={this.props.controller.state.playerState == CONSTANTS.STATE.END ? this.props.skinConfig.icons.replay.fontStyleClass : this.props.skinConfig.icons.play.fontStyleClass}
