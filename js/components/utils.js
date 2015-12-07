@@ -148,6 +148,17 @@ var Utils = {
   },
 
   /**
+  * Check if the current device is an iPad
+  *
+  * @function isIPad
+  * @returns {Boolean} Whether the device is an iPad or not
+  */
+  isIPad: function() {
+    var platform = window.navigator.platform;
+    return !!(platform.match(/iPad/));
+  },
+
+  /**
   * Check if the current device is an iPhone
   *
   * @function isIPhone

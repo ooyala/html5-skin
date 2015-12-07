@@ -11,6 +11,24 @@ module.exports = {
     }
   },
 
+  iPadVerticalVideoStyle: {
+    "width":"",
+    "height":"100%",
+    "left":"50%",
+    "top":"50%",
+    "-webkit-transform":"translate(-50%,-50%)",
+    "visibility":"visible"
+  },
+
+  iPadHorizontalVideoStyle: {
+    "width":"100%",
+    "height":"",
+    "left":"50%",
+    "top":"50%",
+    "-webkit-transform":"translate(-50%,-50%)",
+    "visibility":"visible"
+  },
+
   startScreenStyle: {
     style: {
       width: "100%",
