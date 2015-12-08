@@ -399,7 +399,7 @@ var ControlBar = React.createClass({
     return controlBarItems;
   },
 
-
+  /*
   // Saved for responsive control bar
   scaleControlBarItemsBasedOnControlBarSize: function(controlBarHeight) {
     var controlBarWidth = this.props.controlBarWidth;
@@ -431,7 +431,7 @@ var ControlBar = React.createClass({
     InlineStyle.controlBarStyle.volumeIconSetting.lineHeight = controlBarHeight + "px";
     InlineStyle.controlBarStyle.volumeBarStyle.lineHeight = controlBarHeight + "px";
   },
-
+  */
 
   setupControlBarItemForConstantHeight: function(constantControlBarHeight) {
     var returnStyles = {};
