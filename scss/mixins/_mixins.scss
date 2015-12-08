@@ -230,4 +230,5 @@
         -moz-#{$property}: $value;
         -ms-#{$property}: $value;
         -o-#{$property}: $value;
+        #{$property}: $value;
 }

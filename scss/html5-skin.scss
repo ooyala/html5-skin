@@ -30,7 +30,9 @@
   @import "components/forms";
   @import "components/scrubber-bar";
   @import "components/spinner";
-  @import "components/start-screen";
+  @import "components/state-screen";
+  @import "components/pause-screen";
+  @import "components/error-screen";
 
   // Skin
   @import "skin/default";
