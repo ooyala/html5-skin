@@ -92,8 +92,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
-      this.mb.subscribe(OO.EVENTS.PLAYING, 'customerUi', _.bind(this.onPlaying, this));
       this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
+      this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
       this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
       this.mb.subscribe(OO.EVENTS.PAUSE, 'customerUi', _.bind(this.onPause, this));
       this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
@@ -114,8 +114,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
         this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
         this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
-        this.mb.subscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi", _.bind(this.onWillPauseAds, this));
-        this.mb.subscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi", _.bind(this.onWillResumeAds, this));
 
         this.mb.subscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi", _.bind(this.onWillPlayNonlinearAd, this));
         this.mb.subscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi", _.bind(this.closeNonlinearAd, this));
@@ -265,9 +263,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onPlaying: function() {
-      // pause/resume of Ad playback is handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
-      if (this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN) {
+    onPlaying: function(event, source) {
+      if (source == OO.VIDEO.MAIN) {
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         if (Utils.isSafari()){
@@ -276,6 +273,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
         this.state.mainVideoElement.css(InlineStyle.pauseScreenStyle.videoUnblur);
         this.renderSkin();
+      }
+      if (source == OO.VIDEO.ADS) {
+        if (this.state.currentAdsInfo.currentAdItem !== null) {
+          this.state.playerState = CONSTANTS.STATE.PLAYING;
+          //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
+          this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
+          this.renderSkin();
+        }
       }
     },
 
@@ -287,7 +292,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPaused: function(eventname, videoId) {
-      // pause/resume of Ad playback can be handled by different events => WILL_PAUSE_ADS/WILL_RESUME_ADS
       if (videoId == OO.VIDEO.MAIN && this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
         if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
           this.state.pauseAnimationDisabled = true;
@@ -305,6 +309,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.state.mainVideoElement.css(InlineStyle.pauseScreenStyle.videoBlur);
+        this.renderSkin();
+      }
+      else if (videoId == OO.VIDEO.ADS){
+        this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
       }
     },
@@ -418,22 +426,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
     },
 
-    onWillPauseAds: function(event) {
-      OO.log("onWillPauseAds is called");
-      this.state.playerState = CONSTANTS.STATE.PAUSE;
-      this.renderSkin();
-    },
-
-    onWillResumeAds: function(event) {
-      OO.log("onWillResumeAds is called");
-      if (this.state.currentAdsInfo.currentAdItem !== null) {
-        this.state.playerState = CONSTANTS.STATE.PLAYING;
-        //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
-        this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
-        this.renderSkin();
-      }
-    },
-
     onShowAdSkipButton: function(event) {
       this.state.currentAdsInfo.skipAdButtonEnabled = true;
       this.renderSkin();
@@ -524,21 +516,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       }
 
-      //The logic below synchronizes the state of the UI and the state of the video.
-      //If native controls on iOS were used to change the state of the video, our UI doesn't know about it.
-      if (Utils.isIos()){
-        //check if UI state is out of sync with video state
-        if (paused && this.state.playerState == CONSTANTS.STATE.PLAYING){
-          if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_PAUSE_ADS);}
-          else {
-            this.state.pauseAnimationDisabled = true;
-          }
-        }
-        else if (!paused && this.state.playerState == CONSTANTS.STATE.PAUSE){
-          if (this.state.isPlayingAd) {this.mb.publish(OO.EVENTS.WILL_RESUME_ADS);}
-        }
-      }
-
       this.state.fullscreen = fullscreen;
       this.renderSkin();
     },
@@ -556,8 +533,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.PLAYING, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PLAYED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VC_PLAYING, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PAUSED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
@@ -575,8 +552,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
         this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.WILL_PAUSE_ADS, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.WILL_RESUME_ADS, "customerUi");
 
         this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi");
