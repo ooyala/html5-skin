@@ -22,9 +22,9 @@
   visibility: hidden;
 }
 
-//.text-truncate {
-//  @include text-truncate;
-//}
+.text-truncate {
+  @include text-truncate;
+}
 
 .text-lowercase      { text-transform: lowercase; }
 .text-uppercase      { text-transform: uppercase; }
@@ -36,4 +36,22 @@
 
 .sr-only {
   @include sr-only();
+}
+
+.expand {
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+}
+
+.center-vertical-horizontal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }

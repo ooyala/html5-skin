@@ -1,0 +1,89 @@
+.state-screen {
+  @extend .expand;
+  overflow: hidden;
+
+  .state-screen-selectable {
+    @extend .expand;
+    text-decoration:none;
+    cursor: auto;
+    //for IE
+    background-color:white;
+    opacity: 0;
+    filter: alpha(opacity=1);
+  }
+
+  .state-screen-poster {
+    @extend .expand;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .state-screen-poster-small {
+    position: relative;
+    width: 75%;
+    height: 200px;
+    top: 5%;
+    left: 5%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .state-screen-info {
+    position: relative;
+    width: 100%;
+    top: 5%;
+    left: 5%;
+
+    .state-screen-title {
+      font-weight: bold;
+      max-width: 70%;
+      resize: none;
+      margin-bottom: 15px;
+    }
+
+    .state-screen-description {
+      max-width:70%;
+      clear:both;
+    }
+  }
+
+  .info-panel-top {
+    top:5%;
+  }
+  .info-panel-bottom {
+    top:66%;
+  }
+  .info-panel-left {
+    left:5%;
+  }
+  .info-panel-right {
+    left:-3%;
+  }
+
+  .action-icon {
+    @extend .center-vertical-horizontal;
+    cursor: pointer;
+
+    span.icon {
+      font-size: 72px;
+      opacity: 1;
+      color: white;
+    }
+  }
+
+  .action-icon-top {
+    top:15%
+  }
+  .action-icon-bottom {
+    top:80%
+  }
+  .action-icon-left {
+    left:10%
+  }
+  .action-icon-right {
+    left:90%
+  }
+
+}
