@@ -100,6 +100,9 @@ gulp.task('insertVersion', ['browserify', 'browserify-min'], function () {
   }
 });
 
+// Generate documentation
+gulp.task("docs", shell.task("./node_modules/.bin/jsdoc -c ./jsdoc_conf.json"));
+
 //Assets
 gulp.task('assets', function () {
   gulp.src(['assets/**/*'])

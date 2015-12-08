@@ -40,6 +40,7 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseDown: function(evt) {
+    if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
     this.props.controller.startHideControlBarTimer();
     if (evt.type == 'touchstart' || !this.isMobile){
       //since mobile would fire both click and touched events,
@@ -113,6 +114,7 @@ var ScrubberBar = React.createClass({
   },
 
   handleScrubberBarMouseDown: function(evt) {
+    if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
     if (evt.target.className.match("playhead")) { return; }
     this.playheadLeft = evt.nativeEvent.offsetX;
     this.setState({

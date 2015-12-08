@@ -2,86 +2,12 @@ module.exports = {
   defaultScreenStyle: {
     style: {
       width: "100%",
-      height: "100%"
+      height: "100%",
+      cursor: "default"
     },
     closeButtonStyle: {
       "opacity":"0.6",
       "color": "#ffffff"
-    }
-  },
-
-  startScreenStyle: {
-    style: {
-      width: "100%",
-      height: "100%",
-      position: "absolute",
-      overflow: "hidden"
-    },
-
-    posterStyle: {
-      height: "100%",
-      width: "100%",
-      position: "absolute",
-      backgroundSize: "contain",
-      backgroundRepeat: "no-repeat",
-      backgroundPosition: "center"
-    },
-    infoPanel: {
-      style: {
-        position: "absolute",
-        width: "100%"
-      },
-      title: {
-        style: {
-          fontWeight: "bold",
-          maxWidth: "70%",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          resize: "none",
-          marginBottom: "15px"
-        }
-      },
-      description: {
-        style: {
-          maxWidth: "70%",
-          overflow: "visible",
-          clear: "both"
-        }
-      }
-    },
-    playButton: {
-      style: {
-        fontSize: "72",
-        WebkitTransform: "translate(-50%, -50%)",
-        transform: "translate(-50%, -50%)",
-        position: "absolute",
-        opacity: 1,
-        transition: "opacity .25s ease-in-out",
-        "cursor": "pointer"
-      }
-    }
-  },
-
-  spinnerStyle: {
-    spinner: "assets/images/loading.png",
-    style: {
-      width: "10%",
-      WebkitTransform: "translate(-50%, -50%) rotate(90deg)",
-      MozTransform: "translate(-50%, -50%) rotate(90deg)",
-      msTransform: "translate(-50%, -50%) rotate(90deg)",
-      transform: "translate(-50%, -50%) rotate(90deg)",
-      position: "absolute",
-      left: "50%",
-      top: "50%",
-      opacity: 1,
-      color: "white",
-      transition: "opacity .25s ease-in-out",
-      "cursor": "pointer",
-      WebkitAnimation: "spin 4s linear infinite",
-      MozAnimation: "spin 4s linear infinite",
-      msAnimation: "spin 4s linear infinite",
-      animation: "spin 4s linear infinite"
     }
   },
 
@@ -123,8 +49,7 @@ module.exports = {
         WebkitTransform: "translate(-50%, -50%)",
         transform: "translate(-50%, -50%)",
         opacity: 1,
-        transition: "all 1s",
-        "cursor": "pointer"
+        transition: "all 1s"
       }
     },
     fading: {
@@ -225,7 +150,8 @@ module.exports = {
       "paddingLeft": "7.5px",
       "paddingRight": "7.5px",
       "textAlign": "left",
-      "marginTop": "6px"
+      "marginTop": "6px",
+      "cursor": "default"
     },
 
     iconSetting: {},
