@@ -405,13 +405,6 @@ module.exports = {
     }
   },
 
-  discoveryScreenStyle: {
-    discoveryCountDownStyle: {
-      width: "75px",
-      height: "75px"
-    }
-  },
-
   adScreenStyle: {
     panelStyle: {
       "position": "absolute",
