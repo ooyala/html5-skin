@@ -642,12 +642,6 @@ module.exports = {
       "WebkitTransform": "translateY(-50%)",
       "msTransform": "translateY(-50%)",
       "transform": "translateY(-50%)"
-    },
-
-    upNextCountDownStyle: {
-      "height": "27px",
-      "width": "27px",
-      "marginRight": "10px"
     }
   },
 

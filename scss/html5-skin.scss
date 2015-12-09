@@ -1,7 +1,7 @@
 @charset "utf-8";
 
 // namespace root
-#ooyala-inner-wrapper {
+.innerWrapper {
 
   // Core variables
   @import "base/variables";
@@ -29,6 +29,7 @@
   @import "components/buttons";
   @import "components/forms";
   @import "components/scrubber-bar";
+  @import "components/count-down-clock";
   @import "components/spinner";
   @import "components/state-screen";
   @import "components/pause-screen";
