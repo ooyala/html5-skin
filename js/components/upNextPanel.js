@@ -84,8 +84,8 @@ var UpNextPanel = React.createClass({
           <span className={this.props.skinConfig.icons.play.fontStyleClass} aria-hidden="true"></span>
         </a>
 
-        <div className="contentMetadata" style={contentMetadataContainerStyle}>
-          <div style={upNextTitleStyle}>
+        <div className="contentMetadata">
+          <div className="upNextTitle">
             <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNext.timeToShow} currentPlayhead={this.props.currentPlayhead} clockWidth={36}/>
 
             <div className="upNextTitleText text-truncate text-capitalize">

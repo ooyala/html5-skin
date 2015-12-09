@@ -768,14 +768,6 @@ module.exports = {
     }
   },
 
-  upNextPanelStyle: {
-    upNextCountDownStyle: {
-      "height": "27px",
-      "width": "27px",
-      "marginRight": "10px"
-    }
-  },
-
   MoreOptionsScreenStyle: {
     panelStyle: {
       "position": "absolute",
