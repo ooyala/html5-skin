@@ -49,7 +49,7 @@ var EndScreen = React.createClass({
     });
 
     return (
-    <div className="state-screen">
+    <div className="state-screen endScreen">
       <div className="underlay-gradient"></div>
 
       <a className="state-screen-selectable" onClick={this.handleClick}></a>

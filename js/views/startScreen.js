@@ -141,7 +141,7 @@ var StartScreen = React.createClass({
     );
 
     return (
-        <div className="state-screen">
+        <div className="state-screen startScreen">
           <div className={stateScreenPosterClass} style={posterStyle}></div>
           <div className={infoPanelClass}>
             {this.props.skinConfig.startScreen.showTitle ? titleMetadata : ''}

@@ -31,7 +31,7 @@ var ErrorScreen = React.createClass({
     });
 
     return (
-      <div className="state-screen error-screen">
+      <div className="state-screen errorScreen">
         <div className={errorContentClass}>
           <div className="error-title text-uppercase">{errorTitle}</div>
           <div className="error-description">{errorDescription}</div>

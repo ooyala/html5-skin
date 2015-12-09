@@ -106,7 +106,7 @@ var PauseScreen = React.createClass({
     var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.props.contentTree.description}</div>);
 
     return (
-      <div className="state-screen">
+      <div className="state-screen pauseScreen">
         <div className={fadeUnderlayClass}></div>
         <div className={infoPanelClass}>
           {this.props.skinConfig.startScreen.showTitle ? titleMetadata : ''}

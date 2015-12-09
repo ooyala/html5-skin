@@ -111,7 +111,7 @@ var PlayingScreen = React.createClass({
 
   render: function() {
     return (
-    <div className="state-screen"
+    <div className="state-screen playingScreen"
          ref="PlayingScreen"
          onMouseOver={this.showControlBar}
          onMouseOut={this.hideControlBar}

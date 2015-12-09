@@ -1,4 +1,4 @@
-.error-screen {
+.errorScreen {
   background-color: #000;
 
   .error-content {
@@ -10,29 +10,27 @@
     -webkit-transform: translateY(-50%);
     word-wrap: break-word;
 
-    .error-content-center {
-      text-align: center !important;
-    }
-
     .error-title {
-      color: $white;
       font-size: 20pt;
       font-family: 'Roboto', sans-serif;
       font-weight: bold;
       margin-bottom: 30px;
-
-      .error-description {
-        color: $white;
-        font-size: 14pt;
-        font-family: 'Open Sans', sans-serif;
-        margin-bottom: 30px;
-
-        .error-action {
-          color: #4389FF;
-          font-size: 14pt;
-          font-family: 'Open Sans', sans-serif;
-        }
-      }
     }
+
+    .error-description {
+      font-size: 14pt;
+      font-family: 'Open Sans', sans-serif;
+      margin-bottom: 30px;
+    }
+
+    .error-action {
+      color: #4389FF;
+      font-size: 14pt;
+      font-family: 'Open Sans', sans-serif;
+    }
+  }
+
+  .error-content-center {
+    text-align: center !important;
   }
 }
