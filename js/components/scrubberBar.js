@@ -169,8 +169,9 @@ var ScrubberBar = React.createClass({
     }
 
     var scrubberBarContainerStyle = {
-      bottom: (this.props.controlBarVisible ?
-        (controlBarHeight - scrubberPaddingHeight) :  (-1 * scrubberPaddingHeight))
+      "bottom": (this.props.controlBarVisible ?
+        (controlBarHeight - scrubberPaddingHeight) :  (-1 * scrubberPaddingHeight)),
+        "pointer-events": "auto"
     };
 
     return (
