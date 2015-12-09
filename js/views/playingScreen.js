@@ -86,6 +86,7 @@ var PlayingScreen = React.createClass({
   },
 
   handleTouchEnd: function(event) {
+    event.stopPropagation();
     if (this.props.controller.state.volumeState.volumeSliderVisible) {
       this.props.controller.hideVolumeSliderBar();
     }
