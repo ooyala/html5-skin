@@ -42,7 +42,6 @@ var DiscoveryScreen = React.createClass({
   },
 
   render: function() {
-    console.log("xenia1 render Discovery Screen");
     var promoStyle = ClassNames({
       'promo-style': true,
       'invisible hidden': this.props.playerState !== CONSTANTS.STATE.END

@@ -72,7 +72,6 @@ var DiscoveryPanel = React.createClass({
   },
 
   handleDiscoveryContentClick: function(index) {
-    console.log("xenia1 discovery content clicked");
     var eventData = {
       "clickedVideo": this.props.discoveryData.relatedVideos[index],
       "custom": this.props.discoveryData.custom
