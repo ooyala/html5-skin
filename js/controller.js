@@ -42,6 +42,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "duration": 0,
       "mainVideoDuration": 0,
       "mainVideoElement": null,
+      "playerSkin": null,
       "elementId": null,
       "buffering": false,
       "mainVideoPlayhead": null,
@@ -146,6 +147,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $("#" + elementId + " .innerWrapper").append("<div class='player_skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
       $("#" + elementId + " .player_skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
       this.state.mainVideoElement = $("#" + elementId + " .video");
+      this.state.playerSkin = $("#" + elementId + " .player_skin");
 
       var tmpLocalizableStrings = {};
 
@@ -265,6 +267,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
+        this.state.playerSkin.css(InlineStyle.adScreenStyle.enableClicks);
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         if (Utils.isSafari()){
@@ -275,6 +278,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
+        this.state.playerSkin.css(InlineStyle.adScreenStyle.disableClicks);
         if (this.state.currentAdsInfo.currentAdItem !== null) {
           this.state.playerState = CONSTANTS.STATE.PLAYING;
           //Set the screen to ad screen in case current screen does not involve video playback, such as discovery

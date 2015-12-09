@@ -475,6 +475,12 @@ module.exports = {
         "fontSize": "13px",
         "marginRight": "5px"
       }
+    },
+    disableClicks: {
+      "pointer-events":"none"
+    },
+    enableClicks: {
+      "pointer-events":"auto"
     }
   },
 

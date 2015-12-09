@@ -470,6 +470,8 @@ var ControlBar = React.createClass({
 
     this.setupControlBarItemForConstantHeight(InlineStyle.controlBarStyle.controlBarSetting.height);
     var controlBarItems = this.populateControlBar();
+
+    InlineStyle.controlBarStyle.controlBarSetting.pointerEvents = "auto";
     return (
       <div className="controlBar" onMouseUp={this.handleControlBarMouseUp} onMouseDown={this.handleControlBarMouseDown} onTouchEnd={this.handleControlBarMouseUp}
         style={InlineStyle.controlBarStyle.controlBarSetting}>
