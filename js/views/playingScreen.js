@@ -86,6 +86,7 @@ var PlayingScreen = React.createClass({
   },
 
   handleTouchEnd: function(event) {
+    event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
     if (this.props.controller.state.volumeState.volumeSliderVisible) {
       this.props.controller.hideVolumeSliderBar();
     }
