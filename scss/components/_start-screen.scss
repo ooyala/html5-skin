@@ -1,6 +1,11 @@
 .state-screen {
   @extend .expand;
   overflow: hidden;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
   .state-screen-selectable {
     @extend .expand;

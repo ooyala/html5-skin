@@ -79,11 +79,6 @@ var StartScreen = React.createClass({
     this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
-  handleMouseDown: function(event) {
-    //to prevent cursor changing to text cursor if click and drag
-    event.preventDefault();
-  },
-
   render: function() {
     //inline style for config/skin.json elements only
     var titleStyle = {
@@ -154,7 +149,8 @@ var StartScreen = React.createClass({
             {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : ''}
           </div>
 
-          <a className="state-screen-selectable" onClick={this.handleClick} onMouseDown={this.handleMouseDown}></a>
+          <a className="state-screen-selectable" onClick={this.handleClick}></a>
+
           {this.props.controller.state.buffering ? <Spinner /> : actionIcon}
         </div>
     );
