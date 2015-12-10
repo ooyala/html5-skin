@@ -116,18 +116,6 @@ var DiscoveryPanel = React.createClass({
     var startAt = this.props.videosPerPage * (this.state.currentPage-1);
     var endAt = this.props.videosPerPage * this.state.currentPage;
     var relatedVideoPage = relatedVideos.slice(startAt,endAt);
-    var showPrevBtn = this.state.currentPage > 1;
-    var showNextBtn = endAt < relatedVideos.length;
-    var prevBtn = (
-      <a className="leftButton" ref="ChevronLeftButton" onClick={this.handleLeftButtonClick}>
-        <span className={this.props.skinConfig.icons.left.fontStyleClass} aria-hidden="true"></span>
-      </a>
-    );
-    var nextBtn = (
-      <a className="rightButton" ref="ChevronRightButton" onClick={this.handleRightButtonClick}>
-        <span className={this.props.skinConfig.icons.right.fontStyleClass}  aria-hidden="true"></span>
-      </a>
-    );
 
     // discovery content
     var panelTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.DISCOVER, this.props.localizableStrings);
@@ -138,6 +126,14 @@ var DiscoveryPanel = React.createClass({
     var discoveryCountDownWrapperStyle = ClassNames({
       'discoveryCountDownWrapperStyle': true,
       'hidden': !this.state.showDiscoveryCountDown
+    });
+    var leftButtonClass = ClassNames({
+      'leftButton': true,
+      'hidden': this.state.currentPage <= 1
+    });
+    var rightButtonClass = ClassNames({
+      'rightButton': true,
+      'hidden': endAt >= relatedVideos.length
     });
     var countDownClock = (
       <div className={discoveryCountDownWrapperStyle}>
@@ -173,8 +169,12 @@ var DiscoveryPanel = React.createClass({
           {discoveryContentBlocks}
         </div>
 
-        {showPrevBtn ? prevBtn : ''}
-        {showNextBtn ? nextBtn: ''}
+        <a className={leftButtonClass} ref="ChevronLeftButton" onClick={this.handleLeftButtonClick}>
+          <span className={this.props.skinConfig.icons.left.fontStyleClass} aria-hidden="true"></span>
+        </a>
+        <a className={rightButtonClass} ref="ChevronRightButton" onClick={this.handleRightButtonClick}>
+          <span className={this.props.skinConfig.icons.right.fontStyleClass}  aria-hidden="true"></span>
+        </a>
       </div>
     );
   }

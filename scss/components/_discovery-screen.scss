@@ -54,8 +54,7 @@
       display: flex;
       -webkit-flex-flow: column wrap;
       flex-flow: column wrap;
-      overflow-y: hidden;
-      overflow-x: scroll;
+      overflow: hidden;
       align-items: center;
       -webkit-align-items: center;
       justify-content: center;
