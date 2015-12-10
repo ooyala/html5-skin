@@ -48,7 +48,7 @@ var ScrubberBar = React.createClass({
 
       evt.preventDefault();
       if (this.isMobile){
-        evt = evt.nativeEvent;
+        evt = evt.touches[0];
       }
 
       // we enter the scrubbing state to prevent constantly seeking while dragging
@@ -77,6 +77,9 @@ var ScrubberBar = React.createClass({
     this.props.controller.startHideControlBarTimer();
     evt.preventDefault();
     if (this.props.seeking) {
+      if (this.isMobile){
+        evt = evt.touches[0];
+      }
       var deltaX = evt.clientX - this.lastScrubX;
       var scrubbingPlayheadX = this.state.scrubbingPlayheadX + deltaX;
       this.props.controller.updateSeekingPlayhead((scrubbingPlayheadX / this.scrubberBarWidth) * this.props.duration);
@@ -116,11 +119,19 @@ var ScrubberBar = React.createClass({
   handleScrubberBarMouseDown: function(evt) {
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
     if (evt.target.className.match("playhead")) { return; }
-    this.playheadLeft = evt.nativeEvent.offsetX;
+    var offsetX = 0;
+    if (this.isMobile){
+      offsetX = evt.targetTouches[0].pageX - evt.target.getBoundingClientRect().left;
+    }
+    else {
+      offsetX = evt.nativeEvent.offsetX;
+    }
+    this.playheadLeft = offsetX;
+
     this.setState({
-      scrubbingPlayheadX: evt.nativeEvent.offsetX
+      scrubbingPlayheadX: offsetX
     });
-    this.props.controller.updateSeekingPlayhead((evt.nativeEvent.offsetX / this.scrubberBarWidth) * this.props.duration);
+    this.props.controller.updateSeekingPlayhead((offsetX / this.scrubberBarWidth) * this.props.duration);
     this.handlePlayheadMouseDown(evt);
   },
 
