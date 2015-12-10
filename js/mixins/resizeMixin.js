@@ -1,3 +1,14 @@
+/**
+ * Adds and removes event listeners for window resize.
+ *
+ * @mixin ResizeMixin
+ * @requires handleResize()
+ * @listens resize
+ * @listens webkitfullscreenchange
+ * @listens mozfullscreenchange
+ * @listens fullscreenchange
+ * @listens msfullscreenchange
+ */
 var ResizeMixin = {
   componentDidMount: function() {
     // Make sure component resize correctly after switch to fullscreen/inline screen
