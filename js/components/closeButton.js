@@ -3,12 +3,19 @@ var React = require('react')
 var CloseButton = React.createClass({
   propTypes: {
     closeAction: React.PropTypes.func,
-    fontStyleClass: React.PropTypes.string
+    fontStyleClass: React.PropTypes.string,
+    cssClass: React.PropTypes.string
+  },
+
+  getDefaultProps: function () {
+    return {
+      cssClass: 'closeBtn'
+    }
   },
 
   render: function() {
     return (
-        <button className="closeBtn" onClick={this.props.closeAction}>
+        <button className={this.props.cssClass} onClick={this.props.closeAction}>
           <span className={this.props.fontStyleClass}></span>
         </button>
     );
