@@ -37,6 +37,7 @@ var ScrubberBar = React.createClass({
     this.scrubberBarWidth = this.getDOMNode().querySelector(".scrubberBar").clientWidth;
     this.scrubberBarHeight = this.getDOMNode().querySelector(".scrubberBar").clientHeight;
     this.playheadWidth = this.getDOMNode().querySelector(".playhead").clientWidth;
+    this.state.scrubbingPlayheadX = this.props.currentPlayhead * this.scrubberBarWidth / this.props.duration;
   },
 
   handlePlayheadMouseDown: function(evt) {
