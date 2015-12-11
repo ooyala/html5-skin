@@ -38,6 +38,16 @@
         }
       }
 
+      .shareTab {
+        @extend .tab
+      }
+      .embedTab {
+        @extend .tab
+      }
+      .emailTab {
+        @extend .tab
+      }
+
       .active {
         color: $white;
       }

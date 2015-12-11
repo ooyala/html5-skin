@@ -177,15 +177,15 @@ var SharePanel = React.createClass({
 
   render: function() {
     var shareTab = ClassNames({
-      'tab': true,
+      'shareTab': true,
       'active': this.state.activeTab == this.tabs.SHARE
     });
     var embedTab = ClassNames({
-      'tab': true,
+      'embedTab': true,
       'active': this.state.activeTab == this.tabs.EMBED
     });
     var emailTab = ClassNames({
-      'tab': true,
+      'emailTab': true,
       'active': this.state.activeTab == this.tabs.EMAIL
     });
 
