@@ -11,7 +11,6 @@ var React = require('react'),
 
 var DiscoveryPanel = React.createClass({
   propTypes: {
-    videosPerPage: React.PropTypes.number,
     discoveryData: React.PropTypes.shape({
       relatedVideos: React.PropTypes.arrayOf(React.PropTypes.shape({
         preview_image_url: React.PropTypes.string,
@@ -24,7 +23,8 @@ var DiscoveryPanel = React.createClass({
         countDownTime: React.PropTypes.number,
         contentTitle: React.PropTypes.shape({
           show: React.PropTypes.bool
-        })
+        }),
+        videosPerPage: React.PropTypes.objectOf(React.PropTypes.number)
       }),
       icons: React.PropTypes.objectOf(React.PropTypes.object)
     }),
@@ -35,13 +35,18 @@ var DiscoveryPanel = React.createClass({
 
   getDefaultProps: function () {
     return {
-      videosPerPage: 6,
+
       skinConfig: {
         discoveryScreen: {
           showCountDownTimerOnEndScreen: true,
           countDownTime: 10,
           contentTitle: {
             show: true
+          },
+          videosPerPage: {
+            sm: 2,
+            md: 6,
+            lg: 10
           }
         },
         icons: {
@@ -71,14 +76,14 @@ var DiscoveryPanel = React.createClass({
   handleLeftButtonClick: function(event) {
     event.preventDefault();
     this.setState({
-      currentPage: this.state.currentPage-1
+      currentPage: this.state.currentPage - 1
     });
   },
 
   handleRightButtonClick: function(event) {
     event.preventDefault();
     this.setState({
-      currentPage: this.state.currentPage+1
+      currentPage: this.state.currentPage + 1
     });
   },
 
@@ -113,8 +118,9 @@ var DiscoveryPanel = React.createClass({
     }
 
     //pagination
-    var startAt = this.props.videosPerPage * (this.state.currentPage-1);
-    var endAt = this.props.videosPerPage * this.state.currentPage;
+    var videosPerPage = this.props.skinConfig.discoveryScreen.videosPerPage.md;
+    var startAt = videosPerPage * (this.state.currentPage - 1);
+    var endAt = videosPerPage * this.state.currentPage;
     var relatedVideoPage = relatedVideos.slice(startAt,endAt);
 
     // discovery content

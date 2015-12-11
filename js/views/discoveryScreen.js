@@ -50,7 +50,7 @@ var DiscoveryScreen = React.createClass({
     return (
       <div className="discoveryScreen" onMouseDown={this.handleMouseDown}>
         <div className={promoStyle}></div>
-        <DiscoveryPanel {...this.props} videosPerPage={6}/>
+        <DiscoveryPanel {...this.props} />
         <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>
     );
