@@ -37,7 +37,6 @@ var ScrubberBar = React.createClass({
     this.scrubberBarWidth = this.getDOMNode().querySelector(".scrubberBar").clientWidth;
     this.scrubberBarHeight = this.getDOMNode().querySelector(".scrubberBar").clientHeight;
     this.playheadWidth = this.getDOMNode().querySelector(".playhead").clientWidth;
-    this.state.scrubbingPlayheadX = this.props.currentPlayhead * this.scrubberBarWidth / this.props.duration;
   },
 
   handlePlayheadMouseDown: function(evt) {
@@ -79,7 +78,7 @@ var ScrubberBar = React.createClass({
     evt.preventDefault();
     if (this.props.seeking) {
       var deltaX = evt.clientX - this.lastScrubX;
-      var scrubbingPlayheadX = this.state.scrubbingPlayheadX + deltaX;
+      var scrubbingPlayheadX = this.props.currentPlayhead * this.scrubberBarWidth / this.props.duration + deltaX;
       this.props.controller.updateSeekingPlayhead((scrubbingPlayheadX / this.scrubberBarWidth) * this.props.duration);
       this.setState({
         scrubbingPlayheadX: scrubbingPlayheadX
