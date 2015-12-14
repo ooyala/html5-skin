@@ -38,6 +38,12 @@
   @include sr-only();
 }
 
+.default-screen {
+  width:100%;
+  height:100%;
+  cursor: default;
+}
+
 .expand {
   position:absolute;
   width:100%;
