@@ -7,6 +7,7 @@
   height: 24px;
   z-index: 1;
   @include vendor-prefixes(user-select, none);
+  z-index: 12550;
 
   .scrubberBarPadding {
     height: 100%;

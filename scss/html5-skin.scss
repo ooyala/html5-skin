@@ -39,4 +39,19 @@
   // Utility classes
   @import "base/utilities";
 
+
+  .plugins {
+    z-index: 12000;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    overflow: hidden;
+    display:none !important;
+  }
+
+  .plugins.showing {
+    display: block !important;
+  }
 }

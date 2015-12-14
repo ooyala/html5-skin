@@ -43,6 +43,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoDuration": 0,
       "mainVideoElement": null,
       "elementId": null,
+      "pluginsClass": null,
+      "pluginsElement": null,
       "buffering": false,
       "mainVideoPlayhead": null,
 
@@ -101,6 +103,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.BUFFERING, 'customerUi', _.bind(this.onBuffering, this));
       this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
+      this.mb.subscribe(OO.EVENTS.PLAYER_EMBEDDED, 'customerUi', _.bind(this.onPlayerEmbedded, this));
 
 
       /********************************************************************
@@ -143,6 +146,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $("#" + elementId + " .innerWrapper").append("<div class='player_skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
       $("#" + elementId + " .player_skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
       this.state.mainVideoElement = $("#" + elementId + " .video");
+      this.state.elementId = elementId;
 
       var tmpLocalizableStrings = {};
 
@@ -164,8 +168,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
-        this.state.elementId = elementId;
         this.renderSkin();
+        //Snag the plugins element and put it where we need it in the skin.
+        this.state.pluginsElement = $("#" + this.state.elementId + " ." + this.state.pluginsClass);
+        this.state.pluginsElement.attr("style", "");
+        $("#" + this.state.elementId + " .player_skin").append(this.state.pluginsElement);
+        this.state.pluginsElement.mouseover(
+          function() {
+            this.showControlBar();
+            this.renderSkin();
+            this.startHideControlBarTimer();
+          }.bind(this)
+        );
+        this.state.pluginsElement.mouseout(
+          function() {
+            this.hideControlBar();
+          }.bind(this)
+        );
       }, this));
 
       this.state.isMobile = Utils.isMobile();
@@ -179,6 +198,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (Utils.isIE10()) {
         this.state.mainVideoElement.attr("controls", "controls");
       }
+    },
+
+    onPlayerEmbedded: function(evt, uiData) {
+      this.state.pluginsClass = uiData.pluginsClass;
     },
 
     onPlayerDestroy: function (event) {
@@ -390,12 +413,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.duration = 0;
       this.skin.updatePlayhead(0, 0, 0);
       this.state.isPlayingAd = false;
+      this.state.pluginsElement.removeClass("showing");
       this.renderSkin();
     },
 
     onWillPlayAds: function(event) {
       OO.log("onWillPlayAds is called from event = " + event);
       this.state.isPlayingAd = true;
+      this.state.pluginsElement.addClass("showing");
     },
 
     onAdPodStarted: function(event, numberOfAds) {

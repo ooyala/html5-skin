@@ -118,7 +118,8 @@ module.exports = {
       "MozUserSelect": "none",
       "msUserSelect": "none",
       "userSelect": "none",
-      "transition": "bottom 0.5s, height 0.25s"
+      "transition": "bottom 0.5s, height 0.25s",
+      "zIndex": "12500"
     },
 
     controlBarItemsWrapper: {
@@ -429,7 +430,8 @@ module.exports = {
       "MozUserSelect": "none",
       "msUserSelect": "none",
       "userSelect": "none",
-      "transition": "bottom 0.5s, height 0.2 5s"
+      "transition": "bottom 0.5s, height 0.2 5s",
+      "zIndex": "12550"
     },
 
     adPanelTopBarTextStyle: {
