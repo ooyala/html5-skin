@@ -155,6 +155,7 @@ var Skin = React.createClass({
             fullscreen={this.state.fullscreen}
             playerState={this.state.playerState}
             duration={this.state.duration}
+            adVideoDuration={this.props.controller.state.adVideoDuration}
             buffered={this.state.buffered}
             seeking={this.state.seeking}
             controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
