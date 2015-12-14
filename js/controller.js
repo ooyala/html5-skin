@@ -216,7 +216,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoPlayhead = currentPlayhead;
       }
       else if (videoId == OO.VIDEO.ADS) {
-        this.state.adVideoDuration = duration;//adVideoDuration is only used in ad marquee
+        //adVideoDuration is only used in adPanel ad marquee
+        this.state.adVideoDuration = duration;
       }
       // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
       // So we only need to update the playhead for ad screen.
