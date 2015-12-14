@@ -2,7 +2,7 @@
   SCRUBBER BAR
 *********************************************************************/
 var React = require('react'),
-    ResizeMixin = require('../mixins/resizeMixin');
+    ResizeMixin = require('../mixins/resizeMixin'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
