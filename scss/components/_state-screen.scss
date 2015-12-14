@@ -7,6 +7,28 @@
   -ms-user-select: none;
   user-select: none;
 
+  .fading-underlay {
+    @extend .expand;
+    background-color: #000;
+    opacity: 0;
+  }
+  .fading-underlay-active {
+    @extend .expand;
+    background-color: #000;
+    opacity: 0.5;
+  }
+  .fading-underlay.animate-fade {
+    opacity: 0.5;
+    @include vendor-prefixes(transition, all 1s ease);
+  }
+  .underlay-gradient {
+    @extend .expand;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%);
+  }
+
   .state-screen-selectable {
     @extend .expand;
     text-decoration:none;
@@ -79,16 +101,16 @@
   }
 
   .action-icon-top {
-    top:15%
+    top:15% !important;
   }
   .action-icon-bottom {
-    top:80%
+    top:80% !important;
   }
   .action-icon-left {
-    left:10%
+    left:10% !important;
   }
   .action-icon-right {
-    left:90%
+    left:90% !important;
   }
 
 }
