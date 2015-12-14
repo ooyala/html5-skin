@@ -1,0 +1,17 @@
+.action-icon-pause {
+  @extend .center-vertical-horizontal;
+  opacity: 1;
+  font-size:24px;
+
+  span.icon {
+    color: #FFF;
+    opacity: 1;
+  }
+}
+
+.action-icon-pause.animate-pause {
+  @extend .center-vertical-horizontal;
+  opacity: 0;
+  font-size:72px;
+  @include vendor-prefixes(transition, all 1s ease);
+}
