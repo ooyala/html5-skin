@@ -2,9 +2,12 @@
   SCRUBBER BAR
 *********************************************************************/
 var React = require('react'),
+    ResizeMixin = require('../mixins/resizeMixin'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
+  mixins: [ResizeMixin],
+
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.lastClickTime = 0;
@@ -34,6 +37,12 @@ var ScrubberBar = React.createClass({
   },
 
   componentDidMount: function() {
+    this.scrubberBarWidth = this.getDOMNode().querySelector(".scrubberBar").clientWidth;
+    this.scrubberBarHeight = this.getDOMNode().querySelector(".scrubberBar").clientHeight;
+    this.playheadWidth = this.getDOMNode().querySelector(".playhead").clientWidth;
+  },
+
+  handleResize: function() {
     this.scrubberBarWidth = this.getDOMNode().querySelector(".scrubberBar").clientWidth;
     this.scrubberBarHeight = this.getDOMNode().querySelector(".scrubberBar").clientHeight;
     this.playheadWidth = this.getDOMNode().querySelector(".playhead").clientWidth;
