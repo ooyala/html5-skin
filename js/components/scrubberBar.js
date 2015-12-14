@@ -2,9 +2,12 @@
   SCRUBBER BAR
 *********************************************************************/
 var React = require('react'),
+    ResizeMixin = require('../mixins/resizeMixin');
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
+  mixins: [ResizeMixin],
+
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.lastClickTime = 0;
@@ -37,27 +40,12 @@ var ScrubberBar = React.createClass({
     this.scrubberBarWidth = this.getDOMNode().querySelector(".scrubberBar").clientWidth;
     this.scrubberBarHeight = this.getDOMNode().querySelector(".scrubberBar").clientHeight;
     this.playheadWidth = this.getDOMNode().querySelector(".playhead").clientWidth;
-
-    // Make sure component resize correctly after switch to fullscreen/inline screen
-    window.addEventListener('resize', this.handleResize);
-    window.addEventListener('webkitfullscreenchange', this.handleResize);
-    window.addEventListener('mozfullscreenchange', this.handleResize);
-    window.addEventListener('fullscreenchange', this.handleResize);
-    window.addEventListener('msfullscreenchange', this.handleResize);
   },
 
   handleResize: function() {
     this.scrubberBarWidth = this.getDOMNode().querySelector(".scrubberBar").clientWidth;
     this.scrubberBarHeight = this.getDOMNode().querySelector(".scrubberBar").clientHeight;
     this.playheadWidth = this.getDOMNode().querySelector(".playhead").clientWidth;
-  },
-
-  componentWillUnmount: function () {
-    window.removeEventListener('resize', this.handleResize);
-    window.removeEventListener('webkitfullscreenchange', this.handleResize);
-    window.removeEventListener('mozfullscreenchange', this.handleResize);
-    window.removeEventListener('fullscreenchange', this.handleResize);
-    window.removeEventListener('msfullscreenchange', this.handleResize);
   },
 
   handlePlayheadMouseDown: function(evt) {
