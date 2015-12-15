@@ -230,4 +230,29 @@
         -moz-#{$property}: $value;
         -ms-#{$property}: $value;
         -o-#{$property}: $value;
+        #{$property}: $value;
+}
+
+// base style for close buttons
+@mixin close($x, $y) {
+  position: absolute;
+  color: #fff;
+  opacity: 0.6;
+  line-height: 1;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  -webkit-appearance: none;
+  @include highlight();
+
+  // increase selectable area, helps with mobile
+  &:before {
+    position:absolute;
+    content:'';
+    right:$x;
+    left:$x;
+    top:$y;
+    bottom:$y;
+  }
 }

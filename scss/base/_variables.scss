@@ -44,8 +44,8 @@ $border-width:               1px !default;
 ////
 //// Settings for the `<body>` element.
 //
-$body-bg:                    #fff !default;
-$body-color:                 $gray-dark !default;
+$body-bg:                    $white !default;
+$body-color:                 $white !default;
 //
 //
 //// Links
@@ -333,3 +333,7 @@ $state-danger-text:              #a94442 !default;
 //$pre-color:                   $gray-dark !default;
 //$pre-border-color:            #ccc !default;
 //$pre-scrollable-max-height:   340px !default;
+//
+//
+// Video
+$control-bar-height:            60px !default;

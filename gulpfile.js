@@ -75,7 +75,7 @@ gulp.task('sass-min', function () {
     .pipe(gulp.dest('./build'))
 });
 
-// Run tests
+// Run tests in Jenkins build
 gulp.task('test', shell.task(['npm test']));
 
 // Initiate a watch
