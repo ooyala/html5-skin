@@ -59,6 +59,8 @@
     left: 5%;
 
     .state-screen-title {
+      font-size: $font-size-md-screen-title; //this.props.skinConfig.startScreen.titleFont.fontSize
+      font-family: $font-family-roboto-condensed; //this.props.skinConfig.startScreen.titleFont.fontFamily
       font-weight: bold;
       max-width: 70%;
       resize: none;
@@ -66,6 +68,8 @@
     }
 
     .state-screen-description {
+      font-size: $font-size-md-screen-desc; //this.props.skinConfig.startScreen.descriptionFont.fontSize
+      font-family: $font-family-roboto-condensed; //this.props.skinConfig.startScreen.descriptionFont.fontFamily
       max-width:70%;
       clear:both;
     }
