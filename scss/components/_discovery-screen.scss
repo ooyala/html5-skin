@@ -2,10 +2,7 @@
   height:100%;
   width:100%;
   cursor: default;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  @include vendor-prefixes(user-select, none);
 
   .promo-style {
     position: absolute;
