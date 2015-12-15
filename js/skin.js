@@ -82,10 +82,6 @@ var Skin = React.createClass({
       }
     }
 
-    if (this.props.controller.state.disableClickLayer === true) {
-      return null;
-    }
-
     switch (this.state.screenToShow) {
       case CONSTANTS.SCREEN.LOADING_SCREEN:
         return (

@@ -43,11 +43,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoDuration": 0,
       "adVideoDuration": 0,
       "mainVideoElement": null,
-      "playerSkin": null,
       "elementId": null,
       "buffering": false,
       "mainVideoPlayhead": null,
-      "disableClickLayer":false,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -124,8 +122,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD_CLOSE_BUTTON, "customerUi", _.bind(this.showNonlinearAdCloseButton, this));
 
         this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
-        this.mb.subscribe(OO.EVENTS.DISABLE_CLICK_LAYER, "customerUi", _.bind(this.onDisableClickLayer, this));
-        this.mb.subscribe(OO.EVENTS.ENABLE_CLICK_LAYER, "customerUi", _.bind(this.onEnableClickLayer, this));
       }
 
       this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
@@ -148,7 +144,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $("#" + elementId + " .innerWrapper").append("<div class='player_skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
       $("#" + elementId + " .player_skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
       this.state.mainVideoElement = $("#" + elementId + " .video");
-      this.state.playerSkin = $("#" + elementId + " .player_skin");
 
       var tmpLocalizableStrings = {};
 
@@ -272,7 +267,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
-        this.state.playerSkin.css(InlineStyle.adScreenStyle.enableClicks);
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         if (Utils.isSafari()){
@@ -283,7 +277,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
-        this.state.playerSkin.css(InlineStyle.adScreenStyle.disableClicks);
         if (this.state.currentAdsInfo.currentAdItem !== null) {
           this.state.playerState = CONSTANTS.STATE.PLAYING;
           //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
@@ -488,16 +481,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onDisableClickLayer: function(event) {
-      this.state.disableClickLayer = true;
-      this.renderSkin();
-    },
-
-    onEnableClickLayer: function(event) {
-      this.state.disableClickLayer = false;
-      this.renderSkin();
-    },
-
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.closedCaptionOptions.availableLanguages = languages;
 
@@ -570,8 +553,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi");
 
         this.mb.unsubscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.DISABLE_CLICK_LAYER, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.ENABLE_CLICK_LAYER, "customerUi");
 
         if (OO.EVENTS.DISCOVERY_API) {
           this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi");

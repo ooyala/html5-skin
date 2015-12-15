@@ -99,11 +99,11 @@ var AdScreen = React.createClass({
   },
 
   hideControlBar: function() {
-    // if (this.props.controlBarAutoHide == true){
-    //   this.setState({controlBarVisible: false});
-    //   this.props.controller.hideControlBar();
-    //   this.refs.AdScreen.getDOMNode().style.cursor="none";
-    // }
+    if (this.props.controlBarAutoHide == true){
+      this.setState({controlBarVisible: false});
+      this.props.controller.hideControlBar();
+      this.refs.AdScreen.getDOMNode().style.cursor="none";
+    }
   },
 
   handleTouchEnd: function(event) {
