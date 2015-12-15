@@ -40,11 +40,6 @@ var ControlBar = React.createClass({
     }
   },
 
-  handleControlBarMouseDown: function(event) {
-    //to prevent cursor changing to text cursor if click and drag
-    event.preventDefault();
-  },
-
   handleFullscreenClick: function(evt) {
     if (evt.type == 'touchend' || !this.isMobile){
       //since mobile would fire both click and touched events,
@@ -471,7 +466,7 @@ var ControlBar = React.createClass({
     this.setupControlBarItemForConstantHeight(InlineStyle.controlBarStyle.controlBarSetting.height);
     var controlBarItems = this.populateControlBar();
     return (
-      <div className="controlBar" onMouseUp={this.handleControlBarMouseUp} onMouseDown={this.handleControlBarMouseDown} onTouchEnd={this.handleControlBarMouseUp}
+      <div className="controlBar" onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}
         style={InlineStyle.controlBarStyle.controlBarSetting}>
         <div className="controlBarItemsWrapper" style={InlineStyle.controlBarStyle.controlBarItemsWrapper}>
           {controlBarItems}
