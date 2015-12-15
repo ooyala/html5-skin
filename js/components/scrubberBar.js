@@ -90,7 +90,7 @@ var ScrubberBar = React.createClass({
         evt = evt.touches[0];
       }
       var deltaX = evt.clientX - this.lastScrubX;
-      var scrubbingPlayheadX = this.state.scrubbingPlayheadX + deltaX;
+      var scrubbingPlayheadX = this.props.currentPlayhead * this.scrubberBarWidth / this.props.duration + deltaX;
       this.props.controller.updateSeekingPlayhead((scrubbingPlayheadX / this.scrubberBarWidth) * this.props.duration);
       this.setState({
         scrubbingPlayheadX: scrubbingPlayheadX
