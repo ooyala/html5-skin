@@ -95,7 +95,7 @@ var AdScreen = React.createClass({
   showControlBar: function() {
     this.setState({controlBarVisible: true});
     this.props.controller.showControlBar();
-    this.refs.AdScreen.getDOMNode().style.cursor="auto";
+    this.refs.AdScreen.getDOMNode().style.cursor="default";
   },
 
   hideControlBar: function() {
@@ -146,11 +146,6 @@ var AdScreen = React.createClass({
     return playbackControlItems;
   },
 
-  handleMouseDown: function(event) {
-    //to prevent cursor changing to text cursor if click and drag
-    event.preventDefault();
-  },
-
   render: function() {
     var adPanel = null;
     if (this.props.skinConfig.adScreen.showAdMarquee) {
@@ -161,9 +156,12 @@ var AdScreen = React.createClass({
       playbackControlItems = this.getPlaybackControlItems();
     }
     return (
-      <div ref="AdScreen" className="adScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onMouseMove={this.handlePlayerMouseMove} onMouseUp={this.handleClick} onMouseDown={this.handleMouseDown}
-        style={InlineStyle.defaultScreenStyle.style}>
+      <div className="state-screen adScreen"
+         ref="AdScreen"
+         onMouseOver={this.showControlBar}
+         onMouseOut={this.hideControlBar}
+         onMouseMove={this.handlePlayerMouseMove}
+         onMouseUp={this.handleClick}>
 
         <div className="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
           {adPanel}

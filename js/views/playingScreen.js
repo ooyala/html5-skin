@@ -68,11 +68,6 @@ var PlayingScreen = React.createClass({
     // for mobile, touch is handled in handleTouchEnd
   },
 
-  handlePlayerMouseDown: function(event) {
-    //to prevent cursor changing to text cursor if click and drag
-    event.preventDefault();
-  },
-
   handleTouchEnd: function(event) {
     event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
     if (this.props.controller.state.volumeState.volumeSliderVisible) {
@@ -122,7 +117,6 @@ var PlayingScreen = React.createClass({
 
       <div className="default-screen"
            onMouseUp={this.handlePlayerMouseUp}
-           onMouseDown={this.handlePlayerMouseDown}
            onTouchEnd={this.handleTouchEnd}>
 
         <AdOverlay {...this.props}
