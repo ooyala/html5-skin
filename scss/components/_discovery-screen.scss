@@ -33,8 +33,9 @@
     .discovery-panel-title {
       position: absolute;
       line-height: 1;
-      font-size: 1.6em; //this.props.skinConfig.discoveryScreen.panelTitle.titleFont.fontSize
-      font-family: 'Roboto Condensed', sans-serif; //this.props.skinConfig.discoveryScreen.panelTitle.titleFont.fontFamily
+      font-weight: bold;
+      font-size: $font-size-md-screen-title; //this.props.skinConfig.discoveryScreen.panelTitle.titleFont.fontSize
+      font-family: $font-family-roboto-condensed; //this.props.skinConfig.discoveryScreen.panelTitle.titleFont.fontFamily
       color: $white; //this.props.skinConfig.discoveryScreen.panelTitle.titleFont.color
       span.icon {
         top: 1px;
@@ -45,9 +46,9 @@
     }
     .discoveryToasterContainerStyle {
       background-color: transparent;
-      min-height: 200px;
-      height: 320px;
-      width: 600px;
+      min-height: 54%;
+      height: 84%;
+      width: 100%;
       overflow: auto;
       white-space: nowrap;
       margin: auto;
@@ -81,8 +82,9 @@
     }
 
     .discoveryContentName {
-      color: white;
-      font-size: 1em;
+      color: $white;
+      font-size: $font-size-base;
+      font-family: $font-family-roboto-condensed;
       width: 150px;
       //height: 30px;
       display: inline-block;

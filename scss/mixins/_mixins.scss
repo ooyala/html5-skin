@@ -221,9 +221,6 @@
   border: 0;
 }
 
-// add font-smoothing
-
-
 // Vendor prefixing for shorthand properties
 @mixin vendor-prefixes($property, $value) {
         -webkit-#{$property}: $value;

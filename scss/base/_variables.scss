@@ -101,15 +101,21 @@ $link-hover-decoration:      none !default;
 ////
 //// Font, line-height, and color for body text, headings, and more.
 //
-$font-family-sans-serif:     "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-//$font-family-serif:          Georgia, "Times New Roman", Times, serif !default;
-//$font-family-monospace:      Menlo, Monaco, Consolas, "Courier New", monospace !default;
-$font-family-base:           $font-family-sans-serif !default;
+$font-family-sans-serif:            "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$font-family-roboto:                "Roboto", sans-serif !default;
+$font-family-roboto-condensed:      "Roboto Condensed", sans-serif !default;
+$font-family-roboto-bold:           "Roboto Bold", sans-serif !default;
+$font-family-roboto-condensed-bold: "Roboto Condensed Bold", sans-serif !default;
+//$font-family-serif:               Georgia, "Times New Roman", Times, serif !default;
+//$font-family-monospace:           Menlo, Monaco, Consolas, "Courier New", monospace !default;
+$font-family-base:                  $font-family-sans-serif !default;
 //
 //// Pixel value used to responsively scale all typography. Applied to the `<html>` element.
-$font-size-root:             16px !default;
-$font-size-base:             1em !default;
+$font-size-root:               16px !default;
+$font-size-base:               1em !default;
 //$font-size-lg:               1.25em !default;
+$font-size-md-screen-title:    1.6em !default;
+$font-size-md-screen-desc:     1.1em !default;
 //$font-size-sm:               .85em !default;
 //$font-size-xs:               .75em !default;
 //
