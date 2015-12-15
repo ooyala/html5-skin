@@ -80,11 +80,11 @@ var SharePanel = React.createClass({
   handleEmailClick: function(event) {
     event.preventDefault();
     var emailBody = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMAIL_BODY, this.props.localizableStrings);
-    var mailToUrl = "mailto:" + '';
+    var mailToUrl = "mailto:";
     mailToUrl += "?subject=" + encodeURIComponent(this.props.contentTree.title);
-    mailToUrl += "&body=" + encodeURIComponent(emailBody+' - '+location.href);
-    location.href = mailToUrl; //same window
-    //window.open(mailToUrl, "email window", "height=315,width=780"); //new window
+    mailToUrl += "&body=" + encodeURIComponent(emailBody + location.href);
+    //location.href = mailToUrl; //same window
+    window.open(mailToUrl, "_blank", "height=315,width=780"); //new window
   },
 
   handleFacebookClick: function() {
