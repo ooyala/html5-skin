@@ -38,6 +38,16 @@
         }
       }
 
+      .shareTab {
+        @extend .tab
+      }
+      .embedTab {
+        @extend .tab
+      }
+      .emailTab {
+        @extend .tab
+      }
+
       .active {
         color: $white;
       }
@@ -91,6 +101,11 @@
     .googlePlus {
       @extend .social-icon-style;
       background-color: #ff6267;
+    }
+
+    .emailShare {
+      @extend .social-icon-style;
+      background-color: $gray-dark;
     }
 
     input[type="url"] {

@@ -41,6 +41,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "accessibilityControlsEnabled": false,
       "duration": 0,
       "mainVideoDuration": 0,
+      "adVideoDuration": 0,
       "mainVideoElement": null,
       "playerSkin": null,
       "elementId": null,
@@ -218,6 +219,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered, startEnd, videoId) {
       if (videoId == OO.VIDEO.MAIN) {
         this.state.mainVideoPlayhead = currentPlayhead;
+      }
+      else if (videoId == OO.VIDEO.ADS) {
+        //adVideoDuration is only used in adPanel ad marquee
+        this.state.adVideoDuration = duration;
       }
       // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
       // So we only need to update the playhead for ad screen.
@@ -414,6 +419,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onWillPlaySingleAd: function(event, adItem) {
       OO.log("onWillPlaySingleAd is called with adItem = " + adItem);
       if (adItem !== null) {
+        this.state.adVideoDuration = adItem.duration;
         this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
         this.state.isPlayingAd = true;
         this.state.currentAdsInfo.currentAdItem = adItem;
@@ -427,6 +433,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onSingleAdPlayed: function(event) {
       OO.log("onSingleAdPlayed is called");
       this.state.isPlayingAd = false;
+      this.state.adVideoDuration = 0;
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
     },
 
@@ -814,6 +821,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     updateSeekingPlayhead: function(playhead) {
+      playhead = Math.min(Math.max(0, playhead), this.skin.state.duration);
       this.skin.updatePlayhead(playhead, this.skin.state.duration, this.skin.state.buffered);
     },
 

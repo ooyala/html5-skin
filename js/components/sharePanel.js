@@ -21,7 +21,7 @@ var SharePanel = React.createClass({
     };
   },
 
-  tabs: {SHARE: "share", EMBED: "embed", EMAIL: "email"},
+  tabs: {SHARE: "share", EMBED: "embed"},
 
   getInitialState: function() {
     return {
@@ -40,7 +40,11 @@ var SharePanel = React.createClass({
           <div className="social-action-text text-capitalize">{titleString}</div>
           <a className="twitter" onClick={this.handleTwitterClick}>t</a>
           <a className="facebook" onClick={this.handleFacebookClick}>f</a>
-          <a className="googlePlus" onClick={this.handleGPlusClick}>g+</a><br/>
+          <a className="googlePlus" onClick={this.handleGPlusClick}>g+</a>
+          <a className="emailShare" onClick={this.handleEmailClick}>
+            <span className="icon icon-topmenu-share"></span>
+          </a>
+          <br/>
 
           <form className="form-inline">
             <div className="form-group">
@@ -71,85 +75,16 @@ var SharePanel = React.createClass({
         </div>
       );
     }
-
-    else if (this.state.activeTab === this.tabs.EMAIL) {
-      var emailInput = ClassNames({
-        'form-group': true,
-        'clearfix': true,
-        'has-error': this.state.hasError
-      });
-
-      var toString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.TO, this.props.localizableStrings),
-          subjectString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SUBJECT, this.props.localizableStrings),
-          messageString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.MESSAGE, this.props.localizableStrings),
-          recipientString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.RECIPIENT, this.props.localizableStrings),
-          optionalMessageString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.OPTIONAL_MESSAGE, this.props.localizableStrings),
-          sendString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SEND, this.props.localizableStrings);
-
-      return (
-        <div className="shareTabPanel">
-          <form className="form-horizontal">
-            <div className={emailInput}>
-              <label htmlFor="oo-email" className="col-sm-2 form-control-label">{toString}</label>
-              <div className="col-sm-10">
-                <input ref="sharePanelTo"
-                       id="oo-email"
-                       type="email"
-                       className="form-control"
-                       placeholder={recipientString} />
-              </div>
-            </div>
-
-            <div className="form-group clearfix">
-              <label htmlFor="oo-subject" className="col-sm-2 form-control-label">{subjectString}</label>
-              <div className="col-sm-10">
-                <input ref="sharePanelSubject"
-                       id="oo-subject"
-                       type="text"
-                       className="form-control"
-                       placeholder={subjectString} />
-              </div>
-            </div>
-
-            <div className="form-group clearfix">
-              <label htmlFor="oo-message" className="col-sm-2 form-control-label">{messageString}</label>
-              <div className="col-sm-10">
-                <textarea ref="sharePanelMessage"
-                          id="oo-message"
-                          className="form-control"
-                          rows="2"
-                          placeholder={optionalMessageString} />
-              </div>
-            </div>
-
-            <div className="form-group clearfix">
-              <div className="col-sm-offset-2 col-sm-10">
-                <button type="button"
-                        className="btn btn-primary pull-left"
-                        onClick={this.handleEmailClick}>{sendString}</button>
-              </div>
-            </div>
-
-          </form>
-        </div>
-      );
-    }
   },
 
-  handleEmailClick: function() {
-    var mailto = this.refs.sharePanelTo.getDOMNode().value;
-    var subject = encodeURIComponent(this.refs.sharePanelSubject.getDOMNode().value);
-    var body = encodeURIComponent(this.refs.sharePanelMessage.getDOMNode().value);
-
-    if (Utils.validateEmail(mailto)) {
-      this.setState({hasError: false});
-      var mailToUrl = "mailto:" + mailto.trim();
-      mailToUrl += "?subject=" + subject;
-      mailToUrl += "&body=" + body;
-      location.href = mailToUrl;
-    } else {
-      this.setState({hasError: true});
-    }
+  handleEmailClick: function(event) {
+    event.preventDefault();
+    var emailBody = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMAIL_BODY, this.props.localizableStrings);
+    var mailToUrl = "mailto:";
+    mailToUrl += "?subject=" + encodeURIComponent(this.props.contentTree.title);
+    mailToUrl += "&body=" + encodeURIComponent(emailBody + location.href);
+    //location.href = mailToUrl; //same window
+    window.open(mailToUrl, "_blank", "height=315,width=780"); //new window
   },
 
   handleFacebookClick: function() {
@@ -177,28 +112,22 @@ var SharePanel = React.createClass({
 
   render: function() {
     var shareTab = ClassNames({
-      'tab': true,
+      'shareTab': true,
       'active': this.state.activeTab == this.tabs.SHARE
     });
     var embedTab = ClassNames({
-      'tab': true,
+      'embedTab': true,
       'active': this.state.activeTab == this.tabs.EMBED
-    });
-    var emailTab = ClassNames({
-      'tab': true,
-      'active': this.state.activeTab == this.tabs.EMAIL
     });
 
     var shareString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings),
-        embedString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMBED, this.props.localizableStrings),
-        emailString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMAIL, this.props.localizableStrings);
+        embedString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMBED, this.props.localizableStrings);
 
     return (
       <div className="share-container">
         <div className="tabRow">
           <a className={shareTab} onClick={this.showPanel.bind(this, this.tabs.SHARE)}>{shareString}</a>
           <a className={embedTab} onClick={this.showPanel.bind(this, this.tabs.EMBED)}>{embedString}</a>
-          <a className={emailTab} onClick={this.showPanel.bind(this, this.tabs.EMAIL)}>{emailString}</a>
         </div>
         {this.getActivePanel()}
       </div>

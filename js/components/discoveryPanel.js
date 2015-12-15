@@ -11,6 +11,7 @@ var React = require('react'),
 
 var DiscoveryPanel = React.createClass({
   propTypes: {
+    videosPerPage: React.PropTypes.objectOf(React.PropTypes.number),
     discoveryData: React.PropTypes.shape({
       relatedVideos: React.PropTypes.arrayOf(React.PropTypes.shape({
         preview_image_url: React.PropTypes.string,
@@ -34,6 +35,11 @@ var DiscoveryPanel = React.createClass({
 
   getDefaultProps: function () {
     return {
+      videosPerPage: {
+        small: 2,
+        medium: 6,
+        large: 10
+      },
       skinConfig: {
         discoveryScreen: {
           showCountDownTimerOnEndScreen: true,
@@ -47,7 +53,6 @@ var DiscoveryPanel = React.createClass({
           discovery:{fontStyleClass:'icon icon-topmenu-discovery'},
           left:{fontStyleClass:'icon icon-left'},
           right:{fontStyleClass:'icon icon-right'}
-
         }
       },
       discoveryData: {
@@ -61,16 +66,23 @@ var DiscoveryPanel = React.createClass({
 
   getInitialState: function() {
     return {
-      showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen
+      showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen,
+      currentPage: 1
     };
   },
 
   handleLeftButtonClick: function(event) {
     event.preventDefault();
+    this.setState({
+      currentPage: this.state.currentPage - 1
+    });
   },
 
   handleRightButtonClick: function(event) {
     event.preventDefault();
+    this.setState({
+      currentPage: this.state.currentPage + 1
+    });
   },
 
   handleDiscoveryContentClick: function(index) {
@@ -89,7 +101,9 @@ var DiscoveryPanel = React.createClass({
 
   handleDiscoveryCountDownClick: function(event) {
     event.preventDefault();
-    this.setState({showDiscoveryCountDown: false});
+    this.setState({
+      showDiscoveryCountDown: false
+    });
     this.refs.CountDownClock.handleClick(event);
   },
 
@@ -101,6 +115,13 @@ var DiscoveryPanel = React.createClass({
       // TODO: get msg if no discovery related videos
     }
 
+    //pagination
+    var videosPerPage = this.props.videosPerPage.medium;
+    var startAt = videosPerPage * (this.state.currentPage - 1);
+    var endAt = videosPerPage * this.state.currentPage;
+    var relatedVideoPage = relatedVideos.slice(startAt,endAt);
+
+    // discovery content
     var panelTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.DISCOVER, this.props.localizableStrings);
     var discoveryContentName = ClassNames({
       'discoveryContentName': true,
@@ -109,6 +130,14 @@ var DiscoveryPanel = React.createClass({
     var discoveryCountDownWrapperStyle = ClassNames({
       'discoveryCountDownWrapperStyle': true,
       'hidden': !this.state.showDiscoveryCountDown
+    });
+    var leftButtonClass = ClassNames({
+      'leftButton': true,
+      'hidden': this.state.currentPage <= 1
+    });
+    var rightButtonClass = ClassNames({
+      'rightButton': true,
+      'hidden': endAt >= relatedVideos.length
     });
     var countDownClock = (
       <div className={discoveryCountDownWrapperStyle}>
@@ -121,12 +150,12 @@ var DiscoveryPanel = React.createClass({
 
     // Build discovery content blocks
     var discoveryContentBlocks = [];
-    for (var i = 0; i < relatedVideos.length; i++) {
+    for (var i = 0; i < relatedVideoPage.length; i++) {
       discoveryContentBlocks.push(
         <div className="discoveryImageWrapperStyle" key={i}>
           <a onClick={this.handleDiscoveryContentClick.bind(this, i)}>
-            <img className="imageStyle" src={relatedVideos[i].preview_image_url} />
-            <span className={discoveryContentName}>{relatedVideos[i].name}</span>
+            <img className="imageStyle" src={relatedVideoPage[i].preview_image_url} />
+            <span className={discoveryContentName}>{relatedVideoPage[i].name}</span>
           </a>
           {(this.shouldShowCountdownTimer() && i === 0) ? countDownClock : ''}
         </div>
@@ -144,10 +173,10 @@ var DiscoveryPanel = React.createClass({
           {discoveryContentBlocks}
         </div>
 
-        <a className="leftButton" ref="ChevronLeftButton" onClick={this.handleLeftButtonClick}>
+        <a className={leftButtonClass} ref="ChevronLeftButton" onClick={this.handleLeftButtonClick}>
           <span className={this.props.skinConfig.icons.left.fontStyleClass} aria-hidden="true"></span>
         </a>
-        <a className="rightButton" ref="ChevronRightButton" onClick={this.handleRightButtonClick}>
+        <a className={rightButtonClass} ref="ChevronRightButton" onClick={this.handleRightButtonClick}>
           <span className={this.props.skinConfig.icons.right.fontStyleClass}  aria-hidden="true"></span>
         </a>
       </div>

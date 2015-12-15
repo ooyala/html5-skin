@@ -5,9 +5,11 @@ var React = require('react'),
     ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants'),
     Spinner = require('../components/spinner'),
-    Utils = require('../components/utils');
+    TruncateTextMixin = require('../mixins/truncateTextMixin');
 
 var StartScreen = React.createClass({
+  mixins: [TruncateTextMixin],
+
   propTypes: {
     skinConfig: React.PropTypes.shape({
       startScreen: React.PropTypes.shape({
@@ -67,10 +69,7 @@ var StartScreen = React.createClass({
   },
 
   componentDidMount: function() {
-    // CSS doesn't support "truncate N lines" so we need to do DOM width
-    // calculations to figure out where to truncate the description
-    var descriptionNode = React.findDOMNode(this.refs.description);
-    descriptionNode.innerHTML = Utils.truncateTextToWidth(descriptionNode, this.props.contentTree.description);
+    this.truncateText(this.refs.description, this.props.contentTree.description);
   },
 
   handleClick: function(event) {
@@ -82,13 +81,13 @@ var StartScreen = React.createClass({
   render: function() {
     //inline style for config/skin.json elements only
     var titleStyle = {
-      fontSize: this.props.skinConfig.startScreen.titleFont.fontSize + "pt",
-      fontFamily: this.props.skinConfig.startScreen.titleFont.fontFamily,
+      //fontSize: this.props.skinConfig.startScreen.titleFont.fontSize + "pt",
+      //fontFamily: this.props.skinConfig.startScreen.titleFont.fontFamily,
       color: this.props.skinConfig.startScreen.titleFont.color
     };
     var descriptionStyle = {
-      fontSize: this.props.skinConfig.startScreen.descriptionFont.fontSize + "pt",
-      fontFamily: this.props.skinConfig.startScreen.descriptionFont.fontFamily,
+      //fontSize: this.props.skinConfig.startScreen.descriptionFont.fontSize + "pt",
+      //fontFamily: this.props.skinConfig.startScreen.descriptionFont.fontFamily,
       color: this.props.skinConfig.startScreen.descriptionFont.color
     };
     var actionIconStyle = {
@@ -142,7 +141,7 @@ var StartScreen = React.createClass({
     );
 
     return (
-        <div className="state-screen">
+        <div className="state-screen startScreen">
           <div className={stateScreenPosterClass} style={posterStyle}></div>
           <div className={infoPanelClass}>
             {this.props.skinConfig.startScreen.showTitle ? titleMetadata : ''}

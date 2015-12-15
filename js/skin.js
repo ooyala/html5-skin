@@ -3,7 +3,6 @@
 *********************************************************************/
 var React = require('react'),
     Utils = require('./components/utils'),
-    InlineStyle = require('./styles/inlineStyle'),
     CONSTANTS = require('./constants/constants'),
     AdScreen = require('./views/adScreen'),
     ClosedCaptionScreen = require('./views/closedCaptionScreen'),
@@ -42,8 +41,8 @@ var Skin = React.createClass({
 
   componentWillMount: function() {
     if (this.props.skinConfig.closedCaptionOptions){
-         this.props.controller.state.closedCaptionOptions.language = (this.props.skinConfig.closedCaptionOptions.defaultLanguage ? this.props.skinConfig.closedCaptionOptions.defaultLanguage : "en" );
-         this.props.controller.state.closedCaptionOptions.enabled = (this.props.skinConfig.closedCaptionOptions.defaultEnabled ? this.props.skinConfig.closedCaptionOptions.defaultEnabled : false);
+      this.props.controller.state.closedCaptionOptions.language = (this.props.skinConfig.closedCaptionOptions.defaultLanguage ? this.props.skinConfig.closedCaptionOptions.defaultLanguage : "en" );
+      this.props.controller.state.closedCaptionOptions.enabled = (this.props.skinConfig.closedCaptionOptions.defaultEnabled ? this.props.skinConfig.closedCaptionOptions.defaultEnabled : false);
     }
     else {
       this.props.controller.state.closedCaptionOptions.language = "en";
@@ -98,7 +97,8 @@ var Skin = React.createClass({
         );
       case CONSTANTS.SCREEN.PLAYING_SCREEN:
         return (
-          <PlayingScreen {...this.props} contentTree={this.state.contentTree}
+          <PlayingScreen {...this.props}
+            contentTree={this.state.contentTree}
             currentPlayhead={this.state.currentPlayhead}
             duration={this.state.duration}
             buffered={this.state.buffered}
@@ -112,7 +112,8 @@ var Skin = React.createClass({
         );
       case CONSTANTS.SCREEN.SHARE_SCREEN:
         return (
-          <ShareScreen {...this.props} contentTree={this.state.contentTree}
+          <ShareScreen {...this.props}
+            contentTree={this.state.contentTree}
             currentPlayhead={this.state.currentPlayhead}
             duration={this.state.duration}
             buffered={this.state.buffered}
@@ -144,7 +145,6 @@ var Skin = React.createClass({
             currentPlayhead={this.state.currentPlayhead}
             duration={this.state.duration}
             buffered={this.state.buffered}
-            style={InlineStyle.endScreenStyle}
             fullscreen={this.state.fullscreen}
             playerState={this.state.playerState}
             seeking={this.state.seeking}
@@ -153,12 +153,14 @@ var Skin = React.createClass({
         );
       case CONSTANTS.SCREEN.AD_SCREEN:
         return (
-          <AdScreen {...this.props} contentTree={this.state.contentTree}
+          <AdScreen {...this.props}
+            contentTree={this.state.contentTree}
             currentAdsInfo={this.state.currentAdsInfo}
             currentPlayhead={this.state.currentPlayhead}
             fullscreen={this.state.fullscreen}
             playerState={this.state.playerState}
             duration={this.state.duration}
+            adVideoDuration={this.props.controller.state.adVideoDuration}
             buffered={this.state.buffered}
             seeking={this.state.seeking}
             controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
@@ -171,7 +173,6 @@ var Skin = React.createClass({
             currentPlayhead={this.state.currentPlayhead}
             duration={this.state.duration}
             buffered={this.state.buffered}
-            style={InlineStyle.discoveryScreenStyle}
             discoveryData={this.state.discoveryData}
             playerState={this.state.playerState}
             fullscreen={this.state.fullscreen}
@@ -205,8 +206,7 @@ var Skin = React.createClass({
       case CONSTANTS.SCREEN.ERROR_SCREEN:
         return (
           <ErrorScreen {...this.props}
-            errorCode={this.props.controller.state.errorCode}
-            style={InlineStyle.errorScreenStyle}/>
+            errorCode={this.props.controller.state.errorCode} />
         );
       default:
         return false;
