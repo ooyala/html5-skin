@@ -795,6 +795,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     updateSeekingPlayhead: function(playhead) {
+      playhead = Math.min(Math.max(0, playhead), this.skin.state.duration);
       this.skin.updatePlayhead(playhead, this.skin.state.duration, this.skin.state.buffered);
     },
 
