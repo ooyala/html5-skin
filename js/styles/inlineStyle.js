@@ -38,6 +38,7 @@ module.exports = {
       "MozUserSelect": "none",
       "msUserSelect": "none",
       "userSelect": "none",
+      "cursor": "default",
       "transition": "bottom 0.5s, height 0.25s"
     },
 

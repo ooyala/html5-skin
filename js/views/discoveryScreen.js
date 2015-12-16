@@ -36,11 +36,6 @@ var DiscoveryScreen = React.createClass({
     this.props.controller.toggleDiscoveryScreen();
   },
 
-  handleMouseDown: function(event) {
-    //to prevent cursor changing to text cursor if click and drag
-    event.preventDefault();
-  },
-
   render: function() {
     var promoStyle = ClassNames({
       'promo-style': true,
@@ -48,7 +43,7 @@ var DiscoveryScreen = React.createClass({
     });
 
     return (
-      <div className="discoveryScreen" onMouseDown={this.handleMouseDown}>
+      <div className="discoveryScreen">
         <div className={promoStyle}></div>
         <DiscoveryPanel {...this.props} videosPerPage={{small:2, medium:6, large:10}} />
         <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />

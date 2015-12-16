@@ -41,14 +41,9 @@ var MoreOptionsScreen = React.createClass({
     this.props.controller.closeScreen();
   },
 
-  handleMouseDown: function(event) {
-    //to prevent cursor changing to text cursor if click and drag
-    event.preventDefault();
-  },
-
   render: function() {
     return (
-      <div className="MoreOptionsScreen" style={InlineStyle.defaultScreenStyle.style} onMouseDown={this.handleMouseDown}>
+      <div className="state-screen MoreOptionsScreen">
         <MoreOptionsPanel {...this.props} controlBarWidth={this.state.controlBarWidth} />
         <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>

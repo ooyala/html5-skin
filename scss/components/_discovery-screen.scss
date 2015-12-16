@@ -2,6 +2,7 @@
   height:100%;
   width:100%;
   cursor: default;
+  @include vendor-prefixes(user-select, none);
 
   .promo-style {
     position: absolute;

@@ -53,14 +53,9 @@ var ClosedCaptionScreen = React.createClass({
     this.props.controller.toggleClosedCaptionScreen();
   },
 
-  handleMouseDown: function(event) {
-    //to prevent cursor changing to text cursor if click and drag
-    event.preventDefault();
-  },
-
   render: function() {
     return (
-      <div style={InlineStyle.defaultScreenStyle.style} onMouseDown={this.handleMouseDown}>
+      <div className="state-screen closedCaptionsScreen">
         <ClosedCaptionPanel {...this.props} closedCaptionOptions = {this.props.closedCaptionOptions} clientWidth = {this.state.clientWidth} clientHeight = {this.state.clientHeight}/>
         <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>

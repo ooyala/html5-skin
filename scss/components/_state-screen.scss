@@ -1,6 +1,8 @@
 .state-screen {
   @extend .expand;
   overflow: hidden;
+  cursor: default;
+  @include vendor-prefixes(user-select, none);
 
   .fading-underlay {
     @extend .expand;
@@ -27,7 +29,7 @@
   .state-screen-selectable {
     @extend .expand;
     text-decoration:none;
-    cursor: auto;
+    cursor: default;
     //for IE
     background-color:white;
     opacity: 0;
