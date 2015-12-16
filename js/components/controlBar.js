@@ -300,10 +300,10 @@ var ControlBar = React.createClass({
 
       "flexibleSpace": <div className="flexibleSpace controlBarFlexSpace" ></div>,
 
-      "moreOptions": <div className="moreOptions controlBarItem" style={dynamicStyles.generalIconSetting}>
+      "moreOptions": <div className="moreOptions controlBarItem" style={dynamicStyles.generalIconSetting}
+        onClick={this.handleMoreOptionsClick} onTouchEnd={this.handleMoreOptionsClick}>
         <span className={this.props.skinConfig.icons.ellipsis.fontStyleClass} style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleMoreOptionsClick}
-          onTouchEnd={this.handleMoreOptionsClick}>
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         </span>
       </div>,
 

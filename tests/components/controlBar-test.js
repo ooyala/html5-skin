@@ -28,7 +28,8 @@ describe('ControlBar', function () {
     var mockProps = {
       authorization: {},
       controller: mockController,
-      skinConfig: skinConfig
+      skinConfig: skinConfig,
+      duration: 30
     };
 
     var DOM = TestUtils.renderIntoDocument(
@@ -285,7 +286,7 @@ describe('ControlBar', function () {
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
         controlBarWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
+        playerState={CONSTANTS.STATE.END}
         authorization={mockProps.authorization} />
     );
 
@@ -423,6 +424,49 @@ describe('ControlBar', function () {
     expect(buttons.length).toBeLessThan(5);
   });
 
+  it("handles more options click", function() {
+    var moreOptionsClicked = false;
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {}
+      },
+      toggleMoreOptionsScreen: function() {
+        moreOptionsClicked = true;
+      }
+    };
+
+    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig.buttons.desktopContent = [
+      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 },
+      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
+      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
+      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
+      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
+      {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }
+    ];
+    var mockProps = {
+      authorization: {},
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+        controlBarWidth={100}
+        playerState={CONSTANTS.STATE.PLAYING}
+        authorization={mockProps.authorization} />
+    );
+
+    var optionsButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'moreOptions');
+    expect(optionsButton).toNotBe(null);
+    TestUtils.Simulate.click(optionsButton);
+    expect(moreOptionsClicked).toBe(true);
+  });
+
   it("handles bad button input", function() {
     var mockController = {
       state: {
@@ -508,6 +552,104 @@ describe('ControlBar', function () {
 
     buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'live');
     expect(buttons.length).toBe(0);
+  });
+
+  it('highlights volume on mouseover', function() {
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {}
+      }
+    };
+
+    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig.buttons.desktopContent = [{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":100 }];
+
+    var mockProps = {
+      authorization: {},
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+        controlBarWidth={500}
+        playerState={CONSTANTS.STATE.PAUSED}
+        authorization={mockProps.authorization} />
+    );
+
+    expect(DOM.state.mouseOverVolume).toBe(false);
+    TestUtils.Simulate.mouseOver(DOM.refs.volumeIcon);
+    expect(DOM.state.mouseOverVolume).toBe(true);
+    TestUtils.Simulate.mouseOut(DOM.refs.volumeIcon);
+    expect(DOM.state.mouseOverVolume).toBe(false);
+  });
+
+  it('uses the volume slider on mobile', function() {
+    var mockController = {
+      state: {
+        isMobile: true,
+        volumeState: {
+          volume: 1,
+          volumeSliderVisible: true
+        },
+        closedCaptionOptions: {}
+      }
+    };
+
+    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig.buttons.desktopContent = [{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":100 }];
+
+    var mockProps = {
+      authorization: {},
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+        controlBarWidth={500}
+        playerState={CONSTANTS.STATE.PAUSED}
+        authorization={mockProps.authorization} />
+    );
+    var slider = TestUtils.findRenderedDOMComponentWithClass(DOM, "volumeSlider");
+    expect(slider).toNotBe(null);
+  });
+
+  it('hides the volume on iOS', function() {
+    window.navigator.platform = "iPhone";
+    console.log(window.navigator.platform + " " + Utils.isIos());
+    var mockController = {
+      state: {
+        isMobile: true,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {}
+      }
+    };
+
+    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig.buttons.desktopContent = [{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":100 }];
+
+    var mockProps = {
+      authorization: {},
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+        controlBarWidth={500}
+        playerState={CONSTANTS.STATE.PAUSED}
+        authorization={mockProps.authorization} />
+    );
+
+    expect(DOM.refs.volumeIcon).toBe(undefined);
+
   });
 
 });
