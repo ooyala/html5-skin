@@ -3,7 +3,6 @@
 *********************************************************************/
 var React = require('react'),
     CONSTANTS = require('../constants/constants'),
-    InlineStyle = require('../styles/inlineStyle'),
     Utils = require('./utils');
 
 var ControlBar = React.createClass({
@@ -350,12 +349,14 @@ var ControlBar = React.createClass({
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
     //if mobile and not showing the slider or the icon, extra space can be added to control bar width:
-    var extraSpaceVolumeSlider = ((this.isMobile && !this.props.controller.state.volumeState.volumeSliderVisible) ? parseInt(InlineStyle.volumeSliderStyle.volumeBarSetting.width) : 0);
-    var extraSpaceVolumeIcon = ((Utils.isIos()) ?
-                                parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.fontSize)+
-                                parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.paddingLeft)+
-                                parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.paddingRight)
-                                : 0);
+    var volumeItem = null;
+    for (var i = 0; i < defaultItems.length; i++) {
+      if (defaultItems[i].name == "volume") {
+        volumeItem = defaultItems[i];
+        break;
+      }
+    }
+    var extraSpaceVolumeSlider = (((volumeItem && this.isMobile && !this.props.controller.state.volumeState.volumeSliderVisible) || volumeItem && Utils.isIos()) ? parseInt(volumeItem.minWidth) : 0);
 
     //if no hours, add extra space to control bar width:
     var hours = parseInt(this.props.duration / 3600, 10);
@@ -363,7 +364,7 @@ var ControlBar = React.createClass({
 
     var controlBarLeftRightPadding = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
 
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider+extraSpaceVolumeIcon-controlBarLeftRightPadding, defaultItems);
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider-controlBarLeftRightPadding, defaultItems);
     var collapsedControlBarItems = collapsedResult.fit;
     var collapsedMoreOptionsItems = collapsedResult.overflow;
 
