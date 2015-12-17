@@ -43,6 +43,7 @@ module.exports = {
     START_AT: "Start at",
     EMBED: "Embed",
     EMAIL: "Email",
+    EMAIL_BODY: "Check out this video",
     TO: "To",
     SUBJECT: "Subject",
     MESSAGE: "Message",

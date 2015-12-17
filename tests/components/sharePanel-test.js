@@ -48,9 +48,11 @@ describe('SharePanel', function () {
         var twitter = TestUtils.findRenderedDOMComponentWithClass(shareTabPanel, 'twitter');
         var facebook = TestUtils.findRenderedDOMComponentWithClass(shareTabPanel, 'facebook');
         var googlePlus = TestUtils.findRenderedDOMComponentWithClass(shareTabPanel, 'googlePlus');
+        var emailShare = TestUtils.findRenderedDOMComponentWithClass(shareTabPanel, 'emailShare');
         TestUtils.Simulate.click(twitter);
         TestUtils.Simulate.click(facebook);
         TestUtils.Simulate.click(googlePlus);
+        TestUtils.Simulate.click(emailShare);
 
         //test embed tab
         var embedTab = tabs[1];
@@ -58,35 +60,7 @@ describe('SharePanel', function () {
         TestUtils.Simulate.click(embedTab);
         var textArea = TestUtils.findRenderedDOMComponentWithTag(shareTabPanel, 'textarea');
         expect(React.findDOMNode(textArea).value).toContain('//player.ooyala.com/v4/');
-
-        //test email tab
-        var emailTab = tabs[2];
-        expect(React.findDOMNode(emailTab).textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.EMAIL]);
-        TestUtils.Simulate.click(emailTab);
-        expect(React.findDOMNode(DOM.refs.sharePanelTo).getAttribute('placeholder')).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.RECIPIENT]);
-        expect(React.findDOMNode(DOM.refs.sharePanelSubject).getAttribute('placeholder')).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SUBJECT]);
-        expect(React.findDOMNode(DOM.refs.sharePanelMessage).getAttribute('placeholder')).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.OPTIONAL_MESSAGE]);
       }
     }
-  });
-
-  it('tests email in social panel', function () {
-    var DOM = TestUtils.renderIntoDocument(
-      <SharePanel />
-    );
-
-    var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'shareTabPanel');
-    var tabs = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
-    var emailTab = tabs[2];
-    TestUtils.Simulate.click(emailTab);
-
-    //test invalid blank email
-    var sendBtn = TestUtils.findRenderedDOMComponentWithTag(shareTabPanel, 'button');
-    TestUtils.Simulate.click(sendBtn);
-
-    //test valid email
-    var input = DOM.refs.sharePanelTo;
-    TestUtils.Simulate.change(input, {target: {value: 'jeff@aol.com'}});
-    TestUtils.Simulate.click(sendBtn);
   });
 });

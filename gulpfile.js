@@ -75,7 +75,7 @@ gulp.task('sass-min', function () {
     .pipe(gulp.dest('./build'))
 });
 
-// Run tests
+// Run tests in Jenkins build
 gulp.task('test', shell.task(['npm test']));
 
 // Initiate a watch
@@ -99,6 +99,9 @@ gulp.task('insertVersion', ['browserify', 'browserify-min'], function () {
       'sed -i "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
   }
 });
+
+// Generate documentation
+gulp.task("docs", shell.task("./node_modules/.bin/jsdoc -c ./jsdoc_conf.json"));
 
 //Assets
 gulp.task('assets', function () {

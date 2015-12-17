@@ -1,155 +1,158 @@
 /********************************************************************
-  START SCREEN
-*********************************************************************/
+ START SCREEN
+ *********************************************************************/
 var React = require('react'),
+    ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants'),
     Spinner = require('../components/spinner'),
-    Utils = require('../components/utils');
+    TruncateTextMixin = require('../mixins/truncateTextMixin');
 
 var StartScreen = React.createClass({
-  getInitialState: function() {
-    this.isMobile = this.props.controller.state.isMobile;
+  mixins: [TruncateTextMixin],
+
+  propTypes: {
+    skinConfig: React.PropTypes.shape({
+      startScreen: React.PropTypes.shape({
+        titleFont: React.PropTypes.shape({
+          fontSize: React.PropTypes.number
+        }),
+        descriptionFont: React.PropTypes.shape({
+          fontSize: React.PropTypes.number
+        }),
+        playIconStyle: React.PropTypes.shape({
+          color: React.PropTypes.string
+        })
+      }),
+      icons: React.PropTypes.objectOf(React.PropTypes.object)
+    })
+  },
+
+  getDefaultProps: function () {
     return {
-      description: this.props.contentTree.description
+      skinConfig: {
+        startScreen: {
+          titleFont: {
+            fontSize: 30
+          },
+          descriptionFont: {
+            fontSize: 17
+          },
+          playIconStyle: {
+            color: 'white'
+          },
+          infoPanelPosition: 'topLeft',
+          playButtonPosition: 'center',
+          showPlayButton: true,
+          showPromo: true,
+          showTitle: true,
+          showDescription: true,
+          promoImageSize: 'default'
+        },
+        icons: {
+          play:{fontStyleClass:'icon icon-play'},
+          replay:{fontStyleClass:'icon icon-upnext-replay'}
+        }
+      },
+      controller: {
+        togglePlayPause: function(){},
+        state: {
+          playerState:'start',
+          buffering: false
+        }
+      },
+      contentTree: {
+        promo_image: '',
+        description:'',
+        title:''
+      }
     };
   },
 
-
-  // CSS doesn't support "truncate N lines" so we need to do DOM width
-  // calculations to figure out where to truncate the description
   componentDidMount: function() {
-    if (this.props.skinConfig.startScreen.showTitle ||
-      this.props.skinConfig.startScreen.showDescription) {
-      var descriptionNode = this.getDOMNode().getElementsByClassName("startScreenDescription")[0];
-      var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
-      this.setState({description: shortDesc});
-    }
+    this.truncateText(this.refs.description, this.props.contentTree.description);
   },
 
   handleClick: function(event) {
-    if (event.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
-      this.props.controller.togglePlayPause();
-      this.props.controller.state.accessibilityControlsEnabled = true;
-    }
+    event.preventDefault();
+    this.props.controller.togglePlayPause();
+    this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
   render: function() {
-    var screenStyle = this.props.style;
-    var playClass;
-    if (this.props.controller.state.playerState == CONSTANTS.STATE.END){//for iPhone, start screen is shown instead of end screen, with a 'replay' button
-      playClass = this.props.skinConfig.icons.replay.fontStyleClass;
-    }
-    else {
-      playClass = this.props.skinConfig.icons.play.fontStyleClass;
-    }
-    var playStyle = screenStyle.playButton.style;
-    var posterStyle = screenStyle.posterStyle;
-    var infoStyle = screenStyle.infoPanel;
+    //inline style for config/skin.json elements only
+    var titleStyle = {
+      //fontSize: this.props.skinConfig.startScreen.titleFont.fontSize + "pt",
+      //fontFamily: this.props.skinConfig.startScreen.titleFont.fontFamily,
+      color: this.props.skinConfig.startScreen.titleFont.color
+    };
+    var descriptionStyle = {
+      //fontSize: this.props.skinConfig.startScreen.descriptionFont.fontSize + "pt",
+      //fontFamily: this.props.skinConfig.startScreen.descriptionFont.fontFamily,
+      color: this.props.skinConfig.startScreen.descriptionFont.color
+    };
+    var actionIconStyle = {
+      color: this.props.skinConfig.startScreen.playIconStyle.color,
+      opacity: this.props.skinConfig.startScreen.playIconStyle.opacity
+    };
+    var posterImageUrl = this.props.skinConfig.startScreen.showPromo ? this.props.contentTree.promo_image : '';
+    var posterStyle = {
+      backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%), url('" + posterImageUrl + "')"
+    };
 
-    //title style
-    infoStyle.title.style.fontSize = this.props.skinConfig.startScreen.titleFont.fontSize + "pt";
-    infoStyle.title.style.fontFamily = this.props.skinConfig.startScreen.titleFont.fontFamily;
-    infoStyle.title.style.color = this.props.skinConfig.startScreen.titleFont.color;
+    //CSS class manipulation from config/skin.json
+    var stateScreenPosterClass = ClassNames({
+      'state-screen-poster': this.props.skinConfig.startScreen.promoImageSize != "small",
+      'state-screen-poster-small': this.props.skinConfig.startScreen.promoImageSize == "small"
+    });
+    var infoPanelClass = ClassNames({
+      'state-screen-info': true,
+      'info-panel-top': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("top") > -1,
+      'info-panel-bottom': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("bottom") > -1,
+      'info-panel-left': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("left") > -1,
+      'info-panel-right': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+    });
+    var titleClass = ClassNames({
+      'state-screen-title': true,
+      'text-truncate': true,
+      'text-capitalize': true,
+      'pull-right': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+    });
+    var descriptionClass = ClassNames({
+      'state-screen-description': true,
+      'pull-right': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+    });
+    var actionIconClass = ClassNames({
+      'action-icon': true,
+      'action-icon-top': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("top") > -1,
+      'action-icon-bottom': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("bottom") > -1,
+      'action-icon-left': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("left") > -1,
+      'action-icon-right': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("right") > -1,
+      'hidden': !this.props.skinConfig.startScreen.showPlayButton
+    });
 
-    //description style
-    infoStyle.description.style.fontSize = this.props.skinConfig.startScreen.descriptionFont.fontSize + "pt";
-    infoStyle.description.style.fontFamily = this.props.skinConfig.startScreen.descriptionFont.fontFamily;
-    infoStyle.description.style.color = this.props.skinConfig.startScreen.descriptionFont.color;
+    var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
+    var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.props.contentTree.description}</div>);
+    var actionIcon = (
+      <a className={actionIconClass} onClick={this.handleClick}>
+        <span className={this.props.controller.state.playerState == CONSTANTS.STATE.END ? this.props.skinConfig.icons.replay.fontStyleClass : this.props.skinConfig.icons.play.fontStyleClass}
+              style={actionIconStyle}
+              aria-hidden="true"></span>
+      </a>
+    );
 
-    // Accent Color
-    playStyle.color = this.props.skinConfig.startScreen.playIconStyle.color;
-    playStyle.opacity = this.props.skinConfig.startScreen.playIconStyle.opacity;
-
-    // PlayButton position, defaulting to centered
-    if (this.props.skinConfig.startScreen.showPlayButton) {
-      playStyle.top = "50%";
-      playStyle.left = "50%";
-      if (this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("top") > -1)
-        playStyle.top = "15%";
-      if (this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("bottom") > -1)
-        playStyle.top = "80%";
-      if (this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("left") > -1)
-        playStyle.left = "10%";
-      if (this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("right") > -1)
-        playStyle.left = "90%";
-    }
-    else {
-      playStyle.display = "none";
-    }
-
-    // metadata visibility
-    var titleMetadata = null;
-    var descriptionMetadata = null;
-    if (this.props.skinConfig.startScreen.showTitle) {
-      titleMetadata = <div className="startScreenTitle" style={screenStyle.infoPanel.title.style}>{this.props.contentTree.title}</div>;
-    }
-    if (this.props.skinConfig.startScreen.showDescription) {
-      descriptionMetadata = <div className="startScreenDescription" style={screenStyle.infoPanel.description.style}>{this.state.description}</div>;
-    }
-
-    if (this.props.skinConfig.startScreen.showTitle ||
-      this.props.skinConfig.startScreen.showDescription) {
-      if (this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("top") > -1)
-        infoStyle.style.top = "5%";
-      if (this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("bottom") > -1)
-        infoStyle.style.bottom = "5%";
-      if (this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("left") > -1)
-        infoStyle.style.left = "5%";
-      if (this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1) {
-        infoStyle.style.right = "5%";
-        infoStyle.title.style.float = "right";
-        infoStyle.description.style.float = "right";
-      }
-    }
-
-    var posterImageUrl = "";
-    if (this.props.skinConfig.startScreen.showPromo) {
-      posterImageUrl = this.props.contentTree.promo_image;
-    }
-
-    var button = null;
-    if (this.props.controller.state.buffering === true) {
-      button = <Spinner />;
-    }
-    else {
-      button = <span className={playClass} style={playStyle} aria-hidden="true"></span>;
-    }
-
-    if (this.props.skinConfig.startScreen.promoImageSize == "small") {
-      // Small Promo Image configuration
-      posterStyle.backgroundSize = "auto";
-      return (
-        <div className="startScreen" onClick={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
-          <div className="startScreenInfo" style={screenStyle.infoPanel.style}>
-            <img className="startScreenPoster" src={posterImageUrl}/>
-            {titleMetadata}
-            {descriptionMetadata}
+    return (
+        <div className="state-screen startScreen">
+          <div className={stateScreenPosterClass} style={posterStyle}></div>
+          <div className={infoPanelClass}>
+            {this.props.skinConfig.startScreen.showTitle ? titleMetadata : ''}
+            {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : ''}
           </div>
-          {button}
+
+          <a className="state-screen-selectable" onClick={this.handleClick}></a>
+
+          {this.props.controller.state.buffering ? <Spinner /> : actionIcon}
         </div>
-      );
-    }
-    else {
-      // Default configuration
-      posterStyle.backgroundImage = "linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%), url('" + posterImageUrl + "')";
-      return (
-        <div className="startScreen" onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
-          <div className="startScreenPoster" style={screenStyle.posterStyle}></div>
-          <div className="startScreenInfo" style={screenStyle.infoPanel.style}>
-            {titleMetadata}
-            {descriptionMetadata}
-          </div>
-          <div className="play">
-            {button}
-          </div>
-        </div>
-      );
-    }
+    );
   }
 });
 module.exports = StartScreen;

@@ -1,6 +1,11 @@
 .share-screen {
   height: 100%;
   width: 100%;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
   .share-container {
     padding: 35px;
@@ -31,6 +36,16 @@
           -webkit-flex: 1;
           padding-left: 0;
         }
+      }
+
+      .shareTab {
+        @extend .tab
+      }
+      .embedTab {
+        @extend .tab
+      }
+      .emailTab {
+        @extend .tab
       }
 
       .active {
@@ -86,6 +101,11 @@
     .googlePlus {
       @extend .social-icon-style;
       background-color: #ff6267;
+    }
+
+    .emailShare {
+      @extend .social-icon-style;
+      background-color: $gray-dark;
     }
 
     input[type="url"] {

@@ -2,15 +2,16 @@
   PLAYING SCREEN
 *********************************************************************/
 var React = require('react'),
-    InlineStyle = require('../styles/inlineStyle'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
     AdOverlay = require('../components/adOverlay'),
     UpNextPanel = require('../components/upNextPanel'),
     Spinner = require('../components/spinner'),
-    CONSTANTS = require('../constants/constants');
+    ResizeMixin = require('../mixins/resizeMixin');
 
 var PlayingScreen = React.createClass({
+  mixins: [ResizeMixin],
+
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
@@ -22,14 +23,6 @@ var PlayingScreen = React.createClass({
 
   componentDidMount: function () {
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
-
-    // Make sure component resize correctly after switch to fullscreen/inline screen
-    window.addEventListener('resize', this.handleResize);
-    window.addEventListener('webkitfullscreenchange', this.handleResize);
-    window.addEventListener('mozfullscreenchange', this.handleResize);
-    window.addEventListener('fullscreenchange', this.handleResize);
-    window.addEventListener('msfullscreenchange', this.handleResize);
-
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen){
       this.props.controller.startHideControlBarTimer();
@@ -38,14 +31,9 @@ var PlayingScreen = React.createClass({
 
   componentWillUnmount: function () {
     this.props.controller.cancelTimer();
-    window.removeEventListener('resize', this.handleResize);
-    window.removeEventListener('webkitfullscreenchange', this.handleResize);
-    window.removeEventListener('mozfullscreenchange', this.handleResize);
-    window.removeEventListener('fullscreenchange', this.handleResize);
-    window.removeEventListener('msfullscreenchange', this.handleResize);
   },
 
-  componentWillUpdate: function(nextProps, nextState) {
+  componentWillUpdate: function(nextProps) {
     if(nextProps) {
       if (nextProps.controller.state.controlBarVisible == false && this.state.controlBarVisible == true) {
         this.hideControlBar();
@@ -61,7 +49,7 @@ var PlayingScreen = React.createClass({
     }
   },
 
-  handleResize: function(e) {
+  handleResize: function() {
     if (this.isMounted()) {
       this.setState({controlBarWidth: this.getDOMNode().clientWidth});
       this.props.controller.startHideControlBarTimer();
@@ -81,6 +69,7 @@ var PlayingScreen = React.createClass({
   },
 
   handleTouchEnd: function(event) {
+    event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
     if (this.props.controller.state.volumeState.volumeSliderVisible) {
       this.props.controller.hideVolumeSliderBar();
     }
@@ -117,31 +106,39 @@ var PlayingScreen = React.createClass({
   },
 
   render: function() {
-    var upNext = null;
-    if (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) {
-      upNext = <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/>;
-    }
-
-    var spinner = null;
-    if (this.props.controller.state.buffering === true) {
-      spinner = <Spinner />;
-    }
     return (
-      <div className="playingScreen" ref="PlayingScreen" onMouseOver={this.showControlBar} onMouseOut={this.hideControlBar}
-        onMouseMove={this.handlePlayerMouseMove} style={InlineStyle.defaultScreenStyle.style}>
-        {spinner}
-        <div onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd} style={InlineStyle.defaultScreenStyle.style}>
-          <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
-            showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
-          <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-            controlBarWidth={this.state.controlBarWidth} />
-          <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-            controlBarWidth={this.state.controlBarWidth}
-            playerState={this.props.playerState}
-            authorization={this.props.authorization} />
-        </div>
-        {upNext}
+    <div className="state-screen playingScreen"
+         ref="PlayingScreen"
+         onMouseOver={this.showControlBar}
+         onMouseOut={this.hideControlBar}
+         onMouseMove={this.handlePlayerMouseMove}>
+
+      {this.props.controller.state.buffering ? <Spinner /> : ''}
+
+      <div className="default-screen"
+           onMouseUp={this.handlePlayerMouseUp}
+           onTouchEnd={this.handleTouchEnd}>
+
+        <AdOverlay {...this.props}
+          overlay={this.props.controller.state.adOverlayUrl}
+          showOverlay={this.props.controller.state.showAdOverlay}
+          showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
+          controlBarVisible={this.state.controlBarVisible} />
+
+        <ScrubberBar {...this.props}
+          controlBarVisible={this.state.controlBarVisible}
+          controlBarWidth={this.state.controlBarWidth} />
+
+        <ControlBar {...this.props}
+          controlBarVisible={this.state.controlBarVisible}
+          controlBarWidth={this.state.controlBarWidth}
+          playerState={this.props.playerState}
+          authorization={this.props.authorization} />
       </div>
+
+      {(this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
+        <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/> : ''}
+    </div>
     );
   }
 });

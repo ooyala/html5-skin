@@ -9,6 +9,7 @@
 */
 var React = require('react'),
     MoreOptionsPanel = require('../components/moreOptionsPanel'),
+    InlineStyle = require('../styles/inlineStyle'),
     CloseButton = require('../components/closeButton');
 
 var MoreOptionsScreen = React.createClass({
@@ -42,7 +43,7 @@ var MoreOptionsScreen = React.createClass({
 
   render: function() {
     return (
-      <div className="MoreOptionsScreen" style={{height: "100%", width: "100%"}}>
+      <div className="state-screen MoreOptionsScreen">
         <MoreOptionsPanel {...this.props} controlBarWidth={this.state.controlBarWidth} />
         <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>

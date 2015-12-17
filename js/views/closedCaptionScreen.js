@@ -10,6 +10,7 @@
 var React = require('react'),
     ClosedCaptionPanel = require('../components/closedCaptionPanel'),
     CloseButton = require('../components/closeButton'),
+    InlineStyle = require('../styles/inlineStyle'),
     Utils = require('../components/utils');
 
 var ClosedCaptionScreen = React.createClass({
@@ -54,7 +55,7 @@ var ClosedCaptionScreen = React.createClass({
 
   render: function() {
     return (
-      <div style={{height: "100%", width: "100%"}}>
+      <div className="state-screen closedCaptionsScreen">
         <ClosedCaptionPanel {...this.props} closedCaptionOptions = {this.props.closedCaptionOptions} clientWidth = {this.state.clientWidth} clientHeight = {this.state.clientHeight}/>
         <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>
