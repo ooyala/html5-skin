@@ -185,7 +185,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             this.hideControlBar();
           }.bind(this)
         );
-        this.mb.publish(OO.EVENTS.UI_READY, "#" + elementId + " .player_skin_plugins");
+        this.mb.publish(OO.EVENTS.UI_READY, {
+          videoWrapperClass: "innerWrapper",
+          pluginsClass: "player_skin_plugins"
+        });
       }, this));
 
       this.state.isMobile = Utils.isMobile();
