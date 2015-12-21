@@ -11,24 +11,25 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     InlineStyle = require('../styles/inlineStyle'),
     Utils = require('./utils'),
+    ClassNames = require('classnames'),
     ccStyle = InlineStyle.closedCaptionScreenStyles;
 
 var ClosedCaptionPanel = React.createClass({
-  calculateNumberOfRows: function(clientWidth, clientHeight){
-    var switchHeight = parseInt(ccStyle.switchStyle.height) + parseInt(ccStyle.switchStyle.marginTop);
-    var CCPreviewPanelHeight = parseInt(ccStyle.CCPreviewPanelStyle.height);
-    var captionHeight = 4/3*parseInt(ccStyle.captionStyle.fontSize);
-    var innerPanelPaddingHeight = 2*parseInt(ccStyle.innerPanelStyle.padding);
+  // calculateNumberOfRows: function(clientWidth, clientHeight){
+  //   var switchHeight = parseInt(ccStyle.switchStyle.height) + parseInt(ccStyle.switchStyle.marginTop);
+  //   var CCPreviewPanelHeight = parseInt(ccStyle.CCPreviewPanelStyle.height);
+  //   var captionHeight = 4/3*parseInt(ccStyle.captionStyle.fontSize);
+  //   var innerPanelPaddingHeight = 2*parseInt(ccStyle.innerPanelStyle.padding);
 
-    //height of the panel that should fit the table
-    var panelHeight = clientHeight - CCPreviewPanelHeight - captionHeight - innerPanelPaddingHeight - switchHeight;
-    //height of a table row
-    var tableRowHeight = 2*parseInt(ccStyle.itemSelectedStyle.fontSize) + parseInt(ccStyle.itemStyle.marginTop) + 2*parseInt(ccStyle.itemSelectedStyle.padding);
+  //   //height of the panel that should fit the table
+  //   var panelHeight = clientHeight - CCPreviewPanelHeight - captionHeight - innerPanelPaddingHeight - switchHeight;
+  //   //height of a table row
+  //   var tableRowHeight = 2*parseInt(ccStyle.itemSelectedStyle.fontSize) + parseInt(ccStyle.itemStyle.marginTop) + 2*parseInt(ccStyle.itemSelectedStyle.padding);
 
-    var numRows = Math.floor(panelHeight/tableRowHeight);
+  //   var numRows = Math.floor(panelHeight/tableRowHeight);
 
-    return numRows;
-  },
+  //   return numRows;
+  // },
 
 /*   Responsive design code for later
 
@@ -98,17 +99,18 @@ var ClosedCaptionPanel = React.createClass({
 
   render: function(){
     // this.setResponsiveStyle(this.props.clientWidth); //Leave this for later when we use the resizing
-    var numRows = this.calculateNumberOfRows(this.props.clientWidth, this.props.clientHeight);
+    var numRows = 3;//this.calculateNumberOfRows(this.props.clientWidth, this.props.clientHeight);
     var closedCaptionOptionsString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CC_OPTIONS, this.props.localizableStrings);
     return (
-      <div style = {ccStyle.screenStyle}>
-        <div style = {ccStyle.innerPanelStyle}>
-          <div style = {ccStyle.captionStyle}>{closedCaptionOptionsString} <span className={this.props.skinConfig.icons.cc.fontStyleClass} style={ccStyle.captionIconStyle}></span></div>
+        <div className = "closed-captions-panel">
+          <div className = "closed-captions-panel-title">
+            {closedCaptionOptionsString} 
+            <span className={this.props.skinConfig.icons.cc.fontStyleClass}></span>
+          </div>
           <OnOffSwitch {...this.props} />
           <LanguageTabContent {...this.props} numRows = {numRows} />
           <CCPreviewPanel {...this.props} />
         </div>
-      </div>
     );
   }
 });
@@ -121,50 +123,40 @@ var OnOffSwitch = React.createClass({
     return null;
   },
 
-  componentWillMount: function(){
-    this.toggleCCStyles();
-  },
-
   handleOnOffSwitch: function(evt){
-    if (evt.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      this.props.controller.toggleClosedCaptionEnabled();
-      this.toggleCCStyles();
-    }
-  },
-
-  toggleCCStyles: function(){
-    ccStyle.switch.background = this.props.closedCaptionOptions.enabled ? ccStyle.switch.onBackground : "grey";
-    ccStyle.switchThumb.left = this.props.closedCaptionOptions.enabled ? "" : "0";
-    ccStyle.switchThumb.right = this.props.closedCaptionOptions.enabled ? "0" : "";
-
-    var elementColor = this.props.closedCaptionOptions.enabled ? "white" : "grey";
-    ccStyle.itemStyle.color = elementColor;
-    ccStyle.itemStyle.cursor = this.props.closedCaptionOptions.enabled ? "pointer" : "default";
-    ccStyle.lastColumnItemStyle.color = elementColor;
-    ccStyle.lastColumnItemStyle.cursor = this.props.closedCaptionOptions.enabled ? "pointer" : "default";
-    ccStyle.CCPreviewTextStyle.color = elementColor;
-    ccStyle.CCPreviewCaptionStyle.color = elementColor;
-    ccStyle.closedCaptionChevronLeftButtonContainer.color = ccStyle.closedCaptionChevronRightButtonContainer.color = elementColor;
-
-    ccStyle.onStyle.color = elementColor;
-    ccStyle.offStyle.color = this.props.closedCaptionOptions.enabled ? "grey" : "white";
-
+    this.props.controller.toggleClosedCaptionEnabled();
   },
 
   render: function(){
+    var switchThumbClassName = ClassNames({
+      'switch-thumb': true,
+      'switch-thumb-on': this.props.closedCaptionOptions.enabled,
+      'switch-thumb-off': !this.props.closedCaptionOptions.enabled
+    });
+    var switchBodyClassName = ClassNames({
+      'switch-body': true,
+      'switch-body-off': !this.props.closedCaptionOptions.enabled
+    });
+    var onCaptionClassName = ClassNames({
+      'switch-captions switch-captions-on': true,
+      'switch-captions-active': this.props.closedCaptionOptions.enabled
+    });
+    var offCaptionClassName = ClassNames({
+      'switch-captions switch-captions-off': true,
+      'switch-captions-active': !this.props.closedCaptionOptions.enabled
+    });
+
     var offString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.OFF, this.props.localizableStrings);
     var onString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.ON, this.props.localizableStrings);
     return (
-        <div className="CCSwitch" style={ccStyle.switchStyle} onClick={this.handleOnOffSwitch} onTouchEnd={this.handleOnOffSwitch}>
-          <span style={ccStyle.offStyle}>{offString}</span>
-          <div style={ccStyle.switchContainer}>
-            <span style={ccStyle.switch}></span>
-            <span style={ccStyle.switchThumb}></span>
+        <div className="switch-container">
+          <span className = {offCaptionClassName}>{offString}</span>
+          <div className = "switch-element">
+            <span className = {switchBodyClassName}></span>
+            <span className = {switchThumbClassName}></span>
           </div>
-          <span style={ccStyle.onStyle}>{onString}</span>
+          <span className = {onCaptionClassName}>{onString}</span>
+          <a className="switch-container-selectable" onClick={this.handleOnOffSwitch}></a>
         </div>
     );
   }
@@ -176,9 +168,9 @@ var CCPreviewPanel = React.createClass({
     var closedCaptionPreviewTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CLOSED_CAPTION_PREVIEW, this.props.localizableStrings);
     var closedCaptionSampleText =Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SAMPLE_TEXT, this.props.localizableStrings);
     return (
-      <div style = {ccStyle.CCPreviewPanelStyle}>
-        <div style = {ccStyle.CCPreviewCaptionStyle}>{closedCaptionPreviewTitle}</div>
-        <div style = {ccStyle.CCPreviewTextStyle}>{closedCaptionSampleText}</div>
+      <div className = "preview-panel">
+        <div className = "preview-caption">{closedCaptionPreviewTitle}</div>
+        <div className = "preview-text">{closedCaptionSampleText}</div>
       </div>
     );
   }
@@ -194,19 +186,19 @@ var LanguageTabContent = React.createClass({
   },
 
   componentDidUpdate: function(){
-    var oldChevronRightVisibility = ccStyle.closedCaptionChevronRightButtonContainer.visibility;
-    var oldChevronLeftVisibility = ccStyle.closedCaptionChevronLeftButtonContainer.visibility;
+    // var oldChevronRightVisibility = ccStyle.closedCaptionChevronRightButtonContainer.visibility;
+    // var oldChevronLeftVisibility = ccStyle.closedCaptionChevronLeftButtonContainer.visibility;
 
-    //right chevron button is visible if (scrollLeftDistance + table container) are less than table width
-    ccStyle.closedCaptionChevronRightButtonContainer.visibility = (Math.ceil(this.refs.tableLanguageContainer.getDOMNode().clientWidth + this.state.scrollLeftDistance) < this.refs.tableLanguage.getDOMNode().clientWidth) ? "visible" : "hidden";
-    //left chevron button is visible if scrollLeftDistance is > 0 and table does not fit into the container
-    ccStyle.closedCaptionChevronLeftButtonContainer.visibility = (this.state.scrollLeftDistance > 0 && this.refs.tableLanguageContainer.getDOMNode().clientWidth < this.refs.tableLanguage.getDOMNode().clientWidth) ? "visible" : "hidden";
+    // //right chevron button is visible if (scrollLeftDistance + table container) are less than table width
+    // ccStyle.closedCaptionChevronRightButtonContainer.visibility = (Math.ceil(this.refs.tableLanguageContainer.getDOMNode().clientWidth + this.state.scrollLeftDistance) < this.refs.tableLanguage.getDOMNode().clientWidth) ? "visible" : "hidden";
+    // //left chevron button is visible if scrollLeftDistance is > 0 and table does not fit into the container
+    // ccStyle.closedCaptionChevronLeftButtonContainer.visibility = (this.state.scrollLeftDistance > 0 && this.refs.tableLanguageContainer.getDOMNode().clientWidth < this.refs.tableLanguage.getDOMNode().clientWidth) ? "visible" : "hidden";
     this.refs.tableLanguageContainer.getDOMNode().scrollLeft = this.state.scrollLeftDistance;
 
-    if (oldChevronRightVisibility != ccStyle.closedCaptionChevronRightButtonContainer.visibility ||
-      oldChevronLeftVisibility != ccStyle.closedCaptionChevronLeftButtonContainer.visibility){
-      this.forceUpdate();//to update the screen if chevron buttons changed visibility
-    }
+    // if (oldChevronRightVisibility != ccStyle.closedCaptionChevronRightButtonContainer.visibility ||
+    //   oldChevronLeftVisibility != ccStyle.closedCaptionChevronLeftButtonContainer.visibility){
+    //   this.forceUpdate();//to update the screen if chevron buttons changed visibility
+    // }
   },
 
   calculateScrollDistance: function(){
@@ -229,14 +221,9 @@ var LanguageTabContent = React.createClass({
   },
 
   handleLeftChevronClick: function(evt){
-    if (evt.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      if (this.props.closedCaptionOptions.enabled){
-        this.refs.tableLanguageContainer.getDOMNode().scrollLeft += -1*this.calculateScrollDistance();
-        this.setState({scrollLeftDistance: this.refs.tableLanguageContainer.getDOMNode().scrollLeft});
-      }
+    if (this.props.closedCaptionOptions.enabled){
+      this.refs.tableLanguageContainer.getDOMNode().scrollLeft += -1*this.calculateScrollDistance();
+      this.setState({scrollLeftDistance: this.refs.tableLanguageContainer.getDOMNode().scrollLeft});
     }
   },
 
@@ -252,26 +239,26 @@ var LanguageTabContent = React.createClass({
     }
   },
 
-  setStyle: function(item, j, colnum){
-    var style;
+  setClassname: function(item, j, colnum){
+    var classname;
     if (this.props.closedCaptionOptions.language == item && this.props.closedCaptionOptions.enabled){
       if (j == colnum){
-        style = ccStyle.lastColumnItemSelectedStyle;
+        classname = "item item-selected item-last-column";
       }
       else {
-        style = ccStyle.itemSelectedStyle;
+        classname = "item item-selected";
       }
     }
     else {
       if (j == colnum){
-        style = ccStyle.lastColumnItemStyle;
+        classname = "item item-last-column";
       }
       else {
-        style = ccStyle.itemStyle;
+        classname = "item";
       }
     }
 
-    return style;
+    return classname;
   },
 
 
@@ -300,12 +287,14 @@ var LanguageTabContent = React.createClass({
     }
 
     return(
-      <div className="ClosedCaptionsPanel" style={ccStyle.positionRelativeStyle}>
-        <div className="CCLeft" style={ccStyle.closedCaptionChevronLeftButtonContainer} onClick={this.handleLeftChevronClick} onTouchEnd={this.handleLeftChevronClick}>
-          <span className={this.props.skinConfig.icons.left.fontStyleClass} style={ccStyle.closedCaptionChevronLeftButton.style} aria-hidden="true"></span>
+      <div className="language-panel">
+        <div className="chevron-button-container left-chevron-container">
+          <span className={this.props.skinConfig.icons.left.fontStyleClass} aria-hidden="true"></span>
+          <a className="chevron-container-selectable" onClick={this.handleLeftChevronClick}></a>
         </div>
-        <div className="CCRight" style={ccStyle.closedCaptionChevronRightButtonContainer} onClick={this.handleRightChevronClick} onTouchEnd={this.handleRightChevronClick}>
-          <span className={this.props.skinConfig.icons.right.fontStyleClass} style={ccStyle.closedCaptionChevronRightButton.style} aria-hidden="true"></span>
+        <div className="chevron-button-container right-chevron-container">
+          <span className={this.props.skinConfig.icons.right.fontStyleClass} aria-hidden="true"></span>
+          <a className="chevron-container-selectable" onClick={this.handleRightChevronClick}></a>
         </div>
         <div style = {ccStyle.tableLanguageContainerStyle} ref="tableLanguageContainer">
           <table ref = "tableLanguage" style = {ccStyle.tableLanguageStyle}>
@@ -316,7 +305,7 @@ var LanguageTabContent = React.createClass({
                     {row.map(function(item, j){
                       return (
                         <td className={availableLanguages.locale[item]} key = {j} onClick={this.changeLanguage.bind(this, item)} onTouchEnd={this.changeLanguage.bind(this, item)} style = {ccStyle.tdLanguageStyle}>
-                          <div style = {this.setStyle(item, j, colnum)}>{availableLanguages.locale[item]}</div>
+                          <div className = {this.setClassname(item, j, colnum)}>{availableLanguages.locale[item]}</div>
                         </td>
                       );
                     },this)}
