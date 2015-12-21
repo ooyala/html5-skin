@@ -202,8 +202,8 @@ var LanguageTabContent = React.createClass({
   },
 
   calculateScrollDistance: function(){
-    var colWidth = parseInt(ccStyle.itemStyle.width) + parseInt(ccStyle.itemStyle.marginRight) + 2*parseInt(ccStyle.itemStyle.padding);
-    var numCols =  Math.floor((this.refs.tableLanguageContainer.getDOMNode().clientWidth + parseInt(ccStyle.itemStyle.marginRight)) / (colWidth));
+    var colWidth = 276;//parseInt(ccStyle.itemStyle.width) + parseInt(ccStyle.itemStyle.marginRight) + 2*parseInt(ccStyle.itemStyle.padding);
+    var numCols =  Math.floor((this.refs.tableLanguageContainer.getDOMNode().clientWidth + 128) / (colWidth));//parseInt(ccStyle.itemStyle.marginRight)) / (colWidth));
     var scrollDistance = numCols * colWidth;
 
     return scrollDistance;
@@ -296,8 +296,8 @@ var LanguageTabContent = React.createClass({
           <span className={this.props.skinConfig.icons.right.fontStyleClass} aria-hidden="true"></span>
           <a className="chevron-container-selectable" onClick={this.handleRightChevronClick}></a>
         </div>
-        <div style = {ccStyle.tableLanguageContainerStyle} ref="tableLanguageContainer">
-          <table ref = "tableLanguage" style = {ccStyle.tableLanguageStyle}>
+        <div className = "table-container" ref="tableLanguageContainer">
+          <table ref = "tableLanguage" className = "table-language">
             {
               table.map(function(row,i){
                 return (

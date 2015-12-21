@@ -289,45 +289,7 @@ module.exports = {
 
   closedCaptionScreenStyles: {
 
-    itemStyle: {
-      width: "140px",
-      marginRight: "128px",
-      padding: "4px"
-    },
 
-    lastColumnItemStyle: {
-      width: "140px",
-      marginRight: "0px",
-      padding: "4px"
-    },
-
-    itemSelectedStyle: {
-      width: "140px",
-      marginRight: "128px",
-      padding: "4px"
-    },
-
-    lastColumnItemSelectedStyle: {
-      width: "140px",
-      marginRight: "0px",
-      padding: "4px"
-    },
-
-    tableLanguageContainerStyle: {
-      overflowX: "hidden",
-      marginLeft: "50px",
-      marginRight: "50px",
-      resize: "none"
-    },
-
-    tableLanguageStyle: {
-      borderCollapse: "collapse"
-    },
-
-    tdLanguageStyle: {
-      paddingLeft: "0px",
-      paddingRight: "0px"
-    }
   },
 
   MoreOptionsScreenStyle: {
