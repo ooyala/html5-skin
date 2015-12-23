@@ -78,15 +78,11 @@ var StartScreen = React.createClass({
     this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
-  onMouseDown: function(event) {
-    event.preventDefault();
-  },
-
   render: function() {
     //inline style for config/skin.json elements only
     var titleStyle = {
-      // fontSize: this.props.skinConfig.startScreen.titleFont.fontSize + "pt",
-      // fontFamily: this.props.skinConfig.startScreen.titleFont.fontFamily,
+      //fontSize: this.props.skinConfig.startScreen.titleFont.fontSize + "pt",
+      //fontFamily: this.props.skinConfig.startScreen.titleFont.fontFamily,
       color: this.props.skinConfig.startScreen.titleFont.color
     };
     var descriptionStyle = {
@@ -145,7 +141,7 @@ var StartScreen = React.createClass({
     );
 
     return (
-        <div className="state-screen startScreen" onMouseDown={this.onMouseDown}>
+        <div className="state-screen startScreen">
           <div className={stateScreenPosterClass} style={posterStyle}></div>
           <div className={infoPanelClass}>
             {this.props.skinConfig.startScreen.showTitle ? titleMetadata : ''}
