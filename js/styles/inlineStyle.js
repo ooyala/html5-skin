@@ -287,11 +287,6 @@ module.exports = {
     }
   },
 
-  closedCaptionScreenStyles: {
-
-
-  },
-
   MoreOptionsScreenStyle: {
     panelStyle: {
       "position": "absolute",

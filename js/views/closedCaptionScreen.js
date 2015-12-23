@@ -40,6 +40,16 @@ var ClosedCaptionScreen = React.createClass({
     this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
+  calculateScreenSize: function () {
+    if (this.getDOMNode().clientWidth > 1000 && this.getDOMNode().clientHeight > 700 ){
+      return 'large';
+    }
+    else if (this.getDOMNode().clientWidth < 500 || this.getDOMNode().clientHeight < 400 ){
+      return 'small';
+    }
+    else return 'medium';
+  },
+
   highlight: function(evt) {
     Utils.highlight(evt.target);
   },
@@ -56,7 +66,7 @@ var ClosedCaptionScreen = React.createClass({
   render: function() {
     return (
       <div className="state-screen closedCaptionsScreen">
-        <ClosedCaptionPanel {...this.props} closedCaptionOptions = {this.props.closedCaptionOptions} clientWidth = {this.state.clientWidth} clientHeight = {this.state.clientHeight}/>
+        <ClosedCaptionPanel {...this.props} closedCaptionOptions = {this.props.closedCaptionOptions} screenSize = {this.calculateScreenSize()}/>
         <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>
     );

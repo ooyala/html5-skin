@@ -1,0 +1,226 @@
+.closedCaptionsScreen {
+  background-color: rgba(0,0,0,0.8);
+  height: 100%;
+  width: 100%;
+
+  .closed-captions-panel {
+    padding: 35px;
+  }
+
+  .closed-captions-panel-title {
+    font-size: 28pt;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #ffffff;
+    font-weight: bold;
+    span.icon {
+        top: 1px;
+        position: relative;
+        margin-left: 7px;
+        font-size: 0.8em;
+    }
+  }
+
+  .switch-container {
+    cursor: pointer;
+    margin-top: 35px;
+    height: 21px;
+    width: 105px;
+    color: #FFFFFF;
+    position: relative;
+  }
+  .switch-container-selectable {
+    @extend .expand;
+    text-decoration:none;
+    cursor: poiter;
+    //for IE
+    background-color:white;
+    opacity: 0;
+    filter: alpha(opacity=1);
+  }
+  .switch-captions {
+    position: absolute;
+    display: inline-block;
+    color: grey;
+    font-size: 15pt;
+    font-family: 'Roboto', sans-serif;
+    color: grey;
+  }
+  .switch-captions-on {
+    right: 0;
+  }
+  .switch-captions-off {
+    left: 0;
+  }
+  .switch-captions-active {
+    color: white;
+  }
+  .switch-element {
+    display: inline-block;
+    width: 33%;
+    height: 100%;
+    position: relative;
+    margin-left: 33%;
+    border-radius: 100%;
+  }
+  .switch-thumb {
+    display: block;
+    width: 60%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    background: #FFFFFF;
+    border-radius: 100%;
+    transition: all 0.1s ease-in 0s;
+  }
+  .switch-thumb-on {
+    right: 0;
+  }
+  .switch-thumb-off {
+    left: 0;
+  }
+  .switch-body {
+    display: block;
+    width: 100%;
+    height: 75%;
+    position: absolute;
+    right: 0;
+    top: 12.5%;
+    border-radius: 40px;
+    transition: all 0.5s ease-in-out;
+    background: #50AE54;
+  }
+  .switch-body-off {
+    background: grey;
+  }
+
+  .preview-panel {
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    height: 70px;
+    border-top: 1px solid grey;
+    visibility: visible;
+  }
+  .preview-caption {
+    color: white;
+    font-size: 12pt;
+    font-family: 'Roboto', sans-serif;
+    margin-left: 35px;
+    margin-bottom: 5.5px;
+    margin-top: 5.5px
+  }
+  .preview-text {
+    margin-top: 0px;
+    color: white;
+    font-size: 24pt;
+    font-weight: bold;
+    font-family: Verdana;
+    margin-left: 35px
+  }
+
+  .language-panel {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    margin-top: 150px;
+    margin-bottom: 85px;
+  }
+
+  .language-panel-large {
+    max-height: 400px;
+  }
+  .language-panel-medium {
+    max-height: 160px;
+  }
+  .language-panel-small {
+    max-height: 80px;
+  }
+
+  .chevron-button-container {
+    position: absolute;
+    background-color: transparent;
+    height: 100%;
+    width: 50px;
+    color: white;
+    cursor: pointer;
+    span.icon {
+      top: 50%;
+      left: 50%;
+      font-size: 32pt;
+      transform: translate(-50%, -50%);
+      position: absolute;
+      opacity: 1;
+      transition: opacity .25s ease-in-out;
+    }
+  }
+  .left-chevron-container {
+    left: 0px;
+  }
+  .right-chevron-container {
+    right: 0px;
+  }
+
+  .chevron-container-selectable {
+    @extend .expand;
+    text-decoration:none;
+    cursor: poiter;
+    //for IE
+    background-color:white;
+    opacity: 0;
+    filter: alpha(opacity=1);
+  }
+
+  .item {
+    font-size: 22pt;
+    font-family: 'Roboto Condensed', sans-serif;
+    width: 140px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-right: 128px;
+    margin-top: 28px;
+    text-align: center;
+    padding: 4px;
+    color: white;
+    transition: all 0.0s ease;
+    cursor: pointer;
+  }
+  .item-selected {
+    background-color: #4389ff;
+    border-radius: 8px;
+  }
+
+  .disabled {
+    color: grey;
+  }
+
+  .invisible {
+    visibility: none;
+  }
+
+  .language-container {
+    background-color: transparent;
+    overflow: auto;
+    white-space: nowrap;
+    margin-left: 50px;
+    margin-right: 50px;
+    height: 100%;
+  }
+
+
+  .flexcontainer {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: column wrap;
+    flex-flow: column wrap;
+    overflow: scroll;
+    align-items: center;
+    -webkit-align-items: center;
+    justify-content: flex-start;
+  }
+}
