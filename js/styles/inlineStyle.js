@@ -226,7 +226,6 @@ module.exports = {
       "fontFamily": "'Roboto Condensed', sans-serif",
       "color": "#ffffff",
       "margin": "auto",
-      "marginRight": "30px",
       "textAlign": "center",
       "cursor": "pointer",
       "icon": {
@@ -241,6 +240,7 @@ module.exports = {
       "color": "#ffffff",
       "margin": "auto",
       "marginRight": "15px",
+      "marginLeft": "30px",
       "textAlign": "center",
       "cursor": "pointer",
       "icon": {

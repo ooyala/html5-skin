@@ -122,7 +122,8 @@ var Utils = {
   * @returns {Boolean} Whether the browser is Safari or not
   */
   isSafari: function () {
-      return !!window.navigator.userAgent.match(/AppleWebKit/);
+    return (!!window.navigator.userAgent.match(/AppleWebKit/) &&
+            !window.navigator.userAgent.match(/Chrome/));
   },
 
   /**
