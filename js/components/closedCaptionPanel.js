@@ -16,13 +16,13 @@ var ClosedCaptionPanel = React.createClass({
   render: function(){
     var closedCaptionOptionsString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CC_OPTIONS, this.props.localizableStrings);
     return (
-        <div className = "closed-captions-panel">
-          <div className = "closed-captions-panel-title">
+        <div className="closed-captions-panel">
+          <div className="closed-captions-panel-title">
             {closedCaptionOptionsString} 
             <span className={this.props.skinConfig.icons.cc.fontStyleClass}></span>
           </div>
           <OnOffSwitch {...this.props} />
-          <LanguageTabContent {...this.props}/>
+          <LanguageTabContent {...this.props} />
           <CCPreviewPanel {...this.props} />
         </div>
     );
@@ -31,7 +31,7 @@ var ClosedCaptionPanel = React.createClass({
 module.exports = ClosedCaptionPanel;
 
 var OnOffSwitch = React.createClass({
-  handleOnOffSwitch: function(evt){
+  handleOnOffSwitch: function() {
     this.props.controller.toggleClosedCaptionEnabled();
   },
 
@@ -56,14 +56,15 @@ var OnOffSwitch = React.createClass({
 
     var offString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.OFF, this.props.localizableStrings);
     var onString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.ON, this.props.localizableStrings);
+
     return (
         <div className="switch-container">
-          <span className = {offCaptionClassName}>{offString}</span>
-          <div className = "switch-element">
-            <span className = {switchBodyClassName}></span>
-            <span className = {switchThumbClassName}></span>
+          <span className={offCaptionClassName}>{offString}</span>
+          <div className="switch-element">
+            <span className={switchBodyClassName}></span>
+            <span className={switchThumbClassName}></span>
           </div>
-          <span className = {onCaptionClassName}>{onString}</span>
+          <span className={onCaptionClassName}>{onString}</span>
           <a className="switch-container-selectable" onClick={this.handleOnOffSwitch}></a>
         </div>
     );
@@ -73,28 +74,41 @@ var OnOffSwitch = React.createClass({
 var CCPreviewPanel = React.createClass({
   render: function(){
     var closedCaptionPreviewTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CLOSED_CAPTION_PREVIEW, this.props.localizableStrings);
-    var closedCaptionSampleText =Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SAMPLE_TEXT, this.props.localizableStrings);
+    var closedCaptionSampleText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SAMPLE_TEXT, this.props.localizableStrings);
 
     var previewCaptionClassName = ClassNames({
       'preview-caption': true,
       'disabled': !this.props.closedCaptionOptions.enabled
     });
-
     var previewTextClassName = ClassNames({
       'preview-text': true,
       'disabled': !this.props.closedCaptionOptions.enabled
     });
 
     return (
-      <div className = "preview-panel">
-        <div className = {previewCaptionClassName}>{closedCaptionPreviewTitle}</div>
-        <div className = {previewTextClassName}>{closedCaptionSampleText}</div>
+      <div className="preview-panel">
+        <div className={previewCaptionClassName}>{closedCaptionPreviewTitle}</div>
+        <div className={previewTextClassName}>{closedCaptionSampleText}</div>
       </div>
     );
   }
 });
 
 var LanguageTabContent = React.createClass({
+  propTypes: {
+    languagesPerPage: React.PropTypes.objectOf(React.PropTypes.number)
+  },
+
+  getDefaultProps: function () {
+    return {
+      languagesPerPage: {
+        small: 2,
+        medium: 12,
+        large: 25
+      }
+    }
+  },
+
   getInitialState: function() {
     return {
       selectedLanguage: this.props.closedCaptionOptions.language,
@@ -108,94 +122,71 @@ var LanguageTabContent = React.createClass({
     }
   },
 
-  handleLeftChevronClick: function(evt){
-    if (this.props.closedCaptionOptions.enabled){
-      event.preventDefault();
-      this.setState({
-        currentPage: this.state.currentPage - 1
-      });
-    }
+  handleLeftChevronClick: function(event){
+    event.preventDefault();
+    this.setState({
+      currentPage: this.state.currentPage - 1
+    });
   },
 
-  handleRightChevronClick: function(evt){
-    if (this.props.closedCaptionOptions.enabled){
-      event.preventDefault();
-      this.setState({
-        currentPage: this.state.currentPage + 1
-      });
-    }
+  handleRightChevronClick: function(event){
+    event.preventDefault();
+    this.setState({
+      currentPage: this.state.currentPage + 1
+    });
   },
 
   setClassname: function(item){
-    var classname = ClassNames({
+    return ClassNames({
       'item': true,
       'item-selected': this.props.closedCaptionOptions.language == item && this.props.closedCaptionOptions.enabled,
       'disabled': !this.props.closedCaptionOptions.enabled
     });
-    return classname;
   },
 
   render: function(){
     var availableLanguages = this.props.closedCaptionOptions.availableLanguages; //getting list of languages
 
-    if (availableLanguages.languages.length > 1){//if there is only one element, do not show it at all
-      var languageCodes = availableLanguages.languages; // getting an array of all the codes
+    //pagination
+    var languagesPerPage = this.props.languagesPerPage.medium;
+    var startAt = languagesPerPage * (this.state.currentPage - 1);
+    var endAt = languagesPerPage * this.state.currentPage;
+    var languagePage = availableLanguages.languages.slice(startAt,endAt);
 
-      var languagesPerPage = 1;
-      if (this.props.screenSize == 'small'){
-        var languagesPerPage = 1;
-      }
-      else if (this.props.screenSize == 'medium'){
-        var languagesPerPage = 4;
-      }
-      else if (this.props.screenSize == 'large'){
-        var languagesPerPage = 15;
-      }
-
-      var startAt = languagesPerPage * (this.state.currentPage - 1);
-      var endAt = languagesPerPage * this.state.currentPage;
-      var languagePage = availableLanguages.languages.slice(startAt,endAt);
-
-      // Build language content blocks
+    //if there is only one element, do not show it at all
+    if (availableLanguages.languages.length > 1) {
+      //Build language content blocks
       var languageContentBlocks = [];
       for (var i = 0; i < languagePage.length; i++) {
         languageContentBlocks.push(
-          <div key={i}>
-            <a onClick={this.changeLanguage.bind(this, languagePage[i])}>
-              <div className = {this.setClassname(languagePage[i])}>{availableLanguages.locale[languagePage[i]]}</div>
-            </a>
-          </div>
+          <a className={this.setClassname(languagePage[i])} onClick={this.changeLanguage.bind(this, languagePage[i])} key={i}>
+            <span>{availableLanguages.locale[languagePage[i]]}</span>
+          </a>
         );
       }
     }
-    var languagePanel = ClassNames({
-      'language-panel': true,
-      'language-panel-large': this.props.screenSize == 'large',
-      'language-panel-medium': this.props.screenSize == 'medium',
-      'language-panel-small': this.props.screenSize == 'small'
-    });
+
     var leftChevron = ClassNames({
-      'chevron-button-container left-chevron-container': true,
-      'invisible': !this.props.closedCaptionOptions.enabled || this.state.currentPage <= 1
+      'leftButton': true,
+      'hidden': !this.props.closedCaptionOptions.enabled || this.state.currentPage <= 1
     });
     var rightChevron = ClassNames({
-      'chevron-button-container right-chevron-container': true,
-      'invisible': !this.props.closedCaptionOptions.enabled || this.state.currentPage >= availableLanguages.languages.length/languagesPerPage
+      'rightButton': true,
+      'hidden': !this.props.closedCaptionOptions.enabled || endAt >= availableLanguages.languages.length
     });
 
     return(
-      <div className={languagePanel}>
-        <div className={leftChevron}>
-          <span className={this.props.skinConfig.icons.left.fontStyleClass} aria-hidden="true"></span>
-          <a className="chevron-container-selectable" onClick={this.handleLeftChevronClick}></a>
-        </div>
-        <div className={rightChevron}>
-          <span className={this.props.skinConfig.icons.right.fontStyleClass} aria-hidden="true"></span>
-          <a className="chevron-container-selectable" onClick={this.handleRightChevronClick}></a>
-        </div>
-        <div className="language-container flexcontainer">
+      <div className="language-container">
+        <div className="language-panel flexcontainer">
           {languageContentBlocks}
         </div>
+
+        <a className={leftChevron} ref="leftChevron" onClick={this.handleLeftButtonClick}>
+          <span className={this.props.skinConfig.icons.left.fontStyleClass} aria-hidden="true"></span>
+        </a>
+        <a className={rightChevron} ref="rightChevron" onClick={this.handleRightChevronClick}>
+          <span className={this.props.skinConfig.icons.right.fontStyleClass}  aria-hidden="true"></span>
+        </a>
       </div>
     );
   }
