@@ -192,6 +192,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onAuthorizationFetched: function(event, authorization) {
       this.state.authorization = authorization;
+
+      this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
+      this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
+      this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
+      this.mb.subscribe(OO.EVENTS.PAUSE, 'customerUi', _.bind(this.onPause, this));
+      this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
+      this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
+      this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
+      this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
+      this.mb.subscribe(OO.EVENTS.BUFFERING, 'customerUi', _.bind(this.onBuffering, this));
+      this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
+
     },
 
     onContentTreeFetched: function (event, contentTree) {
@@ -515,7 +527,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onErrorEvent: function(event, errorCode){
-      this.unsubscribeFromMessageBus();
+
+      this.mb.unsubscribe(OO.EVENTS.VC_PLAYED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VC_PLAYING, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VC_PAUSED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
 
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.state.playerState = CONSTANTS.STATE.ERROR;
