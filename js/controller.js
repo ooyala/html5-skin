@@ -24,6 +24,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.mb = mb;
     this.id = id;
     this.state = {
+      "playerParam": {},
+      "assetId": null,
       "contentTree": {},
       "authorization": {},
       "screenToShow": null,
@@ -90,6 +92,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
       this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_CREATED, 'customerUi', _.bind(this.onVcVideoElementCreated, this));
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
+      this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
@@ -144,6 +147,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $("#" + elementId + " .innerWrapper").append("<div class='player_skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
       $("#" + elementId + " .player_skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
       this.state.mainVideoElement = $("#" + elementId + " .video");
+      this.state.playerParam = params;
 
       var tmpLocalizableStrings = {};
 
@@ -188,6 +192,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // remove mounted Skin component
       React.unmountComponentAtNode(mountNode);
       this.mb = null;
+    },
+
+    onEmbedCodeChanged: function(event, embedCode, options) {
+      this.state.assetId = embedCode;
+      $.extend(true, this.state.playerParam, options);
+      console.log(this.state.assetId);
+      console.log(this.state.playerParam);
     },
 
     onAuthorizationFetched: function(event, authorization) {

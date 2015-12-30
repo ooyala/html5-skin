@@ -66,11 +66,13 @@ var SharePanel = React.createClass({
     }
 
     else if (this.state.activeTab === this.tabs.EMBED) {
+      var iframeURL = "<iframe width='480' height='320' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/stable/latest/skin-plugin/iframe.html" +
+                      "?ec=" + this.props.assetId + "&pbid=" + this.props.playerParam.playerBrandingId + "&pcode=" + this.props.playerParam.pcode + "'></iframe>"
       return (
         <div className="shareTabPanel">
           <textarea className="form-control"
                     rows="3"
-                    value="&lt;script src=&quot;//player.ooyala.com/v4/&quot;&gt;&lt;/script&gt;"
+                    value={iframeURL}
                     readOnly />
         </div>
       );
