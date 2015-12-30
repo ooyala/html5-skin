@@ -66,10 +66,15 @@ var SharePanel = React.createClass({
     }
 
     else if (this.state.activeTab === this.tabs.EMBED) {
-      var iframeURL = this.props.skinConfig.shareScreen.embed.source
-        .replace("<ASSET_ID>", this.props.assetId)
-        .replace("<PLAYER_ID>", this.props.playerParam.playerBrandingId)
-        .replace("<PUBLISHER_ID>", this.props.playerParam.pcode);
+      try {
+        var iframeURL = this.props.skinConfig.shareScreen.embed.source
+          .replace("<ASSET_ID>", this.props.assetId)
+          .replace("<PLAYER_ID>", this.props.playerParam.playerBrandingId)
+          .replace("<PUBLISHER_ID>", this.props.playerParam.pcode);
+      } catch(err) {
+        iframeURL = "";
+      }
+
       return (
         <div className="shareTabPanel">
           <textarea className="form-control"
