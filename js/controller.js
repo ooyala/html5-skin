@@ -197,8 +197,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onEmbedCodeChanged: function(event, embedCode, options) {
       this.state.assetId = embedCode;
       $.extend(true, this.state.playerParam, options);
-      console.log(this.state.assetId);
-      console.log(this.state.playerParam);
     },
 
     onAuthorizationFetched: function(event, authorization) {
