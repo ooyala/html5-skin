@@ -41,12 +41,13 @@ var ControlBar = React.createClass({
   },
 
   handleFullscreenClick: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      this.props.controller.toggleFullscreen();
-    }
+    // On mobile, we get a following click event that fires after the Video
+    // has gone full screen, clicking on a different UI element. So we prevent
+    // the following click.
+    evt.stopPropagation();
+    evt.cancelBubble = true;
+    evt.preventDefault();
+    this.props.controller.toggleFullscreen();
   },
 
   handleVolumeIconClick: function(evt) {
