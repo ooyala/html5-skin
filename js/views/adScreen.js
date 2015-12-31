@@ -3,10 +3,10 @@
 *********************************************************************/
 var React = require('react'),
     CONSTANTS = require('../constants/constants'),
-    InlineStyle = require('../styles/inlineStyle'),
     AdPanel = require('../components/adPanel'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
+    ClassNames = require('classnames'),
     Utils = require('../components/utils');
 
 var AdScreen = React.createClass({
@@ -95,14 +95,12 @@ var AdScreen = React.createClass({
   showControlBar: function() {
     this.setState({controlBarVisible: true});
     this.props.controller.showControlBar();
-    this.refs.AdScreen.getDOMNode().style.cursor="default";
   },
 
   hideControlBar: function() {
     if (this.props.controlBarAutoHide == true){
       this.setState({controlBarVisible: false});
       this.props.controller.hideControlBar();
-      this.refs.AdScreen.getDOMNode().style.cursor="none";
     }
   },
 
@@ -155,6 +153,12 @@ var AdScreen = React.createClass({
     if(this.props.skinConfig.adScreen.showControlBar) {
       playbackControlItems = this.getPlaybackControlItems();
     }
+
+    var adScreenClasses = ClassNames({
+      "adScreen": true,
+      "hidden": !this.state.controlBarVisible
+    });
+
     return (
       <div className="state-screen adScreen"
          ref="AdScreen"

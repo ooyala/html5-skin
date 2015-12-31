@@ -179,55 +179,22 @@ module.exports = {
 
   adScreenStyle: {
     panelStyle: {
-      "position": "absolute",
-      "top": "0",
-      "bottom": "32px",
-      "width": "100%"
     },
 
     topBarStyle: {
-      "position": "absolute",
-      "top": "0%",
-      "height": "34px",
-      "width": "100%",
-      "backgroundColor": "rgba(0, 0, 0, 0.5)",
-      "margin": 0,
-      "fontSize": "18px",
-      "listStyle": "none",
-      "display": "flex",
-      "flexFlow": "row nowrap",
-      "justifyContent": "flex-start",
-      "WebkitUserSelect": "none",
-      "MozUserSelect": "none",
-      "msUserSelect": "none",
-      "userSelect": "none",
-      "transition": "bottom 0.5s, height 0.2 5s"
+      
     },
 
     adPanelTopBarTextStyle: {
-      "fontSize": "12pt",
-      "color": "#ffffff",
-      "fontFamily": "'Roboto', sans-serif",
-      "margin": "auto",
-      "textAlign": "center",
-      "paddingLeft": "7.5px",
-      "paddingRight": "7.5px",
-      "white-space": "pre"
+
     },
 
 
     flexibleSpace: {
-      "flex": 1,
-      "WebkitFlex": 1
+
     },
 
     learnMoreButtonStyle: {
-      "fontSize": "12pt",
-      "fontFamily": "'Roboto Condensed', sans-serif",
-      "color": "#ffffff",
-      "margin": "auto",
-      "textAlign": "center",
-      "cursor": "pointer",
       "icon": {
         "fontSize": "13px",
         "marginRight": "5px"
@@ -243,47 +210,23 @@ module.exports = {
       "marginLeft": "30px",
       "textAlign": "center",
       "cursor": "pointer",
-      "icon": {
-        "fontSize": "13px",
-        "marginRight": "5px"
+    "icon": {
+
       }
     }
   },
 
   adOverlayStyle: {
     style: {
-      display: "inline-block",
-      bottom: "50%",
-      position: "absolute",
-      transition: "bottom 0.5s, height 0.25s",
-      margin: 0,
-      padding: 0
     },
 
     overlayImageStyle: {
-      display: "block"
     },
 
     closeButtonStyle: {
-      display: "inline",
-      position: "absolute",
-      cursor: "pointer",
-      height: "28px",
-      width: "28px",
-      top: "0px",
-      right: "0px"
     },
 
     closeButtonIconStyle: {
-      position: "absolute",
-      fontSize: "8px",
-      top: "50%",
-      left: "50%",
-      WebkitTransform: "translate(-50%, -50%)",
-      msTransform: "translate(-50%, -50%)",
-      transform: "translate(-50%, -50%)",
-      color: "#ffffff",
-      opacity: "0.6"
     }
   },
 
