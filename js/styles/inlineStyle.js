@@ -176,46 +176,7 @@ module.exports = {
       height: "75px"
     }
   },
-
-  adScreenStyle: {
-    panelStyle: {
-    },
-
-    topBarStyle: {
-      
-    },
-
-    adPanelTopBarTextStyle: {
-
-    },
-
-
-    flexibleSpace: {
-
-    },
-
-    learnMoreButtonStyle: {
-      "icon": {
-        "fontSize": "13px",
-        "marginRight": "5px"
-      }
-    },
-
-    skipButtonStyle: {
-      "fontSize": "12pt",
-      "fontFamily": "'Roboto Condensed', sans-serif",
-      "color": "#ffffff",
-      "margin": "auto",
-      "marginRight": "15px",
-      "marginLeft": "30px",
-      "textAlign": "center",
-      "cursor": "pointer",
-    "icon": {
-
-      }
-    }
-  },
-
+  
   adOverlayStyle: {
     style: {
     },

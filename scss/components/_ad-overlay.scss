@@ -1,0 +1,40 @@
+.adOverlay {
+  display: inline-block;
+  bottom: 50%;
+  position: absolute;
+  transition: bottom 0.5s, height 0.25s;
+  margin: 0;
+  padding: 0;
+
+  .adOverlay.hidden {
+    display: none;
+  }
+
+  .adOverlayImage {
+    display: block;
+  }
+
+  .adOverlayCloseButton {
+    display: inline;
+    position: absolute;
+    cursor: pointer;
+    height: 28px;
+    width: 28px;
+    top: 0px;
+    right: 0px;
+  }
+
+  .adOverlayCloseButton.hidden {
+    display: none;
+  }
+
+  .adOverlayCloseButtonIcon {
+    position: absolute;
+    font-size: 8px;
+    top: 50%;
+    left: 50%;
+    @include vendor-prefixes(transform, translate(-50%, -50%));
+    color: #ffffff;
+    opacity: 0.6;
+  }
+}
