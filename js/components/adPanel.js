@@ -109,7 +109,7 @@ var AdPanel = React.createClass({
     // Skip
     var handleSkipAdButtonClick;
     var skipButtonClass = ClassNames({
-      "skin": true,
+      "skipButton": true,
       "visible": this.props.currentAdsInfo.currentAdItem.skippable,
       "enabled": this.props.currentAdsInfo.skipAdButtonEnabled
     });
