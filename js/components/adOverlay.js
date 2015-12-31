@@ -2,8 +2,8 @@
   AD OVERLAY
 *********************************************************************/
 var React = require('react'),
-  InlineStyle = require('../styles/inlineStyle');
   Utils = require('../components/utils'),
+  ClassNames = require('classnames'),
   CONSTANTS = require('../constants/constants');
 
 var AdOverlay = React.createClass({
@@ -36,36 +36,31 @@ var AdOverlay = React.createClass({
   },
 
   render: function() {
-    var overlayStyle = InlineStyle.adOverlayStyle.style;
-    var overlayImageStyle = InlineStyle.adOverlayStyle.overlayImageStyle;
-    var closeButtonStyle = InlineStyle.adOverlayStyle.closeButtonStyle;
-    var closeButtonIconStyle = InlineStyle.adOverlayStyle.closeButtonIconStyle;
-
+    var overlayStyle = {};
     var scrubberPaddingHeight = parseInt(CONSTANTS.UI.defaultScrubberBarPaddingHeight);
     var scrubberBarHeight = parseInt(CONSTANTS.UI.defaultScrubberBarHeight);
-    var controlBarHeight = InlineStyle.controlBarStyle.controlBarSetting.height;
+    var controlBarHeight = parseInt(CONSTANTS.UI.defaultControlBarHeight);
 
     if(this.props.overlay && this.props.showOverlay) {
-      overlayStyle.display = "inline-block";
       overlayStyle.bottom = this.props.controlBarVisible ? controlBarHeight : scrubberPaddingHeight/2;
-      if(this.props.showOverlayCloseButton) {
-        closeButtonStyle.display = "inline";
-      }
-      else {
-        closeButtonStyle.display = "none";
-      }
     }
-    else {
-      overlayStyle.display = "none";
-    }
+
+    var adOverlayClass = ClassNames({
+      "adOverlay": true,
+      "hidden": !this.props.overlay && this.props.showOverlay
+    });
+    var closeButtonClass = ClassNames({
+      "adOverlayCloseButton": true,
+      "hidden": this.props.showOverlayCloseButton
+    });
+
     return (
-      <div className="adOverlay" style={overlayStyle} onMouseUp={this.handleOverlayClick}
+      <div className={adOverlayClass} style={overlayStyle} onMouseUp={this.handleOverlayClick}
           onTouchEnd={this.handleOverlayClick}>
-        <img src={this.props.overlay} style={overlayImageStyle}></img>
-        <div className="adOverlayCloseButton" style={closeButtonStyle} onMouseUp={this.closeOverlay}
-          onTouchEnd={this.closeOverlay}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} onMouseOver={this.highlight}
-            onMouseOut={this.removeHighlight} style={closeButtonIconStyle}>
+        <img src={this.props.overlay} className="adOverlayImage"></img>
+        <div className="adOverlayCloseButton" onMouseUp={this.closeOverlay} onTouchEnd={this.closeOverlay}>
+          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass + " adOverlayCloseButtonIcon"}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
           </span>
         </div>
       </div>

@@ -9,8 +9,8 @@
  */
 var React = require('react'),
   CONSTANTS = require('../constants/constants'),
-  InlineStyle = require('../styles/inlineStyle'),
   Spinner = require('./spinner'),
+  ClassNames = require('classnames'),
   Utils = require('./utils');
 
 var AdPanelTopBarItem = React.createClass({
@@ -25,15 +25,6 @@ var AdPanel = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return null;
-  },
-
-  componentDidMount: function(){
-    if (Utils.isSafari()){
-      InlineStyle.adScreenStyle.topBarStyle.display = "-webkit-flex";
-    }
-    else {
-      InlineStyle.adScreenStyle.topBarStyle.display = "flex";
-    }
   },
 
   handleSkipAdButtonClick: function(event) {
@@ -69,8 +60,8 @@ var AdPanel = React.createClass({
 
   isValidAdPlaybackInfo: function(playbackInfo) {
     return (playbackInfo !== null &&
-    typeof playbackInfo !== 'undefined' &&
-    playbackInfo !== "");
+      typeof playbackInfo !== 'undefined' &&
+      playbackInfo !== "");
   },
 
   populateAdTopBar: function() {
@@ -80,7 +71,7 @@ var AdPanel = React.createClass({
     var adTitle = this.props.currentAdsInfo.currentAdItem.name;
     // AMC puts "Unknown" in the name field if ad name unavailable
     if (this.isValidAdPlaybackInfo(adTitle) && this.props.controlBarWidth > 560) {
-      var adTitleDiv = <AdPanelTopBarItem key="AdTitle" style={InlineStyle.adScreenStyle.adPanelTopBarTextStyle} data={adTitle} itemClassName="adTitle"/>;
+      var adTitleDiv = <AdPanelTopBarItem key="AdTitle" data={adTitle} itemClassName="adTitle"/>;
       adTopBarItems.push(adTitleDiv);
     }
 
@@ -95,60 +86,39 @@ var AdPanel = React.createClass({
     var remainingTime = Utils.formatSeconds(Math.max(0, parseInt(this.props.adVideoDuration - this.props.currentPlayhead)));
     adPlaybackInfo = adPlaybackInfo + " - " + remainingTime;
 
-    var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" style={InlineStyle.adScreenStyle.adPanelTopBarTextStyle} data={adPlaybackInfo} itemClassName="adPlaybackInfo"/>;
+    var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" data={adPlaybackInfo} itemClassName="adPlaybackInfo"/>;
     adTopBarItems.push(adPlaybackInfoDiv);
 
     // Flexible space
-    var flexibleSpaceDiv = <AdPanelTopBarItem key="flexibleSpace" style={InlineStyle.adScreenStyle.flexibleSpace} itemClassName="flexibleSpace"/>;
+    var flexibleSpaceDiv = <AdPanelTopBarItem key="flexibleSpace" itemClassName="flexibleSpace"/>;
     adTopBarItems.push(flexibleSpaceDiv);
 
     // Learn more
-    if (this.props.currentAdsInfo.currentAdItem.hasClickUrl === false) {
-      InlineStyle.adScreenStyle.learnMoreButtonStyle.visibility = "hidden";
-    }
-    else {
-      InlineStyle.adScreenStyle.learnMoreButtonStyle.visibility = "visible";
-    }
+    var learnMoreClass = ClassNames({
+      "learnMore": true,
+      "hidden": !this.props.currentAdsInfo.currentAdItem.hasClickUrl
+    });
     if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.hasClickUrl)) {
       var learnMoreText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
-      var learnMoreClass = this.props.skinConfig.icons.learn.fontStyleClass;
-      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" onButtonClicked={this.handleLearnMoreButtonClick}
-                                style={InlineStyle.adScreenStyle.learnMoreButtonStyle} data={learnMoreText}
-                                icon ={<span className={learnMoreClass} style={InlineStyle.adScreenStyle.learnMoreButtonStyle.icon}></span>}
-                                itemClassName="learnMore"/>;
+      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" onButtonClicked={this.handleLearnMoreButtonClick} data={learnMoreText}
+                                icon ={<span className={this.props.skinConfig.icons.learn.fontStyleClass + " buttonIcon"}></span>}
+                                itemClassName={learnMoreClass}/>;
       adTopBarItems.push(learnMoreButtonDiv);
     }
 
     // Skip
     var handleSkipAdButtonClick;
-    if (this.props.currentAdsInfo.currentAdItem.skippable === false) {
-      InlineStyle.adScreenStyle.skipButtonStyle.visibility = "hidden";
-      InlineStyle.adScreenStyle.skipButtonStyle.width = "0";
-      InlineStyle.adScreenStyle.skipButtonStyle.marginLeft = "0";
-    }
-    else {
-      InlineStyle.adScreenStyle.skipButtonStyle.visibility = "visible";
-      InlineStyle.adScreenStyle.skipButtonStyle.width = "initial";
-      InlineStyle.adScreenStyle.skipButtonStyle.marginLeft = "30";
-    }
-
-    if (!this.props.currentAdsInfo.skipAdButtonEnabled) {
-      InlineStyle.adScreenStyle.skipButtonStyle.opacity = "0.3";
-      handleSkipAdButtonClick = null;
-      InlineStyle.adScreenStyle.skipButtonStyle.cursor = "default";
-    }
-    else {
-      InlineStyle.adScreenStyle.skipButtonStyle.opacity = "1";
-      handleSkipAdButtonClick = this.handleSkipAdButtonClick;
-      InlineStyle.adScreenStyle.skipButtonStyle.cursor = "pointer";
-    }
-
+    var skipButtonClass = ClassNames({
+      "skipButton": true,
+      "visible": this.props.currentAdsInfo.currentAdItem.skippable,
+      "enabled": this.props.currentAdsInfo.skipAdButtonEnabled
+    });
     var skipButtonText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
-    var skipAdClass = this.props.skinConfig.icons.skip.fontStyleClass;
+    var skipAdClass = this.props.skinConfig.icons.skip.fontStyleClass + " skipIcon";
     var skipButtonDiv = <AdPanelTopBarItem key="skipButton" onButtonClicked={handleSkipAdButtonClick}
-                        style={InlineStyle.adScreenStyle.skipButtonStyle} data={skipButtonText}
-                        icon ={<span className={skipAdClass} style={InlineStyle.adScreenStyle.skipButtonStyle.icon}></span>}
-                        itemClassName="skip"/>;
+                        data={skipButtonText}
+                        icon ={<span className={skipAdClass}></span>}
+                        itemClassName={skipButtonClass}/>;
     adTopBarItems.push(skipButtonDiv);
 
     return adTopBarItems;
@@ -162,9 +132,9 @@ var AdPanel = React.createClass({
     }
     var adTopBarItems = this.populateAdTopBar();
     return (
-      <div style={InlineStyle.adScreenStyle.panelStyle}>
+      <div className="adScreenPanel">
         {spinner}
-        <div className="adTopBar" style={InlineStyle.adScreenStyle.topBarStyle} onClick={this.handleAdTopBarClick} onTouchEnd={this.handleAdTopBarClick}>
+        <div className="adTopBar" onClick={this.handleAdTopBarClick} onTouchEnd={this.handleAdTopBarClick}>
           {adTopBarItems}
         </div>
       </div>
