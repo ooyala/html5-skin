@@ -109,6 +109,7 @@
         margin: auto;
 
         a.item {
+          width: 140px;
           font-size: 1.2em;
           font-family: $font-family-roboto-condensed;
           text-overflow: ellipsis;
@@ -140,7 +141,7 @@
         overflow: scroll;
         align-items: flex-start;
         -webkit-align-items: flex-start;
-        justify-content: flex-start;
+        justify-content: center;
       }
 
       .discoverBtn {

@@ -102,9 +102,9 @@ var LanguageTabContent = React.createClass({
   getDefaultProps: function () {
     return {
       languagesPerPage: {
-        small: 2,
-        medium: 12,
-        large: 25
+        small: 1,
+        medium: 4,
+        large: 15
       }
     }
   },
@@ -181,7 +181,7 @@ var LanguageTabContent = React.createClass({
           {languageContentBlocks}
         </div>
 
-        <a className={leftChevron} ref="leftChevron" onClick={this.handleLeftButtonClick}>
+        <a className={leftChevron} ref="leftChevron" onClick={this.handleLeftChevronClick}>
           <span className={this.props.skinConfig.icons.left.fontStyleClass} aria-hidden="true"></span>
         </a>
         <a className={rightChevron} ref="rightChevron" onClick={this.handleRightChevronClick}>
