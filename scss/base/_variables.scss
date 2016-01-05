@@ -38,6 +38,7 @@ $enable-hover-media-query:  false !default;
 //$spacer-y:                   $spacer !default;
 $spacer-close-btn:           -18px !default;
 $border-width:               1px !default;
+$panel-padding:           35px !default;
 //
 //
 //// Body
@@ -46,6 +47,7 @@ $border-width:               1px !default;
 //
 $body-bg:                    $white !default;
 $body-color:                 $white !default;
+$panel-bg:                   rgba(0, 0, 0, 0.7) !default;
 //
 //
 //// Links

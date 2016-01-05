@@ -8,11 +8,11 @@
   user-select: none;
 
   .share-container {
-    padding: 35px;
+    padding: $panel-padding;
     position: absolute;
     top: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.75);
+    background: $panel-bg;
     left: 0;
     right: 0;
     display: flex;
@@ -23,8 +23,8 @@
 
     .tabRow {
       position: absolute;
-      top: 35px;
-      left: 35px;
+      top: $panel-padding;
+      left: $panel-padding;
 
       .tab {
         display: inline-block;
