@@ -160,7 +160,7 @@ var LanguageTabContent = React.createClass({
       for (var i = 0; i < languagePage.length; i++) {
         languageContentBlocks.push(
           <a className={this.setClassname(languagePage[i])} onClick={this.changeLanguage.bind(this, languagePage[i])} key={i}>
-            <span>{availableLanguages.locale[languagePage[i]]}</span>
+            <span className="language">{availableLanguages.locale[languagePage[i]]}</span>
           </a>
         );
       }
