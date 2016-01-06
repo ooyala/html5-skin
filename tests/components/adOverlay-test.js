@@ -94,7 +94,10 @@ describe('AdOverlay', function () {
         skinConfig={mockSkinConfig}
       />);
 
-    TestUtils.Simulate.mouseUp(DOM.refs.adOverlayCloseButton);
+    //var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'adOverlayCloseButton');
+    var closeBtn = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'button');
+    //var closeBtn = DOM.refs.adOverlayCloseButton;
+    TestUtils.Simulate.click(closeBtn);
     expect(nonLinearHidden).toBe(true);
     expect(adSkipped).toBe(true);
   });

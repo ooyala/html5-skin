@@ -2,20 +2,14 @@
   AD OVERLAY
 *********************************************************************/
 var React = require('react'),
-  Utils = require('../components/utils'),
-  ClassNames = require('classnames'),
-  CONSTANTS = require('../constants/constants');
+    ClassNames = require('classnames'),
+    CloseButton = require('./closeButton'),
+    CONSTANTS = require('../constants/constants');
 
 var AdOverlay = React.createClass({
-  closeOverlay: function(event) {
-    if (event.type == 'touchend' || !this.props.controller.state.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
+  closeOverlay: function() {
       this.props.controller.hideNonlinearAd();
       this.props.controller.onSkipAdClicked();
-    }
   },
 
   handleOverlayClick: function(event) {
@@ -26,27 +20,11 @@ var AdOverlay = React.createClass({
     }
   },
 
-  highlight: function(evt) {
-    Utils.highlight(evt.target);
-  },
-
-  removeHighlight: function(evt) {
-    var opacity = "0.6";
-    Utils.removeHighlight(evt.target, opacity);
-  },
-
   render: function() {
-    var overlayStyle = {};
-    var scrubberPaddingHeight = parseInt(CONSTANTS.UI.defaultScrubberBarPaddingHeight);
-    var scrubberBarHeight = parseInt(CONSTANTS.UI.defaultScrubberBarHeight);
-    var controlBarHeight = parseInt(CONSTANTS.UI.defaultControlBarHeight);
-
-    if(this.props.overlay && this.props.showOverlay) {
-      overlayStyle.bottom = this.props.controlBarVisible ? controlBarHeight : scrubberPaddingHeight/2;
-    }
-
     var adOverlayClass = ClassNames({
       "adOverlay": true,
+      "controlBarVisible": this.props.overlay && this.props.showOverlay && this.props.controlBarVisible,
+      "controlBarInvisible": this.props.overlay && this.props.showOverlay && !this.props.controlBarVisible,
       "hidden": !this.props.overlay && this.props.showOverlay
     });
     var closeButtonClass = ClassNames({
@@ -55,14 +33,13 @@ var AdOverlay = React.createClass({
     });
 
     return (
-      <div className={adOverlayClass} style={overlayStyle} onMouseUp={this.handleOverlayClick}
-          onTouchEnd={this.handleOverlayClick}>
+      <div className={adOverlayClass} onMouseUp={this.handleOverlayClick} onTouchEnd={this.handleOverlayClick}>
         <img src={this.props.overlay} className="adOverlayImage"></img>
-        <div className="adOverlayCloseButton" ref="adOverlayCloseButton" onMouseUp={this.closeOverlay} onTouchEnd={this.closeOverlay}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass + " adOverlayCloseButtonIcon"}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-          </span>
-        </div>
+
+        <CloseButton cssClass={closeButtonClass}
+                     closeAction={this.closeOverlay}
+                     fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass + " adOverlayCloseButtonIcon"}
+                     ref="adOverlayCloseButton" />
       </div>
     );
   }

@@ -6,10 +6,6 @@
   margin: 0;
   padding: 0;
 
-  .adOverlay.hidden {
-    display: none;
-  }
-
   .adOverlayImage {
     display: block;
   }
@@ -20,8 +16,8 @@
     cursor: pointer;
     height: 28px;
     width: 28px;
-    top: 0px;
-    right: 0px;
+    top: 0;
+    right: 0;
   }
 
   .adOverlayCloseButton.hidden {
@@ -37,4 +33,16 @@
     color: #ffffff;
     opacity: 0.6;
   }
+}
+
+.adOverlay.hidden {
+  display: none;
+}
+
+.adOverlay.controlBarVisible {
+  bottom: $control-bar-height !important;
+}
+
+.adOverlay.controlBarInvisible {
+  bottom: $scrubber-bar-padding-height/2 !important;
 }
