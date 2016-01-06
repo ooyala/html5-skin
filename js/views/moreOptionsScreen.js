@@ -23,7 +23,7 @@ var MoreOptionsScreen = React.createClass({
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
 
     // Make sure component resize correctly after switch to fullscreen/inline screen
-    window.addEventListener('resize', this.handleResize);
+    //window.addEventListener('resize', this.handleResize);
     this.props.controller.state.accessibilityControlsEnabled = false;
   },
 

@@ -50,6 +50,10 @@ var AdScreen = React.createClass({
         this.hideControlBar();
       }
 
+      if (nextProps.controller.state.controlBarVisible == true && this.state.controlBarVisible == false) {
+        this.showControlBar();
+      }
+
       if(!this.props.fullscreen && nextProps.fullscreen && this.state.playerState != CONSTANTS.STATE.PAUSE) {
         this.props.controller.startHideControlBarTimer();
       }
