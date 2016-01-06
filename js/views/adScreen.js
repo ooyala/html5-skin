@@ -115,12 +115,7 @@ var AdScreen = React.createClass({
   },
 
   handlePlayerMouseMove: function() {
-    if(this.props.playerState === CONSTANTS.STATE.PAUSE) {
-      if (this.state.timer !== null){
-        clearTimeout(this.state.timer);
-      }
-    }
-    else if(!this.isMobile && this.props.fullscreen) {
+    if(this.props.playerState !== CONSTANTS.STATE.PAUSE && !this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
@@ -161,13 +156,13 @@ var AdScreen = React.createClass({
 
     return (
       <div className="state-screen adScreen"
-         ref="AdScreen"
+         ref="adScreen"
          onMouseOver={this.showControlBar}
          onMouseOut={this.hideControlBar}
          onMouseMove={this.handlePlayerMouseMove}
          onMouseUp={this.handleClick}>
 
-        <div className="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
+        <div className="adPanel" ref="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
           {adPanel}
         </div>
         <div>

@@ -15,7 +15,7 @@ var React = require('react'),
 
 var AdPanelTopBarItem = React.createClass({
   render: function() {
-    return <div className={this.props.itemClassName} style={this.props.style} onClick={this.props.onButtonClicked} onTouchEnd={this.props.onButtonClicked}>
+    return <div className={this.props.itemClassName} onClick={this.props.onButtonClicked} onTouchEnd={this.props.onButtonClicked}>
       {this.props.icon}{this.props.data}
     </div>;
   }
@@ -39,7 +39,7 @@ var AdPanel = React.createClass({
   },
 
   handleLearnMoreButtonClick: function(event) {
-    if (event.type == 'touchend' || !this.isMobile){
+    if (event.type == 'touchend' || !this.isMobile) {
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
@@ -50,7 +50,7 @@ var AdPanel = React.createClass({
   },
 
   handleAdTopBarClick: function(event){
-    if (event.type == 'touchend' || !this.isMobile){
+    if (event.type == 'touchend' || !this.isMobile) {
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
       event.stopPropagation(); // W3C
@@ -71,7 +71,7 @@ var AdPanel = React.createClass({
     var adTitle = this.props.currentAdsInfo.currentAdItem.name;
     // AMC puts "Unknown" in the name field if ad name unavailable
     if (this.isValidAdPlaybackInfo(adTitle) && this.props.controlBarWidth > 560) {
-      var adTitleDiv = <AdPanelTopBarItem key="AdTitle" data={adTitle} itemClassName="adTitle"/>;
+      var adTitleDiv = <AdPanelTopBarItem key="adTitle" ref="adTitle" data={adTitle} itemClassName="adTitle"/>;
       adTopBarItems.push(adTitleDiv);
     }
 
@@ -100,14 +100,12 @@ var AdPanel = React.createClass({
     });
     if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.hasClickUrl)) {
       var learnMoreText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
-      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" onButtonClicked={this.handleLearnMoreButtonClick} data={learnMoreText}
-                                icon ={<span className={this.props.skinConfig.icons.learn.fontStyleClass + " buttonIcon"}></span>}
-                                itemClassName={learnMoreClass}/>;
+      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" ref="learnMoreButton" onButtonClicked={this.handleLearnMoreButtonClick}
+        data={learnMoreText} icon ={<span className={this.props.skinConfig.icons.learn.fontStyleClass + " buttonIcon"}></span>} itemClassName={learnMoreClass}/>;
       adTopBarItems.push(learnMoreButtonDiv);
     }
 
     // Skip
-    var handleSkipAdButtonClick;
     var skipButtonClass = ClassNames({
       "skipButton": true,
       "visible": this.props.currentAdsInfo.currentAdItem.skippable,
@@ -115,9 +113,9 @@ var AdPanel = React.createClass({
     });
     var skipButtonText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
     var skipAdClass = this.props.skinConfig.icons.skip.fontStyleClass + " skipIcon";
-    var skipButtonDiv = <AdPanelTopBarItem key="skipButton" onButtonClicked={handleSkipAdButtonClick}
+    var skipButtonDiv = <AdPanelTopBarItem key="skipButton" ref="skipButton" onButtonClicked={this.handleSkipAdButtonClick}
                         data={skipButtonText}
-                        icon ={<span className={skipAdClass}></span>}
+                        icon={<span className={skipAdClass}></span>}
                         itemClassName={skipButtonClass}/>;
     adTopBarItems.push(skipButtonDiv);
 
@@ -134,7 +132,7 @@ var AdPanel = React.createClass({
     return (
       <div className="adScreenPanel">
         {spinner}
-        <div className="adTopBar" onClick={this.handleAdTopBarClick} onTouchEnd={this.handleAdTopBarClick}>
+        <div className="adTopBar" ref="adTopBar" onClick={this.handleAdTopBarClick} onTouchEnd={this.handleAdTopBarClick}>
           {adTopBarItems}
         </div>
       </div>

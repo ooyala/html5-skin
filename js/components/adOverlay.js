@@ -58,7 +58,7 @@ var AdOverlay = React.createClass({
       <div className={adOverlayClass} style={overlayStyle} onMouseUp={this.handleOverlayClick}
           onTouchEnd={this.handleOverlayClick}>
         <img src={this.props.overlay} className="adOverlayImage"></img>
-        <div className="adOverlayCloseButton" onMouseUp={this.closeOverlay} onTouchEnd={this.closeOverlay}>
+        <div className="adOverlayCloseButton" ref="adOverlayCloseButton" onMouseUp={this.closeOverlay} onTouchEnd={this.closeOverlay}>
           <span className={this.props.skinConfig.icons.dismiss.fontStyleClass + " adOverlayCloseButtonIcon"}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
           </span>
