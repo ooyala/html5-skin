@@ -16,10 +16,14 @@ var en = require('../../config/en.json'),
 //manual mock of OO.ready player skin params
 var playerParam = {
   "skin": {
-    "languages": {"en": en, "es": es, "zh": zh}
-  }
+    "languages": {"en": en, "es": es, "zh": zh},
+    "inline": {"shareScreen" : {"embed" : { "source" : "iframe_<ASSET_ID>_<PLAYER_ID>_<PUBLISHER_ID>"}}}
+  },
+  "playerBrandingId": "bb",
+  "pcode": "cc"
 };
 var localizableStrings = playerParam.skin.languages;
+var skinConfig = playerParam.skin.inline;
 
 //start unit test
 describe('SharePanel', function () {
@@ -31,7 +35,7 @@ describe('SharePanel', function () {
 
         //Render share panel into DOM
         var DOM = TestUtils.renderIntoDocument(
-          <SharePanel language={key} localizableStrings={localizableStrings}/>
+          <SharePanel language={key} localizableStrings={localizableStrings} skinConfig={skinConfig} assetId={"aa"} playerParam={playerParam} />
         );
 
         //parent elements
@@ -59,7 +63,7 @@ describe('SharePanel', function () {
         expect(React.findDOMNode(embedTab).textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.EMBED]);
         TestUtils.Simulate.click(embedTab);
         var textArea = TestUtils.findRenderedDOMComponentWithTag(shareTabPanel, 'textarea');
-        expect(React.findDOMNode(textArea).value).toContain('//player.ooyala.com/v4/');
+        expect(React.findDOMNode(textArea).value).toContain('iframe_aa_bb_cc');
       }
     }
   });
