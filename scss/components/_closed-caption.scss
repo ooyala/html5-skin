@@ -25,12 +25,12 @@ video::-webkit-media-text-track-background {
 }
 
 video::-webkit-media-text-track-display {
-  position:relative;
+  position: relative;
   top: 76% !important;
   bottom: 20px;
   background-color: transparent !important;
-  padding: 0 !important;
-  margin: 0!important;
+  padding: 1px !important;
+  margin: 0! important;
   font: 16px Arial, Helvetica, sans-serif;
   color: #fff !important;
   text-shadow: 1px 1px 2px black !important;
