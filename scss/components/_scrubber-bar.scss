@@ -5,7 +5,7 @@
   transition: bottom 0.5s, height 0.25s;
   width: 100%;
   height: 24px;
-  z-index: 12600;
+  z-index: 12550;
   @include vendor-prefixes(user-select, none);
 
   .scrubberBarPadding {

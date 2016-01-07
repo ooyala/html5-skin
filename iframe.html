@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html style="padding:0; margin:0; width:100%; height:100%; overflow:hidden">
+<head>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/core.js"></script>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/video-plugin/main_html5.js"></script>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/skin-plugin/html5-skin.js"></script>
+  <link rel="stylesheet" href="//player.ooyala.com/static/v4/candidate/latest/skin-plugin/html5-skin.css"/>
+</head>
+
+<body style="padding:0; margin:0; width:100%; height:100%; overflow:hidden">
+  <div id='container' style='width:100%; height:100%;'></div>
+  <script>
+    var queryParams = window.location.href;
+    var playerParam = {
+      "pcode": queryParams.match(/pcode=([^&]*)/)[1],
+      "playerBrandingId": queryParams.match(/pbid=([^&]*)/)[1],
+      "skin": {
+        "config": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/skin.json"
+      }
+    };
+
+    // Parse docUrl
+    var docUrl = undefined;
+    if (!!queryParams.match(/docUrl=([^&]*)/)) {
+      playerParam["docUrl"] = decodeURIComponent(queryParams.match(/docUrl=([^&]*)/)[1]);
+    }
+
+    // Parse standard Ooyala player runtime options
+    var queryTokens = queryParams.split(/[\?\&]/);
+    for (var i=0; i<queryTokens.length; i++) {
+      try {
+        var match = queryTokens[i].match(/^options\[([^\]]+)\]=(.+)/);
+        if (match) {
+          var currentLevel = playerParam;
+          var keySplits = match[1].split(".");
+          while (keySplits.length > 1) {
+            var key = keySplits.shift();
+            if (currentLevel[key] === undefined)
+              currentLevel[key] = {};
+            currentLevel = currentLevel[key];
+          }
+          if (typeof currentLevel === 'string')
+            throw("Exception: Invalid query parameter");
+          currentLevel[keySplits[0]] = decodeURIComponent(match[2]);
+        }
+      }
+      catch (e) {
+        throw("Exception: Invalid query parameter");
+      }
+    }
+
+    OO.ready(function() {
+      window.pp = OO.Player.create('container', queryParams.match(/ec=([^&]*)/)[1], playerParam);
+    });
+  </script>
+</body>
+</html>

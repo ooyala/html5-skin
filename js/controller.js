@@ -24,6 +24,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.mb = mb;
     this.id = id;
     this.state = {
+      "playerParam": {},
+      "assetId": null,
       "contentTree": {},
       "authorization": {},
       "screenToShow": null,
@@ -44,6 +46,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "adVideoDuration": 0,
       "mainVideoElement": null,
       "elementId": null,
+      "pluginsElement": null,
       "buffering": false,
       "mainVideoPlayhead": null,
 
@@ -90,6 +93,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
       this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_CREATED, 'customerUi', _.bind(this.onVcVideoElementCreated, this));
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
+      this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
@@ -129,6 +133,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
       this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
+
+      this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
     },
 
     externalPluginSubscription: function() {
@@ -144,6 +150,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $("#" + elementId + " .innerWrapper").append("<div class='player_skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
       $("#" + elementId + " .player_skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
       this.state.mainVideoElement = $("#" + elementId + " .video");
+      this.state.playerParam = params;
+      this.state.elementId = elementId;
 
       var tmpLocalizableStrings = {};
 
@@ -165,8 +173,26 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
-        this.state.elementId = elementId;
         this.renderSkin();
+
+        $("#" + elementId + " .player_skin").append("<div class='player_skin_plugins'></div>");
+        this.state.pluginsElement = $("#" + elementId + " .player_skin_plugins");
+        this.state.pluginsElement.mouseover(
+          function() {
+            this.showControlBar();
+            this.renderSkin();
+            this.startHideControlBarTimer();
+          }.bind(this)
+        );
+        this.state.pluginsElement.mouseout(
+          function() {
+            this.hideControlBar();
+          }.bind(this)
+        );
+        this.mb.publish(OO.EVENTS.UI_READY, {
+          videoWrapperClass: "innerWrapper",
+          pluginsClass: "player_skin_plugins"
+        });
       }, this));
 
       this.state.isMobile = Utils.isMobile();
@@ -188,6 +214,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // remove mounted Skin component
       React.unmountComponentAtNode(mountNode);
       this.mb = null;
+    },
+
+    onEmbedCodeChanged: function(event, embedCode, options) {
+      this.state.assetId = embedCode;
+      $.extend(true, this.state.playerParam, options);
     },
 
     onAuthorizationFetched: function(event, authorization) {
@@ -395,12 +426,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.duration = 0;
       this.skin.updatePlayhead(0, 0, 0);
       this.state.isPlayingAd = false;
+      this.state.pluginsElement.removeClass("showing");
       this.renderSkin();
     },
 
     onWillPlayAds: function(event) {
       OO.log("onWillPlayAds is called from event = " + event);
       this.state.isPlayingAd = true;
+      this.state.pluginsElement.addClass("showing");
     },
 
     onAdPodStarted: function(event, numberOfAds) {

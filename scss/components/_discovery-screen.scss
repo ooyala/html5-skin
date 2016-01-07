@@ -15,10 +15,10 @@
   }
 
   .discovery-panel {
-    padding: 35px;
+    padding: $panel-padding;
     //position: absolute;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: $panel-bg;
     left: 0;
     right: 0;
     display: flex;
@@ -43,8 +43,7 @@
     }
     .discoveryToasterContainerStyle {
       background-color: transparent;
-      min-height: 54%;
-      height: 84%;
+      height: 320px;
       width: 100%;
       overflow: auto;
       white-space: nowrap;
