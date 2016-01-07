@@ -1,9 +1,7 @@
 jest.dontMock('../../js/components/controlBar')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/constants/constants')
-    .dontMock('../../config/en.json')
-    .dontMock('../../config/es.json')
-    .dontMock('../../config/zh.json');
+    .dontMock('classnames');
 
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
@@ -145,7 +143,7 @@ describe('ControlBar', function () {
     expect(buttons.length).toBe(4);
   });
 
-  it('to mute on click and change volume', function() {
+  it('should mute on click and change volume', function() {
     var muteClicked = false;
     var newVolume = -1;
     var mockController = {
@@ -621,7 +619,6 @@ describe('ControlBar', function () {
 
   it('hides the volume on iOS', function() {
     window.navigator.platform = "iPhone";
-    console.log(window.navigator.platform + " " + Utils.isIos());
     var mockController = {
       state: {
         isMobile: true,

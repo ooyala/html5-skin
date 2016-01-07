@@ -96,11 +96,11 @@
   background-color: rgba(67, 137, 255, 0.6);
 }
 
-.volumeBar.highlighted {
+.volume:hover .volumeBar {
   background-color: rgba(255, 255, 255, 1);
 }
 
-.volumeBar.highlighted.on {
+.volume:hover .volumeBar.on {
   background-color: rgba(67, 137, 255, 1);
 }
 

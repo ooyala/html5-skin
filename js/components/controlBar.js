@@ -3,6 +3,7 @@
 *********************************************************************/
 var React = require('react'),
     CONSTANTS = require('../constants/constants'),
+    ClassNames = require('classnames');
     Utils = require('./utils');
 
 var ControlBar = React.createClass({
@@ -185,12 +186,10 @@ var ControlBar = React.createClass({
   },
 
   volumeHighlight:function() {
-    this.setState({mouseOverVolume: true});
     this.highlight({target: this.refs.volumeIcon.getDOMNode()});
   },
 
   volumeRemoveHighlight:function() {
-    this.setState({mouseOverVolume: false});
     this.removeHighlight({target: this.refs.volumeIcon.getDOMNode()});
   },
 
@@ -222,12 +221,11 @@ var ControlBar = React.createClass({
     for (var i=0; i<10; i++) {
       //create each volume tick separately
       var turnedOn = this.props.controller.state.volumeState.volume >= (i+1) / 10;
-      var highlighted = this.state.mouseOverVolume;
-      var volumeClass = "volumeBar";
-      if (turnedOn) volumeClass += " on";
-      if (highlighted) volumeClass += " highlighted";
+      var volumeClass = ClassNames({
+        "volumeBar": true,
+        "on": turnedOn
+      });
       volumeBars.push(<span data-volume={(i+1)/10} className={volumeClass}
-        onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}
         onClick={this.handleVolumeClick} onTouchEnd={this.handleVolumeClick}></span>);
     }
 
@@ -286,10 +284,10 @@ var ControlBar = React.createClass({
         </div>
       </div>,
 
-      "volume": <div className="volume controlBarItem" style={dynamicStyles.generalIconSetting}>
+      "volume": <div className="volume controlBarItem" style={dynamicStyles.generalIconSetting}
+        onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}>
         <span className={muteClass} style={volumeIconSetting} ref="volumeIcon"
-          onClick={this.handleVolumeIconClick} onTouchEnd={this.handleVolumeIconClick}
-          onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}>
+          onClick={this.handleVolumeIconClick} onTouchEnd={this.handleVolumeIconClick}>
         </span>
         {volumeControls}
       </div>,
