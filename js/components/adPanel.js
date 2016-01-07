@@ -132,7 +132,7 @@ var AdPanel = React.createClass({
       InlineStyle.adScreenStyle.skipButtonStyle.marginLeft = "30";
     }
 
-    if (!this.props.currentAdsInfo.skipAdButtonEnabled) {
+    if (!this.props.controller.state.currentAdsInfo.skipAdButtonEnabled) {
       InlineStyle.adScreenStyle.skipButtonStyle.opacity = "0.3";
       handleSkipAdButtonClick = null;
       InlineStyle.adScreenStyle.skipButtonStyle.cursor = "default";
