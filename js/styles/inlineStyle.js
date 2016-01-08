@@ -39,7 +39,8 @@ module.exports = {
       "msUserSelect": "none",
       "userSelect": "none",
       "cursor": "default",
-      "transition": "bottom 0.5s, height 0.25s"
+      "transition": "bottom 0.5s, height 0.25s",
+      "zIndex": "12550"
     },
 
     controlBarItemsWrapper: {
