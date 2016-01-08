@@ -317,7 +317,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPause: function(event, source, pauseReason) {
-      if (pauseReason === "transition"){
+      if (pauseReason === CONSTANTS.PAUSE_REASON.TRANSITION){
         this.state.pauseAnimationDisabled = true;
       }
     },
