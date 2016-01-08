@@ -79,9 +79,6 @@ module.exports = {
     iconSetting: {},
     volumeIconSetting: {
       "opacity": "1",
-      "WebkitFilter": "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))",
-      "filter": "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))",
-      "msFilter": "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')"
     },
 
     flexibleSpace: {

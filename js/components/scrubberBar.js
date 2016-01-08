@@ -158,9 +158,17 @@ var ScrubberBar = React.createClass({
     var scrubberBarHeight = this.scrubberBarHeight;
 
     var bufferedIndicatorStyle = {width: (parseFloat(this.props.buffered) /
-      parseFloat(this.props.duration)) * 100 + "%"};
+      parseFloat(this.props.duration)) * 100 + "%",
+      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.bufferedColor
+    };
     var playedIndicatorStyle = {width: Math.min((parseFloat(this.props.currentPlayhead) /
-      parseFloat(this.props.duration)) * 100, 100) + "%"};
+      parseFloat(this.props.duration)) * 100, 100) + "%",
+      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor
+    };
+    var scrubberBarStyle = {
+      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.backgroundColor
+    }
+
     var playheadStyle = {};
     var playheadPaddingStyle = {};
 
@@ -196,7 +204,7 @@ var ScrubberBar = React.createClass({
     return (
       <div className="scrubberBarContainer" style={scrubberBarContainerStyle}>
         <div className="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
-          <div ref="scrubberBar" className="scrubberBar">
+          <div ref="scrubberBar" className="scrubberBar" style={scrubberBarStyle}>
             <div className="bufferedIndicator" style={bufferedIndicatorStyle}></div>
             <div className={playedIndicatorClassName} style={playedIndicatorStyle}></div>
             <div className="playheadPadding" style={playheadPaddingStyle}
