@@ -121,7 +121,7 @@ var AdPanel = React.createClass({
 
     // Skip
     var handleSkipAdButtonClick;
-    if (this.props.controller.state.currentAdsInfo.skipAdButtonEnabled === false) {
+    if (this.props.currentAdsInfo.skipAdButtonEnabled === false) {
       InlineStyle.adScreenStyle.skipButtonStyle.visibility = "hidden";
       InlineStyle.adScreenStyle.skipButtonStyle.width = "0";
       InlineStyle.adScreenStyle.skipButtonStyle.marginLeft = "0";
@@ -132,17 +132,9 @@ var AdPanel = React.createClass({
       InlineStyle.adScreenStyle.skipButtonStyle.marginLeft = "30";
     }
 
-    if (!this.props.controller.state.currentAdsInfo.skipAdButtonEnabled) {
-      InlineStyle.adScreenStyle.skipButtonStyle.opacity = "0.3";
-      handleSkipAdButtonClick = null;
-      InlineStyle.adScreenStyle.skipButtonStyle.cursor = "default";
-    }
-    else {
-      InlineStyle.adScreenStyle.skipButtonStyle.opacity = "1";
-      handleSkipAdButtonClick = this.handleSkipAdButtonClick;
-      InlineStyle.adScreenStyle.skipButtonStyle.cursor = "pointer";
-    }
-
+    InlineStyle.adScreenStyle.skipButtonStyle.opacity = "1";
+    handleSkipAdButtonClick = this.handleSkipAdButtonClick;
+    InlineStyle.adScreenStyle.skipButtonStyle.cursor = "pointer";
     var skipButtonText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
     var skipAdClass = this.props.skinConfig.icons.skip.fontStyleClass;
     var skipButtonDiv = <AdPanelTopBarItem key="skipButton" onButtonClicked={handleSkipAdButtonClick}
