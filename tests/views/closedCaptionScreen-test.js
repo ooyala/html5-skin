@@ -7,10 +7,10 @@ var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
 var ClosedCaptionScreen = require('../../js/views/closedCaptionScreen');
 
-describe('DiscoveryScreen', function () {
-  it('test discovery screen', function () {
+describe('ClosedCaptionScreen', function () {
+  it('test closed caption screen', function () {
 
-    // Render share screen into DOM
+    // Render closed caption screen into DOM
     var DOM = TestUtils.renderIntoDocument(<ClosedCaptionScreen />);
 
     //test close btn
