@@ -1,5 +1,7 @@
 jest.dontMock('../../js/components/adOverlay');
 jest.dontMock('../../js/constants/constants');
+jest.dontMock('../../js/components/closeButton');
+jest.dontMock('classnames');
 
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
@@ -21,7 +23,7 @@ describe('AdOverlay', function () {
       icons: {
         dismiss: {
           fontStyleClass: "dismiss"
-        },
+        }
       }
     };
     var DOM = TestUtils.renderIntoDocument(
@@ -50,7 +52,7 @@ describe('AdOverlay', function () {
       icons: {
         dismiss: {
           fontStyleClass: "dismiss"
-        },
+        }
       }
     };
     var DOM = TestUtils.renderIntoDocument(
@@ -85,7 +87,7 @@ describe('AdOverlay', function () {
       icons: {
         dismiss: {
           fontStyleClass: "dismiss"
-        },
+        }
       }
     };
     var DOM = TestUtils.renderIntoDocument(
@@ -94,9 +96,7 @@ describe('AdOverlay', function () {
         skinConfig={mockSkinConfig}
       />);
 
-    //var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'adOverlayCloseButton');
-    var closeBtn = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'button');
-    //var closeBtn = DOM.refs.adOverlayCloseButton;
+    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'adOverlayCloseButton');
     TestUtils.Simulate.click(closeBtn);
     expect(nonLinearHidden).toBe(true);
     expect(adSkipped).toBe(true);
