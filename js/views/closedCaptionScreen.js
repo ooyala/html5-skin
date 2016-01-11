@@ -16,6 +16,32 @@ var React = require('react'),
 var ClosedCaptionScreen = React.createClass({
   mixins: [ResizeMixin, AccessibilityMixin],
 
+  propTypes: {
+    skinConfig: React.PropTypes.shape({
+      icons: React.PropTypes.shape({
+        dismiss: React.PropTypes.shape({
+          fontStyleClass: React.PropTypes.string
+        })
+      })
+    })
+  },
+
+  getDefaultProps: function () {
+    return {
+      skinConfig: {
+        icons: {
+          dismiss:{fontStyleClass:'icon icon-close'}
+        }
+      },
+      controller: {
+        toggleClosedCaptionScreen: function(){},
+        state: {
+          accessibilityControlsEnabled: true
+        }
+      }
+    };
+  },
+
   getInitialState: function() {
     return {
       clientWidth: null,
