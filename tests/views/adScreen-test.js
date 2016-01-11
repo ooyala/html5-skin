@@ -1,0 +1,138 @@
+jest.dontMock('../../js/views/adScreen');
+
+var React = require('react/addons');
+var TestUtils = React.addons.TestUtils;
+var AdScreen = require('../../js/views/adScreen');
+
+describe('AdScreen', function () {
+  it('creates an ad screen', function () {
+
+    // Render start screen into DOM
+    var mockController = {
+      state: {
+        isMobile: false
+      }
+    };
+    var mockSkinConfig = {
+      adScreen: {
+        showControlBar: true,
+        showAdMarquee: true
+      }
+    };
+    var DOM = TestUtils.renderIntoDocument(
+      <AdScreen
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+      />);
+
+  });
+
+  it('handles mouseover and mouseout', function () {
+
+    // Render start screen into DOM
+    var controlBarVisible = true;
+    var mockController = {
+      state: {
+        isMobile: false
+      },
+      hideControlBar: function() {
+        controlBarVisible = false;
+      },
+      showControlBar: function() {
+        controlBarVisible = true;
+      }
+    };
+    var mockSkinConfig = {
+      adScreen: {
+        showControlBar: true,
+        showAdMarquee: true
+      }
+    };
+    var DOM = TestUtils.renderIntoDocument(
+      <AdScreen
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        controlBarAutoHide={true}
+      />);
+
+    expect(DOM.state.controlBarVisible).toBe(true);
+    TestUtils.Simulate.mouseOut(DOM.getDOMNode());
+    expect(DOM.state.controlBarVisible).toBe(false);
+    expect(controlBarVisible).toBe(false);
+
+    TestUtils.Simulate.mouseOver(DOM.getDOMNode());
+    expect(DOM.state.controlBarVisible).toBe(true);
+    expect(controlBarVisible).toBe(true);
+  });
+
+  it('handles mousemove', function () {
+
+    // Render start screen into DOM
+    var controlBarVisible = true;
+    var mockController = {
+      state: {
+        isMobile: false,
+        controlBarVisible: false
+      },
+      hideControlBar: function() {
+        controlBarVisible = false;
+      },
+      showControlBar: function() {
+        controlBarVisible = true;
+      },
+      startHideControlBarTimer: function() {}
+    };
+    var mockSkinConfig = {
+      adScreen: {
+        showControlBar: true,
+        showAdMarquee: true
+      }
+    };
+    var DOM = TestUtils.renderIntoDocument(
+      <AdScreen
+        playerState={"playing"}
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        controlBarAutoHide={true}
+        fullscreen={true}
+      />);
+
+    expect(DOM.state.controlBarVisible).toBe(false);
+    TestUtils.Simulate.mouseMove(DOM.getDOMNode());
+    expect(DOM.state.controlBarVisible).toBe(true);
+
+  });
+
+  it('test player clicks', function () {
+
+    // Render start screen into DOM
+    var adsClicked = false;
+    var mockController = {
+      state: {
+        isMobile: false,
+        accessibilityControlsEnabled: false
+      },
+      onAdsClicked: function() {
+        adsClicked = true;
+      }
+    };
+    var mockSkinConfig = {
+      adScreen: {
+        showControlBar: true,
+        showAdMarquee: true
+      }
+    };
+    var DOM = TestUtils.renderIntoDocument(
+      <AdScreen
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+      />);
+
+    TestUtils.Simulate.mouseUp(DOM.refs.adScreen);
+    expect(mockController.state.accessibilityControlsEnabled).toBe(true);
+
+    TestUtils.Simulate.click(DOM.refs.adPanel);
+    expect(adsClicked).toBe(true);
+  });
+
+});
