@@ -157,17 +157,17 @@ var ScrubberBar = React.createClass({
     var scrubberPaddingHeight = this.scrubberBarContainerHeight;
     var scrubberBarHeight = this.scrubberBarHeight;
 
-    var bufferedIndicatorStyle = {width: (parseFloat(this.props.buffered) /
-      parseFloat(this.props.duration)) * 100 + "%",
-      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.bufferedColor
-    };
-    var playedIndicatorStyle = {width: Math.min((parseFloat(this.props.currentPlayhead) /
-      parseFloat(this.props.duration)) * 100, 100) + "%",
-      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor
-    };
     var scrubberBarStyle = {
       backgroundColor: this.props.skinConfig.controlBar.scrubberBar.backgroundColor
-    }
+    };
+    var bufferedIndicatorStyle = {
+      width: (parseFloat(this.props.buffered) / parseFloat(this.props.duration)) * 100 + "%",
+      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.bufferedColor
+    };
+    var playedIndicatorStyle = {
+      width: Math.min((parseFloat(this.props.currentPlayhead) / parseFloat(this.props.duration)) * 100, 100) + "%",
+      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor
+    };
 
     var playheadStyle = {};
     var playheadPaddingStyle = {};
@@ -194,6 +194,10 @@ var ScrubberBar = React.createClass({
       playheadClassName += " adPlayhead";
       playedIndicatorClassName += " playedAdIndicator";
       playheadMouseDown = null;
+
+      scrubberBarStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.backgroundColor;
+      bufferedIndicatorStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.bufferedColor;
+      playedIndicatorStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.playedColor;
     }
 
     var scrubberBarContainerStyle = {
