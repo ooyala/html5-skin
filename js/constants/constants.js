@@ -76,7 +76,7 @@ module.exports = {
   },
 
   PAUSE_REASON: {
-    AD_PLAYBACK: "pauseForAdPlayback"
+    TRANSITION: "transition"
   },
 
   ERROR_MESSAGE: {
