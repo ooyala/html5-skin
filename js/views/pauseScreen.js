@@ -54,13 +54,9 @@ var PauseScreen = React.createClass({
   render: function() {
     //inline style for config/skin.json elements only
     var titleStyle = {
-      //fontSize: this.props.skinConfig.startScreen.titleFont.fontSize + "pt",
-      //fontFamily: this.props.skinConfig.startScreen.titleFont.fontFamily,
       color: this.props.skinConfig.startScreen.titleFont.color
     };
     var descriptionStyle = {
-      //fontSize: this.props.skinConfig.startScreen.descriptionFont.fontSize + "pt",
-      //fontFamily: this.props.skinConfig.startScreen.descriptionFont.fontFamily,
       color: this.props.skinConfig.startScreen.descriptionFont.color
     };
     var actionIconStyle = {
