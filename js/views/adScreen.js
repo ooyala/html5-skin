@@ -7,9 +7,12 @@ var React = require('react'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
     ClassNames = require('classnames'),
-    Utils = require('../components/utils');
+    Utils = require('../components/utils'),
+    ResizeMixin = require('../mixins/resizeMixin');
 
 var AdScreen = React.createClass({
+  mixins: [ResizeMixin],
+
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
@@ -22,13 +25,6 @@ var AdScreen = React.createClass({
   componentDidMount: function () {
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
 
-    // Make sure component resize correctly after switch to fullscreen/inline screen
-    window.addEventListener('resize', this.handleResize);
-    window.addEventListener('webkitfullscreenchange', this.handleResize);
-    window.addEventListener('mozfullscreenchange', this.handleResize);
-    window.addEventListener('fullscreenchange', this.handleResize);
-    window.addEventListener('msfullscreenchange', this.handleResize);
-
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen){
       this.props.controller.startHideControlBarTimer();
@@ -37,14 +33,9 @@ var AdScreen = React.createClass({
 
   componentWillUnmount: function () {
     this.props.controller.cancelTimer();
-    window.removeEventListener('resize', this.handleResize);
-    window.removeEventListener('webkitfullscreenchange', this.handleResize);
-    window.removeEventListener('mozfullscreenchange', this.handleResize);
-    window.removeEventListener('fullscreenchange', this.handleResize);
-    window.removeEventListener('msfullscreenchange', this.handleResize);
   },
 
-  componentWillUpdate: function(nextProps, nextState) {
+  componentWillUpdate: function(nextProps) {
     if(nextProps) {
       if (nextProps.controller.state.controlBarVisible == false && this.state.controlBarVisible == true) {
         this.hideControlBar();
@@ -64,7 +55,7 @@ var AdScreen = React.createClass({
     }
   },
 
-  handleResize: function(e) {
+  handleResize: function() {
     if (this.isMounted()) {
       this.setState({controlBarWidth: this.getDOMNode().clientWidth});
       this.props.controller.startHideControlBarTimer();
