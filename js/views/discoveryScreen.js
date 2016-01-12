@@ -11,9 +11,12 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     DiscoveryPanel = require('../components/discoveryPanel'),
     CloseButton = require('../components/closeButton'),
-    ClassNames = require('classnames');
+    ClassNames = require('classnames'),
+    AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var DiscoveryScreen = React.createClass({
+  mixins: [AccessibilityMixin],
+
   propTypes: {
     skinConfig: React.PropTypes.shape({
       icons: React.PropTypes.shape({
@@ -24,12 +27,20 @@ var DiscoveryScreen = React.createClass({
     })
   },
 
-  componentDidMount: function () {
-    this.props.controller.state.accessibilityControlsEnabled = false;
-  },
-
-  componentWillUnmount: function () {
-    this.props.controller.state.accessibilityControlsEnabled = true;
+  getDefaultProps: function () {
+    return {
+      skinConfig: {
+        icons: {
+          dismiss:{fontStyleClass:'icon icon-close'}
+        }
+      },
+      controller: {
+        toggleDiscoveryScreen: function(){},
+        state: {
+          accessibilityControlsEnabled: true
+        }
+      }
+    };
   },
 
   handleClose: function() {

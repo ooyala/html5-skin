@@ -9,15 +9,32 @@
 */
 var React = require('react'),
     SharePanel = require('../components/sharePanel'),
-    CloseButton = require('../components/closeButton');
+    CloseButton = require('../components/closeButton'),
+    AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var ShareScreen = React.createClass({
-  componentDidMount: function () {
-    this.props.controller.state.accessibilityControlsEnabled = false;
+  mixins: [AccessibilityMixin],
+
+  propTypes: {
+    skinConfig: React.PropTypes.shape({
+      icons: React.PropTypes.objectOf(React.PropTypes.object)
+    })
   },
 
-  componentWillUnmount: function () {
-    this.props.controller.state.accessibilityControlsEnabled = true;
+  getDefaultProps: function () {
+    return {
+      skinConfig: {
+        icons: {
+          dismiss:{fontStyleClass:'icon icon-close'}
+        }
+      },
+      controller: {
+        closeScreen: function(){},
+        state: {
+          accessibilityControlsEnabled: true
+        }
+      }
+    };
   },
 
   handleClose: function() {

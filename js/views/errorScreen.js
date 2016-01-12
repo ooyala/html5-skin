@@ -4,11 +4,20 @@
 var React = require('react'),
     ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants'),
-    Utils = require('../components/utils');
+    Utils = require('../components/utils'),
+    AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var ErrorScreen = React.createClass({
-  componentDidMount: function () {
-    this.props.controller.state.accessibilityControlsEnabled = false;
+  mixins: [AccessibilityMixin],
+
+  getDefaultProps: function () {
+    return {
+      controller: {
+        state: {
+          accessibilityControlsEnabled: true
+        }
+      }
+    };
   },
 
   render: function() {
