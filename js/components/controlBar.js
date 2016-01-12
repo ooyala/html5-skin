@@ -10,8 +10,7 @@ var ControlBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
-      currentVolumeHead: 0,
-      mouseOverVolume: false
+      currentVolumeHead: 0
     };
   },
 
@@ -226,15 +225,6 @@ var ControlBar = React.createClass({
 
     // TODO: Update when implementing localization
     var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
-
-    if (this.state.mouseOverVolume) {
-      volumeIconSetting.opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
-      volumeIconSetting.color = this.props.skinConfig.controlBar.iconStyle.active.color;
-    }
-    else {
-      volumeIconSetting.opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
-      volumeIconSetting.color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
-    }
 
     var controlItemTemplates = {
       "playPause": <button className="playPause controlBarItem" style={dynamicStyles.generalIconSetting} key="playPause">

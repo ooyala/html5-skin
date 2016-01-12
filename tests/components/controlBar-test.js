@@ -564,6 +564,10 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":100 }];
+    oneButtonSkinConfig.controlBar.iconStyle.inactive.opacity = 0;
+    oneButtonSkinConfig.controlBar.iconStyle.active.opacity = 1;
+    oneButtonSkinConfig.controlBar.iconStyle.active.color = "red";
+    oneButtonSkinConfig.controlBar.iconStyle.inactive.color = "blue";
 
     var mockProps = {
       authorization: {},
@@ -578,11 +582,14 @@ describe('ControlBar', function () {
         authorization={mockProps.authorization} />
     );
 
-    expect(DOM.state.mouseOverVolume).toBe(false);
+    expect(DOM.refs.volumeIcon.getDOMNode().style.opacity).toBe("0");
+    expect(DOM.refs.volumeIcon.getDOMNode().style.color).toBe("blue");
     TestUtils.Simulate.mouseOver(DOM.refs.volumeIcon);
-    expect(DOM.state.mouseOverVolume).toBe(true);
+    expect(DOM.refs.volumeIcon.getDOMNode().style.opacity).toBe("1");
+    expect(DOM.refs.volumeIcon.getDOMNode().style.color).toBe("red");
     TestUtils.Simulate.mouseOut(DOM.refs.volumeIcon);
-    expect(DOM.state.mouseOverVolume).toBe(false);
+    expect(DOM.refs.volumeIcon.getDOMNode().style.opacity).toBe("0");
+    expect(DOM.refs.volumeIcon.getDOMNode().style.color).toBe("blue");
   });
 
   it('uses the volume slider on mobile', function() {
