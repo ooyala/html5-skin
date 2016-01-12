@@ -108,7 +108,7 @@ var AdPanel = React.createClass({
     // Skip
     var skipButtonClass = ClassNames({
       "skipButton": true,
-      "visible": this.props.currentAdsInfo.currentAdItem.skippable,
+      "visible": this.props.currentAdsInfo.skipAdButtonEnabled,
       "enabled": this.props.currentAdsInfo.skipAdButtonEnabled
     });
     var skipButtonText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
