@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/build/html5-skin.min.css"/>
+  
+
+  <script src="http://player.ooyala.com/static/v4/candidate/latest/core.min.js"></script>
+
+  <script src="http://player.ooyala.com/static/v4/sandbox/shaka/video-plugin/shaka-player.compiled.debug.js"></script>
+  <script src="http://player.ooyala.com/static/v4/sandbox/shaka/video-plugin/shaka.js"></script>
+  
+  <script src="http://player.ooyala.com/static/v4/candidate/latest/skin-plugin/html5-skin.min.js"></script>
+  <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+
+</head>
+
+<body>
+<div id='container' style='width:540px; height:460px;'></div>
+<script>
+  var playerParam = {
+    "pcode": "5zb2wxOlZcNCe_HVT3a6cawW298X",
+    "playerBrandingId": "26e2e3c1049c4e70ae08a242638b5c40",
+    'debug':true,
+    "initialVolume" : 1,
+    "skin": {
+      "config": "/config/skin.json"
+    },
+  };
+  OO.ready(function() {
+    window.pp = OO.Player.create('container', 'F1cms4dzo7uHc774uYw2Oug6sLWArIQl', playerParam);
+    pp.mb.subscribe("*", "test", function(event, props1, props2, props3, props4, props5){
+      console.log("MESSAGE BUS: ", event+" "+JSON.stringify(props1, null, '\t')+" "+JSON.stringify(props2, null, '\t')+" "+JSON.stringify(props3, null, '\t')+" "+JSON.stringify(props4, null, '\t')+" "+JSON.stringify(props5, null, '\t'));
+    });
+  });
+</script>
+
+</body>
+</html>
