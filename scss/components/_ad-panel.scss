@@ -20,6 +20,7 @@
     justify-content: flex-start;
     @include vendor-prefixes(user-select, none);
     transition: bottom 0.5s, height 0.2 5s;
+    z-index: 12600;
 
     .adTitle, .adPlaybackInfo {
       font-size: 12pt;
