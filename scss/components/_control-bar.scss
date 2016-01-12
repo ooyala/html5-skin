@@ -1,8 +1,8 @@
 .controlBar {
   background: rgba(0, 0, 0, 0.3);
   width: 100%;
-  bottom: 0%;
-  height: 60;
+  bottom: 0;
+  height: 60px;
   position: absolute;
   margin: 0;
   font-size: 18px;
@@ -13,73 +13,80 @@
   user-select: none;
   transition: bottom 0.5s, height 0.25s;
   z-index: 12500;
-}
 
-.controlBarItemsWrapper {
-  display: -webkit-flex;
-  display: flex;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-  padding-right: 7.5px;
-  padding-left: 7.5px;
-}
+  .controlBarItemsWrapper {
+    display: -webkit-flex;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    padding-right: 7.5px;
+    padding-left: 7.5px;
 
-.controlBarItem {
-  height: 100%;
-  font-weight: bold;
-  font-size: 18px;
-  text-align: center;
-  padding-left: 7.5px;
-  padding-right: 7.5px;
-  padding-top: 0;
-  margin-top: 6px;
-  cursor: pointer;
-}
+    .controlBarItem {
+      height: 100%;
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+      padding: 0 7.5px;
+      margin-top: 6px;
+      cursor: pointer;
+    }
 
-.controlBarItem.watermark {
-  cursor: auto;
-}
+    button.controlBarItem {
+      background-color: transparent;
+      border:0;
+      outline: none;
+    }
 
-.controlBarDuration {
-  height: 100%;
-  color: #ffffff;
-  opacity: 1;
-  font-family: 'Roboto', sans-serif;
-  font-size: 14;
-  padding-left: 7.5px;
-  padding-right: 7.5px;
-  text-align: left;
-  margin-top: 6px;
-}
+    .controlBarItem.watermark {
+      cursor: auto;
+    }
 
-.controlBarFlexSpace {
-  -webkit-flex: 1;
-  flex: 1;
-}
+    .controlBarDuration {
+      height: 100%;
+      color: #ffffff;
+      opacity: 1;
+      font-family: $font-family-roboto;
+      font-size: 14px;
+      padding-left: 7.5px;
+      padding-right: 7.5px;
+      text-align: left;
+      margin-top: 6px;
+    }
 
-.liveCircle {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: red;
-  margin-right: 2px;
-}
+    .controlBarFlexSpace {
+      -webkit-flex: 1;
+      flex: 1;
+    }
 
-.liveIndicator {
-  transform: translateY(50%);
-}
+    .liveCircle {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: red;
+      margin-right: 2px;
+    }
 
-.liveText {
-  font-size: 10px;
-  color: LightGray;
-}
+    .liveIndicator {
+      transform: translateY(50%);
+    }
 
-.watermark img {
-  position: relative;
-  height: 18px;
-  top: 14px;
+    .liveText {
+      font-size: 10px;
+      color: $gray-light;
+    }
+
+    .watermark img {
+      position: relative;
+      height: 18px;
+      top: 14px;
+    }
+  }
+}
+a.volumeBar {
+  border:0;
+  outline: none;
 }
 
 .volumeBar {

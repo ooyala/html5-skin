@@ -294,7 +294,6 @@ describe('ControlBar', function () {
   });
 
   it('shows/hides closed caption button if captions available', function() {
-    var discoveryClicked = false;
     var mockController = {
       state: {
         isMobile: false,
@@ -460,7 +459,7 @@ describe('ControlBar', function () {
     );
 
     var optionsButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'moreOptions');
-    expect(optionsButton).toNotBe(null);
+    expect(optionsButton).not.toBe(null);
     TestUtils.Simulate.click(optionsButton);
     expect(moreOptionsClicked).toBe(true);
   });
@@ -614,7 +613,7 @@ describe('ControlBar', function () {
         authorization={mockProps.authorization} />
     );
     var slider = TestUtils.findRenderedDOMComponentWithClass(DOM, "volumeSlider");
-    expect(slider).toNotBe(null);
+    expect(slider).not.toBe(null);
   });
 
   it('hides the volume on iOS', function() {
