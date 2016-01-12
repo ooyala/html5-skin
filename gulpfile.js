@@ -17,7 +17,7 @@ var gulp = require('gulp'),
 var path = {
   scripts: ['./js/**/*.js'],
   sass: ['./scss/**/*.scss'],
-  pages: ['./iframe.html']
+  pages: ['./']
 };
 
 // Build All
@@ -115,4 +115,6 @@ gulp.task('assets', function () {
 gulp.task('pages', function () {
   gulp.src(['iframe.html'])
     .pipe(gulp.dest('./build'));
+  gulp.src(['shaka.html'])
+  .pipe(gulp.dest('./build'));
 });
