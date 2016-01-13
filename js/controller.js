@@ -242,7 +242,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered, startEnd, videoId) {
-      if (videoId == OO.VIDEO.MAIN) {
+      if (videoId == "main") {
         this.state.mainVideoPlayhead = currentPlayhead;
       }
       else if (videoId == OO.VIDEO.ADS) {
