@@ -41,6 +41,9 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeIconClick: function(evt) {
+    if (evt.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
       if (this.isMobile){
         this.props.controller.startHideControlBarTimer();
         evt.stopPropagation(); // W3C
@@ -55,6 +58,7 @@ var ControlBar = React.createClass({
       else{
         this.props.controller.handleMuteClick();
       }
+    }
   },
 
   handleVolumeBarTouchEnd: function(evt) {
@@ -227,9 +231,10 @@ var ControlBar = React.createClass({
     var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
 
     var controlItemTemplates = {
-      "playPause": <button className="playPause controlBarItem" style={dynamicStyles.generalIconSetting} key="playPause">
+      "playPause": <button className="playPause controlBarItem" style={dynamicStyles.generalIconSetting}
+        onClick={this.handlePlayClick} key="playPause">
         <span className={playClass} style={dynamicStyles.iconCharacter}
-          onClick={this.handlePlayClick} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         </span>
       </button>,
 
@@ -240,10 +245,9 @@ var ControlBar = React.createClass({
         </div>
       </div>,
 
-      "volume": <button className="volume controlBarItem" style={dynamicStyles.generalIconSetting}
-        onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight} key="volume">
-        <span className={muteClass} style={volumeIconSetting} ref="volumeIcon"
-          onClick={this.handleVolumeIconClick}>
+      "volume": <button className="volume controlBarItem" style={dynamicStyles.generalIconSetting} key="volume">
+        <span className={muteClass} style={volumeIconSetting} ref="volumeIcon" onClick={this.handleVolumeIconClick}
+              onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}>
         </span>
         {volumeControls}
       </button>,
@@ -274,17 +278,17 @@ var ControlBar = React.createClass({
         </span>
       </button>,
 
-      "closedCaption": <button className="closedCaption controlBarItem" style={dynamicStyles.generalIconSetting} key="closedCaption">
+      "closedCaption": <button className="closedCaption controlBarItem" style={dynamicStyles.generalIconSetting}
+        onClick={this.handleClosedCaptionClick} key="closedCaption">
         <span className={this.props.skinConfig.icons.cc.fontStyleClass} style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
-          onClick={this.handleClosedCaptionClick}>
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         </span>
       </button>,
 
-      "share": <button className="share controlBarItem" style={dynamicStyles.generalIconSetting} key="share">
+      "share": <button className="share controlBarItem" style={dynamicStyles.generalIconSetting}
+        onClick={this.handleShareClick} key="share">
         <span className={this.props.skinConfig.icons.share.fontStyleClass} style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
-          onClick={this.handleShareClick}>
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         </span>
       </button>,
 
