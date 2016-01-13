@@ -81,6 +81,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       "isMobile": false,
       "controlBarVisible": true,
+      "forceControlBarVisible": false,
       "timer": null,
       "errorCode": null
     };
@@ -174,7 +175,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.configLoaded = true;
         this.renderSkin();
 
-        $("#" + elementId + " .player_skin").append("<div class='player_skin_plugins'></div><div class='player_skin_plugins_click_layer'></div>");
+        $("#" + this.state.elementId + " .player_skin").append("<div class='player_skin_plugins'></div><div class='player_skin_plugins_click_layer'></div>");
         this.state.pluginsElement = $("#" + elementId + " .player_skin_plugins");
         this.state.pluginsClickElement = $("#" + elementId + " .player_skin_plugins_click_layer");
         this.state.pluginsElement.mouseover(
@@ -458,6 +459,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       OO.log("onWillPlayAds is called from event = " + event);
       this.state.isPlayingAd = true;
       this.state.pluginsElement.addClass("showing");
+      this.state.forceControlBarVisible = (this.state.pluginsElement.children.length > 0);
     },
 
     onAdPodStarted: function(event, numberOfAds) {

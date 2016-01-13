@@ -68,6 +68,10 @@ var StartScreen = React.createClass({
     };
   },
 
+  getInitialState: function() {
+    return {playButtonClicked: false};
+  },
+
   componentDidMount: function() {
     this.truncateText(this.refs.description, this.props.contentTree.description);
   },
@@ -76,6 +80,7 @@ var StartScreen = React.createClass({
     event.preventDefault();
     this.props.controller.togglePlayPause();
     this.props.controller.state.accessibilityControlsEnabled = true;
+    this.setState({playButtonClicked: true});
   },
 
   render: function() {
@@ -150,7 +155,7 @@ var StartScreen = React.createClass({
 
           <a className="state-screen-selectable" onClick={this.handleClick}></a>
 
-          {this.props.controller.state.buffering ? <Spinner /> : actionIcon}
+          {this.state.playButtonClicked || this.props.controller.state.buffering ? <Spinner /> : actionIcon}
         </div>
     );
   }
