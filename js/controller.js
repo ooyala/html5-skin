@@ -174,8 +174,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.configLoaded = true;
         this.renderSkin();
 
-        $("#" + elementId + " .player_skin").append("<div class='player_skin_plugins'></div>");
+        $("#" + elementId + " .player_skin").append("<div class='player_skin_plugins'></div><div class='player_skin_plugins_click_layer'></div>");
         this.state.pluginsElement = $("#" + elementId + " .player_skin_plugins");
+        this.state.pluginsClickElement = $("#" + elementId + " .player_skin_plugins_click_layer");
         this.state.pluginsElement.mouseover(
           function() {
             this.showControlBar();
@@ -184,6 +185,24 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }.bind(this)
         );
         this.state.pluginsElement.mouseout(
+          function() {
+            this.hideControlBar();
+          }.bind(this)
+        );
+        this.state.pluginsClickElement.click(
+          function() {
+            this.state.pluginsClickElement.removeClass("showing");
+            this.mb.publish(OO.EVENTS.PLAY);
+          }.bind(this)
+        );
+        this.state.pluginsClickElement.mouseover(
+          function() {
+            this.showControlBar();
+            this.renderSkin();
+            this.startHideControlBarTimer();
+          }.bind(this)
+        );
+        this.state.pluginsClickElement.mouseout(
           function() {
             this.hideControlBar();
           }.bind(this)
@@ -297,6 +316,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
+        this.state.pluginsElement.removeClass("showing");
+        this.state.pluginsClickElement.removeClass("showing");
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         if (Utils.isSafari()){
@@ -307,6 +328,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
+        this.state.pluginsClickElement.removeClass("showing");
         if (this.state.currentAdsInfo.currentAdItem !== null) {
           this.state.playerState = CONSTANTS.STATE.PLAYING;
           //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
@@ -319,6 +341,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPause: function(event, source, pauseReason) {
       if (pauseReason === CONSTANTS.PAUSE_REASON.TRANSITION){
         this.state.pauseAnimationDisabled = true;
+      }
+      // If an ad using the custom ad element has issued a pause, activate the click layer
+      if (source == OO.VIDEO.ADS && this.state.pluginsElement.children.length > 0) {
+        this.state.pluginsClickElement.addClass("showing");
       }
     },
 

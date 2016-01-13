@@ -12,3 +12,17 @@
 .player_skin_plugins.showing:not(:empty) {
   display: block;
 }
+
+.player_skin_plugins_click_layer {
+  z-index: 12005;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  display: none;
+}
+
+.player_skin_plugins_click_layer.showing {
+  display: block;
+}
