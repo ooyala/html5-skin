@@ -51,7 +51,7 @@ module.exports = {
     OPTIONAL_MESSAGE: "Optional Message",
     SEND: "Send",
     ERROR_ACTION: "RELOAD YOUR SCREEN OR TRY SELECTING A DIFFERENT VIDEO",
-    UNKNOWN_ERROR: "THIS IS NOT WORKING! :("
+    UNKNOWN_ERROR: "Something happened while we were trying to play your video! Click replay or simply reload your page."
   },
 
   KEYCODES: {
@@ -220,6 +220,14 @@ module.exports = {
       name: "OO.ERROR.CHANNEL_CONTENT",
       title: "CHANNEL CONTENT ERROR",
       description: "This channel is not playable at this time"
+    },
+    "unsupported_encoding":{
+      name: "OO.ERROR.VC.UNSUPPORTED_ENCODING",
+      description: "Something happened while we were trying to play your video! Click replay or simply reload your page."
+    },
+    "unable_to_create_video_element":{
+      name: "OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT",
+      description: "Something happened while we were trying to play your video! Click replay or simply reload your page."
     }
   }
 }
