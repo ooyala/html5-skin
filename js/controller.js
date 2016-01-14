@@ -101,7 +101,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       
       if (eventSubscriptionFlag == false) {
-        eventSubscriptionFlag = this.togglePlaybackSubscription(eventSubscriptionFlag);
+        this.togglePlaybackSubscription();
       }
 
       /********************************************************************
@@ -133,8 +133,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
     },
 
-    togglePlaybackSubscription: function(currentEventSubscriptionFlag) {
-      if (currentEventSubscriptionFlag == false) {        
+    togglePlaybackSubscription: function() {
+      if (eventSubscriptionFlag == false) {        
         this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
         this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
@@ -157,7 +157,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
         eventSubscriptionFlag = false;
       }
-      return eventSubscriptionFlag;
     },
 
     externalPluginSubscription: function() {
@@ -248,7 +247,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.authorization = authorization;
 
       if (eventSubscriptionFlag == false) {
-        eventSubscriptionFlag = this.togglePlaybackSubscription(eventSubscriptionFlag);
+        this.togglePlaybackSubscription();
       }
     },
 
@@ -576,7 +575,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onErrorEvent: function(event, errorCode){
 
       if (eventSubscriptionFlag == true) {
-        eventSubscriptionFlag = this.togglePlaybackSubscription(eventSubscriptionFlag);
+        this.togglePlaybackSubscription();
       }
 
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
@@ -588,7 +587,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     unsubscribeFromMessageBus: function(){
 
       if (eventSubscriptionFlag == true) {
-        eventSubscriptionFlag = this.togglePlaybackSubscription(eventSubscriptionFlag);
+        this.togglePlaybackSubscription();
       }
 
       this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
