@@ -20,6 +20,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     OO.publicApi.VERSION.skin_version = "<SKIN_VERSION>";
   }
 
+  var eventSubscriptionFlag = false;
+
   var Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
@@ -96,16 +98,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
-      this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
-      this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
-      this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
-      this.mb.subscribe(OO.EVENTS.VC_PAUSE, 'customerUi', _.bind(this.onPause, this));
-      this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
-      this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
-      this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
-      this.mb.subscribe(OO.EVENTS.BUFFERING, 'customerUi', _.bind(this.onBuffering, this));
-      this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
+      
+      if (eventSubscriptionFlag == false) {
+        eventSubscriptionFlag = this.togglePlaybackSubscription(eventSubscriptionFlag);
+      }
 
       /********************************************************************
        ADS RELATED EVENTS
@@ -134,6 +131,33 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
 
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
+    },
+
+    togglePlaybackSubscription: function(currentEventSubscriptionFlag) {
+      if (currentEventSubscriptionFlag == false) {        
+        this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
+        this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
+        this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
+        this.mb.subscribe(OO.EVENTS.VC_PAUSE, 'customerUi', _.bind(this.onPause, this));
+        this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
+        this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
+        this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
+        this.mb.subscribe(OO.EVENTS.BUFFERING, 'customerUi', _.bind(this.onBuffering, this));
+        this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
+        eventSubscriptionFlag = true;
+      } else {
+        this.mb.unsubscribe(OO.EVENTS.VC_PLAYED, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.VC_PLAYING, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.VC_PAUSE, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.VC_PAUSED, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
+        eventSubscriptionFlag = false;
+      }
+      return eventSubscriptionFlag;
     },
 
     externalPluginSubscription: function() {
@@ -223,19 +247,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onAuthorizationFetched: function(event, authorization) {
       this.state.authorization = authorization;
 
-      // Outside of state check as this is needed in order to be able to perform the state check.
-      this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
-
-      if (this.state.playerState == CONSTANTS.STATE.ERROR) {
-        // Resubscribe events that were unsubscribed from onErrorEvent.
-        this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
-        this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
-        this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
-        this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
-        this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
-        this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
-        this.mb.subscribe(OO.EVENTS.BUFFERING, 'customerUi', _.bind(this.onBuffering, this));
-        this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
+      if (eventSubscriptionFlag == false) {
+        eventSubscriptionFlag = this.togglePlaybackSubscription(eventSubscriptionFlag);
       }
     },
 
@@ -562,15 +575,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onErrorEvent: function(event, errorCode){
 
-      this.mb.unsubscribe(OO.EVENTS.VC_PLAYED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.VC_PLAYING, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.VC_PAUSED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
+      if (eventSubscriptionFlag == true) {
+        eventSubscriptionFlag = this.togglePlaybackSubscription(eventSubscriptionFlag);
+      }
 
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.state.playerState = CONSTANTS.STATE.ERROR;
@@ -579,19 +586,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     unsubscribeFromMessageBus: function(){
+
+      if (eventSubscriptionFlag == true) {
+        eventSubscriptionFlag = this.togglePlaybackSubscription(eventSubscriptionFlag);
+      }
+
       this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.VC_PLAYED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.VC_PLAYING, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.VC_PAUSE, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.VC_PAUSED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
 
       if (!Utils.isIPhone()) {
         //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
