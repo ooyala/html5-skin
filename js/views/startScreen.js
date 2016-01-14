@@ -141,17 +141,19 @@ var StartScreen = React.createClass({
     );
 
     return (
-        <div className="state-screen startScreen">
-          <div className={stateScreenPosterClass} style={posterStyle}></div>
-          <div className={infoPanelClass}>
-            {this.props.skinConfig.startScreen.showTitle ? titleMetadata : ''}
-            {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : ''}
-          </div>
-
-          <a className="state-screen-selectable" onClick={this.handleClick}></a>
-
-          {this.props.controller.state.buffering ? <Spinner /> : actionIcon}
+      <div className="state-screen startScreen">
+        <div className={stateScreenPosterClass} style={posterStyle}>
+          <a onClick={this.handleClick} style={{display:'block'}}>
+            <img src={posterImageUrl} />
+          </a>
         </div>
+        <div className={infoPanelClass}>
+          {this.props.skinConfig.startScreen.showTitle ? titleMetadata : ''}
+          {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : ''}
+        </div>
+
+        {this.props.controller.state.buffering ? <Spinner /> : actionIcon}
+      </div>
     );
   }
 });
