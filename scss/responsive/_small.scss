@@ -1,0 +1,33 @@
+.small {
+  // State Screens
+  .state-screen {
+    .state-screen-info {
+      .state-screen-title {
+        font-size: 1em;
+      }
+      .state-screen-description {
+        font-size: 0.6em;
+      }
+    }
+  }
+
+  // Discovery Screen
+  .discoveryScreen {
+    .discovery-panel {
+      .discoveryToasterContainerStyle {
+        min-height:0;
+        height: 200px;
+      }
+    }
+  }
+
+  // Closed Caption Screen
+  .closedCaptionsScreen{
+    .language-container {
+      .language-panel {
+        min-height:0;
+        height: 80px
+      }
+    }
+  }
+}

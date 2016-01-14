@@ -1,4 +1,18 @@
 // ---------------------------------------------------------------------------------------
-// When having several skins, this file contains everything related to the default skin.
-// Values are pulled from /html5-skin/config/skin.json
+// When having several skins, this file contains everything related to default skin.
+// Values can be pulled from /html5-skin/config/skin.json
 // ---------------------------------------------------------------------------------------
+
+.player_skin {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+video.video {
+  width: 100% !important;
+  height: 100% !important;
+  position: static !important;
+  display: block !important;
+}

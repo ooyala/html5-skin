@@ -8,10 +8,6 @@
 
   // Mixins
   @import "mixins/mixins";
-  //@import "mixins/buttons";
-  //@import "mixins/gradients";
-  //@import "mixins/grid-framework";
-  //@import "mixins/grid";
 
   // Normalize and reset
   @import "base/normalize";
@@ -20,7 +16,6 @@
   // Core CSS
   @import "base/base";
   @import "base/type";
-  //@import "base/grid";
 
   // Components
   @import "components/share-screen";
@@ -41,6 +36,10 @@
   @import "components/ad-panel";
   @import "components/closed-captions-screen";
   @import "components/plugins";
+
+  // Responsive
+  @import "responsive/small";
+  @import "responsive/large";
 
   // Skin
   @import "skin/default";

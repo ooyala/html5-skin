@@ -37,10 +37,25 @@
   }
 
   .state-screen-poster {
-    @extend .expand;
-    background-size: contain;
+    width:100%;
+    top:0;
+    left:0;
+    background-size: cover; //set back to contain after poster attr added to video tag
     background-repeat: no-repeat;
     background-position: center;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    img {
+      visibility: hidden;
+      width:100%;
+    }
   }
 
   .state-screen-poster-small {
@@ -52,10 +67,14 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    img {
+      visibility: hidden;
+      width:0;
+    }
   }
 
   .state-screen-info {
-    position: relative;
+    position: absolute;
     width: 100%;
     top: 5%;
     left: 5%;
