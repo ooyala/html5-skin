@@ -1,16 +1,4 @@
 module.exports = {
-  defaultScreenStyle: {
-    style: {
-      width: "100%",
-      height: "100%",
-      cursor: "default"
-    },
-    closeButtonStyle: {
-      "opacity":"0.6",
-      "color": "#ffffff"
-    }
-  },
-
   pauseScreenStyle: {
     videoBlur: {
       "-webkit-filter": "blur(3px)",
@@ -165,80 +153,6 @@ module.exports = {
       "left": "50%",
       "WebkitTransform": "translateY(-50%) translateX(-50%)",
       "transform": "translateY(-50%) translateX(-50%)"
-    }
-  },
-
-  discoveryScreenStyle: {
-    discoveryCountDownStyle: {
-      width: "75px",
-      height: "75px"
-    }
-  },
-  
-  adOverlayStyle: {
-    style: {
-    },
-
-    overlayImageStyle: {
-    },
-
-    closeButtonStyle: {
-    },
-
-    closeButtonIconStyle: {
-    }
-  },
-
-  MoreOptionsScreenStyle: {
-    panelStyle: {
-      "position": "absolute",
-      "top": "0",
-      "left": "0",
-      "width": "100%",
-      "height": "100%",
-      "background": "rgba(0, 0, 0, 0.7)"
-    },
-
-    buttonListStyle: {
-      "position": "absolute",
-      "bottom": "0%",
-      "left": "50%",
-      "WebkitTransform": "translate(-50%, 50%)",
-      "transform": "translate(-50%, 50%)",
-      "height": "32",
-      "opacity": "0",
-      "listStyle": "none",
-      "display": "flex",
-      "flexFlow": "row nowrap",
-      "justifyContent": "flex-start",
-      "WebkitUserSelect": "none",
-      "MozUserSelect": "none",
-      "msUserSelect": "none",
-      "userSelect": "none",
-      "WebkitFlexDirection": "row",
-      "flexDirection": "row",
-      "transition": "bottom 0.7s, opacity 0.7s"
-    },
-
-    buttonStyle: {
-      "height": "100%",
-      "fontWeight": "bold",
-      "fontSize": "30px",
-      "textAlign": "center",
-      "paddingLeft": "13px",
-      "paddingRight": "13px",
-      "margin": "0 auto",
-      "opacity": "1",
-      "cursor": "pointer"
-    },
-
-    iconStyle: {},
-
-    closeButtonStyle: {
-      "position": "absolute",
-      "top": "35",
-      "right": "35",
-      "cursor": "pointer"
     }
   }
 };
