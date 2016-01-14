@@ -1,0 +1,8 @@
+.adScreen {
+  cursor: default;
+  z-index: 13000;
+}
+
+.adScreen.hidden {
+  cursor: none;
+}

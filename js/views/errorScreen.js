@@ -4,11 +4,20 @@
 var React = require('react'),
     ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants'),
-    Utils = require('../components/utils');
+    Utils = require('../components/utils'),
+    AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var ErrorScreen = React.createClass({
-  componentDidMount: function () {
-    this.props.controller.state.accessibilityControlsEnabled = false;
+  mixins: [AccessibilityMixin],
+
+  getDefaultProps: function () {
+    return {
+      controller: {
+        state: {
+          accessibilityControlsEnabled: true
+        }
+      }
+    };
   },
 
   render: function() {
@@ -19,15 +28,15 @@ var ErrorScreen = React.createClass({
       errorAction = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.ERROR_ACTION, this.props.localizableStrings);
     }
     else {
-      errorTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UNKNOWN_ERROR, this.props.localizableStrings);
-      errorDescription = null;
+      errorDescription = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UNKNOWN_ERROR, this.props.localizableStrings);
+      errorTitle = null;
       errorAction = null;
     }
 
     var errorContentClass = ClassNames({
       'error-content': true,
       'center-block': true,
-      'error-content-center': CONSTANTS.ERROR_MESSAGE.hasOwnProperty(this.props.errorCode.code)
+      'error-content-center': true
     });
 
     return (

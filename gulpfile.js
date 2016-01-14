@@ -16,11 +16,12 @@ var gulp = require('gulp'),
 
 var path = {
   scripts: ['./js/**/*.js'],
-  sass: ['./scss/**/*.scss']
+  sass: ['./scss/**/*.scss'],
+  pages: ['./iframe.html']
 };
 
 // Build All
-gulp.task('build', ['browserify', 'browserify-min', 'insertVersion', 'sass', 'sass-min', 'assets']);
+gulp.task('build', ['browserify', 'browserify-min', 'insertVersion', 'sass', 'sass-min', 'assets', 'pages']);
 
 // Browserify JS
 gulp.task('browserify', function () {
@@ -82,6 +83,7 @@ gulp.task('test', shell.task(['npm test']));
 gulp.task('watch', function() {
   gulp.watch(path.scripts, ['browserify', 'browserify-min']);
   gulp.watch(path.sass, ['sass', 'sass-min']);
+  gulp.watch(path.pages, ['pages']);
 });
 
 // The default task (called when you run `gulp` from cli)
@@ -107,4 +109,10 @@ gulp.task("docs", shell.task("./node_modules/.bin/jsdoc -c ./jsdoc_conf.json"));
 gulp.task('assets', function () {
   gulp.src(['assets/**/*'])
     .pipe(gulp.dest('./build/assets'));
+});
+
+// HTML pages
+gulp.task('pages', function () {
+  gulp.src(['iframe.html'])
+    .pipe(gulp.dest('./build'));
 });

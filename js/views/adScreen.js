@@ -3,13 +3,16 @@
 *********************************************************************/
 var React = require('react'),
     CONSTANTS = require('../constants/constants'),
-    InlineStyle = require('../styles/inlineStyle'),
     AdPanel = require('../components/adPanel'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
-    Utils = require('../components/utils');
+    ClassNames = require('classnames'),
+    Utils = require('../components/utils'),
+    ResizeMixin = require('../mixins/resizeMixin');
 
 var AdScreen = React.createClass({
+  mixins: [ResizeMixin],
+
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
@@ -22,13 +25,6 @@ var AdScreen = React.createClass({
   componentDidMount: function () {
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
 
-    // Make sure component resize correctly after switch to fullscreen/inline screen
-    window.addEventListener('resize', this.handleResize);
-    window.addEventListener('webkitfullscreenchange', this.handleResize);
-    window.addEventListener('mozfullscreenchange', this.handleResize);
-    window.addEventListener('fullscreenchange', this.handleResize);
-    window.addEventListener('msfullscreenchange', this.handleResize);
-
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen){
       this.props.controller.startHideControlBarTimer();
@@ -37,17 +33,16 @@ var AdScreen = React.createClass({
 
   componentWillUnmount: function () {
     this.props.controller.cancelTimer();
-    window.removeEventListener('resize', this.handleResize);
-    window.removeEventListener('webkitfullscreenchange', this.handleResize);
-    window.removeEventListener('mozfullscreenchange', this.handleResize);
-    window.removeEventListener('fullscreenchange', this.handleResize);
-    window.removeEventListener('msfullscreenchange', this.handleResize);
   },
 
-  componentWillUpdate: function(nextProps, nextState) {
+  componentWillUpdate: function(nextProps) {
     if(nextProps) {
       if (nextProps.controller.state.controlBarVisible == false && this.state.controlBarVisible == true) {
         this.hideControlBar();
+      }
+
+      if (nextProps.controller.state.controlBarVisible == true && this.state.controlBarVisible == false) {
+        this.showControlBar();
       }
 
       if(!this.props.fullscreen && nextProps.fullscreen && this.state.playerState != CONSTANTS.STATE.PAUSE) {
@@ -60,7 +55,7 @@ var AdScreen = React.createClass({
     }
   },
 
-  handleResize: function(e) {
+  handleResize: function() {
     if (this.isMounted()) {
       this.setState({controlBarWidth: this.getDOMNode().clientWidth});
       this.props.controller.startHideControlBarTimer();
@@ -95,14 +90,12 @@ var AdScreen = React.createClass({
   showControlBar: function() {
     this.setState({controlBarVisible: true});
     this.props.controller.showControlBar();
-    this.refs.AdScreen.getDOMNode().style.cursor="default";
   },
 
   hideControlBar: function() {
     if (this.props.controlBarAutoHide == true){
       this.setState({controlBarVisible: false});
       this.props.controller.hideControlBar();
-      this.refs.AdScreen.getDOMNode().style.cursor="none";
     }
   },
 
@@ -117,12 +110,7 @@ var AdScreen = React.createClass({
   },
 
   handlePlayerMouseMove: function() {
-    if(this.props.playerState === CONSTANTS.STATE.PAUSE) {
-      if (this.state.timer !== null){
-        clearTimeout(this.state.timer);
-      }
-    }
-    else if(!this.isMobile && this.props.fullscreen) {
+    if(this.props.playerState !== CONSTANTS.STATE.PAUSE && !this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
@@ -155,15 +143,21 @@ var AdScreen = React.createClass({
     if(this.props.skinConfig.adScreen.showControlBar) {
       playbackControlItems = this.getPlaybackControlItems();
     }
+
+    var adScreenClasses = ClassNames({
+      "adScreen": true,
+      "hidden": !this.state.controlBarVisible
+    });
+
     return (
       <div className="state-screen adScreen"
-         ref="AdScreen"
+         ref="adScreen"
          onMouseOver={this.showControlBar}
          onMouseOut={this.hideControlBar}
          onMouseMove={this.handlePlayerMouseMove}
          onMouseUp={this.handleClick}>
 
-        <div className="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
+        <div className="adPanel" ref="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
           {adPanel}
         </div>
         <div>
