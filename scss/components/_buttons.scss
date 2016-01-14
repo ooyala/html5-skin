@@ -1,0 +1,11 @@
+button.closeBtn {
+  top: 35px;
+  right: 35px;
+  @include close($spacer-close-btn, $spacer-close-btn);
+}
+
+button.upNextCloseBtn {
+  top: 10px;
+  right: 10px;
+  @include close(-10px, -10px);
+}

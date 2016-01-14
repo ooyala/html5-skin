@@ -1,160 +1,107 @@
 /********************************************************************
-  MORE OPTIONS PANEL
-*********************************************************************/
+ MORE OPTIONS PANEL
+ *********************************************************************/
 /**
-* @class MoreOptionsPanel
-* @constructor
-*/
+ * @class MoreOptionsPanel
+ * @constructor
+ */
 var React = require('react'),
-    InlineStyle = require('../styles/inlineStyle'),
-    Utils = require('./utils');
+    Utils = require('./utils'),
+    CONSTANTS = require('../constants/constants'),
+    ClassNames = require('classnames');
 
 var MoreOptionsPanel = React.createClass({
   getInitialState: function() {
-    this.isMobile = this.props.controller.state.isMobile;
-    return null;
+    return {
+      animate: false
+    };
   },
+
   componentDidMount: function () {
-    // Fade-in & bottom-up animation
-    InlineStyle.MoreOptionsScreenStyle.buttonListStyle.bottom = "50%";
-    InlineStyle.MoreOptionsScreenStyle.buttonListStyle.opacity = "1";
-
-    if (Utils.isSafari()){
-      InlineStyle.MoreOptionsScreenStyle.buttonListStyle.display = "-webkit-flex";
-    }
-    else {
-      InlineStyle.MoreOptionsScreenStyle.buttonListStyle.display = "flex";
-    }
-
-    this.props.controller.state.accessibilityControlsEnabled = false;
+    this.setState({
+      animate: true
+    });
   },
 
-  componentWillUnmount: function () {
-    InlineStyle.MoreOptionsScreenStyle.buttonListStyle.bottom = "0";
-    this.props.controller.state.accessibilityControlsEnabled = true;
+  handleShareClick: function () {
+    this.props.controller.toggleShareScreen();
   },
 
-  closeMoreOptionsScreen: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      this.props.controller.closeMoreOptionsScreen();
-    }
+  handleDiscoveryClick: function () {
+    this.props.controller.toggleDiscoveryScreen();
   },
 
-  handleShareClick: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      this.props.controller.toggleShareScreen();
-    }
+  handleClosedCaptionClick: function () {
+    this.props.controller.toggleClosedCaptionScreen();
   },
 
-  handleDiscoveryClick: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      this.props.controller.toggleDiscoveryScreen();
-    }
+  highlight: function (evt) {
+    var color = this.props.skinConfig.moreOptionsScreen.iconStyle.active.color;
+    var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.active.opacity;
+    Utils.highlight(evt.target, opacity, color);
   },
 
-  handleClosedCaptionClick: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      this.props.controller.toggleClosedCaptionScreen();
-    }
+  removeHighlight: function (evt) {
+    var color = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.color;
+    var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.opacity;
+    Utils.removeHighlight(evt.target, opacity, color);
   },
 
-  highlight: function(evt) {
-    Utils.highlight(evt.target);
-  },
-
-  removeHighlight: function(evt) {
-    var opacity = this.props.skinConfig.moreOptions.iconStyle.opacity;
-    Utils.removeHighlight(evt.target, opacity);
-  },
-
-  dismissButtonHighlight: function(evt) {
-    Utils.highlight(evt.target);
-  },
-
-  removeDismissButtonHighlight: function(evt) {
-    var opacity = "0.6";
-    Utils.removeHighlight(evt.target, opacity);
-  },
-
-  buildMoreOptionsButtonList: function() {
+  buildMoreOptionsButtonList: function () {
     var fullscreenClass = (this.props.fullscreen) ?
       this.props.skinConfig.icons.compress.fontStyleClass : this.props.skinConfig.icons.expand.fontStyleClass;
+    var iconSetting = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive;
 
-    InlineStyle.MoreOptionsScreenStyle.buttonStyle.fontSize = this.props.skinConfig.moreOptions.iconSize+"px";
-    var iconSetting = Utils.extend(InlineStyle.MoreOptionsScreenStyle.iconStyle, this.props.skinConfig.moreOptions.iconStyle);
     var optionsItemsTemplates = {
-      "discovery": <div className="discovery" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}
-        onClick={this.handleDiscoveryClick} onTouchEnd={this.handleDiscoveryClick}>
-        <span className={this.props.skinConfig.icons.discovery.fontStyleClass}
-          style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        </span></div>,
+      "quality": <div className="quality controlBarItem" key="quality">
+        <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+      </div>,
 
-      "quality": <div className="quality" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}>
-        <span className={this.props.skinConfig.icons.quality.fontStyleClass}
-          style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        </span></div>,
+      "discovery": <button className="discovery controlBarItem" onClick={this.handleDiscoveryClick} key="discovery">
+        <span className={this.props.skinConfig.icons.discovery.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+      </button>,
 
-      "closedCaption": <div className="closedCaption" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle} onClick={this.handleClosedCaptionClick} onTouchEnd={this.handleClosedCaptionClick}>
-        <span className={this.props.skinConfig.icons.cc.fontStyleClass}
-          style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        </span></div>,
+      "closedCaption": <button className="closedCaption controlBarItem" onClick={this.handleClosedCaptionClick} key="closedCaption">
+        <span className={this.props.skinConfig.icons.cc.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight} ></span>
+      </button>,
 
-      "share": <div className="share" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}
-        onClick={this.handleShareClick} onTouchEnd={this.handleShareClick}>
-        <span className={this.props.skinConfig.icons.share.fontStyleClass}
-          style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        </span></div>,
+      "share": <button className="share controlBarItem" onClick={this.handleShareClick} key="share">
+        <span className={this.props.skinConfig.icons.share.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+      </button>,
 
-      "fullscreen": <div className="fullscreen" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}
-        onClick={this.handleFullscreenClick} onTouchEnd={this.handleFullscreenClick}>
-        <span className={fullscreenClass}
-          style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        </span></div>,
-
-      "settings": <div className="settings" style={InlineStyle.MoreOptionsScreenStyle.buttonStyle}>
-        <span className={this.props.skinConfig.icons.setting.fontStyleClass}
-          style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        </span></div>,
+      "settings": <div className="settings" key="settings">
+        <span className={this.props.skinConfig.icons.setting.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+      </div>
     };
 
     var moreOptionsItems = [];
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
     //if mobile and not showing the slider or the icon, extra space can be added to control bar width:
-    var extraSpaceVolumeSlider = ((this.isMobile && !this.props.controller.state.volumeState.volumeSliderVisible) ? parseInt(InlineStyle.volumeSliderStyle.volumeBarSetting.width) : 0);
-    var extraSpaceVolumeIcon = ((Utils.isIos())?
-                                parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.fontSize)+
-                                parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.paddingLeft)+
-                                parseInt(InlineStyle.controlBarStyle.controlBarItemSetting.paddingRight)
-                                :0);
+    var volumeItem = null;
+    for (var j = 0; j < defaultItems.length; j++) {
+      if (defaultItems[j].name == "volume") {
+        volumeItem = defaultItems[j];
+        break;
+      }
+    }
+    var extraSpaceVolumeSlider = (((volumeItem && this.isMobile && !this.props.controller.state.volumeState.volumeSliderVisible) || volumeItem && Utils.isIos()) ? parseInt(volumeItem.minWidth) : 0);
 
     //if no hours, add extra space to control bar width:
     var hours = parseInt(this.props.duration / 3600, 10);
     var extraSpaceDuration = (hours > 0) ? 0 : 45;
 
-   var controlBarLeftRightPadding = parseFloat(InlineStyle.controlBarStyle.controlBarItemsWrapper.paddingLeft)+parseFloat(InlineStyle.controlBarStyle.controlBarItemsWrapper.paddingRight);
+    var controlBarLeftRightPadding = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
 
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider+extraSpaceVolumeIcon-controlBarLeftRightPadding, defaultItems);
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems);
     var collapsedMoreOptionsItems = collapsedResult.overflow;
-    for (i = 0; i < collapsedMoreOptionsItems.length; i++) {
+    for (var i = 0; i < collapsedMoreOptionsItems.length; i++) {
       if (typeof optionsItemsTemplates[collapsedMoreOptionsItems[i].name] === "undefined") {
         continue;
       }
 
       //do not show CC button if no CC available
-      if (!this.props.controller.state.ccOptions.availableLanguages && (collapsedMoreOptionsItems[i].name === "closedCaption")){
+      if (!this.props.controller.state.closedCaptionOptions.availableLanguages && (collapsedMoreOptionsItems[i].name === "closedCaption")) {
         continue;
       }
       moreOptionsItems.push(optionsItemsTemplates[collapsedMoreOptionsItems[i].name]);
@@ -162,19 +109,26 @@ var MoreOptionsPanel = React.createClass({
     return moreOptionsItems;
   },
 
-  render: function() {
+  render: function () {
+    var moreOptionsItemsClass = ClassNames({
+      'moreOptionsItems': true,
+      'animate-more-options': this.state.animate
+    });
+
+    //inline style for config/skin.json elements only
+    var buttonStyle = {
+      fontSize: this.props.skinConfig.moreOptionsScreen.iconSize + "px",
+      color: this.props.skinConfig.moreOptionsScreen.color
+    };
+
     var moreOptionsItems = this.buildMoreOptionsButtonList();
+
     return (
       <div>
-        <div className="moreOptionsPanel" style={InlineStyle.MoreOptionsScreenStyle.panelStyle}>
-          <div className="moreOptionsItems" style={InlineStyle.MoreOptionsScreenStyle.buttonListStyle}>
+        <div className="moreOptionsPanel">
+          <div className={moreOptionsItemsClass} style={buttonStyle}>
             {moreOptionsItems}
           </div>
-        </div>
-        <div onClick={this.closeMoreOptionsScreen} onTouchEnd={this.closeMoreOptionsScreen} style={InlineStyle.MoreOptionsScreenStyle.closeButtonStyle}>
-          <span className={this.props.skinConfig.icons.dismiss.fontStyleClass} onMouseOver={this.dismissButtonHighlight}
-            onMouseOut={this.removeDismissButtonHighlight} style={InlineStyle.defaultScreenStyle.closeButtonStyle}>
-          </span>
         </div>
       </div>
     );

@@ -1,172 +1,145 @@
 /********************************************************************
-  PAUSE SCREEN
-*********************************************************************/
+ PAUSE SCREEN
+ *********************************************************************/
 var React = require('react'),
-    InlineStyle = require('../styles/inlineStyle'),
-    Utils = require('../components/utils'),
+    ClassNames = require('classnames'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
     AdOverlay = require('../components/adOverlay'),
     UpNextPanel = require('../components/upNextPanel'),
-    CONSTANTS = require('../constants/constants');
+    TruncateTextMixin = require('../mixins/truncateTextMixin'),
+    ResizeMixin = require('../mixins/resizeMixin');
 
 var PauseScreen = React.createClass({
+  mixins: [ResizeMixin, TruncateTextMixin],
+
   getInitialState: function() {
-    this.isMobile = this.props.controller.state.isMobile;
     return {
-      description: this.props.contentTree.description,
       controlBarVisible: true,
-      controlBarWidth: 0
+      controlBarWidth: 0,
+      animate: false
     };
   },
 
-  // CSS doesn't support "truncate N lines" so we need to do DOM width
-  // calculations to figure out where to truncate the description
   componentDidMount: function() {
-    // Make sure component resize correctly after switch to fullscreen/inline screen
-    window.addEventListener('resize', this.handleResize);
-    window.addEventListener('webkitfullscreenchange', this.handleResize);
-    window.addEventListener('mozfullscreenchange', this.handleResize);
-    window.addEventListener('fullscreenchange', this.handleResize);
-    window.addEventListener('msfullscreenchange', this.handleResize);
-
-    //need this to display fading pause button and dimming the screen
-    InlineStyle.pauseScreenStyle.pauseIcon.style.opacity = 0;
-    InlineStyle.pauseScreenStyle.pauseIcon.style.fontSize = "72";
-    InlineStyle.pauseScreenStyle.fading.opacity = 0.5;
-    InlineStyle.pauseScreenStyle.fading.transition = (this.props.pauseAnimationDisabled === true ? "opacity 0s" : "opacity 1s");
-
+    this.truncateText(this.refs.description, this.props.contentTree.description);
     this.setState({
       controlBarWidth: this.getDOMNode().clientWidth,
-      description: this.getShortenedDescription()
+      animate: true
     });
   },
 
-  handleResize: function(e) {
+  componentWillUnmount: function() {
+    this.props.controller.enablePauseAnimation();
+  },
+
+  handleClick: function(event) {
+    event.preventDefault();
+    this.props.controller.togglePlayPause();
+    this.props.controller.state.accessibilityControlsEnabled = true;
+    if (this.props.controller.state.volumeState.volumeSliderVisible) {
+      this.props.controller.hideVolumeSliderBar();
+    }
+  },
+
+  handleResize: function() {
+    this.truncateText(this.refs.description, this.props.contentTree.description);
     if (this.isMounted()) {
       this.setState({
-        controlBarWidth: this.getDOMNode().clientWidth,
-        description: this.getShortenedDescription()
+        controlBarWidth: this.getDOMNode().clientWidth
       });
     }
   },
 
-  getShortenedDescription: function() {
-    if (this.props.skinConfig.pauseScreen.showTitle ||
-      this.props.skinConfig.pauseScreen.showDescription) {
-      var descriptionNode = this.getDOMNode().getElementsByClassName("pauseScreen-description")[0];
-      var shortDesc = Utils.truncateTextToWidth(descriptionNode, this.state.description);
-      return shortDesc;
-    }
-    else {
-      return this.state.description;
-    }
-  },
-
-  componentWillUnmount: function() {
-    //setting styles back to normal, for fading the pause button and dimming the screen next time
-    InlineStyle.pauseScreenStyle.pauseIcon.style.opacity = 1;
-    InlineStyle.pauseScreenStyle.pauseIcon.style.fontSize = "24";
-    InlineStyle.pauseScreenStyle.fading.opacity = 0;
-    this.props.controller.enablePauseAnimation();
-    window.removeEventListener('resize', this.handleResize);
-    window.removeEventListener('webkitfullscreenchange', this.handleResize);
-    window.removeEventListener('mozfullscreenchange', this.handleResize);
-    window.removeEventListener('fullscreenchange', this.handleResize);
-    window.removeEventListener('msfullscreenchange', this.handleResize);
-  },
-
-  handleClick: function(event) {
-    if (event.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
-
-      this.props.controller.togglePlayPause();
-      this.props.controller.state.accessibilityControlsEnabled = true;
-
-      if (this.props.controller.state.volumeState.volumeSliderVisible) {
-        this.props.controller.hideVolumeSliderBar();
-      }
-    }
-  },
-
   render: function() {
-    var screenStyle = InlineStyle.pauseScreenStyle;
-    var pauseClass = this.props.skinConfig.icons.pause.fontStyleClass;
-    var pauseStyle = screenStyle.pauseIcon.style;
-    var infoStyle = screenStyle.infoPanel;
+    //inline style for config/skin.json elements only
+    var titleStyle = {
+      //fontSize: this.props.skinConfig.startScreen.titleFont.fontSize + "pt",
+      //fontFamily: this.props.skinConfig.startScreen.titleFont.fontFamily,
+      color: this.props.skinConfig.startScreen.titleFont.color
+    };
+    var descriptionStyle = {
+      //fontSize: this.props.skinConfig.startScreen.descriptionFont.fontSize + "pt",
+      //fontFamily: this.props.skinConfig.startScreen.descriptionFont.fontFamily,
+      color: this.props.skinConfig.startScreen.descriptionFont.color
+    };
+    var actionIconStyle = {
+      color: this.props.skinConfig.pauseScreen.PauseIconStyle.color,
+      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity
+    };
 
-    // Accent Color
-    pauseStyle.color = screenStyle.infoPanel.style.color = this.props.skinConfig.pauseScreen.PauseIconStyle.color;
+    //CSS class manipulation from config/skin.json
+    var fadeUnderlayClass = ClassNames({
+      'fading-underlay': !this.props.pauseAnimationDisabled,
+      'fading-underlay-active': this.props.pauseAnimationDisabled,
+      'animate-fade': this.state.animate && !this.props.pauseAnimationDisabled
+    });
+    var infoPanelClass = ClassNames({
+      'state-screen-info': true,
+      'info-panel-top': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("top") > -1,
+      'info-panel-bottom': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("bottom") > -1,
+      'info-panel-left': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("left") > -1,
+      'info-panel-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+    });
+    var titleClass = ClassNames({
+      'state-screen-title': true,
+      'text-truncate': true,
+      'text-capitalize': true,
+      'pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+    });
+    var descriptionClass = ClassNames({
+      'state-screen-description': true,
+      'pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+    });
+    var actionIconClass = ClassNames({
+      'action-icon-pause': !this.props.pauseAnimationDisabled,
+      'action-icon': this.props.pauseAnimationDisabled,
+      'animate-pause': this.state.animate && !this.props.pauseAnimationDisabled,
+      'action-icon-top': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("top") > -1,
+      'action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1,
+      'action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1,
+      'action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1,
+      'hidden': !this.props.skinConfig.pauseScreen.showPauseIcon || this.props.pauseAnimationDisabled
+    });
 
-    // PlayButton position, defaulting to centered
-    if (this.props.skinConfig.pauseScreen.showPauseIcon) {
-      pauseStyle.top = "50%";
-      pauseStyle.left = "50%";
-      if (this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("top") > -1)
-        pauseStyle.top = "15%";
-      if (this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1)
-        pauseStyle.top = "80%";
-      if (this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1)
-        pauseStyle.left = "10%";
-      if (this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1)
-        pauseStyle.left = "90%";
-    }
-    else {
-      pauseStyle.display = "none";
-    }
+    var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
+    var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.props.contentTree.description}</div>);
 
-    // metadata visibility
-    var titleMetadata = null;
-    var descriptionMetadata = null;
-    if (this.props.skinConfig.pauseScreen.showTitle) {
-      titleMetadata = <div className="pauseScreen-title" style={screenStyle.infoPanel.title.style}>{this.props.contentTree.title}</div>;
-    }
-    if (this.props.skinConfig.pauseScreen.showDescription) {
-      descriptionMetadata = <div className="pauseScreen-description" style={screenStyle.infoPanel.description.style}>{this.state.description}</div>;
-    }
-
-    if (this.props.skinConfig.pauseScreen.showTitle ||
-      this.props.skinConfig.pauseScreen.showDescription) {
-      if (this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("top") > -1)
-        infoStyle.style.top = "5%";
-      if (this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("bottom") > -1)
-        infoStyle.style.bottom = "5%";
-      if (this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("left") > -1)
-        infoStyle.style.left = "5%";
-      if (this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1) {
-        infoStyle.style.right = "5%";
-        infoStyle.title.style.float = "right";
-        infoStyle.description.style.float = "right";
-      }
-    }
-
-    var upNext = null;
-    if (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) {
-      upNext = <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/>;
-    }
     return (
-      <div className="pauseScreen" style={InlineStyle.defaultScreenStyle.style}>
-        <div onMouseUp={this.handleClick} onTouchEnd={this.handleClick} style={screenStyle.style}>
-          <div style ={screenStyle.fading}></div>
-          <span className={this.props.pauseAnimationDisabled === true ? null : pauseClass} style={pauseStyle} aria-hidden="true"></span>
-          <div style={screenStyle.infoPanel.style}>
-            {titleMetadata}
-            {descriptionMetadata}
-          </div>
-          <AdOverlay {...this.props} overlay={this.props.controller.state.adOverlayUrl} showOverlay={this.props.controller.state.showAdOverlay}
-            showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton} controlBarVisible={this.state.controlBarVisible} />
-          <ScrubberBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-            controlBarWidth={this.state.controlBarWidth}/>
-          <ControlBar {...this.props} controlBarVisible={this.state.controlBarVisible}
-            controlBarWidth={this.state.controlBarWidth}
-            playerState={this.state.playerState}
-            authorization={this.props.authorization} />
+      <div className="state-screen pauseScreen">
+        <div className={fadeUnderlayClass}></div>
+        <div className={infoPanelClass}>
+          {this.props.skinConfig.startScreen.showTitle ? titleMetadata : ''}
+          {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : ''}
         </div>
-        {upNext}
+
+        <a className="state-screen-selectable" onClick={this.handleClick}></a>
+
+        <a className={actionIconClass} onClick={this.handleClick}>
+          <span className={this.props.skinConfig.icons.pause.fontStyleClass}
+                style={actionIconStyle}
+                aria-hidden="true"></span>
+        </a>
+
+        <AdOverlay {...this.props}
+          overlay={this.props.controller.state.adOverlayUrl}
+          showOverlay={this.props.controller.state.showAdOverlay}
+          showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
+          controlBarVisible={this.state.controlBarVisible}
+        />
+        <ScrubberBar {...this.props}
+          controlBarVisible={this.state.controlBarVisible}
+          controlBarWidth={this.state.controlBarWidth}
+        />
+        <ControlBar {...this.props}
+          controlBarVisible={this.state.controlBarVisible}
+          controlBarWidth={this.state.controlBarWidth}
+          playerState={this.state.playerState}
+          authorization={this.props.authorization}
+        />
+
+        {(this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
+          <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/> : ''}
       </div>
     );
   }

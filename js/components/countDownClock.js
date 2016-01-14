@@ -8,40 +8,52 @@
 * @constructor
 */
 var React = require('react'),
-    CONSTANTS = require('../constants/constants'),
-    InlineStyle = require('../styles/inlineStyle');
+    ClassNames = require('classnames'),
+    CONSTANTS = require('../constants/constants');
 
 var CountDownClock = React.createClass({
+  propTypes: {
+    timeToShow: React.PropTypes.number,
+    clockWidth: React.PropTypes.number,
+    currentPlayhead: React.PropTypes.number
+  },
+
+  getDefaultProps: function () {
+    return {
+      timeToShow: 10, //seconds
+      clockWidth: 36,
+      currentPlayhead: 0
+    }
+  },
+
   getInitialState: function() {
     // canvas, interval, and context are changing based on time instead of user interaction
     this.canvas = null;
     this.context = null;
     this.interval = null;
-    this.countDownStyle = null;
     var tmpFraction = 0;
     var tmpRemainSeconds = 0;
     var upNextTimeToShow = this.props.controller.state.upNextInfo.timeToShow;
 
     if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
-      this.countDownStyle = InlineStyle.discoveryScreenStyle.discoveryCountDownStyle;
       tmpFraction = 2 / this.props.timeToShow;
       tmpRemainSeconds = this.props.timeToShow;
     }
     else {
-      this.countDownStyle = InlineStyle.upNextPanelStyle.upNextCountDownStyle; 
-      tmpRemainSeconds = this.props.duration - this.props.currentPlayhead;
       tmpFraction = 2 / upNextTimeToShow;
+      tmpRemainSeconds = this.props.duration - this.props.currentPlayhead;
     }
 
-    tmpClockRadius = parseInt(this.countDownStyle.width, 10)/2;
-    tmpClockContainerWidth = parseInt(this.countDownStyle.width, 10);
+    var tmpClockRadius = parseInt(this.props.clockWidth, 10)/2;
+    var tmpClockContainerWidth = parseInt(this.props.clockWidth, 10);
 
     return {
       clockRadius: tmpClockRadius,
       clockContainerWidth: tmpClockContainerWidth,
       counterInterval: 0.05,
-      fraction: tmpFraction, // fraction = 2 / (skinConfig.upNextScreen.timeToShow) so "fraction * pi" is how much we want to fill the circle for each second
-      remainSeconds: tmpRemainSeconds
+      fraction: tmpFraction, // fraction = 2 / (skinConfig.upNext.timeToShow) so "fraction * pi" is how much we want to fill the circle for each second
+      remainSeconds: tmpRemainSeconds,
+      hideClock: false
     };
   },
 
@@ -51,7 +63,7 @@ var CountDownClock = React.createClass({
       //we need to make sure only one actually does the work
 
       if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
-        this.countDownStyle.display = "none";
+        this.setState({hideClock: true});
         clearInterval(this.interval);
       } 
     }
@@ -160,14 +172,21 @@ var CountDownClock = React.createClass({
   },
 
   render: function() {
-      return React.createElement("canvas", {
-        "className": "alice-countdown-clock",
-        height: this.state.clockContainerWidth,
-        width: this.state.clockContainerWidth,
-        style: this.countDownStyle,
-        onClick: this.handleClick,
-        onTouchEnd: this.handleClick
+    var canvasClassName = ClassNames({
+      'countdown-clock': true,
+      'up-next-count-down': this.props.controller.state.screenToShow !== CONSTANTS.SCREEN.DISCOVERY_SCREEN,
+      'discovery-count-down': this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN,
+      'hidden': this.state.hideClock
     });
+
+    return (
+      <canvas className={canvasClassName}
+              width={this.state.clockContainerWidth}
+              height={this.state.clockContainerWidth}
+              onClick={this.handleClick}
+              onTouchEnd={this.handleClick}>
+      </canvas>
+    );
   }
 });
 module.exports = CountDownClock;

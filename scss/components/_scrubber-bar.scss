@@ -1,0 +1,75 @@
+.scrubberBarContainer {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  transition: bottom 0.5s, height 0.25s;
+  width: 100%;
+  height: 24px;
+  z-index: 12600;
+  @include vendor-prefixes(user-select, none);
+
+  .scrubberBarPadding {
+    height: 100%;
+    left: 15px;
+    right: 15px;
+    position: absolute;
+
+    .scrubberBar {
+      background-color: #afafaf;
+      height: 5px;
+      width: 100%;
+      margin: 0;
+      position: absolute;
+      padding: 0;
+      bottom: 50%;
+      transform: translateY(50%)
+    }
+
+    .bufferedIndicator {
+      background-color: #7f7f7f;
+      height: 100%;
+      position: absolute;
+    }
+
+    .playedIndicator {
+      background: #4389ff;
+      height: 100%;
+      position: absolute;
+    }
+
+    .playedAdIndicator {
+      background: #FF3F80;
+    }
+
+    .playheadPadding {
+      width: 25px;
+      height: 25px;
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      transition: opacity 0.25s;
+      @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
+
+      .playhead {
+        background: #ffffff;
+        width: 10px;
+        height: 10px;
+        border-style: solid;
+        border-color: white;
+        border-width: 1px;
+        border-radius: 10px;
+        position: absolute;
+        transition: opacity 0.25s;
+        top: 50%;
+        cursor: pointer;
+        left: 50%;
+        @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
+      }
+
+      .adPlayhead {
+        visibility: hidden;
+      }
+    }
+  }
+}
+

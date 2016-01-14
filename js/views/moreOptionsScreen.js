@@ -9,11 +9,29 @@
 */
 var React = require('react'),
     MoreOptionsPanel = require('../components/moreOptionsPanel'),
-    ControlBar = require('../components/controlBar'),
-    ScrubberBar = require('../components/scrubberBar'),
-    CONSTANTS = require('../constants/constants');
+    CloseButton = require('../components/closeButton'),
+    AccessibilityMixin = require('../mixins/accessibilityMixin'),
+    ResizeMixin = require('../mixins/resizeMixin');
 
 var MoreOptionsScreen = React.createClass({
+  mixins: [AccessibilityMixin, ResizeMixin],
+
+  getDefaultProps: function () {
+    return {
+      skinConfig: {
+        icons: {
+          dismiss:{fontStyleClass:'icon icon-close'}
+        }
+      },
+      controller: {
+        closeScreen: function(){},
+        state: {
+          accessibilityControlsEnabled: true
+        }
+      }
+    };
+  },
+
   getInitialState: function() {
     return {
       controlBarWidth: 0
@@ -22,29 +40,23 @@ var MoreOptionsScreen = React.createClass({
 
   componentDidMount: function () {
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
-
-    // Make sure component resize correctly after switch to fullscreen/inline screen
-    window.addEventListener('resize', this.handleResize);
-    this.props.controller.state.accessibilityControlsEnabled = false;
   },
 
-  componentWillUnmount: function () {
-    this.props.controller.state.accessibilityControlsEnabled = true;
-  },
-
-  handleResize: function(e) {
+  handleResize: function() {
     if (this.isMounted()) {
       this.setState({controlBarWidth: this.getDOMNode().clientWidth});
     }
   },
 
+  handleClose: function() {
+    this.props.controller.closeScreen();
+  },
+
   render: function() {
     return (
-      <div className="MoreOptionsScreen" style={{height: "100%", width: "100%"}}>
-
-        <MoreOptionsPanel {...this.props}
-          controlBarWidth={this.state.controlBarWidth}/>
-
+      <div className="state-screen MoreOptionsScreen">
+        <MoreOptionsPanel {...this.props} controlBarWidth={this.state.controlBarWidth} />
+        <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>
     );
   }

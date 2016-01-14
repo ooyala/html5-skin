@@ -1,0 +1,37 @@
+.errorScreen {
+  background-color: #000;
+
+  .error-content {
+    width: 80%;
+    position: relative;
+    top: 50%;
+    text-align: left;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    word-wrap: break-word;
+
+    .error-title {
+      font-size: 20pt;
+      font-family: 'Roboto', sans-serif;
+      font-weight: bold;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .error-description {
+      font-size: 14pt;
+      font-family: 'Open Sans', sans-serif;
+      margin-bottom: 30px;
+    }
+
+    .error-action {
+      color: #4389FF;
+      font-size: 14pt;
+      font-family: 'Open Sans', sans-serif;
+    }
+  }
+
+  .error-content-center {
+    text-align: center !important;
+  }
+}
