@@ -359,40 +359,6 @@ var ControlBar = React.createClass({
     return controlBarItems;
   },
 
-  /*
-  // Saved for responsive control bar
-  scaleControlBarItemsBasedOnControlBarSize: function(controlBarHeight) {
-    var controlBarWidth = this.props.controlBarWidth;
-    var controlBarWidthBase = 0;
-    if (controlBarWidth >= 1280) {
-      controlBarWidthBase = 1280;
-    } else if (controlBarWidth <= 560) {
-      controlBarWidthBase = 560;
-    } else {
-      controlBarWidthBase = controlBarWidth;
-    }
-    InlineStyle.controlBarStyle.controlBarItemSetting.fontSize = 18 * controlBarWidth / controlBarWidthBase + "px";
-    InlineStyle.controlBarStyle.volumeBarStyle.height = 18 * controlBarWidth / controlBarWidthBase + "px";
-
-    // watermark
-    var watermarkHeight = 18 * controlBarWidth / controlBarWidthBase;
-    InlineStyle.controlBarStyle.watermarkImageStyle.top = (controlBarHeight - watermarkHeight) / 2 + "px";
-    InlineStyle.controlBarStyle.watermarkImageStyle.width = this.props.skinConfig.controlBar.watermark.width / this.props.skinConfig.controlBar.watermark.height * watermarkHeight + "px";
-    InlineStyle.controlBarStyle.watermarkImageStyle.height = watermarkHeight + "px";
-  },
-
-  // Saved for responsive control bar
-  scaleControlBarItemsBasedOnHeight: function(controlBarHeight) {
-    InlineStyle.controlBarStyle.controlBarSetting.height = controlBarHeight;
-    InlineStyle.controlBarStyle.controlBarSetting.bottom = (this.props.controlBarVisible ?
-      0 : -1*InlineStyle.controlBarStyle.controlBarSetting.height);
-    InlineStyle.controlBarStyle.durationIndicatorSetting.lineHeight = controlBarHeight + "px";
-    InlineStyle.controlBarStyle.iconSetting.lineHeight = controlBarHeight + "px";
-    InlineStyle.controlBarStyle.volumeIconSetting.lineHeight = controlBarHeight + "px";
-    InlineStyle.controlBarStyle.volumeBarStyle.lineHeight = controlBarHeight + "px";
-  },
-  */
-
   setupControlBarItemForConstantHeight: function(constantControlBarHeight) {
     var returnStyles = {};
     returnStyles.watermarkImageStyle = {
@@ -421,10 +387,6 @@ var ControlBar = React.createClass({
 
 
   render: function() {
-    // Liusha: Uncomment the following code to support "threshold scaling control bar implementation"
-    // var controlBarHeight = Utils.getScaledControlBarHeight(this.props.controlBarWidth);
-    // this.scaleControlBarItemsBasedOnControlBarSize(controlBarHeight);
-    // this.scaleControlBarItemsBasedOnHeight(controlBarHeight);
     var controlBarStyle = {
       height: CONSTANTS.UI.defaultControlBarHeight,
       bottom: (this.props.controlBarVisible ? 0 : -1 * CONSTANTS.UI.defaultControlBarHeight)
