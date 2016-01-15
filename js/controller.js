@@ -20,8 +20,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     OO.publicApi.VERSION.skin_version = "<SKIN_VERSION>";
   }
 
-  var eventSubscriptionFlag = false;
-
   var Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
@@ -87,75 +85,57 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "errorCode": null
     };
 
-    this.init();
+    this.init(true);
   };
 
   Html5Skin.prototype = {
-    init: function () {
-      this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
-      this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_CREATED, 'customerUi', _.bind(this.onVcVideoElementCreated, this));
-      this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
-      this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
-      this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
-      this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
-      this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
-      
-      if (eventSubscriptionFlag == false) {
-        this.togglePlaybackSubscription();
-      }
+    init: function (subscribe) {
+      this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
+      this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
+      this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
+      this.mb.subscribe(OO.EVENTS.VC_PAUSE, 'customerUi', _.bind(this.onPause, this));
+      this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
+      this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
+      this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
+      this.mb.subscribe(OO.EVENTS.BUFFERING, 'customerUi', _.bind(this.onBuffering, this));
+      this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
 
-      /********************************************************************
-       ADS RELATED EVENTS
-       ********************************************************************/
-      if (!Utils.isIPhone()) {
-        //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
-        this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
-        this.mb.subscribe(OO.EVENTS.WILL_PLAY_ADS , "customerUi", _.bind(this.onWillPlayAds, this));
-        this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
-        this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
-        this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
+      if (subscribe) {
+        this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
+        this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_CREATED, 'customerUi', _.bind(this.onVcVideoElementCreated, this));
+        this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
+        this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
+        this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
+        this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
+        this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
 
-        this.mb.subscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi", _.bind(this.onWillPlayNonlinearAd, this));
-        this.mb.subscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi", _.bind(this.closeNonlinearAd, this));
-        this.mb.subscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi", _.bind(this.hideNonlinearAd, this));
-        this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi", _.bind(this.showNonlinearAd, this));
-        this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD_CLOSE_BUTTON, "customerUi", _.bind(this.showNonlinearAdCloseButton, this));
+        /********************************************************************
+         ADS RELATED EVENTS
+         ********************************************************************/
+        if (!Utils.isIPhone()) {
+          //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
+          this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
+          this.mb.subscribe(OO.EVENTS.WILL_PLAY_ADS , "customerUi", _.bind(this.onWillPlayAds, this));
+          this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
+          this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
+          this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
 
-        this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
-      }
+          this.mb.subscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi", _.bind(this.onWillPlayNonlinearAd, this));
+          this.mb.subscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi", _.bind(this.closeNonlinearAd, this));
+          this.mb.subscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi", _.bind(this.hideNonlinearAd, this));
+          this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi", _.bind(this.showNonlinearAd, this));
+          this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD_CLOSE_BUTTON, "customerUi", _.bind(this.showNonlinearAdCloseButton, this));
 
-      this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
-      this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
-      this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
-      this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
-      this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
+          this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
+        }
 
-      this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
-    },
+        this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
+        this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
+        this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
+        this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
+        this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
 
-    togglePlaybackSubscription: function() {
-      if (eventSubscriptionFlag == false) {        
-        this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
-        this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
-        this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
-        this.mb.subscribe(OO.EVENTS.VC_PAUSE, 'customerUi', _.bind(this.onPause, this));
-        this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
-        this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
-        this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
-        this.mb.subscribe(OO.EVENTS.BUFFERING, 'customerUi', _.bind(this.onBuffering, this));
-        this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
-        eventSubscriptionFlag = true;
-      } else {
-        this.mb.unsubscribe(OO.EVENTS.VC_PLAYED, 'customerUi');
-        this.mb.unsubscribe(OO.EVENTS.VC_PLAYING, 'customerUi');
-        this.mb.unsubscribe(OO.EVENTS.VC_PAUSE, 'customerUi');
-        this.mb.unsubscribe(OO.EVENTS.VC_PAUSED, 'customerUi');
-        this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
-        this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
-        this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
-        this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'customerUi');
-        this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
-        eventSubscriptionFlag = false;
+        this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       }
     },
 
@@ -245,10 +225,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onAuthorizationFetched: function(event, authorization) {
       this.state.authorization = authorization;
-
-      if (eventSubscriptionFlag == false) {
-        this.togglePlaybackSubscription();
-      }
+      this.init(false);
     },
 
     onContentTreeFetched: function (event, contentTree) {
@@ -573,55 +550,53 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onErrorEvent: function(event, errorCode){
-
-      if (eventSubscriptionFlag == true) {
-        this.togglePlaybackSubscription();
-      }
-
+      this.unsubscribeFromMessageBus(false);
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.state.playerState = CONSTANTS.STATE.ERROR;
       this.state.errorCode = errorCode;
       this.renderSkin();
     },
 
-    unsubscribeFromMessageBus: function(){
+    unsubscribeFromMessageBus: function(destroy){
+      this.mb.unsubscribe(OO.EVENTS.VC_PLAYED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VC_PLAYING, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VC_PAUSE, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VC_PAUSED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
 
-      if (eventSubscriptionFlag == true) {
-        this.togglePlaybackSubscription();
-      }
+      if(destroy) {
+        this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
 
-      this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
+        if (!Utils.isIPhone()) {
+          //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
+          this.mb.unsubscribe(OO.EVENTS.ADS_PLAYED, "customerUi");
+          this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_ADS , "customerUi");
+          this.mb.unsubscribe(OO.EVENTS.AD_POD_STARTED, "customerUi");
+          this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi");
+          this.mb.unsubscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi");
+          this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi");
+          this.mb.unsubscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi");
+          this.mb.unsubscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi");
+          this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi");
+          this.mb.unsubscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi");
 
-      if (!Utils.isIPhone()) {
-        //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
-        this.mb.unsubscribe(OO.EVENTS.ADS_PLAYED, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_ADS , "customerUi");
-
-        this.mb.unsubscribe(OO.EVENTS.AD_POD_STARTED, "customerUi");
-
-        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi");
-
-        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi");
-
-        this.mb.unsubscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi");
-
-        if (OO.EVENTS.DISCOVERY_API) {
-          this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi");
+          if (OO.EVENTS.DISCOVERY_API) {
+            this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi");
+          }
         }
       }
-
-      this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi");
-      this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
-      this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
-      this.mb.unsubscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi");
-      this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
     },
 
     /*--------------------------------------------------------------------
