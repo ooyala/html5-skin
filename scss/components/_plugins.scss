@@ -1,14 +1,28 @@
 .player_skin_plugins {
   z-index: 12000;
-  height: 100%;
-  width: 100%;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: $control-bar-height;
   position: absolute;
   overflow: hidden;
   display: none;
 }
 
 .player_skin_plugins.showing:not(:empty) {
+  display: block;
+}
+
+.player_skin_plugins_click_layer {
+  z-index: 12005;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: $control-bar-height;
+  position: absolute;
+  display: none;
+}
+
+.player_skin_plugins_click_layer.showing {
   display: block;
 }

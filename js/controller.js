@@ -46,6 +46,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoElement": null,
       "elementId": null,
       "pluginsElement": null,
+      "pluginsClickElement": null,
       "buffering": false,
       "mainVideoPlayhead": null,
 
@@ -80,6 +81,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       "isMobile": false,
       "controlBarVisible": true,
+      "forceControlBarVisible": false,
       "timer": null,
       "errorCode": null,
       "isSubscribed": false
@@ -170,14 +172,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         $.extend(true, data, params.skin.inline);
 
         this.skin = React.render(
-          React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + elementId + " .player_skin")
+          React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .player_skin")
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
         this.renderSkin();
 
-        $("#" + elementId + " .player_skin").append("<div class='player_skin_plugins'></div>");
-        this.state.pluginsElement = $("#" + elementId + " .player_skin_plugins");
+        $("#" + this.state.elementId + " .player_skin").append("<div class='player_skin_plugins'></div><div class='player_skin_plugins_click_layer'></div>");
+        this.state.pluginsElement = $("#" + this.state.elementId + " .player_skin_plugins");
+        this.state.pluginsClickElement = $("#" + this.state.elementId + " .player_skin_plugins_click_layer");
         this.state.pluginsElement.mouseover(
           function() {
             this.showControlBar();
@@ -186,6 +189,24 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }.bind(this)
         );
         this.state.pluginsElement.mouseout(
+          function() {
+            this.hideControlBar();
+          }.bind(this)
+        );
+        this.state.pluginsClickElement.click(
+          function() {
+            this.state.pluginsClickElement.removeClass("showing");
+            this.mb.publish(OO.EVENTS.PLAY);
+          }.bind(this)
+        );
+        this.state.pluginsClickElement.mouseover(
+          function() {
+            this.showControlBar();
+            this.renderSkin();
+            this.startHideControlBarTimer();
+          }.bind(this)
+        );
+        this.state.pluginsClickElement.mouseout(
           function() {
             this.hideControlBar();
           }.bind(this)
@@ -300,6 +321,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
+        this.state.pluginsElement.removeClass("showing");
+        this.state.pluginsClickElement.removeClass("showing");
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         if (Utils.isSafari()){
@@ -310,6 +333,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
+        this.state.pluginsClickElement.removeClass("showing");
         if (this.state.currentAdsInfo.currentAdItem !== null) {
           this.state.playerState = CONSTANTS.STATE.PLAYING;
           //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
@@ -323,6 +347,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (pauseReason === CONSTANTS.PAUSE_REASON.TRANSITION){
         this.state.pauseAnimationDisabled = true;
         this.endSeeking();
+      }
+      // If an ad using the custom ad element has issued a pause, activate the click layer
+      if (source == OO.VIDEO.ADS && this.state.pluginsElement.children.length > 0) {
+        this.state.pluginsClickElement.addClass("showing");
       }
     },
 
@@ -436,6 +464,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       OO.log("onWillPlayAds is called from event = " + event);
       this.state.isPlayingAd = true;
       this.state.pluginsElement.addClass("showing");
+      this.state.forceControlBarVisible = (this.state.pluginsElement.children().length > 0);
     },
 
     onAdPodStarted: function(event, numberOfAds) {
