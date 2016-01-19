@@ -334,6 +334,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
+        this.state.pluginsElement.addClass("showing");
         this.state.pluginsClickElement.removeClass("showing");
         if (this.state.currentAdsInfo.currentAdItem !== null) {
           this.state.playerState = CONSTANTS.STATE.PLAYING;
