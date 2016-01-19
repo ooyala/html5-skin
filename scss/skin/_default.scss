@@ -2,3 +2,9 @@
 // When having several skins, this file contains everything related to the default skin.
 // Values are pulled from /html5-skin/config/skin.json
 // ---------------------------------------------------------------------------------------
+
+video.blur {
+  -webkit-filter: blur(3px);
+  -moz-filter: blur(3px);
+  filter: blur(3px);
+}
