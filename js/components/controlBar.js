@@ -245,12 +245,12 @@ var ControlBar = React.createClass({
         </div>
       </div>,
 
-      "volume": <button className="volume controlBarItem" style={dynamicStyles.generalIconSetting} key="volume">
+      "volume": <div className="volume controlBarItem" style={dynamicStyles.generalIconSetting} key="volume">
         <span className={muteClass} style={volumeIconSetting} ref="volumeIcon" onClick={this.handleVolumeIconClick}
               onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}>
         </span>
         {volumeControls}
-      </button>,
+      </div>,
 
       "timeDuration": <div className="timeDuration controlBarDuration" style={durationSetting} key="timeDuration">
         {Utils.formatSeconds(parseInt(this.props.currentPlayhead))} / {totalTime}
