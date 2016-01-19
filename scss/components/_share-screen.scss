@@ -44,9 +44,6 @@
       .embedTab {
         @extend .tab
       }
-      .emailTab {
-        @extend .tab
-      }
 
       .active {
         color: $white;
@@ -74,38 +71,37 @@
       margin-bottom: 15px;
     }
 
-    .social-icon-style {
+    .social-icon {
       display: inline-block;
-      height: 30px;
-      width: 30px;
-      margin-bottom: 15px;
-      margin-right: 15px;
-      background-color: aqua;
-      text-align: center;
-      font-size: 22px;
-      font-weight: bold;
-      line-height: 30px;
+      height: 38px;
+      width: 38px;
+      margin-bottom: $panel-padding/2;
+      margin-right: 20px;
+      background-size: 60px;
+      background-repeat: no-repeat;
+      background-position: center;
       border-radius: 6px;
     }
 
-    .twitter {
-      @extend .social-icon-style;
-      background-color: #64ccea;
+    .facebook {
+      @extend .social-icon;
+      background-image: url("assets/images/social-facebook.svg");
     }
 
-    .facebook {
-      @extend .social-icon-style;
-      background-color: #517db8;
+    .twitter {
+      @extend .social-icon;
+      background-image: url("assets/images/social-twitter.svg");
     }
 
     .googlePlus {
-      @extend .social-icon-style;
-      background-color: #ff6267;
+      @extend .social-icon;
+      background-image: url("assets/images/social-google.svg");
     }
 
     .emailShare {
-      @extend .social-icon-style;
-      background-color: $gray-dark;
+      @extend .social-icon;
+      background-image: url("assets/images/social-email.svg");
+      background-size: cover;
     }
 
     input[type="url"] {

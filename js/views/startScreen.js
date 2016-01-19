@@ -13,12 +13,6 @@ var StartScreen = React.createClass({
   propTypes: {
     skinConfig: React.PropTypes.shape({
       startScreen: React.PropTypes.shape({
-        titleFont: React.PropTypes.shape({
-          fontSize: React.PropTypes.number
-        }),
-        descriptionFont: React.PropTypes.shape({
-          fontSize: React.PropTypes.number
-        }),
         playIconStyle: React.PropTypes.shape({
           color: React.PropTypes.string
         })
@@ -32,10 +26,8 @@ var StartScreen = React.createClass({
       skinConfig: {
         startScreen: {
           titleFont: {
-            fontSize: 30
           },
           descriptionFont: {
-            fontSize: 17
           },
           playIconStyle: {
             color: 'white'
@@ -86,13 +78,9 @@ var StartScreen = React.createClass({
   render: function() {
     //inline style for config/skin.json elements only
     var titleStyle = {
-      //fontSize: this.props.skinConfig.startScreen.titleFont.fontSize + "pt",
-      //fontFamily: this.props.skinConfig.startScreen.titleFont.fontFamily,
       color: this.props.skinConfig.startScreen.titleFont.color
     };
     var descriptionStyle = {
-      //fontSize: this.props.skinConfig.startScreen.descriptionFont.fontSize + "pt",
-      //fontFamily: this.props.skinConfig.startScreen.descriptionFont.fontFamily,
       color: this.props.skinConfig.startScreen.descriptionFont.color
     };
     var actionIconStyle = {

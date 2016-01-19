@@ -8,13 +8,29 @@ var React = require('react'),
 var ScrubberBar = React.createClass({
   mixins: [ResizeMixin],
 
+  getDefaultProps: function () {
+    return {
+      skinConfig: {
+        controlBar: {
+          scrubberBar: {
+            backgroundColor: 'rgba(5,175,175,1)',
+            bufferedColor: 'rgba(127,5,127,1)',
+            playedColor: 'rgba(67,137,5,1)'
+          },
+          adScrubberBar: {
+            backgroundColor: 'rgba(175,175,5,1)',
+            bufferedColor: 'rgba(127,5,127,1)',
+            playedColor: 'rgba(5,63,128,1)'
+          }
+        }
+      }
+    };
+  },
+
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
-    this.lastClickTime = 0;
     this.lastScrubX = null;
-    this.playheadLeft = 0;
     this.scrubberBarWidth = 0;
-    this.scrubberBarHeight = 0;
     this.scrubberBarContainerHeight = CONSTANTS.UI.defaultScrubberBarPaddingHeight;
     this.playheadWidth = 0;
     return {
@@ -38,13 +54,11 @@ var ScrubberBar = React.createClass({
 
   componentDidMount: function() {
     this.scrubberBarWidth = this.getDOMNode().querySelector(".scrubberBar").clientWidth;
-    this.scrubberBarHeight = this.getDOMNode().querySelector(".scrubberBar").clientHeight;
     this.playheadWidth = this.getDOMNode().querySelector(".playhead").clientWidth;
   },
 
   handleResize: function() {
     this.scrubberBarWidth = this.getDOMNode().querySelector(".scrubberBar").clientWidth;
-    this.scrubberBarHeight = this.getDOMNode().querySelector(".scrubberBar").clientHeight;
     this.playheadWidth = this.getDOMNode().querySelector(".playhead").clientWidth;
   },
 
@@ -135,7 +149,6 @@ var ScrubberBar = React.createClass({
     else {
       offsetX = evt.nativeEvent.offsetX;
     }
-    this.playheadLeft = offsetX;
 
     this.setState({
       scrubbingPlayheadX: offsetX
@@ -155,12 +168,18 @@ var ScrubberBar = React.createClass({
     //   controlBarHeight = this.props.skinConfig.controlBar.height;
     // }
     var scrubberPaddingHeight = this.scrubberBarContainerHeight;
-    var scrubberBarHeight = this.scrubberBarHeight;
+    var scrubberBarStyle = {
+      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.backgroundColor
+    };
+    var bufferedIndicatorStyle = {
+      width: (parseFloat(this.props.buffered) / parseFloat(this.props.duration)) * 100 + "%",
+      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.bufferedColor
+    };
+    var playedIndicatorStyle = {
+      width: Math.min((parseFloat(this.props.currentPlayhead) / parseFloat(this.props.duration)) * 100, 100) + "%",
+      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor
+    };
 
-    var bufferedIndicatorStyle = {width: (parseFloat(this.props.buffered) /
-      parseFloat(this.props.duration)) * 100 + "%"};
-    var playedIndicatorStyle = {width: Math.min((parseFloat(this.props.currentPlayhead) /
-      parseFloat(this.props.duration)) * 100, 100) + "%"};
     var playheadStyle = {};
     var playheadPaddingStyle = {};
 
@@ -180,12 +199,16 @@ var ScrubberBar = React.createClass({
     var playheadMouseDown = this.handlePlayheadMouseDown;
     var scrubberBarMouseDown = this.handleScrubberBarMouseDown;
     var playedIndicatorClassName = "playedIndicator";
-    var playheadClassName = "playhead"
+    var playheadClassName = "playhead";
 
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN){
       playheadClassName += " adPlayhead";
       playedIndicatorClassName += " playedAdIndicator";
       playheadMouseDown = null;
+
+      scrubberBarStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.backgroundColor;
+      bufferedIndicatorStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.bufferedColor;
+      playedIndicatorStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.playedColor;
     }
 
     var scrubberBarContainerStyle = {
@@ -196,7 +219,7 @@ var ScrubberBar = React.createClass({
     return (
       <div className="scrubberBarContainer" style={scrubberBarContainerStyle}>
         <div className="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
-          <div ref="scrubberBar" className="scrubberBar">
+          <div ref="scrubberBar" className="scrubberBar" style={scrubberBarStyle}>
             <div className="bufferedIndicator" style={bufferedIndicatorStyle}></div>
             <div className={playedIndicatorClassName} style={playedIndicatorStyle}></div>
             <div className="playheadPadding" style={playheadPaddingStyle}
