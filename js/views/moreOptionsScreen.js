@@ -10,11 +10,10 @@
 var React = require('react'),
     MoreOptionsPanel = require('../components/moreOptionsPanel'),
     CloseButton = require('../components/closeButton'),
-    AccessibilityMixin = require('../mixins/accessibilityMixin'),
-    ResizeMixin = require('../mixins/resizeMixin');
+    AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var MoreOptionsScreen = React.createClass({
-  mixins: [AccessibilityMixin, ResizeMixin],
+  mixins: [AccessibilityMixin],
 
   getDefaultProps: function () {
     return {
@@ -40,12 +39,6 @@ var MoreOptionsScreen = React.createClass({
 
   componentDidMount: function () {
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
-  },
-
-  handleResize: function() {
-    if (this.isMounted()) {
-      this.setState({controlBarWidth: this.getDOMNode().clientWidth});
-    }
   },
 
   handleClose: function() {
