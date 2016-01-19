@@ -47,6 +47,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoElement": null,
       "elementId": null,
       "pluginsElement": null,
+      "pluginsClickElement": null,
       "buffering": false,
       "mainVideoPlayhead": null,
 
@@ -172,15 +173,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         $.extend(true, data, params.skin.inline);
 
         this.skin = React.render(
-          React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + elementId + " .player_skin")
+          React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .player_skin")
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
         this.renderSkin();
 
         $("#" + this.state.elementId + " .player_skin").append("<div class='player_skin_plugins'></div><div class='player_skin_plugins_click_layer'></div>");
-        this.state.pluginsElement = $("#" + elementId + " .player_skin_plugins");
-        this.state.pluginsClickElement = $("#" + elementId + " .player_skin_plugins_click_layer");
+        this.state.pluginsElement = $("#" + this.state.elementId + " .player_skin_plugins");
+        this.state.pluginsClickElement = $("#" + this.state.elementId + " .player_skin_plugins_click_layer");
         this.state.pluginsElement.mouseover(
           function() {
             this.showControlBar();
@@ -527,7 +528,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.showAdOverlay = false;
       this.state.showAdOverlayCloseButton = false;
       this.renderSkin();
-    },
+    // },
 
     hideNonlinearAd: function(event) {
       this.state.showAdOverlay = false;
