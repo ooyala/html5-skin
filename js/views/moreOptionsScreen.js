@@ -9,10 +9,28 @@
 */
 var React = require('react'),
     MoreOptionsPanel = require('../components/moreOptionsPanel'),
-    InlineStyle = require('../styles/inlineStyle'),
-    CloseButton = require('../components/closeButton');
+    CloseButton = require('../components/closeButton'),
+    AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var MoreOptionsScreen = React.createClass({
+  mixins: [AccessibilityMixin],
+
+  getDefaultProps: function () {
+    return {
+      skinConfig: {
+        icons: {
+          dismiss:{fontStyleClass:'icon icon-close'}
+        }
+      },
+      controller: {
+        closeScreen: function(){},
+        state: {
+          accessibilityControlsEnabled: true
+        }
+      }
+    };
+  },
+
   getInitialState: function() {
     return {
       controlBarWidth: 0
@@ -21,20 +39,6 @@ var MoreOptionsScreen = React.createClass({
 
   componentDidMount: function () {
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
-
-    // Make sure component resize correctly after switch to fullscreen/inline screen
-    //window.addEventListener('resize', this.handleResize);
-    this.props.controller.state.accessibilityControlsEnabled = false;
-  },
-
-  componentWillUnmount: function () {
-    this.props.controller.state.accessibilityControlsEnabled = true;
-  },
-
-  handleResize: function(e) {
-    if (this.isMounted()) {
-      this.setState({controlBarWidth: this.getDOMNode().clientWidth});
-    }
   },
 
   handleClose: function() {
