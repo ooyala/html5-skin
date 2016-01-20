@@ -136,7 +136,7 @@ var StartScreen = React.createClass({
     return (
       <div className="state-screen startScreen">
         <div className={stateScreenPosterClass} style={posterStyle}>
-          <a onClick={this.handleClick} style={{display:'block'}}>
+          <a className="selectable-action" onClick={this.handleClick}>
             <img src={posterImageUrl} />
           </a>
         </div>
