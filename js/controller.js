@@ -350,7 +350,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.endSeeking();
       }
       // If an ad using the custom ad element has issued a pause, activate the click layer
-      if (source == OO.VIDEO.ADS && this.state.pluginsElement.children.length > 0) {
+      if (source == OO.VIDEO.ADS && this.state.pluginsElement.children().length > 0) {
         this.state.pluginsClickElement.addClass("showing");
       }
     },
