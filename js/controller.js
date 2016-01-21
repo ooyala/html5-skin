@@ -84,7 +84,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "forceControlBarVisible": false,
       "timer": null,
       "errorCode": null,
-      "isSubscribed": false
+      "isSubscribed": false,
+      "endClickTrack": 0
     };
 
     this.init();
@@ -700,7 +701,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
           break;
         case CONSTANTS.STATE.END:
-          this.mb.publish(OO.EVENTS.REPLAY);
+          this.state.endClickTrack = this.state.endClickTrack + 1;
+          if(Utils.isAndroid()) {
+            if(this.state.endClickTrack == 2) {
+              this.mb.publish(OO.EVENTS.REPLAY);
+            }
+          } else {
+            this.mb.publish(OO.EVENTS.REPLAY);
+          }
           break;
         case CONSTANTS.STATE.PAUSE:
           this.mb.publish(OO.EVENTS.PLAY);
