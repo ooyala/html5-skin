@@ -85,7 +85,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "timer": null,
       "errorCode": null,
       "isSubscribed": false,
-      "endClickTrack": 0
+      "skipAdClicked": false
     };
 
     this.init();
@@ -502,6 +502,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onSkipAdClicked: function(event) {
+      this.state.skipAdClicked = true;
       OO.log("onSkipAdClicked is called");
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
       this.mb.publish(OO.EVENTS.SKIP_AD);
@@ -701,10 +702,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
           break;
         case CONSTANTS.STATE.END:
-          this.state.endClickTrack = this.state.endClickTrack + 1;
           if(Utils.isAndroid()) {
-            if(this.state.endClickTrack == 2) {
-              this.mb.publish(OO.EVENTS.REPLAY);
+            if(this.state.skipAdClicked) {
+             this.state.skipAdClicked = false;
+            }
+            else
+            {
+               this.mb.publish(OO.EVENTS.REPLAY);
             }
           } else {
             this.mb.publish(OO.EVENTS.REPLAY);
