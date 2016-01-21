@@ -16,7 +16,9 @@ var ControlBar = React.createClass({
 
   componentWillUnmount: function () {
     this.props.controller.cancelTimer();
-    this.props.controller.hideVolumeSliderBar();
+    if (Utils.isAndroid()){
+      this.props.controller.hideVolumeSliderBar();
+    }
   },
 
   handleControlBarMouseUp: function(evt) {
