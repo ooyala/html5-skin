@@ -16,6 +16,7 @@ var ControlBar = React.createClass({
 
   componentWillUnmount: function () {
     this.props.controller.cancelTimer();
+    this.props.controller.hideVolumeSliderBar();
   },
 
   handleControlBarMouseUp: function(evt) {
@@ -23,9 +24,6 @@ var ControlBar = React.createClass({
       evt.stopPropagation(); // W3C
       evt.cancelBubble = true; // IE
       this.props.controller.state.accessibilityControlsEnabled = true;
-      if (this.props.controller.state.volumeState.volumeSliderVisible){
-        this.props.controller.hideVolumeSliderBar();
-      }
       this.props.controller.startHideControlBarTimer();
     }
   },
@@ -41,23 +39,19 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeIconClick: function(evt) {
-    if (evt.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-      if (this.isMobile){
-        this.props.controller.startHideControlBarTimer();
-        evt.stopPropagation(); // W3C
-        evt.cancelBubble = true; // IE
-        if (this.props.controller.state.volumeState.volumeSliderVisible){
-          this.props.controller.hideVolumeSliderBar();
-        }
-        else {
-          this.props.controller.showVolumeSliderBar();
-        }
+    if (this.isMobile){
+      this.props.controller.startHideControlBarTimer();
+      evt.stopPropagation(); // W3C
+      evt.cancelBubble = true; // IE
+      if (!this.props.controller.state.volumeState.volumeSliderVisible){
+        this.props.controller.showVolumeSliderBar();
       }
-      else{
+      else {
         this.props.controller.handleMuteClick();
       }
+    }
+    else{
+      this.props.controller.handleMuteClick();
     }
   },
 
