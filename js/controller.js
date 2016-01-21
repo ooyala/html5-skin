@@ -908,6 +908,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     hideControlBar: function() {
       this.state.controlBarVisible = false;
+      if (Utils.isAndroid()) {
+        this.hideVolumeSliderBar();
+      }
     },
 
     cancelTimer: function() {
