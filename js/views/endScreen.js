@@ -32,9 +32,6 @@ var EndScreen = React.createClass({
     event.preventDefault();
     this.props.controller.state.accessibilityControlsEnabled = true;
     this.props.controller.togglePlayPause();
-    if (this.props.controller.state.volumeState.volumeSliderVisible) {
-      this.props.controller.hideVolumeSliderBar();
-    }
   },
 
   render: function() {
