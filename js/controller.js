@@ -120,6 +120,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
+        this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
 
         // ad events
         if (!Utils.isIPhone()) {
@@ -458,6 +459,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.skin.updatePlayhead(0, 0, 0);
       this.state.isPlayingAd = false;
       this.state.pluginsElement.removeClass("showing");
+      this.state.pluginsClickElement.removeClass("showing");
       this.renderSkin();
     },
 
@@ -522,6 +524,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.showAdOverlay = true;
       }
       this.renderSkin();
+    },
+
+    onVideoElementFocus: function(event, source) {
+      if (source == OO.VIDEO.MAIN) {
+        this.state.pluginsElement.removeClass("showing");
+        this.state.pluginsClickElement.removeClass("showing");
+      }
     },
 
     closeNonlinearAd: function(event) {
