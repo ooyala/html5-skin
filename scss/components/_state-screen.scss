@@ -29,7 +29,7 @@
   .state-screen-selectable {
     @extend .expand;
     text-decoration:none;
-    cursor: default;
+    cursor: pointer;
     //for IE
     background-color:white;
     opacity: 0;
