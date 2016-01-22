@@ -153,7 +153,7 @@ var DiscoveryPanel = React.createClass({
     for (var i = 0; i < relatedVideoPage.length; i++) {
       discoveryContentBlocks.push(
         <div className="discoveryImageWrapperStyle" key={i}>
-          <a onClick={this.handleDiscoveryContentClick.bind(this, i)}>
+          <a onClick={this.handleDiscoveryContentClick.bind(this, videosPerPage * (this.state.currentPage - 1) + i)}>
             <img className="imageStyle" src={relatedVideoPage[i].preview_image_url} />
             <span className={discoveryContentName}>{relatedVideoPage[i].name}</span>
           </a>
