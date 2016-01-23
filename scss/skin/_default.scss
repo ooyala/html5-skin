@@ -10,11 +10,10 @@
   overflow: hidden;
 }
 
-video.video {
-  width: 100% !important;
-  height: 100% !important;
-  position: static !important;
-  display: block !important;
+video {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 video.blur {
