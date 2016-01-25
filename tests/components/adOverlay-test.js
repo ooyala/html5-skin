@@ -72,11 +72,13 @@ describe('AdOverlay', function () {
       state: {
         isMobile: false
       },
-      hideNonlinearAd: function() {
-        nonLinearHidden = true;
-      },
       onSkipAdClicked: function() {
         adSkipped = true;
+      },
+      onAdsClicked: function(source) {
+      },
+      closeNonlinearAd: function() {
+        nonLinearHidden = true;
       }
     };
     var mockSkinConfig = {
