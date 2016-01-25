@@ -16,8 +16,9 @@
 
   .discovery-panel {
     padding: $panel-padding;
-    //position: absolute;
+    position: absolute;
     bottom: 0;
+    top: 0;
     background-color: $panel-bg;
     left: 0;
     right: 0;

@@ -1,0 +1,23 @@
+.large {
+  // State Screens
+  .state-screen {
+    .state-screen-info {
+      .state-screen-title {
+        font-size: 3.0em;
+      }
+      .state-screen-description {
+        font-size: 1.8em;
+      }
+    }
+  }
+
+  // Closed Caption Screen
+  .closedCaptionsScreen{
+    .language-container {
+      .language-panel {
+        height: 400px
+      }
+    }
+  }
+
+}

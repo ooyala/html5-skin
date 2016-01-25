@@ -39,6 +39,10 @@
   @import "components/start-screen";
   @import "components/more-options";
 
+  // Responsive
+  @import "responsive/small";
+  @import "responsive/large";
+
   // Skin
   @import "skin/default";
 

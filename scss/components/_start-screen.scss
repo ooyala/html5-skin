@@ -1,3 +1,7 @@
 .startScreen {
   z-index: 12005;
+
+  a.selectable-action {
+    display:block;
+  }
 }
