@@ -412,6 +412,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVcPlayed: function(event, source) {
+      this.onBuffered();
       if (source == OO.VIDEO.MAIN) {
         this.state.mainVideoDuration = this.state.duration;
       }
