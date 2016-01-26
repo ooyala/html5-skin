@@ -45,4 +45,12 @@
       font-size: 0.7em;
     }
   }
+
+  //Action Icons
+  .action-icon-pause {
+    font-size:12px;
+  }
+  .action-icon span.icon, .action-icon-pause.animate-pause {
+    font-size:36px;
+  }
 }
