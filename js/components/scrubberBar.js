@@ -46,6 +46,17 @@ var ScrubberBar = React.createClass({
     }
   },
 
+  componentWillUnmount: function() {
+    if (!this.isMobile){
+      this.getDOMNode().parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
+      document.removeEventListener("mouseup", this.handlePlayheadMouseUp, true);
+    }
+    else{
+      this.getDOMNode().parentNode.removeEventListener("touchmove", this.handlePlayheadMouseMove);
+      document.removeEventListener("touchend", this.handlePlayheadMouseUp, true);
+    }
+  },
+
   componentWillReceiveProps: function(nextProps) {
     if (this.transitionedDuringSeek && !nextProps.seeking) {
       this.setState({transitionedDuringSeek: false});
@@ -114,6 +125,9 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseUp: function(evt) {
+    if (!this.isMounted()) {
+      return;
+    }
     this.props.controller.startHideControlBarTimer();
     evt.preventDefault();
     // stop propagation to prevent it from bubbling up to the skin and pausing
