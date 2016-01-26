@@ -35,8 +35,7 @@ var ErrorScreen = React.createClass({
 
     var errorContentClass = ClassNames({
       'error-content': true,
-      'center-block': true,
-      'error-content-center': true
+      'center-block': true
     });
 
     return (

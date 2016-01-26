@@ -30,4 +30,17 @@
       }
     }
   }
+
+  //Error screen
+  .errorScreen {
+    .error-title {
+      font-size: 1em;
+    }
+    .error-description {
+      font-size: 0.7em;
+    }
+    .error-action {
+      font-size: 0.7em;
+    }
+  }
 }
