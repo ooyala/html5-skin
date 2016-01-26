@@ -7,7 +7,9 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants');
 
 var AdOverlay = React.createClass({
-  closeOverlay: function() {
+  closeOverlay: function(event) {
+    event.stopPropagation();
+    event.cancelBubble = true;
     this.props.controller.closeNonlinearAd();
     this.props.controller.onSkipAdClicked();
   },
