@@ -20,11 +20,11 @@
     }
   }
 
-  //Pause screen icon
+  //Action Icons
   .action-icon-pause {
     font-size:32px;
   }
-  .action-icon-pause.animate-pause {
+  .action-icon span.icon, .action-icon-pause.animate-pause {
     font-size:96px;
   }
 }
