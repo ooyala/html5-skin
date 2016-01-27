@@ -20,6 +20,19 @@
     }
   }
 
+  //Error screen
+  .errorScreen {
+    .error-title {
+      font-size: 2em;
+    }
+    .error-description {
+      font-size: 1.4em;
+    }
+    .error-action {
+      font-size: 1.4em;
+    }
+  }
+
   //Action Icons
   .action-icon-pause {
     font-size:32px;
