@@ -11,7 +11,7 @@ describe('StartScreen', function () {
     var DOM = TestUtils.renderIntoDocument(<StartScreen />);
 
     //test play
-    var playBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'selectable-action');
+    var playBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'state-screen-selectable');
     TestUtils.Simulate.click(playBtn);
   });
 });
