@@ -26,3 +26,7 @@
 .player_skin_plugins_click_layer.showing {
   display: block;
 }
+
+.plugins {
+  @extend .expand;
+}
