@@ -136,9 +136,7 @@ var StartScreen = React.createClass({
     return (
       <div className="state-screen startScreen">
         <div className={stateScreenPosterClass} style={posterStyle}>
-          <a className="selectable-action" onClick={this.handleClick}>
-            <img src={posterImageUrl} />
-          </a>
+          <a className="state-screen-selectable" onClick={this.handleClick}></a>
         </div>
         <div className={infoPanelClass}>
           {this.props.skinConfig.startScreen.showTitle ? titleMetadata : ''}

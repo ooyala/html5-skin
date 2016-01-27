@@ -4,16 +4,13 @@
 // ---------------------------------------------------------------------------------------
 
 .player_skin {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+  @extend .expand;
   overflow: hidden;
+  z-index: 11000;
 }
 
 video {
-  width: 100%;
-  height: 100%;
-  display: block;
+  @extend .expand;
 }
 
 video.blur {
