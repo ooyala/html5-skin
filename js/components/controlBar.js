@@ -119,7 +119,7 @@ var ControlBar = React.createClass({
     this.props.controller.toggleShareScreen();
   },
 
-  handleBitrateClick: function() {
+  handleQualityClick: function() {
     this.props.controller.toggleScreen(CONSTANTS.SCREEN.BITRATE_SCREEN);
   },
 
