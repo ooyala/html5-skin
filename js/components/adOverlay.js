@@ -31,7 +31,7 @@ var AdOverlay = React.createClass({
     });
     var closeButtonClass = ClassNames({
       "adOverlayCloseButton": true,
-      "hidden": this.props.showOverlayCloseButton
+      "hidden": !this.props.showOverlayCloseButton
     });
 
     return (
