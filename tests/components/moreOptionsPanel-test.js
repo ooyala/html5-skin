@@ -27,7 +27,10 @@ describe('MoreOptionsPanel', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {availableLanguages: true}
+        closedCaptionOptions: {availableLanguages: true},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       },
       toggleDiscoveryScreen: function() {
         discoveryScreenToggled = true;

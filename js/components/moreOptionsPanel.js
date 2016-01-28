@@ -53,9 +53,9 @@ var MoreOptionsPanel = React.createClass({
     var iconSetting = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive;
 
     var optionsItemsTemplates = {
-      "quality": <div className="quality controlBarItem" key="quality">
+      "quality": <button className="quality controlBarItem" onClick={this.handleQualityClick} key="quality">
         <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
-      </div>,
+      </button>,
 
       "discovery": <button className="discovery controlBarItem" onClick={this.handleDiscoveryClick} key="discovery">
         <span className={this.props.skinConfig.icons.discovery.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
@@ -102,6 +102,10 @@ var MoreOptionsPanel = React.createClass({
 
       //do not show CC button if no CC available
       if (!this.props.controller.state.closedCaptionOptions.availableLanguages && (collapsedMoreOptionsItems[i].name === "closedCaption")) {
+        continue;
+      }
+      //do not show quality button if no bitrates available
+      if (!this.props.controller.state.videoQualityOptions.availableBitrates && (collapsedMoreOptionsItems[i].name === "quality")){
         continue;
       }
       moreOptionsItems.push(optionsItemsTemplates[collapsedMoreOptionsItems[i].name]);
