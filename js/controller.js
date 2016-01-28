@@ -30,7 +30,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
-      "bitrateData": null,
       "isPlayingAd": false,
       "adOverlayUrl": null,
       "showAdOverlay": false,
@@ -128,8 +127,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
         this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
-        this.mb.subscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi", _.bind(this.onBitrateInfoAvailable, this));
-
 
         // ad events
         if (!Utils.isIPhone()) {
@@ -594,12 +591,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onBitrateInfoAvailable: function(event, availableBitrates) {
-      OO.log("onBitrateInfoAvailable is called");
-      this.state.bitrateData = {availableBitrates: availableBitrates};
-      this.renderSkin();
-    },
-
     onFullscreenChanged: function(event, fullscreen, paused) {
       // iPhone end screen is the same as start screen, except for the replay button
       if (Utils.isIPhone() && (this.state.playerState == CONSTANTS.STATE.END || this.state.playerState == CONSTANTS.STATE.PAUSE)){
@@ -847,12 +838,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
     },
 
-    sendBitrateChangeEvent: function(selectedContentData) {
+    sendVideoQualityChangeEvent: function(selectedContentData) {
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
       this.renderSkin();
       this.mb.publish(OO.EVENTS.PAUSE);
       //this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.selectedBitrate);
-      this.mb.publish(OO.EVENTS.BITRATE_CHANGED, selectedContentData);
+      this.mb.publish(OO.EVENTS.BITRATE_CHANGED, selectedContentData.selectedBitrate);
     },
 
     setClosedCaptionsLanguage: function(){

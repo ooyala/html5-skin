@@ -1,36 +1,40 @@
 /********************************************************************
- BITRATE SCREEN
+ VIDEO QUALITY SCREEN
  *********************************************************************/
 /**
- * This screen displays when user selects bitrate.
+ * This screen displays when user selects video quality.
  *
- * @class BitrateScreen
+ * @class VideoQualityScreen
  * @constructor
  */
 var React = require('react'),
     CONSTANTS = require('../constants/constants'),
-    BitratePanel = require('../components/bitratePanel'),
+    VideoQualityPanel = require('../components/videoQualityPanel'),
     CloseButton = require('../components/closeButton'),
     AccessibilityMixin = require('../mixins/accessibilityMixin');
 
-var BitrateScreen = React.createClass({
+var VideoQualityScreen = React.createClass({
   mixins: [AccessibilityMixin],
 
   handleClose: function(event) {
-    this.props.controller.toggleScreen(CONSTANTS.SCREEN.BITRATE_SCREEN);
+    this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
   },
 
   render: function() {
     return (
-      <div className="state-screen bitrate-screen">
-        <BitratePanel {...this.props} />
+      <div className="state-screen quality-screen">
+        <div className="quality-panel-title">
+          Video Quality
+          <span className={this.props.skinConfig.icons.quality.fontStyleClass}></span>
+        </div>
+        <VideoQualityPanel {...this.props} />
         <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>
     );
   }
 });
 
-BitrateScreen.propTypes = {
+VideoQualityScreen.propTypes = {
   skinConfig: React.PropTypes.shape({
     icons: React.PropTypes.shape({
       dismiss: React.PropTypes.shape({
@@ -40,7 +44,7 @@ BitrateScreen.propTypes = {
   })
 };
 
-BitrateScreen.defaultProps = {
+VideoQualityScreen.defaultProps = {
   skinConfig: {
     icons: {
       dismiss:{fontStyleClass:'icon icon-close'}
@@ -54,4 +58,4 @@ BitrateScreen.defaultProps = {
   }
 };
 
-module.exports = BitrateScreen;
+module.exports = VideoQualityScreen;
