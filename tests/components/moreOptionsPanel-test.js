@@ -18,7 +18,8 @@ describe('MoreOptionsPanel', function () {
     oneButtonSkinConfig.buttons.desktopContent = [
       {"name":"share", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
       {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
-      {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 }
+      {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
+      {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 }
     ];
 
     var mockController = {

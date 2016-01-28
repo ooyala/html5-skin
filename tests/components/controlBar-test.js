@@ -703,5 +703,70 @@ describe('ControlBar', function () {
 
   });
 
+  it('shows/hides quality button if bitrates available/not available', function() {
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
+      }
+    };
+
+    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig.buttons.desktopContent = [
+      {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+    ];
+
+    var mockProps = {
+      authorization: {},
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+        controlBarWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        authorization={mockProps.authorization} />
+    );
+
+    var qualityButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
+    expect(qualityButton.length).toBe(0);
+
+    var qualityClicked = false;
+    mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {availableLanguages: true},
+        videoQualityOptions: {
+          availableBitrates: true
+        }
+      }
+    };
+
+    mockProps = {
+      authorization: {},
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+        controlBarWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        authorization={mockProps.authorization} />
+    );
+
+    var qualityButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
+    expect(qualityButton.length).toBe(1);
+  });
 });
 
