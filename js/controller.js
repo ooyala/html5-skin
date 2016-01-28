@@ -63,6 +63,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "availableLanguages": null
       },
 
+      "videoQualityOptions": {
+        "availableBitrates": null
+      },
+
       "volumeState": {
         "volume": 1,
         "muted": false,
@@ -119,6 +123,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.BUFFERING, 'customerUi', _.bind(this.onBuffering, this));
         this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
+        this.mb.subscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi", _.bind(this.onBitrateInfoAvailable, this));
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
@@ -243,6 +248,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onEmbedCodeChanged: function(event, embedCode, options) {
+      this.state.videoQualityOptions.availableBitrates = null;
       this.state.assetId = embedCode;
       $.extend(true, this.state.playerParam, options);
       this.subscribeBasicPlaybackEvents();
@@ -560,6 +566,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onBitrateInfoAvailable: function(event, bitrates) {
+      this.state.videoQualityOptions.availableBitrates = bitrates;
+      this.renderSkin({"videoQualityOptions": {"availableBitrates": bitrates}});
+    },
+
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.closedCaptionOptions.availableLanguages = languages;
 
@@ -631,6 +642,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi");
