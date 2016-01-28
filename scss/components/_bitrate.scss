@@ -1,0 +1,32 @@
+.bitrate-screen {
+
+  .bitrate-panel {
+    padding: $panel-padding;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    background-color: $panel-bg;
+    left: 0;
+    right: 0;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    height: 100%;
+
+    .bitrate-panel-title {
+      position: absolute;
+      line-height: 1;
+      font-weight: bold;
+      font-size: $font-size-md-screen-title;
+      font-family: $font-family-roboto-condensed;
+      color: $white;
+      span.icon {
+        top: 1px;
+        position: relative;
+        margin-left: 7px;
+        font-size: 0.8em;
+      }
+    }
+  }
+}

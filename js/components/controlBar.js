@@ -119,6 +119,10 @@ var ControlBar = React.createClass({
     this.props.controller.toggleShareScreen();
   },
 
+  handleBitrateClick: function() {
+    this.props.controller.toggleScreen(CONSTANTS.SCREEN.BITRATE_SCREEN);
+  },
+
   handleVolumeClick: function(evt) {
     evt.preventDefault();
     var newVolume = parseFloat(evt.target.dataset.volume);

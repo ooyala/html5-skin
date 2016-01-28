@@ -15,6 +15,7 @@ var React = require('react'),
     PauseScreen = require('./views/pauseScreen'),
     PlayingScreen = require('./views/playingScreen'),
     ErrorScreen = require('./views/errorScreen'),
+    BitrateScreen = require('./views/bitrateScreen'),
     ComponentWidthMixin = require('./mixins/componentWidthMixin'),
     ClassNames = require('classnames');
 
@@ -224,6 +225,16 @@ var Skin = React.createClass({
               responsiveView={responsiveClass}
               componentWidth={this.state.componentWidth}
               ref="closedCaptionScreen" />
+          );
+          break;
+        case CONSTANTS.SCREEN.BITRATE_SCREEN:
+          screen = (
+            <BitrateScreen {...this.props}
+              playerState={this.state.playerState}
+              fullscreen={this.state.fullscreen}
+              bitrateData={this.state.bitrateData}
+              responsiveView={responsiveClass}
+              ref="bitrateScreen" />
           );
           break;
         case CONSTANTS.SCREEN.ERROR_SCREEN:
