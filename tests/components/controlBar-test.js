@@ -47,7 +47,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       },
       toggleFullscreen: function() {
         fullscreenToggled = true;
@@ -83,7 +86,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       }
     };
 
@@ -114,7 +120,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       }
     };
 
@@ -152,7 +161,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       },
       handleMuteClick: function() {muteClicked = true;},
       setVolume: function(volume) {newVolume = volume;}
@@ -193,7 +205,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       },
       togglePlayPause: function() {playClicked = true;}
     };
@@ -229,7 +244,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       },
       toggleShareScreen: function() {shareClicked = true;}
     };
@@ -265,7 +283,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       },
       toggleDiscoveryScreen: function() {discoveryClicked = true;}
     };
@@ -300,7 +321,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       }
     };
 
@@ -332,7 +356,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {availableLanguages: true}
+        closedCaptionOptions: {availableLanguages: true},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       },
       toggleClosedCaptionScreen: function() {ccClicked = true;}
     };
@@ -365,7 +392,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       }
     };
 
@@ -429,7 +459,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       },
       toggleMoreOptionsScreen: function() {
         moreOptionsClicked = true;
@@ -471,7 +504,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       }
     };
 
@@ -505,7 +541,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       }
     };
 
@@ -558,7 +597,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       }
     };
 
@@ -600,7 +642,10 @@ describe('ControlBar', function () {
           volume: 1,
           volumeSliderVisible: true
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       }
     };
 
@@ -631,7 +676,10 @@ describe('ControlBar', function () {
         volumeState: {
           volume: 1
         },
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       }
     };
 
