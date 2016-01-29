@@ -63,7 +63,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       },
 
       "videoQualityOptions": {
-        "availableBitrates": null
+        "availableBitrates": null,
+        "selectedBitrate": null
       },
 
       "volumeState": {
@@ -246,6 +247,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onEmbedCodeChanged: function(event, embedCode, options) {
       this.state.videoQualityOptions.availableBitrates = null;
+
+      //test data, remove when real data available
+      this.state.videoQualityOptions.availableBitrates = [{"id":"720p 1500kbps", "bitrate":1558322, "label": "720p"}, {"id":"480p 500kbps", "bitrate":520929, "label": "480p"}, {"id":"360p 358kbps", "bitrate":358157, "label": "360p"}, {"id":"240p 258kbps", "bitrate":258157, "label": "240p"}, {"id":"144p 144kbps", "bitrate":144157, "label": "144p"}];
+      //^^test data, remove when real data available^^
+
       this.state.assetId = embedCode;
       $.extend(true, this.state.playerParam, options);
       this.subscribeBasicPlaybackEvents();
@@ -800,6 +806,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    toggleScreen: function(screen) {
+      if (this.state.screenToShow == screen) {
+        this.closeScreen();
+      }
+      else {
+        if (this.state.playerState == CONSTANTS.STATE.PLAYING){
+          this.mb.publish(OO.EVENTS.PAUSE);
+        }
+        setTimeout(function() {
+          this.state.screenToShow = screen;
+          this.renderSkin();
+        }.bind(this), 1);
+      }
+    },
+
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
       this.state.upNextInfo.showing = false;
       if (isAutoUpNext){
@@ -821,6 +842,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "custom" : { "source" : screen}
       };
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
+    },
+
+    sendVideoQualityChangeEvent: function(selectedContentData) {
+      this.state.videoQualityOptions.selectedBitrate = {
+        "id": selectedContentData.id
+      };
+      this.mb.publish(OO.EVENTS.SET_TARGET_BITRATE, selectedContentData.id);
     },
 
     setClosedCaptionsLanguage: function(){
