@@ -40,4 +40,41 @@
   .action-icon span.icon, .action-icon-pause.animate-pause {
     font-size:96px;
   }
+  //Ad Panel
+  .adTopBar {
+     height: 34px;
+
+    .adTitle, .adPlaybackInfo {
+        font-size: 1em;
+        padding-left: 7.5px;
+        padding-right: 7.5px;
+    }
+    .learnMore {
+      font-size: 1em;
+      margin-right: 10px;
+
+      .buttonIcon {
+        font-size: 0.8em;
+        margin-right: 5px;
+      }
+    }
+    .skipButton {
+      font-size: 1em;
+
+      .skipIcon {
+        font-size: 0.8em;
+        margin-right: 5px;
+      }
+    }
+
+    .skipButton.visible {
+      margin-right: 15px;
+      margin-left: 15px;
+
+      .skipIcon {
+        font-size: 0.8em;
+        margin-right: 5px;
+      }
+    }
+  }
 }

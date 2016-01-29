@@ -55,44 +55,39 @@
   }
 
   //Ad Panel
-  .adScreenPanel {
-    bottom: 32px;
-  }
-
   .adTopBar {
-     height: 34px;
-     font-size: 18px;
+     height: 17px;
 
     .adTitle, .adPlaybackInfo {
-        font-size: 12pt;
-        padding-left: 7.5px;
-        padding-right: 7.5px;
+        font-size: 0.7em;
+        padding-left: 4px;
+        padding-right: 4px;
     }
     .learnMore {
-      font-size: 12pt;
-      margin-right: 15px;
+      font-size: 0.7em;
+      margin-right: 7px;
 
       .buttonIcon {
-        font-size: 13px;
-        margin-right: 5px;
+        font-size: 0.7em;
+        margin-right: 3px;
       }
     }
     .skipButton {
-      font-size: 12pt;
+      font-size: 0.7em;
 
       .skipIcon {
-        font-size: 13px;
-        margin-right: 5px;
+        font-size: 0.7em;
+        margin-right: 3px;
       }
     }
 
     .skipButton.visible {
-      margin-right: 15px;
-      margin-left: 15px;
+      margin-right: 7px;
+      margin-left: 7px;
 
       .skipIcon {
-        font-size: 13px;
-        margin-right: 5px;
+        font-size: 0.7em;
+        margin-right: 3px;
       }
     }
   }
