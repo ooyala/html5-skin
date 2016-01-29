@@ -63,7 +63,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       },
 
       "videoQualityOptions": {
-        "availableBitrates": null
+        "availableBitrates": null,
+        "selectedBitrate": null
       },
 
       "volumeState": {
@@ -246,6 +247,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onEmbedCodeChanged: function(event, embedCode, options) {
       this.state.videoQualityOptions.availableBitrates = null;
+
+      //test data, remove when real data available
+      this.state.videoQualityOptions.availableBitrates = [{"id":"720p 1500kbps", "bitrate":1558322, "label": "720p"}, {"id":"480p 500kbps", "bitrate":520929, "label": "480p"}, {"id":"360p 358kbps", "bitrate":358157, "label": "360p"}, {"id":"240p 258kbps", "bitrate":258157, "label": "240p"}, {"id":"144p 144kbps", "bitrate":144157, "label": "144p"}];
+      //^^test data, remove when real data available^^
+
       this.state.assetId = embedCode;
       $.extend(true, this.state.playerParam, options);
       this.subscribeBasicPlaybackEvents();
@@ -839,10 +845,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     sendVideoQualityChangeEvent: function(selectedContentData) {
+      this.state.videoQualityOptions.selectedBitrate = {
+        "id": selectedContentData.id
+      };
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
       this.renderSkin();
       this.mb.publish(OO.EVENTS.PAUSE);
-      //this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.selectedBitrate);
+      this.mb.publish(OO.EVENTS.SET_EMBED_CODE, this.state.assetId);
       this.mb.publish(OO.EVENTS.BITRATE_CHANGED, selectedContentData.selectedBitrate);
     },
 

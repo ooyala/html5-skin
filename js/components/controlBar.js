@@ -340,13 +340,10 @@ var ControlBar = React.createClass({
         continue;
       }
 
-      //disabled for QA until real bitrate data available
-      /*
       //do not show quality button if no bitrates available
       if (!this.props.controller.state.videoQualityOptions.availableBitrates && (collapsedControlBarItems[k].name === "quality")){
         continue;
       }
-      */
 
       if (Utils.isIos() && (collapsedControlBarItems[k].name === "volume")){
         continue;
