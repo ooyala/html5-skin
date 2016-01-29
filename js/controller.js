@@ -848,11 +848,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.videoQualityOptions.selectedBitrate = {
         "id": selectedContentData.id
       };
-      this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
-      this.renderSkin();
-      this.mb.publish(OO.EVENTS.PAUSE);
-      this.mb.publish(OO.EVENTS.SET_EMBED_CODE, this.state.assetId);
-      this.mb.publish(OO.EVENTS.BITRATE_CHANGED, selectedContentData.selectedBitrate);
+      this.mb.publish(OO.EVENTS.SET_TARGET_BITRATE, selectedContentData.selectedBitrate);
     },
 
     setClosedCaptionsLanguage: function(){
