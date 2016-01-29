@@ -526,11 +526,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, {"marginHeight": marginHeight});
     },
 
-    onWillPlayNonlinearAd: function(event, url) {
-      if(url.url) {
-        this.state.adOverlayUrl = url.url;
+    onWillPlayNonlinearAd: function(event, adInfo) {
+      if(adInfo.url) {
+        this.state.adOverlayUrl = adInfo.url;
         this.state.showAdOverlay = true;
       }
+      this.state.pluginsElement.addClass("overlay_showing");
+      var elementWidth = $("#"+this.state.elementId).width();
+      var elementHeight = $("#"+this.state.elementId).height();
+      this.state.pluginsElement.css({
+        top: (elementHeight - CONSTANTS.UI.defaultControlBarHeight - adInfo.ad.height) + "px",
+        left: ((elementWidth - adInfo.ad.width) / 2) + "px",
+        right: ((elementWidth - adInfo.ad.width) / 2) + "px"
+      });
       this.renderSkin();
     },
 
@@ -545,16 +553,24 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.adOverlayUrl = null;
       this.state.showAdOverlay = false;
       this.state.showAdOverlayCloseButton = false;
+      this.state.pluginsElement.removeClass("overlay_showing");
+      this.state.pluginsElement.css({
+        top: "",
+        left: "",
+        right: ""
+      });
       this.renderSkin();
     },
 
     hideNonlinearAd: function(event) {
       this.state.showAdOverlay = false;
+      this.state.pluginsElement.removeClass("overlay_showing");
       this.renderSkin();
     },
 
     showNonlinearAd: function(event) {
       this.state.showAdOverlay = true;
+      this.state.pluginsElement.addClass("overlay_showing");
       this.renderSkin();
     },
 
