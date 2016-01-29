@@ -19,7 +19,6 @@ var CloseButton = React.createClass({
     event.stopPropagation();
     event.cancelBubble = true;
     event.preventDefault();
-    return false;
   },
 
   render: function() {

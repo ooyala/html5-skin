@@ -2,22 +2,23 @@
 An open-source HTML5 UI skin based on [React.js](https://github.com/facebook/react) that overlays Ooyala V4 core player. This README contains introduction, setup and customization sections.
 
 ## High Level Overview
-html5-skin is a js file that is made available externally to Ooyala core V4 player. It accepts and triggers general Ooyala Message Bus events from and to core player to change the behavior of video playback. All static files necessary to create and run video playback are hosted and can be accessed publicly. This skin repo are available to be git cloned or forked and be modified by developers (terms and condition apply).
+`html5-skin` is a JS file that is made available externally to Ooyala core V4 player. It accepts and triggers general Ooyala Message Bus events from and to core player to change the behavior of video playback. All static files necessary to create and run video playback are hosted and can be accessed publicly. This skin repo are available to be git cloned or forked and be modified by developers (terms and condition apply).
 
 ### Plug and Play capability
-core.js is a lightweight core player that enables basic video playback functionality and provides Message Bus environment. Most of additional capabilities such as ads, discovery and skin are separated from core player JS. You may want to load additional plugin.
+`core.js` is a lightweight core player that enables basic video playback functionality and provides Message Bus environment. Most of additional capabilities such as ads, discovery and skin are separated from core player JS. You may want to load additional plugins.
 
 ## Examples
-We have a sample HTML page ready for you. Check out [sample page](http://debug.ooyala.com/ea/index.html?ec=RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2&pbid=26e2e3c1049c4e70ae08a242638b5c40&pcode=5zb2wxOlZcNCe_HVT3a6cawW298X&core_player=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fcore.min.js&html5_skin=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fskin-plugin%2Fhtml5-skin.min.js&skin_asset=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fskin-plugin%2Fhtml5-skin.min.css&skin_config=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fskin-plugin%2Fskin.json&ad_plugin=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fad-plugin%2Ffreewheel.min.js&additional_plugins=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fother-plugin%2Fdiscovery_api.min.js%0Ahttp%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fvideo-plugin%2Fmain_html5.min.js&options=%7B%22freewheel-ads-manager%22%3A%7B%22fw_video_asset_id%22%3A%22NqcGg4bzoOmMiV35ZttQDtBX1oNQBnT-%22%2C%22html5_ad_server%22%3A%22http%3A%2F%2Fg1.v.fwmrm.net%22%2C%22fw_android_ad_server%22%3A%22http%3A%2F%2Fg1.v.fwmrm.net%2F%22%2C%22html5_player_profile%22%3A%2290750%3Aooyala_html5%22%2C%22fw_android_player_profile%22%3A%2290750%3Aooyala_android%22%2C%22fw_mrm_network_id%22%3A%22380912%22%7D%7D)
+We have a sample HTML page ready for you. Check out [sample page](http://debug.ooyala.com/ea/index.html?ec=RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2&pbid=26e2e3c1049c4e70ae08a242638b5c40&pcode=5zb2wxOlZcNCe_HVT3a6cawW298X&core_player=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fcore.min.js&video_plugins=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fvideo-plugin%2Fmain_html5.min.js%0Ahttp%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fvideo-plugin%2Fosmf_flash.min.js&html5_skin=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fskin-plugin%2Fhtml5-skin.min.js&skin_asset=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fskin-plugin%2Fhtml5-skin.min.css&skin_config=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fskin-plugin%2Fskin.json&ad_plugin=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fad-plugin%2Ffreewheel.min.js&additional_plugins=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2Flatest%2Fother-plugin%2Fdiscovery_api.min.js&options=%7B%22freewheel-ads-manager%22%3A%7B%22fw_video_asset_id%22%3A%22NqcGg4bzoOmMiV35ZttQDtBX1oNQBnT-%22%2C%22html5_ad_server%22%3A%22http%3A%2F%2Fg1.v.fwmrm.net%22%2C%22fw_android_ad_server%22%3A%22http%3A%2F%2Fg1.v.fwmrm.net%2F%22%2C%22html5_player_profile%22%3A%2290750%3Aooyala_html5%22%2C%22fw_android_player_profile%22%3A%2290750%3Aooyala_android%22%2C%22fw_mrm_network_id%22%3A%22380912%22%7D%7D)
 
 This simple test HTML page can also be hosted on your environment to showcase html5 skin.
-```javascript
+```html
 <!DOCTYPE html>
 <html>
 <head>
   <!-- V4 JS core and at least one video plugin is required. Plugins such as skin, discovery and Advertising need to be loaded separately -->
   <script src="//player.ooyala.com/static/v4/stable/latest/core.min.js"></script>
   <script src="//player.ooyala.com/static/v4/stable/latest/video-plugin/main_html5.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/latest/video-plugin/osmf_flash.min.js"></script>
   <!-- Change these html5-skin.min.css and html5-skin.min.js to your local build if necessary -->
   <script src="//player.ooyala.com/static/v4/stable/latest/skin-plugin/html5-skin.min.js"></script>
   <link rel="stylesheet" href="//player.ooyala.com/static/v4/stable/latest/skin-plugin/html5-skin.min.css"/>
@@ -35,6 +36,7 @@ This simple test HTML page can also be hosted on your environment to showcase ht
       "config": "//player.ooyala.com/static/v4/stable/latest/skin-plugin/skin.json"
     }
   };
+
   OO.ready(function() {
     window.pp = OO.Player.create('container', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
   });
@@ -77,7 +79,7 @@ If you have the forever module installed, you can use the following command to k
 
     forever --spinSleepTime 5000 --workingDir <path to your project directory> /usr/local/bin/gulp
 
-Once you've built the Javascript with gulp, you'll need to run a webserver in order to serve sample.html.
+Once you've built the Javascript with gulp, you'll need to run a webserver in order to serve `sample.html`.
 The simplest way to do this is with python's built in server, but you can use any server you like.
 To start a python server, cd into the repo directory and run:
 
@@ -143,7 +145,7 @@ Note that some necessary files are located with relative paths. Please verify th
 - asset files
 
 ### Simple Customization
-Simple customization can be achieved by modifying skin.json setting. Furthermore, you are able to override skin setting during player create time. The example below hides description text and render playButton blue on start screen.
+Simple customization can be achieved by modifying `skin.json` settings. Furthermore, you are able to override skin setting during player create time. The example below hides description text and render playButton blue on start screen.
 
 ```javascript
 var playerParam = {
@@ -157,4 +159,4 @@ var playerParam = {
 ```
 
 ### Advanced Customization
-Advanced customization is readily available by modifying JS files. Follow _Developer Setup_ section to create a local repository and to run build script. Built files are available inside build folder. You are welcomed to host your built skin javascript to be run with your player.
+Advanced customization is readily available by modifying JS files. Follow [Developer Setup](#developer-setup) section to create a local repository and to run build script. Built files are available inside build folder. You are welcomed to host your built skin javascript to be run with your player.

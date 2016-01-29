@@ -119,6 +119,10 @@ var ControlBar = React.createClass({
     this.props.controller.toggleShareScreen();
   },
 
+  handleQualityClick: function() {
+    this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
+  },
+
   handleVolumeClick: function(evt) {
     evt.preventDefault();
     var newVolume = parseFloat(evt.target.dataset.volume);
