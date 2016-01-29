@@ -62,6 +62,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "availableLanguages": null
       },
 
+      "videoQualityOptions": {
+        "availableBitrates": null,
+        "selectedBitrate": null
+      },
+
       "volumeState": {
         "volume": 1,
         "muted": false,
@@ -84,7 +89,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "forceControlBarVisible": false,
       "timer": null,
       "errorCode": null,
-      "isSubscribed": false
+      "isSubscribed": false,
+      "skipAdClicked": false
     };
 
     this.init();
@@ -117,6 +123,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.BUFFERING, 'customerUi', _.bind(this.onBuffering, this));
         this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
+        this.mb.subscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi", _.bind(this.onBitrateInfoAvailable, this));
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
@@ -151,8 +158,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      event listeners from core player -> regulate skin STATE
      ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
-      $("#" + elementId + " .innerWrapper").append("<div class='player_skin' style='width:100%; height:100%; overflow:hidden; position: absolute; font-family: &apos;Helvetica Neue&apos;,Helvetica,Arial,sans-serif;'></div>");
-      $("#" + elementId + " .player_skin").css("z-index", OO.CSS.ALICE_SKIN_Z_INDEX);
+      $("#" + elementId + " .innerWrapper").append("<div class='player_skin'></div>");
       this.state.mainVideoElement = $("#" + elementId + " .video");
       this.state.playerParam = params;
       this.state.elementId = elementId;
@@ -240,6 +246,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onEmbedCodeChanged: function(event, embedCode, options) {
+      this.state.videoQualityOptions.availableBitrates = null;
+
+      //test data, remove when real data available
+      this.state.videoQualityOptions.availableBitrates = [{"id":"720p 1500kbps", "bitrate":1558322, "label": "720p"}, {"id":"480p 500kbps", "bitrate":520929, "label": "480p"}, {"id":"360p 358kbps", "bitrate":358157, "label": "360p"}, {"id":"240p 258kbps", "bitrate":258157, "label": "240p"}, {"id":"144p 144kbps", "bitrate":144157, "label": "144p"}];
+      //^^test data, remove when real data available^^
+
       this.state.assetId = embedCode;
       $.extend(true, this.state.playerParam, options);
       this.subscribeBasicPlaybackEvents();
@@ -411,6 +423,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var language = "";
       var mode = 'disabled';
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
+      this.onBuffered();
       if (source == OO.VIDEO.MAIN) {
         this.state.mainVideoDuration = this.state.duration;
       }
@@ -503,6 +516,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onSkipAdClicked: function(event) {
+      this.state.skipAdClicked = true;
       OO.log("onSkipAdClicked is called");
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
       this.mb.publish(OO.EVENTS.SKIP_AD);
@@ -553,6 +567,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     showNonlinearAdCloseButton: function(event) {
       this.state.showAdOverlayCloseButton = true;
       this.renderSkin();
+    },
+
+    onBitrateInfoAvailable: function(event, bitrates) {
+      this.state.videoQualityOptions.availableBitrates = bitrates;
+      this.renderSkin({"videoQualityOptions": {"availableBitrates": bitrates}});
     },
 
     onClosedCaptionsInfoAvailable: function(event, languages) {
@@ -620,6 +639,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi");
@@ -709,7 +729,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
           break;
         case CONSTANTS.STATE.END:
-          this.mb.publish(OO.EVENTS.REPLAY);
+          if(Utils.isAndroid()) {
+            if(this.state.skipAdClicked) {
+             this.state.skipAdClicked = false;
+            }
+            else
+            {
+               this.mb.publish(OO.EVENTS.REPLAY);
+            }
+          } else {
+            this.mb.publish(OO.EVENTS.REPLAY);
+          }
           break;
         case CONSTANTS.STATE.PAUSE:
           this.mb.publish(OO.EVENTS.PLAY);
@@ -776,6 +806,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    toggleScreen: function(screen) {
+      if (this.state.screenToShow == screen) {
+        this.closeScreen();
+      }
+      else {
+        if (this.state.playerState == CONSTANTS.STATE.PLAYING){
+          this.mb.publish(OO.EVENTS.PAUSE);
+        }
+        setTimeout(function() {
+          this.state.screenToShow = screen;
+          this.renderSkin();
+        }.bind(this), 1);
+      }
+    },
+
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
       this.state.upNextInfo.showing = false;
       if (isAutoUpNext){
@@ -797,6 +842,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "custom" : { "source" : screen}
       };
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
+    },
+
+    sendVideoQualityChangeEvent: function(selectedContentData) {
+      this.state.videoQualityOptions.selectedBitrate = {
+        "id": selectedContentData.id
+      };
+      this.mb.publish(OO.EVENTS.SET_TARGET_BITRATE, selectedContentData.id);
     },
 
     setClosedCaptionsLanguage: function(){

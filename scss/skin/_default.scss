@@ -1,7 +1,17 @@
 // ---------------------------------------------------------------------------------------
-// When having several skins, this file contains everything related to the default skin.
-// Values are pulled from /html5-skin/config/skin.json
+// When having several skins, this file contains everything related to default skin.
+// Values can be pulled from /html5-skin/config/skin.json
 // ---------------------------------------------------------------------------------------
+
+.player_skin {
+  @extend .expand;
+  overflow: hidden;
+  z-index: 11000;
+}
+
+video {
+  @extend .expand;
+}
 
 video.blur {
   -webkit-filter: blur(3px);

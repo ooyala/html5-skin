@@ -13,9 +13,18 @@ var CloseButton = React.createClass({
     }
   },
 
+  // Odds are we don't want to fire any handlers behind the close button,
+  // so we stop them here
+  stopEvent: function(event) {
+    event.stopPropagation();
+    event.cancelBubble = true;
+    event.preventDefault();
+  },
+
   render: function() {
     return (
-        <button className={this.props.cssClass} onClick={this.props.closeAction}>
+        <button className={this.props.cssClass} onClick={this.props.closeAction}
+          onMouseUp={this.stopEvent} onTouchEnd={this.stopEvent}>
           <span className={this.props.fontStyleClass}></span>
         </button>
     );

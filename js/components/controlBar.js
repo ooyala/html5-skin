@@ -119,6 +119,10 @@ var ControlBar = React.createClass({
     this.props.controller.toggleShareScreen();
   },
 
+  handleQualityClick: function() {
+    this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
+  },
+
   handleVolumeClick: function(evt) {
     evt.preventDefault();
     var newVolume = parseFloat(evt.target.dataset.volume);
@@ -261,11 +265,12 @@ var ControlBar = React.createClass({
         </span>
       </button>,
 
-      "quality": <div className="quality controlBarItem" style={dynamicStyles.generalIconSetting} key="quality">
+      "quality": <button className="quality controlBarItem" style={dynamicStyles.generalIconSetting}
+        onClick={this.handleQualityClick} key="quality">
         <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
         </span>
-      </div>,
+      </button>,
 
       "discovery": <button className="discovery controlBarItem" style={dynamicStyles.generalIconSetting}
         onClick={this.handleDiscoveryClick} key="discovery">
@@ -332,6 +337,11 @@ var ControlBar = React.createClass({
 
       //do not show CC button if no CC available
       if (!this.props.controller.state.closedCaptionOptions.availableLanguages && (collapsedControlBarItems[k].name === "closedCaption")){
+        continue;
+      }
+
+      //do not show quality button if no bitrates available
+      if (!this.props.controller.state.videoQualityOptions.availableBitrates && (collapsedControlBarItems[k].name === "quality")){
         continue;
       }
 

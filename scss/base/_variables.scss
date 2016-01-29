@@ -6,6 +6,7 @@ $gray:                      #55595c !default;
 $gray-light:                #818a91 !default;
 $gray-lighter:              #eceeef !default;
 $gray-lightest:             #f7f7f9 !default;
+$blue-light:                #488DFB !default;
 $white:                     #fff !default;
 //
 $brand-primary:             #0275d8 !default;
@@ -45,7 +46,7 @@ $panel-padding:           35px !default;
 ////
 //// Settings for the `<body>` element.
 //
-$body-bg:                    $white !default;
+$body-bg:                    #000 !default;
 $body-color:                 $white !default;
 $panel-bg:                   rgba(0, 0, 0, 0.7) !default;
 //

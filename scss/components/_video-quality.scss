@@ -1,0 +1,77 @@
+.quality-screen {
+  padding: $panel-padding;
+  background-color: $panel-bg;
+
+  .quality-panel-title {
+    line-height: 1;
+    font-weight: bold;
+    font-size: $font-size-md-screen-title;
+    font-family: $font-family-roboto-condensed;
+    color: $white;
+    span.icon {
+      top: 1px;
+      position: relative;
+      margin-left: 7px;
+      font-size: 0.8em;
+    }
+  }
+
+  .quality-panel {
+    position: relative;
+    text-align: center;
+    top:30%;
+
+    button.quality-btn {
+      padding: 10px 8px;
+      margin: 0 22px;
+      background-color: transparent;
+      color: $white;
+      font-size: 1.1em;
+      font-family: $font-family-roboto;
+      line-height:1em;
+      border-radius: 2px;
+      border: 1px solid $gray;
+      outline: none;
+
+      &:first-child {
+        margin-left:0;
+      }
+
+      &:last-child {
+        margin-right:0;
+      }
+
+      &:hover, &.selected {
+        color: $blue-light;
+        border-color: $blue-light;
+      }
+    }
+
+    a.auto-quality-btn {
+      padding: 10px 8px;
+      margin: 0 28px;
+      background-color: transparent;
+      font-family: $font-family-roboto;
+      line-height:1em;
+      outline: none;
+      width: 100px;
+
+      .quality-auto-icon {
+        border-radius: 2px;
+        border: 1px solid $gray;
+        font-size: 2em;
+        color: $gray;
+        text-transform: uppercase;
+        padding:4px;
+        margin-bottom: 8px;
+      }
+
+      .quality-auto-label {
+        color:$white;
+        font-size: 0.8em;
+        text-transform: capitalize;
+        text-align: center;
+      }
+    }
+  }
+}

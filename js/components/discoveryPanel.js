@@ -11,6 +11,7 @@ var React = require('react'),
 
 var DiscoveryPanel = React.createClass({
   propTypes: {
+    responsiveView: React.PropTypes.string,
     videosPerPage: React.PropTypes.objectOf(React.PropTypes.number),
     discoveryData: React.PropTypes.shape({
       relatedVideos: React.PropTypes.arrayOf(React.PropTypes.shape({
@@ -116,7 +117,17 @@ var DiscoveryPanel = React.createClass({
     }
 
     //pagination
-    var videosPerPage = this.props.videosPerPage.medium;
+    var videosPerPage;
+    switch (this.props.responsiveView) {
+      case "small":
+        videosPerPage = this.props.videosPerPage.small;
+        break;
+      case "large":
+        videosPerPage = this.props.videosPerPage.large;
+        break;
+      default:
+        videosPerPage = this.props.videosPerPage.medium;
+    }
     var startAt = videosPerPage * (this.state.currentPage - 1);
     var endAt = videosPerPage * this.state.currentPage;
     var relatedVideoPage = relatedVideos.slice(startAt,endAt);

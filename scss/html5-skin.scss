@@ -38,6 +38,11 @@
   @import "components/plugins";
   @import "components/start-screen";
   @import "components/more-options";
+  @import "components/video-quality";
+
+  // Responsive
+  @import "responsive/small";
+  @import "responsive/large";
 
   // Skin
   @import "skin/default";

@@ -7,9 +7,11 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants');
 
 var AdOverlay = React.createClass({
-  closeOverlay: function() {
-      this.props.controller.hideNonlinearAd();
-      this.props.controller.onSkipAdClicked();
+  closeOverlay: function(event) {
+    event.stopPropagation();
+    event.cancelBubble = true;
+    this.props.controller.closeNonlinearAd();
+    this.props.controller.onSkipAdClicked();
   },
 
   handleOverlayClick: function(event) {
@@ -29,7 +31,7 @@ var AdOverlay = React.createClass({
     });
     var closeButtonClass = ClassNames({
       "adOverlayCloseButton": true,
-      "hidden": this.props.showOverlayCloseButton
+      "hidden": !this.props.showOverlayCloseButton
     });
 
     return (

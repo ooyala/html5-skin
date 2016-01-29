@@ -1,0 +1,43 @@
+.large {
+  // State Screens
+  .state-screen {
+    .state-screen-info {
+      .state-screen-title {
+        font-size: 3.0em;
+      }
+      .state-screen-description {
+        font-size: 1.8em;
+      }
+    }
+  }
+
+  // Closed Caption Screen
+  .closedCaptionsScreen{
+    .language-container {
+      .language-panel {
+        height: 400px
+      }
+    }
+  }
+
+  //Error screen
+  .errorScreen {
+    .error-title {
+      font-size: 2em;
+    }
+    .error-description {
+      font-size: 1.4em;
+    }
+    .error-action {
+      font-size: 1.4em;
+    }
+  }
+
+  //Action Icons
+  .action-icon-pause {
+    font-size:32px;
+  }
+  .action-icon span.icon, .action-icon-pause.animate-pause {
+    font-size:96px;
+  }
+}

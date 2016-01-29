@@ -1,0 +1,56 @@
+.small {
+  // State Screens
+  .state-screen {
+    .state-screen-info {
+      .state-screen-title {
+        font-size: 1em;
+      }
+      .state-screen-description {
+        font-size: 0.6em;
+      }
+    }
+  }
+
+  // Discovery Screen
+  .discoveryScreen {
+    .discovery-panel {
+      .discoveryToasterContainerStyle {
+        min-height:0;
+        height: 200px;
+      }
+    }
+  }
+
+  // Closed Caption Screen
+  .closedCaptionsScreen{
+    .language-container {
+      .language-panel {
+        min-height:0;
+        height: 80px
+      }
+    }
+  }
+
+  //Error screen
+  .errorScreen {
+    .error-title {
+      font-size: 1em;
+      margin-bottom: 10px;
+    }
+    .error-description {
+      font-size: 0.7em;
+      margin-bottom: 10px;
+    }
+    .error-action {
+      font-size: 0.7em;
+    }
+  }
+
+  //Action Icons
+  .action-icon-pause {
+    font-size:12px;
+  }
+  .action-icon span.icon, .action-icon-pause.animate-pause {
+    font-size:36px;
+  }
+}
