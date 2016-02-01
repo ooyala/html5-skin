@@ -3,14 +3,16 @@
 *********************************************************************/
 var React = require('react'),
     CONSTANTS = require('../constants/constants'),
-    ClassNames = require('classnames');
-    Utils = require('./utils');
+    ClassNames = require('classnames'),
+    Utils = require('./utils'),
+    VideoQualityPopover = require('./videoQualityPopover');
 
 var ControlBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
-      currentVolumeHead: 0
+      currentVolumeHead: 0,
+      showVideoQualityPopover: false
     };
   },
 
@@ -120,7 +122,14 @@ var ControlBar = React.createClass({
   },
 
   handleQualityClick: function() {
-    this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
+    if(this.props.responsiveView == 'small') {
+      this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
+    } else {
+      this.setState({
+        showVideoQualityPopover: !this.state.showVideoQualityPopover
+      });
+    }
+
   },
 
   handleVolumeClick: function(evt) {
@@ -399,12 +408,16 @@ var ControlBar = React.createClass({
     };
 
     var controlBarItems = this.populateControlBar();
+
+    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props}/> : null;
+
     return (
       <div className="controlBar" onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}
         style={controlBarStyle}>
         <div className="controlBarItemsWrapper">
           {controlBarItems}
         </div>
+        {videoQualityPopover}
       </div>
     );
   }
