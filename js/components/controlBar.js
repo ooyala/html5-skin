@@ -125,11 +125,15 @@ var ControlBar = React.createClass({
     if(this.props.responsiveView == 'small') {
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
     } else {
-      this.setState({
-        showVideoQualityPopover: !this.state.showVideoQualityPopover
-      });
+      this.toggleQualityPopover();
     }
 
+  },
+
+  toggleQualityPopover: function() {
+    this.setState({
+      showVideoQualityPopover: !this.state.showVideoQualityPopover
+    });
   },
 
   handleVolumeClick: function(evt) {
@@ -409,7 +413,7 @@ var ControlBar = React.createClass({
 
     var controlBarItems = this.populateControlBar();
 
-    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props}/> : null;
+    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
 
     return (
       <div className="controlBar" onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}
