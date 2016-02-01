@@ -75,3 +75,46 @@
     }
   }
 }
+
+.quality-popover {
+  position: absolute;
+  background-color: $panel-bg;
+  right:10px;
+  bottom: $control-bar-height + 10px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 5px 10px;
+  border: 0;
+  border-radius: 3px;
+  padding: 10px;
+
+  .quality-panel {
+    position: relative;
+    text-align: center;
+    line-height:1;
+
+    button.quality-btn {
+      padding: 6px;
+      margin: 0 10px;
+      background-color: transparent;
+      color: $white;
+      font-size: 0.6em;
+      font-family: $font-family-roboto;
+      line-height:1;
+      border-radius: 2px;
+      border: 1px solid $gray;
+      outline: none;
+
+      &:first-child {
+        margin-left:0;
+      }
+
+      &:last-child {
+        margin-right:0;
+      }
+
+      &:hover, &.selected {
+        color: $blue-light;
+        border-color: $blue-light;
+      }
+    }
+  }
+}

@@ -120,6 +120,8 @@ var Skin = React.createClass({
               upNextInfo={this.state.upNextInfo}
               authorization={this.state.authorization}
               controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
+              responsiveView={responsiveClass}
+              videoQualityOptions={this.state.videoQualityOptions}
               ref="playScreen" />
           );
           break;
@@ -149,6 +151,8 @@ var Skin = React.createClass({
               seeking={this.state.seeking}
               upNextInfo={this.state.upNextInfo}
               authorization={this.state.authorization}
+              responsiveView={responsiveClass}
+              videoQualityOptions={this.state.videoQualityOptions}
               ref="pauseScreen" />
           );
           break;
@@ -164,6 +168,8 @@ var Skin = React.createClass({
               playerState={this.state.playerState}
               seeking={this.state.seeking}
               authorization={this.state.authorization}
+              responsiveView={responsiveClass}
+              videoQualityOptions={this.state.videoQualityOptions}
               ref="endScreen" />
           );
           break;
@@ -180,6 +186,8 @@ var Skin = React.createClass({
               buffered={this.state.buffered}
               seeking={this.state.seeking}
               controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
+              responsiveView={responsiveClass}
+              videoQualityOptions={this.state.videoQualityOptions}
               ref="adScreen" />
           );
           break;

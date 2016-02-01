@@ -27,6 +27,10 @@ var MoreOptionsPanel = React.createClass({
     this.props.controller.toggleShareScreen();
   },
 
+  handleQualityClick: function() {
+    this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
+  },
+
   handleDiscoveryClick: function () {
     this.props.controller.toggleDiscoveryScreen();
   },
