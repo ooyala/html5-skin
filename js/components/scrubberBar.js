@@ -149,8 +149,10 @@ var ScrubberBar = React.createClass({
       * this.props.duration;
     this.props.controller.seek(newPlayheadTime);
     this.setState({
-      currentPlayhead: newPlayheadTime
+      currentPlayhead: newPlayheadTime,
+      scrubbingPlayheadX: 0
     });
+    this.props.controller.endSeeking();
   },
 
   handleScrubberBarMouseDown: function(evt) {
@@ -198,11 +200,12 @@ var ScrubberBar = React.createClass({
     var playheadPaddingStyle = {};
 
     if (!this.state.transitionedDuringSeek) {
-        if (!this.props.seeking) {
+
+        if (this.state.scrubbingPlayheadX && this.state.scrubbingPlayheadX != 0) {
+          playheadPaddingStyle.left = this.state.scrubbingPlayheadX;
+        } else {
           playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
             parseFloat(this.props.duration)) * this.scrubberBarWidth);
-        } else if (this.state.scrubbingPlayheadX) {
-          playheadPaddingStyle.left = this.state.scrubbingPlayheadX;
         }
 
         playheadPaddingStyle.left = Math.max(

@@ -1,7 +1,7 @@
 .adScreenPanel {
   position: absolute;
   top: 0;
-  bottom: 32px;
+  bottom: 64px;
   width: 100%;
 
   .adTopBar {
@@ -9,11 +9,11 @@
     display: flex;
     position: absolute;
     top: 0%;
-    height: 34px;
+    height: 25px;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     margin: 0;
-    font-size: 18px;
+    font-size: 1em;
     list-style: none;
     display: flex;
     flex-flow: row nowrap;
@@ -23,7 +23,7 @@
     z-index: 12600;
 
     .adTitle, .adPlaybackInfo {
-      font-size: 12pt;
+      font-size: 0.9em;
       color: #ffffff;
       font-family: 'Roboto', sans-serif;
       margin: auto;
@@ -38,15 +38,16 @@
     }
 
     .learnMore {
-      font-size: 12pt;
+      font-size: 0.9em;
       font-family: 'Roboto Condensed', sans-serif;
       color: #ffffff;
       margin: auto;
+      margin-right: 15px;
       text-align: center;
       cursor: pointer;
 
       .buttonIcon {
-        font-size: 13px;
+        font-size: 0.7em;
         margin-right: 5px
       }
     }
@@ -56,7 +57,7 @@
     }
 
     .skipButton {
-      font-size: 12pt;
+      font-size: 0.9em;
       font-family: 'Roboto Condensed', sans-serif;
       color: #ffffff;
       visibility: hidden;
@@ -67,7 +68,7 @@
       cursor: default;
 
       .skipIcon {
-        font-size: 13px;
+        font-size: 0.7em;
         margin-right: 5px;
       }
     }
@@ -75,15 +76,14 @@
     .skipButton.visible {
       visibility: visible;
       width: initial;
-      margin-left: 30px;
       margin: auto;
       margin-right: 15px;
-      margin-left: 30px;
+      margin-left: 15px;
       text-align: center;
       cursor: pointer;
 
       .skipIcon {
-        font-size: 13px;
+        font-size: 0.7em;
         margin-right: 5px;
       }
     }

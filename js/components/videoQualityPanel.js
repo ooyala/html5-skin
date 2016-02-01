@@ -21,6 +21,7 @@ var VideoQualityPanel = React.createClass({
     this.setState({
       selected: selectedBitrateId
     });
+    this.props.togglePopoverAction();
   },
 
   render: function() {
@@ -63,6 +64,7 @@ VideoQualityPanel.propTypes = {
       label: React.PropTypes.string
     }))
   }),
+  togglePopoverAction: React.PropTypes.func,
   controller: React.PropTypes.shape({
     sendVideoQualityChangeEvent: React.PropTypes.func
   })
@@ -77,6 +79,7 @@ VideoQualityPanel.defaultProps = {
   videoQualityOptions: {
     availableBitrates: []
   },
+  togglePopoverAction: function(){},
   controller: {
     sendVideoQualityChangeEvent: function(a){}
   }

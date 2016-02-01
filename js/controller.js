@@ -338,10 +338,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.pluginsClickElement.removeClass("showing");
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
-        if (Utils.isSafari()){
-          //Safari only can set cc when the video is playing, not before
-          this.setClosedCaptionsLanguage();
-        }
+        this.setClosedCaptionsLanguage();
         this.state.mainVideoElement.removeClass('blur');
         this.renderSkin();
       }
@@ -423,6 +420,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVcPlayed: function(event, source) {
+      var language = "";
+      var mode = 'disabled';
+      this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
       this.onBuffered();
       if (source == OO.VIDEO.MAIN) {
         this.state.mainVideoDuration = this.state.duration;
@@ -469,7 +469,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       OO.log("onAdsPlayed is called from event = " + event);
       this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       this.state.duration = 0;
-      this.skin.updatePlayhead(0, 0, 0);
+      this.skin.updatePlayhead(this.skin.state.currentPlayhead, this.skin.state.duration, this.skin.state.buffered);
       this.state.isPlayingAd = false;
       this.state.pluginsElement.removeClass("showing");
       this.state.pluginsClickElement.removeClass("showing");
