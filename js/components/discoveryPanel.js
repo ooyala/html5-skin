@@ -54,6 +54,12 @@ var DiscoveryPanel = React.createClass({
           discovery:{fontStyleClass:'icon icon-topmenu-discovery'},
           left:{fontStyleClass:'icon icon-left'},
           right:{fontStyleClass:'icon icon-right'}
+        },
+        responsive: {
+          breakpoints: {
+            sm: {name: 'small'},
+            lg: {name: 'large'}
+          }
         }
       },
       discoveryData: {
