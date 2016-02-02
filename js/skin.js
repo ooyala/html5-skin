@@ -76,13 +76,34 @@ var Skin = React.createClass({
     });
   },
 
-  render: function() {
-    var responsiveClass = ClassNames({
-      'small': this.state.componentWidth <= 560,
-      'medium': this.state.componentWidth > 560 && this.state.componentWidth < 940,
-      'large': this.state.componentWidth >= 940
-    });
+  generateBreakpointClasses: function() {
+    var breakpoints = this.props.skinConfig.responsive.breakpoints;
+    var breakpointClasses = {};
 
+    //loop through breakpoints from skinConfig
+    //generate Classname object with name and min/max width
+    for (var key in breakpoints) {
+      if (breakpoints.hasOwnProperty(key)) {
+        //min width only, 1st breakpoint
+        if(breakpoints[key].minWidth && !breakpoints[key].maxWidth) {
+          breakpointClasses[breakpoints[key].name] = this.state.componentWidth >= breakpoints[key].minWidth;
+        }
+        //min and max, middle breakpoints
+        else if(breakpoints[key].minWidth && breakpoints[key].maxWidth) {
+          breakpointClasses[breakpoints[key].name] = this.state.componentWidth >= breakpoints[key].minWidth && this.state.componentWidth <= breakpoints[key].maxWidth;
+        }
+        //max width only, last breakpoint
+        else if(breakpoints[key].maxWidth && !breakpoints[key].minWidth) {
+          breakpointClasses[breakpoints[key].name] = this.state.componentWidth <= breakpoints[key].maxWidth;
+        }
+      }
+    }
+
+    return breakpointClasses;
+  },
+
+  render: function() {
+    var responsiveClass = ClassNames(this.generateBreakpointClasses());
     var screen;
 
     //For IE10, use the start screen and that's it.
