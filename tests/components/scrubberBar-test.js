@@ -72,7 +72,8 @@ describe('ScrubberBar', function () {
       renderSkin: function() {},
       seek: function() {
         seekTriggered = true;
-      }
+      },
+      endSeeking: function() {}
     };
     var DOM = TestUtils.renderIntoDocument(
       <ScrubberBar
