@@ -54,6 +54,12 @@ var DiscoveryPanel = React.createClass({
           discovery:{fontStyleClass:'icon icon-topmenu-discovery'},
           left:{fontStyleClass:'icon icon-left'},
           right:{fontStyleClass:'icon icon-right'}
+        },
+        responsive: {
+          breakpoints: {
+            sm: {name: 'small'},
+            lg: {name: 'large'}
+          }
         }
       },
       discoveryData: {
@@ -119,10 +125,10 @@ var DiscoveryPanel = React.createClass({
     //pagination
     var videosPerPage;
     switch (this.props.responsiveView) {
-      case "small":
+      case this.props.skinConfig.responsive.breakpoints.sm.name:
         videosPerPage = this.props.videosPerPage.small;
         break;
-      case "large":
+      case this.props.skinConfig.responsive.breakpoints.lg.name:
         videosPerPage = this.props.videosPerPage.large;
         break;
       default:

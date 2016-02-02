@@ -122,7 +122,7 @@ var ControlBar = React.createClass({
   },
 
   handleQualityClick: function() {
-    if(this.props.responsiveView == 'small') {
+    if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name) {
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
     } else {
       this.toggleQualityPopover();
