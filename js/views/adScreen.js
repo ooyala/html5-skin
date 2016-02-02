@@ -67,10 +67,13 @@ var AdScreen = React.createClass({
     event.cancelBubble = true; // IE
 
     this.props.controller.state.accessibilityControlsEnabled = true;
+    if ((event.type == 'click' || !this.isMobile) && !this.props.skinConfig.adScreen.showAdMarquee) {
+      this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.VIDEO_WINDOW);
+    }
   },
 
   handlePlayerClicked: function(event) {
-    if (event.type == 'touchend' || !this.isMobile){
+    if (event.type == 'click' || !this.isMobile){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
