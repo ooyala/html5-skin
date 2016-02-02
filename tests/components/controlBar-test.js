@@ -735,8 +735,8 @@ describe('ControlBar', function () {
         authorization={mockProps.authorization} />
     );
 
-    var qualityButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
-    expect(qualityButton.length).toBe(0);
+    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
+    expect(qualityButtons.length).toBe(0);
 
     var qualityClicked = false;
     mockController = {
@@ -749,13 +749,17 @@ describe('ControlBar', function () {
         videoQualityOptions: {
           availableBitrates: true
         }
-      }
+      },
+      toggleScreen: function() {qualityClicked = true;},
+      toggleQualityPopover: function() {qualityClicked = true;}
     };
 
+    //small
     mockProps = {
       authorization: {},
       controller: mockController,
-      skinConfig: oneButtonSkinConfig
+      skinConfig: oneButtonSkinConfig,
+      responsiveView: 'small'
     };
 
     DOM = TestUtils.renderIntoDocument(
@@ -765,8 +769,56 @@ describe('ControlBar', function () {
         authorization={mockProps.authorization} />
     );
 
-    var qualityButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
-    expect(qualityButton.length).toBe(1);
+    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
+    expect(qualityButtons.length).toBe(1);
+
+    var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'quality').getDOMNode().firstChild;
+    TestUtils.Simulate.click(qualityButton);
+    expect(qualityClicked).toBe(true);
+
+    //medium
+    mockProps = {
+      authorization: {},
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig,
+      responsiveView: 'medium'
+    };
+
+    DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+        controlBarWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        authorization={mockProps.authorization} />
+    );
+
+    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
+    expect(qualityButtons.length).toBe(1);
+
+    var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'quality').getDOMNode().firstChild;
+    TestUtils.Simulate.click(qualityButton);
+    expect(qualityClicked).toBe(true);
+
+    //large
+    mockProps = {
+      authorization: {},
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig,
+      responsiveView: 'large'
+    };
+
+    DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+        controlBarWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        authorization={mockProps.authorization} />
+    );
+
+    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
+    expect(qualityButtons.length).toBe(1);
+
+    var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'quality').getDOMNode().firstChild;
+    TestUtils.Simulate.click(qualityButton);
+    expect(qualityClicked).toBe(true);
   });
 });
 
