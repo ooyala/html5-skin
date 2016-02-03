@@ -129,6 +129,7 @@ var PauseScreen = React.createClass({
           controlBarWidth={this.state.controlBarWidth}
           playerState={this.state.playerState}
           authorization={this.props.authorization}
+          responsiveView={this.props.responsiveView}
         />
 
         {(this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?

@@ -130,7 +130,8 @@ var PlayingScreen = React.createClass({
           controlBarVisible={this.state.controlBarVisible}
           controlBarWidth={this.state.controlBarWidth}
           playerState={this.props.playerState}
-          authorization={this.props.authorization} />
+          authorization={this.props.authorization}
+          responsiveView={this.props.responsiveView} />
       </div>
 
       {(this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?

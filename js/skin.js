@@ -237,6 +237,7 @@ var Skin = React.createClass({
               playerState={this.state.playerState}
               fullscreen={this.state.fullscreen}
               seeking={this.state.seeking}
+              responsiveView={responsiveClass}
               ref="moreOptionsScreen" />
           );
           break;

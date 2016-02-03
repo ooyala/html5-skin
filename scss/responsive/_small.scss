@@ -130,6 +130,99 @@
     }
   }
 
+  //Control Bar
+  .controlBar {
+    height: 45px;
+    font-size: 13.5px;
+
+    .controlBarItemsWrapper {
+      padding-right: 6px;
+      padding-left: 6px;
+
+      .controlBarItem {
+        font-size: 13.5px;
+        padding: 0 6px;
+        margin-top: 4.5px;
+      }
+
+      .controlBarDuration {
+        font-size: 10.5px;
+        padding-left: 6px;
+        padding-right: 6px;
+        margin-top: 4.5px;
+      }
+
+      .liveCircle {
+        width: 7.5px;
+        height: 7.5px;
+        margin-right: 1px;
+      }
+
+      .liveText {
+        font-size: 7.5px;
+      }
+
+      .watermark img {
+        height: 13.5px;
+        top: 10.5px;
+      }
+    }
+  }
+
+  .volumeBar {
+    width: 4.5px;
+    height: 13.5px;
+    padding-right: 2.75px;
+  }
+
+  .volumeSlider {
+    height: 4px;
+    margin-left: 4px;
+    border-radius: 1.5px;
+
+    .volumeIndicator {
+      border-radius: 1.5px;
+    }
+
+    .playheadPadding {
+      width: 19px;
+      height: 19px;
+
+      .volumeHead {
+        width: 6px;
+        height: 6px;
+        border-width: 2px;
+        border-radius: 6px;
+      }
+    }
+  }
+
+  //Scrubber Bar
+  .scrubberBarContainer {
+    height: 18px;
+
+    .scrubberBarPadding {
+      left: 11px;
+      right: 11px;
+
+      .scrubberBar {
+        height: 3.5px;
+      }
+
+      .playheadPadding {
+        width: 19px;
+        height: 19px;
+
+        .playhead {
+          width: 8px;
+          height: 8px;
+          border-width: 1px;
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+
   //Close Button
   button.closeBtn {
     top: $panel-padding*0.7;

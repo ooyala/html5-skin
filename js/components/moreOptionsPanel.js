@@ -95,9 +95,10 @@ var MoreOptionsPanel = React.createClass({
     var hours = parseInt(this.props.duration / 3600, 10);
     var extraSpaceDuration = (hours > 0) ? 0 : 45;
 
-    var controlBarLeftRightPadding = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
+    var controlBarLeftRightPadding = CONSTANTS.UI.default.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
 
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems);
+console.log("xenia1 in moreoptions,", this.props.controlBarWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding);
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems, this.props.responsiveView);
     var collapsedMoreOptionsItems = collapsedResult.overflow;
     for (var i = 0; i < collapsedMoreOptionsItems.length; i++) {
       if (typeof optionsItemsTemplates[collapsedMoreOptionsItems[i].name] === "undefined") {

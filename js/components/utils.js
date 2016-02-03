@@ -292,12 +292,12 @@ var Utils = {
   * @returns {Object} An object of the structure {fit:[], overflow:[]} where the fit object is
   *   an array of buttons that fit in the control bar and overflow are the ones that should be hidden
   */
-  collapse: function( barWidth, orderedItems ) {
+  collapse: function( barWidth, orderedItems, responsiveView ) {
     if( isNaN( barWidth ) || barWidth === undefined ) { return orderedItems; }
     if( ! orderedItems ) { return []; }
     var self = this;
     var validItems = orderedItems.filter( function(item) { return self._isValid(item); } );
-    var r = this._collapse( barWidth, validItems );
+    var r = this._collapse( barWidth, validItems, responsiveView );
     return r;
   },
 
@@ -313,9 +313,10 @@ var Utils = {
     return valid;
   },
 
-  _collapse: function( barWidth, orderedItems ) {
+  _collapse: function( barWidth, orderedItems, responsiveView ) {
+    console.log("xenia1 responsiveView",responsiveView);
     var r = { fit : orderedItems.slice(), overflow : [] };
-    var usedWidth = orderedItems.reduce( function(p,c,i,a) { return p+c.minWidth; }, 0 );
+    var usedWidth = orderedItems.reduce( function(p,c,i,a) { return p + (responsiveView == 'small' ? c.minWidth*0.75 : c.minWidth); }, 0 );
     for( var i = orderedItems.length-1; i >= 0; --i ) {
       var item = orderedItems[ i ];
       if( this._isOnlyInMoreOptions(item) ) {
