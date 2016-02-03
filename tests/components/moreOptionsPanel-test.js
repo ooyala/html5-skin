@@ -18,7 +18,8 @@ describe('MoreOptionsPanel', function () {
     oneButtonSkinConfig.buttons.desktopContent = [
       {"name":"share", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
       {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
-      {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 }
+      {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
+      {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 }
     ];
 
     var mockController = {
@@ -29,7 +30,7 @@ describe('MoreOptionsPanel', function () {
         },
         closedCaptionOptions: {availableLanguages: true},
         videoQualityOptions: {
-          availableBitrates: null
+          availableBitrates: true
         }
       },
       toggleDiscoveryScreen: function() {
@@ -40,6 +41,9 @@ describe('MoreOptionsPanel', function () {
       },
       toggleClosedCaptionScreen: function() {
         ccScreenToggled = true;
+      },
+      toggleScreen: function() {
+        qualityClicked = true;
       }
     };
 
@@ -67,5 +71,51 @@ describe('MoreOptionsPanel', function () {
     for(var j=0; j<button.length; j++){
       TestUtils.Simulate.click(button[j]);
     }
+    expect(qualityClicked).toBe(true);
+    expect(ccScreenToggled).toBe(true);
+    expect(shareScreenToggled).toBe(true);
+    expect(discoveryScreenToggled).toBe(true);
+  });
+});
+
+//bitrate selection and closed captions buttons not available
+describe('MoreOptionsPanel', function () {
+  it('checks cc button not available', function () {
+
+    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig.buttons.desktopContent = [
+      {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
+      {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 }
+    ];
+    var qualityClicked = false;
+    mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {availableLanguages: null},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
+      }
+    };
+    var mockProps = {
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <MoreOptionsPanel {...mockProps}
+        playerState={CONSTANTS.STATE.PLAYING}
+        controlBarVisible={true}
+        controlBarWidth={100} />
+    );
+
+    var ccButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'closedCaption');
+    expect(ccButtons.length).toBe(0);
+
+    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
+    expect(qualityButtons.length).toBe(0);
   });
 });
