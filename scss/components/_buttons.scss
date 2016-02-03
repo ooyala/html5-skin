@@ -1,6 +1,6 @@
 button.closeBtn {
-  top: 35px;
-  right: 35px;
+  top: $panel-padding;
+  right: $panel-padding;
   @include close($spacer-close-btn, $spacer-close-btn);
 }
 

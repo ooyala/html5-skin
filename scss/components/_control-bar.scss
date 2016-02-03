@@ -38,6 +38,11 @@
       outline: none;
     }
 
+    .controlBarItem.selected > span {
+      color:$blue-light !important;
+      opacity:1 !important;
+    }
+
     .controlBarItem.watermark {
       cursor: auto;
     }
