@@ -13,7 +13,8 @@ var VideoQualityPanel = React.createClass({
     };
   },
 
-  handleVideoQualityClick: function(selectedBitrateId) {
+  handleVideoQualityClick: function(selectedBitrateId, event) {
+    event.preventDefault();
     var eventData = {
       "id": selectedBitrateId
     };
@@ -31,11 +32,16 @@ var VideoQualityPanel = React.createClass({
 
     //auto btn
     var autoQualityBtn = ClassNames({
-      'quality-btn': true,
+      'quality-auto-btn': true,
       'selected': this.state.selected == 'auto'
     });
     bitrateButtons.push(
-      <button className={autoQualityBtn} key='auto' onClick={this.handleVideoQualityClick.bind(this, 'auto')}>Auto</button>
+      <li className="auto-li" key='auto-li'>
+        <a className={autoQualityBtn} key='auto' onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
+          <div className="quality-auto-icon"><span className="icon icon-auto"></span></div>
+          <div className="quality-auto-label">Auto</div>
+        </a>
+      </li>
     );
 
     //available bitrates
@@ -45,12 +51,14 @@ var VideoQualityPanel = React.createClass({
         'selected': this.state.selected == availableBitrates[i].id
       });
 
-      bitrateButtons.push(<button className={qualityBtn} key={i} onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>{availableBitrates[i].label}</button>);
+      bitrateButtons.push(<li key={i}><a className={qualityBtn} key={i} onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>{availableBitrates[i].label}</a></li>);
     }
 
     return (
       <div className="quality-panel">
-        {bitrateButtons}
+        <ul>
+          {bitrateButtons}
+        </ul>
       </div>
     );
   }

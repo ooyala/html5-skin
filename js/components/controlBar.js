@@ -243,6 +243,12 @@ var ControlBar = React.createClass({
     // TODO: Update when implementing localization
     var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
 
+    var qualityClass = ClassNames({
+      "quality": true,
+      "controlBarItem": true,
+      "selected": this.state.showVideoQualityPopover
+    });
+
     var controlItemTemplates = {
       "playPause": <button className="playPause controlBarItem" style={dynamicStyles.generalIconSetting}
         onClick={this.handlePlayClick} key="playPause">
@@ -278,7 +284,7 @@ var ControlBar = React.createClass({
         </span>
       </button>,
 
-      "quality": <button className="quality controlBarItem" style={dynamicStyles.generalIconSetting}
+      "quality": <button className={qualityClass} style={dynamicStyles.generalIconSetting}
         onClick={this.handleQualityClick} key="quality">
         <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
