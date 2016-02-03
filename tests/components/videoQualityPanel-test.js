@@ -41,11 +41,11 @@ describe('VideoQualityPanel', function () {
       <VideoQualityPanel {...mockProps} />
     );
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn');
-    expect(bitrateItems.length).toBe(6);
+    expect(bitrateItems.length).toBe(availableBitrates.length);
 
-    for (i=1; i<bitrateItems.length; i++){
+    for (i=0; i<bitrateItems.length; i++){
       var itemText = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn')[i].getDOMNode().textContent;
-      expect(itemText).toEqual(availableBitrates[i-1].label);
+      expect(itemText).toEqual(availableBitrates[i].label);
     }
   });
 
@@ -58,12 +58,12 @@ describe('VideoQualityPanel', function () {
     expect(bitrateItems[0].getDOMNode().textContent).toBe('Auto');
 
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn');
-    expect(bitrateItems.length).toBe(6);
+    expect(bitrateItems.length).toBe(availableBitrates.length);
 
-    for (i=1; i<bitrateItems.length; i++){
+    for (i=0; i<bitrateItems.length; i++){
       var newBitrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn')[i];
       TestUtils.Simulate.click(newBitrate);
-      expect(selectedBitrate.id).toBe(availableBitrates[i-1].id);
+      expect(selectedBitrate.id).toBe(availableBitrates[i].id);
     }
   });
 
