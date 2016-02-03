@@ -534,11 +534,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.pluginsElement.addClass("overlay_showing");
       var elementWidth = $("#"+this.state.elementId).width();
       var elementHeight = $("#"+this.state.elementId).height();
-      this.state.pluginsElement.css({
-        top: (elementHeight - CONSTANTS.UI.defaultControlBarHeight - adInfo.ad.height) + "px",
-        left: ((elementWidth - adInfo.ad.width) / 2) + "px",
-        right: ((elementWidth - adInfo.ad.width) / 2) + "px"
-      });
+      var newCSS = {};
+      if (adInfo.ad.height && adInfo.ad.height !== -1) {
+        newCSS.top = (elementHeight - CONSTANTS.UI.defaultControlBarHeight - adInfo.ad.height) + "px";
+      }
+      if (adInfo.ad.width && adInfo.ad.width !== -1) {
+        newCSS.left = newCSS.right = ((elementWidth - adInfo.ad.width) / 2) + "px";
+      }
+      this.state.pluginsElement.css(newCSS);
       this.renderSkin();
     },
 
