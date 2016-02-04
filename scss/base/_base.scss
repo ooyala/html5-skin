@@ -25,7 +25,8 @@
   // move this to another class
   width: 100%;
   height:0;
-  //responsive aspect ratio
+  //default aspect ratio
+  //overridden by calculateAspectRatio() function
   padding-top: 75%; // 4:3 aspect ratio
 }
 
