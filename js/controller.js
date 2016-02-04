@@ -535,13 +535,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var elementWidth = $("#"+this.state.elementId).width();
       var elementHeight = $("#"+this.state.elementId).height();
       var newCSS = {};
+      var overlayPadding = 50;
       if (adInfo.ad.height && adInfo.ad.height !== -1) {
-        newCSS.top = ((elementHeight - CONSTANTS.UI.defaultControlBarHeight - adInfo.ad.height) - 50) + "px";
+        newCSS.top = ((elementHeight - CONSTANTS.UI.defaultControlBarHeight -
+          adInfo.ad.height) - overlayPadding) + "px";
       } else {
         newCSS.bottom = 0;
       }
       if (adInfo.ad.width && adInfo.ad.width !== -1) {
-        newCSS.left = newCSS.right = (((elementWidth - adInfo.ad.width) / 2) - 25) + "px";
+        newCSS.left = newCSS.right = (((elementWidth - adInfo.ad.width) / 2) -
+          (overlayPadding / 2)) + "px";
       }
       this.state.pluginsElement.css(newCSS);
       this.renderSkin();
