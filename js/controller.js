@@ -537,6 +537,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var newCSS = {};
       if (adInfo.ad.height && adInfo.ad.height !== -1) {
         newCSS.top = (elementHeight - CONSTANTS.UI.defaultControlBarHeight - adInfo.ad.height) + "px";
+      } else {
+        newCSS.bottom = 0;
       }
       if (adInfo.ad.width && adInfo.ad.width !== -1) {
         newCSS.left = newCSS.right = ((elementWidth - adInfo.ad.width) / 2) + "px";
@@ -560,7 +562,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.pluginsElement.css({
         top: "",
         left: "",
-        right: ""
+        right: "",
+        bottom: ""
       });
       this.renderSkin();
     },
