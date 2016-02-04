@@ -1,5 +1,16 @@
 @charset "utf-8";
 
+//override non-responsive css on debug.ooyala.com
+//remove this after hack_attack PR #25 merged and deployed
+#video_container {
+  display: inline !important;
+  margin: 0 !important;
+}
+#ooplayer {
+  width:auto !important;
+  height:auto !important;
+}
+
 // namespace root
 .innerWrapper {
 
