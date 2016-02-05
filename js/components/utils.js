@@ -180,8 +180,8 @@ var Utils = {
   },
 
   // Liusha: saved for resizing control bar
-  getScaledControlBarHeight: function(controlBarWidth) {
-    var controlBarHeightBase = CONSTANTS.UI.defaultControlBarHeight;
+  getScaledControlBarHeight: function(controlBarWidth, responsiveView) {
+    var controlBarHeightBase = Utils.responsiveUIMultiple(responsiveView) * CONSTANTS.UI.defaultControlBarHeight;
     // if (controlBarWidth >= 1280) {
     //   controlBarHeight = controlBarHeightBase * controlBarWidth / 1280;
     // } else if (controlBarWidth <= 560) {
@@ -283,6 +283,16 @@ var Utils = {
   },
 
   /**
+  * Returns the UI multiple according to player size
+  *
+  * @function responsiveUIMultiple
+  * @param {String} responsiveView - Size of the player
+  */
+  responsiveUIMultiple: function(responsiveView) {
+    return (responsiveView == 'small' ? CONSTANTS.UI_SMALL_MULTIPLE : 1);
+  },
+
+  /**
   * Determine which buttons should be shown in the control bar given the width of the player<br/>
   * Note: items which do not meet the item spec will be removed and not appear in the results.
   *
@@ -314,9 +324,8 @@ var Utils = {
   },
 
   _collapse: function( barWidth, orderedItems, responsiveView ) {
-    console.log("xenia1 responsiveView",responsiveView);
     var r = { fit : orderedItems.slice(), overflow : [] };
-    var usedWidth = orderedItems.reduce( function(p,c,i,a) { return p + (responsiveView == 'small' ? c.minWidth*0.75 : c.minWidth); }, 0 );
+    var usedWidth = orderedItems.reduce( function(p,c,i,a) { return p + Utils.responsiveUIMultiple(responsiveView) * c.minWidth; }, 0 );
     for( var i = orderedItems.length-1; i >= 0; --i ) {
       var item = orderedItems[ i ];
       if( this._isOnlyInMoreOptions(item) ) {

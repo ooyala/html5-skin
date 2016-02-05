@@ -63,21 +63,14 @@ module.exports = {
     DOWN_ARROW_KEY: 40
   },
 
+  UI_SMALL_MULTIPLE: 0.7,
+
   UI: {
-    small: {
-      defaultControlBarHeight: 45,
-      defaultScrubberBarHeight: 3.75,
-      defaultScrubberBarPaddingHeight: 18,
-      DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15,
-      VOLUME_SLIDER_WIDTH: 65
-    },
-    default: {
-      defaultControlBarHeight: 60,
-      defaultScrubberBarHeight: 5,
-      defaultScrubberBarPaddingHeight: 24,
-      DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15,
-      VOLUME_SLIDER_WIDTH: 65
-    }
+    defaultControlBarHeight: 60,
+    defaultScrubberBarHeight: 5,
+    defaultScrubberBarPaddingHeight: 24,
+    DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15,
+    VOLUME_SLIDER_WIDTH: 65
   },
 
   AD_CLICK_SOURCE:{

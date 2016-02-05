@@ -10,6 +10,7 @@ var React = require('react'),
 var ControlBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
+    this.responsiveUIMultiple = Utils.responsiveUIMultiple(this.props.responsiveView);
     return {
       currentVolumeHead: 0,
       showVideoQualityPopover: false
@@ -21,6 +22,10 @@ var ControlBar = React.createClass({
     if (Utils.isAndroid()){
       this.props.controller.hideVolumeSliderBar();
     }
+  },
+
+  componentDidUpdate: function () {
+    this.responsiveUIMultiple = Utils.responsiveUIMultiple(this.props.responsiveView);
   },
 
   handleControlBarMouseUp: function(evt) {
@@ -176,9 +181,7 @@ var ControlBar = React.createClass({
   },
 
   populateControlBar: function() {
-    var controlBarHeight = this.props.responsiveView == 'small' ? CONSTANTS.UI.small.defaultControlBarHeight : CONSTANTS.UI.default.defaultControlBarHeight;
-
-    var dynamicStyles = this.setupControlBarItemForConstantHeight(controlBarHeight);
+    var dynamicStyles = this.setupControlBarItemForConstantHeight(this.responsiveUIMultiple * CONSTANTS.UI.defaultControlBarHeight);
     var playClass = "";
     if (this.props.playerState == CONSTANTS.STATE.PLAYING) {
       playClass = this.props.skinConfig.icons.pause.fontStyleClass;
@@ -220,7 +223,7 @@ var ControlBar = React.createClass({
 
     var volumeSlider = [];
     volumeSlider.push(
-      <div className="volumeSlider" ref="volumeSlider" style={{width: CONSTANTS.UI.VOLUME_SLIDER_WIDTH + "px"}} onTouchEnd={this.handleVolumeBarTouchEnd} key={i}>
+      <div className="volumeSlider" ref="volumeSlider" style={{width: this.responsiveUIMultiple * CONSTANTS.UI.VOLUME_SLIDER_WIDTH + "px"}} onTouchEnd={this.handleVolumeBarTouchEnd} key={i}>
         <div className="volumeIndicator" style={volumeIndicatorStyle}></div>
         <div className="playheadPadding" style={volumeHeadPaddingStyle}
           onTouchStart={this.handleVolumeHeadTouchStart}>
@@ -343,9 +346,9 @@ var ControlBar = React.createClass({
     var hours = parseInt(this.props.duration / 3600, 10);
     var extraSpaceDuration = (hours > 0) ? 0 : 45;
 
-    var controlBarLeftRightPadding = CONSTANTS.UI.default.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
+    var controlBarLeftRightPadding = this.responsiveUIMultiple * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
 
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth+extraSpaceDuration+extraSpaceVolumeSlider-controlBarLeftRightPadding, defaultItems, this.props.responsiveView);
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems, this.props.responsiveView);
     var collapsedControlBarItems = collapsedResult.fit;
     var collapsedMoreOptionsItems = collapsedResult.overflow;
 
@@ -394,7 +397,7 @@ var ControlBar = React.createClass({
 
     returnStyles.controlBarSetting= {
       height: constantControlBarHeight,
-      bottom: (this.props.controlBarVisible ? 0 : -1 * CONSTANTS.UI.default.defaultControlBarHeight)
+      bottom: (this.props.controlBarVisible ? 0 : -1 * this.responsiveUIMultiple * CONSTANTS.UI.defaultControlBarHeight)
     };
     returnStyles.generalIconSetting = {lineHeight: constantControlBarHeight + "px"};
     returnStyles.durationIndicatorSetting = {lineHeight: constantControlBarHeight + "px"};
@@ -414,8 +417,7 @@ var ControlBar = React.createClass({
 
 
   render: function() {
-    var controlBarHeight = this.props.responsiveView == 'small' ? CONSTANTS.UI.small.defaultControlBarHeight : CONSTANTS.UI.default.defaultControlBarHeight;
-
+    var controlBarHeight = this.responsiveUIMultiple * CONSTANTS.UI.defaultControlBarHeight;
     var controlBarStyle = {
       height: controlBarHeight,
       bottom: (this.props.controlBarVisible ? 0 : -1 * controlBarHeight)

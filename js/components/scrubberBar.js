@@ -3,6 +3,7 @@
 *********************************************************************/
 var React = require('react'),
     ResizeMixin = require('../mixins/resizeMixin'),
+    Utils = require('./utils'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
@@ -29,9 +30,9 @@ var ScrubberBar = React.createClass({
 
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
+    this.responsiveUIMultiple = Utils.responsiveUIMultiple(this.props.responsiveView);
     this.lastScrubX = null;
     this.scrubberBarWidth = 0;
-    this.scrubberBarContainerHeight = this.props.responsiveView == 'small' ? CONSTANTS.UI.small.defaultScrubberBarPaddingHeight : CONSTANTS.UI.default.defaultScrubberBarPaddingHeight;
     this.playheadWidth = 0;
     return {
       scrubbingPlayheadX: 0,
@@ -44,6 +45,10 @@ var ScrubberBar = React.createClass({
     if (this.props.seeking) {
       this.setState({transitionedDuringSeek: true});
     }
+  },
+
+  componentDidUpdate: function () {
+    this.responsiveUIMultiple = Utils.responsiveUIMultiple(this.props.responsiveView);
   },
 
   componentWillUnmount: function() {
@@ -145,7 +150,7 @@ var ScrubberBar = React.createClass({
     }
     var newPlayheadTime =
       (this.state.scrubbingPlayheadX /
-        (this.props.controlBarWidth - (2 * CONSTANTS.UI.default.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING)))
+        (this.props.controlBarWidth - (2 * this.responsiveUIMultiple * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING)))
       * this.props.duration;
     this.props.controller.seek(newPlayheadTime);
     this.setState({
@@ -174,7 +179,7 @@ var ScrubberBar = React.createClass({
   },
 
   render: function() {
-    var controlBarHeight = this.props.responsiveView == 'small' ? CONSTANTS.UI.small.defaultControlBarHeight : CONSTANTS.UI.default.defaultControlBarHeight;
+    var controlBarHeight = this.responsiveUIMultiple * CONSTANTS.UI.defaultControlBarHeight;
     // Liusha: Uncomment the following code when we need to support resizing control bar with threshold and scaling.
     // if (this.props.controlBarWidth > 1280) {
     //   controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280;
@@ -183,7 +188,7 @@ var ScrubberBar = React.createClass({
     // } else {
     //   controlBarHeight = this.props.skinConfig.controlBar.height;
     // }
-    var scrubberPaddingHeight = this.props.responsiveView == 'small' ? CONSTANTS.UI.small.defaultScrubberBarPaddingHeight : CONSTANTS.UI.default.defaultScrubberBarPaddingHeight;
+    var scrubberPaddingHeight = this.responsiveUIMultiple * CONSTANTS.UI.defaultScrubberBarPaddingHeight;
     var scrubberBarStyle = {
       backgroundColor: this.props.skinConfig.controlBar.scrubberBar.backgroundColor
     };

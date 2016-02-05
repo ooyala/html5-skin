@@ -34,7 +34,8 @@ var Skin = React.createClass({
   componentDidUpdate: function() {
     // Notify AMC the correct overlay rendering info
     if (this.state.screenToShow !== null && !this.overlayRenderingEventSent) {
-      var marginHeight = Utils.getScaledControlBarHeight(this.getDOMNode().clientWidth) + CONSTANTS.UI.defaultScrubberBarHeight;
+      var responsiveClass = ClassNames(this.generateBreakpointClasses());
+      var marginHeight = Utils.getScaledControlBarHeight(this.getDOMNode().clientWidth, responsiveClass) + Utils.responsiveUIMultiple(responsiveClass) * CONSTANTS.UI.defaultScrubberBarHeight;
       this.props.controller.publishOverlayRenderingEvent(marginHeight);
       this.overlayRenderingEventSent = true;
     }
