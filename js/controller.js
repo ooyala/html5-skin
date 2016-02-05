@@ -43,7 +43,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "duration": 0,
       "mainVideoDuration": 0,
       "adVideoDuration": 0,
-      "mainVideoElement": null,
+      "mainVideo": {
+        element: null,
+        intrinsicWidth: null,
+        intrinsicHeight: null,
+        aspectRatio: null
+      },
       "elementId": null,
       "pluginsElement": null,
       "pluginsClickElement": null,
@@ -159,10 +164,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
       $("#" + elementId + " .innerWrapper").append("<div class='player_skin'></div>");
-      this.state.mainVideoElement = $("#" + elementId + " .video");
+      this.state.mainVideo.element = $("#" + elementId + " .video");
       this.state.playerParam = params;
       this.state.elementId = elementId;
-
       var tmpLocalizableStrings = {};
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
@@ -231,9 +235,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVcVideoElementCreated: function() {
-      this.state.mainVideoElement = $("#" + this.state.elementId + " .video");
+      this.state.mainVideo.element = $("#" + this.state.elementId + " .video");
       if (Utils.isIE10()) {
-        this.state.mainVideoElement.attr("controls", "controls");
+        this.state.mainVideo.element.attr("controls", "controls");
       }
     },
 
@@ -334,12 +338,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
+        this.calculateAspectRatio();
         this.state.pluginsElement.removeClass("showing");
         this.state.pluginsClickElement.removeClass("showing");
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.setClosedCaptionsLanguage();
-        this.state.mainVideoElement.removeClass('blur');
+        this.state.mainVideo.element.removeClass('blur');
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
@@ -382,7 +387,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
-        this.state.mainVideoElement.addClass('blur');
+        this.state.mainVideo.element.addClass('blur');
         this.renderSkin();
       }
       else if (videoId == OO.VIDEO.ADS){
@@ -498,7 +503,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.currentAdsInfo.currentAdItem = adItem;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.skin.state.currentPlayhead = 0;
-        this.state.mainVideoElement.removeClass('blur');
+        this.state.mainVideo.element.removeClass('blur');
         this.renderSkin();
       }
     },
@@ -979,6 +984,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         clearTimeout(this.state.timer);
         this.state.timer = null;
       }
+    },
+
+    calculateAspectRatio: function() {
+      var video = this.state.mainVideo.element.get(0);
+      var aspectRatio = ((video.videoHeight/video.videoWidth)*100).toFixed(2);
+      this.state.mainVideo.intrinsicWidth = video.videoWidth;
+      this.state.mainVideo.intrinsicHeight = video.videoHeight;
+      this.state.mainVideo.aspectRatio = aspectRatio+"%";
+      this.setAspectRatio(this.state.mainVideo.aspectRatio);
+      console.log("******** ar: "+this.state.mainVideo.aspectRatio+" ******* width: "+this.state.mainVideo.intrinsicWidth+" ********* height: "+this.state.mainVideo.intrinsicHeight);
+    },
+
+    setAspectRatio: function(aspectRatio) {
+      $("#" + this.state.elementId + " .innerWrapper").css("padding-top", aspectRatio);
     }
   };
 
