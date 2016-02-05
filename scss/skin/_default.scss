@@ -9,7 +9,16 @@
   z-index: 11000;
 }
 
+//html5 video
 video {
+  @extend .expand;
+}
+
+//other video objects
+& > div,
+& > embed,
+& > figure,
+& > object {
   @extend .expand;
 }
 
