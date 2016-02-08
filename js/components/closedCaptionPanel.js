@@ -74,7 +74,7 @@ var OnOffSwitch = React.createClass({
 var CCPreviewPanel = React.createClass({
   render: function(){
     var closedCaptionPreviewTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CLOSED_CAPTION_PREVIEW, this.props.localizableStrings);
-    var closedCaptionSampleText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SAMPLE_TEXT, this.props.localizableStrings);
+    var closedCaptionSampleText = Utils.getLocalizedString(this.props.closedCaptionOptions.language, CONSTANTS.SKIN_TEXT.SAMPLE_TEXT, this.props.localizableStrings);
 
     var previewCaptionClassName = ClassNames({
       'preview-caption': true,

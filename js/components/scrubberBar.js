@@ -148,13 +148,9 @@ var ScrubberBar = React.createClass({
       this.getDOMNode().parentNode.removeEventListener("touchmove", this.handlePlayheadMouseMove);
       document.removeEventListener("touchend", this.handlePlayheadMouseUp, true);
     }
-    var newPlayheadTime =
-      (this.state.scrubbingPlayheadX /
-        (this.props.controlBarWidth - (2 * this.responsiveUIMultiple * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING)))
-      * this.props.duration;
-    this.props.controller.seek(newPlayheadTime);
+    this.props.controller.seek(this.props.currentPlayhead);
     this.setState({
-      currentPlayhead: newPlayheadTime,
+      currentPlayhead: this.props.currentPlayhead,
       scrubbingPlayheadX: 0
     });
     this.props.controller.endSeeking();

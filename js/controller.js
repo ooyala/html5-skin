@@ -159,7 +159,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
       $("#" + elementId + " .innerWrapper").append("<div class='player_skin'></div>");
-      this.state.mainVideoElement = $("#" + elementId + " .video");
       this.state.playerParam = params;
       this.state.elementId = elementId;
 
@@ -230,10 +229,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
     },
 
-    onVcVideoElementCreated: function() {
-      this.state.mainVideoElement = $("#" + this.state.elementId + " .video");
+    onVcVideoElementCreated: function(eventname, params) {
+      var element = $("#" + params["domId"]);
       if (Utils.isIE10()) {
-        this.state.mainVideoElement.attr("controls", "controls");
+        element.attr("controls", "controls");
+      }
+
+      if (params["videoId"] === OO.VIDEO.MAIN)
+      {
+        this.state.mainVideoElement = element;
       }
     },
 
@@ -420,11 +424,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVcPlayed: function(event, source) {
-      var language = "";
-      var mode = 'disabled';
-      this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
       this.onBuffered();
       if (source == OO.VIDEO.MAIN) {
+        var language = "";
+        var mode = 'disabled';
+        this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
         this.state.mainVideoDuration = this.state.duration;
       }
     },
