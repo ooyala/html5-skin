@@ -424,11 +424,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVcPlayed: function(event, source) {
-      var language = "";
-      var mode = 'disabled';
-      this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
       this.onBuffered();
       if (source == OO.VIDEO.MAIN) {
+        var language = "";
+        var mode = 'disabled';
+        this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
         this.state.mainVideoDuration = this.state.duration;
       }
     },
