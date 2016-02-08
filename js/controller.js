@@ -575,13 +575,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onClosedCaptionsInfoAvailable: function(event, languages) {
-      this.state.closedCaptionOptions.availableLanguages = languages;
-
-      if (languages.languages.length == 1){//if only one language, set it as default language
-        this.state.closedCaptionOptions.language = languages.languages[0];
+      if(this.state.closedCaptionOptions.availableLanguages != null) {
+        this.state.closedCaptionOptions.availableLanguages.languages.push.apply(this.state.closedCaptionOptions.availableLanguages.languages, languages.languages);
+      } else {
+        this.state.closedCaptionOptions.availableLanguages = languages;
       }
-
-      if (this.state.closedCaptionOptions.enabled){
+      //if only one language, set it as default language
+      if (this.state.closedCaptionOptions.availableLanguages.languages.length == 1) {
+        this.state.closedCaptionOptions.language = this.state.closedCaptionOptions.availableLanguages.languages[0];
+      } else {
+        this.state.closedCaptionOptions.language = this.state.closedCaptionOptions.availableLanguages.languages[1];
+      }
+      if (this.state.closedCaptionOptions.enabled) {
         this.setClosedCaptionsLanguage();
       }
     },
