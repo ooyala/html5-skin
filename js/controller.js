@@ -44,6 +44,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoDuration": 0,
       "adVideoDuration": 0,
       "mainVideoElement": null,
+      "mainVideoWrapper": null,
       "elementId": null,
       "pluginsElement": null,
       "pluginsClickElement": null,
@@ -158,9 +159,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      event listeners from core player -> regulate skin STATE
      ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
-      $("#" + elementId + " .innerWrapper").append("<div class='player_skin'></div>");
+      this.state.mainVideoWrapper = $("#" + elementId + " .innerWrapper");
       this.state.playerParam = params;
       this.state.elementId = elementId;
+
+      this.state.mainVideoWrapper.append("<div class='player_skin'></div>");
 
       var tmpLocalizableStrings = {};
 
@@ -684,6 +687,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      ---------------------------------------------------------------------*/
     toggleFullscreen: function() {
       this.state.fullscreen = !this.state.fullscreen;
+      if(this.state.fullscreen) {
+        this.state.mainVideoWrapper.addClass('fullscreen');
+      } else {
+        this.state.mainVideoWrapper.removeClass('fullscreen');
+      }
       this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, this.state.fullscreen);
       this.renderSkin();
     },
