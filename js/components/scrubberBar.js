@@ -30,7 +30,7 @@ var ScrubberBar = React.createClass({
 
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
-    this.responsiveUIMultiple = Utils.responsiveUIMultiple(this.props.responsiveView);
+    this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.lastScrubX = null;
     this.scrubberBarWidth = 0;
     this.playheadWidth = 0;
@@ -48,7 +48,7 @@ var ScrubberBar = React.createClass({
   },
 
   componentDidUpdate: function () {
-    this.responsiveUIMultiple = Utils.responsiveUIMultiple(this.props.responsiveView);
+    this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
   },
 
   componentWillUnmount: function() {
@@ -71,6 +71,12 @@ var ScrubberBar = React.createClass({
   componentDidMount: function() {
     this.scrubberBarWidth = this.getDOMNode().querySelector(".scrubberBar").clientWidth;
     this.playheadWidth = this.getDOMNode().querySelector(".playhead").clientWidth;
+  },
+
+  getResponsiveUIMultiple: function(responsiveView){
+    return responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ?
+      this.props.skinConfig.responsive.breakpoints.sm.multiplier :
+      this.props.skinConfig.responsive.breakpoints.md.multiplier;
   },
 
   handleResize: function() {

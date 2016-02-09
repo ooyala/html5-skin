@@ -63,8 +63,6 @@ module.exports = {
     DOWN_ARROW_KEY: 40
   },
 
-  UI_SMALL_MULTIPLE: 0.7,
-
   UI: {
     defaultControlBarHeight: 60,
     defaultScrubberBarHeight: 5,
