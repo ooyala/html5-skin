@@ -43,12 +43,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "duration": 0,
       "mainVideoDuration": 0,
       "adVideoDuration": 0,
-      "mainVideo": {
-        element: null,
-        intrinsicWidth: null,
-        intrinsicHeight: null,
-        aspectRatio: null
-      },
+      "mainVideoElement": null,
+      "mainVideoAspectRatio": null,
       "elementId": null,
       "pluginsElement": null,
       "pluginsClickElement": null,
@@ -95,7 +91,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "timer": null,
       "errorCode": null,
       "isSubscribed": false,
-      "skipAdClicked": false
+      "skipAdClicked": false,
+      "isInitialPlay": false
     };
 
     this.init();
@@ -113,11 +110,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
-
     },
 
     subscribeBasicPlaybackEvents: function () {
       if(!this.state.isSubscribed) {
+        this.mb.subscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi', _.bind(this.onInitialPlay, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
         this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
@@ -164,9 +161,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
       $("#" + elementId + " .innerWrapper").append("<div class='player_skin'></div>");
-      this.state.mainVideo.element = $("#" + elementId + " .video");
+      this.state.mainVideoElement = $("#" + elementId + " .video");
       this.state.playerParam = params;
       this.state.elementId = elementId;
+      this.enableAspectRatio();
+
       var tmpLocalizableStrings = {};
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
@@ -235,9 +234,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVcVideoElementCreated: function() {
-      this.state.mainVideo.element = $("#" + this.state.elementId + " .video");
+      this.state.mainVideoElement = $("#" + this.state.elementId + " .video");
       if (Utils.isIE10()) {
-        this.state.mainVideo.element.attr("controls", "controls");
+        this.state.mainVideoElement.attr("controls", "controls");
       }
     },
 
@@ -336,15 +335,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    onInitialPlay: function() {
+      this.state.isInitialPlay = true;
+    },
+
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
-        this.calculateAspectRatio();
+        this.enableAspectRatio();
         this.state.pluginsElement.removeClass("showing");
         this.state.pluginsClickElement.removeClass("showing");
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.setClosedCaptionsLanguage();
-        this.state.mainVideo.element.removeClass('blur');
+        this.state.mainVideoElement.removeClass('blur');
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
@@ -387,7 +390,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
-        this.state.mainVideo.element.addClass('blur');
+        this.state.mainVideoElement.addClass('blur');
         this.renderSkin();
       }
       else if (videoId == OO.VIDEO.ADS){
@@ -503,7 +506,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.currentAdsInfo.currentAdItem = adItem;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.skin.state.currentPlayhead = 0;
-        this.state.mainVideo.element.removeClass('blur');
+        this.state.mainVideoElement.removeClass('blur');
         this.renderSkin();
       }
     },
@@ -986,18 +989,36 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    calculateAspectRatio: function() {
-      var video = this.state.mainVideo.element.get(0);
-      var aspectRatio = ((video.videoHeight/video.videoWidth)*100).toFixed(2);
-      this.state.mainVideo.intrinsicWidth = video.videoWidth;
-      this.state.mainVideo.intrinsicHeight = video.videoHeight;
-      this.state.mainVideo.aspectRatio = aspectRatio+"%";
-      this.setAspectRatio(this.state.mainVideo.aspectRatio);
-      console.log("******** ar: "+this.state.mainVideo.aspectRatio+" ******* width: "+this.state.mainVideo.intrinsicWidth+" ********* height: "+this.state.mainVideo.intrinsicHeight);
+    enableAspectRatio: function() {
+      //auto set aspect ratio
+      if(this.state.isInitialPlay && (!this.state.playerParam.skin.aspectRatio || this.state.playerParam.skin.aspectRatio == "auto")) {
+        this.getIntrinsicDimensions(this.setAspectRatio);
+        this.state.isInitialPlay = false;
+      }
+      //use playerParam aspect ratio
+      else if(this.state.playerParam.skin.aspectRatio && this.state.playerParam.skin.aspectRatio != "auto") {
+        this.state.mainVideoAspectRatio = this.state.playerParam.skin.aspectRatio;
+        this.setAspectRatio(this.state)
+      }
     },
 
-    setAspectRatio: function(aspectRatio) {
-      $("#" + this.state.elementId + " .innerWrapper").css("padding-top", aspectRatio);
+    getIntrinsicDimensions: function(callback) {
+      var video = this.state.mainVideoElement.get(0);
+      this.state.mainVideoAspectRatio = this.calculateAspectRatio(video.videoWidth, video.videoHeight);
+      if(typeof callback === "function") {
+        callback(this.state);
+      }
+    },
+
+    calculateAspectRatio: function(width, height) {
+      var aspectRatio = ((height/width)*100).toFixed(2);
+      return aspectRatio;
+    },
+
+    setAspectRatio: function(state) {
+      if(state.mainVideoAspectRatio > 0 && state.mainVideoAspectRatio <= 100) {
+        $("#" + state.elementId + " .innerWrapper").css("padding-top", state.mainVideoAspectRatio+"%");
+      }
     }
   };
 
