@@ -365,7 +365,7 @@ var ControlBar = React.createClass({
       }
 
       //do not show discovery button if no related videos available
-      if (!this.props.controller.state.discoveryData.relatedVideos && (collapsedControlBarItems[k].name === "discovery")){
+      if (!this.props.controller.state.discoveryData && (collapsedControlBarItems[k].name === "discovery")){
         continue;
       }
 
