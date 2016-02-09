@@ -61,7 +61,12 @@
     left: 15px;
     width: 100%;
     color: #FFFFFF;
-    
+
+    .up-next-count-down {
+      width: 36px;
+      height: 36px;
+    }
+
     .upNextTitleText {
       font-size: 18pt;
       font-family: 'Roboto Condensed', sans-serif;

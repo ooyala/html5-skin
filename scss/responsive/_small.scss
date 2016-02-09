@@ -130,9 +130,59 @@
     }
   }
 
-  //Close Button
+  //Close Buttons
   button.closeBtn {
     top: $panel-padding*0.7;
     right: $panel-padding*0.7;
+    font-size: 10px;
+  }
+
+  button.upNextCloseBtn {
+    top: 7px;
+    right: 7px;
+    font-size: 10px;
+    @include close(-7px, -7px);
+  }
+
+//Up Next
+  .upNextPanel {
+    height: 80px*0.7;
+
+    a.upNextContent {
+      width: 140px*0.7;
+
+      span.icon {
+        font-size: 25px*0.7;
+      }
+    }
+  }
+
+  .contentMetadata {
+    left: 140px*0.7;
+
+    .upNextTitle {
+      top: 3px*0.7;
+      left: 15px*0.7;
+
+    .up-next-count-down {
+      width: 36px*0.7;
+      height: 36px*0.7;
+    }
+
+      .upNextTitleText {
+        font-size: 18pt*0.7;
+      }
+    }
+    
+    .contentDescription {
+      bottom: 5px*0.7;
+      left: 15px*0.7;
+      margin-top: 10px*0.7;
+      font-size: 12pt*0.7;
+    }
+  }
+
+  .up-next-count-down {
+    margin-right:10px*0.7;
   }
 }
