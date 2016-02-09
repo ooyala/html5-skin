@@ -94,7 +94,7 @@
 
   //Video Quality
   .quality-screen {
-    padding:$panel-padding*0.7;
+    padding:$panel-padding * $small-multiple;
     .quality-panel-title {
       font-size: $font-size-sm-screen-title;
       span.icon {
@@ -132,57 +132,57 @@
 
   //Close Buttons
   button.closeBtn {
-    top: $panel-padding*0.7;
-    right: $panel-padding*0.7;
+    top: $panel-padding * $small-multiple;
+    right: $panel-padding * $small-multiple;
     font-size: 10px;
   }
 
   button.upNextCloseBtn {
-    top: 7px;
-    right: 7px;
+    top: 10px * $small-multiple;
+    right: 10px * $small-multiple;
     font-size: 10px;
-    @include close(-7px, -7px);
+    @include close(-10px * $small-multiple, -10px * $small-multiple);
   }
 
 //Up Next
   .upNextPanel {
-    height: 80px*0.7;
+    height: 80px * $small-multiple;
 
     a.upNextContent {
-      width: 140px*0.7;
+      width: 140px * $small-multiple;
 
       span.icon {
-        font-size: 25px*0.7;
+        font-size: 25px * $small-multiple;
       }
     }
   }
 
   .contentMetadata {
-    left: 140px*0.7;
+    left: 140px * $small-multiple;
 
     .upNextTitle {
-      top: 3px*0.7;
-      left: 15px*0.7;
+      top: 3px * $small-multiple;
+      left: 15px * $small-multiple;
 
     .up-next-count-down {
-      width: 36px*0.7;
-      height: 36px*0.7;
+      width: 36px * $small-multiple;
+      height: 36px * $small-multiple;
     }
 
       .upNextTitleText {
-        font-size: 18pt*0.7;
+        font-size: 18pt * $small-multiple;
       }
     }
     
     .contentDescription {
-      bottom: 5px*0.7;
-      left: 15px*0.7;
-      margin-top: 10px*0.7;
-      font-size: 12pt*0.7;
+      bottom: 5px * $small-multiple;
+      left: 15px * $small-multiple;
+      margin-top: 10px * $small-multiple;
+      font-size: 12pt * $small-multiple;
     }
   }
 
   .up-next-count-down {
-    margin-right:10px*0.7;
+    margin-right:10px * $small-multiple;
   }
 }
