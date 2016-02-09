@@ -26,7 +26,7 @@ var AdScreen = React.createClass({
     this.setState({controlBarWidth: this.getDOMNode().clientWidth});
 
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
-    if (this.isMobile || this.props.fullscreen){
+    if (this.isMobile || this.props.fullscreen) {
       this.props.controller.startHideControlBarTimer();
     }
   },
@@ -67,19 +67,16 @@ var AdScreen = React.createClass({
     event.cancelBubble = true; // IE
 
     this.props.controller.state.accessibilityControlsEnabled = true;
-    if ((event.type == 'click' || !this.isMobile) && !this.props.skinConfig.adScreen.showAdMarquee) {
-      this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.VIDEO_WINDOW);
-    }
   },
 
   handlePlayerClicked: function(event) {
-    if (event.type == 'click' || !this.isMobile){
+    if (event.type == 'touchend' || !this.isMobile) {
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
       //since after exiting the full screen, iPhone pauses the video and places an overlay play button in the middle
       //of the screen (which we can't remove), clicking the screen would start the video.
-      if (Utils.isIPhone() && this.state.playerState == CONSTANTS.STATE.PAUSE){
+      if (Utils.isIPhone() && this.state.playerState == CONSTANTS.STATE.PAUSE) {
         this.props.controller.togglePlayPause();
       }
       else {
@@ -95,15 +92,15 @@ var AdScreen = React.createClass({
     this.props.controller.showControlBar();
   },
 
-  hideControlBar: function() {
-    if (this.props.controlBarAutoHide == true){
+  hideControlBar: function(event) {
+    if (this.props.controlBarAutoHide == true && !(this.isMobile && event)) {
       this.setState({controlBarVisible: false});
       this.props.controller.hideControlBar();
     }
   },
 
   handleTouchEnd: function(event) {
-    if (!this.state.controlBarVisible && this.props.skinConfig.adScreen.showControlBar){
+    if (!this.state.controlBarVisible && this.props.skinConfig.adScreen.showControlBar) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
