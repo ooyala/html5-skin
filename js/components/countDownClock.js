@@ -9,12 +9,9 @@
 */
 var React = require('react'),
     ClassNames = require('classnames'),
-    ResizeMixin = require('../mixins/resizeMixin'),
     CONSTANTS = require('../constants/constants');
 
 var CountDownClock = React.createClass({
-  mixins: [ResizeMixin],
-
   propTypes: {
     timeToShow: React.PropTypes.number,
     clockWidth: React.PropTypes.number,
@@ -53,12 +50,6 @@ var CountDownClock = React.createClass({
       remainSeconds: tmpRemainSeconds,
       hideClock: false
     };
-  },
-
-  handleResize: function() {
-    this.updateClockSize();
-    this.setupCanvas();
-    this.updateCanvas();
   },
 
   handleClick: function(event) {
