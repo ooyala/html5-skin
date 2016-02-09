@@ -44,6 +44,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoDuration": 0,
       "adVideoDuration": 0,
       "mainVideoElement": null,
+      "mainVideoWrapper": null,
       "elementId": null,
       "pluginsElement": null,
       "pluginsClickElement": null,
@@ -90,7 +91,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "timer": null,
       "errorCode": null,
       "isSubscribed": false,
-      "skipAdClicked": false
+      "isSkipAdClicked": false
     };
 
     this.init();
@@ -158,9 +159,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      event listeners from core player -> regulate skin STATE
      ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
-      $("#" + elementId + " .innerWrapper").append("<div class='player_skin'></div>");
+      this.state.mainVideoWrapper = $("#" + elementId + " .innerWrapper");
       this.state.playerParam = params;
       this.state.elementId = elementId;
+
+      this.state.mainVideoWrapper.append("<div class='player_skin'></div>");
 
       var tmpLocalizableStrings = {};
 
@@ -417,6 +420,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
       } else {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
+        this.mb.publish(OO.EVENTS.END_SCREEN_SHOWN);
       }
       this.skin.updatePlayhead(this.state.duration, this.state.duration, this.state.duration);
       this.state.playerState = CONSTANTS.STATE.END;
@@ -520,7 +524,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onSkipAdClicked: function(event) {
-      this.state.skipAdClicked = true;
+      this.state.isSkipAdClicked = true;
       OO.log("onSkipAdClicked is called");
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
       this.mb.publish(OO.EVENTS.SKIP_AD);
@@ -684,6 +688,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      ---------------------------------------------------------------------*/
     toggleFullscreen: function() {
       this.state.fullscreen = !this.state.fullscreen;
+      if(this.state.fullscreen) {
+        this.state.mainVideoWrapper.addClass('fullscreen');
+      } else {
+        this.state.mainVideoWrapper.removeClass('fullscreen');
+      }
       this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, this.state.fullscreen);
       this.renderSkin();
     },
