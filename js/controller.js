@@ -532,8 +532,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.showAdOverlay = true;
       }
       this.state.pluginsElement.addClass("overlay_showing");
-      var elementWidth = $("#"+this.state.elementId).width();
-      var elementHeight = $("#"+this.state.elementId).height();
+      var elementWidth = $("#"+this.state.elementId+" .player_skin").width();
+      var elementHeight = $("#"+this.state.elementId+" .player_skin").height();
       var newCSS = {};
       var overlayPadding = 50;
       if (adInfo.ad.height && adInfo.ad.height !== -1) {
