@@ -44,12 +44,7 @@ var CountDownClock = React.createClass({
       tmpRemainSeconds = this.props.duration - this.props.currentPlayhead;
     }
 
-    var tmpClockRadius = parseInt(this.props.clockWidth, 10)/2;
-    var tmpClockContainerWidth = parseInt(this.props.clockWidth, 10);
-
     return {
-      clockRadius: tmpClockRadius,
-      clockContainerWidth: tmpClockContainerWidth,
       counterInterval: 0.05,
       fraction: tmpFraction, // fraction = 2 / (skinConfig.upNext.timeToShow) so "fraction * pi" is how much we want to fill the circle for each second
       remainSeconds: tmpRemainSeconds,
@@ -67,6 +62,10 @@ var CountDownClock = React.createClass({
         clearInterval(this.interval);
       } 
     }
+  },
+
+  componentWillMount: function() {
+    this.updateClockSize();
   },
 
   componentDidMount: function() {
@@ -99,6 +98,19 @@ var CountDownClock = React.createClass({
     this.context.arc(this.state.clockContainerWidth / 2, this.state.clockRadius, this.state.clockRadius, 0, Math.PI * 2, false);
     this.context.arc(this.state.clockContainerWidth / 2, this.state.clockRadius, this.state.clockRadius / 1.2, Math.PI * 2, 0, true);
     this.context.fill();
+  },
+
+  updateClockSize: function(){
+    if (this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN){
+      var clockWidth = 75;
+    }
+    else {
+      var clockWidth = this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ? 25 : 36;
+    }
+    this.setState({
+      clockRadius: parseInt(clockWidth, 10)/2,
+      clockContainerWidth: parseInt(clockWidth, 10)
+    });
   },
 
   drawTimer: function() {

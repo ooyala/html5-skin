@@ -111,6 +111,12 @@ var MoreOptionsPanel = React.createClass({
       if (!this.props.controller.state.closedCaptionOptions.availableLanguages && (collapsedMoreOptionsItems[i].name === "closedCaption")) {
         continue;
       }
+
+      //do not show discovery button if no related videos available
+      if (!this.props.controller.state.discoveryData && (collapsedMoreOptionsItems[i].name === "discovery")){
+        continue;
+      }
+
       //do not show quality button if no bitrates available
       if (!this.props.controller.state.videoQualityOptions.availableBitrates && (collapsedMoreOptionsItems[i].name === "quality")){
         continue;
