@@ -44,9 +44,9 @@
     }
     .discoveryToasterContainerStyle {
       background-color: transparent;
-      max-height: 650px;
+      height: 320px;
       width: 100%;
-      overflow: hidden;
+      overflow: auto;
       white-space: nowrap;
       margin: auto;
     }
@@ -64,16 +64,16 @@
 
     .discoveryImageWrapperStyle {
       position: relative;
-      width:214px;
-      height:170px;
-      margin: 30px;
+      height:84px;
+      width:150px;
+      margin: 24px;
       flex-shrink: 0;
     }
 
     img.imageStyle {
       //position: absolute;
-      width: 214px;
-      height: 120px;
+      width: 150px;
+      height: 84px;
       display: block;
     }
 
