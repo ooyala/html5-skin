@@ -131,7 +131,10 @@
   }
 
   //Control Bar
-  .controlBar {
+  .control-bar-hidden {
+    bottom: -1 * $control-bar-height * $small-multiple;
+  }
+  .control-bar {
     height: $control-bar-height * $small-multiple;
     font-size: 18px * $small-multiple;
 
@@ -143,6 +146,7 @@
         font-size: 18px * $small-multiple;
         padding: 0 7.5px * $small-multiple;
         margin-top: 6px * $small-multiple;
+        line-height: $control-bar-height * $small-multiple;
       }
 
       .controlBarDuration {
@@ -150,6 +154,7 @@
         padding-left: 7.5px * $small-multiple;
         padding-right: 7.5px * $small-multiple;
         margin-top: 6px * $small-multiple;
+        line-height: $control-bar-height * $small-multiple;
       }
 
       .liveCircle {
@@ -164,7 +169,6 @@
 
       .watermark img {
         height: 18px * $small-multiple;
-        top: 14px * $small-multiple;
       }
     }
   }
@@ -177,6 +181,7 @@
 
   .volumeSlider {
     height: 5px * $small-multiple;
+    width: 65px * $small-multiple;
     margin-left: 5px * $small-multiple;
     border-radius: 2px * $small-multiple;
 
@@ -198,6 +203,13 @@
   }
 
   //Scrubber Bar
+  .scrubber-bar-visible {
+    bottom: ($control-bar-height - $scrubber-padding-height) * $small-multiple;
+  }
+
+  .scrubber-bar-hidden {
+    bottom: -1 * $scrubber-padding-height * $small-multiple;
+  }
   .scrubberBarContainer {
     height: 24px * $small-multiple;
 

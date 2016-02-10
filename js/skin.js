@@ -38,7 +38,7 @@ var Skin = React.createClass({
       var responsiveUIMultiple = responsiveClass == this.props.skinConfig.responsive.breakpoints.sm.name ?
         this.props.skinConfig.responsive.breakpoints.sm.multiplier :
         this.props.skinConfig.responsive.breakpoints.md.multiplier;
-      var marginHeight = responsiveUIMultiple * CONSTANTS.UI.defaultControlBarHeight + responsiveUIMultiple * CONSTANTS.UI.defaultScrubberBarHeight;
+      var marginHeight = responsiveUIMultiple * (CONSTANTS.UI.defaultControlBarHeight + CONSTANTS.UI.defaultScrubberBarHeight);
       this.props.controller.publishOverlayRenderingEvent(marginHeight);
       this.overlayRenderingEventSent = true;
     }

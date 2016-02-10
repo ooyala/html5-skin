@@ -1,3 +1,11 @@
+.scrubber-bar-visible {
+  bottom: $control-bar-height - $scrubber-padding-height;
+}
+
+.scrubber-bar-hidden {
+  bottom: -1 * $scrubber-padding-height;
+}
+
 .scrubberBarContainer {
   padding: 0;
   margin: 0;
