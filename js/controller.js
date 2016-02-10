@@ -377,7 +377,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
           this.state.pauseAnimationDisabled = true;
         }
-        if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
+        if (this.state.discoveryData && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
             && !(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))) {
           OO.log("Should display DISCOVERY_SCREEN on pause");
           this.sendDiscoveryDisplayEvent("pauseScreen");
@@ -600,9 +600,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onRelatedVideosFetched: function(event, relatedVideos) {
       OO.log("onRelatedVideosFetched is called");
-      this.state.discoveryData = {relatedVideos: relatedVideos.videos};
-      this.state.upNextInfo.upNextData = relatedVideos.videos[0];
-      this.renderSkin();
+      if (relatedVideos.videos) {
+        this.state.discoveryData = {relatedVideos: relatedVideos.videos};
+        this.state.upNextInfo.upNextData = relatedVideos.videos[0];
+        this.renderSkin();
+      }
     },
 
     onFullscreenChanged: function(event, fullscreen, paused) {
