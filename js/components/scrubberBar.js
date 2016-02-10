@@ -3,6 +3,8 @@
 *********************************************************************/
 var React = require('react'),
     ResizeMixin = require('../mixins/resizeMixin'),
+    Utils = require('./utils'),
+    ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
@@ -29,9 +31,9 @@ var ScrubberBar = React.createClass({
 
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
+    this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.lastScrubX = null;
     this.scrubberBarWidth = 0;
-    this.scrubberBarContainerHeight = CONSTANTS.UI.defaultScrubberBarPaddingHeight;
     this.playheadWidth = 0;
     return {
       scrubbingPlayheadX: 0,
@@ -44,6 +46,10 @@ var ScrubberBar = React.createClass({
     if (this.props.seeking) {
       this.setState({transitionedDuringSeek: true});
     }
+  },
+
+  componentDidUpdate: function () {
+    this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
   },
 
   componentWillUnmount: function() {
@@ -66,6 +72,12 @@ var ScrubberBar = React.createClass({
   componentDidMount: function() {
     this.scrubberBarWidth = this.getDOMNode().querySelector(".scrubberBar").clientWidth;
     this.playheadWidth = this.getDOMNode().querySelector(".playhead").clientWidth;
+  },
+
+  getResponsiveUIMultiple: function(responsiveView){
+    return responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ?
+      this.props.skinConfig.responsive.breakpoints.sm.multiplier :
+      this.props.skinConfig.responsive.breakpoints.md.multiplier;
   },
 
   handleResize: function() {
@@ -170,16 +182,6 @@ var ScrubberBar = React.createClass({
   },
 
   render: function() {
-    var controlBarHeight = CONSTANTS.UI.defaultControlBarHeight;
-    // Liusha: Uncomment the following code when we need to support resizing control bar with threshold and scaling.
-    // if (this.props.controlBarWidth > 1280) {
-    //   controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 1280;
-    // } else if (this.props.controlBarWidth < 560) {
-    //   controlBarHeight = this.props.skinConfig.controlBar.height * this.props.controlBarWidth / 560;
-    // } else {
-    //   controlBarHeight = this.props.skinConfig.controlBar.height;
-    // }
-    var scrubberPaddingHeight = this.scrubberBarContainerHeight;
     var scrubberBarStyle = {
       backgroundColor: this.props.skinConfig.controlBar.scrubberBar.backgroundColor
     };
@@ -224,13 +226,14 @@ var ScrubberBar = React.createClass({
       playedIndicatorStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.playedColor;
     }
 
-    var scrubberBarContainerStyle = {
-      bottom: (this.props.controlBarVisible ?
-        (controlBarHeight - scrubberPaddingHeight) :  (-1 * scrubberPaddingHeight))
-    };
+    var scrubberBarClass = ClassNames({
+      "scrubberBarContainer": true,
+      "scrubber-bar-hidden": !this.props.controlBarVisible,
+      "scrubber-bar-visible": this.props.controlBarVisible
+    });
 
     return (
-      <div className="scrubberBarContainer" style={scrubberBarContainerStyle}>
+      <div className={scrubberBarClass}>
         <div className="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
           <div ref="scrubberBar" className="scrubberBar" style={scrubberBarStyle}>
             <div className="bufferedIndicator" style={bufferedIndicatorStyle}></div>

@@ -123,7 +123,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        discoveryData: true
       }
     };
 
@@ -286,7 +287,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        discoveryData: true
       },
       toggleDiscoveryScreen: function() {discoveryClicked = true;}
     };
@@ -383,6 +385,79 @@ describe('ControlBar', function () {
     var ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'closedCaption').getDOMNode().firstChild;
     TestUtils.Simulate.click(ccButton);
     expect(ccClicked).toBe(true);
+  });
+
+  it('shows/hides discovery button if discovery available', function() {
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        },
+        discoveryData: false
+      }
+    };
+
+    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig.buttons.desktopContent = [
+      {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+    ];
+
+    var mockProps = {
+      authorization: {},
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+        controlBarWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        authorization={mockProps.authorization} />
+    );
+
+    var discoveryButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'discovery');
+    expect(discoveryButtons.length).toBe(0);
+
+    var discoveryClicked = false;
+    mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        },
+        discoveryData: true
+      },
+      toggleDiscoveryScreen: function() {discoveryClicked = true;}
+    };
+
+    mockProps = {
+      authorization: {},
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+        controlBarWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        authorization={mockProps.authorization} />
+    );
+
+    var discoveryButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'discovery');
+    expect(discoveryButtons.length).toBe(1);
+
+    var discoveryButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'discovery').getDOMNode().firstChild;
+    TestUtils.Simulate.click(discoveryButton);
+    expect(discoveryClicked).toBe(true);
   });
 
   it("shows/hides the more options button appropriately", function() {

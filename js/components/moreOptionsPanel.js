@@ -95,9 +95,12 @@ var MoreOptionsPanel = React.createClass({
     var hours = parseInt(this.props.duration / 3600, 10);
     var extraSpaceDuration = (hours > 0) ? 0 : 45;
 
-    var controlBarLeftRightPadding = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
+    var responsiveUIMultiple = this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ?
+      this.props.skinConfig.responsive.breakpoints.sm.multiplier :
+      this.props.skinConfig.responsive.breakpoints.md.multiplier;
+    var controlBarLeftRightPadding = responsiveUIMultiple * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
 
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems);
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems, responsiveUIMultiple);
     var collapsedMoreOptionsItems = collapsedResult.overflow;
     for (var i = 0; i < collapsedMoreOptionsItems.length; i++) {
       if (typeof optionsItemsTemplates[collapsedMoreOptionsItems[i].name] === "undefined") {

@@ -66,9 +66,7 @@ module.exports = {
   UI: {
     defaultControlBarHeight: 60,
     defaultScrubberBarHeight: 5,
-    defaultScrubberBarPaddingHeight: 24,
-    DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15,
-    VOLUME_SLIDER_WIDTH: 65
+    DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15
   },
 
   AD_CLICK_SOURCE:{
