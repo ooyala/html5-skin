@@ -8,6 +8,7 @@ jest.dontMock('../../js/components/scrubberBar')
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
 var CONSTANTS = require('../../js/constants/constants');
+var skinConfig = require('../../config/skin.json');
 var ScrubberBar = require('../../js/components/scrubberBar');
 
 // start unit test
@@ -26,6 +27,7 @@ describe('ScrubberBar', function () {
         controlBarWidth={500}
         seeking={false}
         controller={mockController}
+        skinConfig={skinConfig}
         />
     );
   });
@@ -49,6 +51,7 @@ describe('ScrubberBar', function () {
         controlBarWidth={500}
         seeking={false}
         controller={mockController}
+        skinConfig={skinConfig}
         />
     );
 
@@ -81,6 +84,7 @@ describe('ScrubberBar', function () {
         controlBarWidth={500}
         seeking={false}
         controller={mockController}
+        skinConfig={skinConfig}
         />
     );
 
@@ -109,6 +113,7 @@ describe('ScrubberBar', function () {
         controller={mockController}
         currentPlayhead={30}
         duration={60}
+        skinConfig={skinConfig}
         />
     );
 
@@ -138,6 +143,7 @@ describe('ScrubberBar', function () {
         controller={mockController}
         currentPlayhead={30}
         duration={60}
+        skinConfig={skinConfig}
         />
     );
 

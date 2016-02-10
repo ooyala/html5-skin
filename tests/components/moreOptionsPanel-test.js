@@ -31,7 +31,8 @@ describe('MoreOptionsPanel', function () {
         closedCaptionOptions: {availableLanguages: true},
         videoQualityOptions: {
           availableBitrates: true
-        }
+        },
+        discoveryData: true
       },
       toggleDiscoveryScreen: function() {
         discoveryScreenToggled = true;
@@ -78,16 +79,17 @@ describe('MoreOptionsPanel', function () {
   });
 });
 
-//bitrate selection and closed captions buttons not available
+//bitrate selection, closed captions, discovery buttons not available
 describe('MoreOptionsPanel', function () {
   it('checks cc button not available', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
       {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
-      {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 }
+      {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
+      {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 }
     ];
-    var qualityClicked = false;
+
     mockController = {
       state: {
         isMobile: false,
@@ -97,7 +99,8 @@ describe('MoreOptionsPanel', function () {
         closedCaptionOptions: {availableLanguages: null},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        discoveryData: null
       }
     };
     var mockProps = {
@@ -117,5 +120,8 @@ describe('MoreOptionsPanel', function () {
 
     var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
     expect(qualityButtons.length).toBe(0);
+
+    var discoveryButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'discovery');
+    expect(discoveryButtons.length).toBe(0);
   });
 });
