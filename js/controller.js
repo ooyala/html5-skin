@@ -164,7 +164,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.mainVideoElement = $("#" + elementId + " .video");
       this.state.playerParam = params;
       this.state.elementId = elementId;
-      this.enableAspectRatio();
 
       var tmpLocalizableStrings = {};
 
@@ -238,6 +237,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (Utils.isIE10()) {
         this.state.mainVideoElement.attr("controls", "controls");
       }
+      this.enableAspectRatio();
     },
 
     onPlayerDestroy: function (event) {
@@ -991,13 +991,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     enableAspectRatio: function() {
       //auto set aspect ratio
-      if(this.state.isInitialPlay && (!this.state.playerParam.skin.aspectRatio || this.state.playerParam.skin.aspectRatio == "auto")) {
+      if(this.state.isInitialPlay && (!this.skin.props.skinConfig.responsive.aspectRatio || this.skin.props.skinConfig.responsive.aspectRatio == "auto")) {
         this.getIntrinsicDimensions(this.setAspectRatio);
         this.state.isInitialPlay = false;
       }
       //use playerParam aspect ratio
-      else if(this.state.playerParam.skin.aspectRatio && this.state.playerParam.skin.aspectRatio != "auto") {
-        this.state.mainVideoAspectRatio = this.state.playerParam.skin.aspectRatio;
+      else if(this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
+        this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
         this.setAspectRatio(this.state)
       }
     },
