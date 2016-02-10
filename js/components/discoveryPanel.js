@@ -159,7 +159,7 @@ var DiscoveryPanel = React.createClass({
     var countDownClock = (
       <div className={discoveryCountDownWrapperStyle}>
         <a className="discoveryCountDownIconStyle" onClick={this.handleDiscoveryCountDownClick}>
-          <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} clockWidth={75} ref="CountDownClock" />
+          <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
           <span className={this.props.skinConfig.icons.pause.fontStyleClass}></span>
         </a>
       </div>
