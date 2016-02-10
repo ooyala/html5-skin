@@ -255,10 +255,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onEmbedCodeChanged: function(event, embedCode, options) {
       this.state.videoQualityOptions.availableBitrates = null;
 
-      //test data, remove when real data available
-      this.state.videoQualityOptions.availableBitrates = [{"id":"720p 1500kbps", "bitrate":1558322, "label": "720p"}, {"id":"480p 500kbps", "bitrate":520929, "label": "480p"}, {"id":"360p 358kbps", "bitrate":358157, "label": "360p"}, {"id":"240p 258kbps", "bitrate":258157, "label": "240p"}, {"id":"144p 144kbps", "bitrate":144157, "label": "144p"}];
-      //^^test data, remove when real data available^^
-
       this.state.assetId = embedCode;
       $.extend(true, this.state.playerParam, options);
       this.subscribeBasicPlaybackEvents();
@@ -578,8 +574,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onBitrateInfoAvailable: function(event, bitrates) {
-      this.state.videoQualityOptions.availableBitrates = bitrates;
-      this.renderSkin({"videoQualityOptions": {"availableBitrates": bitrates}});
+      if (bitrates && bitrates.bitrates) {
+        this.state.videoQualityOptions.availableBitrates = bitrates.bitrates;
+        this.renderSkin({"videoQualityOptions": {"availableBitrates": bitrates.bitrates }});
+      }
     },
 
     onClosedCaptionsInfoAvailable: function(event, languages) {
