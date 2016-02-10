@@ -535,7 +535,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var elementWidth = $("#"+this.state.elementId+" .player_skin").width();
       var elementHeight = $("#"+this.state.elementId+" .player_skin").height();
       var newCSS = {};
-      var overlayPadding = 50;
+      var overlayPadding = (adInfo.ad.paddingRequired ? 50 : 0);
       if (adInfo.ad.height && adInfo.ad.height !== -1) {
         newCSS.top = ((elementHeight - CONSTANTS.UI.defaultControlBarHeight -
           adInfo.ad.height) - overlayPadding) + "px";
