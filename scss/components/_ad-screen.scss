@@ -1,5 +1,11 @@
 .adScreen {
   cursor: default;
+
+  .action-icon {
+    span.icon {
+      opacity: 0;
+    }
+  }
 }
 
 .adScreen.hidden {

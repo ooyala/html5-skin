@@ -37,6 +37,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "configLoaded": false,
       "fullscreen": false,
       "pauseAnimationDisabled": false,
+      "adPauseAnimationDisabled": true,
       "seeking": false,
       "queuedPlayheadUpdate": null,
       "accessibilityControlsEnabled": false,
@@ -344,6 +345,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
         this.autoUpdateAspectRatio();
+        this.state.pauseAnimationDisabled = false;
         this.state.pluginsElement.removeClass("showing");
         this.state.pluginsClickElement.removeClass("showing");
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
@@ -354,6 +356,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
+        this.state.adPauseAnimationDisabled = true;
         this.state.pluginsElement.addClass("showing");
         this.state.pluginsClickElement.removeClass("showing");
         if (this.state.currentAdsInfo.currentAdItem !== null) {
@@ -397,6 +400,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       else if (videoId == OO.VIDEO.ADS){
+        this.state.adPauseAnimationDisabled = false;
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
       }
