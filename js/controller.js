@@ -1002,19 +1002,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    //determine how aspect ratio is enabled
     enableAspectRatio: function() {
-      //auto set aspect ratio
-      if(this.state.isInitialPlay && (!this.skin.props.skinConfig.responsive.aspectRatio || this.skin.props.skinConfig.responsive.aspectRatio == "auto")) {
-        this.getIntrinsicDimensions(this.setAspectRatio);
-        this.state.isInitialPlay = false;
-      }
-      //use playerParam aspect ratio
-      else if(this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
+      //use fixed aspect ratio number from skinConfig
+      if(this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
         this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
         this.setAspectRatio(this.state)
       }
+      //auto detect and update aspect ratio (default)
+      else {
+        if(this.state.isInitialPlay) {
+          this.getIntrinsicDimensions(this.setAspectRatio);
+          this.state.isInitialPlay = false;
+        }
+      }
     },
 
+    //get original video width/height dimensions
     getIntrinsicDimensions: function(callback) {
       var video = this.state.mainVideoElement.get(0);
       this.state.mainVideoAspectRatio = this.calculateAspectRatio(video.videoWidth, video.videoHeight);
@@ -1023,14 +1027,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    //returns original video aspect ratio
     calculateAspectRatio: function(width, height) {
       var aspectRatio = ((height/width)*100).toFixed(2);
       return aspectRatio;
     },
 
+    //set Main Video Element Wrapper padding-top to aspect ratio
     setAspectRatio: function(state) {
       if(state.mainVideoAspectRatio > 0 && state.mainVideoAspectRatio <= 100) {
-        $("#" + state.elementId + " .innerWrapper").css("padding-top", state.mainVideoAspectRatio+"%");
+        state.mainVideoWrapper.css("padding-top", state.mainVideoAspectRatio+"%");
       }
     }
   };
