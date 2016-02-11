@@ -1027,7 +1027,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //returns original video aspect ratio
     calculateAspectRatio: function(width, height) {
-      var aspectRatio = ((height / Utils.notZero(width)) * 100).toFixed(2);
+      var aspectRatio = ((height / width) * 100).toFixed(2);
       return aspectRatio;
     },
 

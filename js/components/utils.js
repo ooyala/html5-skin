@@ -352,14 +352,6 @@ var Utils = {
 
   _isOverflow: function( item ) {
     return item.whenDoesNotFit && item.whenDoesNotFit == "moveToMoreOptions";
-  },
-
-  notZero: function(n) {
-    n = +n;  // Coerce to number.
-    if (!n) {  // Matches +0, -0, NaN
-      OO.log('Invalid dividend ' + n);
-    }
-    return n;
   }
 };
 module.exports = Utils;
