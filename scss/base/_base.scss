@@ -21,13 +21,11 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizelegibility;
-
-  // move this to another class
   width: 100%;
   height:0;
-  //default aspect ratio
-  //overridden by calculateAspectRatio() function
-  padding-top: 75%; // 4:3 aspect ratio
+  //fallback responsive aspect ratio
+  padding-top: 56.25%; // 16:9
+  @include vendor-prefixes(transition, padding-top 0.5s ease);
 }
 
 &:-moz-full-screen {
@@ -45,8 +43,7 @@
   top:0;
   left:0;
   width:100%;
-  height:100% !important;
-  padding:0 !important;
+  height:100%;
 }
 
 
