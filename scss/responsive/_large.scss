@@ -11,6 +11,27 @@
     }
   }
 
+  // Discovery Screen
+  .discoveryScreen {
+    .discovery-panel {
+      margin-top:auto;
+      margin-bottom:auto;
+      .discoveryToasterContainerStyle {
+        height: 650px;
+        overflow: hidden;
+      }
+      .discoveryImageWrapperStyle {
+        width:214px;
+        height:170px;
+        margin: 30px;
+      }
+      img.imageStyle {
+        width: 214px;
+        height: 120px;
+      }
+    }
+  }
+
   // Closed Caption Screen
   .closedCaptionsScreen{
     .language-container {
