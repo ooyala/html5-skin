@@ -30,14 +30,24 @@
 
 &:-moz-full-screen {
   position: absolute;
+  width: 100% !important;
+  height: 100% !important;
+  padding:0 !important;
 }
 
 &:-webkit-full-screen {
   width: 100% !important;
   height: 100% !important;
+  padding:0 !important;
 }
 
-&.fullscreen{
+&:-ms-fullscreen {
+  width: 100% !important;
+  height: 100% !important;
+  padding:0 !important;
+}
+
+&.fullscreen {
   position:fixed;
   overflow: hidden;
   top:0;
