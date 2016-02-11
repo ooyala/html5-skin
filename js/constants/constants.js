@@ -60,7 +60,8 @@ module.exports = {
     LEFT_ARROW_KEY: 37,
     RIGHT_ARROW_KEY: 39,
     UP_ARROW_KEY: 38,
-    DOWN_ARROW_KEY: 40
+    DOWN_ARROW_KEY: 40,
+    ESCAPE_KEY: 27
   },
 
   UI: {
