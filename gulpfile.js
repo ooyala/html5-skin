@@ -12,7 +12,11 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     shell = require('gulp-shell'),
     sass = require('gulp-sass'),
-    rename = require('gulp-rename');
+    rename = require('gulp-rename'),
+    realFs = require('fs'),
+    gracefulFs = require('graceful-fs');
+    //Fix OSX EMFILE error
+    gracefulFs.gracefulify(realFs);
 
 var path = {
   scripts: ['./js/**/*.js'],
