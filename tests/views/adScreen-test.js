@@ -17,6 +17,17 @@ describe('AdScreen', function () {
       adScreen: {
         showControlBar: true,
         showAdMarquee: true
+      },
+      pauseScreen: {
+        showPauseIcon: true,
+        pauseIconPosition: "center",
+        PauseIconStyle: {
+          color: "white",
+          opacity: 1
+        }
+      },
+      icons: {
+        pause: {"fontStyleClass": "icon icon-pause"}
       }
     };
     var DOM = TestUtils.renderIntoDocument(
@@ -46,6 +57,17 @@ describe('AdScreen', function () {
       adScreen: {
         showControlBar: true,
         showAdMarquee: true
+      },
+      pauseScreen: {
+        showPauseIcon: true,
+        pauseIconPosition: "center",
+        PauseIconStyle: {
+          color: "white",
+          opacity: 1
+        }
+      },
+      icons: {
+        pause: {"fontStyleClass": "icon icon-pause"}
       }
     };
     var DOM = TestUtils.renderIntoDocument(
@@ -86,6 +108,17 @@ describe('AdScreen', function () {
       adScreen: {
         showControlBar: true,
         showAdMarquee: true
+      },
+      pauseScreen: {
+        showPauseIcon: true,
+        pauseIconPosition: "center",
+        PauseIconStyle: {
+          color: "white",
+          opacity: 1
+        }
+      },
+      icons: {
+        pause: {"fontStyleClass": "icon icon-pause"}
       }
     };
     var DOM = TestUtils.renderIntoDocument(
@@ -120,6 +153,17 @@ describe('AdScreen', function () {
       adScreen: {
         showControlBar: true,
         showAdMarquee: true
+      },
+      pauseScreen: {
+        showPauseIcon: true,
+        pauseIconPosition: "center",
+        PauseIconStyle: {
+          color: "white",
+          opacity: 1
+        }
+      },
+      icons: {
+        pause: {"fontStyleClass": "icon icon-pause"}
       }
     };
     var DOM = TestUtils.renderIntoDocument(

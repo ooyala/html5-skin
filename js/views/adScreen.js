@@ -143,6 +143,19 @@ var AdScreen = React.createClass({
   },
 
   render: function() {
+    var actionIconStyle = {
+      color: this.props.skinConfig.pauseScreen.PauseIconStyle.color
+    };
+    var actionIconClass = ClassNames({
+      'action-icon-pause': !this.props.controller.state.adPauseAnimationDisabled,
+      'action-icon': this.props.controller.state.adPauseAnimationDisabled,
+      'animate-pause': !this.props.controller.state.adPauseAnimationDisabled,
+      'action-icon-top': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("top") > -1,
+      'action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1,
+      'action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1,
+      'action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1,
+      'hidden': !this.props.skinConfig.pauseScreen.showPauseIcon
+    });
     var adPanel = null;
     if (this.props.skinConfig.adScreen.showAdMarquee) {
       adPanel = <AdPanel {...this.props} controlBarWidth={this.state.controlBarWidth}/>;
@@ -165,6 +178,11 @@ var AdScreen = React.createClass({
          onMouseMove={this.handlePlayerMouseMove}
          onMouseUp={this.handleClick}>
 
+        <a className={actionIconClass} onClick={this.handlePlayerClicked}>
+          <span className={this.props.skinConfig.icons.pause.fontStyleClass}
+            style={actionIconStyle}
+            aria-hidden="true"></span>
+        </a>
         <div className="adPanel" ref="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
           {adPanel}
         </div>
