@@ -44,7 +44,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoDuration": 0,
       "adVideoDuration": 0,
       "mainVideoElement": null,
-      "mainVideoAspectRatio": null,
+      "mainVideoAspectRatio": 0,
       "mainVideoWrapper": null,
       "elementId": null,
       "pluginsElement": null,
@@ -243,7 +243,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       {
         this.state.mainVideoElement = element;
       }
-      this.enableAspectRatio();
+      this.updateAspectRatio();
     },
 
     onPlayerDestroy: function (event) {
@@ -347,13 +347,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
-        this.enableAspectRatio();
+        this.autoUpdateAspectRatio();
         this.state.pluginsElement.removeClass("showing");
         this.state.pluginsClickElement.removeClass("showing");
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.setClosedCaptionsLanguage();
         this.state.mainVideoElement.removeClass('blur');
+        this.state.isInitialPlay = false;
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
@@ -1002,41 +1003,38 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    //determine how aspect ratio is enabled
-    enableAspectRatio: function() {
-      //use fixed aspect ratio number from skinConfig
+    //use fixed aspect ratio number from skinConfig
+    updateAspectRatio: function() {
       if(this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
         this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
-        this.setAspectRatio(this.state)
+        this.setAspectRatio();
       }
-      //auto detect and update aspect ratio (default)
-      else {
-        if(this.state.isInitialPlay) {
-          this.getIntrinsicDimensions(this.setAspectRatio);
-          this.state.isInitialPlay = false;
-        }
+    },
+
+    //auto detect and update aspect ratio (default)
+    autoUpdateAspectRatio: function() {
+      if(this.state.isInitialPlay && (this.skin.props.skinConfig.responsive.aspectRatio == "auto" || !this.skin.props.skinConfig.responsive.aspectRatio)) {
+        this.getIntrinsicDimensions();
+        this.setAspectRatio();
       }
     },
 
     //get original video width/height dimensions
-    getIntrinsicDimensions: function(callback) {
+    getIntrinsicDimensions: function() {
       var video = this.state.mainVideoElement.get(0);
       this.state.mainVideoAspectRatio = this.calculateAspectRatio(video.videoWidth, video.videoHeight);
-      if(typeof callback === "function") {
-        callback(this.state);
-      }
     },
 
     //returns original video aspect ratio
     calculateAspectRatio: function(width, height) {
-      var aspectRatio = ((height/width)*100).toFixed(2);
+      var aspectRatio = ((height / Utils.notZero(width)) * 100).toFixed(2);
       return aspectRatio;
     },
 
     //set Main Video Element Wrapper padding-top to aspect ratio
-    setAspectRatio: function(state) {
-      if(state.mainVideoAspectRatio > 0 && state.mainVideoAspectRatio <= 100) {
-        state.mainVideoWrapper.css("padding-top", state.mainVideoAspectRatio+"%");
+    setAspectRatio: function() {
+      if(this.state.mainVideoAspectRatio > 0 && this.state.mainVideoAspectRatio <= 100) {
+        this.state.mainVideoWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
     }
   };
