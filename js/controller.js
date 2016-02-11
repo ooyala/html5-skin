@@ -45,6 +45,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoDuration": 0,
       "adVideoDuration": 0,
       "mainVideoElement": null,
+      "mainVideoAspectRatio": 0,
       "mainVideoWrapper": null,
       "elementId": null,
       "pluginsElement": null,
@@ -93,6 +94,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "errorCode": null,
       "isSubscribed": false,
       "isSkipAdClicked": false,
+      "isInitialPlay": false,
       "isFullScreenSupported": false,
       "isFullWindow": false
     };
@@ -112,11 +114,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
-
     },
 
     subscribeBasicPlaybackEvents: function () {
       if(!this.state.isSubscribed) {
+        this.mb.subscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi', _.bind(this.onInitialPlay, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
         this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
@@ -164,7 +166,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.mainVideoWrapper = $("#" + elementId + " .innerWrapper");
       this.state.playerParam = params;
       this.state.elementId = elementId;
-
       this.state.mainVideoWrapper.append("<div class='player_skin'></div>");
 
       var tmpLocalizableStrings = {};
@@ -250,6 +251,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       {
         this.state.mainVideoElement = element;
       }
+      this.updateAspectRatio();
     },
 
     onPlayerDestroy: function (event) {
@@ -343,14 +345,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    onInitialPlay: function() {
+      this.state.isInitialPlay = true;
+    },
+
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
+        this.autoUpdateAspectRatio();
         this.state.pluginsElement.removeClass("showing");
         this.state.pluginsClickElement.removeClass("showing");
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.setClosedCaptionsLanguage();
         this.state.mainVideoElement.removeClass('blur');
+        this.state.isInitialPlay = false;
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
@@ -612,6 +620,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    //called when event listener triggered
     onFullscreenChanged: function() {
       if (this.state.isFullScreenSupported) {
         this.state.fullscreen = Fullscreen.isFullscreen;
@@ -624,6 +633,54 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       }
       this.renderSkin();
+    },
+
+    //called when user selects fullscreen icon
+    toggleFullscreen: function() {
+      this.state.fullscreen = !this.state.fullscreen;
+      if(this.state.isFullScreenSupported) {
+        Fullscreen.toggle(this.state.mainVideoWrapper.get(0));
+      } else {
+        if(this.state.isFullWindow) {
+          this.exitFullWindow();
+        } else {
+          this.enterFullWindow();
+        }
+      }
+      this.renderSkin();
+    },
+
+    // if fullscreen is not supported natively, "full window" style
+    // is applied to video wrapper to fill browser window
+    enterFullWindow: function() {
+      this.state.isFullWindow = this.state.fullscreen = true;
+
+      // add listener for esc key
+      document.addEventListener("keydown", this.exitFullWindowOnEscKey.bind(this));
+      // hide scroll bars
+      document.documentElement.style.overflow = 'hidden';
+      //apply full window style
+      this.state.mainVideoWrapper.addClass('fullscreen');
+    },
+
+    // remove "full window" style and event listener
+    exitFullWindow: function() {
+      this.state.isFullWindow = this.state.fullscreen = false;
+
+      // remove event listener
+      document.removeEventListener("keydown", this.exitFullWindowOnEscKey);
+      // unhide scroll bars
+      document.documentElement.style.overflow = 'visible';
+      //remove full window style
+      this.state.mainVideoWrapper.removeClass('fullscreen');
+    },
+
+    // exit full window on ESC key
+    exitFullWindowOnEscKey: function(event) {
+      if (event.keyCode === CONSTANTS.KEYCODES.ESCAPE_KEY) {
+        event.preventDefault();
+        this.exitFullWindow();
+      }
     },
 
     onErrorEvent: function(event, errorCode){
@@ -696,57 +753,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /*--------------------------------------------------------------------
      skin UI-action -> publish event to core player
      ---------------------------------------------------------------------*/
-    toggleFullscreen: function() {
-      this.state.fullscreen = !this.state.fullscreen;
-      if(this.state.isFullScreenSupported) {
-        Fullscreen.toggle(this.state.mainVideoWrapper.get(0));
-      } else {
-        if(this.state.isFullWindow) {
-          this.exitFullWindow();
-        } else {
-          this.enterFullWindow();
-        }
-      }
-      this.renderSkin();
-    },
-
-    // if fullscreen is not supported natively, "full window" style
-    // is applied to video wrapper to fill browser window
-    enterFullWindow: function() {
-      this.state.isFullWindow = this.state.fullscreen = true;
-
-      // add listener for esc key
-      document.addEventListener("keydown", this.exitFullWindowOnEscKey.bind(this));
-
-      // hide scroll bars
-      document.documentElement.style.overflow = 'hidden';
-
-      //apply full window style
-      this.state.mainVideoWrapper.addClass('fullscreen');
-    },
-
-    // remove "full window" style and event listener
-    exitFullWindow: function() {
-      this.state.isFullWindow = this.state.fullscreen = false;
-
-      // remove event listener
-      document.removeEventListener("keydown", this.exitFullWindowOnEscKey);
-
-      // unhide scroll bars
-      document.documentElement.style.overflow = 'visible';
-
-      //remove full window style
-      this.state.mainVideoWrapper.removeClass('fullscreen');
-    },
-
-    // exit full window on ESC key
-    exitFullWindowOnEscKey: function(event) {
-      if (event.keyCode === CONSTANTS.KEYCODES.ESCAPE_KEY) {
-        event.preventDefault();
-        this.exitFullWindow();
-      }
-    },
-
     toggleDiscoveryScreen: function() {
       switch(this.state.playerState) {
         case CONSTANTS.STATE.PLAYING:
@@ -1041,6 +1047,41 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.timer !== null){
         clearTimeout(this.state.timer);
         this.state.timer = null;
+      }
+    },
+
+    //use fixed aspect ratio number from skinConfig
+    updateAspectRatio: function() {
+      if(this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
+        this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
+        this.setAspectRatio();
+      }
+    },
+
+    //auto detect and update aspect ratio (default)
+    autoUpdateAspectRatio: function() {
+      if(this.state.isInitialPlay && (this.skin.props.skinConfig.responsive.aspectRatio == "auto" || !this.skin.props.skinConfig.responsive.aspectRatio)) {
+        this.getIntrinsicDimensions();
+        this.setAspectRatio();
+      }
+    },
+
+    //get original video width/height dimensions
+    getIntrinsicDimensions: function() {
+      var video = this.state.mainVideoElement.get(0);
+      this.state.mainVideoAspectRatio = this.calculateAspectRatio(video.videoWidth, video.videoHeight);
+    },
+
+    //returns original video aspect ratio
+    calculateAspectRatio: function(width, height) {
+      var aspectRatio = ((height / width) * 100).toFixed(2);
+      return aspectRatio;
+    },
+
+    //set Main Video Element Wrapper padding-top to aspect ratio
+    setAspectRatio: function() {
+      if(this.state.mainVideoAspectRatio > 0 && this.state.mainVideoAspectRatio <= 100) {
+        this.state.mainVideoWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
     }
   };
