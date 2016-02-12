@@ -58,7 +58,6 @@ describe('VideoQualityPanel', function () {
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'selected');
     expect(bitrateItems.length).toBe(1);
     expect(bitrateItems[0].getDOMNode().textContent).toBe('Auto');
-    console.log("xenia bitrateItems[0].getDOMNode().textContent",bitrateItems[0].getDOMNode().textContent);
 
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn');
     expect(bitrateItems.length).toBe(availableBitrates.length-1);
