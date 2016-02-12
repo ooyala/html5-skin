@@ -1,4 +1,6 @@
 jest.dontMock('../js/controller');
+jest.dontMock('screenfull');
+
 
 OO = {plugin: function(){}};
 

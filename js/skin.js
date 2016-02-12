@@ -283,7 +283,7 @@ var Skin = React.createClass({
     }
 
     return (
-      <div className={responsiveClass}>
+      <div id="ooyala-responsive" className={responsiveClass}>
         {screen}
       </div>
     );
