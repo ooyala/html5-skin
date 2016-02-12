@@ -41,7 +41,7 @@ describe('AdPanel', function () {
   });
 
   it('handles clicks', function () {
-    var skipAdClicked = false;
+    var isSkipAdClicked = false;
     var learnMoreClicked = false;
     var clickSource = "";
     var mockController = {
@@ -49,7 +49,7 @@ describe('AdPanel', function () {
         isMobile: false
       },
       onSkipAdClicked: function() {
-        skipAdClicked = true;
+        isSkipAdClicked = true;
       },
       onAdsClicked: function(source) {
         learnMoreClicked = true;
@@ -91,7 +91,7 @@ describe('AdPanel', function () {
     DOM.refs.skipButton.props.onButtonClicked({type: "click",
       stopPropagation: function(){}
     });
-    expect(skipAdClicked).toBe(true);
+    expect(isSkipAdClicked).toBe(true);
 
     DOM.refs.learnMoreButton.props.onButtonClicked({type: "click",
       stopPropagation: function(){}
