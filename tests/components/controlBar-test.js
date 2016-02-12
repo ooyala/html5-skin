@@ -379,8 +379,8 @@ describe('ControlBar', function () {
         authorization={mockProps.authorization} />
     );
 
-    var ccButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'closedCaption');
-    expect(ccButtons.length).toBe(1);
+    var ccButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'closedCaption');
+    expect(ccButtons2.length).toBe(1);
 
     var ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'closedCaption').getDOMNode().firstChild;
     TestUtils.Simulate.click(ccButton);
@@ -452,8 +452,8 @@ describe('ControlBar', function () {
         authorization={mockProps.authorization} />
     );
 
-    var discoveryButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'discovery');
-    expect(discoveryButtons.length).toBe(1);
+    var discoveryButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'discovery');
+    expect(discoveryButtons2.length).toBe(1);
 
     var discoveryButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'discovery').getDOMNode().firstChild;
     TestUtils.Simulate.click(discoveryButton);
@@ -834,7 +834,7 @@ describe('ControlBar', function () {
       authorization: {},
       controller: mockController,
       skinConfig: oneButtonSkinConfig,
-      responsiveView: 'small'
+      responsiveView: skinConfig.responsive.breakpoints.sm.name
     };
 
     DOM = TestUtils.renderIntoDocument(
@@ -844,10 +844,10 @@ describe('ControlBar', function () {
         authorization={mockProps.authorization} />
     );
 
-    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
-    expect(qualityButtons.length).toBe(1);
+    var qualityButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
+    expect(qualityButtons2.length).toBe(1);
 
-    var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'quality').getDOMNode().firstChild;
+    qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'quality').getDOMNode().firstChild;
     TestUtils.Simulate.click(qualityButton);
     expect(qualityClicked).toBe(true);
 
@@ -856,7 +856,7 @@ describe('ControlBar', function () {
       authorization: {},
       controller: mockController,
       skinConfig: oneButtonSkinConfig,
-      responsiveView: 'medium'
+      responsiveView: skinConfig.responsive.breakpoints.md.name
     };
 
     DOM = TestUtils.renderIntoDocument(
@@ -866,8 +866,8 @@ describe('ControlBar', function () {
         authorization={mockProps.authorization} />
     );
 
-    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
-    expect(qualityButtons.length).toBe(1);
+    var qualityButtons3 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
+    expect(qualityButtons3.length).toBe(1);
 
     var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'quality').getDOMNode().firstChild;
     TestUtils.Simulate.click(qualityButton);
@@ -878,7 +878,7 @@ describe('ControlBar', function () {
       authorization: {},
       controller: mockController,
       skinConfig: oneButtonSkinConfig,
-      responsiveView: 'large'
+      responsiveView: skinConfig.responsive.breakpoints.lg.name
     };
 
     DOM = TestUtils.renderIntoDocument(
@@ -888,10 +888,10 @@ describe('ControlBar', function () {
         authorization={mockProps.authorization} />
     );
 
-    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
-    expect(qualityButtons.length).toBe(1);
+    var qualityButtons4 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
+    expect(qualityButtons4.length).toBe(1);
 
-    var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'quality').getDOMNode().firstChild;
+    qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'quality').getDOMNode().firstChild;
     TestUtils.Simulate.click(qualityButton);
     expect(qualityClicked).toBe(true);
   });
