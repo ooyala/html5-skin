@@ -5,6 +5,7 @@ var React = require('react'),
     Utils = require('./components/utils'),
     CONSTANTS = require('./constants/constants'),
     AccessibilityControls = require('./components/accessibilityControls'),
+    Fullscreen = require('screenfull'),
     Skin = require('./skin');
 
 OO.plugin("Html5Skin", function (OO, _, $, W) {
@@ -37,6 +38,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "configLoaded": false,
       "fullscreen": false,
       "pauseAnimationDisabled": false,
+      "adPauseAnimationDisabled": true,
       "seeking": false,
       "queuedPlayheadUpdate": null,
       "accessibilityControlsEnabled": false,
@@ -93,7 +95,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "errorCode": null,
       "isSubscribed": false,
       "isSkipAdClicked": false,
-      "isInitialPlay": false
+      "isInitialPlay": false,
+      "isFullScreenSupported": false,
+      "isFullWindow": false
     };
 
     this.init();
@@ -129,7 +133,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi", _.bind(this.onBitrateInfoAvailable, this));
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
-        this.mb.subscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi", _.bind(this.onFullscreenChanged, this));
         this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
 
         // ad events
@@ -231,6 +234,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.externalPluginSubscription();
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+
+      // check if fullscreen is supported natively, set flag, add event listener for change
+      if (Fullscreen.enabled) {
+        this.state.isFullScreenSupported = true;
+        document.addEventListener(Fullscreen.raw.fullscreenchange, this.onFullscreenChanged.bind(this));
+      }
     },
 
     onVcVideoElementCreated: function(eventname, params) {
@@ -344,6 +353,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
         this.autoUpdateAspectRatio();
+        this.state.pauseAnimationDisabled = false;
         this.state.pluginsElement.removeClass("showing");
         this.state.pluginsClickElement.removeClass("showing");
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
@@ -354,6 +364,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
+        this.state.adPauseAnimationDisabled = true;
         this.state.pluginsElement.addClass("showing");
         this.state.pluginsClickElement.removeClass("showing");
         if (this.state.currentAdsInfo.currentAdItem !== null) {
@@ -397,6 +408,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       else if (videoId == OO.VIDEO.ADS){
+        this.state.adPauseAnimationDisabled = false;
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
       }
@@ -612,14 +624,67 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onFullscreenChanged: function(event, fullscreen, paused) {
+    //called when event listener triggered
+    onFullscreenChanged: function() {
+      if (this.state.isFullScreenSupported) {
+        this.state.fullscreen = Fullscreen.isFullscreen;
+      } else {
+        this.toggleFullscreen();
+      }
+
       // iPhone end screen is the same as start screen, except for the replay button
       if (Utils.isIPhone() && (this.state.playerState == CONSTANTS.STATE.END || this.state.playerState == CONSTANTS.STATE.PAUSE)){
         this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       }
-
-      this.state.fullscreen = fullscreen;
       this.renderSkin();
+    },
+
+    //called when user selects fullscreen icon
+    toggleFullscreen: function() {
+      this.state.fullscreen = !this.state.fullscreen;
+      if(this.state.isFullScreenSupported) {
+        Fullscreen.toggle(this.state.mainVideoWrapper.get(0));
+      } else {
+        if(this.state.isFullWindow) {
+          this.exitFullWindow();
+        } else {
+          this.enterFullWindow();
+        }
+      }
+      this.renderSkin();
+    },
+
+    // if fullscreen is not supported natively, "full window" style
+    // is applied to video wrapper to fill browser window
+    enterFullWindow: function() {
+      this.state.isFullWindow = this.state.fullscreen = true;
+
+      // add listener for esc key
+      document.addEventListener("keydown", this.exitFullWindowOnEscKey.bind(this));
+      // hide scroll bars
+      document.documentElement.style.overflow = 'hidden';
+      //apply full window style
+      this.state.mainVideoWrapper.addClass('fullscreen');
+    },
+
+    // remove "full window" style and event listener
+    exitFullWindow: function() {
+      this.state.isFullWindow = this.state.fullscreen = false;
+
+      // remove event listener
+      document.removeEventListener("keydown", this.exitFullWindowOnEscKey);
+      // unhide scroll bars
+      document.documentElement.style.overflow = 'visible';
+      //remove full window style
+      this.state.mainVideoWrapper.removeClass('fullscreen');
+    },
+
+    // exit full window on ESC key
+    exitFullWindowOnEscKey: function(event) {
+      if (event.keyCode === CONSTANTS.KEYCODES.ESCAPE_KEY) {
+        event.preventDefault();
+        this.exitFullWindow();
+      }
     },
 
     onErrorEvent: function(event, errorCode){
@@ -657,7 +722,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
-      this.mb.unsubscribe(OO.EVENTS.FULLSCREEN_CHANGED, "customerUi");
 
       // ad events
       if (!Utils.isIPhone()) {
@@ -693,17 +757,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /*--------------------------------------------------------------------
      skin UI-action -> publish event to core player
      ---------------------------------------------------------------------*/
-    toggleFullscreen: function() {
-      this.state.fullscreen = !this.state.fullscreen;
-      if(this.state.fullscreen) {
-        this.state.mainVideoWrapper.addClass('fullscreen');
-      } else {
-        this.state.mainVideoWrapper.removeClass('fullscreen');
-      }
-      this.mb.publish(OO.EVENTS.WILL_CHANGE_FULLSCREEN, this.state.fullscreen);
-      this.renderSkin();
-    },
-
     toggleDiscoveryScreen: function() {
       switch(this.state.playerState) {
         case CONSTANTS.STATE.PLAYING:
