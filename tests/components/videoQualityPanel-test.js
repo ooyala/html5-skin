@@ -27,7 +27,9 @@ describe('VideoQualityPanel', function () {
     }
   };
 
-  var availableBitrates = [{"id":"720p 1500kbps", "bitrate":1558322, "label": "720p"}, {"id":"480p 500kbps", "bitrate":520929, "label": "480p"}, {"id":"360p 358kbps", "bitrate":358157, "label": "360p"}, {"id":"240p 258kbps", "bitrate":258157, "label": "240p"}, {"id":"144p 144kbps", "bitrate":144157, "label": "144p"}]
+  var availableBitrates = [{"id":"auto", "bitrate":0}, {"id":"1", "bitrate":1000}, {"id":"2", "bitrate":2000}, {"id":"3", "bitrate":3000}, {"id":"4", "bitrate":4000}, {"id":"5", "bitrate":5000}]
+  var bitrateLabels = ['1 kbps', '2 kbps','3 kbps','4 kbps','5 kbps']
+
   var mockProps = {
     controller: mockController,
     videoQualityOptions: {
@@ -41,11 +43,11 @@ describe('VideoQualityPanel', function () {
       <VideoQualityPanel {...mockProps} />
     );
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn');
-    expect(bitrateItems.length).toBe(availableBitrates.length);
+    expect(bitrateItems.length).toBe(availableBitrates.length-1);
 
     for (i=0; i<bitrateItems.length; i++){
       var itemText = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn')[i].getDOMNode().textContent;
-      expect(itemText).toEqual(availableBitrates[i].label);
+      expect(itemText).toEqual(bitrateLabels[i]);
     }
   });
 
@@ -58,12 +60,12 @@ describe('VideoQualityPanel', function () {
     expect(bitrateItems[0].getDOMNode().textContent).toBe('Auto');
 
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn');
-    expect(bitrateItems.length).toBe(availableBitrates.length);
+    expect(bitrateItems.length).toBe(availableBitrates.length-1);
 
     for (i=0; i<bitrateItems.length; i++){
       var newBitrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn')[i];
       TestUtils.Simulate.click(newBitrate);
-      expect(selectedBitrate.id).toBe(availableBitrates[i].id);
+      expect(selectedBitrate.id).toBe(availableBitrates[i+1].id);
     }
   });
 
@@ -72,7 +74,7 @@ describe('VideoQualityPanel', function () {
       controller: mockController,
       videoQualityOptions: {
         availableBitrates: availableBitrates,
-        selectedBitrate: availableBitrates[0]
+        selectedBitrate: availableBitrates[1]
       }
     }
     var DOM = TestUtils.renderIntoDocument(
@@ -80,6 +82,6 @@ describe('VideoQualityPanel', function () {
     );
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'selected');
     expect(bitrateItems.length).toBe(1);
-    expect(bitrateItems[0].getDOMNode().textContent).toBe(availableBitrates[0].label);
+    expect(bitrateItems[0].getDOMNode().textContent).toBe(bitrateLabels[0]);
   });
 });

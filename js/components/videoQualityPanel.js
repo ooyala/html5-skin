@@ -25,16 +25,12 @@ var VideoQualityPanel = React.createClass({
     this.props.togglePopoverAction();
   },
 
-  render: function() {
-    var availableBitrates  = this.props.videoQualityOptions.availableBitrates;
-
-    var bitrateButtons = [];
-
-    //auto btn
+  addAutoButton: function(bitrateButtons) {
     var autoQualityBtn = ClassNames({
       'quality-auto-btn': true,
       'selected': this.state.selected == 'auto'
     });
+
     bitrateButtons.push(
       <li className="auto-li" key='auto-li'>
         <a className={autoQualityBtn} key='auto' onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
@@ -43,6 +39,12 @@ var VideoQualityPanel = React.createClass({
         </a>
       </li>
     );
+  },
+
+  render: function() {
+    var availableBitrates  = this.props.videoQualityOptions.availableBitrates;
+
+    var bitrateButtons = [];
 
     //available bitrates
     for (var i = 0; i < availableBitrates.length; i++) {
@@ -51,7 +53,13 @@ var VideoQualityPanel = React.createClass({
         'selected': this.state.selected == availableBitrates[i].id
       });
 
-      bitrateButtons.push(<li key={i}><a className={qualityBtn} key={i} onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>{availableBitrates[i].label}</a></li>);
+      if (availableBitrates[i].id == 'auto'){
+        this.addAutoButton(bitrateButtons);
+      }
+      else {
+        var label = Math.round(availableBitrates[i].bitrate/1000) + ' kbps';
+        bitrateButtons.push(<li key={i}><a className={qualityBtn} key={i} onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>{label}</a></li>);
+      }
     }
 
     return (
