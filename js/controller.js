@@ -538,14 +538,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var newCSS = {};
       var overlayPadding = (adInfo.ad.paddingRequired ? 50 : 0);
       if (adInfo.ad.height && adInfo.ad.height !== -1) {
-        newCSS.top = ((elementHeight - CONSTANTS.UI.defaultControlBarHeight -
-          adInfo.ad.height) - overlayPadding) + "px";
+        newCSS.height = (adInfo.ad.height + overlayPadding) + "px";
+        newCSS.top = "auto";
       } else {
+        newCSS.top = 0;
         newCSS.bottom = 0;
       }
       if (adInfo.ad.width && adInfo.ad.width !== -1) {
-        newCSS.left = newCSS.right = (((elementWidth - adInfo.ad.width) / 2) -
-          (overlayPadding / 2)) + "px";
+        newCSS.width = (adInfo.ad.width + (2 * overlayPadding)) + "px";
+        newCSS.left = "50%";
+        newCSS.transform = "translateX(-50%)"
       }
       this.state.pluginsElement.css(newCSS);
       this.renderSkin();
@@ -567,7 +569,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         top: "",
         left: "",
         right: "",
-        bottom: ""
+        bottom: "",
+        height: "",
+        width: "",
+        transform: ""
       });
       this.renderSkin();
     },
