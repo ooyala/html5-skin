@@ -153,6 +153,8 @@ var Skin = React.createClass({
         case CONSTANTS.SCREEN.SHARE_SCREEN:
           screen = (
             <ShareScreen {...this.props}
+              assetId={this.state.assetId}
+              playerParam={this.state.playerParam}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
               duration={this.state.duration}
