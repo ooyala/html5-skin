@@ -63,7 +63,7 @@
       padding-right: 7.5px;
       text-align: left;
       margin-top: 6px;
-      line-height: $control-bar-height;
+      line-height: $control-bar-height - 3;
     }
 
     .controlBarFlexSpace {
@@ -81,7 +81,7 @@
     }
 
     .liveIndicator {
-      transform: translateY(50%);
+      line-height: $control-bar-height - 7;
     }
 
     .liveText {
