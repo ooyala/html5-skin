@@ -802,9 +802,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
           break;
         case CONSTANTS.STATE.END:
-          if(Utils.isAndroid()) {
-            if(this.state.skipAdClicked) {
-             this.state.skipAdClicked = false;
+          if(Utils.isAndroid() || Utils.isIos()) {
+            if(this.state.isSkipAdClicked) {
+             this.state.isSkipAdClicked = false;
             }
             else
             {
