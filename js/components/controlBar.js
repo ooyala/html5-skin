@@ -250,7 +250,8 @@ var ControlBar = React.createClass({
     var volumeIconSetting = Utils.clone(this.props.skinConfig.controlBar.iconStyle.inactive);
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
-    var timeDurationContent = this.props.authorization.streams[0].is_live_stream ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : Utils.formatSeconds(parseInt(this.props.currentPlayhead)) + " / " + totalTime;
+    var currentPlayheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
+    var timeDurationContent = this.props.authorization.streams[0].is_live_stream ? currentPlayheadTime : currentPlayheadTime + " / " + totalTime;
 
     // TODO: Update when implementing localization
     var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
