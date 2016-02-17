@@ -1073,15 +1073,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     //get original video width/height dimensions
     getIntrinsicDimensions: function() {
       var video = this.state.mainVideoElement.get(0);
+      var width, height;
       if (typeof video.videoWidth != 'undefined'){
-        this.state.mainVideoAspectRatio = this.calculateAspectRatio(video.videoWidth, video.videoHeight);
+        width = video.videoWidth;
+        height = video.videoHeight;
       }
       else {
-        var width = video.TGetProperty("/", 8);
-        var height= video.TGetProperty("/", 9);
-
-        this.state.mainVideoAspectRatio = this.calculateAspectRatio(width, height);
+        width = video.TGetProperty("/", 8);
+        height= video.TGetProperty("/", 9);
       }
+      this.state.mainVideoAspectRatio = this.calculateAspectRatio(width, height);
     },
 
     //returns original video aspect ratio
