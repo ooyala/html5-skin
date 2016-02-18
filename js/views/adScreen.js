@@ -154,7 +154,8 @@ var AdScreen = React.createClass({
       'action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1,
       'action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1,
       'action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1,
-      'hidden': !this.props.skinConfig.pauseScreen.showPauseIcon
+      'hidden': !this.props.skinConfig.pauseScreen.showPauseIcon,
+      'icon-hidden': this.props.playerState != CONSTANTS.STATE.PAUSE
     });
     var adPanel = null;
     if (this.props.skinConfig.adScreen.showAdMarquee) {
@@ -178,7 +179,7 @@ var AdScreen = React.createClass({
          onMouseMove={this.handlePlayerMouseMove}
          onMouseUp={this.handleClick}>
 
-        <a className={actionIconClass} onClick={this.handlePlayerClicked}>
+        <a className={actionIconClass}>
           <span className={this.props.skinConfig.icons.pause.fontStyleClass}
             style={actionIconStyle}
             aria-hidden="true"></span>
