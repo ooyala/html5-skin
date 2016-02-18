@@ -134,7 +134,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
-        this.mb.subscribe(OO.EVENTS.REPLAY, "customerUi", _.bind(this.onReplay, this));
 
         // ad events
         if (!Utils.isIPhone()) {
@@ -277,7 +276,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
-      this.resetUpNextInfo(true);
+      this.resetUpNextInfo();
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       this.renderSkin({"contentTree": contentTree});
@@ -287,10 +286,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.volumeState.volume = newVolume;
     },
 
-    resetUpNextInfo: function (purge) {
-      if (purge) {
-        this.state.upNextInfo.upNextData = null;
-      }
+    resetUpNextInfo: function () {
+      this.state.upNextInfo.upNextData = null;
       this.state.upNextInfo.countDownFinished = false;
       this.state.upNextInfo.countDownCancelled = false;
     },
@@ -486,10 +483,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.buffering = false;
         this.renderSkin();
       }
-    },
-
-    onReplay: function(event) {
-      this.resetUpNextInfo(false);
     },
 
     /********************************************************************
