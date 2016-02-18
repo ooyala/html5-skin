@@ -24,7 +24,7 @@ describe('ControlBar', function () {
     };
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: skinConfig,
       duration: 30
@@ -61,7 +61,7 @@ describe('ControlBar', function () {
     fullscreenSkinConfig.buttons.desktopContent = [{"name":"fullscreen", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: fullscreenSkinConfig
     };
@@ -97,7 +97,7 @@ describe('ControlBar', function () {
     oneButtonSkinConfig.buttons.desktopContent = [{"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -137,7 +137,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -177,7 +177,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -220,7 +220,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -259,7 +259,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -299,7 +299,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -336,7 +336,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -367,7 +367,7 @@ describe('ControlBar', function () {
     };
 
     mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -408,7 +408,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -440,7 +440,7 @@ describe('ControlBar', function () {
     };
 
     mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -481,7 +481,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -508,7 +508,7 @@ describe('ControlBar', function () {
     ];
 
     mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -554,7 +554,7 @@ describe('ControlBar', function () {
       {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }
     ];
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -593,7 +593,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -687,7 +687,7 @@ describe('ControlBar', function () {
     oneButtonSkinConfig.controlBar.iconStyle.inactive.color = "blue";
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -728,7 +728,7 @@ describe('ControlBar', function () {
     oneButtonSkinConfig.buttons.desktopContent = [{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":100 }];
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -762,7 +762,7 @@ describe('ControlBar', function () {
     oneButtonSkinConfig.buttons.desktopContent = [{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":100 }];
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -798,7 +798,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -831,7 +831,7 @@ describe('ControlBar', function () {
 
     //small
     mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig,
       responsiveView: skinConfig.responsive.breakpoints.sm.name
@@ -853,7 +853,7 @@ describe('ControlBar', function () {
 
     //medium
     mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig,
       responsiveView: skinConfig.responsive.breakpoints.md.name
@@ -875,7 +875,7 @@ describe('ControlBar', function () {
 
     //large
     mockProps = {
-      authorization: {},
+      authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig,
       responsiveView: skinConfig.responsive.breakpoints.lg.name
