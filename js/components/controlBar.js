@@ -442,4 +442,13 @@ var ControlBar = React.createClass({
     );
   }
 });
+
+ControlBar.defaultProps = {
+  authorization: {
+    streams: [
+      {is_live_stream: false}
+    ]
+  }
+};
+
 module.exports = ControlBar;
