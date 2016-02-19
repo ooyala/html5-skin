@@ -8,6 +8,7 @@
 * @constructor
 */
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants');
 
@@ -84,7 +85,7 @@ var CountDownClock = React.createClass({
   },
 
   setupCanvas: function() {
-    this.canvas = this.getDOMNode();
+    this.canvas = ReactDOM.findDOMNode(this);
     this.context = this.canvas.getContext("2d");
     this.context.textAlign = 'center';
     this.context.textBaseline = 'middle';

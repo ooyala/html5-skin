@@ -2,8 +2,8 @@
   SCRUBBER BAR
 *********************************************************************/
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     ResizeMixin = require('../mixins/resizeMixin'),
-    Utils = require('./utils'),
     ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants');
 
@@ -54,11 +54,11 @@ var ScrubberBar = React.createClass({
 
   componentWillUnmount: function() {
     if (!this.isMobile){
-      this.getDOMNode().parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
+      ReactDOM.findDOMNode(this).parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
       document.removeEventListener("mouseup", this.handlePlayheadMouseUp, true);
     }
     else{
-      this.getDOMNode().parentNode.removeEventListener("touchmove", this.handlePlayheadMouseMove);
+      ReactDOM.findDOMNode(this).parentNode.removeEventListener("touchmove", this.handlePlayheadMouseMove);
       document.removeEventListener("touchend", this.handlePlayheadMouseUp, true);
     }
   },
@@ -70,8 +70,8 @@ var ScrubberBar = React.createClass({
   },
 
   componentDidMount: function() {
-    this.scrubberBarWidth = this.getDOMNode().querySelector(".scrubberBar").clientWidth;
-    this.playheadWidth = this.getDOMNode().querySelector(".playhead").clientWidth;
+    this.scrubberBarWidth = ReactDOM.findDOMNode(this).querySelector(".scrubberBar").clientWidth;
+    this.playheadWidth = ReactDOM.findDOMNode(this).querySelector(".playhead").clientWidth;
   },
 
   getResponsiveUIMultiple: function(responsiveView){
@@ -81,8 +81,8 @@ var ScrubberBar = React.createClass({
   },
 
   handleResize: function() {
-    this.scrubberBarWidth = this.getDOMNode().querySelector(".scrubberBar").clientWidth;
-    this.playheadWidth = this.getDOMNode().querySelector(".playhead").clientWidth;
+    this.scrubberBarWidth = ReactDOM.findDOMNode(this).querySelector(".scrubberBar").clientWidth;
+    this.playheadWidth = ReactDOM.findDOMNode(this).querySelector(".playhead").clientWidth;
   },
 
   handlePlayheadMouseDown: function(evt) {
@@ -107,13 +107,13 @@ var ScrubberBar = React.createClass({
       }
 
       if (!this.isMobile){
-        this.getDOMNode().parentNode.addEventListener("mousemove", this.handlePlayheadMouseMove);
+        ReactDOM.findDOMNode(this).parentNode.addEventListener("mousemove", this.handlePlayheadMouseMove);
         // attach a mouseup listener to the document for usability, otherwise scrubbing
         // breaks if your cursor leaves the player element
         document.addEventListener("mouseup", this.handlePlayheadMouseUp, true);
       }
       else {
-        this.getDOMNode().parentNode.addEventListener("touchmove", this.handlePlayheadMouseMove);
+        ReactDOM.findDOMNode(this).parentNode.addEventListener("touchmove", this.handlePlayheadMouseMove);
         document.addEventListener("touchend", this.handlePlayheadMouseUp, true);
       }
     }
@@ -148,11 +148,11 @@ var ScrubberBar = React.createClass({
 
     this.lastScrubX = null;
     if (!this.isMobile){
-      this.getDOMNode().parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
+      ReactDOM.findDOMNode(this).parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
       document.removeEventListener("mouseup", this.handlePlayheadMouseUp, true);
     }
     else{
-      this.getDOMNode().parentNode.removeEventListener("touchmove", this.handlePlayheadMouseMove);
+      ReactDOM.findDOMNode(this).parentNode.removeEventListener("touchmove", this.handlePlayheadMouseMove);
       document.removeEventListener("touchend", this.handlePlayheadMouseUp, true);
     }
     this.props.controller.seek(this.props.currentPlayhead);

@@ -2,6 +2,7 @@
   END SCREEN
 *********************************************************************/
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
@@ -18,12 +19,12 @@ var EndScreen = React.createClass({
   },
 
   componentDidMount: function() {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+    this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
   },
 
   handleResize: function() {
     if (this.isMounted()) {
-      this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+      this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
     }
   },
 

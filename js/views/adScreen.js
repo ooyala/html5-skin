@@ -2,6 +2,7 @@
   AD SCREEN
 *********************************************************************/
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     CONSTANTS = require('../constants/constants'),
     AdPanel = require('../components/adPanel'),
     ControlBar = require('../components/controlBar'),
@@ -23,7 +24,7 @@ var AdScreen = React.createClass({
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+    this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
 
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen) {
@@ -57,7 +58,7 @@ var AdScreen = React.createClass({
 
   handleResize: function() {
     if (this.isMounted()) {
-      this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+      this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
       this.props.controller.startHideControlBarTimer();
     }
   },

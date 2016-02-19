@@ -8,6 +8,7 @@
 * @constructor
 */
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     ClosedCaptionPanel = require('../components/closedCaptionPanel'),
     CloseButton = require('../components/closeButton'),
     ResizeMixin = require('../mixins/resizeMixin'),
@@ -51,15 +52,15 @@ var ClosedCaptionScreen = React.createClass({
 
   handleResize: function() {
     this.setState({
-      clientWidth: this.getDOMNode().clientWidth,
-      clientHeight: this.getDOMNode().clientHeight
+      clientWidth: ReactDOM.findDOMNode(this).clientWidth,
+      clientHeight: ReactDOM.findDOMNode(this).clientHeight
     });
   },
 
   componentDidMount: function() {
     this.setState({
-      clientWidth: this.getDOMNode().clientWidth,
-      clientHeight: this.getDOMNode().clientHeight
+      clientWidth: ReactDOM.findDOMNode(this).clientWidth,
+      clientHeight: ReactDOM.findDOMNode(this).clientHeight
     });
   },
 

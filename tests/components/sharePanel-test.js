@@ -5,8 +5,8 @@ jest.dontMock('../../js/components/sharePanel')
     .dontMock('../../config/es.json')
     .dontMock('../../config/zh.json');
 
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
+var React = require('react');
+var TestUtils = require('react-addons-test-utils');
 var CONSTANTS = require('../../js/constants/constants');
 var SharePanel = require('../../js/components/sharePanel');
 var en = require('../../config/en.json'),
@@ -44,15 +44,15 @@ describe('SharePanel', function () {
 
         //test share tab
         var shareTab = tabs[0];
-        expect(React.findDOMNode(shareTab).textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
+        expect(shareTab.textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
         TestUtils.Simulate.click(shareTab);
-        expect(React.findDOMNode(shareTabPanel).textContent).toContain(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION]);
+        expect(shareTabPanel.textContent).toContain(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION]);
 
         //test social links
-        var twitter = TestUtils.findRenderedDOMComponentWithClass(shareTabPanel, 'twitter');
-        var facebook = TestUtils.findRenderedDOMComponentWithClass(shareTabPanel, 'facebook');
-        var googlePlus = TestUtils.findRenderedDOMComponentWithClass(shareTabPanel, 'googlePlus');
-        var emailShare = TestUtils.findRenderedDOMComponentWithClass(shareTabPanel, 'emailShare');
+        var twitter = TestUtils.findRenderedDOMComponentWithClass(DOM, 'twitter');
+        var facebook = TestUtils.findRenderedDOMComponentWithClass(DOM, 'facebook');
+        var googlePlus = TestUtils.findRenderedDOMComponentWithClass(DOM, 'googlePlus');
+        var emailShare = TestUtils.findRenderedDOMComponentWithClass(DOM, 'emailShare');
         TestUtils.Simulate.click(twitter);
         TestUtils.Simulate.click(facebook);
         TestUtils.Simulate.click(googlePlus);
@@ -60,10 +60,10 @@ describe('SharePanel', function () {
 
         //test embed tab
         var embedTab = tabs[1];
-        expect(React.findDOMNode(embedTab).textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.EMBED]);
+        expect(embedTab.textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.EMBED]);
         TestUtils.Simulate.click(embedTab);
-        var textArea = TestUtils.findRenderedDOMComponentWithTag(shareTabPanel, 'textarea');
-        expect(React.findDOMNode(textArea).value).toContain('iframe_aa_bb_cc');
+        var textArea = TestUtils.findRenderedDOMComponentWithTag(DOM, 'textarea');
+        expect(textArea.value).toContain('iframe_aa_bb_cc');
       }
     }
   });

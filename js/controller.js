@@ -2,6 +2,7 @@
  CONTROLLER
  *********************************************************************/
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     Utils = require('./components/utils'),
     CONSTANTS = require('./constants/constants'),
     AccessibilityControls = require('./components/accessibilityControls'),
@@ -184,7 +185,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         //Override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
 
-        this.skin = React.render(
+        this.skin = ReactDOM.render(
           React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .player_skin")
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
@@ -259,7 +260,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var elementId = this.state.elementId;
       var mountNode = document.querySelector('#' + elementId + ' .player_skin');
       // remove mounted Skin component
-      React.unmountComponentAtNode(mountNode);
+      ReactDOM.unmountComponentAtNode(mountNode);
       this.mb = null;
     },
 

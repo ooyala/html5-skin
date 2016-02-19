@@ -1,8 +1,8 @@
 jest.dontMock('../../js/views/videoQualityScreen');
 jest.dontMock('../../js/components/closeButton');
 
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
+var React = require('react');
+var TestUtils = require('react-addons-test-utils');
 var VideoQualityScreen = require('../../js/views/videoQualityScreen');
 
 describe('VideoQualityScreen', function () {

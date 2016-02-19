@@ -2,8 +2,8 @@ jest.dontMock('../../js/components/adPanel');
 jest.dontMock('../../js/components/spinner');
 jest.dontMock('../../js/constants/constants');
 
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
+var React = require('react');
+var TestUtils = require('react-addons-test-utils');
 var AdPanel = require('../../js/components/adPanel');
 var Spinner = require('../../js/components/spinner');
 var CONSTANTS = require('../../js/constants/constants');
