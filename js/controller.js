@@ -53,6 +53,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "pluginsClickElement": null,
       "buffering": false,
       "mainVideoPlayhead": null,
+      "focusedElement": null,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -388,6 +389,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPaused: function(eventname, videoId) {
+      if (videoId != this.focusedElement) { return; }
       if (videoId == OO.VIDEO.MAIN && this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
         if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
           this.state.pauseAnimationDisabled = true;
@@ -583,6 +585,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVideoElementFocus: function(event, source) {
+      this.focusedElement = source;
       if (source == OO.VIDEO.MAIN) {
         this.state.pluginsElement.removeClass("showing");
         this.state.pluginsClickElement.removeClass("showing");
