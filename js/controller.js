@@ -134,6 +134,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
+        this.mb.subscribe(OO.EVENTS.REPLAY, "customerUi", _.bind(this.onReplay, this));
 
         // ad events
         if (!Utils.isIPhone()) {
@@ -143,7 +144,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
           this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
           this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
-          this.mb.subscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi", _.bind(this.onWillPlayNonlinearAd, this));
+          this.mb.subscribe(OO.EVENTS.PLAY_NONLINEAR_AD, "customerUi", _.bind(this.onPlayNonlinearAd, this));
           this.mb.subscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi", _.bind(this.closeNonlinearAd, this));
           this.mb.subscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi", _.bind(this.hideNonlinearAd, this));
           this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi", _.bind(this.showNonlinearAd, this));
@@ -276,7 +277,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
-      this.resetUpNextInfo();
+      this.resetUpNextInfo(true);
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       this.renderSkin({"contentTree": contentTree});
@@ -286,8 +287,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.volumeState.volume = newVolume;
     },
 
-    resetUpNextInfo: function () {
-      this.state.upNextInfo.upNextData = null;
+    resetUpNextInfo: function (purge) {
+      if (purge) {
+        this.state.upNextInfo.upNextData = null;
+      }
       this.state.upNextInfo.countDownFinished = false;
       this.state.upNextInfo.countDownCancelled = false;
     },
@@ -485,6 +488,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    onReplay: function(event) {
+      this.resetUpNextInfo(false);
+    },
+
     /********************************************************************
       ADS RELATED EVENTS
     *********************************************************************/
@@ -555,7 +562,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, {"marginHeight": marginHeight});
     },
 
-    onWillPlayNonlinearAd: function(event, adInfo) {
+    onPlayNonlinearAd: function(event, adInfo) {
       if(adInfo.url) {
         this.state.adOverlayUrl = adInfo.url;
         this.state.showAdOverlay = true;
@@ -762,7 +769,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.unsubscribe(OO.EVENTS.AD_POD_STARTED, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.PLAY_NONLINEAR_AD, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi");
