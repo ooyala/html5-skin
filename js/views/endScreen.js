@@ -28,10 +28,15 @@ var EndScreen = React.createClass({
   },
 
   handleClick: function(event) {
-    // pause or play the video if the skin is clicked
-    event.preventDefault();
-    this.props.controller.state.accessibilityControlsEnabled = true;
-    this.props.controller.togglePlayPause();
+    if (event.type == 'touchend' || !this.isMobile){
+      //since mobile would fire both click and touched events,
+      //we need to make sure only one actually does the work
+
+      // pause or play the video if the skin is clicked
+      event.preventDefault();
+      this.props.controller.state.accessibilityControlsEnabled = true;
+      this.props.controller.togglePlayPause();
+    }
   },
 
   render: function() {
