@@ -91,7 +91,7 @@ var PlayingScreen = React.createClass({
     if (!this.isMobile || event.type == 'touchend') {
       this.setState({controlBarVisible: true});
       this.props.controller.showControlBar();
-      //ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor="auto";
+      ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor="auto";
     }
   },
 
@@ -99,7 +99,7 @@ var PlayingScreen = React.createClass({
     if (this.props.controlBarAutoHide == true && !(this.isMobile && event)) {
       this.setState({controlBarVisible: false});
       this.props.controller.hideControlBar();
-      //ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor="none";
+      ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor="none";
     }
   },
 
