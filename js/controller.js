@@ -406,6 +406,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           // default
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
+        if (Utils.isIPhone()){
+          //iPhone pause screen is the same as start screen
+          this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+        }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.state.mainVideoElement.addClass('blur');
         this.renderSkin();
@@ -440,6 +444,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       } else {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
         this.mb.publish(OO.EVENTS.END_SCREEN_SHOWN);
+      }
+      if (Utils.isIPhone()){
+        //iPhone end screen is the same as start screen, except for the replay button
+        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       }
       this.skin.updatePlayhead(this.state.duration, this.state.duration, this.state.duration);
       this.state.playerState = CONSTANTS.STATE.END;
@@ -670,10 +678,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.toggleFullscreen();
       }
 
-      // iPhone end screen is the same as start screen, except for the replay button
-      if (Utils.isIPhone() && (this.state.playerState == CONSTANTS.STATE.END || this.state.playerState == CONSTANTS.STATE.PAUSE)){
-        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
-      }
       this.renderSkin();
     },
 
