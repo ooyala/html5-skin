@@ -74,11 +74,9 @@ var AdScreen = React.createClass({
   },
 
   handlePlayerClicked: function(event) {
-    if (event.type == 'click' || !this.isMobile) {
+    if (event.type == 'touchend' || !this.isMobile) {
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
-      //Touchend fires inconsistently and depends on the user 'releasing'
-      //the touch whereas click has predictable results, so we use click.
 
       //since after exiting the full screen, iPhone pauses the video and places an overlay play button in the middle
       //of the screen (which we can't remove), clicking the screen would start the video.
@@ -106,13 +104,17 @@ var AdScreen = React.createClass({
   },
 
   handleTouchEnd: function(event) {
+    // handleTouchEnd is used to verify controlBar visibility.
     if (!this.state.controlBarVisible && this.props.skinConfig.adScreen.showControlBar) {
       this.showControlBar();
-      this.props.controller.startHideControlBarTimer();
+      // Do not start the process to hide the control bar unless we are leaving pause state.
+      if (this.props.playerState == CONSTANTS.STATE.PAUSE) {
+        this.props.controller.startHideControlBarTimer();
+      }
     }
-    else {
-      this.handlePlayerClicked(event);
-    }
+    // Even if our action was to start showing the control bar, we should still handle
+    // the click to prevent the need to double tap.
+    this.handlePlayerClicked(event);
   },
 
   handlePlayerMouseMove: function() {
