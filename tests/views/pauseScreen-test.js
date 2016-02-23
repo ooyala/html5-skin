@@ -1,8 +1,8 @@
 jest.dontMock('../../js/views/pauseScreen')
     .dontMock('classnames');
 
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
+var React = require('react');
+var TestUtils = require('react-addons-test-utils');
 var PauseScreen = require('../../js/views/pauseScreen');
 var ClassNames = require('classnames');
 
@@ -49,7 +49,7 @@ describe('PauseScreen', function () {
     // Render pause screen into DOM
     var DOM = TestUtils.renderIntoDocument(<PauseScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree}/>);
 
-    var pauseIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'action-icon-pause').getDOMNode();
+    var pauseIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'action-icon-pause');
     TestUtils.Simulate.click(pauseIcon);
     expect(clicked).toBe(true);
   });

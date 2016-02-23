@@ -5,8 +5,8 @@ jest.dontMock('../../js/components/scrubberBar')
     .dontMock('../../config/es.json')
     .dontMock('../../config/zh.json');
 
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
+var React = require('react');
+var TestUtils = require('react-addons-test-utils');
 var CONSTANTS = require('../../js/constants/constants');
 var skinConfig = require('../../config/skin.json');
 var ScrubberBar = require('../../js/components/scrubberBar');
@@ -56,7 +56,7 @@ describe('ScrubberBar', function () {
     );
 
     var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "scrubberBarPadding");
-    TestUtils.Simulate.mouseDown(scrubberBar.getDOMNode());
+    TestUtils.Simulate.mouseDown(scrubberBar);
     expect(scrubberBarClicked).toBe(true);
   });
 
@@ -89,7 +89,7 @@ describe('ScrubberBar', function () {
     );
 
     var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'scrubberBarPadding');
-    TestUtils.Simulate.mouseDown(scrubberBar.getDOMNode());
+    TestUtils.Simulate.mouseDown(scrubberBar);
     DOM.handlePlayheadMouseUp({
       preventDefault: function() {},
       stopPropagation: function() {}
@@ -121,7 +121,7 @@ describe('ScrubberBar', function () {
     DOM.playheadWidth = 10;
     DOM.forceUpdate();
 
-    var playhead = TestUtils.findRenderedDOMComponentWithClass(DOM, 'playheadPadding').getDOMNode();
+    var playhead = TestUtils.findRenderedDOMComponentWithClass(DOM, 'playheadPadding');
     var leftPos = parseInt(playhead.style.left);
     expect(leftPos).toBeGreaterThan(200);
     expect(leftPos).toBeLessThan(300);
@@ -147,9 +147,8 @@ describe('ScrubberBar', function () {
         />
     );
 
-    var playhead = TestUtils.findRenderedDOMComponentWithClass(DOM, 'playhead').getDOMNode();
+    var playhead = TestUtils.findRenderedDOMComponentWithClass(DOM, 'playhead');
     expect(playhead.className).toMatch('adPlayhead');
   });
 
 });
-

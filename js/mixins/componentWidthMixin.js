@@ -1,4 +1,4 @@
-var React = require('react');
+var ReactDOM = require('react-dom');
 
 var ComponentWidthMixin = {
   getInitialState: function() {
@@ -10,7 +10,7 @@ var ComponentWidthMixin = {
   componentDidMount: function() {
     window.addEventListener('resize', this.onResize);
     this.setState({
-      componentWidth: React.findDOMNode(this).getBoundingClientRect().width
+      componentWidth: ReactDOM.findDOMNode(this).getBoundingClientRect().width
     });
   },
 
@@ -20,7 +20,7 @@ var ComponentWidthMixin = {
 
   onResize: function() {
     this.setState({
-      componentWidth: React.findDOMNode(this).getBoundingClientRect().width
+      componentWidth: ReactDOM.findDOMNode(this).getBoundingClientRect().width
     });
   }
 };

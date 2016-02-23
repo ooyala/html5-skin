@@ -1,7 +1,7 @@
 jest.dontMock('../../js/views/startScreen');
 
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
+var React = require('react');
+var TestUtils = require('react-addons-test-utils');
 var StartScreen = require('../../js/views/startScreen');
 
 describe('StartScreen', function () {

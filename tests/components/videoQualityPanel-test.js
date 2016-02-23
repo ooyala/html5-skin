@@ -3,8 +3,8 @@ jest.dontMock('../../js/components/videoQualityPanel')
     .dontMock('../../js/constants/constants')
     .dontMock('classnames');
 
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
+var React = require('react');
+var TestUtils = require('react-addons-test-utils');
 var CONSTANTS = require('../../js/constants/constants');
 var VideoQualityPanel = require('../../js/components/videoQualityPanel');
 var skinConfig = require('../../config/skin.json');
@@ -46,7 +46,7 @@ describe('VideoQualityPanel', function () {
     expect(bitrateItems.length).toBe(availableBitrates.length-1);
 
     for (i=0; i<bitrateItems.length; i++){
-      var itemText = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn')[i].getDOMNode().textContent;
+      var itemText = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn')[i].textContent;
       expect(itemText).toEqual(bitrateLabels[i]);
     }
   });
@@ -57,7 +57,7 @@ describe('VideoQualityPanel', function () {
     );
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'selected');
     expect(bitrateItems.length).toBe(1);
-    expect(bitrateItems[0].getDOMNode().textContent).toBe('Auto');
+    expect(bitrateItems[0].textContent).toBe('Auto');
 
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn');
     expect(bitrateItems.length).toBe(availableBitrates.length-1);
@@ -82,6 +82,6 @@ describe('VideoQualityPanel', function () {
     );
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'selected');
     expect(bitrateItems.length).toBe(1);
-    expect(bitrateItems[0].getDOMNode().textContent).toBe(bitrateLabels[0]);
+    expect(bitrateItems[0].textContent).toBe(bitrateLabels[0]);
   });
 });

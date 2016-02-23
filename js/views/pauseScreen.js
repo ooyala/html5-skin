@@ -2,6 +2,7 @@
  PAUSE SCREEN
  *********************************************************************/
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
@@ -24,7 +25,7 @@ var PauseScreen = React.createClass({
   componentDidMount: function() {
     this.truncateText(this.refs.description, this.props.contentTree.description);
     this.setState({
-      controlBarWidth: this.getDOMNode().clientWidth,
+      controlBarWidth: ReactDOM.findDOMNode(this).clientWidth,
       animate: true
     });
   },
@@ -43,7 +44,7 @@ var PauseScreen = React.createClass({
     this.truncateText(this.refs.description, this.props.contentTree.description);
     if (this.isMounted()) {
       this.setState({
-        controlBarWidth: this.getDOMNode().clientWidth
+        controlBarWidth: ReactDOM.findDOMNode(this).clientWidth
       });
     }
   },

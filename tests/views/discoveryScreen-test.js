@@ -4,8 +4,8 @@ jest.dontMock('../../js/mixins/accessibilityMixin');
 jest.dontMock('../../js/constants/constants');
 jest.dontMock('classnames');
 
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
+var React = require('react');
+var TestUtils = require('react-addons-test-utils');
 var DiscoveryScreen = require('../../js/views/discoveryScreen');
 
 describe('DiscoveryScreen', function () {

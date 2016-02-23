@@ -3,8 +3,9 @@ jest.dontMock('../../js/constants/constants');
 jest.dontMock('../../js/components/closeButton');
 jest.dontMock('classnames');
 
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
+var React = require('react');
+var ReactDOM = require('react-dom');
+var TestUtils = require('react-addons-test-utils');
 var AdOverlay = require('../../js/components/adOverlay');
 var CONSTANTS = require('../../js/constants/constants');
 
@@ -61,7 +62,7 @@ describe('AdOverlay', function () {
         skinConfig={mockSkinConfig}
       />);
 
-    TestUtils.Simulate.mouseUp(DOM.getDOMNode());
+    TestUtils.Simulate.mouseUp(ReactDOM.findDOMNode(DOM));
     expect(clickSource).toBe(CONSTANTS.AD_CLICK_SOURCE.OVERLAY);
   });
 
@@ -138,7 +139,7 @@ describe('AdOverlay', function () {
         showOverlayCloseButton={false}
       />);
 
-    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'adOverlayCloseButton').getDOMNode();
+    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'adOverlayCloseButton');
     expect(closeBtn.className).toMatch("hidden");
 
     DOM = TestUtils.renderIntoDocument(
@@ -148,7 +149,7 @@ describe('AdOverlay', function () {
         showOverlayCloseButton={true}
       />);
 
-    closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'adOverlayCloseButton').getDOMNode();
+    closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'adOverlayCloseButton');
     expect(closeBtn.className).not.toMatch("hidden");
   });
 });
