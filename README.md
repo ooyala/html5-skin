@@ -25,7 +25,7 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 </head>
 
 <body>
-<div id='container' style='width:640px; height:360px;'></div>
+<div id='container'></div>
 <script>
   var playerParam = {
     "pcode": "YOUR_PCODE",
@@ -47,48 +47,37 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 ```
 
 ## Developer Setup
-This section provides step by step guide on setting up this repo and create simple local hosting.
-You need [npm](https://www.npmjs.org/) installed on your computer.
-From the root project directory run these commands from the command line:
 
-    npm install
+1. Install [brew](http://brew.sh): `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-This will install all dependencies.
+2. Install [git](http://git-scm.com): `brew install git`
 
-This project also makes use of a git submodule for the config file. This needs to be initialized
-using the git submodule commands:
+3. Install [Node.js] (http://nodejs.org) v0.10.x: `brew install homebrew/versions/node010`
 
+4. Install gulp globally by running: `npm install -g gulp`
+
+5. Clone project: `git clone https://github.com/ooyala/html5-skin.git`
+
+6. After cloning, just `cd` in there, install dependencies by running `npm install`
+
+7. This project also makes use of `git submodule` for the config directory. This needs to be initialized
+using `git submodule` commands:
+```sh
     git submodule init
     git submodule update
     git pull
-
-The init and update should only need to be run once, afterward git pull will
+```
+The `init` and `update` should only need to be run once, afterward `git pull` will
 update the submodule as well as the parent repo.
 
-To build the project, first run this command:
+8. Build the project by running: `gulp`
 
-    sudo npm install -g gulp
+This will perform an initial build and start a watch that will update the `build/` folder with any changes made in `js/` or `scss/` folders.
 
-This will install gulp module globally. Then, simply run this command:
-
-    gulp
-
-This will perform an initial build and start a watch that will update the `build/` folder with any changes made in 'js/' or 'scss/' folders.
-
-If you have the forever module installed, you can use the following command to keep gulp running:
-
-    forever --spinSleepTime 5000 --workingDir <path to your project directory> /usr/local/bin/gulp
-
-Once you've built the Javascript with gulp, you'll need to run a webserver in order to serve `sample.html`.
-The simplest way to do this is with python's built in server, but you can use any server you like.
-To start a python server, cd into the repo directory and run:
-
-    python -m SimpleHTTPServer
-
-You should now be able to load the sample page by hitting http://localhost:8000/sample.html
+Once the app is built a webserver will start and serve `sample.html` in your browser at [http://0.0.0.0:4444/](http://0.0.0.0:4444/).
 
 ## Style
-We use [Sass](http://sass-lang.com/) (SCSS) for CSS preprocessor and [Bootstrap](http://getbootstrap.com/) for responsive, mobile design.
+We use [Sass](http://sass-lang.com/) (SCSS) for CSS preprocessor.
 
 Our [4-1 architecture pattern](http://sass-guidelin.es/#the-7-1-pattern) splits the Sass codebase over several files that are compiled into a single, minified stylesheet deployed to production.
 
@@ -102,7 +91,6 @@ scss/
 |   |– _reset.scss       # resets to common HTML elements, Adds additional rules on top of _normalize.scss
 |   |– _variables.scss   # variables, colors, measurements, flags to enable/disable features
 |   |– _base.scss        # boilerplate, app level styles
-|   |– _grid.scss        # responsive Bootstrap grid system
 |   |– _type.scss        # typography rules, fonts, icons
 |   ...
 |
