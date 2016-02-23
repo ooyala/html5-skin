@@ -1155,14 +1155,22 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     //get original video width/height dimensions
     getIntrinsicDimensions: function() {
       var video = this.state.mainVideoElement.get(0);
+      var liveStreamDimension = this.state.authorization.streams[0].aspect_ratio ? Utils.reformatAspectRatio(this.state.authorization.streams[0].aspect_ratio) : null;
       var width, height;
-      if (typeof video.videoWidth != 'undefined'){
-        width = video.videoWidth;
-        height = video.videoHeight;
-      }
-      else {
+      // flash
+      if (typeof video.TGetProperty != 'undefined') {
         width = video.TGetProperty("/", 8);
         height= video.TGetProperty("/", 9);
+      }
+      // live stream
+      else if (liveStreamDimension) {
+        width = liveStreamDimension.width;
+        height = liveStreamDimension.height;
+      }
+      // html5
+      else {
+        width = video.videoWidth;
+        height = video.videoHeight;
       }
       this.state.mainVideoAspectRatio = this.calculateAspectRatio(width, height);
     },
