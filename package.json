@@ -24,14 +24,19 @@
     "screenfull": "3.0.0"
   },
   "devDependencies": {
-    "browserify": "12.0.1",
-    "gulp": "3.8.11",
+    "browserify": "13.0.0",
+    "git-rev": "0.2.1",
+    "graceful-fs": "*",
+    "gulp": "3.9.1",
+    "gulp-connect": "^2.3.1",
+    "gulp-open": "^1.0.0",
     "gulp-rename": "*",
+    "gulp-replace": "0.5.4",
     "gulp-sass": "2.0.4",
     "gulp-shell": "0.4.2",
     "gulp-sourcemaps": "1.5.2",
     "gulp-uglify": "1.1.0",
-    "gulp-util": "3.0.6",
+    "gulp-util": "3.0.7",
     "jest-cli": "0.4.18",
     "jsdoc": "^3.3.3",
     "jsdoc-jsx": "^0.1.0",
@@ -39,7 +44,7 @@
     "reactify": "1.1.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
-    "graceful-fs": "*"
+    "watchify": "3.7.0"
   },
   "author": "Ooyala",
   "contributors": [

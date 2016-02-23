@@ -2,19 +2,24 @@
 // Require sudo npm install -g gulp
 // For dev, initiate watch by executing either `gulp` or `gulp watch`
 
-var gulp = require('gulp'),
-    browserify = require('browserify'),
-    reactify = require('reactify'),
-    source = require('vinyl-source-stream'),
-    buffer = require('vinyl-buffer'),
-    gutil = require('gulp-util'),
-    sourcemaps = require('gulp-sourcemaps'),
-    uglify = require('gulp-uglify'),
-    shell = require('gulp-shell'),
-    sass = require('gulp-sass'),
-    rename = require('gulp-rename'),
-    realFs = require('fs'),
-    gracefulFs = require('graceful-fs');
+var gulp        = require('gulp'),
+    browserify  = require('browserify'),
+    watchify    = require('watchify'),
+    reactify    = require('reactify'),
+    source      = require('vinyl-source-stream'),
+    buffer      = require('vinyl-buffer'),
+    gutil       = require('gulp-util'),
+    sourcemaps  = require('gulp-sourcemaps'),
+    uglify      = require('gulp-uglify'),
+    shell       = require('gulp-shell'),
+    sass        = require('gulp-sass'),
+    rename      = require('gulp-rename'),
+    replace     = require('gulp-replace'),
+    connect     = require('gulp-connect'),
+    open        = require('gulp-open'),
+    git         = require('git-rev'),
+    realFs      = require('fs'),
+    gracefulFs  = require('graceful-fs');
     //Fix OSX EMFILE error
     gracefulFs.gracefulify(realFs);
 
@@ -24,92 +29,134 @@ var path = {
   pages: ['./iframe.html']
 };
 
+var devServer = {
+  host: '0.0.0.0',
+  port: 4444,
+  file: 'sample.html',
+  livereloadPort: 6666
+
+};
+
+//Build JS
+function buildJS(file, hash, watch, ugly, sourcemap, debug) {
+  var props ={
+    entries: ['./js/controller.js'],
+    debug: debug,
+    transform:    [[reactify, {}]],
+    cache: {},
+    packageCache: {}
+  };
+  var bundler = watch ? watchify(browserify(props)) : browserify(props);
+
+  function rebundle(reload) {
+    bundler.bundle()
+      .on("error", function (err) {
+          gutil.log(
+            gutil.colors.red("Browserify compile error:"),
+            err.message
+          );
+          gutil.beep();
+        })
+      .on('end', function() {
+        gutil.log(gutil.colors.green(file + ' DONE'));
+      })
+      .pipe(source(file))
+      .pipe(buffer())
+      .pipe(sourcemap ? sourcemaps.init({loadMaps: true}) : gutil.noop())
+      // Add transformation tasks to the pipeline here.
+      .pipe(replace('<SKIN_VERSION>', hash))
+      .pipe(ugly ? uglify() : gutil.noop())
+      .pipe(sourcemap ? sourcemaps.write('./') : gutil.noop())
+      .pipe(gulp.dest('./build'))
+      .pipe(reload ? connect.reload() : gutil.noop())
+  }
+
+  if (watch) {
+    bundler.on('update', function () {
+      gutil.log(gutil.colors.yellow('REBUILDING ' + file));
+      return rebundle(true);
+    });
+  }
+
+  return rebundle(false);
+}
+
 // Build All
-gulp.task('build', ['browserify', 'browserify-min', 'insertVersion', 'sass', 'sass-min', 'assets', 'pages']);
+gulp.task('build', ['browserify', 'browserify:min', 'sass', 'sass:min', 'assets', 'pages']);
+
+// Build Watch
+gulp.task('build:watch', ['watchify', 'watchify:min', 'sass', 'sass:min', 'assets', 'pages']);
 
 // Browserify JS
-gulp.task('browserify', function () {
-  // set up the browserify instance on a task basis
-  var b = browserify({
-    entries: './js/controller.js',
-    debug: false,
-    // defining transforms here will avoid crashing your stream
-    transform: [reactify]
-  });
-  return b.bundle()
-    .pipe(source('html5-skin.js'))
-    .pipe(buffer())
-    .on('error', gutil.log)
-    .pipe(gulp.dest('./build'));
+gulp.task('browserify', function() {
+  git.long(function (hash) {
+    return buildJS('html5-skin.js', hash, false, false, false, false);
+  })
 });
 
 // Browserify Minified JS
-gulp.task('browserify-min', function () {
-  // set up the browserify instance on a task basis
-  var b = browserify({
-    entries: './js/controller.js',
-    debug: true,
-    // defining transforms here will avoid crashing your stream
-    transform: [reactify]
-  });
-  return b.bundle()
-    .pipe(source('html5-skin.min.js'))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({loadMaps: true}))
-    // Add transformation tasks to the pipeline here.
-    .pipe(uglify())
-    .on('error', gutil.log)
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('./build'));
+gulp.task('browserify:min', function() {
+  git.long(function (hash) {
+    return buildJS('html5-skin.min.js', hash, false, true, true, true);
+  })
+});
+
+// Watchify JS
+gulp.task('watchify', function() {
+  git.long(function (hash) {
+    return buildJS('html5-skin.js', hash, true, false, false, false);
+  })
+});
+
+// Watchify Minified JS
+gulp.task('watchify:min', function() {
+  git.long(function (hash) {
+    return buildJS('html5-skin.min.js', hash, true, true, true, true);
+  })
 });
 
 // Build Sass
 gulp.task('sass', function () {
   gulp.src(path.sass)
-    .pipe(sass().on('error', sass.logError))
+    .pipe(sass()
+      .on('error', sass.logError)
+      .on('end', function() {gutil.log(gutil.colors.cyan('html5-skin.css DONE'));})
+    )
     .pipe(gulp.dest('./build'))
+    .pipe(connect.reload())
 });
 
 // Build Minified Sass
-gulp.task('sass-min', function () {
+gulp.task('sass:min', function () {
   gulp.src(path.sass)
     .pipe(sourcemaps.init())
-    .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+    .pipe(sass({outputStyle: 'compressed'})
+      .on('error', sass.logError)
+      .on('end', function() {gutil.log(gutil.colors.cyan('html5-skin.min.css DONE'));})
+    )
     .pipe(rename({suffix: '.min'}))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./build'))
+    .pipe(connect.reload())
 });
 
 // Run tests in Jenkins build
 gulp.task('test', shell.task(['npm test']));
 
 // Initiate a watch
-gulp.task('watch', function() {
-  gulp.watch(path.scripts, ['browserify', 'browserify-min']);
-  gulp.watch(path.sass, ['sass', 'sass-min']);
+gulp.task('watch', ['build:watch'], function() {
+  gulp.watch(path.sass, ['sass', 'sass:min']);
   gulp.watch(path.pages, ['pages']);
+  gutil.log(gutil.colors.blue('WATCHING...'));
 });
 
 // The default task (called when you run `gulp` from cli)
-gulp.task('default', ['build', 'watch']);
-
-//Insert version needs the other build steps to finish first, so we mark them as dependent tasks
-gulp.task('insertVersion', ['browserify', 'browserify-min'], function () {
-  if (process.platform == "darwin") {
-    return gulp.src('')
-      .pipe(shell(['sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
-      'sed -i "" "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
-  } else {
-    return gulp.src('')
-      .pipe(shell(['sed -i "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.js',
-      'sed -i "s/<SKIN_VERSION>/`git rev-parse HEAD`/" ./build/html5-skin.min.js']));
-  }
-});
+gulp.task('default', ['watch', 'open']);
 
 // Generate documentation
 gulp.task("docs", shell.task("./node_modules/.bin/jsdoc -c ./jsdoc_conf.json"));
 
-//Assets
+// Assets
 gulp.task('assets', function () {
   gulp.src(['assets/**/*'])
     .pipe(gulp.dest('./build/assets'));
@@ -119,4 +166,25 @@ gulp.task('assets', function () {
 gulp.task('pages', function () {
   gulp.src(['iframe.html'])
     .pipe(gulp.dest('./build'));
+});
+
+// Local HTTP Server
+gulp.task('server', function() {
+  connect.server({
+    port: devServer.port,
+    livereload: {
+      port: devServer.livereloadPort
+    },
+    host: devServer.host,
+    fallback: devServer.file
+  });
+});
+
+// Open app in browser
+gulp.task('open', ['server'], function() {
+  var options = {
+    uri: 'http://' + devServer.host + ':' + devServer.port
+  };
+  gulp.src('./' + devServer.file)
+    .pipe(open(options));
 });
