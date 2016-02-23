@@ -22,11 +22,51 @@
   }
 
   // Closed Caption Screen
-  .closedCaptionsScreen{
+  .closedCaptionsScreen {
+    .closed-captions-panel {
+      padding:$panel-padding * $small-multiple;
+      .closed-captions-panel-title {
+        font-size: $font-size-sm-screen-title;
+        span.icon {
+          font-size: 0.7em;
+        }
+      }
+      .switch-container {
+        margin-top: 20px;
+        height: 15px;
+        width: 74px;
+        .switch-captions {
+          font-size: $font-size-base * $small-multiple;
+        }
+        .switch-element {
+          margin-bottom: 33%;
+        }
+      }
+    }
     .language-container {
+      margin-top: 4%;
       .language-panel {
-        min-height:0;
-        height: 80px
+        a.item {
+          width: 98px;
+          font-size: .9em;
+          margin: 10px 20px;
+          padding: 3px 10px;
+        }
+      }
+      .discoverBtn {
+        span.icon {
+          font-size: 0.8em;
+        }
+      }
+    }
+    .preview-panel {
+      padding: 8px $panel-padding * $small-multiple;
+      .preview-caption {
+        font-size: 0.6em;
+        line-height:.8em;
+      }
+      .preview-text {
+        font-size: 1.0em;
       }
     }
   }
@@ -278,7 +318,7 @@
         font-size: 18pt * $small-multiple;
       }
     }
-    
+
     .contentDescription {
       bottom: 5px * $small-multiple;
       left: 15px * $small-multiple;
