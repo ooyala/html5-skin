@@ -47,35 +47,30 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 ```
 
 ## Developer Setup
-1. Install [brew](http://brew.sh): 
-   ```sh
-   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-   ```
+1. [Install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
-2. Install [git](http://git-scm.com): `brew install git`
+2. [Install Node.js] (https://nodejs.org/download/release/v0.10.33/) v0.10.33.
 
-3. Install [Node.js] (http://nodejs.org) v0.10.x: `brew install homebrew/versions/node010`
+3. Install [gulp](http://gulpjs.com) globally by running: `npm install --global gulp-cli`
 
-4. Install gulp globally by running: `npm install -g gulp`
+4. Clone project: `git clone https://github.com/ooyala/html5-skin.git`
 
-5. Clone project: `git clone https://github.com/ooyala/html5-skin.git`
+5. After cloning, just `cd` in there, install dependencies by running `npm install`
 
-6. After cloning, just `cd` in there, install dependencies by running `npm install`
-
-7. This project also makes use of `git submodule` for the config directory. This needs to be initialized
-using `git submodule` commands:
+6. This project also makes use of *git submodule* for the config directory. This needs to be initialized
+using *git submodule* commands:
    ```sh
        git submodule init
        git submodule update
        git pull
    ```
-   The `init` and `update` should only need to be run once, afterward `git pull` will update the submodule as well as the parent repo.
+   The *init* and *update* should only need to be run once, afterward *git pull* will update the submodule as well as the parent repo.
 
-8. Build the project by running: `gulp`
+7. Build the project by running: `gulp`
 
    This will perform an initial build and start a watch that will update the `build/` folder with any changes made in `js/` or `scss/` folders.
 
-   Once the app is built a webserver will start and serve `sample.html` in your browser at [http://0.0.0.0:4444/](http://0.0.0.0:4444/).
+   Once the app is built a webserver will start and serve `sample.html` in your browser [http://0.0.0.0:4444/](http://0.0.0.0:4444/).
 
 ## Style
 We use [Sass](http://sass-lang.com/) (SCSS) for CSS preprocessor.
