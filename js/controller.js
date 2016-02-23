@@ -258,8 +258,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.enableIosFullScreen();
     },
 
-
-
     onPlayerDestroy: function (event) {
       var elementId = this.state.elementId;
       var mountNode = document.querySelector('#' + elementId + ' .player_skin');
