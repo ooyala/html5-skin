@@ -47,7 +47,6 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 ```
 
 ## Developer Setup
-
 1. Install [brew](http://brew.sh): `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
 2. Install [git](http://git-scm.com): `brew install git`
