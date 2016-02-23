@@ -47,7 +47,10 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 ```
 
 ## Developer Setup
-1. Install [brew](http://brew.sh): `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+1. Install [brew](http://brew.sh): 
+   ```sh
+   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+   ```
 
 2. Install [git](http://git-scm.com): `brew install git`
 
@@ -61,19 +64,18 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 
 7. This project also makes use of `git submodule` for the config directory. This needs to be initialized
 using `git submodule` commands:
-```sh
-    git submodule init
-    git submodule update
-    git pull
-```
-The `init` and `update` should only need to be run once, afterward `git pull` will
-update the submodule as well as the parent repo.
+   ```sh
+       git submodule init
+       git submodule update
+       git pull
+   ```
+   The `init` and `update` should only need to be run once, afterward `git pull` will update the submodule as well as the parent repo.
 
 8. Build the project by running: `gulp`
 
-This will perform an initial build and start a watch that will update the `build/` folder with any changes made in `js/` or `scss/` folders.
+   This will perform an initial build and start a watch that will update the `build/` folder with any changes made in `js/` or `scss/` folders.
 
-Once the app is built a webserver will start and serve `sample.html` in your browser at [http://0.0.0.0:4444/](http://0.0.0.0:4444/).
+   Once the app is built a webserver will start and serve `sample.html` in your browser at [http://0.0.0.0:4444/](http://0.0.0.0:4444/).
 
 ## Style
 We use [Sass](http://sass-lang.com/) (SCSS) for CSS preprocessor.
