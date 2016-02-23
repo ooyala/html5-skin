@@ -2,6 +2,7 @@
   PLAYING SCREEN
 *********************************************************************/
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
     AdOverlay = require('../components/adOverlay'),
@@ -22,7 +23,7 @@ var PlayingScreen = React.createClass({
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+    this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen){
       this.props.controller.startHideControlBarTimer();
@@ -51,7 +52,7 @@ var PlayingScreen = React.createClass({
 
   handleResize: function() {
     if (this.isMounted()) {
-      this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+      this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
       this.props.controller.startHideControlBarTimer();
     }
   },
@@ -90,7 +91,7 @@ var PlayingScreen = React.createClass({
     if (!this.isMobile || event.type == 'touchend') {
       this.setState({controlBarVisible: true});
       this.props.controller.showControlBar();
-      this.refs.PlayingScreen.getDOMNode().style.cursor="auto";
+      ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor="auto";
     }
   },
 
@@ -98,7 +99,7 @@ var PlayingScreen = React.createClass({
     if (this.props.controlBarAutoHide == true && !(this.isMobile && event)) {
       this.setState({controlBarVisible: false});
       this.props.controller.hideControlBar();
-      this.refs.PlayingScreen.getDOMNode().style.cursor="none";
+      ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor="none";
     }
   },
 

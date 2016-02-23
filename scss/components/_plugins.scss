@@ -13,6 +13,10 @@
   display: block;
 }
 
+.player_skin_plugins.overlay_showing:not(:empty) {
+  display: block;
+}
+
 .player_skin_plugins_click_layer {
   z-index: 12005;
   top: 0;

@@ -1,7 +1,8 @@
 jest.dontMock('../../js/views/adScreen');
 
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
+var React = require('react');
+var ReactDOM = require('react-dom');
+var TestUtils = require('react-addons-test-utils');
 var AdScreen = require('../../js/views/adScreen');
 
 describe('AdScreen', function () {
@@ -78,11 +79,11 @@ describe('AdScreen', function () {
       />);
 
     expect(DOM.state.controlBarVisible).toBe(true);
-    TestUtils.Simulate.mouseOut(DOM.getDOMNode());
+    TestUtils.Simulate.mouseOut(ReactDOM.findDOMNode(DOM));
     expect(DOM.state.controlBarVisible).toBe(false);
     expect(controlBarVisible).toBe(false);
 
-    TestUtils.Simulate.mouseOver(DOM.getDOMNode());
+    TestUtils.Simulate.mouseOver(ReactDOM.findDOMNode(DOM));
     expect(DOM.state.controlBarVisible).toBe(true);
     expect(controlBarVisible).toBe(true);
   });
@@ -131,7 +132,7 @@ describe('AdScreen', function () {
       />);
 
     expect(DOM.state.controlBarVisible).toBe(false);
-    TestUtils.Simulate.mouseMove(DOM.getDOMNode());
+    TestUtils.Simulate.mouseMove(ReactDOM.findDOMNode(DOM));
     expect(DOM.state.controlBarVisible).toBe(true);
 
   });
