@@ -96,7 +96,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "errorCode": null,
       "isSubscribed": false,
       "isSkipAdClicked": false,
-      "isMetaDataLoaded": false,
       "isInitialPlay": false,
       "isFullScreenSupported": false,
       "isVideoFullScreenSupported": false,
@@ -256,7 +255,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     // functions dependent on video metadata
     metaDataLoaded: function () {
-      this.state.isMetaDataLoaded = true;
       this.enableIosFullScreen();
     },
 
