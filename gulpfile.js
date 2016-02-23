@@ -33,7 +33,7 @@ var devServer = {
   host: '0.0.0.0',
   port: 4444,
   file: 'sample.html',
-  livereloadPort: 6666
+  livereloadPort: 35729
 
 };
 
