@@ -701,7 +701,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //called when user selects fullscreen icon
     toggleFullscreen: function() {
-      this.state.fullscreen = !this.state.fullscreen;
       // full support, any element
       if(this.state.isFullScreenSupported) {
         Fullscreen.toggle(this.state.mainVideoWrapper.get(0));
@@ -709,9 +708,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // partial support, video element only (iOS)
       else if (this.state.isVideoFullScreenSupported) {
         if(this.state.fullscreen) {
-          this.state.mainVideoElement.get(0).webkitEnterFullscreen();
-        } else {
           this.state.mainVideoElement.get(0).webkitExitFullscreen();
+        } else {
+          this.state.mainVideoElement.get(0).webkitEnterFullscreen();
         }
       }
       // no support
@@ -722,6 +721,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.enterFullWindow();
         }
       }
+      this.state.fullscreen = !this.state.fullscreen;
       this.renderSkin();
     },
 
