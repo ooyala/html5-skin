@@ -1073,7 +1073,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     //get original video width/height dimensions
     getIntrinsicDimensions: function() {
       var video = this.state.mainVideoElement.get(0);
-      var liveStreamDimension = this.state.authorization.streams[0].aspect_ratio ? Utils.reformatAspectRatio(this.state.authorization.streams[0].aspect_ratio) : null;
+      var liveStreamDimension = (this.state.authorization.streams && this.state.authorization.streams[0].aspect_ratio) ? Utils.reformatAspectRatio(this.state.authorization.streams[0].aspect_ratio) : null;
       var width, height;
       // flash
       if (typeof video.TGetProperty != 'undefined') {
