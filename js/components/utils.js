@@ -3,7 +3,6 @@
 *
 * @module Utils
 */
-CONSTANTS = require('./../constants/constants');
 
 var Utils = {
   /**

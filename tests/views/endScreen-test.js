@@ -1,8 +1,8 @@
 jest.dontMock('../../js/views/endScreen')
     .dontMock('classnames');
 
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
+var React = require('react');
+var TestUtils = require('react-addons-test-utils');
 var EndScreen = require('../../js/views/endScreen');
 var ClassNames = require('classnames');
 var ResizeMixin = require('../../js/mixins/resizeMixin');
@@ -35,7 +35,7 @@ describe('EndScreen', function () {
     // Render end screen into DOM
     var DOM = TestUtils.renderIntoDocument(<EndScreen skinConfig={mockSkinConfig} controller = {mockController}/>);
 
-    var replayButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'action-icon').getDOMNode();
+    var replayButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'action-icon');
     TestUtils.Simulate.click(replayButton);
     expect(clicked).toBe(true);
   });
@@ -68,7 +68,7 @@ describe('EndScreen', function () {
     var DOM = TestUtils.renderIntoDocument(<EndScreen skinConfig={mockSkinConfig} controller = {mockController}/>);
 
     //replay button hidden
-    var replayButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'action-icon').getDOMNode();
+    var replayButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'action-icon');
     expect(replayButton.className).toMatch("hidden");
 
     //test replay clicking on screen

@@ -2,6 +2,7 @@
  CONTROLLER
  *********************************************************************/
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     Utils = require('./components/utils'),
     CONSTANTS = require('./constants/constants'),
     AccessibilityControls = require('./components/accessibilityControls'),
@@ -53,6 +54,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "pluginsClickElement": null,
       "buffering": false,
       "mainVideoPlayhead": null,
+      "focusedElement": null,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -97,6 +99,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isSkipAdClicked": false,
       "isInitialPlay": false,
       "isFullScreenSupported": false,
+      "isVideoFullScreenSupported": false,
       "isFullWindow": false
     };
 
@@ -143,7 +146,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
           this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
           this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
-          this.mb.subscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi", _.bind(this.onWillPlayNonlinearAd, this));
+          this.mb.subscribe(OO.EVENTS.PLAY_NONLINEAR_AD, "customerUi", _.bind(this.onPlayNonlinearAd, this));
           this.mb.subscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi", _.bind(this.closeNonlinearAd, this));
           this.mb.subscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi", _.bind(this.hideNonlinearAd, this));
           this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi", _.bind(this.showNonlinearAd, this));
@@ -184,7 +187,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         //Override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
 
-        this.skin = React.render(
+        this.skin = ReactDOM.render(
           React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .player_skin")
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
@@ -234,32 +237,33 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.externalPluginSubscription();
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
-
-      // check if fullscreen is supported natively, set flag, add event listener for change
-      if (Fullscreen.enabled) {
-        this.state.isFullScreenSupported = true;
-        document.addEventListener(Fullscreen.raw.fullscreenchange, this.onFullscreenChanged.bind(this));
-      }
     },
 
     onVcVideoElementCreated: function(eventname, params) {
       var element = $("#" + params["domId"]);
+      element.get(0).addEventListener("loadedmetadata", this.metaDataLoaded.bind(this));
+
       if (Utils.isIE10()) {
         element.attr("controls", "controls");
       }
 
-      if (params["videoId"] === OO.VIDEO.MAIN)
-      {
+      if (params["videoId"] === OO.VIDEO.MAIN) {
         this.state.mainVideoElement = element;
+        this.updateAspectRatio();
+        this.enableFullScreen();
       }
-      this.updateAspectRatio();
+    },
+
+    // functions dependent on video metadata
+    metaDataLoaded: function () {
+      this.enableIosFullScreen();
     },
 
     onPlayerDestroy: function (event) {
       var elementId = this.state.elementId;
       var mountNode = document.querySelector('#' + elementId + ' .player_skin');
       // remove mounted Skin component
-      React.unmountComponentAtNode(mountNode);
+      ReactDOM.unmountComponentAtNode(mountNode);
       this.mb = null;
     },
 
@@ -388,6 +392,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPaused: function(eventname, videoId) {
+      if (videoId != this.focusedElement) { return; }
       if (videoId == OO.VIDEO.MAIN && this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
         if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
           this.state.pauseAnimationDisabled = true;
@@ -402,6 +407,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         } else {
           // default
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+        }
+        if (Utils.isIPhone()){
+          //iPhone pause screen is the same as start screen
+          this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.state.mainVideoElement.addClass('blur');
@@ -437,6 +446,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       } else {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
         this.mb.publish(OO.EVENTS.END_SCREEN_SHOWN);
+      }
+      if (Utils.isIPhone()){
+        //iPhone end screen is the same as start screen, except for the replay button
+        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       }
       this.skin.updatePlayhead(this.state.duration, this.state.duration, this.state.duration);
       this.state.playerState = CONSTANTS.STATE.END;
@@ -555,7 +568,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, {"marginHeight": marginHeight});
     },
 
-    onWillPlayNonlinearAd: function(event, adInfo) {
+    onPlayNonlinearAd: function(event, adInfo) {
       if(adInfo.url) {
         this.state.adOverlayUrl = adInfo.url;
         this.state.showAdOverlay = true;
@@ -583,6 +596,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVideoElementFocus: function(event, source) {
+      this.focusedElement = source;
       if (source == OO.VIDEO.MAIN) {
         this.state.pluginsElement.removeClass("showing");
         this.state.pluginsClickElement.removeClass("showing");
@@ -655,6 +669,26 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    // check if fullscreen is supported natively, set flag, add event listener for change
+    enableFullScreen: function() {
+      if (Fullscreen.enabled) {
+        this.state.isFullScreenSupported = true;
+        document.addEventListener(Fullscreen.raw.fullscreenchange, this.onFullscreenChanged.bind(this));
+      }
+    },
+
+    // iOS webkitSupportsFullscreen property is not valid until metadata has loaded
+    // https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/ControllingMediaWithJavaScript/ControllingMediaWithJavaScript.html#//apple_ref/doc/uid/TP40009523-CH3-SW13
+    enableIosFullScreen: function() {
+      if(!this.state.isFullScreenSupported) {
+        if (this.state.mainVideoElement.get(0).webkitSupportsFullscreen) {
+          this.state.isVideoFullScreenSupported = true;
+          this.state.mainVideoElement.get(0).addEventListener("webkitbeginfullscreen", this.webkitBeginFullscreen.bind(this));
+          this.state.mainVideoElement.get(0).addEventListener("webkitendfullscreen", this.webkitEndFullscreen.bind(this));
+        }
+      }
+    },
+
     //called when event listener triggered
     onFullscreenChanged: function() {
       if (this.state.isFullScreenSupported) {
@@ -663,25 +697,32 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.toggleFullscreen();
       }
 
-      // iPhone end screen is the same as start screen, except for the replay button
-      if (Utils.isIPhone() && (this.state.playerState == CONSTANTS.STATE.END || this.state.playerState == CONSTANTS.STATE.PAUSE)){
-        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
-      }
       this.renderSkin();
     },
 
     //called when user selects fullscreen icon
     toggleFullscreen: function() {
-      this.state.fullscreen = !this.state.fullscreen;
+      // full support, any element
       if(this.state.isFullScreenSupported) {
         Fullscreen.toggle(this.state.mainVideoWrapper.get(0));
-      } else {
+      }
+      // partial support, video element only (iOS)
+      else if (this.state.isVideoFullScreenSupported) {
+        if(this.state.fullscreen) {
+          this.state.mainVideoElement.get(0).webkitExitFullscreen();
+        } else {
+          this.state.mainVideoElement.get(0).webkitEnterFullscreen();
+        }
+      }
+      // no support
+      else {
         if(this.state.isFullWindow) {
           this.exitFullWindow();
         } else {
           this.enterFullWindow();
         }
       }
+      this.state.fullscreen = !this.state.fullscreen;
       this.renderSkin();
     },
 
@@ -708,6 +749,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       document.documentElement.style.overflow = 'visible';
       //remove full window style
       this.state.mainVideoWrapper.removeClass('fullscreen');
+    },
+
+    // iOS event fires when a video enters full-screen mode
+    webkitBeginFullscreen: function() {
+      this.state.fullscreen = true;
+    },
+
+    // iOS event fires when a video exits full-screen mode
+    webkitEndFullscreen: function() {
+      this.state.fullscreen = false;
     },
 
     // exit full window on ESC key
@@ -740,6 +791,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     unsubscribeBasicPlaybackEvents: function() {
+      this.mb.unsubscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PLAYED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PLAYING, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PAUSE, 'customerUi');
@@ -762,7 +814,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.unsubscribe(OO.EVENTS.AD_POD_STARTED, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_NONLINEAR_AD, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.PLAY_NONLINEAR_AD, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi");

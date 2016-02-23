@@ -6,6 +6,16 @@
       opacity: 0;
     }
   }
+
+  .action-icon.icon-hidden {
+    z-index: 11990;
+  }
+
+  .action-icon-pause.animate-pause {
+    z-index: 12600;
+    cursor: default;
+    visibility: hidden;
+  }
 }
 
 .adScreen.hidden {

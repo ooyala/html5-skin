@@ -2,6 +2,7 @@
   AD SCREEN
 *********************************************************************/
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     CONSTANTS = require('../constants/constants'),
     AdPanel = require('../components/adPanel'),
     ControlBar = require('../components/controlBar'),
@@ -23,7 +24,7 @@ var AdScreen = React.createClass({
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+    this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
 
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen) {
@@ -57,7 +58,7 @@ var AdScreen = React.createClass({
 
   handleResize: function() {
     if (this.isMounted()) {
-      this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+      this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
       this.props.controller.startHideControlBarTimer();
     }
   },
@@ -159,7 +160,8 @@ var AdScreen = React.createClass({
       'action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1,
       'action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1,
       'action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1,
-      'hidden': !this.props.skinConfig.pauseScreen.showPauseIcon
+      'hidden': !this.props.skinConfig.pauseScreen.showPauseIcon,
+      'icon-hidden': this.props.playerState != CONSTANTS.STATE.PAUSE
     });
     var adPanel = null;
     if (this.props.skinConfig.adScreen.showAdMarquee) {
@@ -183,7 +185,7 @@ var AdScreen = React.createClass({
          onMouseMove={this.handlePlayerMouseMove}
          onMouseUp={this.handleClick}>
 
-        <a className={actionIconClass} onClick={this.handlePlayerClicked}>
+        <a className={actionIconClass}>
           <span className={this.props.skinConfig.icons.pause.fontStyleClass}
             style={actionIconStyle}
             aria-hidden="true"></span>

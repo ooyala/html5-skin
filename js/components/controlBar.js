@@ -2,6 +2,7 @@
   CONTROL BAR
 *********************************************************************/
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     CONSTANTS = require('../constants/constants'),
     ClassNames = require('classnames'),
     Utils = require('./utils'),
@@ -85,7 +86,7 @@ var ControlBar = React.createClass({
     evt.cancelBubble = true; // IE
     evt = evt.nativeEvent;
 
-    this.getDOMNode().parentNode.addEventListener("touchmove", this.handleVolumeHeadMove);
+    ReactDOM.findDOMNode(this).parentNode.addEventListener("touchmove", this.handleVolumeHeadMove);
     document.addEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
 
     this.setState({
@@ -105,7 +106,7 @@ var ControlBar = React.createClass({
   setNewVolume: function(evt) {
     var newVolumeHeadX = this.isMobile ? evt.changedTouches[0].screenX : evt.screenX;
     var diffX = newVolumeHeadX - this.state.currentVolumeHead;
-    var diffVolume = (diffX / parseInt(this.refs.volumeSlider.getDOMNode().clientWidth));
+    var diffVolume = (diffX / parseInt(ReactDOM.findDOMNode(this.refs.volumeSlider)));
     var newVolume = this.props.controller.state.volumeState.volume + diffVolume;
     newVolume = Math.min(newVolume, 1);
     newVolume = Math.max(newVolume, 0);
@@ -121,7 +122,7 @@ var ControlBar = React.createClass({
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
     this.setNewVolume(evt);
-    this.getDOMNode().parentNode.removeEventListener("touchmove", this.handleVolumeHeadMove);
+    ReactDOM.findDOMNode(this).parentNode.removeEventListener("touchmove", this.handleVolumeHeadMove);
     document.removeEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
   },
 
@@ -180,11 +181,11 @@ var ControlBar = React.createClass({
   },
 
   volumeHighlight:function() {
-    this.highlight({target: this.refs.volumeIcon.getDOMNode()});
+    this.highlight({target: ReactDOM.findDOMNode(this.refs.volumeIcon)});
   },
 
   volumeRemoveHighlight:function() {
-    this.removeHighlight({target: this.refs.volumeIcon.getDOMNode()});
+    this.removeHighlight({target: ReactDOM.findDOMNode(this.refs.volumeIcon)});
   },
 
   populateControlBar: function() {

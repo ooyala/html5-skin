@@ -8,6 +8,7 @@
 * @constructor
 */
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     MoreOptionsPanel = require('../components/moreOptionsPanel'),
     CloseButton = require('../components/closeButton'),
     AccessibilityMixin = require('../mixins/accessibilityMixin');
@@ -38,7 +39,7 @@ var MoreOptionsScreen = React.createClass({
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: this.getDOMNode().clientWidth});
+    this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
   },
 
   handleClose: function() {

@@ -143,7 +143,7 @@ var StartScreen = React.createClass({
           {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : ''}
         </div>
 
-        {this.state.playButtonClicked || this.props.controller.state.buffering ? <Spinner /> : actionIcon}
+        {(this.state.playButtonClicked && this.props.controller.state.playerState == CONSTANTS.STATE.START) || this.props.controller.state.buffering ? <Spinner /> : actionIcon}
       </div>
     );
   }
