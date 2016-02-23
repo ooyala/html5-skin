@@ -682,8 +682,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if(!this.state.isFullScreenSupported) {
         if (this.state.mainVideoElement.get(0).webkitSupportsFullscreen) {
           this.state.isVideoFullScreenSupported = true;
-          this.state.mainVideoElement.get(0).addEventListener("webkitbeginfullscreen", this.webkitbeginfullscreen.bind(this));
-          this.state.mainVideoElement.get(0).addEventListener("webkitendfullscreen", this.webkitendfullscreen.bind(this));
+          this.state.mainVideoElement.get(0).addEventListener("webkitbeginfullscreen", this.webkitBeginFullscreen.bind(this));
+          this.state.mainVideoElement.get(0).addEventListener("webkitendfullscreen", this.webkitEndFullscreen.bind(this));
         }
       }
     },
@@ -751,12 +751,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     // iOS event fires when a video enters full-screen mode
-    webkitbeginfullscreen: function() {
+    webkitBeginFullscreen: function() {
       this.state.fullscreen = true;
     },
 
     // iOS event fires when a video exits full-screen mode
-    webkitendfullscreen: function() {
+    webkitEndFullscreen: function() {
       this.state.fullscreen = false;
     },
 
