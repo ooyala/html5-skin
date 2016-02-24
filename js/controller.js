@@ -36,6 +36,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "adOverlayUrl": null,
       "showAdOverlay": false,
       "showAdOverlayCloseButton": false,
+      "adOverlayLoaded": false,
       "configLoaded": false,
       "fullscreen": false,
       "pauseAnimationDisabled": false,
@@ -602,6 +603,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onAdOverlayLoaded: function() {
+      this.state.adOverlayLoaded = true;
+      this.mb.publish(OO.EVENTS.NON_LINEAR_AD_DISPLAYED);
+    },
+
     onVideoElementFocus: function(event, source) {
       this.focusedElement = source;
       if (source == OO.VIDEO.MAIN) {
@@ -628,6 +634,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     hideNonlinearAd: function(event) {
+      this.state.adOverlayLoaded = false;
       this.state.showAdOverlay = false;
       this.state.pluginsElement.removeClass("overlay_showing");
       this.renderSkin();

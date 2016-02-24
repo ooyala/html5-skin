@@ -22,6 +22,12 @@ var AdOverlay = React.createClass({
     }
   },
 
+  overlayLoaded: function() {
+    if (this.props.overlay && this.props.showOverlay && !this.props.controller.state.adOverlayLoaded){
+      this.props.controller.onAdOverlayLoaded();
+    }
+  },
+
   render: function() {
     var adOverlayClass = ClassNames({
       "adOverlay": true,
@@ -36,7 +42,7 @@ var AdOverlay = React.createClass({
 
     return (
       <div className={adOverlayClass} onMouseUp={this.handleOverlayClick} onTouchEnd={this.handleOverlayClick}>
-        <img src={this.props.overlay} className="adOverlayImage"></img>
+        <img src={this.props.overlay} className="adOverlayImage" onload={this.overlayLoaded()}></img>
 
         <CloseButton cssClass={closeButtonClass}
                      closeAction={this.closeOverlay}
