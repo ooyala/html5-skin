@@ -36,7 +36,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "adOverlayUrl": null,
       "showAdOverlay": false,
       "showAdOverlayCloseButton": false,
-      "adOverlayLoaded": false,
       "configLoaded": false,
       "fullscreen": false,
       "pauseAnimationDisabled": false,
@@ -604,7 +603,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onAdOverlayLoaded: function() {
-      this.state.adOverlayLoaded = true;
       this.mb.publish(OO.EVENTS.NONLINEAR_AD_DISPLAYED);
     },
 
@@ -634,7 +632,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     hideNonlinearAd: function(event) {
-      this.state.adOverlayLoaded = false;
       this.state.showAdOverlay = false;
       this.state.pluginsElement.removeClass("overlay_showing");
       this.renderSkin();

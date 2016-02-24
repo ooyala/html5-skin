@@ -38,6 +38,9 @@ describe('AdOverlay', function () {
         overlay={true}
         showOverlay={true}
       />);
+
+    var adOverlayImage = TestUtils.findRenderedDOMComponentWithClass(DOM, 'adOverlayImage');
+    TestUtils.Simulate.load(adOverlayImage);
     expect(loaded).toBe(true);
   });
 
