@@ -605,7 +605,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onAdOverlayLoaded: function() {
       this.state.adOverlayLoaded = true;
-      this.mb.publish(OO.EVENTS.NON_LINEAR_AD_DISPLAYED);
+      this.mb.publish(OO.EVENTS.NONLINEAR_AD_DISPLAYED);
     },
 
     onVideoElementFocus: function(event, source) {
