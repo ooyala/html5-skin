@@ -64,6 +64,10 @@
       text-align: left;
       margin-top: 6px;
       line-height: $control-bar-height - 3;
+
+      .total-time {
+        color: #B3B3B3;
+      }
     }
 
     .controlBarFlexSpace {
