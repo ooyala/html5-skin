@@ -117,6 +117,8 @@ $font-family-base:                  $font-family-sans-serif !default;
 $font-size-root:               16px !default;
 $font-size-base:               1em !default;
 //$font-size-lg:               1.25em !default;
+$font-size-lg-screen-title:    1.9em !default;
+$font-size-lg-screen-desc:     1.3em !default;
 $font-size-md-screen-title:    1.6em !default;
 $font-size-md-screen-desc:     1.1em !default;
 $font-size-sm-screen-title:    1.1em !default;
@@ -348,6 +350,7 @@ $state-danger-text:              #a94442 !default;
 //
 // Video
 $small-multiple:                  0.7;
+$large-multiple:                  1.2;
 $scrubber-padding-height:         24px !default;
 $control-bar-height:              60px !default;
 $scrubber-bar-height:             5px !default;
