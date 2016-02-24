@@ -287,6 +287,16 @@ var Utils = {
     return r;
   },
 
+  reformatAspectRatio: function (aspectRatio) {
+    var aspectRatioArray = aspectRatio.split(':');
+    var vidWidth = aspectRatioArray[0];
+    var vidHeight = aspectRatioArray[1];
+    var dimensions = {};
+    dimensions["width"] = vidWidth;
+    dimensions["height"] = vidHeight;
+    return dimensions;
+  },
+
   _isValid: function( item ) {
     var valid = (
       item &&
