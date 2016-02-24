@@ -602,6 +602,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onAdOverlayLoaded: function() {
+      this.mb.publish(OO.EVENTS.NONLINEAR_AD_DISPLAYED);
+    },
+
     onVideoElementFocus: function(event, source) {
       this.focusedElement = source;
       if (source == OO.VIDEO.MAIN) {
