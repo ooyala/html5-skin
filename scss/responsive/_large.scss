@@ -14,19 +14,29 @@
   // Discovery Screen
   .discoveryScreen {
     .discovery-panel {
+      padding: $panel-padding-lg;
       margin-top:auto;
       margin-bottom:auto;
+      .discovery-panel-title {
+        position: absolute;
+      }
       .discoveryToasterContainerStyle {
-        height: 650px;
-        overflow: hidden;
+        max-height: 460px;
+
       }
       .discoveryImageWrapperStyle {
-        width:214px;
-        height:170px;
-        margin: 30px;
-      }
-      img.imageStyle {
         width: 214px;
+        height: auto;
+        margin: 0 60px 60px 0;
+
+        &:nth-child(even) {
+          margin-bottom: 0;
+        }
+        &:last-child, &:nth-last-child(2) {
+          margin-right:0;
+        }
+      }
+      .imageStyle {
         height: 120px;
       }
     }
@@ -34,9 +44,15 @@
 
   // Closed Caption Screen
   .closedCaptionsScreen{
-    .language-container {
-      .language-panel {
-        height: 400px
+    .closed-captions-panel {
+      padding: $panel-padding-lg;
+      .language-container {
+        .language-panel {
+          height: 400px
+        }
+      }
+      .preview-panel {
+        padding: 12px $panel-padding-lg;
       }
     }
   }
@@ -97,5 +113,27 @@
         margin-right: 5px;
       }
     }
+  }
+
+  //Close Buttons
+  button.closeBtn {
+    top: $panel-padding-lg;
+    right: $panel-padding-lg;
+  }
+
+  //Share Screen
+  .share-screen {
+    .share-container {
+      padding: $panel-padding-lg;
+      .tabRow {
+        top: $panel-padding-lg;
+        left: $panel-padding-lg;
+      }
+    }
+  }
+
+  //Video Quality
+  .quality-screen {
+    padding: $panel-padding-lg;
   }
 }
