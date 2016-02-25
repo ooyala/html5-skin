@@ -166,7 +166,7 @@ var AdScreen = React.createClass({
       'icon-hidden': this.props.playerState != CONSTANTS.STATE.PAUSE
     });
     var adPanel = null;
-    if (this.props.skinConfig.adScreen.showAdMarquee) {
+    if (this.props.skinConfig.adScreen.showAdMarquee && this.props.controller.state.showAdMarquee) {
       adPanel = <AdPanel {...this.props} controlBarWidth={this.state.controlBarWidth}/>;
     }
     var playbackControlItems = null;
