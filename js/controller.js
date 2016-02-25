@@ -36,6 +36,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "adOverlayUrl": null,
       "showAdOverlay": false,
       "showAdOverlayCloseButton": false,
+      "showAdControls": true,
       "configLoaded": false,
       "fullscreen": false,
       "pauseAnimationDisabled": false,
@@ -153,6 +154,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi", _.bind(this.showNonlinearAd, this));
           this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD_CLOSE_BUTTON, "customerUi", _.bind(this.showNonlinearAdCloseButton, this));
           this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
+          this.mb.subscribe(OO.EVENTS.SHOW_AD_CONTROLS, "customerUi", _.bind(this.onShowAdControls, this));
         }
       }
       this.state.isSubscribed = true;
@@ -558,6 +560,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onShowAdControls: function(event, showAdControls) {
+      this.state.showAdControls = showAdControls;
+      this.renderSkin();
+    },
+
     onSkipAdClicked: function(event) {
       this.state.isSkipAdClicked = true;
       OO.log("onSkipAdClicked is called");
@@ -781,12 +788,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onErrorEvent: function(event, errorCode){
-      this.unsubscribeBasicPlaybackEvents();
+      this.mb.publish(OO.EVENTS.SHOW_AD_CONTROLS, errorCode);//xenia: this is to test, remove this line and uncomment everything below 
+      // this.unsubscribeBasicPlaybackEvents();
 
-      this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
-      this.state.playerState = CONSTANTS.STATE.ERROR;
-      this.state.errorCode = errorCode;
-      this.renderSkin();
+      // this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
+      // this.state.playerState = CONSTANTS.STATE.ERROR;
+      // this.state.errorCode = errorCode;
+      // this.renderSkin();
     },
 
     unsubscribeFromMessageBus: function() {
@@ -830,6 +838,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.unsubscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.SHOW_AD_CONTROLS, "customerUi");
 
         if (OO.EVENTS.DISCOVERY_API) {
           this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi");
