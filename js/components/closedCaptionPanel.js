@@ -18,7 +18,7 @@ var ClosedCaptionPanel = React.createClass({
     return (
         <div className="closed-captions-panel">
           <div className="closed-captions-panel-title">
-            {closedCaptionOptionsString} 
+            {closedCaptionOptionsString}
             <span className={this.props.skinConfig.icons.cc.fontStyleClass}></span>
           </div>
           <OnOffSwitch {...this.props} />
@@ -116,9 +116,25 @@ var LanguageTabContent = React.createClass({
     };
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    //If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
+    if (nextProps.responsiveView != this.props.responsiveView) {
+      var currentViewSize = this.props.responsiveView.replace('ooyala-', '');
+      var nextViewSize = nextProps.responsiveView.replace('ooyala-', '');
+      var firstLanguageIndex = this.state.currentPage * this.props.languagesPerPage[currentViewSize] - this.props.languagesPerPage[currentViewSize];
+      var newCurrentPage = Math.floor(firstLanguageIndex/nextProps.languagesPerPage[nextViewSize]) + 1;
+      this.setState({
+        currentPage: newCurrentPage
+      });
+    }
+  },
+
   changeLanguage: function(language){
     if (this.props.closedCaptionOptions.enabled){
       this.props.controller.onClosedCaptionLanguageChange(language);
+      this.setState({
+        selectedLanguage: language
+      });
     }
   },
 
@@ -148,7 +164,8 @@ var LanguageTabContent = React.createClass({
     var availableLanguages = this.props.closedCaptionOptions.availableLanguages; //getting list of languages
 
     //pagination
-    var languagesPerPage = this.props.languagesPerPage.medium;
+    var currentViewSize = this.props.responsiveView.replace('ooyala-', '');
+    var languagesPerPage = this.props.languagesPerPage[currentViewSize];
     var startAt = languagesPerPage * (this.state.currentPage - 1);
     var endAt = languagesPerPage * this.state.currentPage;
     var languagePage = availableLanguages.languages.slice(startAt,endAt);
