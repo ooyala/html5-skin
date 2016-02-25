@@ -191,7 +191,7 @@ var ControlBar = React.createClass({
   handleWatermarkClick: function() {
     var watermarkClickUrl = this.props.skinConfig.controlBar.watermark.clickUrl;
     if (watermarkClickUrl){
-      window.open(watermarkClickUrl);
+      window.open(watermarkClickUrl,'_blank');
     }
   },
 
