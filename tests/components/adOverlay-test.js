@@ -11,9 +11,13 @@ var CONSTANTS = require('../../js/constants/constants');
 
 describe('AdOverlay', function () {
   it('creates an AdOverlay', function () {
+    var loaded = false;
     var mockController = {
       state: {
         isMobile: false
+      },
+      onAdOverlayLoaded: function() {
+        loaded = true;
       }
     };
     var mockSkinConfig = {
@@ -31,8 +35,13 @@ describe('AdOverlay', function () {
       <AdOverlay
         controller={mockController}
         skinConfig={mockSkinConfig}
+        overlay={true}
+        showOverlay={true}
       />);
 
+    var adOverlayImage = TestUtils.findRenderedDOMComponentWithClass(DOM, 'adOverlayImage');
+    TestUtils.Simulate.load(adOverlayImage);
+    expect(loaded).toBe(true);
   });
 
   it('handles a click', function () {

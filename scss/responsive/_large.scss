@@ -43,13 +43,52 @@
   }
 
   // Closed Caption Screen
-  .closedCaptionsScreen{
+  .closedCaptionsScreen {
     .closed-captions-panel {
-      padding: $panel-padding-lg;
-      .language-container {
-        .language-panel {
-          height: 400px
+      padding:$panel-padding * $large-multiple;
+      .closed-captions-panel-title {
+        font-size: $font-size-lg-screen-title;
+        span.icon {
+          top: 4px;
+          font-size: 1em;
         }
+      }
+      .switch-container {
+        margin-top: 42px;
+        height: 26px;
+        width: 126px;
+        .switch-captions {
+          font-size: $font-size-base * $large-multiple;
+        }
+        .switch-element {
+          margin-bottom: 33%;
+        }
+      }
+    }
+    .language-container {
+      margin-top: 8%;
+      .language-panel {
+        a.item {
+          width: 168px;
+          font-size: 1.4em;
+          margin: 17px 33px;
+          padding: 3px 12px;
+        }
+      }
+      .discoverBtn {
+        span.icon {
+          font-size: 1.2em;
+        }
+      }
+    }
+    .preview-panel {
+      padding: 14px $panel-padding * $large-multiple;
+      .preview-caption {
+        font-size: 1em;
+        line-height:1.4em;
+      }
+      .preview-text {
+        font-size: 1.7em;
       }
       .preview-panel {
         padding: 12px $panel-padding-lg;

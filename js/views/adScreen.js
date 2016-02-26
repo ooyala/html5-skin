@@ -68,6 +68,9 @@ var AdScreen = React.createClass({
     event.cancelBubble = true; // IE
 
     this.props.controller.state.accessibilityControlsEnabled = true;
+    if ((event.type == 'click' || !this.isMobile) && !this.props.skinConfig.adScreen.showAdMarquee) {
+      this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.VIDEO_WINDOW);
+    }
   },
 
   handlePlayerClicked: function(event) {
@@ -101,13 +104,17 @@ var AdScreen = React.createClass({
   },
 
   handleTouchEnd: function(event) {
+    // handleTouchEnd is used to verify controlBar visibility.
     if (!this.state.controlBarVisible && this.props.skinConfig.adScreen.showControlBar) {
       this.showControlBar();
-      this.props.controller.startHideControlBarTimer();
+      // Do not start the process to hide the control bar unless we are leaving pause state.
+      if (this.props.playerState == CONSTANTS.STATE.PAUSE) {
+        this.props.controller.startHideControlBarTimer();
+      }
     }
-    else {
-      this.handlePlayerClicked(event);
-    }
+    // Even if our action was to start showing the control bar, we should still handle
+    // the click to prevent the need to double tap.
+    this.handlePlayerClicked(event);
   },
 
   handlePlayerMouseMove: function() {
@@ -159,7 +166,7 @@ var AdScreen = React.createClass({
       'icon-hidden': this.props.playerState != CONSTANTS.STATE.PAUSE
     });
     var adPanel = null;
-    if (this.props.skinConfig.adScreen.showAdMarquee) {
+    if (this.props.skinConfig.adScreen.showAdMarquee && this.props.controller.state.showAdMarquee) {
       adPanel = <AdPanel {...this.props} controlBarWidth={this.state.controlBarWidth}/>;
     }
     var playbackControlItems = null;

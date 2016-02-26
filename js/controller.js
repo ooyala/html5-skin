@@ -36,6 +36,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "adOverlayUrl": null,
       "showAdOverlay": false,
       "showAdOverlayCloseButton": false,
+      "showAdMarquee": true,
       "configLoaded": false,
       "fullscreen": false,
       "pauseAnimationDisabled": false,
@@ -153,6 +154,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi", _.bind(this.showNonlinearAd, this));
           this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD_CLOSE_BUTTON, "customerUi", _.bind(this.showNonlinearAdCloseButton, this));
           this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
+          this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi", _.bind(this.onShowAdMarquee, this));
         }
       }
       this.state.isSubscribed = true;
@@ -558,6 +560,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onShowAdMarquee: function(event, showAdMarquee) {
+      this.state.showAdMarquee = showAdMarquee;
+      this.renderSkin();
+    },
+
     onSkipAdClicked: function(event) {
       this.state.isSkipAdClicked = true;
       OO.log("onSkipAdClicked is called");
@@ -600,6 +607,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       this.state.pluginsElement.css(newCSS);
       this.renderSkin();
+    },
+
+    onAdOverlayLoaded: function() {
+      this.mb.publish(OO.EVENTS.NONLINEAR_AD_DISPLAYED);
     },
 
     onVideoElementFocus: function(event, source) {
@@ -826,6 +837,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.unsubscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi");
 
         if (OO.EVENTS.DISCOVERY_API) {
           this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi");
