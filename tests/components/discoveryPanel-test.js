@@ -1,7 +1,9 @@
 jest.dontMock('../../js/components/discoveryPanel')
+    .dontMock('../../js/components/discoverItem')
     .dontMock('classnames');
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 var DiscoveryPanel = require('../../js/components/discoveryPanel');
 
@@ -25,7 +27,7 @@ describe('DiscoveryPanel', function () {
     var vidName = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'discoveryContentName');
     //loop through all videos, test expected values from mock data
     for (var i=0; i<data.relatedVideos.length; i++) {
-      expect(vidImg[i].getAttribute('src')).toEqual(data.relatedVideos[i].preview_image_url);
+      expect(ReactDOM.findDOMNode(vidImg[i]).style.backgroundImage).toEqual("url("+data.relatedVideos[i].preview_image_url+")");
       expect(vidName[i].textContent).toEqual(data.relatedVideos[i].name);
     }
 
