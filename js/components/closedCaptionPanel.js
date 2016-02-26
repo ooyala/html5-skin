@@ -106,7 +106,8 @@ var LanguageTabContent = React.createClass({
         small: 1,
         medium: 4,
         large: 15
-      }
+      },
+      responsiveView: 'ooyala-medium'
     }
   },
 

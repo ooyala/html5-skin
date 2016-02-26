@@ -7,7 +7,8 @@ var React = require('react'),
     ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants'),
     Utils = require('./utils'),
-    CountDownClock = require('./countDownClock');
+    CountDownClock = require('./countDownClock'),
+    DiscoverItem = require('./discoverItem');
 
 var DiscoveryPanel = React.createClass({
   propTypes: {
@@ -39,7 +40,7 @@ var DiscoveryPanel = React.createClass({
       videosPerPage: {
         small: 2,
         medium: 6,
-        large: 10
+        large: 8
       },
       skinConfig: {
         discoveryScreen: {
@@ -169,13 +170,15 @@ var DiscoveryPanel = React.createClass({
     var discoveryContentBlocks = [];
     for (var i = 0; i < relatedVideoPage.length; i++) {
       discoveryContentBlocks.push(
-        <div className="discoveryImageWrapperStyle" key={i}>
-          <a onClick={this.handleDiscoveryContentClick.bind(this, videosPerPage * (this.state.currentPage - 1) + i)}>
-            <img className="imageStyle" src={relatedVideoPage[i].preview_image_url} />
-            <span className={discoveryContentName}>{relatedVideoPage[i].name}</span>
-          </a>
-          {(this.shouldShowCountdownTimer() && i === 0) ? countDownClock : ''}
-        </div>
+        <DiscoverItem {...this.props}
+          key={i}
+          src={relatedVideoPage[i].preview_image_url}
+          contentTitle={relatedVideoPage[i].name}
+          contentTitleClassName={discoveryContentName}
+          onClickAction={this.handleDiscoveryContentClick.bind(this, videosPerPage * (this.state.currentPage - 1) + i)}
+        >
+          {(this.shouldShowCountdownTimer() && i === 0) ? countDownClock : null}
+        </DiscoverItem>
       );
     }
 
