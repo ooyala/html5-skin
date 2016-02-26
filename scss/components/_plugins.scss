@@ -27,6 +27,10 @@
   display: none;
 }
 
+.player_skin_plugins.full:not(.overlay_showing), .player_skin_plugins_click_layer.full {
+  bottom: 0;
+}
+
 .player_skin_plugins_click_layer.showing {
   display: block;
 }
