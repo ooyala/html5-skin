@@ -188,6 +188,13 @@ var ControlBar = React.createClass({
     this.removeHighlight({target: ReactDOM.findDOMNode(this.refs.volumeIcon)});
   },
 
+  handleWatermarkClick: function() {
+    var watermarkClickUrl = this.props.skinConfig.controlBar.watermark.clickUrl;
+    if (watermarkClickUrl){
+      window.open(watermarkClickUrl,'_blank');
+    }
+  },
+
   populateControlBar: function() {
     var dynamicStyles = this.setupItemStyle();
     var playClass = "";
@@ -263,6 +270,12 @@ var ControlBar = React.createClass({
       "selected": this.state.showVideoQualityPopover
     });
 
+    var watermarkClass = ClassNames({
+      "watermark": true,
+      "controlBarItem": true,
+      "nonClickableWatermark": !this.props.skinConfig.controlBar.watermark.clickUrl
+    });
+
     var controlItemTemplates = {
       "playPause": <button className="playPause controlBarItem" onClick={this.handlePlayClick} key="playPause">
         <span className={playClass} style={dynamicStyles.iconCharacter}
@@ -332,8 +345,8 @@ var ControlBar = React.createClass({
         </span>
       </button>,
 
-      "watermark": <div className="watermark controlBarItem" key="watermark" style = {dynamicStyles.watermarkImageStyle}>
-        <img src={watermarkUrl} />
+      "watermark": <div className={watermarkClass} key="watermark" style = {dynamicStyles.watermarkImageStyle}>
+        <img src={watermarkUrl} onClick={this.handleWatermarkClick}/>
       </div>
     };
 
