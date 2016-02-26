@@ -45,7 +45,7 @@
   // Closed Caption Screen
   .closedCaptionsScreen {
     .closed-captions-panel {
-      padding:$panel-padding * $large-multiple;
+      padding:$panel-padding-lg;
       .closed-captions-panel-title {
         font-size: $font-size-lg-screen-title;
         span.icon {
@@ -82,16 +82,13 @@
       }
     }
     .preview-panel {
-      padding: 14px $panel-padding * $large-multiple;
+      padding: 14px $panel-padding-lg;
       .preview-caption {
         font-size: 1em;
         line-height:1.4em;
       }
       .preview-text {
         font-size: 1.7em;
-      }
-      .preview-panel {
-        padding: 12px $panel-padding-lg;
       }
     }
   }
