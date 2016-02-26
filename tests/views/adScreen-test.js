@@ -88,7 +88,7 @@ describe('AdScreen', function () {
     expect(controlBarVisible).toBe(true);
   });
 
-it('checks that ad marquee is not shown when showAdMarquee in controler is false', function () {
+it('checks that ad marquee is shown/not shown when appropriate', function () {
 
     // Render start screen into DOM
     var mockController = {
