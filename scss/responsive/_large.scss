@@ -75,6 +75,10 @@
           padding: 3px 12px;
         }
       }
+      .flexcontainer {
+        -webkit-flex-flow: row wrap;
+        flex-flow: row wrap;
+      }
       .discoverBtn {
         span.icon {
           font-size: 1.2em;
