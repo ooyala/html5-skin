@@ -72,14 +72,7 @@
       }
     }
     .preview-panel {
-      padding: 8px $panel-padding * $small-multiple;
-      .preview-caption {
-        font-size: 0.6em;
-        line-height:.8em;
-      }
-      .preview-text {
-        font-size: 1.0em;
-      }
+      display: none;
     }
   }
 
