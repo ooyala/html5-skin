@@ -133,3 +133,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+// calculate padding from aspect ratio
+@mixin set-aspect-ratio($width, $height) {
+  padding-top: 100% * ($height/$width);
+}
