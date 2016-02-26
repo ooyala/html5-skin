@@ -38,6 +38,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "showAdOverlayCloseButton": false,
       "showAdMarquee": true,
       "configLoaded": false,
+      "config": {},
       "fullscreen": false,
       "pauseAnimationDisabled": false,
       "adPauseAnimationDisabled": true,
@@ -189,6 +190,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
         //Override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
+        this.state.config = data;
 
         this.skin = ReactDOM.render(
           React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .player_skin")
@@ -197,7 +199,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.configLoaded = true;
         this.renderSkin();
 
-        $("#" + this.state.elementId + " .player_skin").append("<div class='player_skin_plugins'></div><div class='player_skin_plugins_click_layer'></div>");
+        var fullClass = (this.state.config.adScreen.showControlBar ? "" : " full");
+        $("#" + this.state.elementId + " .player_skin").append("<div class='player_skin_plugins"+fullClass+"'></div><div class='player_skin_plugins_click_layer"+fullClass+"'></div>");
         this.state.pluginsElement = $("#" + this.state.elementId + " .player_skin_plugins");
         this.state.pluginsClickElement = $("#" + this.state.elementId + " .player_skin_plugins_click_layer");
         this.state.pluginsElement.mouseover(

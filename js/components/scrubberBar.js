@@ -209,6 +209,8 @@ var ScrubberBar = React.createClass({
         playheadPaddingStyle.left = Math.max(
           Math.min(this.scrubberBarWidth - parseInt(this.playheadWidth)/2,
             playheadPaddingStyle.left), 0);
+
+        if (isNaN(playheadPaddingStyle.left)) playheadPaddingStyle.left = 0;
     }
 
     var playheadMouseDown = this.handlePlayheadMouseDown;

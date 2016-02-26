@@ -22,19 +22,15 @@
     background-color: $panel-bg;
     left: 0;
     right: 0;
-    display: flex;
-    display: -webkit-flex;
-    flex-direction: row;
-    -webkit-flex-direction: row;
     height: 100%;
 
     .discovery-panel-title {
-      position: absolute;
+      position: relative;
       line-height: 1;
       font-weight: bold;
-      font-size: $font-size-md-screen-title; //this.props.skinConfig.discoveryScreen.panelTitle.titleFont.fontSize
-      font-family: $font-family-roboto-condensed; //this.props.skinConfig.discoveryScreen.panelTitle.titleFont.fontFamily
-      color: $white; //this.props.skinConfig.discoveryScreen.panelTitle.titleFont.color
+      font-size: $font-size-md-screen-title;
+      font-family: $font-family-roboto-condensed;
+      color: $white;
       span.icon {
         top: 1px;
         position: relative;
@@ -43,10 +39,13 @@
       }
     }
     .discoveryToasterContainerStyle {
+      @include absolute-center;
+      position:relative;
       background-color: transparent;
-      height: 320px;
+      height: auto;
+      max-height: 370px;
       width: 100%;
-      overflow: auto;
+      overflow: hidden;
       white-space: nowrap;
       margin: auto;
     }
@@ -54,35 +53,46 @@
     .flexcontainer {
       display: -webkit-flex;
       display: flex;
+      -webkit-align-items: center;
+      align-items: center;
+      -webkit-justify-content: center;
+      justify-content: center;
       -webkit-flex-flow: column wrap;
       flex-flow: column wrap;
+      -webkit-align-content: center;
+      align-content: center;
       overflow: hidden;
-      align-items: center;
-      -webkit-align-items: center;
-      justify-content: center;
     }
 
     .discoveryImageWrapperStyle {
       position: relative;
-      height: 84px;
       width: 150px;
-      margin: 24px;
+      height: auto;
+      margin: 0 42px 42px 0;
       flex-shrink: 0;
+
+      &:nth-child(even) {
+        margin-bottom: 0;
+      }
+      &:last-child, &:nth-last-child(2) {
+        margin-right:0
+      }
     }
 
-    img.imageStyle {
-      //position: absolute;
-      width: 150px;
+    .imageStyle {
+      width: auto;
       height: 84px;
       display: block;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
     }
 
     .discoveryContentName {
       color: $white;
       font-size: $font-size-base;
       font-family: $font-family-roboto-condensed;
-      width: 150px;
-      //height: 30px;
+      width: 100%;
       display: inline-block;
       text-transform: capitalize;
       @include text-truncate();

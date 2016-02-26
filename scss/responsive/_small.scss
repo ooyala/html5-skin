@@ -14,9 +14,21 @@
   // Discovery Screen
   .discoveryScreen {
     .discovery-panel {
+      .discovery-panel-title {
+        position: absolute;
+      }
       .discoveryToasterContainerStyle {
-        min-height:0;
-        height: 200px;
+        max-height: 200px;
+      }
+      .discoveryImageWrapperStyle {
+        margin-bottom: 0;
+
+        &:nth-last-child(2) {
+          margin-right:42px;
+        }
+        &:last-child {
+          margin-right:0;
+        }
       }
     }
   }
@@ -134,7 +146,6 @@
 
   //Video Quality
   .quality-screen {
-    padding:$panel-padding * $small-multiple;
     .quality-panel-title {
       font-size: $font-size-sm-screen-title;
       span.icon {
@@ -277,8 +288,6 @@
 
   //Close Buttons
   button.closeBtn {
-    top: $panel-padding * $small-multiple;
-    right: $panel-padding * $small-multiple;
     font-size: 10px;
   }
 

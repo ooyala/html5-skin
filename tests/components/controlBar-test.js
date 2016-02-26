@@ -896,4 +896,80 @@ describe('ControlBar', function () {
     TestUtils.Simulate.click(qualityButton);
     expect(qualityClicked).toBe(true);
   });
+
+  it("renders nonclickable watermark", function() {
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
+      }
+    };
+
+    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig.buttons.desktopContent = [
+      {"name":"watermark", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
+    ];
+    oneButtonSkinConfig.controlBar.watermark.clickUrl = false;
+
+    var mockProps = {
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+        controlBarWidth={100}
+        playerState={CONSTANTS.STATE.PLAYING}
+        authorization={mockProps.authorization} />
+    );
+
+    var watermark = TestUtils.findRenderedDOMComponentWithClass(DOM, 'watermark');
+    var nonClickableWatermark = TestUtils.findRenderedDOMComponentWithClass(DOM, 'nonClickableWatermark');
+    expect(nonClickableWatermark).not.toBe(null);
+  });
+
+  it("renders clickable watermark", function() {
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
+      }
+    };
+
+    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig.buttons.desktopContent = [
+      {"name":"watermark", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
+    ];
+    oneButtonSkinConfig.controlBar.watermark.clickUrl = true;
+
+    var mockProps = {
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+        controlBarWidth={100}
+        playerState={CONSTANTS.STATE.PLAYING}
+        authorization={mockProps.authorization} />
+    );
+
+    var nonClickableWatermark = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'nonClickableWatermark');
+    expect(nonClickableWatermark.length).toBe(0);
+
+    var watermark = TestUtils.findRenderedDOMComponentWithClass(DOM, 'watermark');
+    TestUtils.Simulate.click(watermark);
+  });
 });
