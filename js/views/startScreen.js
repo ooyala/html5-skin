@@ -24,6 +24,13 @@ var StartScreen = React.createClass({
   getDefaultProps: function () {
     return {
       skinConfig: {
+        general: {
+          loadingImage: {
+            imageResource: {
+              url: null
+            }
+          }
+        },
         startScreen: {
           titleFont: {
           },
