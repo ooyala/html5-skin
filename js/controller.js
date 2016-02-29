@@ -275,6 +275,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onEmbedCodeChanged: function(event, embedCode, options) {
       this.state.videoQualityOptions.availableBitrates = null;
+      this.state.closedCaptionOptions.availableLanguages = null;
 
       this.state.assetId = embedCode;
       $.extend(true, this.state.playerParam, options);
