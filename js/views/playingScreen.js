@@ -59,7 +59,7 @@ var PlayingScreen = React.createClass({
 
   handlePlayerMouseUp: function(event) {
     // pause or play the video if the skin is clicked on desktop
-    if (!this.isMobile) {
+    if (!this.isMobile && event.target.tagName != "BUTTON") {
       event.stopPropagation(); // W3C
       event.cancelBubble = true; // IE
 

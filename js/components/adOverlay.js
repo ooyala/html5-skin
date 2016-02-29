@@ -15,7 +15,7 @@ var AdOverlay = React.createClass({
   },
 
   handleOverlayClick: function(event) {
-    if (event.type == 'touchend' || !this.props.controller.state.isMobile){
+    if ((event.type == 'touchend' || !this.props.controller.state.isMobile) && event.target.tagName != "BUTTON"){
       event.stopPropagation(); // W3C
       event.cancelBubble = true; // IE
       this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.OVERLAY);
