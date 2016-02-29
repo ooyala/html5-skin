@@ -111,7 +111,7 @@ var PlayingScreen = React.createClass({
          onMouseOut={this.hideControlBar}
          onMouseMove={this.handlePlayerMouseMove}>
 
-      {this.props.controller.state.buffering ? <Spinner /> : ''}
+      {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : ''}
 
       <div className="default-screen"
            onMouseUp={this.handlePlayerMouseUp}

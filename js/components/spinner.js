@@ -5,7 +5,7 @@ var Spinner = React.createClass({
     return (
       <div className="spinner-screen">
         <div className="spinner-wrapper">
-          <img src="assets/images/loading.png" className="spinner" />
+          <img src={this.props.loadingImage} className="spinner" />
         </div>
       </div>
     );
