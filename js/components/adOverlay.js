@@ -8,18 +8,12 @@ var React = require('react'),
 
 var AdOverlay = React.createClass({
   closeOverlay: function(event) {
-    event.stopPropagation();
-    event.cancelBubble = true;
     this.props.controller.closeNonlinearAd();
     this.props.controller.onSkipAdClicked();
   },
 
   handleOverlayClick: function(event) {
-    if ((event.type == 'touchend' || !this.props.controller.state.isMobile) && event.target.tagName != "BUTTON"){
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
       this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.OVERLAY);
-    }
   },
 
   overlayLoaded: function() {
@@ -41,13 +35,14 @@ var AdOverlay = React.createClass({
     });
 
     return (
-      <div className={adOverlayClass} onMouseUp={this.handleOverlayClick} onTouchEnd={this.handleOverlayClick}>
-        <img src={this.props.overlay} className="adOverlayImage" onLoad={this.overlayLoaded}></img>
-
+      <div className={adOverlayClass}>
+        <a onClick={this.handleOverlayClick}>
+          <img src={this.props.overlay} className="adOverlayImage" onLoad={this.overlayLoaded} />
+        </a>
         <CloseButton cssClass={closeButtonClass}
-                     closeAction={this.closeOverlay}
-                     fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass + " adOverlayCloseButtonIcon"}
-                     ref="adOverlayCloseButton" />
+          closeAction={this.closeOverlay}
+          fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass + " adOverlayCloseButtonIcon"}
+          ref="adOverlayCloseButton" />
       </div>
     );
   }
