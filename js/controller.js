@@ -510,9 +510,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.resetUpNextInfo(false);
     },
 
-    onAssetDimensionsReceived: function(event, assetDimensions) {
-      this.state.mainVideoAspectRatio = this.calculateAspectRatio(assetDimensions.width, assetDimensions.height);
-      this.setAspectRatio();
+    onAssetDimensionsReceived: function(event, params) {
+      if (params.videoId == OO.VIDEO.MAIN) {
+        this.state.mainVideoAspectRatio = this.calculateAspectRatio(params.width, params.height);
+        this.setAspectRatio();
+      }
     },
 
     /********************************************************************
