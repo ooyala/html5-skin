@@ -11,72 +11,24 @@ var React = require('react'),
     DiscoverItem = require('./discoverItem');
 
 var DiscoveryPanel = React.createClass({
-  propTypes: {
-    responsiveView: React.PropTypes.string,
-    videosPerPage: React.PropTypes.objectOf(React.PropTypes.number),
-    discoveryData: React.PropTypes.shape({
-      relatedVideos: React.PropTypes.arrayOf(React.PropTypes.shape({
-        preview_image_url: React.PropTypes.string,
-        name: React.PropTypes.string
-      }))
-    }),
-    skinConfig: React.PropTypes.shape({
-      discoveryScreen: React.PropTypes.shape({
-        showCountDownTimerOnEndScreen: React.PropTypes.bool,
-        countDownTime: React.PropTypes.number,
-        contentTitle: React.PropTypes.shape({
-          show: React.PropTypes.bool
-        })
-      }),
-      icons: React.PropTypes.objectOf(React.PropTypes.object)
-    }),
-    controller: React.PropTypes.shape({
-      sendDiscoveryClickEvent: React.PropTypes.func
-    })
-  },
-
-  getDefaultProps: function () {
-    return {
-      videosPerPage: {
-        small: 2,
-        medium: 6,
-        large: 8
-      },
-      skinConfig: {
-        discoveryScreen: {
-          showCountDownTimerOnEndScreen: true,
-          countDownTime: 10,
-          contentTitle: {
-            show: true
-          }
-        },
-        icons: {
-          pause:{fontStyleClass:'icon icon-pause'},
-          discovery:{fontStyleClass:'icon icon-topmenu-discovery'},
-          left:{fontStyleClass:'icon icon-left'},
-          right:{fontStyleClass:'icon icon-right'}
-        },
-        responsive: {
-          breakpoints: {
-            sm: {name: 'small'},
-            lg: {name: 'large'}
-          }
-        }
-      },
-      discoveryData: {
-        relatedVideos: []
-      },
-      controller: {
-        sendDiscoveryClickEvent: function(a,b){}
-      }
-    };
-  },
-
   getInitialState: function() {
     return {
       showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen,
       currentPage: 1
     };
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    //If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
+    if (nextProps.responsiveView != this.props.responsiveView) {
+      var currentViewSize = this.props.responsiveView.replace('ooyala-', '');
+      var nextViewSize = nextProps.responsiveView.replace('ooyala-', '');
+      var firstLanguageIndex = this.state.currentPage * this.props.videosPerPage[currentViewSize] - this.props.videosPerPage[currentViewSize];
+      var newCurrentPage = Math.floor(firstLanguageIndex/nextProps.videosPerPage[nextViewSize]) + 1;
+      this.setState({
+        currentPage: newCurrentPage
+      });
+    }
   },
 
   handleLeftButtonClick: function(event) {
@@ -203,4 +155,65 @@ var DiscoveryPanel = React.createClass({
     );
   }
 });
+
+DiscoveryPanel.propTypes = {
+  responsiveView: React.PropTypes.string,
+  videosPerPage: React.PropTypes.objectOf(React.PropTypes.number),
+  discoveryData: React.PropTypes.shape({
+    relatedVideos: React.PropTypes.arrayOf(React.PropTypes.shape({
+      preview_image_url: React.PropTypes.string,
+      name: React.PropTypes.string
+    }))
+  }),
+  skinConfig: React.PropTypes.shape({
+    discoveryScreen: React.PropTypes.shape({
+      showCountDownTimerOnEndScreen: React.PropTypes.bool,
+      countDownTime: React.PropTypes.number,
+      contentTitle: React.PropTypes.shape({
+        show: React.PropTypes.bool
+      })
+    }),
+    icons: React.PropTypes.objectOf(React.PropTypes.object)
+  }),
+  controller: React.PropTypes.shape({
+    sendDiscoveryClickEvent: React.PropTypes.func
+  })
+};
+
+DiscoveryPanel.defaultProps = {
+  videosPerPage: {
+    small: 2,
+    medium: 6,
+    large: 8
+  },
+  skinConfig: {
+    discoveryScreen: {
+      showCountDownTimerOnEndScreen: true,
+      countDownTime: 10,
+      contentTitle: {
+        show: true
+      }
+    },
+    icons: {
+      pause:{fontStyleClass:'icon icon-pause'},
+      discovery:{fontStyleClass:'icon icon-topmenu-discovery'},
+      left:{fontStyleClass:'icon icon-left'},
+      right:{fontStyleClass:'icon icon-right'}
+    },
+    responsive: {
+      breakpoints: {
+        sm: {name: 'small'},
+        lg: {name: 'large'}
+      }
+    }
+  },
+  discoveryData: {
+    relatedVideos: []
+  },
+  controller: {
+    sendDiscoveryClickEvent: function(a,b){}
+  },
+  responsiveView: 'ooyala-medium'
+};
+
 module.exports = DiscoveryPanel;
