@@ -511,7 +511,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onAssetDimensionsReceived: function(event, params) {
-      if (params.videoId == OO.VIDEO.MAIN) {
+      if (params.videoId == OO.VIDEO.MAIN && (this.skin.props.skinConfig.responsive.aspectRatio == "auto" || !this.skin.props.skinConfig.responsive.aspectRatio)) {
         this.state.mainVideoAspectRatio = this.calculateAspectRatio(params.width, params.height);
         this.setAspectRatio();
       }
