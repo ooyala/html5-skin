@@ -88,6 +88,74 @@ describe('AdScreen', function () {
     expect(controlBarVisible).toBe(true);
   });
 
+it('checks that ad marquee is shown/not shown when appropriate', function () {
+
+    // Render start screen into DOM
+    var mockController = {
+      state: {
+        isMobile: false,
+        showAdMarquee: true
+      }
+    };
+    var mockSkinConfig = {
+      adScreen: {
+        showControlBar: true,
+        showAdMarquee: true
+      },
+      pauseScreen: {
+        showPauseIcon: true,
+        pauseIconPosition: "center",
+        PauseIconStyle: {
+          color: "white",
+          opacity: 1
+        }
+      },
+      icons: {
+        pause: {"fontStyleClass": "icon icon-pause"}
+      }
+    };
+
+    //showing ad marquee
+    var DOM = TestUtils.renderIntoDocument(
+      <AdScreen
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        controlBarAutoHide={true}
+      />);
+
+    var adPanel = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'adPanel');
+    expect(adPanel[0]._childNodes.length).not.toBe(0);
+
+    //not showing ad marquee
+    mockController.state.showAdMarquee = true;
+    mockSkinConfig.adScreen.showAdMarquee = false;
+
+    var DOM = TestUtils.renderIntoDocument(
+      <AdScreen
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        controlBarAutoHide={true}
+      />);
+
+    var adPanel1 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'adPanel');
+    expect(adPanel1[0]._childNodes.length).toBe(0);
+
+    //not showing ad marquee
+    mockController.state.showAdMarquee = false;
+    mockSkinConfig.adScreen.showAdMarquee = true;
+
+    var DOM = TestUtils.renderIntoDocument(
+      <AdScreen
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        controlBarAutoHide={true}
+      />);
+
+    var adPanel2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'adPanel');
+    expect(adPanel2[0]._childNodes.length).toBe(0);
+
+  });
+
   it('handles mousemove', function () {
 
     // Render start screen into DOM

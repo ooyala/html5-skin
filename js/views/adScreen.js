@@ -135,12 +135,14 @@ var AdScreen = React.createClass({
     var playbackControlItemTemplates = {
      "scrubberBar": <ScrubberBar {...this.props}
        controlBarVisible={showControlBar}
-       controlBarWidth={this.state.controlBarWidth} />,
+       controlBarWidth={this.state.controlBarWidth}
+       key='scrubberBar' />,
 
      "controlBar": <ControlBar {...this.props}
        controlBarVisible={showControlBar}
        controlBarWidth={this.state.controlBarWidth}
-       playerState={this.props.playerState} />
+       playerState={this.props.playerState}
+       key='controlBar' />
     };
 
     var playbackControlItems = [];
@@ -167,7 +169,7 @@ var AdScreen = React.createClass({
       'icon-hidden': this.props.playerState != CONSTANTS.STATE.PAUSE
     });
     var adPanel = null;
-    if (this.props.skinConfig.adScreen.showAdMarquee) {
+    if (this.props.skinConfig.adScreen.showAdMarquee && this.props.controller.state.showAdMarquee) {
       adPanel = <AdPanel {...this.props} controlBarWidth={this.state.controlBarWidth}/>;
     }
     var playbackControlItems = null;

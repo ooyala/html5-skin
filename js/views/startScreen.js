@@ -24,6 +24,13 @@ var StartScreen = React.createClass({
   getDefaultProps: function () {
     return {
       skinConfig: {
+        general: {
+          loadingImage: {
+            imageResource: {
+              url: null
+            }
+          }
+        },
         startScreen: {
           titleFont: {
           },
@@ -143,7 +150,8 @@ var StartScreen = React.createClass({
           {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : ''}
         </div>
 
-        {(this.state.playButtonClicked && this.props.controller.state.playerState == CONSTANTS.STATE.START) || this.props.controller.state.buffering ? <Spinner /> : actionIcon}
+        {(this.state.playButtonClicked && this.props.controller.state.playerState == CONSTANTS.STATE.START) || this.props.controller.state.buffering ?
+          <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : actionIcon}
       </div>
     );
   }

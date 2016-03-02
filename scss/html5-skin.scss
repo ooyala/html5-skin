@@ -1,21 +1,10 @@
 @charset "utf-8";
 
-//override non-responsive css on debug.ooyala.com
-//remove this after test site updated
-#video_container {
-  display: inline !important;
-  margin: 0 !important;
-}
-#ooplayer {
-  width:auto !important;
-  height:auto !important;
-}
+// Core variables
+@import "base/variables";
 
 // namespace root
 .innerWrapper {
-
-  // Core variables
-  @import "base/variables";
 
   // Mixins
   @import "mixins/mixins";
@@ -61,4 +50,16 @@
   // Utility classes
   @import "base/utilities";
 
+}
+
+//override non-responsive css on debug.ooyala.com
+//remove this after test site updated
+#video_container {
+  display: inline !important;
+  margin: 0 !important;
+}
+#ooplayer {
+  width:auto !important;
+  height:auto !important;
+  min-width:$min-player-width;
 }

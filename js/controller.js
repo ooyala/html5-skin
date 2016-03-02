@@ -37,7 +37,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "showAdOverlay": false,
       "showAdOverlayCloseButton": false,
       "showAdControls": true,
+      "showAdMarquee": true,
       "configLoaded": false,
+      "config": {},
       "fullscreen": false,
       "pauseAnimationDisabled": false,
       "adPauseAnimationDisabled": true,
@@ -155,6 +157,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD_CLOSE_BUTTON, "customerUi", _.bind(this.showNonlinearAdCloseButton, this));
           this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
           this.mb.subscribe(OO.EVENTS.SHOW_AD_CONTROLS, "customerUi", _.bind(this.onShowAdControls, this));
+          this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi", _.bind(this.onShowAdMarquee, this));
         }
       }
       this.state.isSubscribed = true;
@@ -189,6 +192,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
         //Override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
+        this.state.config = data;
 
         this.skin = ReactDOM.render(
           React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .player_skin")
@@ -197,7 +201,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.configLoaded = true;
         this.renderSkin();
 
-        $("#" + this.state.elementId + " .player_skin").append("<div class='player_skin_plugins'></div><div class='player_skin_plugins_click_layer'></div>");
+        var fullClass = (this.state.config.adScreen.showControlBar ? "" : " full");
+        $("#" + this.state.elementId + " .player_skin").append("<div class='player_skin_plugins"+fullClass+"'></div><div class='player_skin_plugins_click_layer"+fullClass+"'></div>");
         this.state.pluginsElement = $("#" + this.state.elementId + " .player_skin_plugins");
         this.state.pluginsClickElement = $("#" + this.state.elementId + " .player_skin_plugins_click_layer");
         this.state.pluginsElement.mouseover(
@@ -565,6 +570,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onShowAdMarquee: function(event, showAdMarquee) {
+      this.state.showAdMarquee = showAdMarquee;
+      this.renderSkin();
+    },
+
     onSkipAdClicked: function(event) {
       this.state.isSkipAdClicked = true;
       OO.log("onSkipAdClicked is called");
@@ -839,6 +849,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SHOW_AD_CONTROLS, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi");
 
         if (OO.EVENTS.DISCOVERY_API) {
           this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi");

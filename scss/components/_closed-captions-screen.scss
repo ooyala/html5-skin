@@ -117,7 +117,7 @@
           overflow: hidden;
           text-align: center;
           margin: 14px 28px;
-          padding: 3px 18px;
+          padding: 3px;
           color: $white;
           transition: all 0.0s ease;
           cursor: pointer;
@@ -136,8 +136,8 @@
       .flexcontainer {
         display: -webkit-flex;
         display: flex;
-        -webkit-flex-flow: row wrap;
-        flex-flow: row wrap;
+        -webkit-flex-flow: row nowrap;
+        flex-flow: row nowrap;
         overflow: visible;
         align-items: flex-start;
         -webkit-align-items: flex-start;
