@@ -140,6 +140,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
         this.mb.subscribe(OO.EVENTS.REPLAY, "customerUi", _.bind(this.onReplay, this));
+        this.mb.subscribe(OO.EVENTS.ASSET_DIMENSION, "customerUi", _.bind(this.onAssetDimensionsReceived, this));
 
         // ad events
         if (!Utils.isIPhone()) {
@@ -366,7 +367,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
-        this.autoUpdateAspectRatio();
         this.state.pauseAnimationDisabled = false;
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
@@ -508,6 +508,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onReplay: function(event) {
       this.resetUpNextInfo(false);
+    },
+
+    onAssetDimensionsReceived: function(event, params) {
+      if (params.videoId == OO.VIDEO.MAIN && (this.skin.props.skinConfig.responsive.aspectRatio == "auto" || !this.skin.props.skinConfig.responsive.aspectRatio)) {
+        this.state.mainVideoAspectRatio = this.calculateAspectRatio(params.width, params.height);
+        this.setAspectRatio();
+      }
     },
 
     /********************************************************************
@@ -1165,45 +1172,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
         this.setAspectRatio();
       }
-    },
-
-    //auto detect and update aspect ratio (default)
-    autoUpdateAspectRatio: function() {
-      if(this.state.isInitialPlay && (this.skin.props.skinConfig.responsive.aspectRatio == "auto" || !this.skin.props.skinConfig.responsive.aspectRatio)) {
-        this.getIntrinsicDimensions();
-        this.setAspectRatio();
-      }
-    },
-
-    //get original video width/height dimensions
-    getIntrinsicDimensions: function() {
-      var video = this.state.mainVideoElement.get(0);
-      var width, height;
-      var liveStreamDimension = null;
-      try {
-        if (this.state.authorization.streams[0].aspect_ratio) {
-          liveStreamDimension = Utils.reformatAspectRatio(this.state.authorization.streams[0].aspect_ratio);
-        }
-      } catch (err) {
-        //do nothing
-      }
-
-      // flash
-      if (typeof video.TGetProperty != 'undefined') {
-        width = video.TGetProperty("/", 8);
-        height= video.TGetProperty("/", 9);
-      }
-      // live stream
-      else if (liveStreamDimension) {
-        width = liveStreamDimension.width;
-        height = liveStreamDimension.height;
-      }
-      // html5
-      else {
-        width = video.videoWidth;
-        height = video.videoHeight;
-      }
-      this.state.mainVideoAspectRatio = this.calculateAspectRatio(width, height);
     },
 
     //returns original video aspect ratio
