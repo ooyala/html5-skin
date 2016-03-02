@@ -368,8 +368,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (source == OO.VIDEO.MAIN) {
         this.autoUpdateAspectRatio();
         this.state.pauseAnimationDisabled = false;
-        this.state.pluginsElement.removeClass("showing");
-        this.state.pluginsClickElement.removeClass("showing");
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.setClosedCaptionsLanguage();
