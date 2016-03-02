@@ -114,7 +114,7 @@ var PlayingScreen = React.createClass({
       {this.props.controller.state.buffering ? <Spinner /> : ''}
 
       <div className="default-screen">
-        <div className="expand" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
+        <div className="state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
         <AdOverlay {...this.props}
           overlay={this.props.controller.state.adOverlayUrl}
