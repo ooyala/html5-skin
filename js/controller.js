@@ -805,13 +805,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onErrorEvent: function(event, errorCode){
-      this.mb.publish(OO.EVENTS.SHOW_AD_CONTROLS, errorCode);//xenia: this is to test, remove this line and uncomment everything below 
-      // this.unsubscribeBasicPlaybackEvents();
+      this.unsubscribeBasicPlaybackEvents();
 
-      // this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
-      // this.state.playerState = CONSTANTS.STATE.ERROR;
-      // this.state.errorCode = errorCode;
-      // this.renderSkin();
+      this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
+      this.state.playerState = CONSTANTS.STATE.ERROR;
+      this.state.errorCode = errorCode;
+      this.renderSkin();
     },
 
     unsubscribeFromMessageBus: function() {
