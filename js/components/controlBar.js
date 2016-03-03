@@ -205,8 +205,8 @@ var ControlBar = React.createClass({
     } else {
       playClass = this.props.skinConfig.icons.play.fontStyleClass;
     }
-    var muteClass = (this.props.controller.state.muted) ?
-      this.props.skinConfig.icons.volume.fontStyleClass : this.props.skinConfig.icons.volumeOff.fontStyleClass;
+    var muteClass = (this.props.controller.state.volumeState.muted) ?
+      this.props.skinConfig.icons.volumeOff.fontStyleClass : this.props.skinConfig.icons.volume.fontStyleClass;
 
     var fullscreenClass = (this.props.controller.state.fullscreen) ?
       this.props.skinConfig.icons.compress.fontStyleClass : this.props.skinConfig.icons.expand.fontStyleClass;
