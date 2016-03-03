@@ -81,7 +81,10 @@ var UpNextPanel = React.createClass({
       <div className={upNextPanel}>
         <a className="upNextContent" onClick={this.handleStartUpNextClick}>
           <img className="contentImage" src={this.props.upNextInfo.upNextData.preview_image_url} />
-          <span className={this.props.skinConfig.icons.play.fontStyleClass} aria-hidden="true"></span>
+          <span className={this.props.skinConfig.icons.play.fontStyleClass}
+            style={{fontFamily: this.props.skinConfig.icons.play.fontFamilyName}} aria-hidden="true">
+            {this.props.skinConfig.icons.play.fontString}
+          </span>
         </a>
 
         <div className="contentMetadata">
@@ -98,7 +101,10 @@ var UpNextPanel = React.createClass({
           </div>
         </div>
 
-        <CloseButton cssClass="upNextCloseBtn" closeAction={this.closeUpNextPanel} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
+        <CloseButton cssClass="upNextCloseBtn" closeAction={this.closeUpNextPanel}
+          fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass}
+          fontString={this.props.skinConfig.icons.dismiss.fontString}
+          fontFamilyName={this.props.skinConfig.icons.dismiss.fontFamilyName}/>
       </div>
     );
   }

@@ -38,7 +38,8 @@ var EndScreen = React.createClass({
   render: function() {
     var actionIconStyle = {
       color: this.props.skinConfig.endScreen.replayIconStyle.color,
-      opacity: this.props.skinConfig.endScreen.replayIconStyle.opacity
+      opacity: this.props.skinConfig.endScreen.replayIconStyle.opacity,
+      fontFamily: this.props.skinConfig.icons.replay.fontFamilyName
     };
 
     var actionIconClass = ClassNames({
@@ -55,14 +56,16 @@ var EndScreen = React.createClass({
       <a className={actionIconClass} onClick={this.handleClick}>
           <span className={this.props.skinConfig.icons.replay.fontStyleClass}
                 style={actionIconStyle}
-                aria-hidden="true"></span>
+                aria-hidden="true">
+                  {this.props.skinConfig.icons.replay.fontString}
+                </span>
       </a>
 
-      <ScrubberBar {...this.props} 
-        controlBarVisible={this.state.controlBarVisible} 
+      <ScrubberBar {...this.props}
+        controlBarVisible={this.state.controlBarVisible}
         controlBarWidth={this.state.controlBarWidth} />
 
-      <ControlBar {...this.props} 
+      <ControlBar {...this.props}
         controlBarVisible={this.state.controlBarVisible}
         controlBarWidth={this.state.controlBarWidth}
         playerState={this.props.playerState}

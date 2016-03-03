@@ -101,7 +101,12 @@ var AdPanel = React.createClass({
     if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.hasClickUrl)) {
       var learnMoreText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
       var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" ref="learnMoreButton" onButtonClicked={this.handleLearnMoreButtonClick}
-        data={learnMoreText} icon ={<span className={this.props.skinConfig.icons.learn.fontStyleClass + " buttonIcon"}></span>} itemClassName={learnMoreClass}/>;
+        data={learnMoreText}
+        icon={<span style={{fontFamily: this.props.skinConfig.icons.learn.fontFamilyName}}
+          className={this.props.skinConfig.icons.learn.fontStyleClass + " buttonIcon"}>
+            {this.props.skinConfig.icons.learn.fontString}
+          </span>}
+        itemClassName={learnMoreClass}/>;
       adTopBarItems.push(learnMoreButtonDiv);
     }
 
@@ -115,7 +120,9 @@ var AdPanel = React.createClass({
     var skipAdClass = this.props.skinConfig.icons.skip.fontStyleClass + " skipIcon";
     var skipButtonDiv = <AdPanelTopBarItem key="skipButton" ref="skipButton" onButtonClicked={this.handleSkipAdButtonClick}
                         data={skipButtonText}
-                        icon={<span className={skipAdClass}></span>}
+                        icon={<span className={skipAdClass} style={{fontFamily: this.props.skinConfig.icons.skip.fontFamilyName}}>
+                            {this.props.skinConfig.icons.skip.fontString}
+                          </span>}
                         itemClassName={skipButtonClass}/>;
     adTopBarItems.push(skipButtonDiv);
 

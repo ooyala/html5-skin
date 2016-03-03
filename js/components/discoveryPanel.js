@@ -146,10 +146,16 @@ var DiscoveryPanel = React.createClass({
         </div>
 
         <a className={leftButtonClass} ref="ChevronLeftButton" onClick={this.handleLeftButtonClick}>
-          <span className={this.props.skinConfig.icons.left.fontStyleClass} aria-hidden="true"></span>
+          <span className={this.props.skinConfig.icons.left.fontStyleClass} aria-hidden="true"
+            style={{fontFamily: this.props.skinConfig.icons.left.fontFamilyName}}>
+            {this.props.skinConfig.icons.left.fontString}
+          </span>
         </a>
         <a className={rightButtonClass} ref="ChevronRightButton" onClick={this.handleRightButtonClick}>
-          <span className={this.props.skinConfig.icons.right.fontStyleClass}  aria-hidden="true"></span>
+          <span className={this.props.skinConfig.icons.right.fontStyleClass}  aria-hidden="true"
+            style={{fontFamily: this.props.skinConfig.icons.right.fontFamilyName}}>
+            {this.props.skinConfig.icons.right.fontString}
+          </span>
         </a>
       </div>
     );

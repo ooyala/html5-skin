@@ -94,6 +94,8 @@ var StartScreen = React.createClass({
       color: this.props.skinConfig.startScreen.playIconStyle.color,
       opacity: this.props.skinConfig.startScreen.playIconStyle.opacity
     };
+    actionIconStyle.fontFamily = this.props.controller.state.playerState == CONSTANTS.STATE.END ?
+      this.props.skinConfig.icons.replay.fontFamilyName : this.props.skinConfig.icons.play.fontFamilyName;
     var posterImageUrl = this.props.skinConfig.startScreen.showPromo ? this.props.contentTree.promo_image : '';
     var posterStyle = {
       backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%), url('" + posterImageUrl + "')"
@@ -136,10 +138,11 @@ var StartScreen = React.createClass({
       <a className={actionIconClass} onClick={this.handleClick}>
         <span className={this.props.controller.state.playerState == CONSTANTS.STATE.END ? this.props.skinConfig.icons.replay.fontStyleClass : this.props.skinConfig.icons.play.fontStyleClass}
               style={actionIconStyle}
-              aria-hidden="true"></span>
+              aria-hidden="true">
+                {this.props.controller.state.playerState == CONSTANTS.STATE.END ? this.props.skinConfig.icons.replay.fontString : this.props.skinConfig.icons.play.fontString}
+              </span>
       </a>
     );
-
     return (
       <div className="state-screen startScreen">
         <div className={stateScreenPosterClass} style={posterStyle}>

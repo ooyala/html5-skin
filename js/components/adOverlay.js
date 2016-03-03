@@ -47,6 +47,8 @@ var AdOverlay = React.createClass({
         <CloseButton cssClass={closeButtonClass}
                      closeAction={this.closeOverlay}
                      fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass + " adOverlayCloseButtonIcon"}
+                     fontString={this.props.skinConfig.icons.dismiss.fontString}
+                     fontFamilyName={this.props.skinConfig.icons.dismiss.fontFamilyName}
                      ref="adOverlayCloseButton" />
       </div>
     );

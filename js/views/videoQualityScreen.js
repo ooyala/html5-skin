@@ -28,7 +28,10 @@ var VideoQualityScreen = React.createClass({
           <span className={this.props.skinConfig.icons.quality.fontStyleClass}></span>
         </div>
         <VideoQualityPanel {...this.props} />
-        <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
+        <CloseButton closeAction={this.handleClose}
+          fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass}
+          fontString={this.props.skinConfig.icons.dismiss.fontString}
+          fontFamilyName={this.props.skinConfig.icons.dismiss.fontFamilyName}/>
       </div>
     );
   }

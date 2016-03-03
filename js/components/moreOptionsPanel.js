@@ -58,23 +58,43 @@ var MoreOptionsPanel = React.createClass({
 
     var optionsItemsTemplates = {
       "quality": <button className="quality controlBarItem" onClick={this.handleQualityClick} key="quality">
-        <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+        <span className={this.props.skinConfig.icons.quality.fontStyleClass}
+         style={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.quality.fontFamilyName})}
+         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+         {this.props.skinConfig.icons.quality.fontString}
+        </span>
       </button>,
 
       "discovery": <button className="discovery controlBarItem" onClick={this.handleDiscoveryClick} key="discovery">
-        <span className={this.props.skinConfig.icons.discovery.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+        <span className={this.props.skinConfig.icons.discovery.fontStyleClass}
+          style={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.discovery.fontFamilyName})}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          {this.props.skinConfig.icons.discovery.fontString}
+        </span>
       </button>,
 
       "closedCaption": <button className="closedCaption controlBarItem" onClick={this.handleClosedCaptionClick} key="closedCaption">
-        <span className={this.props.skinConfig.icons.cc.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight} ></span>
+        <span className={this.props.skinConfig.icons.cc.fontStyleClass}
+          style={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.cc.fontFamilyName})}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          {this.props.skinConfig.icons.cc.fontString}
+        </span>
       </button>,
 
       "share": <button className="share controlBarItem" onClick={this.handleShareClick} key="share">
-        <span className={this.props.skinConfig.icons.share.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+        <span className={this.props.skinConfig.icons.share.fontStyleClass}
+          style={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.share.fontFamilyName})}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          {this.props.skinConfig.icons.share.fontString}
+        </span>
       </button>,
 
       "settings": <div className="settings" key="settings">
-        <span className={this.props.skinConfig.icons.setting.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+        <span className={this.props.skinConfig.icons.setting.fontStyleClass}
+          style={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.setting.fontFamilyName})}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          {this.props.skinConfig.icons.setting.fontString}
+          </span>
       </div>
     };
 

@@ -198,18 +198,39 @@ var ControlBar = React.createClass({
   populateControlBar: function() {
     var dynamicStyles = this.setupItemStyle();
     var playClass = "";
+    var playIconStyle = Utils.clone(dynamicStyles.iconCharacter);
+    var playIconCharacter = "";
     if (this.props.playerState == CONSTANTS.STATE.PLAYING) {
       playClass = this.props.skinConfig.icons.pause.fontStyleClass;
+      playIconStyle.fontFamily = this.props.skinConfig.icons.pause.fontFamilyName;
+      playIconCharacter = this.props.skinConfig.icons.pause.fontString;
     } else if (this.props.playerState == CONSTANTS.STATE.END) {
       playClass = this.props.skinConfig.icons.replay.fontStyleClass;
+      playIconStyle.fontFamily = this.props.skinConfig.icons.replay.fontFamilyName;
+      playIconCharacter = this.props.skinConfig.icons.replay.fontString;
     } else {
       playClass = this.props.skinConfig.icons.play.fontStyleClass;
+      playIconStyle.fontFamily = this.props.skinConfig.icons.play.fontFamilyName;
+      playIconCharacter = this.props.skinConfig.icons.play.fontString;
     }
+
     var muteClass = (this.props.controller.state.muted) ?
       this.props.skinConfig.icons.volume.fontStyleClass : this.props.skinConfig.icons.volumeOff.fontStyleClass;
 
-    var fullscreenClass = (this.props.controller.state.fullscreen) ?
-      this.props.skinConfig.icons.compress.fontStyleClass : this.props.skinConfig.icons.expand.fontStyleClass;
+    var fullscreenClass = "";
+    var fullscreenCharacter = "";
+    var fullscreenStyle = Utils.clone(dynamicStyles.iconCharacter);
+    if (this.props.controller.state.fullscreen) {
+      fullscreenClass = this.props.skinConfig.icons.compress.fontStyleClass;
+      fullscreenCharacter = this.props.skinConfig.icons.compress.fontString;
+      fullscreenStyle.fontFamily = this.props.skinConfig.icons.compress.fontFamilyName;
+    }
+    else {
+      fullscreenClass = this.props.skinConfig.icons.expand.fontStyleClass;
+      fullscreenCharacter = this.props.skinConfig.icons.expand.fontString;
+      fullscreenStyle.fontFamily = this.props.skinConfig.icons.expand.fontFamilyName;
+    }
+
 
     var totalTime = 0;
     if (this.props.duration == null || typeof this.props.duration == 'undefined' || this.props.duration == ""){
@@ -256,6 +277,7 @@ var ControlBar = React.createClass({
 
     var iconSetting = {};
     var volumeIconSetting = Utils.clone(this.props.skinConfig.controlBar.iconStyle.inactive);
+    volumeIconSetting.fontFamily = this.props.skinConfig.icons.volume.fontFamilyName;
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
     var currentPlayheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
@@ -278,8 +300,9 @@ var ControlBar = React.createClass({
 
     var controlItemTemplates = {
       "playPause": <button className="playPause controlBarItem" onClick={this.handlePlayClick} key="playPause">
-        <span className={playClass} style={dynamicStyles.iconCharacter}
+        <span className={playClass} style={playIconStyle}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          {playIconCharacter}
         </span>
       </button>,
 
@@ -293,6 +316,7 @@ var ControlBar = React.createClass({
       "volume": <div className="volume controlBarItem" key="volume">
         <span className={muteClass} style={volumeIconSetting} ref="volumeIcon" onClick={this.handleVolumeIconClick}
               onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}>
+          {this.props.skinConfig.icons.volume.fontString}
         </span>
         {volumeControls}
       </div>,
@@ -305,43 +329,54 @@ var ControlBar = React.createClass({
 
       "moreOptions": <button className="moreOptions controlBarItem"
         onClick={this.handleMoreOptionsClick} key="moreOptions">
-        <span className={this.props.skinConfig.icons.ellipsis.fontStyleClass} style={dynamicStyles.iconCharacter}
+        <span className={this.props.skinConfig.icons.ellipsis.fontStyleClass}
+          style={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.ellipsis.fontFamilyName})}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          {this.props.skinConfig.icons.ellipsis.fontString}
         </span>
       </button>,
 
       "quality": <button className={qualityClass}
         onClick={this.handleQualityClick} key="quality">
-        <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={dynamicStyles.iconCharacter}
+        <span className={this.props.skinConfig.icons.quality.fontStyleClass}
+          style={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.quality.fontFamilyName})}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          {this.props.skinConfig.icons.quality.fontString}
         </span>
       </button>,
 
       "discovery": <button className="discovery controlBarItem"
         onClick={this.handleDiscoveryClick} key="discovery">
-        <span className={this.props.skinConfig.icons.discovery.fontStyleClass} style={dynamicStyles.iconCharacter}
+        <span className={this.props.skinConfig.icons.discovery.fontStyleClass}
+          style={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.discovery.fontFamilyName})}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          {this.props.skinConfig.icons.discovery.fontString}
         </span>
       </button>,
 
       "closedCaption": <button className="closedCaption controlBarItem"
         onClick={this.handleClosedCaptionClick} key="closedCaption">
-        <span className={this.props.skinConfig.icons.cc.fontStyleClass} style={dynamicStyles.iconCharacter}
+        <span className={this.props.skinConfig.icons.cc.fontStyleClass}
+          style={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.cc.fontFamilyName})}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          {this.props.skinConfig.icons.cc.fontString}
         </span>
       </button>,
 
       "share": <button className="share controlBarItem"
         onClick={this.handleShareClick} key="share">
-        <span className={this.props.skinConfig.icons.share.fontStyleClass} style={dynamicStyles.iconCharacter}
+        <span className={this.props.skinConfig.icons.share.fontStyleClass}
+          style={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.share.fontFamilyName})}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          {this.props.skinConfig.icons.share.fontString}
         </span>
       </button>,
 
       "fullscreen": <button className="fullscreen controlBarItem"
         onClick={this.handleFullscreenClick} key="fullscreen">
-        <span className={fullscreenClass} style={iconSetting} style={dynamicStyles.iconCharacter}
+        <span className={fullscreenClass} style={iconSetting} style={fullscreenStyle}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          {fullscreenCharacter}
         </span>
       </button>,
 
