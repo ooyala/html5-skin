@@ -67,6 +67,11 @@
 
       .total-time {
         color: #B3B3B3;
+
+        &:before {
+          content: " - ";
+          color: $white;
+        }
       }
     }
 

@@ -259,7 +259,7 @@ var ControlBar = React.createClass({
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
     var currentPlayheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
-    var totalTimeContent = this.props.authorization.streams[0].is_live_stream ? null : " - " + totalTime;
+    var totalTimeContent = this.props.authorization.streams[0].is_live_stream ? null : <span className="total-time">{totalTime}</span>;
 
     // TODO: Update when implementing localization
     var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
@@ -298,7 +298,7 @@ var ControlBar = React.createClass({
       </div>,
 
       "timeDuration": <div className="timeDuration controlBarDuration" style={durationSetting} key="timeDuration">
-        <span>{currentPlayheadTime}</span><span className="total-time">{totalTimeContent}</span>
+        <span>{currentPlayheadTime}</span>{totalTimeContent}
       </div>,
 
       "flexibleSpace": <div className="flexibleSpace controlBarFlexSpace" key="flexibleSpace"></div>,
