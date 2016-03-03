@@ -77,6 +77,10 @@
       &:last-child, &:nth-last-child(2) {
         margin-right:0
       }
+
+      .discovery-wrapper {
+        position: relative;
+      }
     }
 
     .imageStyle {
@@ -118,13 +122,16 @@
       right: 0;
       text-align: left;
     }
+
     .discoveryCountDownWrapperStyle {
+      line-height:1;
       position: absolute;
       top: 50%;
       left: 50%;
       -webkit-transform: translate(-50%, -50%);
       transform: translate(-50%, -50%);
     }
+
     .discoveryCountDownWrapperStyle a.discoveryCountDownIconStyle span {
       position: absolute;
       top: 50%;

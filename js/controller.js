@@ -36,6 +36,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "adOverlayUrl": null,
       "showAdOverlay": false,
       "showAdOverlayCloseButton": false,
+      "showAdControls": true,
       "showAdMarquee": true,
       "configLoaded": false,
       "config": {},
@@ -140,6 +141,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
         this.mb.subscribe(OO.EVENTS.REPLAY, "customerUi", _.bind(this.onReplay, this));
+        this.mb.subscribe(OO.EVENTS.ASSET_DIMENSION, "customerUi", _.bind(this.onAssetDimensionsReceived, this));
 
         // ad events
         if (!Utils.isIPhone()) {
@@ -155,6 +157,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi", _.bind(this.showNonlinearAd, this));
           this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD_CLOSE_BUTTON, "customerUi", _.bind(this.showNonlinearAdCloseButton, this));
           this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
+          this.mb.subscribe(OO.EVENTS.SHOW_AD_CONTROLS, "customerUi", _.bind(this.onShowAdControls, this));
           this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi", _.bind(this.onShowAdMarquee, this));
         }
       }
@@ -275,6 +278,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onEmbedCodeChanged: function(event, embedCode, options) {
       this.state.videoQualityOptions.availableBitrates = null;
+      this.state.closedCaptionOptions.availableLanguages = null;
+      this.state.discoveryData = null;
 
       this.state.assetId = embedCode;
       $.extend(true, this.state.playerParam, options);
@@ -364,10 +369,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
-        this.autoUpdateAspectRatio();
         this.state.pauseAnimationDisabled = false;
-        this.state.pluginsElement.removeClass("showing");
-        this.state.pluginsClickElement.removeClass("showing");
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.setClosedCaptionsLanguage();
@@ -439,7 +441,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.upNextInfo.delayedSetEmbedCodeEvent) {
         var delayedContentData = this.state.upNextInfo.delayedContentData;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
-        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, delayedContentData.clickedVideo.embed_code);
+        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, delayedContentData.clickedVideo.embed_code, this.state.playerParam);
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, delayedContentData);
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
         this.state.upNextInfo.delayedContentData = null;
@@ -510,6 +512,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.resetUpNextInfo(false);
     },
 
+    onAssetDimensionsReceived: function(event, params) {
+      if (params.videoId == OO.VIDEO.MAIN && (this.skin.props.skinConfig.responsive.aspectRatio == "auto" || !this.skin.props.skinConfig.responsive.aspectRatio)) {
+        this.state.mainVideoAspectRatio = this.calculateAspectRatio(params.width, params.height);
+        this.setAspectRatio();
+      }
+    },
+
     /********************************************************************
       ADS RELATED EVENTS
     *********************************************************************/
@@ -560,6 +569,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onShowAdSkipButton: function(event) {
       this.state.currentAdsInfo.skipAdButtonEnabled = true;
+      this.renderSkin();
+    },
+
+    onShowAdControls: function(event, showAdControls) {
+      this.state.showAdControls = showAdControls;
       this.renderSkin();
     },
 
@@ -840,6 +854,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.unsubscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.SHOW_AD_CONTROLS, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi");
 
         if (OO.EVENTS.DISCOVERY_API) {
@@ -1165,45 +1180,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
         this.setAspectRatio();
       }
-    },
-
-    //auto detect and update aspect ratio (default)
-    autoUpdateAspectRatio: function() {
-      if(this.state.isInitialPlay && (this.skin.props.skinConfig.responsive.aspectRatio == "auto" || !this.skin.props.skinConfig.responsive.aspectRatio)) {
-        this.getIntrinsicDimensions();
-        this.setAspectRatio();
-      }
-    },
-
-    //get original video width/height dimensions
-    getIntrinsicDimensions: function() {
-      var video = this.state.mainVideoElement.get(0);
-      var width, height;
-      var liveStreamDimension = null;
-      try {
-        if (this.state.authorization.streams[0].aspect_ratio) {
-          liveStreamDimension = Utils.reformatAspectRatio(this.state.authorization.streams[0].aspect_ratio);
-        }
-      } catch (err) {
-        //do nothing
-      }
-
-      // flash
-      if (typeof video.TGetProperty != 'undefined') {
-        width = video.TGetProperty("/", 8);
-        height= video.TGetProperty("/", 9);
-      }
-      // live stream
-      else if (liveStreamDimension) {
-        width = liveStreamDimension.width;
-        height = liveStreamDimension.height;
-      }
-      // html5
-      else {
-        width = video.videoWidth;
-        height = video.videoHeight;
-      }
-      this.state.mainVideoAspectRatio = this.calculateAspectRatio(width, height);
     },
 
     //returns original video aspect ratio

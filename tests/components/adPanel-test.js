@@ -153,6 +153,13 @@ describe('AdPanel', function () {
       }
     };
     var mockSkinConfig = {
+      general: {
+        loadingImage: {
+          imageResource: {
+            url: true
+          }
+        }
+      },
       adScreen: {
         showControlBar: true,
         showAdMarquee: true

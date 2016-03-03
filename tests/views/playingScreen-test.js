@@ -17,13 +17,13 @@ describe('PlayingScreen', function () {
         }
       },
       togglePlayPause: function(){clicked = true},
-      startHideControlBarTimer: function() {moved = true},
+      startHideControlBarTimer: function() {moved = true}
     };
 
     // Render pause screen into DOM
     var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} />);
 
-    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'default-screen');
+    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'state-screen-selectable');
     
     TestUtils.Simulate.mouseMove(screen);
     expect(moved).toBe(false);
@@ -49,7 +49,7 @@ describe('PlayingScreen', function () {
     // Render pause screen into DOM
     var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} />);
 
-    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'default-screen');
+    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'state-screen-selectable');
     TestUtils.Simulate.touchEnd(screen);
     expect(clicked).toBe(true);
   });
