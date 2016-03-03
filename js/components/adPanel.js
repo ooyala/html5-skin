@@ -126,7 +126,7 @@ var AdPanel = React.createClass({
   render: function() {
     var spinner = null;
     if (this.props.controller.state.buffering === true) {
-      spinner = <Spinner />;
+      spinner = <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/>;
     }
     var adTopBarItems = this.populateAdTopBar();
     return (
