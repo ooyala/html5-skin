@@ -13,20 +13,6 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants');
 
 var CountDownClock = React.createClass({
-  propTypes: {
-    timeToShow: React.PropTypes.number,
-    clockWidth: React.PropTypes.number,
-    currentPlayhead: React.PropTypes.number
-  },
-
-  getDefaultProps: function () {
-    return {
-      timeToShow: 10, //seconds
-      clockWidth: 36,
-      currentPlayhead: 0
-    }
-  },
-
   getInitialState: function() {
     // canvas, interval, and context are changing based on time instead of user interaction
     this.canvas = null;
@@ -202,4 +188,17 @@ var CountDownClock = React.createClass({
     );
   }
 });
+
+CountDownClock.propTypes = {
+  timeToShow: React.PropTypes.string,
+  clockWidth: React.PropTypes.number,
+  currentPlayhead: React.PropTypes.number
+};
+
+CountDownClock.defaultProps = {
+  timeToShow: "10", //seconds
+  clockWidth: 36,
+  currentPlayhead: 0
+};
+
 module.exports = CountDownClock;

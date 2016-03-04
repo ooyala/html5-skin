@@ -14,9 +14,6 @@
   // Discovery Screen
   .discoveryScreen {
     .discovery-panel {
-      .discovery-panel-title {
-        position: absolute;
-      }
       .discoveryToasterContainerStyle {
         max-height: 200px;
       }
@@ -29,6 +26,10 @@
         &:last-child {
           margin-right:0;
         }
+      }
+
+      .scaleHeight {
+        max-height: 150px;
       }
     }
   }
