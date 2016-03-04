@@ -1,5 +1,6 @@
 jest.dontMock('../../js/components/videoQualityPanel')
     .dontMock('../../js/components/utils')
+    .dontMock('../../js/components/icon')
     .dontMock('../../js/constants/constants')
     .dontMock('classnames');
 
