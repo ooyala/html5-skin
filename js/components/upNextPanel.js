@@ -36,7 +36,7 @@ var UpNextPanel = React.createClass({
     return {
       skinConfig: {
         upNext: {
-          timeToShow: 10
+          timeToShow: "10"
         },
         icons: {
           play:{fontStyleClass:'icon icon-play'},

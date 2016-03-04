@@ -1,5 +1,6 @@
 jest.dontMock('../../js/components/controlBar')
     .dontMock('../../js/components/utils')
+    .dontMock('../../js/components/icon')
     .dontMock('../../js/constants/constants')
     .dontMock('classnames');
 
@@ -702,10 +703,10 @@ describe('ControlBar', function () {
 
     expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe("0");
     expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe("blue");
-    TestUtils.Simulate.mouseOver(DOM.refs.volumeIcon);
+    TestUtils.Simulate.mouseOver(ReactDOM.findDOMNode(DOM.refs.volumeIcon));
     expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe("1");
     expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe("red");
-    TestUtils.Simulate.mouseOut(DOM.refs.volumeIcon);
+    TestUtils.Simulate.mouseOut(ReactDOM.findDOMNode(DOM.refs.volumeIcon));
     expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe("0");
     expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe("blue");
   });
