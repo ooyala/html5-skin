@@ -5,7 +5,8 @@ var React = require('react'),
     ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants'),
     Spinner = require('../components/spinner'),
-    TruncateTextMixin = require('../mixins/truncateTextMixin');
+    TruncateTextMixin = require('../mixins/truncateTextMixin'),
+    Icon = require('../components/icon');
 
 var StartScreen = React.createClass({
   mixins: [TruncateTextMixin],
@@ -136,11 +137,10 @@ var StartScreen = React.createClass({
     var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.props.contentTree.description}</div>);
     var actionIcon = (
       <a className={actionIconClass} onClick={this.handleClick}>
-        <span className={this.props.controller.state.playerState == CONSTANTS.STATE.END ? this.props.skinConfig.icons.replay.fontStyleClass : this.props.skinConfig.icons.play.fontStyleClass}
-              style={actionIconStyle}
-              aria-hidden="true">
-                {this.props.controller.state.playerState == CONSTANTS.STATE.END ? this.props.skinConfig.icons.replay.fontString : this.props.skinConfig.icons.play.fontString}
-              </span>
+        <Icon iconClass={this.props.controller.state.playerState == CONSTANTS.STATE.END ? this.props.skinConfig.icons.replay.fontStyleClass : this.props.skinConfig.icons.play.fontStyleClass}
+              iconStyle={actionIconStyle}
+              iconString={this.props.controller.state.playerState == CONSTANTS.STATE.END ? this.props.skinConfig.icons.replay.fontString : this.props.skinConfig.icons.play.fontString}
+              aria-hidden="true"/>
       </a>
     );
     return (
