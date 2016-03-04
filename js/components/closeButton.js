@@ -1,4 +1,5 @@
-var React = require('react')
+var React = require('react'),
+    Icon = require('../components/icon');
 
 var CloseButton = React.createClass({
   propTypes: {
@@ -16,9 +17,9 @@ var CloseButton = React.createClass({
   render: function() {
     return (
         <button className={this.props.cssClass} onClick={this.props.closeAction}>
-          <span className={this.props.fontStyleClass} style={{fontFamily: this.props.fontFamilyName}}>
-            {this.props.fontString}
-          </span>
+          <Icon iconClass={this.props.fontStyleClass}
+            iconStyle={{fontFamily: this.props.fontFamilyName}}
+            iconString={this.props.fontString}/>
         </button>
     );
   }

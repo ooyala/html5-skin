@@ -12,7 +12,8 @@ var React = require('react'),
     CONSTANTS = require('./../constants/constants'),
     Utils = require('./utils'),
     CloseButton = require('./closeButton'),
-    CountDownClock = require('./countDownClock');
+    CountDownClock = require('./countDownClock'),
+    Icon = require('../components/icon');
 
 var UpNextPanel = React.createClass({
   propTypes: {
@@ -25,7 +26,7 @@ var UpNextPanel = React.createClass({
     }),
     skinConfig: React.PropTypes.shape({
       upNext: React.PropTypes.shape({
-        timeToShow: React.PropTypes.number
+        timeToShow: React.PropTypes.string
       }),
       icons: React.PropTypes.objectOf(React.PropTypes.object)
     })
@@ -81,10 +82,9 @@ var UpNextPanel = React.createClass({
       <div className={upNextPanel}>
         <a className="upNextContent" onClick={this.handleStartUpNextClick}>
           <img className="contentImage" src={this.props.upNextInfo.upNextData.preview_image_url} />
-          <span className={this.props.skinConfig.icons.play.fontStyleClass}
-            style={{fontFamily: this.props.skinConfig.icons.play.fontFamilyName}} aria-hidden="true">
-            {this.props.skinConfig.icons.play.fontString}
-          </span>
+          <Icon iconClass={this.props.skinConfig.icons.play.fontStyleClass}
+            iconStyle={{fontFamily: this.props.skinConfig.icons.play.fontFamilyName}}
+            iconString={this.props.skinConfig.icons.play.fontString}/>
         </a>
 
         <div className="contentMetadata">

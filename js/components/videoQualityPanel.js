@@ -4,7 +4,8 @@
  * @module VideoQualityPanel
  */
 var React = require('react'),
-    ClassNames = require('classnames');
+    ClassNames = require('classnames'),
+    Icon = require('../components/icon');
 
 var VideoQualityPanel = React.createClass({
   getInitialState: function() {
@@ -35,10 +36,9 @@ var VideoQualityPanel = React.createClass({
       <li className="auto-li" key='auto-li'>
         <a className={autoQualityBtn} key='auto' onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
           <div className="quality-auto-icon">
-            <span className={this.props.skinConfig.icons.auto.fontStyleClass}
-              style={{fontFamily: this.props.skinConfig.icons.auto.fontFamilyName}}>
-              {this.props.skinConfig.icons.auto.fontString}
-            </span>
+            <Icon iconClass={this.props.skinConfig.icons.auto.fontStyleClass}
+              iconStyle={{fontFamily: this.props.skinConfig.icons.auto.fontFamilyName}}
+              iconString={this.props.skinConfig.icons.auto.fontString}/>
           </div>
           <div className="quality-auto-label">Auto</div>
         </a>

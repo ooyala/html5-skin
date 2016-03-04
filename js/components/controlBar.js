@@ -6,7 +6,8 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     ClassNames = require('classnames'),
     Utils = require('./utils'),
-    VideoQualityPopover = require('./videoQualityPopover');
+    VideoQualityPopover = require('./videoQualityPopover'),
+    Icon = require('../components/icon');
 
 var ControlBar = React.createClass({
   getInitialState: function() {
@@ -300,10 +301,9 @@ var ControlBar = React.createClass({
 
     var controlItemTemplates = {
       "playPause": <button className="playPause controlBarItem" onClick={this.handlePlayClick} key="playPause">
-        <span className={playClass} style={playIconStyle}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-          {playIconCharacter}
-        </span>
+        <Icon iconClass={playClass} iconStyle={playIconStyle}
+          iconString={playIconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "live": <div className="live controlBarItem" key="live">
@@ -314,10 +314,10 @@ var ControlBar = React.createClass({
       </div>,
 
       "volume": <div className="volume controlBarItem" key="volume">
-        <span className={muteClass} style={volumeIconSetting} ref="volumeIcon" onClick={this.handleVolumeIconClick}
-              onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}>
-          {this.props.skinConfig.icons.volume.fontString}
-        </span>
+        <Icon iconClass={muteClass} iconStyle={volumeIconSetting} ref="volumeIcon"
+          iconString={this.props.skinConfig.icons.volume.fontString}
+          onClick={this.handleVolumeIconClick}
+          onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}/>
         {volumeControls}
       </div>,
 
@@ -329,55 +329,49 @@ var ControlBar = React.createClass({
 
       "moreOptions": <button className="moreOptions controlBarItem"
         onClick={this.handleMoreOptionsClick} key="moreOptions">
-        <span className={this.props.skinConfig.icons.ellipsis.fontStyleClass}
-          style={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.ellipsis.fontFamilyName})}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-          {this.props.skinConfig.icons.ellipsis.fontString}
-        </span>
+        <Icon iconClass={this.props.skinConfig.icons.ellipsis.fontStyleClass}
+          iconStyle={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.ellipsis.fontFamilyName})}
+          iconString={this.props.skinConfig.icons.ellipsis.fontString}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "quality": <button className={qualityClass}
         onClick={this.handleQualityClick} key="quality">
-        <span className={this.props.skinConfig.icons.quality.fontStyleClass}
-          style={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.quality.fontFamilyName})}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-          {this.props.skinConfig.icons.quality.fontString}
-        </span>
+        <Icon iconClass={this.props.skinConfig.icons.quality.fontStyleClass}
+          iconStyle={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.quality.fontFamilyName})}
+          iconString={this.props.skinConfig.icons.quality.fontString}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "discovery": <button className="discovery controlBarItem"
         onClick={this.handleDiscoveryClick} key="discovery">
-        <span className={this.props.skinConfig.icons.discovery.fontStyleClass}
-          style={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.discovery.fontFamilyName})}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-          {this.props.skinConfig.icons.discovery.fontString}
-        </span>
+        <Icon iconClass={this.props.skinConfig.icons.discovery.fontStyleClass}
+          iconStyle={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.discovery.fontFamilyName})}
+          iconString={this.props.skinConfig.icons.discovery.fontString}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "closedCaption": <button className="closedCaption controlBarItem"
         onClick={this.handleClosedCaptionClick} key="closedCaption">
-        <span className={this.props.skinConfig.icons.cc.fontStyleClass}
-          style={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.cc.fontFamilyName})}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-          {this.props.skinConfig.icons.cc.fontString}
-        </span>
+        <Icon iconClass={this.props.skinConfig.icons.cc.fontStyleClass}
+          iconStyle={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.cc.fontFamilyName})}
+          iconString={this.props.skinConfig.icons.cc.fontString}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "share": <button className="share controlBarItem"
         onClick={this.handleShareClick} key="share">
-        <span className={this.props.skinConfig.icons.share.fontStyleClass}
-          style={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.share.fontFamilyName})}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-          {this.props.skinConfig.icons.share.fontString}
-        </span>
+        <Icon iconClass={this.props.skinConfig.icons.share.fontStyleClass}
+          iconStyle={Utils.extend(dynamicStyles.iconCharacter, {fontFamily: this.props.skinConfig.icons.share.fontFamilyName})}
+          iconString={this.props.skinConfig.icons.share.fontString}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "fullscreen": <button className="fullscreen controlBarItem"
         onClick={this.handleFullscreenClick} key="fullscreen">
-        <span className={fullscreenClass} style={iconSetting} style={fullscreenStyle}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-          {fullscreenCharacter}
-        </span>
+        <Icon iconClass={fullscreenClass} iconStyle={fullscreenStyle}
+          iconString={fullscreenCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "watermark": <div className={watermarkClass} key="watermark" style = {dynamicStyles.watermarkImageStyle}>
@@ -481,8 +475,7 @@ var ControlBar = React.createClass({
     var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
 
     return (
-      <div className={controlBarClass} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}
->
+      <div className={controlBarClass} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
         <div className="controlBarItemsWrapper">
           {controlBarItems}
         </div>

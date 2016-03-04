@@ -6,7 +6,8 @@ var React = require('react'),
     ClassNames = require('classnames'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
-    ResizeMixin = require('../mixins/resizeMixin');
+    ResizeMixin = require('../mixins/resizeMixin'),
+    Icon = require('../components/icon');
 
 var EndScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -54,11 +55,9 @@ var EndScreen = React.createClass({
       <a className="state-screen-selectable" onClick={this.handleClick}></a>
 
       <a className={actionIconClass} onClick={this.handleClick}>
-          <span className={this.props.skinConfig.icons.replay.fontStyleClass}
-                style={actionIconStyle}
-                aria-hidden="true">
-                  {this.props.skinConfig.icons.replay.fontString}
-                </span>
+        <Icon iconClass={this.props.skinConfig.icons.replay.fontStyleClass}
+          iconStyle={actionIconStyle}
+          fontString={this.props.skinConfig.icons.replay.fontString}/>
       </a>
 
       <ScrubberBar {...this.props}

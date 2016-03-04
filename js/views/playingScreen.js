@@ -134,7 +134,8 @@ var PlayingScreen = React.createClass({
       </div>
 
       {(this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
-        <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/> : ''}
+        <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible}
+          currentPlayhead={this.props.currentPlayhead} timeToShow={parseInt(this.props.skinConfig.upNext.timeToShow)}/> : ''}
     </div>
     );
   }

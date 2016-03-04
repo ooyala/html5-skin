@@ -9,7 +9,8 @@ var React = require('react'),
     ScrubberBar = require('../components/scrubberBar'),
     ClassNames = require('classnames'),
     Utils = require('../components/utils'),
-    ResizeMixin = require('../mixins/resizeMixin');
+    ResizeMixin = require('../mixins/resizeMixin'),
+    Icon = require('../components/icon');
 
 var AdScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -155,7 +156,8 @@ var AdScreen = React.createClass({
 
   render: function() {
     var actionIconStyle = {
-      color: this.props.skinConfig.pauseScreen.PauseIconStyle.color
+      color: this.props.skinConfig.pauseScreen.PauseIconStyle.color,
+      fontFamily: this.props.skinConfig.icons.pause.fontFamilyName
     };
     var actionIconClass = ClassNames({
       'action-icon-pause': !this.props.controller.state.adPauseAnimationDisabled,
@@ -191,9 +193,9 @@ var AdScreen = React.createClass({
          onMouseUp={this.handleClick}>
 
         <a className={actionIconClass}>
-          <span className={this.props.skinConfig.icons.pause.fontStyleClass}
-            style={actionIconStyle}
-            aria-hidden="true"></span>
+          <Icon iconClass={this.props.skinConfig.icons.pause.fontStyleClass}
+            iconStyle={actionIconStyle}
+            iconString={this.props.skinConfig.icons.pause.fontString}/>
         </a>
         <div className="adPanel" ref="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
           {adPanel}

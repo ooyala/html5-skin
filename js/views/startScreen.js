@@ -138,9 +138,8 @@ var StartScreen = React.createClass({
     var actionIcon = (
       <a className={actionIconClass} onClick={this.handleClick}>
         <Icon iconClass={this.props.controller.state.playerState == CONSTANTS.STATE.END ? this.props.skinConfig.icons.replay.fontStyleClass : this.props.skinConfig.icons.play.fontStyleClass}
-              iconStyle={actionIconStyle}
-              iconString={this.props.controller.state.playerState == CONSTANTS.STATE.END ? this.props.skinConfig.icons.replay.fontString : this.props.skinConfig.icons.play.fontString}
-              aria-hidden="true"/>
+          iconStyle={actionIconStyle}
+          iconString={this.props.controller.state.playerState == CONSTANTS.STATE.END ? this.props.skinConfig.icons.replay.fontString : this.props.skinConfig.icons.play.fontString}/>
       </a>
     );
     return (

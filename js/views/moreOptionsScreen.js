@@ -11,7 +11,8 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     MoreOptionsPanel = require('../components/moreOptionsPanel'),
     CloseButton = require('../components/closeButton'),
-    AccessibilityMixin = require('../mixins/accessibilityMixin');
+    AccessibilityMixin = require('../mixins/accessibilityMixin'),
+    Icon = require('../components/icon');
 
 var MoreOptionsScreen = React.createClass({
   mixins: [AccessibilityMixin],

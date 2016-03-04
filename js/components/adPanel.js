@@ -11,7 +11,8 @@ var React = require('react'),
   CONSTANTS = require('../constants/constants'),
   Spinner = require('./spinner'),
   ClassNames = require('classnames'),
-  Utils = require('./utils');
+  Utils = require('./utils'),
+  Icon = require('../components/icon');
 
 var AdPanelTopBarItem = React.createClass({
   render: function() {
@@ -102,10 +103,11 @@ var AdPanel = React.createClass({
       var learnMoreText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
       var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" ref="learnMoreButton" onButtonClicked={this.handleLearnMoreButtonClick}
         data={learnMoreText}
-        icon={<span style={{fontFamily: this.props.skinConfig.icons.learn.fontFamilyName}}
-          className={this.props.skinConfig.icons.learn.fontStyleClass + " buttonIcon"}>
-            {this.props.skinConfig.icons.learn.fontString}
-          </span>}
+        icon={<Icon
+          iconStyle={{fontFamily: this.props.skinConfig.icons.learn.fontFamilyName}}
+          iconClass={this.props.skinConfig.icons.learn.fontStyleClass + " buttonIcon"}
+          iconString={this.props.skinConfig.icons.learn.fontString}/>
+        }
         itemClassName={learnMoreClass}/>;
       adTopBarItems.push(learnMoreButtonDiv);
     }
@@ -120,9 +122,9 @@ var AdPanel = React.createClass({
     var skipAdClass = this.props.skinConfig.icons.skip.fontStyleClass + " skipIcon";
     var skipButtonDiv = <AdPanelTopBarItem key="skipButton" ref="skipButton" onButtonClicked={this.handleSkipAdButtonClick}
                         data={skipButtonText}
-                        icon={<span className={skipAdClass} style={{fontFamily: this.props.skinConfig.icons.skip.fontFamilyName}}>
-                            {this.props.skinConfig.icons.skip.fontString}
-                          </span>}
+                        icon={<Icon iconClass={skipAdClass}
+                                iconStyle={{fontFamily: this.props.skinConfig.icons.skip.fontFamilyName}}
+                                iconString={this.props.skinConfig.icons.skip.fontString}/>}
                         itemClassName={skipButtonClass}/>;
     adTopBarItems.push(skipButtonDiv);
 

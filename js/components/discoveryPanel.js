@@ -8,7 +8,8 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     Utils = require('./utils'),
     CountDownClock = require('./countDownClock'),
-    DiscoverItem = require('./discoverItem');
+    DiscoverItem = require('./discoverItem'),
+    Icon = require('../components/icon');
 
 var DiscoveryPanel = React.createClass({
   getInitialState: function() {
@@ -112,8 +113,11 @@ var DiscoveryPanel = React.createClass({
     var countDownClock = (
       <div className={discoveryCountDownWrapperStyle}>
         <a className="discoveryCountDownIconStyle" onClick={this.handleDiscoveryCountDownClick}>
-          <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
-          <span className={this.props.skinConfig.icons.pause.fontStyleClass}></span>
+          <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime}
+          ref="CountDownClock" />
+          <Icon iconClass={this.props.skinConfig.icons.pause.fontStyleClass}
+            iconString={this.props.skinConfig.icons.pause.fontString}
+            iconStyle={{fontFamily: this.props.skinConfig.icons.pause.fontFamilyName}}/>
         </a>
       </div>
     );
@@ -138,7 +142,9 @@ var DiscoveryPanel = React.createClass({
       <div className="discovery-panel">
         <div className="discovery-panel-title">
           {panelTitle}
-          <span className={this.props.skinConfig.icons.discovery.fontStyleClass}></span>
+          <Icon iconClass={this.props.skinConfig.icons.discovery.fontStyleClass}
+            iconString={this.props.skinConfig.icons.discovery.fontString}
+            iconStyle={{fontFamily: this.props.skinConfig.icons.discovery.fontFamilyName}}/>
         </div>
 
         <div className="discoveryToasterContainerStyle flexcontainer" id="DiscoveryToasterContainer" ref="DiscoveryToasterContainer">
@@ -146,16 +152,14 @@ var DiscoveryPanel = React.createClass({
         </div>
 
         <a className={leftButtonClass} ref="ChevronLeftButton" onClick={this.handleLeftButtonClick}>
-          <span className={this.props.skinConfig.icons.left.fontStyleClass} aria-hidden="true"
-            style={{fontFamily: this.props.skinConfig.icons.left.fontFamilyName}}>
-            {this.props.skinConfig.icons.left.fontString}
-          </span>
+          <Icon iconClass={this.props.skinConfig.icons.left.fontStyleClass}
+            iconStyle={{fontFamily: this.props.skinConfig.icons.left.fontFamilyName}}
+            iconString={this.props.skinConfig.icons.left.fontString}/>
         </a>
         <a className={rightButtonClass} ref="ChevronRightButton" onClick={this.handleRightButtonClick}>
-          <span className={this.props.skinConfig.icons.right.fontStyleClass}  aria-hidden="true"
-            style={{fontFamily: this.props.skinConfig.icons.right.fontFamilyName}}>
-            {this.props.skinConfig.icons.right.fontString}
-          </span>
+          <Icon iconClass={this.props.skinConfig.icons.right.fontStyleClass}
+            iconStyle={{fontFamily: this.props.skinConfig.icons.right.fontFamilyName}}
+            iconString={this.props.skinConfig.icons.right.fontString}/>
         </a>
       </div>
     );

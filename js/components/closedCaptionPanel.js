@@ -10,7 +10,8 @@
 var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     Utils = require('./utils'),
-    ClassNames = require('classnames');
+    ClassNames = require('classnames'),
+    Icon = require('../components/icon');
 
 var ClosedCaptionPanel = React.createClass({
   render: function(){
@@ -19,7 +20,9 @@ var ClosedCaptionPanel = React.createClass({
         <div className="closed-captions-panel">
           <div className="closed-captions-panel-title">
             {closedCaptionOptionsString}
-            <span className={this.props.skinConfig.icons.cc.fontStyleClass}></span>
+            <Icon iconClass={this.props.skinConfig.icons.cc.fontStyleClass}
+              iconString={this.props.skinConfig.icons.cc.fontString}
+              iconStyle={{fontFamily: this.props.skinConfig.icons.cc.fontFamilyName}}/>
           </div>
           <OnOffSwitch {...this.props} />
           <LanguageTabContent {...this.props} />
@@ -201,10 +204,14 @@ var LanguageTabContent = React.createClass({
         </div>
 
         <a className={leftChevron} ref="leftChevron" onClick={this.handleLeftChevronClick}>
-          <span className={this.props.skinConfig.icons.left.fontStyleClass} aria-hidden="true"></span>
+          <Icon iconClass={this.props.skinConfig.icons.left.fontStyleClass}
+            iconString={this.props.skinConfig.icons.left.fontString}
+            iconStyle={{fontFamily: this.props.skinConfig.icons.left.fontFamilyName}}/>
         </a>
         <a className={rightChevron} ref="rightChevron" onClick={this.handleRightChevronClick}>
-          <span className={this.props.skinConfig.icons.right.fontStyleClass}  aria-hidden="true"></span>
+        <Icon iconClass={this.props.skinConfig.icons.right.fontStyleClass}
+          iconString={this.props.skinConfig.icons.right.fontString}
+          iconStyle={{fontFamily: this.props.skinConfig.icons.right.fontFamilyName}}/>
         </a>
       </div>
     );

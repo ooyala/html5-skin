@@ -8,7 +8,8 @@
 var React = require('react'),
     Utils = require('./utils'),
     CONSTANTS = require('../constants/constants'),
-    ClassNames = require('classnames');
+    ClassNames = require('classnames'),
+    Icon = require('../components/icon');
 
 var MoreOptionsPanel = React.createClass({
   getInitialState: function() {
@@ -58,43 +59,38 @@ var MoreOptionsPanel = React.createClass({
 
     var optionsItemsTemplates = {
       "quality": <button className="quality controlBarItem" onClick={this.handleQualityClick} key="quality">
-        <span className={this.props.skinConfig.icons.quality.fontStyleClass}
-         style={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.quality.fontFamilyName})}
-         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-         {this.props.skinConfig.icons.quality.fontString}
-        </span>
+        <Icon iconClass={this.props.skinConfig.icons.quality.fontStyleClass}
+         iconStyle={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.quality.fontFamilyName})}
+         iconString={this.props.skinConfig.icons.quality.fontString}
+         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "discovery": <button className="discovery controlBarItem" onClick={this.handleDiscoveryClick} key="discovery">
-        <span className={this.props.skinConfig.icons.discovery.fontStyleClass}
-          style={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.discovery.fontFamilyName})}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-          {this.props.skinConfig.icons.discovery.fontString}
-        </span>
+        <Icon iconClass={this.props.skinConfig.icons.discovery.fontStyleClass}
+          iconStyle={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.discovery.fontFamilyName})}
+          iconString={this.props.skinConfig.icons.discovery.fontString}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "closedCaption": <button className="closedCaption controlBarItem" onClick={this.handleClosedCaptionClick} key="closedCaption">
-        <span className={this.props.skinConfig.icons.cc.fontStyleClass}
-          style={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.cc.fontFamilyName})}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-          {this.props.skinConfig.icons.cc.fontString}
-        </span>
+        <Icon iconClass={this.props.skinConfig.icons.cc.fontStyleClass}
+          iconStyle={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.cc.fontFamilyName})}
+          iconString={this.props.skinConfig.icons.cc.fontString}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "share": <button className="share controlBarItem" onClick={this.handleShareClick} key="share">
-        <span className={this.props.skinConfig.icons.share.fontStyleClass}
-          style={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.share.fontFamilyName})}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-          {this.props.skinConfig.icons.share.fontString}
-        </span>
+        <Icon iconClass={this.props.skinConfig.icons.share.fontStyleClass}
+          iconStyle={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.share.fontFamilyName})}
+          iconString={this.props.skinConfig.icons.share.fontString}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "settings": <div className="settings" key="settings">
-        <span className={this.props.skinConfig.icons.setting.fontStyleClass}
-          style={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.setting.fontFamilyName})}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-          {this.props.skinConfig.icons.setting.fontString}
-          </span>
+        <Icon iconClass={this.props.skinConfig.icons.setting.fontStyleClass}
+          iconStyle={Utils.extend(iconSetting, {fontFamily: this.props.skinConfig.icons.setting.fontFamilyName})}
+          iconString={this.props.skinConfig.icons.setting.fontString}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </div>
     };
 

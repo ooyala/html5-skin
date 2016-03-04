@@ -4,7 +4,9 @@ var Icon = React.createClass({
   render: function() {
     return (
       <span className={this.props.iconClass}
-        style={this.props.iconStyle}>
+        style={this.props.iconStyle}
+        onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}
+        onClick={this.props.onClick}>
         {this.props.iconString}
       </span>
     );
