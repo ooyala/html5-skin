@@ -1,6 +1,13 @@
 var React = require('react');
 
+
 var Icon = React.createClass({
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return  (nextProps.iconClass != this.props.iconClass ||
+            nextProps.iconString != this.props.iconString ||
+            JSON.stringify(nextProps.iconStyle) != JSON.stringify(this.props.iconStyle))
+  },
+
   render: function() {
     return (
       <span className={this.props.iconClass}
