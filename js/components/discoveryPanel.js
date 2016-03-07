@@ -4,6 +4,7 @@
  * @module DiscoveryPanel
  */
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants'),
     Utils = require('./utils'),
@@ -15,8 +16,14 @@ var DiscoveryPanel = React.createClass({
   getInitialState: function() {
     return {
       showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen,
-      currentPage: 1
+      currentPage: 1,
+      heightOverflow: false,
+      heightOverflowBreakpoint: null
     };
+  },
+
+  componentDidMount: function () {
+    this.detectHeight();
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -24,12 +31,15 @@ var DiscoveryPanel = React.createClass({
     if (nextProps.responsiveView != this.props.responsiveView) {
       var currentViewSize = this.props.responsiveView.replace('ooyala-', '');
       var nextViewSize = nextProps.responsiveView.replace('ooyala-', '');
-      var firstLanguageIndex = this.state.currentPage * this.props.videosPerPage[currentViewSize] - this.props.videosPerPage[currentViewSize];
-      var newCurrentPage = Math.floor(firstLanguageIndex/nextProps.videosPerPage[nextViewSize]) + 1;
+      var firstDiscoverIndex = this.state.currentPage * this.props.videosPerPage[currentViewSize] - this.props.videosPerPage[currentViewSize];
+      var newCurrentPage = Math.floor(firstDiscoverIndex/nextProps.videosPerPage[nextViewSize]) + 1;
       this.setState({
         currentPage: newCurrentPage
       });
+      this.detectHeight();
     }
+
+    this.detectHeightOverflow();
   },
 
   handleLeftButtonClick: function(event) {
@@ -68,6 +78,26 @@ var DiscoveryPanel = React.createClass({
     this.refs.CountDownClock.handleClick(event);
   },
 
+  // detect height of outer and inner windows
+  detectHeight: function() {
+    var discoveryPanel = ReactDOM.findDOMNode(this.refs.discoveryPanel);
+    var discoveryPanelToaster = ReactDOM.findDOMNode(this.refs.DiscoveryToasterContainer);
+    var heightData = Utils.windowHeightOverflow(discoveryPanel, discoveryPanelToaster.getBoundingClientRect().height, 10);
+    this.setState({
+      heightOverflow: heightData.isWindowHeightOverflow,
+      heightOverflowBreakpoint: discoveryPanelToaster.getBoundingClientRect().height
+    });
+  },
+
+  // detect height overflow
+  detectHeightOverflow: function() {
+    var discoveryPanel = ReactDOM.findDOMNode(this.refs.discoveryPanel);
+    var heightData = Utils.windowHeightOverflow(discoveryPanel, this.state.heightOverflowBreakpoint, 10);
+    this.setState({
+      heightOverflow: heightData.isWindowHeightOverflow
+    });
+  },
+
   render: function() {
     var relatedVideos = this.props.discoveryData.relatedVideos;
 
@@ -101,6 +131,11 @@ var DiscoveryPanel = React.createClass({
     var discoveryCountDownWrapperStyle = ClassNames({
       'discoveryCountDownWrapperStyle': true,
       'hidden': !this.state.showDiscoveryCountDown
+    });
+    var discoveryToaster = ClassNames({
+      'discoveryToasterContainerStyle': true,
+      'flexcontainer': true,
+      'scaleHeight': this.state.heightOverflow
     });
     var leftButtonClass = ClassNames({
       'leftButton': true,
@@ -139,7 +174,7 @@ var DiscoveryPanel = React.createClass({
     }
 
     return (
-      <div className="discovery-panel">
+      <div className="discovery-panel" ref="discoveryPanel">
         <div className="discovery-panel-title">
           {panelTitle}
           <Icon iconClass={this.props.skinConfig.icons.discovery.fontStyleClass}
@@ -147,7 +182,7 @@ var DiscoveryPanel = React.createClass({
             iconStyle={{fontFamily: this.props.skinConfig.icons.discovery.fontFamilyName}}/>
         </div>
 
-        <div className="discoveryToasterContainerStyle flexcontainer" id="DiscoveryToasterContainer" ref="DiscoveryToasterContainer">
+        <div className={discoveryToaster} id="DiscoveryToasterContainer" ref="DiscoveryToasterContainer">
           {discoveryContentBlocks}
         </div>
 
@@ -178,7 +213,7 @@ DiscoveryPanel.propTypes = {
   skinConfig: React.PropTypes.shape({
     discoveryScreen: React.PropTypes.shape({
       showCountDownTimerOnEndScreen: React.PropTypes.bool,
-      countDownTime: React.PropTypes.number,
+      countDownTime: React.PropTypes.string,
       contentTitle: React.PropTypes.shape({
         show: React.PropTypes.bool
       })
@@ -199,7 +234,7 @@ DiscoveryPanel.defaultProps = {
   skinConfig: {
     discoveryScreen: {
       showCountDownTimerOnEndScreen: true,
-      countDownTime: 10,
+      countDownTime: "10",
       contentTitle: {
         show: true
       }
