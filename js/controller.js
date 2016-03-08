@@ -36,6 +36,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "adOverlayUrl": null,
       "showAdOverlay": false,
       "showAdOverlayCloseButton": false,
+      "showAdControls": true,
       "showAdMarquee": true,
       "configLoaded": false,
       "config": {},
@@ -156,6 +157,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi", _.bind(this.showNonlinearAd, this));
           this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD_CLOSE_BUTTON, "customerUi", _.bind(this.showNonlinearAdCloseButton, this));
           this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
+          this.mb.subscribe(OO.EVENTS.SHOW_AD_CONTROLS, "customerUi", _.bind(this.onShowAdControls, this));
           this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi", _.bind(this.onShowAdMarquee, this));
         }
       }
@@ -570,6 +572,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onShowAdControls: function(event, showAdControls) {
+      this.state.showAdControls = showAdControls;
+      this.renderSkin();
+    },
+
     onShowAdMarquee: function(event, showAdMarquee) {
       this.state.showAdMarquee = showAdMarquee;
       this.renderSkin();
@@ -847,6 +854,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.unsubscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi");
+        this.mb.unsubscribe(OO.EVENTS.SHOW_AD_CONTROLS, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi");
 
         if (OO.EVENTS.DISCOVERY_API) {

@@ -71,7 +71,8 @@ describe('AdOverlay', function () {
         skinConfig={mockSkinConfig}
       />);
 
-    TestUtils.Simulate.mouseUp(ReactDOM.findDOMNode(DOM));
+    var ad = TestUtils.findRenderedDOMComponentWithTag(DOM, 'a');
+    TestUtils.Simulate.click(ad);
     expect(clickSource).toBe(CONSTANTS.AD_CLICK_SOURCE.OVERLAY);
   });
 

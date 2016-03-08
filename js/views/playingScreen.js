@@ -104,6 +104,15 @@ var PlayingScreen = React.createClass({
   },
 
   render: function() {
+    var adOverlay = null;
+    if (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) {
+      adOverlay = <AdOverlay {...this.props}
+        overlay={this.props.controller.state.adOverlayUrl}
+        showOverlay={this.props.controller.state.showAdOverlay}
+        showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
+        controlBarVisible={this.state.controlBarVisible} />;
+    }
+
     return (
     <div className="state-screen playingScreen"
          ref="PlayingScreen"
@@ -113,15 +122,10 @@ var PlayingScreen = React.createClass({
 
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : ''}
 
-      <div className="default-screen"
-           onMouseUp={this.handlePlayerMouseUp}
-           onTouchEnd={this.handleTouchEnd}>
+      <div className="default-screen">
+        <div className="state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
-        <AdOverlay {...this.props}
-          overlay={this.props.controller.state.adOverlayUrl}
-          showOverlay={this.props.controller.state.showAdOverlay}
-          showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
-          controlBarVisible={this.state.controlBarVisible} />
+        {adOverlay}
 
         <ScrubberBar {...this.props}
           controlBarVisible={this.state.controlBarVisible}

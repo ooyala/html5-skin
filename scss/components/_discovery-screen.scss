@@ -144,5 +144,22 @@
       font-size: 25px;
       cursor: pointer
     }
+
+    .scaleHeight {
+      max-height: 250px;
+      .discoveryImageWrapperStyle {
+        width: 150px * $small-multiple;
+        margin: 0 42px * $small-multiple 30px * $small-multiple 0;
+        &:nth-child(even) {
+          margin-bottom: 0;
+        }
+        &:last-child, &:nth-last-child(2) {
+          margin-right:0
+        }
+        .imageStyle {
+          height: 84px * $small-multiple;
+        }
+      }
+    }
   }
 }
