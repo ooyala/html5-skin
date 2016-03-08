@@ -67,7 +67,6 @@ var UpNextPanel = React.createClass({
   }
 });
 
-
 UpNextPanel.propTypes = {
   upNextInfo: React.PropTypes.shape({
     upNextData: React.PropTypes.shape({
@@ -78,7 +77,7 @@ UpNextPanel.propTypes = {
   }),
   skinConfig: React.PropTypes.shape({
     upNext: React.PropTypes.shape({
-      timeToShow: React.PropTypes.number
+      timeToShow: React.PropTypes.string
     }),
     icons: React.PropTypes.objectOf(React.PropTypes.object)
   })
@@ -87,7 +86,7 @@ UpNextPanel.propTypes = {
 UpNextPanel.defaultProps = {
   skinConfig: {
     upNext: {
-      timeToShow: 10
+      timeToShow: "10"
     },
     icons: {
       play:{fontStyleClass:'icon icon-play'},

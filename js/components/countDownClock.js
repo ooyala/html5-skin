@@ -190,13 +190,13 @@ var CountDownClock = React.createClass({
 });
 
 CountDownClock.propTypes = {
-  timeToShow: React.PropTypes.number,
+  timeToShow: React.PropTypes.string,
   clockWidth: React.PropTypes.number,
   currentPlayhead: React.PropTypes.number
 };
 
 CountDownClock.defaultProps = {
-  timeToShow: 10, //seconds
+  timeToShow: "10", //seconds
   clockWidth: 36,
   currentPlayhead: 0
 };
