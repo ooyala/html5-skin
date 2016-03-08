@@ -10,32 +10,13 @@ var React = require('react'),
 var ScrubberBar = React.createClass({
   mixins: [ResizeMixin],
 
-  getDefaultProps: function () {
-    return {
-      skinConfig: {
-        controlBar: {
-          scrubberBar: {
-            backgroundColor: 'rgba(5,175,175,1)',
-            bufferedColor: 'rgba(127,5,127,1)',
-            playedColor: 'rgba(67,137,5,1)'
-          },
-          adScrubberBar: {
-            backgroundColor: 'rgba(175,175,5,1)',
-            bufferedColor: 'rgba(127,5,127,1)',
-            playedColor: 'rgba(5,63,128,1)'
-          }
-        }
-      }
-    };
-  },
-
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
-    this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
-    this.lastScrubX = null;
-    this.scrubberBarWidth = 0;
-    this.playheadWidth = 0;
+
     return {
+      lastScrubX: null,
+      scrubberBarWidth: 0,
+      playheadWidth: 0,
       scrubbingPlayheadX: 0,
       currentPlayhead: 0,
       transitionedDuringSeek: false
@@ -48,8 +29,14 @@ var ScrubberBar = React.createClass({
     }
   },
 
-  componentDidUpdate: function () {
-    this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
+  componentDidMount: function() {
+    this.handleResize();
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    if (this.transitionedDuringSeek && !nextProps.seeking) {
+      this.setState({transitionedDuringSeek: false});
+    }
   },
 
   componentWillUnmount: function() {
@@ -63,26 +50,11 @@ var ScrubberBar = React.createClass({
     }
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    if (this.transitionedDuringSeek && !nextProps.seeking) {
-      this.setState({transitionedDuringSeek: false});
-    }
-  },
-
-  componentDidMount: function() {
-    this.scrubberBarWidth = ReactDOM.findDOMNode(this).querySelector(".scrubberBar").clientWidth;
-    this.playheadWidth = ReactDOM.findDOMNode(this).querySelector(".playhead").clientWidth;
-  },
-
-  getResponsiveUIMultiple: function(responsiveView){
-    return responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ?
-      this.props.skinConfig.responsive.breakpoints.sm.multiplier :
-      this.props.skinConfig.responsive.breakpoints.md.multiplier;
-  },
-
   handleResize: function() {
-    this.scrubberBarWidth = ReactDOM.findDOMNode(this).querySelector(".scrubberBar").clientWidth;
-    this.playheadWidth = ReactDOM.findDOMNode(this).querySelector(".playhead").clientWidth;
+    this.setState({
+      scrubberBarWidth: ReactDOM.findDOMNode(this.refs.scrubberBar).clientWidth,
+      playheadWidth: ReactDOM.findDOMNode(this.refs.playhead).clientWidth
+    });
   },
 
   handlePlayheadMouseDown: function(evt) {
@@ -102,8 +74,8 @@ var ScrubberBar = React.createClass({
       this.props.controller.beginSeeking();
       this.props.controller.renderSkin();
 
-      if (!this.lastScrubX) {
-        this.lastScrubX = evt.clientX;
+      if (!this.state.lastScrubX) {
+        this.setState({lastScrubX: evt.clientX});
       }
 
       if (!this.isMobile){
@@ -126,13 +98,13 @@ var ScrubberBar = React.createClass({
       if (this.isMobile){
         evt = evt.touches[0];
       }
-      var deltaX = evt.clientX - this.lastScrubX;
-      var scrubbingPlayheadX = this.props.currentPlayhead * this.scrubberBarWidth / this.props.duration + deltaX;
-      this.props.controller.updateSeekingPlayhead((scrubbingPlayheadX / this.scrubberBarWidth) * this.props.duration);
+      var deltaX = evt.clientX - this.state.lastScrubX;
+      var scrubbingPlayheadX = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration + deltaX;
+      this.props.controller.updateSeekingPlayhead((scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration);
       this.setState({
         scrubbingPlayheadX: scrubbingPlayheadX
       });
-      this.lastScrubX = evt.clientX;
+      this.state.lastScrubX = evt.clientX;
     }
   },
 
@@ -146,7 +118,7 @@ var ScrubberBar = React.createClass({
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
 
-    this.lastScrubX = null;
+    this.state.lastScrubX = null;
     if (!this.isMobile){
       ReactDOM.findDOMNode(this).parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
       document.removeEventListener("mouseup", this.handlePlayheadMouseUp, true);
@@ -177,7 +149,7 @@ var ScrubberBar = React.createClass({
     this.setState({
       scrubbingPlayheadX: offsetX
     });
-    this.props.controller.updateSeekingPlayhead((offsetX / this.scrubberBarWidth) * this.props.duration);
+    this.props.controller.updateSeekingPlayhead((offsetX / this.state.scrubberBarWidth) * this.props.duration);
     this.handlePlayheadMouseDown(evt);
   },
 
@@ -203,11 +175,11 @@ var ScrubberBar = React.createClass({
           playheadPaddingStyle.left = this.state.scrubbingPlayheadX;
         } else {
           playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
-            parseFloat(this.props.duration)) * this.scrubberBarWidth);
+            parseFloat(this.props.duration)) * this.state.scrubberBarWidth);
         }
 
         playheadPaddingStyle.left = Math.max(
-          Math.min(this.scrubberBarWidth - parseInt(this.playheadWidth)/2,
+          Math.min(this.state.scrubberBarWidth - parseInt(this.state.playheadWidth)/2,
             playheadPaddingStyle.left), 0);
 
         if (isNaN(playheadPaddingStyle.left)) playheadPaddingStyle.left = 0;
@@ -242,7 +214,7 @@ var ScrubberBar = React.createClass({
             <div className={playedIndicatorClassName} style={playedIndicatorStyle}></div>
             <div className="playheadPadding" style={playheadPaddingStyle}
               onMouseDown={playheadMouseDown} onTouchStart={playheadMouseDown}>
-              <div className={playheadClassName} style={playheadStyle}></div>
+              <div ref="playhead" className={playheadClassName} style={playheadStyle}></div>
             </div>
           </div>
         </div>
@@ -250,4 +222,22 @@ var ScrubberBar = React.createClass({
     );
   }
 });
+
+ScrubberBar.defaultProps = {
+  skinConfig: {
+    controlBar: {
+      scrubberBar: {
+        backgroundColor: 'rgba(5,175,175,1)',
+        bufferedColor: 'rgba(127,5,127,1)',
+        playedColor: 'rgba(67,137,5,1)'
+      },
+      adScrubberBar: {
+        backgroundColor: 'rgba(175,175,5,1)',
+        bufferedColor: 'rgba(127,5,127,1)',
+        playedColor: 'rgba(5,63,128,1)'
+      }
+    }
+  }
+};
+
 module.exports = ScrubberBar;

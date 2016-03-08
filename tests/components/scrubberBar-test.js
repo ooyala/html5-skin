@@ -24,7 +24,6 @@ describe('ScrubberBar', function () {
     var DOM = TestUtils.renderIntoDocument(
       <ScrubberBar
         controlBarVisible={true}
-        controlBarWidth={500}
         seeking={false}
         controller={mockController}
         skinConfig={skinConfig}
@@ -43,12 +42,11 @@ describe('ScrubberBar', function () {
       },
       startHideControlBarTimer: function() {},
       beginSeeking: function() {},
-      renderSkin: function() {},
+      renderSkin: function() {}
     };
     var DOM = TestUtils.renderIntoDocument(
       <ScrubberBar
         controlBarVisible={true}
-        controlBarWidth={500}
         seeking={false}
         controller={mockController}
         skinConfig={skinConfig}
@@ -81,7 +79,6 @@ describe('ScrubberBar', function () {
     var DOM = TestUtils.renderIntoDocument(
       <ScrubberBar
         controlBarVisible={true}
-        controlBarWidth={500}
         seeking={false}
         controller={mockController}
         skinConfig={skinConfig}
@@ -108,7 +105,6 @@ describe('ScrubberBar', function () {
     var DOM = TestUtils.renderIntoDocument(
       <ScrubberBar
         controlBarVisible={true}
-        controlBarWidth={500}
         seeking={false}
         controller={mockController}
         currentPlayhead={30}
@@ -117,8 +113,8 @@ describe('ScrubberBar', function () {
         />
     );
 
-    DOM.scrubberBarWidth = 470;
-    DOM.playheadWidth = 10;
+    DOM.state.scrubberBarWidth = 470;
+    DOM.state.playheadWidth = 10;
     DOM.forceUpdate();
 
     var playhead = TestUtils.findRenderedDOMComponentWithClass(DOM, 'playheadPadding');
@@ -138,7 +134,6 @@ describe('ScrubberBar', function () {
     var DOM = TestUtils.renderIntoDocument(
       <ScrubberBar
         controlBarVisible={true}
-        controlBarWidth={500}
         seeking={false}
         controller={mockController}
         currentPlayhead={30}
