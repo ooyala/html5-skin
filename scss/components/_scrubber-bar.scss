@@ -23,7 +23,7 @@
     position: absolute;
 
     .scrubberBar {
-      background-color: #afafaf;
+      background-color: $gray-lighter;
       height: 5px;
       width: 100%;
       margin: 0;
@@ -34,13 +34,13 @@
     }
 
     .bufferedIndicator {
-      background-color: #7f7f7f;
+      background-color: $gray-light;
       height: 100%;
       position: absolute;
     }
 
     .playedIndicator {
-      background: #4389ff;
+      background: $blue-light;
       height: 100%;
       position: absolute;
     }
@@ -59,7 +59,7 @@
       @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
 
       .playhead {
-        background: #ffffff;
+        background: $white;
         width: 10px;
         height: 10px;
         border-style: solid;
