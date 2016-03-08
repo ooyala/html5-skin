@@ -24,8 +24,17 @@ var ScrubberBar = React.createClass({
             bufferedColor: 'rgba(127,5,127,1)',
             playedColor: 'rgba(5,63,128,1)'
           }
+        },
+        responsive: {
+          breakpoints: {
+            xs: {id: 'xs'},
+            sm: {id: 'sm'},
+            md: {id: 'md'},
+            lg: {id: 'lg'}
+          }
         }
-      }
+      },
+      responsiveView: 'md'
     };
   },
 
@@ -75,9 +84,8 @@ var ScrubberBar = React.createClass({
   },
 
   getResponsiveUIMultiple: function(responsiveView){
-    return responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ?
-      this.props.skinConfig.responsive.breakpoints.sm.multiplier :
-      this.props.skinConfig.responsive.breakpoints.md.multiplier;
+    var multiplier = this.props.skinConfig.responsive.breakpoints[responsiveView].multiplier;
+    return multiplier;
   },
 
   handleResize: function() {

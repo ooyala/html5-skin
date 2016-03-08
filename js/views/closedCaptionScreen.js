@@ -71,7 +71,7 @@ var ClosedCaptionScreen = React.createClass({
   render: function() {
     return (
       <div className="state-screen closedCaptionsScreen">
-        <ClosedCaptionPanel {...this.props} closedCaptionOptions={this.props.closedCaptionOptions} languagesPerPage={{small:1, medium:4, large:15}} />
+        <ClosedCaptionPanel {...this.props} closedCaptionOptions={this.props.closedCaptionOptions} languagesPerPage={{xs:1, sm:4, md:4, lg:15}} />
         <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>
     );

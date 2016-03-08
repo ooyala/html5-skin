@@ -20,9 +20,8 @@ var ControlBar = React.createClass({
   },
 
   getResponsiveUIMultiple: function(responsiveView){
-    return responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ?
-      this.props.skinConfig.responsive.breakpoints.sm.multiplier :
-      this.props.skinConfig.responsive.breakpoints.md.multiplier;
+    var multiplier = this.props.skinConfig.responsive.breakpoints[responsiveView].multiplier;
+    return multiplier;
   },
 
   componentWillUnmount: function () {
@@ -135,7 +134,7 @@ var ControlBar = React.createClass({
   },
 
   handleQualityClick: function() {
-    if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name) {
+    if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
     } else {
       this.toggleQualityPopover();
@@ -462,7 +461,18 @@ ControlBar.defaultProps = {
     streams: [
       {is_live_stream: false}
     ]
-  }
+  },
+  skinConfig: {
+    responsive: {
+      breakpoints: {
+        xs: {id: 'xs'},
+        sm: {id: 'sm'},
+        md: {id: 'md'},
+        lg: {id: 'lg'}
+      }
+    }
+  },
+  responsiveView: 'md'
 };
 
 module.exports = ControlBar;

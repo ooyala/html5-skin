@@ -56,7 +56,7 @@ var DiscoveryScreen = React.createClass({
     return (
       <div className="discoveryScreen">
         <div className={promoStyle}></div>
-        <DiscoveryPanel {...this.props} videosPerPage={{small:2, medium:6, large:8}} />
+        <DiscoveryPanel {...this.props} videosPerPage={{xs:2, sm:4, md:6, lg:8}} />
         <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
       </div>
     );
