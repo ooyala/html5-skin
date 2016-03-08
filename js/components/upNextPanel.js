@@ -15,43 +15,6 @@ var React = require('react'),
     CountDownClock = require('./countDownClock');
 
 var UpNextPanel = React.createClass({
-  propTypes: {
-    upNextInfo: React.PropTypes.shape({
-      upNextData: React.PropTypes.shape({
-        preview_image_url: React.PropTypes.string,
-        name: React.PropTypes.string,
-        description:React.PropTypes.string
-      })
-    }),
-    skinConfig: React.PropTypes.shape({
-      upNext: React.PropTypes.shape({
-        timeToShow: React.PropTypes.number
-      }),
-      icons: React.PropTypes.objectOf(React.PropTypes.object)
-    })
-  },
-
-  getDefaultProps: function () {
-    return {
-      skinConfig: {
-        upNext: {
-          timeToShow: 10
-        },
-        icons: {
-          play:{fontStyleClass:'icon icon-play'},
-          dismiss:{fontStyleClass:'icon icon-close'}
-        }
-      },
-      upNextInfo: {
-        upNextData: {}
-      },
-      controller: {
-        upNextDismissButtonClicked: function(){},
-        sendDiscoveryClickEvent: function(a,b){}
-      }
-    };
-  },
-
   closeUpNextPanel: function() {
     this.props.controller.upNextDismissButtonClicked();
   },
@@ -103,4 +66,41 @@ var UpNextPanel = React.createClass({
     );
   }
 });
+
+
+UpNextPanel.propTypes = {
+  upNextInfo: React.PropTypes.shape({
+    upNextData: React.PropTypes.shape({
+      preview_image_url: React.PropTypes.string,
+      name: React.PropTypes.string,
+      description:React.PropTypes.string
+    })
+  }),
+  skinConfig: React.PropTypes.shape({
+    upNext: React.PropTypes.shape({
+      timeToShow: React.PropTypes.number
+    }),
+    icons: React.PropTypes.objectOf(React.PropTypes.object)
+  })
+};
+
+UpNextPanel.defaultProps = {
+  skinConfig: {
+    upNext: {
+      timeToShow: 10
+    },
+    icons: {
+      play:{fontStyleClass:'icon icon-play'},
+      dismiss:{fontStyleClass:'icon icon-close'}
+    }
+  },
+  upNextInfo: {
+    upNextData: {}
+  },
+  controller: {
+    upNextDismissButtonClicked: function(){},
+    sendDiscoveryClickEvent: function(a,b){}
+  }
+};
+
 module.exports = UpNextPanel;
