@@ -830,12 +830,12 @@ describe('ControlBar', function () {
       toggleQualityPopover: function() {qualityClicked = true;}
     };
 
-    //small
+    //xsmall
     mockProps = {
       authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig,
-      responsiveView: skinConfig.responsive.breakpoints.sm.name
+      responsiveView: skinConfig.responsive.breakpoints.xs.id
     };
 
     DOM = TestUtils.renderIntoDocument(
@@ -857,7 +857,7 @@ describe('ControlBar', function () {
       authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig,
-      responsiveView: skinConfig.responsive.breakpoints.md.name
+      responsiveView: skinConfig.responsive.breakpoints.md.id
     };
 
     DOM = TestUtils.renderIntoDocument(
@@ -879,7 +879,7 @@ describe('ControlBar', function () {
       authorization: {streams: [{is_live_stream: false}]},
       controller: mockController,
       skinConfig: oneButtonSkinConfig,
-      responsiveView: skinConfig.responsive.breakpoints.lg.name
+      responsiveView: skinConfig.responsive.breakpoints.lg.id
     };
 
     DOM = TestUtils.renderIntoDocument(
