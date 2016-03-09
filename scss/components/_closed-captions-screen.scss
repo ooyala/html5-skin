@@ -121,6 +121,9 @@
           color: $white;
           transition: all 0.0s ease;
           cursor: pointer;
+          border-radius: 2px;
+          border: 1px solid $gray;
+          outline: none;
         }
 
         a.item-selected {
