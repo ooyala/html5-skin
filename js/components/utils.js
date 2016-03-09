@@ -126,6 +126,26 @@ var Utils = {
   },
 
   /**
+  * Check if the current browser is Edge
+  *
+  * @function isEdge
+  * @returns {Boolean} Whether the browser is Edge or not
+  */
+  isEdge: function () {
+    return (!!window.navigator.userAgent.match(/Edge/));
+  },
+
+  /**
+  * Check if the current browser is Internet Explorer
+  *
+  * @function isIE
+  * @returns {Boolean} Whether the browser is IE or not
+  */
+  isIE: function() {
+    return (!!window.navigator.userAgent.match(/MSIE/) || !!window.navigator.userAgent.match(/Trident/));
+  },
+
+  /**
   * Check if the current device is Android
   *
   * @function isAndroid

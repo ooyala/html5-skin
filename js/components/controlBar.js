@@ -5,6 +5,7 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     CONSTANTS = require('../constants/constants'),
     ClassNames = require('classnames'),
+    Slider = require('./slider'),
     Utils = require('./utils'),
     VideoQualityPopover = require('./videoQualityPopover');
 
@@ -12,6 +13,7 @@ var ControlBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
+    this.volumeSliderValue = 0;
 
     return {
       currentVolumeHead: 0,
@@ -70,60 +72,6 @@ var ControlBar = React.createClass({
     else{
       this.props.controller.handleMuteClick();
     }
-  },
-
-  handleVolumeBarTouchEnd: function(evt) {
-    this.props.controller.startHideControlBarTimer();
-    //to prevent volume slider from hiding when clicking on volume slider
-    evt.stopPropagation(); // W3C
-    evt.cancelBubble = true; // IE
-  },
-
-  handleVolumeHeadTouchStart: function(evt) {
-    this.props.controller.startHideControlBarTimer();
-    evt.preventDefault();
-    evt.stopPropagation(); // W3C
-    evt.cancelBubble = true; // IE
-    evt = evt.nativeEvent;
-
-    ReactDOM.findDOMNode(this).parentNode.addEventListener("touchmove", this.handleVolumeHeadMove);
-    document.addEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
-
-    this.setState({
-      currentVolumeHead: evt.changedTouches[0].screenX
-    });
-  },
-
-  handleVolumeHeadMove: function(evt) {
-    this.props.controller.startHideControlBarTimer();
-    evt.preventDefault();
-    evt.stopPropagation(); // W3C
-    evt.cancelBubble = true; // IE
-
-    this.setNewVolume(evt);
-  },
-
-  setNewVolume: function(evt) {
-    var newVolumeHeadX = this.isMobile ? evt.changedTouches[0].screenX : evt.screenX;
-    var diffX = newVolumeHeadX - this.state.currentVolumeHead;
-    var diffVolume = (diffX / parseInt(ReactDOM.findDOMNode(this.refs.volumeSlider)));
-    var newVolume = this.props.controller.state.volumeState.volume + diffVolume;
-    newVolume = Math.min(newVolume, 1);
-    newVolume = Math.max(newVolume, 0);
-
-    this.props.controller.setVolume(newVolume);
-    this.setState({
-      currentVolumeHead: newVolumeHeadX
-    });
-  },
-
-  handleVolumeHeadTouchEnd: function(evt) {
-    this.props.controller.startHideControlBarTimer();
-    evt.stopPropagation(); // W3C
-    evt.cancelBubble = true; // IE
-    this.setNewVolume(evt);
-    ReactDOM.findDOMNode(this).parentNode.removeEventListener("touchmove", this.handleVolumeHeadMove);
-    document.removeEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
   },
 
   handlePlayClick: function() {
@@ -195,6 +143,13 @@ var ControlBar = React.createClass({
     }
   },
 
+  changeVolumeSlider: function(event) {
+    var newVolume = parseFloat(event.target.value);
+    this.props.controller.setVolume(newVolume);
+    this.setState({
+      volumeSliderValue: event.target.value
+    });
+  },
   populateControlBar: function() {
     var dynamicStyles = this.setupItemStyle();
     var playClass = "";
@@ -231,20 +186,12 @@ var ControlBar = React.createClass({
         onClick={this.handleVolumeClick}></a>);
     }
 
-    var volumeHeadPaddingStyle = {};
-    volumeHeadPaddingStyle.left = parseFloat(this.props.controller.state.volumeState.volume) * 100 + "%";
-    var volumeIndicatorStyle = {};
-    volumeIndicatorStyle.width = volumeHeadPaddingStyle.left;
-
-    var volumeSlider = [];
-    volumeSlider.push(
-      <div className="volumeSlider" ref="volumeSlider" onTouchEnd={this.handleVolumeBarTouchEnd} key={i}>
-        <div className="volumeIndicator" style={volumeIndicatorStyle}></div>
-        <div className="playheadPadding" style={volumeHeadPaddingStyle}
-          onTouchStart={this.handleVolumeHeadTouchStart}>
-          <div className="volumeHead"></div>
-        </div>
-      </div>);
+    var volumeSlider = <div className="volumeSlider"><Slider volumeSliderValue={parseFloat(this.props.controller.state.volumeState.volume)}
+                        changeVolumeSlider={this.changeVolumeSlider}
+                        className={"slider slider-volume"}
+                        minValue={"0"}
+                        maxValue={"1"}
+                        step={"0.1"}/></div>;
 
     var volumeControls;
     if (!this.isMobile){
