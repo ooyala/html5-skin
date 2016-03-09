@@ -8,8 +8,10 @@ var Slider = React.createClass({
     this.handleSliderColoring();
   },
 
-  componentDidUpdate: function() {
-    this.handleSliderColoring();
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps.value != this.props.value) {
+      this.handleSliderColoring();
+    }
   },
 
   handleSliderColoring: function(){
@@ -34,8 +36,6 @@ var Slider = React.createClass({
               'color-stop(' + value + ', '+ colorAfterThumb + ')',
             ')'
           ].join('');
-
-          // input.style.backgroundClip = 'content-box';
         };
         input.oninput();
       }
@@ -44,16 +44,16 @@ var Slider = React.createClass({
 
   changeValue: function(event) {
     if (event.type == 'change' && !Utils.isIE()){
-      this.props.changeVolumeSlider(event);
+      this.props.onChange(event);
     }
     else if (Utils.isIE()){
-      this.props.changeVolumeSlider(event);
+      this.props.onChange(event);
     }
   },
 
   render: function() {
     return (
-      <input type="range" className={this.props.className} min={this.props.minValue} max={this.props.maxValue} value={this.props.volumeSliderValue}
+      <input type="range" className={this.props.className} min={this.props.minValue} max={this.props.maxValue} value={this.props.value}
            step={this.props.step} onChange={this.changeValue} onClick={this.changeValue} onMouseMove={this.changeValue}/>
     );
   }
