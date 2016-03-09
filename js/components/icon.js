@@ -17,12 +17,19 @@ var Icon = React.createClass({
         {this.props.iconString}
       </span>
     );
-  },
-  proptypes: {
-    iconClass: React.PropTypes.string,
-    iconString: React.PropTypes.string,
-    iconStyle: React.PropTypes.object
   }
-
 });
+
+Icon.propTypes = {
+  iconClass: React.PropTypes.string,
+  iconString: React.PropTypes.string,
+  iconStyle: React.PropTypes.object
+};
+
+Icon.defaultProps = {
+  iconClass: "",
+  iconString: "",
+  iconStyle: {}
+};
+
 module.exports = Icon;

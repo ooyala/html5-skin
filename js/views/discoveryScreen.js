@@ -12,8 +12,7 @@ var React = require('react'),
     DiscoveryPanel = require('../components/discoveryPanel'),
     CloseButton = require('../components/closeButton'),
     ClassNames = require('classnames'),
-    AccessibilityMixin = require('../mixins/accessibilityMixin'),
-    Icon = require('../components/icon');
+    AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var DiscoveryScreen = React.createClass({
   mixins: [AccessibilityMixin],

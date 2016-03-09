@@ -10,8 +10,7 @@
 var React = require('react'),
     SharePanel = require('../components/sharePanel'),
     CloseButton = require('../components/closeButton'),
-    AccessibilityMixin = require('../mixins/accessibilityMixin'),
-    Icon = require('../components/icon');
+    AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var ShareScreen = React.createClass({
   mixins: [AccessibilityMixin],

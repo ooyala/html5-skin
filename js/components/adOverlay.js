@@ -4,8 +4,7 @@
 var React = require('react'),
     ClassNames = require('classnames'),
     CloseButton = require('./closeButton'),
-    CONSTANTS = require('../constants/constants'),
-    Icon = require('../components/icon');
+    CONSTANTS = require('../constants/constants');
 
 var AdOverlay = React.createClass({
   closeOverlay: function() {

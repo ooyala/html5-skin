@@ -12,8 +12,7 @@ var React = require('react'),
     ClosedCaptionPanel = require('../components/closedCaptionPanel'),
     CloseButton = require('../components/closeButton'),
     ResizeMixin = require('../mixins/resizeMixin'),
-    AccessibilityMixin = require('../mixins/accessibilityMixin'),
-    Icon = require('../components/icon');
+    AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var ClosedCaptionScreen = React.createClass({
   mixins: [ResizeMixin, AccessibilityMixin],
