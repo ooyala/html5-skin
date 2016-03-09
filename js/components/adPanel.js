@@ -103,10 +103,7 @@ var AdPanel = React.createClass({
       var learnMoreText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
       var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" ref="learnMoreButton"
                                 onButtonClicked={this.handleLearnMoreButtonClick} itemClassName={learnMoreClass}>
-                                  <Icon
-                                    iconStyle={{fontFamily: this.props.skinConfig.icons.learn.fontFamilyName}}
-                                    iconClass={this.props.skinConfig.icons.learn.fontStyleClass + " buttonIcon"}
-                                    iconString={this.props.skinConfig.icons.learn.fontString}/>
+                                  <Icon {...this.props} icon="learn" className="buttonIcon"/>
                                   {learnMoreText}
                               </AdPanelTopBarItem>;
       adTopBarItems.push(learnMoreButtonDiv);
@@ -122,9 +119,7 @@ var AdPanel = React.createClass({
     var skipAdClass = this.props.skinConfig.icons.skip.fontStyleClass + " skipIcon";
     var skipButtonDiv = <AdPanelTopBarItem key="skipButton" ref="skipButton"
                           onButtonClicked={this.handleSkipAdButtonClick} itemClassName={skipButtonClass}>
-                            <Icon iconClass={skipAdClass}
-                                    iconStyle={{fontFamily: this.props.skinConfig.icons.skip.fontFamilyName}}
-                                    iconString={this.props.skinConfig.icons.skip.fontString}/>
+                            <Icon {...this.props} icon="skip" className="buttonIcon"/>
                                     {skipButtonText}
                         </AdPanelTopBarItem>;
     adTopBarItems.push(skipButtonDiv);

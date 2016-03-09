@@ -16,10 +16,10 @@ var CloseButton = React.createClass({
 
   render: function() {
     return (
-        <button className={this.props.cssClass} onClick={this.props.closeAction}>
-          <Icon iconClass={this.props.fontStyleClass}
-            iconStyle={{fontFamily: this.props.fontFamilyName}}
-            iconString={this.props.fontString}/>
+        <button className={this.props.cssClass}
+          onClick={this.props.closeAction}>
+          <Icon {...this.props} icon="dismiss"
+            className={this.props.className}/>
         </button>
     );
   }

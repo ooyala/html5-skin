@@ -20,9 +20,7 @@ var ClosedCaptionPanel = React.createClass({
         <div className="closed-captions-panel">
           <div className="closed-captions-panel-title">
             {closedCaptionOptionsString}
-            <Icon iconClass={this.props.skinConfig.icons.cc.fontStyleClass}
-              iconString={this.props.skinConfig.icons.cc.fontString}
-              iconStyle={{fontFamily: this.props.skinConfig.icons.cc.fontFamilyName}}/>
+            <Icon {...this.props} icon="cc"/>
           </div>
           <OnOffSwitch {...this.props} />
           <LanguageTabContent {...this.props} />
@@ -204,14 +202,10 @@ var LanguageTabContent = React.createClass({
         </div>
 
         <a className={leftChevron} ref="leftChevron" onClick={this.handleLeftChevronClick}>
-          <Icon iconClass={this.props.skinConfig.icons.left.fontStyleClass}
-            iconString={this.props.skinConfig.icons.left.fontString}
-            iconStyle={{fontFamily: this.props.skinConfig.icons.left.fontFamilyName}}/>
+          <Icon {...this.props} icon="left"/>
         </a>
         <a className={rightChevron} ref="rightChevron" onClick={this.handleRightChevronClick}>
-        <Icon iconClass={this.props.skinConfig.icons.right.fontStyleClass}
-          iconString={this.props.skinConfig.icons.right.fontString}
-          iconStyle={{fontFamily: this.props.skinConfig.icons.right.fontFamilyName}}/>
+          <Icon {...this.props} icon="right"/>
         </a>
       </div>
     );

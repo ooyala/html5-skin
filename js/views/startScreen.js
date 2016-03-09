@@ -135,11 +135,10 @@ var StartScreen = React.createClass({
 
     var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
     var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.props.contentTree.description}</div>);
+    var iconName = (this.props.controller.state.playerState == CONSTANTS.STATE.END ? "replay" : "play");
     var actionIcon = (
       <a className={actionIconClass} onClick={this.handleClick}>
-        <Icon iconClass={this.props.controller.state.playerState == CONSTANTS.STATE.END ? this.props.skinConfig.icons.replay.fontStyleClass : this.props.skinConfig.icons.play.fontStyleClass}
-          iconStyle={actionIconStyle}
-          iconString={this.props.controller.state.playerState == CONSTANTS.STATE.END ? this.props.skinConfig.icons.replay.fontString : this.props.skinConfig.icons.play.fontString}/>
+        <Icon {...this.props} icon={iconName}/>
       </a>
     );
     return (

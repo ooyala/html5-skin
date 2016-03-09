@@ -112,9 +112,7 @@ var PauseScreen = React.createClass({
         <a className="state-screen-selectable" onClick={this.handleClick}></a>
 
         <a className={actionIconClass} onClick={this.handleClick}>
-          <Icon iconClass={this.props.skinConfig.icons.pause.fontStyleClass}
-            iconStyle={actionIconStyle}
-            iconString={this.props.skinConfig.icons.pause.fontString}/>
+          <Icon {...this.props} icon="pause"/>
         </a>
 
         <AdOverlay {...this.props}

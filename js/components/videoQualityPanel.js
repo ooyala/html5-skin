@@ -36,9 +36,7 @@ var VideoQualityPanel = React.createClass({
       <li className="auto-li" key='auto-li'>
         <a className={autoQualityBtn} key='auto' onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
           <div className="quality-auto-icon">
-            <Icon iconClass={this.props.skinConfig.icons.auto.fontStyleClass}
-              iconStyle={{fontFamily: this.props.skinConfig.icons.auto.fontFamilyName}}
-              iconString={this.props.skinConfig.icons.auto.fontString}/>
+            <Icon {...this.props} icon="auto"/>
           </div>
           <div className="quality-auto-label">Auto</div>
         </a>

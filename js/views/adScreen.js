@@ -193,9 +193,7 @@ var AdScreen = React.createClass({
          onMouseUp={this.handleClick}>
 
         <a className={actionIconClass}>
-          <Icon iconClass={this.props.skinConfig.icons.pause.fontStyleClass}
-            iconStyle={actionIconStyle}
-            iconString={this.props.skinConfig.icons.pause.fontString}/>
+          <Icon {...this.props} icon="pause"/>
         </a>
         <div className="adPanel" ref="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
           {adPanel}

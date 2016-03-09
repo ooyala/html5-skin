@@ -26,15 +26,11 @@ var VideoQualityScreen = React.createClass({
       <div className="state-screen quality-screen">
         <div className="quality-panel-title">
           Video Quality
-          <Icon iconClass={this.props.skinConfig.icons.quality.fontStyleClass}
-            iconStyle={{fontFamily: this.props.skinConfig.icons.quality.fontFamilyName}}
-            iconString={this.props.skinConfig.icons.quality.fontString}/>
+          <Icon {...this.props} icon="quality"/>
         </div>
         <VideoQualityPanel {...this.props} />
-        <CloseButton closeAction={this.handleClose}
-          fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass}
-          fontString={this.props.skinConfig.icons.dismiss.fontString}
-          fontFamilyName={this.props.skinConfig.icons.dismiss.fontFamilyName}/>
+        <CloseButton {...this.props}
+          closeAction={this.handleClose}/>
       </div>
     );
   }

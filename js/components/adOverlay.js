@@ -39,11 +39,10 @@ var AdOverlay = React.createClass({
         <a onClick={this.handleOverlayClick}>
           <img src={this.props.overlay} className="adOverlayImage" onLoad={this.overlayLoaded} />
         </a>
-        <CloseButton cssClass={closeButtonClass}
+        <CloseButton {...this.props}
+          cssClass={closeButtonClass}
           closeAction={this.closeOverlay}
-          fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass + " adOverlayCloseButtonIcon"}
-          fontString={this.props.skinConfig.icons.dismiss.fontString}
-          fontFamilyName={this.props.skinConfig.icons.dismiss.fontFamilyName}
+          className={"adOverlayCloseButtonIcon"}
           ref="adOverlayCloseButton" />
       </div>
     );

@@ -55,9 +55,7 @@ var EndScreen = React.createClass({
       <a className="state-screen-selectable" onClick={this.handleClick}></a>
 
       <a className={actionIconClass} onClick={this.handleClick}>
-        <Icon iconClass={this.props.skinConfig.icons.replay.fontStyleClass}
-          iconStyle={actionIconStyle}
-          fontString={this.props.skinConfig.icons.replay.fontString}/>
+        <Icon {...this.props} icon="replay"/>
       </a>
 
       <ScrubberBar {...this.props}

@@ -150,9 +150,7 @@ var DiscoveryPanel = React.createClass({
         <a className="discoveryCountDownIconStyle" onClick={this.handleDiscoveryCountDownClick}>
           <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime}
           ref="CountDownClock" />
-          <Icon iconClass={this.props.skinConfig.icons.pause.fontStyleClass}
-            iconString={this.props.skinConfig.icons.pause.fontString}
-            iconStyle={{fontFamily: this.props.skinConfig.icons.pause.fontFamilyName}}/>
+          <Icon {...this.props} icon="pause"/>
         </a>
       </div>
     );
@@ -177,9 +175,7 @@ var DiscoveryPanel = React.createClass({
       <div className="discovery-panel" ref="discoveryPanel">
         <div className="discovery-panel-title">
           {panelTitle}
-          <Icon iconClass={this.props.skinConfig.icons.discovery.fontStyleClass}
-            iconString={this.props.skinConfig.icons.discovery.fontString}
-            iconStyle={{fontFamily: this.props.skinConfig.icons.discovery.fontFamilyName}}/>
+          <Icon {...this.props} icon="discovery"/>
         </div>
 
         <div className={discoveryToaster} id="DiscoveryToasterContainer" ref="DiscoveryToasterContainer">
@@ -187,14 +183,10 @@ var DiscoveryPanel = React.createClass({
         </div>
 
         <a className={leftButtonClass} ref="ChevronLeftButton" onClick={this.handleLeftButtonClick}>
-          <Icon iconClass={this.props.skinConfig.icons.left.fontStyleClass}
-            iconStyle={{fontFamily: this.props.skinConfig.icons.left.fontFamilyName}}
-            iconString={this.props.skinConfig.icons.left.fontString}/>
+          <Icon {...this.props} icon="left"/>
         </a>
         <a className={rightButtonClass} ref="ChevronRightButton" onClick={this.handleRightButtonClick}>
-          <Icon iconClass={this.props.skinConfig.icons.right.fontStyleClass}
-            iconStyle={{fontFamily: this.props.skinConfig.icons.right.fontFamilyName}}
-            iconString={this.props.skinConfig.icons.right.fontString}/>
+          <Icon {...this.props} icon="right"/>
         </a>
       </div>
     );

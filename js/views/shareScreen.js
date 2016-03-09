@@ -45,10 +45,7 @@ var ShareScreen = React.createClass({
     return (
       <div className="share-screen">
         <SharePanel {...this.props} />
-        <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass}
-          fontFamilyName={this.props.skinConfig.icons.dismiss.fontFamilyName}
-          fontString={this.props.skinConfig.icons.dismiss.fontString}
-        />
+        <CloseButton {...this.props} closeAction={this.handleClose}/>
       </div>
     );
   }
