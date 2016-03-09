@@ -121,6 +121,9 @@
           color: $white;
           transition: all 0.0s ease;
           cursor: pointer;
+          border-radius: 2px;
+          border: 1px solid $gray;
+          outline: none;
         }
 
         a.item-selected {
@@ -141,7 +144,7 @@
         overflow: visible;
         align-items: flex-start;
         -webkit-align-items: flex-start;
-        justify-content: center;
+        justify-content: flex-start;
       }
 
       .discoverBtn {
