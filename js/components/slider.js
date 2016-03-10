@@ -16,7 +16,7 @@ var Slider = React.createClass({
 
   handleSliderColoring: function(){
     if (!Utils.isEdge()){
-      var inputs = document.querySelectorAll('input[type=range]');
+      var inputs = document.getElementsByClassName('slider');
       for (var i = 0; i < inputs.length; i++) {
         input = inputs[i];
 
