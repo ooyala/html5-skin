@@ -648,8 +648,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         left: "",
         right: "",
         bottom: "",
-        height: "",
-        width: "",
+        height: "0px",
+        width: "0px",
         transform: ""
       });
       this.renderSkin();
