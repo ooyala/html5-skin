@@ -5,10 +5,16 @@ Utils = require('./utils');
 var Slider = React.createClass({
 
   componentDidMount: function() {
-    this.handleSliderColoring();
+    this.handleSliderColoring(this.props);
   },
 
-  handleSliderColoring: function(){
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps.value != this.props.value) {
+      this.handleSliderColoring(nextProps);
+    }
+  },
+
+  handleSliderColoring: function(props){
     if (!Utils.isEdge()){
       var input = this.refs[this.props.itemRef];
       var style = window.getComputedStyle(input, null);
@@ -16,7 +22,7 @@ var Slider = React.createClass({
       var colorBeforeThumb = style.getPropertyValue("border-left-color");
       var colorAfterThumb = style.getPropertyValue("border-right-color");
 
-      var value = (input.value - input.min)/(input.max - input.min);
+      var value = (props.value - props.minValue)/(props.maxValue - props.minValue);
       input.style.backgroundImage = [
         '-webkit-gradient(',
           'linear, ',
@@ -30,9 +36,12 @@ var Slider = React.createClass({
   },
 
   changeValue: function(event) {
-    if ((event.type == 'change' && !Utils.isIE()) || Utils.isIE()){
+    if (event.type == 'change' && !Utils.isIE()){
       this.props.onChange(event);
-      this.handleSliderColoring();
+      this.handleSliderColoring(this.props);
+    }
+    else if (Utils.isIE()) {
+      this.props.onChange(event);
     }
   },
 
