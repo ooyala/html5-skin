@@ -360,4 +360,23 @@ $scrubber-bar-padding-height:     24px !default;
 $scrubber-bar-left-right-padding: 15px !default;
 $min-player-width:                320px !default;
 
+//slider
+$thumb-color: yellow;
+$progress-color: green;
+$track-color: red;
+$slider-width: 10px;
+$slider-height: 1px;
+$slider-thumb-diameter: 3px;
+
+$slider-volume-width: 200px;
+$slider-volume-height: 3px;
+$slider-volume-thumb-diameter: 15px;
+$slider-volume-thumb-color: #FFFFFF;
+$slider-volume-progress-color: #FFFFFF;
+$slider-volume-track-color: #999999;
+
+$slider-volume-width-small: $slider-volume-width * $small-multiple;
+$slider-volume-height-small: $slider-volume-height * $small-multiple;
+$slider-volume-thumb-diameter-small: $slider-volume-thumb-diameter * $small-multiple;
+
 $font-path: "assets/fonts";
