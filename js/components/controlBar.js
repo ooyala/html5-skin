@@ -189,6 +189,7 @@ var ControlBar = React.createClass({
     var volumeSlider = <div className="volumeSlider"><Slider value={parseFloat(this.props.controller.state.volumeState.volume)}
                         onChange={this.changeVolumeSlider}
                         className={"slider slider-volume"}
+                        itemRef={"volumeSlider"}
                         minValue={"0"}
                         maxValue={"1"}
                         step={"0.1"}/></div>;
