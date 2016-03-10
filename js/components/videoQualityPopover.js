@@ -1,13 +1,18 @@
 var React = require('react'),
+    ScrollArea = require('react-scrollbar/dist/no-css'),
     VideoQualityPanel = require('../components/videoQualityPanel');
 
 var VideoQualityPopover = React.createClass({
 
   render: function() {
     return (
-      <div className="quality-popover">
-        <VideoQualityPanel {...this.props} />
-      </div>
+    <ScrollArea
+      speed={0.6}
+      className="quality-popover"
+      horizontal={false}
+    >
+      <VideoQualityPanel {...this.props} />
+    </ScrollArea>
     );
   }
 });
