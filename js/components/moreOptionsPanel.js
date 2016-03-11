@@ -8,7 +8,8 @@
 var React = require('react'),
     Utils = require('./utils'),
     CONSTANTS = require('../constants/constants'),
-    ClassNames = require('classnames');
+    ClassNames = require('classnames'),
+    Icon = require('../components/icon');
 
 var MoreOptionsPanel = React.createClass({
   getInitialState: function() {
@@ -58,23 +59,28 @@ var MoreOptionsPanel = React.createClass({
 
     var optionsItemsTemplates = {
       "quality": <button className="quality controlBarItem" onClick={this.handleQualityClick} key="quality">
-        <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+        <Icon {...this.props} icon="quality"
+         onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "discovery": <button className="discovery controlBarItem" onClick={this.handleDiscoveryClick} key="discovery">
-        <span className={this.props.skinConfig.icons.discovery.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+        <Icon {...this.props} icon="discovery"
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "closedCaption": <button className="closedCaption controlBarItem" onClick={this.handleClosedCaptionClick} key="closedCaption">
-        <span className={this.props.skinConfig.icons.cc.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight} ></span>
+        <Icon {...this.props} icon="cc"
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "share": <button className="share controlBarItem" onClick={this.handleShareClick} key="share">
-        <span className={this.props.skinConfig.icons.share.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+        <Icon {...this.props} icon="share"
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "settings": <div className="settings" key="settings">
-        <span className={this.props.skinConfig.icons.setting.fontStyleClass} style={iconSetting} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}></span>
+        <Icon {...this.props} icon="setting"
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </div>
     };
 

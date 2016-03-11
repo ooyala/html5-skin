@@ -10,7 +10,8 @@
 var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     Utils = require('./utils'),
-    ClassNames = require('classnames');
+    ClassNames = require('classnames'),
+    Icon = require('../components/icon');
 
 var ClosedCaptionPanel = React.createClass({
   render: function(){
@@ -19,7 +20,7 @@ var ClosedCaptionPanel = React.createClass({
         <div className="closed-captions-panel">
           <div className="closed-captions-panel-title">
             {closedCaptionOptionsString}
-            <span className={this.props.skinConfig.icons.cc.fontStyleClass}></span>
+            <Icon {...this.props} icon="cc"/>
           </div>
           <OnOffSwitch {...this.props} />
           <LanguageTabContent {...this.props} />
@@ -201,10 +202,10 @@ var LanguageTabContent = React.createClass({
         </div>
 
         <a className={leftChevron} ref="leftChevron" onClick={this.handleLeftChevronClick}>
-          <span className={this.props.skinConfig.icons.left.fontStyleClass} aria-hidden="true"></span>
+          <Icon {...this.props} icon="left"/>
         </a>
         <a className={rightChevron} ref="rightChevron" onClick={this.handleRightChevronClick}>
-          <span className={this.props.skinConfig.icons.right.fontStyleClass}  aria-hidden="true"></span>
+          <Icon {...this.props} icon="right"/>
         </a>
       </div>
     );

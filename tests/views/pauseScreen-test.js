@@ -1,4 +1,5 @@
 jest.dontMock('../../js/views/pauseScreen')
+    .dontMock('../../js/components/icon')
     .dontMock('classnames');
 
 var React = require('react');

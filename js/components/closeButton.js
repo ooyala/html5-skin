@@ -1,10 +1,13 @@
-var React = require('react');
+var React = require('react'),
+    Icon = require('../components/icon');
 
 var CloseButton = React.createClass({
   render: function() {
     return (
-        <button className={this.props.cssClass} onClick={this.props.closeAction}>
-          <span className={this.props.fontStyleClass}></span>
+        <button className={this.props.cssClass}
+          onClick={this.props.closeAction}>
+          <Icon {...this.props} icon="dismiss"
+            className={this.props.className}/>
         </button>
     );
   }

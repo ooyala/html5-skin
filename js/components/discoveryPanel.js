@@ -9,7 +9,8 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     Utils = require('./utils'),
     CountDownClock = require('./countDownClock'),
-    DiscoverItem = require('./discoverItem');
+    DiscoverItem = require('./discoverItem'),
+    Icon = require('../components/icon');
 
 var DiscoveryPanel = React.createClass({
   getInitialState: function() {
@@ -147,8 +148,9 @@ var DiscoveryPanel = React.createClass({
     var countDownClock = (
       <div className={discoveryCountDownWrapperStyle}>
         <a className="discoveryCountDownIconStyle" onClick={this.handleDiscoveryCountDownClick}>
-          <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime} ref="CountDownClock" />
-          <span className={this.props.skinConfig.icons.pause.fontStyleClass}></span>
+          <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime}
+          ref="CountDownClock" />
+          <Icon {...this.props} icon="pause"/>
         </a>
       </div>
     );
@@ -173,7 +175,7 @@ var DiscoveryPanel = React.createClass({
       <div className="discovery-panel" ref="discoveryPanel">
         <div className="discovery-panel-title">
           {panelTitle}
-          <span className={this.props.skinConfig.icons.discovery.fontStyleClass}></span>
+          <Icon {...this.props} icon="discovery"/>
         </div>
 
         <div className={discoveryToaster} id="DiscoveryToasterContainer" ref="DiscoveryToasterContainer">
@@ -181,10 +183,10 @@ var DiscoveryPanel = React.createClass({
         </div>
 
         <a className={leftButtonClass} ref="ChevronLeftButton" onClick={this.handleLeftButtonClick}>
-          <span className={this.props.skinConfig.icons.left.fontStyleClass} aria-hidden="true"></span>
+          <Icon {...this.props} icon="left"/>
         </a>
         <a className={rightButtonClass} ref="ChevronRightButton" onClick={this.handleRightButtonClick}>
-          <span className={this.props.skinConfig.icons.right.fontStyleClass}  aria-hidden="true"></span>
+          <Icon {...this.props} icon="right"/>
         </a>
       </div>
     );
