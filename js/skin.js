@@ -117,7 +117,11 @@ var Skin = React.createClass({
     //For IE10, use the start screen and that's it.
     if (Utils.isIE10()){
       if (this.state.screenToShow == CONSTANTS.SCREEN.START_SCREEN){
-        screen = (<StartScreen {...this.props} contentTree={this.state.contentTree} />);
+        screen = (
+          <StartScreen {...this.props}
+            componentWidth={this.state.componentWidth}
+            contentTree={this.state.contentTree} />
+        );
       }
       else {
         screen = (<div></div>);
@@ -133,7 +137,9 @@ var Skin = React.createClass({
           break;
         case CONSTANTS.SCREEN.START_SCREEN:
           screen = (
-            <StartScreen {...this.props} contentTree={this.state.contentTree} />
+            <StartScreen {...this.props}
+              componentWidth={this.state.componentWidth}
+              contentTree={this.state.contentTree} />
           );
           break;
         case CONSTANTS.SCREEN.PLAYING_SCREEN:
@@ -150,6 +156,7 @@ var Skin = React.createClass({
               authorization={this.state.authorization}
               controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
               responsiveView={responsiveId}
+              componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
               ref="playScreen" />
           );
@@ -183,6 +190,7 @@ var Skin = React.createClass({
               upNextInfo={this.state.upNextInfo}
               authorization={this.state.authorization}
               responsiveView={responsiveId}
+              componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
               ref="pauseScreen" />
           );
@@ -218,6 +226,7 @@ var Skin = React.createClass({
               seeking={this.state.seeking}
               controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
               responsiveView={responsiveId}
+              componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
               ref="adScreen" />
           );

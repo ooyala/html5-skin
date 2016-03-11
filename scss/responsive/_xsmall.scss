@@ -218,6 +218,7 @@
     }
   }
 
+  //Volume Slider
   .volumeBar {
     width: 6px * $xsmall-multiple;
     height: 18px * $xsmall-multiple;
@@ -225,25 +226,15 @@
   }
 
   .volumeSlider {
-    height: 5px * $xsmall-multiple;
-    width: 65px * $xsmall-multiple;
-    margin-left: 5px * $xsmall-multiple;
-    border-radius: 2px * $xsmall-multiple;
+    height: 20px * $xsmall-multiple;
+    width: $slider-volume-width * $xsmall-multiple;
+    margin-left: 6px * $xsmall-multiple;
+  }
 
-    .volumeIndicator {
-      border-radius: 2px * $xsmall-multiple;
-    }
-
-    .playheadPadding {
-      width: 25px * $xsmall-multiple;
-      height: 25px * $xsmall-multiple;
-
-      .volumeHead {
-        width: 8px * $xsmall-multiple;
-        height: 8px * $xsmall-multiple;
-        border-width: 1px * $xsmall-multiple;
-        border-radius: 10px * $xsmall-multiple;
-      }
+  // IE 11 only
+  @media all and (-ms-high-contrast:none) {
+    *::-ms-backdrop, .volumeSlider {
+      height: 0px;
     }
   }
 
@@ -347,5 +338,55 @@
   }
   .player_skin_plugins_click_layer {
     bottom: $control-bar-height * $xsmall-multiple;
+  }
+
+  //Slider
+  .slider-volume {
+    width: #{$slider-volume-width-small};
+  }
+
+  .slider-volume[type=range] {
+    /*required for proper track sizing in FF*/
+    width: #{$slider-volume-width-small};
+  }
+
+  .slider-volume[type=range]::-webkit-slider-runnable-track {
+    height: #{$slider-volume-height-small};
+  }
+
+  .slider-volume[type=range]::-webkit-slider-thumb {
+    height: #{$slider-volume-thumb-diameter-small};
+    width: #{$slider-volume-thumb-diameter-small};
+    margin-top: -($slider-volume-thumb-diameter-small - $slider-volume-height-small)/2;
+  }
+
+  //IE Edge only
+  @supports (-ms-accelerator:true) {
+    .slider-volume[type=range]::-webkit-slider-thumb {
+      margin-top: 1px;
+    }
+  }
+
+  //moz
+  .slider-volume[type=range]::-moz-range-track {
+    width: #{$slider-volume-width-small};
+    height: #{$slider-volume-height-small};
+  }
+
+  .slider-volume[type=range]::-moz-range-thumb {
+    height: #{$slider-volume-thumb-diameter-small};
+    width: #{$slider-volume-thumb-diameter-small};
+  }
+
+  //ms
+  .slider-volume[type=range]::-ms-track {
+    width: #{$slider-volume-width-small};
+    height: #{$slider-volume-height-small};
+    border-width: $slider-volume-thumb-diameter-small/2 0;
+  }
+
+  .slider-volume[type=range]::-ms-thumb {
+    height: #{$slider-volume-thumb-diameter-small};
+    width: #{$slider-volume-thumb-diameter-small};
   }
 }

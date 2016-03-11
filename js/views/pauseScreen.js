@@ -8,24 +8,23 @@ var React = require('react'),
     ScrubberBar = require('../components/scrubberBar'),
     AdOverlay = require('../components/adOverlay'),
     UpNextPanel = require('../components/upNextPanel'),
-    TruncateTextMixin = require('../mixins/truncateTextMixin'),
-    ResizeMixin = require('../mixins/resizeMixin');
+    ResizeMixin = require('../mixins/resizeMixin'),
+    Utils = require('../components/utils');
 
 var PauseScreen = React.createClass({
-  mixins: [ResizeMixin, TruncateTextMixin],
+  mixins: [ResizeMixin],
 
   getInitialState: function() {
     return {
+      descriptionText: this.props.contentTree.description,
       controlBarVisible: true,
-      controlBarWidth: 0,
       animate: false
     };
   },
 
   componentDidMount: function() {
-    this.truncateText(this.refs.description, this.props.contentTree.description);
+    this.handleResize();
     this.setState({
-      controlBarWidth: ReactDOM.findDOMNode(this).clientWidth,
       animate: true
     });
   },
@@ -34,19 +33,16 @@ var PauseScreen = React.createClass({
     this.props.controller.enablePauseAnimation();
   },
 
+  handleResize: function() {
+    this.setState({
+      descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), this.props.contentTree.description)
+    });
+  },
+
   handleClick: function(event) {
     event.preventDefault();
     this.props.controller.togglePlayPause();
     this.props.controller.state.accessibilityControlsEnabled = true;
-  },
-
-  handleResize: function() {
-    this.truncateText(this.refs.description, this.props.contentTree.description);
-    if (this.isMounted()) {
-      this.setState({
-        controlBarWidth: ReactDOM.findDOMNode(this).clientWidth
-      });
-    }
   },
 
   render: function() {
@@ -97,14 +93,14 @@ var PauseScreen = React.createClass({
     });
 
     var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
-    var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.props.contentTree.description}</div>);
+    var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.state.descriptionText}</div>);
 
     return (
       <div className="state-screen pauseScreen">
         <div className={fadeUnderlayClass}></div>
         <div className={infoPanelClass}>
-          {this.props.skinConfig.startScreen.showTitle ? titleMetadata : ''}
-          {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : ''}
+          {this.props.skinConfig.startScreen.showTitle ? titleMetadata : null}
+          {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : null}
         </div>
 
         <a className="state-screen-selectable" onClick={this.handleClick}></a>
@@ -123,17 +119,15 @@ var PauseScreen = React.createClass({
         />
         <ScrubberBar {...this.props}
           controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}
         />
         <ControlBar {...this.props}
           controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}
           playerState={this.state.playerState}
           authorization={this.props.authorization}
         />
 
         {(this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
-          <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/> : ''}
+          <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/> : null}
       </div>
     );
   }

@@ -129,7 +129,7 @@ describe('AdPanel', function () {
         controller={mockController}
         skinConfig={mockSkinConfig}
         currentAdsInfo={currentAdsInfo}
-        controlBarWidth={600}
+        componentWidth={600}
       />);
 
     expect(DOM.refs.adTitle).toBeDefined();
@@ -139,7 +139,7 @@ describe('AdPanel', function () {
           controller={mockController}
           skinConfig={mockSkinConfig}
           currentAdsInfo={currentAdsInfo}
-          controlBarWidth={500}
+          componentWidth={500}
         />);
 
       expect(DOM.refs.adTitle).toBeUndefined();
@@ -182,7 +182,7 @@ describe('AdPanel', function () {
         controller={mockController}
         skinConfig={mockSkinConfig}
         currentAdsInfo={currentAdsInfo}
-        controlBarWidth={600}
+        componentWidth={600}
       />);
 
       expect(TestUtils.findRenderedComponentWithType(DOM, Spinner)).toBeDefined();

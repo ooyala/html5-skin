@@ -8,7 +8,7 @@ var AdScreen = require('../../js/views/adScreen');
 describe('AdScreen', function () {
   it('creates an ad screen', function () {
 
-    // Render start screen into DOM
+    // Render ad screen into DOM
     var mockController = {
       state: {
         isMobile: false
@@ -41,7 +41,7 @@ describe('AdScreen', function () {
 
   it('handles mouseover and mouseout', function () {
 
-    // Render start screen into DOM
+    // Render ad screen into DOM
     var controlBarVisible = true;
     var mockController = {
       state: {
@@ -90,7 +90,7 @@ describe('AdScreen', function () {
 
 it('checks that ad marquee is shown/not shown when appropriate', function () {
 
-    // Render start screen into DOM
+    // Render ad screen into DOM
     var mockController = {
       state: {
         isMobile: false,
@@ -158,7 +158,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
 
   it('handles mousemove', function () {
 
-    // Render start screen into DOM
+    // Render ad screen into DOM
     var controlBarVisible = true;
     var mockController = {
       state: {
@@ -199,15 +199,15 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
         fullscreen={true}
       />);
 
-    expect(DOM.state.controlBarVisible).toBe(false);
-    TestUtils.Simulate.mouseMove(ReactDOM.findDOMNode(DOM));
     expect(DOM.state.controlBarVisible).toBe(true);
+    TestUtils.Simulate.mouseMove(ReactDOM.findDOMNode(DOM));
+    expect(DOM.state.controlBarVisible).toBe(false);
 
   });
 
   it('test player clicks', function () {
 
-    // Render start screen into DOM
+    // Render ad screen into DOM
     var adsClicked = false;
     var mockController = {
       state: {

@@ -2,30 +2,15 @@
   END SCREEN
 *********************************************************************/
 var React = require('react'),
-    ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
     ControlBar = require('../components/controlBar'),
-    ScrubberBar = require('../components/scrubberBar'),
-    ResizeMixin = require('../mixins/resizeMixin');
+    ScrubberBar = require('../components/scrubberBar');
 
 var EndScreen = React.createClass({
-  mixins: [ResizeMixin],
-
   getInitialState: function() {
     return {
-      controlBarVisible: true,
-      controlBarWidth: 0
+      controlBarVisible: true
     };
-  },
-
-  componentDidMount: function() {
-    this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
-  },
-
-  handleResize: function() {
-    if (this.isMounted()) {
-      this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
-    }
   },
 
   handleClick: function(event) {
@@ -59,12 +44,10 @@ var EndScreen = React.createClass({
       </a>
 
       <ScrubberBar {...this.props} 
-        controlBarVisible={this.state.controlBarVisible} 
-        controlBarWidth={this.state.controlBarWidth} />
+        controlBarVisible={this.state.controlBarVisible} />
 
       <ControlBar {...this.props} 
         controlBarVisible={this.state.controlBarVisible}
-        controlBarWidth={this.state.controlBarWidth}
         playerState={this.props.playerState}
         authorization={this.props.authorization} />
     </div>

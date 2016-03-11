@@ -33,7 +33,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -69,7 +69,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -105,7 +105,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -145,7 +145,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={1200}
+        componentWidth={1200}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -185,7 +185,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -228,7 +228,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -267,7 +267,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -307,7 +307,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.END}
         authorization={mockProps.authorization} />
     );
@@ -344,7 +344,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -375,7 +375,7 @@ describe('ControlBar', function () {
 
     DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -416,7 +416,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -448,7 +448,7 @@ describe('ControlBar', function () {
 
     DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -489,7 +489,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -516,7 +516,7 @@ describe('ControlBar', function () {
 
     DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={100}
+        componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -562,7 +562,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={100}
+        componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -601,7 +601,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -637,7 +637,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -657,7 +657,7 @@ describe('ControlBar', function () {
 
     DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={100}
+        componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -695,7 +695,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSED}
         authorization={mockProps.authorization} />
     );
@@ -736,7 +736,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSED}
         authorization={mockProps.authorization} />
     );
@@ -770,7 +770,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSED}
         authorization={mockProps.authorization} />
     );
@@ -806,7 +806,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -840,7 +840,7 @@ describe('ControlBar', function () {
 
     DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -862,7 +862,7 @@ describe('ControlBar', function () {
 
     DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -884,7 +884,7 @@ describe('ControlBar', function () {
 
     DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={500}
+        componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -924,7 +924,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={100}
+        componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
@@ -961,7 +961,7 @@ describe('ControlBar', function () {
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
-        controlBarWidth={100}
+        componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
         authorization={mockProps.authorization} />
     );
