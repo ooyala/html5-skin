@@ -10,16 +10,6 @@ var React = require('react'),
 var ErrorScreen = React.createClass({
   mixins: [AccessibilityMixin],
 
-  getDefaultProps: function () {
-    return {
-      controller: {
-        state: {
-          accessibilityControlsEnabled: true
-        }
-      }
-    };
-  },
-
   render: function() {
     var errorTitle, errorDescription, errorAction;
     if (CONSTANTS.ERROR_MESSAGE.hasOwnProperty(this.props.errorCode.code)){
@@ -49,4 +39,13 @@ var ErrorScreen = React.createClass({
     );
   }
 });
+
+ErrorScreen.defaultProps = {
+  controller: {
+    state: {
+      accessibilityControlsEnabled: true
+    }
+  }
+};
+
 module.exports = ErrorScreen;

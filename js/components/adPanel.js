@@ -15,9 +15,11 @@ var React = require('react'),
 
 var AdPanelTopBarItem = React.createClass({
   render: function() {
-    return <div className={this.props.itemClassName} onClick={this.props.onButtonClicked} onTouchEnd={this.props.onButtonClicked}>
-      {this.props.icon}{this.props.data}
-    </div>;
+    return (
+      <a className={this.props.itemClassName} onClick={this.props.onButtonClicked}>
+        {this.props.icon}{this.props.data}
+      </a>
+    );
   }
 });
 
@@ -27,26 +29,12 @@ var AdPanel = React.createClass({
     return null;
   },
 
-  handleSkipAdButtonClick: function(event) {
-    if (event.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
-      this.props.controller.onSkipAdClicked();
-    }
+  handleSkipAdButtonClick: function() {
+    this.props.controller.onSkipAdClicked();
   },
 
-  handleLearnMoreButtonClick: function(event) {
-    if (event.type == 'touchend' || !this.isMobile) {
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
-      this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.LEARN_MORE_BUTTON);
-    }
+  handleLearnMoreButtonClick: function() {
+    this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.LEARN_MORE_BUTTON);
   },
 
   handleAdTopBarClick: function(event){
@@ -70,7 +58,7 @@ var AdPanel = React.createClass({
     // // Ad title
     var adTitle = this.props.currentAdsInfo.currentAdItem.name;
     // AMC puts "Unknown" in the name field if ad name unavailable
-    if (this.isValidAdPlaybackInfo(adTitle) && this.props.controlBarWidth > 560) {
+    if (this.isValidAdPlaybackInfo(adTitle) && this.props.componentWidth > 560) {
       var adTitleDiv = <AdPanelTopBarItem key="adTitle" ref="adTitle" data={adTitle} itemClassName="adTitle"/>;
       adTopBarItems.push(adTitleDiv);
     }

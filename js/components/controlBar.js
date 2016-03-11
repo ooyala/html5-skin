@@ -21,10 +21,11 @@ var ControlBar = React.createClass({
     };
   },
 
-  getResponsiveUIMultiple: function(responsiveView){
-    return responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ?
-      this.props.skinConfig.responsive.breakpoints.sm.multiplier :
-      this.props.skinConfig.responsive.breakpoints.md.multiplier;
+  componentWillReceiveProps: function(nextProps) {
+    // if responsive breakpoint changes
+    if (nextProps.responsiveView != this.props.responsiveView) {
+      this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
+    }
   },
 
   componentWillUnmount: function () {
@@ -34,8 +35,10 @@ var ControlBar = React.createClass({
     }
   },
 
-  componentDidUpdate: function () {
-    this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
+  getResponsiveUIMultiple: function(responsiveView){
+    return responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ?
+      this.props.skinConfig.responsive.breakpoints.sm.multiplier :
+      this.props.skinConfig.responsive.breakpoints.md.multiplier;
   },
 
   handleControlBarMouseUp: function(evt) {
@@ -317,7 +320,7 @@ var ControlBar = React.createClass({
 
     var controlBarLeftRightPadding = this.responsiveUIMultiple * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
 
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems, this.responsiveUIMultiple);
+    var collapsedResult = Utils.collapse(this.props.componentWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems, this.responsiveUIMultiple);
     var collapsedControlBarItems = collapsedResult.fit;
     var collapsedMoreOptionsItems = collapsedResult.overflow;
 
