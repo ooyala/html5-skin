@@ -250,6 +250,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onVcVideoElementCreated: function(eventname, params) {
       var element = $("#" + params["domId"]);
+      var elementVideo = element.find("video");
+
+      //if video element is descendant
+      if (elementVideo.length) {
+        element = elementVideo;
+      }
+
       element.get(0).addEventListener("loadedmetadata", this.metaDataLoaded.bind(this));
 
       if (Utils.isIE10()) {
