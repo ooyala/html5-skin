@@ -254,6 +254,7 @@ var ControlBar = React.createClass({
       volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
     }
 
+    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
     var iconSetting = {};
     var volumeIconSetting = Utils.clone(this.props.skinConfig.controlBar.iconStyle.inactive);
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
@@ -310,12 +311,16 @@ var ControlBar = React.createClass({
         </span>
       </button>,
 
-      "quality": <button className={qualityClass}
-        onClick={this.handleQualityClick} key="quality">
-        <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        </span>
-      </button>,
+      "quality": (
+        <div className="popover-button-container">
+          {videoQualityPopover}
+          <button className={qualityClass} onClick={this.handleQualityClick} key="quality">
+            <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={dynamicStyles.iconCharacter}
+              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+            </span>
+          </button>
+        </div>
+      ),
 
       "discovery": <button className="discovery controlBarItem"
         onClick={this.handleDiscoveryClick} key="discovery">
@@ -443,15 +448,12 @@ var ControlBar = React.createClass({
 
     var controlBarItems = this.populateControlBar();
 
-    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
-
     return (
       <div className={controlBarClass} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}
 >
         <div className="controlBarItemsWrapper">
           {controlBarItems}
         </div>
-        {videoQualityPopover}
       </div>
     );
   }

@@ -61,3 +61,8 @@
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+//convert px to em
+@function em($pixels, $context: $font-size-root) {
+  @return ($pixels / $context) * 1em;
+}

@@ -6,13 +6,14 @@ var VideoQualityPopover = React.createClass({
 
   render: function() {
     return (
-    <ScrollArea
-      speed={0.6}
-      className="quality-popover"
-      horizontal={false}
-    >
-      <VideoQualityPanel {...this.props} />
-    </ScrollArea>
+      // ScrollArea used to make scrollbars consistent across platforms/browsers
+      <ScrollArea
+        speed={0.6}
+        className="quality-popover"
+        horizontal={false}
+      >
+        <VideoQualityPanel {...this.props} />
+      </ScrollArea>
     );
   }
 });
