@@ -31,7 +31,8 @@ var VideoQualityPanel = React.createClass({
       'selected': this.state.selected == 'auto'
     });
 
-    bitrateButtons.push(
+    //add auto btn to beginning of array
+    bitrateButtons.unshift(
       <li className="auto-li" key='auto-li'>
         <a className={autoQualityBtn} key='auto' onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
           <div className="quality-auto-icon"><span className="icon icon-auto"></span></div>
