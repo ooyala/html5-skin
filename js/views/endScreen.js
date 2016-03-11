@@ -4,6 +4,8 @@
 var React = require('react'),
     ClassNames = require('classnames'),
     ControlBar = require('../components/controlBar'),
+    ResizeMixin = require('../mixins/resizeMixin'),
+    Icon = require('../components/icon'),
     ScrubberBar = require('../components/scrubberBar');
 
 var EndScreen = React.createClass({
@@ -23,7 +25,8 @@ var EndScreen = React.createClass({
   render: function() {
     var actionIconStyle = {
       color: this.props.skinConfig.endScreen.replayIconStyle.color,
-      opacity: this.props.skinConfig.endScreen.replayIconStyle.opacity
+      opacity: this.props.skinConfig.endScreen.replayIconStyle.opacity,
+      fontFamily: this.props.skinConfig.icons.replay.fontFamilyName
     };
 
     var actionIconClass = ClassNames({
@@ -38,15 +41,13 @@ var EndScreen = React.createClass({
       <a className="state-screen-selectable" onClick={this.handleClick}></a>
 
       <a className={actionIconClass} onClick={this.handleClick}>
-          <span className={this.props.skinConfig.icons.replay.fontStyleClass}
-                style={actionIconStyle}
-                aria-hidden="true"></span>
+        <Icon {...this.props} icon="replay"/>
       </a>
 
-      <ScrubberBar {...this.props} 
+      <ScrubberBar {...this.props}
         controlBarVisible={this.state.controlBarVisible} />
 
-      <ControlBar {...this.props} 
+      <ControlBar {...this.props}
         controlBarVisible={this.state.controlBarVisible}
         playerState={this.props.playerState}
         authorization={this.props.authorization} />

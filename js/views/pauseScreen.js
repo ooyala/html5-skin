@@ -9,6 +9,7 @@ var React = require('react'),
     AdOverlay = require('../components/adOverlay'),
     UpNextPanel = require('../components/upNextPanel'),
     ResizeMixin = require('../mixins/resizeMixin'),
+    Icon = require('../components/icon'),
     Utils = require('../components/utils');
 
 var PauseScreen = React.createClass({
@@ -55,7 +56,8 @@ var PauseScreen = React.createClass({
     };
     var actionIconStyle = {
       color: this.props.skinConfig.pauseScreen.PauseIconStyle.color,
-      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity
+      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity,
+      fontFamily: this.props.skinConfig.icons.pause.fontFamilyName
     };
 
     //CSS class manipulation from config/skin.json
@@ -106,9 +108,7 @@ var PauseScreen = React.createClass({
         <a className="state-screen-selectable" onClick={this.handleClick}></a>
 
         <a className={actionIconClass} onClick={this.handleClick}>
-          <span className={this.props.skinConfig.icons.pause.fontStyleClass}
-                style={actionIconStyle}
-                aria-hidden="true"></span>
+          <Icon {...this.props} icon="pause"/>
         </a>
 
         <AdOverlay {...this.props}

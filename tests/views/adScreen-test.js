@@ -1,4 +1,5 @@
-jest.dontMock('../../js/views/adScreen');
+jest.dontMock('../../js/views/adScreen')
+    .dontMock('../../js/components/icon');
 
 var React = require('react');
 var ReactDOM = require('react-dom');

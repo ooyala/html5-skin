@@ -1,7 +1,8 @@
-jest.dontMock('../../js/views/closedCaptionScreen');
-jest.dontMock('../../js/components/closeButton');
-jest.dontMock('../../js/mixins/accessibilityMixin');
-jest.dontMock('../../js/mixins/resizeMixin');
+jest.dontMock('../../js/views/closedCaptionScreen')
+    .dontMock('../../js/components/closeButton')
+    .dontMock('../../js/components/icon')
+    .dontMock('../../js/mixins/accessibilityMixin')
+    .dontMock('../../js/mixins/resizeMixin');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
