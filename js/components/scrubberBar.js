@@ -12,9 +12,9 @@ var ScrubberBar = React.createClass({
 
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
+    this.lastScrubX = null;
 
     return {
-      lastScrubX: null,
       scrubberBarWidth: 0,
       playheadWidth: 0,
       scrubbingPlayheadX: 0,
@@ -74,8 +74,8 @@ var ScrubberBar = React.createClass({
       this.props.controller.beginSeeking();
       this.props.controller.renderSkin();
 
-      if (!this.state.lastScrubX) {
-        this.setState({lastScrubX: evt.clientX});
+      if (!this.lastScrubX) {
+        this.lastScrubX = evt.clientX;
       }
 
       if (!this.isMobile){
@@ -98,13 +98,13 @@ var ScrubberBar = React.createClass({
       if (this.isMobile){
         evt = evt.touches[0];
       }
-      var deltaX = evt.clientX - this.state.lastScrubX;
+      var deltaX = evt.clientX - this.lastScrubX;
       var scrubbingPlayheadX = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration + deltaX;
       this.props.controller.updateSeekingPlayhead((scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration);
       this.setState({
         scrubbingPlayheadX: scrubbingPlayheadX
       });
-      this.state.lastScrubX = evt.clientX;
+      this.lastScrubX = evt.clientX;
     }
   },
 
@@ -118,7 +118,7 @@ var ScrubberBar = React.createClass({
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
 
-    this.state.lastScrubX = null;
+    this.lastScrubX = null;
     if (!this.isMobile){
       ReactDOM.findDOMNode(this).parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
       document.removeEventListener("mouseup", this.handlePlayheadMouseUp, true);
@@ -171,18 +171,18 @@ var ScrubberBar = React.createClass({
 
     if (!this.state.transitionedDuringSeek) {
 
-        if (this.state.scrubbingPlayheadX && this.state.scrubbingPlayheadX != 0) {
-          playheadPaddingStyle.left = this.state.scrubbingPlayheadX;
-        } else {
-          playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
-            parseFloat(this.props.duration)) * this.state.scrubberBarWidth);
-        }
+      if (this.state.scrubbingPlayheadX && this.state.scrubbingPlayheadX != 0) {
+        playheadPaddingStyle.left = this.state.scrubbingPlayheadX;
+      } else {
+        playheadPaddingStyle.left = ((parseFloat(this.props.currentPlayhead) /
+        parseFloat(this.props.duration)) * this.state.scrubberBarWidth);
+      }
 
-        playheadPaddingStyle.left = Math.max(
-          Math.min(this.state.scrubberBarWidth - parseInt(this.state.playheadWidth)/2,
-            playheadPaddingStyle.left), 0);
+      playheadPaddingStyle.left = Math.max(
+        Math.min(this.state.scrubberBarWidth - parseInt(this.state.playheadWidth)/2,
+          playheadPaddingStyle.left), 0);
 
-        if (isNaN(playheadPaddingStyle.left)) playheadPaddingStyle.left = 0;
+      if (isNaN(playheadPaddingStyle.left)) playheadPaddingStyle.left = 0;
     }
 
     var playheadMouseDown = this.handlePlayheadMouseDown;
