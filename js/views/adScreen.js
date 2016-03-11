@@ -2,7 +2,6 @@
   AD SCREEN
 *********************************************************************/
 var React = require('react'),
-    ReactDOM = require('react-dom'),
     CONSTANTS = require('../constants/constants'),
     AdPanel = require('../components/adPanel'),
     ControlBar = require('../components/controlBar'),
@@ -19,22 +18,15 @@ var AdScreen = React.createClass({
     this.isMobile = this.props.controller.state.isMobile;
     return {
       controlBarVisible: true,
-      controlBarWidth: 0,
       timer: null
     };
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
-
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen) {
       this.props.controller.startHideControlBarTimer();
     }
-  },
-
-  componentWillUnmount: function () {
-    this.props.controller.cancelTimer();
   },
 
   componentWillUpdate: function(nextProps) {
@@ -57,9 +49,12 @@ var AdScreen = React.createClass({
     }
   },
 
+  componentWillUnmount: function () {
+    this.props.controller.cancelTimer();
+  },
+
   handleResize: function() {
     if (this.isMounted()) {
-      this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
       this.props.controller.startHideControlBarTimer();
     }
   },
@@ -136,12 +131,10 @@ var AdScreen = React.createClass({
     var playbackControlItemTemplates = {
      "scrubberBar": <ScrubberBar {...this.props}
        controlBarVisible={showControlBar}
-       controlBarWidth={this.state.controlBarWidth}
        key='scrubberBar' />,
 
      "controlBar": <ControlBar {...this.props}
        controlBarVisible={showControlBar}
-       controlBarWidth={this.state.controlBarWidth}
        playerState={this.props.playerState}
        key='controlBar' />
     };
@@ -172,17 +165,12 @@ var AdScreen = React.createClass({
     });
     var adPanel = null;
     if (this.props.skinConfig.adScreen.showAdMarquee && this.props.controller.state.showAdMarquee) {
-      adPanel = <AdPanel {...this.props} controlBarWidth={this.state.controlBarWidth}/>;
+      adPanel = <AdPanel {...this.props} />;
     }
     var playbackControlItems = null;
     if(this.props.skinConfig.adScreen.showControlBar) {
       playbackControlItems = this.getPlaybackControlItems();
     }
-
-    var adScreenClasses = ClassNames({
-      "adScreen": true,
-      "hidden": !this.state.controlBarVisible
-    });
 
     return (
       <div className="state-screen adScreen"

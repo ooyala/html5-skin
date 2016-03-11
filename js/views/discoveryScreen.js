@@ -17,32 +17,6 @@ var React = require('react'),
 var DiscoveryScreen = React.createClass({
   mixins: [AccessibilityMixin],
 
-  propTypes: {
-    skinConfig: React.PropTypes.shape({
-      icons: React.PropTypes.shape({
-        dismiss: React.PropTypes.shape({
-          fontStyleClass: React.PropTypes.string
-        })
-      })
-    })
-  },
-
-  getDefaultProps: function () {
-    return {
-      skinConfig: {
-        icons: {
-          dismiss:{fontStyleClass:'icon icon-close'}
-        }
-      },
-      controller: {
-        toggleDiscoveryScreen: function(){},
-        state: {
-          accessibilityControlsEnabled: true
-        }
-      }
-    };
-  },
-
   handleClose: function() {
     this.props.controller.toggleDiscoveryScreen();
   },
@@ -62,4 +36,29 @@ var DiscoveryScreen = React.createClass({
     );
   }
 });
+
+DiscoveryScreen.propTypes = {
+  skinConfig: React.PropTypes.shape({
+    icons: React.PropTypes.shape({
+      dismiss: React.PropTypes.shape({
+        fontStyleClass: React.PropTypes.string
+      })
+    })
+  })
+};
+
+DiscoveryScreen.defaultProps = {
+  skinConfig: {
+    icons: {
+      dismiss:{fontStyleClass:'icon icon-close'}
+    }
+  },
+  controller: {
+    toggleDiscoveryScreen: function(){},
+    state: {
+      accessibilityControlsEnabled: true
+    }
+  }
+};
+
 module.exports = DiscoveryScreen;

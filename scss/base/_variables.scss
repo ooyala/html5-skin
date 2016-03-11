@@ -1,15 +1,16 @@
 // Credit: https://github.com/twbs/bootstrap/blob/v4-dev/scss/_variables.scss
 
 //// Colors
+$black:                     #000 !default;
 $gray-dark:                 #373a3c !default;
 $gray:                      #55595c !default;
 $gray-light:                #818a91 !default;
-$gray-lighter:              #eceeef !default;
+$gray-lighter:              #afafaf !default;
 $gray-lightest:             #f7f7f9 !default;
-$blue-light:                #488DFB !default;
+$blue-light:                #448aff !default;
 $white:                     #fff !default;
 //
-$brand-primary:             #0275d8 !default;
+$brand-primary:             $blue-light !default;
 //$brand-success:             #5cb85c !default;
 //$brand-info:                #5bc0de !default;
 //$brand-warning:             #f0ad4e !default;
@@ -358,5 +359,24 @@ $scrubber-bar-height:             5px !default;
 $scrubber-bar-padding-height:     24px !default;
 $scrubber-bar-left-right-padding: 15px !default;
 $min-player-width:                320px !default;
+
+//slider
+$thumb-color: yellow;
+$progress-color: green;
+$track-color: red;
+$slider-width: 10px;
+$slider-height: 1px;
+$slider-thumb-diameter: 3px;
+
+$slider-volume-width: 200px;
+$slider-volume-height: 3px;
+$slider-volume-thumb-diameter: 15px;
+$slider-volume-thumb-color: #FFFFFF;
+$slider-volume-progress-color: #FFFFFF;
+$slider-volume-track-color: #999999;
+
+$slider-volume-width-small: $slider-volume-width * $small-multiple;
+$slider-volume-height-small: $slider-volume-height * $small-multiple;
+$slider-volume-thumb-diameter-small: $slider-volume-thumb-diameter * $small-multiple;
 
 $font-path: "assets/fonts";

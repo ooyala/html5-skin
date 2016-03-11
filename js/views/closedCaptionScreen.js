@@ -8,61 +8,12 @@
 * @constructor
 */
 var React = require('react'),
-    ReactDOM = require('react-dom'),
     ClosedCaptionPanel = require('../components/closedCaptionPanel'),
     CloseButton = require('../components/closeButton'),
-    ResizeMixin = require('../mixins/resizeMixin'),
     AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var ClosedCaptionScreen = React.createClass({
-  mixins: [ResizeMixin, AccessibilityMixin],
-
-  propTypes: {
-    skinConfig: React.PropTypes.shape({
-      icons: React.PropTypes.shape({
-        dismiss: React.PropTypes.shape({
-          fontStyleClass: React.PropTypes.string
-        })
-      })
-    })
-  },
-
-  getDefaultProps: function () {
-    return {
-      skinConfig: {
-        icons: {
-          dismiss:{fontStyleClass:'icon icon-close'}
-        }
-      },
-      controller: {
-        toggleClosedCaptionScreen: function(){},
-        state: {
-          accessibilityControlsEnabled: true
-        }
-      }
-    };
-  },
-
-  getInitialState: function() {
-    return {
-      clientWidth: null,
-      clientHeight: null
-    };
-  },
-
-  handleResize: function() {
-    this.setState({
-      clientWidth: ReactDOM.findDOMNode(this).clientWidth,
-      clientHeight: ReactDOM.findDOMNode(this).clientHeight
-    });
-  },
-
-  componentDidMount: function() {
-    this.setState({
-      clientWidth: ReactDOM.findDOMNode(this).clientWidth,
-      clientHeight: ReactDOM.findDOMNode(this).clientHeight
-    });
-  },
+  mixins: [AccessibilityMixin],
 
   handleClose: function() {
     this.props.controller.toggleClosedCaptionScreen();
@@ -78,4 +29,29 @@ var ClosedCaptionScreen = React.createClass({
     );
   }
 });
+
+ClosedCaptionScreen.propTypes = {
+  skinConfig: React.PropTypes.shape({
+    icons: React.PropTypes.shape({
+      dismiss: React.PropTypes.shape({
+        fontStyleClass: React.PropTypes.string
+      })
+    })
+  })
+};
+
+ClosedCaptionScreen.defaultProps = {
+  skinConfig: {
+    icons: {
+      dismiss:{fontStyleClass:'icon icon-close'}
+    }
+  },
+  controller: {
+    toggleClosedCaptionScreen: function(){},
+    state: {
+      accessibilityControlsEnabled: true
+    }
+  }
+};
+
 module.exports = ClosedCaptionScreen;

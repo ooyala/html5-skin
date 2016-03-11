@@ -28,7 +28,7 @@ var Utils = {
     if (textWidth > (actualWidth * 1.8)){
       var truncPercent = actualWidth / textWidth;
       var newWidth = (Math.floor(truncPercent * text.length) * 1.8) - 3;
-      truncatedText = text.slice(0,newWidth) + "&hellip;";
+      truncatedText = text.slice(0,newWidth) + "...";
     }
     else {
       truncatedText = text;
@@ -123,6 +123,26 @@ var Utils = {
   isSafari: function () {
     return (!!window.navigator.userAgent.match(/AppleWebKit/) &&
             !window.navigator.userAgent.match(/Chrome/));
+  },
+
+  /**
+  * Check if the current browser is Edge
+  *
+  * @function isEdge
+  * @returns {Boolean} Whether the browser is Edge or not
+  */
+  isEdge: function () {
+    return (!!window.navigator.userAgent.match(/Edge/));
+  },
+
+  /**
+  * Check if the current browser is Internet Explorer
+  *
+  * @function isIE
+  * @returns {Boolean} Whether the browser is IE or not
+  */
+  isIE: function() {
+    return (!!window.navigator.userAgent.match(/MSIE/) || !!window.navigator.userAgent.match(/Trident/));
   },
 
   /**

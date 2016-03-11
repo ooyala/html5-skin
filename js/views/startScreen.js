@@ -2,78 +2,32 @@
  START SCREEN
  *********************************************************************/
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants'),
     Spinner = require('../components/spinner'),
-    TruncateTextMixin = require('../mixins/truncateTextMixin'),
-    Icon = require('../components/icon');
+    Icon = require('../components/icon'),
+    ResizeMixin = require('../mixins/resizeMixin'),
+    Utils = require('../components/utils');
 
 var StartScreen = React.createClass({
-  mixins: [TruncateTextMixin],
+  mixins: [ResizeMixin],
 
-  propTypes: {
-    skinConfig: React.PropTypes.shape({
-      startScreen: React.PropTypes.shape({
-        playIconStyle: React.PropTypes.shape({
-          color: React.PropTypes.string
-        })
-      }),
-      icons: React.PropTypes.objectOf(React.PropTypes.object)
-    })
-  },
-
-  getDefaultProps: function () {
+  getInitialState: function() {
     return {
-      skinConfig: {
-        general: {
-          loadingImage: {
-            imageResource: {
-              url: null
-            }
-          }
-        },
-        startScreen: {
-          titleFont: {
-          },
-          descriptionFont: {
-          },
-          playIconStyle: {
-            color: 'white'
-          },
-          infoPanelPosition: 'topLeft',
-          playButtonPosition: 'center',
-          showPlayButton: true,
-          showPromo: true,
-          showTitle: true,
-          showDescription: true,
-          promoImageSize: 'default'
-        },
-        icons: {
-          play:{fontStyleClass:'icon icon-play'},
-          replay:{fontStyleClass:'icon icon-upnext-replay'}
-        }
-      },
-      controller: {
-        togglePlayPause: function(){},
-        state: {
-          playerState:'start',
-          buffering: false
-        }
-      },
-      contentTree: {
-        promo_image: '',
-        description:'',
-        title:''
-      }
+      playButtonClicked: false,
+      descriptionText: this.props.contentTree.description
     };
   },
 
-  getInitialState: function() {
-    return {playButtonClicked: false};
+  componentDidMount: function() {
+    this.handleResize();
   },
 
-  componentDidMount: function() {
-    this.truncateText(this.refs.description, this.props.contentTree.description);
+  handleResize: function() {
+    this.setState({
+      descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), this.props.contentTree.description)
+    });
   },
 
   handleClick: function(event) {
@@ -134,8 +88,9 @@ var StartScreen = React.createClass({
     });
 
     var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
-    var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.props.contentTree.description}</div>);
     var iconName = (this.props.controller.state.playerState == CONSTANTS.STATE.END ? "replay" : "play");
+    var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.state.descriptionText}</div>);
+
     var actionIcon = (
       <a className={actionIconClass} onClick={this.handleClick}>
         <Icon {...this.props} icon={iconName}/>
@@ -147,8 +102,8 @@ var StartScreen = React.createClass({
           <a className="state-screen-selectable" onClick={this.handleClick}></a>
         </div>
         <div className={infoPanelClass}>
-          {this.props.skinConfig.startScreen.showTitle ? titleMetadata : ''}
-          {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : ''}
+          {this.props.skinConfig.startScreen.showTitle ? titleMetadata : null}
+          {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : null}
         </div>
 
         {(this.state.playButtonClicked && this.props.controller.state.playerState == CONSTANTS.STATE.START) || this.props.controller.state.buffering ?
@@ -157,4 +112,60 @@ var StartScreen = React.createClass({
     );
   }
 });
+
+StartScreen.propTypes = {
+  skinConfig: React.PropTypes.shape({
+    startScreen: React.PropTypes.shape({
+      playIconStyle: React.PropTypes.shape({
+        color: React.PropTypes.string
+      })
+    }),
+    icons: React.PropTypes.objectOf(React.PropTypes.object)
+  })
+};
+
+StartScreen.defaultProps = {
+  skinConfig: {
+    general: {
+      loadingImage: {
+        imageResource: {
+          url: null
+        }
+      }
+    },
+    startScreen: {
+      titleFont: {
+      },
+      descriptionFont: {
+      },
+      playIconStyle: {
+        color: 'white'
+      },
+      infoPanelPosition: 'topLeft',
+      playButtonPosition: 'center',
+      showPlayButton: true,
+      showPromo: true,
+      showTitle: true,
+      showDescription: true,
+      promoImageSize: 'default'
+    },
+    icons: {
+      play:{fontStyleClass:'icon icon-play'},
+      replay:{fontStyleClass:'icon icon-upnext-replay'}
+    }
+  },
+  controller: {
+    togglePlayPause: function(){},
+    state: {
+      playerState:'start',
+      buffering: false
+    }
+  },
+  contentTree: {
+    promo_image: '',
+    description:'',
+    title:''
+  }
+};
+
 module.exports = StartScreen;

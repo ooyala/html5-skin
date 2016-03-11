@@ -5,6 +5,7 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     CONSTANTS = require('../constants/constants'),
     ClassNames = require('classnames'),
+    Slider = require('./slider'),
     Utils = require('./utils'),
     VideoQualityPopover = require('./videoQualityPopover'),
     Icon = require('../components/icon');
@@ -13,6 +14,7 @@ var ControlBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
+    this.volumeSliderValue = 0;
 
     return {
       currentVolumeHead: 0,
@@ -20,10 +22,11 @@ var ControlBar = React.createClass({
     };
   },
 
-  getResponsiveUIMultiple: function(responsiveView){
-    return responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ?
-      this.props.skinConfig.responsive.breakpoints.sm.multiplier :
-      this.props.skinConfig.responsive.breakpoints.md.multiplier;
+  componentWillReceiveProps: function(nextProps) {
+    // if responsive breakpoint changes
+    if (nextProps.responsiveView != this.props.responsiveView) {
+      this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
+    }
   },
 
   componentWillUnmount: function () {
@@ -33,8 +36,10 @@ var ControlBar = React.createClass({
     }
   },
 
-  componentDidUpdate: function () {
-    this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
+  getResponsiveUIMultiple: function(responsiveView){
+    return responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ?
+      this.props.skinConfig.responsive.breakpoints.sm.multiplier :
+      this.props.skinConfig.responsive.breakpoints.md.multiplier;
   },
 
   handleControlBarMouseUp: function(evt) {
@@ -71,60 +76,6 @@ var ControlBar = React.createClass({
     else{
       this.props.controller.handleMuteClick();
     }
-  },
-
-  handleVolumeBarTouchEnd: function(evt) {
-    this.props.controller.startHideControlBarTimer();
-    //to prevent volume slider from hiding when clicking on volume slider
-    evt.stopPropagation(); // W3C
-    evt.cancelBubble = true; // IE
-  },
-
-  handleVolumeHeadTouchStart: function(evt) {
-    this.props.controller.startHideControlBarTimer();
-    evt.preventDefault();
-    evt.stopPropagation(); // W3C
-    evt.cancelBubble = true; // IE
-    evt = evt.nativeEvent;
-
-    ReactDOM.findDOMNode(this).parentNode.addEventListener("touchmove", this.handleVolumeHeadMove);
-    document.addEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
-
-    this.setState({
-      currentVolumeHead: evt.changedTouches[0].screenX
-    });
-  },
-
-  handleVolumeHeadMove: function(evt) {
-    this.props.controller.startHideControlBarTimer();
-    evt.preventDefault();
-    evt.stopPropagation(); // W3C
-    evt.cancelBubble = true; // IE
-
-    this.setNewVolume(evt);
-  },
-
-  setNewVolume: function(evt) {
-    var newVolumeHeadX = this.isMobile ? evt.changedTouches[0].screenX : evt.screenX;
-    var diffX = newVolumeHeadX - this.state.currentVolumeHead;
-    var diffVolume = (diffX / parseInt(ReactDOM.findDOMNode(this.refs.volumeSlider)));
-    var newVolume = this.props.controller.state.volumeState.volume + diffVolume;
-    newVolume = Math.min(newVolume, 1);
-    newVolume = Math.max(newVolume, 0);
-
-    this.props.controller.setVolume(newVolume);
-    this.setState({
-      currentVolumeHead: newVolumeHeadX
-    });
-  },
-
-  handleVolumeHeadTouchEnd: function(evt) {
-    this.props.controller.startHideControlBarTimer();
-    evt.stopPropagation(); // W3C
-    evt.cancelBubble = true; // IE
-    this.setNewVolume(evt);
-    ReactDOM.findDOMNode(this).parentNode.removeEventListener("touchmove", this.handleVolumeHeadMove);
-    document.removeEventListener("touchend", this.handleVolumeHeadTouchEnd, true);
   },
 
   handlePlayClick: function() {
@@ -196,6 +147,13 @@ var ControlBar = React.createClass({
     }
   },
 
+  changeVolumeSlider: function(event) {
+    var newVolume = parseFloat(event.target.value);
+    this.props.controller.setVolume(newVolume);
+    this.setState({
+      volumeSliderValue: event.target.value
+    });
+  },
   populateControlBar: function() {
     var dynamicStyles = this.setupItemStyle();
     var playIcon = "";
@@ -217,7 +175,6 @@ var ControlBar = React.createClass({
       fullscreenIcon = "expand";
     }
 
-
     var totalTime = 0;
     if (this.props.duration == null || typeof this.props.duration == 'undefined' || this.props.duration == ""){
       totalTime = Utils.formatSeconds(0);
@@ -238,20 +195,13 @@ var ControlBar = React.createClass({
         onClick={this.handleVolumeClick}></a>);
     }
 
-    var volumeHeadPaddingStyle = {};
-    volumeHeadPaddingStyle.left = parseFloat(this.props.controller.state.volumeState.volume) * 100 + "%";
-    var volumeIndicatorStyle = {};
-    volumeIndicatorStyle.width = volumeHeadPaddingStyle.left;
-
-    var volumeSlider = [];
-    volumeSlider.push(
-      <div className="volumeSlider" ref="volumeSlider" onTouchEnd={this.handleVolumeBarTouchEnd} key={i}>
-        <div className="volumeIndicator" style={volumeIndicatorStyle}></div>
-        <div className="playheadPadding" style={volumeHeadPaddingStyle}
-          onTouchStart={this.handleVolumeHeadTouchStart}>
-          <div className="volumeHead"></div>
-        </div>
-      </div>);
+    var volumeSlider = <div className="volumeSlider"><Slider value={parseFloat(this.props.controller.state.volumeState.volume)}
+                        onChange={this.changeVolumeSlider}
+                        className={"slider slider-volume"}
+                        itemRef={"volumeSlider"}
+                        minValue={"0"}
+                        maxValue={"1"}
+                        step={"0.1"}/></div>;
 
     var volumeControls;
     if (!this.isMobile){
@@ -370,7 +320,7 @@ var ControlBar = React.createClass({
 
     var controlBarLeftRightPadding = this.responsiveUIMultiple * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
 
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems, this.responsiveUIMultiple);
+    var collapsedResult = Utils.collapse(this.props.componentWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems, this.responsiveUIMultiple);
     var collapsedControlBarItems = collapsedResult.fit;
     var collapsedMoreOptionsItems = collapsedResult.overflow;
 
