@@ -312,9 +312,9 @@ var ControlBar = React.createClass({
       </button>,
 
       "quality": (
-        <div className="popover-button-container">
+        <div className="popover-button-container" key="quality">
           {videoQualityPopover}
-          <button className={qualityClass} onClick={this.handleQualityClick} key="quality">
+          <button className={qualityClass} onClick={this.handleQualityClick}>
             <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={dynamicStyles.iconCharacter}
               onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
             </span>
