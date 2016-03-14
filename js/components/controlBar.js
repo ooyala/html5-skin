@@ -7,7 +7,8 @@ var React = require('react'),
     ClassNames = require('classnames'),
     Slider = require('./slider'),
     Utils = require('./utils'),
-    VideoQualityPopover = require('./videoQualityPopover');
+    VideoQualityPopover = require('./videoQualityPopover'),
+    Icon = require('../components/icon');
 
 var ControlBar = React.createClass({
   getInitialState: function() {
@@ -21,10 +22,11 @@ var ControlBar = React.createClass({
     };
   },
 
-  getResponsiveUIMultiple: function(responsiveView){
-    return responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ?
-      this.props.skinConfig.responsive.breakpoints.sm.multiplier :
-      this.props.skinConfig.responsive.breakpoints.md.multiplier;
+  componentWillReceiveProps: function(nextProps) {
+    // if responsive breakpoint changes
+    if (nextProps.responsiveView != this.props.responsiveView) {
+      this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
+    }
   },
 
   componentWillUnmount: function () {
@@ -34,8 +36,9 @@ var ControlBar = React.createClass({
     }
   },
 
-  componentDidUpdate: function () {
-    this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
+  getResponsiveUIMultiple: function(responsiveView){
+    var multiplier = this.props.skinConfig.responsive.breakpoints[responsiveView].multiplier;
+    return multiplier;
   },
 
   handleControlBarMouseUp: function(evt) {
@@ -83,7 +86,7 @@ var ControlBar = React.createClass({
   },
 
   handleQualityClick: function() {
-    if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name) {
+    if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
     } else {
       this.toggleQualityPopover();
@@ -150,21 +153,27 @@ var ControlBar = React.createClass({
       volumeSliderValue: event.target.value
     });
   },
+
   populateControlBar: function() {
     var dynamicStyles = this.setupItemStyle();
-    var playClass = "";
+    var playIcon = "";
     if (this.props.playerState == CONSTANTS.STATE.PLAYING) {
-      playClass = this.props.skinConfig.icons.pause.fontStyleClass;
+      playIcon = "pause";
     } else if (this.props.playerState == CONSTANTS.STATE.END) {
-      playClass = this.props.skinConfig.icons.replay.fontStyleClass;
+      playIcon = "replay";
     } else {
-      playClass = this.props.skinConfig.icons.play.fontStyleClass;
+      playIcon = "play";
     }
-    var muteClass = (this.props.controller.state.volumeState.muted) ?
-      this.props.skinConfig.icons.volumeOff.fontStyleClass : this.props.skinConfig.icons.volume.fontStyleClass;
 
-    var fullscreenClass = (this.props.controller.state.fullscreen) ?
-      this.props.skinConfig.icons.compress.fontStyleClass : this.props.skinConfig.icons.expand.fontStyleClass;
+    var volumeIcon = (this.props.controller.state.volumeState.muted ? "volumeOff" : "volume");
+
+    var fullscreenIcon = "";
+    if (this.props.controller.state.fullscreen) {
+      fullscreenIcon = "compress"
+    }
+    else {
+      fullscreenIcon = "expand";
+    }
 
     var totalTime = 0;
     if (this.props.duration == null || typeof this.props.duration == 'undefined' || this.props.duration == ""){
@@ -202,8 +211,8 @@ var ControlBar = React.createClass({
       volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
     }
 
+    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
     var iconSetting = {};
-    var volumeIconSetting = Utils.clone(this.props.skinConfig.controlBar.iconStyle.inactive);
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
     var currentPlayheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
@@ -226,9 +235,9 @@ var ControlBar = React.createClass({
 
     var controlItemTemplates = {
       "playPause": <button className="playPause controlBarItem" onClick={this.handlePlayClick} key="playPause">
-        <span className={playClass} style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        </span>
+        <Icon {...this.props} icon={playIcon}
+          style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "live": <div className="live controlBarItem" key="live">
@@ -239,9 +248,10 @@ var ControlBar = React.createClass({
       </div>,
 
       "volume": <div className="volume controlBarItem" key="volume">
-        <span className={muteClass} style={volumeIconSetting} ref="volumeIcon" onClick={this.handleVolumeIconClick}
-              onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}>
-        </span>
+        <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
+          style={this.props.skinConfig.controlBar.iconStyle.inactive}
+          onClick={this.handleVolumeIconClick}
+          onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}/>
         {volumeControls}
       </div>,
 
@@ -253,44 +263,42 @@ var ControlBar = React.createClass({
 
       "moreOptions": <button className="moreOptions controlBarItem"
         onClick={this.handleMoreOptionsClick} key="moreOptions">
-        <span className={this.props.skinConfig.icons.ellipsis.fontStyleClass} style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        </span>
+        <Icon {...this.props} icon="ellipsis" style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "quality": <button className={qualityClass}
-        onClick={this.handleQualityClick} key="quality">
-        <span className={this.props.skinConfig.icons.quality.fontStyleClass} style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        </span>
-      </button>,
+      "quality": (
+        <div className="popover-button-container" key="quality">
+          {videoQualityPopover}
+          <button className={qualityClass} onClick={this.handleQualityClick}>
+            <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
+              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+          </button>
+        </div>
+      ),
 
       "discovery": <button className="discovery controlBarItem"
         onClick={this.handleDiscoveryClick} key="discovery">
-        <span className={this.props.skinConfig.icons.discovery.fontStyleClass} style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        </span>
+        <Icon {...this.props} icon="discovery" style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "closedCaption": <button className="closedCaption controlBarItem"
         onClick={this.handleClosedCaptionClick} key="closedCaption">
-        <span className={this.props.skinConfig.icons.cc.fontStyleClass} style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        </span>
+        <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "share": <button className="share controlBarItem"
         onClick={this.handleShareClick} key="share">
-        <span className={this.props.skinConfig.icons.share.fontStyleClass} style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        </span>
+        <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "fullscreen": <button className="fullscreen controlBarItem"
         onClick={this.handleFullscreenClick} key="fullscreen">
-        <span className={fullscreenClass} style={iconSetting} style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-        </span>
+        <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "watermark": <div className={watermarkClass} key="watermark" style = {dynamicStyles.watermarkImageStyle}>
@@ -317,7 +325,7 @@ var ControlBar = React.createClass({
 
     var controlBarLeftRightPadding = this.responsiveUIMultiple * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
 
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems, this.responsiveUIMultiple);
+    var collapsedResult = Utils.collapse(this.props.componentWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems, this.responsiveUIMultiple);
     var collapsedControlBarItems = collapsedResult.fit;
     var collapsedMoreOptionsItems = collapsedResult.overflow;
 
@@ -391,15 +399,11 @@ var ControlBar = React.createClass({
 
     var controlBarItems = this.populateControlBar();
 
-    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
-
     return (
-      <div className={controlBarClass} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}
->
+      <div className={controlBarClass} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
         <div className="controlBarItemsWrapper">
           {controlBarItems}
         </div>
-        {videoQualityPopover}
       </div>
     );
   }
@@ -410,7 +414,18 @@ ControlBar.defaultProps = {
     streams: [
       {is_live_stream: false}
     ]
-  }
+  },
+  skinConfig: {
+    responsive: {
+      breakpoints: {
+        xs: {id: 'xs'},
+        sm: {id: 'sm'},
+        md: {id: 'md'},
+        lg: {id: 'lg'}
+      }
+    }
+  },
+  responsiveView: 'md'
 };
 
 module.exports = ControlBar;

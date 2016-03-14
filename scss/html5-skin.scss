@@ -9,6 +9,9 @@
   // Mixins
   @import "mixins/mixins";
 
+  // Utility classes
+  @import "base/utilities";
+
   // Normalize and reset
   @import "base/normalize";
   @import "base/reset";
@@ -18,6 +21,7 @@
   @import "base/type";
 
   // Components
+  @import "components/scrollbar";
   @import "components/share-screen";
   @import "components/discovery-screen";
   @import "components/closed-caption";
@@ -42,15 +46,12 @@
   @import "components/video-quality";
 
   // Responsive
+  @import "responsive/xsmall";
   @import "responsive/small";
   @import "responsive/large";
 
   // Skin
   @import "skin/default";
-
-  // Utility classes
-  @import "base/utilities";
-
 }
 
 //override non-responsive css on debug.ooyala.com

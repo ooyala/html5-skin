@@ -11,13 +11,16 @@ var React = require('react'),
   CONSTANTS = require('../constants/constants'),
   Spinner = require('./spinner'),
   ClassNames = require('classnames'),
-  Utils = require('./utils');
+  Utils = require('./utils'),
+  Icon = require('../components/icon');
 
 var AdPanelTopBarItem = React.createClass({
   render: function() {
-    return <div className={this.props.itemClassName} onClick={this.props.onButtonClicked} onTouchEnd={this.props.onButtonClicked}>
-      {this.props.icon}{this.props.data}
-    </div>;
+    return (
+      <a className={this.props.itemClassName} onClick={this.props.onButtonClicked}>
+        {this.props.children}
+      </a>
+    );
   }
 });
 
@@ -27,26 +30,12 @@ var AdPanel = React.createClass({
     return null;
   },
 
-  handleSkipAdButtonClick: function(event) {
-    if (event.type == 'touchend' || !this.isMobile){
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
-      this.props.controller.onSkipAdClicked();
-    }
+  handleSkipAdButtonClick: function() {
+    this.props.controller.onSkipAdClicked();
   },
 
-  handleLearnMoreButtonClick: function(event) {
-    if (event.type == 'touchend' || !this.isMobile) {
-      //since mobile would fire both click and touched events,
-      //we need to make sure only one actually does the work
-
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
-      this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.LEARN_MORE_BUTTON);
-    }
+  handleLearnMoreButtonClick: function() {
+    this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.LEARN_MORE_BUTTON);
   },
 
   handleAdTopBarClick: function(event){
@@ -70,8 +59,8 @@ var AdPanel = React.createClass({
     // // Ad title
     var adTitle = this.props.currentAdsInfo.currentAdItem.name;
     // AMC puts "Unknown" in the name field if ad name unavailable
-    if (this.isValidAdPlaybackInfo(adTitle) && this.props.controlBarWidth > 560) {
-      var adTitleDiv = <AdPanelTopBarItem key="adTitle" ref="adTitle" data={adTitle} itemClassName="adTitle"/>;
+    if (this.isValidAdPlaybackInfo(adTitle) && this.props.componentWidth > 560) {
+      var adTitleDiv = <AdPanelTopBarItem key="adTitle" ref="adTitle" itemClassName="adTitle">{adTitle}</AdPanelTopBarItem>;
       adTopBarItems.push(adTitleDiv);
     }
 
@@ -86,7 +75,7 @@ var AdPanel = React.createClass({
     var remainingTime = Utils.formatSeconds(Math.max(0, parseInt(this.props.adVideoDuration - this.props.currentPlayhead)));
     adPlaybackInfo = adPlaybackInfo + " - " + remainingTime;
 
-    var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" data={adPlaybackInfo} itemClassName="adPlaybackInfo"/>;
+    var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" itemClassName="adPlaybackInfo">{adPlaybackInfo}</AdPanelTopBarItem>;
     adTopBarItems.push(adPlaybackInfoDiv);
 
     // Flexible space
@@ -100,8 +89,11 @@ var AdPanel = React.createClass({
     });
     if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.hasClickUrl)) {
       var learnMoreText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
-      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" ref="learnMoreButton" onButtonClicked={this.handleLearnMoreButtonClick}
-        data={learnMoreText} icon ={<span className={this.props.skinConfig.icons.learn.fontStyleClass + " buttonIcon"}></span>} itemClassName={learnMoreClass}/>;
+      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" ref="learnMoreButton"
+                                onButtonClicked={this.handleLearnMoreButtonClick} itemClassName={learnMoreClass}>
+                                  <Icon {...this.props} icon="learn" className="buttonIcon"/>
+                                  {learnMoreText}
+                              </AdPanelTopBarItem>;
       adTopBarItems.push(learnMoreButtonDiv);
     }
 
@@ -113,10 +105,11 @@ var AdPanel = React.createClass({
     });
     var skipButtonText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
     var skipAdClass = this.props.skinConfig.icons.skip.fontStyleClass + " skipIcon";
-    var skipButtonDiv = <AdPanelTopBarItem key="skipButton" ref="skipButton" onButtonClicked={this.handleSkipAdButtonClick}
-                        data={skipButtonText}
-                        icon={<span className={skipAdClass}></span>}
-                        itemClassName={skipButtonClass}/>;
+    var skipButtonDiv = <AdPanelTopBarItem key="skipButton" ref="skipButton"
+                          onButtonClicked={this.handleSkipAdButtonClick} itemClassName={skipButtonClass}>
+                            <Icon {...this.props} icon="skip" className="buttonIcon"/>
+                                    {skipButtonText}
+                        </AdPanelTopBarItem>;
     adTopBarItems.push(skipButtonDiv);
 
     return adTopBarItems;

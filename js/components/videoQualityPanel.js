@@ -4,7 +4,8 @@
  * @module VideoQualityPanel
  */
 var React = require('react'),
-    ClassNames = require('classnames');
+    ClassNames = require('classnames'),
+    Icon = require('../components/icon');
 
 var VideoQualityPanel = React.createClass({
   getInitialState: function() {
@@ -31,10 +32,13 @@ var VideoQualityPanel = React.createClass({
       'selected': this.state.selected == 'auto'
     });
 
-    bitrateButtons.push(
+    //add auto btn to beginning of array
+    bitrateButtons.unshift(
       <li className="auto-li" key='auto-li'>
         <a className={autoQualityBtn} key='auto' onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
-          <div className="quality-auto-icon"><span className="icon icon-auto"></span></div>
+          <div className="quality-auto-icon">
+            <Icon {...this.props} icon="auto"/>
+          </div>
           <div className="quality-auto-label">Auto</div>
         </a>
       </li>

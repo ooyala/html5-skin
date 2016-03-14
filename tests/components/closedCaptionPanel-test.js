@@ -1,4 +1,5 @@
 jest.dontMock('../../js/components/closedCaptionPanel')
+    .dontMock('../../js/components/icon')
     .dontMock('classnames');
 
 var React = require('react');

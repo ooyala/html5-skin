@@ -1,5 +1,6 @@
 jest.dontMock('../../js/components/videoQualityPanel')
     .dontMock('../../js/components/utils')
+    .dontMock('../../js/components/icon')
     .dontMock('../../js/constants/constants')
     .dontMock('classnames');
 
@@ -35,7 +36,8 @@ describe('VideoQualityPanel', function () {
     videoQualityOptions: {
       availableBitrates: availableBitrates,
       selectedBitrate: null
-    }
+    },
+    skinConfig: skinConfig
   };
 
   it('creates video quality panel', function () {
@@ -57,7 +59,7 @@ describe('VideoQualityPanel', function () {
     );
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'selected');
     expect(bitrateItems.length).toBe(1);
-    expect(bitrateItems[0].textContent).toBe('Auto');
+    expect(bitrateItems[0].querySelector("[class*=label]").textContent).toBe('Auto');
 
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn');
     expect(bitrateItems.length).toBe(availableBitrates.length-1);
@@ -75,7 +77,8 @@ describe('VideoQualityPanel', function () {
       videoQualityOptions: {
         availableBitrates: availableBitrates,
         selectedBitrate: availableBitrates[1]
-      }
+      },
+      skinConfig: skinConfig
     }
     var DOM = TestUtils.renderIntoDocument(
       <VideoQualityPanel {...mockProps} />

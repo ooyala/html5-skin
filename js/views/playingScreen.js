@@ -17,21 +17,15 @@ var PlayingScreen = React.createClass({
     this.isMobile = this.props.controller.state.isMobile;
     return {
       controlBarVisible: true,
-      controlBarWidth: 0,
       timer: null
     };
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen){
       this.props.controller.startHideControlBarTimer();
     }
-  },
-
-  componentWillUnmount: function () {
-    this.props.controller.cancelTimer();
   },
 
   componentWillUpdate: function(nextProps) {
@@ -50,9 +44,12 @@ var PlayingScreen = React.createClass({
     }
   },
 
+  componentWillUnmount: function () {
+    this.props.controller.cancelTimer();
+  },
+
   handleResize: function() {
     if (this.isMounted()) {
-      this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
       this.props.controller.startHideControlBarTimer();
     }
   },
@@ -120,7 +117,7 @@ var PlayingScreen = React.createClass({
          onMouseOut={this.hideControlBar}
          onMouseMove={this.handlePlayerMouseMove}>
 
-      {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : ''}
+      {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
       <div className="default-screen">
         <div className="state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
@@ -128,18 +125,16 @@ var PlayingScreen = React.createClass({
         {adOverlay}
 
         <ScrubberBar {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth} />
+          controlBarVisible={this.state.controlBarVisible} />
 
         <ControlBar {...this.props}
           controlBarVisible={this.state.controlBarVisible}
-          controlBarWidth={this.state.controlBarWidth}
           playerState={this.props.playerState}
           authorization={this.props.authorization} />
       </div>
 
       {(this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
-        <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/> : ''}
+        <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/> : null}
     </div>
     );
   }

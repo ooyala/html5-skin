@@ -11,7 +11,8 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     VideoQualityPanel = require('../components/videoQualityPanel'),
     CloseButton = require('../components/closeButton'),
-    AccessibilityMixin = require('../mixins/accessibilityMixin');
+    AccessibilityMixin = require('../mixins/accessibilityMixin'),
+    Icon = require('../components/icon');
 
 var VideoQualityScreen = React.createClass({
   mixins: [AccessibilityMixin],
@@ -25,10 +26,11 @@ var VideoQualityScreen = React.createClass({
       <div className="state-screen quality-screen">
         <div className="quality-panel-title">
           Video Quality
-          <span className={this.props.skinConfig.icons.quality.fontStyleClass}></span>
+          <Icon {...this.props} icon="quality"/>
         </div>
         <VideoQualityPanel {...this.props} />
-        <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
+        <CloseButton {...this.props}
+          closeAction={this.handleClose}/>
       </div>
     );
   }

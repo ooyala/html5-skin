@@ -12,7 +12,8 @@ var React = require('react'),
     CONSTANTS = require('./../constants/constants'),
     Utils = require('./utils'),
     CloseButton = require('./closeButton'),
-    CountDownClock = require('./countDownClock');
+    CountDownClock = require('./countDownClock'),
+    Icon = require('../components/icon');
 
 var UpNextPanel = React.createClass({
   closeUpNextPanel: function() {
@@ -44,7 +45,7 @@ var UpNextPanel = React.createClass({
       <div className={upNextPanel}>
         <a className="upNextContent" onClick={this.handleStartUpNextClick}>
           <img className="contentImage" src={this.props.upNextInfo.upNextData.preview_image_url} />
-          <span className={this.props.skinConfig.icons.play.fontStyleClass} aria-hidden="true"></span>
+          <Icon {...this.props} icon="play"/>
         </a>
 
         <div className="contentMetadata">
@@ -61,7 +62,8 @@ var UpNextPanel = React.createClass({
           </div>
         </div>
 
-        <CloseButton cssClass="upNextCloseBtn" closeAction={this.closeUpNextPanel} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
+        <CloseButton {...this.props}
+          cssClass="upNextCloseBtn" closeAction={this.closeUpNextPanel}/>
       </div>
     );
   }

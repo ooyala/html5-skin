@@ -8,61 +8,12 @@
 * @constructor
 */
 var React = require('react'),
-    ReactDOM = require('react-dom'),
     ClosedCaptionPanel = require('../components/closedCaptionPanel'),
     CloseButton = require('../components/closeButton'),
-    ResizeMixin = require('../mixins/resizeMixin'),
     AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var ClosedCaptionScreen = React.createClass({
-  mixins: [ResizeMixin, AccessibilityMixin],
-
-  propTypes: {
-    skinConfig: React.PropTypes.shape({
-      icons: React.PropTypes.shape({
-        dismiss: React.PropTypes.shape({
-          fontStyleClass: React.PropTypes.string
-        })
-      })
-    })
-  },
-
-  getDefaultProps: function () {
-    return {
-      skinConfig: {
-        icons: {
-          dismiss:{fontStyleClass:'icon icon-close'}
-        }
-      },
-      controller: {
-        toggleClosedCaptionScreen: function(){},
-        state: {
-          accessibilityControlsEnabled: true
-        }
-      }
-    };
-  },
-
-  getInitialState: function() {
-    return {
-      clientWidth: null,
-      clientHeight: null
-    };
-  },
-
-  handleResize: function() {
-    this.setState({
-      clientWidth: ReactDOM.findDOMNode(this).clientWidth,
-      clientHeight: ReactDOM.findDOMNode(this).clientHeight
-    });
-  },
-
-  componentDidMount: function() {
-    this.setState({
-      clientWidth: ReactDOM.findDOMNode(this).clientWidth,
-      clientHeight: ReactDOM.findDOMNode(this).clientHeight
-    });
-  },
+  mixins: [AccessibilityMixin],
 
   handleClose: function() {
     this.props.controller.toggleClosedCaptionScreen();
@@ -71,10 +22,35 @@ var ClosedCaptionScreen = React.createClass({
   render: function() {
     return (
       <div className="state-screen closedCaptionsScreen">
-        <ClosedCaptionPanel {...this.props} closedCaptionOptions={this.props.closedCaptionOptions} languagesPerPage={{small:1, medium:4, large:15}} />
-        <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
+        <ClosedCaptionPanel {...this.props} closedCaptionOptions={this.props.closedCaptionOptions} languagesPerPage={{xs:1, sm:4, md:4, lg:15}} />
+        <CloseButton {...this.props} closeAction={this.handleClose}/>
       </div>
     );
   }
 });
+
+ClosedCaptionScreen.propTypes = {
+  skinConfig: React.PropTypes.shape({
+    icons: React.PropTypes.shape({
+      dismiss: React.PropTypes.shape({
+        fontStyleClass: React.PropTypes.string
+      })
+    })
+  })
+};
+
+ClosedCaptionScreen.defaultProps = {
+  skinConfig: {
+    icons: {
+      dismiss:{fontStyleClass:'icon icon-close'}
+    }
+  },
+  controller: {
+    toggleClosedCaptionScreen: function(){},
+    state: {
+      accessibilityControlsEnabled: true
+    }
+  }
+};
+
 module.exports = ClosedCaptionScreen;
