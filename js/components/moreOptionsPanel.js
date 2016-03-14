@@ -101,9 +101,8 @@ var MoreOptionsPanel = React.createClass({
     var hours = parseInt(this.props.duration / 3600, 10);
     var extraSpaceDuration = (hours > 0) ? 0 : 45;
 
-    var responsiveUIMultiple = this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ?
-      this.props.skinConfig.responsive.breakpoints.sm.multiplier :
-      this.props.skinConfig.responsive.breakpoints.md.multiplier;
+    var responsiveView = this.props.responsiveView;
+    var responsiveUIMultiple = this.props.skinConfig.responsive.breakpoints[responsiveView].multiplier;
     var controlBarLeftRightPadding = responsiveUIMultiple * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
 
     var collapsedResult = Utils.collapse(this.props.controlBarWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems, responsiveUIMultiple);
@@ -157,4 +156,19 @@ var MoreOptionsPanel = React.createClass({
     );
   }
 });
+
+MoreOptionsPanel.defaultProps = {
+  skinConfig: {
+    responsive: {
+      breakpoints: {
+        xs: {id: 'xs'},
+        sm: {id: 'sm'},
+        md: {id: 'md'},
+        lg: {id: 'lg'}
+      }
+    }
+  },
+  responsiveView: 'md'
+};
+
 module.exports = MoreOptionsPanel;

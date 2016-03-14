@@ -92,7 +92,7 @@ var CountDownClock = React.createClass({
       var clockWidth = 75;
     }
     else {
-      var clockWidth = this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ? 25 : 36;
+      var clockWidth = this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id ? 25 : 36;
     }
     this.setState({
       clockRadius: parseInt(clockWidth, 10)/2,

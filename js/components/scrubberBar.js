@@ -50,6 +50,11 @@ var ScrubberBar = React.createClass({
     }
   },
 
+  getResponsiveUIMultiple: function(responsiveView){
+    var multiplier = this.props.skinConfig.responsive.breakpoints[responsiveView].multiplier;
+    return multiplier;
+  },
+
   handleResize: function() {
     this.setState({
       scrubberBarWidth: ReactDOM.findDOMNode(this.refs.scrubberBar).clientWidth,

@@ -104,11 +104,12 @@ var LanguageTabContent = React.createClass({
   getDefaultProps: function () {
     return {
       languagesPerPage: {
-        small: 1,
-        medium: 4,
-        large: 15
+        xs: 1,
+        sm: 4,
+        md: 4,
+        lg: 15
       },
-      responsiveView: 'ooyala-medium'
+      responsiveView: 'md'
     }
   },
 
@@ -122,8 +123,8 @@ var LanguageTabContent = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     //If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
     if (nextProps.responsiveView != this.props.responsiveView) {
-      var currentViewSize = this.props.responsiveView.replace('ooyala-', '');
-      var nextViewSize = nextProps.responsiveView.replace('ooyala-', '');
+      var currentViewSize = this.props.responsiveView;
+      var nextViewSize = nextProps.responsiveView;
       var firstLanguageIndex = this.state.currentPage * this.props.languagesPerPage[currentViewSize] - this.props.languagesPerPage[currentViewSize];
       var newCurrentPage = Math.floor(firstLanguageIndex/nextProps.languagesPerPage[nextViewSize]) + 1;
       this.setState({
@@ -167,7 +168,7 @@ var LanguageTabContent = React.createClass({
     var availableLanguages = this.props.closedCaptionOptions.availableLanguages; //getting list of languages
 
     //pagination
-    var currentViewSize = this.props.responsiveView.replace('ooyala-', '');
+    var currentViewSize = this.props.responsiveView;
     var languagesPerPage = this.props.languagesPerPage[currentViewSize];
     var startAt = languagesPerPage * (this.state.currentPage - 1);
     var endAt = languagesPerPage * this.state.currentPage;

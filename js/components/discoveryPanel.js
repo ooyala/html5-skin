@@ -29,8 +29,8 @@ var DiscoveryPanel = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     //If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
     if (nextProps.responsiveView != this.props.responsiveView) {
-      var currentViewSize = this.props.responsiveView.replace('ooyala-', '');
-      var nextViewSize = nextProps.responsiveView.replace('ooyala-', '');
+      var currentViewSize = this.props.responsiveView;
+      var nextViewSize = nextProps.responsiveView;
       var firstDiscoverIndex = this.state.currentPage * this.props.videosPerPage[currentViewSize] - this.props.videosPerPage[currentViewSize];
       var newCurrentPage = Math.floor(firstDiscoverIndex/nextProps.videosPerPage[nextViewSize]) + 1;
       this.setState({
@@ -107,20 +107,11 @@ var DiscoveryPanel = React.createClass({
     }
 
     //pagination
-    var videosPerPage;
-    switch (this.props.responsiveView) {
-      case this.props.skinConfig.responsive.breakpoints.sm.name:
-        videosPerPage = this.props.videosPerPage.small;
-        break;
-      case this.props.skinConfig.responsive.breakpoints.lg.name:
-        videosPerPage = this.props.videosPerPage.large;
-        break;
-      default:
-        videosPerPage = this.props.videosPerPage.medium;
-    }
+    var currentViewSize = this.props.responsiveView;
+    var videosPerPage = this.props.videosPerPage[currentViewSize];
     var startAt = videosPerPage * (this.state.currentPage - 1);
     var endAt = videosPerPage * this.state.currentPage;
-    var relatedVideoPage = relatedVideos.slice(startAt,endAt);
+    var relatedVideoPage = relatedVideos.slice(startAt, endAt);
 
     // discovery content
     var panelTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.DISCOVER, this.props.localizableStrings);
@@ -219,9 +210,10 @@ DiscoveryPanel.propTypes = {
 
 DiscoveryPanel.defaultProps = {
   videosPerPage: {
-    small: 2,
-    medium: 6,
-    large: 8
+    xs: 2,
+    sm: 4,
+    md: 6,
+    lg: 8
   },
   skinConfig: {
     discoveryScreen: {
@@ -239,8 +231,10 @@ DiscoveryPanel.defaultProps = {
     },
     responsive: {
       breakpoints: {
-        sm: {name: 'small'},
-        lg: {name: 'large'}
+        xs: {id: 'xs'},
+        sm: {id: 'sm'},
+        md: {id: 'md'},
+        lg: {id: 'lg'}
       }
     }
   },
@@ -250,7 +244,7 @@ DiscoveryPanel.defaultProps = {
   controller: {
     sendDiscoveryClickEvent: function(a,b){}
   },
-  responsiveView: 'ooyala-medium'
+  responsiveView: 'md'
 };
 
 module.exports = DiscoveryPanel;

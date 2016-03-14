@@ -351,7 +351,7 @@ $state-danger-text:              #a94442 !default;
 //
 //
 // Video
-$small-multiple:                  0.7;
+$xsmall-multiple:                  0.7;
 $large-multiple:                  1.2;
 $scrubber-padding-height:         24px !default;
 $control-bar-height:              60px !default;
@@ -375,8 +375,8 @@ $slider-volume-thumb-color: #FFFFFF;
 $slider-volume-progress-color: #FFFFFF;
 $slider-volume-track-color: #999999;
 
-$slider-volume-width-small: $slider-volume-width * $small-multiple;
-$slider-volume-height-small: $slider-volume-height * $small-multiple;
-$slider-volume-thumb-diameter-small: $slider-volume-thumb-diameter * $small-multiple;
+$slider-volume-width-small: $slider-volume-width * $xsmall-multiple;
+$slider-volume-height-small: $slider-volume-height * $xsmall-multiple;
+$slider-volume-thumb-diameter-small: $slider-volume-thumb-diameter * $xsmall-multiple;
 
 $font-path: "assets/fonts";
