@@ -209,6 +209,7 @@ var Skin = React.createClass({
               authorization={this.state.authorization}
               responsiveView={responsiveId}
               videoQualityOptions={this.state.videoQualityOptions}
+              componentWidth={this.state.componentWidth}
               ref="endScreen" />
           );
           break;
