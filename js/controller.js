@@ -123,6 +123,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
+
+      this.mb.subscribe(OO.EVENTS.SET_ASSET, 'customerUi', _.bind(this.onAssetChanged, this));
+      this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
+
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
@@ -312,6 +316,30 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onContentTreeFetched: function (event, contentTree) {
       this.resetUpNextInfo(true);
+      this.state.contentTree = contentTree;
+      this.state.playerState = CONSTANTS.STATE.START;
+      this.renderSkin({"contentTree": contentTree});
+    },
+
+    onAssetChanged: function (event, asset) {
+      this.state.videoQualityOptions.availableBitrates = null;
+      this.state.closedCaptionOptions.availableLanguages = null;
+      this.state.discoveryData = null;
+      this.subscribeBasicPlaybackEvents();
+
+      this.resetUpNextInfo(true);
+
+      var authorization = {};
+      authorization.streams = asset.content.streams;
+      this.state.authorization = authorization;
+
+      var contentTree  = {};
+      contentTree.title = asset.content.title;
+      contentTree.description = asset.content.description;
+      contentTree.duration = asset.content.duration;
+      contentTree.promo_image = asset.content.posterImages[0].url;
+
+      this.state.closedCaptionOptions.availableLanguages = asset.content.captions;
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       this.renderSkin({"contentTree": contentTree});
