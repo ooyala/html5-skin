@@ -2,7 +2,7 @@
   COUNT DOWN CLOCK
 *********************************************************************/
 /**
-* 
+*
 *
 * @class CountDownClock
 * @constructor
@@ -20,7 +20,7 @@ var CountDownClock = React.createClass({
     this.interval = null;
     var tmpFraction = 0;
     var tmpRemainSeconds = 0;
-    var upNextTimeToShow = this.props.controller.state.upNextInfo.timeToShow;
+    var upNextTimeToShow = parseInt(this.props.controller.state.upNextInfo.timeToShow);
 
     if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
       tmpFraction = 2 / this.props.timeToShow;
@@ -47,7 +47,7 @@ var CountDownClock = React.createClass({
       if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
         this.setState({hideClock: true});
         clearInterval(this.interval);
-      } 
+      }
     }
   },
 
@@ -92,7 +92,7 @@ var CountDownClock = React.createClass({
       var clockWidth = 75;
     }
     else {
-      var clockWidth = this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.sm.name ? 25 : 36;
+      var clockWidth = this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id ? 25 : 36;
     }
     this.setState({
       clockRadius: parseInt(clockWidth, 10)/2,
@@ -110,7 +110,7 @@ var CountDownClock = React.createClass({
     this.context.beginPath();
     this.context.arc(this.state.clockContainerWidth / 2, this.state.clockRadius, this.state.clockRadius, Math.PI * 1.5, Math.PI * percent, false);
     this.context.arc(this.state.clockContainerWidth / 2, this.state.clockRadius, this.state.clockRadius / 1.2, Math.PI * percent, Math.PI * 1.5, true);
-    this.context.fill();  
+    this.context.fill();
   },
 
   startTimer: function() {
@@ -134,7 +134,7 @@ var CountDownClock = React.createClass({
         this.setState({remainSeconds: 0});
         clearInterval(this.interval);
         this.startUpNextVideo();
-      } 
+      }
       else {
         this.setState({remainSeconds: this.props.duration - this.props.currentPlayhead});
         this.updateCanvas();

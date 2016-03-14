@@ -19,7 +19,7 @@
     flex-flow: row nowrap;
     justify-content: flex-start;
     @include vendor-prefixes(user-select, none);
-    transition: bottom 0.5s, height 0.2 5s;
+    transition: bottom 0.5s, height 0.5s;
     z-index: 12600;
 
     .adTitle, .adPlaybackInfo {
@@ -67,7 +67,7 @@
       opacity: 0.3;
       cursor: default;
 
-      .skipIcon {
+      .buttonIcon {
         font-size: 0.7em;
         margin-right: 5px;
       }

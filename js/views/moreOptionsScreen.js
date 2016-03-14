@@ -16,22 +16,6 @@ var React = require('react'),
 var MoreOptionsScreen = React.createClass({
   mixins: [AccessibilityMixin],
 
-  getDefaultProps: function () {
-    return {
-      skinConfig: {
-        icons: {
-          dismiss:{fontStyleClass:'icon icon-close'}
-        }
-      },
-      controller: {
-        closeScreen: function(){},
-        state: {
-          accessibilityControlsEnabled: true
-        }
-      }
-    };
-  },
-
   getInitialState: function() {
     return {
       controlBarWidth: 0
@@ -50,9 +34,25 @@ var MoreOptionsScreen = React.createClass({
     return (
       <div className="state-screen MoreOptionsScreen">
         <MoreOptionsPanel {...this.props} controlBarWidth={this.state.controlBarWidth} />
-        <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
+        <CloseButton {...this.props}
+          closeAction={this.handleClose}/>
       </div>
     );
   }
 });
+
+MoreOptionsScreen.defaultProps = {
+  skinConfig: {
+    icons: {
+      dismiss:{fontStyleClass:'icon icon-close'}
+    }
+  },
+  controller: {
+    closeScreen: function(){},
+    state: {
+      accessibilityControlsEnabled: true
+    }
+  }
+};
+
 module.exports = MoreOptionsScreen;

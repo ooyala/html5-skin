@@ -2,14 +2,14 @@
   AD SCREEN
 *********************************************************************/
 var React = require('react'),
-    ReactDOM = require('react-dom'),
     CONSTANTS = require('../constants/constants'),
     AdPanel = require('../components/adPanel'),
     ControlBar = require('../components/controlBar'),
     ScrubberBar = require('../components/scrubberBar'),
     ClassNames = require('classnames'),
     Utils = require('../components/utils'),
-    ResizeMixin = require('../mixins/resizeMixin');
+    ResizeMixin = require('../mixins/resizeMixin'),
+    Icon = require('../components/icon');
 
 var AdScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -18,22 +18,15 @@ var AdScreen = React.createClass({
     this.isMobile = this.props.controller.state.isMobile;
     return {
       controlBarVisible: true,
-      controlBarWidth: 0,
       timer: null
     };
   },
 
   componentDidMount: function () {
-    this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
-
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen) {
       this.props.controller.startHideControlBarTimer();
     }
-  },
-
-  componentWillUnmount: function () {
-    this.props.controller.cancelTimer();
   },
 
   componentWillUpdate: function(nextProps) {
@@ -56,9 +49,12 @@ var AdScreen = React.createClass({
     }
   },
 
+  componentWillUnmount: function () {
+    this.props.controller.cancelTimer();
+  },
+
   handleResize: function() {
     if (this.isMounted()) {
-      this.setState({controlBarWidth: ReactDOM.findDOMNode(this).clientWidth});
       this.props.controller.startHideControlBarTimer();
     }
   },
@@ -135,12 +131,10 @@ var AdScreen = React.createClass({
     var playbackControlItemTemplates = {
      "scrubberBar": <ScrubberBar {...this.props}
        controlBarVisible={showControlBar}
-       controlBarWidth={this.state.controlBarWidth}
        key='scrubberBar' />,
 
      "controlBar": <ControlBar {...this.props}
        controlBarVisible={showControlBar}
-       controlBarWidth={this.state.controlBarWidth}
        playerState={this.props.playerState}
        key='controlBar' />
     };
@@ -155,7 +149,8 @@ var AdScreen = React.createClass({
 
   render: function() {
     var actionIconStyle = {
-      color: this.props.skinConfig.pauseScreen.PauseIconStyle.color
+      color: this.props.skinConfig.pauseScreen.PauseIconStyle.color,
+      fontFamily: this.props.skinConfig.icons.pause.fontFamilyName
     };
     var actionIconClass = ClassNames({
       'action-icon-pause': !this.props.controller.state.adPauseAnimationDisabled,
@@ -170,17 +165,12 @@ var AdScreen = React.createClass({
     });
     var adPanel = null;
     if (this.props.skinConfig.adScreen.showAdMarquee && this.props.controller.state.showAdMarquee) {
-      adPanel = <AdPanel {...this.props} controlBarWidth={this.state.controlBarWidth}/>;
+      adPanel = <AdPanel {...this.props} />;
     }
     var playbackControlItems = null;
     if(this.props.skinConfig.adScreen.showControlBar) {
       playbackControlItems = this.getPlaybackControlItems();
     }
-
-    var adScreenClasses = ClassNames({
-      "adScreen": true,
-      "hidden": !this.state.controlBarVisible
-    });
 
     return (
       <div className="state-screen adScreen"
@@ -191,9 +181,7 @@ var AdScreen = React.createClass({
          onMouseUp={this.handleClick}>
 
         <a className={actionIconClass}>
-          <span className={this.props.skinConfig.icons.pause.fontStyleClass}
-            style={actionIconStyle}
-            aria-hidden="true"></span>
+          <Icon {...this.props} icon="pause"/>
         </a>
         <div className="adPanel" ref="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
           {adPanel}

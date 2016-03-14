@@ -15,28 +15,6 @@ var React = require('react'),
 var ShareScreen = React.createClass({
   mixins: [AccessibilityMixin],
 
-  propTypes: {
-    skinConfig: React.PropTypes.shape({
-      icons: React.PropTypes.objectOf(React.PropTypes.object)
-    })
-  },
-
-  getDefaultProps: function () {
-    return {
-      skinConfig: {
-        icons: {
-          dismiss:{fontStyleClass:'icon icon-close'}
-        }
-      },
-      controller: {
-        closeScreen: function(){},
-        state: {
-          accessibilityControlsEnabled: true
-        }
-      }
-    };
-  },
-
   handleClose: function() {
     this.props.controller.closeScreen();
   },
@@ -45,9 +23,30 @@ var ShareScreen = React.createClass({
     return (
       <div className="share-screen">
         <SharePanel {...this.props} />
-        <CloseButton closeAction={this.handleClose} fontStyleClass={this.props.skinConfig.icons.dismiss.fontStyleClass} />
+        <CloseButton {...this.props} closeAction={this.handleClose}/>
       </div>
     );
   }
 });
+
+ShareScreen.propTypes = {
+  skinConfig: React.PropTypes.shape({
+    icons: React.PropTypes.objectOf(React.PropTypes.object)
+  })
+};
+
+ShareScreen.defaultProps = {
+  skinConfig: {
+    icons: {
+      dismiss:{fontStyleClass:'icon icon-close'}
+    }
+  },
+  controller: {
+    closeScreen: function(){},
+    state: {
+      accessibilityControlsEnabled: true
+    }
+  }
+};
+
 module.exports = ShareScreen;

@@ -82,7 +82,7 @@
   }
 }
 
-[data-icon]:before {
+[data-icon] {
   font-family: "alice" !important;
   content: attr(data-icon);
   font-style: normal !important;
@@ -95,8 +95,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-[class^="icon-"]:before,
-[class*=" icon-"]:before {
+[class^="icon-"],
+[class*=" icon-"] {
   font-family: "alice" !important;
   font-style: normal !important;
   font-weight: normal !important;
@@ -106,68 +106,4 @@
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-volume-desktop:before {
-  content: "a";
-}
-.icon-volume-mobile:before {
-  content: "b";
-}
-.icon-upnext-replay:before {
-  content: "c";
-}
-.icon-auto:before {
-  content: "d";
-}
-.icon-close:before {
-  content: "e";
-}
-.icon-menu:before {
-  content: "f";
-}
-.icon-pause:before {
-  content: "g";
-}
-.icon-play:before {
-  content: "h";
-}
-.icon-resize-large:before {
-  content: "i";
-}
-.icon-resize-small:before {
-  content: "j";
-}
-.icon-topmenu-cc:before {
-  content: "k";
-}
-.icon-topmenu-discovery:before {
-  content: "l";
-}
-.icon-topmenu-quality:before {
-  content: "m";
-}
-.icon-topmenu-settings:before {
-  content: "n";
-}
-.icon-topmenu-share:before {
-  content: "o";
-}
-.icon-ooyala:before {
-  content: "q";
-}
-.icon-left:before {
-  content: "r";
-}
-.icon-right:before {
-  content: "s";
-}
-.icon-volume-mobile-mute:before {
-  content: "p";
-}
-.icon-learn:before {
-  content: "t";
-}
-.icon-skip:before {
-  content: "u";
 }
