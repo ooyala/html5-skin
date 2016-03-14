@@ -1,3 +1,4 @@
+//full screen
 .quality-screen {
   padding: $panel-padding;
   background-color: $panel-bg;
@@ -114,15 +115,31 @@
   }
 }
 
+//micro state
 .quality-popover {
   position: absolute;
-  background-color: $panel-bg;
-  right:10px;
+  background-color: $popover-bg;
   bottom: $control-bar-height + 10px;
   box-shadow: rgba(0, 0, 0, 0.2) 0 5px 10px;
   border: 0;
-  border-radius: 3px;
-  padding: 10px 20px 4px 20px;
+  border-radius: 4px;
+  padding: 10px 12px;
+  max-height: 150px;
+  width:90px;
+  @include horizontal-center;
+
+  //override default scrollbar style
+  .scrollbar-container.vertical {
+    background-color: transparent !important;
+    padding-top: 6px !important;
+    opacity:1 !important;
+    .scrollbar {
+      background-color: #545456 !important;
+      width:2px !important;
+      margin-left: 4px !important;
+      border-radius: 10px !important;
+    }
+  }
 
   .quality-panel {
     position: relative;
@@ -130,36 +147,28 @@
 
     ul {
       padding: 0;
-      margin: 0 auto;
+      margin: 0;
       list-style: none;
-      display: inline-block;
 
       li {
-        float: left;
-        position: relative;
         display: block;
-        margin: 0 10px;
-
-        &:first-child {
-          margin-left: 0;
-        }
+        margin: 0 0 6px 0;
+        padding:0;
 
         &:last-child {
-          margin-right: 0;
+          margin-bottom: 10px;
         }
 
         //vid quality btns - popover
         a.quality-btn {
-          padding: 5px;
           background-color: transparent;
           color: $white;
           font-size: 0.6em;
           font-family: $font-family-roboto;
           line-height:1;
-          border-radius: 2px;
-          border: 1px solid $gray;
           outline: none;
           opacity:1;
+          white-space:nowrap;
           @include vendor-prefixes(transition, opacity 0.3s ease);
 
           &:hover {
@@ -168,9 +177,8 @@
 
           &.selected {
             color: $blue-light;
-            border-color: $blue-light;
-            border-width: 2px;
             font-weight: bold;
+            font-size:0.6em + em(2px);
           }
         }
 
@@ -180,6 +188,7 @@
           font-family: $font-family-roboto;
           line-height:1;
           outline: none;
+          white-space:nowrap;
 
           &:hover {
             .quality-auto-icon, .quality-auto-label {
@@ -192,6 +201,12 @@
             .quality-auto-icon, .quality-auto-label {
               color: $blue-light;
               font-weight:bold;
+            }
+            .quality-auto-icon {
+              font-size: 1em + em(2px);
+            }
+            .quality-auto-label {
+              font-size: 0.5em + em(2px);
             }
           }
 

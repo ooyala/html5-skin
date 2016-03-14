@@ -211,6 +211,7 @@ var ControlBar = React.createClass({
       volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
     }
 
+    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
     var iconSetting = {};
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
@@ -266,11 +267,15 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "quality": <button className={qualityClass}
-        onClick={this.handleQualityClick} key="quality">
-        <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      "quality": (
+        <div className="popover-button-container" key="quality">
+          {videoQualityPopover}
+          <button className={qualityClass} onClick={this.handleQualityClick}>
+            <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
+              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+          </button>
+        </div>
+      ),
 
       "discovery": <button className="discovery controlBarItem"
         onClick={this.handleDiscoveryClick} key="discovery">
@@ -394,14 +399,11 @@ var ControlBar = React.createClass({
 
     var controlBarItems = this.populateControlBar();
 
-    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
-
     return (
       <div className={controlBarClass} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
         <div className="controlBarItemsWrapper">
           {controlBarItems}
         </div>
-        {videoQualityPopover}
       </div>
     );
   }
