@@ -52,6 +52,7 @@ $body-bg:                    #000 !default;
 $body-color:                 $white !default;
 $panel-bg:                   rgba(0, 0, 0, 0.7) !default;
 $popover-bg:                 rgba(26, 26, 26, 0.8) !default;
+$scrollbar-bg:               #545456 !default;
 //
 //
 //// Links
@@ -379,5 +380,8 @@ $slider-volume-track-color: #999999;
 $slider-volume-width-small: $slider-volume-width * $xsmall-multiple;
 $slider-volume-height-small: $slider-volume-height * $xsmall-multiple;
 $slider-volume-thumb-diameter-small: $slider-volume-thumb-diameter * $xsmall-multiple;
+
+//bitrate
+$bitrate-horizontal-height: 100px !default;
 
 $font-path: "assets/fonts";
