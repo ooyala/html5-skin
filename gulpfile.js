@@ -89,6 +89,7 @@ gulp.task('build:watch', ['watchify', 'watchify:min', 'sass', 'sass:min', 'asset
 
 // Browserify JS
 gulp.task('browserify', function() {
+  process.env.NODE_ENV = 'production';
   git.long(function (hash) {
     return buildJS('html5-skin.js', hash, false, false, false, false);
   })
@@ -96,6 +97,7 @@ gulp.task('browserify', function() {
 
 // Browserify Minified JS
 gulp.task('browserify:min', function() {
+  process.env.NODE_ENV = 'production';
   git.long(function (hash) {
     return buildJS('html5-skin.min.js', hash, false, true, true, true);
   })
