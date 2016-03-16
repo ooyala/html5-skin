@@ -585,6 +585,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onShowAdControls: function(event, showAdControls) {
       this.state.showAdControls = showAdControls;
+      if (showAdControls && this.state.config.adScreen.showControlBar) {
+        this.state.pluginsElement.removeClass("full");
+        this.state.pluginsClickElement.removeClass("full");
+      } else {
+        this.state.pluginsElement.addClass("full");
+        this.state.pluginsClickElement.addClass("full");
+      }
       this.renderSkin();
     },
 
