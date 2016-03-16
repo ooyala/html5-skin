@@ -148,28 +148,32 @@
         font-size: 0.6em;
       }
     }
-    .quality-panel {
-      height:70px;
-      ul {
-        li {
-          margin: 0 14px;
-          a.quality-btn {
-            padding: 8px 6px;
-            font-size: 0.8em;
-          }
-          a.quality-auto-btn {
-            .quality-auto-icon {
-              font-size: 1.4em;
-              padding:4px;
-              margin-bottom: 0;
-            }
-            .quality-auto-label {
+
+    .quality-screen-content {
+      height: $bitrate-horizontal-height - 25px;
+      .quality-panel {
+        ul {
+          height: $bitrate-horizontal-height - 30px;
+          li {
+            margin: 0 14px;
+            a.quality-btn {
+              padding: 8px 6px;
               font-size: 0.8em;
             }
+            a.quality-auto-btn {
+              .quality-auto-icon {
+                font-size: 1.4em;
+                padding:4px;
+                margin-bottom: 0;
+              }
+              .quality-auto-label {
+                font-size: 0.8em;
+              }
+            }
           }
-        }
-        li.auto-li {
-          top:14px;
+          li.auto-li {
+            top:14px;
+          }
         }
       }
     }
