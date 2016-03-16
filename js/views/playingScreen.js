@@ -130,7 +130,7 @@ var PlayingScreen = React.createClass({
         <ControlBar {...this.props}
           controlBarVisible={this.state.controlBarVisible}
           playerState={this.props.playerState}
-          authorization={this.props.authorization} />
+          isLiveStream={this.props.isLiveStream} />
       </div>
 
       {(this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?

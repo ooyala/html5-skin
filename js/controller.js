@@ -28,7 +28,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "playerParam": {},
       "assetId": null,
       "contentTree": {},
-      "authorization": {},
+      "isLiveStream": false,
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
@@ -118,10 +118,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
-
-      this.mb.subscribe(OO.EVENTS.SET_ASSET, 'customerUi', _.bind(this.onAssetChanged, this));
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
-
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
@@ -298,7 +295,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onAuthorizationFetched: function(event, authorization) {
-      this.state.authorization = authorization;
+      this.state.isLiveStream = authorization.streams[0].is_live_stream;
     },
 
     onContentTreeFetched: function (event, contentTree) {
@@ -316,9 +313,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.resetUpNextInfo(true);
 
-      var authorization = {};
-      authorization.streams = asset.content.streams;
-      this.state.authorization = authorization;
+      this.state.isLiveStream = asset.content.streams[0].is_live_stream;
 
       var contentTree  = {};
       contentTree.title = asset.content.title;
@@ -860,6 +855,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
     },
