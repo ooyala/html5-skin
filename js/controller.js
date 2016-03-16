@@ -202,7 +202,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.configLoaded = true;
         this.renderSkin();
 
-        var fullClass = (this.state.config.adScreen.showControlBar && this.state.showAdControls ? "" : " full");
+        var fullClass = (this.state.config.adScreen.showControlBar ? "" : " full");
         $("#" + this.state.elementId + " .player_skin").append("<div class='player_skin_plugins"+fullClass+"'></div><div class='player_skin_plugins_click_layer"+fullClass+"'></div>");
         this.state.pluginsElement = $("#" + this.state.elementId + " .player_skin_plugins");
         this.state.pluginsClickElement = $("#" + this.state.elementId + " .player_skin_plugins_click_layer");
