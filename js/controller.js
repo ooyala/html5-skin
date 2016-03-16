@@ -628,8 +628,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var elementHeight = skinElement.height();
       var newCSS = {};
       if (adInfo.ad.height && adInfo.ad.height !== -1) {
-        var padding = 0;
-        if (adInfo.ad.paddingHeight) padding = adInfo.ad.paddingHeight;
+        var padding = (adInfo.ad.paddingHeight ? adInfo.ad.paddingHeight : 0);
         newCSS.height = (adInfo.ad.height + padding) + "px";
         newCSS.top = "auto";
       } else {
@@ -637,8 +636,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         newCSS.bottom = 0;
       }
       if (adInfo.ad.width && adInfo.ad.width !== -1) {
-        var padding = 0;
-        if (adInfo.ad.paddingWidth) padding = adInfo.ad.paddingWidth;
+        var padding = (adInfo.ad.paddingWidth ? adInfo.ad.paddingWidth : 0);
         newCSS.width = (adInfo.ad.width + padding) + "px";
         newCSS.left = "50%";
         newCSS.transform = "translateX(-50%)"
