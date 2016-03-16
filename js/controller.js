@@ -202,7 +202,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.configLoaded = true;
         this.renderSkin();
 
-        var fullClass = (this.state.config.adScreen.showControlBar ? "" : " full");
+        var fullClass = (this.state.config.adScreen.showControlBar && this.state.showAdControls ? "" : " full");
         $("#" + this.state.elementId + " .player_skin").append("<div class='player_skin_plugins"+fullClass+"'></div><div class='player_skin_plugins_click_layer"+fullClass+"'></div>");
         this.state.pluginsElement = $("#" + this.state.elementId + " .player_skin_plugins");
         this.state.pluginsClickElement = $("#" + this.state.elementId + " .player_skin_plugins_click_layer");
@@ -585,6 +585,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onShowAdControls: function(event, showAdControls) {
       this.state.showAdControls = showAdControls;
+      if (showAdControls && this.state.config.adScreen.showControlBar) {
+        this.state.pluginsElement.removeClass("full");
+        this.state.pluginsClickElement.removeClass("full");
+      } else {
+        this.state.pluginsElement.addClass("full");
+        this.state.pluginsClickElement.addClass("full");
+      }
       this.renderSkin();
     },
 
