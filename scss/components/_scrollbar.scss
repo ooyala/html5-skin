@@ -18,9 +18,10 @@
 
       .scrollbar{
         width: 20px;
-        height: 8px;
-        background: black;
-        margin-top: 1px;
+        height: 2px;
+        background: $scrollbar-bg;
+        margin-top: 4px;
+        border-radius: 10px;
       }
     }
 
@@ -31,16 +32,17 @@
       top: 0;
 
       .scrollbar{
-        width: 8px;
+        width: 2px;
         height: 20px;
-        background: black;
-        margin-left: 1px;
+        background: $scrollbar-bg;
+        margin-left: 4px;
+        border-radius: 10px;
       }
     }
 
     position: absolute;
     background: none;
-    opacity: .1;
+    opacity: .4;
     z-index: 9999;
 
     -webkit-transition: all .4s;
@@ -50,17 +52,17 @@
     transition: all .4s;
 
     &:hover{
-      background: gray;
-      opacity: .6 !important;
+      //background: gray;
+      opacity: 1 !important;
     }
 
     &.active{
-      background: gray;
-      opacity: .6 !important;
+      //background: gray;
+      opacity: 1 !important;
     }
   }
 
   &:hover .scrollbar-container{
-    opacity: .3;
+    opacity: 0.8;
   }
 }

@@ -608,6 +608,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onShowAdControls: function(event, showAdControls) {
       this.state.showAdControls = showAdControls;
+      if (showAdControls && this.state.config.adScreen.showControlBar) {
+        this.state.pluginsElement.removeClass("full");
+        this.state.pluginsClickElement.removeClass("full");
+      } else {
+        this.state.pluginsElement.addClass("full");
+        this.state.pluginsClickElement.addClass("full");
+      }
       this.renderSkin();
     },
 
@@ -643,16 +650,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var elementWidth = skinElement.width();
       var elementHeight = skinElement.height();
       var newCSS = {};
-      var overlayPadding = (adInfo.ad.paddingRequired ? 50 : 0);
       if (adInfo.ad.height && adInfo.ad.height !== -1) {
-        newCSS.height = (adInfo.ad.height + overlayPadding) + "px";
+        var padding = (adInfo.ad.paddingHeight ? adInfo.ad.paddingHeight : 0);
+        newCSS.height = (adInfo.ad.height + padding) + "px";
         newCSS.top = "auto";
       } else {
         newCSS.top = 0;
         newCSS.bottom = 0;
       }
       if (adInfo.ad.width && adInfo.ad.width !== -1) {
-        newCSS.width = (adInfo.ad.width + (2 * overlayPadding)) + "px";
+        var padding = (adInfo.ad.paddingWidth ? adInfo.ad.paddingWidth : 0);
+        newCSS.width = (adInfo.ad.width + padding) + "px";
         newCSS.left = "50%";
         newCSS.transform = "translateX(-50%)"
       }

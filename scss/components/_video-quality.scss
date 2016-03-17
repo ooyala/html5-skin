@@ -17,99 +17,108 @@
     }
   }
 
-  .quality-panel {
-    @extend .center-vertical-horizontal;
-    height:90px;
-    overflow:hidden;
+  .quality-screen-content {
+    @include absolute-center;
+    height: $bitrate-horizontal-height;
+    max-width: 95%;
 
-    ul {
-      padding:0;
-      margin:0 auto;
-      list-style: none;
+    //override default scrollbar style
+    .scrollarea-content{
       display: inline-block;
-      white-space:nowrap;
+    }
 
-      li {
-        float:none;
-        position:relative;
-        display:inline-block;
-        margin: 0 24px;
+    .quality-panel {
+      ul {
+        display: inline-block;
+        padding:0;
+        margin:0 auto;
+        list-style: none;
+        white-space:nowrap;
+        position: relative;
+        height: $bitrate-horizontal-height - 10px;
 
-        &:first-child {
-          margin-left:0;
-        }
+        li {
+          float:none;
+          position:relative;
+          display:inline-block;
+          margin: 0 24px;
 
-        &:last-child {
-          margin-right:0;
-        }
-
-        //vid quality btns - full screen
-        a.quality-btn {
-          padding: 10px 8px;
-          background-color: transparent;
-          color: $white;
-          font-size: 1.1em;
-          font-family: $font-family-roboto;
-          line-height:1em;
-          border-radius: 2px;
-          border: 1px solid $gray;
-          outline: none;
-          opacity:1;
-          @include vendor-prefixes(transition, opacity 0.3s ease);
-
-          &:hover {
-            opacity:0.6;
+          &:first-child {
+            margin-left:0;
           }
 
-          &.selected {
-            color: $blue-light;
-            border-color: $blue-light;
-            border-width: 2px;
-            font-weight: bold;
+          &:last-child {
+            margin-right:0;
           }
-        }
 
-        //auto quality btn - full screen
-        a.quality-auto-btn {
-          background-color: transparent;
-          font-family: $font-family-roboto;
-          line-height:1;
-          outline: none;
+          //vid quality btns - full screen
+          a.quality-btn {
+            padding: 10px 8px;
+            background-color: transparent;
+            color: $white;
+            font-size: 1.1em;
+            font-family: $font-family-roboto;
+            line-height:1em;
+            border-radius: 2px;
+            border: 1px solid $gray;
+            outline: none;
+            opacity:1;
+            @include vendor-prefixes(transition, opacity 0.3s ease);
 
-          &:hover {
-            .quality-auto-icon, .quality-auto-label {
+            &:hover {
               opacity:0.6;
-              @include vendor-prefixes(transition, opacity 0.3s ease);
             }
-          }
 
-          &.selected {
-            .quality-auto-icon, .quality-auto-label {
+            &.selected {
               color: $blue-light;
-              font-weight:bold;
+              border-color: $blue-light;
+              border-width: 2px;
+              font-weight: bold;
             }
           }
 
-          .quality-auto-icon {
-            font-size: 2.1em;
-            font-weight:bold;
-            color: $gray;
-            margin-bottom: 6px;
-            opacity:1;
-          }
+          //auto quality btn - full screen
+          a.quality-auto-btn {
+            background-color: transparent;
+            font-family: $font-family-roboto;
+            line-height:1;
+            outline: none;
 
-          .quality-auto-label {
-            color:$white;
-            font-size: 0.9em;
-            text-transform: capitalize;
-            text-align: center;
-            opacity:1;
+            &:hover {
+              .quality-auto-icon, .quality-auto-label {
+                opacity:0.6;
+                @include vendor-prefixes(transition, opacity 0.3s ease);
+              }
+            }
+
+            &.selected {
+              .quality-auto-icon, .quality-auto-label {
+                color: $blue-light;
+                font-weight:bold;
+              }
+            }
+
+            .quality-auto-icon {
+              font-size: 2.1em;
+              font-weight:bold;
+              color: $gray;
+              margin-bottom: 6px;
+              opacity:1;
+            }
+
+            .quality-auto-label {
+              color:$white;
+              font-size: 0.9em;
+              text-transform: capitalize;
+              text-align: center;
+              opacity:1;
+            }
           }
         }
-      }
 
-      li.auto-li {
-        top:20px;
+        li.auto-li {
+          top:20px;
+        }
       }
     }
   }
@@ -130,15 +139,7 @@
 
   //override default scrollbar style
   .scrollbar-container.vertical {
-    background-color: transparent !important;
     padding-top: 6px !important;
-    opacity:1 !important;
-    .scrollbar {
-      background-color: #545456 !important;
-      width:2px !important;
-      margin-left: 4px !important;
-      border-radius: 10px !important;
-    }
   }
 
   .quality-panel {

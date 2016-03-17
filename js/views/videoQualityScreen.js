@@ -12,12 +12,13 @@ var React = require('react'),
     VideoQualityPanel = require('../components/videoQualityPanel'),
     CloseButton = require('../components/closeButton'),
     AccessibilityMixin = require('../mixins/accessibilityMixin'),
+    ScrollArea = require('react-scrollbar/dist/no-css'),
     Icon = require('../components/icon');
 
 var VideoQualityScreen = React.createClass({
   mixins: [AccessibilityMixin],
 
-  handleClose: function(event) {
+  handleClose: function() {
     this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
   },
 
@@ -28,9 +29,10 @@ var VideoQualityScreen = React.createClass({
           Video Quality
           <Icon {...this.props} icon="quality"/>
         </div>
-        <VideoQualityPanel {...this.props} />
-        <CloseButton {...this.props}
-          closeAction={this.handleClose}/>
+        <ScrollArea className="quality-screen-content">
+          <VideoQualityPanel {...this.props} />
+        </ScrollArea>
+        <CloseButton {...this.props} closeAction={this.handleClose}/>
       </div>
     );
   }
