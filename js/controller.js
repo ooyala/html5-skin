@@ -285,6 +285,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onEmbedCodeChanged: function(event, embedCode, options) {
       this.state.videoQualityOptions.availableBitrates = null;
+      this.state.videoQualityOptions.selectedBitrate = null;
       this.state.closedCaptionOptions.availableLanguages = null;
       this.state.discoveryData = null;
 
@@ -694,7 +695,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onBitrateInfoAvailable: function(event, bitrates) {
       if (bitrates && bitrates.bitrates) {
         this.state.videoQualityOptions.availableBitrates = bitrates.bitrates;
-        this.renderSkin({"videoQualityOptions": {"availableBitrates": bitrates.bitrates }});
+        this.renderSkin({
+          "videoQualityOptions": {
+            "availableBitrates": bitrates.bitrates,
+            "selectedBitrate": this.state.videoQualityOptions.selectedBitrate
+          }
+        });
       }
     },
 
