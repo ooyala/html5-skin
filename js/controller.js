@@ -711,7 +711,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onClosedCaptionCueChanged: function(event, data) {
-      // saved for the future use
+      console.log("ryne received in skin: ", data);
     },
 
     onRelatedVideosFetched: function(event, relatedVideos) {
