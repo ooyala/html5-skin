@@ -321,7 +321,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       contentTree.duration = asset.content.duration;
       contentTree.promo_image = asset.content.posterImages[0].url;
 
-      this.state.closedCaptionOptions.availableLanguages = asset.content.captions;
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       this.renderSkin({"contentTree": contentTree});
