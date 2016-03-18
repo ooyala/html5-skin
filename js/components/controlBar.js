@@ -15,6 +15,7 @@ var ControlBar = React.createClass({
     this.isMobile = this.props.controller.state.isMobile;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.volumeSliderValue = 0;
+    this.moreOptionsItems = null;
 
     return {
       currentVolumeHead: 0,
@@ -25,7 +26,7 @@ var ControlBar = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     // if responsive breakpoint changes
     if (nextProps.responsiveView != this.props.responsiveView) {
-      this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
+      this.responsiveUIMultiple = this.getResponsiveUIMultiple(nextProps.responsiveView);
     }
   },
 
@@ -111,7 +112,7 @@ var ControlBar = React.createClass({
   },
 
   handleMoreOptionsClick: function() {
-    this.props.controller.toggleMoreOptionsScreen();
+    this.props.controller.toggleMoreOptionsScreen(this.moreOptionsItems);
   },
 
   handleClosedCaptionClick: function() {
@@ -309,66 +310,81 @@ var ControlBar = React.createClass({
     var controlBarItems = [];
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
-    //if mobile and not showing the slider or the icon, extra space can be added to control bar width:
+    //if mobile and not showing the slider or the icon, extra space can be added to control bar width. If volume bar is shown instead of slider, add some space as well:
     var volumeItem = null;
+    var extraSpaceVolume = 0;
+
     for (var j = 0; j < defaultItems.length; j++) {
       if (defaultItems[j].name == "volume") {
         volumeItem = defaultItems[j];
+
+        var extraSpaceVolumeSlider = (((volumeItem && this.isMobile && !this.props.controller.state.volumeState.volumeSliderVisible) || volumeItem && Utils.isIos()) ? parseInt(volumeItem.minWidth) : 0);
+        var extraSpaceVolumeBar = this.isMobile ? 0 : parseInt(volumeItem.minWidth)/2;
+        extraSpaceVolume = extraSpaceVolumeSlider + extraSpaceVolumeBar;
+
         break;
       }
     }
-    var extraSpaceVolumeSlider = (((volumeItem && this.isMobile && !this.props.controller.state.volumeState.volumeSliderVisible) || volumeItem && Utils.isIos()) ? parseInt(volumeItem.minWidth) : 0);
+
 
     //if no hours, add extra space to control bar width:
     var hours = parseInt(this.props.duration / 3600, 10);
     var extraSpaceDuration = (hours > 0) ? 0 : 45;
 
-    var controlBarLeftRightPadding = this.responsiveUIMultiple * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
+    var controlBarLeftRightPadding = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
 
-    var collapsedResult = Utils.collapse(this.props.componentWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems, this.responsiveUIMultiple);
-    var collapsedControlBarItems = collapsedResult.fit;
-    var collapsedMoreOptionsItems = collapsedResult.overflow;
-
-    for (var k = 0; k < collapsedControlBarItems.length; k++) {
+    for (var k = 0; k < defaultItems.length; k++) {
 
       // filter out unrecognized button names
-      if (typeof controlItemTemplates[collapsedControlBarItems[k].name] === "undefined") {
+      if (typeof controlItemTemplates[defaultItems[k].name] === "undefined") {
         continue;
       }
 
       //do not show CC button if no CC available
-      if (!this.props.controller.state.closedCaptionOptions.availableLanguages && (collapsedControlBarItems[k].name === "closedCaption")){
+      if (!this.props.controller.state.closedCaptionOptions.availableLanguages && (defaultItems[k].name === "closedCaption")){
         continue;
       }
 
       //do not show quality button if no bitrates available
-      if (!this.props.controller.state.videoQualityOptions.availableBitrates && (collapsedControlBarItems[k].name === "quality")){
+      if (!this.props.controller.state.videoQualityOptions.availableBitrates && (defaultItems[k].name === "quality")){
         continue;
       }
 
       //do not show discovery button if no related videos available
-      if (!this.props.controller.state.discoveryData && (collapsedControlBarItems[k].name === "discovery")){
+      if (!this.props.controller.state.discoveryData && (defaultItems[k].name === "discovery")){
         continue;
       }
 
-      if (Utils.isIos() && (collapsedControlBarItems[k].name === "volume")){
-        continue;
-      }
-
-      if (collapsedControlBarItems[k].name === "moreOptions" && collapsedMoreOptionsItems.length === 0) {
+      if (Utils.isIos() && (defaultItems[k].name === "volume")){
         continue;
       }
 
       // Not sure what to do when there are multi streams
-      if (collapsedControlBarItems[k].name === "live" &&
+      if (defaultItems[k].name === "live" &&
           (typeof this.props.authorization === 'undefined' ||
           !(this.props.authorization.streams[0].is_live_stream))) {
         continue;
       }
 
-      controlBarItems.push(controlItemTemplates[collapsedControlBarItems[k].name]);
+      controlBarItems.push(defaultItems[k]);
     }
-    return controlBarItems;
+
+    var collapsedResult = Utils.collapse(this.props.componentWidth + this.responsiveUIMultiple * (extraSpaceDuration + extraSpaceVolume - controlBarLeftRightPadding), controlBarItems, this.responsiveUIMultiple);
+    var collapsedControlBarItems = collapsedResult.fit;
+    var collapsedMoreOptionsItems = collapsedResult.overflow;
+    this.moreOptionsItems = collapsedMoreOptionsItems;
+
+    finalControlBarItems = [];
+
+    for (var k = 0; k < collapsedControlBarItems.length; k++) {
+      if (collapsedControlBarItems[k].name === "moreOptions" && collapsedMoreOptionsItems.length === 0) {
+        continue;
+      }
+
+      finalControlBarItems.push(controlItemTemplates[collapsedControlBarItems[k].name]);
+    }
+
+    return finalControlBarItems;
   },
 
   setupItemStyle: function() {

@@ -84,50 +84,13 @@ var MoreOptionsPanel = React.createClass({
       </div>
     };
 
+    var items = this.props.controller.state.moreOptionsItems;
     var moreOptionsItems = [];
-    var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
-
-    //if mobile and not showing the slider or the icon, extra space can be added to control bar width:
-    var volumeItem = null;
-    for (var j = 0; j < defaultItems.length; j++) {
-      if (defaultItems[j].name == "volume") {
-        volumeItem = defaultItems[j];
-        break;
-      }
+    
+    for (var i = 0; i < items.length; i++) {
+      moreOptionsItems.push(optionsItemsTemplates[items[i].name]);
     }
-    var extraSpaceVolumeSlider = (((volumeItem && this.isMobile && !this.props.controller.state.volumeState.volumeSliderVisible) || volumeItem && Utils.isIos()) ? parseInt(volumeItem.minWidth) : 0);
 
-    //if no hours, add extra space to control bar width:
-    var hours = parseInt(this.props.duration / 3600, 10);
-    var extraSpaceDuration = (hours > 0) ? 0 : 45;
-
-    var responsiveView = this.props.responsiveView;
-    var responsiveUIMultiple = this.props.skinConfig.responsive.breakpoints[responsiveView].multiplier;
-    var controlBarLeftRightPadding = responsiveUIMultiple * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
-
-    var collapsedResult = Utils.collapse(this.props.controlBarWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems, responsiveUIMultiple);
-    var collapsedMoreOptionsItems = collapsedResult.overflow;
-    for (var i = 0; i < collapsedMoreOptionsItems.length; i++) {
-      if (typeof optionsItemsTemplates[collapsedMoreOptionsItems[i].name] === "undefined") {
-        continue;
-      }
-
-      //do not show CC button if no CC available
-      if (!this.props.controller.state.closedCaptionOptions.availableLanguages && (collapsedMoreOptionsItems[i].name === "closedCaption")) {
-        continue;
-      }
-
-      //do not show discovery button if no related videos available
-      if (!this.props.controller.state.discoveryData && (collapsedMoreOptionsItems[i].name === "discovery")){
-        continue;
-      }
-
-      //do not show quality button if no bitrates available
-      if (!this.props.controller.state.videoQualityOptions.availableBitrates && (collapsedMoreOptionsItems[i].name === "quality")){
-        continue;
-      }
-      moreOptionsItems.push(optionsItemsTemplates[collapsedMoreOptionsItems[i].name]);
-    }
     return moreOptionsItems;
   },
 
