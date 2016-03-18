@@ -97,13 +97,17 @@
     }
 
     .language-container {
-      margin-top: 6%;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
 
       .language-panel {
         background-color: transparent;
         min-height: 54%;
         height: 84%;
-        width: 100%;
+        width: 90%;
         overflow: auto;
         white-space: nowrap;
         margin: auto;
@@ -142,9 +146,9 @@
         -webkit-flex-flow: row nowrap;
         flex-flow: row nowrap;
         overflow: visible;
-        align-items: flex-start;
-        -webkit-align-items: flex-start;
-        justify-content: flex-start;
+        align-items: center;
+        -webkit-align-items: center;
+        justify-content: center;
       }
 
       .discoverBtn {
