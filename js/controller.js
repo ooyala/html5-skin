@@ -93,6 +93,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "delayedContentData": null
       },
 
+      "moreOptionsItems": null,
+
       "isMobile": false,
       "controlBarVisible": true,
       "forceControlBarVisible": false,
@@ -265,8 +267,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       if (params["videoId"] === OO.VIDEO.MAIN) {
         this.state.mainVideoElement = element;
-        this.updateAspectRatio();
         this.enableFullScreen();
+        this.updateAspectRatio();
       }
     },
 
@@ -1123,11 +1125,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    toggleMoreOptionsScreen: function() {
+    toggleMoreOptionsScreen: function(moreOptionsItems) {
       if (this.state.screenToShow == CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN) {
         this.closeMoreOptionsScreen();
       } else {
-        this.displayMoreOptionsScreen();
+        this.displayMoreOptionsScreen(moreOptionsItems);
       }
     },
 
@@ -1135,11 +1137,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.pauseAnimationDisabled = true;
       this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
       this.state.playerState = CONSTANTS.STATE.PAUSE;
+      this.state.moreOptionsItems = null;
       this.renderSkin();
     },
 
-    displayMoreOptionsScreen: function() {
+    displayMoreOptionsScreen: function(moreOptionsItems) {
       this.mb.publish(OO.EVENTS.PAUSE);
+      this.state.moreOptionsItems = moreOptionsItems;
       setTimeout(function() {
         this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
         this.renderSkin();
@@ -1205,7 +1209,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //use fixed aspect ratio number from skinConfig
     updateAspectRatio: function() {
-      if(this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
+      if(this.skin && this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
         this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
         this.setAspectRatio();
       }
