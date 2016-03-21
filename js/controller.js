@@ -265,8 +265,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       if (params["videoId"] === OO.VIDEO.MAIN) {
         this.state.mainVideoElement = element;
-        this.updateAspectRatio();
         this.enableFullScreen();
+        this.updateAspectRatio();
       }
     },
 
@@ -1195,9 +1195,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //use fixed aspect ratio number from skinConfig
     updateAspectRatio: function() {
-      if(this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
-        this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
-        this.setAspectRatio();
+      if (this.skin) {
+        if(this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
+          this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
+          this.setAspectRatio();
+        }
       }
     },
 
