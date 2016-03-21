@@ -33,7 +33,8 @@ describe('MoreOptionsPanel', function () {
         videoQualityOptions: {
           availableBitrates: true
         },
-        discoveryData: true
+        discoveryData: true,
+        moreOptionsItems: oneButtonSkinConfig.buttons.desktopContent
       },
       toggleDiscoveryScreen: function() {
         discoveryScreenToggled = true;
@@ -85,11 +86,7 @@ describe('MoreOptionsPanel', function () {
   it('checks cc button not available', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
-      {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
-      {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 }
-    ];
+    oneButtonSkinConfig.buttons.desktopContent = [];
 
     mockController = {
       state: {
@@ -101,7 +98,8 @@ describe('MoreOptionsPanel', function () {
         videoQualityOptions: {
           availableBitrates: null
         },
-        discoveryData: null
+        discoveryData: null,
+        moreOptionsItems: oneButtonSkinConfig.buttons.desktopContent
       }
     };
     var mockProps = {
