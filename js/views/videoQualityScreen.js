@@ -13,6 +13,7 @@ var React = require('react'),
     CloseButton = require('../components/closeButton'),
     AccessibilityMixin = require('../mixins/accessibilityMixin'),
     ScrollArea = require('react-scrollbar/dist/no-css'),
+    ClassNames = require('classnames'),
     Icon = require('../components/icon');
 
 var VideoQualityScreen = React.createClass({
@@ -23,8 +24,14 @@ var VideoQualityScreen = React.createClass({
   },
 
   render: function() {
+    var qualityScreenClass = ClassNames({
+      'state-screen': true,
+      'quality-screen': true,
+      'mobile-fullscreen': this.props.controller.state.isMobile && (this.props.controller.state.fullscreen || this.props.controller.state.isFullWindow)
+    });
+
     return (
-      <div className="state-screen quality-screen">
+      <div className={qualityScreenClass}>
         <div className="quality-panel-title">
           Video Quality
           <Icon {...this.props} icon="quality"/>
