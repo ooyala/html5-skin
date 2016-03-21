@@ -68,7 +68,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "closedCaptionOptions": {
         "enabled": null,
         "language": null,
-        "availableLanguages": null
+        "availableLanguages": null,
+        "cueText": null
       },
 
       "videoQualityOptions": {
@@ -717,7 +718,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onClosedCaptionCueChanged: function(event, data) {
-      // saved for the future use
+      this.state.closedCaptionOptions.cueText = data;
+      this.renderSkin();
     },
 
     onRelatedVideosFetched: function(event, relatedVideos) {

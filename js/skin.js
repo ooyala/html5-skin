@@ -158,6 +158,7 @@ var Skin = React.createClass({
               responsiveView={responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
+              closedCaptionOptions = {this.props.closedCaptionOptions}
               ref="playScreen" />
           );
           break;
