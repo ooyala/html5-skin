@@ -18,9 +18,12 @@
   }
 
   .quality-screen-content {
-    @include absolute-center;
+    top: 46%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     height: $bitrate-horizontal-height;
-    max-width: 95%;
+    text-align: center;
+    //max-width: 95%;
 
     //override default scrollbar style
     .scrollarea-content{
@@ -49,11 +52,11 @@
           margin: 0 24px;
 
           &:first-child {
-            margin-left:0;
+            margin-left:0 !important;
           }
 
           &:last-child {
-            margin-right:0;
+            margin-right:0 !important;
           }
 
           //vid quality btns - full screen
@@ -77,7 +80,7 @@
             &.selected {
               color: $blue-light;
               border-color: $blue-light;
-              border-width: 2px;
+              //border-width: 2px;
               font-weight: bold;
             }
           }
@@ -127,15 +130,17 @@
       }
     }
   }
+}
 
-  //mobile, fullscreen, portrait
-  @media (orientation: portrait) {
-    .mobile-fullscreen {
+//mobile, fullscreen, portrait
+@media (orientation: portrait) {
+  .mobile-fullscreen {
+    .quality-screen-content {
       height: 80% !important;
-      width: 100px;
+      width: 100px !important;
 
       .scrollarea-content{
-        display: block !important;
+        //display: block !important;
       }
 
       .quality-panel {
