@@ -1201,11 +1201,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //use fixed aspect ratio number from skinConfig
     updateAspectRatio: function() {
-      if (this.skin) {
-        if(this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
-          this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
-          this.setAspectRatio();
-        }
+      if(this.skin && this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
+        this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
+        this.setAspectRatio();
       }
     },
 
