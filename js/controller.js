@@ -718,7 +718,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onClosedCaptionCueChanged: function(event, data) {
-      this.state.closedCaptionOptions.cueText = data;
+      if (data && data.length > 0) {
+        this.state.closedCaptionOptions.cueText = data;
+      } else {
+        this.state.closedCaptionOptions.cueText = null;
+      }
       this.renderSkin();
     },
 
