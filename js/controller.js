@@ -552,6 +552,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       OO.log("onWillPlayAds is called from event = " + event);
       this.state.isPlayingAd = true;
       this.state.pluginsElement.addClass("showing");
+      this.state.pluginsElement.css({
+        height: "",
+        width: ""
+      });
       this.state.forceControlBarVisible = (this.state.pluginsElement.children().length > 0);
     },
 
