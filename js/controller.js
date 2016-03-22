@@ -68,7 +68,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "closedCaptionOptions": {
         "enabled": null,
         "language": null,
-        "availableLanguages": null
+        "availableLanguages": null,
+        "cueText": null
       },
 
       "videoQualityOptions": {
@@ -719,7 +720,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onClosedCaptionCueChanged: function(event, data) {
-      // saved for the future use
+      if (data && data.length > 0) {
+        this.state.closedCaptionOptions.cueText = data;
+      } else {
+        this.state.closedCaptionOptions.cueText = null;
+      }
+      this.renderSkin();
     },
 
     onRelatedVideosFetched: function(event, relatedVideos) {
