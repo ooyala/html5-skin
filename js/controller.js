@@ -105,7 +105,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isInitialPlay": false,
       "isFullScreenSupported": false,
       "isVideoFullScreenSupported": false,
-      "isFullWindow": false
+      "isFullWindow": false,
+
+      "configInput": null
     };
 
     this.init();
@@ -248,6 +250,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.externalPluginSubscription();
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+
+      this.state.configInput = document.querySelector("#config");
+      this.state.configInput.addEventListener("input", this.renderSkin.bind(this));
     },
 
     onVcVideoElementCreated: function(eventname, params) {
@@ -893,6 +898,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      Skin state -> control skin
      ---------------------------------------------------------------------*/
     renderSkin: function(args) {
+      try {
+        var newProps = JSON.parse(this.state.configInput.value);
+        this.skin.setProps({skinConfig: newProps});
+      } catch (e) {
+        console.log("Render Skin catch");
+      }
       if (this.state.configLoaded) {
         _.extend(this.state, args);
         this.skin.switchComponent(this.state);
