@@ -126,7 +126,7 @@ var DiscoveryPanel = React.createClass({
     var discoveryToaster = ClassNames({
       'discoveryToasterContainerStyle': true,
       'flexcontainer': true,
-      'scaleHeight': this.state.heightOverflow
+      'scaleHeight': this.state.heightOverflow && (this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id || this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.sm.id)
     });
     var leftButtonClass = ClassNames({
       'leftButton': true,
