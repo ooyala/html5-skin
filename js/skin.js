@@ -235,16 +235,9 @@ var Skin = React.createClass({
         case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
           screen = (
             <DiscoveryScreen {...this.props}
-              contentTree={this.state.contentTree}
-              currentPlayhead={this.state.currentPlayhead}
-              duration={this.state.duration}
-              buffered={this.state.buffered}
               discoveryData={this.state.discoveryData}
               playerState={this.state.playerState}
-              fullscreen={this.state.fullscreen}
-              seeking={this.state.seeking}
               responsiveView={responsiveId}
-              componentWidth={this.state.componentWidth}
               ref="DiscoveryScreen" />
           );
           break;
