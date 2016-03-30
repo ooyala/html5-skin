@@ -8,6 +8,7 @@ var React = require('react'),
     ScrubberBar = require('../components/scrubberBar'),
     AdOverlay = require('../components/adOverlay'),
     UpNextPanel = require('../components/upNextPanel'),
+    TextTrack = require('../components/textTrackPanel'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon'),
     Utils = require('../components/utils');
@@ -110,6 +111,8 @@ var PauseScreen = React.createClass({
         <a className={actionIconClass} onClick={this.handleClick}>
           <Icon {...this.props} icon="pause"/>
         </a>
+
+        <TextTrack closedCaptionOptions={this.props.closedCaptionOptions} />
 
         <AdOverlay {...this.props}
           overlay={this.props.controller.state.adOverlayUrl}
