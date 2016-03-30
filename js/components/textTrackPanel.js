@@ -8,7 +8,7 @@ var React = require('react');
 var TextTrackPanel = React.createClass({
 
   render: function() {
-    if (!this.props.text) {
+    if (!this.props.closedCaptionOptions.cueText) {
       return null;
     }
 
@@ -17,7 +17,7 @@ var TextTrackPanel = React.createClass({
         <div className="text-track-window">
           <div className="text-track-background">
             <div className="text-track">
-              {this.props.text}
+              {this.props.closedCaptionOptions.cueText}
             </div>
           </div>
         </div>
@@ -27,11 +27,15 @@ var TextTrackPanel = React.createClass({
 });
 
 TextTrackPanel.propTypes = {
-  text: React.PropTypes.string
+  closedCaptionOptions: React.PropTypes.shape({
+    cueText: React.PropTypes.string
+  })
 };
 
 TextTrackPanel.defaultProps = {
-  text: null
+  closedCaptionOptions: {
+    cueText: null
+  }
 };
 
 module.exports = TextTrackPanel;

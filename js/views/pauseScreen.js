@@ -112,7 +112,7 @@ var PauseScreen = React.createClass({
           <Icon {...this.props} icon="pause"/>
         </a>
 
-        <TextTrack text={this.props.closedCaptionOptions.cueText} />
+        <TextTrack closedCaptionOptions={this.props.closedCaptionOptions} />
 
         <AdOverlay {...this.props}
           overlay={this.props.controller.state.adOverlayUrl}

@@ -123,7 +123,7 @@ var PlayingScreen = React.createClass({
       <div className="default-screen">
         <div className="state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
-        <TextTrack text={this.props.closedCaptionOptions.cueText} />
+        <TextTrack closedCaptionOptions={this.props.closedCaptionOptions} />
 
         {adOverlay}
 
