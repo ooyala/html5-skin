@@ -1,18 +1,18 @@
 .text-track-container {
   position: absolute;
   bottom: 15%;
-  width: 80%;
-  margin: 13px auto;
+  max-width: 80%;
+  margin: 12px auto;
   @include horizontal-center;
 
   .text-track-window {
-    background-color: $popover-bg;
+    background-color: $text-track-bg;
     padding: 10px;
     border-radius: 8px;
 
     .text-track-background {
       background-color: transparent;
-      padding: 17px 37px;
+      padding: 4px 10px;
 
       .text-track {
         text-align: center;

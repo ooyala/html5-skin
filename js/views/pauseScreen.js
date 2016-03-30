@@ -106,13 +106,13 @@ var PauseScreen = React.createClass({
           {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : null}
         </div>
 
+        <TextTrack closedCaptionOptions={this.props.closedCaptionOptions} />
+
         <a className="state-screen-selectable" onClick={this.handleClick}></a>
 
         <a className={actionIconClass} onClick={this.handleClick}>
           <Icon {...this.props} icon="pause"/>
         </a>
-
-        <TextTrack closedCaptionOptions={this.props.closedCaptionOptions} />
 
         <AdOverlay {...this.props}
           overlay={this.props.controller.state.adOverlayUrl}

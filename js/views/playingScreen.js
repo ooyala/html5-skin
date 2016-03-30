@@ -121,9 +121,10 @@ var PlayingScreen = React.createClass({
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
       <div className="default-screen">
-        <div className="state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
         <TextTrack closedCaptionOptions={this.props.closedCaptionOptions} />
+
+        <div className="state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
         {adOverlay}
 
