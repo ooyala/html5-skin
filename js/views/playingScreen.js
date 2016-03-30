@@ -8,6 +8,7 @@ var React = require('react'),
     AdOverlay = require('../components/adOverlay'),
     UpNextPanel = require('../components/upNextPanel'),
     Spinner = require('../components/spinner'),
+    TextTrack = require('../components/textTrackPanel'),
     ResizeMixin = require('../mixins/resizeMixin');
 
 var PlayingScreen = React.createClass({
@@ -121,6 +122,8 @@ var PlayingScreen = React.createClass({
 
       <div className="default-screen">
         <div className="state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
+
+        <TextTrack text={this.props.closedCaptionOptions.cueText} />
 
         {adOverlay}
 
