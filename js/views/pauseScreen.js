@@ -36,9 +36,11 @@ var PauseScreen = React.createClass({
   },
 
   handleResize: function() {
-    this.setState({
-      descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), this.props.contentTree.description)
-    });
+    if (ReactDOM.findDOMNode(this.refs.description)){
+      this.setState({
+        descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), this.props.contentTree.description)
+      });
+    }
   },
 
   handleClick: function(event) {
@@ -102,8 +104,8 @@ var PauseScreen = React.createClass({
       <div className="state-screen pauseScreen">
         <div className={fadeUnderlayClass}></div>
         <div className={infoPanelClass}>
-          {this.props.skinConfig.startScreen.showTitle ? titleMetadata : null}
-          {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : null}
+          {this.props.skinConfig.pauseScreen.showTitle ? titleMetadata : null}
+          {this.props.skinConfig.pauseScreen.showDescription ? descriptionMetadata : null}
         </div>
 
         <TextTrack closedCaptionOptions={this.props.closedCaptionOptions} />

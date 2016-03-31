@@ -25,9 +25,11 @@ var StartScreen = React.createClass({
   },
 
   handleResize: function() {
-    this.setState({
-      descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), this.props.contentTree.description)
-    });
+    if (ReactDOM.findDOMNode(this.refs.description)){
+      this.setState({
+        descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), this.props.contentTree.description)
+      });
+    }
   },
 
   handleClick: function(event) {
