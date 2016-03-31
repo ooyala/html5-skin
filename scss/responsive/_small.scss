@@ -1,3 +1,18 @@
 .ooyala-small {
 
+  //Text Tracks
+  .text-track-container {
+    .text-track-window {
+      padding: 8px;
+
+      .text-track-background {
+        padding: 2px 12px;
+
+        .text-track {
+          font-size: em(18px);
+        }
+      }
+    }
+  }
+
 }

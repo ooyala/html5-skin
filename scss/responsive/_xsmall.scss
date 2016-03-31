@@ -287,7 +287,7 @@
     @include close(-10px * $xsmall-multiple, -10px * $xsmall-multiple);
   }
 
-//Up Next
+  //Up Next
   .upNextPanel {
     height: 80px * $xsmall-multiple;
 
@@ -392,5 +392,24 @@
   .slider-volume[type=range]::-ms-thumb {
     height: #{$slider-volume-thumb-diameter-small};
     width: #{$slider-volume-thumb-diameter-small};
+  }
+
+  //Text Tracks
+  .text-track-container {
+    bottom: $control-bar-height * $xsmall-multiple;
+    max-width: 96%;
+    margin: 4px auto;
+
+    .text-track-window {
+      padding: 4px;
+
+      .text-track-background {
+        padding: 2px 6px;
+
+        .text-track {
+          font-size: em(12px);
+        }
+      }
+    }
   }
 }
