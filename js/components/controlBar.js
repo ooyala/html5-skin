@@ -216,7 +216,7 @@ var ControlBar = React.createClass({
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
     var currentPlayheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
-    var totalTimeContent = this.props.authorization.streams[0].is_live_stream ? null : <span className="total-time">{totalTime}</span>;
+    var totalTimeContent = this.props.isLiveStream ? null : <span className="total-time">{totalTime}</span>;
 
     // TODO: Update when implementing localization
     var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
@@ -361,8 +361,8 @@ var ControlBar = React.createClass({
 
       // Not sure what to do when there are multi streams
       if (collapsedControlBarItems[k].name === "live" &&
-          (typeof this.props.authorization === 'undefined' ||
-          !(this.props.authorization.streams[0].is_live_stream))) {
+          (typeof this.props.isLiveStream === 'undefined' ||
+          !(this.props.isLiveStream))) {
         continue;
       }
 
@@ -410,11 +410,7 @@ var ControlBar = React.createClass({
 });
 
 ControlBar.defaultProps = {
-  authorization: {
-    streams: [
-      {is_live_stream: false}
-    ]
-  },
+  isLiveStream: false,
   skinConfig: {
     responsive: {
       breakpoints: {
