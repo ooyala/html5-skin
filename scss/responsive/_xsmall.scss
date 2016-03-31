@@ -17,11 +17,14 @@
       .discoveryToasterContainerStyle {
         max-height: 200px;
       }
+      @include apply-to-safari-only ('.discoveryToasterContainerStyle') {
+        min-height: 100px;
+      }
       .discoveryImageWrapperStyle {
         margin-bottom: 0;
 
         &:nth-last-child(2) {
-          margin-right:42px;
+          margin-right:42px !important;
         }
         &:last-child {
           margin-right:0;
@@ -30,6 +33,9 @@
 
       .scaleHeight {
         max-height: 150px;
+      }
+      @include apply-to-safari-only ('.scaleHeight') {
+        min-height: 80px !important;
       }
     }
   }

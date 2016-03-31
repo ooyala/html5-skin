@@ -22,17 +22,20 @@
       }
       .discoveryToasterContainerStyle {
         max-height: 460px;
-
       }
+      @include apply-to-safari-only ('.discoveryToasterContainerStyle') {
+        min-height: 360px;
+      }
+
       .discoveryImageWrapperStyle {
         width: 214px;
         height: auto;
         margin: 0 60px 60px 0;
 
-        &:nth-child(even) {
+        &:nth-of-type(even) {
           margin-bottom: 0;
         }
-        &:last-child, &:nth-last-child(2) {
+        &:last-child, &:nth-last-child(2):nth-of-type(odd) {
           margin-right:0;
         }
       }
