@@ -1,0 +1,25 @@
+.text-track-container {
+  @include horizontal-center;
+  bottom: $control-bar-height;
+  max-width: 80%;
+  margin: 12px auto;
+
+  .text-track-window {
+    background-color: $text-track-bg;
+    padding: 10px;
+    border-radius: 8px;
+
+    .text-track-background {
+      background-color: transparent;
+      padding: 4px 16px;
+      border-radius: 8px;
+
+      .text-track {
+        text-align: center;
+        color: $white;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: em(24px);
+      }
+    }
+  }
+}

@@ -8,6 +8,7 @@ var React = require('react'),
     AdOverlay = require('../components/adOverlay'),
     UpNextPanel = require('../components/upNextPanel'),
     Spinner = require('../components/spinner'),
+    TextTrack = require('../components/textTrackPanel'),
     ResizeMixin = require('../mixins/resizeMixin');
 
 var PlayingScreen = React.createClass({
@@ -120,6 +121,9 @@ var PlayingScreen = React.createClass({
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
       <div className="default-screen">
+
+        <TextTrack closedCaptionOptions={this.props.closedCaptionOptions} />
+
         <div className="state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
         {adOverlay}

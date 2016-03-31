@@ -8,6 +8,7 @@ var React = require('react'),
     ScrubberBar = require('../components/scrubberBar'),
     AdOverlay = require('../components/adOverlay'),
     UpNextPanel = require('../components/upNextPanel'),
+    TextTrack = require('../components/textTrackPanel'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon'),
     Utils = require('../components/utils');
@@ -104,6 +105,8 @@ var PauseScreen = React.createClass({
           {this.props.skinConfig.startScreen.showTitle ? titleMetadata : null}
           {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : null}
         </div>
+
+        <TextTrack closedCaptionOptions={this.props.closedCaptionOptions} />
 
         <a className="state-screen-selectable" onClick={this.handleClick}></a>
 
