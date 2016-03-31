@@ -1,5 +1,14 @@
 .ooyala-small {
 
+  // Discovery Screen
+  .discoveryScreen {
+    .discovery-panel {
+      @include apply-to-safari-only ('.scaleHeight') {
+        min-height: 190px !important;
+      }
+    }
+  }
+
   //Text Tracks
   .text-track-container {
     .text-track-window {

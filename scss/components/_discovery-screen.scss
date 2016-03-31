@@ -49,19 +49,22 @@
       white-space: nowrap;
       margin: auto;
     }
+    @include apply-to-safari-only ('.discoveryToasterContainerStyle') {
+      min-height: 270px;
+    }
 
     .flexcontainer {
       display: -webkit-flex;
       display: flex;
       -webkit-align-items: center;
       align-items: center;
-      -webkit-justify-content: center;
-      justify-content: center;
+      -webkit-justify-content: flex-start;
+      justify-content: flex-start;
       -webkit-flex-flow: column wrap;
       flex-flow: column wrap;
       -webkit-align-content: center;
       align-content: center;
-      overflow: hidden;
+      overflow: visible;
     }
 
     .discoveryImageWrapperStyle {
@@ -71,10 +74,10 @@
       margin: 0 42px 42px 0;
       flex-shrink: 0;
 
-      &:nth-child(even) {
+      &:nth-of-type(even) {
         margin-bottom: 0;
       }
-      &:last-child, &:nth-last-child(2) {
+      &:last-child, &:nth-last-child(2):nth-of-type(odd) {
         margin-right:0
       }
 
@@ -150,10 +153,10 @@
       .discoveryImageWrapperStyle {
         width: 150px * $xsmall-multiple;
         margin: 0 42px * $xsmall-multiple 30px * $xsmall-multiple 0;
-        &:nth-child(even) {
+        &:nth-of-type(even) {
           margin-bottom: 0;
         }
-        &:last-child, &:nth-last-child(2) {
+        &:last-child, &:nth-last-child(2):nth-of-type(odd) {
           margin-right:0
         }
         .imageStyle {

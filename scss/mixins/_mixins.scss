@@ -154,3 +154,18 @@
 @mixin set-aspect-ratio($width, $height) {
   padding-top: 100% * ($height/$width);
 }
+
+// safari only
+@mixin apply-to-safari-only ($selector) {
+  // safari 7.1+
+  _::-webkit-full-page-media, _:future, :root #{$selector} {
+    @content;
+  }
+
+  // safari 9+
+  @supports (overflow:-webkit-marquee) and (justify-content:inherit) {
+    #{$selector} {
+      @content;
+    }
+  }
+}
