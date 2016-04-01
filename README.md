@@ -16,7 +16,7 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 <html>
 <head>
   <!-- V4 JS core and at least one video plugin is required. Plugins such as skin, discovery and Advertising need to be loaded separately -->
-  <script src="//player.ooyala.com/static/v4/stable/4.2.7/core.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.2.9/core.min.js"></script>
   <script src="//player.ooyala.com/static/v4/stable/4.2.9/video-plugin/main_html5.min.js"></script>
   <script src="//player.ooyala.com/static/v4/stable/4.2.9/video-plugin/osmf_flash.min.js"></script>
   <script src="//player.ooyala.com/static/v4/stable/4.2.9/video-plugin/bit_wrapper.min.js"></script>
