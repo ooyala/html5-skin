@@ -102,7 +102,7 @@ var StartScreen = React.createClass({
           <a className="state-screen-selectable" onClick={this.handleClick}></a>
         </div>
         <div className={infoPanelClass}>
-          {this.props.skinConfig.startScreen.showTitle ? titleMetadata : null}
+          {this.props.skinConfig.startScreen.showTitle ? titleMetadata : null} Dave
           {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : null}
         </div>
 
