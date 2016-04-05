@@ -6,12 +6,12 @@
 
   .fading-underlay {
     @extend .expand;
-    background-color: #000;
+    background-color: #1a1a1a;
     opacity: 0;
   }
   .fading-underlay-active {
     @extend .expand;
-    background-color: #000;
+    background-color: #1a1a1a;
     opacity: 0.5;
   }
   .fading-underlay.animate-fade {
