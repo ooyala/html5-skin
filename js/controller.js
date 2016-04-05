@@ -1083,7 +1083,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     setClosedCaptionsLanguage: function(){
       var language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : "";
-      var mode = this.state.closedCaptionOptions.enabled ? "hidden" : "disabled";
+      var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
     },
 
