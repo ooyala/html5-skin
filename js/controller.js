@@ -1066,7 +1066,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
         this.mb.publish(OO.EVENTS.PAUSE);
-        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
+        if (selectedContentData.clickedVideo.embed_code){
+          this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
+        }
+        else if (selectedContentData.clickedVideo.asset){
+          this.mb.publish(OO.EVENTS.SET_ASSET, selectedContentData.clickedVideo.asset);
+        }
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
       }
     },
