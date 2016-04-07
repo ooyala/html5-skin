@@ -4,9 +4,7 @@
 var React = require('react'),
     ClassNames = require('classnames'),
     ControlBar = require('../components/controlBar'),
-    ResizeMixin = require('../mixins/resizeMixin'),
-    Icon = require('../components/icon'),
-    ScrubberBar = require('../components/scrubberBar');
+    Icon = require('../components/icon');
 
 var EndScreen = React.createClass({
   getInitialState: function() {
@@ -44,13 +42,12 @@ var EndScreen = React.createClass({
         <Icon {...this.props} icon="replay"/>
       </a>
 
-      <ScrubberBar {...this.props}
-        controlBarVisible={this.state.controlBarVisible} />
-
-      <ControlBar {...this.props}
-        controlBarVisible={this.state.controlBarVisible}
-        playerState={this.props.playerState}
-        authorization={this.props.authorization} />
+      <div className="interactive-container">
+        <ControlBar {...this.props}
+          controlBarVisible={this.state.controlBarVisible}
+          playerState={this.props.playerState}
+          authorization={this.props.authorization} />
+      </div>
     </div>
     );
   }

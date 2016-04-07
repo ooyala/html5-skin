@@ -5,7 +5,6 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     AdPanel = require('../components/adPanel'),
     ControlBar = require('../components/controlBar'),
-    ScrubberBar = require('../components/scrubberBar'),
     ClassNames = require('classnames'),
     Utils = require('../components/utils'),
     ResizeMixin = require('../mixins/resizeMixin'),
@@ -129,10 +128,6 @@ var AdScreen = React.createClass({
       this.state.controlBarVisible;
 
     var playbackControlItemTemplates = {
-     "scrubberBar": <ScrubberBar {...this.props}
-       controlBarVisible={showControlBar}
-       key='scrubberBar' />,
-
      "controlBar": <ControlBar {...this.props}
        controlBarVisible={showControlBar}
        playerState={this.props.playerState}
@@ -186,7 +181,7 @@ var AdScreen = React.createClass({
         <div className="adPanel" ref="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
           {adPanel}
         </div>
-        <div>
+        <div className="interactive-container">
           {playbackControlItems}
         </div>
 

@@ -25,8 +25,6 @@ var AdOverlay = React.createClass({
   render: function() {
     var adOverlayClass = ClassNames({
       "adOverlay": true,
-      "controlBarVisible": this.props.overlay && this.props.showOverlay && this.props.controlBarVisible,
-      "controlBarInvisible": this.props.overlay && this.props.showOverlay && !this.props.controlBarVisible,
       "hidden": !this.props.overlay && this.props.showOverlay
     });
     var closeButtonClass = ClassNames({
