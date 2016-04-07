@@ -1,9 +1,8 @@
 .upNextPanel {
-  position: absolute;
+  position: relative;
   width: 100%;
   height: 80px;
   right: 0;
-  bottom: 0;
   background-color: rgba(22, 22, 22, 0.9);
   transition: bottom 0.5s;
   
@@ -41,10 +40,6 @@
   }
 
 
-}
-
-.upNextPanelBottom {
-  bottom:$control-bar-height;
 }
 
 .contentMetadata {

@@ -1,17 +1,13 @@
 .adOverlay {
-  display: inline-block;
-  bottom: 50%;
-  position: absolute;
+  display: table;
+  position: relative;
   transition: bottom 0.5s, height 0.25s;
   margin: 0;
   padding: 0;
-
-  .adOverlayImage {
-    display: block;
-  }
+  overflow: hidden;
 
   .adOverlayCloseButton {
-    display: inline;
+    display: inline-block;
     position: absolute;
     cursor: pointer;
     height: 28px;
@@ -20,6 +16,7 @@
     right: 0;
     background-color: rgba(0,0,0,0.3);
     border: 0;
+    outline:none;
   }
 
   .adOverlayCloseButton.hidden {
@@ -39,12 +36,4 @@
 
 .adOverlay.hidden {
   display: none;
-}
-
-.adOverlay.controlBarVisible {
-  bottom: $control-bar-height !important;
-}
-
-.adOverlay.controlBarInvisible {
-  bottom: $scrubber-bar-padding-height/2 !important;
 }

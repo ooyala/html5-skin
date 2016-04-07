@@ -186,30 +186,20 @@
   }
 
   //Control Bar
-  .control-bar-hidden {
-    bottom: -1 * $control-bar-height * $xsmall-multiple;
-  }
   .control-bar {
     height: $control-bar-height * $xsmall-multiple;
     font-size: 18px * $xsmall-multiple;
 
     .controlBarItemsWrapper {
-      padding-right: 7.5px * $xsmall-multiple;
-      padding-left: 7.5px * $xsmall-multiple;
-
       .controlBarItem {
         font-size: 18px * $xsmall-multiple;
         padding: 0 7.5px * $xsmall-multiple;
-        margin-top: 6px * $xsmall-multiple;
-        line-height: $control-bar-height * $xsmall-multiple;
       }
 
       .controlBarDuration {
         font-size: 14px * $xsmall-multiple;
         padding-left: 7.5px * $xsmall-multiple;
         padding-right: 7.5px * $xsmall-multiple;
-        margin-top: 6px * $xsmall-multiple;
-        line-height: $control-bar-height * $xsmall-multiple;
       }
 
       .liveCircle {
@@ -244,27 +234,17 @@
   // IE 11 only
   @media all and (-ms-high-contrast:none) {
     *::-ms-backdrop, .volumeSlider {
-      height: 0px;
+      height: 0;
     }
   }
 
   //Scrubber Bar
-  .scrubber-bar-visible {
-    bottom: ($control-bar-height - $scrubber-padding-height) * $xsmall-multiple;
-  }
-
-  .scrubber-bar-hidden {
-    bottom: -1 * $scrubber-padding-height * $xsmall-multiple;
-  }
   .scrubberBarContainer {
-    height: 24px * $xsmall-multiple;
+    height: 28px * $xsmall-multiple;
 
     .scrubberBarPadding {
-      left: 15px * $xsmall-multiple;
-      right: 15px * $xsmall-multiple;
-
       .scrubberBar {
-        height: 5px * $xsmall-multiple;
+        height: 4px * $xsmall-multiple;
       }
 
       .playheadPadding {
@@ -402,9 +382,8 @@
 
   //Text Tracks
   .text-track-container {
-    bottom: $control-bar-height * $xsmall-multiple;
     max-width: 96%;
-    margin: 4px auto;
+    margin-bottom: 4px;
 
     .text-track-window {
       padding: 4px;

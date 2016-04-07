@@ -1,8 +1,9 @@
 .text-track-container {
   @include horizontal-center;
-  bottom: $control-bar-height;
+  position: relative;
+  display: inline-block;
   max-width: 80%;
-  margin: 12px auto;
+  margin: 0 auto 12px auto;
 
   .text-track-window {
     background-color: $text-track-bg;
