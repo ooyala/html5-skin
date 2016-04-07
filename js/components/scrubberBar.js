@@ -4,7 +4,6 @@
 var React = require('react'),
     ReactDOM = require('react-dom'),
     ResizeMixin = require('../mixins/resizeMixin'),
-    ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
@@ -205,14 +204,8 @@ var ScrubberBar = React.createClass({
       playedIndicatorStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.playedColor;
     }
 
-    var scrubberBarClass = ClassNames({
-      "scrubberBarContainer": true,
-      "scrubber-bar-hidden": !this.props.controlBarVisible,
-      "scrubber-bar-visible": this.props.controlBarVisible
-    });
-
     return (
-      <div className={scrubberBarClass}>
+      <div className="scrubberBarContainer">
         <div className="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
           <div ref="scrubberBar" className="scrubberBar" style={scrubberBarStyle}>
             <div className="bufferedIndicator" style={bufferedIndicatorStyle}></div>

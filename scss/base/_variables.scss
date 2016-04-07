@@ -50,8 +50,9 @@ $panel-padding-lg:            35px !default;
 //
 $body-bg:                    #000 !default;
 $body-color:                 $white !default;
-$panel-bg:                   rgba(0, 0, 0, 0.7) !default;
-$text-track-bg:              rgba(0, 0, 0, 0.8) !default;
+$panel-bg:                   rgba($black, 0.7) !default;
+$control-bar-bg:             rgba($black, 0.3) !default;
+$text-track-bg:              rgba($black, 0.8) !default;
 $popover-bg:                 rgba(26, 26, 26, 0.8) !default;
 $scrollbar-bg:               #545456 !default;
 //

@@ -8,7 +8,6 @@
 * @constructor
 */
 var React = require('react'),
-    ClassNames = require('classnames'),
     CONSTANTS = require('./../constants/constants'),
     Utils = require('./utils'),
     CloseButton = require('./closeButton'),
@@ -36,13 +35,9 @@ var UpNextPanel = React.createClass({
 
   render: function() {
     var upNextString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UP_NEXT, this.props.localizableStrings);
-    var upNextPanel = ClassNames({
-      'upNextPanel': true,
-      'upNextPanelBottom': this.props.controlBarVisible
-    });
 
     return (
-      <div className={upNextPanel}>
+      <div className="upNextPanel">
         <a className="upNextContent" onClick={this.handleStartUpNextClick}>
           <img className="contentImage" src={this.props.upNextInfo.upNextData.preview_image_url} />
           <Icon {...this.props} icon="play"/>

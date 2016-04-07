@@ -5,6 +5,7 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     CONSTANTS = require('../constants/constants'),
     ClassNames = require('classnames'),
+    ScrubberBar = require('./scrubberBar'),
     Slider = require('./slider'),
     Utils = require('./utils'),
     VideoQualityPopover = require('./videoQualityPopover'),
@@ -401,6 +402,7 @@ var ControlBar = React.createClass({
     returnStyles.iconCharacter = {
       color: this.props.skinConfig.controlBar.iconStyle.inactive.color,
       opacity: this.props.skinConfig.controlBar.iconStyle.inactive.opacity
+
     };
     return returnStyles;
   },
@@ -409,14 +411,15 @@ var ControlBar = React.createClass({
   render: function() {
     var controlBarClass = ClassNames({
       "control-bar": true,
-      "control-bar-hidden": !this.props.controlBarVisible,
-      "control-bar-visible": this.props.controlBarVisible
+      "control-bar-hidden": !this.props.controlBarVisible
     });
 
     var controlBarItems = this.populateControlBar();
 
     return (
       <div className={controlBarClass} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
+        <ScrubberBar {...this.props} />
+
         <div className="controlBarItemsWrapper">
           {controlBarItems}
         </div>

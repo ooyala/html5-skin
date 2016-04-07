@@ -5,7 +5,6 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
     ControlBar = require('../components/controlBar'),
-    ScrubberBar = require('../components/scrubberBar'),
     AdOverlay = require('../components/adOverlay'),
     UpNextPanel = require('../components/upNextPanel'),
     TextTrack = require('../components/textTrackPanel'),
@@ -99,6 +98,16 @@ var PauseScreen = React.createClass({
 
     var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
     var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.state.descriptionText}</div>);
+    var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
+      <AdOverlay {...this.props}
+        overlay={this.props.controller.state.adOverlayUrl}
+        showOverlay={this.props.controller.state.showAdOverlay}
+        showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}/> : null;
+
+    var upNextPanel = (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
+      <UpNextPanel {...this.props}
+        controlBarVisible={this.state.controlBarVisible}
+        currentPlayhead={this.props.currentPlayhead}/> : null;
 
     return (
       <div className="state-screen pauseScreen">
@@ -108,31 +117,27 @@ var PauseScreen = React.createClass({
           {this.props.skinConfig.pauseScreen.showDescription ? descriptionMetadata : null}
         </div>
 
-        <TextTrack closedCaptionOptions={this.props.closedCaptionOptions} />
-
         <a className="state-screen-selectable" onClick={this.handleClick}></a>
 
         <a className={actionIconClass} onClick={this.handleClick}>
-          <Icon {...this.props} icon="pause"/>
+          <Icon {...this.props} icon="pause" />
         </a>
 
-        <AdOverlay {...this.props}
-          overlay={this.props.controller.state.adOverlayUrl}
-          showOverlay={this.props.controller.state.showAdOverlay}
-          showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
-          controlBarVisible={this.state.controlBarVisible}
-        />
-        <ScrubberBar {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-        />
-        <ControlBar {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-          playerState={this.state.playerState}
-          authorization={this.props.authorization}
-        />
+        <div className="interactive-container">
 
-        {(this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
-          <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/> : null}
+          <TextTrack closedCaptionOptions={this.props.closedCaptionOptions}/>
+
+          <a className="state-screen-selectable" onClick={this.handleClick}></a>
+
+          {adOverlay}
+
+          {upNextPanel}
+
+          <ControlBar {...this.props}
+            controlBarVisible={this.state.controlBarVisible}
+            playerState={this.state.playerState}
+            authorization={this.props.authorization}/>
+        </div>
       </div>
     );
   }

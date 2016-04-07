@@ -1,31 +1,38 @@
 .control-bar-hidden {
-  bottom: -1 * $control-bar-height;
+  height: 0 !important;
 }
-.control-bar-visible {
-  bottom: 0;
-}
+
 .control-bar {
-  background: rgba($black, 0.3);
+  background: $control-bar-bg;
   width: 100%;
   height: $control-bar-height;
-  position: absolute;
+  position: relative;
   margin: 0;
+  padding: 0 15px;
   font-size: 18px;
   list-style: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  transition: bottom 0.5s, height 0.25s;
+  transition: height 0.5s;
   z-index: 12500;
 
   .controlBarItemsWrapper {
     display: -webkit-flex;
     display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
     flex-flow: row nowrap;
-    justify-content: flex-start;
-    padding-right: 7.5px;
-    padding-left: 7.5px;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    white-space: nowrap;
+
+    & > * {
+      line-height: 1 !important;
+    }
 
     .popover-button-container {
       position: relative;
@@ -41,9 +48,15 @@
       font-size: 18px;
       text-align: center;
       padding: 0 7.5px;
-      margin-top: 6px;
       cursor: pointer;
-      line-height: $control-bar-height;
+    }
+
+    & > .controlBarItem:first-child {
+      padding-left:0 !important;
+    }
+
+    & > .controlBarItem:last-child {
+      padding-right:0 !important;
     }
 
     button.controlBarItem {
@@ -70,8 +83,6 @@
       padding-left: 7.5px;
       padding-right: 7.5px;
       text-align: left;
-      margin-top: 6px;
-      line-height: $control-bar-height - 3;
 
       .total-time {
         color: #B3B3B3;
@@ -88,6 +99,10 @@
       flex: 1;
     }
 
+    .liveIndicator {
+      line-height: 0.5;
+    }
+
     .liveCircle {
       display: inline-block;
       width: 10px;
@@ -95,20 +110,18 @@
       border-radius: 50%;
       background-color: red;
       margin-right: 2px;
-    }
-
-    .liveIndicator {
-      line-height: $control-bar-height - 7;
+      vertical-align: middle;
     }
 
     .liveText {
       font-size: 10px;
       color: $gray-light;
+      vertical-align: middle;
     }
 
     .watermark img {
       position: relative;
-      height: 18px;
+      max-height: 18px;
       vertical-align: baseline;
     }
   }
