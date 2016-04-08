@@ -49,10 +49,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "duration": 0,
       "mainVideoDuration": 0,
       "adVideoDuration": 0,
+      "elementId": null,
+      "mainVideoContainer": null,
+      "mainVideoInnerWrapper": null,
       "mainVideoElement": null,
       "mainVideoAspectRatio": 0,
-      "mainVideoWrapper": null,
-      "elementId": null,
       "pluginsElement": null,
       "pluginsClickElement": null,
       "buffering": false,
@@ -177,10 +178,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      event listeners from core player -> regulate skin STATE
      ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params) {
-      this.state.mainVideoWrapper = $("#" + elementId + " .innerWrapper");
+      //set state variables
+      this.state.mainVideoContainer = $("#" + elementId);
+      this.state.mainVideoInnerWrapper = $("#" + elementId + " .innerWrapper");
       this.state.playerParam = params;
       this.state.elementId = elementId;
-      this.state.mainVideoWrapper.append("<div class='player_skin'></div>");
+      this.state.isMobile = Utils.isMobile();
+
+      //initial DOM manipulation
+      this.state.mainVideoContainer.addClass('ooyala-video-container');
+      this.state.mainVideoInnerWrapper.append("<div class='player_skin'></div>");
 
       var tmpLocalizableStrings = {};
 
@@ -244,8 +251,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           pluginsClass: "player_skin_plugins"
         });
       }, this));
-
-      this.state.isMobile = Utils.isMobile();
 
       this.externalPluginSubscription();
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
@@ -776,7 +781,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     toggleFullscreen: function() {
       // full support, any element
       if(this.state.isFullScreenSupported) {
-        Fullscreen.toggle(this.state.mainVideoWrapper.get(0));
+        Fullscreen.toggle(this.state.mainVideoInnerWrapper.get(0));
       }
       // partial support, video element only (iOS)
       else if (this.state.isVideoFullScreenSupported) {
@@ -808,7 +813,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // hide scroll bars
       document.documentElement.style.overflow = 'hidden';
       //apply full window style
-      this.state.mainVideoWrapper.addClass('fullscreen');
+      this.state.mainVideoInnerWrapper.addClass('fullscreen');
     },
 
     // remove "full window" style and event listener
@@ -820,7 +825,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // unhide scroll bars
       document.documentElement.style.overflow = 'visible';
       //remove full window style
-      this.state.mainVideoWrapper.removeClass('fullscreen');
+      this.state.mainVideoInnerWrapper.removeClass('fullscreen');
     },
 
     // iOS event fires when a video enters full-screen mode
@@ -1230,7 +1235,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     //set Main Video Element Wrapper padding-top to aspect ratio
     setAspectRatio: function() {
       if(this.state.mainVideoAspectRatio > 0 && this.state.mainVideoAspectRatio <= 100) {
-        this.state.mainVideoWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
+        this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
     }
   };
