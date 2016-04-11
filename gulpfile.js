@@ -4,8 +4,8 @@
 
 var gulp        = require('gulp'),
     browserify  = require('browserify'),
+    babelify    = require('babelify'),
     watchify    = require('watchify'),
-    reactify    = require('reactify'),
     source      = require('vinyl-source-stream'),
     buffer      = require('vinyl-buffer'),
     gutil       = require('gulp-util'),
@@ -42,7 +42,7 @@ function buildJS(file, hash, watch, ugly, sourcemap, debug) {
   var props ={
     entries: ['./js/controller.js'],
     debug: debug,
-    transform:    [[reactify, {}]],
+    transform:    [[babelify, {presets: ["react"]}]],
     cache: {},
     packageCache: {}
   };
