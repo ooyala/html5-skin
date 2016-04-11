@@ -130,7 +130,7 @@
 @mixin vertical-center {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  @include vendor-prefixes(transform, translateY(-50%));
 }
 
 /// Horizontally centers the element inside of its first non-static parent,
@@ -138,7 +138,7 @@
 @mixin horizontal-center {
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
+  @include vendor-prefixes(transform, translateX(-50%));
 }
 
 /// Absolutely centers the element inside of its first non-static parent,
@@ -147,7 +147,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  @include vendor-prefixes(transform, translate(-50%, -50%));
 }
 
 // calculate padding from aspect ratio
