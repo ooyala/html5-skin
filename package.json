@@ -21,12 +21,14 @@
   "dependencies": {
     "classnames": "*",
     "lodash.debounce": "4.0.3",
-    "react": "0.14.7",
-    "react-dom": "0.14.7",
+    "react": "15.0.1",
+    "react-dom": "15.0.1",
     "react-scrollbar": "0.4.0",
     "screenfull": "3.0.0"
   },
   "devDependencies": {
+    "babel-jest": "10.0.1",
+    "babel-preset-react": "6.5.0",
     "browserify": "13.0.0",
     "git-rev": "0.2.1",
     "graceful-fs": "*",
@@ -40,11 +42,10 @@
     "gulp-sourcemaps": "1.5.2",
     "gulp-uglify": "1.1.0",
     "gulp-util": "3.0.7",
-    "jest-cli": "0.4.18",
+    "jest-cli": "0.10.0",
     "jsdoc": "^3.3.3",
     "jsdoc-jsx": "^0.1.0",
-    "react-addons-test-utils": "0.14.7",
-    "react-tools": "*",
+    "react-addons-test-utils": "15.0.1",
     "reactify": "1.1.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
@@ -72,10 +73,10 @@
       "/node_modules/"
     ],
     "rootDir": "",
-    "scriptPreprocessor": "scripts/jest/preprocessor.js",
-    "setupEnvScriptFile": "scripts/jest/environment.js",
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/react",
+      "<rootDir>/node_modules/react-dom",
+      "<rootDir>/node_modules/react-addons-test-utils",
       "react"
     ],
     "testPathDirs": [
