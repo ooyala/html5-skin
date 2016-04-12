@@ -114,13 +114,13 @@ describe('MoreOptionsPanel', function () {
         controlBarWidth={100} />
     );
 
-    var ccButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'closedCaption');
+    var ccButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-closed-caption');
     expect(ccButtons.length).toBe(0);
 
-    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality');
+    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
     expect(qualityButtons.length).toBe(0);
 
-    var discoveryButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'discovery');
+    var discoveryButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery');
     expect(discoveryButtons.length).toBe(0);
   });
 });

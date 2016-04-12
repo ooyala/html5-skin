@@ -44,11 +44,11 @@ describe('VideoQualityPanel', function () {
     var DOM = TestUtils.renderIntoDocument(
       <VideoQualityPanel {...mockProps} />
     );
-    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn');
+    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn');
     expect(bitrateItems.length).toBe(availableBitrates.length-1);
 
     for (i=0; i<bitrateItems.length; i++){
-      var itemText = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn')[i].textContent;
+      var itemText = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn')[i].textContent;
       expect(itemText).toEqual(bitrateLabels[i]);
     }
   });
@@ -57,15 +57,15 @@ describe('VideoQualityPanel', function () {
     var DOM = TestUtils.renderIntoDocument(
       <VideoQualityPanel {...mockProps} />
     );
-    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'selected');
+    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-selected');
     expect(bitrateItems.length).toBe(1);
     expect(bitrateItems[0].querySelector("[class*=label]").textContent).toBe('Auto');
 
-    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn');
+    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn');
     expect(bitrateItems.length).toBe(availableBitrates.length-1);
 
     for (i=0; i<bitrateItems.length; i++){
-      var newBitrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'quality-btn')[i];
+      var newBitrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn')[i];
       TestUtils.Simulate.click(newBitrate);
       expect(selectedBitrate.id).toBe(availableBitrates[i+1].id);
     }
@@ -83,7 +83,7 @@ describe('VideoQualityPanel', function () {
     var DOM = TestUtils.renderIntoDocument(
       <VideoQualityPanel {...mockProps} />
     );
-    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'selected');
+    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-selected');
     expect(bitrateItems.length).toBe(1);
     expect(bitrateItems[0].textContent).toBe(bitrateLabels[0]);
   });

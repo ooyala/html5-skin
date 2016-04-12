@@ -188,11 +188,11 @@ var LanguageTabContent = React.createClass({
     }
 
     var leftChevron = ClassNames({
-      'oo-leftButton': true,
+      'oo-left-button': true,
       'oo-hidden': !this.props.closedCaptionOptions.enabled || this.state.currentPage <= 1
     });
     var rightChevron = ClassNames({
-      'oo-rightButton': true,
+      'oo-right-button': true,
       'oo-hidden': !this.props.closedCaptionOptions.enabled || endAt >= availableLanguages.languages.length
     });
 
