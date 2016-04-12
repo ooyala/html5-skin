@@ -110,7 +110,7 @@ var PauseScreen = React.createClass({
         currentPlayhead={this.props.currentPlayhead}/> : null;
 
     return (
-      <div className="oo-state-screen pauseScreen">
+      <div className="oo-state-screen oo-pause-screen">
         <div className={fadeUnderlayClass}></div>
         <div className={infoPanelClass}>
           {this.props.skinConfig.pauseScreen.showTitle ? titleMetadata : null}
