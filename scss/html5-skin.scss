@@ -1,10 +1,9 @@
 @charset "utf-8";
 
-// Core variables
-@import "base/variables";
-
 // namespace root
-.innerWrapper {
+.ooyala-video-container {
+  // Core variables
+  @import "base/variables";
 
   // Mixins
   @import "mixins/mixins";
@@ -64,5 +63,4 @@
 #ooplayer {
   width:auto !important;
   height:auto !important;
-  min-width:$min-player-width;
 }

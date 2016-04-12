@@ -52,6 +52,7 @@
     .oo-up-next-count-down {
       width: 36px;
       height: 36px;
+      float: left;
     }
 
     .oo-up-next-title-text {
@@ -61,6 +62,8 @@
       max-width: 70%;
       color: inherit;
       resize: none;
+      display: inline-block;
+      float: left;
     }
   }
   
