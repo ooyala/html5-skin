@@ -60,6 +60,7 @@
     .up-next-count-down {
       width: 36px;
       height: 36px;
+      float: left;
     }
 
     .upNextTitleText {
@@ -69,6 +70,8 @@
       max-width: 70%;
       color: inherit;
       resize: none;
+      display: inline-block;
+      float: left;
     }
   }
   
