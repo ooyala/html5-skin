@@ -148,15 +148,15 @@ var AdScreen = React.createClass({
       fontFamily: this.props.skinConfig.icons.pause.fontFamilyName
     };
     var actionIconClass = ClassNames({
-      'action-icon-pause': !this.props.controller.state.adPauseAnimationDisabled,
-      'action-icon': this.props.controller.state.adPauseAnimationDisabled,
-      'animate-pause': !this.props.controller.state.adPauseAnimationDisabled,
-      'action-icon-top': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("top") > -1,
-      'action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1,
-      'action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1,
-      'action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1,
-      'hidden': !this.props.skinConfig.pauseScreen.showPauseIcon,
-      'icon-hidden': this.props.playerState != CONSTANTS.STATE.PAUSE
+      'oo-action-icon-pause': !this.props.controller.state.adPauseAnimationDisabled,
+      'oo-action-icon': this.props.controller.state.adPauseAnimationDisabled,
+      'oo-animate-pause': !this.props.controller.state.adPauseAnimationDisabled,
+      'oo-action-icon-top': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("top") > -1,
+      'oo-action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1,
+      'oo-action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1,
+      'oo-action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1,
+      'oo-hidden': !this.props.skinConfig.pauseScreen.showPauseIcon,
+      'oo-icon-hidden': this.props.playerState != CONSTANTS.STATE.PAUSE
     });
     var adPanel = null;
     if (this.props.skinConfig.adScreen.showAdMarquee && this.props.controller.state.showAdMarquee) {
@@ -168,7 +168,7 @@ var AdScreen = React.createClass({
     }
 
     return (
-      <div className="state-screen adScreen"
+      <div className="oo-state-screen oo-ad-screen"
          ref="adScreen"
          onMouseOver={this.showControlBar}
          onMouseOut={this.hideControlBar}
@@ -178,10 +178,10 @@ var AdScreen = React.createClass({
         <a className={actionIconClass}>
           <Icon {...this.props} icon="pause"/>
         </a>
-        <div className="adPanel" ref="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
+        <div className="oo-ad-panel" ref="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
           {adPanel}
         </div>
-        <div className="interactive-container">
+        <div className="oo-interactive-container">
           {playbackControlItems}
         </div>
 

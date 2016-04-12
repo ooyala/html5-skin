@@ -64,36 +64,36 @@ var PauseScreen = React.createClass({
 
     //CSS class manipulation from config/skin.json
     var fadeUnderlayClass = ClassNames({
-      'fading-underlay': !this.props.pauseAnimationDisabled,
-      'fading-underlay-active': this.props.pauseAnimationDisabled,
-      'animate-fade': this.state.animate && !this.props.pauseAnimationDisabled
+      'oo-fading-underlay': !this.props.pauseAnimationDisabled,
+      'oo-fading-underlay-active': this.props.pauseAnimationDisabled,
+      'oo-animate-fade': this.state.animate && !this.props.pauseAnimationDisabled
     });
     var infoPanelClass = ClassNames({
-      'state-screen-info': true,
-      'info-panel-top': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("top") > -1,
-      'info-panel-bottom': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("bottom") > -1,
-      'info-panel-left': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("left") > -1,
-      'info-panel-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+      'oo-state-screen-info': true,
+      'oo-info-panel-top': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("top") > -1,
+      'oo-info-panel-bottom': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("bottom") > -1,
+      'oo-info-panel-left': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("left") > -1,
+      'oo-info-panel-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
     });
     var titleClass = ClassNames({
-      'state-screen-title': true,
-      'text-truncate': true,
-      'text-capitalize': true,
-      'pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+      'oo-state-screen-title': true,
+      'oo-text-truncate': true,
+      'oo-text-capitalize': true,
+      'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
     });
     var descriptionClass = ClassNames({
-      'state-screen-description': true,
-      'pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+      'oo-state-screen-description': true,
+      'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
     });
     var actionIconClass = ClassNames({
-      'action-icon-pause': !this.props.pauseAnimationDisabled,
-      'action-icon': this.props.pauseAnimationDisabled,
-      'animate-pause': this.state.animate && !this.props.pauseAnimationDisabled,
-      'action-icon-top': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("top") > -1,
-      'action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1,
-      'action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1,
-      'action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1,
-      'hidden': !this.props.skinConfig.pauseScreen.showPauseIcon || this.props.pauseAnimationDisabled
+      'oo-action-icon-pause': !this.props.pauseAnimationDisabled,
+      'oo-action-icon': this.props.pauseAnimationDisabled,
+      'oo-animate-pause': this.state.animate && !this.props.pauseAnimationDisabled,
+      'oo-action-icon-top': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("top") > -1,
+      'oo-action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1,
+      'oo-action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1,
+      'oo-action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1,
+      'oo-hidden': !this.props.skinConfig.pauseScreen.showPauseIcon || this.props.pauseAnimationDisabled
     });
 
     var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
@@ -110,24 +110,24 @@ var PauseScreen = React.createClass({
         currentPlayhead={this.props.currentPlayhead}/> : null;
 
     return (
-      <div className="state-screen pauseScreen">
+      <div className="oo-state-screen pauseScreen">
         <div className={fadeUnderlayClass}></div>
         <div className={infoPanelClass}>
           {this.props.skinConfig.pauseScreen.showTitle ? titleMetadata : null}
           {this.props.skinConfig.pauseScreen.showDescription ? descriptionMetadata : null}
         </div>
 
-        <a className="state-screen-selectable" onClick={this.handleClick}></a>
+        <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
 
         <a className={actionIconClass} onClick={this.handleClick}>
           <Icon {...this.props} icon="pause" />
         </a>
 
-        <div className="interactive-container">
+        <div className="oo-interactive-container">
 
           <TextTrack closedCaptionOptions={this.props.closedCaptionOptions}/>
 
-          <a className="state-screen-selectable" onClick={this.handleClick}></a>
+          <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
 
           {adOverlay}
 

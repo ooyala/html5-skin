@@ -1,6 +1,5 @@
 var ReactDOM = require('react-dom'),
-    debounce = require('lodash.debounce'),
-    screenfull = require('screenfull');
+    debounce = require('lodash.debounce');
 
 var ComponentWidthMixin = {
   getInitialState: function() {

@@ -28,21 +28,21 @@ var EndScreen = React.createClass({
     };
 
     var actionIconClass = ClassNames({
-      'action-icon': true,
-      'hidden': !this.props.skinConfig.endScreen.showReplayButton
+      'oo-action-icon': true,
+      'oo-hidden': !this.props.skinConfig.endScreen.showReplayButton
     });
 
     return (
-    <div className="state-screen endScreen">
-      <div className="underlay-gradient"></div>
+    <div className="oo-state-screen oo-end-screen">
+      <div className="oo-underlay-gradient"></div>
 
-      <a className="state-screen-selectable" onClick={this.handleClick}></a>
+      <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
 
       <a className={actionIconClass} onClick={this.handleClick}>
         <Icon {...this.props} icon="replay"/>
       </a>
 
-      <div className="interactive-container">
+      <div className="oo-interactive-container">
         <ControlBar {...this.props}
           controlBarVisible={this.state.controlBarVisible}
           playerState={this.props.playerState}

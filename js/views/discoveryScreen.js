@@ -23,12 +23,12 @@ var DiscoveryScreen = React.createClass({
 
   render: function() {
     var promoStyle = ClassNames({
-      'promo-style': true,
-      'invisible hidden': this.props.playerState !== CONSTANTS.STATE.END
+      'oo-promo-style': true,
+      'oo-invisible hidden': this.props.playerState !== CONSTANTS.STATE.END
     });
 
     return (
-      <div className="discoveryScreen">
+      <div className="oo-discovery-screen">
         <div className={promoStyle}></div>
         <DiscoveryPanel {...this.props} videosPerPage={{xs:2, sm:4, md:6, lg:8}} />
         <CloseButton {...this.props} closeAction={this.handleClose}/>
@@ -50,7 +50,7 @@ DiscoveryScreen.propTypes = {
 DiscoveryScreen.defaultProps = {
   skinConfig: {
     icons: {
-      dismiss:{fontStyleClass:'icon icon-close'}
+      dismiss:{fontStyleClass:'oo-icon oo-icon-close'}
     }
   },
   controller: {
