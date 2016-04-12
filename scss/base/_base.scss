@@ -48,7 +48,7 @@
   padding:0 !important;
 }
 
-&.fullscreen {
+&.oo-fullscreen {
   position:fixed;
   overflow: hidden;
   top:0;
@@ -77,14 +77,14 @@ a {
   }
 }
 
-.col-sm-2 {
+.oo-col-sm-2 {
   width: (100/12)*2%;
 }
 
-.col-sm-10 {
+.oo-col-sm-10 {
   width: (100/12)*10%;
 }
 
-.col-sm-offset-2 {
+.oo-col-sm-offset-2 {
   margin-left: (100/12)*2%;
 }

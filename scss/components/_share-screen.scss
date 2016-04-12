@@ -1,4 +1,4 @@
-.share-screen {
+.oo-share-screen {
   height: 100%;
   width: 100%;
   cursor: default;
@@ -7,7 +7,7 @@
   -ms-user-select: none;
   user-select: none;
 
-  .share-container {
+  .oo-share-container {
     padding: $panel-padding;
     position: absolute;
     top: 0;
@@ -21,12 +21,12 @@
     -webkit-align-items: center;
     justify-content: center;
 
-    .tabRow {
+    .oo-tab-row {
       position: absolute;
       top: $panel-padding;
       left: $panel-padding;
 
-      .tab {
+      .oo-tab {
         display: inline-block;
         color: #afafaf;
         font-weight: bold;
@@ -38,20 +38,20 @@
         }
       }
 
-      .shareTab {
-        @extend .tab
+      .oo-share-tab {
+        @extend .oo-tab
       }
-      .embedTab {
-        @extend .tab
+      .oo-embed-tab {
+        @extend .oo-tab
       }
 
-      .active {
+      .oo-active {
         color: $white;
       }
     }
   }
 
-  .shareTabPanel {
+  .oo-share-tab-panel {
     flex: 1;
     -webkit-flex: 1;
     color: $white;
@@ -64,14 +64,14 @@
       }
     }
 
-    .social-action-text {
-      font-family: 'Roboto Condensed', sans-serif;
+    .oo-social-action-text {
+      font-family: $font-family-roboto-condensed;
       font-size: 1.2em;
       font-weight: bold;
       margin-bottom: 15px;
     }
 
-    .social-icon {
+    .oo-social-icon {
       display: inline-block;
       height: 38px;
       width: 38px;
@@ -83,42 +83,42 @@
       border-radius: 6px;
     }
 
-    .facebook {
-      @extend .social-icon;
+    .oo-facebook {
+      @extend .oo-social-icon;
       background-image: url("//player.ooyala.com/static/v4/stable/4.1.4/skin-plugin/assets/images/social-facebook.svg");
     }
 
-    .twitter {
-      @extend .social-icon;
+    .oo-twitter {
+      @extend .oo-social-icon;
       background-image: url("//player.ooyala.com/static/v4/stable/4.1.4/skin-plugin/assets/images/social-twitter.svg");
     }
 
-    .googlePlus {
-      @extend .social-icon;
+    .oo-google-plus {
+      @extend .oo-social-icon;
       background-image: url("//player.ooyala.com/static/v4/stable/4.1.4/skin-plugin/assets/images/social-google.svg");
     }
 
-    .emailShare {
-      @extend .social-icon;
+    .oo-email-share {
+      @extend .oo-social-icon;
       background-image: url("//player.ooyala.com/static/v4/stable/4.1.4/skin-plugin/assets/images/social-email.svg");
       background-size: cover;
     }
 
     input[type="url"] {
-      &.form-control {
+      &.oo-form-control {
         width: 300px;
       }
     }
 
-    input.start-at {
+    input.oo-start-at {
       width: 68px;
     }
 
-    .form-control-label {
+    .oo-form-control-label {
       text-align: right;
     }
 
-    .form-horizontal {
+    .oo-form-horizontal {
       margin-top: 40px;
     }
 

@@ -1,24 +1,24 @@
-.text-track-container {
+.oo-text-track-container {
   @include horizontal-center;
   position: relative;
   display: inline-block;
   max-width: 80%;
   margin: 0 auto 12px auto;
 
-  .text-track-window {
+  .oo-text-track-window {
     background-color: $text-track-bg;
     padding: 10px;
     border-radius: 8px;
 
-    .text-track-background {
+    .oo-text-track-background {
       background-color: transparent;
       padding: 4px 16px;
       border-radius: 8px;
 
-      .text-track {
+      .oo-text-track {
         text-align: center;
         color: $white;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-family: $font-family-sans-serif;
         font-size: em(24px);
       }
     }

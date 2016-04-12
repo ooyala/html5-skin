@@ -1,4 +1,4 @@
-.adOverlay {
+.oo-ad-overlay {
   display: table;
   position: relative;
   transition: bottom 0.5s, height 0.25s;
@@ -6,7 +6,7 @@
   padding: 0;
   overflow: hidden;
 
-  .adOverlayCloseButton {
+  .oo-ad-overlay-close-button {
     display: inline-block;
     position: absolute;
     cursor: pointer;
@@ -19,11 +19,11 @@
     outline:none;
   }
 
-  .adOverlayCloseButton.hidden {
+  .oo-ad-overlay-close-button.oo-hidden {
     display: none;
   }
 
-  .adOverlayCloseButtonIcon {
+  .oo-ad-overlay-close-button-icon {
     position: absolute;
     font-size: 8px;
     top: 50%;
@@ -34,6 +34,6 @@
   }
 }
 
-.adOverlay.hidden {
+.oo-ad-overlay.oo-hidden {
   display: none;
 }
