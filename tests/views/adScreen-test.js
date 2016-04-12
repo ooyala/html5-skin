@@ -125,7 +125,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
       />);
 
     var adPanel = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'adPanel');
-    expect(adPanel[0]._childNodes.length).not.toBe(0);
+    expect(adPanel[0].childNodes.length).not.toBe(0);
 
     //not showing ad marquee
     mockController.state.showAdMarquee = true;
@@ -139,7 +139,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
       />);
 
     var adPanel1 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'adPanel');
-    expect(adPanel1[0]._childNodes.length).toBe(0);
+    expect(adPanel1[0].childNodes.length).toBe(0);
 
     //not showing ad marquee
     mockController.state.showAdMarquee = false;
@@ -153,7 +153,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
       />);
 
     var adPanel2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'adPanel');
-    expect(adPanel2[0]._childNodes.length).toBe(0);
+    expect(adPanel2[0].childNodes.length).toBe(0);
 
   });
 
