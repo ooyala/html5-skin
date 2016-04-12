@@ -47,11 +47,11 @@ var OnOffSwitch = React.createClass({
       'oo-switch-body-off': !this.props.closedCaptionOptions.enabled
     });
     var onCaptionClassName = ClassNames({
-      'oo-switch-captions switch-captions-on': true,
+      'oo-switch-captions oo-switch-captions-on': true,
       'oo-switch-captions-active': this.props.closedCaptionOptions.enabled
     });
     var offCaptionClassName = ClassNames({
-      'oo-switch-captions switch-captions-off': true,
+      'oo-switch-captions oo-switch-captions-off': true,
       'oo-switch-captions-active': !this.props.closedCaptionOptions.enabled
     });
 
