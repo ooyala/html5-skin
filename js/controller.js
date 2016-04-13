@@ -719,7 +719,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.closedCaptionOptions.availableLanguages = languages;
 
-      if (languages.languages.length == 1){//if only one language, set it as default language
+      //Set the language to the skinConfig default if it is one of our possible languages, otherwise just set it to the first possible language.
+      if (this.skin.props.skinConfig.closedCaptionOptions && _.contains(languages.languages, this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage)){
+        this.state.closedCaptionOptions.language = this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage;
+      } else if (languages && languages.languages && languages.languages.length > 0){
         this.state.closedCaptionOptions.language = languages.languages[0];
       }
 
