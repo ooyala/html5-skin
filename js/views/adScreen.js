@@ -145,7 +145,7 @@ var AdScreen = React.createClass({
   render: function() {
     var actionIconStyle = {
       color: this.props.skinConfig.pauseScreen.PauseIconStyle.color,
-      fontFamily: this.props.skinConfig.icons.pause.fontFamilyName
+      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity
     };
     var actionIconClass = ClassNames({
       'action-icon-pause': !this.props.controller.state.adPauseAnimationDisabled,
@@ -176,7 +176,7 @@ var AdScreen = React.createClass({
          onMouseUp={this.handleClick}>
 
         <a className={actionIconClass}>
-          <Icon {...this.props} icon="pause"/>
+          <Icon {...this.props} icon="pause" style={actionIconStyle}/>
         </a>
         <div className="adPanel" ref="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
           {adPanel}

@@ -23,8 +23,7 @@ var EndScreen = React.createClass({
   render: function() {
     var actionIconStyle = {
       color: this.props.skinConfig.endScreen.replayIconStyle.color,
-      opacity: this.props.skinConfig.endScreen.replayIconStyle.opacity,
-      fontFamily: this.props.skinConfig.icons.replay.fontFamilyName
+      opacity: this.props.skinConfig.endScreen.replayIconStyle.opacity
     };
 
     var actionIconClass = ClassNames({
@@ -39,7 +38,7 @@ var EndScreen = React.createClass({
       <a className="state-screen-selectable" onClick={this.handleClick}></a>
 
       <a className={actionIconClass} onClick={this.handleClick}>
-        <Icon {...this.props} icon="replay"/>
+        <Icon {...this.props} icon="replay" style={actionIconStyle}/>
       </a>
 
       <div className="interactive-container">
