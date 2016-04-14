@@ -15,13 +15,14 @@
 
     .scrubberBar {
       background-color: $gray-lighter;
-      height: 4px;
+      height: 3px;
       width: 100%;
       margin: 0;
       position: absolute;
       cursor: pointer;
       padding: 0;
       bottom: 50%;
+      border-radius: 3px;
       transform: translateY(50%)
     }
 
@@ -29,12 +30,14 @@
       background-color: $gray-light;
       height: 100%;
       position: absolute;
+      border-radius: 3px;
     }
 
     .playedIndicator {
       background: $blue-light;
       height: 100%;
       position: absolute;
+      border-radius: 3px;
     }
 
     .playedAdIndicator {
@@ -51,7 +54,7 @@
       @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
 
       .playhead {
-        background: $white;
+        background: $blue-light;
         width: 10px;
         height: 10px;
         border: 1px solid $white;
