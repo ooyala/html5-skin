@@ -186,7 +186,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isMobile = Utils.isMobile();
 
       //initial DOM manipulation
-      this.state.mainVideoContainer.addClass('ooyala-video-container');
+      this.state.mainVideoContainer.addClass('oo-player-container');
+      this.state.mainVideoInnerWrapper.addClass('oo-player');
       this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
 
       var tmpLocalizableStrings = {};
