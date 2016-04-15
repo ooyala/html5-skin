@@ -58,8 +58,7 @@ var PauseScreen = React.createClass({
     };
     var actionIconStyle = {
       color: this.props.skinConfig.pauseScreen.PauseIconStyle.color,
-      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity,
-      fontFamily: this.props.skinConfig.icons.pause.fontFamilyName
+      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity
     };
 
     //CSS class manipulation from config/skin.json
@@ -120,7 +119,7 @@ var PauseScreen = React.createClass({
         <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
 
         <a className={actionIconClass} onClick={this.handleClick}>
-          <Icon {...this.props} icon="pause" />
+          <Icon {...this.props} icon="pause" style={actionIconStyle}/>
         </a>
 
         <div className="oo-interactive-container">

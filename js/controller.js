@@ -460,7 +460,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.upNextInfo.delayedSetEmbedCodeEvent) {
         var delayedContentData = this.state.upNextInfo.delayedContentData;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
-        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, delayedContentData.clickedVideo.embed_code, this.state.playerParam);
+        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, delayedContentData.clickedVideo.embed_code);
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, delayedContentData);
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
         this.state.upNextInfo.delayedContentData = null;
@@ -722,7 +722,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.closedCaptionOptions.availableLanguages = languages;
 
-      if (languages.languages.length == 1){//if only one language, set it as default language
+      //Set the language to the skinConfig default if it is one of our possible languages, otherwise just set it to the first possible language.
+      if (this.skin.props.skinConfig.closedCaptionOptions && _.contains(languages.languages, this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage)){
+        this.state.closedCaptionOptions.language = this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage;
+      } else if (languages && languages.languages && languages.languages.length > 0){
         this.state.closedCaptionOptions.language = languages.languages[0];
       }
 
