@@ -17,8 +17,8 @@ var ClosedCaptionPanel = React.createClass({
   render: function(){
     var closedCaptionOptionsString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CC_OPTIONS, this.props.localizableStrings);
     return (
-        <div className="closed-captions-panel">
-          <div className="closed-captions-panel-title">
+        <div className="oo-closed-captions-panel">
+          <div className="oo-closed-captions-panel-title">
             {closedCaptionOptionsString}
             <Icon {...this.props} icon="cc"/>
           </div>
@@ -38,35 +38,35 @@ var OnOffSwitch = React.createClass({
 
   render: function(){
     var switchThumbClassName = ClassNames({
-      'switch-thumb': true,
-      'switch-thumb-on': this.props.closedCaptionOptions.enabled,
-      'switch-thumb-off': !this.props.closedCaptionOptions.enabled
+      'oo-switch-thumb': true,
+      'oo-switch-thumb-on': this.props.closedCaptionOptions.enabled,
+      'oo-switch-thumb-off': !this.props.closedCaptionOptions.enabled
     });
     var switchBodyClassName = ClassNames({
-      'switch-body': true,
-      'switch-body-off': !this.props.closedCaptionOptions.enabled
+      'oo-switch-body': true,
+      'oo-switch-body-off': !this.props.closedCaptionOptions.enabled
     });
     var onCaptionClassName = ClassNames({
-      'switch-captions switch-captions-on': true,
-      'switch-captions-active': this.props.closedCaptionOptions.enabled
+      'oo-switch-captions oo-switch-captions-on': true,
+      'oo-switch-captions-active': this.props.closedCaptionOptions.enabled
     });
     var offCaptionClassName = ClassNames({
-      'switch-captions switch-captions-off': true,
-      'switch-captions-active': !this.props.closedCaptionOptions.enabled
+      'oo-switch-captions oo-switch-captions-off': true,
+      'oo-switch-captions-active': !this.props.closedCaptionOptions.enabled
     });
 
     var offString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.OFF, this.props.localizableStrings);
     var onString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.ON, this.props.localizableStrings);
 
     return (
-        <div className="switch-container">
+        <div className="oo-switch-container">
           <span className={offCaptionClassName}>{offString}</span>
-          <div className="switch-element">
+          <div className="oo-switch-element">
             <span className={switchBodyClassName}></span>
             <span className={switchThumbClassName}></span>
           </div>
           <span className={onCaptionClassName}>{onString}</span>
-          <a className="switch-container-selectable" onClick={this.handleOnOffSwitch}></a>
+          <a className="oo-switch-container-selectable" onClick={this.handleOnOffSwitch}></a>
         </div>
     );
   }
@@ -79,16 +79,16 @@ var CCPreviewPanel = React.createClass({
     if (!closedCaptionSampleText) closedCaptionSampleText = Utils.getLocalizedString('en', CONSTANTS.SKIN_TEXT.SAMPLE_TEXT, this.props.localizableStrings);
 
     var previewCaptionClassName = ClassNames({
-      'preview-caption': true,
-      'disabled': !this.props.closedCaptionOptions.enabled
+      'oo-preview-caption': true,
+      'oo-disabled': !this.props.closedCaptionOptions.enabled
     });
     var previewTextClassName = ClassNames({
-      'preview-text': true,
-      'disabled': !this.props.closedCaptionOptions.enabled
+      'oo-preview-text': true,
+      'oo-disabled': !this.props.closedCaptionOptions.enabled
     });
 
     return (
-      <div className="preview-panel">
+      <div className="oo-preview-panel">
         <div className={previewCaptionClassName}>{closedCaptionPreviewTitle}</div>
         <div className={previewTextClassName}>{closedCaptionSampleText}</div>
       </div>
@@ -158,9 +158,9 @@ var LanguageTabContent = React.createClass({
 
   setClassname: function(item){
     return ClassNames({
-      'item': true,
-      'item-selected': this.props.closedCaptionOptions.language == item && this.props.closedCaptionOptions.enabled,
-      'disabled': !this.props.closedCaptionOptions.enabled
+      'oo-item': true,
+      'oo-item-selected': this.props.closedCaptionOptions.language == item && this.props.closedCaptionOptions.enabled,
+      'oo-disabled': !this.props.closedCaptionOptions.enabled
     });
   },
 
@@ -181,24 +181,24 @@ var LanguageTabContent = React.createClass({
       for (var i = 0; i < languagePage.length; i++) {
         languageContentBlocks.push(
           <a className={this.setClassname(languagePage[i])} onClick={this.changeLanguage.bind(this, languagePage[i])} key={i}>
-            <span className="language">{availableLanguages.locale[languagePage[i]]}</span>
+            <span className="oo-language">{availableLanguages.locale[languagePage[i]]}</span>
           </a>
         );
       }
     }
 
     var leftChevron = ClassNames({
-      'leftButton': true,
-      'hidden': !this.props.closedCaptionOptions.enabled || this.state.currentPage <= 1
+      'oo-left-button': true,
+      'oo-hidden': !this.props.closedCaptionOptions.enabled || this.state.currentPage <= 1
     });
     var rightChevron = ClassNames({
-      'rightButton': true,
-      'hidden': !this.props.closedCaptionOptions.enabled || endAt >= availableLanguages.languages.length
+      'oo-right-button': true,
+      'oo-hidden': !this.props.closedCaptionOptions.enabled || endAt >= availableLanguages.languages.length
     });
 
     return(
-      <div className="language-container">
-        <div className="language-panel flexcontainer">
+      <div className="oo-language-container">
+        <div className="oo-language-panel oo-flexcontainer">
           {languageContentBlocks}
         </div>
 

@@ -39,7 +39,7 @@ describe('SharePanel', function () {
         );
 
         //parent elements
-        var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'shareTabPanel');
+        var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel');
         var tabs = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
 
         //test share tab
@@ -49,10 +49,10 @@ describe('SharePanel', function () {
         expect(shareTabPanel.textContent).toContain(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION]);
 
         //test social links
-        var twitter = TestUtils.findRenderedDOMComponentWithClass(DOM, 'twitter');
-        var facebook = TestUtils.findRenderedDOMComponentWithClass(DOM, 'facebook');
-        var googlePlus = TestUtils.findRenderedDOMComponentWithClass(DOM, 'googlePlus');
-        var emailShare = TestUtils.findRenderedDOMComponentWithClass(DOM, 'emailShare');
+        var twitter = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-twitter');
+        var facebook = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-facebook');
+        var googlePlus = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-google-plus');
+        var emailShare = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-email-share');
         TestUtils.Simulate.click(twitter);
         TestUtils.Simulate.click(facebook);
         TestUtils.Simulate.click(googlePlus);

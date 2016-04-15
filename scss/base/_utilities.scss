@@ -1,44 +1,44 @@
-.clearfix {
+.oo-clearfix {
   @include clearfix();
 }
 
-.center-block {
+.oo-center-block {
   @include center-block();
 }
 
-.pull-right {
+.oo-pull-right {
   @include pull-right();
 }
 
-.pull-left {
+.oo-pull-left {
   @include pull-left();
 }
 
-[hidden], .hidden {
+[hidden], .oo-hidden {
   display: none !important;
 }
 
-.invisible {
+.oo-invisible {
   visibility: hidden;
 }
 
-.text-truncate {
+.oo-text-truncate {
   @include text-truncate;
 }
 
-.text-lowercase      { text-transform: lowercase; }
-.text-uppercase      { text-transform: uppercase; }
-.text-capitalize     { text-transform: capitalize; }
+.oo-text-lowercase      { text-transform: lowercase; }
+.oo-text-uppercase      { text-transform: uppercase; }
+.oo-text-capitalize     { text-transform: capitalize; }
 
 //
 // Screenreaders
 //
 
-.sr-only {
+.oo-sr-only {
   @include sr-only();
 }
 
-.expand {
+.oo-expand {
   position:absolute;
   width:100%;
   height:100%;
@@ -46,7 +46,7 @@
   left:0;
 }
 
-.center-vertical-horizontal {
+.oo-center-vertical-horizontal {
   position: absolute;
   left: 50%;
   top: 50%;

@@ -113,7 +113,7 @@ var PlayingScreen = React.createClass({
         currentPlayhead={this.props.currentPlayhead}/> : null;
 
     return (
-    <div className="state-screen playingScreen"
+    <div className="oo-state-screen oo-playing-screen"
          ref="PlayingScreen"
          onMouseOver={this.showControlBar}
          onMouseOut={this.hideControlBar}
@@ -121,13 +121,13 @@ var PlayingScreen = React.createClass({
 
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
-      <div className="state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
+      <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
-      <div className="interactive-container">
+      <div className="oo-interactive-container">
 
         <TextTrack closedCaptionOptions={this.props.closedCaptionOptions}/>
 
-        <div className="state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
+        <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
         {adOverlay}
 

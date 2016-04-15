@@ -186,8 +186,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isMobile = Utils.isMobile();
 
       //initial DOM manipulation
-      this.state.mainVideoContainer.addClass('ooyala-video-container');
-      this.state.mainVideoInnerWrapper.append("<div class='player_skin'></div>");
+      this.state.mainVideoContainer.addClass('oo-player-container');
+      this.state.mainVideoInnerWrapper.addClass('oo-player');
+      this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
 
       var tmpLocalizableStrings = {};
 
@@ -206,16 +207,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.config = data;
 
         this.skin = ReactDOM.render(
-          React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .player_skin")
+          React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .oo-player-skin")
         );
         var accessibilityControls = new AccessibilityControls(this); //keyboard support
         this.state.configLoaded = true;
         this.renderSkin();
 
-        var fullClass = (this.state.config.adScreen.showControlBar ? "" : " full");
-        $("#" + this.state.elementId + " .player_skin").append("<div class='player_skin_plugins"+fullClass+"'></div><div class='player_skin_plugins_click_layer"+fullClass+"'></div>");
-        this.state.pluginsElement = $("#" + this.state.elementId + " .player_skin_plugins");
-        this.state.pluginsClickElement = $("#" + this.state.elementId + " .player_skin_plugins_click_layer");
+        var fullClass = (this.state.config.adScreen.showControlBar ? "" : " oo-full");
+        $("#" + this.state.elementId + " .oo-player-skin").append("<div class='oo-player-skin-plugins"+fullClass+"'></div><div class='oo-player-skin-plugins-click-layer"+fullClass+"'></div>");
+        this.state.pluginsElement = $("#" + this.state.elementId + " .oo-player-skin-plugins");
+        this.state.pluginsClickElement = $("#" + this.state.elementId + " .oo-player-skin-plugins-click-layer");
         this.state.pluginsElement.mouseover(
           function() {
             this.showControlBar();
@@ -230,7 +231,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         );
         this.state.pluginsClickElement.click(
           function() {
-            this.state.pluginsClickElement.removeClass("showing");
+            this.state.pluginsClickElement.removeClass("oo-showing");
             this.mb.publish(OO.EVENTS.PLAY);
           }.bind(this)
         );
@@ -248,9 +249,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         );
         this.mb.publish(OO.EVENTS.UI_READY, {
           videoWrapperClass: "innerWrapper",
-          pluginsClass: "player_skin_plugins"
+          pluginsClass: "oo-player-skin-plugins"
         });
       }, this));
+
+      this.state.isMobile = Utils.isMobile();
 
       this.externalPluginSubscription();
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
@@ -285,7 +288,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlayerDestroy: function (event) {
       var elementId = this.state.elementId;
-      var mountNode = document.querySelector('#' + elementId + ' .player_skin');
+      var mountNode = document.querySelector('#' + elementId + ' .oo-player-skin');
       // remove mounted Skin component
       ReactDOM.unmountComponentAtNode(mountNode);
       this.mb = null;
@@ -389,14 +392,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.setClosedCaptionsLanguage();
-        this.state.mainVideoElement.removeClass('blur');
+        this.state.mainVideoElement.removeClass('oo-blur');
         this.state.isInitialPlay = false;
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
         this.state.adPauseAnimationDisabled = true;
-        this.state.pluginsElement.addClass("showing");
-        this.state.pluginsClickElement.removeClass("showing");
+        this.state.pluginsElement.addClass("oo-showing");
+        this.state.pluginsClickElement.removeClass("oo-showing");
         if (this.state.currentAdsInfo.currentAdItem !== null) {
           this.state.playerState = CONSTANTS.STATE.PLAYING;
           //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
@@ -413,7 +416,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       // If an ad using the custom ad element has issued a pause, activate the click layer
       if (source == OO.VIDEO.ADS && this.state.pluginsElement.children().length > 0) {
-        this.state.pluginsClickElement.addClass("showing");
+        this.state.pluginsClickElement.addClass("oo-showing");
       }
     },
 
@@ -439,7 +442,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
-        this.state.mainVideoElement.addClass('blur');
+        this.state.mainVideoElement.addClass('oo-blur');
         this.renderSkin();
       }
       else if (videoId == OO.VIDEO.ADS){
@@ -548,15 +551,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       this.skin.updatePlayhead(this.skin.state.currentPlayhead, this.state.mainVideoDuration, this.skin.state.buffered);
       this.state.isPlayingAd = false;
-      this.state.pluginsElement.removeClass("showing");
-      this.state.pluginsClickElement.removeClass("showing");
+      this.state.pluginsElement.removeClass("oo-showing");
+      this.state.pluginsClickElement.removeClass("oo-showing");
       this.renderSkin();
     },
 
     onWillPlayAds: function(event) {
       OO.log("onWillPlayAds is called from event = " + event);
       this.state.isPlayingAd = true;
-      this.state.pluginsElement.addClass("showing");
+      this.state.pluginsElement.addClass("oo-showing");
       this.state.pluginsElement.css({
         height: "",
         width: ""
@@ -579,7 +582,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.currentAdsInfo.currentAdItem = adItem;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.skin.state.currentPlayhead = 0;
-        this.state.mainVideoElement.removeClass('blur');
+        this.state.mainVideoElement.removeClass('oo-blur');
         this.renderSkin();
       }
     },
@@ -599,11 +602,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onShowAdControls: function(event, showAdControls) {
       this.state.showAdControls = showAdControls;
       if (showAdControls && this.state.config.adScreen.showControlBar) {
-        this.state.pluginsElement.removeClass("full");
-        this.state.pluginsClickElement.removeClass("full");
+        this.state.pluginsElement.removeClass("oo-full");
+        this.state.pluginsClickElement.removeClass("oo-full");
       } else {
-        this.state.pluginsElement.addClass("full");
-        this.state.pluginsClickElement.addClass("full");
+        this.state.pluginsElement.addClass("oo-full");
+        this.state.pluginsClickElement.addClass("oo-full");
       }
       this.renderSkin();
     },
@@ -635,8 +638,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.adOverlayUrl = adInfo.url;
         this.state.showAdOverlay = true;
       }
-      this.state.pluginsElement.addClass("overlay_showing");
-      var skinElement = $("#"+this.state.elementId+" .player_skin");
+      this.state.pluginsElement.addClass("oo-overlay-showing");
+      var skinElement = $("#"+this.state.elementId+" .oo-player-skin");
       var elementWidth = skinElement.width();
       var elementHeight = skinElement.height();
       var newCSS = {};
@@ -665,8 +668,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onVideoElementFocus: function(event, source) {
       this.focusedElement = source;
       if (source == OO.VIDEO.MAIN) {
-        this.state.pluginsElement.removeClass("showing");
-        this.state.pluginsClickElement.removeClass("showing");
+        this.state.pluginsElement.removeClass("oo-showing");
+        this.state.pluginsClickElement.removeClass("oo-showing");
       }
     },
 
@@ -674,14 +677,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.adOverlayUrl = null;
       this.state.showAdOverlay = false;
       this.state.showAdOverlayCloseButton = false;
-      this.state.pluginsElement.removeClass("overlay_showing");
+      this.state.pluginsElement.removeClass("oo-overlay-showing");
       this.state.pluginsElement.css({
         top: "",
         left: "",
         right: "",
         bottom: "",
-        height: "0px",
-        width: "0px",
+        height: "0",
+        width: "0",
         transform: ""
       });
       this.renderSkin();
@@ -689,13 +692,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     hideNonlinearAd: function(event) {
       this.state.showAdOverlay = false;
-      this.state.pluginsElement.removeClass("overlay_showing");
+      this.state.pluginsElement.removeClass("oo-overlay-showing");
       this.renderSkin();
     },
 
     showNonlinearAd: function(event) {
       this.state.showAdOverlay = true;
-      this.state.pluginsElement.addClass("overlay_showing");
+      this.state.pluginsElement.addClass("oo-overlay-showing");
       this.renderSkin();
     },
 
@@ -816,7 +819,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // hide scroll bars
       document.documentElement.style.overflow = 'hidden';
       //apply full window style
-      this.state.mainVideoInnerWrapper.addClass('fullscreen');
+      this.state.mainVideoInnerWrapper.addClass('oo-fullscreen');
     },
 
     // remove "full window" style and event listener
@@ -828,7 +831,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // unhide scroll bars
       document.documentElement.style.overflow = 'visible';
       //remove full window style
-      this.state.mainVideoInnerWrapper.removeClass('fullscreen');
+      this.state.mainVideoInnerWrapper.removeClass('oo-fullscreen');
     },
 
     // iOS event fires when a video enters full-screen mode

@@ -25,8 +25,8 @@ describe('DiscoveryPanel', function () {
     TestUtils.Simulate.click(rightBtn);
 
     //test discovery videos
-    var vidImg = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'imageStyle');
-    var vidName = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'discoveryContentName');
+    var vidImg = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-image-style');
+    var vidName = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery-content-name');
     //loop through all videos, test expected values from mock data
     for (var i=0; i<data.relatedVideos.length; i++) {
       expect(ReactDOM.findDOMNode(vidImg[i]).style.backgroundImage).toEqual("url("+data.relatedVideos[i].preview_image_url+")");
@@ -46,7 +46,7 @@ describe('DiscoveryPanel', function () {
     var DOM = TestUtils.renderIntoDocument(<DiscoveryPanel discoveryData={data} playerState="end" />);
 
     //test clock click
-    var discoveryClock = TestUtils.findRenderedDOMComponentWithClass(DOM, 'discoveryCountDownIconStyle');
+    var discoveryClock = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-discovery-count-down-icon-style');
     expect(discoveryClock).toBeDefined();
     TestUtils.Simulate.click(discoveryClock);
   });

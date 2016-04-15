@@ -28,12 +28,12 @@ var SharePanel = React.createClass({
       var startAtString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.START_AT, this.props.localizableStrings);
 
       return (
-        <div className="shareTabPanel">
-          <div className="social-action-text text-capitalize">{titleString}</div>
-          <a className="twitter" onClick={this.handleTwitterClick}> </a>
-          <a className="facebook" onClick={this.handleFacebookClick}> </a>
-          <a className="googlePlus" onClick={this.handleGPlusClick}> </a>
-          <a className="emailShare" onClick={this.handleEmailClick}> </a>
+        <div className="oo-share-tab-panel">
+          <div className="oo-social-action-text oo-text-capitalize">{titleString}</div>
+          <a className="oo-twitter" onClick={this.handleTwitterClick}> </a>
+          <a className="oo-facebook" onClick={this.handleFacebookClick}> </a>
+          <a className="oo-google-plus" onClick={this.handleGPlusClick}> </a>
+          <a className="oo-email-share" onClick={this.handleEmailClick}> </a>
         </div>
       );
     }
@@ -49,8 +49,8 @@ var SharePanel = React.createClass({
       }
 
       return (
-        <div className="shareTabPanel">
-          <textarea className="form-control"
+        <div className="oo-share-tab-panel">
+          <textarea className="oo-form-control"
                     rows="3"
                     value={iframeURL}
                     readOnly />
@@ -94,20 +94,20 @@ var SharePanel = React.createClass({
 
   render: function() {
     var shareTab = ClassNames({
-      'shareTab': true,
-      'active': this.state.activeTab == this.tabs.SHARE
+      'oo-share-tab': true,
+      'oo-active': this.state.activeTab == this.tabs.SHARE
     });
     var embedTab = ClassNames({
-      'embedTab': true,
-      'active': this.state.activeTab == this.tabs.EMBED
+      'oo-embed-tab': true,
+      'oo-active': this.state.activeTab == this.tabs.EMBED
     });
 
     var shareString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings),
         embedString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMBED, this.props.localizableStrings);
 
     return (
-      <div className="share-container">
-        <div className="tabRow">
+      <div className="oo-share-container">
+        <div className="oo-tab-row">
           <a className={shareTab} onClick={this.showPanel.bind(this, this.tabs.SHARE)}>{shareString}</a>
           <a className={embedTab} onClick={this.showPanel.bind(this, this.tabs.EMBED)}>{embedString}</a>
         </div>
