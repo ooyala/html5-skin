@@ -103,24 +103,5 @@
       background-image: url("//player.ooyala.com/static/v4/stable/4.1.4/skin-plugin/assets/images/social-email.svg");
       background-size: cover;
     }
-
-    input[type="url"] {
-      &.form-control {
-        width: 300px;
-      }
-    }
-
-    input.start-at {
-      width: 68px;
-    }
-
-    .form-control-label {
-      text-align: right;
-    }
-
-    .form-horizontal {
-      margin-top: 40px;
-    }
-
   }
 }

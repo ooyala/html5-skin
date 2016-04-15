@@ -34,23 +34,6 @@ var SharePanel = React.createClass({
           <a className="facebook" onClick={this.handleFacebookClick}> </a>
           <a className="googlePlus" onClick={this.handleGPlusClick}> </a>
           <a className="emailShare" onClick={this.handleEmailClick}> </a>
-          <br/>
-
-          <form className="form-inline">
-            <div className="form-group">
-              <label className="sr-only" htmlFor="oo-url">url</label>
-              <input className="form-control" type='url' defaultValue={location.href} id="oo-url"/>
-            </div>
-
-            <label className="checkbox-inline">
-              <input type="checkbox" />{startAtString}
-            </label>
-
-            <div className="form-group">
-              <label className="sr-only" htmlFor="oo-start-at">{startAtString}</label>
-              <input className="form-control start-at" type='text' id="oo-start-at" defaultValue={Utils.formatSeconds(this.props.currentPlayhead)} />
-            </div>
-          </form>
         </div>
       );
     }
