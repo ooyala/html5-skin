@@ -3,7 +3,7 @@
   // Discovery Screen
   .oo-discovery-screen {
     .oo-discovery-panel {
-      @include apply-to-safari-only ('.oo-scale-height') {
+      @include apply-to-safari-only ('.oo-scale-size') {
         min-height: 190px !important;
       }
     }

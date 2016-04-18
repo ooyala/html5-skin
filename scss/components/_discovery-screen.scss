@@ -54,8 +54,7 @@
     }
 
     .oo-flexcontainer {
-      display: -webkit-flex;
-      display: flex;
+      @include flexbox();
       -webkit-align-items: center;
       align-items: center;
       -webkit-justify-content: flex-start;
@@ -140,7 +139,7 @@
       cursor: pointer
     }
 
-    .oo-scale-height {
+    .oo-scale-size {
       max-height: 250px;
       .oo-discovery-image-wrapper-style {
         width: 150px * $xsmall-multiple;
