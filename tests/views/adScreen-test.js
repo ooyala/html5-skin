@@ -29,7 +29,7 @@ describe('AdScreen', function () {
         }
       },
       icons: {
-        pause: {"fontStyleClass": "icon icon-pause"}
+        pause: {"fontStyleClass": "oo-icon oo-icon-pause"}
       }
     };
     var DOM = TestUtils.renderIntoDocument(
@@ -69,7 +69,7 @@ describe('AdScreen', function () {
         }
       },
       icons: {
-        pause: {"fontStyleClass": "icon icon-pause"}
+        pause: {"fontStyleClass": "oo-icon oo-icon-pause"}
       }
     };
     var DOM = TestUtils.renderIntoDocument(
@@ -112,7 +112,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
         }
       },
       icons: {
-        pause: {"fontStyleClass": "icon icon-pause"}
+        pause: {"fontStyleClass": "oo-icon oo-icon-pause"}
       }
     };
 
@@ -124,7 +124,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
         controlBarAutoHide={true}
       />);
 
-    var adPanel = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'adPanel');
+    var adPanel = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-ad-panel');
     expect(adPanel[0]._childNodes.length).not.toBe(0);
 
     //not showing ad marquee
@@ -138,7 +138,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
         controlBarAutoHide={true}
       />);
 
-    var adPanel1 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'adPanel');
+    var adPanel1 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-ad-panel');
     expect(adPanel1[0]._childNodes.length).toBe(0);
 
     //not showing ad marquee
@@ -152,7 +152,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
         controlBarAutoHide={true}
       />);
 
-    var adPanel2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'adPanel');
+    var adPanel2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-ad-panel');
     expect(adPanel2[0]._childNodes.length).toBe(0);
 
   });

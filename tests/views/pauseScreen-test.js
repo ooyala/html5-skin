@@ -50,7 +50,7 @@ describe('PauseScreen', function () {
     // Render pause screen into DOM
     var DOM = TestUtils.renderIntoDocument(<PauseScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree}/>);
 
-    var pauseIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'action-icon-pause');
+    var pauseIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-action-icon-pause');
     TestUtils.Simulate.click(pauseIcon);
     expect(clicked).toBe(true);
   });

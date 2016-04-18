@@ -1,154 +1,157 @@
-.ooyala-large {
+.oo-large {
   // State Screens
-  .state-screen {
-    .state-screen-info {
-      .state-screen-title {
+  .oo-state-screen {
+    .oo-state-screen-info {
+      .oo-state-screen-title {
         font-size: 3.0em;
       }
-      .state-screen-description {
+      .oo-state-screen-description {
         font-size: 1.8em;
       }
     }
   }
 
   // Discovery Screen
-  .discoveryScreen {
-    .discovery-panel {
+  .oo-discovery-screen {
+    .oo-discovery-panel {
       padding: $panel-padding-lg;
       margin-top:auto;
       margin-bottom:auto;
-      .discovery-panel-title {
+      .oo-discovery-panel-title {
         position: absolute;
       }
-      .discoveryToasterContainerStyle {
+      .oo-discovery-toaster-container-style {
         max-height: 460px;
-
       }
-      .discoveryImageWrapperStyle {
+      @include apply-to-safari-only ('.oo-discovery-toaster-container-style') {
+        min-height: 360px;
+      }
+
+      .oo-discovery-image-wrapper-style {
         width: 214px;
         height: auto;
         margin: 0 60px 60px 0;
 
-        &:nth-child(even) {
+        &:nth-of-type(even) {
           margin-bottom: 0;
         }
-        &:last-child, &:nth-last-child(2) {
+        &:last-child, &:nth-last-child(2):nth-of-type(odd) {
           margin-right:0;
         }
       }
-      .imageStyle {
+      .oo-image-style {
         height: 120px;
       }
     }
   }
 
   // Closed Caption Screen
-  .closedCaptionsScreen {
-    .closed-captions-panel {
+  .oo-closed-captions-screen {
+    .oo-closed-captions-panel {
       padding:$panel-padding-lg;
-      .closed-captions-panel-title {
+      .oo-closed-captions-panel-title {
         font-size: $font-size-lg-screen-title;
-        span.icon {
+        span.oo-icon {
           top: 4px;
           font-size: 1em;
         }
       }
-      .switch-container {
+      .oo-switch-container {
         margin-top: 42px;
         height: 26px;
         width: 126px;
-        .switch-captions {
+        .oo-switch-captions {
           font-size: $font-size-base * $large-multiple;
         }
-        .switch-element {
+        .oo-switch-element {
           margin-bottom: 33%;
         }
       }
     }
-    .language-container {
+    .oo-language-container {
       margin-top: 8%;
-      .language-panel {
-        a.item {
+      .oo-language-panel {
+        a.oo-item {
           width: 168px;
           font-size: 1.4em;
           margin: 17px 33px;
           padding: 3px 12px;
         }
       }
-      .flexcontainer {
+      .oo-flexcontainer {
         -webkit-flex-flow: row wrap;
         flex-flow: row wrap;
       }
-      .discoverBtn {
-        span.icon {
+      .oo-discover-btn {
+        span.oo-icon {
           font-size: 1.2em;
         }
       }
     }
-    .preview-panel {
+    .oo-preview-panel {
       padding: 14px $panel-padding-lg;
-      .preview-caption {
+      .oo-preview-caption {
         font-size: 1em;
         line-height:1.4em;
       }
-      .preview-text {
+      .oo-preview-text {
         font-size: 1.7em;
       }
     }
   }
 
   //Error screen
-  .errorScreen {
-    .error-title {
+  .oo-error-screen {
+    .oo-error-title {
       font-size: 2em;
     }
-    .error-description {
+    .oo-error-description {
       font-size: 1.4em;
     }
-    .error-action {
+    .oo-error-action {
       font-size: 1.4em;
     }
   }
 
   //Action Icons
-  .action-icon-pause {
+  .oo-action-icon-pause {
     font-size:32px;
   }
-  .action-icon span.icon, .action-icon-pause.animate-pause {
+  .oo-action-icon span.oo-icon, .oo-action-icon-pause.oo-animate-pause {
     font-size:96px;
   }
   //Ad Panel
-  .adTopBar {
+  .oo-ad-top-bar {
      height: 34px;
 
-    .adTitle, .adPlaybackInfo {
+    .oo-ad-title, .oo-ad-playback-info {
         font-size: 1em;
         padding-left: 7.5px;
         padding-right: 7.5px;
     }
-    .learnMore {
+    .oo-learn-more {
       font-size: 1em;
       margin-right: 10px;
 
-      .buttonIcon {
+      .oo-button-icon {
         font-size: 0.8em;
         margin-right: 5px;
       }
     }
-    .skipButton {
+    .oo-skip-button {
       font-size: 1em;
 
-      .skipIcon {
+      .oo-skip-icon {
         font-size: 0.8em;
         margin-right: 5px;
       }
     }
 
-    .skipButton.visible {
+    .oo-skip-button.oo-visible {
       margin-right: 15px;
       margin-left: 15px;
 
-      .skipIcon {
+      .oo-skip-icon {
         font-size: 0.8em;
         margin-right: 5px;
       }
@@ -156,16 +159,16 @@
   }
 
   //Close Buttons
-  button.closeBtn {
+  button.oo-close-btn {
     top: $panel-padding-lg;
     right: $panel-padding-lg;
   }
 
   //Share Screen
-  .share-screen {
-    .share-container {
+  .oo-share-screen {
+    .oo-share-container {
       padding: $panel-padding-lg;
-      .tabRow {
+      .oo-tab-row {
         top: $panel-padding-lg;
         left: $panel-padding-lg;
       }
@@ -173,7 +176,7 @@
   }
 
   //Video Quality
-  .quality-screen {
+  .oo-quality-screen {
     padding: $panel-padding-lg;
   }
 }

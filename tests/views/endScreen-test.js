@@ -36,7 +36,7 @@ describe('EndScreen', function () {
     // Render end screen into DOM
     var DOM = TestUtils.renderIntoDocument(<EndScreen skinConfig={mockSkinConfig} controller = {mockController}/>);
 
-    var replayButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'action-icon');
+    var replayButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-action-icon');
     TestUtils.Simulate.click(replayButton);
     expect(clicked).toBe(true);
   });
@@ -69,11 +69,11 @@ describe('EndScreen', function () {
     var DOM = TestUtils.renderIntoDocument(<EndScreen skinConfig={mockSkinConfig} controller = {mockController}/>);
 
     //replay button hidden
-    var replayButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'action-icon');
+    var replayButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-action-icon');
     expect(replayButton.className).toMatch("hidden");
 
     //test replay clicking on screen
-    var replayScreen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'state-screen-selectable');
+    var replayScreen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
     TestUtils.Simulate.click(replayScreen);
 
     expect(clicked).toBe(true);

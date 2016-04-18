@@ -1,10 +1,9 @@
 @charset "utf-8";
 
-// Core variables
-@import "base/variables";
-
 // namespace root
-.innerWrapper {
+.oo-player-container {
+  // Core variables
+  @import "base/variables";
 
   // Mixins
   @import "mixins/mixins";
@@ -44,6 +43,7 @@
   @import "components/start-screen";
   @import "components/more-options";
   @import "components/video-quality";
+  @import "components/text-track";
 
   // Responsive
   @import "responsive/xsmall";
@@ -63,5 +63,4 @@
 #ooplayer {
   width:auto !important;
   height:auto !important;
-  min-width:$min-player-width;
 }

@@ -5,7 +5,6 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     AdPanel = require('../components/adPanel'),
     ControlBar = require('../components/controlBar'),
-    ScrubberBar = require('../components/scrubberBar'),
     ClassNames = require('classnames'),
     Utils = require('../components/utils'),
     ResizeMixin = require('../mixins/resizeMixin'),
@@ -129,10 +128,6 @@ var AdScreen = React.createClass({
       this.state.controlBarVisible;
 
     var playbackControlItemTemplates = {
-     "scrubberBar": <ScrubberBar {...this.props}
-       controlBarVisible={showControlBar}
-       key='scrubberBar' />,
-
      "controlBar": <ControlBar {...this.props}
        controlBarVisible={showControlBar}
        playerState={this.props.playerState}
@@ -150,18 +145,18 @@ var AdScreen = React.createClass({
   render: function() {
     var actionIconStyle = {
       color: this.props.skinConfig.pauseScreen.PauseIconStyle.color,
-      fontFamily: this.props.skinConfig.icons.pause.fontFamilyName
+      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity
     };
     var actionIconClass = ClassNames({
-      'action-icon-pause': !this.props.controller.state.adPauseAnimationDisabled,
-      'action-icon': this.props.controller.state.adPauseAnimationDisabled,
-      'animate-pause': !this.props.controller.state.adPauseAnimationDisabled,
-      'action-icon-top': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("top") > -1,
-      'action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1,
-      'action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1,
-      'action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1,
-      'hidden': !this.props.skinConfig.pauseScreen.showPauseIcon,
-      'icon-hidden': this.props.playerState != CONSTANTS.STATE.PAUSE
+      'oo-action-icon-pause': !this.props.controller.state.adPauseAnimationDisabled,
+      'oo-action-icon': this.props.controller.state.adPauseAnimationDisabled,
+      'oo-animate-pause': !this.props.controller.state.adPauseAnimationDisabled,
+      'oo-action-icon-top': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("top") > -1,
+      'oo-action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1,
+      'oo-action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1,
+      'oo-action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1,
+      'oo-hidden': !this.props.skinConfig.pauseScreen.showPauseIcon,
+      'oo-icon-hidden': this.props.playerState != CONSTANTS.STATE.PAUSE
     });
     var adPanel = null;
     if (this.props.skinConfig.adScreen.showAdMarquee && this.props.controller.state.showAdMarquee) {
@@ -173,7 +168,7 @@ var AdScreen = React.createClass({
     }
 
     return (
-      <div className="state-screen adScreen"
+      <div className="oo-state-screen oo-ad-screen"
          ref="adScreen"
          onMouseOver={this.showControlBar}
          onMouseOut={this.hideControlBar}
@@ -181,12 +176,12 @@ var AdScreen = React.createClass({
          onMouseUp={this.handleClick}>
 
         <a className={actionIconClass}>
-          <Icon {...this.props} icon="pause"/>
+          <Icon {...this.props} icon="pause" style={actionIconStyle}/>
         </a>
-        <div className="adPanel" ref="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
+        <div className="oo-ad-panel" ref="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
           {adPanel}
         </div>
-        <div>
+        <div className="oo-interactive-container">
           {playbackControlItems}
         </div>
 

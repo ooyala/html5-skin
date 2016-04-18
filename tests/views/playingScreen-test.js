@@ -23,12 +23,12 @@ describe('PlayingScreen', function () {
     // Render pause screen into DOM
     var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} />);
 
-    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'state-screen-selectable');
+    var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
     
-    TestUtils.Simulate.mouseMove(screen);
+    TestUtils.Simulate.mouseMove(screen[0]);
     expect(moved).toBe(false);
 
-    TestUtils.Simulate.mouseUp(screen);
+    TestUtils.Simulate.mouseUp(screen[0]);
     expect(clicked).toBe(true);
   });
 
@@ -49,8 +49,8 @@ describe('PlayingScreen', function () {
     // Render pause screen into DOM
     var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} />);
 
-    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'state-screen-selectable');
-    TestUtils.Simulate.touchEnd(screen);
+    var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
+    TestUtils.Simulate.touchEnd(screen[0]);
     expect(clicked).toBe(true);
   });
 
@@ -78,14 +78,14 @@ describe('PlayingScreen', function () {
     // Render pause screen into DOM
     var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} fullscreen = {true} controlBarAutoHide={true}/>);
 
-    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'playingScreen');
+    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playing-screen');
     TestUtils.Simulate.mouseMove(screen);
     expect(moved).toBe(true);
 
     TestUtils.Simulate.mouseOut(screen);
     expect(out).toBe(true);
 
-    var screen1 = TestUtils.findRenderedDOMComponentWithClass(DOM, 'default-screen');
+    var screen1 = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-interactive-container');
     TestUtils.Simulate.touchEnd(screen1);
     expect(clicked).toBe(false);
 

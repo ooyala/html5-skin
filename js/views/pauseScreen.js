@@ -5,9 +5,9 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
     ControlBar = require('../components/controlBar'),
-    ScrubberBar = require('../components/scrubberBar'),
     AdOverlay = require('../components/adOverlay'),
     UpNextPanel = require('../components/upNextPanel'),
+    TextTrack = require('../components/textTrackPanel'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon'),
     Utils = require('../components/utils');
@@ -35,9 +35,11 @@ var PauseScreen = React.createClass({
   },
 
   handleResize: function() {
-    this.setState({
-      descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), this.props.contentTree.description)
-    });
+    if (ReactDOM.findDOMNode(this.refs.description)){
+      this.setState({
+        descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), this.props.contentTree.description)
+      });
+    }
   },
 
   handleClick: function(event) {
@@ -56,78 +58,85 @@ var PauseScreen = React.createClass({
     };
     var actionIconStyle = {
       color: this.props.skinConfig.pauseScreen.PauseIconStyle.color,
-      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity,
-      fontFamily: this.props.skinConfig.icons.pause.fontFamilyName
+      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity
     };
 
     //CSS class manipulation from config/skin.json
     var fadeUnderlayClass = ClassNames({
-      'fading-underlay': !this.props.pauseAnimationDisabled,
-      'fading-underlay-active': this.props.pauseAnimationDisabled,
-      'animate-fade': this.state.animate && !this.props.pauseAnimationDisabled
+      'oo-fading-underlay': !this.props.pauseAnimationDisabled,
+      'oo-fading-underlay-active': this.props.pauseAnimationDisabled,
+      'oo-animate-fade': this.state.animate && !this.props.pauseAnimationDisabled
     });
     var infoPanelClass = ClassNames({
-      'state-screen-info': true,
-      'info-panel-top': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("top") > -1,
-      'info-panel-bottom': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("bottom") > -1,
-      'info-panel-left': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("left") > -1,
-      'info-panel-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+      'oo-state-screen-info': true,
+      'oo-info-panel-top': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("top") > -1,
+      'oo-info-panel-bottom': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("bottom") > -1,
+      'oo-info-panel-left': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("left") > -1,
+      'oo-info-panel-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
     });
     var titleClass = ClassNames({
-      'state-screen-title': true,
-      'text-truncate': true,
-      'text-capitalize': true,
-      'pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+      'oo-state-screen-title': true,
+      'oo-text-truncate': true,
+      'oo-text-capitalize': true,
+      'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
     });
     var descriptionClass = ClassNames({
-      'state-screen-description': true,
-      'pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+      'oo-state-screen-description': true,
+      'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
     });
     var actionIconClass = ClassNames({
-      'action-icon-pause': !this.props.pauseAnimationDisabled,
-      'action-icon': this.props.pauseAnimationDisabled,
-      'animate-pause': this.state.animate && !this.props.pauseAnimationDisabled,
-      'action-icon-top': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("top") > -1,
-      'action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1,
-      'action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1,
-      'action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1,
-      'hidden': !this.props.skinConfig.pauseScreen.showPauseIcon || this.props.pauseAnimationDisabled
+      'oo-action-icon-pause': !this.props.pauseAnimationDisabled,
+      'oo-action-icon': this.props.pauseAnimationDisabled,
+      'oo-animate-pause': this.state.animate && !this.props.pauseAnimationDisabled,
+      'oo-action-icon-top': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("top") > -1,
+      'oo-action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1,
+      'oo-action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1,
+      'oo-action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1,
+      'oo-hidden': !this.props.skinConfig.pauseScreen.showPauseIcon || this.props.pauseAnimationDisabled
     });
 
     var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
     var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.state.descriptionText}</div>);
+    var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
+      <AdOverlay {...this.props}
+        overlay={this.props.controller.state.adOverlayUrl}
+        showOverlay={this.props.controller.state.showAdOverlay}
+        showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}/> : null;
+
+    var upNextPanel = (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
+      <UpNextPanel {...this.props}
+        controlBarVisible={this.state.controlBarVisible}
+        currentPlayhead={this.props.currentPlayhead}/> : null;
 
     return (
-      <div className="state-screen pauseScreen">
+      <div className="oo-state-screen oo-pause-screen">
         <div className={fadeUnderlayClass}></div>
         <div className={infoPanelClass}>
-          {this.props.skinConfig.startScreen.showTitle ? titleMetadata : null}
-          {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : null}
+          {this.props.skinConfig.pauseScreen.showTitle ? titleMetadata : null}
+          {this.props.skinConfig.pauseScreen.showDescription ? descriptionMetadata : null}
         </div>
 
-        <a className="state-screen-selectable" onClick={this.handleClick}></a>
+        <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
 
         <a className={actionIconClass} onClick={this.handleClick}>
-          <Icon {...this.props} icon="pause"/>
+          <Icon {...this.props} icon="pause" style={actionIconStyle}/>
         </a>
 
-        <AdOverlay {...this.props}
-          overlay={this.props.controller.state.adOverlayUrl}
-          showOverlay={this.props.controller.state.showAdOverlay}
-          showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
-          controlBarVisible={this.state.controlBarVisible}
-        />
-        <ScrubberBar {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-        />
-        <ControlBar {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-          playerState={this.state.playerState}
-          isLiveStream={this.props.isLiveStream}
-        />
+        <div className="oo-interactive-container">
 
-        {(this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
-          <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/> : null}
+          <TextTrack closedCaptionOptions={this.props.closedCaptionOptions}/>
+
+          <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
+
+          {adOverlay}
+
+          {upNextPanel}
+
+          <ControlBar {...this.props}
+            controlBarVisible={this.state.controlBarVisible}
+            playerState={this.state.playerState}
+            isLiveStream={this.props.isLiveStream}/>
+        </div>
       </div>
     );
   }

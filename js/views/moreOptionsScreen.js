@@ -32,7 +32,7 @@ var MoreOptionsScreen = React.createClass({
 
   render: function() {
     return (
-      <div className="state-screen MoreOptionsScreen">
+      <div className="oo-state-screen oo-more-options-screen">
         <MoreOptionsPanel {...this.props} controlBarWidth={this.state.controlBarWidth} />
         <CloseButton {...this.props}
           closeAction={this.handleClose}/>
@@ -44,7 +44,7 @@ var MoreOptionsScreen = React.createClass({
 MoreOptionsScreen.defaultProps = {
   skinConfig: {
     icons: {
-      dismiss:{fontStyleClass:'icon icon-close'}
+      dismiss:{fontStyleClass:'oo-icon oo-icon-close'}
     }
   },
   controller: {
