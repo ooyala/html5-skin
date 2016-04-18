@@ -4,6 +4,8 @@
 
 .oo-control-bar {
   background: $control-bar-bg;
+  background-repeat: no-repeat;
+  background-size: cover;
   width: 100%;
   height: $control-bar-height;
   position: relative;
