@@ -172,10 +172,10 @@ var CountDownClock = React.createClass({
 
   render: function() {
     var canvasClassName = ClassNames({
-      'oo-countdown-clock': true,
-      'oo-up-next-count-down': this.props.controller.state.screenToShow !== CONSTANTS.SCREEN.DISCOVERY_SCREEN,
-      'oo-discovery-count-down': this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN,
-      'oo-hidden': this.state.hideClock
+      'countdown-clock': true,
+      'up-next-count-down': this.props.controller.state.screenToShow !== CONSTANTS.SCREEN.DISCOVERY_SCREEN,
+      'discovery-count-down': this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN,
+      'hidden': this.state.hideClock
     });
 
     return (

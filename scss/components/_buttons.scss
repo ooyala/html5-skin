@@ -1,10 +1,10 @@
-button.oo-close-btn {
+button.closeBtn {
   top: $panel-padding;
   right: $panel-padding;
   @include close($spacer-close-btn, $spacer-close-btn);
 }
 
-button.oo-up-next-close-btn {
+button.upNextCloseBtn {
   top: 10px;
   right: 10px;
   @include close(-10px, -10px);

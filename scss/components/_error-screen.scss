@@ -1,7 +1,7 @@
-.oo-error-screen {
+.errorScreen {
   background-color: #000;
 
-  .oo-error-content {
+  .error-content {
     width: 80%;
     position: relative;
     top: 50%;
@@ -9,20 +9,20 @@
     @include vendor-prefixes(transform, translateY(-50%));
     word-wrap: break-word;
 
-    .oo-error-title {
+    .error-title {
       font-family: 'Roboto', sans-serif;
       font-weight: bold;
       margin-bottom: 30px;
       font-size: 1.7em;
     }
 
-    .oo-error-description {
+    .error-description {
       font-family: 'Open Sans', sans-serif;
       margin-bottom: 30px;
       font-size: 1em;
     }
 
-    .oo-error-action {
+    .error-action {
       color: #4389FF;
       font-family: 'Open Sans', sans-serif;
       font-size: 1em;

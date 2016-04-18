@@ -53,7 +53,7 @@ describe('ScrubberBar', function () {
         />
     );
 
-    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-scrubber-bar-padding");
+    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "scrubberBarPadding");
     TestUtils.Simulate.mouseDown(scrubberBar);
     expect(scrubberBarClicked).toBe(true);
   });
@@ -85,7 +85,7 @@ describe('ScrubberBar', function () {
         />
     );
 
-    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar-padding');
+    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'scrubberBarPadding');
     TestUtils.Simulate.mouseDown(scrubberBar);
     DOM.handlePlayheadMouseUp({
       preventDefault: function() {},
@@ -117,7 +117,7 @@ describe('ScrubberBar', function () {
     DOM.state.playheadWidth = 10;
     DOM.forceUpdate();
 
-    var playhead = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playhead-padding');
+    var playhead = TestUtils.findRenderedDOMComponentWithClass(DOM, 'playheadPadding');
     var leftPos = parseInt(playhead.style.left);
     expect(leftPos).toBeGreaterThan(200);
     expect(leftPos).toBeLessThan(300);
@@ -142,8 +142,8 @@ describe('ScrubberBar', function () {
         />
     );
 
-    var playhead = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playhead');
-    expect(playhead.className).toMatch('oo-ad-playhead');
+    var playhead = TestUtils.findRenderedDOMComponentWithClass(DOM, 'playhead');
+    expect(playhead.className).toMatch('adPlayhead');
   });
 
 });

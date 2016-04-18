@@ -9,15 +9,21 @@
 }
 
 @mixin border-radius($radius: $border-radius) {
-  border-radius: $radius;
+  @if $enable-rounded {
+    border-radius: $radius;
+  }
 }
 
 @mixin box-shadow($shadow...) {
-  box-shadow: $shadow;
+  @if $enable-shadows {
+    box-shadow: $shadow;
+  }
 }
 
 @mixin transition($transition...) {
-  transition: $transition;
+  @if $enable-transitions {
+    transition: $transition;
+  }
 }
 
 @mixin clearfix() {
@@ -51,13 +57,18 @@
   white-space: nowrap;
 }
 
-@mixin hover {
-  &:hover { @content }
-}
 
 @mixin hover-focus {
-  &:focus { @content }
-  @include hover { @content }
+  @if $enable-hover-media-query {
+    &:focus { @content }
+    @include hover { @content }
+  }
+  @else {
+    &:focus,
+    &:hover {
+      @content
+    }
+  }
 }
 
 // WebKit-style focus
@@ -119,7 +130,7 @@
 @mixin vertical-center {
   position: absolute;
   top: 50%;
-  @include vendor-prefixes(transform, translateY(-50%));
+  transform: translateY(-50%);
 }
 
 /// Horizontally centers the element inside of its first non-static parent,
@@ -127,7 +138,7 @@
 @mixin horizontal-center {
   position: absolute;
   left: 50%;
-  @include vendor-prefixes(transform, translateX(-50%));
+  transform: translateX(-50%);
 }
 
 /// Absolutely centers the element inside of its first non-static parent,
@@ -136,25 +147,10 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  @include vendor-prefixes(transform, translate(-50%, -50%));
+  transform: translate(-50%, -50%);
 }
 
 // calculate padding from aspect ratio
 @mixin set-aspect-ratio($width, $height) {
   padding-top: 100% * ($height/$width);
-}
-
-// safari only
-@mixin apply-to-safari-only ($selector) {
-  // safari 7.1+
-  _::-webkit-full-page-media, _:future, :root #{$selector} {
-    @content;
-  }
-
-  // safari 9+
-  @supports (overflow:-webkit-marquee) and (justify-content:inherit) {
-    #{$selector} {
-      @content;
-    }
-  }
 }

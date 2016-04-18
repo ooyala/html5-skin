@@ -28,12 +28,29 @@ var SharePanel = React.createClass({
       var startAtString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.START_AT, this.props.localizableStrings);
 
       return (
-        <div className="oo-share-tab-panel">
-          <div className="oo-social-action-text oo-text-capitalize">{titleString}</div>
-          <a className="oo-twitter" onClick={this.handleTwitterClick}> </a>
-          <a className="oo-facebook" onClick={this.handleFacebookClick}> </a>
-          <a className="oo-google-plus" onClick={this.handleGPlusClick}> </a>
-          <a className="oo-email-share" onClick={this.handleEmailClick}> </a>
+        <div className="shareTabPanel">
+          <div className="social-action-text text-capitalize">{titleString}</div>
+          <a className="twitter" onClick={this.handleTwitterClick}> </a>
+          <a className="facebook" onClick={this.handleFacebookClick}> </a>
+          <a className="googlePlus" onClick={this.handleGPlusClick}> </a>
+          <a className="emailShare" onClick={this.handleEmailClick}> </a>
+          <br/>
+
+          <form className="form-inline">
+            <div className="form-group">
+              <label className="sr-only" htmlFor="oo-url">url</label>
+              <input className="form-control" type='url' defaultValue={location.href} id="oo-url"/>
+            </div>
+
+            <label className="checkbox-inline">
+              <input type="checkbox" />{startAtString}
+            </label>
+
+            <div className="form-group">
+              <label className="sr-only" htmlFor="oo-start-at">{startAtString}</label>
+              <input className="form-control start-at" type='text' id="oo-start-at" defaultValue={Utils.formatSeconds(this.props.currentPlayhead)} />
+            </div>
+          </form>
         </div>
       );
     }
@@ -49,8 +66,8 @@ var SharePanel = React.createClass({
       }
 
       return (
-        <div className="oo-share-tab-panel">
-          <textarea className="oo-form-control"
+        <div className="shareTabPanel">
+          <textarea className="form-control"
                     rows="3"
                     value={iframeURL}
                     readOnly />
@@ -94,20 +111,20 @@ var SharePanel = React.createClass({
 
   render: function() {
     var shareTab = ClassNames({
-      'oo-share-tab': true,
-      'oo-active': this.state.activeTab == this.tabs.SHARE
+      'shareTab': true,
+      'active': this.state.activeTab == this.tabs.SHARE
     });
     var embedTab = ClassNames({
-      'oo-embed-tab': true,
-      'oo-active': this.state.activeTab == this.tabs.EMBED
+      'embedTab': true,
+      'active': this.state.activeTab == this.tabs.EMBED
     });
 
     var shareString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings),
         embedString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMBED, this.props.localizableStrings);
 
     return (
-      <div className="oo-share-container">
-        <div className="oo-tab-row">
+      <div className="share-container">
+        <div className="tabRow">
           <a className={shareTab} onClick={this.showPanel.bind(this, this.tabs.SHARE)}>{shareString}</a>
           <a className={embedTab} onClick={this.showPanel.bind(this, this.tabs.EMBED)}>{embedString}</a>
         </div>

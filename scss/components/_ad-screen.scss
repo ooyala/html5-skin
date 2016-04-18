@@ -1,23 +1,23 @@
-.oo-ad-screen {
+.adScreen {
   cursor: default;
 
-  .oo-action-icon {
-    span.oo-icon {
+  .action-icon {
+    span.icon {
       opacity: 0;
     }
   }
 
-  .oo-action-icon.oo-icon-hidden {
+  .action-icon.icon-hidden {
     z-index: 11990;
   }
 
-  .oo-action-icon-pause.oo-animate-pause {
+  .action-icon-pause.animate-pause {
     z-index: 12600;
     cursor: default;
     visibility: hidden;
   }
 }
 
-.oo-ad-screen.oo-hidden {
+.adScreen.hidden {
   cursor: none;
 }

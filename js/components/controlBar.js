@@ -5,7 +5,6 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     CONSTANTS = require('../constants/constants'),
     ClassNames = require('classnames'),
-    ScrubberBar = require('./scrubberBar'),
     Slider = require('./slider'),
     Utils = require('./utils'),
     VideoQualityPopover = require('./videoQualityPopover'),
@@ -16,7 +15,6 @@ var ControlBar = React.createClass({
     this.isMobile = this.props.controller.state.isMobile;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.volumeSliderValue = 0;
-    this.moreOptionsItems = null;
 
     return {
       currentVolumeHead: 0,
@@ -27,7 +25,7 @@ var ControlBar = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     // if responsive breakpoint changes
     if (nextProps.responsiveView != this.props.responsiveView) {
-      this.responsiveUIMultiple = this.getResponsiveUIMultiple(nextProps.responsiveView);
+      this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     }
   },
 
@@ -113,7 +111,7 @@ var ControlBar = React.createClass({
   },
 
   handleMoreOptionsClick: function() {
-    this.props.controller.toggleMoreOptionsScreen(this.moreOptionsItems);
+    this.props.controller.toggleMoreOptionsScreen();
   },
 
   handleClosedCaptionClick: function() {
@@ -190,16 +188,16 @@ var ControlBar = React.createClass({
       //create each volume tick separately
       var turnedOn = this.props.controller.state.volumeState.volume >= (i+1) / 10;
       var volumeClass = ClassNames({
-        "oo-volume-bar": true,
-        "oo-on": turnedOn
+        "volumeBar": true,
+        "on": turnedOn
       });
       volumeBars.push(<a data-volume={(i+1)/10} className={volumeClass} key={i}
         onClick={this.handleVolumeClick}></a>);
     }
 
-    var volumeSlider = <div className="oo-volume-slider"><Slider value={parseFloat(this.props.controller.state.volumeState.volume)}
+    var volumeSlider = <div className="volumeSlider"><Slider value={parseFloat(this.props.controller.state.volumeState.volume)}
                         onChange={this.changeVolumeSlider}
-                        className={"oo-slider oo-slider-volume"}
+                        className={"slider slider-volume"}
                         itemRef={"volumeSlider"}
                         minValue={"0"}
                         maxValue={"1"}
@@ -214,41 +212,42 @@ var ControlBar = React.createClass({
     }
 
     var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
+    var iconSetting = {};
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
     var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
     var currentPlayheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
-    var totalTimeContent = this.props.isLiveStream ? null : <span className="oo-total-time">{totalTime}</span>;
+    var totalTimeContent = this.props.isLiveStream ? null : <span className="total-time">{totalTime}</span>;
 
     // TODO: Update when implementing localization
     var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
 
     var qualityClass = ClassNames({
-      "oo-quality": true,
-      "oo-control-bar-item": true,
-      "oo-selected": this.state.showVideoQualityPopover
+      "quality": true,
+      "controlBarItem": true,
+      "selected": this.state.showVideoQualityPopover
     });
 
     var watermarkClass = ClassNames({
-      "oo-watermark": true,
-      "oo-control-bar-item": true,
-      "oo-non-clickable-watermark": !this.props.skinConfig.controlBar.watermark.clickUrl
+      "watermark": true,
+      "controlBarItem": true,
+      "nonClickableWatermark": !this.props.skinConfig.controlBar.watermark.clickUrl
     });
 
     var controlItemTemplates = {
-      "playPause": <button className="oo-play-pause oo-control-bar-item" onClick={this.handlePlayClick} key="playPause">
+      "playPause": <button className="playPause controlBarItem" onClick={this.handlePlayClick} key="playPause">
         <Icon {...this.props} icon={playIcon}
           style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "live": <div className="oo-live oo-control-bar-item" key="live">
-        <div className="oo-live-indicator">
-          <div className="oo-live-circle"></div>
-          <span className="oo-live-text"> {liveText}</span>
+      "live": <div className="live controlBarItem" key="live">
+        <div className="liveIndicator">
+          <div className="liveCircle"></div>
+          <span className="liveText"> {liveText}</span>
         </div>
       </div>,
 
-      "volume": <div className="oo-volume oo-control-bar-item" key="volume">
+      "volume": <div className="volume controlBarItem" key="volume">
         <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
           style={this.props.skinConfig.controlBar.iconStyle.inactive}
           onClick={this.handleVolumeIconClick}
@@ -256,20 +255,20 @@ var ControlBar = React.createClass({
         {volumeControls}
       </div>,
 
-      "timeDuration": <div className="oo-time-duration oo-control-bar-duration" style={durationSetting} key="timeDuration">
+      "timeDuration": <div className="timeDuration controlBarDuration" style={durationSetting} key="timeDuration">
         <span>{currentPlayheadTime}</span>{totalTimeContent}
       </div>,
 
-      "flexibleSpace": <div className="oo-flexible-space oo-control-bar-flex-space" key="flexibleSpace"></div>,
+      "flexibleSpace": <div className="flexibleSpace controlBarFlexSpace" key="flexibleSpace"></div>,
 
-      "moreOptions": <button className="oo-more-options oo-control-bar-item"
+      "moreOptions": <button className="moreOptions controlBarItem"
         onClick={this.handleMoreOptionsClick} key="moreOptions">
         <Icon {...this.props} icon="ellipsis" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "quality": (
-        <div className="oo-popover-button-container" key="quality">
+        <div className="popover-button-container" key="quality">
           {videoQualityPopover}
           <button className={qualityClass} onClick={this.handleQualityClick}>
             <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
@@ -278,25 +277,25 @@ var ControlBar = React.createClass({
         </div>
       ),
 
-      "discovery": <button className="oo-discovery oo-control-bar-item"
+      "discovery": <button className="discovery controlBarItem"
         onClick={this.handleDiscoveryClick} key="discovery">
         <Icon {...this.props} icon="discovery" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "closedCaption": <button className="oo-closed-caption oo-control-bar-item"
+      "closedCaption": <button className="closedCaption controlBarItem"
         onClick={this.handleClosedCaptionClick} key="closedCaption">
         <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "share": <button className="oo-share oo-control-bar-item"
+      "share": <button className="share controlBarItem"
         onClick={this.handleShareClick} key="share">
         <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
+      "fullscreen": <button className="fullscreen controlBarItem"
         onClick={this.handleFullscreenClick} key="fullscreen">
         <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
@@ -310,81 +309,66 @@ var ControlBar = React.createClass({
     var controlBarItems = [];
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
-    //if mobile and not showing the slider or the icon, extra space can be added to control bar width. If volume bar is shown instead of slider, add some space as well:
+    //if mobile and not showing the slider or the icon, extra space can be added to control bar width:
     var volumeItem = null;
-    var extraSpaceVolume = 0;
-
     for (var j = 0; j < defaultItems.length; j++) {
       if (defaultItems[j].name == "volume") {
         volumeItem = defaultItems[j];
-
-        var extraSpaceVolumeSlider = (((volumeItem && this.isMobile && !this.props.controller.state.volumeState.volumeSliderVisible) || volumeItem && Utils.isIos()) ? parseInt(volumeItem.minWidth) : 0);
-        var extraSpaceVolumeBar = this.isMobile ? 0 : parseInt(volumeItem.minWidth)/2;
-        extraSpaceVolume = extraSpaceVolumeSlider + extraSpaceVolumeBar;
-
         break;
       }
     }
-
+    var extraSpaceVolumeSlider = (((volumeItem && this.isMobile && !this.props.controller.state.volumeState.volumeSliderVisible) || volumeItem && Utils.isIos()) ? parseInt(volumeItem.minWidth) : 0);
 
     //if no hours, add extra space to control bar width:
     var hours = parseInt(this.props.duration / 3600, 10);
     var extraSpaceDuration = (hours > 0) ? 0 : 45;
 
-    var controlBarLeftRightPadding = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
+    var controlBarLeftRightPadding = this.responsiveUIMultiple * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
 
-    for (var k = 0; k < defaultItems.length; k++) {
+    var collapsedResult = Utils.collapse(this.props.componentWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems, this.responsiveUIMultiple);
+    var collapsedControlBarItems = collapsedResult.fit;
+    var collapsedMoreOptionsItems = collapsedResult.overflow;
+
+    for (var k = 0; k < collapsedControlBarItems.length; k++) {
 
       // filter out unrecognized button names
-      if (typeof controlItemTemplates[defaultItems[k].name] === "undefined") {
+      if (typeof controlItemTemplates[collapsedControlBarItems[k].name] === "undefined") {
         continue;
       }
 
       //do not show CC button if no CC available
-      if (!this.props.controller.state.closedCaptionOptions.availableLanguages && (defaultItems[k].name === "closedCaption")){
+      if (!this.props.controller.state.closedCaptionOptions.availableLanguages && (collapsedControlBarItems[k].name === "closedCaption")){
         continue;
       }
 
       //do not show quality button if no bitrates available
-      if (!this.props.controller.state.videoQualityOptions.availableBitrates && (defaultItems[k].name === "quality")){
+      if (!this.props.controller.state.videoQualityOptions.availableBitrates && (collapsedControlBarItems[k].name === "quality")){
         continue;
       }
 
       //do not show discovery button if no related videos available
-      if (!this.props.controller.state.discoveryData && (defaultItems[k].name === "discovery")){
+      if (!this.props.controller.state.discoveryData && (collapsedControlBarItems[k].name === "discovery")){
         continue;
       }
 
-      if (Utils.isIos() && (defaultItems[k].name === "volume")){
+      if (Utils.isIos() && (collapsedControlBarItems[k].name === "volume")){
+        continue;
+      }
+
+      if (collapsedControlBarItems[k].name === "moreOptions" && collapsedMoreOptionsItems.length === 0) {
         continue;
       }
 
       // Not sure what to do when there are multi streams
-      if (defaultItems[k].name === "live" &&
+      if (collapsedControlBarItems[k].name === "live" &&
           (typeof this.props.isLiveStream === 'undefined' ||
           !(this.props.isLiveStream))) {
         continue;
       }
 
-      controlBarItems.push(defaultItems[k]);
+      controlBarItems.push(controlItemTemplates[collapsedControlBarItems[k].name]);
     }
-
-    var collapsedResult = Utils.collapse(this.props.componentWidth + this.responsiveUIMultiple * (extraSpaceDuration + extraSpaceVolume - controlBarLeftRightPadding), controlBarItems, this.responsiveUIMultiple);
-    var collapsedControlBarItems = collapsedResult.fit;
-    var collapsedMoreOptionsItems = collapsedResult.overflow;
-    this.moreOptionsItems = collapsedMoreOptionsItems;
-
-    finalControlBarItems = [];
-
-    for (var k = 0; k < collapsedControlBarItems.length; k++) {
-      if (collapsedControlBarItems[k].name === "moreOptions" && collapsedMoreOptionsItems.length === 0) {
-        continue;
-      }
-
-      finalControlBarItems.push(controlItemTemplates[collapsedControlBarItems[k].name]);
-    }
-
-    return finalControlBarItems;
+    return controlBarItems;
   },
 
   setupItemStyle: function() {
@@ -401,7 +385,6 @@ var ControlBar = React.createClass({
     returnStyles.iconCharacter = {
       color: this.props.skinConfig.controlBar.iconStyle.inactive.color,
       opacity: this.props.skinConfig.controlBar.iconStyle.inactive.opacity
-
     };
     return returnStyles;
   },
@@ -409,17 +392,16 @@ var ControlBar = React.createClass({
 
   render: function() {
     var controlBarClass = ClassNames({
-      "oo-control-bar": true,
-      "oo-control-bar-hidden": !this.props.controlBarVisible
+      "control-bar": true,
+      "control-bar-hidden": !this.props.controlBarVisible,
+      "control-bar-visible": this.props.controlBarVisible
     });
 
     var controlBarItems = this.populateControlBar();
 
     return (
       <div className={controlBarClass} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
-        <ScrubberBar {...this.props} />
-
-        <div className="oo-control-bar-items-wrapper">
+        <div className="controlBarItemsWrapper">
           {controlBarItems}
         </div>
       </div>

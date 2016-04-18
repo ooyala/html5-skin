@@ -1,15 +1,15 @@
 //full screen
-.oo-quality-screen {
+.quality-screen {
   padding: $panel-padding;
   background-color: $panel-bg;
 
-  .oo-quality-panel-title {
+  .quality-panel-title {
     line-height: 1;
     font-weight: bold;
     font-size: $font-size-md-screen-title;
     font-family: $font-family-roboto-condensed;
     color: $white;
-    span.oo-icon {
+    span.icon {
       top: 1px;
       position: relative;
       margin-left: 7px;
@@ -17,25 +17,17 @@
     }
   }
 
-  .oo-quality-screen-content {
-    top: 46%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  .quality-screen-content {
+    @include absolute-center;
     height: $bitrate-horizontal-height;
-    text-align: center;
-    //max-width: 95%;
+    max-width: 95%;
 
     //override default scrollbar style
     .scrollarea-content{
       display: inline-block;
     }
 
-    //hide horizontal scrollbars
-    .scrollbar-container.horizontal {
-      display:none;
-    }
-
-    .oo-quality-panel {
+    .quality-panel {
       ul {
         display: inline-block;
         padding:0;
@@ -52,15 +44,15 @@
           margin: 0 24px;
 
           &:first-child {
-            margin-left:0 !important;
+            margin-left:0;
           }
 
           &:last-child {
-            margin-right:0 !important;
+            margin-right:0;
           }
 
           //vid quality btns - full screen
-          a.oo-quality-btn {
+          a.quality-btn {
             padding: 10px 8px;
             background-color: transparent;
             color: $white;
@@ -77,36 +69,36 @@
               opacity:0.6;
             }
 
-            &.oo-selected {
+            &.selected {
               color: $blue-light;
               border-color: $blue-light;
-              //border-width: 2px;
+              border-width: 2px;
               font-weight: bold;
             }
           }
 
           //auto quality btn - full screen
-          a.oo-quality-auto-btn {
+          a.quality-auto-btn {
             background-color: transparent;
             font-family: $font-family-roboto;
             line-height:1;
             outline: none;
 
             &:hover {
-              .oo-quality-auto-icon, .oo-quality-auto-label {
+              .quality-auto-icon, .quality-auto-label {
                 opacity:0.6;
                 @include vendor-prefixes(transition, opacity 0.3s ease);
               }
             }
 
-            &.oo-selected {
-              .oo-quality-auto-icon, .oo-quality-auto-label {
+            &.selected {
+              .quality-auto-icon, .quality-auto-label {
                 color: $blue-light;
                 font-weight:bold;
               }
             }
 
-            .oo-quality-auto-icon {
+            .quality-auto-icon {
               font-size: 2.1em;
               font-weight:bold;
               color: $gray;
@@ -114,7 +106,7 @@
               opacity:1;
             }
 
-            .oo-quality-auto-label {
+            .quality-auto-label {
               color:$white;
               font-size: 0.9em;
               text-transform: capitalize;
@@ -124,7 +116,7 @@
           }
         }
 
-        li.oo-auto-li {
+        li.auto-li {
           top:20px;
         }
       }
@@ -132,49 +124,8 @@
   }
 }
 
-//mobile, fullscreen, portrait
-@media (orientation: portrait) {
-  .oo-mobile-fullscreen {
-    .oo-quality-screen-content {
-      height: 80% !important;
-      width: 100px !important;
-
-      .oo-scrollarea-content{
-        display: block !important;
-      }
-
-      .oo-quality-panel {
-        position: relative;
-        text-align: center;
-        ul {
-          padding: 0;
-          margin: 0;
-          list-style: none;
-          height: 75% !important;
-          white-space: normal;
-
-          li {
-            display: block;
-            margin: 0 0 30px 0 !important;
-            padding: 0;
-            list-style: none;
-
-            &:last-child {
-              margin-bottom: 10px;
-            }
-          }
-
-          li.oo-auto-li {
-            top:4px !important;
-          }
-        }
-      }
-    }
-  }
-}
-
 //micro state
-.oo-quality-popover {
+.quality-popover {
   position: absolute;
   background-color: $popover-bg;
   bottom: $control-bar-height + 10px;
@@ -191,7 +142,7 @@
     padding-top: 6px !important;
   }
 
-  .oo-quality-panel {
+  .quality-panel {
     position: relative;
     text-align: center;
 
@@ -210,7 +161,7 @@
         }
 
         //vid quality btns - popover
-        a.oo-quality-btn {
+        a.quality-btn {
           background-color: transparent;
           color: $white;
           font-size: 0.6em;
@@ -225,7 +176,7 @@
             opacity:0.6;
           }
 
-          &.oo-selected {
+          &.selected {
             color: $blue-light;
             font-weight: bold;
             font-size:0.6em + em(2px);
@@ -233,7 +184,7 @@
         }
 
         // auto btn - popover
-        a.oo-quality-auto-btn {
+        a.quality-auto-btn {
           background-color: transparent;
           font-family: $font-family-roboto;
           line-height:1;
@@ -241,26 +192,26 @@
           white-space:nowrap;
 
           &:hover {
-            .oo-quality-auto-icon, .oo-quality-auto-label {
+            .quality-auto-icon, .quality-auto-label {
               @include vendor-prefixes(transition, opacity 0.3s ease);
               opacity:0.6;
             }
           }
 
-          &.oo-selected {
-            .oo-quality-auto-icon, .oo-quality-auto-label {
+          &.selected {
+            .quality-auto-icon, .quality-auto-label {
               color: $blue-light;
               font-weight:bold;
             }
-            .oo-quality-auto-icon {
+            .quality-auto-icon {
               font-size: 1em + em(2px);
             }
-            .oo-quality-auto-label {
+            .quality-auto-label {
               font-size: 0.5em + em(2px);
             }
           }
 
-          .oo-quality-auto-icon {
+          .quality-auto-icon {
             font-size: 1em;
             font-weight:bold;
             color: $gray;
@@ -268,7 +219,7 @@
             opacity:1;
           }
 
-          .oo-quality-auto-label {
+          .quality-auto-label {
             color:$white;
             font-size: 0.5em;
             text-transform: capitalize;

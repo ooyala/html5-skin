@@ -116,29 +116,29 @@ var DiscoveryPanel = React.createClass({
     // discovery content
     var panelTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.DISCOVER, this.props.localizableStrings);
     var discoveryContentName = ClassNames({
-      'oo-discovery-content-name': true,
-      'oo-hidden': !this.props.skinConfig.discoveryScreen.contentTitle.show
+      'discoveryContentName': true,
+      'hidden': !this.props.skinConfig.discoveryScreen.contentTitle.show
     });
     var discoveryCountDownWrapperStyle = ClassNames({
-      'oo-discovery-count-down-wrapper-style': true,
-      'oo-hidden': !this.state.showDiscoveryCountDown
+      'discoveryCountDownWrapperStyle': true,
+      'hidden': !this.state.showDiscoveryCountDown
     });
     var discoveryToaster = ClassNames({
-      'oo-discovery-toaster-container-style': true,
-      'oo-flexcontainer': true,
-      'oo-scale-height': this.state.heightOverflow && (this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id || this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.sm.id)
+      'discoveryToasterContainerStyle': true,
+      'flexcontainer': true,
+      'scaleHeight': this.state.heightOverflow
     });
     var leftButtonClass = ClassNames({
-      'oo-left-button': true,
-      'oo-hidden': this.state.currentPage <= 1
+      'leftButton': true,
+      'hidden': this.state.currentPage <= 1
     });
     var rightButtonClass = ClassNames({
-      'oo-right-button': true,
-      'oo-hidden': endAt >= relatedVideos.length
+      'rightButton': true,
+      'hidden': endAt >= relatedVideos.length
     });
     var countDownClock = (
       <div className={discoveryCountDownWrapperStyle}>
-        <a className="oo-discovery-count-down-icon-style" onClick={this.handleDiscoveryCountDownClick}>
+        <a className="discoveryCountDownIconStyle" onClick={this.handleDiscoveryCountDownClick}>
           <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime}
           ref="CountDownClock" />
           <Icon {...this.props} icon="pause"/>
@@ -163,8 +163,8 @@ var DiscoveryPanel = React.createClass({
     }
 
     return (
-      <div className="oo-discovery-panel" ref="discoveryPanel">
-        <div className="oo-discovery-panel-title">
+      <div className="discovery-panel" ref="discoveryPanel">
+        <div className="discovery-panel-title">
           {panelTitle}
           <Icon {...this.props} icon="discovery"/>
         </div>
@@ -224,10 +224,10 @@ DiscoveryPanel.defaultProps = {
       }
     },
     icons: {
-      pause:{fontStyleClass:'oo-icon oo-icon-pause'},
-      discovery:{fontStyleClass:'oo-icon oo-icon-topmenu-discovery'},
-      left:{fontStyleClass:'oo-icon oo-icon-left'},
-      right:{fontStyleClass:'oo-icon oo-icon-right'}
+      pause:{fontStyleClass:'icon icon-pause'},
+      discovery:{fontStyleClass:'icon icon-topmenu-discovery'},
+      left:{fontStyleClass:'icon icon-left'},
+      right:{fontStyleClass:'icon icon-right'}
     },
     responsive: {
       breakpoints: {

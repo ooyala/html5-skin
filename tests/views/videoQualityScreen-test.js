@@ -23,7 +23,7 @@ describe('VideoQualityScreen', function () {
     var DOM = TestUtils.renderIntoDocument(<VideoQualityScreen skinConfig={mockSkinConfig}/>);
 
     //test close btn
-    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-close-btn');
+    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'closeBtn');
     TestUtils.Simulate.click(closeBtn);
   });
 });

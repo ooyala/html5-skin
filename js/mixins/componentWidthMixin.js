@@ -10,7 +10,6 @@ var ComponentWidthMixin = {
 
   componentDidMount: function() {
     window.addEventListener('resize', debounce(this.onResize, 150));
-    window.addEventListener('webkitfullscreenchange', debounce(this.onResize, 150));
     this.setState({
       componentWidth: ReactDOM.findDOMNode(this).getBoundingClientRect().width
     });
@@ -18,7 +17,6 @@ var ComponentWidthMixin = {
 
   componentWillUnmount: function() {
     window.removeEventListener('resize', this.onResize);
-    window.removeEventListener('webkitfullscreenchange', this.onResize);
   },
 
   onResize: function() {

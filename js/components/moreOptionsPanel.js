@@ -58,46 +58,83 @@ var MoreOptionsPanel = React.createClass({
     var iconSetting = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive;
 
     var optionsItemsTemplates = {
-      "quality": <button className="oo-quality oo-control-bar-item" onClick={this.handleQualityClick} key="quality">
+      "quality": <button className="quality controlBarItem" onClick={this.handleQualityClick} key="quality">
         <Icon {...this.props} icon="quality"
          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "discovery": <button className="oo-discovery oo-control-bar-item" onClick={this.handleDiscoveryClick} key="discovery">
+      "discovery": <button className="discovery controlBarItem" onClick={this.handleDiscoveryClick} key="discovery">
         <Icon {...this.props} icon="discovery"
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "closedCaption": <button className="oo-closed-caption oo-control-bar-item" onClick={this.handleClosedCaptionClick} key="closedCaption">
+      "closedCaption": <button className="closedCaption controlBarItem" onClick={this.handleClosedCaptionClick} key="closedCaption">
         <Icon {...this.props} icon="cc"
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "share": <button className="oo-share oo-control-bar-item" onClick={this.handleShareClick} key="share">
+      "share": <button className="share controlBarItem" onClick={this.handleShareClick} key="share">
         <Icon {...this.props} icon="share"
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "settings": <div className="oo-settings" key="settings">
+      "settings": <div className="settings" key="settings">
         <Icon {...this.props} icon="setting"
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </div>
     };
 
-    var items = this.props.controller.state.moreOptionsItems;
     var moreOptionsItems = [];
-    
-    for (var i = 0; i < items.length; i++) {
-      moreOptionsItems.push(optionsItemsTemplates[items[i].name]);
-    }
+    var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
+    //if mobile and not showing the slider or the icon, extra space can be added to control bar width:
+    var volumeItem = null;
+    for (var j = 0; j < defaultItems.length; j++) {
+      if (defaultItems[j].name == "volume") {
+        volumeItem = defaultItems[j];
+        break;
+      }
+    }
+    var extraSpaceVolumeSlider = (((volumeItem && this.isMobile && !this.props.controller.state.volumeState.volumeSliderVisible) || volumeItem && Utils.isIos()) ? parseInt(volumeItem.minWidth) : 0);
+
+    //if no hours, add extra space to control bar width:
+    var hours = parseInt(this.props.duration / 3600, 10);
+    var extraSpaceDuration = (hours > 0) ? 0 : 45;
+
+    var responsiveView = this.props.responsiveView;
+    var responsiveUIMultiple = this.props.skinConfig.responsive.breakpoints[responsiveView].multiplier;
+    var controlBarLeftRightPadding = responsiveUIMultiple * CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
+
+    var collapsedResult = Utils.collapse(this.props.controlBarWidth + extraSpaceDuration + extraSpaceVolumeSlider - controlBarLeftRightPadding, defaultItems, responsiveUIMultiple);
+    var collapsedMoreOptionsItems = collapsedResult.overflow;
+    for (var i = 0; i < collapsedMoreOptionsItems.length; i++) {
+      if (typeof optionsItemsTemplates[collapsedMoreOptionsItems[i].name] === "undefined") {
+        continue;
+      }
+
+      //do not show CC button if no CC available
+      if (!this.props.controller.state.closedCaptionOptions.availableLanguages && (collapsedMoreOptionsItems[i].name === "closedCaption")) {
+        continue;
+      }
+
+      //do not show discovery button if no related videos available
+      if (!this.props.controller.state.discoveryData && (collapsedMoreOptionsItems[i].name === "discovery")){
+        continue;
+      }
+
+      //do not show quality button if no bitrates available
+      if (!this.props.controller.state.videoQualityOptions.availableBitrates && (collapsedMoreOptionsItems[i].name === "quality")){
+        continue;
+      }
+      moreOptionsItems.push(optionsItemsTemplates[collapsedMoreOptionsItems[i].name]);
+    }
     return moreOptionsItems;
   },
 
   render: function () {
     var moreOptionsItemsClass = ClassNames({
-      'oo-more-options-items': true,
-      'oo-animate-more-options': this.state.animate
+      'moreOptionsItems': true,
+      'animate-more-options': this.state.animate
     });
 
     //inline style for config/skin.json elements only
@@ -110,7 +147,7 @@ var MoreOptionsPanel = React.createClass({
 
     return (
       <div>
-        <div className="oo-more-options-panel">
+        <div className="moreOptionsPanel">
           <div className={moreOptionsItemsClass} style={buttonStyle}>
             {moreOptionsItems}
           </div>

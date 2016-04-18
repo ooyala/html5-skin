@@ -15,7 +15,7 @@ describe('ClosedCaptionScreen', function () {
     var DOM = TestUtils.renderIntoDocument(<ClosedCaptionScreen />);
 
     //test close btn
-    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-close-btn');
+    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'closeBtn');
     TestUtils.Simulate.click(closeBtn);
   });
 });

@@ -1,143 +1,137 @@
-.oo-xsmall {
+.ooyala-xsmall {
   // State Screens
-  .oo-state-screen {
-    .oo-state-screen-info {
-      .oo-state-screen-title {
+  .state-screen {
+    .state-screen-info {
+      .state-screen-title {
         font-size: 1em;
       }
-      .oo-state-screen-description {
+      .state-screen-description {
         font-size: 0.6em;
       }
     }
   }
 
   // Discovery Screen
-  .oo-discovery-screen {
-    .oo-discovery-panel {
-      .oo-discovery-toaster-container-style {
+  .discoveryScreen {
+    .discovery-panel {
+      .discoveryToasterContainerStyle {
         max-height: 200px;
       }
-      @include apply-to-safari-only ('.oo-discovery-toaster-container-style') {
-        min-height: 100px;
-      }
-      .oo-discovery-image-wrapper-style {
+      .discoveryImageWrapperStyle {
         margin-bottom: 0;
 
         &:nth-last-child(2) {
-          margin-right:42px !important;
+          margin-right:42px;
         }
         &:last-child {
           margin-right:0;
         }
       }
 
-      .oo-scale-height {
+      .scaleHeight {
         max-height: 150px;
-      }
-      @include apply-to-safari-only ('.oo-scale-height') {
-        min-height: 80px !important;
       }
     }
   }
 
   // Closed Caption Screen
-  .oo-closed-captions-screen {
-    .oo-closed-captions-panel {
+  .closedCaptionsScreen {
+    .closed-captions-panel {
       padding:$panel-padding * $xsmall-multiple;
-      .oo-closed-captions-panel-title {
+      .closed-captions-panel-title {
         font-size: $font-size-sm-screen-title;
-        span.oo-icon {
+        span.icon {
           font-size: 0.7em;
         }
       }
-      .oo-switch-container {
+      .switch-container {
         margin-top: 20px;
         height: 15px;
         width: 74px;
-        .oo-switch-captions {
+        .switch-captions {
           font-size: $font-size-base * $xsmall-multiple;
         }
-        .oo-switch-element {
+        .switch-element {
           margin-bottom: 33%;
         }
       }
     }
-    .oo-language-container {
+    .language-container {
       margin-top: 4%;
-      .oo-language-panel {
-        a.oo-item {
+      .language-panel {
+        a.item {
           width: 98px;
           font-size: .9em;
           margin: 10px 20px;
           padding: 3px 10px;
         }
       }
-      .oo-discover-btn {
-        span.oo-icon {
+      .discoverBtn {
+        span.icon {
           font-size: 0.8em;
         }
       }
     }
-    .oo-preview-panel {
+    .preview-panel {
       display: none;
     }
   }
 
   //Error screen
-  .oo-error-screen {
-    .oo-error-title {
+  .errorScreen {
+    .error-title {
       font-size: 1em;
       margin-bottom: 10px;
     }
-    .oo-error-description {
+    .error-description {
       font-size: 0.7em;
       margin-bottom: 10px;
     }
-    .oo-error-action {
+    .error-action {
       font-size: 0.7em;
     }
   }
 
   //Action Icons
-  .oo-action-icon-pause {
+  .action-icon-pause {
     font-size:12px;
   }
-  .oo-action-icon span.oo-icon, .oo-action-icon-pause.oo-animate-pause {
+  .action-icon span.icon, .action-icon-pause.animate-pause {
     font-size:36px;
   }
 
   //Ad Panel
-  .oo-ad-top-bar {
+  .adTopBar {
      height: 17px;
 
-    .oo-ad-title, .oo-ad-playback-info {
+    .adTitle, .adPlaybackInfo {
         font-size: 0.7em;
         padding-left: 4px;
         padding-right: 4px;
     }
-    .oo-learn-more {
+    .learnMore {
       font-size: 0.7em;
       margin-right: 7px;
 
-      .oo-button-icon {
+      .buttonIcon {
         font-size: 0.7em;
         margin-right: 3px;
       }
     }
-    .oo-skip-button {
+    .skipButton {
       font-size: 0.7em;
 
-      .oo-skip-icon {
+      .skipIcon {
         font-size: 0.7em;
         margin-right: 3px;
       }
     }
 
-    .oo-skip-button.oo-visible {
+    .skipButton.visible {
       margin-right: 7px;
       margin-left: 7px;
 
-      .oo-skip-icon {
+      .skipIcon {
         font-size: 0.7em;
         margin-right: 3px;
       }
@@ -145,39 +139,39 @@
   }
 
   //Video Quality
-  .oo-quality-screen {
-    .oo-quality-panel-title {
+  .quality-screen {
+    .quality-panel-title {
       font-size: $font-size-sm-screen-title;
-      span.oo-icon {
+      span.icon {
         top: 1px;
         margin-left: 7px;
         font-size: 0.6em;
       }
     }
 
-    .oo-quality-screen-content {
+    .quality-screen-content {
       height: $bitrate-horizontal-height - 25px;
-      .oo-quality-panel {
+      .quality-panel {
         ul {
           height: $bitrate-horizontal-height - 30px;
           li {
             margin: 0 14px;
-            a.oo-quality-btn {
+            a.quality-btn {
               padding: 8px 6px;
               font-size: 0.8em;
             }
-            a.oo-quality-auto-btn {
-              .oo-quality-auto-icon {
+            a.quality-auto-btn {
+              .quality-auto-icon {
                 font-size: 1.4em;
                 padding:4px;
                 margin-bottom: 0;
               }
-              .oo-quality-auto-label {
+              .quality-auto-label {
                 font-size: 0.8em;
               }
             }
           }
-          li.oo-auto-li {
+          li.auto-li {
             top:14px;
           }
         }
@@ -186,46 +180,56 @@
   }
 
   //Control Bar
-  .oo-control-bar {
+  .control-bar-hidden {
+    bottom: -1 * $control-bar-height * $xsmall-multiple;
+  }
+  .control-bar {
     height: $control-bar-height * $xsmall-multiple;
     font-size: 18px * $xsmall-multiple;
 
-    .oo-control-bar-items-wrapper {
-      .oo-control-bar-item {
+    .controlBarItemsWrapper {
+      padding-right: 7.5px * $xsmall-multiple;
+      padding-left: 7.5px * $xsmall-multiple;
+
+      .controlBarItem {
         font-size: 18px * $xsmall-multiple;
         padding: 0 7.5px * $xsmall-multiple;
+        margin-top: 6px * $xsmall-multiple;
+        line-height: $control-bar-height * $xsmall-multiple;
       }
 
-      .oo-control-bar-duration {
+      .controlBarDuration {
         font-size: 14px * $xsmall-multiple;
         padding-left: 7.5px * $xsmall-multiple;
         padding-right: 7.5px * $xsmall-multiple;
+        margin-top: 6px * $xsmall-multiple;
+        line-height: $control-bar-height * $xsmall-multiple;
       }
 
-      .oo-live-circle {
+      .liveCircle {
         width: 10px * $xsmall-multiple;
         height: 10px * $xsmall-multiple;
         margin-right: 2px * $xsmall-multiple;
       }
 
-      .oo-live-text {
+      .liveText {
         font-size: 10px * $xsmall-multiple;
       }
 
-      .oo-watermark img {
+      .watermark img {
         height: 18px * $xsmall-multiple;
       }
     }
   }
 
   //Volume Slider
-  .oo-volume-bar {
+  .volumeBar {
     width: 6px * $xsmall-multiple;
     height: 18px * $xsmall-multiple;
-    padding-left: 3px * $xsmall-multiple;
+    padding-right: 3px * $xsmall-multiple;
   }
 
-  .oo-volume-slider {
+  .volumeSlider {
     height: 20px * $xsmall-multiple;
     width: $slider-volume-width * $xsmall-multiple;
     margin-left: 6px * $xsmall-multiple;
@@ -233,25 +237,35 @@
 
   // IE 11 only
   @media all and (-ms-high-contrast:none) {
-    *::-ms-backdrop, .oo-volume-slider {
-      height: 0;
+    *::-ms-backdrop, .volumeSlider {
+      height: 0px;
     }
   }
 
   //Scrubber Bar
-  .oo-scrubber-bar-container {
-    height: 28px * $xsmall-multiple;
+  .scrubber-bar-visible {
+    bottom: ($control-bar-height - $scrubber-padding-height) * $xsmall-multiple;
+  }
 
-    .oo-scrubber-bar-padding {
-      .oo-scrubber-bar {
-        height: 3px * $xsmall-multiple;
+  .scrubber-bar-hidden {
+    bottom: -1 * $scrubber-padding-height * $xsmall-multiple;
+  }
+  .scrubberBarContainer {
+    height: 24px * $xsmall-multiple;
+
+    .scrubberBarPadding {
+      left: 15px * $xsmall-multiple;
+      right: 15px * $xsmall-multiple;
+
+      .scrubberBar {
+        height: 5px * $xsmall-multiple;
       }
 
-      .oo-playhead-padding {
+      .playheadPadding {
         width: 25px * $xsmall-multiple;
         height: 25px * $xsmall-multiple;
 
-        .oo-playhead {
+        .playhead {
           width: 10px * $xsmall-multiple;
           height: 10px * $xsmall-multiple;
           border-width: 1px * $xsmall-multiple;
@@ -262,48 +276,48 @@
   }
 
   //Close Buttons
-  button.oo-close-btn {
+  button.closeBtn {
     font-size: 10px;
   }
 
-  button.oo-up-next-close-btn {
+  button.upNextCloseBtn {
     top: 10px * $xsmall-multiple;
     right: 10px * $xsmall-multiple;
     font-size: 10px;
     @include close(-10px * $xsmall-multiple, -10px * $xsmall-multiple);
   }
 
-  //Up Next
-  .oo-up-next-panel {
+//Up Next
+  .upNextPanel {
     height: 80px * $xsmall-multiple;
 
-    a.oo-up-next-content {
+    a.upNextContent {
       width: 140px * $xsmall-multiple;
 
-      span.oo-icon {
+      span.icon {
         font-size: 25px * $xsmall-multiple;
       }
     }
   }
 
-  .oo-content-metadata {
+  .contentMetadata {
     left: 140px * $xsmall-multiple;
 
-    .oo-up-next-title {
+    .upNextTitle {
       top: 3px * $xsmall-multiple;
       left: 15px * $xsmall-multiple;
 
-    .oo-up-next-count-down {
+    .up-next-count-down {
       width: 36px * $xsmall-multiple;
       height: 36px * $xsmall-multiple;
     }
 
-      .oo-up-next-title-text {
+      .upNextTitleText {
         font-size: 18pt * $xsmall-multiple;
       }
     }
 
-    .oo-content-description {
+    .contentDescription {
       bottom: 5px * $xsmall-multiple;
       left: 15px * $xsmall-multiple;
       margin-top: 10px * $xsmall-multiple;
@@ -311,40 +325,40 @@
     }
   }
 
-  .oo-up-next-count-down {
+  .up-next-count-down {
     margin-right:10px * $xsmall-multiple;
   }
 
-  .oo-ad-overlay.oo-control-bar-visible {
+  .adOverlay.controlBarVisible {
     bottom: $control-bar-height * $xsmall-multiple !important;
   }
 
-  .oo-up-next-panel-bottom {
+  .upNextPanelBottom {
     bottom: $control-bar-height * $xsmall-multiple;
   }
 
-  .oo-player-skin-plugins {
+  .player_skin_plugins {
     bottom: $control-bar-height * $xsmall-multiple;
   }
-  .oo-player-skin-plugins-click-layer {
+  .player_skin_plugins_click_layer {
     bottom: $control-bar-height * $xsmall-multiple;
   }
 
   //Slider
-  .oo-slider-volume {
+  .slider-volume {
     width: #{$slider-volume-width-small};
   }
 
-  .oo-slider-volume[type=range] {
+  .slider-volume[type=range] {
     /*required for proper track sizing in FF*/
     width: #{$slider-volume-width-small};
   }
 
-  .oo-slider-volume[type=range]::-webkit-slider-runnable-track {
+  .slider-volume[type=range]::-webkit-slider-runnable-track {
     height: #{$slider-volume-height-small};
   }
 
-  .oo-slider-volume[type=range]::-webkit-slider-thumb {
+  .slider-volume[type=range]::-webkit-slider-thumb {
     height: #{$slider-volume-thumb-diameter-small};
     width: #{$slider-volume-thumb-diameter-small};
     margin-top: -($slider-volume-thumb-diameter-small - $slider-volume-height-small)/2;
@@ -352,49 +366,31 @@
 
   //IE Edge only
   @supports (-ms-accelerator:true) {
-    .oo-slider-volume[type=range]::-webkit-slider-thumb {
+    .slider-volume[type=range]::-webkit-slider-thumb {
       margin-top: 1px;
     }
   }
 
   //moz
-  .oo-slider-volume[type=range]::-moz-range-track {
+  .slider-volume[type=range]::-moz-range-track {
     width: #{$slider-volume-width-small};
     height: #{$slider-volume-height-small};
   }
 
-  .oo-slider-volume[type=range]::-moz-range-thumb {
+  .slider-volume[type=range]::-moz-range-thumb {
     height: #{$slider-volume-thumb-diameter-small};
     width: #{$slider-volume-thumb-diameter-small};
   }
 
   //ms
-  .oo-slider-volume[type=range]::-ms-track {
+  .slider-volume[type=range]::-ms-track {
     width: #{$slider-volume-width-small};
     height: #{$slider-volume-height-small};
     border-width: $slider-volume-thumb-diameter-small/2 0;
   }
 
-  .oo-slider-volume[type=range]::-ms-thumb {
+  .slider-volume[type=range]::-ms-thumb {
     height: #{$slider-volume-thumb-diameter-small};
     width: #{$slider-volume-thumb-diameter-small};
-  }
-
-  //Text Tracks
-  .oo-text-track-container {
-    max-width: 96%;
-    margin-bottom: 4px;
-
-    .oo-text-track-window {
-      padding: 4px;
-
-      .oo-text-track-background {
-        padding: 2px 6px;
-
-        .oo-text-track {
-          font-size: em(12px);
-        }
-      }
-    }
   }
 }

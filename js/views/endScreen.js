@@ -4,7 +4,9 @@
 var React = require('react'),
     ClassNames = require('classnames'),
     ControlBar = require('../components/controlBar'),
-    Icon = require('../components/icon');
+    ResizeMixin = require('../mixins/resizeMixin'),
+    Icon = require('../components/icon'),
+    ScrubberBar = require('../components/scrubberBar');
 
 var EndScreen = React.createClass({
   getInitialState: function() {
@@ -23,30 +25,32 @@ var EndScreen = React.createClass({
   render: function() {
     var actionIconStyle = {
       color: this.props.skinConfig.endScreen.replayIconStyle.color,
-      opacity: this.props.skinConfig.endScreen.replayIconStyle.opacity
+      opacity: this.props.skinConfig.endScreen.replayIconStyle.opacity,
+      fontFamily: this.props.skinConfig.icons.replay.fontFamilyName
     };
 
     var actionIconClass = ClassNames({
-      'oo-action-icon': true,
-      'oo-hidden': !this.props.skinConfig.endScreen.showReplayButton
+      'action-icon': true,
+      'hidden': !this.props.skinConfig.endScreen.showReplayButton
     });
 
     return (
-    <div className="oo-state-screen oo-end-screen">
-      <div className="oo-underlay-gradient"></div>
+    <div className="state-screen endScreen">
+      <div className="underlay-gradient"></div>
 
-      <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
+      <a className="state-screen-selectable" onClick={this.handleClick}></a>
 
       <a className={actionIconClass} onClick={this.handleClick}>
-        <Icon {...this.props} icon="replay" style={actionIconStyle}/>
+        <Icon {...this.props} icon="replay"/>
       </a>
 
-      <div className="oo-interactive-container">
-        <ControlBar {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-          playerState={this.props.playerState}
-          isLiveStream={this.props.isLiveStream} />
-      </div>
+      <ScrubberBar {...this.props}
+        controlBarVisible={this.state.controlBarVisible} />
+
+      <ControlBar {...this.props}
+        controlBarVisible={this.state.controlBarVisible}
+        playerState={this.props.playerState}
+        isLiveStream={this.props.isLiveStream} />
     </div>
     );
   }

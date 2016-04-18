@@ -1,13 +1,17 @@
-.oo-ad-overlay {
-  display: table;
-  position: relative;
+.adOverlay {
+  display: inline-block;
+  bottom: 50%;
+  position: absolute;
   transition: bottom 0.5s, height 0.25s;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 
-  .oo-ad-overlay-close-button {
-    display: inline-block;
+  .adOverlayImage {
+    display: block;
+  }
+
+  .adOverlayCloseButton {
+    display: inline;
     position: absolute;
     cursor: pointer;
     height: 28px;
@@ -16,14 +20,13 @@
     right: 0;
     background-color: rgba(0,0,0,0.3);
     border: 0;
-    outline:none;
   }
 
-  .oo-ad-overlay-close-button.oo-hidden {
+  .adOverlayCloseButton.hidden {
     display: none;
   }
 
-  .oo-ad-overlay-close-button-icon {
+  .adOverlayCloseButtonIcon {
     position: absolute;
     font-size: 8px;
     top: 50%;
@@ -34,6 +37,14 @@
   }
 }
 
-.oo-ad-overlay.oo-hidden {
+.adOverlay.hidden {
   display: none;
+}
+
+.adOverlay.controlBarVisible {
+  bottom: $control-bar-height !important;
+}
+
+.adOverlay.controlBarInvisible {
+  bottom: $scrubber-bar-padding-height/2 !important;
 }

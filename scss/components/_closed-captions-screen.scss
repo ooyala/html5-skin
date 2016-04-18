@@ -1,8 +1,8 @@
-.oo-closed-captions-screen {
+.closedCaptionsScreen {
   height: 100%;
   width: 100%;
 
-  .oo-closed-captions-panel {
+  .closed-captions-panel {
     padding: $panel-padding;
     bottom: 0;
     background-color: $panel-bg;
@@ -10,13 +10,13 @@
     right: 0;
     height: 100%;
 
-    .oo-closed-captions-panel-title {
+    .closed-captions-panel-title {
       position: relative;
       line-height: 1;
       font-weight: bold;
       font-size: $font-size-md-screen-title;
       font-family: $font-family-roboto-condensed;
-      span.oo-icon {
+      span.icon {
         top: 1px;
         position: relative;
         margin-left: 7px;
@@ -24,15 +24,15 @@
       }
     }
 
-    .oo-switch-container {
+    .switch-container {
       cursor: pointer;
       margin-top: 35px;
       height: 21px;
       width: 105px;
       position: relative;
 
-      .oo-switch-container-selectable {
-        @extend .oo-expand;
+      .switch-container-selectable {
+        @extend .expand;
         text-decoration:none;
         cursor: pointer;
         //for IE
@@ -40,23 +40,23 @@
         opacity: 0;
         filter: alpha(opacity=1);
       }
-      .oo-switch-captions {
+      .switch-captions {
         position: absolute;
         display: inline-block;
         color: $gray;
         font-size: $font-size-base;
         font-family: $font-family-roboto;
       }
-      .oo-switch-captions-on {
+      .switch-captions-on {
         right: 0;
       }
-      .oo-switch-captions-off {
+      .switch-captions-off {
         left: 0;
       }
-      .oo-switch-captions-active {
+      .switch-captions-active {
         color: $white;
       }
-      .oo-switch-element {
+      .switch-element {
         display: inline-block;
         width: 33%;
         height: 100%;
@@ -64,7 +64,7 @@
         margin-left: 33%;
         border-radius: 100%;
       }
-      .oo-switch-thumb {
+      .switch-thumb {
         display: block;
         width: 60%;
         height: 100%;
@@ -74,13 +74,13 @@
         border-radius: 100%;
         transition: all 0.1s ease-in 0s;
       }
-      .oo-switch-thumb-on {
+      .switch-thumb-on {
         right: 0;
       }
-      .oo-switch-thumb-off {
+      .switch-thumb-off {
         left: 0;
       }
-      .oo-switch-body {
+      .switch-body {
         display: block;
         width: 100%;
         height: 75%;
@@ -91,26 +91,24 @@
         transition: all 0.5s ease-in-out;
         background: $blue-light;
       }
-      .oo-switch-body-off {
+      .switch-body-off {
         background: $gray;
       }
     }
 
-    .oo-language-container {
-      @include vertical-center;
-      left: 0;
-      right: 0;
+    .language-container {
+      margin-top: 6%;
 
-      .oo-language-panel {
+      .language-panel {
         background-color: transparent;
         min-height: 54%;
         height: 84%;
-        width: 90%;
+        width: 100%;
         overflow: auto;
         white-space: nowrap;
         margin: auto;
 
-        a.oo-item {
+        a.item {
           width: 140px;
           font-size: 1.2em;
           font-family: $font-family-roboto-condensed;
@@ -128,28 +126,28 @@
           outline: none;
         }
 
-        a.oo-item-selected {
+        a.item-selected {
           background-color: $blue-light;
           border-radius: 4px;
         }
 
-        a.oo-disabled {
+        a.disabled {
           color: $gray;
         }
       }
 
-      .oo-flexcontainer {
+      .flexcontainer {
         display: -webkit-flex;
         display: flex;
         -webkit-flex-flow: row nowrap;
         flex-flow: row nowrap;
         overflow: visible;
-        align-items: center;
-        -webkit-align-items: center;
-        justify-content: center;
+        align-items: flex-start;
+        -webkit-align-items: flex-start;
+        justify-content: flex-start;
       }
 
-      .oo-discover-btn {
+      .discoverBtn {
         position: absolute;
         top: 48%;
         background-color: transparent;
@@ -158,20 +156,20 @@
         color: white;
       }
 
-      .oo-left-button {
-        @extend .oo-discover-btn;
+      .leftButton {
+        @extend .discoverBtn;
         left: 0;
         text-align: right;
       }
 
-      .oo-right-button {
-        @extend .oo-discover-btn;
+      .rightButton {
+        @extend .discoverBtn;
         right: 0;
         text-align: left;
       }
     }
 
-    .oo-preview-panel {
+    .preview-panel {
       width: 100%;
       background-color: rgba(0,0,0,0.5);
       position: absolute;
@@ -180,20 +178,20 @@
       border-top: 1px solid $gray;
       padding: 12px $panel-padding;
 
-      .oo-preview-caption {
+      .preview-caption {
         font-size: 0.8em;
         line-height:1.2em;
         font-family: $font-family-roboto;
       }
-      .oo-preview-text {
+      .preview-text {
         margin-top: 0;
         font-size: 1.4em;
         font-weight: bold;
-        font-family: $font-family-verdana;
+        font-family: Verdana, Geneva, sans-serif;
       }
     }
 
-    .oo-disabled {
+    .disabled {
       color: $gray;
     }
   }

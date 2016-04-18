@@ -30,10 +30,10 @@ var DiscoverItem = React.createClass({
     };
 
     return (
-      <div className="oo-discovery-image-wrapper-style">
-        <div className="oo-discovery-wrapper">
+      <div className="discoveryImageWrapperStyle">
+        <div className="discovery-wrapper">
           <a onClick={this.props.onClickAction}>
-            <div className="oo-image-style" style={thumbnailStyle}></div>
+            <div className="imageStyle" style={thumbnailStyle}></div>
           </a>
           {this.props.children}
         </div>

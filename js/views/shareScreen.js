@@ -21,7 +21,7 @@ var ShareScreen = React.createClass({
 
   render: function() {
     return (
-      <div className="oo-share-screen">
+      <div className="share-screen">
         <SharePanel {...this.props} />
         <CloseButton {...this.props} closeAction={this.handleClose}/>
       </div>
@@ -38,7 +38,7 @@ ShareScreen.propTypes = {
 ShareScreen.defaultProps = {
   skinConfig: {
     icons: {
-      dismiss:{fontStyleClass:'oo-icon oo-icon-close'}
+      dismiss:{fontStyleClass:'icon icon-close'}
     }
   },
   controller: {

@@ -15,7 +15,7 @@ describe('MoreOptionsScreen', function () {
     var DOM = TestUtils.renderIntoDocument(<MoreOptionsScreen />);
 
     //test close btn
-    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-close-btn');
+    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'closeBtn');
     TestUtils.Simulate.click(closeBtn);
   });
 });

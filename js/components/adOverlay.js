@@ -24,23 +24,25 @@ var AdOverlay = React.createClass({
 
   render: function() {
     var adOverlayClass = ClassNames({
-      "oo-ad-overlay": true,
-      "oo-hidden": !this.props.overlay && this.props.showOverlay
+      "adOverlay": true,
+      "controlBarVisible": this.props.overlay && this.props.showOverlay && this.props.controlBarVisible,
+      "controlBarInvisible": this.props.overlay && this.props.showOverlay && !this.props.controlBarVisible,
+      "hidden": !this.props.overlay && this.props.showOverlay
     });
     var closeButtonClass = ClassNames({
-      "oo-ad-overlay-close-button": true,
-      "oo-hidden": !this.props.showOverlayCloseButton
+      "adOverlayCloseButton": true,
+      "hidden": !this.props.showOverlayCloseButton
     });
 
     return (
       <div className={adOverlayClass}>
         <a onClick={this.handleOverlayClick}>
-          <img src={this.props.overlay} className="oo-ad-overlay-image" onLoad={this.overlayLoaded} />
+          <img src={this.props.overlay} className="adOverlayImage" onLoad={this.overlayLoaded} />
         </a>
         <CloseButton {...this.props}
           cssClass={closeButtonClass}
           closeAction={this.closeOverlay}
-          className={"oo-ad-overlay-close-button-icon"}
+          className={"adOverlayCloseButtonIcon"}
           ref="adOverlayCloseButton" />
       </div>
     );

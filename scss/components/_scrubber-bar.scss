@@ -1,50 +1,55 @@
-.oo-scrubber-bar-container {
+.scrubber-bar-visible {
+  bottom: $control-bar-height - $scrubber-padding-height;
+}
+
+.scrubber-bar-hidden {
+  bottom: -1 * $scrubber-padding-height;
+}
+
+.scrubberBarContainer {
   padding: 0;
   margin: 0;
-  position: relative;
+  position: absolute;
+  transition: bottom 0.5s, height 0.25s;
   width: 100%;
-  height: 28px;
+  height: 24px;
   z-index: 12600;
   @include vendor-prefixes(user-select, none);
 
-  .oo-scrubber-bar-padding {
+  .scrubberBarPadding {
     height: 100%;
-    left: 0;
-    right: 0;
+    left: 15px;
+    right: 15px;
     position: absolute;
 
-    .oo-scrubber-bar {
+    .scrubberBar {
       background-color: $gray-lighter;
-      height: 3px;
+      height: 5px;
       width: 100%;
       margin: 0;
       position: absolute;
-      cursor: pointer;
       padding: 0;
       bottom: 50%;
-      border-radius: 3px;
       transform: translateY(50%)
     }
 
-    .oo-buffered-indicator {
+    .bufferedIndicator {
       background-color: $gray-light;
       height: 100%;
       position: absolute;
-      border-radius: 3px;
     }
 
-    .oo-played-indicator {
+    .playedIndicator {
       background: $blue-light;
       height: 100%;
       position: absolute;
-      border-radius: 3px;
     }
 
-    .oo-played-ad-indicator {
+    .playedAdIndicator {
       background: #FF3F80;
     }
 
-    .oo-playhead-padding {
+    .playheadPadding {
       width: 25px;
       height: 25px;
       position: absolute;
@@ -53,11 +58,13 @@
       transition: opacity 0.25s;
       @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
 
-      .oo-playhead {
-        background: $blue-light;
+      .playhead {
+        background: $white;
         width: 10px;
         height: 10px;
-        border: 1px solid $white;
+        border-style: solid;
+        border-color: white;
+        border-width: 1px;
         border-radius: 10px;
         position: absolute;
         transition: opacity 0.25s;
@@ -67,9 +74,10 @@
         @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
       }
 
-      .oo-ad-playhead {
+      .adPlayhead {
         visibility: hidden;
       }
     }
   }
 }
+

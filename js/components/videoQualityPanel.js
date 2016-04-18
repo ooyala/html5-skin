@@ -28,18 +28,18 @@ var VideoQualityPanel = React.createClass({
 
   addAutoButton: function(bitrateButtons) {
     var autoQualityBtn = ClassNames({
-      'oo-quality-auto-btn': true,
-      'oo-selected': this.state.selected == 'auto'
+      'quality-auto-btn': true,
+      'selected': this.state.selected == 'auto'
     });
 
     //add auto btn to beginning of array
     bitrateButtons.unshift(
-      <li className="oo-auto-li" key='auto-li'>
+      <li className="auto-li" key='auto-li'>
         <a className={autoQualityBtn} key='auto' onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
-          <div className="oo-quality-auto-icon">
+          <div className="quality-auto-icon">
             <Icon {...this.props} icon="auto"/>
           </div>
-          <div className="oo-quality-auto-label">Auto</div>
+          <div className="quality-auto-label">Auto</div>
         </a>
       </li>
     );
@@ -53,8 +53,8 @@ var VideoQualityPanel = React.createClass({
     //available bitrates
     for (var i = 0; i < availableBitrates.length; i++) {
       var qualityBtn = ClassNames({
-        'oo-quality-btn': true,
-        'oo-selected': this.state.selected == availableBitrates[i].id
+        'quality-btn': true,
+        'selected': this.state.selected == availableBitrates[i].id
       });
 
       if (availableBitrates[i].id == 'auto'){
@@ -67,7 +67,7 @@ var VideoQualityPanel = React.createClass({
     }
 
     return (
-      <div className="oo-quality-panel">
+      <div className="quality-panel">
         <ul>
           {bitrateButtons}
         </ul>
@@ -93,7 +93,7 @@ VideoQualityPanel.propTypes = {
 VideoQualityPanel.defaultProps = {
   skinConfig: {
     icons: {
-      quality:{fontStyleClass:'oo-icon oo-icon-topmenu-quality'}
+      quality:{fontStyleClass:'icon icon-topmenu-quality'}
     }
   },
   videoQualityOptions: {

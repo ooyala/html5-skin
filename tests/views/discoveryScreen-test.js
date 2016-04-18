@@ -15,7 +15,7 @@ describe('DiscoveryScreen', function () {
     var DOM = TestUtils.renderIntoDocument(<DiscoveryScreen />);
 
     //test close btn
-    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-close-btn');
+    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'closeBtn');
     TestUtils.Simulate.click(closeBtn);
   });
 });

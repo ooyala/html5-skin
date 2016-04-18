@@ -1,27 +1,3 @@
-.oo-small {
-
-  // Discovery Screen
-  .oo-discovery-screen {
-    .oo-discovery-panel {
-      @include apply-to-safari-only ('.oo-scale-height') {
-        min-height: 190px !important;
-      }
-    }
-  }
-
-  //Text Tracks
-  .oo-text-track-container {
-    .oo-text-track-window {
-      padding: 8px;
-
-      .oo-text-track-background {
-        padding: 2px 12px;
-
-        .oo-text-track {
-          font-size: em(18px);
-        }
-      }
-    }
-  }
+.ooyala-small {
 
 }

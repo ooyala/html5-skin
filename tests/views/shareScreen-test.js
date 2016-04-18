@@ -13,7 +13,7 @@ describe('ShareScreen', function () {
     var DOM = TestUtils.renderIntoDocument(<ShareScreen />);
 
     //test close btn
-    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-close-btn');
+    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'closeBtn');
     TestUtils.Simulate.click(closeBtn);
   });
 });

@@ -1,157 +1,154 @@
-.oo-large {
+.ooyala-large {
   // State Screens
-  .oo-state-screen {
-    .oo-state-screen-info {
-      .oo-state-screen-title {
+  .state-screen {
+    .state-screen-info {
+      .state-screen-title {
         font-size: 3.0em;
       }
-      .oo-state-screen-description {
+      .state-screen-description {
         font-size: 1.8em;
       }
     }
   }
 
   // Discovery Screen
-  .oo-discovery-screen {
-    .oo-discovery-panel {
+  .discoveryScreen {
+    .discovery-panel {
       padding: $panel-padding-lg;
       margin-top:auto;
       margin-bottom:auto;
-      .oo-discovery-panel-title {
+      .discovery-panel-title {
         position: absolute;
       }
-      .oo-discovery-toaster-container-style {
+      .discoveryToasterContainerStyle {
         max-height: 460px;
-      }
-      @include apply-to-safari-only ('.oo-discovery-toaster-container-style') {
-        min-height: 360px;
-      }
 
-      .oo-discovery-image-wrapper-style {
+      }
+      .discoveryImageWrapperStyle {
         width: 214px;
         height: auto;
         margin: 0 60px 60px 0;
 
-        &:nth-of-type(even) {
+        &:nth-child(even) {
           margin-bottom: 0;
         }
-        &:last-child, &:nth-last-child(2):nth-of-type(odd) {
+        &:last-child, &:nth-last-child(2) {
           margin-right:0;
         }
       }
-      .oo-image-style {
+      .imageStyle {
         height: 120px;
       }
     }
   }
 
   // Closed Caption Screen
-  .oo-closed-captions-screen {
-    .oo-closed-captions-panel {
+  .closedCaptionsScreen {
+    .closed-captions-panel {
       padding:$panel-padding-lg;
-      .oo-closed-captions-panel-title {
+      .closed-captions-panel-title {
         font-size: $font-size-lg-screen-title;
-        span.oo-icon {
+        span.icon {
           top: 4px;
           font-size: 1em;
         }
       }
-      .oo-switch-container {
+      .switch-container {
         margin-top: 42px;
         height: 26px;
         width: 126px;
-        .oo-switch-captions {
+        .switch-captions {
           font-size: $font-size-base * $large-multiple;
         }
-        .oo-switch-element {
+        .switch-element {
           margin-bottom: 33%;
         }
       }
     }
-    .oo-language-container {
+    .language-container {
       margin-top: 8%;
-      .oo-language-panel {
-        a.oo-item {
+      .language-panel {
+        a.item {
           width: 168px;
           font-size: 1.4em;
           margin: 17px 33px;
           padding: 3px 12px;
         }
       }
-      .oo-flexcontainer {
+      .flexcontainer {
         -webkit-flex-flow: row wrap;
         flex-flow: row wrap;
       }
-      .oo-discover-btn {
-        span.oo-icon {
+      .discoverBtn {
+        span.icon {
           font-size: 1.2em;
         }
       }
     }
-    .oo-preview-panel {
+    .preview-panel {
       padding: 14px $panel-padding-lg;
-      .oo-preview-caption {
+      .preview-caption {
         font-size: 1em;
         line-height:1.4em;
       }
-      .oo-preview-text {
+      .preview-text {
         font-size: 1.7em;
       }
     }
   }
 
   //Error screen
-  .oo-error-screen {
-    .oo-error-title {
+  .errorScreen {
+    .error-title {
       font-size: 2em;
     }
-    .oo-error-description {
+    .error-description {
       font-size: 1.4em;
     }
-    .oo-error-action {
+    .error-action {
       font-size: 1.4em;
     }
   }
 
   //Action Icons
-  .oo-action-icon-pause {
+  .action-icon-pause {
     font-size:32px;
   }
-  .oo-action-icon span.oo-icon, .oo-action-icon-pause.oo-animate-pause {
+  .action-icon span.icon, .action-icon-pause.animate-pause {
     font-size:96px;
   }
   //Ad Panel
-  .oo-ad-top-bar {
+  .adTopBar {
      height: 34px;
 
-    .oo-ad-title, .oo-ad-playback-info {
+    .adTitle, .adPlaybackInfo {
         font-size: 1em;
         padding-left: 7.5px;
         padding-right: 7.5px;
     }
-    .oo-learn-more {
+    .learnMore {
       font-size: 1em;
       margin-right: 10px;
 
-      .oo-button-icon {
+      .buttonIcon {
         font-size: 0.8em;
         margin-right: 5px;
       }
     }
-    .oo-skip-button {
+    .skipButton {
       font-size: 1em;
 
-      .oo-skip-icon {
+      .skipIcon {
         font-size: 0.8em;
         margin-right: 5px;
       }
     }
 
-    .oo-skip-button.oo-visible {
+    .skipButton.visible {
       margin-right: 15px;
       margin-left: 15px;
 
-      .oo-skip-icon {
+      .skipIcon {
         font-size: 0.8em;
         margin-right: 5px;
       }
@@ -159,16 +156,16 @@
   }
 
   //Close Buttons
-  button.oo-close-btn {
+  button.closeBtn {
     top: $panel-padding-lg;
     right: $panel-padding-lg;
   }
 
   //Share Screen
-  .oo-share-screen {
-    .oo-share-container {
+  .share-screen {
+    .share-container {
       padding: $panel-padding-lg;
-      .oo-tab-row {
+      .tabRow {
         top: $panel-padding-lg;
         left: $panel-padding-lg;
       }
@@ -176,7 +173,7 @@
   }
 
   //Video Quality
-  .oo-quality-screen {
+  .quality-screen {
     padding: $panel-padding-lg;
   }
 }

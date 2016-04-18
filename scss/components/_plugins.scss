@@ -1,4 +1,4 @@
-.oo-player-skin-plugins {
+.player_skin_plugins {
   z-index: 12000;
   top: 0;
   left: 0;
@@ -9,15 +9,15 @@
   display: none;
 }
 
-.oo-player-skin-plugins.oo-showing:not(:empty) {
+.player_skin_plugins.showing:not(:empty) {
   display: block;
 }
 
-.oo-player-skin-plugins.oo-overlay-showing:not(:empty) {
+.player_skin_plugins.overlay_showing:not(:empty) {
   display: block;
 }
 
-.oo-player-skin-plugins-click-layer {
+.player_skin_plugins_click_layer {
   z-index: 12005;
   top: 0;
   left: 0;
@@ -27,14 +27,14 @@
   display: none;
 }
 
-.oo-player-skin-plugins.oo-full:not(.oo-overlay-showing), .oo-player-skin-plugins-click-layer.oo-full {
+.player_skin_plugins.full:not(.overlay_showing), .player_skin_plugins_click_layer.full {
   bottom: 0;
 }
 
-.oo-player-skin-plugins-click-layer.oo-showing {
+.player_skin_plugins_click_layer.showing {
   display: block;
 }
 
-.oo-plugins {
-  @extend .oo-expand;
+.plugins {
+  @extend .expand;
 }
