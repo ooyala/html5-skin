@@ -5,8 +5,7 @@
   bottom: 0;
 }
 .control-bar {
-  background: rgba($black, 0.3);
-  width: 100%;
+  @include vendor-prefixes (background, $control-bar-gradient);  width: 100%;
   height: $control-bar-height;
   position: absolute;
   margin: 0;
