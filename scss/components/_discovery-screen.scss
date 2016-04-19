@@ -38,16 +38,18 @@
         font-size: 0.8em;
       }
     }
+    
     .oo-discovery-toaster-container-style {
-      @include absolute-center;
-      position:relative;
+      position: absolute;
+      top: 50%;
       background-color: transparent;
-      height: auto;
+      height: 100%;
       max-height: 370px;
       width: 100%;
       overflow: hidden;
       white-space: nowrap;
       margin: auto;
+      @include vendor-prefixes(transform, translateY(-25%));
     }
     @include apply-to-safari-only ('.oo-discovery-toaster-container-style') {
       min-height: 270px;
