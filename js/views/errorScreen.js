@@ -24,16 +24,16 @@ var ErrorScreen = React.createClass({
     }
 
     var errorContentClass = ClassNames({
-      'error-content': true,
-      'center-block': true
+      'oo-error-content': true,
+      'oo-center-block': true
     });
 
     return (
-      <div className="state-screen errorScreen">
+      <div className="oo-state-screen oo-error-screen">
         <div className={errorContentClass}>
-          <div className="error-title text-uppercase">{errorTitle}</div>
-          <div className="error-description">{errorDescription}</div>
-          <div className="error-action text-uppercase">{errorAction}</div>
+          <div className="oo-error-title oo-text-uppercase">{errorTitle}</div>
+          <div className="oo-error-description">{errorDescription}</div>
+          <div className="oo-error-action oo-text-uppercase">{errorAction}</div>
         </div>
       </div>
     );

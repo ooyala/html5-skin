@@ -1,8 +1,8 @@
-.control-bar-hidden {
+.oo-control-bar-hidden {
   height: 0 !important;
 }
 
-.control-bar {
+.oo-control-bar {
   background: $control-bar-bg;
   width: 100%;
   height: $control-bar-height;
@@ -18,7 +18,7 @@
   transition: height 0.5s;
   z-index: 12500;
 
-  .controlBarItemsWrapper {
+  .oo-control-bar-items-wrapper {
     display: -webkit-flex;
     display: flex;
     -webkit-flex-direction: row;
@@ -34,7 +34,7 @@
       line-height: 1 !important;
     }
 
-    .popover-button-container {
+    .oo-popover-button-container {
       position: relative;
       height:100%;
       border:0;
@@ -42,7 +42,7 @@
       padding:0;
     }
 
-    .controlBarItem {
+    .oo-control-bar-item {
       height: 100%;
       font-weight: bold;
       font-size: 18px;
@@ -51,30 +51,30 @@
       cursor: pointer;
     }
 
-    & > .controlBarItem:first-child {
+    & > .oo-control-bar-item:first-child {
       padding-left:0 !important;
     }
 
-    & > .controlBarItem:last-child {
+    & > .oo-control-bar-item:last-child {
       padding-right:0 !important;
     }
 
-    button.controlBarItem {
+    button.oo-control-bar-item {
       background-color: transparent;
       border:0;
       outline: none;
     }
 
-    .controlBarItem.selected > span {
+    .oo-control-bar-item.oo-selected > span {
       color:$blue-light !important;
       opacity:1 !important;
     }
 
-    .controlBarItem.nonClickableWatermark {
+    .oo-control-bar-item.oo-non-clickable-watermark {
       cursor: auto;
     }
 
-    .controlBarDuration {
+    .oo-control-bar-duration {
       height: 100%;
       color: $white;
       opacity: 1;
@@ -84,7 +84,7 @@
       padding-right: 7.5px;
       text-align: left;
 
-      .total-time {
+      .oo-total-time {
         color: $white;
 
         &:before {
@@ -94,16 +94,16 @@
       }
     }
 
-    .controlBarFlexSpace {
+    .oo-control-bar-flex-space {
       -webkit-flex: 1;
       flex: 1;
     }
 
-    .liveIndicator {
+    .oo-live-indicator {
       line-height: 0.5;
     }
 
-    .liveCircle {
+    .oo-live-circle {
       display: inline-block;
       width: 10px;
       height: 10px;
@@ -113,25 +113,25 @@
       vertical-align: middle;
     }
 
-    .liveText {
+    .oo-live-text {
       font-size: 10px;
       color: $gray-light;
       vertical-align: middle;
     }
 
-    .watermark img {
+    .oo-watermark img {
       position: relative;
       max-height: 18px;
       vertical-align: baseline;
     }
   }
 }
-a.volumeBar {
+a.oo-volume-bar {
   border:0;
   outline: none;
 }
 
-.volumeBar {
+.oo-volume-bar {
   display: inline-block;
   background-clip: content-box;
   position: relative;
@@ -141,19 +141,19 @@ a.volumeBar {
   background-color: rgba($white, 0.6);
 }
 
-.volumeBar.on {
+.oo-volume-bar.oo-on {
   background-color: rgba($blue-light, 0.6);
 }
 
-.volume:hover .volumeBar {
+.oo-volume:hover .oo-volume-bar {
   background-color: $white;
 }
 
-.volume:hover .volumeBar.on {
+.oo-volume:hover .oo-volume-bar.oo-on {
   background-color: $blue-light;
 }
 
-.volumeSlider {
+.oo-volume-slider {
   display: inline-block;
   position: relative;
   margin-left: 6px;
@@ -163,7 +163,7 @@ a.volumeBar {
 
 // IE 11 only
 @media all and (-ms-high-contrast:none) {
-  *::-ms-backdrop, .volumeSlider {
+  *::-ms-backdrop, .oo-volume-slider {
     height: auto;
   }
 }

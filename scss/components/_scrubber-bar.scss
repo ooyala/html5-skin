@@ -1,4 +1,4 @@
-.scrubberBarContainer {
+.oo-scrubber-bar-container {
   padding: 0;
   margin: 0;
   position: relative;
@@ -7,13 +7,13 @@
   z-index: 12600;
   @include vendor-prefixes(user-select, none);
 
-  .scrubberBarPadding {
+  .oo-scrubber-bar-padding {
     height: 100%;
     left: 0;
     right: 0;
     position: absolute;
 
-    .scrubberBar {
+    .oo-scrubber-bar {
       background-color: $gray-lighter;
       height: 3px;
       width: 100%;
@@ -26,25 +26,25 @@
       transform: translateY(50%)
     }
 
-    .bufferedIndicator {
+    .oo-buffered-indicator {
       background-color: $gray-light;
       height: 100%;
       position: absolute;
       border-radius: 3px;
     }
 
-    .playedIndicator {
+    .oo-played-indicator {
       background: $blue-light;
       height: 100%;
       position: absolute;
       border-radius: 3px;
     }
 
-    .playedAdIndicator {
+    .oo-played-ad-indicator {
       background: #FF3F80;
     }
 
-    .playheadPadding {
+    .oo-playhead-padding {
       width: 25px;
       height: 25px;
       position: absolute;
@@ -53,7 +53,7 @@
       transition: opacity 0.25s;
       @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
 
-      .playhead {
+      .oo-playhead {
         background: $blue-light;
         width: 10px;
         height: 10px;
@@ -67,7 +67,7 @@
         @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
       }
 
-      .adPlayhead {
+      .oo-ad-playhead {
         visibility: hidden;
       }
     }

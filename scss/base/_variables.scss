@@ -9,25 +9,8 @@ $gray-lighter:              #afafaf !default;
 $gray-lightest:             #f7f7f9 !default;
 $blue-light:                #448aff !default;
 $white:                     #fff !default;
-//
 $brand-primary:             $blue-light !default;
-//$brand-success:             #5cb85c !default;
-//$brand-info:                #5bc0de !default;
-//$brand-warning:             #f0ad4e !default;
-//$brand-danger:              #d9534f !default;
-//
-//
-//// Options
-////
-//// Quickly modify global styling by enabling or disabling optional features.
-//
-//$enable-flex:               false !default;
-$enable-rounded:            true !default;
-$enable-shadows:            false !default;
-//$enable-gradients:          false !default;
-$enable-transitions:        false !default;
-$enable-hover-media-query:  false !default;
-//$enable-grid-classes:       true !default;
+$body-color:                $white !default;
 //
 //
 //// Spacing
@@ -44,15 +27,14 @@ $panel-padding:               24.5px !default;
 $panel-padding-lg:            35px !default;
 //
 //
-//// Body
+//// Background Colors
 ////
-//// Settings for the `<body>` element.
 //
 $body-bg:                    #000 !default;
-$body-color:                 $white !default;
 $panel-bg:                   rgba($black, 0.7) !default;
 $control-bar-bg:             rgba($black, 0.3) !default;
 $text-track-bg:              rgba($black, 0.8) !default;
+$ad-top-bar-bg:              rgba($black, 0.5) !default;
 $popover-bg:                 rgba(26, 26, 26, 0.8) !default;
 $scrollbar-bg:               #545456 !default;
 //
@@ -67,45 +49,6 @@ $link-hover-color:           darken($link-color, 15%) !default;
 $link-hover-decoration:      none !default;
 //
 //
-//// Grid breakpoints
-////
-//// Define the minimum and maximum dimensions at which your layout will change,
-//// adapting to different screen sizes, for use in media queries.
-//
-//$grid-breakpoints: (
-//  // Extra small screen / phone
-//        xs: 0,
-//  // Small screen / phone
-//        sm: 544px,
-//  // Medium screen / tablet
-//        md: 768px,
-//  // Large screen / desktop
-//        lg: 992px,
-//  // Extra large screen / wide desktop
-//        xl: 1200px
-//) !default;
-//
-//
-//// Grid containers
-////
-//// Define the maximum width of `.container` for different screen sizes.
-//
-//$container-max-widths: (
-//        sm: 576px,
-//        md: 720px,
-//        lg: 940px,
-//        xl: 1140px
-//) !default;
-//
-//
-//// Grid columns
-////
-//// Set the number of columns and specify the width of the gutters.
-//
-//$grid-columns:               12 !default;
-//$grid-gutter-width:          1.875em !default; // 30px
-//
-//
 //// Typography
 ////
 //// Font, line-height, and color for body text, headings, and more.
@@ -115,6 +58,7 @@ $font-family-roboto:                "Roboto", sans-serif !default;
 $font-family-roboto-condensed:      "Roboto Condensed", sans-serif !default;
 $font-family-roboto-bold:           "Roboto Bold", sans-serif !default;
 $font-family-roboto-condensed-bold: "Roboto Condensed Bold", sans-serif !default;
+$font-family-verdana:               Verdana, Geneva, sans-serif !default;
 //$font-family-serif:               Georgia, "Times New Roman", Times, serif !default;
 //$font-family-monospace:           Menlo, Monaco, Consolas, "Courier New", monospace !default;
 $font-family-base:                  $font-family-sans-serif !default;
@@ -132,123 +76,9 @@ $font-size-sm-screen-desc:     0.8em !default;
 //$font-size-sm:               .85em !default;
 //$font-size-xs:               .75em !default;
 //
-//$font-size-h1:               2.5em !default;
-//$font-size-h2:               2em !default;
-//$font-size-h3:               1.75em !default;
-//$font-size-h4:               1.5em !default;
-//$font-size-h5:               1.25em !default;
-//$font-size-h6:               1em !default;
-//
-//$display1-size:               6em !default;
-//$display2-size:               5.5em !default;
-//$display3-size:               4.5em !default;
-//$display4-size:               3.5em !default;
-//
-//$display1-weight:             300 !default;
-//$display2-weight:             300 !default;
-//$display3-weight:             300 !default;
-//$display4-weight:             300 !default;
-//
 $line-height:                1.5 !default;
 //
-//$headings-margin-bottom:     ($spacer / 2) !default;
-//$headings-font-family:       inherit !default;
-//$headings-font-weight:       500 !default;
-//$headings-line-height:       1.1 !default;
-//$headings-color:             inherit !default;
-//
-//$lead-font-size:             1.25em !default;
-//$lead-font-weight:           300 !default;
-//
-//$text-muted:                  $gray-light !default;
-//
-//$abbr-border-color:           $gray-light !default;
-//
-//$blockquote-small-color:      $gray-light !default;
-//$blockquote-font-size:        ($font-size-base * 1.25) !default;
-//$blockquote-border-color:     $gray-lighter !default;
-//
-//$hr-border-color:             rgba(0,0,0,.1) !default;
-//$hr-border-width:             $border-width !default;
-//
-//
-//// Components
-////
-//// Define common padding and border radius sizes and more. Values based on 16px text and 1.428 line-height (~20px to start).
-//
-//$line-height-lg:         (4 / 3) !default;
-//$line-height-sm:         1.5 !default;
-//
 $border-radius:          .25em !default;
-//$border-radius-lg:       .3em !default;
-//$border-radius-sm:       .2em !default;
-//
-//$component-active-color: #fff !default;
-//$component-active-bg:    $brand-primary !default;
-//
-//$caret-width:            .3em !default;
-//$caret-width-lg:         $caret-width !default;
-//
-//
-//// Tables
-////
-//// Customizes the `.table` component with basic values, each used across all table variations.
-//
-//$table-cell-padding:            .75em !default;
-//$table-sm-cell-padding:         .3em !default;
-//
-//$table-bg:                      transparent !default;
-//$table-bg-accent:               #f9f9f9 !default;
-//$table-bg-hover:                #f5f5f5 !default;
-//$table-bg-active:               $table-bg-hover !default;
-//
-//$table-border-color:            $gray-lighter !default;
-//
-//
-//// Buttons
-////
-//// For each button, define text, background and border color.
-//
-//$btn-padding-x:                  1em !default;
-//$btn-padding-y:                  .375em !default;
-//$btn-font-weight:                normal !default;
-//
-//$btn-primary-color:              #fff !default;
-//$btn-primary-bg:                 $brand-primary !default;
-//$btn-primary-border:             $btn-primary-bg !default;
-//
-//$btn-secondary-color:            $gray-dark !default;
-//$btn-secondary-bg:               #fff !default;
-//$btn-secondary-border:           #ccc !default;
-//
-//$btn-info-color:                 #fff !default;
-//$btn-info-bg:                    $brand-info !default;
-//$btn-info-border:                $btn-info-bg !default;
-//
-//$btn-success-color:              #fff !default;
-//$btn-success-bg:                 $brand-success !default;
-//$btn-success-border:             $btn-success-bg !default;
-//
-//$btn-warning-color:              #fff !default;
-//$btn-warning-bg:                 $brand-warning !default;
-//$btn-warning-border:             $btn-warning-bg !default;
-//
-//$btn-danger-color:               #fff !default;
-//$btn-danger-bg:                  $brand-danger !default;
-//$btn-danger-border:              $btn-danger-bg !default;
-//
-//$btn-link-disabled-color:        $gray-light !default;
-//
-//$btn-padding-x-sm:               .75em !default;
-//$btn-padding-y-sm:               .25em !default;
-//
-//$btn-padding-x-lg:               1.25em !default;
-//$btn-padding-y-lg:               .75em !default;
-//
-//// Allows for customizing button radius independently from global border radius
-//$btn-border-radius:              $border-radius !default;
-//$btn-border-radius-lg:           $border-radius-lg !default;
-//$btn-border-radius-sm:           $border-radius-sm !default;
 //
 //
 //// Forms
@@ -264,28 +94,8 @@ $input-border:                   #ccc !default;
 $input-box-shadow:               inset 0 1px 1px rgba(0,0,0,.075) !default;
 //
 $input-border-radius:            $border-radius !default;
-//$input-border-radius-lg:         $border-radius-lg !default;
-//$input-border-radius-sm:         $border-radius-sm !default;
-//
-//$input-border-focus:             #66afe9 !default;
-//$input-box-shadow-focus:         rgba(102,175,233,.6) !default;
 //
 $input-color-placeholder:        #999 !default;
-//
-//$input-padding-x-sm:             .75em !default;
-//$input-padding-y-sm:             .275em !default;
-//
-//$input-padding-x-lg:             1.25em !default;
-//$input-padding-y-lg:             .75em !default;
-//
-//$input-height:                   (($font-size-base * $line-height) + ($input-padding-y * 2)) !default;
-//$input-height-lg:                (($font-size-lg * $line-height-lg) + ($input-padding-y-lg * 2)) !default;
-//$input-height-sm:                (($font-size-sm * $line-height-sm) + ($input-padding-y-sm * 2)) !default;
-//
-//$form-group-margin-bottom:       $spacer-y !default;
-//
-//$input-group-addon-bg:           $gray-lighter !default;
-//$input-group-addon-border-color: $input-border !default;
 //
 $cursor-disabled:                not-allowed !default;
 //
@@ -316,47 +126,14 @@ $cursor-disabled:                not-allowed !default;
 ////
 //// Define colors for form feedback states and, by default, alerts.
 //
-//$state-success-text:             #3c763d !default;
-//$state-success-bg:               #dff0d8 !default;
-//$state-success-border:           darken($state-success-bg, 5%) !default;
-//
-//$state-info-text:                #31708f !default;
-//$state-info-bg:                  #d9edf7 !default;
-//$state-info-border:              darken($state-info-bg, 7%) !default;
-//
-//$state-warning-text:             #8a6d3b !default;
-//$state-warning-bg:               #fcf8e3 !default;
-//$state-warning-border:           darken($state-warning-bg, 5%) !default;
-//
 $state-danger-text:              #a94442 !default;
 //$state-danger-bg:                #f2dede !default;
 //$state-danger-border:            darken($state-danger-bg, 5%) !default;
 //
 //
-//// Close
-//
-//$close-font-weight:           bold !default;
-//$close-color:                 #000 !default;
-//$close-text-shadow:           0 1px 0 #fff !default;
-//
-//
-//// Code
-//
-//$code-color:                  #bd4147 !default;
-//$code-bg:                     #f7f7f9 !default;
-//
-//$kbd-color:                   #fff !default;
-//$kbd-bg:                      #333 !default;
-//
-//$pre-bg:                      #f7f7f9 !default;
-//$pre-color:                   $gray-dark !default;
-//$pre-border-color:            #ccc !default;
-//$pre-scrollable-max-height:   340px !default;
-//
-//
 // Video
-$xsmall-multiple:                  0.7;
-$large-multiple:                  1.2;
+$xsmall-multiple:                 0.7 !default;
+$large-multiple:                  1.2 !default;
 $scrubber-padding-height:         24px !default;
 $control-bar-height:              60px !default;
 $scrubber-bar-height:             5px !default;
@@ -365,25 +142,25 @@ $scrubber-bar-left-right-padding: 15px !default;
 $min-player-width:                320px !default;
 
 //slider
-$thumb-color: yellow;
-$progress-color: green;
-$track-color: red;
-$slider-width: 10px;
-$slider-height: 1px;
-$slider-thumb-diameter: 3px;
+$thumb-color:                     yellow !default;
+$progress-color:                  green !default;
+$track-color:                     red !default;
+$slider-width:                    10px !default;
+$slider-height:                   1px !default;
+$slider-thumb-diameter:           3px !default;
 
-$slider-volume-width: 200px;
-$slider-volume-height: 3px;
-$slider-volume-thumb-diameter: 15px;
-$slider-volume-thumb-color: #FFFFFF;
-$slider-volume-progress-color: #FFFFFF;
-$slider-volume-track-color: #999999;
+$slider-volume-width:             200px !default;
+$slider-volume-height:            3px !default;
+$slider-volume-thumb-diameter:    15px !default;
+$slider-volume-thumb-color:       #FFFFFF !default;
+$slider-volume-progress-color:    #FFFFFF !default;
+$slider-volume-track-color:       #999999 !default;
 
-$slider-volume-width-small: $slider-volume-width * $xsmall-multiple;
-$slider-volume-height-small: $slider-volume-height * $xsmall-multiple;
-$slider-volume-thumb-diameter-small: $slider-volume-thumb-diameter * $xsmall-multiple;
+$slider-volume-width-small:           $slider-volume-width * $xsmall-multiple !default;
+$slider-volume-height-small:          $slider-volume-height * $xsmall-multiple !default;
+$slider-volume-thumb-diameter-small:  $slider-volume-thumb-diameter * $xsmall-multiple !default;
 
 //bitrate
-$bitrate-horizontal-height: 100px !default;
+$bitrate-horizontal-height:       100px !default;
 
-$font-path: "assets/fonts";
+$font-path:                       "assets/fonts" !default;

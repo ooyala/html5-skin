@@ -1,6 +1,5 @@
 var React = require('react'),
-ReactDOM = require('react-dom'),
-Utils = require('./utils');
+    Utils = require('./utils');
 
 var Slider = React.createClass({
 

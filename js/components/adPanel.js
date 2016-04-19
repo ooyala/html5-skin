@@ -60,7 +60,7 @@ var AdPanel = React.createClass({
     var adTitle = this.props.currentAdsInfo.currentAdItem.name;
     // AMC puts "Unknown" in the name field if ad name unavailable
     if (this.isValidAdPlaybackInfo(adTitle) && this.props.componentWidth > 560) {
-      var adTitleDiv = <AdPanelTopBarItem key="adTitle" ref="adTitle" itemClassName="adTitle">{adTitle}</AdPanelTopBarItem>;
+      var adTitleDiv = <AdPanelTopBarItem key="adTitle" ref="adTitle" itemClassName="oo-ad-title">{adTitle}</AdPanelTopBarItem>;
       adTopBarItems.push(adTitleDiv);
     }
 
@@ -75,23 +75,23 @@ var AdPanel = React.createClass({
     var remainingTime = Utils.formatSeconds(Math.max(0, parseInt(this.props.adVideoDuration - this.props.currentPlayhead)));
     adPlaybackInfo = adPlaybackInfo + " - " + remainingTime;
 
-    var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" itemClassName="adPlaybackInfo">{adPlaybackInfo}</AdPanelTopBarItem>;
+    var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" itemClassName="oo-ad-playback-info">{adPlaybackInfo}</AdPanelTopBarItem>;
     adTopBarItems.push(adPlaybackInfoDiv);
 
     // Flexible space
-    var flexibleSpaceDiv = <AdPanelTopBarItem key="flexibleSpace" itemClassName="flexibleSpace"/>;
+    var flexibleSpaceDiv = <AdPanelTopBarItem key="flexibleSpace" itemClassName="oo-flexible-space"/>;
     adTopBarItems.push(flexibleSpaceDiv);
 
     // Learn more
     var learnMoreClass = ClassNames({
-      "learnMore": true,
-      "hidden": !this.props.currentAdsInfo.currentAdItem.hasClickUrl
+      "oo-learn-more": true,
+      "oo-hidden": !this.props.currentAdsInfo.currentAdItem.hasClickUrl
     });
     if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.hasClickUrl)) {
       var learnMoreText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
       var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" ref="learnMoreButton"
                                 onButtonClicked={this.handleLearnMoreButtonClick} itemClassName={learnMoreClass}>
-                                  <Icon {...this.props} icon="learn" className="buttonIcon"/>
+                                  <Icon {...this.props} icon="learn" className="oo-button-icon"/>
                                   {learnMoreText}
                               </AdPanelTopBarItem>;
       adTopBarItems.push(learnMoreButtonDiv);
@@ -99,16 +99,15 @@ var AdPanel = React.createClass({
 
     // Skip
     var skipButtonClass = ClassNames({
-      "skipButton": true,
-      "visible": this.props.currentAdsInfo.skipAdButtonEnabled,
-      "enabled": this.props.currentAdsInfo.skipAdButtonEnabled
+      "oo-skip-button": true,
+      "oo-visible": this.props.currentAdsInfo.skipAdButtonEnabled,
+      "oo-enabled": this.props.currentAdsInfo.skipAdButtonEnabled
     });
     var skipButtonText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
-    var skipAdClass = this.props.skinConfig.icons.skip.fontStyleClass + " skipIcon";
     var skipButtonDiv = <AdPanelTopBarItem key="skipButton" ref="skipButton"
                           onButtonClicked={this.handleSkipAdButtonClick} itemClassName={skipButtonClass}>
-                            <Icon {...this.props} icon="skip" className="buttonIcon"/>
-                                    {skipButtonText}
+                          <Icon {...this.props} icon="skip" className="oo-button-icon"/>
+                            {skipButtonText}
                         </AdPanelTopBarItem>;
     adTopBarItems.push(skipButtonDiv);
 
@@ -123,9 +122,9 @@ var AdPanel = React.createClass({
     }
     var adTopBarItems = this.populateAdTopBar();
     return (
-      <div className="adScreenPanel">
+      <div className="oo-ad-screen-panel">
         {spinner}
-        <div className="adTopBar" ref="adTopBar" onClick={this.handleAdTopBarClick} onTouchEnd={this.handleAdTopBarClick}>
+        <div className="oo-ad-top-bar" ref="adTopBar" onClick={this.handleAdTopBarClick} onTouchEnd={this.handleAdTopBarClick}>
           {adTopBarItems}
         </div>
       </div>
