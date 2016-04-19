@@ -385,3 +385,6 @@ $slider-volume-thumb-diameter-small: $slider-volume-thumb-diameter * $xsmall-mul
 $bitrate-horizontal-height: 100px !default;
 
 $font-path: "assets/fonts";
+
+/gradients
+$control-bar-gradient: linear-gradient(to bottom, rgba(0,0,0,0) 23%,rgba(0,0,0,0.6) 90%,rgba(0,0,0,0.69) 100%);
