@@ -31,10 +31,10 @@
         }
       }
 
-      .oo-scale-height {
+      .oo-scale-size {
         max-height: 150px;
       }
-      @include apply-to-safari-only ('.oo-scale-height') {
+      @include apply-to-safari-only ('.oo-scale-size') {
         min-height: 80px !important;
       }
     }

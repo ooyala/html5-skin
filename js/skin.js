@@ -239,6 +239,7 @@ var Skin = React.createClass({
               discoveryData={this.state.discoveryData}
               playerState={this.state.playerState}
               responsiveView={responsiveId}
+              componentWidth={this.state.componentWidth}
               ref="DiscoveryScreen" />
           );
           break;

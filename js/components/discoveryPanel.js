@@ -10,15 +10,17 @@ var React = require('react'),
     Utils = require('./utils'),
     CountDownClock = require('./countDownClock'),
     DiscoverItem = require('./discoverItem'),
+    ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon');
 
 var DiscoveryPanel = React.createClass({
+  mixins: [ResizeMixin],
+
   getInitialState: function() {
     return {
       showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen,
       currentPage: 1,
-      heightOverflow: false,
-      heightOverflowBreakpoint: null
+      componentHeight: null
     };
   },
 
@@ -26,20 +28,16 @@ var DiscoveryPanel = React.createClass({
     this.detectHeight();
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  handleResize: function(nextProps) {
     //If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
-    if (nextProps.responsiveView != this.props.responsiveView) {
-      var currentViewSize = this.props.responsiveView;
-      var nextViewSize = nextProps.responsiveView;
-      var firstDiscoverIndex = this.state.currentPage * this.props.videosPerPage[currentViewSize] - this.props.videosPerPage[currentViewSize];
-      var newCurrentPage = Math.floor(firstDiscoverIndex/nextProps.videosPerPage[nextViewSize]) + 1;
-      this.setState({
-        currentPage: newCurrentPage
-      });
-      this.detectHeight();
-    }
-
-    this.detectHeightOverflow();
+    var currentViewSize = this.props.responsiveView;
+    var nextViewSize = nextProps.responsiveView;
+    var firstDiscoverIndex = this.state.currentPage * this.props.videosPerPage[currentViewSize] - this.props.videosPerPage[currentViewSize];
+    var newCurrentPage = Math.floor(firstDiscoverIndex/nextProps.videosPerPage[nextViewSize]) + 1;
+    this.setState({
+      currentPage: newCurrentPage
+    });
+    this.detectHeight();
   },
 
   handleLeftButtonClick: function(event) {
@@ -78,23 +76,11 @@ var DiscoveryPanel = React.createClass({
     this.refs.CountDownClock.handleClick(event);
   },
 
-  // detect height of outer and inner windows
+  // detect height of component
   detectHeight: function() {
     var discoveryPanel = ReactDOM.findDOMNode(this.refs.discoveryPanel);
-    var discoveryPanelToaster = ReactDOM.findDOMNode(this.refs.DiscoveryToasterContainer);
-    var heightData = Utils.windowHeightOverflow(discoveryPanel, discoveryPanelToaster.getBoundingClientRect().height, 10);
     this.setState({
-      heightOverflow: heightData.isWindowHeightOverflow,
-      heightOverflowBreakpoint: discoveryPanelToaster.getBoundingClientRect().height
-    });
-  },
-
-  // detect height overflow
-  detectHeightOverflow: function() {
-    var discoveryPanel = ReactDOM.findDOMNode(this.refs.discoveryPanel);
-    var heightData = Utils.windowHeightOverflow(discoveryPanel, this.state.heightOverflowBreakpoint, 10);
-    this.setState({
-      heightOverflow: heightData.isWindowHeightOverflow
+      componentHeight: discoveryPanel.getBoundingClientRect().height
     });
   },
 
@@ -126,7 +112,7 @@ var DiscoveryPanel = React.createClass({
     var discoveryToaster = ClassNames({
       'oo-discovery-toaster-container-style': true,
       'oo-flexcontainer': true,
-      'oo-scale-height': this.state.heightOverflow && (this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id || this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.sm.id)
+      'oo-scale-size': (this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id && (this.props.componentWidth <= 420 || this.state.componentHeight <= 175)) || (this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.sm.id && (this.props.componentWidth <= 420 || this.state.componentHeight <= 320))
     });
     var leftButtonClass = ClassNames({
       'oo-left-button': true,

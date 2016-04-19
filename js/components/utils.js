@@ -103,18 +103,6 @@ var Utils = {
   },
 
   /**
-  * Check if an email address follows RFC standard
-  *
-  * @function validateEmail
-  * @returns {Boolean} Whether the email follows RFC spec
-  */
-  validateEmail: function(email) {
-    // RFC 2822 compliant regex
-    var regEx = /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/i;
-    return regEx.test(email);
-  },
-
-  /**
   * Check if the current browser is Safari
   *
   * @function isSafari
@@ -315,26 +303,6 @@ var Utils = {
     dimensions["width"] = vidWidth;
     dimensions["height"] = vidHeight;
     return dimensions;
-  },
-
-  windowHeightOverflow: function (outerWindowNode, innerWindow, offset) {
-    // outerWindow height
-    var outerWindowHeight = outerWindowNode.getBoundingClientRect().height;
-    var outerWindowHeightPadding = window.getComputedStyle(outerWindowNode, null).getPropertyValue('padding');
-    var outerWindowVisibleHeight = outerWindowHeightPadding ? outerWindowHeight - (2 * parseInt(outerWindowHeightPadding)) : outerWindowHeight;
-
-    // innerWindow height
-    var innerWindowHeight = innerWindow;
-
-    // offset
-    var offsetHeight = offset ? parseInt(offset) : 0;
-    outerWindowVisibleHeight -= offsetHeight;
-
-    var heightData = {};
-    heightData['outerWindowVisibleHeight'] = outerWindowVisibleHeight;
-    heightData['isWindowHeightOverflow'] = (innerWindowHeight >= outerWindowVisibleHeight);
-
-    return heightData;
   },
 
   _isValid: function( item ) {
