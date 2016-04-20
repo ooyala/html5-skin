@@ -1061,10 +1061,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.closeScreen();
       }
       else {
-        if (this.state.playerState == CONSTANTS.STATE.PLAYING){
+        if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
           this.mb.publish(OO.EVENTS.PAUSE);
+          this.pausedCallback = function() {
+            this.state.screenToShow = screen;
+            this.renderSkin();
+          }.bind(this);
         }
-
+        else {
+          this.state.screenToShow = screen;
+          this.renderSkin();
+        }
       }
     },
 
