@@ -43,6 +43,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "fullscreen": false,
       "pauseAnimationDisabled": false,
       "adPauseAnimationDisabled": true,
+      "pausedCallback": null,
       "seeking": false,
       "queuedPlayheadUpdate": null,
       "accessibilityControlsEnabled": false,
@@ -449,6 +450,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.adPauseAnimationDisabled = false;
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
+      }
+      if (this.pausedCallback) {
+        this.pausedCallback();
+        this.pausedCallback = null;
       }
     },
 
@@ -928,14 +933,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     toggleDiscoveryScreen: function() {
       switch(this.state.playerState) {
         case CONSTANTS.STATE.PLAYING:
-          this.togglePlayPause();
-          this.sendDiscoveryDisplayEvent("pauseScreen");
-          setTimeout(function() {
+          this.pausedCallback = function() {
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
             this.state.playerState = CONSTANTS.STATE.PAUSE;
             this.renderSkin();
             OO.log("finished toggleDiscoveryScreen");
-          }.bind(this), 1);
+          }.bind(this);
+          this.togglePlayPause();
+          this.sendDiscoveryDisplayEvent("pauseScreen");
           break;
         case CONSTANTS.STATE.PAUSE:
           if(this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
@@ -1038,12 +1043,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING){
+          this.pausedCallback = function() {
+            this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
+            this.renderSkin();
+          }.bind(this);
           this.mb.publish(OO.EVENTS.PAUSE);
         }
-        setTimeout(function() {
+        else {
           this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
           this.renderSkin();
-        }.bind(this), 1);
+        }
       }
     },
 
@@ -1052,13 +1061,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.closeScreen();
       }
       else {
-        if (this.state.playerState == CONSTANTS.STATE.PLAYING){
+        if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
+          this.pausedCallback = function() {
+            this.state.screenToShow = screen;
+            this.renderSkin();
+          }.bind(this);
           this.mb.publish(OO.EVENTS.PAUSE);
         }
-        setTimeout(function() {
+        else {
           this.state.screenToShow = screen;
           this.renderSkin();
-        }.bind(this), 1);
+        }
       }
     },
 
@@ -1104,12 +1117,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING){
+          this.pausedCallback = function() {
+            this.state.screenToShow = CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN;
+            this.renderSkin();
+          }.bind(this);
           this.mb.publish(OO.EVENTS.PAUSE);
         }
-        setTimeout(function() {
+        else {
           this.state.screenToShow = CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN;
           this.renderSkin();
-        }.bind(this), 1);
+        }
       }
     },
 
@@ -1159,12 +1176,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     displayMoreOptionsScreen: function(moreOptionsItems) {
-      this.mb.publish(OO.EVENTS.PAUSE);
-      this.state.moreOptionsItems = moreOptionsItems;
-      setTimeout(function() {
+      if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
+        this.pausedCallback = function() {
+          this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
+          this.renderSkin();
+        }.bind(this);
+        this.mb.publish(OO.EVENTS.PAUSE);
+      }
+      else {
         this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
         this.renderSkin();
-      }.bind(this), 1);
+      }
+      this.state.moreOptionsItems = moreOptionsItems;
     },
 
     enablePauseAnimation: function(){
