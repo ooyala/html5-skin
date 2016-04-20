@@ -933,14 +933,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     toggleDiscoveryScreen: function() {
       switch(this.state.playerState) {
         case CONSTANTS.STATE.PLAYING:
-          this.togglePlayPause();
-          this.sendDiscoveryDisplayEvent("pauseScreen");
           this.pausedCallback = function() {
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
             this.state.playerState = CONSTANTS.STATE.PAUSE;
             this.renderSkin();
             OO.log("finished toggleDiscoveryScreen");
           }.bind(this);
+          this.togglePlayPause();
+          this.sendDiscoveryDisplayEvent("pauseScreen");
           break;
         case CONSTANTS.STATE.PAUSE:
           if(this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
@@ -1043,11 +1043,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING){
-          this.mb.publish(OO.EVENTS.PAUSE);
           this.pausedCallback = function() {
             this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
             this.renderSkin();
           }.bind(this);
+          this.mb.publish(OO.EVENTS.PAUSE);
         }
         else {
           this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
@@ -1062,11 +1062,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
-          this.mb.publish(OO.EVENTS.PAUSE);
           this.pausedCallback = function() {
             this.state.screenToShow = screen;
             this.renderSkin();
           }.bind(this);
+          this.mb.publish(OO.EVENTS.PAUSE);
         }
         else {
           this.state.screenToShow = screen;
@@ -1117,11 +1117,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING){
-          this.mb.publish(OO.EVENTS.PAUSE);
           this.pausedCallback = function() {
             this.state.screenToShow = CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN;
             this.renderSkin();
           }.bind(this);
+          this.mb.publish(OO.EVENTS.PAUSE);
         }
         else {
           this.state.screenToShow = CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN;
@@ -1177,11 +1177,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     displayMoreOptionsScreen: function(moreOptionsItems) {
       if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
-        this.mb.publish(OO.EVENTS.PAUSE);
         this.pausedCallback = function() {
           this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
           this.renderSkin();
         }.bind(this);
+        this.mb.publish(OO.EVENTS.PAUSE);
       }
       else {
         this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
