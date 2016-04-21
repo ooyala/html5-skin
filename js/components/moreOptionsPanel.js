@@ -44,6 +44,7 @@ var MoreOptionsPanel = React.createClass({
   },
 
   buildMoreOptionsButtonList: function () {
+    //inline style for config/skin.json elements only
     var buttonStyle = {
       fontSize: this.props.skinConfig.moreOptionsScreen.iconSize + "px",
       color: this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.color,
@@ -92,9 +93,6 @@ var MoreOptionsPanel = React.createClass({
       'oo-more-options-items': true,
       'oo-animate-more-options': this.state.animate
     });
-
-    //inline style for config/skin.json elements only
-
 
     var moreOptionsItems = this.buildMoreOptionsButtonList();
 

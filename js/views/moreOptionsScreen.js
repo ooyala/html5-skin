@@ -30,6 +30,11 @@ var MoreOptionsScreen = React.createClass({
 });
 
 MoreOptionsScreen.defaultProps = {
+  skinConfig: {
+    icons: {
+      dismiss:{fontStyleClass:'oo-icon oo-icon-close'}
+    }
+  },
   controller: {
     closeScreen: function(){},
     state: {
