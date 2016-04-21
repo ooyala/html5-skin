@@ -4,6 +4,7 @@
 
 .oo-control-bar {
   background: $control-bar-bg;
+  @include vendor-prefixes (background, $control-bar-gradient);
   width: 100%;
   height: $control-bar-height;
   position: relative;
