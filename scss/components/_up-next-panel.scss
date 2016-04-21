@@ -13,6 +13,9 @@
     width: 140px;
     height: 100%;
     cursor: pointer;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     
     img.oo-content-image {
     @include absolute-center;

@@ -35,11 +35,13 @@ var UpNextPanel = React.createClass({
 
   render: function() {
     var upNextString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UP_NEXT, this.props.localizableStrings);
+    var thumbnailStyle = {
+      backgroundImage: "url('" + this.props.upNextInfo.upNextData.preview_image_url + "')"
+    };
 
     return (
       <div className="oo-up-next-panel">
-        <a className="oo-up-next-content" onClick={this.handleStartUpNextClick}>
-          <img className="oo-content-image" src={this.props.upNextInfo.upNextData.preview_image_url} />
+        <a className="oo-up-next-content" onClick={this.handleStartUpNextClick} style={thumbnailStyle}>
           <Icon {...this.props} icon="play"/>
         </a>
 
