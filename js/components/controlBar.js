@@ -304,7 +304,17 @@ var ControlBar = React.createClass({
 
       "watermark": <div className={watermarkClass} key="watermark" style = {dynamicStyles.watermarkImageStyle}>
         <img src={watermarkUrl} onClick={this.handleWatermarkClick}/>
-      </div>
+      </div>,
+
+      "facebook": <button className="oo-facebook oo-control-bar-item"
+        onClick={this.handleFacebookClick} key="facebook">
+        <span></span>
+      </button>,
+
+      "twitter": <button className="oo-twitter oo-control-bar-item"
+        onClick={this.handleTwitterClick} key="twitter">
+        <span></span>
+      </button>,
     };
 
     var controlBarItems = [];
@@ -406,6 +416,18 @@ var ControlBar = React.createClass({
     return returnStyles;
   },
 
+  handleFacebookClick: function() {
+    var facebookUrl = "http://www.facebook.com/sharer.php";
+    facebookUrl += "?u=" + encodeURIComponent(location.href);
+    window.open(facebookUrl, "facebook window", "height=315,width=780");
+  },
+
+  handleTwitterClick: function() {
+    var twitterUrl = "https://twitter.com/intent/tweet";
+    twitterUrl += "?text=" + encodeURIComponent(this.props.contentTree.title+": ");
+    twitterUrl += "&url=" + encodeURIComponent(location.href);
+    window.open(twitterUrl, "twitter window", "height=300,width=750");
+  },
 
   render: function() {
     var controlBarClass = ClassNames({

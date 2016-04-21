@@ -124,6 +124,24 @@
       max-height: 18px;
       vertical-align: baseline;
     }
+
+    .oo-twitter > span {
+      height: 20px;
+      width: 20px;
+      display: inline-block;
+      background-image: url("//player.ooyala.com/static/v4/stable/4.1.4/skin-plugin/assets/images/social-twitter.svg");
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    .oo-facebook > span {
+      height: 20px;
+      width: 20px;
+      display: inline-block;
+      background-image: url("//player.ooyala.com/static/v4/stable/4.1.4/skin-plugin/assets/images/social-facebook.svg");
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
   }
 }
 a.oo-volume-bar {
