@@ -246,13 +246,7 @@ var Skin = React.createClass({
         case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
           screen = (
             <MoreOptionsScreen {...this.props}
-              contentTree={this.state.contentTree}
-              currentPlayhead={this.state.currentPlayhead}
-              duration={this.state.duration}
-              playerState={this.state.playerState}
               fullscreen={this.state.fullscreen}
-              seeking={this.state.seeking}
-              responsiveView={responsiveId}
               ref="moreOptionsScreen" />
           );
           break;
@@ -294,7 +288,7 @@ var Skin = React.createClass({
     }
 
     return (
-      <div id="ooyala-responsive" className={responsiveClass}>
+      <div id="oo-responsive" className={responsiveClass}>
         {screen}
       </div>
     );
