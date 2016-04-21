@@ -440,7 +440,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
         if (Utils.isIPhone()){
           //iPhone pause screen is the same as start screen
-          this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+          this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.state.mainVideoElement.addClass('oo-blur');
