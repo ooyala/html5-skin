@@ -1,28 +1,19 @@
-.scrubber-bar-visible {
-  bottom: $control-bar-height - $scrubber-padding-height;
-}
-
-.scrubber-bar-hidden {
-  bottom: -1 * $scrubber-padding-height;
-}
-
-.scrubberBarContainer {
+.oo-scrubber-bar-container {
   padding: 0;
   margin: 0;
-  position: absolute;
-  transition: bottom 0.5s, height 0.25s;
+  position: relative;
   width: 100%;
-  height: 24px;
+  height: 28px;
   z-index: 12600;
   @include vendor-prefixes(user-select, none);
 
-  .scrubberBarPadding {
+  .oo-scrubber-bar-padding {
     height: 100%;
-    left: 15px;
-    right: 15px;
+    left: 0;
+    right: 0;
     position: absolute;
 
-    .scrubberBar {
+    .oo-scrubber-bar {
       background-color: $gray-lighter;
       height: 3px;
       width: 100%;
@@ -31,28 +22,29 @@
       cursor: pointer;
       padding: 0;
       bottom: 50%;
-      transform: translateY(50%);
       border-radius: 3px;
+      transform: translateY(50%)
     }
 
-    .bufferedIndicator {
+    .oo-buffered-indicator {
       background-color: $gray-light;
       height: 100%;
       position: absolute;
       border-radius: 3px;
     }
 
-    .playedIndicator {
+    .oo-played-indicator {
       background: $blue-light;
       height: 100%;
       position: absolute;
+      border-radius: 3px;
     }
 
-    .playedAdIndicator {
+    .oo-played-ad-indicator {
       background: #FF3F80;
     }
 
-    .playheadPadding {
+    .oo-playhead-padding {
       width: 25px;
       height: 25px;
       position: absolute;
@@ -61,13 +53,11 @@
       transition: opacity 0.25s;
       @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
 
-      .playhead {
+      .oo-playhead {
         background: $blue-light;
         width: 10px;
         height: 10px;
-        border-style: solid;
-        border-color: white;
-        border-width: 1px;
+        border: 1px solid $white;
         border-radius: 10px;
         position: absolute;
         transition: opacity 0.25s;
@@ -77,10 +67,9 @@
         @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
       }
 
-      .adPlayhead {
+      .oo-ad-playhead {
         visibility: hidden;
       }
     }
   }
 }
-

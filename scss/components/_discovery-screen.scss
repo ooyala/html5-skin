@@ -1,10 +1,10 @@
-.discoveryScreen {
+.oo-discovery-screen {
   height:100%;
   width:100%;
   cursor: default;
   @include vendor-prefixes(user-select, none);
 
-  .promo-style {
+  .oo-promo-style {
     position: absolute;
     height: 100%;
     width: 100%;
@@ -14,7 +14,7 @@
     //background-image: url('this.props.contentTree.promo_image');
   }
 
-  .discovery-panel {
+  .oo-discovery-panel {
     padding: $panel-padding;
     position: absolute;
     bottom: 0;
@@ -24,38 +24,39 @@
     right: 0;
     height: 100%;
 
-    .discovery-panel-title {
+    .oo-discovery-panel-title {
       position: relative;
       line-height: 1;
       font-weight: bold;
       font-size: $font-size-md-screen-title;
       font-family: $font-family-roboto-condensed;
       color: $white;
-      span.icon {
+      span.oo-icon {
         top: 1px;
         position: relative;
         margin-left: 7px;
         font-size: 0.8em;
       }
     }
-    .discoveryToasterContainerStyle {
-      @include absolute-center;
-      position:relative;
+    
+    .oo-discovery-toaster-container-style {
+      position: absolute;
+      top: 50%;
       background-color: transparent;
-      height: auto;
+      height: 100%;
       max-height: 370px;
       width: 100%;
       overflow: hidden;
       white-space: nowrap;
       margin: auto;
+      @include vendor-prefixes(transform, translateY(-25%));
     }
-    @include apply-to-safari-only ('.discoveryToasterContainerStyle') {
+    @include apply-to-safari-only ('.oo-discovery-toaster-container-style') {
       min-height: 270px;
     }
 
-    .flexcontainer {
-      display: -webkit-flex;
-      display: flex;
+    .oo-flexcontainer {
+      @include flexbox();
       -webkit-align-items: center;
       align-items: center;
       -webkit-justify-content: flex-start;
@@ -67,7 +68,7 @@
       overflow: visible;
     }
 
-    .discoveryImageWrapperStyle {
+    .oo-discovery-image-wrapper-style {
       position: relative;
       width: 150px;
       height: auto;
@@ -81,12 +82,12 @@
         margin-right:0
       }
 
-      .discovery-wrapper {
+      .oo-discovery-wrapper {
         position: relative;
       }
     }
 
-    .imageStyle {
+    .oo-image-style {
       width: auto;
       height: 84px;
       display: block;
@@ -95,7 +96,7 @@
       background-position: center;
     }
 
-    .discoveryContentName {
+    .oo-discovery-content-name {
       color: $white;
       font-size: $font-size-base;
       font-family: $font-family-roboto-condensed;
@@ -105,7 +106,7 @@
       @include text-truncate();
     }
 
-    .discoverBtn {
+    .oo-discover-btn {
       position: absolute;
       top: 50%;
       background-color: transparent;
@@ -114,43 +115,35 @@
       color: white;
     }
 
-    .leftButton {
-      @extend .discoverBtn;
+    .oo-left-button {
+      @extend .oo-discover-btn;
       left: 0;
       text-align: right;
     }
 
-    .rightButton {
-      @extend .discoverBtn;
+    .oo-right-button {
+      @extend .oo-discover-btn;
       right: 0;
       text-align: left;
     }
 
-    .discoveryCountDownWrapperStyle {
+    .oo-discovery-count-down-wrapper-style {
+      @include absolute-center;
       line-height:1;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      -webkit-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%);
     }
 
-    .discoveryCountDownWrapperStyle a.discoveryCountDownIconStyle span {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      -webkit-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%);
+    .oo-discovery-count-down-wrapper-style a.oo-discovery-count-down-icon-style span {
+      @include absolute-center;
       line-height: 40px;
       z-index: 10005;
-      color: white;
+      color: $white;
       font-size: 25px;
       cursor: pointer
     }
 
-    .scaleHeight {
+    .oo-scale-size {
       max-height: 250px;
-      .discoveryImageWrapperStyle {
+      .oo-discovery-image-wrapper-style {
         width: 150px * $xsmall-multiple;
         margin: 0 42px * $xsmall-multiple 30px * $xsmall-multiple 0;
         &:nth-of-type(even) {
@@ -159,7 +152,7 @@
         &:last-child, &:nth-last-child(2):nth-of-type(odd) {
           margin-right:0
         }
-        .imageStyle {
+        .oo-image-style {
           height: 84px * $xsmall-multiple;
         }
       }

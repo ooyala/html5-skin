@@ -1,31 +1,30 @@
-.adScreenPanel {
+.oo-ad-screen-panel {
   position: absolute;
   top: 0;
   bottom: 64px;
   width: 100%;
 
-  .adTopBar {
+  .oo-ad-top-bar {
     display: -webkit-flex;
     display: flex;
     position: absolute;
-    top: 0%;
+    top: 0;
     height: 25px;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: $ad-top-bar-bg;
     margin: 0;
     font-size: 1em;
     list-style: none;
-    display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
     @include vendor-prefixes(user-select, none);
     transition: bottom 0.5s, height 0.5s;
     z-index: 12600;
 
-    .adTitle, .adPlaybackInfo {
+    .oo-ad-title, .oo-ad-playback-info {
       font-size: 0.9em;
-      color: #ffffff;
-      font-family: 'Roboto', sans-serif;
+      color: $white;
+      font-family: $font-family-roboto;
       margin: auto;
       text-align: center;
       padding-left: 7.5px;
@@ -33,62 +32,58 @@
       white-space: pre;
     }
 
-    .flexibleSpace {
+    .oo-flexible-space {
       @include vendor-prefixes(flex, 1);
     }
 
-    .learnMore {
+    .oo-learn-more {
       font-size: 0.9em;
-      font-family: 'Roboto Condensed', sans-serif;
-      color: #ffffff;
-      margin: auto;
-      margin-right: 15px;
+      font-family: $font-family-roboto;
+      color: $white;
+      margin: auto 15px auto auto;
       text-align: center;
       cursor: pointer;
 
-      .buttonIcon {
+      .oo-button-icon {
         font-size: 0.7em;
         margin-right: 5px
       }
     }
 
-    .learnMore.hidden {
+    .oo-learn-more.oo-hidden {
       visibility: hidden;
     }
 
-    .skipButton {
+    .oo-skip-button {
       font-size: 0.9em;
-      font-family: 'Roboto Condensed', sans-serif;
-      color: #ffffff;
+      font-family: $font-family-roboto;
+      color: $white;
       visibility: hidden;
       width: 0;
-      margin: auto;
-      margin-left: 0;
+      margin: auto auto auto 0;
       opacity: 0.3;
       cursor: default;
 
-      .buttonIcon {
+      .oo-button-icon {
         font-size: 0.7em;
         margin-right: 5px;
       }
     }
 
-    .skipButton.visible {
+    .oo-skip-button.oo-visible {
       visibility: visible;
       width: initial;
-      margin: auto;
-      margin-right: 15px;
-      margin-left: 15px;
+      margin: auto 15px;
       text-align: center;
       cursor: pointer;
 
-      .skipIcon {
+      .oo-skip-icon {
         font-size: 0.7em;
         margin-right: 5px;
       }
     }
 
-    .skipButton.enabled {
+    .oo-skip-button.oo-enabled {
       opacity: 1;
       cursor: pointer;
     }

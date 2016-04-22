@@ -1,9 +1,9 @@
-.slider {
+.oo-slider {
   width: #{$slider-width};
-  @extend .center-vertical-horizontal;
+  @extend .oo-center-vertical-horizontal;
 }
 
-.slider[type=range] {
+.oo-slider[type=range] {
     -webkit-appearance: none;
 
     //increases the clickable area for webkit sliders
@@ -20,12 +20,12 @@
     width: #{$slider-width};
 }
 
-.slider[type=range]::-webkit-slider-runnable-track {
+.oo-slider[type=range]::-webkit-slider-runnable-track {
     height: #{$slider-height};
     border: none;
 }
 
-.slider[type=range]::-webkit-slider-thumb {
+.oo-slider[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: none;
     height: #{$slider-thumb-diameter};
@@ -37,23 +37,23 @@
 
 // IE Edge only
 @supports (-ms-accelerator:true) {
-    .slider[type=range]::-webkit-slider-thumb {
+    .oo-slider[type=range]::-webkit-slider-thumb {
         margin-top: 0;
     }
 }
 
-.slider[type=range]:focus {
+.oo-slider[type=range]:focus {
     outline: none;
 }
 
 //moz
-.slider[type=range]::-moz-range-track {
+.oo-slider[type=range]::-moz-range-track {
     width: #{$slider-width};
     height: #{$slider-height};
     background: #{$track-color};
 }
 
-.slider[type=range]::-moz-range-thumb {
+.oo-slider[type=range]::-moz-range-thumb {
     border: none;
     height: #{$slider-thumb-diameter};
     width: #{$slider-thumb-diameter};
@@ -61,20 +61,20 @@
     background: #{$thumb-color};
 }
 
-.slider[type=range]:focus::-moz-range-track {
+.oo-slider[type=range]:focus::-moz-range-track {
     background: #{$track-color};
 }
 
-.slider[type=range]::-moz-range-progress {
+.oo-slider[type=range]::-moz-range-progress {
     background: #{$progress-color};
 }
 
-.slider-volume[type=range]::-moz-range-progress {
+.oo-slider-volume[type=range]::-moz-range-progress {
     background: #{$slider-volume-progress-color};
 }
 
 //ms
-.slider[type=range]::-ms-track {
+.oo-slider[type=range]::-ms-track {
     width: #{$slider-width};
     height: #{$slider-height};
     
@@ -89,16 +89,16 @@
     color: transparent;
 }
 
-.slider[type=range]::-ms-fill-lower {
+.oo-slider[type=range]::-ms-fill-lower {
     background: #{$progress-color};
 }
 
-.slider[type=range]::-ms-fill-upper {
+.oo-slider[type=range]::-ms-fill-upper {
     background: #{$track-color};
 }
 
 //Generic slider
-.slider[type=range]::-ms-thumb {
+.oo-slider[type=range]::-ms-thumb {
     border: none;
     height: #{$slider-thumb-diameter};
     width: #{$slider-thumb-diameter};
@@ -106,25 +106,25 @@
     background: #{$thumb-color};
 }
 
-.slider[type=range]:focus::-ms-fill-lower {
+.oo-slider[type=range]:focus::-ms-fill-lower {
     background: #{$progress-color};
 }
 
-.slider[type=range]:focus::-ms-fill-upper {
+.oo-slider[type=range]:focus::-ms-fill-upper {
     background: #{$track-color};
 }
 
-.slider[type=range]::-ms-tooltip {
+.oo-slider[type=range]::-ms-tooltip {
     display: none;
 }
 
 //Volume slider
 
-.slider-volume {
+.oo-slider-volume {
   width: #{$slider-volume-width};
 }
 
-.slider-volume[type=range] {
+.oo-slider-volume[type=range] {
     //passing colors to use for coloring the progress/track in browsers other than IE
     border-right-color: #{$slider-volume-track-color};
     border-left-color:#{$slider-volume-progress-color};
@@ -133,11 +133,11 @@
     width: #{$slider-volume-width};
 }
 
-.slider-volume[type=range]::-webkit-slider-runnable-track {
+.oo-slider-volume[type=range]::-webkit-slider-runnable-track {
     height: #{$slider-volume-height};
 }
 
-.slider-volume[type=range]::-webkit-slider-thumb {
+.oo-slider-volume[type=range]::-webkit-slider-thumb {
     height: #{$slider-volume-thumb-diameter};
     width: #{$slider-volume-thumb-diameter};
     background: #{$slider-volume-thumb-color};
@@ -146,51 +146,51 @@
 
 // IE Edge only
 @supports (-ms-accelerator:true) {
-    .slider-volume[type=range]::-webkit-slider-thumb {
+    .oo-slider-volume[type=range]::-webkit-slider-thumb {
         margin-top: 0;
     }
 }
 
-.slider-volume[type=range]::-moz-range-track {
+.oo-slider-volume[type=range]::-moz-range-track {
     width: #{$slider-volume-width};
     height: #{$slider-volume-height};
     background: #{$slider-volume-track-color};
 }
 
-.slider-volume[type=range]::-moz-range-thumb {
+.oo-slider-volume[type=range]::-moz-range-thumb {
     height: #{$slider-volume-thumb-diameter};
     width: #{$slider-volume-thumb-diameter};
     background: #{$slider-volume-thumb-color};
 }
 
-.slider-volume[type=range]:focus::-moz-range-track {
+.oo-slider-volume[type=range]:focus::-moz-range-track {
     background: #{$slider-volume-track-color};
 }
 
-.slider-volume[type=range]::-ms-track {
+.oo-slider-volume[type=range]::-ms-track {
     width: #{$slider-volume-width};
     height: #{$slider-volume-height};
     border-width: $slider-volume-thumb-diameter/2 0;
 }
 
-.slider-volume[type=range]::-ms-fill-lower {
+.oo-slider-volume[type=range]::-ms-fill-lower {
     background: #{$slider-volume-progress-color};
 }
 
-.slider-volume[type=range]::-ms-fill-upper {
+.oo-slider-volume[type=range]::-ms-fill-upper {
     background: #{$slider-volume-track-color};
 }
 
-.slider-volume[type=range]::-ms-thumb {
+.oo-slider-volume[type=range]::-ms-thumb {
     height: #{$slider-volume-thumb-diameter};
     width: #{$slider-volume-thumb-diameter};
     background: #{$slider-volume-thumb-color};
 }
 
-.slider-volume[type=range]:focus::-ms-fill-lower {
+.oo-slider-volume[type=range]:focus::-ms-fill-lower {
     background: #{$slider-volume-progress-color};
 }
 
-.slider-volume[type=range]:focus::-ms-fill-upper {
+.oo-slider-volume[type=range]:focus::-ms-fill-upper {
     background: #{$slider-volume-track-color};
 }

@@ -1,10 +1,10 @@
-.MoreOptionsScreen {
+.oo-more-options-screen {
 
-  .moreOptionsPanel {
-    @extend .expand;
+  .oo-more-options-panel {
+    @extend .oo-expand;
     background: $panel-bg;
 
-    .moreOptionsItems {
+    .oo-more-options-items {
       position: absolute;
       left: 50%;
       @include vendor-prefixes(transform, translate(-50%, -50%));
@@ -18,13 +18,13 @@
       @include vendor-prefixes(user-select, none);
       font-size: 30px;
 
-      button.controlBarItem {
+      button.oo-control-bar-item {
         background-color: transparent;
         border:0;
         outline: none;
       }
 
-      .controlBarItem {
+      .oo-control-bar-item {
         height: 100%;
         font-weight: bold;
         text-align: center;
@@ -36,7 +36,7 @@
       }
     }
 
-    .moreOptionsItems.animate-more-options {
+    .oo-more-options-items.oo-animate-more-options {
       top: 50%;
       opacity: 1;
       @include vendor-prefixes(transition, all ease 0.7s);
