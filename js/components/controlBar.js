@@ -9,7 +9,8 @@ var React = require('react'),
     Slider = require('./slider'),
     Utils = require('./utils'),
     VideoQualityPopover = require('./videoQualityPopover'),
-    Icon = require('../components/icon');
+    Logo = require('./logo');
+    Icon = require('./icon');
 
 var ControlBar = React.createClass({
   getInitialState: function() {
@@ -141,13 +142,6 @@ var ControlBar = React.createClass({
     this.removeHighlight({target: ReactDOM.findDOMNode(this.refs.volumeIcon)});
   },
 
-  handleWatermarkClick: function() {
-    var watermarkClickUrl = this.props.skinConfig.controlBar.watermark.clickUrl;
-    if (watermarkClickUrl){
-      window.open(watermarkClickUrl,'_blank');
-    }
-  },
-
   changeVolumeSlider: function(event) {
     var newVolume = parseFloat(event.target.value);
     this.props.controller.setVolume(newVolume);
@@ -215,7 +209,6 @@ var ControlBar = React.createClass({
 
     var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
-    var watermarkUrl = this.props.skinConfig.controlBar.watermark.imageResource.url;
     var currentPlayheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
     var totalTimeContent = this.props.authorization.streams[0].is_live_stream ? null : <span className="oo-total-time">{totalTime}</span>;
 
@@ -226,12 +219,6 @@ var ControlBar = React.createClass({
       "oo-quality": true,
       "oo-control-bar-item": true,
       "oo-selected": this.state.showVideoQualityPopover
-    });
-
-    var watermarkClass = ClassNames({
-      "oo-watermark": true,
-      "oo-control-bar-item": true,
-      "oo-non-clickable-watermark": !this.props.skinConfig.controlBar.watermark.clickUrl
     });
 
     var controlItemTemplates = {
@@ -302,9 +289,12 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "watermark": <div className={watermarkClass} key="watermark" style = {dynamicStyles.watermarkImageStyle}>
-        <img src={watermarkUrl} onClick={this.handleWatermarkClick}/>
-      </div>
+      "logo": <Logo key="logo" imageUrl={this.props.skinConfig.controlBar.logo.imageResource.url}
+                    clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
+                    target={this.props.skinConfig.controlBar.logo.target}
+                    width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
+                    height={this.props.skinConfig.controlBar.logo.height}
+                    style={dynamicStyles.logoStyle} />
     };
 
     var controlBarItems = [];
@@ -355,6 +345,11 @@ var ControlBar = React.createClass({
         continue;
       }
 
+      //do not show logo if no image url available
+      if (!this.props.skinConfig.controlBar.logo.imageResource.url && (defaultItems[k].name === "logo")){
+        continue;
+      }
+
       if (Utils.isIos() && (defaultItems[k].name === "volume")){
         continue;
       }
@@ -391,9 +386,9 @@ var ControlBar = React.createClass({
     var returnStyles = {};
 
     for (element in this.props.skinConfig.buttons.desktopContent){
-      if (this.props.skinConfig.buttons.desktopContent[element].name == "watermark"){
-        returnStyles.watermarkImageStyle = {
-          width: this.responsiveUIMultiple * this.props.skinConfig.buttons.desktopContent[element].minWidth + "px"
+      if (this.props.skinConfig.buttons.desktopContent[element].name == "logo"){
+        returnStyles.logoStyle = {
+          minWidth: this.responsiveUIMultiple * this.props.skinConfig.buttons.desktopContent[element].minWidth + "px"
         };
       }
     }

@@ -212,8 +212,8 @@
         font-size: 10px * $xsmall-multiple;
       }
 
-      .oo-watermark img {
-        height: 18px * $xsmall-multiple;
+      .oo-logo img {
+        max-height: 18px * $xsmall-multiple;
       }
     }
   }

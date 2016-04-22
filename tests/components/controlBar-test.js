@@ -1,6 +1,7 @@
 jest.dontMock('../../js/components/controlBar')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/components/icon')
+    .dontMock('../../js/components/logo')
     .dontMock('../../js/constants/constants')
     .dontMock('classnames');
 
@@ -898,7 +899,7 @@ describe('ControlBar', function () {
     expect(qualityClicked).toBe(true);
   });
 
-  it("renders nonclickable watermark", function() {
+  it("renders nonclickable logo", function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -914,9 +915,9 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"watermark", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
+      {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
     ];
-    oneButtonSkinConfig.controlBar.watermark.clickUrl = false;
+    oneButtonSkinConfig.controlBar.logo.clickUrl = "";
 
     var mockProps = {
       controller: mockController,
@@ -930,12 +931,12 @@ describe('ControlBar', function () {
         authorization={mockProps.authorization} />
     );
 
-    var watermark = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-watermark');
-    var nonClickableWatermark = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-non-clickable-watermark');
-    expect(nonClickableWatermark).not.toBe(null);
+    var logo = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-logo');
+    var nonClickableLogo = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
+    expect(nonClickableLogo.length).toBe(0);
   });
 
-  it("renders clickable watermark", function() {
+  it("renders clickable logo", function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -951,9 +952,9 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"watermark", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
+      {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
     ];
-    oneButtonSkinConfig.controlBar.watermark.clickUrl = true;
+    oneButtonSkinConfig.controlBar.logo.clickUrl = "http://www.ooyala.com";
 
     var mockProps = {
       controller: mockController,
@@ -967,10 +968,10 @@ describe('ControlBar', function () {
         authorization={mockProps.authorization} />
     );
 
-    var nonClickableWatermark = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-non-clickable-watermark');
-    expect(nonClickableWatermark.length).toBe(0);
+    var logo = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-logo');
+    var clickableLogo = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
 
-    var watermark = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-watermark');
-    TestUtils.Simulate.click(watermark);
+    expect(clickableLogo.length).toBe(1);
+    TestUtils.Simulate.click(logo);
   });
 });
