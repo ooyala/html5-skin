@@ -1,34 +1,41 @@
-.control-bar-hidden {
-  bottom: -1 * $control-bar-height;
+.oo-control-bar-hidden {
+  height: 0 !important;
 }
-.control-bar-visible {
-  bottom: 0;
-}
-.control-bar {
-  background: rgba($black, 0.3); 
-  @include vendor-prefixes (background, $control-bar-gradient);  
+
+.oo-control-bar {
+  background: $control-bar-bg;
+  @include vendor-prefixes (background, $control-bar-gradient);
   width: 100%;
   height: $control-bar-height;
-  position: absolute;
+  position: relative;
   margin: 0;
+  padding: 0 15px;
   font-size: 18px;
   list-style: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  transition: bottom 0.5s, height 0.25s;
+  transition: height 0.5s;
   z-index: 12500;
 
-  .controlBarItemsWrapper {
+  .oo-control-bar-items-wrapper {
     display: -webkit-flex;
     display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
     flex-flow: row nowrap;
-    justify-content: flex-start;
-    padding-right: 7.5px;
-    padding-left: 7.5px;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    white-space: nowrap;
 
-    .popover-button-container {
+    & > * {
+      line-height: 1 !important;
+    }
+
+    .oo-popover-button-container {
       position: relative;
       height:100%;
       border:0;
@@ -36,33 +43,39 @@
       padding:0;
     }
 
-    .controlBarItem {
+    .oo-control-bar-item {
       height: 100%;
       font-weight: bold;
       font-size: 18px;
       text-align: center;
       padding: 0 7.5px;
-      margin-top: 6px;
       cursor: pointer;
-      line-height: $control-bar-height;
     }
 
-    button.controlBarItem {
+    & > .oo-control-bar-item:first-child {
+      padding-left:0 !important;
+    }
+
+    & > .oo-control-bar-item:last-child {
+      padding-right:0 !important;
+    }
+
+    button.oo-control-bar-item {
       background-color: transparent;
       border:0;
       outline: none;
     }
 
-    .controlBarItem.selected > span {
+    .oo-control-bar-item.oo-selected > span {
       color:$blue-light !important;
       opacity:1 !important;
     }
 
-    .controlBarItem.nonClickableWatermark {
+    .oo-control-bar-item.oo-logo {
       cursor: auto;
     }
 
-    .controlBarDuration {
+    .oo-control-bar-duration {
       height: 100%;
       color: $white;
       opacity: 1;
@@ -71,10 +84,8 @@
       padding-left: 7.5px;
       padding-right: 7.5px;
       text-align: left;
-      margin-top: 6px;
-      line-height: $control-bar-height - 3;
 
-      .total-time {
+      .oo-total-time {
         color: $white;
 
         &:before {
@@ -84,42 +95,44 @@
       }
     }
 
-    .controlBarFlexSpace {
+    .oo-control-bar-flex-space {
       -webkit-flex: 1;
       flex: 1;
     }
 
-    .liveCircle {
+    .oo-live-indicator {
+      line-height: 0.5;
+    }
+
+    .oo-live-circle {
       display: inline-block;
       width: 10px;
       height: 10px;
       border-radius: 50%;
       background-color: red;
       margin-right: 2px;
+      vertical-align: middle;
     }
 
-    .liveIndicator {
-      line-height: $control-bar-height - 7;
-    }
-
-    .liveText {
+    .oo-live-text {
       font-size: 10px;
       color: $gray-light;
+      vertical-align: middle;
     }
 
-    .watermark img {
+    .oo-logo img {
       position: relative;
-      height: 18px;
+      max-height: 18px;
       vertical-align: baseline;
     }
   }
 }
-a.volumeBar {
+a.oo-volume-bar {
   border:0;
   outline: none;
 }
 
-.volumeBar {
+.oo-volume-bar {
   display: inline-block;
   background-clip: content-box;
   position: relative;
@@ -129,19 +142,19 @@ a.volumeBar {
   background-color: rgba($white, 0.6);
 }
 
-.volumeBar.on {
+.oo-volume-bar.oo-on {
   background-color: rgba($blue-light, 0.6);
 }
 
-.volume:hover .volumeBar {
+.oo-volume:hover .oo-volume-bar {
   background-color: $white;
 }
 
-.volume:hover .volumeBar.on {
+.oo-volume:hover .oo-volume-bar.oo-on {
   background-color: $blue-light;
 }
 
-.volumeSlider {
+.oo-volume-slider {
   display: inline-block;
   position: relative;
   margin-left: 6px;
@@ -151,7 +164,7 @@ a.volumeBar {
 
 // IE 11 only
 @media all and (-ms-high-contrast:none) {
-  *::-ms-backdrop, .volumeSlider {
+  *::-ms-backdrop, .oo-volume-slider {
     height: auto;
   }
 }
