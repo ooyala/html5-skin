@@ -1,7 +1,7 @@
 .oo-more-options-screen {
 
   .oo-more-options-panel {
-    @extend .expand;
+    @extend .oo-expand;
     background: $panel-bg;
 
     .oo-more-options-items {
