@@ -39,7 +39,7 @@ describe('AdOverlay', function () {
         showOverlay={true}
       />);
 
-    var adOverlayImage = TestUtils.findRenderedDOMComponentWithClass(DOM, 'adOverlayImage');
+    var adOverlayImage = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-ad-overlay-image');
     TestUtils.Simulate.load(adOverlayImage);
     expect(loaded).toBe(true);
   });
@@ -109,7 +109,7 @@ describe('AdOverlay', function () {
         skinConfig={mockSkinConfig}
       />);
 
-    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'adOverlayCloseButton');
+    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-ad-overlay-close-button');
     TestUtils.Simulate.click(closeBtn);
     expect(nonLinearHidden).toBe(true);
     expect(adSkipped).toBe(true);
@@ -149,7 +149,7 @@ describe('AdOverlay', function () {
         showOverlayCloseButton={false}
       />);
 
-    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'adOverlayCloseButton');
+    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-ad-overlay-close-button');
     expect(closeBtn.className).toMatch("hidden");
 
     DOM = TestUtils.renderIntoDocument(
@@ -159,7 +159,7 @@ describe('AdOverlay', function () {
         showOverlayCloseButton={true}
       />);
 
-    closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'adOverlayCloseButton');
+    closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-ad-overlay-close-button');
     expect(closeBtn.className).not.toMatch("hidden");
   });
 });

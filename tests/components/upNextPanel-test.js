@@ -13,11 +13,11 @@ describe('UpNextPanel', function () {
     DOM = TestUtils.renderIntoDocument(<UpNextPanel upNextInfo={data} />);
 
     //test up next content link
-    var upNextContent = TestUtils.findRenderedDOMComponentWithClass(DOM, 'upNextContent');
+    var upNextContent = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-up-next-content');
     TestUtils.Simulate.click(upNextContent);
 
     //test close btn
-    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'upNextCloseBtn');
+    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-up-next-close-btn');
     TestUtils.Simulate.click(closeBtn);
   });
 });
