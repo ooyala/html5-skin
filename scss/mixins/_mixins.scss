@@ -9,21 +9,15 @@
 }
 
 @mixin border-radius($radius: $border-radius) {
-  @if $enable-rounded {
-    border-radius: $radius;
-  }
+  border-radius: $radius;
 }
 
 @mixin box-shadow($shadow...) {
-  @if $enable-shadows {
-    box-shadow: $shadow;
-  }
+  box-shadow: $shadow;
 }
 
 @mixin transition($transition...) {
-  @if $enable-transitions {
-    transition: $transition;
-  }
+  transition: $transition;
 }
 
 @mixin clearfix() {
@@ -57,18 +51,13 @@
   white-space: nowrap;
 }
 
+@mixin hover {
+  &:hover { @content }
+}
 
 @mixin hover-focus {
-  @if $enable-hover-media-query {
-    &:focus { @content }
-    @include hover { @content }
-  }
-  @else {
-    &:focus,
-    &:hover {
-      @content
-    }
-  }
+  &:focus { @content }
+  @include hover { @content }
 }
 
 // WebKit-style focus
@@ -168,4 +157,13 @@
       @content;
     }
   }
+}
+
+// flexbox prefixing
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
 }

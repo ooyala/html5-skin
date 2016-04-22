@@ -1,23 +1,23 @@
-.ooyala-small {
+.oo-small {
 
   // Discovery Screen
-  .discoveryScreen {
-    .discovery-panel {
-      @include apply-to-safari-only ('.scaleHeight') {
+  .oo-discovery-screen {
+    .oo-discovery-panel {
+      @include apply-to-safari-only ('.oo-scale-size') {
         min-height: 190px !important;
       }
     }
   }
 
   //Text Tracks
-  .text-track-container {
-    .text-track-window {
+  .oo-text-track-container {
+    .oo-text-track-window {
       padding: 8px;
 
-      .text-track-background {
+      .oo-text-track-background {
         padding: 2px 12px;
 
-        .text-track {
+        .oo-text-track {
           font-size: em(18px);
         }
       }

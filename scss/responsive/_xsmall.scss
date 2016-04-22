@@ -1,26 +1,26 @@
-.ooyala-xsmall {
+.oo-xsmall {
   // State Screens
-  .state-screen {
-    .state-screen-info {
-      .state-screen-title {
+  .oo-state-screen {
+    .oo-state-screen-info {
+      .oo-state-screen-title {
         font-size: 1em;
       }
-      .state-screen-description {
+      .oo-state-screen-description {
         font-size: 0.6em;
       }
     }
   }
 
   // Discovery Screen
-  .discoveryScreen {
-    .discovery-panel {
-      .discoveryToasterContainerStyle {
+  .oo-discovery-screen {
+    .oo-discovery-panel {
+      .oo-discovery-toaster-container-style {
         max-height: 200px;
       }
-      @include apply-to-safari-only ('.discoveryToasterContainerStyle') {
+      @include apply-to-safari-only ('.oo-discovery-toaster-container-style') {
         min-height: 100px;
       }
-      .discoveryImageWrapperStyle {
+      .oo-discovery-image-wrapper-style {
         margin-bottom: 0;
 
         &:nth-last-child(2) {
@@ -31,113 +31,113 @@
         }
       }
 
-      .scaleHeight {
+      .oo-scale-size {
         max-height: 150px;
       }
-      @include apply-to-safari-only ('.scaleHeight') {
+      @include apply-to-safari-only ('.oo-scale-size') {
         min-height: 80px !important;
       }
     }
   }
 
   // Closed Caption Screen
-  .closedCaptionsScreen {
-    .closed-captions-panel {
+  .oo-closed-captions-screen {
+    .oo-closed-captions-panel {
       padding:$panel-padding * $xsmall-multiple;
-      .closed-captions-panel-title {
+      .oo-closed-captions-panel-title {
         font-size: $font-size-sm-screen-title;
-        span.icon {
+        span.oo-icon {
           font-size: 0.7em;
         }
       }
-      .switch-container {
+      .oo-switch-container {
         margin-top: 20px;
         height: 15px;
         width: 74px;
-        .switch-captions {
+        .oo-switch-captions {
           font-size: $font-size-base * $xsmall-multiple;
         }
-        .switch-element {
+        .oo-switch-element {
           margin-bottom: 33%;
         }
       }
     }
-    .language-container {
+    .oo-language-container {
       margin-top: 4%;
-      .language-panel {
-        a.item {
+      .oo-language-panel {
+        a.oo-item {
           width: 98px;
           font-size: .9em;
           margin: 10px 20px;
           padding: 3px 10px;
         }
       }
-      .discoverBtn {
-        span.icon {
+      .oo-discover-btn {
+        span.oo-icon {
           font-size: 0.8em;
         }
       }
     }
-    .preview-panel {
+    .oo-preview-panel {
       display: none;
     }
   }
 
   //Error screen
-  .errorScreen {
-    .error-title {
+  .oo-error-screen {
+    .oo-error-title {
       font-size: 1em;
       margin-bottom: 10px;
     }
-    .error-description {
+    .oo-error-description {
       font-size: 0.7em;
       margin-bottom: 10px;
     }
-    .error-action {
+    .oo-error-action {
       font-size: 0.7em;
     }
   }
 
   //Action Icons
-  .action-icon-pause {
+  .oo-action-icon-pause {
     font-size:12px;
   }
-  .action-icon span.icon, .action-icon-pause.animate-pause {
+  .oo-action-icon span.oo-icon, .oo-action-icon-pause.oo-animate-pause {
     font-size:36px;
   }
 
   //Ad Panel
-  .adTopBar {
+  .oo-ad-top-bar {
      height: 17px;
 
-    .adTitle, .adPlaybackInfo {
+    .oo-ad-title, .oo-ad-playback-info {
         font-size: 0.7em;
         padding-left: 4px;
         padding-right: 4px;
     }
-    .learnMore {
+    .oo-learn-more {
       font-size: 0.7em;
       margin-right: 7px;
 
-      .buttonIcon {
+      .oo-button-icon {
         font-size: 0.7em;
         margin-right: 3px;
       }
     }
-    .skipButton {
+    .oo-skip-button {
       font-size: 0.7em;
 
-      .skipIcon {
+      .oo-skip-icon {
         font-size: 0.7em;
         margin-right: 3px;
       }
     }
 
-    .skipButton.visible {
+    .oo-skip-button.oo-visible {
       margin-right: 7px;
       margin-left: 7px;
 
-      .skipIcon {
+      .oo-skip-icon {
         font-size: 0.7em;
         margin-right: 3px;
       }
@@ -145,39 +145,39 @@
   }
 
   //Video Quality
-  .quality-screen {
-    .quality-panel-title {
+  .oo-quality-screen {
+    .oo-quality-panel-title {
       font-size: $font-size-sm-screen-title;
-      span.icon {
+      span.oo-icon {
         top: 1px;
         margin-left: 7px;
         font-size: 0.6em;
       }
     }
 
-    .quality-screen-content {
+    .oo-quality-screen-content {
       height: $bitrate-horizontal-height - 25px;
-      .quality-panel {
+      .oo-quality-panel {
         ul {
           height: $bitrate-horizontal-height - 30px;
           li {
             margin: 0 14px;
-            a.quality-btn {
+            a.oo-quality-btn {
               padding: 8px 6px;
               font-size: 0.8em;
             }
-            a.quality-auto-btn {
-              .quality-auto-icon {
+            a.oo-quality-auto-btn {
+              .oo-quality-auto-icon {
                 font-size: 1.4em;
                 padding:4px;
                 margin-bottom: 0;
               }
-              .quality-auto-label {
+              .oo-quality-auto-label {
                 font-size: 0.8em;
               }
             }
           }
-          li.auto-li {
+          li.oo-auto-li {
             top:14px;
           }
         }
@@ -186,56 +186,46 @@
   }
 
   //Control Bar
-  .control-bar-hidden {
-    bottom: -1 * $control-bar-height * $xsmall-multiple;
-  }
-  .control-bar {
+  .oo-control-bar {
     height: $control-bar-height * $xsmall-multiple;
     font-size: 18px * $xsmall-multiple;
 
-    .controlBarItemsWrapper {
-      padding-right: 7.5px * $xsmall-multiple;
-      padding-left: 7.5px * $xsmall-multiple;
-
-      .controlBarItem {
+    .oo-control-bar-items-wrapper {
+      .oo-control-bar-item {
         font-size: 18px * $xsmall-multiple;
         padding: 0 7.5px * $xsmall-multiple;
-        margin-top: 6px * $xsmall-multiple;
-        line-height: $control-bar-height * $xsmall-multiple;
       }
 
-      .controlBarDuration {
+      .oo-control-bar-duration {
         font-size: 14px * $xsmall-multiple;
         padding-left: 7.5px * $xsmall-multiple;
         padding-right: 7.5px * $xsmall-multiple;
-        margin-top: 6px * $xsmall-multiple;
-        line-height: $control-bar-height * $xsmall-multiple;
       }
 
-      .liveCircle {
+      .oo-live-circle {
         width: 10px * $xsmall-multiple;
         height: 10px * $xsmall-multiple;
         margin-right: 2px * $xsmall-multiple;
       }
 
-      .liveText {
+      .oo-live-text {
         font-size: 10px * $xsmall-multiple;
       }
 
-      .watermark img {
-        height: 18px * $xsmall-multiple;
+      .oo-logo img {
+        max-height: 18px * $xsmall-multiple;
       }
     }
   }
 
   //Volume Slider
-  .volumeBar {
+  .oo-volume-bar {
     width: 6px * $xsmall-multiple;
     height: 18px * $xsmall-multiple;
     padding-left: 3px * $xsmall-multiple;
   }
 
-  .volumeSlider {
+  .oo-volume-slider {
     height: 20px * $xsmall-multiple;
     width: $slider-volume-width * $xsmall-multiple;
     margin-left: 6px * $xsmall-multiple;
@@ -243,35 +233,25 @@
 
   // IE 11 only
   @media all and (-ms-high-contrast:none) {
-    *::-ms-backdrop, .volumeSlider {
-      height: 0px;
+    *::-ms-backdrop, .oo-volume-slider {
+      height: 0;
     }
   }
 
   //Scrubber Bar
-  .scrubber-bar-visible {
-    bottom: ($control-bar-height - $scrubber-padding-height) * $xsmall-multiple;
-  }
+  .oo-scrubber-bar-container {
+    height: 28px * $xsmall-multiple;
 
-  .scrubber-bar-hidden {
-    bottom: -1 * $scrubber-padding-height * $xsmall-multiple;
-  }
-  .scrubberBarContainer {
-    height: 24px * $xsmall-multiple;
-
-    .scrubberBarPadding {
-      left: 15px * $xsmall-multiple;
-      right: 15px * $xsmall-multiple;
-
-      .scrubberBar {
+    .oo-scrubber-bar-padding {
+      .oo-scrubber-bar {
         height: 3px * $xsmall-multiple;
       }
 
-      .playheadPadding {
+      .oo-playhead-padding {
         width: 25px * $xsmall-multiple;
         height: 25px * $xsmall-multiple;
 
-        .playhead {
+        .oo-playhead {
           width: 10px * $xsmall-multiple;
           height: 10px * $xsmall-multiple;
           border-width: 1px * $xsmall-multiple;
@@ -282,11 +262,11 @@
   }
 
   //Close Buttons
-  button.closeBtn {
+  button.oo-close-btn {
     font-size: 10px;
   }
 
-  button.upNextCloseBtn {
+  button.oo-up-next-close-btn {
     top: 10px * $xsmall-multiple;
     right: 10px * $xsmall-multiple;
     font-size: 10px;
@@ -294,36 +274,36 @@
   }
 
   //Up Next
-  .upNextPanel {
+  .oo-up-next-panel {
     height: 80px * $xsmall-multiple;
 
-    a.upNextContent {
+    a.oo-up-next-content {
       width: 140px * $xsmall-multiple;
 
-      span.icon {
+      span.oo-icon {
         font-size: 25px * $xsmall-multiple;
       }
     }
   }
 
-  .contentMetadata {
+  .oo-content-metadata {
     left: 140px * $xsmall-multiple;
 
-    .upNextTitle {
+    .oo-up-next-title {
       top: 3px * $xsmall-multiple;
       left: 15px * $xsmall-multiple;
 
-    .up-next-count-down {
+    .oo-up-next-count-down {
       width: 36px * $xsmall-multiple;
       height: 36px * $xsmall-multiple;
     }
 
-      .upNextTitleText {
+      .oo-up-next-title-text {
         font-size: 18pt * $xsmall-multiple;
       }
     }
 
-    .contentDescription {
+    .oo-content-description {
       bottom: 5px * $xsmall-multiple;
       left: 15px * $xsmall-multiple;
       margin-top: 10px * $xsmall-multiple;
@@ -331,40 +311,40 @@
     }
   }
 
-  .up-next-count-down {
+  .oo-up-next-count-down {
     margin-right:10px * $xsmall-multiple;
   }
 
-  .adOverlay.controlBarVisible {
+  .oo-ad-overlay.oo-control-bar-visible {
     bottom: $control-bar-height * $xsmall-multiple !important;
   }
 
-  .upNextPanelBottom {
+  .oo-up-next-panel-bottom {
     bottom: $control-bar-height * $xsmall-multiple;
   }
 
-  .player_skin_plugins {
+  .oo-player-skin-plugins {
     bottom: $control-bar-height * $xsmall-multiple;
   }
-  .player_skin_plugins_click_layer {
+  .oo-player-skin-plugins-click-layer {
     bottom: $control-bar-height * $xsmall-multiple;
   }
 
   //Slider
-  .slider-volume {
+  .oo-slider-volume {
     width: #{$slider-volume-width-small};
   }
 
-  .slider-volume[type=range] {
+  .oo-slider-volume[type=range] {
     /*required for proper track sizing in FF*/
     width: #{$slider-volume-width-small};
   }
 
-  .slider-volume[type=range]::-webkit-slider-runnable-track {
+  .oo-slider-volume[type=range]::-webkit-slider-runnable-track {
     height: #{$slider-volume-height-small};
   }
 
-  .slider-volume[type=range]::-webkit-slider-thumb {
+  .oo-slider-volume[type=range]::-webkit-slider-thumb {
     height: #{$slider-volume-thumb-diameter-small};
     width: #{$slider-volume-thumb-diameter-small};
     margin-top: -($slider-volume-thumb-diameter-small - $slider-volume-height-small)/2;
@@ -372,47 +352,46 @@
 
   //IE Edge only
   @supports (-ms-accelerator:true) {
-    .slider-volume[type=range]::-webkit-slider-thumb {
+    .oo-slider-volume[type=range]::-webkit-slider-thumb {
       margin-top: 1px;
     }
   }
 
   //moz
-  .slider-volume[type=range]::-moz-range-track {
+  .oo-slider-volume[type=range]::-moz-range-track {
     width: #{$slider-volume-width-small};
     height: #{$slider-volume-height-small};
   }
 
-  .slider-volume[type=range]::-moz-range-thumb {
+  .oo-slider-volume[type=range]::-moz-range-thumb {
     height: #{$slider-volume-thumb-diameter-small};
     width: #{$slider-volume-thumb-diameter-small};
   }
 
   //ms
-  .slider-volume[type=range]::-ms-track {
+  .oo-slider-volume[type=range]::-ms-track {
     width: #{$slider-volume-width-small};
     height: #{$slider-volume-height-small};
     border-width: $slider-volume-thumb-diameter-small/2 0;
   }
 
-  .slider-volume[type=range]::-ms-thumb {
+  .oo-slider-volume[type=range]::-ms-thumb {
     height: #{$slider-volume-thumb-diameter-small};
     width: #{$slider-volume-thumb-diameter-small};
   }
 
   //Text Tracks
-  .text-track-container {
-    bottom: $control-bar-height * $xsmall-multiple;
+  .oo-text-track-container {
     max-width: 96%;
-    margin: 4px auto;
+    margin-bottom: 4px;
 
-    .text-track-window {
+    .oo-text-track-window {
       padding: 4px;
 
-      .text-track-background {
+      .oo-text-track-background {
         padding: 2px 6px;
 
-        .text-track {
+        .oo-text-track {
           font-size: em(12px);
         }
       }
