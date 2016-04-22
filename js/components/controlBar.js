@@ -292,7 +292,7 @@ var ControlBar = React.createClass({
       "logo": <Logo key="logo" imageUrl={this.props.skinConfig.controlBar.logo.imageResource.url}
                     clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
                     target={this.props.skinConfig.controlBar.logo.target}
-                    width={this.props.skinConfig.controlBar.logo.width}
+                    width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
                     height={this.props.skinConfig.controlBar.logo.height}
                     style={dynamicStyles.logoStyle} />
     };
