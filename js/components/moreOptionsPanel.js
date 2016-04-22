@@ -58,27 +58,27 @@ var MoreOptionsPanel = React.createClass({
     var iconSetting = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive;
 
     var optionsItemsTemplates = {
-      "quality": <button className="quality controlBarItem" onClick={this.handleQualityClick} key="quality">
+      "quality": <button className="oo-quality oo-control-bar-item" onClick={this.handleQualityClick} key="quality">
         <Icon {...this.props} icon="quality"
          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "discovery": <button className="discovery controlBarItem" onClick={this.handleDiscoveryClick} key="discovery">
+      "discovery": <button className="oo-discovery oo-control-bar-item" onClick={this.handleDiscoveryClick} key="discovery">
         <Icon {...this.props} icon="discovery"
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "closedCaption": <button className="closedCaption controlBarItem" onClick={this.handleClosedCaptionClick} key="closedCaption">
+      "closedCaption": <button className="oo-closed-caption oo-control-bar-item" onClick={this.handleClosedCaptionClick} key="closedCaption">
         <Icon {...this.props} icon="cc"
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "share": <button className="share controlBarItem" onClick={this.handleShareClick} key="share">
+      "share": <button className="oo-share oo-control-bar-item" onClick={this.handleShareClick} key="share">
         <Icon {...this.props} icon="share"
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "settings": <div className="settings" key="settings">
+      "settings": <div className="oo-settings" key="settings">
         <Icon {...this.props} icon="setting"
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </div>
@@ -96,8 +96,8 @@ var MoreOptionsPanel = React.createClass({
 
   render: function () {
     var moreOptionsItemsClass = ClassNames({
-      'moreOptionsItems': true,
-      'animate-more-options': this.state.animate
+      'oo-more-options-items': true,
+      'oo-animate-more-options': this.state.animate
     });
 
     //inline style for config/skin.json elements only
@@ -110,7 +110,7 @@ var MoreOptionsPanel = React.createClass({
 
     return (
       <div>
-        <div className="moreOptionsPanel">
+        <div className="oo-more-options-panel">
           <div className={moreOptionsItemsClass} style={buttonStyle}>
             {moreOptionsItems}
           </div>

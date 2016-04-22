@@ -4,7 +4,6 @@
 var React = require('react'),
     ReactDOM = require('react-dom'),
     ResizeMixin = require('../mixins/resizeMixin'),
-    ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
@@ -142,7 +141,7 @@ var ScrubberBar = React.createClass({
 
   handleScrubberBarMouseDown: function(evt) {
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
-    if (evt.target.className.match("playhead")) { return; }
+    if (evt.target.className.match("oo-playhead")) { return; }
     var offsetX = 0;
     if (this.isMobile){
       offsetX = evt.targetTouches[0].pageX - evt.target.getBoundingClientRect().left;
@@ -192,12 +191,12 @@ var ScrubberBar = React.createClass({
 
     var playheadMouseDown = this.handlePlayheadMouseDown;
     var scrubberBarMouseDown = this.handleScrubberBarMouseDown;
-    var playedIndicatorClassName = "playedIndicator";
-    var playheadClassName = "playhead";
+    var playedIndicatorClassName = "oo-played-indicator";
+    var playheadClassName = "oo-playhead";
 
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN){
-      playheadClassName += " adPlayhead";
-      playedIndicatorClassName += " playedAdIndicator";
+      playheadClassName += " oo-ad-playhead";
+      playedIndicatorClassName += " oo-played-ad-indicator";
       playheadMouseDown = null;
 
       scrubberBarStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.backgroundColor;
@@ -205,19 +204,13 @@ var ScrubberBar = React.createClass({
       playedIndicatorStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.playedColor;
     }
 
-    var scrubberBarClass = ClassNames({
-      "scrubberBarContainer": true,
-      "scrubber-bar-hidden": !this.props.controlBarVisible,
-      "scrubber-bar-visible": this.props.controlBarVisible
-    });
-
     return (
-      <div className={scrubberBarClass}>
-        <div className="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
-          <div ref="scrubberBar" className="scrubberBar" style={scrubberBarStyle}>
-            <div className="bufferedIndicator" style={bufferedIndicatorStyle}></div>
+      <div className="oo-scrubber-bar-container">
+        <div className="oo-scrubber-bar-padding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
+          <div ref="scrubberBar" className="oo-scrubber-bar" style={scrubberBarStyle}>
+            <div className="oo-buffered-indicator" style={bufferedIndicatorStyle}></div>
             <div className={playedIndicatorClassName} style={playedIndicatorStyle}></div>
-            <div className="playheadPadding" style={playheadPaddingStyle}
+            <div className="oo-playhead-padding" style={playheadPaddingStyle}
               onMouseDown={playheadMouseDown} onTouchStart={playheadMouseDown}>
               <div ref="playhead" className={playheadClassName} style={playheadStyle}></div>
             </div>

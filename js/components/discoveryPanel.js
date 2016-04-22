@@ -10,15 +10,17 @@ var React = require('react'),
     Utils = require('./utils'),
     CountDownClock = require('./countDownClock'),
     DiscoverItem = require('./discoverItem'),
+    ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon');
 
 var DiscoveryPanel = React.createClass({
+  mixins: [ResizeMixin],
+
   getInitialState: function() {
     return {
       showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen,
       currentPage: 1,
-      heightOverflow: false,
-      heightOverflowBreakpoint: null
+      componentHeight: null
     };
   },
 
@@ -26,20 +28,16 @@ var DiscoveryPanel = React.createClass({
     this.detectHeight();
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  handleResize: function(nextProps) {
     //If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
-    if (nextProps.responsiveView != this.props.responsiveView) {
-      var currentViewSize = this.props.responsiveView;
-      var nextViewSize = nextProps.responsiveView;
-      var firstDiscoverIndex = this.state.currentPage * this.props.videosPerPage[currentViewSize] - this.props.videosPerPage[currentViewSize];
-      var newCurrentPage = Math.floor(firstDiscoverIndex/nextProps.videosPerPage[nextViewSize]) + 1;
-      this.setState({
-        currentPage: newCurrentPage
-      });
-      this.detectHeight();
-    }
-
-    this.detectHeightOverflow();
+    var currentViewSize = this.props.responsiveView;
+    var nextViewSize = nextProps.responsiveView;
+    var firstDiscoverIndex = this.state.currentPage * this.props.videosPerPage[currentViewSize] - this.props.videosPerPage[currentViewSize];
+    var newCurrentPage = Math.floor(firstDiscoverIndex/nextProps.videosPerPage[nextViewSize]) + 1;
+    this.setState({
+      currentPage: newCurrentPage
+    });
+    this.detectHeight();
   },
 
   handleLeftButtonClick: function(event) {
@@ -78,23 +76,11 @@ var DiscoveryPanel = React.createClass({
     this.refs.CountDownClock.handleClick(event);
   },
 
-  // detect height of outer and inner windows
+  // detect height of component
   detectHeight: function() {
     var discoveryPanel = ReactDOM.findDOMNode(this.refs.discoveryPanel);
-    var discoveryPanelToaster = ReactDOM.findDOMNode(this.refs.DiscoveryToasterContainer);
-    var heightData = Utils.windowHeightOverflow(discoveryPanel, discoveryPanelToaster.getBoundingClientRect().height, 10);
     this.setState({
-      heightOverflow: heightData.isWindowHeightOverflow,
-      heightOverflowBreakpoint: discoveryPanelToaster.getBoundingClientRect().height
-    });
-  },
-
-  // detect height overflow
-  detectHeightOverflow: function() {
-    var discoveryPanel = ReactDOM.findDOMNode(this.refs.discoveryPanel);
-    var heightData = Utils.windowHeightOverflow(discoveryPanel, this.state.heightOverflowBreakpoint, 10);
-    this.setState({
-      heightOverflow: heightData.isWindowHeightOverflow
+      componentHeight: discoveryPanel.getBoundingClientRect().height
     });
   },
 
@@ -116,29 +102,29 @@ var DiscoveryPanel = React.createClass({
     // discovery content
     var panelTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.DISCOVER, this.props.localizableStrings);
     var discoveryContentName = ClassNames({
-      'discoveryContentName': true,
-      'hidden': !this.props.skinConfig.discoveryScreen.contentTitle.show
+      'oo-discovery-content-name': true,
+      'oo-hidden': !this.props.skinConfig.discoveryScreen.contentTitle.show
     });
     var discoveryCountDownWrapperStyle = ClassNames({
-      'discoveryCountDownWrapperStyle': true,
-      'hidden': !this.state.showDiscoveryCountDown
+      'oo-discovery-count-down-wrapper-style': true,
+      'oo-hidden': !this.state.showDiscoveryCountDown
     });
     var discoveryToaster = ClassNames({
-      'discoveryToasterContainerStyle': true,
-      'flexcontainer': true,
-      'scaleHeight': this.state.heightOverflow && (this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id || this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.sm.id)
+      'oo-discovery-toaster-container-style': true,
+      'oo-flexcontainer': true,
+      'oo-scale-size': (this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id && (this.props.componentWidth <= 420 || this.state.componentHeight <= 175)) || (this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.sm.id && (this.props.componentWidth <= 420 || this.state.componentHeight <= 320))
     });
     var leftButtonClass = ClassNames({
-      'leftButton': true,
-      'hidden': this.state.currentPage <= 1
+      'oo-left-button': true,
+      'oo-hidden': this.state.currentPage <= 1
     });
     var rightButtonClass = ClassNames({
-      'rightButton': true,
-      'hidden': endAt >= relatedVideos.length
+      'oo-right-button': true,
+      'oo-hidden': endAt >= relatedVideos.length
     });
     var countDownClock = (
       <div className={discoveryCountDownWrapperStyle}>
-        <a className="discoveryCountDownIconStyle" onClick={this.handleDiscoveryCountDownClick}>
+        <a className="oo-discovery-count-down-icon-style" onClick={this.handleDiscoveryCountDownClick}>
           <CountDownClock {...this.props} timeToShow={this.props.skinConfig.discoveryScreen.countDownTime}
           ref="CountDownClock" />
           <Icon {...this.props} icon="pause"/>
@@ -163,8 +149,8 @@ var DiscoveryPanel = React.createClass({
     }
 
     return (
-      <div className="discovery-panel" ref="discoveryPanel">
-        <div className="discovery-panel-title">
+      <div className="oo-discovery-panel" ref="discoveryPanel">
+        <div className="oo-discovery-panel-title">
           {panelTitle}
           <Icon {...this.props} icon="discovery"/>
         </div>
@@ -224,10 +210,10 @@ DiscoveryPanel.defaultProps = {
       }
     },
     icons: {
-      pause:{fontStyleClass:'icon icon-pause'},
-      discovery:{fontStyleClass:'icon icon-topmenu-discovery'},
-      left:{fontStyleClass:'icon icon-left'},
-      right:{fontStyleClass:'icon icon-right'}
+      pause:{fontStyleClass:'oo-icon oo-icon-pause'},
+      discovery:{fontStyleClass:'oo-icon oo-icon-topmenu-discovery'},
+      left:{fontStyleClass:'oo-icon oo-icon-left'},
+      right:{fontStyleClass:'oo-icon oo-icon-right'}
     },
     responsive: {
       breakpoints: {

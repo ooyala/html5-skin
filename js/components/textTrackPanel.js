@@ -13,10 +13,10 @@ var TextTrackPanel = React.createClass({
     }
 
     return (
-      <div className="text-track-container">
-        <div className="text-track-window">
-          <div className="text-track-background">
-            <div className="text-track">
+      <div className="oo-text-track-container">
+        <div className="oo-text-track-window">
+          <div className="oo-text-track-background">
+            <div className="oo-text-track">
               {this.props.closedCaptionOptions.cueText}
             </div>
           </div>

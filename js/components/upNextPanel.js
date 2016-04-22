@@ -8,7 +8,6 @@
 * @constructor
 */
 var React = require('react'),
-    ClassNames = require('classnames'),
     CONSTANTS = require('./../constants/constants'),
     Utils = require('./utils'),
     CloseButton = require('./closeButton'),
@@ -36,34 +35,32 @@ var UpNextPanel = React.createClass({
 
   render: function() {
     var upNextString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UP_NEXT, this.props.localizableStrings);
-    var upNextPanel = ClassNames({
-      'upNextPanel': true,
-      'upNextPanelBottom': this.props.controlBarVisible
-    });
+    var thumbnailStyle = {
+      backgroundImage: "url('" + this.props.upNextInfo.upNextData.preview_image_url + "')"
+    };
 
     return (
-      <div className={upNextPanel}>
-        <a className="upNextContent" onClick={this.handleStartUpNextClick}>
-          <img className="contentImage" src={this.props.upNextInfo.upNextData.preview_image_url} />
+      <div className="oo-up-next-panel">
+        <a className="oo-up-next-content" onClick={this.handleStartUpNextClick} style={thumbnailStyle}>
           <Icon {...this.props} icon="play"/>
         </a>
 
-        <div className="contentMetadata">
-          <div className="upNextTitle">
+        <div className="oo-content-metadata">
+          <div className="oo-up-next-title">
             <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNext.timeToShow} currentPlayhead={this.props.currentPlayhead}/>
 
-            <div className="upNextTitleText text-truncate text-capitalize">
+            <div className="oo-up-next-title-text oo-text-truncate oo-text-capitalize">
               {upNextString}: {this.props.upNextInfo.upNextData.name}
             </div>
           </div>
 
-          <div className="contentDescription text-truncate text-capitalize">
+          <div className="oo-content-description oo-text-truncate oo-text-capitalize">
             {this.props.upNextInfo.upNextData.description}
           </div>
         </div>
 
         <CloseButton {...this.props}
-          cssClass="upNextCloseBtn" closeAction={this.closeUpNextPanel}/>
+          cssClass="oo-up-next-close-btn" closeAction={this.closeUpNextPanel}/>
       </div>
     );
   }
@@ -91,8 +88,8 @@ UpNextPanel.defaultProps = {
       timeToShow: "10"
     },
     icons: {
-      play:{fontStyleClass:'icon icon-play'},
-      dismiss:{fontStyleClass:'icon icon-close'}
+      play:{fontStyleClass:'oo-icon oo-icon-play'},
+      dismiss:{fontStyleClass:'oo-icon oo-icon-close'}
     }
   },
   upNextInfo: {

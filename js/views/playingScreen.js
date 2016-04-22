@@ -4,7 +4,6 @@
 var React = require('react'),
     ReactDOM = require('react-dom'),
     ControlBar = require('../components/controlBar'),
-    ScrubberBar = require('../components/scrubberBar'),
     AdOverlay = require('../components/adOverlay'),
     UpNextPanel = require('../components/upNextPanel'),
     Spinner = require('../components/spinner'),
@@ -102,17 +101,19 @@ var PlayingScreen = React.createClass({
   },
 
   render: function() {
-    var adOverlay = null;
-    if (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) {
-      adOverlay = <AdOverlay {...this.props}
+    var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
+      <AdOverlay {...this.props}
         overlay={this.props.controller.state.adOverlayUrl}
         showOverlay={this.props.controller.state.showAdOverlay}
-        showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
-        controlBarVisible={this.state.controlBarVisible} />;
-    }
+        showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}/> : null;
+
+    var upNextPanel = (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
+      <UpNextPanel {...this.props}
+        controlBarVisible={this.state.controlBarVisible}
+        currentPlayhead={this.props.currentPlayhead}/> : null;
 
     return (
-    <div className="state-screen playingScreen"
+    <div className="oo-state-screen oo-playing-screen"
          ref="PlayingScreen"
          onMouseOver={this.showControlBar}
          onMouseOut={this.hideControlBar}
@@ -120,25 +121,23 @@ var PlayingScreen = React.createClass({
 
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
-      <div className="default-screen">
+      <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
-        <TextTrack closedCaptionOptions={this.props.closedCaptionOptions} />
+      <div className="oo-interactive-container">
 
-        <div className="state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
+        <TextTrack closedCaptionOptions={this.props.closedCaptionOptions}/>
+
+        <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
         {adOverlay}
 
-        <ScrubberBar {...this.props}
-          controlBarVisible={this.state.controlBarVisible} />
+        {upNextPanel}
 
         <ControlBar {...this.props}
           controlBarVisible={this.state.controlBarVisible}
           playerState={this.props.playerState}
-          authorization={this.props.authorization} />
+          authorization={this.props.authorization}/>
       </div>
-
-      {(this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
-        <UpNextPanel {...this.props} controlBarVisible={this.state.controlBarVisible} currentPlayhead={this.props.currentPlayhead}/> : null}
     </div>
     );
   }

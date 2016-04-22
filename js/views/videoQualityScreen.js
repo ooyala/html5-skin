@@ -25,18 +25,18 @@ var VideoQualityScreen = React.createClass({
 
   render: function() {
     var qualityScreenClass = ClassNames({
-      'state-screen': true,
-      'quality-screen': true,
-      'mobile-fullscreen': this.props.controller.state.isMobile && (this.props.controller.state.fullscreen || this.props.controller.state.isFullWindow)
+      'oo-state-screen': true,
+      'oo-quality-screen': true,
+      'oo-mobile-fullscreen': this.props.controller.state.isMobile && (this.props.controller.state.fullscreen || this.props.controller.state.isFullWindow)
     });
 
     return (
       <div className={qualityScreenClass}>
-        <div className="quality-panel-title">
+        <div className="oo-quality-panel-title">
           Video Quality
           <Icon {...this.props} icon="quality"/>
         </div>
-        <ScrollArea className="quality-screen-content">
+        <ScrollArea className="oo-quality-screen-content">
           <VideoQualityPanel {...this.props} />
         </ScrollArea>
         <CloseButton {...this.props} closeAction={this.handleClose}/>
@@ -58,7 +58,7 @@ VideoQualityScreen.propTypes = {
 VideoQualityScreen.defaultProps = {
   skinConfig: {
     icons: {
-      dismiss:{fontStyleClass:'icon icon-close'}
+      dismiss:{fontStyleClass:'oo-icon oo-icon-close'}
     }
   },
   controller: {

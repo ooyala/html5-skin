@@ -10,7 +10,7 @@
 var ResizeMixin = {
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.componentWidth != this.props.componentWidth) {
-      this.handleResize();
+      this.handleResize(nextProps);
     }
   }
 };
