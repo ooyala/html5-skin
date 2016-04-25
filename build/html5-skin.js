@@ -1801,11 +1801,13 @@ var ScrubberBar = React.createClass({displayName: "ScrubberBar",
       document.removeEventListener("touchend", this.handlePlayheadMouseUp, true);
     }
     this.props.controller.seek(this.props.currentPlayhead);
-    this.setState({
-      currentPlayhead: this.props.currentPlayhead,
-      scrubbingPlayheadX: 0
-    });
-    this.props.controller.endSeeking();
+    if (this.isMounted()) {
+      this.setState({
+        currentPlayhead: this.props.currentPlayhead,
+        scrubbingPlayheadX: 0
+      });
+      this.props.controller.endSeeking();
+    }
   },
 
   handleScrubberBarMouseDown: function(evt) {
@@ -3010,7 +3012,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin_version = "61c2e9f7c783c8edf5e420864789906b8322d4f2";
+    OO.publicApi.VERSION.skin_version = "3c066295dba8a73e4146e761ac29a461d7c79201";
   }
 
   var Html5Skin = function (mb, id) {
@@ -3992,6 +3994,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.SEEK, seconds);
       if (this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN) {
         this.state.pauseAnimationDisabled = true;
+        this.endSeeking();
         this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
