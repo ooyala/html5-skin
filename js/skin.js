@@ -5,9 +5,10 @@ var React = require('react'),
     Utils = require('./components/utils'),
     CONSTANTS = require('./constants/constants'),
     Spinner = require('./components/spinner'),
+    ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel'),
+    DiscoveryPanel = require('./components/discoveryPanel'),
+    VideoQualityPanel = require('./components/videoQualityPanel'),
     AdScreen = require('./views/adScreen'),
-    ClosedCaptionScreen = require('./views/closedCaptionScreen'),
-    DiscoveryScreen = require('./views/discoveryScreen'),
     EndScreen = require('./views/endScreen'),
     MoreOptionsScreen = require('./views/moreOptionsScreen'),
     ShareScreen = require('./views/shareScreen'),
@@ -15,7 +16,7 @@ var React = require('react'),
     PauseScreen = require('./views/pauseScreen'),
     PlayingScreen = require('./views/playingScreen'),
     ErrorScreen = require('./views/errorScreen'),
-    VideoQualityScreen = require('./views/videoQualityScreen'),
+    ContentScreen = require('./views/contentScreen'),
     ComponentWidthMixin = require('./mixins/componentWidthMixin'),
     ClassNames = require('classnames');
 
@@ -235,12 +236,19 @@ var Skin = React.createClass({
           break;
         case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
           screen = (
-            <DiscoveryScreen {...this.props}
-              discoveryData={this.state.discoveryData}
-              playerState={this.state.playerState}
-              responsiveView={responsiveId}
-              componentWidth={this.state.componentWidth}
-              ref="DiscoveryScreen" />
+            <ContentScreen
+              {...this.props}
+              screen={CONSTANTS.SCREEN.DISCOVERY_SCREEN}
+              titleText={CONSTANTS.SKIN_TEXT.DISCOVER}
+              icon="discovery">
+              <DiscoveryPanel
+                {...this.props}
+                videosPerPage={{xs:2, sm:4, md:6, lg:8}}
+                discoveryData={this.state.discoveryData}
+                playerState={this.state.playerState}
+                responsiveView={responsiveId}
+                componentWidth={this.state.componentWidth}/>
+            </ContentScreen>
           );
           break;
         case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
@@ -258,28 +266,32 @@ var Skin = React.createClass({
           break;
         case CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN:
           screen = (
-            <ClosedCaptionScreen {...this.props}
-              contentTree={this.state.contentTree}
-              closedCaptionOptions = {this.props.closedCaptionOptions}
-              currentPlayhead={this.state.currentPlayhead}
-              duration={this.state.duration}
-              buffered={this.state.buffered}
-              playerState={this.state.playerState}
-              fullscreen={this.state.fullscreen}
-              seeking={this.state.seeking}
-              responsiveView={responsiveId}
-              componentWidth={this.state.componentWidth}
-              ref="closedCaptionScreen" />
+          <ContentScreen
+            {...this.props}
+            screen={CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN}
+            titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
+            icon="cc">
+            <ClosedCaptionPanel
+              {...this.props}
+              closedCaptionOptions={this.props.closedCaptionOptions}
+              languagesPerPage={{xs:1, sm:4, md:4, lg:15}}
+              responsiveView={responsiveId}/>
+          </ContentScreen>
           );
           break;
         case CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN:
           screen = (
-            <VideoQualityScreen {...this.props}
-              playerState={this.state.playerState}
+          <ContentScreen
+            {...this.props}
+            screen={CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN}
+            titleText={CONSTANTS.SKIN_TEXT.VIDEO_QUALITY}
+            icon="quality">
+            <VideoQualityPanel
+              {...this.props}
               fullscreen={this.state.fullscreen}
               videoQualityOptions={this.state.videoQualityOptions}
-              responsiveView={responsiveId}
-              ref="videoQualityScreen" />
+              responsiveView={responsiveId}/>
+          </ContentScreen>
           );
           break;
         case CONSTANTS.SCREEN.ERROR_SCREEN:
