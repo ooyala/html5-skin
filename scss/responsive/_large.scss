@@ -1,4 +1,17 @@
 .oo-large {
+
+  // Content Screens
+  .oo-content-screen {
+    padding: $panel-padding-lg;
+  }
+  .oo-content-screen-title {
+    font-size: $font-size-lg-screen-title;
+    span.oo-icon {
+      top: 4px;
+      font-size: 1em;
+    }
+  }
+
   // State Screens
   .oo-state-screen {
     .oo-state-screen-info {
@@ -12,91 +25,79 @@
   }
 
   // Discovery Screen
-  .oo-discovery-screen {
-    .oo-discovery-panel {
-      padding: $panel-padding-lg;
-      margin-top:auto;
-      margin-bottom:auto;
-      .oo-discovery-panel-title {
-        position: absolute;
-      }
-      .oo-discovery-toaster-container-style {
-        max-height: 460px;
-      }
-      @include apply-to-safari-only ('.oo-discovery-toaster-container-style') {
-        min-height: 360px;
-      }
+  .oo-discovery-panel {
+    padding: $panel-padding-lg;
+    margin-top:auto;
+    margin-bottom:auto;
+    .oo-discovery-panel-title {
+      position: absolute;
+    }
+    .oo-discovery-toaster-container-style {
+      max-height: 460px;
+    }
+    @include apply-to-safari-only ('.oo-discovery-toaster-container-style') {
+      min-height: 360px;
+    }
 
-      .oo-discovery-image-wrapper-style {
-        width: 214px;
-        height: auto;
-        margin: 0 60px 60px 0;
+    .oo-discovery-image-wrapper-style {
+      width: 214px;
+      height: auto;
+      margin: 0 60px 60px 0;
 
-        &:nth-of-type(even) {
-          margin-bottom: 0;
-        }
-        &:last-child, &:nth-last-child(2):nth-of-type(odd) {
-          margin-right:0;
-        }
+      &:nth-of-type(even) {
+        margin-bottom: 0;
       }
-      .oo-image-style {
-        height: 120px;
+      &:last-child, &:nth-last-child(2):nth-of-type(odd) {
+        margin-right:0;
       }
+    }
+    .oo-image-style {
+      height: 120px;
     }
   }
 
   // Closed Caption Screen
-  .oo-closed-captions-screen {
-    .oo-closed-captions-panel {
-      padding:$panel-padding-lg;
-      .oo-closed-captions-panel-title {
-        font-size: $font-size-lg-screen-title;
-        span.oo-icon {
-          top: 4px;
-          font-size: 1em;
-        }
+  .oo-closed-captions-panel {
+    .oo-switch-container {
+      margin-top: 42px;
+      height: 26px;
+      width: 126px;
+      .oo-switch-captions {
+        font-size: $font-size-base * $large-multiple;
       }
-      .oo-switch-container {
-        margin-top: 42px;
-        height: 26px;
-        width: 126px;
-        .oo-switch-captions {
-          font-size: $font-size-base * $large-multiple;
-        }
-        .oo-switch-element {
-          margin-bottom: 33%;
-        }
+      .oo-switch-element {
+        margin-bottom: 33%;
       }
     }
-    .oo-language-container {
-      margin-top: 8%;
-      .oo-language-panel {
-        a.oo-item {
-          width: 168px;
-          font-size: 1.4em;
-          margin: 17px 33px;
-          padding: 3px 12px;
-        }
-      }
-      .oo-flexcontainer {
-        -webkit-flex-flow: row wrap;
-        flex-flow: row wrap;
-      }
-      .oo-discover-btn {
-        span.oo-icon {
-          font-size: 1.2em;
-        }
+  }
+  .oo-language-container {
+    margin-top: 8%;
+    .oo-language-panel {
+      a.oo-item {
+        width: 168px;
+        font-size: 1.4em;
+        margin: 17px 33px;
+        padding: 3px 12px;
       }
     }
-    .oo-preview-panel {
-      padding: 14px $panel-padding-lg;
-      .oo-preview-caption {
-        font-size: 1em;
-        line-height:1.4em;
+    .oo-flexcontainer {
+      -webkit-flex-flow: row wrap;
+      flex-flow: row wrap;
+    }
+    .oo-discover-btn {
+      span.oo-icon {
+        font-size: 1.2em;
       }
-      .oo-preview-text {
-        font-size: 1.7em;
-      }
+    }
+  }
+  .oo-preview-panel {
+    padding: 14px $panel-padding-lg;
+    .oo-preview-caption {
+      font-size: 1em;
+      line-height:1.4em;
+    }
+    .oo-preview-text {
+      font-size: 1.7em;
     }
   }
 
@@ -120,6 +121,7 @@
   .oo-action-icon span.oo-icon, .oo-action-icon-pause.oo-animate-pause {
     font-size:96px;
   }
+
   //Ad Panel
   .oo-ad-top-bar {
      height: 34px;
@@ -173,10 +175,5 @@
         left: $panel-padding-lg;
       }
     }
-  }
-
-  //Video Quality
-  .oo-quality-screen {
-    padding: $panel-padding-lg;
   }
 }

@@ -163,8 +163,6 @@ a.oo-volume-bar {
 }
 
 // IE 11 only
-@media all and (-ms-high-contrast:none) {
-  *::-ms-backdrop, .oo-volume-slider {
-    height: auto;
-  }
+@include apply-to-ie11-only ('.oo-volume-slider') {
+  height: auto;
 }
