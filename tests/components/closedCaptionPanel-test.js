@@ -1,11 +1,11 @@
-jest.dontMock('../../js/components/closedCaptionPanel')
+jest.dontMock('../../js/components/closed-caption/closedCaptionPanel')
     .dontMock('../../js/components/icon')
     .dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
-var ClosedCaptionPanel = require('../../js/components/closedCaptionPanel');
+var ClosedCaptionPanel = require('../../js/components/closed-caption/closedCaptionPanel');
 
 describe('ClosedCaptionPanel', function () {
   var availableLanguages = {"languages":["en","fr","de","ru","it"],

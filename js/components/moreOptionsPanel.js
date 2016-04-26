@@ -37,7 +37,7 @@ var MoreOptionsPanel = React.createClass({
   },
 
   handleClosedCaptionClick: function () {
-    this.props.controller.toggleClosedCaptionScreen();
+    this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
   },
 
   highlight: function (evt) {
