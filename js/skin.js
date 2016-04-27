@@ -8,10 +8,10 @@ var React = require('react'),
     ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel'),
     DiscoveryPanel = require('./components/discoveryPanel'),
     VideoQualityPanel = require('./components/videoQualityPanel'),
+    SharePanel = require('./components/sharePanel'),
+    MoreOptionsPanel = require('./components/moreOptionsPanel'),
     AdScreen = require('./views/adScreen'),
     EndScreen = require('./views/endScreen'),
-    MoreOptionsScreen = require('./views/moreOptionsScreen'),
-    ShareScreen = require('./views/shareScreen'),
     StartScreen = require('./views/startScreen'),
     PauseScreen = require('./views/pauseScreen'),
     PlayingScreen = require('./views/playingScreen'),
@@ -165,17 +165,13 @@ var Skin = React.createClass({
           break;
         case CONSTANTS.SCREEN.SHARE_SCREEN:
           screen = (
-            <ShareScreen {...this.props}
-              assetId={this.state.assetId}
-              playerParam={this.state.playerParam}
-              contentTree={this.state.contentTree}
-              currentPlayhead={this.state.currentPlayhead}
-              duration={this.state.duration}
-              buffered={this.state.buffered}
-              fullscreen={this.state.fullscreen}
-              playerState={this.state.playerState}
-              seeking={this.state.seeking}
-              ref="shareScreen" />
+          <ContentScreen
+            {...this.props}
+            screen={CONSTANTS.SCREEN.SHARE_SCREEN}
+            icon="share">
+            <SharePanel
+              {...this.props}/>
+          </ContentScreen>
           );
           break;
         case CONSTANTS.SCREEN.PAUSE_SCREEN:
@@ -253,15 +249,13 @@ var Skin = React.createClass({
           break;
         case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
           screen = (
-            <MoreOptionsScreen {...this.props}
-              contentTree={this.state.contentTree}
-              currentPlayhead={this.state.currentPlayhead}
-              duration={this.state.duration}
-              playerState={this.state.playerState}
-              fullscreen={this.state.fullscreen}
-              seeking={this.state.seeking}
-              responsiveView={responsiveId}
-              ref="moreOptionsScreen" />
+          <ContentScreen
+            {...this.props}
+            screen={CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN}>
+            <MoreOptionsPanel
+              {...this.props}
+              fullscreen={this.state.fullscreen}/>
+          </ContentScreen>
           );
           break;
         case CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN:

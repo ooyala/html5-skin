@@ -19,11 +19,20 @@
   @import "base/base";
   @import "base/type";
 
+  // Views
+  @import "components/content-screen";
+  @import "components/state-screen";
+  @import "components/start-screen";
+  @import "components/pause-screen";
+  @import "components/error-screen";
+  @import "components/ad-screen";
+
   // Components
+  @import "components/discovery-panel";
+  @import "components/share-panel";
+  @import "components/closed-captions";
   @import "components/scrollbar";
-  @import "components/share-screen";
-  @import "components/discovery-screen";
-  @import "components/closed-caption";
+  @import "components/webvtt";
   @import "components/buttons";
   @import "components/forms";
   @import "components/scrubber-bar";
@@ -32,23 +41,18 @@
   @import "components/count-down-clock";
   @import "components/spinner";
   @import "components/slider";
-  @import "components/state-screen";
-  @import "components/pause-screen";
-  @import "components/error-screen";
-  @import "components/ad-screen";
   @import "components/ad-overlay";
   @import "components/ad-panel";
-  @import "components/closed-captions-screen";
   @import "components/plugins";
-  @import "components/start-screen";
+  @import "components/text-track";
   @import "components/more-options";
   @import "components/video-quality";
-  @import "components/text-track";
 
   // Responsive
   @import "responsive/xsmall";
   @import "responsive/small";
   @import "responsive/large";
+  @import "responsive/portrait";
 
   // Skin
   @import "skin/default";

@@ -60,3 +60,12 @@
 @function em($pixels, $context: $font-size-root) {
   @return ($pixels / $context) * 1em;
 }
+
+//responsive multiples
+@function xs($x) {
+  @return  $x * $xsmall-multiple;
+}
+
+@function lg($x) {
+  @return  $x * $large-multiple;
+}

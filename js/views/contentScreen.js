@@ -19,16 +19,19 @@ var ContentScreen = React.createClass({
   },
 
   render: function() {
-    //localized title text
-    var titleText = Utils.getLocalizedString(this.props.language, this.props.titleText, this.props.localizableStrings);
+    //localized title bar, show nothing if no title text
+    var titleBar = this.props.titleText ? (
+      <div className="oo-content-screen-title">
+        {Utils.getLocalizedString(this.props.language, this.props.titleText, this.props.localizableStrings)} <Icon {...this.props} icon={this.props.icon}/>
+      </div>
+    ) :
+    null;
 
     return (
       <div className={this.props.screenClassName}>
         <div className={this.props.titleBarClassName}>
-          <div className="oo-content-screen-title">
-            {titleText} <Icon {...this.props} icon={this.props.icon}/>
-          </div>
-          <CloseButton {...this.props} closeAction={this.handleClose} cssClass="oo-close-button"/>
+          {titleBar}
+          <CloseButton {...this.props} closeAction={this.handleClose}/>
         </div>
 
         {this.props.children}
