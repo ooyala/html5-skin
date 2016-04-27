@@ -2,6 +2,7 @@ jest.dontMock('../../js/components/moreOptionsPanel')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/components/icon')
     .dontMock('../../js/constants/constants')
+    .dontMock('../../js/mixins/animateMixin')
     .dontMock('classnames');
 
 var React = require('react');

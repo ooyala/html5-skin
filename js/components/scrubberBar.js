@@ -132,11 +132,13 @@ var ScrubberBar = React.createClass({
       document.removeEventListener("touchend", this.handlePlayheadMouseUp, true);
     }
     this.props.controller.seek(this.props.currentPlayhead);
-    this.setState({
-      currentPlayhead: this.props.currentPlayhead,
-      scrubbingPlayheadX: 0
-    });
-    this.props.controller.endSeeking();
+    if (this.isMounted()) {
+      this.setState({
+        currentPlayhead: this.props.currentPlayhead,
+        scrubbingPlayheadX: 0
+      });
+      this.props.controller.endSeeking();
+    }
   },
 
   handleScrubberBarMouseDown: function(evt) {
