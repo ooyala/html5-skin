@@ -23,7 +23,8 @@ module.exports = {
     LOADING_SCREEN: "loadingScreen",
     CLOSEDCAPTION_SCREEN: "closedCaptionScreen",
     VIDEO_QUALITY_SCREEN: "videoQualityScreen",
-    ERROR_SCREEN: "errorScreen"
+    ERROR_SCREEN: "errorScreen",
+    ALT_END_SCREEN: "altEndScreen"
   },
 
   SKIN_TEXT: {

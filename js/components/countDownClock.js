@@ -22,7 +22,8 @@ var CountDownClock = React.createClass({
     var tmpRemainSeconds = 0;
     var upNextTimeToShow = parseInt(this.props.controller.state.upNextInfo.timeToShow);
 
-    if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
+    if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN ||
+      this.props.controller.state.screenToShow === CONSTANTS.SCREEN.ALT_END_SCREEN) {
       tmpFraction = 2 / this.props.timeToShow;
       tmpRemainSeconds = this.props.timeToShow;
     }
@@ -44,7 +45,8 @@ var CountDownClock = React.createClass({
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
-      if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
+      if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN ||
+        this.props.controller.state.screenToShow === CONSTANTS.SCREEN.ALT_END_SCREEN) {
         this.setState({hideClock: true});
         clearInterval(this.interval);
       }
@@ -118,7 +120,8 @@ var CountDownClock = React.createClass({
   },
 
   tick: function() {
-    if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
+    if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN ||
+      this.props.controller.state.screenToShow === CONSTANTS.SCREEN.ALT_END_SCREEN) {
       if(this.state.remainSeconds < 1) {
         this.setState({remainSeconds: 0});
         clearInterval(this.interval);

@@ -16,6 +16,7 @@ var React = require('react'),
     PlayingScreen = require('./views/playingScreen'),
     ErrorScreen = require('./views/errorScreen'),
     VideoQualityScreen = require('./views/videoQualityScreen'),
+    AltEndScreen = require('./views/altEndScreen'),
     ComponentWidthMixin = require('./mixins/componentWidthMixin'),
     ClassNames = require('classnames');
 
@@ -281,6 +282,33 @@ var Skin = React.createClass({
             <ErrorScreen {...this.props}
               errorCode={this.props.controller.state.errorCode} />
           );
+          break;
+        case CONSTANTS.SCREEN.ALT_END_SCREEN:
+          if (this.state.upNextInfo.upNextData) {
+            screen = (
+              <AltEndScreen {...this.props}
+                contentTree={this.state.contentTree}
+                upNextInfo={this.state.upNextInfo}
+                discoveryData={this.state.discoveryData}/>
+            );
+          } else {
+            screen = (
+              <EndScreen {...this.props}
+                contentTree={this.state.contentTree}
+                discoveryData={this.state.discoveryData}
+                currentPlayhead={this.state.currentPlayhead}
+                duration={this.state.duration}
+                buffered={this.state.buffered}
+                fullscreen={this.state.fullscreen}
+                playerState={this.state.playerState}
+                seeking={this.state.seeking}
+                authorization={this.state.authorization}
+                responsiveView={responsiveId}
+                videoQualityOptions={this.state.videoQualityOptions}
+                componentWidth={this.state.componentWidth}
+                ref="endScreen" />
+            );
+          }
           break;
         default:
           screen = (<div></div>);

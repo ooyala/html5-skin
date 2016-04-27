@@ -477,6 +477,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
       } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "share") {
         this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
+      } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "altEnd") {
+        this.state.screenToShow = CONSTANTS.SCREEN.ALT_END_SCREEN;
       } else {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
         this.mb.publish(OO.EVENTS.END_SCREEN_SHOWN);

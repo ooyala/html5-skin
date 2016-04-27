@@ -1,0 +1,97 @@
+.oo-alt-end-screen {
+
+  background-size: cover;
+  background-position: center;
+
+  .oo-alt-previous {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    width: 30%;
+    height: auto;
+
+    .oo-alt-prev-promo {
+      position: relative;
+    }
+
+    .oo-alt-prev-title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+    }
+
+    .oo-alt-prev-replay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+    }
+
+    .oo-alt-prev-twitter {
+      width: 30%;
+      border-radius: 10px;
+      background-color: teal;
+      display: inline-block;
+    }
+
+    .oo-alt-prev-facebook {
+      width: 30%;
+      border-radius: 10px;
+      background-color: blue;
+      display: inline-block;
+    }
+
+    .oo-alt-prev-link {
+      width: 20%;
+      border-radius: 10px;
+      background-color: gray;
+      display: inline-block;
+    }
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .oo-alt-next-panel {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+
+    .oo-alt-next-countdown, .oo-alt-next-info {
+      display: inline-block;
+    }
+  }
+
+  .oo-alt-autoplay {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+
+    .oo-alt-autoplay-switch {
+      width:80px;
+      height:20px;
+      background-color: gray;
+
+      .oo-alt-autoplay-indicator {
+        position:absolute;
+        width: 40px;
+        height:20px;
+        left: 0;
+        background-color: white;
+        transition: all 0.25s;
+      }
+
+      .oo-alt-autoplay-indicator.off {
+        left: auto;
+        margin-left: 50%;
+      }
+    }
+  }
+
+}
