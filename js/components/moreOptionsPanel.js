@@ -109,11 +109,9 @@ var MoreOptionsPanel = React.createClass({
     var moreOptionsItems = this.buildMoreOptionsButtonList();
 
     return (
-      <div>
-        <div className="oo-more-options-panel">
-          <div className={moreOptionsItemsClass} style={buttonStyle}>
-            {moreOptionsItems}
-          </div>
+      <div className="oo-content-panel oo-more-options-panel">
+        <div className={moreOptionsItemsClass} style={buttonStyle}>
+          {moreOptionsItems}
         </div>
       </div>
     );
