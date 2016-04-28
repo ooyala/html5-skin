@@ -53,9 +53,10 @@
   // Closed Caption Panel
   .oo-closed-captions-panel {
     .oo-switch-container {
-      margin-top: 20px;
       height: 15px;
       width: 74px;
+      top: 22px;
+      left: 138px;
       .oo-switch-captions {
         font-size: $font-size-base * $xsmall-multiple;
       }
