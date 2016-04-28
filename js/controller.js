@@ -997,13 +997,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     seek: function(seconds) {
-      this.mb.publish(OO.EVENTS.SEEK, seconds);
-      if (this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN) {
-        this.state.pauseAnimationDisabled = true;
+      if (this.state.playerState == CONSTANTS.STATE.END) {
         this.endSeeking();
-        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
-        this.state.playerState = CONSTANTS.STATE.PAUSE;
-        this.renderSkin();
+        this.mb.publish(OO.EVENTS.REPLAY, seconds);
+      }
+      else {
+        this.mb.publish(OO.EVENTS.SEEK, seconds);
       }
     },
 
