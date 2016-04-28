@@ -1,5 +1,9 @@
 jest.dontMock('../../js/components/closed-caption/closedCaptionPanel')
+    .dontMock('../../js/components/closed-caption/ccPreviewPanel')
+    .dontMock('../../js/components/closed-caption/languageTab')
+    .dontMock('../../js/components/closed-caption/onOffSwitch')
     .dontMock('../../js/components/icon')
+    .dontMock('../../js/components/tabs')
     .dontMock('classnames');
 
 var React = require('react');
