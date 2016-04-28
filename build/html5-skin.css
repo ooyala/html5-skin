@@ -778,7 +778,7 @@
   margin: 0;
   position: relative;
   width: 100%;
-  height: 28px;
+  height: 48px;
   z-index: 12600;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -845,7 +845,8 @@
         visibility: hidden; }
 
 .oo-player-container .oo-control-bar-hidden {
-  height: 0 !important; }
+  height: 0 !important;
+  opacity: 0; }
 
 .oo-player-container .oo-control-bar {
   background: rgba(0, 0, 0, 0.3);
@@ -854,8 +855,9 @@
   -ms-background: linear-gradient(to bottom, transparent 23%, rgba(0, 0, 0, 0.6) 90%, rgba(0, 0, 0, 0.69) 100%);
   -o-background: linear-gradient(to bottom, transparent 23%, rgba(0, 0, 0, 0.6) 90%, rgba(0, 0, 0, 0.69) 100%);
   background: linear-gradient(to bottom, transparent 23%, rgba(0, 0, 0, 0.6) 90%, rgba(0, 0, 0, 0.69) 100%);
+  transition: opacity .2s ease-in-out, height .3s ease-in-out;
   width: 100%;
-  height: 60px;
+  height: 90px;
   position: relative;
   margin: 0;
   padding: 0 15px;
@@ -865,7 +867,6 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  transition: height 0.5s;
   z-index: 12500; }
   .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper {
     display: -webkit-flex;
@@ -1669,7 +1670,7 @@
   top: 0;
   left: 0;
   right: 0;
-  bottom: 60px;
+  bottom: 90px;
   position: absolute;
   overflow: hidden;
   display: none; }
@@ -1685,7 +1686,7 @@
   top: 0;
   left: 0;
   right: 0;
-  bottom: 60px;
+  bottom: 90px;
   position: absolute;
   display: none; }
 
@@ -1701,6 +1702,8 @@
 .oo-player-container .oo-more-options-screen .oo-more-options-panel {
   background: rgba(0, 0, 0, 0.7); }
   .oo-player-container .oo-more-options-screen .oo-more-options-panel .oo-more-options-items {
+    top: 100%;
+    opacity: 0;
     position: absolute;
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
@@ -1708,8 +1711,6 @@
     -ms-transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    top: 100%;
-    opacity: 0;
     list-style: none;
     display: flex;
     display: -webkit-flex;
@@ -1737,11 +1738,11 @@
   .oo-player-container .oo-more-options-screen .oo-more-options-panel .oo-more-options-items.oo-animate-more-options {
     top: 50%;
     opacity: 1;
-    -webkit-transition: all ease 0.7s;
-    -moz-transition: all ease 0.7s;
-    -ms-transition: all ease 0.7s;
-    -o-transition: all ease 0.7s;
-    transition: all ease 0.7s; }
+    -webkit-transition: all 0.7s ease;
+    -moz-transition: all 0.7s ease;
+    -ms-transition: all 0.7s ease;
+    -o-transition: all 0.7s ease;
+    transition: all 0.7s ease; }
 
 .oo-player-container .oo-quality-screen {
   padding: 24.5px;
@@ -1864,7 +1865,7 @@
 .oo-player-container .oo-quality-popover {
   position: absolute;
   background-color: rgba(26, 26, 26, 0.8);
-  bottom: 70px;
+  bottom: 100px;
   box-shadow: rgba(0, 0, 0, 0.2) 0 5px 10px;
   border: 0;
   border-radius: 4px;
@@ -2101,7 +2102,7 @@
       top: 14px; }
 
 .oo-player-container .oo-xsmall .oo-control-bar {
-  height: 42px;
+  height: 49px;
   font-size: 12.6px; }
   .oo-player-container .oo-xsmall .oo-control-bar .oo-control-bar-items-wrapper .oo-control-bar-item {
     font-size: 12.6px;
@@ -2134,7 +2135,7 @@
     height: 0; } }
 
 .oo-player-container .oo-xsmall .oo-scrubber-bar-container {
-  height: 19.6px; }
+  height: 24.5px; }
   .oo-player-container .oo-xsmall .oo-scrubber-bar-container .oo-scrubber-bar-padding .oo-scrubber-bar {
     height: 2.1px; }
   .oo-player-container .oo-xsmall .oo-scrubber-bar-container .oo-scrubber-bar-padding .oo-playhead-padding {
@@ -2202,16 +2203,16 @@
   margin-right: 7px; }
 
 .oo-player-container .oo-xsmall .oo-ad-overlay.oo-control-bar-visible {
-  bottom: 42px !important; }
+  bottom: 63px !important; }
 
 .oo-player-container .oo-xsmall .oo-up-next-panel-bottom {
-  bottom: 42px; }
+  bottom: 63px; }
 
 .oo-player-container .oo-xsmall .oo-player-skin-plugins {
-  bottom: 42px; }
+  bottom: 63px; }
 
 .oo-player-container .oo-xsmall .oo-player-skin-plugins-click-layer {
-  bottom: 42px; }
+  bottom: 63px; }
 
 .oo-player-container .oo-xsmall .oo-slider-volume {
   width: 140px; }
