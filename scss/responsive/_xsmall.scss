@@ -187,7 +187,7 @@
 
   //Control Bar
   .oo-control-bar {
-    height: $control-bar-height * $xsmall-multiple;
+    height: $control-bar-height-small * $xsmall-multiple;
     font-size: 18px * $xsmall-multiple;
 
     .oo-control-bar-items-wrapper {
@@ -240,7 +240,7 @@
 
   //Scrubber Bar
   .oo-scrubber-bar-container {
-    height: 28px * $xsmall-multiple;
+    height: 35px * $xsmall-multiple;
 
     .oo-scrubber-bar-padding {
       .oo-scrubber-bar {
