@@ -25,7 +25,6 @@ var SharePanel = React.createClass({
   getActivePanel: function() {
     if (this.state.activeTab === this.tabs.SHARE) {
       var titleString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION, this.props.localizableStrings);
-      var startAtString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.START_AT, this.props.localizableStrings);
 
       return (
         <div className="oo-share-tab-panel">
@@ -106,7 +105,7 @@ var SharePanel = React.createClass({
         embedString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMBED, this.props.localizableStrings);
 
     return (
-      <div className="oo-share-container">
+      <div className="oo-content-panel oo-share-panel">
         <div className="oo-tab-row">
           <a className={shareTab} onClick={this.showPanel.bind(this, this.tabs.SHARE)}>{shareString}</a>
           <a className={embedTab} onClick={this.showPanel.bind(this, this.tabs.EMBED)}>{embedString}</a>

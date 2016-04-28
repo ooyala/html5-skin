@@ -9,20 +9,11 @@ var React = require('react'),
     Utils = require('./utils'),
     CONSTANTS = require('../constants/constants'),
     ClassNames = require('classnames'),
+    AnimateMixin = require('../mixins/animateMixin'),
     Icon = require('../components/icon');
 
 var MoreOptionsPanel = React.createClass({
-  getInitialState: function() {
-    return {
-      animate: false
-    };
-  },
-
-  componentDidMount: function () {
-    this.setState({
-      animate: true
-    });
-  },
+  mixins: [AnimateMixin],
 
   handleShareClick: function () {
     this.props.controller.toggleShareScreen();
@@ -37,7 +28,7 @@ var MoreOptionsPanel = React.createClass({
   },
 
   handleClosedCaptionClick: function () {
-    this.props.controller.toggleClosedCaptionScreen();
+    this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
   },
 
   highlight: function (evt) {
@@ -53,33 +44,36 @@ var MoreOptionsPanel = React.createClass({
   },
 
   buildMoreOptionsButtonList: function () {
-    var fullscreenClass = (this.props.fullscreen) ?
-      this.props.skinConfig.icons.compress.fontStyleClass : this.props.skinConfig.icons.expand.fontStyleClass;
-    var iconSetting = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive;
+    //inline style for config/skin.json elements only
+    var buttonStyle = {
+      fontSize: this.props.skinConfig.moreOptionsScreen.iconSize + "px",
+      color: this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.color,
+      opacity: this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.opacity
+    };
 
     var optionsItemsTemplates = {
       "quality": <button className="oo-quality oo-control-bar-item" onClick={this.handleQualityClick} key="quality">
-        <Icon {...this.props} icon="quality"
+        <Icon {...this.props} icon="quality" style={buttonStyle}
          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "discovery": <button className="oo-discovery oo-control-bar-item" onClick={this.handleDiscoveryClick} key="discovery">
-        <Icon {...this.props} icon="discovery"
+        <Icon {...this.props} icon="discovery" style={buttonStyle}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "closedCaption": <button className="oo-closed-caption oo-control-bar-item" onClick={this.handleClosedCaptionClick} key="closedCaption">
-        <Icon {...this.props} icon="cc"
+        <Icon {...this.props} icon="cc" style={buttonStyle}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "share": <button className="oo-share oo-control-bar-item" onClick={this.handleShareClick} key="share">
-        <Icon {...this.props} icon="share"
+        <Icon {...this.props} icon="share" style={buttonStyle}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
       "settings": <div className="oo-settings" key="settings">
-        <Icon {...this.props} icon="setting"
+        <Icon {...this.props} icon="setting" style={buttonStyle}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </div>
     };
@@ -100,20 +94,12 @@ var MoreOptionsPanel = React.createClass({
       'oo-animate-more-options': this.state.animate
     });
 
-    //inline style for config/skin.json elements only
-    var buttonStyle = {
-      fontSize: this.props.skinConfig.moreOptionsScreen.iconSize + "px",
-      color: this.props.skinConfig.moreOptionsScreen.color
-    };
-
     var moreOptionsItems = this.buildMoreOptionsButtonList();
 
     return (
-      <div>
-        <div className="oo-more-options-panel">
-          <div className={moreOptionsItemsClass} style={buttonStyle}>
-            {moreOptionsItems}
-          </div>
+      <div className="oo-content-panel oo-more-options-panel">
+        <div className={moreOptionsItemsClass}>
+          {moreOptionsItems}
         </div>
       </div>
     );
@@ -122,16 +108,20 @@ var MoreOptionsPanel = React.createClass({
 
 MoreOptionsPanel.defaultProps = {
   skinConfig: {
-    responsive: {
-      breakpoints: {
-        xs: {id: 'xs'},
-        sm: {id: 'sm'},
-        md: {id: 'md'},
-        lg: {id: 'lg'}
+    moreOptionsScreen: {
+      iconStyle: {
+        active: {
+          color: '#FFF',
+          opacity: 1
+
+        },
+        inactive: {
+          color: '#FFF',
+          opacity: 0.6
+        }
       }
     }
-  },
-  responsiveView: 'md'
+  }
 };
 
 module.exports = MoreOptionsPanel;

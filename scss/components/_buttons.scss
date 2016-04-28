@@ -1,3 +1,9 @@
+button.oo-close-button {
+  @include close($spacer-close-btn, $spacer-close-btn);
+  position:relative;
+  float:right;
+}
+
 button.oo-close-btn {
   top: $panel-padding;
   right: $panel-padding;

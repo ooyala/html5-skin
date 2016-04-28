@@ -1,0 +1,30 @@
+.tabs-menu {
+  display: table;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tabs-menu-item {
+  float: left;
+  margin-right: 40px;
+}
+
+.tabs-menu-item a {
+  cursor: pointer;
+  display: block;
+  color: $white;
+  text-transform: uppercase;
+}
+
+.tabs-menu-item.is-active a {
+  text-decoration: underline;
+}
+
+.tabs-menu-item:not(.is-active) a:hover {
+  color:$blue-light;
+}
+
+.tab-panel {
+  padding: 10px 0;
+}

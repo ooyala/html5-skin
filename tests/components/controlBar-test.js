@@ -354,7 +354,7 @@ describe('ControlBar', function () {
     var ccButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-closed-caption');
     expect(ccButtons.length).toBe(0);
 
-    var ccClicked = false;
+    var toggleScreenClicked = false;
     mockController = {
       state: {
         isMobile: false,
@@ -366,7 +366,7 @@ describe('ControlBar', function () {
           availableBitrates: null
         }
       },
-      toggleClosedCaptionScreen: function() {ccClicked = true;}
+      toggleScreen: function() {toggleScreenClicked = true;}
     };
 
     mockProps = {
@@ -387,7 +387,7 @@ describe('ControlBar', function () {
 
     var ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-closed-caption').firstChild;
     TestUtils.Simulate.click(ccButton);
-    expect(ccClicked).toBe(true);
+    expect(toggleScreenClicked).toBe(true);
   });
 
   it('shows/hides discovery button if discovery available', function() {

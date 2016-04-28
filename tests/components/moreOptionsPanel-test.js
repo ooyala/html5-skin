@@ -2,6 +2,7 @@ jest.dontMock('../../js/components/moreOptionsPanel')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/components/icon')
     .dontMock('../../js/constants/constants')
+    .dontMock('../../js/mixins/animateMixin')
     .dontMock('classnames');
 
 var React = require('react');
@@ -42,11 +43,8 @@ describe('MoreOptionsPanel', function () {
       toggleShareScreen: function() {
         shareScreenToggled = true;
       },
-      toggleClosedCaptionScreen: function() {
-        ccScreenToggled = true;
-      },
       toggleScreen: function() {
-        qualityClicked = true;
+        toggleScreenClicked = true;
       }
     };
 
@@ -74,8 +72,7 @@ describe('MoreOptionsPanel', function () {
     for(var j=0; j<button.length; j++){
       TestUtils.Simulate.click(button[j]);
     }
-    expect(qualityClicked).toBe(true);
-    expect(ccScreenToggled).toBe(true);
+    expect(toggleScreenClicked).toBe(true);
     expect(shareScreenToggled).toBe(true);
     expect(discoveryScreenToggled).toBe(true);
   });

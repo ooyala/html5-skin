@@ -1,4 +1,16 @@
 .oo-xsmall {
+
+  // Content Screens
+  .oo-content-screen {
+    padding: xs($panel-padding);
+  }
+  .oo-content-screen-title {
+    font-size: $font-size-sm-screen-title;
+    span.oo-icon {
+      font-size: 0.7em;
+    }
+  }
+
   // State Screens
   .oo-state-screen {
     .oo-state-screen-info {
@@ -11,76 +23,66 @@
     }
   }
 
-  // Discovery Screen
-  .oo-discovery-screen {
-    .oo-discovery-panel {
-      .oo-discovery-toaster-container-style {
-        max-height: 200px;
-      }
-      @include apply-to-safari-only ('.oo-discovery-toaster-container-style') {
-        min-height: 100px;
-      }
-      .oo-discovery-image-wrapper-style {
-        margin-bottom: 0;
+  // Discovery Panel
+  .oo-discovery-panel {
+    .oo-discovery-toaster-container-style {
+      max-height: 200px;
+    }
+    @include apply-to-safari-only ('.oo-discovery-toaster-container-style') {
+      min-height: 100px;
+    }
+    .oo-discovery-image-wrapper-style {
+      margin-bottom: 0;
 
-        &:nth-last-child(2) {
-          margin-right:42px !important;
-        }
-        &:last-child {
-          margin-right:0;
-        }
+      &:nth-last-child(2) {
+        margin-right:42px !important;
       }
+      &:last-child {
+        margin-right:0;
+      }
+    }
 
-      .oo-scale-size {
-        max-height: 150px;
-      }
-      @include apply-to-safari-only ('.oo-scale-size') {
-        min-height: 80px !important;
-      }
+    .oo-scale-size {
+      max-height: 150px;
+    }
+    @include apply-to-safari-only ('.oo-scale-size') {
+      min-height: 80px !important;
     }
   }
 
-  // Closed Caption Screen
-  .oo-closed-captions-screen {
-    .oo-closed-captions-panel {
-      padding:$panel-padding * $xsmall-multiple;
-      .oo-closed-captions-panel-title {
-        font-size: $font-size-sm-screen-title;
-        span.oo-icon {
-          font-size: 0.7em;
-        }
+  // Closed Caption Panel
+  .oo-closed-captions-panel {
+    .oo-switch-container {
+      height: 15px;
+      width: 74px;
+      top: 22px;
+      left: 138px;
+      .oo-switch-captions {
+        font-size: $font-size-base * $xsmall-multiple;
       }
-      .oo-switch-container {
-        margin-top: 20px;
-        height: 15px;
-        width: 74px;
-        .oo-switch-captions {
-          font-size: $font-size-base * $xsmall-multiple;
-        }
-        .oo-switch-element {
-          margin-bottom: 33%;
-        }
+      .oo-switch-element {
+        margin-bottom: 33%;
       }
     }
-    .oo-language-container {
-      margin-top: 4%;
-      .oo-language-panel {
-        a.oo-item {
-          width: 98px;
-          font-size: .9em;
-          margin: 10px 20px;
-          padding: 3px 10px;
-        }
-      }
-      .oo-discover-btn {
-        span.oo-icon {
-          font-size: 0.8em;
-        }
+  }
+  .oo-language-container {
+    margin-top: 4%;
+    .oo-language-panel {
+      a.oo-item {
+        width: 98px;
+        font-size: .9em;
+        margin: 10px 20px;
+        padding: 3px 10px;
       }
     }
-    .oo-preview-panel {
-      display: none;
+    .oo-discover-btn {
+      span.oo-icon {
+        font-size: 0.8em;
+      }
     }
+  }
+  .oo-preview-panel {
+    display: none;
   }
 
   //Error screen
@@ -145,41 +147,30 @@
   }
 
   //Video Quality
-  .oo-quality-screen {
-    .oo-quality-panel-title {
-      font-size: $font-size-sm-screen-title;
-      span.oo-icon {
-        top: 1px;
-        margin-left: 7px;
-        font-size: 0.6em;
-      }
-    }
-
+  .oo-quality-panel {
+    height: $bitrate-horizontal-height - 25px;
     .oo-quality-screen-content {
-      height: $bitrate-horizontal-height - 25px;
-      .oo-quality-panel {
-        ul {
-          height: $bitrate-horizontal-height - 30px;
-          li {
-            margin: 0 14px;
-            a.oo-quality-btn {
-              padding: 8px 6px;
+      ul {
+        height: $bitrate-horizontal-height - 30px;
+        li {
+          margin: 0 14px;
+          a.oo-quality-btn {
+            padding: 8px 6px;
+            font-size: 0.8em;
+          }
+          a.oo-quality-auto-btn {
+            .oo-quality-auto-icon {
+              font-size: 1.4em;
+              padding:4px;
+              margin-bottom: 0;
+            }
+            .oo-quality-auto-label {
               font-size: 0.8em;
             }
-            a.oo-quality-auto-btn {
-              .oo-quality-auto-icon {
-                font-size: 1.4em;
-                padding:4px;
-                margin-bottom: 0;
-              }
-              .oo-quality-auto-label {
-                font-size: 0.8em;
-              }
-            }
           }
-          li.oo-auto-li {
-            top:14px;
-          }
+        }
+        li.oo-auto-li {
+          top:14px;
         }
       }
     }
@@ -232,10 +223,8 @@
   }
 
   // IE 11 only
-  @media all and (-ms-high-contrast:none) {
-    *::-ms-backdrop, .oo-volume-slider {
-      height: 0;
-    }
+  @include apply-to-ie11-only ('.oo-volume-slider') {
+    height: 0;
   }
 
   //Scrubber Bar
@@ -262,7 +251,7 @@
   }
 
   //Close Buttons
-  button.oo-close-btn {
+  button.oo-close-btn, button.oo-close-button {
     font-size: 10px;
   }
 
