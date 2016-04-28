@@ -4,6 +4,7 @@
  * @module VideoQualityPanel
  */
 var React = require('react'),
+    ScrollArea = require('react-scrollbar/dist/no-css'),
     ClassNames = require('classnames'),
     Icon = require('../components/icon');
 
@@ -66,11 +67,23 @@ var VideoQualityPanel = React.createClass({
       }
     }
 
+    var qualityScreenClass = ClassNames({
+      'oo-content-panel': !this.props.popover,
+      'oo-quality-panel': !this.props.popover,
+      'oo-quality-popover': this.props.popover,
+      'oo-mobile-fullscreen': !this.props.popover && this.props.controller.state.isMobile && (this.props.controller.state.fullscreen || this.props.controller.state.isFullWindow)
+    });
+
     return (
-      <div className="oo-quality-panel">
-        <ul>
-          {bitrateButtons}
-        </ul>
+      <div className={qualityScreenClass}>
+        <ScrollArea
+          className="oo-quality-screen-content"
+          speed={this.props.popover ? 0.6 : 1}
+          horizontal={this.props.popover ? false : true}>
+          <ul>
+            {bitrateButtons}
+          </ul>
+        </ScrollArea>
       </div>
     );
   }
@@ -91,6 +104,7 @@ VideoQualityPanel.propTypes = {
 };
 
 VideoQualityPanel.defaultProps = {
+  popover: false,
   skinConfig: {
     icons: {
       quality:{fontStyleClass:'oo-icon oo-icon-topmenu-quality'}

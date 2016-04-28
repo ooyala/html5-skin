@@ -1112,25 +1112,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
     },
 
-    toggleClosedCaptionScreen: function() {
-      if (this.state.screenToShow == CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN) {
-        this.closeScreen();
-      }
-      else {
-        if (this.state.playerState == CONSTANTS.STATE.PLAYING){
-          this.pausedCallback = function() {
-            this.state.screenToShow = CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN;
-            this.renderSkin();
-          }.bind(this);
-          this.mb.publish(OO.EVENTS.PAUSE);
-        }
-        else {
-          this.state.screenToShow = CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN;
-          this.renderSkin();
-        }
-      }
-    },
-
     closeScreen: function() {
       this.state.pauseAnimationDisabled = true;
       if (this.state.playerState == CONSTANTS.STATE.PAUSE) {

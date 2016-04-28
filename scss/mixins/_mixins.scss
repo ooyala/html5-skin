@@ -159,6 +159,15 @@
   }
 }
 
+// IE11 only
+@mixin apply-to-ie11-only ($selector) {
+  @media all and (-ms-high-contrast:none) {
+    *::-ms-backdrop, #{$selector} {
+      @content;
+    }
+  }
+}
+
 // flexbox prefixing
 @mixin flexbox() {
   display: -webkit-box;
@@ -166,4 +175,12 @@
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
+}
+
+@mixin expand() {
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
 }

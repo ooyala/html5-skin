@@ -28,7 +28,7 @@ var MoreOptionsPanel = React.createClass({
   },
 
   handleClosedCaptionClick: function () {
-    this.props.controller.toggleClosedCaptionScreen();
+    this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
   },
 
   highlight: function (evt) {
@@ -97,7 +97,7 @@ var MoreOptionsPanel = React.createClass({
     var moreOptionsItems = this.buildMoreOptionsButtonList();
 
     return (
-      <div className="oo-more-options-panel">
+      <div className="oo-content-panel oo-more-options-panel">
         <div className={moreOptionsItemsClass}>
           {moreOptionsItems}
         </div>

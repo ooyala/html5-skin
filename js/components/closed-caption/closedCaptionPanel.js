@@ -8,20 +8,15 @@
 * @constructor
 */
 var React = require('react'),
-    CONSTANTS = require('../constants/constants'),
-    Utils = require('./utils'),
+    CONSTANTS = require('../../constants/constants'),
+    Utils = require('./../utils'),
     ClassNames = require('classnames'),
-    Icon = require('../components/icon');
+    Icon = require('../icon');
 
 var ClosedCaptionPanel = React.createClass({
   render: function(){
-    var closedCaptionOptionsString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CC_OPTIONS, this.props.localizableStrings);
     return (
-        <div className="oo-closed-captions-panel">
-          <div className="oo-closed-captions-panel-title">
-            {closedCaptionOptionsString}
-            <Icon {...this.props} icon="cc"/>
-          </div>
+        <div className="oo-content-panel oo-closed-captions-panel">
           <OnOffSwitch {...this.props} />
           <LanguageTabContent {...this.props} />
           <CCPreviewPanel {...this.props} />

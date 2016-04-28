@@ -20,7 +20,7 @@ CloseButton.propTypes = {
 };
 
 CloseButton.defaultProps = {
-  cssClass: 'oo-close-btn'
+  cssClass: 'oo-close-button'
 };
 
 module.exports = CloseButton;

@@ -7,7 +7,6 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants'),
-    Utils = require('./utils'),
     CountDownClock = require('./countDownClock'),
     DiscoverItem = require('./discoverItem'),
     ResizeMixin = require('../mixins/resizeMixin'),
@@ -100,7 +99,6 @@ var DiscoveryPanel = React.createClass({
     var relatedVideoPage = relatedVideos.slice(startAt, endAt);
 
     // discovery content
-    var panelTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.DISCOVER, this.props.localizableStrings);
     var discoveryContentName = ClassNames({
       'oo-discovery-content-name': true,
       'oo-hidden': !this.props.skinConfig.discoveryScreen.contentTitle.show
@@ -149,12 +147,7 @@ var DiscoveryPanel = React.createClass({
     }
 
     return (
-      <div className="oo-discovery-panel" ref="discoveryPanel">
-        <div className="oo-discovery-panel-title">
-          {panelTitle}
-          <Icon {...this.props} icon="discovery"/>
-        </div>
-
+      <div className="oo-content-panel oo-discovery-panel" ref="discoveryPanel">
         <div className={discoveryToaster} id="DiscoveryToasterContainer" ref="DiscoveryToasterContainer">
           {discoveryContentBlocks}
         </div>

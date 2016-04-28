@@ -94,7 +94,6 @@ var ControlBar = React.createClass({
     } else {
       this.toggleQualityPopover();
     }
-
   },
 
   toggleQualityPopover: function() {
@@ -118,7 +117,7 @@ var ControlBar = React.createClass({
   },
 
   handleClosedCaptionClick: function() {
-    this.props.controller.toggleClosedCaptionScreen();
+    this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
   },
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
