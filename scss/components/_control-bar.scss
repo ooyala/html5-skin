@@ -1,10 +1,12 @@
 .oo-control-bar-hidden {
   height: 0 !important;
+  opacity: 0;
 }
 
 .oo-control-bar {
   background: $control-bar-bg;
   @include vendor-prefixes (background, $control-bar-gradient);
+  transition: opacity .2s ease-in-out, height .3s ease-in-out;
   width: 100%;
   height: $control-bar-height;
   position: relative;
