@@ -1,8 +1,3 @@
-.oo-control-bar-hidden {
-  height: 0 !important;
-  opacity: 0;
-}
-
 .oo-control-bar {
   background: $control-bar-bg;
   @include vendor-prefixes (background, $control-bar-gradient);
@@ -18,7 +13,6 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  transition: height 0.5s;
   z-index: 12500;
 
   .oo-control-bar-items-wrapper {
@@ -167,4 +161,9 @@ a.oo-volume-bar {
 // IE 11 only
 @include apply-to-ie11-only ('.oo-volume-slider') {
   height: auto;
+}
+
+.oo-control-bar-hidden {
+  height: 0 !important;
+  opacity: 0;
 }
