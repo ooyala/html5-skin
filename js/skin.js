@@ -52,10 +52,28 @@ var Skin = React.createClass({
     if (this.props.skinConfig.closedCaptionOptions){
       this.props.controller.state.closedCaptionOptions.language = (this.props.skinConfig.closedCaptionOptions.defaultLanguage ? this.props.skinConfig.closedCaptionOptions.defaultLanguage : "en" );
       this.props.controller.state.closedCaptionOptions.enabled = (this.props.skinConfig.closedCaptionOptions.defaultEnabled ? this.props.skinConfig.closedCaptionOptions.defaultEnabled : false);
+      this.props.controller.state.closedCaptionOptions.textColor = (this.props.skinConfig.closedCaptionOptions.defaultTextColor ? this.props.skinConfig.closedCaptionOptions.defaultTextColor : "white");
+      this.props.controller.state.closedCaptionOptions.windowColor = (this.props.skinConfig.closedCaptionOptions.defaultWindowColor ? this.props.skinConfig.closedCaptionOptions.defaultWindowColor : "transparent");
+      this.props.controller.state.closedCaptionOptions.backgroundColor = (this.props.skinConfig.closedCaptionOptions.defaultBackgroundColor ? this.props.skinConfig.closedCaptionOptions.defaultBackgroundColor : "transparent");
+      this.props.controller.state.closedCaptionOptions.textOpacity = (this.props.skinConfig.closedCaptionOptions.defaultTextOpacity ? this.props.skinConfig.closedCaptionOptions.defaultTextOpacity : 1);
+      this.props.controller.state.closedCaptionOptions.backgroundOpacity = (this.props.skinConfig.closedCaptionOptions.defaultBackgroundOpacity ? this.props.skinConfig.closedCaptionOptions.defaultBackgroundOpacity : 0);
+      this.props.controller.state.closedCaptionOptions.windowOpacity = (this.props.skinConfig.closedCaptionOptions.defaultWindowOpacity ? this.props.skinConfig.closedCaptionOptions.defaultWindowOpacity : 0);
+      this.props.controller.state.closedCaptionOptions.fontType = (this.props.skinConfig.closedCaptionOptions.defaultFontType ? this.props.skinConfig.closedCaptionOptions.defaultFontType : "helvetica");
+      this.props.controller.state.closedCaptionOptions.fontSize = (this.props.skinConfig.closedCaptionOptions.defaultFontSize ? this.props.skinConfig.closedCaptionOptions.defaultFontSize : "medium");
+      this.props.controller.state.closedCaptionOptions.textEnhancement = (this.props.skinConfig.closedCaptionOptions.defaultTextEnhancement ? this.props.skinConfig.closedCaptionOptions.defaultTextEnhancement : "uniform");
     }
     else {
       this.props.controller.state.closedCaptionOptions.language = "en";
       this.props.controller.state.closedCaptionOptions.enabled = false;
+      this.props.controller.state.closedCaptionOptions.textColor = "white";
+      this.props.controller.state.closedCaptionOptions.windowColor = "transparent";
+      this.props.controller.state.closedCaptionOptions.backgroundColor = "transparent";
+      this.props.controller.state.closedCaptionOptions.textOpacity = 1;
+      this.props.controller.state.closedCaptionOptions.backgroundOpacity = 0;
+      this.props.controller.state.closedCaptionOptions.windowOpacity = 0;
+      this.props.controller.state.closedCaptionOptions.fontType = "helvetica";
+      this.props.controller.state.closedCaptionOptions.fontSize = "medium";
+      this.props.controller.state.closedCaptionOptions.textEnhancement = "uniform";
     }
   },
 
