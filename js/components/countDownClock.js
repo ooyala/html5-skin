@@ -24,8 +24,8 @@ var CountDownClock = React.createClass({
 
     if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN ||
       this.props.controller.state.screenToShow === CONSTANTS.SCREEN.ALT_END_SCREEN) {
-      tmpFraction = 2 / this.props.timeToShow;
-      tmpRemainSeconds = this.props.timeToShow;
+      tmpFraction = 2 / parseInt(this.props.timeToShow);
+      tmpRemainSeconds = parseInt(this.props.timeToShow);
     }
     else {
       tmpFraction = 2 / upNextTimeToShow;
@@ -106,7 +106,7 @@ var CountDownClock = React.createClass({
     var decimals;
     var percent = this.state.fraction * this.state.remainSeconds + 1.5;
     this.context.fillStyle = 'white';
-    if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PLAYING_SCREEN || this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PAUSE_SCREEN) {
+    if(this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PLAYING_SCREEN || this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PAUSE_SCREEN || this.props.controller.state.screenToShow === CONSTANTS.SCREEN.ALT_END_SCREEN) {
       this.context.fillText(this.state.remainSeconds.toFixed(decimals), this.state.clockContainerWidth / 2, this.state.clockRadius, 100);
     }
     this.context.beginPath();

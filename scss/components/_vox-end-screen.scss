@@ -2,6 +2,13 @@
 
   background-size: cover;
   background-position: center;
+  a {
+    color: inherit;
+    &:link {text-decoration: none;}
+    &:visited {text-decoration: none;}
+    &:hover {text-decoration: none;}
+    &:active {text-decoration: none;}
+  }
 
   .oo-alt-previous {
     position: absolute;
@@ -28,27 +35,86 @@
       left: 0;
       right: 0;
       text-align: center;
+      font-weight: bold;
+    }
+
+    .oo-alt-prev-replay-text {
+      font-weight: bold;
+      margin-left: 5px;
+      cursor: pointer;
     }
 
     .oo-alt-prev-twitter {
-      width: 30%;
+      margin-top: 2px;
+      margin-right: 10px;
+      padding-right: 10px;
       border-radius: 10px;
-      background-color: teal;
+      background-color: #55acee;
       display: inline-block;
+      height: 30px;
+      cursor: pointer;
+
+      &:before {
+        background-image: url('/assets/images/twitter_logo.png');
+        background-size: 30px 30px;
+        display: inline-block;
+        vertical-align: middle;
+        width: 30px;
+        height: 30px;
+        margin-left: 2px;
+        margin-right: 2px;
+        content:"";
+      }
     }
 
     .oo-alt-prev-facebook {
-      width: 30%;
+      margin-top: 2px;
+      margin-right: 10px;
+      padding-right: 10px;
       border-radius: 10px;
-      background-color: blue;
+      background-color: #3b5998;
       display: inline-block;
+      height: 30px;
+      cursor: pointer;
+
+    &:before {
+        background-image: url('/assets/images/facebook_logo.png');
+        background-size: 20px 20px;
+        display: inline-block;
+        vertical-align: middle;
+        width: 20px;
+        height: 20px;
+        margin-left: 2px;
+        margin-right: 2px;
+        content:"";
+      }
+    }
+
+    .oo-alt-prev-buttontext {
+      vertical-align: middle;
+      font-weight: bold;
     }
 
     .oo-alt-prev-link {
-      width: 20%;
+      margin-top: 2px;
+      margin-right: 10px;
       border-radius: 10px;
       background-color: gray;
       display: inline-block;
+      height: 30px;
+      cursor: pointer;
+
+      &:before {
+        background-image: url('/assets/images/link.png');
+        background-size: 20px 20px;
+        display: inline-block;
+        vertical-align: middle;
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        margin-left: 10px;
+        content:"";
+      }
     }
 
     img {
@@ -62,6 +128,7 @@
     left: 0;
     right: 0;
     text-align: center;
+    font-weight: bold;
 
     .oo-alt-next-countdown, .oo-alt-next-info {
       display: inline-block;
@@ -71,15 +138,18 @@
   .oo-alt-autoplay {
     position: absolute;
     top: 25px;
-    right: 25px;
+    right: 70px;
+    font-weight: bold;
 
     .oo-alt-autoplay-switch {
+      border-radius: 5px;
       width:80px;
       height:20px;
       background-color: gray;
 
       .oo-alt-autoplay-indicator {
         position:absolute;
+        border-radius: 5px;
         width: 40px;
         height:20px;
         left: 0;
@@ -91,6 +161,24 @@
         left: auto;
         margin-left: 50%;
       }
+    }
+  }
+
+  .oo-alt-autoplay-text {
+    position: absolute;
+    top: 45px;
+    right: 40px;
+    font-weight: bold;
+
+    &:before {
+      content: "ON";
+    }
+  }
+
+  .oo-alt-autoplay-text.off {
+    right: 35px;
+    &:before {
+      content: "OFF";
     }
   }
 
