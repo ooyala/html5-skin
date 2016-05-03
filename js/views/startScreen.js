@@ -53,7 +53,7 @@ var StartScreen = React.createClass({
     };
     var posterImageUrl = this.props.skinConfig.startScreen.showPromo ? this.props.contentTree.promo_image : '';
     var posterStyle = {
-      backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%), url('" + posterImageUrl + "')"
+      backgroundImage: "url('" + posterImageUrl + "')"
     };
 
     //CSS class manipulation from config/skin.json
