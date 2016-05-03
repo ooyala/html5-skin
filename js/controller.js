@@ -71,7 +71,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "enabled": null,
         "language": null,
         "availableLanguages": null,
-        "cueText": null
+        "cueText": null,
+        "textColor": null,
+        "windowColor": null,
+        "backgroundColor": null,
+        "textOpacity": null,
+        "backgroundOpacity": null,
+        "windowOpacity": null,
+        "fontType": null,
+        "fontSize": null,
+        "textEnhancement": null
       },
 
       "videoQualityOptions": {
