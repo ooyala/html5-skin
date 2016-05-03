@@ -19,6 +19,12 @@ var ContentScreen = React.createClass({
   },
 
   render: function() {
+    //overlay only for the closed captions screen. Needs to be different than the other screens because of closed caption preview.
+    var closedCaptionOverlay = this.props.screenClassName == "oo-content-screen oo-content-screen-closed-captions" ? (
+      <div className="closed-caption-overlay"></div>
+    ) :
+    null;
+
     //localized title bar, show nothing if no title text
     var titleBar = this.props.titleText ? (
       <div className="oo-content-screen-title">
@@ -29,6 +35,7 @@ var ContentScreen = React.createClass({
 
     return (
       <div className={this.props.screenClassName}>
+        {closedCaptionOverlay}
         <div className={this.props.titleBarClassName}>
           {titleBar}
           <CloseButton {...this.props} closeAction={this.handleClose}/>
