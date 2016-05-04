@@ -4,6 +4,7 @@
 var React = require('react'),
     ReactDOM = require('react-dom'),
     ResizeMixin = require('../mixins/resizeMixin'),
+    Thumbnail = require('./thumbnail'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
@@ -206,8 +207,22 @@ var ScrubberBar = React.createClass({
       playedIndicatorStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.playedColor;
     }
 
+    if (this.state.scrubbingPlayheadX) {
+      var hoverPosition = this.state.scrubbingPlayheadX;
+      var hoverTime=(this.state.scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration;
+
+      var thumbnailContainer = (<div className="oo-scrubber-thumbnail-container">
+            <Thumbnail {...this.props}
+              hoverPosition={hoverPosition}
+              hoverTime={hoverTime}
+              scrubberBarWidth={this.state.scrubberBarWidth}/>
+          </div>);
+    }
+    else var thumbnailContainer = null;
+
     return (
       <div className="oo-scrubber-bar-container">
+        {thumbnailContainer}
         <div className="oo-scrubber-bar-padding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
           <div ref="scrubberBar" className="oo-scrubber-bar" style={scrubberBarStyle}>
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle}></div>

@@ -28,6 +28,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "playerParam": {},
       "assetId": null,
       "contentTree": {},
+      "thumbnails": {},
       "authorization": {},
       "screenToShow": null,
       "playerState": null,
@@ -122,6 +123,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
+      this.mb.subscribe(OO.EVENTS.STYLE_FETCHED, 'customerUi', _.bind(this.onStyleFetched, this));
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
@@ -315,6 +317,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       this.renderSkin({"contentTree": contentTree});
+    },
+    onStyleFetched: function (event, thumbnails) {
+      this.renderSkin({"thumbnails": thumbnails});
     },
 
     onVolumeChanged: function (event, newVolume){
