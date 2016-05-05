@@ -1,14 +1,14 @@
 .oo-control-bar {
   background: $control-bar-bg;
   @include vendor-prefixes (background, $control-bar-gradient);
-  transition: opacity .2s ease-in-out, height .3s ease-in-out;
+  @include vendor-prefixes (transition, $medium-transition);
   width: 100%;
   height: $control-bar-height;
   position: relative;
   margin: 0;
   padding: 0 15px;
-  font-size: 18px;
   list-style: none;
+  font-size: 18px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -26,6 +26,7 @@
     -webkit-justify-content: center;
     justify-content: center;
     white-space: nowrap;
+    margin-top: 10px;
 
     & > * {
       line-height: 1 !important;
@@ -42,10 +43,11 @@
     .oo-control-bar-item {
       height: 100%;
       font-weight: bold;
-      font-size: 18px;
+      font-size: 23px;
       text-align: center;
-      padding: 0 7.5px;
+      padding: 0 12.5px;
       cursor: pointer;
+      opacity: 1;
     }
 
     & > .oo-control-bar-item:first-child {
@@ -80,6 +82,7 @@
       padding-left: 7.5px;
       padding-right: 7.5px;
       text-align: left;
+      margin-bottom: 5px;
 
       .oo-total-time {
         color: $white;
@@ -118,32 +121,46 @@
 
     .oo-logo img {
       position: relative;
-      max-height: 18px;
+      max-height: 24px;
       vertical-align: baseline;
+      opacity: 0.9;
     }
   }
 }
+
+
 a.oo-volume-bar {
   border:0;
   outline: none;
 }
 
+
 .oo-volume-bar {
-  display: inline-block;
-  background-clip: content-box;
-  position: relative;
-  width: 6px;
-  height: 18px;
-  padding-left: 3px;
-  background-color: rgba($white, 0.6);
+    margin-bottom: 4px;
+    display: inline-block;
+    background-clip: content-box;
+    position: relative;
+    width: 9px;
+    height: 8px;
+    padding-left: 7px;
+    background-color: rgba($white, 0.6);
+    @include vendor-prefixes (transition, all .18s ease-in-out);
 }
 
-.oo-volume-bar.oo-on {
-  background-color: rgba($blue-light, 0.6);
+.oo-volume-bar:hover{
+height: 17px;
+}
+
+.oo-on{
+  background-color: rgba($blue-light, 1.0);
+  height: 17px;
+  padding-bottom: 0px;
+  margin-bottom: 4px;
+
 }
 
 .oo-volume:hover .oo-volume-bar {
-  background-color: $white;
+  background-color: rgba($white, 0.7);
 }
 
 .oo-volume:hover .oo-volume-bar.oo-on {
@@ -167,3 +184,6 @@ a.oo-volume-bar {
   height: 0 !important;
   opacity: 0;
 }
+
+
+
