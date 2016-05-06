@@ -1,11 +1,11 @@
 @at-root {
   @font-face {
-    font-family: "alice";
-    src: url('#{$font-path}/alice.eot');
-    src: url('#{$font-path}/alice.eot?#iefix') format('embedded-opentype'),
-    url('#{$font-path}/alice.woff') format('woff'),
-    url('#{$font-path}/alice.ttf') format('truetype'),
-    url('#{$font-path}/alice.svg#alice') format('svg');
+    font-family: "ooyala-slick-type";
+    src: url('#{$font-path}/ooyala-slick-type.eot');
+    src: url('#{$font-path}/ooyala-slick-type.eot?#iefix') format('embedded-opentype'),
+    url('#{$font-path}/ooyala-slick-type.woff') format('woff'),
+    url('#{$font-path}/ooyala-slick-type.ttf') format('truetype'),
+    url('#{$font-path}/ooyala-slick-type.svg#alice') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -83,7 +83,7 @@
 }
 
 [data-icon] {
-  font-family: "alice" !important;
+  font-family: "ooyala-slick-type" !important;
   content: attr(data-icon);
   font-style: normal !important;
   font-weight: normal !important;
@@ -97,7 +97,7 @@
 
 [class^="oo-icon-"],
 [class*=" oo-icon-"] {
-  font-family: "alice" !important;
+  font-family: "ooyala-slick-type" !important;
   font-style: normal !important;
   font-weight: normal !important;
   font-variant: normal !important;

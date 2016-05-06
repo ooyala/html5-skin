@@ -3,7 +3,7 @@
   margin: 0;
   position: relative;
   width: 100%;
-  height: 28px;
+  height: 34px;
   z-index: 12600;
   @include vendor-prefixes(user-select, none);
 
@@ -49,19 +49,19 @@
       height: 25px;
       position: absolute;
       z-index: 1;
-      top: 50%;
+      top: 100%;
       transition: opacity 0.25s;
       @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
 
       .oo-playhead {
         background: $blue-light;
-        width: 10px;
-        height: 10px;
+        width: 8px;
+        height: 8px;
         border: 1px solid $white;
         border-radius: 10px;
         position: absolute;
         transition: opacity 0.25s;
-        top: 50%;
+        top: 43%;
         cursor: pointer;
         left: 50%;
         @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
