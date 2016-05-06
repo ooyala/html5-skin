@@ -1244,7 +1244,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //set Main Video Element Wrapper padding-top to aspect ratio
     setAspectRatio: function() {
-      if(this.state.mainVideoAspectRatio > 0 && this.state.mainVideoAspectRatio <= 100) {
+      if(this.state.mainVideoAspectRatio > 0) {
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
     }
