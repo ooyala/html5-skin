@@ -185,7 +185,7 @@
       .oo-control-bar-item {
         font-size: 25px * $xsmall-multiple;
         padding: 0 8.5px * $xsmall-multiple;
-    margin-top: 2px;
+        margin-top: 2px;
       }
 
       .oo-control-bar-duration {
@@ -193,7 +193,6 @@
         padding-left: 7.5px * $xsmall-multiple;
         padding-right: 7.5px * $xsmall-multiple;
         margin-top: 6px;
-
       }
 
       .oo-live-circle {
@@ -212,7 +211,6 @@
     }
   }
 
-
   //Volume Slider
   .oo-volume-bar {
     width: 7px * $xsmall-multiple;
@@ -220,7 +218,6 @@
     padding-left: 4px * $xsmall-multiple;
     margin-bottom: 4px;
   }
-
 
 .oo-volume-bar.oo-on{
   background-color: rgba($blue-light, 1.0);

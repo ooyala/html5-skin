@@ -1,12 +1,11 @@
 .oo-small {
-
   // Control bar
-    .oo-control-bar-items-wrapper {
-      .oo-control-bar-item {
-        padding: 0 14.5px * $xsmall-multiple;
-        font-size: 23px;
-       }
-      }
+  .oo-control-bar-items-wrapper {
+    .oo-control-bar-item {
+      padding: 0 14.5px * $xsmall-multiple;
+      font-size: 23px;
+    }
+  }
     
   // Discovery Screen
   .oo-discovery-panel {
@@ -29,5 +28,4 @@
       }
     }
   }
-
 }
