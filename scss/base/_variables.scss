@@ -162,7 +162,8 @@ $slider-volume-height-small:          $slider-volume-height * $xsmall-multiple !
 $slider-volume-thumb-diameter-small:  $slider-volume-thumb-diameter * $xsmall-multiple !default;
 
 //bitrate
-$bitrate-horizontal-height:       100px !default;
+$bitrate-horizontal-height:        100px !default;
+$bitrate-popover-height:            80px !default;
 
 $font-path:                       "assets/fonts" !default;
 
