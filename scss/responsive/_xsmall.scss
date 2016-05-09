@@ -178,43 +178,56 @@
 
   //Control Bar
   .oo-control-bar {
-    height: $control-bar-height * $xsmall-multiple;
-    font-size: 18px * $xsmall-multiple;
+    height: $control-bar-height-small;
+    font-size: 25px * $xsmall-multiple;
 
     .oo-control-bar-items-wrapper {
       .oo-control-bar-item {
-        font-size: 18px * $xsmall-multiple;
-        padding: 0 7.5px * $xsmall-multiple;
+        font-size: 25px * $xsmall-multiple;
+        padding: 0 8.5px * $xsmall-multiple;
+        margin-top: 2px;
       }
 
       .oo-control-bar-duration {
         font-size: 14px * $xsmall-multiple;
         padding-left: 7.5px * $xsmall-multiple;
         padding-right: 7.5px * $xsmall-multiple;
+        margin-top: 6px;
+      }
+
+      .oo-live-indicator{
+        margin-top: 7px;
       }
 
       .oo-live-circle {
-        width: 10px * $xsmall-multiple;
-        height: 10px * $xsmall-multiple;
-        margin-right: 2px * $xsmall-multiple;
+        width: 7px * $xsmall-multiple;
+        height: 7px * $xsmall-multiple;
+        margin-top: 0px;
       }
 
       .oo-live-text {
-        font-size: 10px * $xsmall-multiple;
+        font-size: 15px * $xsmall-multiple;
       }
 
       .oo-logo img {
-        max-height: 18px * $xsmall-multiple;
+        max-height: 24px * $xsmall-multiple;
       }
     }
   }
 
   //Volume Slider
   .oo-volume-bar {
-    width: 6px * $xsmall-multiple;
-    height: 18px * $xsmall-multiple;
-    padding-left: 3px * $xsmall-multiple;
+    width: 7px * $xsmall-multiple;
+    height: 14px * $xsmall-multiple;
+    padding-left: 4px * $xsmall-multiple;
+    margin-bottom: 4px;
   }
+
+.oo-volume-bar.oo-on{
+  background-color: rgba($blue-light, 1.0);
+  height: 14px * $xsmall-multiple;
+  padding-bottom: 0px;
+}
 
   .oo-volume-slider {
     height: 20px * $xsmall-multiple;
@@ -229,11 +242,11 @@
 
   //Scrubber Bar
   .oo-scrubber-bar-container {
-    height: 28px * $xsmall-multiple;
+    height: 20px * $xsmall-multiple;
 
     .oo-scrubber-bar-padding {
       .oo-scrubber-bar {
-        height: 3px * $xsmall-multiple;
+        height: 4px * $xsmall-multiple;
       }
 
       .oo-playhead-padding {
@@ -241,10 +254,11 @@
         height: 25px * $xsmall-multiple;
 
         .oo-playhead {
-          width: 10px * $xsmall-multiple;
-          height: 10px * $xsmall-multiple;
+          width: 7px;
+          height: 7px;
           border-width: 1px * $xsmall-multiple;
           border-radius: 10px * $xsmall-multiple;
+          top: 39%;
         }
       }
     }

@@ -135,7 +135,8 @@ $state-danger-text:              #a94442 !default;
 $xsmall-multiple:                 0.7 !default;
 $large-multiple:                  1.2 !default;
 $scrubber-padding-height:         24px !default;
-$control-bar-height:              60px !default;
+$control-bar-height:              90px !default;
+$control-bar-height-small:        57px !default;
 $scrubber-bar-height:             5px !default;
 $scrubber-bar-padding-height:     24px !default;
 $scrubber-bar-left-right-padding: 15px !default;
@@ -161,9 +162,13 @@ $slider-volume-height-small:          $slider-volume-height * $xsmall-multiple !
 $slider-volume-thumb-diameter-small:  $slider-volume-thumb-diameter * $xsmall-multiple !default;
 
 //bitrate
-$bitrate-horizontal-height:       100px !default;
+$bitrate-horizontal-height:        100px !default;
+$bitrate-popover-height:            80px !default;
 
 $font-path:                       "assets/fonts" !default;
 
 //gradients
 $control-bar-gradient: linear-gradient(to bottom, rgba(0,0,0,0) 23%,rgba(0,0,0,0.6) 90%,rgba(0,0,0,0.69) 100%);
+
+//transition - easing
+$medium-transition: transition, opacity .2s ease-in-out, height .3s ease-in-out;

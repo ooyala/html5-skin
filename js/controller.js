@@ -1466,13 +1466,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     seek: function(seconds) {
-      this.mb.publish(OO.EVENTS.SEEK, seconds);
-      if (this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN) {
-        this.state.pauseAnimationDisabled = true;
+      if (this.state.playerState == CONSTANTS.STATE.END) {
         this.endSeeking();
-        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
-        this.state.playerState = CONSTANTS.STATE.PAUSE;
-        this.renderSkin();
+        this.mb.publish(OO.EVENTS.REPLAY, seconds);
+      }
+      else {
+        this.mb.publish(OO.EVENTS.SEEK, seconds);
       }
     },
 
@@ -1714,7 +1713,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //set Main Video Element Wrapper padding-top to aspect ratio
     setAspectRatio: function() {
-      if(this.state.mainVideoAspectRatio > 0 && this.state.mainVideoAspectRatio <= 100) {
+      if(this.state.mainVideoAspectRatio > 0) {
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
     }
