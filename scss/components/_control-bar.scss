@@ -101,21 +101,23 @@
 
     .oo-live-indicator {
       line-height: 0.5;
+      margin-bottom: 12px;
     }
 
-    .oo-live-circle {
+    .oo-live-circle{
       display: inline-block;
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background-color: red;
+      background-color: #E83F3F;
       margin-right: 2px;
+      margin-top: 2px;
       vertical-align: middle;
     }
 
     .oo-live-text {
-      font-size: 10px;
-      color: $gray-light;
+      font-size: 14px;
+      color: $white;
       vertical-align: middle;
     }
 

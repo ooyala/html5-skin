@@ -195,14 +195,18 @@
         margin-top: 6px;
       }
 
+      .oo-live-indicator{
+        margin-top: 7px;
+      }
+
       .oo-live-circle {
-        width: 10px * $xsmall-multiple;
-        height: 10px * $xsmall-multiple;
-        margin-right: 2px * $xsmall-multiple;
+        width: 7px * $xsmall-multiple;
+        height: 7px * $xsmall-multiple;
+        margin-top: 0px;
       }
 
       .oo-live-text {
-        font-size: 10px * $xsmall-multiple;
+        font-size: 15px * $xsmall-multiple;
       }
 
       .oo-logo img {
