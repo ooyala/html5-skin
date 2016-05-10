@@ -23,11 +23,13 @@
       padding: 0;
       bottom: 50%;
       border-radius: 3px;
-      transform: translateY(50%)
+      transform: translateY(50%);
+      @include vendor-prefixes(transition, all 0.15s);
     }
 
-    .oo-scrubber-bar-hover {
+    .oo-scrubber-bar-hover{
       height: 6px;
+      border-radius: 6px;
     }
 
     .oo-hovered-indicator {
@@ -72,16 +74,18 @@
         border: 1px solid $white;
         border-radius: 10px;
         position: absolute;
-        transition: opacity 0.25s;
         top: 43%;
         cursor: pointer;
         left: 50%;
         @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
+        @include vendor-prefixes(transition, all 0.15s);
       }
 
       .oo-playhead-scrubbing {
         width: 13px;
         height: 13px;
+        border: 3px solid $blue-light;
+        background: $white;
       }
 
       .oo-playhead-hovering {

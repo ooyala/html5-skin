@@ -415,7 +415,7 @@
 
   //Thumbnail
   .oo-scrubber-thumbnail-container {
-    bottom: 125px * $xsmall-multiple;
+    bottom: 115px * $xsmall-multiple;
   }
 
   .oo-thumbnail {
@@ -426,7 +426,10 @@
   }
 
   .oo-thumbnail-time {
-    border-radius: 5px * $xsmall-multiple;
-    font-size: 10px * $xsmall-multiple;
+    border-radius: 13px * $xsmall-multiple;
+    font-size: 12px * $xsmall-multiple;
+    padding-left: 10% * $xsmall-multiple;
+    padding-right: 10% * $xsmall-multiple;
+    font-size: 18px * $xsmall-multiple;
   }
 }
