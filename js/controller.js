@@ -398,6 +398,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
+        this.state.buffering = false;
         this.state.adPauseAnimationDisabled = true;
         this.state.pluginsElement.addClass("oo-showing");
         this.state.pluginsClickElement.removeClass("oo-showing");
