@@ -1,0 +1,29 @@
+.oo-scrubber-thumbnail-container {
+  position: absolute;
+  bottom: 125px;
+}
+
+.oo-thumbnail {
+  position: absolute;
+  width: 113px;
+  height: 77px;
+  border-radius: 4px;
+  box-shadow: rgba(0,0,0,0.5) 0 6px 18px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.oo-thumbnail-time {
+  position: absolute;
+  bottom: 7%;
+  background-color: rgba(26,26,26,0.8);
+  border-radius: 5px;
+  color: white;
+  padding-left: 5%;
+  padding-right: 5%;
+  font-size: 10px;
+  font-family: $font-family-roboto-condensed;
+  left: 50%;
+  @include vendor-prefixes(transform, translateX(-50%));
+}
