@@ -26,6 +26,18 @@
       transform: translateY(50%)
     }
 
+    .oo-scrubber-bar-hover {
+      height: 6px;
+    }
+
+    .oo-hovered-indicator {
+      background-color: $blue-light;
+      opacity: 0.6;
+      height: 100%;
+      position: absolute;
+      border-radius: 3px;
+    }
+
     .oo-buffered-indicator {
       background-color: $gray-light;
       height: 100%;
@@ -65,6 +77,15 @@
         cursor: pointer;
         left: 50%;
         @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
+      }
+
+      .oo-playhead-scrubbing {
+        width: 13px;
+        height: 13px;
+      }
+
+      .oo-playhead-hovering {
+        top: 38%;
       }
 
       .oo-ad-playhead {
