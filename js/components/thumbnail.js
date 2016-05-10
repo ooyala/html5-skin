@@ -10,7 +10,7 @@ var React = require('react'),
 
 var Thumbnail = React.createClass({
 
-  // findThumbnail: function(hoverTime) {
+  // findThumbnail: function(hoverTime) { //ESPN assets only
   //   var thumbnails = this.props.controller.state.thumbnails;
   //   var selectedThumbnail = null;
 
@@ -34,15 +34,31 @@ var Thumbnail = React.createClass({
     var thumbnails = this.props.controller.state.thumbnails;
     var timeSlices = thumbnails.data.available_time_slices;
     var width = this.props.controller.state.thumbnails.data.available_widths[0]; //choosing the lowest size
-    var selectedTimeSlice = timeSlices[0];
     var selectedThumbnail = null;
 
-    for (var i = 0; i < timeSlices.length; i++) {
-      if (timeSlices[i] > hoverTime && i > 0) {
-        selectedTimeSlice = timeSlices[i - 1];
-        break;
+    var position = Math.floor((hoverTime/this.props.duration)* timeSlices.length);
+    position = Math.min(position, timeSlices.length - 1);
+    position = Math.max(position, 0);
+
+    if (timeSlices[position] >= hoverTime) {
+      var selectedTimeSlice = timeSlices[0];
+      for (var i = position; i >= 0; i--) {
+        if (timeSlices[i] < hoverTime) {
+          selectedTimeSlice = timeSlices[i];
+          break;
+        }
       }
     }
+    else {
+      var selectedTimeSlice = timeSlices[timeSlices.length - 1];
+      for (var i = position; i < timeSlices.length; i++) {
+        if (timeSlices[i] > hoverTime) {
+          selectedTimeSlice = timeSlices[i - 1];
+          break;
+        }
+      }
+    }
+
     selectedThumbnail = thumbnails.data.thumbnails[selectedTimeSlice][width].url;
     return selectedThumbnail;
   },

@@ -316,10 +316,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.resetUpNextInfo(true);
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
+      this.onStyleFetched();//xenia: temporary here, so that I can test on any asset.
       this.renderSkin({"contentTree": contentTree});
     },
+
     onStyleFetched: function (event, thumbnails) {
-      thumbnails = 
+      thumbnails = //xenia: temporary, for testing
 {
    "data":{
       "available_time_slices":[
