@@ -1137,6 +1137,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onClosedCaptionTextColorChange: function(textColor) {
+      this.state.closedCaptionOptions.textColor = textColor;
+      this.renderSkin();
+    },
+
+    onClosedCaptionWindowColorChange: function(windowColor) {
+      this.state.closedCaptionOptions.windowColor = windowColor;
+      this.renderSkin();
+    },
+
+    onClosedCaptionBackgroundColorChange: function(backgroundColor) {
+      this.state.closedCaptionOptions.backgroundColor = backgroundColor;
+      this.renderSkin();
+    },
+
     toggleClosedCaptionEnabled: function() {
       this.state.closedCaptionOptions.enabled = !this.state.closedCaptionOptions.enabled;
       this.setClosedCaptionsLanguage();

@@ -30,7 +30,7 @@ var ClosedCaptionPanel = React.createClass({
               <LanguageTab {...this.props} />
             </Tab>
             <Tab title="Color Selection">
-              <ColorSelectionTab />
+              <ColorSelectionTab {...this.props} />
             </Tab>
             <Tab title="Caption Opacity">
               <CaptionOpacityTab />

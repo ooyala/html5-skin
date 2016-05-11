@@ -6,22 +6,103 @@
   margin: 0 auto 12px auto;
 
   .oo-text-track-window {
-    background-color: $text-track-bg;
     padding: 10px;
     border-radius: 8px;
 
     .oo-text-track-background {
-      background-color: transparent;
       padding: 4px 16px;
       border-radius: 8px;
 
       .oo-text-track {
         text-align: center;
-        color: $white;
         font-family: $font-family-sans-serif;
         font-size: em(24px);
         white-space: pre-wrap;
       }
     }
+  }
+
+  //Text Color
+  .oo-text-track-text-color-White {
+    color: white;
+  }
+  .oo-text-track-text-color-Blue {
+    color: blue;
+  }
+  .oo-text-track-text-color-Magenta {
+    color: magenta;
+  }
+  .oo-text-track-text-color-Green {
+    color: green;
+  }
+  .oo-text-track-text-color-Yellow {
+    color: yellow;
+  }
+  .oo-text-track-text-color-Red {
+    color: red;
+  }
+  .oo-text-track-text-color-Cyan {
+    color: cyan;
+  }
+  .oo-text-track-text-color-Black {
+    color: black;
+  }
+
+  //Window Color
+  .oo-text-track-window-color-White {
+    background-color: white;
+  }
+  .oo-text-track-window-color-Blue {
+    background-color: blue;
+  }
+  .oo-text-track-window-color-Magenta {
+    background-color: magenta;
+  }
+  .oo-text-track-window-color-Green {
+    background-color: green;
+  }
+  .oo-text-track-window-color-Yellow {
+    background-color: yellow;
+  }
+  .oo-text-track-window-color-Red {
+    background-color: red;
+  }
+  .oo-text-track-window-color-Cyan {
+    background-color: cyan;
+  }
+  .oo-text-track-window-color-Black {
+    background-color: black;
+  }
+  .oo-text-track-window-color-Transparent {
+    background-color: transparent;
+  }
+
+  //Background Color
+  .oo-text-track-background-color-White {
+    background-color: white;
+  }
+  .oo-text-track-background-color-Blue {
+    background-color: blue;
+  }
+  .oo-text-track-background-color-Magenta {
+    background-color: magenta;
+  }
+  .oo-text-track-background-color-Green {
+    background-color: green;
+  }
+  .oo-text-track-background-color-Yellow {
+    background-color: yellow;
+  }
+  .oo-text-track-background-color-Red {
+    background-color: red;
+  }
+  .oo-text-track-background-color-Cyan {
+    background-color: cyan;
+  }
+  .oo-text-track-background-color-Black {
+    background-color: black;
+  }
+  .oo-text-track-background-color-Transparent {
+    background-color: transparent;
   }
 }

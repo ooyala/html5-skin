@@ -29,11 +29,11 @@
 }
 
 .tab-panel {
+  height: 100%;
   padding: 10px 0;
 }
 
-//closed captions tabs
-.oo-closed-captions-panel {
+.tabs-navigation {
   //override default scrollbar style
   .scrollarea-content{
     display: inline-block;

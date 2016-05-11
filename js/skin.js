@@ -52,9 +52,9 @@ var Skin = React.createClass({
     if (this.props.skinConfig.closedCaptionOptions){
       this.props.controller.state.closedCaptionOptions.language = (this.props.skinConfig.closedCaptionOptions.defaultLanguage ? this.props.skinConfig.closedCaptionOptions.defaultLanguage : "en" );
       this.props.controller.state.closedCaptionOptions.enabled = (this.props.skinConfig.closedCaptionOptions.defaultEnabled ? this.props.skinConfig.closedCaptionOptions.defaultEnabled : false);
-      this.props.controller.state.closedCaptionOptions.textColor = (this.props.skinConfig.closedCaptionOptions.defaultTextColor ? this.props.skinConfig.closedCaptionOptions.defaultTextColor : "white");
-      this.props.controller.state.closedCaptionOptions.windowColor = (this.props.skinConfig.closedCaptionOptions.defaultWindowColor ? this.props.skinConfig.closedCaptionOptions.defaultWindowColor : "transparent");
-      this.props.controller.state.closedCaptionOptions.backgroundColor = (this.props.skinConfig.closedCaptionOptions.defaultBackgroundColor ? this.props.skinConfig.closedCaptionOptions.defaultBackgroundColor : "transparent");
+      this.props.controller.state.closedCaptionOptions.textColor = (this.props.skinConfig.closedCaptionOptions.defaultTextColor ? this.props.skinConfig.closedCaptionOptions.defaultTextColor : "White");
+      this.props.controller.state.closedCaptionOptions.windowColor = (this.props.skinConfig.closedCaptionOptions.defaultWindowColor ? this.props.skinConfig.closedCaptionOptions.defaultWindowColor : "Transparent");
+      this.props.controller.state.closedCaptionOptions.backgroundColor = (this.props.skinConfig.closedCaptionOptions.defaultBackgroundColor ? this.props.skinConfig.closedCaptionOptions.defaultBackgroundColor : "Transparent");
       this.props.controller.state.closedCaptionOptions.textOpacity = (this.props.skinConfig.closedCaptionOptions.defaultTextOpacity ? this.props.skinConfig.closedCaptionOptions.defaultTextOpacity : 1);
       this.props.controller.state.closedCaptionOptions.backgroundOpacity = (this.props.skinConfig.closedCaptionOptions.defaultBackgroundOpacity ? this.props.skinConfig.closedCaptionOptions.defaultBackgroundOpacity : 0);
       this.props.controller.state.closedCaptionOptions.windowOpacity = (this.props.skinConfig.closedCaptionOptions.defaultWindowOpacity ? this.props.skinConfig.closedCaptionOptions.defaultWindowOpacity : 0);
@@ -65,9 +65,9 @@ var Skin = React.createClass({
     else {
       this.props.controller.state.closedCaptionOptions.language = "en";
       this.props.controller.state.closedCaptionOptions.enabled = false;
-      this.props.controller.state.closedCaptionOptions.textColor = "white";
-      this.props.controller.state.closedCaptionOptions.windowColor = "transparent";
-      this.props.controller.state.closedCaptionOptions.backgroundColor = "transparent";
+      this.props.controller.state.closedCaptionOptions.textColor = "White";
+      this.props.controller.state.closedCaptionOptions.windowColor = "Transparent";
+      this.props.controller.state.closedCaptionOptions.backgroundColor = "Transparent";
       this.props.controller.state.closedCaptionOptions.textOpacity = 1;
       this.props.controller.state.closedCaptionOptions.backgroundOpacity = 0;
       this.props.controller.state.closedCaptionOptions.windowOpacity = 0;
