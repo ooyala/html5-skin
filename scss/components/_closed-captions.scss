@@ -167,10 +167,10 @@
   }
 }
 
-.oo-color-selection-container {
+.oo-color-selection-tab {
   height: 70%;
   overflow-y: scroll;
-  .oo-color-selection-panel {
+  .oo-selection-container {
     position: relative;
     float: left;
     background-color: transparent;
@@ -178,18 +178,18 @@
     min-width: 200px;
     margin-top: 20px;
 
-    .oo-color-selection-title {
+    .oo-selection-container-title {
       font-family: $font-family-roboto-condensed;
       font-size: $font-size-root;
       color: $white;
       margin-bottom: 26px;
 
-      .oo-color-selection-text {
+      .oo-selection-container-selection-text {
         font-family: $font-family-roboto-condensed-bold;
       }
     }
 
-    .oo-color-items-container {
+    .oo-selection-items-container {
       max-width: 200px;
     }
 
