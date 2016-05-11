@@ -1152,6 +1152,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onClosedCaptionFontTypeChange: function(fontType) {
+      this.state.closedCaptionOptions.fontType = fontType;
+      this.renderSkin();
+    },
+
     toggleClosedCaptionEnabled: function() {
       this.state.closedCaptionOptions.enabled = !this.state.closedCaptionOptions.enabled;
       this.setClosedCaptionsLanguage();

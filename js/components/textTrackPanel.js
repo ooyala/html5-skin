@@ -16,7 +16,7 @@ var TextTrackPanel = React.createClass({
       <div className="oo-text-track-container">
         <div className={"oo-text-track-window oo-text-track-window-color-" + this.props.closedCaptionOptions.windowColor}>
           <div className={"oo-text-track-background oo-text-track-background-color-" + this.props.closedCaptionOptions.backgroundColor}>
-            <div className={"oo-text-track oo-text-track-text-color-" + this.props.closedCaptionOptions.textColor}>
+            <div className={"oo-text-track oo-text-track-text-color-" + this.props.closedCaptionOptions.textColor + " oo-text-track-font-type-" + this.props.closedCaptionOptions.fontType.replace(/ /g, "-")}>
               {this.props.closedCaptionOptions.cueText}
             </div>
           </div>
@@ -31,7 +31,8 @@ TextTrackPanel.propTypes = {
     cueText: React.PropTypes.string,
     windowColor: React.PropTypes.string,
     backgroundColor: React.PropTypes.string,
-    textColor: React.PropTypes.string
+    textColor: React.PropTypes.string,
+    fontType: React.PropTypes.string
   })
 };
 
@@ -40,7 +41,8 @@ TextTrackPanel.defaultProps = {
     cueText: null,
     windowColor: null,
     backgroundColor: null,
-    textColor: null
+    textColor: null,
+    fontType: null
   }
 };
 

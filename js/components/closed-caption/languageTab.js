@@ -30,7 +30,7 @@ var LanguageTab = React.createClass({
         <DataSelector
           {...this.props}
           viewSize={this.props.responsiveView}
-          dataItemsPerPage={this.props.languagesPerPage}
+          dataItemsPerPage={this.props.dataItemsPerPage}
           selectedData={this.state.selectedLanguage}
           enabled={this.props.closedCaptionOptions.enabled}
           availableDataItems={_.values(this.props.closedCaptionOptions.availableLanguages.locale)}
@@ -42,11 +42,11 @@ var LanguageTab = React.createClass({
 });
 
 LanguageTab.propTypes = {
-  languagesPerPage: React.PropTypes.objectOf(React.PropTypes.number)
+  dataItemsPerPage: React.PropTypes.objectOf(React.PropTypes.number)
 };
 
 LanguageTab.defaultProps = {
-  languagesPerPage: {
+  dataItemsPerPage: {
     xs: 1,
     sm: 4,
     md: 4,

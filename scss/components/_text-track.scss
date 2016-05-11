@@ -15,7 +15,6 @@
 
       .oo-text-track {
         text-align: center;
-        font-family: $font-family-sans-serif;
         font-size: em(24px);
         white-space: pre-wrap;
       }
@@ -46,6 +45,35 @@
   }
   .oo-text-track-text-color-Black {
     color: black;
+  }
+
+  //Font Type
+  .oo-text-track-font-type-Helvetica {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .oo-text-track-font-type-Georgia {
+    font-family: Georgia, serif;
+  }
+  .oo-text-track-font-type-Comic-Sans {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+  }
+  .oo-text-track-font-type-Impact {
+    font-family: Impact, Charcoal, sans-serif;
+  }
+  .oo-text-track-font-type-Times-New-Roman {
+    font-family: "Times New Roman", Times, serif;
+  }
+  .oo-text-track-font-type-Tahoma {
+    font-family: Tahoma, Geneva, sans-serif;
+  }
+  .oo-text-track-font-type-Verdana {
+    font-family: Verdana, Geneva, sans-serif;
+  }
+  .oo-text-track-font-type-Courier-New {
+    font-family: "Courier New", Courier, monospace;
+  }
+  .oo-text-track-font-type-Lucida-Console {
+    font-family: "Lucida Console", Monaco, monospace;
   }
 
   //Window Color
