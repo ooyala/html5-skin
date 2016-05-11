@@ -92,12 +92,12 @@
   }
 }
 
-.oo-language-container {
+.oo-data-selector {
   @include vertical-center;
   left: 0;
   right: 0;
 
-  .oo-language-panel {
+  .oo-data-panel {
     background-color: transparent;
     min-height: 54%;
     height: 84%;

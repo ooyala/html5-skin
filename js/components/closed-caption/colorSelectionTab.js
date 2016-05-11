@@ -53,10 +53,10 @@ var ColorSelectionTab = React.createClass({
           selectionText={this.props.closedCaptionOptions.textColor}
           >
           <ColorSelector
-            {...this.props}
             colors={textColors}
             onColorChange={this.changeTextColor}
             selectedColor={this.props.closedCaptionOptions.textColor}
+            enabled={this.props.closedCaptionOptions.enabled}
           />
         </SelectionContainer>
 
@@ -65,10 +65,10 @@ var ColorSelectionTab = React.createClass({
           selectionText={this.props.closedCaptionOptions.windowColor}
           >
           <ColorSelector
-            {...this.props}
             colors={windowColors}
             onColorChange={this.changeWindowColor}
             selectedColor={this.props.closedCaptionOptions.windowColor}
+            enabled={this.props.closedCaptionOptions.enabled}
           />
         </SelectionContainer>
 
@@ -77,10 +77,10 @@ var ColorSelectionTab = React.createClass({
           selectionText={this.props.closedCaptionOptions.backgroundColor}
           >
           <ColorSelector
-            {...this.props}
             colors={backgroundColors}
             onColorChange={this.changeBackgroundColor}
             selectedColor={this.props.closedCaptionOptions.backgroundColor}
+            enabled={this.props.closedCaptionOptions.enabled}
           />
         </SelectionContainer>
       </div>

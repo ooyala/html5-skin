@@ -6,8 +6,8 @@ var ColorSelector = React.createClass({
   setClassname: function(item){
     return ClassNames({
       'oo-item': true,
-      'oo-item-selected': this.props.selectedColor == item && this.props.closedCaptionOptions.enabled,
-      'oo-disabled': !this.props.closedCaptionOptions.enabled
+      'oo-item-selected': this.props.selectedColor == item && this.props.enabled,
+      'oo-disabled': !this.props.enabled
     });
   },
 
