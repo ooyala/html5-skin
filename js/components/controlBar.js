@@ -63,6 +63,14 @@ var ControlBar = React.createClass({
     this.props.controller.toggleFullscreen();
   },
 
+  handleLiveClick: function(evt) {
+    evt.stopPropagation();
+    evt.cancelBubble = true;
+    evt.preventDefault();
+    // add 2 more seconds to compensate for time to process this request
+    this.props.controller.seek(-this.props.duration + 2);
+  },
+
   handleVolumeIconClick: function(evt) {
     if (this.isMobile){
       this.props.controller.startHideControlBarTimer();
@@ -210,8 +218,8 @@ var ControlBar = React.createClass({
     var isLiveStream = this.props.authorization.streams[0].is_live_stream;
     var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
-    var playheadTimeContent = isLiveStream ? (Math.abs(this.props.duration - this.props.currentPlayhead < 0.7) ? null :
-                                              Utils.formatSeconds(this.props.currentPlayhead - this.props.duration)) : playheadTime;
+    var timeShift = this.props.currentPlayhead - this.props.duration;
+    var playheadTimeContent = isLiveStream ? (Math.abs(timeShift) < 2 ? null : Utils.formatSeconds(timeShift)) : playheadTime;
     var totalTimeContent = isLiveStream ? null : <span className="oo-total-time">{totalTime}</span>;
 
     // TODO: Update when implementing localization
@@ -230,13 +238,11 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "live": <div className="oo-live oo-control-bar-item" key="live">
-        <div className="oo-live-indicator">
-          <div className="oo-live-circle"></div>
-          <span className="oo-live-text"> {liveText}</span>
-        </div>
-      </div>,
-
+      "live": <button className="oo-control-bar-item" onClick={this.handleLiveClick} key="live">
+        <div className="oo-live-circle"></div>
+        <span className="oo-live-text"> {liveText}</span>
+      </button>,
+      
       "volume": <div className="oo-volume oo-control-bar-item" key="volume">
         <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
           style={this.props.skinConfig.controlBar.iconStyle.inactive}
