@@ -10,8 +10,8 @@ var React = require('react'),
 
 var Thumbnail = React.createClass({
 
-  // findThumbnail: function(hoverTime) { //ESPN assets only
-  //   var thumbnails = this.props.controller.state.thumbnails;
+  // findThumbnail: function(hoverTime) { //ESPN assets only, core branch pbw-5132
+  //   var thumbnails = this.props.thumbnails;
   //   var selectedThumbnail = null;
 
   //   //logic for selecting thumbnail, will change
@@ -31,9 +31,9 @@ var Thumbnail = React.createClass({
   // },
 
   findThumbnail: function(hoverTime) {
-    var thumbnails = this.props.controller.state.thumbnails;
+    var thumbnails = this.props.thumbnails;
     var timeSlices = thumbnails.data.available_time_slices;
-    var width = this.props.controller.state.thumbnails.data.available_widths[0]; //choosing the lowest size
+    var width = this.props.thumbnails.data.available_widths[0]; //choosing the lowest size
     var selectedThumbnail = null;
 
     var position = Math.floor((hoverTime/this.props.duration)* timeSlices.length);
@@ -80,7 +80,7 @@ var Thumbnail = React.createClass({
 
     var time = isFinite(parseInt(this.props.hoverTime)) ? Utils.formatSeconds(parseInt(this.props.hoverTime)) : null;
     return (
-      <div className="oo-thumbnail" style={thumbnailStyle}>
+      <div className="oo-thumbnail" ref="thumbnail" style={thumbnailStyle}>
         <div className="oo-thumbnail-time">{time}</div>
       </div>
     );

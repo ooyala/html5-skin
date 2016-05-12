@@ -169,12 +169,16 @@ describe('ScrubberBar', function () {
     expect(thumbnail.length).toBe(1);
   });
 
-  it('display thumbnail on scrubbing', function() {
+  it('display thumbnail on scrubber bar mouse down', function() {
     var mockController = {
       state: {
         isMobile: false,
         thumbnails: true
-      }
+      },
+      updateSeekingPlayhead: function () {},
+      startHideControlBarTimer: function () {},
+      beginSeeking: function () {},
+      renderSkin: function () {}
     };
     var DOM = TestUtils.renderIntoDocument(
       <ScrubberBar
@@ -186,7 +190,10 @@ describe('ScrubberBar', function () {
         skinConfig={skinConfig}/>
     );
 
-//to be created
+    var evt = {nativeEvent: {offsetX: 10}};
+    TestUtils.Simulate.mouseDown(ReactDOM.findDOMNode(DOM.refs.scrubberBarPadding), evt);
+    var thumbnail = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-scrubber-thumbnail-container');
+    expect(thumbnail.length).toBe(1);
   });
 
 });

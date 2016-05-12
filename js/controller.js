@@ -123,7 +123,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
-      this.mb.subscribe(OO.EVENTS.STYLE_FETCHED, 'customerUi', _.bind(this.onStyleFetched, this));
+      this.mb.subscribe(OO.EVENTS.STYLE_FETCHED, 'customerUi', _.bind(this.onStyleFetched, this));//xenia: to be replaced by a more appropriate event
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
@@ -316,12 +316,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.resetUpNextInfo(true);
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
-      this.onStyleFetched();//xenia: temporary here, so that I can test on any asset.
+      this.onStyleFetched();//xenia: temporary here, for testing, remove before creating PR
       this.renderSkin({"contentTree": contentTree});
     },
 
     onStyleFetched: function (event, thumbnails) {
-      thumbnails = //xenia: temporary, for testing
+      thumbnails = //xenia: mock data, for testing with asset: RhbDFiMzE61s6Sv--ouyc4V5x3N3rS5C
 {
    "data":{
       "available_time_slices":[
@@ -784,8 +784,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
    ]
 };
-
-      this.renderSkin({"thumbnails": thumbnails});
+      if (this.skin.props.skinConfig.controlBar.scrubberBar.thumbnailPreview) {
+        this.state.thumbnails = thumbnails;
+      }
     },
 
     onVolumeChanged: function (event, newVolume){

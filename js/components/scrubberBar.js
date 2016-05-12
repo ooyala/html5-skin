@@ -234,13 +234,18 @@ var ScrubberBar = React.createClass({
       playedIndicatorStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.playedColor;
     }
 
-    if (this.props.controller.state.thumbnails && (this.state.scrubbingPlayheadX || this.state.hoveringX)) {
+    if (this.props.controller.state.thumbnails && (this.state.scrubbingPlayheadX || this.lastScrubX || this.state.hoveringX)) {
       if (this.state.scrubbingPlayheadX) {
         var hoverPosition = this.state.scrubbingPlayheadX;
         var hoverTime = (this.state.scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration;
         playheadClassName += " oo-playhead-scrubbing";
       }
-      else {
+      else if (this.lastScrubX) {//to show thumbnail when clicking on playhead
+        var hoverPosition = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration;
+        var hoverTime = this.props.currentPlayhead;
+        playheadClassName += " oo-playhead-scrubbing";
+      }
+      else if (this.state.hoveringX) {
         var hoverPosition = this.state.hoveringX;
         var hoverTime=(this.state.hoveringX / this.state.scrubberBarWidth) * this.props.duration;
         var hoveredIndicatorStyle = {
@@ -252,7 +257,8 @@ var ScrubberBar = React.createClass({
       }
       var thumbnailContainer =
         (<div className="oo-scrubber-thumbnail-container">
-          <Thumbnail {...this.props}
+          <Thumbnail
+            thumbnails={this.props.controller.state.thumbnails}
             hoverPosition={hoverPosition}
             duration={this.props.duration}
             hoverTime={hoverTime > 0 ? hoverTime : 0}
@@ -264,7 +270,7 @@ var ScrubberBar = React.createClass({
     return (
       <div className="oo-scrubber-bar-container" ref="scrubberBarContainer" onMouseOver={scrubberBarMouseOver} onMouseOut={scrubberBarMouseOut} onMouseMove={scrubberBarMouseMove}>
         {thumbnailContainer}
-        <div className="oo-scrubber-bar-padding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
+        <div className="oo-scrubber-bar-padding" ref="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
           <div ref="scrubberBar" className={scrubberBarClassName} style={scrubberBarStyle}>
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle}></div>
             <div className="oo-hovered-indicator" style={hoveredIndicatorStyle}></div>
