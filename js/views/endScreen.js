@@ -45,7 +45,7 @@ var EndScreen = React.createClass({
           <ControlBar {...this.props}
             controlBarVisible={this.state.controlBarVisible}
             playerState={this.props.playerState}
-            isLiveStream={this.props.isLiveStream} />/>
+            isLiveStream={this.props.isLiveStream} />
         </div>
       </div>
     );
