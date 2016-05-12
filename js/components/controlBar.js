@@ -206,10 +206,13 @@ var ControlBar = React.createClass({
       volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
     }
 
+    var playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
+    var isLiveStream = this.props.authorization.streams[0].is_live_stream;
     var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
-    var currentPlayheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
-    var totalTimeContent = this.props.authorization.streams[0].is_live_stream ? null : <span className="oo-total-time">{totalTime}</span>;
+    var playheadTimeContent = isLiveStream ? (Math.abs(this.props.duration - this.props.currentPlayhead < 0.7) ? null :
+                                              Utils.formatSeconds(this.props.currentPlayhead - this.props.duration)) : playheadTime;
+    var totalTimeContent = isLiveStream ? null : <span className="oo-total-time">{totalTime}</span>;
 
     // TODO: Update when implementing localization
     var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
@@ -243,7 +246,7 @@ var ControlBar = React.createClass({
       </div>,
 
       "timeDuration": <div className="oo-time-duration oo-control-bar-duration" style={durationSetting} key="timeDuration">
-        <span>{currentPlayheadTime}</span>{totalTimeContent}
+        <span>{playheadTimeContent}</span>{totalTimeContent}
       </div>,
 
       "flexibleSpace": <div className="oo-flexible-space oo-control-bar-flex-space" key="flexibleSpace"></div>,
@@ -355,8 +358,7 @@ var ControlBar = React.createClass({
 
       // Not sure what to do when there are multi streams
       if (defaultItems[k].name === "live" &&
-          (typeof this.props.authorization === 'undefined' ||
-          !(this.props.authorization.streams[0].is_live_stream))) {
+          (typeof this.props.authorization === 'undefined' || !isLiveStream)) {
         continue;
       }
 
