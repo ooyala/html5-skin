@@ -79,10 +79,11 @@ var Utils = {
   * Convert raw seconds into human friendly HH:MM format
   *
   * @function formatSeconds
-  * @param {integer} timeInSeconds The time to format in seconds
+  * @param {integer} time The time to format in seconds
   * @return {String} The time as a string in the HH:MM format
   */
-  formatSeconds: function(timeInSeconds) {
+  formatSeconds: function(time) {
+    var timeInSeconds = Math.abs(time);
     var seconds = parseInt(timeInSeconds,10) % 60;
     var hours = parseInt(timeInSeconds / 3600, 10);
     var minutes = parseInt((timeInSeconds - hours * 3600) / 60, 10);
@@ -99,7 +100,12 @@ var Utils = {
       seconds = '0' + seconds;
     }
 
-    return (parseInt(hours,10) > 0) ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
+    var timeStr = (parseInt(hours,10) > 0) ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
+    if (time >= 0) {
+      return timeStr;
+    } else {
+      return "-" + timeStr;
+    }
   },
 
   /**
