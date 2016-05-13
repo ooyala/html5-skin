@@ -70,6 +70,15 @@ var ControlBar = React.createClass({
     this.props.controller.seek(this.props.duration);
   },
 
+  checkLiveCursor: function() {
+    var timeShift = this.props.currentPlayhead - this.props.duration;
+    if (Math.abs(timeShift) < 2) {
+      ReactDOM.findDOMNode(this.refs.LiveButton).style.cursor="default";
+    } else {
+      ReactDOM.findDOMNode(this.refs.LiveButton).style.cursor="pointer";
+    }
+  },
+
   handleVolumeIconClick: function(evt) {
     if (this.isMobile){
       this.props.controller.startHideControlBarTimer();
@@ -238,7 +247,10 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "live": <button className="oo-control-bar-item oo-live oo-live-indicator" onClick={this.handleLiveClick} key="live">
+      "live": <button className="oo-control-bar-item oo-live oo-live-indicator"
+          ref="LiveButton"
+          onClick={this.handleLiveClick} key="live"
+          onMouseOver={this.checkLiveCursor}>
         <div className="oo-live-circle"></div>
         <span className="oo-live-text"> {liveText}</span>
       </button>,
