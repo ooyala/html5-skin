@@ -67,8 +67,8 @@ var ControlBar = React.createClass({
     evt.stopPropagation();
     evt.cancelBubble = true;
     evt.preventDefault();
-    // add 2 more seconds to compensate for time to process this request
-    this.props.controller.seek(-this.props.duration + 2);
+    // add 2.5 more seconds to compensate for time to process this request
+    this.props.controller.seek(-this.props.duration + 2.5);
   },
 
   handleVolumeIconClick: function(evt) {
@@ -238,7 +238,7 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "live": <button className="oo-control-bar-item" onClick={this.handleLiveClick} key="live">
+      "live": <button className="oo-control-bar-item oo-live oo-live-indicator" onClick={this.handleLiveClick} key="live">
         <div className="oo-live-circle"></div>
         <span className="oo-live-text"> {liveText}</span>
       </button>,
