@@ -70,15 +70,6 @@ var ControlBar = React.createClass({
     this.props.controller.seek(this.props.duration);
   },
 
-  checkLiveCursor: function() {
-    var timeShift = this.props.currentPlayhead - this.props.duration;
-    if (Math.abs(timeShift) < 2) {
-      ReactDOM.findDOMNode(this.refs.LiveButton).style.cursor="default";
-    } else {
-      ReactDOM.findDOMNode(this.refs.LiveButton).style.cursor="pointer";
-    }
-  },
-
   handleVolumeIconClick: function(evt) {
     if (this.isMobile){
       this.props.controller.startHideControlBarTimer();
@@ -224,15 +215,23 @@ var ControlBar = React.createClass({
 
     var playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
     var isLiveStream = this.props.authorization.streams[0].is_live_stream;
-    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
     var timeShift = this.props.currentPlayhead - this.props.duration;
-    // checking timeShift < 2 seconds (not == 0) as processing of the click after we rewinded and then went live may take some time
-    var playheadTimeContent = isLiveStream ? (Math.abs(timeShift) < 2 ? null : Utils.formatSeconds(timeShift)) : playheadTime;
+    // checking timeShift < 1 seconds (not == 0) as processing of the click after we rewinded and then went live may take some time
+    var isLiveNow = Math.abs(timeShift) < 1;
+    var liveClick = isLiveNow ? null : this.handleLiveClick;
+    var playheadTimeContent = isLiveStream ? (isLiveNow ? null : Utils.formatSeconds(timeShift)) : playheadTime;
     var totalTimeContent = isLiveStream ? null : <span className="oo-total-time">{totalTime}</span>;
 
     // TODO: Update when implementing localization
     var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
+
+    var liveClass = ClassNames({
+        "oo-control-bar-item oo-live oo-live-indicator": true,
+        "oo-live-nonclickable": isLiveNow
+      });
+
+    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
 
     var qualityClass = ClassNames({
       "oo-quality": true,
@@ -247,10 +246,9 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "live": <button className="oo-control-bar-item oo-live oo-live-indicator"
+      "live": <button className={liveClass}
           ref="LiveButton"
-          onClick={this.handleLiveClick} key="live"
-          onMouseOver={this.checkLiveCursor}>
+          onClick={liveClick} key="live">
         <div className="oo-live-circle"></div>
         <span className="oo-live-text"> {liveText}</span>
       </button>,

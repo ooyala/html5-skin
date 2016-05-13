@@ -127,6 +127,10 @@
       vertical-align: baseline;
       opacity: 0.9;
     }
+
+    .oo-live-nonclickable {
+      cursor: default;
+    }
   }
 }
 
