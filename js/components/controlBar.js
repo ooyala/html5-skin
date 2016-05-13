@@ -67,8 +67,7 @@ var ControlBar = React.createClass({
     evt.stopPropagation();
     evt.cancelBubble = true;
     evt.preventDefault();
-    // add 2.5 more seconds to compensate for time to process this request
-    this.props.controller.seek(-this.props.duration + 2.5);
+    this.props.controller.seek(this.props.duration);
   },
 
   handleVolumeIconClick: function(evt) {
@@ -219,6 +218,7 @@ var ControlBar = React.createClass({
     var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
     var timeShift = this.props.currentPlayhead - this.props.duration;
+    // checking timeShift < 2 seconds (not == 0) as processing of the click after we rewinded and then went live may take some time
     var playheadTimeContent = isLiveStream ? (Math.abs(timeShift) < 2 ? null : Utils.formatSeconds(timeShift)) : playheadTime;
     var totalTimeContent = isLiveStream ? null : <span className="oo-total-time">{totalTime}</span>;
 
