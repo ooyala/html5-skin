@@ -185,6 +185,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.playerParam = params;
       this.state.elementId = elementId;
       this.state.isMobile = Utils.isMobile();
+      this.state.browserSupportsTouch = Utils.browserSupportsTouch();
 
       //initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');

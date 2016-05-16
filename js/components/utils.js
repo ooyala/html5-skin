@@ -311,6 +311,19 @@ var Utils = {
     return dimensions;
   },
 
+  /**
+  * Check if the current browser is on a touch enabled device.
+  * Function from https://hacks.mozilla.org/2013/04/detecting-touch-its-the-why-not-the-how/
+  *
+  * @function browserSupportsTouch
+  * @returns {Boolean} Whether or not the browser supports touch events.
+  */
+  browserSupportsTouch: function() {
+    return ('ontouchstart' in window) ||
+     (navigator.maxTouchPoints > 0) ||
+     (navigator.msMaxTouchPoints > 0);
+  },
+
   _isValid: function( item ) {
     var valid = (
       item &&
