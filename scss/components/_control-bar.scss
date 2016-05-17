@@ -82,7 +82,8 @@
       padding-left: 7.5px;
       padding-right: 7.5px;
       text-align: left;
-      margin-bottom: 5px;
+      position: relative;
+      top:-2px;
 
       .oo-total-time {
         color: $white;
@@ -100,8 +101,8 @@
     }
 
     .oo-live-indicator {
-      line-height: 0.5;
-      margin-bottom: 12px;
+      top: -5px;
+      position: relative;
     }
 
     .oo-live-circle{
@@ -110,8 +111,7 @@
       height: 8px;
       border-radius: 50%;
       background-color: #E83F3F;
-      margin-right: 2px;
-      margin-top: 2px;
+      margin-right: 4px;
       vertical-align: middle;
     }
 
