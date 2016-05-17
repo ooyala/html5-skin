@@ -1157,6 +1157,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onClosedCaptionFontSizeChange: function(fontSize) {
+      this.state.closedCaptionOptions.fontSize = fontSize;
+      this.renderSkin();
+    },
+
     toggleClosedCaptionEnabled: function() {
       this.state.closedCaptionOptions.enabled = !this.state.closedCaptionOptions.enabled;
       this.setClosedCaptionsLanguage();

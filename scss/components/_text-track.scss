@@ -15,7 +15,6 @@
 
       .oo-text-track {
         text-align: center;
-        font-size: em(24px);
         white-space: pre-wrap;
       }
     }
@@ -74,6 +73,20 @@
   }
   .oo-text-track-font-type-Lucida-Console {
     font-family: "Lucida Console", Monaco, monospace;
+  }
+
+    //Font Size
+  .oo-text-track-font-size-Small {
+    font-size: 16px;
+  }
+  .oo-text-track-font-size-Medium {
+    font-size: 26px;
+  }
+  .oo-text-track-font-size-Large {
+    font-size: 44px;
+  }
+  .oo-text-track-font-size-Extra-Large {
+    font-size: 64px;
   }
 
   //Window Color

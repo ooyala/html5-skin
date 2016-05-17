@@ -248,7 +248,86 @@
       border-color: white;
     }
     .oo-color-item-Transparent {
-      background-color: rgba(255, 255, 255, 0.5);
+      background-image: url("assets/images/transparent.svg");
+      background-position: top-left;
+    }
+  }
+}
+
+.oo-font-size-tab {
+  height: 70%;
+  overflow-y: scroll;
+  .oo-selection-container {
+    position: relative;
+    float: left;
+    background-color: transparent;
+    width: 100%;
+    margin-top: 20px;
+    height: 100%;
+
+    .oo-selection-container-title {
+      font-family: $font-family-roboto-condensed;
+      font-size: $font-size-root;
+      color: $white;
+      margin-bottom: 26px;
+
+      .oo-selection-container-selection-text {
+        font-family: $font-family-roboto-condensed-bold;
+      }
+    }
+
+    .oo-selection-items-container {
+      height: 100%;
+
+      .oo-font-size-container {
+        position: relative;
+        float: left;
+        background-color: transparent;
+        width: 25%;
+        height: 110px;
+        min-width: 155px;
+        margin-bottom: 30px;
+        cursor: pointer;
+
+        .oo-font-size-letter {
+          color: $white;
+          height: 100%;
+          text-align: center;
+        }
+        .oo-font-size-letter-Small {
+          font-size: 50px;
+          line-height: 170px;
+        }
+        .oo-font-size-letter-Medium {
+          font-size: 75px;
+          line-height: 151px;
+        }
+        .oo-font-size-letter-Large {
+          font-size: 100px;
+          line-height: 133px;
+        }
+        .oo-font-size-letter-Extra-Large {
+          font-size: 125px;
+          line-height: 115px;
+        }
+
+        .oo-font-size-label {
+          font-family: $font-family-roboto-condensed;
+          font-size: $font-size-root;
+          color: #b3b3b3;
+          width: 100%;
+          text-align: center;
+          white-space: nowrap;
+        }
+
+        .oo-font-size-selected {
+          color: #448AFF;
+        }
+
+        .oo-font-size-label-selected {
+          font-family: $font-family-roboto-condensed-bold;
+        }
+      }
     }
   }
 }

@@ -16,7 +16,11 @@ var TextTrackPanel = React.createClass({
       <div className="oo-text-track-container">
         <div className={"oo-text-track-window oo-text-track-window-color-" + this.props.closedCaptionOptions.windowColor}>
           <div className={"oo-text-track-background oo-text-track-background-color-" + this.props.closedCaptionOptions.backgroundColor}>
-            <div className={"oo-text-track oo-text-track-text-color-" + this.props.closedCaptionOptions.textColor + " oo-text-track-font-type-" + this.props.closedCaptionOptions.fontType.replace(/ /g, "-")}>
+            <div className={
+              "oo-text-track oo-text-track-text-color-" + this.props.closedCaptionOptions.textColor +
+              " oo-text-track-font-type-" + this.props.closedCaptionOptions.fontType.replace(/ /g, "-") +
+              " oo-text-track-font-size-" + this.props.closedCaptionOptions.fontSize.replace(/ /g, "-")
+              }>
               {this.props.closedCaptionOptions.cueText}
             </div>
           </div>
