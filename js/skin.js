@@ -170,7 +170,9 @@ var Skin = React.createClass({
             screen={CONSTANTS.SCREEN.SHARE_SCREEN}
             icon="share">
             <SharePanel
-              {...this.props}/>
+              {...this.props}
+              assetId={this.state.assetId}
+              playerParam={this.state.playerParam} />
           </ContentScreen>
           );
           break;
