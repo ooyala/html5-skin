@@ -270,7 +270,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         element = elementVideo;
       }
 
-      element.get(0).addEventListener("loadedmetadata", this.metaDataLoaded.bind(this));
+      //add loadedmetadata event listener to main video element
+      if (element.get(0)) {
+        element.get(0).addEventListener("loadedmetadata", this.metaDataLoaded.bind(this));
+      }
 
       if (Utils.isIE10()) {
         element.attr("controls", "controls");
