@@ -135,7 +135,7 @@ var PauseScreen = React.createClass({
           <ControlBar {...this.props}
             controlBarVisible={this.state.controlBarVisible}
             playerState={this.state.playerState}
-            authorization={this.props.authorization}/>
+            isLiveStream={this.props.isLiveStream}/>
         </div>
       </div>
     );

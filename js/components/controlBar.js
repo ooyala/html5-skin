@@ -214,7 +214,7 @@ var ControlBar = React.createClass({
     }
 
     var playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
-    var isLiveStream = this.props.authorization.streams[0].is_live_stream;
+    var isLiveStream = this.props.isLiveStream;
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
     var timeShift = this.props.currentPlayhead - this.props.duration;
     // checking timeShift < 1 seconds (not == 0) as processing of the click after we rewinded and then went live may take some time
@@ -252,7 +252,7 @@ var ControlBar = React.createClass({
         <div className="oo-live-circle"></div>
         <span className="oo-live-text">{liveText}</span>
       </button>,
-      
+
       "volume": <div className="oo-volume oo-control-bar-item" key="volume">
         <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
           style={this.props.skinConfig.controlBar.iconStyle.inactive}
@@ -373,7 +373,8 @@ var ControlBar = React.createClass({
 
       // Not sure what to do when there are multi streams
       if (defaultItems[k].name === "live" &&
-          (typeof this.props.authorization === 'undefined' || !isLiveStream)) {
+          (typeof this.props.isLiveStream === 'undefined' ||
+          !(this.props.isLiveStream))) {
         continue;
       }
 
@@ -431,11 +432,7 @@ var ControlBar = React.createClass({
 });
 
 ControlBar.defaultProps = {
-  authorization: {
-    streams: [
-      {is_live_stream: false}
-    ]
-  },
+  isLiveStream: false,
   skinConfig: {
     responsive: {
       breakpoints: {
