@@ -250,7 +250,7 @@ var ControlBar = React.createClass({
           ref="LiveButton"
           onClick={liveClick} key="live">
         <div className="oo-live-circle"></div>
-        <span className="oo-live-text"> {liveText}</span>
+        <span className="oo-live-text">{liveText}</span>
       </button>,
       
       "volume": <div className="oo-volume oo-control-bar-item" key="volume">
@@ -311,8 +311,7 @@ var ControlBar = React.createClass({
                     clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
                     target={this.props.skinConfig.controlBar.logo.target}
                     width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
-                    height={this.props.skinConfig.controlBar.logo.height}
-                    style={dynamicStyles.logoStyle} />
+                    height={this.props.skinConfig.controlBar.logo.height}/>
     };
 
     var controlBarItems = [];
@@ -401,14 +400,6 @@ var ControlBar = React.createClass({
 
   setupItemStyle: function() {
     var returnStyles = {};
-
-    for (element in this.props.skinConfig.buttons.desktopContent){
-      if (this.props.skinConfig.buttons.desktopContent[element].name == "logo"){
-        returnStyles.logoStyle = {
-          minWidth: this.responsiveUIMultiple * this.props.skinConfig.buttons.desktopContent[element].minWidth + "px"
-        };
-      }
-    }
 
     returnStyles.iconCharacter = {
       color: this.props.skinConfig.controlBar.iconStyle.inactive.color,
