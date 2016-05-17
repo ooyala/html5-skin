@@ -49,7 +49,7 @@
       height: 25px;
       position: absolute;
       z-index: 1;
-      top: 100%;
+      top: 50%;
       transition: opacity 0.25s;
       @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
 
@@ -61,7 +61,7 @@
         border-radius: 10px;
         position: absolute;
         transition: opacity 0.25s;
-        top: 43%;
+        top: 50%;
         cursor: pointer;
         left: 50%;
         @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
