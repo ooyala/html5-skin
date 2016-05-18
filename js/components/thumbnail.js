@@ -19,33 +19,13 @@ var Thumbnail = React.createClass({
     this.setState({thumbnailWidth: ReactDOM.findDOMNode(this.refs.thumbnail).clientWidth});
   },
 
-  // findThumbnail: function(hoverTime) { //ESPN assets only, core branch pbw-5132
-  //   var thumbnails = this.props.thumbnails;
-  //   var selectedThumbnail = null;
-
-  //   //logic for selecting thumbnail, will change
-  //   var min = -1;
-  //   for (var key in thumbnails){
-  //     var time = parseInt(key);
-  //     if (min == -1 && hoverTime - time >= 0) {
-  //       min = hoverTime - time;
-  //       selectedThumbnail = thumbnails[key];
-  //     }
-  //     if (hoverTime - time >= 0 && hoverTime - time < min){
-  //       min = hoverTime - time;
-  //       selectedThumbnail = thumbnails[key];
-  //     }
-  //   }
-  //   return selectedThumbnail;
-  // },
-
   findThumbnail: function(hoverTime) {
     var thumbnails = this.props.thumbnails;
     var timeSlices = thumbnails.data.available_time_slices;
     var width = this.props.thumbnails.data.available_widths[0]; //choosing the lowest size
     var selectedThumbnail = null;
 
-    var position = Math.floor((hoverTime/this.props.duration)* timeSlices.length);
+    var position = Math.floor((hoverTime/this.props.duration) * timeSlices.length);
     position = Math.min(position, timeSlices.length - 1);
     position = Math.max(position, 0);
 
