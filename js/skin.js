@@ -154,7 +154,7 @@ var Skin = React.createClass({
               playerState={this.state.playerState}
               seeking={this.state.seeking}
               upNextInfo={this.state.upNextInfo}
-              authorization={this.state.authorization}
+              isLiveStream={this.state.isLiveStream}
               controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
               responsiveView={responsiveId}
               componentWidth={this.state.componentWidth}
@@ -170,7 +170,9 @@ var Skin = React.createClass({
             screen={CONSTANTS.SCREEN.SHARE_SCREEN}
             icon="share">
             <SharePanel
-              {...this.props}/>
+              {...this.props}
+              assetId={this.state.assetId}
+              playerParam={this.state.playerParam} />
           </ContentScreen>
           );
           break;
@@ -186,7 +188,7 @@ var Skin = React.createClass({
               fullscreen={this.state.fullscreen}
               seeking={this.state.seeking}
               upNextInfo={this.state.upNextInfo}
-              authorization={this.state.authorization}
+              isLiveStream={this.state.isLiveStream}
               responsiveView={responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
@@ -204,7 +206,7 @@ var Skin = React.createClass({
               fullscreen={this.state.fullscreen}
               playerState={this.state.playerState}
               seeking={this.state.seeking}
-              authorization={this.state.authorization}
+              isLiveStream={this.state.isLiveStream}
               responsiveView={responsiveId}
               videoQualityOptions={this.state.videoQualityOptions}
               componentWidth={this.state.componentWidth}

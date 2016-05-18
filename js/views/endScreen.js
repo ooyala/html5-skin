@@ -32,22 +32,22 @@ var EndScreen = React.createClass({
     });
 
     return (
-    <div className="oo-state-screen oo-end-screen">
-      <div className="oo-underlay-gradient"></div>
+      <div className="oo-state-screen oo-end-screen">
+        <div className="oo-underlay-gradient"></div>
 
-      <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
+        <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
 
-      <a className={actionIconClass} onClick={this.handleClick}>
-        <Icon {...this.props} icon="replay" style={actionIconStyle}/>
-      </a>
+        <a className={actionIconClass} onClick={this.handleClick}>
+          <Icon {...this.props} icon="replay" style={actionIconStyle}/>
+        </a>
 
-      <div className="oo-interactive-container">
-        <ControlBar {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-          playerState={this.props.playerState}
-          authorization={this.props.authorization} />
+        <div className="oo-interactive-container">
+          <ControlBar {...this.props}
+            controlBarVisible={this.state.controlBarVisible}
+            playerState={this.props.playerState}
+            isLiveStream={this.props.isLiveStream} />
+        </div>
       </div>
-    </div>
     );
   }
 });

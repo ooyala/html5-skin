@@ -55,7 +55,7 @@
     .oo-switch-container {
       height: 15px;
       width: 74px;
-      top: 22px;
+      top: 20px;
       left: 138px;
       .oo-switch-captions {
         font-size: $font-size-base * $xsmall-multiple;
@@ -105,7 +105,7 @@
     font-size:12px;
   }
   .oo-action-icon span.oo-icon, .oo-action-icon-pause.oo-animate-pause {
-    font-size:36px;
+    font-size:50px;
   }
 
   //Ad Panel
@@ -185,24 +185,22 @@
       .oo-control-bar-item {
         font-size: 25px * $xsmall-multiple;
         padding: 0 8.5px * $xsmall-multiple;
-        margin-top: 2px;
       }
 
       .oo-control-bar-duration {
         font-size: 14px * $xsmall-multiple;
         padding-left: 7.5px * $xsmall-multiple;
         padding-right: 7.5px * $xsmall-multiple;
-        margin-top: 6px;
+        top:-1px;
       }
 
-      .oo-live-indicator{
-        margin-top: 7px;
+      .oo-live-indicator {
+        top: -3px;
       }
 
       .oo-live-circle {
         width: 7px * $xsmall-multiple;
         height: 7px * $xsmall-multiple;
-        margin-top: 0px;
       }
 
       .oo-live-text {
@@ -223,11 +221,11 @@
     margin-bottom: 4px;
   }
 
-.oo-volume-bar.oo-on{
-  background-color: rgba($blue-light, 1.0);
-  height: 14px * $xsmall-multiple;
-  padding-bottom: 0px;
-}
+  .oo-volume-bar.oo-on{
+    background-color: rgba($blue-light, 1.0);
+    height: 14px * $xsmall-multiple;
+    padding-bottom: 0;
+  }
 
   .oo-volume-slider {
     height: 20px * $xsmall-multiple;
@@ -262,7 +260,6 @@
           height: 7px;
           border-width: 1px * $xsmall-multiple;
           border-radius: 10px * $xsmall-multiple;
-          top: 39%;
         }
         .oo-playhead-scrubbing {
           width: 13px * $xsmall-multiple;

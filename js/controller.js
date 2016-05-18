@@ -29,7 +29,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "assetId": null,
       "contentTree": {},
       "thumbnails": null,
-      "authorization": {},
+      "isLiveStream": false,
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
@@ -125,6 +125,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.THUMBNAILS_FETCHED, 'customerUi', _.bind(this.onThumbnailsFetched, this));//xenia: to be replaced by a more appropriate event
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
+      this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
@@ -187,6 +188,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.playerParam = params;
       this.state.elementId = elementId;
       this.state.isMobile = Utils.isMobile();
+      this.state.browserSupportsTouch = Utils.browserSupportsTouch();
 
       //initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');
@@ -271,7 +273,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         element = elementVideo;
       }
 
-      element.get(0).addEventListener("loadedmetadata", this.metaDataLoaded.bind(this));
+      //add loadedmetadata event listener to main video element
+      if (element.get(0)) {
+        element.get(0).addEventListener("loadedmetadata", this.metaDataLoaded.bind(this));
+      }
 
       if (Utils.isIE10()) {
         element.attr("controls", "controls");
@@ -309,7 +314,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onAuthorizationFetched: function(event, authorization) {
-      this.state.authorization = authorization;
+      this.state.isLiveStream = authorization.streams[0].is_live_stream;
     },
 
     onContentTreeFetched: function (event, contentTree) {
@@ -323,6 +328,27 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.skin.props.skinConfig.controlBar.scrubberBar.thumbnailPreview) {
         this.state.thumbnails = thumbnails;
       }
+    },
+
+    onAssetChanged: function (event, asset) {
+      this.state.videoQualityOptions.availableBitrates = null;
+      this.state.closedCaptionOptions.availableLanguages = null;
+      this.state.discoveryData = null;
+      this.subscribeBasicPlaybackEvents();
+
+      this.resetUpNextInfo(true);
+
+      this.state.isLiveStream = asset.content.streams[0].is_live_stream;
+
+      var contentTree  = {};
+      contentTree.title = asset.content.title;
+      contentTree.description = asset.content.description;
+      contentTree.duration = asset.content.duration;
+      contentTree.promo_image = asset.content.posterImages[0].url;
+
+      this.state.contentTree = contentTree;
+      this.state.playerState = CONSTANTS.STATE.START;
+      this.renderSkin({"contentTree": contentTree});
     },
 
     onVolumeChanged: function (event, newVolume){
@@ -406,6 +432,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
+        this.state.buffering = false;
         this.state.adPauseAnimationDisabled = true;
         this.state.pluginsElement.addClass("oo-showing");
         this.state.pluginsClickElement.removeClass("oo-showing");
@@ -473,7 +500,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.upNextInfo.delayedSetEmbedCodeEvent) {
         var delayedContentData = this.state.upNextInfo.delayedContentData;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
-        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, delayedContentData.clickedVideo.embed_code);
+
+        if (delayedContentData.clickedVideo.embed_code){
+          this.mb.publish(OO.EVENTS.SET_EMBED_CODE, delayedContentData.clickedVideo.embed_code, this.state.playerParam);
+        }
+        else if (delayedContentData.clickedVideo.asset){
+          this.mb.publish(OO.EVENTS.SET_ASSET, delayedContentData.clickedVideo.asset, this.state.playerParam);
+        }
+
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, delayedContentData);
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
         this.state.upNextInfo.delayedContentData = null;
@@ -882,6 +916,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
     },
@@ -1093,7 +1128,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
         this.mb.publish(OO.EVENTS.PAUSE);
-        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
+        if (selectedContentData.clickedVideo.embed_code){
+          this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
+        }
+        else if (selectedContentData.clickedVideo.asset){
+          this.mb.publish(OO.EVENTS.SET_ASSET, selectedContentData.clickedVideo.asset);
+        }
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
       }
     },

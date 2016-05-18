@@ -53,7 +53,7 @@ var StartScreen = React.createClass({
     };
     var posterImageUrl = this.props.skinConfig.startScreen.showPromo ? this.props.contentTree.promo_image : '';
     var posterStyle = {
-      backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%), url('" + posterImageUrl + "')"
+      backgroundImage: "url('" + posterImageUrl + "')"
     };
 
     //CSS class manipulation from config/skin.json
@@ -99,6 +99,7 @@ var StartScreen = React.createClass({
     return (
       <div className="oo-state-screen oo-start-screen">
         <div className={stateScreenPosterClass} style={posterStyle}>
+          <div className="oo-start-screen-linear-gradient"></div>
           <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
         </div>
         <div className={infoPanelClass}>
