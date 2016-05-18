@@ -234,6 +234,7 @@ var ScrubberBar = React.createClass({
       playedIndicatorStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.playedColor;
     }
 
+    var thumbnailContainer = null;
     if (this.props.controller.state.thumbnails && (this.state.scrubbingPlayheadX || this.lastScrubX || this.state.hoveringX)) {
       if (this.state.scrubbingPlayheadX) {
         var hoverPosition = this.state.scrubbingPlayheadX;
@@ -255,7 +256,7 @@ var ScrubberBar = React.createClass({
         scrubberBarClassName += " oo-scrubber-bar-hover";
         playheadClassName += " oo-playhead-hovering";
       }
-      var thumbnailContainer =
+      thumbnailContainer =
         (<div className="oo-scrubber-thumbnail-container">
           <Thumbnail
             thumbnails={this.props.controller.state.thumbnails}
@@ -265,7 +266,6 @@ var ScrubberBar = React.createClass({
             scrubberBarWidth={this.state.scrubberBarWidth}/>
         </div>);
     }
-    else var thumbnailContainer = null;
 
     return (
       <div className="oo-scrubber-bar-container" ref="scrubberBarContainer" onMouseOver={scrubberBarMouseOver} onMouseOut={scrubberBarMouseOut} onMouseMove={scrubberBarMouseMove}>

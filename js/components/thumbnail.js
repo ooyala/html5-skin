@@ -5,10 +5,19 @@
  */
 var React = require('react'),
     ClassNames = require('classnames'),
-    CONSTANTS = require('../constants/constants'),
+    ReactDOM = require('react-dom'),
     Utils = require('./utils');
 
 var Thumbnail = React.createClass({
+  getInitialState: function() {
+    return {
+      thumbnailWidth: 0
+    };
+  },
+
+  componentDidMount: function() {
+    this.setState({thumbnailWidth: ReactDOM.findDOMNode(this.refs.thumbnail).clientWidth});
+  },
 
   // findThumbnail: function(hoverTime) { //ESPN assets only, core branch pbw-5132
   //   var thumbnails = this.props.thumbnails;
@@ -66,7 +75,7 @@ var Thumbnail = React.createClass({
   render: function() {
     var thumbnail = this.findThumbnail(this.props.hoverTime);
     var thumbnailStyle = {};
-    var defaultThumbnailWidth = CONSTANTS.UI.defaultThumbnailWidth;
+    var defaultThumbnailWidth = this.state.thumbnailWidth;
     var hoverPosition = 0;
 
     if (this.props.hoverPosition - defaultThumbnailWidth/2 >= 0 && this.props.hoverPosition + defaultThumbnailWidth/2 < this.props.scrubberBarWidth) {
