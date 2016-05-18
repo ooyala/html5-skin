@@ -1,6 +1,6 @@
 var React = require('react'),
-    ClassNames = require('classnames'),
-    DataSelector = require('../dataSelector');
+    DataSelector = require('../dataSelector'),
+    values = require('lodash.values');
 
 var LanguageTab = React.createClass({
   getInitialState: function() {
@@ -33,7 +33,7 @@ var LanguageTab = React.createClass({
           dataItemsPerPage={this.props.dataItemsPerPage}
           selectedData={this.state.selectedLanguage}
           enabled={this.props.closedCaptionOptions.enabled}
-          availableDataItems={_.values(this.props.closedCaptionOptions.availableLanguages.locale)}
+          availableDataItems={values(this.props.closedCaptionOptions.availableLanguages.locale)}
           onDataChange={this.changeLanguage}
         />
       </div>

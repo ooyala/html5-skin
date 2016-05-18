@@ -1,5 +1,4 @@
-var React = require('react'),
-    ClassNames = require('classnames');
+var React = require('react');
 
 var SelectionContainer = React.createClass({
 

@@ -4,6 +4,7 @@ jest.dontMock('../../js/components/closed-caption/closedCaptionPanel')
     .dontMock('../../js/components/closed-caption/onOffSwitch')
     .dontMock('../../js/components/icon')
     .dontMock('../../js/components/tabs')
+    .dontMock('../../js/components/dataSelector')
     .dontMock('classnames');
 
 var React = require('react');
@@ -13,7 +14,7 @@ var ClosedCaptionPanel = require('../../js/components/closed-caption/closedCapti
 
 describe('ClosedCaptionPanel', function () {
   var availableLanguages = {"languages":["en","fr","de","ru","it"],
-                            "locale":{"de": "Deutsch", "en": "English", "fr": "français", "ru": "русский", "it": "italiano"}};
+                            "locale":{"en": "English", "fr": "français", "de": "Deutsch", "ru": "русский", "it": "italiano"}};
   var skinConfig = {
     "icons": {"cc": [], "left": [], "right": []},
     "closedCaptionOptions": {
@@ -28,14 +29,14 @@ describe('ClosedCaptionPanel', function () {
     //Render closed caption panel into DOM
     var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPanel skinConfig={skinConfig} closedCaptionOptions={closedCaptionOptions}/>);
 
-    var items0 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-language');
+    var items0 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item');
     var leftButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-left-button');
     var rightButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-right-button');
 
     function testItemsOnPage(items, page){
       var j = items0.length*(page);
       for (var i=0; i<items.length; i++){
-        var itemText = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-language')[i].textContent;
+        var itemText = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item')[i].textContent;
           expect(itemText).toEqual(availableLanguages.locale[availableLanguages.languages[i+j]]);
       }
     }
@@ -44,7 +45,7 @@ describe('ClosedCaptionPanel', function () {
 
     //checking that languages displayed on page 1 are as expected after clicking right chevron
     TestUtils.Simulate.click(rightButton);
-    var items1 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-language');
+    var items1 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item');
     testItemsOnPage(items1, 1);
 
     //checking that languages displayed on page 0 are as expected after clicking left chevron
@@ -80,7 +81,7 @@ describe('ClosedCaptionPanel', function () {
 
     var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPanel skinConfig={skinConfig} closedCaptionOptions={closedCaptionOptions} controller={mockController}/>);
 
-    var newLanguage = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-language')[1];
+    var newLanguage = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item')[1];
     TestUtils.Simulate.click(newLanguage);
     expect(selectedLanguage).toBe(availableLanguages.languages[1]);
   });
@@ -96,7 +97,7 @@ describe('ClosedCaptionPanel', function () {
 
     var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPanel skinConfig={skinConfig} closedCaptionOptions={closedCaptionOptions} controller={mockController}/>);
 
-    var newLanguage = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-language')[1];
+    var newLanguage = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item')[1];
     TestUtils.Simulate.click(newLanguage);
     expect(selectedLanguage).toBe(skinConfig.closedCaptionOptions.defaultLanguage);
 
@@ -107,7 +108,7 @@ describe('ClosedCaptionPanel', function () {
      var availableLanguages = {"languages":["en"], "locale":{"en": "English"}};
      closedCaptionOptions.availableLanguages = availableLanguages;
      var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPanel skinConfig={skinConfig} closedCaptionOptions={closedCaptionOptions}/>);
-     var items0 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-language');
+     var items0 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item');
      expect(items0.length).toBe(0);
   });
 });
