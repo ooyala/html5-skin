@@ -1,6 +1,5 @@
 var React = require('react'),
     ClassNames = require('classnames'),
-    ScrollArea = require('react-scrollbar/dist/no-css'),
     SelectionContainer = require('./selectionContainer'),
     ColorSelector = require('../colorSelector');
 
@@ -61,18 +60,6 @@ var ColorSelectionTab = React.createClass({
         </SelectionContainer>
 
         <SelectionContainer
-          title="Window Color"
-          selectionText={this.props.closedCaptionOptions.windowColor}
-          >
-          <ColorSelector
-            colors={windowColors}
-            onColorChange={this.changeWindowColor}
-            selectedColor={this.props.closedCaptionOptions.windowColor}
-            enabled={this.props.closedCaptionOptions.enabled}
-          />
-        </SelectionContainer>
-
-        <SelectionContainer
           title="Background Color"
           selectionText={this.props.closedCaptionOptions.backgroundColor}
           >
@@ -80,6 +67,18 @@ var ColorSelectionTab = React.createClass({
             colors={backgroundColors}
             onColorChange={this.changeBackgroundColor}
             selectedColor={this.props.closedCaptionOptions.backgroundColor}
+            enabled={this.props.closedCaptionOptions.enabled}
+          />
+        </SelectionContainer>
+
+        <SelectionContainer
+          title="Window Color"
+          selectionText={this.props.closedCaptionOptions.windowColor}
+          >
+          <ColorSelector
+            colors={windowColors}
+            onColorChange={this.changeWindowColor}
+            selectedColor={this.props.closedCaptionOptions.windowColor}
             enabled={this.props.closedCaptionOptions.enabled}
           />
         </SelectionContainer>

@@ -250,6 +250,114 @@
     .oo-color-item-Transparent {
       background-image: url("assets/images/transparent.svg");
       background-position: top-left;
+      background-size: 30px;
+    }
+  }
+}
+
+.oo-caption-opacity-tab {
+  height: 70%;
+  overflow-y: scroll;
+  .oo-selection-container {
+    position: relative;
+    float: left;
+    background-color: transparent;
+    width: 33%;
+    min-width: 200px;
+    margin-top: 20px;
+
+    .oo-selection-container-title {
+      font-family: $font-family-roboto-condensed;
+      font-size: $font-size-root;
+      color: $white;
+      margin-bottom: 30px;
+      height: 30px;
+
+      .oo-selection-container-selection-text {
+        font-family: $font-family-roboto-condensed-bold;
+      }
+    }
+
+    .oo-selection-items-container {
+      position: relative;
+      height: 30px;
+      width: 75%;
+    }
+
+    .oo-slider-caption-opacity {
+      width: #{$slider-caption-opacity-width};
+      cursor: pointer;
+    }
+
+    .oo-slider-caption-opacity[type=range] {
+        //passing colors to use for coloring the progress/track in browsers other than IE
+        border-right-color: #{$slider-volume-track-color};
+        border-left-color:#{$slider-volume-progress-color};
+
+        /*required for proper track sizing in FF*/
+        width: #{$slider-caption-opacity-width};
+    }
+
+    .oo-slider-caption-opacity[type=range]::-webkit-slider-runnable-track {
+        height: #{$slider-volume-height};
+    }
+
+    .oo-slider-caption-opacity[type=range]::-webkit-slider-thumb {
+        height: #{$slider-volume-thumb-diameter};
+        width: #{$slider-volume-thumb-diameter};
+        background: #{$slider-volume-thumb-color};
+        margin-top: -($slider-volume-thumb-diameter - $slider-volume-height)/2;
+    }
+
+    // IE Edge only
+    @supports (-ms-accelerator:true) {
+        .oo-slider-caption-opacity[type=range]::-webkit-slider-thumb {
+            margin-top: 0;
+        }
+    }
+
+    .oo-slider-caption-opacity[type=range]::-moz-range-track {
+        width: #{$slider-caption-opacity-width};
+        height: #{$slider-volume-height};
+        background: #{$slider-volume-track-color};
+    }
+
+    .oo-slider-caption-opacity[type=range]::-moz-range-thumb {
+        height: #{$slider-volume-thumb-diameter};
+        width: #{$slider-volume-thumb-diameter};
+        background: #{$slider-volume-thumb-color};
+    }
+
+    .oo-slider-caption-opacity[type=range]:focus::-moz-range-track {
+        background: #{$slider-volume-track-color};
+    }
+
+    .oo-slider-caption-opacity[type=range]::-ms-track {
+        width: #{$slider-caption-opacity-width};
+        height: #{$slider-volume-height};
+        border-width: $slider-volume-thumb-diameter/2 0;
+    }
+
+    .oo-slider-caption-opacity[type=range]::-ms-fill-lower {
+        background: #{$slider-volume-progress-color};
+    }
+
+    .oo-slider-caption-opacity[type=range]::-ms-fill-upper {
+        background: #{$slider-volume-track-color};
+    }
+
+    .oo-slider-caption-opacity[type=range]::-ms-thumb {
+        height: #{$slider-volume-thumb-diameter};
+        width: #{$slider-volume-thumb-diameter};
+        background: #{$slider-volume-thumb-color};
+    }
+
+    .oo-slider-caption-opacity[type=range]:focus::-ms-fill-lower {
+        background: #{$slider-volume-progress-color};
+    }
+
+    .oo-slider-caption-opacity[type=range]:focus::-ms-fill-upper {
+        background: #{$slider-volume-track-color};
     }
   }
 }

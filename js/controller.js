@@ -1162,6 +1162,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onClosedCaptionTextOpacityChange: function(textOpacity) {
+      this.state.closedCaptionOptions.textOpacity = textOpacity;
+      this.renderSkin();
+    },
+
+    onClosedCaptionBackgroundOpacityChange: function(backgroundOpacity) {
+      this.state.closedCaptionOptions.backgroundOpacity = backgroundOpacity;
+      this.renderSkin();
+    },
+
+    onClosedCaptionWindowOpacityChange: function(windowOpacity) {
+      this.state.closedCaptionOptions.windowOpacity = windowOpacity;
+      this.renderSkin();
+    },
+
     toggleClosedCaptionEnabled: function() {
       this.state.closedCaptionOptions.enabled = !this.state.closedCaptionOptions.enabled;
       this.setClosedCaptionsLanguage();

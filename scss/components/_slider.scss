@@ -77,10 +77,10 @@
 .oo-slider[type=range]::-ms-track {
     width: #{$slider-width};
     height: #{$slider-height};
-    
+
     /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
     background: transparent;
-    
+
     /*leave room for the larger thumb to overflow with a transparent border */
     border-color: transparent;
     border-width: $slider-thumb-diameter/2 0;

@@ -6,7 +6,7 @@
       font-size: 23px;
     }
   }
-    
+
   // Discovery Screen
   .oo-discovery-panel {
     @include apply-to-safari-only ('.oo-scale-size') {
@@ -23,7 +23,7 @@
         padding: 2px 12px;
 
         .oo-text-track {
-          font-size: em(18px);
+
         }
       }
     }
