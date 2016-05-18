@@ -11,8 +11,8 @@ var ScrubberBar = React.createClass({
   mixins: [ResizeMixin],
 
   getInitialState: function() {
-    this.isMobile = this.props.controller.state.isMobile;
     this.lastScrubX = null;
+    this.touchInitiated = false;
 
     return {
       scrubberBarWidth: 0,
@@ -66,12 +66,12 @@ var ScrubberBar = React.createClass({
   handlePlayheadMouseDown: function(evt) {
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
     this.props.controller.startHideControlBarTimer();
-    if (evt.type == 'touchstart' || !this.isMobile){
+    if ((this.touchInitiated && evt.type !== "mousedown") || (!this.touchInitiated && evt.type === "mousedown") ){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
       evt.preventDefault();
-      if (this.isMobile){
+      if (this.touchInitiated){
         evt = evt.touches[0];
       }
 
@@ -84,7 +84,7 @@ var ScrubberBar = React.createClass({
         this.lastScrubX = evt.clientX;
       }
 
-      if (!this.isMobile){
+      if (!this.touchInitiated){
         ReactDOM.findDOMNode(this).parentNode.addEventListener("mousemove", this.handlePlayheadMouseMove);
         // attach a mouseup listener to the document for usability, otherwise scrubbing
         // breaks if your cursor leaves the player element
@@ -101,7 +101,7 @@ var ScrubberBar = React.createClass({
     this.props.controller.startHideControlBarTimer();
     evt.preventDefault();
     if (this.props.seeking) {
-      if (this.isMobile){
+      if (this.touchInitiated){
         evt = evt.touches[0];
       }
       var deltaX = evt.clientX - this.lastScrubX;
@@ -125,7 +125,7 @@ var ScrubberBar = React.createClass({
     evt.cancelBubble = true; // IE
 
     this.lastScrubX = null;
-    if (!this.isMobile){
+    if (!this.touchInitiated){
       ReactDOM.findDOMNode(this).parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
       document.removeEventListener("mouseup", this.handlePlayheadMouseUp, true);
     }
@@ -141,13 +141,16 @@ var ScrubberBar = React.createClass({
       });
       this.props.controller.endSeeking();
     }
+    this.touchInitiated = false;
   },
 
   handleScrubberBarMouseDown: function(evt) {
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
     if (evt.target.className.match("oo-playhead")) { return; }
+    if (this.touchInitiated && evt.type === "mousedown") { return; }
     var offsetX = 0;
-    if (this.isMobile){
+    this.touchInitiated = evt.type === "touchstart";
+    if (this.touchInitiated){
       offsetX = evt.targetTouches[0].pageX - evt.target.getBoundingClientRect().left;
     }
     else {
