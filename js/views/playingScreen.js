@@ -15,7 +15,6 @@ var PlayingScreen = React.createClass({
 
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
-    this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
     return {
       controlBarVisible: true,
       timer: null
@@ -24,7 +23,7 @@ var PlayingScreen = React.createClass({
 
   componentDidMount: function () {
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
-    if (this.isMobile || this.props.fullscreen || this.browserSupportsTouch){
+    if (this.isMobile || this.props.fullscreen){
       this.props.controller.startHideControlBarTimer();
     }
   },
@@ -137,7 +136,7 @@ var PlayingScreen = React.createClass({
         <ControlBar {...this.props}
           controlBarVisible={this.state.controlBarVisible}
           playerState={this.props.playerState}
-          isLiveStream={this.props.isLiveStream} />
+          authorization={this.props.authorization}/>
       </div>
     </div>
     );

@@ -3,7 +3,7 @@
   margin: 0;
   position: relative;
   width: 100%;
-  height: $scrubber-bar-padding-height;
+  height: 34px;
   z-index: 12600;
   @include vendor-prefixes(user-select, none);
 
@@ -15,7 +15,7 @@
 
     .oo-scrubber-bar {
       background-color: $gray-lighter;
-      height: $scrubber-bar-height;
+      height: 3px;
       width: 100%;
       margin: 0;
       position: absolute;

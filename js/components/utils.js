@@ -79,11 +79,10 @@ var Utils = {
   * Convert raw seconds into human friendly HH:MM format
   *
   * @function formatSeconds
-  * @param {integer} time The time to format in seconds
+  * @param {integer} timeInSeconds The time to format in seconds
   * @return {String} The time as a string in the HH:MM format
   */
-  formatSeconds: function(time) {
-    var timeInSeconds = Math.abs(time);
+  formatSeconds: function(timeInSeconds) {
     var seconds = parseInt(timeInSeconds,10) % 60;
     var hours = parseInt(timeInSeconds / 3600, 10);
     var minutes = parseInt((timeInSeconds - hours * 3600) / 60, 10);
@@ -100,12 +99,7 @@ var Utils = {
       seconds = '0' + seconds;
     }
 
-    var timeStr = (parseInt(hours,10) > 0) ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
-    if (time >= 0) {
-      return timeStr;
-    } else {
-      return "-" + timeStr;
-    }
+    return (parseInt(hours,10) > 0) ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
   },
 
   /**
@@ -309,19 +303,6 @@ var Utils = {
     dimensions["width"] = vidWidth;
     dimensions["height"] = vidHeight;
     return dimensions;
-  },
-
-  /**
-  * Check if the current browser is on a touch enabled device.
-  * Function from https://hacks.mozilla.org/2013/04/detecting-touch-its-the-why-not-the-how/
-  *
-  * @function browserSupportsTouch
-  * @returns {Boolean} Whether or not the browser supports touch events.
-  */
-  browserSupportsTouch: function() {
-    return ('ontouchstart' in window) ||
-     (navigator.maxTouchPoints > 0) ||
-     (navigator.msMaxTouchPoints > 0);
   },
 
   _isValid: function( item ) {

@@ -63,13 +63,6 @@ var ControlBar = React.createClass({
     this.props.controller.toggleFullscreen();
   },
 
-  handleLiveClick: function(evt) {
-    evt.stopPropagation();
-    evt.cancelBubble = true;
-    evt.preventDefault();
-    this.props.controller.seek(this.props.duration);
-  },
-
   handleVolumeIconClick: function(evt) {
     if (this.isMobile){
       this.props.controller.startHideControlBarTimer();
@@ -213,25 +206,13 @@ var ControlBar = React.createClass({
       volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
     }
 
-    var playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
-    var isLiveStream = this.props.isLiveStream;
+    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
     var durationSetting = {color: this.props.skinConfig.controlBar.iconStyle.inactive.color};
-    var timeShift = this.props.currentPlayhead - this.props.duration;
-    // checking timeShift < 1 seconds (not == 0) as processing of the click after we rewinded and then went live may take some time
-    var isLiveNow = Math.abs(timeShift) < 1;
-    var liveClick = isLiveNow ? null : this.handleLiveClick;
-    var playheadTimeContent = isLiveStream ? (isLiveNow ? null : Utils.formatSeconds(timeShift)) : playheadTime;
-    var totalTimeContent = isLiveStream ? null : <span className="oo-total-time">{totalTime}</span>;
+    var currentPlayheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
+    var totalTimeContent = this.props.authorization.streams[0].is_live_stream ? null : <span className="oo-total-time">{totalTime}</span>;
 
     // TODO: Update when implementing localization
     var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
-
-    var liveClass = ClassNames({
-        "oo-control-bar-item oo-live oo-live-indicator": true,
-        "oo-live-nonclickable": isLiveNow
-      });
-
-    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
 
     var qualityClass = ClassNames({
       "oo-quality": true,
@@ -246,12 +227,12 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
 
-      "live": <button className={liveClass}
-          ref="LiveButton"
-          onClick={liveClick} key="live">
-        <div className="oo-live-circle"></div>
-        <span className="oo-live-text">{liveText}</span>
-      </button>,
+      "live": <div className="oo-live oo-control-bar-item" key="live">
+        <div className="oo-live-indicator">
+          <div className="oo-live-circle"></div>
+          <span className="oo-live-text"> {liveText}</span>
+        </div>
+      </div>,
 
       "volume": <div className="oo-volume oo-control-bar-item" key="volume">
         <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
@@ -262,7 +243,7 @@ var ControlBar = React.createClass({
       </div>,
 
       "timeDuration": <div className="oo-time-duration oo-control-bar-duration" style={durationSetting} key="timeDuration">
-        <span>{playheadTimeContent}</span>{totalTimeContent}
+        <span>{currentPlayheadTime}</span>{totalTimeContent}
       </div>,
 
       "flexibleSpace": <div className="oo-flexible-space oo-control-bar-flex-space" key="flexibleSpace"></div>,
@@ -311,7 +292,8 @@ var ControlBar = React.createClass({
                     clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
                     target={this.props.skinConfig.controlBar.logo.target}
                     width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
-                    height={this.props.skinConfig.controlBar.logo.height}/>
+                    height={this.props.skinConfig.controlBar.logo.height}
+                    style={dynamicStyles.logoStyle} />
     };
 
     var controlBarItems = [];
@@ -373,8 +355,8 @@ var ControlBar = React.createClass({
 
       // Not sure what to do when there are multi streams
       if (defaultItems[k].name === "live" &&
-          (typeof this.props.isLiveStream === 'undefined' ||
-          !(this.props.isLiveStream))) {
+          (typeof this.props.authorization === 'undefined' ||
+          !(this.props.authorization.streams[0].is_live_stream))) {
         continue;
       }
 
@@ -401,6 +383,14 @@ var ControlBar = React.createClass({
 
   setupItemStyle: function() {
     var returnStyles = {};
+
+    for (element in this.props.skinConfig.buttons.desktopContent){
+      if (this.props.skinConfig.buttons.desktopContent[element].name == "logo"){
+        returnStyles.logoStyle = {
+          minWidth: this.responsiveUIMultiple * this.props.skinConfig.buttons.desktopContent[element].minWidth + "px"
+        };
+      }
+    }
 
     returnStyles.iconCharacter = {
       color: this.props.skinConfig.controlBar.iconStyle.inactive.color,
@@ -432,7 +422,11 @@ var ControlBar = React.createClass({
 });
 
 ControlBar.defaultProps = {
-  isLiveStream: false,
+  authorization: {
+    streams: [
+      {is_live_stream: false}
+    ]
+  },
   skinConfig: {
     responsive: {
       breakpoints: {
