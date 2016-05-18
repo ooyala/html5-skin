@@ -28,6 +28,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "playerParam": {},
       "assetId": null,
       "contentTree": {},
+      "thumbnails": null,
       "isLiveStream": false,
       "screenToShow": null,
       "playerState": null,
@@ -122,6 +123,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
+      this.mb.subscribe(OO.EVENTS.THUMBNAILS_FETCHED, 'customerUi', _.bind(this.onThumbnailsFetched, this));//xenia: to be replaced by a more appropriate event
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
@@ -320,6 +322,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       this.renderSkin({"contentTree": contentTree});
+    },
+
+    onThumbnailsFetched: function (event, thumbnails) {
+      if (this.skin.props.skinConfig.controlBar.scrubberBar.thumbnailPreview) {
+        this.state.thumbnails = thumbnails;
+      }
     },
 
     onAssetChanged: function (event, asset) {

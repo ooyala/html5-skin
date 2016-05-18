@@ -4,6 +4,7 @@
 var React = require('react'),
     ReactDOM = require('react-dom'),
     ResizeMixin = require('../mixins/resizeMixin'),
+    Thumbnail = require('./thumbnail'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
@@ -17,6 +18,7 @@ var ScrubberBar = React.createClass({
       scrubberBarWidth: 0,
       playheadWidth: 0,
       scrubbingPlayheadX: 0,
+      hoveringX: 0,
       currentPlayhead: 0,
       transitionedDuringSeek: false
     };
@@ -162,6 +164,28 @@ var ScrubberBar = React.createClass({
     this.handlePlayheadMouseDown(evt);
   },
 
+  handleScrubberBarMouseOver: function(evt) {
+    if (!this.props.controller.state.thumbnails) return;
+    if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
+    if (this.isMobile) { return; }
+    if (evt.target.className.match("oo-playhead")) { return; }
+
+    this.setState({
+      hoveringX: evt.nativeEvent.offsetX
+    });
+  },
+
+  handleScrubberBarMouseMove: function(evt) {
+    this.handleScrubberBarMouseOver(evt);
+  },
+
+  handleScrubberBarMouseOut: function(evt) {
+    if (!this.props.controller.state.thumbnails) return;
+    this.setState({
+      hoveringX: 0
+    });
+  },
+
   render: function() {
     var scrubberBarStyle = {
       backgroundColor: this.props.skinConfig.controlBar.scrubberBar.backgroundColor
@@ -196,8 +220,12 @@ var ScrubberBar = React.createClass({
 
     var playheadMouseDown = this.handlePlayheadMouseDown;
     var scrubberBarMouseDown = this.handleScrubberBarMouseDown;
+    var scrubberBarMouseOver = this.handleScrubberBarMouseOver;
+    var scrubberBarMouseOut = this.handleScrubberBarMouseOut;
+    var scrubberBarMouseMove = this.handleScrubberBarMouseMove;
     var playedIndicatorClassName = "oo-played-indicator";
     var playheadClassName = "oo-playhead";
+    var scrubberBarClassName = "oo-scrubber-bar";
 
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN){
       playheadClassName += " oo-ad-playhead";
@@ -209,11 +237,46 @@ var ScrubberBar = React.createClass({
       playedIndicatorStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.playedColor;
     }
 
+    var thumbnailContainer = null;
+    if (this.props.controller.state.thumbnails && (this.state.scrubbingPlayheadX || this.lastScrubX || this.state.hoveringX)) {
+      if (this.state.scrubbingPlayheadX) {
+        var hoverPosition = this.state.scrubbingPlayheadX;
+        var hoverTime = (this.state.scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration;
+        playheadClassName += " oo-playhead-scrubbing";
+      }
+      else if (this.lastScrubX) {//to show thumbnail when clicking on playhead
+        var hoverPosition = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration;
+        var hoverTime = this.props.currentPlayhead;
+        playheadClassName += " oo-playhead-scrubbing";
+      }
+      else if (this.state.hoveringX) {
+        var hoverPosition = this.state.hoveringX;
+        var hoverTime=(this.state.hoveringX / this.state.scrubberBarWidth) * this.props.duration;
+        var hoveredIndicatorStyle = {
+              width: Math.min((parseFloat(hoverTime) / parseFloat(this.props.duration)) * 100, 100) + "%",
+              backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor
+            };
+        scrubberBarClassName += " oo-scrubber-bar-hover";
+        playheadClassName += " oo-playhead-hovering";
+      }
+      thumbnailContainer =
+        (<div className="oo-scrubber-thumbnail-container">
+          <Thumbnail
+            thumbnails={this.props.controller.state.thumbnails}
+            hoverPosition={hoverPosition}
+            duration={this.props.duration}
+            hoverTime={hoverTime > 0 ? hoverTime : 0}
+            scrubberBarWidth={this.state.scrubberBarWidth}/>
+        </div>);
+    }
+
     return (
-      <div className="oo-scrubber-bar-container">
-        <div className="oo-scrubber-bar-padding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
-          <div ref="scrubberBar" className="oo-scrubber-bar" style={scrubberBarStyle}>
+      <div className="oo-scrubber-bar-container" ref="scrubberBarContainer" onMouseOver={scrubberBarMouseOver} onMouseOut={scrubberBarMouseOut} onMouseMove={scrubberBarMouseMove}>
+        {thumbnailContainer}
+        <div className="oo-scrubber-bar-padding" ref="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
+          <div ref="scrubberBar" className={scrubberBarClassName} style={scrubberBarStyle}>
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle}></div>
+            <div className="oo-hovered-indicator" style={hoveredIndicatorStyle}></div>
             <div className={playedIndicatorClassName} style={playedIndicatorStyle}></div>
             <div className="oo-playhead-padding" style={playheadPaddingStyle}
               onMouseDown={playheadMouseDown} onTouchStart={playheadMouseDown}>
