@@ -10,24 +10,21 @@ var React = require('react'),
     TextTrack = require('../components/textTrackPanel'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon'),
-    Utils = require('../components/utils');
+    Utils = require('../components/utils'),
+    AnimateMixin = require('../mixins/animateMixin');
 
 var PauseScreen = React.createClass({
-  mixins: [ResizeMixin],
+  mixins: [ResizeMixin, AnimateMixin],
 
   getInitialState: function() {
     return {
       descriptionText: this.props.contentTree.description,
-      controlBarVisible: true,
-      animate: false
+      controlBarVisible: true
     };
   },
 
   componentDidMount: function() {
     this.handleResize();
-    this.setState({
-      animate: true
-    });
   },
 
   componentWillUnmount: function() {
