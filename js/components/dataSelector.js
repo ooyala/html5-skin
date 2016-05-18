@@ -3,11 +3,14 @@ var React = require('react'),
     Icon = require('./icon');
 
 var DataSelector = React.createClass({
-
   getInitialState: function() {
     return {
       currentPage: 1
     };
+  },
+
+  handelDataSelection: function(dataItem){
+    this.props.onDataChange(dataItem);
   },
 
   handleLeftChevronClick: function(event){
@@ -59,7 +62,7 @@ var DataSelector = React.createClass({
       var dataContentBlocks = [];
       for (var i = 0; i < dataItems.length; i++) {
         dataContentBlocks.push(
-          <a className={this.setClassname(dataItems[i])} onClick={this.props.onDataChange.bind(this, dataItems[i])} key={i}>
+          <a className={this.setClassname(dataItems[i])} onClick={this.handelDataSelection.bind(this, dataItems[i])} key={i}>
             <span className="oo-data">{dataItems[i]}</span>
           </a>
         );

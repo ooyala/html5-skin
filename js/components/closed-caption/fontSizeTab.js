@@ -1,17 +1,15 @@
 var React = require('react'),
     ClassNames = require('classnames'),
-    ScrollArea = require('react-scrollbar/dist/no-css'),
     SelectionContainer = require('./selectionContainer');
 
 var FontSizeTab = React.createClass({
-
   getInitialState: function() {
     return {
-      selectedFontSize: this.props.closedCaptionOptions.fontSize,
+      selectedFontSize: this.props.closedCaptionOptions.fontSize
     };
   },
 
-  changeFontSize: function(fontSize){
+  changeFontSize: function(fontSize) {
     if (this.props.closedCaptionOptions.enabled){
       this.props.controller.onClosedCaptionFontSizeChange(fontSize);
       this.setState({
@@ -20,9 +18,7 @@ var FontSizeTab = React.createClass({
     }
   },
 
-
-
-  setClassname: function(item, elementType){
+  setClassname: function(item, elementType) {
     return ClassNames({
       'oo-font-size-letter': elementType == "letter",
       'oo-font-size-label': elementType == "label",
@@ -32,19 +28,19 @@ var FontSizeTab = React.createClass({
     });
   },
 
-  render: function(){
+  render: function() {
     var fontSizes = ["Small", "Medium", "Large", "Extra Large"];
     var fontItems = [];
     for(var i = 0; i < fontSizes.length; i++) {
       fontItems.push(
-        <a className="oo-font-size-container" onClick={this.changeFontSize.bind(this, fontSizes[i])}>
+        <a className="oo-font-size-container" onClick={this.changeFontSize.bind(this, fontSizes[i])} key={i}>
           <div className={this.setClassname(fontSizes[i], "letter") + " oo-font-size-letter-" + fontSizes[i].replace(" ", "-")}>A</div>
           <div className={this.setClassname(fontSizes[i], "label")}>{fontSizes[i]}</div>
         </a>
       );
     }
 
-    return(
+    return (
       <div className="oo-font-size-tab">
         <SelectionContainer
           title="Font size"
