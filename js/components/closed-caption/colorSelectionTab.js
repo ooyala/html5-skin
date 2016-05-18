@@ -1,5 +1,4 @@
 var React = require('react'),
-    ClassNames = require('classnames'),
     SelectionContainer = require('./selectionContainer'),
     ColorSelector = require('../colorSelector');
 
@@ -17,7 +16,7 @@ var ColorSelectionTab = React.createClass({
     if (this.props.closedCaptionOptions.enabled){
       this.props.controller.onClosedCaptionTextColorChange(color);
       this.setState({
-        selectedTextColor: color,
+        selectedTextColor: color
       });
     }
   },
@@ -26,7 +25,7 @@ var ColorSelectionTab = React.createClass({
     if (this.props.closedCaptionOptions.enabled){
       this.props.controller.onClosedCaptionWindowColorChange(color);
       this.setState({
-        selectedWindowColor: color,
+        selectedWindowColor: color
       });
     }
   },
@@ -35,7 +34,7 @@ var ColorSelectionTab = React.createClass({
     if (this.props.closedCaptionOptions.enabled){
       this.props.controller.onClosedCaptionBackgroundColorChange(color);
       this.setState({
-        selectedBackgroundColor: color,
+        selectedBackgroundColor: color
       });
     }
   },

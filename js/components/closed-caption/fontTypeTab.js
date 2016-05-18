@@ -1,5 +1,4 @@
 var React = require('react'),
-    ClassNames = require('classnames'),
     DataSelector = require('../dataSelector');
 
 var FontTypeTab = React.createClass({
