@@ -1,7 +1,7 @@
 // taken from https://github.com/pedronauck/react-simpletabs
 
 var React = require('react'),
-    ScrollArea = require('react-scrollbar/dist/no-css'),
+    Scrollbars = require('react-custom-scrollbars').default,
     ClassNames = require('classnames');
 
 var Tabs = React.createClass({
@@ -78,13 +78,9 @@ var Tabs = React.createClass({
 
     return (
       <nav className='tabs-navigation'>
-        <ScrollArea
-          className="oo-scrollarea-tabs"
-          speed={1}
-          horizontal={true}
-          >
+        <Scrollbars style={{width: "100%", height: 30}}>
           <ul className='tabs-menu'>{menuItems}</ul>
-        </ScrollArea>
+        </Scrollbars>
       </nav>
     );
   },
