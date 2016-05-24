@@ -100,7 +100,7 @@ var ScrubberBar = React.createClass({
   handlePlayheadMouseMove: function(evt) {
     this.props.controller.startHideControlBarTimer();
     evt.preventDefault();
-    if (this.props.seeking) {
+    if (this.props.seeking && this.props.duration > 0) {
       if (this.touchInitiated){
         evt = evt.touches[0];
       }
