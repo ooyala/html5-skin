@@ -44,7 +44,13 @@
           }
           if (typeof currentLevel === 'string')
             throw("Exception: Invalid query parameter");
-          currentLevel[keySplits[0]] = decodeURIComponent(match[2]);
+
+          if (decodeURIComponent(match[2]).toLowerCase() === "true")
+            currentLevel[keySplits[0]] = true;
+          else if (decodeURIComponent(match[2]).toLowerCase() === "false")
+            currentLevel[keySplits[0]] = false;
+          else
+            currentLevel[keySplits[0]] = decodeURIComponent(match[2]);
         }
       }
       catch (e) {
