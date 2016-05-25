@@ -307,6 +307,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.videoQualityOptions.selectedBitrate = null;
       this.state.closedCaptionOptions.availableLanguages = null;
       this.state.discoveryData = null;
+      this.resetUpNextInfo(true);
 
       this.state.assetId = embedCode;
       $.extend(true, this.state.playerParam, options);
@@ -318,7 +319,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onContentTreeFetched: function (event, contentTree) {
-      this.resetUpNextInfo(true);
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       this.renderSkin({"contentTree": contentTree});
