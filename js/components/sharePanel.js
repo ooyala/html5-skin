@@ -65,7 +65,16 @@ var SharePanel = React.createClass({
     mailToUrl += "?subject=" + encodeURIComponent(this.props.contentTree.title);
     mailToUrl += "&body=" + encodeURIComponent(emailBody + location.href);
     //location.href = mailToUrl; //same window
-    window.open(mailToUrl, "_blank", "height=315,width=780"); //new window
+    var emailWindow = window.open(mailToUrl, "email", "height=315,width=780"); //new window
+    setTimeout(function(){
+      try {
+         // If we can't access href, a web client has taken over and this will throw
+         // an exception, preventing the window from being closed.
+        var test = emailWindow.location.href;
+        emailWindow.close()
+      } catch(e) {};
+      // Generous 2 second timeout to give the window time to redirect if it's going to a web client
+    }, 2000);
   },
 
   handleFacebookClick: function() {
