@@ -284,6 +284,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       if (params["videoId"] === OO.VIDEO.MAIN) {
         this.state.mainVideoElement = element;
+        this.updateStastics("videoPlugin", params["plugin"]);
         this.enableFullScreen();
         this.updateAspectRatio();
       }
@@ -1295,7 +1296,34 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if(this.state.mainVideoAspectRatio > 0) {
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
-    }
+    },
+
+    streamData: {
+      format: null,
+      protocol: null,
+      bandwidth: null,
+      currentBitrate: null,
+      availableBitrates: null,
+      fps: null,
+      droppedFrames: null,
+      bitrateSwitchLatency: null,
+      videoPlugin: null
+    },
+
+    showStatistics: function() {
+      // TODO: show element
+    },
+
+    hideStastics: function() {
+      // TODO: hide element
+    },
+
+    updateStastics: function(field, value) {
+      if (this.streamData.hasOwnProperty(field)) {
+        this.streamData[field] = value;
+      }
+      // TODO: if showing, update bunnypass screen with new data
+    },
   };
 
   return Html5Skin;
