@@ -42,7 +42,7 @@
               currentLevel[key] = {};
             currentLevel = currentLevel[key];
           }
-          if (typeof currentLevel === 'string')
+          if (typeof currentLevel !== 'object')
             throw("Exception: Invalid query parameter");
 
           if (decodeURIComponent(match[2]).toLowerCase() === "true")
