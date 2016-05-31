@@ -936,6 +936,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
 
       // ad events
       if (!Utils.isIPhone()) {
