@@ -60,7 +60,7 @@ var Skin = React.createClass({
       this.props.controller.state.closedCaptionOptions.windowOpacity = (this.props.skinConfig.closedCaptionOptions.defaultWindowOpacity ? this.props.skinConfig.closedCaptionOptions.defaultWindowOpacity : 0);
       this.props.controller.state.closedCaptionOptions.fontType = (this.props.skinConfig.closedCaptionOptions.defaultFontType ? this.props.skinConfig.closedCaptionOptions.defaultFontType : "Helvetica");
       this.props.controller.state.closedCaptionOptions.fontSize = (this.props.skinConfig.closedCaptionOptions.defaultFontSize ? this.props.skinConfig.closedCaptionOptions.defaultFontSize : "Medium");
-      this.props.controller.state.closedCaptionOptions.textEnhancement = (this.props.skinConfig.closedCaptionOptions.defaultTextEnhancement ? this.props.skinConfig.closedCaptionOptions.defaultTextEnhancement : "uniform");
+      this.props.controller.state.closedCaptionOptions.textEnhancement = (this.props.skinConfig.closedCaptionOptions.defaultTextEnhancement ? this.props.skinConfig.closedCaptionOptions.defaultTextEnhancement : "Uniform");
     }
     else {
       this.props.controller.state.closedCaptionOptions.language = "en";
@@ -73,7 +73,7 @@ var Skin = React.createClass({
       this.props.controller.state.closedCaptionOptions.windowOpacity = 0;
       this.props.controller.state.closedCaptionOptions.fontType = "Helvetica";
       this.props.controller.state.closedCaptionOptions.fontSize = "Medium";
-      this.props.controller.state.closedCaptionOptions.textEnhancement = "uniform";
+      this.props.controller.state.closedCaptionOptions.textEnhancement = "Uniform";
     }
   },
 

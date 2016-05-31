@@ -401,22 +401,23 @@
           color: $white;
           height: 100%;
           text-align: center;
+          font-family: $font-family-roboto-condensed-bold;
         }
         .oo-font-size-letter-Small {
           font-size: 50px;
-          line-height: 170px;
+          line-height: 157px;
         }
         .oo-font-size-letter-Medium {
           font-size: 75px;
-          line-height: 151px;
+          line-height: 138px;
         }
         .oo-font-size-letter-Large {
           font-size: 100px;
-          line-height: 133px;
+          line-height: 120px;
         }
         .oo-font-size-letter-Extra-Large {
           font-size: 125px;
-          line-height: 115px;
+          line-height: 102px;
         }
 
         .oo-font-size-label {
@@ -440,25 +441,99 @@
   }
 }
 
+.oo-text-enhancements-tab {
+  height: 70%;
+  overflow-y: scroll;
+  .oo-selection-container {
+    position: relative;
+    float: left;
+    background-color: transparent;
+    width: 100%;
+    margin-top: 20px;
+    height: 100%;
+
+    .oo-selection-container-title {
+      font-family: $font-family-roboto-condensed;
+      font-size: $font-size-root;
+      color: $white;
+      margin-bottom: 26px;
+
+      .oo-selection-container-selection-text {
+        font-family: $font-family-roboto-condensed-bold;
+      }
+    }
+
+    .oo-selection-items-container {
+      height: 100%;
+
+      .oo-text-enhancements-container {
+        position: relative;
+        float: left;
+        background-color: transparent;
+        width: 25%;
+        height: 110px;
+        min-width: 155px;
+        margin-bottom: 30px;
+        cursor: pointer;
+
+        .oo-text-enhancement-letter {
+          color: $white;
+          height: 100%;
+          text-align: center;
+          font-size: 100px;
+          line-height: 120px;
+          font-family: $font-family-roboto-condensed-bold;
+        }
+        .oo-text-enhancement-letter-Uniform {
+          text-shadow: none;
+        }
+        .oo-text-enhancement-letter-Depressed {
+          -webkit-text-fill-color: transparent;
+          -webkit-text-stroke-width: 1px;
+          -webkit-text-stroke-color: white;
+          text-shadow: 5px 0px gray;
+        }
+        .oo-text-enhancement-letter-Raised {
+          color: gray;
+          text-shadow: 5px 0px white;
+        }
+        .oo-text-enhancement-letter-Shadow {
+          text-shadow: 5px 0px gray;
+        }
+
+        .oo-text-enhancement-label {
+          font-family: $font-family-roboto-condensed;
+          font-size: $font-size-root;
+          color: #b3b3b3;
+          width: 100%;
+          text-align: center;
+          white-space: nowrap;
+        }
+
+        .oo-text-enhancement-selected {
+          color: #448AFF;
+        }
+
+        .oo-text-enhancement-label-selected {
+          font-family: $font-family-roboto-condensed-bold;
+        }
+      }
+    }
+  }
+}
+
 .oo-preview-panel {
   width: 100%;
-  background-color: rgba(0,0,0,0.5);
   position: absolute;
   bottom: 0;
   left: 0;
-  border-top: 1px solid $gray;
   padding: 12px $panel-padding;
 
   .oo-preview-caption {
-    font-size: 0.8em;
+    font-size: 16px;
     line-height:1.2em;
-    font-family: $font-family-roboto;
-  }
-  .oo-preview-text {
-    margin-top: 0;
-    font-size: 1.4em;
-    font-weight: bold;
-    font-family: $font-family-verdana;
+    font-family: $font-family-roboto-condensed;
+    color: #b3b3b3;
   }
 }
 

@@ -38,6 +38,13 @@ var TextTrackPanel = React.createClass({
     "Extra Large": "64px"
   },
 
+  textEnhancementMap: {
+    "Uniform": "none",
+    "Depressed": "none",
+    "Raised": "none",
+    "Shadow": "2px 0px gray"
+  },
+
   setWindowBackgroundStyle: function(color, opacity) {
     if (color == "Transparent") opacity = 0;
     return {
@@ -45,16 +52,17 @@ var TextTrackPanel = React.createClass({
     }
   },
 
-  setTextStyle: function(color, opacity, fontType, fontSize) {
+  setTextStyle: function(color, opacity, fontType, fontSize, textEnhancement) {
     return {
       color: "rgba(" + this.colorMap[color] + "," + opacity + ")",
       fontFamily: this.fontTypeMap[fontType],
-      fontSize: this.fontSizeMap[fontSize]
+      fontSize: this.fontSizeMap[fontSize],
+      textShadow: this.textEnhancementMap[textEnhancement]
     }
   },
 
   render: function() {
-    if (!this.props.closedCaptionOptions.cueText) {
+    if (!this.props.cueText) {
       return null;
     }
 
@@ -85,11 +93,12 @@ var TextTrackPanel = React.createClass({
                   this.props.closedCaptionOptions.textColor,
                   this.props.closedCaptionOptions.textOpacity,
                   this.props.closedCaptionOptions.fontType,
-                  this.props.closedCaptionOptions.fontSize
+                  this.props.closedCaptionOptions.fontSize,
+                  this.props.closedCaptionOptions.textEnhancement
                 )
               }
               >
-              {this.props.closedCaptionOptions.cueText}
+              {this.props.cueText}
             </div>
           </div>
         </div>
@@ -99,8 +108,8 @@ var TextTrackPanel = React.createClass({
 });
 
 TextTrackPanel.propTypes = {
+  cueText: React.PropTypes.string,
   closedCaptionOptions: React.PropTypes.shape({
-    cueText: React.PropTypes.string,
     windowColor: React.PropTypes.string,
     backgroundColor: React.PropTypes.string,
     textColor: React.PropTypes.string,
@@ -109,8 +118,8 @@ TextTrackPanel.propTypes = {
 };
 
 TextTrackPanel.defaultProps = {
+  cueText: null,
   closedCaptionOptions: {
-    cueText: null,
     windowColor: null,
     backgroundColor: null,
     textColor: null,

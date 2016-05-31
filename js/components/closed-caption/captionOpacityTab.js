@@ -27,7 +27,7 @@ var CaptionOpacityTab = React.createClass({
   },
 
   percentString: function(number) {
-    if (number == 0) return "Transparent";
+    //if (number == 0) return "Transparent";
     return (number * 100).toString() + "%"
   },
 
@@ -35,7 +35,7 @@ var CaptionOpacityTab = React.createClass({
     return(
       <div className="oo-caption-opacity-tab">
         <SelectionContainer
-          title="Text Opacity"
+          title="Text opacity"
           selectionText={this.percentString(this.props.closedCaptionOptions.textOpacity)}
           >
           <Slider
@@ -50,7 +50,7 @@ var CaptionOpacityTab = React.createClass({
         </SelectionContainer>
 
         <SelectionContainer
-          title="Background Opacity"
+          title="Background opacity"
           selectionText={this.percentString(this.props.closedCaptionOptions.backgroundOpacity)}
           >
           <Slider
@@ -65,7 +65,7 @@ var CaptionOpacityTab = React.createClass({
         </SelectionContainer>
 
         <SelectionContainer
-          title="Window Opacity"
+          title="Window opacity"
           selectionText={this.percentString(this.props.closedCaptionOptions.windowOpacity)}
           >
           <Slider

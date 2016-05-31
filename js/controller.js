@@ -1177,6 +1177,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onClosedCaptionTextEnhancementChange: function(textEnhancement) {
+      this.state.closedCaptionOptions.textEnhancement = textEnhancement;
+      this.renderSkin();
+    },
+
     toggleClosedCaptionEnabled: function() {
       this.state.closedCaptionOptions.enabled = !this.state.closedCaptionOptions.enabled;
       this.setClosedCaptionsLanguage();
