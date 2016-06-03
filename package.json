@@ -32,6 +32,7 @@
     "graceful-fs": "*",
     "gulp": "3.9.1",
     "gulp-connect": "^2.3.1",
+    "gulp-header": "^1.8.2",
     "gulp-open": "^1.0.0",
     "gulp-rename": "*",
     "gulp-replace": "0.5.4",

@@ -450,7 +450,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.upNextInfo.delayedSetEmbedCodeEvent) {
         var delayedContentData = this.state.upNextInfo.delayedContentData;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
-        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, delayedContentData.clickedVideo.embed_code, this.state.playerParam);
+
+        var mergedParams = this.state.playerParam;
+        mergedParams.autoplay = !!(this.state.config.nym && this.state.config.nym.autoPlayNextVideo);
+
+        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, delayedContentData.clickedVideo.embed_code, mergedParams);
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, delayedContentData);
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
         this.state.upNextInfo.delayedContentData = null;
@@ -1049,7 +1053,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
         this.mb.publish(OO.EVENTS.PAUSE);
-        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
+        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code, {"autoplay": !!(this.state.config.nym && this.state.config.nym.autoPlayNextVideo)});
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
       }
     },
