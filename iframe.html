@@ -42,9 +42,19 @@
               currentLevel[key] = {};
             currentLevel = currentLevel[key];
           }
-          if (typeof currentLevel === 'string')
+          if (typeof currentLevel !== 'object')
             throw("Exception: Invalid query parameter");
-          currentLevel[keySplits[0]] = decodeURIComponent(match[2]);
+
+          var paramValue = decodeURIComponent(match[2]);
+          if (paramValue.toLowerCase() === "true")
+            currentLevel[keySplits[0]] = true;
+          else if (paramValue.toLowerCase() === "false")
+            currentLevel[keySplits[0]] = false;
+          else if (paramValue[0] === "[" &&
+            paramValue[paramValue.length -1] === "]")
+            currentLevel[keySplits[0]] = JSON.parse(decodeURIComponent(match[2]));
+          else
+            currentLevel[keySplits[0]] = decodeURIComponent(match[2]);
         }
       }
       catch (e) {
