@@ -24,10 +24,12 @@
 
 .oo-switch-container {
   cursor: pointer;
-  margin-top: 35px;
   height: 21px;
   width: 105px;
-  position: relative;
+  position: absolute;
+  display: inline-block;
+  top: 25px;
+  left: 200px;
 
   .oo-switch-container-selectable {
     @extend .oo-expand;

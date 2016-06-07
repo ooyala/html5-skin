@@ -10,7 +10,14 @@
 var React = require('react'),
     OnOffSwitch = require('./onOffSwitch'),
     LanguageTab = require('./languageTab'),
-    CCPreviewPanel = require('./ccPreviewPanel');
+    ColorSelectionTab = require('./colorSelectionTab'),
+    CaptionOpacityTab = require('./captionOpacityTab'),
+    FontTypeTab = require('./fontTypeTab'),
+    FontSizeTab = require('./fontSizeTab'),
+    TextEnhancementsTab = require('./textEnhancementsTab'),
+    CCPreviewPanel = require('./ccPreviewPanel'),
+    Tabs = require('../tabs'),
+    Tab = Tabs.Panel;
 
 var ClosedCaptionPanel = React.createClass({
   render: function(){
