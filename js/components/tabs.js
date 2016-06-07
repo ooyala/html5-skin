@@ -1,7 +1,6 @@
 // taken from https://github.com/pedronauck/react-simpletabs
 
 var React = require('react'),
-    Scrollbars = require('react-custom-scrollbars').default,
     ClassNames = require('classnames');
 
 var Tabs = React.createClass({
@@ -64,7 +63,8 @@ var Tabs = React.createClass({
         var title = panel.props.title;
         var classes = ClassNames(
           'tabs-menu-item',
-          this.state.tabActive === (index + 1) && 'is-active'
+          this.state.tabActive === (index + 1) && 'is-active',
+          'tabs-menu-item-' + index
         );
 
         return (
@@ -78,9 +78,7 @@ var Tabs = React.createClass({
 
     return (
       <nav className='tabs-navigation'>
-        <Scrollbars style={{width: "100%", height: 30}}>
-          <ul className='tabs-menu'>{menuItems}</ul>
-        </Scrollbars>
+        <ul className='tabs-menu'>{menuItems}</ul>
       </nav>
     );
   },
