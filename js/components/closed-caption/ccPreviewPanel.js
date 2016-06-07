@@ -22,7 +22,7 @@ var CCPreviewPanel = React.createClass({
     return (
       <div className="oo-preview-panel">
         <div className={previewCaptionClassName}>{closedCaptionPreviewTitle}</div>
-        <TextTrack {...this.props} cueText="Hi, I'm a caption!" />
+        <TextTrack {...this.props} cueText={closedCaptionSampleText} />
       </div>
     );
   }
