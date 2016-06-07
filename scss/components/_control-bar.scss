@@ -82,7 +82,8 @@
       padding-left: 7.5px;
       padding-right: 7.5px;
       text-align: left;
-      margin-bottom: 5px;
+      position: relative;
+      top:-2px;
 
       .oo-total-time {
         color: $white;
@@ -100,22 +101,23 @@
     }
 
     .oo-live-indicator {
-      line-height: 0.5;
+      top: -5px;
+      position: relative;
     }
 
-    .oo-live-circle {
+    .oo-live-circle{
       display: inline-block;
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background-color: red;
-      margin-right: 2px;
+      background-color: #E83F3F;
+      margin-right: 4px;
       vertical-align: middle;
     }
 
     .oo-live-text {
-      font-size: 10px;
-      color: $gray-light;
+      font-size: 14px;
+      color: $white;
       vertical-align: middle;
     }
 
@@ -124,6 +126,10 @@
       max-height: 24px;
       vertical-align: baseline;
       opacity: 0.9;
+    }
+
+    .oo-live-nonclickable {
+      cursor: default;
     }
   }
 }

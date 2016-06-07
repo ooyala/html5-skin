@@ -7,6 +7,11 @@
     }
   }
 
+  //Action Icons
+    .oo-action-icon span.oo-icon, .oo-action-icon-pause.oo-animate-pause {
+      font-size:86px;
+  }
+
   // Discovery Screen
   .oo-discovery-panel {
     @include apply-to-safari-only ('.oo-scale-size') {

@@ -131,14 +131,15 @@ $state-danger-text:              #a94442 !default;
 //$state-danger-border:            darken($state-danger-bg, 5%) !default;
 //
 //
-// Video
+// Multiples
 $xsmall-multiple:                 0.7 !default;
 $large-multiple:                  1.2 !default;
-$scrubber-padding-height:         24px !default;
+
+// Video
 $control-bar-height:              90px !default;
 $control-bar-height-small:        57px !default;
-$scrubber-bar-height:             5px !default;
-$scrubber-bar-padding-height:     24px !default;
+$scrubber-bar-height:             3px !default;
+$scrubber-bar-padding-height:     34px !default;
 $scrubber-bar-left-right-padding: 15px !default;
 $min-player-width:                320px !default;
 
@@ -163,7 +164,8 @@ $slider-volume-height-small:          $slider-volume-height * $xsmall-multiple !
 $slider-volume-thumb-diameter-small:  $slider-volume-thumb-diameter * $xsmall-multiple !default;
 
 //bitrate
-$bitrate-horizontal-height:       100px !default;
+$bitrate-horizontal-height:        100px !default;
+$bitrate-popover-height:            80px !default;
 
 $font-path:                       "assets/fonts" !default;
 

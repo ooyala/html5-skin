@@ -66,7 +66,7 @@ module.exports = {
   },
 
   UI: {
-    defaultControlBarHeight: 60,
+    defaultControlBarHeight: 90,
     defaultScrubberBarHeight: 4,
     DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15
   },

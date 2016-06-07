@@ -17,11 +17,10 @@ var React = require('react'),
     PlayingScreen = require('./views/playingScreen'),
     ErrorScreen = require('./views/errorScreen'),
     ContentScreen = require('./views/contentScreen'),
-    ComponentWidthMixin = require('./mixins/componentWidthMixin'),
-    ClassNames = require('classnames');
+    ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
 
 var Skin = React.createClass({
-  mixins: [ComponentWidthMixin],
+  mixins: [ResponsiveManagerMixin],
 
   getInitialState: function() {
     this.overlayRenderingEventSent = false;
@@ -35,10 +34,8 @@ var Skin = React.createClass({
   componentDidUpdate: function() {
     // Notify AMC the correct overlay rendering info
     if (this.state.screenToShow !== null && !this.overlayRenderingEventSent) {
-      var breakpointData = this.generateBreakpointData();
-      var responsiveId = ClassNames(breakpointData.ids);
-      var responsiveUIMultiple = this.props.skinConfig.responsive.breakpoints[responsiveId].multiplier;
-      var marginHeight = responsiveUIMultiple * (CONSTANTS.UI.defaultControlBarHeight + CONSTANTS.UI.defaultScrubberBarHeight);
+      var responsiveUIMultiple = this.props.skinConfig.responsive.breakpoints[this.state.responsiveId].multiplier;
+      var marginHeight = responsiveUIMultiple * CONSTANTS.UI.defaultControlBarHeight;
       this.props.controller.publishOverlayRenderingEvent(marginHeight);
       this.overlayRenderingEventSent = true;
     }
@@ -98,39 +95,7 @@ var Skin = React.createClass({
     });
   },
 
-  generateBreakpointData: function() {
-    var breakpoints = this.props.skinConfig.responsive.breakpoints;
-    var breakpointData = {
-      classes: {},
-      ids: {}
-    };
-
-    //loop through breakpoints from skinConfig
-    //generate Classname object with name and min/max width
-    for (var key in breakpoints) {
-      if (breakpoints.hasOwnProperty(key)) {
-        //min width only, 1st breakpoint
-        if(breakpoints[key].minWidth && !breakpoints[key].maxWidth) {
-          breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] = this.state.componentWidth >= breakpoints[key].minWidth;
-        }
-        //min and max, middle breakpoints
-        else if(breakpoints[key].minWidth && breakpoints[key].maxWidth) {
-          breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] = this.state.componentWidth >= breakpoints[key].minWidth && this.state.componentWidth <= breakpoints[key].maxWidth;
-        }
-        //max width only, last breakpoint
-        else if(breakpoints[key].maxWidth && !breakpoints[key].minWidth) {
-          breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] = this.state.componentWidth <= breakpoints[key].maxWidth;
-        }
-      }
-    }
-
-    return breakpointData;
-  },
-
   render: function() {
-    var breakpointData = this.generateBreakpointData();
-    var responsiveClass = ClassNames(breakpointData.classes);
-    var responsiveId = ClassNames(breakpointData.ids);
     var screen;
 
     //For IE10, use the start screen and that's it.
@@ -172,9 +137,9 @@ var Skin = React.createClass({
               playerState={this.state.playerState}
               seeking={this.state.seeking}
               upNextInfo={this.state.upNextInfo}
-              authorization={this.state.authorization}
+              isLiveStream={this.state.isLiveStream}
               controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
-              responsiveView={responsiveId}
+              responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
               closedCaptionOptions = {this.props.closedCaptionOptions}
@@ -188,7 +153,9 @@ var Skin = React.createClass({
             screen={CONSTANTS.SCREEN.SHARE_SCREEN}
             icon="share">
             <SharePanel
-              {...this.props}/>
+              {...this.props}
+              assetId={this.state.assetId}
+              playerParam={this.state.playerParam} />
           </ContentScreen>
           );
           break;
@@ -204,8 +171,8 @@ var Skin = React.createClass({
               fullscreen={this.state.fullscreen}
               seeking={this.state.seeking}
               upNextInfo={this.state.upNextInfo}
-              authorization={this.state.authorization}
-              responsiveView={responsiveId}
+              isLiveStream={this.state.isLiveStream}
+              responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
               ref="pauseScreen" />
@@ -222,8 +189,8 @@ var Skin = React.createClass({
               fullscreen={this.state.fullscreen}
               playerState={this.state.playerState}
               seeking={this.state.seeking}
-              authorization={this.state.authorization}
-              responsiveView={responsiveId}
+              isLiveStream={this.state.isLiveStream}
+              responsiveView={this.state.responsiveId}
               videoQualityOptions={this.state.videoQualityOptions}
               componentWidth={this.state.componentWidth}
               ref="endScreen" />
@@ -242,7 +209,7 @@ var Skin = React.createClass({
               buffered={this.state.buffered}
               seeking={this.state.seeking}
               controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
-              responsiveView={responsiveId}
+              responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
               ref="adScreen" />
@@ -260,7 +227,7 @@ var Skin = React.createClass({
                 videosPerPage={{xs:2, sm:4, md:6, lg:8}}
                 discoveryData={this.state.discoveryData}
                 playerState={this.state.playerState}
-                responsiveView={responsiveId}
+                responsiveView={this.state.responsiveId}
                 componentWidth={this.state.componentWidth}/>
             </ContentScreen>
           );
@@ -303,7 +270,7 @@ var Skin = React.createClass({
               {...this.props}
               fullscreen={this.state.fullscreen}
               videoQualityOptions={this.state.videoQualityOptions}
-              responsiveView={responsiveId}/>
+              responsiveView={this.state.responsiveId}/>
           </ContentScreen>
           );
           break;
@@ -319,7 +286,7 @@ var Skin = React.createClass({
     }
 
     return (
-      <div id="oo-responsive" className={responsiveClass}>
+      <div id="oo-responsive" className={this.state.responsiveClass}>
         {screen}
       </div>
     );

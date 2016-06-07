@@ -4,19 +4,21 @@
 var React = require('react'),
     ReactDOM = require('react-dom'),
     ResizeMixin = require('../mixins/resizeMixin'),
+    Thumbnail = require('./thumbnail'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
   mixins: [ResizeMixin],
 
   getInitialState: function() {
-    this.isMobile = this.props.controller.state.isMobile;
     this.lastScrubX = null;
+    this.touchInitiated = false;
 
     return {
       scrubberBarWidth: 0,
       playheadWidth: 0,
       scrubbingPlayheadX: 0,
+      hoveringX: 0,
       currentPlayhead: 0,
       transitionedDuringSeek: false
     };
@@ -64,12 +66,12 @@ var ScrubberBar = React.createClass({
   handlePlayheadMouseDown: function(evt) {
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
     this.props.controller.startHideControlBarTimer();
-    if (evt.type == 'touchstart' || !this.isMobile){
+    if ((this.touchInitiated && evt.type !== "mousedown") || (!this.touchInitiated && evt.type === "mousedown") ){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
 
       evt.preventDefault();
-      if (this.isMobile){
+      if (this.touchInitiated){
         evt = evt.touches[0];
       }
 
@@ -82,7 +84,7 @@ var ScrubberBar = React.createClass({
         this.lastScrubX = evt.clientX;
       }
 
-      if (!this.isMobile){
+      if (!this.touchInitiated){
         ReactDOM.findDOMNode(this).parentNode.addEventListener("mousemove", this.handlePlayheadMouseMove);
         // attach a mouseup listener to the document for usability, otherwise scrubbing
         // breaks if your cursor leaves the player element
@@ -98,8 +100,8 @@ var ScrubberBar = React.createClass({
   handlePlayheadMouseMove: function(evt) {
     this.props.controller.startHideControlBarTimer();
     evt.preventDefault();
-    if (this.props.seeking) {
-      if (this.isMobile){
+    if (this.props.seeking && this.props.duration > 0) {
+      if (this.touchInitiated){
         evt = evt.touches[0];
       }
       var deltaX = evt.clientX - this.lastScrubX;
@@ -123,7 +125,7 @@ var ScrubberBar = React.createClass({
     evt.cancelBubble = true; // IE
 
     this.lastScrubX = null;
-    if (!this.isMobile){
+    if (!this.touchInitiated){
       ReactDOM.findDOMNode(this).parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
       document.removeEventListener("mouseup", this.handlePlayheadMouseUp, true);
     }
@@ -139,13 +141,16 @@ var ScrubberBar = React.createClass({
       });
       this.props.controller.endSeeking();
     }
+    this.touchInitiated = false;
   },
 
   handleScrubberBarMouseDown: function(evt) {
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
     if (evt.target.className.match("oo-playhead")) { return; }
+    if (this.touchInitiated && evt.type === "mousedown") { return; }
     var offsetX = 0;
-    if (this.isMobile){
+    this.touchInitiated = evt.type === "touchstart";
+    if (this.touchInitiated){
       offsetX = evt.targetTouches[0].pageX - evt.target.getBoundingClientRect().left;
     }
     else {
@@ -157,6 +162,28 @@ var ScrubberBar = React.createClass({
     });
     this.props.controller.updateSeekingPlayhead((offsetX / this.state.scrubberBarWidth) * this.props.duration);
     this.handlePlayheadMouseDown(evt);
+  },
+
+  handleScrubberBarMouseOver: function(evt) {
+    if (!this.props.controller.state.thumbnails) return;
+    if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
+    if (this.isMobile) { return; }
+    if (evt.target.className.match("oo-playhead")) { return; }
+
+    this.setState({
+      hoveringX: evt.nativeEvent.offsetX
+    });
+  },
+
+  handleScrubberBarMouseMove: function(evt) {
+    this.handleScrubberBarMouseOver(evt);
+  },
+
+  handleScrubberBarMouseOut: function(evt) {
+    if (!this.props.controller.state.thumbnails) return;
+    this.setState({
+      hoveringX: 0
+    });
   },
 
   render: function() {
@@ -193,8 +220,12 @@ var ScrubberBar = React.createClass({
 
     var playheadMouseDown = this.handlePlayheadMouseDown;
     var scrubberBarMouseDown = this.handleScrubberBarMouseDown;
+    var scrubberBarMouseOver = this.handleScrubberBarMouseOver;
+    var scrubberBarMouseOut = this.handleScrubberBarMouseOut;
+    var scrubberBarMouseMove = this.handleScrubberBarMouseMove;
     var playedIndicatorClassName = "oo-played-indicator";
     var playheadClassName = "oo-playhead";
+    var scrubberBarClassName = "oo-scrubber-bar";
 
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN){
       playheadClassName += " oo-ad-playhead";
@@ -206,11 +237,46 @@ var ScrubberBar = React.createClass({
       playedIndicatorStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.playedColor;
     }
 
+    var thumbnailContainer = null;
+    if (this.props.controller.state.thumbnails && (this.state.scrubbingPlayheadX || this.lastScrubX || this.state.hoveringX)) {
+      if (this.state.scrubbingPlayheadX) {
+        var hoverPosition = this.state.scrubbingPlayheadX;
+        var hoverTime = (this.state.scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration;
+        playheadClassName += " oo-playhead-scrubbing";
+      }
+      else if (this.lastScrubX) {//to show thumbnail when clicking on playhead
+        var hoverPosition = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration;
+        var hoverTime = this.props.currentPlayhead;
+        playheadClassName += " oo-playhead-scrubbing";
+      }
+      else if (this.state.hoveringX) {
+        var hoverPosition = this.state.hoveringX;
+        var hoverTime=(this.state.hoveringX / this.state.scrubberBarWidth) * this.props.duration;
+        var hoveredIndicatorStyle = {
+              width: Math.min((parseFloat(hoverTime) / parseFloat(this.props.duration)) * 100, 100) + "%",
+              backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor
+            };
+        scrubberBarClassName += " oo-scrubber-bar-hover";
+        playheadClassName += " oo-playhead-hovering";
+      }
+      thumbnailContainer =
+        (<div className="oo-scrubber-thumbnail-container">
+          <Thumbnail
+            thumbnails={this.props.controller.state.thumbnails}
+            hoverPosition={hoverPosition}
+            duration={this.props.duration}
+            hoverTime={hoverTime > 0 ? hoverTime : 0}
+            scrubberBarWidth={this.state.scrubberBarWidth}/>
+        </div>);
+    }
+
     return (
-      <div className="oo-scrubber-bar-container">
-        <div className="oo-scrubber-bar-padding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
-          <div ref="scrubberBar" className="oo-scrubber-bar" style={scrubberBarStyle}>
+      <div className="oo-scrubber-bar-container" ref="scrubberBarContainer" onMouseOver={scrubberBarMouseOver} onMouseOut={scrubberBarMouseOut} onMouseMove={scrubberBarMouseMove}>
+        {thumbnailContainer}
+        <div className="oo-scrubber-bar-padding" ref="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
+          <div ref="scrubberBar" className={scrubberBarClassName} style={scrubberBarStyle}>
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle}></div>
+            <div className="oo-hovered-indicator" style={hoveredIndicatorStyle}></div>
             <div className={playedIndicatorClassName} style={playedIndicatorStyle}></div>
             <div className="oo-playhead-padding" style={playheadPaddingStyle}
               onMouseDown={playheadMouseDown} onTouchStart={playheadMouseDown}>

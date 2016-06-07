@@ -28,7 +28,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "playerParam": {},
       "assetId": null,
       "contentTree": {},
-      "authorization": {},
+      "thumbnails": null,
+      "isLiveStream": false,
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
@@ -131,7 +132,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
+      this.mb.subscribe(OO.EVENTS.THUMBNAILS_FETCHED, 'customerUi', _.bind(this.onThumbnailsFetched, this));//xenia: to be replaced by a more appropriate event
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
+      this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
@@ -194,6 +197,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.playerParam = params;
       this.state.elementId = elementId;
       this.state.isMobile = Utils.isMobile();
+      this.state.browserSupportsTouch = Utils.browserSupportsTouch();
 
       //initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');
@@ -278,7 +282,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         element = elementVideo;
       }
 
-      element.get(0).addEventListener("loadedmetadata", this.metaDataLoaded.bind(this));
+      //add loadedmetadata event listener to main video element
+      if (element.get(0)) {
+        element.get(0).addEventListener("loadedmetadata", this.metaDataLoaded.bind(this));
+      }
 
       if (Utils.isIE10()) {
         element.attr("controls", "controls");
@@ -309,6 +316,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.videoQualityOptions.selectedBitrate = null;
       this.state.closedCaptionOptions.availableLanguages = null;
       this.state.discoveryData = null;
+      this.resetUpNextInfo(true);
 
       this.state.assetId = embedCode;
       $.extend(true, this.state.playerParam, options);
@@ -316,11 +324,37 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onAuthorizationFetched: function(event, authorization) {
-      this.state.authorization = authorization;
+      this.state.isLiveStream = authorization.streams[0].is_live_stream;
     },
 
     onContentTreeFetched: function (event, contentTree) {
+      this.state.contentTree = contentTree;
+      this.state.playerState = CONSTANTS.STATE.START;
+      this.renderSkin({"contentTree": contentTree});
+    },
+
+    onThumbnailsFetched: function (event, thumbnails) {
+      if (this.skin.props.skinConfig.controlBar.scrubberBar.thumbnailPreview) {
+        this.state.thumbnails = thumbnails;
+      }
+    },
+
+    onAssetChanged: function (event, asset) {
+      this.state.videoQualityOptions.availableBitrates = null;
+      this.state.closedCaptionOptions.availableLanguages = null;
+      this.state.discoveryData = null;
+      this.subscribeBasicPlaybackEvents();
+
       this.resetUpNextInfo(true);
+
+      this.state.isLiveStream = asset.content.streams[0].is_live_stream;
+
+      var contentTree  = {};
+      contentTree.title = asset.content.title;
+      contentTree.description = asset.content.description;
+      contentTree.duration = asset.content.duration;
+      contentTree.promo_image = asset.content.posterImages[0].url;
+
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       this.renderSkin({"contentTree": contentTree});
@@ -407,6 +441,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
+        this.state.buffering = false;
         this.state.adPauseAnimationDisabled = true;
         this.state.pluginsElement.addClass("oo-showing");
         this.state.pluginsClickElement.removeClass("oo-showing");
@@ -474,7 +509,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.upNextInfo.delayedSetEmbedCodeEvent) {
         var delayedContentData = this.state.upNextInfo.delayedContentData;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
-        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, delayedContentData.clickedVideo.embed_code);
+
+        if (delayedContentData.clickedVideo.embed_code){
+          this.mb.publish(OO.EVENTS.SET_EMBED_CODE, delayedContentData.clickedVideo.embed_code, this.state.playerParam);
+        }
+        else if (delayedContentData.clickedVideo.asset){
+          this.mb.publish(OO.EVENTS.SET_ASSET, delayedContentData.clickedVideo.asset, this.state.playerParam);
+        }
+
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, delayedContentData);
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
         this.state.upNextInfo.delayedContentData = null;
@@ -736,15 +778,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.closedCaptionOptions.availableLanguages = languages;
 
-      //Set the language to the skinConfig default if it is one of our possible languages, otherwise just set it to the first possible language.
-      if (this.skin.props.skinConfig.closedCaptionOptions && _.contains(languages.languages, this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage)){
-        this.state.closedCaptionOptions.language = this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage;
-      } else if (languages && languages.languages && languages.languages.length > 0){
-        this.state.closedCaptionOptions.language = languages.languages[0];
-      }
+      //Set the language to the skinConfig default if it is not already set or is not one of our possible languages.
+      //If that is not possible either, just set it to the first possible language.
+      if (this.state.closedCaptionOptions.language == null || !_.contains(languages.languages, this.state.closedCaptionOptions.language)) {
+        if (this.skin.props.skinConfig.closedCaptionOptions && _.contains(languages.languages, this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage)){
+          this.state.closedCaptionOptions.language = this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage;
+        } else if (languages && languages.languages && languages.languages.length > 0){
+          this.state.closedCaptionOptions.language = languages.languages[0];
+        }
 
-      if (this.state.closedCaptionOptions.enabled){
-        this.setClosedCaptionsLanguage();
+        if (this.state.closedCaptionOptions.enabled){
+          this.setClosedCaptionsLanguage();
+        }
       }
     },
 
@@ -883,6 +928,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
     },
@@ -1094,7 +1140,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
         this.mb.publish(OO.EVENTS.PAUSE);
-        this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
+        if (selectedContentData.clickedVideo.embed_code){
+          this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
+        }
+        else if (selectedContentData.clickedVideo.asset){
+          this.mb.publish(OO.EVENTS.SET_ASSET, selectedContentData.clickedVideo.asset);
+        }
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
       }
     },
@@ -1298,7 +1349,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //set Main Video Element Wrapper padding-top to aspect ratio
     setAspectRatio: function() {
-      if(this.state.mainVideoAspectRatio > 0 && this.state.mainVideoAspectRatio <= 100) {
+      if(this.state.mainVideoAspectRatio > 0) {
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
     }
