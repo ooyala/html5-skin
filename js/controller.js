@@ -777,10 +777,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         } else if (languages && languages.languages && languages.languages.length > 0){
           this.state.closedCaptionOptions.language = languages.languages[0];
         }
-      }
 
-      if (this.state.closedCaptionOptions.enabled){
-        this.setClosedCaptionsLanguage();
+        if (this.state.closedCaptionOptions.enabled){
+          this.setClosedCaptionsLanguage();
+        }
       }
     },
 
