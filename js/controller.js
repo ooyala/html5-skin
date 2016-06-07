@@ -256,6 +256,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           videoWrapperClass: "innerWrapper",
           pluginsClass: "oo-player-skin-plugins"
         });
+
+        this.setupClosedCaptions();
       }, this));
 
       this.state.isMobile = Utils.isMobile();
@@ -325,9 +327,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onThumbnailsFetched: function (event, thumbnails) {
-      if (this.skin.props.skinConfig.controlBar.scrubberBar.thumbnailPreview) {
-        this.state.thumbnails = thumbnails;
-      }
+      this.state.thumbnails = thumbnails;
     },
 
     onAssetChanged: function (event, asset) {
@@ -768,7 +768,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.closedCaptionOptions.availableLanguages = languages;
+      this.setupClosedCaptions();
+    },
 
+    setupClosedCaptions: function() {
+      if (!this.state.closedCaptionOptions.availableLanguages || !this.skin) return;
+      var languages = this.state.closedCaptionOptions.availableLanguages;
       //Set the language to the skinConfig default if it is one of our possible languages, otherwise just set it to the first possible language.
       if (this.skin.props.skinConfig.closedCaptionOptions && _.contains(languages.languages, this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage)){
         this.state.closedCaptionOptions.language = this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage;
