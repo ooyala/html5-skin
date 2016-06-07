@@ -769,11 +769,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.closedCaptionOptions.availableLanguages = languages;
 
-      //Set the language to the skinConfig default if it is one of our possible languages, otherwise just set it to the first possible language.
-      if (this.skin.props.skinConfig.closedCaptionOptions && _.contains(languages.languages, this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage)){
-        this.state.closedCaptionOptions.language = this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage;
-      } else if (languages && languages.languages && languages.languages.length > 0){
-        this.state.closedCaptionOptions.language = languages.languages[0];
+      //Set the language to the skinConfig default if it is not already set or is not one of our possible languages.
+      //If that is not possible either, just set it to the first possible language.
+      if (this.state.closedCaptionOptions.language == null || !_.contains(languages.languages, this.state.closedCaptionOptions.language)) {
+        if (this.skin.props.skinConfig.closedCaptionOptions && _.contains(languages.languages, this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage)){
+          this.state.closedCaptionOptions.language = this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage;
+        } else if (languages && languages.languages && languages.languages.length > 0){
+          this.state.closedCaptionOptions.language = languages.languages[0];
+        }
       }
 
       if (this.state.closedCaptionOptions.enabled){
