@@ -41,46 +41,50 @@ var ColorSelectionTab = React.createClass({
 
   render: function(){
     var textColors = ["White", "Blue", "Magenta", "Green", "Yellow", "Red", "Cyan", "Black"];
-    var windowColors = ["White", "Blue", "Magenta", "Green", "Yellow", "Red", "Cyan", "Black", "Transparent"];
-    var backgroundColors = ["White", "Blue", "Magenta", "Green", "Yellow", "Red", "Cyan", "Black", "Transparent"];
+    var windowColors = ["Transparent", "White", "Blue", "Magenta", "Green", "Yellow", "Red", "Cyan", "Black"];
+    var backgroundColors = ["Transparent", "White", "Blue", "Magenta", "Green", "Yellow", "Red", "Cyan", "Black"];
 
     return(
       <div className="oo-color-selection-tab">
-        <SelectionContainer
-          title="Text color"
-          selectionText={this.props.closedCaptionOptions.textColor}
-          >
-          <ColorSelector
-            colors={textColors}
-            onColorChange={this.changeTextColor}
-            selectedColor={this.props.closedCaptionOptions.textColor}
-            enabled={this.props.closedCaptionOptions.enabled}
-          />
-        </SelectionContainer>
+        <div className="oo-color-selection-inner-wrapper">
+          <SelectionContainer
+            title="Text color"
+            selectionText={this.props.closedCaptionOptions.textColor}
+            >
+            <div className="oo-text-color-items-container">
+              <ColorSelector
+                colors={textColors}
+                onColorChange={this.changeTextColor}
+                selectedColor={this.props.closedCaptionOptions.textColor}
+                enabled={this.props.closedCaptionOptions.enabled}
+              />
+            </div>
+          </SelectionContainer>
 
-        <SelectionContainer
-          title="Background color"
-          selectionText={this.props.closedCaptionOptions.backgroundColor}
-          >
-          <ColorSelector
-            colors={backgroundColors}
-            onColorChange={this.changeBackgroundColor}
-            selectedColor={this.props.closedCaptionOptions.backgroundColor}
-            enabled={this.props.closedCaptionOptions.enabled}
-          />
-        </SelectionContainer>
+          <SelectionContainer
+            title="Background color"
+            selectionText={this.props.closedCaptionOptions.backgroundColor}
+            >
+            <ColorSelector
+              colors={backgroundColors}
+              onColorChange={this.changeBackgroundColor}
+              selectedColor={this.props.closedCaptionOptions.backgroundColor}
+              enabled={this.props.closedCaptionOptions.enabled}
+            />
+          </SelectionContainer>
 
-        <SelectionContainer
-          title="Window color"
-          selectionText={this.props.closedCaptionOptions.windowColor}
-          >
-          <ColorSelector
-            colors={windowColors}
-            onColorChange={this.changeWindowColor}
-            selectedColor={this.props.closedCaptionOptions.windowColor}
-            enabled={this.props.closedCaptionOptions.enabled}
-          />
-        </SelectionContainer>
+          <SelectionContainer
+            title="Window color"
+            selectionText={this.props.closedCaptionOptions.windowColor}
+            >
+            <ColorSelector
+              colors={windowColors}
+              onColorChange={this.changeWindowColor}
+              selectedColor={this.props.closedCaptionOptions.windowColor}
+              enabled={this.props.closedCaptionOptions.enabled}
+            />
+          </SelectionContainer>
+        </div>
       </div>
     );
   }

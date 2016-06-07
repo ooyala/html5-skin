@@ -71,36 +71,6 @@
       }
     }
   }
-  .oo-language-container {
-    margin-top: 8%;
-    .oo-language-panel {
-      a.oo-item {
-        width: 168px;
-        font-size: 1.4em;
-        margin: 17px 33px;
-        padding: 3px 12px;
-      }
-    }
-    .oo-flexcontainer {
-      -webkit-flex-flow: row wrap;
-      flex-flow: row wrap;
-    }
-    .oo-discover-btn {
-      span.oo-icon {
-        font-size: 1.2em;
-      }
-    }
-  }
-  .oo-preview-panel {
-    padding: 14px $panel-padding-lg;
-    .oo-preview-caption {
-      font-size: 1em;
-      line-height:1.4em;
-    }
-    .oo-preview-text {
-      font-size: 1.7em;
-    }
-  }
 
   //Error screen
   .oo-error-screen {

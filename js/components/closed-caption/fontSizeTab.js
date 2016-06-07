@@ -42,12 +42,14 @@ var FontSizeTab = React.createClass({
 
     return (
       <div className="oo-font-size-tab">
-        <SelectionContainer
-          title="Font size"
-          selectionText={this.props.closedCaptionOptions.fontSize}
-          >
-          {fontItems}
-        </SelectionContainer>
+        <div className="oo-font-size-inner-wrapper">
+          <SelectionContainer
+            title="Font size"
+            selectionText={this.props.closedCaptionOptions.fontSize}
+            >
+            {fontItems}
+          </SelectionContainer>
+        </div>
       </div>
     );
   }

@@ -34,50 +34,52 @@ var CaptionOpacityTab = React.createClass({
   render: function(){
     return(
       <div className="oo-caption-opacity-tab">
-        <SelectionContainer
-          title="Text opacity"
-          selectionText={this.percentString(this.props.closedCaptionOptions.textOpacity)}
-          >
-          <Slider
-            value={parseFloat(this.props.closedCaptionOptions.textOpacity)}
-            onChange={this.changeTextOpacity}
-            className={"oo-slider oo-slider-caption-opacity"}
-            itemRef={"textOpacitySlider"}
-            minValue={"0"}
-            maxValue={"1"}
-            step={"0.1"}
-          />
-        </SelectionContainer>
+        <div className="oo-caption-opacity-inner-wrapper">
+          <SelectionContainer
+            title="Text opacity"
+            selectionText={this.percentString(this.props.closedCaptionOptions.textOpacity)}
+            >
+            <Slider
+              value={parseFloat(this.props.closedCaptionOptions.textOpacity)}
+              onChange={this.changeTextOpacity}
+              className={"oo-slider oo-slider-caption-opacity"}
+              itemRef={"textOpacitySlider"}
+              minValue={"0"}
+              maxValue={"1"}
+              step={"0.1"}
+            />
+          </SelectionContainer>
 
-        <SelectionContainer
-          title="Background opacity"
-          selectionText={this.percentString(this.props.closedCaptionOptions.backgroundOpacity)}
-          >
-          <Slider
-            value={parseFloat(this.props.closedCaptionOptions.backgroundOpacity)}
-            onChange={this.changeBackgroundOpacity}
-            className={"oo-slider oo-slider-caption-opacity"}
-            itemRef={"backgroundOpacitySlider"}
-            minValue={"0"}
-            maxValue={"1"}
-            step={"0.1"}
-          />
-        </SelectionContainer>
+          <SelectionContainer
+            title="Background opacity"
+            selectionText={this.percentString(this.props.closedCaptionOptions.backgroundOpacity)}
+            >
+            <Slider
+              value={parseFloat(this.props.closedCaptionOptions.backgroundOpacity)}
+              onChange={this.changeBackgroundOpacity}
+              className={"oo-slider oo-slider-caption-opacity"}
+              itemRef={"backgroundOpacitySlider"}
+              minValue={"0"}
+              maxValue={"1"}
+              step={"0.1"}
+            />
+          </SelectionContainer>
 
-        <SelectionContainer
-          title="Window opacity"
-          selectionText={this.percentString(this.props.closedCaptionOptions.windowOpacity)}
-          >
-          <Slider
-            value={parseFloat(this.props.closedCaptionOptions.windowOpacity)}
-            onChange={this.changeWindowOpacity}
-            className={"oo-slider oo-slider-caption-opacity"}
-            itemRef={"windowOpacitySlider"}
-            minValue={"0"}
-            maxValue={"1"}
-            step={"0.1"}
-          />
-        </SelectionContainer>
+          <SelectionContainer
+            title="Window opacity"
+            selectionText={this.percentString(this.props.closedCaptionOptions.windowOpacity)}
+            >
+            <Slider
+              value={parseFloat(this.props.closedCaptionOptions.windowOpacity)}
+              onChange={this.changeWindowOpacity}
+              className={"oo-slider oo-slider-caption-opacity"}
+              itemRef={"windowOpacitySlider"}
+              minValue={"0"}
+              maxValue={"1"}
+              step={"0.1"}
+            />
+          </SelectionContainer>
+        </div>
       </div>
     );
   }

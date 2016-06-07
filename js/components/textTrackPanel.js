@@ -41,8 +41,8 @@ var TextTrackPanel = React.createClass({
   textEnhancementMap: {
     "Uniform": "none",
     "Depressed": "none",
-    "Raised": "none",
-    "Shadow": "2px 0px gray"
+    "Raised": "-1px -1px white, -3px 0px 5px black",
+    "Shadow": "2px 2px 2px #1a1a1a"
   },
 
   setWindowBackgroundStyle: function(color, opacity) {

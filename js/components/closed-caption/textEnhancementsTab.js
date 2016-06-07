@@ -42,12 +42,14 @@ var TextEnhancementsTab = React.createClass({
 
     return (
       <div className="oo-text-enhancements-tab">
-        <SelectionContainer
-          title="Text Enhancement"
-          selectionText={this.props.closedCaptionOptions.textEnhancement}
-          >
-          {textEnhancementItems}
-        </SelectionContainer>
+        <div className="oo-text-enhancements-inner-wrapper">
+          <SelectionContainer
+            title="Text Enhancement"
+            selectionText={this.props.closedCaptionOptions.textEnhancement}
+            >
+            {textEnhancementItems}
+          </SelectionContainer>
+        </div>
       </div>
     );
   }

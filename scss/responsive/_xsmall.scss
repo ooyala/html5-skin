@@ -50,7 +50,7 @@
     }
   }
 
-  // Closed Caption Panel
+  //Closed Caption Panel
   .oo-closed-captions-panel {
     .oo-switch-container {
       height: 15px;
@@ -64,6 +64,9 @@
         margin-bottom: 33%;
       }
     }
+  }
+  .oo-data-selector {
+    top: 60%;
   }
   .oo-language-container {
     margin-top: 4%;
@@ -81,6 +84,8 @@
       }
     }
   }
+
+  //CC Preview Panel
   .oo-preview-panel {
     display: none;
   }

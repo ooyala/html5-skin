@@ -49,8 +49,8 @@ LanguageTab.defaultProps = {
   dataItemsPerPage: {
     xs: 1,
     sm: 4,
-    md: 4,
-    lg: 15
+    md: 8,
+    lg: 8
   },
   responsiveView: 'md'
 };

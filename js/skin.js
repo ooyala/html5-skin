@@ -287,7 +287,7 @@ var Skin = React.createClass({
             <ClosedCaptionPanel
               {...this.props}
               closedCaptionOptions={this.props.closedCaptionOptions}
-              dataItemsPerPage={{xs:1, sm:4, md:4, lg:15}}
+              dataItemsPerPage={{xs:1, sm:4, md:8, lg:8}}
               responsiveView={responsiveId}/>
           </ContentScreen>
           );
