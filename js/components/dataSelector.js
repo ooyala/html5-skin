@@ -9,18 +9,18 @@ var DataSelector = React.createClass({
     };
   },
 
-  handelDataSelection: function(dataItem){
+  handleDataSelection: function(dataItem) {
     this.props.onDataChange(dataItem);
   },
 
-  handleLeftChevronClick: function(event){
+  handleLeftChevronClick: function(event) {
     event.preventDefault();
     this.setState({
       currentPage: this.state.currentPage - 1
     });
   },
 
-  handleRightChevronClick: function(event){
+  handleRightChevronClick: function(event) {
     event.preventDefault();
     this.setState({
       currentPage: this.state.currentPage + 1
@@ -40,7 +40,7 @@ var DataSelector = React.createClass({
     }
   },
 
-  setClassname: function(item){
+  setClassname: function(item) {
     return ClassNames({
       'oo-item': true,
       'oo-item-selected': this.props.selectedData == item && this.props.enabled,
@@ -62,7 +62,7 @@ var DataSelector = React.createClass({
       var dataContentBlocks = [];
       for (var i = 0; i < dataItems.length; i++) {
         dataContentBlocks.push(
-          <a className={this.setClassname(dataItems[i])} onClick={this.handelDataSelection.bind(this, dataItems[i])} key={i}>
+          <a className={this.setClassname(dataItems[i])} onClick={this.handleDataSelection.bind(this, dataItems[i])} key={i}>
             <span className="oo-data">{dataItems[i]}</span>
           </a>
         );

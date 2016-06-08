@@ -5,12 +5,13 @@ var React = require('react'),
 var FontSizeTab = React.createClass({
   getInitialState: function() {
     return {
-      selectedFontSize: this.props.closedCaptionOptions.fontSize
+      selectedFontSize: this.props.closedCaptionOptions.fontSize,
+      fontSizes: ["Small", "Medium", "Large", "Extra Large"]
     };
   },
 
   changeFontSize: function(fontSize) {
-    if (this.props.closedCaptionOptions.enabled){
+    if (this.props.closedCaptionOptions.enabled) {
       this.props.controller.onClosedCaptionFontSizeChange(fontSize);
       this.setState({
         selectedFontSize: fontSize
@@ -29,13 +30,12 @@ var FontSizeTab = React.createClass({
   },
 
   render: function() {
-    var fontSizes = ["Small", "Medium", "Large", "Extra Large"];
     var fontItems = [];
-    for(var i = 0; i < fontSizes.length; i++) {
+    for(var i = 0; i < this.state.fontSizes.length; i++) {
       fontItems.push(
-        <a className="oo-font-size-container" onClick={this.changeFontSize.bind(this, fontSizes[i])} key={i}>
-          <div className={this.setClassname(fontSizes[i], "letter") + " oo-font-size-letter-" + fontSizes[i].replace(" ", "-")}>A</div>
-          <div className={this.setClassname(fontSizes[i], "label")}>{fontSizes[i]}</div>
+        <a className="oo-font-size-container" onClick={this.changeFontSize.bind(this, this.state.fontSizes[i])} key={i}>
+          <div className={this.setClassname(this.state.fontSizes[i], "letter") + " oo-font-size-letter-" + this.state.fontSizes[i].replace(" ", "-")}>A</div>
+          <div className={this.setClassname(this.state.fontSizes[i], "label")}>{this.state.fontSizes[i]}</div>
         </a>
       );
     }

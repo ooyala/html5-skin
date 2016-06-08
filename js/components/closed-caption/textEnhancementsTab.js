@@ -5,7 +5,8 @@ var React = require('react'),
 var TextEnhancementsTab = React.createClass({
   getInitialState: function() {
     return {
-      selectedTextEnhancement: this.props.closedCaptionOptions.textEnhancement
+      selectedTextEnhancement: this.props.closedCaptionOptions.textEnhancement,
+      textEnhancements: ["Uniform", "Depressed", "Raised", "Shadow"]
     };
   },
 
@@ -29,13 +30,12 @@ var TextEnhancementsTab = React.createClass({
   },
 
   render: function() {
-    var textEnhancements = ["Uniform", "Depressed", "Raised", "Shadow"];
     var textEnhancementItems = [];
-    for(var i = 0; i < textEnhancements.length; i++) {
+    for(var i = 0; i < this.state.textEnhancements.length; i++) {
       textEnhancementItems.push(
-        <a className="oo-text-enhancements-container" onClick={this.changeTextEnhancement.bind(this, textEnhancements[i])} key={i}>
-          <div className={this.setClassname(textEnhancements[i], "letter") + " oo-text-enhancement-letter-" + textEnhancements[i]}>A</div>
-          <div className={this.setClassname(textEnhancements[i], "label")}>{textEnhancements[i]}</div>
+        <a className="oo-text-enhancements-container" onClick={this.changeTextEnhancement.bind(this, this.state.textEnhancements[i])} key={i}>
+          <div className={this.setClassname(this.state.textEnhancements[i], "letter") + " oo-text-enhancement-letter-" + this.state.textEnhancements[i]}>A</div>
+          <div className={this.setClassname(this.state.textEnhancements[i], "label")}>{this.state.textEnhancements[i]}</div>
         </a>
       );
     }

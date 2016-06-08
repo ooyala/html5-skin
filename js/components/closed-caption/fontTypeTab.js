@@ -4,11 +4,12 @@ var React = require('react'),
 var FontTypeTab = React.createClass({
   getInitialState: function() {
     return {
-      selectedFontType: this.props.closedCaptionOptions.fontType
+      selectedFontType: this.props.closedCaptionOptions.fontType,
+      availableFontTypes: ["Helvetica", "Georgia", "Comic Sans", "Impact", "Times New Roman", "Tahoma", "Verdana", "Courier New", "Lucida Console"]
     };
   },
 
-  changeFontType: function(fontType){
+  changeFontType: function(fontType) {
     if (this.props.closedCaptionOptions.enabled){
       this.props.controller.onClosedCaptionFontTypeChange(fontType);
       this.setState({
@@ -18,8 +19,6 @@ var FontTypeTab = React.createClass({
   },
 
   render: function(){
-    var availableFontTypes = ["Helvetica", "Georgia", "Comic Sans", "Impact", "Times New Roman", "Tahoma", "Verdana", "Courier New", "Lucida Console"];
-
     return(
       <div className="oo-font-type-tab">
         <DataSelector
@@ -28,7 +27,7 @@ var FontTypeTab = React.createClass({
           dataItemsPerPage={this.props.dataItemsPerPage}
           selectedData={this.state.selectedFontType}
           enabled={this.props.closedCaptionOptions.enabled}
-          availableDataItems={availableFontTypes}
+          availableDataItems={this.state.availableFontTypes}
           onDataChange={this.changeFontType}
         />
       </div>
