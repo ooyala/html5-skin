@@ -32,10 +32,30 @@ var TextTrackPanel = React.createClass({
   },
 
   fontSizeMap: {
-    "Small": "16px",
-    "Medium": "26px",
-    "Large": "44px",
-    "Extra Large": "64px"
+    "Small": {
+      "xs": "12px",
+      "sm": "14px",
+      "md": "16px",
+      "lg": "20px",
+    },
+    "Medium": {
+      "xs": "18px",
+      "sm": "22px",
+      "md": "26px",
+      "lg": "32px",
+    },
+    "Large": {
+      "xs": "30px",
+      "sm": "36px",
+      "md": "44px",
+      "lg": "52px",
+    },
+    "Extra Large": {
+      "xs": "34px",
+      "sm": "42px",
+      "md": "64px",
+      "lg": "72px",
+    }
   },
 
   textEnhancementMap: {
@@ -56,7 +76,7 @@ var TextTrackPanel = React.createClass({
     return {
       color: "rgba(" + this.colorMap[color] + "," + opacity + ")",
       fontFamily: this.fontTypeMap[fontType],
-      fontSize: this.fontSizeMap[fontSize],
+      fontSize: this.fontSizeMap[fontSize][this.props.responsiveView],
       textShadow: this.textEnhancementMap[textEnhancement]
     }
   },
