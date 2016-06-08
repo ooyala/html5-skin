@@ -1,7 +1,8 @@
 var React = require('react'),
-    Utils = require('./../utils'),
+    Utils = require('../utils'),
     CONSTANTS = require('../../constants/constants'),
-    ClassNames = require('classnames');
+    ClassNames = require('classnames'),
+    TextTrack = require('../textTrackPanel');
 
 var CCPreviewPanel = React.createClass({
   render: function(){
@@ -21,7 +22,7 @@ var CCPreviewPanel = React.createClass({
     return (
       <div className="oo-preview-panel">
         <div className={previewCaptionClassName}>{closedCaptionPreviewTitle}</div>
-        <div className={previewTextClassName}>{closedCaptionSampleText}</div>
+        <TextTrack {...this.props} cueText={closedCaptionSampleText} />
       </div>
     );
   }

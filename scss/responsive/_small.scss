@@ -11,11 +11,76 @@
     .oo-action-icon span.oo-icon, .oo-action-icon-pause.oo-animate-pause {
       font-size:86px;
   }
-    
+
   // Discovery Screen
   .oo-discovery-panel {
     @include apply-to-safari-only ('.oo-scale-size') {
       min-height: 190px !important;
+    }
+  }
+
+  //Closed Caption Settings
+  .captions-navbar {
+    margin-top:10px;
+  }
+  .tabs-menu-item a {
+    font-size: 15px;
+  }
+  .oo-data-panel {
+    width: 400px;
+  }
+  .oo-closed-captions-panel {
+    .oo-color-selection-tab {
+      .oo-selection-container {
+        min-width: 185px;
+
+        .oo-selection-inner-wrapper {
+          width: 190px;
+
+          .oo-selection-container-title {
+            font-size: 15px;
+            margin-bottom: 20px;
+          }
+
+          .oo-text-color-items-container {
+            width: 180px;
+          }
+
+          .oo-selection-items-container {
+            width: 190px;
+          }
+
+          .oo-item {
+            width: 23px;
+            height: 23px;
+            margin-right: 15px;
+            margin-bottom: 20px;
+          }
+
+          .oo-item-selected {
+            border: solid #247dff 3px;
+            border-radius: 50%;
+          }
+
+          .oo-color-item {
+            width: 15px;
+            height: 15px;
+          }
+          .oo-color-item-Transparent {
+            background-size: 25px;
+          }
+        }
+      }
+    }
+    .oo-font-size-tab {
+      .oo-selection-container-title {
+        margin-bottom: 0px !important;
+      }
+    }
+    .oo-text-enhancements-tab {
+      .oo-selection-container-title {
+        margin-bottom: 0px !important;
+      }
     }
   }
 
@@ -28,7 +93,7 @@
         padding: 2px 12px;
 
         .oo-text-track {
-          font-size: em(18px);
+
         }
       }
     }

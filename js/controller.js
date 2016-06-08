@@ -72,7 +72,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "enabled": null,
         "language": null,
         "availableLanguages": null,
-        "cueText": null
+        "cueText": null,
+        "textColor": null,
+        "windowColor": null,
+        "backgroundColor": null,
+        "textOpacity": null,
+        "backgroundOpacity": null,
+        "windowOpacity": null,
+        "fontType": null,
+        "fontSize": null,
+        "textEnhancement": null
       },
 
       "videoQualityOptions": {
@@ -1181,6 +1190,51 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onClosedCaptionLanguageChange: function(language) {
       this.state.closedCaptionOptions.language = language;
       this.setClosedCaptionsLanguage();
+      this.renderSkin();
+    },
+
+    onClosedCaptionTextColorChange: function(textColor) {
+      this.state.closedCaptionOptions.textColor = textColor;
+      this.renderSkin();
+    },
+
+    onClosedCaptionWindowColorChange: function(windowColor) {
+      this.state.closedCaptionOptions.windowColor = windowColor;
+      this.renderSkin();
+    },
+
+    onClosedCaptionBackgroundColorChange: function(backgroundColor) {
+      this.state.closedCaptionOptions.backgroundColor = backgroundColor;
+      this.renderSkin();
+    },
+
+    onClosedCaptionFontTypeChange: function(fontType) {
+      this.state.closedCaptionOptions.fontType = fontType;
+      this.renderSkin();
+    },
+
+    onClosedCaptionFontSizeChange: function(fontSize) {
+      this.state.closedCaptionOptions.fontSize = fontSize;
+      this.renderSkin();
+    },
+
+    onClosedCaptionTextOpacityChange: function(textOpacity) {
+      this.state.closedCaptionOptions.textOpacity = textOpacity;
+      this.renderSkin();
+    },
+
+    onClosedCaptionBackgroundOpacityChange: function(backgroundOpacity) {
+      this.state.closedCaptionOptions.backgroundOpacity = backgroundOpacity;
+      this.renderSkin();
+    },
+
+    onClosedCaptionWindowOpacityChange: function(windowOpacity) {
+      this.state.closedCaptionOptions.windowOpacity = windowOpacity;
+      this.renderSkin();
+    },
+
+    onClosedCaptionTextEnhancementChange: function(textEnhancement) {
+      this.state.closedCaptionOptions.textEnhancement = textEnhancement;
       this.renderSkin();
     },
 
