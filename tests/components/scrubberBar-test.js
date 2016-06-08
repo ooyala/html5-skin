@@ -3,7 +3,8 @@ jest.dontMock('../../js/components/scrubberBar')
     .dontMock('../../js/constants/constants')
     .dontMock('../../config/en.json')
     .dontMock('../../config/es.json')
-    .dontMock('../../config/zh.json');
+    .dontMock('../../config/zh.json')
+    .dontMock('../../config/skin.json');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');

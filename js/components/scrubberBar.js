@@ -165,7 +165,7 @@ var ScrubberBar = React.createClass({
   },
 
   handleScrubberBarMouseOver: function(evt) {
-    if (!this.props.controller.state.thumbnails) return;
+    if (!this.props.skinConfig.controlBar.scrubberBar.thumbnailPreview) return;
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
     if (this.isMobile) { return; }
     if (evt.target.className.match("oo-playhead")) { return; }
