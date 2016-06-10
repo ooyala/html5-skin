@@ -15,7 +15,8 @@
 @include apply-to-ie11-only ('.oo-discovery-toaster-container-style') {
   position: absolute;
   height: 100%;
-  left:auto;
+  left: 50%;
+  top: 62.5%;
   @include vendor-prefixes(transform, translate(none, -25%));
 }
 
