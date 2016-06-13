@@ -11,12 +11,13 @@ var FontSizeTab = React.createClass({
   },
 
   changeFontSize: function(fontSize) {
-    if (this.props.closedCaptionOptions.enabled) {
-      this.props.controller.onClosedCaptionFontSizeChange(fontSize);
-      this.setState({
-        selectedFontSize: fontSize
-      });
+    if (!this.props.closedCaptionOptions.enabled) {
+      this.props.controller.toggleClosedCaptionEnabled();
     }
+    this.props.controller.onClosedCaptionFontSizeChange(fontSize);
+    this.setState({
+      selectedFontSize: fontSize
+    });
   },
 
   setClassname: function(item, elementType) {
