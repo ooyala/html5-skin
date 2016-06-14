@@ -523,10 +523,8 @@
               text-shadow: none;
             }
             .oo-text-enhancement-letter-Depressed {
-              -webkit-text-fill-color: transparent;
-              -webkit-text-stroke-width: 1px;
-              -webkit-text-stroke-color: white;
-              text-shadow: 5px 0px gray;
+              color: gray;
+              text-shadow: 1px 1px white;
             }
             .oo-text-enhancement-letter-Raised {
               color: gray;
