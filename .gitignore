@@ -1,6 +1,5 @@
 node_modules
-build/*
-!build/html5-skin.min.js
+build
 coverage
 .idea
 .DS_Store
