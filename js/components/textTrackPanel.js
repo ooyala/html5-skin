@@ -4,7 +4,7 @@
  * @module TextTrackPanel
  */
 var React = require('react');
-
+var baseFontSize = 1.0;
 var TextTrackPanel = React.createClass({
 
   colorMap: {
@@ -33,28 +33,28 @@ var TextTrackPanel = React.createClass({
 
   fontSizeMap: {
     "Small": {
-      "xs": "12px",
-      "sm": "14px",
-      "md": "16px",
-      "lg": "20px",
+      "xs": (baseFontSize * 0.8) + "em",
+      "sm": (baseFontSize * 1.0) + "em",
+      "md": (baseFontSize * 1.2) + "em",
+      "lg": (baseFontSize * 1.4) + "em",
     },
     "Medium": {
-      "xs": "18px",
-      "sm": "22px",
-      "md": "26px",
-      "lg": "32px",
+      "xs": (baseFontSize * 1.2) + "em",
+      "sm": (baseFontSize * 1.4) + "em",
+      "md": (baseFontSize * 1.6) + "em",
+      "lg": (baseFontSize * 1.8) + "em",
     },
     "Large": {
-      "xs": "30px",
-      "sm": "36px",
-      "md": "44px",
-      "lg": "52px",
+      "xs": (baseFontSize * 1.6) + "em",
+      "sm": (baseFontSize * 1.8) + "em",
+      "md": (baseFontSize * 2.0) + "em",
+      "lg": (baseFontSize * 2.2) + "em",
     },
     "Extra Large": {
-      "xs": "34px",
-      "sm": "42px",
-      "md": "64px",
-      "lg": "72px",
+      "xs": (baseFontSize * 2.0) + "em",
+      "sm": (baseFontSize * 2.2) + "em",
+      "md": (baseFontSize * 2.4) + "em",
+      "lg": (baseFontSize * 2.6) + "em",
     }
   },
 
