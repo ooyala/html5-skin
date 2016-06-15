@@ -3,43 +3,11 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#E2E2E2;}
-	.st1{fill:#FFFFFF;}
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#F2384A;}
 </style>
-<rect x="83.4" y="0" class="st0" width="16.6" height="16.6"/>
-<rect x="83.4" y="16.6" class="st1" width="16.6" height="16.6"/>
-<rect x="83.4" y="33.3" class="st0" width="16.6" height="16.7"/>
-<rect x="50" y="0" class="st0" width="16.7" height="16.6"/>
-<rect x="50" y="16.6" class="st1" width="16.7" height="16.6"/>
-<rect x="50" y="33.3" class="st0" width="16.7" height="16.7"/>
-<rect x="66.8" y="0" class="st1" width="16.6" height="16.6"/>
-<rect x="66.8" y="16.6" class="st0" width="16.6" height="16.6"/>
-<rect x="66.8" y="33.3" class="st1" width="16.6" height="16.7"/>
-<rect x="83.4" y="50" class="st1" width="16.6" height="16.6"/>
-<rect x="83.4" y="66.7" class="st0" width="16.6" height="16.6"/>
-<rect x="83.4" y="83.4" class="st1" width="16.6" height="16.7"/>
-<rect x="50" y="50" class="st1" width="16.7" height="16.6"/>
-<rect x="50" y="66.7" class="st0" width="16.7" height="16.6"/>
-<rect x="50" y="83.4" class="st1" width="16.7" height="16.7"/>
-<rect x="66.8" y="50" class="st0" width="16.6" height="16.6"/>
-<rect x="66.8" y="66.7" class="st1" width="16.6" height="16.6"/>
-<rect x="66.8" y="83.4" class="st0" width="16.6" height="16.7"/>
-<rect x="0" y="83.4" class="st0" width="16.6" height="16.6"/>
-<rect x="0" y="66.8" class="st1" width="16.6" height="16.6"/>
-<rect x="0" y="50" class="st0" width="16.6" height="16.7"/>
-<rect x="33.3" y="83.4" class="st0" width="16.7" height="16.6"/>
-<rect x="33.3" y="66.8" class="st1" width="16.7" height="16.6"/>
-<rect x="33.3" y="50" class="st0" width="16.7" height="16.7"/>
-<rect x="16.6" y="83.4" class="st1" width="16.6" height="16.6"/>
-<rect x="16.6" y="66.8" class="st0" width="16.6" height="16.6"/>
-<rect x="16.6" y="50" class="st1" width="16.6" height="16.7"/>
-<rect x="0" y="33.4" class="st1" width="16.6" height="16.6"/>
-<rect x="0" y="16.7" class="st0" width="16.6" height="16.6"/>
-<rect x="0" y="0" class="st1" width="16.6" height="16.7"/>
-<rect x="33.3" y="33.4" class="st1" width="16.7" height="16.6"/>
-<rect x="33.3" y="16.7" class="st0" width="16.7" height="16.6"/>
-<rect x="33.3" y="0" class="st1" width="16.7" height="16.7"/>
-<rect x="16.6" y="33.4" class="st0" width="16.6" height="16.6"/>
-<rect x="16.6" y="16.7" class="st1" width="16.6" height="16.6"/>
-<rect x="16.6" y="0" class="st0" width="16.6" height="16.7"/>
+<rect x="0" class="st0" width="100" height="100"/>
+<g>
+	<polygon class="st1" points="11.8,100 100,11.6 100,0 89,0 0,89.2 0,100 	"/>
+</g>
 </svg>
