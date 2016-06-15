@@ -64,7 +64,7 @@ function buildJS(file, hash, watch, ugly, sourcemap, debug) {
       .pipe(buffer())
       .pipe(sourcemap ? sourcemaps.init({loadMaps: true}) : gutil.noop())
       // Add transformation tasks to the pipeline here.
-      .pipe(replace('<SKIN_VERSION>', hash))
+      .pipe(replace('<SKIN_REV>', hash))
       .pipe(ugly ? uglify() : gutil.noop())
       .pipe(sourcemap ? sourcemaps.write('./') : gutil.noop())
       .pipe(gulp.dest('./build'))
