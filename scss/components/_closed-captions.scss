@@ -264,6 +264,9 @@
         }
       }
     }
+    .oo-text-color-selection-container {
+      padding-left: $panel-padding;
+    }
   }
 }
 
@@ -403,7 +406,7 @@
           font-family: $font-family-roboto-condensed;
           font-size: $font-size-root;
           color: $white;
-          margin-bottom: 26px;
+          margin-bottom: 0px;
 
           .oo-selection-container-selection-text {
             font-family: $font-family-roboto-condensed-bold;
@@ -491,7 +494,7 @@
           font-family: $font-family-roboto-condensed;
           font-size: $font-size-root;
           color: $white;
-          margin-bottom: 26px;
+          margin-bottom: 0px;
 
           .oo-selection-container-selection-text {
             font-family: $font-family-roboto-condensed-bold;
@@ -563,11 +566,11 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  padding: 12px $panel-padding;
+  padding: 0px $panel-padding;
 
   .oo-preview-caption {
     font-size: 16px;
-    line-height:1.2em;
+    line-height:0em;
     font-family: $font-family-roboto-condensed;
     color: white;
     text-shadow: 1px 1px 2px black;
