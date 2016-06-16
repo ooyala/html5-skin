@@ -26,7 +26,17 @@ var TextTrackPanel = React.createClass({
     "Proportional Sans-Serif": 'Roboto, "Arial Unicode Ms", Arial, Helvetica, Verdana, "PT Sans Caption", sans-serif',
     "Casual": '"Comic Sans MS", Impact, Handlee, fantasy',
     "Cursive": '"Monotype Corsiva", "URW Chancery L", "Apple Chancery", "Dancing Script", cursive',
-    "Small Capitals": '"Arial Unicode Ms", Arial, Helvetica, Verdana, "Marcellus SC", sans-serif; font-variant: small-caps'
+    "Small Capitals": '"Arial Unicode Ms", Arial, Helvetica, Verdana, "Marcellus SC", sans-serif'
+  },
+
+  fontVariantMap: {
+    "Monospaced Serif": 'normal',
+    "Proportional Serif": 'normal',
+    "Monospaced Sans-Serif": 'normal',
+    "Proportional Sans-Serif": 'normal',
+    "Casual": 'normal',
+    "Cursive": 'normal',
+    "Small Capitals": 'small-caps'
   },
 
   fontSizeMap: {
@@ -74,6 +84,7 @@ var TextTrackPanel = React.createClass({
     return {
       color: "rgba(" + this.colorMap[color] + "," + opacity + ")",
       fontFamily: this.fontTypeMap[fontType],
+      fontVariant: this.fontVariantMap[fontType],
       fontSize: this.fontSizeMap[fontSize][this.props.responsiveView],
       textShadow: this.textEnhancementMap[textEnhancement]
     }

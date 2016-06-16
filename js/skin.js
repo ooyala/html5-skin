@@ -55,7 +55,7 @@ var Skin = React.createClass({
       this.props.controller.state.closedCaptionOptions.textOpacity = (this.props.skinConfig.closedCaptionOptions.defaultTextOpacity ? this.props.skinConfig.closedCaptionOptions.defaultTextOpacity : 1);
       this.props.controller.state.closedCaptionOptions.backgroundOpacity = (this.props.skinConfig.closedCaptionOptions.defaultBackgroundOpacity ? this.props.skinConfig.closedCaptionOptions.defaultBackgroundOpacity : 0.6);
       this.props.controller.state.closedCaptionOptions.windowOpacity = (this.props.skinConfig.closedCaptionOptions.defaultWindowOpacity ? this.props.skinConfig.closedCaptionOptions.defaultWindowOpacity : 0);
-      this.props.controller.state.closedCaptionOptions.fontType = (this.props.skinConfig.closedCaptionOptions.defaultFontType ? this.props.skinConfig.closedCaptionOptions.defaultFontType : "Helvetica");
+      this.props.controller.state.closedCaptionOptions.fontType = (this.props.skinConfig.closedCaptionOptions.defaultFontType ? this.props.skinConfig.closedCaptionOptions.defaultFontType : "Proportional Sans-Serif");
       this.props.controller.state.closedCaptionOptions.fontSize = (this.props.skinConfig.closedCaptionOptions.defaultFontSize ? this.props.skinConfig.closedCaptionOptions.defaultFontSize : "Medium");
       this.props.controller.state.closedCaptionOptions.textEnhancement = (this.props.skinConfig.closedCaptionOptions.defaultTextEnhancement ? this.props.skinConfig.closedCaptionOptions.defaultTextEnhancement : "Uniform");
     }
@@ -68,7 +68,7 @@ var Skin = React.createClass({
       this.props.controller.state.closedCaptionOptions.textOpacity = 1;
       this.props.controller.state.closedCaptionOptions.backgroundOpacity = 0.6;
       this.props.controller.state.closedCaptionOptions.windowOpacity = 0;
-      this.props.controller.state.closedCaptionOptions.fontType = "Helvetica";
+      this.props.controller.state.closedCaptionOptions.fontType = "Proportional Sans-Serif";
       this.props.controller.state.closedCaptionOptions.fontSize = "Medium";
       this.props.controller.state.closedCaptionOptions.textEnhancement = "Uniform";
     }
