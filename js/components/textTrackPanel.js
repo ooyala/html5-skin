@@ -20,15 +20,23 @@ var TextTrackPanel = React.createClass({
   },
 
   fontTypeMap: {
-    "Helvetica": "Arial, Helvetica, sans-serif",
-    "Georgia": "Georgia, serif",
-    "Comic Sans": "Comic Sans MS, cursive, sans-serif",
-    "Impact": "Impact, Charcoal, sans-serif",
-    "Times New Roman": "Times New Roman, Times, serif",
-    "Tahoma": "Tahoma, Geneva, sans-serif",
-    "Verdana": "Verdana, Geneva, sans-serif",
-    "Courier New": "Courier New, Courier, monospace",
-    "Lucida Console": "Lucida Console, Monaco, monospace"
+    "Monospaced Serif": '"Courier New", Courier, "Nimbus Mono L", "Cutive Mono", monospace',
+    "Proportional Serif": '"Times New Roman", Times, Georgia, Cambria, "PT Serif Caption", serif',
+    "Monospaced Sans-Serif": '"Deja Vu Sans Mono", "Lucida Console", Monaco, Consolas, "PT Mono", monospace',
+    "Proportional Sans-Serif": 'Roboto, "Arial Unicode Ms", Arial, Helvetica, Verdana, "PT Sans Caption", sans-serif',
+    "Casual": '"Comic Sans MS", Impact, Handlee, fantasy',
+    "Cursive": '"Monotype Corsiva", "URW Chancery L", "Apple Chancery", "Dancing Script", cursive',
+    "Small Capitals": '"Arial Unicode Ms", Arial, Helvetica, Verdana, "Marcellus SC", sans-serif'
+  },
+
+  fontVariantMap: {
+    "Monospaced Serif": 'normal',
+    "Proportional Serif": 'normal',
+    "Monospaced Sans-Serif": 'normal',
+    "Proportional Sans-Serif": 'normal',
+    "Casual": 'normal',
+    "Cursive": 'normal',
+    "Small Capitals": 'small-caps'
   },
 
   fontSizeMap: {
@@ -76,6 +84,7 @@ var TextTrackPanel = React.createClass({
     return {
       color: "rgba(" + this.colorMap[color] + "," + opacity + ")",
       fontFamily: this.fontTypeMap[fontType],
+      fontVariant: this.fontVariantMap[fontType],
       fontSize: this.fontSizeMap[fontSize][this.props.responsiveView],
       textShadow: this.textEnhancementMap[textEnhancement]
     }

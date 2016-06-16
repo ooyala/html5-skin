@@ -5,7 +5,7 @@ var FontTypeTab = React.createClass({
   getInitialState: function() {
     return {
       selectedFontType: this.props.closedCaptionOptions.fontType,
-      availableFontTypes: ["Helvetica", "Georgia", "Comic Sans", "Impact", "Times New Roman", "Tahoma", "Verdana", "Courier New", "Lucida Console"]
+      availableFontTypes: ["Monospaced Serif", "Proportional Serif", "Monospaced Sans-Serif", "Proportional Sans-Serif", "Casual", "Cursive", "Small Capitals"]
     };
   },
 
