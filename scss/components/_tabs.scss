@@ -12,19 +12,22 @@
 }
 
 .tabs-menu-item a {
+  border-bottom: 2px solid transparent;
   cursor: pointer;
   display: block;
   color: $white;
   font-family: $font-family-roboto-condensed-bold;
   font-size: 18px;
+  @include vendor-prefixes (transition, 0.3s);
 }
 
 .tabs-menu-item.is-active a {
-  border-bottom: 2px solid $blue-light
+  border-bottom: 2px solid $blue-light;
 }
 
 .tabs-menu-item:not(.is-active) a:hover {
   color:$blue-light;
+  opacity: 0.7;
 }
 
 .tab-panel {
