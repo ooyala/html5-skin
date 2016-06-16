@@ -85,30 +85,4 @@ describe('ClosedCaptionPanel', function () {
     TestUtils.Simulate.click(newLanguage);
     expect(selectedLanguage).toBe(availableLanguages.languages[1]);
   });
-
-  it('checks that we cannot change the language when cc is disabled', function () {
-    var selectedLanguage = skinConfig.closedCaptionOptions.defaultLanguage;
-    closedCaptionOptions.enabled = false;
-    var mockController = {
-      onClosedCaptionLanguageChange: function(language) {
-        selectedLanguage = language;
-      }
-    };
-
-    var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPanel skinConfig={skinConfig} closedCaptionOptions={closedCaptionOptions} controller={mockController}/>);
-
-    var newLanguage = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item')[1];
-    TestUtils.Simulate.click(newLanguage);
-    expect(selectedLanguage).toBe(skinConfig.closedCaptionOptions.defaultLanguage);
-
-    closedCaptionOptions.enabled = true;
-  });
-
-  it('checks that if only one language is available, it is not shown', function () {
-     var availableLanguages = {"languages":["en"], "locale":{"en": "English"}};
-     closedCaptionOptions.availableLanguages = availableLanguages;
-     var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPanel skinConfig={skinConfig} closedCaptionOptions={closedCaptionOptions}/>);
-     var items0 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item');
-     expect(items0.length).toBe(0);
-  });
 });
