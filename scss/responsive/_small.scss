@@ -43,6 +43,7 @@
 
         .oo-selection-inner-wrapper {
           width: 190px;
+          margin: 0 auto;
 
           .oo-selection-container-title {
             font-size: 15px;
@@ -82,10 +83,12 @@
     }
     .oo-caption-opacity-inner-wrapper {
       top: 60%;
+      padding-left: 0;
     }
     .oo-font-size-tab {
       .oo-font-size-inner-wrapper {
         top: calc(50% + 42px);
+        padding-left: 0;
       }
       .oo-selection-container-title {
         margin-bottom: 0px !important;
@@ -94,10 +97,14 @@
     .oo-text-enhancements-tab {
       .oo-text-enhancements-inner-wrapper {
         top: calc(50% + 42px);
+        padding-left: 0;
       }
       .oo-selection-container-title {
         margin-bottom: 0px !important;
       }
+    }
+    .oo-selection-inner-wrapper {
+      margin: 0 auto;
     }
   }
   //CC Preview Panel
