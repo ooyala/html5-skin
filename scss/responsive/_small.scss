@@ -30,7 +30,13 @@
     width: 400px;
   }
   .oo-closed-captions-panel {
+    .oo-data-selector {
+      top: 60%;
+    }
     .oo-color-selection-tab {
+      .oo-color-selection-inner-wrapper {
+        top: calc(50% + 42px);
+      }
       .oo-selection-container {
         min-width: 185px;
 
@@ -68,17 +74,34 @@
           }
         }
       }
+      .oo-text-color-selection-container {
+        min-width: 160px;
+        padding-left: $panel-padding;
+      }
+    }
+    .oo-caption-opacity-inner-wrapper {
+      top: 60%;
     }
     .oo-font-size-tab {
+      .oo-font-size-inner-wrapper {
+        top: calc(50% + 42px);
+      }
       .oo-selection-container-title {
         margin-bottom: 0px !important;
       }
     }
     .oo-text-enhancements-tab {
+      .oo-text-enhancements-inner-wrapper {
+        top: calc(50% + 42px);
+      }
       .oo-selection-container-title {
         margin-bottom: 0px !important;
       }
     }
+  }
+  //CC Preview Panel
+  .oo-preview-panel {
+    display: none;
   }
 
   //Text Tracks

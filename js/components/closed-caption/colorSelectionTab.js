@@ -50,6 +50,7 @@ var ColorSelectionTab = React.createClass({
       <div className="oo-color-selection-tab">
         <div className="oo-color-selection-inner-wrapper">
           <SelectionContainer
+            className="oo-text-color-selection-container"
             title="Text color"
             selectionText={this.props.closedCaptionOptions.textColor}
             >
