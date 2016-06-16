@@ -56,17 +56,14 @@ var DataSelector = React.createClass({
     var endAt = dataItemsPerPage * this.state.currentPage;
     var dataItems = this.props.availableDataItems.slice(startAt, endAt);
 
-    //if there is only one data item, do not show it at all
-    if (this.props.availableDataItems.length > 1) {
-      //Build data content blocks
-      var dataContentBlocks = [];
-      for (var i = 0; i < dataItems.length; i++) {
-        dataContentBlocks.push(
-          <a className={this.setClassname(dataItems[i])} onClick={this.handleDataSelection.bind(this, dataItems[i])} key={i}>
-            <span className="oo-data">{dataItems[i]}</span>
-          </a>
-        );
-      }
+    //Build data content blocks
+    var dataContentBlocks = [];
+    for (var i = 0; i < dataItems.length; i++) {
+      dataContentBlocks.push(
+        <a className={this.setClassname(dataItems[i])} onClick={this.handleDataSelection.bind(this, dataItems[i])} key={i}>
+          <span className="oo-data">{dataItems[i]}</span>
+        </a>
+      );
     }
 
     var leftChevron = ClassNames({
