@@ -121,7 +121,11 @@ var PauseScreen = React.createClass({
 
         <div className="oo-interactive-container">
 
-          <TextTrack closedCaptionOptions={this.props.closedCaptionOptions}/>
+          <TextTrack
+            closedCaptionOptions={this.props.closedCaptionOptions}
+            cueText={this.props.closedCaptionOptions.cueText}
+            responsiveView={this.props.responsiveView}
+          />
 
           <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
 
