@@ -188,7 +188,6 @@
 
       .oo-selection-inner-wrapper {
         width: 245px;
-        margin: 0 auto;
 
         .oo-selection-container-title {
           font-family: $font-family-roboto-condensed;
@@ -276,17 +275,17 @@
     @include vertical-center;
     left: 0;
     right: 0;
+    padding-left: $panel-padding;
 
     .oo-selection-container {
       position: relative;
       float: left;
       background-color: transparent;
       width: 33%;
-      min-width: 180px;
+      min-width: 175px;
 
       .oo-selection-inner-wrapper {
         width: 75%;
-        margin: 0 auto;
 
         .oo-selection-container-title {
           font-family: $font-family-roboto-condensed;
@@ -391,6 +390,7 @@
     @include vertical-center;
     left: 0;
     right: 0;
+    padding-left: $panel-padding;
 
     .oo-selection-container {
       position: relative;
@@ -401,7 +401,6 @@
 
       .oo-selection-inner-wrapper {
         width: 90%;
-        margin: 0 auto;
 
         .oo-selection-container-title {
           font-family: $font-family-roboto-condensed;
@@ -479,6 +478,7 @@
     @include vertical-center;
     left: 0;
     right: 0;
+    padding-left: $panel-padding;
 
     .oo-selection-container {
       position: relative;
@@ -489,7 +489,6 @@
 
       .oo-selection-inner-wrapper {
         width: 90%;
-        margin: 0 auto;
 
         .oo-selection-container-title {
           font-family: $font-family-roboto-condensed;
