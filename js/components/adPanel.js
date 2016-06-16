@@ -78,7 +78,7 @@ var AdPanel = React.createClass({
     if (isLive) {
       remainingTime = parseInt((this.props.adStartTime + this.props.adVideoDuration * 1000 - new Date().getTime())/1000);
     } else {
-      remainingTime = parseInt(this.props.adStartTime + this.props.adVideoDuration - this.props.currentPlayhead)
+      remainingTime = parseInt(this.props.adVideoDuration - this.props.currentPlayhead)
     }
     remainingTime = Utils.formatSeconds(Math.max(0, remainingTime));
 
