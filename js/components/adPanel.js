@@ -72,7 +72,16 @@ var AdPanel = React.createClass({
       adPlaybackInfo = adPlaybackInfo + ": (" + currentAdIndex + "/" + totalNumberOfAds + ")";
     }
 
-    var remainingTime = Utils.formatSeconds(Math.max(0, parseInt(this.props.adVideoDuration - this.props.currentPlayhead)));
+    var isLive = this.props.currentAdsInfo.currentAdItem.isLive;
+
+    var remainingTime;
+    if (isLive) {
+      remainingTime = parseInt((this.props.adStartTime + this.props.adVideoDuration * 1000 - new Date().getTime())/1000);
+    } else {
+      remainingTime = parseInt(this.props.adStartTime + this.props.adVideoDuration - this.props.currentPlayhead)
+    }
+    remainingTime = Utils.formatSeconds(Math.max(0, remainingTime));
+
     adPlaybackInfo = adPlaybackInfo + " - " + remainingTime;
 
     var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" itemClassName="oo-ad-playback-info">{adPlaybackInfo}</AdPanelTopBarItem>;
