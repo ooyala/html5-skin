@@ -51,6 +51,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "duration": 0,
       "mainVideoDuration": 0,
       "adVideoDuration": 0,
+      "adStartTime": 0,
       "elementId": null,
       "mainVideoContainer": null,
       "mainVideoInnerWrapper": null,
@@ -637,6 +638,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.isPlayingAd = true;
         this.state.currentAdsInfo.currentAdItem = adItem;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
+        if (adItem.isLive) {
+          this.state.adStartTime = new Date().getTime();
+        } else {
+          this.state.adStartTime = 0;
+        }
         this.skin.state.currentPlayhead = 0;
         this.state.mainVideoElement.removeClass('oo-blur');
         this.renderSkin();

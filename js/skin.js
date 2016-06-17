@@ -212,6 +212,7 @@ var Skin = React.createClass({
               responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
+              adStartTime={this.state.adStartTime}
               ref="adScreen" />
           );
           break;
