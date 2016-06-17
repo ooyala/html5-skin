@@ -140,4 +140,21 @@ var AdPanel = React.createClass({
     );
   }
 });
+
+AdPanel.defaultProps = {
+  currentPlayhead: 0,
+  adVideoDuration: 0,
+  adStartTime: 0,
+  currentAdsInfo: {
+    numberOfAds: 0,
+    skipAdButtonEnabled: false,
+    currentAdItem: {
+      hasClickUrl: false,
+      name: "",
+      indexInPod: 0,
+      isLive: false
+    }
+  }
+};
+
 module.exports = AdPanel;
