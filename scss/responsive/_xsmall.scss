@@ -67,6 +67,21 @@
     .captions-navbar {
       margin-top: 10px;
     }
+    .tabs-menu {
+      width: 775px;
+    }
+    .oo-left-tab-button-active {
+      @include scroll-button;
+      top: 55px;
+      text-align: right;
+      left: -10px;
+    }
+    .oo-right-tab-button-active {
+      @include scroll-button;
+      top: 55px;
+      text-align: left;
+      right: -10px;
+    }
     .oo-data-selector {
       top: 60%;
     }
