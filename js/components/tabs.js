@@ -1,7 +1,8 @@
 // taken from https://github.com/pedronauck/react-simpletabs
 
 var React = require('react'),
-    ClassNames = require('classnames');
+    ClassNames = require('classnames'),
+    Icon = require('./icon');
 
 var Tabs = React.createClass({
   getInitialState: function() {
@@ -77,7 +78,7 @@ var Tabs = React.createClass({
       }.bind(this));
 
     return (
-      <nav className='tabs-navigation'>
+      <nav className='tabs-navigation' ref='tabsNavigation'>
         <ul className='tabs-menu'>{menuItems}</ul>
       </nav>
     );
@@ -94,6 +95,16 @@ var Tabs = React.createClass({
     );
   },
 
+  handleLeftChevronClick: function(event) {
+    event.preventDefault();
+    this.refs.tabsNavigation.scrollLeft -= 30;
+  },
+
+  handleRightChevronClick: function(event) {
+    event.preventDefault();
+    this.refs.tabsNavigation.scrollLeft += 30;
+  },
+
   render: function() {
     var className = ClassNames('tabs', this.props.className);
 
@@ -101,6 +112,18 @@ var Tabs = React.createClass({
       <div className={className}>
         {this.getMenuItems()}
         {this.getSelectedPanel()}
+        <a className="oo-left-tab-button" ref="leftChevron" onClick={this.handleLeftChevronClick}>
+          <Icon
+            {...this.props}
+            icon="left"
+          />
+        </a>
+        <a className="oo-right-tab-button" ref="rightChevron" onClick={this.handleRightChevronClick}>
+          <Icon
+            {...this.props}
+            icon="right"
+          />
+        </a>
       </div>
     );
   }

@@ -25,7 +25,7 @@ var ClosedCaptionPanel = React.createClass({
         <div className="oo-content-panel oo-closed-captions-panel">
           <OnOffSwitch {...this.props} />
 
-          <Tabs className="captions-navbar">
+          <Tabs className="captions-navbar" {...this.props}>
             <Tab title="Language">
               <LanguageTab {...this.props} />
             </Tab>
