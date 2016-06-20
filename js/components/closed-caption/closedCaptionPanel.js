@@ -27,7 +27,7 @@ var ClosedCaptionPanel = React.createClass({
 
           <Tabs
             className="captions-navbar"
-            showScrollButtons={this.props.componentWidth < 745}
+            showScrollButtons={this.props.componentWidth < 730}
             {...this.props}>
             <Tab title="Language">
               <LanguageTab {...this.props} />
