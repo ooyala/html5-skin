@@ -23,7 +23,6 @@
     "lodash.debounce": "4.0.3",
     "lodash.values": "4.1.0",
     "react": "0.14.7",
-    "react-custom-scrollbars": "^3.1.0",
     "react-dom": "0.14.7",
     "react-scrollbar": "0.4.0",
     "screenfull": "3.0.0"
