@@ -108,17 +108,26 @@ var Tabs = React.createClass({
   render: function() {
     var className = ClassNames('tabs', this.props.className);
 
+    var leftScrollButton = ClassNames({
+      'oo-left-tab-button': true,
+      'oo-left-tab-button-active': this.props.showScrollButtons
+    });
+    var rightScrollButton = ClassNames({
+      'oo-right-tab-button': true,
+      'oo-right-tab-button-active': this.props.showScrollButtons
+    });
+
     return (
       <div className={className}>
         {this.getMenuItems()}
         {this.getSelectedPanel()}
-        <a className="oo-left-tab-button" ref="leftChevron" onClick={this.handleLeftChevronClick}>
+        <a className={leftScrollButton} ref="leftChevron" onClick={this.handleLeftChevronClick}>
           <Icon
             {...this.props}
             icon="left"
           />
         </a>
-        <a className="oo-right-tab-button" ref="rightChevron" onClick={this.handleRightChevronClick}>
+        <a className={rightScrollButton} ref="rightChevron" onClick={this.handleRightChevronClick}>
           <Icon
             {...this.props}
             icon="right"

@@ -70,13 +70,13 @@
     .tabs-menu {
       width: 775px;
     }
-    .oo-left-tab-button {
+    .oo-left-tab-button-active {
       @include scroll-button;
       top: 55px;
       text-align: right;
       left: -10px;
     }
-    .oo-right-tab-button {
+    .oo-right-tab-button-active {
       @include scroll-button;
       top: 55px;
       text-align: left;
