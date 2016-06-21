@@ -104,7 +104,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "forceControlBarVisible": false,
       "timer": null,
       "errorCode": null,
-      "isSubscribed": false,
+
+      "isSubscribed": {
+        "initSubscribe": false,
+        "isPlaybackReadySubscribed": false
+      },
+
       "isSkipAdClicked": false,
       "isInitialPlay": false,
       "isFullScreenSupported": false,
@@ -126,12 +131,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.THUMBNAILS_FETCHED, 'customerUi', _.bind(this.onThumbnailsFetched, this));//xenia: to be replaced by a more appropriate event
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
+      this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
+      this.state.isSubscribed.isPlaybackReadySubscribed = true;
     },
 
     subscribeBasicPlaybackEvents: function () {
-      if(!this.state.isSubscribed) {
+      if(!this.state.isSubscribed.initSubscribe) {
         this.mb.subscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi', _.bind(this.onInitialPlay, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
@@ -149,7 +156,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
         this.mb.subscribe(OO.EVENTS.REPLAY, "customerUi", _.bind(this.onReplay, this));
         this.mb.subscribe(OO.EVENTS.ASSET_DIMENSION, "customerUi", _.bind(this.onAssetDimensionsReceived, this));
-        this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
+        // PLAYBACK_READY is a fundamental event in the init process that can be unsubscribed by errors.
+        // If and only if such has occured, it needs a route to being resubscribed.
+        if(!this.state.isSubscribed.isPlaybackReadySubscribed) {
+          this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
+        }
 
         // ad events
         if (!Utils.isIPhone()) {
@@ -169,7 +180,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi", _.bind(this.onShowAdMarquee, this));
         }
       }
-      this.state.isSubscribed = true;
+      this.state.isSubscribed.initSubscribe = true;
     },
 
     externalPluginSubscription: function() {
@@ -937,6 +948,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
+      this.state.isSubscribed.isPlaybackReadySubscribed = false;
 
       // ad events
       if (!Utils.isIPhone()) {
@@ -958,7 +970,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi");
         }
       }
-      this.state.isSubscribed = false;
+      this.state.isSubscribed.initSubscribe = false;
     },
 
     /*--------------------------------------------------------------------
