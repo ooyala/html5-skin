@@ -252,6 +252,7 @@ var Skin = React.createClass({
             screen={CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN}
             screenClassName="oo-content-screen oo-content-screen-closed-captions"
             titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
+            closedCaptionOptions={this.props.closedCaptionOptions}
             element={<OnOffSwitch {...this.props} />}
             icon="cc">
             <ClosedCaptionPanel

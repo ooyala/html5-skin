@@ -1,5 +1,7 @@
 var React = require('react'),
     ClassNames = require('classnames'),
+    Utils = require('../utils'),
+    CONSTANTS = require('../../constants/constants'),
     SelectionContainer = require('./selectionContainer'),
     Slider = require('../slider');
 
@@ -35,11 +37,16 @@ var CaptionOpacityTab = React.createClass({
   },
 
   render: function(){
+
+    var textOpacityTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.TEXT_OPACITY, this.props.localizableStrings);
+    var backgroundOpacityTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.BACKGROUND_OPACITY, this.props.localizableStrings);
+    var windowOpacityTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.WINDOW_OPACITY, this.props.localizableStrings);
+
     return(
       <div className="oo-caption-opacity-tab">
         <div className="oo-caption-opacity-inner-wrapper">
           <SelectionContainer
-            title="Text opacity"
+            title={textOpacityTitle}
             selectionText={this.percentString(this.props.closedCaptionOptions.textOpacity)}
             >
             <Slider
@@ -54,7 +61,7 @@ var CaptionOpacityTab = React.createClass({
           </SelectionContainer>
 
           <SelectionContainer
-            title="Background opacity"
+            title={backgroundOpacityTitle}
             selectionText={this.percentString(this.props.closedCaptionOptions.backgroundOpacity)}
             >
             <Slider
@@ -69,7 +76,7 @@ var CaptionOpacityTab = React.createClass({
           </SelectionContainer>
 
           <SelectionContainer
-            title="Window opacity"
+            title={windowOpacityTitle}
             selectionText={this.percentString(this.props.closedCaptionOptions.windowOpacity)}
             >
             <Slider

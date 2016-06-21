@@ -24,6 +24,18 @@
 .tabs-menu-item-5 {
   margin-right: 0 !important;
 }
+.oo-left-tab-button-active {
+  @include scroll-button;
+  top: 81px;
+  text-align: right;
+  left: -5px;
+}
+.oo-right-tab-button-active {
+  @include scroll-button;
+  top: 81px;
+  text-align: left;
+  right: -5px;
+}
 
 .oo-switch-container {
   cursor: pointer;

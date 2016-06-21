@@ -1,5 +1,7 @@
 var React = require('react'),
     ClassNames = require('classnames'),
+    Utils = require('../utils'),
+    CONSTANTS = require('../../constants/constants'),
     SelectionContainer = require('./selectionContainer');
 
 var TextEnhancementsTab = React.createClass({
@@ -31,12 +33,25 @@ var TextEnhancementsTab = React.createClass({
   },
 
   render: function() {
+    var textEnhancementTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.TEXT_ENHANCEMENT, this.props.localizableStrings);
+    var textEnhancementSelection = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.textEnhancement.toUpperCase()],
+      this.props.localizableStrings
+    );
+
     var textEnhancementItems = [];
     for(var i = 0; i < this.state.textEnhancements.length; i++) {
       textEnhancementItems.push(
         <a className="oo-text-enhancements-container" onClick={this.changeTextEnhancement.bind(this, this.state.textEnhancements[i])} key={i}>
           <div className={this.setClassname(this.state.textEnhancements[i], "letter") + " oo-text-enhancement-letter-" + this.state.textEnhancements[i]}>A</div>
-          <div className={this.setClassname(this.state.textEnhancements[i], "label")}>{this.state.textEnhancements[i]}</div>
+          <div className={this.setClassname(this.state.textEnhancements[i], "label")}>{
+            Utils.getLocalizedString(
+              this.props.language,
+              CONSTANTS.SKIN_TEXT[this.state.textEnhancements[i].toUpperCase()],
+              this.props.localizableStrings
+            )
+          }</div>
         </a>
       );
     }
@@ -45,8 +60,8 @@ var TextEnhancementsTab = React.createClass({
       <div className="oo-text-enhancements-tab">
         <div className="oo-text-enhancements-inner-wrapper">
           <SelectionContainer
-            title="Text Enhancement"
-            selectionText={this.props.closedCaptionOptions.textEnhancement}
+            title={textEnhancementTitle}
+            selectionText={textEnhancementSelection}
             >
             {textEnhancementItems}
           </SelectionContainer>
