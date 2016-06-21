@@ -1,16 +1,21 @@
-jest.dontMock('../../js/components/closed-caption/closedCaptionPanel')
+jest.dontMock('../../js/views/contentScreen')
+    .dontMock('../../js/components/closed-caption/closedCaptionPanel')
     .dontMock('../../js/components/closed-caption/ccPreviewPanel')
     .dontMock('../../js/components/closed-caption/languageTab')
     .dontMock('../../js/components/closed-caption/onOffSwitch')
     .dontMock('../../js/components/icon')
     .dontMock('../../js/components/tabs')
     .dontMock('../../js/components/dataSelector')
+    .dontMock('../../js/constants/constants')
     .dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
+var ContentScreen = require('../../js/views/contentScreen');
 var ClosedCaptionPanel = require('../../js/components/closed-caption/closedCaptionPanel');
+var OnOffSwitch = require('../../js/components/closed-caption/onOffSwitch');
+var CONSTANTS = require('../../js/constants/constants');
 
 describe('ClosedCaptionPanel', function () {
   var availableLanguages = {"languages":["en","fr","de","ru","it"],
@@ -60,7 +65,17 @@ describe('ClosedCaptionPanel', function () {
       }
     };
 
-    var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPanel skinConfig={skinConfig} closedCaptionOptions={closedCaptionOptions} controller={mockController}/>);
+    var DOM = TestUtils.renderIntoDocument(
+      <ContentScreen
+        screen={CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN}
+        screenClassName="oo-content-screen oo-content-screen-closed-captions"
+        titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
+        element={<OnOffSwitch controller={mockController} closedCaptionOptions={closedCaptionOptions}/>}
+        icon="cc"
+        skinConfig={skinConfig}>
+        <ClosedCaptionPanel skinConfig={skinConfig} closedCaptionOptions={closedCaptionOptions} controller={mockController}/>
+      </ContentScreen>
+        );
 
     var closedCaptionsEnabled = closedCaptionOptions.enabled;
     var toggle = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-switch-container-selectable');

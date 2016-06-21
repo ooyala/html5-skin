@@ -8,7 +8,6 @@
 * @constructor
 */
 var React = require('react'),
-    OnOffSwitch = require('./onOffSwitch'),
     LanguageTab = require('./languageTab'),
     ColorSelectionTab = require('./colorSelectionTab'),
     CaptionOpacityTab = require('./captionOpacityTab'),
@@ -23,8 +22,6 @@ var ClosedCaptionPanel = React.createClass({
   render: function(){
     return (
         <div className="oo-content-panel oo-closed-captions-panel">
-          <OnOffSwitch {...this.props} />
-
           <Tabs
             className="captions-navbar"
             showScrollButtons={this.props.componentWidth < 730}
