@@ -8,12 +8,8 @@
 * @constructor
 */
 var React = require('react'),
-<<<<<<< HEAD
     Utils = require('../utils'),
     CONSTANTS = require('../../constants/constants'),
-    OnOffSwitch = require('./onOffSwitch'),
-=======
->>>>>>> master
     LanguageTab = require('./languageTab'),
     ColorSelectionTab = require('./colorSelectionTab'),
     CaptionOpacityTab = require('./captionOpacityTab'),
