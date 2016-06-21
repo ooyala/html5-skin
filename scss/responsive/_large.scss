@@ -57,17 +57,13 @@
   }
 
   // Closed Caption Panel
-  .oo-closed-captions-panel {
+  .oo-content-screen-closed-captions {
     .oo-switch-container {
       height: 26px;
       width: 126px;
-      top: 40px;
-      left: 300px;
+      font-size:24px;
       .oo-switch-captions {
         font-size: $font-size-base * $large-multiple;
-      }
-      .oo-switch-element {
-        margin-bottom: 33%;
       }
     }
     .oo-data-panel {
