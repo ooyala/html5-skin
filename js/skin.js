@@ -5,6 +5,7 @@ var React = require('react'),
     Utils = require('./components/utils'),
     CONSTANTS = require('./constants/constants'),
     Spinner = require('./components/spinner'),
+    OnOffSwitch = require('./components/closed-caption/onOffSwitch'),
     ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel'),
     DiscoveryPanel = require('./components/discoveryPanel'),
     VideoQualityPanel = require('./components/videoQualityPanel'),
@@ -252,6 +253,7 @@ var Skin = React.createClass({
             screenClassName="oo-content-screen oo-content-screen-closed-captions"
             titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
             closedCaptionOptions={this.props.closedCaptionOptions}
+            element={<OnOffSwitch {...this.props} />}
             icon="cc">
             <ClosedCaptionPanel
               {...this.props}

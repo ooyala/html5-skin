@@ -1,7 +1,7 @@
 .oo-content-screen.oo-content-screen-closed-captions {
   background-color: rgba(0,0,0,0);
 
-  .closed-caption-overlay {
+  .oo-closed-caption-overlay {
     position: absolute;
     left: 0px;
     top: 0px;
@@ -41,10 +41,9 @@
   cursor: pointer;
   height: 21px;
   width: 105px;
-  position: absolute;
+  position: relative;
   display: inline-block;
-  top: 25px;
-  left: 240px;
+  margin-left:20px;
 
   .oo-switch-container-selectable {
     @extend .oo-expand;
