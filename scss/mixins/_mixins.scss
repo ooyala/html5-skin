@@ -117,7 +117,7 @@
 // Default style for tabs scroll icons
 @mixin scroll-button {
   position: absolute;
-  display: block;
+  display: block !important;
   background-color: transparent;
   height: 25px;
   width: 25px;

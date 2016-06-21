@@ -1,4 +1,6 @@
 var React = require('react'),
+    Utils = require('../utils'),
+    CONSTANTS = require('../../constants/constants'),
     SelectionContainer = require('./selectionContainer'),
     ColorSelector = require('../colorSelector');
 
@@ -46,13 +48,35 @@ var ColorSelectionTab = React.createClass({
   },
 
   render: function(){
+
+    var textColorTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.TEXT_COLOR, this.props.localizableStrings);
+    var textColorSelection = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.textColor.toUpperCase()],
+      this.props.localizableStrings
+    );
+
+    var backgroundColorTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.BACKGROUND_COLOR, this.props.localizableStrings);
+    var backgroundColorSelection = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.backgroundColor.toUpperCase()],
+      this.props.localizableStrings
+    );
+
+    var windowColorTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.WINDOW_COLOR, this.props.localizableStrings);
+    var windowColorSelection = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.windowColor.toUpperCase()],
+      this.props.localizableStrings
+    );
+
     return(
       <div className="oo-color-selection-tab">
         <div className="oo-color-selection-inner-wrapper">
           <SelectionContainer
             className="oo-text-color-selection-container"
-            title="Text color"
-            selectionText={this.props.closedCaptionOptions.textColor}
+            title={textColorTitle}
+            selectionText={textColorSelection}
             >
             <div className="oo-text-color-items-container">
               <ColorSelector
@@ -65,8 +89,8 @@ var ColorSelectionTab = React.createClass({
           </SelectionContainer>
 
           <SelectionContainer
-            title="Background color"
-            selectionText={this.props.closedCaptionOptions.backgroundColor}
+            title={backgroundColorTitle}
+            selectionText={backgroundColorSelection}
             >
             <ColorSelector
               colors={this.state.backgroundColors}
@@ -77,8 +101,8 @@ var ColorSelectionTab = React.createClass({
           </SelectionContainer>
 
           <SelectionContainer
-            title="Window color"
-            selectionText={this.props.closedCaptionOptions.windowColor}
+            title={windowColorTitle}
+            selectionText={windowColorSelection}
             >
             <ColorSelector
               colors={this.state.windowColors}

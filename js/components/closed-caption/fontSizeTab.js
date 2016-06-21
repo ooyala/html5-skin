@@ -1,5 +1,7 @@
 var React = require('react'),
     ClassNames = require('classnames'),
+    Utils = require('../utils'),
+    CONSTANTS = require('../../constants/constants'),
     SelectionContainer = require('./selectionContainer');
 
 var FontSizeTab = React.createClass({
@@ -31,12 +33,25 @@ var FontSizeTab = React.createClass({
   },
 
   render: function() {
+    var fontSizeTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.FONT_SIZE, this.props.localizableStrings);
+    var fontSizeSelection = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.fontSize.toUpperCase().replace(" ", "_")],
+      this.props.localizableStrings
+    );
+
     var fontItems = [];
     for(var i = 0; i < this.state.fontSizes.length; i++) {
       fontItems.push(
         <a className="oo-font-size-container" onClick={this.changeFontSize.bind(this, this.state.fontSizes[i])} key={i}>
           <div className={this.setClassname(this.state.fontSizes[i], "letter") + " oo-font-size-letter-" + this.state.fontSizes[i].replace(" ", "-")}>A</div>
-          <div className={this.setClassname(this.state.fontSizes[i], "label")}>{this.state.fontSizes[i]}</div>
+          <div className={this.setClassname(this.state.fontSizes[i], "label")}>{
+            Utils.getLocalizedString(
+              this.props.language,
+              CONSTANTS.SKIN_TEXT[this.state.fontSizes[i].toUpperCase().replace(" ", "_")],
+              this.props.localizableStrings
+            )
+          }</div>
         </a>
       );
     }
@@ -45,8 +60,8 @@ var FontSizeTab = React.createClass({
       <div className="oo-font-size-tab">
         <div className="oo-font-size-inner-wrapper">
           <SelectionContainer
-            title="Font size"
-            selectionText={this.props.closedCaptionOptions.fontSize}
+            title={fontSizeTitle}
+            selectionText={fontSizeSelection}
             >
             {fontItems}
           </SelectionContainer>
