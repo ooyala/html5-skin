@@ -55,9 +55,13 @@
     .oo-switch-container {
       height: 15px;
       width: 74px;
-      margin-left:10px;
+      margin-left:18px;
+      top:4px;
       .oo-switch-captions {
         font-size: $font-size-base * $xsmall-multiple;
+      }
+      .oo-switch-element {
+        top: -3px;
       }
     }
     .captions-navbar {
