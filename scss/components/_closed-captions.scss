@@ -43,7 +43,10 @@
   width: 105px;
   position: relative;
   display: inline-block;
-  margin-left:20px;
+  margin-left:30px;
+  font-size: initial;
+  font-weight:normal;
+  line-height:1.5;
 
   .oo-switch-container-selectable {
     @extend .oo-expand;
