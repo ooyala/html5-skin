@@ -45,6 +45,7 @@
       height: 100%;
       position: absolute;
       border-radius: 3px;
+      @include vendor-prefixes(transition, all 0.10s);
     }
 
     .oo-played-indicator {
@@ -69,27 +70,28 @@
 
       .oo-playhead {
         background: $blue-light;
-        width: 8px;
-        height: 8px;
-        border: 1px solid $white;
+        width: 13px;
+        height: 13px;
+        border: 1.5px solid $white;
         border-radius: 10px;
         position: absolute;
-        top: 43%;
+        top: 40%;
         cursor: pointer;
         left: 50%;
         @include vendor-prefixes(transform, translateY(-50%) translateX(-50%));
-        @include vendor-prefixes(transition, all 0.15s);
+        @include vendor-prefixes(transition, all 0.10s);
       }
 
       .oo-playhead-scrubbing {
-        width: 13px;
-        height: 13px;
+        width: 20px;
+        height: 20px;
         border: 3px solid $blue-light;
         background: $white;
+        box-shadow: rgba(0,0,0,0.5) 0 6px 18px;
       }
 
       .oo-playhead-hovering {
-        top: 38%;
+        top: 40%;
       }
 
       .oo-ad-playhead {
