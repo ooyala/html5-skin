@@ -156,7 +156,8 @@ var Skin = React.createClass({
             <SharePanel
               {...this.props}
               assetId={this.state.assetId}
-              playerParam={this.state.playerParam} />
+              playerParam={this.state.playerParam}
+              contentTree={this.state.contentTree} />
           </ContentScreen>
           );
           break;
