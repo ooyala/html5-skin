@@ -319,6 +319,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.videoQualityOptions.selectedBitrate = null;
       this.state.closedCaptionOptions.availableLanguages = null;
       this.state.discoveryData = null;
+      this.state.thumbnails = null;
       this.resetUpNextInfo(true);
 
       this.state.assetId = embedCode;
