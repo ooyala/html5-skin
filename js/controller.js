@@ -467,13 +467,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onPaused: function(eventname, videoId) {
+    onPaused: function(eventname, videoId, pauseReason) {
       if (videoId != this.focusedElement) { return; }
       if (videoId == OO.VIDEO.MAIN && this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
         if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
           this.state.pauseAnimationDisabled = true;
         }
-        if (this.state.discoveryData && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
+        if (!pauseReason === CONSTANTS.PAUSE_REASON.TRANSITION && this.state.discoveryData && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
             && !(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))) {
           OO.log("Should display DISCOVERY_SCREEN on pause");
           this.sendDiscoveryDisplayEvent("pauseScreen");
