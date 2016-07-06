@@ -419,8 +419,12 @@ var ControlBar = React.createClass({
 
     var controlBarItems = this.populateControlBar();
 
+    var controlBarStyle = {
+      height: this.props.skinConfig.controlBar.height
+    };
+
     return (
-      <div className={controlBarClass} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
+      <div className={controlBarClass} style={controlBarStyle} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
         <ScrubberBar {...this.props} />
 
         <div className="oo-control-bar-items-wrapper">
