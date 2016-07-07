@@ -5,6 +5,7 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Thumbnail = require('./thumbnail'),
+    ThumbnailCarousel = require('./thumbnailCarousel'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
@@ -238,11 +239,22 @@ var ScrubberBar = React.createClass({
     }
 
     var thumbnailContainer = null;
+    var thumbnailCarousel = null;
     if (this.props.controller.state.thumbnails && (this.state.scrubbingPlayheadX || this.lastScrubX || this.state.hoveringX)) {
       if (this.state.scrubbingPlayheadX) {
         var hoverPosition = this.state.scrubbingPlayheadX;
         var hoverTime = (this.state.scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration;
         playheadClassName += " oo-playhead-scrubbing";
+
+        thumbnailContainer = null;
+        thumbnailCarousel =
+          (<div className="oo-scrubber-thumbnail-carousel">
+           <ThumbnailCarousel
+           thumbnails={this.props.controller.state.thumbnails}
+           duration={this.props.duration}
+           hoverTime={hoverTime > 0 ? hoverTime : 0}
+           scrubberBarWidth={this.state.scrubberBarWidth}/>
+           </div>);
       }
       else if (this.lastScrubX) {//to show thumbnail when clicking on playhead
         var hoverPosition = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration;
@@ -259,20 +271,23 @@ var ScrubberBar = React.createClass({
         scrubberBarClassName += " oo-scrubber-bar-hover";
         playheadClassName += " oo-playhead-hovering";
       }
-      thumbnailContainer =
-        (<div className="oo-scrubber-thumbnail-container">
-          <Thumbnail
-            thumbnails={this.props.controller.state.thumbnails}
-            hoverPosition={hoverPosition}
-            duration={this.props.duration}
-            hoverTime={hoverTime > 0 ? hoverTime : 0}
-            scrubberBarWidth={this.state.scrubberBarWidth}/>
-        </div>);
+      if (!thumbnailCarousel) {
+        thumbnailContainer =
+          (<div className="oo-scrubber-thumbnail-container">
+           <Thumbnail
+           thumbnails={this.props.controller.state.thumbnails}
+           hoverPosition={hoverPosition}
+           duration={this.props.duration}
+           hoverTime={hoverTime > 0 ? hoverTime : 0}
+           scrubberBarWidth={this.state.scrubberBarWidth}/>
+           </div>);
+      }
     }
 
     return (
       <div className="oo-scrubber-bar-container" ref="scrubberBarContainer" onMouseOver={scrubberBarMouseOver} onMouseOut={scrubberBarMouseOut} onMouseMove={scrubberBarMouseMove}>
         {thumbnailContainer}
+        {thumbnailCarousel}
         <div className="oo-scrubber-bar-padding" ref="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
           <div ref="scrubberBar" className={scrubberBarClassName} style={scrubberBarStyle}>
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle}></div>
