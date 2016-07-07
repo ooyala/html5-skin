@@ -27,8 +27,6 @@ var ThumbnailCarousel = React.createClass({
     var thumbnails = this.props.thumbnails;
     var timeSlices = thumbnails.data.available_time_slices;
     var width = this.props.thumbnails.data.available_widths[0]; //choosing the lowest size
-    var selectedThumbnail = null;
-    var selectedPosition = -1;
 
     var position = Math.floor((hoverTime/this.props.duration) * timeSlices.length);
     position = Math.min(position, timeSlices.length - 1);
@@ -55,7 +53,7 @@ var ThumbnailCarousel = React.createClass({
       }
     }
 
-    selectedThumbnail = thumbnails.data.thumbnails[selectedTimeSlice][width].url;
+    var selectedThumbnail = thumbnails.data.thumbnails[selectedTimeSlice][width].url;
     return { url: selectedThumbnail, pos: selectedPosition };
   },
 
@@ -63,8 +61,6 @@ var ThumbnailCarousel = React.createClass({
     var thumbnails = this.props.thumbnails;
     var timeSlices = thumbnails.data.available_time_slices;
     var width = this.props.thumbnails.data.available_widths[0]; //choosing the lowest size
-    var selectedThumbnail = null;
-    var selectedPosition = -1;
     var imgWidth = this.state.thumbnailWidth;
     var imgHeight = this.state.thumbnailHeight;
     var centerWidth = this.state.centerThumbnailWidth;
@@ -74,9 +70,12 @@ var ThumbnailCarousel = React.createClass({
     var top = (centerHeight - imgHeight) / 2;
 
     var thumbmailsAfter = [];
-
-    for (var i = position; i < timeSlices.length; i++) {
-      thumbmailsAfter.push(thumbnails.data.thumbnails[timeSlices[i]][width].url);
+    for (var i = position, j = 0; i < timeSlices.length; i++, j++) {
+      var left = start + imgWidth * j;
+      if (left + imgWidth <= scrubberBarWidth) {
+        var thumbStyle = { left: left, top: top, backgroundImage: "url(" + thumbnails.data.thumbnails[timeSlices[i]][width].url + ")" };
+        thumbmailsAfter.push(thumbStyle);
+      }
     }
     return thumbmailsAfter;
   },
@@ -85,42 +84,38 @@ var ThumbnailCarousel = React.createClass({
     var thumbnails = this.props.thumbnails;
     var timeSlices = thumbnails.data.available_time_slices;
     var width = this.props.thumbnails.data.available_widths[0]; //choosing the lowest size
-    var selectedThumbnail = null;
-    var selectedPosition = -1;
+    var imgWidth = this.state.thumbnailWidth;
+    var imgHeight = this.state.thumbnailHeight;
+    var centerWidth = this.state.centerThumbnailWidth;
+    var centerHeight = this.state.centerThumbnailHeight;
+    var scrubberBarWidth = this.props.scrubberBarWidth;
+    var start = (scrubberBarWidth - centerWidth) / 2;
+    var top = (centerHeight - imgHeight) / 2;
 
     var thumbmailsBefore = [];
-    for (var i = position; i >= 0; i--) {
-      thumbmailsBefore.push(thumbnails.data.thumbnails[timeSlices[i]][width].url);
+    for (var i = position, j = 0; i >= 0; i--, j++) {
+      var left = start - imgWidth * (j + 1);
+      if (left >= 0) {
+        var thumbStyle = { left: left, top: top, backgroundImage: "url(" + thumbnails.data.thumbnails[timeSlices[i]][width].url + ")" };
+        thumbmailsBefore.push(thumbStyle);
+      }
     }
     return thumbmailsBefore;
   },
 
   render: function() {
     var centralThumbnail = this.findThumbnail(this.props.hoverTime);
-    var thumbnail = centralThumbnail.url;
-    var position = centralThumbnail.pos;
-    var thumbnailsBefore = this.findThumbnailsBefore(position);
-    var thumbnailsAfter = this.findThumbnailsAfter(position);
-    var thumbnailStyle = {};
-    var imgWidth = this.state.thumbnailWidth;
-    var imgHeight = this.state.thumbnailHeight;
+    var thumbnailsBefore = this.findThumbnailsBefore(centralThumbnail.pos);
+    var thumbnailsAfter = this.findThumbnailsAfter(centralThumbnail.pos);
     var centerWidth = this.state.centerThumbnailWidth;
-    var centerHeight = this.state.centerThumbnailHeight;
     var scrubberBarWidth = this.props.scrubberBarWidth;
-    var top = (centerHeight - imgHeight) / 2;
 
-    thumbnailStyle.left = (scrubberBarWidth - centerWidth) / 2;
-    thumbnailStyle.backgroundImage = "url("+thumbnail+")";
-
+    var thumbnailStyle = { left: (scrubberBarWidth - centerWidth) / 2, backgroundImage: "url(" + centralThumbnail.url + ")" };
     var time = isFinite(parseInt(this.props.hoverTime)) ? Utils.formatSeconds(parseInt(this.props.hoverTime)) : null;
     return (<div>
             {
               thumbnailsBefore.map(function (element, i) {
-                var left = thumbnailStyle.left - imgWidth * (i + 1);
-                if (left >= 0) {
-                  var thumbStyle = { left: left, top: top, backgroundImage: "url(" + element + ")" };
-                  return <div className="oo-thumbnail" ref="thumbnail" style={thumbStyle}></div>
-                }
+                return <div className="oo-thumbnail" ref="thumbnail" style={element}></div>
               })
             }      
             <div className="oo-thumbnail-carousel" ref="thumbnailCarousel" style={thumbnailStyle}>
@@ -128,11 +123,7 @@ var ThumbnailCarousel = React.createClass({
             </div>
             {
               thumbnailsAfter.map(function (element, i) {
-                var left = thumbnailStyle.left + centerWidth + imgWidth * i;
-                if (left + imgWidth <= scrubberBarWidth) {
-                  var thumbStyle = { left: left, top: top, backgroundImage: "url(" + element + ")" };
-                  return <div className="oo-thumbnail" ref="thumbnail" style={thumbStyle}></div>
-                }
+                return <div className="oo-thumbnail" ref="thumbnail" style={element}></div>
               })
             }
             </div>
