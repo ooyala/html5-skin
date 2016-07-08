@@ -240,13 +240,16 @@ var ScrubberBar = React.createClass({
 
     var thumbnailContainer = null;
     var thumbnailCarousel = null;
+    var hoverTime = 0;
+    var hoverPosition = 0;
+    var hoveredIndicatorStyle = null;
+
     if (this.props.controller.state.thumbnails && (this.state.scrubbingPlayheadX || this.lastScrubX || this.state.hoveringX)) {
       if (this.state.scrubbingPlayheadX) {
-        var hoverPosition = this.state.scrubbingPlayheadX;
-        var hoverTime = (this.state.scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration;
+        hoverPosition = this.state.scrubbingPlayheadX;
+        hoverTime = (this.state.scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration;
         playheadClassName += " oo-playhead-scrubbing";
 
-        thumbnailContainer = null;
         thumbnailCarousel =
           (<div className="oo-scrubber-thumbnail-carousel">
            <ThumbnailCarousel
@@ -255,19 +258,17 @@ var ScrubberBar = React.createClass({
            hoverTime={hoverTime > 0 ? hoverTime : 0}
            scrubberBarWidth={this.state.scrubberBarWidth}/>
            </div>);
-      }
-      else if (this.lastScrubX) {//to show thumbnail when clicking on playhead
-        var hoverPosition = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration;
-        var hoverTime = this.props.currentPlayhead;
+      } else if (this.lastScrubX) {//to show thumbnail when clicking on playhead
+        hoverPosition = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration;
+        hoverTime = this.props.currentPlayhead;
         playheadClassName += " oo-playhead-scrubbing";
-      }
-      else if (this.state.hoveringX) {
-        var hoverPosition = this.state.hoveringX;
-        var hoverTime=(this.state.hoveringX / this.state.scrubberBarWidth) * this.props.duration;
-        var hoveredIndicatorStyle = {
-              width: Math.min((parseFloat(hoverTime) / parseFloat(this.props.duration)) * 100, 100) + "%",
-              backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor
-            };
+      } else if (this.state.hoveringX) {
+        hoverPosition = this.state.hoveringX;
+        hoverTime = (this.state.hoveringX / this.state.scrubberBarWidth) * this.props.duration;
+        hoveredIndicatorStyle = {
+          width: Math.min((parseFloat(hoverTime) / parseFloat(this.props.duration)) * 100, 100) + "%",
+          backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor
+        };
         scrubberBarClassName += " oo-scrubber-bar-hover";
         playheadClassName += " oo-playhead-hovering";
       }
