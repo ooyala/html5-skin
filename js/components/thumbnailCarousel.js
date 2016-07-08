@@ -3,6 +3,7 @@
  *
  * @module ThumbnailCarousel
  */
+
 var React = require('react'),
     ClassNames = require('classnames'),
     ReactDOM = require('react-dom'),
@@ -24,40 +25,6 @@ var ThumbnailCarousel = React.createClass({
                    thumbnailHeight: carousel.clientHeight / 2,
                    centerThumbnailWidth: carousel.clientWidth,
                    centerThumbnailHeight: carousel.clientHeight});
-  },
-
-  findThumbnail: function(hoverTime) {
-    var thumbnails = this.props.thumbnails;
-    var timeSlices = thumbnails.data.available_time_slices;
-    var width = this.props.thumbnails.data.available_widths[0]; //choosing the lowest size
-
-    var position = Math.floor((hoverTime/this.props.duration) * timeSlices.length);
-    position = Math.min(position, timeSlices.length - 1);
-    position = Math.max(position, 0);
-
-    if (timeSlices[position] >= hoverTime) {
-      var selectedTimeSlice = timeSlices[0];
-      for (var i = position; i >= 0; i--) {
-        if (timeSlices[i] < hoverTime) {
-          selectedTimeSlice = timeSlices[i];
-          selectedPosition = i;
-          break;
-        }
-      }
-    }
-    else {
-      var selectedTimeSlice = timeSlices[timeSlices.length - 1];
-      for (var i = position; i < timeSlices.length; i++) {
-        if (timeSlices[i] > hoverTime) {
-          selectedTimeSlice = timeSlices[i - 1];
-          selectedPosition = i - 1;
-          break;
-        }
-      }
-    }
-
-    var selectedThumbnail = thumbnails.data.thumbnails[selectedTimeSlice][width].url;
-    return { url: selectedThumbnail, pos: selectedPosition };
   },
 
   findThumbnailsAfter: function(data) {
@@ -89,7 +56,7 @@ var ThumbnailCarousel = React.createClass({
   },
 
   render: function() {
-    var centralThumbnail = this.findThumbnail(this.props.hoverTime);
+    var centralThumbnail = Utils.findThumbnail(this.props.thumbnails, this.props.hoverTime, this.props.duration);
     var data = {
       thumbnails: this.props.thumbnails,
       timeSlices: this.props.thumbnails.data.available_time_slices,
@@ -123,5 +90,12 @@ var ThumbnailCarousel = React.createClass({
            );
   }
 });
+
+ThumbnailCarousel.defaultProps = {
+  thumbnailWidth: 0,
+  thumbnailHeight: 0,
+  centerThumbnailWidth: 0,
+  centerThumbnailHeight: 0
+};
 
 module.exports = ThumbnailCarousel;
