@@ -11,7 +11,10 @@ var React = require('react'),
 var ThumbnailCarousel = React.createClass({
   getInitialState: function() {
     return {
-      thumbnailWidth: 0
+      thumbnailWidth: 0,
+      thumbnailHeight: 0,
+      centerThumbnailWidth: 0,
+      centerThumbnailHeight: 0
     };
   },
 
