@@ -209,6 +209,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON(params.skin.config, _.bind(function(data) {
+        //Override data in skin config with possible inline data input by the user
+        $.extend(true, data, params.skin.inline);
+
         //load language jsons
         data.localization.availableLanguageFile.forEach(function(languageObj){
           $.getJSON(languageObj.languageFile, _.bind(function(data) {
@@ -217,8 +220,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }, this));
         }, this);
 
-        //Override data in skin config with possible inline data input by the user
-        $.extend(true, data, params.skin.inline);
         this.state.config = data;
 
         this.skin = ReactDOM.render(
