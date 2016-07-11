@@ -154,7 +154,7 @@ var ScrubberBar = React.createClass({
       offsetX = evt.targetTouches[0].pageX - evt.target.getBoundingClientRect().left;
     }
     else {
-      offsetX = evt.nativeEvent.offsetX;
+      offsetX = evt.nativeEvent.offsetX == undefined ? evt.nativeEvent.layerX : evt.nativeEvent.offsetX;
     }
 
     this.setState({

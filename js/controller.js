@@ -212,6 +212,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON(params.skin.config, _.bind(function(data) {
+        //Override data in skin config with possible inline data input by the user
+        $.extend(true, data, params.skin.inline);
+
         //load language jsons
         data.localization.availableLanguageFile.forEach(function(languageObj){
           $.getJSON(languageObj.languageFile, _.bind(function(data) {
@@ -220,8 +223,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }, this));
         }, this);
 
-        //override data in skin config with possible inline data input by the user
-        $.extend(true, data, params.skin.inline);
         this.state.config = data;
 
         //override state settings with defaults from skin config and possible local storage settings
@@ -323,6 +324,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.videoQualityOptions.selectedBitrate = null;
       this.state.closedCaptionOptions.availableLanguages = null;
       this.state.discoveryData = null;
+      this.state.thumbnails = null;
       this.resetUpNextInfo(true);
 
       this.state.assetId = embedCode;
@@ -476,7 +478,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
           this.state.pauseAnimationDisabled = true;
         }
-        if (this.state.discoveryData && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
+        if (this.state.pauseAnimationDisabled == false && this.state.discoveryData && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
             && !(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))) {
           OO.log("Should display DISCOVERY_SCREEN on pause");
           this.sendDiscoveryDisplayEvent("pauseScreen");
@@ -1096,7 +1098,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.closeScreen();
       }
       else {
-        if (this.state.playerState == CONSTANTS.STATE.PLAYING){
+        if (this.state.playerState == CONSTANTS.STATE.PLAYING || this.state.playerState == CONSTANTS.STATE.START) {
           this.pausedCallback = function() {
             this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
             this.renderSkin();
