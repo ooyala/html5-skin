@@ -322,7 +322,7 @@ var Utils = {
     var selectedPosition = 0;
 
     if (timeSlices[position] >= hoverTime) {
-      var selectedTimeSlice = timeSlices[0];
+      selectedTimeSlice = timeSlices[0];
       for (var i = position; i >= 0; i--) {
         if (timeSlices[i] < hoverTime) {
           selectedTimeSlice = timeSlices[i];
@@ -332,7 +332,7 @@ var Utils = {
       }
     }
     else {
-      var selectedTimeSlice = timeSlices[timeSlices.length - 1];
+      selectedTimeSlice = timeSlices[timeSlices.length - 1];
       for (var i = position; i < timeSlices.length; i++) {
         if (timeSlices[i] > hoverTime) {
           selectedTimeSlice = timeSlices[i - 1];
