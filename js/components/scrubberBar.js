@@ -251,7 +251,7 @@ var ScrubberBar = React.createClass({
         playheadClassName += " oo-playhead-scrubbing";
 
         thumbnailCarousel =
-          (<div className="oo-scrubber-thumbnail-carousel">
+          (<div className="oo-scrubber-carousel-container">
            <ThumbnailCarousel
            thumbnails={this.props.controller.state.thumbnails}
            duration={this.props.duration}
