@@ -116,10 +116,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "timer": null,
       "errorCode": null,
 
-      "isSubscribed": {
-        "initSubscribe": false,
-        "isPlaybackReadySubscribed": false
-      },
+      "isSubscribed": false,
+      "isPlaybackReadySubscribed": false,
 
       "isSkipAdClicked": false,
       "isInitialPlay": false,
@@ -145,11 +143,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
-      this.state.isSubscribed.isPlaybackReadySubscribed = true;
+      this.state.isPlaybackReadySubscribed = true;
     },
 
     subscribeBasicPlaybackEvents: function () {
-      if(!this.state.isSubscribed.initSubscribe) {
+      if(!this.state.isSubscribed) {
         this.mb.subscribe(OO.EVENTS.SEND_QUALITY_CHANGE, 'customerUi', _.bind(this.receiveVideoQualityChangeEvent, this));
         this.mb.subscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi', _.bind(this.onInitialPlay, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
@@ -170,7 +168,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.ASSET_DIMENSION, "customerUi", _.bind(this.onAssetDimensionsReceived, this));
         // PLAYBACK_READY is a fundamental event in the init process that can be unsubscribed by errors.
         // If and only if such has occured, it needs a route to being resubscribed.
-        if(!this.state.isSubscribed.isPlaybackReadySubscribed) {
+        if(!this.state.isPlaybackReadySubscribed) {
           this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
         }
 
@@ -192,7 +190,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi", _.bind(this.onShowAdMarquee, this));
         }
       }
-      this.state.isSubscribed.initSubscribe = true;
+      this.state.isSubscribed = true;
     },
 
     externalPluginSubscription: function() {
@@ -975,7 +973,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
-      this.state.isSubscribed.isPlaybackReadySubscribed = false;
+      this.state.isPlaybackReadySubscribed = false;
 
       // ad events
       if (!Utils.isIPhone()) {
@@ -997,7 +995,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi");
         }
       }
-      this.state.isSubscribed.initSubscribe = false;
+      this.state.isSubscribed = false;
     },
 
     /*--------------------------------------------------------------------
