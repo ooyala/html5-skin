@@ -31,29 +31,29 @@ var ThumbnailCarousel = React.createClass({
   findThumbnailsAfter: function(data) {
     var start = (data.scrubberBarWidth + data.centerWidth) / 2;
 
-    var thumbmailsAfter = [];
+    var thumbnailsAfter = [];
     for (var i = data.pos, j = 0; i < data.timeSlices.length; i++, j++) {
       var left = start + data.imgWidth * j;
       if (left + data.imgWidth <= data.scrubberBarWidth) {
         var thumbStyle = { left: left, top: data.top, backgroundImage: "url(" + data.thumbnails.data.thumbnails[data.timeSlices[i]][data.width].url + ")" };
-        thumbmailsAfter.push(thumbStyle);
+        thumbnailsAfter.push(thumbStyle);
       }
     }
-    return thumbmailsAfter;
+    return thumbnailsAfter;
   },
 
   findThumbnailsBefore: function(data) {
     var start = (data.scrubberBarWidth - data.centerWidth) / 2;
 
-    var thumbmailsBefore = [];
+    var thumbnailsBefore = [];
     for (var i = data.pos, j = 0; i >= 0; i--, j++) {
       var left = start - data.imgWidth * (j + 1);
       if (left >= 0) {
         var thumbStyle = { left: left, top: data.top, backgroundImage: "url(" + data.thumbnails.data.thumbnails[data.timeSlices[i]][data.width].url + ")" };
-        thumbmailsBefore.push(thumbStyle);
+        thumbnailsBefore.push(thumbStyle);
       }
     }
-    return thumbmailsBefore;
+    return thumbnailsBefore;
   },
 
   render: function() {
