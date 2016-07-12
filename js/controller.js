@@ -194,7 +194,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /*--------------------------------------------------------------------
      event listeners from core player -> regulate skin STATE
      ---------------------------------------------------------------------*/
-    onPlayerCreated: function (event, elementId, settings, params) {
+    onPlayerCreated: function (event, elementId, params, settings) {
       //set state variables
       this.state.mainVideoContainer = $("#" + elementId);
       this.state.mainVideoInnerWrapper = $("#" + elementId + " .innerWrapper");
@@ -212,8 +212,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON(params.skin.config, _.bind(function(data) {
-        //Override data in skin config with possible inline data input by the user
+        //override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
+        //override state settings with defaults from skin config and possible local storage settings
+        $.extend(true, this.state.closedCaptionOptions, data.closedCaptionOptions, settings.closedCaptionOptions);
 
         //load language jsons
         data.localization.availableLanguageFile.forEach(function(languageObj){
@@ -224,9 +226,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }, this);
 
         this.state.config = data;
-
-        //override state settings with defaults from skin config and possible local storage settings
-        $.extend(true, this.state.closedCaptionOptions, data.closedCaptionOptions, settings.closedCaptionOptions);
 
         this.skin = ReactDOM.render(
           React.createElement(Skin, {skinConfig: data, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(data), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .oo-player-skin")
