@@ -4,7 +4,6 @@
  * @module Thumbnail
  */
 var React = require('react'),
-    ClassNames = require('classnames'),
     ReactDOM = require('react-dom'),
     Utils = require('./utils');
 
@@ -17,6 +16,10 @@ var Thumbnail = React.createClass({
 
   componentDidMount: function() {
     this.setState({thumbnailWidth: ReactDOM.findDOMNode(this.refs.thumbnail).clientWidth});
+  },
+
+  shouldComponentUpdate: function(nextProps) {
+    return (nextProps.hoverPosition != this.props.hoverPosition);
   },
 
   render: function() {
@@ -42,5 +45,13 @@ var Thumbnail = React.createClass({
     );
   }
 });
+
+Thumbnail.defaultProps = {
+  thumbnails: {},
+  hoverPosition: 0,
+  duration: 0,
+  hoverTime: 0,
+  scrubberBarWidth: 0
+};
 
 module.exports = Thumbnail;
