@@ -30,8 +30,8 @@ var path = {
 };
 
 var devServer = {
-  host: '0.0.0.0',
-  port: 4444,
+  host: 'localhost',
+  port: 8000,
   file: 'sample.html',
   livereloadPort: 35729
 

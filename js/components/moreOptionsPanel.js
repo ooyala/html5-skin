@@ -52,25 +52,25 @@ var MoreOptionsPanel = React.createClass({
     };
 
     var optionsItemsTemplates = {
-      "quality": <button className="oo-quality oo-control-bar-item" onClick={this.handleQualityClick} key="quality">
+      "quality": <a className="oo-quality oo-control-bar-item" onClick={this.handleQualityClick} key="quality">
         <Icon {...this.props} icon="quality" style={buttonStyle}
          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
-      "discovery": <button className="oo-discovery oo-control-bar-item" onClick={this.handleDiscoveryClick} key="discovery">
+      "discovery": <a className="oo-discovery oo-control-bar-item" onClick={this.handleDiscoveryClick} key="discovery">
         <Icon {...this.props} icon="discovery" style={buttonStyle}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
-      "closedCaption": <button className="oo-closed-caption oo-control-bar-item" onClick={this.handleClosedCaptionClick} key="closedCaption">
+      "closedCaption": <a className="oo-closed-caption oo-control-bar-item" onClick={this.handleClosedCaptionClick} key="closedCaption">
         <Icon {...this.props} icon="cc" style={buttonStyle}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
-      "share": <button className="oo-share oo-control-bar-item" onClick={this.handleShareClick} key="share">
+      "share": <a className="oo-share oo-control-bar-item" onClick={this.handleShareClick} key="share">
         <Icon {...this.props} icon="share" style={buttonStyle}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
       "settings": <div className="oo-settings" key="settings">
         <Icon {...this.props} icon="setting" style={buttonStyle}
