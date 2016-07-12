@@ -1,5 +1,7 @@
 jest.dontMock('../../js/components/scrubberBar')
     .dontMock('../../js/components/utils')
+    .dontMock('../../js/components/thumbnail')
+    .dontMock('../../js/components/thumbnailCarousel')
     .dontMock('../../js/constants/constants')
     .dontMock('../../config/en.json')
     .dontMock('../../config/es.json')
@@ -12,6 +14,51 @@ var CONSTANTS = require('../../js/constants/constants');
 var skinConfig = require('../../config/skin.json');
 var ReactDOM = require('react-dom');
 var ScrubberBar = require('../../js/components/scrubberBar');
+
+
+var thumbnails = {
+  "data":{
+    "available_time_slices":[
+      0,
+      10,
+      20
+    ],
+    "available_widths":[
+      120
+    ],
+    "thumbnails":{
+      "0":{
+        "120":{
+          "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_1.jpg",
+          "width":120,
+          "height":80
+        }
+      },
+      "10":{
+        "120":{
+          "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_2.jpg",
+          "width":120,
+          "height":80
+        }
+      },
+      "20":{
+        "120":{
+          "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_3.jpg",
+          "width":120,
+          "height":80
+        }
+      },
+      "errors":[
+        {
+          "status":404,
+          "code":"Not Found",
+          "title":"unable to find thumbnail images",
+          "detail":"embed code not found"
+        }
+      ]
+    }
+  }
+}
 
 // start unit test
 describe('ScrubberBar', function () {
@@ -151,7 +198,7 @@ describe('ScrubberBar', function () {
     var mockController = {
       state: {
         isMobile: false,
-        thumbnails: true
+        thumbnails: thumbnails
       }
     };
     var DOM = TestUtils.renderIntoDocument(
@@ -170,11 +217,11 @@ describe('ScrubberBar', function () {
     expect(thumbnail.length).toBe(1);
   });
 
-  it('display thumbnail on scrubber bar mouse down', function() {
+  it('display thumbnailCarousel on scrubber bar mouse down', function() {
     var mockController = {
       state: {
         isMobile: false,
-        thumbnails: true
+        thumbnails: thumbnails
       },
       updateSeekingPlayhead: function () {},
       startHideControlBarTimer: function () {},
@@ -193,8 +240,8 @@ describe('ScrubberBar', function () {
 
     var evt = {nativeEvent: {offsetX: 10}};
     TestUtils.Simulate.mouseDown(ReactDOM.findDOMNode(DOM.refs.scrubberBarPadding), evt);
-    var thumbnail = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-scrubber-thumbnail-container');
-    expect(thumbnail.length).toBe(1);
+    var thumbnailCarousel = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-scrubber-carousel-container');
+    expect(thumbnailCarousel.length).toBe(1);
   });
 
 });

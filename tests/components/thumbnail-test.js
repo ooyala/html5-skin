@@ -1,9 +1,11 @@
-jest.dontMock('../../js/components/thumbnail');
+jest.dontMock('../../js/components/thumbnail')
+  .dontMock('../../js/components/utils');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
 var ReactDOM = require('react-dom');
 var Thumbnail = require('../../js/components/thumbnail');
+var Utils = require('../../js/components/utils');
 
 describe('Thumbnail', function () {
   var thumbnails = {
