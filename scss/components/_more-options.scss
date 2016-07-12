@@ -12,7 +12,7 @@
   @include vendor-prefixes(user-select, none);
   font-size: 30px;
 
-  div.oo-control-bar-item {
+  a.oo-control-bar-item {
     background-color: transparent;
     border:0;
     outline: none;
