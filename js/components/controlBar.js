@@ -104,8 +104,9 @@ var ControlBar = React.createClass({
   },
 
   toggleQualityPopover: function() {
+    this.props.controller.toggleVideoQualityPopOver();
     this.setState({
-      showVideoQualityPopover: !this.state.showVideoQualityPopover
+      showVideoQualityPopover: this.props.controller.state.videoQualityOptions.showVideoQualityPopover
     });
   },
 
@@ -128,16 +129,18 @@ var ControlBar = React.createClass({
   },
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
-  highlight: function(evt) {
+  highlight: function(e) {
+    var event = e || window.event;
     var color = this.props.skinConfig.controlBar.iconStyle.active.color;
     var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
-    Utils.highlight(evt.target, opacity, color);
+    Utils.highlight(event.target, opacity, color);
   },
 
-  removeHighlight: function(evt) {
+  removeHighlight: function(e) {
+    var event = e || window.event;
     var color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
     var opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
-    Utils.removeHighlight(evt.target, opacity, color);
+    Utils.removeHighlight(event.target, opacity, color);
   },
 
   volumeHighlight:function() {
@@ -146,6 +149,62 @@ var ControlBar = React.createClass({
 
   volumeRemoveHighlight:function() {
     this.removeHighlight({target: ReactDOM.findDOMNode(this.refs.volumeIcon)});
+  },
+
+  playPauseHighlight:function() {
+    this.highlight({target: ReactDOM.findDOMNode(this.refs.playIcon)});
+  },
+
+  playPauseRemoveHighlight:function() {
+    this.removeHighlight({target: ReactDOM.findDOMNode(this.refs.playIcon)});
+  },
+
+  moreOptionsHighlight:function() {
+    this.highlight({target: ReactDOM.findDOMNode(this.refs.moreOptionsIcon)});
+  },
+
+  moreOptionsRemoveHighlight:function() {
+    this.removeHighlight({target: ReactDOM.findDOMNode(this.refs.moreOptionsIcon)});
+  },
+
+  qualityHighlight:function() {
+    this.highlight({target: ReactDOM.findDOMNode(this.refs.qualityIcon)});
+  },
+
+  qualityRemoveHighlight:function() {
+    this.removeHighlight({target: ReactDOM.findDOMNode(this.refs.qualityIcon)});
+  },
+
+  discoveryHighlight:function() {
+    this.highlight({target: ReactDOM.findDOMNode(this.refs.discoveryIcon)});
+  },
+
+  discoveryRemoveHighlight:function() {
+    this.removeHighlight({target: ReactDOM.findDOMNode(this.refs.discoveryIcon)});
+  },
+
+  shareHighlight:function() {
+    this.highlight({target: ReactDOM.findDOMNode(this.refs.shareIcon)});
+  },
+
+  shareRemoveHighlight:function() {
+    this.removeHighlight({target: ReactDOM.findDOMNode(this.refs.shareIcon)});
+  },
+
+  fullscreenHighlight:function() {
+    this.highlight({target: ReactDOM.findDOMNode(this.refs.fullscreenIcon)});
+  },
+
+  fullscreenRemoveHighlight:function() {
+    this.removeHighlight({target: ReactDOM.findDOMNode(this.refs.fullscreenIcon)});
+  },
+
+  ccHighlight:function() {
+    this.highlight({target: ReactDOM.findDOMNode(this.refs.ccIcon)});
+  },
+
+  ccRemoveHighlight:function() {
+    this.removeHighlight({target: ReactDOM.findDOMNode(this.refs.ccIcon)});
   },
 
   changeVolumeSlider: function(event) {
@@ -231,20 +290,20 @@ var ControlBar = React.createClass({
         "oo-live-nonclickable": isLiveNow
       });
 
-    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
+    var videoQualityPopover = this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
 
     var qualityClass = ClassNames({
       "oo-quality": true,
       "oo-control-bar-item": true,
-      "oo-selected": this.state.showVideoQualityPopover
+      "oo-selected": this.props.controller.state.videoQualityOptions.showVideoQualityPopover
     });
 
     var controlItemTemplates = {
-      "playPause": <button className="oo-play-pause oo-control-bar-item" onClick={this.handlePlayClick} key="playPause">
-        <Icon {...this.props} icon={playIcon}
-          style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      "playPause": <div className="oo-play-pause oo-control-bar-item" onClick={this.handlePlayClick} key="playPause">
+        <Icon {...this.props} icon={playIcon} ref="playIcon"
+          style={this.props.skinConfig.controlBar.iconStyle.inactive}
+          onMouseOver={this.playPauseHighlight} onMouseOut={this.playPauseRemoveHighlight}/>
+      </div>,
 
       "live": <button className={liveClass}
           ref="LiveButton"
@@ -267,45 +326,45 @@ var ControlBar = React.createClass({
 
       "flexibleSpace": <div className="oo-flexible-space oo-control-bar-flex-space" key="flexibleSpace"></div>,
 
-      "moreOptions": <button className="oo-more-options oo-control-bar-item"
+      "moreOptions": <div className="oo-more-options oo-control-bar-item"
         onClick={this.handleMoreOptionsClick} key="moreOptions">
-        <Icon {...this.props} icon="ellipsis" style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+        <Icon {...this.props} icon="ellipsis" ref="moreOptionsIcon" style={this.props.skinConfig.controlBar.iconStyle.inactive}
+          onmouseover={this.moreOptionsHighlight} onMouseOut={this.moreOptionsRemoveHighlight}/>
+      </div>,
 
       "quality": (
         <div className="oo-popover-button-container" key="quality">
           {videoQualityPopover}
           <button className={qualityClass} onClick={this.handleQualityClick}>
-            <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
-              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+            <Icon {...this.props} icon="quality" ref="qualityIcon" style={this.props.skinConfig.controlBar.iconStyle.inactive}
+              onmouseover={this.qualityHighlight} onMouseOut={this.qualityRemoveHighlight}/>
           </button>
         </div>
       ),
 
-      "discovery": <button className="oo-discovery oo-control-bar-item"
+      "discovery": <div className="oo-discovery oo-control-bar-item"
         onClick={this.handleDiscoveryClick} key="discovery">
-        <Icon {...this.props} icon="discovery" style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+        <Icon {...this.props} icon="discovery" ref="discoveryIcon" style={this.props.skinConfig.controlBar.iconStyle.inactive}
+          onmouseover={this.discoveryHighlight} onMouseOut={this.discoveryRemoveHighlight}/>
+      </div>,
 
-      "closedCaption": <button className="oo-closed-caption oo-control-bar-item"
+      "closedCaption": <div className="oo-closed-caption oo-control-bar-item"
         onClick={this.handleClosedCaptionClick} key="closedCaption">
-        <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+        <Icon {...this.props} icon="cc" ref="ccIcon" style={this.props.skinConfig.controlBar.iconStyle.inactive}
+          onMouseOver={this.ccHighlight} onMouseOut={this.ccRemoveHighlight}/>
+      </div>,
 
-      "share": <button className="oo-share oo-control-bar-item"
+      "share": <div className="oo-share oo-control-bar-item"
         onClick={this.handleShareClick} key="share">
-        <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+        <Icon {...this.props} icon="share" ref="shareIcon" style={this.props.skinConfig.controlBar.iconStyle.inactive}
+          onMouseOver={this.shareHighlight} onMouseOut={this.shareRemoveHighlight}/>
+      </div>,
 
-      "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
+      "fullscreen": <div className="oo-fullscreen oo-control-bar-item"
         onClick={this.handleFullscreenClick} key="fullscreen">
-        <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+        <Icon {...this.props} icon={fullscreenIcon} ref="fullscreenIcon" style={this.props.skinConfig.controlBar.iconStyle.inactive}
+          onMouseOver={this.fullscreenHighlight} onMouseOut={this.fullscreenRemoveHighlight}/>
+      </div>,
 
       "logo": <Logo key="logo" imageUrl={this.props.skinConfig.controlBar.logo.imageResource.url}
                     clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
@@ -419,12 +478,8 @@ var ControlBar = React.createClass({
 
     var controlBarItems = this.populateControlBar();
 
-    var controlBarStyle = {
-      height: this.props.skinConfig.controlBar.height
-    };
-
     return (
-      <div className={controlBarClass} style={controlBarStyle} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
+      <div className={controlBarClass} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
         <ScrubberBar {...this.props} />
 
         <div className="oo-control-bar-items-wrapper">
