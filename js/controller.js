@@ -115,10 +115,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "forceControlBarVisible": false,
       "timer": null,
       "errorCode": null,
-
       "isSubscribed": false,
       "isPlaybackReadySubscribed": false,
-
       "isSkipAdClicked": false,
       "isInitialPlay": false,
       "isFullScreenSupported": false,
