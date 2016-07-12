@@ -74,14 +74,14 @@ var ThumbnailCarousel = React.createClass({
     var time = isFinite(parseInt(this.props.hoverTime)) ? Utils.formatSeconds(parseInt(this.props.hoverTime)) : null;
     
     return (
-        <div>
+      <div className="oo-scrubber-carousel-container">
         {
           thumbnailsBefore.map(function (element, i) {
             return <div className="oo-thumbnail-carousel-image" key={i} ref="thumbnail" style={element}></div>
           })
         }      
         <div className="oo-thumbnail-carousel-center-image" ref="thumbnailCarousel" style={thumbnailStyle}>
-        <div className="oo-thumbnail-carousel-time">{time}</div>
+          <div className="oo-thumbnail-carousel-time">{time}</div>
         </div>
         {
           thumbnailsAfter.map(function (element, i) {

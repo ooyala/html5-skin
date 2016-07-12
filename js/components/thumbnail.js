@@ -36,8 +36,10 @@ var Thumbnail = React.createClass({
 
     var time = isFinite(parseInt(this.props.hoverTime)) ? Utils.formatSeconds(parseInt(this.props.hoverTime)) : null;
     return (
-      <div className="oo-thumbnail" ref="thumbnail" style={thumbnailStyle}>
-        <div className="oo-thumbnail-time">{time}</div>
+      <div className="oo-scrubber-thumbnail-container">
+        <div className="oo-thumbnail" ref="thumbnail" style={thumbnailStyle}>
+          <div className="oo-thumbnail-time">{time}</div>
+        </div>
       </div>
     );
   }

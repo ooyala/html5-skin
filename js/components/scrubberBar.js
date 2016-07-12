@@ -251,13 +251,11 @@ var ScrubberBar = React.createClass({
         playheadClassName += " oo-playhead-scrubbing";
 
         thumbnailCarousel =
-          (<div className="oo-scrubber-carousel-container">
-           <ThumbnailCarousel
+          <ThumbnailCarousel
            thumbnails={this.props.controller.state.thumbnails}
            duration={this.props.duration}
            hoverTime={hoverTime > 0 ? hoverTime : 0}
            scrubberBarWidth={this.state.scrubberBarWidth}/>
-           </div>);
       } else if (this.lastScrubX) {//to show thumbnail when clicking on playhead
         hoverPosition = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration;
         hoverTime = this.props.currentPlayhead;
@@ -274,14 +272,12 @@ var ScrubberBar = React.createClass({
       }
       if (!thumbnailCarousel) {
         thumbnailContainer =
-          (<div className="oo-scrubber-thumbnail-container">
-           <Thumbnail
+          <Thumbnail
            thumbnails={this.props.controller.state.thumbnails}
            hoverPosition={hoverPosition}
            duration={this.props.duration}
            hoverTime={hoverTime > 0 ? hoverTime : 0}
            scrubberBarWidth={this.state.scrubberBarWidth}/>
-           </div>);
       }
     }
 
