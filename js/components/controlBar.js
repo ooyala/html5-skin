@@ -104,8 +104,9 @@ var ControlBar = React.createClass({
   },
 
   toggleQualityPopover: function() {
+    this.props.controller.toggleVideoQualityPopOver();
     this.setState({
-      showVideoQualityPopover: !this.state.showVideoQualityPopover
+      showVideoQualityPopover: this.props.controller.state.videoQualityOptions.showVideoQualityPopover
     });
   },
 
@@ -231,12 +232,12 @@ var ControlBar = React.createClass({
         "oo-live-nonclickable": isLiveNow
       });
 
-    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
+    var videoQualityPopover = this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
 
     var qualityClass = ClassNames({
       "oo-quality": true,
       "oo-control-bar-item": true,
-      "oo-selected": this.state.showVideoQualityPopover
+      "oo-selected": this.props.controller.state.videoQualityOptions.showVideoQualityPopover
     });
 
     var controlItemTemplates = {

@@ -87,7 +87,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       "videoQualityOptions": {
         "availableBitrates": null,
-        "selectedBitrate": null
+        "selectedBitrate": null,
+        "showVideoQualityPopover":false,
       },
 
       "volumeState": {
@@ -143,6 +144,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     subscribeBasicPlaybackEvents: function () {
       if(!this.state.isSubscribed) {
+        this.mb.subscribe(OO.EVENTS.SEND_QUALITY_CHANGE, 'customerUi', _.bind(this.receiveVideoQualityChangeEvent, this));
         this.mb.subscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi', _.bind(this.onInitialPlay, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
@@ -1169,6 +1171,27 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "custom" : { "source" : screen}
       };
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
+    },
+
+    toggleVideoQualityPopOver: function() {
+      this.state.videoQualityOptions.showVideoQualityPopover = !this.state.videoQualityOptions.showVideoQualityPopover;
+      this.renderSkin();
+    },
+
+    receiveVideoQualityChangeEvent: function(eventName, targetBitrate) {
+        this.state.videoQualityOptions.selectedBitrate = {
+        "id": targetBitrate
+      };
+      this.renderSkin({
+          "videoQualityOptions": {
+            "availableBitrates": this.state.videoQualityOptions.availableBitrates,
+            "selectedBitrate": this.state.videoQualityOptions.selectedBitrate,
+            "showVideoQualityPopover":this.state.videoQualityOptions.showVideoQualityPopover
+          }
+        });
+      if(this.state.videoQualityOptions.showVideoQualityPopover == true) {
+        this.toggleVideoQualityPopOver();
+      }
     },
 
     sendVideoQualityChangeEvent: function(selectedContentData) {
