@@ -72,7 +72,16 @@ var AdPanel = React.createClass({
       adPlaybackInfo = adPlaybackInfo + ": (" + currentAdIndex + "/" + totalNumberOfAds + ")";
     }
 
-    var remainingTime = Utils.formatSeconds(Math.max(0, parseInt(this.props.adVideoDuration - this.props.currentPlayhead)));
+    var isLive = this.props.currentAdsInfo.currentAdItem.isLive;
+
+    var remainingTime;
+    if (isLive) {
+      remainingTime = parseInt((this.props.adStartTime + this.props.adVideoDuration * 1000 - new Date().getTime())/1000);
+    } else {
+      remainingTime = parseInt(this.props.adVideoDuration - this.props.currentPlayhead)
+    }
+    remainingTime = Utils.formatSeconds(Math.max(0, remainingTime));
+
     adPlaybackInfo = adPlaybackInfo + " - " + remainingTime;
 
     var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" itemClassName="oo-ad-playback-info">{adPlaybackInfo}</AdPanelTopBarItem>;
@@ -131,4 +140,21 @@ var AdPanel = React.createClass({
     );
   }
 });
+
+AdPanel.defaultProps = {
+  currentPlayhead: 0,
+  adVideoDuration: 0,
+  adStartTime: 0,
+  currentAdsInfo: {
+    numberOfAds: 0,
+    skipAdButtonEnabled: false,
+    currentAdItem: {
+      hasClickUrl: false,
+      name: "",
+      indexInPod: 0,
+      isLive: false
+    }
+  }
+};
+
 module.exports = AdPanel;

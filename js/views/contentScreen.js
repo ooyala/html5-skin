@@ -19,16 +19,25 @@ var ContentScreen = React.createClass({
   },
 
   render: function() {
+    //overlay only for the closed captions screen. Needs to be different than the other screens because of closed caption preview.
+    var closedCaptionOverlay = this.props.screen == CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN ? (
+      <div className="oo-closed-caption-overlay"></div>
+    ) :
+    null;
+
     //localized title bar, show nothing if no title text
     var titleBar = this.props.titleText ? (
       <div className="oo-content-screen-title">
-        {Utils.getLocalizedString(this.props.language, this.props.titleText, this.props.localizableStrings)} <Icon {...this.props} icon={this.props.icon}/>
+        {Utils.getLocalizedString(this.props.language, this.props.titleText, this.props.localizableStrings)}
+        <Icon {...this.props} icon={this.props.icon}/>
+        {this.props.element}
       </div>
     ) :
     null;
 
     return (
       <div className={this.props.screenClassName}>
+        {closedCaptionOverlay}
         <div className={this.props.titleBarClassName}>
           {titleBar}
           <CloseButton {...this.props} closeAction={this.handleClose}/>
@@ -40,13 +49,16 @@ var ContentScreen = React.createClass({
   }
 });
 
-ContentScreen.propTypes = {};
+ContentScreen.propTypes = {
+  element: React.PropTypes.element
+};
 
 ContentScreen.defaultProps = {
   screen: CONSTANTS.SCREEN.SHARE_SCREEN,
   screenClassName: 'oo-content-screen',
   titleBarClassName: 'oo-content-screen-title-bar',
   titleText: '',
+  element: null,
   icon: 'share',
   controller: {
     toggleScreen: function(){},

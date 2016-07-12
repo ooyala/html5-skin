@@ -20,11 +20,15 @@ describe('PlayingScreen', function () {
       startHideControlBarTimer: function() {moved = true}
     };
 
+    var closedCaptionOptions = {
+      cueText: "cue text"
+    };
+
     // Render pause screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} />);
+    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
 
     var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
-    
+
     TestUtils.Simulate.mouseMove(screen[0]);
     expect(moved).toBe(false);
 
@@ -46,8 +50,12 @@ describe('PlayingScreen', function () {
       startHideControlBarTimer: function() {}
     };
 
+    var closedCaptionOptions = {
+      cueText: "cue text"
+    };
+
     // Render pause screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} />);
+    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
 
     var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
     TestUtils.Simulate.touchEnd(screen[0]);
@@ -75,8 +83,12 @@ describe('PlayingScreen', function () {
 
     };
 
+    var closedCaptionOptions = {
+      cueText: "cue text"
+    };
+
     // Render pause screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} fullscreen = {true} controlBarAutoHide={true}/>);
+    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} fullscreen = {true} controlBarAutoHide={true} closedCaptionOptions = {closedCaptionOptions}/>);
 
     var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playing-screen');
     TestUtils.Simulate.mouseMove(screen);

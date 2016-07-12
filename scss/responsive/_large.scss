@@ -57,46 +57,30 @@
   }
 
   // Closed Caption Panel
-  .oo-closed-captions-panel {
+  .oo-content-screen-closed-captions {
     .oo-switch-container {
       height: 26px;
       width: 126px;
+      margin-left:34px;
       .oo-switch-captions {
         font-size: $font-size-base * $large-multiple;
       }
-      .oo-switch-element {
-        margin-bottom: 33%;
-      }
     }
-  }
-  .oo-language-container {
-    margin-top: 8%;
-    .oo-language-panel {
-      a.oo-item {
-        width: 168px;
-        font-size: 1.4em;
-        margin: 17px 33px;
-        padding: 3px 12px;
-      }
+    .oo-data-panel {
+      padding-left: 7px;
+      width: 850px;
     }
-    .oo-flexcontainer {
-      -webkit-flex-flow: row wrap;
-      flex-flow: row wrap;
+    .oo-text-color-selection-container {
+      padding-left: $panel-padding-lg;
     }
-    .oo-discover-btn {
-      span.oo-icon {
-        font-size: 1.2em;
-      }
+    .oo-caption-opacity-inner-wrapper {
+      padding-left: $panel-padding-lg;
     }
-  }
-  .oo-preview-panel {
-    padding: 14px $panel-padding-lg;
-    .oo-preview-caption {
-      font-size: 1em;
-      line-height:1.4em;
+    .oo-font-size-inner-wrapper {
+      padding-left: $panel-padding-lg;
     }
-    .oo-preview-text {
-      font-size: 1.7em;
+    .oo-text-enhancements-inner-wrapper {
+      padding-left: $panel-padding-lg;
     }
   }
 

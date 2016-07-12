@@ -114,6 +114,16 @@
   }
 }
 
+// Default style for tabs scroll icons
+@mixin scroll-button {
+  position: absolute;
+  display: block !important;
+  background-color: transparent;
+  height: 25px;
+  width: 25px;
+  color: white;
+}
+
 /// Vertically centers the element inside of its first non-static parent,
 /// @link http://www.sitepoint.com/centering-with-sass/ Centering With Sass
 @mixin vertical-center {

@@ -154,7 +154,7 @@ var ScrubberBar = React.createClass({
       offsetX = evt.targetTouches[0].pageX - evt.target.getBoundingClientRect().left;
     }
     else {
-      offsetX = evt.nativeEvent.offsetX;
+      offsetX = evt.nativeEvent.offsetX == undefined ? evt.nativeEvent.layerX : evt.nativeEvent.offsetX;
     }
 
     this.setState({
@@ -165,7 +165,7 @@ var ScrubberBar = React.createClass({
   },
 
   handleScrubberBarMouseOver: function(evt) {
-    if (!this.props.controller.state.thumbnails) return;
+    if (!this.props.skinConfig.controlBar.scrubberBar.thumbnailPreview) return;
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
     if (this.isMobile) { return; }
     if (evt.target.className.match("oo-playhead")) { return; }

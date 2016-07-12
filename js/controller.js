@@ -18,7 +18,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin_version = "<SKIN_VERSION>";
+    OO.publicApi.VERSION.skin = {"releaseVersion": "<SKIN_VERSION>", "rev": "<SKIN_REV>"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -51,6 +51,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "duration": 0,
       "mainVideoDuration": 0,
       "adVideoDuration": 0,
+      "adStartTime": 0,
       "elementId": null,
       "mainVideoContainer": null,
       "mainVideoInnerWrapper": null,
@@ -72,12 +73,22 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "enabled": null,
         "language": null,
         "availableLanguages": null,
-        "cueText": null
+        "cueText": null,
+        "textColor": null,
+        "windowColor": null,
+        "backgroundColor": null,
+        "textOpacity": null,
+        "backgroundOpacity": null,
+        "windowOpacity": null,
+        "fontType": null,
+        "fontSize": null,
+        "textEnhancement": null
       },
 
       "videoQualityOptions": {
         "availableBitrates": null,
-        "selectedBitrate": null
+        "selectedBitrate": null,
+        "showVideoQualityPopover":false,
       },
 
       "volumeState": {
@@ -139,6 +150,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     subscribeBasicPlaybackEvents: function () {
       if(!this.state.isSubscribed.initSubscribe) {
+        this.mb.subscribe(OO.EVENTS.SEND_QUALITY_CHANGE, 'customerUi', _.bind(this.receiveVideoQualityChangeEvent, this));
         this.mb.subscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi', _.bind(this.onInitialPlay, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
@@ -210,6 +222,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON(params.skin.config, _.bind(function(data) {
+        //Override data in skin config with possible inline data input by the user
+        $.extend(true, data, params.skin.inline);
+
         //load language jsons
         data.localization.availableLanguageFile.forEach(function(languageObj){
           $.getJSON(languageObj.languageFile, _.bind(function(data) {
@@ -218,8 +233,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }, this));
         }, this);
 
-        //Override data in skin config with possible inline data input by the user
-        $.extend(true, data, params.skin.inline);
         this.state.config = data;
 
         this.skin = ReactDOM.render(
@@ -267,6 +280,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           videoWrapperClass: "innerWrapper",
           pluginsClass: "oo-player-skin-plugins"
         });
+
+        this.setupClosedCaptions();
       }, this));
 
       this.state.isMobile = Utils.isMobile();
@@ -318,6 +333,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.videoQualityOptions.selectedBitrate = null;
       this.state.closedCaptionOptions.availableLanguages = null;
       this.state.discoveryData = null;
+      this.state.thumbnails = null;
       this.resetUpNextInfo(true);
 
       this.state.assetId = embedCode;
@@ -336,9 +352,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onThumbnailsFetched: function (event, thumbnails) {
-      if (this.skin.props.skinConfig.controlBar.scrubberBar.thumbnailPreview) {
-        this.state.thumbnails = thumbnails;
-      }
+      this.state.thumbnails = thumbnails;
     },
 
     onAssetChanged: function (event, asset) {
@@ -473,7 +487,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
           this.state.pauseAnimationDisabled = true;
         }
-        if (this.state.discoveryData && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
+        if (this.state.pauseAnimationDisabled == false && this.state.discoveryData && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
             && !(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))) {
           OO.log("Should display DISCOVERY_SCREEN on pause");
           this.sendDiscoveryDisplayEvent("pauseScreen");
@@ -639,6 +653,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.isPlayingAd = true;
         this.state.currentAdsInfo.currentAdItem = adItem;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
+        if (adItem.isLive) {
+          this.state.adStartTime = new Date().getTime();
+        } else {
+          this.state.adStartTime = 0;
+        }
         this.skin.state.currentPlayhead = 0;
         this.state.mainVideoElement.removeClass('oo-blur');
         this.renderSkin();
@@ -779,16 +798,24 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.closedCaptionOptions.availableLanguages = languages;
+      this.setupClosedCaptions();
+    },
 
-      //Set the language to the skinConfig default if it is one of our possible languages, otherwise just set it to the first possible language.
-      if (this.skin.props.skinConfig.closedCaptionOptions && _.contains(languages.languages, this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage)){
-        this.state.closedCaptionOptions.language = this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage;
-      } else if (languages && languages.languages && languages.languages.length > 0){
-        this.state.closedCaptionOptions.language = languages.languages[0];
-      }
+    setupClosedCaptions: function() {
+      if (!this.state.closedCaptionOptions.availableLanguages || !this.skin) return;
+      var languages = this.state.closedCaptionOptions.availableLanguages;
+      //Set the language to the skinConfig default if it is not already set or is not one of our possible languages.
+      //If that is not possible either, just set it to the first possible language.
+      if (this.state.closedCaptionOptions.language == null || !_.contains(languages.languages, this.state.closedCaptionOptions.language)) {
+        if (this.skin.props.skinConfig.closedCaptionOptions && _.contains(languages.languages, this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage)){
+          this.state.closedCaptionOptions.language = this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage;
+        } else if (languages && languages.languages && languages.languages.length > 0){
+          this.state.closedCaptionOptions.language = languages.languages[0];
+        }
 
-      if (this.state.closedCaptionOptions.enabled){
-        this.setClosedCaptionsLanguage();
+        if (this.state.closedCaptionOptions.enabled){
+          this.setClosedCaptionsLanguage();
+        }
       }
     },
 
@@ -1098,7 +1125,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.closeScreen();
       }
       else {
-        if (this.state.playerState == CONSTANTS.STATE.PLAYING){
+        if (this.state.playerState == CONSTANTS.STATE.PLAYING || this.state.playerState == CONSTANTS.STATE.START) {
           this.pausedCallback = function() {
             this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
             this.renderSkin();
@@ -1159,6 +1186,27 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
     },
 
+    toggleVideoQualityPopOver: function() {
+      this.state.videoQualityOptions.showVideoQualityPopover = !this.state.videoQualityOptions.showVideoQualityPopover;
+      this.renderSkin();
+    },
+
+    receiveVideoQualityChangeEvent: function(eventName, targetBitrate) {
+        this.state.videoQualityOptions.selectedBitrate = {
+        "id": targetBitrate
+      };
+      this.renderSkin({
+          "videoQualityOptions": {
+            "availableBitrates": this.state.videoQualityOptions.availableBitrates,
+            "selectedBitrate": this.state.videoQualityOptions.selectedBitrate,
+            "showVideoQualityPopover":this.state.videoQualityOptions.showVideoQualityPopover
+          }
+        });
+      if(this.state.videoQualityOptions.showVideoQualityPopover == true) {
+        this.toggleVideoQualityPopOver();
+      }
+    },
+
     sendVideoQualityChangeEvent: function(selectedContentData) {
       this.state.videoQualityOptions.selectedBitrate = {
         "id": selectedContentData.id
@@ -1186,6 +1234,51 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onClosedCaptionLanguageChange: function(language) {
       this.state.closedCaptionOptions.language = language;
       this.setClosedCaptionsLanguage();
+      this.renderSkin();
+    },
+
+    onClosedCaptionTextColorChange: function(textColor) {
+      this.state.closedCaptionOptions.textColor = textColor;
+      this.renderSkin();
+    },
+
+    onClosedCaptionWindowColorChange: function(windowColor) {
+      this.state.closedCaptionOptions.windowColor = windowColor;
+      this.renderSkin();
+    },
+
+    onClosedCaptionBackgroundColorChange: function(backgroundColor) {
+      this.state.closedCaptionOptions.backgroundColor = backgroundColor;
+      this.renderSkin();
+    },
+
+    onClosedCaptionFontTypeChange: function(fontType) {
+      this.state.closedCaptionOptions.fontType = fontType;
+      this.renderSkin();
+    },
+
+    onClosedCaptionFontSizeChange: function(fontSize) {
+      this.state.closedCaptionOptions.fontSize = fontSize;
+      this.renderSkin();
+    },
+
+    onClosedCaptionTextOpacityChange: function(textOpacity) {
+      this.state.closedCaptionOptions.textOpacity = textOpacity;
+      this.renderSkin();
+    },
+
+    onClosedCaptionBackgroundOpacityChange: function(backgroundOpacity) {
+      this.state.closedCaptionOptions.backgroundOpacity = backgroundOpacity;
+      this.renderSkin();
+    },
+
+    onClosedCaptionWindowOpacityChange: function(windowOpacity) {
+      this.state.closedCaptionOptions.windowOpacity = windowOpacity;
+      this.renderSkin();
+    },
+
+    onClosedCaptionTextEnhancementChange: function(textEnhancement) {
+      this.state.closedCaptionOptions.textEnhancement = textEnhancement;
       this.renderSkin();
     },
 

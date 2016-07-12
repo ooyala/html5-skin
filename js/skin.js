@@ -5,6 +5,7 @@ var React = require('react'),
     Utils = require('./components/utils'),
     CONSTANTS = require('./constants/constants'),
     Spinner = require('./components/spinner'),
+    OnOffSwitch = require('./components/closed-caption/onOffSwitch'),
     ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel'),
     DiscoveryPanel = require('./components/discoveryPanel'),
     VideoQualityPanel = require('./components/videoQualityPanel'),
@@ -35,7 +36,7 @@ var Skin = React.createClass({
     // Notify AMC the correct overlay rendering info
     if (this.state.screenToShow !== null && !this.overlayRenderingEventSent) {
       var responsiveUIMultiple = this.props.skinConfig.responsive.breakpoints[this.state.responsiveId].multiplier;
-      var marginHeight = responsiveUIMultiple * CONSTANTS.UI.defaultControlBarHeight;
+      var marginHeight = responsiveUIMultiple * this.props.skinConfig.controlBar.height;
       this.props.controller.publishOverlayRenderingEvent(marginHeight);
       this.overlayRenderingEventSent = true;
     }
@@ -49,10 +50,28 @@ var Skin = React.createClass({
     if (this.props.skinConfig.closedCaptionOptions){
       this.props.controller.state.closedCaptionOptions.language = (this.props.skinConfig.closedCaptionOptions.defaultLanguage ? this.props.skinConfig.closedCaptionOptions.defaultLanguage : "en" );
       this.props.controller.state.closedCaptionOptions.enabled = (this.props.skinConfig.closedCaptionOptions.defaultEnabled ? this.props.skinConfig.closedCaptionOptions.defaultEnabled : false);
+      this.props.controller.state.closedCaptionOptions.textColor = (this.props.skinConfig.closedCaptionOptions.defaultTextColor ? this.props.skinConfig.closedCaptionOptions.defaultTextColor : "White");
+      this.props.controller.state.closedCaptionOptions.windowColor = (this.props.skinConfig.closedCaptionOptions.defaultWindowColor ? this.props.skinConfig.closedCaptionOptions.defaultWindowColor : "Transparent");
+      this.props.controller.state.closedCaptionOptions.backgroundColor = (this.props.skinConfig.closedCaptionOptions.defaultBackgroundColor ? this.props.skinConfig.closedCaptionOptions.defaultBackgroundColor : "Black");
+      this.props.controller.state.closedCaptionOptions.textOpacity = (this.props.skinConfig.closedCaptionOptions.defaultTextOpacity ? this.props.skinConfig.closedCaptionOptions.defaultTextOpacity : 1);
+      this.props.controller.state.closedCaptionOptions.backgroundOpacity = (this.props.skinConfig.closedCaptionOptions.defaultBackgroundOpacity ? this.props.skinConfig.closedCaptionOptions.defaultBackgroundOpacity : 0.6);
+      this.props.controller.state.closedCaptionOptions.windowOpacity = (this.props.skinConfig.closedCaptionOptions.defaultWindowOpacity ? this.props.skinConfig.closedCaptionOptions.defaultWindowOpacity : 0);
+      this.props.controller.state.closedCaptionOptions.fontType = (this.props.skinConfig.closedCaptionOptions.defaultFontType ? this.props.skinConfig.closedCaptionOptions.defaultFontType : "Proportional Sans-Serif");
+      this.props.controller.state.closedCaptionOptions.fontSize = (this.props.skinConfig.closedCaptionOptions.defaultFontSize ? this.props.skinConfig.closedCaptionOptions.defaultFontSize : "Medium");
+      this.props.controller.state.closedCaptionOptions.textEnhancement = (this.props.skinConfig.closedCaptionOptions.defaultTextEnhancement ? this.props.skinConfig.closedCaptionOptions.defaultTextEnhancement : "Uniform");
     }
     else {
       this.props.controller.state.closedCaptionOptions.language = "en";
       this.props.controller.state.closedCaptionOptions.enabled = false;
+      this.props.controller.state.closedCaptionOptions.textColor = "White";
+      this.props.controller.state.closedCaptionOptions.windowColor = "Transparent";
+      this.props.controller.state.closedCaptionOptions.backgroundColor = "Black";
+      this.props.controller.state.closedCaptionOptions.textOpacity = 1;
+      this.props.controller.state.closedCaptionOptions.backgroundOpacity = 0.6;
+      this.props.controller.state.closedCaptionOptions.windowOpacity = 0;
+      this.props.controller.state.closedCaptionOptions.fontType = "Proportional Sans-Serif";
+      this.props.controller.state.closedCaptionOptions.fontSize = "Medium";
+      this.props.controller.state.closedCaptionOptions.textEnhancement = "Uniform";
     }
   },
 
@@ -137,7 +156,8 @@ var Skin = React.createClass({
             <SharePanel
               {...this.props}
               assetId={this.state.assetId}
-              playerParam={this.state.playerParam} />
+              playerParam={this.state.playerParam}
+              contentTree={this.state.contentTree} />
           </ContentScreen>
           );
           break;
@@ -194,6 +214,7 @@ var Skin = React.createClass({
               responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
+              adStartTime={this.state.adStartTime}
               ref="adScreen" />
           );
           break;
@@ -230,13 +251,17 @@ var Skin = React.createClass({
           <ContentScreen
             {...this.props}
             screen={CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN}
+            screenClassName="oo-content-screen oo-content-screen-closed-captions"
             titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
+            closedCaptionOptions={this.props.closedCaptionOptions}
+            element={<OnOffSwitch {...this.props} />}
             icon="cc">
             <ClosedCaptionPanel
               {...this.props}
               closedCaptionOptions={this.props.closedCaptionOptions}
-              languagesPerPage={{xs:1, sm:4, md:4, lg:15}}
-              responsiveView={this.state.responsiveId}/>
+              dataItemsPerPage={{xs:1, sm:4, md:8, lg:8}}
+              responsiveView={this.state.responsiveId}
+              componentWidth={this.state.componentWidth}/>
           </ContentScreen>
           );
           break;
