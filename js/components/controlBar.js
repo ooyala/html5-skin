@@ -246,12 +246,12 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </a>,
 
-      "live": <button className={liveClass}
+      "live": <a className={liveClass}
           ref="LiveButton"
           onClick={liveClick} key="live">
         <div className="oo-live-circle"></div>
         <span className="oo-live-text">{liveText}</span>
-      </button>,
+      </a>,
 
       "volume": <div className="oo-volume oo-control-bar-item" key="volume">
         <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
@@ -274,13 +274,13 @@ var ControlBar = React.createClass({
       </a>,
 
       "quality": (
-        <a className="oo-popover-button-container" key="quality">
+        <div className="oo-popover-button-container" key="quality">
           {videoQualityPopover}
-          <button className={qualityClass} onClick={this.handleQualityClick}>
+          <a className={qualityClass} onClick={this.handleQualityClick}>
             <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
               onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-          </button>
-        </a>
+          </a>
+        </div>
       ),
 
       "discovery": <a className="oo-discovery oo-control-bar-item"
