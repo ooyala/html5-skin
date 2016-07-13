@@ -205,7 +205,7 @@ describe('ThumbnailCarousel', function () {
   };
 
   it('creates a ThumbnailCarousel at 50 sec', function () {
-    var hoverTime = 50;
+    var hoverTime = 50; // should find thumbnails that correspond to time slice of 50 as there is a time slice for the value of 50
     var DOM = TestUtils.renderIntoDocument(
       <ThumbnailCarousel
         duration={100}
@@ -215,13 +215,13 @@ describe('ThumbnailCarousel', function () {
     );
     var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnailCarousel).style._values['background-image'];
     centerImage = centerImage.slice(centerImage.indexOf("url(") + 4, -1);
-    expect(centerImage).toBe(thumbnails.data.thumbnails["50"]["120"]["url"]);
+    expect(centerImage).toBe(thumbnails.data.thumbnails["50"]["120"]["url"]); //50 is present in the data, so hoverTime of 50 should find exact match
 
     testThumbnails(DOM, thumbnails, hoverTime);
   });
 
   it('creates a ThumbnailCarousel at 45 sec', function () {
-    var hoverTime = 45;
+    var hoverTime = 45; // should find thumbnails that correspond to time slice of 40 as there is no exact time slice match for the value of 45
     var DOM = TestUtils.renderIntoDocument(
       <ThumbnailCarousel
         duration={100}
@@ -232,7 +232,7 @@ describe('ThumbnailCarousel', function () {
 
     var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnailCarousel).style._values['background-image'];
     centerImage = centerImage.slice(centerImage.indexOf("url(") + 4, -1);
-    expect(centerImage).toBe(thumbnails.data.thumbnails["40"]["120"]["url"]);
+    expect(centerImage).toBe(thumbnails.data.thumbnails["40"]["120"]["url"]);//45 is not present in the data, so hoverTime of 45 should find previous value
 
     testThumbnails(DOM, thumbnails, hoverTime);
   });
