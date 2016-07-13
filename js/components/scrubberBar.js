@@ -253,6 +253,7 @@ var ScrubberBar = React.createClass({
         thumbnailCarousel =
           <ThumbnailCarousel
            thumbnails={this.props.controller.state.thumbnails}
+           hoverPosition={hoverPosition}
            duration={this.props.duration}
            hoverTime={hoverTime > 0 ? hoverTime : 0}
            scrubberBarWidth={this.state.scrubberBarWidth}/>
