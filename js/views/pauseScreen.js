@@ -74,7 +74,6 @@ var PauseScreen = React.createClass({
     var titleClass = ClassNames({
       'oo-state-screen-title': true,
       'oo-text-truncate': true,
-      'oo-text-capitalize': true,
       'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
     });
     var descriptionClass = ClassNames({
