@@ -36,7 +36,6 @@ var Thumbnail = React.createClass({
     }
     thumbnailStyle.left = hoverPosition;
     thumbnailStyle.backgroundImage = "url("+thumbnail.url+")";
-
     var time = isFinite(parseInt(this.props.hoverTime)) ? Utils.formatSeconds(parseInt(this.props.hoverTime)) : null;
     return (
       <div className="oo-scrubber-thumbnail-container">

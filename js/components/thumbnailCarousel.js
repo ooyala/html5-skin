@@ -27,6 +27,10 @@ var ThumbnailCarousel = React.createClass({
                    centerThumbnailHeight: carousel.clientHeight});
   },
 
+  shouldComponentUpdate: function(nextProps) {
+    return (nextProps.hoverPosition != this.props.hoverPosition);
+  },
+
   findThumbnailsAfter: function(data) {
     var start = (data.scrubberBarWidth + data.centerWidth) / 2;
 
@@ -72,7 +76,7 @@ var ThumbnailCarousel = React.createClass({
     var thumbnailsAfter = this.findThumbnailsAfter(data);
     var thumbnailStyle = { left: (data.scrubberBarWidth - data.centerWidth) / 2, backgroundImage: "url(" + centralThumbnail.url + ")" };
     var time = isFinite(parseInt(this.props.hoverTime)) ? Utils.formatSeconds(parseInt(this.props.hoverTime)) : null;
-    
+
     return (
       <div className="oo-scrubber-carousel-container">
         {

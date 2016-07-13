@@ -20,8 +20,7 @@ var thumbnails = {
   "data":{
     "available_time_slices":[
       0,
-      10,
-      20
+      10
     ],
     "available_widths":[
       120
@@ -37,13 +36,6 @@ var thumbnails = {
       "10":{
         "120":{
           "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_2.jpg",
-          "width":120,
-          "height":80
-        }
-      },
-      "20":{
-        "120":{
-          "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_3.jpg",
           "width":120,
           "height":80
         }
