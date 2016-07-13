@@ -1077,7 +1077,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     setVolume: function(volume){
-      this.state.volumeState.muted = false;
+      if(volume == 0) {
+        this.state.volumeState.muted = true;
+      }
+      else {
+        this.state.volumeState.muted = false;
+      }
       this.state.volumeState.volume = volume;
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
       this.renderSkin();
