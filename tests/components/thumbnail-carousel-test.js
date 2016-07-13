@@ -234,6 +234,6 @@ describe('ThumbnailCarousel', function () {
     centerImage = centerImage.slice(centerImage.indexOf("url(") + 4, -1);
     expect(centerImage).toBe(thumbnails.data.thumbnails["40"]["120"]["url"]);
 
-    testThumbnails(DOM, thumbnails, 45);
+    testThumbnails(DOM, thumbnails, hoverTime);
   });
 });
