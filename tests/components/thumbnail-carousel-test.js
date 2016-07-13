@@ -21,7 +21,6 @@ var testThumbnails = function(DOM, thumbnails, hoverTime) {
     }
   }
 
-  console.log("*******************", hoverTime, hoverPosition);
   var imagesDiv = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail-carousel-center-image');
   var images = imagesDiv[0]._parentNode._childNodes;
   for (var i = 0; i < hoverPosition; i++) {
