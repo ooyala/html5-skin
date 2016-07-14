@@ -68,7 +68,7 @@ describe('MoreOptionsPanel', function () {
     }
 
     //test btn clicks
-    var button = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'button');
+    var button = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
     for(var j=0; j<button.length; j++){
       TestUtils.Simulate.click(button[j]);
     }
