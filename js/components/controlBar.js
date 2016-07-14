@@ -195,6 +195,7 @@ var ControlBar = React.createClass({
         "oo-on": turnedOn
       });
       volumeBars.push(<a data-volume={(i+1)/10} className={volumeClass} key={i}
+        style={{backgroundColor: this.props.skinConfig.controlBar.volumeControl.color}}
         onClick={this.handleVolumeClick}></a>);
     }
 
