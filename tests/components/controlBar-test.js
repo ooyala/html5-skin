@@ -853,7 +853,6 @@ describe('ControlBar', function () {
         }
       },
       toggleScreen: function() {qualityClicked = true;},
-      //toggleQualityPopover: function() {},
       toggleVideoQualityPopOver: function(){qualityClicked = true;}
     };
 
