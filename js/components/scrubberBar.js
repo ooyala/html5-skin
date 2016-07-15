@@ -14,7 +14,7 @@ var ScrubberBar = React.createClass({
   getInitialState: function() {
     this.lastScrubX = null;
     this.touchInitiated = false;
-    this.thumbnailPadding = 4;
+    this.thumbnailPadding = 6;
 
     return {
       scrubberBarWidth: 0,
