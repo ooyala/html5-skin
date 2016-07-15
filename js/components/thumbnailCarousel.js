@@ -36,7 +36,7 @@ var ThumbnailCarousel = React.createClass({
 
     var thumbnailsAfter = [];
     for (var i = data.pos, j = 0; i < data.timeSlices.length; i++, j++) {
-      var left = start + data.imgWidth * j;
+      var left = start + this.props.padding + j * (data.imgWidth + this.props.padding);
       if (left + data.imgWidth <= data.scrubberBarWidth) {
         var thumbStyle = { left: left, top: data.top, backgroundImage: "url(" + data.thumbnails.data.thumbnails[data.timeSlices[i]][data.width].url + ")" };
         thumbnailsAfter.push(thumbStyle);
@@ -50,7 +50,7 @@ var ThumbnailCarousel = React.createClass({
 
     var thumbnailsBefore = [];
     for (var i = data.pos, j = 0; i >= 0; i--, j++) {
-      var left = start - data.imgWidth * (j + 1);
+      var left = start - (j + 1) * (data.imgWidth + this.props.padding);
       if (left >= 0) {
         var thumbStyle = { left: left, top: data.top, backgroundImage: "url(" + data.thumbnails.data.thumbnails[data.timeSlices[i]][data.width].url + ")" };
         thumbnailsBefore.push(thumbStyle);
