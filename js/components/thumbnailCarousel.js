@@ -1,4 +1,4 @@
-/*
+/**
  * ThumbnailCarousel component
  *
  * @module ThumbnailCarousel
