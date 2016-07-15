@@ -371,7 +371,7 @@
 
     .oo-scrubber-bar-padding {
       .oo-scrubber-bar {
-        height: 4px * $xsmall-multiple;
+        height: 6px * $xsmall-multiple;
       }
 
       .oo-scrubber-bar-hover {
@@ -383,14 +383,14 @@
         height: 25px * $xsmall-multiple;
 
         .oo-playhead {
-          width: 7px;
-          height: 7px;
-          border-width: 1px * $xsmall-multiple;
+          width: 9px;
+          height: 9px;
+          border-width: 2px * $xsmall-multiple;
           border-radius: 10px * $xsmall-multiple;
         }
         .oo-playhead-scrubbing {
-          width: 13px * $xsmall-multiple;
-          height: 13px * $xsmall-multiple;
+          width: 14px * $xsmall-multiple;
+          height: 14px * $xsmall-multiple;
         }
 
         .oo-playhead-hovering {
@@ -556,4 +556,26 @@
     padding-right: 10% * $xsmall-multiple;
     font-size: 18px * $xsmall-multiple;
   }
+
+  .oo-thumbnail-carousel-center-image {
+  width: 124px;
+  height: 72px;
+  border-radius: 4px;
 }
+
+.oo-thumbnail-carousel-image {
+  position: absolute;
+  width: 73px;
+  height: 43px;
+  border-radius: 2px;
+}
+
+  .oo-scrubber-thumbnail-container {
+    bottom: 70px;
+  }
+
+  .oo-scrubber-carousel-container {
+    bottom: 88px;
+  }
+}
+
