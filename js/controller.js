@@ -74,6 +74,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "language": null,
         "availableLanguages": null,
         "cueText": null,
+        "showClosedCaptionPopover": false,
         "textColor": null,
         "windowColor": null,
         "backgroundColor": null,
@@ -88,7 +89,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "videoQualityOptions": {
         "availableBitrates": null,
         "selectedBitrate": null,
-        "showVideoQualityPopover":false,
+        "showVideoQualityPopover":false
       },
 
       "volumeState": {
@@ -1180,6 +1181,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     toggleVideoQualityPopOver: function() {
       this.state.videoQualityOptions.showVideoQualityPopover = !this.state.videoQualityOptions.showVideoQualityPopover;
+      this.renderSkin();
+    },
+
+    toggleClosedCaptionPopOver: function() {
+      this.state.closedCaptionOptions.showClosedCaptionPopover = !this.state.closedCaptionOptions.showClosedCaptionPopover;
       this.renderSkin();
     },
 
