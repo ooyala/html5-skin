@@ -1,4 +1,5 @@
-jest.dontMock('../../js/views/startScreen');
+jest.dontMock('../../js/views/startScreen')
+  .dontMock('../../js/components/icon');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
