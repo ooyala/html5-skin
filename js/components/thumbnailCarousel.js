@@ -1,4 +1,4 @@
-/**
+/*
  * ThumbnailCarousel component
  *
  * @module ThumbnailCarousel
@@ -27,19 +27,22 @@ var ThumbnailCarousel = React.createClass({
                    centerThumbnailHeight: carousel.clientHeight});
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    this.props.update = false;
+  },
+
   shouldComponentUpdate: function(nextProps) {
-    return (nextProps.hoverPosition != this.props.hoverPosition);
+    return this.props.update || (nextProps.hoverPosition != this.props.hoverPosition);
   },
 
   findThumbnailsAfter: function(data) {
     var start = (data.scrubberBarWidth + data.centerWidth) / 2;
-
     var thumbnailsAfter = [];
     for (var i = data.pos, j = 0; i < data.timeSlices.length; i++, j++) {
-      var left = start + this.props.padding + j * (data.imgWidth + this.props.padding);
+      var left = start + data.padding + j * (data.imgWidth + data.padding);
       if (left + data.imgWidth <= data.scrubberBarWidth) {
         var thumbStyle = { left: left, top: data.top, backgroundImage: "url(" + data.thumbnails.data.thumbnails[data.timeSlices[i]][data.width].url + ")" };
-        thumbnailsAfter.push(thumbStyle);
+        thumbnailsAfter.push(<div className="oo-thumbnail-carousel-image" key={i} ref="thumbnail" style={thumbStyle}></div>);
       }
     }
     return thumbnailsAfter;
@@ -50,10 +53,10 @@ var ThumbnailCarousel = React.createClass({
 
     var thumbnailsBefore = [];
     for (var i = data.pos, j = 0; i >= 0; i--, j++) {
-      var left = start - (j + 1) * (data.imgWidth + this.props.padding);
+      var left = start - (j + 1) * (data.imgWidth + data.padding);
       if (left >= 0) {
         var thumbStyle = { left: left, top: data.top, backgroundImage: "url(" + data.thumbnails.data.thumbnails[data.timeSlices[i]][data.width].url + ")" };
-        thumbnailsBefore.push(thumbStyle);
+        thumbnailsBefore.push(<div className="oo-thumbnail-carousel-image" key={i} ref="thumbnail" style={thumbStyle}></div>);
       }
     }
     return thumbnailsBefore;
@@ -69,9 +72,10 @@ var ThumbnailCarousel = React.createClass({
       centerWidth: this.state.centerThumbnailWidth,
       scrubberBarWidth: this.props.scrubberBarWidth,
       top: this.state.centerThumbnailHeight - this.state.thumbnailHeight,
-      pos: centralThumbnail.pos
+      pos: centralThumbnail.pos,
+      padding: this.props.padding
     };
-    
+
     var thumbnailsBefore = this.findThumbnailsBefore(data);
     var thumbnailsAfter = this.findThumbnailsAfter(data);
     var thumbnailStyle = { left: (data.scrubberBarWidth - data.centerWidth) / 2, backgroundImage: "url(" + centralThumbnail.url + ")" };
@@ -79,19 +83,11 @@ var ThumbnailCarousel = React.createClass({
 
     return (
       <div className="oo-scrubber-carousel-container">
-        {
-          thumbnailsBefore.map(function (element, i) {
-            return <div className="oo-thumbnail-carousel-image" key={i} ref="thumbnail" style={element}></div>
-          })
-        }      
+        {thumbnailsBefore}
         <div className="oo-thumbnail-carousel-center-image" ref="thumbnailCarousel" style={thumbnailStyle}>
           <div className="oo-thumbnail-carousel-time">{time}</div>
         </div>
-        {
-          thumbnailsAfter.map(function (element, i) {
-            return <div className="oo-thumbnail-carousel-image" key={i} ref="thumbnail" style={element}></div>
-          })
-        }
+        {thumbnailsAfter}
       </div>
     );
   }
@@ -101,7 +97,8 @@ ThumbnailCarousel.defaultProps = {
   thumbnails: {},
   duration: 0,
   hoverTime: 0,
-  scrubberBarWidth: 0
+  scrubberBarWidth: 0,
+  update: true
 };
 
 module.exports = ThumbnailCarousel;

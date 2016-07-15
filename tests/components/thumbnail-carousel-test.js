@@ -21,20 +21,21 @@ var testThumbnails = function(DOM, thumbnails, hoverTime) {
     }
   }
 
-  var imagesDiv = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail-carousel-center-image');
-  var images = imagesDiv[0]._parentNode._childNodes;
+  var smallImages = ReactDOM.findDOMNode(DOM.refs.thumbnail);
+  var images = smallImages._parentNode._childNodes;
+
   for (var i = 0; i < hoverPosition; i++) {
-    var style = images[i]._style;
-    if (typeof style == "string") {
-      var offset = style.indexOf("url(") + 4;
-      expect(style.slice(offset, -2)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[hoverPosition - i]]["120"]["url"]);
+    var imageStyle = images[i]._style;
+    if (typeof imageStyle == "string") {
+      var offset = imageStyle.indexOf("url(") + 4;
+      expect(imageStyle.slice(offset, -2)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[hoverPosition - i]]["120"]["url"]);
     }    
   }
   for (var i = hoverPosition + 1; i < images.length; i++) {
-    var style = images[i]._style;
-    if (typeof style == "string") {
-      var offset = style.indexOf("url(") + 4;
-      expect(style.slice(offset, -2)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[i - 2]]["120"]["url"]);
+    var imageStyle = images[i]._style;
+    if (typeof imageStyle == "string") {
+      var offset = imageStyle.indexOf("url(") + 4;
+      expect(imageStyle.slice(offset, -2)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[i - 2]]["120"]["url"]);
     }    
   }
 }
@@ -210,7 +211,10 @@ describe('ThumbnailCarousel', function () {
       <ThumbnailCarousel
         duration={100}
         hoverTime={hoverTime}
+        hoverPosition={hoverTime}
         scrubberBarWidth={100}
+        padding={0}
+        update={false}
         thumbnails={thumbnails}/>
     );
     var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnailCarousel).style._values['background-image'];
@@ -226,7 +230,10 @@ describe('ThumbnailCarousel', function () {
       <ThumbnailCarousel
         duration={100}
         hoverTime={hoverTime}
+        hoverPosition={hoverTime}
         scrubberBarWidth={100}
+        padding={0}
+        update={false}
         thumbnails={thumbnails}/>
     );
 

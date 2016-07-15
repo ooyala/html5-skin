@@ -14,6 +14,7 @@ var ScrubberBar = React.createClass({
   getInitialState: function() {
     this.lastScrubX = null;
     this.touchInitiated = false;
+    this.thumbnailPadding = 4;
 
     return {
       scrubberBarWidth: 0,
@@ -256,7 +257,7 @@ var ScrubberBar = React.createClass({
            hoverPosition={hoverPosition}
            duration={this.props.duration}
            hoverTime={hoverTime > 0 ? hoverTime : 0}
-           padding={4}
+           padding={typeof this.props.padding == "number" ? this.props.padding : this.thumbnailPadding}
            scrubberBarWidth={this.state.scrubberBarWidth}/>
       } else if (this.lastScrubX) {//to show thumbnail when clicking on playhead
         hoverPosition = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration;
