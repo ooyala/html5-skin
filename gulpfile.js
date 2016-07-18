@@ -178,7 +178,7 @@ gulp.task('assets', function () {
 
 // HTML pages
 gulp.task('pages', function () {
-  gulp.src(['iframe.html'])
+  gulp.src(['iframe.html', 'amp_iframe.html'])
     .pipe(gulp.dest('./build'));
 });
 
