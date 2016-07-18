@@ -1006,6 +1006,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.pausedCallback = function() {
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
             this.state.playerState = CONSTANTS.STATE.PAUSE;
+            this.state.pluginsElement.addClass("oo-overlay-blur");
             this.renderSkin();
             OO.log("finished toggleDiscoveryScreen");
           }.bind(this);
@@ -1015,19 +1016,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         case CONSTANTS.STATE.PAUSE:
           if(this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
             this.state.pauseAnimationDisabled = true;
+            this.state.pluginsElement.removeClass("oo-overlay-blur");
             this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
           }
           else {
             this.sendDiscoveryDisplayEvent("pauseScreen");
+            this.state.pluginsElement.addClass("oo-overlay-blur");
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
           }
           break;
         case CONSTANTS.STATE.END:
           if(this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
+            this.state.pluginsElement.removeClass("oo-overlay-blur");
             this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
           }
           else {
             this.sendDiscoveryDisplayEvent("endScreen");
+            this.state.pluginsElement.addClass("oo-overlay-blur");
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
           }
           break;
@@ -1119,6 +1124,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING || this.state.playerState == CONSTANTS.STATE.START) {
           this.pausedCallback = function() {
+            this.state.pluginsElement.addClass("oo-overlay-blur");
             this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
             this.renderSkin();
           }.bind(this);
@@ -1126,6 +1132,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
         else {
           this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
+          this.state.pluginsElement.addClass("oo-overlay-blur");
           this.renderSkin();
         }
       }
@@ -1138,6 +1145,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
           this.pausedCallback = function() {
+            this.state.pluginsElement.addClass("oo-overlay-blur");
             this.state.screenToShow = screen;
             this.renderSkin();
           }.bind(this);
@@ -1145,6 +1153,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
         else {
           this.state.screenToShow = screen;
+          this.state.pluginsElement.addClass("oo-overlay-blur");
           this.renderSkin();
         }
       }
@@ -1213,6 +1222,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     closeScreen: function() {
+      this.state.pluginsElement.removeClass("oo-overlay-blur");
       this.state.pauseAnimationDisabled = true;
       if (this.state.playerState == CONSTANTS.STATE.PAUSE) {
         this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
@@ -1299,6 +1309,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
       this.state.playerState = CONSTANTS.STATE.PAUSE;
       this.state.moreOptionsItems = null;
+      this.state.pluginsElement.removeClass("oo-overlay-blur");
       this.renderSkin();
     },
 
@@ -1306,12 +1317,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
         this.pausedCallback = function() {
           this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
+          this.state.pluginsElement.addClass("oo-overlay-blur");
           this.renderSkin();
         }.bind(this);
         this.mb.publish(OO.EVENTS.PAUSE);
       }
       else {
         this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
+        this.state.pluginsElement.addClass("oo-overlay-blur");
         this.renderSkin();
       }
       this.state.moreOptionsItems = moreOptionsItems;
