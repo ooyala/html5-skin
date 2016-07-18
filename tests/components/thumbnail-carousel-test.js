@@ -213,8 +213,6 @@ describe('ThumbnailCarousel', function () {
         hoverTime={hoverTime}
         hoverPosition={hoverTime}
         scrubberBarWidth={100}
-        padding={0}
-        update={false}
         thumbnails={thumbnails}/>
     );
     var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnailCarousel).style._values['background-image'];
@@ -232,8 +230,6 @@ describe('ThumbnailCarousel', function () {
         hoverTime={hoverTime}
         hoverPosition={hoverTime}
         scrubberBarWidth={100}
-        padding={0}
-        update={false}
         thumbnails={thumbnails}/>
     );
 

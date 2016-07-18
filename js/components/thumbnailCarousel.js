@@ -14,25 +14,26 @@ var ThumbnailCarousel = React.createClass({
       thumbnailWidth: 0,
       thumbnailHeight: 0,
       centerThumbnailWidth: 0,
-      centerThumbnailHeight: 0
+      centerThumbnailHeight: 0,
+      thumbnailPadding: 0
     };
   },
 
   componentDidMount: function() {
     var thumbnail = ReactDOM.findDOMNode(this.refs.thumbnail);
     var carousel = ReactDOM.findDOMNode(this.refs.thumbnailCarousel);
-    this.setState({thumbnailWidth: thumbnail.clientWidth,
-                   thumbnailHeight: thumbnail.clientHeight,
-                   centerThumbnailWidth: carousel.clientWidth,
-                   centerThumbnailHeight: carousel.clientHeight});
-  },
+    var thumbnailPadding = window.getComputedStyle(thumbnail, null).getPropertyValue("padding");
+    thumbnailPadding = parseInt(thumbnailPadding, 10); // convert css px to number
 
-  componentWillReceiveProps: function(nextProps) {
-    this.props.update = false;
-  },
-
-  shouldComponentUpdate: function(nextProps) {
-    return this.props.update || (nextProps.hoverPosition != this.props.hoverPosition);
+    if (thumbnail.clientWidth && carousel.clientWidth) {
+      this.setState({
+        thumbnailWidth: thumbnail.clientWidth,
+        thumbnailHeight: thumbnail.clientHeight,
+        centerThumbnailWidth: carousel.clientWidth,
+        centerThumbnailHeight: carousel.clientHeight,
+        thumbnailPadding: thumbnailPadding
+      });
+    }
   },
 
   findThumbnailsAfter: function(data) {
@@ -73,7 +74,7 @@ var ThumbnailCarousel = React.createClass({
       scrubberBarWidth: this.props.scrubberBarWidth,
       top: this.state.centerThumbnailHeight - this.state.thumbnailHeight,
       pos: centralThumbnail.pos,
-      padding: this.props.padding
+      padding: this.state.thumbnailPadding
     };
 
     var thumbnailsBefore = this.findThumbnailsBefore(data);
@@ -97,8 +98,7 @@ ThumbnailCarousel.defaultProps = {
   thumbnails: {},
   duration: 0,
   hoverTime: 0,
-  scrubberBarWidth: 0,
-  update: true
+  scrubberBarWidth: 0
 };
 
 module.exports = ThumbnailCarousel;
