@@ -49,12 +49,12 @@ var UpNextPanel = React.createClass({
           <div className="oo-up-next-title">
             <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNext.timeToShow} currentPlayhead={this.props.currentPlayhead}/>
 
-            <div className="oo-up-next-title-text oo-text-truncate oo-text-capitalize">
+            <div className="oo-up-next-title-text oo-text-truncate">
               {upNextString}: {this.props.upNextInfo.upNextData.name}
             </div>
           </div>
 
-          <div className="oo-content-description oo-text-truncate oo-text-capitalize">
+          <div className="oo-content-description oo-text-truncate">
             {this.props.upNextInfo.upNextData.description}
           </div>
         </div>

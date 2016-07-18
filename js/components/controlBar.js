@@ -104,8 +104,9 @@ var ControlBar = React.createClass({
   },
 
   toggleQualityPopover: function() {
+    this.props.controller.toggleVideoQualityPopOver();
     this.setState({
-      showVideoQualityPopover: !this.state.showVideoQualityPopover
+      showVideoQualityPopover: this.props.controller.state.videoQualityOptions.showVideoQualityPopover
     });
   },
 
@@ -194,6 +195,7 @@ var ControlBar = React.createClass({
         "oo-on": turnedOn
       });
       volumeBars.push(<a data-volume={(i+1)/10} className={volumeClass} key={i}
+        style={{backgroundColor: this.props.skinConfig.controlBar.volumeControl.color}}
         onClick={this.handleVolumeClick}></a>);
     }
 
@@ -231,27 +233,27 @@ var ControlBar = React.createClass({
         "oo-live-nonclickable": isLiveNow
       });
 
-    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
+    var videoQualityPopover = this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
 
     var qualityClass = ClassNames({
       "oo-quality": true,
       "oo-control-bar-item": true,
-      "oo-selected": this.state.showVideoQualityPopover
+      "oo-selected": this.props.controller.state.videoQualityOptions.showVideoQualityPopover
     });
 
     var controlItemTemplates = {
-      "playPause": <button className="oo-play-pause oo-control-bar-item" onClick={this.handlePlayClick} key="playPause">
+      "playPause": <a className="oo-play-pause oo-control-bar-item" onClick={this.handlePlayClick} key="playPause">
         <Icon {...this.props} icon={playIcon}
           style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
-      "live": <button className={liveClass}
+      "live": <a className={liveClass}
           ref="LiveButton"
           onClick={liveClick} key="live">
         <div className="oo-live-circle"></div>
         <span className="oo-live-text">{liveText}</span>
-      </button>,
+      </a>,
 
       "volume": <div className="oo-volume oo-control-bar-item" key="volume">
         <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
@@ -261,51 +263,51 @@ var ControlBar = React.createClass({
         {volumeControls}
       </div>,
 
-      "timeDuration": <div className="oo-time-duration oo-control-bar-duration" style={durationSetting} key="timeDuration">
+      "timeDuration": <a className="oo-time-duration oo-control-bar-duration" style={durationSetting} key="timeDuration">
         <span>{playheadTimeContent}</span>{totalTimeContent}
-      </div>,
+      </a>,
 
       "flexibleSpace": <div className="oo-flexible-space oo-control-bar-flex-space" key="flexibleSpace"></div>,
 
-      "moreOptions": <button className="oo-more-options oo-control-bar-item"
+      "moreOptions": <a className="oo-more-options oo-control-bar-item"
         onClick={this.handleMoreOptionsClick} key="moreOptions">
         <Icon {...this.props} icon="ellipsis" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
       "quality": (
         <div className="oo-popover-button-container" key="quality">
           {videoQualityPopover}
-          <button className={qualityClass} onClick={this.handleQualityClick}>
+          <a className={qualityClass} onClick={this.handleQualityClick}>
             <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
               onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-          </button>
+          </a>
         </div>
       ),
 
-      "discovery": <button className="oo-discovery oo-control-bar-item"
+      "discovery": <a className="oo-discovery oo-control-bar-item"
         onClick={this.handleDiscoveryClick} key="discovery">
         <Icon {...this.props} icon="discovery" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
-      "closedCaption": <button className="oo-closed-caption oo-control-bar-item"
+      "closedCaption": <a className="oo-closed-caption oo-control-bar-item"
         onClick={this.handleClosedCaptionClick} key="closedCaption">
         <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
-      "share": <button className="oo-share oo-control-bar-item"
+      "share": <a className="oo-share oo-control-bar-item"
         onClick={this.handleShareClick} key="share">
         <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
-      "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
+      "fullscreen": <a className="oo-fullscreen oo-control-bar-item"
         onClick={this.handleFullscreenClick} key="fullscreen">
         <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
       "logo": <Logo key="logo" imageUrl={this.props.skinConfig.controlBar.logo.imageResource.url}
                     clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
@@ -419,8 +421,12 @@ var ControlBar = React.createClass({
 
     var controlBarItems = this.populateControlBar();
 
+    var controlBarStyle = {
+      height: this.props.skinConfig.controlBar.height
+    };
+
     return (
-      <div className={controlBarClass} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
+      <div className={controlBarClass} style={controlBarStyle} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
         <ScrubberBar {...this.props} />
 
         <div className="oo-control-bar-items-wrapper">

@@ -22,7 +22,8 @@ describe('ControlBar', function () {
         isMobile: false,
         volumeState: {
           volume: 1
-        }
+        },
+        videoQualityOptions: {}
       }
     };
 
@@ -829,7 +830,8 @@ describe('ControlBar', function () {
         }
       },
       toggleScreen: function() {qualityClicked = true;},
-      toggleQualityPopover: function() {qualityClicked = true;}
+      toggleQualityPopover: function() {qualityClicked = true;},
+      toggleVideoQualityPopOver: function(){}
     };
 
     //xsmall

@@ -87,7 +87,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       "videoQualityOptions": {
         "availableBitrates": null,
-        "selectedBitrate": null
+        "selectedBitrate": null,
+        "showVideoQualityPopover":false,
       },
 
       "volumeState": {
@@ -143,6 +144,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     subscribeBasicPlaybackEvents: function () {
       if(!this.state.isSubscribed) {
+        this.mb.subscribe(OO.EVENTS.SEND_QUALITY_CHANGE, 'customerUi', _.bind(this.receiveVideoQualityChangeEvent, this));
         this.mb.subscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi', _.bind(this.onInitialPlay, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
@@ -209,6 +211,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON(params.skin.config, _.bind(function(data) {
+        //Override data in skin config with possible inline data input by the user
+        $.extend(true, data, params.skin.inline);
+
         //load language jsons
         data.localization.availableLanguageFile.forEach(function(languageObj){
           $.getJSON(languageObj.languageFile, _.bind(function(data) {
@@ -217,8 +222,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }, this));
         }, this);
 
-        //Override data in skin config with possible inline data input by the user
-        $.extend(true, data, params.skin.inline);
         this.state.config = data;
 
         this.skin = ReactDOM.render(
@@ -319,6 +322,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.videoQualityOptions.selectedBitrate = null;
       this.state.closedCaptionOptions.availableLanguages = null;
       this.state.discoveryData = null;
+      this.state.thumbnails = null;
       this.resetUpNextInfo(true);
 
       this.state.assetId = embedCode;
@@ -472,7 +476,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
           this.state.pauseAnimationDisabled = true;
         }
-        if (this.state.discoveryData && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
+        if (this.state.pauseAnimationDisabled == false && this.state.discoveryData && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
             && !(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))) {
           OO.log("Should display DISCOVERY_SCREEN on pause");
           this.sendDiscoveryDisplayEvent("pauseScreen");
@@ -1002,6 +1006,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.pausedCallback = function() {
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
             this.state.playerState = CONSTANTS.STATE.PAUSE;
+            this.state.pluginsElement.addClass("oo-overlay-blur");
             this.renderSkin();
             OO.log("finished toggleDiscoveryScreen");
           }.bind(this);
@@ -1011,19 +1016,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         case CONSTANTS.STATE.PAUSE:
           if(this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
             this.state.pauseAnimationDisabled = true;
+            this.state.pluginsElement.removeClass("oo-overlay-blur");
             this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
           }
           else {
             this.sendDiscoveryDisplayEvent("pauseScreen");
+            this.state.pluginsElement.addClass("oo-overlay-blur");
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
           }
           break;
         case CONSTANTS.STATE.END:
           if(this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
+            this.state.pluginsElement.removeClass("oo-overlay-blur");
             this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
           }
           else {
             this.sendDiscoveryDisplayEvent("endScreen");
+            this.state.pluginsElement.addClass("oo-overlay-blur");
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
           }
           break;
@@ -1073,7 +1082,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     setVolume: function(volume){
-      this.state.volumeState.muted = false;
+      if(volume == 0) {
+        this.state.volumeState.muted = true;
+      }
+      else {
+        this.state.volumeState.muted = false;
+      }
       this.state.volumeState.volume = volume;
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
       this.renderSkin();
@@ -1108,8 +1122,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.closeScreen();
       }
       else {
-        if (this.state.playerState == CONSTANTS.STATE.PLAYING){
+        if (this.state.playerState == CONSTANTS.STATE.PLAYING || this.state.playerState == CONSTANTS.STATE.START) {
           this.pausedCallback = function() {
+            this.state.pluginsElement.addClass("oo-overlay-blur");
             this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
             this.renderSkin();
           }.bind(this);
@@ -1117,6 +1132,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
         else {
           this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
+          this.state.pluginsElement.addClass("oo-overlay-blur");
           this.renderSkin();
         }
       }
@@ -1129,6 +1145,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
           this.pausedCallback = function() {
+            this.state.pluginsElement.addClass("oo-overlay-blur");
             this.state.screenToShow = screen;
             this.renderSkin();
           }.bind(this);
@@ -1136,6 +1153,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
         else {
           this.state.screenToShow = screen;
+          this.state.pluginsElement.addClass("oo-overlay-blur");
           this.renderSkin();
         }
       }
@@ -1169,6 +1187,27 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
     },
 
+    toggleVideoQualityPopOver: function() {
+      this.state.videoQualityOptions.showVideoQualityPopover = !this.state.videoQualityOptions.showVideoQualityPopover;
+      this.renderSkin();
+    },
+
+    receiveVideoQualityChangeEvent: function(eventName, targetBitrate) {
+        this.state.videoQualityOptions.selectedBitrate = {
+        "id": targetBitrate
+      };
+      this.renderSkin({
+          "videoQualityOptions": {
+            "availableBitrates": this.state.videoQualityOptions.availableBitrates,
+            "selectedBitrate": this.state.videoQualityOptions.selectedBitrate,
+            "showVideoQualityPopover":this.state.videoQualityOptions.showVideoQualityPopover
+          }
+        });
+      if(this.state.videoQualityOptions.showVideoQualityPopover == true) {
+        this.toggleVideoQualityPopOver();
+      }
+    },
+
     sendVideoQualityChangeEvent: function(selectedContentData) {
       this.state.videoQualityOptions.selectedBitrate = {
         "id": selectedContentData.id
@@ -1183,6 +1222,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     closeScreen: function() {
+      this.state.pluginsElement.removeClass("oo-overlay-blur");
       this.state.pauseAnimationDisabled = true;
       if (this.state.playerState == CONSTANTS.STATE.PAUSE) {
         this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
@@ -1269,6 +1309,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
       this.state.playerState = CONSTANTS.STATE.PAUSE;
       this.state.moreOptionsItems = null;
+      this.state.pluginsElement.removeClass("oo-overlay-blur");
       this.renderSkin();
     },
 
@@ -1276,12 +1317,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
         this.pausedCallback = function() {
           this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
+          this.state.pluginsElement.addClass("oo-overlay-blur");
           this.renderSkin();
         }.bind(this);
         this.mb.publish(OO.EVENTS.PAUSE);
       }
       else {
         this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
+        this.state.pluginsElement.addClass("oo-overlay-blur");
         this.renderSkin();
       }
       this.state.moreOptionsItems = moreOptionsItems;
