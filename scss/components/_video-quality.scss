@@ -114,15 +114,10 @@
 }
 
 //popover
-.oo-quality-popover {
-  position: absolute;
-  background-color: $popover-bg;
-  bottom: $bitrate-popover-height;
-  box-shadow: rgba(0, 0, 0, 0.2) 0 5px 10px;
-  border: 0;
-  border-radius: 4px;
-  padding: 10px 0;
-  @include horizontal-center;
+.oo-popover {
+  .oo-quality-popover {
+    margin: 10px 0;
+  }
 
   .oo-quality-screen-content {
     max-height: 150px;

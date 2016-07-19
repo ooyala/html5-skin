@@ -75,6 +75,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "closedCaptionOptions": {
         "enabled": null,
         "language": null,
+        "availableLanguages": null,
+        "cueText": null,
+        "showClosedCaptionPopover": false,
         "textColor": null,
         "windowColor": null,
         "backgroundColor": null,
@@ -83,15 +86,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "windowOpacity": null,
         "fontType": null,
         "fontSize": null,
-        "textEnhancement": null,
-        "availableLanguages": null,
-        "cueText": null
+        "textEnhancement": null
       },
 
       "videoQualityOptions": {
         "availableBitrates": null,
         "selectedBitrate": null,
-        "showVideoQualityPopover":false,
+        "showVideoQualityPopover":false
       },
 
       "volumeState": {
@@ -1176,6 +1177,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     toggleVideoQualityPopOver: function() {
       this.state.videoQualityOptions.showVideoQualityPopover = !this.state.videoQualityOptions.showVideoQualityPopover;
+      this.renderSkin();
+    },
+
+    toggleClosedCaptionPopOver: function() {
+      this.state.closedCaptionOptions.showClosedCaptionPopover = !this.state.closedCaptionOptions.showClosedCaptionPopover;
       this.renderSkin();
     },
 

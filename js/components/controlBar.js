@@ -8,7 +8,9 @@ var React = require('react'),
     ScrubberBar = require('./scrubberBar'),
     Slider = require('./slider'),
     Utils = require('./utils'),
-    VideoQualityPopover = require('./videoQualityPopover'),
+    Popover = require('../views/popover'),
+    VideoQualityPanel = require('./videoQualityPanel'),
+    ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
     Logo = require('./logo');
     Icon = require('./icon');
 
@@ -21,7 +23,8 @@ var ControlBar = React.createClass({
 
     return {
       currentVolumeHead: 0,
-      showVideoQualityPopover: false
+      showVideoQualityPopover: false,
+      showClosedCaptionPopover: false
     };
   },
 
@@ -100,6 +103,9 @@ var ControlBar = React.createClass({
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
     } else {
       this.toggleQualityPopover();
+      if(this.state.showClosedCaptionPopover == true) {
+        this.toggleCaptionPopover();
+      }
     }
   },
 
@@ -107,6 +113,13 @@ var ControlBar = React.createClass({
     this.props.controller.toggleVideoQualityPopOver();
     this.setState({
       showVideoQualityPopover: this.props.controller.state.videoQualityOptions.showVideoQualityPopover
+    });
+  },
+
+  toggleCaptionPopover: function() {
+    this.props.controller.toggleClosedCaptionPopOver();
+    this.setState({
+      showClosedCaptionPopover: this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover
     });
   },
 
@@ -125,7 +138,14 @@ var ControlBar = React.createClass({
   },
 
   handleClosedCaptionClick: function() {
-    this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
+    if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
+      this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
+    } else {
+      this.toggleCaptionPopover();
+      if(this.state.showVideoQualityPopover == true) {
+        this.toggleQualityPopover();
+      }
+    }
   },
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
@@ -234,12 +254,19 @@ var ControlBar = React.createClass({
         "oo-live-nonclickable": isLiveNow
       });
 
-    var videoQualityPopover = this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
+    var videoQualityPopover = this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? <Popover><VideoQualityPanel{...this.props} togglePopoverAction={this.toggleQualityPopover} popover={true}/></Popover> : null;
+    var closedCaptionPopover = this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover ? <Popover><ClosedCaptionPopover {...this.props} togglePopoverAction={this.toggleCaptionPopover} /></Popover> : null;
 
     var qualityClass = ClassNames({
       "oo-quality": true,
       "oo-control-bar-item": true,
       "oo-selected": this.props.controller.state.videoQualityOptions.showVideoQualityPopover
+    });
+
+    var captionClass = ClassNames({
+      "oo-closed-caption": true,
+      "oo-control-bar-item": true,
+      "oo-selected": this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover
     });
 
     var controlItemTemplates = {
@@ -292,11 +319,15 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </a>,
 
-      "closedCaption": <a className="oo-closed-caption oo-control-bar-item"
-        onClick={this.handleClosedCaptionClick} key="closedCaption">
-        <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </a>,
+      "closedCaption": (
+        <div className="oo-popover-button-container" key="closedCaption">
+          {closedCaptionPopover}
+          <a className={captionClass} onClick={this.handleClosedCaptionClick}>
+            <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
+              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+          </a>
+        </div>
+      ),
 
       "share": <a className="oo-share oo-control-bar-item"
         onClick={this.handleShareClick} key="share">
