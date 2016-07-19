@@ -17,6 +17,14 @@
   display: block;
 }
 
+.oo-player-skin-plugins.oo-overlay-blur:not(:empty) {
+  -webkit-filter: blur(3px);
+  -moz-filter: blur(3px);
+  filter: blur(3px);
+  z-index: -10000;
+  position: absolute;
+}
+
 .oo-player-skin-plugins-click-layer {
   z-index: 12005;
   top: 0;
