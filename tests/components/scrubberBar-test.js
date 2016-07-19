@@ -227,6 +227,7 @@ describe('ScrubberBar', function () {
         controller={mockController}
         currentPlayhead={30}
         duration={60}
+        padding={0}
         skinConfig={skinConfig}/>
     );
 
