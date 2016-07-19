@@ -406,7 +406,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    showUpNextScreenWhenReady: function(currentPlayhead, duration) {
+    howshowUpNextScreenWhenReady: function(currentPlayhead, duration) {
       var timeToShow = 0;
       var stringTimeToShow = this.skin.props.skinConfig.upNext.timeToShow;
 
@@ -420,7 +420,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.state.upNextInfo.timeToShow = timeToShow;
 
-      if (duration - currentPlayhead <= timeToShow &&
+if (duration!==0 &&- currentPlayhead <= timeToShow &&
         !this.state.upNextInfo.countDownCancelled &&
         this.state.isPlayingAd !== true &&
         this.state.upNextInfo.upNextData !== null && (this.state.playerState === CONSTANTS.STATE.PLAYING || this.state.playerState === CONSTANTS.STATE.PAUSE)) {
