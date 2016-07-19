@@ -26,6 +26,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.id = id;
     this.state = {
       "playerParam": {},
+      "persistentSettings": {
+        "closedCaptionOptions": {}
+      },
       "assetId": null,
       "contentTree": {},
       "thumbnails": null,
@@ -194,7 +197,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /*--------------------------------------------------------------------
      event listeners from core player -> regulate skin STATE
      ---------------------------------------------------------------------*/
-    onPlayerCreated: function (event, elementId, params) {
+    onPlayerCreated: function (event, elementId, params, settings) {
       //set state variables
       this.state.mainVideoContainer = $("#" + elementId);
       this.state.mainVideoInnerWrapper = $("#" + elementId + " .innerWrapper");
@@ -212,8 +215,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       // Would be a good idea to also (or only) wait for skin metadata to load. Load metadata here
       $.getJSON(params.skin.config, _.bind(function(data) {
-        //Override data in skin config with possible inline data input by the user
+        //override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
+        //override state settings with defaults from skin config and possible local storage settings
+        $.extend(true, this.state.closedCaptionOptions, data.closedCaptionOptions, settings.closedCaptionOptions);
 
         //load language jsons
         data.localization.availableLanguageFile.forEach(function(languageObj){
@@ -270,8 +275,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           videoWrapperClass: "innerWrapper",
           pluginsClass: "oo-player-skin-plugins"
         });
-
-        this.setupClosedCaptions();
       }, this));
 
       this.state.isMobile = Utils.isMobile();
@@ -788,24 +791,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.closedCaptionOptions.availableLanguages = languages;
-      this.setupClosedCaptions();
-    },
-
-    setupClosedCaptions: function() {
-      if (!this.state.closedCaptionOptions.availableLanguages || !this.skin) return;
-      var languages = this.state.closedCaptionOptions.availableLanguages;
-      //Set the language to the skinConfig default if it is not already set or is not one of our possible languages.
-      //If that is not possible either, just set it to the first possible language.
-      if (this.state.closedCaptionOptions.language == null || !_.contains(languages.languages, this.state.closedCaptionOptions.language)) {
-        if (this.skin.props.skinConfig.closedCaptionOptions && _.contains(languages.languages, this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage)){
-          this.state.closedCaptionOptions.language = this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage;
-        } else if (languages && languages.languages && languages.languages.length > 0){
-          this.state.closedCaptionOptions.language = languages.languages[0];
-        }
-
-        if (this.state.closedCaptionOptions.enabled){
-          this.setClosedCaptionsLanguage();
-        }
+      if (this.state.closedCaptionOptions.enabled){
+        this.setClosedCaptionsLanguage();
       }
     },
 
@@ -1229,61 +1216,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onClosedCaptionLanguageChange: function(language) {
-      this.state.closedCaptionOptions.language = language;
-      this.setClosedCaptionsLanguage();
+    onClosedCaptionChange: function(name, value) {
+      this.state.closedCaptionOptions[name] = this.state.persistentSettings.closedCaptionOptions[name] = value;
+      if (name === 'language') {
+        this.setClosedCaptionsLanguage();
+      }
       this.renderSkin();
-    },
-
-    onClosedCaptionTextColorChange: function(textColor) {
-      this.state.closedCaptionOptions.textColor = textColor;
-      this.renderSkin();
-    },
-
-    onClosedCaptionWindowColorChange: function(windowColor) {
-      this.state.closedCaptionOptions.windowColor = windowColor;
-      this.renderSkin();
-    },
-
-    onClosedCaptionBackgroundColorChange: function(backgroundColor) {
-      this.state.closedCaptionOptions.backgroundColor = backgroundColor;
-      this.renderSkin();
-    },
-
-    onClosedCaptionFontTypeChange: function(fontType) {
-      this.state.closedCaptionOptions.fontType = fontType;
-      this.renderSkin();
-    },
-
-    onClosedCaptionFontSizeChange: function(fontSize) {
-      this.state.closedCaptionOptions.fontSize = fontSize;
-      this.renderSkin();
-    },
-
-    onClosedCaptionTextOpacityChange: function(textOpacity) {
-      this.state.closedCaptionOptions.textOpacity = textOpacity;
-      this.renderSkin();
-    },
-
-    onClosedCaptionBackgroundOpacityChange: function(backgroundOpacity) {
-      this.state.closedCaptionOptions.backgroundOpacity = backgroundOpacity;
-      this.renderSkin();
-    },
-
-    onClosedCaptionWindowOpacityChange: function(windowOpacity) {
-      this.state.closedCaptionOptions.windowOpacity = windowOpacity;
-      this.renderSkin();
-    },
-
-    onClosedCaptionTextEnhancementChange: function(textEnhancement) {
-      this.state.closedCaptionOptions.textEnhancement = textEnhancement;
-      this.renderSkin();
+      this.mb.publish(OO.EVENTS.SAVE_PLAYER_SETTINGS, this.state.persistentSettings);
     },
 
     toggleClosedCaptionEnabled: function() {
       this.state.closedCaptionOptions.enabled = !this.state.closedCaptionOptions.enabled;
+      this.state.persistentSettings.closedCaptionOptions['enabled'] = !!this.state.closedCaptionOptions.enabled;
       this.setClosedCaptionsLanguage();
       this.renderSkin();
+      this.mb.publish(OO.EVENTS.SAVE_PLAYER_SETTINGS, this.state.persistentSettings);
     },
 
     upNextDismissButtonClicked: function() {

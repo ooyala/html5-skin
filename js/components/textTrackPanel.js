@@ -5,6 +5,7 @@
  */
 var React = require('react');
 var baseFontSize = 1.0;
+
 var TextTrackPanel = React.createClass({
 
   colorMap: {
@@ -44,25 +45,25 @@ var TextTrackPanel = React.createClass({
       "xs": (baseFontSize * 0.8) + "em",
       "sm": (baseFontSize * 1.0) + "em",
       "md": (baseFontSize * 1.2) + "em",
-      "lg": (baseFontSize * 1.4) + "em",
+      "lg": (baseFontSize * 1.4) + "em"
     },
     "Medium": {
       "xs": (baseFontSize * 1.2) + "em",
       "sm": (baseFontSize * 1.4) + "em",
       "md": (baseFontSize * 1.6) + "em",
-      "lg": (baseFontSize * 1.8) + "em",
+      "lg": (baseFontSize * 1.8) + "em"
     },
     "Large": {
       "xs": (baseFontSize * 1.6) + "em",
       "sm": (baseFontSize * 1.8) + "em",
       "md": (baseFontSize * 2.0) + "em",
-      "lg": (baseFontSize * 2.2) + "em",
+      "lg": (baseFontSize * 2.2) + "em"
     },
     "Extra Large": {
       "xs": (baseFontSize * 2.0) + "em",
       "sm": (baseFontSize * 2.2) + "em",
       "md": (baseFontSize * 2.4) + "em",
-      "lg": (baseFontSize * 2.6) + "em",
+      "lg": (baseFontSize * 2.6) + "em"
     }
   },
 
@@ -139,20 +140,30 @@ var TextTrackPanel = React.createClass({
 TextTrackPanel.propTypes = {
   cueText: React.PropTypes.string,
   closedCaptionOptions: React.PropTypes.shape({
+    textColor: React.PropTypes.string,
     windowColor: React.PropTypes.string,
     backgroundColor: React.PropTypes.string,
-    textColor: React.PropTypes.string,
-    fontType: React.PropTypes.string
+    textOpacity: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
+    backgroundOpacity: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
+    windowOpacity: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
+    fontType: React.PropTypes.string,
+    fontSize: React.PropTypes.string,
+    textEnhancement: React.PropTypes.string
   })
 };
 
 TextTrackPanel.defaultProps = {
   cueText: null,
   closedCaptionOptions: {
-    windowColor: null,
-    backgroundColor: null,
-    textColor: null,
-    fontType: null
+    textColor: "White",
+    windowColor: "Transparent",
+    backgroundColor: "Black",
+    textOpacity: 1,
+    backgroundOpacity: 0.6,
+    windowOpacity: 0,
+    fontType: "Proportional Sans-Serif",
+    fontSize: "Medium",
+    textEnhancement: "Uniform"
   }
 };
 

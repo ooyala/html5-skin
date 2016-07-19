@@ -46,35 +46,6 @@ var Skin = React.createClass({
     window.addEventListener('mouseup', this.handleClickOutsidePlayer);
   },
 
-  componentWillMount: function() {
-    if (this.props.skinConfig.closedCaptionOptions){
-      this.props.controller.state.closedCaptionOptions.language = (this.props.skinConfig.closedCaptionOptions.defaultLanguage ? this.props.skinConfig.closedCaptionOptions.defaultLanguage : "en" );
-      this.props.controller.state.closedCaptionOptions.enabled = (this.props.skinConfig.closedCaptionOptions.defaultEnabled ? this.props.skinConfig.closedCaptionOptions.defaultEnabled : false);
-      this.props.controller.state.closedCaptionOptions.textColor = (this.props.skinConfig.closedCaptionOptions.defaultTextColor ? this.props.skinConfig.closedCaptionOptions.defaultTextColor : "White");
-      this.props.controller.state.closedCaptionOptions.windowColor = (this.props.skinConfig.closedCaptionOptions.defaultWindowColor ? this.props.skinConfig.closedCaptionOptions.defaultWindowColor : "Transparent");
-      this.props.controller.state.closedCaptionOptions.backgroundColor = (this.props.skinConfig.closedCaptionOptions.defaultBackgroundColor ? this.props.skinConfig.closedCaptionOptions.defaultBackgroundColor : "Black");
-      this.props.controller.state.closedCaptionOptions.textOpacity = (this.props.skinConfig.closedCaptionOptions.defaultTextOpacity ? this.props.skinConfig.closedCaptionOptions.defaultTextOpacity : 1);
-      this.props.controller.state.closedCaptionOptions.backgroundOpacity = (this.props.skinConfig.closedCaptionOptions.defaultBackgroundOpacity ? this.props.skinConfig.closedCaptionOptions.defaultBackgroundOpacity : 0.6);
-      this.props.controller.state.closedCaptionOptions.windowOpacity = (this.props.skinConfig.closedCaptionOptions.defaultWindowOpacity ? this.props.skinConfig.closedCaptionOptions.defaultWindowOpacity : 0);
-      this.props.controller.state.closedCaptionOptions.fontType = (this.props.skinConfig.closedCaptionOptions.defaultFontType ? this.props.skinConfig.closedCaptionOptions.defaultFontType : "Proportional Sans-Serif");
-      this.props.controller.state.closedCaptionOptions.fontSize = (this.props.skinConfig.closedCaptionOptions.defaultFontSize ? this.props.skinConfig.closedCaptionOptions.defaultFontSize : "Medium");
-      this.props.controller.state.closedCaptionOptions.textEnhancement = (this.props.skinConfig.closedCaptionOptions.defaultTextEnhancement ? this.props.skinConfig.closedCaptionOptions.defaultTextEnhancement : "Uniform");
-    }
-    else {
-      this.props.controller.state.closedCaptionOptions.language = "en";
-      this.props.controller.state.closedCaptionOptions.enabled = false;
-      this.props.controller.state.closedCaptionOptions.textColor = "White";
-      this.props.controller.state.closedCaptionOptions.windowColor = "Transparent";
-      this.props.controller.state.closedCaptionOptions.backgroundColor = "Black";
-      this.props.controller.state.closedCaptionOptions.textOpacity = 1;
-      this.props.controller.state.closedCaptionOptions.backgroundOpacity = 0.6;
-      this.props.controller.state.closedCaptionOptions.windowOpacity = 0;
-      this.props.controller.state.closedCaptionOptions.fontType = "Proportional Sans-Serif";
-      this.props.controller.state.closedCaptionOptions.fontSize = "Medium";
-      this.props.controller.state.closedCaptionOptions.textEnhancement = "Uniform";
-    }
-  },
-
   componentWillUnmount: function () {
     window.removeEventListener('mouseup', this.handleClickOutsidePlayer);
   },

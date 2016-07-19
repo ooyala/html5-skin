@@ -21,7 +21,7 @@ var ColorSelectionTab = React.createClass({
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
-    this.props.controller.onClosedCaptionTextColorChange(color);
+    this.props.controller.onClosedCaptionChange('textColor', color);
     this.setState({
       selectedTextColor: color
     });
@@ -31,7 +31,7 @@ var ColorSelectionTab = React.createClass({
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
-    this.props.controller.onClosedCaptionWindowColorChange(color);
+    this.props.controller.onClosedCaptionChange('windowColor', color);
     this.setState({
       selectedWindowColor: color
     });
@@ -41,7 +41,7 @@ var ColorSelectionTab = React.createClass({
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
-    this.props.controller.onClosedCaptionBackgroundColorChange(color);
+    this.props.controller.onClosedCaptionChange('backgroundColor', color);
     this.setState({
       selectedBackgroundColor: color
     });
