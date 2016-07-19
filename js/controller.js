@@ -224,7 +224,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         //override data in skin config with possible inline data input by the user
         $.extend(true, data, params.skin.inline);
         //override state settings with defaults from skin config and possible local storage settings
-        $.extend(true, this.state.closedCaptionOptions, data.closedCaptionOptions, settings.closedCaptionOptions);
+        if (settings)
+          $.extend(true, this.state.closedCaptionOptions, data.closedCaptionOptions, settings.closedCaptionOptions);
 
         //load language jsons
         data.localization.availableLanguageFile.forEach(function(languageObj){
