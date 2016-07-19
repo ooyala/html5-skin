@@ -119,6 +119,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "timer": null,
       "errorCode": null,
       "isSubscribed": false,
+      "isPlaybackReadySubscribed": false,
       "isSkipAdClicked": false,
       "isInitialPlay": false,
       "isFullScreenSupported": false,
@@ -143,6 +144,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
+      this.state.isPlaybackReadySubscribed = true;
     },
 
     subscribeBasicPlaybackEvents: function () {
@@ -165,6 +167,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
         this.mb.subscribe(OO.EVENTS.REPLAY, "customerUi", _.bind(this.onReplay, this));
         this.mb.subscribe(OO.EVENTS.ASSET_DIMENSION, "customerUi", _.bind(this.onAssetDimensionsReceived, this));
+        // PLAYBACK_READY is a fundamental event in the init process that can be unsubscribed by errors.
+        // If and only if such has occured, it needs a route to being resubscribed.
+        if(!this.state.isPlaybackReadySubscribed) {
+          this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
+        }
 
         // ad events
         if (!Utils.isIPhone()) {
@@ -950,6 +957,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
+      this.state.isPlaybackReadySubscribed = false;
 
       // ad events
       if (!Utils.isIPhone()) {
