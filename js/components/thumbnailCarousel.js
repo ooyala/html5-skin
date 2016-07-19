@@ -15,17 +15,18 @@ var ThumbnailCarousel = React.createClass({
       thumbnailHeight: 0,
       centerThumbnailWidth: 0,
       centerThumbnailHeight: 0,
-      thumbnailPadding: 0
+      thumbnailPadding: 6
     };
   },
 
   componentDidMount: function() {
     var thumbnail = ReactDOM.findDOMNode(this.refs.thumbnail);
     var carousel = ReactDOM.findDOMNode(this.refs.thumbnailCarousel);
-    var thumbnailPadding = window.getComputedStyle(thumbnail, null).getPropertyValue("padding");
-    thumbnailPadding = parseInt(thumbnailPadding, 10); // convert css px to number
+    var thumbnailStylePadding = thumbnail ? window.getComputedStyle(thumbnail, null).getPropertyValue("padding") : 0;
+    thumbnailStylePadding = parseFloat(thumbnailStylePadding); // convert css px to number
+    var thumbnailPadding = !isNaN(thumbnailStylePadding) ? thumbnailStylePadding : this.state.thumbnailPadding;
 
-    if (thumbnail.clientWidth && carousel.clientWidth) {
+    if (thumbnail && carousel && thumbnail.clientWidth && carousel.clientWidth) {
       this.setState({
         thumbnailWidth: thumbnail.clientWidth,
         thumbnailHeight: thumbnail.clientHeight,
