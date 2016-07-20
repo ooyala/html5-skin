@@ -24,18 +24,18 @@ var testThumbnails = function(DOM, thumbnails, hoverTime) {
   var smallImages = ReactDOM.findDOMNode(DOM.refs.thumbnail);
   var images = smallImages._parentNode._childNodes;
 
-  for (var i = 0; i < hoverPosition; i++) {
+  for (var i = 1; i < hoverPosition; i++) {
     var imageStyle = images[i]._style;
     if (typeof imageStyle == "string") {
       var offset = imageStyle.indexOf("url(") + 4;
-      expect(imageStyle.slice(offset, -2)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[hoverPosition - i]]["120"]["url"]);
+      expect(imageStyle.slice(offset, -2)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[hoverPosition - i - 1]]["120"]["url"]);
     }    
   }
   for (var i = hoverPosition + 1; i < images.length; i++) {
     var imageStyle = images[i]._style;
     if (typeof imageStyle == "string") {
       var offset = imageStyle.indexOf("url(") + 4;
-      expect(imageStyle.slice(offset, -2)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[i - 2]]["120"]["url"]);
+      expect(imageStyle.slice(offset, -2)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[i]]["120"]["url"]);
     }    
   }
 }
