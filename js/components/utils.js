@@ -319,7 +319,7 @@ var Utils = {
     position = Math.max(position, 0);
 
     var selectedTimeSlice = null;
-    var selectedPosition = 0;
+    var selectedPosition = position;
 
     if (timeSlices[position] >= hoverTime) {
       selectedTimeSlice = timeSlices[0];
