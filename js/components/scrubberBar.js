@@ -272,14 +272,13 @@ var ScrubberBar = React.createClass({
         playheadClassName += " oo-playhead-hovering";
       }
       if (!thumbnailCarousel) {
-        thumbnailContainer =
+        thumbnailContainer = (
           <Thumbnail
            thumbnails={this.props.controller.state.thumbnails}
            hoverPosition={hoverPosition}
            duration={this.props.duration}
-           hoverTime={hoverTime > 0 ? hoverTime : 0}
-           thumbnailWidth={Thumbnail.getThumbnailWidth()}
-           scrubberBarWidth={this.state.scrubberBarWidth}/>
+           hoverTime={hoverTime > 0 ? hoverTime : 0} />
+        )
       }
     }
 
