@@ -54,6 +54,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 50% 50%;
+  @include vendor-prefixes(transform, translateX(-50%));
 }
 
 .oo-thumbnail-time {
