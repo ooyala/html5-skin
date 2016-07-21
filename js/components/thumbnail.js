@@ -7,7 +7,15 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     Utils = require('./utils');
 
+var thumbnailWidth = 0;
+
 var Thumbnail = React.createClass({
+  statics: {
+    getThumbnailWidth: function() {
+      return thumbnailWidth;
+    }
+  },
+
   getInitialState: function() {
     return {
       thumbnailWidth: 0
@@ -15,7 +23,10 @@ var Thumbnail = React.createClass({
   },
 
   componentDidMount: function() {
-    this.setState({thumbnailWidth: ReactDOM.findDOMNode(this.refs.thumbnail).clientWidth});
+    var thmb = ReactDOM.findDOMNode(this.refs.thumbnail);
+    var width = thmb.clientWidth;
+    thumbnailWidth = width;
+    this.setState({thumbnailWidth: width});
   },
 
   shouldComponentUpdate: function(nextProps) {
@@ -25,7 +36,7 @@ var Thumbnail = React.createClass({
   render: function() {
     var thumbnail = Utils.findThumbnail(this.props.thumbnails, this.props.hoverTime, this.props.duration);
     var thumbnailStyle = {};
-    var defaultThumbnailWidth = this.state.thumbnailWidth;
+    var defaultThumbnailWidth = this.state.thumbnailWidth > 0 ? this.state.thumbnailWidth : this.props.thumbnailWidth;
     var hoverPosition = 0;
 
     if (this.props.hoverPosition - defaultThumbnailWidth/2 >= 0 && this.props.hoverPosition + defaultThumbnailWidth/2 < this.props.scrubberBarWidth) {
