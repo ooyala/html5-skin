@@ -8,7 +8,7 @@ var Thumbnail = require('../../js/components/thumbnail');
 var Utils = require('../../js/components/utils');
 
 describe('Thumbnail', function () {
-  var thumbnails = {
+    var thumbnails = {
     "data":{
       "available_time_slices":[
          0,
@@ -24,139 +24,83 @@ describe('Thumbnail', function () {
          100
       ],
       "available_widths":[
-         120,
-         240
+         120
         ],
       "thumbnails":{
         "0":{
             "120":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_1.jpg",
+               "url":"http://media.video-cdn.espn.com/motion/Miercoles_000.jpg",
                "width":120,
-               "height":80
-            },
-            "240":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_1.jpg",
-               "width":240,
                "height":80
             }
          },
          "10":{
             "120":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_2.jpg",
+               "url":"http://media.video-cdn.espn.com/motion/Miercoles_010.jpg",
                "width":120,
-               "height":80
-            },
-            "240":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_2.jpg",
-               "width":240,
                "height":80
             }
          },
          "20":{
             "120":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_3.jpg",
+               "url":"http://media.video-cdn.espn.com/motion/Miercoles_020.jpg",
                "width":120,
-               "height":80
-            },
-            "240":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_3.jpg",
-               "width":240,
                "height":80
             }
          },
          "30":{
             "120":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_4.jpg",
+               "url":"http://media.video-cdn.espn.com/motion/Miercoles_030.jpg",
                "width":120,
-               "height":80
-            },
-            "240":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_4.jpg",
-               "width":240,
                "height":80
             }
          },
          "40":{
             "120":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_5.jpg",
+               "url":"http://media.video-cdn.espn.com/motion/Miercoles_040.jpg",
                "width":120,
-               "height":80
-            },
-            "240":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_5.jpg",
-               "width":240,
                "height":80
             }
          },
          "50":{
             "120":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_6.jpg",
+               "url":"http://media.video-cdn.espn.com/motion/Miercoles_050.jpg",
                "width":120,
-               "height":80
-            },
-            "240":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_6.jpg",
-               "width":240,
                "height":80
             }
          },
          "60":{
             "120":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_7.jpg",
+               "url":"http://media.video-cdn.espn.com/motion/Miercoles_060.jpg",
                "width":120,
-               "height":80
-            },
-            "240":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_7.jpg",
-               "width":240,
                "height":80
             }
          },
          "70":{
             "120":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_8.jpg",
+               "url":"http://media.video-cdn.espn.com/motion/Miercoles_070.jpg",
                "width":120,
-               "height":80
-            },
-            "240":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_8.jpg",
-               "width":240,
                "height":80
             }
          },
          "80":{
             "120":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_9.jpg",
+               "url":"http://media.video-cdn.espn.com/motion/Miercoles_080.jpg",
                "width":120,
-               "height":80
-            },
-            "240":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_9.jpg",
-               "width":240,
                "height":80
             }
          },
          "90":{
             "120":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_10.jpg",
+               "url":"http://media.video-cdn.espn.com/motion/Miercoles_090.jpg",
                "width":120,
-               "height":80
-            },
-            "240":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_10.jpg",
-               "width":240,
                "height":80
             }
          },
          "100":{
             "120":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_11.jpg",
+               "url":"http://media.video-cdn.espn.com/motion/Miercoles_100.jpg",
                "width":120,
-               "height":80
-            },
-            "240":{
-               "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_11.jpg",
-               "width":240,
                "height":80
             }
          }
@@ -171,79 +115,32 @@ describe('Thumbnail', function () {
       ]
     }
   };
-  it('creates a Thumbnail at 5 sec', function () {
-    var DOM = TestUtils.renderIntoDocument(
-      <Thumbnail
-        hoverPosition={5}
-        duration={100}
-        hoverTime={5}
-        scrubberBarWidth={100}
-        thumbnails={thumbnails}/>
-    );
-    var thumbnail = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail');
-    var thumbnailTime = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail-time');
-    expect(ReactDOM.findDOMNode(DOM.refs.thumbnail).style._values['background-image']).toBe("url("+thumbnails["data"]["thumbnails"]["0"]["120"]["url"]+")");
-    expect(thumbnail.length).toBe(1);
-    expect(thumbnailTime.length).toBe(1);
-  });
 
-  it('creates a Thumbnail at 15 sec', function () {
-    var DOM = TestUtils.renderIntoDocument(
-      <Thumbnail
-        hoverPosition={15}
-        duration={100}
-        hoverTime={15}
-        scrubberBarWidth={100}
-        thumbnails={thumbnails}/>
-    );
-    expect(ReactDOM.findDOMNode(DOM.refs.thumbnail).style._values['background-image']).toBe("url("+thumbnails["data"]["thumbnails"]["10"]["120"]["url"]+")");
-  });
-
-  it('creates a Thumbnail at 25 sec', function () {
-    var DOM = TestUtils.renderIntoDocument(
-      <Thumbnail
-        hoverPosition={250}
-        duration={100}
-        hoverTime={25}
-        scrubberBarWidth={100}
-        thumbnails={thumbnails}/>
-    );
-    expect(ReactDOM.findDOMNode(DOM.refs.thumbnail).style._values['background-image']).toBe("url("+thumbnails["data"]["thumbnails"]["20"]["120"]["url"]+")");
-  });
-
-  it('creates a Thumbnail at 0 sec', function () {
-    var DOM = TestUtils.renderIntoDocument(
-      <Thumbnail
-        hoverPosition={0}
-        duration={100}
-        hoverTime={0}
-        scrubberBarWidth={100}
-        thumbnails={thumbnails}/>
-    );
-    expect(ReactDOM.findDOMNode(DOM.refs.thumbnail).style._values['background-image']).toBe("url("+thumbnails["data"]["thumbnails"]["0"]["120"]["url"]+")");
-  });
-
-  it('creates a Thumbnail at 100 sec', function () {
-    var DOM = TestUtils.renderIntoDocument(
-      <Thumbnail
-        hoverPosition={100}
-        duration={100}
-        hoverTime={100}
-        scrubberBarWidth={100}
-        thumbnails={thumbnails}/>
-    );
-    expect(ReactDOM.findDOMNode(DOM.refs.thumbnail).style._values['background-image']).toBe("url("+thumbnails["data"]["thumbnails"]["100"]["120"]["url"]+")");
-  });
-
-  it('creates a Thumbnail at 500 sec', function () {
-    var DOM = TestUtils.renderIntoDocument(
-      <Thumbnail
-        hoverPosition={500}
-        duration={100}
-        hoverTime={50}
-        scrubberBarWidth={1000}
-        thumbnails={thumbnails}/>
-    );
-    expect(ReactDOM.findDOMNode(DOM.refs.thumbnail).style._values['background-image']).toBe("url("+thumbnails["data"]["thumbnails"]["50"]["120"]["url"]+")");
+  it('creates and verifies thumbnails at hover times of [0, 100], step 5', function () {
+    var width = thumbnails.data.available_widths[0];
+    var duration = 100;
+    for (var hoverTime = 0; hoverTime <= 100; hoverTime += 5) {
+      var DOM = TestUtils.renderIntoDocument
+      (
+          <Thumbnail
+           hoverPosition={hoverTime}
+           duration={duration}
+           hoverTime={hoverTime}
+           scrubberBarWidth={100}
+           thumbnails={thumbnails}/>
+      );
+      var thumbnail = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail');
+      var thumbnailTime = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail-time');
+      var hoverPosition = Utils.findThumbnail(thumbnails, hoverTime, duration).pos;
+      var node = ReactDOM.findDOMNode(DOM.refs.thumbnail);
+      if (hoverTime % 10 == 0) {
+        expect(node.style._values['background-image']).toBe("url("+thumbnails.data.thumbnails[hoverTime][width]["url"]+")");
+      } else {
+        expect(node.style._values['background-image']).toBe("url("+thumbnails.data.thumbnails[(hoverTime - 5).toString()][width]["url"]+")");
+      }
+      expect(thumbnail.length).toBe(1);
+      expect(thumbnailTime.length).toBe(1);
+      ReactDOM.unmountComponentAtNode(document);
+    }
   });
 });
