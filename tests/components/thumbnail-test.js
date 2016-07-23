@@ -8,7 +8,7 @@ var Thumbnail = require('../../js/components/thumbnail');
 var Utils = require('../../js/components/utils');
 
 describe('Thumbnail', function () {
-    var thumbnails = {
+  var thumbnails = {
     "data":{
       "available_time_slices":[
          0,
