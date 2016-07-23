@@ -140,7 +140,6 @@ describe('Thumbnail', function () {
       }
       expect(thumbnail.length).toBe(1);
       expect(thumbnailTime.length).toBe(1);
-      ReactDOM.unmountComponentAtNode(document);
     }
   });
 });

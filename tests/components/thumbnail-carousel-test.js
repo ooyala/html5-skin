@@ -185,7 +185,6 @@ describe('ThumbnailCarousel', function () {
       );
 
       testThumbnails(DOM, thumbnails, hoverTime, width, duration);
-      ReactDOM.unmountComponentAtNode(document);
     }
   });
 });
