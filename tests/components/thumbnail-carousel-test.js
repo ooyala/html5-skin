@@ -14,19 +14,25 @@ var testThumbnails = function(DOM, thumbnails, hoverTime, width, duration) {
   var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnailCarousel);
   var images = centerImage._parentNode._childNodes;
 
-  for (var i = 1; i < hoverPosition; i++) {
+  var lastLeft = 0;
+  var next = 0;
+  for (var i = 0; i < hoverPosition && i < images.length; i++) {
     var imageStyle = images[i]._style;
-    if (typeof imageStyle == "string") {
-      var offset = imageStyle.indexOf("url(") + 4;
-      expect(imageStyle.slice(offset, -2)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[hoverPosition - i - 1]][width]["url"]);
-    }    
+    var img = imageStyle._values["background-image"];
+    var left = parseInt(imageStyle._values["left"]);
+    if (i > 0 && left > lastLeft) {
+      next = hoverPosition - i;
+      break;
+    }
+    var offset = img.indexOf("url(") + 4;
+    lastLeft = left;
+    expect(img.slice(offset, -1)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[hoverPosition - i - 1]][width]["url"]);
   }
-  for (var i = hoverPosition + 1; i < images.length; i++) {
+  for (var i = hoverPosition + 1 - next; i < images.length; i++) {
     var imageStyle = images[i]._style;
-    if (typeof imageStyle == "string") {
-      var offset = imageStyle.indexOf("url(") + 4;
-      expect(imageStyle.slice(offset, -2)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[i]][width]["url"]);
-    }    
+    var img = imageStyle._values["background-image"];
+    var offset = img.indexOf("url(") + 4;
+    expect(img.slice(offset, -1)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[i + next]][width]["url"]);
   }
 }
 
@@ -146,8 +152,11 @@ describe('ThumbnailCarousel', function () {
       <ThumbnailCarousel
         duration={100}
         hoverTime={hoverTime}
-        hoverPosition={hoverTime}
-        scrubberBarWidth={100}
+        scrubberBarWidth={200}
+        carouselWidth="154"
+        carouselHeight="102"
+        thumbnailWidth="93"
+        thumbnailHeight="63"
         thumbnails={thumbnails}/>
     );
     var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnailCarousel).style._values['background-image'];
@@ -162,8 +171,11 @@ describe('ThumbnailCarousel', function () {
       <ThumbnailCarousel
         duration={100}
         hoverTime={hoverTime}
-        hoverPosition={hoverTime}
-        scrubberBarWidth={100}
+        scrubberBarWidth={200}
+        carouselWidth="154"
+        carouselHeight="102"
+        thumbnailWidth="93"
+        thumbnailHeight="63"
         thumbnails={thumbnails}/>
     );
     var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnailCarousel).style._values['background-image'];
@@ -179,8 +191,11 @@ describe('ThumbnailCarousel', function () {
           <ThumbnailCarousel
            duration={duration}
            hoverTime={hoverTime}
-           hoverPosition={hoverTime}
-           scrubberBarWidth={200}
+           scrubberBarWidth={800}
+           carouselWidth="154"
+           carouselHeight="102"
+           thumbnailWidth="93"
+           thumbnailHeight="63"
            thumbnails={thumbnails}/>
       );
 
