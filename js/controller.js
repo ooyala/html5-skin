@@ -1078,6 +1078,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    onLiveClick: function() {
+      this.mb.publish(OO.EVENTS.LIVE_BUTTON_CLICKED);
+    },
+
     setVolume: function(volume){
       if(volume == 0) {
         this.state.volumeState.muted = true;
