@@ -226,7 +226,7 @@
       font-size: 0.7em;
     }
   }
-  
+
   //Action Icons
   .oo-action-icon-pause {
     font-size:12px;
@@ -241,6 +241,12 @@
   }
 
   //Ad Panel
+  .oo-ad-screen {
+    .oo-action-icon-pause {
+      display:none;
+    }
+  }
+
   .oo-ad-top-bar {
      height: 17px;
 
