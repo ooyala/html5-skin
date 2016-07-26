@@ -20,7 +20,7 @@ var testThumbnails = function(DOM, thumbnails, hoverTime, width, duration) {
     var imageStyle = images[i]._style;
     var img = imageStyle._values["background-image"];
     var left = parseInt(imageStyle._values["left"]);
-    if (i > 0 && left > lastLeft) {
+    if (i > 0 && left > lastLeft) { // left edge of scrubber bar reached,  now check images to the right of central, remember index where we stopped
       next = hoverPosition - i;
       break;
     }
