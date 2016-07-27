@@ -70,6 +70,7 @@ var ControlBar = React.createClass({
     evt.stopPropagation();
     evt.cancelBubble = true;
     evt.preventDefault();
+    this.props.controller.onLiveClick();
     this.props.controller.seek(this.props.duration);
   },
 
