@@ -1222,6 +1222,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     setClosedCaptionsLanguage: function(){
+      //if saved language not in available languages, set to first available language
+      if (this.state.closedCaptionOptions.language == null || !_.contains(this.state.closedCaptionOptions.availableLanguages.languages, this.state.closedCaptionOptions.language)) {
+        this.state.closedCaptionOptions.language = this.state.closedCaptionOptions.availableLanguages.languages[0];
+      }
       var language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : "";
       var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
