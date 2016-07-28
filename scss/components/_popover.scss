@@ -41,11 +41,15 @@
         padding: 4px 10px;
         color:$white;
         background-color: #333;
-        text-transform: uppercase;
+        text-transform: capitalize;
         font-size:12px;
         font-weight:bold;
+        @include vendor-prefixes (transition, all .15s);
       }
     }
-
   }
+}
+
+ a.oo-more-captions:hover {
+  background-color: red;
 }
