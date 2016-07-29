@@ -22,7 +22,9 @@ describe('ControlBar', function () {
         isMobile: false,
         volumeState: {
           volume: 1
-        }
+        },
+        videoQualityOptions: {},
+        closedCaptionOptions: {}
       }
     };
 
@@ -355,6 +357,7 @@ describe('ControlBar', function () {
     expect(ccButtons.length).toBe(0);
 
     var toggleScreenClicked = false;
+    var captionClicked = false;
     mockController = {
       state: {
         isMobile: false,
@@ -366,9 +369,11 @@ describe('ControlBar', function () {
           availableBitrates: null
         }
       },
-      toggleScreen: function() {toggleScreenClicked = true;}
+      toggleScreen: function() {toggleScreenClicked = true;},
+      toggleClosedCaptionPopOver: function(){captionClicked = true;}
     };
 
+    // md, test cc popover
     mockProps = {
       isLiveStream: false,
       controller: mockController,
@@ -386,6 +391,25 @@ describe('ControlBar', function () {
     expect(ccButtons2.length).toBe(1);
 
     var ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-closed-caption').firstChild;
+    TestUtils.Simulate.click(ccButton);
+    expect(captionClicked).toBe(true);
+
+    // xs, test full window view
+    mockProps = {
+      isLiveStream: false,
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig,
+      responsiveView: skinConfig.responsive.breakpoints.xs.id
+    };
+
+    DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+       componentWidth={350}
+       playerState={CONSTANTS.STATE.PLAYING}
+       isLiveStream={mockProps.isLiveStream} />
+    );
+
+    ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-closed-caption').firstChild;
     TestUtils.Simulate.click(ccButton);
     expect(toggleScreenClicked).toBe(true);
   });
@@ -829,7 +853,7 @@ describe('ControlBar', function () {
         }
       },
       toggleScreen: function() {qualityClicked = true;},
-      toggleQualityPopover: function() {qualityClicked = true;}
+      toggleVideoQualityPopOver: function(){qualityClicked = true;}
     };
 
     //xsmall

@@ -38,7 +38,7 @@ var devServer = {
 };
 
 //Build JS
-function buildJS(file, hash, watch, ugly, sourcemap, debug) {
+function buildJS(file, hash, watch, ugly, sourcemap, debug, externalReact) {
   var props ={
     entries: ['./js/controller.js'],
     debug: debug,
@@ -49,6 +49,10 @@ function buildJS(file, hash, watch, ugly, sourcemap, debug) {
   var bundler = watch ? watchify(browserify(props)) : browserify(props);
 
   function rebundle(reload) {
+    if (externalReact) {
+      bundler.external('react');
+      bundler.external('react-dom');
+    }
     bundler.bundle()
       .on("error", function (err) {
           gutil.log(
@@ -91,7 +95,7 @@ gulp.task('build:watch', ['watchify', 'watchify:min', 'sass', 'sass:min', 'asset
 gulp.task('browserify', function() {
   process.env.NODE_ENV = 'production';
   git.long(function (hash) {
-    return buildJS('html5-skin.js', hash, false, false, false, false);
+    return buildJS('html5-skin.js', hash, false, false, false, false, false);
   })
 });
 
@@ -99,21 +103,29 @@ gulp.task('browserify', function() {
 gulp.task('browserify:min', function() {
   process.env.NODE_ENV = 'production';
   git.long(function (hash) {
-    return buildJS('html5-skin.min.js', hash, false, true, true, true);
+    return buildJS('html5-skin.min.js', hash, false, true, true, true, false);
+  })
+});
+
+// Browserify Minified, External React.js
+gulp.task('external-react', function() {
+  process.env.NODE_ENV = 'production';
+  git.long(function (hash) {
+    return buildJS('html5-skin.min.js', hash, false, true, true, true, true);
   })
 });
 
 // Watchify JS
 gulp.task('watchify', function() {
   git.long(function (hash) {
-    return buildJS('html5-skin.js', hash, true, false, false, false);
+    return buildJS('html5-skin.js', hash, true, false, false, false, false);
   })
 });
 
 // Watchify Minified JS
 gulp.task('watchify:min', function() {
   git.long(function (hash) {
-    return buildJS('html5-skin.min.js', hash, true, true, true, true);
+    return buildJS('html5-skin.min.js', hash, true, true, true, true, false);
   })
 });
 
@@ -166,7 +178,7 @@ gulp.task('assets', function () {
 
 // HTML pages
 gulp.task('pages', function () {
-  gulp.src(['iframe.html'])
+  gulp.src(['iframe.html', 'amp_iframe.html'])
     .pipe(gulp.dest('./build'));
 });
 

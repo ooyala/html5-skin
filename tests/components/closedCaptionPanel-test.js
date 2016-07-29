@@ -5,7 +5,9 @@ jest.dontMock('../../js/views/contentScreen')
     .dontMock('../../js/components/closed-caption/onOffSwitch')
     .dontMock('../../js/components/icon')
     .dontMock('../../js/components/tabs')
+    .dontMock('../../js/components/utils')
     .dontMock('../../js/components/dataSelector')
+    .dontMock('../../js/components/utils')
     .dontMock('../../js/constants/constants')
     .dontMock('classnames');
 
@@ -89,8 +91,8 @@ describe('ClosedCaptionPanel', function () {
   it('checks changing the closed caption language', function () {
     var selectedLanguage = skinConfig.closedCaptionOptions.defaultLanguage;
     var mockController = {
-      onClosedCaptionLanguageChange: function(language) {
-        selectedLanguage = language;
+      onClosedCaptionChange: function(name, value) {
+        selectedLanguage = value;
       }
     };
 

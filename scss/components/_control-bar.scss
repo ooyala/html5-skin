@@ -58,7 +58,7 @@
       padding-right:0 !important;
     }
 
-    button.oo-control-bar-item {
+    a.oo-control-bar-item {
       background-color: transparent;
       border:0;
       outline: none;
@@ -183,7 +183,9 @@ a.oo-volume-bar {
   height: auto;
 }
 
-.oo-control-bar-hidden {
-  height: 0 !important;
-  opacity: 0;
+.oo-interactive-container {
+  .oo-control-bar.oo-control-bar-hidden {
+    height: 0 !important;
+    opacity: 0;
+  }
 }

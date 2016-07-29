@@ -13,7 +13,7 @@ var FontTypeTab = React.createClass({
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
-    this.props.controller.onClosedCaptionFontTypeChange(fontType);
+    this.props.controller.onClosedCaptionChange('fontType', fontType);
     this.setState({
       selectedFontType: fontType
     });
