@@ -45,11 +45,11 @@
         font-size:12px;
         font-weight:bold;
         @include vendor-prefixes (transition, all .15s);
+
+        &:hover {
+          background-color:$blue-light;
+        };
       }
     }
   }
-}
-
- a.oo-more-captions:hover {
-  background-color: red;
 }
