@@ -67,6 +67,9 @@ var ScrubberBar = React.createClass({
   handlePlayheadMouseDown: function(evt) {
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
     this.props.controller.startHideControlBarTimer();
+    if (evt.target.className.match("playhead") && evt.type !== "mousedown") {
+        this.touchInitiated = true;
+    }
     if ((this.touchInitiated && evt.type !== "mousedown") || (!this.touchInitiated && evt.type === "mousedown") ){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
