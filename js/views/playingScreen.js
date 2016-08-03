@@ -132,8 +132,6 @@ var PlayingScreen = React.createClass({
           responsiveView={this.props.responsiveView}
         />
 
-        <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
-
         {adOverlay}
 
         {upNextPanel}
