@@ -15,42 +15,7 @@ var skinConfig = require('../../config/skin.json');
 var ReactDOM = require('react-dom');
 var ScrubberBar = require('../../js/components/scrubberBar');
 
-
-var thumbnails = {
-  "data":{
-    "available_time_slices":[
-      0,
-      10
-    ],
-    "available_widths":[
-      120
-    ],
-    "thumbnails":{
-      "0":{
-        "120":{
-          "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_1.jpg",
-          "width":120,
-          "height":80
-        }
-      },
-      "10":{
-        "120":{
-          "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_2.jpg",
-          "width":120,
-          "height":80
-        }
-      },
-      "errors":[
-        {
-          "status":404,
-          "code":"Not Found",
-          "title":"unable to find thumbnail images",
-          "detail":"embed code not found"
-        }
-      ]
-    }
-  }
-}
+var thumbnails = { "data":{ "available_time_slices":[ 0, 10 ], "available_widths":[ 120 ], "thumbnails":{ "0":{ "120":{ "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_1.jpg", "width":120, "height":80 } }, "10":{ "120":{ "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_2.jpg", "width":120, "height":80 } }, "errors":[ { "status":404, "code":"Not Found", "title":"unable to find thumbnail images", "detail":"embed code not found" } ] } }};
 
 // start unit test
 describe('ScrubberBar', function () {
@@ -235,6 +200,147 @@ describe('ScrubberBar', function () {
     TestUtils.Simulate.mouseDown(ReactDOM.findDOMNode(DOM.refs.scrubberBarPadding), evt);
     var thumbnailCarousel = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-scrubber-carousel-container');
     expect(thumbnailCarousel.length).toBe(1);
+  });
+
+  it('tests a scrubber bar componentWillReceiveProps', function () {
+    var mockController = {
+      state: {
+        isMobile: false
+      }
+    };
+
+    var node = document.createElement('div');
+    var scrubber = ReactDOM.render(
+      <ScrubberBar
+      controlBarVisible={true}
+      seeking={true}
+      controller={mockController}
+      skinConfig={skinConfig} />, node
+    );
+
+    ReactDOM.render(
+      <ScrubberBar
+        controlBarVisible={false}
+        seeking={false}
+        controller={mockController}
+        skinConfig={skinConfig} />, node
+    );
+
+    ReactDOM.unmountComponentAtNode(node);
+  });
+
+  it('tests a scrubber bar functions', function () {
+    var mockController = {
+      state: {
+        isMobile: true
+      },
+      startHideControlBarTimer: function() {},
+      updateSeekingPlayhead: function() {},
+      beginSeeking: function() {},
+      endSeeking: function() {},
+      seek: function() {},
+      renderSkin: function() {}
+    };
+
+    var node = document.createElement('div');
+    var scrubber = ReactDOM.render(
+      <ScrubberBar
+        controlBarVisible={true}
+        seeking={true}
+        duration={8}
+        controller={mockController}
+        skinConfig={skinConfig} />, node
+    );
+
+    scrubber.getResponsiveUIMultiple('md');
+
+    var event2 = {
+      preventDefault: function() {},
+      stopPropagation: function() {},
+      touches: ['a', 'b'],
+      targetTouches: [{pageX:2}, {}],
+      clientX: 45,
+      target: {
+        className: 'padding',
+        getBoundingClientRect: function() {
+          return {left: 33}
+        }
+      },
+      type: 'mousedown',
+      nativeEvent: {}
+    };
+    scrubber.handleScrubberBarMouseDown(event2);
+
+    var event1 = {
+      preventDefault: function() {},
+      touches: ['a', 'b'],
+      targetTouches: [{pageX:2}, {}],
+      clientX: 45,
+      target: {
+        className: 'oo-playhead',
+        getBoundingClientRect: function() {
+          return {left: 33}
+        }
+      },
+      type: 'mouseup',
+      nativeEvent: {}
+    };
+    scrubber.handlePlayheadMouseDown(event1);
+    scrubber.handlePlayheadMouseDown(event2);
+    scrubber.handlePlayheadMouseUp(event2);
+
+    var event3 = {
+      preventDefault: function() {},
+      touches: ['a', 'b'],
+      targetTouches: [{pageX:2}, {}],
+      clientX: 45,
+      target: {
+        className: 'playhead',
+        getBoundingClientRect: function() {
+          return {left: 33}
+        }
+      },
+      type: 'touchstart'
+    };
+    scrubber.handleScrubberBarMouseDown(event3);
+
+    var event4 = {
+      preventDefault: function() {},
+      touches: ['a', 'b'],
+      clientX: 45
+    };
+    scrubber.handlePlayheadMouseMove(event4);
+    scrubber.handleScrubberBarMouseMove(event4);
+    scrubber.handleScrubberBarMouseOut(event4);
+  });
+
+  it('tests a scrubber bar componentWillUnmount', function () {
+    var mockController = {
+      state: {
+        isMobile: true
+      }
+    };
+
+    var node = document.createElement('div');
+    var scrubber = ReactDOM.render(
+      <ScrubberBar
+        controlBarVisible={true}
+        seeking={true}
+        duration={8}
+        controller={mockController}
+        skinConfig={skinConfig} />, node
+    );
+
+    ReactDOM.render(
+      <ScrubberBar
+        controlBarVisible={false}
+        seeking={false}
+        controller={mockController}
+        skinConfig={skinConfig} />, node
+    );
+
+    ReactDOM.unmountComponentAtNode(node);
+    scrubber.handlePlayheadMouseUp({});
   });
 
 });

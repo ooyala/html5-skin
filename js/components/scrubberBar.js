@@ -13,6 +13,7 @@ var ScrubberBar = React.createClass({
 
   getInitialState: function() {
     this.lastScrubX = null;
+    this.isMobile = this.props.controller.state.isMobile;
     this.touchInitiated = false;
 
     return {
@@ -36,7 +37,7 @@ var ScrubberBar = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if (this.transitionedDuringSeek && !nextProps.seeking) {
+    if (this.state.transitionedDuringSeek && !nextProps.seeking) {
       this.setState({transitionedDuringSeek: false});
     }
   },
@@ -67,7 +68,7 @@ var ScrubberBar = React.createClass({
   handlePlayheadMouseDown: function(evt) {
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
     this.props.controller.startHideControlBarTimer();
-    if (evt.target.className.match("playhead") && evt.type !== "mousedown") {
+    if (evt.target.className.match("oo-playhead") && evt.type !== "mousedown") {
         this.touchInitiated = true;
     }
     if ((this.touchInitiated && evt.type !== "mousedown") || (!this.touchInitiated && evt.type === "mousedown") ){
