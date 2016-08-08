@@ -284,13 +284,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         });
       }, this));
 
-      this.state.isMobile = Utils.isMobile();
-
       this.externalPluginSubscription();
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
     },
 
-    onVcVideoElementCreated: function(eventname, params) {
+    onVcVideoElementCreated: function(event, params) {
       var element = $("#" + params["domId"]);
       var elementVideo = element.find("video");
 
@@ -324,7 +322,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var elementId = this.state.elementId;
       var mountNode = document.querySelector('#' + elementId + ' .oo-player-skin');
       // remove mounted Skin component
-      ReactDOM.unmountComponentAtNode(mountNode);
+      if (mountNode) {
+        ReactDOM.unmountComponentAtNode(mountNode);
+      }
       this.mb = null;
     },
 
@@ -481,7 +481,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onPaused: function(eventname, videoId) {
+    onPaused: function(event, videoId) {
       if (videoId != this.focusedElement || this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN) { return; }
       if (videoId == OO.VIDEO.MAIN && this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
         if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
@@ -1198,7 +1198,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    receiveVideoQualityChangeEvent: function(eventName, targetBitrate) {
+    receiveVideoQualityChangeEvent: function(event, targetBitrate) {
         this.state.videoQualityOptions.selectedBitrate = {
         "id": targetBitrate
       };
@@ -1379,6 +1379,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     }
   };
+
+  exposeStaticApi = Html5Skin; //for unit test only
 
   return Html5Skin;
 });
