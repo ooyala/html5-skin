@@ -998,4 +998,66 @@ describe('ControlBar', function () {
     expect(clickableLogo.length).toBe(1);
     TestUtils.Simulate.click(logo);
   });
+
+  it('tests controlbar componentWill*', function () {
+    var mockController = {
+      state: {
+        isMobile: true,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
+      },
+      cancelTimer:function() {},
+      hideVolumeSliderBar:function() {},
+      startHideControlBarTimer:function() {},
+      onLiveClick:function() {},
+      seek: function() {},
+      handleMuteClick: function() {},
+      showVolumeSliderBar: function() {}
+    };
+
+    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig.buttons.desktopContent = [
+      {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
+    ];
+    oneButtonSkinConfig.controlBar.logo.clickUrl = "http://www.ooyala.com";
+    var mockProps = {
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    var node = document.createElement('div');
+    var controlBar = ReactDOM.render(
+      <ControlBar
+        {...mockProps}
+        controlBarVisible={true}
+        componentWidth={100}
+        responsiveView="sm" />, node
+    );
+
+    ReactDOM.render(
+      <ControlBar
+        {...mockProps}
+        controlBarVisible={true}
+        componentWidth={300}
+        responsiveView="md" />, node
+    );
+
+    var event = {
+      stopPropagation: function() {},
+      cancelBubble: function() {},
+      preventDefault: function() {},
+      type: 'touchend'
+    };
+    controlBar.handleControlBarMouseUp(event);
+    controlBar.handleLiveClick(event);
+
+    window.navigator.appVersion = 'Android';
+    controlBar.handleVolumeIconClick(event);
+    ReactDOM.unmountComponentAtNode(node);
+  });
 });
