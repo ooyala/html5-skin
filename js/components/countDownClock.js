@@ -198,7 +198,24 @@ CountDownClock.propTypes = {
 CountDownClock.defaultProps = {
   timeToShow: "10", //seconds
   clockWidth: 36,
-  currentPlayhead: 0
+  currentPlayhead: 0,
+  controller: {
+    state: {
+      screenToShow: '',
+      upNextInfo: {
+        timeToShow: "10"
+      }
+    }
+  },
+  skinConfig: {
+    responsive: {
+      breakpoints: {
+        xs: {
+          id: 'xs'
+        }
+      }
+    }
+  },
 };
 
 module.exports = CountDownClock;
