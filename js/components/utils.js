@@ -349,16 +349,6 @@ var Utils = {
     return { url: selectedThumbnail, pos: selectedPosition };
   },
 
-  reformatAspectRatio: function (aspectRatio) {
-    var aspectRatioArray = aspectRatio.split(':');
-    var vidWidth = aspectRatioArray[0];
-    var vidHeight = aspectRatioArray[1];
-    var dimensions = {};
-    dimensions["width"] = vidWidth;
-    dimensions["height"] = vidHeight;
-    return dimensions;
-  },
-
   /**
   * Check if the current browser is on a touch enabled device.
   * Function from https://hacks.mozilla.org/2013/04/detecting-touch-its-the-why-not-the-how/
@@ -419,10 +409,7 @@ var Utils = {
       }
     }
     return usedWidth;
-  },
-
-  _isOverflow: function( item ) {
-    return item.whenDoesNotFit && item.whenDoesNotFit == "moveToMoreOptions";
   }
 };
+
 module.exports = Utils;
