@@ -1,5 +1,6 @@
 jest.dontMock('../../js/views/adScreen')
-    .dontMock('../../js/components/icon');
+    .dontMock('../../js/components/icon')
+    .dontMock('../../js/mixins/resizeMixin');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -247,6 +248,77 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
 
     TestUtils.Simulate.click(DOM.refs.adPanel);
     expect(adsClicked).toBe(true);
+  });
+
+  it('tests ad componentWill*', function () {
+    var adsClicked = false;
+    var mockController = {
+      state: {
+        isMobile: false,
+        accessibilityControlsEnabled: false,
+        controlBarVisible: false
+      },
+      onAdsClicked: function() {
+        adsClicked = true;
+      },
+      cancelTimer: function() {},
+      startHideControlBarTimer: function() {}
+    };
+    var mockController2 = {
+      state: {
+        isMobile: true,
+        accessibilityControlsEnabled: false,
+        controlBarVisible: true
+      },
+      onAdsClicked: function() {
+        adsClicked = true;
+      },
+      cancelTimer: function() {},
+      startHideControlBarTimer: function() {}
+    };
+    var mockSkinConfig = {
+      adScreen: {
+        showControlBar: true,
+        showAdMarquee: true
+      },
+      pauseScreen: {
+        showPauseIcon: true,
+        pauseIconPosition: "center",
+        PauseIconStyle: {
+          color: "white",
+          opacity: 1
+        }
+      },
+      icons: {
+        pause: {"fontStyleClass": "icon icon-pause"}
+      }
+    };
+
+    var node = document.createElement('div');
+    var adScreen = ReactDOM.render(
+      <AdScreen
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        componentWidth={400}
+        fullscreen={true} />, node
+    );
+
+    ReactDOM.render(
+      <AdScreen
+        controller={mockController2}
+        skinConfig={mockSkinConfig}
+        componentWidth={800}
+        fullscreen={false} />, node
+    );
+
+    var event = {
+      stopPropagation: function() {},
+      cancelBubble: function() {},
+      type: 'touchend'
+    };
+
+    adScreen.handleTouchEnd(event);
+    ReactDOM.unmountComponentAtNode(node);
   });
 
 });
