@@ -374,6 +374,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       this.renderSkin({"contentTree": contentTree});
+
+      if (asset.relatedVideos.length > 0) {
+        this.mb.publish(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, {videos:asset.relatedVideos});
+      }
     },
 
     onVolumeChanged: function (event, newVolume){
