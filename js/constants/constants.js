@@ -111,6 +111,11 @@ module.exports = {
     TRANSITION: "transition"
   },
 
+  MEDIA_TYPE: {
+    HTML5: "html5",
+    FLASH: "flash"
+  },
+
   ERROR_MESSAGE: {
     "network":{
       name: "OO.ERROR.API.NETWORK",
@@ -261,4 +266,4 @@ module.exports = {
       description: "Something happened while we were trying to play your video! Click replay or simply reload your page."
     }
   }
-}
+};

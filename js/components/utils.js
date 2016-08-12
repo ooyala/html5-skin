@@ -120,6 +120,16 @@ var Utils = {
   },
 
   /**
+   * Check if the current browser is Chrome
+   *
+   * @function isChrome
+   * @returns {Boolean} Whether the browser is Chrome or not
+   */
+  isChrome: function () {
+    return (!!window.navigator.userAgent.match(/Chrome/) && !!window.navigator.vendor.match(/Google Inc/));
+  },
+
+  /**
   * Check if the current browser is Edge
   *
   * @function isEdge

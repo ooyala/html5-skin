@@ -59,6 +59,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoContainer": null,
       "mainVideoInnerWrapper": null,
       "mainVideoElement": null,
+      "mainVideoMediaType": null,
       "mainVideoAspectRatio": 0,
       "pluginsElement": null,
       "pluginsClickElement": null,
@@ -125,7 +126,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isInitialPlay": false,
       "isFullScreenSupported": false,
       "isVideoFullScreenSupported": false,
-      "isFullWindow": false
+      "isFullWindow": false,
+      "autoPauseDisabled": false
     };
 
     this.init();
@@ -297,6 +299,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       //if video element is descendant
       if (elementVideo.length) {
         element = elementVideo;
+        this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
       }
 
       //add loadedmetadata event listener to main video element
@@ -396,6 +399,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         //adVideoDuration is only used in adPanel ad marquee
         this.state.adVideoDuration = duration;
       }
+
+      // lower skin z-index if Chrome auto-pauses flash content
+      if(!this.state.autoPauseDisabled && Utils.isChrome && this.state.mainVideoMediaType != CONSTANTS.MEDIA_TYPE.HTML5) {
+        var skinElement = $("#"+this.state.elementId+" .oo-player-skin");
+        if(currentPlayhead == 0 && this.state.playerState == CONSTANTS.STATE.PLAYING) {
+          skinElement.addClass('oo-z-index-auto');
+        } else {
+          skinElement.removeClass('oo-z-index-auto');
+          this.state.autoPauseDisabled = true;
+        }
+      }
+
       // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
       // So we only need to update the playhead for ad screen.
       this.state.duration = duration;
