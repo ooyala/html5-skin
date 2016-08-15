@@ -68,7 +68,7 @@ var ScrubberBar = React.createClass({
   handlePlayheadMouseDown: function(evt) {
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
     this.props.controller.startHideControlBarTimer();
-    if (evt.target.className.match("oo-playhead") && evt.type !== "mousedown") {
+    if (evt.target.className.match("playhead") && evt.type !== "mousedown") {
         this.touchInitiated = true;
     }
     if ((this.touchInitiated && evt.type !== "mousedown") || (!this.touchInitiated && evt.type === "mousedown") ){
