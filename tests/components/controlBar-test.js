@@ -955,7 +955,6 @@ describe('ControlBar', function () {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var logo = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-logo');
     var nonClickableLogo = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
     expect(nonClickableLogo.length).toBe(0);
   });
@@ -978,6 +977,7 @@ describe('ControlBar', function () {
     oneButtonSkinConfig.buttons.desktopContent = [
       {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
     ];
+    oneButtonSkinConfig.controlBar.logo.imageResource.url = "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/assets/images/ooyala-logo.svg";
     oneButtonSkinConfig.controlBar.logo.clickUrl = "http://www.ooyala.com";
 
     var mockProps = {
@@ -994,8 +994,44 @@ describe('ControlBar', function () {
 
     var logo = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-logo');
     var clickableLogo = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
-
     expect(clickableLogo.length).toBe(1);
     TestUtils.Simulate.click(logo);
+  });
+
+  it("tests logo without image resource url", function() {
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
+      }
+    };
+
+    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig.buttons.desktopContent = [
+      {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
+    ];
+    oneButtonSkinConfig.controlBar.logo.imageResource.url = "";
+    oneButtonSkinConfig.controlBar.logo.clickUrl = "http://www.ooyala.com";
+
+    var mockProps = {
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+                  componentWidth={100}
+                  playerState={CONSTANTS.STATE.PLAYING}
+                  isLiveStream={mockProps.isLiveStream} />
+    );
+
+    var logo = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-logo');
+    expect(logo.length).toBe(0);
   });
 });
