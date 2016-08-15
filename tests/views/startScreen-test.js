@@ -1,9 +1,9 @@
-jest.dontMock('../../js/views/startScreen')
-  .dontMock('../../js/components/icon');
+jest.dontMock('../../src/js/views/startScreen')
+  .dontMock('../../src/js/components/icon');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-var StartScreen = require('../../js/views/startScreen');
+var StartScreen = require('../../src/js/views/startScreen');
 
 describe('StartScreen', function () {
   it('test start screen', function () {

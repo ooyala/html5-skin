@@ -1,23 +1,23 @@
-jest.dontMock('../../js/views/contentScreen')
-    .dontMock('../../js/components/closed-caption/closedCaptionPanel')
-    .dontMock('../../js/components/closed-caption/ccPreviewPanel')
-    .dontMock('../../js/components/closed-caption/languageTab')
-    .dontMock('../../js/components/closed-caption/onOffSwitch')
-    .dontMock('../../js/components/icon')
-    .dontMock('../../js/components/tabs')
-    .dontMock('../../js/components/utils')
-    .dontMock('../../js/components/dataSelector')
-    .dontMock('../../js/components/utils')
-    .dontMock('../../js/constants/constants')
+jest.dontMock('../../src/js/views/contentScreen')
+    .dontMock('../../src/js/components/closed-caption/closedCaptionPanel')
+    .dontMock('../../src/js/components/closed-caption/ccPreviewPanel')
+    .dontMock('../../src/js/components/closed-caption/languageTab')
+    .dontMock('../../src/js/components/closed-caption/onOffSwitch')
+    .dontMock('../../src/js/components/icon')
+    .dontMock('../../src/js/components/tabs')
+    .dontMock('../../src/js/components/utils')
+    .dontMock('../../src/js/components/dataSelector')
+    .dontMock('../../src/js/components/utils')
+    .dontMock('../../src/js/constants/constants')
     .dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
-var ContentScreen = require('../../js/views/contentScreen');
-var ClosedCaptionPanel = require('../../js/components/closed-caption/closedCaptionPanel');
-var OnOffSwitch = require('../../js/components/closed-caption/onOffSwitch');
-var CONSTANTS = require('../../js/constants/constants');
+var ContentScreen = require('../../src/js/views/contentScreen');
+var ClosedCaptionPanel = require('../../src/js/components/closed-caption/closedCaptionPanel');
+var OnOffSwitch = require('../../src/js/components/closed-caption/onOffSwitch');
+var CONSTANTS = require('../../src/js/constants/constants');
 
 describe('ClosedCaptionPanel', function () {
   var availableLanguages = {"languages":["en","fr","de","ru","it"],

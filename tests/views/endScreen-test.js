@@ -1,12 +1,12 @@
-jest.dontMock('../../js/views/endScreen')
-    .dontMock('../../js/components/icon')
+jest.dontMock('../../src/js/views/endScreen')
+    .dontMock('../../src/js/components/icon')
     .dontMock('classnames');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-var EndScreen = require('../../js/views/endScreen');
+var EndScreen = require('../../src/js/views/endScreen');
 var ClassNames = require('classnames');
-var ResizeMixin = require('../../js/mixins/resizeMixin');
+var ResizeMixin = require('../../src/js/mixins/resizeMixin');
 
 describe('EndScreen', function () {
   it('creates an EndScreen with replay button', function () {

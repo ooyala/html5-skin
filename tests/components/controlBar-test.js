@@ -1,17 +1,17 @@
-jest.dontMock('../../js/components/controlBar')
-    .dontMock('../../js/components/utils')
-    .dontMock('../../js/components/icon')
-    .dontMock('../../js/components/logo')
-    .dontMock('../../js/constants/constants')
+jest.dontMock('../../src/js/components/controlBar')
+    .dontMock('../../src/js/components/utils')
+    .dontMock('../../src/js/components/icon')
+    .dontMock('../../src/js/components/logo')
+    .dontMock('../../src/js/constants/constants')
     .dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
-var CONSTANTS = require('../../js/constants/constants');
-var ControlBar = require('../../js/components/controlBar');
+var CONSTANTS = require('../../src/js/constants/constants');
+var ControlBar = require('../../src/js/components/controlBar');
 var skinConfig = require('../../config/skin.json');
-var Utils = require('../../js/components/utils');
+var Utils = require('../../src/js/components/utils');
 
 // start unit test
 describe('ControlBar', function () {

@@ -1,10 +1,10 @@
-jest.dontMock('../../js/views/adScreen')
-    .dontMock('../../js/components/icon');
+jest.dontMock('../../src/js/views/adScreen')
+    .dontMock('../../src/js/components/icon');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
-var AdScreen = require('../../js/views/adScreen');
+var AdScreen = require('../../src/js/views/adScreen');
 
 describe('AdScreen', function () {
   it('creates an ad screen', function () {

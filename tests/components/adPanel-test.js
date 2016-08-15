@@ -1,12 +1,12 @@
-jest.dontMock('../../js/components/adPanel');
-jest.dontMock('../../js/components/spinner');
-jest.dontMock('../../js/constants/constants');
+jest.dontMock('../../src/js/components/adPanel');
+jest.dontMock('../../src/js/components/spinner');
+jest.dontMock('../../src/js/constants/constants');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-var AdPanel = require('../../js/components/adPanel');
-var Spinner = require('../../js/components/spinner');
-var CONSTANTS = require('../../js/constants/constants');
+var AdPanel = require('../../src/js/components/adPanel');
+var Spinner = require('../../src/js/components/spinner');
+var CONSTANTS = require('../../src/js/constants/constants');
 
 describe('AdPanel', function () {
   it('creates an AdPanel', function () {

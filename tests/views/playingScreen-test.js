@@ -1,8 +1,8 @@
-jest.dontMock('../../js/views/playingScreen');
+jest.dontMock('../../src/js/views/playingScreen');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-var PlayingScreen = require('../../js/views/playingScreen');
+var PlayingScreen = require('../../src/js/views/playingScreen');
 
 describe('PlayingScreen', function () {
   it('creates a PlayingScreen and checks mouseUp, mouseMove', function () {

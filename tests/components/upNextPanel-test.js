@@ -1,9 +1,9 @@
-jest.dontMock('../../js/components/upNextPanel');
-jest.dontMock('../../js/components/closeButton');
+jest.dontMock('../../src/js/components/upNextPanel');
+jest.dontMock('../../src/js/components/closeButton');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-UpNextPanel = require('../../js/components/upNextPanel');
+UpNextPanel = require('../../src/js/components/upNextPanel');
 
 describe('UpNextPanel', function () {
   it('tests up next panel', function () {
