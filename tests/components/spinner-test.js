@@ -1,8 +1,8 @@
-jest.dontMock('../../js/components/spinner');
+jest.dontMock('../../src/js/components/spinner');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-var Spinner = require('../../js/components/spinner');
+var Spinner = require('../../src/js/components/spinner');
 
 describe('Spinner', function () {
   it('tests spinner', function () {

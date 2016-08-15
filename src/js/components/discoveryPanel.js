@@ -10,7 +10,7 @@ var React = require('react'),
     CountDownClock = require('./countDownClock'),
     DiscoverItem = require('./discoverItem'),
     ResizeMixin = require('../mixins/resizeMixin'),
-    Icon = require('../components/icon');
+    Icon = require('./icon');
 
 var DiscoveryPanel = React.createClass({
   mixins: [ResizeMixin],

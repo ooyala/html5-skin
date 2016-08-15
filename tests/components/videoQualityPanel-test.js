@@ -1,15 +1,15 @@
-jest.dontMock('../../js/components/videoQualityPanel')
-    .dontMock('../../js/components/utils')
-    .dontMock('../../js/components/icon')
-    .dontMock('../../js/constants/constants')
+jest.dontMock('../../src/js/components/videoQualityPanel')
+    .dontMock('../../src/js/components/utils')
+    .dontMock('../../src/js/components/icon')
+    .dontMock('../../src/js/constants/constants')
     .dontMock('classnames');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-var CONSTANTS = require('../../js/constants/constants');
-var VideoQualityPanel = require('../../js/components/videoQualityPanel');
+var CONSTANTS = require('../../src/js/constants/constants');
+var VideoQualityPanel = require('../../src/js/components/videoQualityPanel');
 var skinConfig = require('../../config/skin.json');
-var Utils = require('../../js/components/utils');
+var Utils = require('../../src/js/components/utils');
 
 // start unit test
 describe('VideoQualityPanel', function () {

@@ -1,14 +1,14 @@
-jest.dontMock('../../js/components/sharePanel')
-    .dontMock('../../js/components/utils')
-    .dontMock('../../js/constants/constants')
+jest.dontMock('../../src/js/components/sharePanel')
+    .dontMock('../../src/js/components/utils')
+    .dontMock('../../src/js/constants/constants')
     .dontMock('../../config/en.json')
     .dontMock('../../config/es.json')
     .dontMock('../../config/zh.json');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-var CONSTANTS = require('../../js/constants/constants');
-var SharePanel = require('../../js/components/sharePanel');
+var CONSTANTS = require('../../src/js/constants/constants');
+var SharePanel = require('../../src/js/components/sharePanel');
 var en = require('../../config/en.json'),
     es = require('../../config/es.json'),
     zh = require('../../config/zh.json');

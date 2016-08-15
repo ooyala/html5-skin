@@ -1,13 +1,13 @@
-jest.dontMock('../../js/components/thumbnailCarousel')
-  .dontMock('../../js/components/thumbnail')
-  .dontMock('../../js/components/utils');
+jest.dontMock('../../src/js/components/thumbnailCarousel')
+  .dontMock('../../src/js/components/thumbnail')
+  .dontMock('../../src/js/components/utils');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
 var ReactDOM = require('react-dom');
-var Thumbnail = require('../../js/components/thumbnail');
-var ThumbnailCarousel = require('../../js/components/thumbnailCarousel');
-var Utils = require('../../js/components/utils');
+var Thumbnail = require('../../src/js/components/thumbnail');
+var ThumbnailCarousel = require('../../src/js/components/thumbnailCarousel');
+var Utils = require('../../src/js/components/utils');
 
 var testThumbnails = function(DOM, thumbnails, hoverTime, width, duration) {
   var hoverPosition = Utils.findThumbnail(thumbnails, hoverTime, duration).pos;

@@ -1,10 +1,10 @@
-jest.dontMock('../../js/views/pauseScreen')
-    .dontMock('../../js/components/icon')
+jest.dontMock('../../src/js/views/pauseScreen')
+    .dontMock('../../src/js/components/icon')
     .dontMock('classnames');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-var PauseScreen = require('../../js/views/pauseScreen');
+var PauseScreen = require('../../src/js/views/pauseScreen');
 var ClassNames = require('classnames');
 
 describe('PauseScreen', function () {

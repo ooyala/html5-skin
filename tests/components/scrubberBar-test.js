@@ -1,8 +1,8 @@
-jest.dontMock('../../js/components/scrubberBar')
-    .dontMock('../../js/components/utils')
-    .dontMock('../../js/components/thumbnail')
-    .dontMock('../../js/components/thumbnailCarousel')
-    .dontMock('../../js/constants/constants')
+jest.dontMock('../../src/js/components/scrubberBar')
+    .dontMock('../../src/js/components/utils')
+    .dontMock('../../src/js/components/thumbnail')
+    .dontMock('../../src/js/components/thumbnailCarousel')
+    .dontMock('../../src/js/constants/constants')
     .dontMock('../../config/en.json')
     .dontMock('../../config/es.json')
     .dontMock('../../config/zh.json')
@@ -10,10 +10,10 @@ jest.dontMock('../../js/components/scrubberBar')
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-var CONSTANTS = require('../../js/constants/constants');
+var CONSTANTS = require('../../src/js/constants/constants');
 var skinConfig = require('../../config/skin.json');
 var ReactDOM = require('react-dom');
-var ScrubberBar = require('../../js/components/scrubberBar');
+var ScrubberBar = require('../../src/js/components/scrubberBar');
 
 
 var thumbnails = {

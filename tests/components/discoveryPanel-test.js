@@ -1,13 +1,13 @@
-jest.dontMock('../../js/components/discoveryPanel')
-    .dontMock('../../js/components/discoverItem')
-    .dontMock('../../js/components/icon')
-    .dontMock('../../js/components/utils')
+jest.dontMock('../../src/js/components/discoveryPanel')
+    .dontMock('../../src/js/components/discoverItem')
+    .dontMock('../../src/js/components/icon')
+    .dontMock('../../src/js/components/utils')
     .dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
-var DiscoveryPanel = require('../../js/components/discoveryPanel');
+var DiscoveryPanel = require('../../src/js/components/discoveryPanel');
 
 describe('DiscoveryPanel', function () {
   it('tests displays discovery panel', function () {

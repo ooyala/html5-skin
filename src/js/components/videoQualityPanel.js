@@ -6,7 +6,7 @@
 var React = require('react'),
     ScrollArea = require('react-scrollbar/dist/no-css'),
     ClassNames = require('classnames'),
-    Icon = require('../components/icon');
+    Icon = require('./icon');
 
 var VideoQualityPanel = React.createClass({
   getInitialState: function() {

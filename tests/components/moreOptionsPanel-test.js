@@ -1,16 +1,16 @@
-jest.dontMock('../../js/components/moreOptionsPanel')
-    .dontMock('../../js/components/utils')
-    .dontMock('../../js/components/icon')
-    .dontMock('../../js/constants/constants')
-    .dontMock('../../js/mixins/animateMixin')
+jest.dontMock('../../src/js/components/moreOptionsPanel')
+    .dontMock('../../src/js/components/utils')
+    .dontMock('../../src/js/components/icon')
+    .dontMock('../../src/js/constants/constants')
+    .dontMock('../../src/js/mixins/animateMixin')
     .dontMock('classnames');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-var CONSTANTS = require('../../js/constants/constants');
-var MoreOptionsPanel = require('../../js/components/moreOptionsPanel');
+var CONSTANTS = require('../../src/js/constants/constants');
+var MoreOptionsPanel = require('../../src/js/components/moreOptionsPanel');
 var skinConfig = require('../../config/skin.json');
-var Utils = require('../../js/components/utils');
+var Utils = require('../../src/js/components/utils');
 
 // start unit test
 describe('MoreOptionsPanel', function () {

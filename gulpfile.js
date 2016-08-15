@@ -24,9 +24,9 @@ var gulp        = require('gulp'),
     gracefulFs.gracefulify(realFs);
 
 var path = {
-  scripts: ['./js/**/*.js'],
-  sass: ['./scss/**/*.scss'],
-  pages: ['./iframe.html']
+  scripts: ['./src/js/**/*.js'],
+  sass: ['./src/scss/**/*.scss'],
+  pages: ['./src/**/*.html']
 };
 
 var devServer = {
@@ -40,7 +40,7 @@ var devServer = {
 //Build JS
 function buildJS(file, hash, watch, ugly, sourcemap, debug, externalReact) {
   var props ={
-    entries: ['./js/controller.js'],
+    entries: ['./src/js/controller.js'],
     debug: debug,
     transform:    [[reactify, {}]],
     cache: {},
@@ -172,13 +172,13 @@ gulp.task("docs", shell.task("./node_modules/.bin/jsdoc -c ./jsdoc_conf.json"));
 
 // Assets
 gulp.task('assets', function () {
-  gulp.src(['assets/**/*'])
+  gulp.src(['src/assets/**/*'])
     .pipe(gulp.dest('./build/assets'));
 });
 
 // HTML pages
 gulp.task('pages', function () {
-  gulp.src(['iframe.html', 'amp_iframe.html'])
+  gulp.src(['src/iframe.html', 'src/amp_iframe.html'])
     .pipe(gulp.dest('./build'));
 });
 

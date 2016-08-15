@@ -1,13 +1,13 @@
-jest.dontMock('../../js/components/adOverlay');
-jest.dontMock('../../js/constants/constants');
-jest.dontMock('../../js/components/closeButton');
+jest.dontMock('../../src/js/components/adOverlay');
+jest.dontMock('../../src/js/constants/constants');
+jest.dontMock('../../src/js/components/closeButton');
 jest.dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
-var AdOverlay = require('../../js/components/adOverlay');
-var CONSTANTS = require('../../js/constants/constants');
+var AdOverlay = require('../../src/js/components/adOverlay');
+var CONSTANTS = require('../../src/js/constants/constants');
 
 describe('AdOverlay', function () {
   it('creates an AdOverlay', function () {

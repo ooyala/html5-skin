@@ -1,12 +1,12 @@
-jest.dontMock('../../js/views/contentScreen');
-jest.dontMock('../../js/components/closeButton');
-jest.dontMock('../../js/mixins/accessibilityMixin');
-jest.dontMock('../../js/constants/constants');
+jest.dontMock('../../src/js/views/contentScreen');
+jest.dontMock('../../src/js/components/closeButton');
+jest.dontMock('../../src/js/mixins/accessibilityMixin');
+jest.dontMock('../../src/js/constants/constants');
 jest.dontMock('classnames');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-var ContentScreen = require('../../js/views/contentScreen');
+var ContentScreen = require('../../src/js/views/contentScreen');
 
 describe('ContentScreen', function () {
   it('test content screen', function () {

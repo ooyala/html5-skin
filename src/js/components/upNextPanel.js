@@ -12,7 +12,7 @@ var React = require('react'),
     Utils = require('./utils'),
     CloseButton = require('./closeButton'),
     CountDownClock = require('./countDownClock'),
-    Icon = require('../components/icon');
+    Icon = require('./icon');
 
 var UpNextPanel = React.createClass({
   closeUpNextPanel: function() {
