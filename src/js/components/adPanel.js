@@ -12,7 +12,7 @@ var React = require('react'),
   Spinner = require('./spinner'),
   ClassNames = require('classnames'),
   Utils = require('./utils'),
-  Icon = require('../components/icon');
+  Icon = require('./icon');
 
 var AdPanelTopBarItem = React.createClass({
   render: function() {
