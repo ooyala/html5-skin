@@ -430,7 +430,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       this.state.upNextInfo.timeToShow = timeToShow;
 
-      if (duration !==0 &&
+      if ((this.state.mainVideoPlayhead != 0 && currentPlayhead != 0) && duration !==0 &&
         duration - currentPlayhead <= timeToShow &&
         !this.state.upNextInfo.countDownCancelled &&
         this.state.isPlayingAd !== true &&

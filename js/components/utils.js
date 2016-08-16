@@ -330,11 +330,14 @@ var Utils = {
           break;
         }
       }
-    }
-    else {
+    } else {
       selectedTimeSlice = timeSlices[timeSlices.length - 1];
       for (var i = position; i < timeSlices.length; i++) {
-        if (timeSlices[i] > hoverTime) {
+        if (timeSlices[i] == hoverTime) {
+          selectedTimeSlice = timeSlices[i];
+          selectedPosition = i;
+          break;
+        } else if (timeSlices[i] > hoverTime) {
           selectedTimeSlice = timeSlices[i - 1];
           selectedPosition = i - 1;
           break;

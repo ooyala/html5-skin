@@ -26,14 +26,40 @@ var ThumbnailCarousel = React.createClass({
     thumbnailStylePadding = parseFloat(thumbnailStylePadding); // convert css px to number
     var thumbnailPadding = !isNaN(thumbnailStylePadding) ? thumbnailStylePadding : this.state.thumbnailPadding;
 
-    if (thumbnail && carousel && thumbnail.clientWidth && carousel.clientWidth) {
-      this.setState({
-        thumbnailWidth: thumbnail.clientWidth,
-        thumbnailHeight: thumbnail.clientHeight,
-        centerThumbnailWidth: carousel.clientWidth,
-        centerThumbnailHeight: carousel.clientHeight,
-        thumbnailPadding: thumbnailPadding
-      });
+    if (thumbnail && carousel) {
+      if (thumbnail.clientWidth && carousel.clientWidth) {
+        this.setState({
+          thumbnailWidth: thumbnail.clientWidth,
+          thumbnailHeight: thumbnail.clientHeight,
+          centerThumbnailWidth: carousel.clientWidth,
+          centerThumbnailHeight: carousel.clientHeight,
+          thumbnailPadding: thumbnailPadding
+        });
+      } else {
+        var thumbnailStyleWidth = thumbnail ? window.getComputedStyle(thumbnail, null).getPropertyValue("width") : 0;
+        thumbnailStyleWidth = parseFloat(thumbnailStyleWidth); // convert css px to number
+        var thumbnailWidth = !isNaN(thumbnailStyleWidth) ? thumbnailStyleWidth : parseInt(this.props.thumbnailWidth);
+
+        var thumbnailStyleHeight = thumbnail ? window.getComputedStyle(thumbnail, null).getPropertyValue("height") : 0;
+        thumbnailStyleHeight = parseFloat(thumbnailStyleHeight); // convert css px to number
+        var thumbnailHeight = !isNaN(thumbnailStyleHeight) ? thumbnailStyleHeight : parseInt(this.props.thumbnailHeight);
+
+        var carouselStyleWidth = carousel ? window.getComputedStyle(carousel, null).getPropertyValue("width") : 0;
+        carouselStyleWidth = parseFloat(carouselStyleWidth); // convert css px to number
+        var carouselWidth = !isNaN(carouselStyleWidth) ? carouselStyleWidth : parseInt(this.props.carouselWidth);
+
+        var carouselStyleHeight = carousel ? window.getComputedStyle(carousel, null).getPropertyValue("height") : 0;
+        carouselStyleHeight = parseFloat(carouselStyleHeight); // convert css px to number
+        var carouselHeight = !isNaN(carouselStyleHeight) ? carouselStyleHeight : parseInt(this.props.carouselHeight);
+
+        this.setState({
+          thumbnailWidth: thumbnailWidth,
+          thumbnailHeight: thumbnailHeight,
+          centerThumbnailWidth: carouselWidth,
+          centerThumbnailHeight: carouselHeight,
+          thumbnailPadding: thumbnailPadding
+        });
+      }
     }
   },
 
