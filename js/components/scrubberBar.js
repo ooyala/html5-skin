@@ -13,6 +13,7 @@ var ScrubberBar = React.createClass({
 
   getInitialState: function() {
     this.lastScrubX = null;
+    this.isMobile = this.props.controller.state.isMobile;
     this.touchInitiated = false;
 
     return {
@@ -36,7 +37,7 @@ var ScrubberBar = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if (this.transitionedDuringSeek && !nextProps.seeking) {
+    if (this.state.transitionedDuringSeek && !nextProps.seeking) {
       this.setState({transitionedDuringSeek: false});
     }
   },

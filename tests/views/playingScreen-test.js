@@ -1,6 +1,8 @@
-jest.dontMock('../../js/views/playingScreen');
+jest.dontMock('../../js/views/playingScreen')
+    .dontMock('../../js/mixins/resizeMixin');
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 var PlayingScreen = require('../../js/views/playingScreen');
 
@@ -80,7 +82,6 @@ describe('PlayingScreen', function () {
       togglePlayPause: function(){clicked = true},
       showControlBar: function() {over = true},
       hideControlBar: function() {out = true}
-
     };
 
     var closedCaptionOptions = {
@@ -103,5 +104,47 @@ describe('PlayingScreen', function () {
 
     TestUtils.Simulate.mouseOver(screen);
     expect(over).toBe(true);
+  });
+
+  it('tests playing screen componentWill*', function () {
+    var mockController = {
+      state: {
+        isMobile: false,
+        accessibilityControlsEnabled: false,
+        upNextInfo: {
+          showing: false
+        }
+      },
+      startHideControlBarTimer: function() {moved = true},
+      togglePlayPause: function(){clicked = true},
+      showControlBar: function() {over = true},
+      hideControlBar: function() {out = true},
+      cancelTimer:function() {}
+    };
+
+    var closedCaptionOptions = {
+      cueText: "cue text"
+    };
+
+    var node = document.createElement('div');
+    var playScreen = ReactDOM.render(
+      <PlayingScreen
+        controller = {mockController}
+        fullscreen = {true}
+        controlBarAutoHide={true}
+        componentWidth={400}
+        closedCaptionOptions={closedCaptionOptions} />, node
+    );
+
+    ReactDOM.render(
+      <PlayingScreen
+        controller = {mockController}
+        fullscreen = {true}
+        controlBarAutoHide={true}
+        componentWidth={800}
+        closedCaptionOptions={closedCaptionOptions} />, node
+    );
+
+    ReactDOM.unmountComponentAtNode(node);
   });
 });

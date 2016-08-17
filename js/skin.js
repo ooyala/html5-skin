@@ -269,4 +269,35 @@ var Skin = React.createClass({
     );
   }
 });
+
+Skin.defaultProps = {
+  skinConfig: {
+    general: {
+      loadingImage: {
+        imageResource: {
+          url: null
+        }
+      }
+    },
+    responsive: {
+      breakpoints: {
+        md: {
+          multiplier: 1
+        }
+      }
+    },
+    controlBar: {
+      height: 90
+    }
+  },
+  controller: {
+    state: {
+      adVideoDuration: 0,
+      errorCode: 404
+    },
+    publishOverlayRenderingEvent: function() {}
+  }
+
+};
+
 module.exports = Skin;
