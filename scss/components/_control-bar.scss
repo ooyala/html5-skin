@@ -13,7 +13,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  z-index: 12500;
+  z-index: $zindex-control-bar;
 
   .oo-control-bar-items-wrapper {
     display: -webkit-flex;
