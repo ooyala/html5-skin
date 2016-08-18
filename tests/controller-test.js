@@ -189,6 +189,7 @@ OO = {
       pausedCallback: function() {},
       renderSkin: function() {window.isSkinRendered = true;},
       cancelTimer: function() {window.isTimerCanceled = true;},
+      startHideControlBarTimer: function() {},
       hideControlBar: function() {window.isControlBarHidden = true;},
       hideVolumeSliderBar: function() {window.isVolumeSliderBarHidden = true;},
       updateAspectRatio: function() {},
