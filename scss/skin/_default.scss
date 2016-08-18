@@ -25,6 +25,10 @@
     @extend .oo-expand;
   }
 
+  & > div > figure > object {
+    object-fit: fill !important; // fix bit_wrapper letterbox issue on Firefox
+  }
+
   // fullscreen styles
   &:-moz-full-screen {
     position: absolute;
@@ -66,6 +70,7 @@
 //html5 video
 video {
   @extend .oo-expand;
+  object-fit: fill !important; // fix bit_wrapper letterbox issue on Firefox
 }
 
 video.oo-blur {
