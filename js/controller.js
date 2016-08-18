@@ -459,6 +459,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onInitialPlay: function() {
       this.state.isInitialPlay = true;
+      this.startHideControlBarTimer();
     },
 
     onPlaying: function(event, source) {
