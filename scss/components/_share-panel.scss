@@ -32,7 +32,10 @@
   color: $white;
   text-align: center;
   width: 90%;
-  margin-top: 10px;
+  max-height: 80%;
+  height: inherit;
+  margin-top: auto;
+  margin-bottom: auto;
 
   a {
     color: inherit;
