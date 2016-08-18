@@ -144,6 +144,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.THUMBNAILS_FETCHED, 'customerUi', _.bind(this.onThumbnailsFetched, this));//xenia: to be replaced by a more appropriate event
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
+      this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
@@ -377,6 +378,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       this.renderSkin({"contentTree": contentTree});
+    },
+
+    onAssetUpdated: function (event, asset) {
+      this.resetUpNextInfo(true);
+
+      this.state.isLiveStream = asset.content.streams[0].is_live_stream;
+
+      this.state.contentTree.title = asset.content.title;
+      this.state.contentTree.description = asset.content.description;
+      this.state.contentTree.duration = asset.content.duration;
+      this.state.contentTree.promo_image = asset.content.posterImages[0].url;
+
+      this.renderSkin({"contentTree": this.state.contentTree});
     },
 
     onVolumeChanged: function (event, newVolume){
@@ -955,6 +969,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
     },
