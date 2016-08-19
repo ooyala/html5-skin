@@ -256,7 +256,7 @@ var ControlBar = React.createClass({
       });
 
     var videoQualityPopover = this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? <Popover><VideoQualityPanel{...this.props} togglePopoverAction={this.toggleQualityPopover} popover={true}/></Popover> : null;
-    var closedCaptionPopover = this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover ? <Popover><ClosedCaptionPopover {...this.props} togglePopoverAction={this.toggleCaptionPopover} /></Popover> : null;
+    var closedCaptionPopover = this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover ? <Popover popoverClassName="oo-popover oo-popover-pull-right"><ClosedCaptionPopover {...this.props} togglePopoverAction={this.toggleCaptionPopover}/></Popover> : null;
 
     var qualityClass = ClassNames({
       "oo-quality": true,

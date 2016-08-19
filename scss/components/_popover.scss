@@ -7,6 +7,12 @@
   border-radius: 4px;
   @include horizontal-center;
 
+  &.oo-popover-pull-right {
+    left: auto;
+    right: 0;
+    @include vendor-prefixes(transform, none);
+  }
+
   ul.oo-popover-horizontal {
     display: inline-block;
     padding:0;
