@@ -17,16 +17,12 @@
   @include set-aspect-ratio(16, 9);
   @include vendor-prefixes(transition, padding-top 0.5s ease);
 
-  //other video objects
+  // other video objects
   & > div,
   & > embed,
   & > figure,
   & > object {
     @extend .oo-expand;
-  }
-
-  & > div > figure > object {
-    object-fit: fill !important; // fix bit_wrapper letterbox issue on Firefox
   }
 
   // fullscreen styles
@@ -67,10 +63,17 @@
   z-index: $zindex-player-skin;
 }
 
-//html5 video
+// html5 video
 video {
   @extend .oo-expand;
-  object-fit: fill !important; // fix bit_wrapper letterbox issue on Firefox
+}
+
+// fix bit_wrapper letterbox issue on Firefox
+@include apply-to-firefox-only ('video') {
+  object-fit: fill !important;
+}
+@include apply-to-firefox-only ('.oo-player > div > figure > object') {
+  object-fit: fill !important;
 }
 
 video.oo-blur {
