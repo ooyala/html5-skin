@@ -415,7 +415,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
 
       // lower skin z-index if Chrome auto-pauses flash content
-      if(!this.state.autoPauseDisabled && Utils.isChrome && this.state.mainVideoMediaType != CONSTANTS.MEDIA_TYPE.HTML5) {
+      if(!this.state.autoPauseDisabled && Utils.isChrome() && this.state.mainVideoMediaType != CONSTANTS.MEDIA_TYPE.HTML5) {
         var skinElement = $("#"+this.state.elementId+" .oo-player-skin");
         if(currentPlayhead == 0 && this.state.playerState == CONSTANTS.STATE.PLAYING) {
           skinElement.addClass('oo-z-index-auto');
