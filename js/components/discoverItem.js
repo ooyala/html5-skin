@@ -19,6 +19,10 @@ var DiscoverItem = React.createClass({
     }.bind(this);
   },
 
+  createMarkup: function() {
+    return {__html: this.props.contentTitle};
+  },
+
   render: function() {
     // handle img error, return null
     if (this.state.imgError) {
@@ -37,7 +41,7 @@ var DiscoverItem = React.createClass({
           </a>
           {this.props.children}
         </div>
-        <div className={this.props.contentTitleClassName}>{this.props.contentTitle}</div>
+        <div className={this.props.contentTitleClassName} dangerouslySetInnerHTML={this.createMarkup()}></div>
       </div>
     );
   }
