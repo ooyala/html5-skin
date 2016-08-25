@@ -181,6 +181,7 @@ OO = {
       sendDiscoveryDisplayEvent: function(a) {},
       togglePlayPause: function() {},
       closeScreen: function(a) {},
+      closePopovers: function() {},
       setVolume: function(a) {},
       toggleVideoQualityPopOver: function(a) {},
       setClosedCaptionsLanguage: function() {},
