@@ -22,9 +22,7 @@ var ControlBar = React.createClass({
     this.moreOptionsItems = null;
 
     return {
-      currentVolumeHead: 0,
-      showVideoQualityPopover: false,
-      showClosedCaptionPopover: false
+      currentVolumeHead: 0
     };
   },
 
@@ -37,12 +35,6 @@ var ControlBar = React.createClass({
     if (nextProps.responsiveView != this.props.responsiveView) {
       this.responsiveUIMultiple = this.getResponsiveUIMultiple(nextProps.responsiveView);
     }
-
-    // update popover state from controller
-    this.setState({
-      showVideoQualityPopover: nextProps.controller.state.videoQualityOptions.showVideoQualityPopover,
-      showClosedCaptionPopover: nextProps.controller.state.closedCaptionOptions.showClosedCaptionPopover
-    });
   },
 
   componentWillUnmount: function () {
@@ -125,7 +117,7 @@ var ControlBar = React.createClass({
   },
 
   closeQualityPopover: function() {
-    if(this.state.showVideoQualityPopover == true) {
+    if(this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true) {
       this.toggleQualityPopover();
     }
   },
@@ -135,7 +127,7 @@ var ControlBar = React.createClass({
   },
 
   closeCaptionPopover: function() {
-    if(this.state.showClosedCaptionPopover == true) {
+    if(this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover == true) {
       this.toggleCaptionPopover();
     }
   },
