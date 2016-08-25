@@ -49,7 +49,7 @@ var SharePanel = React.createClass({
 
       return (
         <div className="oo-share-tab-panel">
-          <textarea className="oo-form-control"
+          <textarea className="oo-form-control oo-embed-form"
                     rows="3"
                     value={iframeURL}
                     readOnly />
