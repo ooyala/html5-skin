@@ -28,18 +28,30 @@ var ControlBar = React.createClass({
     };
   },
 
+  componentDidMount: function() {
+    window.addEventListener('orientationchange', this.closePopovers);
+  },
+
   componentWillReceiveProps: function(nextProps) {
     // if responsive breakpoint changes
     if (nextProps.responsiveView != this.props.responsiveView) {
       this.responsiveUIMultiple = this.getResponsiveUIMultiple(nextProps.responsiveView);
     }
+
+    // update popover state from controller
+    this.setState({
+      showVideoQualityPopover: nextProps.controller.state.videoQualityOptions.showVideoQualityPopover,
+      showClosedCaptionPopover: nextProps.controller.state.closedCaptionOptions.showClosedCaptionPopover
+    });
   },
 
   componentWillUnmount: function () {
     this.props.controller.cancelTimer();
+    this.closePopovers();
     if (Utils.isAndroid()){
       this.props.controller.hideVolumeSliderBar();
     }
+    window.removeEventListener('orientationchange', this.closePopovers);
   },
 
   getResponsiveUIMultiple: function(responsiveView){
@@ -104,24 +116,33 @@ var ControlBar = React.createClass({
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
     } else {
       this.toggleQualityPopover();
-      if(this.state.showClosedCaptionPopover == true) {
-        this.toggleCaptionPopover();
-      }
+      this.closeCaptionPopover();
     }
   },
 
   toggleQualityPopover: function() {
     this.props.controller.toggleVideoQualityPopOver();
-    this.setState({
-      showVideoQualityPopover: this.props.controller.state.videoQualityOptions.showVideoQualityPopover
-    });
+  },
+
+  closeQualityPopover: function() {
+    if(this.state.showVideoQualityPopover == true) {
+      this.toggleQualityPopover();
+    }
   },
 
   toggleCaptionPopover: function() {
     this.props.controller.toggleClosedCaptionPopOver();
-    this.setState({
-      showClosedCaptionPopover: this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover
-    });
+  },
+
+  closeCaptionPopover: function() {
+    if(this.state.showClosedCaptionPopover == true) {
+      this.toggleCaptionPopover();
+    }
+  },
+
+  closePopovers: function() {
+    this.closeCaptionPopover();
+    this.closeQualityPopover();
   },
 
   handleVolumeClick: function(evt) {
@@ -143,9 +164,7 @@ var ControlBar = React.createClass({
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
     } else {
       this.toggleCaptionPopover();
-      if(this.state.showVideoQualityPopover == true) {
-        this.toggleQualityPopover();
-      }
+      this.closeQualityPopover();
     }
   },
 

@@ -670,7 +670,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onAdPodStarted: function(event, numberOfAds) {
-      OO.log("onAdPodStarted is called from event = " + event + "with " + numberOfAds + "ads");
+      OO.log("onAdPodStarted is called from event = " + event + " with " + numberOfAds + " ads");
       this.state.currentAdsInfo.numberOfAds = numberOfAds;
       this.renderSkin();
     },
@@ -1229,6 +1229,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    closePopovers: function() {
+      this.state.closedCaptionOptions.showClosedCaptionPopover = false;
+      this.state.videoQualityOptions.showVideoQualityPopover = false;
+      this.renderSkin();
+    },
+
     receiveVideoQualityChangeEvent: function(event, targetBitrate) {
         this.state.videoQualityOptions.selectedBitrate = {
         "id": targetBitrate
@@ -1377,6 +1383,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     hideControlBar: function() {
       this.state.controlBarVisible = false;
+      this.closePopovers();
       if (Utils.isAndroid()) {
         this.hideVolumeSliderBar();
       }
