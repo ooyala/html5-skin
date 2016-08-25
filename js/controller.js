@@ -670,7 +670,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onAdPodStarted: function(event, numberOfAds) {
-      OO.log("onAdPodStarted is called from event = " + event + "with " + numberOfAds + "ads");
+      OO.log("onAdPodStarted is called from event = " + event + " with " + numberOfAds + " ads");
       this.state.currentAdsInfo.numberOfAds = numberOfAds;
       this.renderSkin();
     },
