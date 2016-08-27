@@ -15,11 +15,15 @@ var AnimateMixin = {
     };
   },
 
-  componentDidMount: function () {
-    setTimeout(this.startAnimation, 1);
+  componentDidMount: function() {
+    animateTimer = setTimeout(this.startAnimation, 1);
   },
 
-  startAnimation: function () {
+  componentWillUnmount: function() {
+    clearTimeout(animateTimer);
+  },
+
+  startAnimation: function() {
     this.setState({
       animate: true
     });

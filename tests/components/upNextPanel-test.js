@@ -3,7 +3,7 @@ jest.dontMock('../../js/components/closeButton');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-UpNextPanel = require('../../js/components/upNextPanel');
+var UpNextPanel = require('../../js/components/upNextPanel');
 
 describe('UpNextPanel', function () {
   it('tests up next panel', function () {

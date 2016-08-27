@@ -120,6 +120,16 @@ var Utils = {
   },
 
   /**
+   * Check if the current browser is Chrome
+   *
+   * @function isChrome
+   * @returns {Boolean} Whether the browser is Chrome or not
+   */
+  isChrome: function () {
+    return (!!window.navigator.userAgent.match(/Chrome/) && !!window.navigator.vendor.match(/Google Inc/));
+  },
+
+  /**
   * Check if the current browser is Edge
   *
   * @function isEdge
@@ -319,7 +329,7 @@ var Utils = {
     position = Math.max(position, 0);
 
     var selectedTimeSlice = null;
-    var selectedPosition = 0;
+    var selectedPosition = position;
 
     if (timeSlices[position] >= hoverTime) {
       selectedTimeSlice = timeSlices[0];
@@ -330,11 +340,14 @@ var Utils = {
           break;
         }
       }
-    }
-    else {
+    } else {
       selectedTimeSlice = timeSlices[timeSlices.length - 1];
       for (var i = position; i < timeSlices.length; i++) {
-        if (timeSlices[i] > hoverTime) {
+        if (timeSlices[i] == hoverTime) {
+          selectedTimeSlice = timeSlices[i];
+          selectedPosition = i;
+          break;
+        } else if (timeSlices[i] > hoverTime) {
           selectedTimeSlice = timeSlices[i - 1];
           selectedPosition = i - 1;
           break;
@@ -344,16 +357,6 @@ var Utils = {
 
     var selectedThumbnail = thumbnails.data.thumbnails[selectedTimeSlice][width].url;
     return { url: selectedThumbnail, pos: selectedPosition };
-  },
-
-  reformatAspectRatio: function (aspectRatio) {
-    var aspectRatioArray = aspectRatio.split(':');
-    var vidWidth = aspectRatioArray[0];
-    var vidHeight = aspectRatioArray[1];
-    var dimensions = {};
-    dimensions["width"] = vidWidth;
-    dimensions["height"] = vidHeight;
-    return dimensions;
   },
 
   /**
@@ -416,10 +419,7 @@ var Utils = {
       }
     }
     return usedWidth;
-  },
-
-  _isOverflow: function( item ) {
-    return item.whenDoesNotFit && item.whenDoesNotFit == "moveToMoreOptions";
   }
 };
+
 module.exports = Utils;

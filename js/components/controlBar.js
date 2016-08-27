@@ -22,10 +22,12 @@ var ControlBar = React.createClass({
     this.moreOptionsItems = null;
 
     return {
-      currentVolumeHead: 0,
-      showVideoQualityPopover: false,
-      showClosedCaptionPopover: false
+      currentVolumeHead: 0
     };
+  },
+
+  componentDidMount: function() {
+    window.addEventListener('orientationchange', this.closePopovers);
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -37,9 +39,11 @@ var ControlBar = React.createClass({
 
   componentWillUnmount: function () {
     this.props.controller.cancelTimer();
+    this.closePopovers();
     if (Utils.isAndroid()){
       this.props.controller.hideVolumeSliderBar();
     }
+    window.removeEventListener('orientationchange', this.closePopovers);
   },
 
   getResponsiveUIMultiple: function(responsiveView){
@@ -70,6 +74,7 @@ var ControlBar = React.createClass({
     evt.stopPropagation();
     evt.cancelBubble = true;
     evt.preventDefault();
+    this.props.controller.onLiveClick();
     this.props.controller.seek(this.props.duration);
   },
 
@@ -103,24 +108,33 @@ var ControlBar = React.createClass({
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
     } else {
       this.toggleQualityPopover();
-      if(this.state.showClosedCaptionPopover == true) {
-        this.toggleCaptionPopover();
-      }
+      this.closeCaptionPopover();
     }
   },
 
   toggleQualityPopover: function() {
     this.props.controller.toggleVideoQualityPopOver();
-    this.setState({
-      showVideoQualityPopover: this.props.controller.state.videoQualityOptions.showVideoQualityPopover
-    });
+  },
+
+  closeQualityPopover: function() {
+    if(this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true) {
+      this.toggleQualityPopover();
+    }
   },
 
   toggleCaptionPopover: function() {
     this.props.controller.toggleClosedCaptionPopOver();
-    this.setState({
-      showClosedCaptionPopover: this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover
-    });
+  },
+
+  closeCaptionPopover: function() {
+    if(this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover == true) {
+      this.toggleCaptionPopover();
+    }
+  },
+
+  closePopovers: function() {
+    this.closeCaptionPopover();
+    this.closeQualityPopover();
   },
 
   handleVolumeClick: function(evt) {
@@ -142,9 +156,7 @@ var ControlBar = React.createClass({
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
     } else {
       this.toggleCaptionPopover();
-      if(this.state.showVideoQualityPopover == true) {
-        this.toggleQualityPopover();
-      }
+      this.closeQualityPopover();
     }
   },
 
@@ -255,7 +267,7 @@ var ControlBar = React.createClass({
       });
 
     var videoQualityPopover = this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? <Popover><VideoQualityPanel{...this.props} togglePopoverAction={this.toggleQualityPopover} popover={true}/></Popover> : null;
-    var closedCaptionPopover = this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover ? <Popover><ClosedCaptionPopover {...this.props} togglePopoverAction={this.toggleCaptionPopover} /></Popover> : null;
+    var closedCaptionPopover = this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover ? <Popover popoverClassName="oo-popover oo-popover-pull-right"><ClosedCaptionPopover {...this.props} togglePopoverAction={this.toggleCaptionPopover}/></Popover> : null;
 
     var qualityClass = ClassNames({
       "oo-quality": true,

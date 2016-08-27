@@ -18,7 +18,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.5.5", "rev": "<SKIN_REV>"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "<SKIN_VERSION>", "rev": "<SKIN_REV>"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -59,6 +59,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoContainer": null,
       "mainVideoInnerWrapper": null,
       "mainVideoElement": null,
+      "mainVideoMediaType": null,
       "mainVideoAspectRatio": 0,
       "pluginsElement": null,
       "pluginsClickElement": null,
@@ -125,7 +126,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isInitialPlay": false,
       "isFullScreenSupported": false,
       "isVideoFullScreenSupported": false,
-      "isFullWindow": false
+      "isFullWindow": false,
+      "autoPauseDisabled": false
     };
 
     this.init();
@@ -142,6 +144,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.THUMBNAILS_FETCHED, 'customerUi', _.bind(this.onThumbnailsFetched, this));//xenia: to be replaced by a more appropriate event
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
+      this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
@@ -284,19 +287,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         });
       }, this));
 
-      this.state.isMobile = Utils.isMobile();
-
       this.externalPluginSubscription();
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
     },
 
-    onVcVideoElementCreated: function(eventname, params) {
+    onVcVideoElementCreated: function(event, params) {
       var element = $("#" + params["domId"]);
       var elementVideo = element.find("video");
 
       //if video element is descendant
       if (elementVideo.length) {
         element = elementVideo;
+        this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
       }
 
       //add loadedmetadata event listener to main video element
@@ -324,7 +326,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var elementId = this.state.elementId;
       var mountNode = document.querySelector('#' + elementId + ' .oo-player-skin');
       // remove mounted Skin component
-      ReactDOM.unmountComponentAtNode(mountNode);
+      if (mountNode) {
+        ReactDOM.unmountComponentAtNode(mountNode);
+      }
       this.mb = null;
     },
 
@@ -376,6 +380,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin({"contentTree": contentTree});
     },
 
+    onAssetUpdated: function (event, asset) {
+      this.resetUpNextInfo(true);
+
+      this.state.isLiveStream = asset.content.streams[0].is_live_stream;
+
+      this.state.contentTree.title = asset.content.title;
+      this.state.contentTree.description = asset.content.description;
+      this.state.contentTree.duration = asset.content.duration;
+      this.state.contentTree.promo_image = asset.content.posterImages[0].url;
+
+      this.renderSkin({"contentTree": this.state.contentTree});
+    },
+
     onVolumeChanged: function (event, newVolume){
       this.state.volumeState.volume = newVolume;
     },
@@ -396,6 +413,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         //adVideoDuration is only used in adPanel ad marquee
         this.state.adVideoDuration = duration;
       }
+
+      // lower skin z-index if Chrome auto-pauses flash content
+      if(!this.state.autoPauseDisabled && Utils.isChrome() && this.state.mainVideoMediaType != CONSTANTS.MEDIA_TYPE.HTML5) {
+        var skinElement = $("#"+this.state.elementId+" .oo-player-skin");
+        if(currentPlayhead == 0 && this.state.playerState == CONSTANTS.STATE.PLAYING) {
+          skinElement.addClass('oo-z-index-auto');
+        } else {
+          skinElement.removeClass('oo-z-index-auto');
+          this.state.autoPauseDisabled = true;
+        }
+      }
+
       // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
       // So we only need to update the playhead for ad screen.
       this.state.duration = duration;
@@ -430,7 +459,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       this.state.upNextInfo.timeToShow = timeToShow;
 
-      if (duration !==0 &&
+      if ((this.state.mainVideoPlayhead != 0 && currentPlayhead != 0) && duration !==0 &&
         duration - currentPlayhead <= timeToShow &&
         !this.state.upNextInfo.countDownCancelled &&
         this.state.isPlayingAd !== true &&
@@ -444,6 +473,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onInitialPlay: function() {
       this.state.isInitialPlay = true;
+      this.startHideControlBarTimer();
     },
 
     onPlaying: function(event, source) {
@@ -481,7 +511,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onPaused: function(eventname, videoId) {
+    onPaused: function(event, videoId) {
       if (videoId != this.focusedElement || this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN) { return; }
       if (videoId == OO.VIDEO.MAIN && this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
         if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
@@ -640,7 +670,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onAdPodStarted: function(event, numberOfAds) {
-      OO.log("onAdPodStarted is called from event = " + event + "with " + numberOfAds + "ads");
+      OO.log("onAdPodStarted is called from event = " + event + " with " + numberOfAds + " ads");
       this.state.currentAdsInfo.numberOfAds = numberOfAds;
       this.renderSkin();
     },
@@ -939,6 +969,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
     },
@@ -1078,6 +1109,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    onLiveClick: function() {
+      this.mb.publish(OO.EVENTS.LIVE_BUTTON_CLICKED);
+    },
+
     setVolume: function(volume){
       if(volume == 0) {
         this.state.volumeState.muted = true;
@@ -1194,7 +1229,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    receiveVideoQualityChangeEvent: function(eventName, targetBitrate) {
+    closePopovers: function() {
+      this.state.closedCaptionOptions.showClosedCaptionPopover = false;
+      this.state.videoQualityOptions.showVideoQualityPopover = false;
+      this.renderSkin();
+    },
+
+    receiveVideoQualityChangeEvent: function(event, targetBitrate) {
         this.state.videoQualityOptions.selectedBitrate = {
         "id": targetBitrate
       };
@@ -1218,6 +1259,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     setClosedCaptionsLanguage: function(){
+      var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
+      //if saved language not in available languages, set to first available language
+      if (availableLanguages && (this.state.closedCaptionOptions.language == null || !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))) {
+        this.state.closedCaptionOptions.language = availableLanguages.languages[0];
+      }
       var language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : "";
       var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
@@ -1370,6 +1416,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     }
   };
+
+  exposeStaticApi = Html5Skin; //for unit test only
 
   return Html5Skin;
 });
