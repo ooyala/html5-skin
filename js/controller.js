@@ -393,8 +393,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
-    onVolumeChanged: function (event, newVolume){
-      this.state.volumeState.volume = newVolume;
+    onVolumeChanged: function (event, newVolume) {
+      if (newVolume <= 0) {
+        this.state.volumeState.muted = true;
+        this.state.volumeState.volume = 0;
+      } else {
+        this.state.volumeState.muted = false;
+        this.state.volumeState.volume = newVolume;
+      }
+      this.renderSkin();
     },
 
     resetUpNextInfo: function (purge) {
@@ -1114,15 +1121,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     setVolume: function(volume){
-      if(volume == 0) {
-        this.state.volumeState.muted = true;
-      }
-      else {
-        this.state.volumeState.muted = false;
-      }
-      this.state.volumeState.volume = volume;
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
-      this.renderSkin();
     },
 
     handleMuteClick: function() {
