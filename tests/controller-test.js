@@ -155,6 +155,9 @@ OO = {
             pauseScreen: {},
             endScreen: {
               screenToShowOnEnd: 'discovery'
+            },
+            discoveryScreen: {
+              showCountDownTimerOnEndScreen: false
             }
           }
         },
