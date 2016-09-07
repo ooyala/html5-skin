@@ -1361,7 +1361,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     showVolumeSliderBar: function() {
       this.state.volumeState.volumeSliderVisible = true;
+      if (Utils.isAndroid()) {
+        this.startHideVolumeSliderTimer();
+      }
       this.renderSkin();
+    },
+
+    startHideVolumeSliderTimer: function() {
+        this.cancelTimer();
+        var timer = setTimeout(function() {
+          if(this.state.volumeState.volumeSliderVisible === true){
+            this.hideVolumeSliderBar();
+          }
+        }.bind(this), 3000);
+        this.state.timer = timer;
     },
 
     startHideControlBarTimer: function() {
