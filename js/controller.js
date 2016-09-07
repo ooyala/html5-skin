@@ -393,8 +393,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
-    onVolumeChanged: function (event, newVolume){
-      this.state.volumeState.volume = newVolume;
+    onVolumeChanged: function (event, newVolume) {
+      if (newVolume <= 0) {
+        this.state.volumeState.muted = true;
+        this.state.volumeState.volume = 0;
+      } else {
+        this.state.volumeState.muted = false;
+        this.state.volumeState.volume = newVolume;
+      }
+      this.renderSkin();
     },
 
     resetUpNextInfo: function (purge) {
@@ -1062,6 +1069,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             this.sendDiscoveryDisplayEvent("endScreen");
             this.state.pluginsElement.addClass("oo-overlay-blur");
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
+            this.skin.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen = false;
           }
           break;
       }
@@ -1114,15 +1122,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     setVolume: function(volume){
-      if(volume == 0) {
-        this.state.volumeState.muted = true;
-      }
-      else {
-        this.state.volumeState.muted = false;
-      }
-      this.state.volumeState.volume = volume;
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
-      this.renderSkin();
     },
 
     handleMuteClick: function() {
@@ -1217,6 +1217,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "custom" : { "source" : screen}
       };
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
+      if (screen == CONSTANTS.SCREEN.END_SCREEN) {
+        this.skin.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen = true;
+      }
     },
 
     toggleVideoQualityPopOver: function() {
@@ -1362,7 +1365,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     showVolumeSliderBar: function() {
       this.state.volumeState.volumeSliderVisible = true;
+      if (Utils.isAndroid()) {
+        this.startHideVolumeSliderTimer();
+      }
       this.renderSkin();
+    },
+
+    startHideVolumeSliderTimer: function() {
+        this.cancelTimer();
+        var timer = setTimeout(function() {
+          if(this.state.volumeState.volumeSliderVisible === true){
+            this.hideVolumeSliderBar();
+          }
+        }.bind(this), 3000);
+        this.state.timer = timer;
     },
 
     startHideControlBarTimer: function() {
