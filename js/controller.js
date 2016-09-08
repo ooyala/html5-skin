@@ -337,6 +337,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.videoQualityOptions.availableBitrates = null;
       this.state.videoQualityOptions.selectedBitrate = null;
       this.state.closedCaptionOptions.availableLanguages = null;
+      this.state.closedCaptionsInfoCache = {};
       this.state.discoveryData = null;
       this.state.thumbnails = null;
       this.resetUpNextInfo(true);
@@ -363,6 +364,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onAssetChanged: function (event, asset) {
       this.state.videoQualityOptions.availableBitrates = null;
       this.state.closedCaptionOptions.availableLanguages = null;
+      this.state.closedCaptionsInfoCache = {};
       this.state.discoveryData = null;
       this.subscribeBasicPlaybackEvents();
 
