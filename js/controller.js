@@ -878,6 +878,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    enableIosCCLanguageChange: function() {
+      if (this.state.mainVideoElement.get(0).textTracks != null) {
+        for (i=0; i<this.state.mainVideoElement.get(0).textTracks.length; i++) {
+          this.state.mainVideoElement.get(0).textTracks[i].addEventListener("touchstart", this.touchOnCC.bind(this));
+        }
+      }
+    },
+
     //called when event listener triggered
     onFullscreenChanged: function() {
       if (this.state.isFullScreenSupported) {
@@ -955,6 +963,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (event.keyCode === CONSTANTS.KEYCODES.ESCAPE_KEY) {
         event.preventDefault();
         this.exitFullWindow();
+      }
+    },
+
+    // Track touch event in CC panel for updating in iOS native player.
+    touchOnCC: function(event) {
+      for(i in event)
+      {
+        console.log("#################   "+event[i]);
       }
     },
 
@@ -1269,7 +1285,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       var language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : "";
       var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
-      this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
+      this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode}, this.state.closedCaptionOptions.availableLanguages);
+      this.enableIosCCLanguageChange();
     },
 
     closeScreen: function() {
