@@ -63,6 +63,7 @@ OO = {
         queuedPlayheadUpdate: true,
         currentAdsInfo: {},
         videoQualityOptions: {},
+        closedCaptionsInfoCache: {},
         closedCaptionOptions: {
           enabled: null,
           language: null,
@@ -187,6 +188,7 @@ OO = {
       closePopovers: function() {},
       setVolume: function(a) {},
       toggleVideoQualityPopOver: function(a) {},
+      setClosedCaptionsInfo: function() {},
       setClosedCaptionsLanguage: function() {},
       displayMoreOptionsScreen: function(a) {},
       closeMoreOptionsScreen: function() {},

@@ -73,6 +73,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "skipAdButtonEnabled": false
       },
 
+      "closedCaptionsInfoCache": {},
       "closedCaptionOptions": {
         "enabled": null,
         "language": null,
@@ -781,6 +782,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onVideoElementFocus: function(event, source) {
       this.focusedElement = source;
+      // Make sure that the skin uses the captions that correspond
+      // to the newly focused video element
+      this.setClosedCaptionsInfo(source);
       if (source == OO.VIDEO.MAIN) {
         this.state.pluginsElement.removeClass("oo-showing");
         this.state.pluginsClickElement.removeClass("oo-showing");
@@ -833,11 +837,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onClosedCaptionsInfoAvailable: function(event, languages) {
-      this.state.closedCaptionOptions.availableLanguages = languages;
-      if (this.state.closedCaptionOptions.enabled){
-        this.setClosedCaptionsLanguage();
-      }
+    onClosedCaptionsInfoAvailable: function(event, info) {
+      // Store info in cache in order to be able to restore it
+      // if this video element looses and then regains focus (like when an ad plays)
+      this.state.closedCaptionsInfoCache[info.videoId] = info;
+      this.setClosedCaptionsInfo(info.videoId);
     },
 
     onClosedCaptionCueChanged: function(event, data) {
@@ -1259,6 +1263,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "id": selectedContentData.id
       };
       this.mb.publish(OO.EVENTS.SET_TARGET_BITRATE, selectedContentData.id);
+    },
+
+    setClosedCaptionsInfo: function(videoId) {
+      var closedCaptionsInfo = this.state.closedCaptionsInfoCache[videoId];
+      if (!closedCaptionsInfo) {
+        return;
+      }
+      // Load the CC info for the video with the given id onto the state
+      this.state.closedCaptionOptions.availableLanguages = closedCaptionsInfo;
+      if (this.state.closedCaptionOptions.enabled) {
+        this.setClosedCaptionsLanguage();
+      }
     },
 
     setClosedCaptionsLanguage: function(){
