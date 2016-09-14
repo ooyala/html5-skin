@@ -840,6 +840,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onClosedCaptionsInfoAvailable: function(event, info) {
+      if (!info || !info.videoId || !info.languages) {
+        return;
+      }
       // Store info in cache in order to be able to restore it
       // if this video element looses and then regains focus (like when an ad plays)
       this.state.closedCaptionsInfoCache[info.videoId] = info;
