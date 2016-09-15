@@ -15,6 +15,7 @@
   .oo-action-icon-pause.oo-animate-pause {
     z-index: $zindex-action-icon-pause-animate;
     cursor: default;
+    pointer-events: none; // Allow click to pass through
   }
 }
 
