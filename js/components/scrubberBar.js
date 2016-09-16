@@ -196,7 +196,7 @@ var ScrubberBar = React.createClass({
       backgroundColor: this.props.skinConfig.controlBar.scrubberBar.backgroundColor
     };
     var bufferedIndicatorStyle = {
-      width: (parseFloat(this.props.buffered) / parseFloat(this.props.duration)) * 100 + "%",
+      width: Math.min((parseFloat(this.props.buffered) / parseFloat(this.props.duration)) * 100, 100) + "%",
       backgroundColor: this.props.skinConfig.controlBar.scrubberBar.bufferedColor
     };
     var playedIndicatorStyle = {
