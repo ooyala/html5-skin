@@ -126,11 +126,13 @@ var PlayingScreen = React.createClass({
 
       <div className="oo-interactive-container">
 
-        <TextTrack
-          closedCaptionOptions={this.props.closedCaptionOptions}
-          cueText={this.props.closedCaptionOptions.cueText}
-          responsiveView={this.props.responsiveView}
-        />
+        {this.props.closedCaptionOptions.enabled ?
+          <TextTrack
+            closedCaptionOptions={this.props.closedCaptionOptions}
+            cueText={this.props.closedCaptionOptions.cueText}
+            responsiveView={this.props.responsiveView}
+          /> : null
+        }
 
         <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
