@@ -5,6 +5,7 @@
   box-shadow: rgba(0, 0, 0, 0.2) 0 5px 10px;
   border: 0;
   border-radius: 4px;
+  z-index: $zindex-popover;
   @include horizontal-center;
 
   &.oo-popover-pull-right {
