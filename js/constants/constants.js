@@ -217,11 +217,6 @@ module.exports = {
       title: "PLAYBACK ERROR",
       description: "Could not play the content"
     },
-    "stream":{
-      name: "OO.ERROR.PLAYBACK.STREAM",
-      title: "PLAYBACK STREAM ERROR",
-      description: "This video isn't encoded for your device"
-    },
     "livestream":{
       name: "OO.ERROR.PLAYBACK.LIVESTREAM",
       title: "PLAYBACK LIVESTREAM ERROR",
@@ -259,7 +254,7 @@ module.exports = {
     },
     "unsupported_encoding":{
       name: "OO.ERROR.VC.UNSUPPORTED_ENCODING",
-      description: "Something happened while we were trying to play your video! Click replay or simply reload your page."
+      description: "This video isn't encoded for your device"
     },
     "unable_to_create_video_element":{
       name: "OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT",
