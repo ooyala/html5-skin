@@ -10,6 +10,7 @@ var React = require('react'),
     Utils = require('./utils'),
     Popover = require('../views/popover'),
     VideoQualityPanel = require('./videoQualityPanel'),
+    MultiAudioPanel = require('./multiAudioPanel'),
     ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
     Logo = require('./logo');
     Icon = require('./icon');
@@ -103,22 +104,53 @@ var ControlBar = React.createClass({
     this.props.controller.toggleShareScreen();
   },
 
-  handleQualityClick: function() {
+  handleVideoQualityClick: function() {
     if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
     } else {
-      this.toggleQualityPopover();
+      this.toggleVideoQualityPopover();
+      this.closeCaptionPopover();
+      this.closeMultiAudioPopover();
+    }
+  },
+
+  toggleVideoQualityPopover: function() {
+    this.props.controller.toggleVideoQualityPopOver();
+  },
+
+  closeVideoQualityPopover: function() {
+    if(this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true) {
+      this.toggleVideoQualityPopover();
+    }
+  },
+
+  handleMultiAudioClick: function() {
+    if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
+      this.props.controller.toggleScreen(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
+    } else {
+      this.toggleMultiAudioPopover();
+      this.closeVideoQualityPopover();
       this.closeCaptionPopover();
     }
   },
 
-  toggleQualityPopover: function() {
-    this.props.controller.toggleVideoQualityPopOver();
+  toggleMultiAudioPopover: function() {
+    this.props.controller.toggleMultiAudioPopOver();
   },
 
-  closeQualityPopover: function() {
-    if(this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true) {
-      this.toggleQualityPopover();
+  closeMultiAudioPopover: function() {
+    if(this.props.controller.state.multiAudioOptions.showMultiAudioPopover == true) {
+      this.toggleMultiAudioPopover();
+    }
+  },
+
+  handleClosedCaptionClick: function() {
+    if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
+      this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
+    } else {
+      this.toggleCaptionPopover();
+      this.closeVideoQualityPopover();
+      this.closeMultiAudioPopover();
     }
   },
 
@@ -134,7 +166,8 @@ var ControlBar = React.createClass({
 
   closePopovers: function() {
     this.closeCaptionPopover();
-    this.closeQualityPopover();
+    this.closeVideoQualityPopover();
+    this.closeMultiAudioPopover();
   },
 
   handleVolumeClick: function(evt) {
@@ -149,15 +182,6 @@ var ControlBar = React.createClass({
 
   handleMoreOptionsClick: function() {
     this.props.controller.toggleMoreOptionsScreen(this.moreOptionsItems);
-  },
-
-  handleClosedCaptionClick: function() {
-    if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
-      this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
-    } else {
-      this.toggleCaptionPopover();
-      this.closeQualityPopover();
-    }
   },
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
@@ -266,13 +290,20 @@ var ControlBar = React.createClass({
         "oo-live-nonclickable": isLiveNow
       });
 
-    var videoQualityPopover = this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? <Popover><VideoQualityPanel{...this.props} togglePopoverAction={this.toggleQualityPopover} popover={true}/></Popover> : null;
+    var videoQualityPopover = this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? <Popover><VideoQualityPanel{...this.props} togglePopoverAction={this.toggleVideoQualityPopover} popover={true}/></Popover> : null;
     var closedCaptionPopover = this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover ? <Popover popoverClassName="oo-popover oo-popover-pull-right"><ClosedCaptionPopover {...this.props} togglePopoverAction={this.toggleCaptionPopover}/></Popover> : null;
+    var multiAudioPopover = this.props.controller.state.multiAudioOptions.showMultiAudioPopover ? <Popover><MultiAudioPanel{...this.props} togglePopoverAction={this.toggleMultiAudioPopover} popover={true}/></Popover> : null;
 
     var qualityClass = ClassNames({
       "oo-quality": true,
       "oo-control-bar-item": true,
       "oo-selected": this.props.controller.state.videoQualityOptions.showVideoQualityPopover
+    });
+
+    var audioClass = ClassNames({
+      "oo-audio": true,
+      "oo-control-bar-item": true,
+      "oo-selected": this.props.controller.state.multiAudioOptions.showMultiAudioPopover
     });
 
     var captionClass = ClassNames({
@@ -318,8 +349,18 @@ var ControlBar = React.createClass({
       "quality": (
         <div className="oo-popover-button-container" key="quality">
           {videoQualityPopover}
-          <a className={qualityClass} onClick={this.handleQualityClick}>
+          <a className={qualityClass} onClick={this.handleVideoQualityClick}>
             <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
+              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+          </a>
+        </div>
+      ),
+
+      "setting": (
+        <div className="oo-popover-button-container" key="setting">
+          {multiAudioPopover}
+          <a className={audioClass} onClick={this.handleMultiAudioClick}>
+            <Icon {...this.props} icon="setting" style={dynamicStyles.iconCharacter}
               onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
           </a>
         </div>
@@ -400,6 +441,11 @@ var ControlBar = React.createClass({
 
       //do not show quality button if no bitrates available
       if (!this.props.controller.state.videoQualityOptions.availableBitrates && (defaultItems[k].name === "quality")){
+        continue;
+      }
+
+      //do not show multi-audio button if no audio tracks available
+      if (!this.props.controller.state.multiAudioOptions.availableAudioTracks && (defaultItems[k].name === "setting")){
         continue;
       }
 

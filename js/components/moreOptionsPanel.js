@@ -31,6 +31,10 @@ var MoreOptionsPanel = React.createClass({
     this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
   },
 
+  handleMultiAudioClick: function () {
+    this.props.controller.toggleScreen(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
+  },
+
   highlight: function (evt) {
     var color = this.props.skinConfig.moreOptionsScreen.iconStyle.active.color;
     var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.active.opacity;
@@ -72,7 +76,7 @@ var MoreOptionsPanel = React.createClass({
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </a>,
 
-      "settings": <div className="oo-settings" key="settings">
+      "setting": <div className="oo-setting  oo-control-bar-item" onClick={this.handleMultiAudioClick} key="settings">
         <Icon {...this.props} icon="setting" style={buttonStyle}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </div>

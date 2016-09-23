@@ -23,6 +23,7 @@ module.exports = {
     LOADING_SCREEN: "loadingScreen",
     CLOSEDCAPTION_SCREEN: "closedCaptionScreen",
     VIDEO_QUALITY_SCREEN: "videoQualityScreen",
+    MULTI_AUDIO_SCREEN: "multiAudioScreen",
     ERROR_SCREEN: "errorScreen"
   },
 
@@ -40,6 +41,7 @@ module.exports = {
     DISCOVER: "Discover",
     UP_NEXT: "Up next",
     VIDEO_QUALITY: "Video Quality",
+    AUDIO: "Audio",
     SHARE_CALL_TO_ACTION: "Invest In Social Change",
     SHARE: "Share",
     START_AT: "Start at",

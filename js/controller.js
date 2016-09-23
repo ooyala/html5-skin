@@ -96,6 +96,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "showVideoQualityPopover":false
       },
 
+      "multiAudioOptions": {
+        "availableAudioTracks": null,
+        "selectedAudioTrack": null,
+        "showMultiAudioPopover":false
+      },
+
       "volumeState": {
         "volume": 1,
         "muted": false,
@@ -166,6 +172,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
         this.mb.subscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi", _.bind(this.onBitrateInfoAvailable, this));
+        this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_INFO_AVAILABLE, "customerUi", _.bind(this.onMultiAudioInfoAvailable, this));
+        this.mb.subscribe(OO.EVENTS.SEND_AUDIO_CHANGE, 'customerUi', _.bind(this.receiveMultiAudioChangeEvent, this));
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
@@ -335,6 +343,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onEmbedCodeChanged: function(event, embedCode, options) {
       this.state.videoQualityOptions.availableBitrates = null;
       this.state.videoQualityOptions.selectedBitrate = null;
+      this.state.multiAudioOptions.availableAudioTracks = null;
+      this.state.multiAudioOptions.selectedAudioTrack = null;
       this.state.closedCaptionOptions.availableLanguages = null;
       this.state.discoveryData = null;
       this.state.thumbnails = null;
@@ -361,6 +371,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onAssetChanged: function (event, asset) {
       this.state.videoQualityOptions.availableBitrates = null;
+      this.state.multiAudioOptions.availableAudioTracks = null;
       this.state.closedCaptionOptions.availableLanguages = null;
       this.state.discoveryData = null;
       this.subscribeBasicPlaybackEvents();
@@ -833,6 +844,22 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    onMultiAudioInfoAvailable: function(event, audioData) {
+      if (audioData && audioData.audioTracks) {
+        console.log("******* html5-skin onMultiAudioInfoAvailable: ", JSON.stringify(audioData));
+        this.state.multiAudioOptions.availableAudioTracks = audioData.audioTracks;
+        this.state.multiAudioOptions.selectedAudioTrack = audioData.currentAudioTrack;
+        this.renderSkin(this.state.multiAudioOptions);
+      }
+    },
+
+    receiveMultiAudioChangeEvent: function(event, targetAudioTrack) {
+      console.log("********* html5-skin receiveMultiAudioChangeEvent: ", targetAudioTrack);
+      this.state.multiAudioOptions.selectedAudioTrack = targetAudioTrack;
+      this.state.multiAudioOptions.showMultiAudioPopover = false;
+      this.renderSkin(this.state.multiAudioOptions);
+    },
+
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.closedCaptionOptions.availableLanguages = languages;
       if (this.state.closedCaptionOptions.enabled){
@@ -994,6 +1021,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_INFO_AVAILABLE, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.SEND_AUDIO_CHANGE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
@@ -1232,9 +1261,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    toggleMultiAudioPopOver: function() {
+      this.state.multiAudioOptions.showMultiAudioPopover = !this.state.multiAudioOptions.showMultiAudioPopover;
+      this.renderSkin();
+    },
+
     closePopovers: function() {
       this.state.closedCaptionOptions.showClosedCaptionPopover = false;
       this.state.videoQualityOptions.showVideoQualityPopover = false;
+      this.state.multiAudioOptions.showMultiAudioPopover = false;
       this.renderSkin();
     },
 
@@ -1259,6 +1294,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "id": selectedContentData.id
       };
       this.mb.publish(OO.EVENTS.SET_TARGET_BITRATE, selectedContentData.id);
+    },
+
+    sendMultiAudioChangeEvent: function(selectedAudioId) {
+      this.mb.publish(OO.EVENTS.SET_TARGET_AUDIO, selectedAudioId);
     },
 
     setClosedCaptionsLanguage: function(){

@@ -9,6 +9,7 @@ var React = require('react'),
     ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel'),
     DiscoveryPanel = require('./components/discoveryPanel'),
     VideoQualityPanel = require('./components/videoQualityPanel'),
+    MultiAudioPanel = require('./components/multiAudioPanel'),
     SharePanel = require('./components/sharePanel'),
     MoreOptionsPanel = require('./components/moreOptionsPanel'),
     AdScreen = require('./views/adScreen'),
@@ -114,7 +115,8 @@ var Skin = React.createClass({
               responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
-              closedCaptionOptions = {this.props.closedCaptionOptions}
+              closedCaptionOptions={this.props.closedCaptionOptions}
+              multiAudioOptions={this.state.multiAudioOptions}
               ref="playScreen" />
           );
           break;
@@ -148,6 +150,7 @@ var Skin = React.createClass({
               responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
+              multiAudioOptions={this.state.multiAudioOptions}
               ref="pauseScreen" />
           );
           break;
@@ -165,6 +168,7 @@ var Skin = React.createClass({
               isLiveStream={this.state.isLiveStream}
               responsiveView={this.state.responsiveId}
               videoQualityOptions={this.state.videoQualityOptions}
+              multiAudioOptions={this.state.multiAudioOptions}
               componentWidth={this.state.componentWidth}
               ref="endScreen" />
           );
@@ -185,6 +189,7 @@ var Skin = React.createClass({
               responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
+              multiAudioOptions={this.state.multiAudioOptions}
               adStartTime={this.state.adStartTime}
               ref="adScreen" />
           );
@@ -249,6 +254,21 @@ var Skin = React.createClass({
               videoQualityOptions={this.state.videoQualityOptions}
               responsiveView={this.state.responsiveId}/>
           </ContentScreen>
+          );
+          break;
+        case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
+          screen = (
+            <ContentScreen
+              {...this.props}
+              screen={CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN}
+              titleText={CONSTANTS.SKIN_TEXT.AUDIO}
+              icon="setting">
+              <MultiAudioPanel
+                {...this.props}
+                fullscreen={this.state.fullscreen}
+                multiAudioOptions={this.state.multiAudioOptions}
+                responsiveView={this.state.responsiveId}/>
+            </ContentScreen>
           );
           break;
         case CONSTANTS.SCREEN.ERROR_SCREEN:
