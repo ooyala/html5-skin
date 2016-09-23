@@ -29,7 +29,7 @@ var VideoQualityPanel = React.createClass({
 
   addAutoButton: function(bitrateButtons) {
     var autoQualityBtn = ClassNames({
-      'oo-quality-auto-btn': true,
+      'oo-list-auto-btn': true,
       'oo-selected': this.state.selected == 'auto'
     });
 
@@ -37,10 +37,10 @@ var VideoQualityPanel = React.createClass({
     bitrateButtons.unshift(
       <li className="oo-auto-li" key='auto-li'>
         <a className={autoQualityBtn} key='auto' onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
-          <div className="oo-quality-auto-icon">
+          <div className="oo-list-auto-icon">
             <Icon {...this.props} icon="auto"/>
           </div>
-          <div className="oo-quality-auto-label">Auto</div>
+          <div className="oo-list-auto-label">Auto</div>
         </a>
       </li>
     );
@@ -54,7 +54,7 @@ var VideoQualityPanel = React.createClass({
     //available bitrates
     for (var i = 0; i < availableBitrates.length; i++) {
       var qualityBtn = ClassNames({
-        'oo-quality-btn': true,
+        'oo-list-btn': true,
         'oo-selected': this.state.selected == availableBitrates[i].id
       });
 
@@ -69,15 +69,15 @@ var VideoQualityPanel = React.createClass({
 
     var qualityScreenClass = ClassNames({
       'oo-content-panel': !this.props.popover,
-      'oo-quality-panel': !this.props.popover,
-      'oo-quality-popover': this.props.popover,
+      'oo-list-panel': !this.props.popover,
+      'oo-list-popover': this.props.popover,
       'oo-mobile-fullscreen': !this.props.popover && this.props.controller.state.isMobile && (this.props.controller.state.fullscreen || this.props.controller.state.isFullWindow)
     });
 
     return (
       <div className={qualityScreenClass}>
         <ScrollArea
-          className="oo-quality-screen-content"
+          className="oo-list-screen-content"
           speed={this.props.popover ? 0.6 : 1}
           horizontal={this.props.popover ? false : true}>
           <ul>
