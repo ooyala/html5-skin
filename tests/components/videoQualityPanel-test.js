@@ -29,7 +29,7 @@ describe('VideoQualityPanel', function () {
   };
 
   var availableBitrates = [{"id":"auto", "bitrate":0}, {"id":"1", "bitrate":1000}, {"id":"2", "bitrate":2000}, {"id":"3", "bitrate":3000}, {"id":"4", "bitrate":4000}, {"id":"5", "bitrate":5000}]
-  var bitrateLabels = ['1 kbps', '2 kbps','3 kbps','4 kbps','5 kbps']
+  var bitrateLabels = ['1 kbps', '2 kbps','3 kbps','4 kbps','5 kbps'];
 
   var mockProps = {
     controller: mockController,
@@ -44,11 +44,11 @@ describe('VideoQualityPanel', function () {
     var DOM = TestUtils.renderIntoDocument(
       <VideoQualityPanel {...mockProps} />
     );
-    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn');
+    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-list-btn');
     expect(bitrateItems.length).toBe(availableBitrates.length-1);
 
     for (i=0; i<bitrateItems.length; i++){
-      var itemText = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn')[i].textContent;
+      var itemText = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-list-btn')[i].textContent;
       expect(itemText).toEqual(bitrateLabels[i]);
     }
   });
@@ -61,11 +61,11 @@ describe('VideoQualityPanel', function () {
     expect(bitrateItems.length).toBe(1);
     expect(bitrateItems[0].querySelector("[class*=label]").textContent).toBe('Auto');
 
-    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn');
+    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-list-btn');
     expect(bitrateItems.length).toBe(availableBitrates.length-1);
 
     for (i=0; i<bitrateItems.length; i++){
-      var newBitrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn')[i];
+      var newBitrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-list-btn')[i];
       TestUtils.Simulate.click(newBitrate);
       expect(selectedBitrate.id).toBe(availableBitrates[i+1].id);
     }

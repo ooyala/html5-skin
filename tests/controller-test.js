@@ -63,6 +63,7 @@ OO = {
         queuedPlayheadUpdate: true,
         currentAdsInfo: {},
         videoQualityOptions: {},
+        multiAudioOptions: {},
         closedCaptionOptions: {
           enabled: null,
           language: null,
@@ -187,6 +188,7 @@ OO = {
       closePopovers: function() {},
       setVolume: function(a) {},
       toggleVideoQualityPopOver: function(a) {},
+      toggleMultiAudioPopOver: function(a) {},
       setClosedCaptionsLanguage: function() {},
       displayMoreOptionsScreen: function(a) {},
       closeMoreOptionsScreen: function() {},
@@ -194,6 +196,7 @@ OO = {
       renderSkin: function() {window.isSkinRendered = true;},
       cancelTimer: function() {window.isTimerCanceled = true;},
       startHideControlBarTimer: function() {},
+      startHideVolumeSliderTimer: function() {},
       hideControlBar: function() {window.isControlBarHidden = true;},
       hideVolumeSliderBar: function() {window.isVolumeSliderBarHidden = true;},
       updateAspectRatio: function() {},
@@ -226,6 +229,7 @@ OO = {
     Html5Skin.onContentTreeFetched.call(controllerMock, 'customerUi', {someContent: true});
     Html5Skin.onThumbnailsFetched.call(controllerMock, 'customerUi', {thumb: 'nail'});
 
+    Html5Skin.onVolumeChanged.call(controllerMock, 'customerUi', -1);
     Html5Skin.onVolumeChanged.call(controllerMock, 'customerUi', 0.5);
     window.vol = controllerMock.state.volumeState.volume;
 
@@ -306,6 +310,7 @@ OO = {
     Html5Skin.showNonlinearAd.call(controllerMock, 'customerUi');
     Html5Skin.showNonlinearAdCloseButton.call(controllerMock, 'customerUi');
     Html5Skin.onBitrateInfoAvailable.call(controllerMock, 'customerUi', {bitrates:{}});
+    Html5Skin.onMultiAudioInfoAvailable.call(controllerMock, 'customerUi', {tracks:{}});
 
     controllerMock.state.closedCaptionOptions.enabled = true;
     Html5Skin.onClosedCaptionsInfoAvailable.call(controllerMock, 'customerUi', {languages: ['en', 'es']});
@@ -426,9 +431,13 @@ OO = {
 
     Html5Skin.sendDiscoveryDisplayEvent.call(controllerMock, CONSTANTS.SCREEN.DISCOVERY_SCREEN);
     Html5Skin.toggleVideoQualityPopOver.call(controllerMock);
+    Html5Skin.toggleMultiAudioPopOver.call(controllerMock);
     Html5Skin.toggleClosedCaptionPopOver.call(controllerMock);
+
     Html5Skin.receiveVideoQualityChangeEvent.call(controllerMock, null, 312);
     Html5Skin.sendVideoQualityChangeEvent.call(controllerMock, {id:2});
+    Html5Skin.receiveMultiAudioChangeEvent.call(controllerMock, null, 312);
+    Html5Skin.sendMultiAudioChangeEvent.call(controllerMock, {id:2});
 
     Html5Skin.setClosedCaptionsLanguage.call(controllerMock);
     controllerMock.state.closedCaptionOptions.availableLanguages = null;
@@ -469,6 +478,7 @@ OO = {
 
     // test control bar
     Html5Skin.startHideControlBarTimer.call(controllerMock);
+    Html5Skin.startHideVolumeSliderTimer.call(controllerMock);
 
     Html5Skin.showControlBar.call(controllerMock);
     window.showControlBarVisible = controllerMock.state.controlBarVisible;
@@ -499,8 +509,10 @@ OO = {
     //test destroy functions last
     Html5Skin.onEmbedCodeChanged.call(controllerMock, 'customerUi', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', {});
     Html5Skin.onAssetChanged.call(controllerMock, 'customerUi', {content: {streams: [{is_live_stream: true}], title: 'Title', posterImages: [{url:'www.ooyala.com'}]}});
+    Html5Skin.onAssetUpdated.call(controllerMock, 'customerUi', {content: {streams: [{is_live_stream: true}], title: 'Title', posterImages: [{url:'www.ooyala.com'}]}});
     controllerMock.state.elementId = 'oo-video';
     Html5Skin.onPlayerDestroy.call(controllerMock, 'customerUi');
+    Html5Skin.closePopovers.call(controllerMock);
   }
 };
 

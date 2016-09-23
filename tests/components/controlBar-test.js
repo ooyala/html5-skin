@@ -24,7 +24,8 @@ describe('ControlBar', function () {
           volume: 1
         },
         videoQualityOptions: {},
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        multiAudioOptions: {}
       }
     };
 
@@ -55,7 +56,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       },
       toggleFullscreen: function() {
         fullscreenToggled = true;
@@ -94,7 +96,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       }
     };
 
@@ -129,7 +132,8 @@ describe('ControlBar', function () {
         videoQualityOptions: {
           availableBitrates: null
         },
-        discoveryData: true
+        discoveryData: true,
+        multiAudioOptions: {}
       }
     };
 
@@ -170,7 +174,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       },
       handleMuteClick: function() {muteClicked = true;},
       setVolume: function(volume) {newVolume = volume;}
@@ -214,7 +219,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       },
       togglePlayPause: function() {playClicked = true;}
     };
@@ -253,7 +259,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       },
       toggleShareScreen: function() {shareClicked = true;}
     };
@@ -293,7 +300,8 @@ describe('ControlBar', function () {
         videoQualityOptions: {
           availableBitrates: null
         },
-        discoveryData: true
+        discoveryData: true,
+        multiAudioOptions: {}
       },
       toggleDiscoveryScreen: function() {discoveryClicked = true;}
     };
@@ -331,7 +339,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       }
     };
 
@@ -367,7 +376,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {availableLanguages: true},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       },
       toggleScreen: function() {toggleScreenClicked = true;},
       toggleClosedCaptionPopOver: function(){captionClicked = true;}
@@ -425,7 +435,8 @@ describe('ControlBar', function () {
         videoQualityOptions: {
           availableBitrates: null
         },
-        discoveryData: false
+        discoveryData: false,
+        multiAudioOptions: {}
       }
     };
 
@@ -461,7 +472,8 @@ describe('ControlBar', function () {
         videoQualityOptions: {
           availableBitrates: null
         },
-        discoveryData: true
+        discoveryData: true,
+        multiAudioOptions: {}
       },
       toggleDiscoveryScreen: function() {discoveryClicked = true;}
     };
@@ -497,7 +509,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       }
     };
 
@@ -564,7 +577,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       },
       toggleMoreOptionsScreen: function() {
         moreOptionsClicked = true;
@@ -609,7 +623,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       }
     };
 
@@ -646,7 +661,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       }
     };
 
@@ -702,7 +718,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       }
     };
 
@@ -747,7 +764,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       }
     };
 
@@ -781,7 +799,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       }
     };
 
@@ -815,7 +834,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       }
     };
 
@@ -850,7 +870,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {availableLanguages: true},
         videoQualityOptions: {
           availableBitrates: true
-        }
+        },
+        multiAudioOptions: {}
       },
       toggleScreen: function() {qualityClicked = true;},
       toggleVideoQualityPopOver: function(){qualityClicked = true;}
@@ -933,7 +954,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       }
     };
 
@@ -969,7 +991,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       }
     };
 
@@ -1008,7 +1031,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       },
       cancelTimer:function() {},
       hideVolumeSliderBar:function() {},
@@ -1070,7 +1094,8 @@ describe('ControlBar', function () {
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        multiAudioOptions: {}
       }
     };
 
