@@ -113,6 +113,7 @@ $cursor-disabled:                not-allowed !default;
 $zindex-player-skin-plugins-blur:        -10000 !default;
 $zindex-closed-caption-overlay:              -1 !default;
 $zindex-playhead-padding:                     1 !default;
+$zindex-thumbnail:                           -1 !default;
 $zindex-scrollbar:                         9999 !default;
 $VIDEO_Z_INDEX:                           10000 !default; //in core, here for bird's eye view tracking
 $zindex-discovery-count-down-icon:        10005 !default;
@@ -127,6 +128,7 @@ $zindex-control-bar:                      12500 !default;
 $zindex-scrubber-bar:                     12600 !default;
 $zindex-action-icon-pause-animate:        12600 !default;
 $zindex-ad-top-bar:                       12600 !default;
+$zindex-popover:                          12600 !default;
 $SUPER_Z_INDEX:                           20000 !default; //in core, here for bird's eye view tracking
 $zindex-fullscreen:                  2147483647 !default; //in screenfull, here for bird's eye view tracking
 
