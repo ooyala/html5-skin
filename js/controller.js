@@ -64,6 +64,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "pluginsElement": null,
       "pluginsClickElement": null,
       "buffering": false,
+      "mainVideoBuffered": null,
       "mainVideoPlayhead": null,
       "focusedElement": null,
 
@@ -73,6 +74,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "skipAdButtonEnabled": false
       },
 
+      "closedCaptionsInfoCache": {},
       "closedCaptionOptions": {
         "enabled": null,
         "language": null,
@@ -336,6 +338,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.videoQualityOptions.availableBitrates = null;
       this.state.videoQualityOptions.selectedBitrate = null;
       this.state.closedCaptionOptions.availableLanguages = null;
+      this.state.closedCaptionsInfoCache = {};
       this.state.discoveryData = null;
       this.state.thumbnails = null;
       this.resetUpNextInfo(true);
@@ -362,6 +365,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onAssetChanged: function (event, asset) {
       this.state.videoQualityOptions.availableBitrates = null;
       this.state.closedCaptionOptions.availableLanguages = null;
+      this.state.closedCaptionsInfoCache = {};
       this.state.discoveryData = null;
       this.subscribeBasicPlaybackEvents();
 
@@ -413,13 +417,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered, startEnd, videoId) {
-      if (videoId == "main") {
+      if (videoId == OO.VIDEO.MAIN) {
         this.state.mainVideoPlayhead = currentPlayhead;
+        this.state.mainVideoDuration = duration;
+        this.state.mainVideoBuffered = buffered;
       }
       else if (videoId == OO.VIDEO.ADS) {
         //adVideoDuration is only used in adPanel ad marquee
         this.state.adVideoDuration = duration;
       }
+      this.state.duration = duration;
 
       // lower skin z-index if Chrome auto-pauses flash content
       if(!this.state.autoPauseDisabled && Utils.isChrome() && this.state.mainVideoMediaType != CONSTANTS.MEDIA_TYPE.HTML5) {
@@ -434,7 +441,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
       // So we only need to update the playhead for ad screen.
-      this.state.duration = duration;
       if (this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN ) {
         if (this.skin.props.skinConfig.upNext.showUpNext) {
           if (!(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))){//no UpNext for iPhone or fullscreen iPad
@@ -658,7 +664,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onAdsPlayed: function(event) {
       OO.log("onAdsPlayed is called from event = " + event);
       this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
-      this.skin.updatePlayhead(this.skin.state.currentPlayhead, this.state.mainVideoDuration, this.skin.state.buffered);
+      this.skin.updatePlayhead(this.state.mainVideoPlayhead, this.state.mainVideoDuration, this.state.mainVideoBuffered);
       this.state.isPlayingAd = false;
       this.state.pluginsElement.removeClass("oo-showing");
       this.state.pluginsClickElement.removeClass("oo-showing");
@@ -733,6 +739,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onSkipAdClicked: function(event) {
       this.state.isSkipAdClicked = true;
       OO.log("onSkipAdClicked is called");
+      this.skin.updatePlayhead(this.state.mainVideoPlayhead, this.state.mainVideoDuration, this.state.mainVideoBuffered);
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
       this.mb.publish(OO.EVENTS.SKIP_AD);
       this.renderSkin();
@@ -781,6 +788,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onVideoElementFocus: function(event, source) {
       this.focusedElement = source;
+      // Make sure that the skin uses the captions that correspond
+      // to the newly focused video element
+      this.setClosedCaptionsInfo(source);
       if (source == OO.VIDEO.MAIN) {
         this.state.pluginsElement.removeClass("oo-showing");
         this.state.pluginsClickElement.removeClass("oo-showing");
@@ -833,11 +843,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onClosedCaptionsInfoAvailable: function(event, languages) {
-      this.state.closedCaptionOptions.availableLanguages = languages;
-      if (this.state.closedCaptionOptions.enabled){
-        this.setClosedCaptionsLanguage();
+    onClosedCaptionsInfoAvailable: function(event, info) {
+      if (!info || !info.videoId || !info.languages) {
+        return;
       }
+      // Store info in cache in order to be able to restore it
+      // if this video element looses and then regains focus (like when an ad plays)
+      this.state.closedCaptionsInfoCache[info.videoId] = info;
+      this.setClosedCaptionsInfo(info.videoId);
     },
 
     onClosedCaptionCueChanged: function(event, data) {
@@ -1259,6 +1272,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "id": selectedContentData.id
       };
       this.mb.publish(OO.EVENTS.SET_TARGET_BITRATE, selectedContentData.id);
+    },
+
+    setClosedCaptionsInfo: function(videoId) {
+      var closedCaptionsInfo = this.state.closedCaptionsInfoCache[videoId];
+      if (!closedCaptionsInfo) {
+        return;
+      }
+      // Load the CC info for the video with the given id onto the state
+      this.state.closedCaptionOptions.availableLanguages = closedCaptionsInfo;
+      if (this.state.closedCaptionOptions.enabled) {
+        this.setClosedCaptionsLanguage();
+      }
     },
 
     setClosedCaptionsLanguage: function(){

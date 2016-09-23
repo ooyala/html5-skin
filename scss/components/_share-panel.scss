@@ -80,4 +80,9 @@
     background-image: url("//player.ooyala.com/static/v4/candidate/latest/skin-plugin/assets/images/social-email.svg");
     background-size: cover;
   }
+
+  .oo-embed-form {
+    resize: none;
+    height: calc(15vh);
+  }
 }
