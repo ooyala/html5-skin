@@ -133,6 +133,7 @@ var AdPanel = React.createClass({
     return (
       <div className="oo-ad-screen-panel">
         {spinner}
+        <div className="oo-ad-screen-panel-click-layer"></div>
         <div className="oo-ad-top-bar" ref="adTopBar" onClick={this.handleAdTopBarClick} onTouchEnd={this.handleAdTopBarClick}>
           {adTopBarItems}
         </div>
