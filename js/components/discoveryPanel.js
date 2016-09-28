@@ -141,7 +141,7 @@ var DiscoveryPanel = React.createClass({
           contentTitleClassName={discoveryContentName}
           onClickAction={this.handleDiscoveryContentClick.bind(this, videosPerPage * (this.state.currentPage - 1) + i)}
         >
-          {(this.shouldShowCountdownTimer() && i === 0) ? countDownClock : null}
+          {(this.shouldShowCountdownTimer() && i === 0 && this.state.currentPage <= 1) ? countDownClock : null}
         </DiscoverItem>
       );
     }
