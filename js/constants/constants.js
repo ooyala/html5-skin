@@ -217,6 +217,11 @@ module.exports = {
       title: "PLAYBACK ERROR",
       description: "Could not play the content"
     },
+    "stream":{
+      name: "OO.ERROR.PLAYBACK.STREAM",
+      title: "PLAYBACK STREAM ERROR",
+      description: "This video isn't encoded for your device"
+    },
     "livestream":{
       name: "OO.ERROR.PLAYBACK.LIVESTREAM",
       title: "PLAYBACK LIVESTREAM ERROR",
