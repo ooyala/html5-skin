@@ -372,6 +372,17 @@ var Utils = {
      (navigator.msMaxTouchPoints > 0);
   },
 
+  /**
+   * Creates wrapper object with sanitized html. This marked data can subsequently be passed into dangerouslySetInnerHTML
+   * See https://facebook.github.io/react/tips/dangerously-set-inner-html.html
+   *
+   * @function createMarkup
+   * @returns {Object} Wrapper object for sanitized markup.
+   */
+  createMarkup: function(html) {
+    return {__html: html};
+  },
+
   _isValid: function( item ) {
     var valid = (
       item &&

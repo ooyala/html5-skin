@@ -196,4 +196,10 @@ describe('Utils', function () {
     thumbs = Utils.findThumbnail(thumbData, 33, 100);
     expect(thumbs.pos).toBe(2);
   });
+
+  it('tests createMarkup', function () {
+    var markup = 'This is &quot;markup&quot;';
+    var html = Utils.createMarkup(markup);
+    expect(html.__html).toBe(markup);
+  });
 });
