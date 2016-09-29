@@ -1,4 +1,5 @@
-var React = require('react');
+var React = require('react'),
+    Utils = require('./utils');
 
 var DiscoverItem = React.createClass({
   getInitialState: function() {
@@ -19,10 +20,6 @@ var DiscoverItem = React.createClass({
     }.bind(this);
   },
 
-  createMarkup: function() {
-    return {__html: this.props.contentTitle};
-  },
-
   render: function() {
     // handle img error, return null
     if (this.state.imgError) {
@@ -41,7 +38,7 @@ var DiscoverItem = React.createClass({
           </a>
           {this.props.children}
         </div>
-        <div className={this.props.contentTitleClassName} dangerouslySetInnerHTML={this.createMarkup()}></div>
+        <div className={this.props.contentTitleClassName} dangerouslySetInnerHTML={Utils.createMarkup(this.props.contentTitle)}></div>
       </div>
     );
   }
