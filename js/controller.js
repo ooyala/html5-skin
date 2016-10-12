@@ -1205,6 +1205,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
+      this.state.pluginsElement.removeClass("oo-overlay-blur");
       this.state.upNextInfo.showing = false;
       if (isAutoUpNext){
         this.state.upNextInfo.delayedContentData = selectedContentData;
