@@ -25,7 +25,7 @@ var AdOverlay = React.createClass({
   render: function() {
     var adOverlayClass = ClassNames({
       "oo-ad-overlay": !this.props.overlayIsPauseAd,
-      "oo-ad-overlay-pause-ad": this.props.overlayIsPauseAd,
+      "oo-ad-overlay-pause-ad": this.props.overlayIsPauseAd, 
       "oo-hidden": !this.props.overlay && this.props.showOverlay
     });
     var closeButtonClass = ClassNames({
