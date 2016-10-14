@@ -39,6 +39,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isPlayingAd": false,
       "adOverlayUrl": null,
       "showAdOverlay": false,
+      "overlayIsPauseAd" : false,
       "showAdOverlayCloseButton": false,
       "showAdControls": true,
       "showAdMarquee": true,
@@ -758,6 +759,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if(adInfo.url) {
         this.state.adOverlayUrl = adInfo.url;
         this.state.showAdOverlay = true;
+        if(this.state.playerState === CONSTANTS.STATE.PAUSE) {
+          this.state.overlayIsPauseAd = true;
+          this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+        }
       }
       this.state.pluginsElement.addClass("oo-overlay-showing");
       var skinElement = $("#"+this.state.elementId+" .oo-player-skin");
@@ -800,6 +805,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     closeNonlinearAd: function(event) {
       this.state.adOverlayUrl = null;
       this.state.showAdOverlay = false;
+      this.state.overlayIsPauseAd = false;
       this.state.showAdOverlayCloseButton = false;
       this.state.pluginsElement.removeClass("oo-overlay-showing");
       this.state.pluginsElement.css({
@@ -816,6 +822,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     hideNonlinearAd: function(event) {
       this.state.showAdOverlay = false;
+      this.state.overlayIsPauseAd = false;
       this.state.pluginsElement.removeClass("oo-overlay-showing");
       this.renderSkin();
     },

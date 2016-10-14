@@ -19,6 +19,56 @@
     outline:none;
   }
 
+
+
+  .oo-ad-overlay-close-button.oo-hidden {
+    display: none;
+  }
+
+  .oo-ad-overlay-close-button-icon {
+    position: absolute;
+    font-size: 8px;
+    top: 50%;
+    left: 50%;
+    @include vendor-prefixes(transform, translate(-50%, -50%));
+    color: #ffffff;
+    opacity: 0.6;
+  }
+}
+
+.oo-ad-overlay-pause-ad {
+  position: absolute !important;
+  width: 100% !important;
+  height: 100% !important;
+
+  .oo-ad-overlay-image-pause-ad {
+    position: absolute;
+    bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    left: 0;
+    right: 0;
+  }
+
+  .oo-ad-overlay-close-button {
+    display: inline-block;
+    position: absolute;
+    cursor: pointer;
+    height: 28px;
+    width: 28px;
+    top: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.3);
+    border: 0;
+    outline:none;
+  }
+
+
+
   .oo-ad-overlay-close-button.oo-hidden {
     display: none;
   }

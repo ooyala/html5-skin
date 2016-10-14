@@ -460,6 +460,7 @@ var ControlBar = React.createClass({
   render: function() {
     var controlBarClass = ClassNames({
       "oo-control-bar": true,
+      "oo-control-bar-pause-ad": this.props.hasPauseAd,
       "oo-control-bar-hidden": !this.props.controlBarVisible
     });
 

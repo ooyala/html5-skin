@@ -91,12 +91,18 @@ var PauseScreen = React.createClass({
       'oo-hidden': !this.props.skinConfig.pauseScreen.showPauseIcon || this.props.pauseAnimationDisabled
     });
 
+    var interactiveContainerClass = ClassNames({
+      'oo-interactive-container': !this.props.controller.state.overlayIsPauseAd,
+      'oo-interactive-container-pause-ad': this.props.controller.state.overlayIsPauseAd
+    });
+
     var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
     var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.state.descriptionText}</div>);
     var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
       <AdOverlay {...this.props}
         overlay={this.props.controller.state.adOverlayUrl}
         showOverlay={this.props.controller.state.showAdOverlay}
+        overlayIsPauseAd ={this.props.controller.state.overlayIsPauseAd}
         showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}/> : null;
 
     var upNextPanel = (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
@@ -118,7 +124,7 @@ var PauseScreen = React.createClass({
           <Icon {...this.props} icon="pause" style={actionIconStyle}/>
         </a>
 
-        <div className="oo-interactive-container">
+        <div className={interactiveContainerClass}>
           {this.props.closedCaptionOptions.enabled ?
             <TextTrack
               closedCaptionOptions={this.props.closedCaptionOptions}
@@ -135,6 +141,7 @@ var PauseScreen = React.createClass({
 
           <ControlBar {...this.props}
             controlBarVisible={this.state.controlBarVisible}
+            hasPauseAd={this.props.controller.state.overlayIsPauseAd && this.props.controller.state.showAdOverlay}
             playerState={this.state.playerState}
             isLiveStream={this.props.isLiveStream}/>
         </div>
