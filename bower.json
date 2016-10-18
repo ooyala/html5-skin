@@ -1,0 +1,11 @@
+{
+  "name": "html5-skin",
+  "version": "4.6.9",
+  "description": "Custom Skin for Ooyala Player V4",
+  "authors": [
+    "Ooyala"
+  ],
+  "main": [
+    "build/html5-skin.min.js"
+  ]
+}
