@@ -5,13 +5,11 @@
   "authors": [
     "Ooyala"
   ],
+  "main": "build/html5-skin.min.js",
   "ignore": [
     ".gitignore",
     "docs",
     "assets",
     "tests"
   ],
-  "main": [
-    "build/html5-skin.min.js"
-  ]
 }
