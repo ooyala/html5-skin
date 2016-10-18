@@ -4396,7 +4396,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "3b37f9c9d3a0dda0ccf58ce96d5b37a377286045"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "183b94de844a5137cf577e7e4de60c3a891d2598"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -5031,7 +5031,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onAssetDimensionsReceived: function(event, params) {
       if (params.videoId == OO.VIDEO.MAIN && (this.skin.props.skinConfig.responsive.aspectRatio == "auto" || !this.skin.props.skinConfig.responsive.aspectRatio)) {
         this.state.mainVideoAspectRatio = this.calculateAspectRatio(params.width, params.height);
-        this.setAspectRatio();
+        // this.setAspectRatio();
       }
     },
 
@@ -5818,7 +5818,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     updateAspectRatio: function() {
       if(this.skin && this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
         this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
-        this.setAspectRatio();
+        // this.setAspectRatio();
       }
     },
 

@@ -653,7 +653,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onAssetDimensionsReceived: function(event, params) {
       if (params.videoId == OO.VIDEO.MAIN && (this.skin.props.skinConfig.responsive.aspectRatio == "auto" || !this.skin.props.skinConfig.responsive.aspectRatio)) {
         this.state.mainVideoAspectRatio = this.calculateAspectRatio(params.width, params.height);
-        this.setAspectRatio();
+        // this.setAspectRatio();
       }
     },
 
@@ -1440,7 +1440,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     updateAspectRatio: function() {
       if(this.skin && this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
         this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
-        this.setAspectRatio();
+        // this.setAspectRatio();
       }
     },
 
