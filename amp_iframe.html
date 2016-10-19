@@ -62,6 +62,24 @@
 
     OO.ready(function() {
       window.pp = OO.Player.create('container', queryParams.match(/ec=([^&]*)/)[1], playerParam);
+
+      //Enable cross-iframe control
+      window.addEventListener("message", function(evt){
+        switch (evt.data) {
+          case "play":
+            pp.play();
+            break;
+          case "pause":
+            pp.pause();
+            break;
+          case "mute":
+            pp.setVolume(0);
+            break;
+          case "unmute":
+            pp.setVolume(1);
+            break;
+        }
+      });
     });
   </script>
 </body>
