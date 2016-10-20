@@ -62,13 +62,15 @@ var VideoQualityPanel = React.createClass({
       if (availableBitrates[i].id == 'auto') {
         this.addAutoButton(bitrateButtons);
       }
-      else if (typeof availableBitrates[i].bitrate === "number") {
-        label = Math.round(availableBitrates[i].bitrate/1000) + ' kbps';
-      }
       else {
-        label = availableBitrates[i].bitrate;
+        if (typeof availableBitrates[i].bitrate === "number") {
+          label = Math.round(availableBitrates[i].bitrate/1000) + ' kbps';
+        } 
+        else {
+          label = availableBitrates[i].bitrate;
+        }
+        bitrateButtons.push(<li key={i}><a className={qualityBtn} key={i} onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>{label}</a></li>);
       }
-      bitrateButtons.push(<li key={i}><a className={qualityBtn} key={i} onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>{label}</a></li>);
     }
 
     var qualityScreenClass = ClassNames({
