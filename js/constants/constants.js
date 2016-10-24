@@ -116,6 +116,12 @@ module.exports = {
     FLASH: "flash"
   },
 
+  ORIENTATION: {
+    PORTRAIT: "portrait",
+    LANDSCAPE_LEFT: "landscapeLeft",
+    LANDSCAPE_RIGHT: "landscapeRight"
+  },
+
   ERROR_MESSAGE: {
     "network":{
       name: "OO.ERROR.API.NETWORK",

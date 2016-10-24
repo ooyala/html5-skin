@@ -160,6 +160,10 @@ var ControlBar = React.createClass({
     }
   },
 
+  handleHandsFreeClick: function() {
+    this.props.controller.toggleHandsFree();
+  },
+
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
     var color = this.props.skinConfig.controlBar.iconStyle.active.color;
@@ -281,6 +285,12 @@ var ControlBar = React.createClass({
       "oo-selected": this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover
     });
 
+    var handsFreeClass = ClassNames({
+      "oo-handsfree": true,
+      "oo-control-bar-item": true,
+      "oo-selected": this.props.controller.state.handsFreeEnabled
+    });
+
     var controlItemTemplates = {
       "playPause": <a className="oo-play-pause oo-control-bar-item" onClick={this.handlePlayClick} key="playPause">
         <Icon {...this.props} icon={playIcon}
@@ -308,6 +318,12 @@ var ControlBar = React.createClass({
       </a>,
 
       "flexibleSpace": <div className="oo-flexible-space oo-control-bar-flex-space" key="flexibleSpace"></div>,
+
+      "handsfree": (
+      <a className={handsFreeClass} onClick={this.handleHandsFreeClick} key="handsfree">
+        <Icon {...this.props} icon="handsfree" style={dynamicStyles.iconCharacter} onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
+      </a>
+      ),
 
       "moreOptions": <a className="oo-more-options oo-control-bar-item"
         onClick={this.handleMoreOptionsClick} key="moreOptions">

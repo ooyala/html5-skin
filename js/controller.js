@@ -7,7 +7,8 @@ var React = require('react'),
     CONSTANTS = require('./constants/constants'),
     AccessibilityControls = require('./components/accessibilityControls'),
     Fullscreen = require('screenfull'),
-    Skin = require('./skin');
+    Skin = require('./skin'),
+    throttle = require('lodash.throttle');
 
 OO.plugin("Html5Skin", function (OO, _, $, W) {
   //Check if the player is at least v4. If not, the skin cannot load.
@@ -129,7 +130,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullScreenSupported": false,
       "isVideoFullScreenSupported": false,
       "isFullWindow": false,
-      "autoPauseDisabled": false
+      "autoPauseDisabled": false,
+      "orientation": null,
+      "orientationGamma": null,
+      "handsFreeEnabled": false,
+      "handleDeviceOrientation": null,
+      "handleDeviceAcceleration": null,
+      "handleOrientationChange": null
     };
 
     this.init();
@@ -217,6 +224,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.elementId = elementId;
       this.state.isMobile = Utils.isMobile();
       this.state.browserSupportsTouch = Utils.browserSupportsTouch();
+      this.state.handleDeviceOrientation = throttle(this.handleDeviceOrientation.bind(this), 500);
+      this.state.handleDeviceAcceleration = throttle(this.handleDeviceAcceleration.bind(this), 500);
+      this.state.handleOrientationChange = this.handleOrientationChange.bind(this);
+
+
 
       //initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');
@@ -1121,6 +1133,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     seek: function(seconds) {
+      console.log("******** seek seconds: " + seconds);
       if (this.state.playerState == CONSTANTS.STATE.END) {
         this.endSeeking();
         this.mb.publish(OO.EVENTS.REPLAY, seconds);
@@ -1456,6 +1469,96 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if(this.state.mainVideoAspectRatio > 0) {
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
+    },
+
+    toggleHandsFree: function(enable) {
+      this.state.handsFreeEnabled = enable ? enable : !this.state.handsFreeEnabled;
+      this.calculateOrientation();
+
+      if (this.state.handsFreeEnabled) {
+        //window.addEventListener("deviceorientation", this.state.handleDeviceOrientation);
+        window.addEventListener("devicemotion", this.state.handleDeviceAcceleration);
+        window.addEventListener("orientationchange", this.state.handleOrientationChange);
+      } else {
+        //window.removeEventListener("deviceorientation", this.state.handleDeviceOrientation);
+        window.removeEventListener("devicemotion", this.state.handleDeviceAcceleration);
+        window.removeEventListener("orientationchange", this.state.handleOrientationChange);
+      }
+      this.renderSkin();
+    },
+
+    handleDeviceOrientation: function(event) {
+      var orientation = {
+        "alpha": Math.round(event.alpha * 100) / 1000,
+        "beta": Math.round(event.beta * 100) / 1000,
+        "gamma": Math.round(event.gamma * 100) / 1000
+      };
+      var newPlayheadTime;
+
+      if(this.state.orientation == CONSTANTS.ORIENTATION.PORTRAIT) {
+        if(Math.abs(orientation.gamma) > 5) {
+          newPlayheadTime = this.skin.state.currentPlayhead + orientation.gamma;
+          //this.seek(newPlayheadTime);
+        }
+      }
+      // print out
+      //document.getElementById("deviceOrientation").innerHTML = "Orientation: <ul>" + "<li>absolute: " + event.absolute + "</li>" + "<li>alpha: " + orientation.alpha + "</li>" + "<li>beta: " + orientation.beta + "</li>" + "<li>gamma: " + orientation.gamma + "</li></ul>";
+    },
+
+    handleDeviceAcceleration: function(event) {
+      var acceleration = {
+        "x": Math.round(event.accelerationIncludingGravity.x * 100) / 100,
+        "y": Math.round(event.accelerationIncludingGravity.y * 100) / 100,
+        "z": Math.round(event.accelerationIncludingGravity.z * 100) / 100
+      };
+      var newPlayheadTime;
+      var seekRate = 1.2;
+      var threshHold = 3;
+
+      if (this.state.orientation == CONSTANTS.ORIENTATION.PORTRAIT) {
+        if(Math.abs(acceleration.x) > threshHold) {
+          newPlayheadTime = this.skin.state.currentPlayhead + (acceleration.x * seekRate);
+          this.seek(newPlayheadTime);
+        }
+      }
+      else if (this.state.orientation == CONSTANTS.ORIENTATION.LANDSCAPE_RIGHT) {
+        if(Math.abs(acceleration.y) > threshHold) {
+          newPlayheadTime = this.skin.state.currentPlayhead + (acceleration.y * seekRate);
+          this.seek(newPlayheadTime);
+        }
+      }
+      else if (this.state.orientation == CONSTANTS.ORIENTATION.LANDSCAPE_LEFT) {
+        if(Math.abs(acceleration.y) > threshHold) {
+          newPlayheadTime = this.skin.state.currentPlayhead + (acceleration.y * seekRate * -1);
+          this.seek(newPlayheadTime);
+        }
+      }
+
+      // print out
+      //document.getElementById("acceleration").innerHTML = "Acceleration: <ul>" + "<li>x: " + acceleration.x + "</li>" + "<li>y: " + acceleration.y + "</li>" + "<li>z: " + acceleration.z + "</li></ul>";
+    },
+
+    handleOrientationChange: function() {
+      //this.toggleHandsFree(false);
+      this.calculateOrientation();
+    },
+
+    calculateOrientation: function() {
+      switch (window.orientation) {
+        case 0:
+          this.state.orientation = CONSTANTS.ORIENTATION.PORTRAIT;
+          break;
+        case 180:
+          this.state.orientation = CONSTANTS.ORIENTATION.PORTRAIT;
+          break;
+        case 90:
+          this.state.orientation = CONSTANTS.ORIENTATION.LANDSCAPE_LEFT;
+          break;
+        case -90:
+          this.state.orientation = CONSTANTS.ORIENTATION.LANDSCAPE_RIGHT;
+          break;
+      }
+      //document.getElementById("orientationChange").innerHTML = this.state.orientation;
     }
   };
 
