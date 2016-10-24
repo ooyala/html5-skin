@@ -200,7 +200,10 @@ OO = {
       hideVolumeSliderBar: function() {window.isVolumeSliderBarHidden = true;},
       updateAspectRatio: function() {},
       calculateAspectRatio: function(a,b) {},
-      setAspectRatio: function() {window.isAspectRatioSet = true;}
+      setAspectRatio: function() {window.isAspectRatioSet = true;},
+      handleDeviceAcceleration: function() {},
+      handleDeviceOrientation: function() {},
+      handleOrientationChange: function() {}
     };
 
 
