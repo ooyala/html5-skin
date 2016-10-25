@@ -31,11 +31,7 @@ This simple test HTML page can also be hosted on your environment to showcase ht
   var playerParam = {
     "pcode": "YOUR_PCODE",
     "playerBrandingId": "YOUR_PLAYER_ID",
-    "debug":true,
-    "skin": {
-      // Config contains the configuration setting for player skin. Change to your local config when necessary.
-      "config": "//player.ooyala.com/static/v4/stable/latest/skin-plugin/skin.json"
-    }
+    "debug":true
   };
 
   OO.ready(function() {
