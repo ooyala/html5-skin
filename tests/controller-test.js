@@ -209,6 +209,13 @@ OO = {
      */
 
     var Html5Skin = exposeStaticApi.prototype; // public object used to expose private object for testing
+    var elementId = 'adrfgyi';
+
+    //setup document body for valid DOM elements
+    document.body.innerHTML =
+      '<div id='+elementId+'>' +
+      '  <div class="oo-player-skin" />' +
+      '</div>';
 
     //test mb subscribe
     window._.bind = function() {};
@@ -217,11 +224,14 @@ OO = {
     Html5Skin.subscribeBasicPlaybackEvents.call(controllerMock);
     Html5Skin.externalPluginSubscription.call(controllerMock);
 
-    // test player state
-    Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', 1, {skin:{config:{}}}, {});
+    //test player state
+    var tempSkin = controllerMock.skin;
+    Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', elementId, {skin:{config:{}}}, {});
+    controllerMock.skin = tempSkin; //reset skin, onPlayerCreated updates skin
 
+    var tempMainVideoElement = controllerMock.state.mainVideoElement;
     Html5Skin.onVcVideoElementCreated.call(controllerMock, 'customerUi', {videoId: OO.VIDEO.MAIN});
-    controllerMock.state.mainVideoElement = {addClass: function(a) {}, removeClass: function(a) {}, get: function(a) { return { webkitSupportsFullscreen: true, webkitEnterFullscreen: function() {}, webkitExitFullscreen: function() {}, addEventListener: function(a,b) {}}}}
+    controllerMock.state.mainVideoElement = tempMainVideoElement;
 
     Html5Skin.metaDataLoaded.call(controllerMock);
     Html5Skin.onAuthorizationFetched.call(controllerMock, 'customerUi', {streams: [{is_live_stream: true}]});
