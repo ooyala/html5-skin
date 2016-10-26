@@ -15,6 +15,7 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
   <!-- V4 JS core and at least one video plugin is required. Plugins such as skin, discovery and Advertising need to be loaded separately -->
   <script src="//player.ooyala.com/static/v4/stable/latest/core.min.js"></script>
   <script src="//player.ooyala.com/static/v4/stable/latest/video-plugin/main_html5.min.js"></script>
