@@ -8,7 +8,9 @@ var React = require('react'),
     AccessibilityControls = require('./components/accessibilityControls'),
     Fullscreen = require('screenfull'),
     Skin = require('./skin'),
-    SkinJSON = require('../config/skin');
+    SkinJSON = require('../config/skin'),
+    Bulk = require('bulk-require'),
+    Localization = Bulk('./config', ['languageFiles/*.json']);
 
 OO.plugin("Html5Skin", function (OO, _, $, W) {
   //Check if the player is at least v4. If not, the skin cannot load.
@@ -228,20 +230,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       $.extend(true, SkinJSON, params.skin.inline);
       //override state settings with defaults from skin config and possible local storage settings
       $.extend(true, this.state.closedCaptionOptions, SkinJSON.closedCaptionOptions, settings.closedCaptionOptions);
-
-      //load language jsons
-      var tmpLocalizableStrings = {};
-      SkinJSON.localization.availableLanguageFile.forEach(function(languageObj){
-        $.getJSON(languageObj.languageFile, _.bind(function(data) {
-          tmpLocalizableStrings[languageObj.language] = data;
-          this.renderSkin();
-        }, this));
-      }, this);
-
       this.state.config = SkinJSON;
 
       this.skin = ReactDOM.render(
-        React.createElement(Skin, {skinConfig: SkinJSON, localizableStrings: tmpLocalizableStrings, language: Utils.getLanguageToUse(SkinJSON), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .oo-player-skin")
+        React.createElement(Skin, {skinConfig: SkinJSON, localizableStrings: Localization.languageFiles, language: Utils.getLanguageToUse(SkinJSON), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .oo-player-skin")
       );
       var accessibilityControls = new AccessibilityControls(this); //keyboard support
       this.state.configLoaded = true;

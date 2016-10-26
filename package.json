@@ -29,6 +29,8 @@
   },
   "devDependencies": {
     "browserify": "13.0.0",
+    "bulk-require": "^1.0.0",
+    "bulkify": "^1.4.2",
     "git-rev": "0.2.1",
     "graceful-fs": "*",
     "gulp": "3.9.1",
