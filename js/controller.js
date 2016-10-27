@@ -779,6 +779,85 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    /********************************************************************
+     MAIN VIDEO RELATED EVENTS
+     *********************************************************************/
+
+    //merge and load config data
+    loadConfigData: function(params, settings, data) {
+      if (data) {
+        SkinJSON = data;
+      }
+
+      //override data in skin config with possible inline data input by the user
+      $.extend(true, SkinJSON, params.skin.inline);
+      //override state settings with defaults from skin config and possible local storage settings
+      $.extend(true, this.state.closedCaptionOptions, SkinJSON.closedCaptionOptions, settings.closedCaptionOptions);
+      this.state.config = SkinJSON;
+
+      //load config language json if exist
+      if (SkinJSON.localization.availableLanguageFile) {
+        SkinJSON.localization.availableLanguageFile.forEach(function(languageObj){
+          if (languageObj.languageFile) {
+            $.getJSON(languageObj.languageFile, function(data) {
+              Localization.languageFiles[languageObj.language] = data;
+            });
+          }
+        });
+      }
+
+      //load player
+      this.skin = ReactDOM.render(
+        React.createElement(Skin, {skinConfig: SkinJSON, localizableStrings: Localization.languageFiles, language: Utils.getLanguageToUse(SkinJSON), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .oo-player-skin")
+      );
+      this.state.configLoaded = true;
+      this.renderSkin();
+      this.createPluginElements();
+    },
+
+    //create plugin container elements
+    createPluginElements: function() {
+      var fullClass = (this.state.config.adScreen.showControlBar ? "" : " oo-full");
+      $("#" + this.state.elementId + " .oo-player-skin").append("<div class='oo-player-skin-plugins"+fullClass+"'></div><div class='oo-player-skin-plugins-click-layer"+fullClass+"'></div>");
+      this.state.pluginsElement = $("#" + this.state.elementId + " .oo-player-skin-plugins");
+      this.state.pluginsClickElement = $("#" + this.state.elementId + " .oo-player-skin-plugins-click-layer");
+      this.state.pluginsElement.mouseover(
+        function() {
+          this.showControlBar();
+          this.renderSkin();
+          this.startHideControlBarTimer();
+        }.bind(this)
+      );
+      this.state.pluginsElement.mouseout(
+        function() {
+          this.hideControlBar();
+        }.bind(this)
+      );
+      this.state.pluginsClickElement.click(
+        function() {
+          this.state.pluginsClickElement.removeClass("oo-showing");
+          this.mb.publish(OO.EVENTS.PLAY);
+        }.bind(this)
+      );
+      this.state.pluginsClickElement.mouseover(
+        function() {
+          this.showControlBar();
+          this.renderSkin();
+          this.startHideControlBarTimer();
+        }.bind(this)
+      );
+      this.state.pluginsClickElement.mouseout(
+        function() {
+          this.hideControlBar();
+        }.bind(this)
+      );
+      this.mb.publish(OO.EVENTS.UI_READY, {
+        videoWrapperClass: "innerWrapper",
+        pluginsClass: "oo-player-skin-plugins"
+      });
+      this.externalPluginSubscription();
+    },
+
     onBitrateInfoAvailable: function(event, bitrates) {
       if (bitrates && bitrates.bitrates) {
         this.state.videoQualityOptions.availableBitrates = bitrates.bitrates;
@@ -1404,81 +1483,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if(this.state.mainVideoAspectRatio > 0) {
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
-    },
-
-    //merge and load config data
-    loadConfigData: function(params, settings, data) {
-      if (data) {
-        SkinJSON = data;
-      }
-
-      //override data in skin config with possible inline data input by the user
-      $.extend(true, SkinJSON, params.skin.inline);
-      //override state settings with defaults from skin config and possible local storage settings
-      $.extend(true, this.state.closedCaptionOptions, SkinJSON.closedCaptionOptions, settings.closedCaptionOptions);
-      this.state.config = SkinJSON;
-
-      //load config language json if exist
-      if (SkinJSON.localization.availableLanguageFile) {
-        SkinJSON.localization.availableLanguageFile.forEach(function(languageObj){
-          if (languageObj.languageFile) {
-            $.getJSON(languageObj.languageFile, function(data) {
-              Localization.languageFiles[languageObj.language] = data;
-            });
-          }
-        });
-      }
-
-      //load player
-      this.skin = ReactDOM.render(
-        React.createElement(Skin, {skinConfig: SkinJSON, localizableStrings: Localization.languageFiles, language: Utils.getLanguageToUse(SkinJSON), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .oo-player-skin")
-      );
-      this.state.configLoaded = true;
-      this.renderSkin();
-      this.createPluginElements();
-    },
-
-    //create plugin container elements
-    createPluginElements: function() {
-      var fullClass = (this.state.config.adScreen.showControlBar ? "" : " oo-full");
-      $("#" + this.state.elementId + " .oo-player-skin").append("<div class='oo-player-skin-plugins"+fullClass+"'></div><div class='oo-player-skin-plugins-click-layer"+fullClass+"'></div>");
-      this.state.pluginsElement = $("#" + this.state.elementId + " .oo-player-skin-plugins");
-      this.state.pluginsClickElement = $("#" + this.state.elementId + " .oo-player-skin-plugins-click-layer");
-      this.state.pluginsElement.mouseover(
-        function() {
-          this.showControlBar();
-          this.renderSkin();
-          this.startHideControlBarTimer();
-        }.bind(this)
-      );
-      this.state.pluginsElement.mouseout(
-        function() {
-          this.hideControlBar();
-        }.bind(this)
-      );
-      this.state.pluginsClickElement.click(
-        function() {
-          this.state.pluginsClickElement.removeClass("oo-showing");
-          this.mb.publish(OO.EVENTS.PLAY);
-        }.bind(this)
-      );
-      this.state.pluginsClickElement.mouseover(
-        function() {
-          this.showControlBar();
-          this.renderSkin();
-          this.startHideControlBarTimer();
-        }.bind(this)
-      );
-      this.state.pluginsClickElement.mouseout(
-        function() {
-          this.hideControlBar();
-        }.bind(this)
-      );
-      this.mb.publish(OO.EVENTS.UI_READY, {
-        videoWrapperClass: "innerWrapper",
-        pluginsClass: "oo-player-skin-plugins"
-      });
-      this.externalPluginSubscription();
     }
   };
 
