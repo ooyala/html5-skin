@@ -34,7 +34,7 @@ This simple test HTML page can also be hosted on your environment to showcase ht
     "playerBrandingId": "YOUR_PLAYER_ID",
     "debug":true,
     "skin": {
-      // Default config (./config/skin.json) contains the configuration setting for player skin. Change to your local config when necessary.
+      // config contains the configuration setting for player skin. Change to your local config when necessary.
       "config": ""
     }
   };
