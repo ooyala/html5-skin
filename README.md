@@ -32,7 +32,11 @@ This simple test HTML page can also be hosted on your environment to showcase ht
   var playerParam = {
     "pcode": "YOUR_PCODE",
     "playerBrandingId": "YOUR_PLAYER_ID",
-    "debug":true
+    "debug":true,
+    "skin": {
+      // Default config (./config/skin.json) contains the configuration setting for player skin. Change to your local config when necessary.
+      "config": ""
+    }
   };
 
   OO.ready(function() {
