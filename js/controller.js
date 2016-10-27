@@ -1231,9 +1231,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "custom" : { "source" : screen}
       };
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
-      if (screen == CONSTANTS.SCREEN.END_SCREEN) {
-        this.skin.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen = true;
-      }
     },
 
     toggleVideoQualityPopOver: function() {
