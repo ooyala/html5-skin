@@ -227,13 +227,13 @@ OO = {
     Html5Skin.externalPluginSubscription.call(controllerMock);
 
     //test player state
-    var tempSkin = controllerMock.skin;
+    var tempSkin = $.extend(true, {}, controllerMock.skin);
     Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', elementId, {skin:{config:{}}}, {});
     Html5Skin.loadConfigData.call(controllerMock, {skin:{config:{}}}, {});
     Html5Skin.createPluginElements.call(controllerMock);
     controllerMock.skin = tempSkin; //reset skin, onPlayerCreated updates skin
 
-    var tempMainVideoElement = controllerMock.state.mainVideoElement;
+    var tempMainVideoElement = $.extend(true, {}, controllerMock.state.mainVideoElement);
     Html5Skin.onVcVideoElementCreated.call(controllerMock, 'customerUi', {videoId: OO.VIDEO.MAIN});
     controllerMock.state.mainVideoElement = tempMainVideoElement;
 
