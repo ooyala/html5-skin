@@ -3,9 +3,6 @@ jest.dontMock('../../js/components/scrubberBar')
     .dontMock('../../js/components/thumbnail')
     .dontMock('../../js/components/thumbnailCarousel')
     .dontMock('../../js/constants/constants')
-    .dontMock('../../config/en.json')
-    .dontMock('../../config/es.json')
-    .dontMock('../../config/zh.json')
     .dontMock('../../config/skin.json');
 
 var React = require('react');
