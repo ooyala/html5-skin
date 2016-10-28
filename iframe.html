@@ -27,6 +27,8 @@
     var docUrl = undefined;
     if (!!queryParams.match(/docUrl=([^&]*)/)) {
       playerParam["docUrl"] = decodeURIComponent(queryParams.match(/docUrl=([^&]*)/)[1]);
+    } else {
+      playerParam["docUrl"] = document.referrer;
     }
 
     // Parse standard Ooyala player runtime options
