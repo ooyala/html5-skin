@@ -1,0 +1,60 @@
+.oo-watermark-container {
+  position: absolute;
+  max-height: 100%;
+  max-width: 100%;
+  @include vendor-prefixes (transition, bottom .3s ease-in-out);
+}
+
+.oo-watermark-image {
+  width: auto;
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.oo-watermark-clickable {
+  width: auto;
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.oo-watermark-top {
+  top: 15px;
+}
+.oo-watermark-bottom {
+  bottom: 15px;
+}
+
+.oo-watermark-center-horizontal {
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.oo-watermark-center-vertical {
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.oo-watermark-left {
+  left: 15px;
+
+  img {
+    float: left;
+  }
+}
+.oo-watermark-right {
+  right: 15px;
+
+  img {
+    float: right;
+  }
+}
+
+.oo-watermark-bottom.oo-watermark-bottom-cb {
+  bottom: $control-bar-height;
+}

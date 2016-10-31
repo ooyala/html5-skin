@@ -5,9 +5,11 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     ControlBar = require('../components/controlBar'),
     AdOverlay = require('../components/adOverlay'),
+    ClassNames = require('classnames'),
     UpNextPanel = require('../components/upNextPanel'),
     Spinner = require('../components/spinner'),
     TextTrack = require('../components/textTrackPanel'),
+    Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin');
 
 var PlayingScreen = React.createClass({
@@ -113,12 +115,17 @@ var PlayingScreen = React.createClass({
         controlBarVisible={this.state.controlBarVisible}
         currentPlayhead={this.props.currentPlayhead}/> : null;
 
+    var watermarkClickableLayer = <Watermark {...this.props} clickableLayer={true} controlBarVisible={this.state.controlBarVisible}/>
+    var watermarkImage = <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
+
     return (
     <div className="oo-state-screen oo-playing-screen"
          ref="PlayingScreen"
          onMouseOver={this.showControlBar}
          onMouseOut={this.hideControlBar}
          onMouseMove={this.handlePlayerMouseMove}>
+
+      {watermarkImage}
 
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
@@ -145,6 +152,9 @@ var PlayingScreen = React.createClass({
           playerState={this.props.playerState}
           isLiveStream={this.props.isLiveStream} />
       </div>
+
+      {watermarkClickableLayer}
+
     </div>
     );
   }
