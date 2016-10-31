@@ -496,6 +496,9 @@ var ClosedCaptionPanel = React.createClass({displayName: "ClosedCaptionPanel",
             this.props), 
             React.createElement(Tab, {title: languageTabTitle}, 
               React.createElement(LanguageTab, React.__spread({},  this.props))
+            ), 
+            React.createElement(Tab, {title: captionOpacityTabTitle}, 
+              React.createElement(CaptionOpacityTab, React.__spread({},  this.props))
             )
           ), 
 
@@ -4381,7 +4384,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "27da4bf51e42e0260112389509fc2594f1dfd9da"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "028c871879592e92512e4a662f39af79bf8feacd"};
   }
 
   var Html5Skin = function (mb, id) {

@@ -46,6 +46,9 @@ var ClosedCaptionPanel = React.createClass({
             <Tab title={languageTabTitle}>
               <LanguageTab {...this.props} />
             </Tab>
+            <Tab title={captionOpacityTabTitle}>
+              <CaptionOpacityTab {...this.props} />
+            </Tab>
           </Tabs>
 
           <CCPreviewPanel {...this.props} />
