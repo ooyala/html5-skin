@@ -496,21 +496,6 @@ var ClosedCaptionPanel = React.createClass({displayName: "ClosedCaptionPanel",
             this.props), 
             React.createElement(Tab, {title: languageTabTitle}, 
               React.createElement(LanguageTab, React.__spread({},  this.props))
-            ), 
-            React.createElement(Tab, {title: colorSelectionTabTitle}, 
-              React.createElement(ColorSelectionTab, React.__spread({},  this.props))
-            ), 
-            React.createElement(Tab, {title: captionOpacityTabTitle}, 
-              React.createElement(CaptionOpacityTab, React.__spread({},  this.props))
-            ), 
-            React.createElement(Tab, {title: fontTypeTabTitle}, 
-              React.createElement(FontTypeTab, React.__spread({},  this.props))
-            ), 
-            React.createElement(Tab, {title: fontSizeTabTitle}, 
-              React.createElement(FontSizeTab, React.__spread({},  this.props))
-            ), 
-            React.createElement(Tab, {title: textEnhancementsTabTitle}, 
-              React.createElement(TextEnhancementsTab, React.__spread({},  this.props))
             )
           ), 
 
@@ -4396,7 +4381,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "183b94de844a5137cf577e7e4de60c3a891d2598"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "27da4bf51e42e0260112389509fc2594f1dfd9da"};
   }
 
   var Html5Skin = function (mb, id) {
