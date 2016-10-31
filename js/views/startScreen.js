@@ -103,8 +103,8 @@ var StartScreen = React.createClass({
           <div className="oo-start-screen-linear-gradient"></div>
           <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
         </div>
-        <Watermark {...this.props}/>
-        <Watermark {...this.props} clickableLayer={true}/>
+        <Watermark {...this.props} controlBarVisible={false}/>
+        <Watermark {...this.props} clickableLayer={true} controlBarVisible={false}/>
         <div className={infoPanelClass}>
           {this.props.skinConfig.startScreen.showTitle ? titleMetadata : null}
           {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : null}

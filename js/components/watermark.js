@@ -121,7 +121,7 @@ Watermark.propTypes = {
 
 Watermark.defaultProps = {
   clickableLayer: false,
-  controlBarVisible: true,
+  controlBarVisible: false,
   skinConfig: {
     general: {
       watermark: {
