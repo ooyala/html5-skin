@@ -490,18 +490,7 @@ var ClosedCaptionPanel = React.createClass({displayName: "ClosedCaptionPanel",
 
     return (
         React.createElement("div", {className: "oo-content-panel oo-closed-captions-panel"}, 
-          React.createElement(Tabs, React.__spread({
-            className: "captions-navbar", 
-            showScrollButtons: this.props.componentWidth < tabMenuOverflowMap[this.props.language]}, 
-            this.props), 
-            React.createElement(Tab, {title: languageTabTitle}, 
-              React.createElement(LanguageTab, React.__spread({},  this.props))
-            ), 
-            React.createElement(Tab, {title: captionOpacityTabTitle}, 
-              React.createElement(CaptionOpacityTab, React.__spread({},  this.props))
-            )
-          ), 
-
+          React.createElement(LanguageTab, React.__spread({},  this.props)), 
           React.createElement(CCPreviewPanel, React.__spread({},  this.props))
         )
     );
@@ -4384,7 +4373,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "028c871879592e92512e4a662f39af79bf8feacd"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "dee5bb2217fc418c9bfe5e5117fd7439a760d78b"};
   }
 
   var Html5Skin = function (mb, id) {
