@@ -51,15 +51,19 @@ var Watermark = React.createClass({
     }
     else {
       var watermarkStyle = {};
+      var watermarkImageStyle = {};
       watermarkStyle.opacity = this.props.skinConfig.general.watermark.transparency;
       if (this.props.skinConfig.general.watermark.scalingOption == "height") {
         watermarkStyle.height = this.props.skinConfig.general.watermark.scalingPercentage + '%';
+        watermarkImageStyle.height = '100%';
       }
       else if (this.props.skinConfig.general.watermark.scalingOption == "width") {
         watermarkStyle.width = this.props.skinConfig.general.watermark.scalingPercentage + '%';
+        watermarkImageStyle.width = '100%';
       }
       else if (this.props.skinConfig.general.watermark.scalingOption == "default") {
         watermarkStyle.width = CONSTANTS.WATERMARK.DEFAULT_SCALING_PERCENTAGE + '%';
+        watermarkImageStyle.width = '100%';
       }
       else {
         watermarkStyle.width = 'auto';
@@ -79,8 +83,8 @@ var Watermark = React.createClass({
         this.props.skinConfig.general.watermark.position.toLowerCase().indexOf("centerleft") > -1
     });
 
-    var watermarkImage = <img className="oo-watermark-image" src={watermarkUrl}/>;
-    var watermarkClickableLayer = <img className="oo-watermark-clickable" src={watermarkUrl}/>;
+    var watermarkImage = <img className="oo-watermark-image" style={watermarkImageStyle} src={watermarkUrl}/>;
+    var watermarkClickableLayer = <img className="oo-watermark-clickable" style={watermarkImageStyle} src={watermarkUrl}/>;
 
     if (!this.props.clickableLayer) {
       return (<div className={watermarkClass} ref="watermark-image" style={watermarkStyle}>{watermarkImage}</div>);
