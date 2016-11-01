@@ -115,7 +115,8 @@ describe('Watermark', function () {
 
     //test watermark width is default
     var image = DOM.refs['watermark-image'];
-    expect(image.style.width).toBe('auto'||'');
+    var check = (image.style.width == 'auto' || image.style.width == '')
+    expect(check).toBe(true);
   });
 
   it('tests watermark click on desktop', function () {
