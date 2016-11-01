@@ -143,6 +143,17 @@ describe('Utils', function () {
     expect(localizedString).toBe("");
   });
 
+  it('tests getPropertyValue', function () {
+    var defaultVal = Utils.getPropertyValue({}, 'property.nestedProp', 'default');
+    expect(defaultVal).toEqual('default');
+
+    var undefinedVal = Utils.getPropertyValue({}, 'property.nestedProp');
+    expect(undefinedVal).toBeUndefined();
+
+    var existingVal = Utils.getPropertyValue({ property: { nestedProp: 'value' } }, 'property.nestedProp');
+    expect(existingVal).toEqual('value');
+  });
+
   it('tests highlight', function () {
     var div = document.createElement('div');
     var opacity = '0.6';
