@@ -68,7 +68,7 @@ video {
   @extend .oo-expand;
 }
 
-video.oo-blur {
+.oo-blur {
   -webkit-filter: blur(3px);
   -moz-filter: blur(3px);
   filter: blur(3px);
