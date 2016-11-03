@@ -1306,7 +1306,7 @@ var ControlBar = React.createClass({displayName: "ControlBar",
                         step: "0.1"}));
 
     var volumeControls;
-    if (!this.isMobile){
+    if (this.props.skinConfig.controlBar.volumeControl.bars){
       volumeControls = volumeBars;
     }
     else {
@@ -4434,7 +4434,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "5c3ac48232b843d7527fa62b29eb3a122ccac2c3"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "35e5c53a10eb81d2e588e2b8f5a78a66b2e56626"};
   }
 
   var Html5Skin = function (mb, id) {
