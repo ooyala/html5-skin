@@ -1367,6 +1367,8 @@ var ControlBar = React.createClass({displayName: "ControlBar",
           onMouseOver: this.highlight, onMouseOut: this.removeHighlight}))
       ),
 
+      "scrubberBar": React.createElement(ScrubberBar, React.__spread({},  this.props)),
+
       "live": React.createElement("a", {className: liveClass, 
           ref: "LiveButton", 
           onClick: liveClick, key: "live"}, 
@@ -1583,6 +1585,16 @@ var ControlBar = React.createClass({displayName: "ControlBar",
     var controlBarStyle = {
       height: this.props.skinConfig.controlBar.height
     };
+
+    if(this.props.skinConfig.controlBar.scrubberBar.nested){
+      return (
+        React.createElement("div", {className: controlBarClass, style: controlBarStyle, onMouseUp: this.handleControlBarMouseUp, onTouchEnd: this.handleControlBarMouseUp}, 
+          React.createElement("div", {className: "oo-control-bar-items-wrapper"}, 
+            controlBarItems
+          )
+        )
+      );
+    }
 
     return (
       React.createElement("div", {className: controlBarClass, style: controlBarStyle, onMouseUp: this.handleControlBarMouseUp, onTouchEnd: this.handleControlBarMouseUp}, 
@@ -4451,7 +4463,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "a5d5041c6c13fb5f8e0a45bcb7fec4c6292b9259"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "98fb9d62cbd83de8bc61d10677ca1d0b9c7fc964"};
   }
 
   var Html5Skin = function (mb, id) {

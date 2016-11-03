@@ -327,6 +327,8 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </a>,
 
+      "scrubberBar": <ScrubberBar {...this.props} />,
+
       "live": <a className={liveClass}
           ref="LiveButton"
           onClick={liveClick} key="live">
@@ -543,6 +545,16 @@ var ControlBar = React.createClass({
     var controlBarStyle = {
       height: this.props.skinConfig.controlBar.height
     };
+
+    if(this.props.skinConfig.controlBar.scrubberBar.nested){
+      return (
+        <div className={controlBarClass} style={controlBarStyle} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
+          <div className="oo-control-bar-items-wrapper">
+            {controlBarItems}
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div className={controlBarClass} style={controlBarStyle} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
