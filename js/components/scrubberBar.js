@@ -253,6 +253,7 @@ var ScrubberBar = React.createClass({
         hoverPosition = this.state.scrubbingPlayheadX;
         hoverTime = (this.state.scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration;
         playheadClassName += " oo-playhead-scrubbing";
+        playedIndicatorClassName += " oo-played-indicator-scrubbing";
 
         thumbnailCarousel =
           <ThumbnailCarousel
@@ -264,6 +265,7 @@ var ScrubberBar = React.createClass({
         hoverPosition = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration;
         hoverTime = this.props.currentPlayhead;
         playheadClassName += " oo-playhead-scrubbing";
+        playedIndicatorClassName += " oo-played-indicator-scrubbing";
       } else if (this.state.hoveringX) {
         hoverPosition = this.state.hoveringX;
         hoverTime = (this.state.hoveringX / this.state.scrubberBarWidth) * this.props.duration;

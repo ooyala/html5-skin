@@ -1390,9 +1390,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     showVolumeSliderBar: function() {
       this.state.volumeState.volumeSliderVisible = true;
-      if (Utils.isAndroid()) {
+      // if (Utils.isAndroid()) {
         this.startHideVolumeSliderTimer();
-      }
+      // }
       this.renderSkin();
     },
 
@@ -1400,7 +1400,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.cancelTimer();
         var timer = setTimeout(function() {
           if(this.state.volumeState.volumeSliderVisible === true){
-            this.hideVolumeSliderBar();
+            // this.hideVolumeSliderBar();
           }
         }.bind(this), 3000);
         this.state.timer = timer;
@@ -1412,6 +1412,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         var timer = setTimeout(function() {
           if(this.state.controlBarVisible === true){
             this.hideControlBar();
+            // this.hideVolumeSliderBar();
           }
         }.bind(this), 3000);
         this.state.timer = timer;
@@ -1458,9 +1459,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     //set playbackRate
-    changePlaybackSpeed: function(rate) {
+    changePlaybackSpeed: function() {
       var video = this.state.mainVideoElement.get(0); // here you can access the video element for example
-      video.playbackRate=video.playbackRate*rate;
+      if(video.playbackRate == 2){
+        video.playbackRate = 1;
+      } else {
+        video.playbackRate=video.playbackRate + 0.5;
+      }
+      this.playbackRate = video.playbackRate;
     }
   };
 

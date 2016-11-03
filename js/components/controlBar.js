@@ -79,7 +79,7 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeIconClick: function(evt) {
-    if (this.isMobile){
+    // if (this.isMobile){
       this.props.controller.startHideControlBarTimer();
       evt.stopPropagation(); // W3C
       evt.cancelBubble = true; // IE
@@ -89,10 +89,10 @@ var ControlBar = React.createClass({
       else {
         this.props.controller.handleMuteClick();
       }
-    }
-    else{
-      this.props.controller.handleMuteClick();
-    }
+    // }
+    // else{
+      // this.props.controller.handleMuteClick();
+    // }
   },
 
   handlePlayClick: function() {
@@ -181,9 +181,14 @@ var ControlBar = React.createClass({
     this.removeHighlight({target: ReactDOM.findDOMNode(this.refs.volumeIcon)});
   },
 
+  handleVolumeHover: function() {
+    this.props.controller.showVolumeSliderBar()
+  },
+
   changeVolumeSlider: function(event) {
     var newVolume = parseFloat(event.target.value);
     this.props.controller.setVolume(newVolume);
+    this.props.controller.showVolumeSliderBar()
     this.setState({
       volumeSliderValue: event.target.value
     });
@@ -210,7 +215,7 @@ var ControlBar = React.createClass({
   },
 
   handlePlaybackSpeed: function(){
-    console.log ("Increase playback speed");
+    console.log ("Change playback speed");
     this.props.controller.changePlaybackSpeed(2); // This method does not exist - so need to create it
   },
 
@@ -223,6 +228,15 @@ var ControlBar = React.createClass({
       playIcon = "replay";
     } else {
       playIcon = "play";
+    }
+
+    var playbackSpeedIcon = "";
+    if (this.props.controller.playbackRate == 1.5) {
+      playbackSpeedIcon = "pause";
+    } else if (this.props.controller.playbackRate == 2) {
+      playbackSpeedIcon = "replay";
+    } else {
+      playbackSpeedIcon = "play";
     }
 
     var volumeIcon = (this.props.controller.state.volumeState.muted ? "volumeOff" : "volume");
@@ -321,11 +335,11 @@ var ControlBar = React.createClass({
       </a>,
 
       "volume": <div className="oo-volume oo-control-bar-item" key="volume">
+        {volumeControls}
         <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
           style={this.props.skinConfig.controlBar.iconStyle.inactive}
           onClick={this.handleVolumeIconClick}
-          onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}/>
-        {volumeControls}
+          onMouseOver={this.handleVolumeHover}/>
       </div>,
 
       "playheadTime": <a className="oo-playhead-time oo-control-bar-item" style={durationSetting} key="playheadTime">
@@ -413,7 +427,7 @@ var ControlBar = React.createClass({
       </button>,
 
       "changePlaybackSpeed": <button className="oo-playback-speed oo-control-bar-item" onClick={this.handlePlaybackSpeed} key="playbackspeed">
-        <Icon {...this.props} icon="playbackSpeed"
+        <Icon {...this.props} icon={playbackSpeedIcon}
           style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,

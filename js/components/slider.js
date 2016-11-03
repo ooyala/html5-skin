@@ -46,9 +46,10 @@ var Slider = React.createClass({
 
   render: function() {
     return (
-      <input type="range" className={this.props.className} min={this.props.minValue} max={this.props.maxValue} 
+      <input type="range" className={this.props.className} min={this.props.minValue} max={this.props.maxValue}
            value={this.props.value} step={this.props.step} ref={this.props.itemRef}
-           onChange={this.changeValue} onClick={this.changeValue} onMouseMove={this.changeValue}/>
+           onChange={this.changeValue} onClick={this.changeValue} onMouseMove={this.changeValue}
+           onMouseOver={this.props.onMouseOver}/>
     );
   }
 });

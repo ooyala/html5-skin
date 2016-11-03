@@ -1119,7 +1119,7 @@ var ControlBar = React.createClass({displayName: "ControlBar",
   },
 
   handleVolumeIconClick: function(evt) {
-    if (this.isMobile){
+    // if (this.isMobile){
       this.props.controller.startHideControlBarTimer();
       evt.stopPropagation(); // W3C
       evt.cancelBubble = true; // IE
@@ -1129,10 +1129,10 @@ var ControlBar = React.createClass({displayName: "ControlBar",
       else {
         this.props.controller.handleMuteClick();
       }
-    }
-    else{
-      this.props.controller.handleMuteClick();
-    }
+    // }
+    // else{
+      // this.props.controller.handleMuteClick();
+    // }
   },
 
   handlePlayClick: function() {
@@ -1221,9 +1221,14 @@ var ControlBar = React.createClass({displayName: "ControlBar",
     this.removeHighlight({target: ReactDOM.findDOMNode(this.refs.volumeIcon)});
   },
 
+  handleVolumeHover: function() {
+    this.props.controller.showVolumeSliderBar()
+  },
+
   changeVolumeSlider: function(event) {
     var newVolume = parseFloat(event.target.value);
     this.props.controller.setVolume(newVolume);
+    this.props.controller.showVolumeSliderBar()
     this.setState({
       volumeSliderValue: event.target.value
     });
@@ -1250,7 +1255,7 @@ var ControlBar = React.createClass({displayName: "ControlBar",
   },
 
   handlePlaybackSpeed: function(){
-    console.log ("Increase playback speed");
+    console.log ("Change playback speed");
     this.props.controller.changePlaybackSpeed(2); // This method does not exist - so need to create it
   },
 
@@ -1263,6 +1268,15 @@ var ControlBar = React.createClass({displayName: "ControlBar",
       playIcon = "replay";
     } else {
       playIcon = "play";
+    }
+
+    var playbackSpeedIcon = "";
+    if (this.props.controller.playbackRate == 1.5) {
+      playbackSpeedIcon = "pause";
+    } else if (this.props.controller.playbackRate == 2) {
+      playbackSpeedIcon = "replay";
+    } else {
+      playbackSpeedIcon = "play";
     }
 
     var volumeIcon = (this.props.controller.state.volumeState.muted ? "volumeOff" : "volume");
@@ -1361,11 +1375,11 @@ var ControlBar = React.createClass({displayName: "ControlBar",
       ),
 
       "volume": React.createElement("div", {className: "oo-volume oo-control-bar-item", key: "volume"}, 
+        volumeControls, 
         React.createElement(Icon, React.__spread({},  this.props, {icon: volumeIcon, ref: "volumeIcon", 
           style: this.props.skinConfig.controlBar.iconStyle.inactive, 
           onClick: this.handleVolumeIconClick, 
-          onMouseOver: this.volumeHighlight, onMouseOut: this.volumeRemoveHighlight})), 
-        volumeControls
+          onMouseOver: this.handleVolumeHover}))
       ),
 
       "playheadTime": React.createElement("a", {className: "oo-playhead-time oo-control-bar-item", style: durationSetting, key: "playheadTime"}, 
@@ -1453,7 +1467,7 @@ var ControlBar = React.createClass({displayName: "ControlBar",
       ),
 
       "changePlaybackSpeed": React.createElement("button", {className: "oo-playback-speed oo-control-bar-item", onClick: this.handlePlaybackSpeed, key: "playbackspeed"}, 
-        React.createElement(Icon, React.__spread({},  this.props, {icon: "playbackSpeed", 
+        React.createElement(Icon, React.__spread({},  this.props, {icon: playbackSpeedIcon, 
           style: dynamicStyles.iconCharacter, 
           onMouseOver: this.highlight, onMouseOut: this.removeHighlight}))
       ),
@@ -2678,6 +2692,7 @@ var ScrubberBar = React.createClass({displayName: "ScrubberBar",
         hoverPosition = this.state.scrubbingPlayheadX;
         hoverTime = (this.state.scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration;
         playheadClassName += " oo-playhead-scrubbing";
+        playedIndicatorClassName += " oo-played-indicator-scrubbing";
 
         thumbnailCarousel =
           React.createElement(ThumbnailCarousel, {
@@ -2689,6 +2704,7 @@ var ScrubberBar = React.createClass({displayName: "ScrubberBar",
         hoverPosition = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration;
         hoverTime = this.props.currentPlayhead;
         playheadClassName += " oo-playhead-scrubbing";
+        playedIndicatorClassName += " oo-played-indicator-scrubbing";
       } else if (this.state.hoveringX) {
         hoverPosition = this.state.hoveringX;
         hoverTime = (this.state.hoveringX / this.state.scrubberBarWidth) * this.props.duration;
@@ -2936,7 +2952,8 @@ var Slider = React.createClass({displayName: "Slider",
     return (
       React.createElement("input", {type: "range", className: this.props.className, min: this.props.minValue, max: this.props.maxValue, 
            value: this.props.value, step: this.props.step, ref: this.props.itemRef, 
-           onChange: this.changeValue, onClick: this.changeValue, onMouseMove: this.changeValue})
+           onChange: this.changeValue, onClick: this.changeValue, onMouseMove: this.changeValue, 
+           onMouseOver: this.props.onMouseOver})
     );
   }
 });
@@ -4434,7 +4451,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "35e5c53a10eb81d2e588e2b8f5a78a66b2e56626"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "a5d5041c6c13fb5f8e0a45bcb7fec4c6292b9259"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -5806,9 +5823,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     showVolumeSliderBar: function() {
       this.state.volumeState.volumeSliderVisible = true;
-      if (Utils.isAndroid()) {
+      // if (Utils.isAndroid()) {
         this.startHideVolumeSliderTimer();
-      }
+      // }
       this.renderSkin();
     },
 
@@ -5816,7 +5833,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.cancelTimer();
         var timer = setTimeout(function() {
           if(this.state.volumeState.volumeSliderVisible === true){
-            this.hideVolumeSliderBar();
+            // this.hideVolumeSliderBar();
           }
         }.bind(this), 3000);
         this.state.timer = timer;
@@ -5828,6 +5845,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         var timer = setTimeout(function() {
           if(this.state.controlBarVisible === true){
             this.hideControlBar();
+            // this.hideVolumeSliderBar();
           }
         }.bind(this), 3000);
         this.state.timer = timer;
@@ -5874,9 +5892,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     //set playbackRate
-    changePlaybackSpeed: function(rate) {
+    changePlaybackSpeed: function() {
       var video = this.state.mainVideoElement.get(0); // here you can access the video element for example
-      video.playbackRate=video.playbackRate*rate;
+      if(video.playbackRate == 2){
+        video.playbackRate = 1;
+      } else {
+        video.playbackRate=video.playbackRate + 0.5;
+      }
+      this.playbackRate = video.playbackRate;
     }
   };
 
