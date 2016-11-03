@@ -266,7 +266,7 @@ var ControlBar = React.createClass({
                         step={"0.1"}/></div>;
 
     var volumeControls;
-    if (!this.isMobile){
+    if (this.props.skinConfig.controlBar.volumeControl.bars){
       volumeControls = volumeBars;
     }
     else {
