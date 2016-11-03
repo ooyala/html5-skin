@@ -3,6 +3,7 @@
 *
 * @module Utils
 */
+var debounce = require('lodash.debounce');
 
 var Utils = {
   /**
@@ -430,6 +431,52 @@ var Utils = {
       }
     }
     return usedWidth;
+  },
+
+  isObject: function (value) {
+    var type = typeof value;
+    return !!value && (type == 'object' || type == 'function');
+  },
+
+  /**
+   * Credit - https://www.npmjs.com/package/lodash.throttle
+   *
+   * Creates a throttled function that only invokes `func` at most once per
+   * every `wait` milliseconds. The throttled function comes with a `cancel`
+   * method to cancel delayed `func` invocations and a `flush` method to
+   * immediately invoke them. Provide `options` to indicate whether `func`
+   * should be invoked on the leading and/or trailing edge of the `wait`
+   * timeout. The `func` is invoked with the last arguments provided to the
+   * throttled function. Subsequent calls to the throttled function return the
+   * result of the last `func` invocation.
+   *
+   *
+   * @function throttle
+   * @param {Function} func The function to throttle.
+   * @param {number} [wait=0] The number of milliseconds to throttle invocations to.
+   * @param {Object} [options={}] The options object.
+   * @param {boolean} [options.leading=true]
+   *  Specify invoking on the leading edge of the timeout.
+   * @param {boolean} [options.trailing=true]
+   *  Specify invoking on the trailing edge of the timeout.
+   * @returns {Function} Returns the new throttled function.
+   */
+  throttle: function (func, wait, options) {
+    var leading = true,
+      trailing = true;
+
+    if (typeof func != 'function') {
+      throw new TypeError('Expected a function');
+    }
+    if (this.isObject(options)) {
+      leading = 'leading' in options ? !!options.leading : leading;
+      trailing = 'trailing' in options ? !!options.trailing : trailing;
+    }
+    return debounce(func, wait, {
+      'leading': leading,
+      'maxWait': wait,
+      'trailing': trailing
+    });
   }
 };
 

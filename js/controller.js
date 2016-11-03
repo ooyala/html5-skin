@@ -7,8 +7,7 @@ var React = require('react'),
     CONSTANTS = require('./constants/constants'),
     AccessibilityControls = require('./components/accessibilityControls'),
     Fullscreen = require('screenfull'),
-    Skin = require('./skin'),
-    throttle = require('lodash.throttle');
+    Skin = require('./skin');
 
 OO.plugin("Html5Skin", function (OO, _, $, W) {
   //Check if the player is at least v4. If not, the skin cannot load.
@@ -224,8 +223,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.elementId = elementId;
       this.state.isMobile = Utils.isMobile();
       this.state.browserSupportsTouch = Utils.browserSupportsTouch();
-      this.state.handleDeviceOrientation = throttle(this.handleDeviceOrientation.bind(this), 500);
-      this.state.handleDeviceAcceleration = throttle(this.handleDeviceAcceleration.bind(this), 500);
+      this.state.handleDeviceOrientation = Utils.throttle(this.handleDeviceOrientation.bind(this), 500);
+      this.state.handleDeviceAcceleration = Utils.throttle(this.handleDeviceAcceleration.bind(this), 500);
       this.state.handleOrientationChange = this.handleOrientationChange.bind(this);
 
 
