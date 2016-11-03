@@ -1455,6 +1455,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if(this.state.mainVideoAspectRatio > 0) {
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
+    },
+
+    //set playbackRate
+    changePlaybackSpeed: function(rate) {
+      var video = this.state.mainVideoElement.get(0); // here you can access the video element for example
+      video.playbackRate=video.playbackRate*rate;
     }
   };
 

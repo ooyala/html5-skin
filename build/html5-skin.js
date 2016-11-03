@@ -1229,6 +1229,31 @@ var ControlBar = React.createClass({displayName: "ControlBar",
     });
   },
 
+  handleScrubBack: function(){
+    console.log ("Seeking Back");
+    this.props.controller.seek(this.props.currentPlayhead-10);
+  },
+
+  handleScrubForward: function(){
+    console.log ("Seeking Forward");
+    this.props.controller.seek(this.props.currentPlayhead+10);
+  },
+
+  handleSkipBack: function(){
+    console.log ("Skipping Back");
+    this.props.controller.seek(this.props.currentPlayhead-30);
+  },
+
+  handleSkipForward: function(){
+    console.log ("Skipping Forward");
+    this.props.controller.seek(this.props.currentPlayhead+30);
+  },
+
+  handlePlaybackSpeed: function(){
+    console.log ("Increase playback speed");
+    this.props.controller.changePlaybackSpeed(2); // This method does not exist - so need to create it
+  },
+
   populateControlBar: function() {
     var dynamicStyles = this.setupItemStyle();
     var playIcon = "";
@@ -1343,8 +1368,12 @@ var ControlBar = React.createClass({displayName: "ControlBar",
         volumeControls
       ),
 
-      "timeDuration": React.createElement("a", {className: "oo-time-duration oo-control-bar-duration", style: durationSetting, key: "timeDuration"}, 
-        React.createElement("span", null, playheadTimeContent), totalTimeContent
+      "playheadTime": React.createElement("a", {className: "oo-playhead-time oo-control-bar-item", style: durationSetting, key: "playheadTime"}, 
+        React.createElement("span", null, playheadTimeContent)
+      ),
+
+      "totalTime": React.createElement("a", {className: "oo-total-time oo-control-bar-item", style: durationSetting, key: "totalTime"}, 
+        totalTimeContent
       ),
 
       "flexibleSpace": React.createElement("div", {className: "oo-flexible-space oo-control-bar-flex-space", key: "flexibleSpace"}),
@@ -1397,7 +1426,39 @@ var ControlBar = React.createClass({displayName: "ControlBar",
                     clickUrl: this.props.skinConfig.controlBar.logo.clickUrl, 
                     target: this.props.skinConfig.controlBar.logo.target, 
                     width: this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null, 
-                    height: this.props.skinConfig.controlBar.logo.height})
+                    height: this.props.skinConfig.controlBar.logo.height}),
+
+      "scrubBack": React.createElement("button", {className: "oo-scrub-back oo-control-bar-item", onClick: this.handleScrubBack, key: "scrubback"}, 
+        React.createElement(Icon, React.__spread({},  this.props, {icon: "scrubBack", 
+          style: dynamicStyles.iconCharacter, 
+          onMouseOver: this.highlight, onMouseOut: this.removeHighlight}))
+      ),
+
+      "scrubForward": React.createElement("button", {className: "oo-scrub-forward oo-control-bar-item", onClick: this.handleScrubForward, key: "scrubforward"}, 
+        React.createElement(Icon, React.__spread({},  this.props, {icon: "scrubForward", 
+          style: dynamicStyles.iconCharacter, 
+          onMouseOver: this.highlight, onMouseOut: this.removeHighlight}))
+      ),
+
+      "skipBack": React.createElement("button", {className: "oo-skip-back oo-control-bar-item", onClick: this.handleSkipBack, key: "skipback"}, 
+        React.createElement(Icon, React.__spread({},  this.props, {icon: "skipBack", 
+          style: dynamicStyles.iconCharacter, 
+          onMouseOver: this.highlight, onMouseOut: this.removeHighlight}))
+      ),
+
+      "skipForward": React.createElement("button", {className: "oo-skip-forward oo-control-bar-item", onClick: this.handleSkipForward, key: "skipforward"}, 
+        React.createElement(Icon, React.__spread({},  this.props, {icon: "skipForward", 
+          style: dynamicStyles.iconCharacter, 
+          onMouseOver: this.highlight, onMouseOut: this.removeHighlight}))
+      ),
+
+      "changePlaybackSpeed": React.createElement("button", {className: "oo-playback-speed oo-control-bar-item", onClick: this.handlePlaybackSpeed, key: "playbackspeed"}, 
+        React.createElement(Icon, React.__spread({},  this.props, {icon: "playbackSpeed", 
+          style: dynamicStyles.iconCharacter, 
+          onMouseOver: this.highlight, onMouseOut: this.removeHighlight}))
+      ),
+
+
     };
 
     var controlBarItems = [];
@@ -4373,7 +4434,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "dee5bb2217fc418c9bfe5e5117fd7439a760d78b"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "5c3ac48232b843d7527fa62b29eb3a122ccac2c3"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -5810,6 +5871,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if(this.state.mainVideoAspectRatio > 0) {
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
+    },
+
+    //set playbackRate
+    changePlaybackSpeed: function(rate) {
+      var video = this.state.mainVideoElement.get(0); // here you can access the video element for example
+      video.playbackRate=video.playbackRate*rate;
     }
   };
 

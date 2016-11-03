@@ -189,6 +189,31 @@ var ControlBar = React.createClass({
     });
   },
 
+  handleScrubBack: function(){
+    console.log ("Seeking Back");
+    this.props.controller.seek(this.props.currentPlayhead-10);
+  },
+
+  handleScrubForward: function(){
+    console.log ("Seeking Forward");
+    this.props.controller.seek(this.props.currentPlayhead+10);
+  },
+
+  handleSkipBack: function(){
+    console.log ("Skipping Back");
+    this.props.controller.seek(this.props.currentPlayhead-30);
+  },
+
+  handleSkipForward: function(){
+    console.log ("Skipping Forward");
+    this.props.controller.seek(this.props.currentPlayhead+30);
+  },
+
+  handlePlaybackSpeed: function(){
+    console.log ("Increase playback speed");
+    this.props.controller.changePlaybackSpeed(2); // This method does not exist - so need to create it
+  },
+
   populateControlBar: function() {
     var dynamicStyles = this.setupItemStyle();
     var playIcon = "";
@@ -303,8 +328,12 @@ var ControlBar = React.createClass({
         {volumeControls}
       </div>,
 
-      "timeDuration": <a className="oo-time-duration oo-control-bar-duration" style={durationSetting} key="timeDuration">
-        <span>{playheadTimeContent}</span>{totalTimeContent}
+      "playheadTime": <a className="oo-playhead-time oo-control-bar-item" style={durationSetting} key="playheadTime">
+        <span>{playheadTimeContent}</span>
+      </a>,
+
+      "totalTime": <a className="oo-total-time oo-control-bar-item" style={durationSetting} key="totalTime">
+        {totalTimeContent}
       </a>,
 
       "flexibleSpace": <div className="oo-flexible-space oo-control-bar-flex-space" key="flexibleSpace"></div>,
@@ -357,7 +386,39 @@ var ControlBar = React.createClass({
                     clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
                     target={this.props.skinConfig.controlBar.logo.target}
                     width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
-                    height={this.props.skinConfig.controlBar.logo.height}/>
+                    height={this.props.skinConfig.controlBar.logo.height}/>,
+
+      "scrubBack": <button className="oo-scrub-back oo-control-bar-item" onClick={this.handleScrubBack} key="scrubback">
+        <Icon {...this.props} icon="scrubBack"
+          style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+      </button>,
+
+      "scrubForward": <button className="oo-scrub-forward oo-control-bar-item" onClick={this.handleScrubForward} key="scrubforward">
+        <Icon {...this.props} icon="scrubForward"
+          style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+      </button>,
+
+      "skipBack": <button className="oo-skip-back oo-control-bar-item" onClick={this.handleSkipBack} key="skipback">
+        <Icon {...this.props} icon="skipBack"
+          style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+      </button>,
+
+      "skipForward": <button className="oo-skip-forward oo-control-bar-item" onClick={this.handleSkipForward} key="skipforward">
+        <Icon {...this.props} icon="skipForward"
+          style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+      </button>,
+
+      "changePlaybackSpeed": <button className="oo-playback-speed oo-control-bar-item" onClick={this.handlePlaybackSpeed} key="playbackspeed">
+        <Icon {...this.props} icon="playbackSpeed"
+          style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+      </button>,
+
+
     };
 
     var controlBarItems = [];
