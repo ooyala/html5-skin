@@ -132,8 +132,6 @@ var PauseScreen = React.createClass({
             /> : null
           }
 
-          <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
-
           {adOverlay}
 
           {upNextPanel}

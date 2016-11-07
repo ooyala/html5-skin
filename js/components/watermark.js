@@ -9,36 +9,10 @@ var React = require('react'),
 
 var Watermark = React.createClass({
 
-  getInitialState: function() {
-    this.isMobile = this.props.controller.state.isMobile;
-    return null;
-  },
-
-  handleMouseUp: function(event) {
-    // handle watermark clicked on desktop
-    if (!this.isMobile) {
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
-
-      if (this.props.playerState == CONSTANTS.STATE.PLAYING){
-        this.props.controller.togglePlayPause();
-      }
-      this.props.controller.state.accessibilityControlsEnabled = true;
-      this.handleWatermarkClick();
-    }
-    // for mobile, touch is handled in handleTouchEnd
-  },
-
-  handleTouchEnd: function(event) {
-    event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
+  handleWatermarkClick: function() {
     if (this.props.playerState == CONSTANTS.STATE.PLAYING){
         this.props.controller.togglePlayPause();
     }
-    this.handleWatermarkClick();
-  },
-
-  handleWatermarkClick: function() {
-    window.open(this.props.skinConfig.general.watermark.clickUrl, this.props.skinConfig.general.watermark.target);
   },
 
   render: function() {
@@ -100,7 +74,7 @@ var Watermark = React.createClass({
       return (<div className={watermarkClass} ref='watermark' style={watermarkStyle}>{watermarkImage}</div>);
     else
       return (<a className={watermarkClass} ref='watermark' style={watermarkStyle} href={this.props.skinConfig.general.watermark.clickUrl}
-            target={this.props.skinConfig.general.watermark.target} onMouseUp={this.handleMouseUp} onTouchEnd={this.handleTouchEnd}>{watermarkImage}</a>);
+            target={this.props.skinConfig.general.watermark.target} onClick={this.handleWatermarkClick}>{watermarkImage}</a>);
   }
 });
 
@@ -124,9 +98,6 @@ Watermark.propTypes = {
   }),
   controller: React.PropTypes.shape({
     togglePlayPause: React.PropTypes.func,
-    state: React.PropTypes.shape({
-      isMobile: React.PropTypes.bool
-    })
   })
 };
 
@@ -150,9 +121,6 @@ Watermark.defaultProps = {
   },
   controller: {
     togglePlayPause: function(){},
-    state: {
-      isMobile: false
-    }
   }
 };
 

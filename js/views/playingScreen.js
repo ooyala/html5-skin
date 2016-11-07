@@ -138,8 +138,6 @@ var PlayingScreen = React.createClass({
           /> : null
         }
 
-        <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
-
         {adOverlay}
 
         {upNextPanel}

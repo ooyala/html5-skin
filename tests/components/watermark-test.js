@@ -137,7 +137,7 @@ describe('Watermark', function () {
     expect(check).toBe(true);
   });
 
-  it('tests watermark click on desktop', function () {
+  it('tests watermark click', function () {
     var clicked = false;
     //Render watermark into DOM
     DOM = TestUtils.renderIntoDocument(
@@ -145,57 +145,14 @@ describe('Watermark', function () {
         controlBarVisible={false}/>
     );
 
-    DOM.handleWatermarkClick = function() {clicked = true;};
     var clickable = DOM.refs['watermark'];
-    TestUtils.Simulate.mouseUp(clickable);
+    TestUtils.Simulate.click(clickable);
     expect(paused).toBe(true);
-    expect(clicked).toBe(true);
 
     mockProps.playerState = 'paused';
     playerState = 'paused';
-    TestUtils.Simulate.mouseUp(clickable);
+    TestUtils.Simulate.click(clickable);
     expect(paused).toBe(false);
-    expect(clicked).toBe(true);
-
-    mockProps.playerState = 'playing';
-    playerState = 'playing';
-  });
-
-  it('tests watermark click window open', function () {
-    DOM = TestUtils.renderIntoDocument(
-      <Watermark {...mockProps}
-        controlBarVisible={false}/>
-    );
-
-    spyOn(window, 'open').andCallFake(function() {
-      return true;
-    } );
-
-    var clickable = DOM.refs['watermark'];
-    TestUtils.Simulate.mouseUp(clickable);
-    expect(window.open).toHaveBeenCalled();
-    expect(window.open).toHaveBeenCalledWith(mockProps.skinConfig.general.watermark.clickUrl,mockProps.skinConfig.general.watermark.target);
-  });
-
-  it('tests watermark click on mobile', function () {
-    mockProps.controller.state.isMobile = true;
-    var clicked = false;
-    DOM = TestUtils.renderIntoDocument(
-      <Watermark {...mockProps}
-        controlBarVisible={false}/>
-    );
-    DOM.handleWatermarkClick = function() {clicked = true;};
-
-    var clickable = DOM.refs['watermark'];
-    TestUtils.Simulate.touchEnd(clickable);
-    expect(clicked).toBe(true);
-    mockProps.controller.state.isMobile = false;
-
-    mockProps.playerState = 'paused';
-    playerState = 'paused';
-    TestUtils.Simulate.touchEnd(clickable);
-    expect(paused).toBe(false);
-    expect(clicked).toBe(true);
 
     mockProps.playerState = 'playing';
     playerState = 'playing';
@@ -211,7 +168,7 @@ describe('Watermark', function () {
 
     DOM.handleWatermarkClick = function() {clicked = true;};
     var watermark = DOM.refs['watermark'];
-    TestUtils.Simulate.mouseUp(watermark);
+    TestUtils.Simulate.click(watermark);
     expect(clicked).toBe(false);
 
     mockProps.playerState = 'playing';
