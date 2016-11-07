@@ -39,7 +39,6 @@ var EndScreen = React.createClass({
         <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
 
         <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
-        <Watermark {...this.props} clickableLayer={true} controlBarVisible={this.state.controlBarVisible}/>
 
         <a className={actionIconClass} onClick={this.handleClick}>
           <Icon {...this.props} icon="replay" style={actionIconStyle}/>

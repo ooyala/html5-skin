@@ -106,21 +106,18 @@ var PauseScreen = React.createClass({
         controlBarVisible={this.state.controlBarVisible}
         currentPlayhead={this.props.currentPlayhead}/> : null;
 
-      var watermarkClickableLayer = <Watermark {...this.props} clickableLayer={true} controlBarVisible={this.state.controlBarVisible}/>
-      var watermarkImage = <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
-
     return (
       <div className="oo-state-screen oo-pause-screen">
         <div className={fadeUnderlayClass}></div>
 
-        {watermarkImage}
+        <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
+
+        <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
         <div className={infoPanelClass}>
           {this.props.skinConfig.pauseScreen.showTitle ? titleMetadata : null}
           {this.props.skinConfig.pauseScreen.showDescription ? descriptionMetadata : null}
         </div>
-
-        <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
 
         <a className={actionIconClass} onClick={this.handleClick}>
           <Icon {...this.props} icon="pause" style={actionIconStyle}/>
@@ -146,9 +143,6 @@ var PauseScreen = React.createClass({
             playerState={this.state.playerState}
             isLiveStream={this.props.isLiveStream}/>
         </div>
-
-        {watermarkClickableLayer}
-
       </div>
     );
   }

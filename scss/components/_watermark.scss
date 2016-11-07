@@ -2,49 +2,39 @@
   position: absolute;
   max-height: 100%;
   max-width: 100%;
+  pointer-events: auto;
   @include vendor-prefixes (transition, bottom .3s ease-in-out);
 }
 
-.oo-watermark-image {
+.oo-watermark {
   width: auto;
   height: auto;
-}
-
-.oo-watermark-clickable {
-  width: auto;
-  height: auto;
-  opacity: 0;
-  cursor: pointer;
 }
 
 .oo-watermark-top {
-  top: 15px;
+  top: $watermark-margin;
 }
 .oo-watermark-bottom {
-  bottom: 15px;
+  bottom: $watermark-margin;
 }
 
 .oo-watermark-center-horizontal {
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
+  @include horizontal-center;
 }
 
 .oo-watermark-center-vertical {
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
+  @include vertical-center;
 }
 
 .oo-watermark-left {
-  left: 15px;
+  left: $watermark-margin;
 
   img {
     float: left;
   }
 }
 .oo-watermark-right {
-  right: 15px;
+  right: $watermark-margin;
 
   img {
     float: right;

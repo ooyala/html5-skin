@@ -115,9 +115,6 @@ var PlayingScreen = React.createClass({
         controlBarVisible={this.state.controlBarVisible}
         currentPlayhead={this.props.currentPlayhead}/> : null;
 
-    var watermarkClickableLayer = <Watermark {...this.props} clickableLayer={true} controlBarVisible={this.state.controlBarVisible}/>
-    var watermarkImage = <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
-
     return (
     <div className="oo-state-screen oo-playing-screen"
          ref="PlayingScreen"
@@ -125,11 +122,11 @@ var PlayingScreen = React.createClass({
          onMouseOut={this.hideControlBar}
          onMouseMove={this.handlePlayerMouseMove}>
 
-      {watermarkImage}
+      <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
+
+      <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
-
-      <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
       <div className="oo-interactive-container">
 
@@ -152,9 +149,6 @@ var PlayingScreen = React.createClass({
           playerState={this.props.playerState}
           isLiveStream={this.props.isLiveStream} />
       </div>
-
-      {watermarkClickableLayer}
-
     </div>
     );
   }

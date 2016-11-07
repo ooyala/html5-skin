@@ -46,7 +46,7 @@ var ContentScreen = React.createClass({
 
     return (
       <div className={this.props.screenClassName}>
-        <Watermark {...this.props} controlBarVisible={false}/>
+        <Watermark {...this.props} controlBarVisible={false} nonClickable={true}/>
         {closedCaptionOverlay}
         <div className={this.props.titleBarClassName}>
           {titleBar}
