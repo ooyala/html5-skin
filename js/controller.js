@@ -68,7 +68,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "pluginsClickElement": null,
       "buffering": false,
       "mainVideoBuffered": null,
-      "mainVideoPlayhead": null,
+      "mainVideoPlayhead": 0,
       "focusedElement": null,
 
       "currentAdsInfo": {
@@ -613,6 +613,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       OO.log("onAdsPlayed is called from event = " + event);
       this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       this.skin.updatePlayhead(this.state.mainVideoPlayhead, this.state.mainVideoDuration, this.state.mainVideoBuffered);
+      this.state.duration = this.state.contentTree.duration / 1000;
       this.state.isPlayingAd = false;
       this.state.pluginsElement.removeClass("oo-showing");
       this.state.pluginsClickElement.removeClass("oo-showing");
