@@ -4,6 +4,7 @@
 var React = require('react'),
     ClassNames = require('classnames'),
     ControlBar = require('../components/controlBar'),
+    Watermark = require('../components/watermark'),
     Icon = require('../components/icon');
 
 var EndScreen = React.createClass({
@@ -36,6 +37,8 @@ var EndScreen = React.createClass({
         <div className="oo-underlay-gradient"></div>
 
         <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
+
+        <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
         <a className={actionIconClass} onClick={this.handleClick}>
           <Icon {...this.props} icon="replay" style={actionIconStyle}/>

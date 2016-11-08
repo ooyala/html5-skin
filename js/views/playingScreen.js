@@ -5,9 +5,11 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     ControlBar = require('../components/controlBar'),
     AdOverlay = require('../components/adOverlay'),
+    ClassNames = require('classnames'),
     UpNextPanel = require('../components/upNextPanel'),
     Spinner = require('../components/spinner'),
     TextTrack = require('../components/textTrackPanel'),
+    Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin');
 
 var PlayingScreen = React.createClass({
@@ -120,9 +122,11 @@ var PlayingScreen = React.createClass({
          onMouseOut={this.hideControlBar}
          onMouseMove={this.handlePlayerMouseMove}>
 
-      {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
-
       <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
+
+      <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
+
+      {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
       <div className="oo-interactive-container">
 
@@ -133,8 +137,6 @@ var PlayingScreen = React.createClass({
             responsiveView={this.props.responsiveView}
           /> : null
         }
-
-        <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
         {adOverlay}
 

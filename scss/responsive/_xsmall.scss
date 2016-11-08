@@ -587,4 +587,8 @@
   .oo-scrubber-carousel-container {
     bottom: 88px;
   }
+
+  .oo-watermark-bottom.oo-watermark-bottom-cb {
+    bottom: $control-bar-height-small;
+  }
 }
