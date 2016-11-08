@@ -70,7 +70,7 @@ var Watermark = React.createClass({
   });
 
     var watermarkImage = <img className={watermarkImageClass} style={watermarkImageStyle} src={watermarkUrl} ref='watermarkImage'/>;
-    if (this.props.nonClickable)
+    if (this.props.nonClickable || !clickUrl)
       return (<div className={watermarkClass} ref='watermark' style={watermarkStyle}>{watermarkImage}</div>);
     else
       return (<a className={watermarkClass} ref='watermark' style={watermarkStyle} href={this.props.skinConfig.general.watermark.clickUrl}
