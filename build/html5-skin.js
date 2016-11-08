@@ -843,7 +843,7 @@ LanguageTab.propTypes = {
 
 LanguageTab.defaultProps = {
   dataItemsPerPage: {
-    xs: 1,
+    xs: 4,
     sm: 4,
     md: 8,
     lg: 8
@@ -1246,12 +1246,12 @@ var ControlBar = React.createClass({displayName: "ControlBar",
 
   handleSkipBack: function(){
     console.log ("Skipping Back");
-    this.props.controller.seek(this.props.currentPlayhead-30);
+    this.props.controller.goToPrevChapter();
   },
 
   handleSkipForward: function(){
     console.log ("Skipping Forward");
-    this.props.controller.seek(this.props.currentPlayhead+30);
+    this.props.controller.goToNextChapter();
   },
 
   handlePlaybackSpeed: function(){
@@ -1480,6 +1480,26 @@ var ControlBar = React.createClass({displayName: "ControlBar",
     var controlBarItems = [];
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
+    //scrubberBarItems for audio player
+    var scrubberBarItems = [];
+    if(this.props.skinConfig.buttons.scrubberBar){
+      var scrubberItems = this.props.skinConfig.buttons.scrubberBar;
+
+      for (var q = 0; q < scrubberItems.length; q++) {
+        scrubberBarItems.push(controlItemTemplates[scrubberItems[q].name]);
+      }
+    }
+
+    var volumeBarItems = [];
+    if(this.props.skinConfig.buttons.volumeBar){
+      var volumeItems = this.props.skinConfig.buttons.volumeBar;
+
+      for (var r = 0; r < volumeItems.length; r++) {
+        volumeBarItems.push(controlItemTemplates[volumeItems[r].name]);
+      }
+    }
+
+
     //if mobile and not showing the slider or the icon, extra space can be added to control bar width. If volume bar is shown instead of slider, add some space as well:
     var volumeItem = null;
     var extraSpaceVolume = 0;
@@ -1559,7 +1579,11 @@ var ControlBar = React.createClass({displayName: "ControlBar",
       finalControlBarItems.push(controlItemTemplates[collapsedControlBarItems[k].name]);
     }
 
-    return finalControlBarItems;
+    return {
+      mainControlItems: finalControlBarItems,
+      scrubberItems: scrubberBarItems,
+      volumeItems: volumeBarItems
+    };
   },
 
   setupItemStyle: function() {
@@ -1590,7 +1614,7 @@ var ControlBar = React.createClass({displayName: "ControlBar",
       return (
         React.createElement("div", {className: controlBarClass, style: controlBarStyle, onMouseUp: this.handleControlBarMouseUp, onTouchEnd: this.handleControlBarMouseUp}, 
           React.createElement("div", {className: "oo-control-bar-items-wrapper"}, 
-            controlBarItems
+            controlBarItems.mainControlItems
           )
         )
       );
@@ -1598,10 +1622,16 @@ var ControlBar = React.createClass({displayName: "ControlBar",
 
     return (
       React.createElement("div", {className: controlBarClass, style: controlBarStyle, onMouseUp: this.handleControlBarMouseUp, onTouchEnd: this.handleControlBarMouseUp}, 
-        React.createElement(ScrubberBar, React.__spread({},  this.props)), 
+        React.createElement("div", {className: "oo-scrubber-and-time-wrapper oo-control-bar-items-wrapper"}, 
+          controlBarItems.scrubberItems
+        ), 
 
         React.createElement("div", {className: "oo-control-bar-items-wrapper"}, 
-          controlBarItems
+          controlBarItems.mainControlItems
+        ), 
+
+        React.createElement("div", {className: "oo-audio-volume-wrapper oo-control-bar-items-wrapper"}, 
+          controlBarItems.volumeItems
         )
       )
     );
@@ -4463,7 +4493,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "98fb9d62cbd83de8bc61d10677ca1d0b9c7fc964"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "576e2620202fd3b71cd88dc2013020f20d1af14c"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -5845,7 +5875,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.cancelTimer();
         var timer = setTimeout(function() {
           if(this.state.volumeState.volumeSliderVisible === true){
-            // this.hideVolumeSliderBar();
+            this.hideVolumeSliderBar();
           }
         }.bind(this), 3000);
         this.state.timer = timer;
@@ -5857,7 +5887,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         var timer = setTimeout(function() {
           if(this.state.controlBarVisible === true){
             this.hideControlBar();
-            // this.hideVolumeSliderBar();
+            this.hideVolumeSliderBar();
           }
         }.bind(this), 3000);
         this.state.timer = timer;
@@ -5900,6 +5930,53 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     setAspectRatio: function() {
       if(this.state.mainVideoAspectRatio > 0) {
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
+      }
+    },
+
+    goToNextChapter: function() {
+      var chapters = this.state.playerParam.chapters;
+      var playhead = this.state.mainVideoPlayhead;
+      var duration = this.state.mainVideoDuration;
+
+      //add beginning and end to chapters array
+      chapters.unshift(0);
+      chapters.push(duration);
+
+      if(chapters.length > 0){
+        for(var i=0;i<chapters.length;i++){
+          if(chapters[i] > playhead){
+            this.seek(chapters[i]);
+            i=chapters.length;
+          }
+        }
+      } else {
+        this.seek(duration);
+      }
+    },
+
+    goToPrevChapter: function() {
+      var chapters = this.state.playerParam.chapters;
+      var playhead = this.state.mainVideoPlayhead;
+      var duration = this.state.mainVideoDuration;
+      var chapterStartMargin = 2;
+
+      //add beginning and end to chapters array
+      chapters.unshift(0);
+      chapters.push(duration);
+
+      if(chapters.length > 0){
+        for(var i=0;i<chapters.length;i++){
+          if(chapters[i]+chapterStartMargin > playhead){
+            if(i==0){
+              this.seek(0);
+            } else {
+              this.seek(chapters[i-1]);
+            }
+            i=chapters.length;
+          }
+        }
+      } else {
+        this.seek(0);
       }
     },
 
@@ -6290,7 +6367,7 @@ var Skin = React.createClass({displayName: "Skin",
             React.createElement(ClosedCaptionPanel, React.__spread({}, 
               this.props, 
               {closedCaptionOptions: this.props.closedCaptionOptions, 
-              dataItemsPerPage: {xs:1, sm:4, md:8, lg:8}, 
+              dataItemsPerPage: {xs:4, sm:4, md:8, lg:8}, 
               responsiveView: this.state.responsiveId, 
               componentWidth: this.state.componentWidth}))
           )
@@ -7161,7 +7238,7 @@ var StartScreen = React.createClass({displayName: "StartScreen",
     );
     return (
       React.createElement("div", {className: "oo-state-screen oo-start-screen"}, 
-        React.createElement("div", {className: stateScreenPosterClass, style: posterStyle}, 
+        React.createElement("div", {className: stateScreenPosterClass}, 
           React.createElement("div", {className: "oo-start-screen-linear-gradient"}), 
           React.createElement("a", {className: "oo-state-screen-selectable", onClick: this.handleClick})
         ), 

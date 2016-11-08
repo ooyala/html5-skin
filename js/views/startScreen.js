@@ -97,7 +97,7 @@ var StartScreen = React.createClass({
     );
     return (
       <div className="oo-state-screen oo-start-screen">
-        <div className={stateScreenPosterClass} style={posterStyle}>
+        <div className={stateScreenPosterClass}>
           <div className="oo-start-screen-linear-gradient"></div>
           <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
         </div>

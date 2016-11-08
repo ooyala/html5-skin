@@ -206,12 +206,12 @@ var ControlBar = React.createClass({
 
   handleSkipBack: function(){
     console.log ("Skipping Back");
-    this.props.controller.seek(this.props.currentPlayhead-30);
+    this.props.controller.goToPrevChapter();
   },
 
   handleSkipForward: function(){
     console.log ("Skipping Forward");
-    this.props.controller.seek(this.props.currentPlayhead+30);
+    this.props.controller.goToNextChapter();
   },
 
   handlePlaybackSpeed: function(){
@@ -440,6 +440,26 @@ var ControlBar = React.createClass({
     var controlBarItems = [];
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
+    //scrubberBarItems for audio player
+    var scrubberBarItems = [];
+    if(this.props.skinConfig.buttons.scrubberBar){
+      var scrubberItems = this.props.skinConfig.buttons.scrubberBar;
+
+      for (var q = 0; q < scrubberItems.length; q++) {
+        scrubberBarItems.push(controlItemTemplates[scrubberItems[q].name]);
+      }
+    }
+
+    var volumeBarItems = [];
+    if(this.props.skinConfig.buttons.volumeBar){
+      var volumeItems = this.props.skinConfig.buttons.volumeBar;
+
+      for (var r = 0; r < volumeItems.length; r++) {
+        volumeBarItems.push(controlItemTemplates[volumeItems[r].name]);
+      }
+    }
+
+
     //if mobile and not showing the slider or the icon, extra space can be added to control bar width. If volume bar is shown instead of slider, add some space as well:
     var volumeItem = null;
     var extraSpaceVolume = 0;
@@ -519,7 +539,11 @@ var ControlBar = React.createClass({
       finalControlBarItems.push(controlItemTemplates[collapsedControlBarItems[k].name]);
     }
 
-    return finalControlBarItems;
+    return {
+      mainControlItems: finalControlBarItems,
+      scrubberItems: scrubberBarItems,
+      volumeItems: volumeBarItems
+    };
   },
 
   setupItemStyle: function() {
@@ -550,7 +574,7 @@ var ControlBar = React.createClass({
       return (
         <div className={controlBarClass} style={controlBarStyle} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
           <div className="oo-control-bar-items-wrapper">
-            {controlBarItems}
+            {controlBarItems.mainControlItems}
           </div>
         </div>
       );
@@ -558,10 +582,16 @@ var ControlBar = React.createClass({
 
     return (
       <div className={controlBarClass} style={controlBarStyle} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
-        <ScrubberBar {...this.props} />
+        <div className="oo-scrubber-and-time-wrapper oo-control-bar-items-wrapper">
+          {controlBarItems.scrubberItems}
+        </div>
 
         <div className="oo-control-bar-items-wrapper">
-          {controlBarItems}
+          {controlBarItems.mainControlItems}
+        </div>
+
+        <div className="oo-audio-volume-wrapper oo-control-bar-items-wrapper">
+          {controlBarItems.volumeItems}
         </div>
       </div>
     );

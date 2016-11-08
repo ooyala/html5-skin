@@ -1400,7 +1400,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.cancelTimer();
         var timer = setTimeout(function() {
           if(this.state.volumeState.volumeSliderVisible === true){
-            // this.hideVolumeSliderBar();
+            this.hideVolumeSliderBar();
           }
         }.bind(this), 3000);
         this.state.timer = timer;
@@ -1412,7 +1412,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         var timer = setTimeout(function() {
           if(this.state.controlBarVisible === true){
             this.hideControlBar();
-            // this.hideVolumeSliderBar();
+            this.hideVolumeSliderBar();
           }
         }.bind(this), 3000);
         this.state.timer = timer;
@@ -1455,6 +1455,53 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     setAspectRatio: function() {
       if(this.state.mainVideoAspectRatio > 0) {
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
+      }
+    },
+
+    goToNextChapter: function() {
+      var chapters = this.state.playerParam.chapters;
+      var playhead = this.state.mainVideoPlayhead;
+      var duration = this.state.mainVideoDuration;
+
+      //add beginning and end to chapters array
+      chapters.unshift(0);
+      chapters.push(duration);
+
+      if(chapters.length > 0){
+        for(var i=0;i<chapters.length;i++){
+          if(chapters[i] > playhead){
+            this.seek(chapters[i]);
+            i=chapters.length;
+          }
+        }
+      } else {
+        this.seek(duration);
+      }
+    },
+
+    goToPrevChapter: function() {
+      var chapters = this.state.playerParam.chapters;
+      var playhead = this.state.mainVideoPlayhead;
+      var duration = this.state.mainVideoDuration;
+      var chapterStartMargin = 2;
+
+      //add beginning and end to chapters array
+      chapters.unshift(0);
+      chapters.push(duration);
+
+      if(chapters.length > 0){
+        for(var i=0;i<chapters.length;i++){
+          if(chapters[i]+chapterStartMargin > playhead){
+            if(i==0){
+              this.seek(0);
+            } else {
+              this.seek(chapters[i-1]);
+            }
+            i=chapters.length;
+          }
+        }
+      } else {
+        this.seek(0);
       }
     },
 
