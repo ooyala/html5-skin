@@ -81,9 +81,14 @@ var AdPanel = React.createClass({
       } else {
         remainingTime = parseInt(this.props.adVideoDuration - this.props.currentPlayhead)
       }
-      remainingTime = Utils.formatSeconds(Math.max(0, remainingTime));
 
-      adPlaybackInfo = adPlaybackInfo + " - " + remainingTime;
+      if (isFinite(remainingTime)) {
+        remainingTime = Utils.formatSeconds(Math.max(0, remainingTime));
+        adPlaybackInfo = adPlaybackInfo + " - " + remainingTime;
+      }
+      else {
+        OO.log("ad remaining time is not a finite number");
+      }
     }
 
     var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" itemClassName="oo-ad-playback-info">{adPlaybackInfo}</AdPanelTopBarItem>;
