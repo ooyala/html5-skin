@@ -1222,7 +1222,11 @@ var ControlBar = React.createClass({displayName: "ControlBar",
   },
 
   handleVolumeHover: function() {
-    this.props.controller.showVolumeSliderBar()
+    this.props.controller.showVolumeSliderBar();
+  },
+
+  handleVolumeOut: function(){
+    this.props.controller.hideVolumeSliderBar();
   },
 
   changeVolumeSlider: function(event) {
@@ -1379,11 +1383,12 @@ var ControlBar = React.createClass({displayName: "ControlBar",
       ),
 
       "volume": React.createElement("div", {className: "oo-volume oo-control-bar-item", key: "volume"}, 
-        volumeControls, 
-        React.createElement(Icon, React.__spread({},  this.props, {icon: volumeIcon, ref: "volumeIcon", 
-          style: this.props.skinConfig.controlBar.iconStyle.inactive, 
-          onClick: this.handleVolumeIconClick, 
-          onMouseOver: this.handleVolumeHover}))
+        React.createElement("div", {className: "oo-volume-wrapper", onMouseEnter: this.handleVolumeHover, onMouseLeave: this.handleVolumeOut}, 
+          volumeControls, 
+          React.createElement(Icon, React.__spread({},  this.props, {icon: volumeIcon, ref: "volumeIcon", 
+            style: this.props.skinConfig.controlBar.iconStyle.inactive, 
+            onClick: this.handleVolumeIconClick}))
+        )
       ),
 
       "playheadTime": React.createElement("a", {className: "oo-playhead-time oo-control-bar-item", style: durationSetting, key: "playheadTime"}, 
@@ -1420,10 +1425,9 @@ var ControlBar = React.createClass({displayName: "ControlBar",
 
       "closedCaption": (
         React.createElement("div", {className: "oo-popover-button-container", key: "closedCaption"}, 
-          closedCaptionPopover, 
-          React.createElement("a", {className: captionClass, onClick: this.handleClosedCaptionClick}, 
-            React.createElement(Icon, React.__spread({},  this.props, {icon: "cc", style: dynamicStyles.iconCharacter, 
-              onMouseOver: this.highlight, onMouseOut: this.removeHighlight}))
+          React.createElement("div", {className: "oo-cc-wrapper", onMouseEnter: this.handleClosedCaptionClick, onMouseLeave: this.handleClosedCaptionClick}, 
+            closedCaptionPopover, 
+            React.createElement(Icon, React.__spread({},  this.props, {icon: "cc", style: dynamicStyles.iconCharacter}))
           )
         )
       ),
@@ -4495,7 +4499,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "c5850b674d0beed65fe61508213807e0e25b372d"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "29bde64c6f67a30a2d6ea783984710d35c8991b3"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -5867,9 +5871,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     showVolumeSliderBar: function() {
       this.state.volumeState.volumeSliderVisible = true;
-      // if (Utils.isAndroid()) {
-        this.startHideVolumeSliderTimer();
-      // }
       this.renderSkin();
     },
 

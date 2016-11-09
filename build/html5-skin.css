@@ -2802,7 +2802,7 @@
       top: 14px; }
 
 .oo-player-container .oo-xsmall .oo-control-bar {
-  height: 57px !important;
+  height: 57px;
   font-size: 17.5px; }
   .oo-player-container .oo-xsmall .oo-control-bar .oo-control-bar-items-wrapper .oo-control-bar-item {
     font-size: 17.5px;
