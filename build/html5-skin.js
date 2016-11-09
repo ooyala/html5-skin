@@ -1323,7 +1323,9 @@ var ControlBar = React.createClass({displayName: "ControlBar",
     if (this.props.skinConfig.controlBar.volumeControl.bars){
       volumeControls = volumeBars;
     }
-    else {
+    else if(this.props.skinConfig.controlBar.volumeControl.alwaysOnSlider){
+      volumeControls = volumeSlider;
+    } else {
       volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
     }
 
@@ -4493,7 +4495,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "576e2620202fd3b71cd88dc2013020f20d1af14c"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "c5850b674d0beed65fe61508213807e0e25b372d"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -5940,7 +5942,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       //add beginning and end to chapters array
       chapters.unshift(0);
-      chapters.push(duration);
+      chapters.push(duration-1);
 
       if(chapters.length > 0){
         for(var i=0;i<chapters.length;i++){
@@ -5950,7 +5952,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }
         }
       } else {
-        this.seek(duration);
+        this.seek(duration-1);
       }
     },
 
