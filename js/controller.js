@@ -1462,7 +1462,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       //add beginning and end to chapters array
       chapters.unshift(0);
-      chapters.push(duration);
+      chapters.push(duration-1);
 
       if(chapters.length > 0){
         for(var i=0;i<chapters.length;i++){
@@ -1472,7 +1472,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }
         }
       } else {
-        this.seek(duration);
+        this.seek(duration-1);
       }
     },
 

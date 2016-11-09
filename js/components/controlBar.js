@@ -287,7 +287,9 @@ var ControlBar = React.createClass({
     if (this.props.skinConfig.controlBar.volumeControl.bars){
       volumeControls = volumeBars;
     }
-    else {
+    else if(this.props.skinConfig.controlBar.volumeControl.alwaysOnSlider){
+      volumeControls = volumeSlider;
+    } else {
       volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
     }
 
