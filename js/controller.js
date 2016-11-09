@@ -1390,9 +1390,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     showVolumeSliderBar: function() {
       this.state.volumeState.volumeSliderVisible = true;
-      // if (Utils.isAndroid()) {
-        this.startHideVolumeSliderTimer();
-      // }
       this.renderSkin();
     },
 

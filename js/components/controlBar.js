@@ -182,7 +182,11 @@ var ControlBar = React.createClass({
   },
 
   handleVolumeHover: function() {
-    this.props.controller.showVolumeSliderBar()
+    this.props.controller.showVolumeSliderBar();
+  },
+
+  handleVolumeOut: function(){
+    this.props.controller.hideVolumeSliderBar();
   },
 
   changeVolumeSlider: function(event) {
@@ -337,11 +341,12 @@ var ControlBar = React.createClass({
       </a>,
 
       "volume": <div className="oo-volume oo-control-bar-item" key="volume">
-        {volumeControls}
-        <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
-          style={this.props.skinConfig.controlBar.iconStyle.inactive}
-          onClick={this.handleVolumeIconClick}
-          onMouseOver={this.handleVolumeHover}/>
+        <div className="oo-volume-wrapper" onMouseEnter={this.handleVolumeHover} onMouseLeave={this.handleVolumeOut}>
+          {volumeControls}
+          <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
+            style={this.props.skinConfig.controlBar.iconStyle.inactive}
+            onClick={this.handleVolumeIconClick}/>
+        </div>
       </div>,
 
       "playheadTime": <a className="oo-playhead-time oo-control-bar-item" style={durationSetting} key="playheadTime">
@@ -378,11 +383,10 @@ var ControlBar = React.createClass({
 
       "closedCaption": (
         <div className="oo-popover-button-container" key="closedCaption">
-          {closedCaptionPopover}
-          <a className={captionClass} onClick={this.handleClosedCaptionClick}>
-            <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
-              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-          </a>
+          <div className="oo-cc-wrapper" onMouseEnter={this.handleClosedCaptionClick} onMouseLeave={this.handleClosedCaptionClick}>
+            {closedCaptionPopover}
+            <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}/>
+          </div>
         </div>
       ),
 
