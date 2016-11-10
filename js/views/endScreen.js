@@ -2,16 +2,35 @@
   END SCREEN
 *********************************************************************/
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
     ControlBar = require('../components/controlBar'),
     Watermark = require('../components/watermark'),
-    Icon = require('../components/icon');
+    Icon = require('../components/icon'),
+    ResizeMixin = require('../mixins/resizeMixin'),
+    Utils = require('../components/utils');
 
 var EndScreen = React.createClass({
+  mixins: [ResizeMixin],
+
   getInitialState: function() {
     return {
-      controlBarVisible: true
+      controlBarVisible: true,
+      descriptionText: this.props.contentTree.description
     };
+
+  },
+
+  componentDidMount: function() {
+    this.handleResize();
+  },
+
+  handleResize: function() {
+    if (ReactDOM.findDOMNode(this.refs.description)){
+      this.setState({
+        descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), this.props.contentTree.description)
+      });
+    }
   },
 
   handleClick: function(event) {
@@ -27,10 +46,39 @@ var EndScreen = React.createClass({
       opacity: this.props.skinConfig.endScreen.replayIconStyle.opacity
     };
 
+    var titleStyle = {
+      color: this.props.skinConfig.startScreen.titleFont.color
+    };
+    var descriptionStyle = {
+      color: this.props.skinConfig.startScreen.descriptionFont.color
+    };
+
     var actionIconClass = ClassNames({
       'oo-action-icon': true,
       'oo-hidden': !this.props.skinConfig.endScreen.showReplayButton
     });
+
+    var infoPanelClass = ClassNames({
+      'oo-state-screen-info': true,
+      'oo-info-panel-top': this.props.skinConfig.endScreen.infoPanelPosition.toLowerCase().indexOf("top") > -1,
+      'oo-info-panel-bottom': this.props.skinConfig.endScreen.infoPanelPosition.toLowerCase().indexOf("bottom") > -1,
+      'oo-info-panel-left': this.props.skinConfig.endScreen.infoPanelPosition.toLowerCase().indexOf("left") > -1,
+      'oo-info-panel-right': this.props.skinConfig.endScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+    });
+    var titleClass = ClassNames({
+      'oo-state-screen-title': true,
+      'oo-text-truncate': true,
+      'oo-pull-right': this.props.skinConfig.endScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1,
+      'oo-hidden': !this.props.skinConfig.endScreen.showTitle
+    });
+    var descriptionClass = ClassNames({
+      'oo-state-screen-description': true,
+      'oo-pull-right': this.props.skinConfig.endScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1,
+      'oo-hidden': !this.props.skinConfig.endScreen.showDescription
+    });
+
+    var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
+    var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.state.descriptionText}</div>);
 
     return (
       <div className="oo-state-screen oo-end-screen">
@@ -39,6 +87,11 @@ var EndScreen = React.createClass({
         <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
 
         <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
+
+        <div className={infoPanelClass}>
+          {titleMetadata}
+          {descriptionMetadata}
+        </div>
 
         <a className={actionIconClass} onClick={this.handleClick}>
           <Icon {...this.props} icon="replay" style={actionIconStyle}/>
