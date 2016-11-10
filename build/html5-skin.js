@@ -1260,7 +1260,7 @@ var ControlBar = React.createClass({displayName: "ControlBar",
 
   handlePlaybackSpeed: function(){
     console.log ("Change playback speed");
-    this.props.controller.changePlaybackSpeed(2); // This method does not exist - so need to create it
+    this.props.controller.changePlaybackSpeed(); // This method does not exist - so need to create it
   },
 
   populateControlBar: function() {
@@ -1276,11 +1276,11 @@ var ControlBar = React.createClass({displayName: "ControlBar",
 
     var playbackSpeedIcon = "";
     if (this.props.controller.playbackRate == 1.5) {
-      playbackSpeedIcon = "pause";
+      playbackSpeedIcon = "x1.5";
     } else if (this.props.controller.playbackRate == 2) {
-      playbackSpeedIcon = "replay";
+      playbackSpeedIcon = "x2";
     } else {
-      playbackSpeedIcon = "play";
+      playbackSpeedIcon = "x1";
     }
 
     var volumeIcon = (this.props.controller.state.volumeState.muted ? "volumeOff" : "volume");
@@ -1496,12 +1496,12 @@ var ControlBar = React.createClass({displayName: "ControlBar",
       }
     }
 
-    var volumeBarItems = [];
-    if(this.props.skinConfig.buttons.volumeBar){
-      var volumeItems = this.props.skinConfig.buttons.volumeBar;
+    var bottomBarItems = [];
+    if(this.props.skinConfig.buttons.bottomBar){
+      var bottomItems = this.props.skinConfig.buttons.bottomBar;
 
-      for (var r = 0; r < volumeItems.length; r++) {
-        volumeBarItems.push(controlItemTemplates[volumeItems[r].name]);
+      for (var r = 0; r < bottomItems.length; r++) {
+        bottomBarItems.push(controlItemTemplates[bottomItems[r].name]);
       }
     }
 
@@ -1588,7 +1588,7 @@ var ControlBar = React.createClass({displayName: "ControlBar",
     return {
       mainControlItems: finalControlBarItems,
       scrubberItems: scrubberBarItems,
-      volumeItems: volumeBarItems
+      bottomItems: bottomBarItems
     };
   },
 
@@ -1636,8 +1636,8 @@ var ControlBar = React.createClass({displayName: "ControlBar",
           controlBarItems.mainControlItems
         ), 
 
-        React.createElement("div", {className: "oo-audio-volume-wrapper oo-control-bar-items-wrapper"}, 
-          controlBarItems.volumeItems
+        React.createElement("div", {className: "oo-bottom-bar-wrapper oo-control-bar-items-wrapper"}, 
+          controlBarItems.bottomItems
         )
       )
     );
@@ -4499,7 +4499,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "29bde64c6f67a30a2d6ea783984710d35c8991b3"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "8819a6c1994c1cc2f7dc40f62134d833eb49e3d4"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -5986,6 +5986,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     //set playbackRate
     changePlaybackSpeed: function() {
       var video = this.state.mainVideoElement.get(0); // here you can access the video element for example
+      console.log("Video Element: ", this.state.mainVideoElement);
       if(video.playbackRate == 2){
         video.playbackRate = 1;
       } else {

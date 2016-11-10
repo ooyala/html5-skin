@@ -220,7 +220,7 @@ var ControlBar = React.createClass({
 
   handlePlaybackSpeed: function(){
     console.log ("Change playback speed");
-    this.props.controller.changePlaybackSpeed(2); // This method does not exist - so need to create it
+    this.props.controller.changePlaybackSpeed(); // This method does not exist - so need to create it
   },
 
   populateControlBar: function() {
@@ -236,11 +236,11 @@ var ControlBar = React.createClass({
 
     var playbackSpeedIcon = "";
     if (this.props.controller.playbackRate == 1.5) {
-      playbackSpeedIcon = "pause";
+      playbackSpeedIcon = "x1.5";
     } else if (this.props.controller.playbackRate == 2) {
-      playbackSpeedIcon = "replay";
+      playbackSpeedIcon = "x2";
     } else {
-      playbackSpeedIcon = "play";
+      playbackSpeedIcon = "x1";
     }
 
     var volumeIcon = (this.props.controller.state.volumeState.muted ? "volumeOff" : "volume");
@@ -456,12 +456,12 @@ var ControlBar = React.createClass({
       }
     }
 
-    var volumeBarItems = [];
-    if(this.props.skinConfig.buttons.volumeBar){
-      var volumeItems = this.props.skinConfig.buttons.volumeBar;
+    var bottomBarItems = [];
+    if(this.props.skinConfig.buttons.bottomBar){
+      var bottomItems = this.props.skinConfig.buttons.bottomBar;
 
-      for (var r = 0; r < volumeItems.length; r++) {
-        volumeBarItems.push(controlItemTemplates[volumeItems[r].name]);
+      for (var r = 0; r < bottomItems.length; r++) {
+        bottomBarItems.push(controlItemTemplates[bottomItems[r].name]);
       }
     }
 
@@ -548,7 +548,7 @@ var ControlBar = React.createClass({
     return {
       mainControlItems: finalControlBarItems,
       scrubberItems: scrubberBarItems,
-      volumeItems: volumeBarItems
+      bottomItems: bottomBarItems
     };
   },
 
@@ -596,8 +596,8 @@ var ControlBar = React.createClass({
           {controlBarItems.mainControlItems}
         </div>
 
-        <div className="oo-audio-volume-wrapper oo-control-bar-items-wrapper">
-          {controlBarItems.volumeItems}
+        <div className="oo-bottom-bar-wrapper oo-control-bar-items-wrapper">
+          {controlBarItems.bottomItems}
         </div>
       </div>
     );
