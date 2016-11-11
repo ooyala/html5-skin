@@ -71,7 +71,7 @@
     left: 0;
   }
   .oo-switch-captions-active {
-    color: $white;
+    color: $white !important;
     font-family: $font-family-roboto-condensed-bold;
   }
   .oo-switch-element {

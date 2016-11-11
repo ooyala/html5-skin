@@ -385,9 +385,9 @@ var ControlBar = React.createClass({
 
       "closedCaption": (
         <div className="oo-popover-button-container" key="closedCaption">
-          <div className="oo-cc-wrapper" onMouseEnter={this.handleClosedCaptionClick} onMouseLeave={this.handleClosedCaptionClick}>
+          <div className="oo-cc-wrapper">
             {closedCaptionPopover}
-            <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}/>
+            <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter} onClick={this.handleClosedCaptionClick}/>
           </div>
         </div>
       ),
