@@ -2,7 +2,8 @@ var React = require('react'),
     CONSTANTS = require('../../constants/constants'),
     Utils = require('../utils'),
     OnOffSwitch = require('./onOffSwitch'),
-    CloseButton = require('../closeButton');
+    CloseButton = require('../closeButton'),
+    Icon = require('../icon');
 
 var ClosedCaptionPopover = React.createClass({
 
@@ -24,7 +25,7 @@ var ClosedCaptionPopover = React.createClass({
           <OnOffSwitch {...this.props} />
         </li>
         <li>
-          <a className="oo-more-captions" onClick={this.handleMoreCaptions}>{captionBtnText}</a>
+          <a className="oo-more-captions" onClick={this.handleMoreCaptions}>{captionBtnText} <Icon {...this.props} icon="arrowRight" className={this.props.className}/></a>
         </li>
         <li>
           <CloseButton {...this.props} closeAction={this.handleClose} />

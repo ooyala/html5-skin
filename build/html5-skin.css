@@ -867,7 +867,7 @@
   .oo-player-container .oo-switch-container .oo-switch-captions-off {
     left: 0; }
   .oo-player-container .oo-switch-container .oo-switch-captions-active {
-    color: #fff;
+    color: #fff !important;
     font-family: "Roboto Condensed Bold", sans-serif; }
   .oo-player-container .oo-switch-container .oo-switch-element {
     display: inline-block;

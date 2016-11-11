@@ -1241,6 +1241,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleClosedCaptionPopOver: function() {
+      if(!this.state.closedCaptionOptions.showClosedCaptionPopover){
+        var ccButton = document.getElementsByClassName("playericon-captions");
+        $(ccButton[0]).addClass("clicked");
+      } else {
+        var ccButton = document.getElementsByClassName("playericon-captions");
+        $(ccButton[0]).removeClass("clicked");
+      }
       this.state.closedCaptionOptions.showClosedCaptionPopover = !this.state.closedCaptionOptions.showClosedCaptionPopover;
       this.renderSkin();
     },
