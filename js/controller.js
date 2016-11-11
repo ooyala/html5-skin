@@ -1512,6 +1512,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     //set playbackRate
     changePlaybackSpeed: function() {
       var video = this.state.mainVideoElement.get(0); // here you can access the video element for example
+      console.log("Video Element: ", this.state.mainVideoElement);
       if(video.playbackRate == 2){
         video.playbackRate = 1;
       } else {
