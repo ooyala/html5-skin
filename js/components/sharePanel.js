@@ -13,11 +13,11 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants');
 
 var SharePanel = React.createClass({
-  tabs: {SHARE: "share", EMBED: "embed"},
+  tabs: {SHARE: "social", EMBED: "embed"},
 
   getInitialState: function() {
     return {
-      activeTab: this.tabs.SHARE,
+      activeTab: this.props.skinConfig.shareScreen.shareContent[0],
       hasError: false
     };
   },
@@ -101,14 +101,22 @@ var SharePanel = React.createClass({
   },
 
   render: function() {
+    var showEmbedTab = false;
+    var showShareTab = false;
+    for (var i = 0; i < this.props.skinConfig.shareScreen.shareContent.length; i++){
+      if (this.props.skinConfig.shareScreen.shareContent[i] == this.tabs.EMBED) showEmbedTab = true;
+      if (this.props.skinConfig.shareScreen.shareContent[i] == this.tabs.SHARE) showShareTab = true;
+    }
+
     var shareTab = ClassNames({
       'oo-share-tab': true,
-      'oo-active': this.state.activeTab == this.tabs.SHARE
+      'oo-active': this.state.activeTab == this.tabs.SHARE,
+      'oo-hidden': !showShareTab
     });
     var embedTab = ClassNames({
       'oo-embed-tab': true,
       'oo-active': this.state.activeTab == this.tabs.EMBED,
-      'oo-hidden': !this.props.skinConfig.shareScreen.showEmbedTab
+      'oo-hidden': !showEmbedTab
     });
 
     var shareString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings),

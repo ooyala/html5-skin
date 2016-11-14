@@ -18,7 +18,7 @@ var en = require('../../config/languageFiles/en.json'),
 var playerParam = {
   "skin": {
     "languages": {"en": en, "es": es, "zh": zh},
-    "inline": {"shareScreen" : {"embed" : { "source" : "iframe_<ASSET_ID>_<PLAYER_ID>_<PUBLISHER_ID>"}}, "showEmbedTab": false}
+    "inline": {"shareScreen" : {"embed" : { "source" : "iframe_<ASSET_ID>_<PLAYER_ID>_<PUBLISHER_ID>"}, "shareContent": ["social","embed"]}}
   },
   "playerBrandingId": "bb",
   "pcode": "cc"
@@ -62,13 +62,13 @@ describe('SharePanel', function () {
     }
   });
 
-it('tests embed panel in social screen is shown', function () {
+it('tests embed tab in social screen is shown, social tab is not shown', function () {
 
     //loop through languages
     for (var key in localizableStrings) {
       if (localizableStrings.hasOwnProperty(key)) {
 
-        playerParam.skin.inline.shareScreen.showEmbedTab = true;
+        playerParam.skin.inline.shareScreen.shareContent = ["embed"];
 
         //Render share panel into DOM
         var DOM = TestUtils.renderIntoDocument(
@@ -79,7 +79,8 @@ it('tests embed panel in social screen is shown', function () {
         var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel');
         var tabs = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
 
-        //test embed tab
+        //test embed tab shown, share not shown
+        var shareTab = tabs[0];
         var embedTab = tabs[1];
         expect(embedTab.textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.EMBED]);
         TestUtils.Simulate.click(embedTab);
@@ -87,19 +88,18 @@ it('tests embed panel in social screen is shown', function () {
         expect(textArea.value).toContain('iframe_aa_bb_cc');
 
         expect(embedTab.className).not.toMatch("hidden");
-
-        playerParam.skin.inline.shareScreen.showEmbedTab = true;
+        expect(shareTab.className).toMatch("hidden");
       }
     }
   });
 
-it('tests embed panel in social screen is not shown', function () {
+it('tests embed tab in social screen is not shown, social tab is shown', function () {
 
     //loop through languages
     for (var key in localizableStrings) {
       if (localizableStrings.hasOwnProperty(key)) {
 
-        playerParam.skin.inline.shareScreen.showEmbedTab = false;
+        playerParam.skin.inline.shareScreen.shareContent = ["social"];
 
         //Render share panel into DOM
         var DOM = TestUtils.renderIntoDocument(
@@ -110,14 +110,17 @@ it('tests embed panel in social screen is not shown', function () {
         var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel');
         var tabs = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
 
-        //test embed tab
+        //test share tabs shown, embed not shown
+        var shareTab = tabs[0];
         var embedTab = tabs[1];
         expect(embedTab.textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.EMBED]);
         TestUtils.Simulate.click(embedTab);
         var textArea = TestUtils.findRenderedDOMComponentWithTag(DOM, 'textarea');
         expect(textArea.value).toContain('iframe_aa_bb_cc');
 
+        expect(shareTab.className).not.toMatch("hidden");
         expect(embedTab.className).toMatch("hidden");
+
       }
     }
   });
