@@ -290,7 +290,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }, this));
 
       this.externalPluginSubscription();
-      this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+      if(this.skin.props.skinConfig.general.isAudio){
+        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+      } else {
+        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+      }
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -626,7 +630,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaybackReady: function(event) {
-      this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      if(this.skin.props.skinConfig.general.isAudio){
+        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+      } else {
+        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      }
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
