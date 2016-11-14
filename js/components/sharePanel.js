@@ -107,7 +107,8 @@ var SharePanel = React.createClass({
     });
     var embedTab = ClassNames({
       'oo-embed-tab': true,
-      'oo-active': this.state.activeTab == this.tabs.EMBED
+      'oo-active': this.state.activeTab == this.tabs.EMBED,
+      'oo-hidden': !this.props.skinConfig.shareScreen.showEmbedTab
     });
 
     var shareString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings),

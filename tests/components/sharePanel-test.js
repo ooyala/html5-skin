@@ -3,7 +3,8 @@ jest.dontMock('../../js/components/sharePanel')
     .dontMock('../../js/constants/constants')
     .dontMock('../../config/languageFiles/en.json')
     .dontMock('../../config/languageFiles/es.json')
-    .dontMock('../../config/languageFiles/zh.json');
+    .dontMock('../../config/languageFiles/zh.json')
+    .dontMock('classnames');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
@@ -17,7 +18,7 @@ var en = require('../../config/languageFiles/en.json'),
 var playerParam = {
   "skin": {
     "languages": {"en": en, "es": es, "zh": zh},
-    "inline": {"shareScreen" : {"embed" : { "source" : "iframe_<ASSET_ID>_<PLAYER_ID>_<PUBLISHER_ID>"}}}
+    "inline": {"shareScreen" : {"embed" : { "source" : "iframe_<ASSET_ID>_<PLAYER_ID>_<PUBLISHER_ID>"}}, "showEmbedTab": false}
   },
   "playerBrandingId": "bb",
   "pcode": "cc"
@@ -57,6 +58,26 @@ describe('SharePanel', function () {
         TestUtils.Simulate.click(facebook);
         TestUtils.Simulate.click(googlePlus);
         TestUtils.Simulate.click(emailShare);
+      }
+    }
+  });
+
+it('tests embed panel in social screen is shown', function () {
+
+    //loop through languages
+    for (var key in localizableStrings) {
+      if (localizableStrings.hasOwnProperty(key)) {
+
+        playerParam.skin.inline.shareScreen.showEmbedTab = true;
+
+        //Render share panel into DOM
+        var DOM = TestUtils.renderIntoDocument(
+          <SharePanel language={key} localizableStrings={localizableStrings} skinConfig={skinConfig} assetId={"aa"} playerParam={playerParam} />
+        );
+
+        //parent elements
+        var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel');
+        var tabs = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
 
         //test embed tab
         var embedTab = tabs[1];
@@ -64,6 +85,39 @@ describe('SharePanel', function () {
         TestUtils.Simulate.click(embedTab);
         var textArea = TestUtils.findRenderedDOMComponentWithTag(DOM, 'textarea');
         expect(textArea.value).toContain('iframe_aa_bb_cc');
+
+        expect(embedTab.className).not.toMatch("hidden");
+
+        playerParam.skin.inline.shareScreen.showEmbedTab = true;
+      }
+    }
+  });
+
+it('tests embed panel in social screen is not shown', function () {
+
+    //loop through languages
+    for (var key in localizableStrings) {
+      if (localizableStrings.hasOwnProperty(key)) {
+
+        playerParam.skin.inline.shareScreen.showEmbedTab = false;
+
+        //Render share panel into DOM
+        var DOM = TestUtils.renderIntoDocument(
+          <SharePanel language={key} localizableStrings={localizableStrings} skinConfig={skinConfig} assetId={"aa"} playerParam={playerParam} />
+        );
+
+        //parent elements
+        var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel');
+        var tabs = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
+
+        //test embed tab
+        var embedTab = tabs[1];
+        expect(embedTab.textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.EMBED]);
+        TestUtils.Simulate.click(embedTab);
+        var textArea = TestUtils.findRenderedDOMComponentWithTag(DOM, 'textarea');
+        expect(textArea.value).toContain('iframe_aa_bb_cc');
+
+        expect(embedTab.className).toMatch("hidden");
       }
     }
   });
