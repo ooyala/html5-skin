@@ -55,15 +55,27 @@ var DataSelector = React.createClass({
     var startAt = dataItemsPerPage * (this.state.currentPage - 1);
     var endAt = dataItemsPerPage * this.state.currentPage;
     var dataItems = this.props.availableDataItems.slice(startAt, endAt);
+    var selectedItemStyle = { backgroundColor: this.props.skinConfig.controlBar.iconStyle.active.color ? 
+                                               this.props.skinConfig.controlBar.iconStyle.active.color : 
+                                               this.props.skinConfig.general.accentColor };
 
     //Build data content blocks
     var dataContentBlocks = [];
+
     for (var i = 0; i < dataItems.length; i++) {
-      dataContentBlocks.push(
-        <a className={this.setClassname(dataItems[i])} onClick={this.handleDataSelection.bind(this, dataItems[i])} key={i}>
-          <span className="oo-data">{dataItems[i]}</span>
-        </a>
-      );
+      if (this.setClassname(dataItems[i]) === "oo-item oo-item-selected") {
+        dataContentBlocks.push(
+          <a className={this.setClassname(dataItems[i])}  style={selectedItemStyle} onClick={this.handleDataSelection.bind(this, dataItems[i])} key={i}>
+            <span className="oo-data">{dataItems[i]}</span>
+          </a>
+        );
+      } else {
+        dataContentBlocks.push(
+          <a className={this.setClassname(dataItems[i])} onClick={this.handleDataSelection.bind(this, dataItems[i])} key={i}>
+            <span className="oo-data">{dataItems[i]}</span>
+          </a>
+        );
+      }
     }
 
     var leftChevron = ClassNames({

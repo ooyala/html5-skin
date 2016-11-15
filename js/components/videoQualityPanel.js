@@ -6,6 +6,7 @@
 var React = require('react'),
     ScrollArea = require('react-scrollbar/dist/no-css'),
     ClassNames = require('classnames'),
+    Utils = require('./utils'),
     Icon = require('../components/icon');
 
 var VideoQualityPanel = React.createClass({
@@ -13,6 +14,20 @@ var VideoQualityPanel = React.createClass({
     return {
       selected: this.props.videoQualityOptions.selectedBitrate ? this.props.videoQualityOptions.selectedBitrate.id : 'auto'
     };
+  },
+
+  highlight: function(evt) {
+    var color = this.props.skinConfig.controlBar.iconStyle.active.color ?
+                this.props.skinConfig.controlBar.iconStyle.active.color :
+                this.props.skinConfig.general.accentColor;
+    var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
+    Utils.highlight(evt.target, opacity, color);
+  },
+
+  removeHighlight: function(evt) {
+    var color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
+    var opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
+    Utils.removeHighlight(evt.target, opacity, color);
   },
 
   handleVideoQualityClick: function(selectedBitrateId, event) {
@@ -25,6 +40,13 @@ var VideoQualityPanel = React.createClass({
       selected: selectedBitrateId
     });
     this.props.togglePopoverAction();
+    if (this.props.controller.state.videoQualityOptions.showVideoQualityPopover == false) {
+      $("span.oo-icon.oo-icon-bitrate").css("color", this.props.skinConfig.controlBar.iconStyle.inactive.color);
+      $("span.oo-icon.oo-icon-bitrate").css("opacity", this.props.skinConfig.controlBar.iconStyle.inactive.opacity);
+      $("span.oo-icon.oo-icon-bitrate").css("WebkitFilter", "");
+      $("span.oo-icon.oo-icon-bitrate").css("filter", "");
+      $("span.oo-icon.oo-icon-bitrate").css("msFilter", "");
+    }
   },
 
   addAutoButton: function(bitrateButtons) {
@@ -33,17 +55,34 @@ var VideoQualityPanel = React.createClass({
       'oo-selected': this.state.selected == 'auto'
     });
 
-    //add auto btn to beginning of array
-    bitrateButtons.unshift(
-      <li className="oo-auto-li" key='auto-li'>
-        <a className={autoQualityBtn} key='auto' onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
-          <div className="oo-quality-auto-icon">
-            <Icon {...this.props} icon="auto"/>
-          </div>
-          <div className="oo-quality-auto-label">Auto</div>
-        </a>
-      </li>
-    );
+   if (autoQualityBtn === "oo-quality-auto-btn oo-selected") {
+        var selectedBitrateStyle = { color: this.props.skinConfig.controlBar.iconStyle.active.color ? 
+                                            this.props.skinConfig.controlBar.iconStyle.active.color : 
+                                            this.props.skinConfig.general.accentColor };
+        //add auto btn to beginning of array
+        bitrateButtons.unshift(
+          <li className="oo-auto-li" key='auto-li'>
+            <a className={autoQualityBtn} key='auto' onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
+              <div className="oo-quality-auto-icon">
+                <Icon {...this.props} icon="auto" style={selectedBitrateStyle}/>
+              </div>
+              <div className="oo-quality-auto-label" style={selectedBitrateStyle}>Auto</div>
+            </a>
+          </li>
+        );
+    } else {
+        //add auto btn to beginning of array
+        bitrateButtons.unshift(
+          <li className="oo-auto-li" key='auto-li'>
+            <a className={autoQualityBtn} key='auto' onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
+              <div className="oo-quality-auto-icon" >
+                <Icon {...this.props} icon="auto" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+              </div>
+              <div className="oo-quality-auto-label" onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>Auto</div>
+            </a>
+          </li>
+        );
+    }
   },
 
   render: function() {
@@ -51,6 +90,9 @@ var VideoQualityPanel = React.createClass({
 
     var bitrateButtons = [];
     var label;
+    var selectedBitrateStyle = { color: this.props.skinConfig.controlBar.iconStyle.active.color ? 
+                                        this.props.skinConfig.controlBar.iconStyle.active.color : 
+                                        this.props.skinConfig.general.accentColor };
 
     //available bitrates
     for (var i = 0; i < availableBitrates.length; i++) {
@@ -69,7 +111,11 @@ var VideoQualityPanel = React.createClass({
         else {
           label = availableBitrates[i].bitrate;
         }
-        bitrateButtons.push(<li key={i}><a className={qualityBtn} key={i} onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>{label}</a></li>);
+        if ( qualityBtn === "oo-quality-btn oo-selected") {
+          bitrateButtons.push(<li key={i}><a className={qualityBtn} style={selectedBitrateStyle} key={i} onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>{label}</a></li>);
+        } else {
+          bitrateButtons.push(<li key={i}><a className={qualityBtn} onMouseOver={this.highlight} onMouseOut={this.removeHighlight} key={i} onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>{label}</a></li>);
+        }
       }
     }
 

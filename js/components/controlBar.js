@@ -103,12 +103,18 @@ var ControlBar = React.createClass({
     this.props.controller.toggleShareScreen();
   },
 
-  handleQualityClick: function() {
+  handleQualityClick: function(event) {
     if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
     } else {
       this.toggleQualityPopover();
       this.closeCaptionPopover();
+    }
+
+    if(this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true) {
+      this.iConClickHighlight(event);
+    } else {
+      this.removeHighlight(event);
     }
   },
 
@@ -124,6 +130,13 @@ var ControlBar = React.createClass({
 
   toggleCaptionPopover: function() {
     this.props.controller.toggleClosedCaptionPopOver();
+    if (this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover == false) {
+      $("span.oo-icon.oo-icon-cc").css("color", this.props.skinConfig.controlBar.iconStyle.inactive.color);
+      $("span.oo-icon.oo-icon-cc").css("opacity", this.props.skinConfig.controlBar.iconStyle.inactive.opacity);
+      $("span.oo-icon.oo-icon-cc").css("WebkitFilter", "");
+      $("span.oo-icon.oo-icon-cc").css("filter", "");
+      $("span.oo-icon.oo-icon-cc").css("msFilter", "");
+    }
   },
 
   closeCaptionPopover: function() {
@@ -151,23 +164,39 @@ var ControlBar = React.createClass({
     this.props.controller.toggleMoreOptionsScreen(this.moreOptionsItems);
   },
 
-  handleClosedCaptionClick: function() {
+  handleClosedCaptionClick: function(event) {
     if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
     } else {
       this.toggleCaptionPopover();
       this.closeQualityPopover();
     }
+
+    if(this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover == true) {
+      this.iConClickHighlight(event);
+    } else {
+      this.removeHighlight(event);
+    }
+  },
+
+  iConClickHighlight: function(evt) {
+    var color = this.props.skinConfig.controlBar.iconStyle.active.color ? this.props.skinConfig.controlBar.iconStyle.active.color : this.props.skinConfig.general.accentColor;
+    var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
+    Utils.highlight(evt.target, opacity, color);
   },
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
-    var color = this.props.skinConfig.controlBar.iconStyle.active.color;
+    if (this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover == true ||
+      this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true) { return};
+    var color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
     var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
     Utils.highlight(evt.target, opacity, color);
   },
 
   removeHighlight: function(evt) {
+    if (this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover == true ||
+      this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true ) { return};
     var color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
     var opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
     Utils.removeHighlight(evt.target, opacity, color);
@@ -226,7 +255,8 @@ var ControlBar = React.createClass({
         "oo-volume-bar": true,
         "oo-on": turnedOn
       });
-      var barStyle = turnedOn ? {backgroundColor: this.props.skinConfig.controlBar.volumeControl.color} : null;
+      var barStyle = {backgroundColor: this.props.skinConfig.controlBar.volumeControl.color ? 
+                     this.props.skinConfig.controlBar.volumeControl.color : this.props.skinConfig.general.accentColor};
       volumeBars.push(<a data-volume={(i+1)/10} className={volumeClass} key={i}
         style={barStyle}
         onClick={this.handleVolumeClick}></a>);
@@ -297,7 +327,7 @@ var ControlBar = React.createClass({
 
       "volume": <div className="oo-volume oo-control-bar-item" key="volume">
         <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
-          style={this.props.skinConfig.controlBar.iconStyle.inactive}
+          style={dynamicStyles.iconCharacter}
           onClick={this.handleVolumeIconClick}
           onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}/>
         {volumeControls}

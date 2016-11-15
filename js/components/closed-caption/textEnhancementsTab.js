@@ -40,20 +40,38 @@ var TextEnhancementsTab = React.createClass({
       this.props.localizableStrings
     );
 
+    var selectedTextEnhancementStyle = { color: this.props.skinConfig.controlBar.iconStyle.active.color ? 
+                                         this.props.skinConfig.controlBar.iconStyle.active.color : 
+                                         this.props.skinConfig.general.accentColor };
     var textEnhancementItems = [];
     for(var i = 0; i < this.state.textEnhancements.length; i++) {
-      textEnhancementItems.push(
-        <a className="oo-text-enhancements-container" onClick={this.changeTextEnhancement.bind(this, this.state.textEnhancements[i])} key={i}>
-          <div className={this.setClassname(this.state.textEnhancements[i], "letter") + " oo-text-enhancement-letter-" + this.state.textEnhancements[i]}>A</div>
-          <div className={this.setClassname(this.state.textEnhancements[i], "label")}>{
-            Utils.getLocalizedString(
-              this.props.language,
-              CONSTANTS.SKIN_TEXT[this.state.textEnhancements[i].toUpperCase()],
-              this.props.localizableStrings
-            )
-          }</div>
-        </a>
-      );
+      if ( this.setClassname(this.state.textEnhancements[i], "letter") === 'oo-text-enhancement-letter oo-text-enhancement-selected') {
+        textEnhancementItems.push(
+          <a className="oo-text-enhancements-container" onClick={this.changeTextEnhancement.bind(this, this.state.textEnhancements[i])} key={i}>
+            <div className={this.setClassname(this.state.textEnhancements[i], "letter") + " oo-text-enhancement-letter-" + this.state.textEnhancements[i]} style={selectedTextEnhancementStyle}>A</div>
+            <div className={this.setClassname(this.state.textEnhancements[i], "label")} style={selectedTextEnhancementStyle}>{
+              Utils.getLocalizedString(
+                this.props.language,
+                CONSTANTS.SKIN_TEXT[this.state.textEnhancements[i].toUpperCase()],
+                this.props.localizableStrings
+              )
+            }</div>
+          </a>
+        );
+      } else {
+        textEnhancementItems.push(
+          <a className="oo-text-enhancements-container" onClick={this.changeTextEnhancement.bind(this, this.state.textEnhancements[i])} key={i}>
+            <div className={this.setClassname(this.state.textEnhancements[i], "letter") + " oo-text-enhancement-letter-" + this.state.textEnhancements[i]}>A</div>
+            <div className={this.setClassname(this.state.textEnhancements[i], "label")}>{
+              Utils.getLocalizedString(
+                this.props.language,
+                CONSTANTS.SKIN_TEXT[this.state.textEnhancements[i].toUpperCase()],
+                this.props.localizableStrings
+              )
+            }</div>
+          </a>
+        );
+      }
     }
 
     return (

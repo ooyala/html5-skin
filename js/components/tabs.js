@@ -2,9 +2,24 @@
 
 var React = require('react'),
     ClassNames = require('classnames'),
+    Utils = require('./utils'),
     Icon = require('./icon');
 
 var Tabs = React.createClass({
+  highlight: function(evt) {
+    var color = this.props.skinConfig.controlBar.iconStyle.active.color ? 
+                this.props.skinConfig.controlBar.iconStyle.active.color : 
+                this.props.skinConfig.general.accentColor;
+    var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
+    Utils.highlight(evt.target, opacity, color);
+  },
+
+  removeHighlight: function(evt) {
+    var color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
+    var opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
+    Utils.removeHighlight(evt.target, opacity, color);
+  },
+
   getInitialState: function() {
     return {
       tabActive: this.props.tabActive
@@ -62,20 +77,40 @@ var Tabs = React.createClass({
       .map(function(panel, index)  {
         var ref = ("tab-menu-" + (index + 1));
         var title = panel.props.title;
+        var activeMenuColor =  "solid ";
+        activeMenuColor += this.props.skinConfig.controlBar.iconStyle.active.color ? 
+                           this.props.skinConfig.controlBar.iconStyle.active.color : 
+                           this.props.skinConfig.general.accentColor;
+
+        var activeTabStyle = { borderBottom: activeMenuColor};
+
         var classes = ClassNames(
           'tabs-menu-item',
           this.state.tabActive === (index + 1) && 'is-active',
           'tabs-menu-item-' + index
         );
 
+      if ( classes.search("is-active") === -1 ) {
         return (
           <li ref={ref} key={index} className={classes}>
-            <a onClick={this.setActive.bind(this, index + 1)}>
+            <a onClick={this.setActive.bind(this, index + 1)} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
               {title}
             </a>
           </li>
         );
+      } else {
+          return (
+          <li ref={ref} key={index} className={classes}>
+            <a onClick={this.setActive.bind(this, index + 1)} style={activeTabStyle} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+              {title}
+            </a>
+          </li>
+        );
+      }
+
+
       }.bind(this));
+
 
     return (
       <nav className='tabs-navigation' ref='tabsNavigation'>
