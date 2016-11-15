@@ -125,6 +125,11 @@ var ControlBar = React.createClass({
   closeQualityPopover: function() {
     if(this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true) {
       this.toggleQualityPopover();
+      $("span.oo-icon.oo-icon-bitrate").css("color", this.props.skinConfig.controlBar.iconStyle.inactive.color);
+      $("span.oo-icon.oo-icon-bitrate").css("opacity", this.props.skinConfig.controlBar.iconStyle.inactive.opacity);
+      $("span.oo-icon.oo-icon-bitrate").css("WebkitFilter", "");
+      $("span.oo-icon.oo-icon-bitrate").css("filter", "");
+      $("span.oo-icon.oo-icon-bitrate").css("msFilter", "");
     }
   },
 
