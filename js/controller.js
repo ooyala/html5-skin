@@ -1105,6 +1105,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY);
+          if(this.state.isMobile) {
+            this.mb.publish(OO.EVENTS.PLAY);
+          }
           break;
         case CONSTANTS.STATE.END:
           if(Utils.isAndroid() || Utils.isIos()) {
