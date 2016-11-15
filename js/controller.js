@@ -1244,7 +1244,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
         this.mb.publish(OO.EVENTS.PAUSE);
         if (selectedContentData.clickedVideo.embed_code){
-          this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code);
+          this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code,
+                          this.state.playerParam);
         }
         else if (selectedContentData.clickedVideo.asset){
           this.mb.publish(OO.EVENTS.SET_ASSET, selectedContentData.clickedVideo.asset);
