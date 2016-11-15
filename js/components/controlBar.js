@@ -104,15 +104,15 @@ var ControlBar = React.createClass({
   },
 
   handleQualityClick: function(event) {
+    event.stopPropagation();
     if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
     } else {
       this.toggleQualityPopover();
       this.closeCaptionPopover();
     }
-
     if(this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true) {
-      this.iConClickHighlight(event);
+      this.highlightOnClick(event);
     } else {
       this.removeHighlight(event);
     }
@@ -170,21 +170,21 @@ var ControlBar = React.createClass({
   },
 
   handleClosedCaptionClick: function(event) {
+    event.stopPropagation();
     if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
     } else {
       this.toggleCaptionPopover();
       this.closeQualityPopover();
     }
-
     if(this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover == true) {
-      this.iConClickHighlight(event);
+      this.highlightOnClick(event);
     } else {
       this.removeHighlight(event);
     }
   },
 
-  iConClickHighlight: function(evt) {
+  highlightOnClick: function(evt) {
     var color = this.props.skinConfig.controlBar.iconStyle.active.color ? this.props.skinConfig.controlBar.iconStyle.active.color : this.props.skinConfig.general.accentColor;
     var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
     Utils.highlight(evt.target, opacity, color);
@@ -193,7 +193,7 @@ var ControlBar = React.createClass({
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
     if (this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover == true ||
-      this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true) { return};
+      this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true) { return };
     var color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
     var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
     Utils.highlight(evt.target, opacity, color);
@@ -201,7 +201,7 @@ var ControlBar = React.createClass({
 
   removeHighlight: function(evt) {
     if (this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover == true ||
-      this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true ) { return};
+      this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true ) { return };
     var color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
     var opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
     Utils.removeHighlight(evt.target, opacity, color);
@@ -353,9 +353,9 @@ var ControlBar = React.createClass({
       "quality": (
         <div className="oo-popover-button-container" key="quality">
           {videoQualityPopover}
-          <a className={qualityClass} onClick={this.handleQualityClick}>
+          <a className={qualityClass}>
             <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
-              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+              onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleQualityClick}/>
           </a>
         </div>
       ),
@@ -369,9 +369,9 @@ var ControlBar = React.createClass({
       "closedCaption": (
         <div className="oo-popover-button-container" key="closedCaption">
           {closedCaptionPopover}
-          <a className={captionClass} onClick={this.handleClosedCaptionClick}>
+          <a className={captionClass}>
             <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
-              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+              onMouseOver={this.highlight} onMouseOut={this.removeHighlight} onClick={this.handleClosedCaptionClick}/>
           </a>
         </div>
       ),

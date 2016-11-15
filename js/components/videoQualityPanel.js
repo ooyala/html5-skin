@@ -63,8 +63,8 @@ var VideoQualityPanel = React.createClass({
         bitrateButtons.unshift(
           <li className="oo-auto-li" key='auto-li'>
             <a className={autoQualityBtn} key='auto' onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
-              <div className="oo-quality-auto-icon">
-                <Icon {...this.props} icon="auto" style={selectedBitrateStyle}/>
+              <div className="oo-quality-auto-icon" style={selectedBitrateStyle}>
+                <Icon {...this.props} icon="auto" />
               </div>
               <div className="oo-quality-auto-label" style={selectedBitrateStyle}>Auto</div>
             </a>
@@ -96,15 +96,15 @@ var VideoQualityPanel = React.createClass({
 
     //available bitrates
     for (var i = 0; i < availableBitrates.length; i++) {
-      var qualityBtn = ClassNames({
-        'oo-quality-btn': true,
-        'oo-selected': this.state.selected == availableBitrates[i].id
-      });
-
       if (availableBitrates[i].id == 'auto') {
         this.addAutoButton(bitrateButtons);
       }
       else {
+        var qualityBtn = ClassNames({
+        'oo-quality-btn': true,
+        'oo-selected': this.state.selected == availableBitrates[i].id
+        });
+
         if (typeof availableBitrates[i].bitrate === "number") {
           label = Math.round(availableBitrates[i].bitrate/1000) + ' kbps';
         } 
