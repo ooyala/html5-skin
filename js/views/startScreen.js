@@ -14,6 +14,8 @@ var StartScreen = React.createClass({
   mixins: [ResizeMixin],
 
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
+
     return {
       playButtonClicked: false,
       descriptionText: this.props.contentTree.description
@@ -106,7 +108,7 @@ var StartScreen = React.createClass({
           {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : null}
         </div>
 
-        {(this.state.playButtonClicked && this.props.controller.state.playerState == CONSTANTS.STATE.START) || this.props.controller.state.buffering ?
+        {(this.state.playButtonClicked && this.props.controller.state.playerState == CONSTANTS.STATE.START && !this.isMobile) || this.props.controller.state.buffering ?
           <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : actionIcon}
       </div>
     );

@@ -17,6 +17,8 @@ var PauseScreen = React.createClass({
   mixins: [ResizeMixin, AnimateMixin],
 
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
+
     return {
       descriptionText: this.props.contentTree.description,
       controlBarVisible: true
@@ -114,7 +116,7 @@ var PauseScreen = React.createClass({
 
         <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
 
-        <a className={actionIconClass} onClick={this.handleClick}>
+        <a ngIf="!this.isMobile" className={actionIconClass} onClick={this.handleClick}>
           <Icon {...this.props} icon="pause" style={actionIconStyle}/>
         </a>
 
