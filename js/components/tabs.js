@@ -7,11 +7,10 @@ var React = require('react'),
 
 var Tabs = React.createClass({
   highlight: function(evt) {
-    var color = this.props.skinConfig.controlBar.iconStyle.active.color ? 
-                this.props.skinConfig.controlBar.iconStyle.active.color : 
-                this.props.skinConfig.general.accentColor;
-    var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
-    Utils.highlight(evt.target, opacity, color);
+    evt.target.style.opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;;
+    evt.target.style.color = this.props.skinConfig.controlBar.iconStyle.active.color ? 
+                             this.props.skinConfig.controlBar.iconStyle.active.color : 
+                             this.props.skinConfig.general.accentColor;
   },
 
   removeHighlight: function(evt) {
