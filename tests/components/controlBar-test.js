@@ -730,7 +730,7 @@ describe('ControlBar', function () {
     expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe("blue");
     TestUtils.Simulate.mouseOver(ReactDOM.findDOMNode(DOM.refs.volumeIcon));
     expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe("1");
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe("blue");
+    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe("red");
     TestUtils.Simulate.mouseOut(ReactDOM.findDOMNode(DOM.refs.volumeIcon));
     expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe("0");
     expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe("blue");

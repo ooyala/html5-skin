@@ -66,8 +66,9 @@
     }
 
     .oo-control-bar-item.oo-selected > span {
-      color:$blue-light;
-      opacity:1;
+      color:$blue-light !important;
+      color: inherit !important;
+      opacity:1 !important;
     }
 
     .oo-control-bar-item.oo-logo {
