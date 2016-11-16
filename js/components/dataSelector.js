@@ -60,7 +60,7 @@ var DataSelector = React.createClass({
     var dataContentBlocks = [];
 
     for (var i = 0; i < dataItems.length; i++) {
-      if (this.setClassname(dataItems[i]) === "oo-item oo-item-selected") {
+      if (this.props.selectedData == dataItems[i] && this.props.enabled) {
         selectedItemStyle = { backgroundColor: this.props.skinConfig.controlBar.iconStyle.active.color ? 
                                                this.props.skinConfig.controlBar.iconStyle.active.color : 
                                                this.props.skinConfig.general.accentColor };

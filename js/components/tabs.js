@@ -7,7 +7,7 @@ var React = require('react'),
 
 var Tabs = React.createClass({
   highlight: function(evt) {
-    evt.target.style.opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;;
+    evt.target.style.opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
     evt.target.style.color = this.props.skinConfig.controlBar.iconStyle.active.color ? 
                              this.props.skinConfig.controlBar.iconStyle.active.color : 
                              this.props.skinConfig.general.accentColor;
@@ -106,10 +106,7 @@ var Tabs = React.createClass({
           </li>
         );
       }
-
-
-      }.bind(this));
-
+    }.bind(this));
 
     return (
       <nav className='tabs-navigation' ref='tabsNavigation'>
