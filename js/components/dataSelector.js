@@ -59,8 +59,14 @@ var DataSelector = React.createClass({
     //Build data content blocks
     var dataContentBlocks = [];
     for (var i = 0; i < dataItems.length; i++) {
+      //accent color
+      var selectedItemStyle = {};
+      if (this.props.selectedData == dataItems[i] && this.props.enabled && this.props.skinConfig.general.accentColor) {
+        selectedItemStyle = {backgroundColor: this.props.skinConfig.general.accentColor};
+      }
+
       dataContentBlocks.push(
-        <a className={this.setClassname(dataItems[i])} onClick={this.handleDataSelection.bind(this, dataItems[i])} key={i}>
+        <a className={this.setClassname(dataItems[i])}  style={selectedItemStyle} onClick={this.handleDataSelection.bind(this, dataItems[i])} key={i}>
           <span className="oo-data">{dataItems[i]}</span>
         </a>
       );
