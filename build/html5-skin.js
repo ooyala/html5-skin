@@ -4500,7 +4500,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "5ac08ab0ef861ff27454a5e70bc446c266e4a93c"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "14d965d9598f1ee5402a90a8bddae93784965748"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -5077,10 +5077,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
         this.mb.publish(OO.EVENTS.END_SCREEN_SHOWN);
       }
-      if (Utils.isIPhone()){
-        //iPhone end screen is the same as start screen, except for the replay button
-        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
-      }
+      // if (Utils.isIPhone()){
+      //   //iPhone end screen is the same as start screen, except for the replay button
+      //   this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      // }
       this.skin.updatePlayhead(this.state.duration, this.state.duration, this.state.duration);
       this.state.playerState = CONSTANTS.STATE.END;
       this.renderSkin();
@@ -6005,7 +6005,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     //set playbackRate
     changePlaybackSpeed: function() {
       var video = this.state.mainVideoElement.get(0); // here you can access the video element for example
-      console.log("Video Element: ", this.state.mainVideoElement);
+      console.log("Video Element: ", video);
       if(video.playbackRate == 2){
         video.playbackRate = 1;
       } else {

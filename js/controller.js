@@ -595,10 +595,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
         this.mb.publish(OO.EVENTS.END_SCREEN_SHOWN);
       }
-      if (Utils.isIPhone()){
-        //iPhone end screen is the same as start screen, except for the replay button
-        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
-      }
+      // if (Utils.isIPhone()){
+      //   //iPhone end screen is the same as start screen, except for the replay button
+      //   this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      // }
       this.skin.updatePlayhead(this.state.duration, this.state.duration, this.state.duration);
       this.state.playerState = CONSTANTS.STATE.END;
       this.renderSkin();
@@ -1523,7 +1523,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     //set playbackRate
     changePlaybackSpeed: function() {
       var video = this.state.mainVideoElement.get(0); // here you can access the video element for example
-      console.log("Video Element: ", this.state.mainVideoElement);
+      console.log("Video Element: ", video);
       if(video.playbackRate == 2){
         video.playbackRate = 1;
       } else {
