@@ -5,6 +5,18 @@ var React = require('react'),
     Icon = require('./icon');
 
 var Tabs = React.createClass({
+  highlight: function(evt) {
+    if (this.props.skinConfig.general.accentColor) {
+      evt.target.style.color = this.props.skinConfig.general.accentColor;
+    }
+  },
+
+  removeHighlight: function(evt) {
+    if (this.props.skinConfig.general.accentColor) {
+      evt.target.style.color = '';
+    }
+  },
+
   getInitialState: function() {
     return {
       tabActive: this.props.tabActive
@@ -62,15 +74,24 @@ var Tabs = React.createClass({
       .map(function(panel, index)  {
         var ref = ("tab-menu-" + (index + 1));
         var title = panel.props.title;
+        var activeTabStyle = {};
+
         var classes = ClassNames(
           'tabs-menu-item',
           this.state.tabActive === (index + 1) && 'is-active',
           'tabs-menu-item-' + index
         );
 
+        //accent color
+        if (this.state.tabActive === (index+1) && this.props.skinConfig.general.accentColor) {
+          var activeMenuColor =  "solid ";
+          activeMenuColor += this.props.skinConfig.general.accentColor;
+          activeTabStyle = {borderBottom: activeMenuColor};
+        }
+
         return (
           <li ref={ref} key={index} className={classes}>
-            <a onClick={this.setActive.bind(this, index + 1)}>
+            <a onClick={this.setActive.bind(this, index + 1)} style={activeTabStyle} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
               {title}
             </a>
           </li>
