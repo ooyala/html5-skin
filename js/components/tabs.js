@@ -14,9 +14,7 @@ var Tabs = React.createClass({
 
   removeHighlight: function(evt) {
     if (this.props.skinConfig.general.accentColor) {
-      var color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
-      var opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
-      Utils.removeHighlight(evt.target, opacity, color);
+      evt.target.style.color = '';
     }
   },
 
