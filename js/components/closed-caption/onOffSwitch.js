@@ -27,9 +27,7 @@ var OnOffSwitch = React.createClass({
       'oo-switch-captions-active': !this.props.closedCaptionOptions.enabled
     });
 
-    var ccOnStyle = this.props.closedCaptionOptions.enabled ? {backgroundColor: this.props.skinConfig.controlBar.iconStyle.active.color ? 
-                                                               this.props.skinConfig.controlBar.iconStyle.active.color : 
-                                                               this.props.skinConfig.general.accentColor} : null;
+    var ccOnStyle =  {backgroundColor: this.props.closedCaptionOptions.enabled && this.props.skinConfig.general.accentColor ? this.props.skinConfig.general.accentColor : null};
 
     var offString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.OFF, this.props.localizableStrings);
     var onString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.ON, this.props.localizableStrings);
@@ -37,7 +35,7 @@ var OnOffSwitch = React.createClass({
     return (
       <div className="oo-switch-container">
         <span className={offCaptionClassName}>{offString}</span>
-        <div className="oo-switch-element" >
+        <div className="oo-switch-element">
           <span className={switchBodyClassName} style={ccOnStyle}></span>
           <span className={switchThumbClassName}></span>
         </div>
