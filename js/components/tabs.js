@@ -7,16 +7,17 @@ var React = require('react'),
 
 var Tabs = React.createClass({
   highlight: function(evt) {
-    evt.target.style.opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
-    evt.target.style.color = this.props.skinConfig.controlBar.iconStyle.active.color ? 
-                             this.props.skinConfig.controlBar.iconStyle.active.color : 
-                             this.props.skinConfig.general.accentColor;
+    if (this.props.skinConfig.general.accentColor) {
+      evt.target.style.color = this.props.skinConfig.general.accentColor;
+    }
   },
 
   removeHighlight: function(evt) {
-    var color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
-    var opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
-    Utils.removeHighlight(evt.target, opacity, color);
+    if (this.props.skinConfig.general.accentColor) {
+      var color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
+      var opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
+      Utils.removeHighlight(evt.target, opacity, color);
+    }
   },
 
   getInitialState: function() {
@@ -83,14 +84,14 @@ var Tabs = React.createClass({
           this.state.tabActive === (index + 1) && 'is-active',
           'tabs-menu-item-' + index
         );
-        
+
+        //accent color
         if (this.state.tabActive === (index+1) && this.props.skinConfig.general.accentColor) {
           var activeMenuColor =  "solid ";
           activeMenuColor += this.props.skinConfig.general.accentColor;
-          activeTabStyle = { borderBottom: activeMenuColor};         
-        } else {
-          activeTabStyle = {};
+          activeTabStyle = {borderBottom: activeMenuColor};
         }
+
         return (
           <li ref={ref} key={index} className={classes}>
             <a onClick={this.setActive.bind(this, index + 1)} style={activeTabStyle} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
