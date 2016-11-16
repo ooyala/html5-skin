@@ -4500,7 +4500,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "14d965d9598f1ee5402a90a8bddae93784965748"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "f8fb4d3149a752dc0ed0eba18f73a131dfab2f0c"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -4977,6 +4977,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
+        this.state.mainVideoElement = this.state.mainVideoInnerWrapper.find("video").length ? this.state.mainVideoInnerWrapper.find("video") : this.state.mainVideoInnerWrapper.find("object");
         this.state.pauseAnimationDisabled = false;
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
@@ -5104,11 +5105,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.queuedPlayheadUpdate = null;
         this.renderSkin();
       }
-      if (Utils.isIos() && this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN && this.state.fullscreen) {
-        this.state.pauseAnimationDisabled = true;
-        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
-        this.state.playerState = CONSTANTS.STATE.PAUSE;
-      }
+      // if (Utils.isIos() && this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN && this.state.fullscreen) {
+      //   this.state.pauseAnimationDisabled = true;
+      //   this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+      //   this.state.playerState = CONSTANTS.STATE.PAUSE;
+      // }
     },
 
     onPlaybackReady: function(event) {

@@ -495,6 +495,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
+        this.state.mainVideoElement = this.state.mainVideoInnerWrapper.find("video").length ? this.state.mainVideoInnerWrapper.find("video") : this.state.mainVideoInnerWrapper.find("object");
         this.state.pauseAnimationDisabled = false;
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
@@ -622,11 +623,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.queuedPlayheadUpdate = null;
         this.renderSkin();
       }
-      if (Utils.isIos() && this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN && this.state.fullscreen) {
-        this.state.pauseAnimationDisabled = true;
-        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
-        this.state.playerState = CONSTANTS.STATE.PAUSE;
-      }
+      // if (Utils.isIos() && this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN && this.state.fullscreen) {
+      //   this.state.pauseAnimationDisabled = true;
+      //   this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+      //   this.state.playerState = CONSTANTS.STATE.PAUSE;
+      // }
     },
 
     onPlaybackReady: function(event) {
