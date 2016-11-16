@@ -33,8 +33,8 @@ describe('VideoQualityPanel', function () {
 
   var mockSkinConfig = Utils.clone(skinConfig);
 
-  var availableBitrates = [{"id":"auto", "bitrate":0}, {"id":"1", "bitrate":1000}, {"id":"2", "bitrate":2000}, {"id":"3", "bitrate":3000}, {"id":"4", "bitrate":4000}, {"id":"5", "bitrate":5000}]
-  var bitrateLabels = ['1 kbps', '2 kbps','3 kbps','4 kbps','5 kbps']
+  var availableBitrates = [{"id":"auto", "bitrate":0}, {"id":"1", "bitrate":1000}, {"id":"2", "bitrate":2000}, {"id":"3", "bitrate":3000}, {"id":"4", "bitrate":4000}, {"id":"5", "bitrate":5000}];
+  var bitrateLabels = ['1 kbps', '2 kbps','3 kbps','4 kbps','5 kbps'];
 
   var mockProps = {
     controller: mockController,
@@ -103,8 +103,7 @@ describe('VideoQualityPanel', function () {
   });
 
   it('selects item from video quality panel with controlbar iconStyle color', function () {
-    mockSkinConfig.general.accentColor = "blue";
-    mockSkinConfig.controlBar.iconStyle.active.color = "red";
+    mockSkinConfig.general.accentColor = "red";
 
     var DOM = TestUtils.renderIntoDocument(
       <VideoQualityPanel {...mockProps} />
@@ -136,7 +135,7 @@ describe('VideoQualityPanel', function () {
         selectedBitrate: availableBitrates[1]
       },
       skinConfig: skinConfig
-    }
+    };
     var DOM = TestUtils.renderIntoDocument(
       <VideoQualityPanel {...mockProps} />
     );
