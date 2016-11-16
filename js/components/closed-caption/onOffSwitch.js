@@ -26,9 +26,7 @@ var OnOffSwitch = React.createClass({
       'oo-switch-captions oo-switch-captions-off': true,
       'oo-switch-captions-active': !this.props.closedCaptionOptions.enabled
     });
-
     var ccOnStyle =  {backgroundColor: this.props.closedCaptionOptions.enabled && this.props.skinConfig.general.accentColor ? this.props.skinConfig.general.accentColor : null};
-
     var offString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.OFF, this.props.localizableStrings);
     var onString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.ON, this.props.localizableStrings);
 

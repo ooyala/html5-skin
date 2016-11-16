@@ -201,13 +201,10 @@ var ScrubberBar = React.createClass({
     };
     var playedIndicatorStyle = {
       width: Math.min((parseFloat(this.props.currentPlayhead) / parseFloat(this.props.duration)) * 100, 100) + "%",
-      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor ? this.props.skinConfig.controlBar.scrubberBar.playedColor :
-                                                                                  this.props.skinConfig.general.accentColor
+      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor ? this.props.skinConfig.controlBar.scrubberBar.playedColor : this.props.skinConfig.general.accentColor
     };
-
     var playheadStyle = {
-      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor ? this.props.skinConfig.controlBar.scrubberBar.playedColor :
-                                                                                  this.props.skinConfig.general.accentColor
+      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor ? this.props.skinConfig.controlBar.scrubberBar.playedColor : this.props.skinConfig.general.accentColor
     };
     var playheadPaddingStyle = {};
 
@@ -273,8 +270,7 @@ var ScrubberBar = React.createClass({
         hoverTime = (this.state.hoveringX / this.state.scrubberBarWidth) * this.props.duration;
         hoveredIndicatorStyle = {
           width: Math.min((parseFloat(hoverTime) / parseFloat(this.props.duration)) * 100, 100) + "%",
-          backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor ? this.props.skinConfig.controlBar.scrubberBar.playedColor :
-                                                                                      this.props.skinConfig.general.accentColor
+          backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor ? this.props.skinConfig.controlBar.scrubberBar.playedColor : this.props.skinConfig.general.accentColor
         };
         scrubberBarClassName += " oo-scrubber-bar-hover";
         playheadClassName += " oo-playhead-hovering";

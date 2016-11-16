@@ -55,16 +55,16 @@ var DataSelector = React.createClass({
     var startAt = dataItemsPerPage * (this.state.currentPage - 1);
     var endAt = dataItemsPerPage * this.state.currentPage;
     var dataItems = this.props.availableDataItems.slice(startAt, endAt);
-    var selectedItemStyle = {};
+
     //Build data content blocks
     var dataContentBlocks = [];
-
     for (var i = 0; i < dataItems.length; i++) {
+      //accent color
+      var selectedItemStyle = {};
       if (this.props.selectedData == dataItems[i] && this.props.enabled && this.props.skinConfig.general.accentColor) {
         selectedItemStyle = {backgroundColor: this.props.skinConfig.general.accentColor};
-      } else {
-        selectedItemStyle = {};
       }
+
       dataContentBlocks.push(
         <a className={this.setClassname(dataItems[i])}  style={selectedItemStyle} onClick={this.handleDataSelection.bind(this, dataItems[i])} key={i}>
           <span className="oo-data">{dataItems[i]}</span>

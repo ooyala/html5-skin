@@ -39,15 +39,14 @@ var FontSizeTab = React.createClass({
       CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.fontSize.toUpperCase().replace(" ", "_")],
       this.props.localizableStrings
     );
-    
-    var selectedFontSizeStyle = {};
     var fontItems = [];
     for(var i = 0; i < this.state.fontSizes.length; i++) {
-      if (this.setClassname(this.state.fontSizes[i], "letter") === 'oo-font-size-letter oo-font-size-selected' && this.props.skinConfig.general.accentColor) {
+      //accent color
+      var selectedFontSizeStyle = {};
+      if (this.props.closedCaptionOptions.enabled && this.props.skinConfig.general.accentColor && this.props.closedCaptionOptions.fontSize == this.state.fontSizes[i]) {
         selectedFontSizeStyle = {color: this.props.skinConfig.general.accentColor};
-      } else {
-        selectedFontSizeStyle = {};
       }
+
       fontItems.push(
       <a className="oo-font-size-container" onClick={this.changeFontSize.bind(this, this.state.fontSizes[i])} key={i}>
         <div className={this.setClassname(this.state.fontSizes[i], "letter") + " oo-font-size-letter-" + this.state.fontSizes[i].replace(" ", "-")} style={selectedFontSizeStyle}>A</div>
