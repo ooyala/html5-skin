@@ -408,16 +408,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     showUpNextScreenWhenReady: function(currentPlayhead, duration) {
-      var timeToShow = 0;
-      var stringTimeToShow = this.skin.props.skinConfig.upNext.timeToShow;
+      var timeToShow = this.skin.props.skinConfig.upNext.timeToShow;
 
-      if (stringTimeToShow.indexOf('%') === -1){
-        // time to show is based on seconds from the end
-        timeToShow = parseInt(stringTimeToShow);
-      } else {
+      if (timeToShow < 1){
         // time to show is based on percentage of duration from the beginning
-        timeToShow = (1 - parseInt(stringTimeToShow)/100) * duration;
+        timeToShow = (1 - timeToShow) * duration;
       }
+
       this.state.upNextInfo.timeToShow = timeToShow;
 
       if ((this.state.mainVideoPlayhead != 0 && currentPlayhead != 0) && duration !==0 &&
@@ -806,6 +803,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }
         });
       }
+
+      //backwards compatibility with string parameters in skin.json
+      SkinJSON.upNext.timeToShow = Utils.convertStringToNumber(SkinJSON.upNext.timeToShow);
+      SkinJSON.discoveryScreen.countDownTime = Utils.convertStringToNumber(SkinJSON.discoveryScreen.countDownTime);
 
       //load player
       this.skin = ReactDOM.render(

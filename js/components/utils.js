@@ -291,6 +291,20 @@ var Utils = {
   },
 
   /**
+   * Converts string value to number (needed for backwards compatibility of skin.json parameters)
+   *
+   * @function convertStringToInt
+   * @param {String} property
+   * @return {Number}
+   */
+  convertStringToNumber: function(property) {
+    if (property.toString().indexOf('%') > -1){
+      property = parseInt(property)/100;
+    }
+    return isFinite(Number(property)) ? Number(property) : 0;
+  },
+
+  /**
   * Highlight the given element for hover effects
   *
   * @function Highlight
