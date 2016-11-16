@@ -39,20 +39,25 @@ var FontSizeTab = React.createClass({
       CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.fontSize.toUpperCase().replace(" ", "_")],
       this.props.localizableStrings
     );
-
     var fontItems = [];
     for(var i = 0; i < this.state.fontSizes.length; i++) {
+      //accent color
+      var selectedFontSizeStyle = {};
+      if (this.props.closedCaptionOptions.enabled && this.props.skinConfig.general.accentColor && this.props.closedCaptionOptions.fontSize == this.state.fontSizes[i]) {
+        selectedFontSizeStyle = {color: this.props.skinConfig.general.accentColor};
+      }
+
       fontItems.push(
-        <a className="oo-font-size-container" onClick={this.changeFontSize.bind(this, this.state.fontSizes[i])} key={i}>
-          <div className={this.setClassname(this.state.fontSizes[i], "letter") + " oo-font-size-letter-" + this.state.fontSizes[i].replace(" ", "-")}>A</div>
-          <div className={this.setClassname(this.state.fontSizes[i], "label")}>{
-            Utils.getLocalizedString(
-              this.props.language,
-              CONSTANTS.SKIN_TEXT[this.state.fontSizes[i].toUpperCase().replace(" ", "_")],
-              this.props.localizableStrings
-            )
-          }</div>
-        </a>
+      <a className="oo-font-size-container" onClick={this.changeFontSize.bind(this, this.state.fontSizes[i])} key={i}>
+        <div className={this.setClassname(this.state.fontSizes[i], "letter") + " oo-font-size-letter-" + this.state.fontSizes[i].replace(" ", "-")} style={selectedFontSizeStyle}>A</div>
+        <div className={this.setClassname(this.state.fontSizes[i], "label")} style={selectedFontSizeStyle} >{
+          Utils.getLocalizedString(
+            this.props.language,
+            CONSTANTS.SKIN_TEXT[this.state.fontSizes[i].toUpperCase().replace(" ", "_")],
+            this.props.localizableStrings
+          )
+        }</div>
+      </a>
       );
     }
 
