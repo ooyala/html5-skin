@@ -39,20 +39,25 @@ var TextEnhancementsTab = React.createClass({
       CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.textEnhancement.toUpperCase()],
       this.props.localizableStrings
     );
-
     var textEnhancementItems = [];
     for(var i = 0; i < this.state.textEnhancements.length; i++) {
+      //accent color
+      var selectedTextEnhancementStyle = {};
+      if (this.props.closedCaptionOptions.enabled && this.props.skinConfig.general.accentColor &&  this.props.closedCaptionOptions.textEnhancement == this.state.textEnhancements[i]) {
+        selectedTextEnhancementStyle = {color: this.props.skinConfig.general.accentColor};
+      }
+
       textEnhancementItems.push(
-        <a className="oo-text-enhancements-container" onClick={this.changeTextEnhancement.bind(this, this.state.textEnhancements[i])} key={i}>
-          <div className={this.setClassname(this.state.textEnhancements[i], "letter") + " oo-text-enhancement-letter-" + this.state.textEnhancements[i]}>A</div>
-          <div className={this.setClassname(this.state.textEnhancements[i], "label")}>{
+       <a className="oo-text-enhancements-container" onClick={this.changeTextEnhancement.bind(this, this.state.textEnhancements[i])} key={i}>
+        <div className={this.setClassname(this.state.textEnhancements[i], "letter") + " oo-text-enhancement-letter-" + this.state.textEnhancements[i]} style={selectedTextEnhancementStyle}>A</div>
+          <div className={this.setClassname(this.state.textEnhancements[i], "label")} style={selectedTextEnhancementStyle}>{
             Utils.getLocalizedString(
-              this.props.language,
-              CONSTANTS.SKIN_TEXT[this.state.textEnhancements[i].toUpperCase()],
-              this.props.localizableStrings
-            )
-          }</div>
-        </a>
+            this.props.language,
+            CONSTANTS.SKIN_TEXT[this.state.textEnhancements[i].toUpperCase()],
+            this.props.localizableStrings
+          )
+        }</div>
+      </a>
       );
     }
 
