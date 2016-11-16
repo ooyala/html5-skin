@@ -44,10 +44,8 @@ var TextEnhancementsTab = React.createClass({
 
     var textEnhancementItems = [];
     for(var i = 0; i < this.state.textEnhancements.length; i++) {
-      if ( this.setClassname(this.state.textEnhancements[i], "letter") === 'oo-text-enhancement-letter oo-text-enhancement-selected') {
-        selectedFontSizeStyle = { color: this.props.skinConfig.controlBar.iconStyle.active.color ? 
-                                         this.props.skinConfig.controlBar.iconStyle.active.color : 
-                                         this.props.skinConfig.general.accentColor };
+      if (this.setClassname(this.state.textEnhancements[i], "letter") === 'oo-text-enhancement-letter oo-text-enhancement-selected' && this.props.skinConfig.general.accentColor) {
+        selectedFontSizeStyle = {color: this.props.skinConfig.general.accentColor};
       } else {
         selectedTextEnhancementStyle = {};
       } 

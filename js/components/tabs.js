@@ -76,37 +76,29 @@ var Tabs = React.createClass({
       .map(function(panel, index)  {
         var ref = ("tab-menu-" + (index + 1));
         var title = panel.props.title;
-        var activeMenuColor =  "solid ";
-        activeMenuColor += this.props.skinConfig.controlBar.iconStyle.active.color ? 
-                           this.props.skinConfig.controlBar.iconStyle.active.color : 
-                           this.props.skinConfig.general.accentColor;
-
-        var activeTabStyle = { borderBottom: activeMenuColor};
+        var activeTabStyle = {};
 
         var classes = ClassNames(
           'tabs-menu-item',
           this.state.tabActive === (index + 1) && 'is-active',
           'tabs-menu-item-' + index
         );
-
-      if ( classes.search("is-active") === -1 ) {
+        
+        if (this.state.tabActive === (index+1) && this.props.skinConfig.general.accentColor) {
+          var activeMenuColor =  "solid ";
+          activeMenuColor += this.props.skinConfig.general.accentColor;
+          activeTabStyle = { borderBottom: activeMenuColor};         
+        } else {
+          activeTabStyle = {};
+        }
         return (
-          <li ref={ref} key={index} className={classes}>
-            <a onClick={this.setActive.bind(this, index + 1)} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
-              {title}
-            </a>
-          </li>
-        );
-      } else {
-          return (
           <li ref={ref} key={index} className={classes}>
             <a onClick={this.setActive.bind(this, index + 1)} style={activeTabStyle} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
               {title}
             </a>
           </li>
         );
-      }
-    }.bind(this));
+      }.bind(this));
 
     return (
       <nav className='tabs-navigation' ref='tabsNavigation'>

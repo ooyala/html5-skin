@@ -96,7 +96,6 @@ describe('ClosedCaptionPanel', function () {
     };
 
     mockSkinConfig.general.accentColor = "blue";
-    mockSkinConfig.controlBar.iconStyle.active.color = "";
 
     var DOM = TestUtils.renderIntoDocument(
       <ContentScreen
@@ -112,32 +111,6 @@ describe('ClosedCaptionPanel', function () {
 
     var onOffSwitch = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-switch-body');
     expect(onOffSwitch.style.backgroundColor).toBe("blue");
-  });
-
-  it('checks closed caption on switch with controlbar iconstyle color', function () {
-    var mockController = {
-      toggleClosedCaptionEnabled: function() {
-        closedCaptionsEnabled = !closedCaptionsEnabled;
-      }
-    };
-
-    mockSkinConfig.general.accentColor = "blue";
-    mockSkinConfig.controlBar.iconStyle.active.color = "red";
-
-    var DOM = TestUtils.renderIntoDocument(
-      <ContentScreen
-        screen={CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN}
-        screenClassName="oo-content-screen oo-content-screen-closed-captions"
-        titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
-        element={<OnOffSwitch controller={mockController} skinConfig={mockSkinConfig} closedCaptionOptions={closedCaptionOptions}/>}
-        icon="cc"
-        skinConfig={mockSkinConfig}>
-        <ClosedCaptionPanel skinConfig={mockSkinConfig} closedCaptionOptions={closedCaptionOptions} controller={mockController}/>
-      </ContentScreen>
-    );
-
-    var onOffSwitch = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-switch-body');
-    expect(onOffSwitch.style.backgroundColor).toBe("red");
   });
 
   it('checks closed caption off switch with accent color', function () {
@@ -148,7 +121,6 @@ describe('ClosedCaptionPanel', function () {
     };
 
     mockSkinConfig.general.accentColor = "blue";
-    mockSkinConfig.controlBar.iconStyle.active.color = "";
 
     var DOM = TestUtils.renderIntoDocument(
       <ContentScreen
@@ -164,32 +136,6 @@ describe('ClosedCaptionPanel', function () {
 
     var onOffSwitch = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-switch-body');
     expect(onOffSwitch.style.backgroundColor).toBe("blue");
-  });
-
-  it('checks closed caption off switch with controlbar iconstyle color', function () {
-    var mockController = {
-      toggleClosedCaptionEnabled: function() {
-        closedCaptionsEnabled = closedCaptionsEnabled;
-      }
-    };
-
-    mockSkinConfig.general.accentColor = "blue";
-    mockSkinConfig.controlBar.iconStyle.active.color = "red";
-
-    var DOM = TestUtils.renderIntoDocument(
-      <ContentScreen
-        screen={CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN}
-        screenClassName="oo-content-screen oo-content-screen-closed-captions"
-        titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
-        element={<OnOffSwitch controller={mockController} skinConfig={mockSkinConfig} closedCaptionOptions={closedCaptionOptions}/>}
-        icon="cc"
-        skinConfig={mockSkinConfig}>
-        <ClosedCaptionPanel skinConfig={mockSkinConfig} closedCaptionOptions={closedCaptionOptions} controller={mockController}/>
-      </ContentScreen>
-    );
-
-    var onOffSwitch = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-switch-body');
-    expect(onOffSwitch.style.backgroundColor).toBe("red");
   });
 
   it('checks changing the closed caption language', function () {
@@ -216,30 +162,11 @@ describe('ClosedCaptionPanel', function () {
     };
 
     mockSkinConfig.general.accentColor = "blue";
-    mockSkinConfig.controlBar.iconStyle.active.color = "";
 
     var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPanel skinConfig={mockSkinConfig} closedCaptionOptions={closedCaptionOptions} controller={mockController}/>);
     var newLanguage = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item')[1];
     TestUtils.Simulate.click(newLanguage);
     expect(newLanguage.style.backgroundColor).toBe("blue");  
-    expect(selectedLanguage).toBe(availableLanguages.languages[1]);
-  });
-
-  it('checks changing the closed caption language with controlbar iconstyle color', function () {
-    var selectedLanguage = skinConfig.closedCaptionOptions.defaultLanguage;
-    var mockController = {
-      onClosedCaptionChange: function(name, value) {
-        selectedLanguage = value;
-      }
-    };
-
-    mockSkinConfig.general.accentColor = "blue";
-    mockSkinConfig.controlBar.iconStyle.active.color = "red";
-
-    var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPanel skinConfig={mockSkinConfig} closedCaptionOptions={closedCaptionOptions} controller={mockController}/>);
-    var newLanguage = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item')[1];
-    TestUtils.Simulate.click(newLanguage);
-    expect(newLanguage.style.backgroundColor).toBe("red");  
     expect(selectedLanguage).toBe(availableLanguages.languages[1]);
   });
 });

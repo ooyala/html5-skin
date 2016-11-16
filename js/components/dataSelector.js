@@ -60,10 +60,8 @@ var DataSelector = React.createClass({
     var dataContentBlocks = [];
 
     for (var i = 0; i < dataItems.length; i++) {
-      if (this.props.selectedData == dataItems[i] && this.props.enabled) {
-        selectedItemStyle = { backgroundColor: this.props.skinConfig.controlBar.iconStyle.active.color ? 
-                                               this.props.skinConfig.controlBar.iconStyle.active.color : 
-                                               this.props.skinConfig.general.accentColor };
+      if (this.props.selectedData == dataItems[i] && this.props.enabled && this.props.skinConfig.general.accentColor) {
+        selectedItemStyle = {backgroundColor: this.props.skinConfig.general.accentColor};
       } else {
         selectedItemStyle = {};
       }

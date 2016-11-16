@@ -43,8 +43,8 @@ var FontSizeTab = React.createClass({
     var selectedFontSizeStyle = {};
     var fontItems = [];
     for(var i = 0; i < this.state.fontSizes.length; i++) {
-      if (this.setClassname(this.state.fontSizes[i], "letter") === 'oo-font-size-letter oo-font-size-selected') {
-        selectedFontSizeStyle = {color: this.props.skinConfig.controlBar.iconStyle.active.color ? this.props.skinConfig.controlBar.iconStyle.active.color : this.props.skinConfig.general.accentColor};
+      if (this.setClassname(this.state.fontSizes[i], "letter") === 'oo-font-size-letter oo-font-size-selected' && this.props.skinConfig.general.accentColor) {
+        selectedFontSizeStyle = {color: this.props.skinConfig.general.accentColor};
       } else {
         selectedFontSizeStyle = {};
       }

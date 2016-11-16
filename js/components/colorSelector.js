@@ -20,11 +20,9 @@ var ColorSelector = React.createClass({
     var activeColorStyle = {};
 
     for (var i = 0; i < this.props.colors.length; i++) {
-      if( this.setClassname(this.props.colors[i]) === 'oo-item oo-item-selected') { 
+      if (this.setClassname(this.props.colors[i]) === 'oo-item oo-item-selected' && this.props.skinConfig.general.accentColor) { 
         var selectedColorStyle =  "solid ";
-        selectedColorStyle += this.props.skinConfig.controlBar.iconStyle.active.color ? 
-                           this.props.skinConfig.controlBar.iconStyle.active.color : 
-                           this.props.skinConfig.general.accentColor;
+        selectedColorStyle += this.props.skinConfig.general.accentColor;
 
         activeColorStyle = { border: selectedColorStyle};
       }
