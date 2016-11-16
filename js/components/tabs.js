@@ -2,7 +2,6 @@
 
 var React = require('react'),
     ClassNames = require('classnames'),
-    Utils = require('./utils'),
     Icon = require('./icon');
 
 var Tabs = React.createClass({
