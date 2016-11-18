@@ -72,12 +72,12 @@ var EndScreen = React.createClass({
         'oo-state-screen-title': true,
         'oo-text-truncate': true,
         'oo-pull-right': infoPanelPosition.toLowerCase().indexOf("right") > -1,
-        'oo-hidden': !this.props.skinConfig.endScreen.showTitle
+        'oo-hidden': !Utils.getPropertyValue(this.props.skinConfig, 'endScreen.showTitle')
       });
       var descriptionClass = ClassNames({
         'oo-state-screen-description': true,
         'oo-pull-right': infoPanelPosition.toLowerCase().indexOf("right") > -1,
-        'oo-hidden': !this.props.skinConfig.endScreen.showDescription
+        'oo-hidden': !Utils.getPropertyValue(this.props.skinConfig, 'endScreen.showDescription')
       });
     }
 
