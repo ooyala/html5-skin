@@ -58,24 +58,28 @@ var EndScreen = React.createClass({
       'oo-hidden': !this.props.skinConfig.endScreen.showReplayButton
     });
 
-    var infoPanelClass = ClassNames({
-      'oo-state-screen-info': true,
-      'oo-info-panel-top': this.props.skinConfig.endScreen.infoPanelPosition.toLowerCase().indexOf("top") > -1,
-      'oo-info-panel-bottom': this.props.skinConfig.endScreen.infoPanelPosition.toLowerCase().indexOf("bottom") > -1,
-      'oo-info-panel-left': this.props.skinConfig.endScreen.infoPanelPosition.toLowerCase().indexOf("left") > -1,
-      'oo-info-panel-right': this.props.skinConfig.endScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
-    });
-    var titleClass = ClassNames({
-      'oo-state-screen-title': true,
-      'oo-text-truncate': true,
-      'oo-pull-right': this.props.skinConfig.endScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1,
-      'oo-hidden': !this.props.skinConfig.endScreen.showTitle
-    });
-    var descriptionClass = ClassNames({
-      'oo-state-screen-description': true,
-      'oo-pull-right': this.props.skinConfig.endScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1,
-      'oo-hidden': !this.props.skinConfig.endScreen.showDescription
-    });
+    var infoPanelPosition = Utils.getPropertyValue(this.props.skinConfig, 'endScreen.infoPanelPosition');
+
+    if (infoPanelPosition) {
+      var infoPanelClass = ClassNames({
+        'oo-state-screen-info': true,
+        'oo-info-panel-top': infoPanelPosition.toLowerCase().indexOf("top") > -1,
+        'oo-info-panel-bottom': infoPanelPosition.toLowerCase().indexOf("bottom") > -1,
+        'oo-info-panel-left': infoPanelPosition.toLowerCase().indexOf("left") > -1,
+        'oo-info-panel-right': infoPanelPosition.toLowerCase().indexOf("right") > -1
+      });
+      var titleClass = ClassNames({
+        'oo-state-screen-title': true,
+        'oo-text-truncate': true,
+        'oo-pull-right': infoPanelPosition.toLowerCase().indexOf("right") > -1,
+        'oo-hidden': !Utils.getPropertyValue(this.props.skinConfig, 'endScreen.showTitle')
+      });
+      var descriptionClass = ClassNames({
+        'oo-state-screen-description': true,
+        'oo-pull-right': infoPanelPosition.toLowerCase().indexOf("right") > -1,
+        'oo-hidden': !Utils.getPropertyValue(this.props.skinConfig, 'endScreen.showDescription')
+      });
+    }
 
     var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
     var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.state.descriptionText}</div>);

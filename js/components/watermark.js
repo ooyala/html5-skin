@@ -5,6 +5,7 @@
  */
 var React = require('react'),
     CONSTANTS = require('../constants/constants'),
+    Utils = require('../components/utils'),
     ClassNames = require('classnames');
 
 var Watermark = React.createClass({
@@ -16,16 +17,17 @@ var Watermark = React.createClass({
   },
 
   render: function() {
-    var watermarkUrl = this.props.skinConfig.general.watermark.imageResource.url;
-    var clickUrl = this.props.skinConfig.general.watermark.clickUrl;
+    var watermarkUrl = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.imageResource.url');
+    var clickUrl = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.clickUrl');
+    var watermarkPosition = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.position');
 
-    var watermarkPosition = this.props.skinConfig.general.watermark.position || "bottomRight";
-    var watermarkTarget = this.props.skinConfig.general.watermark.target || "_blank";
-    var watermarkTransparency = isFinite(this.props.skinConfig.general.watermark.transparency) ? this.props.skinConfig.general.watermark.transparency : 1;
-    var watermarkScalingOption = this.props.skinConfig.general.watermark.scalingOption || "default";
-    var watermarkScalingPercentage = this.props.skinConfig.general.watermark.scalingPercentage || CONSTANTS.WATERMARK.DEFAULT_SCALING_PERCENTAGE;
+    var watermarkTarget = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.target', '_blank');
+    var watermarkTransparency = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.transparency', 1);
+    var watermarkScalingOption = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.scalingOption', 'default');
+    var watermarkScalingPercentage = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.scalingPercentage');
 
-    if (!watermarkUrl) {
+
+    if (!watermarkUrl || !watermarkPosition) {
       return null;
     }
     else {
