@@ -1,4 +1,5 @@
-jest.dontMock('../../js/components/watermark');
+jest.dontMock('../../js/components/watermark')
+    .dontMock('../../js/components/utils');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');

@@ -1,5 +1,6 @@
 jest.dontMock('../../js/views/endScreen')
     .dontMock('../../js/components/icon')
+    .dontMock('../../js/components/utils')
     .dontMock('classnames');
 
 var React = require('react');
