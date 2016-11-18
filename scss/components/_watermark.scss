@@ -7,6 +7,10 @@
   @include vendor-prefixes (transition, bottom .3s ease-in-out);
 }
 
+.oo-watermark-no-clickURL {
+  pointer-events: none;
+}
+
 .oo-watermark {
   width: auto;
   height: auto;
