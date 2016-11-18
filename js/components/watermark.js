@@ -19,22 +19,28 @@ var Watermark = React.createClass({
     var watermarkUrl = this.props.skinConfig.general.watermark.imageResource.url;
     var clickUrl = this.props.skinConfig.general.watermark.clickUrl;
 
+    var watermarkPosition = this.props.skinConfig.general.watermark.position || "bottomRight";
+    var watermarkTarget = this.props.skinConfig.general.watermark.target || "_blank";
+    var watermarkTransparency = isFinite(this.props.skinConfig.general.watermark.transparency) ? this.props.skinConfig.general.watermark.transparency : 1;
+    var watermarkScalingOption = this.props.skinConfig.general.watermark.scalingOption || "default";
+    var watermarkScalingPercentage = this.props.skinConfig.general.watermark.scalingPercentage || CONSTANTS.WATERMARK.DEFAULT_SCALING_PERCENTAGE;
+
     if (!watermarkUrl) {
       return null;
     }
     else {
       var watermarkStyle = {};
       var watermarkImageStyle = {};
-      watermarkStyle.opacity = this.props.skinConfig.general.watermark.transparency;
-      if (this.props.skinConfig.general.watermark.scalingOption == 'height') {
-        watermarkStyle.height = this.props.skinConfig.general.watermark.scalingPercentage + '%';
+      watermarkStyle.opacity = watermarkTransparency;
+      if (watermarkScalingOption == 'height') {
+        watermarkStyle.height = watermarkScalingPercentage + '%';
         watermarkImageStyle.height = '100%';
       }
-      else if (this.props.skinConfig.general.watermark.scalingOption == 'width') {
-        watermarkStyle.width = this.props.skinConfig.general.watermark.scalingPercentage + '%';
+      else if (watermarkScalingOption == 'width') {
+        watermarkStyle.width = watermarkScalingPercentage + '%';
         watermarkImageStyle.width = '100%';
       }
-      else if (this.props.skinConfig.general.watermark.scalingOption == 'default') {
+      else if (watermarkScalingOption == 'default') {
         watermarkStyle.width = CONSTANTS.WATERMARK.DEFAULT_SCALING_PERCENTAGE + '%';
         watermarkImageStyle.width = '100%';
       }
@@ -43,7 +49,7 @@ var Watermark = React.createClass({
       }
     }
 
-    var watermarkPosition = this.props.skinConfig.general.watermark.position.toLowerCase();
+    watermarkPosition = watermarkPosition.toLowerCase();
 
     //the position from db passed with the metadata uses 'right' instead of 'centerRight', etc.
     if (watermarkPosition == 'left' || watermarkPosition == 'right') {
@@ -55,6 +61,7 @@ var Watermark = React.createClass({
 
     var watermarkClass = ClassNames({
       'oo-watermark-container': true,
+      'oo-watermark-no-clickURL': !clickUrl,
       'oo-watermark-top': watermarkPosition.indexOf('top') > -1,
       'oo-watermark-bottom': watermarkPosition.indexOf('bottom') > -1,
       'oo-watermark-bottom-cb': this.props.controlBarVisible && watermarkPosition.indexOf('bottom') > -1,
@@ -74,7 +81,7 @@ var Watermark = React.createClass({
       return (<div className={watermarkClass} ref='watermark' style={watermarkStyle}>{watermarkImage}</div>);
     else
       return (<a className={watermarkClass} ref='watermark' style={watermarkStyle} href={this.props.skinConfig.general.watermark.clickUrl}
-            target={this.props.skinConfig.general.watermark.target} onClick={this.handleWatermarkClick}>{watermarkImage}</a>);
+            target={watermarkTarget} onClick={this.handleWatermarkClick}>{watermarkImage}</a>);
   }
 });
 
