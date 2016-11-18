@@ -16,8 +16,9 @@ var SharePanel = React.createClass({
   tabs: {SHARE: "social", EMBED: "embed"},
 
   getInitialState: function() {
+    var shareContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.shareContent');
     return {
-      activeTab: this.props.skinConfig.shareScreen.shareContent[0],
+      activeTab: shareContent ? shareContent[0] : null,
       hasError: false
     };
   },
@@ -101,11 +102,15 @@ var SharePanel = React.createClass({
   },
 
   render: function() {
+    var shareContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.shareContent');
+    if (!shareContent) return null;
+
     var showEmbedTab = false;
     var showShareTab = false;
-    for (var i = 0; i < this.props.skinConfig.shareScreen.shareContent.length; i++){
-      if (this.props.skinConfig.shareScreen.shareContent[i] == this.tabs.EMBED) showEmbedTab = true;
-      if (this.props.skinConfig.shareScreen.shareContent[i] == this.tabs.SHARE) showShareTab = true;
+
+    for (var i = 0; i < shareContent.length; i++){
+      if (shareContent[i] == this.tabs.EMBED) showEmbedTab = true;
+      if (shareContent[i] == this.tabs.SHARE) showShareTab = true;
     }
 
     var shareTab = ClassNames({
