@@ -21,7 +21,7 @@ var Watermark = React.createClass({
 
     var watermarkPosition = this.props.skinConfig.general.watermark.position || "bottomRight";
     var watermarkTarget = this.props.skinConfig.general.watermark.target || "_blank";
-    var watermarkTransparency = this.props.skinConfig.general.watermark.transparency || 1;
+    var watermarkTransparency = isFinite(this.props.skinConfig.general.watermark.transparency) ? this.props.skinConfig.general.watermark.transparency : 1;
     var watermarkScalingOption = this.props.skinConfig.general.watermark.scalingOption || "default";
     var watermarkScalingPercentage = this.props.skinConfig.general.watermark.scalingPercentage || CONSTANTS.WATERMARK.DEFAULT_SCALING_PERCENTAGE;
 
