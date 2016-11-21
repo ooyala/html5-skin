@@ -7,6 +7,7 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     Spinner = require('../components/spinner'),
     Icon = require('../components/icon'),
+    Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Utils = require('../components/utils');
 
@@ -97,12 +98,14 @@ var StartScreen = React.createClass({
         <Icon {...this.props} icon={iconName} style={actionIconStyle}/>
       </a>
     );
+
     return (
       <div className="oo-state-screen oo-start-screen">
         <div className={stateScreenPosterClass}>
           <div className="oo-start-screen-linear-gradient"></div>
           <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
         </div>
+        <Watermark {...this.props} controlBarVisible={false}/>
         <div className={infoPanelClass}>
           {this.props.skinConfig.startScreen.showTitle ? titleMetadata : null}
           {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : null}

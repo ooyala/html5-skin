@@ -188,7 +188,7 @@ OO = {
       closePopovers: function() {},
       setVolume: function(a) {},
       toggleVideoQualityPopOver: function(a) {},
-      setClosedCaptionsInfo: function() {},
+      setClosedCaptionsInfo: function(a) {},
       setClosedCaptionsLanguage: function() {},
       displayMoreOptionsScreen: function(a) {},
       closeMoreOptionsScreen: function() {},
@@ -196,11 +196,13 @@ OO = {
       renderSkin: function() {window.isSkinRendered = true;},
       cancelTimer: function() {window.isTimerCanceled = true;},
       startHideControlBarTimer: function() {},
+      startHideVolumeSliderTimer: function() {},
       hideControlBar: function() {window.isControlBarHidden = true;},
       hideVolumeSliderBar: function() {window.isVolumeSliderBarHidden = true;},
       updateAspectRatio: function() {},
       calculateAspectRatio: function(a,b) {},
-      setAspectRatio: function() {window.isAspectRatioSet = true;}
+      setAspectRatio: function() {window.isAspectRatioSet = true;},
+      createPluginElements: function() {}
     };
 
 
@@ -209,6 +211,13 @@ OO = {
      */
 
     var Html5Skin = exposeStaticApi.prototype; // public object used to expose private object for testing
+    var elementId = 'adrfgyi';
+
+    //setup document body for valid DOM elements
+    document.body.innerHTML =
+      '<div id='+elementId+'>' +
+      '  <div class="oo-player-skin" />' +
+      '</div>';
 
     //test mb subscribe
     window._.bind = function() {};
@@ -217,11 +226,16 @@ OO = {
     Html5Skin.subscribeBasicPlaybackEvents.call(controllerMock);
     Html5Skin.externalPluginSubscription.call(controllerMock);
 
-    // test player state
-    Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', 1, {skin:{config:{}}}, {});
+    //test player state
+    var tempSkin = $.extend(true, {}, controllerMock.skin);
+    Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', elementId, {skin:{config:{}}}, {});
+    Html5Skin.loadConfigData.call(controllerMock, {skin:{config:{}}}, {});
+    Html5Skin.createPluginElements.call(controllerMock);
+    controllerMock.skin = tempSkin; //reset skin, onPlayerCreated updates skin
 
+    var tempMainVideoElement = $.extend(true, {}, controllerMock.state.mainVideoElement);
     Html5Skin.onVcVideoElementCreated.call(controllerMock, 'customerUi', {videoId: OO.VIDEO.MAIN});
-    controllerMock.state.mainVideoElement = {addClass: function(a) {}, removeClass: function(a) {}, get: function(a) { return { webkitSupportsFullscreen: true, webkitEnterFullscreen: function() {}, webkitExitFullscreen: function() {}, addEventListener: function(a,b) {}}}}
+    controllerMock.state.mainVideoElement = tempMainVideoElement;
 
     Html5Skin.metaDataLoaded.call(controllerMock);
     Html5Skin.onAuthorizationFetched.call(controllerMock, 'customerUi', {streams: [{is_live_stream: true}]});
@@ -429,8 +443,10 @@ OO = {
     Html5Skin.sendDiscoveryDisplayEvent.call(controllerMock, CONSTANTS.SCREEN.DISCOVERY_SCREEN);
     Html5Skin.toggleVideoQualityPopOver.call(controllerMock);
     Html5Skin.toggleClosedCaptionPopOver.call(controllerMock);
+    Html5Skin.closePopovers.call(controllerMock);
     Html5Skin.receiveVideoQualityChangeEvent.call(controllerMock, null, 312);
     Html5Skin.sendVideoQualityChangeEvent.call(controllerMock, {id:2});
+    Html5Skin.setClosedCaptionsInfo.call(controllerMock, elementId);
 
     Html5Skin.setClosedCaptionsLanguage.call(controllerMock);
     controllerMock.state.closedCaptionOptions.availableLanguages = null;
@@ -471,6 +487,7 @@ OO = {
 
     // test control bar
     Html5Skin.startHideControlBarTimer.call(controllerMock);
+    Html5Skin.startHideVolumeSliderTimer.call(controllerMock);
 
     Html5Skin.showControlBar.call(controllerMock);
     window.showControlBarVisible = controllerMock.state.controlBarVisible;
@@ -501,6 +518,7 @@ OO = {
     //test destroy functions last
     Html5Skin.onEmbedCodeChanged.call(controllerMock, 'customerUi', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', {});
     Html5Skin.onAssetChanged.call(controllerMock, 'customerUi', {content: {streams: [{is_live_stream: true}], title: 'Title', posterImages: [{url:'www.ooyala.com'}]}});
+    Html5Skin.onAssetUpdated.call(controllerMock, 'customerUi', {content: {streams: [{is_live_stream: true}], title: 'Title', posterImages: [{url:'www.ooyala.com'}]}});
     controllerMock.state.elementId = 'oo-video';
     Html5Skin.onPlayerDestroy.call(controllerMock, 'customerUi');
   }

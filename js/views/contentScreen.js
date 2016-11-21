@@ -3,6 +3,7 @@ var React = require('react'),
     Utils = require('../components/utils'),
     CONSTANTS = require('../constants/constants'),
     Icon = require('../components/icon'),
+    Watermark = require('../components/watermark'),
     AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var ContentScreen = React.createClass({
@@ -44,14 +45,16 @@ var ContentScreen = React.createClass({
     null;
 
     return (
-      <div className={this.props.screenClassName}>
-        {closedCaptionOverlay}
-        <div className={this.props.titleBarClassName}>
-          {titleBar}
-          <CloseButton {...this.props} closeAction={this.handleClose}/>
+      <div>
+        <Watermark {...this.props} controlBarVisible={false} nonClickable={true}/>
+        <div className={this.props.screenClassName}>
+          {closedCaptionOverlay}
+          <div className={this.props.titleBarClassName}>
+            {titleBar}
+            <CloseButton {...this.props} closeAction={this.handleClose}/>
+          </div>
+          {this.props.children}
         </div>
-
-        {this.props.children}
       </div>
     );
   }

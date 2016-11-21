@@ -162,7 +162,7 @@ var ControlBar = React.createClass({
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
-    var color = this.props.skinConfig.controlBar.iconStyle.active.color;
+    var color = this.props.skinConfig.controlBar.iconStyle.active.color ? this.props.skinConfig.controlBar.iconStyle.active.color : this.props.skinConfig.general.accentColor;
     var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
     Utils.highlight(evt.target, opacity, color);
   },
@@ -269,7 +269,8 @@ var ControlBar = React.createClass({
         "oo-volume-bar": true,
         "oo-on": turnedOn
       });
-      var barStyle = turnedOn ? {backgroundColor: this.props.skinConfig.controlBar.volumeControl.color} : null;
+      var barStyle = {backgroundColor: this.props.skinConfig.controlBar.volumeControl.color ? this.props.skinConfig.controlBar.volumeControl.color : this.props.skinConfig.general.accentColor};
+
       volumeBars.push(<a data-volume={(i+1)/10} className={volumeClass} key={i}
         style={barStyle}
         onClick={this.handleVolumeClick}></a>);
@@ -307,9 +308,9 @@ var ControlBar = React.createClass({
     var liveText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LIVE, this.props.localizableStrings);
 
     var liveClass = ClassNames({
-        "oo-control-bar-item oo-live oo-live-indicator": true,
-        "oo-live-nonclickable": isLiveNow
-      });
+      "oo-control-bar-item oo-live oo-live-indicator": true,
+      "oo-live-nonclickable": isLiveNow
+    });
 
     var videoQualityPopover = this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? <Popover><VideoQualityPanel{...this.props} togglePopoverAction={this.toggleQualityPopover} popover={true}/></Popover> : null;
     var closedCaptionPopover = this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover ? <Popover popoverClassName="oo-popover oo-popover-pull-right"><ClosedCaptionPopover {...this.props} togglePopoverAction={this.toggleCaptionPopover}/></Popover> : null;
@@ -326,6 +327,9 @@ var ControlBar = React.createClass({
       "oo-selected": this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover
     });
 
+    var selectedStyle = {};
+    selectedStyle["color"] = this.props.skinConfig.general.accentColor ? this.props.skinConfig.general.accentColor : null;
+
     var controlItemTemplates = {
       "playPause": <a className="oo-play-pause oo-control-bar-item" onClick={this.handlePlayClick} key="playPause">
         <Icon {...this.props} icon={playIcon}
@@ -336,8 +340,8 @@ var ControlBar = React.createClass({
       "scrubberBar": <ScrubberBar {...this.props} />,
 
       "live": <a className={liveClass}
-          ref="LiveButton"
-          onClick={liveClick} key="live">
+        ref="LiveButton"
+        onClick={liveClick} key="live">
         <div className="oo-live-circle"></div>
         <span className="oo-live-text">{liveText}</span>
       </a>,
@@ -370,7 +374,7 @@ var ControlBar = React.createClass({
       "quality": (
         <div className="oo-popover-button-container" key="quality">
           {videoQualityPopover}
-          <a className={qualityClass} onClick={this.handleQualityClick}>
+          <a className={qualityClass} onClick={this.handleQualityClick} style={selectedStyle}>
             <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
               onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
           </a>
@@ -405,10 +409,10 @@ var ControlBar = React.createClass({
       </a>,
 
       "logo": <Logo key="logo" imageUrl={this.props.skinConfig.controlBar.logo.imageResource.url}
-                    clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
-                    target={this.props.skinConfig.controlBar.logo.target}
-                    width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
-                    height={this.props.skinConfig.controlBar.logo.height}/>,
+        clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
+        target={this.props.skinConfig.controlBar.logo.target}
+        width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
+        height={this.props.skinConfig.controlBar.logo.height}/>,
 
       "scrubBack": <button className="oo-scrub-back oo-control-bar-item" onClick={this.handleScrubBack} key="scrubback">
         <Icon {...this.props} icon="scrubBack"
@@ -439,8 +443,6 @@ var ControlBar = React.createClass({
           style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </button>,
-
-
     };
 
     var controlBarItems = [];
@@ -525,8 +527,8 @@ var ControlBar = React.createClass({
 
       // Not sure what to do when there are multi streams
       if (defaultItems[k].name === "live" &&
-          (typeof this.props.isLiveStream === 'undefined' ||
-          !(this.props.isLiveStream))) {
+        (typeof this.props.isLiveStream === 'undefined' ||
+        !(this.props.isLiveStream))) {
         continue;
       }
 

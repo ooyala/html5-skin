@@ -433,6 +433,7 @@
       visibility: hidden;
       width: 0; }
   .oo-player-container .oo-state-screen .oo-state-screen-info, .oo-player-container .oo-spinner-screen .oo-state-screen-info {
+    pointer-events: none;
     position: absolute;
     width: 100%;
     top: 5%;
@@ -475,7 +476,8 @@
     position: absolute;
     left: 0;
     bottom: 0;
-    width: 100%; }
+    width: 100%;
+    pointer-events: none; }
 
 .oo-player-container .oo-start-screen {
   z-index: 12005; }
@@ -784,13 +786,13 @@
     background-position: center;
     border-radius: 6px; }
   .oo-player-container .oo-share-tab-panel .oo-facebook {
-    background-image: url("//player.ooyala.com/static/v4/stable/4.8.5/skin-plugin/assets/images/social-facebook.svg"); }
+    background-image: url("//player.ooyala.com/static/v4/stable/4.10.4/skin-plugin/assets/images/social-facebook.svg"); }
   .oo-player-container .oo-share-tab-panel .oo-twitter {
-    background-image: url("//player.ooyala.com/static/v4/stable/4.8.5/skin-plugin/assets/images/social-twitter.svg"); }
+    background-image: url("//player.ooyala.com/static/v4/stable/4.10.4/skin-plugin/assets/images/social-twitter.svg"); }
   .oo-player-container .oo-share-tab-panel .oo-google-plus {
-    background-image: url("//player.ooyala.com/static/v4/stable/4.8.5/skin-plugin/assets/images/social-google.svg"); }
+    background-image: url("//player.ooyala.com/static/v4/stable/4.10.4/skin-plugin/assets/images/social-google.svg"); }
   .oo-player-container .oo-share-tab-panel .oo-email-share {
-    background-image: url("//player.ooyala.com/static/v4/stable/4.8.5/skin-plugin/assets/images/social-email.svg");
+    background-image: url("//player.ooyala.com/static/v4/stable/4.10.4/skin-plugin/assets/images/social-email.svg");
     background-size: cover; }
   .oo-player-container .oo-share-tab-panel .oo-embed-form {
     resize: none;
@@ -1332,8 +1334,9 @@
 
 .oo-player-container video::-webkit-media-text-track-display {
   position: relative;
-  top: 76% !important;
+  top: auto !important;
   bottom: 20px;
+  width: 100% !important;
   background-color: transparent !important;
   padding: 1px !important;
   margin: 0 !important;
@@ -1625,7 +1628,8 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  z-index: 12500; }
+  z-index: 12500;
+  pointer-events: auto; }
   .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper {
     display: -webkit-flex;
     display: flex;
@@ -1664,6 +1668,7 @@
       outline: none; }
     .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper .oo-control-bar-item.oo-selected > span {
       color: #448aff !important;
+      color: inherit !important;
       opacity: 1 !important; }
     .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper .oo-control-bar-item.oo-logo {
       cursor: auto; }
@@ -1759,6 +1764,7 @@
   opacity: 0; }
 
 .oo-player-container .oo-up-next-panel {
+  pointer-events: auto;
   position: relative;
   width: 100%;
   height: 80px;
@@ -1841,6 +1847,9 @@
 
 .oo-player-container .oo-up-next-count-down {
   margin-right: 10px; }
+
+.oo-player-container .oo-spinner-screen {
+  pointer-events: none; }
 
 .oo-player-container .oo-spinner-wrapper .oo-spinner {
   width: 70px;
@@ -2017,7 +2026,8 @@
   transition: bottom 0.5s, height 0.25s;
   margin: 0;
   padding: 0;
-  overflow: hidden; }
+  overflow: hidden;
+  pointer-events: auto; }
   .oo-player-container .oo-ad-overlay .oo-ad-overlay-close-button {
     display: inline-block;
     position: absolute;
@@ -2052,6 +2062,13 @@
   top: 0;
   bottom: 64px;
   width: 100%; }
+  .oo-player-container .oo-ad-screen-panel .oo-ad-screen-panel-click-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 12005; }
   .oo-player-container .oo-ad-screen-panel .oo-ad-top-bar {
     display: -webkit-flex;
     display: flex;
@@ -2522,6 +2539,62 @@
   -ms-transform: translateX(-50%);
   -o-transform: translateX(-50%);
   transform: translateX(-50%); }
+
+.oo-player-container .oo-watermark-container {
+  position: absolute;
+  max-height: 100%;
+  max-width: 100%;
+  pointer-events: auto;
+  outline: none !important;
+  -webkit-transition: bottom 0.3s ease-in-out;
+  -moz-transition: bottom 0.3s ease-in-out;
+  -ms-transition: bottom 0.3s ease-in-out;
+  -o-transition: bottom 0.3s ease-in-out;
+  transition: bottom 0.3s ease-in-out; }
+
+.oo-player-container .oo-watermark-no-clickURL {
+  pointer-events: none; }
+
+.oo-player-container .oo-watermark {
+  width: auto;
+  height: auto; }
+
+.oo-player-container .oo-watermark-top {
+  top: 15px; }
+
+.oo-player-container .oo-watermark-bottom {
+  bottom: 15px; }
+
+.oo-player-container .oo-watermark-center-horizontal {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  transform: translateX(-50%); }
+
+.oo-player-container .oo-watermark-center-vertical {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%); }
+
+.oo-player-container .oo-watermark-left {
+  left: 15px; }
+  .oo-player-container .oo-watermark-left img {
+    float: left; }
+
+.oo-player-container .oo-watermark-right {
+  right: 15px; }
+  .oo-player-container .oo-watermark-right img {
+    float: right; }
+
+.oo-player-container .oo-watermark-bottom.oo-watermark-bottom-cb {
+  bottom: 90px; }
 
 .oo-player-container .oo-xsmall .oo-content-screen {
   padding: 17.15px; }
@@ -3004,6 +3077,9 @@
 .oo-player-container .oo-xsmall .oo-scrubber-carousel-container {
   bottom: 88px; }
 
+.oo-player-container .oo-xsmall .oo-watermark-bottom.oo-watermark-bottom-cb {
+  bottom: 57px; }
+
 .oo-player-container .oo-small .oo-control-bar-items-wrapper .oo-control-bar-item {
   padding: 0 10.15px;
   font-size: 23px; }
@@ -3303,15 +3379,7 @@
   overflow: hidden;
   z-index: 11000; }
 
-@-moz-document url-prefix() {
-  .oo-player-container video {
-    object-fit: fill !important; } }
-
-@-moz-document url-prefix() {
-  .oo-player-container .oo-player > div > figure > object {
-    object-fit: fill !important; } }
-
-.oo-player-container video.oo-blur {
+.oo-player-container .oo-blur {
   -webkit-filter: blur(3px);
   -moz-filter: blur(3px);
   filter: blur(3px); }

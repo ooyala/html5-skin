@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html style="padding:0; margin:0; width:100%; height:100%; overflow:hidden">
 <head>
+  <meta charset="utf-8">
   <script src="//player.ooyala.com/static/v4/stable/latest/core.min.js"></script>
   <script src="//player.ooyala.com/static/v4/stable/latest/video-plugin/main_html5.min.js"></script>
   <script src="//player.ooyala.com/static/v4/stable/latest/skin-plugin/html5-skin.min.js"></script>
@@ -15,7 +16,7 @@
       "pcode": queryParams.match(/pcode=([^&]*)/)[1],
       "playerBrandingId": queryParams.match(/pbid=([^&]*)/)[1],
       "skin": {
-        "config": "//player.ooyala.com/static/v4/stable/latest/skin-plugin/skin.json",
+        "config": "",
         "inline": {"shareScreen": {"embed": {"source": "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/stable/latest/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>"}}}
       }
     };
@@ -62,6 +63,24 @@
 
     OO.ready(function() {
       window.pp = OO.Player.create('container', queryParams.match(/ec=([^&]*)/)[1], playerParam);
+
+      //Enable cross-iframe control
+      window.addEventListener("message", function(evt){
+        switch (evt.data) {
+          case "play":
+            pp.play();
+            break;
+          case "pause":
+            pp.pause();
+            break;
+          case "mute":
+            pp.setVolume(0);
+            break;
+          case "unmute":
+            pp.setVolume(1);
+            break;
+        }
+      });
     });
   </script>
 </body>

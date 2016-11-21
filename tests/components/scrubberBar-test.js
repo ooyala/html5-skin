@@ -3,9 +3,6 @@ jest.dontMock('../../js/components/scrubberBar')
     .dontMock('../../js/components/thumbnail')
     .dontMock('../../js/components/thumbnailCarousel')
     .dontMock('../../js/constants/constants')
-    .dontMock('../../config/en.json')
-    .dontMock('../../config/es.json')
-    .dontMock('../../config/zh.json')
     .dontMock('../../config/skin.json');
 
 var React = require('react');
@@ -14,6 +11,7 @@ var CONSTANTS = require('../../js/constants/constants');
 var skinConfig = require('../../config/skin.json');
 var ReactDOM = require('react-dom');
 var ScrubberBar = require('../../js/components/scrubberBar');
+var Utils = require('../../js/components/utils');
 
 var thumbnails = { "data":{ "available_time_slices":[ 0, 10 ], "available_widths":[ 120 ], "thumbnails":{ "0":{ "120":{ "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_1.jpg", "width":120, "height":80 } }, "10":{ "120":{ "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_2.jpg", "width":120, "height":80 } }, "errors":[ { "status":404, "code":"Not Found", "title":"unable to find thumbnail images", "detail":"embed code not found" } ] } }};
 
@@ -35,6 +33,51 @@ describe('ScrubberBar', function () {
         skinConfig={skinConfig}
         />
     );
+  });
+
+  it('creates a scrubber bar played bar and play head with accent color', function () {
+    var mockController = {
+      state: {
+        isMobile: false
+      }
+    };
+    var mockSkinConfig = Utils.clone(skinConfig);
+    mockSkinConfig.general.accentColor = "blue";
+    mockSkinConfig.controlBar.scrubberBar.playedColor = "";
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ScrubberBar
+        controlBarVisible={true}
+        seeking={false}
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        />
+    );
+    var playheadBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-playhead");
+    expect(playheadBar.style.backgroundColor).toBe("blue");
+    expect(ReactDOM.findDOMNode(DOM.refs.playhead).style.backgroundColor).toBe("blue");
+  });
+
+  it('creates a scrubber bar played bar and play head with scrubberbar played color setting', function () {
+    var mockController = {
+      state: {
+        isMobile: false
+      }
+    };
+    var mockSkinConfig = Utils.clone(skinConfig);
+    mockSkinConfig.general.accentColor = "blue";
+    mockSkinConfig.controlBar.scrubberBar.playedColor = "green";
+    var DOM = TestUtils.renderIntoDocument(
+      <ScrubberBar
+        controlBarVisible={true}
+        seeking={false}
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        />
+    );
+    var playheadBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-playhead");
+    expect(playheadBar.style.backgroundColor).toBe("green");
+    expect(ReactDOM.findDOMNode(DOM.refs.playhead).style.backgroundColor).toBe("green");
   });
 
   it('handles a mousedown', function() {
