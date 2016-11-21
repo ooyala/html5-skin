@@ -461,7 +461,10 @@ var ControlBar = React.createClass({
       var bottomItems = this.props.skinConfig.buttons.bottomBar;
 
       for (var r = 0; r < bottomItems.length; r++) {
-        bottomBarItems.push(controlItemTemplates[bottomItems[r].name]);
+        if(bottomItems[r].name !== "changePlaybackSpeed" || !Utils.isAndroid()){
+          bottomBarItems.push(controlItemTemplates[bottomItems[r].name]);
+        }
+
       }
     }
 

@@ -1502,7 +1502,10 @@ var ControlBar = React.createClass({displayName: "ControlBar",
       var bottomItems = this.props.skinConfig.buttons.bottomBar;
 
       for (var r = 0; r < bottomItems.length; r++) {
-        bottomBarItems.push(controlItemTemplates[bottomItems[r].name]);
+        if(bottomItems[r].name !== "changePlaybackSpeed" || !Utils.isAndroid()){
+          bottomBarItems.push(controlItemTemplates[bottomItems[r].name]);
+        }
+
       }
     }
 
@@ -4500,7 +4503,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "f8fb4d3149a752dc0ed0eba18f73a131dfab2f0c"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "4821c1c5713c949114a3a996ddc45ef069718633"};
   }
 
   var Html5Skin = function (mb, id) {
