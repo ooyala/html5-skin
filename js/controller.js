@@ -18,7 +18,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.8.5", "rev": "<SKIN_REV>"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.9.8", "rev": "<SKIN_REV>"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -1105,9 +1105,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     togglePlayPause: function() {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
-          this.mb.publish(OO.EVENTS.INITIAL_PLAY);
+          this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());
           if(this.state.isMobile) {
-            this.mb.publish(OO.EVENTS.PLAY);
+            this.mb.publish(OO.EVENTS.PLAY, Date.now());
           }
           break;
         case CONSTANTS.STATE.END:
@@ -1217,6 +1217,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
+      this.state.pluginsElement.removeClass("oo-overlay-blur");
       this.state.upNextInfo.showing = false;
       if (isAutoUpNext){
         this.state.upNextInfo.delayedContentData = selectedContentData;
@@ -1242,9 +1243,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "custom" : { "source" : screen}
       };
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
-      if (screen == CONSTANTS.SCREEN.END_SCREEN) {
-        this.skin.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen = true;
-      }
     },
 
     toggleVideoQualityPopOver: function() {

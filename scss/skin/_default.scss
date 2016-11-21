@@ -70,14 +70,6 @@ video {
   @extend .oo-expand;
 }
 
-// fix bit_wrapper letterbox issue on Firefox
-@include apply-to-firefox-only ('video') {
-  object-fit: fill !important;
-}
-@include apply-to-firefox-only ('.oo-player > div > figure > object') {
-  object-fit: fill !important;
-}
-
 video.oo-blur {
   -webkit-filter: blur(3px);
   -moz-filter: blur(3px);

@@ -264,6 +264,33 @@ var Utils = {
   },
 
   /**
+   * Safely gets the value of an object's nested property.
+   *
+   * @function getPropertyValue
+   * @param {Object} object - The object we want to extract the property form
+   * @param {String} propertyPath - A path that points to a nested property in the object with a form like 'prop.nestedProp1.nestedProp2'
+   * @param {Object} defaltValue - (Optional) A default value to return when the property is undefined
+   * @return {Object} - The value of the nested property, the default value if nested property was undefined
+   */
+  getPropertyValue: function(object, propertyPath, defaltValue) {
+    var value = null;
+    var currentObject = object;
+    var currentProp = null;
+
+    try {
+      var props = propertyPath.split('.');
+
+      for (var i = 0; i < props.length; i++) {
+        currentProp = props[i];
+        currentObject = value = currentObject[currentProp];
+      }
+      return value || defaltValue;
+    } catch (err) {
+      return defaltValue;
+    }
+  },
+
+  /**
   * Highlight the given element for hover effects
   *
   * @function Highlight
@@ -370,6 +397,17 @@ var Utils = {
     return ('ontouchstart' in window) ||
      (navigator.maxTouchPoints > 0) ||
      (navigator.msMaxTouchPoints > 0);
+  },
+
+  /**
+   * Creates wrapper object with sanitized html. This marked data can subsequently be passed into dangerouslySetInnerHTML
+   * See https://facebook.github.io/react/tips/dangerously-set-inner-html.html
+   *
+   * @function createMarkup
+   * @returns {Object} Wrapper object for sanitized markup.
+   */
+  createMarkup: function(html) {
+    return {__html: html};
   },
 
   _isValid: function( item ) {
