@@ -6,6 +6,7 @@ var React = require('react'),
     Utils = require('./components/utils'),
     CONSTANTS = require('./constants/constants'),
     AccessibilityControls = require('./components/accessibilityControls'),
+    DeepMerge = require('deepmerge'),
     Fullscreen = require('screenfull'),
     Skin = require('./skin'),
     SkinJSON = require('../config/skin'),
@@ -292,7 +293,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.resetUpNextInfo(true);
 
       this.state.assetId = embedCode;
-      $.extend(true, this.state.playerParam, options);
+      if (options) {
+        this.state.playerParam = DeepMerge(this.state.playerParam, options);
+      }
       this.subscribeBasicPlaybackEvents();
     },
 
@@ -789,12 +792,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (data) {
         SkinJSON = data;
       }
+      var inlinePageParams = Utils.getPropertyValue(params, 'skin.inline') ? params.skin.inline : {};
 
-      //override data in skin config with possible inline data input by the user
-      $.extend(true, SkinJSON, params.skin.inline);
-      //override state settings with defaults from skin config and possible local storage settings
-      $.extend(true, this.state.closedCaptionOptions, SkinJSON.closedCaptionOptions, settings.closedCaptionOptions);
-      this.state.config = SkinJSON;
+      //override data in skin config with possible local storage settings and inline data input by the user
+      this.state.config = SkinJSON = DeepMerge.all([SkinJSON, inlinePageParams, settings]);
+      this.state.closedCaptionOptions = this.state.config.closedCaptionOptions;
 
       //load config language json if exist
       if (SkinJSON.localization.availableLanguageFile) {
@@ -809,7 +811,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       //load player
       this.skin = ReactDOM.render(
-        React.createElement(Skin, {skinConfig: SkinJSON, localizableStrings: Localization.languageFiles, language: Utils.getLanguageToUse(SkinJSON), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .oo-player-skin")
+        React.createElement(Skin, {skinConfig: this.state.config, localizableStrings: Localization.languageFiles, language: Utils.getLanguageToUse(SkinJSON), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .oo-player-skin")
       );
       this.state.configLoaded = true;
       this.renderSkin();
@@ -1068,7 +1070,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      ---------------------------------------------------------------------*/
     renderSkin: function(args) {
       if (this.state.configLoaded) {
-        _.extend(this.state, args);
+        if (args) {
+          this.state = DeepMerge(this.state, args);
+        }
         this.skin.switchComponent(this.state);
       }
     },
