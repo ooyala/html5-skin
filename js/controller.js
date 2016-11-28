@@ -6,7 +6,7 @@ var React = require('react'),
     Utils = require('./components/utils'),
     CONSTANTS = require('./constants/constants'),
     AccessibilityControls = require('./components/accessibilityControls'),
-    DeepMerge = require('./components/deepMerge'),
+    DeepMerge = require('deepmerge'),
     Fullscreen = require('screenfull'),
     Skin = require('./skin'),
     SkinJSON = require('../config/skin'),
@@ -293,7 +293,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.resetUpNextInfo(true);
 
       this.state.assetId = embedCode;
-      this.state.playerParam = DeepMerge(this.state.playerParam, options);
+      if (options) {
+        this.state.playerParam = DeepMerge(this.state.playerParam, options);
+      }
       this.subscribeBasicPlaybackEvents();
     },
 
@@ -789,9 +791,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (data) {
         SkinJSON = data;
       }
+      var inlinePageParams = Utils.getPropertyValue(params, 'skin.inline') ? params.skin.inline : {};
 
       //override data in skin config with possible local storage settings and inline data input by the user
-      this.state.config = SkinJSON = DeepMerge.all([SkinJSON, params.skin.inline, settings]);
+      this.state.config = SkinJSON = DeepMerge.all([SkinJSON, inlinePageParams, settings]);
       this.state.closedCaptionOptions = this.state.config.closedCaptionOptions;
 
       //load config language json if exist
