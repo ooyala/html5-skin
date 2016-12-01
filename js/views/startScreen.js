@@ -41,6 +41,14 @@ var StartScreen = React.createClass({
   },
 
   render: function() {
+    if (!this.props.contentTree) {
+      this.props.contentTree = StartScreen.defaultProps.contentTree;
+    } 
+
+    if (!this.props.skinConfig) {
+      this.props.contentTree = StartScreen.defaultProps.skinConfig;
+    } 
+
     //inline style for config/skin.json elements only
     var titleStyle = {
       color: this.props.skinConfig.startScreen.titleFont.color
