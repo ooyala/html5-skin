@@ -3,6 +3,7 @@
 *
 * @module Utils
 */
+var DeepMerge = require('deepmerge');
 
 var Utils = {
   /**
@@ -424,6 +425,46 @@ var Utils = {
     return {__html: html};
   },
 
+  /**
+   * Deep merge arrays and array values
+   *
+   * @function arrayDeepMerge
+   * @param {Array} target - An array that will receive new items if additional items are passed
+   * @param {Array} source - An array containing additional items to merge into target
+   * @param {Object} optionsArgument - optional parameters passed, i.e. arrayMerge function
+   * @returns {Array} new merged array with items from both target and source
+   */
+  arrayDeepMerge: function(target, source, optionsArgument) {
+    var self = this;
+    var destination = [];
+    destination = source.slice();
+    target.forEach(function(targetItem, i) {
+      if (typeof destination[i] === 'undefined') {
+        destination[i] = self._cloneIfNecessary(targetItem, optionsArgument);
+      }
+      else if (self._isMergeableObject(targetItem)) {
+        // custom merge for buttons array, used to maintain source sort order
+        if (targetItem.name) {
+          source.forEach(function(sourceItem, j) {
+            //gracefully merge buttons by name
+            if (targetItem.name === sourceItem.name) {
+              destination[j] = DeepMerge(targetItem, sourceItem, optionsArgument);
+            }
+          });
+        }
+        // default array merge
+        else {
+          destination[i] = DeepMerge(targetItem, source[i], optionsArgument);
+        }
+
+      }
+      else if (source.indexOf(targetItem) === -1) {
+        destination.push(self._cloneIfNecessary(targetItem, optionsArgument));
+      }
+    });
+    return destination;
+  },
+
   _isValid: function( item ) {
     var valid = (
       item &&
@@ -471,6 +512,23 @@ var Utils = {
       }
     }
     return usedWidth;
+  },
+
+  _isMergeableObject: function (val) {
+    var nonNullObject = val && typeof val === 'object';
+
+    return nonNullObject
+      && Object.prototype.toString.call(val) !== '[object RegExp]'
+      && Object.prototype.toString.call(val) !== '[object Date]'
+  },
+
+  _emptyTarget: function (val) {
+    return Array.isArray(val) ? [] : {};
+  },
+
+  _cloneIfNecessary: function (value, optionsArgument) {
+    var clone = optionsArgument && optionsArgument.clone === true;
+    return (clone && this._isMergeableObject(value)) ? DeepMerge(this._emptyTarget(value), value, optionsArgument) : value
   }
 };
 
