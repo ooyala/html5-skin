@@ -11,7 +11,7 @@ var React = require('react'),
     Popover = require('../views/popover'),
     VideoQualityPanel = require('./videoQualityPanel'),
     ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
-    Logo = require('./logo');
+    Logo = require('./logo'),
     Icon = require('./icon');
 
 var ControlBar = React.createClass({
@@ -392,8 +392,13 @@ var ControlBar = React.createClass({
 
     for (var k = 0; k < defaultItems.length; k++) {
 
-      // filter out unrecognized button names
+      //filter out unrecognized button names
       if (typeof controlItemTemplates[defaultItems[k].name] === "undefined") {
+        continue;
+      }
+
+      //filter out disabled buttons
+      if (defaultItems[k].enabled == false) {
         continue;
       }
 
@@ -421,7 +426,7 @@ var ControlBar = React.createClass({
         continue;
       }
 
-      // Not sure what to do when there are multi streams
+      //not sure what to do when there are multi streams
       if (defaultItems[k].name === "live" &&
         (typeof this.props.isLiveStream === 'undefined' ||
         !(this.props.isLiveStream))) {
