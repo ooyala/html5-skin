@@ -792,7 +792,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var inlinePageParams = Utils.getPropertyValue(params, 'skin.inline') ? params.skin.inline : {};
 
       //override data in skin config with possible local storage settings and inline data input by the user
-      this.state.config = SkinJSON = DeepMerge.all([SkinJSON, inlinePageParams, settings]);
+      this.state.config = SkinJSON = DeepMerge.all([SkinJSON, inlinePageParams, settings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils)});
       this.state.closedCaptionOptions = this.state.config.closedCaptionOptions;
 
       //load config language json if exist
