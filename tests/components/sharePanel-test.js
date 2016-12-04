@@ -6,6 +6,7 @@ jest.dontMock('../../js/components/sharePanel')
     .dontMock('../../config/languageFiles/zh.json')
     .dontMock('classnames');
 
+_ = require('underscore');
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
 var CONSTANTS = require('../../js/constants/constants');
@@ -18,7 +19,13 @@ var en = require('../../config/languageFiles/en.json'),
 var playerParam = {
   "skin": {
     "languages": {"en": en, "es": es, "zh": zh},
-    "inline": {"shareScreen" : {"embed" : { "source" : "iframe_<ASSET_ID>_<PLAYER_ID>_<PUBLISHER_ID>"}, "shareContent": ["social","embed"]}}
+    "inline": {
+      "shareScreen" : {
+        "embed" : { "source" : "iframe_<ASSET_ID>_<PLAYER_ID>_<PUBLISHER_ID>" },
+        "shareContent": ["social", "embed"],
+        "socialContent": ["twitter", "facebook", "google+", "email"]
+      }
+    }
   },
   "playerBrandingId": "bb",
   "pcode": "cc"

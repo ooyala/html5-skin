@@ -140,6 +140,9 @@ describe('ControlBar', function () {
       {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
       {"name":"fullscreen", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }
     ];
+    // This might no longer be necessary after the skin.json submodule is updated
+    oneButtonSkinConfig.shareScreen.shareContent = ["social", "embed"];
+    oneButtonSkinConfig.shareScreen.socialContent = ["twitter", "facebook", "google+", "email"];
 
     var mockProps = {
       isLiveStream: false,
