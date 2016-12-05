@@ -417,6 +417,50 @@ describe('ControlBar', function () {
     expect(toggleScreenClicked).toBe(true);
   });
 
+  it('hides share button if share options are not provided', function() {
+    var customSkinConfig = JSON.parse(JSON.stringify(skinConfig));
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: { volume: 1 },
+        videoQualityOptions: {},
+        closedCaptionOptions: {}
+      }
+    };
+    var mockProps = {
+      isLiveStream: false,
+      controller: mockController,
+      skinConfig: customSkinConfig
+    };
+
+    customSkinConfig.buttons.desktopContent = [
+      { "name": "share", "location": "controlBar", "whenDoesNotFit": "moveToMoreOptions", "minWidth": 45 }
+    ];
+    customSkinConfig.shareScreen.shareContent = ["social"];
+    customSkinConfig.shareScreen.socialContent = [];
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={mockProps.isLiveStream} />
+    );
+    expect(TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-share').length).toBe(0);
+
+    customSkinConfig.shareScreen.shareContent = [];
+    customSkinConfig.shareScreen.socialContent = ["twitter"];
+
+    DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={mockProps.isLiveStream} />
+    );
+    expect(TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-share').length).toBe(0);
+  });
+
   it('shows/hides discovery button if discovery available', function() {
     var mockController = {
       state: {
