@@ -140,6 +140,9 @@ describe('ControlBar', function () {
       {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
       {"name":"fullscreen", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }
     ];
+    // This might no longer be necessary after the skin.json submodule is updated
+    oneButtonSkinConfig.shareScreen.shareContent = ["social", "embed"];
+    oneButtonSkinConfig.shareScreen.socialContent = ["twitter", "facebook", "google+", "email"];
 
     var mockProps = {
       isLiveStream: false,
@@ -412,6 +415,50 @@ describe('ControlBar', function () {
     ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-closed-caption').firstChild;
     TestUtils.Simulate.click(ccButton);
     expect(toggleScreenClicked).toBe(true);
+  });
+
+  it('hides share button if share options are not provided', function() {
+    var customSkinConfig = JSON.parse(JSON.stringify(skinConfig));
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: { volume: 1 },
+        videoQualityOptions: {},
+        closedCaptionOptions: {}
+      }
+    };
+    var mockProps = {
+      isLiveStream: false,
+      controller: mockController,
+      skinConfig: customSkinConfig
+    };
+
+    customSkinConfig.buttons.desktopContent = [
+      { "name": "share", "location": "controlBar", "whenDoesNotFit": "moveToMoreOptions", "minWidth": 45 }
+    ];
+    customSkinConfig.shareScreen.shareContent = ["social"];
+    customSkinConfig.shareScreen.socialContent = [];
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={mockProps.isLiveStream} />
+    );
+    expect(TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-share').length).toBe(0);
+
+    customSkinConfig.shareScreen.shareContent = [];
+    customSkinConfig.shareScreen.socialContent = ["twitter"];
+
+    DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={mockProps.isLiveStream} />
+    );
+    expect(TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-share').length).toBe(0);
   });
 
   it('shows/hides discovery button if discovery available', function() {

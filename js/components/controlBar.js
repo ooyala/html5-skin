@@ -402,6 +402,17 @@ var ControlBar = React.createClass({
         continue;
       }
 
+      //do not show share button if not share options are available
+      if (defaultItems[k].name === "share") {
+        var shareContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.shareContent', []);
+        var socialContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', []);
+        var onlySocialTab = shareContent.length === 1 && shareContent[0] === 'social';
+        //skip if no tabs were specified or if only the social tab is present but no social buttons are specified
+        if (!shareContent.length || (onlySocialTab && !socialContent.length)) {
+          continue;
+        }
+      }
+
       //do not show CC button if no CC available
       if (!this.props.controller.state.closedCaptionOptions.availableLanguages && (defaultItems[k].name === "closedCaption")){
         continue;
