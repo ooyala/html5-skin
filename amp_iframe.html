@@ -11,22 +11,26 @@
 <body style="padding:0; margin:0; width:100%; height:100%; overflow:hidden">
   <div id='container' style='width:100%; height:100%;'></div>
   <script>
-    var queryParams = window.location.href;
-    var playerParam = {
+   var queryParams = window.location.href;
+   var autoplayParam = queryParams.match(/autoplay=([^&]*)/)[1];
+   var autoplay = false;
+   if (autoplayParam == "true") {
+     autoplay = true;
+   }
+   var playerParam = {
       "pcode": queryParams.match(/pcode=([^&]*)/)[1],
       "playerBrandingId": queryParams.match(/pbid=([^&]*)/)[1],
+      "autoplay": autoplay,
       "skin": {
         "config": "",
         "inline": {"shareScreen": {"embed": {"source": "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/stable/latest/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>"}}}
       }
     };
-
     // Parse docUrl
     var docUrl = undefined;
     if (!!queryParams.match(/docUrl=([^&]*)/)) {
       playerParam["docUrl"] = decodeURIComponent(queryParams.match(/docUrl=([^&]*)/)[1]);
     }
-
     // Parse standard Ooyala player runtime options
     var queryTokens = queryParams.split(/[\?\&]/);
     for (var i=0; i<queryTokens.length; i++) {
@@ -43,7 +47,6 @@
           }
           if (typeof currentLevel !== 'object')
             throw("Exception: Invalid query parameter");
-
           var paramValue = decodeURIComponent(match[2]);
           if (paramValue.toLowerCase() === "true")
             currentLevel[keySplits[0]] = true;
@@ -60,7 +63,6 @@
         throw("Exception: Invalid query parameter");
       }
     }
-
     OO.ready(function() {
       window.pp = OO.Player.create('container', queryParams.match(/ec=([^&]*)/)[1], playerParam);
 
@@ -69,15 +71,19 @@
         switch (evt.data) {
           case "play":
             pp.play();
+            parent.postMessage({data:"playing"}, "*");
             break;
           case "pause":
             pp.pause();
+            parent.postMessage({data:"paused"}, "*");
             break;
           case "mute":
             pp.setVolume(0);
+            parent.postMessage({data:"muted"}, "*");
             break;
           case "unmute":
             pp.setVolume(1);
+            parent.postMessage({data:"unmuted"}, "*");
             break;
         }
       });
