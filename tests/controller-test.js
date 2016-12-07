@@ -124,17 +124,16 @@ OO = {
           removeClass: function(a) {}
         },
         mainVideoElement: {
-          addClass: function(a) {},
-          removeClass: function(a) {},
-          get: function(a) {
-            return {
-              webkitSupportsFullscreen: true,
-              webkitEnterFullscreen: function() {},
-              webkitExitFullscreen: function() {},
-              addEventListener: function(a,b) {}
-            }
-          }
-        }
+          classList: {
+            add: function(a) {},
+            remove: function(a) {}
+          },
+          webkitSupportsFullscreen: true,
+          webkitEnterFullscreen: function() {},
+          webkitExitFullscreen: function() {},
+          addEventListener: function(a,b) {}
+        },
+        mainVideoMediaType: CONSTANTS.MEDIA_TYPE.FLASH
       },
       skin: {
         state: {
@@ -202,7 +201,8 @@ OO = {
       updateAspectRatio: function() {},
       calculateAspectRatio: function(a,b) {},
       setAspectRatio: function() {window.isAspectRatioSet = true;},
-      createPluginElements: function() {}
+      createPluginElements: function() {},
+      findMainVideoElement: function(a) {}
     };
 
 
@@ -212,11 +212,17 @@ OO = {
 
     var Html5Skin = exposeStaticApi.prototype; // public object used to expose private object for testing
     var elementId = 'adrfgyi';
+    var videoId = 'ag5dfdtooon2cncj714i';
+    var videoElement = document.createElement('video');
+    videoElement.className = "video";
+    videoElement.id = videoId;
+    videoElement.preload = "none";
+    videoElement.src = "http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor";
 
     //setup document body for valid DOM elements
     document.body.innerHTML =
       '<div id='+elementId+'>' +
-      '  <div class="oo-player-skin" />' +
+      '  <div class="oo-player-skin">' + videoElement + '</div>' +
       '</div>';
 
     //test mb subscribe
@@ -234,7 +240,7 @@ OO = {
     controllerMock.skin = tempSkin; //reset skin, onPlayerCreated updates skin
 
     var tempMainVideoElement = $.extend(true, {}, controllerMock.state.mainVideoElement);
-    Html5Skin.onVcVideoElementCreated.call(controllerMock, 'customerUi', {videoId: OO.VIDEO.MAIN});
+    Html5Skin.onVcVideoElementCreated.call(controllerMock, 'customerUi', {videoId: OO.VIDEO.MAIN, videoElement: videoElement});
     controllerMock.state.mainVideoElement = tempMainVideoElement;
 
     Html5Skin.metaDataLoaded.call(controllerMock);
@@ -514,6 +520,21 @@ OO = {
 
     Html5Skin.setAspectRatio.call(controllerMock);
     Html5Skin.setAspectRatio.call({state: {mainVideoAspectRatio: 0}});
+
+    //test find main video element
+    Html5Skin.findMainVideoElement.call(controllerMock, videoElement);
+    var div2 = document.createElement('div');
+    div2.appendChild(videoElement);
+    Html5Skin.findMainVideoElement.call(controllerMock, div2);
+    var flashVideoElement = document.createElement('object');
+    flashVideoElement.className = "video";
+    flashVideoElement.id = videoId;
+    flashVideoElement.src = "http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor";
+    Html5Skin.findMainVideoElement.call(controllerMock, flashVideoElement);
+    var div = document.createElement('div');
+    div.appendChild(flashVideoElement);
+    Html5Skin.findMainVideoElement.call(controllerMock, div);
+    Html5Skin.findMainVideoElement.call(controllerMock, {0:videoElement});
 
     //test destroy functions last
     Html5Skin.onEmbedCodeChanged.call(controllerMock, 'customerUi', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', {});

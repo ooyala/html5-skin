@@ -243,26 +243,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVcVideoElementCreated: function(event, params) {
-      var element = $("#" + params["domId"]);
-      var elementVideo = element.find("video");
-
-      //if video element is descendant
-      if (elementVideo.length) {
-        element = elementVideo;
-        this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
-      }
+      var videoElement = params.videoElement;
+      videoElement = this.findMainVideoElement(videoElement);
 
       //add loadedmetadata event listener to main video element
-      if (element.get(0)) {
-        element.get(0).addEventListener("loadedmetadata", this.metaDataLoaded.bind(this));
+      if (videoElement) {
+        videoElement.addEventListener("loadedmetadata", this.metaDataLoaded.bind(this));
       }
 
       if (Utils.isIE10()) {
-        element.attr("controls", "controls");
+        videoElement.attr("controls", "controls");
       }
 
-      if (params["videoId"] === OO.VIDEO.MAIN) {
-        this.state.mainVideoElement = element;
+      if (params.videoId === OO.VIDEO.MAIN) {
+        this.state.mainVideoElement = videoElement;
         this.enableFullScreen();
         this.updateAspectRatio();
       }
@@ -380,7 +374,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.duration = duration;
 
       // lower skin z-index if Chrome auto-pauses flash content
-      if(!this.state.autoPauseDisabled && Utils.isChrome() && this.state.mainVideoMediaType != CONSTANTS.MEDIA_TYPE.HTML5) {
+      if(!this.state.autoPauseDisabled && Utils.isChrome() && this.state.mainVideoMediaType == CONSTANTS.MEDIA_TYPE.FLASH) {
         var skinElement = $("#"+this.state.elementId+" .oo-player-skin");
         if(currentPlayhead == 0 && this.state.playerState == CONSTANTS.STATE.PLAYING) {
           skinElement.addClass('oo-z-index-auto');
@@ -439,11 +433,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
+        //set mainVideoElement if not set during video plugin initialization
+        if (!this.state.mainVideoMediaType) {
+          this.state.mainVideoElement = this.findMainVideoElement(this.state.mainVideoElement);
+        }
         this.state.pauseAnimationDisabled = false;
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.setClosedCaptionsLanguage();
-        this.state.mainVideoElement.removeClass('oo-blur');
+        this.state.mainVideoElement.classList.remove('oo-blur');
         this.state.isInitialPlay = false;
         this.renderSkin();
       }
@@ -494,7 +492,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
-        this.state.mainVideoElement.addClass('oo-blur');
+        this.state.mainVideoElement.classList.add('oo-blur');
         this.renderSkin();
       }
       else if (videoId == OO.VIDEO.ADS){
@@ -651,7 +649,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.adStartTime = 0;
         }
         this.skin.state.currentPlayhead = 0;
-        this.state.mainVideoElement.removeClass('oo-blur');
+        this.state.mainVideoElement.classList.remove('oo-blur');
         this.renderSkin();
       }
     },
@@ -914,10 +912,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     // https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/ControllingMediaWithJavaScript/ControllingMediaWithJavaScript.html#//apple_ref/doc/uid/TP40009523-CH3-SW13
     enableIosFullScreen: function() {
       if(!this.state.isFullScreenSupported) {
-        if (this.state.mainVideoElement.get(0).webkitSupportsFullscreen) {
+        if (this.state.mainVideoElement.webkitSupportsFullscreen) {
           this.state.isVideoFullScreenSupported = true;
-          this.state.mainVideoElement.get(0).addEventListener("webkitbeginfullscreen", this.webkitBeginFullscreen.bind(this));
-          this.state.mainVideoElement.get(0).addEventListener("webkitendfullscreen", this.webkitEndFullscreen.bind(this));
+          this.state.mainVideoElement.addEventListener("webkitbeginfullscreen", this.webkitBeginFullscreen.bind(this));
+          this.state.mainVideoElement.addEventListener("webkitendfullscreen", this.webkitEndFullscreen.bind(this));
         }
       }
     },
@@ -942,9 +940,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // partial support, video element only (iOS)
       else if (this.state.isVideoFullScreenSupported) {
         if(this.state.fullscreen) {
-          this.state.mainVideoElement.get(0).webkitExitFullscreen();
+          this.state.mainVideoElement.webkitExitFullscreen();
         } else {
-          this.state.mainVideoElement.get(0).webkitEnterFullscreen();
+          this.state.mainVideoElement.webkitEnterFullscreen();
         }
       }
       // no support
@@ -1487,6 +1485,39 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if(this.state.mainVideoAspectRatio > 0) {
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
+    },
+
+    //find descendant video element
+    findMainVideoElement: function(element) {
+      var elements = [];
+      //use actual element
+      if (element[0]) {
+        element = element[0];
+      }
+
+      //find html5 video
+      if (element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) != -1) {
+        this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
+      }
+      else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
+        elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO);
+        if (elements.length) {
+          element = elements[0];
+          this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
+        }
+      }
+      //find flash object
+      else if (element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) != -1) {
+        this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
+      }
+      else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
+        elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT);
+        if (elements.length) {
+          element = elements[0];
+          this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
+        }
+      }
+      return element;
     }
   };
 
