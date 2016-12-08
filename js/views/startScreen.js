@@ -25,7 +25,7 @@ var StartScreen = React.createClass({
     this.handleResize();
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps: function() {
     this.handleResize();
   },
 
