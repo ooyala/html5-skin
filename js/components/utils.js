@@ -419,6 +419,7 @@ var Utils = {
    * See https://facebook.github.io/react/tips/dangerously-set-inner-html.html
    *
    * @function createMarkup
+   * @param {String} html - html to be sanitized
    * @returns {Object} Wrapper object for sanitized markup.
    */
   createMarkup: function(html) {
@@ -463,6 +464,29 @@ var Utils = {
       }
     });
     return destination;
+  },
+
+  /**
+   * Checks if image loads and is valid
+   *
+   * @function isValidImage
+   * @param {String} src - absolute path to image src
+   * @returns {Boolean} true if image is valid, false if not
+   */
+  isValidImage: function(src) {
+    if (src) {
+      var isValidImage = true;
+      var img = new Image();
+      img.src = src;
+
+      // check if error occurs while loading img
+      img.onerror = function() {
+        isValidImage = false;
+      };
+      return isValidImage;
+    } else {
+      return false;
+    }
   },
 
   _isValid: function( item ) {
