@@ -4,25 +4,19 @@ var React = require('react'),
 var DiscoverItem = React.createClass({
   getInitialState: function() {
     return {
-      imgError: false
+      isValidImage: true
     };
   },
 
   componentWillMount: function() {
-    var img = new Image();
-    img.src = this.props.src;
-
-    // check if error occurs while loading img
-    img.onerror = function() {
-      this.setState({
-        imgError: true
-      });
-    }.bind(this);
+    this.setState({
+      isValidImage: Utils.isValidImage(this.props.src)
+    });
   },
 
   render: function() {
-    // handle img error, return null
-    if (this.state.imgError) {
+    // if not valid image, return null
+    if (!this.state.isValidImage) {
       return null;
     }
 
