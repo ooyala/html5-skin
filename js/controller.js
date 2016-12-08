@@ -34,6 +34,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "closedCaptionOptions": {}
       },
       "assetId": null,
+      "embedSkinJSON": SkinJSON,
+      "skinParams": {},
+      "skinSettings": {},
+      "skinData": {},
       "contentTree": {},
       "thumbnails": null,
       "isLiveStream": false,
@@ -147,6 +151,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
+      this.mb.subscribe(OO.EVENTS.SKIN_METADATA_FETCHED, 'customerUi', _.bind(this.onSkinMetadataFetched, this));
       this.mb.subscribe(OO.EVENTS.THUMBNAILS_FETCHED, 'customerUi', _.bind(this.onThumbnailsFetched, this));//xenia: to be replaced by a more appropriate event
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
@@ -231,6 +236,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (params.skin && params.skin.config) {
         $.getJSON(params.skin.config, function(data) {
           this.loadConfigData(params, settings, data);
+          this.state.skinParams = params;
+          this.state.skinSettings = settings;
+          this.state.skinData = data;
         }.bind(this));
       }
       //else load player with bundled config
@@ -307,6 +315,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       this.renderSkin({"contentTree": contentTree});
+    },
+
+    onSkinMetadataFetched: function (event, skinMetadata) {
+      this.loadConfigData(this.state.skinParams, this.state.skinSettings, this.state.skinData, skinMetadata);
     },
 
     onThumbnailsFetched: function (event, thumbnails) {
@@ -785,14 +797,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      *********************************************************************/
 
     //merge and load config data
-    loadConfigData: function(params, settings, data) {
-      if (data) {
-        SkinJSON = data;
-      }
+    loadConfigData: function(params, settings, data, metadata) {
+      var backlotMetadata = metadata ? metadata : {};
+      var ajaxJson = data ? data : {};
       var inlinePageParams = Utils.getPropertyValue(params, 'skin.inline') ? params.skin.inline : {};
 
       //override data in skin config with possible local storage settings and inline data input by the user
-      this.state.config = SkinJSON = DeepMerge.all([SkinJSON, inlinePageParams, settings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils)});
+      this.state.config = SkinJSON = DeepMerge.all([SkinJSON, backlotMetadata, ajaxJson, inlinePageParams, settings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils)});
       this.state.closedCaptionOptions = this.state.config.closedCaptionOptions;
 
       //load config language json if exist
@@ -1018,6 +1029,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // player events
       this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.SKIN_METADATA_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi');
