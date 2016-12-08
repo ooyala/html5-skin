@@ -35,9 +35,10 @@ var UpNextPanel = React.createClass({
 
   render: function() {
     var upNextString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UP_NEXT, this.props.localizableStrings);
-    var thumbnailStyle = {
-      backgroundImage: "url('" + this.props.upNextInfo.upNextData.preview_image_url + "')"
-    };
+    var thumbnailStyle = {};
+    if (Utils.isValidImage(this.props.upNextInfo.upNextData.preview_image_url)) {
+      thumbnailStyle.backgroundImage = "url('" + this.props.upNextInfo.upNextData.preview_image_url + "')";
+    }
 
     return (
       <div className="oo-up-next-panel">

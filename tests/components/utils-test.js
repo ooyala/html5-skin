@@ -213,4 +213,22 @@ describe('Utils', function () {
     var html = Utils.createMarkup(markup);
     expect(html.__html).toBe(markup);
   });
+
+  it('tests isValidImage', function () {
+    var src = null;
+    var isValidImage = Utils.isValidImage(src);
+    expect(isValidImage).toBeFalsy();
+
+    src = '';
+    isValidImage = Utils.isValidImage(src);
+    expect(isValidImage).toBeFalsy();
+
+    src = undefined;
+    isValidImage = Utils.isValidImage(src);
+    expect(isValidImage).toBeFalsy();
+
+    src = 'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/3Gduepif0T1UGY8H4xMDoxOmFkOxyVqc';
+    isValidImage = Utils.isValidImage(src);
+    expect(isValidImage).toBeTruthy();
+  });
 });

@@ -53,9 +53,10 @@ var StartScreen = React.createClass({
       opacity: this.props.skinConfig.startScreen.playIconStyle.opacity
     };
     var posterImageUrl = this.props.skinConfig.startScreen.showPromo ? this.props.contentTree.promo_image : '';
-    var posterStyle = {
-      backgroundImage: "url('" + posterImageUrl + "')"
-    };
+    var posterStyle = {};
+    if (Utils.isValidImage(posterImageUrl)) {
+      posterStyle.backgroundImage = "url('" + posterImageUrl + "')";
+    }
 
     //CSS class manipulation from config/skin.json
     var stateScreenPosterClass = ClassNames({
