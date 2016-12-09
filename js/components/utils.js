@@ -431,34 +431,38 @@ var Utils = {
    * @function arrayDeepMerge
    * @param {Array} target - An array that will receive new items if additional items are passed
    * @param {Array} source - An array containing additional items to merge into target
-   * @param {Object} optionsArgument - optional parameters passed, i.e. arrayMerge function
+   * @param {Object} optionsArgument - optional parameters passed, i.e. arrayMerge, swap, unionBy, clone
    * @returns {Array} new merged array with items from both target and source
    */
   arrayDeepMerge: function(target, source, optionsArgument) {
+    var targetArray = optionsArgument.swap ? source : target;
+    var sourceArray = optionsArgument.swap ? target : source;
     var self = this;
     var destination = [];
-    destination = source.slice();
-    target.forEach(function(targetItem, i) {
+    destination = sourceArray.slice();
+
+    targetArray.forEach(function(targetItem, i) {
       if (typeof destination[i] === 'undefined') {
         destination[i] = self._cloneIfNecessary(targetItem, optionsArgument);
       }
       else if (self._isMergeableObject(targetItem)) {
         // custom merge for buttons array, used to maintain source sort order
-        if (targetItem.name) {
-          source.forEach(function(sourceItem, j) {
+        if (targetItem[optionsArgument.unionBy]) {
+          sourceArray.forEach(function(sourceItem, j) {
             //gracefully merge buttons by name
-            if (targetItem.name === sourceItem.name) {
-              destination[j] = DeepMerge(targetItem, sourceItem, optionsArgument);
+            if (targetItem[optionsArgument.unionBy] === sourceItem[optionsArgument.unionBy]) {
+              var targetObject = optionsArgument.swap ? sourceItem : targetItem;
+              var sourceObject = optionsArgument.swap ? targetItem : sourceItem;
+              destination[j] = DeepMerge(targetObject, sourceObject, optionsArgument);
             }
           });
         }
         // default array merge
         else {
-          destination[i] = DeepMerge(targetItem, source[i], optionsArgument);
+          destination[i] = DeepMerge(targetItem, sourceArray[i], optionsArgument);
         }
-
       }
-      else if (source.indexOf(targetItem) === -1) {
+      else if (sourceArray.indexOf(targetItem) === -1) {
         destination.push(self._cloneIfNecessary(targetItem, optionsArgument));
       }
     });
