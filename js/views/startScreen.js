@@ -25,14 +25,17 @@ var StartScreen = React.createClass({
     this.handleResize();
   },
 
-  componentWillReceiveProps: function() {
-    this.handleResize();
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps.contentTree.description != this.props.contentTree.description) {
+      this.handleResize(nextProps);
+    }
   },
 
-  handleResize: function() {
+  handleResize: function(nextProps) {
+    var description = nextProps ? nextProps.contentTree.description : this.props.contentTree.description;
     if (ReactDOM.findDOMNode(this.refs.description)){
       this.setState({
-        descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), this.props.contentTree.description)
+        descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), description)
       });
     }
   },
