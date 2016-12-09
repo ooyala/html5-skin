@@ -398,7 +398,7 @@ var ControlBar = React.createClass({
       }
 
       //filter out disabled buttons
-      if (defaultItems[k].enabled == false) {
+      if (defaultItems[k].location === "none") {
         continue;
       }
 
