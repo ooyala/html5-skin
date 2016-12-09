@@ -234,6 +234,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (params.skin && params.skin.config) {
         $.getJSON(params.skin.config, function(data) {
           this.state.config = data;
+          this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.config, this.state.skinMetaData);
         }.bind(this));
       }
 
