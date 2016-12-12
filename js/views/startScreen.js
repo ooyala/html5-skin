@@ -54,7 +54,7 @@ var StartScreen = React.createClass({
     };
     var posterImageUrl = this.props.skinConfig.startScreen.showPromo ? this.props.contentTree.promo_image : '';
     var posterStyle = {};
-    if (Utils.isValidImage(posterImageUrl)) {
+    if (Utils.isValidString(posterImageUrl)) {
       posterStyle.backgroundImage = "url('" + posterImageUrl + "')";
     }
 

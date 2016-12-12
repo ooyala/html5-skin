@@ -74,7 +74,7 @@ var ThumbnailCarousel = React.createClass({
           top: data.top
         };
         var thumbUrl = data.thumbnails.data.thumbnails[data.timeSlices[i]][data.width].url;
-        if (Utils.isValidImage(thumbUrl)) {
+        if (Utils.isValidString(thumbUrl)) {
           thumbStyle.backgroundImage = "url('" + thumbUrl + "')";
         }
         thumbnailsAfter.push(<div className="oo-thumbnail-carousel-image" key={i} ref="thumbnail" style={thumbStyle}></div>);
@@ -95,7 +95,7 @@ var ThumbnailCarousel = React.createClass({
           top: data.top
         };
         var thumbUrl = data.thumbnails.data.thumbnails[data.timeSlices[i]][data.width].url;
-        if (Utils.isValidImage(thumbUrl)) {
+        if (Utils.isValidString(thumbUrl)) {
           thumbStyle.backgroundImage = "url('" + thumbUrl + "')";
         }
         thumbnailsBefore.push(<div className="oo-thumbnail-carousel-image" key={i} ref="thumbnail" style={thumbStyle}></div>);
@@ -123,7 +123,7 @@ var ThumbnailCarousel = React.createClass({
     var thumbnailStyle = {
       left: (data.scrubberBarWidth - data.centerWidth) / 2
     };
-    if (Utils.isValidImage(centralThumbnail.url)) {
+    if (Utils.isValidString(centralThumbnail.url)) {
       thumbnailStyle.backgroundImage = "url('" + centralThumbnail.url + "')";
     }
     var time = isFinite(parseInt(this.props.hoverTime)) ? Utils.formatSeconds(parseInt(this.props.hoverTime)) : null;

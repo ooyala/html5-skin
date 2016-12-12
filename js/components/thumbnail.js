@@ -17,7 +17,7 @@ var Thumbnail = React.createClass({
 
     var thumbnailStyle = {};
     thumbnailStyle.left = this.props.hoverPosition;
-    if (Utils.isValidImage(thumbnail.url)) {
+    if (Utils.isValidString(thumbnail.url)) {
       thumbnailStyle.backgroundImage = "url('" + thumbnail.url + "')";
     }
 

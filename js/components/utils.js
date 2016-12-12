@@ -467,23 +467,15 @@ var Utils = {
   },
 
   /**
-   * Checks if image loads and is valid
+   * Checks if string is valid
    *
-   * @function isValidImage
-   * @param {String} src - absolute path to image src
-   * @returns {Boolean} true if image is valid, false if not
+   * @function isValidString
+   * @param {String} src - string to be validated
+   * @returns {Boolean} true if string is valid, false if not
    */
-  isValidImage: function(src) {
-    if (src) {
-      var isValidImage = true;
-      var img = new Image();
-      img.src = src;
-
-      // check if error occurs while loading img
-      img.onerror = function() {
-        isValidImage = false;
-      };
-      return isValidImage;
+  isValidString: function(src) {
+    if (src && (typeof src === 'string' || src instanceof String)) {
+      return true;
     } else {
       return false;
     }
