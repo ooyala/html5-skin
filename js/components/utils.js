@@ -474,11 +474,7 @@ var Utils = {
    * @returns {Boolean} true if string is valid, false if not
    */
   isValidString: function(src) {
-    if (src && (typeof src === 'string' || src instanceof String)) {
-      return true;
-    } else {
-      return false;
-    }
+    return (src && (typeof src === 'string' || src instanceof String))
   },
 
   _isValid: function( item ) {

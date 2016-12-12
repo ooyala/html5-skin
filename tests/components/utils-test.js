@@ -214,21 +214,21 @@ describe('Utils', function () {
     expect(html.__html).toBe(markup);
   });
 
-  it('tests isValidImage', function () {
+  it('tests isValidString', function () {
     var src = null;
-    var isValidImage = Utils.isValidImage(src);
-    expect(isValidImage).toBeFalsy();
+    var isValidString = Utils.isValidString(src);
+    expect(isValidString).toBeFalsy();
 
     src = '';
-    isValidImage = Utils.isValidImage(src);
-    expect(isValidImage).toBeFalsy();
+    isValidString = Utils.isValidString(src);
+    expect(isValidString).toBeFalsy();
 
     src = undefined;
-    isValidImage = Utils.isValidImage(src);
-    expect(isValidImage).toBeFalsy();
+    isValidString = Utils.isValidString(src);
+    expect(isValidString).toBeFalsy();
 
     src = 'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/3Gduepif0T1UGY8H4xMDoxOmFkOxyVqc';
-    isValidImage = Utils.isValidImage(src);
-    expect(isValidImage).toBeTruthy();
+    isValidString = Utils.isValidString(src);
+    expect(isValidString).toBeTruthy();
   });
 });
