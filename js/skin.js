@@ -199,6 +199,7 @@ var Skin = React.createClass({
               <DiscoveryPanel
                 {...this.props}
                 videosPerPage={{xs:2, sm:4, md:6, lg:8}}
+                forceCountDownTimer={this.state.forceCountDownTimerOnEndScreen}
                 discoveryData={this.state.discoveryData}
                 playerState={this.state.playerState}
                 responsiveView={this.state.responsiveId}
