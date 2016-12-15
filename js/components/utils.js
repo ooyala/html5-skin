@@ -431,41 +431,61 @@ var Utils = {
    * @function arrayDeepMerge
    * @param {Array} target - An array that will receive new items if additional items are passed
    * @param {Array} source - An array containing additional items to merge into target
-   * @param {Object} optionsArgument - optional parameters passed, i.e. arrayMerge, swap, unionBy, clone
+   * @param {Object} optionsArgument - optional parameters passed, i.e. arrayMerge, swap, unionBy, clone, arrayFusion
    * @returns {Array} new merged array with items from both target and source
    */
   arrayDeepMerge: function(target, source, optionsArgument) {
+    // replaces target with source, no merge
+    if (optionsArgument.arrayFusion === 'replace') {
+      return source;
+    }
+
     var targetArray = optionsArgument.swap ? source : target;
     var sourceArray = optionsArgument.swap ? target : source;
     var self = this;
+    var sourceClone = sourceArray.slice();
     var destination = [];
-    destination = sourceArray.slice();
+    destination = targetArray.slice();
 
-    targetArray.forEach(function(targetItem, i) {
+    sourceArray.forEach(function(sourceItem, i) {
       if (typeof destination[i] === 'undefined') {
-        destination[i] = self._cloneIfNecessary(targetItem, optionsArgument);
+        destination[i] = self._cloneIfNecessary(sourceItem, optionsArgument);
       }
-      else if (self._isMergeableObject(targetItem)) {
+      else if (self._isMergeableObject(sourceItem)) {
         // custom merge for buttons array, used to maintain source sort order
-        if (targetItem[optionsArgument.unionBy]) {
-          sourceArray.forEach(function(sourceItem, j) {
-            //gracefully merge buttons by name
-            if (targetItem[optionsArgument.unionBy] === sourceItem[optionsArgument.unionBy]) {
+        if (sourceItem[optionsArgument.unionBy]) {
+          targetArray.forEach(function(targetItem, j) {
+            // gracefully merge buttons by name
+            if (sourceItem[optionsArgument.unionBy] === targetItem[optionsArgument.unionBy]) {
               var targetObject = optionsArgument.swap ? sourceItem : targetItem;
               var sourceObject = optionsArgument.swap ? targetItem : sourceItem;
               destination[j] = DeepMerge(targetObject, sourceObject, optionsArgument);
+
+              // prunes sourceClone to unique items not in target
+              if (optionsArgument.arrayFusion === 'concat' && sourceClone && sourceClone.length) {
+                for (var x in sourceClone) {
+                  if (sourceClone[x][optionsArgument.unionBy] == sourceItem[optionsArgument.unionBy]) {
+                    sourceClone.splice(x, 1);
+                    break;
+                  }
+                }
+              }
             }
           });
         }
         // default array merge
         else {
-          destination[i] = DeepMerge(targetItem, sourceArray[i], optionsArgument);
+          destination[i] = DeepMerge(targetArray[i], sourceItem, optionsArgument);
         }
       }
-      else if (sourceArray.indexOf(targetItem) === -1) {
-        destination.push(self._cloneIfNecessary(targetItem, optionsArgument));
+      else if (targetArray.indexOf(sourceItem) === -1) {
+        destination.push(self._cloneIfNecessary(sourceItem, optionsArgument));
       }
     });
+    // concat array of unique items to destination
+    if (optionsArgument.arrayFusion === 'concat' && sourceClone && sourceClone.length) {
+      destination = destination.concat(sourceClone);
+    }
     return destination;
   },
 
