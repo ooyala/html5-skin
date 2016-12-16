@@ -219,6 +219,24 @@ describe('Utils', function () {
     expect(html.__html).toBe(markup);
   });
 
+  it('tests isValidString', function () {
+    var src = null;
+    var isValidString = Utils.isValidString(src);
+    expect(isValidString).toBeFalsy();
+
+    src = '';
+    isValidString = Utils.isValidString(src);
+    expect(isValidString).toBeFalsy();
+
+    src = undefined;
+    isValidString = Utils.isValidString(src);
+    expect(isValidString).toBeFalsy();
+
+    src = 'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/3Gduepif0T1UGY8H4xMDoxOmFkOxyVqc';
+    isValidString = Utils.isValidString(src);
+    expect(isValidString).toBeTruthy();
+  });
+
   it('tests deep merge', function () {
     var localSettings = {"closedCaptionOptions":{"windowColor":"Yellow","enabled":true, "backgroundOpacity":"0.2","textOpacity":"1"}};
     var inlinePageParams = {"closedCaptionOptions":{"textColor":"Blue", "backgroundColor":"Green","windowColor":"White","windowOpacity":0.5},"buttons":{"desktopContent":[{"name":"ooyala","location":"ooyala","whenDoesNotFit":"ooyala","minWidth":85},{"name":"quality","location":"controlBar","whenDoesNotFit":"moveToMoreOptions","minWidth":85}]}};

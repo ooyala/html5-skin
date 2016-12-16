@@ -419,6 +419,7 @@ var Utils = {
    * See https://facebook.github.io/react/tips/dangerously-set-inner-html.html
    *
    * @function createMarkup
+   * @param {String} html - html to be sanitized
    * @returns {Object} Wrapper object for sanitized markup.
    */
   createMarkup: function(html) {
@@ -504,6 +505,17 @@ var Utils = {
       }
     }
     return destination;
+  },
+
+  /**
+   * Checks if string is valid
+   *
+   * @function isValidString
+   * @param {String} src - string to be validated
+   * @returns {Boolean} true if string is valid, false if not
+   */
+  isValidString: function(src) {
+    return (src && (typeof src === 'string' || src instanceof String))
   },
 
   _isValid: function( item ) {
