@@ -443,7 +443,7 @@ var Utils = {
     var targetArray = optionsArgument.swap ? source : target;
     var sourceArray = optionsArgument.swap ? target : source;
     var self = this;
-    var sourceClone = sourceArray.slice();
+    var uniqueSourceArray = sourceArray.slice();
     var destination = [];
     destination = targetArray.slice();
 
@@ -461,11 +461,11 @@ var Utils = {
               var sourceObject = optionsArgument.swap ? targetItem : sourceItem;
               destination[j] = DeepMerge(targetObject, sourceObject, optionsArgument);
 
-              // prunes sourceClone to unique items not in target
-              if (optionsArgument.arrayFusion === 'concat' && sourceClone && sourceClone.length) {
-                for (var x in sourceClone) {
-                  if (sourceClone[x][optionsArgument.unionBy] == sourceItem[optionsArgument.unionBy]) {
-                    sourceClone.splice(x, 1);
+              // prunes uniqueSourceArray to unique items not in target
+              if (optionsArgument.arrayFusion === 'prepend' && uniqueSourceArray && uniqueSourceArray.length) {
+                for (var x in uniqueSourceArray) {
+                  if (uniqueSourceArray[x][optionsArgument.unionBy] == sourceItem[optionsArgument.unionBy]) {
+                    uniqueSourceArray.splice(x, 1);
                     break;
                   }
                 }
@@ -482,9 +482,26 @@ var Utils = {
         destination.push(self._cloneIfNecessary(sourceItem, optionsArgument));
       }
     });
-    // concat array of unique items to destination
-    if (optionsArgument.arrayFusion === 'concat' && sourceClone && sourceClone.length) {
-      destination = destination.concat(sourceClone);
+    // prepend uniqueSourceArray array of unique items to buttons after flexible space
+    if (optionsArgument.arrayFusion === 'prepend' && uniqueSourceArray && uniqueSourceArray.length) {
+      var flexibleSpaceIndex = null;
+      // find flexibleSpace btn index
+      for (var y in destination) {
+        if (destination[y][optionsArgument.unionBy] === 'flexibleSpace') {
+          flexibleSpaceIndex = parseInt(y);
+          break;
+        }
+      }
+      // loop through uniqueSourceArray array, add unique objects
+      // to destination array after flexible space btn
+      if (flexibleSpaceIndex) {
+        flexibleSpaceIndex += 1; //after flexible space
+        for (var z in uniqueSourceArray) {
+          destination.splice(flexibleSpaceIndex, 0, uniqueSourceArray[z]);
+        }
+      } else {
+        destination = destination.concat(uniqueSourceArray);
+      }
     }
     return destination;
   },
