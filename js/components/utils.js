@@ -432,21 +432,25 @@ var Utils = {
    * @function arrayDeepMerge
    * @param {Array} target - An array that will receive new items if additional items are passed
    * @param {Array} source - An array containing additional items to merge into target
-   * @param {Object} optionsArgument - optional parameters passed, i.e. arrayMerge, swap, unionBy, clone, arrayFusion
+   * @param {Object} optionsArgument - parameters passed to parent DeepMerge function, i.e. -
+   *        arrayMerge - https://github.com/KyleAMathews/deepmerge#arraymerge
+   *        clone - https://github.com/KyleAMathews/deepmerge#clone
+   *        arrayUnionBy - key used to compare Objects being merged, i.e. button name
+   *        arrayFusion - method used to merge arrays ['replace', 'prepend']
+   *        arraySwap - swaps target/source
    * @returns {Array} new merged array with items from both target and source
    */
   arrayDeepMerge: function(target, source, optionsArgument) {
-    // replaces target with source, no merge
+    // returns source, no merge
     if (optionsArgument.arrayFusion === 'replace') {
       return source;
     }
 
-    var targetArray = optionsArgument.swap ? source : target;
-    var sourceArray = optionsArgument.swap ? target : source;
+    var targetArray = optionsArgument.arraySwap ? source : target;
+    var sourceArray = optionsArgument.arraySwap ? target : source;
     var self = this;
-    var uniqueSourceArray = sourceArray.slice();
-    var destination = [];
-    destination = targetArray.slice();
+    var uniqueSourceArray = sourceArray.slice(); //array used to keep track of objects that do not exist in target
+    var destination = targetArray.slice();
 
     sourceArray.forEach(function(sourceItem, i) {
       if (typeof destination[i] === 'undefined') {
@@ -454,18 +458,18 @@ var Utils = {
       }
       else if (self._isMergeableObject(sourceItem)) {
         // custom merge for buttons array, used to maintain source sort order
-        if (sourceItem[optionsArgument.unionBy]) {
+        if (sourceItem[optionsArgument.arrayUnionBy]) {
           targetArray.forEach(function(targetItem, j) {
             // gracefully merge buttons by name
-            if (sourceItem[optionsArgument.unionBy] === targetItem[optionsArgument.unionBy]) {
-              var targetObject = optionsArgument.swap ? sourceItem : targetItem;
-              var sourceObject = optionsArgument.swap ? targetItem : sourceItem;
+            if (sourceItem[optionsArgument.arrayUnionBy] === targetItem[optionsArgument.arrayUnionBy]) {
+              var targetObject = optionsArgument.arraySwap ? sourceItem : targetItem;
+              var sourceObject = optionsArgument.arraySwap ? targetItem : sourceItem;
               destination[j] = DeepMerge(targetObject, sourceObject, optionsArgument);
 
               // prunes uniqueSourceArray to unique items not in target
               if (optionsArgument.arrayFusion === 'prepend' && uniqueSourceArray && uniqueSourceArray.length) {
                 for (var x in uniqueSourceArray) {
-                  if (uniqueSourceArray[x][optionsArgument.unionBy] == sourceItem[optionsArgument.unionBy]) {
+                  if (uniqueSourceArray[x][optionsArgument.arrayUnionBy] === sourceItem[optionsArgument.arrayUnionBy]) {
                     uniqueSourceArray.splice(x, 1);
                     break;
                   }
@@ -488,7 +492,7 @@ var Utils = {
       var flexibleSpaceIndex = null;
       // find flexibleSpace btn index
       for (var y in destination) {
-        if (destination[y][optionsArgument.unionBy] === 'flexibleSpace') {
+        if (destination[y][optionsArgument.arrayUnionBy] === 'flexibleSpace') {
           flexibleSpaceIndex = parseInt(y);
           break;
         }
