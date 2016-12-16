@@ -15,6 +15,7 @@
   height:0;
   // default aspect ratio 16:9
   @include set-aspect-ratio(16, 9);
+  @include vendor-prefixes(transition, padding-top 0.5s ease);
 
   // other video objects
   & > div,
