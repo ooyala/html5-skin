@@ -798,8 +798,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var arrayFusion = params.buttonMerge ? params.buttonMerge : 'replace';
 
       //override data in skin config with possible local storage settings, inline data input by user, and CMS settings in backlot/themebuilder
-      var mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {arrayMerge: Utils.arrayDeepMerge.bind(Utils), unionBy:'name'});
-      this.state.config = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), unionBy:'name', arrayFusion:arrayFusion});
+      var mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name'});
+      this.state.config = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', arrayFusion:arrayFusion});
       this.state.closedCaptionOptions = this.state.config.closedCaptionOptions;
 
       //load config language json if exist
