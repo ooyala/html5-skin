@@ -17,7 +17,7 @@ var DiscoveryPanel = React.createClass({
 
   getInitialState: function() {
     return {
-      showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen,
+      showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen || this.props.forceCountDownTimer,
       currentPage: 1,
       componentHeight: null
     };

@@ -40,6 +40,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "screenToShow": null,
       "playerState": null,
       "discoveryData": null,
+      "forceCountDownTimerOnEndScreen": false,
       "isPlayingAd": false,
       "adOverlayUrl": null,
       "showAdOverlay": false,
@@ -281,6 +282,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.videoQualityOptions.availableBitrates = null;
       this.state.videoQualityOptions.selectedBitrate = null;
       this.state.closedCaptionOptions.availableLanguages = null;
+      this.state.closedCaptionOptions.cueText = null;
       this.state.closedCaptionsInfoCache = {};
       this.state.discoveryData = null;
       this.state.thumbnails = null;
@@ -990,6 +992,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     // iOS event fires when a video exits full-screen mode
     webkitEndFullscreen: function() {
       this.state.fullscreen = false;
+      var showUpNext = this.skin.props.skinConfig.upNext.showUpNext || this.skin.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen;
+
+      // [PLAYER-212]
+      // We can't show UI such as the "Up Next" countdown on fullscreen iOS. If a countdown
+      // is configured, we wait until the user exits fullscreen and then we display it.
+      if (showUpNext && this.state.playerState === CONSTANTS.STATE.END) {
+        this.state.forceCountDownTimerOnEndScreen = true;
+        this.sendDiscoveryDisplayEvent("endScreen");
+        this.state.pluginsElement.addClass("oo-overlay-blur");
+        this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
+        this.renderSkin();
+        this.state.forceCountDownTimerOnEndScreen = false;
+      }
     },
 
     // exit full window on ESC key
