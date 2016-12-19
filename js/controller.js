@@ -30,6 +30,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.id = id;
     this.state = {
       "playerParam": {},
+      "skinMetaData": {},
       "persistentSettings": {
         "closedCaptionOptions": {}
       },
@@ -150,6 +151,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.THUMBNAILS_FETCHED, 'customerUi', _.bind(this.onThumbnailsFetched, this));//xenia: to be replaced by a more appropriate event
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
+      this.mb.subscribe(OO.EVENTS.SKIN_METADATA_FETCHED, 'customerUi', _.bind(this.onSkinMetaDataFetched, this));
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
@@ -219,6 +221,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.mainVideoContainer = $("#" + elementId);
       this.state.mainVideoInnerWrapper = $("#" + elementId + " .innerWrapper");
       this.state.playerParam = params;
+      this.state.persistentSettings = settings;
       this.state.elementId = elementId;
       this.state.isMobile = Utils.isMobile();
       this.state.browserSupportsTouch = Utils.browserSupportsTouch();
@@ -231,12 +234,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
         $.getJSON(params.skin.config, function(data) {
-          this.loadConfigData(params, settings, data);
+          this.state.config = data;
+          this.loadConfigData(this.state.playerParam, this.state.persistentSettings, data, this.state.skinMetaData);
         }.bind(this));
-      }
-      //else load player with bundled config
-      else {
-        this.loadConfigData(params, settings);
+      } else {
+        this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.config, this.state.skinMetaData);
       }
 
       var accessibilityControls = new AccessibilityControls(this); //keyboard support
@@ -303,6 +305,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       this.renderSkin({"contentTree": contentTree});
+    },
+
+    onSkinMetaDataFetched: function (event, skinMetaData) {
+      this.state.skinMetaData = skinMetaData;
+      this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.config, this.state.skinMetaData);
     },
 
     onThumbnailsFetched: function (event, thumbnails) {
@@ -785,19 +792,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      *********************************************************************/
 
     //merge and load config data
-    loadConfigData: function(params, settings, data) {
-      if (data) {
-        SkinJSON = data;
-      }
+    loadConfigData: function(params, settings, data, skinMetaData) {
+      var localSettings = settings ? settings : {};
       var inlinePageParams = Utils.getPropertyValue(params, 'skin.inline') ? params.skin.inline : {};
+      var customSkinJSON = data ? data : {};
+      var metaDataSettings = skinMetaData ? skinMetaData : {};
+      var arrayFusion = params.buttonMerge ? params.buttonMerge : 'replace';
 
-      //override data in skin config with possible local storage settings and inline data input by the user
-      this.state.config = SkinJSON = DeepMerge.all([SkinJSON, inlinePageParams, settings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils)});
+      //override data in skin config with possible local storage settings, inline data input by user, and CMS settings in backlot/themebuilder
+      var mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name'});
+      this.state.config = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', arrayFusion:arrayFusion});
       this.state.closedCaptionOptions = this.state.config.closedCaptionOptions;
 
       //load config language json if exist
-      if (SkinJSON.localization.availableLanguageFile) {
-        SkinJSON.localization.availableLanguageFile.forEach(function(languageObj){
+      if (this.state.config.localization.availableLanguageFile) {
+        this.state.config.localization.availableLanguageFile.forEach(function(languageObj){
           if (languageObj.languageFile) {
             $.getJSON(languageObj.languageFile, function(data) {
               Localization.languageFiles[languageObj.language] = data;
@@ -807,12 +816,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
 
       //backwards compatibility with string parameters in skin.json
-      SkinJSON.upNext.timeToShow = Utils.convertStringToNumber(SkinJSON.upNext.timeToShow);
-      SkinJSON.discoveryScreen.countDownTime = Utils.convertStringToNumber(SkinJSON.discoveryScreen.countDownTime);
+      this.state.config.upNext.timeToShow = Utils.convertStringToNumber(this.state.config.upNext.timeToShow);
+      this.state.config.discoveryScreen.countDownTime = Utils.convertStringToNumber(this.state.config.discoveryScreen.countDownTime);
 
       //load player
       this.skin = ReactDOM.render(
-        React.createElement(Skin, {skinConfig: this.state.config, localizableStrings: Localization.languageFiles, language: Utils.getLanguageToUse(SkinJSON), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .oo-player-skin")
+        React.createElement(Skin, {skinConfig: this.state.config, localizableStrings: Localization.languageFiles, language: Utils.getLanguageToUse(this.state.config), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .oo-player-skin")
       );
       this.state.configLoaded = true;
       this.renderSkin();
@@ -1031,6 +1040,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // player events
       this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.SKIN_METADATA_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi');

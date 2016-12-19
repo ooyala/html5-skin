@@ -432,37 +432,82 @@ var Utils = {
    * @function arrayDeepMerge
    * @param {Array} target - An array that will receive new items if additional items are passed
    * @param {Array} source - An array containing additional items to merge into target
-   * @param {Object} optionsArgument - optional parameters passed, i.e. arrayMerge function
+   * @param {Object} optionsArgument - parameters passed to parent DeepMerge function, i.e. -
+   *        arrayMerge - https://github.com/KyleAMathews/deepmerge#arraymerge
+   *        clone - https://github.com/KyleAMathews/deepmerge#clone
+   *        arrayUnionBy - key used to compare Objects being merged, i.e. button name
+   *        arrayFusion - method used to merge arrays ['replace', 'prepend']
+   *        arraySwap - swaps target/source
    * @returns {Array} new merged array with items from both target and source
    */
   arrayDeepMerge: function(target, source, optionsArgument) {
+    // returns source, no merge
+    if (optionsArgument.arrayFusion === 'replace') {
+      return source;
+    }
+
+    var targetArray = optionsArgument.arraySwap ? source : target;
+    var sourceArray = optionsArgument.arraySwap ? target : source;
     var self = this;
-    var destination = [];
-    destination = source.slice();
-    target.forEach(function(targetItem, i) {
+    var uniqueSourceArray = sourceArray.slice(); //array used to keep track of objects that do not exist in target
+    var destination = targetArray.slice();
+
+    sourceArray.forEach(function(sourceItem, i) {
       if (typeof destination[i] === 'undefined') {
-        destination[i] = self._cloneIfNecessary(targetItem, optionsArgument);
+        destination[i] = self._cloneIfNecessary(sourceItem, optionsArgument);
       }
-      else if (self._isMergeableObject(targetItem)) {
+      else if (self._isMergeableObject(sourceItem)) {
         // custom merge for buttons array, used to maintain source sort order
-        if (targetItem.name) {
-          source.forEach(function(sourceItem, j) {
-            //gracefully merge buttons by name
-            if (targetItem.name === sourceItem.name) {
-              destination[j] = DeepMerge(targetItem, sourceItem, optionsArgument);
+        if (sourceItem[optionsArgument.arrayUnionBy]) {
+          targetArray.forEach(function(targetItem, j) {
+            // gracefully merge buttons by name
+            if (sourceItem[optionsArgument.arrayUnionBy] === targetItem[optionsArgument.arrayUnionBy]) {
+              var targetObject = optionsArgument.arraySwap ? sourceItem : targetItem;
+              var sourceObject = optionsArgument.arraySwap ? targetItem : sourceItem;
+              destination[j] = DeepMerge(targetObject, sourceObject, optionsArgument);
+
+              // prunes uniqueSourceArray to unique items not in target
+              if (optionsArgument.arrayFusion === 'prepend' && uniqueSourceArray && uniqueSourceArray.length) {
+                for (var x in uniqueSourceArray) {
+                  if (uniqueSourceArray[x][optionsArgument.arrayUnionBy] === sourceItem[optionsArgument.arrayUnionBy]) {
+                    uniqueSourceArray.splice(x, 1);
+                    break;
+                  }
+                }
+              }
             }
           });
         }
         // default array merge
         else {
-          destination[i] = DeepMerge(targetItem, source[i], optionsArgument);
+          destination[i] = DeepMerge(targetArray[i], sourceItem, optionsArgument);
         }
-
       }
-      else if (source.indexOf(targetItem) === -1) {
-        destination.push(self._cloneIfNecessary(targetItem, optionsArgument));
+      else if (targetArray.indexOf(sourceItem) === -1) {
+        destination.push(self._cloneIfNecessary(sourceItem, optionsArgument));
       }
     });
+    // prepend uniqueSourceArray array of unique items to buttons after flexible space
+    if (optionsArgument.arrayFusion === 'prepend' && uniqueSourceArray && uniqueSourceArray.length) {
+      var flexibleSpaceIndex = null;
+      // find flexibleSpace btn index
+      for (var y in destination) {
+        if (destination[y][optionsArgument.arrayUnionBy] === 'flexibleSpace') {
+          flexibleSpaceIndex = parseInt(y);
+          break;
+        }
+      }
+      // loop through uniqueSourceArray array, add unique objects
+      // to destination array after flexible space btn
+      if (flexibleSpaceIndex) {
+        flexibleSpaceIndex += 1; //after flexible space
+        for (var z in uniqueSourceArray) {
+          destination.splice(flexibleSpaceIndex, 0, uniqueSourceArray[z]);
+        }
+      } else {
+        destination = destination.concat(uniqueSourceArray);
+      }
+    }
     return destination;
   },
 

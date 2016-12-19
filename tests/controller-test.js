@@ -2,6 +2,8 @@ jest.dontMock('../js/controller');
 jest.dontMock('screenfull');
 jest.dontMock('../js/constants/constants');
 jest.dontMock('../js/components/utils');
+jest.dontMock('../config/skin');
+jest.dontMock('deepmerge');
 
 var CONSTANTS = require('../js/constants/constants');
 
@@ -202,7 +204,8 @@ OO = {
       calculateAspectRatio: function(a,b) {},
       setAspectRatio: function() {window.isAspectRatioSet = true;},
       createPluginElements: function() {},
-      findMainVideoElement: function(a) {}
+      findMainVideoElement: function(a) {},
+      loadConfigData: function(a, b, c, d) {}
     };
 
 
@@ -218,7 +221,7 @@ OO = {
     videoElement.id = videoId;
     videoElement.preload = "none";
     videoElement.src = "http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor";
-
+    var persistentSettings = {"closedCaptionOptions":{"textColor":"Blue","backgroundColor":"Transparent","windowColor":"Yellow","windowOpacity":"0.3","fontType":"Proportional Serif","fontSize":"Medium","textEnhancement":"Shadow","enabled":true,"language":"unknown","backgroundOpacity":"0.2","textOpacity":"1"}};
     //setup document body for valid DOM elements
     document.body.innerHTML =
       '<div id='+elementId+'>' +
@@ -233,13 +236,14 @@ OO = {
     Html5Skin.externalPluginSubscription.call(controllerMock);
 
     //test player state
-    var tempSkin = $.extend(true, {}, controllerMock.skin);
-    Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', elementId, {skin:{config:{}}}, {});
-    Html5Skin.loadConfigData.call(controllerMock, {skin:{config:{}}}, {});
+    var tempSkin = controllerMock.skin;
+    Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', elementId, {skin:{config:{}}}, persistentSettings);
+    Html5Skin.onSkinMetaDataFetched.call(controllerMock, 'customerUi', {});
+    Html5Skin.loadConfigData.call(controllerMock, 'customerUi', {skin:{config:{}}}, {}, {}, {});
     Html5Skin.createPluginElements.call(controllerMock);
     controllerMock.skin = tempSkin; //reset skin, onPlayerCreated updates skin
 
-    var tempMainVideoElement = $.extend(true, {}, controllerMock.state.mainVideoElement);
+    var tempMainVideoElement = controllerMock.state.mainVideoElement;
     Html5Skin.onVcVideoElementCreated.call(controllerMock, 'customerUi', {videoId: OO.VIDEO.MAIN, videoElement: videoElement});
     controllerMock.state.mainVideoElement = tempMainVideoElement;
 
