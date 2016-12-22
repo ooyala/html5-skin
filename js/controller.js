@@ -50,6 +50,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "showAdMarquee": true,
       "configLoaded": false,
       "config": {},
+      "customSkinJSON": {},
       "fullscreen": false,
       "pauseAnimationDisabled": false,
       "adPauseAnimationDisabled": true,
@@ -234,11 +235,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
         $.getJSON(params.skin.config, function(data) {
-          this.state.config = data;
+          this.state.customSkinJSON = data;
           this.loadConfigData(this.state.playerParam, this.state.persistentSettings, data, this.state.skinMetaData);
         }.bind(this));
       } else {
-        this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.config, this.state.skinMetaData);
+        this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
       }
 
       var accessibilityControls = new AccessibilityControls(this); //keyboard support
@@ -309,7 +310,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onSkinMetaDataFetched: function (event, skinMetaData) {
       this.state.skinMetaData = skinMetaData;
-      this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.config, this.state.skinMetaData);
+      this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
     },
 
     onThumbnailsFetched: function (event, thumbnails) {
