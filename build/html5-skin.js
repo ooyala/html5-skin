@@ -5400,7 +5400,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.10.4", "rev": "fe1640bc0d0146e3776f9adfa39b275d254badaf"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.10.4", "rev": "93c2a5195c16369959785bba68fbfce2c7d9e8ba"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -8281,7 +8281,7 @@ var StartScreen = React.createClass({displayName: "StartScreen",
 
     return (
       React.createElement("div", {className: "oo-state-screen oo-start-screen"}, 
-        React.createElement("div", {className: stateScreenPosterClass}, 
+        React.createElement("div", {className: stateScreenPosterClass, style: posterStyle}, 
           React.createElement("div", {className: "oo-start-screen-linear-gradient"}), 
           React.createElement("a", {className: "oo-state-screen-selectable", onClick: this.handleClick})
         ), 
