@@ -8,6 +8,9 @@ var AccessibilityControls = function (controller) {
     };
     this.keyEvent = this.handleKey.bind(this);
     document.addEventListener("keydown", this.keyEvent);
+    this.unmount = function() {
+      document.removeEventListener("keydown", keydown);
+    }
 };
 
 AccessibilityControls.prototype = {

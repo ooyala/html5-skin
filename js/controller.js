@@ -282,6 +282,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayerDestroy: function (event) {
+      this.accessibilityControls.unmount();
       var elementId = this.state.elementId;
       var mountNode = document.querySelector('#' + elementId + ' .oo-player-skin');
       // remove mounted Skin component
@@ -1162,7 +1163,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      Skin state -> control skin
      ---------------------------------------------------------------------*/
     renderSkin: function(args) {
-      if (this.state.configLoaded) {
+      if (this.state.configLoaded && this.mb) {
         if (args) {
           this.state = DeepMerge(this.state, args);
         }
