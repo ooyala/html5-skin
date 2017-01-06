@@ -798,12 +798,34 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var inlinePageParams = Utils.getPropertyValue(params, 'skin.inline') ? params.skin.inline : {};
       var customSkinJSON = data ? data : {};
       var metaDataSettings = skinMetaData ? skinMetaData : {};
+
+      //to make sure backlot metadata for shareContent and socialContent arrays has higher priority than embedded skin config
+      var backlotShareContent = Utils.getPropertyValue(skinMetaData, 'shareScreen.shareContent');
+      var backlotSocialContent = Utils.getPropertyValue(skinMetaData, 'shareScreen.socialContent');
+      if (backlotShareContent) {
+        SkinJSON.shareScreen.shareContent = backlotShareContent;
+      }
+      if (backlotSocialContent) {
+        SkinJSON.shareScreen.socialContent = backlotSocialContent;
+      }
+
       var arrayFusion = params.buttonMerge ? params.buttonMerge : 'replace';
 
       //override data in skin config with possible local storage settings, inline data input by user, and CMS settings in backlot/themebuilder
       var mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name'});
       this.state.config = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', arrayFusion:arrayFusion});
       this.state.closedCaptionOptions = this.state.config.closedCaptionOptions;
+
+      //remove 'url' from the list until the tab is worked on
+      var shareContent = Utils.getPropertyValue(this.state.config, 'shareScreen.shareContent');
+      if (shareContent) {
+        for (var i = 0; i < shareContent.length; i++) {
+          if (shareContent[i] == 'url') {
+            shareContent.splice(i, 1);
+          }
+        }
+        this.state.config.shareScreen.shareContent = shareContent;
+      }
 
       //load config language json if exist
       if (this.state.config.localization.availableLanguageFile) {
