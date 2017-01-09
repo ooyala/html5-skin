@@ -254,10 +254,10 @@ describe('Utils', function () {
       "closedCaptionOptions":{"fontSize":"Large","windowColor":"Green"},
       "buttons":{"desktopContent":[{"name":"share","location":"controlBar","whenDoesNotFit":"moveToMoreOptions","minWidth":45,"enabled":true},{"name":"volume","location":"controlBar","whenDoesNotFit":"keep","minWidth":45,"enabled":true},{"name":"fullscreen","location":"controlBar","whenDoesNotFit":"keep","minWidth":55,"enabled":true},{"name":"quality","location":"controlBar","whenDoesNotFit":"moveToMoreOptions","minWidth":45,"enabled":true}]},"general":{"accentColor":"#ffbb00","watermark":{"imageResource":{"url":"http://ak.c.ooyala.com/Uzbm46asiensk3opIgwfFn5KFemv/watermark147585568"},"position":"top-left","clickUrl":"","transparency":0.51,"scalingOption":"none","scalingPercentage":0}},"shareScreen":{"shareContent":["social","ooyala"],"socialContent":["twitter","lisa","google+","jason"]}
     };
-    var arrayFusion = 'replace';
+    var buttonArrayFusion = 'replace';
 
-    var mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name'});
-    var finalConfig = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', arrayFusion:arrayFusion});
+    var mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', arrayFusion:'deepmerge'});
+    var finalConfig = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', arrayFusion:'deepmerge', buttonArrayFusion:buttonArrayFusion});
 
     // test merge hierarchy, keys from 5 objects should be merged into one object with correct priority
     expect(finalConfig.closedCaptionOptions.textColor).toBe("Blue"); //from inlinePageParams
@@ -275,10 +275,13 @@ describe('Utils', function () {
     expect(finalConfig.shareScreen.shareContent[2]).toBe(metaDataSettings.shareScreen.shareContent[1]);
     expect(finalConfig.shareScreen.shareContent).toEqual(['social', 'embed', 'ooyala']);
 
-    arrayFusion = 'prepend';
+    buttonArrayFusion = 'prepend';
     mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name'});
-    finalConfig = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', arrayFusion:arrayFusion});
+    finalConfig = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', buttonArrayFusion:buttonArrayFusion});
 
+    // test basic array replace
+    expect(finalConfig.shareScreen.shareContent[1]).not.toBe(SkinJSON.shareScreen.shareContent[1]);
+    expect(finalConfig.shareScreen.shareContent).toEqual(['social', 'ooyala']);
     // test array merge for buttons (prepend)
     expect(finalConfig.buttons.desktopContent.length).toBe(14);
     // test new buttons are placed after flexibleSpace

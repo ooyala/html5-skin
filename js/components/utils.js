@@ -436,14 +436,21 @@ var Utils = {
    *        arrayMerge - https://github.com/KyleAMathews/deepmerge#arraymerge
    *        clone - https://github.com/KyleAMathews/deepmerge#clone
    *        arrayUnionBy - key used to compare Objects being merged, i.e. button name
-   *        arrayFusion - method used to merge arrays ['replace', 'prepend']
+   *        arrayFusion - method used to merge arrays ['replace', 'deepmerge']
+   *        buttonArrayFusion - method used to merge button array ['replace', 'prepend', 'deepmerge']
    *        arraySwap - swaps target/source
    * @returns {Array} new merged array with items from both target and source
    */
   arrayDeepMerge: function(target, source, optionsArgument) {
-    // returns source, no merge
-    if (optionsArgument.arrayFusion === 'replace') {
-      return source;
+    if (source && source.length) {
+      // if source is button and buttonArrayFusion is 'replace', return source w/o merge
+      if (source[0][optionsArgument.arrayUnionBy] && optionsArgument.buttonArrayFusion === 'replace') {
+        return source;
+      }
+      // if source is not button and arrayFusion is 'replace', return source w/o merge
+      else if (!source[0][optionsArgument.arrayUnionBy] && optionsArgument.arrayFusion !== 'deepmerge') {
+        return source;
+      }
     }
 
     var targetArray = optionsArgument.arraySwap ? source : target;
@@ -467,7 +474,7 @@ var Utils = {
               destination[j] = DeepMerge(targetObject, sourceObject, optionsArgument);
 
               // prunes uniqueSourceArray to unique items not in target
-              if (optionsArgument.arrayFusion === 'prepend' && uniqueSourceArray && uniqueSourceArray.length) {
+              if (optionsArgument.buttonArrayFusion === 'prepend' && uniqueSourceArray && uniqueSourceArray.length) {
                 for (var x in uniqueSourceArray) {
                   if (uniqueSourceArray[x][optionsArgument.arrayUnionBy] === sourceItem[optionsArgument.arrayUnionBy]) {
                     uniqueSourceArray.splice(x, 1);
@@ -488,7 +495,7 @@ var Utils = {
       }
     });
     // prepend uniqueSourceArray array of unique items to buttons after flexible space
-    if (optionsArgument.arrayFusion === 'prepend' && uniqueSourceArray && uniqueSourceArray.length) {
+    if (optionsArgument.buttonArrayFusion === 'prepend' && uniqueSourceArray && uniqueSourceArray.length) {
       var flexibleSpaceIndex = null;
       // find flexibleSpace btn index
       for (var y in destination) {
