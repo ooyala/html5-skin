@@ -4,6 +4,8 @@ jest.dontMock('../js/constants/constants');
 jest.dontMock('../js/components/utils');
 jest.dontMock('../config/skin');
 jest.dontMock('deepmerge');
+jest.dontMock('underscore');
+jest.dontMock('jquery');
 
 var CONSTANTS = require('../js/constants/constants');
 
@@ -458,17 +460,20 @@ OO = {
     Html5Skin.sendVideoQualityChangeEvent.call(controllerMock, {id:2});
     Html5Skin.setClosedCaptionsInfo.call(controllerMock, elementId);
 
+    controllerMock.state.closedCaptionOptions.availableLanguages = {languages: ["en", "es", "de", "cs"]};
+    Html5Skin.onChangeClosedCaptionLanguage.call(controllerMock, 'changeClosedCaptionLanguage', 'es'); //valid language test
+    Html5Skin.onChangeClosedCaptionLanguage.call(controllerMock, 'changeClosedCaptionLanguage', 'sderfes'); //invalid language test
     Html5Skin.setClosedCaptionsLanguage.call(controllerMock);
     controllerMock.state.closedCaptionOptions.availableLanguages = null;
     controllerMock.state.closedCaptionOptions.enabled = true;
     Html5Skin.setClosedCaptionsLanguage.call(controllerMock);
 
-    controllerMock.state.playerState = CONSTANTS.STATE.PAUSE;
     Html5Skin.closeScreen.call(controllerMock);
     controllerMock.state.playerState = CONSTANTS.STATE.END;
     Html5Skin.closeScreen.call(controllerMock);
 
-    Html5Skin.onClosedCaptionChange.call(controllerMock, 'language', 'es');
+    controllerMock.state.playerState = CONSTANTS.STATE.PLAYING;
+    Html5Skin.onClosedCaptionChange.call(controllerMock, 'language', 'en');
     Html5Skin.toggleClosedCaptionEnabled.call(controllerMock);
     Html5Skin.upNextDismissButtonClicked.call(controllerMock);
 
