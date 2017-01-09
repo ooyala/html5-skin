@@ -461,8 +461,10 @@ OO = {
     Html5Skin.setClosedCaptionsInfo.call(controllerMock, elementId);
 
     controllerMock.state.closedCaptionOptions.availableLanguages = {languages: ["en", "es", "de", "cs"]};
-    Html5Skin.onChangeClosedCaptionLanguage.call(controllerMock, 'changeClosedCaptionLanguage', 'es'); //valid language test
+    Html5Skin.onChangeClosedCaptionLanguage.call(controllerMock, 'changeClosedCaptionLanguage', 'de'); //valid language test
+    window.closedCaptionLanguage1 = controllerMock.state.closedCaptionOptions.language;
     Html5Skin.onChangeClosedCaptionLanguage.call(controllerMock, 'changeClosedCaptionLanguage', 'sderfes'); //invalid language test
+    window.closedCaptionLanguage2 = controllerMock.state.closedCaptionOptions.language;
     Html5Skin.setClosedCaptionsLanguage.call(controllerMock);
     controllerMock.state.closedCaptionOptions.availableLanguages = null;
     controllerMock.state.closedCaptionOptions.enabled = true;
@@ -472,7 +474,6 @@ OO = {
     controllerMock.state.playerState = CONSTANTS.STATE.END;
     Html5Skin.closeScreen.call(controllerMock);
 
-    controllerMock.state.playerState = CONSTANTS.STATE.PLAYING;
     Html5Skin.onClosedCaptionChange.call(controllerMock, 'language', 'en');
     Html5Skin.toggleClosedCaptionEnabled.call(controllerMock);
     Html5Skin.upNextDismissButtonClicked.call(controllerMock);
@@ -561,6 +562,11 @@ var controller = require('../js/controller');
  * Validate results from unit tests
  */
 describe('Controller', function () {
+  it('tests change caption language from external API', function () {
+    expect(window.closedCaptionLanguage1).toBe("de");
+    expect(window.closedCaptionLanguage2).not.toBe("sderfes");
+  });
+
   it('tests volume', function () {
     expect(window.vol).toBe(0.5);
   });
