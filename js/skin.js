@@ -59,11 +59,12 @@ var Skin = React.createClass({
     this.setState(newState);
   },
 
-  updatePlayhead: function(newPlayhead, newDuration, newBuffered) {
+  updatePlayhead: function(newPlayhead, newDuration, newBuffered, adPlayhead) {
     this.setState({
       currentPlayhead: newPlayhead,
       duration: newDuration,
-      buffered: newBuffered
+      buffered: newBuffered,
+      currentAdPlayhead: adPlayhead
     });
   },
 
@@ -175,6 +176,7 @@ var Skin = React.createClass({
               contentTree={this.state.contentTree}
               currentAdsInfo={this.state.currentAdsInfo}
               currentPlayhead={this.state.currentPlayhead}
+              currentAdPlayhead={this.state.currentAdPlayhead}
               fullscreen={this.state.fullscreen}
               playerState={this.state.playerState}
               duration={this.state.duration}
