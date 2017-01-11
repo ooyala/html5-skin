@@ -72,6 +72,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "buffering": false,
       "mainVideoBuffered": null,
       "mainVideoPlayhead": 0,
+      "adVideoPlayhead": 0,
       "focusedElement": null,
 
       "currentAdsInfo": {
@@ -379,6 +380,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       else if (videoId == OO.VIDEO.ADS) {
         //adVideoDuration is only used in adPanel ad marquee
         this.state.adVideoDuration = duration;
+        this.state.adVideoPlayhead = currentPlayhead;
       }
       this.state.duration = duration;
 
@@ -407,7 +409,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
       }
       if (!this.state.seeking) {
-        this.skin.updatePlayhead(currentPlayhead, duration, buffered);
+        this.skin.updatePlayhead(currentPlayhead, duration, buffered, this.state.adVideoPlayhead);
       } else {
         this.state.queuedPlayheadUpdate = [currentPlayhead, duration, buffered];
       }
