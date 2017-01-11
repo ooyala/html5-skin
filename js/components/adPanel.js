@@ -79,7 +79,7 @@ var AdPanel = React.createClass({
       if (isLive) {
         remainingTime = parseInt((this.props.adStartTime + this.props.adVideoDuration * 1000 - new Date().getTime())/1000);
       } else {
-        remainingTime = parseInt(this.props.adVideoDuration - this.props.currentPlayhead)
+        remainingTime = parseInt(this.props.adVideoDuration - this.props.currentAdPlayhead)
       }
 
       if (isFinite(remainingTime)) {
@@ -151,6 +151,7 @@ var AdPanel = React.createClass({
 
 AdPanel.defaultProps = {
   currentPlayhead: 0,
+  currentAdPlayhead: 0,
   adVideoDuration: 0,
   adStartTime: 0,
   currentAdsInfo: {
