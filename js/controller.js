@@ -431,6 +431,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         !this.state.upNextInfo.countDownCancelled &&
         this.state.isPlayingAd !== true &&
         this.state.upNextInfo.upNextData !== null && (this.state.playerState === CONSTANTS.STATE.PLAYING || this.state.playerState === CONSTANTS.STATE.PAUSE)) {
+        // Trigger discovery event only the first time we
+        // switch from hidden to showing
+        if (!this.state.upNextInfo.showing) {
+          this.sendDiscoveryDisplayEvent(CONSTANTS.SCREEN.PLAYING_SCREEN);
+        }
         this.state.upNextInfo.showing = true;
       }
       else {
@@ -535,6 +540,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
 
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, delayedContentData);
+        this.state.upNextInfo.showing = false;
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
         this.state.upNextInfo.delayedContentData = null;
       }
@@ -1276,7 +1282,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
       this.state.pluginsElement.removeClass("oo-overlay-blur");
-      this.state.upNextInfo.showing = false;
       if (isAutoUpNext){
         this.state.upNextInfo.delayedContentData = selectedContentData;
         this.state.upNextInfo.delayedSetEmbedCodeEvent = true;
