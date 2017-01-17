@@ -435,7 +435,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         // Trigger discovery event only the first time we
         // switch from hidden to showing
         if (!this.state.upNextInfo.showing) {
-          this.sendDiscoveryDisplayEvent(CONSTANTS.SCREEN.PLAYING_SCREEN);
+          this.sendDiscoveryDisplayEvent("endScreen");
         }
         this.state.upNextInfo.showing = true;
       }
