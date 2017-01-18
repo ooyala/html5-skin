@@ -434,7 +434,8 @@ describe('ControlBar', function () {
         isMobile: false,
         volumeState: { volume: 1 },
         videoQualityOptions: {},
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        multiAudioOptions: {}
       }
     };
     var mockProps = {

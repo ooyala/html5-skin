@@ -86,15 +86,15 @@ describe('VideoQualityPanel', function () {
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-selected');
     expect(bitrateItems.length).toBe(1);
     expect(bitrateItems[0].querySelector("[class*=label]").textContent).toBe('Auto');
-    var autoBitrate = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality-auto-label');
+    var autoBitrate = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-list-auto-label');
 
-    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn');
+    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-list-btn');
     expect(bitrateItems.length).toBe(availableBitrates.length-1);
     expect(autoBitrate.style.color).toBe("blue");
     expect(bitrateItems[0].style.color).not.toBe("blue");
 
     for (i=0; i<bitrateItems.length; i++){
-      var newBitrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn')[i];
+      var newBitrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-list-btn')[i];
       TestUtils.Simulate.click(newBitrate);
       expect(selectedBitrate.id).toBe(availableBitrates[i+1].id);
       expect(autoBitrate.style.color).not.toBe("blue");
@@ -111,15 +111,15 @@ describe('VideoQualityPanel', function () {
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-selected');
     expect(bitrateItems.length).toBe(1);
     expect(bitrateItems[0].querySelector("[class*=label]").textContent).toBe('Auto');
-    var autoBitrate = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality-auto-label');
+    var autoBitrate = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-list-auto-label');
 
-    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn');
+    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-list-btn');
     expect(bitrateItems.length).toBe(availableBitrates.length-1);
     expect(autoBitrate.style.color).toBe("red");
     expect(bitrateItems[0].style.color).not.toBe("red");
 
     for (i=0; i<bitrateItems.length; i++){
-      var newBitrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn')[i];
+      var newBitrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-list-btn')[i];
       TestUtils.Simulate.click(newBitrate);
       expect(selectedBitrate.id).toBe(availableBitrates[i+1].id);
       expect(autoBitrate.style.color).not.toBe("red");
