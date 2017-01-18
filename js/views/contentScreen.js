@@ -3,6 +3,7 @@ var React = require('react'),
     Utils = require('../components/utils'),
     CONSTANTS = require('../constants/constants'),
     Icon = require('../components/icon'),
+    Watermark = require('../components/watermark'),
     AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var ContentScreen = React.createClass({
@@ -25,9 +26,17 @@ var ContentScreen = React.createClass({
     ) :
     null;
 
+    var titleBarStyle = {};
+    switch (this.props.screen) {
+      case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
+        titleBarStyle.fontFamily = Utils.getPropertyValue(this.props.skinConfig, 'discoveryScreen.panelTitle.titleFont.fontFamily');
+        titleBarStyle.color = Utils.getPropertyValue(this.props.skinConfig, 'discoveryScreen.panelTitle.titleFont.color');
+        break;
+    }
+
     //localized title bar, show nothing if no title text
     var titleBar = this.props.titleText ? (
-      <div className="oo-content-screen-title">
+      <div className="oo-content-screen-title" style={titleBarStyle}>
         {Utils.getLocalizedString(this.props.language, this.props.titleText, this.props.localizableStrings)}
         <Icon {...this.props} icon={this.props.icon}/>
         {this.props.element}
@@ -36,21 +45,33 @@ var ContentScreen = React.createClass({
     null;
 
     return (
-      <div className={this.props.screenClassName}>
-        {closedCaptionOverlay}
-        <div className={this.props.titleBarClassName}>
-          {titleBar}
-          <CloseButton {...this.props} closeAction={this.handleClose}/>
+      <div>
+        <Watermark {...this.props} controlBarVisible={false} nonClickable={true}/>
+        <div className={this.props.screenClassName}>
+          {closedCaptionOverlay}
+          <div className={this.props.titleBarClassName}>
+            {titleBar}
+            <CloseButton {...this.props} closeAction={this.handleClose}/>
+          </div>
+          {this.props.children}
         </div>
-
-        {this.props.children}
       </div>
     );
   }
 });
 
 ContentScreen.propTypes = {
-  element: React.PropTypes.element
+  element: React.PropTypes.element,
+  skinConfig: React.PropTypes.shape({
+    discoveryScreen: React.PropTypes.shape({
+      panelTitle: React.PropTypes.shape({
+        titleFont: React.PropTypes.shape({
+          color: React.PropTypes.string,
+          fontFamily: React.PropTypes.string
+        })
+      })
+    })
+  })
 };
 
 ContentScreen.defaultProps = {

@@ -1,5 +1,10 @@
 jest.dontMock('../../js/components/utils');
+jest.dontMock('deepmerge');
+jest.dontMock('../../config/skin');
+
 var Utils = require('../../js/components/utils');
+var DeepMerge = require('deepmerge');
+var SkinJSON = require('../../config/skin');
 
 describe('Utils', function () {
   it('tests the utility functions', function () {
@@ -143,6 +148,17 @@ describe('Utils', function () {
     expect(localizedString).toBe("");
   });
 
+  it('tests getPropertyValue', function () {
+    var defaultVal = Utils.getPropertyValue({}, 'property.nestedProp', 'default');
+    expect(defaultVal).toEqual('default');
+
+    var undefinedVal = Utils.getPropertyValue({}, 'property.nestedProp');
+    expect(undefinedVal).toBeUndefined();
+
+    var existingVal = Utils.getPropertyValue({ property: { nestedProp: 'value' } }, 'property.nestedProp');
+    expect(existingVal).toEqual('value');
+  });
+
   it('tests highlight', function () {
     var div = document.createElement('div');
     var opacity = '0.6';
@@ -195,5 +211,83 @@ describe('Utils', function () {
 
     thumbs = Utils.findThumbnail(thumbData, 33, 100);
     expect(thumbs.pos).toBe(2);
+  });
+
+  it('tests createMarkup', function () {
+    var markup = 'This is &quot;markup&quot;';
+    var html = Utils.createMarkup(markup);
+    expect(html.__html).toBe(markup);
+  });
+
+  it('tests isValidString', function () {
+    var src = null;
+    var isValidString = Utils.isValidString(src);
+    expect(isValidString).toBeFalsy();
+
+    src = '';
+    isValidString = Utils.isValidString(src);
+    expect(isValidString).toBeFalsy();
+
+    src = undefined;
+    isValidString = Utils.isValidString(src);
+    expect(isValidString).toBeFalsy();
+
+    src = 'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/3Gduepif0T1UGY8H4xMDoxOmFkOxyVqc';
+    isValidString = Utils.isValidString(src);
+    expect(isValidString).toBeTruthy();
+  });
+
+  it('tests deep merge', function () {
+    var localSettings = {
+      "closedCaptionOptions":{"windowColor":"Yellow","enabled":true, "backgroundOpacity":"0.2","textOpacity":"1"}
+    };
+    var inlinePageParams = {
+      "closedCaptionOptions":{"textColor":"Blue", "backgroundColor":"Green","windowColor":"White","windowOpacity":0.5},
+      "buttons":{"desktopContent":[{"name":"ooyala","location":"ooyala","whenDoesNotFit":"ooyala","minWidth":85},{"name":"quality","location":"controlBar","whenDoesNotFit":"moveToMoreOptions","minWidth":85}]}
+    };
+    var customSkinJSON = {
+      "closedCaptionOptions":{"enabled":true,"language":"en","fontType":"Proportional Sans-Serif"},
+      "buttons":{"desktopContent":[{"name":"alice","location":"alice","whenDoesNotFit":"keep","minWidth":53},{"name":"volume","location":"controlBar","whenDoesNotFit":"keep","minWidth":240},{"name":"live","location":"controlBar","whenDoesNotFit":"keep","minWidth":65},{"name":"quality","location":"controlBar","whenDoesNotFit":"ooyala","minWidth":95,"alice":"video"}]},
+      "general":{"accentColor":"#448aff"}
+    };
+    var metaDataSettings = {
+      "closedCaptionOptions":{"fontSize":"Large","windowColor":"Green"},
+      "buttons":{"desktopContent":[{"name":"share","location":"controlBar","whenDoesNotFit":"moveToMoreOptions","minWidth":45,"enabled":true},{"name":"volume","location":"controlBar","whenDoesNotFit":"keep","minWidth":45,"enabled":true},{"name":"fullscreen","location":"controlBar","whenDoesNotFit":"keep","minWidth":55,"enabled":true},{"name":"quality","location":"controlBar","whenDoesNotFit":"moveToMoreOptions","minWidth":45,"enabled":true}]},"general":{"accentColor":"#ffbb00","watermark":{"imageResource":{"url":"http://ak.c.ooyala.com/Uzbm46asiensk3opIgwfFn5KFemv/watermark147585568"},"position":"top-left","clickUrl":"","transparency":0.51,"scalingOption":"none","scalingPercentage":0}},"shareScreen":{"shareContent":["social","ooyala"],"socialContent":["twitter","lisa","google+","jason"]}
+    };
+    var buttonArrayFusion = 'replace';
+
+    var mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', arrayFusion:'deepmerge'});
+    var finalConfig = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', arrayFusion:'deepmerge', buttonArrayFusion:buttonArrayFusion});
+
+    // test merge hierarchy, keys from 5 objects should be merged into one object with correct priority
+    expect(finalConfig.closedCaptionOptions.textColor).toBe("Blue"); //from inlinePageParams
+    expect(finalConfig.closedCaptionOptions.windowOpacity).toBe(0.5); //from inlinePageParams
+    expect(finalConfig.closedCaptionOptions.backgroundColor).toBe("Green"); //from inlinePageParams
+    expect(finalConfig.closedCaptionOptions.windowColor).toBe("Yellow"); //from localSettings
+    expect(finalConfig.closedCaptionOptions.fontType).toBe("Proportional Sans-Serif"); //from customSkinJSON
+    expect(finalConfig.closedCaptionOptions.fontSize).toBe("Large"); //from metaDataSettings
+    expect(finalConfig.closedCaptionOptions.textEnhancement).toBe("Uniform"); //from SkinJSON
+
+    // test array merge for buttons (replace)
+    expect(finalConfig.buttons.desktopContent.length).toBe(inlinePageParams.buttons.desktopContent.length);
+    // test basic array merge
+    expect(finalConfig.shareScreen.shareContent[1]).toBe(SkinJSON.shareScreen.shareContent[1]);
+    expect(finalConfig.shareScreen.shareContent[2]).toBe(metaDataSettings.shareScreen.shareContent[1]);
+    expect(finalConfig.shareScreen.shareContent).toEqual(['social', 'embed', 'ooyala']);
+
+    buttonArrayFusion = 'prepend';
+    mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name'});
+    finalConfig = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', buttonArrayFusion:buttonArrayFusion});
+
+    // test basic array replace
+    expect(finalConfig.shareScreen.shareContent[1]).not.toBe(SkinJSON.shareScreen.shareContent[1]);
+    expect(finalConfig.shareScreen.shareContent).toEqual(['social', 'ooyala']);
+    // test array merge for buttons (prepend)
+    expect(finalConfig.buttons.desktopContent.length).toBe(14);
+    // test new buttons are placed after flexibleSpace
+    expect(finalConfig.buttons.desktopContent[4].name).toBe("flexibleSpace");
+    expect(finalConfig.buttons.desktopContent[5].name).toBe("ooyala");
+    expect(finalConfig.buttons.desktopContent[6].name).toBe("alice");
+    expect(finalConfig.buttons.desktopContent[10].alice).toBe("video");
   });
 });

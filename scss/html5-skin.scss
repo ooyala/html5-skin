@@ -34,6 +34,7 @@
   @import "components/closed-captions";
   @import "components/scrollbar";
   @import "components/webvtt";
+  @import "components/webkit-media-controls";
   @import "components/buttons";
   @import "components/forms";
   @import "components/scrubber-bar";
@@ -50,6 +51,7 @@
   @import "components/list-item";
   @import "components/tabs";
   @import "components/thumbnail";
+  @import "components/watermark";
 
   // Responsive
   @import "responsive/xsmall";

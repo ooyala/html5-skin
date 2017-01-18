@@ -74,15 +74,22 @@ var AdPanel = React.createClass({
 
     var isLive = this.props.currentAdsInfo.currentAdItem.isLive;
 
-    var remainingTime;
-    if (isLive) {
-      remainingTime = parseInt((this.props.adStartTime + this.props.adVideoDuration * 1000 - new Date().getTime())/1000);
-    } else {
-      remainingTime = parseInt(this.props.adVideoDuration - this.props.currentPlayhead)
-    }
-    remainingTime = Utils.formatSeconds(Math.max(0, remainingTime));
+    if (this.props.skinConfig.adScreen.showAdCountDown) {
+      var remainingTime;
+      if (isLive) {
+        remainingTime = parseInt((this.props.adStartTime + this.props.adVideoDuration * 1000 - new Date().getTime())/1000);
+      } else {
+        remainingTime = parseInt(this.props.adVideoDuration - this.props.currentAdPlayhead)
+      }
 
-    adPlaybackInfo = adPlaybackInfo + " - " + remainingTime;
+      if (isFinite(remainingTime)) {
+        remainingTime = Utils.formatSeconds(Math.max(0, remainingTime));
+        adPlaybackInfo = adPlaybackInfo + " - " + remainingTime;
+      }
+      else {
+        OO.log("ad remaining time is not a finite number");
+      }
+    }
 
     var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" itemClassName="oo-ad-playback-info">{adPlaybackInfo}</AdPanelTopBarItem>;
     adTopBarItems.push(adPlaybackInfoDiv);
@@ -133,6 +140,7 @@ var AdPanel = React.createClass({
     return (
       <div className="oo-ad-screen-panel">
         {spinner}
+        <div className="oo-ad-screen-panel-click-layer"></div>
         <div className="oo-ad-top-bar" ref="adTopBar" onClick={this.handleAdTopBarClick} onTouchEnd={this.handleAdTopBarClick}>
           {adTopBarItems}
         </div>
@@ -143,6 +151,7 @@ var AdPanel = React.createClass({
 
 AdPanel.defaultProps = {
   currentPlayhead: 0,
+  currentAdPlayhead: 0,
   adVideoDuration: 0,
   adStartTime: 0,
   currentAdsInfo: {

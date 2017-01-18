@@ -135,8 +135,10 @@ var AdScreen = React.createClass({
     };
 
     var playbackControlItems = [];
-    for(var item in playbackControlItemTemplates) {
-      playbackControlItems.push(playbackControlItemTemplates[item]);
+    for (var item in playbackControlItemTemplates) {
+      if (playbackControlItemTemplates.hasOwnProperty(item)) {
+        playbackControlItems.push(playbackControlItemTemplates[item]);
+      }
     }
 
     return playbackControlItems;

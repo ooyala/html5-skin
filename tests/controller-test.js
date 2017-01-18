@@ -2,6 +2,10 @@ jest.dontMock('../js/controller');
 jest.dontMock('screenfull');
 jest.dontMock('../js/constants/constants');
 jest.dontMock('../js/components/utils');
+jest.dontMock('../config/skin');
+jest.dontMock('deepmerge');
+jest.dontMock('underscore');
+jest.dontMock('jquery');
 
 var CONSTANTS = require('../js/constants/constants');
 
@@ -64,6 +68,7 @@ OO = {
         currentAdsInfo: {},
         videoQualityOptions: {},
         multiAudioOptions: {},
+        closedCaptionsInfoCache: {},
         closedCaptionOptions: {
           enabled: null,
           language: null,
@@ -124,17 +129,16 @@ OO = {
           removeClass: function(a) {}
         },
         mainVideoElement: {
-          addClass: function(a) {},
-          removeClass: function(a) {},
-          get: function(a) {
-            return {
-              webkitSupportsFullscreen: true,
-              webkitEnterFullscreen: function() {},
-              webkitExitFullscreen: function() {},
-              addEventListener: function(a,b) {}
-            }
-          }
-        }
+          classList: {
+            add: function(a) {},
+            remove: function(a) {}
+          },
+          webkitSupportsFullscreen: true,
+          webkitEnterFullscreen: function() {},
+          webkitExitFullscreen: function() {},
+          addEventListener: function(a,b) {}
+        },
+        mainVideoMediaType: CONSTANTS.MEDIA_TYPE.FLASH
       },
       skin: {
         state: {
@@ -189,6 +193,7 @@ OO = {
       setVolume: function(a) {},
       toggleVideoQualityPopOver: function(a) {},
       toggleMultiAudioPopOver: function(a) {},
+      setClosedCaptionsInfo: function(a) {},
       setClosedCaptionsLanguage: function() {},
       displayMoreOptionsScreen: function(a) {},
       closeMoreOptionsScreen: function() {},
@@ -201,7 +206,10 @@ OO = {
       hideVolumeSliderBar: function() {window.isVolumeSliderBarHidden = true;},
       updateAspectRatio: function() {},
       calculateAspectRatio: function(a,b) {},
-      setAspectRatio: function() {window.isAspectRatioSet = true;}
+      setAspectRatio: function() {window.isAspectRatioSet = true;},
+      createPluginElements: function() {},
+      findMainVideoElement: function(a) {},
+      loadConfigData: function(a, b, c, d) {}
     };
 
 
@@ -210,6 +218,19 @@ OO = {
      */
 
     var Html5Skin = exposeStaticApi.prototype; // public object used to expose private object for testing
+    var elementId = 'adrfgyi';
+    var videoId = 'ag5dfdtooon2cncj714i';
+    var videoElement = document.createElement('video');
+    videoElement.className = "video";
+    videoElement.id = videoId;
+    videoElement.preload = "none";
+    videoElement.src = "http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor";
+    var persistentSettings = {"closedCaptionOptions":{"textColor":"Blue","backgroundColor":"Transparent","windowColor":"Yellow","windowOpacity":"0.3","fontType":"Proportional Serif","fontSize":"Medium","textEnhancement":"Shadow","enabled":true,"language":"unknown","backgroundOpacity":"0.2","textOpacity":"1"}};
+    //setup document body for valid DOM elements
+    document.body.innerHTML =
+      '<div id='+elementId+'>' +
+      '  <div class="oo-player-skin">' + videoElement + '</div>' +
+      '</div>';
 
     //test mb subscribe
     window._.bind = function() {};
@@ -218,11 +239,17 @@ OO = {
     Html5Skin.subscribeBasicPlaybackEvents.call(controllerMock);
     Html5Skin.externalPluginSubscription.call(controllerMock);
 
-    // test player state
-    Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', 1, {skin:{config:{}}}, {});
+    //test player state
+    var tempSkin = controllerMock.skin;
+    Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', elementId, {skin:{config:{}}}, persistentSettings);
+    Html5Skin.onSkinMetaDataFetched.call(controllerMock, 'customerUi', {});
+    Html5Skin.loadConfigData.call(controllerMock, 'customerUi', {skin:{config:{}}}, {}, {}, {});
+    Html5Skin.createPluginElements.call(controllerMock);
+    controllerMock.skin = tempSkin; //reset skin, onPlayerCreated updates skin
 
-    Html5Skin.onVcVideoElementCreated.call(controllerMock, 'customerUi', {videoId: OO.VIDEO.MAIN});
-    controllerMock.state.mainVideoElement = {addClass: function(a) {}, removeClass: function(a) {}, get: function(a) { return { webkitSupportsFullscreen: true, webkitEnterFullscreen: function() {}, webkitExitFullscreen: function() {}, addEventListener: function(a,b) {}}}}
+    var tempMainVideoElement = controllerMock.state.mainVideoElement;
+    Html5Skin.onVcVideoElementCreated.call(controllerMock, 'customerUi', {videoId: OO.VIDEO.MAIN, videoElement: videoElement});
+    controllerMock.state.mainVideoElement = tempMainVideoElement;
 
     Html5Skin.metaDataLoaded.call(controllerMock);
     Html5Skin.onAuthorizationFetched.call(controllerMock, 'customerUi', {streams: [{is_live_stream: true}]});
@@ -433,23 +460,29 @@ OO = {
     Html5Skin.toggleVideoQualityPopOver.call(controllerMock);
     Html5Skin.toggleMultiAudioPopOver.call(controllerMock);
     Html5Skin.toggleClosedCaptionPopOver.call(controllerMock);
+    Html5Skin.closePopovers.call(controllerMock);
 
     Html5Skin.receiveVideoQualityChangeEvent.call(controllerMock, null, 312);
     Html5Skin.sendVideoQualityChangeEvent.call(controllerMock, {id:2});
+    Html5Skin.setClosedCaptionsInfo.call(controllerMock, elementId);
     Html5Skin.receiveMultiAudioChangeEvent.call(controllerMock, null, 312);
     Html5Skin.sendMultiAudioChangeEvent.call(controllerMock, {id:2});
 
+    controllerMock.state.closedCaptionOptions.availableLanguages = {languages: ["en", "es", "de", "cs"]};
+    Html5Skin.onChangeClosedCaptionLanguage.call(controllerMock, 'changeClosedCaptionLanguage', 'de'); //valid language test
+    window.closedCaptionLanguage1 = controllerMock.state.closedCaptionOptions.language;
+    Html5Skin.onChangeClosedCaptionLanguage.call(controllerMock, 'changeClosedCaptionLanguage', 'sderfes'); //invalid language test
+    window.closedCaptionLanguage2 = controllerMock.state.closedCaptionOptions.language;
     Html5Skin.setClosedCaptionsLanguage.call(controllerMock);
     controllerMock.state.closedCaptionOptions.availableLanguages = null;
     controllerMock.state.closedCaptionOptions.enabled = true;
     Html5Skin.setClosedCaptionsLanguage.call(controllerMock);
 
-    controllerMock.state.playerState = CONSTANTS.STATE.PAUSE;
     Html5Skin.closeScreen.call(controllerMock);
     controllerMock.state.playerState = CONSTANTS.STATE.END;
     Html5Skin.closeScreen.call(controllerMock);
 
-    Html5Skin.onClosedCaptionChange.call(controllerMock, 'language', 'es');
+    Html5Skin.onClosedCaptionChange.call(controllerMock, 'language', 'en');
     Html5Skin.toggleClosedCaptionEnabled.call(controllerMock);
     Html5Skin.upNextDismissButtonClicked.call(controllerMock);
 
@@ -506,6 +539,21 @@ OO = {
     Html5Skin.setAspectRatio.call(controllerMock);
     Html5Skin.setAspectRatio.call({state: {mainVideoAspectRatio: 0}});
 
+    //test find main video element
+    Html5Skin.findMainVideoElement.call(controllerMock, videoElement);
+    var div2 = document.createElement('div');
+    div2.appendChild(videoElement);
+    Html5Skin.findMainVideoElement.call(controllerMock, div2);
+    var flashVideoElement = document.createElement('object');
+    flashVideoElement.className = "video";
+    flashVideoElement.id = videoId;
+    flashVideoElement.src = "http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor";
+    Html5Skin.findMainVideoElement.call(controllerMock, flashVideoElement);
+    var div = document.createElement('div');
+    div.appendChild(flashVideoElement);
+    Html5Skin.findMainVideoElement.call(controllerMock, div);
+    Html5Skin.findMainVideoElement.call(controllerMock, {0:videoElement});
+
     //test destroy functions last
     Html5Skin.onEmbedCodeChanged.call(controllerMock, 'customerUi', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', {});
     Html5Skin.onAssetChanged.call(controllerMock, 'customerUi', {content: {streams: [{is_live_stream: true}], title: 'Title', posterImages: [{url:'www.ooyala.com'}]}});
@@ -523,6 +571,11 @@ var controller = require('../js/controller');
  * Validate results from unit tests
  */
 describe('Controller', function () {
+  it('tests change caption language from external API', function () {
+    expect(window.closedCaptionLanguage1).toBe("de");
+    expect(window.closedCaptionLanguage2).not.toBe("sderfes");
+  });
+
   it('tests volume', function () {
     expect(window.vol).toBe(0.5);
   });

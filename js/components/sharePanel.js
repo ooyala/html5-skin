@@ -13,11 +13,26 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants');
 
 var SharePanel = React.createClass({
-  tabs: {SHARE: "share", EMBED: "embed"},
+  tabs: {SHARE: "social", EMBED: "embed"},
 
   getInitialState: function() {
+    var shareContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.shareContent');
+    var socialContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', []);
+    var activeTab = shareContent ? shareContent[0] : null;
+
+    // If no social buttons are specified, default to the first tab
+    // that isn't the 'social' tab, since it will be hidden
+    if (shareContent && !socialContent.length) {
+      for (var i = 0; i < shareContent.length; i++) {
+        if (shareContent[i] !== 'social') {
+          activeTab = shareContent[i];
+          break;
+        }
+      }
+    }
+
     return {
-      activeTab: this.tabs.SHARE,
+      activeTab: activeTab,
       hasError: false
     };
   },
@@ -25,14 +40,30 @@ var SharePanel = React.createClass({
   getActivePanel: function() {
     if (this.state.activeTab === this.tabs.SHARE) {
       var titleString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION, this.props.localizableStrings);
+      var socialContent = _.uniq(Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', []));
+
+      var shareButtons = [];
+      socialContent.forEach(function(shareButton) {
+        switch (shareButton) {
+          case "twitter":
+            shareButtons.push(<a className="oo-twitter" onClick={this.handleTwitterClick}></a>);
+            break;
+          case "facebook":
+            shareButtons.push(<a className="oo-facebook" onClick={this.handleFacebookClick}></a>);
+            break;
+          case "google+":
+            shareButtons.push(<a className="oo-google-plus" onClick={this.handleGPlusClick}></a>);
+            break;
+          case "email":
+            shareButtons.push(<a className="oo-email-share" onClick={this.handleEmailClick}></a>);
+            break;
+        }
+      }, this);
 
       return (
         <div className="oo-share-tab-panel">
           <div className="oo-social-action-text oo-text-capitalize">{titleString}</div>
-          <a className="oo-twitter" onClick={this.handleTwitterClick}> </a>
-          <a className="oo-facebook" onClick={this.handleFacebookClick}> </a>
-          <a className="oo-google-plus" onClick={this.handleGPlusClick}> </a>
-          <a className="oo-email-share" onClick={this.handleEmailClick}> </a>
+          {shareButtons}
         </div>
       );
     }
@@ -49,7 +80,7 @@ var SharePanel = React.createClass({
 
       return (
         <div className="oo-share-tab-panel">
-          <textarea className="oo-form-control"
+          <textarea className="oo-form-control oo-embed-form"
                     rows="3"
                     value={iframeURL}
                     readOnly />
@@ -101,13 +132,27 @@ var SharePanel = React.createClass({
   },
 
   render: function() {
+    var shareContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.shareContent');
+    var socialContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', []);
+    if (!shareContent) return null;
+
+    var showEmbedTab = false;
+    var showShareTab = false;
+
+    for (var i = 0; i < shareContent.length; i++){
+      if (shareContent[i] == this.tabs.EMBED) showEmbedTab = true;
+      if (shareContent[i] == this.tabs.SHARE && socialContent.length) showShareTab = true;
+    }
+
     var shareTab = ClassNames({
       'oo-share-tab': true,
-      'oo-active': this.state.activeTab == this.tabs.SHARE
+      'oo-active': this.state.activeTab == this.tabs.SHARE,
+      'oo-hidden': !showShareTab
     });
     var embedTab = ClassNames({
       'oo-embed-tab': true,
-      'oo-active': this.state.activeTab == this.tabs.EMBED
+      'oo-active': this.state.activeTab == this.tabs.EMBED,
+      'oo-hidden': !showEmbedTab
     });
 
     var shareString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings),

@@ -15,7 +15,6 @@
   height:0;
   // default aspect ratio 16:9
   @include set-aspect-ratio(16, 9);
-  @include vendor-prefixes(transition, padding-top 0.5s ease);
 
   // other video objects
   & > div,
@@ -68,15 +67,7 @@ video {
   @extend .oo-expand;
 }
 
-// fix bit_wrapper letterbox issue on Firefox
-@include apply-to-firefox-only ('video') {
-  object-fit: fill !important;
-}
-@include apply-to-firefox-only ('.oo-player > div > figure > object') {
-  object-fit: fill !important;
-}
-
-video.oo-blur {
+.oo-blur {
   -webkit-filter: blur(3px);
   -moz-filter: blur(3px);
   filter: blur(3px);
