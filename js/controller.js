@@ -302,6 +302,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.externalPluginSubscription();
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+      this.toggleHandsFree(true);
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -1511,7 +1512,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "z": Math.round(event.accelerationIncludingGravity.z * 100) / 100
       };
       var newPlayheadTime;
-      var seekRate = 1.2;
+      var seekRate = 1.0;
       var threshHold = 3;
 
       if (this.state.orientation == CONSTANTS.ORIENTATION.PORTRAIT) {
