@@ -203,7 +203,8 @@ OO = {
       setAspectRatio: function() {window.isAspectRatioSet = true;},
       handleDeviceAcceleration: function() {},
       handleDeviceOrientation: function() {},
-      handleOrientationChange: function() {}
+      handleOrientationChange: function() {},
+      toggleHandsFree: function(a) {}
     };
 
 
