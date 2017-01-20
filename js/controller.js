@@ -1556,7 +1556,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
 
       //find html5 video
-      if (element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) != -1) {
+      if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) != -1) {
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
       }
       else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
@@ -1567,7 +1567,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
       }
       //find flash object
-      else if (element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) != -1) {
+      else if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) != -1) {
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
       }
       else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
