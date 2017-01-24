@@ -139,7 +139,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullWindow": false,
       "autoPauseDisabled": false
     };
-
     this.init();
   };
 
@@ -206,6 +205,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi", _.bind(this.onShowAdMarquee, this));
         }
       }
+
       this.state.isSubscribed = true;
     },
 
@@ -219,6 +219,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      event listeners from core player -> regulate skin STATE
      ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params, settings) {
+      //subscribe to plugin events
+      this.externalPluginSubscription();
+
       //set state variables
       this.state.mainVideoContainer = $("#" + elementId);
       this.state.mainVideoInnerWrapper = $("#" + elementId + " .innerWrapper");
@@ -889,7 +892,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         videoWrapperClass: "innerWrapper",
         pluginsClass: "oo-player-skin-plugins"
       });
-      this.externalPluginSubscription();
     },
 
     onBitrateInfoAvailable: function(event, bitrates) {
