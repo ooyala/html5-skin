@@ -432,6 +432,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         !this.state.upNextInfo.countDownCancelled &&
         this.state.isPlayingAd !== true &&
         this.state.upNextInfo.upNextData !== null && (this.state.playerState === CONSTANTS.STATE.PLAYING || this.state.playerState === CONSTANTS.STATE.PAUSE)) {
+        // Trigger discovery event only the first time we
+        // switch from hidden to showing
+        if (!this.state.upNextInfo.showing) {
+          var upNextEmbedCode = Utils.getPropertyValue(this.state.upNextInfo, "upNextData.embed_code");
+          this.sendDiscoveryDisplayEvent("endScreen", upNextEmbedCode);
+        }
         this.state.upNextInfo.showing = true;
       }
       else {
@@ -536,6 +542,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
 
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, delayedContentData);
+        this.state.upNextInfo.showing = false;
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
         this.state.upNextInfo.delayedContentData = null;
       }
@@ -1277,12 +1284,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
       this.state.pluginsElement.removeClass("oo-overlay-blur");
-      this.state.upNextInfo.showing = false;
       if (isAutoUpNext){
         this.state.upNextInfo.delayedContentData = selectedContentData;
         this.state.upNextInfo.delayedSetEmbedCodeEvent = true;
       }
       else {
+        this.state.upNextInfo.showing = false;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
         this.mb.publish(OO.EVENTS.PAUSE);
@@ -1297,10 +1304,22 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    sendDiscoveryDisplayEvent: function(screen) {
+    sendDiscoveryDisplayEvent: function(screenName, embedCode) {
+      var relatedVideosData = Utils.getPropertyValue(this.state.discoveryData, "relatedVideos", []);
+      var relatedVideos = relatedVideosData;
+
+      // With "Up Next" panel we only pass the data of the asset
+      // that is currently shown
+      if (embedCode) {
+        var eventAsset = _.find(relatedVideosData, function(relatedVideo) {
+          return relatedVideo.embed_code === embedCode;
+        });
+        relatedVideos = eventAsset ? [eventAsset] : [];
+      }
+
       var eventData = {
-        "relatedVideos" : this.state.discoveryData.relatedVideos,
-        "custom" : { "source" : screen}
+        "relatedVideos" : relatedVideos,
+        "custom" : { "source" : screenName }
       };
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
     },
