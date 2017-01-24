@@ -139,6 +139,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullWindow": false,
       "autoPauseDisabled": false
     };
+
     this.init();
   };
 
@@ -205,7 +206,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi", _.bind(this.onShowAdMarquee, this));
         }
       }
-
       this.state.isSubscribed = true;
     },
 
