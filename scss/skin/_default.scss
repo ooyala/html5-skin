@@ -67,6 +67,11 @@ video {
   @extend .oo-expand;
 }
 
+// fix anamorphic video issue on Firefox
+@include apply-to-firefox-only ('.oo-anamorphic video') {
+  object-fit: fill !important;
+}
+
 .oo-blur {
   -webkit-filter: blur(3px);
   -moz-filter: blur(3px);

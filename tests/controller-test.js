@@ -59,6 +59,7 @@ OO = {
         },
         isPlaybackReadySubscribed: false,
         configLoaded: true,
+        attributes: {},
         elementId: 'oo-video',
         isLiveStream: false,
         contentTree: {},
@@ -241,6 +242,7 @@ OO = {
     var tempSkin = controllerMock.skin;
     Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', elementId, {skin:{config:{}}}, persistentSettings);
     Html5Skin.onSkinMetaDataFetched.call(controllerMock, 'customerUi', {});
+    Html5Skin.onAttributesFetched.call(controllerMock, 'customerUi', {"attributes":{"provider":{"ots_stretch_to_output":"true"}}});
     Html5Skin.loadConfigData.call(controllerMock, 'customerUi', {skin:{config:{}}}, {}, {}, {});
     Html5Skin.createPluginElements.call(controllerMock);
     controllerMock.skin = tempSkin; //reset skin, onPlayerCreated updates skin
