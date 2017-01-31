@@ -237,6 +237,30 @@ describe('Utils', function () {
     expect(isValidString).toBeTruthy();
   });
 
+  it('tests sanitizeConfigData', function () {
+    var data = null;
+    var sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toEqual({});
+
+    data = '';
+    sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toEqual({});
+
+    data = undefined;
+    sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toEqual({});
+
+    data = [];
+    sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toEqual({});
+
+    data = {skin: {config: "v4"}};
+    sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toBeTruthy();
+    expect(sanitizedConfigData.skin).toBeTruthy();
+    expect(sanitizedConfigData.skin.config).toBe("v4");
+  });
+
   it('tests deep merge', function () {
     var localSettings = {
       "closedCaptionOptions":{"windowColor":"Yellow","enabled":true, "backgroundOpacity":"0.2","textOpacity":"1"}

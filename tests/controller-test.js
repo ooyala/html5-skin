@@ -242,6 +242,7 @@ OO = {
     Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', elementId, {skin:{config:{}}}, persistentSettings);
     Html5Skin.onSkinMetaDataFetched.call(controllerMock, 'customerUi', {});
     Html5Skin.loadConfigData.call(controllerMock, 'customerUi', {skin:{config:{}}}, {}, {}, {});
+    Html5Skin.loadConfigData.call(controllerMock, 'customerUi', {skin:{inline:[]}}, {}, {}, {});
     Html5Skin.createPluginElements.call(controllerMock);
     controllerMock.skin = tempSkin; //reset skin, onPlayerCreated updates skin
 

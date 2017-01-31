@@ -814,10 +814,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //merge and load config data
     loadConfigData: function(params, settings, data, skinMetaData) {
-      var localSettings = settings ? settings : {};
-      var inlinePageParams = Utils.getPropertyValue(params, 'skin.inline') ? params.skin.inline : {};
-      var customSkinJSON = data ? data : {};
-      var metaDataSettings = skinMetaData ? skinMetaData : {};
+      var localSettings = Utils.sanitizeConfigData(settings);
+      var inlinePageParams = Utils.sanitizeConfigData(Utils.getPropertyValue(params, 'skin.inline'));
+      var customSkinJSON = Utils.sanitizeConfigData(data);
+      var metaDataSettings = Utils.sanitizeConfigData(skinMetaData);
       var buttonArrayFusion = params.buttonMerge ? params.buttonMerge : 'replace';
 
       //override data in skin config with possible local storage settings, inline data input by user, and CMS settings in backlot/themebuilder
