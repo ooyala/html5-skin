@@ -235,9 +235,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.mainVideoContainer.addClass('oo-player-container');
       this.state.mainVideoInnerWrapper.addClass('oo-player');
       this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
-      if (this.state.playerParam.anamorphic == true || this.state.playerParam.anamorphic == "true") {
-        this.state.mainVideoInnerWrapper.addClass('oo-anamorphic');
-      }
 
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
