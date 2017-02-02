@@ -540,6 +540,7 @@ var Utils = {
     if (data && (!Array.isArray(data))) {
       return data
     } else {
+      OO.log("Invalid player configuration json data: ", data);
       return {};
     }
   },
