@@ -5,6 +5,9 @@ jest.dontMock('../../config/skin');
 var Utils = require('../../js/components/utils');
 var DeepMerge = require('deepmerge');
 var SkinJSON = require('../../config/skin');
+OO = {
+  log: function(a) {console.info(a);}
+};
 
 describe('Utils', function () {
   it('tests the utility functions', function () {
@@ -253,6 +256,18 @@ describe('Utils', function () {
     data = [];
     sanitizedConfigData = Utils.sanitizeConfigData(data);
     expect(sanitizedConfigData).toEqual({});
+
+    data = [1, 2, 3];
+    sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toEqual({});
+
+    data = 'inline: {data: 2}';
+    sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toBe(data);
+
+    data = 10;
+    sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toBe(data);
 
     data = {skin: {config: "v4"}};
     sanitizedConfigData = Utils.sanitizeConfigData(data);
