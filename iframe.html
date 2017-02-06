@@ -16,8 +16,8 @@
     function queryStringToJSON(qs) {
       var pairs = qs.split('&');
       var result = {};
-      pairs.forEach(function(pair) {
-        var pair = pair.split('=');
+      pairs.forEach(function(p) {
+        var pair = p.split('=');
         var key = pair[0];
         var value = decodeURIComponent(pair[1] || '');
         if (value === "true") {
@@ -44,7 +44,7 @@
       });
 
       return JSON.parse(JSON.stringify(result));
-    };
+    }
    
     var playerParams = queryStringToJSON(window.location.search.substring(1));
     var skin = {
