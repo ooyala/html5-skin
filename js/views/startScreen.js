@@ -48,6 +48,14 @@ var StartScreen = React.createClass({
   },
 
   render: function() {
+    if (!this.props.contentTree) {
+      this.props.contentTree = StartScreen.defaultProps.contentTree;
+    } 
+
+    if (!this.props.skinConfig) {
+      this.props.contentTree = StartScreen.defaultProps.skinConfig;
+    } 
+
     //inline style for config/skin.json elements only
     var titleStyle = {
       color: this.props.skinConfig.startScreen.titleFont.color
@@ -97,7 +105,7 @@ var StartScreen = React.createClass({
 
     var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
     var iconName = (this.props.controller.state.playerState == CONSTANTS.STATE.END ? "replay" : "play");
-    var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.state.descriptionText}</div>);
+    var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.props.contentTree.description}</div>);
 
     var actionIcon = (
       <a className={actionIconClass} onClick={this.handleClick}>
