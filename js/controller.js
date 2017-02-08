@@ -31,6 +31,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
+      "attributes": {},
       "persistentSettings": {
         "closedCaptionOptions": {}
       },
@@ -156,10 +157,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_CREATED, 'customerUi', _.bind(this.onVcVideoElementCreated, this));
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
+      this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED_AFTER_OOYALA_AD, 'customerUi', _.bind(this.onEmbedCodeChangedAfterOoyalaAd, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
       this.mb.subscribe(OO.EVENTS.THUMBNAILS_FETCHED, 'customerUi', _.bind(this.onThumbnailsFetched, this));//xenia: to be replaced by a more appropriate event
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.SKIN_METADATA_FETCHED, 'customerUi', _.bind(this.onSkinMetaDataFetched, this));
+      this.mb.subscribe(OO.EVENTS.ATTRIBUTES_FETCHED, 'customerUi', _.bind(this.onAttributesFetched, this));
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
@@ -228,6 +231,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      event listeners from core player -> regulate skin STATE
      ---------------------------------------------------------------------*/
     onPlayerCreated: function (event, elementId, params, settings) {
+      //subscribe to plugin events
+      this.externalPluginSubscription();
+
       //set state variables
       this.state.mainVideoContainer = $("#" + elementId);
       this.state.mainVideoInnerWrapper = $("#" + elementId + " .innerWrapper");
@@ -291,6 +297,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb = null;
     },
 
+    onEmbedCodeChangedAfterOoyalaAd: function(event, embedCode, options) {
+      if (options) {
+        this.state.playerParam = DeepMerge(this.state.playerParam, options);
+      }
+    },
+
     onEmbedCodeChanged: function(event, embedCode, options) {
       this.state.videoQualityOptions.availableBitrates = null;
       this.state.videoQualityOptions.selectedBitrate = null;
@@ -323,6 +335,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onSkinMetaDataFetched: function (event, skinMetaData) {
       this.state.skinMetaData = skinMetaData;
       this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
+    },
+
+    onAttributesFetched: function (event, attributes) {
+      this.state.attributes = attributes;
+      //anamorphic videos
+      var isAnamorphic = Utils.getPropertyValue(this.state.attributes, 'provider.ots_stretch_to_output');
+      if (isAnamorphic == true || isAnamorphic == "true") {
+        this.state.mainVideoInnerWrapper.addClass('oo-anamorphic');
+      }
     },
 
     onThumbnailsFetched: function (event, thumbnails) {
@@ -443,6 +464,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         !this.state.upNextInfo.countDownCancelled &&
         this.state.isPlayingAd !== true &&
         this.state.upNextInfo.upNextData !== null && (this.state.playerState === CONSTANTS.STATE.PLAYING || this.state.playerState === CONSTANTS.STATE.PAUSE)) {
+        // Trigger discovery event only the first time we
+        // switch from hidden to showing
+        if (!this.state.upNextInfo.showing) {
+          var upNextEmbedCode = Utils.getPropertyValue(this.state.upNextInfo, "upNextData.embed_code");
+          this.sendDiscoveryDisplayEvent("endScreen", upNextEmbedCode);
+        }
         this.state.upNextInfo.showing = true;
       }
       else {
@@ -547,6 +574,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
 
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, delayedContentData);
+        this.state.upNextInfo.showing = false;
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
         this.state.upNextInfo.delayedContentData = null;
       }
@@ -808,10 +836,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //merge and load config data
     loadConfigData: function(params, settings, data, skinMetaData) {
-      var localSettings = settings ? settings : {};
-      var inlinePageParams = Utils.getPropertyValue(params, 'skin.inline') ? params.skin.inline : {};
-      var customSkinJSON = data ? data : {};
-      var metaDataSettings = skinMetaData ? skinMetaData : {};
+      var localSettings = Utils.sanitizeConfigData(settings);
+      var inlinePageParams = Utils.sanitizeConfigData(Utils.getPropertyValue(params, 'skin.inline'));
+      var customSkinJSON = Utils.sanitizeConfigData(data);
+      var metaDataSettings = Utils.sanitizeConfigData(skinMetaData);
       var buttonArrayFusion = params.buttonMerge ? params.buttonMerge : 'replace';
 
       //override data in skin config with possible local storage settings, inline data input by user, and CMS settings in backlot/themebuilder
@@ -894,7 +922,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         videoWrapperClass: "innerWrapper",
         pluginsClass: "oo-player-skin-plugins"
       });
-      this.externalPluginSubscription();
     },
 
     onBitrateInfoAvailable: function(event, bitrates) {
@@ -1083,11 +1110,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SKIN_METADATA_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.ATTRIBUTES_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE_AFTER_OOYALA_AD, 'customerUi');
     },
 
     unsubscribeBasicPlaybackEvents: function() {
@@ -1106,6 +1135,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_INFO_AVAILABLE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.SEND_AUDIO_CHANGE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
@@ -1306,12 +1336,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
       this.state.pluginsElement.removeClass("oo-overlay-blur");
-      this.state.upNextInfo.showing = false;
       if (isAutoUpNext){
         this.state.upNextInfo.delayedContentData = selectedContentData;
         this.state.upNextInfo.delayedSetEmbedCodeEvent = true;
       }
       else {
+        this.state.upNextInfo.showing = false;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
         this.mb.publish(OO.EVENTS.PAUSE);
@@ -1326,10 +1356,22 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    sendDiscoveryDisplayEvent: function(screen) {
+    sendDiscoveryDisplayEvent: function(screenName, embedCode) {
+      var relatedVideosData = Utils.getPropertyValue(this.state.discoveryData, "relatedVideos", []);
+      var relatedVideos = relatedVideosData;
+
+      // With "Up Next" panel we only pass the data of the asset
+      // that is currently shown
+      if (embedCode) {
+        var eventAsset = _.find(relatedVideosData, function(relatedVideo) {
+          return relatedVideo.embed_code === embedCode;
+        });
+        relatedVideos = eventAsset ? [eventAsset] : [];
+      }
+
       var eventData = {
-        "relatedVideos" : this.state.discoveryData.relatedVideos,
-        "custom" : { "source" : screen}
+        "relatedVideos" : relatedVideos,
+        "custom" : { "source" : screenName }
       };
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
     },
@@ -1595,7 +1637,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
 
       //find html5 video
-      if (element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) != -1) {
+      if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) != -1) {
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
       }
       else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
@@ -1606,7 +1648,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
       }
       //find flash object
-      else if (element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) != -1) {
+      else if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) != -1) {
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
       }
       else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
