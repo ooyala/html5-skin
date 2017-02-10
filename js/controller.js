@@ -267,6 +267,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         if (Utils.isIE10()) {
           videoElement.attr("controls", "controls");
         }
+      } else {
+        OO.log("Could not find main video element")
       }
 
       if (params.videoId === OO.VIDEO.MAIN) {
@@ -1595,14 +1597,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //find descendant video element
     findMainVideoElement: function(element) {
-      var elements = [];
-      //use actual element
-      if (element[0]) {
-        element = element[0];
-      }
-
       //find html5 video
       try {
+        var elements = [];
+        //use actual element
+        if (element[0]) {
+          element = element[0];
+        }
+
         if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) != -1) {
           this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
         }
