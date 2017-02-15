@@ -157,9 +157,8 @@ We will do our best to keep the `master` branch in good shape, with tests passin
 The core team monitors pull requests. We will review your pull request and either merge it, request changes to it, or close it with an explanation.
 
 Before submitting a pull request, please make sure the following is done:
-
 1. Fork the repository and create your branch from `master`.
-2. If you've added code that should be tested, add tests!
+2. If you've added code that should be tested, [add tests](https://github.com/ooyala/html5-skin#testing)!
 3. Ensure the test suite passes (`npm test`).
 
 ###Style Guide
