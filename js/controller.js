@@ -256,19 +256,25 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onVcVideoElementCreated: function(event, params) {
       var videoElement = params.videoElement;
-      videoElement = this.findMainVideoElement(videoElement);
+      if (params.videoId === OO.VIDEO.MAIN) {
+        this.state.mainVideoElement = videoElement;
+      }
 
+      videoElement = this.findMainVideoElement(videoElement);
       //add loadedmetadata event listener to main video element
       if (videoElement) {
         videoElement.addEventListener("loadedmetadata", this.metaDataLoaded.bind(this));
-      }
-
-      if (Utils.isIE10()) {
-        videoElement.attr("controls", "controls");
+        if (Utils.isIE10()) {
+          videoElement.attr("controls", "controls");
+        }
+      } else {
+        OO.log("Could not find main video element")
       }
 
       if (params.videoId === OO.VIDEO.MAIN) {
-        this.state.mainVideoElement = videoElement;
+        if (videoElement) {
+          this.state.mainVideoElement = videoElement;
+        }
         this.enableFullScreen();
         this.updateAspectRatio();
       }
@@ -1591,35 +1597,39 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //find descendant video element
     findMainVideoElement: function(element) {
-      var elements = [];
-      //use actual element
-      if (element[0]) {
-        element = element[0];
-      }
-
       //find html5 video
-      if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) != -1) {
-        this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
-      }
-      else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
-        elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO);
-        if (elements.length) {
-          element = elements[0];
+      try {
+        var elements = [];
+        //use actual element
+        if (element[0]) {
+          element = element[0];
+        }
+
+        if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) != -1) {
           this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
         }
-      }
-      //find flash object
-      else if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) != -1) {
-        this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
-      }
-      else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
-        elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT);
-        if (elements.length) {
-          element = elements[0];
+        else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
+          elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO);
+          if (elements.length) {
+            element = elements[0];
+            this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
+          }
+        }
+        //find flash object
+        else if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) != -1) {
           this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
         }
+        else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
+          elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT);
+          if (elements.length) {
+            element = elements[0];
+            this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
+          }
+        }
+        return element;
+      } catch(err) {
+        return null;
       }
-      return element;
     }
   };
 
