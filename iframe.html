@@ -34,10 +34,16 @@
       var data = {};
       for (var i = 0 ; i < nvp.length ; i++) {
         var pair = nvp[i].split('=');
+        if (!Array.isArray(pair) || pair.length != 2) {
+          continue;
+        }
         var name = decodeURIComponent(pair[0]);
         var value = decodeURIComponent(pair[1]);
 
         var path = name.match(/(^[^\[]+)(\[.*\]$)?/);
+        if (!Array.isArray(path) || path.length < 2) {
+          continue;
+        }
         var first = path[1];
         if (path[2]) {
           //case of 'array[level1]' || 'array[level1][level2]'
