@@ -18,6 +18,7 @@ var React = require('react'),
     PlayingScreen = require('./views/playingScreen'),
     ErrorScreen = require('./views/errorScreen'),
     ContentScreen = require('./views/contentScreen'),
+    ClassNames = require('classnames'),
     ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
 
 var Skin = React.createClass({
@@ -89,7 +90,7 @@ var Skin = React.createClass({
       switch (this.state.screenToShow) {
         case CONSTANTS.SCREEN.LOADING_SCREEN:
           screen = (
-            <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/>
+            <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} loadingScreen={true}/>
           );
           break;
         case CONSTANTS.SCREEN.START_SCREEN:
@@ -265,8 +266,10 @@ var Skin = React.createClass({
       }
     }
 
+    var responsiveClass = 'oo-responsive '+ this.state.responsiveClass;
+
     return (
-      <div id="oo-responsive" className={this.state.responsiveClass}>
+      <div id="oo-responsive" className={responsiveClass}>
         {screen}
       </div>
     );
