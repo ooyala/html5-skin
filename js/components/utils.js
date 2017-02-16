@@ -529,6 +529,22 @@ var Utils = {
     return (src && (typeof src === 'string' || src instanceof String))
   },
 
+  /**
+   * Returns sanitized config data
+   *
+   * @function sanitizeConfigData
+   * @param {Object} data to be sanitized
+   * @returns {Object} data if data is valid, empty object if not
+   */
+  sanitizeConfigData: function(data) {
+    if (data && (!Array.isArray(data))) {
+      return data
+    } else {
+      OO.log("Invalid player configuration json data: ", data);
+      return {};
+    }
+  },
+
   _isValid: function( item ) {
     var valid = (
       item &&
