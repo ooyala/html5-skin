@@ -151,7 +151,7 @@ Advanced customization is readily available by modifying JS files. Follow [Devel
 
 If you send a pull request, please do it against the [`master` branch](https://github.com/ooyala/html5-skin/tree/master). We maintain stable branches separately but we don't accept pull requests to them directly. 
 
-We will do our best to keep the `master` branch in good shape, with tests passing at all times. But our `master` branch is under active development and may contain changes that your application might not be compatible. We recommend using [latest stable version](https://github.com/ooyala/html5-skin/tree/stable) for production.
+We will do our best to keep the `master` branch in good shape, with tests passing at all times. But our `master` branch is under active development and may contain changes that your application might not be compatible with. We recommend using [latest stable version](https://github.com/ooyala/html5-skin/tree/stable) for production.
 
 ###Submitting a Pull Request
 The core team monitors pull requests. We will review your pull request and either merge it, request changes to it, or close it with an explanation.
