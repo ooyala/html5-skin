@@ -257,7 +257,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
       }
 
-      var accessibilityControls = new AccessibilityControls(this); //keyboard support
+      this.accessibilityControls = new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
     },
 
@@ -293,7 +293,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (mountNode) {
         ReactDOM.unmountComponentAtNode(mountNode);
       }
+      this.cleanUpEventListeners()
       this.mb = null;
+    },
+    
+    cleanUpEventListeners : function() {
+      this.accessibilityControls.cleanUp()
     },
 
     onEmbedCodeChangedAfterOoyalaAd: function(event, embedCode, options) {
