@@ -213,7 +213,8 @@ OO = {
       hideSkinDiv: function(){},
       showResponsiveDiv: function(){},
       hideResponsiveDiv: function(){},
-      changeIMAiframeOpacity: function(){}
+      changeIMAiframeOpacity: function(){},
+      cleanUpEventListeners: function(){}
     };
 
 
