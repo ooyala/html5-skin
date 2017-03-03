@@ -49,6 +49,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "showAdOverlayCloseButton": false,
       "showAdControls": true,
       "showAdMarquee": true,
+      "isOoyalaAds": false,
       "configLoaded": false,
       "config": {},
       "customSkinJSON": {},
@@ -298,6 +299,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (options) {
         this.state.playerParam = DeepMerge(this.state.playerParam, options);
       }
+      this.state.isOoyalaAds = false;
     },
 
     onEmbedCodeChanged: function(event, embedCode, options) {
@@ -309,6 +311,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.discoveryData = null;
       this.state.thumbnails = null;
       this.resetUpNextInfo(true);
+
+      if (options && options.ooyalaAds === true) {
+        this.state.isOoyalaAds = true;
+      } else {
+        this.state.isOoyalaAds = false;
+      }
 
       this.state.assetId = embedCode;
       if (options) {
@@ -353,6 +361,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.subscribeBasicPlaybackEvents();
 
       this.resetUpNextInfo(true);
+      this.state.isOoyalaAds = false;
 
       this.state.isLiveStream = asset.content.streams[0].is_live_stream;
 
