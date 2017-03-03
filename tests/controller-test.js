@@ -552,6 +552,31 @@ OO = {
     Html5Skin.findMainVideoElement.call(controllerMock, div);
     Html5Skin.findMainVideoElement.call(controllerMock, {0:videoElement});
 
+    describe('Controller testing Ooyala Ads', function () {
+      it('test after Ooyala ad state', function() {
+        expect(controllerMock.state.afterOoyalaAd).toBe(false);
+        Html5Skin.onEmbedCodeChanged.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.afterOoyalaAd).toBe(false);
+        Html5Skin.onEmbedCodeChangedAfterOoyalaAd.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.afterOoyalaAd).toBe(true);
+        Html5Skin.onEmbedCodeChanged.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.afterOoyalaAd).toBe(false);
+      });
+
+      it('test start screen is shown on playback ready', function() {
+        controllerMock.state.afterOoyalaAd = false;
+        Html5Skin.onPlaybackReady.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
+      });
+
+      it('test loading screen is shown on playback ready after an Ooyala ad', function() {
+        controllerMock.state.afterOoyalaAd = true;
+        Html5Skin.onPlaybackReady.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
+        controllerMock.state.afterOoyalaAd = false;
+      });
+    });
+
     //test destroy functions last
     Html5Skin.onEmbedCodeChanged.call(controllerMock, 'customerUi', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', {});
     Html5Skin.onAssetChanged.call(controllerMock, 'customerUi', {content: {streams: [{is_live_stream: true}], title: 'Title', posterImages: [{url:'www.ooyala.com'}]}});

@@ -50,6 +50,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "showAdControls": true,
       "showAdMarquee": true,
       "isOoyalaAds": false,
+      "afterOoyalaAd": false,
       "configLoaded": false,
       "config": {},
       "customSkinJSON": {},
@@ -300,6 +301,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.playerParam = DeepMerge(this.state.playerParam, options);
       }
       this.state.isOoyalaAds = false;
+      this.state.afterOoyalaAd = true;
     },
 
     onEmbedCodeChanged: function(event, embedCode, options) {
@@ -310,6 +312,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.closedCaptionsInfoCache = {};
       this.state.discoveryData = null;
       this.state.thumbnails = null;
+      this.state.afterOoyalaAd = false;
       this.resetUpNextInfo(true);
 
       if (options && options.ooyalaAds === true) {
@@ -627,7 +630,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaybackReady: function(event) {
-      this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      if (this.state.afterOoyalaAd) {
+        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+      } else {
+        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      }
+
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
