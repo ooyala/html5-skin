@@ -209,6 +209,11 @@ OO = {
       createPluginElements: function() {},
       findMainVideoElement: function(a) {},
       loadConfigData: function(a, b, c, d) {},
+      showSkinDiv: function(){},
+      hideSkinDiv: function(){},
+      showResponsiveDiv: function(){},
+      hideResponsiveDiv: function(){},
+      changeIMAiframeOpacity: function(){},
       cleanUpEventListeners: function(){}
     };
 

@@ -3,6 +3,10 @@
   pointer-events: none; // Allow click to pass through
 }
 
+.oo-spinner-background {
+  background: black;
+}
+
 .oo-spinner-wrapper {
   @extend .oo-center-vertical-horizontal;
 
