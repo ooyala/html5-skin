@@ -824,6 +824,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         newCSS.transform = "translateX(-50%)"
       }
       this.state.pluginsElement.css(newCSS);
+      this.changeIMAiframeOpacity(1);
       this.renderSkin();
     },
 
