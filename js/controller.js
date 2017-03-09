@@ -78,10 +78,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoPlayhead": 0,
       "adVideoPlayhead": 0,
       "focusedElement": null,
-      "midVideo": false,
-      "responsiveDivHidden": false,
-      "skinDivHidden": false,
-      "hideFlashAlerts": false,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -175,8 +171,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if(!this.state.isSubscribed) {
         this.mb.subscribe(OO.EVENTS.SEND_QUALITY_CHANGE, 'customerUi', _.bind(this.receiveVideoQualityChangeEvent, this));
         this.mb.subscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi', _.bind(this.onInitialPlay, this));
-        this.mb.subscribe(OO.EVENTS.VC_PLAY, 'customerUi', _.bind(this.onVcPlay, this));
-        this.mb.subscribe(OO.EVENTS.VC_WILL_PLAY, 'customerUi', _.bind(this.onVcWillPlay, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
         this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
@@ -242,7 +236,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.elementId = elementId;
       this.state.isMobile = Utils.isMobile();
       this.state.browserSupportsTouch = Utils.browserSupportsTouch();
-      this.state.hideFlashAlerts = Utils.getPropertyValue(this.state.playerParam, "hideFlashAlerts", false);
 
       //initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');
@@ -320,7 +313,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.discoveryData = null;
       this.state.thumbnails = null;
       this.state.afterOoyalaAd = false;
-      this.state.midVideo = false;
       this.resetUpNextInfo(true);
 
       if (options && options.ooyalaAds === true) {
@@ -508,7 +500,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.setClosedCaptionsLanguage();
         this.state.mainVideoElement.classList.remove('oo-blur');
         this.state.isInitialPlay = false;
-        this.state.midVideo = true;
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
@@ -613,18 +604,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onVcPlay: function(event, source) {
-      if (source == OO.VIDEO.MAIN && this.state.isInitialPlay) {
-        this.hideSkinDiv();
-      }
-    },
-
-    onVcWillPlay: function(event, source) {
-      if (source == OO.VIDEO.MAIN) {
-        this.showSkinDiv();
-      }
-    },
-
     onVcPlayed: function(event, source) {
       this.onBuffered();
       if (source == OO.VIDEO.MAIN) {
@@ -632,7 +611,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         var mode = 'disabled';
         this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
         this.state.mainVideoDuration = this.state.duration;
-        this.state.midVideo = false;
       }
     },
 
@@ -667,7 +645,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       } else {
         this.state.buffering = true;
       }
-      this.showSkinDiv();
       this.renderSkin();
     },
 
@@ -680,7 +657,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onReplay: function(event) {
       this.resetUpNextInfo(false);
-      this.state.midVideo = false;
     },
 
     onAssetDimensionsReceived: function(event, params) {
@@ -702,11 +678,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isPlayingAd = false;
       this.state.pluginsElement.removeClass("oo-showing");
       this.state.pluginsClickElement.removeClass("oo-showing");
-      this.showResponsiveDiv();
-      this.changeIMAiframeOpacity(0);
-      if (this.state.midVideo && this.state.playerState == CONSTANTS.STATE.PAUSE) {
-        this.mb.publish(OO.EVENTS.PLAY);
-      }
       this.renderSkin();
     },
 
@@ -719,11 +690,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         width: ""
       });
       this.state.forceControlBarVisible = (this.state.pluginsElement.children().length > 0);
-
-      if (this.state.midVideo) {
-        this.mb.publish(OO.EVENTS.PAUSE);
-      }
-      this.hideResponsiveDiv();
     },
 
     onAdPodStarted: function(event, numberOfAds) {
@@ -756,7 +722,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isPlayingAd = false;
       this.state.adVideoDuration = 0;
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
-      this.hideResponsiveDiv();
     },
 
     onShowAdSkipButton: function(event) {
@@ -840,7 +805,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.pluginsElement.removeClass("oo-showing");
         this.state.pluginsClickElement.removeClass("oo-showing");
       }
-      this.showResponsiveDiv();
     },
 
     closeNonlinearAd: function(event) {
@@ -1152,8 +1116,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     unsubscribeBasicPlaybackEvents: function() {
       this.mb.unsubscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.VC_PLAY, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.VC_WILL_PLAY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PLAYED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PLAYING, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PAUSE, 'customerUi');
@@ -1680,41 +1642,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
       }
       return element;
-    },
-
-    changeIMAiframeOpacity: function(opacity) {
-      var IMAiframe = $("iframe[src^='http://imasdk.googleapis.com/']")[0];
-      if (IMAiframe && IMAiframe.style)
-      {
-        IMAiframe.style.opacity = opacity;
-      }
-    },
-
-    showResponsiveDiv: function() {
-      if (!this.state.hideFlashAlerts && this.state.responsiveDivHidden) {
-        $("#" + this.state.elementId + " .oo-responsive").removeClass("oo-invisible");
-        this.state.responsiveDivHidden = false;
-      }
-    },
-    hideResponsiveDiv: function() {
-      if (!this.state.hideFlashAlerts) {
-        $("#" + this.state.elementId + " .oo-responsive").addClass("oo-invisible");
-        this.state.responsiveDivHidden = true;
-        this.changeIMAiframeOpacity(1);
-      }
-    },
-
-    showSkinDiv: function() {
-      if (this.state.skinDivHidden && !this.state.hideFlashAlerts) {
-        $("#" + this.state.elementId + " .oo-player-skin").removeClass("oo-invisible");
-        this.state.skinDivHidden = false;
-      }
-    },
-    hideSkinDiv: function() {
-      if (!this.state.hideFlashAlerts){
-        $("#" + this.state.elementId + " .oo-player-skin").addClass("oo-invisible");
-        this.state.skinDivHidden = true;
-      }
     }
   };
 
