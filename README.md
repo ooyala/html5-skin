@@ -8,7 +8,7 @@ An open-source HTML5 UI skin based on [React.js](https://github.com/facebook/rea
 `core.js` is a lightweight core player that enables basic video playback functionality and provides Message Bus environment. Most of additional capabilities such as ads, discovery and skin are separated from core player JS. You may want to load additional plugins.
 
 ## Examples
-We have a sample HTML page ready for you. Check out [sample page](http://debug.ooyala.com/ea/index.html?ec=RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2&pbid=26e2e3c1049c4e70ae08a242638b5c40&pcode=5zb2wxOlZcNCe_HVT3a6cawW298X&core_player=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.1.4%2Fcore.min.js&video_plugins=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.1.4%2Fvideo-plugin%2Fmain_html5.min.js%0Ahttp%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.1.4%2Fvideo-plugin%2Fosmf_flash.min.js%0Ahttp%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.1.4%2Fvideo-plugin%2Fbit_wrapper.min.js&html5_skin=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.1.4%2Fskin-plugin%2Fhtml5-skin.min.js&skin_asset=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.1.4%2Fskin-plugin%2Fhtml5-skin.min.css&skin_config=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.1.4%2Fskin-plugin%2Fskin.json&ad_plugin=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.1.4%2Fad-plugin%2Ffreewheel.min.js&additional_plugins=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.1.4%2Fother-plugin%2Fdiscovery_api.min.js&options=%7B%22freewheel-ads-manager%22%3A%7B%22fw_video_asset_id%22%3A%22NqcGg4bzoOmMiV35ZttQDtBX1oNQBnT-%22%2C%22html5_ad_server%22%3A%22http%3A%2F%2Fg1.v.fwmrm.net%22%2C%22fw_android_ad_server%22%3A%22http%3A%2F%2Fg1.v.fwmrm.net%2F%22%2C%22html5_player_profile%22%3A%2290750%3Aooyala_html5%22%2C%22fw_android_player_profile%22%3A%2290750%3Aooyala_android%22%2C%22fw_mrm_network_id%22%3A%22380912%22%7D%7D)
+We have a sample HTML page ready for you. Check out [sample page](http://debug.ooyala.com/ea/index.html?ec=RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2&pbid=26e2e3c1049c4e70ae08a242638b5c40&pcode=5zb2wxOlZcNCe_HVT3a6cawW298X&core_player=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.12.6%2Fcore.min.js&video_plugins=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.12.6%2Fvideo-plugin%2Fmain_html5.min.js%0Ahttp%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.12.6%2Fvideo-plugin%2Fosmf_flash.min.js%0Ahttp%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.12.6%2Fvideo-plugin%2Fbit_wrapper.min.js&html5_skin=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.12.6%2Fskin-plugin%2Fhtml5-skin.min.js&skin_asset=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.12.6%2Fskin-plugin%2Fhtml5-skin.min.css&skin_config=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.12.6%2Fskin-plugin%2Fskin.json&ad_plugin=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.12.6%2Fad-plugin%2Ffreewheel.min.js&additional_plugins=http%3A%2F%2Fplayer.ooyala.com%2Fstatic%2Fv4%2Fstable%2F4.12.6%2Fother-plugin%2Fdiscovery_api.min.js&options=%7B%22freewheel-ads-manager%22%3A%7B%22fw_video_asset_id%22%3A%22NqcGg4bzoOmMiV35ZttQDtBX1oNQBnT-%22%2C%22html5_ad_server%22%3A%22http%3A%2F%2Fg1.v.fwmrm.net%22%2C%22fw_android_ad_server%22%3A%22http%3A%2F%2Fg1.v.fwmrm.net%2F%22%2C%22html5_player_profile%22%3A%2290750%3Aooyala_html5%22%2C%22fw_android_player_profile%22%3A%2290750%3Aooyala_android%22%2C%22fw_mrm_network_id%22%3A%22380912%22%7D%7D)
 
 This simple test HTML page can also be hosted on your environment to showcase html5 skin.
 ```html
@@ -17,13 +17,13 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 <head>
   <meta charset="utf-8">
   <!-- V4 JS core and at least one video plugin is required. Plugins such as skin, discovery and Advertising need to be loaded separately -->
-  <script src="//player.ooyala.com/static/v4/stable/latest/core.min.js"></script>
-  <script src="//player.ooyala.com/static/v4/stable/latest/video-plugin/main_html5.min.js"></script>
-  <script src="//player.ooyala.com/static/v4/stable/latest/video-plugin/osmf_flash.min.js"></script>
-  <script src="//player.ooyala.com/static/v4/stable/latest/video-plugin/bit_wrapper.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.12.6/core.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.12.6/video-plugin/main_html5.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.12.6/video-plugin/osmf_flash.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.12.6/video-plugin/bit_wrapper.min.js"></script>
   <!-- Change these html5-skin.min.css and html5-skin.min.js to your local build if necessary -->
-  <script src="//player.ooyala.com/static/v4/stable/latest/skin-plugin/html5-skin.min.js"></script>
-  <link rel="stylesheet" href="//player.ooyala.com/static/v4/stable/latest/skin-plugin/html5-skin.min.css"/>
+  <script src="//player.ooyala.com/static/v4/stable/4.12.6/skin-plugin/html5-skin.min.js"></script>
+  <link rel="stylesheet" href="//player.ooyala.com/static/v4/stable/4.12.6/skin-plugin/html5-skin.min.css"/>
 </head>
 
 <body>
@@ -136,7 +136,7 @@ Simple customization can be achieved by modifying `skin.json` settings. Furtherm
 ```javascript
 var playerParam = {
   "skin": {
-    "config": "//player.ooyala.com/static/v4/stable/latest/skin-plugin/skin.json",
+    "config": "//player.ooyala.com/static/v4/stable/4.12.6/skin-plugin/skin.json",
     "inline": {
       "startScreen": {"showDescription": false, "playIconStyle": {"color": "blue"}}
     }
