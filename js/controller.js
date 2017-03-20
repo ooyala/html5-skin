@@ -247,7 +247,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
       }
 
-      var accessibilityControls = new AccessibilityControls(this); //keyboard support
+      this.accessibilityControls = new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
     },
 
@@ -277,6 +277,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayerDestroy: function (event) {
+      this.accessibilityControls.unmount();
       var elementId = this.state.elementId;
       var mountNode = document.querySelector('#' + elementId + ' .oo-player-skin');
       // remove mounted Skin component
