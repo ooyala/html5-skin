@@ -147,13 +147,13 @@ var playerParam = {
 ### Advanced Customization
 Advanced customization is readily available by modifying JS files. Follow [Developer Setup](#developer-setup) section to create a local repository and to run build script. Built files are available inside build folder. You are welcomed to host your built skin javascript to be run with your player.
 
-##How to Contribute
+## How to Contribute
 
 If you send a pull request, please do it against the [`master` branch](https://github.com/ooyala/html5-skin/tree/master). We maintain stable branches separately but we don't accept pull requests to them directly. 
 
 We will do our best to keep the `master` branch in good shape, with tests passing at all times. But our `master` branch is under active development and may contain changes that your application might not be compatible with. We recommend using [latest stable version](https://github.com/ooyala/html5-skin/tree/stable) for production.
 
-###Submitting a Pull Request
+### Submitting a Pull Request
 The core team monitors pull requests. We will review your pull request and either merge it, request changes to it, or close it with an explanation.
 
 Before submitting a pull request, please make sure the following is done:
@@ -164,5 +164,5 @@ Before submitting a pull request, please make sure the following is done:
 
 3. Ensure the test suite passes (`npm test`).
 
-###Style Guide
+### Style Guide
 We *mostly* follow [Airbnb's Style Guide](https://github.com/airbnb/javascript).
