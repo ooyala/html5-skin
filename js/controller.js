@@ -951,6 +951,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (!info || !info.videoId || !info.languages) {
         return;
       }
+      // A workaround for Safari's bug
+      var languages = info.languages;
+      if (languages && languages.length === 1 && languages[0] === 'CC') {
+        return;
+      }
       // Store info in cache in order to be able to restore it
       // if this video element looses and then regains focus (like when an ad plays)
       this.state.closedCaptionsInfoCache[info.videoId] = info;
