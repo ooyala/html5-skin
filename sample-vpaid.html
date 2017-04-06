@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/core.js"></script>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/ad-plugin/google_ima.js"></script>
+  <!--<script src="//player.ooyala.com/static/v4/stable/4.2.7/ad-plugin/ad_manager_vast.js"></script>-->
+  <!--<script src="//player.ooyala.com/static/v4/stable/4.3.3/ad-plugin/ad_manager_vast.js"></script>-->
+  <!--<script src="//player.ooyala.com/static/v4/stable/4.2.14/ad-plugin/ad_manager_vast.js"></script>-->
+  <!--<script src="//player.ooyala.com/static/v4/candidate/latest/ad-plugin/freewheel.js"></script>-->
+  <script src="//player.ooyala.com/static/v4/candidate/latest/ad-plugin/ad_manager_vast.js"></script>
+  <!--<script src="//player.ooyala.com/static/v4/candidate/latest/ad-plugin/pulse.js"></script>-->
+  <script src="//player.ooyala.com/static/v4/candidate/latest/video-plugin/main_html5.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/video-plugin/osmf_flash.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/video-plugin/bit_wrapper.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/latest/other-plugin/discovery_api.js"></script>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/skin-plugin/html5-skin.min.js"></script>
+  <link rel="stylesheet" href="//player.ooyala.com/static/v4/candidate/latest/skin-plugin/html5-skin.min.css"/>
+</head>
+
+<body>
+  <object type="application/x-shockwave-flash" id="flash" data="//localhost:8000/html5-skin/FlashAdPlayerBeta/PulseFlashAdPlayer.swf">
+    <param name="allowscriptaccess" value="always"/>
+    <param name=FlashVars" value="readyCallback=foo()"/>
+  </object>
+
+<!--Shared Feature iframe-->
+<!--<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/candidate/latest/skin-plugin/iframe.html?ec=htcmtjczpHnIEJLJUrZ8YUs0CW0pyi2R&pbid=242f532f58ad4b2e9192f84fd4ff727d&pcode=pyaDkyOqdnY0iQC2sTO4JeaXggl9'></iframe>-->
+
+<div id='ima' style="width:900px;height:900px"></div>
+<div id='vast' style="width:900px;height:900px"></div>
+<!--<div id='freewheel' style="width:900px;height:900px"></div>-->
+
+<!--<div id='vast2' style="width:900px;height:900px"></div>-->
+<!--<div id='pulse' style="width:900px;height:900px"></div>-->
+
+<script>
+  var flash = document.getElementById("flash");
+  console.log(flash);
+  console.log(flash.playVideoAd);
+
+  var playerParam = {
+    "autoPlay": true,
+    "pcode": "5zb2wxOlZcNCe_HVT3a6cawW298X",
+    "playerBrandingId": "26e2e3c1049c4e70ae08a242638b5c40",
+    'debug':true,
+    "skin": {
+      "config": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/skin.json",
+      "inline": {"shareScreen": {"embed": {"source": "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/candidate/latest/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>"}}}
+    }
+  };
+
+  var playerParamFreewheel = {
+    "autoPlay": true,
+    "pcode": "5zb2wxOlZcNCe_HVT3a6cawW298X",
+    "playerBrandingId": "26e2e3c1049c4e70ae08a242638b5c40",
+    'debug':true,
+    "skin":
+    {
+      "config": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/skin.json",
+      "inline":
+      {
+        "shareScreen":
+        {
+          "embed":
+          {
+            "source": "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/candidate/latest/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>"
+          }
+        }
+      }
+    },
+    "freewheel-ads-manager":{
+      "fw_video_asset_id":"Q5MXg2bzq0UAXXMjLIFWio_6U0Jcfk6v",
+      "html5_ad_server":"http://g1.v.fwmrm.net",
+      "html5_player_profile":"90750:ooyala_html5",
+      "fw_mrm_network_id":"380912"
+    }
+  };
+
+  var playerParamPulse = {
+    "autoPlay": true,
+    "encodingPriority": ["dash", "hls", "mp4"],
+    "pcode": "BjcWYyOu1KK2DiKOkF41Z2k0X57l",
+    "playerBrandingId": "8287c6992b2d40e6ab182fb2c5014c17",
+    "skin": {
+      "config": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/skin.json",
+      "inline": {"shareScreen": {"embed": {"source": "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/candidate/latest/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>"}}}
+    }
+  };
+
+  var playerParameters = {
+    "autoplay": true,
+    "pcode": "dsY2EyOmmfo55ED0CvwTYIMeB7ya",
+    "playerBrandingId": "5d8891bc445c4156a75933fbf4bcfc9a",
+    "adManagerLoadTimeout": 0,
+    "skin": {
+      "config": "http://player.ooyala.com/static/v4/candidate/latest/skin-plugin/skin.json"
+    },
+    /*
+    "google-ima-ads-manager": {
+      "all_ads": [
+        {
+          "position_type":"t",
+          "tag_url":"https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/1048199/Video_test&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=howcast.com&correlator=[timestamp]"
+        }
+      ],
+    }
+    */
+  };
+
+
+  OO.ready(function() {
+    window.pp = OO.Player.create('ima', '5ubHlycTpDMOFl3UAvmDvwwJqm87zjuk', playerParameters);
+    window.pp2 = OO.Player.create('vast', 'I2OXQwNDE6FtKQipdDD5HlCI177ULA8h', playerParam);
+    //window.pp3 = OO.Player.create('freewheel', 'RmbHlycTpp3D2ARo5QGzrQa5cMtGSc2m', playerParamFreewheel);
+    //window.pp4 = OO.Player.create('ima', '04bmhiczpPSg6fwQs4UQncIhV_YoKPi6', playerParameters);
+
+    //window.pp2.subscribe("videoControllerVideoElementCreated", 'banana', function(eventName, params) {console.log(eventName); console.log(params);});
+
+    //window.pp4 = OO.Player.create('pulse', '5kbmU5MzE6ivgWkobhscmQwGuD7fyNIa', playerParamPulse);
+    //window.pp2a = OO.Player.create('vast2', 'xxbDB4dDovMCDiqvo2DSqON3lIGSM5N5', playerParam);
+    //window.pp2a = OO.Player.create('vast2', '9vdWM3NTE6YoflQBvUOz84UmgSVaTKv9', playerParam);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<<<<<<< Updated upstream
+  <script src="//player.ooyala.com/static/v4/stable/4.5.5/core.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.5.5/video-plugin/main_html5.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.5.5/video-plugin/osmf_flash.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.5.5/video-plugin/bit_wrapper.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.5.5/other-plugin/discovery_api.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.5.5/skin-plugin/html5-skin.min.js"></script>
+  <link rel="stylesheet" href="//player.ooyala.com/static/v4/stable/4.5.5/skin-plugin/html5-skin.min.css"/>
+=======
+  <script src="//player.ooyala.com/static/v4/candidate/latest/core.js"></script>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/ad-plugin/ad_manager_vast.js"></script>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/ad-plugin/google_ima.js"></script>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/ad-plugin/freewheel.js"></script>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/video-plugin/main_html5.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/video-plugin/osmf_flash.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/video-plugin/bit_wrapper.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/other-plugin/discovery_api.js"></script>
+  <script src="//player.ooyala.com/static/v4/candidate/latest/skin-plugin/html5-skin.min.js"></script>
+  <link rel="stylesheet" href="//player.ooyala.com/static/v4/candidate/latest/skin-plugin/html5-skin.min.css"/>
+>>>>>>> Stashed changes
+</head>
+
+<body>
+<div id='ima'></div>
+<div id='vast'></div>
+<div id='freewheel'></div>
+<script>
+  var playerParam = {
+    "autoPlay": true,
+    "pcode": "5zb2wxOlZcNCe_HVT3a6cawW298X",
+    "playerBrandingId": "26e2e3c1049c4e70ae08a242638b5c40",
+    'debug':true,
+    "skin": {
+<<<<<<< Updated upstream
+      "config": "//player.ooyala.com/static/v4/stable/4.5.5/skin-plugin/skin.json",
+      "inline": {"shareScreen": {"embed": {"source": "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/stable/4.5.5/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>"}}}
+=======
+      "config": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/skin.json",
+      "inline": {"shareScreen": {"embed": {"source": "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/candidate/latest/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>"}}}
+    }
+  };
+  var playerParamFreewheel = {
+    "autoPlay": true,
+    "pcode": "5zb2wxOlZcNCe_HVT3a6cawW298X",
+    "playerBrandingId": "26e2e3c1049c4e70ae08a242638b5c40",
+    'debug':true,
+    "skin":
+    {
+      "config": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/skin.json",
+      "inline":
+      {
+        "shareScreen":
+        {
+          "embed":
+          {
+            "source": "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/candidate/latest/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>"
+          }
+        }
+      }
+    },
+    "freewheel-ads-manager":{
+      "fw_video_asset_id":"Q5MXg2bzq0UAXXMjLIFWio_6U0Jcfk6v",
+      "html5_ad_server":"http://g1.v.fwmrm.net",
+      "html5_player_profile":"90750:ooyala_html5",
+      "fw_mrm_network_id":"380912"
+>>>>>>> Stashed changes
+    }
+  };
+  OO.ready(function() {
+    OO.Player.create('ima', '5ubHlycTpDMOFl3UAvmDvwwJqm87zjuk', playerParam);
+    //OO.Player.create('vast', 'htcmtjczpHnIEJLJUrZ8YUs0CW0pyi2R', playerParam);
+    //OO.Player.create('freewheel', 'RmbHlycTpp3D2ARo5QGzrQa5cMtGSc2m', playerParamFreewheel);
+  });
+</script>
+
+</body>
+</html>
