@@ -1485,9 +1485,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         // Only enable anamorphic videos fix if video actually requires it
         if (isAnamorphic === true || isAnamorphic === 'true') {
           this.state.mainVideoInnerWrapper.addClass('oo-anamorphic');
+          OO.log("Anamorphic video fix: ON");
         }
       } else {
         this.state.mainVideoInnerWrapper.removeClass('oo-anamorphic');
+        OO.log("Anamorphic video fix: OFF");
       }
     },
 
