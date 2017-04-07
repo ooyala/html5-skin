@@ -197,6 +197,7 @@ OO = {
       displayMoreOptionsScreen: function(a) {},
       closeMoreOptionsScreen: function() {},
       pausedCallback: function() {},
+      trySetAnamorphicFixState: function() {},
       renderSkin: function() {window.isSkinRendered = true;},
       cancelTimer: function() {window.isTimerCanceled = true;},
       startHideControlBarTimer: function() {},
@@ -244,6 +245,7 @@ OO = {
     Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', elementId, {skin:{config:{}}}, persistentSettings);
     Html5Skin.onSkinMetaDataFetched.call(controllerMock, 'customerUi', {});
     Html5Skin.onAttributesFetched.call(controllerMock, 'customerUi', {"attributes":{"provider":{"ots_stretch_to_output":"true"}}});
+    Html5Skin.trySetAnamorphicFixState.call(controllerMock, true);
     Html5Skin.loadConfigData.call(controllerMock, 'customerUi', {skin:{config:{}}}, {}, {}, {});
     Html5Skin.loadConfigData.call(controllerMock, 'customerUi', {skin:{config:[]}}, {}, {}, {}); //invalid
     Html5Skin.loadConfigData.call(controllerMock, 'customerUi', {skin:{inline:{}}}, {}, {}, {});
