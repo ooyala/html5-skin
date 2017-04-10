@@ -604,8 +604,8 @@ OO = {
       it('should apply anamorphic CSS fix when ots_stretch_to_output is true', function() {
         Html5Skin.onAttributesFetched.call(controllerMock, 'customerUi', attributesParam);
         Html5Skin.trySetAnamorphicFixState.call(controllerMock, true);
-        expect(addClassSpy.callCount).toEqual(1);
-        expect(removeClassSpy.callCount).toEqual(0);
+        expect(addClassSpy.callCount).toBe(1);
+        expect(removeClassSpy.callCount).toBe(0);
       });
 
       it('should not apply anamorphic CSS fix when ots_stretch_to_output isn\'t true', function() {
@@ -615,18 +615,18 @@ OO = {
         attributesParam.provider = { 'ots_stretch_to_output': false };
         Html5Skin.onAttributesFetched.call(controllerMock, 'customerUi', attributesParam);
         Html5Skin.trySetAnamorphicFixState.call(controllerMock, true);
-        expect(addClassSpy.callCount).toEqual(0);
-        expect(removeClassSpy.callCount).toEqual(0);
+        expect(addClassSpy.callCount).toBe(0);
+        expect(removeClassSpy.callCount).toBe(0);
       });
 
       it('should disable anamorphic CSS fix when passing false', function() {
         Html5Skin.onAttributesFetched.call(controllerMock, 'customerUi', attributesParam);
         Html5Skin.trySetAnamorphicFixState.call(controllerMock, true);
-        expect(addClassSpy.callCount).toEqual(1);
+        expect(addClassSpy.callCount).toBe(1);
         Html5Skin.onWillPlayAds.call(controllerMock, 'customerUi');
         Html5Skin.trySetAnamorphicFixState.call(controllerMock, false);
-        expect(addClassSpy.callCount).toEqual(1);
-        expect(removeClassSpy.callCount).toEqual(1);
+        expect(addClassSpy.callCount).toBe(1);
+        expect(removeClassSpy.callCount).toBe(1);
       });
     });
 
