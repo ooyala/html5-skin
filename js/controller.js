@@ -1474,6 +1474,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.SAVE_PLAYER_SETTINGS, this.state.persistentSettings);
     },
 
+    /**
+     * Used to enable or disable the CSS workaround that prevents anamorphic videos from
+     * being distorted on Firefox. The fix will only be enabled if ots_stretch_to_output
+     * is set to true in the player attributes.
+     * Note that currently the oo-anamorphic class has effect only on Firefox.
+     * @param {boolen} enabled A value that determines whether to enable or disable the anamorphic videos CSS fix.
+     */
     trySetAnamorphicFixState: function(enabled) {
       if (!this.state || !this.state.mainVideoInnerWrapper) {
         return;
