@@ -8,6 +8,7 @@ jest.dontMock('underscore');
 jest.dontMock('jquery');
 
 var CONSTANTS = require('../js/constants/constants');
+var sinon = require('sinon');
 
 /**
  * Mock OO
@@ -197,6 +198,7 @@ OO = {
       displayMoreOptionsScreen: function(a) {},
       closeMoreOptionsScreen: function() {},
       pausedCallback: function() {},
+      trySetAnamorphicFixState: function() {},
       renderSkin: function() {window.isSkinRendered = true;},
       cancelTimer: function() {window.isTimerCanceled = true;},
       startHideControlBarTimer: function() {},
@@ -208,7 +210,8 @@ OO = {
       setAspectRatio: function() {window.isAspectRatioSet = true;},
       createPluginElements: function() {},
       findMainVideoElement: function(a) {},
-      loadConfigData: function(a, b, c, d) {}
+      loadConfigData: function(a, b, c, d) {},
+      cleanUpEventListeners: function(){}
     };
 
 
@@ -550,6 +553,82 @@ OO = {
     div.appendChild(flashVideoElement);
     Html5Skin.findMainVideoElement.call(controllerMock, div);
     Html5Skin.findMainVideoElement.call(controllerMock, {0:videoElement});
+
+    describe('Controller testing Ooyala Ads', function () {
+      it('test after Ooyala ad state', function() {
+        expect(controllerMock.state.afterOoyalaAd).toBe(false);
+        Html5Skin.onEmbedCodeChanged.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.afterOoyalaAd).toBe(false);
+        Html5Skin.onEmbedCodeChangedAfterOoyalaAd.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.afterOoyalaAd).toBe(true);
+        Html5Skin.onEmbedCodeChanged.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.afterOoyalaAd).toBe(false);
+      });
+
+      it('test start screen is shown on playback ready', function() {
+        controllerMock.state.afterOoyalaAd = false;
+        Html5Skin.onPlaybackReady.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
+      });
+
+      it('test loading screen is shown on playback ready after an Ooyala ad', function() {
+        controllerMock.state.afterOoyalaAd = true;
+        Html5Skin.onPlaybackReady.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
+        controllerMock.state.afterOoyalaAd = false;
+      });
+    });
+
+    describe('Controller testing Anamorphic videos fix', function() {
+      var addClassSpy = null;
+      var removeClassSpy = null;
+      var attributesParam = null;
+      var attributesState = JSON.parse(JSON.stringify(controllerMock.state.attributes));
+
+      beforeEach(function() {
+        attributesParam = {
+          provider: {
+            'ots_stretch_to_output': true
+          }
+        };
+        addClassSpy = sinon.spy(controllerMock.state.mainVideoInnerWrapper, 'addClass');
+        removeClassSpy = sinon.spy(controllerMock.state.mainVideoInnerWrapper, 'removeClass');
+      });
+
+      afterEach(function() {
+        controllerMock.state.mainVideoInnerWrapper.addClass.restore();
+        controllerMock.state.mainVideoInnerWrapper.removeClass.restore();
+        controllerMock.state.attributes = attributesState;
+      });
+
+      it('should apply anamorphic CSS fix when ots_stretch_to_output is true', function() {
+        Html5Skin.onAttributesFetched.call(controllerMock, 'customerUi', attributesParam);
+        Html5Skin.trySetAnamorphicFixState.call(controllerMock, true);
+        expect(addClassSpy.callCount).toBe(1);
+        expect(removeClassSpy.callCount).toBe(0);
+      });
+
+      it('should not apply anamorphic CSS fix when ots_stretch_to_output isn\'t true', function() {
+        attributesParam.provider = {};
+        Html5Skin.onAttributesFetched.call(controllerMock, 'customerUi', attributesParam);
+        Html5Skin.trySetAnamorphicFixState.call(controllerMock, true);
+        attributesParam.provider = { 'ots_stretch_to_output': false };
+        Html5Skin.onAttributesFetched.call(controllerMock, 'customerUi', attributesParam);
+        Html5Skin.trySetAnamorphicFixState.call(controllerMock, true);
+        expect(addClassSpy.callCount).toBe(0);
+        expect(removeClassSpy.callCount).toBe(0);
+      });
+
+      it('should disable anamorphic CSS fix when passing false', function() {
+        Html5Skin.onAttributesFetched.call(controllerMock, 'customerUi', attributesParam);
+        Html5Skin.trySetAnamorphicFixState.call(controllerMock, true);
+        expect(addClassSpy.callCount).toBe(1);
+        Html5Skin.onWillPlayAds.call(controllerMock, 'customerUi');
+        Html5Skin.trySetAnamorphicFixState.call(controllerMock, false);
+        expect(addClassSpy.callCount).toBe(1);
+        expect(removeClassSpy.callCount).toBe(1);
+      });
+    });
 
     //test destroy functions last
     Html5Skin.onEmbedCodeChanged.call(controllerMock, 'customerUi', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', {});

@@ -57,7 +57,16 @@ var AdPanel = React.createClass({
     var adTopBarItems = [];
 
     // // Ad title
-    var adTitle = this.props.currentAdsInfo.currentAdItem.name;
+    var adTitle = "Unknown";
+    if (this.props.currentAdsInfo && 
+        this.props.currentAdsInfo.currentAdItem && 
+        this.props.contentTree && 
+        this.props.currentAdsInfo.currentAdItem.ooyalaAds && 
+        this.props.contentTree.title) {
+      adTitle = this.props.contentTree.title;
+    } else {
+      adTitle = this.props.currentAdsInfo.currentAdItem.name;
+    }
     // AMC puts "Unknown" in the name field if ad name unavailable
     if (this.isValidAdPlaybackInfo(adTitle) && this.props.componentWidth > 560) {
       var adTitleDiv = <AdPanelTopBarItem key="adTitle" ref="adTitle" itemClassName="oo-ad-title">{adTitle}</AdPanelTopBarItem>;
