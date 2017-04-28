@@ -27,7 +27,7 @@ var ResponsiveManagerMixin = {
   },
 
   generateResponsiveData: function() {
-    var componentWidth = ReactDOM.findDOMNode(this).getBoundingClientRect().width;
+    var componentWidth = Math.ceil(ReactDOM.findDOMNode(this).getBoundingClientRect().width);
     var breakpoints = this.props.skinConfig.responsive.breakpoints;
     var breakpointData = {
       classes: {},
