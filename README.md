@@ -17,13 +17,13 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 <head>
   <meta charset="utf-8">
   <!-- V4 JS core and at least one video plugin is required. Plugins such as skin, discovery and Advertising need to be loaded separately -->
-  <script src="//player.ooyala.com/static/v4/stable/4.10.6/core.min.js"></script>
-  <script src="//player.ooyala.com/static/v4/stable/4.10.6/video-plugin/main_html5.min.js"></script>
-  <script src="//player.ooyala.com/static/v4/stable/4.10.6/video-plugin/osmf_flash.min.js"></script>
-  <script src="//player.ooyala.com/static/v4/stable/4.10.6/video-plugin/bit_wrapper.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.13.4/core.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.13.4/video-plugin/main_html5.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.13.4/video-plugin/osmf_flash.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.13.4/video-plugin/bit_wrapper.min.js"></script>
   <!-- Change these html5-skin.min.css and html5-skin.min.js to your local build if necessary -->
-  <script src="//player.ooyala.com/static/v4/stable/4.10.6/skin-plugin/html5-skin.min.js"></script>
-  <link rel="stylesheet" href="//player.ooyala.com/static/v4/stable/4.10.6/skin-plugin/html5-skin.min.css"/>
+  <script src="//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/html5-skin.min.js"></script>
+  <link rel="stylesheet" href="//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/html5-skin.min.css"/>
 </head>
 
 <body>
@@ -136,7 +136,7 @@ Simple customization can be achieved by modifying `skin.json` settings. Furtherm
 ```javascript
 var playerParam = {
   "skin": {
-    "config": "//player.ooyala.com/static/v4/stable/4.10.6/skin-plugin/skin.json",
+    "config": "//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/skin.json",
     "inline": {
       "startScreen": {"showDescription": false, "playIconStyle": {"color": "blue"}}
     }
@@ -146,3 +146,23 @@ var playerParam = {
 
 ### Advanced Customization
 Advanced customization is readily available by modifying JS files. Follow [Developer Setup](#developer-setup) section to create a local repository and to run build script. Built files are available inside build folder. You are welcomed to host your built skin javascript to be run with your player.
+
+##How to Contribute
+
+If you send a pull request, please do it against the [`master` branch](https://github.com/ooyala/html5-skin/tree/master). We maintain stable branches separately but we don't accept pull requests to them directly.
+
+We will do our best to keep the `master` branch in good shape, with tests passing at all times. But our `master` branch is under active development and may contain changes that your application might not be compatible with. We recommend using [latest stable version](https://github.com/ooyala/html5-skin/tree/stable) for production.
+
+###Submitting a Pull Request
+The core team monitors pull requests. We will review your pull request and either merge it, request changes to it, or close it with an explanation.
+
+Before submitting a pull request, please make sure the following is done:
+
+1. Fork the repository and create your branch from `master`.
+
+2. If you've added code that should be tested, [add tests](https://github.com/ooyala/html5-skin#testing)!
+
+3. Ensure the test suite passes (`npm test`).
+
+###Style Guide
+We *mostly* follow [Airbnb's Style Guide](https://github.com/airbnb/javascript).
