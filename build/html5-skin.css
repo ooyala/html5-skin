@@ -785,14 +785,16 @@
     background-repeat: no-repeat;
     background-position: center;
     border-radius: 6px; }
+    .oo-player-container .oo-share-tab-panel .oo-social-icon:last-child, .oo-player-container .oo-share-tab-panel .oo-facebook:last-child, .oo-player-container .oo-share-tab-panel .oo-twitter:last-child, .oo-player-container .oo-share-tab-panel .oo-google-plus:last-child, .oo-player-container .oo-share-tab-panel .oo-email-share:last-child {
+      margin-right: 0; }
   .oo-player-container .oo-share-tab-panel .oo-facebook {
-    background-image: url("//player.ooyala.com/static/v4/stable/4.10.6/skin-plugin/assets/images/social-facebook.svg"); }
+    background-image: url("//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/assets/images/social-facebook.svg"); }
   .oo-player-container .oo-share-tab-panel .oo-twitter {
-    background-image: url("//player.ooyala.com/static/v4/stable/4.10.6/skin-plugin/assets/images/social-twitter.svg"); }
+    background-image: url("//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/assets/images/social-twitter.svg"); }
   .oo-player-container .oo-share-tab-panel .oo-google-plus {
-    background-image: url("//player.ooyala.com/static/v4/stable/4.10.6/skin-plugin/assets/images/social-google.svg"); }
+    background-image: url("//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/assets/images/social-google.svg"); }
   .oo-player-container .oo-share-tab-panel .oo-email-share {
-    background-image: url("//player.ooyala.com/static/v4/stable/4.10.6/skin-plugin/assets/images/social-email.svg");
+    background-image: url("//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/assets/images/social-email.svg");
     background-size: cover; }
   .oo-player-container .oo-share-tab-panel .oo-embed-form {
     resize: none;
@@ -1344,6 +1346,14 @@
   color: #fff !important;
   text-shadow: 1px 1px 2px black !important; }
 
+.oo-player-container video::-webkit-media-controls-panel {
+  display: none !important;
+  -webkit-appearance: none; }
+
+.oo-player-container video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none; }
+
 .oo-player-container button.oo-close-button {
   position: absolute;
   color: #fff;
@@ -1682,7 +1692,13 @@
       padding-right: 7.5px;
       text-align: left;
       position: relative;
-      top: -2px; }
+      top: -2px;
+      cursor: auto;
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      -o-user-select: text;
+      user-select: text; }
       .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper .oo-control-bar-duration .oo-total-time {
         color: #fff; }
         .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper .oo-control-bar-duration .oo-total-time:before {
@@ -3378,6 +3394,10 @@
 .oo-player-container .oo-player-skin {
   overflow: hidden;
   z-index: 11000; }
+
+@-moz-document url-prefix() {
+  .oo-player-container .oo-anamorphic video {
+    object-fit: fill !important; } }
 
 .oo-player-container .oo-blur {
   -webkit-filter: blur(3px);
