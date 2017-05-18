@@ -38,6 +38,9 @@ var ControlBar = React.createClass({
   },
 
   componentWillUnmount: function () {
+    if (this.video) {
+      this.video.removeEventListener('webkitplaybacktargetavailabilitychanged', this.handleAirplayTrigger);
+    }
     this.props.controller.cancelTimer();
     this.closePopovers();
     if (Utils.isAndroid()){
@@ -158,6 +161,22 @@ var ControlBar = React.createClass({
       this.toggleCaptionPopover();
       this.closeQualityPopover();
     }
+  },
+
+  handleChromecastClick: function() {
+    document.getElementById('chromecast-button').click();
+  },
+
+  handleAirplayTrigger: function(event) {
+    if (event.availability === 'available') {
+      this.video.webkitShowPlaybackTargetPicker();
+    }
+  },
+
+  handleAirplayClick: function() {
+    this.video = document.getElementById('container').getElementsByTagName('video')[0];
+    this.video.setAttribute('x-webkit-airplay', 'allow');
+    this.video.addEventListener('webkitplaybacktargetavailabilitychanged', this.handleAirplayTrigger);
   },
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
@@ -361,7 +380,18 @@ var ControlBar = React.createClass({
         clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
         target={this.props.skinConfig.controlBar.logo.target}
         width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
-        height={this.props.skinConfig.controlBar.logo.height}/>
+        height={this.props.skinConfig.controlBar.logo.height}/>,
+
+      "chromecast": <a className="oo-chromecast oo-control-bar-item" onClick={this.handleChromecastClick} key="chromecast">
+        <button id="chromecast-button" is="google-cast-button" style={{ visibility: 'hidden', position: 'absolute', zIndex: -1 }} />
+        <Icon {...this.props} icon="chromecast" style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+      </a>,
+
+      "airplay": <a className="oo-airplay oo-control-bar-item" onClick={this.handleAirplayClick} key="airplay">
+        <Icon {...this.props} icon="airplay" style={dynamicStyles.iconCharacter}
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+      </a>,
     };
 
     var controlBarItems = [];
@@ -437,7 +467,23 @@ var ControlBar = React.createClass({
         continue;
       }
 
-      //not sure what to do when there are multi streams
+      //do not show chromecast if unsupported
+      try {
+        if ((defaultItems[k].name === "chromecast") && (!(chrome && chrome.cast && chrome.cast.isAvailable))) {
+          continue;
+        }
+      } catch(e) {
+        if (defaultItems[k].name === "chromecast") {
+          continue;
+        }
+      }
+
+      //do not show airplay if unsupported
+      if (!window.WebKitPlaybackTargetAvailabilityEvent && (defaultItems[k].name === "airplay")) {
+        continue;
+      }
+
+      // Not sure what to do when there are multi streams
       if (defaultItems[k].name === "live" &&
         (typeof this.props.isLiveStream === 'undefined' ||
         !(this.props.isLiveStream))) {

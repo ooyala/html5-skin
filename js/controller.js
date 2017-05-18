@@ -22,7 +22,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "<SKIN_VERSION>", "rev": "<SKIN_REV>"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.11.13", "rev": "<SKIN_REV>"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -282,6 +282,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayerDestroy: function (event) {
+      this.accessibilityControls.unmount();
       var elementId = this.state.elementId;
       var mountNode = document.querySelector('#' + elementId + ' .oo-player-skin');
       // remove mounted Skin component
@@ -1162,7 +1163,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      Skin state -> control skin
      ---------------------------------------------------------------------*/
     renderSkin: function(args) {
-      if (this.state.configLoaded) {
+      if (this.state.configLoaded && this.mb) {
         if (args) {
           this.state = DeepMerge(this.state, args);
         }
