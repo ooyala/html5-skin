@@ -164,10 +164,7 @@ var ControlBar = React.createClass({
   },
 
   handleChromecastClick: function() {
-    var a = new chrome.cast.SessionRequest;
-    var c = new chrome.cast.ApiConfig(a, function() {}, function() {});
-    chrome.cast.initialize(c, function() {}, function() {});
-    chrome.cast.requestSession(function() {}, function() {});
+    document.getElementById('chromecast-button').click();
   },
 
   handleAirplayTrigger: function(event) {
@@ -386,6 +383,7 @@ var ControlBar = React.createClass({
         height={this.props.skinConfig.controlBar.logo.height}/>,
 
       "chromecast": <a className="oo-chromecast oo-control-bar-item" onClick={this.handleChromecastClick} key="chromecast">
+        <button id="chromecast-button" is="google-cast-button" style={{ visibility: 'hidden', position: 'absolute', zIndex: -1 }} />
         <Icon {...this.props} icon="chromecast" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </a>,
