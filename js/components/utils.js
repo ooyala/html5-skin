@@ -212,35 +212,49 @@ var Utils = {
   */
   getLanguageToUse: function(skinConfig) {
     var localization = skinConfig.localization;
-    var language, availableLanguages;
+    var language;
 
-    // set lang to default lang in skin config
-    language = localization.defaultLanguage;
+    // check browser lang settings
+    language = this.getBrowserLanguageSetting(localization);
 
-    // if no default lang in skin config check browser lang settings
+    // if no available lang use default lang in skin config
     if(!language) {
-      if(window.navigator.languages){
-        // A String, representing the language version of the browser.
-        // Examples of valid language codes are: "en", "en-US", "de", "fr", etc.
-        language = window.navigator.languages[0];
-      }
-      else {
-        // window.navigator.browserLanguage: current operating system language
-        // window.navigator.userLanguage: operating system's natural language setting
-        // window.navigator.language: the preferred language of the user, usually the language of the browser UI
-        language = window.navigator.browserLanguage || window.navigator.userLanguage || window.navigator.language;
-      }
+      language = localization.defaultLanguage;
+    }
+    return language;
+  },
 
-      // remove lang sub-code
-      var primaryLanguage = language.substr(0,2);
+  /**
+  * Get the primary lang in borowser settings
+  *
+  * @function getBrowserLanguageSetting
+  * @param {Object} localization - Localization section in the skin configuration file
+  * @returns {String} The ISO code
+  */
+  getBrowserLanguageSetting: function(localization) {
+    var language, primaryLanguage, availableLanguages;
 
-      // check available lang file for browser lang
-      for(var i = 0; i < localization.availableLanguageFile.length; i++) {
-        availableLanguages = localization.availableLanguageFile[i];
-        // if lang file available set lang to browser primary lang
-        if (primaryLanguage == availableLanguages.language){
-          language = primaryLanguage;
-        }
+    if(window.navigator.languages){
+      // A String, representing the language version of the browser.
+      // Examples of valid language codes are: "en", "en-US", "de", "fr", etc.
+      primaryLanguage = window.navigator.languages[0];
+    }
+    else {
+      // window.navigator.browserLanguage: current operating system language
+      // window.navigator.userLanguage: operating system's natural language setting
+      // window.navigator.language: the preferred language of the user, usually the language of the browser UI
+      primaryLanguage = window.navigator.browserLanguage || window.navigator.userLanguage || window.navigator.language;
+    }
+
+    // remove lang sub-code
+    primaryLanguage = primaryLanguage.substr(0,2);
+
+    // check available lang file for browser lang
+    for(var i = 0; i < localization.availableLanguageFile.length; i++) {
+      availableLanguages = localization.availableLanguageFile[i];
+      // if lang file available set lang to browser primary lang
+      if (primaryLanguage == availableLanguages.language){
+        language = primaryLanguage;
       }
     }
     return language;
