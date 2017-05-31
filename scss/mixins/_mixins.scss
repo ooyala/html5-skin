@@ -1,10 +1,15 @@
+
+@mixin highlight-base() {
+  opacity: 1.0;
+  filter: drop-shadow(0px 0px 3px rgba(255,255,255,0.8));
+  -webkit-filter: drop-shadow(0px 0px 3px rgba(255,255,255,0.8));
+  -ms-filter: progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff');
+}
+
 // Credit: https://github.com/twbs/bootstrap/tree/v4-dev/scss/mixins
 @mixin highlight() {
   &:hover {
-    opacity: 1.0;
-    filter: drop-shadow(0px 0px 3px rgba(255,255,255,0.8));
-    -webkit-filter: drop-shadow(0px 0px 3px rgba(255,255,255,0.8));
-    -ms-filter: progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff');
+    @include highlight-base();
   }
 }
 

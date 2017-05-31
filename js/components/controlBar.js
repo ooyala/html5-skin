@@ -191,23 +191,34 @@ var ControlBar = React.createClass({
 
   populateControlBar: function() {
     var dynamicStyles = this.setupItemStyle();
-    var playIcon = "";
+    var playIcon, playPauseAriaLabel;
     if (this.props.playerState == CONSTANTS.STATE.PLAYING) {
       playIcon = "pause";
+      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PAUSE;
     } else if (this.props.playerState == CONSTANTS.STATE.END) {
       playIcon = "replay";
+      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.REPLAY;
     } else {
       playIcon = "play";
+      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PLAY;
     }
 
-    var volumeIcon = (this.props.controller.state.volumeState.muted ? "volumeOff" : "volume");
+    var volumeIcon, volumeAriaLabel;
+    if (this.props.controller.state.volumeState.muted) {
+      volumeIcon = "volumeOff";
+      volumeAriaLabel = CONSTANTS.ARIA_LABELS.UNMUTE;
+    } else {
+      volumeIcon = "volume";
+      volumeAriaLabel = CONSTANTS.ARIA_LABELS.MUTE;
+    }
 
-    var fullscreenIcon = "";
+    var fullscreenIcon, fullscreenAriaLabel;
     if (this.props.controller.state.fullscreen) {
-      fullscreenIcon = "compress"
-    }
-    else {
+      fullscreenIcon = "compress";
+      fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.EXIT_FULLSCREEN;
+    } else {
       fullscreenIcon = "expand";
+      fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
 
     var totalTime = 0;
@@ -286,7 +297,12 @@ var ControlBar = React.createClass({
     selectedStyle["color"] = this.props.skinConfig.general.accentColor ? this.props.skinConfig.general.accentColor : null;
 
     var controlItemTemplates = {
-      "playPause": <a className="oo-play-pause oo-control-bar-item" onClick={this.handlePlayClick} key="playPause">
+      "playPause": <a className="oo-play-pause oo-control-bar-item"
+        onClick={this.handlePlayClick}
+        key="playPause"
+        tabIndex="0"
+        aria-label={playPauseAriaLabel}
+        role="button">
         <Icon {...this.props} icon={playIcon}
           style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
@@ -300,10 +316,15 @@ var ControlBar = React.createClass({
       </a>,
 
       "volume": <div className="oo-volume oo-control-bar-item" key="volume">
-        <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
-          style={this.props.skinConfig.controlBar.iconStyle.inactive}
+        <a className="oo-mute-unmute oo-control-bar-item"
           onClick={this.handleVolumeIconClick}
-          onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}/>
+          tabIndex="0"
+          aria-label={volumeAriaLabel}
+          role="button">
+          <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
+            style={this.props.skinConfig.controlBar.iconStyle.inactive}
+            onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}/>
+        </a>
         {volumeControls}
       </div>,
 
@@ -352,7 +373,11 @@ var ControlBar = React.createClass({
       </a>,
 
       "fullscreen": <a className="oo-fullscreen oo-control-bar-item"
-        onClick={this.handleFullscreenClick} key="fullscreen">
+        onClick={this.handleFullscreenClick}
+        key="fullscreen"
+        tabIndex="0"
+        aria-label={fullscreenAriaLabel}
+        role="button">
         <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </a>,

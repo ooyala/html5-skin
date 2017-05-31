@@ -240,6 +240,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       //initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');
       this.state.mainVideoInnerWrapper.addClass('oo-player');
+      this.state.mainVideoInnerWrapper.attr('aria-label', CONSTANTS.ARIA_LABELS.VIDEO_PLAYER);
+      this.state.mainVideoInnerWrapper.attr('tabindex', '-1');
       this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
 
       //load player with page level config param if exist

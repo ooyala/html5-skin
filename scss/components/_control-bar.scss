@@ -71,6 +71,16 @@
       opacity:1 !important;
     }
 
+    a.oo-control-bar-item:focus .oo-icon {
+      @include highlight-base();
+      opacity: 1 !important;
+    }
+
+    a.oo-control-bar-item.oo-mute-unmute {
+      height: auto;
+      padding: 0;
+    }
+
     .oo-control-bar-item.oo-logo {
       cursor: auto;
     }
