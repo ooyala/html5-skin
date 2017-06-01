@@ -98,13 +98,12 @@ var EndScreen = React.createClass({
           {descriptionMetadata}
         </div>
 
-        <a className={actionIconClass}
+        <button className={actionIconClass}
           onClick={this.handleClick}
           tabIndex="0"
-          aria-label={CONSTANTS.ARIA_LABELS.REPLAY}
-          role="button">
+          aria-label={CONSTANTS.ARIA_LABELS.REPLAY}>
           <Icon {...this.props} icon="replay" style={actionIconStyle}/>
-        </a>
+        </button>
 
         <div className="oo-interactive-container">
           <ControlBar {...this.props}

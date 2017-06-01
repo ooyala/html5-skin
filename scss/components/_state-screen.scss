@@ -110,6 +110,13 @@
     left:-3%;
   }
 
+  button.oo-action-icon {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+  }
+
   .oo-action-icon {
     @extend .oo-center-vertical-horizontal;
     cursor: pointer;

@@ -297,16 +297,15 @@ var ControlBar = React.createClass({
     selectedStyle["color"] = this.props.skinConfig.general.accentColor ? this.props.skinConfig.general.accentColor : null;
 
     var controlItemTemplates = {
-      "playPause": <a className="oo-play-pause oo-control-bar-item"
+      "playPause": <button className="oo-play-pause oo-control-bar-item"
         onClick={this.handlePlayClick}
         key="playPause"
         tabIndex="0"
-        aria-label={playPauseAriaLabel}
-        role="button">
+        aria-label={playPauseAriaLabel}>
         <Icon {...this.props} icon={playIcon}
           style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </a>,
+      </button>,
 
       "live": <a className={liveClass}
         ref="LiveButton"
@@ -316,15 +315,14 @@ var ControlBar = React.createClass({
       </a>,
 
       "volume": <div className="oo-volume oo-control-bar-item" key="volume">
-        <a className="oo-mute-unmute oo-control-bar-item"
+        <button className="oo-mute-unmute oo-control-bar-item"
           onClick={this.handleVolumeIconClick}
           tabIndex="0"
-          aria-label={volumeAriaLabel}
-          role="button">
+          aria-label={volumeAriaLabel}>
           <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
             style={this.props.skinConfig.controlBar.iconStyle.inactive}
             onMouseOver={this.volumeHighlight} onMouseOut={this.volumeRemoveHighlight}/>
-        </a>
+        </button>
         {volumeControls}
       </div>,
 
@@ -372,15 +370,14 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </a>,
 
-      "fullscreen": <a className="oo-fullscreen oo-control-bar-item"
+      "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
         onClick={this.handleFullscreenClick}
         key="fullscreen"
         tabIndex="0"
-        aria-label={fullscreenAriaLabel}
-        role="button">
+        aria-label={fullscreenAriaLabel}>
         <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </a>,
+      </button>,
 
       "logo": <Logo key="logo" imageUrl={this.props.skinConfig.controlBar.logo.imageResource.url}
         clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}

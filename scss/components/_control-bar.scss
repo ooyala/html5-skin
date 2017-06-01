@@ -59,9 +59,10 @@
       padding-right:0 !important;
     }
 
-    a.oo-control-bar-item {
+    a.oo-control-bar-item,
+    button.oo-control-bar-item {
       background-color: transparent;
-      border:0;
+      border: 0;
       outline: none;
     }
 
@@ -71,12 +72,12 @@
       opacity:1 !important;
     }
 
-    a.oo-control-bar-item:focus .oo-icon {
+    .oo-control-bar-item:focus .oo-icon {
       @include highlight-base();
       opacity: 1 !important;
     }
 
-    a.oo-control-bar-item.oo-mute-unmute {
+    .oo-control-bar-item.oo-mute-unmute {
       height: auto;
       padding: 0;
     }
