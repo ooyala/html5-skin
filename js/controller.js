@@ -78,6 +78,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoPlayhead": 0,
       "adVideoPlayhead": 0,
       "focusedElement": null,
+      "playPauseButtonFocused": false,
 
       "currentAdsInfo": {
         "currentAdItem": null,

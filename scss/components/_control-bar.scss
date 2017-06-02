@@ -64,6 +64,13 @@
       background-color: transparent;
       border: 0;
       outline: none;
+
+      // Workaround for Safari clipping text shadows
+      // inside buttons
+      .oo-icon {
+        display: inline-block;
+        transform: translateZ(0);
+      }
     }
 
     .oo-control-bar-item.oo-selected > span {

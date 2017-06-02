@@ -129,8 +129,12 @@
     }
   }
 
-  .oo-action-icon:focus .oo-icon {
+  .oo-action-icon:focus {
     @include highlight-base();
+  }
+
+  .oo-action-icon:active {
+    text-shadow: none;
   }
 
   .oo-action-icon-top {
