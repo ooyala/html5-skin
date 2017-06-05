@@ -162,6 +162,39 @@ describe('Utils', function () {
     expect(existingVal).toEqual('value');
   });
 
+  it('tests elementHasClass', function() {
+    var element = document.createElement('div');
+    element.className = 'oo-icon';
+    expect(Utils.elementHasClass(element, 'oo-icon')).toBe(true);
+    element.className = 'fancy oo-icon pants';
+    expect(Utils.elementHasClass(element, 'oo-icon')).toBe(true);
+    element.className = 'fancy pants oo-icon';
+    expect(Utils.elementHasClass(element, 'oo-icon')).toBe(true);
+    element.className = 'fancy oo-icons pants';
+    expect(Utils.elementHasClass(element, 'oo-icon')).toBe(false);
+  });
+
+  it('tests getEventIconElement', function() {
+    var iconElement = document.createElement('span');
+    var buttonElement = document.createElement('button');
+    iconElement.className = 'oo-icon';
+    buttonElement.appendChild(iconElement);
+
+    var nestedIconElement = document.createElement('span');
+    var divElement = document.createElement('div');
+    var nestedDivElement = document.createElement('div');
+    nestedIconElement.className = 'oo-custom-icon';
+    divElement.appendChild(nestedDivElement);
+    nestedDivElement.appendChild(nestedIconElement);
+
+    var extractedElement1 = Utils.getEventIconElement({ currentTarget: buttonElement });
+    expect(extractedElement1).toBe(iconElement);
+    var extractedElement2 = Utils.getEventIconElement({ currentTarget: iconElement });
+    expect(extractedElement2).toBe(iconElement);
+    var extractedElement3 = Utils.getEventIconElement({ currentTarget: divElement }, 'oo-custom-icon');
+    expect(extractedElement3).toBe(nestedIconElement);
+  });
+
   it('tests highlight', function () {
     var div = document.createElement('div');
     var opacity = '0.6';

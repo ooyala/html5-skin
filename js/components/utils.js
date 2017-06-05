@@ -317,7 +317,7 @@ var Utils = {
    * @param {String} className The name of the class we want to match
    * @return {Boolean} True if the element contains the given class, false otherwise
    */
-  hasClass: function(element, className) {
+  elementHasClass: function(element, className) {
     if (!element) {
       return false;
     }
@@ -343,7 +343,7 @@ var Utils = {
     if (currentTarget) {
       // Check to see if the target itself is the icon, otherwise get
       // the first icon child
-      if (this.hasClass(currentTarget, classToMatch)) {
+      if (this.elementHasClass(currentTarget, classToMatch)) {
         iconElement = currentTarget;
       } else {
         iconElement = currentTarget.querySelector('.' + classToMatch);
