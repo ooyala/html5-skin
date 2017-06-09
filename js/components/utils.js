@@ -361,6 +361,9 @@ var Utils = {
   highlight: function(target, opacity, color) {
     target.style.opacity = opacity;
     target.style.color = color;
+    // HEADSUP
+    // This is currently the same style as the one used in _mixins.scss. 
+    // We should change both styles whenever we update this.
     target.style.textShadow = "0px 0px 3px rgba(255, 255, 255, 0.5), 0px 0px 6px rgba(255, 255, 255, 0.5), 0px 0px 9px rgba(255, 255, 255, 0.5)";
   },
 
