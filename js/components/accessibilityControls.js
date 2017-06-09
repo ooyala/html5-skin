@@ -23,8 +23,17 @@ AccessibilityControls.prototype = {
     var currentTime;
     var newPlayheadTime;
     var newVolume;
+    var targetTagName;
 
-    if (e.keyCode === CONSTANTS.KEYCODES.SPACE_KEY){
+    if (e.target && typeof e.target.tagName === "string") {
+      targetTagName = e.target.tagName.toLowerCase();
+    }
+
+    // We override the default behavior when the target element is a button (pressing
+    // the spacebar on a button should activate it).
+    // Note that this is not a comprehensive fix for all clickable elements, this is
+    // mostly meant to enable keyboard navigation on control bar elements.
+    if (e.keyCode === CONSTANTS.KEYCODES.SPACE_KEY && targetTagName !== "button") {
       e.preventDefault();
       this.controller.togglePlayPause();
     }

@@ -15,6 +15,34 @@ var Utils = require('../../js/components/utils');
 
 // start unit test
 describe('ControlBar', function () {
+
+  var baseMockController, baseMockProps;
+  var defaultSkinConfig = JSON.parse(JSON.stringify(skinConfig));
+
+  // TODO
+  // Old unit tests should use the base mock controller and props
+  // instead of defining them manually each time
+  beforeEach(function() {
+    baseMockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
+      }
+    };
+
+    baseMockProps = {
+      isLiveStream: false,
+      controller: baseMockController,
+      skinConfig: JSON.parse(JSON.stringify(defaultSkinConfig))
+    };
+  });
+
   it('creates a control bar', function () {
 
     var mockController = {
@@ -243,6 +271,79 @@ describe('ControlBar', function () {
     var playButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause').firstChild;
     TestUtils.Simulate.click(playButton);
     expect(playClicked).toBe(true);
+  });
+
+  it('should render default state aria labels', function() {
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+      { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
+      { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+    ];
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={baseMockProps.isLiveStream} />
+    );
+
+    var playPauseButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause');
+    var muteUnmuteButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').querySelector('.oo-mute-unmute');
+    var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
+    expect(playPauseButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PAUSE);
+    expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.MUTE);
+    expect(fullscreenButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.FULLSCREEN);
+  });
+
+  it('should render alternate state aria labels', function() {
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+      { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
+      { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+    ];
+
+    baseMockController.state.fullscreen = true;
+    baseMockController.state.volumeState.muted = true;
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PAUSED}
+        isLiveStream={baseMockProps.isLiveStream} />
+    );
+
+    var playPauseButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause');
+    var muteUnmuteButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').querySelector('.oo-mute-unmute');
+    var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
+    expect(playPauseButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PLAY);
+    expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.UNMUTE);
+    expect(fullscreenButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.EXIT_FULLSCREEN);
+  });
+
+  it('should store playPause button focus state', function() {
+    baseMockController.state.playPauseButtonFocused = false;
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 }
+    ];
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={baseMockProps.isLiveStream} />
+    );
+
+    var playPauseButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause');
+    TestUtils.Simulate.focus(playPauseButton);
+    expect(baseMockController.state.playPauseButtonFocused).toBe(true);
+    TestUtils.Simulate.blur(playPauseButton);
+    expect(baseMockController.state.playPauseButtonFocused).toBe(false);
   });
 
   it('to toggle share screen', function() {

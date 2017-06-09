@@ -100,9 +100,12 @@ var StartScreen = React.createClass({
     var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.state.descriptionText}</div>);
 
     var actionIcon = (
-      <a className={actionIconClass} onClick={this.handleClick}>
+      <button className={actionIconClass}
+        onClick={this.handleClick}
+        tabIndex="0"
+        aria-label={CONSTANTS.ARIA_LABELS.START_PLAYBACK}>
         <Icon {...this.props} icon={iconName} style={actionIconStyle}/>
-      </a>
+      </button>
     );
 
     return (
