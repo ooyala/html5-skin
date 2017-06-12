@@ -397,6 +397,7 @@ var ControlBar = React.createClass({
 
       "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
         onClick={this.handleFullscreenClick}
+        onMouseUp={this.blurOnMouseUp}
         onMouseOver={this.highlight}
         onMouseOut={this.removeHighlight}
         key="fullscreen"

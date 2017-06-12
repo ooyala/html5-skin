@@ -69,7 +69,7 @@
       // inside buttons
       .oo-icon {
         display: inline-block;
-        transform: translateZ(0);
+        @include vendor-prefixes(transform, translateZ(0));
       }
     }
 

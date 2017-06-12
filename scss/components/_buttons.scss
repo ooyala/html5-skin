@@ -14,7 +14,7 @@ button.oo-close-btn {
 // inside buttons
 button.oo-close-button .oo-icon {
   display: inline-block;
-  transform: translateZ(0);
+  @include vendor-prefixes(transform, translateZ(0));
 }
 
 button.oo-up-next-close-btn {
