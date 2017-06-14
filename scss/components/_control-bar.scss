@@ -59,16 +59,34 @@
       padding-right:0 !important;
     }
 
-    a.oo-control-bar-item {
+    a.oo-control-bar-item,
+    button.oo-control-bar-item {
       background-color: transparent;
-      border:0;
+      border: 0;
       outline: none;
+
+      // Workaround for Safari clipping text shadows
+      // inside buttons
+      .oo-icon {
+        display: inline-block;
+        @include vendor-prefixes(transform, translateZ(0));
+      }
     }
 
     .oo-control-bar-item.oo-selected > span {
       color:$blue-light !important;
       color: inherit !important;
       opacity:1 !important;
+    }
+
+    .oo-control-bar-item:focus .oo-icon {
+      @include highlight-base();
+      opacity: 1 !important;
+    }
+
+    .oo-control-bar-item.oo-mute-unmute {
+      height: auto;
+      padding: 0;
     }
 
     .oo-control-bar-item.oo-logo {

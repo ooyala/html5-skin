@@ -110,15 +110,31 @@
     left:-3%;
   }
 
+  button.oo-action-icon {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+  }
+
   .oo-action-icon {
     @extend .oo-center-vertical-horizontal;
     cursor: pointer;
+    outline: none;
 
     span.oo-icon {
       font-size: 150px;
       opacity: 1;
       color: white;
     }
+  }
+
+  .oo-action-icon:focus {
+    @include highlight-base();
+  }
+
+  .oo-action-icon:active {
+    text-shadow: none;
   }
 
   .oo-action-icon-top {

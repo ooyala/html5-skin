@@ -4,6 +4,7 @@
 var React = require('react'),
     ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
+    CONSTANTS = require('../constants/constants'),
     ControlBar = require('../components/controlBar'),
     Watermark = require('../components/watermark'),
     Icon = require('../components/icon'),
@@ -97,9 +98,12 @@ var EndScreen = React.createClass({
           {descriptionMetadata}
         </div>
 
-        <a className={actionIconClass} onClick={this.handleClick}>
+        <button className={actionIconClass}
+          onClick={this.handleClick}
+          tabIndex="0"
+          aria-label={CONSTANTS.ARIA_LABELS.REPLAY}>
           <Icon {...this.props} icon="replay" style={actionIconStyle}/>
-        </a>
+        </button>
 
         <div className="oo-interactive-container">
           <ControlBar {...this.props}

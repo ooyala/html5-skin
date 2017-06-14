@@ -87,6 +87,18 @@ module.exports = {
     SHADOW: "Shadow"
   },
 
+  ARIA_LABELS: {
+    VIDEO_PLAYER: "Video Player",
+    START_PLAYBACK: "Start Playback",
+    PLAY: "Play",
+    PAUSE: "Pause",
+    REPLAY: "Replay",
+    MUTE: "Mute",
+    UNMUTE: "Unmute",
+    FULLSCREEN: "Fullscreen",
+    EXIT_FULLSCREEN: "Exit Fullscreen",
+  },
+
   KEYCODES: {
     SPACE_KEY: 32,
     LEFT_ARROW_KEY: 37,
