@@ -242,6 +242,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.mainVideoContainer.addClass('oo-player-container');
       this.state.mainVideoInnerWrapper.addClass('oo-player');
       this.state.mainVideoInnerWrapper.attr('aria-label', CONSTANTS.ARIA_LABELS.VIDEO_PLAYER);
+      // Setting the tabindex will let some screen readers recognize this element as a group
+      // identified with the ARIA label above. We set it to -1 in order to prevent actual keyboard focus
       this.state.mainVideoInnerWrapper.attr('tabindex', '-1');
       this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
 
