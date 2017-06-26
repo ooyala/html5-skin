@@ -5641,7 +5641,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.10.4", "rev": "3aeb8c5d8ddedcc1fde6da593cef3516a19b4001"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.10.4", "rev": "996115cd2a4cafee939cc62b65f642ba7387f67f"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -5969,11 +5969,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onAttributesFetched: function (event, attributes) {
       this.state.attributes = attributes;
-      //anamorphic videos
-      var isAnamorphic = Utils.getPropertyValue(this.state.attributes, 'provider.ots_stretch_to_output');
-      if (isAnamorphic == true || isAnamorphic == "true") {
-        this.state.mainVideoInnerWrapper.addClass('oo-anamorphic');
-      }
+      // This is the first point at which we know whether the video is anamorphic or not,
+      // apply fix if necessary
+      this.trySetAnamorphicFixState(true);
     },
 
     onThumbnailsFetched: function (event, thumbnails) {
@@ -6301,12 +6299,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isPlayingAd = false;
       this.state.pluginsElement.removeClass("oo-showing");
       this.state.pluginsClickElement.removeClass("oo-showing");
+      // Restore anamorphic videos fix after ad playback if necessary
+      this.trySetAnamorphicFixState(true);
       this.renderSkin();
     },
 
     onWillPlayAds: function(event) {
       OO.log("onWillPlayAds is called from event = " + event);
       this.state.isPlayingAd = true;
+      // Anamorphic videos fix should not be active during ad playback
+      this.trySetAnamorphicFixState(false);
       this.state.pluginsElement.addClass("oo-showing");
       this.state.pluginsElement.css({
         height: "",
@@ -7103,6 +7105,32 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       this.renderSkin();
       this.mb.publish(OO.EVENTS.SAVE_PLAYER_SETTINGS, this.state.persistentSettings);
+    },
+
+    /**
+     * Used to enable or disable the CSS workaround that prevents anamorphic videos from
+     * being distorted on Firefox. The fix will only be enabled if ots_stretch_to_output
+     * is set to true in the player attributes.
+     * Note that currently the oo-anamorphic class has effect only on Firefox.
+     * @param {boolen} enabled A value that determines whether to enable or disable the anamorphic videos CSS fix.
+     */
+    trySetAnamorphicFixState: function(enabled) {
+      if (!this.state || !this.state.mainVideoInnerWrapper) {
+        return;
+      }
+
+      if (enabled) {
+        var isAnamorphic = Utils.getPropertyValue(this.state.attributes, 'provider.ots_stretch_to_output');
+
+        // Only enable anamorphic videos fix if video actually requires it
+        if (isAnamorphic === true || isAnamorphic === 'true') {
+          this.state.mainVideoInnerWrapper.addClass('oo-anamorphic');
+          OO.log('Anamorphic video fix: ON');
+        }
+      } else {
+        this.state.mainVideoInnerWrapper.removeClass('oo-anamorphic');
+        OO.log('Anamorphic video fix: OFF');
+      }
     },
 
     toggleClosedCaptionEnabled: function() {
