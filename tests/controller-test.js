@@ -180,6 +180,7 @@ OO = {
       exitFullWindow: function() {},
       exitFullWindowOnEscKey: function() {},
       onBuffered: function() {},
+      onInitialPlayRequested: function() {},
       unsubscribeBasicPlaybackEvents: function() {},
       resetUpNextInfo: function(a) {},
       showUpNextScreenWhenReady: function(a,b) {},
@@ -553,6 +554,43 @@ OO = {
     div.appendChild(flashVideoElement);
     Html5Skin.findMainVideoElement.call(controllerMock, div);
     Html5Skin.findMainVideoElement.call(controllerMock, {0:videoElement});
+
+    describe('Controller testing skin initialization', function() {
+      // TODO
+      // This gets cleared up below in the "destroy" tests due to the way this
+      // test suite is currently set up. We need a lot of refactoring to fix this,
+      // so we're working around it for now
+      var mb = controllerMock.mb;
+      var messageBusSpy;
+
+      beforeEach(function() {
+        controllerMock.mb = mb;
+        messageBusSpy = sinon.spy(controllerMock.mb, 'publish');
+      });
+
+      afterEach(function() {
+        messageBusSpy.restore();
+      });
+
+      it('should show Start Screen after player created', function() {
+        Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', 'elementId', {});
+        expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
+      });
+
+      it('should raise INITIAL_PLAY_REQUESTED event when toggling play/pause on Start Screen', function() {
+        Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', 'elementId', {});
+        Html5Skin.togglePlayPause.call(controllerMock);
+        expect(messageBusSpy.calledOnce).toBe(true);
+        expect(messageBusSpy.calledWith(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED)).toBe(true);
+      });
+
+      it('should publish INITIAL_PLAY after INITIAL_PLAY_REQUESTED', function() {
+        Html5Skin.onInitialPlayRequested.call(controllerMock);
+        expect(messageBusSpy.calledOnce).toBe(true);
+        expect(messageBusSpy.args.length).toBe(1);
+        expect(messageBusSpy.calledWith(OO.EVENTS.INITIAL_PLAY)).toBe(true);
+      });
+    });
 
     describe('Controller testing Ooyala Ads', function () {
       it('test after Ooyala ad state', function() {
