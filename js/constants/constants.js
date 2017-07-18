@@ -26,6 +26,10 @@ module.exports = {
     ERROR_SCREEN: "errorScreen"
   },
 
+  CUSTOM_EVENTS: {
+    INITIAL_PLAY_REQUESTED: 'html5SkinInitialPlayRequested'
+  },
+
   SKIN_TEXT: {
     LEARN_MORE: "Learn More",
     CLOSED_CAPTION_PREVIEW: "CLOSED CAPTION PREVIEW",
