@@ -164,9 +164,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
-      this.mb.subscribe(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED, "customerUi", _.bind(this.onInitialPlayRequested, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
-      this.mb.addDependent(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED, OO.EVENTS.PLAYBACK_READY);
       this.state.isPlaybackReadySubscribed = true;
     },
 
@@ -260,7 +258,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
 
       this.accessibilityControls = new AccessibilityControls(this); //keyboard support
-      this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -669,17 +667,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoAspectRatio = this.calculateAspectRatio(params.width, params.height);
         this.setAspectRatio();
       }
-    },
-
-    /**
-     * Handles the custom INITIAL_PLAY_REQUESTED skin event. This event is used in
-     * order to defer INITIAL_PLAY until PLAYBACK_READY has been fired. Doing this allows
-     * us to display the big play button before the player finishes loading. If the user
-     * clicks on the button before PLAYBACK_READY, the player will simply show the loading
-     * spinner and INITIAL_PLAY will be automatically fired after PLAYBACK_READY itself fires.
-     */
-    onInitialPlayRequested: function() {
-      this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());
     },
 
     /********************************************************************
@@ -1132,8 +1119,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE_AFTER_OOYALA_AD, 'customerUi');
-      // custom skin events
-      this.mb.unsubscribe(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED, "customerUi");
     },
 
     unsubscribeBasicPlaybackEvents: function() {
@@ -1241,7 +1226,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     togglePlayPause: function() {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
-          this.mb.publish(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED);
+          this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());
           break;
         case CONSTANTS.STATE.END:
           if(Utils.isAndroid() || Utils.isIos()) {

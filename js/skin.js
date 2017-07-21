@@ -87,6 +87,14 @@ var Skin = React.createClass({
     //switch screenToShow
     else {
       switch (this.state.screenToShow) {
+        case CONSTANTS.SCREEN.INITIAL_SCREEN:
+          screen = (
+            <StartScreen {...this.props}
+              componentWidth={this.state.componentWidth}
+              contentTree={this.state.contentTree}
+              isInitializing={true} />
+          );
+          break;
         case CONSTANTS.SCREEN.LOADING_SCREEN:
           screen = (
             <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/>
@@ -96,7 +104,8 @@ var Skin = React.createClass({
           screen = (
             <StartScreen {...this.props}
               componentWidth={this.state.componentWidth}
-              contentTree={this.state.contentTree} />
+              contentTree={this.state.contentTree}
+              isInitializing={false} />
           );
           break;
         case CONSTANTS.SCREEN.PLAYING_SCREEN:
