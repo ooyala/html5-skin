@@ -11,6 +11,7 @@ module.exports = {
   },
 
   SCREEN: {
+    INITIAL_SCREEN: "initialScreen",
     START_SCREEN: "startScreen",
     PLAYING_SCREEN: "playingScreen",
     PAUSE_SCREEN: "pauseScreen",
@@ -24,10 +25,6 @@ module.exports = {
     CLOSEDCAPTION_SCREEN: "closedCaptionScreen",
     VIDEO_QUALITY_SCREEN: "videoQualityScreen",
     ERROR_SCREEN: "errorScreen"
-  },
-
-  CUSTOM_EVENTS: {
-    INITIAL_PLAY_REQUESTED: 'html5SkinInitialPlayRequested'
   },
 
   SKIN_TEXT: {
