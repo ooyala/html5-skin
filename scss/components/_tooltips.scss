@@ -1,0 +1,77 @@
+.oo-tooltip::before {
+  content: attr(data-tip) ;
+  font-family: "Roboto Condensed", sans-serif;
+  text-shadow: none;
+  position:absolute;
+  z-index: 99999999;
+  background: black;
+  color: white;
+  border-radius: 3px;
+  opacity: 0;
+  font-size: 15px;
+  padding: 8px 20px 8px 20px;
+  bottom: 59px;
+}
+
+.oo-xsmall .oo-tooltip::before {
+  font-size: 10px;
+  padding: 7px 13px 7px 13px;
+  bottom: 43px;
+}
+
+.oo-small .oo-tooltip::before {
+  font-size: 12px;
+}
+
+.oo-medium .oo-tooltip::before {
+  font-size: 14px;
+}
+
+.oo-tooltip:hover::before {
+  opacity: 0.8;
+  animation: OOTooltip 2s;
+}
+
+.oo-tooltip.oo-tooltip-left::before {
+  left: inherit;
+  right: 0%;
+}
+
+.oo-tooltip.oo-tooltip-center::before {
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.oo-tooltip.oo-tooltip-right::before {
+  left: 0%;
+  right: inherit;
+}
+
+.oo-tooltip::after {
+  content: "";
+  position: absolute;
+  z-index: 99999999;
+  white-space: nowrap;
+  top: -36px;
+  left: 25%;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid black;
+  opacity: 0;
+}
+
+.oo-xsmall .oo-tooltip::after {
+  top: -26px;
+}
+
+@keyframes OOTooltip {
+  0% {opacity: 0;}
+  25% {opacity: 0;}
+  50% {opacity: 0;}
+  100% {opacity: 0.8;}
+}
+
+.oo-tooltip:hover::after {
+  opacity: 0.8;
+  animation: OOTooltip 2s;
+}
