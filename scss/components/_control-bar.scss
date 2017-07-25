@@ -81,6 +81,13 @@
 
     .oo-control-bar-item:focus .oo-icon {
       @include highlight-base();
+      @include highlight-tab();
+      opacity: 1 !important;
+    }
+
+    .oo-control-bar-item:hover .oo-icon {
+      @include highlight-base();
+      @include remove-highlight-tab();
       opacity: 1 !important;
     }
 

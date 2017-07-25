@@ -119,9 +119,9 @@ var PauseScreen = React.createClass({
           {this.props.skinConfig.pauseScreen.showDescription ? descriptionMetadata : null}
         </div>
 
-        <a className={actionIconClass} onClick={this.handleClick}>
+        <button className={actionIconClass} onClick={this.handleClick} aria-hidden="true">
           <Icon {...this.props} icon="pause" style={actionIconStyle}/>
-        </a>
+        </button>
 
         <div className="oo-interactive-container">
           {this.props.closedCaptionOptions.enabled ?

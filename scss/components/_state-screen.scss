@@ -131,6 +131,12 @@
 
   .oo-action-icon:focus {
     @include highlight-base();
+    @include highlight-tab();
+  }
+
+  .oo-action-icon:hover {
+    @include highlight-base();
+    @include remove-highlight-tab();    
   }
 
   .oo-action-icon:active {
