@@ -69,9 +69,9 @@ var PlayingScreen = React.createClass({
     // for mobile, touch is handled in handleTouchEnd
   },
 
-  handleKeyPress: function(event){
-    // show control bar on tab key navegation
-    if(event.which === 9 || event.keyCode === 9){
+  handleKeyPress: function(event) {
+    // show control bar on tab key navigation
+    if(event.which === 9 || event.keyCode === 9) {
       this.showControlBar();
     }
   },
