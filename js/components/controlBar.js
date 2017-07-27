@@ -335,7 +335,7 @@ var ControlBar = React.createClass({
         aria-label={playPauseAriaLabel}
         autoFocus={this.props.controller.state.playPauseButtonFocused}>
         <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} 
-          className="oo-tooltip oo-tooltip-right" dataTip={playPauseTooltip}/>
+          className="oo-tooltip oo-tooltip-right" tooltip={playPauseTooltip}/>
       </button>,
 
       "live": <a className={liveClass}
@@ -355,7 +355,7 @@ var ControlBar = React.createClass({
           aria-label={volumeAriaLabel}>
           <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
             style={this.props.skinConfig.controlBar.iconStyle.inactive}
-            className="oo-tooltip oo-tooltip-center" dataTip={volumeTooltip}/>
+            className="oo-tooltip oo-tooltip-center" tooltip={volumeTooltip}/>
         </button>
         {volumeControls}
       </div>,
@@ -370,7 +370,7 @@ var ControlBar = React.createClass({
         onClick={this.handleMoreOptionsClick} key="moreOptions" aria-hidden="true">
         <Icon {...this.props} icon="ellipsis" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
-          className="oo-tooltip oo-tooltip-center" dataTip={CONSTANTS.TOOLTIPS.VQ}/>
+          className="oo-tooltip oo-tooltip-center" tooltip={CONSTANTS.TOOLTIPS.MORE_OPTIONS}/>
       </a>,
 
       "quality": (
@@ -379,7 +379,7 @@ var ControlBar = React.createClass({
           <a className={qualityClass} onClick={this.handleQualityClick} style={selectedStyle} aria-hidden="true">
             <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
               onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
-              className="oo-tooltip oo-tooltip-center" dataTip={CONSTANTS.TOOLTIPS.VQ}/>
+              className="oo-tooltip oo-tooltip-center" tooltip={CONSTANTS.TOOLTIPS.VIDEO_QUALITY}/>
           </a>
         </div>
       ),
@@ -388,7 +388,7 @@ var ControlBar = React.createClass({
         onClick={this.handleDiscoveryClick} key="discovery" aria-hidden="true">
         <Icon {...this.props} icon="discovery" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
-          className="oo-tooltip oo-tooltip-center" dataTip={CONSTANTS.TOOLTIPS.DISCOVER}/>
+          className="oo-tooltip oo-tooltip-center" tooltip={CONSTANTS.TOOLTIPS.DISCOVER}/>
       </a>,
 
       "closedCaption": (
@@ -397,7 +397,7 @@ var ControlBar = React.createClass({
           <a className={captionClass} onClick={this.handleClosedCaptionClick} style={selectedStyle} aria-hidden="true">
             <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
               onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
-              className="oo-tooltip oo-tooltip-center" dataTip={CONSTANTS.TOOLTIPS.CC}/>
+              className="oo-tooltip oo-tooltip-center" tooltip={CONSTANTS.TOOLTIPS.CLOSED_CAPTIONS}/>
           </a>
         </div>
       ),
@@ -406,7 +406,7 @@ var ControlBar = React.createClass({
         onClick={this.handleShareClick} key="share" aria-hidden="true">
         <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
-          className="oo-tooltip oo-tooltip-center" dataTip={CONSTANTS.TOOLTIPS.SHARE}/>
+          className="oo-tooltip oo-tooltip-center" tooltip={CONSTANTS.TOOLTIPS.SHARE}/>
       </a>,
 
       "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
@@ -418,7 +418,7 @@ var ControlBar = React.createClass({
         tabIndex="0"
         aria-label={fullscreenAriaLabel}>
         <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter}
-          className="oo-tooltip oo-tooltip-left" dataTip={fullscreenTooltip}/>
+          className="oo-tooltip oo-tooltip-left" tooltip={fullscreenTooltip}/>
       </button>,
 
       "logo": <Logo key="logo" imageUrl={this.props.skinConfig.controlBar.logo.imageResource.url}
