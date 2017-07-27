@@ -143,8 +143,8 @@ module.exports = {
     UNMUTE: "Unmute",
     SHARE: "Share",
     DISCOVER: "Discover",
-    CC: "Closed Captions",
-    VQ: "Video Quality",
+    CLOSED_CAPTIONS: "Closed Captions",
+    VIDEO_QUALITY: "Video Quality",
     FULLSCREEN: "Full Screen",
     EXIT_FULLSCREEN: "Exit Full Screen",
     MORE_OPTIONS: "More Options"
