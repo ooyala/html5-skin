@@ -64,12 +64,13 @@ describe('PlayingScreen', function () {
     expect(clicked).toBe(true);
   });
 
-  it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut', function () {
+  it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp', function () {
     var over = false;
     var out = false;
     var moved = false;
     var clicked = false;
-
+    var tab = false;
+    
     var mockController = {
       state: {
         isMobile: false,
@@ -81,7 +82,8 @@ describe('PlayingScreen', function () {
       startHideControlBarTimer: function() {moved = true},
       togglePlayPause: function(){clicked = true},
       showControlBar: function() {over = true},
-      hideControlBar: function() {out = true}
+      hideControlBar: function() {out = true},
+      showControlBarByTab: function() {tab = true}
     };
 
     var closedCaptionOptions = {
@@ -104,6 +106,9 @@ describe('PlayingScreen', function () {
 
     TestUtils.Simulate.mouseOver(screen);
     expect(over).toBe(true);
+
+    TestUtils.Simulate.keyUp(screen, {key: 'Tab', which: 9, keyCode: 9});
+    expect(tab).toBe(true);
   });
 
   it('tests playing screen componentWill*', function () {
