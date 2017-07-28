@@ -71,12 +71,9 @@ var PlayingScreen = React.createClass({
 
   handleKeyPress: function(event) {
     // show control bar on tab key navigation
-    if(event.which === 9 || event.keyCode === 9) {
+    if (event.which === 9 || event.keyCode === 9) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
-      if(this.props.controller.showControlBarByTab) {
-        this.props.controller.showControlBarByTab();
-      }
     }
   },
 

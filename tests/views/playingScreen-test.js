@@ -69,7 +69,6 @@ describe('PlayingScreen', function () {
     var out = false;
     var moved = false;
     var clicked = false;
-    var tab = false;
     
     var mockController = {
       state: {
@@ -82,8 +81,7 @@ describe('PlayingScreen', function () {
       startHideControlBarTimer: function() {moved = true},
       togglePlayPause: function(){clicked = true},
       showControlBar: function() {over = true},
-      hideControlBar: function() {out = true},
-      showControlBarByTab: function() {tab = true}
+      hideControlBar: function() {out = true}
     };
 
     var closedCaptionOptions = {
@@ -106,9 +104,33 @@ describe('PlayingScreen', function () {
 
     TestUtils.Simulate.mouseOver(screen);
     expect(over).toBe(true);
+  });
+
+  it('should show control bar when pressing the tab key', function () {
+    var autoHide = false;
+    var controlBar = false;
+
+    var mockController = {
+      state: {
+        isMobile: false,
+        accessibilityControlsEnabled: false,
+        upNextInfo: {
+          showing: false
+        }
+      },
+      startHideControlBarTimer: function() {autoHide = true},     
+      showControlBar: function() {controlBar = true}
+    };
+    
+    var closedCaptionOptions = {
+      cueText: "cue text"
+    };
+
+    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
+    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playing-screen');
 
     TestUtils.Simulate.keyUp(screen, {key: 'Tab', which: 9, keyCode: 9});
-    expect(tab).toBe(true);
+    expect(autoHide && controlBar).toBe(true);
   });
 
   it('tests playing screen componentWill*', function () {
