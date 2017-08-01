@@ -133,10 +133,6 @@
     @include highlight-tab();
   }
 
-  .oo-action-icon:hover {
-    @include highlight-base();
-  }
-
   .oo-action-icon:active {
     @include remove-highlight-tab();
   }
