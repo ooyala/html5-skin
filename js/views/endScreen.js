@@ -35,7 +35,7 @@ var EndScreen = React.createClass({
   },
 
   blurOnMouseUp: function(evt) {
-    if (evt.currentTarget) {
+    if (evt.currentTarget && evt.currentTarget.blur) {
       evt.currentTarget.blur();
     }
   },
