@@ -13,6 +13,14 @@
   }
 }
 
+@mixin highlight-tab() {
+  box-shadow: 0 0 0 2px $blue-light;
+}
+
+@mixin remove-highlight-tab() {
+  box-shadow: none;
+}
+
 @mixin border-radius($radius: $border-radius) {
   border-radius: $radius;
 }
