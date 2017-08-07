@@ -1,0 +1,88 @@
+//tooltip position
+$ico-size: 23px; //get from _xsmall.scss
+$ico-size-small: 25px * $xsmall-multiple; //calc get from _xsmall.scss
+$items-wrapper-margin-top: 10px;
+$tooltip-offset: $ico-size + $items-wrapper-margin-top + ($scrubber-bar-height/2 + $scrubber-bar-padding-height/2);
+$tooltip-offset-small: $ico-size-small + $items-wrapper-margin-top + ($scrubber-bar-height-small/2 + $scrubber-bar-padding-height-small/2);
+
+//tooltip
+$tooltip-opacity: 0.75;
+$tooltip-color: black;
+$tooltip-animation-duration: 0.5s;
+$tooltip-pointer-size: 5px;
+
+.oo-tooltip::before, .oo-tooltip::after{
+  position: absolute;
+  z-index: $zindex-popover;
+  white-space: nowrap;
+  opacity: 0;
+}
+
+.oo-tooltip::before {
+  content: attr(data-tooltip) ;
+  font-family: $font-family-roboto-condensed;
+  text-shadow: none;
+  background: $tooltip-color;
+  border-radius: 3px;
+  font-size: 15px;
+  padding: 8px 20px 8px 20px;
+  bottom: $tooltip-offset + $tooltip-pointer-size;
+}
+
+.oo-xsmall .oo-tooltip::before {
+  font-size: 10px;
+  padding: 7px 13px 7px 13px;
+  bottom: $tooltip-offset-small + $tooltip-pointer-size;
+}
+
+.oo-small .oo-tooltip::before {
+  font-size: 12px;
+}
+
+.oo-medium .oo-tooltip::before {
+  font-size: 14px;
+}
+
+.oo-tooltip:hover::before, .oo-tooltip:hover::after {
+  opacity: $tooltip-opacity;
+  animation: OOTooltip $tooltip-animation-duration;
+}
+
+//redudant style for firefox https://bugzilla.mozilla.org/show_bug.cgi?id=843003
+button:hover span::before, button:hover span::after {
+  opacity: $tooltip-opacity;
+  animation: OOTooltip $tooltip-animation-duration;
+}
+
+.oo-tooltip.oo-tooltip-left::before {
+  left: inherit;
+  right: 0%;
+}
+
+.oo-tooltip.oo-tooltip-center::before {
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.oo-tooltip.oo-tooltip-right::before {
+  left: 0%;
+  right: inherit;
+}
+
+.oo-tooltip::after {
+  content: "";
+  left: 25%;
+  border-left: $tooltip-pointer-size solid transparent;
+  border-right: $tooltip-pointer-size solid transparent;
+  border-top: $tooltip-pointer-size solid $tooltip-color;
+  bottom: $tooltip-offset;
+}
+
+.oo-xsmall .oo-tooltip::after {
+  bottom: $tooltip-offset-small;
+}
+
+@keyframes OOTooltip {
+  0% {opacity: 0;}  
+  100% {opacity: $tooltip-opacity;}
+}

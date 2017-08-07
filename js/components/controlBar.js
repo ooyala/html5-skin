@@ -209,34 +209,41 @@ var ControlBar = React.createClass({
 
   populateControlBar: function() {
     var dynamicStyles = this.setupItemStyle();
-    var playIcon, playPauseAriaLabel;
+    var playIcon, playPauseAriaLabel, playPauseTooltip;
     if (this.props.playerState == CONSTANTS.STATE.PLAYING) {
       playIcon = "pause";
       playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PAUSE;
+      playPauseTooltip = CONSTANTS.TOOLTIPS.PAUSE;
     } else if (this.props.playerState == CONSTANTS.STATE.END) {
       playIcon = "replay";
       playPauseAriaLabel = CONSTANTS.ARIA_LABELS.REPLAY;
+      playPauseTooltip = CONSTANTS.TOOLTIPS.REPLAY;
     } else {
       playIcon = "play";
       playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PLAY;
+      playPauseTooltip = CONSTANTS.TOOLTIPS.PLAY;
     }
 
-    var volumeIcon, volumeAriaLabel;
+    var volumeIcon, volumeAriaLabel, volumeTooltip;
     if (this.props.controller.state.volumeState.muted) {
       volumeIcon = "volumeOff";
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.UNMUTE;
+      volumeTooltip = CONSTANTS.TOOLTIPS.UNMUTE;
     } else {
       volumeIcon = "volume";
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.MUTE;
+      volumeTooltip = CONSTANTS.TOOLTIPS.MUTE;
     }
 
-    var fullscreenIcon, fullscreenAriaLabel;
+    var fullscreenIcon, fullscreenAriaLabel, fullscreenTooltip;
     if (this.props.controller.state.fullscreen) {
       fullscreenIcon = "compress";
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.EXIT_FULLSCREEN;
+      fullscreenTooltip = CONSTANTS.TOOLTIPS.EXIT_FULLSCREEN;
     } else {
       fullscreenIcon = "expand";
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
+      fullscreenTooltip = CONSTANTS.TOOLTIPS.FULLSCREEN;
     }
 
     var totalTime = 0;
@@ -327,7 +334,8 @@ var ControlBar = React.createClass({
         tabIndex="0"
         aria-label={playPauseAriaLabel}
         autoFocus={this.props.controller.state.playPauseButtonFocused}>
-        <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
+        <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} 
+          className="oo-tooltip oo-tooltip-right" tooltip={playPauseTooltip}/>
       </button>,
 
       "live": <a className={liveClass}
@@ -346,7 +354,8 @@ var ControlBar = React.createClass({
           tabIndex="0"
           aria-label={volumeAriaLabel}>
           <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
-            style={this.props.skinConfig.controlBar.iconStyle.inactive} />
+            style={this.props.skinConfig.controlBar.iconStyle.inactive}
+            className="oo-tooltip oo-tooltip-center" tooltip={volumeTooltip}/>
         </button>
         {volumeControls}
       </div>,
@@ -360,7 +369,8 @@ var ControlBar = React.createClass({
       "moreOptions": <a className="oo-more-options oo-control-bar-item"
         onClick={this.handleMoreOptionsClick} key="moreOptions" aria-hidden="true">
         <Icon {...this.props} icon="ellipsis" style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+          className="oo-tooltip oo-tooltip-center" tooltip={CONSTANTS.TOOLTIPS.MORE_OPTIONS}/>
       </a>,
 
       "quality": (
@@ -368,7 +378,8 @@ var ControlBar = React.createClass({
           {videoQualityPopover}
           <a className={qualityClass} onClick={this.handleQualityClick} style={selectedStyle} aria-hidden="true">
             <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
-              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+              className="oo-tooltip oo-tooltip-center" tooltip={CONSTANTS.TOOLTIPS.VIDEO_QUALITY}/>
           </a>
         </div>
       ),
@@ -376,7 +387,8 @@ var ControlBar = React.createClass({
       "discovery": <a className="oo-discovery oo-control-bar-item"
         onClick={this.handleDiscoveryClick} key="discovery" aria-hidden="true">
         <Icon {...this.props} icon="discovery" style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+          className="oo-tooltip oo-tooltip-center" tooltip={CONSTANTS.TOOLTIPS.DISCOVER}/>
       </a>,
 
       "closedCaption": (
@@ -384,7 +396,8 @@ var ControlBar = React.createClass({
           {closedCaptionPopover}
           <a className={captionClass} onClick={this.handleClosedCaptionClick} style={selectedStyle} aria-hidden="true">
             <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
-              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+              className="oo-tooltip oo-tooltip-center" tooltip={CONSTANTS.TOOLTIPS.CLOSED_CAPTIONS}/>
           </a>
         </div>
       ),
@@ -392,7 +405,8 @@ var ControlBar = React.createClass({
       "share": <a className="oo-share oo-control-bar-item"
         onClick={this.handleShareClick} key="share" aria-hidden="true">
         <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}
+          className="oo-tooltip oo-tooltip-center" tooltip={CONSTANTS.TOOLTIPS.SHARE}/>
       </a>,
 
       "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
@@ -403,7 +417,8 @@ var ControlBar = React.createClass({
         key="fullscreen"
         tabIndex="0"
         aria-label={fullscreenAriaLabel}>
-        <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
+        <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter}
+          className="oo-tooltip oo-tooltip-left" tooltip={fullscreenTooltip}/>
       </button>,
 
       "logo": <Logo key="logo" imageUrl={this.props.skinConfig.controlBar.logo.imageResource.url}

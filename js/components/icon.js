@@ -12,7 +12,7 @@ var Icon = React.createClass({
     return (
       <span
         className={this.props.skinConfig.icons[this.props.icon].fontStyleClass + " " + this.props.className}
-        style={iconStyle}
+        style={iconStyle} data-tooltip={this.props.tooltip}
         onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}
         onClick={this.props.onClick}>
         {this.props.skinConfig.icons[this.props.icon].fontString}
@@ -25,14 +25,16 @@ Icon.propTypes = {
   icon: React.PropTypes.string,
   skinConfig: React.PropTypes.object,
   className: React.PropTypes.string,
-  style: React.PropTypes.object
+  style: React.PropTypes.object,
+  tooltip: React.PropTypes.string
 };
 
 Icon.defaultProps = {
   icon: "",
   skinConfig: {},
   className: "",
-  style: {}
+  style: {},
+  tooltip: ""
 };
 
 module.exports = Icon;
