@@ -12,7 +12,9 @@ var React = require('react'),
     VideoQualityPanel = require('./videoQualityPanel'),
     ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
     Logo = require('./logo'),
-    Icon = require('./icon');
+    Icon = require('./icon'),
+    Tooltip = require('./tooltip');
+
 
 var ControlBar = React.createClass({
   getInitialState: function() {
@@ -315,8 +317,9 @@ var ControlBar = React.createClass({
     var selectedStyle = {};
     selectedStyle["color"] = this.props.skinConfig.general.accentColor ? this.props.skinConfig.general.accentColor : null;
 
+    var isTooltipEnabled = this.props.skinConfig.controlBar.tooltips ? this.props.skinConfig.controlBar.tooltips.enabled : false;
     var controlItemTemplates = {
-      "playPause": <button className="oo-play-pause oo-control-bar-item"
+      "playPause": (function(alignment){return  <button className="oo-play-pause oo-control-bar-item"
         onClick={this.handlePlayClick}
         onMouseUp={this.blurOnMouseUp}
         onMouseOver={this.highlight}
@@ -327,17 +330,19 @@ var ControlBar = React.createClass({
         tabIndex="0"
         aria-label={playPauseAriaLabel}
         autoFocus={this.props.controller.state.playPauseButtonFocused}>
-        <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
-      </button>,
+        <Tooltip enabled={isTooltipEnabled} text={CONSTANTS.TOOLTIPS.PLAY} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment="left">
+          <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter}/>
+        </Tooltip>
+      </button>}).bind(this),
 
-      "live": <a className={liveClass}
+      "live": (function(alignment){return <a className={liveClass}
         ref="LiveButton"
         onClick={liveClick} key="live">
         <div className="oo-live-circle"></div>
         <span className="oo-live-text">{liveText}</span>
-      </a>,
+      </a>}).bind(this),
 
-      "volume": <div className="oo-volume oo-control-bar-item" key="volume">
+      "volume": (function(alignment){return  <div className="oo-volume oo-control-bar-item" key="volume">
         <button className="oo-mute-unmute oo-control-bar-item"
           onClick={this.handleVolumeIconClick}
           onMouseUp={this.blurOnMouseUp}
@@ -345,57 +350,67 @@ var ControlBar = React.createClass({
           onMouseOut={this.removeHighlight}
           tabIndex="0"
           aria-label={volumeAriaLabel}>
-          <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
+          <Tooltip enabled={isTooltipEnabled} text={this.props.controller.state.volumeState.muted ? CONSTANTS.TOOLTIPS.UNMUTE : CONSTANTS.TOOLTIPS.MUTE} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment="center">
+            <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
             style={this.props.skinConfig.controlBar.iconStyle.inactive} />
+          </Tooltip>
         </button>
         {volumeControls}
-      </div>,
+      </div>}).bind(this),
 
-      "timeDuration": <a className="oo-time-duration oo-control-bar-duration" style={durationSetting} key="timeDuration">
+      "timeDuration": (function(alignment){return <a className="oo-time-duration oo-control-bar-duration" style={durationSetting} key="timeDuration">
         <span>{playheadTimeContent}</span>{totalTimeContent}
-      </a>,
+      </a>}).bind(this),
 
-      "flexibleSpace": <div className="oo-flexible-space oo-control-bar-flex-space" key="flexibleSpace"></div>,
+      "flexibleSpace": (function(alignment){return <div className="oo-flexible-space oo-control-bar-flex-space" key="flexibleSpace"></div>}).bind(this),
 
-      "moreOptions": <a className="oo-more-options oo-control-bar-item"
+      "moreOptions": (function(alignment){return <a className="oo-more-options oo-control-bar-item"
         onClick={this.handleMoreOptionsClick} key="moreOptions" aria-hidden="true">
         <Icon {...this.props} icon="ellipsis" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </a>,
+      </a>}).bind(this),
 
-      "quality": (
+      "quality": (function(alignment){return (
         <div className="oo-popover-button-container" key="quality">
           {videoQualityPopover}
           <a className={qualityClass} onClick={this.handleQualityClick} style={selectedStyle} aria-hidden="true">
+            <Tooltip enabled={isTooltipEnabled} text={CONSTANTS.TOOLTIPS.VIDEO_QUALITY} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment="center">
             <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
               onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+            </Tooltip>
           </a>
         </div>
-      ),
+      )}).bind(this),
 
-      "discovery": <a className="oo-discovery oo-control-bar-item"
+      "discovery": (function(alignment){return  <a className="oo-discovery oo-control-bar-item"
         onClick={this.handleDiscoveryClick} key="discovery" aria-hidden="true">
+        <Tooltip enabled={isTooltipEnabled} text={CONSTANTS.TOOLTIPS.DISCOVER} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment="center">
         <Icon {...this.props} icon="discovery" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </a>,
+        </Tooltip>
+      </a>}).bind(this),
 
-      "closedCaption": (
+      "closedCaption": (function(alignment){return (
         <div className="oo-popover-button-container" key="closedCaption">
           {closedCaptionPopover}
+          <Tooltip enabled={isTooltipEnabled} text={CONSTANTS.TOOLTIPS.CLOSED_CAPTIONS} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment="center">
           <a className={captionClass} onClick={this.handleClosedCaptionClick} style={selectedStyle} aria-hidden="true">
             <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
               onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
           </a>
+          </Tooltip>
         </div>
-      ),
+      )}).bind(this),
 
-      "share": <a className="oo-share oo-control-bar-item"
+      "share": (function(alignment){return <a className="oo-share oo-control-bar-item"
         onClick={this.handleShareClick} key="share" aria-hidden="true">
-        <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </a>,
+        <Tooltip enabled={isTooltipEnabled} text={CONSTANTS.TOOLTIPS.SHARE} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment="center">
+          <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
+            onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+        </Tooltip>
+      </a>}).bind(this),
 
-      "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
+      "fullscreen": (function(alignment){return <button className="oo-fullscreen oo-control-bar-item"
         onClick={this.handleFullscreenClick}
         onMouseUp={this.blurOnMouseUp}
         onMouseOver={this.highlight}
@@ -403,15 +418,17 @@ var ControlBar = React.createClass({
         key="fullscreen"
         tabIndex="0"
         aria-label={fullscreenAriaLabel}>
-        <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
-      </button>,
+        <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple} text={this.props.controller.state.fullscreen ? CONSTANTS.TOOLTIPS.EXIT_FULLSCREEN :CONSTANTS.TOOLTIPS.FULLSCREEN } bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment="right">
+          <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
+        </Tooltip>
+      </button>}).bind(this),
 
-      "logo": <Logo key="logo" imageUrl={this.props.skinConfig.controlBar.logo.imageResource.url}
+      "logo": (function(alignment){return  <Logo key="logo" imageUrl={this.props.skinConfig.controlBar.logo.imageResource.url}
         clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
         target={this.props.skinConfig.controlBar.logo.target}
         width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
-        height={this.props.skinConfig.controlBar.logo.height}/>
-    };
+        height={this.props.skinConfig.controlBar.logo.height}/>}).bind(this)
+  }
 
     var controlBarItems = [];
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
@@ -502,14 +519,19 @@ var ControlBar = React.createClass({
     this.moreOptionsItems = collapsedMoreOptionsItems;
 
     finalControlBarItems = [];
-
+     
     for (var k = 0; k < collapsedControlBarItems.length; k++) {
       if (collapsedControlBarItems[k].name === "moreOptions" && (this.props.controller.state.isOoyalaAds || collapsedMoreOptionsItems.length === 0)) {
         continue;
       }
-
-      finalControlBarItems.push(controlItemTemplates[collapsedControlBarItems[k].name]);
-    }
+      var position = 'center';
+      if (k === collapsedControlBarItems.length -1) {
+        position = 'right'
+      } else if (k === 0) {
+        position = 'left';
+      }
+      finalControlBarItems.push(controlItemTemplates[collapsedControlBarItems[k].name](position));
+    }   
 
     return finalControlBarItems;
   },
