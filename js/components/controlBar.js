@@ -104,7 +104,7 @@ var ControlBar = React.createClass({
    * @param {event} evt The mouse up event object
    */
   blurOnMouseUp: function(evt) {
-    if (evt.currentTarget) {
+    if (evt.currentTarget && evt.currentTarget.blur) {
       evt.currentTarget.blur();
     }
   },

@@ -34,6 +34,12 @@ var EndScreen = React.createClass({
     }
   },
 
+  blurOnMouseUp: function(evt) {
+    if (evt.currentTarget && evt.currentTarget.blur) {
+      evt.currentTarget.blur();
+    }
+  },
+
   handleClick: function(event) {
     // pause or play the video if the skin is clicked
     event.preventDefault();
@@ -100,6 +106,7 @@ var EndScreen = React.createClass({
 
         <button className={actionIconClass}
           onClick={this.handleClick}
+          onMouseUp={this.blurOnMouseUp}
           tabIndex="0"
           aria-label={CONSTANTS.ARIA_LABELS.REPLAY}>
           <Icon {...this.props} icon="replay" style={actionIconStyle}/>
