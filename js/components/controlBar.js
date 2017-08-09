@@ -330,8 +330,11 @@ var ControlBar = React.createClass({
         tabIndex="0"
         aria-label={playPauseAriaLabel}
         autoFocus={this.props.controller.state.playPauseButtonFocused}>
-        <Tooltip enabled={isTooltipEnabled} text={this.props.playerState == CONSTANTS.STATE.PLAYING ? this.props.localizableStrings[this.props.language].Pause : this.props.localizableStrings[this.props.language].Play } 
-                 responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment="left">
+        <Tooltip enabled={isTooltipEnabled}
+                 alignment="left"
+                 responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height}
+                 text={this.props.playerState == CONSTANTS.STATE.PLAYING ? this.props.localizableStrings[this.props.language].Pause :
+                    this.props.playerState == CONSTANTS.STATE.END ? this.props.localizableStrings[this.props.language].Replay : this.props.localizableStrings[this.props.language].Play }>
           <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter}/>
         </Tooltip>
       </button>}).bind(this),
