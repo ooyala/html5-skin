@@ -25,8 +25,7 @@ function getContainerStyle(bottom, visible, responsivenessMultiplier, alignment)
         opacity: visible ? '0.75' : '0',
         fontWeight: 'normal',
         bottom: bottom,
-        //display: visible ? 'block' : 'none',
-        transition:'1s',
+        transition: '1s',
         visibility: visible ? 'visible' : 'hidden',
     }
 
@@ -80,7 +79,7 @@ var Tooltip = React.createClass({
                 </div>
             );
         } else {
-            return (<div>{this.props.children }</div>);
+            return (<div>{this.props.children}</div>);
         }
     },
 
@@ -108,7 +107,8 @@ Tooltip.propTypes = {
 Tooltip.defaultProps = {
     enabled: false,
     alignment: 'center',
-    responsivenessMultiplier: 1
+    responsivenessMultiplier: 1,
+    bottom: 0
 };
 
 module.exports = Tooltip;

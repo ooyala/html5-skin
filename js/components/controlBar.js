@@ -524,13 +524,13 @@ var ControlBar = React.createClass({
       if (collapsedControlBarItems[k].name === "moreOptions" && (this.props.controller.state.isOoyalaAds || collapsedMoreOptionsItems.length === 0)) {
         continue;
       }
-      var position = 'center';
-      if (k === collapsedControlBarItems.length -1) {
-        position = 'right'
+      var alignment = 'center';
+      if (k === collapsedControlBarItems.length - 1) {
+        alignment = 'right'
       } else if (k === 0) {
-        position = 'left';
+        alignment = 'left';
       }
-      finalControlBarItems.push(controlItemTemplates[collapsedControlBarItems[k].name](position));
+      finalControlBarItems.push(controlItemTemplates[collapsedControlBarItems[k].name](alignment));
     }   
 
     return finalControlBarItems;
