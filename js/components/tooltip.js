@@ -1,8 +1,9 @@
 var React = require('react');
 var deepmerge = require('deepmerge');
 
+var verticalOffset = 80;
 function getContainerStyle(bottom, visible, responsivenessMultiplier, alignment) {
-    var verticalAlignment = 80 * responsivenessMultiplier;
+    var verticalAlignment = verticalOffset * responsivenessMultiplier;
     var alignmentStyle = {
         left: {
             left: 0,

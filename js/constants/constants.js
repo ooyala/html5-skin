@@ -85,22 +85,18 @@ module.exports = {
     UNIFORM: "Uniform",
     DEPRESSED: "Depressed",
     RAISED: "Raised",
-    SHADOW: "Shadow"
-  },
-
-  TOOLTIPS: {
-     PLAY: "Play",
-     PAUSE: "Pause",
-     REPLAY: "Replay",
-     MUTE: "Mute",
-     UNMUTE: "Unmute",
-     SHARE: "Share",
-     DISCOVER: "Discover",
-     CLOSED_CAPTIONS: "Closed Captions",
-     VIDEO_QUALITY: "Video Quality",
-     FULLSCREEN: "Full Screen",
-     EXIT_FULLSCREEN: "Exit Full Screen",
-     MORE_OPTIONS: "More Options"
+    SHADOW: "Shadow",
+    PLAY: "Play",
+    REPLAY: "Replay",
+    PAUSE: "Pause",
+    MUTE: "Mute",
+    UNMUTE: "Unmute",
+    CLOSED_CAPTIONS: "Closed Captions",
+    FULL_SCREEN: "Full Screen",
+    EXIT_FULL_SCREEN: "Exit Full Screen",
+    VIDEO_QUALITY: "Video Quality",
+    SHARE: "Share",
+    MORE_OPTIONS: "More Options"
   },
 
   ARIA_LABELS: {
