@@ -401,12 +401,12 @@ var ControlBar = React.createClass({
       "closedCaption": (function(alignment){return (
         <div className="oo-popover-button-container" key="closedCaption">
           {closedCaptionPopover}
-          <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CLOSED_CAPTIONS, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}>
           <a className={captionClass} onClick={this.handleClosedCaptionClick} style={selectedStyle} aria-hidden="true">
-            <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
-              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-          </a>
+          <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CLOSED_CAPTIONS, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}>
+              <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
+                onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
           </Tooltip>
+          </a>
         </div>
       )}).bind(this),
 
@@ -541,8 +541,7 @@ var ControlBar = React.createClass({
         alignment = 'left';
       }
       finalControlBarItems.push(controlItemTemplates[collapsedControlBarItems[k].name](alignment));
-    }   
-
+    }
     return finalControlBarItems;
   },
 
