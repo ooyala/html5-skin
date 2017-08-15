@@ -75,7 +75,7 @@ var ControlBar = React.createClass({
     },
 
     handleStereoClick: function (evt) {
-        console.log('call handleStereoClick args', evt);
+       this.props.controller.toggleStereo();
     },
 
     handleLiveClick: function(evt) {
@@ -325,17 +325,17 @@ var ControlBar = React.createClass({
 
         var controlItemTemplates = {
             "playPause": <button className="oo-play-pause oo-control-bar-item"
-        onClick={this.handlePlayClick}
-        onMouseUp={this.blurOnMouseUp}
-        onMouseOver={this.highlight}
-        onMouseOut={this.removeHighlight}
-        onFocus={this.handlePlayPauseFocus}
-        onBlur={this.handlePlayPauseBlur}
-        key="playPause"
-        tabIndex="0"
-        aria-label={playPauseAriaLabel}
-        autoFocus={this.props.controller.state.playPauseButtonFocused}>
-    <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
+                onClick={this.handlePlayClick}
+                onMouseUp={this.blurOnMouseUp}
+                onMouseOver={this.highlight}
+                onMouseOut={this.removeHighlight}
+                onFocus={this.handlePlayPauseFocus}
+                onBlur={this.handlePlayPauseBlur}
+                key="playPause"
+                tabIndex="0"
+                aria-label={playPauseAriaLabel}
+                autoFocus={this.props.controller.state.playPauseButtonFocused}>
+            <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
         </button>,
 
         "live": <a className={liveClass}
