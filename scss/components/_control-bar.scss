@@ -41,6 +41,12 @@
       padding:0;
     }
 
+    .oo-control-bar-item-container{
+      display: -webkit-box;
+      display: -ms-flexbox;  
+      display: -webkit-flex;
+      display: flex; 
+    }
     .oo-control-bar-item {
       height: 100%;
       font-weight: bold;
@@ -97,7 +103,9 @@
       cursor: auto;
     }
 
-    .oo-control-bar-item.oo-quality, .oo-control-bar-item.oo-closed-caption{
+    .oo-control-bar-item.oo-quality, .oo-control-bar-item.oo-closed-caption,
+    .oo-control-bar-item.oo-discovery, .oo-control-bar-item.oo-share
+      {
       display: block;
     }
 

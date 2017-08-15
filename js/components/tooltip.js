@@ -7,15 +7,18 @@ function getContainerStyle(bottom, visible, responsivenessMultiplier, alignment)
     var alignmentStyle = {
         left: {
             left: 0,
-            transform: 'translate(0,' + verticalAlignment + '%)'
+            transform: 'translate(0,' + verticalAlignment + '%)',
+            '-webkit-transform': 'translate(0,' + verticalAlignment + '%)'
         },
         center: {
             left: '50%',
-            transform: 'translate(-50%,' + verticalAlignment + '%)'
+            transform: 'translate(-50%,' + verticalAlignment + '%)',
+            '-webkit-transform': 'translate(-50%,' + verticalAlignment + '%)'
         },
         right: {
             right: 0,
-            transform: 'translate(0,' + verticalAlignment + '%)'
+            transform: 'translate(0,' + verticalAlignment + '%)',
+            '-webkit-transform': 'translate(0,' + verticalAlignment + '%)'
         }
     };
 
