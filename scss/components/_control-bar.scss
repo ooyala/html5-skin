@@ -80,8 +80,12 @@
     }
 
     .oo-control-bar-item:focus .oo-icon {
-      @include highlight-base();
+      @include highlight-tab();
       opacity: 1 !important;
+    }
+
+    .oo-control-bar-item:active .oo-icon {
+      @include remove-highlight-tab();
     }
 
     .oo-control-bar-item.oo-mute-unmute {

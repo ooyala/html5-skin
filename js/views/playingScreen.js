@@ -61,6 +61,14 @@ var PlayingScreen = React.createClass({
     }
   },
 
+  handleKeyPress: function(event) {
+    // show control bar on tab key navigation
+    if (event.which === 9 || event.keyCode === 9) {
+      this.showControlBar();
+      this.props.controller.startHideControlBarTimer();
+    }
+  },
+
   handleTouchEnd: function(event) {
     event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
     if (!this.state.controlBarVisible){
@@ -70,7 +78,6 @@ var PlayingScreen = React.createClass({
     else {
       // this.props.controller.togglePlayPause(event);
     }
-    console.log('SSS event', event);
   },
 
   handlePlayerMouseDown: function(e) {
@@ -158,8 +165,8 @@ var PlayingScreen = React.createClass({
          onMouseOver={this.showControlBar}
          onMouseOut={this.hideControlBar}
          onMouseMove={this.handlePlayerMouseMove}
+        onKeyUp={this.handleKeyPress}
     >
-
       {/*<div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>*/}
       <div className="oo-state-screen-selectable" onMouseDown={this.handlePlayerMouseDown} onMouseUp={this.handlePlayerMouseUp} onMouseMove={this.handlePlayerMouseMove} onTouchEnd={this.handleTouchEnd}></div>
 
