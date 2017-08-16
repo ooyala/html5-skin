@@ -28,7 +28,8 @@ var ControlBar = React.createClass({
     },
 
     getVrParams: function(){
-        var bitWrapper = this.props.controller.state.playerParam['bit-wrapper'];
+        var playerParam = this.props.controller.state.playerParam;
+        var bitWrapper = playerParam ? playerParam['bit-wrapper'] : null;
         var isVr = !!bitWrapper && !!bitWrapper.source && !!bitWrapper.source.vr;
 
         return isVr ? _.extend({}, bitWrapper.source.vr) : false;
