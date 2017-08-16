@@ -20,10 +20,18 @@ var ControlBar = React.createClass({
         this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
         this.volumeSliderValue = 0;
         this.moreOptionsItems = null;
+        this.vr = this.getVrParams();
 
         return {
             currentVolumeHead: 0
         };
+    },
+
+    getVrParams: function(){
+        var bitWrapper = this.props.controller.state.playerParam['bit-wrapper'];
+        var isVr = !!bitWrapper && !!bitWrapper.source && !!bitWrapper.source.vr;
+
+        return isVr ? _.extend({}, bitWrapper.source.vr) : false;
     },
 
     componentDidMount: function() {
@@ -64,9 +72,6 @@ var ControlBar = React.createClass({
         // On mobile, we get a following click event that fires after the Video
         // has gone full screen, clicking on a different UI element. So we prevent
         // the following click.
-
-        console.info('call handleFullscreenClick args', evt);
-
 
         evt.stopPropagation();
         evt.cancelBubble = true;
@@ -335,102 +340,102 @@ var ControlBar = React.createClass({
                 tabIndex="0"
                 aria-label={playPauseAriaLabel}
                 autoFocus={this.props.controller.state.playPauseButtonFocused}>
-            <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
-        </button>,
+                <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
+            </button>,
 
-        "live": <a className={liveClass}
-        ref="LiveButton"
-        onClick={liveClick} key="live">
-            <div className="oo-live-circle"></div>
-            <span className="oo-live-text">{liveText}</span>
+            "live": <a className={liveClass}
+            ref="LiveButton"
+            onClick={liveClick} key="live">
+                <div className="oo-live-circle"></div>
+                <span className="oo-live-text">{liveText}</span>
+                </a>,
+
+            "volume": <div className="oo-volume oo-control-bar-item" key="volume">
+                <button className="oo-mute-unmute oo-control-bar-item"
+            onClick={this.handleVolumeIconClick}
+            onMouseUp={this.blurOnMouseUp}
+            onMouseOver={this.highlight}
+            onMouseOut={this.removeHighlight}
+            tabIndex="0"
+            aria-label={volumeAriaLabel}>
+                <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
+                style={this.props.skinConfig.controlBar.iconStyle.inactive} />
+                </button>
+                {volumeControls}
+            </div>,
+
+            "timeDuration": <a className="oo-time-duration oo-control-bar-duration" style={durationSetting} key="timeDuration">
+                <span>{playheadTimeContent}</span>{totalTimeContent}
+                </a>,
+
+            "flexibleSpace": <div className="oo-flexible-space oo-control-bar-flex-space" key="flexibleSpace"></div>,
+
+            "moreOptions": <a className="oo-more-options oo-control-bar-item"
+            onClick={this.handleMoreOptionsClick} key="moreOptions" aria-hidden="true">
+                <Icon {...this.props} icon="ellipsis" style={dynamicStyles.iconCharacter}
+            onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
             </a>,
 
-        "volume": <div className="oo-volume oo-control-bar-item" key="volume">
-            <button className="oo-mute-unmute oo-control-bar-item"
-        onClick={this.handleVolumeIconClick}
-        onMouseUp={this.blurOnMouseUp}
-        onMouseOver={this.highlight}
-        onMouseOut={this.removeHighlight}
-        tabIndex="0"
-        aria-label={volumeAriaLabel}>
-            <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
-        style={this.props.skinConfig.controlBar.iconStyle.inactive} />
-        </button>
-        {volumeControls}
-    </div>,
+            "quality": (
+            <div className="oo-popover-button-container" key="quality">
+                {videoQualityPopover}
+                <a className={qualityClass} onClick={this.handleQualityClick} style={selectedStyle} aria-hidden="true">
+                <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
+            onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+            </a>
+            </div>
+        ),
 
-        "timeDuration": <a className="oo-time-duration oo-control-bar-duration" style={durationSetting} key="timeDuration">
-            <span>{playheadTimeContent}</span>{totalTimeContent}
+            "discovery": <a className="oo-discovery oo-control-bar-item"
+            onClick={this.handleDiscoveryClick} key="discovery" aria-hidden="true">
+                <Icon {...this.props} icon="discovery" style={dynamicStyles.iconCharacter}
+            onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
             </a>,
 
-        "flexibleSpace": <div className="oo-flexible-space oo-control-bar-flex-space" key="flexibleSpace"></div>,
+            "closedCaption": (
+            <div className="oo-popover-button-container" key="closedCaption">
+                {closedCaptionPopover}
+                <a className={captionClass} onClick={this.handleClosedCaptionClick} style={selectedStyle} aria-hidden="true">
+                <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
+            onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+            </a>
+            </div>
+        ),
 
-        "moreOptions": <a className="oo-more-options oo-control-bar-item"
-        onClick={this.handleMoreOptionsClick} key="moreOptions" aria-hidden="true">
-            <Icon {...this.props} icon="ellipsis" style={dynamicStyles.iconCharacter}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-        </a>,
+            "share": <a className="oo-share oo-control-bar-item"
+            onClick={this.handleShareClick} key="share" aria-hidden="true">
+                <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
+            onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+            </a>,
 
-        "quality": (
-        <div className="oo-popover-button-container" key="quality">
-            {videoQualityPopover}
-            <a className={qualityClass} onClick={this.handleQualityClick} style={selectedStyle} aria-hidden="true">
-            <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-        </a>
-        </div>
-    ),
+            "stereo": !this.vr ? null : <button className="oo-fullscreen oo-control-bar-item"
+            onClick={this.handleStereoClick}
+            onMouseUp={this.blurOnMouseUp}
+            onMouseOver={this.highlight}
+            onMouseOut={this.removeHighlight}
+            key="stereo"
+            tabIndex="0"
+            aria-label={fullscreenAriaLabel}>
+                <Icon {...this.props} icon="stereo" style={dynamicStyles.iconCharacter} />
+            </button>,
 
-        "discovery": <a className="oo-discovery oo-control-bar-item"
-        onClick={this.handleDiscoveryClick} key="discovery" aria-hidden="true">
-            <Icon {...this.props} icon="discovery" style={dynamicStyles.iconCharacter}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-        </a>,
+            "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
+            onClick={this.handleFullscreenClick}
+            onMouseUp={this.blurOnMouseUp}
+            onMouseOver={this.highlight}
+            onMouseOut={this.removeHighlight}
+            key="fullscreen"
+            tabIndex="0"
+            aria-label={fullscreenAriaLabel}>
+                <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
+            </button>,
 
-        "closedCaption": (
-        <div className="oo-popover-button-container" key="closedCaption">
-            {closedCaptionPopover}
-            <a className={captionClass} onClick={this.handleClosedCaptionClick} style={selectedStyle} aria-hidden="true">
-            <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-        </a>
-        </div>
-    ),
-
-        "share": <a className="oo-share oo-control-bar-item"
-        onClick={this.handleShareClick} key="share" aria-hidden="true">
-            <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
-        onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-        </a>,
-
-        "stereo": <button className="oo-fullscreen oo-control-bar-item"
-        onClick={this.handleStereoClick}
-        onMouseUp={this.blurOnMouseUp}
-        onMouseOver={this.highlight}
-        onMouseOut={this.removeHighlight}
-        key="stereo"
-        tabIndex="0"
-        aria-label={fullscreenAriaLabel}>
-            <Icon {...this.props} icon="stereo" style={dynamicStyles.iconCharacter} />
-        </button>,
-
-        "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
-        onClick={this.handleFullscreenClick}
-        onMouseUp={this.blurOnMouseUp}
-        onMouseOver={this.highlight}
-        onMouseOut={this.removeHighlight}
-        key="fullscreen"
-        tabIndex="0"
-        aria-label={fullscreenAriaLabel}>
-            <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
-        </button>,
-
-        "logo": <Logo key="logo" imageUrl={this.props.skinConfig.controlBar.logo.imageResource.url}
-        clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
-        target={this.props.skinConfig.controlBar.logo.target}
-        width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
-        height={this.props.skinConfig.controlBar.logo.height}/>
-    };
+            "logo": <Logo key="logo" imageUrl={this.props.skinConfig.controlBar.logo.imageResource.url}
+            clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
+            target={this.props.skinConfig.controlBar.logo.target}
+            width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
+            height={this.props.skinConfig.controlBar.logo.height}/>
+        };
 
         var controlBarItems = [];
         var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
