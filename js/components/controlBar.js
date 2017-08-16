@@ -79,8 +79,9 @@ var ControlBar = React.createClass({
         this.props.controller.toggleFullscreen();
     },
 
-    handleStereoClick: function (evt) {
-       this.props.controller.toggleStereo();
+    handleStereoClick: function () {
+        this.vr.stereo = !this.vr.stereo;
+        this.props.controller.toggleStereo();
     },
 
     handleLiveClick: function(evt) {
@@ -251,6 +252,15 @@ var ControlBar = React.createClass({
             fullscreenIcon = "expand";
             fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
         }
+        
+        var stereoIcon, stereoAriaLabel;
+        if(this.vr && this.vr.stereo) {
+            stereoIcon = "stereoOn";
+            stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
+        } else {
+            stereoIcon = "stereoOff";
+            stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
+        }
 
         var totalTime = 0;
         if (this.props.duration == null || typeof this.props.duration == 'undefined' || this.props.duration == ""){
@@ -415,8 +425,12 @@ var ControlBar = React.createClass({
             onMouseOut={this.removeHighlight}
             key="stereo"
             tabIndex="0"
-            aria-label={fullscreenAriaLabel}>
-                <Icon {...this.props} icon="stereo" style={dynamicStyles.iconCharacter} />
+            aria-label={stereoAriaLabel}>
+                <Icon
+                    {...this.props}
+                    icon={stereoIcon}
+                    style={dynamicStyles.iconCharacter}
+                />
             </button>,
 
             "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
