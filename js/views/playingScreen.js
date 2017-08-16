@@ -20,7 +20,11 @@ var PlayingScreen = React.createClass({
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
     return {
       controlBarVisible: true,
-      timer: null
+      timer: null,
+      isMouseDown: false,
+      XMouseStart: 0,
+      YMouseStart: 0,
+      mouseMoveStartTime: 0
     };
   },
 
@@ -57,18 +61,6 @@ var PlayingScreen = React.createClass({
     }
   },
 
-  handlePlayerMouseUp: function(event) {
-    // pause or play the video if the skin is clicked on desktop
-    if (!this.isMobile) {
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
-
-      this.props.controller.togglePlayPause();
-      this.props.controller.state.accessibilityControlsEnabled = true;
-    }
-    // for mobile, touch is handled in handleTouchEnd
-  },
-
   handleTouchEnd: function(event) {
     event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
     if (!this.state.controlBarVisible){
@@ -76,15 +68,60 @@ var PlayingScreen = React.createClass({
       this.props.controller.startHideControlBarTimer();
     }
     else {
-      this.props.controller.togglePlayPause();
+      // this.props.controller.togglePlayPause(event);
     }
+    console.log('SSS event', event);
   },
 
-  handlePlayerMouseMove: function() {
+  handlePlayerMouseDown: function(e) {
+    this.setState({
+      isMouseDown: true,
+      XMouseStart: e.pageX,
+      YMouseStart: e.pageY,
+      mouseMoveStartTime: new Date()
+    });
+  },
+
+  handlePlayerMouseMove: function(e) {
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
+    console.log('this.state.isMouseDown', this.state.isMouseDown);
+    if (this.state.isMouseDown) {
+      var dx = e.pageX - this.state.XMouseStart;
+      var dy = e.pageY - this.state.YMouseStart;
+      console.log('SSS XStart', this.state.XMouseStart, 'SSS XEnd', e.pageX,  'YStart', this.state.YMouseStart, 'YEnd', e.pageY);
+      var directionRad = Math.atan2(dx, dy);
+      var directionDeg= directionRad * (180/Math.PI);
+      var vectorLength = Math.sqrt(Math.pow(dx, 2)+ Math.pow(dy, 2));
+      var timeSec = ((new Date) - this.state.mouseMoveStartTime) / 1000;
+      var speed = vectorLength / timeSec;
+      console.log('SSS dx', dx, 'dy', dy);
+      console.log('SSS angle directionDeg', directionDeg);
+      // console.log('SSS vectorLength', vectorLength);
+      // console.log('SSS timeSec', timeSec);
+      // console.log('SSS speed', speed);
+      var params = [-10, -20, 0 ];
+      this.props.controller.onTouched(params, true);
+    }
+  },
+
+  handlePlayerMouseUp: function(e) {
+    // pause or play the video if the skin is clicked on desktop
+    if (!this.isMobile) {
+      e.stopPropagation(); // W3C
+      e.cancelBubble = true; // IE
+
+      this.props.controller.state.accessibilityControlsEnabled = true;
+    }
+    // for mobile, touch is handled in handleTouchEnd
+    this.setState({
+      isMouseDown: false,
+      // XMouseStart: e.pageX,
+      // YMouseStart: e.pageY
+    });
+    this.props.controller.onVcTouched();
   },
 
   showControlBar: function(event) {
@@ -120,9 +157,11 @@ var PlayingScreen = React.createClass({
          ref="PlayingScreen"
          onMouseOver={this.showControlBar}
          onMouseOut={this.hideControlBar}
-         onMouseMove={this.handlePlayerMouseMove}>
+         onMouseMove={this.handlePlayerMouseMove}
+    >
 
-      <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
+      {/*<div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>*/}
+      <div className="oo-state-screen-selectable" onMouseDown={this.handlePlayerMouseDown} onMouseUp={this.handlePlayerMouseUp} onMouseMove={this.handlePlayerMouseMove} onTouchEnd={this.handleTouchEnd}></div>
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
