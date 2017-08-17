@@ -3,7 +3,6 @@ jest.dontMock('../../js/components/controlBar')
     .dontMock('../../js/components/icon')
     .dontMock('../../js/components/logo')
     .dontMock('../../js/constants/constants')
-    .dontMock('../../js/components/tooltip')
     .dontMock('classnames');
 
 var React = require('react');
