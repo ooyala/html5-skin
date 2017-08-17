@@ -18,7 +18,7 @@ describe('PlayingScreen', function () {
           showing: false
         }
       },
-      togglePlayPause: function(){clicked = true},
+      // togglePlayPause: function(){clicked = true},
       startHideControlBarTimer: function() {moved = true}
     };
 
@@ -48,7 +48,7 @@ describe('PlayingScreen', function () {
           showing: false
         }
       },
-      togglePlayPause: function(){clicked = true},
+      // togglePlayPause: function(){clicked = true},
       startHideControlBarTimer: function() {}
     };
 
@@ -79,7 +79,7 @@ describe('PlayingScreen', function () {
         }
       },
       startHideControlBarTimer: function() {moved = true},
-      togglePlayPause: function(){clicked = true},
+      // togglePlayPause: function(){clicked = true},
       showControlBar: function() {over = true},
       hideControlBar: function() {out = true}
     };
@@ -143,7 +143,7 @@ describe('PlayingScreen', function () {
         }
       },
       startHideControlBarTimer: function() {moved = true},
-      togglePlayPause: function(){clicked = true},
+      // togglePlayPause: function(){clicked = true},
       showControlBar: function() {over = true},
       hideControlBar: function() {out = true},
       cancelTimer:function() {}

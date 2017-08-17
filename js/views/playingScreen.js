@@ -24,7 +24,8 @@ var PlayingScreen = React.createClass({
       isMouseDown: false,
       XMouseStart: 0,
       YMouseStart: 0,
-      mouseMoveStartTime: 0
+      mouseMoveStartTime: 0,
+      viewingDirection: {yaw: 0, roll: 0, pitch: 0}
     };
   },
 
@@ -75,9 +76,9 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
-    else {
-      // this.props.controller.togglePlayPause(event);
-    }
+    // else {
+    //   this.props.controller.togglePlayPause(event);
+    // }
   },
 
   handlePlayerMouseDown: function(e) {
@@ -128,7 +129,9 @@ var PlayingScreen = React.createClass({
       // XMouseStart: e.pageX,
       // YMouseStart: e.pageY
     });
-    this.props.controller.onVcTouched();
+    if (this.props.controller.onVcTouched) {
+      this.props.controller.onVcTouched(true);
+    }
   },
 
   showControlBar: function(event) {
