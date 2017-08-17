@@ -196,11 +196,13 @@ var ControlBar = React.createClass({
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
-    var iconElement = Utils.getEventIconElement(evt);
-    if (iconElement) {
-      var color = this.props.skinConfig.controlBar.iconStyle.active.color ? this.props.skinConfig.controlBar.iconStyle.active.color : this.props.skinConfig.general.accentColor;
-      var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
-      Utils.highlight(iconElement, opacity, color);
+    if (!this.isMobile) {
+      var iconElement = Utils.getEventIconElement(evt);
+      if (iconElement) {
+        var color = this.props.skinConfig.controlBar.iconStyle.active.color ? this.props.skinConfig.controlBar.iconStyle.active.color : this.props.skinConfig.general.accentColor;
+        var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
+        Utils.highlight(iconElement, opacity, color);
+      }
     }
   },
 
