@@ -114,7 +114,8 @@ var Skin = React.createClass({
         case CONSTANTS.SCREEN.PLAYING_SCREEN:
           console.log('SCREEN PLAYING_SCREEN');
           screen = (
-            <PlayingScreen {...this.props}
+            <PlayingScreen
+              {...this.props}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
               duration={this.state.duration}
@@ -127,8 +128,9 @@ var Skin = React.createClass({
               controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
               responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
+              componentHeight={this.state.componentHeight}
               videoQualityOptions={this.state.videoQualityOptions}
-              closedCaptionOptions = {this.props.closedCaptionOptions}
+              closedCaptionOptions={this.props.closedCaptionOptions}
               ref="playScreen" />
           );
           break;

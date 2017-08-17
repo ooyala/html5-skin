@@ -6,6 +6,7 @@ var ResponsiveManagerMixin = {
   getInitialState: function() {
       return {
         componentWidth: null,
+        componentHeight: null,
         responsiveClass: null,
         responsiveId: null
       };
@@ -28,6 +29,10 @@ var ResponsiveManagerMixin = {
 
   generateResponsiveData: function() {
     var componentWidth = ReactDOM.findDOMNode(this).getBoundingClientRect().width;
+    var componentHeight = ReactDOM.findDOMNode(this).parentNode ?
+      ReactDOM.findDOMNode(this).parentNode.getBoundingClientRect().height
+      :
+      ReactDOM.findDOMNode(this).getBoundingClientRect().height;
     var breakpoints = this.props.skinConfig.responsive.breakpoints;
     var breakpointData = {
       classes: {},
@@ -56,6 +61,7 @@ var ResponsiveManagerMixin = {
     //set responsive data to state
     this.setState({
       componentWidth: componentWidth,
+      componentHeight: componentHeight > 0  ? componentHeight : 1,
       responsiveClass: ClassNames(breakpointData.classes),
       responsiveId: ClassNames(breakpointData.ids)
     });
