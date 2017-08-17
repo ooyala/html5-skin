@@ -127,6 +127,7 @@ Tooltip.propTypes = {
 
 Tooltip.defaultProps = {
   enabled: false,
+  text: '',
   alignment: 'center',
   responsivenessMultiplier: 1,
   bottom: 0
