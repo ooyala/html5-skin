@@ -168,8 +168,13 @@ var PlayingScreen = React.createClass({
          onMouseMove={this.handlePlayerMouseMove}
         onKeyUp={this.handleKeyPress}
     >
-      {/*<div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>*/}
-      <div className="oo-state-screen-selectable" onMouseDown={this.handlePlayerMouseDown} onMouseUp={this.handlePlayerMouseUp} onMouseMove={this.handlePlayerMouseMove} onTouchEnd={this.handleTouchEnd}></div>
+      <div
+        className="oo-state-screen-selectable"
+        onMouseDown={this.handlePlayerMouseDown}
+        onMouseUp={this.handlePlayerMouseUp}
+        onMouseMove={this.handlePlayerMouseMove}
+        onTouchEnd={this.handleTouchEnd}
+      />
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
