@@ -183,7 +183,7 @@ var ControlBar = React.createClass({
   },
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
-  highlight: function(evt) {
+  highlight: function (evt) {
     if (!this.isMobile) {
       var iconElement = Utils.getEventIconElement(evt);
       if (iconElement) {
@@ -333,14 +333,14 @@ var ControlBar = React.createClass({
           tabIndex="0"
           aria-label={playPauseAriaLabel}
           autoFocus={this.props.controller.state.playPauseButtonFocused}>
-            <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
-            <Tooltip enabled={isTooltipEnabled}
-              alignment={alignment}
-              responsivenessMultiplier={this.responsiveUIMultiple}
-              bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height}
-              text={this.props.playerState == CONSTANTS.STATE.PLAYING ? Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.PAUSE, this.props.localizableStrings) :
-                this.props.playerState == CONSTANTS.STATE.END ? Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.REPLAY, this.props.localizableStrings) : Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.PLAY, this.props.localizableStrings)}>
-            </Tooltip>
+          <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
+          <Tooltip enabled={isTooltipEnabled}
+            alignment={alignment}
+            responsivenessMultiplier={this.responsiveUIMultiple}
+            bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height}
+            text={this.props.playerState == CONSTANTS.STATE.PLAYING ? Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.PAUSE, this.props.localizableStrings) :
+              this.props.playerState == CONSTANTS.STATE.END ? Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.REPLAY, this.props.localizableStrings) : Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.PLAY, this.props.localizableStrings)}>
+          </Tooltip>
         </button>
       }).bind(this),
 
@@ -354,22 +354,22 @@ var ControlBar = React.createClass({
       }).bind(this),
 
       "volume": (function (alignment) {
-        return <div className="oo-volume oo-control-bar-item" key="volume">  
-            <button className="oo-mute-unmute oo-control-bar-item"
-              onClick={this.handleVolumeIconClick}
-              onMouseUp={this.blurOnMouseUp}
-              onMouseOver={this.highlight}
-              onMouseOut={this.removeHighlight}
-              tabIndex="0"
-              aria-label={volumeAriaLabel}>
-              <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
-                  style={this.props.skinConfig.controlBar.iconStyle.inactive} />
-              <Tooltip enabled={isTooltipEnabled}
-                text={this.props.controller.state.volumeState.muted ? Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UNMUTE, this.props.localizableStrings) : Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.MUTE, this.props.localizableStrings)}
-                responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}>
-              </Tooltip>
-            </button>
-            {volumeControls}
+        return <div className="oo-volume oo-control-bar-item" key="volume">
+          <button className="oo-mute-unmute oo-control-bar-item"
+            onClick={this.handleVolumeIconClick}
+            onMouseUp={this.blurOnMouseUp}
+            onMouseOver={this.highlight}
+            onMouseOut={this.removeHighlight}
+            tabIndex="0"
+            aria-label={volumeAriaLabel}>
+            <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
+              style={this.props.skinConfig.controlBar.iconStyle.inactive} />
+            <Tooltip enabled={isTooltipEnabled}
+              text={this.props.controller.state.volumeState.muted ? Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UNMUTE, this.props.localizableStrings) : Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.MUTE, this.props.localizableStrings)}
+              responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}>
+            </Tooltip>
+          </button>
+          {volumeControls}
         </div>
       }).bind(this),
 
@@ -383,33 +383,33 @@ var ControlBar = React.createClass({
 
       "moreOptions": (function (alignment) {
         return <a className="oo-more-options oo-control-bar-item"
-            onClick={this.handleMoreOptionsClick} key="moreOptions" aria-hidden="true">
-            <Icon {...this.props} icon="ellipsis" style={dynamicStyles.iconCharacter}
-                onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
-            <Tooltip enabled={isTooltipEnabled}  responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height}
-              text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.MORE_OPTIONS, this.props.localizableStrings)}  alignment={alignment}>
-            </Tooltip>
-          </a>
+          onClick={this.handleMoreOptionsClick} key="moreOptions" aria-hidden="true">
+          <Icon {...this.props} icon="ellipsis" style={dynamicStyles.iconCharacter}
+            onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
+          <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height}
+            text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.MORE_OPTIONS, this.props.localizableStrings)} alignment={alignment}>
+          </Tooltip>
+        </a>
       }).bind(this),
 
       "quality": (function (alignment) {
         return <div className="oo-popover-button-container" key="quality">
-            {videoQualityPopover}
-            <a className={qualityClass} onClick={this.handleQualityClick} style={selectedStyle} aria-hidden="true">
+          {videoQualityPopover}
+          <a className={qualityClass} onClick={this.handleQualityClick} style={selectedStyle} aria-hidden="true">
             <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
-                  onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
+              onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
             <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.VIDEO_QUALITY, this.props.localizableStrings)} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}
               responsivenessMultiplier={this.responsiveUIMultiple} />
-            </a>
-          </div>
+          </a>
+        </div>
       }).bind(this),
 
       "discovery": (function (alignment) {
         return <a className="oo-discovery oo-control-bar-item"
           onClick={this.handleDiscoveryClick} key="discovery" aria-hidden="true">
           <Icon {...this.props} icon="discovery" style={dynamicStyles.iconCharacter}
-              onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
-          <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.DISCOVER, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}/>
+            onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
+          <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.DISCOVER, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
         </a>
       }).bind(this),
 
@@ -419,8 +419,8 @@ var ControlBar = React.createClass({
             {closedCaptionPopover}
             <a className={captionClass} onClick={this.handleClosedCaptionClick} style={selectedStyle} aria-hidden="true">
               <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
-                  onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
-              <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CLOSED_CAPTIONS, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}/>
+                onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
+              <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CLOSED_CAPTIONS, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
             </a>
           </div>
         )
@@ -430,25 +430,25 @@ var ControlBar = React.createClass({
         return <a className="oo-share oo-control-bar-item"
           onClick={this.handleShareClick} key="share" aria-hidden="true">
           <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
-              onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
-          <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}/>
+            onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
+          <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
         </a>
       }).bind(this),
 
       "fullscreen": (function (alignment) {
         return <button className="oo-fullscreen oo-control-bar-item"
-              onClick={this.handleFullscreenClick}
-              onMouseUp={this.blurOnMouseUp}
-              onMouseOver={this.highlight}
-              onMouseOut={this.removeHighlight}
-              key="fullscreen"
-              tabIndex="0"
-              aria-label={fullscreenAriaLabel}>
-              <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
-              <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple} text={this.props.controller.state.fullscreen ?
-                Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EXIT_FULL_SCREEN, this.props.localizableStrings) : Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.FULL_SCREEN, this.props.localizableStrings)}
-                bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}/>
-            </button>
+          onClick={this.handleFullscreenClick}
+          onMouseUp={this.blurOnMouseUp}
+          onMouseOver={this.highlight}
+          onMouseOut={this.removeHighlight}
+          key="fullscreen"
+          tabIndex="0"
+          aria-label={fullscreenAriaLabel}>
+          <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
+          <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple} text={this.props.controller.state.fullscreen ?
+            Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EXIT_FULL_SCREEN, this.props.localizableStrings) : Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.FULL_SCREEN, this.props.localizableStrings)}
+            bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
+        </button>
       }).bind(this),
 
       "logo": (function (alignment) {
