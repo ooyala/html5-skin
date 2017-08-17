@@ -20,11 +20,20 @@ var ControlBar = React.createClass({
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.volumeSliderValue = 0;
     this.moreOptionsItems = null;
+		this.vr = this.getVrParams();
 
     return {
       currentVolumeHead: 0
     };
   },
+
+	getVrParams: function(){
+		var playerParam = this.props.controller.state.playerParam;
+		var bitWrapper = playerParam ? playerParam['bit-wrapper'] : null;
+		var isVr = !!bitWrapper && !!bitWrapper.source && !!bitWrapper.source.vr;
+
+		return isVr ? _.extend({}, bitWrapper.source.vr) : false;
+	},
 
   componentDidMount: function() {
     window.addEventListener('orientationchange', this.closePopovers);
@@ -69,6 +78,11 @@ var ControlBar = React.createClass({
     evt.preventDefault();
     this.props.controller.toggleFullscreen();
   },
+
+	handleStereoClick: function () {
+		this.vr.stereo = !this.vr.stereo;
+		this.props.controller.toggleStereo();
+	},
 
   handleLiveClick: function(evt) {
     evt.stopPropagation();
@@ -241,6 +255,15 @@ var ControlBar = React.createClass({
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
 
+		var stereoIcon, stereoAriaLabel;
+		if(this.vr && this.vr.stereo) {
+			stereoIcon = "stereoOn";
+			stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
+		} else {
+			stereoIcon = "stereoOff";
+			stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
+		}
+
     var totalTime = 0;
     if (this.props.duration == null || typeof this.props.duration == 'undefined' || this.props.duration == ""){
       totalTime = Utils.formatSeconds(0);
@@ -396,6 +419,21 @@ var ControlBar = React.createClass({
         <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </a>,
+
+			"stereo": !this.vr ? null : <button className="oo-fullscreen oo-control-bar-item"
+				onClick={this.handleStereoClick}
+				onMouseUp={this.blurOnMouseUp}
+				onMouseOver={this.highlight}
+				onMouseOut={this.removeHighlight}
+				key="stereo"
+				tabIndex="0"
+				aria-label={stereoAriaLabel}>
+					<Icon
+				{...this.props}
+				icon={stereoIcon}
+				style={dynamicStyles.iconCharacter}
+				/>
+			</button>,
 
       "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
         onClick={this.handleFullscreenClick}

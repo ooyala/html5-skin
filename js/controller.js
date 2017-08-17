@@ -1250,10 +1250,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
     },
 
-    togglePlayPause: function(event) {
-      console.log('SSS togglePlayPause', event);
-      console.log('SSS togglePlayPause this.state.playerState', this.state.playerState);
-      switch (this.state.playerState) {
+    toggleStereo: function () {
+        this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
+    },
+
+		togglePlayPause: function(event) {
+			console.log('SSS togglePlayPause', event);
+			console.log('SSS togglePlayPause this.state.playerState', this.state.playerState);
+			switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());
           break;
@@ -1264,7 +1268,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             }
             else
             {
-              this.mb.publish(OO.EVENTS.REPLAY);
+               this.mb.publish(OO.EVENTS.REPLAY);
             }
           } else {
             this.mb.publish(OO.EVENTS.REPLAY);
