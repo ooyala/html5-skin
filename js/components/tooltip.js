@@ -73,7 +73,7 @@ var Tooltip = React.createClass({
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
 
-    this.parentElement = ReactDOM.findDOMNode(this).parentElement;
+    this.parentElement = (ReactDOM.findDOMNode(this) || {}).parentElement;
     if (this.parentElement) {
       this.parentElement.addEventListener('mouseover', this.onMouseOver);
       this.parentElement.addEventListener('mouseleave', this.onMouseLeave);
