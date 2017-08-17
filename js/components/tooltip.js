@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var deepmerge = require('deepmerge');
 
 var verticalOffset = 80;
@@ -67,6 +68,25 @@ function getPointerStyle(alignment) {
 
 
 var Tooltip = React.createClass({
+
+    componentDidMount: function () {
+        this.onMouseOver = this.onMouseOver.bind(this);
+        this.onMouseLeave = this.onMouseLeave.bind(this);
+
+        this.parentElement = ReactDOM.findDOMNode(this).parentElement;
+        if (this.parentElement) {
+            this.parentElement.addEventListener('mouseover', this.onMouseOver);
+            this.parentElement.addEventListener('mouseleave', this.onMouseLeave);
+        }
+    },
+
+    componentWillUnmount: function () {
+        if (this.parentElement) {
+            this.parentElement.removeEventListener('mouseover', this.onMouseOver);
+            this.parentElement.removeEventListener('mouseleave', this.onMouseLeave);
+        }
+    },
+
     render: function () {
         if (this.props.enabled) {
             return (
@@ -77,13 +97,10 @@ var Tooltip = React.createClass({
                         </div>
                         <div style={getPointerStyle(this.props.alignment)}></div>
                     </div>
-                    <div onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
-                        {this.props.children}
-                    </div>
                 </div>
             );
-        } else {
-            return (<div>{this.props.children}</div>);
+        }else{
+            return null;
         }
     },
 
