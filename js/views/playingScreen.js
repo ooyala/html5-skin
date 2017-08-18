@@ -10,7 +10,8 @@ var React = require('react'),
     Spinner = require('../components/spinner'),
     TextTrack = require('../components/textTrackPanel'),
     Watermark = require('../components/watermark'),
-    ResizeMixin = require('../mixins/resizeMixin');
+    ResizeMixin = require('../mixins/resizeMixin'),
+		ViewControls = require('../components/viewControls');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -150,6 +151,24 @@ var PlayingScreen = React.createClass({
     }
   },
 
+	showDirectionControls: function () {
+		console.log('showDirectionControls');
+	},
+
+	hideDirectionControls: function () {
+		console.log('hideDirectionControls');
+	},
+
+	showControls: function () {
+		this.showControlBar();
+		this.showDirectionControls();
+	},
+
+	hideControls: function () {
+		this.hideControlBar();
+		this.hideDirectionControls();
+	},
+
   render: function() {
     var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
       <AdOverlay {...this.props}
@@ -165,8 +184,8 @@ var PlayingScreen = React.createClass({
     return (
     <div className="oo-state-screen oo-playing-screen"
          ref="PlayingScreen"
-         onMouseOver={this.showControlBar}
-         onMouseOut={this.hideControlBar}
+         onMouseOver={this.showControls}
+         onMouseOut={this.hideControls}
          onMouseMove={this.handlePlayerMouseMove}
         onKeyUp={this.handleKeyPress}
     >
@@ -195,7 +214,13 @@ var PlayingScreen = React.createClass({
           controlBarVisible={this.state.controlBarVisible}
           playerState={this.props.playerState}
           isLiveStream={this.props.isLiveStream} />
+
+
       </div>
+			<ViewControls
+				controlsVisible={this.state.controlBarVisible}
+				playerState={this.props.playerState}
+			/>
     </div>
     );
   }
