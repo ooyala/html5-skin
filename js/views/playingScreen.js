@@ -12,7 +12,6 @@ var React = require('react'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin');
 
-
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
 
@@ -77,6 +76,7 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
+    //ToDo: it can be usefull in future 
     // else {
     //   this.props.controller.togglePlayPause(event);
     // }
@@ -99,8 +99,7 @@ var PlayingScreen = React.createClass({
     if (this.state.isMouseDown) {
       var dx = e.pageX - this.state.XMouseStart;
       var dy = e.pageY - this.state.YMouseStart;
-      console.log('SSS XStart', this.state.XMouseStart, 'SSS XEnd', e.pageX,  'YStart', this.state.YMouseStart, 'YEnd', e.pageY);
-      console.log('SSS dx', dx, 'dy', dy);
+      
       var gradosPorBarridoX = 90,
         gradosPorBarridoY = 90;
       var gradosPorPixelYaw = gradosPorBarridoX / this.props.componentWidth,

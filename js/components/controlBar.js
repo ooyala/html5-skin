@@ -20,20 +20,12 @@ var ControlBar = React.createClass({
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.volumeSliderValue = 0;
     this.moreOptionsItems = null;
-		this.vr = this.getVrParams();
+		this.vr = this.props.controller.getVrParams();
 
     return {
       currentVolumeHead: 0
     };
   },
-
-	getVrParams: function(){
-		var playerParam = this.props.controller.state.playerParam;
-		var bitWrapper = playerParam ? playerParam['bit-wrapper'] : null;
-		var isVr = !!bitWrapper && !!bitWrapper.source && !!bitWrapper.source.vr;
-
-		return isVr ? _.extend({}, bitWrapper.source.vr) : false;
-	},
 
   componentDidMount: function() {
     window.addEventListener('orientationchange', this.closePopovers);
