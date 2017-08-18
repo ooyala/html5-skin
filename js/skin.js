@@ -88,6 +88,7 @@ var Skin = React.createClass({
     else {
       switch (this.state.screenToShow) {
         case CONSTANTS.SCREEN.INITIAL_SCREEN:
+          console.log('SCREEN INITIAL_SCREEN');
           screen = (
             <StartScreen {...this.props}
               componentWidth={this.state.componentWidth}
@@ -96,11 +97,13 @@ var Skin = React.createClass({
           );
           break;
         case CONSTANTS.SCREEN.LOADING_SCREEN:
+          console.log('SCREEN LOADING_SCREEN');
           screen = (
             <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/>
           );
           break;
         case CONSTANTS.SCREEN.START_SCREEN:
+          console.log('SCREEN START_SCREEN');
           screen = (
             <StartScreen {...this.props}
               componentWidth={this.state.componentWidth}
@@ -109,8 +112,10 @@ var Skin = React.createClass({
           );
           break;
         case CONSTANTS.SCREEN.PLAYING_SCREEN:
+          console.log('SCREEN PLAYING_SCREEN');
           screen = (
-            <PlayingScreen {...this.props}
+            <PlayingScreen
+              {...this.props}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
               duration={this.state.duration}
@@ -123,12 +128,14 @@ var Skin = React.createClass({
               controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
               responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
+              componentHeight={this.state.componentHeight}
               videoQualityOptions={this.state.videoQualityOptions}
-              closedCaptionOptions = {this.props.closedCaptionOptions}
+              closedCaptionOptions={this.props.closedCaptionOptions}
               ref="playScreen" />
           );
           break;
         case CONSTANTS.SCREEN.SHARE_SCREEN:
+          console.log('SCREEN SHARE_SCREEN');
           screen = (
           <ContentScreen
             {...this.props}
@@ -143,6 +150,7 @@ var Skin = React.createClass({
           );
           break;
         case CONSTANTS.SCREEN.PAUSE_SCREEN:
+          console.log('SCREEN PAUSE_SCREEN');
           screen = (
             <PauseScreen {...this.props}
               contentTree={this.state.contentTree}
@@ -162,6 +170,7 @@ var Skin = React.createClass({
           );
           break;
         case CONSTANTS.SCREEN.END_SCREEN:
+          console.log('SCREEN END_SCREEN');
           screen = (
             <EndScreen {...this.props}
               contentTree={this.state.contentTree}
@@ -180,6 +189,7 @@ var Skin = React.createClass({
           );
           break;
         case CONSTANTS.SCREEN.AD_SCREEN:
+          console.log('SCREEN AD_SCREEN');
           screen = (
             <AdScreen {...this.props}
               contentTree={this.state.contentTree}
@@ -201,6 +211,7 @@ var Skin = React.createClass({
           );
           break;
         case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
+          console.log('SCREEN DISCOVERY_SCREEN');
           screen = (
             <ContentScreen
               {...this.props}
@@ -219,6 +230,7 @@ var Skin = React.createClass({
           );
           break;
         case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
+          console.log('SCREEN MORE_OPTIONS_SCREEN');
           screen = (
           <ContentScreen
             {...this.props}
@@ -230,6 +242,7 @@ var Skin = React.createClass({
           );
           break;
         case CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN:
+          console.log('SCREEN CLOSEDCAPTION_SCREEN');
           screen = (
           <ContentScreen
             {...this.props}
@@ -249,6 +262,7 @@ var Skin = React.createClass({
           );
           break;
         case CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN:
+          console.log('SCREEN VIDEO_QUALITY_SCREEN');
           screen = (
           <ContentScreen
             {...this.props}
@@ -264,6 +278,7 @@ var Skin = React.createClass({
           );
           break;
         case CONSTANTS.SCREEN.ERROR_SCREEN:
+          console.log('SCREEN ERROR_SCREEN');
           screen = (
             <ErrorScreen {...this.props}
               errorCode={this.props.controller.state.errorCode} />

@@ -12,6 +12,7 @@ var React = require('react'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin');
 
+
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
 
@@ -20,7 +21,12 @@ var PlayingScreen = React.createClass({
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
     return {
       controlBarVisible: true,
-      timer: null
+      timer: null,
+      isMouseDown: false,
+      XMouseStart: 0,
+      YMouseStart: 0,
+      mouseMoveStartTime: 0,
+      viewingDirection: this.props.controller.state.viewingDirection
     };
   },
 
@@ -57,18 +63,6 @@ var PlayingScreen = React.createClass({
     }
   },
 
-  handlePlayerMouseUp: function(event) {
-    // pause or play the video if the skin is clicked on desktop
-    if (!this.isMobile) {
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
-
-      this.props.controller.togglePlayPause();
-      this.props.controller.state.accessibilityControlsEnabled = true;
-    }
-    // for mobile, touch is handled in handleTouchEnd
-  },
-
   handleKeyPress: function(event) {
     // show control bar on tab key navigation
     if (event.which === 9 || event.keyCode === 9) {
@@ -83,15 +77,58 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
-    else {
-      this.props.controller.togglePlayPause();
-    }
+    // else {
+    //   this.props.controller.togglePlayPause(event);
+    // }
   },
 
-  handlePlayerMouseMove: function() {
+  handlePlayerMouseDown: function(e) {
+    this.setState({
+      isMouseDown: true,
+      XMouseStart: e.pageX,
+      YMouseStart: e.pageY,
+      mouseMoveStartTime: new Date()
+    });
+  },
+
+  handlePlayerMouseMove: function(e) {
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
+    }
+    if (this.state.isMouseDown) {
+      var dx = e.pageX - this.state.XMouseStart;
+      var dy = e.pageY - this.state.YMouseStart;
+      console.log('SSS XStart', this.state.XMouseStart, 'SSS XEnd', e.pageX,  'YStart', this.state.YMouseStart, 'YEnd', e.pageY);
+      console.log('SSS dx', dx, 'dy', dy);
+      var gradosPorBarridoX = 90,
+        gradosPorBarridoY = 90;
+      var gradosPorPixelYaw = gradosPorBarridoX / this.props.componentWidth,
+        gradosPorPixelPitch = gradosPorBarridoY / this.props.componentHeight;
+      var yaw = this.state.viewingDirection.yaw + dx * gradosPorPixelYaw,
+        pitch = this.state.viewingDirection.pitch + dy * gradosPorPixelPitch;
+      var params = [yaw, 0, pitch ];
+      this.props.controller.onTouched(params, true);
+    }
+  },
+
+  handlePlayerMouseUp: function(e) {
+    // pause or play the video if the skin is clicked on desktop
+    if (!this.isMobile) {
+      e.stopPropagation(); // W3C
+      e.cancelBubble = true; // IE
+
+      this.props.controller.state.accessibilityControlsEnabled = true;
+    }
+    // for mobile, touch is handled in handleTouchEnd
+    this.setState({
+      isMouseDown: false,
+    });
+    if (this.props.controller.onVcTouched) {
+      this.props.controller.onVcTouched(true);
+      this.setState({
+        viewingDirection:  this.props.controller.state.viewingDirection
+      })
     }
   },
 
@@ -129,9 +166,10 @@ var PlayingScreen = React.createClass({
          onMouseOver={this.showControlBar}
          onMouseOut={this.hideControlBar}
          onMouseMove={this.handlePlayerMouseMove}
-         onKeyUp={this.handleKeyPress} >
-
-      <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
+        onKeyUp={this.handleKeyPress}
+    >
+      {/*<div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>*/}
+      <div className="oo-state-screen-selectable" onMouseDown={this.handlePlayerMouseDown} onMouseUp={this.handlePlayerMouseUp} onMouseMove={this.handlePlayerMouseMove} onTouchEnd={this.handleTouchEnd}></div>
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
