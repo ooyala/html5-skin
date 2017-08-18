@@ -266,11 +266,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.accessibilityControls = new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
 
-      //@TODO: Need to add function for checkibg isVr
-      if (params['bit-wrapper']['source']['vr']) {
+      if (this.getVrParams()) {
         this.state.isVideo360 = true;
       }
     },
+
+		getVrParams: function(){
+			var playerParam = this.state.playerParam;
+			var bitWrapper = playerParam ? playerParam['bit-wrapper'] : null;
+			var isVr = !!bitWrapper && !!bitWrapper.source && !!bitWrapper.source.vr;
+
+			return isVr ? _.extend({}, bitWrapper.source.vr) : false;
+		},
 
     onVcVideoElementCreated: function(event, params) {
       var videoElement = params.videoElement;
@@ -629,7 +636,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onTouched: function(params, isOnVideoClick) {
-      console.log('html5-skin controller onTouched params', params, 'isOnVideoClick', isOnVideoClick);
       if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
         if (this.state.isVideo360 && isOnVideoClick) {
           this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement, params);
@@ -1263,8 +1269,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
 		togglePlayPause: function(event) {
-			console.log('SSS togglePlayPause', event);
-			console.log('SSS togglePlayPause this.state.playerState', this.state.playerState);
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());
@@ -1398,7 +1402,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     sendDiscoveryDisplayEvent: function(screenName, embedCode) {
-      console.log('here sendDiscoveryDisplayEvent');
       var relatedVideosData = Utils.getPropertyValue(this.state.discoveryData, "relatedVideos", []);
       var relatedVideos = relatedVideosData;
 

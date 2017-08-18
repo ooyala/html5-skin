@@ -13,7 +13,6 @@ var React = require('react'),
     ResizeMixin = require('../mixins/resizeMixin'),
 		ViewControls = require('../components/viewControls');
 
-
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
 
@@ -78,6 +77,7 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
+    //ToDo: it can be usefull in future 
     // else {
     //   this.props.controller.togglePlayPause(event);
     // }
@@ -100,8 +100,7 @@ var PlayingScreen = React.createClass({
     if (this.state.isMouseDown) {
       var dx = e.pageX - this.state.XMouseStart;
       var dy = e.pageY - this.state.YMouseStart;
-      console.log('SSS XStart', this.state.XMouseStart, 'SSS XEnd', e.pageX,  'YStart', this.state.YMouseStart, 'YEnd', e.pageY);
-      console.log('SSS dx', dx, 'dy', dy);
+      
       var gradosPorBarridoX = 90,
         gradosPorBarridoY = 90;
       var gradosPorPixelYaw = gradosPorBarridoX / this.props.componentWidth,
@@ -187,8 +186,13 @@ var PlayingScreen = React.createClass({
          onMouseMove={this.handlePlayerMouseMove}
         onKeyUp={this.handleKeyPress}
     >
-      {/*<div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>*/}
-      <div className="oo-state-screen-selectable" onMouseDown={this.handlePlayerMouseDown} onMouseUp={this.handlePlayerMouseUp} onMouseMove={this.handlePlayerMouseMove} onTouchEnd={this.handleTouchEnd}></div>
+      <div
+        className="oo-state-screen-selectable"
+        onMouseDown={this.handlePlayerMouseDown}
+        onMouseUp={this.handlePlayerMouseUp}
+        onMouseMove={this.handlePlayerMouseMove}
+        onTouchEnd={this.handleTouchEnd}
+      />
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
