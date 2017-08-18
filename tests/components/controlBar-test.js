@@ -225,7 +225,7 @@ describe('ControlBar', function () {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var volumeButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').firstChild;
+    var volumeButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-mute-unmute').firstChild;
     TestUtils.Simulate.click(volumeButton);
     expect(muteClicked).toBe(true);
     var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
