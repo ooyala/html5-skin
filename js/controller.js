@@ -143,7 +143,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullWindow": false,
       "autoPauseDisabled": false,
 
-      "isVideo360": false
+      "isVideo360": false,
+      "viewingDirection": {yaw: 0, roll: 0, pitch: 0}
     };
 
     this.init();
@@ -195,6 +196,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         // If and only if such has occured, it needs a route to being resubscribed.
         if(!this.state.isPlaybackReadySubscribed) {
           this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
+        }
+        if (this.state.isVideo360) {
+          this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.getViewingDirection, this));
         }
 
         // ad events
@@ -628,7 +632,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       console.log('html5-skin controller onTouched params', params, 'isOnVideoClick', isOnVideoClick);
       if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
         if (this.state.isVideo360 && isOnVideoClick) {
-          console.log('this.state.isVideo360 && isOnVideoClick');
           this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement, params);
         }
       }
@@ -640,6 +643,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.publish(OO.EVENTS.VC_TOUCHED, this.focusedElement);
         }
       }
+    },
+
+    getViewingDirection: function(event, yaw, roll, pitch) {
+      this.state.viewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
     },
 
     onSeeked: function(event) {
@@ -1165,6 +1172,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.TOUCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_TOUCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
@@ -1257,7 +1265,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 		togglePlayPause: function(event) {
 			console.log('SSS togglePlayPause', event);
 			console.log('SSS togglePlayPause this.state.playerState', this.state.playerState);
-			switch (this.state.playerState) {
+      switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());
           break;

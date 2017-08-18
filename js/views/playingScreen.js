@@ -13,6 +13,7 @@ var React = require('react'),
     ResizeMixin = require('../mixins/resizeMixin'),
 		ViewControls = require('../components/viewControls');
 
+
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
 
@@ -26,7 +27,7 @@ var PlayingScreen = React.createClass({
       XMouseStart: 0,
       YMouseStart: 0,
       mouseMoveStartTime: 0,
-      viewingDirection: {yaw: 0, roll: 0, pitch: 0}
+      viewingDirection: this.props.controller.state.viewingDirection
     };
   },
 
@@ -96,22 +97,18 @@ var PlayingScreen = React.createClass({
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
-    console.log('this.state.isMouseDown', this.state.isMouseDown);
     if (this.state.isMouseDown) {
       var dx = e.pageX - this.state.XMouseStart;
       var dy = e.pageY - this.state.YMouseStart;
       console.log('SSS XStart', this.state.XMouseStart, 'SSS XEnd', e.pageX,  'YStart', this.state.YMouseStart, 'YEnd', e.pageY);
-      var directionRad = Math.atan2(dx, dy);
-      var directionDeg= directionRad * (180/Math.PI);
-      var vectorLength = Math.sqrt(Math.pow(dx, 2)+ Math.pow(dy, 2));
-      var timeSec = ((new Date) - this.state.mouseMoveStartTime) / 1000;
-      var speed = vectorLength / timeSec;
       console.log('SSS dx', dx, 'dy', dy);
-      console.log('SSS angle directionDeg', directionDeg);
-      // console.log('SSS vectorLength', vectorLength);
-      // console.log('SSS timeSec', timeSec);
-      // console.log('SSS speed', speed);
-      var params = [-10, -20, 0 ];
+      var gradosPorBarridoX = 90,
+        gradosPorBarridoY = 90;
+      var gradosPorPixelYaw = gradosPorBarridoX / this.props.componentWidth,
+        gradosPorPixelPitch = gradosPorBarridoY / this.props.componentHeight;
+      var yaw = this.state.viewingDirection.yaw + dx * gradosPorPixelYaw,
+        pitch = this.state.viewingDirection.pitch + dy * gradosPorPixelPitch;
+      var params = [yaw, 0, pitch ];
       this.props.controller.onTouched(params, true);
     }
   },
@@ -127,11 +124,12 @@ var PlayingScreen = React.createClass({
     // for mobile, touch is handled in handleTouchEnd
     this.setState({
       isMouseDown: false,
-      // XMouseStart: e.pageX,
-      // YMouseStart: e.pageY
     });
     if (this.props.controller.onVcTouched) {
       this.props.controller.onVcTouched(true);
+      this.setState({
+        viewingDirection:  this.props.controller.state.viewingDirection
+      })
     }
   },
 
