@@ -629,7 +629,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onTouched: function(params, isOnVideoClick) {
-      console.log('html5-skin controller onTouched params', params, 'isOnVideoClick', isOnVideoClick);
       if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
         if (this.state.isVideo360 && isOnVideoClick) {
           this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement, params);
