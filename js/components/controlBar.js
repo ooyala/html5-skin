@@ -319,7 +319,11 @@ var ControlBar = React.createClass({
     var selectedStyle = {};
     selectedStyle["color"] = this.props.skinConfig.general.accentColor ? this.props.skinConfig.general.accentColor : null;
 
-    var isTooltipEnabled = this.props.skinConfig.controlBar.tooltips ? this.props.skinConfig.controlBar.tooltips.enabled : false;
+    var isTooltipEnabled = false;
+    if (!this.isMobile) {
+      isTooltipEnabled = this.props.skinConfig.controlBar.tooltips ? this.props.skinConfig.controlBar.tooltips.enabled : false;
+    }
+
     var controlItemTemplates = {
       "playPause": (function (alignment) {
         return <button className="oo-play-pause oo-control-bar-item"
