@@ -62,8 +62,7 @@ var DirectionControl = React.createClass({
 var ViewControls = React.createClass({
 
 	handleDirection: function (move, direction) {
-		console.log('move', move, '; direction', direction);
-		this.props.controller.moveToDirection(arguments);
+		this.props.controller.moveToDirection(move, direction);
 	},
 
 	render: function () {

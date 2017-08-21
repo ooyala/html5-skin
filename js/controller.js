@@ -1269,7 +1269,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
 		moveToDirection: function (move, direction) {
-			this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, arguments);
+			this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, move, direction);
 		},
 
 		togglePlayPause: function(event) {
