@@ -1268,6 +1268,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
     },
 
+		moveToDirection: function (move, direction) {
+			this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, arguments);
+		},
+
 		togglePlayPause: function(event) {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
