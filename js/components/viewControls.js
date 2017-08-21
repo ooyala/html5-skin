@@ -67,14 +67,12 @@ var ViewControls = React.createClass({
 
 	render: function () {
 		var styles = {
-			width: '20%',
-			height: '20%',
 			position: 'absolute',
 			display: 'block',
 			top: '10%',
 			left: '10%',
 			background: 'black',
-			opacity: 0.1
+			opacity: 0.3
 		};
 
 		return (
