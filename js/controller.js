@@ -1096,6 +1096,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onErrorEvent: function(event, errorCode){
+      console.error("errorcode ",errorCode);
       this.unsubscribeBasicPlaybackEvents();
 
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
@@ -1430,7 +1431,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     setClosedCaptionsLanguage: function(){
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
       //if saved language not in available languages, set to first available language
-      if (availableLanguages && (this.state.closedCaptionOptions.language == null || !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))) {
+      if (availableLanguages && availableLanguages.languages && (this.state.closedCaptionOptions.language == null || !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))) {
         this.state.closedCaptionOptions.language = availableLanguages.languages[0];
       }
       var language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : "";
@@ -1656,8 +1657,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) != -1) {
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
       }
-      else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
-        elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO);
+      else if (window.document.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
+        elements = window.document.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO);
         if (elements.length) {
           element = elements[0];
           this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
@@ -1667,8 +1668,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       else if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) != -1) {
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
       }
-      else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
-        elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT);
+      else if (window.document.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
+        elements = window.document.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT);
         if (elements.length) {
           element = elements[0];
           this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
