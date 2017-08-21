@@ -148,24 +148,6 @@ var PlayingScreen = React.createClass({
     }
   },
 
-	showDirectionControls: function () {
-		// console.log('showDirectionControls');
-	},
-
-	hideDirectionControls: function () {
-		// console.log('hideDirectionControls');
-	},
-
-	showControls: function () {
-		this.showControlBar();
-		this.showDirectionControls();
-	},
-
-	hideControls: function () {
-		this.hideControlBar();
-		this.hideDirectionControls();
-	},
-
   render: function() {
     var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
       <AdOverlay {...this.props}
@@ -177,12 +159,12 @@ var PlayingScreen = React.createClass({
       <UpNextPanel {...this.props}
         controlBarVisible={this.state.controlBarVisible}
         currentPlayhead={this.props.currentPlayhead}/> : null;
-
+		
     return (
     <div className="oo-state-screen oo-playing-screen"
          ref="PlayingScreen"
-         onMouseOver={this.showControls}
-         onMouseOut={this.hideControls}
+         onMouseOver={this.showControlBar}
+         onMouseOut={this.hideControlBar}
          onMouseMove={this.handlePlayerMouseMove}
         onKeyUp={this.handleKeyPress}
     >
