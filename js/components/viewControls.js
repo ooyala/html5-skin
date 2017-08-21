@@ -21,17 +21,38 @@ var DirectionControl = React.createClass({
 	},
 
 	render: function () {
-		// var dirIcon = "fa fa-chevron-"+this.props.dir+" fa-lg";
 
-		var dirIcon = CONSTANTS.ARIA_LABELS.PLAY;
-		var styles = {width:'10px', height:'10px', position:'absolute'};
+		var styles = {
+			// width:'10px',
+			// height:'10px',
+			// position:'absolute'
+			transform: (function (self) {
+				var angle;
+				switch (self.props.dir){
+					case 'right':
+						angle = -90;
+						break;
+					case 'up':
+						angle = 0;
+						break;
+					case 'down':
+						angle = 90;
+						break;
+					case 'left':
+						angle = 180;
+						break;
+				}
+
+				return 'rotate('+angle+'deg)';
+			})(this)
+		};
+
 		var dynamicStyles = this.setupItemStyle();
+		dynamicStyles.iconCharacter.color = '#000';
 
-		console.warn('this.props', this.props);
-		console.warn('dynamicStyles', dynamicStyles);
-		// return <span style={styles}><i className={dirIcon}>p</i></span>
 		return (
 			<button
+							style={styles}
 							onClick={this.handleClick}
 							key={this.props.dir}
 							tabIndex="0">
