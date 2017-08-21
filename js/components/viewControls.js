@@ -1,12 +1,10 @@
 var React = require('react'),
-		CONSTANTS = require('../constants/constants'),
-		ClassNames = require('classnames'),
-		Utils = require('./utils'),
 		Icon = require('./icon');
 
 var DirectionControl = React.createClass({
-	handleClick: function(){
-		console.log('handleClick props', this.props);
+	handleEvent: function (ev) {
+		var move = ev.type == 'mousedown' || ev.type == 'touchstart' ? 'start' : 'end';
+		this.props.handleDirection(move, this.props.dir);
 	},
 
 	setupItemStyle: function() {
@@ -23,17 +21,14 @@ var DirectionControl = React.createClass({
 	render: function () {
 
 		var styles = {
-			// width:'10px',
-			// height:'10px',
-			// position:'absolute'
 			transform: (function (self) {
 				var angle;
 				switch (self.props.dir){
 					case 'right':
-						angle = -90;
+						angle = 0;
 						break;
 					case 'up':
-						angle = 0;
+						angle = -90;
 						break;
 					case 'down':
 						angle = 90;
@@ -53,9 +48,11 @@ var DirectionControl = React.createClass({
 		return (
 			<button
 							style={styles}
-							onClick={this.handleClick}
 							key={this.props.dir}
-							tabIndex="0">
+							tabIndex="0"
+							onMouseDown={this.handleEvent} onTouchStart={this.handleEvent}
+							onMouseUp={this.handleEvent} onTouchEnd={this.handleEvent}
+			>
 				<Icon {...this.props} icon="play" style={dynamicStyles.iconCharacter}/>
 			</button>
 		)
@@ -64,12 +61,11 @@ var DirectionControl = React.createClass({
 
 var ViewControls = React.createClass({
 
-	handleMouseDown: function (ev) {
-		debugger;
+	handleDirection: function (move, direction) {
+		console.log('move', move, '; direction', direction);
 	},
 
 	render: function () {
-		console.log('ViewControls props', this.props);
 		var styles = {
 			width: '20%',
 			height: '20%',
@@ -77,17 +73,16 @@ var ViewControls = React.createClass({
 			display: 'block',
 			top: '10%',
 			left: '10%',
-			'z-index': 2147483648,
 			background: 'black',
 			opacity: 0.1
 		};
 
 		return (
-			<div className="viewControls" style={styles}>
-				<DirectionControl {...this.props} dir="left" onMouseDown={this.handleMouseDown} onTouchDown={this.handleMouseDown}/>
-				<DirectionControl {...this.props} dir="right" onMouseDown={this.handleMouseDown} onTouchDown={this.handleMouseDown}/>
-				<DirectionControl {...this.props} dir="up" onMouseDown={this.handleMouseDown} onTouchDown={this.handleMouseDown}/>
-				<DirectionControl {...this.props} dir="down" onMouseDown={this.handleMouseDown} onTouchDown={this.handleMouseDown}/>
+			<div style={styles}>
+				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="left"/>
+				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="right"/>
+				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="up"/>
+				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="down"/>
 			</div>
 		);
 	}

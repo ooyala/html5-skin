@@ -149,11 +149,11 @@ var PlayingScreen = React.createClass({
   },
 
 	showDirectionControls: function () {
-		console.log('showDirectionControls');
+		// console.log('showDirectionControls');
 	},
 
 	hideDirectionControls: function () {
-		console.log('hideDirectionControls');
+		// console.log('hideDirectionControls');
 	},
 
 	showControls: function () {
