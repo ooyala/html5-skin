@@ -3,8 +3,8 @@ var React = require('react'),
 
 var DirectionControl = React.createClass({
 	handleEvent: function (ev) {
-		var move = ev.type == 'mousedown' || ev.type == 'touchstart' ? 'start' : 'end';
-		this.props.handleDirection(move, this.props.dir);
+		var rotate = ev.type == 'mousedown' || ev.type == 'touchstart' ? true : false;
+		this.props.handleDirection(rotate, this.props.dir);
 	},
 
 	setupItemStyle: function() {
@@ -63,8 +63,8 @@ var DirectionControl = React.createClass({
 
 var ViewControls = React.createClass({
 
-	handleDirection: function (move, direction) {
-		this.props.controller.moveToDirection(move, direction);
+	handleDirection: function (rotate, direction) {
+		this.props.controller.moveToDirection(rotate, direction);
 	},
 
 	render: function () {

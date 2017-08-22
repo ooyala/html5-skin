@@ -1268,8 +1268,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
     },
 
-		moveToDirection: function (move, direction) {
-			this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, move, direction);
+		moveToDirection: function (rotate, direction) {
+			this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, rotate, direction);
 		},
 
 		togglePlayPause: function(event) {
