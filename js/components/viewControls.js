@@ -21,6 +21,8 @@ var DirectionControl = React.createClass({
 	render: function () {
 
 		var styles = {
+			margin: '0px',
+			padding: '0px',
 			transform: (function (self) {
 				var angle;
 				switch (self.props.dir){
