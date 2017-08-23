@@ -212,7 +212,8 @@ OO = {
       createPluginElements: function() {},
       findMainVideoElement: function(a) {},
       loadConfigData: function(a, b, c, d) {},
-      cleanUpEventListeners: function(){}
+      cleanUpEventListeners: function(){},
+			getVrParams: function () {}
     };
 
 
