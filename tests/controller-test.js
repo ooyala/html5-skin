@@ -213,7 +213,8 @@ OO = {
       findMainVideoElement: function(a) {},
       loadConfigData: function(a, b, c, d) {},
       cleanUpEventListeners: function(){},
-			getVrParams: function () {}
+			getVrParams: function () {},
+			toggleStereo: function () {}
     };
 
 
@@ -540,6 +541,9 @@ OO = {
 
     Html5Skin.setAspectRatio.call(controllerMock);
     Html5Skin.setAspectRatio.call({state: {mainVideoAspectRatio: 0}});
+
+    //test toggle stereo
+		html5Skin.toggleStereo.call(controllerMock);
 
     //test find main video element
     Html5Skin.findMainVideoElement.call(controllerMock, videoElement);
