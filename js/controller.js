@@ -266,7 +266,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.accessibilityControls = new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
 
-      if (this.getVrParams()) {
+      if (this.getVrParams && this.getVrParams()) {
         this.state.isVideo360 = true;
       }
     },
