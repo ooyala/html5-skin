@@ -213,8 +213,7 @@ OO = {
       findMainVideoElement: function(a) {},
       loadConfigData: function(a, b, c, d) {},
       cleanUpEventListeners: function(){},
-			getVrParams: function () {},
-			toggleStereo: function () {}
+			getVrParams: function () {}
     };
 
 
@@ -410,6 +409,9 @@ OO = {
     Html5Skin.toggleMute.call(controllerMock, true);
     Html5Skin.toggleMute.call(controllerMock, false);
 
+		//test toggle stereo
+		Html5Skin.toggleStereo.call(controllerMock);
+
     controllerMock.state.playerState = CONSTANTS.STATE.START;
     Html5Skin.togglePlayPause.call(controllerMock);
     controllerMock.state.playerState = CONSTANTS.STATE.END;
@@ -541,9 +543,6 @@ OO = {
 
     Html5Skin.setAspectRatio.call(controllerMock);
     Html5Skin.setAspectRatio.call({state: {mainVideoAspectRatio: 0}});
-
-    //test toggle stereo
-		html5Skin.toggleStereo.call(controllerMock);
 
     //test find main video element
     Html5Skin.findMainVideoElement.call(controllerMock, videoElement);
