@@ -39,9 +39,10 @@ describe('PlayingScreen', function () {
     TestUtils.Simulate.mouseUp(screen[0]);
     expect(clicked).toBe(true);
   });
-  it('creates a PlayingScreen and checks mouseMove with video360', function() {
+  it('creates a PlayingScreen and checks mouseUp, mouseMove with video360', function() {
     var moved = false;
     var isTouched = false;
+    var isVcTouched = false;
     var mockController = {
       state: {
         isMobile: false,
@@ -52,11 +53,14 @@ describe('PlayingScreen', function () {
         isVideo360: true,
       },
       startHideControlBarTimer: function () {
-        moved = true
+        moved = true;
       },
       onTouched: function () {
         isTouched = true;
       },
+      onVcTouched: function () {
+        isVcTouched = true;
+      }
     };
     var closedCaptionOptions = {
       cueText: "cue text"
@@ -87,6 +91,9 @@ describe('PlayingScreen', function () {
     expect(isTouched).toBe(true);
     expect(getDirectionParams).toHaveBeenCalled();
     expect(directionParams).toEqual([10, 0, 40]);
+
+    TestUtils.Simulate.mouseUp(screen[0]);
+    expect(isVcTouched).toBe(true);
 
   });
 
