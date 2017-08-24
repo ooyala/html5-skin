@@ -1265,7 +1265,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleStereo: function () {
-        this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
+      this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
     },
 
 		togglePlayPause: function(event) {
