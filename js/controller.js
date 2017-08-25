@@ -1269,6 +1269,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
 		moveToDirection: function (rotate, direction) {
+			OO.log("moveToDirection is called");
 			this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, rotate, direction);
 		},
 
