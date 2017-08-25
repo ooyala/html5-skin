@@ -20,7 +20,9 @@ var ControlBar = React.createClass({
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.volumeSliderValue = 0;
     this.moreOptionsItems = null;
-		this.vr = this.props.controller.getVrParams();
+		this.vr = this.props.controller
+			&& this.props.controller.getVrParams
+			&& this.props.controller.getVrParams();
 
     return {
       currentVolumeHead: 0

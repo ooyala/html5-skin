@@ -22,6 +22,7 @@ var PlayingScreen = React.createClass({
     return {
       controlBarVisible: true,
       timer: null,
+      isVideo360: this.props.controller.state.isVideo360,
       isMouseDown: false,
       XMouseStart: 0,
       YMouseStart: 0,
@@ -84,6 +85,7 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseDown: function(e) {
+    if (!this.state.isVideo360) { return; }
     this.setState({
       isMouseDown: true,
       XMouseStart: e.pageX,
@@ -97,16 +99,16 @@ var PlayingScreen = React.createClass({
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
-    if (this.state.isMouseDown) {
-      var dx = e.pageX - this.state.XMouseStart;
-      var dy = e.pageY - this.state.YMouseStart;
+    if (this.state.isVideo360 && this.state.isMouseDown) {
+      var dx = e.pageX - this.state.XMouseStart
+        , dy = e.pageY - this.state.YMouseStart;
       
-      var gradosPorBarridoX = 90,
-        gradosPorBarridoY = 90;
-      var gradosPorPixelYaw = gradosPorBarridoX / this.props.componentWidth,
-        gradosPorPixelPitch = gradosPorBarridoY / this.props.componentHeight;
-      var yaw = this.state.viewingDirection.yaw + dx * gradosPorPixelYaw,
-        pitch = this.state.viewingDirection.pitch + dy * gradosPorPixelPitch;
+      var maxDegreesX = 90,
+        maxDegreesY = 90;
+      var degreesForPixelYaw = maxDegreesX / this.props.componentWidth,
+        degreesForPixelPitch = maxDegreesY / this.props.componentHeight;
+      var yaw = (this.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw,
+        pitch = (this.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
       var params = [yaw, 0, pitch ];
       this.props.controller.onTouched(params, true);
     }
@@ -119,16 +121,21 @@ var PlayingScreen = React.createClass({
       e.cancelBubble = true; // IE
 
       this.props.controller.state.accessibilityControlsEnabled = true;
+      if (!this.state.isVideo360) {
+        this.props.controller.togglePlayPause();
+      }
     }
     // for mobile, touch is handled in handleTouchEnd
-    this.setState({
-      isMouseDown: false,
-    });
-    if (this.props.controller.onVcTouched) {
-      this.props.controller.onVcTouched(true);
+    if (this.state.isVideo360) {
       this.setState({
-        viewingDirection:  this.props.controller.state.viewingDirection
-      })
+        isMouseDown: false,
+      });
+      if (this.props.controller.onVcTouched) {
+        this.props.controller.onVcTouched(true);
+        this.setState({
+          viewingDirection:  this.props.controller.state.viewingDirection
+        })
+      }
     }
   },
 

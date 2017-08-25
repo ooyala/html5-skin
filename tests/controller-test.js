@@ -212,7 +212,8 @@ OO = {
       createPluginElements: function() {},
       findMainVideoElement: function(a) {},
       loadConfigData: function(a, b, c, d) {},
-      cleanUpEventListeners: function(){}
+      cleanUpEventListeners: function(){},
+			getVrParams: function () {}
     };
 
 
@@ -408,6 +409,7 @@ OO = {
     Html5Skin.toggleMute.call(controllerMock, true);
     Html5Skin.toggleMute.call(controllerMock, false);
 
+		Html5Skin.toggleStereo.call(controllerMock);
 		Html5Skin.moveToDirection.call(controllerMock);
 
     controllerMock.state.playerState = CONSTANTS.STATE.START;
