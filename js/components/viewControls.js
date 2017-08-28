@@ -2,6 +2,10 @@ var React = require('react');
 var DirectionControl = require('./directionControl');
 
 var ViewControls = React.createClass({
+	componentWillMount: function () {
+		this.vr = this.props.controller.getVrParams();
+	},
+
 
 	handleDirection: function (rotate, direction) {
 		this.props.controller.moveToDirection(rotate, direction);
@@ -14,10 +18,10 @@ var ViewControls = React.createClass({
 			top: '10%',
 			left: '10%',
 			background: 'black',
-			opacity: 0.3
+			opacity: this.props.controlBarVisible ? 0.3: 0
 		};
 
-		return (
+		return this.vr && (
 			<div className="view-controls" style={styles}>
 				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="left"/>
 				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="right"/>

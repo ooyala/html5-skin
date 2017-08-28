@@ -209,7 +209,9 @@ var PlayingScreen = React.createClass({
 
       </div>
 
-			<ViewControls {...this.props} />
+			<ViewControls {...this.props}
+				controlBarVisible={this.state.controlBarVisible}
+			/>
 			
     </div>
     );
