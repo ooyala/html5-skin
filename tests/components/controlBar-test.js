@@ -108,7 +108,6 @@ describe('ControlBar', function () {
 
     expect(fullscreenToggled).toBe(false);
     var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
-    // console.log('DOM', DOM);
     TestUtils.Simulate.click(fullscreenButton);
     expect(fullscreenToggled).toBe(true);
   });

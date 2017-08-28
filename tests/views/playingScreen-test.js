@@ -172,18 +172,7 @@ describe('PlayingScreen', function () {
         closedCaptionOptions={closedCaptionOptions} />, node
     );
 
-		// var DOM = TestUtils.renderIntoDocument(
-		// 	<PlayingScreen
-		// 		controller = {mockController}
-		// 		fullscreen = {true}
-		// 		controlBarAutoHide={true}
-		// 		componentWidth={800}
-		// 		closedCaptionOptions={closedCaptionOptions} />
-		// );
-		//
-		// var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'direction-control');
-		// console.log('***************buttons', buttons);
-
+		
     ReactDOM.unmountComponentAtNode(node);
   });
 });
