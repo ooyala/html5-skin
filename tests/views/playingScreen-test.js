@@ -172,6 +172,7 @@ describe('PlayingScreen', function () {
         closedCaptionOptions={closedCaptionOptions} />, node
     );
 
+		
     ReactDOM.unmountComponentAtNode(node);
   });
 });
