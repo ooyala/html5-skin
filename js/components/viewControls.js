@@ -78,7 +78,7 @@ var ViewControls = React.createClass({
 			top: '10%',
 			left: '10%',
 			background: 'black',
-			opacity: 0.3
+			opacity: this.props.controlBarVisible ? 0.3: 0
 		};
 
 		return this.vr && (
