@@ -18,7 +18,7 @@ var ViewControls = React.createClass({
 		};
 
 		return (
-			<div style={styles}>
+			<div className="view-controls" style={styles}>
 				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="left"/>
 				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="right"/>
 				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="up"/>

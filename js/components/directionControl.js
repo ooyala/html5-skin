@@ -50,6 +50,7 @@ var DirectionControl = React.createClass({
 		return (
 			<button
 				style={styles}
+				className="direction-control"
 				key={this.props.dir}
 				tabIndex="0"
 				onMouseDown={this.handleEvent} onTouchStart={this.handleEvent}
