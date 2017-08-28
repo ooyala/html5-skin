@@ -28,16 +28,21 @@ describe('viewControls', function () {
 	});
 
 	it('creates a viewControls', function () {
+		var controller = {
+			getVrParams: function () {
+				return {stereo: false};
+			}
+		};
+
 		var mockProps = {
 			isLiveStream: false,
 			duration: 30,
 			skinConfig: skinConfig,
-			playerState: CONSTANTS.STATE.PLAYING
+			playerState: CONSTANTS.STATE.PLAYING,
+			controller: controller
 		};
 
-		var DOM = TestUtils.renderIntoDocument(
-			<ViewControls {...mockProps}/>
-		);
+		var DOM = TestUtils.renderIntoDocument(	<ViewControls {...mockProps}/> );
 	});
 
 	it('create buttons in a viewControls', function () {
@@ -61,5 +66,47 @@ describe('viewControls', function () {
 		expect(mockProps.clickButton).toBe(false);
 		TestUtils.Simulate.mouseDown(button);
 		expect(mockProps.clickButton).toBe(true);
-	})
+	});
+
+	it('check condition: if video support vr360 then viewControls exist', function () {
+		var controller = {
+			getVrParams: function () {
+				return {stereo: false};
+			}
+		};
+
+		var mockProps = {
+			isLiveStream: false,
+			duration: 30,
+			skinConfig: skinConfig,
+			playerState: CONSTANTS.STATE.PLAYING,
+			controller: controller
+		};
+
+		var DOM = TestUtils.renderIntoDocument( <ViewControls {...mockProps}/> );
+
+		var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'direction-control');
+		expect(buttons.length).toBe(4);
+	});
+
+	it('check condition: if video does not support vr360 then viewControls does not exist', function () {
+		var controller = {
+			getVrParams: function () {
+				return null;
+			}
+		};
+
+		var mockProps = {
+			isLiveStream: false,
+			duration: 30,
+			skinConfig: skinConfig,
+			playerState: CONSTANTS.STATE.PLAYING,
+			controller: controller
+		};
+
+		var DOM = TestUtils.renderIntoDocument( <ViewControls {...mockProps}/> );
+
+		var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'direction-control');
+		expect(buttons.length).toBe(0);
+	});
 });
