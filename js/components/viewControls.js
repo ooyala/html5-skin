@@ -62,6 +62,10 @@ var DirectionControl = React.createClass({
 });
 
 var ViewControls = React.createClass({
+	componentWillMount: function () {
+		this.vr = this.props.controller.getVrParams();
+	},
+
 
 	handleDirection: function (rotate, direction) {
 		this.props.controller.moveToDirection(rotate, direction);
@@ -77,7 +81,7 @@ var ViewControls = React.createClass({
 			opacity: 0.3
 		};
 
-		return (
+		return this.vr && (
 			<div style={styles}>
 				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="left"/>
 				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="right"/>
