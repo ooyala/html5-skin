@@ -19,13 +19,14 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
+    this.isVideo360 = this.props.controller.state.isVideo360;
     return {
       controlBarVisible: true,
       timer: null,
+      // isVideo360: this.props.controller.state.isVideo360,
       isMouseDown: false,
       XMouseStart: 0,
       YMouseStart: 0,
-      mouseMoveStartTime: 0,
       viewingDirection: this.props.controller.state.viewingDirection
     };
   },
@@ -77,18 +78,17 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
-    //ToDo: it can be usefull in future 
-    // else {
-    //   this.props.controller.togglePlayPause(event);
-    // }
+    else if (!this.isVideo360) {
+      this.props.controller.togglePlayPause(event);
+    }
   },
 
   handlePlayerMouseDown: function(e) {
+    if (!this.isVideo360) { return; }
     this.setState({
       isMouseDown: true,
       XMouseStart: e.pageX,
-      YMouseStart: e.pageY,
-      mouseMoveStartTime: new Date()
+      YMouseStart: e.pageY
     });
   },
 
@@ -97,17 +97,8 @@ var PlayingScreen = React.createClass({
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
-    if (this.state.isMouseDown) {
-      var dx = e.pageX - this.state.XMouseStart;
-      var dy = e.pageY - this.state.YMouseStart;
-      
-      var gradosPorBarridoX = 90,
-        gradosPorBarridoY = 90;
-      var gradosPorPixelYaw = gradosPorBarridoX / this.props.componentWidth,
-        gradosPorPixelPitch = gradosPorBarridoY / this.props.componentHeight;
-      var yaw = this.state.viewingDirection.yaw + dx * gradosPorPixelYaw,
-        pitch = this.state.viewingDirection.pitch + dy * gradosPorPixelPitch;
-      var params = [yaw, 0, pitch ];
+    if (this.isVideo360 && this.state.isMouseDown) {
+      var params = this.getDirectionParams(e.pageX, e.pageY);
       this.props.controller.onTouched(params, true);
     }
   },
@@ -119,17 +110,35 @@ var PlayingScreen = React.createClass({
       e.cancelBubble = true; // IE
 
       this.props.controller.state.accessibilityControlsEnabled = true;
+      if (!this.isVideo360) {
+        this.props.controller.togglePlayPause();
+      }
     }
     // for mobile, touch is handled in handleTouchEnd
-    this.setState({
-      isMouseDown: false,
-    });
-    if (this.props.controller.onVcTouched) {
-      this.props.controller.onVcTouched(true);
+    if (this.isVideo360) {
       this.setState({
-        viewingDirection:  this.props.controller.state.viewingDirection
-      })
+        isMouseDown: false,
+      });
+      if (this.props.controller.onVcTouched) {
+        this.props.controller.onVcTouched(true);
+        this.setState({
+          viewingDirection: this.props.controller.state.viewingDirection
+        })
+      }
     }
+  },
+
+  getDirectionParams: function(pageX, pageY) {
+    var dx = pageX - this.state.XMouseStart
+      , dy = pageY - this.state.YMouseStart;
+
+    var maxDegreesX = 90,
+      maxDegreesY = 90;
+    var degreesForPixelYaw = maxDegreesX / this.props.componentWidth,
+      degreesForPixelPitch = maxDegreesY / this.props.componentHeight;
+    var yaw = (this.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw,
+      pitch = (this.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
+    return [yaw, 0, pitch];
   },
 
   showControlBar: function(event) {
@@ -148,24 +157,6 @@ var PlayingScreen = React.createClass({
     }
   },
 
-	showDirectionControls: function () {
-		console.log('showDirectionControls');
-	},
-
-	hideDirectionControls: function () {
-		console.log('hideDirectionControls');
-	},
-
-	showControls: function () {
-		this.showControlBar();
-		this.showDirectionControls();
-	},
-
-	hideControls: function () {
-		this.hideControlBar();
-		this.hideDirectionControls();
-	},
-
   render: function() {
     var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
       <AdOverlay {...this.props}
@@ -177,12 +168,12 @@ var PlayingScreen = React.createClass({
       <UpNextPanel {...this.props}
         controlBarVisible={this.state.controlBarVisible}
         currentPlayhead={this.props.currentPlayhead}/> : null;
-
+		
     return (
     <div className="oo-state-screen oo-playing-screen"
          ref="PlayingScreen"
-         onMouseOver={this.showControls}
-         onMouseOut={this.hideControls}
+         onMouseOver={this.showControlBar}
+         onMouseOut={this.hideControlBar}
          onMouseMove={this.handlePlayerMouseMove}
         onKeyUp={this.handleKeyPress}
     >

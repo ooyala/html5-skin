@@ -25,16 +25,6 @@ var DirectionControl = React.createClass({
 		});
 	},
 
-	setupItemStyle: function() {
-		var returnStyles = {};
-
-		returnStyles.iconCharacter = {
-			color: this.props.skinConfig.controlBar.iconStyle.inactive.color,
-			opacity: this.props.skinConfig.controlBar.iconStyle.inactive.opacity
-		};
-		return returnStyles;
-	},
-
 	render: function () {
   	var directionClass = 'oo-vr-icon--move--' + this.props.dir
 			, touchedDirectionClass = this.state.isTouched && 'oo-vr-icon--move--' + this.props.dir + '--touched';

@@ -8,7 +8,6 @@ var ViewControls = React.createClass({
 	},
 
 	render: function () {
-		console.log('AAA jcbdjs');
 		return (
 			<div className={classnames("oo-vr-icon-container view-controls", {"oo-vr-icon-container--hidden": !this.props.controlBarVisible})}>
 				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="left"/>

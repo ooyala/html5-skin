@@ -266,7 +266,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.accessibilityControls = new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
 
-      if (this.getVrParams()) {
+      if (this.getVrParams && this.getVrParams()) {
         this.state.isVideo360 = true;
       }
     },
@@ -1265,8 +1265,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleStereo: function () {
-        this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
+			OO.log("toggleStereo is called");
+			this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
     },
+
+		moveToDirection: function (rotate, direction) {
+			OO.log("moveToDirection is called");
+			this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, rotate, direction);
+		},
 
 		togglePlayPause: function(event) {
       switch (this.state.playerState) {
