@@ -216,7 +216,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi", _.bind(this.onShowAdMarquee, this));
         }
 
-				this.vrSubscribes();
+				this.vrSubscribes && this.vrSubscribes();
       }
       this.state.isSubscribed = true;
     },
@@ -275,7 +275,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
 			if (this.getVrParams && this.getVrParams()) {
 				this.state.isVideo360 = true;
-				this.vrSubscribes();
+				this.vrSubscribes && this.vrSubscribes();
 			}
     },
 
