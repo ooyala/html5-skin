@@ -219,10 +219,13 @@ var PlayingScreen = React.createClass({
 
 
       </div>
-			<ViewControls
-				controlsVisible={this.state.controlBarVisible}
-				playerState={this.props.playerState}
-			/>
+      {
+        this.isVideo360 &&
+        <ViewControls
+          {...this.props}
+				  controlBarVisible={this.state.controlBarVisible}
+			  />
+      }
     </div>
     );
   }

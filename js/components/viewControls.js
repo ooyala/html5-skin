@@ -1,46 +1,24 @@
-var React = require('react'),
-		CONSTANTS = require('../constants/constants'),
-		ClassNames = require('classnames'),
-		Utils = require('./utils'),
-		Icon = require('./icon');
-
-var DirectionControl = React.createClass({
-	render: function () {
-		var dirIcon = "fa fa-chevron-"+this.props.dir+" fa-lg";
-		var styles = {width:'10px', height:'10px', position:'absolute'};
-		return <span style={styles}><i className={dirIcon}>p</i></span>
-	}
-});
+var React = require('react');
+var DirectionControl = require('./directionControl');
+var classnames = require('classnames');
 
 var ViewControls = React.createClass({
-
-	handleMouseDown: function (ev) {
-		debugger;
+	handleDirection: function (rotate, direction) {
+		this.props.controller.moveToDirection(rotate, direction);
 	},
 
 	render: function () {
-		console.log('ViewControls props', this.props);
-		var styles = {
-			width: '20%',
-			height: '20%',
-			position: 'absolute',
-			display: 'block',
-			top: '10%',
-			left: '10%',
-			'z-index': 2147483648,
-			background: 'black',
-			opacity: 0.1
-		};
-
+		console.log('AAA jcbdjs');
 		return (
-			<div className="viewControls" style={styles}>
-				<DirectionControl dir="left" onMouseDown={this.handleMouseDown} onTouchDown={this.handleMouseDown}/>
-				<DirectionControl dir="right" onMouseDown={this.handleMouseDown} onTouchDown={this.handleMouseDown}/>
-				<DirectionControl dir="up" onMouseDown={this.handleMouseDown} onTouchDown={this.handleMouseDown}/>
-				<DirectionControl dir="down" onMouseDown={this.handleMouseDown} onTouchDown={this.handleMouseDown}/>
+			<div className={classnames("oo-vr-icon-container view-controls", {"oo-vr-icon-container--hidden": !this.props.controlBarVisible})}>
+				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="left"/>
+				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="right"/>
+				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="up"/>
+				<DirectionControl {...this.props} handleDirection={this.handleDirection} dir="down"/>
 			</div>
 		);
 	}
 });
+
 
 module.exports = ViewControls;
