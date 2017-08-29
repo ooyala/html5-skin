@@ -213,6 +213,7 @@ OO = {
       findMainVideoElement: function(a) {},
       loadConfigData: function(a, b, c, d) {},
       cleanUpEventListeners: function(){},
+      toggleStereo: function () {},
 			getVrParams: function () {}
     };
 

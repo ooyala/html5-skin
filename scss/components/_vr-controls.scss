@@ -1,0 +1,86 @@
+.oo-vr-icon {
+  &--move {
+    position: absolute;
+    height: 33%;
+    width: 33%;
+    cursor: pointer;
+    outline: none;
+    @include vendor-prefixes(border-radius, 3px);
+    &--left {
+      top: 50%;
+      left: 0;
+      bottom: auto;
+      right: auto;
+      @include vendor-prefixes(transform, translateY(-50%));
+      &--touched {
+        background: -moz-linear-gradient(left, rgba(0,0,0,0.6) 0%, rgba(255,255,255,0) 100%);
+        background: -webkit-linear-gradient(left, rgba(0,0,0,0.6) 0%,rgba(255,255,255,0) 100%);
+        background: linear-gradient(to right, rgba(0,0,0,0.6) 0%,rgba(255,255,255,0) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00ffffff',GradientType=1 );
+      }
+    }
+    &--right {
+      top: 50%;
+      left: auto;
+      bottom: auto;
+      right: 0;
+      @include vendor-prefixes(transform, translateY(-50%));
+      &--touched {
+        background: -moz-linear-gradient(right, rgba(0,0,0,0.6) 0%, rgba(255,255,255,0) 100%);
+        background: -webkit-linear-gradient(right, rgba(0,0,0,0.6) 0%,rgba(255,255,255,0) 100%);
+        background: linear-gradient(to left, rgba(0,0,0,0.6) 0%,rgba(255,255,255,0) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#a6000000',GradientType=1 );
+      }
+    }
+    &--up {
+      top: 0;
+      left: 50%;
+      bottom: auto;
+      right: auto;
+      @include vendor-prefixes(transform, translateX(-50%));
+      &--touched {
+        background: -moz-linear-gradient(top, rgba(0,0,0,0.6) 0%, rgba(255,255,255,0) 100%);
+        background: -webkit-linear-gradient(top, rgba(0,0,0,0.6) 0%,rgba(255,255,255,0) 100%);
+        background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(255,255,255,0) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00ffffff',GradientType=0 );
+      }
+    }
+    &--down {
+      top: auto;
+      left: 50%;
+      bottom: 0;
+      right: auto;
+      @include vendor-prefixes(transform, translateX(-50%));
+      &--touched {
+        background: -moz-linear-gradient(bottom, rgba(0,0,0,0.6) 0%, rgba(255,255,255,0) 100%);
+        background: -webkit-linear-gradient(bottom, rgba(0,0,0,0.6) 0%,rgba(255,255,255,0) 100%);
+        background: linear-gradient(to top, rgba(0,0,0,0.6) 0%,rgba(255,255,255,0) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#a6000000',GradientType=0 );
+      }
+    }
+  }
+  &-container {
+    position: absolute;
+    display: block;
+    top: 15px;
+    left: 15px;
+    width: 5%;
+    max-width: 80px;
+    max-height: 80px;
+    min-width: 40px;
+    min-height: 40px;
+    background-image: url("assets/images/vr-controls.svg");
+    background-position: 0 0;
+    background-size: 100% 100%;
+    opacity: 1;
+    @include vendor-prefixes (transition, opacity .3s ease-in-out);
+    &--hidden {
+      opacity: 0;
+    }
+    &:after {
+      content: "";
+      display: block;
+      padding-bottom: 100%;
+    }
+  }
+}
