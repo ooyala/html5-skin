@@ -197,9 +197,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         if(!this.state.isPlaybackReadySubscribed) {
           this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
         }
-        if (this.state.isVideo360) {
-          this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.getViewingDirection, this));
-        }
 
         // ad events
         if (!Utils.isIPhone()) {
@@ -218,9 +215,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.SHOW_AD_CONTROLS, "customerUi", _.bind(this.onShowAdControls, this));
           this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi", _.bind(this.onShowAdMarquee, this));
         }
+
+				this.vrSubscribes && this.vrSubscribes();
       }
       this.state.isSubscribed = true;
     },
+
+		vrSubscribes: function () {
+			if (this.state.isVideo360) {
+				this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.getViewingDirection, this));
+			}
+		},
 
     externalPluginSubscription: function() {
       if (OO.EVENTS.DISCOVERY_API) {
@@ -251,7 +256,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // Setting the tabindex will let some screen readers recognize this element as a group
       // identified with the ARIA label above. We set it to -1 in order to prevent actual keyboard focus
       this.state.mainVideoInnerWrapper.attr('tabindex', '-1');
-      this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
+
+			var $ooPlayerSkin = $('.oo-player-skin');
+			!$ooPlayerSkin.length && this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
 
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
@@ -266,9 +273,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.accessibilityControls = new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
 
-      if (this.getVrParams && this.getVrParams()) {
-        this.state.isVideo360 = true;
-      }
+			if (this.getVrParams && this.getVrParams()) {
+				this.state.isVideo360 = true;
+				this.vrSubscribes && this.vrSubscribes();
+			}
     },
 
 		getVrParams: function(){
