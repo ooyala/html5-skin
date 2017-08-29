@@ -19,6 +19,8 @@ var PlayingScreen = React.createClass({
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
     this.isVideo360 = this.props.controller.state.isVideo360;
+    this.vr = this.props.controller.getVrParams();
+
     return {
       controlBarVisible: true,
       timer: null,
@@ -35,6 +37,7 @@ var PlayingScreen = React.createClass({
     if (this.isMobile || this.props.fullscreen || this.browserSupportsTouch){
       this.props.controller.startHideControlBarTimer();
     }
+    document.addEventListener("keyup", this.handleKeyUp.bind(this));
   },
 
   componentWillUpdate: function(nextProps) {
@@ -65,10 +68,37 @@ var PlayingScreen = React.createClass({
 
   handleKeyPress: function(event) {
     // show control bar on tab key navigation
+    event.preventDefault();
     if (event.which === 9 || event.keyCode === 9) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
+  },
+
+  handleKeyUp: function(event) {
+    event = event || window.event;
+    var charCode = event.which || event.keyCode;
+    var charStr = String.fromCharCode(charCode);
+    console.log('BBB charStr', charStr);
+    var leftBtn = charStr === 'a' || charStr === 'A'
+      , rigthBtn = charStr === 'd' || charStr === 'D'
+      , topBtn = charStr === 'w' || charStr === 'W'
+      , bottomBtn = charStr === 's' || charStr === 'S';
+    if (
+      leftBtn ||
+      rigthBtn ||
+      topBtn ||
+      bottomBtn
+    ) {
+      event.preventDefault();
+      console.log('rules with buttons');
+      // var params = this.getDirectionParams(event.pageX, event.pageY);
+      // this.props.controller.onTouched(params, true);
+    }
+  },
+
+  changeDirection: function (rotate, direction) {
+    this.props.controller.moveToDirection(rotate, direction);
   },
 
   handleTouchEnd: function(event) {
