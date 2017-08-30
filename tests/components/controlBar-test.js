@@ -156,7 +156,97 @@ describe('ControlBar', function () {
 		expect(typeof toggleStereoButton).toBe('object');
 	});
 
-  it('renders one button', function() {
+	it('not render stereo button if content not vr', function () {
+		var mockController = {
+			state: {
+				isMobile: false,
+				volumeState: {
+					volume: 1
+				},
+				closedCaptionOptions: {},
+				videoQualityOptions: {
+					availableBitrates: null
+				}
+			},
+			getVrParams: function() {
+				return null;
+			}
+		};
+
+		var toggleSkinConfig = Utils.clone(skinConfig);
+		toggleSkinConfig.buttons.desktopContent = [{"name":"stereo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
+
+
+		var mockProps = {
+			isLiveStream: false,
+			controller: mockController,
+			skinConfig: toggleSkinConfig,
+			duration: 30,
+			vr: mockController.getVrParams()
+		};
+
+		var DOM = TestUtils.renderIntoDocument(
+			<ControlBar {...mockProps} controlBarVisible={true}
+				componentWidth={500}
+				playerState={CONSTANTS.STATE.PLAYING}
+				isLiveStream={mockProps.isLiveStream} />
+		);
+
+		var toggleStereoButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'stereo-button');
+		expect(toggleStereoButtons.length).toBe(0);
+	});
+
+	it('enter stereo mode', function () {
+		var stereoMode = false;
+
+		var mockController = {
+			state: {
+				isMobile: false,
+				volumeState: {
+					volume: 1
+				},
+				closedCaptionOptions: {},
+				videoQualityOptions: {
+					availableBitrates: null
+				}
+			},
+			getVrParams: function() {
+				return {
+					stereo: false,
+					contentType: "single",
+					startPosition: 0
+				}
+			},
+			toggleStereo: function () {
+				stereoMode = true;
+			}
+		};
+
+		var toggleSkinConfig = Utils.clone(skinConfig);
+		toggleSkinConfig.buttons.desktopContent = [{"name":"stereo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
+
+		var mockProps = {
+			isLiveStream: false,
+			controller: mockController,
+			skinConfig: toggleSkinConfig,
+			duration: 30,
+			vr: mockController.getVrParams()
+		};
+
+		var DOM = TestUtils.renderIntoDocument(
+			<ControlBar {...mockProps} controlBarVisible={true}
+			componentWidth={500}
+			playerState={CONSTANTS.STATE.PLAYING}
+			isLiveStream={mockProps.isLiveStream} />
+		);
+
+		expect(stereoMode).toBe(false);
+		var toggleStereoButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'stereo-button');
+		TestUtils.Simulate.click(toggleStereoButton);
+		expect(stereoMode).toBe(true);
+	});
+
+	it('renders one button', function() {
     var mockController = {
       state: {
         isMobile: false,
