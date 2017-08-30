@@ -107,6 +107,6 @@ describe('viewControls', function () {
 		var DOM = TestUtils.renderIntoDocument( <ViewControls {...mockProps}/> );
 
 		var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'direction-control');
-		expect(buttons.length).toBe(0);
+		expect(buttons.length).toBe(4);
 	});
 });
