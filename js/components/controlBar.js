@@ -415,7 +415,7 @@ var ControlBar = React.createClass({
 			"stereo": !this.vr ?
         null
         :
-        <button className="oo-video-type oo-control-bar-item"
+        <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
 				  onClick={this.handleStereoClick}
 				  onMouseUp={this.blurOnMouseUp}
 				  onMouseOver={this.highlight}
