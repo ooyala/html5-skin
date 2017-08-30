@@ -249,13 +249,11 @@ var ControlBar = React.createClass({
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
 
-		var stereoIcon, stereoAriaLabel;
+		var stereoIcon = "oo-vr-icon--stereoOff"
+      , stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
 		if(this.vr && this.vr.stereo) {
-			stereoIcon = "stereoOn";
+			stereoIcon = "oo-vr-icon--stereoOn";
 			stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
-		} else {
-			stereoIcon = "stereoOff";
-			stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
 		}
 
     var totalTime = 0;
@@ -414,19 +412,23 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </a>,
 
-			"stereo": !this.vr ? null : <button className="oo-fullscreen oo-control-bar-item"
-				onClick={this.handleStereoClick}
-				onMouseUp={this.blurOnMouseUp}
-				onMouseOver={this.highlight}
-				onMouseOut={this.removeHighlight}
-				key="stereo"
-				tabIndex="0"
-				aria-label={stereoAriaLabel}>
-					<Icon
-				{...this.props}
-				icon={stereoIcon}
-				style={dynamicStyles.iconCharacter}
-				/>
+			"stereo": !this.vr ?
+        null
+        :
+        <button className="oo-video-type oo-control-bar-item"
+				  onClick={this.handleStereoClick}
+				  onMouseUp={this.blurOnMouseUp}
+				  onMouseOver={this.highlight}
+				  onMouseOut={this.removeHighlight}
+				  key="stereo"
+				  tabIndex="0"
+				  aria-label={stereoAriaLabel}
+        >
+          <span
+            className={stereoIcon}
+            onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}
+            onClick={this.props.onClick}
+          />
 			</button>,
 
       "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
