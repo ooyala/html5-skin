@@ -112,6 +112,50 @@ describe('ControlBar', function () {
     expect(fullscreenToggled).toBe(true);
   });
 
+  it('render one stereo button if content vr', function () {
+		var mockController = {
+			state: {
+				isMobile: false,
+				volumeState: {
+					volume: 1
+				},
+				closedCaptionOptions: {},
+				videoQualityOptions: {
+					availableBitrates: null
+				}
+			},
+			getVrParams: function() {
+				return {
+					stereo: false,
+					contentType: "single",
+					startPosition: 0
+				}
+			}
+		};
+
+		var toggleSkinConfig = Utils.clone(skinConfig);
+		toggleSkinConfig.buttons.desktopContent = [{"name":"stereo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
+
+
+		var mockProps = {
+			isLiveStream: false,
+			controller: mockController,
+			skinConfig: toggleSkinConfig,
+			duration: 30,
+			vr: mockController.getVrParams()
+		};
+
+		var DOM = TestUtils.renderIntoDocument(
+			<ControlBar {...mockProps} controlBarVisible={true}
+				componentWidth={500}
+				playerState={CONSTANTS.STATE.PLAYING}
+				isLiveStream={mockProps.isLiveStream} />
+		);
+
+		var toggleStereoButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'stereo-button');
+		expect(typeof toggleStereoButton).toBe('object');
+	});
+
   it('renders one button', function() {
     var mockController = {
       state: {

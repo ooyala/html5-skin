@@ -414,7 +414,7 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </a>,
 
-			"stereo": !this.vr ? null : <button className="oo-fullscreen oo-control-bar-item"
+			"stereo": !this.vr ? null : <button className="oo-fullscreen oo-control-bar-item stereo-button"
 				onClick={this.handleStereoClick}
 				onMouseUp={this.blurOnMouseUp}
 				onMouseOver={this.highlight}
@@ -422,10 +422,10 @@ var ControlBar = React.createClass({
 				key="stereo"
 				tabIndex="0"
 				aria-label={stereoAriaLabel}>
-					<Icon
-				{...this.props}
-				icon={stereoIcon}
-				style={dynamicStyles.iconCharacter}
+				<Icon
+					{...this.props}
+					icon={stereoIcon}
+					style={dynamicStyles.iconCharacter}
 				/>
 			</button>,
 
