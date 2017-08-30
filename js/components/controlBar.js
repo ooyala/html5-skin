@@ -249,10 +249,10 @@ var ControlBar = React.createClass({
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
 
-		var stereoIcon = "oo-vr-icon--stereoOff"
+		var stereoIconClassName = "oo-vr-icon--type--stereoOff"
       , stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
 		if(this.vr && this.vr.stereo) {
-			stereoIcon = "oo-vr-icon--stereoOn";
+			stereoIconClassName = "oo-vr-icon--type--stereoOn";
 			stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
 		}
 
@@ -425,7 +425,7 @@ var ControlBar = React.createClass({
 				  aria-label={stereoAriaLabel}
         >
           <span
-            className={stereoIcon}
+            className={'oo-vr-icon--type ' + stereoIconClassName}
             onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}
             onClick={this.props.onClick}
           />
