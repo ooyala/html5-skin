@@ -90,7 +90,6 @@ var SharePanel = React.createClass({
   },
 
   handleEmailClick: function(event) {
-    console.log('email click');
     event.preventDefault();
     var emailBody = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMAIL_BODY, this.props.localizableStrings);
     var mailToUrl = "mailto:";
