@@ -1452,14 +1452,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onChangeClosedCaptionLanguage: function(event, language) {
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
-
       //validate language is available before update and save
-      if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
+        if (language && availableLanguages && (_.contains(availableLanguages.languages, language) || language === 'none')) {
         this.state.closedCaptionOptions.language = this.state.persistentSettings.closedCaptionOptions.language = language;
-        var captionLanguage = this.state.closedCaptionOptions.enabled ? language : "";
-        var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
+        var captionLanguage = this.state.closedCaptionOptions.enabled && language !== 'none' ? language : "";
+        var mode = this.state.closedCaptionOptions.enabled && language !== 'none' ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
         //publish set closed caption event
+        // console.log('choosen captionLanguage-',captionLanguage,' mode-',mode);
         this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, captionLanguage, {"mode": mode});
+
         //update skin, save new closed caption language
         this.renderSkin();
         this.mb.publish(OO.EVENTS.SAVE_PLAYER_SETTINGS, this.state.persistentSettings);
