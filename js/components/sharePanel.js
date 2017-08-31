@@ -90,22 +90,30 @@ var SharePanel = React.createClass({
   },
 
   handleEmailClick: function(event) {
+    console.log('email click');
     event.preventDefault();
     var emailBody = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMAIL_BODY, this.props.localizableStrings);
     var mailToUrl = "mailto:";
     mailToUrl += "?subject=" + encodeURIComponent(this.props.contentTree.title);
     mailToUrl += "&body=" + encodeURIComponent(emailBody + location.href);
     //location.href = mailToUrl; //same window
-    var emailWindow = window.open(mailToUrl, "email", "height=315,width=780"); //new window
-    setTimeout(function(){
-      try {
-         // If we can't access href, a web client has taken over and this will throw
-         // an exception, preventing the window from being closed.
-        var test = emailWindow.location.href;
-        emailWindow.close()
-      } catch(e) {};
-      // Generous 2 second timeout to give the window time to redirect if it's going to a web client
-    }, 2000);
+    if (OO.isIos && OO.isSafari) {
+        document.location = mailToUrl;
+    } else {
+        var emailWindow = window.open(mailToUrl, "email", "height=315,width=780"); //new window
+        setTimeout(function () {
+            try {
+                // If we can't access href, a web client has taken over and this will throw
+                // an exception, preventing the window from being closed.
+                var test = emailWindow.location.href;
+                emailWindow.close()
+            } catch (e) {
+                console.log('email send error - ', e);
+            }
+            ;
+            // Generous 2 second timeout to give the window time to redirect if it's going to a web client
+        }, 2000);
+    }
   },
 
   handleFacebookClick: function() {
