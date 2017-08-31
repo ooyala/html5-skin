@@ -259,8 +259,13 @@ var ControlBar = React.createClass({
         "oo-volume-bar": true,
         "oo-on": turnedOn
       });
-      var barStyle = { backgroundColor: this.props.skinConfig.controlBar.volumeControl.color ? this.props.skinConfig.controlBar.volumeControl.color : this.props.skinConfig.general.accentColor };
-
+      var barStyle = turnedOn === true ? ({
+          backgroundColor: this.props.skinConfig.controlBar.volumeControl.color ?
+              this.props.skinConfig.controlBar.volumeControl.color : this.props.skinConfig.general.accentColor
+      }) : ({
+          backgroundColor: this.props.skinConfig.controlBar.volumeControl.inactiveColor ?
+              this.props.skinConfig.controlBar.volumeControl.inactiveColor : this.props.skinConfig.general.accentColor
+      });
       volumeBars.push(<a data-volume={(i + 1) / 10} className={volumeClass} key={i}
         style={barStyle}
         onClick={this.handleVolumeClick}
