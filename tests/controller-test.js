@@ -412,6 +412,7 @@ OO = {
     Html5Skin.toggleMute.call(controllerMock, false);
 
 		Html5Skin.toggleStereo.call(controllerMock);
+		Html5Skin.moveToDirection.call(controllerMock);
 
 		Html5Skin.vrSubscribes.call(controllerMock);
 

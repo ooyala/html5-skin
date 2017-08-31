@@ -1277,6 +1277,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 			this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
     },
 
+		moveToDirection: function (rotate, direction) {
+			OO.log("moveToDirection is called");
+			this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, rotate, direction);
+		},
+
 		togglePlayPause: function(event) {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
@@ -1289,7 +1294,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             }
             else
             {
-              this.mb.publish(OO.EVENTS.REPLAY);
+               this.mb.publish(OO.EVENTS.REPLAY);
             }
           } else {
             this.mb.publish(OO.EVENTS.REPLAY);
