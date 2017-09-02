@@ -123,6 +123,19 @@ module.exports = {
     ESCAPE_KEY: 27
   },
 
+  // KeyboardEvent's which and keyCode properties are deprecated.
+  // It's a good idea to use KeyboardEvent.key moving forward even though React
+  // synthetic events normalize event data.
+  KEY_VALUES: {
+    ENTER: "Enter",
+    TAB: "Tab",
+    SPACE: " ", // yep
+    ARROW_UP: "ArrowUp",
+    ARROW_DOWN: "ArrowDown",
+    ARROW_LEFT: "ArrowLeft",
+    ARROW_RIGHT: "ArrowRight"
+  },
+
   UI: {
     defaultScrubberBarHeight: 4,
     DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15

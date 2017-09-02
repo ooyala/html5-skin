@@ -10,7 +10,8 @@ var React = require('react'),
     Spinner = require('../components/spinner'),
     TextTrack = require('../components/textTrackPanel'),
     Watermark = require('../components/watermark'),
-    ResizeMixin = require('../mixins/resizeMixin');
+    ResizeMixin = require('../mixins/resizeMixin'),
+    CONSTANTS = require('../constants/constants');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -70,10 +71,16 @@ var PlayingScreen = React.createClass({
   },
 
   handleKeyPress: function(event) {
-    // show control bar on tab key navigation
-    if ((event.which === 9 || event.keyCode === 9) || (event.which === 32 || event.keyCode === 32) || (event.which === 13 || event.keyCode === 13)) {
-      this.showControlBar();
-      this.props.controller.startHideControlBarTimer();
+    // Show control bar when either tab, space or enter are pressed
+    switch (event.key) {
+      case CONSTANTS.KEY_VALUES.TAB:
+      case CONSTANTS.KEY_VALUES.SPACE:
+      case CONSTANTS.KEY_VALUES.ENTER:
+        this.showControlBar();
+        this.props.controller.startHideControlBarTimer();
+        break;
+      default:
+        break;
     }
   },
 

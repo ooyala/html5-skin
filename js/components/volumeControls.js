@@ -29,14 +29,14 @@ var VolumeControls = React.createClass({
   },
 
   handleVolumeSliderKeyDown: function(evt) {
-    switch (evt.keyCode) {
-      case CONSTANTS.KEYCODES.UP_ARROW_KEY:
-      case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
+    switch (evt.key) {
+      case CONSTANTS.KEY_VALUES.ARROW_UP:
+      case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
         evt.preventDefault();
         this.props.controller.changeVolumeBy(10, true);
         break;
-      case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
-      case CONSTANTS.KEYCODES.LEFT_ARROW_KEY:
+      case CONSTANTS.KEY_VALUES.ARROW_DOWN:
+      case CONSTANTS.KEY_VALUES.ARROW_LEFT:
         evt.preventDefault();
         this.props.controller.changeVolumeBy(10, false);
         break;
@@ -55,6 +55,14 @@ var VolumeControls = React.createClass({
     if (evt.currentTarget && evt.currentTarget.blur) {
       evt.currentTarget.blur();
     }
+  },
+
+  getVolumePercent: function() {
+    return (this.props.controller.state.volumeState.volume * 100).toFixed(0);
+  },
+
+  getAriaValueText: function() {
+    return this.getVolumePercent() + CONSTANTS.ARIA_LABELS.VOLUME_PERCENT;
   },
 
   renderVolumeBars: function() {
@@ -82,8 +90,8 @@ var VolumeControls = React.createClass({
       );
     }
 
-    var volumePercent = (this.props.controller.state.volumeState.volume * 100).toFixed(0);
-    var ariaValueText = volumePercent + CONSTANTS.ARIA_LABELS.VOLUME_PERCENT;
+    var volumePercent = this.getVolumePercent();
+    var ariaValueText = this.getAriaValueText();
 
     return (
       <span
@@ -105,16 +113,32 @@ var VolumeControls = React.createClass({
   },
 
   renderVolumeSlider: function() {
+    var volumePercent = this.getVolumePercent();
+    var ariaValueText = this.getAriaValueText();
+
     return (
-      <div className="oo-volume-slider">
+      <div
+        className="oo-volume-slider"
+        role="slider"
+        aria-label={CONSTANTS.ARIA_LABELS.VOLUME_SLIDER}
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow={volumePercent}
+        aria-valuetext={ariaValueText}
+        tabIndex="0"
+        onMouseUp={this.blurOnMouseUp}
+        onFocus={this.handleVolumeSliderFocus}
+        onBlur={this.handleVolumeSliderBlur}
+        onKeyDown={this.handleVolumeSliderKeyDown}>
         <Slider
           value={parseFloat(this.props.controller.state.volumeState.volume)}
           onChange={this.changeVolumeSlider}
-          className={"oo-slider oo-slider-volume"}
-          itemRef={"volumeSlider"}
-          minValue={"0"}
-          maxValue={"1"}
-          step={"0.1"} />
+          className="oo-slider oo-slider-volume"
+          itemRef="volumeSlider"
+          role="presentation"
+          minValue="0"
+          maxValue="1"
+          step="0.1" />
       </div>
     );
   },
