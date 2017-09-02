@@ -6,6 +6,72 @@
 var DeepMerge = require('deepmerge');
 
 var Utils = {
+
+  /**
+   * ensureNumber - description
+   *
+   * @param  {type} value        description
+   * @param  {type} defaultValue description
+   * @return {type}              description
+   */
+  ensureNumber: function(value, defaultValue) {
+    var number = Number(value);
+    if (!isFinite(number)) {
+      return (typeof defaultValue === 'undefined') ? null : defaultValue;
+    }
+    return number;
+  },
+
+  /**
+   * constrainToRange - description
+   *
+   * @param  {type} value description
+   * @param  {type} min   description
+   * @param  {type} max   description
+   * @return {type}       description
+   */
+  constrainToRange: function(value, min, max) {
+    value = this.ensureNumber(value, 0);
+    min = this.ensureNumber(value, 0);
+    max = this.ensureNumber(value, 0);
+    return Math.min(Math.max(min, value), max);
+  },
+
+  /**
+   * getTimeDisplayValues - description
+   *
+   * @param  {type} currentPlayhead description
+   * @param  {type} duration        description
+   * @param  {type} isLiveStream    description
+   * @return {type}                 description
+   */
+  getTimeDisplayValues: function(currentPlayhead, duration, isLiveStream) {
+    currentPlayhead = this.ensureNumber(currentPlayhead);
+    duration = this.ensureNumber(duration, 0);
+
+    var currentTime = null;
+    var totalTime = Utils.formatSeconds(duration);
+
+    var currentPlayheadInt = parseInt(currentPlayhead, 10);
+    var currentPlayheadTime = isFinite(currentPlayheadInt) ? Utils.formatSeconds(currentPlayheadInt) : null;
+    var timeShift = (currentPlayhead || 0) - duration;
+
+    if (isLiveStream) {
+      // Checking timeShift < 1 second (not === 0) as processing of the click after we
+      // rewinded and then went live may take some time.
+      var isLiveNow = Math.abs(timeShift) < 1;
+      currentTime = isLiveNow ? null : Utils.formatSeconds(timeShift);
+    } else {
+      currentTime = currentPlayheadTime;
+    }
+    totalTime = isLiveStream ? null : totalTime;
+
+    return {
+      currentTime: currentTime,
+      totalTime: totalTime
+    };
+  },
+
   /**
   * Trims the given text to fit inside of the given element, truncating with ellipsis.
   *
@@ -362,7 +428,7 @@ var Utils = {
     target.style.opacity = opacity;
     target.style.color = color;
     // HEADSUP
-    // This is currently the same style as the one used in _mixins.scss. 
+    // This is currently the same style as the one used in _mixins.scss.
     // We should change both styles whenever we update this.
     target.style.textShadow = "0px 0px 3px rgba(255, 255, 255, 0.5), 0px 0px 6px rgba(255, 255, 255, 0.5), 0px 0px 9px rgba(255, 255, 255, 0.5)";
   },

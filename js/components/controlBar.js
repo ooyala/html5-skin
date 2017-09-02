@@ -9,6 +9,7 @@ var React = require('react'),
   Slider = require('./slider'),
   Utils = require('./utils'),
   Popover = require('../views/popover'),
+  VolumeControls = require('./VolumeControls'),
   VideoQualityPanel = require('./videoQualityPanel'),
   ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
   Logo = require('./logo'),
@@ -20,12 +21,8 @@ var ControlBar = React.createClass({
   getInitialState: function () {
     this.isMobile = this.props.controller.state.isMobile;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
-    this.volumeSliderValue = 0;
     this.moreOptionsItems = null;
-
-    return {
-      currentVolumeHead: 0
-    };
+    return {};
   },
 
   componentDidMount: function () {
@@ -251,38 +248,6 @@ var ControlBar = React.createClass({
       totalTime = Utils.formatSeconds(this.props.duration);
     }
 
-    var volumeBars = [];
-    for (var i = 0; i < 10; i++) {
-      //create each volume tick separately
-      var turnedOn = this.props.controller.state.volumeState.volume >= (i + 1) / 10;
-      var volumeClass = ClassNames({
-        "oo-volume-bar": true,
-        "oo-on": turnedOn
-      });
-      var barStyle = { backgroundColor: this.props.skinConfig.controlBar.volumeControl.color ? this.props.skinConfig.controlBar.volumeControl.color : this.props.skinConfig.general.accentColor };
-
-      volumeBars.push(<a data-volume={(i + 1) / 10} className={volumeClass} key={i}
-        style={barStyle}
-        onClick={this.handleVolumeClick}
-        aria-hidden="true"></a>);
-    }
-
-    var volumeSlider = <div className="oo-volume-slider"><Slider value={parseFloat(this.props.controller.state.volumeState.volume)}
-      onChange={this.changeVolumeSlider}
-      className={"oo-slider oo-slider-volume"}
-      itemRef={"volumeSlider"}
-      minValue={"0"}
-      maxValue={"1"}
-      step={"0.1"} /></div>;
-
-    var volumeControls;
-    if (!this.isMobile) {
-      volumeControls = volumeBars;
-    }
-    else {
-      volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
-    }
-
     var playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
     var isLiveStream = this.props.isLiveStream;
     var durationSetting = { color: this.props.skinConfig.controlBar.iconStyle.inactive.color };
@@ -373,7 +338,7 @@ var ControlBar = React.createClass({
               responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}>
             </Tooltip>
           </button>
-          {volumeControls}
+          <VolumeControls {...this.props} />
         </div>
       }).bind(this),
 

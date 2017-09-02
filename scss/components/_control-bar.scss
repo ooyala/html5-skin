@@ -164,6 +164,23 @@
   }
 }
 
+.oo-volume-controls:focus {
+  position: relative;
+  outline: none;
+}
+
+.oo-volume-controls:focus::before {
+  $focus-padding: 4px;
+  content: '';
+  position: absolute;
+  top: -$focus-padding;
+  right: -$focus-padding;
+  bottom: $focus-padding;
+  left: $focus-padding;
+  padding: $focus-padding;
+  @include highlight-tab();
+}
+
 a.oo-volume-bar {
   border:0;
   outline: none;

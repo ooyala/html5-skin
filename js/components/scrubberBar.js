@@ -6,6 +6,7 @@ var React = require('react'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Thumbnail = require('./thumbnail'),
     ThumbnailCarousel = require('./thumbnailCarousel'),
+    Utils = require('./utils'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
@@ -129,6 +130,12 @@ var ScrubberBar = React.createClass({
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
 
+    // Remove keyboard focus when clicking on scrubber bar
+    var scrubberBar = ReactDOM.findDOMNode(this.refs.scrubberBar);
+    if (scrubberBar && typeof scrubberBar.blur === 'function') {
+      scrubberBar.blur();
+    }
+
     this.lastScrubX = null;
     if (!this.touchInitiated){
       ReactDOM.findDOMNode(this).parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
@@ -147,6 +154,31 @@ var ScrubberBar = React.createClass({
       this.props.controller.endSeeking();
     }
     this.touchInitiated = false;
+  },
+
+  handleScrubberBarFocus: function(evt) {
+    this.props.controller.state.accessibilityControlsEnabled = false;
+  },
+
+  handleScrubberBarBlur: function(evt) {
+    this.props.controller.state.accessibilityControlsEnabled = true;
+  },
+
+  handleScrubberBarKeyDown: function(evt) {
+    switch (evt.keyCode) {
+      case CONSTANTS.KEYCODES.UP_ARROW_KEY:
+      case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
+        evt.preventDefault();
+        this.props.controller.seekBy(5, true);
+        break;
+      case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
+      case CONSTANTS.KEYCODES.LEFT_ARROW_KEY:
+        evt.preventDefault();
+        this.props.controller.seekBy(5, false);
+        break;
+      default:
+        break;
+    }
   },
 
   handleScrubberBarMouseDown: function(evt) {
@@ -286,12 +318,27 @@ var ScrubberBar = React.createClass({
       }
     }
 
+    var timeDisplayValues = Utils.getTimeDisplayValues(this.props.currentPlayhead, this.props.duration, this.props.isLiveStream);
+
     return (
       <div className="oo-scrubber-bar-container" ref="scrubberBarContainer" onMouseOver={scrubberBarMouseOver} onMouseOut={scrubberBarMouseOut} onMouseMove={scrubberBarMouseMove}>
         {thumbnailContainer}
         {thumbnailCarousel}
         <div className="oo-scrubber-bar-padding" ref="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
-          <div ref="scrubberBar" className={scrubberBarClassName} style={scrubberBarStyle}>
+          <div
+            ref="scrubberBar"
+            className={scrubberBarClassName}
+            style={scrubberBarStyle}
+            role="slider"
+            aria-label={CONSTANTS.ARIA_LABELS.SEEK_SLIDER}
+            aria-valuemin="0"
+            aria-valuemax={this.props.duration}
+            aria-valuenow={this.props.currentPlayhead}
+            aria-valuetext={timeDisplayValues.currentTime + ' of ' + timeDisplayValues.totalTime}
+            tabIndex="0"
+            onFocus={this.handleScrubberBarFocus}
+            onBlur={this.handleScrubberBarBlur}
+            onKeyDown={this.handleScrubberBarKeyDown}>
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle}></div>
             <div className="oo-hovered-indicator" style={hoveredIndicatorStyle}></div>
             <div className={playedIndicatorClassName} style={playedIndicatorStyle}></div>

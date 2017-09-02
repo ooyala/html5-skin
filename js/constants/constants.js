@@ -109,6 +109,9 @@ module.exports = {
     UNMUTE: "Unmute",
     FULLSCREEN: "Fullscreen",
     EXIT_FULLSCREEN: "Exit Fullscreen",
+    SEEK_SLIDER: "Seek slider",
+    VOLUME_SLIDER: "Volume slider",
+    VOLUME_PERCENT: "% volume"
   },
 
   KEYCODES: {

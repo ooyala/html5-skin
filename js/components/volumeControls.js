@@ -1,0 +1,171 @@
+var React = require('react');
+var ReactDOM = require('react-dom');
+var ClassNames = require('classnames');
+var Slider = require('./slider');
+var CONSTANTS = require('../constants/constants');
+
+var VolumeControls = React.createClass({
+
+  handleVolumeClick: function(evt) {
+    evt.preventDefault();
+    var newVolume = parseFloat(evt.target.dataset.volume);
+    this.props.controller.setVolume(newVolume);
+  },
+
+  changeVolumeSlider: function(event) {
+    var newVolume = parseFloat(event.target.value);
+    this.props.controller.setVolume(newVolume);
+    this.setState({
+      volumeSliderValue: event.target.value
+    });
+  },
+
+  handleVolumeSliderFocus: function(evt) {
+    this.props.controller.state.accessibilityControlsEnabled = false;
+  },
+
+  handleVolumeSliderBlur: function(evt) {
+    this.props.controller.state.accessibilityControlsEnabled = true;
+  },
+
+  handleVolumeSliderKeyDown: function(evt) {
+    switch (evt.keyCode) {
+      case CONSTANTS.KEYCODES.UP_ARROW_KEY:
+      case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
+        evt.preventDefault();
+        this.props.controller.changeVolumeBy(10, true);
+        break;
+      case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
+      case CONSTANTS.KEYCODES.LEFT_ARROW_KEY:
+        evt.preventDefault();
+        this.props.controller.changeVolumeBy(10, false);
+        break;
+      default:
+        break;
+    }
+  },
+
+  /**
+   * Some browsers give focus to buttons after click, which leaves
+   * them highlighted. This overrides the browser's default behavior.
+   *
+   * @param {event} evt The mouse up event object
+   */
+  blurOnMouseUp: function (evt) {
+    if (evt.currentTarget && evt.currentTarget.blur) {
+      evt.currentTarget.blur();
+    }
+  },
+
+  renderVolumeBars: function() {
+    var volumeBars = [];
+
+    for (var i = 0; i < 10; i++) {
+      // Create each volume tick separately
+      var turnedOn = this.props.controller.state.volumeState.volume >= (i + 1) / 10;
+      var volumeClass = ClassNames({
+        "oo-volume-bar": true,
+        "oo-on": turnedOn
+      });
+      var barStyle = {
+        backgroundColor: this.props.skinConfig.controlBar.volumeControl.color ? this.props.skinConfig.controlBar.volumeControl.color : this.props.skinConfig.general.accentColor
+      };
+
+      volumeBars.push(
+        <a data-volume={(i + 1) / 10}
+          className={volumeClass}
+          key={i}
+          style={barStyle}
+          onClick={this.handleVolumeClick}
+          aria-hidden="true">
+        </a>
+      );
+    }
+
+    var volumePercent = (this.props.controller.state.volumeState.volume * 100).toFixed(0);
+    var ariaValueText = volumePercent + CONSTANTS.ARIA_LABELS.VOLUME_PERCENT;
+
+    return (
+      <span
+        className="oo-volume-controls"
+        role="slider"
+        aria-label={CONSTANTS.ARIA_LABELS.VOLUME_SLIDER}
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow={volumePercent}
+        aria-valuetext={ariaValueText}
+        tabIndex="0"
+        onMouseUp={this.blurOnMouseUp}
+        onFocus={this.handleVolumeSliderFocus}
+        onBlur={this.handleVolumeSliderBlur}
+        onKeyDown={this.handleVolumeSliderKeyDown}>
+        {volumeBars}
+      </span>
+    );
+  },
+
+  renderVolumeSlider: function() {
+    return (
+      <div className="oo-volume-slider">
+        <Slider
+          value={parseFloat(this.props.controller.state.volumeState.volume)}
+          onChange={this.changeVolumeSlider}
+          className={"oo-slider oo-slider-volume"}
+          itemRef={"volumeSlider"}
+          minValue={"0"}
+          maxValue={"1"}
+          step={"0.1"} />
+      </div>
+    );
+  },
+
+  render: function () {
+    if (this.props.controller.state.isMobile) {
+      if (this.props.controller.state.volumeState.volumeSliderVisible) {
+        return this.renderVolumeSlider();
+      } else {
+        return null;
+      }
+    } else {
+      return this.renderVolumeBars();
+    }
+  }
+});
+
+VolumeControls.propTypes = {
+  controller: React.PropTypes.shape({
+    state: React.PropTypes.shape({
+      isMobile: React.PropTypes.bool.isRequired,
+      volumeState: React.PropTypes.shape({
+        volumeSliderVisible: React.PropTypes.bool.isRequired,
+        volume: React.PropTypes.number.isRequired
+      })
+    }),
+    setVolume: React.PropTypes.func.isRequired
+  }),
+  skinConfig: React.PropTypes.shape({
+    general: React.PropTypes.shape({
+      accentColor: React.PropTypes.string
+    }),
+    controlBar: React.PropTypes.shape({
+      volumeControl: React.PropTypes.shape({
+        color: React.PropTypes.string
+      })
+    })
+  })
+};
+
+VolumeControls.defaultProps = {
+  skinConfig: {
+    general: {
+      accentColor: '#448aff'
+    },
+    controlBar: {
+      volumeControl: {
+        color: '#448aff'
+      }
+    }
+  }
+};
+
+module.exports = VolumeControls;
