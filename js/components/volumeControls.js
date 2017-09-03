@@ -6,26 +6,15 @@ var CONSTANTS = require('../constants/constants');
 
 var VolumeControls = React.createClass({
 
-  handleVolumeClick: function(evt) {
-    evt.preventDefault();
-    var newVolume = parseFloat(evt.target.dataset.volume);
+  handleVolumeClick: function(event) {
+    event.preventDefault();
+    var newVolume = parseFloat(event.target.dataset.volume);
     this.props.controller.setVolume(newVolume);
   },
 
-  changeVolumeSlider: function(event) {
+  handleVolumeSliderChange: function(event) {
     var newVolume = parseFloat(event.target.value);
     this.props.controller.setVolume(newVolume);
-    this.setState({
-      volumeSliderValue: event.target.value
-    });
-  },
-
-  handleVolumeSliderFocus: function(evt) {
-    this.props.controller.state.accessibilityControlsEnabled = false;
-  },
-
-  handleVolumeSliderBlur: function(evt) {
-    this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
   handleVolumeSliderKeyDown: function(evt) {
@@ -40,6 +29,14 @@ var VolumeControls = React.createClass({
         evt.preventDefault();
         this.props.controller.changeVolumeBy(10, false);
         break;
+      case CONSTANTS.KEY_VALUES.HOME:
+        evt.preventDefault();
+        this.props.controller.changeVolumeBy(100, false);
+        break;
+      case CONSTANTS.KEY_VALUES.END:
+        evt.preventDefault();
+        this.props.controller.changeVolumeBy(100, true);
+        break;
       default:
         break;
     }
@@ -51,9 +48,9 @@ var VolumeControls = React.createClass({
    *
    * @param {event} evt The mouse up event object
    */
-  blurOnMouseUp: function (evt) {
-    if (evt.currentTarget && evt.currentTarget.blur) {
-      evt.currentTarget.blur();
+  blurOnMouseUp: function (event) {
+    if (event.currentTarget && event.currentTarget.blur) {
+      event.currentTarget.blur();
     }
   },
 
@@ -72,8 +69,8 @@ var VolumeControls = React.createClass({
       // Create each volume tick separately
       var turnedOn = this.props.controller.state.volumeState.volume >= (i + 1) / 10;
       var volumeClass = ClassNames({
-        "oo-volume-bar": true,
-        "oo-on": turnedOn
+        'oo-volume-bar': true,
+        'oo-on': turnedOn
       });
       var barStyle = {
         backgroundColor: this.props.skinConfig.controlBar.volumeControl.color ? this.props.skinConfig.controlBar.volumeControl.color : this.props.skinConfig.general.accentColor
@@ -102,10 +99,9 @@ var VolumeControls = React.createClass({
         aria-valuemax="100"
         aria-valuenow={volumePercent}
         aria-valuetext={ariaValueText}
+        data-focus-id="volumeControls"
         tabIndex="0"
         onMouseUp={this.blurOnMouseUp}
-        onFocus={this.handleVolumeSliderFocus}
-        onBlur={this.handleVolumeSliderBlur}
         onKeyDown={this.handleVolumeSliderKeyDown}>
         {volumeBars}
       </span>
@@ -125,20 +121,19 @@ var VolumeControls = React.createClass({
         aria-valuemax="100"
         aria-valuenow={volumePercent}
         aria-valuetext={ariaValueText}
+        data-focus-id="volumeSlider"
         tabIndex="0"
         onMouseUp={this.blurOnMouseUp}
-        onFocus={this.handleVolumeSliderFocus}
-        onBlur={this.handleVolumeSliderBlur}
         onKeyDown={this.handleVolumeSliderKeyDown}>
         <Slider
           value={parseFloat(this.props.controller.state.volumeState.volume)}
-          onChange={this.changeVolumeSlider}
           className="oo-slider oo-slider-volume"
           itemRef="volumeSlider"
           role="presentation"
           minValue="0"
           maxValue="1"
-          step="0.1" />
+          step="0.1"
+          onChange={this.handleVolumeSliderChange} />
       </div>
     );
   },

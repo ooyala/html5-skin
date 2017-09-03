@@ -133,7 +133,9 @@ module.exports = {
     ARROW_UP: "ArrowUp",
     ARROW_DOWN: "ArrowDown",
     ARROW_LEFT: "ArrowLeft",
-    ARROW_RIGHT: "ArrowRight"
+    ARROW_RIGHT: "ArrowRight",
+    HOME: "Home",
+    END: "End"
   },
 
   UI: {

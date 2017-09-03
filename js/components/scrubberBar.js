@@ -156,14 +156,6 @@ var ScrubberBar = React.createClass({
     this.touchInitiated = false;
   },
 
-  handleScrubberBarFocus: function(evt) {
-    this.props.controller.state.accessibilityControlsEnabled = false;
-  },
-
-  handleScrubberBarBlur: function(evt) {
-    this.props.controller.state.accessibilityControlsEnabled = true;
-  },
-
   handleScrubberBarKeyDown: function(evt) {
     switch (evt.key) {
       case CONSTANTS.KEY_VALUES.ARROW_UP:
@@ -335,9 +327,8 @@ var ScrubberBar = React.createClass({
             aria-valuemax={this.props.duration}
             aria-valuenow={this.props.currentPlayhead}
             aria-valuetext={timeDisplayValues.currentTime + ' of ' + timeDisplayValues.totalTime}
+            data-focus-id="scrubberBar"
             tabIndex="0"
-            onFocus={this.handleScrubberBarFocus}
-            onBlur={this.handleScrubberBarBlur}
             onKeyDown={this.handleScrubberBarKeyDown}>
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle}></div>
             <div className="oo-hovered-indicator" style={hoveredIndicatorStyle}></div>

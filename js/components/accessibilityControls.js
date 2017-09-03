@@ -28,7 +28,9 @@ AccessibilityControls.prototype = {
     if (e.target && typeof e.target.tagName === "string") {
       targetTagName = e.target.tagName.toLowerCase();
     }
-
+    // Slider interaction requires the arrow keys. When a slider is active we should
+    // disable arrow key controls
+    var sliderIsActive = document.activeElement && document.activeElement.getAttribute('role') === 'slider';
     // We override the default behavior when the target element is a button (pressing
     // the spacebar on a button should activate it).
     // Note that this is not a comprehensive fix for all clickable elements, this is
@@ -38,7 +40,9 @@ AccessibilityControls.prototype = {
       this.controller.togglePlayPause();
     }
 
-    else if ((e.keyCode === CONSTANTS.KEYCODES.DOWN_ARROW_KEY && this.controller.state.volumeState.volume > 0) || (e.keyCode === CONSTANTS.KEYCODES.UP_ARROW_KEY && this.controller.state.volumeState.volume < 1)){
+    else if (!sliderIsActive
+      && ((e.keyCode === CONSTANTS.KEYCODES.DOWN_ARROW_KEY && this.controller.state.volumeState.volume > 0)
+      || (e.keyCode === CONSTANTS.KEYCODES.UP_ARROW_KEY && this.controller.state.volumeState.volume < 1))) {
       e.preventDefault();
       var deltaVolumeSign = 1; // positive 1 for volume increase, negative for decrease
 
@@ -53,7 +57,8 @@ AccessibilityControls.prototype = {
       this.controller.setVolume(newVolume);
     }
 
-    else if (e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY || e.keyCode === CONSTANTS.KEYCODES.LEFT_ARROW_KEY){
+    else if (!sliderIsActive
+      && (e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY || e.keyCode === CONSTANTS.KEYCODES.LEFT_ARROW_KEY)) {
       e.preventDefault();
       var shiftSign = 1; // positive 1 for fast forward, negative for rewind back
 

@@ -70,12 +70,19 @@ var PlayingScreen = React.createClass({
     // for mobile, touch is handled in handleTouchEnd
   },
 
-  handleKeyPress: function(event) {
-    // Show control bar when either tab, space or enter are pressed
+  handleKeyDown: function(event) {
+    // Show control bar when any of the following keys are pressed:
+    // - Tab: Focus on next control
+    // - Space/Enter: Press active control
+    // - Arrow keys: Either seek forward/back, volume up/down or interact with focused slider
     switch (event.key) {
       case CONSTANTS.KEY_VALUES.TAB:
       case CONSTANTS.KEY_VALUES.SPACE:
       case CONSTANTS.KEY_VALUES.ENTER:
+      case CONSTANTS.KEY_VALUES.ARROW_UP:
+      case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
+      case CONSTANTS.KEY_VALUES.ARROW_DOWN:
+      case CONSTANTS.KEY_VALUES.ARROW_LEFT:
         this.showControlBar();
         this.props.controller.startHideControlBarTimer();
         break;
@@ -136,7 +143,7 @@ var PlayingScreen = React.createClass({
          onMouseOver={this.showControlBar}
          onMouseOut={this.hideControlBar}
          onMouseMove={this.handlePlayerMouseMove}
-         onKeyUp={this.handleKeyPress} >
+         onKeyDown={this.handleKeyDown}>
 
       <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 

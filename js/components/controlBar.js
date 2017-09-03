@@ -27,6 +27,7 @@ var ControlBar = React.createClass({
 
   componentDidMount: function () {
     window.addEventListener('orientationchange', this.closePopovers);
+    this.restoreFocusedControl();
   },
 
   componentWillReceiveProps: function (nextProps) {
@@ -43,6 +44,22 @@ var ControlBar = React.createClass({
       this.props.controller.hideVolumeSliderBar();
     }
     window.removeEventListener('orientationchange', this.closePopovers);
+  },
+
+  /**
+   * Restores the focus of a previously selected control bar item.
+   * This is needed as a workaround because switching between play and pause states
+   * currently causes the control bar to re-render.
+   */
+  restoreFocusedControl: function() {
+    if (!this.props.controller.state.focusedControl || !this.domNode) {
+      return;
+    }
+    var control = this.domNode.querySelector('[data-focus-id="' + this.props.controller.state.focusedControl + '"]');
+
+    if (control && typeof control.focus === 'function') {
+      control.focus();
+    }
   },
 
   getResponsiveUIMultiple: function (responsiveView) {
@@ -171,14 +188,6 @@ var ControlBar = React.createClass({
     }
   },
 
-  handlePlayPauseFocus: function () {
-    this.props.controller.state.playPauseButtonFocused = true;
-  },
-
-  handlePlayPauseBlur: function () {
-    this.props.controller.state.playPauseButtonFocused = false;
-  },
-
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function (evt) {
     if (!this.isMobile) {
@@ -296,12 +305,10 @@ var ControlBar = React.createClass({
           onMouseUp={this.blurOnMouseUp}
           onMouseOver={this.highlight}
           onMouseOut={this.removeHighlight}
-          onFocus={this.handlePlayPauseFocus}
-          onBlur={this.handlePlayPauseBlur}
           key="playPause"
+          data-focus-id="playPause"
           tabIndex="0"
-          aria-label={playPauseAriaLabel}
-          autoFocus={this.props.controller.state.playPauseButtonFocused}>
+          aria-label={playPauseAriaLabel}>
           <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
           <Tooltip enabled={isTooltipEnabled}
             alignment={alignment}
@@ -329,6 +336,7 @@ var ControlBar = React.createClass({
             onMouseUp={this.blurOnMouseUp}
             onMouseOver={this.highlight}
             onMouseOut={this.removeHighlight}
+            data-focus-id="muteUnmute"
             tabIndex="0"
             aria-label={volumeAriaLabel}>
             <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
@@ -411,6 +419,7 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight}
           onMouseOut={this.removeHighlight}
           key="fullscreen"
+          data-focus-id="fullscreen"
           tabIndex="0"
           aria-label={fullscreenAriaLabel}>
           <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
@@ -546,6 +555,23 @@ var ControlBar = React.createClass({
   },
 
 
+  /**
+   * Fires whenever an item is focused inside the control bar. Stores the id of
+   * the focused control.
+   *
+   * @param {type} evt Focus event.
+   */
+  handleControlBarFocus: function(evt) {
+    var focusId = evt.target ? evt.target.getAttribute('data-focus-id') : null;
+    if (focusId) {
+      this.props.controller.state.focusedControl = focusId;
+    }
+  },
+
+  handleControlBarBlur: function(evt) {
+    this.props.controller.state.focusedControl = null;
+  },
+
   render: function () {
     var controlBarClass = ClassNames({
       "oo-control-bar": true,
@@ -559,7 +585,14 @@ var ControlBar = React.createClass({
     };
 
     return (
-      <div className={controlBarClass} style={controlBarStyle} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
+      <div
+        ref={function(domNode) { this.domNode = domNode; }.bind(this)}
+        className={controlBarClass}
+        style={controlBarStyle}
+        onFocus={this.handleControlBarFocus}
+        onBlur={this.handleControlBarBlur}
+        onMouseUp={this.handleControlBarMouseUp}
+        onTouchEnd={this.handleControlBarMouseUp}>
         <ScrubberBar {...this.props} />
 
         <div className="oo-control-bar-items-wrapper">

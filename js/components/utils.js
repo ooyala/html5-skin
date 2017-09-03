@@ -8,11 +8,13 @@ var DeepMerge = require('deepmerge');
 var Utils = {
 
   /**
-   * ensureNumber - description
+   * Converts a value to a number or returns null if it can't be converted or is not finite value.
    *
-   * @param  {type} value        description
-   * @param  {type} defaultValue description
-   * @return {type}              description
+   * @function ensureNumber
+   * @param {Object} value The value to convert.
+   * @param {Number} defaultValue A default value to return when the input is not a valid number.
+   * @return {Number} The Number equivalent of value if it can be converted and is finite.
+   * When value doesn't meet the criteria the function will return either defaultValue (if provided) or null.
    */
   ensureNumber: function(value, defaultValue) {
     var number = Number(value);
@@ -23,27 +25,31 @@ var Utils = {
   },
 
   /**
-   * constrainToRange - description
+   * Ensures that a number falls within a specified range. When a number is outside of
+   * a range the function will return either the minimum or maximum allowed value depending on the case.
    *
-   * @param  {type} value description
-   * @param  {type} min   description
-   * @param  {type} max   description
-   * @return {type}       description
+   * @function constrainToRange
+   * @param {Number} value The numerical value to constrain.
+   * @param {Number} min The minimum value of the range.
+   * @param {Number} max The maximum value of the range.
+   * @return {Number} The Number equivalent of value if it falls between min and max,
+   * min if it falls below, max if it falls above.
    */
   constrainToRange: function(value, min, max) {
     value = this.ensureNumber(value, 0);
-    min = this.ensureNumber(value, 0);
-    max = this.ensureNumber(value, 0);
+    min = this.ensureNumber(min, 0);
+    max = this.ensureNumber(max, 0);
     return Math.min(Math.max(min, value), max);
   },
 
   /**
-   * getTimeDisplayValues - description
    *
-   * @param  {type} currentPlayhead description
-   * @param  {type} duration        description
-   * @param  {type} isLiveStream    description
-   * @return {type}                 description
+   *
+   * @function getTimeDisplayValues
+   * @param {type} currentPlayhead
+   * @param {type} duration
+   * @param {type} isLiveStream
+   * @return {type}
    */
   getTimeDisplayValues: function(currentPlayhead, duration, isLiveStream) {
     currentPlayhead = this.ensureNumber(currentPlayhead);
