@@ -264,7 +264,7 @@ var ControlBar = React.createClass({
               this.props.skinConfig.controlBar.volumeControl.color : this.props.skinConfig.general.accentColor
       }) : ({
           backgroundColor: this.props.skinConfig.controlBar.volumeControl.inactiveColor ?
-              this.props.skinConfig.controlBar.volumeControl.inactiveColor : this.props.skinConfig.general.accentColor
+              this.props.skinConfig.controlBar.volumeControl.inactiveColor : this.props.skinConfig.general.inactiveAccentColor
       });
       volumeBars.push(<a data-volume={(i + 1) / 10} className={volumeClass} key={i}
         style={barStyle}
