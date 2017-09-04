@@ -11,16 +11,13 @@ var Utils = {
    * Some browsers give focus to buttons after click, which leaves them highlighted.
    * This can be used to override the browsers' default behavior.
    *
-   * @function blurOnMouseDown
-   * @param {type} MouseDown event object.
+   * @function blurOnMouseUp
+   * @param {type} MouseUp event object.
    */
-  blurOnMouseDown: function(event) {
+  blurOnMouseUp: function(event) {
     if (!event || typeof event.preventDefault !== 'function') {
       return;
     }
-    // Prevent button or control from being highlighted on click
-    event.preventDefault();
-    // Also remove focus on click if already present
     if (event.currentTarget && typeof event.currentTarget.blur === 'function') {
       event.currentTarget.blur();
     }

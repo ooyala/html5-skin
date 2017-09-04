@@ -290,7 +290,7 @@ var ControlBar = React.createClass({
       "playPause": (function (alignment) {
         return <button className="oo-play-pause oo-control-bar-item"
           onClick={this.handlePlayClick}
-          onMouseDown={Utils.blurOnMouseDown}
+          onMouseUp={Utils.blurOnMouseUp}
           onMouseOver={this.highlight}
           onMouseOut={this.removeHighlight}
           key="playPause"
@@ -321,7 +321,7 @@ var ControlBar = React.createClass({
         return <div className="oo-volume oo-control-bar-item" key="volume">
           <button className="oo-mute-unmute oo-control-bar-item"
             onClick={this.handleVolumeIconClick}
-            onMouseDown={Utils.blurOnMouseDown}
+            onMouseUp={Utils.blurOnMouseUp}
             onMouseOver={this.highlight}
             onMouseOut={this.removeHighlight}
             data-focus-id="muteUnmute"
@@ -403,7 +403,7 @@ var ControlBar = React.createClass({
       "fullscreen": (function (alignment) {
         return <button className="oo-fullscreen oo-control-bar-item"
           onClick={this.handleFullscreenClick}
-          onMouseDown={Utils.blurOnMouseDown}
+          onMouseUp={Utils.blurOnMouseUp}
           onMouseOver={this.highlight}
           onMouseOut={this.removeHighlight}
           key="fullscreen"

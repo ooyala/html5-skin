@@ -133,6 +133,10 @@
     @include highlight-tab();
   }
 
+  .oo-action-icon:hover:active {
+    @include remove-highlight-tab();
+  }
+
   .oo-action-icon-top {
     top:15% !important;
   }

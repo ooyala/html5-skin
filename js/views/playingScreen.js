@@ -91,6 +91,24 @@ var PlayingScreen = React.createClass({
     }
   },
 
+  /**
+   * The keydown event is not fired when the scrubber bar is first focused with
+   * a tab unless playback was activated with a click. As a workaround, we make sure
+   * that the control bar is shown when a control bar element is focused.
+   *
+   * @param {object} event Focus event object.
+   */
+  handleFocus: function(event) {
+    var isControlBarElement = event.target || event.target.hasAttribute('data-focus-id');
+    // Only do this if the control bar hasn't been shown by now and limit to focus
+    // events that are triggered on known control bar elements
+    if (!this.state.controlBarVisible && isControlBarElement) {
+      this.showControlBar();
+      this.props.controller.startHideControlBarTimer();
+      this.props.controller.state.accessibilityControlsEnabled = true;
+    }
+  },
+
   handleTouchEnd: function(event) {
     event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
     if (!this.state.controlBarVisible){
@@ -151,7 +169,7 @@ var PlayingScreen = React.createClass({
 
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
-      <div className="oo-interactive-container">
+      <div className="oo-interactive-container" onFocus={this.handleFocus}>
 
         {this.props.closedCaptionOptions.enabled ?
           <TextTrack

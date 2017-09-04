@@ -100,7 +100,7 @@ var EndScreen = React.createClass({
 
         <button className={actionIconClass}
           onClick={this.handleClick}
-          onMouseDown={Utils.blurOnMouseDown}
+          onMouseUp={Utils.blurOnMouseUp}
           tabIndex="0"
           aria-label={CONSTANTS.ARIA_LABELS.REPLAY}>
           <Icon {...this.props} icon="replay" style={actionIconStyle}/>

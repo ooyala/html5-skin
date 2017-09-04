@@ -90,7 +90,7 @@ var VolumeControls = React.createClass({
         aria-valuetext={ariaValueText}
         data-focus-id="volumeControls"
         tabIndex="0"
-        onMouseDown={Utils.blurOnMouseDown}
+        onMouseUp={Utils.blurOnMouseUp}
         onKeyDown={this.handleVolumeSliderKeyDown}>
         {volumeBars}
       </span>
@@ -112,7 +112,7 @@ var VolumeControls = React.createClass({
         aria-valuetext={ariaValueText}
         data-focus-id="volumeSlider"
         tabIndex="0"
-        onMouseDown={this.blurOnMouseDown}
+        onMouseUp={this.blurOnMouseUp}
         onKeyDown={this.handleVolumeSliderKeyDown}>
         <Slider
           value={parseFloat(this.props.controller.state.volumeState.volume)}

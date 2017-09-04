@@ -84,6 +84,10 @@
       opacity: 1 !important;
     }
 
+    .oo-control-bar-item:hover:active .oo-icon {
+      @include remove-highlight-tab();
+    }
+
     .oo-control-bar-item.oo-mute-unmute {
       height: auto;
       padding: 0;
