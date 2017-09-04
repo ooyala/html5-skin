@@ -15,11 +15,6 @@
   @include highlight-tab();
 }
 
-.oo-volume-controls:active::before,
-.oo-volume-controls:active:focus::before {
-  content: none;
-}
-
 a.oo-volume-bar {
   border:0;
   outline: none;
@@ -67,11 +62,6 @@ a.oo-volume-bar {
 .oo-volume-slider:focus {
   outline: none;
   @include highlight-tab();
-}
-
-.oo-volume-slider:active,
-.oo-volume-slider:active:focus {
-  @include remove-highlight-tab();
 }
 
 // IE 11 only

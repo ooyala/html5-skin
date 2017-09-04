@@ -8,6 +8,25 @@ var DeepMerge = require('deepmerge');
 var Utils = {
 
   /**
+   * Some browsers give focus to buttons after click, which leaves them highlighted.
+   * This can be used to override the browsers' default behavior.
+   *
+   * @function blurOnMouseDown
+   * @param {type} MouseDown event object.
+   */
+  blurOnMouseDown: function(event) {
+    if (!event || typeof event.preventDefault !== 'function') {
+      return;
+    }
+    // Prevent button or control from being highlighted on click
+    event.preventDefault();
+    // Also remove focus on click if already present
+    if (event.currentTarget && typeof event.currentTarget.blur === 'function') {
+      event.currentTarget.blur();
+    }
+  },
+
+  /**
    * Converts a value to a number or returns null if it can't be converted or is not finite value.
    *
    * @function ensureNumber

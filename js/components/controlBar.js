@@ -111,18 +111,6 @@ var ControlBar = React.createClass({
     }
   },
 
-  /**
-   * Some browsers give focus to buttons after click, which leaves
-   * them highlighted. This overrides the browser's default behavior.
-   *
-   * @param {event} evt The mouse up event object
-   */
-  blurOnMouseUp: function (evt) {
-    if (evt.currentTarget && evt.currentTarget.blur) {
-      evt.currentTarget.blur();
-    }
-  },
-
   handlePlayClick: function () {
     this.props.controller.togglePlayPause();
   },
@@ -302,7 +290,7 @@ var ControlBar = React.createClass({
       "playPause": (function (alignment) {
         return <button className="oo-play-pause oo-control-bar-item"
           onClick={this.handlePlayClick}
-          onMouseUp={this.blurOnMouseUp}
+          onMouseDown={Utils.blurOnMouseDown}
           onMouseOver={this.highlight}
           onMouseOut={this.removeHighlight}
           key="playPause"
@@ -333,7 +321,7 @@ var ControlBar = React.createClass({
         return <div className="oo-volume oo-control-bar-item" key="volume">
           <button className="oo-mute-unmute oo-control-bar-item"
             onClick={this.handleVolumeIconClick}
-            onMouseUp={this.blurOnMouseUp}
+            onMouseDown={Utils.blurOnMouseDown}
             onMouseOver={this.highlight}
             onMouseOut={this.removeHighlight}
             data-focus-id="muteUnmute"
@@ -415,7 +403,7 @@ var ControlBar = React.createClass({
       "fullscreen": (function (alignment) {
         return <button className="oo-fullscreen oo-control-bar-item"
           onClick={this.handleFullscreenClick}
-          onMouseUp={this.blurOnMouseUp}
+          onMouseDown={Utils.blurOnMouseDown}
           onMouseOver={this.highlight}
           onMouseOut={this.removeHighlight}
           key="fullscreen"

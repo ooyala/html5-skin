@@ -2,6 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var ClassNames = require('classnames');
 var Slider = require('./slider');
+var Utils = require('./utils');
 var CONSTANTS = require('../constants/constants');
 
 var VolumeControls = React.createClass({
@@ -39,18 +40,6 @@ var VolumeControls = React.createClass({
         break;
       default:
         break;
-    }
-  },
-
-  /**
-   * Some browsers give focus to buttons after click, which leaves
-   * them highlighted. This overrides the browser's default behavior.
-   *
-   * @param {event} evt The mouse up event object
-   */
-  blurOnMouseUp: function (event) {
-    if (event.currentTarget && event.currentTarget.blur) {
-      event.currentTarget.blur();
     }
   },
 
@@ -101,7 +90,7 @@ var VolumeControls = React.createClass({
         aria-valuetext={ariaValueText}
         data-focus-id="volumeControls"
         tabIndex="0"
-        onMouseUp={this.blurOnMouseUp}
+        onMouseDown={Utils.blurOnMouseDown}
         onKeyDown={this.handleVolumeSliderKeyDown}>
         {volumeBars}
       </span>
@@ -123,7 +112,7 @@ var VolumeControls = React.createClass({
         aria-valuetext={ariaValueText}
         data-focus-id="volumeSlider"
         tabIndex="0"
-        onMouseUp={this.blurOnMouseUp}
+        onMouseDown={this.blurOnMouseDown}
         onKeyDown={this.handleVolumeSliderKeyDown}>
         <Slider
           value={parseFloat(this.props.controller.state.volumeState.volume)}
