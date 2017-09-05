@@ -198,7 +198,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
         }
         if (this.state.isVideo360) {
-          this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.getViewingDirection, this));
+          this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
         }
 
         // ad events
@@ -635,23 +635,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onTouched: function(params, isOnVideoClick) {
+    onTouching: function(params, isOnVideoClick) {
       if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
         if (this.state.isVideo360 && isOnVideoClick) {
-          this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement, params);
+          this.mb.publish(OO.EVENTS.TOUCHING, this.focusedElement, params);
         }
       }
     },
 
-    onVcTouched: function (isOnVideoClick) {
+    onTouched: function (isOnVideoClick) {
       if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
         if (this.state.isVideo360 && isOnVideoClick) {
-          this.mb.publish(OO.EVENTS.VC_TOUCHED, this.focusedElement);
+          this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement);
         }
       }
     },
 
-    getViewingDirection: function(event, yaw, roll, pitch) {
+    setViewingDirection: function(event, yaw, roll, pitch) {
       this.state.viewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
     },
 
@@ -1269,10 +1269,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 			this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
     },
 
-		moveToDirection: function (rotate, direction) {
-			OO.log("moveToDirection is called");
-			this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, rotate, direction);
+		moveToDirection: function (rotate, direction, callback) {
+			OO.log("CCC moveToDirection callback", callback);
+			this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, rotate, direction, callback);
 		},
+
+    moveDirection: function () {
+      this.mb.publish(OO.EVENTS.MOVE_DIRECTION, x, y, phi);
+    },
 
 		togglePlayPause: function(event) {
       switch (this.state.playerState) {
