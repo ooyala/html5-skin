@@ -65,16 +65,12 @@ var PlayingScreen = React.createClass({
 
   handleKeyPress: function(event) {
     // show control bar on tab key navigation
-    // event.preventDefault();
+    event.preventDefault();
     var charCode = event.which || event.keyCode;
     if (charCode === 9 || charCode === 32 || charCode === 13) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
-  },
-
-  changeDirection: function (rotate, direction) {
-    this.props.controller.moveToDirection(rotate, direction);
   },
 
   handleTouchEnd: function(event) {
@@ -174,7 +170,7 @@ var PlayingScreen = React.createClass({
       <UpNextPanel {...this.props}
         controlBarVisible={this.state.controlBarVisible}
         currentPlayhead={this.props.currentPlayhead}/> : null;
-    
+
     return (
     <div
       className="oo-state-screen oo-playing-screen"

@@ -197,9 +197,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         if(!this.state.isPlaybackReadySubscribed) {
           this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
         }
-        if (this.state.isVideo360) {
-          this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
-        }
 
         // ad events
         if (!Utils.isIPhone()) {
@@ -218,15 +215,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.SHOW_AD_CONTROLS, "customerUi", _.bind(this.onShowAdControls, this));
           this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi", _.bind(this.onShowAdMarquee, this));
         }
-        
+
         this.vrSubscribes && this.vrSubscribes();
       }
       this.state.isSubscribed = true;
     },
-    
+
     vrSubscribes: function () {
       if (this.state.isVideo360) {
-        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.getViewingDirection, this));
+        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
       }
     },
 
@@ -259,7 +256,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // Setting the tabindex will let some screen readers recognize this element as a group
       // identified with the ARIA label above. We set it to -1 in order to prevent actual keyboard focus
       this.state.mainVideoInnerWrapper.attr('tabindex', '-1');
-      
+
       var $ooPlayerSkin = $('.oo-player-skin');
       !$ooPlayerSkin.length && this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
 
@@ -275,18 +272,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.accessibilityControls = new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
-      
+
       if (this.getVrParams && this.getVrParams()) {
         this.state.isVideo360 = true;
         this.vrSubscribes && this.vrSubscribes();
       }
     },
-    
+
     getVrParams: function(){
       var playerParam = this.state.playerParam;
       var bitWrapper = playerParam ? playerParam['bit-wrapper'] : null;
       var isVr = !!bitWrapper && !!bitWrapper.source && !!bitWrapper.source.vr;
-      
+
       return isVr ? _.extend({}, bitWrapper.source.vr) : false;
     },
 
@@ -1283,10 +1280,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     moveToDirection: function (rotate, direction) {
       OO.log("moveToDirection is called");
       this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, rotate, direction);
-    },
-
-    moveDirection: function () {
-      this.mb.publish(OO.EVENTS.MOVE_DIRECTION, x, y, phi);
     },
 
     togglePlayPause: function(event) {

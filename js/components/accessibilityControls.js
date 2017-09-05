@@ -27,7 +27,7 @@ var AccessibilityControls = function (controller) {
 AccessibilityControls.prototype = {
   cleanUp : function() {
     document.removeEventListener("keydown", this.keyEventDown);
-    document.removeEventListener("keyup", this.keyEventDown);
+    document.removeEventListener("keyup", this.keyEventUp);
   },
 
   handleKeyClick: function(keyMapsList, charStr, bool, targetTagName) {
@@ -119,6 +119,7 @@ AccessibilityControls.prototype = {
     }
   },
   keyEventUp: function(e) {
+    console.log('BBB this.controller.state.accessibilityControlsEnabled', this.controller.state.accessibilityControlsEnabled);
     if (!this.controller.state.accessibilityControlsEnabled) { return; }
 
     var targetTagName = this.getTargetTagName(e);
