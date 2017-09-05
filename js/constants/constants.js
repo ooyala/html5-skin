@@ -86,7 +86,18 @@ module.exports = {
     UNIFORM: "Uniform",
     DEPRESSED: "Depressed",
     RAISED: "Raised",
-    SHADOW: "Shadow"
+    SHADOW: "Shadow",
+    PLAY: "Play",
+    REPLAY: "Replay",
+    PAUSE: "Pause",
+    MUTE: "Mute",
+    UNMUTE: "Unmute",
+    CLOSED_CAPTIONS: "Closed Captions",
+    FULL_SCREEN: "Full Screen",
+    EXIT_FULL_SCREEN: "Exit Full Screen",
+    VIDEO_QUALITY: "Video Quality",
+    SHARE: "Share",
+    MORE_OPTIONS: "More Options"
   },
 
   ARIA_LABELS: {
