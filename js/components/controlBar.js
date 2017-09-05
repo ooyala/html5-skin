@@ -20,10 +20,10 @@ var ControlBar = React.createClass({
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.volumeSliderValue = 0;
     this.moreOptionsItems = null;
-		this.vr = this.props.controller
-			&& this.props.controller.getVrParams
-			&& this.props.controller.getVrParams();
-
+    this.vr = this.props.controller
+      && this.props.controller.getVrParams
+      && this.props.controller.getVrParams();
+    
     return {
       currentVolumeHead: 0
     };
@@ -72,12 +72,12 @@ var ControlBar = React.createClass({
     evt.preventDefault();
     this.props.controller.toggleFullscreen();
   },
-
-	handleStereoClick: function () {
-		this.vr.stereo = !this.vr.stereo;
-		this.props.controller.toggleStereo();
-	},
-
+  
+  handleStereoClick: function () {
+    this.vr.stereo = !this.vr.stereo;
+    this.props.controller.toggleStereo();
+  },
+  
   handleLiveClick: function(evt) {
     evt.stopPropagation();
     evt.cancelBubble = true;
@@ -248,14 +248,14 @@ var ControlBar = React.createClass({
       fullscreenIcon = "expand";
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
-
-		var stereoIconClassName = "oo-vr-icon--type--stereoOff"
+    
+    var stereoIconClassName = "oo-vr-icon--type--stereoOff"
       , stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
-		if(this.vr && this.vr.stereo) {
-			stereoIconClassName = "oo-vr-icon--type--stereoOn";
-			stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
-		}
-
+    if(this.vr && this.vr.stereo) {
+      stereoIconClassName = "oo-vr-icon--type--stereoOn";
+      stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
+    }
+    
     var totalTime = 0;
     if (this.props.duration == null || typeof this.props.duration == 'undefined' || this.props.duration == ""){
       totalTime = Utils.formatSeconds(0);
@@ -411,34 +411,34 @@ var ControlBar = React.createClass({
         <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </a>,
-
-			"stereo": !this.vr ?
+      
+      "stereo": (!this.vr || !this.isMobile) ?
         null
         :
         <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
-				  onClick={this.handleStereoClick}
-				  onMouseUp={this.blurOnMouseUp}
-				  onMouseOver={this.highlight}
-				  onMouseOut={this.removeHighlight}
-				  key="stereo"
-				  tabIndex="0"
-				  aria-label={stereoAriaLabel}
+                onClick={this.handleStereoClick}
+                onMouseUp={this.blurOnMouseUp}
+                onMouseOver={this.highlight}
+                onMouseOut={this.removeHighlight}
+                key="stereo"
+                tabIndex="0"
+                aria-label={stereoAriaLabel}
         >
           <span
             className={'oo-vr-icon--type ' + stereoIconClassName}
             onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}
             onClick={this.props.onClick}
           />
-			</button>,
-
+        </button>,
+      
       "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
-        onClick={this.handleFullscreenClick}
-        onMouseUp={this.blurOnMouseUp}
-        onMouseOver={this.highlight}
-        onMouseOut={this.removeHighlight}
-        key="fullscreen"
-        tabIndex="0"
-        aria-label={fullscreenAriaLabel}>
+                            onClick={this.handleFullscreenClick}
+                            onMouseUp={this.blurOnMouseUp}
+                            onMouseOver={this.highlight}
+                            onMouseOut={this.removeHighlight}
+                            key="fullscreen"
+                            tabIndex="0"
+                            aria-label={fullscreenAriaLabel}>
         <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
       </button>,
 
