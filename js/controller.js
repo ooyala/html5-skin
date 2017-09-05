@@ -1269,15 +1269,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 			this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
     },
 
-		moveToDirection: function (rotate, direction, callback) {
-			this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, rotate, direction, callback);
-		},
+    moveToDirection: function (rotate, direction, callback) {
+      this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, rotate, direction, callback);
+    },
 
     moveDirection: function () {
       this.mb.publish(OO.EVENTS.MOVE_DIRECTION, x, y, phi);
     },
 
-		togglePlayPause: function(event) {
+    togglePlayPause: function(event) {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());
