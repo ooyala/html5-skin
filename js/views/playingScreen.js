@@ -11,7 +11,7 @@ var React = require('react'),
     TextTrack = require('../components/textTrackPanel'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
-		ViewControls = require('../components/viewControls');
+    ViewControls = require('../components/viewControls');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -168,7 +168,7 @@ var PlayingScreen = React.createClass({
       <UpNextPanel {...this.props}
         controlBarVisible={this.state.controlBarVisible}
         currentPlayhead={this.props.currentPlayhead}/> : null;
-		
+    
     return (
     <div className="oo-state-screen oo-playing-screen"
          ref="PlayingScreen"
@@ -214,8 +214,8 @@ var PlayingScreen = React.createClass({
         this.isVideo360 &&
         <ViewControls
           {...this.props}
-				  controlBarVisible={this.state.controlBarVisible}
-			  />
+          controlBarVisible={this.state.controlBarVisible}
+        />
       }
     </div>
     );

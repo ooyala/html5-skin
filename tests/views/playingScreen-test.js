@@ -300,8 +300,7 @@ describe('PlayingScreen', function () {
         componentWidth={800}
         closedCaptionOptions={closedCaptionOptions} />, node
     );
-
-		
+    
     ReactDOM.unmountComponentAtNode(node);
   });
 });
