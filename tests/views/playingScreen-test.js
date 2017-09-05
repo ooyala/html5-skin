@@ -7,9 +7,9 @@ var TestUtils = require('react-addons-test-utils');
 var PlayingScreen = require('../../js/views/playingScreen');
 
 describe('PlayingScreen', function () {
-  it('creates a PlayingScreen and checks mouseUp, mouseMove without video360', function () {
-    var moved = false;
-    var clicked = false;
+  it('creates a PlayingScreen and checks mouseMove, mouseUp without video360', function () {
+    var isMoved = false
+      , isPlayPause = false;
     var mockController = {
       state: {
         isMobile: false,
@@ -17,11 +17,10 @@ describe('PlayingScreen', function () {
         upNextInfo: {
           showing: false
         },
-        isVideo360: false,
-        viewingDirection: {yaw: 0, roll: 0, pitch: 0}
+        isVideo360: false
       },
-      togglePlayPause: function(){clicked = true},
-      startHideControlBarTimer: function() {moved = true}
+      togglePlayPause: function(){ isPlayPause = true },
+      startHideControlBarTimer: function() { isMoved = true }
     };
 
     var closedCaptionOptions = {
@@ -34,15 +33,14 @@ describe('PlayingScreen', function () {
     var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
 
     TestUtils.Simulate.mouseMove(screen[0]);
-    expect(moved).toBe(false);
+    expect(isMoved).toBe(false);
 
     TestUtils.Simulate.mouseUp(screen[0]);
-    expect(clicked).toBe(true);
+    expect(isPlayPause).toBe(true);
   });
-  it('creates a PlayingScreen and checks mouseUp, mouseMove with video360', function() {
-    var moved = false;
-    var isTouched = false;
-    var isVcTouched = false;
+  it('creates a PlayingScreen and checks mouseDown, mouseUp with video360', function() {
+    var isTouched = false
+      , isStartHideControlBarTimer = false;
     var mockController = {
       state: {
         isMobile: false,
@@ -51,16 +49,12 @@ describe('PlayingScreen', function () {
           showing: false
         },
         isVideo360: true,
+        viewingDirection: {yaw: 0, roll: 0, pitch: 0}
       },
       startHideControlBarTimer: function () {
-        moved = true;
+        isStartHideControlBarTimer = true;
       },
-      onTouched: function () {
-        isTouched = true;
-      },
-      onVcTouched: function () {
-        isVcTouched = true;
-      }
+      onTouched: function() { isTouched = true; },
     };
     var closedCaptionOptions = {
       cueText: "cue text"
@@ -77,23 +71,16 @@ describe('PlayingScreen', function () {
     DOM.setState({
       isMouseDown: true,
       XMouseStart: -10,
-      YMouseStart: -20,
-      viewingDirection: {yaw: 0, roll: 0, pitch: 0}
+      YMouseStart: -20
     });
 
     var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
 
-    var getDirectionParams = spyOn(DOM, 'getDirectionParams').andCallThrough()
-      , directionParams = getDirectionParams(0,0);
-
-    TestUtils.Simulate.mouseMove(screen[0]);
-    expect(moved).toBe(false);
+    TestUtils.Simulate.mouseDown(screen[0]);
     expect(isTouched).toBe(true);
-    expect(getDirectionParams).toHaveBeenCalled();
-    expect(directionParams).toEqual([10, 0, 40]);
 
     TestUtils.Simulate.mouseUp(screen[0]);
-    expect(isVcTouched).toBe(true);
+    expect(isTouched).toBe(true);
 
   });
 
@@ -168,11 +155,11 @@ describe('PlayingScreen', function () {
   });
 
   it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp with video360 fullscreen', function () {
-    var over = false;
-    var out = false;
-    var moved = false;
-    var clicked = false;
-    var isTouched = false;
+    var over = false
+      , out = false
+      , moved = false
+      , clicked = false
+      , isTouching = false;
 
     var mockController = {
       state: {
@@ -182,12 +169,13 @@ describe('PlayingScreen', function () {
         upNextInfo: {
           showing: false
         },
+        viewingDirection: {yaw: 0, roll: 0, pitch: 0}
       },
       startHideControlBarTimer: function() {moved = true},
       togglePlayPause: function(){clicked = true},
       showControlBar: function() {over = true},
       hideControlBar: function() {out = true},
-      onTouched: function() { isTouched = true; }
+      onTouching: function() { isTouching = true; },
     };
 
     var closedCaptionOptions = {
@@ -209,8 +197,7 @@ describe('PlayingScreen', function () {
     DOM.setState({
       isMouseDown: true,
       XMouseStart: -10,
-      YMouseStart: -20,
-      viewingDirection: {yaw: 0, roll: 0, pitch: 0}
+      YMouseStart: -20
     });
 
     var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-playing-screen');
@@ -220,9 +207,9 @@ describe('PlayingScreen', function () {
 
     TestUtils.Simulate.mouseMove(screen[0]);
     expect(moved).toBe(true);
-    expect(isTouched).toBe(true);
+    expect(isTouching).toBe(true);
     expect(getDirectionParams).toHaveBeenCalled();
-    expect(directionParams).toEqual([10, 0, 40]);
+    expect(directionParams).toEqual([10, 0, 53.33333333333333]);
 
     TestUtils.Simulate.mouseOut(screen[0]);
     expect(out).toBe(true);

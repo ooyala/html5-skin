@@ -20,14 +20,13 @@ var PlayingScreen = React.createClass({
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
     this.isVideo360 = this.props.controller.state.isVideo360;
+
     return {
       controlBarVisible: true,
       timer: null,
-      // isVideo360: this.props.controller.state.isVideo360,
       isMouseDown: false,
       XMouseStart: 0,
       YMouseStart: 0,
-      viewingDirection: this.props.controller.state.viewingDirection
     };
   },
 
@@ -66,10 +65,16 @@ var PlayingScreen = React.createClass({
 
   handleKeyPress: function(event) {
     // show control bar on tab key navigation
-    if (event.which === 9 || event.keyCode === 9) {
+    // event.preventDefault();
+    var charCode = event.which || event.keyCode;
+    if (charCode === 9) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
+  },
+
+  changeDirection: function (rotate, direction) {
+    this.props.controller.moveToDirection(rotate, direction);
   },
 
   handleTouchEnd: function(event) {
@@ -90,6 +95,9 @@ var PlayingScreen = React.createClass({
       XMouseStart: e.pageX,
       YMouseStart: e.pageY
     });
+    if (this.props.controller.onTouched) {
+      this.props.controller.onTouched(true);
+    }
   },
 
   handlePlayerMouseMove: function(e) {
@@ -99,7 +107,9 @@ var PlayingScreen = React.createClass({
     }
     if (this.isVideo360 && this.state.isMouseDown) {
       var params = this.getDirectionParams(e.pageX, e.pageY);
-      this.props.controller.onTouched(params, true);
+      if (this.props.controller.onTouching) {
+        this.props.controller.onTouching(params, true);
+      }
     }
   },
 
@@ -119,11 +129,8 @@ var PlayingScreen = React.createClass({
       this.setState({
         isMouseDown: false,
       });
-      if (this.props.controller.onVcTouched) {
-        this.props.controller.onVcTouched(true);
-        this.setState({
-          viewingDirection: this.props.controller.state.viewingDirection
-        })
+      if (this.props.controller.onTouched) {
+        this.props.controller.onTouched(true);
       }
     }
   },
@@ -131,13 +138,12 @@ var PlayingScreen = React.createClass({
   getDirectionParams: function(pageX, pageY) {
     var dx = pageX - this.state.XMouseStart
       , dy = pageY - this.state.YMouseStart;
-
     var maxDegreesX = 90,
-      maxDegreesY = 90;
+      maxDegreesY = 120;
     var degreesForPixelYaw = maxDegreesX / this.props.componentWidth,
       degreesForPixelPitch = maxDegreesY / this.props.componentHeight;
-    var yaw = (this.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw,
-      pitch = (this.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
+    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw,
+      pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
     return [yaw, 0, pitch];
   },
 
@@ -170,18 +176,18 @@ var PlayingScreen = React.createClass({
         currentPlayhead={this.props.currentPlayhead}/> : null;
 		
     return (
-    <div className="oo-state-screen oo-playing-screen"
-         ref="PlayingScreen"
-         onMouseOver={this.showControlBar}
-         onMouseOut={this.hideControlBar}
-         onMouseMove={this.handlePlayerMouseMove}
-        onKeyUp={this.handleKeyPress}
+    <div
+      className="oo-state-screen oo-playing-screen"
+      ref="PlayingScreen"
+      onMouseOver={this.showControlBar}
+      onMouseOut={this.hideControlBar}
+      onMouseMove={this.handlePlayerMouseMove}
+      onKeyUp={this.handleKeyPress}
     >
       <div
         className="oo-state-screen-selectable"
         onMouseDown={this.handlePlayerMouseDown}
         onMouseUp={this.handlePlayerMouseUp}
-        onMouseMove={this.handlePlayerMouseMove}
         onTouchEnd={this.handleTouchEnd}
       />
 
