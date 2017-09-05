@@ -48,7 +48,7 @@ var VolumeControls = React.createClass({
   },
 
   getAriaValueText: function() {
-    return this.getVolumePercent() + CONSTANTS.ARIA_LABELS.VOLUME_PERCENT;
+    return CONSTANTS.ARIA_LABELS.VOLUME_PERCENT.replace('{volume}', this.getVolumePercent());
   },
 
   renderVolumeBars: function() {

@@ -59,6 +59,12 @@ var ControlBar = React.createClass({
 
     if (control && typeof control.focus === 'function') {
       control.focus();
+      // If we got to this point it means that play was triggered using the spacebar
+      // (since a click would've cleared the focused element) and we need to
+      // trigger control bar auto hide
+      if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
+        this.props.controller.startHideControlBarTimer();
+      }
     }
   },
 
@@ -245,6 +251,7 @@ var ControlBar = React.createClass({
       totalTime = Utils.formatSeconds(this.props.duration);
     }
 
+    // TODO - Replace time display logic with Utils.getTimeDisplayValues()
     var playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
     var isLiveStream = this.props.isLiveStream;
     var durationSetting = { color: this.props.skinConfig.controlBar.iconStyle.inactive.color };
@@ -541,7 +548,6 @@ var ControlBar = React.createClass({
     };
     return returnStyles;
   },
-
 
   /**
    * Fires whenever an item is focused inside the control bar. Stores the id of

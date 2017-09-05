@@ -111,7 +111,10 @@ module.exports = {
     EXIT_FULLSCREEN: "Exit Fullscreen",
     SEEK_SLIDER: "Seek slider",
     VOLUME_SLIDER: "Volume slider",
-    VOLUME_PERCENT: "% volume"
+    VOLUME_PERCENT: "{volume}% volume",
+    TIME_DISPLAY: "{currentTime} of {totalTime}",
+    TIME_DISPLAY_LIVE: "Live video",
+    TIME_DISPLAY_DVR: "{currentTime} of {totalTime} live video"
   },
 
   KEYCODES: {

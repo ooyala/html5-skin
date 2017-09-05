@@ -215,6 +215,28 @@ var ScrubberBar = React.createClass({
     });
   },
 
+  /**
+   * Gets a string that describes the current status of the progress bar in a screen
+   * reader friendly format.
+   */
+  getAriaValueText: function() {
+    var ariaValueText;
+    var timeDisplayValues = Utils.getTimeDisplayValues(this.props.currentPlayhead, this.props.duration, this.props.isLiveStream);
+
+    if (this.props.isLiveStream) {
+      if (timeDisplayValues.totalTime) {
+        ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY_DVR.replace('{currentTime}', timeDisplayValues.currentTime);
+        ariaValueText = ariaValueText.replace('{totalTime}', timeDisplayValues.totalTime);
+      } else {
+        ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY_LIVE;
+      }
+    } else {
+      ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY.replace('{currentTime}', timeDisplayValues.currentTime);
+      ariaValueText = ariaValueText.replace('{totalTime}', timeDisplayValues.totalTime);
+    }
+    return ariaValueText;
+  },
+
   render: function() {
     var scrubberBarStyle = {
       backgroundColor: this.props.skinConfig.controlBar.scrubberBar.backgroundColor
@@ -310,7 +332,7 @@ var ScrubberBar = React.createClass({
       }
     }
 
-    var timeDisplayValues = Utils.getTimeDisplayValues(this.props.currentPlayhead, this.props.duration, this.props.isLiveStream);
+    var ariaValueText = this.getAriaValueText();
 
     return (
       <div className="oo-scrubber-bar-container" ref="scrubberBarContainer" onMouseOver={scrubberBarMouseOver} onMouseOut={scrubberBarMouseOut} onMouseMove={scrubberBarMouseMove}>
@@ -325,8 +347,8 @@ var ScrubberBar = React.createClass({
             aria-label={CONSTANTS.ARIA_LABELS.SEEK_SLIDER}
             aria-valuemin="0"
             aria-valuemax={this.props.duration}
-            aria-valuenow={this.props.currentPlayhead}
-            aria-valuetext={timeDisplayValues.currentTime + ' of ' + timeDisplayValues.totalTime}
+            aria-valuenow={Utils.ensureNumber(this.props.currentPlayhead, 0).toFixed(2)}
+            aria-valuetext={ariaValueText}
             data-focus-id="scrubberBar"
             tabIndex="0"
             onKeyDown={this.handleScrubberBarKeyDown}>
