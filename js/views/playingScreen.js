@@ -95,7 +95,9 @@ var PlayingScreen = React.createClass({
       XMouseStart: e.pageX,
       YMouseStart: e.pageY
     });
-    this.props.controller.onTouched(true);
+    if (this.props.controller.onTouched) {
+      this.props.controller.onTouched(true);
+    }
   },
 
   handlePlayerMouseMove: function(e) {

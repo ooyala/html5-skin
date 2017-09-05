@@ -27,12 +27,14 @@ var AccessibilityControls = function (controller) {
 AccessibilityControls.prototype = {
   cleanUp : function() {
     document.removeEventListener("keydown", this.keyEventDown);
+    document.removeEventListener("keyup", this.keyEventDown);
   },
 
   handleKeyClick: function(keyMapsList, charStr, bool, targetTagName) {
     /*
      * keyMapsList - array of objects {char: 's', direction: 'down'}
      */
+    if (!this.controller.state.isVideo360) { return; }
     for (var i=0; i<keyMapsList.length; i++) {
       if (charStr === keyMapsList[i]['char'] && targetTagName !== "button") {
         this.controller.moveToDirection(bool, keyMapsList[i]['direction']);
