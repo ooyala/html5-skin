@@ -1270,7 +1270,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
 		moveToDirection: function (rotate, direction, callback) {
-			OO.log("CCC moveToDirection callback", callback);
 			this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, rotate, direction, callback);
 		},
 
