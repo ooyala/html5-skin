@@ -117,6 +117,11 @@ module.exports = {
     TIME_DISPLAY_DVR: "{currentTime} of {totalTime} live video"
   },
 
+  A11Y_CTRLS: {
+    SEEK_DELTA: 5,
+    VOLUME_CHANGE_DELTA: 10
+  },
+
   KEYCODES: {
     SPACE_KEY: 32,
     LEFT_ARROW_KEY: 37,

@@ -1250,28 +1250,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    seek: function(seconds) {
+    seek: function(seconds, queueUpdate) {
       if (this.state.playerState == CONSTANTS.STATE.END) {
         this.endSeeking();
         this.mb.publish(OO.EVENTS.REPLAY, seconds);
       }
       else {
+        if (queueUpdate && !this.state.queuedPlayheadUpdate) {
+          this.state.queuedPlayheadUpdate = [seconds, this.skin.state.duration, this.skin.state.buffered];
+        }
         this.mb.publish(OO.EVENTS.SEEK, seconds);
       }
-    },
-
-    seekBy: function(seconds, forward) {
-      var seekTo = 0;
-
-      if (forward) {
-        seekTo = this.skin.state.currentPlayhead + seconds;
-      } else {
-        seekTo = this.skin.state.currentPlayhead - seconds;
-      }
-      seekTo = Utils.constrainToRange(seekTo, 0, this.skin.state.duration);
-
-      this.state.queuedPlayheadUpdate = [seekTo, this.skin.state.duration, this.skin.state.buffered];
-      this.seek(seekTo);
     },
 
     onLiveClick: function() {
@@ -1280,24 +1269,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     setVolume: function(volume) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
-    },
-
-    changeVolumeBy: function(percent, increase) {
-      var delta = Utils.constrainToRange(percent, 0, 100);
-
-      if (delta) {
-        var volume = 0;
-        var currentVolumePercent = this.state.volumeState.volume * 100;
-
-        if (increase) {
-          volume = Utils.constrainToRange(currentVolumePercent + delta, 0, 100) / 100;
-        } else {
-          volume = Utils.constrainToRange(currentVolumePercent - delta, 0, 100) / 100;
-        }
-        if (volume !== this.state.volumeState.volume) {
-          this.setVolume(volume);
-        }
-      }
     },
 
     handleMuteClick: function() {

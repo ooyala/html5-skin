@@ -23,20 +23,20 @@ var VolumeControls = React.createClass({
       case CONSTANTS.KEY_VALUES.ARROW_UP:
       case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
         evt.preventDefault();
-        this.props.controller.changeVolumeBy(10, true);
+        this.props.controller.accessibilityControls.changeVolumeBy(CONSTANTS.A11Y_CTRLS.VOLUME_CHANGE_DELTA, true);
         break;
       case CONSTANTS.KEY_VALUES.ARROW_DOWN:
       case CONSTANTS.KEY_VALUES.ARROW_LEFT:
         evt.preventDefault();
-        this.props.controller.changeVolumeBy(10, false);
+        this.props.controller.accessibilityControls.changeVolumeBy(CONSTANTS.A11Y_CTRLS.VOLUME_CHANGE_DELTA, false);
         break;
       case CONSTANTS.KEY_VALUES.HOME:
         evt.preventDefault();
-        this.props.controller.changeVolumeBy(100, false);
+        this.props.controller.accessibilityControls.changeVolumeBy(100, false);
         break;
       case CONSTANTS.KEY_VALUES.END:
         evt.preventDefault();
-        this.props.controller.changeVolumeBy(100, true);
+        this.props.controller.accessibilityControls.changeVolumeBy(100, true);
         break;
       default:
         break;
