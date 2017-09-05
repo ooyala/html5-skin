@@ -115,7 +115,7 @@ describe('ControlBar', function () {
   it('render one stereo button if content vr', function () {
 		var mockController = {
 			state: {
-				isMobile: false,
+				isMobile: true,
 				volumeState: {
 					volume: 1
 				},
@@ -201,7 +201,7 @@ describe('ControlBar', function () {
 
 		var mockController = {
 			state: {
-				isMobile: false,
+				isMobile: true,
 				volumeState: {
 					volume: 1
 				},
