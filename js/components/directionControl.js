@@ -10,34 +10,36 @@ var DirectionControl = React.createClass({
 
   componentWillUnmount: function() {
     this.timer && clearTimeout(this.timer);
-	},
-
-	handleEvent: function (ev) {
+  },
+  
+  handleEvent: function (ev) {
     var rotate = ev.type == 'mousedown' || ev.type == 'touchstart';
     this.props.handleDirection(rotate, this.props.dir);
-  	this.setState({
+    
+    this.setState({
       isTouched: true
-		}, function(){
-  		var _this = this;
+    }, function(){
+      var _this = this;
       this.timer = setTimeout(function(){
-      	_this.setState({isTouched: false});
-			}, 300);
-		});
-	},
-
-	render: function () {
-  	var directionClass = 'oo-vr-icon--move--' + this.props.dir
-			, touchedDirectionClass = this.state.isTouched && 'oo-vr-icon--move--' + this.props.dir + '--touched';
-		return (
-			<div
-				className={classnames('oo-vr-icon--move direction-control', directionClass, touchedDirectionClass)}
-				key={this.props.dir}
-				tabIndex="0"
-				onMouseDown={this.handleEvent} onTouchStart={this.handleEvent}
-				onMouseUp={this.handleEvent} onTouchEnd={this.handleEvent}
-			/>
-		);
-	}
+        _this.setState({isTouched: false});
+      }, 300);
+    });
+  },
+  
+  render: function () {
+    var directionClass = 'oo-vr-icon--move--' + this.props.dir
+      , touchedDirectionClass = this.state.isTouched && 'oo-vr-icon--move--' + this.props.dir + '--touched';
+    return (
+      <div
+        className={classnames('oo-vr-icon--move direction-control', directionClass, touchedDirectionClass)}
+        key={this.props.dir}
+        tabIndex="0"
+        onMouseDown={this.handleEvent} onTouchStart={this.handleEvent}
+        onMouseUp={this.handleEvent} onTouchEnd={this.handleEvent}
+        onMouseOut={this.handleEvent}
+      />
+    );
+  }
 });
 
 module.exports = DirectionControl;
