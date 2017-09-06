@@ -43,14 +43,27 @@ var VolumeControls = React.createClass({
     }
   },
 
+  /**
+   * Converts the current player volume value to a percentage.
+   *
+   * @return {String} A string that represents the volume as a percentage from 0 to 100.
+   */
   getVolumePercent: function() {
     return (this.props.controller.state.volumeState.volume * 100).toFixed(0);
   },
 
+  /**
+   * Converts the current volume value to a screen reader friendly format.
+   *
+   * @return {String} The current volume in a screen reader friendly format (i.e. 20% volume).
+   */
   getAriaValueText: function() {
     return CONSTANTS.ARIA_LABELS.VOLUME_PERCENT.replace('{volume}', this.getVolumePercent());
   },
 
+  /**
+   * Builds the volume bar controls that are shown on desktop.
+   */
   renderVolumeBars: function() {
     var volumeBars = [];
 
@@ -97,6 +110,9 @@ var VolumeControls = React.createClass({
     );
   },
 
+  /**
+   * Renders the volume slider that is shown on mobile web.
+   */
   renderVolumeSlider: function() {
     var volumePercent = this.getVolumePercent();
     var ariaValueText = this.getAriaValueText();

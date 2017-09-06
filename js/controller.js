@@ -1250,15 +1250,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    seek: function(seconds, queueUpdate) {
+    seek: function(seconds) {
       if (this.state.playerState == CONSTANTS.STATE.END) {
         this.endSeeking();
         this.mb.publish(OO.EVENTS.REPLAY, seconds);
       }
       else {
-        if (queueUpdate && !this.state.queuedPlayheadUpdate) {
-          this.state.queuedPlayheadUpdate = [seconds, this.skin.state.duration, this.skin.state.buffered];
-        }
         this.mb.publish(OO.EVENTS.SEEK, seconds);
       }
     },

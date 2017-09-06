@@ -159,12 +159,6 @@ var ControlBar = React.createClass({
     this.closeQualityPopover();
   },
 
-  handleVolumeClick: function (evt) {
-    evt.preventDefault();
-    var newVolume = parseFloat(evt.target.dataset.volume);
-    this.props.controller.setVolume(newVolume);
-  },
-
   handleDiscoveryClick: function () {
     this.props.controller.toggleDiscoveryScreen();
   },
@@ -203,12 +197,24 @@ var ControlBar = React.createClass({
     }
   },
 
-  changeVolumeSlider: function (event) {
-    var newVolume = parseFloat(event.target.value);
-    this.props.controller.setVolume(newVolume);
-    this.setState({
-      volumeSliderValue: event.target.value
-    });
+  /**
+   * Fires whenever an item is focused inside the control bar. Stores the id of
+   * the focused control.
+   *
+   * @param {type} evt Focus event.
+   */
+  handleControlBarFocus: function(evt) {
+    var focusId = evt.target ? evt.target.getAttribute('data-focus-id') : null;
+    if (focusId) {
+      this.props.controller.state.focusedControl = focusId;
+    }
+  },
+
+  /**
+   * Clears the currently focused control.
+   */
+  handleControlBarBlur: function(evt) {
+    this.props.controller.state.focusedControl = null;
   },
 
   populateControlBar: function () {
@@ -547,23 +553,6 @@ var ControlBar = React.createClass({
 
     };
     return returnStyles;
-  },
-
-  /**
-   * Fires whenever an item is focused inside the control bar. Stores the id of
-   * the focused control.
-   *
-   * @param {type} evt Focus event.
-   */
-  handleControlBarFocus: function(evt) {
-    var focusId = evt.target ? evt.target.getAttribute('data-focus-id') : null;
-    if (focusId) {
-      this.props.controller.state.focusedControl = focusId;
-    }
-  },
-
-  handleControlBarBlur: function(evt) {
-    this.props.controller.state.focusedControl = null;
   },
 
   render: function () {
