@@ -1,54 +1,31 @@
 var CONSTANTS = require('./../constants/constants');
 
 var AccessibilityControls = function (controller) {
-    this.controller = controller;
-    this.state = {
-      "fastForwardRate": 1,
-      "lastKeyDownTime": null,
-      "keyMapsList": [
-        {"char": "a", "direction": "left"},
-        {"char": "A", "direction": "left"},
-        {"char": "d", "direction": "right"},
-        {"char": "D", "direction": "right"},
-        {"char": "w", "direction": "up"},
-        {"char": "W", "direction": "up"},
-        {"char": "S", "direction": "down"},
-        {"char": "S", "direction": "down"},
-      ]
-    };
-    this.handleKeyClick = this.handleKeyClick.bind(this);
-    this.getTargetTagName = this.getTargetTagName.bind(this);
-    this.keyEventDown = this.keyEventDown.bind(this);
-    this.keyEventUp = this.keyEventUp.bind(this);
-    document.addEventListener("keydown", this.keyEventDown);
-    document.addEventListener("keyup", this.keyEventUp);
+  this.controller = controller;
+  this.allowed = true;
+  this.state = {
+    "fastForwardRate": 1,
+    "lastKeyDownTime": null,
+    "keyMapsList": [
+      {"char": CONSTANTS.KEYCODES.A, "direction": "left"},
+      {"char": CONSTANTS.KEYCODES.D, "direction": "right"},
+      {"char": CONSTANTS.KEYCODES.W, "direction": "up"},
+      {"char": CONSTANTS.KEYCODES.S, "direction": "down"}
+    ]
+  };
+  this.keyEventDown = this.keyEventDown.bind(this);
+  this.keyEventUp = this.keyEventUp.bind(this);
+  this.handleKeyClick = this.handleKeyClick.bind(this);
+  this.getTargetTagName = this.getTargetTagName.bind(this);
+
+  document.addEventListener("keydown", this.keyEventDown);
+  document.addEventListener("keyup", this.keyEventUp);
 };
 
 AccessibilityControls.prototype = {
   cleanUp : function() {
     document.removeEventListener("keydown", this.keyEventDown);
     document.removeEventListener("keyup", this.keyEventUp);
-  },
-
-  handleKeyClick: function(keyMapsList, charStr, bool, targetTagName) {
-    /*
-     * keyMapsList - array of objects {char: 's', direction: 'down'}
-     */
-    if (!this.controller.state.isVideo360) { return; }
-    for (var i=0; i<keyMapsList.length; i++) {
-      if (charStr === keyMapsList[i]['char'] && targetTagName !== "button") {
-        this.controller.moveToDirection(bool, keyMapsList[i]['direction']);
-        break;
-      }
-    }
-  },
-
-  getTargetTagName: function(e) {
-    var targetTagName = "";
-    if (e.target && typeof e.target.tagName === "string") {
-      targetTagName = e.target.tagName.toLowerCase();
-    }
-    return targetTagName;
   },
 
   keyEventDown: function(e) {
@@ -63,10 +40,8 @@ AccessibilityControls.prototype = {
     // the spacebar on a button should activate it).
     // Note that this is not a comprehensive fix for all clickable elements, this is
     // mostly meant to enable keyboard navigation on control bar elements.
-    var charCode = e.which || e.keyCode
-      , charStr = String.fromCharCode(charCode);
-
-    this.handleKeyClick(this.state.keyMapsList, charStr, true, targetTagName);
+    var charCode = e.which || e.keyCode;
+    this.handleKeyClick(e, this.state.keyMapsList, charCode, true, targetTagName); //start rotate 360
 
     if (charCode === CONSTANTS.KEYCODES.SPACE_KEY && targetTagName !== "button") {
       e.preventDefault();
@@ -118,15 +93,40 @@ AccessibilityControls.prototype = {
       this.controller.seek(newPlayheadTime);
     }
   },
+
   keyEventUp: function(e) {
-    console.log('BBB this.controller.state.accessibilityControlsEnabled', this.controller.state.accessibilityControlsEnabled);
     if (!this.controller.state.accessibilityControlsEnabled) { return; }
-
     var targetTagName = this.getTargetTagName(e);
-    var charCode = e.which || e.keyCode
-      , charStr = String.fromCharCode(charCode);
+    var charCode = e.which || e.keyCode;
+    this.handleKeyClick(e, this.state.keyMapsList, charCode, false, targetTagName);  //stop rotate 360
+  },
 
-    this.handleKeyClick(this.state.keyMapsList, charStr, false, targetTagName);
+  getTargetTagName: function(e) {
+    var targetTagName = "";
+    if (e.target && typeof e.target.tagName === "string") {
+      targetTagName = e.target.tagName.toLowerCase();
+    }
+    return targetTagName;
+  },
+
+  handleKeyClick: function(e, keyMapsList, char, bool, targetTagName) {
+    /*
+     * keyMapsList - array of objects {char: 83, direction: 'down'}
+     */
+    if (!this.controller.state.isVideo360) { return; }
+    for (var i=0; i<keyMapsList.length; i++) {
+      if (char === keyMapsList[i]['char'] && targetTagName !== "button") {
+        if (e.repeat != undefined) {
+          this.allowed = !e.repeat;
+        }
+        if (!this.allowed) {
+          return;
+        }
+        this.allowed = !bool; //prevent repeat of keyDown
+        this.controller.moveToDirection(bool, keyMapsList[i]['direction']);
+        break;
+      }
+    }
   }
 };
 

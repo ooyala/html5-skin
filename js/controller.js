@@ -28,6 +28,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   var Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
+    this.accessibilityControls = null;
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
@@ -215,8 +216,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.SHOW_AD_CONTROLS, "customerUi", _.bind(this.onShowAdControls, this));
           this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi", _.bind(this.onShowAdMarquee, this));
         }
-
-        this.vrSubscribes && this.vrSubscribes();
+        // this.vrSubscribes && this.vrSubscribes();
       }
       this.state.isSubscribed = true;
     },
@@ -270,12 +270,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
       }
 
-      this.accessibilityControls = new AccessibilityControls(this); //keyboard support
+      this.accessibilityControls = this.accessibilityControls || new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
 
       if (this.getVrParams && this.getVrParams()) {
         this.state.isVideo360 = true;
-        this.vrSubscribes && this.vrSubscribes();
+        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
       }
     },
 
@@ -1279,7 +1279,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     moveToDirection: function (rotate, direction) {
       OO.log("moveToDirection is called");
-      this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, rotate, direction);
+      this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, this.focusedElement, rotate, direction);
     },
 
     togglePlayPause: function(event) {
