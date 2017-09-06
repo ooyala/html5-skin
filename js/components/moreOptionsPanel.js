@@ -32,15 +32,21 @@ var MoreOptionsPanel = React.createClass({
   },
 
   highlight: function (evt) {
-    var color = this.props.skinConfig.moreOptionsScreen.iconStyle.active.color;
-    var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.active.opacity;
-    Utils.highlight(evt.target, opacity, color);
+    var iconElement = Utils.getEventIconElement(evt);
+    if (iconElement) {
+      var color = this.props.skinConfig.moreOptionsScreen.iconStyle.active.color;
+      var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.active.opacity;
+      Utils.highlight(iconElement, opacity, color);
+    }
   },
 
   removeHighlight: function (evt) {
-    var color = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.color;
-    var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.opacity;
-    Utils.removeHighlight(evt.target, opacity, color);
+    var iconElement = Utils.getEventIconElement(evt);
+    if (iconElement) {
+      var color = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.color;
+      var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.opacity;
+      Utils.removeHighlight(iconElement, opacity, color);
+    }
   },
 
   buildMoreOptionsButtonList: function () {
@@ -80,7 +86,7 @@ var MoreOptionsPanel = React.createClass({
 
     var items = this.props.controller.state.moreOptionsItems;
     var moreOptionsItems = [];
-    
+
     for (var i = 0; i < items.length; i++) {
       moreOptionsItems.push(optionsItemsTemplates[items[i].name]);
     }

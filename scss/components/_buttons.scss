@@ -10,6 +10,13 @@ button.oo-close-btn {
   @include close($spacer-close-btn, $spacer-close-btn);
 }
 
+// Workaround for Safari clipping text shadows
+// inside buttons
+button.oo-close-button .oo-icon {
+  display: inline-block;
+  @include vendor-prefixes(transform, translateZ(0));
+}
+
 button.oo-up-next-close-btn {
   top: 10px;
   right: 10px;

@@ -69,6 +69,14 @@ var PlayingScreen = React.createClass({
     // for mobile, touch is handled in handleTouchEnd
   },
 
+  handleKeyPress: function(event) {
+    // show control bar on tab key navigation
+    if ((event.which === 9 || event.keyCode === 9) || (event.which === 32 || event.keyCode === 32) || (event.which === 13 || event.keyCode === 13)) {
+      this.showControlBar();
+      this.props.controller.startHideControlBarTimer();
+    }
+  },
+
   handleTouchEnd: function(event) {
     event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
     if (!this.state.controlBarVisible){
@@ -120,7 +128,8 @@ var PlayingScreen = React.createClass({
          ref="PlayingScreen"
          onMouseOver={this.showControlBar}
          onMouseOut={this.hideControlBar}
-         onMouseMove={this.handlePlayerMouseMove}>
+         onMouseMove={this.handlePlayerMouseMove}
+         onKeyUp={this.handleKeyPress} >
 
       <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
