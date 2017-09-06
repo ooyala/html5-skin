@@ -28,6 +28,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   var Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
+    this.accessibilityControls = null;
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
@@ -141,7 +142,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullScreenSupported": false,
       "isVideoFullScreenSupported": false,
       "isFullWindow": false,
-      "autoPauseDisabled": false
+      "autoPauseDisabled": false,
+
+      "isVideo360": false,
+      "viewingDirection": {yaw: 0, roll: 0, pitch: 0}
     };
 
     this.init();
@@ -216,6 +220,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isSubscribed = true;
     },
 
+    vrSubscribes: function () {
+      if (this.state.isVideo360) {
+        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
+      }
+    },
+
     externalPluginSubscription: function() {
       if (OO.EVENTS.DISCOVERY_API) {
         this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
@@ -245,7 +255,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // Setting the tabindex will let some screen readers recognize this element as a group
       // identified with the ARIA label above. We set it to -1 in order to prevent actual keyboard focus
       this.state.mainVideoInnerWrapper.attr('tabindex', '-1');
-      this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
+
+      var $ooPlayerSkin = $('.oo-player-skin');
+      !$ooPlayerSkin.length && this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
 
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
@@ -257,8 +269,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
       }
 
-      this.accessibilityControls = new AccessibilityControls(this); //keyboard support
+      this.accessibilityControls = this.accessibilityControls || new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
+
+      if (this.getVrParams && this.getVrParams()) {
+        this.state.isVideo360 = true;
+        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
+      }
+    },
+
+    getVrParams: function(){
+      var playerParam = this.state.playerParam;
+      var bitWrapper = playerParam ? playerParam['bit-wrapper'] : null;
+      var isVr = !!bitWrapper && !!bitWrapper.source && !!bitWrapper.source.vr;
+
+      return isVr ? _.extend({}, bitWrapper.source.vr) : false;
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -615,6 +640,26 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
         this.state.mainVideoDuration = this.state.duration;
       }
+    },
+
+    onTouching: function(params, isOnVideoClick) {
+      if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
+        if (this.state.isVideo360 && isOnVideoClick) {
+          this.mb.publish(OO.EVENTS.TOUCHING, this.focusedElement, params);
+        }
+      }
+    },
+
+    onTouched: function (isOnVideoClick) {
+      if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
+        if (this.state.isVideo360 && isOnVideoClick) {
+          this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement);
+        }
+      }
+    },
+
+    setViewingDirection: function(event, yaw, roll, pitch) {
+      this.state.viewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
     },
 
     onSeeked: function(event) {
@@ -1138,6 +1183,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.TOUCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VC_TOUCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
@@ -1223,7 +1271,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
     },
 
-    togglePlayPause: function() {
+    toggleStereo: function () {
+      OO.log("toggleStereo is called");
+      this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
+    },
+
+    moveToDirection: function (rotate, direction) {
+      OO.log("moveToDirection is called");
+      this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, this.focusedElement, rotate, direction);
+    },
+
+    togglePlayPause: function(event) {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());

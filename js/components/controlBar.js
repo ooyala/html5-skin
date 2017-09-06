@@ -22,7 +22,10 @@ var ControlBar = React.createClass({
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.volumeSliderValue = 0;
     this.moreOptionsItems = null;
-
+    this.vr = this.props.controller
+      && this.props.controller.getVrParams
+      && this.props.controller.getVrParams();
+    
     return {
       currentVolumeHead: 0
     };
@@ -70,6 +73,11 @@ var ControlBar = React.createClass({
     evt.cancelBubble = true;
     evt.preventDefault();
     this.props.controller.toggleFullscreen();
+  },
+  
+  handleStereoClick: function () {
+    this.vr.stereo = !this.vr.stereo;
+    this.props.controller.toggleStereo();
   },
 
   handleLiveClick: function (evt) {
@@ -242,7 +250,14 @@ var ControlBar = React.createClass({
       fullscreenIcon = "expand";
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
-
+    
+    var stereoIconClassName = "oo-vr-icon--type--stereoOff"
+      , stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
+    if(this.vr && this.vr.stereo) {
+      stereoIconClassName = "oo-vr-icon--type--stereoOn";
+      stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
+    }
+    
     var totalTime = 0;
     if (this.props.duration == null || typeof this.props.duration == 'undefined' || this.props.duration == "") {
       totalTime = Utils.formatSeconds(0);
@@ -438,8 +453,31 @@ var ControlBar = React.createClass({
           <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
         </a>
       }).bind(this),
-
-      "fullscreen": (function (alignment) {
+  
+      "stereo": (function (alignment) {
+        return (!this.vr || !this.isMobile) ?
+          null
+          :
+          <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
+            onClick={this.handleStereoClick}
+            onMouseUp={this.blurOnMouseUp}
+            onMouseOver={this.highlight}
+            onMouseOut={this.removeHighlight}
+            key="stereo"
+            tabIndex="0"
+            aria-label={stereoAriaLabel}
+          >
+          <span
+            className={'oo-vr-icon--type ' + stereoIconClassName}
+            onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}
+            onClick={this.props.onClick}
+          />
+            <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple}
+              bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
+          </button>
+      }).bind(this),
+    
+    "fullscreen": (function (alignment) {
         return <button className="oo-fullscreen oo-control-bar-item"
           onClick={this.handleFullscreenClick}
           onMouseUp={this.blurOnMouseUp}

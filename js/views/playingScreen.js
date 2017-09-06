@@ -10,7 +10,8 @@ var React = require('react'),
     Spinner = require('../components/spinner'),
     TextTrack = require('../components/textTrackPanel'),
     Watermark = require('../components/watermark'),
-    ResizeMixin = require('../mixins/resizeMixin');
+    ResizeMixin = require('../mixins/resizeMixin'),
+    ViewControls = require('../components/viewControls');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -18,9 +19,14 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
+    this.isVideo360 = this.props.controller.state.isVideo360;
+
     return {
       controlBarVisible: true,
-      timer: null
+      timer: null,
+      isMouseDown: false,
+      XMouseStart: 0,
+      YMouseStart: 0,
     };
   },
 
@@ -57,21 +63,11 @@ var PlayingScreen = React.createClass({
     }
   },
 
-  handlePlayerMouseUp: function(event) {
-    // pause or play the video if the skin is clicked on desktop
-    if (!this.isMobile) {
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
-
-      this.props.controller.togglePlayPause();
-      this.props.controller.state.accessibilityControlsEnabled = true;
-    }
-    // for mobile, touch is handled in handleTouchEnd
-  },
-
   handleKeyPress: function(event) {
     // show control bar on tab key navigation
-    if ((event.which === 9 || event.keyCode === 9) || (event.which === 32 || event.keyCode === 32) || (event.which === 13 || event.keyCode === 13)) {
+    event.preventDefault();
+    var charCode = event.which || event.keyCode;
+    if (charCode === 9 || charCode === 32 || charCode === 13) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
@@ -83,16 +79,68 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
-    else {
-      this.props.controller.togglePlayPause();
+    else if (!this.isVideo360) {
+      this.props.controller.togglePlayPause(event);
     }
   },
 
-  handlePlayerMouseMove: function() {
+  handlePlayerMouseDown: function(e) {
+    if (!this.isVideo360) { return; }
+    this.setState({
+      isMouseDown: true,
+      XMouseStart: e.pageX,
+      YMouseStart: e.pageY
+    });
+    if (this.props.controller.onTouched) {
+      this.props.controller.onTouched(true);
+    }
+  },
+
+  handlePlayerMouseMove: function(e) {
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
+    if (this.isVideo360 && this.state.isMouseDown) {
+      var params = this.getDirectionParams(e.pageX, e.pageY);
+      if (this.props.controller.onTouching) {
+        this.props.controller.onTouching(params, true);
+      }
+    }
+  },
+
+  handlePlayerMouseUp: function(e) {
+    // pause or play the video if the skin is clicked on desktop
+    if (!this.isMobile) {
+      e.stopPropagation(); // W3C
+      e.cancelBubble = true; // IE
+
+      this.props.controller.state.accessibilityControlsEnabled = true;
+      if (!this.isVideo360) {
+        this.props.controller.togglePlayPause();
+      }
+    }
+    // for mobile, touch is handled in handleTouchEnd
+    if (this.isVideo360) {
+      this.setState({
+        isMouseDown: false,
+      });
+      if (this.props.controller.onTouched) {
+        this.props.controller.onTouched(true);
+      }
+    }
+  },
+
+  getDirectionParams: function(pageX, pageY) {
+    var dx = pageX - this.state.XMouseStart
+      , dy = pageY - this.state.YMouseStart;
+    var maxDegreesX = 90,
+      maxDegreesY = 120;
+    var degreesForPixelYaw = maxDegreesX / this.props.componentWidth,
+      degreesForPixelPitch = maxDegreesY / this.props.componentHeight;
+    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw,
+      pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
+    return [yaw, 0, pitch];
   },
 
   showControlBar: function(event) {
@@ -124,14 +172,20 @@ var PlayingScreen = React.createClass({
         currentPlayhead={this.props.currentPlayhead}/> : null;
 
     return (
-    <div className="oo-state-screen oo-playing-screen"
-         ref="PlayingScreen"
-         onMouseOver={this.showControlBar}
-         onMouseOut={this.hideControlBar}
-         onMouseMove={this.handlePlayerMouseMove}
-         onKeyUp={this.handleKeyPress} >
-
-      <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
+    <div
+      className="oo-state-screen oo-playing-screen"
+      ref="PlayingScreen"
+      onMouseOver={this.showControlBar}
+      onMouseOut={this.hideControlBar}
+      onMouseMove={this.handlePlayerMouseMove}
+      onKeyUp={this.handleKeyPress}
+    >
+      <div
+        className="oo-state-screen-selectable"
+        onMouseDown={this.handlePlayerMouseDown}
+        onMouseUp={this.handlePlayerMouseUp}
+        onTouchEnd={this.handleTouchEnd}
+      />
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
@@ -156,6 +210,14 @@ var PlayingScreen = React.createClass({
           playerState={this.props.playerState}
           isLiveStream={this.props.isLiveStream} />
       </div>
+      
+      {
+        this.isVideo360 &&
+        <ViewControls
+          {...this.props}
+          controlBarVisible={this.state.controlBarVisible}
+        />
+      }
     </div>
     );
   }
