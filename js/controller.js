@@ -22,7 +22,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.15.7", "rev": "<SKIN_REV>"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.16.10", "rev": "<SKIN_REV>"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -164,9 +164,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
-      this.mb.subscribe(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED, "customerUi", _.bind(this.onInitialPlayRequested, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
-      this.mb.addDependent(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED, OO.EVENTS.PLAYBACK_READY);
       this.state.isPlaybackReadySubscribed = true;
     },
 
@@ -259,8 +257,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
       }
 
+      this.externalPluginSubscription();
       this.accessibilityControls = new AccessibilityControls(this); //keyboard support
-      this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      if(this.skin.props.skinConfig.general.isAudio){
+        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+      } else {
+        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+      }
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -600,10 +603,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
         this.mb.publish(OO.EVENTS.END_SCREEN_SHOWN);
       }
-      if (Utils.isIPhone()){
-        //iPhone end screen is the same as start screen, except for the replay button
-        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
-      }
+      // if (Utils.isIPhone()){
+      //   //iPhone end screen is the same as start screen, except for the replay button
+      //   this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      // }
       this.skin.updatePlayhead(this.state.duration, this.state.duration, this.state.duration);
       this.state.playerState = CONSTANTS.STATE.END;
       this.renderSkin();
@@ -627,20 +630,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.queuedPlayheadUpdate = null;
         this.renderSkin();
       }
-      if (Utils.isIos() && this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN && this.state.fullscreen) {
-        this.state.pauseAnimationDisabled = true;
-        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
-        this.state.playerState = CONSTANTS.STATE.PAUSE;
-      }
+      // if (Utils.isIos() && this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN && this.state.fullscreen) {
+      //   this.state.pauseAnimationDisabled = true;
+      //   this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+      //   this.state.playerState = CONSTANTS.STATE.PAUSE;
+      // }
     },
 
     onPlaybackReady: function(event) {
-      if (this.state.afterOoyalaAd) {
-        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+      if(this.skin.props.skinConfig.general.isAudio){
+        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
       } else {
         this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       }
-
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
@@ -667,19 +669,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onAssetDimensionsReceived: function(event, params) {
       if (params.videoId == OO.VIDEO.MAIN && (this.skin.props.skinConfig.responsive.aspectRatio == "auto" || !this.skin.props.skinConfig.responsive.aspectRatio)) {
         this.state.mainVideoAspectRatio = this.calculateAspectRatio(params.width, params.height);
-        this.setAspectRatio();
+        // this.setAspectRatio();
       }
-    },
-
-    /**
-     * Handles the custom INITIAL_PLAY_REQUESTED skin event. This event is used in
-     * order to defer INITIAL_PLAY until PLAYBACK_READY has been fired. Doing this allows
-     * us to display the big play button before the player finishes loading. If the user
-     * clicks on the button before PLAYBACK_READY, the player will simply show the loading
-     * spinner and INITIAL_PLAY will be automatically fired after PLAYBACK_READY itself fires.
-     */
-    onInitialPlayRequested: function() {
-      this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());
     },
 
     /********************************************************************
@@ -1132,8 +1123,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE_AFTER_OOYALA_AD, 'customerUi');
-      // custom skin events
-      this.mb.unsubscribe(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED, "customerUi");
     },
 
     unsubscribeBasicPlaybackEvents: function() {
@@ -1241,7 +1230,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     togglePlayPause: function() {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
-          this.mb.publish(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED);
+          this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());
+          if(this.state.isMobile) {
+            this.mb.publish(OO.EVENTS.PLAY, Date.now());
+          }
           break;
         case CONSTANTS.STATE.END:
           if(Utils.isAndroid() || Utils.isIos()) {
@@ -1397,6 +1389,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleClosedCaptionPopOver: function() {
+      if(!this.state.closedCaptionOptions.showClosedCaptionPopover){
+        var ccButton = document.getElementsByClassName("playericon-captions");
+        $(ccButton[0]).addClass("clicked");
+      } else {
+        var ccButton = document.getElementsByClassName("playericon-captions");
+        $(ccButton[0]).removeClass("clicked");
+      }
       this.state.closedCaptionOptions.showClosedCaptionPopover = !this.state.closedCaptionOptions.showClosedCaptionPopover;
       this.renderSkin();
     },
@@ -1592,9 +1591,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     showVolumeSliderBar: function() {
       this.state.volumeState.volumeSliderVisible = true;
-      if (Utils.isAndroid()) {
-        this.startHideVolumeSliderTimer();
-      }
       this.renderSkin();
     },
 
@@ -1614,6 +1610,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         var timer = setTimeout(function() {
           if(this.state.controlBarVisible === true){
             this.hideControlBar();
+            this.hideVolumeSliderBar();
           }
         }.bind(this), 3000);
         this.state.timer = timer;
@@ -1642,7 +1639,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     updateAspectRatio: function() {
       if(this.skin && this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
         this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
-        this.setAspectRatio();
+        // this.setAspectRatio();
       }
     },
 
@@ -1657,6 +1654,65 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if(this.state.mainVideoAspectRatio > 0) {
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
+    },
+
+    goToNextChapter: function() {
+      var chapters = this.state.playerParam.chapters;
+      var playhead = this.state.mainVideoPlayhead;
+      var duration = this.state.mainVideoDuration;
+
+      //add beginning and end to chapters array
+      chapters.unshift(0);
+      chapters.push(duration-1);
+
+      if(chapters.length > 0){
+        for(var i=0;i<chapters.length;i++){
+          if(chapters[i] > playhead){
+            this.seek(chapters[i]);
+            i=chapters.length;
+          }
+        }
+      } else {
+        this.seek(duration-1);
+      }
+    },
+
+    goToPrevChapter: function() {
+      var chapters = this.state.playerParam.chapters;
+      var playhead = this.state.mainVideoPlayhead;
+      var duration = this.state.mainVideoDuration;
+      var chapterStartMargin = 2;
+
+      //add beginning and end to chapters array
+      chapters.unshift(0);
+      chapters.push(duration);
+
+      if(chapters.length > 0){
+        for(var i=0;i<chapters.length;i++){
+          if(chapters[i]+chapterStartMargin > playhead){
+            if(i==0){
+              this.seek(0);
+            } else {
+              this.seek(chapters[i-1]);
+            }
+            i=chapters.length;
+          }
+        }
+      } else {
+        this.seek(0);
+      }
+    },
+
+    //set playbackRate
+    changePlaybackSpeed: function() {
+      var video = this.state.mainVideoElement.get(0); // here you can access the video element for example
+      console.log("Video Element: ", video);
+      if(video.playbackRate == 2){
+        video.playbackRate = 1;
+      } else {
+        video.playbackRate=video.playbackRate + 0.5;
+      }
+      this.playbackRate = video.playbackRate;
     },
 
     //find descendant video element

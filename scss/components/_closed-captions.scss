@@ -71,7 +71,7 @@
     left: 0;
   }
   .oo-switch-captions-active {
-    color: $white;
+    color: $white !important;
     font-family: $font-family-roboto-condensed-bold;
   }
   .oo-switch-element {
@@ -273,7 +273,7 @@
           border-color: white;
         }
         .oo-color-item-Transparent {
-          background-image: url("assets/images/transparent.svg");
+          background-image: url("/assets/images/transparent.svg");
           background-position: center;
         }
       }

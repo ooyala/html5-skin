@@ -39,30 +39,7 @@ var ClosedCaptionPanel = React.createClass({
 
     return (
         <div className="oo-content-panel oo-closed-captions-panel">
-          <Tabs
-            className="captions-navbar"
-            showScrollButtons={this.props.componentWidth < tabMenuOverflowMap[this.props.language]}
-            {...this.props}>
-            <Tab title={languageTabTitle}>
-              <LanguageTab {...this.props} />
-            </Tab>
-            <Tab title={colorSelectionTabTitle}>
-              <ColorSelectionTab {...this.props} />
-            </Tab>
-            <Tab title={captionOpacityTabTitle}>
-              <CaptionOpacityTab {...this.props} />
-            </Tab>
-            <Tab title={fontTypeTabTitle}>
-              <FontTypeTab {...this.props} />
-            </Tab>
-            <Tab title={fontSizeTabTitle}>
-              <FontSizeTab {...this.props} />
-            </Tab>
-            <Tab title={textEnhancementsTabTitle}>
-              <TextEnhancementsTab {...this.props} />
-            </Tab>
-          </Tabs>
-
+          <LanguageTab {...this.props} />
           <CCPreviewPanel {...this.props} />
         </div>
     );

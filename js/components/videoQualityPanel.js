@@ -66,7 +66,7 @@ var VideoQualityPanel = React.createClass({
       else {
         if (typeof availableBitrates[i].bitrate === "number") {
           label = Math.round(availableBitrates[i].bitrate/1000) + ' kbps';
-        } 
+        }
         else {
           label = availableBitrates[i].bitrate;
         }

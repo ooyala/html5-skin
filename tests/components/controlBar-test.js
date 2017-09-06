@@ -225,7 +225,7 @@ describe('ControlBar', function () {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var volumeButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').firstChild;
+    var volumeButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-mute-unmute').firstChild;
     TestUtils.Simulate.click(volumeButton);
     expect(muteClicked).toBe(true);
     var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
@@ -1504,7 +1504,7 @@ describe('ControlBar', function () {
     oneButtonSkinConfig.buttons.desktopContent = [
       {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
     ];
-    oneButtonSkinConfig.controlBar.logo.imageResource.url = "//player.ooyala.com/static/v4/stable/4.15.7/skin-plugin/assets/images/ooyala-logo.svg";
+    oneButtonSkinConfig.controlBar.logo.imageResource.url = "//player.ooyala.com/static/v4/stable/4.16.10/skin-plugin/assets/images/ooyala-logo.svg";
     oneButtonSkinConfig.controlBar.logo.clickUrl = "http://www.ooyala.com";
 
     var mockProps = {

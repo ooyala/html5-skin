@@ -17,13 +17,13 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 <head>
   <meta charset="utf-8">
   <!-- V4 JS core and at least one video plugin is required. Plugins such as skin, discovery and Advertising need to be loaded separately -->
-  <script src="//player.ooyala.com/static/v4/stable/4.15.7/core.min.js"></script>
-  <script src="//player.ooyala.com/static/v4/stable/4.15.7/video-plugin/main_html5.min.js"></script>
-  <script src="//player.ooyala.com/static/v4/stable/4.15.7/video-plugin/osmf_flash.min.js"></script>
-  <script src="//player.ooyala.com/static/v4/stable/4.15.7/video-plugin/bit_wrapper.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.16.10/core.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.16.10/video-plugin/main_html5.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.16.10/video-plugin/osmf_flash.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.16.10/video-plugin/bit_wrapper.min.js"></script>
   <!-- Change these html5-skin.min.css and html5-skin.min.js to your local build if necessary -->
-  <script src="//player.ooyala.com/static/v4/stable/4.15.7/skin-plugin/html5-skin.min.js"></script>
-  <link rel="stylesheet" href="//player.ooyala.com/static/v4/stable/4.15.7/skin-plugin/html5-skin.min.css"/>
+  <script src="//player.ooyala.com/static/v4/stable/4.16.10/skin-plugin/html5-skin.min.js"></script>
+  <link rel="stylesheet" href="//player.ooyala.com/static/v4/stable/4.16.10/skin-plugin/html5-skin.min.css"/>
 </head>
 
 <body>
@@ -136,7 +136,7 @@ Simple customization can be achieved by modifying `skin.json` settings. Furtherm
 ```javascript
 var playerParam = {
   "skin": {
-    "config": "//player.ooyala.com/static/v4/stable/4.15.7/skin-plugin/skin.json",
+    "config": "//player.ooyala.com/static/v4/stable/4.16.10/skin-plugin/skin.json",
     "inline": {
       "startScreen": {"showDescription": false, "playIconStyle": {"color": "blue"}}
     }
@@ -149,7 +149,7 @@ Advanced customization is readily available by modifying JS files. Follow [Devel
 
 ## How to Contribute
 
-If you send a pull request, please do it against the [`master` branch](https://github.com/ooyala/html5-skin/tree/master). We maintain stable branches separately but we don't accept pull requests to them directly. 
+If you send a pull request, please do it against the [`master` branch](https://github.com/ooyala/html5-skin/tree/master). We maintain stable branches separately but we don't accept pull requests to them directly.
 
 We will do our best to keep the `master` branch in good shape, with tests passing at all times. But our `master` branch is under active development and may contain changes that your application might not be compatible with. We recommend using [latest stable version](https://github.com/ooyala/html5-skin/tree/stable) for production.
 

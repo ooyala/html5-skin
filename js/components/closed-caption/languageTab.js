@@ -49,7 +49,7 @@ LanguageTab.propTypes = {
 
 LanguageTab.defaultProps = {
   dataItemsPerPage: {
-    xs: 1,
+    xs: 4,
     sm: 4,
     md: 8,
     lg: 8

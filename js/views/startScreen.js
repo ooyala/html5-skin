@@ -15,6 +15,8 @@ var StartScreen = React.createClass({
   mixins: [ResizeMixin],
 
   getInitialState: function() {
+    this.isMobile = this.props.controller.state.isMobile;
+
     return {
       playButtonClicked: false,
       descriptionText: this.props.contentTree.description
@@ -41,10 +43,14 @@ var StartScreen = React.createClass({
   },
 
   handleClick: function(event) {
-    event.preventDefault();
-    this.props.controller.togglePlayPause();
-    this.props.controller.state.accessibilityControlsEnabled = true;
-    this.setState({playButtonClicked: true});
+    // Avoid starting playback when player is initializing (play button is disabled
+    // in this state, but you can still click on the thumbnail)
+    if (!this.props.isInitializing) {
+      event.preventDefault();
+      this.props.controller.togglePlayPause();
+      this.props.controller.state.accessibilityControlsEnabled = true;
+      this.setState({playButtonClicked: true});
+    }
   },
 
   render: function() {
@@ -97,16 +103,33 @@ var StartScreen = React.createClass({
 
     var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
     var iconName = (this.props.controller.state.playerState == CONSTANTS.STATE.END ? "replay" : "play");
-    var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.state.descriptionText}</div>);
-
-    var actionIcon = (
-      <button className={actionIconClass}
-        onClick={this.handleClick}
-        tabIndex="0"
-        aria-label={CONSTANTS.ARIA_LABELS.START_PLAYBACK}>
-        <Icon {...this.props} icon={iconName} style={actionIconStyle}/>
-      </button>
+    // The descriptionText value doesn't react to changes in contentTree.description since
+    // it's being handled as internal state in order to allow truncating it on player resize.
+    // We need to migrate truncateTextToWidth to a CSS solution in order to avoid this.
+    var descriptionMetadata = (
+      <div className={descriptionClass} ref="description" style={descriptionStyle}>
+        {this.state.descriptionText || this.props.contentTree.description}
+      </div>
     );
+
+    var actionIcon, infoPanel;
+    // We do not show the action icon, title or description when the player is initializing
+    if (!this.props.isInitializing) {
+      actionIcon = (
+        <button className={actionIconClass}
+          onClick={this.handleClick}
+          tabIndex="0"
+          aria-label={CONSTANTS.ARIA_LABELS.START_PLAYBACK}>
+          <Icon {...this.props} icon={iconName} style={actionIconStyle}/>
+        </button>
+      );
+      infoPanel = (
+        <div className={infoPanelClass}>
+          {this.props.skinConfig.startScreen.showTitle ? titleMetadata : null}
+          {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : null}
+        </div>
+      );
+    }
 
     return (
       <div className="oo-state-screen oo-start-screen">
@@ -115,12 +138,8 @@ var StartScreen = React.createClass({
           <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
         </div>
         <Watermark {...this.props} controlBarVisible={false}/>
-        <div className={infoPanelClass}>
-          {this.props.skinConfig.startScreen.showTitle ? titleMetadata : null}
-          {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : null}
-        </div>
-
-        {(this.state.playButtonClicked && this.props.controller.state.playerState == CONSTANTS.STATE.START) || this.props.controller.state.buffering ?
+        {infoPanel}
+        {(this.state.playButtonClicked && this.props.controller.state.playerState == CONSTANTS.STATE.START && !this.isMobile) ?
           <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : actionIcon}
       </div>
     );
@@ -128,6 +147,7 @@ var StartScreen = React.createClass({
 });
 
 StartScreen.propTypes = {
+  isInitializing: React.PropTypes.bool,
   skinConfig: React.PropTypes.shape({
     startScreen: React.PropTypes.shape({
       playIconStyle: React.PropTypes.shape({
@@ -139,6 +159,7 @@ StartScreen.propTypes = {
 };
 
 StartScreen.defaultProps = {
+  isInitializing: false,
   skinConfig: {
     general: {
       loadingImage: {
