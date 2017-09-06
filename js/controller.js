@@ -28,6 +28,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   var Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
+    this.accessibilityControls = null;
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
@@ -215,15 +216,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.subscribe(OO.EVENTS.SHOW_AD_CONTROLS, "customerUi", _.bind(this.onShowAdControls, this));
           this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi", _.bind(this.onShowAdMarquee, this));
         }
-        
-        this.vrSubscribes && this.vrSubscribes();
       }
       this.state.isSubscribed = true;
     },
-    
+
     vrSubscribes: function () {
       if (this.state.isVideo360) {
-        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.getViewingDirection, this));
+        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
       }
     },
 
@@ -256,7 +255,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // Setting the tabindex will let some screen readers recognize this element as a group
       // identified with the ARIA label above. We set it to -1 in order to prevent actual keyboard focus
       this.state.mainVideoInnerWrapper.attr('tabindex', '-1');
-      
+
       var $ooPlayerSkin = $('.oo-player-skin');
       !$ooPlayerSkin.length && this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
 
@@ -270,20 +269,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
       }
 
-      this.accessibilityControls = new AccessibilityControls(this); //keyboard support
+      this.accessibilityControls = this.accessibilityControls || new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
-      
+
       if (this.getVrParams && this.getVrParams()) {
         this.state.isVideo360 = true;
-        this.vrSubscribes && this.vrSubscribes();
+        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
       }
     },
-    
+
     getVrParams: function(){
       var playerParam = this.state.playerParam;
       var bitWrapper = playerParam ? playerParam['bit-wrapper'] : null;
       var isVr = !!bitWrapper && !!bitWrapper.source && !!bitWrapper.source.vr;
-      
+
       return isVr ? _.extend({}, bitWrapper.source.vr) : false;
     },
 
@@ -643,23 +642,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onTouched: function(params, isOnVideoClick) {
+    onTouching: function(params, isOnVideoClick) {
       if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
         if (this.state.isVideo360 && isOnVideoClick) {
-          this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement, params);
+          this.mb.publish(OO.EVENTS.TOUCHING, this.focusedElement, params);
         }
       }
     },
 
-    onVcTouched: function (isOnVideoClick) {
+    onTouched: function (isOnVideoClick) {
       if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
         if (this.state.isVideo360 && isOnVideoClick) {
-          this.mb.publish(OO.EVENTS.VC_TOUCHED, this.focusedElement);
+          this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement);
         }
       }
     },
 
-    getViewingDirection: function(event, yaw, roll, pitch) {
+    setViewingDirection: function(event, yaw, roll, pitch) {
       this.state.viewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
     },
 
@@ -1276,12 +1275,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       OO.log("toggleStereo is called");
       this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
     },
-    
+
     moveToDirection: function (rotate, direction) {
       OO.log("moveToDirection is called");
-      this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, rotate, direction);
-      },
-    
+      this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, this.focusedElement, rotate, direction);
+    },
+
     togglePlayPause: function(event) {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
