@@ -444,12 +444,12 @@ var ControlBar = React.createClass({
           </div>
         )
       }).bind(this),
-  
+
       "share": (function (alignment) {
         return <a className="oo-share oo-control-bar-item"
-                  onClick={this.handleShareClick} key="share" aria-hidden="true">
+          onClick={this.handleShareClick} key="share" aria-hidden="true">
           <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
-                onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
+            onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
           <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
         </a>
       }).bind(this),
@@ -459,13 +459,13 @@ var ControlBar = React.createClass({
           null
           :
           <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
-                  onClick={this.handleStereoClick}
-                  onMouseUp={this.blurOnMouseUp}
-                  onMouseOver={this.highlight}
-                  onMouseOut={this.removeHighlight}
-                  key="stereo"
-                  tabIndex="0"
-                  aria-label={stereoAriaLabel}
+            onClick={this.handleStereoClick}
+            onMouseUp={this.blurOnMouseUp}
+            onMouseOver={this.highlight}
+            onMouseOut={this.removeHighlight}
+            key="stereo"
+            tabIndex="0"
+            aria-label={stereoAriaLabel}
           >
           <span
             className={'oo-vr-icon--type ' + stereoIconClassName}
@@ -473,23 +473,23 @@ var ControlBar = React.createClass({
             onClick={this.props.onClick}
           />
             <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple}
-                     bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
+              bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
           </button>
       }).bind(this),
     
     "fullscreen": (function (alignment) {
         return <button className="oo-fullscreen oo-control-bar-item"
-                       onClick={this.handleFullscreenClick}
-                       onMouseUp={this.blurOnMouseUp}
-                       onMouseOver={this.highlight}
-                       onMouseOut={this.removeHighlight}
-                       key="fullscreen"
-                       tabIndex="0"
-                       aria-label={fullscreenAriaLabel}>
+          onClick={this.handleFullscreenClick}
+          onMouseUp={this.blurOnMouseUp}
+          onMouseOver={this.highlight}
+          onMouseOut={this.removeHighlight}
+          key="fullscreen"
+          tabIndex="0"
+          aria-label={fullscreenAriaLabel}>
           <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
           <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple} text={this.props.controller.state.fullscreen ?
             Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EXIT_FULL_SCREEN, this.props.localizableStrings) : Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.FULL_SCREEN, this.props.localizableStrings)}
-                   bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
+            bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
         </button>
       }).bind(this),
 

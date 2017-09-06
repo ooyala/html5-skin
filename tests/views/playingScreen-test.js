@@ -116,7 +116,7 @@ describe('PlayingScreen', function () {
     var out = false;
     var moved = false;
     var clicked = false;
-
+    
     var mockController = {
       state: {
         isMobile: false,
@@ -332,7 +332,7 @@ describe('PlayingScreen', function () {
         componentWidth={800}
         closedCaptionOptions={closedCaptionOptions} />, node
     );
-    
+
     ReactDOM.unmountComponentAtNode(node);
   });
 });

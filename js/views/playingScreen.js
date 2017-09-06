@@ -209,9 +209,8 @@ var PlayingScreen = React.createClass({
           controlBarVisible={this.state.controlBarVisible}
           playerState={this.props.playerState}
           isLiveStream={this.props.isLiveStream} />
-
-
       </div>
+      
       {
         this.isVideo360 &&
         <ViewControls
