@@ -180,6 +180,7 @@ OO = {
       exitFullWindow: function() {},
       exitFullWindowOnEscKey: function() {},
       onBuffered: function() {},
+      onInitialPlayRequested: function() {},
       unsubscribeBasicPlaybackEvents: function() {},
       resetUpNextInfo: function(a) {},
       showUpNextScreenWhenReady: function(a,b) {},
@@ -553,6 +554,15 @@ OO = {
     div.appendChild(flashVideoElement);
     Html5Skin.findMainVideoElement.call(controllerMock, div);
     Html5Skin.findMainVideoElement.call(controllerMock, {0:videoElement});
+
+    describe('Controller testing skin initialization', function() {
+
+      it('should show Initial Screen after player created', function() {
+        Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', 'elementId', {});
+        expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.INITIAL_SCREEN);
+      });
+      
+    });
 
     describe('Controller testing Ooyala Ads', function () {
       it('test after Ooyala ad state', function() {

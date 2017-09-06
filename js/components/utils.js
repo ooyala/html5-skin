@@ -305,6 +305,53 @@ var Utils = {
     return isFinite(Number(property)) ? Number(property) : 0;
   },
 
+
+  /**
+   * Determines whether an element contains a class or not.
+   * TODO:
+   * classList.contains is much better for this purpose, but our current version
+   * of React Test Utils generates events with a null classList, which results in
+   * broken unit tests.
+   *
+   * @param {DOMElement} element The DOM element which we want to check
+   * @param {String} className The name of the class we want to match
+   * @return {Boolean} True if the element contains the given class, false otherwise
+   */
+  elementHasClass: function(element, className) {
+    if (!element) {
+      return false;
+    }
+    return (' ' + element.className + ' ').indexOf(' ' + className + ' ') > -1;
+  },
+
+  /**
+   * Returns the icon element associated with an event (usually mouseover or mouseout),
+   * which can be either the event's target element itself or a child of the target element.
+   * The icon is matched with a class name.
+   * This is needed in order to circumvent a Firefox issue that prevents mouse events from
+   * being triggered in elements that are children of buttons (such as icons).
+   *
+   * @param {String} domEvent The event whose icon element we want to extract
+   * @param {String} iconClass The class that will be used to match the icon element
+   * @return {Object} The element that has been identified as the icon, or null if none was found
+   */
+  getEventIconElement: function(domEvent, iconClass) {
+    var iconElement = null;
+    var classToMatch = iconClass || 'oo-icon';
+    var currentTarget = domEvent ? domEvent.currentTarget : null;
+
+    if (currentTarget) {
+      // Check to see if the target itself is the icon, otherwise get
+      // the first icon child
+      if (this.elementHasClass(currentTarget, classToMatch)) {
+        iconElement = currentTarget;
+      } else {
+        iconElement = currentTarget.querySelector('.' + classToMatch);
+      }
+    }
+    return iconElement;
+  },
+
   /**
   * Highlight the given element for hover effects
   *
@@ -314,9 +361,10 @@ var Utils = {
   highlight: function(target, opacity, color) {
     target.style.opacity = opacity;
     target.style.color = color;
-    target.style.WebkitFilter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
-    target.style.filter = "drop-shadow(0px 0px 3px rgba(255,255,255,0.8))";
-    target.style.msFilter = "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff')";
+    // HEADSUP
+    // This is currently the same style as the one used in _mixins.scss. 
+    // We should change both styles whenever we update this.
+    target.style.textShadow = "0px 0px 3px rgba(255, 255, 255, 0.5), 0px 0px 6px rgba(255, 255, 255, 0.5), 0px 0px 9px rgba(255, 255, 255, 0.5)";
   },
 
   /**
@@ -329,9 +377,7 @@ var Utils = {
   removeHighlight: function(target, opacity, color) {
     target.style.opacity = opacity;
     target.style.color = color;
-    target.style.WebkitFilter = "";
-    target.style.filter = "";
-    target.style.msFilter = "";
+    target.style.textShadow = "";
   },
 
   /**

@@ -116,19 +116,19 @@ describe('Utils', function () {
         availableLanguageFile: [
           {
             "language": "en",
-            "languageFile": "//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/en.json",
+            "languageFile": "//player.ooyala.com/static/v4/stable/4.16.10/skin-plugin/en.json",
             "androidResource": "skin-config/en.json",
             "iosResource": "en"
           },
           {
             "language": "es",
-            "languageFile": "//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/es.json",
+            "languageFile": "//player.ooyala.com/static/v4/stable/4.16.10/skin-plugin/es.json",
             "androidResource": "skin-config/es.json",
             "iosResource": "es"
           },
           {
             "language": "zh",
-            "languageFile": "//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/zh.json",
+            "languageFile": "//player.ooyala.com/static/v4/stable/4.16.10/skin-plugin/zh.json",
             "androidResource": "skin-config/zh.json",
             "iosResource": "zh"
           }
@@ -160,6 +160,39 @@ describe('Utils', function () {
 
     var existingVal = Utils.getPropertyValue({ property: { nestedProp: 'value' } }, 'property.nestedProp');
     expect(existingVal).toEqual('value');
+  });
+
+  it('tests elementHasClass', function() {
+    var element = document.createElement('div');
+    element.className = 'oo-icon';
+    expect(Utils.elementHasClass(element, 'oo-icon')).toBe(true);
+    element.className = 'fancy oo-icon pants';
+    expect(Utils.elementHasClass(element, 'oo-icon')).toBe(true);
+    element.className = 'fancy pants oo-icon';
+    expect(Utils.elementHasClass(element, 'oo-icon')).toBe(true);
+    element.className = 'fancy oo-icons pants';
+    expect(Utils.elementHasClass(element, 'oo-icon')).toBe(false);
+  });
+
+  it('tests getEventIconElement', function() {
+    var iconElement = document.createElement('span');
+    var buttonElement = document.createElement('button');
+    iconElement.className = 'oo-icon';
+    buttonElement.appendChild(iconElement);
+
+    var nestedIconElement = document.createElement('span');
+    var divElement = document.createElement('div');
+    var nestedDivElement = document.createElement('div');
+    nestedIconElement.className = 'oo-custom-icon';
+    divElement.appendChild(nestedDivElement);
+    nestedDivElement.appendChild(nestedIconElement);
+
+    var extractedElement1 = Utils.getEventIconElement({ currentTarget: buttonElement });
+    expect(extractedElement1).toBe(iconElement);
+    var extractedElement2 = Utils.getEventIconElement({ currentTarget: iconElement });
+    expect(extractedElement2).toBe(iconElement);
+    var extractedElement3 = Utils.getEventIconElement({ currentTarget: divElement }, 'oo-custom-icon');
+    expect(extractedElement3).toBe(nestedIconElement);
   });
 
   it('tests highlight', function () {
