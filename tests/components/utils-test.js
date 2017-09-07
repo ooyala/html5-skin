@@ -32,6 +32,55 @@ describe('Utils', function () {
     expect(browserSupportsTouch).toBeFalsy();
   });
 
+  describe('getTimeDisplayValues', function() {
+
+    it('should return formatted currentTime and totalTime for VOD', function() {
+      var values = Utils.getTimeDisplayValues(60, 120, false, false);
+      expect(values.currentTime).toEqual('01:00');
+      expect(values.totalTime).toEqual('02:00');
+      values = Utils.getTimeDisplayValues(0, 122, false, false);
+      expect(values.currentTime).toEqual('00:00');
+      expect(values.totalTime).toEqual('02:02');
+    });
+
+    it('should return empty currentTime and totalTime for Live videos with no DVR', function() {
+      var values = Utils.getTimeDisplayValues(0, -0, true, false);
+      expect(values.currentTime).toEqual('');
+      expect(values.totalTime).toEqual('');
+      values = Utils.getTimeDisplayValues(0, Infinity, true, false);
+      expect(values.currentTime).toEqual('');
+      expect(values.totalTime).toEqual('');
+    });
+
+    it('should return formatted negative currentTime and empty totalTime for Live DVR videos when useNegativeDvrOffset equals true', function() {
+      var values = Utils.getTimeDisplayValues(900, 1800, true, true);
+      expect(values.currentTime).toEqual('-15:00');
+      expect(values.totalTime).toEqual('');
+      values = Utils.getTimeDisplayValues(0, 1800, true, true);
+      expect(values.currentTime).toEqual('-30:00');
+      expect(values.totalTime).toEqual('');
+    });
+
+    it('should return empty currentTime for Live DVR videos when useNegativeDvrOffset equals true and playhead is at live position', function() {
+      var values = Utils.getTimeDisplayValues(1800, 1800, true, true);
+      expect(values.currentTime).toEqual(''); // Playhead is at live position so it's not displayed
+      expect(values.totalTime).toEqual('');
+    });
+
+    it('should return formatted currentTime and totalTime for Live DVR videos when useNegativeDvrOffset equals false', function() {
+      var values = Utils.getTimeDisplayValues(1800, 1800, true, false);
+      expect(values.currentTime).toEqual('30:00');
+      expect(values.totalTime).toEqual('30:00');
+      values = Utils.getTimeDisplayValues(0, 1800, true, false);
+      expect(values.currentTime).toEqual('00:00');
+      expect(values.totalTime).toEqual('30:00');
+      values = Utils.getTimeDisplayValues(900, 1800, true, false);
+      expect(values.currentTime).toEqual('15:00');
+      expect(values.totalTime).toEqual('30:00');
+    });
+
+  });
+
   it('tests isSafari', function () {
     window.navigator.userAgent = 'AppleWebKit';
     var isSafari = Utils.isSafari();
