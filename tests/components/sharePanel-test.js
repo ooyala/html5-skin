@@ -19,7 +19,6 @@ var en = require('../../config/languageFiles/en.json'),
 var playerParam = null;
 var localizableStrings = null;
 var skinConfig = null;
-
 beforeEach(function() {
   playerParam = {
     "skin": {
@@ -70,11 +69,76 @@ describe('SharePanel', function () {
         TestUtils.Simulate.click(twitter);
         TestUtils.Simulate.click(facebook);
         TestUtils.Simulate.click(googlePlus);
+        OO={};
+        OO.isIos = false;
+        OO.isSafari = false;
         TestUtils.Simulate.click(emailShare);
       }
     }
   });
 
+  it('tests share email option when device is ios and browser is safari', function () {
+      //loop through languages
+      for (var key in localizableStrings) {
+          if (localizableStrings.hasOwnProperty(key)) {
+
+              //Render share panel into DOM
+              var DOM = TestUtils.renderIntoDocument(
+                  <SharePanel language={key} localizableStrings={localizableStrings} skinConfig={skinConfig} assetId={"aa"} playerParam={playerParam} />
+              );
+
+              //parent elements
+              var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel');
+              var tabs = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
+
+              //test share tab
+              var shareTab = tabs[0];
+              expect(shareTab.textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
+              TestUtils.Simulate.click(shareTab);
+              expect(shareTabPanel.textContent).toContain(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION]);
+
+              var emailShare = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-email-share');
+              OO={};
+              OO.isIos = true;
+              OO.isSafari = true;
+              document.location = "ooyala.com";//make sure some different site there before testing
+              TestUtils.Simulate.click(emailShare);
+              var index = document.location.indexOf("mailto:?subject=&body=");
+              expect(index).toBe(0);
+          }
+      }
+  });
+  it('tests share email option when device is ios and browser is chrome', function () {
+    //loop through languages
+    for (var key in localizableStrings) {
+        if (localizableStrings.hasOwnProperty(key)) {
+
+            //Render share panel into DOM
+            var DOM = TestUtils.renderIntoDocument(
+                <SharePanel language={key} localizableStrings={localizableStrings} skinConfig={skinConfig} assetId={"aa"} playerParam={playerParam} />
+            );
+
+            //parent elements
+            var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel');var tabs = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
+
+            //test share tab
+            var shareTab = tabs[0];
+            expect(shareTab.textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
+            TestUtils.Simulate.click(shareTab);
+            expect(shareTabPanel.textContent).toContain(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION]);
+
+            var emailShare = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-email-share');
+
+            OO={};
+            OO.isIos = true;
+            OO.isSafari = false;
+            document.location = "ooyala.com";//need to reset location because previous test case will have that location.
+            TestUtils.Simulate.click(emailShare);
+            var index = document.location.indexOf("mailto:?subject=&body=");
+            expect(index).toBe(-1);
+        }
+    }
+  });
 it('tests conditional rendering of social share buttons', function () {
   skinConfig.shareScreen.socialContent = ["twitter", "facebook"];
 
