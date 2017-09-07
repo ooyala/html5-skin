@@ -84,7 +84,7 @@
       opacity: 1 !important;
     }
 
-    .oo-control-bar-item:active .oo-icon {
+    .oo-control-bar-item:hover:active .oo-icon {
       @include remove-highlight-tab();
     }
 
@@ -162,55 +162,6 @@
       cursor: default;
     }
   }
-}
-
-a.oo-volume-bar {
-  border:0;
-  outline: none;
-}
-
-.oo-volume-bar {
-  margin-bottom: 4px;
-  display: inline-block;
-  background-clip: content-box;
-  position: relative;
-  width: 9px;
-  height: 8px;
-  padding-left: 7px;
-  background-color: rgba($white, 0.6);
-  @include vendor-prefixes (transition, all .18s ease-in-out);
-}
-
-.oo-volume-bar:hover{
-  height: 17px;
-}
-
-.oo-on{
-  background-color: rgba($blue-light, 1.0);
-  height: 17px;
-  padding-bottom: 0px;
-  margin-bottom: 4px;
-}
-
-.oo-volume:hover .oo-volume-bar {
-  background-color: rgba($white, 0.7);
-}
-
-.oo-volume:hover .oo-volume-bar.oo-on {
-  background-color: $blue-light;
-}
-
-.oo-volume-slider {
-  display: inline-block;
-  position: relative;
-  margin-left: 6px;
-  height: 20px;
-  width: $slider-volume-width;
-}
-
-// IE 11 only
-@include apply-to-ie11-only ('.oo-volume-slider') {
-  height: auto;
 }
 
 .oo-interactive-container {

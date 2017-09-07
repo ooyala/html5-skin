@@ -6,6 +6,127 @@
 var DeepMerge = require('deepmerge');
 
 var Utils = {
+
+  /**
+   * Some browsers give focus to buttons after click, which leaves them highlighted.
+   * This can be used to override the browsers' default behavior.
+   *
+   * @function blurOnMouseUp
+   * @param {type} MouseUp event object.
+   */
+  blurOnMouseUp: function(event) {
+    if (!event || typeof event.preventDefault !== 'function') {
+      return;
+    }
+    if (event.currentTarget && typeof event.currentTarget.blur === 'function') {
+      event.currentTarget.blur();
+    }
+  },
+
+  /**
+   * Converts a value to a number or returns null if it can't be converted or is not finite value.
+   *
+   * @function ensureNumber
+   * @param {Object} value The value to convert.
+   * @param {Number} defaultValue A default value to return when the input is not a valid number.
+   * @return {Number} The Number equivalent of value if it can be converted and is finite.
+   * When value doesn't meet the criteria the function will return either defaultValue (if provided) or null.
+   */
+  ensureNumber: function(value, defaultValue) {
+    var number = Number(value);
+    if (!isFinite(number)) {
+      return (typeof defaultValue === 'undefined') ? null : defaultValue;
+    }
+    return number;
+  },
+
+  /**
+   * Ensures that a number falls within a specified range. When a number is outside of
+   * a range the function will return either the minimum or maximum allowed value depending on the case.
+   *
+   * @function constrainToRange
+   * @param {Number} value The numerical value to constrain.
+   * @param {Number} min The minimum value of the range.
+   * @param {Number} max The maximum value of the range.
+   * @return {Number} The Number equivalent of value if it falls between min and max,
+   * min if it falls below, max if it falls above.
+   */
+  constrainToRange: function(value, min, max) {
+    value = this.ensureNumber(value, 0);
+    min = this.ensureNumber(min, 0);
+    max = this.ensureNumber(max, 0);
+    return Math.min(Math.max(min, value), max);
+  },
+
+  /**
+   * Returns the currentTime and totalTime values in HH:MM format that can be used for
+   * a video time display UI or for ARIA labels.
+   * Note that the meaning of these values changes depending on the type of video:
+   * VOD
+   *  currentTime: Formatted value of current playhead
+   *  totalTime: Formatted value of video duration
+   * Live - No DVR
+   *  currentTime: null
+   *  totalTime: null
+   * Live - DVR - useNegativeDvrOffset === true
+   *  currentTime: Formatted value of the negative offset from the live playhead
+   *  totalTime: null
+   * Live - DVR - useNegativeDvrOffset === false
+   *  currentTime: Formatted value of the current playhead relative to max time shift
+   *  totalTime: Formatted value of the total duration of the DVR window
+   *
+   * @function getTimeDisplayValues
+   * @param {Number} currentPlayhead The current value of the playhead in seconds.
+   * @param {Number} duration The total duration of the video in seconds.
+   * @param {Boolean} isLiveStream Indicates whether the video is a livestream or not.
+   * @param {Number} useNegativeDvrOffset Whether to display DVR progress as a negative offset value or not.
+   * @return {Object} An object with currentTime and totalTime properties in HH:MM format. Either of these
+   * might be null depending on the conditions above.
+   */
+  getTimeDisplayValues: function(currentPlayhead, duration, isLiveStream, useNegativeDvrOffset) {
+    currentPlayhead = this.ensureNumber(currentPlayhead);
+    duration = this.ensureNumber(duration, 0);
+
+    var currentTime = null;
+    var totalTime = null;
+
+    var currentPlayheadInt = parseInt(currentPlayhead, 10);
+    var currentPlayheadTime = isFinite(currentPlayheadInt) ? Utils.formatSeconds(currentPlayheadInt) : null;
+    var timeShift = (currentPlayhead || 0) - duration;
+
+    if (duration) {
+      totalTime = Utils.formatSeconds(duration);
+    }
+
+    if (isLiveStream) {
+      // Checking timeShift < 1 second (not === 0) as processing of the click after we
+      // rewinded and then went live may take some time.
+      var isLiveNow = Math.abs(timeShift) < 1;
+
+      if (useNegativeDvrOffset) {
+        // We don't show current time unless there is a time shift when using
+        // negative DVR offset
+        currentTime = isLiveNow ? null : Utils.formatSeconds(timeShift);
+      } else {
+        // When not using negative DVR offset, DVR progress is shown in the usual
+        // "current time of total time" format, with total time set to the size of DVR window
+        currentTime = isLiveNow ? totalTime : Utils.formatSeconds(Math.ceil(duration + timeShift));
+      }
+    } else {
+      currentTime = currentPlayheadTime;
+    }
+    // Total time is not displayed when using negative DVR offset, only the
+    // timeshift is shown
+    if (useNegativeDvrOffset) {
+      totalTime = isLiveStream ? null : totalTime;
+    }
+
+    return {
+      currentTime: currentTime,
+      totalTime: totalTime
+    };
+  },
+
   /**
   * Trims the given text to fit inside of the given element, truncating with ellipsis.
   *
@@ -362,7 +483,7 @@ var Utils = {
     target.style.opacity = opacity;
     target.style.color = color;
     // HEADSUP
-    // This is currently the same style as the one used in _mixins.scss. 
+    // This is currently the same style as the one used in _mixins.scss.
     // We should change both styles whenever we update this.
     target.style.textShadow = "0px 0px 3px rgba(255, 255, 255, 0.5), 0px 0px 6px rgba(255, 255, 255, 0.5), 0px 0px 9px rgba(255, 255, 255, 0.5)";
   },
@@ -589,6 +710,15 @@ var Utils = {
       OO.log("Invalid player configuration json data: ", data);
       return {};
     }
+  },
+
+  /**
+   * Returns whether the OS can render the skin
+   * @return {[boolean]} true if the OS can render the skin.
+   */
+  canRenderSkin: function() {
+    var result = !(OO.isIphone && OO.iosMajorVersion < 10);
+    return result;
   },
 
   _isValid: function( item ) {

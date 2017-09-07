@@ -109,6 +109,17 @@ module.exports = {
     UNMUTE: "Unmute",
     FULLSCREEN: "Fullscreen",
     EXIT_FULLSCREEN: "Exit Fullscreen",
+    SEEK_SLIDER: "Seek slider",
+    VOLUME_SLIDER: "Volume slider",
+    VOLUME_PERCENT: "{volume}% volume",
+    TIME_DISPLAY: "{currentTime} of {totalTime}",
+    TIME_DISPLAY_LIVE: "Live video",
+    TIME_DISPLAY_DVR: "{currentTime} of {totalTime} live video"
+  },
+
+  A11Y_CTRLS: {
+    SEEK_DELTA: 5,
+    VOLUME_CHANGE_DELTA: 10
   },
 
   KEYCODES: {
@@ -118,6 +129,21 @@ module.exports = {
     UP_ARROW_KEY: 38,
     DOWN_ARROW_KEY: 40,
     ESCAPE_KEY: 27
+  },
+
+  // KeyboardEvent's which and keyCode properties are deprecated.
+  // It's a good idea to use KeyboardEvent.key moving forward even though React
+  // synthetic events normalize event data.
+  KEY_VALUES: {
+    ENTER: "Enter",
+    TAB: "Tab",
+    SPACE: " ", // yep
+    ARROW_UP: "ArrowUp",
+    ARROW_DOWN: "ArrowDown",
+    ARROW_LEFT: "ArrowLeft",
+    ARROW_RIGHT: "ArrowRight",
+    HOME: "Home",
+    END: "End"
   },
 
   UI: {
