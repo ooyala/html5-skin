@@ -130,6 +130,14 @@ var PlayingScreen = React.createClass({
       }
     }
   },
+  
+  handlePlayerMouseLeave: function () {
+    if (this.isVideo360) {
+      this.setState({
+        isMouseDown: false,
+      });
+    }
+  },
 
   getDirectionParams: function(pageX, pageY) {
     var dx = pageX - this.state.XMouseStart
@@ -178,6 +186,7 @@ var PlayingScreen = React.createClass({
       onMouseOver={this.showControlBar}
       onMouseOut={this.hideControlBar}
       onMouseMove={this.handlePlayerMouseMove}
+      onMouseLeave={this.handlePlayerMouseLeave}
       onKeyUp={this.handleKeyPress}
     >
       <div
