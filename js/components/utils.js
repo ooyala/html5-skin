@@ -15,10 +15,7 @@ var Utils = {
    * @param {type} MouseUp event object.
    */
   blurOnMouseUp: function(event) {
-    if (!event || typeof event.preventDefault !== 'function') {
-      return;
-    }
-    if (event.currentTarget && typeof event.currentTarget.blur === 'function') {
+    if (event && event.currentTarget && typeof event.currentTarget.blur === 'function') {
       event.currentTarget.blur();
     }
   },
@@ -66,36 +63,38 @@ var Utils = {
    *  currentTime: Formatted value of current playhead
    *  totalTime: Formatted value of video duration
    * Live - No DVR
-   *  currentTime: null
-   *  totalTime: null
+   *  currentTime: Empty string
+   *  totalTime: Empty string
    * Live - DVR - useNegativeDvrOffset === true
-   *  currentTime: Formatted value of the negative offset from the live playhead
-   *  totalTime: null
+   *  currentTime: Formatted value of the negative offset from the live playhead. Empty string if playhead is at the Live position
+   *  totalTime: Empty string
    * Live - DVR - useNegativeDvrOffset === false
    *  currentTime: Formatted value of the current playhead relative to max time shift
    *  totalTime: Formatted value of the total duration of the DVR window
+   * NOTE:
+   * Either property can be returned as an empty string if the parameters don't match the requirements.
    *
    * @function getTimeDisplayValues
    * @param {Number} currentPlayhead The current value of the playhead in seconds.
-   * @param {Number} duration The total duration of the video in seconds.
+   * @param {Number} duration The total duration of the video in seconds. Should be -0 or Infinity for Live videos with no DVR.
    * @param {Boolean} isLiveStream Indicates whether the video is a livestream or not.
    * @param {Number} useNegativeDvrOffset Whether to display DVR progress as a negative offset value or not.
    * @return {Object} An object with currentTime and totalTime properties in HH:MM format. Either of these
-   * might be null depending on the conditions above.
+   * might be an empty string depending on the conditions above.
    */
   getTimeDisplayValues: function(currentPlayhead, duration, isLiveStream, useNegativeDvrOffset) {
     currentPlayhead = this.ensureNumber(currentPlayhead);
     duration = this.ensureNumber(duration, 0);
 
-    var currentTime = null;
-    var totalTime = null;
+    var currentTime = '';
+    var totalTime = '';
 
     var currentPlayheadInt = parseInt(currentPlayhead, 10);
-    var currentPlayheadTime = isFinite(currentPlayheadInt) ? Utils.formatSeconds(currentPlayheadInt) : null;
+    var currentPlayheadTime = isFinite(currentPlayheadInt) ? this.formatSeconds(currentPlayheadInt) : null;
     var timeShift = (currentPlayhead || 0) - duration;
 
     if (duration) {
-      totalTime = Utils.formatSeconds(duration);
+      totalTime = this.formatSeconds(duration);
     }
 
     if (isLiveStream) {
@@ -106,11 +105,11 @@ var Utils = {
       if (useNegativeDvrOffset) {
         // We don't show current time unless there is a time shift when using
         // negative DVR offset
-        currentTime = isLiveNow ? null : Utils.formatSeconds(timeShift);
+        currentTime = isLiveNow ? '' : this.formatSeconds(timeShift);
       } else {
         // When not using negative DVR offset, DVR progress is shown in the usual
         // "current time of total time" format, with total time set to the size of DVR window
-        currentTime = isLiveNow ? totalTime : Utils.formatSeconds(Math.ceil(duration + timeShift));
+        currentTime = isLiveNow ? totalTime : this.formatSeconds(Math.ceil(duration + timeShift));
       }
     } else {
       currentTime = currentPlayheadTime;
@@ -118,7 +117,7 @@ var Utils = {
     // Total time is not displayed when using negative DVR offset, only the
     // timeshift is shown
     if (useNegativeDvrOffset) {
-      totalTime = isLiveStream ? null : totalTime;
+      totalTime = isLiveStream ? '' : totalTime;
     }
 
     return {

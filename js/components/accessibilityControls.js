@@ -2,13 +2,13 @@ var CONSTANTS = require('./../constants/constants');
 var Utils = require('./utils');
 
 var AccessibilityControls = function (controller) {
-    this.controller = controller;
-    this.state = {
-      seekRate: 1,
-      lastKeyDownTime: 0
-    };
-    this.keyEvent = this.handleKey.bind(this);
-    document.addEventListener('keydown', this.keyEvent);
+  this.controller = controller;
+  this.state = {
+    seekRate: 1,
+    lastKeyDownTime: 0
+  };
+  this.keyEvent = this.handleKey.bind(this);
+  document.addEventListener('keydown', this.keyEvent);
 };
 
 AccessibilityControls.prototype = {
@@ -50,7 +50,7 @@ AccessibilityControls.prototype = {
         break;
       case CONSTANTS.KEYCODES.LEFT_ARROW_KEY:
       case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
-        if (!sliderIsActive && !this.controller.state.isPlayingAd) {
+        if (!sliderIsActive) {
           e.preventDefault();
           var forward = e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY ? true : false;
           this.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, forward);
@@ -88,6 +88,30 @@ AccessibilityControls.prototype = {
   },
 
   /**
+   * Determines whether or not the controller is in a state that allows seeking the video.
+   * @private
+   * @return {Boolen} True if seeking is possible, false otherwise.
+   */
+  canSeek: function() {
+    var seekingEnabled = false;
+    switch (this.controller.state.screenToShow) {
+      case CONSTANTS.SCREEN.PLAYING_SCREEN:
+      case CONSTANTS.SCREEN.PAUSE_SCREEN:
+      case CONSTANTS.SCREEN.END_SCREEN:
+        if (this.controller.state.isPlayingAd) {
+          seekingEnabled = false;
+        } else {
+          seekingEnabled = true;
+        }
+        break;
+      default:
+        seekingEnabled = false;
+        break;
+    }
+    return seekingEnabled;
+  },
+
+  /**
    * Seeks the video by the specified number of seconds. The direction of the playhead
    * can be specified with the forward parameter. If a value exceeds the minimum or maximum
    * seekable range it will be constrained to appropriate values.
@@ -96,6 +120,9 @@ AccessibilityControls.prototype = {
    * @param {Boolean} forward True to seek forward, false to seek backward.
    */
   seekBy: function(seconds, forward) {
+    if (!this.canSeek()) {
+      return;
+    }
     var shiftSeconds = Utils.ensureNumber(seconds, 1);
     var shiftSign = forward ? 1 : -1; // Positive 1 for fast forward, negative for rewind
     var seekRateIncrease = 1.1;

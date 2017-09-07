@@ -68,7 +68,7 @@ a.oo-volume-bar {
   @include highlight-tab();
 }
 
-.oo-volume-slider:hover:active {		
+.oo-volume-slider:hover:active {
   @include remove-highlight-tab();
 }
 
