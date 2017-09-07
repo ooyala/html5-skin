@@ -592,8 +592,8 @@ var Utils = {
   },
 
   /**
-   * [description]
-   * @return {[type]} [description]
+   * Returns whether the OS can render the skin
+   * @return {[boolean]} true if the OS can render the skin.
    */
   canRenderSkin: function() {
     var result = !(OO.isIphone && OO.iosMajorVersion < 10);
