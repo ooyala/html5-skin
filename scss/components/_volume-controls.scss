@@ -1,0 +1,78 @@
+.oo-volume-controls:focus {
+  position: relative;
+  outline: none;
+}
+
+.oo-volume-controls:focus::before {
+  $focus-padding: 4px;
+  content: '';
+  position: absolute;
+  top: -$focus-padding;
+  right: -$focus-padding;
+  bottom: $focus-padding;
+  left: $focus-padding;
+  padding: $focus-padding;
+  @include highlight-tab();
+}
+
+.oo-volume-controls:hover:active::before {
+  content: none;
+}
+
+a.oo-volume-bar {
+  border:0;
+  outline: none;
+}
+
+.oo-volume-bar {
+  margin-bottom: 4px;
+  display: inline-block;
+  background-clip: content-box;
+  position: relative;
+  width: 9px;
+  height: 8px;
+  padding-left: 7px;
+  background-color: rgba($white, 0.6);
+  @include vendor-prefixes (transition, all .18s ease-in-out);
+}
+
+.oo-volume-bar:hover{
+  height: 17px;
+}
+
+.oo-on {
+  background-color: rgba($blue-light, 1.0);
+  height: 17px;
+  padding-bottom: 0px;
+  margin-bottom: 4px;
+}
+
+.oo-volume:hover .oo-volume-bar {
+  background-color: rgba($white, 0.7);
+}
+
+.oo-volume:hover .oo-volume-bar.oo-on {
+  background-color: $blue-light;
+}
+
+.oo-volume-slider {
+  display: inline-block;
+  position: relative;
+  margin-left: 6px;
+  height: 20px;
+  width: $slider-volume-width;
+}
+
+.oo-volume-slider:focus {
+  outline: none;
+  @include highlight-tab();
+}
+
+.oo-volume-slider:hover:active {		
+  @include remove-highlight-tab();
+}
+
+// IE 11 only
+@include apply-to-ie11-only ('.oo-volume-slider') {
+  height: auto;
+}

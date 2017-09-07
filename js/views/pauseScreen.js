@@ -46,6 +46,18 @@ var PauseScreen = React.createClass({
     this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
+  /**
+   * Make sure keyboard controls are active when a control bar element has focus.
+   *
+   * @param {object} event Focus event object
+   */
+  handleFocus: function(event) {
+    var isControlBarElement = event.target || event.target.hasAttribute('data-focus-id');
+    if (isControlBarElement) {
+      this.props.controller.state.accessibilityControlsEnabled = true;
+    }
+  },
+
   render: function() {
     //inline style for config/skin.json elements only
     var titleStyle = {
@@ -123,7 +135,7 @@ var PauseScreen = React.createClass({
           <Icon {...this.props} icon="pause" style={actionIconStyle}/>
         </button>
 
-        <div className="oo-interactive-container">
+        <div className="oo-interactive-container" onFocus={this.handleFocus}>
           {this.props.closedCaptionOptions.enabled ?
             <TextTrack
               closedCaptionOptions={this.props.closedCaptionOptions}

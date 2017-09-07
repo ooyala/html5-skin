@@ -325,7 +325,7 @@ describe('ControlBar', function () {
   });
 
   it('should store playPause button focus state', function() {
-    baseMockController.state.playPauseButtonFocused = false;
+    baseMockController.state.focusedControl = null;
     baseMockProps.skinConfig.buttons.desktopContent = [
       { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 }
     ];
@@ -341,9 +341,9 @@ describe('ControlBar', function () {
 
     var playPauseButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause');
     TestUtils.Simulate.focus(playPauseButton);
-    expect(baseMockController.state.playPauseButtonFocused).toBe(true);
+    expect(baseMockController.state.focusedControl).toBe('playPause');
     TestUtils.Simulate.blur(playPauseButton);
-    expect(baseMockController.state.playPauseButtonFocused).toBe(false);
+    expect(baseMockController.state.focusedControl).toBe(null);
   });
 
   it('to toggle share screen', function() {

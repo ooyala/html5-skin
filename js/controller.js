@@ -78,7 +78,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoPlayhead": 0,
       "adVideoPlayhead": 0,
       "focusedElement": null,
-      "playPauseButtonFocused": false,
+      "focusedControl": null, // Stores the id of the control bar element that is currently focused
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -1264,7 +1264,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.LIVE_BUTTON_CLICKED);
     },
 
-    setVolume: function(volume){
+    setVolume: function(volume) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
     },
 
