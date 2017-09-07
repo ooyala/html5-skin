@@ -15,10 +15,7 @@ var Utils = {
    * @param {type} MouseUp event object.
    */
   blurOnMouseUp: function(event) {
-    if (!event || typeof event.preventDefault !== 'function') {
-      return;
-    }
-    if (event.currentTarget && typeof event.currentTarget.blur === 'function') {
+    if (event && event.currentTarget && typeof event.currentTarget.blur === 'function') {
       event.currentTarget.blur();
     }
   },
@@ -91,11 +88,11 @@ var Utils = {
     var totalTime = null;
 
     var currentPlayheadInt = parseInt(currentPlayhead, 10);
-    var currentPlayheadTime = isFinite(currentPlayheadInt) ? Utils.formatSeconds(currentPlayheadInt) : null;
+    var currentPlayheadTime = isFinite(currentPlayheadInt) ? this.formatSeconds(currentPlayheadInt) : null;
     var timeShift = (currentPlayhead || 0) - duration;
 
     if (duration) {
-      totalTime = Utils.formatSeconds(duration);
+      totalTime = this.formatSeconds(duration);
     }
 
     if (isLiveStream) {
@@ -106,11 +103,11 @@ var Utils = {
       if (useNegativeDvrOffset) {
         // We don't show current time unless there is a time shift when using
         // negative DVR offset
-        currentTime = isLiveNow ? null : Utils.formatSeconds(timeShift);
+        currentTime = isLiveNow ? null : this.formatSeconds(timeShift);
       } else {
         // When not using negative DVR offset, DVR progress is shown in the usual
         // "current time of total time" format, with total time set to the size of DVR window
-        currentTime = isLiveNow ? totalTime : Utils.formatSeconds(Math.ceil(duration + timeShift));
+        currentTime = isLiveNow ? totalTime : this.formatSeconds(Math.ceil(duration + timeShift));
       }
     } else {
       currentTime = currentPlayheadTime;

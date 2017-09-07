@@ -28,7 +28,7 @@ var VolumeControls = React.createClass({
     this.props.controller.setVolume(newVolume);
   },
 
-  handleVolumeSliderKeyDown: function(evt) {
+  handleVolumeCtrlsKeyDown: function(evt) {
     switch (evt.key) {
       case CONSTANTS.KEY_VALUES.ARROW_UP:
       case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
@@ -50,6 +50,14 @@ var VolumeControls = React.createClass({
         break;
       default:
         break;
+    }
+  },
+
+  handleVolumeCtrlsMouseDown: function(event) {
+    // Prevent focus highlight from flashing when clicking on
+    // the volume controls since the CSS workaround doesn't work on IE.
+    if (Utils.isIE()) {
+      event.preventDefault();
     }
   },
 
@@ -115,8 +123,9 @@ var VolumeControls = React.createClass({
         aria-valuetext={ariaValueText}
         data-focus-id="volumeControls"
         tabIndex="0"
+        onMouseDown={this.handleVolumeCtrlsMouseDown}
         onMouseUp={Utils.blurOnMouseUp}
-        onKeyDown={this.handleVolumeSliderKeyDown}>
+        onKeyDown={this.handleVolumeCtrlsKeyDown}>
         {volumeBars}
       </span>
     );
@@ -140,8 +149,8 @@ var VolumeControls = React.createClass({
         aria-valuetext={ariaValueText}
         data-focus-id="volumeSlider"
         tabIndex="0"
-        onMouseUp={this.blurOnMouseUp}
-        onKeyDown={this.handleVolumeSliderKeyDown}>
+        onMouseUp={Utils.blurOnMouseUp}
+        onKeyDown={this.handleVolumeCtrlsKeyDown}>
         <Slider
           value={parseFloat(this.props.controller.state.volumeState.volume)}
           className="oo-slider oo-slider-volume"
