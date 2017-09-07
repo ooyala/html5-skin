@@ -1,4 +1,5 @@
 jest.dontMock('../../js/components/controlBar')
+    .dontMock('../../js/components/volumeControls')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/components/icon')
     .dontMock('../../js/components/logo')
