@@ -8,9 +8,19 @@ var CONSTANTS = require('../constants/constants');
 var VolumeControls = React.createClass({
 
   handleVolumeClick: function(event) {
-    event.preventDefault();
-    var newVolume = parseFloat(event.target.dataset.volume);
-    this.props.controller.setVolume(newVolume);
+    var clickedBarVolume = Utils.getPropertyValue(event, 'currentTarget.dataset.volume');
+    // For unit tests, since Jest doesn't currently support dataset and it also doesn't
+    // allow overriding currentTarget. The right property to use here is currentTarget.
+    // Note that currentTarget should never be null IRL.
+    if (typeof clickedBarVolume === 'undefined') {
+      clickedBarVolume = Utils.getPropertyValue(event, 'target.dataset.volume');
+    }
+
+    if (typeof clickedBarVolume !== 'undefined') {
+      event.preventDefault();
+      var newVolume = Utils.ensureNumber(clickedBarVolume);
+      this.props.controller.setVolume(newVolume);
+    }
   },
 
   handleVolumeSliderChange: function(event) {
@@ -69,7 +79,8 @@ var VolumeControls = React.createClass({
 
     for (var i = 0; i < 10; i++) {
       // Create each volume tick separately
-      var turnedOn = this.props.controller.state.volumeState.volume >= (i + 1) / 10;
+      var barVolume = (i + 1) / 10;
+      var turnedOn = this.props.controller.state.volumeState.volume >= barVolume;
       var volumeClass = ClassNames({
         'oo-volume-bar': true,
         'oo-on': turnedOn
@@ -79,12 +90,13 @@ var VolumeControls = React.createClass({
       };
 
       volumeBars.push(
-        <a data-volume={(i + 1) / 10}
+        <a data-volume={barVolume}
           className={volumeClass}
           key={i}
           style={barStyle}
           onClick={this.handleVolumeClick}
           aria-hidden="true">
+          <span className="oo-click-extender"></span>
         </a>
       );
     }
