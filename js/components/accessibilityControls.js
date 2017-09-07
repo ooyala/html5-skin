@@ -64,7 +64,7 @@ AccessibilityControls.prototype = {
   /**
    * Increases or decreases the player volume by the specified percentage. Values beyond
    * the minimum or maximum will be constrained to appropriate values.
-   *
+   * @public
    * @param {Number} percent A value from 0 to 100 that indicates how much to increase or decrease the volume.
    * @param {Boolean} increase True for volume increase, false for descrease.
    */
@@ -91,7 +91,7 @@ AccessibilityControls.prototype = {
    * Seeks the video by the specified number of seconds. The direction of the playhead
    * can be specified with the forward parameter. If a value exceeds the minimum or maximum
    * seekable range it will be constrained to appropriate values.
-   *
+   * @public
    * @param {Number} seconds The number of seconds to increase or decrease relative to the current playhead.
    * @param {Boolean} forward True to seek forward, false to seek backward.
    */

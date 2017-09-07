@@ -50,6 +50,7 @@ var ControlBar = React.createClass({
    * Restores the focus of a previously selected control bar item.
    * This is needed as a workaround because switching between play and pause states
    * currently causes the control bar to re-render.
+   * @private
    */
   restoreFocusedControl: function() {
     if (!this.props.controller.state.focusedControl || !this.domNode) {
@@ -200,7 +201,7 @@ var ControlBar = React.createClass({
   /**
    * Fires whenever an item is focused inside the control bar. Stores the id of
    * the focused control.
-   *
+   * @private
    * @param {type} evt Focus event.
    */
   handleControlBarFocus: function(evt) {
@@ -212,6 +213,7 @@ var ControlBar = React.createClass({
 
   /**
    * Clears the currently focused control.
+   * @private
    */
   handleControlBarBlur: function(evt) {
     this.props.controller.state.focusedControl = null;
