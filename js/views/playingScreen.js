@@ -19,6 +19,8 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
+    this.isVideo360 = this.props.controller.state.isVideo360;
+
     return {
       controlBarVisible: true,
       timer: null
@@ -156,14 +158,22 @@ var PlayingScreen = React.createClass({
         currentPlayhead={this.props.currentPlayhead}/> : null;
 
     return (
-    <div className="oo-state-screen oo-playing-screen"
-         ref="PlayingScreen"
-         onMouseOver={this.showControlBar}
-         onMouseOut={this.hideControlBar}
-         onMouseMove={this.handlePlayerMouseMove}
-         onKeyDown={this.handleKeyDown}>
-
-      <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
+    <div
+      className="oo-state-screen oo-playing-screen"
+      ref="PlayingScreen"
+      onMouseOver={this.showControlBar}
+      onMouseOut={this.hideControlBar}
+      onMouseMove={this.handlePlayerMouseMove}
+      onMouseLeave={this.handlePlayerMouseLeave}
+      onKeyUp={this.handleKeyDown}
+    >
+      <div
+        className="oo-state-screen-selectable"
+        onMouseDown={this.handlePlayerMouseDown}
+        onMouseUp={this.handlePlayerMouseUp}
+        onTouchEnd={this.handleTouchEnd}
+        onClick={this.handlePlayerClicked}
+      />
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
