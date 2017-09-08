@@ -72,9 +72,8 @@ var Skin = React.createClass({
     });
   },
 
-  //now and below functions for 360 (vr functions)
+  //here and below functions for 360 (vr functions)
   handleVRPlayerMouseDown: function(e) {
-    console.log('BBB handleVRPlayerMouseDown');
     if (this.props.controller.state.isVideo360) {
       this.setState({
         isMouseDown: true,
@@ -94,7 +93,6 @@ var Skin = React.createClass({
       });
       if (this.props.controller.onTouching) {
         var params = this.getDirectionParams(e.pageX, e.pageY);
-        console.log('BBB params', params);
         this.props.controller.onTouching(params, true);
       }
     }
@@ -102,7 +100,6 @@ var Skin = React.createClass({
 
   handleVRPlayerMouseUp: function() {
     if (this.props.controller.state.isVideo360) {
-      console.log('BBB handleVRPlayerMouseUp');
       this.setState({
         isMouseDown: false,
         XMouseStart: 0,
