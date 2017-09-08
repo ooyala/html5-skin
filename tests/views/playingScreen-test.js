@@ -222,6 +222,34 @@ describe('PlayingScreen', function () {
     expect(clicked).toBe(false);
   });
 
+  it('creates a PlayingScreen and check play&pause', function () {
+    var clicked = false;
+    var mockController = {
+      state: {
+        isMobile: true,
+        isMouseDown: false,
+        isMouseMove: false,
+        accessibilityControlsEnabled: false,
+        upNextInfo: {
+          showing: false
+        },
+        isVideo360: true
+      },
+      togglePlayPause: function(){clicked = true},
+      startHideControlBarTimer: function() {}
+    };
+    var closedCaptionOptions = {
+      cueText: "cue text"
+    };
+  
+    // Render pause screen into DOM
+    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
+    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
+    
+    TestUtils.Simulate.click(screen);
+    expect(clicked).toBe(true);
+  });
+  
   it('should show control bar when pressing the tab key', function () {
     var autoHide = false;
     var controlBar = false;

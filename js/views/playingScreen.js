@@ -86,7 +86,10 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseDown: function(e) {
-    if (!this.isVideo360) { return; }
+    if (!this.isVideo360) {
+      return;
+    }
+    
     this.setState({
       isMouseDown: true,
       XMouseStart: e.pageX,
