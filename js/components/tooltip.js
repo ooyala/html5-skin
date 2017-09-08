@@ -70,8 +70,8 @@ function getPointerStyle(alignment) {
 var Tooltip = React.createClass({
 
   componentDidMount: function () {
-    this.onMouseOver = this.onMouseOver.bind(this);
-    this.onMouseLeave = this.onMouseLeave.bind(this);
+    this.onMouseOver = this.onMouseOver.bind(null, this);
+    this.onMouseLeave = this.onMouseLeave.bind(null, this);
 
     this.parentElement = (ReactDOM.findDOMNode(this) || {}).parentElement;
     if (this.parentElement) {

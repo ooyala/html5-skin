@@ -458,12 +458,24 @@
     left: 5%; }
   .oo-player-container .oo-state-screen .oo-info-panel-right, .oo-player-container .oo-spinner-screen .oo-info-panel-right {
     left: -3%; }
+  .oo-player-container .oo-state-screen button.oo-action-icon, .oo-player-container .oo-spinner-screen button.oo-action-icon {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none; }
   .oo-player-container .oo-state-screen .oo-action-icon, .oo-player-container .oo-spinner-screen .oo-action-icon {
-    cursor: pointer; }
+    cursor: pointer;
+    outline: none; }
     .oo-player-container .oo-state-screen .oo-action-icon span.oo-icon, .oo-player-container .oo-spinner-screen .oo-action-icon span.oo-icon {
       font-size: 150px;
       opacity: 1;
       color: white; }
+  .oo-player-container .oo-state-screen .oo-action-icon:focus, .oo-player-container .oo-spinner-screen .oo-action-icon:focus {
+    box-shadow: 0 0 0 2px #448aff; }
+  .oo-player-container .oo-state-screen .oo-action-icon:active, .oo-player-container .oo-spinner-screen .oo-action-icon:active {
+    box-shadow: none; }
+  .oo-player-container .oo-state-screen .oo-action-icon:active, .oo-player-container .oo-spinner-screen .oo-action-icon:active {
+    text-shadow: none; }
   .oo-player-container .oo-state-screen .oo-action-icon-top, .oo-player-container .oo-spinner-screen .oo-action-icon-top {
     top: 15% !important; }
   .oo-player-container .oo-state-screen .oo-action-icon-bottom, .oo-player-container .oo-spinner-screen .oo-action-icon-bottom {
@@ -491,7 +503,9 @@
 
 .oo-player-container .oo-action-icon-pause {
   opacity: 1;
-  font-size: 24px; }
+  font-size: 24px;
+  background: none;
+  border: 0; }
   .oo-player-container .oo-action-icon-pause span.oo-icon {
     color: #FFF;
     opacity: 1; }
@@ -788,13 +802,13 @@
     .oo-player-container .oo-share-tab-panel .oo-social-icon:last-child, .oo-player-container .oo-share-tab-panel .oo-facebook:last-child, .oo-player-container .oo-share-tab-panel .oo-twitter:last-child, .oo-player-container .oo-share-tab-panel .oo-google-plus:last-child, .oo-player-container .oo-share-tab-panel .oo-email-share:last-child {
       margin-right: 0; }
   .oo-player-container .oo-share-tab-panel .oo-facebook {
-    background-image: url("//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/assets/images/social-facebook.svg"); }
+    background-image: url("//player.ooyala.com/static/v4/stable/4.16.10/skin-plugin/assets/images/social-facebook.svg"); }
   .oo-player-container .oo-share-tab-panel .oo-twitter {
-    background-image: url("//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/assets/images/social-twitter.svg"); }
+    background-image: url("//player.ooyala.com/static/v4/stable/4.16.10/skin-plugin/assets/images/social-twitter.svg"); }
   .oo-player-container .oo-share-tab-panel .oo-google-plus {
-    background-image: url("//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/assets/images/social-google.svg"); }
+    background-image: url("//player.ooyala.com/static/v4/stable/4.16.10/skin-plugin/assets/images/social-google.svg"); }
   .oo-player-container .oo-share-tab-panel .oo-email-share {
-    background-image: url("//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/assets/images/social-email.svg");
+    background-image: url("//player.ooyala.com/static/v4/stable/4.16.10/skin-plugin/assets/images/social-email.svg");
     background-size: cover; }
   .oo-player-container .oo-share-tab-panel .oo-embed-form {
     resize: none;
@@ -1367,10 +1381,8 @@
   position: relative;
   float: right; }
   .oo-player-container button.oo-close-button:hover {
-    opacity: 1.0;
-    filter: drop-shadow(0px 0px 3px rgba(255, 255, 255, 0.8));
-    -webkit-filter: drop-shadow(0px 0px 3px rgba(255, 255, 255, 0.8));
-    -ms-filter: progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff'); }
+    opacity: 1;
+    text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.5), 0px 0px 6px rgba(255, 255, 255, 0.5), 0px 0px 9px rgba(255, 255, 255, 0.5); }
   .oo-player-container button.oo-close-button:before {
     position: absolute;
     content: '';
@@ -1392,10 +1404,8 @@
   background: transparent;
   -webkit-appearance: none; }
   .oo-player-container button.oo-close-btn:hover {
-    opacity: 1.0;
-    filter: drop-shadow(0px 0px 3px rgba(255, 255, 255, 0.8));
-    -webkit-filter: drop-shadow(0px 0px 3px rgba(255, 255, 255, 0.8));
-    -ms-filter: progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff'); }
+    opacity: 1;
+    text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.5), 0px 0px 6px rgba(255, 255, 255, 0.5), 0px 0px 9px rgba(255, 255, 255, 0.5); }
   .oo-player-container button.oo-close-btn:before {
     position: absolute;
     content: '';
@@ -1403,6 +1413,14 @@
     left: -18px;
     top: -18px;
     bottom: -18px; }
+
+.oo-player-container button.oo-close-button .oo-icon {
+  display: inline-block;
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0); }
 
 .oo-player-container button.oo-up-next-close-btn {
   top: 10px;
@@ -1417,10 +1435,8 @@
   background: transparent;
   -webkit-appearance: none; }
   .oo-player-container button.oo-up-next-close-btn:hover {
-    opacity: 1.0;
-    filter: drop-shadow(0px 0px 3px rgba(255, 255, 255, 0.8));
-    -webkit-filter: drop-shadow(0px 0px 3px rgba(255, 255, 255, 0.8));
-    -ms-filter: progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff'); }
+    opacity: 1;
+    text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.5), 0px 0px 6px rgba(255, 255, 255, 0.5), 0px 0px 9px rgba(255, 255, 255, 0.5); }
   .oo-player-container button.oo-up-next-close-btn:before {
     position: absolute;
     content: '';
@@ -1672,16 +1688,35 @@
       padding-left: 0 !important; }
     .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper > .oo-control-bar-item:last-child {
       padding-right: 0 !important; }
-    .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper a.oo-control-bar-item {
+    .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper a.oo-control-bar-item,
+    .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper button.oo-control-bar-item {
       background-color: transparent;
       border: 0;
       outline: none; }
+      .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper a.oo-control-bar-item .oo-icon,
+      .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper button.oo-control-bar-item .oo-icon {
+        display: inline-block;
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        -o-transform: translateZ(0);
+        transform: translateZ(0); }
     .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper .oo-control-bar-item.oo-selected > span {
       color: #448aff !important;
       color: inherit !important;
       opacity: 1 !important; }
+    .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper .oo-control-bar-item:focus .oo-icon {
+      box-shadow: 0 0 0 2px #448aff;
+      opacity: 1 !important; }
+    .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper .oo-control-bar-item:active .oo-icon {
+      box-shadow: none; }
+    .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper .oo-control-bar-item.oo-mute-unmute {
+      height: auto;
+      padding: 0; }
     .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper .oo-control-bar-item.oo-logo {
       cursor: auto; }
+    .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper a.oo-control-bar-item {
+      display: block; }
     .oo-player-container .oo-control-bar .oo-control-bar-items-wrapper .oo-control-bar-duration {
       height: 100%;
       color: #fff;
@@ -2966,10 +3001,8 @@
   background: transparent;
   -webkit-appearance: none; }
   .oo-player-container .oo-xsmall button.oo-up-next-close-btn:hover {
-    opacity: 1.0;
-    filter: drop-shadow(0px 0px 3px rgba(255, 255, 255, 0.8));
-    -webkit-filter: drop-shadow(0px 0px 3px rgba(255, 255, 255, 0.8));
-    -ms-filter: progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#fff'); }
+    opacity: 1;
+    text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.5), 0px 0px 6px rgba(255, 255, 255, 0.5), 0px 0px 9px rgba(255, 255, 255, 0.5); }
   .oo-player-container .oo-xsmall button.oo-up-next-close-btn:before {
     position: absolute;
     content: '';

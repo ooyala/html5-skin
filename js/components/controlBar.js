@@ -221,27 +221,22 @@ var ControlBar = React.createClass({
   },
 
   handleScrubBack: function(){
-    console.log ("Seeking Back");
     this.props.controller.seek(this.props.currentPlayhead-10);
   },
 
   handleScrubForward: function(){
-    console.log ("Seeking Forward");
     this.props.controller.seek(this.props.currentPlayhead+10);
   },
 
   handleSkipBack: function(){
-    console.log ("Skipping Back");
     this.props.controller.goToPrevChapter();
   },
 
   handleSkipForward: function(){
-    console.log ("Skipping Forward");
     this.props.controller.goToNextChapter();
   },
 
   handlePlaybackSpeed: function(){
-    console.log ("Change playback speed");
     this.props.controller.changePlaybackSpeed(); // This method does not exist - so need to create it
   },
 
@@ -393,7 +388,7 @@ var ControlBar = React.createClass({
         </button>
       }).bind(this),
 
-      "scrubberBar": (function(){
+      "scrubberBar": (function(alignment){
         return <ScrubberBar {...this.props} />
       }).bind(this),
 
@@ -428,13 +423,13 @@ var ControlBar = React.createClass({
         </div>
       }).bind(this),
 
-      "playheadTime": (function(){
+      "playheadTime": (function(alignment){
         return <a className="oo-playhead-time oo-control-bar-item" style={durationSetting} key="playheadTime">
           <span>{playheadTimeContent}</span>
         </a>
       }).bind(this),
 
-      "totalTime": (function(){
+      "totalTime": (function(alignment){
         return <a className="oo-total-time oo-control-bar-item" style={durationSetting} key="totalTime">
           {totalTimeContent}
         </a>
@@ -522,7 +517,7 @@ var ControlBar = React.createClass({
           height={this.props.skinConfig.controlBar.logo.height} />
       }).bind(this),
 
-      "scrubBack": (function() {
+      "scrubBack": (function(alignment) {
         return <button className="oo-scrub-back oo-control-bar-item" onClick={this.handleScrubBack} key="scrubback">
           <Icon {...this.props} icon="scrubBack"
             style={dynamicStyles.iconCharacter}
@@ -530,7 +525,7 @@ var ControlBar = React.createClass({
         </button>
       }).bind(this),
 
-      "scrubForward": (function() {
+      "scrubForward": (function(alignment) {
         return <button className="oo-scrub-forward oo-control-bar-item" onClick={this.handleScrubForward} key="scrubforward">
           <Icon {...this.props} icon="scrubForward"
             style={dynamicStyles.iconCharacter}
@@ -538,7 +533,7 @@ var ControlBar = React.createClass({
         </button>
       }).bind(this),
 
-      "skipBack": (function() {
+      "skipBack": (function(alignment) {
         return <button className="oo-skip-back oo-control-bar-item" onClick={this.handleSkipBack} key="skipback">
           <Icon {...this.props} icon="skipBack"
             style={dynamicStyles.iconCharacter}
@@ -546,7 +541,7 @@ var ControlBar = React.createClass({
         </button>
       }).bind(this),
 
-      "skipForward": (function() {
+      "skipForward": (function(alignment) {
         return <button className="oo-skip-forward oo-control-bar-item" onClick={this.handleSkipForward} key="skipforward">
           <Icon {...this.props} icon="skipForward"
             style={dynamicStyles.iconCharacter}
@@ -554,7 +549,7 @@ var ControlBar = React.createClass({
         </button>
       }).bind(this),
 
-      "changePlaybackSpeed": (function() {
+      "changePlaybackSpeed": (function(alignment) {
         return <button className="oo-playback-speed oo-control-bar-item" onClick={this.handlePlaybackSpeed} key="playbackspeed">
           <Icon {...this.props} icon={playbackSpeedIcon}
             style={dynamicStyles.iconCharacter}
@@ -572,7 +567,7 @@ var ControlBar = React.createClass({
       var scrubberItems = this.props.skinConfig.buttons.scrubberBar;
 
       for (var q = 0; q < scrubberItems.length; q++) {
-        scrubberBarItems.push(controlItemTemplates[scrubberItems[q].name]);
+        scrubberBarItems.push(controlItemTemplates[scrubberItems[q].name]());
       }
     }
 
@@ -582,7 +577,7 @@ var ControlBar = React.createClass({
 
       for (var r = 0; r < bottomItems.length; r++) {
         if(bottomItems[r].name !== "changePlaybackSpeed" || !Utils.isAndroid()){
-          bottomBarItems.push(controlItemTemplates[bottomItems[r].name]);
+          bottomBarItems.push(controlItemTemplates[bottomItems[r].name]());
         }
 
       }
