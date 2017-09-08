@@ -25,6 +25,7 @@ var PlayingScreen = React.createClass({
       controlBarVisible: true,
       timer: null,
       isMouseDown: false,
+      isMouseMove: false,
       XMouseStart: 0,
       YMouseStart: 0,
     };
@@ -85,7 +86,10 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseDown: function(e) {
-    if (!this.isVideo360) { return; }
+    if (!this.isVideo360) {
+      return;
+    }
+    
     this.setState({
       isMouseDown: true,
       XMouseStart: e.pageX,
@@ -102,6 +106,11 @@ var PlayingScreen = React.createClass({
       this.props.controller.startHideControlBarTimer();
     }
     if (this.isVideo360 && this.state.isMouseDown) {
+  
+      this.setState({
+        isMouseMove: true
+      });
+      
       var params = this.getDirectionParams(e.pageX, e.pageY);
       if (this.props.controller.onTouching) {
         this.props.controller.onTouching(params, true);
@@ -138,7 +147,17 @@ var PlayingScreen = React.createClass({
       });
     }
   },
-
+  
+  handlePlayerClicked: function (event) {
+    if(!this.state.isMouseMove){
+      this.props.controller.togglePlayPause(event);
+    }
+    
+    this.setState({
+      isMouseMove: false,
+    });
+  },
+  
   getDirectionParams: function(pageX, pageY) {
     var dx = pageX - this.state.XMouseStart
       , dy = pageY - this.state.YMouseStart;
@@ -194,6 +213,7 @@ var PlayingScreen = React.createClass({
         onMouseDown={this.handlePlayerMouseDown}
         onMouseUp={this.handlePlayerMouseUp}
         onTouchEnd={this.handleTouchEnd}
+        onClick={this.handlePlayerClicked}
       />
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
