@@ -235,6 +235,125 @@ describe('ControlBar', function () {
     expect(newVolume).toBeGreaterThan(-1);
   });
 
+  it('should show inactiveAccentColor from skin for volume off when inactive color missing/empty in volcontrol', function() {
+      var muteClicked = false;
+      var newVolume = 1;
+      var mockController = {
+          state: {
+              isMobile: false,
+              volumeState: {
+                  volume: -1
+              },
+              closedCaptionOptions: {},
+              videoQualityOptions: {
+                  availableBitrates: null
+              }
+          },
+          handleMuteClick: function() {muteClicked = false;},
+          setVolume: function(volume) {newVolume = volume;}
+      };
+
+      var volumebarSkinConfig = Utils.clone(skinConfig);
+      var mockProps = {
+          isLiveStream: false,
+          controller: mockController,
+          skinConfig: volumebarSkinConfig
+      };
+
+      var DOM = TestUtils.renderIntoDocument(
+          <ControlBar {...mockProps} controlBarVisible={true}
+                      componentWidth={500}
+                      playerState={CONSTANTS.STATE.PLAYING}
+                      isLiveStream={mockProps.isLiveStream} />
+      );
+
+      var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
+      var style=volumeBars[1].style["_values"];
+      expect(style['background-color']).toBe("rgba(175, 175, 175, 0.5)");
+  });
+
+  it('should show inactiveColor of volume control from skin for volume off', function() {
+      var muteClicked = false;
+      var newVolume = 1;
+      var mockController = {
+          state: {
+              isMobile: false,
+              volumeState: {
+                  volume: -1
+              },
+              closedCaptionOptions: {},
+              videoQualityOptions: {
+                  availableBitrates: null
+              }
+          },
+          handleMuteClick: function() {muteClicked = false;},
+          setVolume: function(volume) {newVolume = volume;}
+      };
+
+      var volumebarSkinConfig = Utils.clone(skinConfig);
+      volumebarSkinConfig.controlBar.volumeControl =
+          {"color": "green",
+              "inactiveColor": "red"}
+      ;
+
+      var mockProps = {
+          isLiveStream: false,
+          controller: mockController,
+          skinConfig: volumebarSkinConfig
+      };
+
+      var DOM = TestUtils.renderIntoDocument(
+          <ControlBar {...mockProps} controlBarVisible={true}
+                      componentWidth={500}
+                      playerState={CONSTANTS.STATE.PLAYING}
+                      isLiveStream={mockProps.isLiveStream} />
+      );
+      var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
+      var style=volumeBars[1].style["_values"];
+      expect(style['background-color']).toBe("red");
+  });
+
+  it('should show color(active) of volume control from skin for volume on', function() {
+      var muteClicked = false;
+      var newVolume = 1;
+      var mockController = {
+          state: {
+              isMobile: false,
+              volumeState: {
+                  volume: 1
+              },
+              closedCaptionOptions: {},
+              videoQualityOptions: {
+                  availableBitrates: null
+              }
+          },
+          handleMuteClick: function() {muteClicked = false;},
+          setVolume: function(volume) {newVolume = volume;}
+      };
+
+      var volumebarSkinConfig = Utils.clone(skinConfig);
+      volumebarSkinConfig.controlBar.volumeControl =
+        {"color": "green",
+              "inactiveColor": "red"}
+        ;
+
+      var mockProps = {
+          isLiveStream: false,
+          controller: mockController,
+          skinConfig: volumebarSkinConfig
+      };
+
+        var DOM = TestUtils.renderIntoDocument(
+          <ControlBar {...mockProps} controlBarVisible={true}
+                      componentWidth={500}
+                      playerState={CONSTANTS.STATE.PLAYING}
+                      isLiveStream={mockProps.isLiveStream} />
+      );
+      var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
+      var style=volumeBars[1].style["_values"];
+      expect(style['background-color']).toBe("green");
+  });
+
   it('to play on play click', function() {
     var playClicked = false;
     var mockController = {

@@ -259,6 +259,47 @@ var ControlBar = React.createClass({
       totalTime = Utils.formatSeconds(this.props.duration);
     }
 
+
+    var volumeBars = [];
+    for (var i = 0; i < 10; i++) {
+      //create each volume tick separately
+      var turnedOn = this.props.controller.state.volumeState.volume >= (i + 1) / 10;
+      var volumeClass = ClassNames({
+        "oo-volume-bar": true,
+        "oo-on": turnedOn
+      });
+      var barStyle = null;
+      if(turnedOn === true){
+          barStyle = {backgroundColor: this.props.skinConfig.controlBar.volumeControl.color ?
+              this.props.skinConfig.controlBar.volumeControl.color : this.props.skinConfig.general.accentColor};
+      }
+      else{
+          barStyle = {backgroundColor: this.props.skinConfig.controlBar.volumeControl.inactiveColor ?
+                  this.props.skinConfig.controlBar.volumeControl.inactiveColor : this.props.skinConfig.general.inactiveAccentColor};
+      }
+      volumeBars.push(<a data-volume={(i + 1) / 10} className={volumeClass} key={i}
+        style={barStyle}
+        onClick={this.handleVolumeClick}
+        aria-hidden="true"></a>);
+    }
+
+    var volumeSlider = <div className="oo-volume-slider"><Slider value={parseFloat(this.props.controller.state.volumeState.volume)}
+      onChange={this.changeVolumeSlider}
+      className={"oo-slider oo-slider-volume"}
+      itemRef={"volumeSlider"}
+      minValue={"0"}
+      maxValue={"1"}
+      step={"0.1"} /></div>;
+
+    var volumeControls;
+    if (!this.isMobile) {
+      volumeControls = volumeBars;
+    }
+    else {
+      volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
+    }
+
+
     // TODO - Replace time display logic with Utils.getTimeDisplayValues()
     var playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
     var isLiveStream = this.props.isLiveStream;
