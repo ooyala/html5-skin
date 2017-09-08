@@ -141,7 +141,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullScreenSupported": false,
       "isVideoFullScreenSupported": false,
       "isFullWindow": false,
-      "autoPauseDisabled": false
+      "autoPauseDisabled": false,
+
+      "isVideo360": false
     };
 
     this.init();
@@ -216,6 +218,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isSubscribed = true;
     },
 
+    vrSubscribes: function () {
+      if (this.state.isVideo360) {
+        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
+      }
+    },
+
     externalPluginSubscription: function() {
       if (OO.EVENTS.DISCOVERY_API) {
         this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
@@ -245,7 +253,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // Setting the tabindex will let some screen readers recognize this element as a group
       // identified with the ARIA label above. We set it to -1 in order to prevent actual keyboard focus
       this.state.mainVideoInnerWrapper.attr('tabindex', '-1');
-      this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
+
+      var $ooPlayerSkin = $('.oo-player-skin');
+      !$ooPlayerSkin.length && this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
 
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
@@ -259,6 +269,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.accessibilityControls = new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
+
+      if (this.getVrParams && this.getVrParams()) {
+        this.state.isVideo360 = true;
+        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
+      }
+    },
+
+    getVrParams: function(){
+      var playerParam = this.state.playerParam;
+      var bitWrapper = playerParam ? playerParam['bit-wrapper'] : null;
+      var isVr = !!bitWrapper && !!bitWrapper.source && !!bitWrapper.source.vr;
+
+      return isVr ? _.extend({}, bitWrapper.source.vr) : false;
     },
 
     onVcVideoElementCreated: function(event, params) {
