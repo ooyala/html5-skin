@@ -28,7 +28,11 @@ var Skin = React.createClass({
     return {
       screenToShow: null,
       currentPlayhead: 0,
-      discoveryData: null
+      discoveryData: null,
+      isMouseDown: false,
+      isMouseMove: false,
+      XMouseStart: 0,
+      YMouseStart: 0,
     };
   },
 
@@ -66,6 +70,74 @@ var Skin = React.createClass({
       buffered: newBuffered,
       currentAdPlayhead: adPlayhead
     });
+  },
+
+  //now and below functions for 360 (vr functions)
+  handleVRPlayerMouseDown: function(e) {
+    console.log('BBB handleVRPlayerMouseDown');
+    if (this.props.controller.state.isVideo360) {
+      this.setState({
+        isMouseDown: true,
+        XMouseStart: e.pageX,
+        YMouseStart: e.pageY
+      });
+      if (this.props.controller.onTouched) {
+        this.props.controller.onTouched(true);
+      }
+    }
+  },
+
+  handleVRPlayerMouseMove: function(e) {
+    if (this.props.controller.state.isVideo360 && this.state.isMouseDown) {
+      this.setState({
+        isMouseMove: true
+      });
+      if (this.props.controller.onTouching) {
+        var params = this.getDirectionParams(e.pageX, e.pageY);
+        console.log('BBB params', params);
+        this.props.controller.onTouching(params, true);
+      }
+    }
+  },
+
+  handleVRPlayerMouseUp: function() {
+    if (this.props.controller.state.isVideo360) {
+      console.log('BBB handleVRPlayerMouseUp');
+      this.setState({
+        isMouseDown: false,
+        XMouseStart: 0,
+        YMouseStart: 0
+      });
+      if (this.props.controller.onTouched) {
+        this.props.controller.onTouched(true);
+      }
+    }
+  },
+
+  handleVRPlayerMouseLeave: function () {
+    if (this.props.controller.state.isVideo360) {
+      this.setState({
+        isMouseDown: false,
+      });
+    }
+  },
+
+  handleVRPlayerClick: function () {
+    this.setState({
+      isMouseMove: false,
+    });
+  },
+
+  getDirectionParams: function(pageX, pageY) {
+    var dx = pageX - this.state.XMouseStart
+      , dy = pageY - this.state.YMouseStart;
+    var maxDegreesX = 90,
+      maxDegreesY = 120;
+    var degreesForPixelYaw = maxDegreesX / this.state.componentWidth,
+      degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
+    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw,
+      pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
+    return [yaw, 0, pitch];
   },
 
   render: function() {
@@ -112,6 +184,12 @@ var Skin = React.createClass({
           screen = (
             <PlayingScreen
               {...this.props}
+              handleVRPlayerMouseDown={this.handleVRPlayerMouseDown}
+              handleVRPlayerMouseMove={this.handleVRPlayerMouseMove}
+              handleVRPlayerMouseUp={this.handleVRPlayerMouseUp}
+              handleVRPlayerMouseLeave={this.handleVRPlayerMouseLeave}
+              handleVRPlayerClick={this.handleVRPlayerClick}
+              isMouseMove={this.state.isMouseMove}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
               duration={this.state.duration}
@@ -146,7 +224,14 @@ var Skin = React.createClass({
           break;
         case CONSTANTS.SCREEN.PAUSE_SCREEN:
           screen = (
-            <PauseScreen {...this.props}
+            <PauseScreen
+              {...this.props}
+              handleVRPlayerMouseDown={this.handleVRPlayerMouseDown}
+              handleVRPlayerMouseMove={this.handleVRPlayerMouseMove}
+              handleVRPlayerMouseUp={this.handleVRPlayerMouseUp}
+              handleVRPlayerMouseLeave={this.handleVRPlayerMouseLeave}
+              handleVRPlayerClick={this.handleVRPlayerClick}
+              isMouseMove={this.state.isMouseMove}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
               playerState={this.state.playerState}
@@ -160,7 +245,8 @@ var Skin = React.createClass({
               responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
-              ref="pauseScreen" />
+              ref="pauseScreen"
+            />
           );
           break;
         case CONSTANTS.SCREEN.END_SCREEN:
