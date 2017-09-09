@@ -7,7 +7,7 @@ var TestUtils = require('react-addons-test-utils');
 var PlayingScreen = require('../../js/views/playingScreen');
 
 describe('PlayingScreen', function () {
-  it('creates a PlayingScreen and checks mouseUp, mouseMove', function () {
+  it('creates a PlayingScreen and checks mouseUp, mouseMove without video360', function () {
     var moved = false;
     var clicked = false;
     var mockController = {
@@ -76,11 +76,11 @@ describe('PlayingScreen', function () {
 
     var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
 
-    // TestUtils.Simulate.mouseDown(screen[0]);
-    // expect(isTouched).toBe(true);
-    //
-    // TestUtils.Simulate.mouseUp(screen[0]);
-    // expect(isTouched).toBe(true);
+    TestUtils.Simulate.mouseDown(screen);
+    expect(isTouched).toBe(true);
+
+    TestUtils.Simulate.mouseUp(screen);
+    expect(isTouched).toBe(true);
 
   });
 
@@ -154,6 +154,102 @@ describe('PlayingScreen', function () {
     expect(over).toBe(true);
   });
 
+  it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp with video360 fullscreen', function () {
+    var over = false
+      , out = false
+      , moved = false
+      , clicked = false
+      , isTouching = false;
+
+    var mockController = {
+      state: {
+        isMobile: false,
+        isVideo360: true,
+        accessibilityControlsEnabled: false,
+        upNextInfo: {
+          showing: false
+        },
+        viewingDirection: {yaw: 0, roll: 0, pitch: 0}
+      },
+      startHideControlBarTimer: function() {moved = true},
+      togglePlayPause: function(){clicked = true},
+      showControlBar: function() {over = true},
+      hideControlBar: function() {out = true},
+      onTouching: function() { isTouching = true; },
+    };
+
+    var closedCaptionOptions = {
+      cueText: "cue text"
+    };
+
+    // Render pause screen into DOM
+    var DOM = TestUtils.renderIntoDocument(
+      <PlayingScreen
+        controller={mockController}
+        fullscreen={true}
+        componentWidth={90}
+        componentHeight={45}
+        controlBarAutoHide={true}
+        closedCaptionOptions={closedCaptionOptions}
+      />
+    );
+
+    DOM.setState({
+      isMouseDown: true,
+      XMouseStart: -10,
+      YMouseStart: -20
+    });
+
+    var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-playing-screen');
+
+    var getDirectionParams = spyOn(DOM, 'getDirectionParams').andCallThrough()
+      , directionParams = getDirectionParams(0,0);
+
+    TestUtils.Simulate.mouseMove(screen[0]);
+    expect(moved).toBe(true);
+    expect(isTouching).toBe(true);
+    expect(getDirectionParams).toHaveBeenCalled();
+    expect(directionParams).toEqual([10, 0, 53.33333333333333]);
+
+    TestUtils.Simulate.mouseOut(screen[0]);
+    expect(out).toBe(true);
+
+    TestUtils.Simulate.mouseOver(screen[0]);
+    expect(over).toBe(true);
+
+    var screen1 = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-interactive-container');
+    TestUtils.Simulate.touchEnd(screen1);
+    expect(clicked).toBe(false);
+  });
+
+  it('creates a PlayingScreen and check play&pause', function () {
+    var clicked = false;
+    var mockController = {
+      state: {
+        isMobile: true,
+        isMouseDown: false,
+        isMouseMove: false,
+        accessibilityControlsEnabled: false,
+        upNextInfo: {
+          showing: false
+        },
+        isVideo360: true
+      },
+      togglePlayPause: function(){clicked = true},
+      startHideControlBarTimer: function() {}
+    };
+    var closedCaptionOptions = {
+      cueText: "cue text"
+    };
+  
+    // Render pause screen into DOM
+    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
+    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
+    
+    TestUtils.Simulate.click(screen);
+    expect(clicked).toBe(true);
+  });
+  
   it('should show control bar when pressing the tab key', function () {
     var autoHide = false;
     var controlBar = false;
@@ -236,7 +332,7 @@ describe('PlayingScreen', function () {
         }
       },
       startHideControlBarTimer: function() {moved = true},
-      togglePlayPause: function(){clicked = true},
+      // togglePlayPause: function(){clicked = true},
       showControlBar: function() {over = true},
       hideControlBar: function() {out = true},
       cancelTimer:function() {}

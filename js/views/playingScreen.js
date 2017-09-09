@@ -23,7 +23,11 @@ var PlayingScreen = React.createClass({
 
     return {
       controlBarVisible: true,
-      timer: null
+      timer: null,
+      isMouseDown: false,
+      isMouseMove: false,
+      XMouseStart: 0,
+      YMouseStart: 0,
     };
   },
 
@@ -117,16 +121,94 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
-    else {
-      this.props.controller.togglePlayPause();
+    else if (!this.isVideo360) {
+      this.props.controller.togglePlayPause(event);
     }
   },
 
-  handlePlayerMouseMove: function() {
+  handlePlayerMouseDown: function(e) {
+    if (!this.isVideo360) {
+      return;
+    }
+    
+    this.setState({
+      isMouseDown: true,
+      XMouseStart: e.pageX,
+      YMouseStart: e.pageY
+    });
+    if (this.props.controller.onTouched) {
+      this.props.controller.onTouched(true);
+    }
+  },
+
+  handlePlayerMouseMove: function(e) {
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
+    if (this.isVideo360 && this.state.isMouseDown) {
+  
+      this.setState({
+        isMouseMove: true
+      });
+      
+      var params = this.getDirectionParams(e.pageX, e.pageY);
+      if (this.props.controller.onTouching) {
+        this.props.controller.onTouching(params, true);
+      }
+    }
+  },
+
+  handlePlayerMouseUp: function(e) {
+    // pause or play the video if the skin is clicked on desktop
+    if (!this.isMobile) {
+      e.stopPropagation(); // W3C
+      e.cancelBubble = true; // IE
+
+      this.props.controller.state.accessibilityControlsEnabled = true;
+      if (!this.isVideo360) {
+        this.props.controller.togglePlayPause();
+      }
+    }
+    // for mobile, touch is handled in handleTouchEnd
+    if (this.isVideo360) {
+      this.setState({
+        isMouseDown: false,
+      });
+      if (this.props.controller.onTouched) {
+        this.props.controller.onTouched(true);
+      }
+    }
+  },
+  
+  handlePlayerMouseLeave: function () {
+    if (this.isVideo360) {
+      this.setState({
+        isMouseDown: false,
+      });
+    }
+  },
+  
+  handlePlayerClicked: function (event) {
+    if(!this.state.isMouseMove){
+      this.props.controller.togglePlayPause(event);
+    }
+    
+    this.setState({
+      isMouseMove: false,
+    });
+  },
+  
+  getDirectionParams: function(pageX, pageY) {
+    var dx = pageX - this.state.XMouseStart
+      , dy = pageY - this.state.YMouseStart;
+    var maxDegreesX = 90,
+      maxDegreesY = 120;
+    var degreesForPixelYaw = maxDegreesX / this.props.componentWidth,
+      degreesForPixelPitch = maxDegreesY / this.props.componentHeight;
+    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw,
+      pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
+    return [yaw, 0, pitch];
   },
 
   showControlBar: function(event) {
