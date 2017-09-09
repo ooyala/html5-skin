@@ -110,6 +110,8 @@ module.exports = {
     UNMUTE: "Unmute",
     FULLSCREEN: "Fullscreen",
     EXIT_FULLSCREEN: "Exit Fullscreen",
+    STEREO_ON: "Stereoscopic",
+    STEREO_OFF: "Monoscopic",
     SEEK_SLIDER: "Seek slider",
     VOLUME_SLIDER: "Volume slider",
     VOLUME_PERCENT: "{volume}% volume",
