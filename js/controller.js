@@ -143,7 +143,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullWindow": false,
       "autoPauseDisabled": false,
 
-      "isVideo360": false
+      "isVideo360": false,
+      "viewingDirection": {yaw: 0, roll: 0, pitch: 0}
     };
 
     this.init();
@@ -638,6 +639,26 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
         this.state.mainVideoDuration = this.state.duration;
       }
+    },
+
+    onTouching: function(params, isOnVideoClick) {
+      if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
+        if (this.state.isVideo360 && isOnVideoClick) {
+          this.mb.publish(OO.EVENTS.TOUCHING, this.focusedElement, params);
+        }
+      }
+    },
+
+    onTouched: function (isOnVideoClick) {
+      if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
+        if (this.state.isVideo360 && isOnVideoClick) {
+          this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement);
+        }
+      }
+    },
+
+    setViewingDirection: function(event, yaw, roll, pitch) {
+      this.state.viewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
     },
 
     onSeeked: function(event) {
@@ -1161,6 +1182,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.TOUCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VC_TOUCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
@@ -1244,6 +1268,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     toggleMute: function(muted) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
+    },
+  
+    moveToDirection: function (rotate, direction) {
+      OO.log("moveToDirection is called");
+      this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, this.focusedElement, rotate, direction);
     },
 
     togglePlayPause: function() {

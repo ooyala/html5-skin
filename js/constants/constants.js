@@ -7,7 +7,8 @@ module.exports = {
     PLAYING : "playing",
     PAUSE : "pause",
     END : "end",
-    ERROR : "error"
+    ERROR : "error",
+    TOUCH: "touch"
   },
 
   SCREEN: {
