@@ -12,6 +12,7 @@ var React = require('react'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     CONSTANTS = require('../constants/constants');
+    ViewControls = require('../components/viewControls');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -280,6 +281,14 @@ var PlayingScreen = React.createClass({
           playerState={this.props.playerState}
           isLiveStream={this.props.isLiveStream} />
       </div>
+      
+      {
+        this.isVideo360 &&
+        <ViewControls
+          {...this.props}
+          controlBarVisible={this.state.controlBarVisible}
+        />
+      }
     </div>
     );
   }
