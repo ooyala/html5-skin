@@ -7,9 +7,9 @@ var TestUtils = require('react-addons-test-utils');
 var PlayingScreen = require('../../js/views/playingScreen');
 
 describe('PlayingScreen', function () {
-  it('creates a PlayingScreen and checks mouseUp, mouseMove without video360', function () {
-    var moved = false;
-    var clicked = false;
+  it('creates a PlayingScreen and checks mouseMove, mouseUp without video360', function () {
+    var isMoved = false
+      , isPlayPause = false;
     var mockController = {
       state: {
         isMobile: false,
@@ -19,8 +19,8 @@ describe('PlayingScreen', function () {
         },
         isVideo360: false
       },
-      togglePlayPause: function(){clicked = true},
-      startHideControlBarTimer: function() {moved = true}
+      togglePlayPause: function(){ isPlayPause = true },
+      startHideControlBarTimer: function() { isMoved = true }
     };
 
     var closedCaptionOptions = {
@@ -28,15 +28,15 @@ describe('PlayingScreen', function () {
     };
 
     // Render pause screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
+    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller={mockController} closedCaptionOptions={closedCaptionOptions}/>);
 
     var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
 
     TestUtils.Simulate.mouseMove(screen[0]);
-    expect(moved).toBe(false);
+    expect(isMoved).toBe(false);
 
     TestUtils.Simulate.mouseUp(screen[0]);
-    expect(clicked).toBe(true);
+    expect(isPlayPause).toBe(true);
   });
   it('creates a PlayingScreen and checks mouseDown, mouseUp with video360', function() {
     var isTouched = false
@@ -74,12 +74,12 @@ describe('PlayingScreen', function () {
       YMouseStart: -20
     });
 
-    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
+    var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
 
-    TestUtils.Simulate.mouseDown(screen);
+    TestUtils.Simulate.mouseDown(screen[0]);
     expect(isTouched).toBe(true);
 
-    TestUtils.Simulate.mouseUp(screen);
+    TestUtils.Simulate.mouseUp(screen[0]);
     expect(isTouched).toBe(true);
 
   });

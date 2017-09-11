@@ -434,7 +434,7 @@ var ControlBar = React.createClass({
       }).bind(this),
   
       "stereo": (function (alignment) {
-        return !this.vr ? null :
+        return (!this.vr) ? null :
           <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
             onClick={this.handleStereoClick}
             onMouseUp={Utils.blurOnMouseUp}
@@ -445,11 +445,11 @@ var ControlBar = React.createClass({
             tabIndex="0"
             aria-label={stereoAriaLabel}
           >
-          <span
-            className={'oo-vr-icon--type ' + stereoIconClassName}
-            onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}
-            onClick={this.props.onClick}
-          />
+            <span
+              className={'oo-vr-icon--type ' + stereoIconClassName}
+              onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}
+              onClick={this.props.onClick}
+            />
             <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple}
               bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
           </button>
@@ -596,6 +596,7 @@ var ControlBar = React.createClass({
     };
     return returnStyles;
   },
+
 
   render: function () {
     var controlBarClass = ClassNames({
