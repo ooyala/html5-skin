@@ -19,7 +19,7 @@ describe('AccessibilityControls', function () {
     };
 
     var accessibilityControls = new AccessibilityControls(controllerMock);
-    accessibilityControls.handleKey(mockEvent)
+    accessibilityControls.keyEventDown(mockEvent)
   });
 
   it('tests down arrow key', function () {
@@ -40,7 +40,7 @@ describe('AccessibilityControls', function () {
     };
 
     var accessibilityControls = new AccessibilityControls(controllerMock);
-    accessibilityControls.handleKey(mockEvent)
+    accessibilityControls.keyEventDown(mockEvent)
   });
 
   it('tests up arrow key', function () {
@@ -61,7 +61,7 @@ describe('AccessibilityControls', function () {
     };
 
     var accessibilityControls = new AccessibilityControls(controllerMock);
-    accessibilityControls.handleKey(mockEvent)
+    accessibilityControls.keyEventDown(mockEvent)
   });
 
   it('tests right arrow key', function () {
@@ -89,7 +89,7 @@ describe('AccessibilityControls', function () {
     };
 
     var accessibilityControls = new AccessibilityControls(controllerMock);
-    accessibilityControls.handleKey(mockEvent)
+    accessibilityControls.keyEventDown(mockEvent)
   });
 
   it('tests left arrow key', function () {
@@ -117,8 +117,25 @@ describe('AccessibilityControls', function () {
     };
 
     var accessibilityControls = new AccessibilityControls(controllerMock);
-    accessibilityControls.handleKey(mockEvent);
-    accessibilityControls.handleKey(mockEvent);
+    accessibilityControls.keyEventDown(mockEvent);
+    accessibilityControls.keyEventDown(mockEvent);
+  });
+
+  it('tests "A" key', function () {
+    var controllerMock = {
+      state: {
+        accessibilityControlsEnabled: true,
+        isVideo360: true
+      },
+      moveToDirection: function() {},
+    };
+
+    var mockEvent = {
+      keyCode: 65,
+    };
+
+    var accessibilityControls = new AccessibilityControls(controllerMock);
+    accessibilityControls.keyEventDown(mockEvent);
   });
 
   it('tests disabled accessibility controls', function () {
@@ -130,7 +147,7 @@ describe('AccessibilityControls', function () {
     var mockEvent = {};
 
     var accessibilityControls = new AccessibilityControls(controllerMock);
-    accessibilityControls.handleKey(mockEvent)
+    accessibilityControls.keyEventDown(mockEvent);
   });
 
 

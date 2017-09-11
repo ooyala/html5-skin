@@ -3,33 +3,45 @@ var Utils = require('./utils');
 
 var AccessibilityControls = function (controller) {
   this.controller = controller;
+  this.allowed = true;
   this.state = {
     seekRate: 1,
-    lastKeyDownTime: 0
+    lastKeyDownTime: 0,
+    "keyMapsList": [
+      {"char": CONSTANTS.KEYCODES.A, "direction": "left"},
+      {"char": CONSTANTS.KEYCODES.D, "direction": "right"},
+      {"char": CONSTANTS.KEYCODES.W, "direction": "up"},
+      {"char": CONSTANTS.KEYCODES.S, "direction": "down"}
+    ]
   };
-  this.keyEvent = this.handleKey.bind(this);
-  document.addEventListener('keydown', this.keyEvent);
+  this.keyEventDown = this.keyEventDown.bind(this);
+  this.keyEventUp = this.keyEventUp.bind(this);
+  this.handleKeyClick = this.handleKeyClick.bind(this);
+  this.getTargetTagName = this.getTargetTagName.bind(this);
+
+  document.addEventListener("keydown", this.keyEventDown);
+  document.addEventListener("keyup", this.keyEventUp);
 };
 
 AccessibilityControls.prototype = {
   cleanUp : function() {
-    document.removeEventListener('keydown', this.keyEvent);
+    document.removeEventListener("keydown", this.keyEventDown);
+    document.removeEventListener("keyup", this.keyEventUp);
   },
 
-  handleKey: function(e) {
+  keyEventDown: function(e) {
     if (!this.controller.state.accessibilityControlsEnabled) {
       return;
     }
 
-    var targetTagName;
-    if (e.target && typeof e.target.tagName === 'string') {
-      targetTagName = e.target.tagName.toLowerCase();
-    }
+    var targetTagName = this.getTargetTagName(e);
+    var charCode = e.which || e.keyCode;
+    this.handleKeyClick(e, this.state.keyMapsList, charCode, true, targetTagName); //start rotate 360
     // Slider interaction requires the arrow keys. When a slider is active we should
     // disable arrow key controls
     var sliderIsActive = document.activeElement && document.activeElement.getAttribute('role') === 'slider';
 
-    switch (e.keyCode) {
+    switch (charCode) {
       case CONSTANTS.KEYCODES.SPACE_KEY:
         // We override the default behavior when the target element is a button (pressing
         // the spacebar on a button should activate it).
@@ -58,6 +70,41 @@ AccessibilityControls.prototype = {
         break;
       default:
         break;
+    }
+  },
+
+  keyEventUp: function(e) {
+    if (!this.controller.state.accessibilityControlsEnabled) { return; }
+    var targetTagName = this.getTargetTagName(e);
+    var charCode = e.which || e.keyCode;
+    this.handleKeyClick(e, this.state.keyMapsList, charCode, false, targetTagName);  //stop rotate 360
+  },
+
+  getTargetTagName: function(e) {
+    var targetTagName = "";
+    if (e.target && typeof e.target.tagName === "string") {
+      targetTagName = e.target.tagName.toLowerCase();
+    }
+    return targetTagName;
+  },
+
+  handleKeyClick: function(e, keyMapsList, char, bool, targetTagName) {
+    /*
+     * keyMapsList - array of objects {char: 83, direction: 'down'}
+     */
+    if (!this.controller.state.isVideo360) { return; }
+    for (var i=0; i<keyMapsList.length; i++) {
+      if (char === keyMapsList[i]['char'] && targetTagName !== "button") {
+        if (e.repeat != undefined) {
+          this.allowed = !e.repeat;
+        }
+        if (!this.allowed) {
+          return;
+        }
+        this.allowed = !bool; //prevent repeat of keyDown
+        this.controller.moveToDirection(bool, keyMapsList[i]['direction']);
+        break;
+      }
     }
   },
 

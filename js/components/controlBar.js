@@ -434,7 +434,9 @@ var ControlBar = React.createClass({
       }).bind(this),
   
       "stereo": (function (alignment) {
-        return !this.vr ? null :
+        return (!this.vr || !this.isMobile) ?
+          null
+          :
           <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
             onClick={this.handleStereoClick}
             onMouseUp={Utils.blurOnMouseUp}
@@ -596,6 +598,7 @@ var ControlBar = React.createClass({
     };
     return returnStyles;
   },
+
 
   render: function () {
     var controlBarClass = ClassNames({
