@@ -117,15 +117,23 @@ var PauseScreen = React.createClass({
 
 
     var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
-      <AdOverlay {...this.props}
-                 overlay={this.props.controller.state.adOverlayUrl}
-                 showOverlay={this.props.controller.state.showAdOverlay}
-                 showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}/> : null;
+      <AdOverlay
+        {...this.props}
+        overlay={this.props.controller.state.adOverlayUrl}
+        showOverlay={this.props.controller.state.showAdOverlay}
+        showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
+      />
+      :
+      null;
 
     var upNextPanel = (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
-      <UpNextPanel {...this.props}
-                   controlBarVisible={this.state.controlBarVisible}
-                   currentPlayhead={this.props.currentPlayhead}/> : null;
+      <UpNextPanel
+        {...this.props}
+        controlBarVisible={this.state.controlBarVisible}
+        currentPlayhead={this.props.currentPlayhead}
+      />
+      :
+      null;
 
     return (
       <div className="oo-state-screen oo-pause-screen">
@@ -168,10 +176,12 @@ var PauseScreen = React.createClass({
 
           {upNextPanel}
 
-          <ControlBar {...this.props}
-                      controlBarVisible={this.state.controlBarVisible}
-                      playerState={this.state.playerState}
-                      isLiveStream={this.props.isLiveStream}/>
+          <ControlBar
+            {...this.props}
+            controlBarVisible={this.state.controlBarVisible}
+            playerState={this.state.playerState}
+            isLiveStream={this.props.isLiveStream}
+          />
         </div>
       </div>
     );
