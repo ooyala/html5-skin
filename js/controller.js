@@ -643,18 +643,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onTouching: function(params, isOnVideoClick) {
-      if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
-        if (this.state.isVideo360 && isOnVideoClick) {
-          this.mb.publish(OO.EVENTS.TOUCHING, this.focusedElement, params);
-        }
+      if (this.state.isVideo360 && isOnVideoClick) {
+        this.mb.publish(OO.EVENTS.TOUCHING, this.focusedElement, params);
       }
     },
 
     onTouched: function (isOnVideoClick) {
-      if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
-        if (this.state.isVideo360 && isOnVideoClick) {
-          this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement);
-        }
+      if (this.state.isVideo360 && isOnVideoClick) {
+        this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement);
       }
     },
 
