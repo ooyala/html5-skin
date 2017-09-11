@@ -128,12 +128,12 @@ var Skin = React.createClass({
   getDirectionParams: function(pageX, pageY) {
     var dx = pageX - this.state.XMouseStart
       , dy = pageY - this.state.YMouseStart;
-    var maxDegreesX = 90,
-      maxDegreesY = 120;
-    var degreesForPixelYaw = maxDegreesX / this.state.componentWidth,
-      degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
-    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw,
-      pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
+    var maxDegreesX = 90
+      , maxDegreesY = 120;
+    var degreesForPixelYaw = maxDegreesX / this.state.componentWidth
+      , degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
+    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw
+      , pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
     return [yaw, 0, pitch];
   },
 
