@@ -3,7 +3,8 @@ jest.dontMock('../../js/components/scrubberBar')
     .dontMock('../../js/components/thumbnail')
     .dontMock('../../js/components/thumbnailCarousel')
     .dontMock('../../js/constants/constants')
-    .dontMock('../../config/skin.json');
+    .dontMock('../../config/skin.json')
+    .dontMock('underscore');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
@@ -12,11 +13,51 @@ var skinConfig = require('../../config/skin.json');
 var ReactDOM = require('react-dom');
 var ScrubberBar = require('../../js/components/scrubberBar');
 var Utils = require('../../js/components/utils');
+var _ = require('underscore');
 
 var thumbnails = { "data":{ "available_time_slices":[ 0, 10 ], "available_widths":[ 120 ], "thumbnails":{ "0":{ "120":{ "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_1.jpg", "width":120, "height":80 } }, "10":{ "120":{ "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_2.jpg", "width":120, "height":80 } }, "errors":[ { "status":404, "code":"Not Found", "title":"unable to find thumbnail images", "detail":"embed code not found" } ] } }};
 
 // start unit test
 describe('ScrubberBar', function () {
+
+  var baseMockController, baseMockProps;
+  var defaultSkinConfig = JSON.parse(JSON.stringify(skinConfig));
+
+  // NOTE
+  // Most props actually come from the controller but they're passed separately.
+  // In order to avoid modifying both baseMockController and baseMockProps you can
+  // update the baseMockController object and then just call updateBaseMockProps().
+  var updateBaseMockProps = function() {
+    _.extend(baseMockProps, {
+      currentPlayhead: baseMockController.state.currentPlayhead,
+      duration: baseMockController.state.duration,
+      controlBarVisible: baseMockController.state.controlBarVisible,
+      playerState: baseMockController.state.playerState,
+      isLiveStream: baseMockController.state.isLiveStream,
+      controller: baseMockController
+    });
+  };
+
+  // TODO
+  // Old unit tests should use the base mock controller and skinConfig
+  // instead of defining them manually each time
+  beforeEach(function() {
+    baseMockController = {
+      state: {
+        isMobile: false,
+        currentPlayhead: 0,
+        duration: 120,
+        playerState: CONSTANTS.STATE.PLAYING,
+        controlBarVisible: true,
+        isLiveStream: false
+      }
+    };
+    baseMockProps = {
+      skinConfig: JSON.parse(JSON.stringify(defaultSkinConfig))
+    };
+    updateBaseMockProps();
+  });
+
   it('creates a scrubber bar', function () {
 
     var mockController = {
@@ -56,6 +97,37 @@ describe('ScrubberBar', function () {
     var playheadBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-playhead");
     expect(playheadBar.style.backgroundColor).toBe("blue");
     expect(ReactDOM.findDOMNode(DOM.refs.playhead).style.backgroundColor).toBe("blue");
+  });
+
+  it('should render ARIA attributes', function () {
+    baseMockController.state.currentPlayhead = 0;
+    baseMockController.state.duration = 60;
+    updateBaseMockProps();
+    var DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
+    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-scrubber-bar");
+    expect(scrubberBar.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.SEEK_SLIDER);
+    expect(scrubberBar.getAttribute('aria-valuemin')).toBe("0");
+    expect(scrubberBar.getAttribute('aria-valuemax')).toBe(baseMockController.state.duration.toString());
+    expect(scrubberBar.getAttribute('aria-valuenow')).toBe(baseMockController.state.currentPlayhead.toFixed(2));
+    expect(scrubberBar.getAttribute('aria-valuetext')).toBe('00:00 of 01:00');
+    expect(scrubberBar.getAttribute('data-focus-id')).toBe('scrubberBar');
+  });
+
+  it('should update the ARIA value in order to reflect the current playhead', function() {
+    baseMockController.state.currentPlayhead = 2;
+    baseMockController.state.duration = 60;
+    updateBaseMockProps();
+    var DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
+    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-scrubber-bar");
+    expect(scrubberBar.getAttribute('aria-valuenow')).toBe('2.00');
+    expect(scrubberBar.getAttribute('aria-valuetext')).toBe('00:02 of 01:00');
+
+    baseMockController.state.currentPlayhead = 60;
+    updateBaseMockProps();
+    DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
+    scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-scrubber-bar");
+    expect(scrubberBar.getAttribute('aria-valuenow')).toBe('60.00');
+    expect(scrubberBar.getAttribute('aria-valuetext')).toBe('01:00 of 01:00');
   });
 
   it('creates a scrubber bar played bar and play head with scrubberbar played color setting', function () {
