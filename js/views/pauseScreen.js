@@ -12,12 +12,14 @@ var React = require('react'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon'),
     Utils = require('../components/utils'),
-    AnimateMixin = require('../mixins/animateMixin');
+    AnimateMixin = require('../mixins/animateMixin'),
+    ViewControls = require('../components/viewControls');
 
 var PauseScreen = React.createClass({
   mixins: [ResizeMixin, AnimateMixin],
 
   getInitialState: function() {
+    this.isVideo360 = this.props.controller.state.isVideo360;
     return {
       descriptionText: this.props.contentTree.description,
       controlBarVisible: true
@@ -183,6 +185,15 @@ var PauseScreen = React.createClass({
             isLiveStream={this.props.isLiveStream}
           />
         </div>
+
+        {
+          this.isVideo360 &&
+          <ViewControls
+            {...this.props}
+            controlBarVisible={this.state.controlBarVisible}
+          />
+        }
+
       </div>
     );
   }
