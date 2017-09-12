@@ -11,7 +11,7 @@ var React = require('react'),
     TextTrack = require('../components/textTrackPanel'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
-    CONSTANTS = require('../constants/constants');
+    CONSTANTS = require('../constants/constants'),
     ViewControls = require('../components/viewControls');
 
 var PlayingScreen = React.createClass({
@@ -24,11 +24,7 @@ var PlayingScreen = React.createClass({
 
     return {
       controlBarVisible: true,
-      timer: null,
-      isMouseDown: false,
-      isMouseMove: false,
-      XMouseStart: 0,
-      YMouseStart: 0,
+      timer: null
     };
   },
 
@@ -116,18 +112,7 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseDown: function(e) {
-    if (!this.isVideo360) {
-      return;
-    }
-    
-    this.setState({
-      isMouseDown: true,
-      XMouseStart: e.pageX,
-      YMouseStart: e.pageY
-    });
-    if (this.props.controller.onTouched) {
-      this.props.controller.onTouched(true);
-    }
+    this.props.handleVRPlayerMouseDown(e);
   },
 
   handlePlayerMouseMove: function(e) {
@@ -135,17 +120,7 @@ var PlayingScreen = React.createClass({
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
-    if (this.isVideo360 && this.state.isMouseDown) {
-  
-      this.setState({
-        isMouseMove: true
-      });
-      
-      var params = this.getDirectionParams(e.pageX, e.pageY);
-      if (this.props.controller.onTouching) {
-        this.props.controller.onTouching(params, true);
-      }
-    }
+    this.props.handleVRPlayerMouseMove(e);
   },
 
   handlePlayerMouseUp: function(e) {
@@ -153,51 +128,24 @@ var PlayingScreen = React.createClass({
     if (!this.isMobile) {
       e.stopPropagation(); // W3C
       e.cancelBubble = true; // IE
-
       this.props.controller.state.accessibilityControlsEnabled = true;
       if (!this.isVideo360) {
         this.props.controller.togglePlayPause();
       }
     }
+    this.props.handleVRPlayerMouseUp();
     // for mobile, touch is handled in handleTouchEnd
-    if (this.isVideo360) {
-      this.setState({
-        isMouseDown: false,
-      });
-      if (this.props.controller.onTouched) {
-        this.props.controller.onTouched(true);
-      }
-    }
   },
-  
+
   handlePlayerMouseLeave: function () {
-    if (this.isVideo360) {
-      this.setState({
-        isMouseDown: false,
-      });
-    }
+    this.props.handleVRPlayerMouseLeave();
   },
-  
+
   handlePlayerClicked: function (event) {
-    if(!this.state.isMouseMove){
+    if (!this.props.isMouseMove) {
       this.props.controller.togglePlayPause(event);
     }
-    
-    this.setState({
-      isMouseMove: false,
-    });
-  },
-  
-  getDirectionParams: function(pageX, pageY) {
-    var dx = pageX - this.state.XMouseStart
-      , dy = pageY - this.state.YMouseStart;
-    var maxDegreesX = 90,
-      maxDegreesY = 120;
-    var degreesForPixelYaw = maxDegreesX / this.props.componentWidth,
-      degreesForPixelPitch = maxDegreesY / this.props.componentHeight;
-    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw,
-      pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
-    return [yaw, 0, pitch];
+    this.props.handleVRPlayerClick();
   },
 
   showControlBar: function(event) {
@@ -234,14 +182,14 @@ var PlayingScreen = React.createClass({
       ref="PlayingScreen"
       onMouseOver={this.showControlBar}
       onMouseOut={this.hideControlBar}
-      onMouseMove={this.handlePlayerMouseMove}
-      onMouseLeave={this.handlePlayerMouseLeave}
-      onKeyUp={this.handleKeyDown}
+      onKeyDown={this.handleKeyDown}
     >
       <div
         className="oo-state-screen-selectable"
         onMouseDown={this.handlePlayerMouseDown}
         onMouseUp={this.handlePlayerMouseUp}
+        onMouseMove={this.handlePlayerMouseMove}
+        onMouseLeave={this.handlePlayerMouseLeave}
         onTouchEnd={this.handleTouchEnd}
         onClick={this.handlePlayerClicked}
       />
@@ -269,7 +217,7 @@ var PlayingScreen = React.createClass({
           playerState={this.props.playerState}
           isLiveStream={this.props.isLiveStream} />
       </div>
-      
+
       {
         this.isVideo360 &&
         <ViewControls

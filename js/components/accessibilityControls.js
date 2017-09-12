@@ -56,7 +56,7 @@ AccessibilityControls.prototype = {
       case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
         if (!sliderIsActive) {
           e.preventDefault();
-          var increase = e.keyCode === CONSTANTS.KEYCODES.UP_ARROW_KEY ? true : false;
+          var increase = !!(charCode === CONSTANTS.KEYCODES.UP_ARROW_KEY);
           this.changeVolumeBy(CONSTANTS.A11Y_CTRLS.VOLUME_CHANGE_DELTA, increase);
         }
         break;
@@ -64,7 +64,7 @@ AccessibilityControls.prototype = {
       case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
         if (!sliderIsActive) {
           e.preventDefault();
-          var forward = e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY ? true : false;
+          var forward = !!(charCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY);
           this.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, forward);
         }
         break;
