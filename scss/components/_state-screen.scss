@@ -30,6 +30,7 @@
     @extend .oo-expand;
     text-decoration:none;
     cursor: default;
+    z-index: 1000;
     //for IE
     background-color:white;
     opacity: 0;

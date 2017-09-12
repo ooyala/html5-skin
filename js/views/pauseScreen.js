@@ -12,12 +12,14 @@ var React = require('react'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon'),
     Utils = require('../components/utils'),
-    AnimateMixin = require('../mixins/animateMixin');
+    AnimateMixin = require('../mixins/animateMixin'),
+    ViewControls = require('../components/viewControls');
 
 var PauseScreen = React.createClass({
   mixins: [ResizeMixin, AnimateMixin],
 
   getInitialState: function() {
+    this.isVideo360 = this.props.controller.state.isVideo360;
     return {
       descriptionText: this.props.contentTree.description,
       controlBarVisible: true
@@ -42,8 +44,27 @@ var PauseScreen = React.createClass({
 
   handleClick: function(event) {
     event.preventDefault();
-    this.props.controller.togglePlayPause();
+    if(!this.props.isMouseMove){
+      this.props.controller.togglePlayPause(event);
+    }
     this.props.controller.state.accessibilityControlsEnabled = true;
+    this.props.handleVRPlayerClick();
+  },
+
+  handlePlayerMouseDown: function(e) {
+    this.props.controller.state.accessibilityControlsEnabled = true;
+    this.props.handleVRPlayerMouseDown(e);
+  },
+  handlePlayerMouseMove: function(e) {
+    this.props.handleVRPlayerMouseMove(e);
+  },
+  handlePlayerMouseUp: function(e) {
+    e.stopPropagation(); // W3C
+    e.cancelBubble = true; // IE
+    this.props.handleVRPlayerMouseUp();
+  },
+  handlePlayerMouseLeave: function() {
+    this.props.handleVRPlayerMouseLeave()
   },
 
   /**
@@ -107,22 +128,43 @@ var PauseScreen = React.createClass({
 
     var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
     var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.state.descriptionText}</div>);
+
+
     var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
-      <AdOverlay {...this.props}
+      <AdOverlay
+        {...this.props}
         overlay={this.props.controller.state.adOverlayUrl}
         showOverlay={this.props.controller.state.showAdOverlay}
-        showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}/> : null;
+        showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
+      />
+      :
+      null;
 
     var upNextPanel = (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
-      <UpNextPanel {...this.props}
+      <UpNextPanel
+        {...this.props}
         controlBarVisible={this.state.controlBarVisible}
-        currentPlayhead={this.props.currentPlayhead}/> : null;
+        currentPlayhead={this.props.currentPlayhead}
+      />
+      :
+      null;
 
     return (
       <div className="oo-state-screen oo-pause-screen">
-        <div className={fadeUnderlayClass}></div>
 
-        <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
+        {
+          !this.props.controller.state.isVideo360 &&
+          <div className={fadeUnderlayClass} />
+        }
+
+        <div
+          className="oo-state-screen-selectable"
+          onClick={this.handleClick}
+          onMouseDown={this.handlePlayerMouseDown}
+          onMouseUp={this.handlePlayerMouseUp}
+          onMouseMove={this.handlePlayerMouseMove}
+          onMouseLeave={this.handlePlayerMouseLeave}
+        />
 
         <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
@@ -148,11 +190,22 @@ var PauseScreen = React.createClass({
 
           {upNextPanel}
 
-          <ControlBar {...this.props}
+          <ControlBar
+            {...this.props}
             controlBarVisible={this.state.controlBarVisible}
             playerState={this.state.playerState}
-            isLiveStream={this.props.isLiveStream}/>
+            isLiveStream={this.props.isLiveStream}
+          />
         </div>
+
+        {
+          this.isVideo360 &&
+          <ViewControls
+            {...this.props}
+            controlBarVisible={this.state.controlBarVisible}
+          />
+        }
+
       </div>
     );
   }
