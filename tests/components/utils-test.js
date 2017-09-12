@@ -404,7 +404,7 @@ describe('Utils', function () {
     expect(finalConfig.shareScreen.shareContent[1]).not.toBe(SkinJSON.shareScreen.shareContent[1]);
     expect(finalConfig.shareScreen.shareContent).toEqual(['social', 'ooyala']);
     // test array merge for buttons (prepend)
-    expect(finalConfig.buttons.desktopContent.length).toBe(15);
+    expect(finalConfig.buttons.desktopContent.length).toBe(14);
     // test new buttons are placed after flexibleSpace
     expect(finalConfig.buttons.desktopContent[4].name).toBe("flexibleSpace");
     expect(finalConfig.buttons.desktopContent[5].name).toBe("ooyala");
