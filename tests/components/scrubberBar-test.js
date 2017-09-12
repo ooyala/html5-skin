@@ -130,6 +130,49 @@ describe('ScrubberBar', function () {
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('01:00 of 01:00');
   });
 
+  it('should use different ARIA value text for live videos', function() {
+    baseMockController.state.isLiveStream = true;
+    baseMockController.state.currentPlayhead = 2;
+    baseMockController.state.duration = 0;
+    updateBaseMockProps();
+    var DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
+    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-scrubber-bar");
+    expect(scrubberBar.getAttribute('aria-valuetext')).toBe('Live video');
+
+    baseMockController.state.currentPlayhead = 60;
+    baseMockController.state.duration = 120;
+    updateBaseMockProps();
+    DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
+    scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-scrubber-bar");
+    expect(scrubberBar.getAttribute('aria-valuetext')).toBe('01:00 of 02:00 live video');
+  });
+
+  it('should call a11y ctrls seek method when arrow keys are pressed', function() {
+    var seekForwardCalled = 0;
+    var seekBackCalled = 0;
+    baseMockController.state.duration = 60;
+    baseMockController.accessibilityControls = {
+      seekBy: function(seconds, forward) {
+        if (forward) {
+          seekForwardCalled++;
+        } else {
+          seekBackCalled++;
+        }
+      }
+    };
+    updateBaseMockProps();
+    var DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
+    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-scrubber-bar");
+    TestUtils.Simulate.keyDown(scrubberBar, { key: CONSTANTS.KEY_VALUES.ARROW_UP });
+    TestUtils.Simulate.keyDown(scrubberBar, { key: CONSTANTS.KEY_VALUES.ARROW_RIGHT });
+    expect(seekForwardCalled).toBe(2);
+    expect(seekBackCalled).toBe(0);
+    TestUtils.Simulate.keyDown(scrubberBar, { key: CONSTANTS.KEY_VALUES.ARROW_DOWN });
+    TestUtils.Simulate.keyDown(scrubberBar, { key: CONSTANTS.KEY_VALUES.ARROW_LEFT });
+    expect(seekForwardCalled).toBe(2);
+    expect(seekBackCalled).toBe(2);
+  });
+
   it('creates a scrubber bar played bar and play head with scrubberbar played color setting', function () {
     var mockController = {
       state: {
