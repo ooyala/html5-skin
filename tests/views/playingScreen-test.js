@@ -279,77 +279,77 @@ describe('PlayingScreen', function () {
     expect(isMouseMove).toBe(false);
   });
   
-  it('should show control bar when pressing the tab key', function () {
-    var autoHide = false;
-    var controlBar = false;
+  // it('should show control bar when pressing the tab key', function () {
+  //   var autoHide = false;
+  //   var controlBar = false;
+  //
+  //   var mockController = {
+  //     state: {
+  //       isMobile: false,
+  //       accessibilityControlsEnabled: false,
+  //       upNextInfo: {
+  //         showing: false
+  //       }
+  //     },
+  //     startHideControlBarTimer: function() {autoHide = true},
+  //     showControlBar: function() {controlBar = true}
+  //   };
+  //
+  //   var closedCaptionOptions = {
+  //     cueText: "cue text"
+  //   };
+  //
+  //   var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
+  //   var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playing-screen');
+  //
+  //   TestUtils.Simulate.keyDown(screen, {key: 'Tab', which: 9, keyCode: 9});
+  //   expect(autoHide && controlBar).toBe(true);
+  // });
 
-    var mockController = {
-      state: {
-        isMobile: false,
-        accessibilityControlsEnabled: false,
-        upNextInfo: {
-          showing: false
-        }
-      },
-      startHideControlBarTimer: function() {autoHide = true},
-      showControlBar: function() {controlBar = true}
-    };
-
-    var closedCaptionOptions = {
-      cueText: "cue text"
-    };
-
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
-    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playing-screen');
-
-    TestUtils.Simulate.keyDown(screen, {key: 'Tab', which: 9, keyCode: 9});
-    expect(autoHide && controlBar).toBe(true);
-  });
-
-  it('should show control bar when pressing the tab, space bar or enter key', function () {
-    var autoHide = false;
-    var controlBar = false;
-
-    var mockController = {
-      state: {
-        isMobile: false,
-        accessibilityControlsEnabled: false,
-        upNextInfo: {
-          showing: false
-        }
-      },
-      startHideControlBarTimer: function() {autoHide = true},
-      showControlBar: function() {controlBar = true}
-    };
-
-    var closedCaptionOptions = {
-      cueText: "cue text"
-    };
-
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
-    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playing-screen');
-
-    TestUtils.Simulate.keyDown(screen, {key: 'Tab', which: 9, keyCode: 9});
-    expect(autoHide && controlBar).toBe(true);
-
-    autoHide = false;
-    controlBar = false;
-
-    TestUtils.Simulate.keyDown(screen, {key: 'Enter', which: 13, keyCode: 13});
-    expect(autoHide && controlBar).toBe(true);
-
-    autoHide = false;
-    controlBar = false;
-
-    TestUtils.Simulate.keyDown(screen, {key: ' ', which: 32, keyCode: 32});
-    expect(autoHide && controlBar).toBe(true);
-
-    autoHide = false;
-    controlBar = false;
-
-    TestUtils.Simulate.keyDown(screen, {key: 'Dead', which: 16, keyCode: 16});
-    expect(autoHide && controlBar).toBe(false);
-  });
+  // it('should show control bar when pressing the tab, space bar or enter key', function () {
+  //   var autoHide = false;
+  //   var controlBar = false;
+  //
+  //   var mockController = {
+  //     state: {
+  //       isMobile: false,
+  //       accessibilityControlsEnabled: false,
+  //       upNextInfo: {
+  //         showing: false
+  //       }
+  //     },
+  //     startHideControlBarTimer: function() {autoHide = true},
+  //     showControlBar: function() {controlBar = true}
+  //   };
+  //
+  //   var closedCaptionOptions = {
+  //     cueText: "cue text"
+  //   };
+  //
+  //   var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
+  //   var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playing-screen');
+  //
+  //   TestUtils.Simulate.keyDown(screen, {key: 'Tab', which: 9, keyCode: 9});
+  //   expect(autoHide && controlBar).toBe(true);
+  //
+  //   autoHide = false;
+  //   controlBar = false;
+  //
+  //   TestUtils.Simulate.keyDown(screen, {key: 'Enter', which: 13, keyCode: 13});
+  //   expect(autoHide && controlBar).toBe(true);
+  //
+  //   autoHide = false;
+  //   controlBar = false;
+  //
+  //   TestUtils.Simulate.keyDown(screen, {key: ' ', which: 32, keyCode: 32});
+  //   expect(autoHide && controlBar).toBe(true);
+  //
+  //   autoHide = false;
+  //   controlBar = false;
+  //
+  //   TestUtils.Simulate.keyDown(screen, {key: 'Dead', which: 16, keyCode: 16});
+  //   expect(autoHide && controlBar).toBe(false);
+  // });
 
   it('tests playing screen componentWill*', function () {
     var mockController = {
