@@ -347,6 +347,30 @@ describe('ControlBar', function () {
     expect(baseMockController.state.focusedControl).toBe(null);
   });
 
+  it('should start auto hide timer after restoring focused control', function() {
+    var startHideControlBarTimerCalled = false;
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 }
+    ];
+    baseMockController.startHideControlBarTimer = function() {
+      startHideControlBarTimerCalled = true;
+    };
+    var controlBar = (
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={baseMockProps.isLiveStream} />
+    );
+    baseMockController.state.focusedControl = null;
+    var DOM = TestUtils.renderIntoDocument(controlBar);
+    expect(startHideControlBarTimerCalled).toBe(false);
+    baseMockController.state.focusedControl = 'playPause';
+    var DOM = TestUtils.renderIntoDocument(controlBar);
+    expect(startHideControlBarTimerCalled).toBe(true);
+  });
+
   it('to toggle share screen', function() {
     var shareClicked = false;
     var mockController = {
