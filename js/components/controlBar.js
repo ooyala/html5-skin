@@ -224,15 +224,17 @@ var ControlBar = React.createClass({
   /**
    * Will handle the keydown event when the controlBar is active and it will restrict
    * tab navigation to elements that are within it when the player is in fullscreen mode.
+   * Note that this only handles the edge cases that are needed in order to loop the tab
+   * focus. Tabbing in between the elements is handled by the browser.
    * @private
    * @param {Object} evt Keydown event object.
    */
   handleControlBarKeyDown: function(evt) {
     if (
-      evt.key !== CONSTANTS.KEY_VALUES.TAB
-      || !this.props.controller.state.fullscreen
-      || !this.domNode
-      || !evt.target
+      evt.key !== CONSTANTS.KEY_VALUES.TAB ||
+      !this.props.controller.state.fullscreen ||
+      !this.domNode ||
+      !evt.target
     ) {
       return;
     }
@@ -268,6 +270,8 @@ var ControlBar = React.createClass({
           firstFocusableElement.focus();
         }
       }
+    } else {
+      OO.log('ControlBar: No focusable elements found');
     }
   },
 
