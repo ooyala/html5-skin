@@ -223,6 +223,10 @@ describe('AccessibilityControls', function () {
         expect(volume).toBe(1);
         a11yCtrls.changeVolumeBy(500, false);
         expect(volume).toBe(0);
+        a11yCtrls.changeVolumeBy(-500, true);
+        expect(volume).toBe(0);
+        a11yCtrls.changeVolumeBy(-500, false);
+        expect(volume).toBe(0);
       });
 
     });
@@ -249,6 +253,13 @@ describe('AccessibilityControls', function () {
         mockCtrl.skin.state.currentPlayhead = 10;
         a11yCtrls.seekBy(5, false);
         expect(newPlayhead).toBe(5);
+      });
+
+      it('should handle negative values gracefully by inverting the direction of the seek', function() {
+        mockCtrl.skin.state.duration = 60;
+        mockCtrl.skin.state.currentPlayhead = 10;
+        a11yCtrls.seekBy(-5, false);
+        expect(newPlayhead).toBe(15);
       });
 
       it('should not seek past the video\'s duration', function() {

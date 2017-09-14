@@ -1652,7 +1652,7 @@ describe('ControlBar', function () {
   });
 
   describe('Tab Navigation', function() {
-    var eventMap, ctrlBarElement, focusableElements, mockEvent;
+    var eventMap, ctrlBarElement, focusableElements, mockEvent, originalAddEventListener;
 
     beforeEach(function() {
       baseMockProps.skinConfig.buttons.desktopContent = [
@@ -1662,9 +1662,10 @@ describe('ControlBar', function () {
       ];
       // Mock addEventListener on document object since TestUtils.Simulate will not work in this case
       eventMap = {};
-      document.addEventListener = jest.genMockFn().mockImpl(function(event, cb) {
+      originalAddEventListener = document.addEventListener;
+      document.addEventListener = function(event, cb) {
         eventMap[event] = cb;
-      });
+      };
       ReactDOM.render(
         <ControlBar
           {...baseMockProps}
@@ -1680,6 +1681,8 @@ describe('ControlBar', function () {
 
     afterEach(function() {
       ReactDOM.unmountComponentAtNode(document.body);
+      // Our version of jest doesn't seem to support mockRestore()
+      document.addEventListener = originalAddEventListener;
       document.body.innerHTML = '';
     });
 
