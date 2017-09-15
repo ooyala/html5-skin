@@ -133,6 +133,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "controlBarVisible": true,
       "forceControlBarVisible": false,
       "timer": null,
+      "bufferingTimer": null,
       "errorCode": null,
       "isSubscribed": false,
       "isPlaybackReadySubscribed": false,
@@ -506,7 +507,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
-        this.state.buffering = false;
+        this.setBufferingState(false);
         this.state.adPauseAnimationDisabled = true;
         this.state.pluginsElement.addClass("oo-showing");
         this.state.pluginsClickElement.removeClass("oo-showing");
@@ -642,18 +643,66 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
+    /**
+     * Fired by the video plugin when the video stalls due to buffering.
+     * @private
+     */
     onBuffering: function(event) {
-      if (this.state.isInitialPlay == false && this.state.screenToShow == CONSTANTS.SCREEN.START_SCREEN) {
-        this.state.buffering = false;
+      if (this.state.isInitialPlay === false && this.state.screenToShow === CONSTANTS.SCREEN.START_SCREEN) {
+        this.setBufferingState(false);
       } else {
-        this.state.buffering = true;
+        this.startBufferingTimer();
       }
-      this.renderSkin();
     },
 
+    /**
+     * Fired by the video plugin when video stalling has ended.
+     * @private
+     */
     onBuffered: function(event) {
-      if (this.state.buffering === true) {
-        this.state.buffering = false;
+      this.setBufferingState(false);
+    },
+
+    /**
+     * Starts a timer that will call setBufferingState() with a value of true after the
+     * time specified in BUFFERING_SPINNER_DELAY has elapsed.
+     * @private
+     */
+    startBufferingTimer: function() {
+      this.state.bufferingTimer = setTimeout(function() {
+        this.setBufferingState(true);
+      }.bind(this), CONSTANTS.UI.BUFFERING_SPINNER_DELAY);
+    },
+
+    /**
+     * Cancels the timer that displays the loading spinner. Should be called when
+     * stalling (buffering) ends, playback resumes, etc.
+     * @private
+     */
+    stopBufferingTimer: function() {
+      clearTimeout(this.state.bufferingTimer);
+      this.state.bufferingTimer = null;
+    },
+
+    /**
+     * Applies the 'buffering' state of the skin which determines whether the
+     * player is stalled. This also determines whether the loading spinner is displayed or not.
+     * IMPORTANT:
+     * The value of this.state.buffering should never be set manually. This function
+     * should be called whenever setting this value.
+     * @private
+     * @param {Boolean} value Must pass true if the player is in buffering state, false otherwise
+     */
+    setBufferingState: function(value) {
+      var buffering = !!value;
+      // Always make sure buffering timer is disabled when buffering has stopped.
+      // This will have no effect if timer hasn't been started.
+      if (!buffering) {
+        this.stopBufferingTimer();
+      }
+      // Only render skin if new state is different
+      if (this.state.buffering !== buffering) {
+        this.state.buffering = buffering;
         this.renderSkin();
       }
     },
