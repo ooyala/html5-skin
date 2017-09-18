@@ -1,3 +1,38 @@
+/*
+ *
+ *  !!!IMPORTANT!!!
+ *
+ *  This file is deprecated. Please use html5skin-test.js for all new controller unit tests.
+ *
+ *  !!!IMPORTANT!!!
+ *
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 jest.dontMock('../js/controller');
 jest.dontMock('screenfull');
 jest.dontMock('../js/constants/constants');
