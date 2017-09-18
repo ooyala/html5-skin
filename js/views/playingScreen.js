@@ -164,15 +164,12 @@ var PlayingScreen = React.createClass({
       onMouseOver={this.showControlBar}
       onMouseOut={this.hideControlBar}
       onMouseMove={this.handlePlayerMouseMove}
-      onMouseLeave={this.handlePlayerMouseLeave}
-      onKeyUp={this.handleKeyDown}
+      onKeyDown={this.handleKeyDown}
     >
       <div
         className="oo-state-screen-selectable"
-        onMouseDown={this.handlePlayerMouseDown}
         onMouseUp={this.handlePlayerMouseUp}
         onTouchEnd={this.handleTouchEnd}
-        onClick={this.handlePlayerClicked}
       />
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>

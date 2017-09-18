@@ -1,5 +1,5 @@
 jest.dontMock('../../js/views/playingScreen')
-    .dontMock('../../js/mixins/resizeMixin');
+  .dontMock('../../js/mixins/resizeMixin');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -19,8 +19,12 @@ describe('PlayingScreen', function () {
         },
         isVideo360: false
       },
-      togglePlayPause: function(){clicked = true},
-      startHideControlBarTimer: function() {moved = true}
+      togglePlayPause: function() {
+        clicked = true;
+      },
+      startHideControlBarTimer: function() {
+        moved = true;
+      }
     };
 
     var closedCaptionOptions = {
@@ -38,9 +42,10 @@ describe('PlayingScreen', function () {
     TestUtils.Simulate.mouseUp(screen[0]);
     expect(clicked).toBe(true);
   });
+
   it('creates a PlayingScreen and checks mouseDown, mouseUp with video360', function() {
-    var isTouched = false
-      , isStartHideControlBarTimer = false;
+    var isTouched = false;
+    var isStartHideControlBarTimer = false;
     var mockController = {
       state: {
         isMobile: false,
@@ -54,7 +59,9 @@ describe('PlayingScreen', function () {
       startHideControlBarTimer: function () {
         isStartHideControlBarTimer = true;
       },
-      onTouched: function() { isTouched = true; },
+      onTouched: function() {
+        isTouched = true;
+      },
     };
     var closedCaptionOptions = {
       cueText: "cue text"
@@ -95,7 +102,9 @@ describe('PlayingScreen', function () {
         },
         isVideo360: false
       },
-      togglePlayPause: function(){clicked = true},
+      togglePlayPause: function() {
+        clicked = true;
+      },
       startHideControlBarTimer: function() {}
     };
 
@@ -126,10 +135,18 @@ describe('PlayingScreen', function () {
           showing: false
         }
       },
-      startHideControlBarTimer: function() {moved = true},
-      togglePlayPause: function(){clicked = true},
-      showControlBar: function() {over = true},
-      hideControlBar: function() {out = true}
+      startHideControlBarTimer: function() {
+        moved = true;
+      },
+      togglePlayPause: function() {
+        clicked = true;
+      },
+      showControlBar: function() {
+        over = true;
+      },
+      hideControlBar: function() {
+        out = true;
+      }
     };
 
     var closedCaptionOptions = {
@@ -166,8 +183,12 @@ describe('PlayingScreen', function () {
           showing: false
         }
       },
-      startHideControlBarTimer: function() {autoHide = true},
-      showControlBar: function() {controlBar = true}
+      startHideControlBarTimer: function() {
+        autoHide = true;
+      },
+      showControlBar: function() {
+        controlBar = true;
+      }
     };
 
     var closedCaptionOptions = {
@@ -193,8 +214,12 @@ describe('PlayingScreen', function () {
           showing: false
         }
       },
-      startHideControlBarTimer: function() {autoHide = true},
-      showControlBar: function() {controlBar = true}
+      startHideControlBarTimer: function() {
+        autoHide = true;
+      },
+      showControlBar: function() {
+        controlBar = true;
+      }
     };
 
     var closedCaptionOptions = {
