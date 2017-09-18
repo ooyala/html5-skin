@@ -73,7 +73,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoAspectRatio": 0,
       "pluginsElement": null,
       "pluginsClickElement": null,
-      "buffering": false,
+      "buffering": false, // Do NOT set manually, call setBufferingState
       "mainVideoBuffered": null,
       "mainVideoPlayhead": 0,
       "adVideoPlayhead": 0,
@@ -294,7 +294,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (mountNode) {
         ReactDOM.unmountComponentAtNode(mountNode);
       }
-      this.cleanUpEventListeners()
+      this.stopBufferingTimer();
+      this.cleanUpEventListeners();
       this.mb = null;
     },
 
@@ -507,7 +508,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
-        this.setBufferingState(false);
         this.state.adPauseAnimationDisabled = true;
         this.state.pluginsElement.addClass("oo-showing");
         this.state.pluginsClickElement.removeClass("oo-showing");
@@ -518,6 +518,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.renderSkin();
         }
       }
+      // For the off chance that a video plugin resumes playback without firing
+      // the ON_BUFFERED event. This will have no effect if it was set previously
+      this.setBufferingState(false);
     },
 
     onPause: function(event, source, pauseReason) {
@@ -669,6 +672,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @private
      */
     startBufferingTimer: function() {
+      this.stopBufferingTimer();
+
       this.state.bufferingTimer = setTimeout(function() {
         this.setBufferingState(true);
       }.bind(this), CONSTANTS.UI.BUFFERING_SPINNER_DELAY);
