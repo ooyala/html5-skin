@@ -73,6 +73,7 @@ describe('SharePanel', function () {
         OO.isIos = false;
         OO.isSafari = false;
         TestUtils.Simulate.click(emailShare);
+	OO=null;
       }
     }
   });
@@ -104,6 +105,7 @@ describe('SharePanel', function () {
               document.location = "ooyala.com";//make sure some different site there before testing
               TestUtils.Simulate.click(emailShare);
               var index = document.location.indexOf("mailto:?subject=&body=");
+	      OO=null;
               expect(index).toBe(0);
           }
       }
@@ -135,6 +137,7 @@ describe('SharePanel', function () {
             document.location = "ooyala.com";//need to reset location because previous test case will have that location.
             TestUtils.Simulate.click(emailShare);
             var index = document.location.indexOf("mailto:?subject=&body=");
+	    OO=null;
             expect(index).toBe(-1);
         }
     }
