@@ -737,6 +737,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.pluginsClickElement.removeClass("oo-showing");
       // Restore anamorphic videos fix after ad playback if necessary
       this.trySetAnamorphicFixState(true);
+      // In case ad was skipped or errored while stalled
+      this.setBufferingState(false);
       this.renderSkin();
     },
 
@@ -858,6 +860,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVideoElementFocus: function(event, source) {
+      // Switching to another element, clear buffering state which applies to current element
+      if (this.focusedElement !== source) {
+        this.setBufferingState(false);
+      }
       this.focusedElement = source;
       // Make sure that the skin uses the captions that correspond
       // to the newly focused video element
@@ -1151,6 +1157,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onErrorEvent: function(event, errorCode){
       this.unsubscribeBasicPlaybackEvents();
+      this.setBufferingState(false);
 
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.state.playerState = CONSTANTS.STATE.ERROR;

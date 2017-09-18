@@ -1,14 +1,17 @@
 jest
+.dontMock('../js/skin')
 .dontMock('../js/components/utils')
 .dontMock('../js/components/accessibilityControls')
 .dontMock('../js/constants/constants')
 .dontMock('../config/skin.json')
 .dontMock('classnames');
 
-var CONSTANTS = require('../js/constants/constants');
+var $ = require('jquery');
+var _ = require('underscore');
 var sinon = require('sinon');
+var CONSTANTS = require('../js/constants/constants');
 
-var Html5Skin, defaultSkinState;
+var Html5Skin;
 
 // Mock OO environment needed for skin plugin initialization
 OO = {
@@ -25,9 +28,8 @@ OO = {
     MAIN: 'main'
   },
   init: function() {},
+  log: function() {},
   plugin: function(module, callback) {
-    var _ = require('underscore');
-    var $ = require('jquery');
     var plugin = callback(OO, _, $);
     plugin.call(OO, OO.mb, 0);
     // Save Html5Skin class in local var
@@ -48,6 +50,8 @@ describe('Controller', function() {
 
   beforeEach(function() {
     controller = new Html5Skin(OO.mb, 'id');
+    controller.state.pluginsElement = $('<div/>');
+    controller.state.pluginsClickElement = $('<div/>');
     controller.state.mainVideoElement = {
       classList: {
         add: function() {},
@@ -62,6 +66,17 @@ describe('Controller', function() {
   });
 
   describe('Buffering state', function() {
+    var startBufferingTimerSpy, stopBufferingTimerSpy;
+
+    beforeEach(function() {
+      startBufferingTimerSpy = sinon.spy(controller, 'startBufferingTimer');
+      stopBufferingTimerSpy = sinon.spy(controller, 'stopBufferingTimer');
+    });
+
+    afterEach(function() {
+      startBufferingTimerSpy.restore();
+      stopBufferingTimerSpy.restore();
+    });
 
     it('should update buffering state', function() {
       controller.setBufferingState(false);
@@ -70,7 +85,17 @@ describe('Controller', function() {
       expect(controller.state.buffering).toBe(true);
     });
 
-    it('should not render skin if new buffering state is the same as the current one', function() {
+    it('should render skin if new buffering state differs from the current one', function() {
+      var spy = sinon.spy(controller, 'renderSkin');
+      controller.state.buffering = false;
+      controller.setBufferingState(true);
+      controller.state.buffering = true;
+      controller.setBufferingState(false);
+      expect(spy.callCount).toBe(2);
+      spy.restore();
+    });
+
+    it('should NOT render skin if new buffering state is the same as the current one', function() {
       var spy = sinon.spy(controller, 'renderSkin');
       controller.state.buffering = false;
       controller.setBufferingState(false);
@@ -81,47 +106,39 @@ describe('Controller', function() {
     });
 
     it('should stop buffering timer before starting a new one', function() {
-      var spy = sinon.spy(controller, 'stopBufferingTimer');
       controller.startBufferingTimer();
-      expect(spy.callCount).toBe(1);
+      expect(stopBufferingTimerSpy.callCount).toBe(1);
       expect(controller.state.bufferingTimer).toBeTruthy();
       controller.stopBufferingTimer();
-      spy.restore();
     });
 
     it('should stop buffering timer when setting buffering state to false', function() {
-      var spy = sinon.spy(controller, 'stopBufferingTimer');
       controller.startBufferingTimer();
-      expect(spy.callCount).toBe(1);
+      expect(stopBufferingTimerSpy.callCount).toBe(1);
       expect(controller.state.bufferingTimer).toBeTruthy();
       controller.setBufferingState(false);
-      expect(spy.callCount).toBe(2);
+      expect(stopBufferingTimerSpy.callCount).toBe(2);
       expect(controller.state.bufferingTimer).toBeFalsy();
-      spy.restore();
     });
 
     it('should cancel buffering timer when ON_BUFFERED event is fired', function() {
-      var spy = sinon.spy(controller, 'stopBufferingTimer');
       controller.startBufferingTimer();
-      expect(spy.callCount).toBe(1);
+      expect(stopBufferingTimerSpy.callCount).toBe(1);
       expect(controller.state.bufferingTimer).toBeTruthy();
       controller.onBuffered();
-      expect(spy.callCount).toBe(2);
+      expect(stopBufferingTimerSpy.callCount).toBe(2);
       expect(controller.state.bufferingTimer).toBeFalsy();
       expect(controller.state.buffering).toBe(false);
-      spy.restore();
     });
 
     it('should delay buffering state and start buffering timer when ON_BUFFERING event is fired', function() {
-      var spy = sinon.spy(controller, 'startBufferingTimer');
       controller.state.isInitialPlay = false;
       controller.state.screenToShow = CONSTANTS.PLAYING_SCREEN;
       controller.onBuffering();
       expect(controller.state.buffering).toBe(false);
-      expect(spy.callCount).toBe(1);
+      expect(startBufferingTimerSpy.callCount).toBe(1);
       expect(controller.state.bufferingTimer).toBeTruthy();
       controller.stopBufferingTimer();
-      spy.restore();
     });
 
     it('should set buffering state to true after buffering timer time has elapsed', function() {
@@ -139,15 +156,39 @@ describe('Controller', function() {
     });
 
     it('should stop buffering timer when plugin is destroyed', function() {
-      var spy = sinon.spy(controller, 'stopBufferingTimer');
       controller.accessibilityControls = { cleanUp: function() {} };
       controller.startBufferingTimer();
-      expect(spy.callCount).toBe(1);
+      expect(stopBufferingTimerSpy.callCount).toBe(1);
       expect(controller.state.bufferingTimer).toBeTruthy();
       controller.onPlayerDestroy({});
-      expect(spy.callCount).toBe(2);
+      expect(stopBufferingTimerSpy.callCount).toBe(2);
       expect(controller.state.bufferingTimer).toBeFalsy();
-      spy.restore();
+    });
+
+    it('should clear buffering timer on ADS_PLAYED, VC_VIDEO_ELEMENT_IN_FOCUS and ERROR events', function() {
+      controller.skin = { updatePlayhead: function() {} };
+      // ADS_PLAYED
+      controller.startBufferingTimer();
+      expect(stopBufferingTimerSpy.callCount).toBe(1);
+      expect(controller.state.bufferingTimer).toBeTruthy();
+      controller.onAdsPlayed();
+      expect(stopBufferingTimerSpy.callCount).toBe(2);
+      expect(controller.state.bufferingTimer).toBeFalsy();
+      // VC_VIDEO_ELEMENT_IN_FOCUS
+      controller.startBufferingTimer();
+      expect(stopBufferingTimerSpy.callCount).toBe(3);
+      expect(controller.state.bufferingTimer).toBeTruthy();
+      this.focusedElement = OO.VIDEO.ADS;
+      controller.onVideoElementFocus('', OO.VIDEO.MAIN);
+      expect(stopBufferingTimerSpy.callCount).toBe(4);
+      expect(controller.state.bufferingTimer).toBeFalsy();
+      // ERROR
+      controller.startBufferingTimer();
+      expect(stopBufferingTimerSpy.callCount).toBe(5);
+      expect(controller.state.bufferingTimer).toBeTruthy();
+      controller.onErrorEvent();
+      expect(stopBufferingTimerSpy.callCount).toBe(6);
+      expect(controller.state.bufferingTimer).toBeFalsy();
     });
 
   });
