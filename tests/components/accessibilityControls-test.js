@@ -79,6 +79,7 @@ describe('AccessibilityControls', function () {
       },
       togglePlayPause: function() {},
       setVolume: function() {},
+      updateSeekingPlayhead: function() {},
       seek: function() {}
     };
 
@@ -106,6 +107,7 @@ describe('AccessibilityControls', function () {
       },
       togglePlayPause: function() {},
       setVolume: function() {},
+      updateSeekingPlayhead: function() {},
       seek: function() {}
     };
 

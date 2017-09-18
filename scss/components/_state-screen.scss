@@ -129,16 +129,12 @@
     }
   }
 
-  .oo-action-icon:focus {    
+  .oo-action-icon:focus {
     @include highlight-tab();
   }
 
-  .oo-action-icon:active {
+  .oo-action-icon:hover:active {
     @include remove-highlight-tab();
-  }
-
-  .oo-action-icon:active {
-    text-shadow: none;
   }
 
   .oo-action-icon-top {
