@@ -75,7 +75,7 @@ var AdScreen = React.createClass({
 
       //since after exiting the full screen, iPhone pauses the video and places an overlay play button in the middle
       //of the screen (which we can't remove), clicking the screen would start the video.
-      if (Utils.isIPhone() && this.state.playerState == CONSTANTS.STATE.PAUSE) {
+      if (!Utils.canRenderSkin() && this.state.playerState == CONSTANTS.STATE.PAUSE) {
         this.props.controller.togglePlayPause();
       }
       else {

@@ -22,7 +22,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.16.10", "rev": "<SKIN_REV>"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.17.4", "rev": "<SKIN_REV>"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -78,7 +78,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoPlayhead": 0,
       "adVideoPlayhead": 0,
       "focusedElement": null,
-      "playPauseButtonFocused": false,
+      "focusedControl": null, // Stores the id of the control bar element that is currently focused
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -196,8 +196,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
 
         // ad events
-        if (!Utils.isIPhone()) {
-          //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
+        if (Utils.canRenderSkin()) {
+          //since iPhone < iOS10 is always playing in full screen and not showing our skin, don't need to render skin
           this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
           this.mb.subscribe(OO.EVENTS.WILL_PLAY_ADS , "customerUi", _.bind(this.onWillPlayAds, this));
           this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
@@ -447,7 +447,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // So we only need to update the playhead for ad screen.
       if (this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN ) {
         if (this.skin.props.skinConfig.upNext.showUpNext) {
-          if (!(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))){//no UpNext for iPhone or fullscreen iPad
+          if (!(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))){//no UpNext for iPhone < iOS10 or fullscreen iOS
             this.showUpNextScreenWhenReady(currentPlayhead, duration);
           }
         } else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
@@ -542,7 +542,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.pauseAnimationDisabled = true;
         }
         if (this.state.pauseAnimationDisabled == false && this.state.discoveryData && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
-            && !(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))) {
+            && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))) {
           OO.log("Should display DISCOVERY_SCREEN on pause");
           this.sendDiscoveryDisplayEvent("pauseScreen");
           this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
@@ -552,8 +552,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           // default
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
-        if (Utils.isIPhone()){
-          //iPhone pause screen is the same as start screen
+        if (!Utils.canRenderSkin()){
+          //iPhone < iOS10 pause screen is the same as start screen
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
@@ -593,7 +593,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.upNextInfo.delayedContentData = null;
       }
       else if (this.state.discoveryData && this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery"
-               && !(Utils.isIPhone() || (Utils.isIos() && this.state.fullscreen))) {
+               && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))) {
         OO.log("Should display DISCOVERY_SCREEN on end");
         this.sendDiscoveryDisplayEvent("endScreen");
         this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
@@ -1145,8 +1145,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
-      if (!Utils.isIPhone()) {
-        //since iPhone is always playing in full screen and not showing our skin, don't need to render skin
+      if (Utils.canRenderSkin()) {
+        //since iPhone < iOS10 is always playing in full screen and not showing our skin, don't need to render skin
         this.mb.unsubscribe(OO.EVENTS.ADS_PLAYED, "customerUi");
         this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_ADS , "customerUi");
         this.mb.unsubscribe(OO.EVENTS.AD_POD_STARTED, "customerUi");
@@ -1271,7 +1271,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.LIVE_BUTTON_CLICKED);
     },
 
-    setVolume: function(volume){
+    setVolume: function(volume) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
     },
 

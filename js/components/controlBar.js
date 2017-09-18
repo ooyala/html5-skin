@@ -9,6 +9,7 @@ var React = require('react'),
   Slider = require('./slider'),
   Utils = require('./utils'),
   Popover = require('../views/popover'),
+  VolumeControls = require('./volumeControls'),
   VideoQualityPanel = require('./videoQualityPanel'),
   ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
   Logo = require('./logo'),
@@ -20,16 +21,13 @@ var ControlBar = React.createClass({
   getInitialState: function () {
     this.isMobile = this.props.controller.state.isMobile;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
-    this.volumeSliderValue = 0;
     this.moreOptionsItems = null;
-
-    return {
-      currentVolumeHead: 0
-    };
+    return {};
   },
 
   componentDidMount: function () {
     window.addEventListener('orientationchange', this.closePopovers);
+    this.restoreFocusedControl();
   },
 
   componentWillReceiveProps: function (nextProps) {
@@ -46,6 +44,29 @@ var ControlBar = React.createClass({
       this.props.controller.hideVolumeSliderBar();
     }
     window.removeEventListener('orientationchange', this.closePopovers);
+  },
+
+  /**
+   * Restores the focus of a previously selected control bar item.
+   * This is needed as a workaround because switching between play and pause states
+   * currently causes the control bar to re-render.
+   * @private
+   */
+  restoreFocusedControl: function() {
+    if (!this.props.controller.state.focusedControl || !this.domNode) {
+      return;
+    }
+    var control = this.domNode.querySelector('[data-focus-id="' + this.props.controller.state.focusedControl + '"]');
+
+    if (control && typeof control.focus === 'function') {
+      control.focus();
+      // If we got to this point it means that play was triggered using the spacebar
+      // (since a click would've cleared the focused element) and we need to
+      // trigger control bar auto hide
+      if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
+        this.props.controller.startHideControlBarTimer();
+      }
+    }
   },
 
   getResponsiveUIMultiple: function (responsiveView) {
@@ -97,18 +118,6 @@ var ControlBar = React.createClass({
     // }
   },
 
-  /**
-   * Some browsers give focus to buttons after click, which leaves
-   * them highlighted. This overrides the browser's default behavior.
-   *
-   * @param {event} evt The mouse up event object
-   */
-  blurOnMouseUp: function (evt) {
-    if (evt.currentTarget && evt.currentTarget.blur) {
-      evt.currentTarget.blur();
-    }
-  },
-
   handlePlayClick: function () {
     this.props.controller.togglePlayPause();
   },
@@ -151,12 +160,6 @@ var ControlBar = React.createClass({
     this.closeQualityPopover();
   },
 
-  handleVolumeClick: function (evt) {
-    evt.preventDefault();
-    var newVolume = parseFloat(evt.target.dataset.volume);
-    this.props.controller.setVolume(newVolume);
-  },
-
   handleDiscoveryClick: function () {
     this.props.controller.toggleDiscoveryScreen();
   },
@@ -172,14 +175,6 @@ var ControlBar = React.createClass({
       this.toggleCaptionPopover();
       this.closeQualityPopover();
     }
-  },
-
-  handlePlayPauseFocus: function () {
-    this.props.controller.state.playPauseButtonFocused = true;
-  },
-
-  handlePlayPauseBlur: function () {
-    this.props.controller.state.playPauseButtonFocused = false;
   },
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
@@ -218,6 +213,27 @@ var ControlBar = React.createClass({
     this.setState({
       volumeSliderValue: event.target.value
     });
+  },
+
+  /**
+   * Fires whenever an item is focused inside the control bar. Stores the id of
+   * the focused control.
+   * @private
+   * @param {type} evt Focus event.
+   */
+  handleControlBarFocus: function(evt) {
+    var focusId = evt.target ? evt.target.getAttribute('data-focus-id') : null;
+    if (focusId) {
+      this.props.controller.state.focusedControl = focusId;
+    }
+  },
+
+  /**
+   * Clears the currently focused control.
+   * @private
+   */
+  handleControlBarBlur: function(evt) {
+    this.props.controller.state.focusedControl = null;
   },
 
   handleScrubBack: function(){
@@ -323,6 +339,7 @@ var ControlBar = React.createClass({
       volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
     }
 
+    // TODO - Replace time display logic with Utils.getTimeDisplayValues()
     var playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
     var isLiveStream = this.props.isLiveStream;
     var durationSetting = { color: this.props.skinConfig.controlBar.iconStyle.inactive.color };
@@ -368,15 +385,13 @@ var ControlBar = React.createClass({
       "playPause": (function (alignment) {
         return <button className="oo-play-pause oo-control-bar-item"
           onClick={this.handlePlayClick}
-          onMouseUp={this.blurOnMouseUp}
+          onMouseUp={Utils.blurOnMouseUp}
           onMouseOver={this.highlight}
           onMouseOut={this.removeHighlight}
-          onFocus={this.handlePlayPauseFocus}
-          onBlur={this.handlePlayPauseBlur}
           key="playPause"
+          data-focus-id="playPause"
           tabIndex="0"
-          aria-label={playPauseAriaLabel}
-          autoFocus={this.props.controller.state.playPauseButtonFocused}>
+          aria-label={playPauseAriaLabel}>
           <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
           <Tooltip enabled={isTooltipEnabled}
             alignment={alignment}
@@ -496,10 +511,11 @@ var ControlBar = React.createClass({
       "fullscreen": (function (alignment) {
         return <button className="oo-fullscreen oo-control-bar-item"
           onClick={this.handleFullscreenClick}
-          onMouseUp={this.blurOnMouseUp}
+          onMouseUp={Utils.blurOnMouseUp}
           onMouseOver={this.highlight}
           onMouseOut={this.removeHighlight}
           key="fullscreen"
+          data-focus-id="fullscreen"
           tabIndex="0"
           aria-label={fullscreenAriaLabel}>
           <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
@@ -701,7 +717,6 @@ var ControlBar = React.createClass({
     };
     return returnStyles;
   },
-
 
   render: function () {
     var controlBarClass = ClassNames({

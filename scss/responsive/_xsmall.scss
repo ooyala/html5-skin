@@ -354,18 +354,43 @@
     }
   }
 
+  //Volume Controls
+  .oo-volume-controls:focus::before {
+    $focus-padding: 2px;
+    top: -$focus-padding;
+    right: -($focus-padding + 1);
+    bottom: $focus-padding;
+    left: $focus-padding - 2;
+    padding: $focus-padding;
+  }
+
   //Volume Slider
   .oo-volume-bar {
-    width: 7px * $xsmall-multiple;
-    height: 14px * $xsmall-multiple;
-    padding-left: 4px * $xsmall-multiple;
+    width: round(7px * $xsmall-multiple);
+    height: 7px * $xsmall-multiple;
+    padding-left: 5px * $xsmall-multiple;
     margin-bottom: 4px;
   }
 
-  .oo-volume-bar.oo-on{
+  .oo-volume-bar.oo-on {
+    position: relative;
     background-color: rgba($blue-light, 1.0);
     height: 14px * $xsmall-multiple;
     padding-bottom: 0;
+  }
+
+  // This is a transparent element inside the volume bar that
+  // will increase the clickable area when the bar is collapsed
+  .oo-volume-bar .oo-click-extender {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 14px * $xsmall-multiple;
+  }
+
+  .oo-volume-bar.oo-on .oo-click-extender {
+    display: none;
   }
 
   .oo-volume-slider {
