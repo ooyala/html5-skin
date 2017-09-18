@@ -26,11 +26,7 @@ OO = {
     DISCOVERY_API: {}
   },
   CONSTANTS: {
-    CLOSED_CAPTIONS: {
-        HIDDEN: "hidden",
-        DISABLED: "disabled",
-        NONE: "none"
-    }
+    CLOSED_CAPTIONS: {}
   },
   VIDEO: {
     ADS: 'ads',
@@ -478,12 +474,6 @@ OO = {
     window.closedCaptionLanguage1 = controllerMock.state.closedCaptionOptions.language;
     Html5Skin.onChangeClosedCaptionLanguage.call(controllerMock, 'changeClosedCaptionLanguage', 'sderfes'); //invalid language test
     window.closedCaptionLanguage2 = controllerMock.state.closedCaptionOptions.language;
-    Html5Skin.onChangeClosedCaptionLanguage.call(controllerMock, 'changeClosedCaptionLanguage', 'en'); //set en before none and test
-    window.closedCaptionLanguage3 = controllerMock.state.closedCaptionOptions.language;
-    Html5Skin.onChangeClosedCaptionLanguage.call(controllerMock, 'changeClosedCaptionLanguage', 'none'); // language none test
-    window.closedCaptionLanguage4 = controllerMock.state.closedCaptionOptions.language;
-    Html5Skin.onChangeClosedCaptionLanguage.call(controllerMock, 'changeClosedCaptionLanguage', 'en'); // set en after none and test
-    window.closedCaptionLanguage5 = controllerMock.state.closedCaptionOptions.language;
     Html5Skin.setClosedCaptionsLanguage.call(controllerMock);
     controllerMock.state.closedCaptionOptions.availableLanguages = null;
     controllerMock.state.closedCaptionOptions.enabled = true;
@@ -571,7 +561,7 @@ OO = {
         Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', 'elementId', {});
         expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.INITIAL_SCREEN);
       });
-
+      
     });
 
     describe('Controller testing Ooyala Ads', function () {
@@ -669,9 +659,6 @@ describe('Controller', function () {
   it('tests change caption language from external API', function () {
     expect(window.closedCaptionLanguage1).toBe("de");
     expect(window.closedCaptionLanguage2).not.toBe("sderfes");
-    expect(window.closedCaptionLanguage3).toBe("en");
-    expect(window.closedCaptionLanguage4).toBe("none");
-    expect(window.closedCaptionLanguage5).toBe("en");
   });
 
   it('tests volume', function () {
