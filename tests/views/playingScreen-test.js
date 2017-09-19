@@ -11,13 +11,13 @@ describe('PlayingScreen', function () {
     var moved = false;
     var clicked = false;
     var mockController = {
+      videoVr: false,
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
-        },
-        isVideo360: false
+        }
       },
       togglePlayPause: function() {
         clicked = true;
@@ -47,13 +47,13 @@ describe('PlayingScreen', function () {
     var isTouched = false;
     var isStartHideControlBarTimer = false;
     var mockController = {
+      videoVr: true,
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
         },
-        isVideo360: true,
         viewingDirection: {yaw: 0, roll: 0, pitch: 0}
       },
       startHideControlBarTimer: function () {
@@ -94,13 +94,13 @@ describe('PlayingScreen', function () {
   it('creates a PlayingScreen and checks touchEnd without video360', function () {
     var clicked = false;
     var mockController = {
+      videoVr: false,
       state: {
         isMobile: true,
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
-        },
-        isVideo360: false
+        }
       },
       togglePlayPause: function() {
         clicked = true;
@@ -127,9 +127,9 @@ describe('PlayingScreen', function () {
     var clicked = false;
 
     var mockController = {
+      videoVr: false,
       state: {
         isMobile: false,
-        isVideo360: false,
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
@@ -179,9 +179,9 @@ describe('PlayingScreen', function () {
       , isTouching = false;
 
     var mockController = {
+      videoVr: true,
       state: {
         isMobile: false,
-        isVideo360: true,
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
@@ -242,6 +242,7 @@ describe('PlayingScreen', function () {
   it('creates a PlayingScreen and check play&pause', function () {
     var clicked = false;
     var mockController = {
+      videoVr: true,
       state: {
         isMobile: true,
         isMouseDown: false,
@@ -249,8 +250,7 @@ describe('PlayingScreen', function () {
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
-        },
-        isVideo360: true
+        }
       },
       togglePlayPause: function(){clicked = true},
       startHideControlBarTimer: function() {}
