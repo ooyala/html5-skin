@@ -19,7 +19,7 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
-    this.isVideo360 = this.props.controller.state.isVideo360;
+    this.videoVr = this.props.controller.videoVr;
 
     return {
       controlBarVisible: true,
@@ -121,13 +121,13 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
-    else if (!this.isVideo360) {
+    else if (!this.videoVr) {
       this.props.controller.togglePlayPause(event);
     }
   },
 
   handlePlayerMouseDown: function(e) {
-    if (!this.isVideo360) {
+    if (!this.videoVr) {
       return;
     }
     
@@ -146,7 +146,7 @@ var PlayingScreen = React.createClass({
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
-    if (this.isVideo360 && this.state.isMouseDown) {
+    if (this.videoVr && this.state.isMouseDown) {
   
       this.setState({
         isMouseMove: true
@@ -166,12 +166,12 @@ var PlayingScreen = React.createClass({
       e.cancelBubble = true; // IE
 
       this.props.controller.state.accessibilityControlsEnabled = true;
-      if (!this.isVideo360) {
+      if (!this.videoVr) {
         this.props.controller.togglePlayPause();
       }
     }
     // for mobile, touch is handled in handleTouchEnd
-    if (this.isVideo360) {
+    if (this.videoVr) {
       this.setState({
         isMouseDown: false,
       });
@@ -182,7 +182,7 @@ var PlayingScreen = React.createClass({
   },
   
   handlePlayerMouseLeave: function () {
-    if (this.isVideo360) {
+    if (this.videoVr) {
       this.setState({
         isMouseDown: false,
       });
@@ -247,7 +247,7 @@ var PlayingScreen = React.createClass({
       onMouseOut={this.hideControlBar}
       onMouseMove={this.handlePlayerMouseMove}
       onMouseLeave={this.handlePlayerMouseLeave}
-      onKeyUp={this.handleKeyDown}
+      onKeyDown={this.handleKeyDown}
     >
       <div
         className="oo-state-screen-selectable"
