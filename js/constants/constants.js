@@ -170,10 +170,6 @@ module.exports = {
     OBJECT: "object"
   },
 
-  VIDEO_PLAYERS: {
-    BIT_WRAPPER: "bit-wrapper"
-  },
-
   ERROR_MESSAGE: {
     "network":{
       name: "OO.ERROR.API.NETWORK",
