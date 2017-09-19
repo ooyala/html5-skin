@@ -121,13 +121,13 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
-    else if (!this.videoVr) {
+    else if (!this.props.controller.videoVr) {
       this.props.controller.togglePlayPause(event);
     }
   },
 
   handlePlayerMouseDown: function(e) {
-    if (!this.videoVr) {
+    if (!this.props.controller.videoVr) {
       return;
     }
     
@@ -146,15 +146,15 @@ var PlayingScreen = React.createClass({
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
-    if (this.videoVr && this.state.isMouseDown) {
-  
+
+    if (this.props.controller.videoVr && this.state.isMouseDown) {
       this.setState({
         isMouseMove: true
       });
       
       var params = this.getDirectionParams(e.pageX, e.pageY);
       if (this.props.controller.onTouching) {
-        this.props.controller.onTouching(params, true);
+        this.props.controller.onTouching(params);
       }
     }
   },
@@ -166,23 +166,23 @@ var PlayingScreen = React.createClass({
       e.cancelBubble = true; // IE
 
       this.props.controller.state.accessibilityControlsEnabled = true;
-      if (!this.videoVr) {
+      if (!this.props.controller.videoVr) {
         this.props.controller.togglePlayPause();
       }
     }
     // for mobile, touch is handled in handleTouchEnd
-    if (this.videoVr) {
+    if (this.props.controller.videoVr) {
       this.setState({
         isMouseDown: false,
       });
       if (this.props.controller.onTouched) {
-        this.props.controller.onTouched(true);
+        this.props.controller.onTouched();
       }
     }
   },
   
   handlePlayerMouseLeave: function () {
-    if (this.videoVr) {
+    if (this.props.controller.videoVr) {
       this.setState({
         isMouseDown: false,
       });
@@ -200,14 +200,14 @@ var PlayingScreen = React.createClass({
   },
   
   getDirectionParams: function(pageX, pageY) {
-    var dx = pageX - this.state.XMouseStart
-      , dy = pageY - this.state.YMouseStart;
-    var maxDegreesX = 90,
-      maxDegreesY = 120;
-    var degreesForPixelYaw = maxDegreesX / this.props.componentWidth,
-      degreesForPixelPitch = maxDegreesY / this.props.componentHeight;
-    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw,
-      pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
+    var dx = pageX - this.state.XMouseStart;
+    var dy = pageY - this.state.YMouseStart;
+    var maxDegreesX = 90;
+    var maxDegreesY = 120;
+    var degreesForPixelYaw = maxDegreesX / this.props.componentWidth;
+    var degreesForPixelPitch = maxDegreesY / this.props.componentHeight;
+    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw;
+    var pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
     return [yaw, 0, pitch];
   },
 

@@ -28,7 +28,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   var Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
-    this.videoVrSource = {};
+    this.videoVrSource = false;
     this.videoVr = false;
     this.state = {
       "playerParam": {},
@@ -275,7 +275,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     setVideoVr: function(event, obj) {
       this.videoVr = true;
-      this.videoVrSource = obj.source || {}; //if we need video vr params
+      this.videoVrSource = obj.source || false; //if we need video vr params
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -634,19 +634,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onTouching: function(params, isOnVideoClick) {
-      if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
-        if (this.videoVr && isOnVideoClick) {
-          this.mb.publish(OO.EVENTS.TOUCHING, this.focusedElement, params);
-        }
+    onTouching: function(params) {
+      if (this.videoVr) {
+        this.mb.publish(OO.EVENTS.TOUCHING, this.focusedElement, params);
       }
     },
 
-    onTouched: function (isOnVideoClick) {
-      if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
-        if (this.videoVr && isOnVideoClick) {
-          this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement);
-        }
+    onTouched: function () {
+      if (this.videoVr) {
+        this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement);
       }
     },
 
@@ -1260,7 +1256,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
   
     moveToDirection: function (rotate, direction) {
-      OO.log("moveToDirection is called");
+      OO.log("moveToDirection called");
       this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, this.focusedElement, rotate, direction);
     },
 
