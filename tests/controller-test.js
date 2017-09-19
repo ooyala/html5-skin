@@ -411,7 +411,6 @@ OO = {
     Html5Skin.toggleMute.call(controllerMock, false);
   
     Html5Skin.moveToDirection.call(controllerMock);
-    Html5Skin.vrSubscribes.call(controllerMock);
 
     controllerMock.state.playerState = CONSTANTS.STATE.START;
     Html5Skin.togglePlayPause.call(controllerMock);
