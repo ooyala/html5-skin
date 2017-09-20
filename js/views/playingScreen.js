@@ -125,7 +125,7 @@ var PlayingScreen = React.createClass({
       YMouseStart: e.pageY
     });
     if (this.props.controller.onTouched) {
-      this.props.controller.onTouched(true);
+      this.props.controller.onTouched();
     }
   },
 
@@ -233,14 +233,14 @@ var PlayingScreen = React.createClass({
       ref="PlayingScreen"
       onMouseOver={this.showControlBar}
       onMouseOut={this.hideControlBar}
-      onMouseMove={this.handlePlayerMouseMove}
-      onMouseLeave={this.handlePlayerMouseLeave}
       onKeyDown={this.handleKeyDown}
     >
       <div
         className="oo-state-screen-selectable"
         onMouseDown={this.handlePlayerMouseDown}
         onMouseUp={this.handlePlayerMouseUp}
+        onMouseMove={this.handlePlayerMouseMove}
+        onMouseLeave={this.handlePlayerMouseLeave}
         onTouchEnd={this.handleTouchEnd}
         onClick={this.handlePlayerClicked}
       />
