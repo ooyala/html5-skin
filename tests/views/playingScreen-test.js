@@ -304,12 +304,12 @@ describe('PlayingScreen', function () {
       />
     );
     var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
-    
+
     TestUtils.Simulate.click(screen);
     expect(clicked).toBe(true);
     expect(isMouseMove).toBe(false);
   });
-  
+
   it('should show control bar when pressing the tab key', function () {
     var autoHide = false;
     var controlBar = false;
