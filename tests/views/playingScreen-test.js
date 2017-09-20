@@ -43,8 +43,9 @@ describe('PlayingScreen', function () {
     expect(clicked).toBe(true);
   });
 
-  it('creates a PlayingScreen and checks mouseDown, mouseUp with video360', function() {
+  it('creates a PlayingScreen and checks mouseMove, mouseDown, mouseUp with video360', function() {
     var isTouched = false;
+    var isTouching = false;
     var isStartHideControlBarTimer = false;
     var mockController = {
       videoVr: true,
@@ -59,6 +60,9 @@ describe('PlayingScreen', function () {
       startHideControlBarTimer: function () {
         isStartHideControlBarTimer = true;
       },
+      onTouching: function() {
+        isTouching = true;
+      },
       onTouched: function() {
         isTouched = true;
       },
@@ -70,7 +74,7 @@ describe('PlayingScreen', function () {
       <PlayingScreen
         controller={mockController}
         componentWidth={90}
-        componentHeight={45}
+        componentHeight={40}
         fullscreen={false}
         closedCaptionOptions={closedCaptionOptions}
       />
@@ -82,6 +86,20 @@ describe('PlayingScreen', function () {
     });
 
     var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
+
+    var getDirectionParams = spyOn(DOM, 'getDirectionParams').andCallThrough();
+    var directionParams = getDirectionParams(0,0);
+
+    TestUtils.Simulate.mouseMove(screen);
+    expect(isTouching).toBe(true);
+    expect(getDirectionParams).toHaveBeenCalled();
+    //dx = arguments[0] - this.state.XMouseStart = 0 - (-10) = 10;
+    //dy = arguments[1] - this.state.YMouseStart = 0 - (-20) = 20;
+    //degreesForPixelYaw = maxDegreesX / componentWidth = 90 / 90 = 1;
+    //degreesForPixelPitch = maxDegreesY / componentHeight = 120 / 40 = 3;
+    //yaw = mockController.viewingDirection.yaw + dx * degreesForPixelYaw = 0 + 10 * 1 = 10;
+    //pitch = mockController.viewingDirection.pitch + dy * degreesForPixelPitch = 0 + 20 * 3 = 60;
+    expect(directionParams).toEqual([10, 0, 60]);
 
     TestUtils.Simulate.mouseDown(screen);
     expect(isTouched).toBe(true);
@@ -171,12 +189,11 @@ describe('PlayingScreen', function () {
     expect(over).toBe(true);
   });
 
-  it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp with video360 fullscreen', function () {
+  it('creates a PlayingScreen and checks mouseOver, mouseOut, keyUp with video360 fullscreen', function () {
     var over = false;
     var out = false;
     var moved = false;
     var clicked = false;
-    var isTouching = false;
 
     var mockController = {
       videoVr: true,
@@ -185,8 +202,7 @@ describe('PlayingScreen', function () {
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
-        },
-        viewingDirection: {yaw: 0, roll: 0, pitch: 0}
+        }
       },
       startHideControlBarTimer: function() {
         moved = true;
@@ -200,9 +216,6 @@ describe('PlayingScreen', function () {
       hideControlBar: function() {
         out = true;
       },
-      onTouching: function() {
-        isTouching = true;
-      },
     };
 
     var closedCaptionOptions = {
@@ -214,35 +227,12 @@ describe('PlayingScreen', function () {
       <PlayingScreen
         controller={mockController}
         fullscreen={true}
-        componentWidth={90}
-        componentHeight={40}
         controlBarAutoHide={true}
         closedCaptionOptions={closedCaptionOptions}
       />
     );
 
-    DOM.setState({
-      isMouseDown: true,
-      XMouseStart: -10,
-      YMouseStart: -20
-    });
-
     var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-playing-screen');
-
-    var getDirectionParams = spyOn(DOM, 'getDirectionParams').andCallThrough();
-    var directionParams = getDirectionParams(0,0);
-
-    TestUtils.Simulate.mouseMove(screen[0]);
-    expect(moved).toBe(true);
-    expect(isTouching).toBe(true);
-    expect(getDirectionParams).toHaveBeenCalled();
-    //dx = arguments[0] - this.state.XMouseStart = 0 - (-10) = 10;
-    //dy = arguments[1] - this.state.YMouseStart = 0 - (-20) = 20;
-    //degreesForPixelYaw = maxDegreesX / componentWidth = 90 / 90 = 1;
-    //degreesForPixelPitch = maxDegreesY / componentHeight = 120 / 40 = 3;
-    //yaw = mockController.viewingDirection.yaw + dx * degreesForPixelYaw = 0 + 10 * 1 = 10;
-    //pitch = mockController.viewingDirection.pitch + dy * degreesForPixelPitch = 0 + 20 * 3 = 60;
-    expect(directionParams).toEqual([10, 0, 60]);
 
     TestUtils.Simulate.mouseOut(screen[0]);
     expect(out).toBe(true);
@@ -280,7 +270,7 @@ describe('PlayingScreen', function () {
     // Render pause screen into DOM
     var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
     var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
-    
+
     TestUtils.Simulate.click(screen);
     TestUtils.Simulate.click(screen);
     expect(clicked).toBe(false);
