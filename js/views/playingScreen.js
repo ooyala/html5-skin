@@ -20,7 +20,6 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
-    this.isVideo360 = this.props.controller.state.isVideo360;
 
     return {
       controlBarVisible: true,
@@ -106,7 +105,7 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
-    else if (!this.isVideo360) {
+    else if (!this.props.controller.videoVr) {
       this.props.controller.togglePlayPause(event);
     }
   },
@@ -129,7 +128,7 @@ var PlayingScreen = React.createClass({
       e.stopPropagation(); // W3C
       e.cancelBubble = true; // IE
       this.props.controller.state.accessibilityControlsEnabled = true;
-      if (!this.isVideo360) {
+      if (!this.props.controller.videoVr) {
         this.props.controller.togglePlayPause();
       }
     }
@@ -219,7 +218,7 @@ var PlayingScreen = React.createClass({
       </div>
 
       {
-        this.isVideo360 &&
+        this.props.controller.videoVr &&
         <ViewControls
           {...this.props}
           controlBarVisible={this.state.controlBarVisible}

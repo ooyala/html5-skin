@@ -123,9 +123,9 @@ describe('AccessibilityControls', function () {
 
   it('tests "A" key', function () {
     var controllerMock = {
+      videoVr: true,
       state: {
         accessibilityControlsEnabled: true,
-        isVideo360: true
       },
       moveToDirection: function() {},
     };

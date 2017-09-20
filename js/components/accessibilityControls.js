@@ -92,7 +92,7 @@ AccessibilityControls.prototype = {
     /*
      * keyMapsList - array of objects {char: 83, direction: 'down'}
      */
-    if (!this.controller.state.isVideo360) { return; }
+    if (!this.controller.videoVr) { return; }
     for (var i=0; i<keyMapsList.length; i++) {
       if (char === keyMapsList[i]['char'] && targetTagName !== "button") {
         if (e.repeat != undefined) {

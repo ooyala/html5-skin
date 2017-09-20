@@ -19,7 +19,6 @@ var PauseScreen = React.createClass({
   mixins: [ResizeMixin, AnimateMixin],
 
   getInitialState: function() {
-    this.isVideo360 = this.props.controller.state.isVideo360;
     return {
       descriptionText: this.props.contentTree.description,
       controlBarVisible: true
@@ -153,7 +152,7 @@ var PauseScreen = React.createClass({
       <div className="oo-state-screen oo-pause-screen">
 
         {
-          !this.props.controller.state.isVideo360 &&
+          !this.props.controller.videoVr &&
           <div className={fadeUnderlayClass} />
         }
 
@@ -199,7 +198,7 @@ var PauseScreen = React.createClass({
         </div>
 
         {
-          this.isVideo360 &&
+          this.props.controller.videoVr &&
           <ViewControls
             {...this.props}
             controlBarVisible={this.state.controlBarVisible}

@@ -28,11 +28,16 @@ var ResponsiveManagerMixin = {
   },
 
   generateResponsiveData: function() {
-    var componentWidth = ReactDOM.findDOMNode(this).getBoundingClientRect().width;
-    var componentHeight = ReactDOM.findDOMNode(this).parentNode ?
-      ReactDOM.findDOMNode(this).parentNode.getBoundingClientRect().height
-      :
-      ReactDOM.findDOMNode(this).getBoundingClientRect().height;
+    var componentWidth = 0;
+    var componentHeight = 1;
+    var dom = ReactDOM.findDOMNode(this);
+    if (dom) {
+      componentWidth = dom.getBoundingClientRect().width;
+      componentHeight = dom.parentNode ?
+        dom.parentNode.getBoundingClientRect().height
+        :
+        componentHeight;
+    }
     var breakpoints = this.props.skinConfig.responsive.breakpoints;
     var breakpointData = {
       classes: {},
@@ -61,7 +66,7 @@ var ResponsiveManagerMixin = {
     //set responsive data to state
     this.setState({
       componentWidth: componentWidth,
-      componentHeight: componentHeight > 0  ? componentHeight : 1,
+      componentHeight: componentHeight,
       responsiveClass: ClassNames(breakpointData.classes),
       responsiveId: ClassNames(breakpointData.ids)
     });

@@ -1,5 +1,5 @@
 jest.dontMock('../../js/views/playingScreen')
-    .dontMock('../../js/mixins/resizeMixin');
+  .dontMock('../../js/mixins/resizeMixin');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -12,17 +12,26 @@ describe('PlayingScreen', function () {
       , isPlayPause = false
       , isTouched = false;
     var mockController = {
+      videoVr: false,
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
-        },
-        isVideo360: false
+        }
       },
-      togglePlayPause: function(){ isPlayPause = true },
-      startHideControlBarTimer: function() { isMoved = true },
-      onTouched: function() { isTouched = true; }
+      togglePlayPause: function() {
+        isPlayPause = true;
+      },
+      togglePlayPause: function(){
+        isPlayPause = true;
+      },
+      startHideControlBarTimer: function() {
+        isMoved = true;
+      },
+      onTouched: function() {
+        isTouched = true;
+      }
     };
 
     var closedCaptionOptions = {
@@ -52,24 +61,26 @@ describe('PlayingScreen', function () {
     TestUtils.Simulate.mouseUp(screen[0]);
     expect(isPlayPause).toBe(true);
   });
-  it('creates a PlayingScreen and checks mouseDown, mouseUp with video360', function() {
-    var isTouched = false
-      , isStartHideControlBarTimer = false;
 
+  it('creates a PlayingScreen and checks mouseDown, mouseUp with video360', function() {
+    var isTouched = false;
+    var isStartHideControlBarTimer = false;
     var mockController = {
+      videoVr: true,
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
         },
-        isVideo360: true,
         viewingDirection: {yaw: 0, roll: 0, pitch: 0}
       },
       startHideControlBarTimer: function () {
         isStartHideControlBarTimer = true;
       },
-      onTouched: function() { isTouched = true; },
+      onTouched: function() {
+        isTouched = true;
+      },
     };
     var closedCaptionOptions = {
       cueText: "cue text"
@@ -111,15 +122,17 @@ describe('PlayingScreen', function () {
   it('creates a PlayingScreen and checks touchEnd without video360', function () {
     var clicked = false;
     var mockController = {
+      videoVr: false,
       state: {
         isMobile: true,
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
-        },
-        isVideo360: false
+        }
       },
-      togglePlayPause: function(){clicked = true},
+      togglePlayPause: function() {
+        clicked = true;
+      },
       startHideControlBarTimer: function() {}
     };
 
@@ -142,18 +155,26 @@ describe('PlayingScreen', function () {
     var clicked = false;
 
     var mockController = {
+      videoVr: false,
       state: {
         isMobile: false,
-        isVideo360: false,
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
         }
       },
-      startHideControlBarTimer: function() {moved = true},
-      togglePlayPause: function(){clicked = true},
-      showControlBar: function() {over = true},
-      hideControlBar: function() {out = true}
+      startHideControlBarTimer: function() {
+        moved = true;
+      },
+      togglePlayPause: function() {
+        clicked = true;
+      },
+      showControlBar: function() {
+        over = true;
+      },
+      hideControlBar: function() {
+        out = true;
+      }
     };
 
     var closedCaptionOptions = {
@@ -179,26 +200,33 @@ describe('PlayingScreen', function () {
   });
 
   it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp with video360 fullscreen', function () {
-    var over = false
-      , out = false
-      , moved = false
-      , clicked = false
-      , isTouching = false;
+    var over = false;
+    var out = false;
+    var moved = false;
+    var clicked = false;
 
     var mockController = {
+      videoVr: true,
       state: {
         isMobile: false,
-        isVideo360: true,
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
         },
         viewingDirection: {yaw: 0, roll: 0, pitch: 0}
       },
-      startHideControlBarTimer: function() {moved = true},
-      togglePlayPause: function(){clicked = true},
-      showControlBar: function() {over = true},
-      hideControlBar: function() {out = true},
+      startHideControlBarTimer: function() {
+        moved = true;
+      },
+      togglePlayPause: function() {
+        clicked = true;
+      },
+      showControlBar: function() {
+        over = true;
+      },
+      hideControlBar: function() {
+        out = true;
+      },
     };
 
     var closedCaptionOptions = {
@@ -211,7 +239,7 @@ describe('PlayingScreen', function () {
         controller={mockController}
         fullscreen={true}
         componentWidth={90}
-        componentHeight={45}
+        componentHeight={40}
         controlBarAutoHide={true}
         closedCaptionOptions={closedCaptionOptions}
       />
@@ -244,6 +272,7 @@ describe('PlayingScreen', function () {
     var clicked = false;
     var isMouseMove = true;
     var mockController = {
+      videoVr: true,
       state: {
         isMobile: true,
         isMouseDown: false,
@@ -251,8 +280,10 @@ describe('PlayingScreen', function () {
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
-        },
-        isVideo360: true
+        }
+      },
+      togglePlayPause: function(){
+        clicked = !clicked;
       },
       togglePlayPause: function(){ clicked = true},
       startHideControlBarTimer: function() {},
@@ -291,8 +322,12 @@ describe('PlayingScreen', function () {
           showing: false
         }
       },
-      startHideControlBarTimer: function() {autoHide = true},
-      showControlBar: function() {controlBar = true}
+      startHideControlBarTimer: function() {
+        autoHide = true;
+      },
+      showControlBar: function() {
+        controlBar = true;
+      }
     };
 
     var closedCaptionOptions = {
@@ -318,8 +353,12 @@ describe('PlayingScreen', function () {
           showing: false
         }
       },
-      startHideControlBarTimer: function() {autoHide = true},
-      showControlBar: function() {controlBar = true}
+      startHideControlBarTimer: function() {
+        autoHide = true;
+      },
+      showControlBar: function() {
+        controlBar = true;
+      }
     };
 
     var closedCaptionOptions = {
@@ -361,7 +400,6 @@ describe('PlayingScreen', function () {
         }
       },
       startHideControlBarTimer: function() {moved = true},
-      // togglePlayPause: function(){clicked = true},
       showControlBar: function() {over = true},
       hideControlBar: function() {out = true},
       cancelTimer:function() {}

@@ -213,9 +213,7 @@ OO = {
       findMainVideoElement: function(a) {},
       loadConfigData: function(a, b, c, d) {},
       cleanUpEventListeners: function(){},
-      toggleStereo: function () {},
-      getVrParams: function () {},
-      vrSubscribes: function () {}
+      toggleStereo: function () {}
     };
 
 
@@ -413,7 +411,6 @@ OO = {
   
     Html5Skin.toggleStereo.call(controllerMock);
     Html5Skin.moveToDirection.call(controllerMock);
-    Html5Skin.vrSubscribes.call(controllerMock);
 
     controllerMock.state.playerState = CONSTANTS.STATE.START;
     Html5Skin.togglePlayPause.call(controllerMock);

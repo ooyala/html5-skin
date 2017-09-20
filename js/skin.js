@@ -74,7 +74,7 @@ var Skin = React.createClass({
 
   //here and below functions for 360 (vr functions)
   handleVRPlayerMouseDown: function(e) {
-    if (this.props.controller.state.isVideo360) {
+    if (this.props.controller.videoVr) {
       this.setState({
         isMouseDown: true,
         XMouseStart: e.pageX,
@@ -87,7 +87,7 @@ var Skin = React.createClass({
   },
 
   handleVRPlayerMouseMove: function(e) {
-    if (this.props.controller.state.isVideo360 && this.state.isMouseDown) {
+    if (this.props.controller.videoVr && this.state.isMouseDown) {
       this.setState({
         isMouseMove: true
       });
@@ -99,7 +99,7 @@ var Skin = React.createClass({
   },
 
   handleVRPlayerMouseUp: function() {
-    if (this.props.controller.state.isVideo360) {
+    if (this.props.controller.videoVr) {
       this.setState({
         isMouseDown: false,
         XMouseStart: 0,
@@ -112,7 +112,7 @@ var Skin = React.createClass({
   },
 
   handleVRPlayerMouseLeave: function () {
-    if (this.props.controller.state.isVideo360) {
+    if (this.props.controller.videoVr) {
       this.setState({
         isMouseDown: false,
       });
