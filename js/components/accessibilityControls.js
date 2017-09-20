@@ -30,7 +30,6 @@ AccessibilityControls.prototype = {
   },
 
   keyEventDown: function(e) {
-    console.log('BBB I am in keyEventDown this.controller.state.accessibilityControlsEnabled is', this.controller.state.accessibilityControlsEnabled);
     if (!this.controller.state.accessibilityControlsEnabled) {
       return;
     }
@@ -57,7 +56,7 @@ AccessibilityControls.prototype = {
       case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
         if (!sliderIsActive) {
           e.preventDefault();
-          var increase = e.keyCode === CONSTANTS.KEYCODES.UP_ARROW_KEY ? true : false;
+          var increase = charCode === CONSTANTS.KEYCODES.UP_ARROW_KEY;
           this.changeVolumeBy(CONSTANTS.A11Y_CTRLS.VOLUME_CHANGE_DELTA, increase);
         }
         break;
@@ -75,7 +74,6 @@ AccessibilityControls.prototype = {
   },
 
   keyEventUp: function(e) {
-    console.log('BBB i am in keyEventUp this.controller.state.accessibilityControlsEnabled is', this.controller.state.accessibilityControlsEnabled);
     if (!this.controller.state.accessibilityControlsEnabled) { return; }
     var targetTagName = this.getTargetTagName(e);
     var charCode = e.which || e.keyCode;
