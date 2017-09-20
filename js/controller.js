@@ -268,9 +268,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.accessibilityControls = new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
 
-      if (this.videoVr) {
-        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
-      }
+      this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
     },
 
     setVideoVr: function(event, obj) {
