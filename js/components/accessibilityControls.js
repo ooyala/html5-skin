@@ -30,6 +30,7 @@ AccessibilityControls.prototype = {
   },
 
   keyEventDown: function(e) {
+    console.log('BBB I am in keyEventDown this.controller.state.accessibilityControlsEnabled is', this.controller.state.accessibilityControlsEnabled);
     if (!this.controller.state.accessibilityControlsEnabled) {
       return;
     }
@@ -74,6 +75,7 @@ AccessibilityControls.prototype = {
   },
 
   keyEventUp: function(e) {
+    console.log('BBB i am in keyEventUp this.controller.state.accessibilityControlsEnabled is', this.controller.state.accessibilityControlsEnabled);
     if (!this.controller.state.accessibilityControlsEnabled) { return; }
     var targetTagName = this.getTargetTagName(e);
     var charCode = e.which || e.keyCode;
@@ -92,7 +94,7 @@ AccessibilityControls.prototype = {
     /*
      * keyMapsList - array of objects {char: 83, direction: 'down'}
      */
-    if (!this.controller.state.isVideo360) { return; }
+    if (!this.controller.videoVr) { return; }
     for (var i=0; i<keyMapsList.length; i++) {
       if (char === keyMapsList[i]['char'] && targetTagName !== "button") {
         if (e.repeat != undefined) {

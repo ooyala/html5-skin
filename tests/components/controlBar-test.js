@@ -125,12 +125,10 @@ describe('ControlBar', function () {
           availableBitrates: null
         }
       },
-      getVrParams: function() {
-        return {
-          stereo: false,
-          contentType: "single",
-          startPosition: 0
-        }
+      videoVrSource: {
+        stereo: false,
+        contentType: "single",
+        startPosition: 0
       }
     };
     
@@ -143,7 +141,7 @@ describe('ControlBar', function () {
       controller: mockController,
       skinConfig: toggleSkinConfig,
       duration: 30,
-      vr: mockController.getVrParams()
+      vr: mockController.videoVrSource
     };
     
     var DOM = TestUtils.renderIntoDocument(
@@ -169,11 +167,10 @@ describe('ControlBar', function () {
           availableBitrates: null
         }
       },
-      getVrParams: function() {
-        return null;
-      }
+      videoVr: false,
+      videoVrSource: false
     };
-    
+
     var toggleSkinConfig = Utils.clone(skinConfig);
     toggleSkinConfig.buttons.desktopContent = [{"name":"stereo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
     
@@ -183,7 +180,7 @@ describe('ControlBar', function () {
       controller: mockController,
       skinConfig: toggleSkinConfig,
       duration: 30,
-      vr: mockController.getVrParams()
+      vr: mockController.videoVr
     };
     
     var DOM = TestUtils.renderIntoDocument(
@@ -211,12 +208,10 @@ describe('ControlBar', function () {
           availableBitrates: null
         }
       },
-      getVrParams: function() {
-        return {
-          stereo: false,
-          contentType: "single",
-          startPosition: 0
-        }
+      videoVrSource: {
+        stereo: false,
+        contentType: "single",
+        startPosition: 0
       },
       toggleStereo: function () {
         stereoMode = true;
@@ -231,7 +226,7 @@ describe('ControlBar', function () {
       controller: mockController,
       skinConfig: toggleSkinConfig,
       duration: 30,
-      vr: mockController.getVrParams()
+      vr: mockController.videoVrSource
     };
     
     var DOM = TestUtils.renderIntoDocument(

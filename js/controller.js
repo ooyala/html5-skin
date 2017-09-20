@@ -29,6 +29,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.mb = mb;
     this.id = id;
     this.accessibilityControls = null;
+    this.videoVrSource = false;
+    this.videoVr = false;
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
@@ -144,7 +146,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullWindow": false,
       "autoPauseDisabled": false,
 
-      "isVideo360": false,
       "viewingDirection": {yaw: 0, roll: 0, pitch: 0}
     };
 
@@ -167,6 +168,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
+      this.mb.subscribe(OO.EVENTS.VIDEO_VR, 'customerUi', _.bind(this.setVideoVr, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -220,12 +222,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isSubscribed = true;
     },
 
-    vrSubscribes: function () {
-      if (this.state.isVideo360) {
-        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
-      }
-    },
-
     externalPluginSubscription: function() {
       if (OO.EVENTS.DISCOVERY_API) {
         this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
@@ -256,8 +252,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // identified with the ARIA label above. We set it to -1 in order to prevent actual keyboard focus
       this.state.mainVideoInnerWrapper.attr('tabindex', '-1');
 
-      var $ooPlayerSkin = $('.oo-player-skin');
-      !$ooPlayerSkin.length && this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
+      if (!$('.oo-player-skin').length) {
+        this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
+      }
 
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
@@ -272,18 +269,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.accessibilityControls = this.accessibilityControls || new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
 
-      if (this.getVrParams && this.getVrParams()) {
-        this.state.isVideo360 = true;
+      if (this.videoVr) {
         this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
       }
     },
 
-    getVrParams: function(){
-      var playerParam = this.state.playerParam;
-      var bitWrapper = playerParam ? playerParam['bit-wrapper'] : null;
-      var isVr = !!bitWrapper && !!bitWrapper.source && !!bitWrapper.source.vr;
-
-      return isVr ? _.extend({}, bitWrapper.source.vr) : false;
+    setVideoVr: function(event, obj) {
+      this.videoVr = true;
+      this.videoVrSource = obj.source || false; //if we need video vr params
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -642,19 +635,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onTouching: function(params, isOnVideoClick) {
-      if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
-        if (this.state.isVideo360 && isOnVideoClick) {
-          this.mb.publish(OO.EVENTS.TOUCHING, this.focusedElement, params);
-        }
+    onTouching: function(params) {
+      if (this.videoVr) {
+        this.mb.publish(OO.EVENTS.TOUCHING, this.focusedElement, params);
       }
     },
 
-    onTouched: function (isOnVideoClick) {
-      if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
-        if (this.state.isVideo360 && isOnVideoClick) {
-          this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement);
-        }
+    onTouched: function () {
+      if (this.videoVr) {
+        this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement);
       }
     },
 
@@ -688,11 +677,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onBuffering: function(event) {
-      if (this.state.isInitialPlay == false && this.state.screenToShow == CONSTANTS.SCREEN.START_SCREEN) {
-        this.state.buffering = false;
-      } else {
-        this.state.buffering = true;
-      }
+      this.state.buffering = !(this.state.isInitialPlay == false && this.state.screenToShow == CONSTANTS.SCREEN.START_SCREEN);
       this.renderSkin();
     },
 
@@ -1272,12 +1257,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleStereo: function () {
-      OO.log("toggleStereo is called");
+      OO.log("toggleStereo чcalled");
       this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
     },
 
     moveToDirection: function (rotate, direction) {
-      OO.log("moveToDirection is called");
+      OO.log("moveToDirection called");
       this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, this.focusedElement, rotate, direction);
     },
 
