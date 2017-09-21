@@ -1451,12 +1451,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onChangeClosedCaptionLanguage: function(event, language) {
+      var noneLanaguage = 'none';
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
       //validate language is available before update and save
-        if (language && availableLanguages && (_.contains(availableLanguages.languages, language) || language === OO.CONSTANTS.CLOSED_CAPTIONS.NONE)) {
+        if (language && availableLanguages && (_.contains(availableLanguages.languages, language) || language === noneLanaguage)) {
         this.state.closedCaptionOptions.language = this.state.persistentSettings.closedCaptionOptions.language = language;
-        var captionLanguage = this.state.closedCaptionOptions.enabled && language !== OO.CONSTANTS.CLOSED_CAPTIONS.NONE ? language : "";
-        var mode = this.state.closedCaptionOptions.enabled && language !== OO.CONSTANTS.CLOSED_CAPTIONS.NONE ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
+        var captionLanguage = this.state.closedCaptionOptions.enabled && language !== noneLanaguage ? language : "";
+        var mode = this.state.closedCaptionOptions.enabled && language !== noneLanaguage ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
         //publish set closed caption event
         this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, captionLanguage, {"mode": mode});
 
