@@ -27,6 +27,22 @@
       @include vendor-prefixes(transition, all 0.15s);
     }
 
+    .oo-scrubber-bar:focus {
+      outline: none;
+    }
+
+    .oo-scrubber-bar:focus::before {
+      $focus-padding: 4px;
+      content: '';
+      position: absolute;
+      top: -$focus-padding;
+      right: -$focus-padding;
+      bottom: -$focus-padding;
+      left: -$focus-padding;
+      padding: $focus-padding;
+      @include highlight-tab();
+    }
+
     .oo-scrubber-bar-hover {
       height: 6px;
       border-radius: 6px;

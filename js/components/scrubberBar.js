@@ -6,6 +6,7 @@ var React = require('react'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Thumbnail = require('./thumbnail'),
     ThumbnailCarousel = require('./thumbnailCarousel'),
+    Utils = require('./utils'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
@@ -129,6 +130,12 @@ var ScrubberBar = React.createClass({
     evt.stopPropagation(); // W3C
     evt.cancelBubble = true; // IE
 
+    // Remove keyboard focus when clicking on scrubber bar
+    var scrubberBar = ReactDOM.findDOMNode(this.refs.scrubberBar);
+    if (scrubberBar && typeof scrubberBar.blur === 'function') {
+      scrubberBar.blur();
+    }
+
     this.lastScrubX = null;
     if (!this.touchInitiated){
       ReactDOM.findDOMNode(this).parentNode.removeEventListener("mousemove", this.handlePlayheadMouseMove);
@@ -147,6 +154,23 @@ var ScrubberBar = React.createClass({
       this.props.controller.endSeeking();
     }
     this.touchInitiated = false;
+  },
+
+  handleScrubberBarKeyDown: function(evt) {
+    switch (evt.key) {
+      case CONSTANTS.KEY_VALUES.ARROW_UP:
+      case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
+        evt.preventDefault();
+        this.props.controller.accessibilityControls.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, true);
+        break;
+      case CONSTANTS.KEY_VALUES.ARROW_DOWN:
+      case CONSTANTS.KEY_VALUES.ARROW_LEFT:
+        evt.preventDefault();
+        this.props.controller.accessibilityControls.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, false);
+        break;
+      default:
+        break;
+    }
   },
 
   handleScrubberBarMouseDown: function(evt) {
@@ -189,6 +213,28 @@ var ScrubberBar = React.createClass({
     this.setState({
       hoveringX: 0
     });
+  },
+
+  /**
+   * Gets a string that describes the current status of the progress bar in a screen
+   * reader friendly format.
+   */
+  getAriaValueText: function() {
+    var ariaValueText;
+    var timeDisplayValues = Utils.getTimeDisplayValues(this.props.currentPlayhead, this.props.duration, this.props.isLiveStream);
+
+    if (this.props.isLiveStream) {
+      if (timeDisplayValues.totalTime) {
+        ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY_DVR.replace('{currentTime}', timeDisplayValues.currentTime);
+        ariaValueText = ariaValueText.replace('{totalTime}', timeDisplayValues.totalTime);
+      } else {
+        ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY_LIVE;
+      }
+    } else {
+      ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY.replace('{currentTime}', timeDisplayValues.currentTime);
+      ariaValueText = ariaValueText.replace('{totalTime}', timeDisplayValues.totalTime);
+    }
+    return ariaValueText;
   },
 
   render: function() {
@@ -286,12 +332,26 @@ var ScrubberBar = React.createClass({
       }
     }
 
+    var ariaValueText = this.getAriaValueText();
+
     return (
       <div className="oo-scrubber-bar-container" ref="scrubberBarContainer" onMouseOver={scrubberBarMouseOver} onMouseOut={scrubberBarMouseOut} onMouseMove={scrubberBarMouseMove}>
         {thumbnailContainer}
         {thumbnailCarousel}
         <div className="oo-scrubber-bar-padding" ref="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
-          <div ref="scrubberBar" className={scrubberBarClassName} style={scrubberBarStyle}>
+          <div
+            ref="scrubberBar"
+            className={scrubberBarClassName}
+            style={scrubberBarStyle}
+            role="slider"
+            aria-label={CONSTANTS.ARIA_LABELS.SEEK_SLIDER}
+            aria-valuemin="0"
+            aria-valuemax={this.props.duration}
+            aria-valuenow={Utils.ensureNumber(this.props.currentPlayhead, 0).toFixed(2)}
+            aria-valuetext={ariaValueText}
+            data-focus-id="scrubberBar"
+            tabIndex="0"
+            onKeyDown={this.handleScrubberBarKeyDown}>
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle}></div>
             <div className="oo-hovered-indicator" style={hoveredIndicatorStyle}></div>
             <div className={playedIndicatorClassName} style={playedIndicatorStyle}></div>
