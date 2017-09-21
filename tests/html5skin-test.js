@@ -9,6 +9,7 @@ jest
 var $ = require('jquery');
 var _ = require('underscore');
 var sinon = require('sinon');
+var skinJson = require('../config/skin.json');
 var CONSTANTS = require('../js/constants/constants');
 
 var Html5Skin;
@@ -47,22 +48,23 @@ require('../js/controller');
 
 describe('Controller', function() {
   var controller;
+  var mockDomElement = {
+    classList: {
+      add: function() {},
+      remove: function() {}
+    },
+    getElementsByTagName: function() { return [mockDomElement] },
+    webkitSupportsFullscreen: true,
+    webkitEnterFullscreen: function() {},
+    webkitExitFullscreen: function() {},
+    addEventListener: function() {}
+  };
 
   beforeEach(function() {
     controller = new Html5Skin(OO.mb, 'id');
     controller.state.pluginsElement = $('<div/>');
     controller.state.pluginsClickElement = $('<div/>');
-    controller.state.mainVideoElement = {
-      classList: {
-        add: function() {},
-        remove: function() {}
-      },
-      getElementsByTagName: function() { return [controller.state.mainVideoElement] },
-      webkitSupportsFullscreen: true,
-      webkitEnterFullscreen: function() {},
-      webkitExitFullscreen: function() {},
-      addEventListener: function() {}
-    };
+    controller.state.mainVideoElement = mockDomElement;
   });
 
   describe('Buffering state', function() {
@@ -71,6 +73,12 @@ describe('Controller', function() {
     beforeEach(function() {
       startBufferingTimerSpy = sinon.spy(controller, 'startBufferingTimer');
       stopBufferingTimerSpy = sinon.spy(controller, 'stopBufferingTimer');
+      controller.skin = {
+        updatePlayhead: function() {},
+        props: {
+          skinConfig: JSON.parse(JSON.stringify(skinJson))
+        }
+      };
     });
 
     afterEach(function() {
@@ -165,8 +173,7 @@ describe('Controller', function() {
       expect(controller.state.bufferingTimer).toBeFalsy();
     });
 
-    it('should clear buffering timer on ADS_PLAYED, VC_VIDEO_ELEMENT_IN_FOCUS and ERROR events', function() {
-      controller.skin = { updatePlayhead: function() {} };
+    it('should clear buffering timer on ADS_PLAYED, VC_VIDEO_ELEMENT_IN_FOCUS, PLAYED and ERROR events', function() {
       // ADS_PLAYED
       controller.startBufferingTimer();
       expect(stopBufferingTimerSpy.callCount).toBe(1);
@@ -182,12 +189,19 @@ describe('Controller', function() {
       controller.onVideoElementFocus('', OO.VIDEO.MAIN);
       expect(stopBufferingTimerSpy.callCount).toBe(4);
       expect(controller.state.bufferingTimer).toBeFalsy();
-      // ERROR
+      // PLAYED
       controller.startBufferingTimer();
       expect(stopBufferingTimerSpy.callCount).toBe(5);
       expect(controller.state.bufferingTimer).toBeTruthy();
-      controller.onErrorEvent();
+      controller.onPlayed();
       expect(stopBufferingTimerSpy.callCount).toBe(6);
+      expect(controller.state.bufferingTimer).toBeFalsy();
+      // ERROR
+      controller.startBufferingTimer();
+      expect(stopBufferingTimerSpy.callCount).toBe(7);
+      expect(controller.state.bufferingTimer).toBeTruthy();
+      controller.onErrorEvent();
+      expect(stopBufferingTimerSpy.callCount).toBe(8);
       expect(controller.state.bufferingTimer).toBeFalsy();
     });
 

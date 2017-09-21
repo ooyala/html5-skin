@@ -608,6 +608,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       this.skin.updatePlayhead(this.state.duration, this.state.duration, this.state.duration);
       this.state.playerState = CONSTANTS.STATE.END;
+      // In case a video plugin fires PLAYED event after stalling without firing BUFFERED or PLAYING first
+      this.setBufferingState(false);
       this.renderSkin();
     },
 
@@ -673,10 +675,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      */
     startBufferingTimer: function() {
       this.stopBufferingTimer();
+      var bufferingSpinnerDelay = Utils.getPropertyValue(this.skin.props.skinConfig, 'general.bufferingSpinnerDelay');
+      bufferingSpinnerDelay = Utils.constrainToRange(bufferingSpinnerDelay, 0, CONSTANTS.UI.MAX_BUFFERING_SPINNER_DELAY);
 
       this.state.bufferingTimer = setTimeout(function() {
         this.setBufferingState(true);
-      }.bind(this), CONSTANTS.UI.BUFFERING_SPINNER_DELAY);
+      }.bind(this), bufferingSpinnerDelay);
     },
 
     /**
