@@ -15,7 +15,7 @@ var DirectionControl = React.createClass({
   handleEvent: function (ev) {
     var rotate = ev.type == 'mousedown' || ev.type == 'touchstart';
     this.props.handleDirection(rotate, this.props.dir);
-    
+    console.log('qweqweqweqweqwe')
     this.setState({
       isTouched: true
     }, function(){

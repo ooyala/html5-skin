@@ -69,7 +69,7 @@
     max-height: 80px;
     min-width: 40px;
     min-height: 40px;
-    background-image: url("assets/images/vr-controls.svg");
+    //background-image: url("assets/images/vr-controls.svg");
     background-position: 0 0;
     background-size: 100% 100%;
     opacity: 1;
@@ -88,7 +88,6 @@
     display: block;
     width: 23px;
     height: 17px;
-    background-image: url("assets/images/vr-video-type.svg");
     background-position: 0 0;
     background-size: 100% 100%;
     &--stereoOn {

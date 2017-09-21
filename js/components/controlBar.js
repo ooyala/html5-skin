@@ -451,11 +451,6 @@ var ControlBar = React.createClass({
             aria-label={stereoAriaLabel}
           >
             <Icon {...this.props} icon={stereoIcon} style={dynamicStyles.iconCharacter} />
-            {/*<span*/}
-              {/*className={'oo-vr-icon--type ' + stereoIconClassName}*/}
-              {/*onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}*/}
-              {/*onClick={this.props.onClick}*/}
-            {/*/>*/}
             <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple}
               bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
           </button>
