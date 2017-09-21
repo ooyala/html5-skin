@@ -260,10 +260,17 @@ var ControlBar = React.createClass({
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
 
-    var stereoIconClassName = "oo-vr-icon--type--stereoOff"
+    // var stereoIconClassName = "oo-vr-icon--type--stereoOff"
+    //   , stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
+    // if(this.vr && this.vr.stereo) {
+    //   stereoIconClassName = "oo-vr-icon--type--stereoOn";
+    //   stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
+    // }
+    
+    var stereoIcon = "stereoOff"
       , stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
-    if(this.vr && this.vr.stereo) {
-      stereoIconClassName = "oo-vr-icon--type--stereoOn";
+    if(this.vr && this.vr.stereo){
+      stereoIcon = "stereoOn";
       stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
     }
 
@@ -443,11 +450,12 @@ var ControlBar = React.createClass({
             tabIndex="0"
             aria-label={stereoAriaLabel}
           >
-            <span
-              className={'oo-vr-icon--type ' + stereoIconClassName}
-              onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}
-              onClick={this.props.onClick}
-            />
+            <Icon {...this.props} icon={stereoIcon} style={dynamicStyles.iconCharacter} />
+            {/*<span*/}
+              {/*className={'oo-vr-icon--type ' + stereoIconClassName}*/}
+              {/*onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}*/}
+              {/*onClick={this.props.onClick}*/}
+            {/*/>*/}
             <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple}
               bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
           </button>
