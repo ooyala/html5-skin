@@ -241,7 +241,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onHAFailoverError: function(){
       this.state.failoverInProgress = false;
-      this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
+      // this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.renderSkin();
     },
 
@@ -544,7 +544,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPause: function(event, source, pauseReason) {
-     if(this.state.failoverInProgress){
+      if(this.state.failoverInProgress) {
         return;
       }
 
@@ -559,7 +559,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPaused: function(event, videoId) {
-      if(this.state.failoverInProgress){
+      if(this.state.failoverInProgress) {
         return;
       }
 
@@ -665,7 +665,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaybackReady: function(event) {
-      if(this.state.failoverInProgress){
+      if(this.state.failoverInProgress) {
         return;
       }
 
