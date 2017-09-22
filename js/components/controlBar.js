@@ -259,13 +259,6 @@ var ControlBar = React.createClass({
       fullscreenIcon = "expand";
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
-
-    // var stereoIconClassName = "oo-vr-icon--type--stereoOff"
-    //   , stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
-    // if(this.vr && this.vr.stereo) {
-    //   stereoIconClassName = "oo-vr-icon--type--stereoOn";
-    //   stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
-    // }
     
     var stereoIcon = "stereoOff"
       , stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
@@ -483,8 +476,23 @@ var ControlBar = React.createClass({
     };
 
     var controlBarItems = [];
-    var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
+    var defaultItems = {};
 
+    //take defaultItems from skin.json
+    if(this.isMobile){
+      if(this.props.controller.state.isPlayingAd){
+        defaultItems = this.props.skinConfig.buttons.mobileAd;
+      } else {
+        defaultItems = this.props.skinConfig.buttons.mobileContent;
+      }
+    } else {
+      if(this.props.controller.state.isPlayingAd){
+        defaultItems = this.props.skinConfig.buttons.desktopAd;
+      } else {
+        defaultItems = this.props.skinConfig.buttons.desktopContent;
+      }
+    }
+    
     //if mobile and not showing the slider or the icon, extra space can be added to control bar width. If volume bar is shown instead of slider, add some space as well:
     var volumeItem = null;
     var extraSpaceVolume = 0;
