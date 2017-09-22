@@ -62,14 +62,13 @@
   &-container {
     position: absolute;
     display: block;
-    top: 50px;
-    left: 15px;
+    top: 15px;
+    left: calc(95% - 15px);
     width: 5%;
     max-width: 80px;
     max-height: 80px;
     min-width: 40px;
     min-height: 40px;
-    //background-image: url("assets/images/vr-controls.svg");
     background-position: 0 0;
     background-size: 100% 100%;
     opacity: 1;
@@ -95,6 +94,15 @@
       filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
     }
     &--stereoOff {}
+  }
+
+  &--dir{
+    position: absolute;
+    display: block;
+    width: 100%;
+    opacity: 1;
+    font-size: 40px;
+    line-height: 40px;
   }
 }
 .oo-video-type {

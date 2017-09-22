@@ -45,6 +45,9 @@ var ViewControls = React.createClass({
     };
     
     var isShow = this.icon && this.icon.name;
+    var iconClass = classnames({
+      "oo-vr-icon-dir": true
+    });
     
     var content = <div className={classnames("oo-vr-icon-container view-controls", {"oo-vr-icon-container--hidden": !this.props.controlBarVisible})}>
                     <Icon {...this.props} icon={this.icon.name} style={actionIconStyle}/>
