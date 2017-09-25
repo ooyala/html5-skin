@@ -35,28 +35,15 @@ var ViewControls = React.createClass({
   },
   
   render: function () {
-    var actionIconStyle = {
-      position: 'absolute',
-      display: 'block',
-      width: '100%',
-      opacity: 1,
-      'font-size': '40px',
-      'line-height': '40px'
-    };
-    
     var isShow = this.icon && this.icon.name;
-    var iconClass = classnames({
-      "oo-vr-icon-dir": true
-    });
-    
     var content = <div className={classnames("oo-vr-icon-container view-controls", {"oo-vr-icon-container--hidden": !this.props.controlBarVisible})}>
-                    <Icon {...this.props} icon={this.icon.name} style={actionIconStyle}/>
+                    <div className={classnames("oo-vr-icon--substrate")}></div>
+                    <Icon {...this.props} icon={this.icon.name} className={classnames("oo-vr-icon--icon-symbol")}/>
                     <DirectionControl {...this.props} handleDirection={this.handleDirection} dir="left"/>
                     <DirectionControl {...this.props} handleDirection={this.handleDirection} dir="right"/>
                     <DirectionControl {...this.props} handleDirection={this.handleDirection} dir="up"/>
                     <DirectionControl {...this.props} handleDirection={this.handleDirection} dir="down"/>
                   </div>;
-                  
     
     return isShow ? content : null;
   }

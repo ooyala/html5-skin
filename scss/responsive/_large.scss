@@ -148,4 +148,24 @@
     top: $panel-padding-lg;
     right: $panel-padding-lg;
   }
+
+  //control buttons for rotating the camera
+  .oo-vr-icon-container {
+    width: $vr-controls-full-size * $large-multiple;
+    height: $vr-controls-full-size * $large-multiple;
+
+    .oo-vr-icon-move {
+      height: 15px * $large-multiple;
+      width: 15px * $large-multiple;
+    }
+
+    .oo-vr-icon--icon-symbol {
+      font-size: $vr-controls-full-size * $large-multiple;
+      line-height: normal;
+    }
+    .oo-vr-icon--substrate {
+      height: $vr-controls-full-size * $large-multiple;
+      width: $vr-controls-full-size * $large-multiple;
+    }
+  }
 }
