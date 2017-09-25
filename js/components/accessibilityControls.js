@@ -74,7 +74,6 @@ AccessibilityControls.prototype = {
   },
 
   keyEventUp: function(e) {
-    if (!this.controller.state.accessibilityControlsEnabled) { return; }
     var targetTagName = this.getTargetTagName(e);
     var charCode = e.which || e.keyCode;
     this.handleKeyClick(e, this.state.keyMapsList, charCode, false, targetTagName);  //stop rotate 360
