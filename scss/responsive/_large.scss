@@ -164,8 +164,8 @@
       line-height: normal;
     }
     .oo-vr-icon--substrate {
-      height: $vr-controls-full-size * $large-multiple;
-      width: $vr-controls-full-size * $large-multiple;
+      height: $vr-controls-full-size * $large-multiple + 4px;
+      width: $vr-controls-full-size * $large-multiple + 4px;
     }
   }
 }

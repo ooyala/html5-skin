@@ -259,11 +259,11 @@ var ControlBar = React.createClass({
       fullscreenIcon = "expand";
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
-    
-    var stereoIcon = "stereoOff"
+
+    var stereoIconClassName = "oo-vr-icon--type--stereoOff"
       , stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
-    if(this.vr && this.vr.stereo){
-      stereoIcon = "stereoOn";
+    if(this.vr && this.vr.stereo) {
+      stereoIconClassName = "oo-vr-icon--type--stereoOn";
       stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
     }
 

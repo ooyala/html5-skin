@@ -33,7 +33,7 @@
   &-container {
     position: absolute;
     display: block;
-    top: calc(5% - 15px);
+    top: 5%;
     left: calc(95% - 15px);
     width: $vr-controls-full-size;
     height: $vr-controls-full-size;
@@ -62,8 +62,9 @@
   &--substrate {
     position: absolute;
     display: block;
-    width: $vr-controls-full-size;
-    height: $vr-controls-full-size;
+    width: calc(#{$vr-controls-full-size} + 4px);
+    height: calc(#{$vr-controls-full-size} + 4px);
+    left: -2px;
     background: #000000;
     opacity: 0.3;
     -moz-border-radius: 100%;
