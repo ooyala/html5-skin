@@ -147,6 +147,10 @@ var PlayingScreen = React.createClass({
     this.props.handleVRPlayerClick();
   },
 
+  handlePlayerFocus: function() {
+    this.props.handleVRPlayerFocus();
+  },
+
   showControlBar: function(event) {
     if (!this.isMobile || event.type == 'touchend') {
       this.setState({controlBarVisible: true});
@@ -171,60 +175,65 @@ var PlayingScreen = React.createClass({
         showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}/> : null;
 
     var upNextPanel = (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
-      <UpNextPanel {...this.props}
+      <UpNextPanel
+        {...this.props}
         controlBarVisible={this.state.controlBarVisible}
-        currentPlayhead={this.props.currentPlayhead}/> : null;
+        currentPlayhead={this.props.currentPlayhead} /> : null;
 
     return (
-    <div
-      className="oo-state-screen oo-playing-screen"
-      ref="PlayingScreen"
-      onMouseOver={this.showControlBar}
-      onMouseOut={this.hideControlBar}
-      onKeyDown={this.handleKeyDown}
-    >
       <div
-        className="oo-state-screen-selectable"
-        onMouseDown={this.handlePlayerMouseDown}
-        onMouseUp={this.handlePlayerMouseUp}
-        onMouseMove={this.handlePlayerMouseMove}
-        onMouseLeave={this.handlePlayerMouseLeave}
-        onTouchEnd={this.handleTouchEnd}
-        onClick={this.handlePlayerClicked}
-      />
+        className="oo-state-screen oo-playing-screen"
+        ref="PlayingScreen"
+        onMouseOver={this.showControlBar}
+        onMouseOut={this.hideControlBar}
+        onKeyDown={this.handleKeyDown}
+      >
+        <div
+          className="oo-state-screen-selectable"
+          onMouseDown={this.handlePlayerMouseDown}
+          onMouseUp={this.handlePlayerMouseUp}
+          onMouseMove={this.handlePlayerMouseMove}
+          onMouseLeave={this.handlePlayerMouseLeave}
+          onTouchEnd={this.handleTouchEnd}
+          onClick={this.handlePlayerClicked}
+          onFocus={this.handlePlayerFocus}
+          ref="screenSelectable"
+        />
 
-      <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
+        <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
-      {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
+        {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
-      <div className="oo-interactive-container" onFocus={this.handleFocus}>
-
-        {this.props.closedCaptionOptions.enabled ?
-          <TextTrack
-            closedCaptionOptions={this.props.closedCaptionOptions}
-            cueText={this.props.closedCaptionOptions.cueText}
-            responsiveView={this.props.responsiveView}
-          /> : null
+        {
+          this.props.controller.videoVr &&
+          <ViewControls
+            {...this.props}
+            screen={this.refs.screenSelectable}
+            controlBarVisible={this.state.controlBarVisible}
+          />
         }
 
-        {adOverlay}
+        <div className="oo-interactive-container" onFocus={this.handleFocus}>
 
-        {upNextPanel}
+          {this.props.closedCaptionOptions.enabled ?
+            <TextTrack
+              closedCaptionOptions={this.props.closedCaptionOptions}
+              cueText={this.props.closedCaptionOptions.cueText}
+              responsiveView={this.props.responsiveView}
+            /> : null
+          }
 
-        <ControlBar {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-          playerState={this.props.playerState}
-          isLiveStream={this.props.isLiveStream} />
+          {adOverlay}
+
+          {upNextPanel}
+
+          <ControlBar {...this.props}
+                      controlBarVisible={this.state.controlBarVisible}
+                      playerState={this.props.playerState}
+                      isLiveStream={this.props.isLiveStream}
+          />
+        </div>
       </div>
-
-      {
-        this.props.controller.videoVr &&
-        <ViewControls
-          {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-        />
-      }
-    </div>
     );
   }
 });
