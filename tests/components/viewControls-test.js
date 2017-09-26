@@ -28,9 +28,15 @@ describe('viewControls', function () {
   });
   
   it('creates a viewControls', function () {
+    
     var controller = {
+      state: {
+        isPlayingAd: false
+      },
       videoVrSource: {
-        stereo: false
+        vr: {
+          stereo: false
+        }
       }
     };
     
@@ -39,7 +45,7 @@ describe('viewControls', function () {
       duration: 30,
       skinConfig: skinConfig,
       playerState: CONSTANTS.STATE.PLAYING,
-      controller: controller
+      controller: controller,
     };
     
     var DOM = TestUtils.renderIntoDocument(	<ViewControls {...mockProps}/> );
@@ -68,12 +74,42 @@ describe('viewControls', function () {
     expect(mockProps.clickButton).toBe(true);
   });
   
-  it('check condition: if video support vr360 then viewControls exist', function () {
+  it('check condition: if video support vr360 and view on desktop then viewControls exist', function () {
+   
     var controller = {
+      state: {
+        isPlayingAd: false,
+        isMobile: false
+      },
       videoVrSource: {
-        stereo: false
+        vr: {
+          stereo: false
+        }
       }
     };
+    
+    this.icon = {
+      "name":"arrowsBlack",
+      "location": "mainView",
+      "whenDoesNotFit":"keep"
+    };
+
+    skinConfig.buttons.desktopContent =  [
+      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
+      {"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":240 },
+      {"name":"live", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45},
+      {"name":"timeDuration", "location":"controlBar", "whenDoesNotFit":"drop", "minWidth":145 },
+      {"name":"flexibleSpace", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":1 },
+      {"name":"share", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
+      {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
+      {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
+      {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
+      {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":125 },
+      {"name":"stereo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
+      {"name":"fullscreen", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
+      {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
+      {"name":"arrowsBlack", "location": "mainView", "whenDoesNotFit":"keep"}
+    ];
     
     var mockProps = {
       isLiveStream: false,
@@ -91,8 +127,13 @@ describe('viewControls', function () {
   
   it('check condition: if video does not support vr360 then viewControls does not exist', function () {
     var controller = {
-      getVrParams: function () {
-        return null;
+      state: {
+        isPlayingAd: false
+      },
+      videoVrSource: {
+        vr: {
+          stereo: false
+        }
       }
     };
     

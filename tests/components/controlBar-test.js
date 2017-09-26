@@ -126,9 +126,11 @@ describe('ControlBar', function () {
         }
       },
       videoVrSource: {
-        stereo: false,
-        contentType: "single",
-        startPosition: 0
+        vr: {
+          stereo: false,
+          contentType: "single",
+          startPosition: 0
+        }
       }
     };
     
@@ -209,9 +211,11 @@ describe('ControlBar', function () {
         }
       },
       videoVrSource: {
-        stereo: false,
-        contentType: "single",
-        startPosition: 0
+        vr: {
+          stereo: false,
+          contentType: "single",
+          startPosition: 0
+        }
       },
       toggleStereo: function () {
         stereoMode = true;
