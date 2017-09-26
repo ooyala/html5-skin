@@ -19,7 +19,7 @@ var ViewControls = React.createClass({
         this.vr = this.props.controller.videoVrSource;
       }
       
-      if (this.props.controller && this.props.controller.state) {
+      if (this.props.controller.state) {
         this.isMobile = this.props.controller.state.isMobile;
       }
     }
