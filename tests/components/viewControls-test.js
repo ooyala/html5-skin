@@ -64,7 +64,7 @@ describe('viewControls', function () {
     };
     
     var DOM = TestUtils.renderIntoDocument(
-      <DirectionControl {...mockProps}  handleVRViewControlsClick={mockProps.handleVRViewControlsClick} dir="left"/>
+      <DirectionControl {...mockProps} handleVRViewControlsClick={mockProps.handleVRViewControlsClick} dir="left"/>
     );
     
     var button = TestUtils.findRenderedDOMComponentWithClass(DOM, 'direction-control');
