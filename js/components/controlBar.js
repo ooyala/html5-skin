@@ -24,7 +24,7 @@ var ControlBar = React.createClass({
     this.moreOptionsItems = null;
     this.vr = false;
     if (this.props.controller && this.props.controller.videoVrSource) {
-      this.vr = this.props.controller.videoVrSource;
+      this.vr = this.props.controller.videoVrSource.vr;
     }
     return {};
   },
@@ -260,11 +260,14 @@ var ControlBar = React.createClass({
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
 
-    var stereoIconClassName = "oo-vr-icon--type--stereoOff"
-      , stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
-    if(this.vr && this.vr.stereo) {
-      stereoIconClassName = "oo-vr-icon--type--stereoOn";
-      stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
+    var stereoIcon, stereoAriaLabel;
+    if(this.vr) {
+      stereoIcon = "stereoOff";
+      stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
+      if(this.vr.stereo){
+        stereoIcon = "stereoOn";
+        stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
+      }
     }
 
     var totalTime = 0;
@@ -432,7 +435,7 @@ var ControlBar = React.createClass({
       }).bind(this),
 
       "stereo": (function (alignment) {
-        return (!this.vr) ? null :
+        return (!this.vr || !this.isMobile) ? null :
           <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
             onClick={this.handleStereoClick}
             onMouseUp={Utils.blurOnMouseUp}
@@ -476,23 +479,8 @@ var ControlBar = React.createClass({
     };
 
     var controlBarItems = [];
-    var defaultItems = {};
+    var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
-    //take defaultItems from skin.json
-    if(this.isMobile){
-      if(this.props.controller.state.isPlayingAd){
-        defaultItems = this.props.skinConfig.buttons.mobileAd;
-      } else {
-        defaultItems = this.props.skinConfig.buttons.mobileContent;
-      }
-    } else {
-      if(this.props.controller.state.isPlayingAd){
-        defaultItems = this.props.skinConfig.buttons.desktopAd;
-      } else {
-        defaultItems = this.props.skinConfig.buttons.desktopContent;
-      }
-    }
-    
     //if mobile and not showing the slider or the icon, extra space can be added to control bar width. If volume bar is shown instead of slider, add some space as well:
     var volumeItem = null;
     var extraSpaceVolume = 0;
