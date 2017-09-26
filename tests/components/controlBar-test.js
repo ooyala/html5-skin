@@ -135,7 +135,7 @@ describe('ControlBar', function () {
     };
     
     var toggleSkinConfig = Utils.clone(skinConfig);
-    toggleSkinConfig.buttons.desktopContent = [{"name":"stereo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
+    toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
     
     
     var mockProps = {
@@ -174,7 +174,7 @@ describe('ControlBar', function () {
     };
 
     var toggleSkinConfig = Utils.clone(skinConfig);
-    toggleSkinConfig.buttons.desktopContent = [{"name":"stereo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
+    toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
     
     
     var mockProps = {
@@ -223,7 +223,7 @@ describe('ControlBar', function () {
     };
     
     var toggleSkinConfig = Utils.clone(skinConfig);
-    toggleSkinConfig.buttons.desktopContent = [{"name":"stereo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
+    toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
     
     var mockProps = {
       isLiveStream: false,

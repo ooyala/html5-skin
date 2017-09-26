@@ -105,7 +105,7 @@ describe('viewControls', function () {
       {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
       {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
       {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":125 },
-      {"name":"stereo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
+      {"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
       {"name":"fullscreen", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
       {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
       {"name":"arrowsBlack", "location": "mainView", "whenDoesNotFit":"keep"}
