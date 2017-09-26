@@ -261,10 +261,10 @@ var ControlBar = React.createClass({
     }
 
     var stereoIcon, stereoAriaLabel;
-    if(this.vr) {
+    if (this.vr) {
       stereoIcon = "stereoOff";
       stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
-      if(this.vr.stereo){
+      if (this.vr.stereo) {
         stereoIcon = "stereoOn";
         stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
       }
