@@ -197,7 +197,6 @@ var PlayingScreen = React.createClass({
           onTouchEnd={this.handleTouchEnd}
           onClick={this.handlePlayerClicked}
           onFocus={this.handlePlayerFocus}
-          ref="screenSelectable"
         />
 
         <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
@@ -208,7 +207,6 @@ var PlayingScreen = React.createClass({
           this.props.controller.videoVr &&
           <ViewControls
             {...this.props}
-            screen={this.refs.screenSelectable}
             controlBarVisible={this.state.controlBarVisible}
           />
         }
