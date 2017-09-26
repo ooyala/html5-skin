@@ -6,8 +6,13 @@ var CONSTANTS = require('../constants/constants');
 var _ = require('underscore');
 
 var ViewControls = React.createClass({
-  handleDirection: function (rotate, direction) {
-    this.props.controller.moveToDirection(rotate, direction);
+  handleVRViewControlsClick: function(e, isRotated, direction) {
+    if (e.type == 'touchend' || !this.props.controller.state.isMobile) {
+      e.stopPropagation(); // W3C
+      e.cancelBubble = true; // IE
+      this.props.controller.state.accessibilityControlsEnabled = true;
+    }
+    this.props.controller.moveToDirection(isRotated, direction);
   },
   
   componentWillMount: function () {
@@ -43,10 +48,10 @@ var ViewControls = React.createClass({
       (<div className={classnames("oo-vr-icon-container view-controls", {"oo-vr-icon-container--hidden": !this.props.controlBarVisible})}>
         <div className={classnames("oo-vr-icon--substrate")}></div>
         <Icon {...this.props} icon={this.icon.name} className={classnames("oo-vr-icon--icon-symbol")}/>
-        <DirectionControl {...this.props} handleDirection={this.handleDirection} dir="left"/>
-        <DirectionControl {...this.props} handleDirection={this.handleDirection} dir="right"/>
-        <DirectionControl {...this.props} handleDirection={this.handleDirection} dir="up"/>
-        <DirectionControl {...this.props} handleDirection={this.handleDirection} dir="down"/>
+        <DirectionControl {...this.props} handleVRViewControlsClick={this.handleVRViewControlsClick} dir="left"/>
+        <DirectionControl {...this.props} handleVRViewControlsClick={this.handleVRViewControlsClick} dir="right"/>
+        <DirectionControl {...this.props} handleVRViewControlsClick={this.handleVRViewControlsClick} dir="up"/>
+        <DirectionControl {...this.props} handleVRViewControlsClick={this.handleVRViewControlsClick} dir="down"/>
       </div>);
   }
 });

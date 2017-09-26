@@ -125,15 +125,19 @@ var Skin = React.createClass({
     });
   },
 
+  handleVRPlayerFocus: function() {
+    this.props.controller.state.accessibilityControlsEnabled = true;
+  },
+
   getDirectionParams: function(pageX, pageY) {
-    var dx = pageX - this.state.XMouseStart
-      , dy = pageY - this.state.YMouseStart;
-    var maxDegreesX = 90
-      , maxDegreesY = 120;
-    var degreesForPixelYaw = maxDegreesX / this.state.componentWidth
-      , degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
-    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw
-      , pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
+    var dx = pageX - this.state.XMouseStart;
+    var dy = pageY - this.state.YMouseStart;
+    var maxDegreesX = 90;
+    var maxDegreesY = 120;
+    var degreesForPixelYaw = maxDegreesX / this.state.componentWidth;
+    var degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
+    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw;
+    var pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
     return [yaw, 0, pitch];
   },
 
@@ -186,6 +190,8 @@ var Skin = React.createClass({
               handleVRPlayerMouseUp={this.handleVRPlayerMouseUp}
               handleVRPlayerMouseLeave={this.handleVRPlayerMouseLeave}
               handleVRPlayerClick={this.handleVRPlayerClick}
+              handleVRPlayerFocus={this.handleVRPlayerFocus}
+              handleVRViewControlsClick={this.handleVRViewControlsClick}
               isMouseMove={this.state.isMouseMove}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
@@ -228,7 +234,6 @@ var Skin = React.createClass({
               handleVRPlayerMouseUp={this.handleVRPlayerMouseUp}
               handleVRPlayerMouseLeave={this.handleVRPlayerMouseLeave}
               handleVRPlayerClick={this.handleVRPlayerClick}
-              isMouseMove={this.state.isMouseMove}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
               playerState={this.state.playerState}

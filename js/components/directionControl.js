@@ -13,8 +13,9 @@ var DirectionControl = React.createClass({
   },
   
   handleEvent: function (ev) {
-    var rotate = ev.type == 'mousedown' || ev.type == 'touchstart';
-    this.props.handleDirection(rotate, this.props.dir);
+    var isRotated = ev.type == 'mousedown' || ev.type == 'touchstart';
+    this.props.handleVRViewControlsClick(ev, isRotated, this.props.dir);
+
     this.setState({
       isTouched: true
     }, function(){
@@ -33,8 +34,10 @@ var DirectionControl = React.createClass({
         className={classnames('oo-vr-icon--move direction-control', directionClass, touchedDirectionClass)}
         key={this.props.dir}
         tabIndex="0"
-        onMouseDown={this.handleEvent} onTouchStart={this.handleEvent}
-        onMouseUp={this.handleEvent} onTouchEnd={this.handleEvent}
+        onMouseDown={this.handleEvent}
+        onTouchStart={this.handleEvent}
+        onMouseUp={this.handleEvent}
+        onTouchEnd={this.handleEvent}
         onMouseOut={this.handleEvent}
       />
     );
