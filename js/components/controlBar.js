@@ -434,7 +434,7 @@ var ControlBar = React.createClass({
         </a>
       }).bind(this),
 
-      "stereo": (function (alignment) {
+      "stereoscopic": (function (alignment) {
         var checkStereoBtn = this.vr && this.isMobile;
         return (!checkStereoBtn) ? null :
           <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
