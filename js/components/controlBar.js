@@ -24,7 +24,7 @@ var ControlBar = React.createClass({
     this.moreOptionsItems = null;
     this.vr = false;
     if (this.props.controller && this.props.controller.videoVrSource) {
-      this.vr = this.props.controller.videoVrSource;
+      this.vr = this.props.controller.videoVrSource.vr;
     }
     return {};
   },
@@ -260,11 +260,14 @@ var ControlBar = React.createClass({
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
 
-    var stereoIconClassName = "oo-vr-icon--type--stereoOff"
-      , stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
-    if(this.vr && this.vr.stereo) {
-      stereoIconClassName = "oo-vr-icon--type--stereoOn";
-      stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
+    var stereoIcon, stereoAriaLabel;
+    if (this.vr) {
+      stereoIcon = "stereoOff";
+      stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
+      if (this.vr.stereo) {
+        stereoIcon = "stereoOn";
+        stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
+      }
     }
 
     var totalTime = 0;
@@ -432,7 +435,8 @@ var ControlBar = React.createClass({
       }).bind(this),
 
       "stereo": (function (alignment) {
-        return (!this.vr) ? null :
+        var checkStereoBtn = this.vr && this.isMobile;
+        return (!checkStereoBtn) ? null :
           <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
             onClick={this.handleStereoClick}
             onMouseUp={Utils.blurOnMouseUp}
@@ -443,11 +447,7 @@ var ControlBar = React.createClass({
             tabIndex="0"
             aria-label={stereoAriaLabel}
           >
-            <span
-              className={'oo-vr-icon--type ' + stereoIconClassName}
-              onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}
-              onClick={this.props.onClick}
-            />
+            <Icon {...this.props} icon={stereoIcon} style={dynamicStyles.iconCharacter} />
             <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple}
               bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
           </button>
