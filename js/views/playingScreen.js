@@ -12,7 +12,8 @@ var React = require('react'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     CONSTANTS = require('../constants/constants');
-    ViewControls = require('../components/viewControls');
+    ViewControls = require('../components/viewControls'),
+    _ = require('underscore');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -176,7 +177,7 @@ var PlayingScreen = React.createClass({
       this.setState({
         isMouseDown: false,
       });
-      if (this.props.controller.onTouched) {
+      if (_.isFunction(this.props.controller.onTouched)) {
         this.props.controller.onTouched();
       }
     }
