@@ -31,6 +31,7 @@ var ControlBar = React.createClass({
 
   componentDidMount: function () {
     window.addEventListener('orientationchange', this.closePopovers);
+    document.addEventListener('keydown', this.handleControlBarKeyDown);
     this.restoreFocusedControl();
   },
 
@@ -48,6 +49,7 @@ var ControlBar = React.createClass({
       this.props.controller.hideVolumeSliderBar();
     }
     window.removeEventListener('orientationchange', this.closePopovers);
+    document.removeEventListener('keydown', this.handleControlBarKeyDown);
   },
 
   /**
@@ -221,6 +223,60 @@ var ControlBar = React.createClass({
    */
   handleControlBarBlur: function(evt) {
     this.props.controller.state.focusedControl = null;
+  },
+
+  /**
+   * Will handle the keydown event when the controlBar is active and it will restrict
+   * tab navigation to elements that are within it when the player is in fullscreen mode.
+   * Note that this only handles the edge cases that are needed in order to loop the tab
+   * focus. Tabbing in between the elements is handled by the browser.
+   * @private
+   * @param {Object} evt Keydown event object.
+   */
+  handleControlBarKeyDown: function(evt) {
+    if (
+      evt.key !== CONSTANTS.KEY_VALUES.TAB ||
+      !this.props.controller.state.fullscreen ||
+      !this.domNode ||
+      !evt.target
+    ) {
+      return;
+    }
+    // Focusable elements on the control bar (this.domNode) are expected to have the
+    // data-focus-id attribute
+    var focusableElements = this.domNode.querySelectorAll('[data-focus-id]');
+
+    if (focusableElements.length) {
+      var firstFocusableElement = focusableElements[0];
+      var lastFocusableElement = focusableElements[focusableElements.length - 1];
+      // This indicates we're tabbing over the focusable control bar elements
+      if (evt.target.hasAttribute('data-focus-id')) {
+        if (evt.shiftKey) {
+          // Shift + tabbing on first element, focus on last
+          if (evt.target === firstFocusableElement) {
+            evt.preventDefault();
+            lastFocusableElement.focus();
+          }
+        } else {
+          // Tabbing on last element, focus on first
+          if (evt.target === lastFocusableElement) {
+            evt.preventDefault();
+            firstFocusableElement.focus();
+          }
+        }
+      // Keydown happened on a non-controlbar element
+      } else {
+        evt.preventDefault();
+
+        if (evt.shiftKey) {
+          lastFocusableElement.focus();
+        } else {
+          firstFocusableElement.focus();
+        }
+      }
+    } else {
+      OO.log('ControlBar: No focusable elements found');
+    }
   },
 
   populateControlBar: function () {

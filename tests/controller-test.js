@@ -1,3 +1,38 @@
+/*
+ *
+ *  !!!IMPORTANT!!!
+ *
+ *  This file is deprecated. Please use html5skin-test.js for all new controller unit tests.
+ *
+ *  !!!IMPORTANT!!!
+ *
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 jest.dontMock('../js/controller');
 jest.dontMock('screenfull');
 jest.dontMock('../js/constants/constants');
@@ -180,6 +215,9 @@ OO = {
       exitFullWindow: function() {},
       exitFullWindowOnEscKey: function() {},
       onBuffered: function() {},
+      setBufferingState: function() {},
+      startBufferingTimer: function() {},
+      stopBufferingTimer: function() {},
       onInitialPlayRequested: function() {},
       unsubscribeBasicPlaybackEvents: function() {},
       resetUpNextInfo: function(a) {},
@@ -563,7 +601,7 @@ OO = {
         Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', 'elementId', {});
         expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.INITIAL_SCREEN);
       });
-      
+
     });
 
     describe('Controller testing Ooyala Ads', function () {
