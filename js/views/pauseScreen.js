@@ -176,6 +176,14 @@ var PauseScreen = React.createClass({
           <Icon {...this.props} icon="pause" style={actionIconStyle}/>
         </button>
 
+        {
+          this.props.controller.videoVr &&
+          <ViewControls
+            {...this.props}
+            controlBarVisible={this.state.controlBarVisible}
+          />
+        }
+
         <div className="oo-interactive-container" onFocus={this.handleFocus}>
           {this.props.closedCaptionOptions.enabled ?
             <TextTrack
@@ -196,15 +204,6 @@ var PauseScreen = React.createClass({
             isLiveStream={this.props.isLiveStream}
           />
         </div>
-
-        {
-          this.props.controller.videoVr &&
-          <ViewControls
-            {...this.props}
-            controlBarVisible={this.state.controlBarVisible}
-          />
-        }
-
       </div>
     );
   }
