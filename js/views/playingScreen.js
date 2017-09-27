@@ -245,8 +245,8 @@ var PlayingScreen = React.createClass({
       ref="PlayingScreen"
       onMouseOver={this.showControlBar}
       onMouseOut={this.hideControlBar}
-      onKeyDown={this.handleKeyDown}
-    >
+      onMouseMove={this.handlePlayerMouseMove}
+      onKeyDown={this.handleKeyDown}>
       <div
         className="oo-state-screen-selectable"
         onMouseDown={this.handlePlayerMouseDown}
