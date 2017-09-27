@@ -1,4 +1,5 @@
-<svg width="50" height="50" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
  <style type="text/css">.st0{fill:url(#SVGID_1_);}</style>
  <linearGradient y2="43.8048" x2="41.1994" y1="6.213" x1="10.7582" gradientUnits="userSpaceOnUse" id="SVGID_1_">
   <stop stop-color="#999999" offset="0"/>
