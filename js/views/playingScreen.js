@@ -177,7 +177,7 @@ var PlayingScreen = React.createClass({
       this.setState({
         isMouseDown: false,
       });
-      if (this.props.controller.onTouched && _.isFunction(this.props.controller.onTouched)) {
+      if (_.isFunction(this.props.controller.onTouched)) {
         this.props.controller.onTouched();
       }
     }
