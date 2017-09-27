@@ -664,7 +664,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onBuffering: function(event) {
-      this.state.buffering = !(this.state.isInitialPlay == false && this.state.screenToShow == CONSTANTS.SCREEN.START_SCREEN);
+      this.state.buffering = !(this.state.isInitialPlay === false && this.state.screenToShow === CONSTANTS.SCREEN.START_SCREEN);
       this.renderSkin();
     },
 

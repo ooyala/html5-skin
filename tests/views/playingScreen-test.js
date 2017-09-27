@@ -83,12 +83,6 @@ describe('PlayingScreen', function () {
 
     var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
 
-    // TestUtils.Simulate.mouseDown(screen[0]);
-    // expect(isTouched).toBe(true);
-    //
-    // TestUtils.Simulate.mouseUp(screen[0]);
-    // expect(isTouched).toBe(true);
-
   });
 
   it('creates a PlayingScreen and checks touchEnd without video360', function () {
