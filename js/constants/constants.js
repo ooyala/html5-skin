@@ -147,7 +147,8 @@ module.exports = {
 
   UI: {
     defaultScrubberBarHeight: 4,
-    DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15
+    DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15,
+    MAX_BUFFERING_SPINNER_DELAY: 60000 // Max allowed value of bufferingSpinnerDelay in milliseconds
   },
 
   WATERMARK: {
