@@ -268,10 +268,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.accessibilityControls = new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
-
-      if (this.videoVr) {
-        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
-      }
     },
 
     setVideoVr: function(event, obj) {
@@ -638,10 +634,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
         this.state.mainVideoDuration = this.state.duration;
       }
-    },
-
-    setViewingDirection: function(event, yaw, roll, pitch) {
-      this.state.viewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
     },
 
     onSeeked: function(event) {
