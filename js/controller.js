@@ -170,6 +170,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.VIDEO_VR, 'customerUi', _.bind(this.setVideoVr, this));
       this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
+      this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -655,6 +656,25 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   
     setViewingDirection: function(event, yaw, roll, pitch) {
       this.state.viewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
+    },
+  
+    recreatingUI: function (event, elementId, params, settings) {
+      console.log('call recreatingUI args', arguments);
+      if (!$('.oo-player-skin').length) {
+        this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
+      }
+  
+      //load player with page level config param if exist
+      if (params.skin && params.skin.config) {
+        $.getJSON(params.skin.config, function(data) {
+          this.state.customSkinJSON = data;
+          this.loadConfigData(this.state.playerParam, this.state.persistentSettings, data, this.state.skinMetaData);
+        }.bind(this));
+      } else {
+        this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
+      }
+  
+      this.accessibilityControls = new AccessibilityControls(this); //keyboard support
     },
 
     onSeeked: function(event) {
@@ -1240,6 +1260,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.TOUCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_TOUCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi');
+      this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
