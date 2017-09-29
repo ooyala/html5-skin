@@ -1346,9 +1346,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
     },
   
-    moveToDirection: function (rotate, direction) {
-      OO.log("moveToDirection called");
-      this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, this.focusedElement, rotate, direction);
+    moveVRToDirection: function (rotate, direction) {
+      this.mb.publish(OO.EVENTS.MOVE_VR_TO_DIRECTION, this.focusedElement, rotate, direction);
     },
 
     togglePlayPause: function() {
