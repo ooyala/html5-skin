@@ -34,7 +34,9 @@ describe('ControlBar', function () {
         videoQualityOptions: {
           availableBitrates: null
         }
-      }
+      },
+      cancelTimer: function() {},
+      hideVolumeSliderBar: function() {}
     };
 
     baseMockProps = {
@@ -478,6 +480,30 @@ describe('ControlBar', function () {
     expect(baseMockController.state.focusedControl).toBe('playPause');
     TestUtils.Simulate.blur(playPauseButton);
     expect(baseMockController.state.focusedControl).toBe(null);
+  });
+
+  it('should start auto hide timer after restoring focused control', function() {
+    var startHideControlBarTimerCalled = false;
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 }
+    ];
+    baseMockController.startHideControlBarTimer = function() {
+      startHideControlBarTimerCalled = true;
+    };
+    var controlBar = (
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={baseMockProps.isLiveStream} />
+    );
+    baseMockController.state.focusedControl = null;
+    var DOM = TestUtils.renderIntoDocument(controlBar);
+    expect(startHideControlBarTimerCalled).toBe(false);
+    baseMockController.state.focusedControl = 'playPause';
+    var DOM = TestUtils.renderIntoDocument(controlBar);
+    expect(startHideControlBarTimerCalled).toBe(true);
   });
 
   it('to toggle share screen', function() {
@@ -1757,4 +1783,82 @@ describe('ControlBar', function () {
     var logo = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-logo');
     expect(logo.length).toBe(0);
   });
+
+  describe('Tab Navigation', function() {
+    var eventMap, ctrlBarElement, focusableElements, mockEvent, originalAddEventListener;
+
+    beforeEach(function() {
+      baseMockProps.skinConfig.buttons.desktopContent = [
+        { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+        { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
+        { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+      ];
+      // Mock addEventListener on document object since TestUtils.Simulate will not work in this case
+      eventMap = {};
+      originalAddEventListener = document.addEventListener;
+      document.addEventListener = function(event, cb) {
+        eventMap[event] = cb;
+      };
+      ReactDOM.render(
+        <ControlBar
+          {...baseMockProps}
+          controlBarVisible={true}
+          componentWidth={500}
+          playerState={CONSTANTS.STATE.PLAYING}
+          isLiveStream={baseMockProps.isLiveStream} />
+      , document.body);
+      ctrlBarElement = document.body.querySelector('.oo-control-bar');
+      focusableElements = ctrlBarElement.querySelectorAll('[data-focus-id]');
+      mockEvent = { key: CONSTANTS.KEY_VALUES.TAB, preventDefault: function() {} };
+    });
+
+    afterEach(function() {
+      ReactDOM.unmountComponentAtNode(document.body);
+      // Our version of jest doesn't seem to support mockRestore()
+      document.addEventListener = originalAddEventListener;
+      document.body.innerHTML = '';
+    });
+
+    it('should constrain tab navigation to control bar elements when in fullscreen mode', function() {
+      baseMockController.state.fullscreen = true;
+      // Tab on document, focuses first element
+      document.activeElement = null;
+      mockEvent.target = document.body;
+      eventMap.keydown(mockEvent);
+      expect(document.activeElement.getAttribute('data-focus-id')).toBe(focusableElements[0].getAttribute('data-focus-id'));
+      // Tab on last element, focuses on first
+      document.activeElement = null;
+      mockEvent.target = focusableElements[focusableElements.length - 1];
+      eventMap.keydown(mockEvent);
+      expect(document.activeElement.getAttribute('data-focus-id')).toBe(focusableElements[0].getAttribute('data-focus-id'));
+      // Shift + tab on document, focuses on last element
+      document.activeElement = null;
+      mockEvent.target = document.body;
+      mockEvent.shiftKey = true;
+      eventMap.keydown(mockEvent);
+      expect(document.activeElement.getAttribute('data-focus-id')).toBe(focusableElements[focusableElements.length - 1].getAttribute('data-focus-id'));
+      // Shift + tab on first element, focuses on last
+      document.activeElement = null;
+      mockEvent.target = focusableElements[0];
+      mockEvent.shiftKey = true;
+      eventMap.keydown(mockEvent);
+      expect(document.activeElement.getAttribute('data-focus-id')).toBe(focusableElements[focusableElements.length - 1].getAttribute('data-focus-id'));
+    });
+
+    it('should NOT constrain tab navigation to control bar elements when NOT in fullscreen mode', function() {
+      baseMockController.state.fullscreen = false;
+      // Tab on last focusable element, should NOT go back to the first
+      document.activeElement = null;
+      mockEvent.target = focusableElements[focusableElements.length - 1];
+      eventMap.keydown(mockEvent);
+      expect(document.activeElement).toBeNull();
+      // Shift + tab on first element, should NOT focus on last
+      document.activeElement = null;
+      mockEvent.target = focusableElements[0];
+      mockEvent.shiftKey = true;
+      eventMap.keydown(mockEvent);
+      expect(document.activeElement).toBeNull();
+    });
+  });
+
 });

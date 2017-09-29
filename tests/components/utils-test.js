@@ -32,6 +32,69 @@ describe('Utils', function () {
     expect(browserSupportsTouch).toBeFalsy();
   });
 
+  describe('blurOnMouseUp', function() {
+
+    it('should call blur() on currentTarget', function() {
+      var blurCalled = false;
+      var event = {
+        currentTarget: {
+          blur: function() {
+            blurCalled = true;
+          }
+        }
+      };
+      Utils.blurOnMouseUp(event);
+      expect(blurCalled).toBe(true);
+    });
+
+  });
+
+  describe('ensureNumber', function() {
+
+    it('should return the Number equivalent of a string', function() {
+      expect(Utils.ensureNumber('233')).toBe(233);
+      expect(Utils.ensureNumber('10.233')).toBe(10.233);
+    });
+
+    it('should return null when the input value is not finite or a parsable Number', function() {
+      expect(Utils.ensureNumber('w00t233')).toBeNull();
+      expect(Utils.ensureNumber(Infinity)).toBeNull();
+      expect(Utils.ensureNumber({})).toBeNull();
+      expect(Utils.ensureNumber(NaN)).toBeNull();
+    });
+
+    it('should return defaultValue when provided if input value is not finite or a parsable Number', function() {
+      expect(Utils.ensureNumber('w00t233', 1)).toBe(1);
+      expect(Utils.ensureNumber(Infinity, 2)).toBe(2);
+      expect(Utils.ensureNumber({}, 'error')).toBe('error');
+      expect(Utils.ensureNumber(NaN, 3)).toBe(3);
+    });
+
+  });
+
+  describe('constrainToRange', function() {
+
+    it('should return the Number equivalent of value if it falls within range', function() {
+      expect(Utils.constrainToRange(5, 1, 10)).toBe(5);
+      expect(Utils.constrainToRange(0, -5, 5)).toBe(0);
+      expect(Utils.constrainToRange('50', '1', '100')).toBe(50);
+    });
+
+    it('should return min or max when value is outside of range', function() {
+      expect(Utils.constrainToRange(1, 5, 10)).toBe(5);
+      expect(Utils.constrainToRange(15, 5, 10)).toBe(10);
+      expect(Utils.constrainToRange(-10, 0, 100)).toBe(0);
+    });
+
+    it('should return the Number equivalent of input values', function() {
+      expect(Utils.constrainToRange(1, '5', 10)).toBe(5);
+      expect(Utils.constrainToRange(15, 5, '10')).toBe(10);
+      expect(Utils.constrainToRange(-10, '0', 100)).toBe(0);
+      expect(Utils.constrainToRange('50', '1', '100')).toBe(50);
+    });
+
+  });
+
   describe('getTimeDisplayValues', function() {
 
     it('should return formatted currentTime and totalTime for VOD', function() {

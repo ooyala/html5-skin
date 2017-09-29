@@ -1,5 +1,6 @@
 jest.dontMock('../../js/components/accessibilityControls');
 jest.dontMock('../../js/constants/constants');
+jest.dontMock('../../js/components/utils');
 
 var CONSTANTS = require('../../js/constants/constants');
 var AccessibilityControls = require('../../js/components/accessibilityControls');
@@ -150,6 +151,158 @@ describe('AccessibilityControls', function () {
     accessibilityControls.keyEventDown(mockEvent);
   });
 
+  describe('API', function() {
+    var mockCtrl, a11yCtrls;
 
+    beforeEach(function() {
+      mockCtrl = {
+        state: {
+          accessibilityControlsEnabled: true,
+          screenToShow: CONSTANTS.SCREEN.PLAYING_SCREEN,
+          volumeState: {
+            volume: 0
+          }
+        },
+        skin: {
+          state: {
+            currentPlayhead: 0,
+            duration: 60
+          }
+        },
+        setVolume: function() {},
+        seek: function() {},
+        updateSeekingPlayhead: function() {}
+      };
+      a11yCtrls = new AccessibilityControls(mockCtrl);
+    });
+
+    describe('canSeek', function() {
+
+      it('should only allow seeking on playing, pause and end screens', function() {
+        for (var currentScreen in CONSTANTS.SCREEN) {
+          mockCtrl.state.screenToShow = currentScreen;
+          switch (currentScreen) {
+            case CONSTANTS.SCREEN.PLAYING_SCREEN:
+            case CONSTANTS.SCREEN.PAUSE_SCREEN:
+            case CONSTANTS.SCREEN.END_SCREEN:
+              expect(a11yCtrls.canSeek()).toBe(true);
+              break;
+            default:
+              expect(a11yCtrls.canSeek()).toBe(false);
+              break;
+          }
+        }
+      });
+
+      it ('should disable seeking when an ad is playing', function() {
+        mockCtrl.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+        mockCtrl.state.isPlayingAd = true;
+        expect(a11yCtrls.canSeek()).toBe(false);
+      });
+
+    });
+
+    describe('changeVolumeBy', function() {
+
+      it('should increase and decrease the volume', function() {
+        var volume = 0;
+        mockCtrl.setVolume = function(vol) {
+          volume = vol;
+        };
+        mockCtrl.state.volumeState.volume = 0;
+        a11yCtrls.changeVolumeBy(100, true);
+        expect(volume).toBe(1);
+        mockCtrl.state.volumeState.volume = 1;
+        a11yCtrls.changeVolumeBy(100, false);
+        expect(volume).toBe(0);
+        mockCtrl.state.volumeState.volume = 0.5;
+        a11yCtrls.changeVolumeBy(25, true);
+        expect(volume).toBe(0.75);
+      });
+
+      it('should not call controller.setVolume() when requested change results in current volume', function() {
+        var setVolumeCalled = false;
+        mockCtrl.setVolume = function() {
+          setVolumeCalled = true;
+        };
+        mockCtrl.state.volumeState.volume = 0;
+        a11yCtrls.changeVolumeBy(100, false);
+        expect(setVolumeCalled).toBe(false);
+      });
+
+      it('should constrain volume to supported values', function() {
+        var volume = 0;
+        mockCtrl.setVolume = function(vol) {
+          volume = vol;
+        };
+        mockCtrl.state.volumeState.volume = 0.5;
+        a11yCtrls.changeVolumeBy(500, true);
+        expect(volume).toBe(1);
+        a11yCtrls.changeVolumeBy(500, false);
+        expect(volume).toBe(0);
+        a11yCtrls.changeVolumeBy(-500, true);
+        expect(volume).toBe(0);
+        a11yCtrls.changeVolumeBy(-500, false);
+        expect(volume).toBe(0);
+      });
+
+    });
+
+    describe('seekBy', function() {
+      var newPlayhead;
+
+      beforeEach(function() {
+        newPlayhead = null;
+        mockCtrl.seek = function(seekTo) {
+          newPlayhead = seekTo;
+        };
+      });
+
+      it('should seek the specified amount of seconds forward', function() {
+        mockCtrl.skin.state.duration = 60;
+        mockCtrl.skin.state.currentPlayhead = 0;
+        a11yCtrls.seekBy(5, true);
+        expect(newPlayhead).toBe(5);
+      });
+
+      it('should seek back the specified amount of seconds', function() {
+        mockCtrl.skin.state.duration = 60;
+        mockCtrl.skin.state.currentPlayhead = 10;
+        a11yCtrls.seekBy(5, false);
+        expect(newPlayhead).toBe(5);
+      });
+
+      it('should handle negative values gracefully by inverting the direction of the seek', function() {
+        mockCtrl.skin.state.duration = 60;
+        mockCtrl.skin.state.currentPlayhead = 10;
+        a11yCtrls.seekBy(-5, false);
+        expect(newPlayhead).toBe(15);
+      });
+
+      it('should not seek past the video\'s duration', function() {
+        mockCtrl.skin.state.duration = 60;
+        mockCtrl.skin.state.currentPlayhead = 10;
+        a11yCtrls.seekBy(120, true);
+        expect(newPlayhead).toBe(mockCtrl.skin.state.duration);
+      });
+
+      it('should not seek past the video\'s start time', function() {
+        mockCtrl.skin.state.duration = 60;
+        mockCtrl.skin.state.currentPlayhead = 30;
+        a11yCtrls.seekBy(120, false);
+        expect(newPlayhead).toBe(0);
+      });
+
+      it('should not seek when seeking is disabled', function() {
+        mockCtrl.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
+        mockCtrl.skin.state.duration = 60;
+        mockCtrl.skin.state.currentPlayhead = 0;
+        a11yCtrls.seekBy(5, true);
+        expect(newPlayhead).toBeNull();
+      });
+
+    });
+
+  });
 
 });

@@ -199,9 +199,9 @@ var PlayingScreen = React.createClass({
           onFocus={this.handlePlayerFocus}
         />
 
-        <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
+      <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
-        {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
+      {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
         {
           this.props.controller.videoVr &&
@@ -213,25 +213,24 @@ var PlayingScreen = React.createClass({
 
         <div className="oo-interactive-container" onFocus={this.handleFocus}>
 
-          {this.props.closedCaptionOptions.enabled ?
-            <TextTrack
-              closedCaptionOptions={this.props.closedCaptionOptions}
-              cueText={this.props.closedCaptionOptions.cueText}
-              responsiveView={this.props.responsiveView}
-            /> : null
-          }
+        {this.props.closedCaptionOptions.enabled ?
+          <TextTrack
+            closedCaptionOptions={this.props.closedCaptionOptions}
+            cueText={this.props.closedCaptionOptions.cueText}
+            responsiveView={this.props.responsiveView}
+          /> : null
+        }
 
-          {adOverlay}
+        {adOverlay}
 
-          {upNextPanel}
+        {upNextPanel}
 
-          <ControlBar {...this.props}
-                      controlBarVisible={this.state.controlBarVisible}
-                      playerState={this.props.playerState}
-                      isLiveStream={this.props.isLiveStream}
-          />
-        </div>
+        <ControlBar {...this.props}
+          controlBarVisible={this.state.controlBarVisible}
+          playerState={this.props.playerState}
+          isLiveStream={this.props.isLiveStream} />
       </div>
+    </div>
     );
   }
 });
