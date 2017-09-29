@@ -137,7 +137,7 @@ AccessibilityControls.prototype = {
   /**
    * Determines whether or not the controller is in a state that allows seeking the video.
    * @private
-   * @return {Boolen} True if seeking is possible, false otherwise.
+   * @return {Boolean} True if seeking is possible, false otherwise.
    */
   canSeek: function() {
     var seekingEnabled = false;

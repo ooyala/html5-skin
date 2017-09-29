@@ -76,7 +76,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoAspectRatio": 0,
       "pluginsElement": null,
       "pluginsClickElement": null,
-      "buffering": false,
+      "buffering": false, // Do NOT set manually, call setBufferingState
       "mainVideoBuffered": null,
       "mainVideoPlayhead": 0,
       "adVideoPlayhead": 0,
@@ -136,6 +136,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "controlBarVisible": true,
       "forceControlBarVisible": false,
       "timer": null,
+      "bufferingTimer": null,
       "errorCode": null,
       "isSubscribed": false,
       "isPlaybackReadySubscribed": false,
@@ -170,6 +171,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.VIDEO_VR, 'customerUi', _.bind(this.setVideoVr, this));
       this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
+      this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -269,6 +271,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.accessibilityControls = this.accessibilityControls || new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
+
+      if (this.videoVr) {
+        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
+      }
     },
 
     setVideoVr: function(event, obj) {
@@ -308,7 +314,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (mountNode) {
         ReactDOM.unmountComponentAtNode(mountNode);
       }
-      this.cleanUpEventListeners()
+      this.stopBufferingTimer();
+      this.cleanUpEventListeners();
       this.mb = null;
     },
 
@@ -521,7 +528,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
-        this.state.buffering = false;
         this.state.adPauseAnimationDisabled = true;
         this.state.pluginsElement.addClass("oo-showing");
         this.state.pluginsClickElement.removeClass("oo-showing");
@@ -532,6 +538,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.renderSkin();
         }
       }
+      // For the off chance that a video plugin resumes playback without firing
+      // the ON_BUFFERED event. This will have no effect if it was set previously
+      this.setBufferingState(false);
     },
 
     onPause: function(event, source, pauseReason) {
@@ -619,6 +628,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       this.skin.updatePlayhead(this.state.duration, this.state.duration, this.state.duration);
       this.state.playerState = CONSTANTS.STATE.END;
+      // In case a video plugin fires PLAYED event after stalling without firing BUFFERED or PLAYING first
+      this.setBufferingState(false);
       this.renderSkin();
     },
 
@@ -631,21 +642,40 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoDuration = this.state.duration;
       }
     },
-
+  
     onTouching: function(params) {
       if (this.videoVr) {
         this.mb.publish(OO.EVENTS.TOUCHING, this.focusedElement, params);
       }
     },
-
+  
     onTouched: function () {
       if (this.videoVr) {
         this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement);
       }
     },
-
+  
     setViewingDirection: function(event, yaw, roll, pitch) {
       this.state.viewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
+    },
+  
+    recreatingUI: function (event, elementId, params, settings) {
+      console.log('call recreatingUI args', arguments);
+      if (!$('.oo-player-skin').length) {
+        this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
+      }
+  
+      //load player with page level config param if exist
+      if (params.skin && params.skin.config) {
+        $.getJSON(params.skin.config, function(data) {
+          this.state.customSkinJSON = data;
+          this.loadConfigData(this.state.playerParam, this.state.persistentSettings, data, this.state.skinMetaData);
+        }.bind(this));
+      } else {
+        this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
+      }
+  
+      this.accessibilityControls = new AccessibilityControls(this); //keyboard support
     },
 
     onSeeked: function(event) {
@@ -673,14 +703,70 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
+    /**
+     * Fired by the video plugin when the video stalls due to buffering.
+     * @private
+     */
     onBuffering: function(event) {
-      this.state.buffering = !(this.state.isInitialPlay == false && this.state.screenToShow == CONSTANTS.SCREEN.START_SCREEN);
-      this.renderSkin();
+      if (this.state.isInitialPlay === false && this.state.screenToShow === CONSTANTS.SCREEN.START_SCREEN) {
+        this.setBufferingState(false);
+      } else {
+        this.startBufferingTimer();
+      }
     },
 
+    /**
+     * Fired by the video plugin when video stalling has ended.
+     * @private
+     */
     onBuffered: function(event) {
-      if (this.state.buffering === true) {
-        this.state.buffering = false;
+      this.setBufferingState(false);
+    },
+
+    /**
+     * Starts a timer that will call setBufferingState() with a value of true after the
+     * time specified in BUFFERING_SPINNER_DELAY has elapsed.
+     * @private
+     */
+    startBufferingTimer: function() {
+      this.stopBufferingTimer();
+      var bufferingSpinnerDelay = Utils.getPropertyValue(this.skin.props.skinConfig, 'general.bufferingSpinnerDelay');
+      bufferingSpinnerDelay = Utils.constrainToRange(bufferingSpinnerDelay, 0, CONSTANTS.UI.MAX_BUFFERING_SPINNER_DELAY);
+
+      this.state.bufferingTimer = setTimeout(function() {
+        this.setBufferingState(true);
+      }.bind(this), bufferingSpinnerDelay);
+    },
+
+    /**
+     * Cancels the timer that displays the loading spinner. Should be called when
+     * stalling (buffering) ends, playback resumes, etc.
+     * @private
+     */
+    stopBufferingTimer: function() {
+      clearTimeout(this.state.bufferingTimer);
+      this.state.bufferingTimer = null;
+    },
+
+    /**
+     * Applies the 'buffering' state of the skin which determines whether the
+     * player is stalled. This also determines whether the loading spinner is displayed or not.
+     * IMPORTANT:
+     * The value of this.state.buffering should never be set manually. This function
+     * should be called whenever setting this value.
+     * @private
+     * @param {Boolean} value Must pass true if the player is in buffering state, false otherwise
+     */
+    setBufferingState: function(value) {
+      var buffering = !!value;
+      // Always make sure buffering timer is disabled when buffering has stopped.
+      // This will have no effect if timer hasn't been started.
+      if (!buffering) {
+        this.stopBufferingTimer();
+      }
+      // Only render skin if new state is different
+      if (this.state.buffering !== buffering) {
+        this.state.buffering = buffering;
         this.renderSkin();
       }
     },
@@ -710,6 +796,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.pluginsClickElement.removeClass("oo-showing");
       // Restore anamorphic videos fix after ad playback if necessary
       this.trySetAnamorphicFixState(true);
+      // In case ad was skipped or errored while stalled
+      this.setBufferingState(false);
       this.renderSkin();
     },
 
@@ -831,6 +919,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVideoElementFocus: function(event, source) {
+      // Switching to another element, clear buffering state which applies to current element
+      if (this.focusedElement !== source) {
+        this.setBufferingState(false);
+      }
       this.focusedElement = source;
       // Make sure that the skin uses the captions that correspond
       // to the newly focused video element
@@ -1124,6 +1216,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onErrorEvent: function(event, errorCode){
       this.unsubscribeBasicPlaybackEvents();
+      this.setBufferingState(false);
 
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.state.playerState = CONSTANTS.STATE.ERROR;
@@ -1168,6 +1261,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.TOUCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_TOUCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi');
+      this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
