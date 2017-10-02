@@ -642,15 +642,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
   
-    onTouching: function(params) {
+    onTouchMove: function(params) {
       if (this.videoVr) {
-        this.mb.publish(OO.EVENTS.TOUCHING, this.focusedElement, params);
+        this.mb.publish(OO.EVENTS.TOUCH_MOVE, this.focusedElement, params);
       }
     },
   
-    onTouched: function () {
+    onTouchEnded: function () {
       if (this.videoVr) {
-        this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement);
+        this.mb.publish(OO.EVENTS.TOUCH_ENDED, this.focusedElement);
       }
     },
   
@@ -659,7 +659,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
   
     recreatingUI: function (event, elementId, params, settings) {
-      console.log('call recreatingUI args', arguments);
       if (!$('.oo-player-skin').length) {
         this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
       }
@@ -1257,7 +1256,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.TOUCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.TOUCH_ENDED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_TOUCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi');
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
