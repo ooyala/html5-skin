@@ -44,7 +44,7 @@ describe('PlayingScreen', function () {
   });
 
   it('creates a PlayingScreen and checks mouseMove, mouseDown, mouseUp with video360', function() {
-    var isTouchEnded = false;
+    var isVrDirectionChecked = false;
     var isTouchMove = false;
     var isStartHideControlBarTimer = false;
     var mockController = {
@@ -63,9 +63,9 @@ describe('PlayingScreen', function () {
       onTouchMove: function() {
         isTouchMove = true;
       },
-      onTouchEnded: function() {
-        isTouchEnded = true;
-      },
+      checkVrDirection: function() {
+        isVrDirectionChecked = true;
+      }
     };
     var closedCaptionOptions = {
       cueText: "cue text"
@@ -91,6 +91,7 @@ describe('PlayingScreen', function () {
     var directionParams = getDirectionParams(0,0);
 
     TestUtils.Simulate.mouseMove(screen);
+    console.log('************************************isTouchMove', isTouchMove);
     expect(isTouchMove).toBe(true);
     expect(getDirectionParams).toHaveBeenCalled();
     //dx = arguments[0] - this.state.XMouseStart = 0 - (-10) = 10;
@@ -102,10 +103,10 @@ describe('PlayingScreen', function () {
     expect(directionParams).toEqual([10, 0, 60]);
 
     TestUtils.Simulate.mouseDown(screen);
-    expect(isTouchEnded).toBe(true);
+    expect(isVrDirectionChecked).toBe(true);
 
     TestUtils.Simulate.mouseUp(screen);
-    expect(isTouchEnded).toBe(true);
+    expect(isVrDirectionChecked).toBe(true);
 
   });
 

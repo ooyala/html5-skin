@@ -648,9 +648,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
   
-    onTouchEnded: function () {
+    checkVrDirection: function () {
       if (this.videoVr) {
-        this.mb.publish(OO.EVENTS.TOUCH_ENDED, this.focusedElement);
+        this.mb.publish(OO.EVENTS.CHECK_VR_DIRECTION, this.focusedElement);
       }
     },
   
@@ -1256,7 +1256,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.TOUCH_ENDED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.CHECK_VR_DIRECTION, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_TOUCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi');
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
