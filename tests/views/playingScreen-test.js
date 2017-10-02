@@ -91,7 +91,7 @@ describe('PlayingScreen', function () {
     var directionParams = getDirectionParams(0,0);
 
     TestUtils.Simulate.mouseMove(screen);
-    console.log('************************************isTouchMove', isTouchMove);
+
     expect(isTouchMove).toBe(true);
     expect(getDirectionParams).toHaveBeenCalled();
     //dx = arguments[0] - this.state.XMouseStart = 0 - (-10) = 10;
