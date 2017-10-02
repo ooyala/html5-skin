@@ -19,11 +19,15 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
-    this.isVideo360 = this.props.controller.state.isVideo360;
+    this.videoVr = this.props.controller.videoVr;
 
     return {
       controlBarVisible: true,
-      timer: null
+      timer: null,
+      isVRMouseDown: false,
+      isMouseMove: false,
+      xVRMouseStart: 0,
+      yVRMouseStart: 0,
     };
   },
 
@@ -117,16 +121,97 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
-    else {
-      this.props.controller.togglePlayPause();
+    else if (!this.props.controller.videoVr) {
+      this.props.controller.togglePlayPause(event);
     }
   },
 
-  handlePlayerMouseMove: function() {
+  handlePlayerMouseDown: function(e) {
+    if (!this.props.controller.videoVr) {
+      return;
+    }
+    
+    this.setState({
+      isVRMouseDown: true,
+      xVRMouseStart: e.pageX,
+      yVRMouseStart: e.pageY
+    });
+    
+    if (this.props.controller.checkVrDirection) {
+      this.props.controller.checkVrDirection();
+    }
+  },
+
+  handlePlayerMouseMove: function(e) {
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
+
+    if (this.props.controller.videoVr && this.state.isVRMouseDown) {
+      this.setState({
+        isMouseMove: true
+      });
+      
+      var params = this.getDirectionParams(e.pageX, e.pageY);
+      
+      if (this.props.controller.onTouchMove) {
+        this.props.controller.onTouchMove(params);
+      }
+    }
+  },
+
+  handlePlayerMouseUp: function(e) {
+    // pause or play the video if the skin is clicked on desktop
+    if (!this.isMobile) {
+      e.stopPropagation(); // W3C
+      e.cancelBubble = true; // IE
+
+      this.props.controller.state.accessibilityControlsEnabled = true;
+      if (!this.props.controller.videoVr) {
+        this.props.controller.togglePlayPause();
+      }
+    }
+    // for mobile, touch is handled in handleTouchEnd
+    if (this.props.controller.videoVr) {
+      this.setState({
+        isVRMouseDown: false,
+      });
+      
+      if (this.props.controller.checkVrDirection) {
+        this.props.controller.checkVrDirection();
+      }
+    }
+  },
+  
+  handlePlayerMouseLeave: function () {
+    if (this.props.controller.videoVr) {
+      this.setState({
+        isVRMouseDown: false,
+      });
+    }
+  },
+  
+  handlePlayerClicked: function (event) {
+    if(!this.state.isMouseMove){
+      this.props.controller.togglePlayPause(event);
+    }
+    
+    this.setState({
+      isMouseMove: false,
+    });
+  },
+  
+  getDirectionParams: function(pageX, pageY) {
+    var dx = pageX - this.state.xVRMouseStart;
+    var dy = pageY - this.state.yVRMouseStart;
+    var maxDegreesX = 90;
+    var maxDegreesY = 120;
+    var degreesForPixelYaw = maxDegreesX / this.props.componentWidth;
+    var degreesForPixelPitch = maxDegreesY / this.props.componentHeight;
+    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw;
+    var pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
+    return [yaw, 0, pitch];
   },
 
   showControlBar: function(event) {
@@ -167,8 +252,12 @@ var PlayingScreen = React.createClass({
       onKeyDown={this.handleKeyDown}>
       <div
         className="oo-state-screen-selectable"
+        onMouseDown={this.handlePlayerMouseDown}
         onMouseUp={this.handlePlayerMouseUp}
+        onMouseMove={this.handlePlayerMouseMove}
+        onMouseLeave={this.handlePlayerMouseLeave}
         onTouchEnd={this.handleTouchEnd}
+        onClick={this.handlePlayerClicked}
       />
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>

@@ -7,17 +7,17 @@ var TestUtils = require('react-addons-test-utils');
 var PlayingScreen = require('../../js/views/playingScreen');
 
 describe('PlayingScreen', function () {
-  it('creates a PlayingScreen and checks mouseUp, mouseMove', function () {
+  it('creates a PlayingScreen and checks mouseUp, mouseMove without video360', function () {
     var moved = false;
     var clicked = false;
     var mockController = {
+      videoVr: false,
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
-        },
-        isVideo360: false
+        }
       },
       togglePlayPause: function() {
         clicked = true;
@@ -43,25 +43,29 @@ describe('PlayingScreen', function () {
     expect(clicked).toBe(true);
   });
 
-  it('creates a PlayingScreen and checks mouseDown, mouseUp with video360', function() {
-    var isTouched = false;
+  it('creates a PlayingScreen and checks mouseMove, mouseDown, mouseUp with video360', function() {
+    var isVrDirectionChecked = false;
+    var isTouchMove = false;
     var isStartHideControlBarTimer = false;
     var mockController = {
+      videoVr: true,
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
         },
-        isVideo360: true,
         viewingDirection: {yaw: 0, roll: 0, pitch: 0}
       },
       startHideControlBarTimer: function () {
         isStartHideControlBarTimer = true;
       },
-      onTouched: function() {
-        isTouched = true;
+      onTouchMove: function() {
+        isTouchMove = true;
       },
+      checkVrDirection: function() {
+        isVrDirectionChecked = true;
+      }
     };
     var closedCaptionOptions = {
       cueText: "cue text"
@@ -70,31 +74,52 @@ describe('PlayingScreen', function () {
       <PlayingScreen
         controller={mockController}
         componentWidth={90}
-        componentHeight={45}
+        componentHeight={40}
         fullscreen={false}
         closedCaptionOptions={closedCaptionOptions}
       />
     );
     DOM.setState({
-      isMouseDown: true,
-      XMouseStart: -10,
-      YMouseStart: -20
+      isVRMouseDown: true,
+      xVRMouseStart: -10,
+      yVRMouseStart: -20
     });
 
     var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
+
+    var getDirectionParams = spyOn(DOM, 'getDirectionParams').andCallThrough();
+    var directionParams = getDirectionParams(0,0);
+
+    TestUtils.Simulate.mouseMove(screen);
+
+    expect(isTouchMove).toBe(true);
+    expect(getDirectionParams).toHaveBeenCalled();
+    //dx = arguments[0] - this.state.xVRMouseStart = 0 - (-10) = 10;
+    //dy = arguments[1] - this.state.yVRMouseStart = 0 - (-20) = 20;
+    //degreesForPixelYaw = maxDegreesX / componentWidth = 90 / 90 = 1;
+    //degreesForPixelPitch = maxDegreesY / componentHeight = 120 / 40 = 3;
+    //yaw = mockController.viewingDirection.yaw + dx * degreesForPixelYaw = 0 + 10 * 1 = 10;
+    //pitch = mockController.viewingDirection.pitch + dy * degreesForPixelPitch = 0 + 20 * 3 = 60;
+    expect(directionParams).toEqual([10, 0, 60]);
+
+    TestUtils.Simulate.mouseDown(screen);
+    expect(isVrDirectionChecked).toBe(true);
+
+    TestUtils.Simulate.mouseUp(screen);
+    expect(isVrDirectionChecked).toBe(true);
 
   });
 
   it('creates a PlayingScreen and checks touchEnd without video360', function () {
     var clicked = false;
     var mockController = {
+      videoVr: false,
       state: {
         isMobile: true,
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
-        },
-        isVideo360: false
+        }
       },
       togglePlayPause: function() {
         clicked = true;
@@ -121,9 +146,9 @@ describe('PlayingScreen', function () {
     var clicked = false;
 
     var mockController = {
+      videoVr: false,
       state: {
         isMobile: false,
-        isVideo360: false,
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
@@ -165,6 +190,93 @@ describe('PlayingScreen', function () {
     expect(over).toBe(true);
   });
 
+  it('creates a PlayingScreen and checks mouseOver, mouseOut, keyUp with video360 fullscreen', function () {
+    var over = false;
+    var out = false;
+    var moved = false;
+    var clicked = false;
+
+    var mockController = {
+      videoVr: true,
+      state: {
+        isMobile: false,
+        accessibilityControlsEnabled: false,
+        upNextInfo: {
+          showing: false
+        }
+      },
+      startHideControlBarTimer: function() {
+        moved = true;
+      },
+      togglePlayPause: function() {
+        clicked = true;
+      },
+      showControlBar: function() {
+        over = true;
+      },
+      hideControlBar: function() {
+        out = true;
+      },
+    };
+
+    var closedCaptionOptions = {
+      cueText: "cue text"
+    };
+
+    // Render pause screen into DOM
+    var DOM = TestUtils.renderIntoDocument(
+      <PlayingScreen
+        controller={mockController}
+        fullscreen={true}
+        controlBarAutoHide={true}
+        closedCaptionOptions={closedCaptionOptions}
+      />
+    );
+
+    var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-playing-screen');
+
+    TestUtils.Simulate.mouseOut(screen[0]);
+    expect(out).toBe(true);
+
+    TestUtils.Simulate.mouseOver(screen[0]);
+    expect(over).toBe(true);
+
+    var screen1 = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-interactive-container');
+    TestUtils.Simulate.touchEnd(screen1);
+    expect(clicked).toBe(false);
+  });
+
+  it('creates a PlayingScreen and check play&pause', function () {
+    var clicked = false;
+    var mockController = {
+      videoVr: true,
+      state: {
+        isMobile: true,
+        isVRMouseDown: false,
+        isMouseMove: false,
+        accessibilityControlsEnabled: false,
+        upNextInfo: {
+          showing: false
+        }
+      },
+      togglePlayPause: function(){
+        clicked = !clicked;
+      },
+      startHideControlBarTimer: function() {}
+    };
+    var closedCaptionOptions = {
+      cueText: "cue text"
+    };
+  
+    // Render pause screen into DOM
+    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
+    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
+
+    TestUtils.Simulate.click(screen);
+    TestUtils.Simulate.click(screen);
+    expect(clicked).toBe(false);
+  });
+  
   it('should show control bar when pressing the tab key', function () {
     var autoHide = false;
     var controlBar = false;
@@ -255,7 +367,6 @@ describe('PlayingScreen', function () {
         }
       },
       startHideControlBarTimer: function() {moved = true},
-      togglePlayPause: function(){clicked = true},
       showControlBar: function() {over = true},
       hideControlBar: function() {out = true},
       cancelTimer:function() {}
