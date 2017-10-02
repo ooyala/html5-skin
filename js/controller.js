@@ -169,7 +169,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.VIDEO_VR, 'customerUi', _.bind(this.setVideoVr, this));
-      this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
+      this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
@@ -272,7 +272,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
 
       if (this.videoVr) {
-        this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
+        this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
       }
     },
 
@@ -1258,7 +1258,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.TOUCH_ENDED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_TOUCHED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi');
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
