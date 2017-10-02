@@ -80,9 +80,9 @@ describe('PlayingScreen', function () {
       />
     );
     DOM.setState({
-      isMouseDown: true,
-      XMouseStart: -10,
-      YMouseStart: -20
+      isVRMouseDown: true,
+      xVRMouseStart: -10,
+      yVRMouseStart: -20
     });
 
     var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
@@ -94,8 +94,8 @@ describe('PlayingScreen', function () {
 
     expect(isTouchMove).toBe(true);
     expect(getDirectionParams).toHaveBeenCalled();
-    //dx = arguments[0] - this.state.XMouseStart = 0 - (-10) = 10;
-    //dy = arguments[1] - this.state.YMouseStart = 0 - (-20) = 20;
+    //dx = arguments[0] - this.state.xVRMouseStart = 0 - (-10) = 10;
+    //dy = arguments[1] - this.state.yVRMouseStart = 0 - (-20) = 20;
     //degreesForPixelYaw = maxDegreesX / componentWidth = 90 / 90 = 1;
     //degreesForPixelPitch = maxDegreesY / componentHeight = 120 / 40 = 3;
     //yaw = mockController.viewingDirection.yaw + dx * degreesForPixelYaw = 0 + 10 * 1 = 10;
@@ -252,7 +252,7 @@ describe('PlayingScreen', function () {
       videoVr: true,
       state: {
         isMobile: true,
-        isMouseDown: false,
+        isVRMouseDown: false,
         isMouseMove: false,
         accessibilityControlsEnabled: false,
         upNextInfo: {
