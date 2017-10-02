@@ -4,7 +4,7 @@ var classnames = require('classnames');
 
 var ViewControls = React.createClass({
   handleDirection: function (rotate, direction) {
-    this.props.controller.moveToDirection(rotate, direction);
+    this.props.controller.moveVRToDirection(rotate, direction);
   },
   
   render: function () {

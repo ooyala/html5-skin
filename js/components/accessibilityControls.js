@@ -112,11 +112,14 @@ AccessibilityControls.prototype = {
     if (!this.vrRotationAllowed) {
       return false;
     }
-    for (var key in this.keyDirectionMap) {
-      if (this.keyDirectionMap.hasOwnProperty(key)) {
-        if (charCode === key && targetTagName !== "button") {
+    var keyDirectionMap = this.keyDirectionMap;
+    for (var key in keyDirectionMap) {
+      if (keyDirectionMap.hasOwnProperty(key)) {
+        console.log('BBB this.keyDirectionMap.hasOwnProperty');
+        if (charCode === parseInt(key) && targetTagName !== "button") {
           this.vrRotationAllowed = !isKeyDown; //prevent repeat of keyDown
-          this.controller.moveVRToDirection(isKeyDown, this.keyDirectionMap[key]);
+          console.log('BBB isKeyDown', isKeyDown, 'keyDirectionMap[key]', keyDirectionMap[key]);
+          this.controller.moveVRToDirection(isKeyDown, keyDirectionMap[key]);
           break;
         }
       }

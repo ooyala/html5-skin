@@ -32,7 +32,7 @@ describe('PlayingScreen', function () {
     };
 
     // Render pause screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller={mockController} closedCaptionOptions={closedCaptionOptions}/>);
+    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
 
     var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
 
@@ -44,8 +44,8 @@ describe('PlayingScreen', function () {
   });
 
   it('creates a PlayingScreen and checks mouseMove, mouseDown, mouseUp with video360', function() {
-    var isTouched = false;
-    var isTouching = false;
+    var isVrDirectionChecked = false;
+    var isTouchMove = false;
     var isStartHideControlBarTimer = false;
     var mockController = {
       videoVr: true,
@@ -60,12 +60,12 @@ describe('PlayingScreen', function () {
       startHideControlBarTimer: function () {
         isStartHideControlBarTimer = true;
       },
-      onTouching: function() {
-        isTouching = true;
+      onTouchMove: function() {
+        isTouchMove = true;
       },
-      onTouched: function() {
-        isTouched = true;
-      },
+      checkVrDirection: function() {
+        isVrDirectionChecked = true;
+      }
     };
     var closedCaptionOptions = {
       cueText: "cue text"
@@ -91,7 +91,7 @@ describe('PlayingScreen', function () {
     var directionParams = getDirectionParams(0,0);
 
     TestUtils.Simulate.mouseMove(screen[0]);
-    expect(isTouching).toBe(true);
+    expect(isTouchMove).toBe(true);
     expect(getDirectionParams).toHaveBeenCalled();
     //dx = arguments[0] - this.state.XMouseStart = 0 - (-10) = 10;
     //dy = arguments[1] - this.state.YMouseStart = 0 - (-20) = 20;
@@ -102,10 +102,10 @@ describe('PlayingScreen', function () {
     expect(directionParams).toEqual([10, 0, 60]);
 
     TestUtils.Simulate.mouseDown(screen[0]);
-    expect(isTouched).toBe(true);
+    expect(isVrDirectionChecked).toBe(true);
 
     TestUtils.Simulate.mouseUp(screen[0]);
-    expect(isTouched).toBe(true);
+    expect(isVrDirectionChecked).toBe(true);
 
   });
 

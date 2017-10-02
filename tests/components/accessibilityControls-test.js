@@ -128,7 +128,7 @@ describe('AccessibilityControls', function () {
       state: {
         accessibilityControlsEnabled: true,
       },
-      moveToDirection: function() {},
+      moveVRToDirection: function() {},
     };
 
     var mockEvent = {

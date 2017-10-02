@@ -251,7 +251,6 @@ OO = {
       findMainVideoElement: function(a) {},
       loadConfigData: function(a, b, c, d) {},
       cleanUpEventListeners: function(){},
-      toggleStereo: function () {}
     };
 
 
@@ -447,8 +446,6 @@ OO = {
     Html5Skin.toggleMute.call(controllerMock, true);
     Html5Skin.toggleMute.call(controllerMock, false);
   
-    Html5Skin.toggleStereo.call(controllerMock);
-
     controllerMock.state.playerState = CONSTANTS.STATE.START;
     Html5Skin.togglePlayPause.call(controllerMock);
     controllerMock.state.playerState = CONSTANTS.STATE.END;

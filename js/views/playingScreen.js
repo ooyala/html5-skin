@@ -124,8 +124,9 @@ var PlayingScreen = React.createClass({
       XMouseStart: e.pageX,
       YMouseStart: e.pageY
     });
-    if (this.props.controller.onTouched) {
-      this.props.controller.onTouched();
+    
+    if (this.props.controller.checkVrDirection) {
+      this.props.controller.checkVrDirection();
     }
   },
 
@@ -141,8 +142,9 @@ var PlayingScreen = React.createClass({
       });
       
       var params = this.getDirectionParams(e.pageX, e.pageY);
-      if (this.props.controller.onTouching) {
-        this.props.controller.onTouching(params);
+      
+      if (this.props.controller.onTouchMove) {
+        this.props.controller.onTouchMove(params);
       }
     }
   },
@@ -163,8 +165,9 @@ var PlayingScreen = React.createClass({
       this.setState({
         isMouseDown: false,
       });
-      if (this.props.controller.onTouched) {
-        this.props.controller.onTouched();
+      
+      if (this.props.controller.checkVrDirection) {
+        this.props.controller.checkVrDirection();
       }
     }
   },
