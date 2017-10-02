@@ -28,7 +28,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   var Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
-    this.videoVrSource = false;
+    this.videoVrSource = null;
     this.videoVr = false;
     this.state = {
       "playerParam": {},
@@ -278,7 +278,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     setVideoVr: function(event, obj) {
       this.videoVr = true;
-      this.videoVrSource = obj.source || false; //if we need video vr params
+      this.videoVrSource = obj.source || null; //if we need video vr params
     },
 
     onVcVideoElementCreated: function(event, params) {
