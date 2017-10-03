@@ -19,4 +19,8 @@ var ViewControls = React.createClass({
   }
 });
 
+ViewControls.propTypes = {
+  controller: React.PropTypes.object
+};
+
 module.exports = ViewControls;

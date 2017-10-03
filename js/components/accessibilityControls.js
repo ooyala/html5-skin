@@ -103,7 +103,7 @@ AccessibilityControls.prototype = {
    */
 
   moveVRToDirection: function(e, charCode, isKeyDown, targetTagName) {
-    if (!this.controller.videoVr) {
+    if (!this.controller.videoVR) {
       return false;
     }
     if (e.repeat !== undefined) {
@@ -113,16 +113,9 @@ AccessibilityControls.prototype = {
       return false;
     }
     var keyDirectionMap = this.keyDirectionMap;
-    for (var key in keyDirectionMap) {
-      if (keyDirectionMap.hasOwnProperty(key)) {
-        console.log('BBB this.keyDirectionMap.hasOwnProperty');
-        if (charCode === parseInt(key) && targetTagName !== "button") {
-          this.vrRotationAllowed = !isKeyDown; //prevent repeat of keyDown
-          console.log('BBB isKeyDown', isKeyDown, 'keyDirectionMap[key]', keyDirectionMap[key]);
-          this.controller.moveVRToDirection(isKeyDown, keyDirectionMap[key]);
-          break;
-        }
-      }
+    if (keyDirectionMap[charCode] && targetTagName !== "button") {
+      this.vrRotationAllowed = !isKeyDown; //prevent repeat of keyDown
+      this.controller.moveVRToDirection(isKeyDown, keyDirectionMap[charCode]);
     }
   },
 

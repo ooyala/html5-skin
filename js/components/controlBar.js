@@ -22,10 +22,6 @@ var ControlBar = React.createClass({
     this.isMobile = this.props.controller.state.isMobile;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
-    this.vr = false;
-    if (this.props.controller && this.props.controller.videoVrSource) {
-      this.vr = this.props.controller.videoVrSource;
-    }
     return {};
   },
 
@@ -99,11 +95,6 @@ var ControlBar = React.createClass({
     this.props.controller.toggleFullscreen();
   },
   
-  handleStereoClick: function () {
-    this.vr.stereo = !this.vr.stereo;
-    this.props.controller.toggleStereo();
-  },
-
   handleLiveClick: function (evt) {
     evt.stopPropagation();
     evt.cancelBubble = true;
@@ -316,13 +307,6 @@ var ControlBar = React.createClass({
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
     
-    var stereoIconClassName = "oo-vr-icon--type--stereoOff"
-      , stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
-    if(this.vr && this.vr.stereo) {
-      stereoIconClassName = "oo-vr-icon--type--stereoOn";
-      stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
-    }
-    
     var totalTime = 0;
     if (this.props.duration == null || typeof this.props.duration == 'undefined' || this.props.duration == "") {
       totalTime = Utils.formatSeconds(0);
@@ -487,28 +471,6 @@ var ControlBar = React.createClass({
         </a>
       }).bind(this),
   
-      "stereo": (function (alignment) {
-        return (!this.vr) ? null :
-          <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
-            onClick={this.handleStereoClick}
-            onMouseUp={Utils.blurOnMouseUp}
-            onMouseOver={this.highlight}
-            onMouseOut={this.removeHighlight}
-            key="stereo"
-            data-focus-id="stereo"
-            tabIndex="0"
-            aria-label={stereoAriaLabel}
-          >
-            <span
-              className={'oo-vr-icon--type ' + stereoIconClassName}
-              onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}
-              onClick={this.props.onClick}
-            />
-            <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple}
-              bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
-          </button>
-      }).bind(this),
-    
     "fullscreen": (function (alignment) {
         return <button className="oo-fullscreen oo-control-bar-item"
           onClick={this.handleFullscreenClick}
