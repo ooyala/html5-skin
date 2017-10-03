@@ -61,10 +61,10 @@ var Skin = React.createClass({
 
   updatePlayhead: function(newPlayhead, newDuration, newBuffered, adPlayhead) {
     this.setState({
-      currentPlayhead: newPlayhead,
-      duration: newDuration,
-      buffered: newBuffered,
-      currentAdPlayhead: adPlayhead
+      currentPlayhead: Utils.ensureNumber(newPlayhead, this.state.currentPlayhead),
+      duration: Utils.ensureNumber(newDuration, this.state.duration),
+      buffered: Utils.ensureNumber(newBuffered, this.state.buffered),
+      currentAdPlayhead: Utils.ensureNumber(adPlayhead, this.state.currentAdPlayhead)
     });
   },
 

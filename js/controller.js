@@ -43,6 +43,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isLiveStream": false,
       "screenToShow": null,
       "playerState": null,
+      "hasPlayed": false, // Determines whether playback has started for any video on this player
       "discoveryData": null,
       "forceCountDownTimerOnEndScreen": false,
       "isPlayingAd": false,
@@ -158,6 +159,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
       this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_CREATED, 'customerUi', _.bind(this.onVcVideoElementCreated, this));
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
+      this.mb.subscribe(OO.EVENTS.SET_EMBED_CODE, 'customerUi', _.bind(this.onSetEmbedCode, this));
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED_AFTER_OOYALA_AD, 'customerUi', _.bind(this.onEmbedCodeChangedAfterOoyalaAd, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
@@ -316,6 +318,22 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.accessibilityControls.cleanUp()
     },
 
+
+    /**
+     * Event handler for SET_EMBED_CODE message bus event.
+     * @private
+     * @param {string} event The event's name.
+     * @param {string} embedCode The video embed code that will be set.
+     */
+    onSetEmbedCode: function(event, embedCode) {
+      // If a video has played and we're setting a new embed code it means that we
+      // will be transitioning to a new video. We make sure to display the loading screen.
+      if (this.state.hasPlayed && this.state.assetId !== embedCode) {
+        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+        this.renderSkin();
+      }
+    },
+
     onEmbedCodeChangedAfterOoyalaAd: function(event, embedCode, options) {
       if (options) {
         this.state.playerParam = DeepMerge(this.state.playerParam, options);
@@ -346,6 +364,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.playerParam = DeepMerge(this.state.playerParam, options);
       }
       this.subscribeBasicPlaybackEvents();
+      // New video starts at 0, duration is still unknown.
+      // Setting this here will prevent flashing a full progress bar on video transitions.
+      this.skin.updatePlayhead(0, 0, 0, 0);
     },
 
     onAuthorizationFetched: function(event, authorization) {
@@ -355,7 +376,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onContentTreeFetched: function (event, contentTree) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
-      this.renderSkin({"contentTree": contentTree});
+      var duration = Utils.ensureNumber(contentTree.duration, 0) / 1000;
+      this.skin.updatePlayhead(null, duration);
+      this.renderSkin({ contentTree: contentTree });
     },
 
     onSkinMetaDataFetched: function (event, skinMetaData) {
@@ -507,6 +530,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaying: function(event, source) {
+      this.state.hasPlayed = true;
+
       if (source == OO.VIDEO.MAIN) {
         //set mainVideoElement if not set during video plugin initialization
         if (!this.state.mainVideoMediaType) {
@@ -587,6 +612,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var duration = this.state.mainVideoDuration;
       this.state.duration = duration;
       this.skin.updatePlayhead(duration, duration, duration);
+      this.state.playerState = CONSTANTS.STATE.END;
 
       if (this.state.upNextInfo.delayedSetEmbedCodeEvent) {
         var delayedContentData = this.state.upNextInfo.delayedContentData;
@@ -615,12 +641,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
         this.mb.publish(OO.EVENTS.END_SCREEN_SHOWN);
       }
-      if (!Utils.canRenderSkin()){
+      if (!Utils.canRenderSkin()) {
         //iPhone < iOS10 end screen is the same as start screen, except for the replay button
         this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       }
-      this.skin.updatePlayhead(this.state.duration, this.state.duration, this.state.duration);
-      this.state.playerState = CONSTANTS.STATE.END;
       // In case a video plugin fires PLAYED event after stalling without firing BUFFERED or PLAYING first
       this.setBufferingState(false);
       this.renderSkin();
@@ -655,7 +679,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.afterOoyalaAd) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
       } else {
-        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+        // If we have played a video before and PLAYBACK_READY fires it means
+        // we're transitioning to a new video.
+        // We only show the loading spinner in these cases.
+        if (this.state.hasPlayed) {
+          this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+        } else {
+          this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+        }
       }
 
       this.renderSkin({"contentTree": this.state.contentTree});
