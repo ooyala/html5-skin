@@ -135,6 +135,13 @@ module.exports = {
     S: 83
   },
 
+  DIRECTIONS: {
+    LEFT: "left",
+    RIGHT: "right",
+    UP: "up",
+    DOWN: "down"
+  },
+
   // KeyboardEvent's which and keyCode properties are deprecated.
   // It's a good idea to use KeyboardEvent.key moving forward even though React
   // synthetic events normalize event data.

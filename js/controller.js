@@ -1243,7 +1243,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CHECK_VR_DIRECTION, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.VC_TOUCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.TOUCH_MOVE, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi');
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
@@ -1330,7 +1330,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     toggleMute: function(muted) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
     },
-  
+
     moveVRToDirection: function (rotate, direction) {
       this.mb.publish(OO.EVENTS.MOVE_VR_TO_DIRECTION, this.focusedElement, rotate, direction);
     },

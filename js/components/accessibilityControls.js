@@ -3,20 +3,19 @@ var Utils = require('./utils');
 
 var AccessibilityControls = function (controller) {
   this.controller = controller;
-  this.allowed = true;
+  this.vrRotationAllowed = true; // flag for checking repeat of keyDown
+  this.keyDirectionMap = {};
+  this.keyDirectionMap[CONSTANTS.KEYCODES.A] = CONSTANTS.DIRECTIONS.LEFT;
+  this.keyDirectionMap[CONSTANTS.KEYCODES.D] = CONSTANTS.DIRECTIONS.RIGHT;
+  this.keyDirectionMap[CONSTANTS.KEYCODES.W] = CONSTANTS.DIRECTIONS.UP;
+  this.keyDirectionMap[CONSTANTS.KEYCODES.S] = CONSTANTS.DIRECTIONS.DOWN;
   this.state = {
     seekRate: 1,
     lastKeyDownTime: 0,
-    "keyMapsList": [
-      {"char": CONSTANTS.KEYCODES.A, "direction": "left"},
-      {"char": CONSTANTS.KEYCODES.D, "direction": "right"},
-      {"char": CONSTANTS.KEYCODES.W, "direction": "up"},
-      {"char": CONSTANTS.KEYCODES.S, "direction": "down"}
-    ]
   };
   this.keyEventDown = this.keyEventDown.bind(this);
   this.keyEventUp = this.keyEventUp.bind(this);
-  this.handleKeyClick = this.handleKeyClick.bind(this);
+  this.moveVRToDirection = this.moveVRToDirection.bind(this);
   this.getTargetTagName = this.getTargetTagName.bind(this);
 
   document.addEventListener("keydown", this.keyEventDown);
@@ -36,7 +35,7 @@ AccessibilityControls.prototype = {
 
     var targetTagName = this.getTargetTagName(e);
     var charCode = e.which || e.keyCode;
-    this.handleKeyClick(e, this.state.keyMapsList, charCode, true, targetTagName); //start rotate 360
+    this.moveVRToDirection(e, charCode, true, targetTagName); //start rotate 360
     // Slider interaction requires the arrow keys. When a slider is active we should
     // disable arrow key controls
     var sliderIsActive = document.activeElement && document.activeElement.getAttribute('role') === 'slider';
@@ -77,8 +76,14 @@ AccessibilityControls.prototype = {
     if (!this.controller.state.accessibilityControlsEnabled) { return; }
     var targetTagName = this.getTargetTagName(e);
     var charCode = e.which || e.keyCode;
-    this.handleKeyClick(e, this.state.keyMapsList, charCode, false, targetTagName);  //stop rotate 360
+    this.moveVRToDirection(e, charCode, false, targetTagName);  //stop rotate 360
   },
+
+  /**
+   *
+   * @param e - event
+   * @returns {string} name of the clicked tag
+   */
 
   getTargetTagName: function(e) {
     var targetTagName = "";
@@ -88,23 +93,29 @@ AccessibilityControls.prototype = {
     return targetTagName;
   },
 
-  handleKeyClick: function(e, keyMapsList, char, bool, targetTagName) {
-    /*
-     * keyMapsList - array of objects {char: 83, direction: 'down'}
-     */
-    if (!this.controller.videoVr) { return; }
-    for (var i=0; i<keyMapsList.length; i++) {
-      if (char === keyMapsList[i]['char'] && targetTagName !== "button") {
-        if (e.repeat != undefined) {
-          this.allowed = !e.repeat;
-        }
-        if (!this.allowed) {
-          return;
-        }
-        this.allowed = !bool; //prevent repeat of keyDown
-        this.controller.moveToDirection(bool, keyMapsList[i]['direction']);
-        break;
-      }
+  /**
+   *
+   * @param e - event
+   * @param charCode {number} - char code;
+   * @param isKeyDown {boolean} - true if key is pressed
+   * @param targetTagName {string} - name of the clicked tag
+   * @returns {boolean} true if moved
+   */
+
+  moveVRToDirection: function(e, charCode, isKeyDown, targetTagName) {
+    if (!this.controller.videoVR) {
+      return false;
+    }
+    if (e.repeat !== undefined) {
+      this.vrRotationAllowed = !e.repeat;
+    }
+    if (!this.vrRotationAllowed) {
+      return false;
+    }
+    var keyDirectionMap = this.keyDirectionMap;
+    if (keyDirectionMap[charCode] && targetTagName !== "button") {
+      this.vrRotationAllowed = !isKeyDown; //prevent repeat of keyDown
+      this.controller.moveVRToDirection(isKeyDown, keyDirectionMap[charCode]);
     }
   },
 

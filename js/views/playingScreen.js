@@ -198,9 +198,20 @@ var PlayingScreen = React.createClass({
     var maxDegreesY = 120;
     var degreesForPixelYaw = maxDegreesX / this.props.componentWidth;
     var degreesForPixelPitch = maxDegreesY / this.props.componentHeight;
-    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw;
-    var pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
+    var yaw = this.getViewingDirectionParamValue("yaw") + dx * degreesForPixelYaw;
+    var pitch = this.getViewingDirectionParamValue("pitch") + dy * degreesForPixelPitch;
     return [yaw, 0, pitch];
+  },
+
+  getViewingDirectionParamValue: function(paramName) {
+    var viewingDirectionYaw = 0;
+    if (this.props.controller
+      && this.props.controller.state
+      && this.props.controller.state.viewingDirection
+      && _.isNumber(this.props.controller.state.viewingDirection[paramName])) {
+      viewingDirectionYaw = this.props.controller.state.viewingDirection[paramName]
+    }
+    return viewingDirectionYaw
   },
 
   showControlBar: function(event) {
@@ -284,4 +295,5 @@ var PlayingScreen = React.createClass({
     );
   }
 });
+
 module.exports = PlayingScreen;

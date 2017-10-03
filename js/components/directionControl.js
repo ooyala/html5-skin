@@ -18,8 +18,8 @@ var DirectionControl = React.createClass({
   },
 
   render: function () {
-    var directionClass = 'oo-vr-icon--move--' + this.props.dir
-      , touchedDirectionClass = this.state.isTouched && 'oo-vr-icon--move--' + this.props.dir + '--touched';
+    var directionClass = 'oo-vr-icon--move--' + this.props.dir;
+    var touchedDirectionClass = this.state.isTouched && 'oo-vr-icon--move--' + this.props.dir + '--touched';
     return (
       <div
         className={classnames('oo-vr-icon--move direction-control', directionClass, touchedDirectionClass)}
