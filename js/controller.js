@@ -52,6 +52,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "showAdOverlayCloseButton": false,
       "showAdControls": true,
       "showAdMarquee": true,
+      "isAsset": false,
       "isOoyalaAds": false,
       "afterOoyalaAd": false,
       "configLoaded": false,
@@ -343,6 +344,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onEmbedCodeChanged: function(event, embedCode, options) {
+      this.state.isAsset = false;
       this.state.videoQualityOptions.availableBitrates = null;
       this.state.videoQualityOptions.selectedBitrate = null;
       this.state.closedCaptionOptions.availableLanguages = null;
@@ -398,6 +400,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onAssetChanged: function (event, asset) {
+      this.state.isAsset = true;
       this.state.videoQualityOptions.availableBitrates = null;
       this.state.closedCaptionOptions.availableLanguages = null;
       this.state.closedCaptionsInfoCache = {};
@@ -417,6 +420,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
+      // Make sure playhead is reset when we switch to a new video
+      this.skin.updatePlayhead(0, contentTree.duration, 0, 0);
       this.renderSkin({"contentTree": contentTree});
     },
 
@@ -680,9 +685,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
       } else {
         // If we have played a video before and PLAYBACK_READY fires it means
-        // we're transitioning to a new video.
-        // We only show the loading spinner in these cases.
-        if (this.state.hasPlayed) {
+        // we're transitioning to a new video. For the time being this will autoplay
+        // the next video, so we only show the loading spinner in these cases.
+        // Note that the standalone player (this.state.isAsset === true) doesn't currently
+        // autoplay, so we need to use the start screen when using it.
+        if (this.state.hasPlayed && !this.state.isAsset) {
           this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         } else {
           this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
@@ -1228,6 +1235,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE_AFTER_OOYALA_AD, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE, 'customerUi');
     },
 
     unsubscribeBasicPlaybackEvents: function() {
