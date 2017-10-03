@@ -43,7 +43,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isLiveStream": false,
       "screenToShow": null,
       "playerState": null,
-      "hasPlayed": false, // Determines whether playback has started for any video on this player
       "discoveryData": null,
       "forceCountDownTimerOnEndScreen": false,
       "isPlayingAd": false,
@@ -52,7 +51,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "showAdOverlayCloseButton": false,
       "showAdControls": true,
       "showAdMarquee": true,
-      "isAsset": false,
       "isOoyalaAds": false,
       "afterOoyalaAd": false,
       "configLoaded": false,
@@ -143,6 +141,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isPlaybackReadySubscribed": false,
       "isSkipAdClicked": false,
       "isInitialPlay": false,
+      "initialPlayHasOccurred": false,
       "isFullScreenSupported": false,
       "isVideoFullScreenSupported": false,
       "isFullWindow": false,
@@ -329,7 +328,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onSetEmbedCode: function(event, embedCode) {
       // If a video has played and we're setting a new embed code it means that we
       // will be transitioning to a new video. We make sure to display the loading screen.
-      if (this.state.hasPlayed && this.state.assetId !== embedCode) {
+      if (this.state.initialPlayHasOccurred && this.state.assetId !== embedCode) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
       }
@@ -344,7 +343,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onEmbedCodeChanged: function(event, embedCode, options) {
-      this.state.isAsset = false;
       this.state.videoQualityOptions.availableBitrates = null;
       this.state.videoQualityOptions.selectedBitrate = null;
       this.state.closedCaptionOptions.availableLanguages = null;
@@ -400,7 +398,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onAssetChanged: function (event, asset) {
-      this.state.isAsset = true;
       this.state.videoQualityOptions.availableBitrates = null;
       this.state.closedCaptionOptions.availableLanguages = null;
       this.state.closedCaptionsInfoCache = {};
@@ -531,12 +528,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onInitialPlay: function() {
       this.state.isInitialPlay = true;
+      this.state.initialPlayHasOccurred = true;
       this.startHideControlBarTimer();
     },
 
     onPlaying: function(event, source) {
-      this.state.hasPlayed = true;
-
       if (source == OO.VIDEO.MAIN) {
         //set mainVideoElement if not set during video plugin initialization
         if (!this.state.mainVideoMediaType) {
@@ -687,9 +683,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         // If we have played a video before and PLAYBACK_READY fires it means
         // we're transitioning to a new video. For the time being this will autoplay
         // the next video, so we only show the loading spinner in these cases.
-        // Note that the standalone player (this.state.isAsset === true) doesn't currently
-        // autoplay, so we need to use the start screen when using it.
-        if (this.state.hasPlayed && !this.state.isAsset) {
+        if (this.state.initialPlayHasOccurred) {
           this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         } else {
           this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;

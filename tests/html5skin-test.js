@@ -215,15 +215,15 @@ describe('Controller', function() {
 
   describe('New video transitions', function() {
 
-    it('should set hasPlayed to true if a video has started playback at least once', function() {
-      expect(controller.state.hasPlayed).toBe(false);
-      controller.onPlaying();
-      expect(controller.state.hasPlayed).toBe(true);
+    it('should set initialPlayHasOccurred to true if initial play has been requested', function() {
+      expect(controller.state.initialPlayHasOccurred).toBe(false);
+      controller.onInitialPlay();
+      expect(controller.state.initialPlayHasOccurred).toBe(true);
     });
 
     it('should trigger loading screen when embed code is set after video has started', function() {
       controller.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
-      controller.state.hasPlayed = true;
+      controller.state.initialPlayHasOccurred = true;
       controller.onSetEmbedCode('newEmbedCode');
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
     });
@@ -237,7 +237,7 @@ describe('Controller', function() {
       controller.onSetEmbedCode('oldEmbedCode');
       controller.onPlaybackReady();
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
-      controller.onPlaying();
+      controller.onInitialPlay();
       controller.onSetEmbedCode('newEmbedCode');
       controller.onPlaybackReady();
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
