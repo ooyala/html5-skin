@@ -676,14 +676,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onPlaybackReady: function(event) {
+    onPlaybackReady: function(event, params) {
+      params = params || {};
+
       if (this.state.afterOoyalaAd) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
       } else {
         // If we have played a video before and PLAYBACK_READY fires it means
         // we're transitioning to a new video. For the time being this will autoplay
         // the next video, so we only show the loading spinner in these cases.
-        if (this.state.initialPlayHasOccurred) {
+        if (params.willAutoplay) {
           this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         } else {
           this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;

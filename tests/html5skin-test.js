@@ -228,18 +228,15 @@ describe('Controller', function() {
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
     });
 
-    it('should show start screen on playback ready for first video', function() {
-      controller.onPlaybackReady();
+    it('should show start screen on playback ready when core reports it will NOT autoplay', function() {
+      expect(controller.state.screenToShow).not.toBe(CONSTANTS.SCREEN.START_SCREEN);
+      controller.onPlaybackReady('event', { willAutoplay: false });
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
     });
 
-    it('should show loading screen on playback ready when switching videos', function() {
-      controller.onSetEmbedCode('oldEmbedCode');
-      controller.onPlaybackReady();
-      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
-      controller.onInitialPlay();
-      controller.onSetEmbedCode('newEmbedCode');
-      controller.onPlaybackReady();
+    it('should show loading screen on playback ready when core reports it will autoplay', function() {
+      expect(controller.state.screenToShow).not.toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
+      controller.onPlaybackReady('event', { willAutoplay: true });
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
     });
 
