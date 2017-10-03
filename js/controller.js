@@ -270,10 +270,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.accessibilityControls = new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
-
-      if (this.videoVR) {
-        this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
-      }
     },
 
     setVideoVR: function(event, obj) {

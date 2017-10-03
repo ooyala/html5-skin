@@ -8,24 +8,15 @@ var DirectionControl = React.createClass({
     };
   },
 
-  componentWillUnmount: function() {
-    this.timer && clearTimeout(this.timer);
-  },
-  
   handleEvent: function (ev) {
     var rotate = ev.type == 'mousedown' || ev.type == 'touchstart';
     this.props.handleDirection(rotate, this.props.dir);
     
     this.setState({
-      isTouched: true
-    }, function(){
-      var _this = this;
-      this.timer = setTimeout(function(){
-        _this.setState({isTouched: false});
-      }, 300);
+      isTouched: rotate
     });
   },
-  
+
   render: function () {
     var directionClass = 'oo-vr-icon--move--' + this.props.dir
       , touchedDirectionClass = this.state.isTouched && 'oo-vr-icon--move--' + this.props.dir + '--touched';
@@ -41,5 +32,9 @@ var DirectionControl = React.createClass({
     );
   }
 });
+
+DirectionControl.propTypes = {
+  handleDirection: React.PropTypes.func
+};
 
 module.exports = DirectionControl;
