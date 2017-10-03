@@ -4,7 +4,6 @@ var classnames = require('classnames');
 
 var ViewControls = React.createClass({
   handleDirection: function (rotate, direction) {
-    console.log('call handleDirection args', arguments);
     this.props.controller.moveVRToDirection(rotate, direction);
   },
   
@@ -19,5 +18,9 @@ var ViewControls = React.createClass({
     );
   }
 });
+
+ViewControls.propTypes = {
+  controller: React.PropTypes.object
+};
 
 module.exports = ViewControls;
