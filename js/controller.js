@@ -662,18 +662,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (!$('.oo-player-skin').length) {
         this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
       }
-  
-      //load player with page level config param if exist
-      if (params.skin && params.skin.config) {
-        $.getJSON(params.skin.config, function(data) {
-          this.state.customSkinJSON = data;
-          this.loadConfigData(this.state.playerParam, this.state.persistentSettings, data, this.state.skinMetaData);
-        }.bind(this));
-      } else {
-        this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
-      }
-  
-      this.accessibilityControls = new AccessibilityControls(this); //keyboard support
+      this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
     },
 
     onSeeked: function(event) {
