@@ -23,8 +23,8 @@ var ControlBar = React.createClass({
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
     this.vr = false;
-    if (this.props.controller && this.props.controller.videoVrSource) {
-      this.vr = this.props.controller.videoVrSource;
+    if (this.props.controller && this.props.controller.videoVRSource) {
+      this.vr = this.props.controller.videoVRSource;
     }
     return {};
   },

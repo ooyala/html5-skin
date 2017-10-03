@@ -11,7 +11,7 @@ describe('PlayingScreen', function () {
     var moved = false;
     var clicked = false;
     var mockController = {
-      videoVr: false,
+      videoVR: false,
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
@@ -44,11 +44,11 @@ describe('PlayingScreen', function () {
   });
 
   it('creates a PlayingScreen and checks mouseMove, mouseDown, mouseUp with video360', function() {
-    var isVrDirectionChecked = false;
+    var isVRDirectionChecked = false;
     var isTouchMove = false;
     var isStartHideControlBarTimer = false;
     var mockController = {
-      videoVr: true,
+      videoVR: true,
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
@@ -63,8 +63,8 @@ describe('PlayingScreen', function () {
       onTouchMove: function() {
         isTouchMove = true;
       },
-      checkVrDirection: function() {
-        isVrDirectionChecked = true;
+      checkVRDirection: function() {
+        isVRDirectionChecked = true;
       }
     };
     var closedCaptionOptions = {
@@ -103,17 +103,17 @@ describe('PlayingScreen', function () {
     expect(directionParams).toEqual([10, 0, 60]);
 
     TestUtils.Simulate.mouseDown(screen);
-    expect(isVrDirectionChecked).toBe(true);
+    expect(isVRDirectionChecked).toBe(true);
 
     TestUtils.Simulate.mouseUp(screen);
-    expect(isVrDirectionChecked).toBe(true);
+    expect(isVRDirectionChecked).toBe(true);
 
   });
 
   it('creates a PlayingScreen and checks touchEnd without video360', function () {
     var clicked = false;
     var mockController = {
-      videoVr: false,
+      videoVR: false,
       state: {
         isMobile: true,
         accessibilityControlsEnabled: false,
@@ -146,7 +146,7 @@ describe('PlayingScreen', function () {
     var clicked = false;
 
     var mockController = {
-      videoVr: false,
+      videoVR: false,
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
@@ -197,7 +197,7 @@ describe('PlayingScreen', function () {
     var clicked = false;
 
     var mockController = {
-      videoVr: true,
+      videoVR: true,
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
@@ -249,7 +249,7 @@ describe('PlayingScreen', function () {
   it('creates a PlayingScreen and check play&pause', function () {
     var clicked = false;
     var mockController = {
-      videoVr: true,
+      videoVR: true,
       state: {
         isMobile: true,
         isVRMouseDown: false,

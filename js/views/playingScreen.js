@@ -21,7 +21,7 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
-    this.videoVr = this.props.controller.videoVr;
+    this.videoVR = this.props.controller.videoVR;
 
     return {
       controlBarVisible: true,
@@ -123,13 +123,13 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
-    else if (!this.props.controller.videoVr) {
+    else if (!this.props.controller.videoVR) {
       this.props.controller.togglePlayPause(event);
     }
   },
 
   handlePlayerMouseDown: function(e) {
-    if (!this.props.controller.videoVr) {
+    if (!this.props.controller.videoVR) {
       return;
     }
     
@@ -139,8 +139,8 @@ var PlayingScreen = React.createClass({
       yVRMouseStart: e.pageY
     });
     
-    if (this.props.controller.checkVrDirection) {
-      this.props.controller.checkVrDirection();
+    if (this.props.controller.checkVRDirection) {
+      this.props.controller.checkVRDirection();
     }
   },
 
@@ -150,7 +150,7 @@ var PlayingScreen = React.createClass({
       this.props.controller.startHideControlBarTimer();
     }
 
-    if (this.props.controller.videoVr && this.state.isVRMouseDown) {
+    if (this.props.controller.videoVR && this.state.isVRMouseDown) {
       this.setState({
         isMouseMove: true
       });
@@ -170,24 +170,24 @@ var PlayingScreen = React.createClass({
       e.cancelBubble = true; // IE
 
       this.props.controller.state.accessibilityControlsEnabled = true;
-      if (!this.props.controller.videoVr) {
+      if (!this.props.controller.videoVR) {
         this.props.controller.togglePlayPause();
       }
     }
     // for mobile, touch is handled in handleTouchEnd
-    if (this.props.controller.videoVr) {
+    if (this.props.controller.videoVR) {
       this.setState({
         isVRMouseDown: false,
       });
       
-      if (_.isFunction(this.props.controller.checkVrDirection)) {
-        this.props.controller.checkVrDirection();
+      if (_.isFunction(this.props.controller.checkVRDirection)) {
+        this.props.controller.checkVRDirection();
       }
     }
   },
   
   handlePlayerMouseLeave: function () {
-    if (this.props.controller.videoVr) {
+    if (this.props.controller.videoVR) {
       this.setState({
         isVRMouseDown: false,
       });
@@ -287,7 +287,7 @@ var PlayingScreen = React.createClass({
       </div>
       
       {
-        this.videoVr &&
+        this.videoVR &&
         <ViewControls
           {...this.props}
           controlBarVisible={this.state.controlBarVisible}

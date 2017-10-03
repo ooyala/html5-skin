@@ -29,7 +29,7 @@ describe('viewControls', function () {
   
   it('creates a viewControls', function () {
     var controller = {
-      getVrParams: function () {
+      getVRParams: function () {
         return {stereo: false};
       }
     };
@@ -70,7 +70,7 @@ describe('viewControls', function () {
   
   it('check condition: if video support vr360 then viewControls exist', function () {
     var controller = {
-      getVrParams: function () {
+      getVRParams: function () {
         return {stereo: false};
       }
     };
@@ -91,7 +91,7 @@ describe('viewControls', function () {
   
   it('check condition: if video does not support vr360 then viewControls does not exist', function () {
     var controller = {
-      getVrParams: function () {
+      getVRParams: function () {
         return null;
       }
     };
