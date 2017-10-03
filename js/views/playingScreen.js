@@ -26,10 +26,10 @@ var PlayingScreen = React.createClass({
     return {
       controlBarVisible: true,
       timer: null,
-      isMouseDown: false,
+      isVRMouseDown: false,
       isMouseMove: false,
-      XMouseStart: 0,
-      YMouseStart: 0,
+      xVRMouseStart: 0,
+      yVRMouseStart: 0,
     };
   },
 
@@ -134,12 +134,13 @@ var PlayingScreen = React.createClass({
     }
     
     this.setState({
-      isMouseDown: true,
-      XMouseStart: e.pageX,
-      YMouseStart: e.pageY
+      isVRMouseDown: true,
+      xVRMouseStart: e.pageX,
+      yVRMouseStart: e.pageY
     });
-    if (this.props.controller.onTouched) {
-      this.props.controller.onTouched();
+    
+    if (this.props.controller.checkVrDirection) {
+      this.props.controller.checkVrDirection();
     }
   },
 
@@ -149,14 +150,15 @@ var PlayingScreen = React.createClass({
       this.props.controller.startHideControlBarTimer();
     }
 
-    if (this.props.controller.videoVr && this.state.isMouseDown) {
+    if (this.props.controller.videoVr && this.state.isVRMouseDown) {
       this.setState({
         isMouseMove: true
       });
       
       var params = this.getDirectionParams(e.pageX, e.pageY);
-      if (this.props.controller.onTouching) {
-        this.props.controller.onTouching(params);
+      
+      if (this.props.controller.onTouchMove) {
+        this.props.controller.onTouchMove(params);
       }
     }
   },
@@ -175,10 +177,11 @@ var PlayingScreen = React.createClass({
     // for mobile, touch is handled in handleTouchEnd
     if (this.props.controller.videoVr) {
       this.setState({
-        isMouseDown: false,
+        isVRMouseDown: false,
       });
-      if (_.isFunction(this.props.controller.onTouched)) {
-        this.props.controller.onTouched();
+      
+      if (_.isFunction(this.props.controller.checkVrDirection)) {
+        this.props.controller.checkVrDirection();
       }
     }
   },
@@ -186,7 +189,7 @@ var PlayingScreen = React.createClass({
   handlePlayerMouseLeave: function () {
     if (this.props.controller.videoVr) {
       this.setState({
-        isMouseDown: false,
+        isVRMouseDown: false,
       });
     }
   },
@@ -202,8 +205,8 @@ var PlayingScreen = React.createClass({
   },
   
   getDirectionParams: function(pageX, pageY) {
-    var dx = pageX - this.state.XMouseStart;
-    var dy = pageY - this.state.YMouseStart;
+    var dx = pageX - this.state.xVRMouseStart;
+    var dy = pageY - this.state.yVRMouseStart;
     var maxDegreesX = 90;
     var maxDegreesY = 120;
     var degreesForPixelYaw = maxDegreesX / this.props.componentWidth;
