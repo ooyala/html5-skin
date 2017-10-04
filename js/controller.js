@@ -28,8 +28,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   var Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
-    this.videoVRSource = null;
-    this.videoVR = false;
+    this.videoVrSource = null;
+    this.videoVr = false;
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
@@ -168,7 +168,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
-      this.mb.subscribe(OO.EVENTS.VIDEO_VR, 'customerUi', _.bind(this.setVideoVR, this));
+      this.mb.subscribe(OO.EVENTS.VIDEO_VR, 'customerUi', _.bind(this.onSetVideoVr, this));
       this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
@@ -271,10 +271,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.accessibilityControls = new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
     },
-
-    setVideoVR: function(event, obj) {
-      this.videoVR = true;
-      this.videoVRSource = obj.source || null; //if we need video vr params
+  
+    onSetVideoVr: function(event, params) {
+      this.videoVr = true;
+      this.videoVrSource = params.source || null; //if we need video vr params
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -639,13 +639,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
   
     onTouchMove: function(params) {
-      if (this.videoVR) {
+      if (this.videoVr) {
         this.mb.publish(OO.EVENTS.TOUCH_MOVE, this.focusedElement, params);
       }
     },
   
-    checkVRDirection: function () {
-      if (this.videoVR) {
+    checkVrDirection: function () {
+      if (this.videoVr) {
         this.mb.publish(OO.EVENTS.CHECK_VR_DIRECTION, this.focusedElement);
       }
     },
@@ -1330,8 +1330,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
     },
   
-    moveVRToDirection: function (rotate, direction) {
-      console.log('controller moveVRToDirection');
+    moveVrToDirection: function (rotate, direction) {
       this.mb.publish(OO.EVENTS.MOVE_VR_TO_DIRECTION, this.focusedElement, rotate, direction);
     },
 
