@@ -24,7 +24,6 @@ var DirectionControl = React.createClass({
       <div
         className={classnames('oo-vr-icon--move direction-control', directionClass, touchedDirectionClass)}
         key={this.props.dir}
-        tabIndex="0"
         onMouseDown={this.handleEvent} onTouchStart={this.handleEvent}
         onMouseUp={this.handleEvent} onTouchEnd={this.handleEvent}
         onMouseOut={this.handleEvent}
