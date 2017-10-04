@@ -682,9 +682,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.afterOoyalaAd) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
       } else {
-        // If we have played a video before and PLAYBACK_READY fires it means
-        // we're transitioning to a new video. For the time being this will autoplay
-        // the next video, so we only show the loading spinner in these cases.
+        // If the core tells us that it will autoplay then we just display the loading
+        // spinner, otherwise we need to render the big play button.
         if (params.willAutoplay) {
           this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         } else {
