@@ -286,7 +286,7 @@ var PlayingScreen = React.createClass({
       
       {
         this.props.controller.videoVr &&
-        <ViewControls
+        <ViewControlsVr
           {...this.props}
           controlBarVisible={this.state.controlBarVisible}
         />
