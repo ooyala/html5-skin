@@ -276,7 +276,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   
     onSetVideoVr: function(event, params) {
       this.videoVr = true;
-      this.videoVrSource = params.source || null; //if we need video vr params
+      if (params) {
+        this.videoVrSource = params.source || null; //if we need video vr params
+      }
     },
 
     onVcVideoElementCreated: function(event, params) {
