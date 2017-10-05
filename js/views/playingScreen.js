@@ -12,7 +12,7 @@ var React = require('react'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     CONSTANTS = require('../constants/constants');
-    ViewControls = require('../components/viewControls'),
+    ViewControlsVr = require('../components/viewControlsVr'),
     _ = require('underscore');
 
 var PlayingScreen = React.createClass({
@@ -288,7 +288,7 @@ var PlayingScreen = React.createClass({
       
       {
         this.videoVr &&
-        <ViewControls
+        <ViewControlsVr
           {...this.props}
           controlBarVisible={this.state.controlBarVisible}
         />
