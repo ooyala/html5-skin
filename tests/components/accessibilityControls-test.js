@@ -124,11 +124,11 @@ describe('AccessibilityControls', function () {
 
   it('tests "A" key', function () {
     var controllerMock = {
-      videoVR: true,
+      videoVr: true,
       state: {
         accessibilityControlsEnabled: true,
       },
-      moveVRToDirection: function() {},
+      moveVrToDirection: function() {},
     };
 
     var mockEvent = {
