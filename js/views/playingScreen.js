@@ -12,8 +12,7 @@ var React = require('react'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     CONSTANTS = require('../constants/constants');
-    ViewControlsVr = require('../components/viewControlsVr'),
-    _ = require('underscore');
+    ViewControlsVr = require('../components/viewControlsVr');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -212,7 +211,7 @@ var PlayingScreen = React.createClass({
     if (this.props.controller &&
       this.props.controller.state &&
       this.props.controller.state.viewingDirection &&
-      _.isNumber(this.props.controller.state.viewingDirection[paramName])) {
+      typeof this.props.controller.state.viewingDirection[paramName] === "number") {
       viewingDirectionYaw = this.props.controller.state.viewingDirection[paramName]
     }
     return viewingDirectionYaw
