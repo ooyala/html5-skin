@@ -12,6 +12,8 @@ var React = require('react'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     CONSTANTS = require('../constants/constants');
+    ViewControlsVr = require('../components/viewControlsVr'),
+    _ = require('underscore');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -24,10 +26,10 @@ var PlayingScreen = React.createClass({
     return {
       controlBarVisible: true,
       timer: null,
-      isVRMouseDown: false,
+      isVrMouseDown: false,
       isMouseMove: false,
-      xVRMouseStart: 0,
-      yVRMouseStart: 0,
+      xVrMouseStart: 0,
+      yVrMouseStart: 0,
     };
   },
 
@@ -132,9 +134,9 @@ var PlayingScreen = React.createClass({
     }
     
     this.setState({
-      isVRMouseDown: true,
-      xVRMouseStart: e.pageX,
-      yVRMouseStart: e.pageY
+      isVrMouseDown: true,
+      xVrMouseStart: e.pageX,
+      yVrMouseStart: e.pageY
     });
     
     if (this.props.controller.checkVrDirection) {
@@ -148,7 +150,7 @@ var PlayingScreen = React.createClass({
       this.props.controller.startHideControlBarTimer();
     }
 
-    if (this.props.controller.videoVr && this.state.isVRMouseDown) {
+    if (this.props.controller.videoVr && this.state.isVrMouseDown) {
       this.setState({
         isMouseMove: true
       });
@@ -175,10 +177,10 @@ var PlayingScreen = React.createClass({
     // for mobile, touch is handled in handleTouchEnd
     if (this.props.controller.videoVr) {
       this.setState({
-        isVRMouseDown: false,
+        isVrMouseDown: false,
       });
       
-      if (this.props.controller.checkVrDirection) {
+      if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
       }
     }
@@ -187,7 +189,7 @@ var PlayingScreen = React.createClass({
   handlePlayerMouseLeave: function () {
     if (this.props.controller.videoVr) {
       this.setState({
-        isVRMouseDown: false,
+        isVrMouseDown: false,
       });
     }
   },
@@ -203,8 +205,8 @@ var PlayingScreen = React.createClass({
   },
   
   getDirectionParams: function(pageX, pageY) {
-    var dx = pageX - this.state.xVRMouseStart;
-    var dy = pageY - this.state.yVRMouseStart;
+    var dx = pageX - this.state.xVrMouseStart;
+    var dy = pageY - this.state.yVrMouseStart;
     var maxDegreesX = 90;
     var maxDegreesY = 120;
     var degreesForPixelYaw = maxDegreesX / this.props.componentWidth;
@@ -283,6 +285,14 @@ var PlayingScreen = React.createClass({
           playerState={this.props.playerState}
           isLiveStream={this.props.isLiveStream} />
       </div>
+      
+      {
+        this.videoVr &&
+        <ViewControlsVr
+          {...this.props}
+          controlBarVisible={this.state.controlBarVisible}
+        />
+      }
     </div>
     );
   }

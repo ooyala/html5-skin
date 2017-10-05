@@ -22,10 +22,6 @@ var ControlBar = React.createClass({
     this.isMobile = this.props.controller.state.isMobile;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
-    this.vr = false;
-    if (this.props.controller && this.props.controller.videoVrSource) {
-      this.vr = this.props.controller.videoVrSource;
-    }
     return {};
   },
 
