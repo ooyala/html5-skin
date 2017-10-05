@@ -114,7 +114,7 @@ describe('ControlBar', function () {
     TestUtils.Simulate.click(fullscreenButton);
     expect(fullscreenToggled).toBe(true);
   });
-  
+
   it('renders one button', function() {
     var mockController = {
       state: {

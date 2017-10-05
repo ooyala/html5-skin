@@ -94,7 +94,7 @@ var ControlBar = React.createClass({
     evt.preventDefault();
     this.props.controller.toggleFullscreen();
   },
-  
+
   handleLiveClick: function (evt) {
     evt.stopPropagation();
     evt.cancelBubble = true;
@@ -306,7 +306,7 @@ var ControlBar = React.createClass({
       fullscreenIcon = "expand";
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
-    
+
     var totalTime = 0;
     if (this.props.duration == null || typeof this.props.duration == 'undefined' || this.props.duration == "") {
       totalTime = Utils.formatSeconds(0);
@@ -470,7 +470,7 @@ var ControlBar = React.createClass({
           <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
         </a>
       }).bind(this),
-  
+
     "fullscreen": (function (alignment) {
         return <button className="oo-fullscreen oo-control-bar-item"
           onClick={this.handleFullscreenClick}
@@ -612,7 +612,6 @@ var ControlBar = React.createClass({
     };
     return returnStyles;
   },
-
 
   render: function () {
     var controlBarClass = ClassNames({

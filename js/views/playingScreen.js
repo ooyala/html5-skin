@@ -299,5 +299,4 @@ var PlayingScreen = React.createClass({
     );
   }
 });
-
 module.exports = PlayingScreen;
