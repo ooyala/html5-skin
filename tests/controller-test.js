@@ -615,6 +615,7 @@ OO = {
 
       it('test start screen is shown on playback ready', function() {
         controllerMock.state.afterOoyalaAd = false;
+        controllerMock.state.initialPlayHasOccurred = false;
         Html5Skin.onPlaybackReady.call(controllerMock, 'customerUi');
         expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
       });
