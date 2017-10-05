@@ -512,7 +512,7 @@ var ControlBar = React.createClass({
           </button>
       }).bind(this),
 
-    "fullscreen": (function (alignment) {
+      "fullscreen": (function (alignment) {
         return <button className="oo-fullscreen oo-control-bar-item"
           onClick={this.handleFullscreenClick}
           onMouseUp={Utils.blurOnMouseUp}
@@ -653,7 +653,6 @@ var ControlBar = React.createClass({
     };
     return returnStyles;
   },
-
 
   render: function () {
     var controlBarClass = ClassNames({

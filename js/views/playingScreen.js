@@ -12,7 +12,7 @@ var React = require('react'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     CONSTANTS = require('../constants/constants');
-    ViewControls = require('../components/viewControls'),
+    ViewControlsVr = require('../components/viewControlsVr'),
     _ = require('underscore');
 
 var PlayingScreen = React.createClass({
@@ -25,10 +25,10 @@ var PlayingScreen = React.createClass({
     return {
       controlBarVisible: true,
       timer: null,
-      isVRMouseDown: false,
+      isVrMouseDown: false,
       isMouseMove: false,
-      xVRMouseStart: 0,
-      yVRMouseStart: 0,
+      xVrMouseStart: 0,
+      yVrMouseStart: 0,
     };
   },
 
@@ -110,24 +110,24 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
-    else if (!this.props.controller.videoVR) {
+    else if (!this.props.controller.videoVr) {
       this.props.controller.togglePlayPause(event);
     }
   },
 
   handlePlayerMouseDown: function(e) {
-    if (!this.props.controller.videoVR) {
+    if (!this.props.controller.videoVr) {
       return;
     }
     
     this.setState({
-      isVRMouseDown: true,
-      xVRMouseStart: e.pageX,
-      yVRMouseStart: e.pageY
+      isVrMouseDown: true,
+      xVrMouseStart: e.pageX,
+      yVrMouseStart: e.pageY
     });
 
-    if (this.props.controller.checkVRDirection) {
-      this.props.controller.checkVRDirection();
+    if (this.props.controller.checkVrDirection) {
+      this.props.controller.checkVrDirection();
     }
   },
 
@@ -137,7 +137,7 @@ var PlayingScreen = React.createClass({
       this.props.controller.startHideControlBarTimer();
     }
 
-    if (this.props.controller.videoVR && this.state.isVRMouseDown) {
+    if (this.props.controller.videoVr && this.state.isVrMouseDown) {
       this.setState({
         isMouseMove: true
       });
@@ -157,26 +157,26 @@ var PlayingScreen = React.createClass({
       e.cancelBubble = true; // IE
 
       this.props.controller.state.accessibilityControlsEnabled = true;
-      if (!this.props.controller.videoVR) {
+      if (!this.props.controller.videoVr) {
         this.props.controller.togglePlayPause();
       }
     }
     // for mobile, touch is handled in handleTouchEnd
-    if (this.props.controller.videoVR) {
+    if (this.props.controller.videoVr) {
       this.setState({
-        isVRMouseDown: false,
+        isVrMouseDown: false,
       });
 
-      if (_.isFunction(this.props.controller.checkVRDirection)) {
-        this.props.controller.checkVRDirection();
+      if (typeof this.props.controller.checkVrDirection === 'function') {
+        this.props.controller.checkVrDirection();
       }
     }
   },
   
   handlePlayerMouseLeave: function () {
-    if (this.props.controller.videoVR) {
+    if (this.props.controller.videoVr) {
       this.setState({
-        isVRMouseDown: false,
+        isVrMouseDown: false,
       });
     }
   },
@@ -192,8 +192,8 @@ var PlayingScreen = React.createClass({
   },
   
   getDirectionParams: function(pageX, pageY) {
-    var dx = pageX - this.state.xVRMouseStart;
-    var dy = pageY - this.state.yVRMouseStart;
+    var dx = pageX - this.state.xVrMouseStart;
+    var dy = pageY - this.state.yVrMouseStart;
     var maxDegreesX = 90;
     var maxDegreesY = 120;
     var degreesForPixelYaw = maxDegreesX / this.props.componentWidth;
@@ -285,7 +285,7 @@ var PlayingScreen = React.createClass({
       </div>
       
       {
-        this.props.controller.videoVR &&
+        this.props.controller.videoVr &&
         <ViewControls
           {...this.props}
           controlBarVisible={this.state.controlBarVisible}
