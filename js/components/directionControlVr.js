@@ -22,7 +22,7 @@ var DirectionControlVr = React.createClass({
     var directionClass = baseDirectionClass + '--' + this.props.dir;
     var touchedDirectionClass = "";
     if (this.state.isTouched) {
-      touchedDirectionClass = this.state.isTouched && directionClass + '--touched';
+      touchedDirectionClass = directionClass + '--touched';
     }
     return (
       <div
