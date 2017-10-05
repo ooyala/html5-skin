@@ -11,7 +11,7 @@ describe('PlayingScreen', function () {
     var isMoved = false
       , isPlayPause = false;
     var mockController = {
-      videoVR: false,
+      videoVr: false,
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
@@ -44,11 +44,11 @@ describe('PlayingScreen', function () {
   });
 
   it('creates a PlayingScreen and checks mouseMove, mouseDown, mouseUp with video360', function() {
-    var isVRDirectionChecked = false;
+    var isVrDirectionChecked = false;
     var isTouchMove = false;
     var isStartHideControlBarTimer = false;
     var mockController = {
-      videoVR: true,
+      videoVr: true,
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
@@ -63,8 +63,8 @@ describe('PlayingScreen', function () {
       onTouchMove: function() {
         isTouchMove = true;
       },
-      checkVRDirection: function() {
-        isVRDirectionChecked = true;
+      checkVrDirection: function() {
+        isVrDirectionChecked = true;
       }
     };
     var closedCaptionOptions = {
@@ -80,9 +80,9 @@ describe('PlayingScreen', function () {
       />
     );
     DOM.setState({
-      isVRMouseDown: true,
-      xVRMouseStart: -10,
-      yVRMouseStart: -20
+      isVrMouseDown: true,
+      xVrMouseStart: -10,
+      yVrMouseStart: -20
     });
 
     var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
@@ -93,8 +93,8 @@ describe('PlayingScreen', function () {
     TestUtils.Simulate.mouseMove(screen[0]);
     expect(isTouchMove).toBe(true);
     expect(getDirectionParams).toHaveBeenCalled();
-    //dx = arguments[0] - this.state.xVRMouseStart = 0 - (-10) = 10;
-    //dy = arguments[1] - this.state.yVRMouseStart = 0 - (-20) = 20;
+    //dx = arguments[0] - this.state.xVrMouseStart = 0 - (-10) = 10;
+    //dy = arguments[1] - this.state.yVrMouseStart = 0 - (-20) = 20;
     //degreesForPixelYaw = maxDegreesX / componentWidth = 90 / 90 = 1;
     //degreesForPixelPitch = maxDegreesY / componentHeight = 120 / 40 = 3;
     //yaw = mockController.viewingDirection.yaw + dx * degreesForPixelYaw = 0 + 10 * 1 = 10;
@@ -102,17 +102,17 @@ describe('PlayingScreen', function () {
     expect(directionParams).toEqual([10, 0, 60]);
 
     TestUtils.Simulate.mouseDown(screen[0]);
-    expect(isVRDirectionChecked).toBe(true);
+    expect(isVrDirectionChecked).toBe(true);
 
     TestUtils.Simulate.mouseUp(screen[0]);
-    expect(isVRDirectionChecked).toBe(true);
+    expect(isVrDirectionChecked).toBe(true);
 
   });
 
   it('creates a PlayingScreen and checks touchEnd without video360', function () {
     var clicked = false;
     var mockController = {
-      videoVR: false,
+      videoVr: false,
       state: {
         isMobile: true,
         accessibilityControlsEnabled: false,
@@ -145,7 +145,7 @@ describe('PlayingScreen', function () {
     var clicked = false;
 
     var mockController = {
-      videoVR: false,
+      videoVr: false,
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
@@ -196,7 +196,7 @@ describe('PlayingScreen', function () {
     var clicked = false;
 
     var mockController = {
-      videoVR: true,
+      videoVr: true,
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
@@ -248,10 +248,10 @@ describe('PlayingScreen', function () {
   it('creates a PlayingScreen and check play&pause', function () {
     var clicked = false;
     var mockController = {
-      videoVR: true,
+      videoVr: true,
       state: {
         isMobile: true,
-        isVRMouseDown: false,
+        isVrMouseDown: false,
         isMouseMove: false,
         accessibilityControlsEnabled: false,
         upNextInfo: {
