@@ -20,7 +20,10 @@ var DirectionControlVr = React.createClass({
   render: function () {
     var baseDirectionClass = 'oo-vr-icon--move';
     var directionClass = baseDirectionClass + '--' + this.props.dir;
-    var touchedDirectionClass = this.state.isTouched && directionClass + '--touched';
+    var touchedDirectionClass = "";
+    if (this.state.isTouched) {
+      touchedDirectionClass = this.state.isTouched && directionClass + '--touched';
+    }
     return (
       <div
         className = {classnames('oo-direction-control', baseDirectionClass, directionClass, touchedDirectionClass)}

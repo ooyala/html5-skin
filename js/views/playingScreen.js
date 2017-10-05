@@ -166,8 +166,8 @@ var PlayingScreen = React.createClass({
       this.setState({
         isVrMouseDown: false,
       });
-
-      if (_.isFunction(this.props.controller.checkVrDirection)) {
+      
+      if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
       }
     }
