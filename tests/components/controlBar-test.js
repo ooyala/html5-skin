@@ -114,7 +114,6 @@ describe('ControlBar', function () {
     TestUtils.Simulate.click(fullscreenButton);
     expect(fullscreenToggled).toBe(true);
   });
-  
   it('render one stereo button if content vr', function () {
     var mockController = {
       state: {
@@ -247,7 +246,6 @@ describe('ControlBar', function () {
     TestUtils.Simulate.click(toggleStereoButton);
     expect(stereoMode).toBe(true);
   });
-  
   it('renders one button', function() {
     var mockController = {
       state: {

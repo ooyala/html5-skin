@@ -28,10 +28,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   var Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
-    this.videoVrSource = null;
-    this.videoVr = false;
     this.accessibilityControls = null;
-    this.state = {
+    this.videoVrSource = null;
+    this.videoVr = false;    this.state = {
       "playerParam": {},
       "skinMetaData": {},
       "attributes": {},

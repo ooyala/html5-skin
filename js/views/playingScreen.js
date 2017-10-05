@@ -12,8 +12,7 @@ var React = require('react'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     CONSTANTS = require('../constants/constants');
-    ViewControlsVr = require('../components/viewControlsVr'),
-    _ = require('underscore');
+    ViewControlsVr = require('../components/viewControlsVr');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -167,6 +166,7 @@ var PlayingScreen = React.createClass({
         isVrMouseDown: false,
       });
 
+      
       if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
       }
@@ -203,12 +203,16 @@ var PlayingScreen = React.createClass({
     return [yaw, 0, pitch];
   },
 
+  /**
+   * @param paramName {string} "yaw", "pitch"
+   * @returns {number}
+   */
   getViewingDirectionParamValue: function(paramName) {
     var viewingDirectionYaw = 0;
-    if (this.props.controller
-      && this.props.controller.state
-      && this.props.controller.state.viewingDirection
-      && _.isNumber(this.props.controller.state.viewingDirection[paramName])) {
+    if (this.props.controller &&
+      this.props.controller.state &&
+      this.props.controller.state.viewingDirection &&
+      typeof this.props.controller.state.viewingDirection[paramName] === "number") {
       viewingDirectionYaw = this.props.controller.state.viewingDirection[paramName]
     }
     return viewingDirectionYaw
@@ -295,5 +299,4 @@ var PlayingScreen = React.createClass({
     );
   }
 });
-
 module.exports = PlayingScreen;

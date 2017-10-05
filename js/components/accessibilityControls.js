@@ -15,7 +15,7 @@ var AccessibilityControls = function (controller) {
   };
   this.keyEventDown = this.keyEventDown.bind(this);
   this.keyEventUp = this.keyEventUp.bind(this);
-  this.moveVRToDirection = this.moveVRToDirection.bind(this);
+  this.moveVrToDirection = this.moveVrToDirection.bind(this);
   this.getTargetTagName = this.getTargetTagName.bind(this);
 
   document.addEventListener("keydown", this.keyEventDown);
@@ -35,7 +35,7 @@ AccessibilityControls.prototype = {
 
     var targetTagName = this.getTargetTagName(e);
     var charCode = e.which || e.keyCode;
-    this.moveVRToDirection(e, charCode, true, targetTagName); //start rotate 360
+    this.moveVrToDirection(e, charCode, true, targetTagName); //start rotate 360
     // Slider interaction requires the arrow keys. When a slider is active we should
     // disable arrow key controls
     var sliderIsActive = document.activeElement && document.activeElement.getAttribute('role') === 'slider';
@@ -76,7 +76,7 @@ AccessibilityControls.prototype = {
     if (!this.controller.state.accessibilityControlsEnabled) { return; }
     var targetTagName = this.getTargetTagName(e);
     var charCode = e.which || e.keyCode;
-    this.moveVRToDirection(e, charCode, false, targetTagName);  //stop rotate 360
+    this.moveVrToDirection(e, charCode, false, targetTagName);  //stop rotate 360
   },
 
   /**
@@ -102,8 +102,8 @@ AccessibilityControls.prototype = {
    * @returns {boolean} true if moved
    */
 
-  moveVRToDirection: function(e, charCode, isKeyDown, targetTagName) {
-    if (!this.controller.videoVR) {
+  moveVrToDirection: function(e, charCode, isKeyDown, targetTagName) {
+    if (!this.controller.videoVr) {
       return false;
     }
     if (e.repeat !== undefined) {
@@ -115,7 +115,7 @@ AccessibilityControls.prototype = {
     var keyDirectionMap = this.keyDirectionMap;
     if (keyDirectionMap[charCode] && targetTagName !== "button") {
       this.vrRotationAllowed = !isKeyDown; //prevent repeat of keyDown
-      this.controller.moveVRToDirection(isKeyDown, keyDirectionMap[charCode]);
+      this.controller.moveVrToDirection(isKeyDown, keyDirectionMap[charCode]);
     }
   },
 
