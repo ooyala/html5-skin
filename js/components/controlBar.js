@@ -20,6 +20,8 @@ var React = require('react'),
 var ControlBar = React.createClass({
   getInitialState: function () {
     this.isMobile = this.props.controller.state.isMobile;
+    this.qualityButtonKeyPressed = false;
+    this.autoFocusQualityPopover = false;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
     return {};
@@ -129,11 +131,32 @@ var ControlBar = React.createClass({
   },
 
   handleQualityClick: function () {
+    // If the quality menu was activated via keyboard we should
+    // autofocus on the first element
+    this.autoFocusQualityPopover = this.qualityButtonKeyPressed;
+    this.qualityButtonKeyPressed = false;
+
     if (this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
     } else {
       this.toggleQualityPopover();
       this.closeCaptionPopover();
+    }
+  },
+
+  /**
+   * Fires when a key is pressed on the video quality button.
+   * @private
+   * @param {type} event The keydown event object.
+   */
+  handleQualityKeyDown: function(event) {
+    switch (event.key) {
+      case CONSTANTS.KEY_VALUES.SPACE:
+      case CONSTANTS.KEY_VALUES.ENTER:
+        this.qualityButtonKeyPressed = true;
+        break;
+      default:
+        break;
     }
   },
 
@@ -334,7 +357,6 @@ var ControlBar = React.createClass({
       "oo-live-nonclickable": isLiveNow
     });
 
-    var videoQualityPopover = this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? <Popover><VideoQualityPanel{...this.props} togglePopoverAction={this.toggleQualityPopover} popover={true} /></Popover> : null;
     var closedCaptionPopover = this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover ? <Popover popoverClassName="oo-popover oo-popover-pull-right"><ClosedCaptionPopover {...this.props} togglePopoverAction={this.toggleCaptionPopover} /></Popover> : null;
 
     var qualityClass = ClassNames({
@@ -430,13 +452,30 @@ var ControlBar = React.createClass({
 
       "quality": (function (alignment) {
         return <div className="oo-popover-button-container" key="quality">
-          {videoQualityPopover}
-          <a className={qualityClass} onClick={this.handleQualityClick} style={selectedStyle} aria-hidden="true">
+          {this.props.controller.state.videoQualityOptions.showVideoQualityPopover &&
+            <Popover>
+              <VideoQualityPanel
+                {...this.props}
+                togglePopoverAction={this.toggleQualityPopover}
+                popover={true}
+                autoFocus={this.autoFocusQualityPopover} />
+            </Popover>
+          }
+          <button
+            className={qualityClass}
+            style={selectedStyle}
+            onMouseUp={Utils.blurOnMouseUp}
+            onClick={this.handleQualityClick}
+            onKeyDown={this.handleQualityKeyDown}
+            data-focus-id="quality"
+            tabIndex="0"
+            aria-label={CONSTANTS.ARIA_LABELS.VIDEO_QUALITY}
+            aria-haspopup="true">
             <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
               onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
             <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.VIDEO_QUALITY, this.props.localizableStrings)} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}
               responsivenessMultiplier={this.responsiveUIMultiple} />
-          </a>
+          </button>
         </div>
       }).bind(this),
 

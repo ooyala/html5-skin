@@ -93,6 +93,7 @@ module.exports = {
     FULL_SCREEN: "Full Screen",
     EXIT_FULL_SCREEN: "Exit Full Screen",
     VIDEO_QUALITY: "Video Quality",
+    AUTO_QUALITY: "Auto",
     SHARE: "Share",
     MORE_OPTIONS: "More Options"
   },
@@ -105,6 +106,8 @@ module.exports = {
     REPLAY: "Replay",
     MUTE: "Mute",
     UNMUTE: "Unmute",
+    VIDEO_QUALITY: "Video Quality",
+    AUTO_QUALITY: "Auto",
     FULLSCREEN: "Fullscreen",
     EXIT_FULLSCREEN: "Exit Fullscreen",
     SEEK_SLIDER: "Seek slider",
