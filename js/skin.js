@@ -29,10 +29,10 @@ var Skin = React.createClass({
       screenToShow: null,
       currentPlayhead: 0,
       discoveryData: null,
-      isMouseDown: false,
-      isMouseMove: false,
-      XMouseStart: 0,
-      YMouseStart: 0,
+      isVrMouseDown: false,
+      isVrMouseMove: false,
+      xVrMouseStart: 0,
+      yVrMouseStart: 0,
     };
   },
 
@@ -65,73 +65,96 @@ var Skin = React.createClass({
 
   updatePlayhead: function(newPlayhead, newDuration, newBuffered, adPlayhead) {
     this.setState({
-      currentPlayhead: newPlayhead,
-      duration: newDuration,
-      buffered: newBuffered,
-      currentAdPlayhead: adPlayhead
+      currentPlayhead: Utils.ensureNumber(newPlayhead, this.state.currentPlayhead),
+      duration: Utils.ensureNumber(newDuration, this.state.duration),
+      buffered: Utils.ensureNumber(newBuffered, this.state.buffered),
+      currentAdPlayhead: Utils.ensureNumber(adPlayhead, this.state.currentAdPlayhead)
     });
   },
 
-  //here and below functions for 360 (vr functions)
-  handleVRPlayerMouseDown: function(e) {
+  /**
+   * @description the function is called when we start the rotation
+   * @param e - event
+   */
+  handleVrPlayerMouseDown: function(e) {
     if (this.props.controller.videoVr) {
       this.setState({
-        isMouseDown: true,
-        XMouseStart: e.pageX,
-        YMouseStart: e.pageY
+        isVrMouseDown: true,
+        xVrMouseStart: e.pageX,
+        yVrMouseStart: e.pageY
       });
-      if (this.props.controller.onTouched) {
-        this.props.controller.onTouched(true);
+      if (typeof this.props.controller.checkVrDirection === 'function') {
+        this.props.controller.checkVrDirection();
       }
     }
   },
 
-  handleVRPlayerMouseMove: function(e) {
-    if (this.props.controller.videoVr && this.state.isMouseDown) {
+  /**
+   * @description the function is called while rotation is active
+   * @param e - event
+   */
+  handleVrPlayerMouseMove: function(e) {
+    if (this.props.controller.videoVr && this.state.isVrMouseDown) {
       this.setState({
-        isMouseMove: true
+        isVrMouseMove: true
       });
-      if (this.props.controller.onTouching) {
+      if (typeof this.props.controller.onTouchMove === 'function') {
         var params = this.getDirectionParams(e.pageX, e.pageY);
-        this.props.controller.onTouching(params, true);
+        this.props.controller.onTouchMove(params, true);
       }
     }
   },
 
-  handleVRPlayerMouseUp: function() {
+  /**
+   * @description the function is called when we stop the rotation
+   */
+  handleVrPlayerMouseUp: function() {
     if (this.props.controller.videoVr) {
       this.setState({
-        isMouseDown: false,
-        XMouseStart: 0,
-        YMouseStart: 0
+        isVrMouseDown: false,
+        xVrMouseStart: 0,
+        yVrMouseStart: 0
       });
-      if (this.props.controller.onTouched) {
-        this.props.controller.onTouched(true);
+      if (typeof this.props.controller.checkVrDirection === 'function') {
+        this.props.controller.checkVrDirection();
       }
     }
   },
 
-  handleVRPlayerMouseLeave: function () {
+  /**
+   * @description set isVrMouseDown to false for mouseleave event
+   */
+  handleVrPlayerMouseLeave: function () {
     if (this.props.controller.videoVr) {
       this.setState({
-        isMouseDown: false,
+        isVrMouseDown: false,
       });
     }
   },
 
-  handleVRPlayerClick: function () {
+  /**
+   * @description set isVrMouseMove to false for click event
+   */
+  handleVrPlayerClick: function () {
     this.setState({
-      isMouseMove: false,
+      isVrMouseMove: false,
     });
   },
 
-  handleVRPlayerFocus: function() {
+  handleVrPlayerFocus: function() {
     this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
+  /**
+   *
+   * @param pageX {number} x coordinate
+   * @param pageY {number} y coordinate
+   * @returns {[*,number,*]}
+   */
+
   getDirectionParams: function(pageX, pageY) {
-    var dx = pageX - this.state.XMouseStart;
-    var dy = pageY - this.state.YMouseStart;
+    var dx = pageX - this.state.xVrMouseStart;
+    var dy = pageY - this.state.yVrMouseStart;
     var maxDegreesX = 90;
     var maxDegreesY = 120;
     var degreesForPixelYaw = maxDegreesX / this.state.componentWidth;
@@ -139,6 +162,21 @@ var Skin = React.createClass({
     var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw;
     var pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
     return [yaw, 0, pitch];
+  },
+
+  /**
+   * @param paramName {string} "yaw", "pitch"
+   * @returns {number}
+   */
+  getViewingDirectionParamValue: function(paramName) {
+    var viewingDirectionYaw = 0;
+    if (this.props.controller &&
+      this.props.controller.state &&
+      this.props.controller.state.viewingDirection &&
+      typeof this.props.controller.state.viewingDirection[paramName] === "number") {
+      viewingDirectionYaw = this.props.controller.state.viewingDirection[paramName]
+    }
+    return viewingDirectionYaw
   },
 
   render: function() {
@@ -185,13 +223,13 @@ var Skin = React.createClass({
           screen = (
             <PlayingScreen
               {...this.props}
-              handleVRPlayerMouseDown={this.handleVRPlayerMouseDown}
-              handleVRPlayerMouseMove={this.handleVRPlayerMouseMove}
-              handleVRPlayerMouseUp={this.handleVRPlayerMouseUp}
-              handleVRPlayerMouseLeave={this.handleVRPlayerMouseLeave}
-              handleVRPlayerClick={this.handleVRPlayerClick}
-              handleVRPlayerFocus={this.handleVRPlayerFocus}
-              isMouseMove={this.state.isMouseMove}
+              handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
+              handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
+              handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
+              handleVrPlayerMouseLeave={this.handleVrPlayerMouseLeave}
+              handleVrPlayerClick={this.handleVrPlayerClick}
+              handleVrPlayerFocus={this.handleVrPlayerFocus}
+              isVrMouseMove={this.state.isVrMouseMove}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
               duration={this.state.duration}
@@ -228,12 +266,12 @@ var Skin = React.createClass({
           screen = (
             <PauseScreen
               {...this.props}
-              handleVRPlayerMouseDown={this.handleVRPlayerMouseDown}
-              handleVRPlayerMouseMove={this.handleVRPlayerMouseMove}
-              handleVRPlayerMouseUp={this.handleVRPlayerMouseUp}
-              handleVRPlayerMouseLeave={this.handleVRPlayerMouseLeave}
-              handleVRPlayerClick={this.handleVRPlayerClick}
-              isMouseMove={this.state.isMouseMove}
+              handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
+              handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
+              handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
+              handleVrPlayerMouseLeave={this.handleVrPlayerMouseLeave}
+              handleVrPlayerClick={this.handleVrPlayerClick}
+              isVrMouseMove={this.state.isVrMouseMove}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
               playerState={this.state.playerState}

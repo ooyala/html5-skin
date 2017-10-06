@@ -23,9 +23,6 @@ describe('PlayingScreen', function () {
       togglePlayPause: function() {
         isPlayPause = true;
       },
-      togglePlayPause: function(){
-        isPlayPause = true;
-      },
       startHideControlBarTimer: function() {
         isMoved = true;
       },
@@ -38,8 +35,8 @@ describe('PlayingScreen', function () {
       cueText: "cue text"
     };
 
-    var handleVRPlayerMouseMove = function() {};
-    var handleVRPlayerMouseUp = function() {
+    var handleVrPlayerMouseMove = function() {};
+    var handleVrPlayerMouseUp = function() {
       mockController.onTouched();
     };
 
@@ -48,8 +45,8 @@ describe('PlayingScreen', function () {
       <PlayingScreen
         controller={mockController}
         closedCaptionOptions={closedCaptionOptions}
-        handleVRPlayerMouseMove={handleVRPlayerMouseMove}
-        handleVRPlayerMouseUp={handleVRPlayerMouseUp.bind(this)}
+        handleVrPlayerMouseMove={handleVrPlayerMouseMove}
+        handleVrPlayerMouseUp={handleVrPlayerMouseUp.bind(this)}
       />
     );
 
@@ -85,10 +82,10 @@ describe('PlayingScreen', function () {
     var closedCaptionOptions = {
       cueText: "cue text"
     };
-    var handleVRPlayerMouseDown = function() {
+    var handleVrPlayerMouseDown = function() {
       mockController.onTouched();
     };
-    var handleVRPlayerMouseUp = function() {
+    var handleVrPlayerMouseUp = function() {
       mockController.onTouched();
     };
 
@@ -98,15 +95,15 @@ describe('PlayingScreen', function () {
         componentWidth={90}
         componentHeight={45}
         fullscreen={false}
-        handleVRPlayerMouseDown={handleVRPlayerMouseDown}
-        handleVRPlayerMouseUp={handleVRPlayerMouseUp}
+        handleVrPlayerMouseDown={handleVrPlayerMouseDown}
+        handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         closedCaptionOptions={closedCaptionOptions}
       />
     );
     DOM.setState({
-      isMouseDown: true,
-      XMouseStart: -10,
-      YMouseStart: -20
+      isVrMouseDown: true,
+      xVrMouseStart: -10,
+      yVrMouseStart: -20
     });
 
     var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
@@ -246,9 +243,9 @@ describe('PlayingScreen', function () {
     );
 
     DOM.setState({
-      isMouseDown: true,
-      XMouseStart: -10,
-      YMouseStart: -20
+      isVrMouseDown: true,
+      xVrMouseStart: -10,
+      yVrMouseStart: -20
     });
 
     var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-playing-screen');
@@ -275,7 +272,7 @@ describe('PlayingScreen', function () {
       videoVr: true,
       state: {
         isMobile: true,
-        isMouseDown: false,
+        isVrMouseDown: false,
         isMouseMove: false,
         accessibilityControlsEnabled: false,
         upNextInfo: {
@@ -291,7 +288,7 @@ describe('PlayingScreen', function () {
     var closedCaptionOptions = {
       cueText: "cue text"
     };
-    var handleVRPlayerClick = function() {
+    var handleVrPlayerClick = function() {
       isMouseMove = false;
     };
 
@@ -300,7 +297,7 @@ describe('PlayingScreen', function () {
       <PlayingScreen
         controller = {mockController}
         closedCaptionOptions = {closedCaptionOptions}
-        handleVRPlayerClick={handleVRPlayerClick}
+        handleVrPlayerClick={handleVrPlayerClick}
       />
     );
     var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');

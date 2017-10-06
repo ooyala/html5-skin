@@ -65,6 +65,18 @@ describe('Controller', function() {
     controller.state.pluginsElement = $('<div/>');
     controller.state.pluginsClickElement = $('<div/>');
     controller.state.mainVideoElement = mockDomElement;
+    controller.skin = {
+      state: {},
+      updatePlayhead: function(currentPlayhead, duration, buffered, currentAdPlayhead) {
+        this.state.currentPlayhead = currentPlayhead;
+        this.state.duration = duration;
+        this.state.buffered = buffered;
+        this.state.currentAdPlayhead = currentAdPlayhead;
+      },
+      props: {
+        skinConfig: JSON.parse(JSON.stringify(skinJson))
+      }
+    };
   });
 
   describe('Buffering state', function() {
@@ -73,12 +85,6 @@ describe('Controller', function() {
     beforeEach(function() {
       startBufferingTimerSpy = sinon.spy(controller, 'startBufferingTimer');
       stopBufferingTimerSpy = sinon.spy(controller, 'stopBufferingTimer');
-      controller.skin = {
-        updatePlayhead: function() {},
-        props: {
-          skinConfig: JSON.parse(JSON.stringify(skinJson))
-        }
-      };
     });
 
     afterEach(function() {
@@ -203,6 +209,74 @@ describe('Controller', function() {
       controller.onErrorEvent();
       expect(stopBufferingTimerSpy.callCount).toBe(8);
       expect(controller.state.bufferingTimer).toBeFalsy();
+    });
+
+  });
+
+  describe('New video transitions', function() {
+
+    it('should set initialPlayHasOccurred to true if initial play has been requested', function() {
+      expect(controller.state.initialPlayHasOccurred).toBe(false);
+      controller.onInitialPlay();
+      expect(controller.state.initialPlayHasOccurred).toBe(true);
+    });
+
+    it('should trigger loading screen when embed code is set after video has started', function() {
+      controller.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
+      controller.state.initialPlayHasOccurred = true;
+      controller.onSetEmbedCode('newEmbedCode');
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
+    });
+
+    it('should show start screen on playback ready when core reports it will NOT autoplay', function() {
+      expect(controller.state.screenToShow).not.toBe(CONSTANTS.SCREEN.START_SCREEN);
+      controller.onPlaybackReady('event', { willAutoplay: false });
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
+    });
+
+    it('should show loading screen on playback ready when core reports it will autoplay', function() {
+      expect(controller.state.screenToShow).not.toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
+      controller.onPlaybackReady('event', { willAutoplay: true });
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
+    });
+
+    it('should reset playhead on embed code changed', function() {
+      controller.onSetEmbedCode('oldEmbedCode');
+      controller.onPlaybackReady();
+      controller.onPlaying();
+      controller.onPlayheadTimeChanged('event', 5, 60, 30, null, OO.VIDEO.MAIN);
+      expect(controller.skin.state.currentPlayhead).toBe(5);
+      controller.onSetEmbedCode('newEmbedCode');
+      controller.onEmbedCodeChanged('newEmbedCode');
+      expect(controller.skin.state.currentPlayhead).toBe(0);
+    });
+
+    it('should reset playhead on asset changed', function() {
+      var asset = {
+        content: {
+          title: 'Title',
+          duration: 120,
+          description: 'Description',
+          captions: {},
+          posterImages: [{ url: 'url' }],
+          streams: [{ delivery_type: 'hls', url: 'url' }]
+        }
+      };
+      controller.onAssetChanged('event', asset);
+      controller.onPlaybackReady();
+      controller.onPlaying();
+      controller.onPlayheadTimeChanged('event', 5, 60, 30, null, OO.VIDEO.MAIN);
+      expect(controller.skin.state.currentPlayhead).toBe(5);
+      expect(controller.skin.state.duration).toBe(60);
+      controller.onAssetChanged('event', asset);
+      expect(controller.skin.state.currentPlayhead).toBe(0);
+      expect(controller.skin.state.duration).toBe(asset.content.duration);
+    });
+
+    it('should update skin duration on content tree fetched', function() {
+      expect(controller.skin.state.duration).not.toBe(120);
+      controller.onContentTreeFetched('event', { duration: 120000 });
+      expect(controller.skin.state.duration).toBe(120);
     });
 
   });
