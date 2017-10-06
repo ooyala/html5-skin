@@ -1,6 +1,6 @@
 /********************************************************************
-  CONSTANT
-*********************************************************************/
+ CONSTANT
+ *********************************************************************/
 module.exports = {
   STATE: {
     START : "start",
@@ -40,9 +40,7 @@ module.exports = {
     OFF: "Off",
     DISCOVER: "Discover",
     UP_NEXT: "Up next",
-    VIDEO_QUALITY: "Video Quality",
     SHARE_CALL_TO_ACTION: "Invest In Social Change",
-    SHARE: "Share",
     START_AT: "Start at",
     EMBED: "Embed",
     EMAIL: "Email",
@@ -109,6 +107,17 @@ module.exports = {
     UNMUTE: "Unmute",
     FULLSCREEN: "Fullscreen",
     EXIT_FULLSCREEN: "Exit Fullscreen",
+    SEEK_SLIDER: "Seek slider",
+    VOLUME_SLIDER: "Volume slider",
+    VOLUME_PERCENT: "{volume}% volume",
+    TIME_DISPLAY: "{currentTime} of {totalTime}",
+    TIME_DISPLAY_LIVE: "Live video",
+    TIME_DISPLAY_DVR: "{currentTime} of {totalTime} live video"
+  },
+
+  A11Y_CTRLS: {
+    SEEK_DELTA: 5,
+    VOLUME_CHANGE_DELTA: 10
   },
 
   KEYCODES: {
@@ -120,9 +129,25 @@ module.exports = {
     ESCAPE_KEY: 27
   },
 
+  // KeyboardEvent's which and keyCode properties are deprecated.
+  // It's a good idea to use KeyboardEvent.key moving forward even though React
+  // synthetic events normalize event data.
+  KEY_VALUES: {
+    ENTER: "Enter",
+    TAB: "Tab",
+    SPACE: " ", // yep
+    ARROW_UP: "ArrowUp",
+    ARROW_DOWN: "ArrowDown",
+    ARROW_LEFT: "ArrowLeft",
+    ARROW_RIGHT: "ArrowRight",
+    HOME: "Home",
+    END: "End"
+  },
+
   UI: {
     defaultScrubberBarHeight: 4,
-    DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15
+    DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15,
+    MAX_BUFFERING_SPINNER_DELAY: 60000 // Max allowed value of bufferingSpinnerDelay in milliseconds
   },
 
   WATERMARK: {
@@ -295,5 +320,8 @@ module.exports = {
       name: "OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT",
       description: "Something happened while we were trying to play your video! Click replay or simply reload your page."
     }
+  },
+  CLOSED_CAPTIONS:{
+    NONE_LANGUAGE:'none'
   }
 };

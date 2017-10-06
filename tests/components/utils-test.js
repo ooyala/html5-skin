@@ -32,6 +32,118 @@ describe('Utils', function () {
     expect(browserSupportsTouch).toBeFalsy();
   });
 
+  describe('blurOnMouseUp', function() {
+
+    it('should call blur() on currentTarget', function() {
+      var blurCalled = false;
+      var event = {
+        currentTarget: {
+          blur: function() {
+            blurCalled = true;
+          }
+        }
+      };
+      Utils.blurOnMouseUp(event);
+      expect(blurCalled).toBe(true);
+    });
+
+  });
+
+  describe('ensureNumber', function() {
+
+    it('should return the Number equivalent of a string', function() {
+      expect(Utils.ensureNumber('233')).toBe(233);
+      expect(Utils.ensureNumber('10.233')).toBe(10.233);
+    });
+
+    it('should return null when the input value is not finite or a parsable Number', function() {
+      expect(Utils.ensureNumber('w00t233')).toBeNull();
+      expect(Utils.ensureNumber(Infinity)).toBeNull();
+      expect(Utils.ensureNumber({})).toBeNull();
+      expect(Utils.ensureNumber(NaN)).toBeNull();
+    });
+
+    it('should return defaultValue when provided if input value is not finite or a parsable Number', function() {
+      expect(Utils.ensureNumber('w00t233', 1)).toBe(1);
+      expect(Utils.ensureNumber(Infinity, 2)).toBe(2);
+      expect(Utils.ensureNumber({}, 'error')).toBe('error');
+      expect(Utils.ensureNumber(NaN, 3)).toBe(3);
+    });
+
+  });
+
+  describe('constrainToRange', function() {
+
+    it('should return the Number equivalent of value if it falls within range', function() {
+      expect(Utils.constrainToRange(5, 1, 10)).toBe(5);
+      expect(Utils.constrainToRange(0, -5, 5)).toBe(0);
+      expect(Utils.constrainToRange('50', '1', '100')).toBe(50);
+    });
+
+    it('should return min or max when value is outside of range', function() {
+      expect(Utils.constrainToRange(1, 5, 10)).toBe(5);
+      expect(Utils.constrainToRange(15, 5, 10)).toBe(10);
+      expect(Utils.constrainToRange(-10, 0, 100)).toBe(0);
+    });
+
+    it('should return the Number equivalent of input values', function() {
+      expect(Utils.constrainToRange(1, '5', 10)).toBe(5);
+      expect(Utils.constrainToRange(15, 5, '10')).toBe(10);
+      expect(Utils.constrainToRange(-10, '0', 100)).toBe(0);
+      expect(Utils.constrainToRange('50', '1', '100')).toBe(50);
+    });
+
+  });
+
+  describe('getTimeDisplayValues', function() {
+
+    it('should return formatted currentTime and totalTime for VOD', function() {
+      var values = Utils.getTimeDisplayValues(60, 120, false, false);
+      expect(values.currentTime).toEqual('01:00');
+      expect(values.totalTime).toEqual('02:00');
+      values = Utils.getTimeDisplayValues(0, 122, false, false);
+      expect(values.currentTime).toEqual('00:00');
+      expect(values.totalTime).toEqual('02:02');
+    });
+
+    it('should return empty currentTime and totalTime for Live videos with no DVR', function() {
+      var values = Utils.getTimeDisplayValues(0, -0, true, false);
+      expect(values.currentTime).toEqual('');
+      expect(values.totalTime).toEqual('');
+      values = Utils.getTimeDisplayValues(0, Infinity, true, false);
+      expect(values.currentTime).toEqual('');
+      expect(values.totalTime).toEqual('');
+    });
+
+    it('should return formatted negative currentTime and empty totalTime for Live DVR videos when useNegativeDvrOffset equals true', function() {
+      var values = Utils.getTimeDisplayValues(900, 1800, true, true);
+      expect(values.currentTime).toEqual('-15:00');
+      expect(values.totalTime).toEqual('');
+      values = Utils.getTimeDisplayValues(0, 1800, true, true);
+      expect(values.currentTime).toEqual('-30:00');
+      expect(values.totalTime).toEqual('');
+    });
+
+    it('should return empty currentTime for Live DVR videos when useNegativeDvrOffset equals true and playhead is at live position', function() {
+      var values = Utils.getTimeDisplayValues(1800, 1800, true, true);
+      expect(values.currentTime).toEqual(''); // Playhead is at live position so it's not displayed
+      expect(values.totalTime).toEqual('');
+    });
+
+    it('should return formatted currentTime and totalTime for Live DVR videos when useNegativeDvrOffset equals false', function() {
+      var values = Utils.getTimeDisplayValues(1800, 1800, true, false);
+      expect(values.currentTime).toEqual('30:00');
+      expect(values.totalTime).toEqual('30:00');
+      values = Utils.getTimeDisplayValues(0, 1800, true, false);
+      expect(values.currentTime).toEqual('00:00');
+      expect(values.totalTime).toEqual('30:00');
+      values = Utils.getTimeDisplayValues(900, 1800, true, false);
+      expect(values.currentTime).toEqual('15:00');
+      expect(values.totalTime).toEqual('30:00');
+    });
+
+  });
+
   it('tests isSafari', function () {
     window.navigator.userAgent = 'AppleWebKit';
     var isSafari = Utils.isSafari();
@@ -355,7 +467,7 @@ describe('Utils', function () {
     expect(finalConfig.shareScreen.shareContent[1]).not.toBe(SkinJSON.shareScreen.shareContent[1]);
     expect(finalConfig.shareScreen.shareContent).toEqual(['social', 'ooyala']);
     // test array merge for buttons (prepend)
-    expect(finalConfig.buttons.desktopContent.length).toBe(14);
+    expect(finalConfig.buttons.desktopContent.length).toBe(16);
     // test new buttons are placed after flexibleSpace
     expect(finalConfig.buttons.desktopContent[4].name).toBe("flexibleSpace");
     expect(finalConfig.buttons.desktopContent[5].name).toBe("ooyala");

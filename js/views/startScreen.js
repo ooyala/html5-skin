@@ -115,6 +115,7 @@ var StartScreen = React.createClass({
     if (!this.props.isInitializing) {
       actionIcon = (
         <button className={actionIconClass}
+          onMouseUp={Utils.blurOnMouseUp}
           onClick={this.handleClick}
           tabIndex="0"
           aria-label={CONSTANTS.ARIA_LABELS.START_PLAYBACK}>
