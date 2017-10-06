@@ -30,7 +30,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.id = id;
     this.accessibilityControls = null;
     this.videoVrSource = null;
-    this.videoVr = false;    this.state = {
+    this.videoVr = false;
+    this.state = {
       "playerParam": {},
       "skinMetaData": {},
       "attributes": {},
@@ -1366,8 +1367,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
     },
 
-    toggleStereo: function () {
-      this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
+    toggleStereoVr: function () {
+      this.mb.publish(OO.EVENTS.TOGGLE_STEREO_VR);
     },
 
     moveVrToDirection: function (rotate, direction) {

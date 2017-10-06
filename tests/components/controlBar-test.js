@@ -154,8 +154,8 @@ describe('ControlBar', function () {
                   isLiveStream={mockProps.isLiveStream} />
     );
     
-    var toggleStereoButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-vr-stereo-button');
-    expect(typeof toggleStereoButton).toBe('object');
+    var toggleStereoVrButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-vr-stereo-button');
+    expect(typeof toggleStereoVrButton).toBe('object');
   });
   
   it('not render stereo button if content not vr', function () {
@@ -193,8 +193,8 @@ describe('ControlBar', function () {
                   isLiveStream={mockProps.isLiveStream} />
     );
     
-    var toggleStereoButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
-    expect(toggleStereoButtons.length).toBe(0);
+    var toggleStereoVrButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
+    expect(toggleStereoVrButtons.length).toBe(0);
   });
   
   it('enter stereo mode', function () {
@@ -218,7 +218,7 @@ describe('ControlBar', function () {
           startPosition: 0
         }
       },
-      toggleStereo: function () {
+      toggleStereoVr: function () {
         stereoMode = true;
       }
     };
@@ -242,8 +242,8 @@ describe('ControlBar', function () {
     );
     
     expect(stereoMode).toBe(false);
-    var toggleStereoButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-vr-stereo-button');
-    TestUtils.Simulate.click(toggleStereoButton);
+    var toggleStereoVrButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-vr-stereo-button');
+    TestUtils.Simulate.click(toggleStereoVrButton);
     expect(stereoMode).toBe(true);
   });
   it('renders one button', function() {
