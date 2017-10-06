@@ -57,7 +57,7 @@ describe('viewControlsVr', function () {
       skinConfig: skinConfig,
       playerState: CONSTANTS.STATE.PLAYING,
       clickButton: false,
-      handleVRViewControlsClick: function () {
+      handleVrViewControlsClick: function () {
         mockProps.clickButton = true;
       }
     };
@@ -65,7 +65,7 @@ describe('viewControlsVr', function () {
     mockProps = _.extend(mockProps, baseMockProps);
 
     var DOM = TestUtils.renderIntoDocument(
-      <DirectionControlVr {...mockProps} handleVRViewControlsClick={mockProps.handleVRViewControlsClick} dir="left"/>
+      <DirectionControlVr {...mockProps} handleVrViewControlsClick={mockProps.handleVrViewControlsClick} dir="left"/>
     );
     
     var button = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-direction-control');

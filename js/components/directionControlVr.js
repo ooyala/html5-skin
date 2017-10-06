@@ -10,7 +10,7 @@ var DirectionControlVr = React.createClass({
 
   handleEvent: function (ev) {
     var isRotated = ev.type === 'mousedown' || ev.type === 'touchstart';
-    this.props.handleVRViewControlsClick(ev, isRotated, this.props.dir);
+    this.props.handleVrViewControlsClick(ev, isRotated, this.props.dir);
     
     this.setState({
       isTouched: isRotated
