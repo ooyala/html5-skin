@@ -440,6 +440,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVolumeChanged: function (event, newVolume) {
+      if (typeof this.state.volumeState.volume === "number") {
+        this.state.volumeState.oldVolume = this.state.volumeState.volume;
+      }
       if (newVolume <= 0) {
         this.state.volumeState.muted = true;
         this.state.volumeState.volume = 0;
@@ -1416,27 +1419,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     handleMuteClick: function() {
-      var newVolumeSettings = {};
       if (!this.state.volumeState.muted) {
-        //if we're muting, save the current volume so we can
-        //restore it when we un-mute
-        newVolumeSettings = {
-          oldVolume: this.state.volumeState.volume,
-          muted: !this.state.volumeState.muted
-        };
         this.setVolume(0);
-      }
-      else {
-        //restore the volume to the previous setting
-        newVolumeSettings = {
-          oldVolume: 0,
-          muted: !this.state.volumeState.muted
-        };
+      } else {
         this.setVolume(this.state.volumeState.oldVolume);
       }
-
-      this.state.volumeState.oldVolume = newVolumeSettings.oldVolume;
-      this.state.volumeState.muted = newVolumeSettings.muted;
     },
 
     toggleShareScreen: function() {
