@@ -72,15 +72,21 @@ AccessibilityControls.prototype = {
     }
   },
 
+  /**
+   * @description handlers for keyup event
+   * @param e - event
+   */
+
   keyEventUp: function(e) {
-    if (!this.controller.state.accessibilityControlsEnabled) { return; }
+    if (!this.controller.state.accessibilityControlsEnabled) {
+      return;
+    }
     var targetTagName = this.getTargetTagName(e);
     var charCode = e.which || e.keyCode;
     this.moveVrToDirection(e, charCode, false, targetTagName);  //stop rotate 360
   },
 
   /**
-   *
    * @param e - event
    * @returns {string} name of the clicked tag
    */

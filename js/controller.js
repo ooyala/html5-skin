@@ -273,7 +273,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.accessibilityControls = this.accessibilityControls || new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
     },
-  
+
     onSetVideoVr: function(event, params) {
       this.videoVr = true;
       if (params) {
