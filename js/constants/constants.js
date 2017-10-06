@@ -115,7 +115,8 @@ module.exports = {
     VOLUME_PERCENT: "{volume}% volume",
     TIME_DISPLAY: "{currentTime} of {totalTime}",
     TIME_DISPLAY_LIVE: "Live video",
-    TIME_DISPLAY_DVR: "{currentTime} of {totalTime} live video"
+    TIME_DISPLAY_DVR: "{currentTime} of {totalTime} live video",
+    CLOSE: "Close"
   },
 
   A11Y_CTRLS: {
@@ -138,6 +139,7 @@ module.exports = {
   KEY_VALUES: {
     ENTER: "Enter",
     TAB: "Tab",
+    ESCAPE: "Escape",
     SPACE: " ", // yep
     ARROW_UP: "ArrowUp",
     ARROW_DOWN: "ArrowDown",

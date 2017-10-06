@@ -11,16 +11,6 @@ var React = require('react'),
 
 var VideoQualityPanel = React.createClass({
 
-  componentDidMount: function() {
-    if (this.props.autoFocus && this.domElement) {
-      var firstButton = this.domElement.querySelector('button');
-
-      if (firstButton && typeof firstButton.focus === 'function') {
-        firstButton.focus();
-      }
-    }
-  },
-
   getInitialState: function() {
     return {
       selected: this.props.videoQualityOptions.selectedBitrate ? this.props.videoQualityOptions.selectedBitrate.id : 'auto'
@@ -53,6 +43,7 @@ var VideoQualityPanel = React.createClass({
         <button
           className={autoQualityBtn}
           key="auto"
+          data-focus-id="auto"
           tabIndex="0"
           aria-label={CONSTANTS.ARIA_LABELS.AUTO_QUALITY}
           aria-checked={isSelected}
@@ -98,6 +89,7 @@ var VideoQualityPanel = React.createClass({
               key={i}
               className={qualityBtn}
               style={selectedBitrateStyle}
+              data-focus-id={'quality' + i}
               tabIndex="0"
               role="menuitemradio"
               aria-label={label}
@@ -118,9 +110,7 @@ var VideoQualityPanel = React.createClass({
     });
 
     return (
-      <div
-        className={qualityScreenClass}
-        ref={function(e) { this.domElement = e; }.bind(this)}>
+      <div className={qualityScreenClass}>
         <ScrollArea
           className="oo-quality-screen-content"
           speed={this.props.popover ? 0.6 : 1}

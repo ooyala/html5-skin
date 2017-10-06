@@ -453,12 +453,14 @@ var ControlBar = React.createClass({
       "quality": (function (alignment) {
         return <div className="oo-popover-button-container" key="quality">
           {this.props.controller.state.videoQualityOptions.showVideoQualityPopover &&
-            <Popover>
+            <Popover
+              autoFocus={this.autoFocusQualityPopover}
+              toggleEnabled={this.props.controller.state.accessibilityControlsEnabled}
+              toggleAction={this.toggleQualityPopover}>
               <VideoQualityPanel
                 {...this.props}
                 togglePopoverAction={this.toggleQualityPopover}
-                popover={true}
-                autoFocus={this.autoFocusQualityPopover} />
+                popover={true}/>
             </Popover>
           }
           <button
