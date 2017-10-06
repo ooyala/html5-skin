@@ -256,6 +256,7 @@ var Skin = React.createClass({
             {...this.props}
             screen={CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN}
             titleText={CONSTANTS.SKIN_TEXT.VIDEO_QUALITY}
+            autoFocus={this.state.autoFocusNewScreen}
             icon="quality">
             <VideoQualityPanel
               {...this.props}

@@ -21,7 +21,6 @@ var ControlBar = React.createClass({
   getInitialState: function () {
     this.isMobile = this.props.controller.state.isMobile;
     this.qualityButtonKeyPressed = false;
-    this.autoFocusQualityPopover = false;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
     return {};
@@ -133,7 +132,7 @@ var ControlBar = React.createClass({
   handleQualityClick: function () {
     // If the quality menu was activated via keyboard we should
     // autofocus on the first element
-    this.autoFocusQualityPopover = this.qualityButtonKeyPressed;
+    this.props.controller.state.autoFocusNewScreen = this.qualityButtonKeyPressed;
     this.qualityButtonKeyPressed = false;
 
     if (this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
@@ -454,7 +453,7 @@ var ControlBar = React.createClass({
         return <div className="oo-popover-button-container" key="quality">
           {this.props.controller.state.videoQualityOptions.showVideoQualityPopover &&
             <Popover
-              autoFocus={this.autoFocusQualityPopover}
+              autoFocus={this.props.controller.state.autoFocusNewScreen}
               toggleEnabled={this.props.controller.state.accessibilityControlsEnabled}
               toggleAction={this.toggleQualityPopover}>
               <VideoQualityPanel
