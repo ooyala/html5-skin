@@ -47,7 +47,7 @@ var ViewControlsVr = React.createClass({
   },
 
   render: function () {
-    var isShow = this.icon && this.icon.name;
+    var isShow = !!(this.icon && this.icon.name);
 
     return !isShow ? null :
       (<div className={classnames("oo-vr-icon-container view-controls", {"oo-vr-icon-container--hidden": !this.props.controlBarVisible})}>

@@ -88,11 +88,7 @@ describe('viewControlsVr', function () {
       }
     };
 
-    this.icon = {
-      "name":"arrowsBlack",
-      "location": "mainView",
-      "whenDoesNotFit":"keep"
-    };
+    this.icon = {"name":"arrowsBlack", "location": "mainView", "whenDoesNotFit":"keep", "minWidth":45 };
 
     skinConfig.buttons.desktopContent =  [
       {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
@@ -108,46 +104,24 @@ describe('viewControlsVr', function () {
       {"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
       {"name":"fullscreen", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
       {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
-      {"name":"arrowsBlack", "location": "mainView", "whenDoesNotFit":"keep"}
+      {"name":"arrowsBlack", "location": "mainView", "whenDoesNotFit":"keep", "minWidth":45 }
     ];
-
+    
     var mockProps = {
       skinConfig: skinConfig,
       playerState: CONSTANTS.STATE.PLAYING,
       controller: controller
     };
 
-    mockProps = _.extend(mockProps, baseMockProps);
-
     var DOM = TestUtils.renderIntoDocument( <ViewControlsVr {...mockProps}/> );
-    
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
+    
     expect(buttons.length).toBe(4);
   });
   
   it('check condition: if video does not support vr360 then viewControlsVr does not exist', function () {
-    var controller = {
-      state: {
-        isPlayingAd: false
-      },
-      videoVrSource: {
-        vr: {
-          stereo: false
-        }
-      }
-    };
-    
-    var mockProps = {
-      skinConfig: skinConfig,
-      playerState: CONSTANTS.STATE.PLAYING,
-      controller: controller
-    };
-
-    mockProps = _.extend(mockProps, baseMockProps);
-
-    var DOM = TestUtils.renderIntoDocument( <ViewControlsVr {...mockProps}/> );
-    
+    var DOM = TestUtils.renderIntoDocument( <ViewControlsVr {...baseMockProps}/> );
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
-    expect(buttons.length).toBe(4);
+    expect(buttons.length).toBe(0);
   });
 });
