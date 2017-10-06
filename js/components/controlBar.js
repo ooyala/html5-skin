@@ -103,8 +103,8 @@ var ControlBar = React.createClass({
     if (this.vr) {
       this.vr.stereo = !this.vr.stereo;
     }
-    if(this.props.controller && typeof this.props.controller.toggleStereo === "function") {
-      this.props.controller.toggleStereo();
+    if(this.props.controller && typeof this.props.controller.toggleStereoVr === "function") {
+      this.props.controller.toggleStereoVr();
     }
   },
 
