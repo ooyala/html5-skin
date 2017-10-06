@@ -139,6 +139,8 @@ module.exports = {
   KEY_VALUES: {
     ENTER: "Enter",
     TAB: "Tab",
+    CONTROL: "Control",
+    ALT: "Alt",
     ESCAPE: "Escape",
     SPACE: " ", // yep
     ARROW_UP: "ArrowUp",

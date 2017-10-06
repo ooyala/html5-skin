@@ -23,7 +23,7 @@
       @include flex-direction(row);
       @include justify-content(center);
       @include align-items(center);
-      padding: 0;
+      padding: 0 2px;
       margin: 0 auto;
       list-style: none;
       white-space: nowrap;
@@ -126,7 +126,7 @@
 //popover
 .oo-popover {
   .oo-quality-popover {
-    margin: 10px 0;
+    margin: 9px 0;
   }
 
   .oo-quality-screen-content {
@@ -135,24 +135,25 @@
     text-align: center;
 
     ul {
-      padding: 0;
+      padding: 2px 0;
       margin: 0;
       list-style: none;
 
       li {
         display: block;
-        margin: 0 0 6px 0;
+        margin: 0 0 5px 0;
         padding:0;
 
         //vid quality btns - popover
         .oo-quality-btn {
           background-color: transparent;
           color: $white;
-          display: inline-block;
+          display: block;
           font-size: 0.6em;
           font-family: $font-family-roboto;
           line-height: 1;
-          padding: 0;
+          margin: 0 auto;
+          padding: 4px;
           border: none;
           outline: none;
           opacity:1;
@@ -176,11 +177,12 @@
 
         // auto btn - popover
         .oo-quality-auto-btn {
-          display: inline-block;
+          display: block;
           background-color: transparent;
           font-family: $font-family-roboto;
           line-height: 1;
-          padding: 0;
+          margin: 0 auto;
+          padding: 4px;
           border: none;
           outline: none;
           white-space:nowrap;
@@ -227,6 +229,10 @@
             opacity:1;
           }
         }
+      }
+
+      li:last-child {
+        margin-bottom: 0;
       }
     }
   }

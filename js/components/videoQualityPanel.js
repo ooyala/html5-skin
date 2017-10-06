@@ -45,6 +45,7 @@ var VideoQualityPanel = React.createClass({
           key="auto"
           data-focus-id="auto"
           tabIndex="0"
+          role="menuitemradio"
           aria-label={CONSTANTS.ARIA_LABELS.AUTO_QUALITY}
           aria-checked={isSelected}
           onClick={this.handleVideoQualityClick.bind(this, 'auto')}>

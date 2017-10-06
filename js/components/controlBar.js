@@ -152,6 +152,13 @@ var ControlBar = React.createClass({
     switch (event.key) {
       case CONSTANTS.KEY_VALUES.SPACE:
       case CONSTANTS.KEY_VALUES.ENTER:
+      // Ctrl and Alt are needed as a workaround for VoiceOver, which uses the
+      // CTRL + OPTION + SPACE combination to activate buttons. VoiceOver actually
+      // suppresses the spacebar keyboard event when this combination is used, so we
+      // can only detect either CTRL or OPTION. This can obviously fail if the user
+      // presses a different key after CTRL + OPTION, but a false positive is preferred.
+      case CONSTANTS.KEY_VALUES.CONTROL:
+      case CONSTANTS.KEY_VALUES.ALT:
         this.qualityButtonKeyPressed = true;
         break;
       default:
@@ -451,6 +458,22 @@ var ControlBar = React.createClass({
 
       "quality": (function (alignment) {
         return <div className="oo-popover-button-container" key="quality">
+          <button
+            className={qualityClass}
+            style={selectedStyle}
+            onMouseUp={Utils.blurOnMouseUp}
+            onClick={this.handleQualityClick}
+            onKeyDown={this.handleQualityKeyDown}
+            data-focus-id="quality"
+            tabIndex="0"
+            aria-label={CONSTANTS.ARIA_LABELS.VIDEO_QUALITY}
+            aria-haspopup="true"
+            aria-expanded={this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? true : null}>
+            <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
+              onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
+            <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.VIDEO_QUALITY, this.props.localizableStrings)} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}
+              responsivenessMultiplier={this.responsiveUIMultiple} />
+          </button>
           {this.props.controller.state.videoQualityOptions.showVideoQualityPopover &&
             <Popover
               autoFocus={this.props.controller.state.autoFocusNewScreen}
@@ -462,21 +485,6 @@ var ControlBar = React.createClass({
                 popover={true}/>
             </Popover>
           }
-          <button
-            className={qualityClass}
-            style={selectedStyle}
-            onMouseUp={Utils.blurOnMouseUp}
-            onClick={this.handleQualityClick}
-            onKeyDown={this.handleQualityKeyDown}
-            data-focus-id="quality"
-            tabIndex="0"
-            aria-label={CONSTANTS.ARIA_LABELS.VIDEO_QUALITY}
-            aria-haspopup="true">
-            <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
-              onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
-            <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.VIDEO_QUALITY, this.props.localizableStrings)} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}
-              responsivenessMultiplier={this.responsiveUIMultiple} />
-          </button>
         </div>
       }).bind(this),
 
