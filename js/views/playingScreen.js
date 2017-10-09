@@ -191,10 +191,11 @@ var PlayingScreen = React.createClass({
   },
 
   /**
-   *
+   * @description get direction params. Direction params are values for new position of a vr video (yaw, roll=0, pitch)
+   * @private
    * @param pageX {number} x coordinate
    * @param pageY {number} y coordinate
-   * @returns {[*,number,*]}
+   * @returns {[number, number, number]}
    */
   getDirectionParams: function(pageX, pageY) {
     var dx = pageX - this.state.xVrMouseStart;
@@ -209,18 +210,20 @@ var PlayingScreen = React.createClass({
   },
 
   /**
+   * @description check viewingDirection existing and return the value
+   * @private
    * @param paramName {string} "yaw", "pitch"
-   * @returns {number}
+   * @returns {number} value of viewingDirection param
    */
   getViewingDirectionParamValue: function(paramName) {
-    var viewingDirectionYaw = 0;
+    var viewingDirectionValue = 0;
     if (this.props.controller &&
       this.props.controller.state &&
       this.props.controller.state.viewingDirection &&
       typeof this.props.controller.state.viewingDirection[paramName] === "number") {
-      viewingDirectionYaw = this.props.controller.state.viewingDirection[paramName]
+      viewingDirectionValue = this.props.controller.state.viewingDirection[paramName]
     }
-    return viewingDirectionYaw
+    return viewingDirectionValue
   },
 
   showControlBar: function(event) {
