@@ -98,8 +98,8 @@ var ControlBar = React.createClass({
     evt.preventDefault();
     this.props.controller.toggleFullscreen();
   },
-
-  handleStereoClick: function () {
+  
+  handleStereoVrClick: function () {
     if (this.vr) {
       this.vr.stereo = !this.vr.stereo;
     }
