@@ -176,11 +176,14 @@ var ControlBar = React.createClass({
     this.props.controller.toggleVideoQualityPopOver();
   },
 
-  closeQualityPopover: function () {
+  closeQualityPopover: function (params) {
+    params = params || {};
+
     if (this.props.controller.state.videoQualityOptions.showVideoQualityPopover === true) {
       // Re-focus on quality button when closing the quality popover if the latter was
       // originally opened with a key press.
-      if (this.qualityMenuOpenedWithKeyboard &&
+      if (params.restoreToggleButtonFocus &&
+          this.qualityMenuOpenedWithKeyboard &&
           this.qualityBtnElement &&
           typeof this.qualityBtnElement.focus === 'function') {
         this.qualityBtnElement.focus();

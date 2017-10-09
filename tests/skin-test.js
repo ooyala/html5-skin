@@ -97,7 +97,10 @@ describe('Skin screenToShow state', function () {
   it('tests VIDEO QUALITY SCREEN', function () {
     this.skin.switchComponent({
       screenToShow: CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN,
-      responsiveId: "md"
+      responsiveId: "md",
+      videoQualityOptions: {
+        autoFocus: false
+      }
     });
   });
 

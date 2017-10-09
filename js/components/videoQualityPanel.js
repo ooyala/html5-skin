@@ -26,7 +26,9 @@ var VideoQualityPanel = React.createClass({
     this.setState({
       selected: selectedBitrateId
     });
-    this.props.closeAction();
+    this.props.closeAction({
+      restoreToggleButtonFocus: true
+    });
   },
 
   addAutoButton: function(bitrateButtons) {
