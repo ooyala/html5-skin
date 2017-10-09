@@ -20,7 +20,9 @@ var React = require('react'),
 var ControlBar = React.createClass({
   getInitialState: function () {
     this.isMobile = this.props.controller.state.isMobile;
-    this.qualityButtonKeyPressed = false;
+    this.domNode = null;
+    this.qualityBtnElement = null;
+    this.qualityMenuOpenedWithKeyboard = false;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
     return {};
@@ -130,10 +132,14 @@ var ControlBar = React.createClass({
   },
 
   handleQualityClick: function () {
-    // If the quality menu was activated via keyboard we should
-    // autofocus on the first element
-    this.props.controller.state.autoFocusNewScreen = this.qualityButtonKeyPressed;
-    this.qualityButtonKeyPressed = false;
+    if (this.props.controller.state.videoQualityOptions.showVideoQualityPopover) {
+      // Reset autoFocus property when closing the quality menu
+      this.props.controller.state.videoQualityOptions.autoFocus = false;
+    } else {
+      // If the quality menu was activated via keyboard we should
+      // autofocus on the first element
+      this.props.controller.state.videoQualityOptions.autoFocus = this.qualityMenuOpenedWithKeyboard;
+    }
 
     if (this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
@@ -159,7 +165,7 @@ var ControlBar = React.createClass({
       // presses a different key after CTRL + OPTION, but a false positive is preferred.
       case CONSTANTS.KEY_VALUES.CONTROL:
       case CONSTANTS.KEY_VALUES.ALT:
-        this.qualityButtonKeyPressed = true;
+        this.qualityMenuOpenedWithKeyboard = true;
         break;
       default:
         break;
@@ -171,7 +177,15 @@ var ControlBar = React.createClass({
   },
 
   closeQualityPopover: function () {
-    if (this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true) {
+    if (this.props.controller.state.videoQualityOptions.showVideoQualityPopover === true) {
+      // Re-focus on quality button when closing the quality popover if the latter was
+      // originally opened with a key press.
+      if (this.qualityMenuOpenedWithKeyboard &&
+          this.qualityBtnElement &&
+          typeof this.qualityBtnElement.focus === 'function') {
+        this.qualityBtnElement.focus();
+      }
+      this.qualityMenuOpenedWithKeyboard = false;
       this.toggleQualityPopover();
     }
   },
@@ -459,6 +473,7 @@ var ControlBar = React.createClass({
       "quality": (function (alignment) {
         return <div className="oo-popover-button-container" key="quality">
           <button
+            ref={function(e) { this.qualityBtnElement = e }.bind(this)}
             className={qualityClass}
             style={selectedStyle}
             onMouseUp={Utils.blurOnMouseUp}
@@ -476,12 +491,12 @@ var ControlBar = React.createClass({
           </button>
           {this.props.controller.state.videoQualityOptions.showVideoQualityPopover &&
             <Popover
-              autoFocus={this.props.controller.state.autoFocusNewScreen}
-              toggleEnabled={this.props.controller.state.accessibilityControlsEnabled}
-              toggleAction={this.toggleQualityPopover}>
+              autoFocus={this.props.controller.state.videoQualityOptions.autoFocus}
+              closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
+              closeAction={this.closeQualityPopover}>
               <VideoQualityPanel
                 {...this.props}
-                togglePopoverAction={this.toggleQualityPopover}
+                closeAction={this.closeQualityPopover}
                 popover={true}/>
             </Popover>
           }

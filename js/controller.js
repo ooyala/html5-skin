@@ -81,7 +81,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "adVideoPlayhead": 0,
       "focusedElement": null,
       "focusedControl": null, // Stores the id of the control bar element that is currently focused
-      "autoFocusNewScreen": false,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -110,7 +109,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "videoQualityOptions": {
         "availableBitrates": null,
         "selectedBitrate": null,
-        "showVideoQualityPopover":false
+        "showVideoQualityPopover": false,
+        "autoFocus": false
       },
 
       "volumeState": {

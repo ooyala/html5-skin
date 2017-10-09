@@ -24,12 +24,12 @@ var Popover = React.createClass({
    * @param {event} event description
    */
   onKeyDown: function(event) {
-    if (!this.props.toggleEnabled || typeof this.props.toggleAction !== 'function') {
+    if (!this.props.closeActionEnabled || typeof this.props.closeAction !== 'function') {
       return;
     }
     switch (event.key) {
       case CONSTANTS.KEY_VALUES.ESCAPE:
-        this.props.toggleAction();
+        this.props.closeAction();
       default:
         break;
     }
@@ -48,14 +48,14 @@ var Popover = React.createClass({
 
 Popover.propTypes = {
   popoverClassName: React.PropTypes.string.isRequired,
-  toggleEnabled: React.PropTypes.bool,
-  toggleAction: React.PropTypes.func
+  closeActionEnabled: React.PropTypes.bool,
+  closeAction: React.PropTypes.func
 };
 
 Popover.defaultProps = {
   popoverClassName: 'oo-popover',
-  toggleEnabled: false,
-  toggleAction: function() {},
+  closeActionEnabled: false,
+  closeAction: function() {},
 };
 
 module.exports = Popover;
