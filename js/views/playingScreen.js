@@ -165,7 +165,6 @@ var PlayingScreen = React.createClass({
       this.setState({
         isVrMouseDown: false,
       });
-
       
       if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
@@ -190,7 +189,13 @@ var PlayingScreen = React.createClass({
       isMouseMove: false,
     });
   },
-  
+
+  /**
+   *
+   * @param pageX {number} x coordinate
+   * @param pageY {number} y coordinate
+   * @returns {[*,number,*]}
+   */
   getDirectionParams: function(pageX, pageY) {
     var dx = pageX - this.state.xVrMouseStart;
     var dy = pageY - this.state.yVrMouseStart;
@@ -246,6 +251,12 @@ var PlayingScreen = React.createClass({
         controlBarVisible={this.state.controlBarVisible}
         currentPlayhead={this.props.currentPlayhead}/> : null;
 
+    var viewControlsVr = this.props.controller.videoVr ?
+      <ViewControlsVr
+        {...this.props}
+        controlBarVisible={this.state.controlBarVisible}
+      /> : null;
+
     return (
     <div
       className="oo-state-screen oo-playing-screen"
@@ -268,7 +279,9 @@ var PlayingScreen = React.createClass({
 
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
-      <div className="oo-interactive-container" onFocus={this.handleFocus}>
+        {viewControlsVr}
+
+        <div className="oo-interactive-container" onFocus={this.handleFocus}>
 
         {this.props.closedCaptionOptions.enabled ?
           <TextTrack
@@ -287,14 +300,6 @@ var PlayingScreen = React.createClass({
           playerState={this.props.playerState}
           isLiveStream={this.props.isLiveStream} />
       </div>
-      
-      {
-        this.props.controller.videoVr &&
-        <ViewControlsVr
-          {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-        />
-      }
     </div>
     );
   }
