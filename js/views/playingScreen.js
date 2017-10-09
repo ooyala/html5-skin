@@ -11,8 +11,8 @@ var React = require('react'),
     TextTrack = require('../components/textTrackPanel'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
-    CONSTANTS = require('../constants/constants'),
-    ViewControls = require('../components/viewControls');
+    CONSTANTS = require('../constants/constants');
+    ViewControlsVr = require('../components/viewControlsVr');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -111,7 +111,7 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseDown: function(e) {
-    this.props.handleVRPlayerMouseDown(e);
+    this.props.handleVrPlayerMouseDown(e);
   },
 
   handlePlayerMouseMove: function(e) {
@@ -119,7 +119,7 @@ var PlayingScreen = React.createClass({
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
-    this.props.handleVRPlayerMouseMove(e);
+    this.props.handleVrPlayerMouseMove(e);
   },
 
   handlePlayerMouseUp: function(e) {
@@ -132,23 +132,23 @@ var PlayingScreen = React.createClass({
         this.props.controller.togglePlayPause();
       }
     }
-    this.props.handleVRPlayerMouseUp();
+    this.props.handleVrPlayerMouseUp();
     // for mobile, touch is handled in handleTouchEnd
   },
 
   handlePlayerMouseLeave: function () {
-    this.props.handleVRPlayerMouseLeave();
+    this.props.handleVrPlayerMouseLeave();
   },
 
   handlePlayerClicked: function (event) {
-    if (!this.props.isMouseMove) {
+    if (!this.props.isVrMouseMove) {
       this.props.controller.togglePlayPause(event);
     }
-    this.props.handleVRPlayerClick();
+    this.props.handleVrPlayerClick();
   },
 
   handlePlayerFocus: function() {
-    this.props.handleVRPlayerFocus();
+    this.props.handleVrPlayerFocus();
   },
 
   showControlBar: function(event) {
@@ -175,10 +175,15 @@ var PlayingScreen = React.createClass({
         showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}/> : null;
 
     var upNextPanel = (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
-      <UpNextPanel
+      <UpNextPanel {...this.props}
+        controlBarVisible={this.state.controlBarVisible}
+        currentPlayhead={this.props.currentPlayhead}/> : null;
+
+    var viewControlsVr = this.props.controller.videoVr ?
+      <ViewControlsVr
         {...this.props}
         controlBarVisible={this.state.controlBarVisible}
-        currentPlayhead={this.props.currentPlayhead} /> : null;
+      /> : null;
 
     return (
       <div
@@ -203,13 +208,7 @@ var PlayingScreen = React.createClass({
 
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
-        {
-          this.props.controller.videoVr &&
-          <ViewControls
-            {...this.props}
-            controlBarVisible={this.state.controlBarVisible}
-          />
-        }
+        {viewControlsVr}
 
         <div className="oo-interactive-container" onFocus={this.handleFocus}>
 

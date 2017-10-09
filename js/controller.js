@@ -29,7 +29,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.mb = mb;
     this.id = id;
     this.accessibilityControls = null;
-    this.videoVrSource = false;
+    this.videoVrSource = null;
     this.videoVr = false;
     this.state = {
       "playerParam": {},
@@ -142,6 +142,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isPlaybackReadySubscribed": false,
       "isSkipAdClicked": false,
       "isInitialPlay": false,
+      "initialPlayHasOccurred": false,
       "isFullScreenSupported": false,
       "isVideoFullScreenSupported": false,
       "isFullWindow": false,
@@ -159,6 +160,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
       this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_CREATED, 'customerUi', _.bind(this.onVcVideoElementCreated, this));
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
+      this.mb.subscribe(OO.EVENTS.SET_EMBED_CODE, 'customerUi', _.bind(this.onSetEmbedCode, this));
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED_AFTER_OOYALA_AD, 'customerUi', _.bind(this.onEmbedCodeChangedAfterOoyalaAd, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
@@ -169,8 +171,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
-      this.mb.subscribe(OO.EVENTS.VIDEO_VR, 'customerUi', _.bind(this.setVideoVr, this));
-      this.mb.subscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
+      this.mb.subscribe(OO.EVENTS.VIDEO_VR, 'customerUi', _.bind(this.onSetVideoVr, this));
+      this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
+      this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -272,9 +275,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
     },
 
-    setVideoVr: function(event, obj) {
+    onSetVideoVr: function(event, params) {
       this.videoVr = true;
-      this.videoVrSource = obj.source || false; //if we need video vr params
+      if (params) {
+        this.videoVrSource = params.source || null; //if we need video vr params
+      }
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -318,6 +323,22 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.accessibilityControls.cleanUp()
     },
 
+
+    /**
+     * Event handler for SET_EMBED_CODE message bus event.
+     * @private
+     * @param {string} event The event's name.
+     * @param {string} embedCode The video embed code that will be set.
+     */
+    onSetEmbedCode: function(event, embedCode) {
+      // If a video has played and we're setting a new embed code it means that we
+      // will be transitioning to a new video. We make sure to display the loading screen.
+      if (this.state.initialPlayHasOccurred && this.state.assetId !== embedCode) {
+        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+        this.renderSkin();
+      }
+    },
+
     onEmbedCodeChangedAfterOoyalaAd: function(event, embedCode, options) {
       if (options) {
         this.state.playerParam = DeepMerge(this.state.playerParam, options);
@@ -348,6 +369,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.playerParam = DeepMerge(this.state.playerParam, options);
       }
       this.subscribeBasicPlaybackEvents();
+      // New video starts at 0, duration is still unknown.
+      // Setting this here will prevent flashing a full progress bar on video transitions.
+      this.skin.updatePlayhead(0, 0, 0, 0);
     },
 
     onAuthorizationFetched: function(event, authorization) {
@@ -357,7 +381,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onContentTreeFetched: function (event, contentTree) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
-      this.renderSkin({"contentTree": contentTree});
+      var duration = Utils.ensureNumber(contentTree.duration, 0) / 1000;
+      this.skin.updatePlayhead(null, duration);
+      this.renderSkin({ contentTree: contentTree });
     },
 
     onSkinMetaDataFetched: function (event, skinMetaData) {
@@ -396,6 +422,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
+      // Make sure playhead is reset when we switch to a new video
+      this.skin.updatePlayhead(0, contentTree.duration, 0, 0);
       this.renderSkin({"contentTree": contentTree});
     },
 
@@ -505,6 +533,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onInitialPlay: function() {
       this.state.isInitialPlay = true;
+      this.state.initialPlayHasOccurred = true;
       this.startHideControlBarTimer();
     },
 
@@ -589,6 +618,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var duration = this.state.mainVideoDuration;
       this.state.duration = duration;
       this.skin.updatePlayhead(duration, duration, duration);
+      this.state.playerState = CONSTANTS.STATE.END;
 
       if (this.state.upNextInfo.delayedSetEmbedCodeEvent) {
         var delayedContentData = this.state.upNextInfo.delayedContentData;
@@ -617,12 +647,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
         this.mb.publish(OO.EVENTS.END_SCREEN_SHOWN);
       }
-      if (!Utils.canRenderSkin()){
+      if (!Utils.canRenderSkin()) {
         //iPhone < iOS10 end screen is the same as start screen, except for the replay button
         this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       }
-      this.skin.updatePlayhead(this.state.duration, this.state.duration, this.state.duration);
-      this.state.playerState = CONSTANTS.STATE.END;
       // In case a video plugin fires PLAYED event after stalling without firing BUFFERED or PLAYING first
       this.setBufferingState(false);
       this.renderSkin();
@@ -638,20 +666,27 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onTouching: function(params) {
+    onTouchMove: function(params) {
       if (this.videoVr) {
-        this.mb.publish(OO.EVENTS.TOUCHING, this.focusedElement, params);
+        this.mb.publish(OO.EVENTS.TOUCH_MOVE, this.focusedElement, params);
       }
     },
 
-    onTouched: function () {
+    checkVrDirection: function () {
       if (this.videoVr) {
-        this.mb.publish(OO.EVENTS.TOUCHED, this.focusedElement);
+        this.mb.publish(OO.EVENTS.CHECK_VR_DIRECTION, this.focusedElement);
       }
     },
 
     setViewingDirection: function(event, yaw, roll, pitch) {
       this.state.viewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
+    },
+
+    recreatingUI: function (event, elementId, params, settings) {
+      if (!$('.oo-player-skin').length) {
+        this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
+      }
+      this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
     },
 
     onSeeked: function(event) {
@@ -669,11 +704,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onPlaybackReady: function(event) {
+    onPlaybackReady: function(event, params) {
+      params = params || {};
+
       if (this.state.afterOoyalaAd) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
       } else {
-        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+        // If the core tells us that it will autoplay then we just display the loading
+        // spinner, otherwise we need to render the big play button.
+        if (params.willAutoplay) {
+          this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+        } else {
+          this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+        }
       }
 
       this.renderSkin({"contentTree": this.state.contentTree});
@@ -1215,6 +1258,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE_AFTER_OOYALA_AD, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE, 'customerUi');
     },
 
     unsubscribeBasicPlaybackEvents: function() {
@@ -1234,9 +1278,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.TOUCHED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.VC_TOUCHED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.DIRECTION_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.CHECK_VR_DIRECTION, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.TOUCH_MOVE, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi');
+      this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
@@ -1322,17 +1367,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
     },
 
-    toggleStereo: function () {
-      OO.log("toggleStereo чcalled");
-      this.mb.publish(OO.EVENTS.TOGGLE_STEREO);
+    toggleStereoVr: function () {
+      this.mb.publish(OO.EVENTS.TOGGLE_STEREO_VR);
     },
 
-    moveToDirection: function (rotate, direction) {
-      OO.log("moveToDirection called");
-      this.mb.publish(OO.EVENTS.MOVE_TO_DIRECTION, this.focusedElement, rotate, direction);
+    moveVrToDirection: function (rotate, direction) {
+      this.mb.publish(OO.EVENTS.MOVE_VR_TO_DIRECTION, this.focusedElement, rotate, direction);
     },
 
-    togglePlayPause: function(event) {
+    togglePlayPause: function() {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
           this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());
@@ -1563,10 +1606,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
 
       //validate language is available before update and save
-      if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
+        if (language && availableLanguages && (_.contains(availableLanguages.languages, language) || language === CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE)) {
         this.state.closedCaptionOptions.language = this.state.persistentSettings.closedCaptionOptions.language = language;
-        var captionLanguage = this.state.closedCaptionOptions.enabled ? language : "";
-        var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
+        var captionLanguage = this.state.closedCaptionOptions.enabled && language !== CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE ? language : "";
+        var mode = this.state.closedCaptionOptions.enabled && language !== CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
         //publish set closed caption event
         this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, captionLanguage, {"mode": mode});
         //update skin, save new closed caption language

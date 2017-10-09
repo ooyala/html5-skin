@@ -251,7 +251,7 @@ OO = {
       findMainVideoElement: function(a) {},
       loadConfigData: function(a, b, c, d) {},
       cleanUpEventListeners: function(){},
-      toggleStereo: function () {}
+      toggleStereoVr: function () {}
     };
 
 
@@ -446,9 +446,7 @@ OO = {
 
     Html5Skin.toggleMute.call(controllerMock, true);
     Html5Skin.toggleMute.call(controllerMock, false);
-  
-    Html5Skin.toggleStereo.call(controllerMock);
-    Html5Skin.moveToDirection.call(controllerMock);
+    Html5Skin.toggleStereoVr.call(controllerMock);
 
     controllerMock.state.playerState = CONSTANTS.STATE.START;
     Html5Skin.togglePlayPause.call(controllerMock);
@@ -619,6 +617,7 @@ OO = {
 
       it('test start screen is shown on playback ready', function() {
         controllerMock.state.afterOoyalaAd = false;
+        controllerMock.state.initialPlayHasOccurred = false;
         Html5Skin.onPlaybackReady.call(controllerMock, 'customerUi');
         expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
       });

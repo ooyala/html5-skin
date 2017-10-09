@@ -13,7 +13,7 @@ var React = require('react'),
     Icon = require('../components/icon'),
     Utils = require('../components/utils'),
     AnimateMixin = require('../mixins/animateMixin'),
-    ViewControls = require('../components/viewControls');
+    ViewControlsVr = require('../components/viewControlsVr');
 
 var PauseScreen = React.createClass({
   mixins: [ResizeMixin, AnimateMixin],
@@ -43,27 +43,27 @@ var PauseScreen = React.createClass({
 
   handleClick: function(event) {
     event.preventDefault();
-    if(!this.props.isMouseMove){
+    if(!this.props.isVrMouseMove){
       this.props.controller.togglePlayPause(event);
     }
     this.props.controller.state.accessibilityControlsEnabled = true;
-    this.props.handleVRPlayerClick();
+    this.props.handleVrPlayerClick();
   },
 
   handlePlayerMouseDown: function(e) {
     this.props.controller.state.accessibilityControlsEnabled = true;
-    this.props.handleVRPlayerMouseDown(e);
+    this.props.handleVrPlayerMouseDown(e);
   },
   handlePlayerMouseMove: function(e) {
-    this.props.handleVRPlayerMouseMove(e);
+    this.props.handleVrPlayerMouseMove(e);
   },
   handlePlayerMouseUp: function(e) {
     e.stopPropagation(); // W3C
     e.cancelBubble = true; // IE
-    this.props.handleVRPlayerMouseUp();
+    this.props.handleVrPlayerMouseUp();
   },
   handlePlayerMouseLeave: function() {
-    this.props.handleVRPlayerMouseLeave()
+    this.props.handleVrPlayerMouseLeave()
   },
 
   /**
@@ -148,6 +148,12 @@ var PauseScreen = React.createClass({
       :
       null;
 
+    var viewControlsVr = this.props.controller.videoVr ?
+      <ViewControlsVr
+        {...this.props}
+        controlBarVisible={this.state.controlBarVisible}
+      /> : null;
+
     return (
       <div className="oo-state-screen oo-pause-screen">
 
@@ -176,13 +182,7 @@ var PauseScreen = React.createClass({
           <Icon {...this.props} icon="pause" style={actionIconStyle}/>
         </button>
 
-        {
-          this.props.controller.videoVr &&
-          <ViewControls
-            {...this.props}
-            controlBarVisible={this.state.controlBarVisible}
-          />
-        }
+        {viewControlsVr}
 
         <div className="oo-interactive-container" onFocus={this.handleFocus}>
           {this.props.closedCaptionOptions.enabled ?

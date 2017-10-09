@@ -47,14 +47,14 @@ describe('PauseScreen', function () {
       }
     };
 
-    var handleVRPlayerClick = function() {};
+    var handleVrPlayerClick = function() {};
     // Render pause screen into DOM
     var DOM = TestUtils.renderIntoDocument(
       <PauseScreen
         skinConfig={mockSkinConfig}
         controller={mockController}
         contentTree={mockContentTree}
-        handleVRPlayerClick={handleVRPlayerClick}
+        handleVrPlayerClick={handleVrPlayerClick}
         closedCaptionOptions={{cueText: "sample text"}}
       />
     );

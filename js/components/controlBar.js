@@ -22,8 +22,8 @@ var ControlBar = React.createClass({
     this.isMobile = this.props.controller.state.isMobile;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
-    this.vr = false;
-    if (this.props.controller && this.props.controller.videoVrSource) {
+    this.vr = null;
+    if (this.props.controller && this.props.controller.videoVrSource && this.props.controller.videoVrSource.vr) {
       this.vr = this.props.controller.videoVrSource.vr;
     }
     return {};
@@ -100,8 +100,12 @@ var ControlBar = React.createClass({
   },
 
   handleStereoClick: function () {
-    this.vr.stereo = !this.vr.stereo;
-    this.props.controller.toggleStereo();
+    if (this.vr) {
+      this.vr.stereo = !this.vr.stereo;
+    }
+    if(this.props.controller && typeof this.props.controller.toggleStereoVr === "function") {
+      this.props.controller.toggleStereoVr();
+    }
   },
 
   handleLiveClick: function (evt) {
@@ -533,7 +537,7 @@ var ControlBar = React.createClass({
           width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
           height={this.props.skinConfig.controlBar.logo.height} />
       }).bind(this)
-    };
+    }
 
     var controlBarItems = [];
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
@@ -552,7 +556,7 @@ var ControlBar = React.createClass({
 
         break;
       }
-    };
+    }
 
     //if no hours, add extra space to control bar width:
     var hours = parseInt(this.props.duration / 3600, 10);

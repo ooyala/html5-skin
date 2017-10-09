@@ -7,8 +7,7 @@ module.exports = {
     PLAYING : "playing",
     PAUSE : "pause",
     END : "end",
-    ERROR : "error",
-    TOUCH: "touch"
+    ERROR : "error"
   },
 
   SCREEN: {
@@ -134,6 +133,13 @@ module.exports = {
     D: 68,
     W: 87,
     S: 83
+  },
+
+  DIRECTIONS: {
+    LEFT: "left",
+    RIGHT: "right",
+    UP: "up",
+    DOWN: "down"
   },
 
   // KeyboardEvent's which and keyCode properties are deprecated.
@@ -327,5 +333,8 @@ module.exports = {
       name: "OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT",
       description: "Something happened while we were trying to play your video! Click replay or simply reload your page."
     }
+  },
+  CLOSED_CAPTIONS:{
+    NONE_LANGUAGE:'none'
   }
 };
