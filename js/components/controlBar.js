@@ -98,8 +98,8 @@ var ControlBar = React.createClass({
     evt.preventDefault();
     this.props.controller.toggleFullscreen();
   },
-
-  handleStereoClick: function () {
+  
+  handleStereoVrClick: function () {
     if (this.vr) {
       this.vr.stereo = !this.vr.stereo;
     }
@@ -498,7 +498,7 @@ var ControlBar = React.createClass({
         var checkStereoBtn = this.vr && this.isMobile;
         return (!checkStereoBtn) ? null :
           <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
-            onClick={this.handleStereoClick}
+            onClick={this.handleStereoVrClick}
             onMouseUp={Utils.blurOnMouseUp}
             onMouseOver={this.highlight}
             onMouseOut={this.removeHighlight}

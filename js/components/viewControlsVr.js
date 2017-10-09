@@ -22,7 +22,7 @@ var ViewControlsVr = React.createClass({
 
   componentWillMount: function () {
     this.isMobile = false;
-    this.vr = false;
+    this.vr = null;
     this.icon = {};
 
     if (this.props.controller) {

@@ -60,7 +60,7 @@ describe('PlayingScreen', function () {
   });
 
   it('creates a PlayingScreen and checks mouseDown, mouseUp with video360', function() {
-    var isTouched = false;
+    var isVrDirectionChecked = false;
     var isStartHideControlBarTimer = false;
     var mockController = {
       videoVr: true,
@@ -75,18 +75,18 @@ describe('PlayingScreen', function () {
       startHideControlBarTimer: function () {
         isStartHideControlBarTimer = true;
       },
-      onTouched: function() {
-        isTouched = true;
+      checkVrDirection: function() {
+        isVrDirectionChecked = true;
       },
     };
     var closedCaptionOptions = {
       cueText: "cue text"
     };
     var handleVrPlayerMouseDown = function() {
-      mockController.onTouched();
+      mockController.checkVrDirection();
     };
     var handleVrPlayerMouseUp = function() {
-      mockController.onTouched();
+      mockController.checkVrDirection();
     };
 
     var DOM = TestUtils.renderIntoDocument(
@@ -109,10 +109,10 @@ describe('PlayingScreen', function () {
     var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
 
     TestUtils.Simulate.mouseDown(screen[0]);
-    expect(isTouched).toBe(true);
+    expect(isVrDirectionChecked).toBe(true);
 
     TestUtils.Simulate.mouseUp(screen[0]);
-    expect(isTouched).toBe(true);
+    expect(isVrDirectionChecked).toBe(true);
 
   });
 

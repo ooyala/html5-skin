@@ -281,4 +281,32 @@ describe('Controller', function() {
 
   });
 
+  describe('Volume state', function() {
+    it('should setVolume to 0 on handleMuteClick when not muted', function() {
+      var spy = sinon.spy(controller, 'setVolume');
+      expect(controller.state.volumeState.muted).toBe(false);
+      controller.handleMuteClick();
+      expect(spy.callCount).toBe(1);
+      expect(spy.calledWith(0)).toBe(true);
+    });
+
+    it('should setVolume to oldVolume on handleMuteClick when muted', function() {
+      controller.state.volumeState.muted = true;
+      controller.state.volumeState.oldVolume = 0.5;
+      var spy = sinon.spy(controller, 'setVolume');
+      expect(controller.state.volumeState.muted).toBe(true);
+      controller.handleMuteClick();
+      expect(spy.callCount).toBe(1);
+      expect(spy.calledWith(0.5)).toBe(true);
+    });
+
+    it('should store oldVolume when volume is changed', function() {
+      controller.state.volumeState.volume = 0.25;
+      controller.onVolumeChanged(OO.EVENTS.VOLUME_CHANGED, 0.5);
+      expect(controller.state.volumeState.volume).toBe(0.5);
+      expect(controller.state.volumeState.oldVolume).toBe(0.25);
+    });
+
+  });
+
 });

@@ -32,7 +32,7 @@ var ResponsiveManagerMixin = {
     var componentHeight = 1;
     var dom = ReactDOM.findDOMNode(this);
     if (dom) {
-      componentWidth = dom.getBoundingClientRect().width;
+      componentWidth = Math.ceil(dom.getBoundingClientRect().width);
       componentHeight = dom.parentNode ?
         dom.parentNode.getBoundingClientRect().height
         :
