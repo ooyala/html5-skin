@@ -98,12 +98,14 @@ var ControlBar = React.createClass({
     evt.preventDefault();
     this.props.controller.toggleFullscreen();
   },
-  handleStereoClick: function () {
+
+  handleStereoVrClick: function () {
     this.vr.stereo = !this.vr.stereo;
-    if(this.props.controller && typeof this.props.controller.toggleStereo === "function") {
-      this.props.controller.toggleStereo();
+    if(this.props.controller && typeof this.props.controller.toggleStereoVr === "function") {
+      this.props.controller.toggleStereoVr();
     }
   },
+
   handleLiveClick: function (evt) {
     evt.stopPropagation();
     evt.cancelBubble = true;
@@ -491,7 +493,7 @@ var ControlBar = React.createClass({
         var checkStereoBtn = this.vr && this.isMobile;
         return (!checkStereoBtn) ? null :
           <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
-            onClick={this.handleStereoClick}
+            onClick={this.handleStereoVrClick}
             onMouseUp={Utils.blurOnMouseUp}
             onMouseOver={this.highlight}
             onMouseOut={this.removeHighlight}
