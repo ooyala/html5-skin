@@ -199,6 +199,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
         this.mb.subscribe(OO.EVENTS.REPLAY, "customerUi", _.bind(this.onReplay, this));
         this.mb.subscribe(OO.EVENTS.ASSET_DIMENSION, "customerUi", _.bind(this.onAssetDimensionsReceived, this));
+
+        this.mb.subscribe(OO.EVENTS.HA_WILL_FAILOVER, "customerUi", _.bind(this.onHAWillFailover, this));
+        this.mb.subscribe(OO.EVENTS.HA_FAILOVER_COMPLETE, "customerUi", _.bind(this.onHAFailoverComplete, this));
+        this.mb.subscribe(OO.EVENTS.HA_FAILOVER_ERROR, "customerUi", _.bind(this.onHAFailoverError, this));
+
         // PLAYBACK_READY is a fundamental event in the init process that can be unsubscribed by errors.
         // If and only if such has occured, it needs a route to being resubscribed.
         if(!this.state.isPlaybackReadySubscribed) {
@@ -231,6 +236,25 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
       }
     },
+
+    onHAWillFailover: function(){
+      this.state.failoverInProgress = true;
+      this.state.pauseAnimationDisabled = true;
+      this.renderSkin();
+    },
+
+    onHAFailoverComplete: function(){
+      this.state.failoverInProgress = false;
+      this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+      this.renderSkin();
+    },
+
+    onHAFailoverError: function(){
+      this.state.failoverInProgress = false;
+      // this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
+      this.renderSkin();
+    },
+
 
     /*--------------------------------------------------------------------
      event listeners from core player -> regulate skin STATE
@@ -440,6 +464,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVolumeChanged: function (event, newVolume) {
+      if (typeof this.state.volumeState.volume === "number") {
+        this.state.volumeState.oldVolume = this.state.volumeState.volume;
+      }
       if (newVolume <= 0) {
         this.state.volumeState.muted = true;
         this.state.volumeState.volume = 0;
@@ -567,6 +594,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPause: function(event, source, pauseReason) {
+      if(this.state.failoverInProgress) {
+        return;
+      }
+
       if (pauseReason === CONSTANTS.PAUSE_REASON.TRANSITION){
         this.state.pauseAnimationDisabled = true;
         this.endSeeking();
@@ -578,6 +609,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPaused: function(event, videoId) {
+      if(this.state.failoverInProgress) {
+        return;
+      }
+
       if (videoId != this.focusedElement || this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN) { return; }
       if (videoId == OO.VIDEO.MAIN && this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
         if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
@@ -704,6 +739,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaybackReady: function(event, params) {
+      if(this.state.failoverInProgress) {
+        return;
+      }
       params = params || {};
 
       if (this.state.afterOoyalaAd) {
@@ -1416,27 +1454,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     handleMuteClick: function() {
-      var newVolumeSettings = {};
       if (!this.state.volumeState.muted) {
-        //if we're muting, save the current volume so we can
-        //restore it when we un-mute
-        newVolumeSettings = {
-          oldVolume: this.state.volumeState.volume,
-          muted: !this.state.volumeState.muted
-        };
         this.setVolume(0);
-      }
-      else {
-        //restore the volume to the previous setting
-        newVolumeSettings = {
-          oldVolume: 0,
-          muted: !this.state.volumeState.muted
-        };
+      } else {
         this.setVolume(this.state.volumeState.oldVolume);
       }
-
-      this.state.volumeState.oldVolume = newVolumeSettings.oldVolume;
-      this.state.volumeState.muted = newVolumeSettings.muted;
     },
 
     toggleShareScreen: function() {
