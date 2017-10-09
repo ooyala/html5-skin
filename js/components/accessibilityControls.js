@@ -74,6 +74,7 @@ AccessibilityControls.prototype = {
 
   /**
    * @description handlers for keyup event
+   * @private
    * @param e - event
    */
 
@@ -87,8 +88,10 @@ AccessibilityControls.prototype = {
   },
 
   /**
+   * @description get name of target tag, for example "button" etc
+   * @private
    * @param e - event
-   * @returns {string} name of the clicked tag
+   * @returns {string} name of the target tag
    */
 
   getTargetTagName: function(e) {
@@ -100,7 +103,8 @@ AccessibilityControls.prototype = {
   },
 
   /**
-   *
+   * @description call moveVrToDirection from controller for rotation a vr video
+   * @private
    * @param e - event
    * @param charCode {number} - char code;
    * @param isKeyDown {boolean} - true if key is pressed
