@@ -22,8 +22,8 @@ var ControlBar = React.createClass({
     this.isMobile = this.props.controller.state.isMobile;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
-    this.vr = false;
-    if (this.props.controller && this.props.controller.videoVrSource) {
+    this.vr = null;
+    if (this.props.controller && this.props.controller.videoVrSource && this.props.controller.videoVrSource.vr) {
       this.vr = this.props.controller.videoVrSource.vr;
     }
     return {};
@@ -99,8 +99,10 @@ var ControlBar = React.createClass({
     this.props.controller.toggleFullscreen();
   },
 
-  handleStereoVrClick: function () {
-    this.vr.stereo = !this.vr.stereo;
+  handleStereoClick: function () {
+    if (this.vr) {
+      this.vr.stereo = !this.vr.stereo;
+    }
     if(this.props.controller && typeof this.props.controller.toggleStereoVr === "function") {
       this.props.controller.toggleStereoVr();
     }
@@ -317,6 +319,7 @@ var ControlBar = React.createClass({
       fullscreenIcon = "expand";
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
+
     var stereoIcon, stereoAriaLabel;
     if (this.vr) {
       stereoIcon = "stereoOff";
@@ -326,6 +329,7 @@ var ControlBar = React.createClass({
         stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
       }
     }
+
     var totalTime = 0;
     if (this.props.duration == null || typeof this.props.duration == 'undefined' || this.props.duration == "") {
       totalTime = Utils.formatSeconds(0);
@@ -489,7 +493,8 @@ var ControlBar = React.createClass({
           <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
         </a>
       }).bind(this),
-  "stereoscopic": (function (alignment) {
+
+      "stereoscopic": (function (alignment) {
         var checkStereoBtn = this.vr && this.isMobile;
         return (!checkStereoBtn) ? null :
           <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
@@ -507,6 +512,7 @@ var ControlBar = React.createClass({
               bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
           </button>
       }).bind(this),
+
     "fullscreen": (function (alignment) {
         return <button className="oo-fullscreen oo-control-bar-item"
           onClick={this.handleFullscreenClick}
@@ -551,7 +557,6 @@ var ControlBar = React.createClass({
         break;
       }
     }
-
 
     //if no hours, add extra space to control bar width:
     var hours = parseInt(this.props.duration / 3600, 10);
