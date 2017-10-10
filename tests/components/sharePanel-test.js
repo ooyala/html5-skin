@@ -69,11 +69,11 @@ describe('SharePanel', function () {
         TestUtils.Simulate.click(twitter);
         TestUtils.Simulate.click(facebook);
         TestUtils.Simulate.click(googlePlus);
-        OO={};
+        OO = {};
         OO.isIos = false;
         OO.isSafari = false;
         TestUtils.Simulate.click(emailShare);
-	      OO = null;
+        OO = null;
       }
     }
   });
