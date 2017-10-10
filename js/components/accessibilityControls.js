@@ -3,33 +3,44 @@ var Utils = require('./utils');
 
 var AccessibilityControls = function (controller) {
   this.controller = controller;
+  this.vrRotationAllowed = true; // flag for checking repeat of keyDown
+  this.keyDirectionMap = {};
+  this.keyDirectionMap[CONSTANTS.KEYCODES.A] = CONSTANTS.DIRECTIONS.LEFT;
+  this.keyDirectionMap[CONSTANTS.KEYCODES.D] = CONSTANTS.DIRECTIONS.RIGHT;
+  this.keyDirectionMap[CONSTANTS.KEYCODES.W] = CONSTANTS.DIRECTIONS.UP;
+  this.keyDirectionMap[CONSTANTS.KEYCODES.S] = CONSTANTS.DIRECTIONS.DOWN;
   this.state = {
     seekRate: 1,
-    lastKeyDownTime: 0
+    lastKeyDownTime: 0,
   };
-  this.keyEvent = this.handleKey.bind(this);
-  document.addEventListener('keydown', this.keyEvent);
+  this.keyEventDown = this.keyEventDown.bind(this);
+  this.keyEventUp = this.keyEventUp.bind(this);
+  this.moveVrToDirection = this.moveVrToDirection.bind(this);
+  this.getTargetTagName = this.getTargetTagName.bind(this);
+
+  document.addEventListener("keydown", this.keyEventDown);
+  document.addEventListener("keyup", this.keyEventUp);
 };
 
 AccessibilityControls.prototype = {
   cleanUp : function() {
-    document.removeEventListener('keydown', this.keyEvent);
+    document.removeEventListener("keydown", this.keyEventDown);
+    document.removeEventListener("keyup", this.keyEventUp);
   },
 
-  handleKey: function(e) {
+  keyEventDown: function(e) {
     if (!this.controller.state.accessibilityControlsEnabled) {
       return;
     }
 
-    var targetTagName;
-    if (e.target && typeof e.target.tagName === 'string') {
-      targetTagName = e.target.tagName.toLowerCase();
-    }
+    var targetTagName = this.getTargetTagName(e);
+    var charCode = e.which || e.keyCode;
+    this.moveVrToDirection(e, charCode, true, targetTagName); //start rotate 360
     // Slider interaction requires the arrow keys. When a slider is active we should
     // disable arrow key controls
     var sliderIsActive = document.activeElement && document.activeElement.getAttribute('role') === 'slider';
 
-    switch (e.keyCode) {
+    switch (charCode) {
       case CONSTANTS.KEYCODES.SPACE_KEY:
         // We override the default behavior when the target element is a button (pressing
         // the spacebar on a button should activate it).
@@ -44,7 +55,7 @@ AccessibilityControls.prototype = {
       case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
         if (!sliderIsActive) {
           e.preventDefault();
-          var increase = e.keyCode === CONSTANTS.KEYCODES.UP_ARROW_KEY ? true : false;
+          var increase = charCode === CONSTANTS.KEYCODES.UP_ARROW_KEY;
           this.changeVolumeBy(CONSTANTS.A11Y_CTRLS.VOLUME_CHANGE_DELTA, increase);
         }
         break;
@@ -58,6 +69,63 @@ AccessibilityControls.prototype = {
         break;
       default:
         break;
+    }
+  },
+
+  /**
+   * @description handlers for keyup event
+   * @private
+   * @param e - event
+   */
+
+  keyEventUp: function(e) {
+    if (!this.controller.state.accessibilityControlsEnabled) {
+      return;
+    }
+    var targetTagName = this.getTargetTagName(e);
+    var charCode = e.which || e.keyCode;
+    this.moveVrToDirection(e, charCode, false, targetTagName);  //stop rotate 360
+  },
+
+  /**
+   * @description get name of target tag, for example "button" etc
+   * @private
+   * @param e - event
+   * @returns {string} name of the target tag
+   */
+
+  getTargetTagName: function(e) {
+    var targetTagName = "";
+    if (e.target && typeof e.target.tagName === "string") {
+      targetTagName = e.target.tagName.toLowerCase();
+    }
+    return targetTagName;
+  },
+
+  /**
+   * @description call moveVrToDirection from controller for rotation a vr video
+   * @private
+   * @param e - event
+   * @param charCode {number} - char code;
+   * @param isKeyDown {boolean} - true if key is pressed
+   * @param targetTagName {string} - name of the clicked tag
+   * @returns {boolean} true if moved
+   */
+
+  moveVrToDirection: function(e, charCode, isKeyDown, targetTagName) {
+    if (!this.controller.videoVr) {
+      return false;
+    }
+    if (e.repeat !== undefined) {
+      this.vrRotationAllowed = !e.repeat;
+    }
+    if (!this.vrRotationAllowed) {
+      return false;
+    }
+    var keyDirectionMap = this.keyDirectionMap;
+    if (keyDirectionMap[charCode] && targetTagName !== "button") {
+      this.vrRotationAllowed = !isKeyDown; //prevent repeat of keyDown
+      this.controller.moveVrToDirection(isKeyDown, keyDirectionMap[charCode]);
     }
   },
 

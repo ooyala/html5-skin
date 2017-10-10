@@ -28,7 +28,11 @@ var Skin = React.createClass({
     return {
       screenToShow: null,
       currentPlayhead: 0,
-      discoveryData: null
+      discoveryData: null,
+      isVrMouseDown: false,
+      isVrMouseMove: false,
+      xVrMouseStart: 0,
+      yVrMouseStart: 0,
     };
   },
 
@@ -66,6 +70,116 @@ var Skin = React.createClass({
       buffered: Utils.ensureNumber(newBuffered, this.state.buffered),
       currentAdPlayhead: Utils.ensureNumber(adPlayhead, this.state.currentAdPlayhead)
     });
+  },
+
+  /**
+   * @description the function is called when we start the rotation
+   * @param e - event
+   */
+  handleVrPlayerMouseDown: function(e) {
+    if (this.props.controller.videoVr) {
+      this.setState({
+        isVrMouseDown: true,
+        xVrMouseStart: e.pageX,
+        yVrMouseStart: e.pageY
+      });
+      if (typeof this.props.controller.checkVrDirection === 'function') {
+        this.props.controller.checkVrDirection();
+      }
+    }
+  },
+
+  /**
+   * @description the function is called while rotation is active
+   * @param e - event
+   */
+  handleVrPlayerMouseMove: function(e) {
+    if (this.props.controller.videoVr && this.state.isVrMouseDown) {
+      this.setState({
+        isVrMouseMove: true
+      });
+      if (typeof this.props.controller.onTouchMove === 'function') {
+        var params = this.getDirectionParams(e.pageX, e.pageY);
+        this.props.controller.onTouchMove(params, true);
+      }
+    }
+  },
+
+  /**
+   * @description the function is called when we stop the rotation
+   */
+  handleVrPlayerMouseUp: function() {
+    if (this.props.controller.videoVr) {
+      this.setState({
+        isVrMouseDown: false,
+        xVrMouseStart: 0,
+        yVrMouseStart: 0
+      });
+      if (typeof this.props.controller.checkVrDirection === 'function') {
+        this.props.controller.checkVrDirection();
+      }
+    }
+  },
+
+  /**
+   * @description set isVrMouseDown to false for mouseleave event
+   */
+  handleVrPlayerMouseLeave: function () {
+    if (this.props.controller.videoVr) {
+      this.setState({
+        isVrMouseDown: false,
+      });
+    }
+  },
+
+  /**
+   * @description set isVrMouseMove to false for click event
+   */
+  handleVrPlayerClick: function () {
+    this.setState({
+      isVrMouseMove: false,
+    });
+  },
+
+  handleVrPlayerFocus: function() {
+    this.props.controller.state.accessibilityControlsEnabled = true;
+  },
+
+  /**
+   * @description get direction params. Direction params are values for new position of a vr video (yaw, roll=0, pitch)
+   * @private
+   * @param pageX {number} x coordinate
+   * @param pageY {number} y coordinate
+   * @returns {[number, number, number]}
+   */
+
+  getDirectionParams: function(pageX, pageY) {
+    var dx = pageX - this.state.xVrMouseStart;
+    var dy = pageY - this.state.yVrMouseStart;
+    var maxDegreesX = 90;
+    var maxDegreesY = 120;
+    var degreesForPixelYaw = maxDegreesX / this.state.componentWidth;
+    var degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
+    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw;
+    var pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
+    return [yaw, 0, pitch];
+  },
+
+  /**
+   * @description check viewingDirection existing and return the value
+   * @private
+   * @param paramName {string} "yaw", "pitch"
+   * @returns {number} value of viewingDirection param
+   */
+  getViewingDirectionParamValue: function(paramName) {
+    var viewingDirectionValue = 0;
+    if (this.props.controller &&
+      this.props.controller.state &&
+      this.props.controller.state.viewingDirection &&
+      typeof this.props.controller.state.viewingDirection[paramName] === "number") {
+      viewingDirectionValue = this.props.controller.state.viewingDirection[paramName]
+    }
+    return viewingDirectionValue
   },
 
   render: function() {
@@ -112,6 +226,13 @@ var Skin = React.createClass({
           screen = (
             <PlayingScreen
               {...this.props}
+              handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
+              handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
+              handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
+              handleVrPlayerMouseLeave={this.handleVrPlayerMouseLeave}
+              handleVrPlayerClick={this.handleVrPlayerClick}
+              handleVrPlayerFocus={this.handleVrPlayerFocus}
+              isVrMouseMove={this.state.isVrMouseMove}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
               duration={this.state.duration}
@@ -126,7 +247,7 @@ var Skin = React.createClass({
               componentWidth={this.state.componentWidth}
               componentHeight={this.state.componentHeight}
               videoQualityOptions={this.state.videoQualityOptions}
-              closedCaptionOptions = {this.props.closedCaptionOptions}
+              closedCaptionOptions={this.props.closedCaptionOptions}
               ref="playScreen" />
           );
           break;
@@ -146,7 +267,14 @@ var Skin = React.createClass({
           break;
         case CONSTANTS.SCREEN.PAUSE_SCREEN:
           screen = (
-            <PauseScreen {...this.props}
+            <PauseScreen
+              {...this.props}
+              handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
+              handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
+              handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
+              handleVrPlayerMouseLeave={this.handleVrPlayerMouseLeave}
+              handleVrPlayerClick={this.handleVrPlayerClick}
+              isVrMouseMove={this.state.isVrMouseMove}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
               playerState={this.state.playerState}
@@ -160,7 +288,8 @@ var Skin = React.createClass({
               responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
-              ref="pauseScreen" />
+              ref="pauseScreen"
+            />
           );
           break;
         case CONSTANTS.SCREEN.END_SCREEN:

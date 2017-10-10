@@ -4,7 +4,6 @@
  * @module VideoQualityPanel
  */
 var React = require('react'),
-    ScrollArea = require('react-scrollbar/dist/no-css'),
     ClassNames = require('classnames'),
     Icon = require('../components/icon')
     CONSTANTS = require('../constants/constants');
@@ -114,14 +113,14 @@ var VideoQualityPanel = React.createClass({
 
     return (
       <div className={qualityScreenClass}>
-        <ScrollArea
+        <div
           className="oo-quality-screen-content"
           speed={this.props.popover ? 0.6 : 1}
           horizontal={!this.props.popover}>
           <ul role="menu">
             {bitrateButtons}
           </ul>
-        </ScrollArea>
+        </div>
       </div>
     );
   }

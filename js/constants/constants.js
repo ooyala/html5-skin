@@ -116,7 +116,9 @@ module.exports = {
     TIME_DISPLAY: "{currentTime} of {totalTime}",
     TIME_DISPLAY_LIVE: "Live video",
     TIME_DISPLAY_DVR: "{currentTime} of {totalTime} live video",
-    CLOSE: "Close"
+    CLOSE: "Close",
+    STEREO_ON: "Stereoscopic",
+    STEREO_OFF: "Monoscopic"
   },
 
   A11Y_CTRLS: {
@@ -130,7 +132,18 @@ module.exports = {
     RIGHT_ARROW_KEY: 39,
     UP_ARROW_KEY: 38,
     DOWN_ARROW_KEY: 40,
-    ESCAPE_KEY: 27
+    ESCAPE_KEY: 27,
+    A: 65,
+    D: 68,
+    W: 87,
+    S: 83
+  },
+
+  DIRECTIONS: {
+    LEFT: "left",
+    RIGHT: "right",
+    UP: "up",
+    DOWN: "down"
   },
 
   // KeyboardEvent's which and keyCode properties are deprecated.

@@ -613,4 +613,10 @@
   .oo-watermark-bottom.oo-watermark-bottom-cb {
     bottom: $control-bar-height-small;
   }
+
+  //control buttons for rotating the camera
+  .oo-vr-icon-container {
+    left: calc(90% - 15px);
+    top: 5%;
+  }
 }

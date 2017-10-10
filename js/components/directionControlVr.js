@@ -4,23 +4,23 @@ var classnames = require('classnames');
 var DirectionControlVr = React.createClass({
   getInitialState: function() {
     return {
-      isTouched: false,
+      isTouched: false
     };
   },
 
   handleEvent: function (ev) {
-    var rotate = ev.type == 'mousedown' || ev.type == 'touchstart';
-    this.props.handleDirection(rotate, this.props.dir);
+    var isRotated = ev.type === 'mousedown' || ev.type === 'touchstart';
+    this.props.handleVrViewControlsClick(ev, isRotated, this.props.dir);
     
     this.setState({
-      isTouched: rotate
+      isTouched: isRotated
     });
   },
 
   render: function () {
     var baseDirectionClass = 'oo-vr-icon--move';
     var directionClass = baseDirectionClass + '--' + this.props.dir;
-    var touchedDirectionClass = "";
+    var touchedDirectionClass = '';
     if (this.state.isTouched) {
       touchedDirectionClass = directionClass + '--touched';
     }
@@ -39,7 +39,7 @@ var DirectionControlVr = React.createClass({
 });
 
 DirectionControlVr.propTypes = {
-  handleDirection: React.PropTypes.func
+  handleVrViewControlsClick: React.PropTypes.func
 };
 
 module.exports = DirectionControlVr;
