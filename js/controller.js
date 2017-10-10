@@ -700,23 +700,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoDuration = this.state.duration;
       }
     },
-  
+
     onTouchMove: function(params) {
       if (this.videoVr) {
         this.mb.publish(OO.EVENTS.TOUCH_MOVE, this.focusedElement, params);
       }
     },
-  
+
     checkVrDirection: function () {
       if (this.videoVr) {
         this.mb.publish(OO.EVENTS.CHECK_VR_DIRECTION, this.focusedElement);
       }
     },
-  
+
     setViewingDirection: function(event, yaw, roll, pitch) {
       this.state.viewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
     },
-  
+
     recreatingUI: function (event, elementId, params, settings) {
       if (!$('.oo-player-skin').length) {
         this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
@@ -1403,6 +1403,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     toggleMute: function(muted) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
+    },
+
+    toggleStereoVr: function () {
+      this.mb.publish(OO.EVENTS.TOGGLE_STEREO_VR);
     },
 
     moveVrToDirection: function (rotate, direction) {

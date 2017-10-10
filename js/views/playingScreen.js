@@ -254,6 +254,12 @@ var PlayingScreen = React.createClass({
         controlBarVisible={this.state.controlBarVisible}
         currentPlayhead={this.props.currentPlayhead}/> : null;
 
+    var viewControlsVr = this.props.controller.videoVr ?
+      <ViewControlsVr
+        {...this.props}
+        controlBarVisible={this.state.controlBarVisible}
+      /> : null;
+
     return (
     <div
       className="oo-state-screen oo-playing-screen"
@@ -276,7 +282,9 @@ var PlayingScreen = React.createClass({
 
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
-      <div className="oo-interactive-container" onFocus={this.handleFocus}>
+        {viewControlsVr}
+
+        <div className="oo-interactive-container" onFocus={this.handleFocus}>
 
         {this.props.closedCaptionOptions.enabled ?
           <TextTrack
@@ -295,14 +303,6 @@ var PlayingScreen = React.createClass({
           playerState={this.props.playerState}
           isLiveStream={this.props.isLiveStream} />
       </div>
-      
-      {
-        this.props.controller.videoVr &&
-        <ViewControlsVr
-          {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-        />
-      }
     </div>
     );
   }

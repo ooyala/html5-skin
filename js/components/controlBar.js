@@ -22,6 +22,10 @@ var ControlBar = React.createClass({
     this.isMobile = this.props.controller.state.isMobile;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
+    this.vr = null;
+    if (this.props.controller && this.props.controller.videoVrSource && this.props.controller.videoVrSource.vr) {
+      this.vr = this.props.controller.videoVrSource.vr;
+    }
     return {};
   },
 
@@ -93,6 +97,15 @@ var ControlBar = React.createClass({
     evt.cancelBubble = true;
     evt.preventDefault();
     this.props.controller.toggleFullscreen();
+  },
+  
+  handleStereoVrClick: function () {
+    if (this.vr) {
+      this.vr.stereo = !this.vr.stereo;
+    }
+    if(this.props.controller && typeof this.props.controller.toggleStereoVr === "function") {
+      this.props.controller.toggleStereoVr();
+    }
   },
 
   handleLiveClick: function (evt) {
@@ -307,6 +320,16 @@ var ControlBar = React.createClass({
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
 
+    var stereoIcon, stereoAriaLabel;
+    if (this.vr) {
+      stereoIcon = "stereoOff";
+      stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
+      if (this.vr.stereo) {
+        stereoIcon = "stereoOn";
+        stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
+      }
+    }
+
     var totalTime = 0;
     if (this.props.duration == null || typeof this.props.duration == 'undefined' || this.props.duration == "") {
       totalTime = Utils.formatSeconds(0);
@@ -471,6 +494,25 @@ var ControlBar = React.createClass({
         </a>
       }).bind(this),
 
+      "stereoscopic": (function (alignment) {
+        var checkStereoBtn = this.vr && this.isMobile;
+        return (!checkStereoBtn) ? null :
+          <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
+            onClick={this.handleStereoVrClick}
+            onMouseUp={Utils.blurOnMouseUp}
+            onMouseOver={this.highlight}
+            onMouseOut={this.removeHighlight}
+            key="stereo"
+            data-focus-id="stereo"
+            tabIndex="0"
+            aria-label={stereoAriaLabel}
+          >
+            <Icon {...this.props} icon={stereoIcon} style={dynamicStyles.iconCharacter} />
+            <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple}
+              bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
+          </button>
+      }).bind(this),
+
     "fullscreen": (function (alignment) {
         return <button className="oo-fullscreen oo-control-bar-item"
           onClick={this.handleFullscreenClick}
@@ -515,7 +557,6 @@ var ControlBar = React.createClass({
         break;
       }
     }
-
 
     //if no hours, add extra space to control bar width:
     var hours = parseInt(this.props.duration / 3600, 10);
