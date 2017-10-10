@@ -23,11 +23,7 @@ var PlayingScreen = React.createClass({
 
     return {
       controlBarVisible: true,
-      timer: null,
-      isVrMouseDown: false,
-      isMouseMove: false,
-      xVrMouseStart: 0,
-      yVrMouseStart: 0,
+      timer: null
     };
   },
 
@@ -115,19 +111,7 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseDown: function(e) {
-    if (!this.props.controller.videoVr) {
-      return;
-    }
-    
-    this.setState({
-      isVrMouseDown: true,
-      xVrMouseStart: e.pageX,
-      yVrMouseStart: e.pageY
-    });
-
-    if (this.props.controller.checkVrDirection) {
-      this.props.controller.checkVrDirection();
-    }
+    this.props.handleVrPlayerMouseDown(e);
   },
 
   handlePlayerMouseMove: function(e) {
@@ -135,18 +119,7 @@ var PlayingScreen = React.createClass({
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
-
-    if (this.props.controller.videoVr && this.state.isVrMouseDown) {
-      this.setState({
-        isMouseMove: true
-      });
-      
-      var params = this.getDirectionParams(e.pageX, e.pageY);
-
-      if (this.props.controller.onTouchMove) {
-        this.props.controller.onTouchMove(params);
-      }
-    }
+    this.props.handleVrPlayerMouseMove(e);
   },
 
   handlePlayerMouseUp: function(e) {
@@ -154,76 +127,28 @@ var PlayingScreen = React.createClass({
     if (!this.isMobile) {
       e.stopPropagation(); // W3C
       e.cancelBubble = true; // IE
-
       this.props.controller.state.accessibilityControlsEnabled = true;
       if (!this.props.controller.videoVr) {
         this.props.controller.togglePlayPause();
       }
     }
+    this.props.handleVrPlayerMouseUp();
     // for mobile, touch is handled in handleTouchEnd
-    if (this.props.controller.videoVr) {
-      this.setState({
-        isVrMouseDown: false,
-      });
-      
-      if (typeof this.props.controller.checkVrDirection === 'function') {
-        this.props.controller.checkVrDirection();
-      }
-    }
   },
-  
+
   handlePlayerMouseLeave: function () {
-    if (this.props.controller.videoVr) {
-      this.setState({
-        isVrMouseDown: false,
-      });
-    }
+    this.props.handleVrPlayerMouseLeave();
   },
-  
+
   handlePlayerClicked: function (event) {
-    if(!this.state.isMouseMove){
+    if (!this.props.isVrMouseMove) {
       this.props.controller.togglePlayPause(event);
     }
-    
-    this.setState({
-      isMouseMove: false,
-    });
+    this.props.handleVrPlayerClick();
   },
 
-  /**
-   * @description get direction params. Direction params are values for new position of a vr video (yaw, roll=0, pitch)
-   * @private
-   * @param pageX {number} x coordinate
-   * @param pageY {number} y coordinate
-   * @returns {[number, number, number]}
-   */
-  getDirectionParams: function(pageX, pageY) {
-    var dx = pageX - this.state.xVrMouseStart;
-    var dy = pageY - this.state.yVrMouseStart;
-    var maxDegreesX = 90;
-    var maxDegreesY = 120;
-    var degreesForPixelYaw = maxDegreesX / this.props.componentWidth;
-    var degreesForPixelPitch = maxDegreesY / this.props.componentHeight;
-    var yaw = this.getViewingDirectionParamValue("yaw") + dx * degreesForPixelYaw;
-    var pitch = this.getViewingDirectionParamValue("pitch") + dy * degreesForPixelPitch;
-    return [yaw, 0, pitch];
-  },
-
-  /**
-   * @description check viewingDirection existing and return the value
-   * @private
-   * @param paramName {string} "yaw", "pitch"
-   * @returns {number} value of viewingDirection param
-   */
-  getViewingDirectionParamValue: function(paramName) {
-    var viewingDirectionValue = 0;
-    if (this.props.controller &&
-      this.props.controller.state &&
-      this.props.controller.state.viewingDirection &&
-      typeof this.props.controller.state.viewingDirection[paramName] === "number") {
-      viewingDirectionValue = this.props.controller.state.viewingDirection[paramName]
-    }
-    return viewingDirectionValue
+  handlePlayerFocus: function() {
+    this.props.handleVrPlayerFocus();
   },
 
   showControlBar: function(event) {
@@ -261,22 +186,23 @@ var PlayingScreen = React.createClass({
       /> : null;
 
     return (
-    <div
-      className="oo-state-screen oo-playing-screen"
-      ref="PlayingScreen"
-      onMouseOver={this.showControlBar}
-      onMouseOut={this.hideControlBar}
-      onMouseMove={this.handlePlayerMouseMove}
-      onKeyDown={this.handleKeyDown}>
       <div
-        className="oo-state-screen-selectable"
-        onMouseDown={this.handlePlayerMouseDown}
-        onMouseUp={this.handlePlayerMouseUp}
-        onMouseMove={this.handlePlayerMouseMove}
-        onMouseLeave={this.handlePlayerMouseLeave}
-        onTouchEnd={this.handleTouchEnd}
-        onClick={this.handlePlayerClicked}
-      />
+        className="oo-state-screen oo-playing-screen"
+        ref="PlayingScreen"
+        onMouseOver={this.showControlBar}
+        onMouseOut={this.hideControlBar}
+        onKeyDown={this.handleKeyDown}
+      >
+        <div
+          className="oo-state-screen-selectable"
+          onMouseDown={this.handlePlayerMouseDown}
+          onMouseUp={this.handlePlayerMouseUp}
+          onMouseMove={this.handlePlayerMouseMove}
+          onMouseLeave={this.handlePlayerMouseLeave}
+          onTouchEnd={this.handleTouchEnd}
+          onClick={this.handlePlayerClicked}
+          onFocus={this.handlePlayerFocus}
+        />
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 

@@ -107,14 +107,14 @@ module.exports = {
     UNMUTE: "Unmute",
     FULLSCREEN: "Fullscreen",
     EXIT_FULLSCREEN: "Exit Fullscreen",
-    STEREO_ON: "Stereoscopic",
-    STEREO_OFF: "Monoscopic",
     SEEK_SLIDER: "Seek slider",
     VOLUME_SLIDER: "Volume slider",
     VOLUME_PERCENT: "{volume}% volume",
     TIME_DISPLAY: "{currentTime} of {totalTime}",
     TIME_DISPLAY_LIVE: "Live video",
-    TIME_DISPLAY_DVR: "{currentTime} of {totalTime} live video"
+    TIME_DISPLAY_DVR: "{currentTime} of {totalTime} live video",
+    STEREO_ON: "Stereoscopic",
+    STEREO_OFF: "Monoscopic"
   },
 
   A11Y_CTRLS: {

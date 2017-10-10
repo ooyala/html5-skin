@@ -1,74 +1,97 @@
 .oo-vr-icon {
   &--move {
     position: absolute;
-    height: 33%;
-    width: 33%;
+    height: 15px;
+    width: 15px;
     cursor: pointer;
     outline: none;
-    @include vendor-prefixes(border-radius, 3px);
     &--left {
-      top: 50%;
+      top: 40%;
       left: 0;
       bottom: auto;
       right: auto;
-      @include vendor-prefixes(transform, translateY(-50%));
-      &--touched {
-        @include linear-gradient(left, #000000, #FFFFFF, 0);
-      }
     }
     &--right {
-      top: 50%;
+      top: 40%;
       left: auto;
       bottom: auto;
       right: 0;
-      @include vendor-prefixes(transform, translateY(-50%));
-      &--touched {
-        @include linear-gradient(right, #000000, #FFFFFF, 1);
-      }
     }
     &--up {
-      top: 0;
-      left: 50%;
+      top: 5%;
+      left: 33%;
       bottom: auto;
       right: auto;
-      @include vendor-prefixes(transform, translateX(-50%));
-      &--touched {
-        @include linear-gradient(top, #000000, #FFFFFF, 0);
-      }
     }
     &--down {
       top: auto;
-      left: 50%;
-      bottom: 0;
+      left: 33%;
+      bottom: -5%;
       right: auto;
-      @include vendor-prefixes(transform, translateX(-50%));
-      &--touched {
-        @include linear-gradient(bottom, #000000, #FFFFFF, 0);
-      }
     }
   }
   &-container {
     position: absolute;
     display: block;
-    top: 15px;
-    left: 15px;
-    width: 5%;
-    max-width: 80px;
-    max-height: 80px;
-    min-width: 40px;
-    min-height: 40px;
-    background-image: url("assets/images/vr-controls.svg");
+    top: 5%;
+    left: calc(95% - 15px);
+    width: $vr-controls-full-size;
+    height: $vr-controls-full-size;
     background-position: 0 0;
     background-size: 100% 100%;
     opacity: 1;
+    z-index: 1001;
     @include vendor-prefixes (transition, opacity .3s ease-in-out);
     &--hidden {
       opacity: 0;
     }
-    &:after {
-      content: "";
-      display: block;
-      padding-bottom: 100%;
+  }
+  &--type {
+    display: block;
+    width: 23px;
+    height: 17px;
+    background-position: 0 0;
+    background-size: 100% 100%;
+    &--stereoOn {
+      -webkit-filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
+      filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
+    }
+    &--stereoOff {}
+  }
+
+  &--substrate {
+    position: absolute;
+    display: block;
+    width: calc(#{$vr-controls-full-size} + 4px);
+    height: calc(#{$vr-controls-full-size} + 4px);
+    left: -2px;
+    background: #000000;
+    opacity: 0.3;
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+    border-radius: 100%
+  }
+
+  &--icon-symbol {
+    position: absolute;
+    display: block;
+    opacity: 1;
+    font-size: $vr-controls-full-size;
+    line-height: normal;
+    @include vendor-prefixes (transition, opacity .3s ease-in-out);
+    &--hidden {
+      opacity: 0;
+    }
+  }
+}
+.oo-video-type {
+  @include vendor-prefixes (transition, all .3s ease-in-out);
+  &:hover,
+  &:active,
+  &:focus {
+    .oo-vr-icon--type {
+      -webkit-filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
+      filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
     }
   }
 }
