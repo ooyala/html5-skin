@@ -445,7 +445,7 @@ OO = {
 
     Html5Skin.toggleMute.call(controllerMock, true);
     Html5Skin.toggleMute.call(controllerMock, false);
-  
+
     controllerMock.state.playerState = CONSTANTS.STATE.START;
     Html5Skin.togglePlayPause.call(controllerMock);
     controllerMock.state.playerState = CONSTANTS.STATE.END;

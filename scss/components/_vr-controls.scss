@@ -71,28 +71,4 @@
       padding-bottom: 100%;
     }
   }
-  &--type {
-    display: block;
-    width: 23px;
-    height: 17px;
-    background-image: url("assets/images/vr-video-type.svg");
-    background-position: 0 0;
-    background-size: 100% 100%;
-    &--stereoOn {
-      -webkit-filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
-      filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
-    }
-    &--stereoOff {}
-  }
-}
-.oo-video-type {
-  @include vendor-prefixes (transition, all .3s ease-in-out);
-  &:hover,
-  &:active,
-  &:focus {
-    .oo-vr-icon--type {
-      -webkit-filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
-      filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
-    }
-  }
 }

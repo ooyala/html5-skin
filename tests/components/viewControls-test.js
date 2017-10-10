@@ -31,8 +31,8 @@ describe('viewControlsVr', function () {
   
   it('creates a viewControlsVr', function () {
     var controller = {
-      getVrParams: function () {
-        return {stereo: false};
+      videoVrSource: {
+        stereo: false
       }
     };
     
@@ -72,8 +72,8 @@ describe('viewControlsVr', function () {
   
   it('check condition: if video support vr360 then viewControlsVr exist', function () {
     var controller = {
-      getVrParams: function () {
-        return {stereo: false};
+      videoVrSource: {
+        stereo: false
       }
     };
     

@@ -12,8 +12,7 @@ var React = require('react'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     CONSTANTS = require('../constants/constants');
-    ViewControlsVr = require('../components/viewControlsVr'),
-    _ = require('underscore');
+    ViewControlsVr = require('../components/viewControlsVr');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -21,7 +20,6 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
-    this.videoVr = this.props.controller.videoVr;
 
     return {
       controlBarVisible: true,
@@ -64,18 +62,6 @@ var PlayingScreen = React.createClass({
     if (this.isMounted()) {
       this.props.controller.startHideControlBarTimer();
     }
-  },
-
-  handlePlayerMouseUp: function(event) {
-    // pause or play the video if the skin is clicked on desktop
-    if (!this.isMobile) {
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
-
-      this.props.controller.togglePlayPause();
-      this.props.controller.state.accessibilityControlsEnabled = true;
-    }
-    // for mobile, touch is handled in handleTouchEnd
   },
 
   handleKeyDown: function(event) {
@@ -138,7 +124,7 @@ var PlayingScreen = React.createClass({
       xVrMouseStart: e.pageX,
       yVrMouseStart: e.pageY
     });
-    
+
     if (this.props.controller.checkVrDirection) {
       this.props.controller.checkVrDirection();
     }
@@ -156,7 +142,7 @@ var PlayingScreen = React.createClass({
       });
       
       var params = this.getDirectionParams(e.pageX, e.pageY);
-      
+
       if (this.props.controller.onTouchMove) {
         this.props.controller.onTouchMove(params);
       }
@@ -203,7 +189,14 @@ var PlayingScreen = React.createClass({
       isMouseMove: false,
     });
   },
-  
+
+  /**
+   * @description get direction params. Direction params are values for new position of a vr video (yaw, roll=0, pitch)
+   * @private
+   * @param pageX {number} x coordinate
+   * @param pageY {number} y coordinate
+   * @returns {[number, number, number]}
+   */
   getDirectionParams: function(pageX, pageY) {
     var dx = pageX - this.state.xVrMouseStart;
     var dy = pageY - this.state.yVrMouseStart;
@@ -211,9 +204,26 @@ var PlayingScreen = React.createClass({
     var maxDegreesY = 120;
     var degreesForPixelYaw = maxDegreesX / this.props.componentWidth;
     var degreesForPixelPitch = maxDegreesY / this.props.componentHeight;
-    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw;
-    var pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
+    var yaw = this.getViewingDirectionParamValue("yaw") + dx * degreesForPixelYaw;
+    var pitch = this.getViewingDirectionParamValue("pitch") + dy * degreesForPixelPitch;
     return [yaw, 0, pitch];
+  },
+
+  /**
+   * @description check viewingDirection existing and return the value
+   * @private
+   * @param paramName {string} "yaw", "pitch"
+   * @returns {number} value of viewingDirection param
+   */
+  getViewingDirectionParamValue: function(paramName) {
+    var viewingDirectionValue = 0;
+    if (this.props.controller &&
+      this.props.controller.state &&
+      this.props.controller.state.viewingDirection &&
+      typeof this.props.controller.state.viewingDirection[paramName] === "number") {
+      viewingDirectionValue = this.props.controller.state.viewingDirection[paramName]
+    }
+    return viewingDirectionValue
   },
 
   showControlBar: function(event) {
@@ -287,7 +297,7 @@ var PlayingScreen = React.createClass({
       </div>
       
       {
-        this.videoVr &&
+        this.props.controller.videoVr &&
         <ViewControlsVr
           {...this.props}
           controlBarVisible={this.state.controlBarVisible}

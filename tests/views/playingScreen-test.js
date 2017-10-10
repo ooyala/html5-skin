@@ -7,9 +7,9 @@ var TestUtils = require('react-addons-test-utils');
 var PlayingScreen = require('../../js/views/playingScreen');
 
 describe('PlayingScreen', function () {
-  it('creates a PlayingScreen and checks mouseUp, mouseMove without video360', function () {
-    var moved = false;
-    var clicked = false;
+  it('creates a PlayingScreen and checks mouseMove, mouseUp without video360', function () {
+    var isMoved = false
+      , isPlayPause = false;
     var mockController = {
       videoVr: false,
       state: {
@@ -20,10 +20,10 @@ describe('PlayingScreen', function () {
         }
       },
       togglePlayPause: function() {
-        clicked = true;
+        isPlayPause = true;
       },
       startHideControlBarTimer: function() {
-        moved = true;
+        isMoved = true;
       }
     };
 
@@ -32,15 +32,15 @@ describe('PlayingScreen', function () {
     };
 
     // Render pause screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
+    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller={mockController} closedCaptionOptions={closedCaptionOptions}/>);
 
     var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
 
     TestUtils.Simulate.mouseMove(screen[0]);
-    expect(moved).toBe(false);
+    expect(isMoved).toBe(false);
 
     TestUtils.Simulate.mouseUp(screen[0]);
-    expect(clicked).toBe(true);
+    expect(isPlayPause).toBe(true);
   });
 
   it('creates a PlayingScreen and checks mouseMove, mouseDown, mouseUp with video360', function() {
@@ -85,13 +85,12 @@ describe('PlayingScreen', function () {
       yVrMouseStart: -20
     });
 
-    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
+    var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
 
     var getDirectionParams = spyOn(DOM, 'getDirectionParams').andCallThrough();
     var directionParams = getDirectionParams(0,0);
 
-    TestUtils.Simulate.mouseMove(screen);
-
+    TestUtils.Simulate.mouseMove(screen[0]);
     expect(isTouchMove).toBe(true);
     expect(getDirectionParams).toHaveBeenCalled();
     //dx = arguments[0] - this.state.xVrMouseStart = 0 - (-10) = 10;
@@ -102,10 +101,10 @@ describe('PlayingScreen', function () {
     //pitch = mockController.viewingDirection.pitch + dy * degreesForPixelPitch = 0 + 20 * 3 = 60;
     expect(directionParams).toEqual([10, 0, 60]);
 
-    TestUtils.Simulate.mouseDown(screen);
+    TestUtils.Simulate.mouseDown(screen[0]);
     expect(isVrDirectionChecked).toBe(true);
 
-    TestUtils.Simulate.mouseUp(screen);
+    TestUtils.Simulate.mouseUp(screen[0]);
     expect(isVrDirectionChecked).toBe(true);
 
   });

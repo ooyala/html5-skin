@@ -107,6 +107,8 @@ module.exports = {
     UNMUTE: "Unmute",
     FULLSCREEN: "Fullscreen",
     EXIT_FULLSCREEN: "Exit Fullscreen",
+    STEREO_ON: "Stereoscopic",
+    STEREO_OFF: "Monoscopic",
     SEEK_SLIDER: "Seek slider",
     VOLUME_SLIDER: "Volume slider",
     VOLUME_PERCENT: "{volume}% volume",
@@ -126,7 +128,18 @@ module.exports = {
     RIGHT_ARROW_KEY: 39,
     UP_ARROW_KEY: 38,
     DOWN_ARROW_KEY: 40,
-    ESCAPE_KEY: 27
+    ESCAPE_KEY: 27,
+    A: 65,
+    D: 68,
+    W: 87,
+    S: 83
+  },
+
+  DIRECTIONS: {
+    LEFT: "left",
+    RIGHT: "right",
+    UP: "up",
+    DOWN: "down"
   },
 
   // KeyboardEvent's which and keyCode properties are deprecated.
