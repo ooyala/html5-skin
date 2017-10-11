@@ -131,6 +131,8 @@ $zindex-ad-top-bar:                       12600 !default;
 $zindex-popover:                          12600 !default;
 $SUPER_Z_INDEX:                           20000 !default; //in core, here for bird's eye view tracking
 $zindex-fullscreen:                  2147483647 !default; //in screenfull, here for bird's eye view tracking
+$zindex_1000:                              1000 !default;
+$zindex_1001:                              1001 !default;
 
 //// Form states and alerts
 ////
