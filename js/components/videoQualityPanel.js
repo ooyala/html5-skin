@@ -40,7 +40,7 @@ var VideoQualityPanel = React.createClass({
    * @param {event} event The keyboard event object.
    */
   handleVideoQualityKeyDown: function(event) {
-    if (!event.target || !event.target.hasAttribute('data-focus-id')) {
+    if (!event.target || !event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)) {
       return;
     }
     switch (event.key) {
@@ -68,13 +68,14 @@ var VideoQualityPanel = React.createClass({
   focusOnMenuItemSibling: function(menuItem, useNextSibling) {
     var menuItemsList = [];
     if (this.menuDomElement) {
-      menuItemsList = this.menuDomElement.querySelectorAll('[data-focus-id]');
+      menuItemsList = this.menuDomElement.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
     }
     if (!menuItemsList.length) {
       return;
     }
     // Since these elements aren't actually next to each other in the DOM, their position
-    // relative to one another is implied from their tab order
+    // relative to one another is implied from their tab order, which should be the same as
+    // the one returned by querySelectorAll as long as tabindex is set to 0 (which should be the case).
     var siblingIndex = this.getMenuItemSiblingIndex(menuItemsList, menuItem, useNextSibling);
     var menuItem = menuItemsList[siblingIndex];
 

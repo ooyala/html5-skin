@@ -75,6 +75,7 @@ AccessibilityControls.prototype = {
    * Please note that this doesn't cover all possible cases at the moment, only
    * roles that are in use in this project have been added so far.
    * @private
+   * @return {Boolean} True if arrow key shortcuts are allowed, false otherwise.
    */
   areArowKeysAllowed: function() {
     var activeElementRole = '';

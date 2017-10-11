@@ -66,6 +66,10 @@
             @include highlight-tab();
           }
 
+          &:hover:active {
+            @include remove-highlight-tab();
+          }
+
           &.oo-selected {
             color: $blue-light;
             border-color: $blue-light;
@@ -91,6 +95,10 @@
 
           &:focus {
             @include highlight-tab();
+          }
+
+          &:hover:active {
+            @include remove-highlight-tab();
           }
 
           &.oo-selected {
@@ -168,6 +176,10 @@
             @include highlight-tab();
           }
 
+          &:hover:active {
+            @include remove-highlight-tab();
+          }
+
           &.oo-selected {
             color: $blue-light;
             font-weight: bold;
@@ -196,6 +208,10 @@
 
           &:focus {
             @include highlight-tab();
+          }
+
+          &:hover:active {
+            @include remove-highlight-tab();
           }
 
           &.oo-selected {

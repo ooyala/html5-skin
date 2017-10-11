@@ -4,6 +4,7 @@
 * @module Utils
 */
 var DeepMerge = require('deepmerge');
+var CONSTANTS = require('./../constants/constants');
 
 var Utils = {
 
@@ -20,7 +21,7 @@ var Utils = {
     if (!domElement || typeof domElement.querySelector !== 'function') {
       return;
     }
-    var query = '[data-focus-id]';
+    var query = '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']';
 
     if (excludeClass) {
       query += ':not(.' + excludeClass + ')';

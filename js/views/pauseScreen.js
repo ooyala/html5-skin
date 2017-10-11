@@ -12,6 +12,7 @@ var React = require('react'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon'),
     Utils = require('../components/utils'),
+    CONSTANTS = require('./../constants/constants'),
     AnimateMixin = require('../mixins/animateMixin'),
     ViewControlsVr = require('../components/viewControlsVr');
 
@@ -72,7 +73,7 @@ var PauseScreen = React.createClass({
    * @param {object} event Focus event object
    */
   handleFocus: function(event) {
-    var isControlBarElement = event.target || event.target.hasAttribute('data-focus-id');
+    var isControlBarElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
     if (isControlBarElement) {
       this.props.controller.state.accessibilityControlsEnabled = true;
     }

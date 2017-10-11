@@ -65,7 +65,8 @@ var ControlBar = React.createClass({
     if (!this.props.controller.state.focusedControl || !this.domNode) {
       return;
     }
-    var control = this.domNode.querySelector('[data-focus-id="' + this.props.controller.state.focusedControl + '"]');
+    var selector = '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + '="' + this.props.controller.state.focusedControl + '"]';
+    var control = this.domNode.querySelector(selector);
 
     if (control && typeof control.focus === 'function') {
       control.focus();
@@ -101,7 +102,7 @@ var ControlBar = React.createClass({
     evt.preventDefault();
     this.props.controller.toggleFullscreen();
   },
-  
+
   handleStereoVrClick: function () {
     if (this.vr) {
       this.vr.stereo = !this.vr.stereo;
@@ -266,7 +267,7 @@ var ControlBar = React.createClass({
    * @param {type} evt Focus event.
    */
   handleControlBarFocus: function(evt) {
-    var focusId = evt.target ? evt.target.getAttribute('data-focus-id') : null;
+    var focusId = evt.target ? evt.target.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR) : null;
     if (focusId) {
       this.props.controller.state.focusedControl = focusId;
     }
@@ -299,13 +300,13 @@ var ControlBar = React.createClass({
     }
     // Focusable elements on the control bar (this.domNode) are expected to have the
     // data-focus-id attribute
-    var focusableElements = this.domNode.querySelectorAll('[data-focus-id]');
+    var focusableElements = this.domNode.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
 
     if (focusableElements.length) {
       var firstFocusableElement = focusableElements[0];
       var lastFocusableElement = focusableElements[focusableElements.length - 1];
       // This indicates we're tabbing over the focusable control bar elements
-      if (evt.target.hasAttribute('data-focus-id')) {
+      if (evt.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)) {
         if (evt.shiftKey) {
           // Shift + tabbing on first element, focus on last
           if (evt.target === firstFocusableElement) {

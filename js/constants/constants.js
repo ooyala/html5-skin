@@ -128,6 +128,8 @@ module.exports = {
     MENU_ITEM_RADIO: "menuitemradio"
   },
 
+  KEYBD_FOCUS_ID_ATTR: "data-focus-id",
+
   A11Y_CTRLS: {
     SEEK_DELTA: 5,
     VOLUME_CHANGE_DELTA: 10
