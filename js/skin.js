@@ -73,6 +73,7 @@ var Skin = React.createClass({
   },
 
   /**
+   * @public
    * @description the function is called when we start the rotation
    * @param e - event
    */
@@ -90,6 +91,7 @@ var Skin = React.createClass({
   },
 
   /**
+   * @public
    * @description the function is called while rotation is active
    * @param e - event
    */
@@ -106,10 +108,11 @@ var Skin = React.createClass({
   },
 
   /**
+   * @public
    * @description the function is called when we stop the rotation
    */
   handleVrPlayerMouseUp: function() {
-    if (this.props.controller.videoVr) {
+    if (this.props.controller && this.props.controller.videoVr) {
       this.setState({
         isVrMouseDown: false,
         xVrMouseStart: 0,
@@ -122,6 +125,7 @@ var Skin = React.createClass({
   },
 
   /**
+   * @public
    * @description set isVrMouseDown to false for mouseleave event
    */
   handleVrPlayerMouseLeave: function () {
@@ -133,6 +137,7 @@ var Skin = React.createClass({
   },
 
   /**
+   * @public
    * @description set isVrMouseMove to false for click event
    */
   handleVrPlayerClick: function () {
@@ -141,6 +146,10 @@ var Skin = React.createClass({
     });
   },
 
+  /**
+   * @public
+   * @description set accessibilityControlsEnabled to true for focus event
+   */
   handleVrPlayerFocus: function() {
     this.props.controller.state.accessibilityControlsEnabled = true;
   },
@@ -154,6 +163,8 @@ var Skin = React.createClass({
    */
 
   getDirectionParams: function(pageX, pageY) {
+    pageX = this.checkIsNumber(pageX) ? pageX : 0;
+    pageY = this.checkIsNumber(pageY) ? pageY : 0;
     var dx = pageX - this.state.xVrMouseStart;
     var dy = pageY - this.state.yVrMouseStart;
     var maxDegreesX = 90;
@@ -180,6 +191,16 @@ var Skin = React.createClass({
       viewingDirectionValue = this.props.controller.state.viewingDirection[paramName]
     }
     return viewingDirectionValue
+  },
+
+  /**
+   * @description check if the value is number
+   * @private
+   * @param value {number}
+   * @returns {boolean}
+   */
+  checkIsNumber: function(value) {
+    return ( !isNaN(parseFloat(value)) && isFinite(value) );
   },
 
   render: function() {
