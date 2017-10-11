@@ -1,5 +1,5 @@
 var React = require('react');
-var DirectionControlVr = require('./DirectionControlVr');
+var DirectionControlVr = require('./directionControlVr');
 var Icon = require('../components/icon');
 var classnames = require('classnames');
 var _ = require('underscore');
