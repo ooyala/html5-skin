@@ -47,8 +47,17 @@ describe('PauseScreen', function () {
       }
     };
 
+    var handleVrPlayerClick = function() {};
     // Render pause screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<PauseScreen skinConfig={mockSkinConfig} controller={mockController} contentTree={mockContentTree} closedCaptionOptions={{cueText: "sample text"}}/>);
+    var DOM = TestUtils.renderIntoDocument(
+      <PauseScreen
+        skinConfig={mockSkinConfig}
+        controller={mockController}
+        contentTree={mockContentTree}
+        handleVrPlayerClick={handleVrPlayerClick}
+        closedCaptionOptions={{cueText: "sample text"}}
+      />
+    );
 
     var pauseIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-action-icon-pause');
     TestUtils.Simulate.click(pauseIcon);

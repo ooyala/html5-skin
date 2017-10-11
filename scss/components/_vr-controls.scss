@@ -1,0 +1,97 @@
+.oo-vr-icon {
+  &--move {
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    cursor: pointer;
+    outline: none;
+    &--left {
+      top: 40%;
+      left: 0;
+      bottom: auto;
+      right: auto;
+    }
+    &--right {
+      top: 40%;
+      left: auto;
+      bottom: auto;
+      right: 0;
+    }
+    &--up {
+      top: 5%;
+      left: 33%;
+      bottom: auto;
+      right: auto;
+    }
+    &--down {
+      top: auto;
+      left: 33%;
+      bottom: -5%;
+      right: auto;
+    }
+  }
+  &-container {
+    position: absolute;
+    display: block;
+    top: 5%;
+    left: calc(95% - 15px);
+    width: $vr-controls-full-size;
+    height: $vr-controls-full-size;
+    background-position: 0 0;
+    background-size: 100% 100%;
+    opacity: 1;
+    z-index: 1001;
+    @include vendor-prefixes (transition, opacity .3s ease-in-out);
+    &--hidden {
+      opacity: 0;
+    }
+  }
+  &--type {
+    display: block;
+    width: 23px;
+    height: 17px;
+    background-position: 0 0;
+    background-size: 100% 100%;
+    &--stereoOn {
+      -webkit-filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
+      filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
+    }
+    &--stereoOff {}
+  }
+
+  &--substrate {
+    position: absolute;
+    display: block;
+    width: calc(#{$vr-controls-full-size} + 4px);
+    height: calc(#{$vr-controls-full-size} + 4px);
+    left: -2px;
+    background: #000000;
+    opacity: 0.3;
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+    border-radius: 100%
+  }
+
+  &--icon-symbol {
+    position: absolute;
+    display: block;
+    opacity: 1;
+    font-size: $vr-controls-full-size;
+    line-height: normal;
+    @include vendor-prefixes (transition, opacity .3s ease-in-out);
+    &--hidden {
+      opacity: 0;
+    }
+  }
+}
+.oo-video-type {
+  @include vendor-prefixes (transition, all .3s ease-in-out);
+  &:hover,
+  &:active,
+  &:focus {
+    .oo-vr-icon--type {
+      -webkit-filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
+      filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
+    }
+  }
+}

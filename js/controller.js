@@ -28,6 +28,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
   var Html5Skin = function (mb, id) {
     this.mb = mb;
     this.id = id;
+    this.accessibilityControls = null;
+    this.videoVrSource = null;
+    this.videoVr = false;
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
@@ -73,7 +76,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoAspectRatio": 0,
       "pluginsElement": null,
       "pluginsClickElement": null,
-      "buffering": false,
+      "buffering": false, // Do NOT set manually, call setBufferingState
       "mainVideoBuffered": null,
       "mainVideoPlayhead": 0,
       "adVideoPlayhead": 0,
@@ -133,15 +136,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "controlBarVisible": true,
       "forceControlBarVisible": false,
       "timer": null,
+      "bufferingTimer": null,
       "errorCode": null,
       "isSubscribed": false,
       "isPlaybackReadySubscribed": false,
       "isSkipAdClicked": false,
       "isInitialPlay": false,
+      "initialPlayHasOccurred": false,
       "isFullScreenSupported": false,
       "isVideoFullScreenSupported": false,
       "isFullWindow": false,
-      "autoPauseDisabled": false
+      "autoPauseDisabled": false,
+
+      "viewingDirection": {yaw: 0, roll: 0, pitch: 0}
     };
 
     this.init();
@@ -153,6 +160,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
       this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_CREATED, 'customerUi', _.bind(this.onVcVideoElementCreated, this));
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
+      this.mb.subscribe(OO.EVENTS.SET_EMBED_CODE, 'customerUi', _.bind(this.onSetEmbedCode, this));
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED_AFTER_OOYALA_AD, 'customerUi', _.bind(this.onEmbedCodeChangedAfterOoyalaAd, this));
       this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
@@ -163,6 +171,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
+      this.mb.subscribe(OO.EVENTS.VIDEO_VR, 'customerUi', _.bind(this.onSetVideoVr, this));
+      this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
+      this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -189,6 +200,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
         this.mb.subscribe(OO.EVENTS.REPLAY, "customerUi", _.bind(this.onReplay, this));
         this.mb.subscribe(OO.EVENTS.ASSET_DIMENSION, "customerUi", _.bind(this.onAssetDimensionsReceived, this));
+
+        this.mb.subscribe(OO.EVENTS.HA_WILL_FAILOVER, "customerUi", _.bind(this.onHAWillFailover, this));
+        this.mb.subscribe(OO.EVENTS.HA_FAILOVER_COMPLETE, "customerUi", _.bind(this.onHAFailoverComplete, this));
+        this.mb.subscribe(OO.EVENTS.HA_FAILOVER_ERROR, "customerUi", _.bind(this.onHAFailoverError, this));
+
         // PLAYBACK_READY is a fundamental event in the init process that can be unsubscribed by errors.
         // If and only if such has occured, it needs a route to being resubscribed.
         if(!this.state.isPlaybackReadySubscribed) {
@@ -222,6 +238,25 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    onHAWillFailover: function(){
+      this.state.failoverInProgress = true;
+      this.state.pauseAnimationDisabled = true;
+      this.renderSkin();
+    },
+
+    onHAFailoverComplete: function(){
+      this.state.failoverInProgress = false;
+      this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+      this.renderSkin();
+    },
+
+    onHAFailoverError: function(){
+      this.state.failoverInProgress = false;
+      // this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
+      this.renderSkin();
+    },
+
+
     /*--------------------------------------------------------------------
      event listeners from core player -> regulate skin STATE
      ---------------------------------------------------------------------*/
@@ -245,7 +280,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // Setting the tabindex will let some screen readers recognize this element as a group
       // identified with the ARIA label above. We set it to -1 in order to prevent actual keyboard focus
       this.state.mainVideoInnerWrapper.attr('tabindex', '-1');
-      this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
+
+      if (!$('.oo-player-skin').length) {
+        this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
+      }
 
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
@@ -257,8 +295,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
       }
 
-      this.accessibilityControls = new AccessibilityControls(this); //keyboard support
+      this.accessibilityControls = this.accessibilityControls || new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
+    },
+
+    onSetVideoVr: function(event, params) {
+      this.videoVr = true;
+      if (params) {
+        this.videoVrSource = params.source || null; //if we need video vr params
+      }
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -293,12 +338,29 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (mountNode) {
         ReactDOM.unmountComponentAtNode(mountNode);
       }
-      this.cleanUpEventListeners()
+      this.stopBufferingTimer();
+      this.cleanUpEventListeners();
       this.mb = null;
     },
 
     cleanUpEventListeners : function() {
       this.accessibilityControls.cleanUp()
+    },
+
+
+    /**
+     * Event handler for SET_EMBED_CODE message bus event.
+     * @private
+     * @param {string} event The event's name.
+     * @param {string} embedCode The video embed code that will be set.
+     */
+    onSetEmbedCode: function(event, embedCode) {
+      // If a video has played and we're setting a new embed code it means that we
+      // will be transitioning to a new video. We make sure to display the loading screen.
+      if (this.state.initialPlayHasOccurred && this.state.assetId !== embedCode) {
+        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+        this.renderSkin();
+      }
     },
 
     onEmbedCodeChangedAfterOoyalaAd: function(event, embedCode, options) {
@@ -331,6 +393,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.playerParam = DeepMerge(this.state.playerParam, options);
       }
       this.subscribeBasicPlaybackEvents();
+      // New video starts at 0, duration is still unknown.
+      // Setting this here will prevent flashing a full progress bar on video transitions.
+      this.skin.updatePlayhead(0, 0, 0, 0);
     },
 
     onAuthorizationFetched: function(event, authorization) {
@@ -340,7 +405,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onContentTreeFetched: function (event, contentTree) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
-      this.renderSkin({"contentTree": contentTree});
+      var duration = Utils.ensureNumber(contentTree.duration, 0) / 1000;
+      this.skin.updatePlayhead(null, duration);
+      this.renderSkin({ contentTree: contentTree });
     },
 
     onSkinMetaDataFetched: function (event, skinMetaData) {
@@ -379,6 +446,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
+      // Make sure playhead is reset when we switch to a new video
+      this.skin.updatePlayhead(0, contentTree.duration, 0, 0);
       this.renderSkin({"contentTree": contentTree});
     },
 
@@ -396,6 +465,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVolumeChanged: function (event, newVolume) {
+      if (typeof this.state.volumeState.volume === "number") {
+        this.state.volumeState.oldVolume = this.state.volumeState.volume;
+      }
       if (newVolume <= 0) {
         this.state.volumeState.muted = true;
         this.state.volumeState.volume = 0;
@@ -488,6 +560,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onInitialPlay: function() {
       this.state.isInitialPlay = true;
+      this.state.initialPlayHasOccurred = true;
       this.startHideControlBarTimer();
     },
 
@@ -506,7 +579,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (source == OO.VIDEO.ADS) {
-        this.state.buffering = false;
         this.state.adPauseAnimationDisabled = true;
         this.state.pluginsElement.addClass("oo-showing");
         this.state.pluginsClickElement.removeClass("oo-showing");
@@ -517,9 +589,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.renderSkin();
         }
       }
+      // For the off chance that a video plugin resumes playback without firing
+      // the ON_BUFFERED event. This will have no effect if it was set previously
+      this.setBufferingState(false);
     },
 
     onPause: function(event, source, pauseReason) {
+      if(this.state.failoverInProgress) {
+        return;
+      }
+
       if (pauseReason === CONSTANTS.PAUSE_REASON.TRANSITION){
         this.state.pauseAnimationDisabled = true;
         this.endSeeking();
@@ -531,6 +610,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPaused: function(event, videoId) {
+      if(this.state.failoverInProgress) {
+        return;
+      }
+
       if (videoId != this.focusedElement || this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN) { return; }
       if (videoId == OO.VIDEO.MAIN && this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
         if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
@@ -570,6 +653,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var duration = this.state.mainVideoDuration;
       this.state.duration = duration;
       this.skin.updatePlayhead(duration, duration, duration);
+      this.state.playerState = CONSTANTS.STATE.END;
 
       if (this.state.upNextInfo.delayedSetEmbedCodeEvent) {
         var delayedContentData = this.state.upNextInfo.delayedContentData;
@@ -598,12 +682,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
         this.mb.publish(OO.EVENTS.END_SCREEN_SHOWN);
       }
-      if (!Utils.canRenderSkin()){
+      if (!Utils.canRenderSkin()) {
         //iPhone < iOS10 end screen is the same as start screen, except for the replay button
         this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       }
-      this.skin.updatePlayhead(this.state.duration, this.state.duration, this.state.duration);
-      this.state.playerState = CONSTANTS.STATE.END;
+      // In case a video plugin fires PLAYED event after stalling without firing BUFFERED or PLAYING first
+      this.setBufferingState(false);
       this.renderSkin();
     },
 
@@ -615,6 +699,29 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
         this.state.mainVideoDuration = this.state.duration;
       }
+    },
+
+    onTouchMove: function(params) {
+      if (this.videoVr) {
+        this.mb.publish(OO.EVENTS.TOUCH_MOVE, this.focusedElement, params);
+      }
+    },
+
+    checkVrDirection: function () {
+      if (this.videoVr) {
+        this.mb.publish(OO.EVENTS.CHECK_VR_DIRECTION, this.focusedElement);
+      }
+    },
+
+    setViewingDirection: function(event, yaw, roll, pitch) {
+      this.state.viewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
+    },
+
+    recreatingUI: function (event, elementId, params, settings) {
+      if (!$('.oo-player-skin').length) {
+        this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
+      }
+      this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
     },
 
     onSeeked: function(event) {
@@ -632,28 +739,91 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onPlaybackReady: function(event) {
+    onPlaybackReady: function(event, params) {
+      if(this.state.failoverInProgress) {
+        return;
+      }
+      params = params || {};
+
       if (this.state.afterOoyalaAd) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
       } else {
-        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+        // If the core tells us that it will autoplay then we just display the loading
+        // spinner, otherwise we need to render the big play button.
+        if (params.willAutoplay) {
+          this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+        } else {
+          this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+        }
       }
 
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
+    /**
+     * Fired by the video plugin when the video stalls due to buffering.
+     * @private
+     */
     onBuffering: function(event) {
-      if (this.state.isInitialPlay == false && this.state.screenToShow == CONSTANTS.SCREEN.START_SCREEN) {
-        this.state.buffering = false;
+      if (this.state.isInitialPlay === false && this.state.screenToShow === CONSTANTS.SCREEN.START_SCREEN) {
+        this.setBufferingState(false);
       } else {
-        this.state.buffering = true;
+        this.startBufferingTimer();
       }
-      this.renderSkin();
     },
 
+    /**
+     * Fired by the video plugin when video stalling has ended.
+     * @private
+     */
     onBuffered: function(event) {
-      if (this.state.buffering === true) {
-        this.state.buffering = false;
+      this.setBufferingState(false);
+    },
+
+    /**
+     * Starts a timer that will call setBufferingState() with a value of true after the
+     * time specified in BUFFERING_SPINNER_DELAY has elapsed.
+     * @private
+     */
+    startBufferingTimer: function() {
+      this.stopBufferingTimer();
+      var bufferingSpinnerDelay = Utils.getPropertyValue(this.skin.props.skinConfig, 'general.bufferingSpinnerDelay');
+      bufferingSpinnerDelay = Utils.constrainToRange(bufferingSpinnerDelay, 0, CONSTANTS.UI.MAX_BUFFERING_SPINNER_DELAY);
+
+      this.state.bufferingTimer = setTimeout(function() {
+        this.setBufferingState(true);
+      }.bind(this), bufferingSpinnerDelay);
+    },
+
+    /**
+     * Cancels the timer that displays the loading spinner. Should be called when
+     * stalling (buffering) ends, playback resumes, etc.
+     * @private
+     */
+    stopBufferingTimer: function() {
+      clearTimeout(this.state.bufferingTimer);
+      this.state.bufferingTimer = null;
+    },
+
+    /**
+     * Applies the 'buffering' state of the skin which determines whether the
+     * player is stalled. This also determines whether the loading spinner is displayed or not.
+     * IMPORTANT:
+     * The value of this.state.buffering should never be set manually. This function
+     * should be called whenever setting this value.
+     * @private
+     * @param {Boolean} value Must pass true if the player is in buffering state, false otherwise
+     */
+    setBufferingState: function(value) {
+      var buffering = !!value;
+      // Always make sure buffering timer is disabled when buffering has stopped.
+      // This will have no effect if timer hasn't been started.
+      if (!buffering) {
+        this.stopBufferingTimer();
+      }
+      // Only render skin if new state is different
+      if (this.state.buffering !== buffering) {
+        this.state.buffering = buffering;
         this.renderSkin();
       }
     },
@@ -683,6 +853,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.pluginsClickElement.removeClass("oo-showing");
       // Restore anamorphic videos fix after ad playback if necessary
       this.trySetAnamorphicFixState(true);
+      // In case ad was skipped or errored while stalled
+      this.setBufferingState(false);
       this.renderSkin();
     },
 
@@ -804,6 +976,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVideoElementFocus: function(event, source) {
+      // Switching to another element, clear buffering state which applies to current element
+      if (this.focusedElement !== source) {
+        this.setBufferingState(false);
+      }
       this.focusedElement = source;
       // Make sure that the skin uses the captions that correspond
       // to the newly focused video element
@@ -1097,6 +1273,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onErrorEvent: function(event, errorCode){
       this.unsubscribeBasicPlaybackEvents();
+      this.setBufferingState(false);
 
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.state.playerState = CONSTANTS.STATE.ERROR;
@@ -1119,6 +1296,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE_AFTER_OOYALA_AD, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE, 'customerUi');
     },
 
     unsubscribeBasicPlaybackEvents: function() {
@@ -1138,6 +1316,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.CHECK_VR_DIRECTION, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.TOUCH_MOVE, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi');
+      this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
@@ -1223,6 +1405,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
     },
 
+    toggleStereoVr: function () {
+      this.mb.publish(OO.EVENTS.TOGGLE_STEREO_VR);
+    },
+
+    moveVrToDirection: function (rotate, direction) {
+      this.mb.publish(OO.EVENTS.MOVE_VR_TO_DIRECTION, this.focusedElement, rotate, direction);
+    },
+
     togglePlayPause: function() {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
@@ -1269,27 +1459,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     handleMuteClick: function() {
-      var newVolumeSettings = {};
       if (!this.state.volumeState.muted) {
-        //if we're muting, save the current volume so we can
-        //restore it when we un-mute
-        newVolumeSettings = {
-          oldVolume: this.state.volumeState.volume,
-          muted: !this.state.volumeState.muted
-        };
         this.setVolume(0);
-      }
-      else {
-        //restore the volume to the previous setting
-        newVolumeSettings = {
-          oldVolume: 0,
-          muted: !this.state.volumeState.muted
-        };
+      } else {
         this.setVolume(this.state.volumeState.oldVolume);
       }
-
-      this.state.volumeState.oldVolume = newVolumeSettings.oldVolume;
-      this.state.volumeState.muted = newVolumeSettings.muted;
     },
 
     toggleShareScreen: function() {

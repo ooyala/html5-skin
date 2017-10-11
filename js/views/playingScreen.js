@@ -12,6 +12,7 @@ var React = require('react'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     CONSTANTS = require('../constants/constants');
+    ViewControlsVr = require('../components/viewControlsVr');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -19,6 +20,7 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
+
     return {
       controlBarVisible: true,
       timer: null
@@ -56,18 +58,6 @@ var PlayingScreen = React.createClass({
     if (this.isMounted()) {
       this.props.controller.startHideControlBarTimer();
     }
-  },
-
-  handlePlayerMouseUp: function(event) {
-    // pause or play the video if the skin is clicked on desktop
-    if (!this.isMobile) {
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
-
-      this.props.controller.togglePlayPause();
-      this.props.controller.state.accessibilityControlsEnabled = true;
-    }
-    // for mobile, touch is handled in handleTouchEnd
   },
 
   handleKeyDown: function(event) {
@@ -115,16 +105,50 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
-    else {
-      this.props.controller.togglePlayPause();
+    else if (!this.props.controller.videoVr) {
+      this.props.controller.togglePlayPause(event);
     }
   },
 
-  handlePlayerMouseMove: function() {
+  handlePlayerMouseDown: function(e) {
+    this.props.handleVrPlayerMouseDown(e);
+  },
+
+  handlePlayerMouseMove: function(e) {
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
+    this.props.handleVrPlayerMouseMove(e);
+  },
+
+  handlePlayerMouseUp: function(e) {
+    // pause or play the video if the skin is clicked on desktop
+    if (!this.isMobile) {
+      e.stopPropagation(); // W3C
+      e.cancelBubble = true; // IE
+      this.props.controller.state.accessibilityControlsEnabled = true;
+      if (!this.props.controller.videoVr) {
+        this.props.controller.togglePlayPause();
+      }
+    }
+    this.props.handleVrPlayerMouseUp();
+    // for mobile, touch is handled in handleTouchEnd
+  },
+
+  handlePlayerMouseLeave: function () {
+    this.props.handleVrPlayerMouseLeave();
+  },
+
+  handlePlayerClicked: function (event) {
+    if (!this.props.isVrMouseMove) {
+      this.props.controller.togglePlayPause(event);
+    }
+    this.props.handleVrPlayerClick();
+  },
+
+  handlePlayerFocus: function() {
+    this.props.handleVrPlayerFocus();
   },
 
   showControlBar: function(event) {
@@ -155,21 +179,38 @@ var PlayingScreen = React.createClass({
         controlBarVisible={this.state.controlBarVisible}
         currentPlayhead={this.props.currentPlayhead}/> : null;
 
-    return (
-    <div className="oo-state-screen oo-playing-screen"
-         ref="PlayingScreen"
-         onMouseOver={this.showControlBar}
-         onMouseOut={this.hideControlBar}
-         onMouseMove={this.handlePlayerMouseMove}
-         onKeyDown={this.handleKeyDown}>
+    var viewControlsVr = this.props.controller.videoVr ?
+      <ViewControlsVr
+        {...this.props}
+        controlBarVisible={this.state.controlBarVisible}
+      /> : null;
 
-      <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
+    return (
+      <div
+        className="oo-state-screen oo-playing-screen"
+        ref="PlayingScreen"
+        onMouseOver={this.showControlBar}
+        onMouseOut={this.hideControlBar}
+        onKeyDown={this.handleKeyDown}
+      >
+        <div
+          className="oo-state-screen-selectable"
+          onMouseDown={this.handlePlayerMouseDown}
+          onMouseUp={this.handlePlayerMouseUp}
+          onMouseMove={this.handlePlayerMouseMove}
+          onMouseLeave={this.handlePlayerMouseLeave}
+          onTouchEnd={this.handleTouchEnd}
+          onClick={this.handlePlayerClicked}
+          onFocus={this.handlePlayerFocus}
+        />
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
-      <div className="oo-interactive-container" onFocus={this.handleFocus}>
+        {viewControlsVr}
+
+        <div className="oo-interactive-container" onFocus={this.handleFocus}>
 
         {this.props.closedCaptionOptions.enabled ?
           <TextTrack

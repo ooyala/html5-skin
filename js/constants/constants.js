@@ -1,6 +1,6 @@
 /********************************************************************
-  CONSTANT
-*********************************************************************/
+ CONSTANT
+ *********************************************************************/
 module.exports = {
   STATE: {
     START : "start",
@@ -40,9 +40,7 @@ module.exports = {
     OFF: "Off",
     DISCOVER: "Discover",
     UP_NEXT: "Up next",
-    VIDEO_QUALITY: "Video Quality",
     SHARE_CALL_TO_ACTION: "Invest In Social Change",
-    SHARE: "Share",
     START_AT: "Start at",
     EMBED: "Embed",
     EMAIL: "Email",
@@ -114,7 +112,9 @@ module.exports = {
     VOLUME_PERCENT: "{volume}% volume",
     TIME_DISPLAY: "{currentTime} of {totalTime}",
     TIME_DISPLAY_LIVE: "Live video",
-    TIME_DISPLAY_DVR: "{currentTime} of {totalTime} live video"
+    TIME_DISPLAY_DVR: "{currentTime} of {totalTime} live video",
+    STEREO_ON: "Stereoscopic",
+    STEREO_OFF: "Monoscopic"
   },
 
   A11Y_CTRLS: {
@@ -128,7 +128,18 @@ module.exports = {
     RIGHT_ARROW_KEY: 39,
     UP_ARROW_KEY: 38,
     DOWN_ARROW_KEY: 40,
-    ESCAPE_KEY: 27
+    ESCAPE_KEY: 27,
+    A: 65,
+    D: 68,
+    W: 87,
+    S: 83
+  },
+
+  DIRECTIONS: {
+    LEFT: "left",
+    RIGHT: "right",
+    UP: "up",
+    DOWN: "down"
   },
 
   // KeyboardEvent's which and keyCode properties are deprecated.
@@ -148,7 +159,8 @@ module.exports = {
 
   UI: {
     defaultScrubberBarHeight: 4,
-    DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15
+    DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15,
+    MAX_BUFFERING_SPINNER_DELAY: 60000 // Max allowed value of bufferingSpinnerDelay in milliseconds
   },
 
   WATERMARK: {

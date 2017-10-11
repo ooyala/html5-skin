@@ -22,11 +22,16 @@ var ControlBar = React.createClass({
     this.isMobile = this.props.controller.state.isMobile;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
+    this.vr = null;
+    if (this.props.controller && this.props.controller.videoVrSource && this.props.controller.videoVrSource.vr) {
+      this.vr = this.props.controller.videoVrSource.vr;
+    }
     return {};
   },
 
   componentDidMount: function () {
     window.addEventListener('orientationchange', this.closePopovers);
+    document.addEventListener('keydown', this.handleControlBarKeyDown);
     this.restoreFocusedControl();
   },
 
@@ -44,6 +49,7 @@ var ControlBar = React.createClass({
       this.props.controller.hideVolumeSliderBar();
     }
     window.removeEventListener('orientationchange', this.closePopovers);
+    document.removeEventListener('keydown', this.handleControlBarKeyDown);
   },
 
   /**
@@ -91,6 +97,15 @@ var ControlBar = React.createClass({
     evt.cancelBubble = true;
     evt.preventDefault();
     this.props.controller.toggleFullscreen();
+  },
+  
+  handleStereoVrClick: function () {
+    if (this.vr) {
+      this.vr.stereo = !this.vr.stereo;
+    }
+    if(this.props.controller && typeof this.props.controller.toggleStereoVr === "function") {
+      this.props.controller.toggleStereoVr();
+    }
   },
 
   handleLiveClick: function (evt) {
@@ -219,6 +234,60 @@ var ControlBar = React.createClass({
     this.props.controller.state.focusedControl = null;
   },
 
+  /**
+   * Will handle the keydown event when the controlBar is active and it will restrict
+   * tab navigation to elements that are within it when the player is in fullscreen mode.
+   * Note that this only handles the edge cases that are needed in order to loop the tab
+   * focus. Tabbing in between the elements is handled by the browser.
+   * @private
+   * @param {Object} evt Keydown event object.
+   */
+  handleControlBarKeyDown: function(evt) {
+    if (
+      evt.key !== CONSTANTS.KEY_VALUES.TAB ||
+      !this.props.controller.state.fullscreen ||
+      !this.domNode ||
+      !evt.target
+    ) {
+      return;
+    }
+    // Focusable elements on the control bar (this.domNode) are expected to have the
+    // data-focus-id attribute
+    var focusableElements = this.domNode.querySelectorAll('[data-focus-id]');
+
+    if (focusableElements.length) {
+      var firstFocusableElement = focusableElements[0];
+      var lastFocusableElement = focusableElements[focusableElements.length - 1];
+      // This indicates we're tabbing over the focusable control bar elements
+      if (evt.target.hasAttribute('data-focus-id')) {
+        if (evt.shiftKey) {
+          // Shift + tabbing on first element, focus on last
+          if (evt.target === firstFocusableElement) {
+            evt.preventDefault();
+            lastFocusableElement.focus();
+          }
+        } else {
+          // Tabbing on last element, focus on first
+          if (evt.target === lastFocusableElement) {
+            evt.preventDefault();
+            firstFocusableElement.focus();
+          }
+        }
+      // Keydown happened on a non-controlbar element
+      } else {
+        evt.preventDefault();
+
+        if (evt.shiftKey) {
+          lastFocusableElement.focus();
+        } else {
+          firstFocusableElement.focus();
+        }
+      }
+    } else {
+      OO.log('ControlBar: No focusable elements found');
+    }
+  },
+
   populateControlBar: function () {
     var dynamicStyles = this.setupItemStyle();
     var playIcon, playPauseAriaLabel;
@@ -249,6 +318,16 @@ var ControlBar = React.createClass({
     } else {
       fullscreenIcon = "expand";
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
+    }
+
+    var stereoIcon, stereoAriaLabel;
+    if (this.vr) {
+      stereoIcon = "stereoOff";
+      stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
+      if (this.vr.stereo) {
+        stereoIcon = "stereoOn";
+        stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
+      }
     }
 
     var totalTime = 0;
@@ -415,7 +494,26 @@ var ControlBar = React.createClass({
         </a>
       }).bind(this),
 
-      "fullscreen": (function (alignment) {
+      "stereoscopic": (function (alignment) {
+        var checkStereoBtn = this.vr && this.isMobile;
+        return (!checkStereoBtn) ? null :
+          <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
+            onClick={this.handleStereoVrClick}
+            onMouseUp={Utils.blurOnMouseUp}
+            onMouseOver={this.highlight}
+            onMouseOut={this.removeHighlight}
+            key="stereo"
+            data-focus-id="stereo"
+            tabIndex="0"
+            aria-label={stereoAriaLabel}
+          >
+            <Icon {...this.props} icon={stereoIcon} style={dynamicStyles.iconCharacter} />
+            <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple}
+              bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
+          </button>
+      }).bind(this),
+
+    "fullscreen": (function (alignment) {
         return <button className="oo-fullscreen oo-control-bar-item"
           onClick={this.handleFullscreenClick}
           onMouseUp={Utils.blurOnMouseUp}
@@ -459,7 +557,6 @@ var ControlBar = React.createClass({
         break;
       }
     }
-
 
     //if no hours, add extra space to control bar width:
     var hours = parseInt(this.props.duration / 3600, 10);

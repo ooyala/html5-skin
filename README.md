@@ -59,7 +59,9 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 
 5. After cloning, just `cd` in there, install dependencies by running `npm install`
 
-6. This project also makes use of *git submodule* for the config directory. This needs to be initialized
+6. One of our dependencies currently has an issue in which it incorrectly declares React as a dependency rather than a peer dependency. This began causing build issues after React 16.0.0 was released. Until this issue is addressed, you can work around it by running `npm dedupe`
+
+7. This project also makes use of *git submodule* for the config directory. This needs to be initialized
 using *git submodule* commands:
    ```sh
        git submodule init
@@ -68,7 +70,7 @@ using *git submodule* commands:
    ```
    The *init* and *update* should only need to be run once, afterward *git pull* will update the submodule as well as the parent repo.
 
-7. Build the project by running: `gulp`
+8. Build the project by running: `gulp`
 
    This will perform an initial build and start a watch that will update the `build/` folder with any changes made in `js/` or `scss/` folders.
 
@@ -149,7 +151,7 @@ Advanced customization is readily available by modifying JS files. Follow [Devel
 
 ## How to Contribute
 
-If you send a pull request, please do it against the [`master` branch](https://github.com/ooyala/html5-skin/tree/master). We maintain stable branches separately but we don't accept pull requests to them directly. 
+If you send a pull request, please do it against the [`master` branch](https://github.com/ooyala/html5-skin/tree/master). We maintain stable branches separately but we don't accept pull requests to them directly.
 
 We will do our best to keep the `master` branch in good shape, with tests passing at all times. But our `master` branch is under active development and may contain changes that your application might not be compatible with. We recommend using [latest stable version](https://github.com/ooyala/html5-skin/tree/stable) for production.
 

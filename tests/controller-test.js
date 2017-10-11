@@ -1,3 +1,38 @@
+/*
+ *
+ *  !!!IMPORTANT!!!
+ *
+ *  This file is deprecated. Please use html5skin-test.js for all new controller unit tests.
+ *
+ *  !!!IMPORTANT!!!
+ *
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 jest.dontMock('../js/controller');
 jest.dontMock('screenfull');
 jest.dontMock('../js/constants/constants');
@@ -180,6 +215,9 @@ OO = {
       exitFullWindow: function() {},
       exitFullWindowOnEscKey: function() {},
       onBuffered: function() {},
+      setBufferingState: function() {},
+      startBufferingTimer: function() {},
+      stopBufferingTimer: function() {},
       onInitialPlayRequested: function() {},
       unsubscribeBasicPlaybackEvents: function() {},
       resetUpNextInfo: function(a) {},
@@ -212,7 +250,8 @@ OO = {
       createPluginElements: function() {},
       findMainVideoElement: function(a) {},
       loadConfigData: function(a, b, c, d) {},
-      cleanUpEventListeners: function(){}
+      cleanUpEventListeners: function(){},
+      toggleStereoVr: function () {}
     };
 
 
@@ -407,6 +446,7 @@ OO = {
 
     Html5Skin.toggleMute.call(controllerMock, true);
     Html5Skin.toggleMute.call(controllerMock, false);
+    Html5Skin.toggleStereoVr.call(controllerMock);
 
     controllerMock.state.playerState = CONSTANTS.STATE.START;
     Html5Skin.togglePlayPause.call(controllerMock);
@@ -561,7 +601,7 @@ OO = {
         Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', 'elementId', {});
         expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.INITIAL_SCREEN);
       });
-      
+
     });
 
     describe('Controller testing Ooyala Ads', function () {
@@ -577,6 +617,7 @@ OO = {
 
       it('test start screen is shown on playback ready', function() {
         controllerMock.state.afterOoyalaAd = false;
+        controllerMock.state.initialPlayHasOccurred = false;
         Html5Skin.onPlaybackReady.call(controllerMock, 'customerUi');
         expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
       });
