@@ -36,6 +36,7 @@ var Popover = React.createClass({
         this.props.closeAction({
           restoreToggleButtonFocus: targetIsChildElement
         });
+        break;
       default:
         break;
     }
@@ -44,8 +45,8 @@ var Popover = React.createClass({
   render: function() {
     return (
       <div
-        className={this.props.popoverClassName}
-        ref={function(e) { this.domElement = e; }.bind(this)}>
+        ref={function(e) { this.domElement = e; }.bind(this)}
+        className={this.props.popoverClassName}>
         {this.props.children}
       </div>
     );

@@ -4,6 +4,7 @@
  * @module VideoQualityPanel
  */
 var React = require('react'),
+    ScrollArea = require('react-scrollbar/dist/no-css'),
     ClassNames = require('classnames'),
     Icon = require('../components/icon')
     CONSTANTS = require('../constants/constants');
@@ -28,6 +29,86 @@ var VideoQualityPanel = React.createClass({
     this.props.closeAction({
       restoreToggleButtonFocus: true
     });
+  },
+
+  /**
+   * Keydown event handler. Implements arrow key navigation for menu items.
+   * TODO:
+   * Export this logic to a generic higher order component so that this is reusable
+   * by other menu components.
+   * @private
+   * @param {event} event The keyboard event object.
+   */
+  handleVideoQualityKeyDown: function(event) {
+    if (!event.target || !event.target.hasAttribute('data-focus-id')) {
+      return;
+    }
+    switch (event.key) {
+      case CONSTANTS.KEY_VALUES.ARROW_UP:
+      case CONSTANTS.KEY_VALUES.ARROW_LEFT:
+        event.preventDefault();
+        this.focusOnMenuItemSibling(event.target, false);
+        break;
+      case CONSTANTS.KEY_VALUES.ARROW_DOWN:
+      case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
+        event.preventDefault();
+        this.focusOnMenuItemSibling(event.target, true);
+        break;
+      default:
+        break;
+    }
+  },
+
+  /**
+   * Finds the previous or next sibling of the given menu item and gives it focus.
+   * @private
+   * @param {Element} menuItem The menuItem element whose sibling we want to focus on.
+   * @param {Boolean} useNextSibling Choses the sibling next to menuItem when true and the previous one when false.
+   */
+  focusOnMenuItemSibling: function(menuItem, useNextSibling) {
+    var menuItemsList = [];
+    if (this.menuDomElement) {
+      menuItemsList = this.menuDomElement.querySelectorAll('[data-focus-id]');
+    }
+    if (!menuItemsList.length) {
+      return;
+    }
+    // Since these elements aren't actually next to each other in the DOM, their position
+    // relative to one another is implied from their tab order
+    var siblingIndex = this.getMenuItemSiblingIndex(menuItemsList, menuItem, useNextSibling);
+    var menuItem = menuItemsList[siblingIndex];
+
+    if (menuItem && typeof menuItem.focus === 'function') {
+      menuItem.focus();
+    }
+  },
+
+  /**
+   * Gets the index of the previous or next menu item on the list relative to
+   * the given menu item. The returned index will loop around so that the previous sibling of
+   * the first element is the last element, and the next sibling of the last element is
+   * the first element.
+   * @private
+   * @param {NodeList} menuItemList An ordered list of elements that comprise a menu.
+   * @param {Element} menuItem The menu item whose sibling we want to find.
+   * @param {Boolean} useNextSibling Choses the sibling next to menuItem when true and the previous one when false.
+   * @return {Number} The index where the sibling menu items is located in the list, -1 if menuItem is absent from the list.
+   */
+  getMenuItemSiblingIndex: function (menuItemList, menuItem, useNextSibling) {
+    if (!menuItemList || !menuItemList.length) {
+      return -1;
+    }
+    var menuItemIndex = Array.prototype.indexOf.call(menuItemList, menuItem);
+    var siblingIndex = useNextSibling ? menuItemIndex + 1 : menuItemIndex - 1;
+    // Note that the code below will have the intended result even if
+    // menuItemIndex is -1
+    if (siblingIndex < 0) {
+      siblingIndex = menuItemList.length - 1;
+    }
+    if (siblingIndex >= menuItemList.length) {
+      siblingIndex = 0;
+    }
+    return siblingIndex;
   },
 
   addAutoButton: function(bitrateButtons) {
@@ -112,15 +193,19 @@ var VideoQualityPanel = React.createClass({
     });
 
     return (
-      <div className={qualityScreenClass}>
-        <div
+      <div
+        className={qualityScreenClass}
+        onKeyDown={this.handleVideoQualityKeyDown}>
+        <ScrollArea
           className="oo-quality-screen-content"
           speed={this.props.popover ? 0.6 : 1}
           horizontal={!this.props.popover}>
-          <ul role="menu">
+          <ul
+            ref={function(e) { this.menuDomElement = e; }.bind(this)}
+            role="menu">
             {bitrateButtons}
           </ul>
-        </div>
+        </ScrollArea>
       </div>
     );
   }

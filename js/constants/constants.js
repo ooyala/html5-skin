@@ -121,6 +121,13 @@ module.exports = {
     STEREO_OFF: "Monoscopic"
   },
 
+  ARIA_ROLES: {
+    SLIDER: "slider",
+    MENU: "menu",
+    MENU_ITEM: "menuitem",
+    MENU_ITEM_RADIO: "menuitemradio"
+  },
+
   A11Y_CTRLS: {
     SEEK_DELTA: 5,
     VOLUME_CHANGE_DELTA: 10
