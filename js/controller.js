@@ -1429,12 +1429,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     setClosedCaptionsLanguage: function(){
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
-      //if saved language not in available languages, set to first available language
-      if (availableLanguages && (this.state.closedCaptionOptions.language == null || !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))) {
+
+      //if saved language not in available languages and saved is not 'none', set to first available language
+      if (availableLanguages && this.state.closedCaptionOptions.language !== CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE
+        && (this.state.closedCaptionOptions.language == null || !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))) {
         this.state.closedCaptionOptions.language = availableLanguages.languages[0];
       }
-      var language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : "";
-      var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
+      var language = "";
+      var mode = OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
+      if(this.state.closedCaptionOptions.enabled && this.state.closedCaptionOptions.language !== CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE){
+        language = this.state.closedCaptionOptions.language;
+        mode = OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN;
+      }
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
     },
 
