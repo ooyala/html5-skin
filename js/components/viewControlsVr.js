@@ -34,8 +34,8 @@ var ViewControlsVr = React.createClass({
       if (this.props.controller.state) {
         this.isMobile = this.props.controller.state.isMobile;
       }
-      if (! (this.props.controller.state.isPlayingAd || this.isMobile)) {
-        if (! (this.props.skinConfig && this.props.skinConfig.buttons && _.isArray(this.props.skinConfig.buttons.desktopContent))) {
+      if (!(this.props.controller.state.isPlayingAd || this.isMobile)) {
+        if (!(this.props.skinConfig && this.props.skinConfig.buttons && _.isArray(this.props.skinConfig.buttons.desktopContent))) {
           return;
         }
         var desktopContent = this.props.skinConfig.buttons.desktopContent;
