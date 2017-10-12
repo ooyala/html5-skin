@@ -6,7 +6,8 @@
 var React = require('react'),
     ScrollArea = require('react-scrollbar/dist/no-css'),
     ClassNames = require('classnames'),
-    Icon = require('../components/icon')
+    Icon = require('../components/icon'),
+    MACROS = require('../constants/macros'),
     CONSTANTS = require('../constants/constants');
 
 var VideoQualityPanel = React.createClass({
@@ -167,6 +168,7 @@ var VideoQualityPanel = React.createClass({
         } else {
           label = availableBitrates[i].bitrate;
         }
+        var ariaLabel = CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i).replace(MACROS.QUALITY, label);
         bitrateButtons.push(
           <li key={i}>
             <button
@@ -176,7 +178,7 @@ var VideoQualityPanel = React.createClass({
               data-focus-id={'quality' + i}
               tabIndex="0"
               role="menuitemradio"
-              aria-label={label}
+              aria-label={ariaLabel}
               aria-checked={isSelected}
               onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>
               {label}

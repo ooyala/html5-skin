@@ -1,3 +1,4 @@
+var MACROS = require('./macros');
 /********************************************************************
  CONSTANT
  *********************************************************************/
@@ -112,10 +113,11 @@ module.exports = {
     EXIT_FULLSCREEN: "Exit Fullscreen",
     SEEK_SLIDER: "Seek slider",
     VOLUME_SLIDER: "Volume slider",
-    VOLUME_PERCENT: "{volume}% volume",
-    TIME_DISPLAY: "{currentTime} of {totalTime}",
+    VOLUME_PERCENT: MACROS.VOLUME + "% volume",
+    TIME_DISPLAY: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME,
     TIME_DISPLAY_LIVE: "Live video",
-    TIME_DISPLAY_DVR: "{currentTime} of {totalTime} live video",
+    TIME_DISPLAY_DVR: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME + " live video",
+    QUALITY_LEVEL: "Quality level " + MACROS.LEVEL + ", " + MACROS.QUALITY,
     CLOSE: "Close",
     STEREO_ON: "Stereoscopic",
     STEREO_OFF: "Monoscopic"
