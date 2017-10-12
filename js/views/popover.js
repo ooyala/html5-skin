@@ -27,8 +27,8 @@ var Popover = React.createClass({
     if (!this.props.closeActionEnabled || typeof this.props.closeAction !== 'function') {
       return;
     }
-    switch (event.key) {
-      case CONSTANTS.KEY_VALUES.ESCAPE:
+    switch (event.which || event.keyCode) {
+      case CONSTANTS.KEYCODES.ESCAPE_KEY:
         // Ask parent to restore the focus of the toggle button that triggers this
         // popover if the ESC key was pressed while the focus was inside this element.
         // If the focus was outside the popover we shouldn't re-focus the toggle button.

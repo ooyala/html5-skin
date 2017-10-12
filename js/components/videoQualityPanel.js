@@ -123,7 +123,7 @@ var VideoQualityPanel = React.createClass({
 
     //add auto btn to beginning of array
     bitrateButtons.unshift(
-      <li className="oo-auto-li" key='auto-li'>
+      <li className="oo-auto-li" key='auto-li' role="presentation">
         <button
           className={autoQualityBtn}
           key="auto"
@@ -170,7 +170,7 @@ var VideoQualityPanel = React.createClass({
         }
         var ariaLabel = CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i).replace(MACROS.QUALITY, label);
         bitrateButtons.push(
-          <li key={i}>
+          <li key={i} role="presentation">
             <button
               key={i}
               className={qualityBtn}
