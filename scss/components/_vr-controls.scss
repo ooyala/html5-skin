@@ -40,7 +40,7 @@
     background-position: 0 0;
     background-size: 100% 100%;
     opacity: 1;
-    z-index: $zindex_1001;
+    z-index: $zindex-vr-controls;
     @include vendor-prefixes (transition, opacity .3s ease-in-out);
     &--hidden {
       opacity: 0;

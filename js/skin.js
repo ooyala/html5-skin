@@ -161,10 +161,9 @@ var Skin = React.createClass({
    * @param pageY {number} y coordinate
    * @returns {[number, number, number]}
    */
-
   getDirectionParams: function(pageX, pageY) {
-    pageX = this.checkIsNumber(pageX) ? pageX : 0;
-    pageY = this.checkIsNumber(pageY) ? pageY : 0;
+    pageX = Utils.ensureNumber(pageX) ? pageX : 0;
+    pageY = Utils.ensureNumber(pageY) ? pageY : 0;
     var dx = pageX - this.state.xVrMouseStart;
     var dy = pageY - this.state.yVrMouseStart;
     var maxDegreesX = 90;
@@ -191,16 +190,6 @@ var Skin = React.createClass({
       viewingDirectionValue = this.props.controller.state.viewingDirection[paramName]
     }
     return viewingDirectionValue
-  },
-
-  /**
-   * @description check if the value is number
-   * @private
-   * @param value {number}
-   * @returns {boolean}
-   */
-  checkIsNumber: function(value) {
-    return ( !isNaN(parseFloat(value)) && isFinite(value) );
   },
 
   render: function() {
