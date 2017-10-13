@@ -30,7 +30,7 @@
     @extend .oo-expand;
     text-decoration:none;
     cursor: default;
-    z-index: $zindex_1000;
+    z-index: $zindex-state-screen;
     //for IE
     background-color:white;
     opacity: 0;
