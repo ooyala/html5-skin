@@ -176,6 +176,37 @@ describe('AccessibilityControls', function () {
       a11yCtrls = new AccessibilityControls(mockCtrl);
     });
 
+    describe('areArrowKeysAllowed', function() {
+      var div;
+
+      beforeEach(function() {
+        div = document.createElement('div');
+        document.activeElement = div;
+      });
+
+      afterEach(function() {
+        document.activeElement = null;
+      });
+
+      it ('should NOT allow global arrow keys when focused element is a menu item', function() {
+        div.setAttribute('role', 'menuitem');
+        expect(a11yCtrls.areArrowKeysAllowed()).toBe(false);
+        div.setAttribute('role', 'menuitemradio');
+        expect(a11yCtrls.areArrowKeysAllowed()).toBe(false);
+      });
+
+      it ('should NOT allow global arrow keys when focused element is a slider', function() {
+        div.setAttribute('role', 'slider');
+        expect(a11yCtrls.areArrowKeysAllowed()).toBe(false);
+      });
+
+      it ('should allow global arrow keys when focused element is NOT a menu item', function() {
+        div.setAttribute('role', 'presentation');
+        expect(a11yCtrls.areArrowKeysAllowed()).toBe(true);
+      });
+
+    });
+
     describe('canSeek', function() {
 
       it('should only allow seeking on playing, pause and end screens', function() {
