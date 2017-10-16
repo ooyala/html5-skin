@@ -182,4 +182,47 @@ describe('VideoQualityPanel', function () {
     expect(qualityButton.getAttribute('aria-checked')).toBe('true');
   });
 
+  describe('keyboard navigation', function() {
+    var qualityButtons;
+
+    beforeEach(function() {
+      var DOM = TestUtils.renderIntoDocument(
+        <VideoQualityPanel {...mockProps} />
+      );
+      var qualityPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality-panel');
+      qualityButtons = qualityPanel.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
+    });
+
+    afterEach(function() {
+      document.activeElement = null;
+    });
+
+    it('should focus on previous menu item when pressing UP or LEFT arrow keys', function() {
+      var activeIndex = qualityButtons.length - 1;
+      document.activeElement = qualityButtons[activeIndex];
+      TestUtils.Simulate.keyDown(document.activeElement, { key: CONSTANTS.KEY_VALUES.ARROW_UP });
+      expect(document.activeElement).toBe(qualityButtons[activeIndex - 1]);
+      TestUtils.Simulate.keyDown(document.activeElement, { key: CONSTANTS.KEY_VALUES.ARROW_LEFT });
+      expect(document.activeElement).toBe(qualityButtons[activeIndex - 2]);
+    });
+
+    it('should focus on next menu item when pressing DOWN or RIGHT arrow keys', function() {
+      var activeIndex = 0;
+      document.activeElement = qualityButtons[activeIndex];
+      TestUtils.Simulate.keyDown(document.activeElement, { key: CONSTANTS.KEY_VALUES.ARROW_DOWN });
+      expect(document.activeElement).toBe(qualityButtons[activeIndex + 1]);
+      TestUtils.Simulate.keyDown(document.activeElement, { key: CONSTANTS.KEY_VALUES.ARROW_RIGHT });
+      expect(document.activeElement).toBe(qualityButtons[activeIndex + 2]);
+    });
+
+    it('should loop focus when navigating with arrow keys', function() {
+      document.activeElement = qualityButtons[0];
+      TestUtils.Simulate.keyDown(document.activeElement, { key: CONSTANTS.KEY_VALUES.ARROW_UP });
+      expect(document.activeElement).toBe(qualityButtons[qualityButtons.length - 1]);
+      TestUtils.Simulate.keyDown(document.activeElement, { key: CONSTANTS.KEY_VALUES.ARROW_RIGHT });
+      expect(document.activeElement).toBe(qualityButtons[0]);
+    });
+
+  });
+
 });
