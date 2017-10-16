@@ -134,11 +134,11 @@ describe('ControlBar', function () {
         }
       }
     };
-    
+
     var toggleSkinConfig = Utils.clone(skinConfig);
     toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
-    
-    
+
+
     var mockProps = {
       isLiveStream: false,
       controller: mockController,
@@ -146,18 +146,18 @@ describe('ControlBar', function () {
       duration: 30,
       vr: mockController.videoVrSource
     };
-    
+
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
                   componentWidth={500}
                   playerState={CONSTANTS.STATE.PLAYING}
                   isLiveStream={mockProps.isLiveStream} />
     );
-    
+
     var toggleStereoVrButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-vr-stereo-button');
     expect(typeof toggleStereoVrButton).toBe('object');
   });
-  
+
   it('not render stereo button if content not vr', function () {
     var mockController = {
       state: {
@@ -176,8 +176,8 @@ describe('ControlBar', function () {
 
     var toggleSkinConfig = Utils.clone(skinConfig);
     toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
-    
-    
+
+
     var mockProps = {
       isLiveStream: false,
       controller: mockController,
@@ -185,21 +185,21 @@ describe('ControlBar', function () {
       duration: 30,
       vr: mockController.videoVr
     };
-    
+
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
                   componentWidth={500}
                   playerState={CONSTANTS.STATE.PLAYING}
                   isLiveStream={mockProps.isLiveStream} />
     );
-    
+
     var toggleStereoVrButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
     expect(toggleStereoVrButtons.length).toBe(0);
   });
-  
+
   it('enter stereo mode', function () {
     var stereoMode = false;
-    
+
     var mockController = {
       state: {
         isMobile: true,
@@ -222,10 +222,10 @@ describe('ControlBar', function () {
         stereoMode = true;
       }
     };
-    
+
     var toggleSkinConfig = Utils.clone(skinConfig);
     toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
-    
+
     var mockProps = {
       isLiveStream: false,
       controller: mockController,
@@ -233,14 +233,14 @@ describe('ControlBar', function () {
       duration: 30,
       vr: mockController.videoVrSource
     };
-    
+
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
                   componentWidth={500}
                   playerState={CONSTANTS.STATE.PLAYING}
                   isLiveStream={mockProps.isLiveStream} />
     );
-    
+
     expect(stereoMode).toBe(false);
     var toggleStereoVrButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-vr-stereo-button');
     TestUtils.Simulate.click(toggleStereoVrButton);
@@ -1806,7 +1806,7 @@ describe('ControlBar', function () {
           isLiveStream={baseMockProps.isLiveStream} />
       , document.body);
       ctrlBarElement = document.body.querySelector('.oo-control-bar');
-      focusableElements = ctrlBarElement.querySelectorAll('[data-focus-id]');
+      focusableElements = ctrlBarElement.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
       mockEvent = { key: CONSTANTS.KEY_VALUES.TAB, preventDefault: function() {} };
     });
 
@@ -1823,24 +1823,24 @@ describe('ControlBar', function () {
       document.activeElement = null;
       mockEvent.target = document.body;
       eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute('data-focus-id')).toBe(focusableElements[0].getAttribute('data-focus-id'));
+      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR )).toBe(focusableElements[0].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR ));
       // Tab on last element, focuses on first
       document.activeElement = null;
       mockEvent.target = focusableElements[focusableElements.length - 1];
       eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute('data-focus-id')).toBe(focusableElements[0].getAttribute('data-focus-id'));
+      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR )).toBe(focusableElements[0].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR ));
       // Shift + tab on document, focuses on last element
       document.activeElement = null;
       mockEvent.target = document.body;
       mockEvent.shiftKey = true;
       eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute('data-focus-id')).toBe(focusableElements[focusableElements.length - 1].getAttribute('data-focus-id'));
+      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR )).toBe(focusableElements[focusableElements.length - 1].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR ));
       // Shift + tab on first element, focuses on last
       document.activeElement = null;
       mockEvent.target = focusableElements[0];
       mockEvent.shiftKey = true;
       eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute('data-focus-id')).toBe(focusableElements[focusableElements.length - 1].getAttribute('data-focus-id'));
+      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR )).toBe(focusableElements[focusableElements.length - 1].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR ));
     });
 
     it('should NOT constrain tab navigation to control bar elements when NOT in fullscreen mode', function() {

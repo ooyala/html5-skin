@@ -110,7 +110,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "videoQualityOptions": {
         "availableBitrates": null,
         "selectedBitrate": null,
-        "showVideoQualityPopover":false
+        "showVideoQualityPopover": false,
+        "autoFocus": false
       },
 
       "volumeState": {

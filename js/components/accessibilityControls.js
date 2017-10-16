@@ -36,9 +36,6 @@ AccessibilityControls.prototype = {
     var targetTagName = this.getTargetTagName(e);
     var charCode = e.which || e.keyCode;
     this.moveVrToDirection(e, charCode, true, targetTagName); //start rotate 360
-    // Slider interaction requires the arrow keys. When a slider is active we should
-    // disable arrow key controls
-    var sliderIsActive = document.activeElement && document.activeElement.getAttribute('role') === 'slider';
 
     switch (charCode) {
       case CONSTANTS.KEYCODES.SPACE_KEY:
@@ -53,7 +50,7 @@ AccessibilityControls.prototype = {
         break;
       case CONSTANTS.KEYCODES.UP_ARROW_KEY:
       case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
-        if (!sliderIsActive) {
+        if (this.areArrowKeysAllowed()) {
           e.preventDefault();
           var increase = charCode === CONSTANTS.KEYCODES.UP_ARROW_KEY;
           this.changeVolumeBy(CONSTANTS.A11Y_CTRLS.VOLUME_CHANGE_DELTA, increase);
@@ -61,7 +58,7 @@ AccessibilityControls.prototype = {
         break;
       case CONSTANTS.KEYCODES.LEFT_ARROW_KEY:
       case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
-        if (!sliderIsActive) {
+        if (this.areArrowKeysAllowed()) {
           e.preventDefault();
           var forward = e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY ? true : false;
           this.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, forward);
@@ -73,11 +70,34 @@ AccessibilityControls.prototype = {
   },
 
   /**
+   * Determines whether arrow key shortcuts should be active. Arrow key shortcuts
+   * should be disabled whenever an element that allows arrow key interaction has focus.
+   * Please note that this doesn't cover all possible cases at the moment, only
+   * roles that are in use in this project have been added so far.
+   * @private
+   * @return {Boolean} True if arrow key shortcuts are allowed, false otherwise.
+   */
+  areArrowKeysAllowed: function() {
+    var activeElementRole = '';
+    if (document.activeElement) {
+      activeElementRole = document.activeElement.getAttribute('role');
+    }
+
+    switch (activeElementRole) {
+      case CONSTANTS.ARIA_ROLES.SLIDER:
+      case CONSTANTS.ARIA_ROLES.MENU_ITEM:
+      case CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO:
+        return false;
+      default:
+        return true;
+    }
+  },
+
+  /**
    * @description handlers for keyup event
    * @private
    * @param e - event
    */
-
   keyEventUp: function(e) {
     if (!this.controller.state.accessibilityControlsEnabled) {
       return;
@@ -93,7 +113,6 @@ AccessibilityControls.prototype = {
    * @param e - event
    * @returns {string} name of the target tag
    */
-
   getTargetTagName: function(e) {
     var targetTagName = "";
     if (e.target && typeof e.target.tagName === "string") {
@@ -111,7 +130,6 @@ AccessibilityControls.prototype = {
    * @param targetTagName {string} - name of the clicked tag
    * @returns {boolean} true if moved
    */
-
   moveVrToDirection: function(e, charCode, isKeyDown, targetTagName) {
     if (!this.controller.videoVr) {
       return false;

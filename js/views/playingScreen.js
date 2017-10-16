@@ -89,7 +89,7 @@ var PlayingScreen = React.createClass({
    * @param {object} event Focus event object.
    */
   handleFocus: function(event) {
-    var isControlBarElement = event.target || event.target.hasAttribute('data-focus-id');
+    var isControlBarElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
     // Only do this if the control bar hasn't been shown by now and limit to focus
     // events that are triggered on known control bar elements
     if (!this.state.controlBarVisible && isControlBarElement) {

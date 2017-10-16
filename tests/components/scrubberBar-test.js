@@ -110,7 +110,7 @@ describe('ScrubberBar', function () {
     expect(scrubberBar.getAttribute('aria-valuemax')).toBe(baseMockController.state.duration.toString());
     expect(scrubberBar.getAttribute('aria-valuenow')).toBe(baseMockController.state.currentPlayhead.toFixed(2));
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('00:00 of 01:00');
-    expect(scrubberBar.getAttribute('data-focus-id')).toBe('scrubberBar');
+    expect(scrubberBar.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR )).toBe('scrubberBar');
   });
 
   it('should update the ARIA value in order to reflect the current playhead', function() {

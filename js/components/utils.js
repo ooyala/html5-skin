@@ -4,15 +4,41 @@
 * @module Utils
 */
 var DeepMerge = require('deepmerge');
+var CONSTANTS = require('./../constants/constants');
 
 var Utils = {
+
+  /**
+   * Searches for focusable elements inside domElement and gives focus to the first one
+   * found. Focusable elements are assumed to be those with the data-focus-id attribute which is
+   * used for various purposes in this project. If the excludeClass parameter is passed, elements
+   * that have a matching class will be excluded from the search.
+   * @function autoFocusFirstElement
+   * @param {HTMLElement} domElement A DOM element that contains the element we want to focus.
+   * @param {String} excludeClass A single className that we want the search query to filter out.
+   */
+  autoFocusFirstElement: function(domElement, excludeClass) {
+    if (!domElement || typeof domElement.querySelector !== 'function') {
+      return;
+    }
+    var query = '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']';
+
+    if (excludeClass) {
+      query += ':not(.' + excludeClass + ')';
+    }
+    var firstFocusableElement = domElement.querySelector(query);
+
+    if (firstFocusableElement && typeof firstFocusableElement.focus === 'function') {
+      firstFocusableElement.focus();
+    }
+  },
 
   /**
    * Some browsers give focus to buttons after click, which leaves them highlighted.
    * This can be used to override the browsers' default behavior.
    *
    * @function blurOnMouseUp
-   * @param {type} MouseUp event object.
+   * @param {Event} MouseUp event object.
    */
   blurOnMouseUp: function(event) {
     if (event && event.currentTarget && typeof event.currentTarget.blur === 'function') {

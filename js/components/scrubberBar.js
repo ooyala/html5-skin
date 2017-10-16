@@ -7,6 +7,7 @@ var React = require('react'),
     Thumbnail = require('./thumbnail'),
     ThumbnailCarousel = require('./thumbnailCarousel'),
     Utils = require('./utils'),
+    MACROS = require('../constants/macros'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
@@ -225,14 +226,14 @@ var ScrubberBar = React.createClass({
 
     if (this.props.isLiveStream) {
       if (timeDisplayValues.totalTime) {
-        ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY_DVR.replace('{currentTime}', timeDisplayValues.currentTime);
-        ariaValueText = ariaValueText.replace('{totalTime}', timeDisplayValues.totalTime);
+        ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY_DVR.replace(MACROS.CURRENT_TIME, timeDisplayValues.currentTime);
+        ariaValueText = ariaValueText.replace(MACROS.TOTAL_TIME, timeDisplayValues.totalTime);
       } else {
         ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY_LIVE;
       }
     } else {
-      ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY.replace('{currentTime}', timeDisplayValues.currentTime);
-      ariaValueText = ariaValueText.replace('{totalTime}', timeDisplayValues.totalTime);
+      ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY.replace(MACROS.CURRENT_TIME, timeDisplayValues.currentTime);
+      ariaValueText = ariaValueText.replace(MACROS.TOTAL_TIME, timeDisplayValues.totalTime);
     }
     return ariaValueText;
   },
