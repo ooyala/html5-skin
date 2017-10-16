@@ -2,10 +2,12 @@ jest.dontMock('../../js/components/videoQualityPanel')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/components/icon')
     .dontMock('../../js/constants/constants')
+    .dontMock('../../js/constants/macros')
     .dontMock('classnames');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
+var MACROS = require('../../js/constants/macros');
 var CONSTANTS = require('../../js/constants/constants');
 var VideoQualityPanel = require('../../js/components/videoQualityPanel');
 var skinConfig = require('../../config/skin.json');
@@ -13,37 +15,36 @@ var Utils = require('../../js/components/utils');
 
 // start unit test
 describe('VideoQualityPanel', function () {
-  var selectedBitrate = null;
-
-  var mockController = {
-    state: {
-      isMobile: false,
-      "videoQualityOptions": {
-        "showVideoQualityPopover":true
-      },
-      volumeState: {
-        volume: 1
-      },
-      closedCaptionOptions: {availableLanguages: true}
-    },
-    sendVideoQualityChangeEvent: function(selectedData){
-      selectedBitrate = selectedData;
-    }
-  };
-
-  var mockSkinConfig = Utils.clone(skinConfig);
-
+  var selectedBitrate, mockController, mockSkinConfig, mockProps;
   var availableBitrates = [{"id":"auto", "bitrate":0}, {"id":"1", "bitrate":1000}, {"id":"2", "bitrate":2000}, {"id":"3", "bitrate":3000}, {"id":"4", "bitrate":4000}, {"id":"5", "bitrate":5000}];
   var bitrateLabels = ['1 kbps', '2 kbps','3 kbps','4 kbps','5 kbps'];
 
-  var mockProps = {
-    controller: mockController,
-    videoQualityOptions: {
-      availableBitrates: availableBitrates,
-      selectedBitrate: null
-    },
-    skinConfig: mockSkinConfig
-  };
+  beforeEach(function() {
+    mockController = {
+      state: {
+        isMobile: false,
+        "videoQualityOptions": {
+          "showVideoQualityPopover":true
+        },
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {availableLanguages: true}
+      },
+      sendVideoQualityChangeEvent: function(selectedData){
+        selectedBitrate = selectedData;
+      }
+    };
+    mockSkinConfig = JSON.parse(JSON.stringify(skinConfig));
+    mockProps = {
+      controller: mockController,
+      videoQualityOptions: {
+        availableBitrates: availableBitrates,
+        selectedBitrate: null
+      },
+      skinConfig: mockSkinConfig
+    };
+  });
 
   it('creates video quality panel', function () {
     var DOM = TestUtils.renderIntoDocument(
@@ -143,4 +144,42 @@ describe('VideoQualityPanel', function () {
     expect(bitrateItems.length).toBe(1);
     expect(bitrateItems[0].textContent).toBe(bitrateLabels[0]);
   });
+
+  it('should render ARIA attributes on Auto quality button', function() {
+    var DOM = TestUtils.renderIntoDocument(
+      <VideoQualityPanel {...mockProps} />
+    );
+    var autoButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality-auto-btn');
+    expect(autoButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.AUTO_QUALITY);
+    expect(autoButton.getAttribute('role')).toBe('menuitemradio');
+    expect(autoButton.getAttribute('aria-checked')).toBeTruthy();
+  });
+
+  it('should render ARIA attributes on quality buttons', function() {
+    var DOM = TestUtils.renderIntoDocument(
+      <VideoQualityPanel {...mockProps} />
+    );
+    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn');
+    var qualityButton, ariaLabel;
+
+    for (var i = 0; i < qualityButtons.length; i++) {
+      qualityButton = qualityButtons[i];
+      ariaLabel = CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i + 1).replace(MACROS.QUALITY, qualityButton.innerHTML);
+      expect(qualityButton.getAttribute('aria-label')).toBe(ariaLabel);
+      expect(qualityButton.getAttribute('role')).toBe('menuitemradio');
+      expect(qualityButton.getAttribute('aria-checked')).toBeTruthy();
+      expect(qualityButton.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe('quality' + (i + 1));
+    }
+  });
+
+  it('should update aria-checked attribute when bitrate is selected', function() {
+    var DOM = TestUtils.renderIntoDocument(
+      <VideoQualityPanel {...mockProps} />
+    );
+    var qualityButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn')[2];
+    expect(qualityButton.getAttribute('aria-checked')).toBe('false');
+    TestUtils.Simulate.click(qualityButton);
+    expect(qualityButton.getAttribute('aria-checked')).toBe('true');
+  });
+
 });
