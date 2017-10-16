@@ -162,8 +162,8 @@ var Skin = React.createClass({
    * @returns {[number, number, number]}
    */
   getDirectionParams: function(pageX, pageY) {
-    pageX = Utils.ensureNumber(pageX) ? pageX : 0;
-    pageY = Utils.ensureNumber(pageY) ? pageY : 0;
+    pageX = Utils.ensureNumber(pageX, 0);
+    pageY = Utils.ensureNumber(pageY, 0);
     var dx = pageX - this.state.xVrMouseStart;
     var dy = pageY - this.state.yVrMouseStart;
     var maxDegreesX = 90;
