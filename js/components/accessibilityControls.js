@@ -50,7 +50,7 @@ AccessibilityControls.prototype = {
         break;
       case CONSTANTS.KEYCODES.UP_ARROW_KEY:
       case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
-        if (this.areArowKeysAllowed()) {
+        if (this.areArrowKeysAllowed()) {
           e.preventDefault();
           var increase = charCode === CONSTANTS.KEYCODES.UP_ARROW_KEY;
           this.changeVolumeBy(CONSTANTS.A11Y_CTRLS.VOLUME_CHANGE_DELTA, increase);
@@ -58,7 +58,7 @@ AccessibilityControls.prototype = {
         break;
       case CONSTANTS.KEYCODES.LEFT_ARROW_KEY:
       case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
-        if (this.areArowKeysAllowed()) {
+        if (this.areArrowKeysAllowed()) {
           e.preventDefault();
           var forward = e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY ? true : false;
           this.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, forward);
@@ -77,7 +77,7 @@ AccessibilityControls.prototype = {
    * @private
    * @return {Boolean} True if arrow key shortcuts are allowed, false otherwise.
    */
-  areArowKeysAllowed: function() {
+  areArrowKeysAllowed: function() {
     var activeElementRole = '';
     if (document.activeElement) {
       activeElementRole = document.activeElement.getAttribute('role');

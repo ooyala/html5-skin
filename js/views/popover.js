@@ -1,4 +1,5 @@
 var React = require('react');
+var Utils = require('../components/utils');
 var CONSTANTS = require('../constants/constants');
 
 var Popover = React.createClass({

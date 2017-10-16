@@ -1,5 +1,5 @@
 var React = require('react'),
-    Icon = require('../components/icon')
+    Icon = require('../components/icon'),
     Utils = require('./utils'),
     CONSTANTS = require('../constants/constants');
 
