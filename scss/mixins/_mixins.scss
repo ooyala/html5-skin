@@ -239,7 +239,7 @@
   left:0;
 }
 
-@function legacy-direction($direction) {
+@function get-direction($direction) {
   $direction-map: (
     "left": "to right",
     "right": "to left",
@@ -256,6 +256,6 @@
 @mixin linear-gradient($direction:left, $color-from:#000000, $color-to:#FFFFFF, $gradient-type:0) {
   background: -moz-linear-gradient($direction, rgba($color-from,0.6) 0%, rgba($color-to,0) 100%);
   background: -webkit-linear-gradient($direction, rgba($color-from,0.6) 0%,rgba($color-to,0) 100%);
-  background: linear-gradient(legacy-direction($direction), rgba($color-from,0.6) 0%,rgba($color-to,0) 100%);
+  background: linear-gradient(get-direction($direction), rgba($color-from,0.6) 0%,rgba($color-to,0) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(GradientType=#{$gradient-type}, StartColorStr=#{$color-from}, EndColorStr=#{$color-to});
 }
