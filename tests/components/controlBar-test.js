@@ -408,9 +408,11 @@ describe('ControlBar', function () {
   });
 
   it('should render default state aria labels', function() {
+    baseMockController.state.videoQualityOptions.availableBitrates = [];
     baseMockProps.skinConfig.buttons.desktopContent = [
       { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
+      { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
     ];
 
@@ -426,15 +428,22 @@ describe('ControlBar', function () {
     var playPauseButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause');
     var muteUnmuteButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').querySelector('.oo-mute-unmute');
     var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
+    var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality');
     expect(playPauseButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PAUSE);
     expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.MUTE);
     expect(fullscreenButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.FULLSCREEN);
+    expect(qualityButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.VIDEO_QUALITY);
+    expect(qualityButton.getAttribute('aria-haspopup')).toBe('true');
+    expect(qualityButton.getAttribute('aria-expanded')).toBeNull();
   });
 
   it('should render alternate state aria labels', function() {
+    baseMockController.state.videoQualityOptions.availableBitrates = [];
+    baseMockController.state.videoQualityOptions.showVideoQualityPopover = true;
     baseMockProps.skinConfig.buttons.desktopContent = [
       { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
+      { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
     ];
 
@@ -453,9 +462,11 @@ describe('ControlBar', function () {
     var playPauseButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause');
     var muteUnmuteButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').querySelector('.oo-mute-unmute');
     var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
+    var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality');
     expect(playPauseButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PLAY);
     expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.UNMUTE);
     expect(fullscreenButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.EXIT_FULLSCREEN);
+    expect(qualityButton.getAttribute('aria-expanded')).toBe('true');
   });
 
   it('should store playPause button focus state', function() {
