@@ -117,7 +117,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "volumeState": {
         "volume": 1,
         "muted": false,
-        "oldVolume": 1,
         "volumeSliderVisible": false
       },
 
@@ -198,6 +197,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
         this.mb.subscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, 'customerUi', _.bind(this.onChangeClosedCaptionLanguage, this));
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
+        this.mb.subscribe(OO.EVENTS.MUTE_STATE_CHANGED, "customerUi", _.bind(this.onMuteStateChanged, this));
         this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
         this.mb.subscribe(OO.EVENTS.REPLAY, "customerUi", _.bind(this.onReplay, this));
         this.mb.subscribe(OO.EVENTS.ASSET_DIMENSION, "customerUi", _.bind(this.onAssetDimensionsReceived, this));
@@ -466,16 +466,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVolumeChanged: function (event, newVolume) {
-      if (typeof this.state.volumeState.volume === "number") {
-        this.state.volumeState.oldVolume = this.state.volumeState.volume;
-      }
       if (newVolume <= 0) {
-        this.state.volumeState.muted = true;
         this.state.volumeState.volume = 0;
       } else {
-        this.state.volumeState.muted = false;
         this.state.volumeState.volume = newVolume;
       }
+      this.renderSkin();
+    },
+
+    onMuteStateChanged: function(event, muted) {
+      this.state.volumeState.muted = muted;
       this.renderSkin();
     },
 
@@ -1403,7 +1403,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleMute: function(muted) {
-      this.mb.publish(OO.EVENTS.CHANGE_VOLUME, (muted ? 0 : 1));
+      this.mb.publish(OO.EVENTS.CHANGE_MUTE_STATE, muted);
     },
 
     toggleStereoVr: function () {
@@ -1460,11 +1460,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     handleMuteClick: function() {
-      if (!this.state.volumeState.muted) {
-        this.setVolume(0);
-      } else {
-        this.setVolume(this.state.volumeState.oldVolume);
-      }
+      this.toggleMute(!this.state.volumeState.muted);
     },
 
     toggleShareScreen: function() {

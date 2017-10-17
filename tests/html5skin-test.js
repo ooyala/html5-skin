@@ -282,29 +282,69 @@ describe('Controller', function() {
   });
 
   describe('Volume state', function() {
-    it('should setVolume to 0 on handleMuteClick when not muted', function() {
-      var spy = sinon.spy(controller, 'setVolume');
+
+    it('should mute on mute state changed', function() {
+      expect(controller.state.volumeState.muted).toBe(false);
+      controller.onMuteStateChanged('event', false);
+      expect(controller.state.volumeState.muted).toBe(false);
+      controller.onMuteStateChanged('event', true);
+      expect(controller.state.volumeState.muted).toBe(true);
+      controller.onMuteStateChanged('event', false);
+      expect(controller.state.volumeState.muted).toBe(false);
+    });
+
+    it('should be able to toggle mute', function() {
+      var spy = sinon.spy(OO.mb, 'publish');
+      controller.toggleMute(false);
+      expect(spy.callCount).toBe(1);
+      expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, false)).toBe(true);
+
+      spy.reset();
+      controller.toggleMute(true);
+      expect(spy.callCount).toBe(1);
+      expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, true)).toBe(true);
+
+      spy.restore();
+    });
+
+    it('should toggle mute on mute click', function() {
+      var spy = sinon.spy(OO.mb, 'publish');
+
+      controller.state.volumeState.muted = false;
       expect(controller.state.volumeState.muted).toBe(false);
       controller.handleMuteClick();
       expect(spy.callCount).toBe(1);
-      expect(spy.calledWith(0)).toBe(true);
-    });
+      expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, true)).toBe(true);
 
-    it('should setVolume to oldVolume on handleMuteClick when muted', function() {
+      spy.reset();
+
       controller.state.volumeState.muted = true;
-      controller.state.volumeState.oldVolume = 0.5;
-      var spy = sinon.spy(controller, 'setVolume');
       expect(controller.state.volumeState.muted).toBe(true);
       controller.handleMuteClick();
       expect(spy.callCount).toBe(1);
-      expect(spy.calledWith(0.5)).toBe(true);
+      expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, false)).toBe(true);
+
+      spy.restore();
     });
 
-    it('should store oldVolume when volume is changed', function() {
-      controller.state.volumeState.volume = 0.25;
-      controller.onVolumeChanged(OO.EVENTS.VOLUME_CHANGED, 0.5);
-      expect(controller.state.volumeState.volume).toBe(0.5);
-      expect(controller.state.volumeState.oldVolume).toBe(0.25);
+    it('should remain unmuted when volume changed to 0 when unmuted', function() {
+      controller.state.volumeState.volume = 100;
+      controller.state.volumeState.muted = false;
+      expect(controller.state.volumeState.muted).toBe(false);
+      expect(controller.state.volumeState.volume).toBe(100);
+      controller.onVolumeChanged('event', 0);
+      expect(controller.state.volumeState.muted).toBe(false);
+      expect(controller.state.volumeState.volume).toBe(0);
+    });
+
+    it('should remain muted when volume changed from 0 when muted', function() {
+      controller.state.volumeState.volume = 0;
+      controller.state.volumeState.muted = true;
+      expect(controller.state.volumeState.muted).toBe(true);
+      expect(controller.state.volumeState.volume).toBe(0);
+      controller.onVolumeChanged('event', 100);
+      expect(controller.state.volumeState.muted).toBe(true);
+      expect(controller.state.volumeState.volume).toBe(100);
     });
 
   });
