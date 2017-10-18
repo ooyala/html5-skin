@@ -34,7 +34,7 @@ OO = {
     var plugin = callback(OO, _, $);
     plugin.call(OO, OO.mb, 0);
     // Save Html5Skin class in local var
-    Html5Skin = exposeStaticApi;
+    Html5Skin = plugin;
   },
   mb: {
     subscribe: function() {},

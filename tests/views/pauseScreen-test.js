@@ -15,6 +15,9 @@ describe('PauseScreen', function () {
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
+        },
+        volumeState: {
+          muted: false
         }
       },
       togglePlayPause: function(){clicked = true}

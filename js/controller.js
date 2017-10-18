@@ -1859,7 +1859,5 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     }
   };
 
-  //exposeStaticApi = Html5Skin; //for unit test only
-
   return Html5Skin;
 });

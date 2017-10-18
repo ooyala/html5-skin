@@ -29,7 +29,8 @@ describe('VolumeControls', function() {
       },
       accessibilityControls: {
         changeVolumeBy: function() {}
-      }
+      },
+      toggleMute: function() {}
     };
     skinConfig = JSON.parse(JSON.stringify(defaultSkinConfig));
   });

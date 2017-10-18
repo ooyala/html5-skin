@@ -18,6 +18,9 @@ describe('PlayingScreen', function () {
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
+        },
+        volumeState: {
+          muted: false
         }
       },
       togglePlayPause: function() {
@@ -70,7 +73,10 @@ describe('PlayingScreen', function () {
         upNextInfo: {
           showing: false
         },
-        viewingDirection: {yaw: 0, roll: 0, pitch: 0}
+        viewingDirection: {yaw: 0, roll: 0, pitch: 0},
+        volumeState: {
+          muted: false
+        }
       },
       startHideControlBarTimer: function () {
         isStartHideControlBarTimer = true;
@@ -125,6 +131,9 @@ describe('PlayingScreen', function () {
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
+        },
+        volumeState: {
+          muted: false
         }
       },
       togglePlayPause: function() {
@@ -158,6 +167,9 @@ describe('PlayingScreen', function () {
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
+        },
+        volumeState: {
+          muted: false
         }
       },
       startHideControlBarTimer: function() {
@@ -210,7 +222,10 @@ describe('PlayingScreen', function () {
         upNextInfo: {
           showing: false
         },
-        viewingDirection: {yaw: 0, roll: 0, pitch: 0}
+        viewingDirection: {yaw: 0, roll: 0, pitch: 0},
+        volumeState: {
+          muted: false
+        }
       },
       startHideControlBarTimer: function() {
         moved = true;
@@ -277,6 +292,9 @@ describe('PlayingScreen', function () {
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
+        },
+        volumeState: {
+          muted: false
         }
       },
       togglePlayPause: function(){
@@ -317,6 +335,9 @@ describe('PlayingScreen', function () {
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
+        },
+        volumeState: {
+          muted: false
         }
       },
       startHideControlBarTimer: function() {
@@ -348,6 +369,9 @@ describe('PlayingScreen', function () {
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
+        },
+        volumeState: {
+          muted: false
         }
       },
       startHideControlBarTimer: function() {
@@ -394,6 +418,9 @@ describe('PlayingScreen', function () {
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
+        },
+        volumeState: {
+          muted: false
         }
       },
       startHideControlBarTimer: function() {moved = true},

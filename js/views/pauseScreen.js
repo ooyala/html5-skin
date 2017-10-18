@@ -222,11 +222,6 @@ var PauseScreen = React.createClass({
 
         {showUnmute ? <button className="oo-playing-screen oo-unmute"
           onClick={this.unmuteClick}
-          //onMouseUp={Utils.blurOnMouseUp}
-          //onMouseOver={this.highlight}
-          //onMouseOut={this.removeHighlight}
-          //data-focus-id="muteUnmute"
-          //tabIndex="0"
           aria-label={volumeAriaLabel}
           >
           <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
