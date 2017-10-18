@@ -205,56 +205,56 @@ OO = {
           }
         },
         updatePlayhead: function(playhead, duration, buffered) {},
-        switchComponent: function(a) {      },
-        enableFullScreen: function() {},
-        enableIosFullScreen: function() {},
-        onFullscreenChanged: function() {},
-        toggleFullscreen: function() {},
-        webkitBeginFullscreen: function() {},
-        webkitEndFullscreen: function() {},
-        enterFullWindow: function() {},
-        exitFullWindow: function() {},
-        exitFullWindowOnEscKey: function() {},
-        onBuffered: function() {},
-        setBufferingState: function() {},
-        startBufferingTimer: function() {},
-        stopBufferingTimer: function() {},
-        onInitialPlayRequested: function() {},
-        unsubscribeBasicPlaybackEvents: function() {},
-        resetUpNextInfo: function(a) {},
-        showUpNextScreenWhenReady: function(a,b) {},
-        subscribeBasicPlaybackEvents: function() {},
-        externalPluginSubscription: function() {},
-        addDependent: function() {},
-        endSeeking: function() {},
-        sendDiscoveryDisplayEvent: function(a) {},
-        togglePlayPause: function() {},
-        closeScreen: function(a) {},
-        closePopovers: function() {},
-        setVolume: function(a) {},
-        toggleMute: function(a) {},
-        toggleVideoQualityPopOver: function(a) {},
-        setClosedCaptionsInfo: function(a) {},
-        setClosedCaptionsLanguage: function() {},
-        displayMoreOptionsScreen: function(a) {},
-        closeMoreOptionsScreen: function() {},
-        pausedCallback: function() {},
-        trySetAnamorphicFixState: function() {},
-        renderSkin: function() {},
-        cancelTimer: function() {},
-        startHideControlBarTimer: function() {},
-        startHideVolumeSliderTimer: function() {},
-        hideControlBar: function() {},
-        hideVolumeSliderBar: function() {},
-        updateAspectRatio: function() {},
-        calculateAspectRatio: function(a,b) {},
-        setAspectRatio: function() {},
-        createPluginElements: function() {},
-        findMainVideoElement: function(a) {},
-        loadConfigData: function(a, b, c, d) {},
-        cleanUpEventListeners: function(){},
-        toggleStereoVr: function () {}
-      }
+        switchComponent: function(a) {},
+      },
+      enableFullScreen: function() {},
+      enableIosFullScreen: function() {},
+      onFullscreenChanged: function() {},
+      toggleFullscreen: function() {},
+      webkitBeginFullscreen: function() {},
+      webkitEndFullscreen: function() {},
+      enterFullWindow: function() {},
+      exitFullWindow: function() {},
+      exitFullWindowOnEscKey: function() {},
+      onBuffered: function() {},
+      setBufferingState: function() {},
+      startBufferingTimer: function() {},
+      stopBufferingTimer: function() {},
+      onInitialPlayRequested: function() {},
+      unsubscribeBasicPlaybackEvents: function() {},
+      resetUpNextInfo: function(a) {},
+      showUpNextScreenWhenReady: function(a,b) {},
+      subscribeBasicPlaybackEvents: function() {},
+      externalPluginSubscription: function() {},
+      addDependent: function() {},
+      endSeeking: function() {},
+      sendDiscoveryDisplayEvent: function(a) {},
+      togglePlayPause: function() {},
+      closeScreen: function(a) {},
+      closePopovers: function() {},
+      setVolume: function(a) {},
+      toggleMute: function(a) {},
+      toggleVideoQualityPopOver: function(a) {},
+      setClosedCaptionsInfo: function(a) {},
+      setClosedCaptionsLanguage: function() {},
+      displayMoreOptionsScreen: function(a) {},
+      closeMoreOptionsScreen: function() {},
+      pausedCallback: function() {},
+      trySetAnamorphicFixState: function() {},
+      renderSkin: function() {},
+      cancelTimer: function() {},
+      startHideControlBarTimer: function() {},
+      startHideVolumeSliderTimer: function() {},
+      hideControlBar: function() {},
+      hideVolumeSliderBar: function() {},
+      updateAspectRatio: function() {},
+      calculateAspectRatio: function(a,b) {},
+      setAspectRatio: function() {},
+      createPluginElements: function() {},
+      findMainVideoElement: function(a) {},
+      loadConfigData: function(a, b, c, d) {},
+      cleanUpEventListeners: function(){},
+      toggleStereoVr: function () {}
     };
 
 
@@ -277,7 +277,7 @@ OO = {
       '</div>';
 
     //test mb subscribe
-        Html5Skin = new plugin(OO.mb, 'id');
+    Html5Skin = new plugin(OO.mb, 'id');
     Html5Skin.init();
     Html5Skin.state.isPlaybackReadySubscribed = false;
     Html5Skin.subscribeBasicPlaybackEvents();
@@ -444,11 +444,11 @@ OO = {
     Html5Skin.state.playerState = CONSTANTS.STATE.START;
     Html5Skin.togglePlayPause();
     Html5Skin.state.playerState = CONSTANTS.STATE.END;
-        Html5Skin.state.isSkipAdClicked = true;
+    Html5Skin.state.isSkipAdClicked = true;
     Html5Skin.togglePlayPause();
     Html5Skin.state.isSkipAdClicked = false;
     Html5Skin.togglePlayPause();
-        Html5Skin.togglePlayPause();
+    Html5Skin.togglePlayPause();
     Html5Skin.state.playerState = CONSTANTS.STATE.PAUSE;
     Html5Skin.togglePlayPause();
     Html5Skin.state.playerState = CONSTANTS.STATE.PLAYING;
@@ -502,8 +502,8 @@ OO = {
 
     Html5Skin.state.closedCaptionOptions.availableLanguages = {languages: ["en", "es", "de", "cs"]};
     Html5Skin.onChangeClosedCaptionLanguage('changeClosedCaptionLanguage', 'de'); //valid language test
-        Html5Skin.onChangeClosedCaptionLanguage('changeClosedCaptionLanguage', 'sderfes'); //invalid language test
-        Html5Skin.setClosedCaptionsLanguage();
+    Html5Skin.onChangeClosedCaptionLanguage('changeClosedCaptionLanguage', 'sderfes'); //invalid language test
+    Html5Skin.setClosedCaptionsLanguage();
     Html5Skin.state.closedCaptionOptions.availableLanguages = null;
     Html5Skin.state.closedCaptionOptions.enabled = true;
     Html5Skin.setClosedCaptionsLanguage();
@@ -545,18 +545,17 @@ OO = {
 
     Html5Skin.showControlBar();
     
-            Html5Skin.hideControlBar();
+    Html5Skin.hideControlBar();
     
     // test timer
     Html5Skin.cancelTimer();
     Html5Skin.cancelTimer.call({state: {timer: null}});
 
     // test aspect ratio
-        Html5Skin.skin.props.skinConfig.responsive.aspectRatio = 45;
+    Html5Skin.skin.props.skinConfig.responsive.aspectRatio = 45;
     Html5Skin.updateAspectRatio();
     Html5Skin.updateAspectRatio.call({});
 
-                
     Html5Skin.setAspectRatio();
     Html5Skin.setAspectRatio.call({state: {mainVideoAspectRatio: 0}});
 
