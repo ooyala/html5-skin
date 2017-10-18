@@ -47,16 +47,16 @@ function buildJS(file, hash, watch, ugly, sourcemap, debug, externalReact) {
     transform:    [reactify, bulkify],
     cache: {},
     packageCache: {},
-    plugin: [livereactload]
+    plugin: []
   };
-  //if (file == 'html5-skin.js') {
-  //  props.plugin.push(livereactload);
-  //}
+
   if (watch) {
     props.plugin.push(watchify);
+    if (!/\.min/.test(file)) {
+      props.plugin.push(livereactload);
+    }
   }
 
-  //var bundler = watch ? watchify(browserify(props)) : browserify(props);
   var bundler = browserify(props);
 
   function rebundle(reload) {
@@ -100,7 +100,7 @@ function buildJS(file, hash, watch, ugly, sourcemap, debug, externalReact) {
 gulp.task('build', ['browserify', 'browserify:min', 'sass', 'sass:min', 'assets', 'pages']);
 
 // Build Watch
-gulp.task('build:watch', ['watchify', 'sass', 'sass:min', 'assets', 'pages']);
+gulp.task('build:watch', ['watchify', 'watchify:min', 'sass', 'sass:min', 'assets', 'pages']);
 
 // Browserify JS
 gulp.task('browserify', function() {
@@ -199,7 +199,6 @@ gulp.task('server', function() {
     port: devServer.port,
     livereload: {
       port: devServer.livereloadPort
-      //filter: function(filePath, cb) {cb(!(/html5-skin\.js/.test(filePath)))}
     },
     host: devServer.host,
     fallback: devServer.file

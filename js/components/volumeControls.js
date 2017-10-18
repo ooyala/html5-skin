@@ -8,6 +8,16 @@ var CONSTANTS = require('../constants/constants');
 
 var VolumeControls = React.createClass({
 
+  volumeChange: function(vol) {
+    var newVol = Utils.ensureNumber(vol);
+    this.props.controller.setVolume(newVol);
+    if (newVol === 0) {
+      this.props.controller.toggleMute(true);
+    } else {
+      this.props.controller.toggleMute(false);
+    }
+  },
+
   handleVolumeClick: function(event) {
     var clickedBarVolume = Utils.getPropertyValue(event, 'currentTarget.dataset.volume');
     // For unit tests, since Jest doesn't currently support dataset and it also doesn't
@@ -19,14 +29,13 @@ var VolumeControls = React.createClass({
 
     if (typeof clickedBarVolume !== 'undefined') {
       event.preventDefault();
-      var newVolume = Utils.ensureNumber(clickedBarVolume);
-      this.props.controller.setVolume(newVolume);
+      this.volumeChange(clickedBarVolume);
     }
   },
 
   handleVolumeSliderChange: function(event) {
     var newVolume = parseFloat(event.target.value);
-    this.props.controller.setVolume(newVolume);
+    this.volumeChange(newVolume);
   },
 
   handleVolumeCtrlsKeyDown: function(evt) {
@@ -89,7 +98,7 @@ var VolumeControls = React.createClass({
     for (var i = 0; i < 10; i++) {
       // Create each volume tick separately
       var barVolume = (i + 1) / 10;
-      var turnedOn = this.props.controller.state.volumeState.volume >= barVolume;
+      var turnedOn = this.props.controller.state.volumeState.volume >= barVolume && !this.props.controller.state.volumeState.muted;
       var volumeClass = ClassNames({
         'oo-volume-bar': true,
         'oo-on': turnedOn
