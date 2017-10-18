@@ -20,6 +20,7 @@ var gulp        = require('gulp'),
     open        = require('gulp-open'),
     git         = require('git-rev'),
     realFs      = require('fs'),
+    livereactload = require('livereactload'),
     gracefulFs  = require('graceful-fs');
     //Fix OSX EMFILE error
     gracefulFs.gracefulify(realFs);
@@ -45,9 +46,18 @@ function buildJS(file, hash, watch, ugly, sourcemap, debug, externalReact) {
     debug: debug,
     transform:    [reactify, bulkify],
     cache: {},
-    packageCache: {}
+    packageCache: {},
+    plugin: [livereactload]
   };
-  var bundler = watch ? watchify(browserify(props)) : browserify(props);
+  //if (file == 'html5-skin.js') {
+  //  props.plugin.push(livereactload);
+  //}
+  if (watch) {
+    props.plugin.push(watchify);
+  }
+
+  //var bundler = watch ? watchify(browserify(props)) : browserify(props);
+  var bundler = browserify(props);
 
   function rebundle(reload) {
     if (externalReact) {
@@ -90,7 +100,7 @@ function buildJS(file, hash, watch, ugly, sourcemap, debug, externalReact) {
 gulp.task('build', ['browserify', 'browserify:min', 'sass', 'sass:min', 'assets', 'pages']);
 
 // Build Watch
-gulp.task('build:watch', ['watchify', 'watchify:min', 'sass', 'sass:min', 'assets', 'pages']);
+gulp.task('build:watch', ['watchify', 'sass', 'sass:min', 'assets', 'pages']);
 
 // Browserify JS
 gulp.task('browserify', function() {
@@ -189,6 +199,7 @@ gulp.task('server', function() {
     port: devServer.port,
     livereload: {
       port: devServer.livereloadPort
+      //filter: function(filePath, cb) {cb(!(/html5-skin\.js/.test(filePath)))}
     },
     host: devServer.host,
     fallback: devServer.file

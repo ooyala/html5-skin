@@ -117,6 +117,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "volumeState": {
         "volume": 1,
         "muted": false,
+        "hasUnmuted": false,
+        "mutedBeforePlayback": false,
         "volumeSliderVisible": false
       },
 
@@ -143,6 +145,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isSkipAdClicked": false,
       "isInitialPlay": false,
       "initialPlayHasOccurred": false,
+      "autoplayed": false,
       "isFullScreenSupported": false,
       "isVideoFullScreenSupported": false,
       "isFullWindow": false,
@@ -476,6 +479,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onMuteStateChanged: function(event, muted) {
       this.state.volumeState.muted = muted;
+      if (!muted) {
+        this.state.volumeState.hasUnmuted = true;
+      }
+      if (this.state.isInitialPlay && muted) {
+        this.state.volumeState.mutedBeforePlayback = true;
+      }
       this.renderSkin();
     },
 
@@ -559,9 +568,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onInitialPlay: function() {
+    onInitialPlay: function(event, time, wasAutoplayed) {
       this.state.isInitialPlay = true;
       this.state.initialPlayHasOccurred = true;
+      this.state.autoplayed = wasAutoplayed;
       this.startHideControlBarTimer();
     },
 
@@ -1849,7 +1859,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     }
   };
 
-  exposeStaticApi = Html5Skin; //for unit test only
+  //exposeStaticApi = Html5Skin; //for unit test only
 
   return Html5Skin;
 });
