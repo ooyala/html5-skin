@@ -309,7 +309,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onClearVideoType: function(event, params) {
-      console.log('BBB onClearVideoType');
       this.videoVr = false;
       this.videoVrSource = null;
     },
@@ -1487,6 +1486,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
             this.renderSkin();
           }.bind(this);
+          console.log('AAA pause toggleShareScreen');
           this.mb.publish(OO.EVENTS.PAUSE);
         }
         else {
@@ -1508,6 +1508,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             this.state.screenToShow = screen;
             this.renderSkin();
           }.bind(this);
+          console.log('AAA pause toggleScreen');
           this.mb.publish(OO.EVENTS.PAUSE);
         }
         else {
@@ -1528,6 +1529,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.upNextInfo.showing = false;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
+        console.log('AAA pause sendDiscoveryClickEvent');
         this.mb.publish(OO.EVENTS.PAUSE);
         if (selectedContentData.clickedVideo.embed_code){
           this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code,
@@ -1727,6 +1729,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.pluginsElement.addClass("oo-overlay-blur");
           this.renderSkin();
         }.bind(this);
+        console.log('AAA pause displayMoreOptionsScreen');
         this.mb.publish(OO.EVENTS.PAUSE);
       }
       else {
