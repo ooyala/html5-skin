@@ -20,6 +20,9 @@ var React = require('react'),
 var ControlBar = React.createClass({
   getInitialState: function () {
     this.isMobile = this.props.controller.state.isMobile;
+    this.domNode = null;
+    this.qualityBtnElement = null;
+    this.qualityMenuOpenedWithKeyboard = false;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
     this.vr = null;
@@ -62,7 +65,8 @@ var ControlBar = React.createClass({
     if (!this.props.controller.state.focusedControl || !this.domNode) {
       return;
     }
-    var control = this.domNode.querySelector('[data-focus-id="' + this.props.controller.state.focusedControl + '"]');
+    var selector = '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + '="' + this.props.controller.state.focusedControl + '"]';
+    var control = this.domNode.querySelector(selector);
 
     if (control && typeof control.focus === 'function') {
       control.focus();
@@ -98,7 +102,7 @@ var ControlBar = React.createClass({
     evt.preventDefault();
     this.props.controller.toggleFullscreen();
   },
-  
+
   handleStereoVrClick: function () {
     if (this.vr) {
       this.vr.stereo = !this.vr.stereo;
@@ -142,6 +146,15 @@ var ControlBar = React.createClass({
   },
 
   handleQualityClick: function () {
+    if (this.props.controller.state.videoQualityOptions.showVideoQualityPopover) {
+      // Reset autoFocus property when closing the quality menu
+      this.props.controller.state.videoQualityOptions.autoFocus = false;
+    } else {
+      // If the quality menu was activated via keyboard we should
+      // autofocus on the first element
+      this.props.controller.state.videoQualityOptions.autoFocus = this.qualityMenuOpenedWithKeyboard;
+    }
+
     if (this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
     } else {
@@ -150,12 +163,46 @@ var ControlBar = React.createClass({
     }
   },
 
+  /**
+   * Fires when a key is pressed on the video quality button.
+   * @private
+   * @param {type} event The keydown event object.
+   */
+  handleQualityKeyDown: function(event) {
+    switch (event.key) {
+      case CONSTANTS.KEY_VALUES.SPACE:
+      case CONSTANTS.KEY_VALUES.ENTER:
+      // Ctrl and Alt are needed as a workaround for VoiceOver, which uses the
+      // CTRL + OPTION + SPACE combination to activate buttons. VoiceOver actually
+      // suppresses the spacebar keyboard event when this combination is used, so we
+      // can only detect either CTRL or OPTION. This can obviously fail if the user
+      // presses a different key after CTRL + OPTION, but a false positive is preferred.
+      case CONSTANTS.KEY_VALUES.CONTROL:
+      case CONSTANTS.KEY_VALUES.ALT:
+        this.qualityMenuOpenedWithKeyboard = true;
+        break;
+      default:
+        break;
+    }
+  },
+
   toggleQualityPopover: function () {
     this.props.controller.toggleVideoQualityPopOver();
   },
 
-  closeQualityPopover: function () {
-    if (this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true) {
+  closeQualityPopover: function (params) {
+    params = params || {};
+
+    if (this.props.controller.state.videoQualityOptions.showVideoQualityPopover === true) {
+      // Re-focus on quality button when closing the quality popover if the latter was
+      // originally opened with a key press.
+      if (params.restoreToggleButtonFocus &&
+          this.qualityMenuOpenedWithKeyboard &&
+          this.qualityBtnElement &&
+          typeof this.qualityBtnElement.focus === 'function') {
+        this.qualityBtnElement.focus();
+      }
+      this.qualityMenuOpenedWithKeyboard = false;
       this.toggleQualityPopover();
     }
   },
@@ -220,7 +267,7 @@ var ControlBar = React.createClass({
    * @param {type} evt Focus event.
    */
   handleControlBarFocus: function(evt) {
-    var focusId = evt.target ? evt.target.getAttribute('data-focus-id') : null;
+    var focusId = evt.target ? evt.target.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR) : null;
     if (focusId) {
       this.props.controller.state.focusedControl = focusId;
     }
@@ -253,13 +300,13 @@ var ControlBar = React.createClass({
     }
     // Focusable elements on the control bar (this.domNode) are expected to have the
     // data-focus-id attribute
-    var focusableElements = this.domNode.querySelectorAll('[data-focus-id]');
+    var focusableElements = this.domNode.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
 
     if (focusableElements.length) {
       var firstFocusableElement = focusableElements[0];
       var lastFocusableElement = focusableElements[focusableElements.length - 1];
       // This indicates we're tabbing over the focusable control bar elements
-      if (evt.target.hasAttribute('data-focus-id')) {
+      if (evt.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)) {
         if (evt.shiftKey) {
           // Shift + tabbing on first element, focus on last
           if (evt.target === firstFocusableElement) {
@@ -357,7 +404,6 @@ var ControlBar = React.createClass({
       "oo-live-nonclickable": isLiveNow
     });
 
-    var videoQualityPopover = this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? <Popover><VideoQualityPanel{...this.props} togglePopoverAction={this.toggleQualityPopover} popover={true} /></Popover> : null;
     var closedCaptionPopover = this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover ? <Popover popoverClassName="oo-popover oo-popover-pull-right"><ClosedCaptionPopover {...this.props} togglePopoverAction={this.toggleCaptionPopover} /></Popover> : null;
 
     var qualityClass = ClassNames({
@@ -453,13 +499,34 @@ var ControlBar = React.createClass({
 
       "quality": (function (alignment) {
         return <div className="oo-popover-button-container" key="quality">
-          {videoQualityPopover}
-          <a className={qualityClass} onClick={this.handleQualityClick} style={selectedStyle} aria-hidden="true">
+          <button
+            ref={function(e) { this.qualityBtnElement = e }.bind(this)}
+            className={qualityClass}
+            style={selectedStyle}
+            onMouseUp={Utils.blurOnMouseUp}
+            onClick={this.handleQualityClick}
+            onKeyDown={this.handleQualityKeyDown}
+            data-focus-id="quality"
+            tabIndex="0"
+            aria-label={CONSTANTS.ARIA_LABELS.VIDEO_QUALITY}
+            aria-haspopup="true"
+            aria-expanded={this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? true : null}>
             <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
               onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
             <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.VIDEO_QUALITY, this.props.localizableStrings)} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}
               responsivenessMultiplier={this.responsiveUIMultiple} />
-          </a>
+          </button>
+          {this.props.controller.state.videoQualityOptions.showVideoQualityPopover &&
+            <Popover
+              autoFocus={this.props.controller.state.videoQualityOptions.autoFocus}
+              closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
+              closeAction={this.closeQualityPopover}>
+              <VideoQualityPanel
+                {...this.props}
+                closeAction={this.closeQualityPopover}
+                popover={true}/>
+            </Popover>
+          }
         </div>
       }).bind(this),
 

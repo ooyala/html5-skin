@@ -1,7 +1,16 @@
 button.oo-close-button {
   @include close($spacer-close-btn, $spacer-close-btn);
-  position:relative;
-  float:right;
+  position: relative;
+  float: right;
+}
+
+button.oo-close-button:focus {
+  @include highlight-tab();
+  opacity: 1;
+}
+
+button.oo-close-button:hover:active {
+  @include remove-highlight-tab();
 }
 
 button.oo-close-btn {

@@ -231,6 +231,7 @@ OO = {
       closeScreen: function(a) {},
       closePopovers: function() {},
       setVolume: function(a) {},
+      toggleMute: function(a) {},
       toggleVideoQualityPopOver: function(a) {},
       setClosedCaptionsInfo: function(a) {},
       setClosedCaptionsLanguage: function() {},

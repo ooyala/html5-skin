@@ -1,3 +1,4 @@
+var MACROS = require('./macros');
 /********************************************************************
  CONSTANT
  *********************************************************************/
@@ -93,6 +94,7 @@ module.exports = {
     FULL_SCREEN: "Full Screen",
     EXIT_FULL_SCREEN: "Exit Full Screen",
     VIDEO_QUALITY: "Video Quality",
+    AUTO_QUALITY: "Auto",
     SHARE: "Share",
     MORE_OPTIONS: "More Options"
   },
@@ -105,17 +107,30 @@ module.exports = {
     REPLAY: "Replay",
     MUTE: "Mute",
     UNMUTE: "Unmute",
+    VIDEO_QUALITY: "Video Quality",
+    AUTO_QUALITY: "Auto",
     FULLSCREEN: "Fullscreen",
     EXIT_FULLSCREEN: "Exit Fullscreen",
     SEEK_SLIDER: "Seek slider",
     VOLUME_SLIDER: "Volume slider",
-    VOLUME_PERCENT: "{volume}% volume",
-    TIME_DISPLAY: "{currentTime} of {totalTime}",
+    VOLUME_PERCENT: MACROS.VOLUME + "% volume",
+    TIME_DISPLAY: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME,
     TIME_DISPLAY_LIVE: "Live video",
-    TIME_DISPLAY_DVR: "{currentTime} of {totalTime} live video",
+    TIME_DISPLAY_DVR: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME + " live video",
+    QUALITY_LEVEL: "Quality level " + MACROS.LEVEL + ", " + MACROS.QUALITY,
+    CLOSE: "Close",
     STEREO_ON: "Stereoscopic",
     STEREO_OFF: "Monoscopic"
   },
+
+  ARIA_ROLES: {
+    SLIDER: "slider",
+    MENU: "menu",
+    MENU_ITEM: "menuitem",
+    MENU_ITEM_RADIO: "menuitemradio"
+  },
+
+  KEYBD_FOCUS_ID_ATTR: "data-focus-id",
 
   A11Y_CTRLS: {
     SEEK_DELTA: 5,
@@ -148,6 +163,9 @@ module.exports = {
   KEY_VALUES: {
     ENTER: "Enter",
     TAB: "Tab",
+    CONTROL: "Control",
+    ALT: "Alt",
+    ESCAPE: "Escape",
     SPACE: " ", // yep
     ARROW_UP: "ArrowUp",
     ARROW_DOWN: "ArrowDown",

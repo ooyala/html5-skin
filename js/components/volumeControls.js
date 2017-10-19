@@ -3,6 +3,7 @@ var ReactDOM = require('react-dom');
 var ClassNames = require('classnames');
 var Slider = require('./slider');
 var Utils = require('./utils');
+var MACROS = require('../constants/macros');
 var CONSTANTS = require('../constants/constants');
 
 var VolumeControls = React.createClass({
@@ -76,7 +77,7 @@ var VolumeControls = React.createClass({
    * @return {String} The current volume in a screen reader friendly format (i.e. 20% volume).
    */
   getAriaValueText: function() {
-    return CONSTANTS.ARIA_LABELS.VOLUME_PERCENT.replace('{volume}', this.getVolumePercent());
+    return CONSTANTS.ARIA_LABELS.VOLUME_PERCENT.replace(MACROS.VOLUME, this.getVolumePercent());
   },
 
   /**
@@ -183,7 +184,8 @@ VolumeControls.propTypes = {
       isMobile: React.PropTypes.bool.isRequired,
       volumeState: React.PropTypes.shape({
         volumeSliderVisible: React.PropTypes.bool.isRequired,
-        volume: React.PropTypes.number.isRequired
+        volume: React.PropTypes.number.isRequired,
+        muted: React.PropTypes.bool.isRequired
       })
     }),
     setVolume: React.PropTypes.func.isRequired

@@ -1,8 +1,10 @@
 jest.dontMock('../../js/components/utils');
+jest.dontMock('../../js/constants/constants');
 jest.dontMock('deepmerge');
 jest.dontMock('../../config/skin');
 
 var Utils = require('../../js/components/utils');
+var CONSTANTS = require('../../js/constants/constants');
 var DeepMerge = require('deepmerge');
 var SkinJSON = require('../../config/skin');
 OO = {
@@ -30,6 +32,51 @@ describe('Utils', function () {
 
     var browserSupportsTouch = Utils.browserSupportsTouch();
     expect(browserSupportsTouch).toBeFalsy();
+  });
+
+  describe('autoFocusFirstElement', function() {
+    var container, elem1, elem2, elem3;
+
+    beforeEach(function() {
+      container = document.createElement('div');
+
+      elem1 = document.createElement('div');
+      elem1.setAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR, '1');
+      container.appendChild(elem1);
+
+      elem2 = document.createElement('div');
+      elem2.setAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR, '2');
+      container.appendChild(elem2);
+
+      elem3 = document.createElement('div');
+      elem3.setAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR, '3');
+      container.appendChild(elem3);
+    });
+
+    it('should focus on first focusable element', function() {
+      var focusCalled = false;
+      elem1.focus = function() {
+        focusCalled = true;
+      };
+      Utils.autoFocusFirstElement(container);
+      expect(focusCalled).toBe(true);
+    });
+
+    it('should focus on next focusable element if first is excluded by class', function() {
+      var focus1Called = false;
+      var focus2Called = false;
+      elem1.setAttribute('class', 'exclude');
+      elem1.focus = function() {
+        focus1Called = true;
+      };
+      elem2.focus = function() {
+        focus2Called = true;
+      };
+      Utils.autoFocusFirstElement(container, 'exclude');
+      expect(focus1Called).toBe(false);
+      expect(focus2Called).toBe(true);
+    });
+
   });
 
   describe('blurOnMouseUp', function() {
