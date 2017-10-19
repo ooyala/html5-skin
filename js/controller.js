@@ -172,6 +172,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.VIDEO_VR, 'customerUi', _.bind(this.onSetVideoVr, this));
+      this.mb.subscribe(OO.EVENTS.CLEAR_VIDEO_TYPE, 'customerUi', _.bind(this.onClearVideoType, this));
       this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
@@ -304,6 +305,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (params) {
         this.videoVrSource = params.source || null; //if we need video vr params
       }
+    },
+
+    onClearVideoType: function(event, params) {
+      this.videoVr = false;
+      this.videoVrSource = null;
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -1319,6 +1325,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CHECK_VR_DIRECTION, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.TOUCH_MOVE, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VIDEO_VR, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.CLEAR_VIDEO_TYPE, 'customerUi');
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
