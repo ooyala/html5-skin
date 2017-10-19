@@ -478,10 +478,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onMuteStateChanged: function(event, muted) {
-      this.state.volumeState.muted = muted;
-      if (!muted) {
+      if (!muted && this.state.volumeState.muted) {
         this.state.volumeState.hasUnmuted = true;
       }
+      this.state.volumeState.muted = muted;
       if (this.state.isInitialPlay && muted) {
         this.state.volumeState.mutedBeforePlayback = true;
       }

@@ -224,8 +224,7 @@ var PauseScreen = React.createClass({
           onClick={this.unmuteClick}
           aria-label={volumeAriaLabel}
           >
-          <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
-            style={this.props.skinConfig.controlBar.iconStyle.inactive} />
+          <Icon {...this.props} icon={volumeIcon} ref="volumeIcon" />
         </button> : null}
       </div>
     );

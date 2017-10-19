@@ -11,6 +11,7 @@ var TestUtils = require('react-addons-test-utils');
 var VolumeControls = require('../../js/components/volumeControls');
 var defaultSkinConfig = require('../../config/skin.json');
 var CONSTANTS = require('../../js/constants/constants');
+var sinon = require('sinon');
 
 describe('VolumeControls', function() {
   var mockCtrl, skinConfig;
@@ -119,6 +120,34 @@ describe('VolumeControls', function() {
     TestUtils.Simulate.keyDown(volumeControls, { key: CONSTANTS.KEY_VALUES.END });
     expect(volumePercent).toBe(100);
     expect(volumeIncrease).toBe(true);
+  });
+
+  it('should unmute when volume is changed when muted', function() {
+    var spy = sinon.spy(mockCtrl, 'toggleMute');
+    var DOM = TestUtils.renderIntoDocument(
+      <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
+    );
+    var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
+    TestUtils.Simulate.click(volumeBars[4], { target: { dataset: { volume: 0.5 } } });
+    expect(mockCtrl.state.volumeState.volume).toBe(0.5);
+    expect(spy.callCount).toBe(1);
+    expect(spy.calledWith(false)).toBe(true);
+
+    spy.restore();
+  });
+
+  it('should not set active css class on any volume bars when muted', function() {
+    mockCtrl.state.volumeState.volume = 0.5;
+    mockCtrl.state.volumeState.muted = true;
+
+    var DOM = TestUtils.renderIntoDocument(
+      <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
+    );
+    var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
+    for (var i = 0; i < volumeBars.length; i++) {
+      var volumeBar = volumeBars[i];
+      expect(volumeBar.className).toEqual('oo-volume-bar');
+    }
   });
 
 });
