@@ -269,16 +269,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       //add loadedmetadata event listener to main video element
       if (videoElement) {
         videoElement.addEventListener("loadedmetadata", this.metaDataLoaded.bind(this));
-      }
+        if (Utils.isIE10()) {
+          videoElement.attr("controls", "controls");
+        }
 
-      if (Utils.isIE10()) {
-        videoElement.attr("controls", "controls");
-      }
-
-      if (params.videoId === OO.VIDEO.MAIN) {
-        this.state.mainVideoElement = videoElement;
-        this.enableFullScreen();
-        this.updateAspectRatio();
+        if (params.videoId === OO.VIDEO.MAIN) {
+          this.state.mainVideoElement = videoElement;
+          this.enableFullScreen();
+          this.updateAspectRatio();
+        }
       }
     },
 
@@ -1711,7 +1710,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //find descendant video element
     findMainVideoElement: function(element) {
-      var elements = [];
+      if (!element || element.length === 0) {
+        return null;
+      }
+      var elementList = [];
       //use actual element
       if (element[0]) {
         element = element[0];
@@ -1721,10 +1723,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) != -1) {
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
       }
-      else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
-        elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO);
-        if (elements.length) {
-          element = elements[0];
+      else if (typeof element.getElementsByTagName === 'function' && element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
+        elementList = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO);
+        if (elementList.length) {
+          element = elementList[0];
           this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
         }
       }
@@ -1732,10 +1734,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       else if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) != -1) {
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
       }
-      else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
-        elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT);
-        if (elements.length) {
-          element = elements[0];
+      else if (typeof element.getElementsByTagName === 'function' && element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
+        elementList = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT);
+        if (elementList.length) {
+          element = elementList[0];
           this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
         }
       }
