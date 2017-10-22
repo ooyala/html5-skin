@@ -169,6 +169,11 @@ var PauseScreen = React.createClass({
           onMouseUp={this.handlePlayerMouseUp}
           onMouseMove={this.handlePlayerMouseMove}
           onMouseLeave={this.handlePlayerMouseLeave}
+
+          onTouchStart={this.handlePlayerMouseDown}
+          onTouchMove={this.handlePlayerMouseMove}
+          onTouchEnd={this.handleTouchEnd}
+          
         />
 
         <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>

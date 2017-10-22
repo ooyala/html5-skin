@@ -195,11 +195,15 @@ var PlayingScreen = React.createClass({
       >
         <div
           className="oo-state-screen-selectable"
+
+          onTouchStart={this.handlePlayerMouseDown}
+          onTouchMove={this.handlePlayerMouseMove}
+          onTouchEnd={this.handleTouchEnd}
+          
           onMouseDown={this.handlePlayerMouseDown}
           onMouseUp={this.handlePlayerMouseUp}
           onMouseMove={this.handlePlayerMouseMove}
           onMouseLeave={this.handlePlayerMouseLeave}
-          onTouchEnd={this.handleTouchEnd}
           onClick={this.handlePlayerClicked}
           onFocus={this.handlePlayerFocus}
         />

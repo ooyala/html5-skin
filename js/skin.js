@@ -71,6 +71,23 @@ var Skin = React.createClass({
       currentAdPlayhead: Utils.ensureNumber(adPlayhead, this.state.currentAdPlayhead)
     });
   },
+  
+  getPageCoords: function (e) {
+    var coords = {
+      pageX: null,
+      pageY: null
+    };
+    
+    if (e && e.changedTouches && e.changedTouches.length) {
+      coords.pageX = e.changedTouches[0].pageX;
+      coords.pageY = e.changedTouches[0].pageY;
+    } else {
+      coords.pageX = e.pageX;
+      coords.pageY = e.pageY;
+    }
+    
+    return coords;
+  },
 
   /**
    * @public
@@ -79,10 +96,12 @@ var Skin = React.createClass({
    */
   handleVrPlayerMouseDown: function(e) {
     if (this.props.controller.videoVr) {
+      var touchCoords = this.getPageCoords(e);
+      
       this.setState({
         isVrMouseDown: true,
-        xVrMouseStart: e.pageX,
-        yVrMouseStart: e.pageY
+        xVrMouseStart: touchCoords.pageX,
+        yVrMouseStart: touchCoords.pageY
       });
       if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
@@ -100,8 +119,11 @@ var Skin = React.createClass({
       this.setState({
         isVrMouseMove: true
       });
+      
       if (typeof this.props.controller.onTouchMove === 'function') {
-        var params = this.getDirectionParams(e.pageX, e.pageY);
+        var touchCoords = this.getPageCoords(e);
+        var params = this.getDirectionParams(touchCoords.pageX, touchCoords.pageY);
+
         this.props.controller.onTouchMove(params, true);
       }
     }
