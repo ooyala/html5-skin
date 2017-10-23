@@ -396,7 +396,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.subscribeBasicPlaybackEvents();
       // New video starts at 0, duration is still unknown.
       // Setting this here will prevent flashing a full progress bar on video transitions.
-      this.skin.updatePlayhead(0, 0, 0, 0);
+      if (this.skin) {
+        this.skin.updatePlayhead(0, 0, 0, 0);
+      }
     },
 
     onAuthorizationFetched: function(event, authorization) {
@@ -407,7 +409,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       var duration = Utils.ensureNumber(contentTree.duration, 0) / 1000;
-      this.skin.updatePlayhead(null, duration);
+      if (this.skin) {
+        this.skin.updatePlayhead(null, duration);
+      }
       this.renderSkin({ contentTree: contentTree });
     },
 
