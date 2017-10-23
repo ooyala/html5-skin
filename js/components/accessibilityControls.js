@@ -99,7 +99,7 @@ AccessibilityControls.prototype = {
    * @param e - event
    */
   keyEventUp: function(e) {
-    if (!this.controller.state.accessibilityControlsEnabled && !this.controller.state.isClickedOutside) {
+    if (!(this.controller.state.accessibilityControlsEnabled || this.controller.state.isClickedOutside)) {
       return;
     }
     var targetTagName = this.getTargetTagName(e);
