@@ -125,6 +125,7 @@ var VideoQualityPanel = React.createClass({
     bitrateButtons.unshift(
       <li className="oo-auto-li" key='auto-li' role="presentation">
         <button
+          type="button"
           className={autoQualityBtn}
           key="auto"
           data-focus-id="auto"
@@ -173,6 +174,7 @@ var VideoQualityPanel = React.createClass({
           <li key={i} role="presentation">
             <button
               key={i}
+              type="button"
               className={qualityBtn}
               style={selectedBitrateStyle}
               data-focus-id={'quality' + i}
