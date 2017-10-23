@@ -61,6 +61,7 @@ var PlayingScreen = React.createClass({
   },
 
   handleKeyDown: function(event) {
+    console.log('BBB onKeyDown');
     // Show control bar when any of the following keys are pressed:
     // - Tab: Focus on next control
     // - Space/Enter: Press active control
@@ -100,6 +101,7 @@ var PlayingScreen = React.createClass({
   },
 
   handleTouchEnd: function(event) {
+    console.log('BBB onTouchEnd handleTouchEnd');
     event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
     if (!this.state.controlBarVisible){
       this.showControlBar(event);
@@ -111,10 +113,12 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseDown: function(e) {
+    console.log('BBB onMouseDown handlePlayerMouseDown');
     this.props.handleVrPlayerMouseDown(e);
   },
 
   handlePlayerMouseMove: function(e) {
+    console.log('BBB onMouseMove handlePlayerMouseMove');
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
@@ -123,6 +127,7 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseUp: function(e) {
+    console.log('BBB onMouseUp handlePlayerMouseUp');
     // pause or play the video if the skin is clicked on desktop
     if (!this.isMobile) {
       e.stopPropagation(); // W3C
@@ -137,6 +142,7 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseLeave: function () {
+    console.log('BBB onMouseLeave handlePlayerMouseLeave');
     this.props.handleVrPlayerMouseLeave();
   },
 
@@ -152,7 +158,9 @@ var PlayingScreen = React.createClass({
   },
 
   showControlBar: function(event) {
+    console.log('BBB onMouseOver showControlBar 1');
     if (!this.isMobile || event.type == 'touchend') {
+      console.log('BBB onMouseOver showControlBar 2');
       this.setState({controlBarVisible: true});
       this.props.controller.showControlBar();
       ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor="auto";
@@ -160,7 +168,9 @@ var PlayingScreen = React.createClass({
   },
 
   hideControlBar: function(event) {
+    console.log('BBB onMouseOut hideControlBar 1');
     if (this.props.controlBarAutoHide == true && !(this.isMobile && event)) {
+      console.log('BBB onMouseOut hideControlBar 2');
       this.setState({controlBarVisible: false});
       this.props.controller.hideControlBar();
       ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor="none";
@@ -198,6 +208,7 @@ var PlayingScreen = React.createClass({
           onMouseDown={this.handlePlayerMouseDown}
           onMouseUp={this.handlePlayerMouseUp}
           onMouseMove={this.handlePlayerMouseMove}
+          onSelect={function(){return false;}}
           onMouseLeave={this.handlePlayerMouseLeave}
           onTouchEnd={this.handleTouchEnd}
           onClick={this.handlePlayerClicked}

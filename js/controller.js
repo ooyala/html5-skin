@@ -208,7 +208,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.HA_FAILOVER_ERROR, "customerUi", _.bind(this.onHAFailoverError, this));
 
         // PLAYBACK_READY is a fundamental event in the init process that can be unsubscribed by errors.
-        // If and only if such has occured, it needs a route to being resubscribed.
+        // If and only if such honTouchMoveas occured, it needs a route to being resubscribed.
         if(!this.state.isPlaybackReadySubscribed) {
           this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
         }
