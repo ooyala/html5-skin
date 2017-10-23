@@ -96,6 +96,7 @@ var PlayingScreen = React.createClass({
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
       this.props.controller.state.accessibilityControlsEnabled = true;
+      this.props.controller.state.isClickedOutside = false;
     }
   },
 
@@ -128,6 +129,7 @@ var PlayingScreen = React.createClass({
       e.stopPropagation(); // W3C
       e.cancelBubble = true; // IE
       this.props.controller.state.accessibilityControlsEnabled = true;
+      this.props.controller.state.isClickedOutside = false;
       if (!this.props.controller.videoVr) {
         this.props.controller.togglePlayPause();
       }

@@ -56,6 +56,7 @@ var Skin = React.createClass({
 
   handleClickOutsidePlayer: function() {
     this.props.controller.state.accessibilityControlsEnabled = false;
+    this.props.controller.state.isClickedOutside = true;
   },
 
   switchComponent: function(args) {

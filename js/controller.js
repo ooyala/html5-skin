@@ -148,6 +148,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullWindow": false,
       "autoPauseDisabled": false,
 
+      "isClickedOutside": false,
       "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0}
     };
 
