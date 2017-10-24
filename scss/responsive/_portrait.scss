@@ -20,6 +20,7 @@
         list-style: none;
         height: 75% !important;
         white-space: normal;
+        @include flex-direction(column);
 
         li {
           display: block;
