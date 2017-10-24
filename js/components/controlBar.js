@@ -428,7 +428,9 @@ var ControlBar = React.createClass({
 
     var controlItemTemplates = {
       "playPause": (function (alignment) {
-        return <button className="oo-play-pause oo-control-bar-item"
+        return <button
+          type="button"
+          className="oo-play-pause oo-control-bar-item"
           onClick={this.handlePlayClick}
           onMouseUp={Utils.blurOnMouseUp}
           onMouseOver={this.highlight}
@@ -459,7 +461,9 @@ var ControlBar = React.createClass({
 
       "volume": (function (alignment) {
         return <div className="oo-volume oo-control-bar-item" key="volume">
-          <button className="oo-mute-unmute oo-control-bar-item"
+          <button
+            type="button"
+            className="oo-mute-unmute oo-control-bar-item"
             onClick={this.handleVolumeIconClick}
             onMouseUp={Utils.blurOnMouseUp}
             onMouseOver={this.highlight}
@@ -500,6 +504,7 @@ var ControlBar = React.createClass({
       "quality": (function (alignment) {
         return <div className="oo-popover-button-container" key="quality">
           <button
+            type="button"
             ref={function(e) { this.qualityBtnElement = e }.bind(this)}
             className={qualityClass}
             style={selectedStyle}
@@ -564,7 +569,9 @@ var ControlBar = React.createClass({
       "stereoscopic": (function (alignment) {
         var checkStereoBtn = this.vr && this.isMobile;
         return (!checkStereoBtn) ? null :
-          <button className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
+          <button
+            type="button"
+            className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
             onClick={this.handleStereoVrClick}
             onMouseUp={Utils.blurOnMouseUp}
             onMouseOver={this.highlight}
@@ -572,8 +579,7 @@ var ControlBar = React.createClass({
             key="stereo"
             data-focus-id="stereo"
             tabIndex="0"
-            aria-label={stereoAriaLabel}
-          >
+            aria-label={stereoAriaLabel}>
             <Icon {...this.props} icon={stereoIcon} style={dynamicStyles.iconCharacter} />
             <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple}
               bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
@@ -581,7 +587,9 @@ var ControlBar = React.createClass({
       }).bind(this),
 
     "fullscreen": (function (alignment) {
-        return <button className="oo-fullscreen oo-control-bar-item"
+        return <button
+          type="button"
+          className="oo-fullscreen oo-control-bar-item"
           onClick={this.handleFullscreenClick}
           onMouseUp={Utils.blurOnMouseUp}
           onMouseOver={this.highlight}
