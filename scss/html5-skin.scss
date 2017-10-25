@@ -20,7 +20,6 @@
   @import "base/type";
 
   // Views
-  @import "components/playing-screen";
   @import "components/content-screen";
   @import "components/state-screen";
   @import "components/start-screen";
@@ -55,6 +54,7 @@
   @import "components/tabs";
   @import "components/thumbnail";
   @import "components/watermark";
+  @import "components/unmute";
 
   // Responsive
   @import "responsive/xsmall";

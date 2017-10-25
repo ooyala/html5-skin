@@ -182,7 +182,7 @@ var AdScreen = React.createClass({
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.MUTE;
     }
 
-    var showUnmute = this.props.controller.state.volumeState.mutingForAutoplay;
+    var showUnmute = this.props.controller.state.volumeState.mutingForAutoplay && this.props.controller.state.volumeState.muted;
 
     return (
       <div className="oo-state-screen oo-ad-screen"
@@ -202,7 +202,7 @@ var AdScreen = React.createClass({
           {playbackControlItems}
         </div>
 
-        {showUnmute ? <button className="oo-playing-screen oo-unmute"
+        {showUnmute ? <button className="oo-ad-screen oo-unmute"
           onClick={this.unmuteClick}
           aria-label={volumeAriaLabel}
           >

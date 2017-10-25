@@ -458,14 +458,12 @@ describe('PlayingScreen', function () {
   it('should display unmute icon when handling muted autoplay', function () {
     var mockController = {
       state: {
-        autoplayed: true,
         upNextInfo: {
           showing: false
         },
         volumeState: {
           muted: true,
-          mutedBeforePlayback: true,
-          hasUnmuted: false
+          mutingForAutoplay: true
         }
       }
     };
@@ -479,89 +477,15 @@ describe('PlayingScreen', function () {
     expect(unmuteIcon).toBeTruthy();
   });
 
-  it('should not display unmute icon when not autoplaying', function () {
-    var mockController = {
-      state: {
-        autoplayed: false,
-        upNextInfo: {
-          showing: false
-        },
-        volumeState: {
-          muted: true,
-          mutedBeforePlayback: true,
-          hasUnmuted: false
-        }
-      }
-    };
-
-    var closedCaptionOptions = {
-      cueText: "cue text"
-    };
-
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions={closedCaptionOptions} />);
-    var unmuteIcons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-unmute');
-    expect(unmuteIcons.length).toBe(0);
-  });
-
-  it('should not display unmute icon when not muted before playback', function () {
-    var mockController = {
-      state: {
-        autoplayed: true,
-        upNextInfo: {
-          showing: false
-        },
-        volumeState: {
-          muted: true,
-          mutedBeforePlayback: false,
-          hasUnmuted: false
-        }
-      }
-    };
-
-    var closedCaptionOptions = {
-      cueText: "cue text"
-    };
-
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions={closedCaptionOptions} />);
-    var unmuteIcons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-unmute');
-    expect(unmuteIcons.length).toBe(0);
-  });
-
   it('should not display unmute icon when not muted', function () {
     var mockController = {
       state: {
-        autoplayed: true,
         upNextInfo: {
           showing: false
         },
         volumeState: {
           muted: false,
-          mutedBeforePlayback: true,
-          hasUnmuted: false
-        }
-      }
-    };
-
-    var closedCaptionOptions = {
-      cueText: "cue text"
-    };
-
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions={closedCaptionOptions} />);
-    var unmuteIcons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-unmute');
-    expect(unmuteIcons.length).toBe(0);
-  });
-
-  it('should not display unmute icon when unmuted at any point', function () {
-    var mockController = {
-      state: {
-        autoplayed: true,
-        upNextInfo: {
-          showing: false
-        },
-        volumeState: {
-          muted: true,
-          mutedBeforePlayback: true,
-          hasUnmuted: true
+          mutingForAutoplay: true
         }
       }
     };
