@@ -79,10 +79,6 @@ var PauseScreen = React.createClass({
     }
   },
 
-  unmuteClick: function(event) {
-    this.props.controller.handleMuteClick();
-  },
-
   render: function() {
     //inline style for config/skin.json elements only
     var titleStyle = {
@@ -158,17 +154,6 @@ var PauseScreen = React.createClass({
         controlBarVisible={this.state.controlBarVisible}
       /> : null;
 
-    var volumeIcon, volumeAriaLabel;
-    if (this.props.controller.state.volumeState.muted) {
-      volumeIcon = "volumeOff";
-      volumeAriaLabel = CONSTANTS.ARIA_LABELS.UNMUTE;
-    } else {
-      volumeIcon = "volume";
-      volumeAriaLabel = CONSTANTS.ARIA_LABELS.MUTE;
-    }
-
-    var showUnmute = this.props.controller.state.volumeState.mutedBeforePlayback && this.props.controller.state.autoplayed && this.props.controller.state.volumeState.muted && !this.props.controller.state.volumeState.hasUnmuted;
-
     return (
       <div className="oo-state-screen oo-pause-screen">
 
@@ -219,13 +204,6 @@ var PauseScreen = React.createClass({
             isLiveStream={this.props.isLiveStream}
           />
         </div>
-
-        {showUnmute ? <button className="oo-playing-screen oo-unmute"
-          onClick={this.unmuteClick}
-          aria-label={volumeAriaLabel}
-          >
-          <Icon {...this.props} icon={volumeIcon} ref="volumeIcon" />
-        </button> : null}
       </div>
     );
   }

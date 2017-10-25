@@ -20,7 +20,6 @@ var gulp        = require('gulp'),
     open        = require('gulp-open'),
     git         = require('git-rev'),
     realFs      = require('fs'),
-    livereactload = require('livereactload'),
     gracefulFs  = require('graceful-fs');
     //Fix OSX EMFILE error
     gracefulFs.gracefulify(realFs);
@@ -46,18 +45,9 @@ function buildJS(file, hash, watch, ugly, sourcemap, debug, externalReact) {
     debug: debug,
     transform:    [reactify, bulkify],
     cache: {},
-    packageCache: {},
-    plugin: []
+    packageCache: {}
   };
-
-  if (watch) {
-    props.plugin.push(watchify);
-    if (!/\.min/.test(file)) {
-      props.plugin.push(livereactload);
-    }
-  }
-
-  var bundler = browserify(props);
+  var bundler = watch ? watchify(browserify(props)) : browserify(props);
 
   function rebundle(reload) {
     if (externalReact) {

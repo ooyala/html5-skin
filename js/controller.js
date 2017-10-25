@@ -117,9 +117,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "volumeState": {
         "volume": 1,
         "muted": false,
-        "hasUnmuted": false,
-        "mutedBeforePlayback": false,
-        "volumeSliderVisible": false
+        "volumeSliderVisible": false,
+        "mutingForAutoplay": false
       },
 
       "upNextInfo": {
@@ -145,7 +144,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isSkipAdClicked": false,
       "isInitialPlay": false,
       "initialPlayHasOccurred": false,
-      "autoplayed": false,
       "isFullScreenSupported": false,
       "isVideoFullScreenSupported": false,
       "isFullWindow": false,
@@ -477,13 +475,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onMuteStateChanged: function(event, muted) {
-      if (!muted && this.state.volumeState.muted) {
-        this.state.volumeState.hasUnmuted = true;
-      }
+    onMuteStateChanged: function(event, muted, videoId, forAutoplay) {
       this.state.volumeState.muted = muted;
-      if (this.state.isInitialPlay && muted) {
-        this.state.volumeState.mutedBeforePlayback = true;
+      if (muted && forAutoplay) {
+        this.state.volumeState.mutingForAutoplay = true;
+      }
+
+      if (!muted) {
+        this.state.volumeState.mutingForAutoplay = false;
       }
       this.renderSkin();
     },
@@ -568,10 +567,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onInitialPlay: function(event, time, wasAutoplayed) {
+    onInitialPlay: function() {
       this.state.isInitialPlay = true;
       this.state.initialPlayHasOccurred = true;
-      this.state.autoplayed = wasAutoplayed;
       this.startHideControlBarTimer();
     },
 

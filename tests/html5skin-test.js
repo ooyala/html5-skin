@@ -347,60 +347,6 @@ describe('Controller', function() {
       expect(controller.state.volumeState.volume).toBe(100);
     });
 
-    it('should set hasUnmuted state when mute state is changed to unmuted', function() {
-      expect(controller.state.volumeState.hasUnmuted).toBe(false);
-      controller.state.volumeState.muted = true;
-      controller.onMuteStateChanged('event', false);
-      expect(controller.state.volumeState.hasUnmuted).toBe(true);
-
-      controller.state.volumeState.hasUnmuted = false;
-      controller.state.volumeState.muted = false;
-      controller.onMuteStateChanged('event', false);
-      expect(controller.state.volumeState.hasUnmuted).toBe(false);
-
-      controller.state.volumeState.hasUnmuted = false;
-      controller.state.volumeState.muted = false;
-      controller.onMuteStateChanged('event', true);
-      expect(controller.state.volumeState.hasUnmuted).toBe(false);
-
-      controller.state.volumeState.hasUnmuted = false;
-      controller.state.volumeState.muted = true;
-      controller.onMuteStateChanged('event', true);
-      expect(controller.state.volumeState.hasUnmuted).toBe(false);
-    });
-
-    it('should set mutedBeforePlayback state when muted before content start', function() {
-      expect(controller.state.volumeState.mutedBeforePlayback).toBe(false);
-      controller.state.isInitialPlay = true;
-      controller.onMuteStateChanged('event', true);
-      controller.state.volumeState.mutedBeforePlayback = true;
-
-      controller.state.volumeState.mutedBeforePlayback = false;
-      controller.state.isInitialPlay = false;
-      controller.onMuteStateChanged('event', true);
-      controller.state.volumeState.mutedBeforePlayback = false;
-
-      controller.state.volumeState.mutedBeforePlayback = false;
-      controller.state.isInitialPlay = true;
-      controller.onMuteStateChanged('event', false);
-      controller.state.volumeState.mutedBeforePlayback = false;
-
-      controller.state.volumeState.mutedBeforePlayback = false;
-      controller.state.isInitialPlay = false;
-      controller.onMuteStateChanged('event', false);
-      controller.state.volumeState.mutedBeforePlayback = false;
-    });
-
-    it('should set autoplayed state to true if initial play has been requested via autoplay', function() {
-      expect(controller.state.autoplayed).toBe(false);
-      controller.onInitialPlay('event', 0, true);
-      expect(controller.state.autoplayed).toBe(true);
-
-      controller.state.autoplayed = false;
-      controller.onInitialPlay('event', 0, false);
-      expect(controller.state.autoplayed).toBe(false);
-    });
-
   });
 
 });

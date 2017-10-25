@@ -200,7 +200,7 @@ var PlayingScreen = React.createClass({
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.MUTE;
     }
 
-    var showUnmute = this.props.controller.state.volumeState.mutedBeforePlayback && this.props.controller.state.autoplayed && this.props.controller.state.volumeState.muted && !this.props.controller.state.volumeState.hasUnmuted;
+    var showUnmute = this.props.controller.state.volumeState.mutingForAutoplay;
 
     return (
       <div
