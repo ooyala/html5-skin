@@ -1416,7 +1416,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     togglePlayPause: function() {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
-          this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());
+          if (!this.state.isInitialPlay){
+            this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now(), false);
+          }
           break;
         case CONSTANTS.STATE.END:
           if(Utils.isAndroid() || Utils.isIos()) {
