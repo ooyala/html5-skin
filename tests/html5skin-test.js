@@ -295,14 +295,14 @@ describe('Controller', function() {
 
     it('should be able to toggle mute', function() {
       var spy = sinon.spy(OO.mb, 'publish');
-      controller.toggleMute(false);
+      controller.toggleMute(false, false);
       expect(spy.callCount).toBe(1);
-      expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, false)).toBe(true);
+      expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, false, null, false)).toBe(true);
 
       spy.reset();
-      controller.toggleMute(true);
+      controller.toggleMute(true, false);
       expect(spy.callCount).toBe(1);
-      expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, true)).toBe(true);
+      expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, true, null, false)).toBe(true);
 
       spy.restore();
     });
@@ -314,7 +314,7 @@ describe('Controller', function() {
       expect(controller.state.volumeState.muted).toBe(false);
       controller.handleMuteClick();
       expect(spy.callCount).toBe(1);
-      expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, true)).toBe(true);
+      expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, true, null, true)).toBe(true);
 
       spy.reset();
 
@@ -322,7 +322,7 @@ describe('Controller', function() {
       expect(controller.state.volumeState.muted).toBe(true);
       controller.handleMuteClick();
       expect(spy.callCount).toBe(1);
-      expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, false)).toBe(true);
+      expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, false, null, true)).toBe(true);
 
       spy.restore();
     });
@@ -345,6 +345,47 @@ describe('Controller', function() {
       controller.onVolumeChanged('event', 100);
       expect(controller.state.volumeState.muted).toBe(true);
       expect(controller.state.volumeState.volume).toBe(100);
+    });
+
+    it('should not accept volume changes if prompted by a video different from a currently playing video', function() {
+      controller.state.volumeState.volume = 0;
+      controller.onPlaying('event', OO.VIDEO.ADS);
+      expect(controller.state.volumeState.volume).toBe(0);
+      controller.onVolumeChanged('event', 100, OO.VIDEO.MAIN);
+      expect(controller.state.volumeState.volume).toBe(0);
+    });
+
+    it('should not accept mute state changes if prompted by a video different from a currently playing video', function() {
+      controller.state.volumeState.muted = true;
+      controller.onPlaying('event', OO.VIDEO.ADS);
+      expect(controller.state.volumeState.muted).toBe(true);
+      controller.onMuteStateChanged('event', false, OO.VIDEO.MAIN);
+      expect(controller.state.volumeState.muted).toBe(true);
+    });
+
+    it('should correctly handle isPlaying state and currentVideoId', function() {
+      expect(controller.state.isPlaying).toBe(false);
+      expect(controller.state.currentVideoId).toBe(null);
+      controller.onPlaying('event', OO.VIDEO.MAIN);
+      expect(controller.state.isPlaying).toBe(true);
+      expect(controller.state.currentVideoId).toBe(OO.VIDEO.MAIN);
+      controller.onErrorEvent();
+      expect(controller.state.isPlaying).toBe(false);
+      expect(controller.state.currentVideoId).toBe(null);
+
+      controller.onPlaying('event', OO.VIDEO.MAIN);
+      expect(controller.state.isPlaying).toBe(true);
+      expect(controller.state.currentVideoId).toBe(OO.VIDEO.MAIN);
+      controller.onPlayed();
+      expect(controller.state.isPlaying).toBe(false);
+      expect(controller.state.currentVideoId).toBe(null);
+
+      controller.onPlaying('event', OO.VIDEO.MAIN);
+      expect(controller.state.isPlaying).toBe(true);
+      expect(controller.state.currentVideoId).toBe(OO.VIDEO.MAIN);
+      controller.onEmbedCodeChanged();
+      expect(controller.state.isPlaying).toBe(false);
+      expect(controller.state.currentVideoId).toBe(null);
     });
 
   });

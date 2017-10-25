@@ -13,7 +13,7 @@ var VolumeControls = React.createClass({
     this.props.controller.setVolume(newVol);
     //unmute when volume is changed when muted
     if (newVol !== 0) {
-      this.props.controller.toggleMute(false);
+      this.props.controller.toggleMute(false, true);
     }
   },
 
