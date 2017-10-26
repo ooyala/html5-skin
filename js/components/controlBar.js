@@ -701,7 +701,7 @@ var ControlBar = React.createClass({
     var collapsedMoreOptionsItems = collapsedResult.overflow;
     this.moreOptionsItems = collapsedMoreOptionsItems;
 
-    finalControlBarItems = [];
+    var finalControlBarItems = [];
     var lastItem = (this.props.controller.state.isOoyalaAds || collapsedMoreOptionsItems.length === 0) ? collapsedControlBarItems.length - 2 : collapsedControlBarItems.length - 1;
     for (var k = 0; k < collapsedControlBarItems.length; k++) {
       if (collapsedControlBarItems[k].name === "moreOptions" && (this.props.controller.state.isOoyalaAds || collapsedMoreOptionsItems.length === 0)) {

@@ -1,0 +1,13 @@
+.oo-unmute {
+  display: inline-block;
+  position: absolute;
+  cursor: pointer;
+  height: 45px;
+  width: 45px;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.3);
+  border: 0;
+  outline:none;
+  z-index: $zindex-unmute;
+}
