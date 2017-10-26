@@ -363,28 +363,16 @@ describe('Controller', function() {
       expect(controller.state.volumeState.muted).toBe(true);
     });
 
-    it('should correctly handle isPlaying state and currentVideoId', function() {
-      expect(controller.state.isPlaying).toBe(false);
+    it('should correctly handle currentVideoId', function() {
       expect(controller.state.currentVideoId).toBe(null);
       controller.onPlaying('event', OO.VIDEO.MAIN);
-      expect(controller.state.isPlaying).toBe(true);
       expect(controller.state.currentVideoId).toBe(OO.VIDEO.MAIN);
       controller.onErrorEvent();
-      expect(controller.state.isPlaying).toBe(false);
       expect(controller.state.currentVideoId).toBe(null);
 
       controller.onPlaying('event', OO.VIDEO.MAIN);
-      expect(controller.state.isPlaying).toBe(true);
-      expect(controller.state.currentVideoId).toBe(OO.VIDEO.MAIN);
-      controller.onPlayed();
-      expect(controller.state.isPlaying).toBe(false);
-      expect(controller.state.currentVideoId).toBe(null);
-
-      controller.onPlaying('event', OO.VIDEO.MAIN);
-      expect(controller.state.isPlaying).toBe(true);
       expect(controller.state.currentVideoId).toBe(OO.VIDEO.MAIN);
       controller.onEmbedCodeChanged();
-      expect(controller.state.isPlaying).toBe(false);
       expect(controller.state.currentVideoId).toBe(null);
     });
 

@@ -9,7 +9,7 @@ var CONSTANTS = require('../constants/constants');
 var VolumeControls = React.createClass({
 
   volumeChange: function(vol) {
-    var newVol = Utils.ensureNumber(vol);
+    var newVol = Utils.ensureNumber(vol, 1);
     this.props.controller.setVolume(newVol);
     //unmute when volume is changed when muted
     if (newVol !== 0) {
@@ -192,7 +192,8 @@ VolumeControls.propTypes = {
       isMobile: React.PropTypes.bool.isRequired,
       volumeState: React.PropTypes.shape({
         volumeSliderVisible: React.PropTypes.bool.isRequired,
-        volume: React.PropTypes.number.isRequired
+        volume: React.PropTypes.number.isRequired,
+        muted: React.PropTypes.bool.isRequired
       })
     }),
     setVolume: React.PropTypes.func.isRequired

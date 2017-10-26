@@ -247,6 +247,8 @@ var PlayingScreen = React.createClass({
           isLiveStream={this.props.isLiveStream} />
       </div>
       {showUnmute ? <button className="oo-playing-screen oo-unmute"
+        type="button"
+        tabindex="0"
         onClick={this.unmuteClick}
         aria-label={volumeAriaLabel}
         >

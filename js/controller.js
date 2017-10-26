@@ -44,7 +44,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isLiveStream": false,
       "screenToShow": null,
       "playerState": null,
-      "isPlaying": false,
       "currentVideoId": null,
       "discoveryData": null,
       "forceCountDownTimerOnEndScreen": false,
@@ -384,7 +383,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.discoveryData = null;
       this.state.thumbnails = null;
       this.state.afterOoyalaAd = false;
-      this.state.isPlaying = false;
       this.state.currentVideoId = null;
       this.resetUpNextInfo(true);
 
@@ -470,11 +468,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
+    isPlaying: function() {
+      return this.state.playerState !== CONSTANTS.STATE.START && this.state.playerState !== CONSTANTS.STATE.ERROR;
+    },
+
     onVolumeChanged: function (event, newVolume, videoId) {
       //ignore the volume change if it came from a source other than the currently playing video
       //but only if currently playing a video. This is to prevent desyncs between video volume
       //and the UI
-      if (videoId && videoId !== this.state.currentVideoId && this.state.isPlaying) {
+      if (videoId && videoId !== this.state.currentVideoId && this.isPlaying()) {
         return;
       }
       if (newVolume <= 0) {
@@ -489,7 +491,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       //ignore the volume change if it came from a source other than the currently playing video
       //but only if currently playing a video. This is to prevent desyncs between video volume
       //and the UI
-      if (videoId && videoId !== this.state.currentVideoId && this.state.isPlaying) {
+      if (videoId && videoId !== this.state.currentVideoId && this.isPlaying()) {
         return;
       }
       this.state.volumeState.muted = muted;
@@ -591,7 +593,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onPlaying: function(event, source) {
       this.state.currentVideoId = source;
-      this.state.isPlaying = true;
       if (source == OO.VIDEO.MAIN) {
         //set mainVideoElement if not set during video plugin initialization
         if (!this.state.mainVideoMediaType) {
@@ -677,8 +678,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayed: function() {
-      this.state.isPlaying = false;
-      this.state.currentVideoId = null;
       var duration = this.state.mainVideoDuration;
       this.state.duration = duration;
       this.skin.updatePlayhead(duration, duration, duration);
@@ -1304,7 +1303,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.unsubscribeBasicPlaybackEvents();
       this.setBufferingState(false);
 
-      this.state.isPlaying = false;
       this.state.currentVideoId = null;
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.state.playerState = CONSTANTS.STATE.ERROR;
