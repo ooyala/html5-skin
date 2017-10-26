@@ -204,7 +204,7 @@ var AdScreen = React.createClass({
 
         {showUnmute ? <button className="oo-ad-screen oo-unmute"
           type="button"
-          tabindex="0"
+          tabIndex="0"
           onClick={this.unmuteClick}
           aria-label={volumeAriaLabel}
           >

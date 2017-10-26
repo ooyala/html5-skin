@@ -248,7 +248,7 @@ var PlayingScreen = React.createClass({
       </div>
       {showUnmute ? <button className="oo-playing-screen oo-unmute"
         type="button"
-        tabindex="0"
+        tabIndex="0"
         onClick={this.unmuteClick}
         aria-label={volumeAriaLabel}
         >
