@@ -44,6 +44,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isLiveStream": false,
       "screenToShow": null,
       "playerState": null,
+      "currentVideoId": null,
       "discoveryData": null,
       "forceCountDownTimerOnEndScreen": false,
       "isPlayingAd": false,
@@ -117,7 +118,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "volumeState": {
         "volume": 1,
         "muted": false,
-        "volumeSliderVisible": false
+        "volumeSliderVisible": false,
+        "mutingForAutoplay": false
       },
 
       "upNextInfo": {
@@ -381,6 +383,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.discoveryData = null;
       this.state.thumbnails = null;
       this.state.afterOoyalaAd = false;
+      this.state.currentVideoId = null;
       this.resetUpNextInfo(true);
 
       if (options && options.ooyalaAds === true) {
@@ -469,7 +472,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
-    onVolumeChanged: function (event, newVolume) {
+    isPlaying: function() {
+      return this.state.playerState !== CONSTANTS.STATE.START && this.state.playerState !== CONSTANTS.STATE.ERROR;
+    },
+
+    onVolumeChanged: function (event, newVolume, videoId) {
+      //ignore the volume change if it came from a source other than the currently playing video
+      //but only if currently playing a video. This is to prevent desyncs between video volume
+      //and the UI
+      if (videoId && videoId !== this.state.currentVideoId && this.isPlaying()) {
+        return;
+      }
       if (newVolume <= 0) {
         this.state.volumeState.volume = 0;
       } else {
@@ -478,8 +491,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onMuteStateChanged: function(event, muted) {
+    onMuteStateChanged: function(event, muted, videoId, forAutoplay) {
+      //ignore the volume change if it came from a source other than the currently playing video
+      //but only if currently playing a video. This is to prevent desyncs between video volume
+      //and the UI
+      if (videoId && videoId !== this.state.currentVideoId && this.isPlaying()) {
+        return;
+      }
       this.state.volumeState.muted = muted;
+      if (muted && forAutoplay) {
+        this.state.volumeState.mutingForAutoplay = true;
+      }
+
+      if (!muted) {
+        this.state.volumeState.mutingForAutoplay = false;
+      }
       this.renderSkin();
     },
 
@@ -570,6 +596,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaying: function(event, source) {
+      this.state.currentVideoId = source;
       if (source == OO.VIDEO.MAIN) {
         //set mainVideoElement if not set during video plugin initialization
         if (!this.state.mainVideoMediaType) {
@@ -1280,6 +1307,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.unsubscribeBasicPlaybackEvents();
       this.setBufferingState(false);
 
+      this.state.currentVideoId = null;
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.state.playerState = CONSTANTS.STATE.ERROR;
       this.state.errorCode = errorCode;
@@ -1406,8 +1434,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    toggleMute: function(muted) {
-      this.mb.publish(OO.EVENTS.CHANGE_MUTE_STATE, muted);
+    toggleMute: function(muted, fromUser) {
+      this.mb.publish(OO.EVENTS.CHANGE_MUTE_STATE, muted, null, fromUser);
     },
 
     toggleStereoVr: function () {
@@ -1464,7 +1492,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     handleMuteClick: function() {
-      this.toggleMute(!this.state.volumeState.muted);
+      this.toggleMute(!this.state.volumeState.muted, true);
     },
 
     toggleShareScreen: function() {
@@ -1861,8 +1889,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       return element;
     }
   };
-
-  exposeStaticApi = Html5Skin; //for unit test only
 
   return Html5Skin;
 });
