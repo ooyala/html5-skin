@@ -119,7 +119,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "volume": 1,
         "muted": false,
         "volumeSliderVisible": false,
-        "mutingForAutoplay": false
+        "mutingForAutoplay": false,
+        "unmuteIconCollapsed": false
       },
 
       "upNextInfo": {
