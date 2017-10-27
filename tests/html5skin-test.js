@@ -230,13 +230,13 @@ describe('Controller', function() {
 
     it('should show start screen on playback ready when core reports it will NOT autoplay', function() {
       expect(controller.state.screenToShow).not.toBe(CONSTANTS.SCREEN.START_SCREEN);
-      controller.onPlaybackReady('event', { willAutoplay: false });
+      controller.onPlaybackReady('event', null, { willAutoplay: false });
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
     });
 
     it('should show loading screen on playback ready when core reports it will autoplay', function() {
       expect(controller.state.screenToShow).not.toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
-      controller.onPlaybackReady('event', { willAutoplay: true });
+      controller.onPlaybackReady('event', null, { willAutoplay: true });
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
     });
 
