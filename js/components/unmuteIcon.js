@@ -14,10 +14,6 @@ var UnmuteIcon = React.createClass({
     this.props.controller.handleMuteClick();
   },
 
-  //componentWillMount: function() {
-  //
-  //},
-
   componentDidMount: function() {
     if (this.state.expanded) {
       clearTimeout(this.timeout);
@@ -30,13 +26,13 @@ var UnmuteIcon = React.createClass({
       this.timeout = setTimeout(_.bind(function() {
         me.props.controller.state.volumeState.unmuteIconCollapsed = true;
         me.setState({expanded: false});
-      }, this), 5000);
+      }, this), 2000);
     }
   },
 
-  //componentWillUnmount: function() {
-  //
-  //},
+  componentWillUnmount: function() {
+    clearTimeout(this.timeout);
+  },
 
   render: function() {
     var volumeIcon, volumeAriaLabel;
@@ -49,13 +45,9 @@ var UnmuteIcon = React.createClass({
     }
 
     var myClass = ClassNames({
-      'oo-unmute': !this.state.expanded,
-      'oo-unmute-expanded': this.state.expanded
+      'oo-unmute': true,
+      'oo-expanded': this.state.expanded
     });
-
-    //<div className="oo-unmute-inner-wrapper">
-    //
-    //    </div>
 
     return (
       <button className={myClass}

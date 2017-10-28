@@ -192,7 +192,7 @@ var PlayingScreen = React.createClass({
         controlBarVisible={this.state.controlBarVisible}
       /> : null;
 
-    var showUnmute = true;//this.props.controller.state.volumeState.mutingForAutoplay && this.props.controller.state.volumeState.muted;
+    var showUnmute = this.props.controller.state.volumeState.mutingForAutoplay && this.props.controller.state.volumeState.muted;
 
     return (
       <div
@@ -217,9 +217,9 @@ var PlayingScreen = React.createClass({
 
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
-        {viewControlsVr}
+      {viewControlsVr}
 
-        <div className="oo-interactive-container" onFocus={this.handleFocus}>
+      <div className="oo-interactive-container" onFocus={this.handleFocus}>
 
         {this.props.closedCaptionOptions.enabled ?
           <TextTrack
@@ -240,7 +240,7 @@ var PlayingScreen = React.createClass({
 
       </div>
 
-        {showUnmute ? <UnmuteIcon {...this.props}/> : null}
+      {showUnmute ? <UnmuteIcon {...this.props}/> : null}
 
     </div>
     );
