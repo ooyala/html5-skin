@@ -10,7 +10,7 @@ var CONSTANTS = require('../../js/constants/constants');
 var skinConfig = require('../../config/skin.json');
 var sinon = require('sinon');
 
-describe('AdPanel', function () {
+describe('UnmuteIcon', function () {
   it('creates an expanded UnmuteIcon', function () {
     var mockController = {
       state: {
