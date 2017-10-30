@@ -117,6 +117,7 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseMove: function(e) {
+    e.preventDefault();
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();

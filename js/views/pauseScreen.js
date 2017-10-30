@@ -56,6 +56,7 @@ var PauseScreen = React.createClass({
     this.props.handleVrPlayerMouseDown(e);
   },
   handlePlayerMouseMove: function(e) {
+    e.preventDefault();
     this.props.handleVrPlayerMouseMove(e);
   },
   handlePlayerMouseUp: function(e) {
