@@ -5,6 +5,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 var PlayingScreen = require('../../js/views/playingScreen');
+var UnmuteIcon = require('../../js/components/unmuteIcon');
 
 describe('PlayingScreen', function () {
   it('creates a PlayingScreen and checks mouseMove, mouseUp without video360', function () {
@@ -473,7 +474,7 @@ describe('PlayingScreen', function () {
     };
 
     var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions={closedCaptionOptions} />);
-    var unmuteIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-unmute');
+    var unmuteIcon = TestUtils.findRenderedComponentWithType(DOM, UnmuteIcon);
     expect(unmuteIcon).toBeTruthy();
   });
 
@@ -495,7 +496,7 @@ describe('PlayingScreen', function () {
     };
 
     var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions={closedCaptionOptions} />);
-    var unmuteIcons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-unmute');
+    var unmuteIcons = TestUtils.scryRenderedComponentsWithType(DOM, UnmuteIcon);
     expect(unmuteIcons.length).toBe(0);
   });
 

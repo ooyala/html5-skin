@@ -7,6 +7,7 @@ var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 var AdScreen = require('../../js/views/adScreen');
 var defaultSkinConfig = require('../../config/skin.json');
+var UnmuteIcon = require('../../js/components/unmuteIcon');
 
 describe('AdScreen', function () {
   it('creates an ad screen', function () {
@@ -361,7 +362,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
         controller={mockController}
         skinConfig={defaultSkinConfig}
       />);
-    var unmuteIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-unmute');
+    var unmuteIcon = TestUtils.findRenderedComponentWithType(DOM, UnmuteIcon);
     expect(unmuteIcon).toBeTruthy();
   });
 
@@ -383,7 +384,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
         controller={mockController}
         skinConfig={defaultSkinConfig}
       />);
-    var unmuteIcons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-unmute');
+    var unmuteIcons = TestUtils.scryRenderedComponentsWithType(DOM, UnmuteIcon);
     expect(unmuteIcons.length).toBe(0);
   });
 
