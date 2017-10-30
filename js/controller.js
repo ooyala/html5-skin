@@ -44,6 +44,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isLiveStream": false,
       "screenToShow": null,
       "playerState": null,
+      "currentVideoId": null,
       "discoveryData": null,
       "forceCountDownTimerOnEndScreen": false,
       "isPlayingAd": false,
@@ -117,7 +118,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "volumeState": {
         "volume": 1,
         "muted": false,
-        "volumeSliderVisible": false
+        "volumeSliderVisible": false,
+        "mutingForAutoplay": false
       },
 
       "upNextInfo": {
@@ -173,7 +175,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.VIDEO_VR, 'customerUi', _.bind(this.onSetVideoVr, this));
-      this.mb.subscribe(OO.EVENTS.CLEAR_VIDEO_TYPE, 'customerUi', _.bind(this.onClearVideoType, this));
+      this.mb.subscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi', _.bind(this.onClearVideoType, this));
       this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setVrViewingDirection, this));
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
@@ -388,6 +390,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.discoveryData = null;
       this.state.thumbnails = null;
       this.state.afterOoyalaAd = false;
+      this.state.currentVideoId = null;
       this.resetUpNextInfo(true);
 
       if (options && options.ooyalaAds === true) {
@@ -403,7 +406,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.subscribeBasicPlaybackEvents();
       // New video starts at 0, duration is still unknown.
       // Setting this here will prevent flashing a full progress bar on video transitions.
-      this.skin.updatePlayhead(0, 0, 0, 0);
+      if (this.skin) {
+        this.skin.updatePlayhead(0, 0, 0, 0);
+      }
     },
 
     onAuthorizationFetched: function(event, authorization) {
@@ -414,7 +419,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       var duration = Utils.ensureNumber(contentTree.duration, 0) / 1000;
-      this.skin.updatePlayhead(null, duration);
+      if (this.skin) {
+        this.skin.updatePlayhead(null, duration);
+      }
       this.renderSkin({ contentTree: contentTree });
     },
 
@@ -472,7 +479,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
-    onVolumeChanged: function (event, newVolume) {
+    isPlaying: function() {
+      return this.state.playerState !== CONSTANTS.STATE.START && this.state.playerState !== CONSTANTS.STATE.ERROR;
+    },
+
+    onVolumeChanged: function (event, newVolume, videoId) {
+      //ignore the volume change if it came from a source other than the currently playing video
+      //but only if currently playing a video. This is to prevent desyncs between video volume
+      //and the UI
+      if (videoId && videoId !== this.state.currentVideoId && this.isPlaying()) {
+        return;
+      }
       if (newVolume <= 0) {
         this.state.volumeState.volume = 0;
       } else {
@@ -481,8 +498,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    onMuteStateChanged: function(event, muted) {
+    onMuteStateChanged: function(event, muted, videoId, forAutoplay) {
+      //ignore the volume change if it came from a source other than the currently playing video
+      //but only if currently playing a video. This is to prevent desyncs between video volume
+      //and the UI
+      if (videoId && videoId !== this.state.currentVideoId && this.isPlaying()) {
+        return;
+      }
       this.state.volumeState.muted = muted;
+      if (muted && forAutoplay) {
+        this.state.volumeState.mutingForAutoplay = true;
+      }
+
+      if (!muted) {
+        this.state.volumeState.mutingForAutoplay = false;
+      }
       this.renderSkin();
     },
 
@@ -573,6 +603,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaying: function(event, source) {
+      this.state.currentVideoId = source;
       if (source == OO.VIDEO.MAIN) {
         //set mainVideoElement if not set during video plugin initialization
         if (!this.state.mainVideoMediaType) {
@@ -1283,6 +1314,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.unsubscribeBasicPlaybackEvents();
       this.setBufferingState(false);
 
+      this.state.currentVideoId = null;
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.state.playerState = CONSTANTS.STATE.ERROR;
       this.state.errorCode = errorCode;
@@ -1328,7 +1360,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.TOUCH_MOVE, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_VR, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.CLEAR_VIDEO_TYPE, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi');
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
@@ -1411,8 +1443,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    toggleMute: function(muted) {
-      this.mb.publish(OO.EVENTS.CHANGE_MUTE_STATE, muted);
+    toggleMute: function(muted, fromUser) {
+      this.mb.publish(OO.EVENTS.CHANGE_MUTE_STATE, muted, null, fromUser);
     },
 
     toggleStereoVr: function () {
@@ -1469,7 +1501,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     handleMuteClick: function() {
-      this.toggleMute(!this.state.volumeState.muted);
+      this.toggleMute(!this.state.volumeState.muted, true);
     },
 
     toggleShareScreen: function() {
@@ -1609,12 +1641,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     setClosedCaptionsLanguage: function(){
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
-      //if saved language not in available languages, set to first available language
-      if (availableLanguages && (this.state.closedCaptionOptions.language == null || !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))) {
+
+      //if saved language not in available languages and saved is not 'none', set to first available language
+      if (availableLanguages &&
+        this.state.closedCaptionOptions.language !== CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE &&
+        (this.state.closedCaptionOptions.language == null ||
+        !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))) {
         this.state.closedCaptionOptions.language = availableLanguages.languages[0];
       }
-      var language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : "";
-      var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
+      var language = "";
+      var mode = OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
+      if (this.state.closedCaptionOptions.enabled &&
+        this.state.closedCaptionOptions.language !== CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE) {
+        language = this.state.closedCaptionOptions.language;
+        mode = OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN;
+      }
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
     },
 
@@ -1857,8 +1898,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       return element;
     }
   };
-
-  exposeStaticApi = Html5Skin; //for unit test only
 
   return Html5Skin;
 });

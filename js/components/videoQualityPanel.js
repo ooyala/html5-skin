@@ -7,6 +7,7 @@ var React = require('react'),
     ScrollArea = require('react-scrollbar/dist/no-css'),
     ClassNames = require('classnames'),
     Icon = require('../components/icon'),
+    Utils = require('../components/utils'),
     MACROS = require('../constants/macros'),
     CONSTANTS = require('../constants/constants');
 
@@ -125,6 +126,7 @@ var VideoQualityPanel = React.createClass({
     bitrateButtons.unshift(
       <li className="oo-auto-li" key='auto-li' role="presentation">
         <button
+          type="button"
           className={autoQualityBtn}
           key="auto"
           data-focus-id="auto"
@@ -132,6 +134,7 @@ var VideoQualityPanel = React.createClass({
           role="menuitemradio"
           aria-label={CONSTANTS.ARIA_LABELS.AUTO_QUALITY}
           aria-checked={isSelected}
+          onMouseUp={Utils.blurOnMouseUp}
           onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
           <span className="oo-quality-auto-icon" style={selectedBitrateStyle}>
             <Icon {...this.props} icon="auto" />
@@ -173,6 +176,7 @@ var VideoQualityPanel = React.createClass({
           <li key={i} role="presentation">
             <button
               key={i}
+              type="button"
               className={qualityBtn}
               style={selectedBitrateStyle}
               data-focus-id={'quality' + i}
@@ -180,6 +184,7 @@ var VideoQualityPanel = React.createClass({
               role="menuitemradio"
               aria-label={ariaLabel}
               aria-checked={isSelected}
+              onMouseUp={Utils.blurOnMouseUp}
               onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>
               {label}
             </button>

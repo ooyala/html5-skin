@@ -131,6 +131,10 @@ AccessibilityControls.prototype = {
    * @returns {boolean} true if moved
    */
   moveVrToDirection: function(e, charCode, isKeyDown, targetTagName) {
+    var keyDirectionMap = this.keyDirectionMap;
+    if (!(keyDirectionMap[charCode] || targetTagName !== "button")) {
+      return false;
+    }
     if (!this.controller.videoVr) {
       return false;
     }
@@ -140,11 +144,13 @@ AccessibilityControls.prototype = {
     if (!this.vrRotationAllowed) {
       return false;
     }
-    var keyDirectionMap = this.keyDirectionMap;
-    if (keyDirectionMap[charCode] && targetTagName !== "button") {
-      this.vrRotationAllowed = !isKeyDown; //prevent repeat of keyDown
-      this.controller.moveVrToDirection(isKeyDown, keyDirectionMap[charCode]);
+    this.vrRotationAllowed = !isKeyDown; //prevent repeat of keyDown
+    this.controller.moveVrToDirection(false, keyDirectionMap[charCode]); //stop rotation if isKeyDown === false or prevent prev rotation if press a button (isKeyDown === true)
+    if (isKeyDown === true) {
+      this.controller.moveVrToDirection(true, keyDirectionMap[charCode]);
+      return true;
     }
+    return false;
   },
 
   /**

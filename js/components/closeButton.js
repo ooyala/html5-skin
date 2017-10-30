@@ -7,6 +7,7 @@ var CloseButton = React.createClass({
   render: function() {
     return (
       <button
+        type="button"
         className={this.props.cssClass}
         onClick={this.props.closeAction}
         onMouseUp={Utils.blurOnMouseUp}

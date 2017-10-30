@@ -11,8 +11,10 @@ var React = require('react'),
     TextTrack = require('../components/textTrackPanel'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
-    CONSTANTS = require('../constants/constants');
-    ViewControlsVr = require('../components/viewControlsVr');
+    CONSTANTS = require('../constants/constants'),
+    ViewControlsVr = require('../components/viewControlsVr'),
+    Icon = require('../components/icon'),
+    Tooltip = require('../components/tooltip');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -116,6 +118,7 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseMove: function(e) {
+    e.preventDefault();
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
@@ -169,6 +172,10 @@ var PlayingScreen = React.createClass({
     }
   },
 
+  unmuteClick: function(event) {
+    this.props.controller.handleMuteClick();
+  },
+
   render: function() {
     var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
       <AdOverlay {...this.props}
@@ -187,6 +194,17 @@ var PlayingScreen = React.createClass({
         controlBarVisible={this.state.controlBarVisible}
       /> : null;
 
+    var volumeIcon, volumeAriaLabel;
+    if (this.props.controller.state.volumeState.muted) {
+      volumeIcon = "volumeOff";
+      volumeAriaLabel = CONSTANTS.ARIA_LABELS.UNMUTE;
+    } else {
+      volumeIcon = "volume";
+      volumeAriaLabel = CONSTANTS.ARIA_LABELS.MUTE;
+    }
+
+    var showUnmute = this.props.controller.state.volumeState.mutingForAutoplay && this.props.controller.state.volumeState.muted;
+
     return (
       <div
         className="oo-state-screen oo-playing-screen"
@@ -195,16 +213,16 @@ var PlayingScreen = React.createClass({
         onMouseOut={this.hideControlBar}
         onKeyDown={this.handleKeyDown}
       >
-        <div
-          className="oo-state-screen-selectable"
-          onMouseDown={this.handlePlayerMouseDown}
-          onMouseUp={this.handlePlayerMouseUp}
-          onMouseMove={this.handlePlayerMouseMove}
-          onMouseLeave={this.handlePlayerMouseLeave}
-          onTouchEnd={this.handleTouchEnd}
-          onClick={this.handlePlayerClicked}
-          onFocus={this.handlePlayerFocus}
-        />
+      <div
+        className="oo-state-screen-selectable"
+        onMouseDown={this.handlePlayerMouseDown}
+        onMouseUp={this.handlePlayerMouseUp}
+        onMouseMove={this.handlePlayerMouseMove}
+        onMouseLeave={this.handlePlayerMouseLeave}
+        onTouchEnd={this.handleTouchEnd}
+        onClick={this.handlePlayerClicked}
+        onFocus={this.handlePlayerFocus}
+      />
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
@@ -231,6 +249,14 @@ var PlayingScreen = React.createClass({
           playerState={this.props.playerState}
           isLiveStream={this.props.isLiveStream} />
       </div>
+      {showUnmute ? <button className="oo-playing-screen oo-unmute"
+        type="button"
+        tabIndex="0"
+        onClick={this.unmuteClick}
+        aria-label={volumeAriaLabel}
+        >
+        <Icon {...this.props} icon={volumeIcon} ref="volumeIcon" />
+      </button> : null}
     </div>
     );
   }

@@ -28,6 +28,7 @@ describe('ControlBar', function () {
       state: {
         isMobile: false,
         volumeState: {
+          muted: false,
           volume: 1
         },
         closedCaptionOptions: {},
@@ -36,7 +37,8 @@ describe('ControlBar', function () {
         }
       },
       cancelTimer: function() {},
-      hideVolumeSliderBar: function() {}
+      hideVolumeSliderBar: function() {},
+      toggleMute: function() {}
     };
 
     baseMockProps = {
@@ -338,7 +340,8 @@ describe('ControlBar', function () {
         }
       },
       handleMuteClick: function() {muteClicked = true;},
-      setVolume: function(volume) {newVolume = volume;}
+      setVolume: function(volume) {newVolume = volume;},
+      toggleMute: function() {}
     };
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);

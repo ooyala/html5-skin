@@ -58,6 +58,7 @@ var PauseScreen = React.createClass({
     this.props.handleVrPlayerMouseDown(e);
   },
   handlePlayerMouseMove: function(e) {
+    e.preventDefault();
     this.props.handleVrPlayerMouseMove(e);
   },
   handlePlayerMouseUp: function(e) {
@@ -181,7 +182,12 @@ var PauseScreen = React.createClass({
           {this.props.skinConfig.pauseScreen.showDescription ? descriptionMetadata : null}
         </div>
 
-        <button className={actionIconClass} onClick={this.handleClick} aria-hidden="true" tabIndex="-1">
+        <button
+          type="button"
+          className={actionIconClass}
+          onClick={this.handleClick}
+          aria-hidden="true"
+          tabIndex="-1">
           <Icon {...this.props} icon="pause" style={actionIconStyle}/>
         </button>
 
