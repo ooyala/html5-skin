@@ -202,6 +202,10 @@ module.exports = {
     OBJECT: "object"
   },
 
+  CLOSED_CAPTIONS: {
+    NO_LANGUAGE: 'none'
+  },
+
   ERROR_MESSAGE: {
     "network":{
       name: "OO.ERROR.API.NETWORK",
@@ -351,8 +355,5 @@ module.exports = {
       name: "OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT",
       description: "Something happened while we were trying to play your video! Click replay or simply reload your page."
     }
-  },
-  CLOSED_CAPTIONS:{
-    NONE_LANGUAGE:'none'
   }
 };
