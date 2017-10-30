@@ -777,7 +777,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onPlaybackReady: function(event, params) {
+    onPlaybackReady: function(event, timeSincePlayerCreated, params) {
       if(this.state.failoverInProgress) {
         return;
       }
