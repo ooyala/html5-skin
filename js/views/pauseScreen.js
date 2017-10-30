@@ -48,11 +48,13 @@ var PauseScreen = React.createClass({
       this.props.controller.togglePlayPause(event);
     }
     this.props.controller.state.accessibilityControlsEnabled = true;
+    this.props.controller.state.isClickedOutside = false;
     this.props.handleVrPlayerClick();
   },
 
   handlePlayerMouseDown: function(e) {
     this.props.controller.state.accessibilityControlsEnabled = true;
+    this.props.controller.state.isClickedOutside = false;
     this.props.handleVrPlayerMouseDown(e);
   },
   handlePlayerMouseMove: function(e) {
@@ -77,6 +79,7 @@ var PauseScreen = React.createClass({
     var isControlBarElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
     if (isControlBarElement) {
       this.props.controller.state.accessibilityControlsEnabled = true;
+      this.props.controller.state.isClickedOutside = false;
     }
   },
 
