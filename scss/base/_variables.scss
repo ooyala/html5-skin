@@ -193,14 +193,17 @@ $medium-transition: transition, opacity .2s ease-in-out, height .3s ease-in-out;
 $watermark-margin: 15px;
 
 //vr controls sizes
-$vr-controls-full-size: 45px;
-$vr-controls-substrate: 50px;
-$vr-substrate-diff: calc(#{$vr-controls-substrate} - #{$vr-controls-full-size});
+$vr-controls-size: 50px;
+$vr-controls-substrate: 56px;
+$vr-substrate-diff: calc(#{$vr-controls-substrate} - #{$vr-controls-size});
+$vr-controls-move: $vr-controls-size / 4;
 
-$vr-controls-size-min: $vr-controls-full-size * $xsmall-multiple;
+$vr-controls-size-min: $vr-controls-size * $xsmall-multiple;
 $vr-controls-substrate-min: $vr-controls-substrate * $xsmall-multiple;
 $vr-substrate-diff-min: calc(#{$vr-controls-substrate-min} - #{$vr-controls-size-min});
+$vr-controls-move-min: $vr-controls-size-min / 4;
 
-$vr-controls-size-max: $vr-controls-full-size * ($large-multiple * $large-multiple);
+$vr-controls-size-max: $vr-controls-size * ($large-multiple * $large-multiple);
 $vr-controls-substrate-max: $vr-controls-substrate * ($large-multiple * $large-multiple);
 $vr-substrate-diff-max: calc(#{$vr-controls-substrate-max} - #{$vr-controls-size-max});
+$vr-controls-move-max: $vr-controls-size-max / 4;
