@@ -8,7 +8,8 @@ var React = require('react'),
     ClassNames = require('classnames'),
     Utils = require('../components/utils'),
     ResizeMixin = require('../mixins/resizeMixin'),
-    Icon = require('../components/icon');
+    Icon = require('../components/icon'),
+    UnmuteIcon = require('../components/unmuteIcon');
 
 var AdScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -173,15 +174,6 @@ var AdScreen = React.createClass({
       playbackControlItems = this.getPlaybackControlItems();
     }
 
-    var volumeIcon, volumeAriaLabel;
-    if (this.props.controller.state.volumeState.muted) {
-      volumeIcon = "volumeOff";
-      volumeAriaLabel = CONSTANTS.ARIA_LABELS.UNMUTE;
-    } else {
-      volumeIcon = "volume";
-      volumeAriaLabel = CONSTANTS.ARIA_LABELS.MUTE;
-    }
-
     var showUnmute = this.props.controller.state.volumeState.mutingForAutoplay && this.props.controller.state.volumeState.muted;
 
     return (
@@ -202,14 +194,7 @@ var AdScreen = React.createClass({
           {playbackControlItems}
         </div>
 
-        {showUnmute ? <button className="oo-ad-screen oo-unmute"
-          type="button"
-          tabIndex="0"
-          onClick={this.unmuteClick}
-          aria-label={volumeAriaLabel}
-          >
-          <Icon {...this.props} icon={volumeIcon} ref="volumeIcon" />
-        </button> : null}
+        {showUnmute ? <UnmuteIcon {...this.props}/> : null}
 
       </div>
     );

@@ -119,7 +119,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "volume": 1,
         "muted": false,
         "volumeSliderVisible": false,
-        "mutingForAutoplay": false
+        "mutingForAutoplay": false,
+        "unmuteIconCollapsed": false
       },
 
       "upNextInfo": {
@@ -480,7 +481,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     isPlaying: function() {
-      return this.state.playerState !== CONSTANTS.STATE.START && this.state.playerState !== CONSTANTS.STATE.ERROR;
+      return this.state.currentVideoId && this.state.playerState !== CONSTANTS.STATE.START && this.state.playerState !== CONSTANTS.STATE.ERROR;
     },
 
     onVolumeChanged: function (event, newVolume, videoId) {
@@ -778,7 +779,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onPlaybackReady: function(event, params) {
+    onPlaybackReady: function(event, timeSincePlayerCreated, params) {
       if(this.state.failoverInProgress) {
         return;
       }
@@ -1444,7 +1445,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleMute: function(muted, fromUser) {
-      this.mb.publish(OO.EVENTS.CHANGE_MUTE_STATE, muted, null, fromUser);
+      this.mb.publish(OO.EVENTS.CHANGE_MUTE_STATE, muted, this.state.currentVideoId, fromUser);
     },
 
     toggleStereoVr: function () {
@@ -1641,21 +1642,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     setClosedCaptionsLanguage: function(){
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
-
-      //if saved language not in available languages and saved is not 'none', set to first available language
-      if (availableLanguages &&
-        this.state.closedCaptionOptions.language !== CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE &&
-        (this.state.closedCaptionOptions.language == null ||
-        !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))) {
+      //if saved language not in available languages, set to first available language
+      if (availableLanguages && (this.state.closedCaptionOptions.language == null || !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))) {
         this.state.closedCaptionOptions.language = availableLanguages.languages[0];
       }
-      var language = "";
-      var mode = OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
-      if (this.state.closedCaptionOptions.enabled &&
-        this.state.closedCaptionOptions.language !== CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE) {
-        language = this.state.closedCaptionOptions.language;
-        mode = OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN;
-      }
+      var language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : "";
+      var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
     },
 
@@ -1672,13 +1664,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onChangeClosedCaptionLanguage: function(event, language) {
+      if (language === CONSTANTS.CLOSED_CAPTIONS.NO_LANGUAGE) {
+        if (this.state.closedCaptionOptions.enabled) {
+          this.toggleClosedCaptionEnabled();
+        }
+        return;
+      }
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
 
       //validate language is available before update and save
-        if (language && availableLanguages && (_.contains(availableLanguages.languages, language) || language === CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE)) {
+      if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
         this.state.closedCaptionOptions.language = this.state.persistentSettings.closedCaptionOptions.language = language;
-        var captionLanguage = this.state.closedCaptionOptions.enabled && language !== CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE ? language : "";
-        var mode = this.state.closedCaptionOptions.enabled && language !== CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
+        var captionLanguage = this.state.closedCaptionOptions.enabled ? language : "";
+        var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
         //publish set closed caption event
         this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, captionLanguage, {"mode": mode});
         //update skin, save new closed caption language

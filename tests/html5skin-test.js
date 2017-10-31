@@ -79,6 +79,40 @@ describe('Controller', function() {
     };
   });
 
+  describe('Closed Captions', function() {
+
+    beforeEach(function() {
+      controller.state.closedCaptionOptions = {
+        enabled: true,
+        language: 'en',
+        availableLanguages: {
+          videoId: 'main',
+          languages: [ 'en', 'fr' ],
+          locale: {
+            en: 'English',
+            fr: 'français'
+          }
+        }
+      };
+    });
+
+    it('should disable closed captions when language is set to "none"', function() {
+      expect(controller.state.closedCaptionOptions.enabled).toBe(true);
+      controller.onChangeClosedCaptionLanguage('event', 'none');
+      expect(controller.state.closedCaptionOptions.enabled).toBe(false);
+    });
+
+    it('should preserve current language when disabling closed captions', function() {
+      controller.state.closedCaptionOptions.language = 'en';
+      controller.onChangeClosedCaptionLanguage('event', 'none');
+      expect(controller.state.closedCaptionOptions.language).toBe('en');
+      controller.toggleClosedCaptionEnabled();
+      expect(controller.state.closedCaptionOptions.enabled).toBe(true);
+      expect(controller.state.closedCaptionOptions.language).toBe('en');
+    });
+
+  });
+
   describe('Buffering state', function() {
     var startBufferingTimerSpy, stopBufferingTimerSpy;
 
@@ -230,13 +264,13 @@ describe('Controller', function() {
 
     it('should show start screen on playback ready when core reports it will NOT autoplay', function() {
       expect(controller.state.screenToShow).not.toBe(CONSTANTS.SCREEN.START_SCREEN);
-      controller.onPlaybackReady('event', { willAutoplay: false });
+      controller.onPlaybackReady('event', null, { willAutoplay: false });
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
     });
 
     it('should show loading screen on playback ready when core reports it will autoplay', function() {
       expect(controller.state.screenToShow).not.toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
-      controller.onPlaybackReady('event', { willAutoplay: true });
+      controller.onPlaybackReady('event', null, { willAutoplay: true });
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
     });
 
