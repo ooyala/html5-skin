@@ -1,8 +1,8 @@
 .oo-vr-icon {
   &--move {
     position: absolute;
-    height: calc(#{$vr-controls-full-size}/4);
-    width: calc(#{$vr-controls-full-size}/4);
+    height: $vr-controls-move;
+    width: $vr-controls-move;
     cursor: pointer;
     outline: none;
     &--left {
@@ -15,7 +15,7 @@
       top: 33%;
       left: auto;
       bottom: auto;
-      right: 5%;
+      right: 20%;
     }
     &--up {
       top: 5%;
@@ -24,9 +24,9 @@
       right: auto;
     }
     &--down {
-      top: calc(#{$vr-controls-substrate} - calc(#{$vr-controls-full-size}/4));
+      top: auto;
       left: 33%;
-      bottom: auto;
+      bottom: 20%;
       right: auto;
     }
   }
@@ -68,6 +68,7 @@
     color: #000000;
     font-size: $vr-controls-substrate;
     line-height: normal;
+    //transform-origin: 50% 50%;
     //transform: rotate(45deg);
     @include vendor-prefixes (transition, opacity .3s ease-in-out);
     &--hidden {
@@ -79,7 +80,7 @@
     position: absolute;
     display: block;
     opacity: 1;
-    font-size: $vr-controls-full-size;
+    font-size: $vr-controls-size;
     line-height: normal;
     @include vendor-prefixes (transition, opacity .3s ease-in-out);
     &--hidden {
