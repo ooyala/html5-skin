@@ -6,8 +6,7 @@ var React = require('react'),
 var UnmuteIcon = React.createClass({
   getInitialState: function () {
     return {
-      collapseTime: 2000,
-      expanded: !this.props.controller.state.volumeState.unmuteIconCollapsed
+      collapseTime: 2000
     };
   },
 
@@ -16,11 +15,12 @@ var UnmuteIcon = React.createClass({
   },
 
   componentDidMount: function() {
-    if (this.state.expanded) {
+    var expanded = !this.props.controller.state.volumeState.unmuteIconCollapsed;
+    if (expanded) {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(function() {
         this.props.controller.state.volumeState.unmuteIconCollapsed = true;
-        this.setState({expanded: false});
+        this.setState({});
       }.bind(this), this.state.collapseTime);
     }
   },
@@ -39,9 +39,11 @@ var UnmuteIcon = React.createClass({
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.MUTE;
     }
 
+    var expanded = !this.props.controller.state.volumeState.unmuteIconCollapsed;
+
     var myClass = ClassNames({
       'oo-unmute': true,
-      'oo-expanded': this.state.expanded
+      'oo-expanded': expanded
     });
 
     return (
@@ -56,7 +58,7 @@ var UnmuteIcon = React.createClass({
           <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"/>
         </div>
 
-        {this.state.expanded ? <div className="oo-unmute-message">{CONSTANTS.SKIN_TEXT.SELECT_TO_UNMUTE}</div> : null}
+        {expanded ? <div className="oo-unmute-message">{CONSTANTS.SKIN_TEXT.SELECT_TO_UNMUTE}</div> : null}
 
       </button>
     );
