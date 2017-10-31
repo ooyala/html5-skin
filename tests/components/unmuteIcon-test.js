@@ -11,8 +11,10 @@ var skinConfig = require('../../config/skin.json');
 var sinon = require('sinon');
 
 describe('UnmuteIcon', function () {
-  it('creates an expanded UnmuteIcon', function () {
-    var mockController = {
+  var mockController = null;
+
+  beforeEach(function() {
+    mockController = {
       state: {
         volumeState: {
           muted: true,
@@ -21,6 +23,9 @@ describe('UnmuteIcon', function () {
         }
       }
     };
+  });
+
+  it('creates an expanded UnmuteIcon', function () {
     var DOM = TestUtils.renderIntoDocument(
       <UnmuteIcon
         controller={mockController}
@@ -33,16 +38,7 @@ describe('UnmuteIcon', function () {
   });
 
   it('creates a collapsed UnmuteIcon', function () {
-    jest.useFakeTimers();
-    var mockController = {
-      state: {
-        volumeState: {
-          muted: true,
-          mutingForAutoplay: true,
-          unmuteIconCollapsed: true
-        }
-      }
-    };
+    mockController.state.volumeState.unmuteIconCollapsed = true;
     var DOM = TestUtils.renderIntoDocument(
       <UnmuteIcon
         controller={mockController}
@@ -56,15 +52,7 @@ describe('UnmuteIcon', function () {
   });
 
   it('collapses an expanded UnmuteIcon', function () {
-    var mockController = {
-      state: {
-        volumeState: {
-          muted: true,
-          mutingForAutoplay: true,
-          unmuteIconCollapsed: false
-        }
-      }
-    };
+    jest.useFakeTimers();
     var DOM = TestUtils.renderIntoDocument(
       <UnmuteIcon
         controller={mockController}
@@ -78,21 +66,13 @@ describe('UnmuteIcon', function () {
     jest.runAllTimers();
     var expandeds = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-expanded');
     expect(expandeds.length).toBe(0);
-    var unmuteIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-unmute');
+    unmuteIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-unmute');
     expect(unmuteIcon).toBeTruthy();
   });
 
   it('handles clicks on collapsed unmute icon', function () {
-    var mockController = {
-      state: {
-        volumeState: {
-          muted: true,
-          mutingForAutoplay: true,
-          unmuteIconCollapsed: true
-        }
-      },
-      handleMuteClick: function() {}
-    };
+    mockController.state.volumeState.unmuteIconCollapsed = true;
+    mockController.handleMuteClick = function() {};
     var spy = sinon.spy(mockController, "handleMuteClick");
     var DOM = TestUtils.renderIntoDocument(
       <UnmuteIcon
@@ -108,16 +88,7 @@ describe('UnmuteIcon', function () {
   });
 
   it('handles clicks on expanded unmute icon', function () {
-    var mockController = {
-      state: {
-        volumeState: {
-          muted: true,
-          mutingForAutoplay: true,
-          unmuteIconCollapsed: false
-        }
-      },
-      handleMuteClick: function() {}
-    };
+    mockController.handleMuteClick = function() {};
     var spy = sinon.spy(mockController, "handleMuteClick");
     var DOM = TestUtils.renderIntoDocument(
       <UnmuteIcon

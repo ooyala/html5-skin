@@ -53,14 +53,25 @@ var UnmuteIcon = React.createClass({
         >
 
         <div className="oo-unmute-icon-wrapper">
-            <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"/>
-          </div>
+          <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"/>
+        </div>
 
-        {this.state.expanded ? <div className="oo-unmute-message">SELECT TO UNMUTE</div> : null}
+        {this.state.expanded ? <div className="oo-unmute-message">{CONSTANTS.SKIN_TEXT.SELECT_TO_UNMUTE}</div> : null}
 
       </button>
     );
   }
 });
+
+UnmuteIcon.propTypes = {
+  controller: React.PropTypes.shape({
+    state: React.PropTypes.shape({
+      volumeState: React.PropTypes.shape({
+        muted: React.PropTypes.bool,
+        unmuteIconCollapsed: React.PropTypes.bool
+      })
+    })
+  })
+};
 
 module.exports = UnmuteIcon;
