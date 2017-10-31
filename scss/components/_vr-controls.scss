@@ -68,8 +68,6 @@
     color: #000000;
     font-size: $vr-controls-substrate;
     line-height: normal;
-    //transform-origin: 50% 50%;
-    //transform: rotate(45deg);
     @include vendor-prefixes (transition, opacity .3s ease-in-out);
     &--hidden {
       opacity: 0;
