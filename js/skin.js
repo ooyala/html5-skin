@@ -56,6 +56,7 @@ var Skin = React.createClass({
 
   handleClickOutsidePlayer: function() {
     this.props.controller.state.accessibilityControlsEnabled = false;
+    this.props.controller.state.isClickedOutside = true;
   },
 
   switchComponent: function(args) {
@@ -192,26 +193,26 @@ var Skin = React.createClass({
     var maxDegreesY = 120;
     var degreesForPixelYaw = maxDegreesX / this.state.componentWidth;
     var degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
-    var yaw = (this.props.controller.state.viewingDirection.yaw || 0) + dx * degreesForPixelYaw;
-    var pitch = (this.props.controller.state.viewingDirection.pitch || 0) + dy * degreesForPixelPitch;
+    var yaw = this.getVrViewingDirectionParamValue("yaw") + dx * degreesForPixelYaw;
+    var pitch = this.getVrViewingDirectionParamValue("pitch") + dy * degreesForPixelPitch;
     return [yaw, 0, pitch];
   },
 
   /**
-   * @description check viewingDirection existing and return the value
+   * @description check vrViewingDirection existing and return the value
    * @private
    * @param paramName {string} "yaw", "pitch"
-   * @returns {number} value of viewingDirection param
+   * @returns {number} value of vrViewingDirection param
    */
-  getViewingDirectionParamValue: function(paramName) {
-    var viewingDirectionValue = 0;
+  getVrViewingDirectionParamValue: function(paramName) {
+    var vrViewingDirectionValue = 0;
     if (this.props.controller &&
       this.props.controller.state &&
-      this.props.controller.state.viewingDirection &&
-      typeof this.props.controller.state.viewingDirection[paramName] === "number") {
-      viewingDirectionValue = this.props.controller.state.viewingDirection[paramName]
+      this.props.controller.state.vrViewingDirection &&
+      typeof this.props.controller.state.vrViewingDirection[paramName] === "number") {
+      vrViewingDirectionValue = this.props.controller.state.vrViewingDirection[paramName]
     }
-    return viewingDirectionValue
+    return vrViewingDirectionValue
   },
 
   render: function() {
