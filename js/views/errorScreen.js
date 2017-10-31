@@ -21,6 +21,18 @@ var ErrorScreen = React.createClass({
 
       errorTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].title, this.props.localizableStrings)
       errorDescription = Utils.getLocalizedString(this.props.language, CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].description, this.props.localizableStrings);
+
+      if (this.props.errorCode.code === "future"){
+        var now_date = Date.now();
+        var countdown_timestamp = ((this.props.errorCode.flight_start_time * 1000) - Date.now()) ;
+        var days = Math.floor(countdown_timestamp / (24 * 60 * 60 * 1000));
+        countdown_timestamp -= days * 24 * 60 * 60 * 1000;
+        var hours = Math.floor(countdown_timestamp / (60 * 60 * 1000));
+        countdown_timestamp -= hours * 60 * 60 * 1000;
+        var minutes = Math.floor(countdown_timestamp / (60 * 1000));
+
+        errorDescription = errorDescription + " and will start in " + days + " days, " + hours + " hours, and " + minutes + " minutes.";
+      }
       errorAction = Utils.getLocalizedString(this.props.language, errorAction, this.props.localizableStrings);
     }
     else {
