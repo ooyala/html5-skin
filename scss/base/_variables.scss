@@ -193,4 +193,18 @@ $unmute-transition: transition, width .5s ease-in-out;
 //watermark
 $watermark-margin: 15px;
 
-$vr-controls-full-size: 40px;
+//vr controls sizes
+$vr-controls-size: 50px;
+$vr-controls-substrate: 56px;
+$vr-substrate-diff: $vr-controls-substrate - $vr-controls-size;
+$vr-controls-move: $vr-controls-size / 4;
+
+$vr-controls-size-min: $vr-controls-size * $xsmall-multiple;
+$vr-controls-substrate-min: $vr-controls-substrate * $xsmall-multiple;
+$vr-substrate-diff-min: $vr-controls-substrate-min - $vr-controls-size-min;
+$vr-controls-move-min: $vr-controls-size-min / 4;
+
+$vr-controls-size-max: $vr-controls-size * ($large-multiple * $large-multiple);
+$vr-controls-substrate-max: $vr-controls-substrate * ($large-multiple * $large-multiple);
+$vr-substrate-diff-max: $vr-controls-substrate-max - $vr-controls-size-max;
+$vr-controls-move-max: $vr-controls-size-max / 4;

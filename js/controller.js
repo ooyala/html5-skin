@@ -151,7 +151,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullWindow": false,
       "autoPauseDisabled": false,
 
-      "viewingDirection": {yaw: 0, roll: 0, pitch: 0}
+      "isClickedOutside": false,
+      "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0}
     };
 
     this.init();
@@ -176,7 +177,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.VIDEO_VR, 'customerUi', _.bind(this.onSetVideoVr, this));
       this.mb.subscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi', _.bind(this.onClearVideoType, this));
-      this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
+      this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setVrViewingDirection, this));
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
@@ -752,8 +753,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    setViewingDirection: function(event, yaw, roll, pitch) {
-      this.state.viewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
+    setVrViewingDirection: function(event, yaw, roll, pitch) {
+      this.state.vrViewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
     },
 
     recreatingUI: function (event, elementId, params, settings) {
