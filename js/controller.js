@@ -119,7 +119,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "volume": 1,
         "muted": false,
         "volumeSliderVisible": false,
-        "mutingForAutoplay": false
+        "mutingForAutoplay": false,
+        "unmuteIconCollapsed": false
       },
 
       "upNextInfo": {
@@ -479,7 +480,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     isPlaying: function() {
-      return this.state.playerState !== CONSTANTS.STATE.START && this.state.playerState !== CONSTANTS.STATE.ERROR;
+      return this.state.currentVideoId && this.state.playerState !== CONSTANTS.STATE.START && this.state.playerState !== CONSTANTS.STATE.ERROR;
     },
 
     onVolumeChanged: function (event, newVolume, videoId) {
@@ -1443,7 +1444,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleMute: function(muted, fromUser) {
-      this.mb.publish(OO.EVENTS.CHANGE_MUTE_STATE, muted, null, fromUser);
+      this.mb.publish(OO.EVENTS.CHANGE_MUTE_STATE, muted, this.state.currentVideoId, fromUser);
     },
 
     toggleStereoVr: function () {

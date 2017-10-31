@@ -14,7 +14,8 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     ViewControlsVr = require('../components/viewControlsVr'),
     Icon = require('../components/icon'),
-    Tooltip = require('../components/tooltip');
+    Tooltip = require('../components/tooltip'),
+    UnmuteIcon = require('../components/unmuteIcon');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -191,15 +192,6 @@ var PlayingScreen = React.createClass({
         controlBarVisible={this.state.controlBarVisible}
       /> : null;
 
-    var volumeIcon, volumeAriaLabel;
-    if (this.props.controller.state.volumeState.muted) {
-      volumeIcon = "volumeOff";
-      volumeAriaLabel = CONSTANTS.ARIA_LABELS.UNMUTE;
-    } else {
-      volumeIcon = "volume";
-      volumeAriaLabel = CONSTANTS.ARIA_LABELS.MUTE;
-    }
-
     var showUnmute = this.props.controller.state.volumeState.mutingForAutoplay && this.props.controller.state.volumeState.muted;
 
     return (
@@ -225,9 +217,9 @@ var PlayingScreen = React.createClass({
 
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
-        {viewControlsVr}
+      {viewControlsVr}
 
-        <div className="oo-interactive-container" onFocus={this.handleFocus}>
+      <div className="oo-interactive-container" onFocus={this.handleFocus}>
 
         {this.props.closedCaptionOptions.enabled ?
           <TextTrack
@@ -245,15 +237,11 @@ var PlayingScreen = React.createClass({
           controlBarVisible={this.state.controlBarVisible}
           playerState={this.props.playerState}
           isLiveStream={this.props.isLiveStream} />
+
       </div>
-      {showUnmute ? <button className="oo-playing-screen oo-unmute"
-        type="button"
-        tabIndex="0"
-        onClick={this.unmuteClick}
-        aria-label={volumeAriaLabel}
-        >
-        <Icon {...this.props} icon={volumeIcon} ref="volumeIcon" />
-      </button> : null}
+
+      {showUnmute ? <UnmuteIcon {...this.props}/> : null}
+
     </div>
     );
   }

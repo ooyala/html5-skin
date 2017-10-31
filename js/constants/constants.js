@@ -96,7 +96,8 @@ module.exports = {
     VIDEO_QUALITY: "Video Quality",
     AUTO_QUALITY: "Auto",
     SHARE: "Share",
-    MORE_OPTIONS: "More Options"
+    MORE_OPTIONS: "More Options",
+    SELECT_TO_UNMUTE: "SELECT TO UNMUTE"
   },
 
   ARIA_LABELS: {
