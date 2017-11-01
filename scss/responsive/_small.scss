@@ -163,21 +163,4 @@
   .oo-scrubber-carousel-container {
    bottom: 103px;
   }
-
-  //control buttons for rotating the camera
-  .oo-vr-icon-container {
-    width: $vr-controls-substrate-min;
-    height: $vr-controls-substrate-min;
-
-    .oo-vr-icon--substrate {
-      left: calc(#{$vr-substrate-diff-min} * -0.5);
-      top: calc(#{$vr-substrate-diff-min} * -0.5);
-      font-size: $vr-controls-substrate-min;
-    }
-
-    .oo-vr-icon--icon-symbol {
-      font-size: $vr-controls-size-min;
-    }
-  }
-
 }

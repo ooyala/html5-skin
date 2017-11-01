@@ -736,7 +736,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (source == OO.VIDEO.MAIN) {
         var language = "";
         var mode = 'disabled';
-        this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
+        this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {
+          mode: mode,
+          isFullScreen: this.state.fullscreen
+        });
         this.state.mainVideoDuration = this.state.duration;
       }
     },
@@ -1648,7 +1651,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       var language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : "";
       var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
-      this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
+      this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {
+        mode: mode,
+        isFullScreen: this.state.fullscreen
+      });
     },
 
     closeScreen: function() {
@@ -1678,7 +1684,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         var captionLanguage = this.state.closedCaptionOptions.enabled ? language : "";
         var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
         //publish set closed caption event
-        this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, captionLanguage, {"mode": mode});
+        this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, captionLanguage, {
+          mode: mode,
+          isFullScreen: this.state.fullscreen
+        });
         //update skin, save new closed caption language
         this.renderSkin();
         this.mb.publish(OO.EVENTS.SAVE_PLAYER_SETTINGS, this.state.persistentSettings);
