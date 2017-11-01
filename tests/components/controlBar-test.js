@@ -371,6 +371,108 @@ describe('ControlBar', function () {
     expect(newVolume).toBeGreaterThan(-1);
   });
 
+  it('should display unmute volume icon when volume is set to a non-zero value', function() {
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1,
+          muted: false
+        },
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
+      },
+      handleMuteClick: function() {muteClicked = true;},
+      setVolume: function(volume) {newVolume = volume;},
+      toggleMute: function() {}
+    };
+
+    var mockProps = {
+      isLiveStream: false,
+      controller: mockController,
+      skinConfig: skinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+                  componentWidth={500}
+                  playerState={CONSTANTS.STATE.PLAYING}
+                  isLiveStream={mockProps.isLiveStream} />
+    );
+
+    expect(DOM.refs.volumeIcon.props.icon).toBe("volume");
+  });
+
+  it('should display mute volume icon when volume is set to 0', function() {
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 0,
+          muted: false
+        },
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
+      },
+      handleMuteClick: function() {muteClicked = true;},
+      setVolume: function(volume) {newVolume = volume;},
+      toggleMute: function() {}
+    };
+
+    var mockProps = {
+      isLiveStream: false,
+      controller: mockController,
+      skinConfig: skinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+                  componentWidth={500}
+                  playerState={CONSTANTS.STATE.PLAYING}
+                  isLiveStream={mockProps.isLiveStream} />
+    );
+
+    expect(DOM.refs.volumeIcon.props.icon).toBe("volumeOff");
+  });
+
+  it('should display mute volume icon when volume is muted', function() {
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1,
+          muted: true
+        },
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
+      },
+      handleMuteClick: function() {muteClicked = true;},
+      setVolume: function(volume) {newVolume = volume;},
+      toggleMute: function() {}
+    };
+
+    var mockProps = {
+      isLiveStream: false,
+      controller: mockController,
+      skinConfig: skinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+                  componentWidth={500}
+                  playerState={CONSTANTS.STATE.PLAYING}
+                  isLiveStream={mockProps.isLiveStream} />
+    );
+
+    expect(DOM.refs.volumeIcon.props.icon).toBe("volumeOff");
+  });
+
   it('to play on play click', function() {
     var playClicked = false;
     var mockController = {
@@ -470,6 +572,31 @@ describe('ControlBar', function () {
     expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.UNMUTE);
     expect(fullscreenButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.EXIT_FULLSCREEN);
     expect(qualityButton.getAttribute('aria-expanded')).toBe('true');
+  });
+
+  it('should render alternate state aria labels for the volume icon when volume is 0', function() {
+    baseMockController.state.videoQualityOptions.availableBitrates = [];
+    baseMockController.state.videoQualityOptions.showVideoQualityPopover = true;
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+      { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
+      { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+      { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+    ];
+
+    baseMockController.state.volumeState.volume = 0;
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PAUSED}
+        isLiveStream={baseMockProps.isLiveStream} />
+    );
+
+    var muteUnmuteButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').querySelector('.oo-mute-unmute');
+    expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.UNMUTE);
   });
 
   it('should store playPause button focus state', function() {

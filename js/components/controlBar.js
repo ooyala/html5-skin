@@ -350,7 +350,8 @@ var ControlBar = React.createClass({
     }
 
     var volumeIcon, volumeAriaLabel;
-    if (this.props.controller.state.volumeState.muted) {
+    var mutedInUi = this.props.controller.state.volumeState.muted || this.props.controller.state.volumeState.volume === 0;
+    if (mutedInUi) {
       volumeIcon = "volumeOff";
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.UNMUTE;
     } else {
@@ -474,7 +475,7 @@ var ControlBar = React.createClass({
             <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
               style={this.props.skinConfig.controlBar.iconStyle.inactive} />
             <Tooltip enabled={isTooltipEnabled}
-              text={this.props.controller.state.volumeState.muted ? Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UNMUTE, this.props.localizableStrings) : Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.MUTE, this.props.localizableStrings)}
+              text={mutedInUi ? Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UNMUTE, this.props.localizableStrings) : Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.MUTE, this.props.localizableStrings)}
               responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}>
             </Tooltip>
           </button>
