@@ -165,8 +165,8 @@
     }
 
     .oo-vr-icon--move{
-      height: calc(#{$vr-controls-size-max}/4);
-      width: calc(#{$vr-controls-size-max}/4);
+      height: $vr-controls-move-max;
+      width: $vr-controls-move-max;
     }
   }
 }
