@@ -372,26 +372,12 @@ describe('ControlBar', function () {
   });
 
   it('should display unmute volume icon when volume is set to a non-zero value', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1,
-          muted: false
-        },
-        closedCaptionOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      handleMuteClick: function() {muteClicked = true;},
-      setVolume: function(volume) {newVolume = volume;},
-      toggleMute: function() {}
-    };
+    baseMockController.state.volumeState.volume = 1;
+    baseMockController.state.volumeState.muted = false;
 
     var mockProps = {
       isLiveStream: false,
-      controller: mockController,
+      controller: baseMockController,
       skinConfig: skinConfig
     };
 
@@ -406,26 +392,12 @@ describe('ControlBar', function () {
   });
 
   it('should display mute volume icon when volume is set to 0', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 0,
-          muted: false
-        },
-        closedCaptionOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      handleMuteClick: function() {muteClicked = true;},
-      setVolume: function(volume) {newVolume = volume;},
-      toggleMute: function() {}
-    };
+    baseMockController.state.volumeState.volume = 0;
+    baseMockController.state.volumeState.muted = false;
 
     var mockProps = {
       isLiveStream: false,
-      controller: mockController,
+      controller: baseMockController,
       skinConfig: skinConfig
     };
 
@@ -440,26 +412,12 @@ describe('ControlBar', function () {
   });
 
   it('should display mute volume icon when volume is muted', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1,
-          muted: true
-        },
-        closedCaptionOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      handleMuteClick: function() {muteClicked = true;},
-      setVolume: function(volume) {newVolume = volume;},
-      toggleMute: function() {}
-    };
+    baseMockController.state.volumeState.volume = 1;
+    baseMockController.state.volumeState.muted = true;
 
     var mockProps = {
       isLiveStream: false,
-      controller: mockController,
+      controller: baseMockController,
       skinConfig: skinConfig
     };
 
