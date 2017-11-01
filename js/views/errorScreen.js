@@ -21,19 +21,12 @@ var ErrorScreen = React.createClass({
 
       errorTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].title, this.props.localizableStrings)
       errorDescription = Utils.getLocalizedString(this.props.language, CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].description, this.props.localizableStrings);
-
-      if (this.props.errorCode.code === "future"){
-        var now_date = Date.now();
-        var countdown_timestamp = ((this.props.errorCode.flight_start_time * 1000) - Date.now()) ;
-        var days = Math.floor(countdown_timestamp / (24 * 60 * 60 * 1000));
-        countdown_timestamp -= days * 24 * 60 * 60 * 1000;
-        var hours = Math.floor(countdown_timestamp / (60 * 60 * 1000));
-        countdown_timestamp -= hours * 60 * 60 * 1000;
-        var minutes = Math.floor(countdown_timestamp / (60 * 1000));
-
-        errorDescription = errorDescription + " and will start in " + days + " days, " + hours + " hours, and " + minutes + " minutes.";
+      /// TODO - need to make countdown functionality display for all languages
+      if (this.props.errorCode.code === "future" && this.props.language === "en"){
+        errorDescription = "This video will be available in " + Utils.getStartCountdown(this.props.errorCode.flight_start_time * 1000 - Date.now());
       }
       errorAction = Utils.getLocalizedString(this.props.language, errorAction, this.props.localizableStrings);
+      console.log("action: " +errorAction);
     }
     else {
       errorDescription = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UNKNOWN_ERROR, this.props.localizableStrings);
