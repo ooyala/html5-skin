@@ -23,6 +23,8 @@ var ErrorScreen = React.createClass({
       errorDescription = Utils.getLocalizedString(this.props.language, CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].description, this.props.localizableStrings);
       /// TODO - need to make countdown functionality display for all languages
       if (this.props.errorCode.code === "future" && this.props.language === "en"){
+        errorTitle = "VIDEO COMING SOON!";
+        action = "You may need to refresh the page to access the video after it becomes available";
         errorDescription = "This video will be available in " + Utils.getStartCountdown(this.props.errorCode.flight_start_time * 1000 - Date.now());
       }
       errorAction = Utils.getLocalizedString(this.props.language, errorAction, this.props.localizableStrings);
