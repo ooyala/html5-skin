@@ -470,6 +470,37 @@ describe('ControlBar', function () {
     expect(playClicked).toBe(true);
   });
 
+  it('should reset quality menu keyboard flag when closing video quality popover', function() {
+    baseMockController.state.videoQualityOptions.availableBitrates = [];
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+      { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
+      { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+      { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+    ];
+    baseMockController.toggleVideoQualityPopOver = function() {
+      this.state.videoQualityOptions.showVideoQualityPopover = !this.state.videoQualityOptions.showVideoQualityPopover;
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={baseMockProps.isLiveStream} />
+    );
+
+    var controlBar = TestUtils.findRenderedComponentWithType(DOM, ControlBar);
+    var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality');
+    expect(controlBar.qualityMenuOpenedWithKeyboard).toBe(false);
+    TestUtils.Simulate.keyDown(qualityButton, { key: ' ' });
+    TestUtils.Simulate.click(qualityButton);
+    expect(controlBar.qualityMenuOpenedWithKeyboard).toBe(true);
+    controlBar.toggleQualityPopover();
+    expect(controlBar.qualityMenuOpenedWithKeyboard).toBe(false);
+  });
+
   it('should render default state aria labels', function() {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
     baseMockProps.skinConfig.buttons.desktopContent = [
