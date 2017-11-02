@@ -126,6 +126,22 @@ describe('Controller', function() {
       controller.stopBufferingTimer();
     });
 
+    it('should set initial play to true on initial play', function() {
+      controller.state.isInitialPlay = false
+      expect(controller.state.isInitialPlay).toBe(false);
+      controller.togglePlayPause();
+      expect(onInitialPlay.callCount).toBe(1);
+      expect(controller.state.isInitialPlay).toBe(true);
+    });
+
+    it('should not fire initial play again if initial play has already happened', function() {
+      controller.state.isInitialPlay = true
+      expect(controller.state.isInitialPlay).toBe(true);
+      controller.togglePlayPause();
+      expect(onInitialPlay.callCount).toBe(0);
+      expect(controller.state.isInitialPlay).toBe(true);
+    });
+
     it('should stop buffering timer when setting buffering state to false', function() {
       controller.startBufferingTimer();
       expect(stopBufferingTimerSpy.callCount).toBe(1);
