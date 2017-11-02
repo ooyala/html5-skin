@@ -33,8 +33,9 @@
   &-container {
     position: absolute;
     display: block;
-    top: 5%;
-    left: calc(95% - 15px);
+    top: 15px;
+    right: 0px;
+    padding-right: 15px;
     width: $vr-controls-substrate;
     height: $vr-controls-substrate;
     background-position: 0 0;
