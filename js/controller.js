@@ -1447,7 +1447,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleMute: function(muted, fromUser) {
-      this.mb.publish(OO.EVENTS.CHANGE_MUTE_STATE, muted, this.state.currentVideoId, fromUser);
+      this.mb.publish(OO.EVENTS.CHANGE_MUTE_STATE, muted, null, fromUser);
     },
 
     toggleStereoVr: function () {
