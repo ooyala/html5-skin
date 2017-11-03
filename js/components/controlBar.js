@@ -187,6 +187,9 @@ var ControlBar = React.createClass({
   },
 
   toggleQualityPopover: function () {
+    if (this.props.controller.state.videoQualityOptions.showVideoQualityPopover) {
+      this.qualityMenuOpenedWithKeyboard = false;
+    }
     this.props.controller.toggleVideoQualityPopOver();
   },
 
@@ -202,7 +205,6 @@ var ControlBar = React.createClass({
           typeof this.qualityBtnElement.focus === 'function') {
         this.qualityBtnElement.focus();
       }
-      this.qualityMenuOpenedWithKeyboard = false;
       this.toggleQualityPopover();
     }
   },
