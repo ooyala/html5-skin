@@ -230,8 +230,9 @@ module.exports = {
     },
     "future":{
       name: "OO.ERROR.API.SAS.FUTURE",
-      title: "VIDEO NOT AVAILABLE YET",
-      description: "This video will be available soon"
+      title: "VIDEO COMING SOON!",
+      description: "This video is not available yet",
+      action: "You may need to refresh the page to access the video after it becomes available"
     },
     "past":{
       name: "OO.ERROR.API.SAS.PAST",
