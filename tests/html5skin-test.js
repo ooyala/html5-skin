@@ -329,6 +329,7 @@ describe('Controller', function() {
 
     it('should be able to toggle mute', function() {
       var spy = sinon.spy(OO.mb, 'publish');
+      controller.onPlaying('event', 'videoId');
       controller.toggleMute(false, false);
       expect(spy.callCount).toBe(1);
       expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, false, null, false)).toBe(true);
@@ -346,6 +347,7 @@ describe('Controller', function() {
 
       controller.state.volumeState.muted = false;
       expect(controller.state.volumeState.muted).toBe(false);
+      controller.onPlaying('event', 'videoId');
       controller.handleMuteClick();
       expect(spy.callCount).toBe(1);
       expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, true, null, true)).toBe(true);
