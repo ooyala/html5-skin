@@ -187,6 +187,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if(!this.state.isSubscribed) {
         this.mb.subscribe(OO.EVENTS.SEND_QUALITY_CHANGE, 'customerUi', _.bind(this.receiveVideoQualityChangeEvent, this));
         this.mb.subscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi', _.bind(this.onInitialPlay, this));
+        this.mb.subscribe(OO.EVENTS.VC_PLAY, 'customerUi', _.bind(this.onVcPlay, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
         this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
@@ -602,8 +603,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.startHideControlBarTimer();
     },
 
-    onPlaying: function(event, source) {
+    onVcPlay: function(event, source) {
       this.state.currentVideoId = source;
+    },
+
+    onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
         //set mainVideoElement if not set during video plugin initialization
         if (!this.state.mainVideoMediaType) {
