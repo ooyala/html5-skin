@@ -311,7 +311,7 @@ describe('Utils', function () {
   });
 
   it('tests getStartCountdown', function () {
-    var text = " 6 days, 5 hours, and 14 minutes"; 
+    var text = "6 days, 5 hours, and 14 minutes"; 
     var countDownText = Utils.getStartCountdown(537289879);
     expect(countDownText).toBe(text);
 
