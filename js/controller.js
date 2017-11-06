@@ -152,7 +152,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "autoPauseDisabled": false,
 
       "isClickedOutside": false,
-      "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0}
+      "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0},
+      "stickyPlayerOptions":{
+        "enable": false,
+        "workOnlyOnPlayState": true
+      }
     };
 
     this.init();
@@ -598,12 +602,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onInitialPlay: function() {
+      console.log("onInitialPlay $$$");
       this.state.isInitialPlay = true;
       this.state.initialPlayHasOccurred = true;
       this.startHideControlBarTimer();
     },
 
     onPlaying: function(event, source) {
+      console.log("onPlaying $$$");
       this.state.currentVideoId = source;
       if (source == OO.VIDEO.MAIN) {
         //set mainVideoElement if not set during video plugin initialization
@@ -632,9 +638,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // For the off chance that a video plugin resumes playback without firing
       // the ON_BUFFERED event. This will have no effect if it was set previously
       this.setBufferingState(false);
+      this.state.playerStateInfo = "playing";
+      window.state.playerStateInfo = this.state.playerStateInfo;
+      console.log("onPlaying $$$ , ",window.state.playerStateInfo);
     },
 
     onPause: function(event, source, pauseReason) {
+      console.log("onPause $$$");
       if(this.state.failoverInProgress) {
         return;
       }
@@ -650,6 +660,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPaused: function(event, videoId) {
+      console.log("onPaused $$$");
       if(this.state.failoverInProgress) {
         return;
       }
@@ -687,9 +698,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.pausedCallback();
         this.pausedCallback = null;
       }
+      this.state.playerStateInfo = "paused";
+      window.state.playerStateInfo = this.state.playerStateInfo;
     },
 
     onPlayed: function() {
+      console.log("onPlayed $$$");
       var duration = this.state.mainVideoDuration;
       this.state.duration = duration;
       this.skin.updatePlayhead(duration, duration, duration);
@@ -732,6 +746,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onVcPlayed: function(event, source) {
+      console.log("onVcPlayed $$$");
       this.onBuffered();
       if (source == OO.VIDEO.MAIN) {
         var language = "";
@@ -1071,6 +1086,63 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      MAIN VIDEO RELATED EVENTS
      *********************************************************************/
 
+    handleScroll: function () {
+      console.log('visible ', this);
+      var vcon = document.getElementById(this.state.elementId);
+      var isElementInView = isScrolledIntoView(vcon);
+      if (isElementInView) {
+        console.log('in view');
+        // vcon.classList.remove( "sticky");
+        if (this.state.initialContainerBoundary) {
+          const currentpos = vcon.getBoundingClientRect();
+          if (this.state.initialContainerBoundary.top === currentpos.top) {
+            vcon.classList.remove("sticky");
+            this.state.sticky = null;
+            vcon.setAttribute("style", this.state.initContainerStyle);
+          }
+        }
+      } else {
+        if (!this.state.sticky) {
+          console.log("no sticky");
+          if (this.state.config.stickyPlayerOptions.workOnlyOnPlayState === false ||
+            (this.state.playerStateInfo === "playing" /*&& this.state.config.stickyPlayerOptions.workOnlyOnPlayState === true*/)) {
+            vcon.classList.add("sticky");
+            this.state.sticky = true;
+            vcon.setAttribute("style", "left: 80%; width: 280px; top: 5px");//width:220px;height:75px; //left: 492px; width: 320px; top: 5px
+          }
+          else{
+            console.log("sticky failed - workonly=", this.state.config.stickyPlayerOptions.workOnlyOnPlayState ," state=",this.state.playerStateInfo);
+          }
+        }
+        console.log('out of view');
+      }
+    },
+
+    initStickyPlayer: function () {
+
+      console.log("this.state.config.stickyPlayerOptions ", this.state.config.stickyPlayerOptions);
+      if (true === this.state.config.stickyPlayerOptions.enable) {
+
+          console.log("sticky player enabled");
+
+          function isScrolledIntoView(el) {
+            const clrect = el.getBoundingClientRect();
+            return clrect.top >= 0 && clrect.bottom <= window.innerHeight;
+          }
+
+          var playerelement = document.getElementById(this.state.elementId);
+          this.state.initContainerStyle = (' ' + playerelement.style.cssText).slice(1);
+          this.state.initialContainerBoundary = playerelement.getBoundingClientRect();
+          this.state.sticky = null;
+          window.state = this.state; //TODO: need to avoid - find better way than window
+          window.isScrolledIntoView = isScrolledIntoView; //TODO: need to avoid - find better way than window
+          window.addEventListener('scroll', this.handleScroll);
+
+      } else {
+        console.log("sticky player disabled");
+      }
+    },
+
     //merge and load config data
     loadConfigData: function(params, settings, data, skinMetaData) {
       var localSettings = Utils.sanitizeConfigData(settings);
@@ -1159,6 +1231,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         videoWrapperClass: "innerWrapper",
         pluginsClass: "oo-player-skin-plugins"
       });
+      this.initStickyPlayer();
     },
 
     onBitrateInfoAvailable: function(event, bitrates) {
