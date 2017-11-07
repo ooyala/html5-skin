@@ -345,7 +345,7 @@ describe('Controller', function() {
 
     it('should be able to toggle mute', function() {
       var spy = sinon.spy(OO.mb, 'publish');
-      controller.onPlaying('event', 'videoId');
+      controller.onVcPlay('event', 'videoId');
       controller.toggleMute(false, false);
       expect(spy.callCount).toBe(1);
       expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, false, null, false)).toBe(true);
@@ -363,7 +363,7 @@ describe('Controller', function() {
 
       controller.state.volumeState.muted = false;
       expect(controller.state.volumeState.muted).toBe(false);
-      controller.onPlaying('event', 'videoId');
+      controller.onVcPlay('event', 'videoId');
       controller.handleMuteClick();
       expect(spy.callCount).toBe(1);
       expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, true, null, true)).toBe(true);
@@ -401,7 +401,7 @@ describe('Controller', function() {
 
     it('should not accept volume changes if prompted by a video different from a currently playing video', function() {
       controller.state.volumeState.volume = 0;
-      controller.onPlaying('event', OO.VIDEO.ADS);
+      controller.onVcPlay('event', OO.VIDEO.ADS);
       expect(controller.state.volumeState.volume).toBe(0);
       controller.onVolumeChanged('event', 100, OO.VIDEO.MAIN);
       expect(controller.state.volumeState.volume).toBe(0);
@@ -409,7 +409,7 @@ describe('Controller', function() {
 
     it('should not accept mute state changes if prompted by a video different from a currently playing video', function() {
       controller.state.volumeState.muted = true;
-      controller.onPlaying('event', OO.VIDEO.ADS);
+      controller.onVcPlay('event', OO.VIDEO.ADS);
       expect(controller.state.volumeState.muted).toBe(true);
       controller.onMuteStateChanged('event', false, OO.VIDEO.MAIN);
       expect(controller.state.volumeState.muted).toBe(true);
@@ -417,12 +417,12 @@ describe('Controller', function() {
 
     it('should correctly handle currentVideoId', function() {
       expect(controller.state.currentVideoId).toBe(null);
-      controller.onPlaying('event', OO.VIDEO.MAIN);
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
       expect(controller.state.currentVideoId).toBe(OO.VIDEO.MAIN);
       controller.onErrorEvent();
       expect(controller.state.currentVideoId).toBe(null);
 
-      controller.onPlaying('event', OO.VIDEO.MAIN);
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
       expect(controller.state.currentVideoId).toBe(OO.VIDEO.MAIN);
       controller.onEmbedCodeChanged();
       expect(controller.state.currentVideoId).toBe(null);
