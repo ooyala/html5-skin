@@ -1348,6 +1348,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     unsubscribeBasicPlaybackEvents: function() {
       this.mb.unsubscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VC_PLAY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PLAYED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PLAYING, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PAUSE, 'customerUi');
