@@ -1,13 +1,40 @@
 .oo-unmute {
+  @include vendor-prefixes (transition, $unmute-transition);
   display: inline-block;
-  position: absolute;
   cursor: pointer;
-  height: 45px;
-  width: 45px;
-  top: 0;
-  left: 0;
-  background-color: rgba(0,0,0,0.3);
-  border: 0;
-  outline:none;
+  position: relative;
+  width: 48px;
+  height: 48px;
+  padding: 6px;
+  margin-left: 13px;
+  margin-top: 13px;
+  border: none;
+  border-radius: 24px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);
   z-index: $zindex-unmute;
+}
+
+.oo-unmute.oo-expanded {
+  width: 270px;
+}
+
+.oo-unmute-message {
+  display: inline-block;
+  float: left;
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  color: #000000;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.oo-unmute-icon-wrapper {
+  display: inline-block;
+  float: left;
+  width: 32px;
+  height: 32px;
+  padding: 6px;
 }

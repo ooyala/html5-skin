@@ -119,7 +119,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "volume": 1,
         "muted": false,
         "volumeSliderVisible": false,
-        "mutingForAutoplay": false
+        "mutingForAutoplay": false,
+        "unmuteIconCollapsed": false
       },
 
       "upNextInfo": {
@@ -150,7 +151,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullWindow": false,
       "autoPauseDisabled": false,
 
-      "viewingDirection": {yaw: 0, roll: 0, pitch: 0}
+      "isClickedOutside": false,
+      "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0}
     };
 
     this.init();
@@ -175,7 +177,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.VIDEO_VR, 'customerUi', _.bind(this.onSetVideoVr, this));
       this.mb.subscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi', _.bind(this.onClearVideoType, this));
-      this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setViewingDirection, this));
+      this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setVrViewingDirection, this));
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
@@ -186,6 +188,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if(!this.state.isSubscribed) {
         this.mb.subscribe(OO.EVENTS.SEND_QUALITY_CHANGE, 'customerUi', _.bind(this.receiveVideoQualityChangeEvent, this));
         this.mb.subscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi', _.bind(this.onInitialPlay, this));
+        this.mb.subscribe(OO.EVENTS.VC_PLAY, 'customerUi', _.bind(this.onVcPlay, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYING, 'customerUi', _.bind(this.onPlaying, this));
         this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
@@ -479,7 +482,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     isPlaying: function() {
-      return this.state.playerState !== CONSTANTS.STATE.START && this.state.playerState !== CONSTANTS.STATE.ERROR;
+      return this.state.currentVideoId && this.state.playerState !== CONSTANTS.STATE.START && this.state.playerState !== CONSTANTS.STATE.ERROR;
     },
 
     onVolumeChanged: function (event, newVolume, videoId) {
@@ -601,8 +604,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.startHideControlBarTimer();
     },
 
-    onPlaying: function(event, source) {
+    onVcPlay: function(event, source) {
       this.state.currentVideoId = source;
+    },
+
+    onPlaying: function(event, source) {
       if (source == OO.VIDEO.MAIN) {
         //set mainVideoElement if not set during video plugin initialization
         if (!this.state.mainVideoMediaType) {
@@ -734,7 +740,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (source == OO.VIDEO.MAIN) {
         var language = "";
         var mode = 'disabled';
-        this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
+        this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {
+          mode: mode,
+          isFullScreen: this.state.fullscreen
+        });
         this.state.mainVideoDuration = this.state.duration;
       }
     },
@@ -751,8 +760,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    setViewingDirection: function(event, yaw, roll, pitch) {
-      this.state.viewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
+    setVrViewingDirection: function(event, yaw, roll, pitch) {
+      this.state.vrViewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
     },
 
     recreatingUI: function (event, elementId, params, settings) {
@@ -777,7 +786,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onPlaybackReady: function(event, params) {
+    onPlaybackReady: function(event, timeSincePlayerCreated, params) {
       if(this.state.failoverInProgress) {
         return;
       }
@@ -1340,6 +1349,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     unsubscribeBasicPlaybackEvents: function() {
       this.mb.unsubscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VC_PLAY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PLAYED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PLAYING, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PAUSE, 'customerUi');
@@ -1457,7 +1467,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     togglePlayPause: function() {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
-          this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());
+          if (!this.state.isInitialPlay){
+            this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now(), false);
+          }
           break;
         case CONSTANTS.STATE.END:
           if(Utils.isAndroid() || Utils.isIos()) {
@@ -1640,22 +1652,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     setClosedCaptionsLanguage: function(){
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
-
-      //if saved language not in available languages and saved is not 'none', set to first available language
-      if (availableLanguages &&
-        this.state.closedCaptionOptions.language !== CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE &&
-        (this.state.closedCaptionOptions.language == null ||
-        !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))) {
+      //if saved language not in available languages, set to first available language
+      if (availableLanguages && (this.state.closedCaptionOptions.language == null || !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))) {
         this.state.closedCaptionOptions.language = availableLanguages.languages[0];
       }
-      var language = "";
-      var mode = OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
-      if (this.state.closedCaptionOptions.enabled &&
-        this.state.closedCaptionOptions.language !== CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE) {
-        language = this.state.closedCaptionOptions.language;
-        mode = OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN;
-      }
-      this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {"mode": mode});
+      var language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : "";
+      var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
+      this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {
+        mode: mode,
+        isFullScreen: this.state.fullscreen
+      });
     },
 
     closeScreen: function() {
@@ -1671,15 +1677,24 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onChangeClosedCaptionLanguage: function(event, language) {
+      if (language === CONSTANTS.CLOSED_CAPTIONS.NO_LANGUAGE) {
+        if (this.state.closedCaptionOptions.enabled) {
+          this.toggleClosedCaptionEnabled();
+        }
+        return;
+      }
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
 
       //validate language is available before update and save
-        if (language && availableLanguages && (_.contains(availableLanguages.languages, language) || language === CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE)) {
+      if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
         this.state.closedCaptionOptions.language = this.state.persistentSettings.closedCaptionOptions.language = language;
-        var captionLanguage = this.state.closedCaptionOptions.enabled && language !== CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE ? language : "";
-        var mode = this.state.closedCaptionOptions.enabled && language !== CONSTANTS.CLOSED_CAPTIONS.NONE_LANGUAGE ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
+        var captionLanguage = this.state.closedCaptionOptions.enabled ? language : "";
+        var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
         //publish set closed caption event
-        this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, captionLanguage, {"mode": mode});
+        this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, captionLanguage, {
+          mode: mode,
+          isFullScreen: this.state.fullscreen
+        });
         //update skin, save new closed caption language
         this.renderSkin();
         this.mb.publish(OO.EVENTS.SAVE_PLAYER_SETTINGS, this.state.persistentSettings);

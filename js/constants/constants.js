@@ -96,7 +96,8 @@ module.exports = {
     VIDEO_QUALITY: "Video Quality",
     AUTO_QUALITY: "Auto",
     SHARE: "Share",
-    MORE_OPTIONS: "More Options"
+    MORE_OPTIONS: "More Options",
+    SELECT_TO_UNMUTE: "SELECT TO UNMUTE"
   },
 
   ARIA_LABELS: {
@@ -240,6 +241,10 @@ module.exports = {
     CHANNEL_CONTENT: "channel_content",
     UNSUPPORTED_ENCODING: "unsupported_encoding",
     UNABLE_TO_CREATE_VIDEO_ELEMENT: "unable_to_create_video_element"
+  },
+
+  CLOSED_CAPTIONS: {
+    NO_LANGUAGE: 'none'
   },
 
   ERROR_MESSAGE: {
@@ -392,8 +397,5 @@ module.exports = {
       name: "OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT",
       description: "Something happened while we were trying to play your video! Click replay or simply reload your page."
     }
-  },
-  CLOSED_CAPTIONS:{
-    NONE_LANGUAGE:'none'
   }
 };

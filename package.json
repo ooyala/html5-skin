@@ -83,7 +83,10 @@
     "setupEnvScriptFile": "scripts/jest/environment.js",
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/react",
-      "react"
+      "react",
+      "<rootDir>/node_modules/fbjs",
+      "<rootDir>/node_modules/react-dom",
+      "<rootDir>/node_modules/react-addons-test-utils"
     ],
     "testPathDirs": [
       "<rootDir>"

@@ -1,21 +1,21 @@
 .oo-vr-icon {
   &--move {
     position: absolute;
-    height: 15px;
-    width: 15px;
+    height: $vr-controls-move;
+    width: $vr-controls-move;
     cursor: pointer;
     outline: none;
     &--left {
-      top: 40%;
-      left: 0;
+      top: 33%;
+      left: 5%;
       bottom: auto;
       right: auto;
     }
     &--right {
-      top: 40%;
+      top: 33%;
       left: auto;
       bottom: auto;
-      right: 0;
+      right: 20%;
     }
     &--up {
       top: 5%;
@@ -26,17 +26,18 @@
     &--down {
       top: auto;
       left: 33%;
-      bottom: -5%;
+      bottom: 20%;
       right: auto;
     }
   }
   &-container {
     position: absolute;
     display: block;
-    top: 5%;
-    left: calc(95% - 15px);
-    width: $vr-controls-full-size;
-    height: $vr-controls-full-size;
+    top: 15px;
+    right: 0px;
+    padding-right: 15px;
+    width: $vr-controls-substrate;
+    height: $vr-controls-substrate;
     background-position: 0 0;
     background-size: 100% 100%;
     opacity: 1;
@@ -62,21 +63,23 @@
   &--substrate {
     position: absolute;
     display: block;
-    width: calc(#{$vr-controls-full-size} + 4px);
-    height: calc(#{$vr-controls-full-size} + 4px);
-    left: -2px;
-    background: #000000;
+    left: calc(#{$vr-substrate-diff} * -0.5);
+    top: calc(#{$vr-substrate-diff} * -0.5);
     opacity: 0.3;
-    -moz-border-radius: 100%;
-    -webkit-border-radius: 100%;
-    border-radius: 100%
+    color: #000000;
+    font-size: $vr-controls-substrate;
+    line-height: normal;
+    @include vendor-prefixes (transition, opacity .3s ease-in-out);
+    &--hidden {
+      opacity: 0;
+    }
   }
 
   &--icon-symbol {
     position: absolute;
     display: block;
     opacity: 1;
-    font-size: $vr-controls-full-size;
+    font-size: $vr-controls-size;
     line-height: normal;
     @include vendor-prefixes (transition, opacity .3s ease-in-out);
     &--hidden {
@@ -90,8 +93,8 @@
   &:active,
   &:focus {
     .oo-vr-icon--type {
-      -webkit-filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
-      filter: drop-shadow(-1px 1px 4px rgba(255,255,255,.7));
+      -webkit-filter: drop-shadow(-1px 1px 4px rgba(255, 255, 255, .7));
+      filter: drop-shadow(-1px 1px 4px rgba(255, 255, 255, .7));
     }
   }
 }
