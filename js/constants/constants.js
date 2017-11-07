@@ -203,6 +203,46 @@ module.exports = {
     OBJECT: "object"
   },
 
+  LANGUAGE: {
+    ENGLISH: "en",
+    SPANISH: "es",
+    CHINESE: "zh",
+    JAPANESE: "ja"
+  },
+
+  ERROR_CODE: {
+    NETWORK: "network",
+    SAS: "sas",
+    GEO: "geo",
+    DOMAIN: "domain",
+    FUTURE: "future",
+    PAST: "past",
+    DEVICE: "device",
+    PROXY: "proxy",
+    CONCURRENT_STREAMS: "concurrent_streams",
+    DEVICE_BINDING_FAILED: "device_binding_failed",
+    DEVICE_ID_TOO_LONG: "device_id_too_long",
+    DEVICE_INVALID_AUTH_TOKEN: "device_invalid_auth_token",
+    DEVICE_LIMIT_REACHED: "device_limit_reached",
+    DRM_GENERAL_FAILURE: "drm_general_failure",
+    DRM_SERVER_ERROR: "drm_server_error",
+    INVALID_ENTITLEMENTS: "invalid_entitlements",
+    INVALID_HEARTBEAT: "invalid_heartbeat",
+    CONTENT_TREE: "content_tree",
+    METADATA: "metadata",
+    PLAYBACK: "playback",
+    STREAM: "stream",
+    LIVESTREAM: "livestream",
+    NETWORK_ERROR: "network_error",
+    UNPLAYABLE_CONTENT: "unplayable_content",
+    INVALID_EXTERNAL_ID: "invalid_external_id",
+    EMPTY_CHANNEL: "empty_channel",
+    EMPTY_CHANNEL_SET: "empty_channel_set",
+    CHANNEL_CONTENT: "channel_content",
+    UNSUPPORTED_ENCODING: "unsupported_encoding",
+    UNABLE_TO_CREATE_VIDEO_ELEMENT: "unable_to_create_video_element"
+  },
+
   CLOSED_CAPTIONS: {
     NO_LANGUAGE: 'none'
   },
@@ -230,8 +270,9 @@ module.exports = {
     },
     "future":{
       name: "OO.ERROR.API.SAS.FUTURE",
-      title: "VIDEO NOT AVAILABLE YET",
-      description: "This video will be available soon"
+      title: "VIDEO COMING SOON!",
+      description: "This video is not available yet",
+      action: "You may need to refresh the page to access the video after it becomes available"
     },
     "past":{
       name: "OO.ERROR.API.SAS.PAST",
