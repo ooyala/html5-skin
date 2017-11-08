@@ -160,23 +160,6 @@ describe('Controller', function() {
       controller.stopBufferingTimer();
     });
 
-    //ToDo: These tests break the assembly into jenkins. Enable after the fix.
-    // it('should set initial play to true on initial play', function() {
-    //   controller.state.isInitialPlay = false
-    //   expect(controller.state.isInitialPlay).toBe(false);
-    //   controller.togglePlayPause();
-    //   expect(onInitialPlay.callCount).toBe(1);
-    //   expect(controller.state.isInitialPlay).toBe(true);
-    // });
-
-    // it('should not fire initial play again if initial play has already happened', function() {
-    //   controller.state.isInitialPlay = true
-    //   expect(controller.state.isInitialPlay).toBe(true);
-    //   controller.togglePlayPause();
-    //   expect(onInitialPlay.callCount).toBe(0);
-    //   expect(controller.state.isInitialPlay).toBe(true);
-    // });
-
     it('should stop buffering timer when setting buffering state to false', function() {
       controller.startBufferingTimer();
       expect(stopBufferingTimerSpy.callCount).toBe(1);
@@ -260,6 +243,38 @@ describe('Controller', function() {
       controller.onErrorEvent();
       expect(stopBufferingTimerSpy.callCount).toBe(8);
       expect(controller.state.bufferingTimer).toBeFalsy();
+    });
+
+  });
+
+  describe('Video start state', function(){
+    var spy;
+
+    beforeEach(function() {
+      controller.state.playerState = CONSTANTS.STATE.START;
+      spy = sinon.spy(controller.mb, 'publish');
+      controller.state.isInitialPlay = false;
+    });
+
+    afterEach(function() {
+      spy.restore();
+    });
+
+    it('should set initial play to true on initial play', function() {
+      expect(spy.callCount).toBe(0);
+      controller.togglePlayPause();
+      expect(spy.callCount).toBe(1);
+      expect(spy.args[0][0]).toBe(OO.EVENTS.INITIAL_PLAY);
+      expect(spy.args[0][2]).toBe(false);
+
+    });
+
+    it('should not fire initial play again if initial play has already happened', function() {
+      controller.onInitialPlay();
+      expect(controller.state.isInitialPlay).toBe(true);
+      expect(spy.callCount).toBe(0);
+      controller.togglePlayPause();
+      expect(spy.callCount).toBe(0);
     });
 
   });

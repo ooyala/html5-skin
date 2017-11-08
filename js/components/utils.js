@@ -411,6 +411,27 @@ var Utils = {
   },
 
   /**
+  * Get the countdown string that shows the time until a given future timestamp
+  *
+  * @function getStartCountdown
+  * @param {Number} timestamp - The Unix timestamp for the asset flight time start
+  * @returns {String} The countdown time string
+  */
+  getStartCountdown: function(countdownTimestamp) {
+    try {
+      if (countdownTimestamp < 0) return "";
+      var days = Math.floor(countdownTimestamp / (24 * 60 * 60 * 1000));
+      countdownTimestamp -= days * 24 * 60 * 60 * 1000;
+      var hours = Math.floor(countdownTimestamp / (60 * 60 * 1000));
+      countdownTimestamp -= hours * 60 * 60 * 1000;
+      var minutes = Math.floor(countdownTimestamp / (60 * 1000));
+      return "" + days + " days, " + hours + " hours, and " + minutes + " minutes";
+    } catch (e) {
+      return "";
+    }
+  },
+
+  /**
    * Safely gets the value of an object's nested property.
    *
    * @function getPropertyValue
