@@ -29,7 +29,6 @@ var ErrorScreen = React.createClass({
         errorDescription = "This video will be available in " + Utils.getStartCountdown(startTime * 1000 - Date.now());
       }
       errorAction = Utils.getLocalizedString(this.props.language, errorAction, this.props.localizableStrings);
-      console.log("action: " +errorAction);
     }
     else {
       errorDescription = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UNKNOWN_ERROR, this.props.localizableStrings);
