@@ -208,9 +208,9 @@ describe('Controller', function() {
 
     it('should set buffering state to true after buffering timer time has elapsed', function() {
       controller.startBufferingTimer();
-      expect(controller.state.buffering).toBe(false);
+      expect(controller.state.buffering === false);
       jest.runAllTimers();
-      expect(controller.state.buffering).toBe(true);
+      expect(controller.state.buffering === true);
     });
 
     it('should reset buffering state if it hasn\'t been cleared by the time PLAYING is fired', function() {
