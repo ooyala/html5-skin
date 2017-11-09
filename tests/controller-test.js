@@ -41,6 +41,8 @@ jest.dontMock('../config/skin');
 jest.dontMock('deepmerge');
 jest.dontMock('underscore');
 jest.dontMock('jquery');
+jest.dontMock("sinon");
+jest.dontMock("bulk-require");
 
 var CONSTANTS = require('../js/constants/constants');
 var sinon = require('sinon');

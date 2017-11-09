@@ -21,59 +21,8 @@ describe('Skin', function () {
 
 describe('Skin screenToShow state', function () {
   beforeEach(function() {
-    
-    var testProps = {
-      skinConfig: {
-        general: {
-          loadingImage: {
-            imageResource: {
-              url: null
-            }
-          }
-        },
-        startScreen: {
-          titleFont: {
-          },
-          descriptionFont: {
-          },
-          playIconStyle: {
-            color: 'white'
-          },
-          infoPanelPosition: 'topLeft',
-          playButtonPosition: 'center',
-          showPlayButton: true,
-          showPromo: true,
-          showTitle: true,
-          showDescription: true,
-          promoImageSize: 'default'
-        },
-        icons: {
-          play:{fontStyleClass:'oo-icon oo-icon-play'},
-          replay:{fontStyleClass:'oo-icon oo-icon-upnext-replay'}
-        },
-        controlBar: {
-          height: 90
-        },
-        "responsive": {
-          "breakpoints": {
-            "xs": {"id": "xs", "name": "oo-xsmall", "maxWidth": 559, "multiplier": 0.7},
-            "sm": {"id": "sm", "name": "oo-small", "minWidth": 560, "maxWidth": 839, "multiplier": 1},
-            "md": {"id": "md", "name": "oo-medium", "minWidth": 840, "maxWidth": 1279, "multiplier": 1},
-            "lg": {"id": "lg", "name": "oo-large", "minWidth": 1280, "multiplier": 1.2}
-          },
-        }
-      },
-      controller: {
-        state: {
-          adVideoDuration: 0,
-          errorCode: 404
-        },
-        publishOverlayRenderingEvent: function() {}
-      }
-    };
-    
     // Render skin into DOM
-    skin = TestUtils.renderIntoDocument(<Skin {...testProps}/>);
+    skin = TestUtils.renderIntoDocument(<Skin />);
   });
 
   it('tests LOADING SCREEN', function () {
@@ -174,8 +123,8 @@ describe('Skin screenToShow state', function () {
   });
 });
 
-describe('Skin', function () {
-  test('tests IE10', function () {
+describe('Skin ', function () {
+  it('tests IE10', function () {
     // set user agent to IE 10
     window.navigator.userAgent = "MSIE 10";
 
@@ -183,14 +132,12 @@ describe('Skin', function () {
     var skinComponent = TestUtils.renderIntoDocument(<Skin />);
   });
 
-  test('tests IE10 START SCREEN', function () {
-    //set user agent to IE 10
+  it('tests IE10 START SCREEN', function () {
+    // set user agent to IE 10
     window.navigator.userAgent = "MSIE 10";
 
     // render skin into DOM
     var skinComponent = TestUtils.renderIntoDocument(<Skin />);
-    
-    
     skinComponent.switchComponent({
       screenToShow: CONSTANTS.SCREEN.START_SCREEN,
       responsiveId: "md"
