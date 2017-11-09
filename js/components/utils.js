@@ -418,14 +418,20 @@ var Utils = {
   * @returns {String} The countdown time string
   */
   getStartCountdown: function(countdownTimestamp) {
+    var dayString = "day";
+    var hourString = "hour";
+    var minuteString = "minute";
     try {
       if (countdownTimestamp < 0) return "";
       var days = Math.floor(countdownTimestamp / (24 * 60 * 60 * 1000));
+      if (days != 1) dayString += "s";
       countdownTimestamp -= days * 24 * 60 * 60 * 1000;
       var hours = Math.floor(countdownTimestamp / (60 * 60 * 1000));
+      if (hours != 1) hourString += "s";
       countdownTimestamp -= hours * 60 * 60 * 1000;
       var minutes = Math.floor(countdownTimestamp / (60 * 1000));
-      return "" + days + " days, " + hours + " hours, and " + minutes + " minutes";
+      if (minutes != 1) minuteString += "s";
+      return "" + days + " " + dayString + ", " + hours + " " + hourString + ", and " + minutes + " " + minuteString;
     } catch (e) {
       return "";
     }
