@@ -165,7 +165,11 @@ var CountDownClock = React.createClass({
     OO.log("startUpNext");
     var eventData = {
       "clickedVideo" : this.props.upNextInfo.upNextData,
-      "custom" : {"source": CONSTANTS.SCREEN.UP_NEXT_SCREEN}
+      "custom": {
+        "source": CONSTANTS.SCREEN.UP_NEXT_SCREEN,
+        "asset": this.props.upNextInfo.upNextData.embed_code,
+        "autoplay": true
+      }
     };
     this.props.controller.sendDiscoveryClickEvent(eventData, true);
   },

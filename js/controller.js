@@ -1590,13 +1590,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           return relatedVideo.embed_code === embedCode;
         });
         relatedVideos = eventAsset ? [eventAsset] : [];
+        var eventData = {
+          "custom" : { "source" : screenName,  "asset" : embedCode}
+        };
+        this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
       }
-
-      var eventData = {
-        "relatedVideos" : relatedVideos,
-        "custom" : { "source" : screenName }
-      };
-      this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
     },
 
     toggleVideoQualityPopOver: function() {

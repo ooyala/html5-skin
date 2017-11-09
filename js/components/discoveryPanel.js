@@ -19,7 +19,8 @@ var DiscoveryPanel = React.createClass({
     return {
       showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen || this.props.forceCountDownTimer,
       currentPage: 1,
-      componentHeight: null
+      componentHeight: null,
+      shownAssets: -1
     };
   },
 
@@ -56,7 +57,11 @@ var DiscoveryPanel = React.createClass({
   handleDiscoveryContentClick: function(index) {
     var eventData = {
       "clickedVideo": this.props.discoveryData.relatedVideos[index],
-      "custom": this.props.discoveryData.custom
+      "custom": {
+        "source": CONSTANTS.SCREEN.DISCOVERY_SCREEN,
+        "asset": this.props.discoveryData.relatedVideos[index].embed_code,
+        "autoplay": false
+      }
     };
     // TODO: figure out countdown value
     // eventData.custom.countdown = 0;
@@ -98,6 +103,13 @@ var DiscoveryPanel = React.createClass({
     var endAt = videosPerPage * this.state.currentPage;
     var relatedVideoPage = relatedVideos.slice(startAt, endAt);
 
+    // Send impression events for each discovery asset shown
+    for (var i = startAt; i < endAt; i++){
+      if (i > this.state.shownAssets && i < relatedVideos.length){
+        this.props.controller.sendDiscoveryDisplayEvent("discoveryScreen", relatedVideos[i].embed_code);
+        this.state.shownAssets++;
+      }
+    }
     // discovery content
     var discoveryContentName = ClassNames({
       'oo-discovery-content-name': true,

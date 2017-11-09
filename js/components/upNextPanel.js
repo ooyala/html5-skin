@@ -26,8 +26,8 @@ var UpNextPanel = React.createClass({
       "clickedVideo": this.props.upNextInfo.upNextData,
       "custom": {
         "source": CONSTANTS.SCREEN.UP_NEXT_SCREEN,
-        "countdown": 0,
-        "autoplay": true
+        "asset": this.props.upNextInfo.upNextData.embed_code,
+        "autoplay": false
       }
     };
     this.props.controller.sendDiscoveryClickEvent(eventData, false);
