@@ -579,12 +579,22 @@ var Utils = {
     var timeSlices = thumbnails.data.available_time_slices;
     var width = thumbnails.data.available_widths[0]; //choosing the lowest size
 
+    if (true) {
+      width = thumbnails.data.available_widths[4];
+    }
+
+    console.log('BBB width', width);
+
     var position = Math.floor((hoverTime/duration) * timeSlices.length);
     position = Math.min(position, timeSlices.length - 1);
     position = Math.max(position, 0);
 
+    console.log('BBB position', position);
+
     var selectedTimeSlice = null;
     var selectedPosition = position;
+
+    console.log('BBB selectedPosition', selectedPosition);
 
     if (timeSlices[position] >= hoverTime) {
       selectedTimeSlice = timeSlices[0];
@@ -610,7 +620,10 @@ var Utils = {
       }
     }
 
+    console.log('BBB selectedTimeSlice', selectedTimeSlice);
+
     var selectedThumbnail = thumbnails.data.thumbnails[selectedTimeSlice][width].url;
+    console.log('BBB thumbnails.data', thumbnails.data);
     return { url: selectedThumbnail, pos: selectedPosition };
   },
 
