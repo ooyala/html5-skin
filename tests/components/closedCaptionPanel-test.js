@@ -9,6 +9,7 @@ jest.dontMock('../../js/views/contentScreen')
     .dontMock('../../js/components/dataSelector')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/constants/constants')
+    .dontMock('../../config/skin.json')
     .dontMock('classnames');
 
 var React = require('react');
