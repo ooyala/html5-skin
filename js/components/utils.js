@@ -579,28 +579,24 @@ var Utils = {
   * @param {Object} thumbnails - metadata object containing information about thumbnails
   * @param {Number} hoverTime - time value to find thumbnail for
   * @param {Number} duration - duration of the video
+  * @param {Boolean} isVideoVr - if video is vr
   * @returns {Object} object that contains URL and index of requested thumbnail
   */
-  findThumbnail: function(thumbnails, hoverTime, duration) {
+  findThumbnail: function(thumbnails, hoverTime, duration, isVideoVr) {
     var timeSlices = thumbnails.data.available_time_slices;
     var width = thumbnails.data.available_widths[0]; //choosing the lowest size
 
-    if (true) {
-      width = thumbnails.data.available_widths[4];
+    if (isVideoVr) {
+      var index = thumbnails.data.available_widths.length >= 5 ? 4 : thumbnails.data.available_widths.length - 1;
+        width = thumbnails.data.available_widths[index];
     }
-
-    console.log('BBB width', width);
 
     var position = Math.floor((hoverTime/duration) * timeSlices.length);
     position = Math.min(position, timeSlices.length - 1);
     position = Math.max(position, 0);
 
-    console.log('BBB position', position);
-
     var selectedTimeSlice = null;
     var selectedPosition = position;
-
-    console.log('BBB selectedPosition', selectedPosition);
 
     if (timeSlices[position] >= hoverTime) {
       selectedTimeSlice = timeSlices[0];
@@ -626,11 +622,10 @@ var Utils = {
       }
     }
 
-    console.log('BBB selectedTimeSlice', selectedTimeSlice);
-
     var selectedThumbnail = thumbnails.data.thumbnails[selectedTimeSlice][width].url;
-    console.log('BBB thumbnails.data', thumbnails.data);
-    return { url: selectedThumbnail, pos: selectedPosition };
+    var imageWidth = thumbnails.data.thumbnails[selectedTimeSlice][width].width;
+    var imageHeight = thumbnails.data.thumbnails[selectedTimeSlice][width].height;
+    return { url: selectedThumbnail, pos: selectedPosition, imageWidth: imageWidth, imageHeight: imageHeight };
   },
 
   /**

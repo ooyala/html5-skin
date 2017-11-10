@@ -45,9 +45,10 @@
   @include vendor-prefixes(transform, translateX(-50%));
 }
 
+$thumbnail_width: 119px;
 .oo-thumbnail {
   position: absolute;
-  width: 119px;
+  width: $thumbnail_width;
   height: 74px;
   border-radius: 4px;
   box-shadow: rgba(0,0,0,0.5) 0 6px 18px;
@@ -55,6 +56,16 @@
   background-size: cover;
   background-position: 50% 50%;
   @include vendor-prefixes(transform, translateX(-50%));
+  &-vr {
+    position: absolute;
+    top: 0;
+    width: $thumbnail_width/2;
+    height: 74px;
+    background-repeat: repeat no-repeat;
+    &-container {
+      overflow: hidden;
+    }
+  }
 }
 
 .oo-thumbnail-time {

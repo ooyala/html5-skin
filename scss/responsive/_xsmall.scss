@@ -574,11 +574,17 @@
     bottom: 115px * $xsmall-multiple;
   }
 
+  $thumbnail_width_xsmall: 113px * $xsmall-multiple;
+  $thumbnail_height_xsmall: 77px * $xsmall-multiple;
   .oo-thumbnail {
-    width: 113px * $xsmall-multiple;
-    height: 77px * $xsmall-multiple;
+    width: $thumbnail_width_xsmall;
+    height: $thumbnail_height_xsmall;
     border-radius: 4px * $xsmall-multiple;
     box-shadow: rgba(0,0,0,0.5) 0 6px * $xsmall-multiple 18px * $xsmall-multiple;
+    &-vr {
+      width: $thumbnail_width_xsmall/2;
+      height: $thumbnail_height_xsmall;
+    }
   }
 
   .oo-thumbnail-time {
