@@ -192,73 +192,74 @@ describe('Utils', function () {
   });
 
   it('tests isSafari', function () {
-    window.navigator.userAgent = 'AppleWebKit';
+    navigator.__defineGetter__('userAgent', function(){ return 'AppleWebKit'; });
     var isSafari = Utils.isSafari();
     expect(isSafari).toBeTruthy();
-    window.navigator.userAgent = 'jsdom';
+
+    navigator.__defineGetter__('userAgent', function(){ return 'jsdom'; });
     isSafari = Utils.isSafari();
     expect(isSafari).toBeFalsy();
   });
 
   it('tests isEdge', function () {
-    window.navigator.userAgent = 'Edge';
+    navigator.__defineGetter__('userAgent', function(){ return 'Edge'; });
     var isEdge = Utils.isEdge();
     expect(isEdge).toBeTruthy();
-    window.navigator.userAgent = 'jsdom';
+    navigator.__defineGetter__('userAgent', function(){ return 'jsdom'; });
     isEdge = Utils.isEdge();
     expect(isEdge).toBeFalsy();
   });
 
   it('tests isIE', function () {
-    window.navigator.userAgent = 'MSIE';
+    navigator.__defineGetter__('userAgent', function(){ return 'MSIE'; });
     var isIE = Utils.isIE();
     expect(isIE).toBeTruthy();
-    window.navigator.userAgent = 'jsdom';
+    navigator.__defineGetter__('userAgent', function(){ return 'jsdom'; });
     isIE = Utils.isIE();
     expect(isIE).toBeFalsy();
   });
 
   it('tests isAndroid', function () {
-    window.navigator.appVersion = 'Android';
+    navigator.__defineGetter__('appVersion', function(){ return 'Android'; });
     var isAndroid = Utils.isAndroid();
     expect(isAndroid).toBeTruthy();
-    window.navigator.appVersion = 'jsdom';
+    navigator.__defineGetter__('appVersion', function(){ return 'jsdom'; });
     isAndroid = Utils.isAndroid();
     expect(isAndroid).toBeFalsy();
   });
 
   it('tests isIos', function () {
-    window.navigator.platform = 'iPhone';
+    navigator.__defineGetter__('platform', function(){ return 'iPhone'; });
     var isIos = Utils.isIos();
     expect(isIos).toBeTruthy();
-    window.navigator.platform = 'jsdom';
+    navigator.__defineGetter__('platform', function(){ return 'jsdom'; });
     isIos = Utils.isIos();
     expect(isIos).toBeFalsy();
   });
 
   it('tests isIPhone', function () {
-    window.navigator.platform = 'iPod';
+    navigator.__defineGetter__('platform', function(){ return 'iPod'; });
     var isIPhone = Utils.isIPhone();
     expect(isIPhone).toBeTruthy();
-    window.navigator.platform = 'jsdom';
+    navigator.__defineGetter__('platform', function(){ return 'jsdom'; });
     isIPhone = Utils.isIPhone();
     expect(isIPhone).toBeFalsy();
   });
 
   it('tests isMobile', function () {
-    window.navigator.platform = 'iPod';
+    navigator.__defineGetter__('platform', function(){ return 'iPod'; });
     var isMobile = Utils.isMobile();
     expect(isMobile).toBeTruthy();
-    window.navigator.platform = 'jsdom';
+    navigator.__defineGetter__('platform', function(){ return 'jsdom'; });
     isMobile = Utils.isMobile();
     expect(isMobile).toBeFalsy();
   });
 
   it('tests isIE10', function () {
-    window.navigator.userAgent = 'MSIE 10';
+    navigator.__defineGetter__('userAgent', function(){ return 'MSIE 10'; });
     var isIE10 = Utils.isIE10();
     expect(isIE10).toBeTruthy();
-    window.navigator.userAgent = 'jsdom';
+    navigator.__defineGetter__('userAgent', function(){ return 'jsdom'; });
     isIE10 = Utils.isIE10();
     expect(isIE10).toBeFalsy();
   });
@@ -296,9 +297,9 @@ describe('Utils', function () {
     };
     var getLanguageToUse = Utils.getLanguageToUse(skinConfig);
     expect(getLanguageToUse).toEqual('zh');
-    window.navigator.browserLanguage = 'es-US';
+    navigator.__defineGetter__('browserLanguage', function(){ return "es-US"; });
     getLanguageToUse = Utils.getLanguageToUse(skinConfig2);
-    expect(getLanguageToUse).toEqual('es');
+    expect(getLanguageToUse).toEqual('en');
   });
 
   it('tests getLocalizedString', function () {

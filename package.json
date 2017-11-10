@@ -82,7 +82,7 @@
       "/node_modules/"
     ],
     "persistModuleRegistryBetweenSpecs": true,
-    "preprocessorIgnorePatterns": [
+    "transformIgnorePatterns": [
       "/node_modules/"
     ],
     "rootDir": "",
