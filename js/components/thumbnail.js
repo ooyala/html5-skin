@@ -8,8 +8,6 @@ var React = require('react'),
 
 var Thumbnail = React.createClass({
   getInitialState: function() {
-    this.positionXLeft = 0;
-    this.positionXRight = 0;
     this.positionY = 0;
     this.positionX = -80;
     this.imageWidth = 0;
