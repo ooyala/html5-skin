@@ -33,14 +33,13 @@ var Thumbnail = React.createClass({
   shouldComponentUpdate: function(nextProps) {
     var hoverPosition = nextProps.hoverPosition != this.props.hoverPosition;
     var fullscreen  = nextProps.fullscreen != this.props.fullscreen;
-    return (hoverPosition || fullscreen);
-    // return (nextProps.hoverPosition != this.props.hoverPosition);
+    var vrViewingDirection = nextProps.vrViewingDirection != this.props.vrViewingDirection;
+    return (hoverPosition || fullscreen || vrViewingDirection);
   },
   componentDidUpdate: function(prevProps, prevState) {
     var newThumbnailWidth = $("#oo-thumbnail").width();
     var newThumbnailHeight = $("#oo-thumbnail").height();
-    if (newThumbnailWidth !== this.thumbnailWidthHalf*2 || newThumbnailHeight !== this.thumbnailHeight) {
-      console.log('BBB newThumbnailWidth', newThumbnailWidth, 'this.thumbnailWidthHalf*2', this.thumbnailWidthHalf*2);
+    if (newThumbnailWidth !== this.thumbnailWidth || newThumbnailHeight !== this.thumbnailHeight) {
       this.thumbnailWidth = newThumbnailWidth;
       this.thumbnailHeight = newThumbnailHeight;
       var yaw = this.props.vrViewingDirection.yaw;
@@ -67,7 +66,7 @@ var Thumbnail = React.createClass({
   },
 
   /**
-   *
+   * @description set positions for a thumbnail image when a video is vr
    * @param {Number} yaw - angle in degrees
    * @param {Number} pitch - angle in degrees
    * @private
@@ -80,7 +79,7 @@ var Thumbnail = React.createClass({
     var thumbnailWidth = this.thumbnailWidth;
     var thumbnailHeight = this.thumbnailHeight;
     yaw = this.getCurrentYawVr(yaw);
-    pitch = pitch >= 360 ? 0 : pitch; //degrees
+    pitch = pitch >= 360 ? 0 : pitch;
 
     var positionY = -(((imageHeight - thumbnailHeight) / 2) - pitch);
     var bottomCoordinate = -(imageHeight - thumbnailHeight);
@@ -95,7 +94,7 @@ var Thumbnail = React.createClass({
   },
 
   /**
-   *
+   * @description return current coefficient of the yaw if yaw > 360 or yaw < -360 degrees
    * @param {Number} yaw
    * @private
    * @returns {number}
