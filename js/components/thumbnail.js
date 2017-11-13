@@ -124,15 +124,11 @@ var Thumbnail = React.createClass({
       thumbnailClassName += " oo-thumbnail-vr";
     }
 
-    var thumbnailElement = (
-      <div id="oo-thumbnail" className={thumbnailClassName} ref="thumbnail" style={thumbnailStyle}>
-        <div className="oo-thumbnail-time">{time}</div>
-      </div>
-    );
-
     return (
       <div className="oo-scrubber-thumbnail-container">
-        {thumbnailElement}
+        <div id="oo-thumbnail" className={thumbnailClassName} ref="thumbnail" style={thumbnailStyle}>
+          <div className="oo-thumbnail-time">{time}</div>
+        </div>
       </div>
     );
   }
