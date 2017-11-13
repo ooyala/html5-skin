@@ -9,7 +9,7 @@ var React = require('react'),
 var Thumbnail = React.createClass({
   getInitialState: function() {
     this.positionY = 0;
-    this.positionX = -80;
+    this.positionX = -320;
     this.imageWidth = 0;
     this.imageHeight = 0;
     this.thumbnailWidth = 80;
@@ -32,7 +32,7 @@ var Thumbnail = React.createClass({
   },
   shouldComponentUpdate: function(nextProps) {
     var hoverPosition = nextProps.hoverPosition != this.props.hoverPosition;
-    var fullscreen  = nextProps.fullscreen != this.props.fullscreen;
+    var fullscreen  = nextProps.fullscreen != this.props.fullscreen && this.props.videoVr;
     var vrViewingDirection = nextProps.vrViewingDirection != this.props.vrViewingDirection;
     return (hoverPosition || fullscreen || vrViewingDirection);
   },
