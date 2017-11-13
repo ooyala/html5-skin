@@ -26,8 +26,10 @@ var UpNextPanel = React.createClass({
       "clickedVideo": this.props.upNextInfo.upNextData,
       "custom": {
         "source": CONSTANTS.SCREEN.UP_NEXT_SCREEN,
-        "asset": this.props.upNextInfo.upNextData.embed_code,
-        "autoplay": false
+        "asset" : { "id" : this.props.upNextInfo.upNextData.embed_code, "idType" : "ooyala"},
+        "autoplay": false,
+        "sequenceNumber" : 1, 
+        "pageSize" : 1
       }
     };
     this.props.controller.sendDiscoveryClickEvent(eventData, false);

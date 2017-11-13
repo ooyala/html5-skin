@@ -168,7 +168,9 @@ var CountDownClock = React.createClass({
       "custom": {
         "source": CONSTANTS.SCREEN.UP_NEXT_SCREEN,
         "asset": this.props.upNextInfo.upNextData.embed_code,
-        "autoplay": true
+        "autoplay": true,
+        "sequenceNumner" : 1, 
+        "pageSize" : 1
       }
     };
     this.props.controller.sendDiscoveryClickEvent(eventData, true);

@@ -43,6 +43,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "thumbnails": null,
       "isLiveStream": false,
       "screenToShow": null,
+      "discoverySource": "pauseScreen",
       "playerState": null,
       "currentVideoId": null,
       "discoveryData": null,
@@ -589,7 +590,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         // switch from hidden to showing
         if (!this.state.upNextInfo.showing) {
           var upNextEmbedCode = Utils.getPropertyValue(this.state.upNextInfo, "upNextData.embed_code");
-          this.sendDiscoveryDisplayEvent("endScreen", upNextEmbedCode);
+          this.state.discoverySource = "endScreen";
+          var customData = { "playheadPercent" : currentPlayhead / duration};
+          this.sendDiscoveryDisplayEvent(this.state.upNextInfo.upNextData, customData, 1, 1);
         }
         this.state.upNextInfo.showing = true;
       }
@@ -666,7 +669,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         if (this.state.pauseAnimationDisabled == false && this.state.discoveryData && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
             && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))) {
           OO.log("Should display DISCOVERY_SCREEN on pause");
-          this.sendDiscoveryDisplayEvent("pauseScreen");
+          this.state.discoverySource = "pauseScreen";
           this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
         } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
           // Remove this comment once pause screen implemented
@@ -718,7 +721,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       else if (this.state.discoveryData && this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery"
                && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))) {
         OO.log("Should display DISCOVERY_SCREEN on end");
-        this.sendDiscoveryDisplayEvent("endScreen");
+        this.state.discoverySource = "endScreen";
         this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
       } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "share") {
         this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
@@ -1302,7 +1305,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // is configured, we wait until the user exits fullscreen and then we display it.
       if (showUpNext && this.state.playerState === CONSTANTS.STATE.END) {
         this.state.forceCountDownTimerOnEndScreen = true;
-        this.sendDiscoveryDisplayEvent("endScreen");
+        this.state.discoverySource = "endScreen";
         this.state.pluginsElement.addClass("oo-overlay-blur");
         this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
         this.renderSkin();
@@ -1422,7 +1425,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             OO.log("finished toggleDiscoveryScreen");
           }.bind(this);
           this.togglePlayPause();
-          this.sendDiscoveryDisplayEvent("pauseScreen");
+          this.state.discoverySource = "pauseScreen";
           break;
         case CONSTANTS.STATE.PAUSE:
           if(this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
@@ -1431,7 +1434,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
           }
           else {
-            this.sendDiscoveryDisplayEvent("pauseScreen");
+            this.state.discoverySource = "pauseScreen";
             this.state.pluginsElement.addClass("oo-overlay-blur");
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
           }
@@ -1442,7 +1445,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
           }
           else {
-            this.sendDiscoveryDisplayEvent("endScreen");
+            this.state.discoverySource = "endScreen";
             this.state.pluginsElement.addClass("oo-overlay-blur");
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
             this.skin.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen = false;
@@ -1579,19 +1582,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    sendDiscoveryDisplayEvent: function(screenName, embedCode) {
+    sendDiscoveryDisplayEvent: function(assetData, customData, pageSize, assetPosition) {
       var relatedVideosData = Utils.getPropertyValue(this.state.discoveryData, "relatedVideos", []);
       var relatedVideos = relatedVideosData;
 
+      customData.source = this.state.discoverySource;
       // With "Up Next" panel we only pass the data of the asset
       // that is currently shown
-      if (embedCode) {
-        var eventAsset = _.find(relatedVideosData, function(relatedVideo) {
-          return relatedVideo.embed_code === embedCode;
-        });
-        relatedVideos = eventAsset ? [eventAsset] : [];
+
+      if (assetData.embed_code) {
         var eventData = {
-          "custom" : { "source" : screenName,  "asset" : embedCode}
+          "custom" : { "customData" : customData,
+                        "asset" : { "id" : assetData.embed_code, "idType" : "ooyala"},
+                        "sequenceNumber" : assetPosition, "pageSize" : pageSize}
         };
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
       }
