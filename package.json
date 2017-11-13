@@ -81,7 +81,6 @@
       "/build/",
       "/node_modules/"
     ],
-    "persistModuleRegistryBetweenSpecs": true,
     "transformIgnorePatterns": [
       "/node_modules/"
     ],
