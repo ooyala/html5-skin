@@ -67,8 +67,8 @@ var Thumbnail = React.createClass({
 
   /**
    * @description set positions for a thumbnail image when a video is vr
-   * @param {Number} yaw - angle in degrees
-   * @param {Number} pitch - angle in degrees
+   * @param {Number} yaw - rotation around the vertical axis in degrees (returns after changing direction)
+   * @param {Number} pitch - rotation around the horizontal axis in degrees (returns after changing direction)
    * @private
    */
   setCurrentViewVr: function(yaw, pitch) {
@@ -95,9 +95,9 @@ var Thumbnail = React.createClass({
 
   /**
    * @description return current coefficient of the yaw if yaw > 360 or yaw < -360 degrees
-   * @param {Number} yaw
+   * @param {Number} yaw - angle in degrees
    * @private
-   * @returns {number}
+   * @returns {number} coefficient showing how many times to take 360 degrees
    */
   getCurrentYawVr: function(yaw) {
     var k = yaw <= -360 ? -1 : 1;
