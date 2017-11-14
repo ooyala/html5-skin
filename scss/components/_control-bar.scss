@@ -88,6 +88,10 @@
       @include remove-highlight-tab();
     }
 
+    .oo-control-bar-item.oo-focusable-btn {
+      @include remove-highlight-tab();
+    }
+
     .oo-control-bar-item.oo-mute-unmute {
       height: auto;
       padding: 0;

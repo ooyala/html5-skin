@@ -9,6 +9,7 @@ var React = require('react'),
   Slider = require('./slider'),
   Utils = require('./utils'),
   Popover = require('../views/popover'),
+  AccessibleButton = require('./accessibleButton'),
   VolumeControls = require('./volumeControls'),
   VideoQualityPanel = require('./videoQualityPanel'),
   ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
@@ -551,11 +552,18 @@ var ControlBar = React.createClass({
         return (
           <div className="oo-popover-button-container" key="closedCaption">
             {closedCaptionPopover}
-            <a className={captionClass} onClick={this.handleClosedCaptionClick} style={selectedStyle} aria-hidden="true">
+            <AccessibleButton
+              style={selectedStyle}
+              className={captionClass}
+              focusId="closedCaptions"
+              ariaLabel={CONSTANTS.ARIA_LABELS.CLOSED_CAPTIONS}
+              ariaHasPopup="true"
+              ariaExpanded={this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover ? true : null}
+              onClick={this.handleClosedCaptionClick}>
               <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
                 onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
               <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CLOSED_CAPTIONS, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
-            </a>
+            </AccessibleButton>
           </div>
         )
       }).bind(this),

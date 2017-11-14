@@ -1,4 +1,7 @@
+jest.dontMock('../../js/components/accessibleButton');
 jest.dontMock('../../js/components/closeButton');
+jest.dontMock('../../js/constants/constants');
+jest.dontMock('classnames');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');

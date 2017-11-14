@@ -108,6 +108,7 @@ module.exports = {
     REPLAY: "Replay",
     MUTE: "Mute",
     UNMUTE: "Unmute",
+    CLOSED_CAPTIONS: "Closed Captions",
     VIDEO_QUALITY: "Video Quality",
     AUTO_QUALITY: "Auto",
     FULLSCREEN: "Fullscreen",
@@ -120,6 +121,8 @@ module.exports = {
     TIME_DISPLAY_DVR: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME + " live video",
     QUALITY_LEVEL: "Quality level " + MACROS.LEVEL + ", " + MACROS.QUALITY,
     CLOSE: "Close",
+    TOGGLE_CLOSED_CAPTIONS: "Toggle Closed Captions",
+    CAPTION_OPTIONS: "Closed Caption Options",
     STEREO_ON: "Stereoscopic",
     STEREO_OFF: "Monoscopic"
   },
@@ -128,7 +131,8 @@ module.exports = {
     SLIDER: "slider",
     MENU: "menu",
     MENU_ITEM: "menuitem",
-    MENU_ITEM_RADIO: "menuitemradio"
+    MENU_ITEM_RADIO: "menuitemradio",
+    MENU_ITEM_CHECKBOX: "menuitemcheckbox"
   },
 
   KEYBD_FOCUS_ID_ATTR: "data-focus-id",
