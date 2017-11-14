@@ -288,7 +288,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // identified with the ARIA label above. We set it to -1 in order to prevent actual keyboard focus
       this.state.mainVideoInnerWrapper.attr('tabindex', '-1');
 
-      if (!$('.oo-player-skin').length) {
+      if (!this.state.mainVideoInnerWrapper.children('.oo-player-skin').length) {
         this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
       }
 
