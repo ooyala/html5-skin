@@ -1,15 +1,17 @@
-jest.dontMock('../../js/views/contentScreen')
-    .dontMock('../../js/components/closed-caption/closedCaptionPanel')
-    .dontMock('../../js/components/closed-caption/ccPreviewPanel')
-    .dontMock('../../js/components/closed-caption/languageTab')
-    .dontMock('../../js/components/closed-caption/onOffSwitch')
-    .dontMock('../../js/components/icon')
-    .dontMock('../../js/components/tabs')
-    .dontMock('../../js/components/utils')
-    .dontMock('../../js/components/dataSelector')
-    .dontMock('../../js/components/utils')
-    .dontMock('../../js/constants/constants')
-    .dontMock('classnames');
+jest
+// .dontMock('../../js/views/contentScreen')
+// .dontMock('../../js/components/closed-caption/closedCaptionPanel')
+// .dontMock('../../js/components/closed-caption/ccPreviewPanel')
+// .dontMock('../../js/components/closed-caption/languageTab')
+// .dontMock('../../js/components/closed-caption/onOffSwitch')
+// .dontMock('../../js/components/icon')
+// .dontMock('../../js/components/tabs')
+// .dontMock('../../js/components/utils')
+// .dontMock('../../js/components/dataSelector')
+.dontMock('../../js/components/utils')
+// .dontMock('../../js/constants/constants')
+.dontMock('../../config/skin.json')
+// .dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -164,9 +166,11 @@ describe('ClosedCaptionPanel', function () {
     mockSkinConfig.general.accentColor = "blue";
 
     var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPanel skinConfig={mockSkinConfig} closedCaptionOptions={closedCaptionOptions} controller={mockController}/>);
+    
     var newLanguage = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item')[1];
+    console.log('newLanguage', newLanguage)
     TestUtils.Simulate.click(newLanguage);
-    expect(newLanguage.style.backgroundColor).toBe("blue");  
+    expect(newLanguage.style.backgroundColor).toBe("blue");
     expect(selectedLanguage).toBe(availableLanguages.languages[1]);
   });
 });

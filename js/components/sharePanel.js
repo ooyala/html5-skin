@@ -40,8 +40,7 @@ var SharePanel = React.createClass({
   getActivePanel: function() {
     if (this.state.activeTab === this.tabs.SHARE) {
       var titleString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION, this.props.localizableStrings);
-      var socialContent = _.uniq(Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', []));
-
+      var socialContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', []);
       var shareButtons = [];
       socialContent.forEach(function(shareButton) {
         switch (shareButton) {
@@ -97,6 +96,7 @@ var SharePanel = React.createClass({
     mailToUrl += "&body=" + encodeURIComponent(emailBody + location.href);
     //location.href = mailToUrl; //same window
     if (OO.isIos && OO.isSafari) {
+      
         document.location = mailToUrl;
     } else {
         var emailWindow = window.open(mailToUrl, "email", "height=315,width=780"); //new window
@@ -163,7 +163,7 @@ var SharePanel = React.createClass({
 
     var shareString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings),
         embedString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMBED, this.props.localizableStrings);
-
+    
     return (
       <div className="oo-content-panel oo-share-panel">
         <div className="oo-tab-row">

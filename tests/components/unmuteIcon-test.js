@@ -1,12 +1,12 @@
 jest.dontMock('../../js/components/unmuteIcon');
 jest.dontMock('../../js/constants/constants');
 jest.dontMock('classnames');
+jest.dontMock("sinon");
+jest.dontMock("bulk-require");
 
 var React = require('react');
-var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 var UnmuteIcon = require('../../js/components/unmuteIcon');
-var CONSTANTS = require('../../js/constants/constants');
 var skinConfig = require('../../config/skin.json');
 var sinon = require('sinon');
 

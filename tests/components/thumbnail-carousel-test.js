@@ -12,12 +12,12 @@ var Utils = require('../../js/components/utils');
 var testThumbnails = function(DOM, thumbnails, hoverTime, width, duration) {
   var hoverPosition = Utils.findThumbnail(thumbnails, hoverTime, duration).pos;
   var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnailCarousel);
-  var images = centerImage._parentNode._childNodes;
+  var images = centerImage.parentNode.childNodes;
 
   var lastLeft = 0;
   var next = 0;
   for (var i = 0; i < hoverPosition && i < images.length; i++) {
-    var imageStyle = images[i]._style;
+    var imageStyle = images[i].style;
     var img = imageStyle._values["background-image"];
     var left = parseInt(imageStyle._values["left"]);
     if (i > 0 && left > lastLeft) { // left edge of scrubber bar reached,  now check images to the right of central, remember index where we stopped
@@ -29,7 +29,7 @@ var testThumbnails = function(DOM, thumbnails, hoverTime, width, duration) {
     expect(img.slice(offset, -1)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[hoverPosition - i - 1]][width]["url"]);
   }
   for (var i = hoverPosition + 1 - next; i < images.length; i++) {
-    var imageStyle = images[i]._style;
+    var imageStyle = images[i].style;
     var img = imageStyle._values["background-image"];
     var offset = img.indexOf("url(") + 4;
     expect(img.slice(offset, -1)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[i + next]][width]["url"]);

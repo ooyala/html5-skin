@@ -29,33 +29,33 @@
     "screenfull": "3.0.0"
   },
   "devDependencies": {
-    "browserify": "13.0.0",
-    "bulk-require": "^1.0.0",
+    "browserify": "14.5.0",
+    "bulk-require": "^1.0.1",
     "bulkify": "^1.4.2",
     "git-rev": "0.2.1",
     "graceful-fs": "*",
     "gulp": "3.9.1",
-    "gulp-connect": "^2.3.1",
-    "gulp-open": "^1.0.0",
+    "gulp-connect": "^5.0.0",
+    "gulp-open": "^2.0.0",
     "gulp-rename": "*",
-    "gulp-replace": "0.5.4",
-    "gulp-sass": "2.0.4",
-    "gulp-shell": "0.4.2",
-    "gulp-sourcemaps": "1.5.2",
-    "gulp-uglify": "1.1.0",
-    "gulp-util": "3.0.7",
-    "jest-cli": "0.4.18",
-    "jquery": "1.8.3",
-    "jsdoc": "^3.3.3",
+    "gulp-replace": "0.6.1",
+    "gulp-sass": "3.1.0",
+    "gulp-shell": "0.6.3",
+    "gulp-sourcemaps": "2.6.1",
+    "gulp-uglify": "3.0.0",
+    "gulp-util": "3.0.8",
+    "jest-cli": "21.2.1",
+    "jquery": "3.2.1",
+    "jsdoc": "^3.5.5",
     "jsdoc-jsx": "^0.1.0",
     "react-addons-test-utils": "0.14.7",
     "react-tools": "*",
     "reactify": "1.1.1",
-    "sinon": "^2.1.0",
-    "underscore": "1.3.3",
+    "sinon": "^4.1.2",
+    "underscore": "1.8.3",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.0.0",
-    "watchify": "3.7.0"
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "3.9.0"
   },
   "author": "Ooyala",
   "contributors": [
@@ -70,17 +70,21 @@
   },
   "homepage": "https://github.com/ooyala/html5-skin",
   "jest": {
+    "globals": {
+      "__DEV__": "scripts/jest/environment.js"
+    },
+    "transform": {
+      ".*": "<rootDir>/scripts/jest/preprocessor.js"
+    },
+    "verbose": true,
     "modulePathIgnorePatterns": [
       "/build/",
       "/node_modules/"
     ],
-    "persistModuleRegistryBetweenSpecs": true,
-    "preprocessorIgnorePatterns": [
+    "transformIgnorePatterns": [
       "/node_modules/"
     ],
     "rootDir": "",
-    "scriptPreprocessor": "scripts/jest/preprocessor.js",
-    "setupEnvScriptFile": "scripts/jest/environment.js",
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/react",
       "react",
@@ -88,10 +92,13 @@
       "<rootDir>/node_modules/react-dom",
       "<rootDir>/node_modules/react-addons-test-utils"
     ],
-    "testPathDirs": [
+    "roots": [
       "<rootDir>"
     ],
-    "testDirectoryName": "tests",
-    "collectCoverage": true
+    "testMatch": [
+      "<rootDir>/tests/**"
+    ],
+    "collectCoverage": true,
+    "automock": true
   }
 }

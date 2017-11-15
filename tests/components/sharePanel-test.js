@@ -45,7 +45,6 @@ describe('SharePanel', function () {
     //loop through languages
     for (var key in localizableStrings) {
       if (localizableStrings.hasOwnProperty(key)) {
-
         //Render share panel into DOM
         var DOM = TestUtils.renderIntoDocument(
           <SharePanel language={key} localizableStrings={localizableStrings} skinConfig={skinConfig} assetId={"aa"} playerParam={playerParam} />

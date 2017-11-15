@@ -3,6 +3,7 @@ jest
 .dontMock('../../js/components/utils')
 .dontMock('../../js/constants/constants')
 .dontMock('../../config/skin.json')
+.dontMock("sinon")
 .dontMock('classnames');
 
 var React = require('react');

@@ -104,4 +104,14 @@ var DataSelector = React.createClass({
   }
 });
 
+DataSelector.defaultProps = {
+  availableDataItems: [],
+  dataItemsPerPage: [],
+  viewSize: 0,
+  selectedData: null,
+  enabled: false,
+  skinConfig:{general: {}},
+  onDataChange: function () {}
+};
+
 module.exports = DataSelector;
