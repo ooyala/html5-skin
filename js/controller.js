@@ -73,6 +73,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoContainer": null,
       "mainVideoInnerWrapper": null,
       "mainVideoElement": null,
+      "mainVideoElementContainer": null, // TODO: Temporary workaround for PBW-6954
       "mainVideoMediaType": null,
       "mainVideoAspectRatio": 0,
       "pluginsElement": null,
@@ -331,6 +332,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
 
       if (params.videoId === OO.VIDEO.MAIN) {
+        // [PBW-6954]
+        // We store mainVideoElementContainer as a temporary workaround in order to
+        // make sure that we don't leave the oo-blur class on the wrong element (since
+        // the skin can pick the container rather than the video due to a race condition).
+        // Note that this could end up being the video itself, but it shouldn't matter.
+        var videoElementContainer = params.videoElement;
+        if (videoElementContainer && videoElementContainer.length) {
+          videoElementContainer = videoElementContainer[0];
+        }
+        this.state.mainVideoElementContainer = videoElementContainer;
+
         this.state.mainVideoElement = videoElement;
         this.enableFullScreen();
         this.updateAspectRatio();
@@ -617,7 +629,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.setClosedCaptionsLanguage();
-        this.state.mainVideoElement.classList.remove('oo-blur');
+        this.removeBlur();
         this.state.isInitialPlay = false;
         this.renderSkin();
       }
@@ -937,7 +949,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.adStartTime = 0;
         }
         this.skin.state.currentPlayhead = 0;
-        this.state.mainVideoElement.classList.remove('oo-blur');
+        this.removeBlur();
         this.renderSkin();
       }
     },
@@ -1909,7 +1921,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
       }
       return element;
+    },
+
+    removeBlur: function() {
+      if (this.state.mainVideoElement && this.state.mainVideoElement.classList) {
+        this.state.mainVideoElement.classList.remove('oo-blur');
+      }
+      // [PBW-6954]
+      // A race condition is causing the skin to pick the div container rather than
+      // the actual video element when VC_VIDEO_ELEMENT_CREATED is fired. As a temporary
+      // workaround, we remove the blur class from both the video element and it's container.
+      if (this.state.mainVideoElementContainer && this.state.mainVideoElementContainer.classList) {
+        this.state.mainVideoElementContainer.classList.remove('oo-blur');
+      }
     }
+
   };
 
   return Html5Skin;
