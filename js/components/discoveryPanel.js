@@ -61,10 +61,12 @@ var DiscoveryPanel = React.createClass({
       "clickedVideo": this.props.discoveryData.relatedVideos[index],
       "custom": {
         "source": CONSTANTS.SCREEN.DISCOVERY_SCREEN,
-        "asset" : { "id" : this.props.discoveryData.relatedVideos[index].embed_code, "idType" : "ooyala"},
+        "asset" : { "id" : this.props.discoveryData.relatedVideos[index].embed_code, "idType" : CONSTANTS.DISCOVERY.ID_TYPE},
         "autoplay": false,
         "pageSize" : videosPerPage,
-        "sequenceNumber" : (index % videosPerPage) + 1
+        "assetPosition" : (index % videosPerPage) + 1,
+        "uiTag" : CONSTANTS.UI_TAG.DISCOVERY,
+        "contentSource" : CONSTANTS.DISCOVERY.SOURCE
       }
     };
     // TODO: figure out countdown value
@@ -110,7 +112,7 @@ var DiscoveryPanel = React.createClass({
     // Send impression events for each discovery asset shown
     for (var i = startAt; i < endAt; i++){
       if (i > this.state.shownAssets && i < relatedVideos.length){
-        this.props.controller.sendDiscoveryDisplayEvent(relatedVideos[i],{}, videosPerPage, position);
+        this.props.controller.sendDiscoveryDisplayEvent(relatedVideos[i],{}, videosPerPage, position, CONSTANTS.UI_TAG.DISCOVERY);
         this.state.shownAssets++;
         position++;
       }

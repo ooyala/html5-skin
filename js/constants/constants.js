@@ -28,6 +28,16 @@ module.exports = {
     ERROR_SCREEN: "errorScreen"
   },
 
+  UI_TAG: {
+    DISCOVERY: "discovery-panel",
+    UP_NEXT: "up-next-panel"
+  },
+
+  DISCOVERY: {
+    ID_TYPE: "ooyala",
+    SOURCE: "ooyala-discovery-1.5"
+  },
+
   SKIN_TEXT: {
     LEARN_MORE: "Learn More",
     CLOSED_CAPTION_PREVIEW: "CLOSED CAPTION PREVIEW",

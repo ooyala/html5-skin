@@ -156,7 +156,15 @@ var CountDownClock = React.createClass({
   startDiscoveryVideo: function() {
     var eventData = {
           "clickedVideo" : this.props.discoveryData.relatedVideos[0],
-          "custom" : this.props.discoveryData.custom
+          "custom" : {
+            "source": CONSTANTS.SCREEN.UP_NEXT_SCREEN,
+            "asset" : { "id" : this.props.discoveryData.relatedVideos[0].embed_code, "idType" : CONSTANTS.DISCOVERY.ID_TYPE},
+            "autoplay": true,
+            "assetPosition" : 1, 
+            "pageSize" : 1,
+            "uiTag" : CONSTANTS.UI_TAG.UP_NEXT,
+            "contentSource" : CONSTANTS.DISCOVERY.SOURCE
+          }
         };
     this.props.controller.sendDiscoveryClickEvent(eventData, false);
   },
@@ -167,10 +175,12 @@ var CountDownClock = React.createClass({
       "clickedVideo" : this.props.upNextInfo.upNextData,
       "custom": {
         "source": CONSTANTS.SCREEN.UP_NEXT_SCREEN,
-        "asset": this.props.upNextInfo.upNextData.embed_code,
+        "asset" : { "id" : this.props.upNextInfo.upNextData.embed_code, "idType" : CONSTANTS.DISCOVERY.ID_TYPE},
         "autoplay": true,
-        "sequenceNumner" : 1, 
-        "pageSize" : 1
+        "assetPosition" : 1, 
+        "pageSize" : 1,
+        "uiTag" : CONSTANTS.UI_TAG.UP_NEXT,
+        "contentSource" : CONSTANTS.DISCOVERY.SOURCE
       }
     };
     this.props.controller.sendDiscoveryClickEvent(eventData, true);
