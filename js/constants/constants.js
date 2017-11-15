@@ -28,6 +28,11 @@ module.exports = {
     ERROR_SCREEN: "errorScreen"
   },
 
+  MENU_OPTIONS: {
+    VIDEO_QUALITY: "videoQualityOptions",
+    CLOSED_CAPTIONS: "closedCaptionOptions"
+  },
+
   SKIN_TEXT: {
     LEARN_MORE: "Learn More",
     CLOSED_CAPTION_PREVIEW: "CLOSED CAPTION PREVIEW",

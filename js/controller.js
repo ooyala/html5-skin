@@ -96,7 +96,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "language": null,
         "availableLanguages": null,
         "cueText": null,
-        "showClosedCaptionPopover": false,
+        "showPopover": false,
+        "autoFocus": false,
         "textColor": null,
         "windowColor": null,
         "backgroundColor": null,
@@ -111,7 +112,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "videoQualityOptions": {
         "availableBitrates": null,
         "selectedBitrate": null,
-        "showVideoQualityPopover": false,
+        "showPopover": false,
         "autoFocus": false
       },
 
@@ -1599,19 +1600,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
     },
 
-    toggleVideoQualityPopOver: function() {
-      this.state.videoQualityOptions.showVideoQualityPopover = !this.state.videoQualityOptions.showVideoQualityPopover;
-      this.renderSkin();
-    },
+    togglePopover: function(menu) {
+      var menuOptions = this.state[menu];
 
-    toggleClosedCaptionPopOver: function() {
-      this.state.closedCaptionOptions.showClosedCaptionPopover = !this.state.closedCaptionOptions.showClosedCaptionPopover;
-      this.renderSkin();
+      if (menuOptions) {
+        menuOptions.showPopover = !menuOptions.showPopover;
+        this.renderSkin();
+      }
     },
 
     closePopovers: function() {
-      this.state.closedCaptionOptions.showClosedCaptionPopover = false;
-      this.state.videoQualityOptions.showVideoQualityPopover = false;
+      this.state.closedCaptionOptions.showPopover = false;
+      this.state.videoQualityOptions.showPopover = false;
       this.renderSkin();
     },
 
@@ -1623,11 +1623,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           "videoQualityOptions": {
             "availableBitrates": this.state.videoQualityOptions.availableBitrates,
             "selectedBitrate": this.state.videoQualityOptions.selectedBitrate,
-            "showVideoQualityPopover":this.state.videoQualityOptions.showVideoQualityPopover
+            "showPopover": this.state.videoQualityOptions.showPopover
           }
         });
-      if(this.state.videoQualityOptions.showVideoQualityPopover == true) {
-        this.toggleVideoQualityPopOver();
+      if (this.state.videoQualityOptions.showPopover === true) {
+        this.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
       }
     },
 

@@ -24,7 +24,7 @@ describe('VideoQualityPanel', function () {
       state: {
         isMobile: false,
         "videoQualityOptions": {
-          "showVideoQualityPopover":true
+          "showPopover":true
         },
         volumeState: {
           volume: 1

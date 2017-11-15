@@ -68,7 +68,10 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseDown: function(evt) {
-    if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
+    if (this.props.controller.state.screenToShow === CONSTANTS.SCREEN.AD_SCREEN) {
+      evt.preventDefault();
+      return;
+    }
     this.props.controller.startHideControlBarTimer();
     if (evt.target.className.match("playhead") && evt.type !== "mousedown") {
         this.touchInitiated = true;
@@ -175,7 +178,10 @@ var ScrubberBar = React.createClass({
   },
 
   handleScrubberBarMouseDown: function(evt) {
-    if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
+    if (this.props.controller.state.screenToShow === CONSTANTS.SCREEN.AD_SCREEN) {
+      evt.preventDefault();
+      return;
+    }
     if (evt.target.className.match("oo-playhead")) { return; }
     if (this.touchInitiated && evt.type === "mousedown") { return; }
     var offsetX = 0;
