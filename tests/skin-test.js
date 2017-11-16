@@ -1,6 +1,7 @@
 jest.dontMock('../js/skin');
 jest.dontMock('../js/constants/constants');
 jest.dontMock('../js/components/utils');
+jest.dontMock('../js/components/higher-order/accessibleMenu');
 jest.dontMock('../js/mixins/responsiveManagerMixin');
 jest.dontMock('screenfull');
 

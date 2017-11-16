@@ -3,6 +3,7 @@ jest.dontMock('../../js/components/controlBar')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/components/icon')
     .dontMock('../../js/components/logo')
+    .dontMock('../../js/components/higher-order/accessibleMenu')
     .dontMock('../../js/constants/constants')
     .dontMock('../../js/components/accessibleButton')
     .dontMock('classnames');

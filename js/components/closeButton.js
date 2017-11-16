@@ -10,6 +10,7 @@ var CloseButton = React.createClass({
         className={this.props.cssClass}
         focusId={'close-' + Date.now()}
         ariaLabel={CONSTANTS.ARIA_LABELS.CLOSE}
+        role={this.props.role}
         onClick={this.props.closeAction}>
         <Icon
           {...this.props}

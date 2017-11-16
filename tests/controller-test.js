@@ -37,6 +37,7 @@ jest.dontMock('../js/controller');
 jest.dontMock('screenfull');
 jest.dontMock('../js/constants/constants');
 jest.dontMock('../js/components/utils');
+jest.dontMock('../js/components/higher-order/accessibleMenu');
 jest.dontMock('../config/skin');
 jest.dontMock('deepmerge');
 jest.dontMock('underscore');

@@ -43,7 +43,7 @@ var OnOffSwitch = React.createClass({
           className="oo-switch-container-selectable"
           ariaLabel={this.props.ariaLabel}
           ariaChecked={this.props.closedCaptionOptions.enabled}
-          role={CONSTANTS.ARIA_ROLES.MENU_ITEM_CHECKBOX}
+          role={this.props.role || CONSTANTS.ARIA_ROLES.MENU_ITEM_CHECKBOX}
           onClick={this.handleOnOffSwitch}>
         </AccessibleButton>
       </div>
