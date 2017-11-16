@@ -311,6 +311,15 @@ describe('Utils', function () {
     expect(localizedString).toBe("");
   });
 
+  it('tests getStartCountdown', function () {
+    var text = "6 days, 5 hours, and 14 minutes"; 
+    var countDownText = Utils.getStartCountdown(537289879);
+    expect(countDownText).toBe(text);
+
+    localizedString = Utils.getStartCountdown(-100000000);
+    expect(localizedString).toBe("");
+  });
+
   it('tests getPropertyValue', function () {
     var defaultVal = Utils.getPropertyValue({}, 'property.nestedProp', 'default');
     expect(defaultVal).toEqual('default');

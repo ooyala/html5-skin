@@ -69,6 +69,7 @@ describe('Controller', function() {
     controller.state.pluginsElement = $('<div/>');
     controller.state.pluginsClickElement = $('<div/>');
     controller.state.mainVideoElement = mockDomElement;
+    controller.state.mainVideoElementContainer = mockDomElement;
     controller.skin = {
       state: {},
       updatePlayhead: function(currentPlayhead, duration, buffered, currentAdPlayhead) {
@@ -250,6 +251,38 @@ describe('Controller', function() {
     //   expect(stopBufferingTimerSpy.callCount).toBe(8);
     //   expect(controller.state.bufferingTimer).toBeFalsy();
     // });
+
+  });
+
+  describe('Video start state', function(){
+    var spy;
+
+    beforeEach(function() {
+      controller.state.playerState = CONSTANTS.STATE.START;
+      spy = sinon.spy(controller.mb, 'publish');
+      controller.state.isInitialPlay = false;
+    });
+
+    afterEach(function() {
+      spy.restore();
+    });
+
+    it('should set initial play to true on initial play', function() {
+      expect(spy.callCount).toBe(0);
+      controller.togglePlayPause();
+      expect(spy.callCount).toBe(1);
+      expect(spy.args[0][0]).toBe(OO.EVENTS.INITIAL_PLAY);
+      expect(spy.args[0][2]).toBe(false);
+
+    });
+
+    it('should not fire initial play again if initial play has already happened', function() {
+      controller.onInitialPlay();
+      expect(controller.state.isInitialPlay).toBe(true);
+      expect(spy.callCount).toBe(0);
+      controller.togglePlayPause();
+      expect(spy.callCount).toBe(0);
+    });
 
   });
 
