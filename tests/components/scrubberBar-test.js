@@ -4,10 +4,8 @@ jest.dontMock('../../js/components/scrubberBar')
     .dontMock('../../js/components/thumbnailCarousel')
     .dontMock('../../js/constants/constants')
     .dontMock('../../config/skin.json')
-    .dontMock('underscore')
-    .dontMock('jquery');
+    .dontMock('underscore');
 
-var $ = require('jquery');
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
 var CONSTANTS = require('../../js/constants/constants');
@@ -18,7 +16,6 @@ var Utils = require('../../js/components/utils');
 var _ = require('underscore');
 
 var thumbnails = { "data":{ "available_time_slices":[ 0, 10 ], "available_widths":[ 120 ], "thumbnails":{ "0":{ "120":{ "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_1.jpg", "width":120, "height":80 } }, "10":{ "120":{ "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_2.jpg", "width":120, "height":80 } }, "errors":[ { "status":404, "code":"Not Found", "title":"unable to find thumbnail images", "detail":"embed code not found" } ] } }};
-window.$ = $;
 
 // start unit test
 describe('ScrubberBar', function () {

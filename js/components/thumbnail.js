@@ -4,7 +4,8 @@
  * @module Thumbnail
  */
 var React = require('react'),
-    Utils = require('./utils');
+    Utils = require('./utils'),
+    ReactDOM = require('react-dom');
 
 var Thumbnail = React.createClass({
   getInitialState: function() {
@@ -17,40 +18,44 @@ var Thumbnail = React.createClass({
     return {};
   },
   componentDidMount: function() {
-    this.setThumbnailSizes();
-    this.setImageSizes();
-    var yaw = this.props.vrViewingDirection.yaw;
-    var pitch = this.props.vrViewingDirection.pitch;
-    this.setCurrentViewVr(yaw, pitch);
+    if (this.props.videoVr) {
+      this.setThumbnailSizes();
+      this.setImageSizes();
+      var yaw = this.props.vrViewingDirection.yaw;
+      var pitch = this.props.vrViewingDirection.pitch;
+      this.setCurrentViewVr(yaw, pitch);
+    }
   },
   componentWillReceiveProps: function(nextProps) {
-    if (this.props.vrViewingDirection !== nextProps.vrViewingDirection) {
+    if (this.props.vrViewingDirection !== nextProps.vrViewingDirection && this.props.videoVr) {
       var yaw = nextProps.vrViewingDirection.yaw;
       var pitch = nextProps.vrViewingDirection.pitch;
       this.setCurrentViewVr(yaw, pitch);
     }
   },
   shouldComponentUpdate: function(nextProps) {
-    var hoverPosition = nextProps.hoverPosition != this.props.hoverPosition;
-    var fullscreen  = nextProps.fullscreen != this.props.fullscreen && this.props.videoVr;
-    var vrViewingDirection = nextProps.vrViewingDirection != this.props.vrViewingDirection;
-    return (hoverPosition || fullscreen || vrViewingDirection);
+    var updateHoverPositon = nextProps.hoverPosition != this.props.hoverPosition;
+    var updateFullscreen  = nextProps.fullscreen != this.props.fullscreen && this.props.videoVr;
+    var updateVrViewDIrection = nextProps.vrViewingDirection != this.props.vrViewingDirection;
+    return (updateHoverPositon || updateFullscreen || updateVrViewDIrection);
   },
   componentDidUpdate: function(prevProps, prevState) {
-    var newThumbnailWidth = $("#oo-thumbnail").width();
-    var newThumbnailHeight = $("#oo-thumbnail").height();
-    if (newThumbnailWidth !== this.thumbnailWidth || newThumbnailHeight !== this.thumbnailHeight) {
-      this.thumbnailWidth = newThumbnailWidth;
-      this.thumbnailHeight = newThumbnailHeight;
-      var yaw = this.props.vrViewingDirection.yaw;
-      var pitch = this.props.vrViewingDirection.pitch;
-      this.setCurrentViewVr(yaw, pitch);
+    if (this.props.videoVr) {
+      var newThumbnailWidth = ReactDOM.findDOMNode(this.refs.thumbnail).clientWidth;
+      var newThumbnailHeight = ReactDOM.findDOMNode(this.refs.thumbnail).clientHeight;
+      if (newThumbnailWidth !== this.thumbnailWidth || newThumbnailHeight !== this.thumbnailHeight) {
+        this.thumbnailWidth = newThumbnailWidth;
+        this.thumbnailHeight = newThumbnailHeight;
+        var yaw = this.props.vrViewingDirection.yaw;
+        var pitch = this.props.vrViewingDirection.pitch;
+        this.setCurrentViewVr(yaw, pitch);
+      }
     }
   },
 
   setThumbnailSizes: function() {
-    var thumbnailWidth = $("#oo-thumbnail").width();
-    var thumbnailHeight = $("#oo-thumbnail").height();
+    var thumbnailWidth = ReactDOM.findDOMNode(this.refs.thumbnail).clientWidth;
+    var thumbnailHeight = ReactDOM.findDOMNode(this.refs.thumbnail).clientHeight;
     if (thumbnailWidth) {
       this.thumbnailWidth = thumbnailWidth;
     }
@@ -61,11 +66,21 @@ var Thumbnail = React.createClass({
 
   setImageSizes: function() {
     var thumbnail = Utils.findThumbnail(this.props.thumbnails, this.props.hoverTime, this.props.duration, this.props.videoVr);
-    this.imageWidth = thumbnail.imageWidth;
-    this.imageHeight = thumbnail.imageHeight;
+    if (thumbnail !== null && typeof thumbnail === 'object') {
+      var imageWidth = thumbnail.imageWidth;
+      var imageHeight = thumbnail.imageHeight;
+      if (imageWidth && imageHeight) {
+        if (imageWidth > 380) {
+          imageWidth = 380;
+          imageHeight = thumbnail.imageHeight * 380 / thumbnail.imageWidth;
+        }
+        this.imageWidth = imageWidth;
+        this.imageHeight = imageHeight;
+      }
+    }
   },
 
-  /**
+  /**x
    * @description set positions for a thumbnail image when a video is vr
    * @param {Number} yaw - rotation around the vertical axis in degrees (returns after changing direction)
    * @param {Number} pitch - rotation around the horizontal axis in degrees (returns after changing direction)
@@ -88,7 +103,7 @@ var Thumbnail = React.createClass({
     } else if (positionY < bottomCoordinate) {
       positionY = bottomCoordinate;
     }
-    var positionX = -(imageWidth - thumbnailWidth/2 - imageWidth*yaw/360);
+    var positionX = -(imageWidth - thumbnailWidth / 2 - imageWidth * yaw / 360);
     this.positionY = positionY;
     this.positionX = positionX;
   },
@@ -101,9 +116,10 @@ var Thumbnail = React.createClass({
    */
   getCurrentYawVr: function(yaw) {
     var k = yaw <= -360 ? -1 : 1;
-    var ratio = (k*yaw)/360;
+    var ratio = k * yaw / 360;
     ratio = ~~ratio;
-    return (yaw - k*ratio*360);
+    var coef = yaw - k * ratio * 360;
+    return coef;
   },
 
   render: function() {

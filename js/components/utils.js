@@ -584,13 +584,13 @@ var Utils = {
   */
   findThumbnail: function(thumbnails, hoverTime, duration, isVideoVr) {
     var timeSlices = thumbnails.data.available_time_slices;
+    console.log('BBB thumbnails', thumbnails);
     var width = thumbnails.data.available_widths[0]; //choosing the lowest size
-
-    if (isVideoVr) {
+    if (isVideoVr && width < 380) {
       // it is necessary to take bigger image for showing part of the image
-      // so choose not the lowest size but bigger one, the best proportion is 4th size
+      // so choose not the lowest size but bigger one, the best width is 380
       var index = thumbnails.data.available_widths.length >= 5 ? 4 : thumbnails.data.available_widths.length - 1;
-        width = thumbnails.data.available_widths[index];
+      width = thumbnails.data.available_widths[index];
     }
 
     var position = Math.floor((hoverTime/duration) * timeSlices.length);
