@@ -142,7 +142,7 @@ var Thumbnail = React.createClass({
 
     return (
       <div className="oo-scrubber-thumbnail-container">
-        <div id="oo-thumbnail" className={thumbnailClassName} ref="thumbnail" style={thumbnailStyle}>
+        <div className={thumbnailClassName} ref="thumbnail" style={thumbnailStyle}>
           <div className="oo-thumbnail-time">{time}</div>
         </div>
       </div>
