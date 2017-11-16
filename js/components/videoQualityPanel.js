@@ -152,6 +152,8 @@ var VideoQualityPanel = React.createClass({
     var bitrateButtons = [];
     var isSelected = false;
     var label = '';
+    var suffix = '';
+    var resolutionAvailable = false;
 
     //available bitrates
     for (var i = 0; i < availableBitrates.length; i++) {
@@ -166,12 +168,25 @@ var VideoQualityPanel = React.createClass({
       if (availableBitrates[i].id == 'auto') {
         this.addAutoButton(bitrateButtons);
       } else {
-        if (typeof availableBitrates[i].bitrate === 'number') {
-          label = Math.round(availableBitrates[i].bitrate/1000) + ' kbps';
-        } else {
-          label = availableBitrates[i].bitrate;
+        label = '';
+        suffix = '';
+        resolutionAvailable = false;
+
+        if (typeof availableBitrates[i].height === 'number') {
+          resolutionAvailable = true;
+          label += availableBitrates[i].height + 'p (';
+          suffix = ')';
         }
-        var ariaLabel = CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i).replace(MACROS.QUALITY, label);
+
+        if (typeof availableBitrates[i].bitrate === 'number') {
+          label += Math.round(availableBitrates[i].bitrate/1000) + ' kbps';
+        } else {
+          label += availableBitrates[i].bitrate;
+        }
+
+        label += suffix;
+
+        var ariaLabel = resolutionAvailable ? label : CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i).replace(MACROS.QUALITY, label);
         bitrateButtons.push(
           <li key={i} role="presentation">
             <button
