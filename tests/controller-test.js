@@ -492,7 +492,7 @@ OO = {
     Html5Skin.sendDiscoveryClickEvent({clickedVideo:{embed_code: true}}, false);
     Html5Skin.sendDiscoveryClickEvent({clickedVideo:{asset: true}}, false);
 
-    Html5Skin.sendDiscoveryDisplayEvent(CONSTANTS.SCREEN.DISCOVERY_SCREEN);
+    Html5Skin.sendDiscoveryDisplayEvent({},{},1,1,"test-panel");
     Html5Skin.toggleVideoQualityPopOver();
     Html5Skin.toggleClosedCaptionPopOver();
     Html5Skin.closePopovers();

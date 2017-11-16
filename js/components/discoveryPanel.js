@@ -202,7 +202,8 @@ DiscoveryPanel.propTypes = {
     icons: React.PropTypes.objectOf(React.PropTypes.object)
   }),
   controller: React.PropTypes.shape({
-    sendDiscoveryClickEvent: React.PropTypes.func
+    sendDiscoveryClickEvent: React.PropTypes.func,
+    sendDiscoveryDisplayEvent: React.PropTypes.func
   })
 };
 
@@ -240,7 +241,10 @@ DiscoveryPanel.defaultProps = {
     relatedVideos: []
   },
   controller: {
-    sendDiscoveryClickEvent: function(a,b){}
+    sendDiscoveryClickEvent: function(a,b){},
+    sendDiscoveryDisplayEvent: function(a,b,c,d,e){}
+
+
   },
   responsiveView: 'md'
 };
