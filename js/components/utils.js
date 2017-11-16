@@ -584,7 +584,6 @@ var Utils = {
   */
   findThumbnail: function(thumbnails, hoverTime, duration, isVideoVr) {
     var timeSlices = thumbnails.data.available_time_slices;
-    console.log('BBB thumbnails', thumbnails);
     var width = thumbnails.data.available_widths[0]; //choosing the lowest size
     if (isVideoVr && width < 380) {
       // it is necessary to take bigger image for showing part of the image
