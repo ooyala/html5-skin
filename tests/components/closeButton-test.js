@@ -21,4 +21,10 @@ describe('CloseButton', function () {
     expect(closeButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.CLOSE);
   });
 
+  it('should render role on button', function() {
+    var DOM = TestUtils.renderIntoDocument(<CloseButton cssClass="oo-close-button" role="customRole"/>);
+    var closeButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-close-button');
+    expect(closeButton.getAttribute('role')).toBe('customRole');
+  });
+
 });

@@ -2,6 +2,7 @@ jest.dontMock('../../js/components/videoQualityPanel')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/components/icon')
     .dontMock('../../js/components/higher-order/accessibleMenu')
+    .dontMock('../../js/components//accessibleButton')
     .dontMock('../../js/constants/constants')
     .dontMock('../../js/constants/macros')
     .dontMock('classnames');

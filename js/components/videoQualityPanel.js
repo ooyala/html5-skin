@@ -7,6 +7,7 @@ var React = require('react'),
     ScrollArea = require('react-scrollbar/dist/no-css'),
     ClassNames = require('classnames'),
     AccessibleMenu = require('../components/higher-order/accessibleMenu'),
+    AccessibleButton = require('../components/accessibleButton'),
     Icon = require('../components/icon'),
     Utils = require('../components/utils'),
     MACROS = require('../constants/macros'),
@@ -45,16 +46,13 @@ var VideoQualityPanel = React.createClass({
     //add auto btn to beginning of array
     bitrateButtons.unshift(
       <li className="oo-auto-li" key='auto-li' role="presentation">
-        <button
-          type="button"
+        <AccessibleButton
           className={autoQualityBtn}
           key="auto"
-          data-focus-id="auto"
-          tabIndex="0"
-          role="menuitemradio"
-          aria-label={CONSTANTS.ARIA_LABELS.AUTO_QUALITY}
-          aria-checked={isSelected}
-          onMouseUp={Utils.blurOnMouseUp}
+          focusId="auto"
+          role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
+          ariaLabel={CONSTANTS.ARIA_LABELS.AUTO_QUALITY}
+          ariaChecked={isSelected}
           onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
           <span className="oo-quality-auto-icon" style={selectedBitrateStyle}>
             <Icon {...this.props} icon="auto" />
@@ -62,7 +60,7 @@ var VideoQualityPanel = React.createClass({
           <span className="oo-quality-auto-label" style={selectedBitrateStyle}>
             {CONSTANTS.SKIN_TEXT.AUTO_QUALITY}
           </span>
-        </button>
+        </AccessibleButton>
       </li>
     );
   },
@@ -94,20 +92,17 @@ var VideoQualityPanel = React.createClass({
         var ariaLabel = CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i).replace(MACROS.QUALITY, label);
         bitrateButtons.push(
           <li key={i} role="presentation">
-            <button
+            <AccessibleButton
               key={i}
-              type="button"
               className={qualityBtn}
               style={selectedBitrateStyle}
-              data-focus-id={'quality' + i}
-              tabIndex="0"
-              role="menuitemradio"
-              aria-label={ariaLabel}
-              aria-checked={isSelected}
-              onMouseUp={Utils.blurOnMouseUp}
+              focusId={'quality' + i}
+              role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
+              ariaLabel={ariaLabel}
+              ariaChecked={isSelected}
               onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>
               {label}
-            </button>
+            </AccessibleButton>
           </li>
         );
       }
