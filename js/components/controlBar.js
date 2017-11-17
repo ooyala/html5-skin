@@ -431,7 +431,7 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight}
           onMouseOut={this.removeHighlight}
           key="playPause"
-          data-focus-id="playPause"
+          data-focus-id={CONSTANTS.FOCUS_IDS.PLAY_PAUSE}
           tabIndex="0"
           aria-label={playPauseAriaLabel}>
           <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
@@ -463,7 +463,7 @@ var ControlBar = React.createClass({
             onMouseUp={Utils.blurOnMouseUp}
             onMouseOver={this.highlight}
             onMouseOut={this.removeHighlight}
-            data-focus-id="muteUnmute"
+            data-focus-id={CONSTANTS.FOCUS_IDS.MUTE_UNMUTE}
             tabIndex="0"
             aria-label={volumeAriaLabel}>
             <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
@@ -502,7 +502,7 @@ var ControlBar = React.createClass({
             ref={function(e) { this.toggleButtons[CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY] = e }.bind(this)}
             style={selectedStyle}
             className={qualityClass}
-            focusId="quality"
+            focusId={CONSTANTS.FOCUS_IDS.VIDEO_QUALITY}
             ariaLabel={CONSTANTS.ARIA_LABELS.VIDEO_QUALITY}
             ariaHasPopup="true"
             ariaExpanded={this.props.controller.state.videoQualityOptions.showPopover ? true : null}
@@ -542,7 +542,7 @@ var ControlBar = React.createClass({
               ref={function(e) { this.toggleButtons[CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS] = e }.bind(this)}
               style={selectedStyle}
               className={captionClass}
-              focusId="closedCaptions"
+              focusId={CONSTANTS.FOCUS_IDS.CLOSED_CAPTIONS}
               ariaLabel={CONSTANTS.ARIA_LABELS.CLOSED_CAPTIONS}
               ariaHasPopup="true"
               ariaExpanded={this.props.controller.state.closedCaptionOptions.showPopover ? true : null}
@@ -584,7 +584,7 @@ var ControlBar = React.createClass({
             onMouseOver={this.highlight}
             onMouseOut={this.removeHighlight}
             key="stereo"
-            data-focus-id="stereo"
+            data-focus-id={CONSTANTS.FOCUS_IDS.STEREO}
             tabIndex="0"
             aria-label={stereoAriaLabel}>
             <Icon {...this.props} icon={stereoIcon} style={dynamicStyles.iconCharacter} />
@@ -602,7 +602,7 @@ var ControlBar = React.createClass({
           onMouseOver={this.highlight}
           onMouseOut={this.removeHighlight}
           key="fullscreen"
-          data-focus-id="fullscreen"
+          data-focus-id={CONSTANTS.FOCUS_IDS.FULLSCREEN}
           tabIndex="0"
           aria-label={fullscreenAriaLabel}>
           <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />

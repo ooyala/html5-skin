@@ -49,7 +49,7 @@ var VideoQualityPanel = React.createClass({
         <AccessibleButton
           className={autoQualityBtn}
           key="auto"
-          focusId="auto"
+          focusId={CONSTANTS.FOCUS_IDS.AUTO_QUALITY}
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
           ariaLabel={CONSTANTS.ARIA_LABELS.AUTO_QUALITY}
           ariaChecked={isSelected}
@@ -96,7 +96,7 @@ var VideoQualityPanel = React.createClass({
               key={i}
               className={qualityBtn}
               style={selectedBitrateStyle}
-              focusId={'quality' + i}
+              focusId={CONSTANTS.FOCUS_IDS.QUALITY_LEVEL + i}
               role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
               ariaLabel={ariaLabel}
               ariaChecked={isSelected}

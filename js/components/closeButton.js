@@ -8,7 +8,7 @@ var CloseButton = React.createClass({
     return (
       <AccessibleButton
         className={this.props.cssClass}
-        focusId={'close-' + Date.now()}
+        focusId={CONSTANTS.FOCUS_IDS.CLOSE + '-' + Date.now()}
         ariaLabel={CONSTANTS.ARIA_LABELS.CLOSE}
         role={this.props.role}
         onClick={this.props.closeAction}>

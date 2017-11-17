@@ -356,7 +356,7 @@ var ScrubberBar = React.createClass({
             aria-valuemax={this.props.duration}
             aria-valuenow={Utils.ensureNumber(this.props.currentPlayhead, 0).toFixed(2)}
             aria-valuetext={ariaValueText}
-            data-focus-id="scrubberBar"
+            data-focus-id={CONSTANTS.FOCUS_IDS.SCRUBBER_BAR}
             tabIndex="0"
             onKeyDown={this.handleScrubberBarKeyDown}>
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle}></div>

@@ -142,6 +142,21 @@ module.exports = {
 
   KEYBD_FOCUS_ID_ATTR: "data-focus-id",
 
+  FOCUS_IDS: {
+    PLAY_PAUSE: "playPause",
+    MUTE_UNMUTE: "muteUnmute",
+    STEREO: "stereo",
+    VIDEO_QUALITY: "videoQuality",
+    CLOSED_CAPTIONS: "closedCaptions",
+    FULLSCREEN: "fullscreen",
+    SCRUBBER_BAR: "scrubberBar",
+    VOLUME_CONTROLS: "volumeControls",
+    VOLUME_SLIDER: "volumeSlider",
+    QUALITY_LEVEL: "qualityLevel",
+    AUTO_QUALITY: "autoQuality",
+    CLOSE: "close"
+  },
+
   A11Y_CTRLS: {
     SEEK_DELTA: 5,
     VOLUME_CHANGE_DELTA: 10

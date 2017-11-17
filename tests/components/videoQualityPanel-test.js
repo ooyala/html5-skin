@@ -2,7 +2,7 @@ jest.dontMock('../../js/components/videoQualityPanel')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/components/icon')
     .dontMock('../../js/components/higher-order/accessibleMenu')
-    .dontMock('../../js/components//accessibleButton')
+    .dontMock('../../js/components/accessibleButton')
     .dontMock('../../js/constants/constants')
     .dontMock('../../js/constants/macros')
     .dontMock('classnames');
@@ -170,7 +170,7 @@ describe('VideoQualityPanel', function () {
       expect(qualityButton.getAttribute('aria-label')).toBe(ariaLabel);
       expect(qualityButton.getAttribute('role')).toBe('menuitemradio');
       expect(qualityButton.getAttribute('aria-checked')).toBeTruthy();
-      expect(qualityButton.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe('quality' + (i + 1));
+      expect(qualityButton.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe(CONSTANTS.FOCUS_IDS.QUALITY_LEVEL + (i + 1));
     }
   });
 

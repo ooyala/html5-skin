@@ -26,7 +26,6 @@ describe('OnOffSwitch', function () {
       localizableStrings: [],
       controller: {
         toggleClosedCaptionEnabled: function() {
-          console.log(">>>huh?");
           props.closedCaptionOptions.enabled = !props.closedCaptionOptions.enabled;
         }
       }

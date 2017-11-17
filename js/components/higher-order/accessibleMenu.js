@@ -53,7 +53,7 @@ var AccessibleMenu = function(ComposedComponent) {
      * Finds the previous or next sibling of the given menu item and gives it focus.
      * @private
      * @param {Element} menuItem The menuItem element whose sibling we want to focus on.
-     * @param {Boolean} useNextSibling Choses the sibling next to menuItem when true and the previous one when false.
+     * @param {Boolean} useNextSibling Chooses the next sibling when true and the previous when false.
      */
     focusOnMenuItemSibling: function(menuItem, useNextSibling) {
       var menuItemsList = [];
