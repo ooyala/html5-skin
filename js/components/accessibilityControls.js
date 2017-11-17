@@ -13,6 +13,7 @@ var AccessibilityControls = function (controller) {
     seekRate: 1,
     lastKeyDownTime: 0,
   };
+  this.prevKeyPressedArr = []; //list of codes of pressed buttons
   this.keyEventDown = this.keyEventDown.bind(this);
   this.keyEventUp = this.keyEventUp.bind(this);
   this.moveVrToDirection = this.moveVrToDirection.bind(this);
@@ -132,10 +133,7 @@ AccessibilityControls.prototype = {
    */
   moveVrToDirection: function(e, charCode, isKeyDown, targetTagName) {
     var keyDirectionMap = this.keyDirectionMap;
-    if (!(keyDirectionMap[charCode] || targetTagName !== "button")) {
-      return false;
-    }
-    if (!this.controller.videoVr) {
+    if (!(this.controller.videoVr || keyDirectionMap[charCode] || targetTagName !== "button")) {
       return false;
     }
     if (e.repeat !== undefined) {
@@ -146,11 +144,30 @@ AccessibilityControls.prototype = {
     }
     this.vrRotationAllowed = !isKeyDown; //prevent repeat of keyDown
     this.controller.moveVrToDirection(false, keyDirectionMap[charCode]); //stop rotation if isKeyDown === false or prevent prev rotation if press a button (isKeyDown === true)
-    if (isKeyDown === true) {
-      this.controller.moveVrToDirection(true, keyDirectionMap[charCode]);
-      return true;
+
+    var inPrevKeyPressedArrIndex = -1;
+    //check if button code is already in list of pressed buttons (this.prevKeyPressedArr)
+    //if code is in the array return index of the code
+    for (var i = this.prevKeyPressedArr.length - 1; i >= 0; i--) {
+      if (this.prevKeyPressedArr[i] === charCode) {
+        inPrevKeyPressedArrIndex = i;
+        break;
+      }
     }
-    return false;
+    if (isKeyDown === true) {
+      this.prevKeyPressedArr.push(charCode);
+    } else { // if button is up remove a code of the button from this.prevKeyPressedArr
+      if (inPrevKeyPressedArrIndex > -1) {
+        this.prevKeyPressedArr.splice(inPrevKeyPressedArrIndex, 1);
+      }
+    }
+    if (this.prevKeyPressedArr.length) {
+      isKeyDown = true;
+      charCode = this.prevKeyPressedArr[this.prevKeyPressedArr.length-1];
+    }
+    //rotate if a button is pressed, stop rotate if other case
+    this.controller.moveVrToDirection(isKeyDown, keyDirectionMap[charCode]);
+    return isKeyDown;
   },
 
   /**
