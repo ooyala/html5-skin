@@ -3,6 +3,7 @@ jest.dontMock('../../js/views/contentScreen')
     .dontMock('../../js/components/closed-caption/ccPreviewPanel')
     .dontMock('../../js/components/closed-caption/languageTab')
     .dontMock('../../js/components/closed-caption/onOffSwitch')
+    .dontMock('../../js/components/accessibleButton')
     .dontMock('../../js/components/icon')
     .dontMock('../../js/components/tabs')
     .dontMock('../../js/components/utils')
@@ -166,7 +167,7 @@ describe('ClosedCaptionPanel', function () {
     var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPanel skinConfig={mockSkinConfig} closedCaptionOptions={closedCaptionOptions} controller={mockController}/>);
     var newLanguage = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item')[1];
     TestUtils.Simulate.click(newLanguage);
-    expect(newLanguage.style.backgroundColor).toBe("blue");  
+    expect(newLanguage.style.backgroundColor).toBe("blue");
     expect(selectedLanguage).toBe(availableLanguages.languages[1]);
   });
 });
