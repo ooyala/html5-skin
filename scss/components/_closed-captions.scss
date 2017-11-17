@@ -52,10 +52,8 @@
     @extend .oo-expand;
     text-decoration:none;
     cursor: pointer;
-    //for IE
-    background-color:$white;
-    opacity: 0;
-    filter: alpha(opacity=1);
+    background-color: transparent;
+    border: none;
   }
   .oo-switch-captions {
     position: absolute;

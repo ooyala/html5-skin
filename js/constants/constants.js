@@ -28,6 +28,11 @@ module.exports = {
     ERROR_SCREEN: "errorScreen"
   },
 
+  MENU_OPTIONS: {
+    VIDEO_QUALITY: "videoQualityOptions",
+    CLOSED_CAPTIONS: "closedCaptionOptions"
+  },
+
   SKIN_TEXT: {
     LEARN_MORE: "Learn More",
     CLOSED_CAPTION_PREVIEW: "CLOSED CAPTION PREVIEW",
@@ -108,6 +113,7 @@ module.exports = {
     REPLAY: "Replay",
     MUTE: "Mute",
     UNMUTE: "Unmute",
+    CLOSED_CAPTIONS: "Closed Captions",
     VIDEO_QUALITY: "Video Quality",
     AUTO_QUALITY: "Auto",
     FULLSCREEN: "Fullscreen",
@@ -120,6 +126,8 @@ module.exports = {
     TIME_DISPLAY_DVR: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME + " live video",
     QUALITY_LEVEL: "Quality level " + MACROS.LEVEL + ", " + MACROS.QUALITY,
     CLOSE: "Close",
+    TOGGLE_CLOSED_CAPTIONS: "Toggle Closed Captions",
+    CAPTION_OPTIONS: "Closed Caption Options",
     STEREO_ON: "Stereoscopic",
     STEREO_OFF: "Monoscopic"
   },
@@ -128,10 +136,26 @@ module.exports = {
     SLIDER: "slider",
     MENU: "menu",
     MENU_ITEM: "menuitem",
-    MENU_ITEM_RADIO: "menuitemradio"
+    MENU_ITEM_RADIO: "menuitemradio",
+    MENU_ITEM_CHECKBOX: "menuitemcheckbox"
   },
 
   KEYBD_FOCUS_ID_ATTR: "data-focus-id",
+
+  FOCUS_IDS: {
+    PLAY_PAUSE: "playPause",
+    MUTE_UNMUTE: "muteUnmute",
+    STEREO: "stereo",
+    VIDEO_QUALITY: "videoQuality",
+    CLOSED_CAPTIONS: "closedCaptions",
+    FULLSCREEN: "fullscreen",
+    SCRUBBER_BAR: "scrubberBar",
+    VOLUME_CONTROLS: "volumeControls",
+    VOLUME_SLIDER: "volumeSlider",
+    QUALITY_LEVEL: "qualityLevel",
+    AUTO_QUALITY: "autoQuality",
+    CLOSE: "close"
+  },
 
   A11Y_CTRLS: {
     SEEK_DELTA: 5,
