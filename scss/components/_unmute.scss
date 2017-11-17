@@ -3,9 +3,9 @@
   display: inline-block;
   cursor: pointer;
   position: relative;
-  width: 48px;
-  height: 48px;
-  padding: 6px;
+  width: 36px;
+  height: 36px;
+  padding: 4px;
   margin-left: 13px;
   margin-top: 13px;
   border: none;
@@ -16,25 +16,25 @@
 }
 
 .oo-unmute.oo-expanded {
-  width: 270px;
+  width: 184px;
 }
 
 .oo-unmute-message {
   display: inline-block;
   float: left;
   font-family: Roboto;
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 15px;
   text-align: center;
   color: #000000;
-  padding-left: 6px;
-  padding-right: 6px;
+  padding-left: 4px;
+  padding-top: 1px;
 }
 
 .oo-unmute-icon-wrapper {
   display: inline-block;
   float: left;
-  width: 32px;
-  height: 32px;
-  padding: 6px;
+  font-size: 20px;
+  width: 24px;
+  height: 24px;
+  padding-left: 4px;
 }
