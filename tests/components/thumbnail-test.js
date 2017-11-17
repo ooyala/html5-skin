@@ -1,14 +1,11 @@
 jest.dontMock('../../js/components/thumbnail')
-  .dontMock('../../js/components/utils')
-  .dontMock('jquery');
+  .dontMock('../../js/components/utils');
 
-var $ = require('jquery');
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
 var ReactDOM = require('react-dom');
 var Thumbnail = require('../../js/components/thumbnail');
 var Utils = require('../../js/components/utils');
-window.$ = $;
 
 describe('Thumbnail', function () {
   var thumbnails = {
