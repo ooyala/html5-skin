@@ -70,8 +70,9 @@ var VideoQualityPanel = React.createClass({
     var bitrateButtons = [];
     var isSelected = false;
     var label = '';
-    var suffix = '';
-    var resolutionAvailable = false;
+    var availableResolution = null;
+    var availableBitrate = null;
+    var anyResolutionAvailable = false;
 
     //available bitrates
     for (var i = 0; i < availableBitrates.length; i++) {
@@ -87,24 +88,27 @@ var VideoQualityPanel = React.createClass({
         this.addAutoButton(bitrateButtons);
       } else {
         label = '';
-        suffix = '';
-        resolutionAvailable = false;
+        availableResolution = null;
+        availableBitrate = null;
 
         if (typeof availableBitrates[i].height === 'number') {
-          resolutionAvailable = true;
-          label += availableBitrates[i].height + 'p (';
-          suffix = ')';
+          availableResolution = availableBitrates[i].height;
+          anyResolutionAvailable = true;
         }
 
         if (typeof availableBitrates[i].bitrate === 'number') {
-          label += Math.round(availableBitrates[i].bitrate/1000) + ' kbps';
+          availableBitrate = Math.round(availableBitrates[i].bitrate/1000) + ' kbps';
         } else {
-          label += availableBitrates[i].bitrate;
+          availableBitrate = availableBitrates[i].bitrate;
         }
 
-        label += suffix;
+        if (availableResolution) {
+          label = CONSTANTS.SKIN_TEXT.RESOLUTION_QUALITY.replace(MACROS.RESOLUTION, availableResolution).replace(MACROS.QUALITY, availableBitrate);
+        } else {
+          label = availableBitrate;
+        }
 
-        var ariaLabel = resolutionAvailable ? label : CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i).replace(MACROS.QUALITY, label);
+        var ariaLabel = availableResolution ? label : CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i).replace(MACROS.QUALITY, availableBitrate);
         bitrateButtons.push(
           <li key={i} role="presentation">
             <AccessibleButton
@@ -130,10 +134,15 @@ var VideoQualityPanel = React.createClass({
       'oo-mobile-fullscreen': !this.props.popover && this.props.controller.state.isMobile && (this.props.controller.state.fullscreen || this.props.controller.state.isFullWindow)
     });
 
+    var screenContentClass = ClassNames({
+      'oo-quality-screen-content': true,
+      'oo-quality-screen-content-resolution': anyResolutionAvailable
+    });
+
     return (
       <div className={qualityScreenClass}>
         <ScrollArea
-          className="oo-quality-screen-content"
+          className={screenContentClass}
           speed={this.props.popover ? 0.6 : 1}
           horizontal={!this.props.popover}>
           <ul

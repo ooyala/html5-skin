@@ -100,6 +100,7 @@ module.exports = {
     EXIT_FULL_SCREEN: "Exit Full Screen",
     VIDEO_QUALITY: "Video Quality",
     AUTO_QUALITY: "Auto",
+    RESOLUTION_QUALITY: MACROS.RESOLUTION + "p (" + MACROS.QUALITY + ")",
     SHARE: "Share",
     MORE_OPTIONS: "More Options",
     SELECT_TO_UNMUTE: "SELECT TO UNMUTE"

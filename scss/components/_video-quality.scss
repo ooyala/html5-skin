@@ -139,7 +139,7 @@
 
   .oo-quality-screen-content {
     max-height: 150px;
-    width:100px;
+    width:80px;
     text-align: center;
 
     ul {
@@ -251,5 +251,9 @@
         margin-bottom: 0;
       }
     }
+  }
+
+  .oo-quality-screen-content-resolution {
+    width:110px;
   }
 }
