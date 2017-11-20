@@ -5,8 +5,21 @@ var CONSTANTS = require('../constants/constants');
 
 var AccessibleButton = React.createClass({
 
-  componentDidMount: function() {
+  getInitialState: function() {
     this.triggeredWithKeyboard = false;
+    return {};
+  },
+
+  componentDidMount: function() {
+    if (this.props.autoFocus) {
+      this.focus();
+    }
+  },
+
+  componentDidUpdate: function(prevProps) {
+    if (!prevProps.autoFocus && this.props.autoFocus) {
+      this.focus();
+    }
   },
 
   wasTriggeredWithKeyboard: function(triggeredWithKeyboard) {
@@ -50,6 +63,7 @@ var AccessibleButton = React.createClass({
       <button
         ref={function(e) { this.domElement = e }.bind(this)}
         type="button"
+        autoFocus={this.props.autoFocus}
         style={this.props.style}
         className={ClassNames(this.props.className, 'oo-focusable-btn')}
         tabIndex="0"
@@ -61,6 +75,8 @@ var AccessibleButton = React.createClass({
         role={this.props.role}
         onKeyDown={this.onKeyDown}
         onMouseUp={Utils.blurOnMouseUp}
+        onMouseOver={this.props.onMouseOver}
+        onMouseOut={this.props.onMouseOut}
         onClick={this.props.onClick}>
         {this.props.children}
       </button>
@@ -70,6 +86,7 @@ var AccessibleButton = React.createClass({
 });
 
 AccessibleButton.propTypes = {
+  autoFocus: React.PropTypes.bool,
   style: React.PropTypes.object,
   className: React.PropTypes.string,
   focusId: React.PropTypes.string,
@@ -78,10 +95,13 @@ AccessibleButton.propTypes = {
   ariaHasPopup: React.PropTypes.bool,
   ariaExpanded: React.PropTypes.bool,
   role: React.PropTypes.string,
-  onClick: React.PropTypes.func
+  onClick: React.PropTypes.func,
+  onMouseOver: React.PropTypes.func,
+  onMouseOut: React.PropTypes.func
 };
 
 AccessibleButton.defaultProps = {
+  autoFocus: false,
   focusId: Math.random().toString(36).substr(2, 10),
   ariaChecked: null,
   ariaHasPopup: null,

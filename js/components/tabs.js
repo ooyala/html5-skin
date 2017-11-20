@@ -1,6 +1,7 @@
 // taken from https://github.com/pedronauck/react-simpletabs
 
 var React = require('react'),
+    AccessibleButton = require('./accessibleButton'),
     ClassNames = require('classnames'),
     Icon = require('./icon');
 
@@ -91,9 +92,15 @@ var Tabs = React.createClass({
 
         return (
           <li ref={ref} key={index} className={classes}>
-            <a onClick={this.setActive.bind(this, index + 1)} style={activeTabStyle} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+            <AccessibleButton
+              style={activeTabStyle}
+              className="tabs-menu-item-btn"
+              ariaLabel={title}
+              onClick={this.setActive.bind(this, index + 1)}
+              onMouseOver={this.highlight}
+              onMouseOut={this.removeHighlight}>
               {title}
-            </a>
+            </AccessibleButton>
           </li>
         );
       }.bind(this));

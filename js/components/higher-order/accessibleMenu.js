@@ -58,7 +58,7 @@ var AccessibleMenu = function(ComposedComponent) {
     focusOnMenuItemSibling: function(menuItem, useNextSibling) {
       var menuItemsList = [];
       if (this.menuDomElement) {
-        menuItemsList = this.menuDomElement.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
+        menuItemsList = this.menuDomElement.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']:not(.oo-hidden)');
       }
       if (!menuItemsList.length) {
         return;
@@ -82,7 +82,7 @@ var AccessibleMenu = function(ComposedComponent) {
      * @private
      * @param {NodeList} menuItemList An ordered list of elements that comprise a menu.
      * @param {Element} menuItem The menu item whose sibling we want to find.
-     * @param {Boolean} useNextSibling Choses the sibling next to menuItem when true and the previous one when false.
+     * @param {Boolean} useNextSibling Chooses the sibling next to menuItem when true and the previous one when false.
      * @return {Number} The index where the sibling menu items is located in the list, -1 if menuItem is absent from the list.
      */
     getMenuItemSiblingIndex: function (menuItemList, menuItem, useNextSibling) {

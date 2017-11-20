@@ -1,11 +1,19 @@
 var React = require('react'),
     ClassNames = require('classnames'),
-    Icon = require('./icon');
+    AccessibleButton = require('./accessibleButton'),
+    Icon = require('./icon'),
+    CONSTANTS = require('../constants/constants');
 
 var DataSelector = React.createClass({
+
   getInitialState: function() {
+    this.leftChevronBtn = null;
+    this.rightChevronBtn = null;
+
     return {
-      currentPage: 1
+      currentPage: 1,
+      autoFocusFirst: false,
+      autoFocusLast: false
     };
   },
 
@@ -15,16 +23,42 @@ var DataSelector = React.createClass({
 
   handleLeftChevronClick: function(event) {
     event.preventDefault();
+    var autoFocusLast = this.checkAndResetAutoFocus(this.leftChevronBtn);
+
     this.setState({
-      currentPage: this.state.currentPage - 1
+      currentPage: this.state.currentPage - 1,
+      autoFocusFirst: false,
+      autoFocusLast: autoFocusLast
     });
   },
 
   handleRightChevronClick: function(event) {
     event.preventDefault();
+    var autoFocusFirst = this.checkAndResetAutoFocus(this.rightChevronBtn)
+
     this.setState({
-      currentPage: this.state.currentPage + 1
+      currentPage: this.state.currentPage + 1,
+      autoFocusFirst: autoFocusFirst,
+      autoFocusLast: false
     });
+  },
+
+  /**
+   * Determines whether the given chevron button was triggered with a keyboard, which would
+   * require us to use autofocus when rendering the new page that we're swithing to. Note that
+   * calling this function will reset the button's triggered with keyboard state.
+   * @private
+   * @param {AccessibleButton} chevronBtn Either the right or left chevron button of this component.
+   * @return {Boolean} True if button state suggests that auto focus is required, false otherwise.
+   */
+  checkAndResetAutoFocus: function(chevronBtn) {
+    var autoFocus = false;
+
+    if (chevronBtn && typeof chevronBtn.wasTriggeredWithKeyboard === 'function') {
+      autoFocus = chevronBtn.wasTriggeredWithKeyboard();
+      chevronBtn.wasTriggeredWithKeyboard(false);
+    }
+    return autoFocus;
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -65,10 +99,20 @@ var DataSelector = React.createClass({
         selectedItemStyle = {backgroundColor: this.props.skinConfig.general.accentColor};
       }
 
+      var autoFocusFirst = this.state.autoFocusFirst && i === 0;
+      var autoFocusLast = this.state.autoFocusLast && i === dataItems.length - 1;
+
       dataContentBlocks.push(
-        <a className={this.setClassname(dataItems[i])}  style={selectedItemStyle} onClick={this.handleDataSelection.bind(this, dataItems[i])} key={i}>
+        <AccessibleButton
+          key={i}
+          autoFocus={autoFocusFirst || autoFocusLast}
+          className={this.setClassname(dataItems[i])}
+          style={selectedItemStyle}
+          ariaLabel={dataItems[i]}
+          role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
+          onClick={this.handleDataSelection.bind(this, dataItems[i])}>
           <span className="oo-data">{dataItems[i]}</span>
-        </a>
+        </AccessibleButton>
       );
     }
 
@@ -83,22 +127,33 @@ var DataSelector = React.createClass({
 
     return(
       <div className="oo-data-selector">
-        <div className="oo-data-panel oo-flexcontainer">
-          {dataContentBlocks}
-        </div>
 
-        <a className={leftChevron} ref="leftChevron" onClick={this.handleLeftChevronClick}>
+        <AccessibleButton
+          ref={function(e) {this.leftChevronBtn = e}.bind(this)}
+          className={leftChevron}
+          ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_OPTIONS}
+          onClick={this.handleLeftChevronClick}>
           <Icon
             {...this.props}
             icon="left"
           />
-        </a>
-        <a className={rightChevron} ref="rightChevron" onClick={this.handleRightChevronClick}>
+        </AccessibleButton>
+
+        <div className="oo-data-panel oo-flexcontainer">
+          {dataContentBlocks}
+        </div>
+
+        <AccessibleButton
+          ref={function(e) {this.rightChevronBtn = e}.bind(this)}
+          className={rightChevron}
+          ariaLabel={CONSTANTS.ARIA_LABELS.MORE_OPTIONS}
+          onClick={this.handleRightChevronClick}>
           <Icon
             {...this.props}
             icon="right"
           />
-        </a>
+        </AccessibleButton>
+
       </div>
     );
   }

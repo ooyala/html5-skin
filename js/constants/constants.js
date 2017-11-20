@@ -129,7 +129,9 @@ module.exports = {
     TOGGLE_CLOSED_CAPTIONS: "Toggle Closed Captions",
     CAPTION_OPTIONS: "Closed Caption Options",
     STEREO_ON: "Stereoscopic",
-    STEREO_OFF: "Monoscopic"
+    STEREO_OFF: "Monoscopic",
+    MORE_OPTIONS: "More Options",
+    PREVIOUS_OPTIONS: "Previous Options"
   },
 
   ARIA_ROLES: {

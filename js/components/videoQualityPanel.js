@@ -121,9 +121,7 @@ var VideoQualityPanel = React.createClass({
           className="oo-quality-screen-content"
           speed={this.props.popover ? 0.6 : 1}
           horizontal={!this.props.popover}>
-          <ul
-            ref={function(e) { this.menuDomElement = e; }.bind(this)}
-            role="menu">
+          <ul role="menu">
             {bitrateButtons}
           </ul>
         </ScrollArea>

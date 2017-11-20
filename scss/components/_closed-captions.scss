@@ -14,8 +14,8 @@
 }
 
 .captions-navbar {
-  height: calc(100% - 26px);
-  margin-top:26px;
+  height: calc(100% - 24px);
+  margin-top: 24px;
 }
 
 .tabs-menu-item {
@@ -125,7 +125,7 @@
     overflow: auto;
     white-space: nowrap;
 
-    a.oo-item {
+    .oo-item {
       width: 144px;
       height: 36px;
       line-height: 27px;
@@ -141,12 +141,13 @@
       color: $white;
       transition: all 0.0s ease;
       cursor: pointer;
+      background-color: transparent;
       border-radius: 2px;
       border: 1px solid $gray;
       outline: none;
     }
 
-    a.oo-item-selected {
+    .oo-item-selected {
       background-color: $blue-light;
       border-radius: 4px;
     }
@@ -166,20 +167,26 @@
     position: absolute;
     top: 48%;
     background-color: transparent;
-    height: 10%;
+    height: auto;
     width: 30px;
+    padding: 0;
     color: white;
+    border: none;
+  }
+
+  .oo-discover-btn .oo-icon {
+    vertical-align: middle;
   }
 
   .oo-left-button {
     @extend .oo-discover-btn;
-    left: 0;
+    left: 1px;
     text-align: right;
   }
 
   .oo-right-button {
     @extend .oo-discover-btn;
-    right: 0;
+    right: 1px;
     text-align: left;
   }
 }
