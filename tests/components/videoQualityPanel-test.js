@@ -192,10 +192,7 @@ describe('VideoQualityPanel', function () {
         <VideoQualityPanel {...mockProps} />
       );
       var qualityPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality-panel');
-      console.log('CONSTANTS.KEYBD_FOCUS_ID_ATTR', CONSTANTS.KEYBD_FOCUS_ID_ATTR)
       qualityButtons = qualityPanel.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
-      
-      console.log('qualityButtons', qualityButtons)
     });
 
     afterEach(function() {
@@ -205,7 +202,6 @@ describe('VideoQualityPanel', function () {
     it('should focus on previous menu item when pressing UP or LEFT arrow keys', function() {
       var activeIndex = qualityButtons.length - 1;
       document.activeElement = qualityButtons[activeIndex];
-      console.log('activeIndex', activeIndex)
       TestUtils.Simulate.keyDown(document.activeElement, { key: CONSTANTS.KEY_VALUES.ARROW_UP });
       expect(document.activeElement).toBe(qualityButtons[activeIndex - 1]);
       TestUtils.Simulate.keyDown(document.activeElement, { key: CONSTANTS.KEY_VALUES.ARROW_LEFT });

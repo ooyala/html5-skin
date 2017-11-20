@@ -70,6 +70,9 @@
   },
   "homepage": "https://github.com/ooyala/html5-skin",
   "jest": {
+    "roots": [
+      "<rootDir>"
+    ],
     "globals": {
       "__DEV__": "scripts/jest/environment.js"
     },
@@ -77,21 +80,11 @@
       ".*": "<rootDir>/scripts/jest/preprocessor.js"
     },
     "verbose": true,
-    "modulePathIgnorePatterns": [
-      "/build/",
-      "/node_modules/"
-    ],
-    "transformIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "rootDir": "",
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/.*",
       "react"
     ],
-    "roots": [
-      "<rootDir>"
-    ],
+
     "testMatch": [
       "<rootDir>/tests/**"
     ],
