@@ -3,7 +3,9 @@ jest.dontMock('../../js/components/controlBar')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/components/icon')
     .dontMock('../../js/components/logo')
+    .dontMock('../../js/components/higher-order/accessibleMenu')
     .dontMock('../../js/constants/constants')
+    .dontMock('../../js/components/accessibleButton')
     .dontMock('classnames');
 
 var React = require('react');
@@ -11,8 +13,10 @@ var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 var CONSTANTS = require('../../js/constants/constants');
 var ControlBar = require('../../js/components/controlBar');
+var AccessibleButton = require('../../js/components/accessibleButton');
 var skinConfig = require('../../config/skin.json');
 var Utils = require('../../js/components/utils');
+var _ = require('underscore');
 
 // start unit test
 describe('ControlBar', function () {
@@ -470,7 +474,7 @@ describe('ControlBar', function () {
     expect(playClicked).toBe(true);
   });
 
-  it('should reset quality menu keyboard flag when closing video quality popover', function() {
+  it('should reset quality menu toggle keyboard flag when closing video quality popover', function() {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
     baseMockProps.skinConfig.buttons.desktopContent = [
       { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
@@ -478,8 +482,8 @@ describe('ControlBar', function () {
       { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
     ];
-    baseMockController.toggleVideoQualityPopOver = function() {
-      this.state.videoQualityOptions.showVideoQualityPopover = !this.state.videoQualityOptions.showVideoQualityPopover;
+    baseMockController.togglePopover = function() {
+      this.state.videoQualityOptions.showPopover = !this.state.videoQualityOptions.showPopover;
     };
 
     var DOM = TestUtils.renderIntoDocument(
@@ -492,21 +496,25 @@ describe('ControlBar', function () {
     );
 
     var controlBar = TestUtils.findRenderedComponentWithType(DOM, ControlBar);
-    var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality');
-    expect(controlBar.qualityMenuOpenedWithKeyboard).toBe(false);
-    TestUtils.Simulate.keyDown(qualityButton, { key: ' ' });
-    TestUtils.Simulate.click(qualityButton);
-    expect(controlBar.qualityMenuOpenedWithKeyboard).toBe(true);
-    controlBar.toggleQualityPopover();
-    expect(controlBar.qualityMenuOpenedWithKeyboard).toBe(false);
+    var qualityBtn = TestUtils.findRenderedComponentWithType(DOM, AccessibleButton);
+    var qualityBtnElement = qualityBtn.getDOMNode();
+
+    expect(qualityBtn.wasTriggeredWithKeyboard()).toBe(false);
+    TestUtils.Simulate.keyDown(qualityBtnElement, { key: ' ' });
+    TestUtils.Simulate.click(qualityBtnElement);
+    expect(qualityBtn.wasTriggeredWithKeyboard()).toBe(true);
+    controlBar.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
+    expect(qualityBtn.wasTriggeredWithKeyboard()).toBe(false);
   });
 
   it('should render default state aria labels', function() {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
+    baseMockController.state.closedCaptionOptions.availableLanguages = [];
     baseMockProps.skinConfig.buttons.desktopContent = [
       { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
       { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+      { "name": "closedCaption", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
     ];
 
@@ -523,21 +531,28 @@ describe('ControlBar', function () {
     var muteUnmuteButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').querySelector('.oo-mute-unmute');
     var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
     var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality');
+    var ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-closed-caption');
     expect(playPauseButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PAUSE);
     expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.MUTE);
     expect(fullscreenButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.FULLSCREEN);
     expect(qualityButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.VIDEO_QUALITY);
     expect(qualityButton.getAttribute('aria-haspopup')).toBe('true');
     expect(qualityButton.getAttribute('aria-expanded')).toBeNull();
+    expect(ccButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.CLOSED_CAPTIONS);
+    expect(ccButton.getAttribute('aria-haspopup')).toBe('true');
+    expect(ccButton.getAttribute('aria-expanded')).toBeNull();
   });
 
   it('should render alternate state aria labels', function() {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
-    baseMockController.state.videoQualityOptions.showVideoQualityPopover = true;
+    baseMockController.state.closedCaptionOptions.availableLanguages = [];
+    baseMockController.state.videoQualityOptions.showPopover = true;
+    baseMockController.state.closedCaptionOptions.showPopover = true;
     baseMockProps.skinConfig.buttons.desktopContent = [
       { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
       { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+      { "name": "closedCaption", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
     ];
 
@@ -557,15 +572,17 @@ describe('ControlBar', function () {
     var muteUnmuteButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').querySelector('.oo-mute-unmute');
     var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
     var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality');
+    var ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-closed-caption');
     expect(playPauseButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PLAY);
     expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.UNMUTE);
     expect(fullscreenButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.EXIT_FULLSCREEN);
     expect(qualityButton.getAttribute('aria-expanded')).toBe('true');
+    expect(ccButton.getAttribute('aria-expanded')).toBe('true');
   });
 
   it('should render alternate state aria labels for the volume icon when volume is 0', function() {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
-    baseMockController.state.videoQualityOptions.showVideoQualityPopover = true;
+    baseMockController.state.videoQualityOptions.showPopover = true;
     baseMockProps.skinConfig.buttons.desktopContent = [
       { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
@@ -762,7 +779,7 @@ describe('ControlBar', function () {
         }
       },
       toggleScreen: function() {toggleScreenClicked = true;},
-      toggleClosedCaptionPopOver: function(){captionClicked = true;}
+      togglePopover: function(){captionClicked = true;}
     };
 
     // md, test cc popover
@@ -1594,7 +1611,7 @@ describe('ControlBar', function () {
         }
       },
       toggleScreen: function() {qualityClicked = true;},
-      toggleVideoQualityPopOver: function(){qualityClicked = true;}
+      togglePopover: function(){qualityClicked = true;}
     };
 
     //xsmall

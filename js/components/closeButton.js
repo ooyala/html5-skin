@@ -1,24 +1,22 @@
 var React = require('react'),
+    AccessibleButton = require('./accessibleButton'),
     Icon = require('../components/icon'),
-    Utils = require('./utils'),
     CONSTANTS = require('../constants/constants');
 
 var CloseButton = React.createClass({
   render: function() {
     return (
-      <button
-        type="button"
+      <AccessibleButton
         className={this.props.cssClass}
-        onClick={this.props.closeAction}
-        onMouseUp={Utils.blurOnMouseUp}
-        data-focus-id={'close-' + Date.now()}
-        tabIndex="0"
-        aria-label={CONSTANTS.ARIA_LABELS.CLOSE}>
+        focusId={CONSTANTS.FOCUS_IDS.CLOSE + '-' + Date.now()}
+        ariaLabel={CONSTANTS.ARIA_LABELS.CLOSE}
+        role={this.props.role}
+        onClick={this.props.closeAction}>
         <Icon
           {...this.props}
           icon="dismiss"
           className={this.props.className}/>
-      </button>
+      </AccessibleButton>
     );
   }
 });

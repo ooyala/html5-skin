@@ -2,6 +2,7 @@ jest
 .dontMock('../js/skin')
 .dontMock('../js/components/utils')
 .dontMock('../js/components/accessibilityControls')
+.dontMock('../js/components/higher-order/accessibleMenu')
 .dontMock('../js/constants/constants')
 .dontMock('../config/skin.json')
 .dontMock('classnames');

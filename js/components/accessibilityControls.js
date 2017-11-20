@@ -88,6 +88,7 @@ AccessibilityControls.prototype = {
       case CONSTANTS.ARIA_ROLES.SLIDER:
       case CONSTANTS.ARIA_ROLES.MENU_ITEM:
       case CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO:
+      case CONSTANTS.ARIA_ROLES.MENU_ITEM_CHECKBOX:
         return false;
       default:
         return true;
