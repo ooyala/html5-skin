@@ -100,7 +100,6 @@ module.exports = {
     EXIT_FULL_SCREEN: "Exit Full Screen",
     VIDEO_QUALITY: "Video Quality",
     AUTO_QUALITY: "Auto",
-    RESOLUTION_QUALITY: MACROS.RESOLUTION + "p (" + MACROS.QUALITY + ")",
     SHARE: "Share",
     MORE_OPTIONS: "More Options",
     SELECT_TO_UNMUTE: "SELECT TO UNMUTE"
@@ -125,7 +124,7 @@ module.exports = {
     TIME_DISPLAY: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME,
     TIME_DISPLAY_LIVE: "Live video",
     TIME_DISPLAY_DVR: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME + " live video",
-    QUALITY_LEVEL: "Quality level " + MACROS.LEVEL + ", " + MACROS.QUALITY,
+    QUALITY_LEVEL: "Quality level " + MACROS.LEVEL + ", " + MACROS.BITRATE,
     CLOSE: "Close",
     TOGGLE_CLOSED_CAPTIONS: "Toggle Closed Captions",
     CAPTION_OPTIONS: "Closed Caption Options",
@@ -270,6 +269,23 @@ module.exports = {
 
   CLOSED_CAPTIONS: {
     NO_LANGUAGE: 'none'
+  },
+
+  QUALITY_SELECTION: {
+    FORMAT: {
+      RESOLUTION: "resolution",
+      BITRATE: "bitrate"
+    },
+    TEXT: {
+      RESOLUTION_BITRATE: MACROS.RESOLUTION + "p (" + MACROS.BITRATE + ")",
+      RESOLUTION_ONLY: MACROS.RESOLUTION + "p",
+      RESOLUTION_TIER: MACROS.RESOLUTION + "p (" + MACROS.RESOLUTION_TIER + ")",
+      BITRATE_ONLY: MACROS.BITRATE
+    },
+    RESOLUTION_TIER: {
+      HIGH: "Hi",
+      LOW: "Low"
+    }
   },
 
   ERROR_MESSAGE: {
