@@ -21,12 +21,39 @@ var ViewControlsVr = React.createClass({
     this.props.controller.moveVrToDirection(isRotated, direction);
   },
 
+  /**
+   * @method ViewControlsVr#_setIconSymbol
+   * @private
+   */
+  _setIconSymbol: function () {
+    var desktopContent = this.props.skinConfig.buttons.desktopContent;
+    this.icon = _.find(desktopContent, function (el) {
+      return el.location === "mainView";
+    });
+
+  },
+
+  /**
+   * @method ViewControlsVr#_setSubstrateSymbol
+   * @private
+   */
+  _setSubstrateSymbol: function () {
+    if(this.icon){
+      if(this.icon.name === 'arrowsBlack'){
+        this.substrateIcon = 'circleArrowsBlack';
+      } else {
+        this.substrateIcon = 'circleArrowsWhite';
+      }
+    }
+  },
+
   componentWillMount: function () {
     // if we have vr mode, and the device !== mobile, we need to add control element to the screen of the player.
     // control element is covered with icon from fonts
     this.isMobile = false;
     this.vr = null;
     this.icon = {};
+    this.substrateIcon = '';
     if (this.props.controller) {
       if (this.props.controller.videoVrSource) {
         this.vr = this.props.controller.videoVrSource.vr;
@@ -38,10 +65,9 @@ var ViewControlsVr = React.createClass({
         if (!(this.props.skinConfig && this.props.skinConfig.buttons && _.isArray(this.props.skinConfig.buttons.desktopContent))) {
           return;
         }
-        var desktopContent = this.props.skinConfig.buttons.desktopContent;
-        this.icon = _.find(desktopContent, function (el) {
-          return el.location === "mainView";
-        });
+
+        this._setIconSymbol();
+        this._setSubstrateSymbol();
       }
     }
   },
@@ -51,7 +77,7 @@ var ViewControlsVr = React.createClass({
 
     return !isShowing ? null :
       (<div className={classnames("oo-vr-icon-container view-controls", {"oo-vr-icon-container--hidden": !this.props.controlBarVisible})}>
-        <Icon {...this.props} icon={this.icon.name} className={classnames("oo-vr-icon--substrate")}/>
+        <Icon {...this.props} icon={this.substrateIcon} className={classnames("oo-vr-icon--substrate")}/>
         <Icon {...this.props} icon={this.icon.name} className={classnames("oo-vr-icon--icon-symbol")}/>
         <DirectionControlVr {...this.props} handleVrViewControlsClick = {this.handleVrViewControlsClick} dir = "left"/>
         <DirectionControlVr {...this.props} handleVrViewControlsClick = {this.handleVrViewControlsClick} dir = "right"/>
