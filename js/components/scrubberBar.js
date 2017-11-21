@@ -4,9 +4,7 @@
 var React = require('react'),
     ReactDOM = require('react-dom'),
     ResizeMixin = require('../mixins/resizeMixin'),
-    Thumbnail = require('./thumbnail'),
-    ThumbnailCarousel = require('./thumbnailCarousel'),
-    ThumbnailsContainer = require('./thumbnailsContainer'),
+    ThumbnailsContainer = require('./thumbnailContainer'),
     Utils = require('./utils'),
     MACROS = require('../constants/macros'),
     CONSTANTS = require('../constants/constants');
@@ -297,8 +295,6 @@ var ScrubberBar = React.createClass({
       playedIndicatorStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.playedColor;
     }
 
-    var thumbnailContainer = null;
-    var thumbnailCarousel = null;
     var hoverTime = 0;
     var hoverPosition = 0;
     var hoveredIndicatorStyle = null;
@@ -319,11 +315,12 @@ var ScrubberBar = React.createClass({
       if (this.props.controller && this.props.controller.videoVr) {
         videoVr = this.props.controller.videoVr;
       }
+      var isCarousel = false;
       if (this.state.scrubbingPlayheadX) {
         hoverPosition = this.state.scrubbingPlayheadX;
         hoverTime = (this.state.scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration;
         playheadClassName += " oo-playhead-scrubbing";
-
+        isCarousel = true;
       } else if (this.lastScrubX) {//to show thumbnail when clicking on playhead
         hoverPosition = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration;
         hoverTime = this.props.currentPlayhead;
@@ -340,9 +337,12 @@ var ScrubberBar = React.createClass({
       }
       thumbnailsContainer = (
         <ThumbnailsContainer
+          isCarousel={isCarousel}
           thumbnails={this.props.controller.state.thumbnails}
+          duration={this.props.duration}
           hoverPosition={hoverPosition}
-          hoverTime={hoverTime}
+          hoverTime={hoverTime > 0 ? hoverTime : 0}
+          scrubberBarWidth={this.state.scrubberBarWidth}
           videoVr={videoVr}
           fullscreen={fullscreen}
           vrViewingDirection={vrViewingDirection}
@@ -353,8 +353,7 @@ var ScrubberBar = React.createClass({
 
     return (
       <div className="oo-scrubber-bar-container" ref="scrubberBarContainer" onMouseOver={scrubberBarMouseOver} onMouseOut={scrubberBarMouseOut} onMouseMove={scrubberBarMouseMove}>
-        {thumbnailContainer}
-        {thumbnailCarousel}
+        {thumbnailsContainer}
         <div className="oo-scrubber-bar-padding" ref="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
           <div
             ref="scrubberBar"

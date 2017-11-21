@@ -5,6 +5,7 @@
  */
 var React = require('react'),
   Utils = require('./utils'),
+  CONSTANTS = require('../constants/constants'),
   ReactDOM = require('react-dom'),
   Thumbnail = require('./thumbnail'),
   ThumbnailCarousel = require('./thumbnailCarousel');
@@ -35,16 +36,14 @@ var ThumbnailContainer = React.createClass({
       this.setCurrentViewVr(yaw, pitch);
     }
   },
-  shouldComponentUpdate: function(nextProps) {
-    var updateHoverPositon = nextProps.hoverPosition != this.props.hoverPosition;
-    var updateFullscreen  = nextProps.fullscreen != this.props.fullscreen && this.props.videoVr;
-    var updateVrViewDIrection = nextProps.vrViewingDirection != this.props.vrViewingDirection;
-    return (updateHoverPositon || updateFullscreen || updateVrViewDIrection);
-  },
   componentDidUpdate: function(prevProps, prevState) {
     if (this.props.videoVr) {
-      var newThumbnailWidth = ReactDOM.findDOMNode(this.refs.thumbnail).clientWidth;
-      var newThumbnailHeight = ReactDOM.findDOMNode(this.refs.thumbnail).clientHeight;
+      if (ReactDOM.findDOMNode(this.refs.thumbnailElement) === null &&
+        ReactDOM.findDOMNode(this.refs.thumbnailElement.thumbnail) === null) {
+        return;
+      }
+      var newThumbnailWidth = ReactDOM.findDOMNode(this.refs.thumbnailElement.thumbnail).clientWidth;
+      var newThumbnailHeight = ReactDOM.findDOMNode(this.refs.thumbnailElement.thumbnail).clientHeight;
       if (newThumbnailWidth !== this.thumbnailWidth || newThumbnailHeight !== this.thumbnailHeight) {
         this.thumbnailWidth = newThumbnailWidth;
         this.thumbnailHeight = newThumbnailHeight;
@@ -56,8 +55,12 @@ var ThumbnailContainer = React.createClass({
   },
 
   setThumbnailSizes: function() {
-    var thumbnailWidth = ReactDOM.findDOMNode(this.refs.thumbnail).clientWidth;
-    var thumbnailHeight = ReactDOM.findDOMNode(this.refs.thumbnail).clientHeight;
+    if (ReactDOM.findDOMNode(this.refs.thumbnailElement) === null &&
+      ReactDOM.findDOMNode(this.refs.thumbnailElement.thumbnail) === null) {
+      return;
+    }
+    var thumbnailWidth = ReactDOM.findDOMNode(this.refs.thumbnailElement.thumbnail).clientWidth;
+    var thumbnailHeight = ReactDOM.findDOMNode(this.refs.thumbnailElement.thumbnail).clientHeight;
     if (thumbnailWidth) {
       this.thumbnailWidth = thumbnailWidth;
     }
@@ -72,9 +75,9 @@ var ThumbnailContainer = React.createClass({
       var imageWidth = thumbnail.imageWidth;
       var imageHeight = thumbnail.imageHeight;
       if (imageWidth && imageHeight) {
-        if (imageWidth > 380) {
-          imageWidth = 380;
-          imageHeight = thumbnail.imageHeight * 380 / thumbnail.imageWidth;
+        if (imageWidth > CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH) {
+          imageWidth = CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH;
+          imageHeight = thumbnail.imageHeight * CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH / thumbnail.imageWidth;
         }
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
@@ -148,62 +151,48 @@ var ThumbnailContainer = React.createClass({
     }
 
     var thumbnail = null;
-    var thumbnailCarousel = null;
-    var hoverTime = 0;
-    var hoverPosition = 0;
 
-    var vrViewingDirection = { yaw: 0, roll: 0, pitch: 0 };
-    if (this.props.controller && this.props.controller.state && this.props.controller.state.vrViewingDirection) {
-      vrViewingDirection = this.props.controller.state.vrViewingDirection;
-    }
-    var fullscreen = false;
-    if (this.props.controller && this.props.controller.state && this.props.controller.state.fullscreen) {
-      fullscreen = this.props.controller.state.fullscreen;
-    }
-    var videoVr = false;
-    if (this.props.controller && this.props.controller.videoVr) {
-      videoVr = this.props.controller.videoVr;
-    }
-    if (this.state.scrubbingPlayheadX) {
-      hoverPosition = this.state.scrubbingPlayheadX;
-      hoverTime = (this.state.scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration;
-
-      console.log('BBB hoverPosition', hoverPosition);
-
-      thumbnailCarousel =
+    if (this.props.isCarousel) {
+      thumbnail =
         <ThumbnailCarousel
-          thumbnails={this.props.controller.state.thumbnails}
+          ref="thumbnailElement"
+          time={time}
+          thumbnails={this.props.thumbnails}
           duration={this.props.duration}
-          hoverTime={hoverTime > 0 ? hoverTime : 0}
-          scrubberBarWidth={this.state.scrubberBarWidth}
-          hoverPosition={hoverPosition}
-          vrViewingDirection={vrViewingDirection}
-          videoVr={videoVr}
-          fullscreen={fullscreen} />
-    }
-    if (!thumbnailCarousel) {
+          hoverTime={this.props.hoverTime}
+          scrubberBarWidth={this.props.scrubberBarWidth}
+          hoverPosition={this.props.hoverPosition}
+          vrViewingDirection={this.props.vrViewingDirection}
+          videoVr={this.props.videoVr}
+          fullscreen={this.props.fullscreen}
+        />
+    } else {
       thumbnail = (
         <Thumbnail
-          thumbnails={this.props.controller.state.thumbnails}
-          hoverPosition={hoverPosition}
+          ref="thumbnailElement"
+          thumbnailClassName={thumbnailClassName}
+          time={time}
+          thumbnails={this.props.thumbnails}
+          hoverPosition={this.props.hoverPosition}
           duration={this.props.duration}
-          hoverTime={hoverTime > 0 ? hoverTime : 0}
-          vrViewingDirection={vrViewingDirection}
-          videoVr={videoVr}
-          fullscreen={fullscreen} />
+          hoverTime={this.props.hoverTime}
+          vrViewingDirection={this.props.vrViewingDirection}
+          videoVr={this.props.videoVr}
+          fullscreen={this.props.fullscreen}
+        />
       )
     }
 
     return (
       <div className={thumbnailContainerClass}>
         {thumbnail}
-        {thumbnailCarousel}
       </div>
     );
   }
 });
 
 ThumbnailContainer.defaultProps = {
+  isCarousel: false,
   thumbnails: {},
   hoverPosition: 0,
   duration: 0,
@@ -219,6 +208,12 @@ ThumbnailContainer.propTypes = {
     roll: React.PropTypes.number,
     pitch: React.PropTypes.number
   }),
+  thumbnails: React.PropTypes.object,
+  hoverPosition: React.PropTypes.number,
+  hoverTime: React.PropTypes.number,
+  duration: React.PropTypes.number,
+  scrubberBarWidth: React.PropTypes.number,
+  isCarousel: React.PropTypes.bool,
   videoVr: React.PropTypes.bool,
   fullscreen: React.PropTypes.bool
 };

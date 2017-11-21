@@ -19,20 +19,20 @@ var Thumbnail = React.createClass({
     return {};
   },
   componentDidMount: function() {
-    if (this.props.videoVr) {
-      this.setThumbnailSizes();
-      this.setImageSizes();
-      var yaw = this.props.vrViewingDirection.yaw;
-      var pitch = this.props.vrViewingDirection.pitch;
-      this.setCurrentViewVr(yaw, pitch);
-    }
+    // if (this.props.videoVr) {
+    //   this.setThumbnailSizes();
+    //   this.setImageSizes();
+    //   var yaw = this.props.vrViewingDirection.yaw;
+    //   var pitch = this.props.vrViewingDirection.pitch;
+    //   this.setCurrentViewVr(yaw, pitch);
+    // }
   },
   componentWillReceiveProps: function(nextProps) {
-    if (this.props.vrViewingDirection !== nextProps.vrViewingDirection && this.props.videoVr) {
-      var yaw = nextProps.vrViewingDirection.yaw;
-      var pitch = nextProps.vrViewingDirection.pitch;
-      this.setCurrentViewVr(yaw, pitch);
-    }
+    // if (this.props.vrViewingDirection !== nextProps.vrViewingDirection && this.props.videoVr) {
+    //   var yaw = nextProps.vrViewingDirection.yaw;
+    //   var pitch = nextProps.vrViewingDirection.pitch;
+    //   this.setCurrentViewVr(yaw, pitch);
+    // }
   },
   shouldComponentUpdate: function(nextProps) {
     var updateHoverPositon = nextProps.hoverPosition != this.props.hoverPosition;
@@ -41,45 +41,45 @@ var Thumbnail = React.createClass({
     return (updateHoverPositon || updateFullscreen || updateVrViewDirection);
   },
   componentDidUpdate: function(prevProps, prevState) {
-    if (this.props.videoVr) {
-      var newThumbnailWidth = ReactDOM.findDOMNode(this.refs.thumbnail).clientWidth;
-      var newThumbnailHeight = ReactDOM.findDOMNode(this.refs.thumbnail).clientHeight;
-      if (newThumbnailWidth !== this.thumbnailWidth || newThumbnailHeight !== this.thumbnailHeight) {
-        this.thumbnailWidth = newThumbnailWidth;
-        this.thumbnailHeight = newThumbnailHeight;
-        var yaw = this.props.vrViewingDirection.yaw;
-        var pitch = this.props.vrViewingDirection.pitch;
-        this.setCurrentViewVr(yaw, pitch);
-      }
-    }
+    // if (this.props.videoVr) {
+    //   var newThumbnailWidth = ReactDOM.findDOMNode(this.refs.thumbnail).clientWidth;
+    //   var newThumbnailHeight = ReactDOM.findDOMNode(this.refs.thumbnail).clientHeight;
+    //   if (newThumbnailWidth !== this.thumbnailWidth || newThumbnailHeight !== this.thumbnailHeight) {
+    //     this.thumbnailWidth = newThumbnailWidth;
+    //     this.thumbnailHeight = newThumbnailHeight;
+    //     var yaw = this.props.vrViewingDirection.yaw;
+    //     var pitch = this.props.vrViewingDirection.pitch;
+    //     this.setCurrentViewVr(yaw, pitch);
+    //   }
+    // }
   },
 
-  setThumbnailSizes: function() {
-    var thumbnailWidth = ReactDOM.findDOMNode(this.refs.thumbnail).clientWidth;
-    var thumbnailHeight = ReactDOM.findDOMNode(this.refs.thumbnail).clientHeight;
-    if (thumbnailWidth) {
-      this.thumbnailWidth = thumbnailWidth;
-    }
-    if (thumbnailHeight) {
-      this.thumbnailHeight = thumbnailHeight;
-    }
-  },
+  // setThumbnailSizes: function() {
+  //   var thumbnailWidth = ReactDOM.findDOMNode(this.refs.thumbnail).clientWidth;
+  //   var thumbnailHeight = ReactDOM.findDOMNode(this.refs.thumbnail).clientHeight;
+  //   if (thumbnailWidth) {
+  //     this.thumbnailWidth = thumbnailWidth;
+  //   }
+  //   if (thumbnailHeight) {
+  //     this.thumbnailHeight = thumbnailHeight;
+  //   }
+  // },
 
-  setImageSizes: function() {
-    var thumbnail = Utils.findThumbnail(this.props.thumbnails, this.props.hoverTime, this.props.duration, this.props.videoVr);
-    if (thumbnail !== null && typeof thumbnail === 'object') {
-      var imageWidth = thumbnail.imageWidth;
-      var imageHeight = thumbnail.imageHeight;
-      if (imageWidth && imageHeight) {
-        if (imageWidth > CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH) {
-          imageWidth = CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH;
-          imageHeight = thumbnail.imageHeight * CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH / thumbnail.imageWidth;
-        }
-        this.imageWidth = imageWidth;
-        this.imageHeight = imageHeight;
-      }
-    }
-  },
+  // setImageSizes: function() {
+  //   var thumbnail = Utils.findThumbnail(this.props.thumbnails, this.props.hoverTime, this.props.duration, this.props.videoVr);
+  //   if (thumbnail !== null && typeof thumbnail === 'object') {
+  //     var imageWidth = thumbnail.imageWidth;
+  //     var imageHeight = thumbnail.imageHeight;
+  //     if (imageWidth && imageHeight) {
+  //       if (imageWidth > CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH) {
+  //         imageWidth = CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH;
+  //         imageHeight = thumbnail.imageHeight * CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH / thumbnail.imageWidth;
+  //       }
+  //       this.imageWidth = imageWidth;
+  //       this.imageHeight = imageHeight;
+  //     }
+  //   }
+  // },
 
   /**
    * @description set positions for a thumbnail image when a video is vr
@@ -135,11 +135,11 @@ var Thumbnail = React.createClass({
 
     var thumbnailClassName = "oo-thumbnail";
 
-    if (this.props.videoVr) {
-      thumbnailStyle.backgroundSize = this.imageWidth + "px " + this.imageHeight + "px";
-      thumbnailStyle.backgroundPosition = this.positionX + "px " + this.positionY + "px";
-      thumbnailClassName += " oo-thumbnail-vr";
-    }
+    // if (this.props.videoVr) {
+      // thumbnailStyle.backgroundSize = this.imageWidth + "px " + this.imageHeight + "px";
+      // thumbnailStyle.backgroundPosition = this.positionX + "px " + this.positionY + "px";
+      // thumbnailClassName += " oo-thumbnail-vr";
+    // }
 
     return (
       <div className="oo-scrubber-thumbnail-container">
