@@ -18,6 +18,10 @@ var ViewControlsVr = React.createClass({
       e.cancelBubble = true; // IE
       this.props.controller.state.accessibilityControlsEnabled = true;
     }
+
+
+    console.log('args', arguments);
+
     this.props.controller.moveVrToDirection(isRotated, direction);
   },
 

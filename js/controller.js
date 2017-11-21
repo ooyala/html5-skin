@@ -1479,6 +1479,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     moveVrToDirection: function (rotate, direction) {
+      console.log('args', arguments)
       this.mb.publish(OO.EVENTS.MOVE_VR_TO_DIRECTION, this.focusedElement, rotate, direction);
     },
 
