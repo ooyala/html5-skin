@@ -51,7 +51,7 @@ var ViewControlsVr = React.createClass({
 
     return !isShowing ? null :
       (<div className={classnames("oo-vr-icon-container view-controls", {"oo-vr-icon-container--hidden": !this.props.controlBarVisible})}>
-        <Icon {...this.props} icon={this.icon.name} className={classnames("oo-vr-icon--substrate")}/>
+        <Icon {...this.props} icon="circleArrowsBlack" className={classnames("oo-vr-icon--substrate")}/>
         <Icon {...this.props} icon={this.icon.name} className={classnames("oo-vr-icon--icon-symbol")}/>
         <DirectionControlVr {...this.props} handleVrViewControlsClick = {this.handleVrViewControlsClick} dir = "left"/>
         <DirectionControlVr {...this.props} handleVrViewControlsClick = {this.handleVrViewControlsClick} dir = "right"/>
