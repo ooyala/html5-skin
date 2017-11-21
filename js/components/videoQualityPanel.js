@@ -73,7 +73,8 @@ var VideoQualityPanel = React.createClass({
     var availableResolution = null;
     var availableBitrate = null;
     var wideFormat = false;
-    var qualityTextFormat = this.props.skinConfig.controlBar && this.props.skinConfig.controlBar.qualitySelection ?
+    var qualityTextFormat = this.props.skinConfig.controlBar && this.props.skinConfig.controlBar.qualitySelection &&
+                            this.props.skinConfig.controlBar.qualitySelection.format ?
                             this.props.skinConfig.controlBar.qualitySelection.format : CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE;
     var showResolution = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.RESOLUTION) >= 0;
     var showBitrate = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE) >= 0;
@@ -130,13 +131,9 @@ var VideoQualityPanel = React.createClass({
             ariaLabel = label;
             break;
           case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY:
-            //We only want the lowest bitrate instance of a resolution if there are multiple bitrates for the same resolution.
-            //The following, along with the entire render function, assumes the bitrates and resolutions in availableBitrates are
-            //presorted in descending order
-            if (!availableBitrates[i + 1] || !availableBitrates[i + 1].height || availableBitrates[i + 1].height !== availableResolution) {
-              label = qualityText.replace(MACROS.RESOLUTION, availableResolution);
-              ariaLabel = label;
-            }
+            //TODO: Confirm with product about how to handle multiple resolutions
+            label = qualityText.replace(MACROS.RESOLUTION, availableResolution);
+            ariaLabel = label;
             break;
           case CONSTANTS.QUALITY_SELECTION.TEXT.BITRATE_ONLY:
             label = qualityText.replace(MACROS.BITRATE, availableBitrate);

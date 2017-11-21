@@ -280,10 +280,6 @@ module.exports = {
       RESOLUTION_BITRATE: MACROS.RESOLUTION + "p (" + MACROS.BITRATE + ")",
       RESOLUTION_ONLY: MACROS.RESOLUTION + "p",
       BITRATE_ONLY: MACROS.BITRATE
-    },
-    RESOLUTION_TIER: {
-      HIGH: "Hi",
-      LOW: "Low"
     }
   },
 
