@@ -166,7 +166,7 @@ describe('VideoQualityPanel', function () {
 
     for (var i = 0; i < qualityButtons.length; i++) {
       qualityButton = qualityButtons[i];
-      ariaLabel = CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i + 1).replace(MACROS.QUALITY, qualityButton.innerHTML);
+      ariaLabel = CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i + 1).replace(MACROS.BITRATE, qualityButton.innerHTML);
       expect(qualityButton.getAttribute('aria-label')).toBe(ariaLabel);
       expect(qualityButton.getAttribute('role')).toBe('menuitemradio');
       expect(qualityButton.getAttribute('aria-checked')).toBeTruthy();

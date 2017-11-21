@@ -115,18 +115,12 @@ var VideoQualityPanel = React.createClass({
           availableBitrate = availableBitrates[i].bitrate;
         }
 
-        if (showResolution && showBitrate) {
-          if (typeof availableResolution === 'number' && availableBitrate) {
-            qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_BITRATE;
-          } else if (availableBitrate) {
-            qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.BITRATE_ONLY;
-          } else if (typeof availableResolution === 'number') {
-            qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY;
-          }
-        } else if (showResolution && typeof availableResolution === 'number') {
-          qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY;
+        if (showResolution && showBitrate && typeof availableResolution === 'number' && availableBitrate) {
+          qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_BITRATE;
         } else if (showBitrate && availableBitrate) {
           qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.BITRATE_ONLY;
+        } else if (showResolution && typeof availableResolution === 'number') {
+          qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY;
         }
 
         switch(qualityText) {
@@ -137,7 +131,8 @@ var VideoQualityPanel = React.createClass({
             break;
           case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY:
             //We only want the lowest bitrate instance of a resolution if there are multiple bitrates for the same resolution.
-            //The following assumes the bitrates and resolutions in availableBitrates are presorted
+            //The following, along with the entire render function, assumes the bitrates and resolutions in availableBitrates are
+            //presorted in descending order
             if (!availableBitrates[i + 1] || !availableBitrates[i + 1].height || availableBitrates[i + 1].height !== availableResolution) {
               label = qualityText.replace(MACROS.RESOLUTION, availableResolution);
               ariaLabel = label;
