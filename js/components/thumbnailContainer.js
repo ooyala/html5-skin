@@ -4,10 +4,12 @@
  * @module Thumbnail
  */
 var React = require('react'),
-    Utils = require('./utils'),
-    ReactDOM = require('react-dom');
+  Utils = require('./utils'),
+  ReactDOM = require('react-dom'),
+  Thumbnail = require('./thumbnail'),
+  ThumbnailCarousel = require('./thumbnailCarousel');
 
-var Thumbnail = React.createClass({
+var ThumbnailContainer = React.createClass({
   getInitialState: function() {
     this.positionY = 0;
     this.positionX = -320;
@@ -140,17 +142,68 @@ var Thumbnail = React.createClass({
       thumbnailClassName += " oo-thumbnail-vr";
     }
 
+    var thumbnailContainerClass = "";
+    if (this.props.thumbnailContainerClass !== undefined) {
+      thumbnailContainerClass = this.props.thumbnailContainerClass;
+    }
+
+    var thumbnail = null;
+    var thumbnailCarousel = null;
+    var hoverTime = 0;
+    var hoverPosition = 0;
+
+    var vrViewingDirection = { yaw: 0, roll: 0, pitch: 0 };
+    if (this.props.controller && this.props.controller.state && this.props.controller.state.vrViewingDirection) {
+      vrViewingDirection = this.props.controller.state.vrViewingDirection;
+    }
+    var fullscreen = false;
+    if (this.props.controller && this.props.controller.state && this.props.controller.state.fullscreen) {
+      fullscreen = this.props.controller.state.fullscreen;
+    }
+    var videoVr = false;
+    if (this.props.controller && this.props.controller.videoVr) {
+      videoVr = this.props.controller.videoVr;
+    }
+    if (this.state.scrubbingPlayheadX) {
+      hoverPosition = this.state.scrubbingPlayheadX;
+      hoverTime = (this.state.scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration;
+
+      console.log('BBB hoverPosition', hoverPosition);
+
+      thumbnailCarousel =
+        <ThumbnailCarousel
+          thumbnails={this.props.controller.state.thumbnails}
+          duration={this.props.duration}
+          hoverTime={hoverTime > 0 ? hoverTime : 0}
+          scrubberBarWidth={this.state.scrubberBarWidth}
+          hoverPosition={hoverPosition}
+          vrViewingDirection={vrViewingDirection}
+          videoVr={videoVr}
+          fullscreen={fullscreen} />
+    }
+    if (!thumbnailCarousel) {
+      thumbnail = (
+        <Thumbnail
+          thumbnails={this.props.controller.state.thumbnails}
+          hoverPosition={hoverPosition}
+          duration={this.props.duration}
+          hoverTime={hoverTime > 0 ? hoverTime : 0}
+          vrViewingDirection={vrViewingDirection}
+          videoVr={videoVr}
+          fullscreen={fullscreen} />
+      )
+    }
+
     return (
-      <div className="oo-scrubber-thumbnail-container">
-        <div className={thumbnailClassName} ref="thumbnail" style={thumbnailStyle}>
-          <div className="oo-thumbnail-time">{time}</div>
-        </div>
+      <div className={thumbnailContainerClass}>
+        {thumbnail}
+        {thumbnailCarousel}
       </div>
     );
   }
 });
 
-Thumbnail.defaultProps = {
+ThumbnailContainer.defaultProps = {
   thumbnails: {},
   hoverPosition: 0,
   duration: 0,
@@ -160,7 +213,7 @@ Thumbnail.defaultProps = {
   fullscreen: false
 };
 
-Thumbnail.propTypes = {
+ThumbnailContainer.propTypes = {
   vrViewingDirection: React.PropTypes.shape({
     yaw: React.PropTypes.number,
     roll: React.PropTypes.number,
@@ -170,4 +223,4 @@ Thumbnail.propTypes = {
   fullscreen: React.PropTypes.bool
 };
 
-module.exports = Thumbnail;
+module.exports = ThumbnailContainer;
