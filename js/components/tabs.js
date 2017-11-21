@@ -2,6 +2,7 @@
 
 var React = require('react'),
     AccessibleButton = require('./accessibleButton'),
+    Utils = require('./utils'),
     ClassNames = require('classnames'),
     Icon = require('./icon');
 
@@ -19,6 +20,9 @@ var Tabs = React.createClass({
   },
 
   getInitialState: function() {
+    this.menuButtons = {};
+    this.autoFocusTabPanel = false;
+
     return {
       tabActive: this.props.tabActive
     };
@@ -40,6 +44,13 @@ var Tabs = React.createClass({
     }
   },
 
+  componentDidUpdate: function() {
+    if (this.autoFocusTabPanel) {
+      this.autoFocusTabPanel = false;
+      Utils.autoFocusFirstElement(this.refs['tab-panel'], 'oo-hidden');
+    }
+  },
+
   setActive: function(index, e) {
     e.preventDefault();
 
@@ -51,6 +62,14 @@ var Tabs = React.createClass({
     if (onBeforeChange) {
       var cancel = onBeforeChange(index, selectedPanel, selectedTabMenu);
       if(cancel === false){ return }
+    }
+
+    // Set a flag to auto focus on the first tab panel element on the next render
+    // if the menu button was triggered with the keyboard
+    var menuButton = this.menuButtons[index];
+    if (menuButton) {
+      this.autoFocusTabPanel = menuButton.wasTriggeredWithKeyboard();
+      menuButton.wasTriggeredWithKeyboard(false);
     }
 
     this.setState({ tabActive: index }, function()  {
@@ -93,6 +112,7 @@ var Tabs = React.createClass({
         return (
           <li ref={ref} key={index} className={classes}>
             <AccessibleButton
+              ref={function(e) { this.menuButtons[index + 1] = e }.bind(this)}
               style={activeTabStyle}
               className="tabs-menu-item-btn"
               ariaLabel={title}

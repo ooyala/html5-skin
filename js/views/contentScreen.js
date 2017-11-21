@@ -73,10 +73,10 @@ var ContentScreen = React.createClass({
         <div className={this.props.screenClassName}>
           {closedCaptionOverlay}
           <div className={this.props.titleBarClassName}>
-            {titleBar}
-            <CloseButton {...this.props} closeAction={this.handleClose}/>
+            {titleBar}  
           </div>
           {this.props.children}
+          <CloseButton {...this.props} closeAction={this.handleClose}/>
         </div>
       </div>
     );
