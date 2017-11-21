@@ -18,7 +18,7 @@
   color: $white;
   font-family: $font-family-roboto-condensed-bold;
   font-size: 18px;
-  padding: 0;
+  padding: 0 1px;
   border: none;
   background-color: transparent;
   @include vendor-prefixes (transition, 0.3s);
@@ -44,6 +44,7 @@
   padding: 2px 2px 0 2px;
   overflow-x: scroll;
   padding-bottom: 1000%;
+  position: relative;
 
   //override default scrollbar style
   .scrollarea-content{
@@ -88,8 +89,10 @@
 
 .oo-left-tab-button {
   display: none;
+  @include vendor-prefixes(user-select, none);
 }
 
 .oo-right-tab-button {
   display: none;
+  @include vendor-prefixes(user-select, none);
 }

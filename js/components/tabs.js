@@ -98,7 +98,8 @@ var Tabs = React.createClass({
               ariaLabel={title}
               onClick={this.setActive.bind(this, index + 1)}
               onMouseOver={this.highlight}
-              onMouseOut={this.removeHighlight}>
+              onMouseOut={this.removeHighlight}
+              onFocus={this.onMenuItemFocus}>
               {title}
             </AccessibleButton>
           </li>
@@ -106,7 +107,9 @@ var Tabs = React.createClass({
       }.bind(this));
 
     return (
-      <nav className='tabs-navigation' ref='tabsNavigation'>
+      <nav
+        className='tabs-navigation'
+        ref={function(e) { this.tabsNavigationElement = e }.bind(this)}>
         <ul className='tabs-menu'>{menuItems}</ul>
       </nav>
     );
@@ -125,12 +128,52 @@ var Tabs = React.createClass({
 
   handleLeftChevronClick: function(event) {
     event.preventDefault();
-    this.refs.tabsNavigation.scrollLeft -= 30;
+    if (this.tabsNavigationElement) {
+      this.tabsNavigationElement.scrollLeft -= 30;
+    }
   },
 
   handleRightChevronClick: function(event) {
     event.preventDefault();
-    this.refs.tabsNavigation.scrollLeft += 30;
+    if (this.tabsNavigationElement) {
+      this.tabsNavigationElement.scrollLeft += 30;
+    }
+  },
+
+  onMenuItemFocus: function(event) {
+    if (event.currentTarget) {
+      this.scrollIntoViewIfNeeded(event.currentTarget);
+    }
+  },
+
+  /**
+   * Ensures that the given menu item is completely visible inside the tabs navigation.
+   * Adjusts the tabs navigation's scroll position when this is not the case.
+   * @private
+   * @param {HTMLElement} menuItem The menu item which we want to make sure is visible.
+   */
+  scrollIntoViewIfNeeded: function(menuItem) {
+    if (
+      !this.tabsNavigationElement ||
+      !menuItem ||
+      typeof menuItem.clientWidth === 'undefined'
+    ) {
+      return;
+    }
+    // Element is at a position that starts before the current navigation's scroll
+    // position. This will cause the element to be cut-off, so we set the scroll position
+    // to the value of the element's offset.
+    if (menuItem.offsetLeft < this.tabsNavigationElement.scrollLeft) {
+      this.tabsNavigationElement.scrollLeft = menuItem.offsetLeft;
+    } else {
+      var menuItemRightEdge = menuItem.offsetLeft + menuItem.clientWidth;
+      var maxVisiblePoint = this.tabsNavigationElement.scrollLeft + this.tabsNavigationElement.clientWidth;
+      // Element overflows from the currently visible navigation area. Adjust the
+      // navigation's scroll value so that the whole menu item fits inside the visible area.
+      if (menuItemRightEdge > maxVisiblePoint) {
+        this.tabsNavigationElement.scrollLeft += menuItemRightEdge - maxVisiblePoint;
+      }
+    }
   },
 
   render: function() {

@@ -77,6 +77,7 @@ var AccessibleButton = React.createClass({
         onMouseUp={Utils.blurOnMouseUp}
         onMouseOver={this.props.onMouseOver}
         onMouseOut={this.props.onMouseOut}
+        onFocus={this.props.onFocus}
         onClick={this.props.onClick}>
         {this.props.children}
       </button>
@@ -95,9 +96,10 @@ AccessibleButton.propTypes = {
   ariaHasPopup: React.PropTypes.bool,
   ariaExpanded: React.PropTypes.bool,
   role: React.PropTypes.string,
-  onClick: React.PropTypes.func,
   onMouseOver: React.PropTypes.func,
-  onMouseOut: React.PropTypes.func
+  onMouseOut: React.PropTypes.func,
+  onFocus: React.PropTypes.func,
+  onClick: React.PropTypes.func
 };
 
 AccessibleButton.defaultProps = {
