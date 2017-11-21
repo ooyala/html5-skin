@@ -146,18 +146,18 @@ AccessibilityControls.prototype = {
     this.vrRotationAllowed = !isKeyDown; //prevent repeat of keyDown
     this.controller.moveVrToDirection(false, keyDirectionMap[charCode]); //stop rotation if isKeyDown === false or prevent prev rotation if press a button (isKeyDown === true)
 
-    var inPrevKeyPressedArrIndex = -1;
-    //check if button code is already in list of pressed buttons (this.prevKeyPressedArr)
-    //if code is in the array return index of the code
-    for (var i = this.prevKeyPressedArr.length - 1; i >= 0; i--) {
-      if (this.prevKeyPressedArr[i] === charCode) {
-        inPrevKeyPressedArrIndex = i;
-        break;
-      }
-    }
     if (isKeyDown === true) {
       this.prevKeyPressedArr.push(charCode);
-    } else { // if button is up remove a code of the button from this.prevKeyPressedArr
+    } else { // if button is up, remove it from this.prevKeyPressedArr
+      var inPrevKeyPressedArrIndex = -1;
+      //check if button code is already in list of pressed buttons (this.prevKeyPressedArr)
+      //if code is in the array return index of the code
+      for (var i = this.prevKeyPressedArr.length - 1; i >= 0; i--) {
+        if (this.prevKeyPressedArr[i] === charCode) {
+          inPrevKeyPressedArrIndex = i;
+          break;
+        }
+      }
       if (inPrevKeyPressedArrIndex > -1) {
         this.prevKeyPressedArr.splice(inPrevKeyPressedArrIndex, 1);
       }
