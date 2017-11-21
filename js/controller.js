@@ -31,6 +31,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.accessibilityControls = null;
     this.videoVrSource = null;
     this.videoVr = false;
+    this.captionDirection = '';
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
@@ -1134,6 +1135,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.configLoaded = true;
       this.renderSkin();
       this.createPluginElements();
+      if (typeof this.state.config.closedCaptionOptions === 'object' &&
+        this.state.config.closedCaptionOptions.language !== undefined) {
+        this.setCaptionDirection(this.state.config.closedCaptionOptions.language);
+      }
     },
 
     //create plugin container elements
@@ -1721,9 +1726,30 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.closedCaptionOptions[name] = this.state.persistentSettings.closedCaptionOptions[name] = value;
       if (name === 'language') {
         this.setClosedCaptionsLanguage();
+        this.setCaptionDirection(value);
       }
       this.renderSkin();
       this.mb.publish(OO.EVENTS.SAVE_PLAYER_SETTINGS, this.state.persistentSettings);
+    },
+
+    /**
+     * @description the function set direction for CC;
+     * if chosen language is right-to-left language set rtl as value for this.captionDirection
+     * else set this.captionDirection as ''
+     * @private
+     * @param languageCode
+     */
+    setCaptionDirection: function(languageCode) {
+      if (typeof languageCode === 'string' &&
+        languageCode.length === 2 &&
+        this.state.config.languageDirections !== null &&
+        typeof this.state.config.languageDirections === 'object') {
+        if (this.state.config.languageDirections[languageCode]) {
+          this.captionDirection = this.state.config.languageDirections[languageCode];
+        } else {
+          this.captionDirection = '';
+        }
+      }
     },
 
     /**

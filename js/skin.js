@@ -259,6 +259,7 @@ var Skin = React.createClass({
               componentHeight={this.state.componentHeight}
               videoQualityOptions={this.state.videoQualityOptions}
               closedCaptionOptions={this.props.closedCaptionOptions}
+              captionDirection={this.props.controller.captionDirection}
               ref="playScreen" />
           );
           break;
@@ -299,6 +300,7 @@ var Skin = React.createClass({
               responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
+              captionDirection={this.props.controller.captionDirection}
               ref="pauseScreen"
             />
           );

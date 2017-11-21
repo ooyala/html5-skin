@@ -5,6 +5,7 @@
  */
 var React = require('react'),
     Utils = require('./utils'),
+    CONSTANTS = require('../constants/constants'),
     ReactDOM = require('react-dom');
 
 var Thumbnail = React.createClass({
@@ -36,8 +37,8 @@ var Thumbnail = React.createClass({
   shouldComponentUpdate: function(nextProps) {
     var updateHoverPositon = nextProps.hoverPosition != this.props.hoverPosition;
     var updateFullscreen  = nextProps.fullscreen != this.props.fullscreen && this.props.videoVr;
-    var updateVrViewDIrection = nextProps.vrViewingDirection != this.props.vrViewingDirection;
-    return (updateHoverPositon || updateFullscreen || updateVrViewDIrection);
+    var updateVrViewDirection = nextProps.vrViewingDirection != this.props.vrViewingDirection;
+    return (updateHoverPositon || updateFullscreen || updateVrViewDirection);
   },
   componentDidUpdate: function(prevProps, prevState) {
     if (this.props.videoVr) {
@@ -70,9 +71,9 @@ var Thumbnail = React.createClass({
       var imageWidth = thumbnail.imageWidth;
       var imageHeight = thumbnail.imageHeight;
       if (imageWidth && imageHeight) {
-        if (imageWidth > 380) {
-          imageWidth = 380;
-          imageHeight = thumbnail.imageHeight * 380 / thumbnail.imageWidth;
+        if (imageWidth > CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH) {
+          imageWidth = CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH;
+          imageHeight = thumbnail.imageHeight * CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH / thumbnail.imageWidth;
         }
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
@@ -80,7 +81,7 @@ var Thumbnail = React.createClass({
     }
   },
 
-  /**x
+  /**
    * @description set positions for a thumbnail image when a video is vr
    * @param {Number} yaw - rotation around the vertical axis in degrees (returns after changing direction)
    * @param {Number} pitch - rotation around the horizontal axis in degrees (returns after changing direction)
