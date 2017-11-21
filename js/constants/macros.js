@@ -5,6 +5,5 @@ module.exports = {
   TOTAL_TIME: "{totalTime}",
   LEVEL: "{level}",
   RESOLUTION: "{resolution}",
-  BITRATE: "{bitrate}",
-  RESOLUTION_TIER: "{resolutionTier}"
+  BITRATE: "{bitrate}"
 };

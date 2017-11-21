@@ -104,7 +104,13 @@ var VideoQualityPanel = React.createClass({
         }
 
         if (typeof availableBitrates[i].bitrate === 'number') {
-          availableBitrate = Math.round(availableBitrates[i].bitrate/1000) + ' kbps';
+          var suffix = 'kbps';
+          availableBitrate = Math.round(availableBitrates[i].bitrate/1000);
+          if (availableBitrate >= 1000) {
+            availableBitrate = Math.round(availableBitrate/10) / 100;
+            suffix = 'mbps';
+          }
+          availableBitrate += ' ' + suffix;
         } else {
           availableBitrate = availableBitrates[i].bitrate;
         }
@@ -130,8 +136,12 @@ var VideoQualityPanel = React.createClass({
             ariaLabel = label;
             break;
           case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY:
-            label = qualityText.replace(MACROS.RESOLUTION, availableResolution);
-            ariaLabel = label;
+            //We only want the lowest bitrate instance of a resolution if there are multiple bitrates for the same resolution.
+            //The following assumes the bitrates and resolutions in availableBitrates are presorted
+            if (!availableBitrates[i + 1] || !availableBitrates[i + 1].height || availableBitrates[i + 1].height !== availableResolution) {
+              label = qualityText.replace(MACROS.RESOLUTION, availableResolution);
+              ariaLabel = label;
+            }
             break;
           case CONSTANTS.QUALITY_SELECTION.TEXT.BITRATE_ONLY:
             label = qualityText.replace(MACROS.BITRATE, availableBitrate);
