@@ -433,5 +433,8 @@ module.exports = {
       name: "OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT",
       description: "Something happened while we were trying to play your video! Click replay or simply reload your page."
     }
+  },
+  THUMBNAIL: {
+    MAX_VR_THUMBNAIL_BG_WIDTH: 380
   }
 };
