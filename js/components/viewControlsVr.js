@@ -19,9 +19,6 @@ var ViewControlsVr = React.createClass({
       this.props.controller.state.accessibilityControlsEnabled = true;
     }
 
-
-    console.log('args', arguments);
-
     this.props.controller.moveVrToDirection(isRotated, direction);
   },
 
@@ -34,7 +31,6 @@ var ViewControlsVr = React.createClass({
     this.icon = _.find(desktopContent, function (el) {
       return el.location === "mainView";
     });
-
   },
 
   /**
