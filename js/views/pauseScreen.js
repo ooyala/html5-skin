@@ -198,6 +198,7 @@ var PauseScreen = React.createClass({
             <TextTrack
               closedCaptionOptions={this.props.closedCaptionOptions}
               cueText={this.props.closedCaptionOptions.cueText}
+              direction={this.props.captionDirection}
               responsiveView={this.props.responsiveView}
             /> : null
           }

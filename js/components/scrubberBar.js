@@ -329,12 +329,27 @@ var ScrubberBar = React.createClass({
         playheadClassName += " oo-playhead-hovering";
       }
       if (!thumbnailCarousel) {
+        var vrViewingDirection = { yaw: 0, roll: 0, pitch: 0 };
+        if (this.props.controller && this.props.controller.state && this.props.controller.state.vrViewingDirection) {
+          vrViewingDirection = this.props.controller.state.vrViewingDirection;
+        }
+        var fullscreen = false;
+        if (this.props.controller && this.props.controller.state && this.props.controller.state.fullscreen) {
+          fullscreen = this.props.controller.state.fullscreen;
+        }
+        var videoVr = false;
+        if (this.props.controller && this.props.controller.videoVr) {
+          videoVr = this.props.controller.videoVr;
+        }
         thumbnailContainer = (
           <Thumbnail
            thumbnails={this.props.controller.state.thumbnails}
            hoverPosition={hoverPosition}
            duration={this.props.duration}
-           hoverTime={hoverTime > 0 ? hoverTime : 0} />
+           hoverTime={hoverTime > 0 ? hoverTime : 0}
+           vrViewingDirection={vrViewingDirection}
+           videoVr={videoVr}
+           fullscreen={fullscreen} />
         )
       }
     }

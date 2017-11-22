@@ -579,11 +579,18 @@ var Utils = {
   * @param {Object} thumbnails - metadata object containing information about thumbnails
   * @param {Number} hoverTime - time value to find thumbnail for
   * @param {Number} duration - duration of the video
+  * @param {Boolean} isVideoVr - if video is vr
   * @returns {Object} object that contains URL and index of requested thumbnail
   */
-  findThumbnail: function(thumbnails, hoverTime, duration) {
+  findThumbnail: function(thumbnails, hoverTime, duration, isVideoVr) {
     var timeSlices = thumbnails.data.available_time_slices;
     var width = thumbnails.data.available_widths[0]; //choosing the lowest size
+    if (isVideoVr && width < CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH) {
+      // it is necessary to take bigger image for showing part of the image
+      // so choose not the lowest size but bigger one, the best width is 380
+      var index = thumbnails.data.available_widths.length >= 5 ? 4 : thumbnails.data.available_widths.length - 1;
+      width = thumbnails.data.available_widths[index];
+    }
 
     var position = Math.floor((hoverTime/duration) * timeSlices.length);
     position = Math.min(position, timeSlices.length - 1);
@@ -617,7 +624,9 @@ var Utils = {
     }
 
     var selectedThumbnail = thumbnails.data.thumbnails[selectedTimeSlice][width].url;
-    return { url: selectedThumbnail, pos: selectedPosition };
+    var imageWidth = thumbnails.data.thumbnails[selectedTimeSlice][width].width;
+    var imageHeight = thumbnails.data.thumbnails[selectedTimeSlice][width].height;
+    return { url: selectedThumbnail, pos: selectedPosition, imageWidth: imageWidth, imageHeight: imageHeight };
   },
 
   /**
