@@ -119,7 +119,7 @@ module.exports = {
     FULLSCREEN: "Fullscreen",
     EXIT_FULLSCREEN: "Exit Fullscreen",
     SEEK_SLIDER: "Seek slider",
-    VOLUME_SLIDER: "Volume slider",
+    VOLUME_SLIDER: "Volume",
     VOLUME_PERCENT: MACROS.VOLUME + "% volume",
     TIME_DISPLAY: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME,
     TIME_DISPLAY_LIVE: "Live video",
@@ -131,7 +131,8 @@ module.exports = {
     STEREO_ON: "Stereoscopic",
     STEREO_OFF: "Monoscopic",
     MORE_OPTIONS: "More Options",
-    PREVIOUS_OPTIONS: "Previous Options"
+    PREVIOUS_OPTIONS: "Previous Options",
+    SLIDER_VALUE_TEXT: MACROS.PERCENT + "% " + MACROS.SETTING
   },
 
   ARIA_ROLES: {

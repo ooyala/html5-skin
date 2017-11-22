@@ -28,7 +28,8 @@ var AccessibleMenu = function(ComposedComponent) {
     onKeyDown: function(event) {
       if (
         !event.target ||
-        !event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)
+        !event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR) ||
+        event.target.getAttribute('role') === CONSTANTS.ARIA_ROLES.SLIDER
       ) {
         return;
       }
