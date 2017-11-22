@@ -96,28 +96,31 @@ var Tabs = React.createClass({
         var ref = ("tab-menu-" + (index + 1));
         var title = panel.props.title;
         var activeTabStyle = {};
+        var isSelected = this.state.tabActive === index + 1;
 
         var classes = ClassNames(
           'tabs-menu-item',
-          this.state.tabActive === (index + 1) && 'is-active',
-          'tabs-menu-item-' + index
+          'tabs-menu-item-' + index, {
+            'is-active': isSelected
+          }
         );
 
         //accent color
-        if (this.state.tabActive === (index+1) && this.props.skinConfig.general.accentColor) {
+        if (isSelected && this.props.skinConfig.general.accentColor) {
           var activeMenuColor =  "solid ";
           activeMenuColor += this.props.skinConfig.general.accentColor;
           activeTabStyle = {borderBottom: activeMenuColor};
         }
 
         return (
-          <li ref={ref} key={index} className={classes}>
+          <li ref={ref} key={index} className={classes} role={CONSTANTS.ARIA_ROLES.PRESENTATION}>
             <AccessibleButton
               ref={function(e) { this.menuButtons[index + 1] = e }.bind(this)}
               style={activeTabStyle}
               className="tabs-menu-item-btn"
               ariaLabel={title}
-              role={CONSTANTS.ARIA_ROLES.MENU_ITEM}
+              ariaChecked={isSelected}
+              role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
               onClick={this.setActive.bind(this, index + 1)}
               onMouseOver={this.highlight}
               onMouseOut={this.removeHighlight}
@@ -132,7 +135,7 @@ var Tabs = React.createClass({
       <nav
         className='tabs-navigation'
         ref={function(e) { this.tabsNavigationElement = e }.bind(this)}>
-        <ul className='tabs-menu'>{menuItems}</ul>
+        <ul className='tabs-menu' role={CONSTANTS.ARIA_ROLES.MENU}>{menuItems}</ul>
       </nav>
     );
   },
@@ -214,13 +217,19 @@ var Tabs = React.createClass({
       <div className={className}>
         {this.getMenuItems()}
         {this.getSelectedPanel()}
-        <a className={leftScrollButton} ref="leftChevron" onClick={this.handleLeftChevronClick}>
+        <a className={leftScrollButton}
+          ref="leftChevron"
+          role={CONSTANTS.ARIA_ROLES.PRESENTATION}
+          onClick={this.handleLeftChevronClick}>
           <Icon
             {...this.props}
             icon="left"
           />
         </a>
-        <a className={rightScrollButton} ref="rightChevron" onClick={this.handleRightChevronClick}>
+        <a className={rightScrollButton}
+          ref="rightChevron"
+          role={CONSTANTS.ARIA_ROLES.PRESENTATION}
+          onClick={this.handleRightChevronClick}>
           <Icon
             {...this.props}
             icon="right"

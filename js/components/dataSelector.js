@@ -94,8 +94,9 @@ var DataSelector = React.createClass({
     var dataContentBlocks = [];
     for (var i = 0; i < dataItems.length; i++) {
       //accent color
+      var isSelected = this.props.selectedData === dataItems[i];
       var selectedItemStyle = {};
-      if (this.props.selectedData == dataItems[i] && this.props.enabled && this.props.skinConfig.general.accentColor) {
+      if (isSelected && this.props.enabled && this.props.skinConfig.general.accentColor) {
         selectedItemStyle = {backgroundColor: this.props.skinConfig.general.accentColor};
       }
 
@@ -109,6 +110,7 @@ var DataSelector = React.createClass({
           className={this.setClassname(dataItems[i])}
           style={selectedItemStyle}
           ariaLabel={dataItems[i]}
+          ariaChecked={isSelected}
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
           onClick={this.handleDataSelection.bind(this, dataItems[i])}>
           <span className="oo-data">{dataItems[i]}</span>
@@ -126,12 +128,13 @@ var DataSelector = React.createClass({
     });
 
     return(
-      <div className="oo-data-selector">
+      <div className="oo-data-selector" role={CONSTANTS.ARIA_ROLES.MENU}>
 
         <AccessibleButton
           ref={function(e) {this.leftChevronBtn = e}.bind(this)}
           className={leftChevron}
           ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_OPTIONS}
+          role={CONSTANTS.ARIA_ROLES.MENU_ITEM}
           onClick={this.handleLeftChevronClick}>
           <Icon
             {...this.props}
@@ -147,6 +150,7 @@ var DataSelector = React.createClass({
           ref={function(e) {this.rightChevronBtn = e}.bind(this)}
           className={rightChevron}
           ariaLabel={CONSTANTS.ARIA_LABELS.MORE_OPTIONS}
+          role={CONSTANTS.ARIA_ROLES.MENU_ITEM}
           onClick={this.handleRightChevronClick}>
           <Icon
             {...this.props}

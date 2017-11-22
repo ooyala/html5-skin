@@ -530,14 +530,15 @@
             float: left;
             background-color: transparent;
             width: 25%;
-            height: 110px;
             min-width: 120px;
-            margin-bottom: 30px;
+            padding: 0;
+            border: none;
             cursor: pointer;
 
             .oo-text-enhancement-letter {
               color: $white;
-              height: 100%;
+              display: block;
+              height: 110px;
               text-align: center;
               font-size: 100px;
               line-height: 120px;
@@ -559,6 +560,7 @@
             }
 
             .oo-text-enhancement-label {
+              display: block;
               font-family: $font-family-roboto-condensed;
               font-size: $font-size-root;
               color: #b3b3b3;

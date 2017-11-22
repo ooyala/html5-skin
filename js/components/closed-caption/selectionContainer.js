@@ -1,4 +1,5 @@
 var React = require('react');
+var CONSTANTS = require('../../constants/constants');
 
 var SelectionContainer = React.createClass({
   render: function() {
@@ -8,7 +9,7 @@ var SelectionContainer = React.createClass({
           <div className="oo-selection-container-title">
             {this.props.title}: <span className="oo-selection-container-selection-text">{this.props.selectionText}</span>
           </div>
-          <div className="oo-selection-items-container">
+          <div className="oo-selection-items-container" role={CONSTANTS.ARIA_ROLES.MENU}>
             {this.props.children}
           </div>
         </div>

@@ -41,10 +41,11 @@ var FontSizeTab = React.createClass({
       this.props.localizableStrings
     );
     var fontItems = [];
-    for(var i = 0; i < this.state.fontSizes.length; i++) {
+    for (var i = 0; i < this.state.fontSizes.length; i++) {
       //accent color
+      var isSelected = this.props.closedCaptionOptions.fontSize === this.state.fontSizes[i];
       var selectedFontSizeStyle = {};
-      if (this.props.closedCaptionOptions.enabled && this.props.skinConfig.general.accentColor && this.props.closedCaptionOptions.fontSize == this.state.fontSizes[i]) {
+      if (this.props.closedCaptionOptions.enabled && this.props.skinConfig.general.accentColor && isSelected) {
         selectedFontSizeStyle = {color: this.props.skinConfig.general.accentColor};
       }
       var itemLabel = Utils.getLocalizedString(
@@ -58,6 +59,7 @@ var FontSizeTab = React.createClass({
           key={i}
           className="oo-font-size-container"
           ariaLabel={itemLabel}
+          ariaChecked={isSelected}
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
           onClick={this.changeFontSize.bind(this, this.state.fontSizes[i])} >
           <span
@@ -65,7 +67,9 @@ var FontSizeTab = React.createClass({
             style={selectedFontSizeStyle}>
             A
           </span>
-          <span className={this.setClassname(this.state.fontSizes[i], "label")} style={selectedFontSizeStyle}>
+          <span
+            className={this.setClassname(this.state.fontSizes[i], "label")}
+            style={selectedFontSizeStyle}>
             {itemLabel}
           </span>
         </AccessibleButton>

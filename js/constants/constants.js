@@ -135,6 +135,7 @@ module.exports = {
   },
 
   ARIA_ROLES: {
+    PRESENTATION: "presentation",
     SLIDER: "slider",
     MENU: "menu",
     MENU_ITEM: "menuitem",
