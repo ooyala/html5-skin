@@ -4,5 +4,6 @@ module.exports = {
   CURRENT_TIME: "{currentTime}",
   TOTAL_TIME: "{totalTime}",
   LEVEL: "{level}",
-  QUALITY: "{quality}"
+  RESOLUTION: "{resolution}",
+  BITRATE: "{bitrate}"
 };
