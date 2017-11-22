@@ -440,14 +440,15 @@
             float: left;
             background-color: transparent;
             width: 25%;
-            height: 110px;
             min-width: 120px;
-            margin-bottom: 30px;
+            padding: 0;
+            border: none;
             cursor: pointer;
 
             .oo-font-size-letter {
               color: $white;
-              height: 100%;
+              display: block;
+              height: 110px;
               text-align: center;
               font-family: $font-family-roboto-condensed-bold;
             }
@@ -469,6 +470,7 @@
             }
 
             .oo-font-size-label {
+              display: block;
               font-family: $font-family-roboto-condensed;
               font-size: $font-size-root;
               color: #b3b3b3;

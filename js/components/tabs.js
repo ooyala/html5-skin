@@ -2,6 +2,7 @@
 
 var React = require('react'),
     AccessibleButton = require('./accessibleButton'),
+    CONSTANTS = require('../constants/constants'),
     Utils = require('./utils'),
     ClassNames = require('classnames'),
     Icon = require('./icon');
@@ -116,6 +117,7 @@ var Tabs = React.createClass({
               style={activeTabStyle}
               className="tabs-menu-item-btn"
               ariaLabel={title}
+              role={CONSTANTS.ARIA_ROLES.MENU_ITEM}
               onClick={this.setActive.bind(this, index + 1)}
               onMouseOver={this.highlight}
               onMouseOut={this.removeHighlight}

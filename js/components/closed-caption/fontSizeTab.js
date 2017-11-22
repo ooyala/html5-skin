@@ -1,6 +1,7 @@
 var React = require('react'),
     ClassNames = require('classnames'),
     Utils = require('../utils'),
+    AccessibleButton = require('../accessibleButton'),
     CONSTANTS = require('../../constants/constants'),
     SelectionContainer = require('./selectionContainer');
 
@@ -46,18 +47,28 @@ var FontSizeTab = React.createClass({
       if (this.props.closedCaptionOptions.enabled && this.props.skinConfig.general.accentColor && this.props.closedCaptionOptions.fontSize == this.state.fontSizes[i]) {
         selectedFontSizeStyle = {color: this.props.skinConfig.general.accentColor};
       }
+      var itemLabel = Utils.getLocalizedString(
+        this.props.language,
+        CONSTANTS.SKIN_TEXT[this.state.fontSizes[i].toUpperCase().replace(" ", "_")],
+        this.props.localizableStrings
+      );
 
       fontItems.push(
-      <a className="oo-font-size-container" onClick={this.changeFontSize.bind(this, this.state.fontSizes[i])} key={i}>
-        <div className={this.setClassname(this.state.fontSizes[i], "letter") + " oo-font-size-letter-" + this.state.fontSizes[i].replace(" ", "-")} style={selectedFontSizeStyle}>A</div>
-        <div className={this.setClassname(this.state.fontSizes[i], "label")} style={selectedFontSizeStyle} >{
-          Utils.getLocalizedString(
-            this.props.language,
-            CONSTANTS.SKIN_TEXT[this.state.fontSizes[i].toUpperCase().replace(" ", "_")],
-            this.props.localizableStrings
-          )
-        }</div>
-      </a>
+        <AccessibleButton
+          key={i}
+          className="oo-font-size-container"
+          ariaLabel={itemLabel}
+          role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
+          onClick={this.changeFontSize.bind(this, this.state.fontSizes[i])} >
+          <span
+            className={this.setClassname(this.state.fontSizes[i], "letter") + " oo-font-size-letter-" + this.state.fontSizes[i].replace(" ", "-")}
+            style={selectedFontSizeStyle}>
+            A
+          </span>
+          <span className={this.setClassname(this.state.fontSizes[i], "label")} style={selectedFontSizeStyle}>
+            {itemLabel}
+          </span>
+        </AccessibleButton>
       );
     }
 
