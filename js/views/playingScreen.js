@@ -23,9 +23,9 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
-
     return {
       controlBarVisible: true,
+      isVrIconHidden: false,
       timer: null
     };
   },
@@ -34,6 +34,13 @@ var PlayingScreen = React.createClass({
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen || this.browserSupportsTouch){
       this.props.controller.startHideControlBarTimer();
+    }
+    var vrIconContainer = document.getElementById("vrIconContainer");
+    if (vrIconContainer) {
+      var listener = function() {
+        this.setState({isVrIconHidden: true});
+      };
+      vrIconContainer.addEventListener("animationend", listener.bind(this), false);
     }
   },
 
@@ -197,6 +204,21 @@ var PlayingScreen = React.createClass({
 
     var showUnmute = this.props.controller.state.volumeState.mutingForAutoplay && this.props.controller.state.volumeState.muted;
 
+    var vrIcon = null;
+    if (this.props.controller.videoVr && !this.state.isVrIconHidden) {
+      var style = {
+        "animationDuration": "3s",
+        "webkitAnimationDuration": "3s"
+      };
+      vrIcon = (
+        <div id="vrIconContainer" className="oo-state-screen-vr-container" style={style}>
+          <div className="oo-state-screen-vr-bg">
+            <Icon {...this.props} icon="vrIcon" className="oo-state-screen-vr-icon" />
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div
         className="oo-state-screen oo-playing-screen"
@@ -215,6 +237,8 @@ var PlayingScreen = React.createClass({
         onClick={this.handlePlayerClicked}
         onFocus={this.handlePlayerFocus}
       />
+
+      {vrIcon}
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 

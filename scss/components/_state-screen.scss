@@ -37,6 +37,46 @@
     filter: alpha(opacity=1);
   }
 
+  .oo-state-screen-vr {
+    &-container {
+      opacity: 1;
+      filter: alpha(opacity=100);
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      position: relative;
+      top: 50%;
+      z-index: 999;
+      @include vendor-prefixes(align-items, center);
+      @include vendor-prefixes(justify-content, center);
+      @include vendor-prefixes(transform, translateY(-50%));
+      @include vendor-prefixes(animation-name, vrIconAnimation);
+      @include vendor-prefixes(animation-duration, 3s);
+      @include vendor-prefixes(animation-delay, 2s);
+    }
+    &-bg {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      font-size: 0;
+      background-color: rgba(0,0,0,.7);
+      width: 240px;
+      height: 240px;
+      overflow: hidden;
+      @include vendor-prefixes(align-items, center);
+      @include vendor-prefixes(justify-content, center);
+      @include vendor-prefixes(border-radius, 50%);
+    }
+    &-icon {
+      position: relative;
+      top: -4px;
+      font-size: 149px;
+      line-height: 1;
+    }
+  }
+
   .oo-state-screen-poster {
     width:100%;
     top:0;
@@ -157,5 +197,27 @@
     bottom:0;
     width:100%;
     pointer-events: none;
+  }
+}
+@-webkit-keyframes vrIconAnimation {
+  0% {
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+  100% {
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
+}
+
+
+@keyframes vrIconAnimation {
+  0% {
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+  100% {
+    opacity: 0;
+    filter: alpha(opacity=0);
   }
 }

@@ -613,4 +613,15 @@
   .oo-watermark-bottom.oo-watermark-bottom-cb {
     bottom: $control-bar-height-small;
   }
+
+  .oo-state-screen-vr {
+    &-bg {
+      width: 140px;
+      height: 140px;
+    }
+    &-icon {
+      top: -2px;
+      font-size: 79px;
+    }
+  }
 }
