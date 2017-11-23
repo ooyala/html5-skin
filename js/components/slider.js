@@ -94,8 +94,7 @@ var Slider = React.createClass({
         role={CONSTANTS.ARIA_ROLES.SLIDER}
         onMouseUp={Utils.blurOnMouseUp}
         onChange={this.changeValue}
-        onClick={this.changeValue}
-        onMouseMove={this.changeValue} />
+        onClick={this.changeValue}/>
     );
   }
 });

@@ -1,5 +1,7 @@
 var React = require('react'),
-    ClassNames = require('classnames');
+    ClassNames = require('classnames'),
+    AccessibleButton = require('./accessibleButton'),
+    CONSTANTS = require('../constants/constants');
 
 var ColorSelector = React.createClass({
   setClassname: function(item){
@@ -18,26 +20,42 @@ var ColorSelector = React.createClass({
     var colorItems = [];
     for (var i = 0; i < this.props.colors.length; i++) {
       //accent color
+      var isSelected = this.props.selectedColor === this.props.colors[i];
       var activeColorStyle = {};
-      if (this.props.enabled && this.props.selectedColor == this.props.colors[i] && this.props.skinConfig.general.accentColor) {
+      if (this.props.enabled && isSelected && this.props.skinConfig.general.accentColor) {
         var selectedColorStyle =  "solid ";
         selectedColorStyle += this.props.skinConfig.general.accentColor;
         activeColorStyle = {border: selectedColorStyle};
       }
+      var ariaLabel = this.props.name + " " + this.props.colors[i];
 
       colorItems.push(
-        <div className={this.setClassname(this.props.colors[i])} key={i} style={activeColorStyle}>
-          <a className={"oo-color-item oo-color-item-" + this.props.colors[i]} onClick={this.handleColorSelection.bind(this, this.props.colors[i])}></a>
+        <div
+          key={i}
+          className={this.setClassname(this.props.colors[i])}
+          style={activeColorStyle}>
+          <AccessibleButton
+            className={"oo-color-item oo-color-item-" + this.props.colors[i]}
+            ariaLabel={ariaLabel}
+            ariaChecked={isSelected}
+            role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
+            onClick={this.handleColorSelection.bind(this, this.props.colors[i])}>
+          </AccessibleButton>
         </div>
       );
     }
 
     return (
-      <div className="oo-color-selector">
+      <div className="oo-color-selector" role={CONSTANTS.ARIA_ROLES.MENU}>
         {colorItems}
       </div>
     );
   }
 });
+
+ColorSelector.propTypes = {
+  name: React.PropTypes.string.isRequired,
+  colors: React.PropTypes.array.isRequired
+};
 
 module.exports = ColorSelector;
