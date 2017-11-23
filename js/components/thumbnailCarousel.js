@@ -26,8 +26,10 @@ var ThumbnailCarousel = React.createClass({
   },
 
   componentDidMount: function() {
-    var thumbnail = ReactDOM.findDOMNode(this.refs.thumbnail);
-    var carousel = ReactDOM.findDOMNode(this.refs.thumbnailCarousel);
+    this.props.onRef(this);
+
+    var thumbnail = ReactDOM.findDOMNode(this.refs.thumbnailCarousel);
+    var carousel = ReactDOM.findDOMNode(this.refs.thumbnail);
     var thumbnailStylePadding = thumbnail ? window.getComputedStyle(thumbnail, null).getPropertyValue("padding") : 0;
     thumbnailStylePadding = parseFloat(thumbnailStylePadding); // convert css px to number
     var thumbnailPadding = !isNaN(thumbnailStylePadding) ? thumbnailStylePadding : this.state.thumbnailPadding;
@@ -67,105 +69,10 @@ var ThumbnailCarousel = React.createClass({
         });
       }
     }
-
-    if (this.props.videoVr) {
-      this.setThumbnailSizes();
-      this.setImageSizes();
-      var yaw = this.props.vrViewingDirection.yaw;
-      var pitch = this.props.vrViewingDirection.pitch;
-      this.setCurrentViewVr(yaw, pitch);
-    }
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    if (this.props.vrViewingDirection !== nextProps.vrViewingDirection && this.props.videoVr) {
-      var yaw = nextProps.vrViewingDirection.yaw;
-      var pitch = nextProps.vrViewingDirection.pitch;
-      this.setCurrentViewVr(yaw, pitch);
-    }
-  },
-
-  componentDidUpdate: function(prevProps, prevState) {
-    if (this.props.videoVr) {
-      var newThumbnailWidth = ReactDOM.findDOMNode(this.refs.thumbnailCarousel).clientWidth;
-      var newThumbnailHeight = ReactDOM.findDOMNode(this.refs.thumbnailCarousel).clientHeight;
-      if (newThumbnailWidth !== this.thumbnailWidth || newThumbnailHeight !== this.thumbnailHeight) {
-        this.thumbnailWidth = newThumbnailWidth;
-        this.thumbnailHeight = newThumbnailHeight;
-        var yaw = this.props.vrViewingDirection.yaw;
-        var pitch = this.props.vrViewingDirection.pitch;
-        this.setCurrentViewVr(yaw, pitch);
-      }
-    }
-  },
-
-  setThumbnailSizes: function() {
-    var thumbnailWidth = ReactDOM.findDOMNode(this.refs.thumbnailCarousel).clientWidth;
-    var thumbnailHeight = ReactDOM.findDOMNode(this.refs.thumbnailCarousel).clientHeight;
-    if (thumbnailWidth) {
-      this.thumbnailWidth = thumbnailWidth;
-    }
-    if (thumbnailHeight) {
-      this.thumbnailHeight = thumbnailHeight;
-    }
-  },
-
-  setImageSizes: function() {
-    var thumbnail = Utils.findThumbnail(this.props.thumbnails, this.props.hoverTime, this.props.duration, this.props.videoVr);
-    if (thumbnail !== null && typeof thumbnail === 'object') {
-      var imageWidth = thumbnail.imageWidth;
-      var imageHeight = thumbnail.imageHeight;
-      if (imageWidth && imageHeight) {
-        if (imageWidth > 380) {
-          imageWidth = 380;
-          imageHeight = thumbnail.imageHeight * 380 / thumbnail.imageWidth;
-        }
-        this.imageWidth = imageWidth;
-        this.imageHeight = imageHeight;
-      }
-    }
-  },
-
-  /**x
-   * @description set positions for a thumbnail image when a video is vr
-   * @param {Number} yaw - rotation around the vertical axis in degrees (returns after changing direction)
-   * @param {Number} pitch - rotation around the horizontal axis in degrees (returns after changing direction)
-   * @private
-   */
-  setCurrentViewVr: function(yaw, pitch) {
-    yaw = Utils.ensureNumber(yaw, 0);
-    pitch = Utils.ensureNumber(pitch, 0);
-    var imageWidth = this.imageWidth;
-    var imageHeight = this.imageHeight;
-    var thumbnailWidth = this.thumbnailWidth;
-    var thumbnailHeight = this.thumbnailHeight;
-    yaw = this.getCurrentYawVr(yaw);
-    pitch = pitch >= 360 ? 0 : pitch;
-
-    var positionY = -(((imageHeight - thumbnailHeight) / 2) - pitch);
-    var bottomCoordinate = -(imageHeight - thumbnailHeight);
-    if (positionY > 0) {
-      positionY = 0;
-    } else if (positionY < bottomCoordinate) {
-      positionY = bottomCoordinate;
-    }
-    var positionX = -(imageWidth - thumbnailWidth / 2 - imageWidth * yaw / 360);
-    this.positionY = positionY;
-    this.positionX = positionX;
-  },
-
-  /**
-   * @description return current coefficient of the yaw if yaw > 360 or yaw < -360 degrees
-   * @param {Number} yaw - angle in degrees
-   * @private
-   * @returns {number} coefficient showing how many times to take 360 degrees
-   */
-  getCurrentYawVr: function(yaw) {
-    var k = yaw <= -360 ? -1 : 1;
-    var ratio = k * yaw / 360;
-    ratio = ~~ratio;
-    var coef = yaw - k * ratio * 360;
-    return coef;
+  componentWillUnmount: function() {
+    this.props.onRef(undefined);
   },
 
   findThumbnailsAfter: function(data) {
@@ -183,7 +90,7 @@ var ThumbnailCarousel = React.createClass({
         if (Utils.isValidString(thumbUrl)) {
           thumbStyle.backgroundImage = "url('" + thumbUrl + "')";
         }
-        thumbnailsAfter.push(<div className="oo-thumbnail-carousel-image" key={i} ref="thumbnail" style={thumbStyle}></div>);
+        thumbnailsAfter.push(<div className="oo-thumbnail-carousel-image" key={i} ref="thumbnailCarousel" style={thumbStyle}></div>);
       }
     }
     return thumbnailsAfter;
@@ -204,7 +111,7 @@ var ThumbnailCarousel = React.createClass({
         if (Utils.isValidString(thumbUrl)) {
           thumbStyle.backgroundImage = "url('" + thumbUrl + "')";
         }
-        thumbnailsBefore.push(<div className="oo-thumbnail-carousel-image" key={i} ref="thumbnail" style={thumbStyle}></div>);
+        thumbnailsBefore.push(<div className="oo-thumbnail-carousel-image" key={i} ref="thumbnailCarousel" style={thumbStyle}></div>);
       }
     }
     return thumbnailsBefore;
@@ -235,8 +142,8 @@ var ThumbnailCarousel = React.createClass({
     }
 
     if (this.props.videoVr) {
-      thumbnailStyle.backgroundSize = this.imageWidth + "px " + this.imageHeight + "px";
-      thumbnailStyle.backgroundPosition = this.positionX + "px " + this.positionY + "px";
+      thumbnailStyle.backgroundSize = this.props.imageWidth + "px " + this.props.imageHeight + "px";
+      thumbnailStyle.backgroundPosition = this.props.positionX + "px " + this.props.positionY + "px";
       thumbnailStyle.repeat = "repeat no-repeat";
       thumbnailClassName += " oo-thumbnail-vr";
     }
@@ -244,10 +151,13 @@ var ThumbnailCarousel = React.createClass({
     var time = isFinite(parseInt(this.props.hoverTime)) ? Utils.formatSeconds(parseInt(this.props.hoverTime)) : null;
 
     console.log('BBB thumbnailStyle', thumbnailStyle);
+    if (this.refs.thumbnail) {
+      console.log('BBB this.refs.thumbnail.style', this.refs.thumbnail.style);
+    }
     return (
       <div className="oo-scrubber-carousel-container">
         {thumbnailsBefore}
-        <div className={thumbnailClassName} ref="thumbnailCarousel" style={thumbnailStyle}>
+        <div className={thumbnailClassName} ref="thumbnail" style={thumbnailStyle}>
           <div className="oo-thumbnail-carousel-time">{time}</div>
         </div>
         {thumbnailsAfter}
