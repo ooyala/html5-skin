@@ -32,6 +32,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.videoVrSource = null;
     this.videoVr = false;
     this.captionDirection = '';
+    this.isNewVideo = true;
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
@@ -616,6 +617,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isInitialPlay = true;
       this.state.initialPlayHasOccurred = true;
       this.startHideControlBarTimer();
+      this.isNewVideo = true;
     },
 
     onVcPlay: function(event, source) {

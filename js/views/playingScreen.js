@@ -1,21 +1,21 @@
 /********************************************************************
-  PLAYING SCREEN
-*********************************************************************/
+ PLAYING SCREEN
+ *********************************************************************/
 var React = require('react'),
-    ReactDOM = require('react-dom'),
-    ControlBar = require('../components/controlBar'),
-    AdOverlay = require('../components/adOverlay'),
-    ClassNames = require('classnames'),
-    UpNextPanel = require('../components/upNextPanel'),
-    Spinner = require('../components/spinner'),
-    TextTrack = require('../components/textTrackPanel'),
-    Watermark = require('../components/watermark'),
-    ResizeMixin = require('../mixins/resizeMixin'),
-    CONSTANTS = require('../constants/constants'),
-    ViewControlsVr = require('../components/viewControlsVr'),
-    Icon = require('../components/icon'),
-    Tooltip = require('../components/tooltip'),
-    UnmuteIcon = require('../components/unmuteIcon');
+  ReactDOM = require('react-dom'),
+  ControlBar = require('../components/controlBar'),
+  AdOverlay = require('../components/adOverlay'),
+  ClassNames = require('classnames'),
+  UpNextPanel = require('../components/upNextPanel'),
+  Spinner = require('../components/spinner'),
+  TextTrack = require('../components/textTrackPanel'),
+  Watermark = require('../components/watermark'),
+  ResizeMixin = require('../mixins/resizeMixin'),
+  CONSTANTS = require('../constants/constants'),
+  ViewControlsVr = require('../components/viewControlsVr'),
+  Icon = require('../components/icon'),
+  Tooltip = require('../components/tooltip'),
+  UnmuteIcon = require('../components/unmuteIcon');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -23,9 +23,9 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
-
     return {
       controlBarVisible: true,
+      isVrNotificationHidden: false,
       timer: null
     };
   },
@@ -35,6 +35,7 @@ var PlayingScreen = React.createClass({
     if (this.isMobile || this.props.fullscreen || this.browserSupportsTouch){
       this.props.controller.startHideControlBarTimer();
     }
+    this.handleVrAnimationEnd("vrNotificatioContainer", "isVrNotificationHidden");
   },
 
   componentWillUpdate: function(nextProps) {
@@ -55,6 +56,27 @@ var PlayingScreen = React.createClass({
 
   componentWillUnmount: function () {
     this.props.controller.cancelTimer();
+  },
+
+  /**
+   * @description need to show special information labels (or/and icons).
+   * The labels should be animated.
+   * Need to remove the labels (icons) after animation
+   * Animation should be only one time
+   * @param id - unique identificator of the label(icon)
+   * @param stateName - name for a state which indicates about necessary to show the label(icon)
+   */
+  handleVrAnimationEnd: function(id, stateName) {
+    var vrContainer = document.getElementById(id);
+    if (vrContainer) {
+      var listener = function() {
+        var newState = {};
+        newState[stateName] = true;
+        this.setState(newState);
+        this.props.controller.isNewVideo = false;
+      };
+      vrContainer.addEventListener("animationend", listener.bind(this), false);
+    }
   },
 
   handleResize: function() {
@@ -180,14 +202,14 @@ var PlayingScreen = React.createClass({
   render: function() {
     var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
       <AdOverlay {...this.props}
-        overlay={this.props.controller.state.adOverlayUrl}
-        showOverlay={this.props.controller.state.showAdOverlay}
-        showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}/> : null;
+                 overlay={this.props.controller.state.adOverlayUrl}
+                 showOverlay={this.props.controller.state.showAdOverlay}
+                 showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}/> : null;
 
     var upNextPanel = (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
       <UpNextPanel {...this.props}
-        controlBarVisible={this.state.controlBarVisible}
-        currentPlayhead={this.props.currentPlayhead}/> : null;
+                   controlBarVisible={this.state.controlBarVisible}
+                   currentPlayhead={this.props.currentPlayhead}/> : null;
 
     var viewControlsVr = this.props.controller.videoVr ?
       <ViewControlsVr
@@ -197,6 +219,31 @@ var PlayingScreen = React.createClass({
 
     var showUnmute = this.props.controller.state.volumeState.mutingForAutoplay && this.props.controller.state.volumeState.muted;
 
+    var vrNotification = null;
+    if (this.props.controller.state.config.isVrAnimationEnabled !== null &&
+      typeof this.props.controller.state.config.isVrAnimationEnabled === "object" &&
+      this.props.controller.state.config.isVrAnimationEnabled.vrNotification &&
+      this.props.controller.videoVr &&
+      !this.state.isVrNotificationHidden &&
+      this.props.controller.isNewVideo) {
+      var style = {};
+      var defaultDuration = 3;
+      if (this.props.controller.state.config.animationDurations !== undefined &&
+        this.props.controller.state.config.animationDurations.vrIcon !== undefined &&
+        Utils.ensureNumber(this.props.controller.state.config.animationDurations.vrNotification, defaultDuration)) {
+        var duration = this.props.controller.state.config.animationDurations.vrNotification + "s";
+        style = {
+          "animationDuration": duration,
+          "webkitAnimationDuration": duration
+        };
+      }
+      vrNotification = (
+        <div id="vrNotificatioContainer" className="oo-state-screen-vr-notification-container">
+          <p className="oo-state-screen-vr-notification" style={style}>{"Select and drag to look around"}</p>
+        </div>
+      );
+    }
+
     return (
       <div
         className="oo-state-screen oo-playing-screen"
@@ -205,48 +252,50 @@ var PlayingScreen = React.createClass({
         onMouseOut={this.hideControlBar}
         onKeyDown={this.handleKeyDown}
       >
-      <div
-        className="oo-state-screen-selectable"
-        onMouseDown={this.handlePlayerMouseDown}
-        onMouseUp={this.handlePlayerMouseUp}
-        onMouseMove={this.handlePlayerMouseMove}
-        onMouseLeave={this.handlePlayerMouseLeave}
-        onTouchEnd={this.handleTouchEnd}
-        onClick={this.handlePlayerClicked}
-        onFocus={this.handlePlayerFocus}
-      />
+        <div
+          className="oo-state-screen-selectable"
+          onMouseDown={this.handlePlayerMouseDown}
+          onMouseUp={this.handlePlayerMouseUp}
+          onMouseMove={this.handlePlayerMouseMove}
+          onMouseLeave={this.handlePlayerMouseLeave}
+          onTouchEnd={this.handleTouchEnd}
+          onClick={this.handlePlayerClicked}
+          onFocus={this.handlePlayerFocus}
+        />
 
-      <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
+        {vrNotification}
 
-      {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
+        <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
-      {viewControlsVr}
+        {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
 
-      <div className="oo-interactive-container" onFocus={this.handleFocus}>
+        {viewControlsVr}
 
-        {this.props.closedCaptionOptions.enabled ?
-          <TextTrack
-            closedCaptionOptions={this.props.closedCaptionOptions}
-            cueText={this.props.closedCaptionOptions.cueText}
-            direction={this.props.captionDirection}
-            responsiveView={this.props.responsiveView}
-          /> : null
-        }
+        <div className="oo-interactive-container" onFocus={this.handleFocus}>
 
-        {adOverlay}
+          {this.props.closedCaptionOptions.enabled ?
+            <TextTrack
+              closedCaptionOptions={this.props.closedCaptionOptions}
+              cueText={this.props.closedCaptionOptions.cueText}
+              direction={this.props.captionDirection}
+              responsiveView={this.props.responsiveView}
+            /> : null
+          }
 
-        {upNextPanel}
+          {adOverlay}
 
-        <ControlBar {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-          playerState={this.props.playerState}
-          isLiveStream={this.props.isLiveStream} />
+          {upNextPanel}
+
+          <ControlBar {...this.props}
+                      controlBarVisible={this.state.controlBarVisible}
+                      playerState={this.props.playerState}
+                      isLiveStream={this.props.isLiveStream} />
+
+        </div>
+
+        {showUnmute ? <UnmuteIcon {...this.props}/> : null}
 
       </div>
-
-      {showUnmute ? <UnmuteIcon {...this.props}/> : null}
-
-    </div>
     );
   }
 });
