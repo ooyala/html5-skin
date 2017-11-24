@@ -159,3 +159,71 @@
     pointer-events: none;
   }
 }
+
+.oo-state-screen-vr-notification {
+  position: relative;
+  top: 0;
+  max-width: 90%;
+  border-radius: 28px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  background-color: rgba(0,0,0,.7);
+  padding: 11px 30px;
+  margin: 0;
+  will-change: transform, top, opacity;
+  @include vendor-prefixes(transform, translateZ(0));
+  @include vendor-prefixes(animation-name, vrNotificationAnimation);
+  @include vendor-prefixes(animation-duration, 5s);
+  @include vendor-prefixes(animation-delay, 1s);
+  &-container {
+    font-family: Roboto, "Open Sans", sans-serif;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    @include vendor-prefixes(justify-content, center);
+  }
+}
+
+@-webkit-keyframes vrNotificationAnimation {
+  0% {
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+  60% {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    top: 60px;
+    @include vendor-prefixes(transform, scale(1));
+  }
+  100% {
+    opacity: 0;
+    filter: alpha(opacity=0);
+    top: 60px;
+    @include vendor-prefixes(transform, scale(.2));
+  }
+}
+
+
+@keyframes vrNotificationAnimation {
+  0% {
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+  60% {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    top: 60px;
+    @include vendor-prefixes(transform, scale(1));
+  }
+  100% {
+    opacity: 0;
+    filter: alpha(opacity=0);
+    top: 60px;
+    @include vendor-prefixes(transform, scale(.2));
+  }
+}
