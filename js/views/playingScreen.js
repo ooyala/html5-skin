@@ -252,16 +252,16 @@ var PlayingScreen = React.createClass({
         onMouseOut={this.hideControlBar}
         onKeyDown={this.handleKeyDown}
       >
-        <div
-          className="oo-state-screen-selectable"
-          onMouseDown={this.handlePlayerMouseDown}
-          onMouseUp={this.handlePlayerMouseUp}
-          onMouseMove={this.handlePlayerMouseMove}
-          onMouseLeave={this.handlePlayerMouseLeave}
-          onTouchEnd={this.handleTouchEnd}
-          onClick={this.handlePlayerClicked}
-          onFocus={this.handlePlayerFocus}
-        />
+      <div
+        className="oo-state-screen-selectable"
+        onMouseDown={this.handlePlayerMouseDown}
+        onMouseUp={this.handlePlayerMouseUp}
+        onMouseMove={this.handlePlayerMouseMove}
+        onMouseLeave={this.handlePlayerMouseLeave}
+        onTouchEnd={this.handleTouchEnd}
+        onClick={this.handlePlayerClicked}
+        onFocus={this.handlePlayerFocus}
+      />
 
         {vrNotification}
 
