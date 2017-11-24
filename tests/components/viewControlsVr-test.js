@@ -116,7 +116,7 @@ describe('viewControlsVr', function () {
     var DOM = TestUtils.renderIntoDocument( <ViewControlsVr {...mockProps}/> );
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
     
-    expect(buttons.length).toBe(4);
+    expect(buttons.length).toBe(5);
   });
   
   it('check condition: if video does not support vr360 then viewControlsVr does not exist', function () {
