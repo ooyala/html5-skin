@@ -617,4 +617,15 @@
   .oo-state-screen-vr-notification {
     font-size: 1em;
   }
+
+  .oo-state-screen-vr {
+    &-bg {
+      width: 140px;
+      height: 140px;
+    }
+    &-icon {
+      top: -2px;
+      font-size: 79px;
+    }
+  }
 }
