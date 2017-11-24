@@ -18,6 +18,7 @@ var ViewControlsVr = React.createClass({
       e.cancelBubble = true; // IE
       this.props.controller.state.accessibilityControlsEnabled = true;
     }
+
     this.props.controller.moveVrToDirection(isRotated, direction);
   },
 
@@ -30,7 +31,6 @@ var ViewControlsVr = React.createClass({
     this.icon = _.find(desktopContent, function (el) {
       return el.location === "mainView";
     });
-
   },
 
   /**
@@ -83,6 +83,7 @@ var ViewControlsVr = React.createClass({
         <DirectionControlVr {...this.props} handleVrViewControlsClick = {this.handleVrViewControlsClick} dir = "right"/>
         <DirectionControlVr {...this.props} handleVrViewControlsClick = {this.handleVrViewControlsClick} dir = "up"/>
         <DirectionControlVr {...this.props} handleVrViewControlsClick = {this.handleVrViewControlsClick} dir = "down"/>
+        <DirectionControlVr {...this.props} handleVrViewControlsClick = {this.handleVrViewControlsClick} dir = "init"/>
       </div>);
   }
 });
