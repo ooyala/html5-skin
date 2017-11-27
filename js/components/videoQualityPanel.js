@@ -70,6 +70,16 @@ var VideoQualityPanel = React.createClass({
     var bitrateButtons = [];
     var isSelected = false;
     var label = '';
+    var availableResolution = null;
+    var availableBitrate = null;
+    var wideFormat = false;
+    var qualityTextFormat = this.props.skinConfig.controlBar && this.props.skinConfig.controlBar.qualitySelection &&
+                            this.props.skinConfig.controlBar.qualitySelection.format ?
+                            this.props.skinConfig.controlBar.qualitySelection.format : CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE;
+    var showResolution = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.RESOLUTION) >= 0;
+    var showBitrate = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE) >= 0;
+    var qualityText = null;
+    var ariaLabel = null;
 
     //available bitrates
     for (var i = 0; i < availableBitrates.length; i++) {
@@ -84,27 +94,70 @@ var VideoQualityPanel = React.createClass({
       if (availableBitrates[i].id == 'auto') {
         this.addAutoButton(bitrateButtons);
       } else {
-        if (typeof availableBitrates[i].bitrate === 'number') {
-          label = Math.round(availableBitrates[i].bitrate/1000) + ' kbps';
-        } else {
-          label = availableBitrates[i].bitrate;
+        label = null;
+        availableResolution = null;
+        availableBitrate = null;
+        qualityText = null;
+        ariaLabel = null;
+
+        if (typeof availableBitrates[i].height === 'number') {
+          availableResolution = availableBitrates[i].height;
         }
-        var ariaLabel = CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i).replace(MACROS.QUALITY, label);
-        bitrateButtons.push(
-          <li key={i} role="presentation">
-            <AccessibleButton
-              key={i}
-              className={qualityBtn}
-              style={selectedBitrateStyle}
-              focusId={CONSTANTS.FOCUS_IDS.QUALITY_LEVEL + i}
-              role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
-              ariaLabel={ariaLabel}
-              ariaChecked={isSelected}
-              onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>
-              {label}
-            </AccessibleButton>
-          </li>
-        );
+
+        if (typeof availableBitrates[i].bitrate === 'number') {
+          var suffix = 'kbps';
+          availableBitrate = Math.round(availableBitrates[i].bitrate/1000);
+          if (availableBitrate >= 1000) {
+            availableBitrate = Math.round(availableBitrate/10) / 100;
+            suffix = 'mbps';
+          }
+          availableBitrate += ' ' + suffix;
+        } else {
+          availableBitrate = availableBitrates[i].bitrate;
+        }
+
+        if (showResolution && showBitrate && typeof availableResolution === 'number' && availableBitrate) {
+          qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_BITRATE;
+        } else if (showBitrate && availableBitrate) {
+          qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.BITRATE_ONLY;
+        } else if (showResolution && typeof availableResolution === 'number') {
+          qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY;
+        }
+
+        switch(qualityText) {
+          case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_BITRATE:
+            wideFormat = true;
+            label = qualityText.replace(MACROS.BITRATE, availableBitrate).replace(MACROS.RESOLUTION, availableResolution);
+            ariaLabel = label;
+            break;
+          case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY:
+            //TODO: Confirm with product about how to handle multiple resolutions
+            label = qualityText.replace(MACROS.RESOLUTION, availableResolution);
+            ariaLabel = label;
+            break;
+          case CONSTANTS.QUALITY_SELECTION.TEXT.BITRATE_ONLY:
+            label = qualityText.replace(MACROS.BITRATE, availableBitrate);
+            ariaLabel = CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i).replace(MACROS.BITRATE, availableBitrate);
+            break;
+        }
+
+        if (label) {
+          bitrateButtons.push(
+            <li key={i} role="presentation">
+              <AccessibleButton
+                key={i}
+                className={qualityBtn}
+                style={selectedBitrateStyle}
+                focusId={CONSTANTS.FOCUS_IDS.QUALITY_LEVEL + i}
+                role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
+                ariaLabel={ariaLabel}
+                ariaChecked={isSelected}
+                onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>
+                {label}
+              </AccessibleButton>
+            </li>
+          );
+        }
       }
     }
 
@@ -115,10 +168,15 @@ var VideoQualityPanel = React.createClass({
       'oo-mobile-fullscreen': !this.props.popover && this.props.controller.state.isMobile && (this.props.controller.state.fullscreen || this.props.controller.state.isFullWindow)
     });
 
+    var screenContentClass = ClassNames({
+      'oo-quality-screen-content': true,
+      'oo-quality-screen-content-wide': wideFormat
+    });
+
     return (
       <div className={qualityScreenClass}>
         <ScrollArea
-          className="oo-quality-screen-content"
+          className={screenContentClass}
           speed={this.props.popover ? 0.6 : 1}
           horizontal={!this.props.popover}>
           <ul
