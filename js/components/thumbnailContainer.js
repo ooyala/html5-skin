@@ -34,7 +34,11 @@ var ThumbnailContainer = React.createClass({
         thumbnailWidth: this.thumbnailWidth,
         thumbnailHeight: this.thumbnailHeight
       };
-      this.setBgPositionVr(params);
+      var positions = this.setBgPositionVr(params);
+      if (positions) {
+        this.positionX = positions.positionX;
+        this.positionY = positions.positionY;
+      }
     }
   },
   componentWillReceiveProps: function(nextProps) {
@@ -49,7 +53,11 @@ var ThumbnailContainer = React.createClass({
         thumbnailWidth: this.thumbnailWidth,
         thumbnailHeight: this.thumbnailHeight
       };
-      this.setBgPositionVr(params);
+      var positions = this.setBgPositionVr(params);
+      if (positions) {
+        this.positionX = positions.positionX;
+        this.positionY = positions.positionY;
+      }
     }
   },
   componentDidUpdate: function(prevProps, prevState) {
@@ -71,7 +79,11 @@ var ThumbnailContainer = React.createClass({
               thumbnailWidth: this.thumbnailWidth,
               thumbnailHeight: this.thumbnailHeight
             };
-            this.setBgPositionVr(params);
+            var positions = this.setBgPositionVr(params);
+            if (positions) {
+              this.positionX = positions.positionX;
+              this.positionY = positions.positionY;
+            }
           }
         }
       }
@@ -119,10 +131,11 @@ var ThumbnailContainer = React.createClass({
    * - {Number} thumbnailWidth - width of thumbnail image
    * - {Number} thumbnailHeight - height of thumbnail image
    * @private
+   * @returns {object} object with positionX, positionY
    */
   setBgPositionVr: function(params) {
     if (!params) {
-      return;
+      return null;
     }
     var yaw = Utils.ensureNumber(params.yaw, 0);
     var pitch = Utils.ensureNumber(params.pitch, 0);
@@ -141,8 +154,7 @@ var ThumbnailContainer = React.createClass({
       positionY = bottomCoordinate;
     }
     var positionX = -(imageWidth - thumbnailWidth / 2 - imageWidth * yaw / 360);
-    this.positionY = positionY;
-    this.positionX = positionX;
+    return {positionX: positionX, positionY: positionY}
   },
 
   /**
