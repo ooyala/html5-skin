@@ -26,14 +26,30 @@ var ThumbnailContainer = React.createClass({
       this.setImageSizes();
       var yaw = this.props.vrViewingDirection.yaw;
       var pitch = this.props.vrViewingDirection.pitch;
-      this.setCurrentViewVr(yaw, pitch);
+      var params = {
+        yaw: yaw,
+        pitch: pitch,
+        imageWidth: this.imageWidth,
+        imageHeight: this.imageHeight,
+        thumbnailWidth: this.thumbnailWidth,
+        thumbnailHeight: this.thumbnailHeight
+      };
+      this.setBgPositionVr(params);
     }
   },
   componentWillReceiveProps: function(nextProps) {
     if (this.props.vrViewingDirection !== nextProps.vrViewingDirection && this.props.videoVr) {
       var yaw = nextProps.vrViewingDirection.yaw;
       var pitch = nextProps.vrViewingDirection.pitch;
-      this.setCurrentViewVr(yaw, pitch);
+      var params = {
+        yaw: yaw,
+        pitch: pitch,
+        imageWidth: this.imageWidth,
+        imageHeight: this.imageHeight,
+        thumbnailWidth: this.thumbnailWidth,
+        thumbnailHeight: this.thumbnailHeight
+      };
+      this.setBgPositionVr(params);
     }
   },
   componentDidUpdate: function(prevProps, prevState) {
@@ -47,7 +63,15 @@ var ThumbnailContainer = React.createClass({
             this.thumbnailHeight = newThumbnailHeight;
             var yaw = this.props.vrViewingDirection.yaw;
             var pitch = this.props.vrViewingDirection.pitch;
-            this.setCurrentViewVr(yaw, pitch);
+            var params = {
+              yaw: yaw,
+              pitch: pitch,
+              imageWidth: this.imageWidth,
+              imageHeight: this.imageHeight,
+              thumbnailWidth: this.thumbnailWidth,
+              thumbnailHeight: this.thumbnailHeight
+            };
+            this.setBgPositionVr(params);
           }
         }
       }
@@ -87,17 +111,25 @@ var ThumbnailContainer = React.createClass({
 
   /**x
    * @description set positions for a thumbnail image when a video is vr
-   * @param {Number} yaw - rotation around the vertical axis in degrees (returns after changing direction)
-   * @param {Number} pitch - rotation around the horizontal axis in degrees (returns after changing direction)
+   * @param {Number} params - object with keys:
+   * - {Number} yaw - rotation around the vertical axis in degrees (returns after changing direction)
+   * - {Number} pitch - rotation around the horizontal axis in degrees (returns after changing direction)
+   * - {Number} imageWidth - width of bg image
+   * - {Number} imageHeight - height of bg image
+   * - {Number} thumbnailWidth - width of thumbnail image
+   * - {Number} thumbnailHeight - height of thumbnail image
    * @private
    */
-  setCurrentViewVr: function(yaw, pitch) {
-    yaw = Utils.ensureNumber(yaw, 0);
-    pitch = Utils.ensureNumber(pitch, 0);
-    var imageWidth = this.imageWidth;
-    var imageHeight = this.imageHeight;
-    var thumbnailWidth = this.thumbnailWidth;
-    var thumbnailHeight = this.thumbnailHeight;
+  setBgPositionVr: function(params) {
+    if (!params) {
+      return;
+    }
+    var yaw = Utils.ensureNumber(params.yaw, 0);
+    var pitch = Utils.ensureNumber(params.pitch, 0);
+    var imageWidth = Utils.ensureNumber(params.imageWidth, 0);
+    var imageHeight = Utils.ensureNumber(params.imageHeight, 0);
+    var thumbnailWidth = Utils.ensureNumber(params.thumbnailWidth, 0); //this.thumbnailWidth;
+    var thumbnailHeight = Utils.ensureNumber(params.thumbnailHeight, 0); //this.thumbnailHeight;
     yaw = this.getCurrentYawVr(yaw);
     pitch = pitch >= 360 ? 0 : pitch;
 
@@ -173,6 +205,7 @@ var ThumbnailContainer = React.createClass({
           positionX={this.positionX}
           imageWidth={this.imageWidth}
           imageHeight={this.imageHeight}
+          setBgPositionVr={this.setBgPositionVr}
         />
     } else {
       thumbnail = (

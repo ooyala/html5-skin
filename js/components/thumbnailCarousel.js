@@ -86,9 +86,15 @@ var ThumbnailCarousel = React.createClass({
           left: left,
           top: data.top
         };
-        var thumbUrl = data.thumbnails.data.thumbnails[data.timeSlices[i]][data.width].url;
+        var thumb = data.thumbnails.data.thumbnails[data.timeSlices[i]][data.width];
+        var thumbUrl =thumb.url;
         if (Utils.isValidString(thumbUrl)) {
           thumbStyle.backgroundImage = "url('" + thumbUrl + "')";
+        }
+        if (this.props.videoVr) {
+          var bgWidth = thumb.width;
+          thumbStyle.backgroundRepeat = "repeat no-repeat";
+          thumbStyle.backgroundSize = "";
         }
         thumbnailsAfter.push(<div className="oo-thumbnail-carousel-image" key={i} ref="thumbnailCarousel" style={thumbStyle}></div>);
       }
