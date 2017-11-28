@@ -23,10 +23,10 @@ var ViewControlsVr = React.createClass({
   },
 
   /**
-   * @method ViewControlsVr#_setIconSymbol
+   * @method ViewControlsVr#_setupIconSymbol
    * @private
    */
-  _setIconSymbol: function () {
+  _setupIconSymbol: function () {
     var desktopContent = this.props.skinConfig.buttons.desktopContent;
     this.icon = _.find(desktopContent, function (el) {
       return el.location === "mainView";
@@ -34,10 +34,10 @@ var ViewControlsVr = React.createClass({
   },
 
   /**
-   * @method ViewControlsVr#_setSubstrateSymbol
+   * @method ViewControlsVr#_setupBackgroundSymbol
    * @private
    */
-  _setSubstrateSymbol: function () {
+  _setupBackgroundSymbol: function () {
     if(this.icon){
       if(this.icon.name === 'arrowsBlack'){
         this.substrateIcon = 'circleArrowsBlack';
@@ -66,8 +66,8 @@ var ViewControlsVr = React.createClass({
           return;
         }
 
-        this._setIconSymbol();
-        this._setSubstrateSymbol();
+        this._setupIconSymbol();
+        this._setupBackgroundSymbol();
       }
     }
   },
