@@ -77,7 +77,7 @@ var PlayingScreen = React.createClass({
         var newState = {};
         newState[stateName] = true;
         this.setState(newState);
-        this.props.controller.isNewVideo = false;
+        this.props.controller.isNewVrVideo = false;
       };
       vrContainer.addEventListener("animationend", listener.bind(this), false);
     }
@@ -205,17 +205,17 @@ var PlayingScreen = React.createClass({
 
   /**
    *
-   * @param vrKey - key for durection in config
+   * @param vrDuration - key for duraction in config
    * @param defaultDuration - default value for duration
    * @returns {object} empty object or object with animationDuration
    */
-  setAnimationDuration: function(vrKey, defaultDuration) {
+  setAnimationDuration: function(vrDuration, defaultDuration) {
     var style = {};
     defaultDuration = Utils.ensureNumber(defaultDuration, 3);
     if (this.props.controller.state.config.animationDurations !== null &&
       typeof this.props.controller.state.config.animationDurations === 'object' &&
-      this.props.controller.state.config.animationDurations[vrKey] !== undefined) {
-      var duration = Utils.ensureNumber(this.props.controller.state.config.animationDurations[vrKey], defaultDuration) + "s";
+      this.props.controller.state.config.animationDurations[vrDuration] !== undefined) {
+      var duration = Utils.ensureNumber(this.props.controller.state.config.animationDurations[vrDuration], defaultDuration) + "s";
       style = {
         "animationDuration": duration,
         "webkitAnimationDuration": duration
@@ -250,8 +250,8 @@ var PlayingScreen = React.createClass({
       this.props.controller.state.config.isVrAnimationEnabled.vrNotification &&
       this.props.controller.videoVr &&
       !this.state.isVrNotificationHidden &&
-      this.props.controller.isNewVideo) {
-      //@Todo: When we know about the rules for vrIcon, change checking "if isNewVideo"
+      this.props.controller.isNewVrVideo) {
+      //@Todo: When we know about the rules for vrIcon, change checking "if isNewVrVideo"
       var defaultDuration = 5;
       var style = this.setAnimationDuration("vrNotification", defaultDuration);
       vrNotification = (
@@ -267,7 +267,7 @@ var PlayingScreen = React.createClass({
       this.props.controller.state.config.isVrAnimationEnabled.vrIcon &&
       this.props.controller.videoVr &&
       !this.state.isVrIconHidden &&
-      this.props.controller.isNewVideo) {
+      this.props.controller.isNewVrVideo) {
       var defaultDuration = 3;
       var style = this.setAnimationDuration("vrIcon", defaultDuration);
       vrIcon = (
