@@ -18,6 +18,7 @@ var Utils = require('../../js/components/utils');
 // start unit test
 describe('VideoQualityPanel', function () {
   var selectedBitrate, mockController, mockSkinConfig, mockProps;
+  var selectedBitrateIdHistory = [];
   var availableBitrates = [{"id":"auto", "bitrate":0, "height":0}, {"id":"1", "bitrate":1000, "height":10}, {"id":"2", "bitrate":2000, "height":20},
                            {"id":"3", "bitrate":3000, "height":30}, {"id":"4", "bitrate":4000, "height":40}, {"id":"5", "bitrate":5000, "height":50},
                            {"id":"6", "bitrate":1000000, "height":1000}];
@@ -26,6 +27,7 @@ describe('VideoQualityPanel', function () {
   var bitrateResolutionLabels = ['10p (1 kbps)','20p (2 kbps)','30p (3 kbps)','40p (4 kbps)','50p (5 kbps)','1000p (1 mbps)'];
 
   beforeEach(function() {
+    selectedBitrateIdHistory = [];
     mockController = {
       state: {
         isMobile: false,
@@ -38,6 +40,9 @@ describe('VideoQualityPanel', function () {
         closedCaptionOptions: {availableLanguages: true}
       },
       sendVideoQualityChangeEvent: function(selectedData){
+        if (selectedData.id) {
+          selectedBitrateIdHistory.push(selectedData.id);
+        }
         selectedBitrate = selectedData;
       }
     };
@@ -54,7 +59,7 @@ describe('VideoQualityPanel', function () {
 
   function checkQualityTexts(DOM, expectedLabels) {
     var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn');
-    expect(bitrateItems.length).toBe(availableBitrates.length-1);
+    expect(bitrateItems.length).toBe(expectedLabels.length);
 
     for (i=0; i<bitrateItems.length; i++){
       var itemText = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn')[i].textContent;
@@ -183,17 +188,7 @@ describe('VideoQualityPanel', function () {
     var DOM = TestUtils.renderIntoDocument(
       <VideoQualityPanel {...mockProps} />
     );
-    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn');
-    var qualityButton, ariaLabel;
-
-    for (var i = 0; i < qualityButtons.length; i++) {
-      qualityButton = qualityButtons[i];
-      ariaLabel = CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i + 1).replace(MACROS.BITRATE, qualityButton.innerHTML);
-      expect(qualityButton.getAttribute('aria-label')).toBe(ariaLabel);
-      expect(qualityButton.getAttribute('role')).toBe('menuitemradio');
-      expect(qualityButton.getAttribute('aria-checked')).toBeTruthy();
-      expect(qualityButton.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe(CONSTANTS.FOCUS_IDS.QUALITY_LEVEL + (i + 1));
-    }
+    checkAriaLabels(DOM, bitrateLabels);
   });
 
   it('should update aria-checked attribute when bitrate is selected', function() {
@@ -216,6 +211,39 @@ describe('VideoQualityPanel', function () {
     checkQualityTexts(DOM, resolutionLabels);
 
     checkAriaLabels(DOM, resolutionLabels);
+  });
+
+  it('creates video quality panel with duplicate resolution labels', function() {
+    mockProps.videoQualityOptions.availableBitrates =
+                          [{"id":"auto", "bitrate":0, "height":0},
+                           {"id":"0", "bitrate":1, "height":1}, {"id":"1", "bitrate":1000, "height":10}, {"id":"2", "bitrate":2000, "height":10},
+                           {"id":"3", "bitrate":3000, "height":20}, {"id":"4", "bitrate":4000, "height":20}, {"id":"5", "bitrate":5000, "height":20},
+                           {"id":"6", "bitrate":1000000, "height":30}, {"id":"7", "bitrate":1100000, "height":30}, {"id":"8", "bitrate":1200000, "height":30},
+                           {"id":"9", "bitrate":1300000, "height":30}];
+
+    mockSkinConfig.controlBar.qualitySelection = {
+      "format": "resolution"
+    };
+    var DOM = TestUtils.renderIntoDocument(
+      <VideoQualityPanel {...mockProps} />
+    );
+
+    //We don't show the lowest 30p button because there are more than 3 30p resolutions
+    var duplicateResolutionLabels = ['1p', '10p (Low)','10p (High)','20p (Low)','20p (Medium)','20p (High)','30p (Low)','30p (Medium)','30p (High)'];
+
+    checkQualityTexts(DOM, duplicateResolutionLabels);
+
+    checkAriaLabels(DOM, duplicateResolutionLabels);
+
+    var bitrateItems = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn');
+    for (i=0; i<bitrateItems.length; i++){
+      var newBitrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn')[i];
+      TestUtils.Simulate.click(newBitrate);
+    }
+
+    //check order of ids is same as resolution labels
+    //The bitrate with id 6 is not available to be clicked since there are ore than 3 30p resolutions
+    expect(selectedBitrateIdHistory).toEqual(['0', '1', '2', '3', '4', '5', '7', '8', '9']);
   });
 
   it('creates video quality panel with bitrate and resolution labels with wide popover', function() {
@@ -246,17 +274,7 @@ describe('VideoQualityPanel', function () {
 
     checkQualityTexts(DOM, bitrateLabels);
 
-    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-btn');
-    var qualityButton, ariaLabel;
-
-    for (var i = 0; i < qualityButtons.length; i++) {
-      qualityButton = qualityButtons[i];
-      ariaLabel = CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i + 1).replace(MACROS.BITRATE, qualityButton.innerHTML);
-      expect(qualityButton.getAttribute('aria-label')).toBe(ariaLabel);
-      expect(qualityButton.getAttribute('role')).toBe('menuitemradio');
-      expect(qualityButton.getAttribute('aria-checked')).toBeTruthy();
-      expect(qualityButton.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe(CONSTANTS.FOCUS_IDS.QUALITY_LEVEL + (i + 1));
-    }
+    checkAriaLabels(DOM, bitrateLabels);
 
     var components = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality-screen-content-wide');
     expect(components.length).toBe(0);
