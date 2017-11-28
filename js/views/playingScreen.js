@@ -2,20 +2,21 @@
   PLAYING SCREEN
 *********************************************************************/
 var React = require('react'),
-    ReactDOM = require('react-dom'),
-    ControlBar = require('../components/controlBar'),
-    AdOverlay = require('../components/adOverlay'),
-    ClassNames = require('classnames'),
-    UpNextPanel = require('../components/upNextPanel'),
-    Spinner = require('../components/spinner'),
-    TextTrack = require('../components/textTrackPanel'),
-    Watermark = require('../components/watermark'),
-    ResizeMixin = require('../mixins/resizeMixin'),
-    CONSTANTS = require('../constants/constants'),
-    ViewControlsVr = require('../components/viewControlsVr'),
-    Icon = require('../components/icon'),
-    Tooltip = require('../components/tooltip'),
-    UnmuteIcon = require('../components/unmuteIcon');
+  ReactDOM = require('react-dom'),
+  Utils = require('../components/utils'),
+  ControlBar = require('../components/controlBar'),
+  AdOverlay = require('../components/adOverlay'),
+  ClassNames = require('classnames'),
+  UpNextPanel = require('../components/upNextPanel'),
+  Spinner = require('../components/spinner'),
+  TextTrack = require('../components/textTrackPanel'),
+  Watermark = require('../components/watermark'),
+  ResizeMixin = require('../mixins/resizeMixin'),
+  CONSTANTS = require('../constants/constants'),
+  ViewControlsVr = require('../components/viewControlsVr'),
+  Icon = require('../components/icon'),
+  Tooltip = require('../components/tooltip'),
+  UnmuteIcon = require('../components/unmuteIcon');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -26,6 +27,8 @@ var PlayingScreen = React.createClass({
 
     return {
       controlBarVisible: true,
+      isVrNotificationHidden: false,
+      isVrIconHidden: false,
       timer: null
     };
   },
@@ -35,6 +38,8 @@ var PlayingScreen = React.createClass({
     if (this.isMobile || this.props.fullscreen || this.browserSupportsTouch){
       this.props.controller.startHideControlBarTimer();
     }
+    this.handleVrAnimationEnd("vrNotificatioContainer", "isVrNotificationHidden");
+    this.handleVrAnimationEnd("vrIconContainer", "isVrIconHidden");
   },
 
   componentWillUpdate: function(nextProps) {
@@ -55,6 +60,27 @@ var PlayingScreen = React.createClass({
 
   componentWillUnmount: function () {
     this.props.controller.cancelTimer();
+  },
+
+  /**
+   * @description need to show special information labels (or/and icons).
+   * The labels should be animated.
+   * Need to remove the labels (icons) after animation
+   * Animation should be only one time
+   * @param id - unique identificator of the label(icon)
+   * @param stateName - name for a state which indicates about necessary to show the label(icon)
+   */
+  handleVrAnimationEnd: function(id, stateName) {
+    var vrContainer = document.getElementById(id);
+    if (vrContainer) {
+      var listener = function() {
+        var newState = {};
+        newState[stateName] = true;
+        this.setState(newState);
+        this.props.controller.isNewVrVideo = false;
+      };
+      vrContainer.addEventListener("animationend", listener.bind(this), false);
+    }
   },
 
   handleResize: function() {
@@ -177,6 +203,27 @@ var PlayingScreen = React.createClass({
     this.props.controller.handleMuteClick();
   },
 
+  /**
+   *
+   * @param vrDuration - key for duraction in config
+   * @param defaultDuration - default value for duration
+   * @returns {object} empty object or object with animationDuration
+   */
+  setAnimationDuration: function(vrDuration, defaultDuration) {
+    var style = {};
+    defaultDuration = Utils.ensureNumber(defaultDuration, 3);
+    if (this.props.controller.state.config.animationDurations !== null &&
+      typeof this.props.controller.state.config.animationDurations === 'object' &&
+      this.props.controller.state.config.animationDurations[vrDuration] !== undefined) {
+      var duration = Utils.ensureNumber(this.props.controller.state.config.animationDurations[vrDuration], defaultDuration) + "s";
+      style = {
+        "animationDuration": duration,
+        "webkitAnimationDuration": duration
+      };
+    }
+    return style;
+  },
+
   render: function() {
     var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
       <AdOverlay {...this.props}
@@ -197,6 +244,41 @@ var PlayingScreen = React.createClass({
 
     var showUnmute = this.props.controller.state.volumeState.mutingForAutoplay && this.props.controller.state.volumeState.muted;
 
+    var vrNotification = null;
+    if (this.props.controller.state.config.isVrAnimationEnabled !== null &&
+      typeof this.props.controller.state.config.isVrAnimationEnabled === "object" &&
+      this.props.controller.state.config.isVrAnimationEnabled.vrNotification &&
+      this.props.controller.videoVr &&
+      !this.state.isVrNotificationHidden &&
+      this.props.controller.isNewVrVideo) {
+      //@Todo: When we know about the rules for vrIcon, change checking "if isNewVrVideo"
+      var defaultDuration = 5;
+      var style = this.setAnimationDuration("vrNotification", defaultDuration);
+      vrNotification = (
+        <div id="vrNotificatioContainer" className="oo-state-screen-vr-notification-container">
+          <p className="oo-state-screen-vr-notification" style={style}>{"Select and drag to look around"}</p>
+        </div>
+      );
+    }
+
+    var vrIcon = null;
+    if (this.props.controller.state.config.isVrAnimationEnabled !== null &&
+      typeof this.props.controller.state.config.isVrAnimationEnabled === "object" &&
+      this.props.controller.state.config.isVrAnimationEnabled.vrIcon &&
+      this.props.controller.videoVr &&
+      !this.state.isVrIconHidden &&
+      this.props.controller.isNewVrVideo) {
+      var defaultDuration = 3;
+      var style = this.setAnimationDuration("vrIcon", defaultDuration);
+      vrIcon = (
+        <div id="vrIconContainer" className="oo-state-screen-vr-container" style={style}>
+          <div className="oo-state-screen-vr-bg">
+            <Icon {...this.props} icon="vrIcon" className="oo-state-screen-vr-icon" />
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div
         className="oo-state-screen oo-playing-screen"
@@ -215,6 +297,9 @@ var PlayingScreen = React.createClass({
         onClick={this.handlePlayerClicked}
         onFocus={this.handlePlayerFocus}
       />
+
+      {vrNotification}
+      {vrIcon}
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
