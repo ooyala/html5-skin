@@ -16,6 +16,8 @@ var ThumbnailCarousel = React.createClass({
     this.imageHeight = 0;
     this.thumbnailWidth = 0;
     this.thumbnailHeight = 0;
+    this.carouselPositionX = 0;
+    this.carouselPositionY = 0;
     return {
       thumbnailWidth: 0,
       thumbnailHeight: 0,
@@ -82,35 +84,49 @@ var ThumbnailCarousel = React.createClass({
     for (var i = data.pos + 1, j = 0; i < data.timeSlices.length; i++, j++) {
       var left = start + data.padding + j * (data.imgWidth + data.padding);
       if (left + data.imgWidth <= data.scrubberBarWidth) {
-        var thumbStyle = {
-          left: left,
-          top: data.top
-        };
-        var thumb = data.thumbnails.data.thumbnails[data.timeSlices[i]][data.width];
-        var thumbUrl =thumb.url;
-        if (Utils.isValidString(thumbUrl)) {
-          thumbStyle.backgroundImage = "url('" + thumbUrl + "')";
-        }
-        if (this.props.videoVr) {
-          var bgWidth = thumb.width * 4;
-          var bgHeight = thumb.width * 4;
-          var yaw = this.props.vrViewingDirection.yaw;
-          var pitch = this.props.vrViewingDirection.pitch;
-          var params = {
-            yaw: yaw,
-            pitch: pitch,
-            imageWidth: bgWidth,
-            imageHeight: bgHeight,
-            thumbnailWidth: 73,
-            thumbnailHeight: 43
-          };
-          var positions = this.props.setBgPositionVr();
-          thumbStyle.backgroundRepeat = "repeat no-repeat";
-          thumbStyle.backgroundSize = bgWidth + "px " + bgHeight + "px";
-          if (positions) {
-            thumbStyle.backgroundPosition = positions.positionX + "px " + positions.positionY + "px";
-          }
-        }
+        var width = data.width;
+        var trumbs = data.thumbnails.data.thumbnails[data.timeSlices[i]];
+        var thumbStyle = this.getThumbnailsCarouselStyles(trumbs, width);
+        thumbStyle.left = left;
+        thumbStyle.top = data.top;
+        // var thumbStyle = {
+        //   left: left,
+        //   top: data.top
+        // };
+        // var width = data.width;
+        // var trumbs = data.thumbnails.data.thumbnails[data.timeSlices[i]];
+        // var thumb = trumbs[width];
+        // if (this.props.videoVr) {
+        //   var widthVr = 3 * width;
+        //   if (trumbs[widthVr] !== undefined) {
+        //     thumb = trumbs[widthVr];
+        //   }
+        // }
+        // var thumbUrl = thumb.url;
+        // if (Utils.isValidString(thumbUrl)) {
+        //   thumbStyle.backgroundImage = "url('" + thumbUrl + "')";
+        // }
+
+        // var bgWidth = thumb.width;
+        // var bgHeight = thumb.height;
+        // var carouselParams = {
+        //   yaw: this.props.vrViewingDirection.yaw,
+        //   pitch: this.props.vrViewingDirection.pitch,
+        //   imageWidth: bgWidth,
+        //   imageHeight: bgHeight,
+        //   thumbnailWidth: this.props.thumbnailCarouselWidth,
+        //   thumbnailHeight: this.props.thumbnailCarouselHeight
+        // };
+        // var carouselBgPositions = this.props.setBgPositionVr(carouselParams);
+        // if (carouselBgPositions) {
+        //   this.carouselPositionX = carouselBgPositions.positionX;
+        //   this.carouselPositionY = carouselBgPositions.positionY;
+        // }
+        // if (this.props.videoVr) {
+        //   thumbStyle.backgroundRepeat = "repeat no-repeat";
+        //   thumbStyle.backgroundSize = bgWidth + "px " + bgHeight + "px";
+        //   thumbStyle.backgroundPosition = this.carouselPositionX + "px " + this.carouselPositionY + "px";
+        // }
         thumbnailsAfter.push(<div className="oo-thumbnail-carousel-image" key={i} ref="thumbnailCarousel" style={thumbStyle}></div>);
       }
     }
@@ -136,6 +152,43 @@ var ThumbnailCarousel = React.createClass({
       }
     }
     return thumbnailsBefore;
+  },
+
+  getThumbnailsCarouselStyles: function(trumbs, width) {
+    var thumbStyle = {};
+    var thumb = trumbs[width];
+    if (this.props.videoVr) {
+      var widthVr = 3 * width;
+      if (trumbs[widthVr] !== undefined) {
+        thumb = trumbs[widthVr];
+      }
+    }
+    var thumbUrl = thumb.url;
+    if (Utils.isValidString(thumbUrl)) {
+      thumbStyle.backgroundImage = "url('" + thumbUrl + "')";
+    }
+
+    var bgWidth = thumb.width;
+    var bgHeight = thumb.height;
+    var carouselParams = {
+      yaw: this.props.vrViewingDirection.yaw,
+      pitch: this.props.vrViewingDirection.pitch,
+      imageWidth: bgWidth,
+      imageHeight: bgHeight,
+      thumbnailWidth: this.props.thumbnailCarouselWidth,
+      thumbnailHeight: this.props.thumbnailCarouselHeight
+    };
+    var carouselBgPositions = this.props.setBgPositionVr(carouselParams);
+    if (carouselBgPositions) {
+      this.carouselPositionX = carouselBgPositions.positionX;
+      this.carouselPositionY = carouselBgPositions.positionY;
+    }
+    if (this.props.videoVr) {
+      thumbStyle.backgroundRepeat = "repeat no-repeat";
+      thumbStyle.backgroundSize = bgWidth + "px " + bgHeight + "px";
+      thumbStyle.backgroundPosition = this.carouselPositionX + "px " + this.carouselPositionY + "px";
+    }
+    return thumbStyle;
   },
 
   render: function() {
@@ -171,10 +224,6 @@ var ThumbnailCarousel = React.createClass({
 
     var time = isFinite(parseInt(this.props.hoverTime)) ? Utils.formatSeconds(parseInt(this.props.hoverTime)) : null;
 
-    console.log('BBB thumbnailStyle', thumbnailStyle);
-    if (this.refs.thumbnail) {
-      console.log('BBB this.refs.thumbnail.style', this.refs.thumbnail.style);
-    }
     return (
       <div className="oo-scrubber-carousel-container">
         {thumbnailsBefore}
@@ -191,7 +240,38 @@ ThumbnailCarousel.defaultProps = {
   thumbnails: {},
   duration: 0,
   hoverTime: 0,
-  scrubberBarWidth: 0
+  scrubberBarWidth: 0,
+  vrViewingDirection: { yaw: 0, roll: 0, pitch: 0 },
+  videoVr: false,
+  fullscreen: false,
+  positionY: 0,
+  positionX: 0,
+  imageWidth: 0,
+  imageHeight: 0
+};
+
+ThumbnailCarousel.propTypes = {
+  onRef: React.PropTypes.func,
+  time: React.PropTypes.number,
+  thumbnails: React.PropTypes.object,
+  duration: React.PropTypes.number,
+  hoverTime: React.PropTypes.number,
+  scrubberBarWidth: React.PropTypes.number,
+  hoverPosition: React.PropTypes.number,
+  vrViewingDirection: React.PropTypes.shape({
+    yaw: React.PropTypes.number,
+    roll: React.PropTypes.number,
+    pitch: React.PropTypes.number
+  }),
+  videoVr: React.PropTypes.bool,
+  fullscreen: React.PropTypes.bool,
+  positionY: React.PropTypes.number,
+  positionX: React.PropTypes.number,
+  imageWidth: React.PropTypes.number,
+  imageHeight: React.PropTypes.number,
+  setBgPositionVr: React.PropTypes.func,
+  thumbnailCarouselWidth: React.PropTypes.number,
+  thumbnailCarouselHeight: React.PropTypes.number
 };
 
 module.exports = ThumbnailCarousel;

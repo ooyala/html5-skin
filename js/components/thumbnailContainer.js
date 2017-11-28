@@ -18,11 +18,13 @@ var ThumbnailContainer = React.createClass({
     this.imageHeight = 0;
     this.thumbnailWidth = 0;
     this.thumbnailHeight = 0;
+    this.thumbnailCarouselWidth = 0;
+    this.thumbnailCarouselHeight = 0;
     return {};
   },
   componentDidMount: function() {
     if (this.props.videoVr) {
-      this.setThumbnailSizes();
+      this.setThumbnailSizesVr();
       this.setImageSizes();
       var yaw = this.props.vrViewingDirection.yaw;
       var pitch = this.props.vrViewingDirection.pitch;
@@ -86,21 +88,46 @@ var ThumbnailContainer = React.createClass({
             }
           }
         }
+        if (this.props.isCarousel) {
+          if (this.child.refs && this.child.refs.thumbnailCarousel) {
+            var newThumbnailCarouselWidth = this.child.refs.thumbnailCarousel.clientWidth;
+            var newThumbnailCarouselHeight = this.child.refs.thumbnailCarousel.clientHeight;
+            if (newThumbnailCarouselWidth !== this.thumbnailCarouselWidth) {
+              this.thumbnailCarouselWidth = newThumbnailCarouselWidth;
+            }
+            if (newThumbnailCarouselHeight !== this.thumbnailCarouselHeight) {
+              this.thumbnailCarouselHeight = newThumbnailCarouselHeight;
+            }
+          }
+        }
       }
     }
   },
 
-  setThumbnailSizes: function() {
+  setThumbnailSizesVr: function() {
     if (this.child !== null && typeof this.child === 'object') {
-      if (this.child.refs && this.child.refs.thumbnail) {
-        var thumbnailWidth = this.child.refs.thumbnail.clientWidth;
-        var thumbnailHeight = this.child.refs.thumbnail.clientHeight;
-        if (thumbnailWidth) {
-          this.thumbnailWidth = thumbnailWidth;
-        }
-        if (thumbnailHeight) {
-          this.thumbnailHeight = thumbnailHeight;
-        }
+      this.setThumbnailSize("thumbnail", "thumbnailWidth", "thumbnailHeight");
+      if (this.props.isCarousel) {
+        this.setThumbnailSize("thumbnailCarousel", "thumbnailCarouselWidth", "thumbnailCarouselHeight");
+      }
+    }
+  },
+
+  /**
+   * @description set values for thumbnails sizes
+   * @param {string} refName - name of thumbnail container ref
+   * @param {string} widthName - name for width which is associated with the ref
+   * @param {string} heightName - name for height which is associated with the ref
+   */
+  setThumbnailSize: function(refName, widthName, heightName) {
+    if (this.child.refs && this.child.refs[refName]) {
+      var width = this.child.refs[refName].clientWidth;
+      var height = this.child.refs[refName].clientHeight;
+      if (width) {
+        this[widthName] = width;
+      }
+      if (height) {
+        this[heightName] = height;
       }
     }
   },
@@ -218,6 +245,8 @@ var ThumbnailContainer = React.createClass({
           imageWidth={this.imageWidth}
           imageHeight={this.imageHeight}
           setBgPositionVr={this.setBgPositionVr}
+          thumbnailCarouselWidth={this.thumbnailCarouselWidth}
+          thumbnailCarouselHeight={this.thumbnailCarouselHeight}
         />
     } else {
       thumbnail = (
