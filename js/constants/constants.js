@@ -124,7 +124,6 @@ module.exports = {
     TIME_DISPLAY: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME,
     TIME_DISPLAY_LIVE: "Live video",
     TIME_DISPLAY_DVR: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME + " live video",
-    QUALITY_LEVEL: "Quality level " + MACROS.LEVEL + ", " + MACROS.BITRATE,
     CLOSE: "Close",
     TOGGLE_CLOSED_CAPTIONS: "Toggle Closed Captions",
     CAPTION_OPTIONS: "Closed Caption Options",
@@ -287,8 +286,21 @@ module.exports = {
     TEXT: {
       RESOLUTION_BITRATE: MACROS.RESOLUTION + "p (" + MACROS.BITRATE + ")",
       RESOLUTION_ONLY: MACROS.RESOLUTION + "p",
+      TIERED_RESOLUTION_ONLY: MACROS.RESOLUTION + "p (" + MACROS.RESOLUTION_TIER + ")",
       BITRATE_ONLY: MACROS.BITRATE
     }
+  },
+
+  RESOLUTION_TIER: {
+    TWO: [
+      "Low",
+      "High"
+    ],
+    THREE: [
+      "Low",
+      "Medium",
+      "High"
+    ]
   },
 
   ERROR_MESSAGE: {

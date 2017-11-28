@@ -163,4 +163,15 @@
   .oo-scrubber-carousel-container {
    bottom: 103px;
   }
+
+  .oo-state-screen-vr {
+    &-bg {
+      width: 180px;
+      height: 180px;
+    }
+    &-icon {
+      top: -3px;
+      font-size: 100px;
+    }
+  }
 }
