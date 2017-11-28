@@ -435,6 +435,8 @@ module.exports = {
     }
   },
   THUMBNAIL: {
-    MAX_VR_THUMBNAIL_BG_WIDTH: 380
+    MAX_VR_THUMBNAIL_BG_WIDTH: 380,
+    THUMBNAIL_VR_RATIO: 4,
+    THUMBNAIL_CAROUSEL_VR_RATIO: 3
   }
 };

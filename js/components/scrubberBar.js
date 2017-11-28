@@ -301,8 +301,7 @@ var ScrubberBar = React.createClass({
 
     var thumbnailsContainer = null;
 
-    // if (this.props.controller.state.thumbnails && (this.state.scrubbingPlayheadX || this.lastScrubX || this.state.hoveringX)) {
-    if (this.props.controller.state.thumbnails) {
+    if (this.props.controller.state.thumbnails && (this.state.scrubbingPlayheadX || this.lastScrubX || this.state.hoveringX)) {
       var vrViewingDirection = { yaw: 0, roll: 0, pitch: 0 };
       if (this.props.controller && this.props.controller.state && this.props.controller.state.vrViewingDirection) {
         vrViewingDirection = this.props.controller.state.vrViewingDirection;

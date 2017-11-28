@@ -6,6 +6,7 @@
 
 var React = require('react'),
     ReactDOM = require('react-dom'),
+    CONSTANTS = require('../constants/constants'),
     Utils = require('./utils');
 
 var ThumbnailCarousel = React.createClass({
@@ -78,7 +79,6 @@ var ThumbnailCarousel = React.createClass({
   },
 
   findThumbnailsAfter: function(data) {
-    console.log('BBB data', data);
     var start = (data.scrubberBarWidth + data.centerWidth) / 2;
     var thumbnailsAfter = [];
     for (var i = data.pos + 1, j = 0; i < data.timeSlices.length; i++, j++) {
@@ -89,44 +89,6 @@ var ThumbnailCarousel = React.createClass({
         var thumbStyle = this.getThumbnailsCarouselStyles(trumbs, width);
         thumbStyle.left = left;
         thumbStyle.top = data.top;
-        // var thumbStyle = {
-        //   left: left,
-        //   top: data.top
-        // };
-        // var width = data.width;
-        // var trumbs = data.thumbnails.data.thumbnails[data.timeSlices[i]];
-        // var thumb = trumbs[width];
-        // if (this.props.videoVr) {
-        //   var widthVr = 3 * width;
-        //   if (trumbs[widthVr] !== undefined) {
-        //     thumb = trumbs[widthVr];
-        //   }
-        // }
-        // var thumbUrl = thumb.url;
-        // if (Utils.isValidString(thumbUrl)) {
-        //   thumbStyle.backgroundImage = "url('" + thumbUrl + "')";
-        // }
-
-        // var bgWidth = thumb.width;
-        // var bgHeight = thumb.height;
-        // var carouselParams = {
-        //   yaw: this.props.vrViewingDirection.yaw,
-        //   pitch: this.props.vrViewingDirection.pitch,
-        //   imageWidth: bgWidth,
-        //   imageHeight: bgHeight,
-        //   thumbnailWidth: this.props.thumbnailCarouselWidth,
-        //   thumbnailHeight: this.props.thumbnailCarouselHeight
-        // };
-        // var carouselBgPositions = this.props.setBgPositionVr(carouselParams);
-        // if (carouselBgPositions) {
-        //   this.carouselPositionX = carouselBgPositions.positionX;
-        //   this.carouselPositionY = carouselBgPositions.positionY;
-        // }
-        // if (this.props.videoVr) {
-        //   thumbStyle.backgroundRepeat = "repeat no-repeat";
-        //   thumbStyle.backgroundSize = bgWidth + "px " + bgHeight + "px";
-        //   thumbStyle.backgroundPosition = this.carouselPositionX + "px " + this.carouselPositionY + "px";
-        // }
         thumbnailsAfter.push(<div className="oo-thumbnail-carousel-image" key={i} ref="thumbnailCarousel" style={thumbStyle}></div>);
       }
     }
@@ -140,25 +102,28 @@ var ThumbnailCarousel = React.createClass({
     for (var i = data.pos - 1, j = 0; i >= 0; i--, j++) {
       var left = start - (j + 1) * (data.imgWidth + data.padding);
       if (left >= 0) {
-        var thumbStyle = {
-          left: left,
-          top: data.top
-        };
-        var thumbUrl = data.thumbnails.data.thumbnails[data.timeSlices[i]][data.width].url;
-        if (Utils.isValidString(thumbUrl)) {
-          thumbStyle.backgroundImage = "url('" + thumbUrl + "')";
-        }
+        var width = data.width;
+        var trumbs = data.thumbnails.data.thumbnails[data.timeSlices[i]];
+        var thumbStyle = this.getThumbnailsCarouselStyles(trumbs, width);
+        thumbStyle.left = left;
+        thumbStyle.top = data.top;
         thumbnailsBefore.push(<div className="oo-thumbnail-carousel-image" key={i} ref="thumbnailCarousel" style={thumbStyle}></div>);
       }
     }
     return thumbnailsBefore;
   },
 
+  /**
+   * @description get styles for carousel thumbnails
+   * @param trumbs
+   * @param width
+   * @returns {object} object with values for bg url and bg size, position and repeat for vr video
+   */
   getThumbnailsCarouselStyles: function(trumbs, width) {
     var thumbStyle = {};
     var thumb = trumbs[width];
     if (this.props.videoVr) {
-      var widthVr = 3 * width;
+      var widthVr = CONSTANTS.THUMBNAIL.THUMBNAIL_CAROUSEL_VR_RATIO * width;
       if (trumbs[widthVr] !== undefined) {
         thumb = trumbs[widthVr];
       }
@@ -168,22 +133,23 @@ var ThumbnailCarousel = React.createClass({
       thumbStyle.backgroundImage = "url('" + thumbUrl + "')";
     }
 
-    var bgWidth = thumb.width;
-    var bgHeight = thumb.height;
-    var carouselParams = {
-      yaw: this.props.vrViewingDirection.yaw,
-      pitch: this.props.vrViewingDirection.pitch,
-      imageWidth: bgWidth,
-      imageHeight: bgHeight,
-      thumbnailWidth: this.props.thumbnailCarouselWidth,
-      thumbnailHeight: this.props.thumbnailCarouselHeight
-    };
-    var carouselBgPositions = this.props.setBgPositionVr(carouselParams);
-    if (carouselBgPositions) {
-      this.carouselPositionX = carouselBgPositions.positionX;
-      this.carouselPositionY = carouselBgPositions.positionY;
-    }
     if (this.props.videoVr) {
+      var bgWidth = thumb.width;
+      var bgHeight = thumb.height;
+      var carouselParams = {
+        yaw: this.props.vrViewingDirection.yaw,
+        pitch: this.props.vrViewingDirection.pitch,
+        imageWidth: bgWidth,
+        imageHeight: bgHeight,
+        thumbnailWidth: this.props.thumbnailCarouselWidth,
+        thumbnailHeight: this.props.thumbnailCarouselHeight
+      };
+      var carouselBgPositions = this.props.setBgPositionVr(carouselParams);
+      if (carouselBgPositions) {
+        this.carouselPositionX = carouselBgPositions.positionX;
+        this.carouselPositionY = carouselBgPositions.positionY;
+      }
+
       thumbStyle.backgroundRepeat = "repeat no-repeat";
       thumbStyle.backgroundSize = bgWidth + "px " + bgHeight + "px";
       thumbStyle.backgroundPosition = this.carouselPositionX + "px " + this.carouselPositionY + "px";
