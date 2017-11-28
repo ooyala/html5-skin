@@ -4,7 +4,6 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     Icon = require('../components/icon'),
     Watermark = require('../components/watermark'),
-    AccessibleMenu = require('../components/higher-order/accessibleMenu'),
     AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var ContentScreen = React.createClass({
@@ -73,7 +72,7 @@ var ContentScreen = React.createClass({
         <div className={this.props.screenClassName}>
           {closedCaptionOverlay}
           <div className={this.props.titleBarClassName}>
-            {titleBar}  
+            {titleBar}
           </div>
           {this.props.children}
           <CloseButton {...this.props} closeAction={this.handleClose}/>
@@ -82,9 +81,6 @@ var ContentScreen = React.createClass({
     );
   }
 });
-
-// Extend with AccessibleMenu features
-ContentScreen = AccessibleMenu(ContentScreen);
 
 ContentScreen.propTypes = {
   element: React.PropTypes.element,

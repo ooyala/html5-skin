@@ -1,6 +1,7 @@
 var React = require('react'),
     ClassNames = require('classnames'),
     AccessibleButton = require('./accessibleButton'),
+    AccessibleMenu = require('./higher-order/accessibleMenu'),
     Icon = require('./icon'),
     CONSTANTS = require('../constants/constants');
 
@@ -162,5 +163,7 @@ var DataSelector = React.createClass({
     );
   }
 });
+
+DataSelector = AccessibleMenu(DataSelector);
 
 module.exports = DataSelector;

@@ -1,6 +1,7 @@
 var React = require('react'),
     ClassNames = require('classnames'),
     AccessibleButton = require('./accessibleButton'),
+    AccessibleMenu = require('./higher-order/accessibleMenu'),
     CONSTANTS = require('../constants/constants');
 
 var ColorSelector = React.createClass({
@@ -33,7 +34,8 @@ var ColorSelector = React.createClass({
         <div
           key={i}
           className={this.setClassname(this.props.colors[i])}
-          style={activeColorStyle}>
+          style={activeColorStyle}
+          role={CONSTANTS.ARIA_ROLES.PRESENTATION}>
           <AccessibleButton
             className={"oo-color-item oo-color-item-" + this.props.colors[i]}
             ariaLabel={ariaLabel}
@@ -52,6 +54,8 @@ var ColorSelector = React.createClass({
     );
   }
 });
+
+ColorSelector = AccessibleMenu(ColorSelector);
 
 ColorSelector.propTypes = {
   name: React.PropTypes.string.isRequired,

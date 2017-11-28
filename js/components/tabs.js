@@ -2,6 +2,7 @@
 
 var React = require('react'),
     AccessibleButton = require('./accessibleButton'),
+    AccessibleMenu = require('./higher-order/accessibleMenu'),
     CONSTANTS = require('../constants/constants'),
     Utils = require('./utils'),
     ClassNames = require('classnames'),
@@ -119,8 +120,8 @@ var Tabs = React.createClass({
               style={activeTabStyle}
               className="tabs-menu-item-btn"
               ariaLabel={title}
-              ariaChecked={isSelected}
-              role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
+              ariaSelected={isSelected}
+              role={CONSTANTS.ARIA_ROLES.TAB}
               onClick={this.setActive.bind(this, index + 1)}
               onMouseOver={this.highlight}
               onMouseOut={this.removeHighlight}
@@ -134,8 +135,9 @@ var Tabs = React.createClass({
     return (
       <nav
         className='tabs-navigation'
-        ref={function(e) { this.tabsNavigationElement = e }.bind(this)}>
-        <ul className='tabs-menu' role={CONSTANTS.ARIA_ROLES.MENU}>{menuItems}</ul>
+        ref={function(e) { this.tabsNavigationElement = e }.bind(this)}
+        aria-hidden="true">
+        <ul className='tabs-menu' role={CONSTANTS.ARIA_ROLES.TAB_LIST}>{menuItems}</ul>
       </nav>
     );
   },
@@ -145,7 +147,7 @@ var Tabs = React.createClass({
     var panel = this.props.children[index];
 
     return (
-      <article ref='tab-panel' className='tab-panel'>
+      <article ref='tab-panel' className='tab-panel' role={CONSTANTS.ARIA_ROLES.TAB_PANEL}>
         {panel}
       </article>
     );
@@ -239,6 +241,8 @@ var Tabs = React.createClass({
     );
   }
 });
+
+Tabs = AccessibleMenu(Tabs, { selector: '.tabs-menu' });
 
 Tabs.propTypes = {
   className: React.PropTypes.oneOfType([

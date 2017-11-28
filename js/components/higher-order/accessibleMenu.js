@@ -2,12 +2,19 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var CONSTANTS = require('../../constants/constants');
 
-var AccessibleMenu = function(ComposedComponent) {
+var AccessibleMenu = function(ComposedComponent, options) {
+  var _options = options || {};
+
   return React.createClass({
 
     componentDidMount: function() {
       this.onKeyDown = this.onKeyDown.bind(this);
       this.menuDomElement = ReactDOM.findDOMNode(this.composedComponent);
+
+      // If specified, use a child element instead of component's main element
+      if (_options.selector && this.menuDomElement) {
+        this.menuDomElement = this.menuDomElement.querySelector(_options.selector);
+      }
 
       if (this.menuDomElement) {
         this.menuDomElement.addEventListener('keydown', this.onKeyDown);

@@ -29,7 +29,10 @@ var ClosedCaptionPopover = React.createClass({
     return (
       <ul className="oo-popover-horizontal" role="menu">
         <li role="presentation">
-          <OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_CLOSED_CAPTIONS} />
+          <OnOffSwitch
+            {...this.props}
+            ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_CLOSED_CAPTIONS}
+            role={CONSTANTS.ARIA_ROLES.MENU_ITEM_CHECKBOX} />
         </li>
         <li role="presentation">
           <AccessibleButton

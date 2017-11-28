@@ -70,6 +70,7 @@ var AccessibleButton = React.createClass({
         data-focus-id={this.props.focusId}
         aria-label={this.props.ariaLabel}
         aria-checked={this.props.ariaChecked}
+        aria-selected={this.props.ariaSelected}
         aria-haspopup={this.props.ariaHasPopup}
         aria-expanded={this.props.ariaExpanded}
         role={this.props.role}
@@ -93,6 +94,7 @@ AccessibleButton.propTypes = {
   focusId: React.PropTypes.string,
   ariaLabel: React.PropTypes.string.isRequired,
   ariaChecked: React.PropTypes.bool,
+  ariaSelected: React.PropTypes.bool,
   ariaHasPopup: React.PropTypes.bool,
   ariaExpanded: React.PropTypes.bool,
   role: React.PropTypes.string,
@@ -106,6 +108,7 @@ AccessibleButton.defaultProps = {
   autoFocus: false,
   focusId: Math.random().toString(36).substr(2, 10),
   ariaChecked: null,
+  ariaSelected: null,
   ariaHasPopup: null,
   ariaExpanded: null,
   role: null,

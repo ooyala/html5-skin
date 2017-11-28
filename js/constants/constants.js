@@ -141,7 +141,11 @@ module.exports = {
     MENU: "menu",
     MENU_ITEM: "menuitem",
     MENU_ITEM_RADIO: "menuitemradio",
-    MENU_ITEM_CHECKBOX: "menuitemcheckbox"
+    MENU_ITEM_CHECKBOX: "menuitemcheckbox",
+    CHECKBOX: "checkbox",
+    TAB_LIST: "tablist",
+    TAB: "tab",
+    TAB_PANEL: "tabpanel"
   },
 
   KEYBD_FOCUS_ID_ATTR: "data-focus-id",

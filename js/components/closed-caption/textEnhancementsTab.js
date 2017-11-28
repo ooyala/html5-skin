@@ -2,6 +2,7 @@ var React = require('react'),
     ClassNames = require('classnames'),
     Utils = require('../utils'),
     AccessibleButton = require('../accessibleButton'),
+    AccessibleMenu = require('../higher-order/accessibleMenu'),
     CONSTANTS = require('../../constants/constants'),
     SelectionContainer = require('./selectionContainer');
 
@@ -57,9 +58,10 @@ var TextEnhancementsTab = React.createClass({
       textEnhancementItems.push(
         <AccessibleButton
           key={i}
+          className="oo-text-enhancements-container"
           ariaLabel={itemLabel}
           ariaChecked={isSelected}
-          className="oo-text-enhancements-container"
+          role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
           onClick={this.changeTextEnhancement.bind(this, this.state.textEnhancements[i])}>
           <span
             className={this.setClassname(this.state.textEnhancements[i], "letter") + " oo-text-enhancement-letter-" + this.state.textEnhancements[i]}
@@ -80,8 +82,7 @@ var TextEnhancementsTab = React.createClass({
         <div className="oo-text-enhancements-inner-wrapper">
           <SelectionContainer
             title={textEnhancementTitle}
-            selectionText={textEnhancementSelection}
-            >
+            selectionText={textEnhancementSelection}>
             {textEnhancementItems}
           </SelectionContainer>
         </div>
@@ -89,5 +90,7 @@ var TextEnhancementsTab = React.createClass({
     );
   }
 });
+
+TextEnhancementsTab = AccessibleMenu(TextEnhancementsTab);
 
 module.exports = TextEnhancementsTab;

@@ -237,8 +237,12 @@
         }
 
         .oo-item-selected {
-          border: solid #247dff 3px;
+          border: solid 3px $blue-light;
           border-radius: 50%;
+        }
+
+        .oo-item-selected .oo-color-item:focus {
+          box-shadow: 0 0 0 3px transparent, 0 0 0 5px #fff, 0 0 0 8px $blue-light;
         }
 
         .oo-color-item {
@@ -253,7 +257,8 @@
           top: 0; bottom: 0; left: 0; right: 0;
         }
         .oo-color-item:focus {
-          box-shadow: 0 0 0 5px $blue-light; // Should be the same as highlight-tab mixin, but with a larger shadow
+          box-shadow: 0 0 0 6px $blue-light; // Should be the same as highlight-tab mixin, but with a larger shadow
+          z-index: -1;
         }
         .oo-color-item-White {
           background-color: white;

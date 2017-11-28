@@ -2,6 +2,7 @@ var React = require('react'),
     ClassNames = require('classnames'),
     Utils = require('../utils'),
     AccessibleButton = require('../accessibleButton'),
+    AccessibleMenu = require('../higher-order/accessibleMenu'),
     CONSTANTS = require('../../constants/constants'),
     SelectionContainer = require('./selectionContainer');
 
@@ -81,8 +82,7 @@ var FontSizeTab = React.createClass({
         <div className="oo-font-size-inner-wrapper">
           <SelectionContainer
             title={fontSizeTitle}
-            selectionText={fontSizeSelection}
-            >
+            selectionText={fontSizeSelection}>
             {fontItems}
           </SelectionContainer>
         </div>
@@ -90,5 +90,7 @@ var FontSizeTab = React.createClass({
     );
   }
 });
+
+FontSizeTab = AccessibleMenu(FontSizeTab);
 
 module.exports = FontSizeTab;
