@@ -270,7 +270,7 @@ var ThumbnailContainer = React.createClass({
     }
 
     return (
-      <div className={thumbnailContainerClass}>
+      <div className="oo-scrubber-thumbnail-wrapper">
         {thumbnail}
       </div>
     );

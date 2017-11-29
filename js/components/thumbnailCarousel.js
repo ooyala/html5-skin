@@ -124,7 +124,9 @@ var ThumbnailCarousel = React.createClass({
     var thumb = trumbs[width];
     if (this.props.videoVr) {
       var widthVr = CONSTANTS.THUMBNAIL.THUMBNAIL_CAROUSEL_VR_RATIO * width;
-      if (trumbs[widthVr] !== undefined) {
+      if (trumbs[widthVr] !== undefined &&
+        trumbs[widthVr].width !== undefined &&
+        trumbs[widthVr].width < CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_CAROUSEL_BG_WIDTH) {
         thumb = trumbs[widthVr];
       }
     }

@@ -119,15 +119,17 @@ describe('Thumbnail', function () {
   it('creates and verifies thumbnails at hover times of [0, 100], step 5', function () {
     var width = thumbnails.data.available_widths[0];
     var duration = 100;
+    var onRef = function() {};
     for (var hoverTime = 0; hoverTime <= 100; hoverTime += 5) {
       var DOM = TestUtils.renderIntoDocument
       (
-          <Thumbnail
-           hoverPosition={hoverTime}
-           duration={duration}
-           hoverTime={hoverTime}
-           scrubberBarWidth={100}
-           thumbnails={thumbnails}/>
+        <Thumbnail
+          onRef={onRef}
+          hoverPosition={hoverTime}
+          duration={duration}
+          hoverTime={hoverTime}
+          scrubberBarWidth={100}
+          thumbnails={thumbnails}/>
       );
       var thumbnail = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail');
       var thumbnailTime = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail-time');
@@ -144,9 +146,11 @@ describe('Thumbnail', function () {
   });
 
   it('tests functions for vr preview', function () {
+    var onRef = function() {};
     var DOM = TestUtils.renderIntoDocument
     (
       <Thumbnail
+        onRef={onRef}
         thumbnails={thumbnails}
         hoverPosition={80}
         duration={100}

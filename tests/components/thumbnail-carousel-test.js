@@ -148,8 +148,10 @@ describe('ThumbnailCarousel', function () {
   it('creates a ThumbnailCarousel at 50 sec', function () {
     var hoverTime = 50; // should find thumbnails that correspond to time slice of 50 as there is a time slice for the value of 50
     var width = thumbnails.data.available_widths[0];
+    var onRef = function() {};
     var DOM = TestUtils.renderIntoDocument(
       <ThumbnailCarousel
+        onRef={onRef}
         duration={100}
         hoverTime={hoverTime}
         scrubberBarWidth={200}
@@ -167,8 +169,10 @@ describe('ThumbnailCarousel', function () {
   it('creates a ThumbnailCarousel at 45 sec', function () {
     var hoverTime = 45; // should find thumbnails that correspond to time slice of 40 as there is no exact time slice match for the value of 45
     var width = thumbnails.data.available_widths[0];
+    var onRef = function() {};
     var DOM = TestUtils.renderIntoDocument(
       <ThumbnailCarousel
+        onRef={onRef}
         duration={100}
         hoverTime={hoverTime}
         scrubberBarWidth={200}
@@ -186,17 +190,19 @@ describe('ThumbnailCarousel', function () {
   it('test generation of left and right thumbnails at various times', function () {
     var duration = 100;
     var width = thumbnails.data.available_widths[0];
+    var onRef = function() {};
     for (var hoverTime = 0; hoverTime <= 100; hoverTime += 5) {
       var DOM = TestUtils.renderIntoDocument(
-          <ThumbnailCarousel
-           duration={duration}
-           hoverTime={hoverTime}
-           scrubberBarWidth={800}
-           carouselWidth="154"
-           carouselHeight="102"
-           thumbnailWidth="93"
-           thumbnailHeight="63"
-           thumbnails={thumbnails}/>
+        <ThumbnailCarousel
+          onRef={onRef}
+          duration={duration}
+          hoverTime={hoverTime}
+          scrubberBarWidth={800}
+          carouselWidth="154"
+          carouselHeight="102"
+          thumbnailWidth="93"
+          thumbnailHeight="63"
+          thumbnails={thumbnails}/>
       );
 
       testThumbnails(DOM, thumbnails, hoverTime, width, duration);
