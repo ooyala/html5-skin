@@ -35,7 +35,7 @@ module.exports = {
 
   DISCOVERY: {
     ID_TYPE: "ooyala",
-    SOURCE: "ooyala-discovery-1.5"
+    SOURCE: "ooyala-discovery"
   },
 
   SKIN_TEXT: {
