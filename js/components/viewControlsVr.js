@@ -23,10 +23,10 @@ var ViewControlsVr = React.createClass({
   },
 
   /**
-   * @method ViewControlsVr#_setIconSymbol
+   * @method ViewControlsVr#_setupIconSymbol
    * @private
    */
-  _setIconSymbol: function () {
+  _setupIconSymbol: function () {
     var desktopContent = this.props.skinConfig.buttons.desktopContent;
     this.icon = _.find(desktopContent, function (el) {
       return el.location === "mainView";
@@ -34,15 +34,15 @@ var ViewControlsVr = React.createClass({
   },
 
   /**
-   * @method ViewControlsVr#_setSubstrateSymbol
+   * @method ViewControlsVr#_setupBackgroundSymbol
    * @private
    */
-  _setSubstrateSymbol: function () {
+  _setupBackgroundSymbol: function () {
     if(this.icon){
       if(this.icon.name === 'arrowsBlack'){
-        this.substrateIcon = 'circleArrowsBlack';
+        this.backgroundIcon = 'circleArrowsBlack';
       } else {
-        this.substrateIcon = 'circleArrowsWhite';
+        this.backgroundIcon = 'circleArrowsWhite';
       }
     }
   },
@@ -53,7 +53,7 @@ var ViewControlsVr = React.createClass({
     this.isMobile = false;
     this.vr = null;
     this.icon = {};
-    this.substrateIcon = '';
+    this.backgroundIcon = '';
     if (this.props.controller) {
       if (this.props.controller.videoVrSource) {
         this.vr = this.props.controller.videoVrSource.vr;
@@ -66,8 +66,8 @@ var ViewControlsVr = React.createClass({
           return;
         }
 
-        this._setIconSymbol();
-        this._setSubstrateSymbol();
+        this._setupIconSymbol();
+        this._setupBackgroundSymbol();
       }
     }
   },
@@ -77,7 +77,7 @@ var ViewControlsVr = React.createClass({
 
     return !isShowing ? null :
       (<div className={classnames("oo-vr-icon-container view-controls", {"oo-vr-icon-container--hidden": !this.props.controlBarVisible})}>
-        <Icon {...this.props} icon={this.substrateIcon} className={classnames("oo-vr-icon--substrate")}/>
+        <Icon {...this.props} icon={this.backgroundIcon} className={classnames("oo-vr-icon--substrate")}/>
         <Icon {...this.props} icon={this.icon.name} className={classnames("oo-vr-icon--icon-symbol")}/>
         <DirectionControlVr {...this.props} handleVrViewControlsClick = {this.handleVrViewControlsClick} dir = "left"/>
         <DirectionControlVr {...this.props} handleVrViewControlsClick = {this.handleVrViewControlsClick} dir = "right"/>

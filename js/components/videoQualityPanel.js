@@ -17,7 +17,8 @@ var VideoQualityPanel = React.createClass({
 
   getInitialState: function() {
     return {
-      selected: this.props.videoQualityOptions.selectedBitrate ? this.props.videoQualityOptions.selectedBitrate.id : 'auto'
+      selected: this.props.videoQualityOptions.selectedBitrate ? this.props.videoQualityOptions.selectedBitrate.id : 'auto',
+      wideFormat: false
     };
   },
 
@@ -65,14 +66,12 @@ var VideoQualityPanel = React.createClass({
     );
   },
 
-  render: function() {
+  addBitrateButtons: function(bitrateButtons) {
     var availableBitrates  = this.props.videoQualityOptions.availableBitrates;
-    var bitrateButtons = [];
     var isSelected = false;
     var label = '';
     var availableResolution = null;
     var availableBitrate = null;
-    var wideFormat = false;
     var qualityTextFormat = this.props.skinConfig.controlBar && this.props.skinConfig.controlBar.qualitySelection &&
                             this.props.skinConfig.controlBar.qualitySelection.format ?
                             this.props.skinConfig.controlBar.qualitySelection.format : CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE;
@@ -80,9 +79,34 @@ var VideoQualityPanel = React.createClass({
     var showBitrate = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE) >= 0;
     var qualityText = null;
     var ariaLabel = null;
+    var i = 0;
+    var resolutions = {};
+    var buttonCount = 0;
+
+    if (showResolution) {
+      //Group into buckets so we can assign quality tiers
+      for (i = 0; i < availableBitrates.length; i++) {
+        if (typeof availableBitrates[i].height === 'number') {
+          if (!resolutions[availableBitrates[i].height]) {
+            resolutions[availableBitrates[i].height] = [];
+          }
+          resolutions[availableBitrates[i].height].push(availableBitrates[i]);
+        }
+      }
+      //sort by ascending bitrate
+      for (var res in resolutions) {
+        if (resolutions.hasOwnProperty(res)) {
+          resolutions[res].sort(function(a, b) {
+            return a.bitrate - b.bitrate;
+          });
+        }
+      }
+    }
+
+    this.state.wideFormat = false;
 
     //available bitrates
-    for (var i = 0; i < availableBitrates.length; i++) {
+    for (i = 0; i < availableBitrates.length; i++) {
       isSelected = this.state.selected === availableBitrates[i].id;
 
       var qualityBtn = ClassNames({
@@ -126,29 +150,50 @@ var VideoQualityPanel = React.createClass({
 
         switch(qualityText) {
           case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_BITRATE:
-            wideFormat = true;
+            this.state.wideFormat = true;
             label = qualityText.replace(MACROS.BITRATE, availableBitrate).replace(MACROS.RESOLUTION, availableResolution);
             ariaLabel = label;
             break;
           case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY:
-            //TODO: Confirm with product about how to handle multiple resolutions
-            label = qualityText.replace(MACROS.RESOLUTION, availableResolution);
+            if (resolutions[availableResolution] && resolutions[availableResolution].length > 1) {
+              var sameResolutionLength = resolutions[availableResolution].length;
+              var tiering = null;
+              if (sameResolutionLength === 2) {
+                tiering = CONSTANTS.RESOLUTION_TIER.TWO;
+              } else if (sameResolutionLength >= 3) {
+                tiering = CONSTANTS.RESOLUTION_TIER.THREE;
+              }
+              if (tiering) {
+                //We want to use top 3 resolutions if we are using 3 resolution tiers
+                var resolutionIndex = resolutions[availableResolution].indexOf(availableBitrates[i]);
+                var extraResolutionLength = resolutions[availableResolution].length - tiering.length;
+                var trueResolutionIndex = resolutionIndex - extraResolutionLength;
+                if (trueResolutionIndex >= 0 && trueResolutionIndex < tiering.length) {
+                  this.state.wideFormat = true;
+                  qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.TIERED_RESOLUTION_ONLY;
+                  label = qualityText.replace(MACROS.RESOLUTION, availableResolution).replace(MACROS.RESOLUTION_TIER, tiering[trueResolutionIndex]);
+                }
+              }
+            } else {
+              label = qualityText.replace(MACROS.RESOLUTION, availableResolution);
+            }
             ariaLabel = label;
             break;
           case CONSTANTS.QUALITY_SELECTION.TEXT.BITRATE_ONLY:
             label = qualityText.replace(MACROS.BITRATE, availableBitrate);
-            ariaLabel = CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i).replace(MACROS.BITRATE, availableBitrate);
+            ariaLabel = label;
             break;
         }
 
         if (label) {
+          buttonCount++;
           bitrateButtons.push(
-            <li key={i} role="presentation">
+            <li key={buttonCount} role="presentation">
               <AccessibleButton
-                key={i}
+                key={buttonCount}
                 className={qualityBtn}
                 style={selectedBitrateStyle}
-                focusId={CONSTANTS.FOCUS_IDS.QUALITY_LEVEL + i}
+                focusId={CONSTANTS.FOCUS_IDS.QUALITY_LEVEL + buttonCount}
                 role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
                 ariaLabel={ariaLabel}
                 ariaChecked={isSelected}
@@ -160,6 +205,12 @@ var VideoQualityPanel = React.createClass({
         }
       }
     }
+  },
+
+  render: function() {
+    var bitrateButtons = [];
+
+    this.addBitrateButtons(bitrateButtons);
 
     var qualityScreenClass = ClassNames({
       'oo-content-panel': !this.props.popover,
@@ -170,7 +221,7 @@ var VideoQualityPanel = React.createClass({
 
     var screenContentClass = ClassNames({
       'oo-quality-screen-content': true,
-      'oo-quality-screen-content-wide': wideFormat
+      'oo-quality-screen-content-wide': this.state.wideFormat
     });
 
     return (
@@ -212,6 +263,7 @@ VideoQualityPanel.propTypes = {
 
 VideoQualityPanel.defaultProps = {
   popover: false,
+  wideFormat: false,
   skinConfig: {
     icons: {
       quality:{fontStyleClass:'oo-icon oo-icon-topmenu-quality'}
