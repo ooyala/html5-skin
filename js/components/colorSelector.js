@@ -55,7 +55,7 @@ var ColorSelector = React.createClass({
   }
 });
 
-ColorSelector = AccessibleMenu(ColorSelector);
+ColorSelector = AccessibleMenu(ColorSelector, { useRovingTabindex: true });
 
 ColorSelector.propTypes = {
   name: React.PropTypes.string.isRequired,

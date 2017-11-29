@@ -164,6 +164,6 @@ var DataSelector = React.createClass({
   }
 });
 
-DataSelector = AccessibleMenu(DataSelector);
+DataSelector = AccessibleMenu(DataSelector, { useRovingTabindex: true });
 
 module.exports = DataSelector;

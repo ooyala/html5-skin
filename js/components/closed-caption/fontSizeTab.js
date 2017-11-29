@@ -91,6 +91,6 @@ var FontSizeTab = React.createClass({
   }
 });
 
-FontSizeTab = AccessibleMenu(FontSizeTab);
+FontSizeTab = AccessibleMenu(FontSizeTab, { useRovingTabindex: true });
 
 module.exports = FontSizeTab;

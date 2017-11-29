@@ -11,7 +11,7 @@ var ContentScreen = React.createClass({
 
   componentDidMount: function() {
     if (this.props.autoFocus) {
-      Utils.autoFocusFirstElement(this.domElement, 'oo-close-button');
+      Utils.autoFocusFirstElement(this.domElement);
     }
   },
 

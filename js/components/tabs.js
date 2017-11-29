@@ -22,9 +22,6 @@ var Tabs = React.createClass({
   },
 
   getInitialState: function() {
-    this.menuButtons = {};
-    this.autoFocusTabPanel = false;
-
     return {
       tabActive: this.props.tabActive
     };
@@ -46,13 +43,6 @@ var Tabs = React.createClass({
     }
   },
 
-  componentDidUpdate: function() {
-    if (this.autoFocusTabPanel) {
-      this.autoFocusTabPanel = false;
-      Utils.autoFocusFirstElement(this.refs['tab-panel'], 'oo-hidden');
-    }
-  },
-
   setActive: function(index, e) {
     e.preventDefault();
 
@@ -64,14 +54,6 @@ var Tabs = React.createClass({
     if (onBeforeChange) {
       var cancel = onBeforeChange(index, selectedPanel, selectedTabMenu);
       if(cancel === false){ return }
-    }
-
-    // Set a flag to auto focus on the first tab panel element on the next render
-    // if the menu button was triggered with the keyboard
-    var menuButton = this.menuButtons[index];
-    if (menuButton) {
-      this.autoFocusTabPanel = menuButton.wasTriggeredWithKeyboard();
-      menuButton.wasTriggeredWithKeyboard(false);
     }
 
     this.setState({ tabActive: index }, function()  {
@@ -116,7 +98,6 @@ var Tabs = React.createClass({
         return (
           <li ref={ref} key={index} className={classes} role={CONSTANTS.ARIA_ROLES.PRESENTATION}>
             <AccessibleButton
-              ref={function(e) { this.menuButtons[index + 1] = e }.bind(this)}
               style={activeTabStyle}
               className="tabs-menu-item-btn"
               ariaLabel={title}
@@ -133,12 +114,12 @@ var Tabs = React.createClass({
       }.bind(this));
 
     return (
-      <nav
+      <div
         className='tabs-navigation'
         ref={function(e) { this.tabsNavigationElement = e }.bind(this)}
-        aria-hidden="true">
+        tabIndex="-1">
         <ul className='tabs-menu' role={CONSTANTS.ARIA_ROLES.TAB_LIST}>{menuItems}</ul>
-      </nav>
+      </div>
     );
   },
 
@@ -242,7 +223,7 @@ var Tabs = React.createClass({
   }
 });
 
-Tabs = AccessibleMenu(Tabs, { selector: '.tabs-menu' });
+Tabs = AccessibleMenu(Tabs, { selector: '.tabs-menu', useRovingTabindex: true });
 
 Tabs.propTypes = {
   className: React.PropTypes.oneOfType([

@@ -91,6 +91,6 @@ var TextEnhancementsTab = React.createClass({
   }
 });
 
-TextEnhancementsTab = AccessibleMenu(TextEnhancementsTab);
+TextEnhancementsTab = AccessibleMenu(TextEnhancementsTab, { useRovingTabindex: true });
 
 module.exports = TextEnhancementsTab;
