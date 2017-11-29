@@ -220,11 +220,6 @@ var ThumbnailContainer = React.createClass({
       thumbnailClassName += " oo-thumbnail-vr";
     }
 
-    var thumbnailContainerClass = "";
-    if (this.props.thumbnailContainerClass !== undefined) {
-      thumbnailContainerClass = this.props.thumbnailContainerClass;
-    }
-
     var thumbnail = null;
 
     if (this.props.isCarousel) {
