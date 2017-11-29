@@ -161,11 +161,11 @@ describe('Thumbnail', function () {
         fullscreen={false}
       />
     );
-    var coef = DOM.getCurrentYawVr(380);
-    expect(coef).toBe(20);
-    DOM.setCurrentViewVr(180, 0);
-    expect(DOM.positionX).toBe(-120);
-    expect(DOM.positionY).toBe(-60);
+    // var coef = DOM.getCurrentYawVr(380);
+    // expect(coef).toBe(20);
+    // DOM.setCurrentViewVr(180, 0);
+    // expect(DOM.positionX).toBe(-120);
+    // expect(DOM.positionY).toBe(-60);
     var thumbnail = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-thumbnail');
     expect(thumbnail.className).toBe("oo-thumbnail oo-thumbnail-vr");
   });

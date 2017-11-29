@@ -11,7 +11,7 @@ var Utils = require('../../js/components/utils');
 
 var testThumbnails = function(DOM, thumbnails, hoverTime, width, duration) {
   var hoverPosition = Utils.findThumbnail(thumbnails, hoverTime, duration).pos;
-  var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnailCarousel);
+  var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnail);
   var images = centerImage._parentNode._childNodes;
 
   var lastLeft = 0;
@@ -161,7 +161,7 @@ describe('ThumbnailCarousel', function () {
         thumbnailHeight="63"
         thumbnails={thumbnails}/>
     );
-    var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnailCarousel).style._values['background-image'];
+    var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnail).style._values['background-image'];
     centerImage = centerImage.slice(centerImage.indexOf("url(") + 4, -1);
     expect(centerImage).toBe(thumbnails.data.thumbnails[hoverTime][width]["url"]); //50 is present in the data, so hoverTime of 50 should find exact match
   });
@@ -182,7 +182,7 @@ describe('ThumbnailCarousel', function () {
         thumbnailHeight="63"
         thumbnails={thumbnails}/>
     );
-    var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnailCarousel).style._values['background-image'];
+    var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnail).style._values['background-image'];
     centerImage = centerImage.slice(centerImage.indexOf("url(") + 4, -1);
     expect(centerImage).toBe(thumbnails.data.thumbnails[hoverTime - 5][width]["url"]);//45 is not present in the data, so hoverTime of 45 should find previous value
   });
