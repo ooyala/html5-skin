@@ -129,7 +129,10 @@ var DataSelector = React.createClass({
     });
 
     return(
-      <div className="oo-data-selector" role={CONSTANTS.ARIA_ROLES.MENU}>
+      <div
+        className="oo-data-selector"
+        aria-label={this.props.ariaLabel}
+        role={CONSTANTS.ARIA_ROLES.MENU}>
 
         <AccessibleButton
           ref={function(e) {this.leftChevronBtn = e}.bind(this)}

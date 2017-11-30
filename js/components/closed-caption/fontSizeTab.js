@@ -82,7 +82,9 @@ var FontSizeTab = React.createClass({
         <div className="oo-font-size-inner-wrapper">
           <SelectionContainer
             title={fontSizeTitle}
-            selectionText={fontSizeSelection}>
+            selectionText={fontSizeSelection}
+            ariaLabel={CONSTANTS.ARIA_LABELS.FONT_SIZE_MENU}
+            role={CONSTANTS.ARIA_ROLES.MENU}>
             {fontItems}
           </SelectionContainer>
         </div>

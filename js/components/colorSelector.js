@@ -28,7 +28,7 @@ var ColorSelector = React.createClass({
         selectedColorStyle += this.props.skinConfig.general.accentColor;
         activeColorStyle = {border: selectedColorStyle};
       }
-      var ariaLabel = this.props.name + " " + this.props.colors[i];
+      var ariaLabel = this.props.colors[i] + " " + this.props.ariaLabel;
 
       colorItems.push(
         <div
@@ -48,7 +48,10 @@ var ColorSelector = React.createClass({
     }
 
     return (
-      <div className="oo-color-selector" role={CONSTANTS.ARIA_ROLES.MENU}>
+      <div
+        className="oo-color-selector"
+        aria-label={this.props.ariaLabel}
+        role={CONSTANTS.ARIA_ROLES.MENU}>
         {colorItems}
       </div>
     );
@@ -58,7 +61,7 @@ var ColorSelector = React.createClass({
 ColorSelector = AccessibleMenu(ColorSelector, { useRovingTabindex: true });
 
 ColorSelector.propTypes = {
-  name: React.PropTypes.string.isRequired,
+  ariaLabel: React.PropTypes.string.isRequired,
   colors: React.PropTypes.array.isRequired
 };
 

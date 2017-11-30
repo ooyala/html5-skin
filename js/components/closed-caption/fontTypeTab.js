@@ -1,4 +1,5 @@
 var React = require('react'),
+    CONSTANTS = require('../../constants/constants'),
     DataSelector = require('../dataSelector');
 
 var FontTypeTab = React.createClass({
@@ -24,6 +25,7 @@ var FontTypeTab = React.createClass({
       <div className="oo-font-type-tab">
         <DataSelector
           {...this.props}
+          ariaLabel={CONSTANTS.ARIA_LABELS.FONT_TYPE_MENU}
           viewSize={this.props.responsiveView}
           dataItemsPerPage={this.props.dataItemsPerPage}
           selectedData={this.state.selectedFontType}

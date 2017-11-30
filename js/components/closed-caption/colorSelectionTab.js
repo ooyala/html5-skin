@@ -81,7 +81,7 @@ var ColorSelectionTab = React.createClass({
             <div className="oo-text-color-items-container">
               <ColorSelector
                 {...this.props}
-                name={textColorTitle}
+                ariaLabel={CONSTANTS.ARIA_LABELS.TEXT_COLOR_MENU}
                 colors={this.state.textColors}
                 onColorChange={this.changeTextColor}
                 selectedColor={this.props.closedCaptionOptions.textColor}
@@ -96,7 +96,7 @@ var ColorSelectionTab = React.createClass({
             >
             <ColorSelector
               {...this.props}
-              name={backgroundColorTitle}
+              ariaLabel={CONSTANTS.ARIA_LABELS.BACKGROUND_COLOR_MENU}
               colors={this.state.backgroundColors}
               onColorChange={this.changeBackgroundColor}
               selectedColor={this.props.closedCaptionOptions.backgroundColor}
@@ -110,7 +110,7 @@ var ColorSelectionTab = React.createClass({
             >
             <ColorSelector
               {...this.props}
-              name={windowColorTitle}
+              ariaLabel={CONSTANTS.ARIA_LABELS.WINDOW_COLOR_MENU}
               colors={this.state.windowColors}
               onColorChange={this.changeWindowColor}
               selectedColor={this.props.closedCaptionOptions.windowColor}

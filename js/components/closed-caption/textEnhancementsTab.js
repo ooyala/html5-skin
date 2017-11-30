@@ -82,7 +82,9 @@ var TextEnhancementsTab = React.createClass({
         <div className="oo-text-enhancements-inner-wrapper">
           <SelectionContainer
             title={textEnhancementTitle}
-            selectionText={textEnhancementSelection}>
+            selectionText={textEnhancementSelection}
+            ariaLabel={CONSTANTS.ARIA_LABELS.TEXT_ENHANCEMENTS_MENU}
+            role={CONSTANTS.ARIA_ROLES.MENU}>
             {textEnhancementItems}
           </SelectionContainer>
         </div>

@@ -131,7 +131,14 @@ module.exports = {
     STEREO_OFF: "Monoscopic",
     MORE_OPTIONS: "More Options",
     PREVIOUS_OPTIONS: "Previous Options",
-    SLIDER_VALUE_TEXT: MACROS.PERCENT + "% " + MACROS.SETTING
+    SLIDER_VALUE_TEXT: MACROS.PERCENT + "% " + MACROS.SETTING,
+    LANGUAGE_MENU: "Language",
+    TEXT_COLOR_MENU: "Text Color",
+    BACKGROUND_COLOR_MENU: "Background Color",
+    WINDOW_COLOR_MENU: "Window Color",
+    FONT_TYPE_MENU: "Font Type",
+    FONT_SIZE_MENU: "Font Size",
+    TEXT_ENHANCEMENTS_MENU: "Text Enhancements"
   },
 
   ARIA_ROLES: {

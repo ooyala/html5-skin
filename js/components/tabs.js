@@ -118,7 +118,12 @@ var Tabs = React.createClass({
         className='tabs-navigation'
         ref={function(e) { this.tabsNavigationElement = e }.bind(this)}
         tabIndex="-1">
-        <ul className='tabs-menu' role={CONSTANTS.ARIA_ROLES.TAB_LIST}>{menuItems}</ul>
+        <ul
+          className='tabs-menu'
+          role={CONSTANTS.ARIA_ROLES.TAB_LIST}
+          aria-label={CONSTANTS.ARIA_LABELS.CAPTION_OPTIONS}>
+          {menuItems}
+        </ul>
       </div>
     );
   },
