@@ -1137,6 +1137,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.configLoaded = true;
       this.renderSkin();
       this.createPluginElements();
+
+      if (params.showAdControlsOverAds === true) {
+        this.state.pluginsElement.css("bottom", 0);
+        this.state.pluginsElementClickElement.css("bottom", 0);
+      }
       if (typeof this.state.config.closedCaptionOptions === 'object' &&
         this.state.config.closedCaptionOptions.language !== undefined) {
         this.setCaptionDirection(this.state.config.closedCaptionOptions.language);
