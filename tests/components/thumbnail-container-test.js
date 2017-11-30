@@ -119,6 +119,11 @@ describe('ThumbnailContainer', function () {
       ]
     }
   };
+  var vrViewingDirection = {yaw: 180, roll: 0, pitch: 0};
+  var duration = 100;
+  var hoverTime = 80;
+  var scrubberBarWidth = 470;
+  var hoverPosition = 80;
 
   it('for isCarousel = false need to show thumbnails', function () {
     var DOM = TestUtils.renderIntoDocument
@@ -126,11 +131,11 @@ describe('ThumbnailContainer', function () {
       <ThumbnailContainer
         thumbnails={thumbnails}
         isCarousel={false}
-        hoverPosition={80}
-        duration={100}
-        hoverTime={80}
-        scrubberBarWidth={100}
-        vrViewingDirection={{yaw: 0, roll: 0, pitch: 0}}
+        hoverPosition={hoverPosition}
+        duration={duration}
+        hoverTime={hoverTime}
+        scrubberBarWidth={scrubberBarWidth}
+        vrViewingDirection={vrViewingDirection}
         videoVr={true}
         fullscreen={false}
       />
@@ -145,11 +150,11 @@ describe('ThumbnailContainer', function () {
       <ThumbnailContainer
         thumbnails={thumbnails}
         isCarousel={true}
-        hoverPosition={80}
-        duration={100}
-        hoverTime={80}
-        scrubberBarWidth={470}
-        vrViewingDirection={{yaw: 0, roll: 0, pitch: 0}}
+        hoverPosition={hoverPosition}
+        duration={duration}
+        hoverTime={hoverTime}
+        scrubberBarWidth={scrubberBarWidth}
+        vrViewingDirection={vrViewingDirection}
         videoVr={true}
         fullscreen={false}
       />
@@ -165,11 +170,11 @@ describe('ThumbnailContainer', function () {
       <ThumbnailContainer
         thumbnails={thumbnails}
         isCarousel={false}
-        hoverPosition={80}
-        duration={100}
-        hoverTime={80}
-        scrubberBarWidth={470}
-        vrViewingDirection={{yaw: 180, roll: 0, pitch: 0}}
+        hoverPosition={hoverPosition}
+        duration={duration}
+        hoverTime={hoverTime}
+        scrubberBarWidth={scrubberBarWidth}
+        vrViewingDirection={vrViewingDirection}
         videoVr={true}
         fullscreen={false}
       />
