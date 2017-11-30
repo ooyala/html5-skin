@@ -120,35 +120,6 @@ describe('ThumbnailContainer', function () {
     }
   };
 
-  // it('creates and verifies thumbnails at hover times of [0, 100], step 5', function () {
-  //   var width = thumbnails.data.available_widths[0];
-  //   var duration = 100;
-  //   var onRef = function() {};
-  //   for (var hoverTime = 0; hoverTime <= 100; hoverTime += 5) {
-  //     var DOM = TestUtils.renderIntoDocument
-  //     (
-  //       <Thumbnail
-  //         onRef={onRef}
-  //         hoverPosition={hoverTime}
-  //         duration={duration}
-  //         hoverTime={hoverTime}
-  //         scrubberBarWidth={100}
-  //         thumbnails={thumbnails}/>
-  //     );
-  //     var thumbnail = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail');
-  //     var thumbnailTime = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail-time');
-  //     var hoverPosition = Utils.findThumbnail(thumbnails, hoverTime, duration).pos;
-  //     var node = ReactDOM.findDOMNode(DOM.refs.thumbnail);
-  //     if (hoverTime % 10 == 0) {
-  //       expect(node.style._values['background-image']).toBe("url("+thumbnails.data.thumbnails[hoverTime][width]["url"]+")");
-  //     } else {
-  //       expect(node.style._values['background-image']).toBe("url("+thumbnails.data.thumbnails[(hoverTime - 5).toString()][width]["url"]+")");
-  //     }
-  //     expect(thumbnail.length).toBe(1);
-  //     expect(thumbnailTime.length).toBe(1);
-  //   }
-  // });
-
   it('for isCarousel = false need to show thumbnails', function () {
     var DOM = TestUtils.renderIntoDocument
     (
