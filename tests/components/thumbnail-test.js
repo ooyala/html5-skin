@@ -144,29 +144,4 @@ describe('Thumbnail', function () {
       expect(thumbnailTime.length).toBe(1);
     }
   });
-
-  it('tests functions for vr preview', function () {
-    var onRef = function() {};
-    var DOM = TestUtils.renderIntoDocument
-    (
-      <Thumbnail
-        onRef={onRef}
-        thumbnails={thumbnails}
-        hoverPosition={80}
-        duration={100}
-        hoverTime={80}
-        scrubberBarWidth={100}
-        vrViewingDirection={{yaw: 0, roll: 0, pitch: 0}}
-        videoVr={true}
-        fullscreen={false}
-      />
-    );
-    // var coef = DOM.getCurrentYawVr(380);
-    // expect(coef).toBe(20);
-    // DOM.setCurrentViewVr(180, 0);
-    // expect(DOM.positionX).toBe(-120);
-    // expect(DOM.positionY).toBe(-60);
-    var thumbnail = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-thumbnail');
-    expect(thumbnail.className).toBe("oo-thumbnail oo-thumbnail-vr");
-  });
 });

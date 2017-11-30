@@ -2,6 +2,7 @@ jest.dontMock('../../js/components/scrubberBar')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/components/thumbnail')
     .dontMock('../../js/components/thumbnailCarousel')
+    .dontMock('../../js/components/thumbnailContainer')
     .dontMock('../../js/constants/constants')
     .dontMock('../../config/skin.json')
     .dontMock('underscore');
@@ -328,8 +329,8 @@ describe('ScrubberBar', function () {
 
     var evt = {nativeEvent: {offsetX: 10}};
     TestUtils.Simulate.mouseOver(ReactDOM.findDOMNode(DOM.refs.scrubberBarContainer), evt);
-    var thumbnail = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-scrubber-thumbnail-container');
-    // expect(thumbnail.length).toBe(1);
+    var thumbnailContainer = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-scrubber-thumbnail-wrapper');
+    expect(thumbnailContainer.length).toBe(1);
   });
 
   it('display thumbnailCarousel on scrubber bar mouse down', function() {
@@ -356,8 +357,8 @@ describe('ScrubberBar', function () {
 
     var evt = {nativeEvent: {offsetX: 10}};
     TestUtils.Simulate.mouseDown(ReactDOM.findDOMNode(DOM.refs.scrubberBarPadding), evt);
-    var thumbnailCarousel = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-scrubber-carousel-container');
-    // expect(thumbnailCarousel.length).toBe(1);
+    var thumbnailCarousel = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-scrubber-thumbnail-wrapper');
+    expect(thumbnailCarousel.length).toBe(1);
   });
 
   it('tests a scrubber bar componentWillReceiveProps', function () {
