@@ -205,20 +205,30 @@ describe('ThumbnailContainer', function () {
     );
     var coef = DOM.getCurrentYawVr(380);
     expect(coef).toBe(20);
+
     var params = {
-      yaw: 180,
-      pitch: 0,
+      yaw: DOM.props.vrViewingDirection.yaw,
+      pitch: DOM.props.vrViewingDirection.pitch,
       imageWidth: 80,
       imageHeight: 40,
       thumbnailWidth: 320,
       thumbnailHeight: 160
     };
-
     var positions = DOM.setBgPositionVr(params);
     var positionX = positions.positionX;
     var positionY = positions.positionY;
-
     expect(positionX).toBe(120);
     expect(positionY).toBe(0);
+
+    DOM.child.refs.thumbnail.clientWidth = 80;
+    DOM.child.refs.thumbnail.clientHeight = 40;
+    var refName = "thumbnail", widthName = "thumbnailWidth", heightName = "thumbnailHeight";
+    DOM.setThumbnailSize(refName, widthName, heightName);
+    expect(DOM.thumbnailWidth).toBe(80);
+    expect(DOM.thumbnailHeight).toBe(40);
+
+    DOM.setImageSizes();
+    expect(DOM.imageWidth).toBe(320);
+    expect(DOM.imageHeight).toBe(160);
   });
 });
