@@ -119,15 +119,17 @@ describe('Thumbnail', function () {
   it('creates and verifies thumbnails at hover times of [0, 100], step 5', function () {
     var width = thumbnails.data.available_widths[0];
     var duration = 100;
+    var onRef = function() {};
     for (var hoverTime = 0; hoverTime <= 100; hoverTime += 5) {
       var DOM = TestUtils.renderIntoDocument
       (
-          <Thumbnail
-           hoverPosition={hoverTime}
-           duration={duration}
-           hoverTime={hoverTime}
-           scrubberBarWidth={100}
-           thumbnails={thumbnails}/>
+        <Thumbnail
+          onRef={onRef}
+          hoverPosition={hoverTime}
+          duration={duration}
+          hoverTime={hoverTime}
+          scrubberBarWidth={100}
+          thumbnails={thumbnails}/>
       );
       var thumbnail = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail');
       var thumbnailTime = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail-time');
@@ -141,28 +143,5 @@ describe('Thumbnail', function () {
       expect(thumbnail.length).toBe(1);
       expect(thumbnailTime.length).toBe(1);
     }
-  });
-
-  it('tests functions for vr preview', function () {
-    var DOM = TestUtils.renderIntoDocument
-    (
-      <Thumbnail
-        thumbnails={thumbnails}
-        hoverPosition={80}
-        duration={100}
-        hoverTime={80}
-        scrubberBarWidth={100}
-        vrViewingDirection={{yaw: 0, roll: 0, pitch: 0}}
-        videoVr={true}
-        fullscreen={false}
-      />
-    );
-    var coef = DOM.getCurrentYawVr(380);
-    expect(coef).toBe(20);
-    DOM.setCurrentViewVr(180, 0);
-    expect(DOM.positionX).toBe(-120);
-    expect(DOM.positionY).toBe(-60);
-    var thumbnail = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-thumbnail');
-    expect(thumbnail.className).toBe("oo-thumbnail oo-thumbnail-vr");
   });
 });

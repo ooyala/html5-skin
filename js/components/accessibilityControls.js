@@ -147,7 +147,16 @@ AccessibilityControls.prototype = {
     this.controller.moveVrToDirection(false, keyDirectionMap[charCode]); //stop rotation if isKeyDown === false or prevent prev rotation if press a button (isKeyDown === true)
 
     if (isKeyDown === true) {
-      this.prevKeyPressedArr.push(charCode);
+      var newBtn = true;
+      for (var j = this.prevKeyPressedArr.length - 1; j >= 0; j--) {
+        if (this.prevKeyPressedArr[j] === charCode) {
+          newBtn = false; // there is extra pressDown for pressed btn in chrome (windows) and safari if to change to fullscreen mode
+          break; // we do not need to add charCode to prevKeyPressedArr in this case
+        }
+      }
+      if (newBtn) {
+        this.prevKeyPressedArr.push(charCode);
+      }
     } else { // if button is up, remove it from this.prevKeyPressedArr
       var inPrevKeyPressedArrIndex = -1;
       //check if button code is already in list of pressed buttons (this.prevKeyPressedArr)

@@ -38,8 +38,10 @@ var PlayingScreen = React.createClass({
     if (this.isMobile || this.props.fullscreen || this.browserSupportsTouch){
       this.props.controller.startHideControlBarTimer();
     }
-    this.handleVrAnimationEnd("vrNotificatioContainer", "isVrNotificationHidden");
-    this.handleVrAnimationEnd("vrIconContainer", "isVrIconHidden");
+    if (this.props.controller.videoVr) {
+      this.handleVrAnimationEnd("vrNotificatioContainer", "isVrNotificationHidden");
+      this.handleVrAnimationEnd("vrIconContainer", "isVrIconHidden");
+    }
   },
 
   componentWillUpdate: function(nextProps) {
@@ -77,7 +79,6 @@ var PlayingScreen = React.createClass({
         var newState = {};
         newState[stateName] = true;
         this.setState(newState);
-        this.props.controller.isNewVrVideo = false;
       };
       vrContainer.addEventListener("animationend", listener.bind(this), false);
     }
