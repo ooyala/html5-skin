@@ -1138,10 +1138,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
       this.createPluginElements();
 
-      if (params.showAdControlsOverAds === true) {
-        this.state.pluginsElement.css("bottom", 0);
-        this.state.pluginsElementClickElement.css("bottom", 0);
-      }
       if (typeof this.state.config.closedCaptionOptions === 'object' &&
         this.state.config.closedCaptionOptions.language !== undefined) {
         this.setCaptionDirection(this.state.config.closedCaptionOptions.language);
@@ -1150,10 +1146,26 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //create plugin container elements
     createPluginElements: function() {
+      //if playerControlsOverAds is true then we need to override the setting
+      //for showing the control bar during ads.
+      if (this.state.playerParam && this.state.playerParam.playerControlsOverAds) {
+        if (this.state.config && this.state.config.adScreen) {
+          this.state.config.adScreen.showControlBar = true;
+        }
+      }
+
       var fullClass = (this.state.config.adScreen.showControlBar ? "" : " oo-full");
       $("#" + this.state.elementId + " .oo-player-skin").append("<div class='oo-player-skin-plugins"+fullClass+"'></div><div class='oo-player-skin-plugins-click-layer"+fullClass+"'></div>");
       this.state.pluginsElement = $("#" + this.state.elementId + " .oo-player-skin-plugins");
       this.state.pluginsClickElement = $("#" + this.state.elementId + " .oo-player-skin-plugins-click-layer");
+
+      //if playerControlsOverAds is true, then we need to set the size of the
+      //elements to be the full size of the player and not end where the control bar begins.
+      if (this.state.playerParam && this.state.playerParam.playerControlsOverAds) {
+        this.state.pluginsElement.css("bottom", 0);
+        this.state.pluginsClickElement.css("bottom", 0);
+      }
+
       this.state.pluginsElement.mouseover(
         function() {
           this.showControlBar();
