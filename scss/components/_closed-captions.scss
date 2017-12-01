@@ -241,7 +241,7 @@
           border-radius: 50%;
         }
 
-        .oo-item-selected .oo-color-item:focus {
+        .oo-item-selected .oo-color-item:focus::before {
           box-shadow: 0 0 0 3px transparent, 0 0 0 5px #fff, 0 0 0 8px $blue-light;
         }
 
@@ -257,8 +257,21 @@
           top: 0; bottom: 0; left: 0; right: 0;
         }
         .oo-color-item:focus {
-          box-shadow: 0 0 0 6px $blue-light; // Should be the same as highlight-tab mixin, but with a larger shadow
-          z-index: -1;
+          @include remove-highlight-tab();
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: 50%;
+            box-shadow: 0 0 0 6px $blue-light; // Should be the same as highlight-tab mixin, but with a larger shadow
+            z-index: $zindex-color-item-focus;
+          }
+        }
+        .oo-color-item:hover:active::before {
+          content: none;
         }
         .oo-color-item-White {
           background-color: white;

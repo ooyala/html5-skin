@@ -28,7 +28,7 @@ var ColorSelector = React.createClass({
         selectedColorStyle += this.props.skinConfig.general.accentColor;
         activeColorStyle = {border: selectedColorStyle};
       }
-      var ariaLabel = this.props.colors[i] + " " + this.props.ariaLabel;
+      var ariaLabel = this.props.ariaLabel + " " + this.props.colors[i];
 
       colorItems.push(
         <div

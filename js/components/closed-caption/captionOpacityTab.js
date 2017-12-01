@@ -7,27 +7,24 @@ var React = require('react'),
 
 var CaptionOpacityTab = React.createClass({
 
-  changeTextOpacity: function(event) {
+  changeTextOpacity: function(value) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
-    var value = event.target.value;
     this.props.controller.onClosedCaptionChange('textOpacity', value);
   },
 
-  changeBackgroundOpacity: function(event) {
+  changeBackgroundOpacity: function(value) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
-    var value = event.target.value;
     this.props.controller.onClosedCaptionChange('backgroundOpacity', value);
   },
 
-  changeWindowOpacity: function(event) {
+  changeWindowOpacity: function(value) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
-    var value = event.target.value;
     this.props.controller.onClosedCaptionChange('windowOpacity', value);
   },
 

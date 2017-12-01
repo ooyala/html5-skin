@@ -32,8 +32,8 @@ var VolumeControls = React.createClass({
     }
   },
 
-  handleVolumeSliderChange: function(event) {
-    var newVolume = parseFloat(event.target.value);
+  handleVolumeSliderChange: function(value) {
+    var newVolume = parseFloat(value);
     this.volumeChange(newVolume);
   },
 

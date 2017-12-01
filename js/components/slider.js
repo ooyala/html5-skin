@@ -8,6 +8,16 @@ var Slider = React.createClass({
 
   componentDidMount: function() {
     this.handleSliderColoring(this.props);
+
+    if (this.isIeFixRequired()) {
+      this.valueObserver = this.setUpValueObserver(this.refs[this.props.itemRef]);
+    }
+  },
+
+  componentWillUnmount: function() {
+    if (this.valueObserver && typeof this.valueObserver.disconnect === 'function') {
+      this.valueObserver.disconnect();
+    }
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -38,13 +48,115 @@ var Slider = React.createClass({
   },
 
   changeValue: function(event) {
-    if (event.type == 'change' && !Utils.isIE()){
-      this.props.onChange(event);
+    if (!event.target) {
+      return;
+    }
+    var value = Utils.ensureNumber(event.target.value, 0);
+
+    if (event.type == 'change' && !Utils.isIE()) {
+      this.props.onChange(value);
       this.handleSliderColoring(this.props);
+    } else if (Utils.isIE()) {
+      this.props.onChange(value);
     }
-    else if (Utils.isIE()) {
-      this.props.onChange(event);
+  },
+
+  /**
+   * Determines whether a workaround is required for the IE/Edge issue in which
+   * change event doesn't fire when controlling slider with keyboard.
+   * @private
+   * @return {Boolean} True if the fix is required, false otherwise
+   */
+  isIeFixRequired: function() {
+    return Utils.isIE() || Utils.isEdge();
+  },
+
+  /**
+   * Sets up a MutationObserver that monitors changes to the input's value attribute.
+   * This is needed as a workaround for an IE11/Edge issue in which the change event is
+   * not triggered when controlling the input with the arrow keys.
+   * @private
+   * @param {Node} The html element which we want to observe.
+   * @return {MutationObserver} The new mutation observer instance that was set up or undefined if setup failed.
+   */
+  setUpValueObserver: function(target) {
+    if (!target || !window.MutationObserver) {
+      return;
     }
+    var observer = new MutationObserver(this.triggerOnChangeForIe);
+    var observerConfig = {
+      attributes: true,
+      attributeFilter: ['value']
+    };
+    observer.observe(target, observerConfig);
+    return observer;
+  },
+
+  /**
+   * Workaround for IE/Edge. This is call by the mutation observer when a change to
+   * the value attribute is detected. We execute the this.props.onChange callback when this
+   * happens in order to let React update the UI.
+   * @private
+   */
+  triggerOnChangeForIe: function() {
+    var domElement = this.refs[this.props.itemRef];
+
+    if (domElement) {
+      // Note that we use the attribute's value, rather than the element's value
+      // property, which seems to have the wrong value some times.
+      var newValue = Utils.ensureNumber(domElement.getAttribute('value'), 0);
+      this.props.onChange(newValue);
+    }
+  },
+
+  /**
+   * Simulates keyboard interaction for IE/Edge which do not properly support it.
+   * @private
+   * @param {Event} event The keydown event object.
+   */
+  onKeyDown: function(event) {
+    var value;
+
+    switch (event.key) {
+      case CONSTANTS.KEY_VALUES.ARROW_UP:
+      case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
+        value = this.getNextSliderValue(true);
+        event.target.setAttribute('value', value);
+        break;
+      case CONSTANTS.KEY_VALUES.ARROW_DOWN:
+      case CONSTANTS.KEY_VALUES.ARROW_LEFT:
+        value = this.getNextSliderValue(false);
+        event.target.setAttribute('value', value);
+        break;
+      case CONSTANTS.KEY_VALUES.HOME:
+        event.target.setAttribute('value', Utils.ensureNumber(this.props.minValue, this.props.value));
+        break;
+      case CONSTANTS.KEY_VALUES.END:
+        event.target.setAttribute('value', Utils.ensureNumber(this.props.maxValue, this.props.value));
+        break;
+      default:
+        break;
+    }
+  },
+
+  /**
+   * Gets the 'next' value on the slider as determined by the configured values of min,
+   * max and step, as well as the current value. The forward parameter determines whether
+   * to get the next value to the right or to the left of the current value.
+   * This is needed as a workaround for an IE/Edge issue and should only be used for this purpose.
+   * @private
+   * @param {type} forward If true gets the value to the right of the current value or the one to the left otherwise.
+   * @return {Number} The next value to the left or right of the current value.
+   */
+  getNextSliderValue: function(forward) {
+    var value = 0;
+    var sign = forward ? 1 : -1;
+    var delta = Utils.ensureNumber(this.props.value) + (Utils.ensureNumber(this.props.step, 1) * sign);
+    var min = Utils.ensureNumber(this.props.minValue, -Infinity);
+    var max = Utils.ensureNumber(this.props.maxValue, Infinity);
+    value = Utils.constrainToRange(delta, min, max);
+    value = Math.round(value * 100) / 100;
+    return value;
   },
 
   /**
@@ -94,7 +206,8 @@ var Slider = React.createClass({
         role={CONSTANTS.ARIA_ROLES.SLIDER}
         onMouseUp={Utils.blurOnMouseUp}
         onChange={this.changeValue}
-        onClick={this.changeValue}/>
+        onClick={this.changeValue}
+        onKeyDown={this.isIeFixRequired() ? this.onKeyDown : null}/>
     );
   }
 });
