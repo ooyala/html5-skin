@@ -1149,12 +1149,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       //if playerControlsOverAds is true then we need to override the setting
       //for showing the control bar during ads.
       if (this.state.playerParam && this.state.playerParam.playerControlsOverAds) {
-        if (this.state.config && this.state.config.adScreen) {
+        if (this.state.config) {
+          this.state.config.adScreen = this.state.config.adScreen || {};
           this.state.config.adScreen.showControlBar = true;
         }
       }
 
-      var fullClass = (this.state.config.adScreen.showControlBar ? "" : " oo-full");
+      var fullClass = "";
+      if (!this.state.config || !this.state.config.adScreen || !this.state.config.adScreen.showControlBar) {
+        fullClass = " oo-full";
+      }
       $("#" + this.state.elementId + " .oo-player-skin").append("<div class='oo-player-skin-plugins"+fullClass+"'></div><div class='oo-player-skin-plugins-click-layer"+fullClass+"'></div>");
       this.state.pluginsElement = $("#" + this.state.elementId + " .oo-player-skin-plugins");
       this.state.pluginsClickElement = $("#" + this.state.elementId + " .oo-player-skin-plugins-click-layer");

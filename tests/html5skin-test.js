@@ -448,4 +448,54 @@ describe('Controller', function() {
 
   });
 
+  describe("Show player controls over ads", function() {
+    it('test playerControlsOverAds = true  and no skin setting for adscreen', function() {
+      var playerParam = {
+        playerControlsOverAds: true,
+      };
+      controller.state.playerParam = playerParam;
+      controller.createPluginElements();
+      expect(controller.state.config.adScreen.showControlBar).toBe(true);
+
+    });
+
+    it('test playerControlsOverAds = true  and skin set showControlBar to false', function() {
+      var playerParam = {
+        playerControlsOverAds: true,
+        skin: {
+          inline: {
+            adScreen: {
+              showControlBar: false
+            }
+          }
+        }
+      };
+      controller.state.playerParam = playerParam;
+      controller.state.config = {};
+      controller.state.config.adScreen = {};
+      controller.state.config.adScreen.showControlBar = false;
+      controller.createPluginElements();
+      expect(controller.state.config.adScreen.showControlBar).toBe(true);
+    });
+
+    it('test playerControlsOverAds = true  and skin set showControlBar to true', function() {
+      var playerParam = {
+        playerControlsOverAds: true,
+        skin: {
+          inline: {
+            adScreen: {
+              showControlBar: true
+            }
+          }
+        }
+      };
+      controller.state.playerParam = playerParam;
+      controller.state.config = {};
+      controller.state.config.adScreen = {};
+      controller.state.config.adScreen.showControlBar = true;
+      controller.createPluginElements();
+      expect(controller.state.config.adScreen.showControlBar).toBe(true);
+    });
+  });
+
 });
