@@ -104,14 +104,22 @@ AccessibleButton.propTypes = {
   onClick: React.PropTypes.func
 };
 
-AccessibleButton.defaultProps = {
-  autoFocus: false,
-  focusId: Math.random().toString(36).substr(2, 10),
-  ariaChecked: null,
-  ariaSelected: null,
-  ariaHasPopup: null,
-  ariaExpanded: null,
-  role: null,
-};
+// Define focusId as a getter so that it returns a different value
+// for each instance of AccessibleButton (defaultProps is static)
+AccessibleButton.defaultProps = Object.create({}, {
+  focusId: {
+    enumerable: true,
+    get: function() {
+      return Math.random().toString(36).substr(2, 10);
+    }
+  }
+});
+
+AccessibleButton.defaultProps.autoFocus = false;
+AccessibleButton.defaultProps.ariaChecked = null;
+AccessibleButton.defaultProps.ariaSelected = null;
+AccessibleButton.defaultProps.ariaHasPopup = null;
+AccessibleButton.defaultProps.ariaExpanded = null;
+AccessibleButton.defaultProps.role = null;
 
 module.exports = AccessibleButton;

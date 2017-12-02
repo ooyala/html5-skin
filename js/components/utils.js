@@ -82,6 +82,19 @@ var Utils = {
   },
 
   /**
+   * Same as Number.toFixed(), except that it returns a Number insted of a string.
+   * @function toFixedNumber
+   * @param {Object} value The numerical value to process.
+   * @param {Number} digits The number of digits to appear after the decimal point.
+   * @return {Number} The equivalent of value with the specified precision. Will return 0 if value is not a valid number.
+   */
+  toFixedNumber: function(value, digits) {
+    var result = this.ensureNumber(value, 0);
+    result = this.ensureNumber(result.toFixed(digits));
+    return result;
+  },
+
+  /**
    * Returns the currentTime and totalTime values in HH:MM format that can be used for
    * a video time display UI or for ARIA labels.
    * Note that the meaning of these values changes depending on the type of video:

@@ -8,56 +8,68 @@ var React = require('react'),
 var DataSelector = React.createClass({
 
   getInitialState: function() {
-    this.leftChevronBtn = null;
-    this.rightChevronBtn = null;
-
     return {
-      currentPage: 1,
-      autoFocusFirst: false,
-      autoFocusLast: false
+      currentPage: 1
     };
   },
 
-  handleDataSelection: function(dataItem) {
+  componentWillMount: function() {
+    this.leftChevronBtn = null;
+    this.rightChevronBtn = null;
+    this.itemButtons = {};
+    this.autoFocus = {
+      first: false,
+      last: false,
+      selected: false
+    };
+  },
+
+  resetAutoFocus: function() {
+    this.autoFocus.first = false;
+    this.autoFocus.last = false;
+    this.autoFocus.selected = false;
+  },
+
+  handleDataSelection: function(dataItem, itemId) {
+    this.resetAutoFocus();
+    this.autoFocus.selected = this.checkAndResetBtnAutoFocus(this.itemButtons[itemId]);
     this.props.onDataChange(dataItem);
   },
 
   handleLeftChevronClick: function(event) {
     event.preventDefault();
-    var autoFocusLast = this.checkAndResetAutoFocus(this.leftChevronBtn);
+    this.resetAutoFocus();
+    this.autoFocus.last = this.checkAndResetBtnAutoFocus(this.leftChevronBtn);
 
     this.setState({
-      currentPage: this.state.currentPage - 1,
-      autoFocusFirst: false,
-      autoFocusLast: autoFocusLast
+      currentPage: this.state.currentPage - 1
     });
   },
 
   handleRightChevronClick: function(event) {
     event.preventDefault();
-    var autoFocusFirst = this.checkAndResetAutoFocus(this.rightChevronBtn)
+    this.resetAutoFocus();
+    this.autoFocus.first = this.checkAndResetBtnAutoFocus(this.rightChevronBtn);
 
     this.setState({
-      currentPage: this.state.currentPage + 1,
-      autoFocusFirst: autoFocusFirst,
-      autoFocusLast: false
+      currentPage: this.state.currentPage + 1
     });
   },
 
   /**
-   * Determines whether the given chevron button was triggered with a keyboard, which would
-   * require us to use autofocus when rendering the new page that we're swithing to. Note that
-   * calling this function will reset the button's triggered with keyboard state.
+   * Determines whether the given button was triggered with a keyboard, which might
+   * require us to use autofocus after rendering. Note that calling this function will
+   * reset the button's triggered with keyboard state.
    * @private
-   * @param {AccessibleButton} chevronBtn Either the right or left chevron button of this component.
+   * @param {AccessibleButton} accessibleButton The button component which we want to check.
    * @return {Boolean} True if button state suggests that auto focus is required, false otherwise.
    */
-  checkAndResetAutoFocus: function(chevronBtn) {
+  checkAndResetBtnAutoFocus: function(accessibleButton) {
     var autoFocus = false;
 
-    if (chevronBtn && typeof chevronBtn.wasTriggeredWithKeyboard === 'function') {
-      autoFocus = chevronBtn.wasTriggeredWithKeyboard();
-      chevronBtn.wasTriggeredWithKeyboard(false);
+    if (accessibleButton && typeof accessibleButton.wasTriggeredWithKeyboard === 'function') {
+      autoFocus = accessibleButton.wasTriggeredWithKeyboard();
+      accessibleButton.wasTriggeredWithKeyboard(false);
     }
     return autoFocus;
   },
@@ -83,6 +95,14 @@ var DataSelector = React.createClass({
     });
   },
 
+  shouldAutoFocusItem: function(dataItems, itemIndex, isSelected) {
+    var autoFocusFirst = this.autoFocus.first && itemIndex === 0;
+    var autoFocusLast = this.autoFocus.last && itemIndex === dataItems.length - 1;
+    var autoFocusSelected = this.autoFocus.selected && isSelected;
+    var autoFocus = autoFocusFirst || autoFocusLast || autoFocusSelected;
+    return autoFocus;
+  },
+
   render: function() {
     //pagination
     var currentViewSize = this.props.viewSize;
@@ -94,26 +114,27 @@ var DataSelector = React.createClass({
     //Build data content blocks
     var dataContentBlocks = [];
     for (var i = 0; i < dataItems.length; i++) {
+      var itemId = dataItems[i];
       //accent color
       var isSelected = this.props.selectedData === dataItems[i];
       var selectedItemStyle = {};
       if (isSelected && this.props.enabled && this.props.skinConfig.general.accentColor) {
         selectedItemStyle = {backgroundColor: this.props.skinConfig.general.accentColor};
       }
-
-      var autoFocusFirst = this.state.autoFocusFirst && i === 0;
-      var autoFocusLast = this.state.autoFocusLast && i === dataItems.length - 1;
+      // Determine whether we should auto focus or not
+      var autoFocus = this.shouldAutoFocusItem(dataItems, i, isSelected);
 
       dataContentBlocks.push(
         <AccessibleButton
-          key={i}
-          autoFocus={autoFocusFirst || autoFocusLast}
+          key={itemId}
+          ref={function(e) { this.itemButtons[itemId] = e }.bind(this)}
+          autoFocus={autoFocus}
           className={this.setClassname(dataItems[i])}
           style={selectedItemStyle}
           ariaLabel={dataItems[i]}
           ariaChecked={isSelected}
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
-          onClick={this.handleDataSelection.bind(this, dataItems[i])}>
+          onClick={this.handleDataSelection.bind(this, dataItems[i], itemId)}>
           <span className="oo-data">{dataItems[i]}</span>
         </AccessibleButton>
       );

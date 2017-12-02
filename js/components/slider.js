@@ -52,8 +52,13 @@ var Slider = React.createClass({
       return;
     }
     var value = Utils.ensureNumber(event.target.value, 0);
+    // These browsers might return a super small fractional number instead of 0
+    // in some cases, this is a workaround for that.
+    if (Utils.isIE() || Utils.isEdge()) {
+      value = Utils.toFixedNumber(value, 2);
+    }
 
-    if (event.type == 'change' && !Utils.isIE()) {
+    if (event.type === 'change' && !Utils.isIE()) {
       this.props.onChange(value);
       this.handleSliderColoring(this.props);
     } else if (Utils.isIE()) {
@@ -62,18 +67,18 @@ var Slider = React.createClass({
   },
 
   /**
-   * Determines whether a workaround is required for the IE/Edge issue in which
+   * Determines whether a workaround is required for the IE11 issue in which
    * change event doesn't fire when controlling slider with keyboard.
    * @private
    * @return {Boolean} True if the fix is required, false otherwise
    */
   isIeFixRequired: function() {
-    return Utils.isIE() || Utils.isEdge();
+    return Utils.isIE();
   },
 
   /**
    * Sets up a MutationObserver that monitors changes to the input's value attribute.
-   * This is needed as a workaround for an IE11/Edge issue in which the change event is
+   * This is needed as a workaround for an IE11 issue in which the change event is
    * not triggered when controlling the input with the arrow keys.
    * @private
    * @param {Node} The html element which we want to observe.
@@ -93,7 +98,7 @@ var Slider = React.createClass({
   },
 
   /**
-   * Workaround for IE/Edge. This is call by the mutation observer when a change to
+   * Workaround for IE11. This is call by the mutation observer when a change to
    * the value attribute is detected. We execute the this.props.onChange callback when this
    * happens in order to let React update the UI.
    * @private
@@ -110,7 +115,7 @@ var Slider = React.createClass({
   },
 
   /**
-   * Simulates keyboard interaction for IE/Edge which do not properly support it.
+   * Simulates keyboard interaction for IE11 which do not properly support it.
    * @private
    * @param {Event} event The keydown event object.
    */
@@ -143,7 +148,7 @@ var Slider = React.createClass({
    * Gets the 'next' value on the slider as determined by the configured values of min,
    * max and step, as well as the current value. The forward parameter determines whether
    * to get the next value to the right or to the left of the current value.
-   * This is needed as a workaround for an IE/Edge issue and should only be used for this purpose.
+   * This is needed as a workaround for an IE11 issue and should only be used for this purpose.
    * @private
    * @param {type} forward If true gets the value to the right of the current value or the one to the left otherwise.
    * @return {Number} The next value to the left or right of the current value.
@@ -155,7 +160,7 @@ var Slider = React.createClass({
     var min = Utils.ensureNumber(this.props.minValue, -Infinity);
     var max = Utils.ensureNumber(this.props.maxValue, Infinity);
     value = Utils.constrainToRange(delta, min, max);
-    value = Math.round(value * 100) / 100;
+    value = Utils.toFixedNumber(value, 2);
     return value;
   },
 
@@ -207,6 +212,7 @@ var Slider = React.createClass({
         onMouseUp={Utils.blurOnMouseUp}
         onChange={this.changeValue}
         onClick={this.changeValue}
+        onMouseMove={this.isIeFixRequired() ? this.changeValue : null}
         onKeyDown={this.isIeFixRequired() ? this.onKeyDown : null}/>
     );
   }
