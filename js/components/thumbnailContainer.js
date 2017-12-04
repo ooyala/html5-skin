@@ -115,6 +115,7 @@ var ThumbnailContainer = React.createClass({
 
   /**
    * @description set values for thumbnails sizes
+   * @private
    * @param {string} refName - name of thumbnail container ref
    * @param {string} widthName - name for width which is associated with the ref
    * @param {string} heightName - name for height which is associated with the ref
