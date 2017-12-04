@@ -85,8 +85,8 @@ var ThumbnailCarousel = React.createClass({
       var left = start + data.padding + j * (data.imgWidth + data.padding);
       if (left + data.imgWidth <= data.scrubberBarWidth) {
         var width = data.width;
-        var trumbs = data.thumbnails.data.thumbnails[data.timeSlices[i]];
-        var thumbStyle = this.getThumbnailsCarouselStyles(trumbs, width);
+        var thumbs = data.thumbnails.data.thumbnails[data.timeSlices[i]];
+        var thumbStyle = this.getThumbnailsCarouselStyles(thumbs, width);
         thumbStyle.left = left;
         thumbStyle.top = data.top;
         thumbnailsAfter.push(<div className="oo-thumbnail-carousel-image" key={i} ref="thumbnailCarousel" style={thumbStyle}></div>);
@@ -103,8 +103,8 @@ var ThumbnailCarousel = React.createClass({
       var left = start - (j + 1) * (data.imgWidth + data.padding);
       if (left >= 0) {
         var width = data.width;
-        var trumbs = data.thumbnails.data.thumbnails[data.timeSlices[i]];
-        var thumbStyle = this.getThumbnailsCarouselStyles(trumbs, width);
+        var thumbs = data.thumbnails.data.thumbnails[data.timeSlices[i]];
+        var thumbStyle = this.getThumbnailsCarouselStyles(thumbs, width);
         thumbStyle.left = left;
         thumbStyle.top = data.top;
         thumbnailsBefore.push(<div className="oo-thumbnail-carousel-image" key={i} ref="thumbnailCarousel" style={thumbStyle}></div>);
@@ -115,19 +115,19 @@ var ThumbnailCarousel = React.createClass({
 
   /**
    * @description get styles for carousel thumbnails
-   * @param trumbs
+   * @param thumbs
    * @param width
    * @returns {object} object with values for bg url and bg size, position and repeat for vr video
    */
-  getThumbnailsCarouselStyles: function(trumbs, width) {
+  getThumbnailsCarouselStyles: function(thumbs, width) {
     var thumbStyle = {};
-    var thumb = trumbs[width];
+    var thumb = thumbs[width];
     if (this.props.videoVr) {
       var widthVr = CONSTANTS.THUMBNAIL.THUMBNAIL_CAROUSEL_VR_RATIO * width;
-      if (trumbs[widthVr] !== undefined &&
-        trumbs[widthVr].width !== undefined &&
-        trumbs[widthVr].width < CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_CAROUSEL_BG_WIDTH) {
-        thumb = trumbs[widthVr];
+      if (thumbs[widthVr] !== undefined &&
+        thumbs[widthVr].width !== undefined &&
+        thumbs[widthVr].width < CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_CAROUSEL_BG_WIDTH) {
+        thumb = thumbs[widthVr];
       }
     }
     var thumbUrl = thumb.url;
