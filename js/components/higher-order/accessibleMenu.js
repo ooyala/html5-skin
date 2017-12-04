@@ -39,37 +39,28 @@ var AccessibleMenu = function(ComposedComponent, options) {
       // See: https://www.w3.org/TR/wai-aria-practices/#kbd_roving_tabindex
       if (_options.useRovingTabindex) {
         this.applyRovingTabIndex();
-        // Set up an observer to re-apply roving tab index when selected menu item changes
-        this.selectionObserver = this.setUpSelectionObserver(this.menuDomElement);
+        // When using roving tab index we need to monitor changes to the composed component
+        // in order to re-apply it when selection changes
+        if (this.composedComponent) {
+          // Store reference to child component's current componentDidUpdate handler
+          this.composedComponentDidUpdateHandler = this.composedComponent.componentDidUpdate;
+          // Replace with custom decorator handler
+          this.composedComponent.componentDidUpdate = this.composedComponentDidUpdate;
+        }
       }
     },
 
     /**
-     * Instantiates a MutationObserver that will call this.applyRovingTabIndex whenever it
-     * detects changes to the selection status of the target element's children. For the
-     * purpose of this component's implementation it is assumed that any selectable items
-     * in this menu will update their aria-checked or aria-selected attributes when selected/deselected.
-     * TODO:
-     * Find a React-only alternative.
+     * Fires when the composed component's componentDidUpdate handler is executed. We use this
+     * cue to make sure that the roving tab index state is up to date.
      * @private
-     * @param {Node} target The html element whose children we want to observe.
-     * @return {MutationObserver} The new mutation observer instance that was set up or undefined if setup failed.
      */
-    setUpSelectionObserver: function(target) {
-      if (!target || !window.MutationObserver) {
-        return;
+    composedComponentDidUpdate: function() {
+      // Call component's original handler if existent
+      if (typeof this.composedComponentDidUpdateHandler === 'function') {
+        this.composedComponentDidUpdateHandler.apply(this.composedComponent, arguments);
       }
-      var observer = new MutationObserver(this.applyRovingTabIndex);
-      var observerConfig = {
-        subtree: true,
-        attributes: true,
-        attributeFilter: [
-          'aria-checked',
-          'aria-selected'
-        ]
-      };
-      observer.observe(target, observerConfig);
-      return observer;
+      this.applyRovingTabIndex();
     },
 
     /**
