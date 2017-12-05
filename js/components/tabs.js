@@ -116,7 +116,8 @@ var Tabs = React.createClass({
     return (
       <div
         className='tabs-navigation'
-        ref={function(e) { this.tabsNavigationElement = e }.bind(this)}>
+        ref={function(e) { this.tabsNavigationElement = e }.bind(this)}
+        tabIndex="-1">
         <ul
           className='tabs-menu'
           role={CONSTANTS.ARIA_ROLES.TAB_LIST}
@@ -132,9 +133,9 @@ var Tabs = React.createClass({
     var panel = this.props.children[index];
 
     return (
-      <article ref='tab-panel' className='tab-panel' role={CONSTANTS.ARIA_ROLES.TAB_PANEL}>
+      <div ref='tab-panel' className='tab-panel' role={CONSTANTS.ARIA_ROLES.TAB_PANEL}>
         {panel}
-      </article>
+      </div>
     );
   },
 

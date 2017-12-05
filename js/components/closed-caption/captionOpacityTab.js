@@ -41,7 +41,10 @@ var CaptionOpacityTab = React.createClass({
 
     return(
       <div className="oo-caption-opacity-tab">
-        <div className="oo-caption-opacity-inner-wrapper">
+        <div
+          className="oo-caption-opacity-inner-wrapper"
+          aria-label={CONSTANTS.ARIA_LABELS.CAPTION_OPACITY_MENU}
+          role={CONSTANTS.ARIA_ROLES.MENU}>
           <SelectionContainer
             title={textOpacityTitle}
             selectionText={this.percentString(this.props.closedCaptionOptions.textOpacity)}>

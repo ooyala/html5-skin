@@ -133,6 +133,7 @@ module.exports = {
     PREVIOUS_OPTIONS: "Previous Options",
     SLIDER_VALUE_TEXT: MACROS.PERCENT + "% " + MACROS.SETTING,
     LANGUAGE_MENU: "Language",
+    CAPTION_OPACITY_MENU: "Caption Opacity",
     TEXT_COLOR_MENU: "Text Color",
     BACKGROUND_COLOR_MENU: "Background Color",
     WINDOW_COLOR_MENU: "Window Color",

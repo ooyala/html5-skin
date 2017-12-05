@@ -114,8 +114,29 @@ var Slider = React.createClass({
     }
   },
 
+  onMouseDown: function() {
+    this.dragging = true;
+  },
+
+  onMouseUp: function(event) {
+    this.dragging = false;
+    Utils.blurOnMouseUp(event);
+  },
+
+  onMouseMove: function(event) {
+    // Avoid showing the keyboard focus outline when dragging the slider with the mouse
+    if (this.dragging) {
+      Utils.blurOnMouseUp(event);
+    }
+    // IE11 doesn't update the value by itself when dragging the slider
+    // with the mouse
+    if (this.isIeFixRequired()) {
+      this.changeValue(event);
+    }
+  },
+
   /**
-   * Simulates keyboard interaction for IE11 which do not properly support it.
+   * Simulates keyboard interaction for IE11 which doesn't properly support it.
    * @private
    * @param {Event} event The keydown event object.
    */
@@ -209,10 +230,11 @@ var Slider = React.createClass({
         aria-valuenow={aria.valueNow}
         aria-valuetext={aria.valueText}
         role={CONSTANTS.ARIA_ROLES.SLIDER}
-        onMouseUp={Utils.blurOnMouseUp}
+        onMouseDown={this.onMouseDown}
+        onMouseUp={this.onMouseUp}
         onChange={this.changeValue}
         onClick={this.changeValue}
-        onMouseMove={this.isIeFixRequired() ? this.changeValue : null}
+        onMouseMove={this.onMouseMove}
         onKeyDown={this.isIeFixRequired() ? this.onKeyDown : null}/>
     );
   }
