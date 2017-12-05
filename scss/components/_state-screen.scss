@@ -162,18 +162,19 @@
 
 .oo-state-screen-vr-notification {
   position: relative;
-  top: 0;
+  top: 20px;
   max-width: 90%;
   border-radius: 28px;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 1;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   background-color: rgba(0,0,0,.7);
-  padding: 11px 30px;
+  padding: 15px 35px;
   margin: 0;
+  opacity: 0;
   z-index: $vr-animated-icons;
   will-change: transform, top, opacity;
   @include vendor-prefixes(transform, translateZ(0));
@@ -236,40 +237,40 @@
 
 @-webkit-keyframes vrNotificationAnimation {
   0% {
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
+  40% {
     opacity: 1;
     filter: alpha(opacity=100);
   }
   60% {
     opacity: 1;
     filter: alpha(opacity=100);
-    top: 60px;
-    @include vendor-prefixes(transform, scale(1));
   }
   100% {
     opacity: 0;
     filter: alpha(opacity=0);
-    top: 60px;
-    @include vendor-prefixes(transform, scale(.2));
   }
 }
 
 
 @keyframes vrNotificationAnimation {
   0% {
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
+  40% {
     opacity: 1;
     filter: alpha(opacity=100);
   }
   60% {
     opacity: 1;
     filter: alpha(opacity=100);
-    top: 60px;
-    @include vendor-prefixes(transform, scale(1));
   }
   100% {
     opacity: 0;
     filter: alpha(opacity=0);
-    top: 60px;
-    @include vendor-prefixes(transform, scale(.2));
   }
 }
 
