@@ -17,9 +17,6 @@ var AccessibleMenu = function(ComposedComponent, options) {
     },
 
     componentWillUnmount: function() {
-      if (this.selectionObserver && typeof this.selectionObserver.disconnect === 'function') {
-        this.selectionObserver.disconnect();
-      }
       if (this.menuDomElement) {
         this.menuDomElement.removeEventListener('keydown', this.onKeyDown);
       }
