@@ -22,6 +22,7 @@ var ThumbnailContainer = React.createClass({
     this.thumbnailCarouselHeight = 0;
     return {};
   },
+
   componentDidMount: function() {
     if (this.props.videoVr) {
       this.setThumbnailSizesVr();
@@ -43,6 +44,7 @@ var ThumbnailContainer = React.createClass({
       }
     }
   },
+
   componentWillReceiveProps: function(nextProps) {
     if (this.props.vrViewingDirection !== nextProps.vrViewingDirection && this.props.videoVr) {
       var yaw = nextProps.vrViewingDirection.yaw;
@@ -62,6 +64,7 @@ var ThumbnailContainer = React.createClass({
       }
     }
   },
+
   componentDidUpdate: function(prevProps, prevState) {
     if (this.props.videoVr) {
       if (this.child !== null && typeof this.child === 'object') {

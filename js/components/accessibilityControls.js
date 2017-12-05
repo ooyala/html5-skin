@@ -36,7 +36,9 @@ AccessibilityControls.prototype = {
 
     var targetTagName = this.getTargetTagName(e);
     var charCode = e.which || e.keyCode;
-    this.moveVrToDirection(e, charCode, true, targetTagName); //start rotate 360
+    if (this.controller.videoVr) {
+      this.moveVrToDirection(e, charCode, true, targetTagName); //start rotate 360
+    }
 
     switch (charCode) {
       case CONSTANTS.KEYCODES.SPACE_KEY:
@@ -104,9 +106,11 @@ AccessibilityControls.prototype = {
     if (!(this.controller.state.accessibilityControlsEnabled || this.controller.state.isClickedOutside)) {
       return;
     }
-    var targetTagName = this.getTargetTagName(e);
-    var charCode = e.which || e.keyCode;
-    this.moveVrToDirection(e, charCode, false, targetTagName);  //stop rotate 360
+    if (this.controller.videoVr) {
+      var targetTagName = this.getTargetTagName(e);
+      var charCode = e.which || e.keyCode;
+      this.moveVrToDirection(e, charCode, false, targetTagName);  //stop rotate 360
+    }
   },
 
   /**

@@ -144,6 +144,7 @@ describe('ThumbnailContainer', function () {
     var thumbnail = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-thumbnail-container');
     expect(thumbnail).not.toBeNull();
   });
+
   it('for isCarousel = true need to show thumbnails', function () {
     var DOM = TestUtils.renderIntoDocument
     (
