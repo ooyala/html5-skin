@@ -148,7 +148,6 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseMove: function(e) {
-
     e.preventDefault();
     e.persist();
     console.log('e', e);
