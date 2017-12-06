@@ -80,6 +80,7 @@ var Skin = React.createClass({
    */
   handleVrPlayerMouseDown: function(e) {
     if (this.props.controller.videoVr) {
+
       this.setState({
         isVrMouseDown: true,
         xVrMouseStart: e.pageX,

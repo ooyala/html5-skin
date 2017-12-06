@@ -142,11 +142,15 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseDown: function(e) {
+    console.log('handlePlayerMouseDown e', e)
     this.props.handleVrPlayerMouseDown(e);
   },
 
   handlePlayerMouseMove: function(e) {
+
     e.preventDefault();
+    e.persist();
+    console.log('e', e)
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
@@ -291,8 +295,10 @@ var PlayingScreen = React.createClass({
       <div
         className="oo-state-screen-selectable"
         onMouseDown={this.handlePlayerMouseDown}
+        onTouchStart={this.handlePlayerMouseDown}
         onMouseUp={this.handlePlayerMouseUp}
         onMouseMove={this.handlePlayerMouseMove}
+        onTouchMove={this.handlePlayerMouseMove}
         onMouseLeave={this.handlePlayerMouseLeave}
         onTouchEnd={this.handleTouchEnd}
         onClick={this.handlePlayerClicked}

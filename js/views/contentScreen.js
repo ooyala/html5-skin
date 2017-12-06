@@ -39,6 +39,10 @@ var ContentScreen = React.createClass({
     }
   },
 
+  handleTouchMove: function (e) {
+    console.log('e', e);
+  },
+
   render: function() {
     //overlay only for the closed captions screen. Needs to be different than the other screens because of closed caption preview.
     var closedCaptionOverlay = this.props.screen == CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN ? (
@@ -67,6 +71,7 @@ var ContentScreen = React.createClass({
     return (
       <div
         onKeyDown={this.handleKeyDown}
+        onTouchMove={this.handleTouchMove}
         ref={function(e) { this.domElement = e; }.bind(this)}>
         <Watermark {...this.props} controlBarVisible={false} nonClickable={true}/>
         <div className={this.props.screenClassName}>
