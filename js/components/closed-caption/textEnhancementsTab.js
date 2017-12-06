@@ -95,4 +95,22 @@ var TextEnhancementsTab = React.createClass({
 
 TextEnhancementsTab = AccessibleMenu(TextEnhancementsTab, { useRovingTabindex: true });
 
+TextEnhancementsTab.propTypes = {
+  language: React.PropTypes.string,
+  localizableStrings: React.PropTypes.array,
+  controller: React.PropTypes.shape({
+    toggleClosedCaptionEnabled: React.PropTypes.func.isRequired,
+    onClosedCaptionChange: React.PropTypes.func.isRequired
+  }),
+  skinConfig: React.PropTypes.shape({
+    general: React.PropTypes.shape({
+      accentColor: React.PropTypes.string
+    })
+  }),
+  closedCaptionOptions: React.PropTypes.shape({
+    textEnhancement: React.PropTypes.string,
+    enabled: React.PropTypes.bool
+  })
+};
+
 module.exports = TextEnhancementsTab;

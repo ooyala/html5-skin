@@ -81,7 +81,7 @@ var Slider = React.createClass({
    * This is needed as a workaround for an IE11 issue in which the change event is
    * not triggered when controlling the input with the arrow keys.
    * @private
-   * @param {Node} The html element which we want to observe.
+   * @param {Node} target The html element which we want to observe.
    * @return {MutationObserver} The new mutation observer instance that was set up or undefined if setup failed.
    */
   setUpValueObserver: function(target) {
@@ -171,7 +171,7 @@ var Slider = React.createClass({
    * to get the next value to the right or to the left of the current value.
    * This is needed as a workaround for an IE11 issue and should only be used for this purpose.
    * @private
-   * @param {type} forward If true gets the value to the right of the current value or the one to the left otherwise.
+   * @param {Boolean} forward If true gets the value to the right of the current value or the one to the left otherwise.
    * @return {Number} The next value to the left or right of the current value.
    */
   getNextSliderValue: function(forward) {
@@ -239,6 +239,18 @@ var Slider = React.createClass({
     );
   }
 });
+
+Slider.propTypes = {
+  value: React.PropTypes.number,
+  minValue: React.PropTypes.number,
+  maxValue: React.PropTypes.number,
+  step: React.PropTypes.number,
+  onChange: React.PropTypes.func,
+  usePercentageForAria: React.PropTypes.bool,
+  settingName: React.PropTypes.string,
+  className: React.PropTypes.string,
+  itemRef: React.PropTypes.string
+};
 
 Slider.defaultProps = {
   focusId: Math.random().toString(36).substr(2, 10),

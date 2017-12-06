@@ -82,7 +82,7 @@ var Utils = {
   },
 
   /**
-   * Same as Number.toFixed(), except that it returns a Number insted of a string.
+   * Same as Number.toFixed(), except that it returns a Number instead of a string.
    * @function toFixedNumber
    * @param {Object} value The numerical value to process.
    * @param {Number} digits The number of digits to appear after the decimal point.

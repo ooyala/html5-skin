@@ -190,4 +190,19 @@ var DataSelector = React.createClass({
 
 DataSelector = AccessibleMenu(DataSelector, { useRovingTabindex: true });
 
+DataSelector.propTypes = {
+  enabled: React.PropTypes.bool.isRequired,
+  selectedData: React.PropTypes.string,
+  availableDataItems: React.PropTypes.array.isRequired,
+  dataItemsPerPage: React.PropTypes.number.isRequired,
+  viewSize: React.PropTypes.number.isRequired,
+  ariaLabel: React.PropTypes.string,
+  onDataChange: React.PropTypes.func.isRequired,
+  skinConfig: React.PropTypes.shape({
+    general: React.PropTypes.shape({
+      accentColor: React.PropTypes.string
+    })
+  })
+};
+
 module.exports = DataSelector;

@@ -17,7 +17,9 @@ var AccessibleButton = React.createClass({
   },
 
   componentDidUpdate: function(prevProps) {
-    if (!prevProps.autoFocus && this.props.autoFocus) {
+    var prevAutoFocus = prevProps ? prevProps.autoFocus : false;
+
+    if (!prevAutoFocus && this.props.autoFocus) {
       this.focus();
     }
   },
