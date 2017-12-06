@@ -73,6 +73,22 @@ var Skin = React.createClass({
     });
   },
 
+  getCoords: function(e) {
+    var сoords = {};
+
+    if(OO.isIos || OO.isAndroid){
+      сoords.x = e.touches[0].pageX;
+      сoords.y = e.touches[0].pageY;
+    } else {
+      сoords.x = e.pageX;
+      сoords.y = e.pageY;
+    }
+
+    console.log('getCoords e', e);
+
+    return сoords;
+  },
+
   /**
    * @public
    * @description the function is called when we start the rotation
@@ -81,10 +97,12 @@ var Skin = React.createClass({
   handleVrPlayerMouseDown: function(e) {
     if (this.props.controller.videoVr) {
 
+      var coords = this.getCoords(e);
+
       this.setState({
         isVrMouseDown: true,
-        xVrMouseStart: e.pageX,
-        yVrMouseStart: e.pageY
+        xVrMouseStart: coords.x,
+        yVrMouseStart: coords.y
       });
       if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
@@ -102,8 +120,11 @@ var Skin = React.createClass({
       this.setState({
         isVrMouseMove: true
       });
+
+      var coords = this.getCoords(e);
+
       if (typeof this.props.controller.onTouchMove === 'function') {
-        var params = this.getDirectionParams(e.pageX, e.pageY);
+        var params = this.getDirectionParams(coords.x, coords.y);
         this.props.controller.onTouchMove(params, true);
       }
     }
