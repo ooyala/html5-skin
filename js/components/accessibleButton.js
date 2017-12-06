@@ -5,8 +5,23 @@ var CONSTANTS = require('../constants/constants');
 
 var AccessibleButton = React.createClass({
 
-  componentDidMount: function() {
+  getInitialState: function() {
     this.triggeredWithKeyboard = false;
+    return {};
+  },
+
+  componentDidMount: function() {
+    if (this.props.autoFocus) {
+      this.focus();
+    }
+  },
+
+  componentDidUpdate: function(prevProps) {
+    var prevAutoFocus = prevProps ? prevProps.autoFocus : false;
+
+    if (!prevAutoFocus && this.props.autoFocus) {
+      this.focus();
+    }
   },
 
   wasTriggeredWithKeyboard: function(triggeredWithKeyboard) {
@@ -50,17 +65,22 @@ var AccessibleButton = React.createClass({
       <button
         ref={function(e) { this.domElement = e }.bind(this)}
         type="button"
+        autoFocus={this.props.autoFocus}
         style={this.props.style}
         className={ClassNames(this.props.className, 'oo-focusable-btn')}
         tabIndex="0"
         data-focus-id={this.props.focusId}
         aria-label={this.props.ariaLabel}
         aria-checked={this.props.ariaChecked}
+        aria-selected={this.props.ariaSelected}
         aria-haspopup={this.props.ariaHasPopup}
         aria-expanded={this.props.ariaExpanded}
         role={this.props.role}
         onKeyDown={this.onKeyDown}
         onMouseUp={Utils.blurOnMouseUp}
+        onMouseOver={this.props.onMouseOver}
+        onMouseOut={this.props.onMouseOut}
+        onFocus={this.props.onFocus}
         onClick={this.props.onClick}>
         {this.props.children}
       </button>
@@ -70,23 +90,38 @@ var AccessibleButton = React.createClass({
 });
 
 AccessibleButton.propTypes = {
+  autoFocus: React.PropTypes.bool,
   style: React.PropTypes.object,
   className: React.PropTypes.string,
   focusId: React.PropTypes.string,
   ariaLabel: React.PropTypes.string.isRequired,
   ariaChecked: React.PropTypes.bool,
+  ariaSelected: React.PropTypes.bool,
   ariaHasPopup: React.PropTypes.bool,
   ariaExpanded: React.PropTypes.bool,
   role: React.PropTypes.string,
+  onMouseOver: React.PropTypes.func,
+  onMouseOut: React.PropTypes.func,
+  onFocus: React.PropTypes.func,
   onClick: React.PropTypes.func
 };
 
-AccessibleButton.defaultProps = {
-  focusId: Math.random().toString(36).substr(2, 10),
-  ariaChecked: null,
-  ariaHasPopup: null,
-  ariaExpanded: null,
-  role: null,
-};
+// Define focusId as a getter so that it returns a different value
+// for each instance of AccessibleButton (defaultProps is static)
+AccessibleButton.defaultProps = Object.create({}, {
+  focusId: {
+    enumerable: true,
+    get: function() {
+      return Math.random().toString(36).substr(2, 10);
+    }
+  }
+});
+
+AccessibleButton.defaultProps.autoFocus = false;
+AccessibleButton.defaultProps.ariaChecked = null;
+AccessibleButton.defaultProps.ariaSelected = null;
+AccessibleButton.defaultProps.ariaHasPopup = null;
+AccessibleButton.defaultProps.ariaExpanded = null;
+AccessibleButton.defaultProps.role = null;
 
 module.exports = AccessibleButton;

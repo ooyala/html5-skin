@@ -380,8 +380,9 @@ var Skin = React.createClass({
             screen={CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN}
             screenClassName="oo-content-screen oo-content-screen-closed-captions"
             titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
+            autoFocus={this.state.closedCaptionOptions.autoFocus}
             closedCaptionOptions={this.props.closedCaptionOptions}
-            element={<OnOffSwitch {...this.props} />}
+            element={<OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_CLOSED_CAPTIONS} />}
             icon="cc">
             <ClosedCaptionPanel
               {...this.props}

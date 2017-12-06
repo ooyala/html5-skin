@@ -119,7 +119,7 @@ module.exports = {
     FULLSCREEN: "Fullscreen",
     EXIT_FULLSCREEN: "Exit Fullscreen",
     SEEK_SLIDER: "Seek slider",
-    VOLUME_SLIDER: "Volume slider",
+    VOLUME_SLIDER: "Volume",
     VOLUME_PERCENT: MACROS.VOLUME + "% volume",
     TIME_DISPLAY: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME,
     TIME_DISPLAY_LIVE: "Live video",
@@ -128,15 +128,31 @@ module.exports = {
     TOGGLE_CLOSED_CAPTIONS: "Toggle Closed Captions",
     CAPTION_OPTIONS: "Closed Caption Options",
     STEREO_ON: "Stereoscopic",
-    STEREO_OFF: "Monoscopic"
+    STEREO_OFF: "Monoscopic",
+    MORE_OPTIONS: "More Options",
+    PREVIOUS_OPTIONS: "Previous Options",
+    SLIDER_VALUE_TEXT: MACROS.PERCENT + "% " + MACROS.SETTING,
+    LANGUAGE_MENU: "Language",
+    CAPTION_OPACITY_MENU: "Caption Opacity",
+    TEXT_COLOR_MENU: "Text Color",
+    BACKGROUND_COLOR_MENU: "Background Color",
+    WINDOW_COLOR_MENU: "Window Color",
+    FONT_TYPE_MENU: "Font Type",
+    FONT_SIZE_MENU: "Font Size",
+    TEXT_ENHANCEMENTS_MENU: "Text Enhancements"
   },
 
   ARIA_ROLES: {
+    PRESENTATION: "presentation",
     SLIDER: "slider",
     MENU: "menu",
     MENU_ITEM: "menuitem",
     MENU_ITEM_RADIO: "menuitemradio",
-    MENU_ITEM_CHECKBOX: "menuitemcheckbox"
+    MENU_ITEM_CHECKBOX: "menuitemcheckbox",
+    CHECKBOX: "checkbox",
+    TAB_LIST: "tablist",
+    TAB: "tab",
+    TAB_PANEL: "tabpanel"
   },
 
   KEYBD_FOCUS_ID_ATTR: "data-focus-id",

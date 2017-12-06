@@ -14,8 +14,8 @@
 }
 
 .captions-navbar {
-  height: calc(100% - 26px);
-  margin-top:26px;
+  height: calc(100% - 24px);
+  margin-top: 24px;
 }
 
 .tabs-menu-item {
@@ -125,7 +125,7 @@
     overflow: auto;
     white-space: nowrap;
 
-    a.oo-item {
+    .oo-item {
       width: 144px;
       height: 36px;
       line-height: 27px;
@@ -141,12 +141,13 @@
       color: $white;
       transition: all 0.0s ease;
       cursor: pointer;
+      background-color: transparent;
       border-radius: 2px;
       border: 1px solid $gray;
       outline: none;
     }
 
-    a.oo-item-selected {
+    .oo-item-selected {
       background-color: $blue-light;
       border-radius: 4px;
     }
@@ -166,20 +167,26 @@
     position: absolute;
     top: 48%;
     background-color: transparent;
-    height: 10%;
+    height: auto;
     width: 30px;
+    padding: 0;
     color: white;
+    border: none;
+  }
+
+  .oo-discover-btn .oo-icon {
+    vertical-align: middle;
   }
 
   .oo-left-button {
     @extend .oo-discover-btn;
-    left: 0;
+    left: 1px;
     text-align: right;
   }
 
   .oo-right-button {
     @extend .oo-discover-btn;
-    right: 0;
+    right: 1px;
     text-align: left;
   }
 }
@@ -230,18 +237,41 @@
         }
 
         .oo-item-selected {
-          border: solid #247dff 3px;
+          border: solid 3px $blue-light;
           border-radius: 50%;
+        }
+
+        .oo-item-selected .oo-color-item:focus::before {
+          box-shadow: 0 0 0 3px transparent, 0 0 0 5px #fff, 0 0 0 8px $blue-light;
         }
 
         .oo-color-item {
           width: 20px;
           height: 20px;
+          border: none;
           border-radius: 50%;
           cursor: pointer;
           margin: auto;
+          padding: 0;
           position: absolute;
           top: 0; bottom: 0; left: 0; right: 0;
+        }
+        .oo-color-item:focus {
+          @include remove-highlight-tab();
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: 50%;
+            box-shadow: 0 0 0 6px $blue-light; // Should be the same as highlight-tab mixin, but with a larger shadow
+            z-index: $zindex-color-item-focus;
+          }
+        }
+        .oo-color-item:hover:active::before {
+          content: none;
         }
         .oo-color-item-White {
           background-color: white;
@@ -433,14 +463,15 @@
             float: left;
             background-color: transparent;
             width: 25%;
-            height: 110px;
             min-width: 120px;
-            margin-bottom: 30px;
+            padding: 0;
+            border: none;
             cursor: pointer;
 
             .oo-font-size-letter {
               color: $white;
-              height: 100%;
+              display: block;
+              height: 110px;
               text-align: center;
               font-family: $font-family-roboto-condensed-bold;
             }
@@ -462,6 +493,7 @@
             }
 
             .oo-font-size-label {
+              display: block;
               font-family: $font-family-roboto-condensed;
               font-size: $font-size-root;
               color: #b3b3b3;
@@ -521,14 +553,15 @@
             float: left;
             background-color: transparent;
             width: 25%;
-            height: 110px;
             min-width: 120px;
-            margin-bottom: 30px;
+            padding: 0;
+            border: none;
             cursor: pointer;
 
             .oo-text-enhancement-letter {
               color: $white;
-              height: 100%;
+              display: block;
+              height: 110px;
               text-align: center;
               font-size: 100px;
               line-height: 120px;
@@ -550,6 +583,7 @@
             }
 
             .oo-text-enhancement-label {
+              display: block;
               font-family: $font-family-roboto-condensed;
               font-size: $font-size-root;
               color: #b3b3b3;

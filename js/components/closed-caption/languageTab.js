@@ -1,5 +1,6 @@
 var React = require('react'),
     DataSelector = require('../dataSelector'),
+    CONSTANTS = require('../../constants/constants'),
     values = require('lodash.values');
 
 var LanguageTab = React.createClass({
@@ -31,6 +32,7 @@ var LanguageTab = React.createClass({
       <div className="oo-language-tab">
         <DataSelector
           {...this.props}
+          ariaLabel={CONSTANTS.ARIA_LABELS.LANGUAGE_MENU}
           viewSize={this.props.responsiveView}
           dataItemsPerPage={this.props.dataItemsPerPage}
           selectedData={this.state.selectedLanguage}

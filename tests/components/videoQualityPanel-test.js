@@ -283,11 +283,11 @@ describe('VideoQualityPanel', function () {
   describe('keyboard navigation', function() {
     var qualityPanel, qualityButtons;
 
-    var getMockKeydownEvent = function(target, key) {
+    var getMockKeydownEvent = function(target, keyCode) {
       return {
         _type: 'keydown',
         target: target,
-        key: key,
+        keyCode: keyCode,
         preventDefault: function() {}
       };
     };
@@ -307,26 +307,26 @@ describe('VideoQualityPanel', function () {
     it('should focus on previous menu item when pressing UP or LEFT arrow keys', function() {
       var activeIndex = qualityButtons.length - 1;
       document.activeElement = qualityButtons[activeIndex];
-      qualityPanel.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEY_VALUES.ARROW_UP));
+      qualityPanel.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.UP_ARROW_KEY));
       expect(document.activeElement).toBe(qualityButtons[activeIndex - 1]);
-      qualityPanel.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEY_VALUES.ARROW_LEFT));
+      qualityPanel.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.LEFT_ARROW_KEY));
       expect(document.activeElement).toBe(qualityButtons[activeIndex - 2]);
     });
 
     it('should focus on next menu item when pressing DOWN or RIGHT arrow keys', function() {
       var activeIndex = 0;
       document.activeElement = qualityButtons[activeIndex];
-      qualityPanel.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEY_VALUES.ARROW_DOWN));
+      qualityPanel.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.DOWN_ARROW_KEY));
       expect(document.activeElement).toBe(qualityButtons[activeIndex + 1]);
-      qualityPanel.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEY_VALUES.ARROW_RIGHT));
+      qualityPanel.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.RIGHT_ARROW_KEY));
       expect(document.activeElement).toBe(qualityButtons[activeIndex + 2]);
     });
 
     it('should loop focus when navigating with arrow keys', function() {
       document.activeElement = qualityButtons[0];
-      qualityPanel.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEY_VALUES.ARROW_UP));
+      qualityPanel.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.UP_ARROW_KEY));
       expect(document.activeElement).toBe(qualityButtons[qualityButtons.length - 1]);
-      qualityPanel.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEY_VALUES.ARROW_RIGHT));
+      qualityPanel.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.RIGHT_ARROW_KEY));
       expect(document.activeElement).toBe(qualityButtons[0]);
     });
 

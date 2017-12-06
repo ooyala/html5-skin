@@ -9,6 +9,16 @@ var React = require('react'),
 var ClosedCaptionPopover = React.createClass({
 
   handleMoreCaptions: function() {
+    if (this.moreOptionsBtn) {
+      // When the Closed Captions screen is closed it will go straight to the control bar without
+      // showing this popover. Make sure CC button gets focus when that happens if it was originally
+      // triggered with the keyboard.
+      if (this.moreOptionsBtn.wasTriggeredWithKeyboard()) {
+        this.props.controller.state.focusedControl = CONSTANTS.FOCUS_IDS.CLOSED_CAPTIONS;
+      }
+      this.props.controller.state.closedCaptionOptions.autoFocus = this.moreOptionsBtn.wasTriggeredWithKeyboard();
+      this.moreOptionsBtn.wasTriggeredWithKeyboard(false);
+    }
     this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
     this.handleClose();
   },
@@ -25,10 +35,14 @@ var ClosedCaptionPopover = React.createClass({
     return (
       <ul className="oo-popover-horizontal" role="menu">
         <li role="presentation">
-          <OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_CLOSED_CAPTIONS} />
+          <OnOffSwitch
+            {...this.props}
+            ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_CLOSED_CAPTIONS}
+            role={CONSTANTS.ARIA_ROLES.MENU_ITEM_CHECKBOX} />
         </li>
         <li role="presentation">
           <AccessibleButton
+            ref={function(e) { this.moreOptionsBtn = e }.bind(this)}
             className="oo-more-captions"
             ariaLabel={CONSTANTS.ARIA_LABELS.CAPTION_OPTIONS}
             role={CONSTANTS.ARIA_ROLES.MENU_ITEM}

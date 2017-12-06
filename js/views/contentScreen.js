@@ -11,7 +11,7 @@ var ContentScreen = React.createClass({
 
   componentDidMount: function() {
     if (this.props.autoFocus) {
-      Utils.autoFocusFirstElement(this.domElement, 'oo-close-button');
+      Utils.autoFocusFirstElement(this.domElement);
     }
   },
 
@@ -73,9 +73,9 @@ var ContentScreen = React.createClass({
           {closedCaptionOverlay}
           <div className={this.props.titleBarClassName}>
             {titleBar}
-            <CloseButton {...this.props} closeAction={this.handleClose}/>
           </div>
           {this.props.children}
+          <CloseButton {...this.props} closeAction={this.handleClose}/>
         </div>
       </div>
     );

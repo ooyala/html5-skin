@@ -43,7 +43,12 @@
 }
 
 .oo-slider[type=range]:focus {
-    outline: none;
+  outline: none;
+  @include highlight-tab();
+}
+
+.oo-slider[type=range]:hover:active {
+  @include remove-highlight-tab();
 }
 
 //moz

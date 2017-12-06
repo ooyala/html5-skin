@@ -9,6 +9,7 @@ jest.dontMock('../../js/views/contentScreen')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/components/dataSelector')
     .dontMock('../../js/components/utils')
+    .dontMock('../../js/components/higher-order/accessibleMenu')
     .dontMock('../../js/constants/constants')
     .dontMock('classnames');
 

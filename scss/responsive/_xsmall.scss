@@ -10,6 +10,11 @@
       font-size: 0.7em;
     }
   }
+  .oo-content-screen .oo-close-button {
+    position: absolute;
+    top: xs($panel-padding);
+    right: xs($panel-padding);
+  }
 
   // State Screens
   .oo-state-screen {
@@ -65,7 +70,7 @@
       }
     }
     .captions-navbar {
-      margin-top: 10px;
+      margin-top: 8px;
     }
     .tabs-menu {
       width: 775px;
