@@ -76,10 +76,11 @@ var Tabs = React.createClass({
       .map(function(panel)  {return typeof panel === 'function' ? panel() : panel;})
       .filter(function(panel)  {return panel;})
       .map(function(panel, index)  {
-        var ref = ("tab-menu-" + (index + 1));
+        var tabIndex = index + 1;
+        var ref = ("tab-menu-" + tabIndex);
         var title = panel.props.title;
         var activeTabStyle = {};
-        var isSelected = this.state.tabActive === index + 1;
+        var isSelected = this.state.tabActive === tabIndex;
 
         var classes = ClassNames(
           'tabs-menu-item',
@@ -103,7 +104,7 @@ var Tabs = React.createClass({
               ariaLabel={title}
               ariaSelected={isSelected}
               role={CONSTANTS.ARIA_ROLES.TAB}
-              onClick={this.setActive.bind(this, index + 1)}
+              onClick={this.setActive.bind(this, tabIndex)}
               onMouseOver={this.highlight}
               onMouseOut={this.removeHighlight}
               onFocus={this.onMenuItemFocus}>
