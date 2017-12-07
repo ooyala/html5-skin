@@ -776,6 +776,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    vrDisableGyroscope: function () {
+      if(this.videoVr){
+        console.log('OO.EVENTS.VR_DISABLE_GYROSCOPE this.focusedElement', this.focusedElement)
+        this.mb.publish(OO.EVENTS.VR_DISABLE_GYROSCOPE);
+      }
+    },
+
+    vrEnableGyroscope: function () {
+      if(this.videoVr){
+        this.mb.publish(OO.EVENTS.VR_ENABLE_GYROSCOPE);
+      }
+    },
+
     setVrViewingDirection: function(event, yaw, roll, pitch) {
       this.state.vrViewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
     },

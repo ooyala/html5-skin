@@ -81,8 +81,12 @@ var Skin = React.createClass({
    */
   getCoords: function(e) {
     var сoords = {};
+    console.log('e', e);
+    var isMobileTouhes = (OO.isIos || OO.isAndroid) &&
+      e.touches &&
+      e.touches.length;
 
-    if(OO.isIos || OO.isAndroid){
+    if(isMobileTouhes){
       сoords.x = e.touches[0].pageX;
       сoords.y = e.touches[0].pageY;
     } else {
@@ -108,6 +112,9 @@ var Skin = React.createClass({
         xVrMouseStart: coords.x,
         yVrMouseStart: coords.y
       });
+
+      this._gyroscopeDisable();
+
       if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
       }
@@ -145,6 +152,9 @@ var Skin = React.createClass({
         xVrMouseStart: 0,
         yVrMouseStart: 0
       });
+
+      this._gyroscopeEnable();
+
       if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
       }
@@ -171,6 +181,31 @@ var Skin = React.createClass({
     this.setState({
       isVrMouseMove: false,
     });
+    this._gyroscopeEnable();
+  },
+
+  /**
+   * @private
+   * @description the creation of an event about the inclusion of a gyroscope when the accompanying conditions are met
+   */
+  _gyroscopeEnable: function () {
+    if((OO.isIos || OO.isAndroid) &&
+        typeof this.props.controller.vrEnableGyroscope === 'function' &&
+        this.props.controller.videoVr){
+      this.props.controller.vrEnableGyroscope();
+    }
+  },
+
+  /**
+   * @private
+   * @description creating an event about turning off the gyroscope when the associated conditions are met
+   */
+  _gyroscopeDisable: function () {
+    if((OO.isIos || OO.isAndroid) &&
+        typeof this.props.controller.vrDisableGyroscope === 'function' &&
+        this.props.controller.videoVr){
+      this.props.controller.vrDisableGyroscope();
+    }
   },
 
   /**

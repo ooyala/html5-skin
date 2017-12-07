@@ -132,9 +132,13 @@ var PlayingScreen = React.createClass({
 
   handleTouchEnd: function(event) {
     event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
+    event.persist();
     if (!this.state.controlBarVisible){
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
+    }
+    else if(this.props.controller.videoVr){
+      this.props.handleVrPlayerMouseUp();
     }
     else if (!this.props.controller.videoVr) {
       this.props.controller.togglePlayPause(event);
@@ -143,6 +147,7 @@ var PlayingScreen = React.createClass({
 
   handlePlayerMouseDown: function(e) {
     e.persist();
+    console.log('handlePlayerMouseDown', e)
     this.props.handleVrPlayerMouseDown(e);
   },
 

@@ -73,6 +73,13 @@ var PauseScreen = React.createClass({
     this.props.handleVrPlayerMouseLeave()
   },
 
+  handleTouchEnd: function (e) {
+    e.persist();
+    if(this.props.controller.videoVr){
+      this.props.handleVrPlayerMouseUp();
+    }
+  },
+
   /**
    * Make sure keyboard controls are active when a control bar element has focus.
    *
@@ -178,6 +185,7 @@ var PauseScreen = React.createClass({
           onMouseMove={this.handlePlayerMouseMove}
           onTouchMove={this.handlePlayerMouseMove}
           onMouseLeave={this.handlePlayerMouseLeave}
+          onTouchEnd={this.handleTouchEnd}
         />
 
         <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
