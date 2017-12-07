@@ -73,6 +73,12 @@ var Skin = React.createClass({
     });
   },
 
+  /**
+   * @public
+   * @description - returns the correct coordinates of events depending on the platform
+   * @param e - event
+   * @returns {object} - coordinates x, y
+   */
   getCoords: function(e) {
     var сoords = {};
 
