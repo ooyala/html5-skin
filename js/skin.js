@@ -84,8 +84,6 @@ var Skin = React.createClass({
       сoords.y = e.pageY;
     }
 
-    console.log('getCoords e', e);
-
     return сoords;
   },
 
