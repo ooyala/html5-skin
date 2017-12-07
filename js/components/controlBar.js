@@ -423,17 +423,14 @@ var ControlBar = React.createClass({
 
     var controlItemTemplates = {
       "playPause": (function (alignment) {
-        return <button
-          type="button"
+        return <AccessibleButton
           className="oo-play-pause oo-control-bar-item"
           onClick={this.handlePlayClick}
-          onMouseUp={Utils.blurOnMouseUp}
           onMouseOver={this.highlight}
           onMouseOut={this.removeHighlight}
           key="playPause"
-          data-focus-id={CONSTANTS.FOCUS_IDS.PLAY_PAUSE}
-          tabIndex="0"
-          aria-label={playPauseAriaLabel}>
+          focusId={CONSTANTS.FOCUS_IDS.PLAY_PAUSE}
+          ariaLabel={playPauseAriaLabel}>
           <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
           <Tooltip enabled={isTooltipEnabled}
             alignment={alignment}
@@ -442,7 +439,7 @@ var ControlBar = React.createClass({
             text={this.props.playerState == CONSTANTS.STATE.PLAYING ? Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.PAUSE, this.props.localizableStrings) :
               this.props.playerState == CONSTANTS.STATE.END ? Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.REPLAY, this.props.localizableStrings) : Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.PLAY, this.props.localizableStrings)}>
           </Tooltip>
-        </button>
+        </AccessibleButton>
       }).bind(this),
 
       "live": (function (alignment) {
@@ -456,23 +453,20 @@ var ControlBar = React.createClass({
 
       "volume": (function (alignment) {
         return <div className="oo-volume oo-control-bar-item" key="volume">
-          <button
-            type="button"
+          <AccessibleButton
             className="oo-mute-unmute oo-control-bar-item"
             onClick={this.handleVolumeIconClick}
-            onMouseUp={Utils.blurOnMouseUp}
             onMouseOver={this.highlight}
             onMouseOut={this.removeHighlight}
-            data-focus-id={CONSTANTS.FOCUS_IDS.MUTE_UNMUTE}
-            tabIndex="0"
-            aria-label={volumeAriaLabel}>
+            focusId={CONSTANTS.FOCUS_IDS.MUTE_UNMUTE}
+            ariaLabel={volumeAriaLabel}>
             <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
               style={this.props.skinConfig.controlBar.iconStyle.inactive} />
             <Tooltip enabled={isTooltipEnabled}
               text={mutedInUi ? Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UNMUTE, this.props.localizableStrings) : Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.MUTE, this.props.localizableStrings)}
               responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment}>
             </Tooltip>
-          </button>
+          </AccessibleButton>
           <VolumeControls {...this.props} />
         </div>
       }).bind(this),
@@ -504,7 +498,7 @@ var ControlBar = React.createClass({
             className={qualityClass}
             focusId={CONSTANTS.FOCUS_IDS.VIDEO_QUALITY}
             ariaLabel={CONSTANTS.ARIA_LABELS.VIDEO_QUALITY}
-            ariaHasPopup="true"
+            ariaHasPopup={true}
             ariaExpanded={this.props.controller.state.videoQualityOptions.showPopover ? true : null}
             onClick={this.handleQualityClick}>
             <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
@@ -544,7 +538,7 @@ var ControlBar = React.createClass({
               className={captionClass}
               focusId={CONSTANTS.FOCUS_IDS.CLOSED_CAPTIONS}
               ariaLabel={CONSTANTS.ARIA_LABELS.CLOSED_CAPTIONS}
-              ariaHasPopup="true"
+              ariaHasPopup={true}
               ariaExpanded={this.props.controller.state.closedCaptionOptions.showPopover ? true : null}
               onClick={this.handleClosedCaptionClick}>
               <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
@@ -576,40 +570,34 @@ var ControlBar = React.createClass({
       "stereoscopic": (function (alignment) {
         var checkStereoBtn = this.vr && this.isMobile;
         return (!checkStereoBtn) ? null :
-          <button
-            type="button"
+          <AccessibleButton
             className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
             onClick={this.handleStereoVrClick}
-            onMouseUp={Utils.blurOnMouseUp}
             onMouseOver={this.highlight}
             onMouseOut={this.removeHighlight}
             key="stereo"
-            data-focus-id={CONSTANTS.FOCUS_IDS.STEREO}
-            tabIndex="0"
-            aria-label={stereoAriaLabel}>
+            focusId={CONSTANTS.FOCUS_IDS.STEREO}
+            ariaLabel={stereoAriaLabel}>
             <Icon {...this.props} icon={stereoIcon} style={dynamicStyles.iconCharacter} />
             <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple}
               bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
-          </button>
+          </AccessibleButton>
       }).bind(this),
 
     "fullscreen": (function (alignment) {
-        return <button
-          type="button"
+        return <AccessibleButton
           className="oo-fullscreen oo-control-bar-item"
           onClick={this.handleFullscreenClick}
-          onMouseUp={Utils.blurOnMouseUp}
           onMouseOver={this.highlight}
           onMouseOut={this.removeHighlight}
           key="fullscreen"
-          data-focus-id={CONSTANTS.FOCUS_IDS.FULLSCREEN}
-          tabIndex="0"
-          aria-label={fullscreenAriaLabel}>
+          focusId={CONSTANTS.FOCUS_IDS.FULLSCREEN}
+          ariaLabel={fullscreenAriaLabel}>
           <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
           <Tooltip enabled={isTooltipEnabled} responsivenessMultiplier={this.responsiveUIMultiple} text={this.props.controller.state.fullscreen ?
             Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EXIT_FULL_SCREEN, this.props.localizableStrings) : Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.FULL_SCREEN, this.props.localizableStrings)}
             bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
-        </button>
+        </AccessibleButton>
       }).bind(this),
 
       "logo": (function (alignment) {
