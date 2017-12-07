@@ -152,6 +152,45 @@ var Utils = {
     };
   },
 
+
+  getDiscoveryEventData: function(assetPosition, pageSize, uiTag, asset, customData){
+    var assetData = { "id" : asset.embed_code, 
+                      "idType" : CONSTANTS.DISCOVERY.ID_TYPE, 
+                      "ooyalaDiscoveryContext": this.getDiscoveryContext(asset)
+                    };
+    var eventData = { "customData" : customData,
+                      "asset" : assetData,
+                      "contentSource" : CONSTANTS.DISCOVERY.SOURCE,
+                      "assetPosition" : assetPosition, 
+                      "pageSize" : pageSize, 
+                      "uiTag" : uiTag
+                    };
+    return eventData;
+  },
+  
+  getDiscoveryContext: function(discoveryAsset) {
+    if (discoveryAsset == null) 
+      return {};
+
+    // If a discovery context is already attached, no need to do any conversion
+    if (discoveryAsset.ooyalaDiscoveryContext != null)
+    {
+      return ooyalaDiscoveryContext;
+    }
+
+    if (discoveryAsset.bucket_info == null) 
+      return {};
+    
+    // Remove the first char that indicates the bucket number
+    var bucket_info = JSON.parse(discoveryAsset.bucket_info.substring(1));
+
+    // Decode the Base64 data and parse as JSON
+    var bucket_decode = JSON.parse(OO.decode64(bucket_info.encoded));
+
+    // Return the new context with converted bucket info
+    return { "version": "1", "data": bucket_decode };
+  },
+
   /**
   * Trims the given text to fit inside of the given element, truncating with ellipsis.
   *

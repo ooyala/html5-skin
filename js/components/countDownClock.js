@@ -10,6 +10,7 @@
 var React = require('react'),
     ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
+    Utils = require('./utils'),
     CONSTANTS = require('../constants/constants');
 
 var CountDownClock = React.createClass({
@@ -154,34 +155,25 @@ var CountDownClock = React.createClass({
   },
 
   startDiscoveryVideo: function() {
+    var asset = this.props.discoveryData.relatedVideos[0];
+    var customData = {"source": CONSTANTS.SCREEN.UP_NEXT_SCREEN, "autoplay": false};
     var eventData = {
-          "clickedVideo" : this.props.discoveryData.relatedVideos[0],
-          "custom" : {
-            "source": CONSTANTS.SCREEN.UP_NEXT_SCREEN,
-            "asset" : { "id" : this.props.discoveryData.relatedVideos[0].embed_code, "idType" : CONSTANTS.DISCOVERY.ID_TYPE},
-            "autoplay": true,
-            "assetPosition" : 1, 
-            "pageSize" : 1,
-            "uiTag" : CONSTANTS.UI_TAG.UP_NEXT,
-            "contentSource" : CONSTANTS.DISCOVERY.SOURCE
-          }
+          "clickedVideo" : asset,
+          "custom" : this.props.discoveryData.custom,
+          "metadata" : Utils.getDiscoveryEventData(1, 1, CONSTANTS.UI_TAG.UP_NEXT, asset, customData)
         };
+
     this.props.controller.sendDiscoveryClickEvent(eventData, false);
   },
 
   startUpNextVideo: function() {
     OO.log("startUpNext");
+    var asset =  this.props.upNextInfo.upNextData;
+    var customData = {"source": CONSTANTS.SCREEN.UP_NEXT_SCREEN, "autoplay": true};
     var eventData = {
-      "clickedVideo" : this.props.upNextInfo.upNextData,
-      "custom": {
-        "source": CONSTANTS.SCREEN.UP_NEXT_SCREEN,
-        "asset" : { "id" : this.props.upNextInfo.upNextData.embed_code, "idType" : CONSTANTS.DISCOVERY.ID_TYPE},
-        "autoplay": true,
-        "assetPosition" : 1, 
-        "pageSize" : 1,
-        "uiTag" : CONSTANTS.UI_TAG.UP_NEXT,
-        "contentSource" : CONSTANTS.DISCOVERY.SOURCE
-      }
+      "clickedVideo" : asset,
+      "custom": customData,
+      "metadata" : Utils.getDiscoveryEventData(1, 1, CONSTANTS.UI_TAG.UP_NEXT, asset, customData)
     };
     this.props.controller.sendDiscoveryClickEvent(eventData, true);
   },
