@@ -30,9 +30,9 @@ var DataSelector = React.createClass({
     this.autoFocus.selected = false;
   },
 
-  handleDataSelection: function(dataItem, itemId) {
+  handleDataSelection: function(dataItem) {
     this.resetAutoFocus();
-    this.autoFocus.selected = this.checkAndResetBtnAutoFocus(this.itemButtons[itemId]);
+    this.autoFocus.selected = this.checkAndResetBtnAutoFocus(this.itemButtons[dataItem]);
     this.props.onDataChange(dataItem);
   },
 
@@ -76,9 +76,9 @@ var DataSelector = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     //If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
-    if (nextProps.responsiveView != this.props.viewSize) {
+    if (nextProps.viewSize !== this.props.viewSize) {
       var currentViewSize = this.props.viewSize;
-      var nextViewSize = nextProps.responsiveView;
+      var nextViewSize = nextProps.viewSize;
       var firstDataIndex = this.state.currentPage * this.props.dataItemsPerPage[currentViewSize] - this.props.dataItemsPerPage[currentViewSize];
       var newCurrentPage = Math.floor(firstDataIndex/nextProps.dataItemsPerPage[nextViewSize]) + 1;
       this.setState({
@@ -103,6 +103,21 @@ var DataSelector = React.createClass({
     return autoFocus;
   },
 
+  /**
+   * Returns a callback function that can be used to store the ref of the item button
+   * identified by the value of dataItem. This is needed because the buttons are added
+   * in a loop and ref is async, so we need to freeze the value of dataItem with the closure.
+   * @private
+   * @param {String} dataItem The value of the data button whose ref we want to store.
+   * @return {Function} A callback that will store the ref of the corresponding item button.
+   */
+  getItemButtonRefCallback: function(dataItem) {
+    var refCallback = function(component) {
+      this.itemButtons[dataItem] = component;
+    };
+    return refCallback.bind(this);
+  },
+
   render: function() {
     //pagination
     var currentViewSize = this.props.viewSize;
@@ -114,9 +129,9 @@ var DataSelector = React.createClass({
     //Build data content blocks
     var dataContentBlocks = [];
     for (var i = 0; i < dataItems.length; i++) {
-      var itemId = dataItems[i];
+      var currentDataItem = dataItems[i];
       //accent color
-      var isSelected = this.props.selectedData === dataItems[i];
+      var isSelected = this.props.selectedData === currentDataItem;
       var selectedItemStyle = {};
       if (isSelected && this.props.enabled && this.props.skinConfig.general.accentColor) {
         selectedItemStyle = {backgroundColor: this.props.skinConfig.general.accentColor};
@@ -126,16 +141,16 @@ var DataSelector = React.createClass({
 
       dataContentBlocks.push(
         <AccessibleButton
-          key={itemId}
-          ref={function(e) { this.itemButtons[itemId] = e }.bind(this)}
+          key={currentDataItem}
+          ref={this.getItemButtonRefCallback(currentDataItem)}
           autoFocus={autoFocus}
-          className={this.setClassname(dataItems[i])}
+          className={this.setClassname(currentDataItem)}
           style={selectedItemStyle}
-          ariaLabel={dataItems[i]}
+          ariaLabel={currentDataItem}
           ariaChecked={isSelected}
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
-          onClick={this.handleDataSelection.bind(this, dataItems[i], itemId)}>
-          <span className="oo-data">{dataItems[i]}</span>
+          onClick={this.handleDataSelection.bind(this, currentDataItem)}>
+          <span className="oo-data">{currentDataItem}</span>
         </AccessibleButton>
       );
     }
@@ -193,9 +208,9 @@ DataSelector = AccessibleMenu(DataSelector, { useRovingTabindex: true });
 DataSelector.propTypes = {
   enabled: React.PropTypes.bool.isRequired,
   selectedData: React.PropTypes.string,
-  availableDataItems: React.PropTypes.array.isRequired,
-  dataItemsPerPage: React.PropTypes.number.isRequired,
-  viewSize: React.PropTypes.number.isRequired,
+  availableDataItems: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+  dataItemsPerPage: React.PropTypes.objectOf(React.PropTypes.number),
+  viewSize: React.PropTypes.string.isRequired,
   ariaLabel: React.PropTypes.string,
   onDataChange: React.PropTypes.func.isRequired,
   skinConfig: React.PropTypes.shape({
