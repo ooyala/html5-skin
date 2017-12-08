@@ -21,4 +21,16 @@ var SelectionContainer = React.createClass({
   }
 });
 
+SelectionContainer.propTypes = {
+  className: React.PropTypes.string,
+  selectionText: React.PropTypes.string,
+  title: React.PropTypes.string,
+  ariaLabel: React.PropTypes.string,
+  role: React.PropTypes.string,
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.array,
+    React.PropTypes.element
+  ]).isRequired
+};
+
 module.exports = SelectionContainer;
