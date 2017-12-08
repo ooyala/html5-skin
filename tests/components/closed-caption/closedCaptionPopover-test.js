@@ -18,6 +18,7 @@ describe('ClosedCaptionPopover', function () {
     props = {
       language: 'en',
       localizableStrings: [],
+      togglePopoverAction: function() {},
       closedCaptionOptions: {
         enabled: false
       },
@@ -27,8 +28,13 @@ describe('ClosedCaptionPopover', function () {
         }
       },
       controller: {
+        state: {
+          focusedControl: null,
+          closedCaptionOptions: {
+            autoFocus: false
+          }
+        },
         toggleScreen: function() {},
-        togglePopoverAction: function() {}
       }
     };
   });
@@ -42,6 +48,24 @@ describe('ClosedCaptionPopover', function () {
     var moreCaptionsBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-more-captions');
     expect(moreCaptionsBtn.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.CAPTION_OPTIONS);
     expect(moreCaptionsBtn.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU_ITEM);
+  });
+
+  it('should set closed caption options autofocus to true when triggered with keyboard', function() {
+    var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPopover {...props}/>);
+    var moreCaptionsBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-more-captions');
+    expect(props.controller.state.closedCaptionOptions.autoFocus).toBe(false);
+    TestUtils.Simulate.keyDown(moreCaptionsBtn, { key: CONSTANTS.KEY_VALUES.SPACE });
+    TestUtils.Simulate.click(moreCaptionsBtn);
+    expect(props.controller.state.closedCaptionOptions.autoFocus).toBe(true);
+  });
+
+  it('should preemptively set the control bar CC button as the focused control when opening CC menu with keyboard', function() {
+    var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPopover {...props}/>);
+    var moreCaptionsBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-more-captions');
+    expect(props.controller.state.focusedControl).toBeNull();
+    TestUtils.Simulate.keyDown(moreCaptionsBtn, { key: CONSTANTS.KEY_VALUES.SPACE });
+    TestUtils.Simulate.click(moreCaptionsBtn);
+    expect(props.controller.state.focusedControl).toBe(CONSTANTS.FOCUS_IDS.CLOSED_CAPTIONS);
   });
 
   describe('keyboard navigation', function() {
