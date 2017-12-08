@@ -65,9 +65,8 @@ describe('Tabs', function() {
   });
 
   it('should update aria-selected attribute when tab selection state changes', function() {
-    var tabButton;
     renderComponent();
-    tabButton = ReactDOM.findDOMNode(tabButtons[0]);
+    var tabButton = ReactDOM.findDOMNode(tabButtons[0]);
     expect(tabButton.getAttribute('aria-selected')).toBe('false');
     TestUtils.Simulate.click(tabButton);
     expect(tabButton.getAttribute('aria-selected')).toBe('true');
