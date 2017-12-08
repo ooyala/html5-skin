@@ -1293,10 +1293,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       // no support
       else {
-        if(this.state.isFullWindow) {
-          this.exitFullWindow();
+
+        if(OO.isIos && this.videoVr){
+          // toggle fullscreen with bitmovin api
+          this.mb.publish(OO.EVENTS.TOGGLE_FULLSCREEN_VR, this.focusedElement);
         } else {
-          this.enterFullWindow();
+          if(this.state.isFullWindow) {
+            this.exitFullWindow();
+          } else {
+            this.enterFullWindow();
+          }
         }
       }
       this.state.fullscreen = !this.state.fullscreen;
