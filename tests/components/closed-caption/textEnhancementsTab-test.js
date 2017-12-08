@@ -1,5 +1,5 @@
 jest
-.dontMock('../../../js/components/closed-caption/fontSizeTab')
+.dontMock('../../../js/components/closed-caption/textEnhancementsTab')
 .dontMock('../../../js/components/closed-caption/selectionContainer')
 .dontMock('../../../js/components/accessibleButton')
 .dontMock('../../../js/components/higher-order/accessibleMenu')
@@ -10,19 +10,19 @@ jest
 var React = require('react');
 var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
-var FontSizeTab = require('../../../js/components/closed-caption/fontSizeTab');
+var TextEnhancementsTab = require('../../../js/components/closed-caption/textEnhancementsTab');
 var AccessibleButton = require('../../../js/components/accessibleButton');
 var CONSTANTS = require('../../../js/constants/constants');
 
-describe('FontSizeTab', function() {
-  var props, node, tree, component, element, fontItems;
+describe('TextEnhancementsTab', function() {
+  var props, node, tree, component, element, textEnhancementItems;
 
   // Using ReactDOM.render instead of test utils in order to allow re-render to simulate props update
   function renderComponent() {
-    tree = ReactDOM.render(<FontSizeTab {...props} />, node);
-    component = TestUtils.findRenderedComponentWithType(tree, FontSizeTab);
+    tree = ReactDOM.render(<TextEnhancementsTab {...props} />, node);
+    component = TestUtils.findRenderedComponentWithType(tree, TextEnhancementsTab);
     element = ReactDOM.findDOMNode(component);
-    fontItems = TestUtils.scryRenderedComponentsWithType(tree, AccessibleButton);
+    textEnhancementItems = TestUtils.scryRenderedComponentsWithType(tree, AccessibleButton);
   }
 
   beforeEach(function() {
@@ -30,25 +30,25 @@ describe('FontSizeTab', function() {
     tree = null;
     component = null;
     element = null;
-    fontItems = null;
+    textEnhancementItems = null;
     props = {
       language: 'en',
       localizableStrings: {
         en: {
-          'Small': 'Small',
-          'Medium': 'Medium',
-          'Large': 'Large',
-          'Extra Large': 'Extra Large'
+          'Uniform': 'Uniform',
+          'Depressed': 'Depressed',
+          'Raised': 'Raised',
+          'Shadow': 'Shadow'
         }
       },
       closedCaptionOptions: {
         enabled: true,
-        fontSize: 'Small',
+        textEnhancement: 'Uniform',
       },
       controller: {
         toggleClosedCaptionEnabled: function() {},
         onClosedCaptionChange: function(property, value) {
-          props.closedCaptionOptions.fontSize = value;
+          props.closedCaptionOptions.textEnhancement = value;
         }
       },
       skinConfig: {
@@ -59,27 +59,27 @@ describe('FontSizeTab', function() {
     };
   });
 
-  it('should render a FontSizeTab', function() {
+  it('should render a TextEnhancementsTab', function() {
     renderComponent();
     expect(component).toBeTruthy();
   });
 
-  it('should render ARIA attributes on font items', function() {
+  it('should render ARIA attributes on text enhancement items', function() {
     renderComponent();
-    var firstItem = ReactDOM.findDOMNode(fontItems[0]);
-    expect(firstItem.getAttribute('aria-label')).toBe(props.localizableStrings[props.language]['Small']);
+    var firstItem = ReactDOM.findDOMNode(textEnhancementItems[0]);
+    expect(firstItem.getAttribute('aria-label')).toBe(props.localizableStrings[props.language]['Uniform']);
     expect(firstItem.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO);
   });
 
   it('should update aria-checked attribute when item selection state changes', function() {
     var secondMenuItem;
-    props.closedCaptionOptions.fontSize = 'Small';
+    props.closedCaptionOptions.textEnhancement = 'Uniform';
     renderComponent();
-    secondMenuItem = ReactDOM.findDOMNode(fontItems[1]);
+    secondMenuItem = ReactDOM.findDOMNode(textEnhancementItems[1]);
     expect(secondMenuItem.getAttribute('aria-checked')).toBe('false');
     TestUtils.Simulate.click(secondMenuItem);
     renderComponent();
-    secondMenuItem = ReactDOM.findDOMNode(fontItems[1]);
+    secondMenuItem = ReactDOM.findDOMNode(textEnhancementItems[1]);
     expect(secondMenuItem.getAttribute('aria-checked')).toBe('true');
   });
 
