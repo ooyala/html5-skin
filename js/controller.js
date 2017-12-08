@@ -1585,6 +1585,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleScreen: function(screen) {
+      this.isNewVrVideo = false;
       if (this.state.screenToShow == screen) {
         this.closeScreen();
       }
