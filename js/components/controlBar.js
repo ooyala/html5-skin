@@ -132,7 +132,7 @@ var ControlBar = React.createClass({
    */
   setLandscapeScreenOrientation: function() {
     var orientation = window.screen.orientation || window.screen.mozOrientation || window.screen.msOrientation;
-    if (orientation.type && (orientation.type === "portrait-secondary" || orientation.type === "portrait-primary")) {
+    if (orientation && orientation.type && (orientation.type === "portrait-secondary" || orientation.type === "portrait-primary")) {
       var orientations = "landscape-primary";
       if (screen.orientation && screen.orientation.lock) { //chrome browser
         screen.orientation.lock(orientations);
