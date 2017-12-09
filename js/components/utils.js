@@ -880,7 +880,7 @@ var Utils = {
       coords.y = e.pageY;
     }
 
-    return сoords;
+    return coords;
   },
 };
 
