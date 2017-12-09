@@ -101,13 +101,70 @@ var ControlBar = React.createClass({
     evt.cancelBubble = true;
     evt.preventDefault();
     this.props.controller.toggleFullscreen();
+    if (this.vr && this.isMobile && this.vr.stereo) {
+      this.toggleStereoVr();
+    }
   },
 
-  handleStereoVrClick: function () {
+  handleStereoVrClick: function (evt) {
     if (this.vr) {
-      this.vr.stereo = !this.vr.stereo;
+      evt.stopPropagation();
+      evt.cancelBubble = true;
+      evt.preventDefault();
+      //
+      this.toggleStereoVr();
+      //
+      if (!this.props.controller.state.fullscreen && this.props.controller && typeof this.props.controller.toggleFullscreen === "function") {
+        this.props.controller.toggleFullscreen();
+      }
+      //
+      if (this.vr.stereo) {
+        this.setLandscapeScreenOrientation();
+      } else {
+        this.unlockScreenOrientation();
+      }
     }
-    if(this.props.controller && typeof this.props.controller.toggleStereoVr === "function") {
+  },
+
+  /**
+   * @description set landscape orientation if it is possible
+   * @private
+   */
+  setLandscapeScreenOrientation: function() {
+    var orientation = window.screen.orientation || window.screen.mozOrientation || window.screen.msOrientation;
+    if (orientation.type && (orientation.type === "portrait-secondary" || orientation.type === "portrait-primary")) {
+      var orientations = "landscape-primary";
+      if (screen.orientation && screen.orientation.lock) { //chrome browser
+        screen.orientation.lock(orientations);
+      } else if (screen.lockOrientation) { //new one
+        screen.lockOrientation(orientations);
+      } else if (screen.mozLockOrientation) { //ff
+        screen.mozLockOrientation(orientations);
+      } else if (screen.msLockOrientation) { //ie
+        screen.msLockOrientation(orientations);
+      }
+    }
+  },
+
+  /**
+   * @description set possibility to use all orientations
+   * @private
+   */
+  unlockScreenOrientation: function() {
+    if (screen.orientation && screen.orientation.unlock) {
+      screen.orientation.unlock();
+    } else if (screen.unlockOrientation) {
+      screen.unlockOrientation();
+    } else if (screen.mozUnlockOrientation) {
+      screen.mozUnlockOrientation();
+    } else if (screen.msUnlockOrientation) {
+      screen.msUnlockOrientation();
+    }
+  },
+
+  toggleStereoVr: function() {
+    if (this.props.controller && typeof this.props.controller.toggleStereoVr === "function") {
+      this.vr.stereo = !this.vr.stereo;
       this.props.controller.toggleStereoVr();
     }
   },
