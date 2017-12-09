@@ -859,7 +859,29 @@ var Utils = {
   _cloneIfNecessary: function (value, optionsArgument) {
     var clone = optionsArgument && optionsArgument.clone === true;
     return (clone && this._isMergeableObject(value)) ? DeepMerge(this._emptyTarget(value), value, optionsArgument) : value
-  }
+  },
+
+  /**
+   * @description - returns the correct coordinates of events depending on the platform
+   * @param e - event
+   * @returns {object} - coordinates x, y
+   */
+  getCoords: function(e) {
+    var coords = {};
+    var isMobileTouhes = (OO.isIos || OO.isAndroid) &&
+      e.touches &&
+      e.touches.length;
+
+    if(isMobileTouhes){
+      coords.x = e.touches[0].pageX;
+      coords.y = e.touches[0].pageY;
+    } else {
+      coords.x = e.pageX;
+      coords.y = e.pageY;
+    }
+
+    return сoords;
+  },
 };
 
 module.exports = Utils;
