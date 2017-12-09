@@ -870,7 +870,7 @@ var Utils = {
     var coords = {};
     var isMobileTouhes = (OO.isIos || OO.isAndroid) &&
       e.touches &&
-      e.touches.length;
+      !!e.touches.length;
 
     if(isMobileTouhes){
       coords.x = e.touches[0].pageX;

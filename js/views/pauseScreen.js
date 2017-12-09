@@ -43,8 +43,10 @@ var PauseScreen = React.createClass({
   },
 
   handleClick: function(event) {
-    this.props.controller.videoVr && event.preventDefault();
-    if(!this.props.isVrMouseMove){
+    if (this.props.controller.videoVr) {
+      event.preventDefault();
+    }
+    if (!this.props.isVrMouseMove){
       this.props.controller.togglePlayPause(event);
     }
     this.props.controller.state.accessibilityControlsEnabled = true;
@@ -53,14 +55,18 @@ var PauseScreen = React.createClass({
   },
 
   handlePlayerMouseDown: function(e) {
-    this.props.controller.videoVr && e.persist();
+    if (this.props.controller.videoVr) {
+      e.persist();
+    }
     this.props.controller.state.accessibilityControlsEnabled = true;
     this.props.controller.state.isClickedOutside = false;
     this.props.handleVrPlayerMouseDown(e);
   },
   handlePlayerMouseMove: function(e) {
-    this.props.controller.videoVr && e.preventDefault();
-    this.props.controller.videoVr && e.persist();
+    if (this.props.controller.videoVr) {
+      e.preventDefault();
+      e.persist();
+    }
     this.props.handleVrPlayerMouseMove(e);
   },
   handlePlayerMouseUp: function(e) {
