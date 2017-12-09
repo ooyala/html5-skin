@@ -142,13 +142,13 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseDown: function(e) {
-    e.persist();
+    this.props.controller.videoVr && e.persist();
     this.props.handleVrPlayerMouseDown(e);
   },
 
   handlePlayerMouseMove: function(e) {
-    e.preventDefault();
-    e.persist();
+    this.props.controller.videoVr && e.preventDefault();
+    this.props.controller.videoVr && e.persist();
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
