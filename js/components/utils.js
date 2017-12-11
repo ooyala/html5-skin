@@ -195,7 +195,7 @@ var Utils = {
    * @return {Object} An object with the discovery event data.
    */
   getDiscoveryEventData: function(assetPosition, pageSize, uiTag, asset, customData){
-    var assetData = { "id" : asset.embed_code, 
+    var assetData = { "embed_code" : asset.embed_code, 
                       "idType" : CONSTANTS.DISCOVERY.ID_TYPE, 
                       "ooyalaDiscoveryContext": this.getDiscoveryContext(asset)
                     };
