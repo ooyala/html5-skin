@@ -80,10 +80,13 @@ var Skin = React.createClass({
    */
   handleVrPlayerMouseDown: function(e) {
     if (this.props.controller.videoVr) {
+
+      var coords = Utils.getCoords(e);
+
       this.setState({
         isVrMouseDown: true,
-        xVrMouseStart: e.pageX,
-        yVrMouseStart: e.pageY
+        xVrMouseStart: coords.x,
+        yVrMouseStart: coords.y
       });
       if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
@@ -101,8 +104,11 @@ var Skin = React.createClass({
       this.setState({
         isVrMouseMove: true
       });
+
+      var coords = Utils.getCoords(e);
+
       if (typeof this.props.controller.onTouchMove === 'function') {
-        var params = this.getDirectionParams(e.pageX, e.pageY);
+        var params = this.getDirectionParams(coords.x, coords.y);
         this.props.controller.onTouchMove(params, true);
       }
     }
