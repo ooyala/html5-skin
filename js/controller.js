@@ -1268,6 +1268,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //called when event listener triggered
     onFullscreenChanged: function() {
+
       if (this.state.isFullScreenSupported) {
         this.state.fullscreen = Fullscreen.isFullscreen;
       } else {
@@ -1279,6 +1280,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //called when user selects fullscreen icon
     toggleFullscreen: function() {
+      console.warn('this.state.fullscreen', this.state.fullscreen);
       // full support, any element
       if(this.state.isFullScreenSupported) {
         Fullscreen.toggle(this.state.mainVideoInnerWrapper.get(0));
@@ -1302,14 +1304,29 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           //Because of that we use Bitmovin API
           //https://caniuse.com/#feat=fullscreen
 
+          // var meta = document.createElement('meta');
+          // meta.name = "apple-mobile-web-app-capable";
+          // meta.content = "yes";
+          // document.getElementsByTagName('head')[0].appendChild(meta);
+
+
+          console.warn('this.state.mainVideoInnerWrapper', this.state.mainVideoInnerWrapper);
+          // this.state.mainVideoInnerWrapper.removeAttr('style');
+          // $('div.oo-player-skin').addClass('oo-fullscreen');
+          // console.warn('this.state.mainVideoInnerWrapper 2', this.state.mainVideoInnerWrapper);
+          //
+          // this.enterFullWindow();
+
+          // this.enableFullScreen();
+          // this.updateAspectRatio();
+
           this.mb.publish(OO.EVENTS.TOGGLE_FULLSCREEN_VR, this.focusedElement);
-        } else {
+        }
           if(this.state.isFullWindow) {
             this.exitFullWindow();
           } else {
             this.enterFullWindow();
           }
-        }
       }
       this.state.fullscreen = !this.state.fullscreen;
       this.renderSkin();
@@ -1950,6 +1967,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     //set Main Video Element Wrapper padding-top to aspect ratio
     setAspectRatio: function() {
       if(this.state.mainVideoAspectRatio > 0) {
+        console.warn('this.state.mainVideoAspectRatio', this.state.mainVideoAspectRatio)
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
     },
