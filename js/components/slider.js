@@ -246,15 +246,22 @@ Slider.propTypes = {
   maxValue: React.PropTypes.number,
   step: React.PropTypes.number,
   onChange: React.PropTypes.func,
+  ariaLabel: React.PropTypes.string,
   usePercentageForAria: React.PropTypes.bool,
   settingName: React.PropTypes.string,
   className: React.PropTypes.string,
   itemRef: React.PropTypes.string
 };
 
-Slider.defaultProps = {
-  focusId: Math.random().toString(36).substr(2, 10),
-  usePercentageForAria: false,
-};
+Slider.defaultProps = Object.create({}, {
+  focusId: {
+    enumerable: true,
+    get: function() {
+      return Math.random().toString(36).substr(2, 10);
+    }
+  }
+});
+
+Slider.defaultProps.usePercentageForAria = false;
 
 module.exports = Slider;

@@ -95,4 +95,22 @@ var FontSizeTab = React.createClass({
 
 FontSizeTab = AccessibleMenu(FontSizeTab, { useRovingTabindex: true });
 
+FontSizeTab.propTypes = {
+  language: React.PropTypes.string,
+  localizableStrings: React.PropTypes.objectOf(React.PropTypes.objectOf(React.PropTypes.string)),
+  closedCaptionOptions: React.PropTypes.shape({
+    enabled:  React.PropTypes.bool,
+    fontSize: React.PropTypes.string,
+  }),
+  controller: React.PropTypes.shape({
+    toggleClosedCaptionEnabled: React.PropTypes.func.isRequired,
+    onClosedCaptionChange: React.PropTypes.func.isRequired
+  }),
+  skinConfig: React.PropTypes.shape({
+    general: React.PropTypes.shape({
+      accentColor: React.PropTypes.string
+    })
+  })
+};
+
 module.exports = FontSizeTab;
