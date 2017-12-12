@@ -49,7 +49,7 @@ describe('Tabs', function() {
   it('should render a ColorSelector', function() {
     renderComponent();
     expect(component).toBeTruthy();
-    expect(buttons.length).toBe(6);
+    expect(buttons.length).toBe(colors.length);
   });
 
   it('should set menu role and ARIA label on main element', function() {

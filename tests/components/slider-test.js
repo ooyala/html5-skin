@@ -104,6 +104,16 @@ describe('Slider', function() {
     renderComponent();
     expect(element.getAttribute('aria-valuenow')).toBe('100');
     expect(element.getAttribute('aria-valuetext')).toBe('100% ' + props.settingName);
+    changeEvent.target.value = -0.5;
+    TestUtils.Simulate.change(element, changeEvent);
+    renderComponent();
+    expect(element.getAttribute('aria-valuenow')).toBe('-50');
+    expect(element.getAttribute('aria-valuetext')).toBe('-50% ' + props.settingName);
+    changeEvent.target.value = 1.5;
+    TestUtils.Simulate.change(element, changeEvent);
+    renderComponent();
+    expect(element.getAttribute('aria-valuenow')).toBe('150');
+    expect(element.getAttribute('aria-valuetext')).toBe('150% ' + props.settingName);
   });
 
   it('should manually update value attribute when using keyboard controls on IE11', function() {
