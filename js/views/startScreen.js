@@ -116,7 +116,9 @@ var StartScreen = React.createClass({
     // We do not show the action icon, title or description when the player is initializing
     if (!this.props.isInitializing) {
       actionIcon = (
-        <button className={actionIconClass}
+        <button
+          type="button"
+          className={actionIconClass}
           onMouseUp={Utils.blurOnMouseUp}
           onClick={this.handleClick}
           tabIndex="0"

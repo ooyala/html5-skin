@@ -86,8 +86,8 @@ describe('Thumbnail', function () {
          "80":{
             "120":{
                "url":"http://media.video-cdn.espn.com/motion/Miercoles_080.jpg",
-               "width":120,
-               "height":80
+               "width":320,
+               "height":160
             }
          },
          "90":{
@@ -141,5 +141,28 @@ describe('Thumbnail', function () {
       expect(thumbnail.length).toBe(1);
       expect(thumbnailTime.length).toBe(1);
     }
+  });
+
+  it('tests functions for vr preview', function () {
+    var DOM = TestUtils.renderIntoDocument
+    (
+      <Thumbnail
+        thumbnails={thumbnails}
+        hoverPosition={80}
+        duration={100}
+        hoverTime={80}
+        scrubberBarWidth={100}
+        vrViewingDirection={{yaw: 0, roll: 0, pitch: 0}}
+        videoVr={true}
+        fullscreen={false}
+      />
+    );
+    var coef = DOM.getCurrentYawVr(380);
+    expect(coef).toBe(20);
+    DOM.setCurrentViewVr(180, 0);
+    expect(DOM.positionX).toBe(-120);
+    expect(DOM.positionY).toBe(-60);
+    var thumbnail = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-thumbnail');
+    expect(thumbnail.className).toBe("oo-thumbnail oo-thumbnail-vr");
   });
 });

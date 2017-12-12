@@ -17,13 +17,13 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 <head>
   <meta charset="utf-8">
   <!-- V4 JS core and at least one video plugin is required. Plugins such as skin, discovery and Advertising need to be loaded separately -->
-  <script src="//player.ooyala.com/static/v4/stable/4.17.4/core.min.js"></script>
-  <script src="//player.ooyala.com/static/v4/stable/4.17.4/video-plugin/main_html5.min.js"></script>
-  <script src="//player.ooyala.com/static/v4/stable/4.17.4/video-plugin/osmf_flash.min.js"></script>
-  <script src="//player.ooyala.com/static/v4/stable/4.17.4/video-plugin/bit_wrapper.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.19.3/core.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.19.3/video-plugin/main_html5.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.19.3/video-plugin/osmf_flash.min.js"></script>
+  <script src="//player.ooyala.com/static/v4/stable/4.19.3/video-plugin/bit_wrapper.min.js"></script>
   <!-- Change these html5-skin.min.css and html5-skin.min.js to your local build if necessary -->
-  <script src="//player.ooyala.com/static/v4/stable/4.17.4/skin-plugin/html5-skin.min.js"></script>
-  <link rel="stylesheet" href="//player.ooyala.com/static/v4/stable/4.17.4/skin-plugin/html5-skin.min.css"/>
+  <script src="//player.ooyala.com/static/v4/stable/4.19.3/skin-plugin/html5-skin.min.js"></script>
+  <link rel="stylesheet" href="//player.ooyala.com/static/v4/stable/4.19.3/skin-plugin/html5-skin.min.css"/>
 </head>
 
 <body>
@@ -59,7 +59,9 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 
 5. After cloning, just `cd` in there, install dependencies by running `npm install`
 
-6. This project also makes use of *git submodule* for the config directory. This needs to be initialized
+6. One of our dependencies currently has an issue in which it incorrectly declares React as a dependency rather than a peer dependency. This began causing build issues after React 16.0.0 was released. Until this issue is addressed, you can work around it by running `npm dedupe`
+
+7. This project also makes use of *git submodule* for the config directory. This needs to be initialized
 using *git submodule* commands:
    ```sh
        git submodule init
@@ -68,7 +70,7 @@ using *git submodule* commands:
    ```
    The *init* and *update* should only need to be run once, afterward *git pull* will update the submodule as well as the parent repo.
 
-7. Build the project by running: `gulp`
+8. Build the project by running: `gulp`
 
    This will perform an initial build and start a watch that will update the `build/` folder with any changes made in `js/` or `scss/` folders.
 
@@ -136,7 +138,7 @@ Simple customization can be achieved by modifying `skin.json` settings. Furtherm
 ```javascript
 var playerParam = {
   "skin": {
-    "config": "//player.ooyala.com/static/v4/stable/4.17.4/skin-plugin/skin.json",
+    "config": "//player.ooyala.com/static/v4/stable/4.19.3/skin-plugin/skin.json",
     "inline": {
       "startScreen": {"showDescription": false, "playIconStyle": {"color": "blue"}}
     }

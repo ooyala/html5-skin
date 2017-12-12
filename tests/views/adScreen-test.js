@@ -1,11 +1,14 @@
 jest.dontMock('../../js/views/adScreen')
     .dontMock('../../js/components/icon')
+    .dontMock('../../js/components/higher-order/accessibleMenu')
     .dontMock('../../js/mixins/resizeMixin');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 var AdScreen = require('../../js/views/adScreen');
+var defaultSkinConfig = require('../../config/skin.json');
+var UnmuteIcon = require('../../js/components/unmuteIcon');
 
 describe('AdScreen', function () {
   it('creates an ad screen', function () {
@@ -13,7 +16,10 @@ describe('AdScreen', function () {
     // Render ad screen into DOM
     var mockController = {
       state: {
-        isMobile: false
+        isMobile: false,
+        volumeState: {
+          muted: false
+        }
       }
     };
     var mockSkinConfig = {
@@ -47,7 +53,10 @@ describe('AdScreen', function () {
     var controlBarVisible = true;
     var mockController = {
       state: {
-        isMobile: false
+        isMobile: false,
+        volumeState: {
+          muted: false
+        }
       },
       hideControlBar: function() {
         controlBarVisible = false;
@@ -96,7 +105,10 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
     var mockController = {
       state: {
         isMobile: false,
-        showAdMarquee: true
+        showAdMarquee: true,
+        volumeState: {
+          muted: false
+        }
       }
     };
     var mockSkinConfig = {
@@ -165,7 +177,10 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
     var mockController = {
       state: {
         isMobile: false,
-        controlBarVisible: false
+        controlBarVisible: false,
+        volumeState: {
+          muted: false
+        }
       },
       hideControlBar: function() {
         controlBarVisible = false;
@@ -214,7 +229,10 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
     var mockController = {
       state: {
         isMobile: false,
-        accessibilityControlsEnabled: false
+        accessibilityControlsEnabled: false,
+        volumeState: {
+          muted: false
+        }
       },
       onAdsClicked: function() {
         adsClicked = true;
@@ -256,7 +274,10 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
-        controlBarVisible: false
+        controlBarVisible: false,
+        volumeState: {
+          muted: false
+        }
       },
       onAdsClicked: function() {
         adsClicked = true;
@@ -268,7 +289,10 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
       state: {
         isMobile: true,
         accessibilityControlsEnabled: false,
-        controlBarVisible: true
+        controlBarVisible: true,
+        volumeState: {
+          muted: false
+        }
       },
       onAdsClicked: function() {
         adsClicked = true;
@@ -319,6 +343,50 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
 
     adScreen.handleTouchEnd(event);
     ReactDOM.unmountComponentAtNode(node);
+  });
+
+  it('should display unmute icon when handling muted autoplay', function () {
+    var mockController = {
+      state: {
+        upNextInfo: {
+          showing: false
+        },
+        volumeState: {
+          muted: true,
+          mutingForAutoplay: true
+        }
+      }
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <AdScreen
+        controller={mockController}
+        skinConfig={defaultSkinConfig}
+      />);
+    var unmuteIcon = TestUtils.findRenderedComponentWithType(DOM, UnmuteIcon);
+    expect(unmuteIcon).toBeTruthy();
+  });
+
+  it('should not display unmute icon when not muted', function () {
+    var mockController = {
+      state: {
+        upNextInfo: {
+          showing: false
+        },
+        volumeState: {
+          muted: false,
+          mutingForAutoplay: true
+        }
+      }
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <AdScreen
+        controller={mockController}
+        skinConfig={defaultSkinConfig}
+      />);
+    var unmuteIcons = TestUtils.scryRenderedComponentsWithType(DOM, UnmuteIcon);
+    expect(unmuteIcons.length).toBe(0);
   });
 
 });
