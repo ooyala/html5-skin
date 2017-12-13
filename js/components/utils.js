@@ -4,41 +4,15 @@
 * @module Utils
 */
 var DeepMerge = require('deepmerge');
-var CONSTANTS = require('./../constants/constants');
 
 var Utils = {
-
-  /**
-   * Searches for focusable elements inside domElement and gives focus to the first one
-   * found. Focusable elements are assumed to be those with the data-focus-id attribute which is
-   * used for various purposes in this project. If the excludeClass parameter is passed, elements
-   * that have a matching class will be excluded from the search.
-   * @function autoFocusFirstElement
-   * @param {HTMLElement} domElement A DOM element that contains the element we want to focus.
-   * @param {String} excludeClass A single className that we want the search query to filter out.
-   */
-  autoFocusFirstElement: function(domElement, excludeClass) {
-    if (!domElement || typeof domElement.querySelector !== 'function') {
-      return;
-    }
-    var query = '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']';
-
-    if (excludeClass) {
-      query += ':not(.' + excludeClass + ')';
-    }
-    var firstFocusableElement = domElement.querySelector(query);
-
-    if (firstFocusableElement && typeof firstFocusableElement.focus === 'function') {
-      firstFocusableElement.focus();
-    }
-  },
 
   /**
    * Some browsers give focus to buttons after click, which leaves them highlighted.
    * This can be used to override the browsers' default behavior.
    *
    * @function blurOnMouseUp
-   * @param {Event} MouseUp event object.
+   * @param {type} MouseUp event object.
    */
   blurOnMouseUp: function(event) {
     if (event && event.currentTarget && typeof event.currentTarget.blur === 'function') {
@@ -411,33 +385,6 @@ var Utils = {
   },
 
   /**
-  * Get the countdown string that shows the time until a given future timestamp
-  *
-  * @function getStartCountdown
-  * @param {Number} timestamp - The Unix timestamp for the asset flight time start
-  * @returns {String} The countdown time string
-  */
-  getStartCountdown: function(countdownTimestamp) {
-    var dayString = "day";
-    var hourString = "hour";
-    var minuteString = "minute";
-    try {
-      if (countdownTimestamp < 0) return "";
-      var days = Math.floor(countdownTimestamp / (24 * 60 * 60 * 1000));
-      if (days != 1) dayString += "s";
-      countdownTimestamp -= days * 24 * 60 * 60 * 1000;
-      var hours = Math.floor(countdownTimestamp / (60 * 60 * 1000));
-      if (hours != 1) hourString += "s";
-      countdownTimestamp -= hours * 60 * 60 * 1000;
-      var minutes = Math.floor(countdownTimestamp / (60 * 1000));
-      if (minutes != 1) minuteString += "s";
-      return "" + days + " " + dayString + ", " + hours + " " + hourString + ", and " + minutes + " " + minuteString;
-    } catch (e) {
-      return "";
-    }
-  },
-
-  /**
    * Safely gets the value of an object's nested property.
    *
    * @function getPropertyValue
@@ -579,18 +526,11 @@ var Utils = {
   * @param {Object} thumbnails - metadata object containing information about thumbnails
   * @param {Number} hoverTime - time value to find thumbnail for
   * @param {Number} duration - duration of the video
-  * @param {Boolean} isVideoVr - if video is vr
   * @returns {Object} object that contains URL and index of requested thumbnail
   */
-  findThumbnail: function(thumbnails, hoverTime, duration, isVideoVr) {
+  findThumbnail: function(thumbnails, hoverTime, duration) {
     var timeSlices = thumbnails.data.available_time_slices;
     var width = thumbnails.data.available_widths[0]; //choosing the lowest size
-    if (isVideoVr && width < CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH) {
-      // it is necessary to take bigger image for showing part of the image
-      // so choose not the lowest size but bigger one, the best width is 380
-      var index = thumbnails.data.available_widths.length >= 5 ? 4 : thumbnails.data.available_widths.length - 1;
-      width = thumbnails.data.available_widths[index];
-    }
 
     var position = Math.floor((hoverTime/duration) * timeSlices.length);
     position = Math.min(position, timeSlices.length - 1);
@@ -624,9 +564,7 @@ var Utils = {
     }
 
     var selectedThumbnail = thumbnails.data.thumbnails[selectedTimeSlice][width].url;
-    var imageWidth = thumbnails.data.thumbnails[selectedTimeSlice][width].width;
-    var imageHeight = thumbnails.data.thumbnails[selectedTimeSlice][width].height;
-    return { url: selectedThumbnail, pos: selectedPosition, imageWidth: imageWidth, imageHeight: imageHeight };
+    return { url: selectedThumbnail, pos: selectedPosition };
   },
 
   /**

@@ -1,7 +1,6 @@
 jest.dontMock('../../js/components/adOverlay');
 jest.dontMock('../../js/constants/constants');
 jest.dontMock('../../js/components/closeButton');
-jest.dontMock('../../js/components/accessibleButton');
 jest.dontMock('classnames');
 
 var React = require('react');

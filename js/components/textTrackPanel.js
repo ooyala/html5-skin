@@ -83,18 +83,14 @@ var TextTrackPanel = React.createClass({
     }
   },
 
-  setTextStyle: function(color, opacity, fontType, fontSize, textEnhancement, direction) {
-    var styles = {
+  setTextStyle: function(color, opacity, fontType, fontSize, textEnhancement) {
+    return {
       color: "rgba(" + this.colorMap[color] + "," + opacity + ")",
       fontFamily: this.fontTypeMap[fontType],
       fontVariant: this.fontVariantMap[fontType],
       fontSize: this.fontSizeMap[fontSize][this.props.responsiveView],
       textShadow: this.textEnhancementMap[textEnhancement]
-    };
-    if (direction) {
-      styles.direction = direction;
     }
-    return styles;
   },
 
   render: function() {
@@ -124,15 +120,13 @@ var TextTrackPanel = React.createClass({
             >
             <div
               className={"oo-text-track"}
-              dir="auto"
               style={
                 this.setTextStyle(
                   this.props.closedCaptionOptions.textColor,
                   this.props.closedCaptionOptions.textOpacity,
                   this.props.closedCaptionOptions.fontType,
                   this.props.closedCaptionOptions.fontSize,
-                  this.props.closedCaptionOptions.textEnhancement,
-                  this.props.direction
+                  this.props.closedCaptionOptions.textEnhancement
                 )
               }
              >
@@ -157,8 +151,7 @@ TextTrackPanel.propTypes = {
     fontType: React.PropTypes.string,
     fontSize: React.PropTypes.string,
     textEnhancement: React.PropTypes.string
-  }),
-  direction: React.PropTypes.string
+  })
 };
 
 TextTrackPanel.defaultProps = {
@@ -173,8 +166,7 @@ TextTrackPanel.defaultProps = {
     fontType: "Proportional Sans-Serif",
     fontSize: "Medium",
     textEnhancement: "Uniform"
-  },
-  direction: ""
+  }
 };
 
 module.exports = TextTrackPanel;

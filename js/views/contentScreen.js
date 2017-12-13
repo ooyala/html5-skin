@@ -9,26 +9,6 @@ var React = require('react'),
 var ContentScreen = React.createClass({
   mixins: [AccessibilityMixin],
 
-  componentDidMount: function() {
-    if (this.props.autoFocus) {
-      Utils.autoFocusFirstElement(this.domElement, 'oo-close-button');
-    }
-  },
-
-  /**
-   * Handles the keydown event while the screen is active.
-   * @private
-   * @param {event} event description
-   */
-  handleKeyDown: function(event) {
-    switch (event.key) {
-      case CONSTANTS.KEY_VALUES.ESCAPE:
-        this.handleClose();
-      default:
-        break;
-    }
-  },
-
   handleClose: function() {
     switch(this.props.screen) {
       case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
@@ -65,9 +45,7 @@ var ContentScreen = React.createClass({
     null;
 
     return (
-      <div
-        onKeyDown={this.handleKeyDown}
-        ref={function(e) { this.domElement = e; }.bind(this)}>
+      <div>
         <Watermark {...this.props} controlBarVisible={false} nonClickable={true}/>
         <div className={this.props.screenClassName}>
           {closedCaptionOverlay}

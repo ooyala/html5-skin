@@ -11,11 +11,7 @@ var React = require('react'),
     TextTrack = require('../components/textTrackPanel'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
-    CONSTANTS = require('../constants/constants'),
-    ViewControlsVr = require('../components/viewControlsVr'),
-    Icon = require('../components/icon'),
-    Tooltip = require('../components/tooltip'),
-    UnmuteIcon = require('../components/unmuteIcon');
+    CONSTANTS = require('../constants/constants');
 
 var PlayingScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -23,7 +19,6 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
-
     return {
       controlBarVisible: true,
       timer: null
@@ -63,6 +58,18 @@ var PlayingScreen = React.createClass({
     }
   },
 
+  handlePlayerMouseUp: function(event) {
+    // pause or play the video if the skin is clicked on desktop
+    if (!this.isMobile) {
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
+
+      this.props.controller.togglePlayPause();
+      this.props.controller.state.accessibilityControlsEnabled = true;
+    }
+    // for mobile, touch is handled in handleTouchEnd
+  },
+
   handleKeyDown: function(event) {
     // Show control bar when any of the following keys are pressed:
     // - Tab: Focus on next control
@@ -92,14 +99,13 @@ var PlayingScreen = React.createClass({
    * @param {object} event Focus event object.
    */
   handleFocus: function(event) {
-    var isControlBarElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
+    var isControlBarElement = event.target || event.target.hasAttribute('data-focus-id');
     // Only do this if the control bar hasn't been shown by now and limit to focus
     // events that are triggered on known control bar elements
     if (!this.state.controlBarVisible && isControlBarElement) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
       this.props.controller.state.accessibilityControlsEnabled = true;
-      this.props.controller.state.isClickedOutside = false;
     }
   },
 
@@ -109,52 +115,16 @@ var PlayingScreen = React.createClass({
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
     }
-    else if (!this.props.controller.videoVr) {
-      this.props.controller.togglePlayPause(event);
+    else {
+      this.props.controller.togglePlayPause();
     }
   },
 
-  handlePlayerMouseDown: function(e) {
-    this.props.handleVrPlayerMouseDown(e);
-  },
-
-  handlePlayerMouseMove: function(e) {
-    e.preventDefault();
+  handlePlayerMouseMove: function() {
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
-    this.props.handleVrPlayerMouseMove(e);
-  },
-
-  handlePlayerMouseUp: function(e) {
-    // pause or play the video if the skin is clicked on desktop
-    if (!this.isMobile) {
-      e.stopPropagation(); // W3C
-      e.cancelBubble = true; // IE
-      this.props.controller.state.accessibilityControlsEnabled = true;
-      this.props.controller.state.isClickedOutside = false;
-      if (!this.props.controller.videoVr) {
-        this.props.controller.togglePlayPause();
-      }
-    }
-    this.props.handleVrPlayerMouseUp();
-    // for mobile, touch is handled in handleTouchEnd
-  },
-
-  handlePlayerMouseLeave: function () {
-    this.props.handleVrPlayerMouseLeave();
-  },
-
-  handlePlayerClicked: function (event) {
-    if (!this.props.isVrMouseMove) {
-      this.props.controller.togglePlayPause(event);
-    }
-    this.props.handleVrPlayerClick();
-  },
-
-  handlePlayerFocus: function() {
-    this.props.handleVrPlayerFocus();
   },
 
   showControlBar: function(event) {
@@ -173,10 +143,6 @@ var PlayingScreen = React.createClass({
     }
   },
 
-  unmuteClick: function(event) {
-    this.props.controller.handleMuteClick();
-  },
-
   render: function() {
     var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
       <AdOverlay {...this.props}
@@ -189,38 +155,19 @@ var PlayingScreen = React.createClass({
         controlBarVisible={this.state.controlBarVisible}
         currentPlayhead={this.props.currentPlayhead}/> : null;
 
-    var viewControlsVr = this.props.controller.videoVr ?
-      <ViewControlsVr
-        {...this.props}
-        controlBarVisible={this.state.controlBarVisible}
-      /> : null;
-
-    var showUnmute = this.props.controller.state.volumeState.mutingForAutoplay && this.props.controller.state.volumeState.muted;
-
     return (
-      <div
-        className="oo-state-screen oo-playing-screen"
-        ref="PlayingScreen"
-        onMouseOver={this.showControlBar}
-        onMouseOut={this.hideControlBar}
-        onKeyDown={this.handleKeyDown}
-      >
-      <div
-        className="oo-state-screen-selectable"
-        onMouseDown={this.handlePlayerMouseDown}
-        onMouseUp={this.handlePlayerMouseUp}
-        onMouseMove={this.handlePlayerMouseMove}
-        onMouseLeave={this.handlePlayerMouseLeave}
-        onTouchEnd={this.handleTouchEnd}
-        onClick={this.handlePlayerClicked}
-        onFocus={this.handlePlayerFocus}
-      />
+    <div className="oo-state-screen oo-playing-screen"
+         ref="PlayingScreen"
+         onMouseOver={this.showControlBar}
+         onMouseOut={this.hideControlBar}
+         onMouseMove={this.handlePlayerMouseMove}
+         onKeyDown={this.handleKeyDown}>
+
+      <div className="oo-state-screen-selectable" onMouseUp={this.handlePlayerMouseUp} onTouchEnd={this.handleTouchEnd}></div>
 
       <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
       {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
-
-      {viewControlsVr}
 
       <div className="oo-interactive-container" onFocus={this.handleFocus}>
 
@@ -228,7 +175,6 @@ var PlayingScreen = React.createClass({
           <TextTrack
             closedCaptionOptions={this.props.closedCaptionOptions}
             cueText={this.props.closedCaptionOptions.cueText}
-            direction={this.props.captionDirection}
             responsiveView={this.props.responsiveView}
           /> : null
         }
@@ -241,11 +187,7 @@ var PlayingScreen = React.createClass({
           controlBarVisible={this.state.controlBarVisible}
           playerState={this.props.playerState}
           isLiveStream={this.props.isLiveStream} />
-
       </div>
-
-      {showUnmute ? <UnmuteIcon {...this.props}/> : null}
-
     </div>
     );
   }

@@ -1,11 +1,7 @@
 button.oo-close-button {
   @include close($spacer-close-btn, $spacer-close-btn);
-  position: relative;
-  float: right;
-}
-
-button.oo-close-button:focus {
-  opacity: 1;
+  position:relative;
+  float:right;
 }
 
 button.oo-close-btn {
@@ -25,13 +21,4 @@ button.oo-up-next-close-btn {
   top: 10px;
   right: 10px;
   @include close(-10px, -10px);
-}
-
-.oo-focusable-btn:focus {
-  outline: none;
-  @include highlight-tab();
-}
-
-.oo-focusable-btn:hover:active {
-  @include remove-highlight-tab();
 }

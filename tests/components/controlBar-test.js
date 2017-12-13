@@ -3,9 +3,7 @@ jest.dontMock('../../js/components/controlBar')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/components/icon')
     .dontMock('../../js/components/logo')
-    .dontMock('../../js/components/higher-order/accessibleMenu')
     .dontMock('../../js/constants/constants')
-    .dontMock('../../js/components/accessibleButton')
     .dontMock('classnames');
 
 var React = require('react');
@@ -13,10 +11,8 @@ var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 var CONSTANTS = require('../../js/constants/constants');
 var ControlBar = require('../../js/components/controlBar');
-var AccessibleButton = require('../../js/components/accessibleButton');
 var skinConfig = require('../../config/skin.json');
 var Utils = require('../../js/components/utils');
-var _ = require('underscore');
 
 // start unit test
 describe('ControlBar', function () {
@@ -32,17 +28,13 @@ describe('ControlBar', function () {
       state: {
         isMobile: false,
         volumeState: {
-          muted: false,
           volume: 1
         },
         closedCaptionOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
-      },
-      cancelTimer: function() {},
-      hideVolumeSliderBar: function() {},
-      toggleMute: function() {}
+      }
     };
 
     baseMockProps = {
@@ -120,138 +112,7 @@ describe('ControlBar', function () {
     TestUtils.Simulate.click(fullscreenButton);
     expect(fullscreenToggled).toBe(true);
   });
-  it('render one stereo button if content vr', function () {
-    var mockController = {
-      state: {
-        isMobile: true,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      videoVrSource: {
-        vr: {
-          stereo: false,
-          contentType: "single",
-          startPosition: 0
-        }
-      }
-    };
 
-    var toggleSkinConfig = Utils.clone(skinConfig);
-    toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
-
-
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: toggleSkinConfig,
-      duration: 30,
-      vr: mockController.videoVrSource
-    };
-
-    var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
-    );
-
-    var toggleStereoVrButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-vr-stereo-button');
-    expect(typeof toggleStereoVrButton).toBe('object');
-  });
-
-  it('not render stereo button if content not vr', function () {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      videoVr: false,
-      videoVrSource: false
-    };
-
-    var toggleSkinConfig = Utils.clone(skinConfig);
-    toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
-
-
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: toggleSkinConfig,
-      duration: 30,
-      vr: mockController.videoVr
-    };
-
-    var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
-    );
-
-    var toggleStereoVrButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
-    expect(toggleStereoVrButtons.length).toBe(0);
-  });
-
-  it('enter stereo mode', function () {
-    var stereoMode = false;
-
-    var mockController = {
-      state: {
-        isMobile: true,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      videoVrSource: {
-        vr: {
-          stereo: false,
-          contentType: "single",
-          startPosition: 0
-        }
-      },
-      toggleStereoVr: function () {
-        stereoMode = true;
-      }
-    };
-
-    var toggleSkinConfig = Utils.clone(skinConfig);
-    toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
-
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: toggleSkinConfig,
-      duration: 30,
-      vr: mockController.videoVrSource
-    };
-
-    var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
-    );
-
-    expect(stereoMode).toBe(false);
-    var toggleStereoVrButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-vr-stereo-button');
-    TestUtils.Simulate.click(toggleStereoVrButton);
-    expect(stereoMode).toBe(true);
-  });
   it('renders one button', function() {
     var mockController = {
       state: {
@@ -344,8 +205,7 @@ describe('ControlBar', function () {
         }
       },
       handleMuteClick: function() {muteClicked = true;},
-      setVolume: function(volume) {newVolume = volume;},
-      toggleMute: function() {}
+      setVolume: function(volume) {newVolume = volume;}
     };
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
@@ -373,66 +233,6 @@ describe('ControlBar', function () {
     //JEST doesn't support dataset at the time of writing
     TestUtils.Simulate.click(volumeBars[5], {target: {dataset: {volume: 5}}});
     expect(newVolume).toBeGreaterThan(-1);
-  });
-
-  it('should display unmute volume icon when volume is set to a non-zero value', function() {
-    baseMockController.state.volumeState.volume = 1;
-    baseMockController.state.volumeState.muted = false;
-
-    var mockProps = {
-      isLiveStream: false,
-      controller: baseMockController,
-      skinConfig: skinConfig
-    };
-
-    var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
-    );
-
-    expect(DOM.refs.volumeIcon.props.icon).toBe("volume");
-  });
-
-  it('should display mute volume icon when volume is set to 0', function() {
-    baseMockController.state.volumeState.volume = 0;
-    baseMockController.state.volumeState.muted = false;
-
-    var mockProps = {
-      isLiveStream: false,
-      controller: baseMockController,
-      skinConfig: skinConfig
-    };
-
-    var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
-    );
-
-    expect(DOM.refs.volumeIcon.props.icon).toBe("volumeOff");
-  });
-
-  it('should display mute volume icon when volume is muted', function() {
-    baseMockController.state.volumeState.volume = 1;
-    baseMockController.state.volumeState.muted = true;
-
-    var mockProps = {
-      isLiveStream: false,
-      controller: baseMockController,
-      skinConfig: skinConfig
-    };
-
-    var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
-    );
-
-    expect(DOM.refs.volumeIcon.props.icon).toBe("volumeOff");
   });
 
   it('to play on play click', function() {
@@ -474,47 +274,10 @@ describe('ControlBar', function () {
     expect(playClicked).toBe(true);
   });
 
-  it('should reset quality menu toggle keyboard flag when closing video quality popover', function() {
-    baseMockController.state.videoQualityOptions.availableBitrates = [];
-    baseMockProps.skinConfig.buttons.desktopContent = [
-      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
-      { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-    ];
-    baseMockController.togglePopover = function() {
-      this.state.videoQualityOptions.showPopover = !this.state.videoQualityOptions.showPopover;
-    };
-
-    var DOM = TestUtils.renderIntoDocument(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={baseMockProps.isLiveStream} />
-    );
-
-    var controlBar = TestUtils.findRenderedComponentWithType(DOM, ControlBar);
-    var qualityBtn = TestUtils.findRenderedComponentWithType(DOM, AccessibleButton);
-    var qualityBtnElement = qualityBtn.getDOMNode();
-
-    expect(qualityBtn.wasTriggeredWithKeyboard()).toBe(false);
-    TestUtils.Simulate.keyDown(qualityBtnElement, { key: ' ' });
-    TestUtils.Simulate.click(qualityBtnElement);
-    expect(qualityBtn.wasTriggeredWithKeyboard()).toBe(true);
-    controlBar.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
-    expect(qualityBtn.wasTriggeredWithKeyboard()).toBe(false);
-  });
-
   it('should render default state aria labels', function() {
-    baseMockController.state.videoQualityOptions.availableBitrates = [];
-    baseMockController.state.closedCaptionOptions.availableLanguages = [];
     baseMockProps.skinConfig.buttons.desktopContent = [
       { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
-      { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      { "name": "closedCaption", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
     ];
 
@@ -530,29 +293,15 @@ describe('ControlBar', function () {
     var playPauseButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause');
     var muteUnmuteButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').querySelector('.oo-mute-unmute');
     var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
-    var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality');
-    var ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-closed-caption');
     expect(playPauseButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PAUSE);
     expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.MUTE);
     expect(fullscreenButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.FULLSCREEN);
-    expect(qualityButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.VIDEO_QUALITY);
-    expect(qualityButton.getAttribute('aria-haspopup')).toBe('true');
-    expect(qualityButton.getAttribute('aria-expanded')).toBeNull();
-    expect(ccButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.CLOSED_CAPTIONS);
-    expect(ccButton.getAttribute('aria-haspopup')).toBe('true');
-    expect(ccButton.getAttribute('aria-expanded')).toBeNull();
   });
 
   it('should render alternate state aria labels', function() {
-    baseMockController.state.videoQualityOptions.availableBitrates = [];
-    baseMockController.state.closedCaptionOptions.availableLanguages = [];
-    baseMockController.state.videoQualityOptions.showPopover = true;
-    baseMockController.state.closedCaptionOptions.showPopover = true;
     baseMockProps.skinConfig.buttons.desktopContent = [
       { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
-      { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      { "name": "closedCaption", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
     ];
 
@@ -571,38 +320,9 @@ describe('ControlBar', function () {
     var playPauseButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause');
     var muteUnmuteButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').querySelector('.oo-mute-unmute');
     var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
-    var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality');
-    var ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-closed-caption');
     expect(playPauseButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PLAY);
     expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.UNMUTE);
     expect(fullscreenButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.EXIT_FULLSCREEN);
-    expect(qualityButton.getAttribute('aria-expanded')).toBe('true');
-    expect(ccButton.getAttribute('aria-expanded')).toBe('true');
-  });
-
-  it('should render alternate state aria labels for the volume icon when volume is 0', function() {
-    baseMockController.state.videoQualityOptions.availableBitrates = [];
-    baseMockController.state.videoQualityOptions.showPopover = true;
-    baseMockProps.skinConfig.buttons.desktopContent = [
-      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
-      { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-    ];
-
-    baseMockController.state.volumeState.volume = 0;
-
-    var DOM = TestUtils.renderIntoDocument(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PAUSED}
-        isLiveStream={baseMockProps.isLiveStream} />
-    );
-
-    var muteUnmuteButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').querySelector('.oo-mute-unmute');
-    expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.UNMUTE);
   });
 
   it('should store playPause button focus state', function() {
@@ -625,30 +345,6 @@ describe('ControlBar', function () {
     expect(baseMockController.state.focusedControl).toBe('playPause');
     TestUtils.Simulate.blur(playPauseButton);
     expect(baseMockController.state.focusedControl).toBe(null);
-  });
-
-  it('should start auto hide timer after restoring focused control', function() {
-    var startHideControlBarTimerCalled = false;
-    baseMockProps.skinConfig.buttons.desktopContent = [
-      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 }
-    ];
-    baseMockController.startHideControlBarTimer = function() {
-      startHideControlBarTimerCalled = true;
-    };
-    var controlBar = (
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={baseMockProps.isLiveStream} />
-    );
-    baseMockController.state.focusedControl = null;
-    var DOM = TestUtils.renderIntoDocument(controlBar);
-    expect(startHideControlBarTimerCalled).toBe(false);
-    baseMockController.state.focusedControl = 'playPause';
-    var DOM = TestUtils.renderIntoDocument(controlBar);
-    expect(startHideControlBarTimerCalled).toBe(true);
   });
 
   it('to toggle share screen', function() {
@@ -779,7 +475,7 @@ describe('ControlBar', function () {
         }
       },
       toggleScreen: function() {toggleScreenClicked = true;},
-      togglePopover: function(){captionClicked = true;}
+      toggleClosedCaptionPopOver: function(){captionClicked = true;}
     };
 
     // md, test cc popover
@@ -1611,7 +1307,7 @@ describe('ControlBar', function () {
         }
       },
       toggleScreen: function() {qualityClicked = true;},
-      togglePopover: function(){qualityClicked = true;}
+      toggleVideoQualityPopOver: function(){qualityClicked = true;}
     };
 
     //xsmall
@@ -1809,7 +1505,7 @@ describe('ControlBar', function () {
     oneButtonSkinConfig.buttons.desktopContent = [
       {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
     ];
-    oneButtonSkinConfig.controlBar.logo.imageResource.url = "//player.ooyala.com/static/v4/stable/4.19.3/skin-plugin/assets/images/ooyala-logo.svg";
+    oneButtonSkinConfig.controlBar.logo.imageResource.url = "//player.ooyala.com/static/v4/stable/4.17.4/skin-plugin/assets/images/ooyala-logo.svg";
     oneButtonSkinConfig.controlBar.logo.clickUrl = "http://www.ooyala.com";
 
     var mockProps = {
@@ -1928,82 +1624,4 @@ describe('ControlBar', function () {
     var logo = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-logo');
     expect(logo.length).toBe(0);
   });
-
-  describe('Tab Navigation', function() {
-    var eventMap, ctrlBarElement, focusableElements, mockEvent, originalAddEventListener;
-
-    beforeEach(function() {
-      baseMockProps.skinConfig.buttons.desktopContent = [
-        { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-        { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
-        { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      ];
-      // Mock addEventListener on document object since TestUtils.Simulate will not work in this case
-      eventMap = {};
-      originalAddEventListener = document.addEventListener;
-      document.addEventListener = function(event, cb) {
-        eventMap[event] = cb;
-      };
-      ReactDOM.render(
-        <ControlBar
-          {...baseMockProps}
-          controlBarVisible={true}
-          componentWidth={500}
-          playerState={CONSTANTS.STATE.PLAYING}
-          isLiveStream={baseMockProps.isLiveStream} />
-      , document.body);
-      ctrlBarElement = document.body.querySelector('.oo-control-bar');
-      focusableElements = ctrlBarElement.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
-      mockEvent = { key: CONSTANTS.KEY_VALUES.TAB, preventDefault: function() {} };
-    });
-
-    afterEach(function() {
-      ReactDOM.unmountComponentAtNode(document.body);
-      // Our version of jest doesn't seem to support mockRestore()
-      document.addEventListener = originalAddEventListener;
-      document.body.innerHTML = '';
-    });
-
-    it('should constrain tab navigation to control bar elements when in fullscreen mode', function() {
-      baseMockController.state.fullscreen = true;
-      // Tab on document, focuses first element
-      document.activeElement = null;
-      mockEvent.target = document.body;
-      eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR )).toBe(focusableElements[0].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR ));
-      // Tab on last element, focuses on first
-      document.activeElement = null;
-      mockEvent.target = focusableElements[focusableElements.length - 1];
-      eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR )).toBe(focusableElements[0].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR ));
-      // Shift + tab on document, focuses on last element
-      document.activeElement = null;
-      mockEvent.target = document.body;
-      mockEvent.shiftKey = true;
-      eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR )).toBe(focusableElements[focusableElements.length - 1].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR ));
-      // Shift + tab on first element, focuses on last
-      document.activeElement = null;
-      mockEvent.target = focusableElements[0];
-      mockEvent.shiftKey = true;
-      eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR )).toBe(focusableElements[focusableElements.length - 1].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR ));
-    });
-
-    it('should NOT constrain tab navigation to control bar elements when NOT in fullscreen mode', function() {
-      baseMockController.state.fullscreen = false;
-      // Tab on last focusable element, should NOT go back to the first
-      document.activeElement = null;
-      mockEvent.target = focusableElements[focusableElements.length - 1];
-      eventMap.keydown(mockEvent);
-      expect(document.activeElement).toBeNull();
-      // Shift + tab on first element, should NOT focus on last
-      document.activeElement = null;
-      mockEvent.target = focusableElements[0];
-      mockEvent.shiftKey = true;
-      eventMap.keydown(mockEvent);
-      expect(document.activeElement).toBeNull();
-    });
-  });
-
 });

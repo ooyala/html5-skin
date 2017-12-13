@@ -55,10 +55,6 @@
   background-size: cover;
   background-position: 50% 50%;
   @include vendor-prefixes(transform, translateX(-50%));
-  &-vr {
-    background-repeat: repeat no-repeat;
-    overflow: hidden;
-  }
 }
 
 .oo-thumbnail-time {

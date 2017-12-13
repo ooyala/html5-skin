@@ -295,11 +295,11 @@
         height: $bitrate-horizontal-height - 30px;
         li {
           margin: 0 14px;
-          .oo-quality-btn {
+          a.oo-quality-btn {
             padding: 8px 6px;
             font-size: 0.8em;
           }
-          .oo-quality-auto-btn {
+          a.oo-quality-auto-btn {
             .oo-quality-auto-icon {
               font-size: 1.4em;
               padding:4px;
@@ -309,6 +309,9 @@
               font-size: 0.8em;
             }
           }
+        }
+        li.oo-auto-li {
+          top:14px;
         }
       }
     }

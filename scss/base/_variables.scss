@@ -131,10 +131,6 @@ $zindex-ad-top-bar:                       12600 !default;
 $zindex-popover:                          12600 !default;
 $SUPER_Z_INDEX:                           20000 !default; //in core, here for bird's eye view tracking
 $zindex-fullscreen:                  2147483647 !default; //in screenfull, here for bird's eye view tracking
-$zindex-state-screen:                      1000 !default;
-$zindex-vr-controls:                       1001 !default;
-$zindex-up-next-panel:                     1002 !default;
-$zindex-unmute:                           19999 !default;
 
 //// Form states and alerts
 ////
@@ -188,23 +184,6 @@ $control-bar-gradient: linear-gradient(to bottom, rgba(0,0,0,0) 23%,rgba(0,0,0,0
 
 //transition - easing
 $medium-transition: transition, opacity .2s ease-in-out, height .3s ease-in-out;
-$unmute-transition: transition, width .5s ease-in-out;
 
 //watermark
 $watermark-margin: 15px;
-
-//vr controls sizes
-$vr-controls-size: 50px;
-$vr-controls-substrate: 56px;
-$vr-substrate-diff: $vr-controls-substrate - $vr-controls-size;
-$vr-controls-move: $vr-controls-size / 4;
-
-$vr-controls-size-min: $vr-controls-size * $xsmall-multiple;
-$vr-controls-substrate-min: $vr-controls-substrate * $xsmall-multiple;
-$vr-substrate-diff-min: $vr-controls-substrate-min - $vr-controls-size-min;
-$vr-controls-move-min: $vr-controls-size-min / 4;
-
-$vr-controls-size-max: $vr-controls-size * ($large-multiple * $large-multiple);
-$vr-controls-substrate-max: $vr-controls-substrate * ($large-multiple * $large-multiple);
-$vr-substrate-diff-max: $vr-controls-substrate-max - $vr-controls-size-max;
-$vr-controls-move-max: $vr-controls-size-max / 4;

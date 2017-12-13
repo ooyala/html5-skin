@@ -1,7 +1,6 @@
-var MACROS = require('./macros');
 /********************************************************************
- CONSTANT
- *********************************************************************/
+  CONSTANT
+*********************************************************************/
 module.exports = {
   STATE: {
     START : "start",
@@ -28,11 +27,6 @@ module.exports = {
     ERROR_SCREEN: "errorScreen"
   },
 
-  MENU_OPTIONS: {
-    VIDEO_QUALITY: "videoQualityOptions",
-    CLOSED_CAPTIONS: "closedCaptionOptions"
-  },
-
   SKIN_TEXT: {
     LEARN_MORE: "Learn More",
     CLOSED_CAPTION_PREVIEW: "CLOSED CAPTION PREVIEW",
@@ -46,7 +40,9 @@ module.exports = {
     OFF: "Off",
     DISCOVER: "Discover",
     UP_NEXT: "Up next",
+    VIDEO_QUALITY: "Video Quality",
     SHARE_CALL_TO_ACTION: "Invest In Social Change",
+    SHARE: "Share",
     START_AT: "Start at",
     EMBED: "Embed",
     EMAIL: "Email",
@@ -99,10 +95,8 @@ module.exports = {
     FULL_SCREEN: "Full Screen",
     EXIT_FULL_SCREEN: "Exit Full Screen",
     VIDEO_QUALITY: "Video Quality",
-    AUTO_QUALITY: "Auto",
     SHARE: "Share",
-    MORE_OPTIONS: "More Options",
-    SELECT_TO_UNMUTE: "SELECT TO UNMUTE"
+    MORE_OPTIONS: "More Options"
   },
 
   ARIA_LABELS: {
@@ -113,47 +107,14 @@ module.exports = {
     REPLAY: "Replay",
     MUTE: "Mute",
     UNMUTE: "Unmute",
-    CLOSED_CAPTIONS: "Closed Captions",
-    VIDEO_QUALITY: "Video Quality",
-    AUTO_QUALITY: "Auto",
     FULLSCREEN: "Fullscreen",
     EXIT_FULLSCREEN: "Exit Fullscreen",
     SEEK_SLIDER: "Seek slider",
     VOLUME_SLIDER: "Volume slider",
-    VOLUME_PERCENT: MACROS.VOLUME + "% volume",
-    TIME_DISPLAY: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME,
+    VOLUME_PERCENT: "{volume}% volume",
+    TIME_DISPLAY: "{currentTime} of {totalTime}",
     TIME_DISPLAY_LIVE: "Live video",
-    TIME_DISPLAY_DVR: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME + " live video",
-    CLOSE: "Close",
-    TOGGLE_CLOSED_CAPTIONS: "Toggle Closed Captions",
-    CAPTION_OPTIONS: "Closed Caption Options",
-    STEREO_ON: "Stereoscopic",
-    STEREO_OFF: "Monoscopic"
-  },
-
-  ARIA_ROLES: {
-    SLIDER: "slider",
-    MENU: "menu",
-    MENU_ITEM: "menuitem",
-    MENU_ITEM_RADIO: "menuitemradio",
-    MENU_ITEM_CHECKBOX: "menuitemcheckbox"
-  },
-
-  KEYBD_FOCUS_ID_ATTR: "data-focus-id",
-
-  FOCUS_IDS: {
-    PLAY_PAUSE: "playPause",
-    MUTE_UNMUTE: "muteUnmute",
-    STEREO: "stereo",
-    VIDEO_QUALITY: "videoQuality",
-    CLOSED_CAPTIONS: "closedCaptions",
-    FULLSCREEN: "fullscreen",
-    SCRUBBER_BAR: "scrubberBar",
-    VOLUME_CONTROLS: "volumeControls",
-    VOLUME_SLIDER: "volumeSlider",
-    QUALITY_LEVEL: "qualityLevel",
-    AUTO_QUALITY: "autoQuality",
-    CLOSE: "close"
+    TIME_DISPLAY_DVR: "{currentTime} of {totalTime} live video"
   },
 
   A11Y_CTRLS: {
@@ -167,18 +128,7 @@ module.exports = {
     RIGHT_ARROW_KEY: 39,
     UP_ARROW_KEY: 38,
     DOWN_ARROW_KEY: 40,
-    ESCAPE_KEY: 27,
-    A: 65,
-    D: 68,
-    W: 87,
-    S: 83
-  },
-
-  DIRECTIONS: {
-    LEFT: "left",
-    RIGHT: "right",
-    UP: "up",
-    DOWN: "down"
+    ESCAPE_KEY: 27
   },
 
   // KeyboardEvent's which and keyCode properties are deprecated.
@@ -187,9 +137,6 @@ module.exports = {
   KEY_VALUES: {
     ENTER: "Enter",
     TAB: "Tab",
-    CONTROL: "Control",
-    ALT: "Alt",
-    ESCAPE: "Escape",
     SPACE: " ", // yep
     ARROW_UP: "ArrowUp",
     ARROW_DOWN: "ArrowDown",
@@ -201,8 +148,7 @@ module.exports = {
 
   UI: {
     defaultScrubberBarHeight: 4,
-    DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15,
-    MAX_BUFFERING_SPINNER_DELAY: 60000 // Max allowed value of bufferingSpinnerDelay in milliseconds
+    DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15
   },
 
   WATERMARK: {
@@ -224,75 +170,6 @@ module.exports = {
     FLASH: "flash",
     VIDEO: "video",
     OBJECT: "object"
-  },
-
-  LANGUAGE: {
-    ENGLISH: "en",
-    SPANISH: "es",
-    CHINESE: "zh",
-    JAPANESE: "ja"
-  },
-
-  ERROR_CODE: {
-    NETWORK: "network",
-    SAS: "sas",
-    GEO: "geo",
-    DOMAIN: "domain",
-    FUTURE: "future",
-    PAST: "past",
-    DEVICE: "device",
-    PROXY: "proxy",
-    CONCURRENT_STREAMS: "concurrent_streams",
-    DEVICE_BINDING_FAILED: "device_binding_failed",
-    DEVICE_ID_TOO_LONG: "device_id_too_long",
-    DEVICE_INVALID_AUTH_TOKEN: "device_invalid_auth_token",
-    DEVICE_LIMIT_REACHED: "device_limit_reached",
-    DRM_GENERAL_FAILURE: "drm_general_failure",
-    DRM_SERVER_ERROR: "drm_server_error",
-    INVALID_ENTITLEMENTS: "invalid_entitlements",
-    INVALID_HEARTBEAT: "invalid_heartbeat",
-    CONTENT_TREE: "content_tree",
-    METADATA: "metadata",
-    PLAYBACK: "playback",
-    STREAM: "stream",
-    LIVESTREAM: "livestream",
-    NETWORK_ERROR: "network_error",
-    UNPLAYABLE_CONTENT: "unplayable_content",
-    INVALID_EXTERNAL_ID: "invalid_external_id",
-    EMPTY_CHANNEL: "empty_channel",
-    EMPTY_CHANNEL_SET: "empty_channel_set",
-    CHANNEL_CONTENT: "channel_content",
-    UNSUPPORTED_ENCODING: "unsupported_encoding",
-    UNABLE_TO_CREATE_VIDEO_ELEMENT: "unable_to_create_video_element"
-  },
-
-  CLOSED_CAPTIONS: {
-    NO_LANGUAGE: 'none'
-  },
-
-  QUALITY_SELECTION: {
-    FORMAT: {
-      RESOLUTION: "resolution",
-      BITRATE: "bitrate"
-    },
-    TEXT: {
-      RESOLUTION_BITRATE: MACROS.RESOLUTION + "p (" + MACROS.BITRATE + ")",
-      RESOLUTION_ONLY: MACROS.RESOLUTION + "p",
-      TIERED_RESOLUTION_ONLY: MACROS.RESOLUTION + "p (" + MACROS.RESOLUTION_TIER + ")",
-      BITRATE_ONLY: MACROS.BITRATE
-    }
-  },
-
-  RESOLUTION_TIER: {
-    TWO: [
-      "Low",
-      "High"
-    ],
-    THREE: [
-      "Low",
-      "Medium",
-      "High"
-    ]
   },
 
   ERROR_MESSAGE: {
@@ -318,9 +195,8 @@ module.exports = {
     },
     "future":{
       name: "OO.ERROR.API.SAS.FUTURE",
-      title: "VIDEO COMING SOON!",
-      description: "This video is not available yet",
-      action: "You may need to refresh the page to access the video after it becomes available"
+      title: "VIDEO NOT AVAILABLE YET",
+      description: "This video will be available soon"
     },
     "past":{
       name: "OO.ERROR.API.SAS.PAST",
@@ -445,8 +321,5 @@ module.exports = {
       name: "OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT",
       description: "Something happened while we were trying to play your video! Click replay or simply reload your page."
     }
-  },
-  THUMBNAIL: {
-    MAX_VR_THUMBNAIL_BG_WIDTH: 380
   }
 };

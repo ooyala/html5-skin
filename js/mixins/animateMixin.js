@@ -16,11 +16,11 @@ var AnimateMixin = {
   },
 
   componentDidMount: function() {
-    this.animateTimer = setTimeout(this.startAnimation, 1);
+    animateTimer = setTimeout(this.startAnimation, 1);
   },
 
   componentWillUnmount: function() {
-    clearTimeout(this.animateTimer);
+    clearTimeout(animateTimer);
   },
 
   startAnimation: function() {

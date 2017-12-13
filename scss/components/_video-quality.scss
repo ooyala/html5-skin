@@ -19,19 +19,17 @@
 
   .oo-quality-screen-content {
     ul {
-      @include flexbox();
-      @include flex-direction(row);
-      @include justify-content(center);
-      @include align-items(center);
-      padding: 0 2px;
-      margin: 0 auto;
+      display: inline-block;
+      padding:0;
+      margin:0 auto;
       list-style: none;
-      white-space: nowrap;
+      white-space:nowrap;
       position: relative;
       height: $bitrate-horizontal-height - 10px;
 
       li {
         float:none;
+        position:relative;
         display:inline-block;
         margin: 0 24px;
 
@@ -44,30 +42,21 @@
         }
 
         //vid quality btns - full screen
-        .oo-quality-btn {
+        a.oo-quality-btn {
           padding: 10px 8px;
           background-color: transparent;
           color: $white;
-          display: inline;
           font-size: 1.1em;
           font-family: $font-family-roboto;
-          line-height: 1em;
+          line-height:1em;
           border-radius: 2px;
           border: 1px solid $gray;
           outline: none;
-          opacity: 1;
+          opacity:1;
           @include vendor-prefixes(transition, opacity 0.3s ease);
 
           &:hover {
             opacity:0.6;
-          }
-
-          &:focus {
-            @include highlight-tab();
-          }
-
-          &:hover:active {
-            @include remove-highlight-tab();
           }
 
           &.oo-selected {
@@ -79,11 +68,10 @@
         }
 
         //auto quality btn - full screen
-        .oo-quality-auto-btn {
+        a.oo-quality-auto-btn {
           background-color: transparent;
           font-family: $font-family-roboto;
-          line-height: 1;
-          border: none;
+          line-height:1;
           outline: none;
 
           &:hover {
@@ -91,14 +79,6 @@
               opacity:0.6;
               @include vendor-prefixes(transition, opacity 0.3s ease);
             }
-          }
-
-          &:focus {
-            @include highlight-tab();
-          }
-
-          &:hover:active {
-            @include remove-highlight-tab();
           }
 
           &.oo-selected {
@@ -109,7 +89,6 @@
           }
 
           .oo-quality-auto-icon {
-            display: block;
             font-size: 2.1em;
             font-weight:bold;
             color: $gray;
@@ -118,7 +97,6 @@
           }
 
           .oo-quality-auto-label {
-            display: block;
             color:$white;
             font-size: 0.9em;
             text-transform: capitalize;
@@ -127,6 +105,10 @@
           }
         }
       }
+
+      li.oo-auto-li {
+        top:20px;
+      }
     }
   }
 }
@@ -134,7 +116,7 @@
 //popover
 .oo-popover {
   .oo-quality-popover {
-    margin: 9px 0;
+    margin: 10px 0;
   }
 
   .oo-quality-screen-content {
@@ -143,26 +125,22 @@
     text-align: center;
 
     ul {
-      padding: 2px 0;
+      padding: 0;
       margin: 0;
       list-style: none;
 
       li {
         display: block;
-        margin: 0 0 5px 0;
+        margin: 0 0 6px 0;
         padding:0;
 
         //vid quality btns - popover
-        .oo-quality-btn {
+        a.oo-quality-btn {
           background-color: transparent;
           color: $white;
-          display: block;
           font-size: 0.6em;
           font-family: $font-family-roboto;
-          line-height: 1;
-          margin: 0 auto;
-          padding: 4px;
-          border: none;
+          line-height:1;
           outline: none;
           opacity:1;
           white-space:nowrap;
@@ -170,14 +148,6 @@
 
           &:hover {
             opacity:0.6;
-          }
-
-          &:focus {
-            @include highlight-tab();
-          }
-
-          &:hover:active {
-            @include remove-highlight-tab();
           }
 
           &.oo-selected {
@@ -188,14 +158,10 @@
         }
 
         // auto btn - popover
-        .oo-quality-auto-btn {
-          display: block;
+        a.oo-quality-auto-btn {
           background-color: transparent;
           font-family: $font-family-roboto;
-          line-height: 1;
-          margin: 0 auto;
-          padding: 4px;
-          border: none;
+          line-height:1;
           outline: none;
           white-space:nowrap;
 
@@ -204,14 +170,6 @@
               @include vendor-prefixes(transition, opacity 0.3s ease);
               opacity:0.6;
             }
-          }
-
-          &:focus {
-            @include highlight-tab();
-          }
-
-          &:hover:active {
-            @include remove-highlight-tab();
           }
 
           &.oo-selected {
@@ -228,7 +186,6 @@
           }
 
           .oo-quality-auto-icon {
-            display: block;
             font-size: 1em;
             font-weight:bold;
             color: $gray;
@@ -237,7 +194,6 @@
           }
 
           .oo-quality-auto-label {
-            display: block;
             color:$white;
             font-size: 0.5em;
             text-transform: capitalize;
@@ -246,14 +202,6 @@
           }
         }
       }
-
-      li:last-child {
-        margin-bottom: 0;
-      }
     }
-  }
-
-  .oo-quality-screen-content-wide {
-    width:120px;
   }
 }

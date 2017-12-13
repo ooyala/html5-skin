@@ -3,42 +3,33 @@ var Utils = require('./utils');
 
 var AccessibilityControls = function (controller) {
   this.controller = controller;
-  this.vrRotationAllowed = true; // flag for checking repeat of keyDown
-  this.keyDirectionMap = {};
-  this.keyDirectionMap[CONSTANTS.KEYCODES.A] = CONSTANTS.DIRECTIONS.LEFT;
-  this.keyDirectionMap[CONSTANTS.KEYCODES.D] = CONSTANTS.DIRECTIONS.RIGHT;
-  this.keyDirectionMap[CONSTANTS.KEYCODES.W] = CONSTANTS.DIRECTIONS.UP;
-  this.keyDirectionMap[CONSTANTS.KEYCODES.S] = CONSTANTS.DIRECTIONS.DOWN;
   this.state = {
     seekRate: 1,
-    lastKeyDownTime: 0,
+    lastKeyDownTime: 0
   };
-  this.prevKeyPressedArr = []; //list of codes of pressed buttons
-  this.keyEventDown = this.keyEventDown.bind(this);
-  this.keyEventUp = this.keyEventUp.bind(this);
-  this.moveVrToDirection = this.moveVrToDirection.bind(this);
-  this.getTargetTagName = this.getTargetTagName.bind(this);
-
-  document.addEventListener("keydown", this.keyEventDown);
-  document.addEventListener("keyup", this.keyEventUp);
+  this.keyEvent = this.handleKey.bind(this);
+  document.addEventListener('keydown', this.keyEvent);
 };
 
 AccessibilityControls.prototype = {
   cleanUp : function() {
-    document.removeEventListener("keydown", this.keyEventDown);
-    document.removeEventListener("keyup", this.keyEventUp);
+    document.removeEventListener('keydown', this.keyEvent);
   },
 
-  keyEventDown: function(e) {
+  handleKey: function(e) {
     if (!this.controller.state.accessibilityControlsEnabled) {
       return;
     }
 
-    var targetTagName = this.getTargetTagName(e);
-    var charCode = e.which || e.keyCode;
-    this.moveVrToDirection(e, charCode, true, targetTagName); //start rotate 360
+    var targetTagName;
+    if (e.target && typeof e.target.tagName === 'string') {
+      targetTagName = e.target.tagName.toLowerCase();
+    }
+    // Slider interaction requires the arrow keys. When a slider is active we should
+    // disable arrow key controls
+    var sliderIsActive = document.activeElement && document.activeElement.getAttribute('role') === 'slider';
 
-    switch (charCode) {
+    switch (e.keyCode) {
       case CONSTANTS.KEYCODES.SPACE_KEY:
         // We override the default behavior when the target element is a button (pressing
         // the spacebar on a button should activate it).
@@ -51,15 +42,15 @@ AccessibilityControls.prototype = {
         break;
       case CONSTANTS.KEYCODES.UP_ARROW_KEY:
       case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
-        if (this.areArrowKeysAllowed()) {
+        if (!sliderIsActive) {
           e.preventDefault();
-          var increase = charCode === CONSTANTS.KEYCODES.UP_ARROW_KEY;
+          var increase = e.keyCode === CONSTANTS.KEYCODES.UP_ARROW_KEY ? true : false;
           this.changeVolumeBy(CONSTANTS.A11Y_CTRLS.VOLUME_CHANGE_DELTA, increase);
         }
         break;
       case CONSTANTS.KEYCODES.LEFT_ARROW_KEY:
       case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
-        if (this.areArrowKeysAllowed()) {
+        if (!sliderIsActive) {
           e.preventDefault();
           var forward = e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY ? true : false;
           this.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, forward);
@@ -68,107 +59,6 @@ AccessibilityControls.prototype = {
       default:
         break;
     }
-  },
-
-  /**
-   * Determines whether arrow key shortcuts should be active. Arrow key shortcuts
-   * should be disabled whenever an element that allows arrow key interaction has focus.
-   * Please note that this doesn't cover all possible cases at the moment, only
-   * roles that are in use in this project have been added so far.
-   * @private
-   * @return {Boolean} True if arrow key shortcuts are allowed, false otherwise.
-   */
-  areArrowKeysAllowed: function() {
-    var activeElementRole = '';
-    if (document.activeElement) {
-      activeElementRole = document.activeElement.getAttribute('role');
-    }
-
-    switch (activeElementRole) {
-      case CONSTANTS.ARIA_ROLES.SLIDER:
-      case CONSTANTS.ARIA_ROLES.MENU_ITEM:
-      case CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO:
-      case CONSTANTS.ARIA_ROLES.MENU_ITEM_CHECKBOX:
-        return false;
-      default:
-        return true;
-    }
-  },
-
-  /**
-   * @description handlers for keyup event
-   * @private
-   * @param e - event
-   */
-  keyEventUp: function(e) {
-    if (!(this.controller.state.accessibilityControlsEnabled || this.controller.state.isClickedOutside)) {
-      return;
-    }
-    var targetTagName = this.getTargetTagName(e);
-    var charCode = e.which || e.keyCode;
-    this.moveVrToDirection(e, charCode, false, targetTagName);  //stop rotate 360
-  },
-
-  /**
-   * @description get name of target tag, for example "button" etc
-   * @private
-   * @param e - event
-   * @returns {string} name of the target tag
-   */
-  getTargetTagName: function(e) {
-    var targetTagName = "";
-    if (e.target && typeof e.target.tagName === "string") {
-      targetTagName = e.target.tagName.toLowerCase();
-    }
-    return targetTagName;
-  },
-
-  /**
-   * @description call moveVrToDirection from controller for rotation a vr video
-   * @private
-   * @param e - event
-   * @param charCode {number} - char code;
-   * @param isKeyDown {boolean} - true if key is pressed
-   * @param targetTagName {string} - name of the clicked tag
-   * @returns {boolean} true if moved
-   */
-  moveVrToDirection: function(e, charCode, isKeyDown, targetTagName) {
-    var keyDirectionMap = this.keyDirectionMap;
-    if (!(this.controller.videoVr || keyDirectionMap[charCode] || targetTagName !== "button")) {
-      return false;
-    }
-    if (e.repeat !== undefined) {
-      this.vrRotationAllowed = !e.repeat;
-    }
-    if (!this.vrRotationAllowed) {
-      return false;
-    }
-    this.vrRotationAllowed = !isKeyDown; //prevent repeat of keyDown
-    this.controller.moveVrToDirection(false, keyDirectionMap[charCode]); //stop rotation if isKeyDown === false or prevent prev rotation if press a button (isKeyDown === true)
-
-    if (isKeyDown === true) {
-      this.prevKeyPressedArr.push(charCode);
-    } else { // if button is up, remove it from this.prevKeyPressedArr
-      var inPrevKeyPressedArrIndex = -1;
-      //check if button code is already in list of pressed buttons (this.prevKeyPressedArr)
-      //if code is in the array return index of the code
-      for (var i = this.prevKeyPressedArr.length - 1; i >= 0; i--) {
-        if (this.prevKeyPressedArr[i] === charCode) {
-          inPrevKeyPressedArrIndex = i;
-          break;
-        }
-      }
-      if (inPrevKeyPressedArrIndex > -1) {
-        this.prevKeyPressedArr.splice(inPrevKeyPressedArrIndex, 1);
-      }
-    }
-    if (this.prevKeyPressedArr.length) {
-      isKeyDown = true;
-      charCode = this.prevKeyPressedArr[this.prevKeyPressedArr.length-1];
-    }
-    //rotate if a button is pressed, stop rotate if other case
-    this.controller.moveVrToDirection(isKeyDown, keyDirectionMap[charCode]);
-    return isKeyDown;
   },
 
   /**
@@ -200,7 +90,7 @@ AccessibilityControls.prototype = {
   /**
    * Determines whether or not the controller is in a state that allows seeking the video.
    * @private
-   * @return {Boolean} True if seeking is possible, false otherwise.
+   * @return {Boolen} True if seeking is possible, false otherwise.
    */
   canSeek: function() {
     var seekingEnabled = false;

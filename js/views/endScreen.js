@@ -98,9 +98,7 @@ var EndScreen = React.createClass({
           {descriptionMetadata}
         </div>
 
-        <button
-          type="button"
-          className={actionIconClass}
+        <button className={actionIconClass}
           onClick={this.handleClick}
           onMouseUp={Utils.blurOnMouseUp}
           tabIndex="0"

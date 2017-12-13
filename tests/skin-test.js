@@ -1,7 +1,6 @@
 jest.dontMock('../js/skin');
 jest.dontMock('../js/constants/constants');
 jest.dontMock('../js/components/utils');
-jest.dontMock('../js/components/higher-order/accessibleMenu');
 jest.dontMock('../js/mixins/responsiveManagerMixin');
 jest.dontMock('screenfull');
 
@@ -98,10 +97,7 @@ describe('Skin screenToShow state', function () {
   it('tests VIDEO QUALITY SCREEN', function () {
     this.skin.switchComponent({
       screenToShow: CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN,
-      responsiveId: "md",
-      videoQualityOptions: {
-        autoFocus: false
-      }
+      responsiveId: "md"
     });
   });
 
