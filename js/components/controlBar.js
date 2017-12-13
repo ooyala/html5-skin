@@ -114,14 +114,26 @@ var ControlBar = React.createClass({
       //
       this.toggleStereoVr();
       //
-      if (!this.props.controller.state.fullscreen && this.props.controller && typeof this.props.controller.toggleFullscreen === "function") {
-        this.props.controller.toggleFullscreen();
-      }
-      //
-      if (this.vr.stereo) {
-        this.setLandscapeScreenOrientation();
-      } else {
-        this.unlockScreenOrientation();
+      if (this.props.controller) {
+        var fullscreen = false;
+        //depends on the switching type
+
+        if (this.props.controller.state.isFullScreenSupported ||
+          this.props.controller.state.isVideoFullScreenSupported) {
+          fullscreen = this.props.controller.state.fullscreen;
+        } else {
+          fullscreen = this.props.controller.state.isFullWindow;
+        }
+
+        if (!fullscreen && typeof this.props.controller.toggleFullscreen === "function") {
+          this.props.controller.toggleFullscreen();
+        }
+        //
+        if (this.vr.stereo) {
+          this.setLandscapeScreenOrientation();
+        } else {
+          this.unlockScreenOrientation();
+        }
       }
     }
   },
