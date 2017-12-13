@@ -192,7 +192,7 @@ var PlayingScreen = React.createClass({
   },
 
   showControlBar: function(event) {
-    if (!this.isMobile || event.type == 'touchend') {
+    if (!this.isMobile || (event && event.type === 'touchend')) {
       this.setState({controlBarVisible: true});
       this.props.controller.showControlBar();
       ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor="auto";

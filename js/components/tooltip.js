@@ -9,17 +9,17 @@ function getContainerStyle(bottom, visible, responsivenessMultiplier, alignment)
     left: {
       left: 0,
       transform: 'translate(0,' + verticalAlignment + '%)',
-      '-webkit-transform': 'translate(0,' + verticalAlignment + '%)'
+      WebkitTransform: 'translate(0,' + verticalAlignment + '%)'
     },
     center: {
       left: '50%',
       transform: 'translate(-50%,' + verticalAlignment + '%)',
-      '-webkit-transform': 'translate(-50%,' + verticalAlignment + '%)'
+      WebkitTransform: 'translate(-50%,' + verticalAlignment + '%)'
     },
     right: {
       right: 0,
       transform: 'translate(0,' + verticalAlignment + '%)',
-      '-webkit-transform': 'translate(0,' + verticalAlignment + '%)'
+      WebkitTransform: 'translate(0,' + verticalAlignment + '%)'
     }
   };
 
@@ -70,9 +70,6 @@ function getPointerStyle(alignment) {
 var Tooltip = React.createClass({
 
   componentDidMount: function () {
-    this.onMouseOver = this.onMouseOver.bind(this);
-    this.onMouseLeave = this.onMouseLeave.bind(this);
-
     this.parentElement = (ReactDOM.findDOMNode(this) || {}).parentElement;
     if (this.parentElement) {
       this.parentElement.addEventListener('mouseover', this.onMouseOver);

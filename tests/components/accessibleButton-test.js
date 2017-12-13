@@ -19,6 +19,7 @@ describe('AccessibleButton', function() {
   }
 
   beforeEach(function() {
+    component = null;
     props = {
       ariaLabel: 'ariaLabel'
     };
