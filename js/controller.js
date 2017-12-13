@@ -1282,31 +1282,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //called when user selects fullscreen icon
     toggleFullscreen: function() {
-      console.warn('this.state.fullscreen', this.state.fullscreen);
       // full support, any element
       if(this.state.isFullScreenSupported) {
         Fullscreen.toggle(this.state.mainVideoInnerWrapper.get(0));
       }
       // partial support, video element only (iOS)
       else if (this.state.isVideoFullScreenSupported) {
-        if(this.state.fullscreen) {
+        if (this.state.fullscreen) {
           this.state.mainVideoElement.webkitExitFullscreen();
         } else {
           this.state.mainVideoElement.webkitEnterFullscreen();
         }
-      }
-      // no support
-      else {
-
-        if(OO.isIos && this.videoVr){
-          // this.state.mainVideoInnerWrapper.attr('style', '');
-          // this.mb.publish(OO.EVENTS.TOGGLE_FULLSCREEN_VR, this.focusedElement);
+      } else { // no support
+        if(this.state.isFullWindow) {
+          this.exitFullWindow();
+        } else {
+          this.enterFullWindow();
         }
-          if(this.state.isFullWindow) {
-            this.exitFullWindow();
-          } else {
-            this.enterFullWindow();
-          }
       }
       this.state.fullscreen = !this.state.fullscreen;
       this.renderSkin();
