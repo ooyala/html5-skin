@@ -1939,7 +1939,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     //set Main Video Element Wrapper padding-top to aspect ratio
     setAspectRatio: function() {
       if(this.state.mainVideoAspectRatio > 0) {
-        console.warn('this.state.mainVideoAspectRatio', this.state.mainVideoAspectRatio)
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
     },
