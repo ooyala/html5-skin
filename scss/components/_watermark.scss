@@ -4,7 +4,6 @@
   max-width: 100%;
   pointer-events: auto;
   outline: none !important;
-  z-index: $zindex-watermark;
   @include vendor-prefixes (transition, bottom .3s ease-in-out);
 }
 
