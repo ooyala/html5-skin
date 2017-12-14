@@ -133,7 +133,7 @@ var PlayingScreen = React.createClass({
   handleTouchEnd: function(event) {
     event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
 
-    if(this.props.controller.videoVr){
+    if(this.props.controller && this.props.controller.videoVr){
       if (this.state.controlBarVisible || this.props.isVrMouseMove) {
         this.setState({controlBarVisible: false});
         this.props.controller.hideControlBar();
