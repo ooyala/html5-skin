@@ -61,8 +61,16 @@ var ColorSelector = React.createClass({
 ColorSelector = AccessibleMenu(ColorSelector, { useRovingTabindex: true });
 
 ColorSelector.propTypes = {
+  enabled: React.PropTypes.bool,
+  selectedColor: React.PropTypes.string,
+  colors: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
   ariaLabel: React.PropTypes.string.isRequired,
-  colors: React.PropTypes.array.isRequired
+  onColorChange: React.PropTypes.func,
+  skinConfig: React.PropTypes.shape({
+    general: React.PropTypes.shape({
+      accentColor: React.PropTypes.string
+    })
+  })
 };
 
 module.exports = ColorSelector;

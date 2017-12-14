@@ -299,6 +299,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
       }
 
+      this.state.mainVideoInnerWrapper.attr('style', '');
+
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
         $.getJSON(params.skin.config, function(data) {
@@ -1308,30 +1310,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       // partial support, video element only (iOS)
       else if (this.state.isVideoFullScreenSupported) {
-        if(this.state.fullscreen) {
+        if (this.state.fullscreen) {
           this.state.mainVideoElement.webkitExitFullscreen();
         } else {
           this.state.mainVideoElement.webkitEnterFullscreen();
         }
-      }
-      // no support
-      else {
-
-        if(OO.isIos && this.videoVr){
-          // toggle fullscreen with bitmovin api
-          //Methods that we use to switch to full screen applied to tag VIDEO.
-          // In video 360, tag VIDEO is not active (black screen).
-          // iOS + Safari doesn't support fullscreen with CANVAS tag.
-          //Because of that we use Bitmovin API
-          //https://caniuse.com/#feat=fullscreen
-
-          this.mb.publish(OO.EVENTS.TOGGLE_FULLSCREEN_VR, this.focusedElement);
+      } else { // no support
+        if(this.state.isFullWindow) {
+          this.exitFullWindow();
         } else {
-          if(this.state.isFullWindow) {
-            this.exitFullWindow();
-          } else {
-            this.enterFullWindow();
-          }
+          this.enterFullWindow();
         }
       }
       this.state.fullscreen = !this.state.fullscreen;

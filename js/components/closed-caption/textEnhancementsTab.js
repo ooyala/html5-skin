@@ -97,7 +97,7 @@ TextEnhancementsTab = AccessibleMenu(TextEnhancementsTab, { useRovingTabindex: t
 
 TextEnhancementsTab.propTypes = {
   language: React.PropTypes.string,
-  localizableStrings: React.PropTypes.array,
+  localizableStrings: React.PropTypes.objectOf(React.PropTypes.objectOf(React.PropTypes.string)),
   controller: React.PropTypes.shape({
     toggleClosedCaptionEnabled: React.PropTypes.func.isRequired,
     onClosedCaptionChange: React.PropTypes.func.isRequired
