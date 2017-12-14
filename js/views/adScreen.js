@@ -8,7 +8,8 @@ var React = require('react'),
     ClassNames = require('classnames'),
     Utils = require('../components/utils'),
     ResizeMixin = require('../mixins/resizeMixin'),
-    Icon = require('../components/icon');
+    Icon = require('../components/icon'),
+    UnmuteIcon = require('../components/unmuteIcon');
 
 var AdScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -144,6 +145,10 @@ var AdScreen = React.createClass({
     return playbackControlItems;
   },
 
+  unmuteClick: function(event) {
+    this.props.controller.handleMuteClick();
+  },
+
   render: function() {
     var actionIconStyle = {
       color: this.props.skinConfig.pauseScreen.PauseIconStyle.color,
@@ -169,6 +174,8 @@ var AdScreen = React.createClass({
       playbackControlItems = this.getPlaybackControlItems();
     }
 
+    var showUnmute = this.props.controller.state.volumeState.mutingForAutoplay && this.props.controller.state.volumeState.muted;
+
     return (
       <div className="oo-state-screen oo-ad-screen"
          ref="adScreen"
@@ -186,6 +193,8 @@ var AdScreen = React.createClass({
         <div className="oo-interactive-container">
           {playbackControlItems}
         </div>
+
+        {showUnmute ? <UnmuteIcon {...this.props}/> : null}
 
       </div>
     );

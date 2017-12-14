@@ -1,8 +1,10 @@
 jest.dontMock('../../js/components/utils');
+jest.dontMock('../../js/constants/constants');
 jest.dontMock('deepmerge');
 jest.dontMock('../../config/skin');
 
 var Utils = require('../../js/components/utils');
+var CONSTANTS = require('../../js/constants/constants');
 var DeepMerge = require('deepmerge');
 var SkinJSON = require('../../config/skin');
 OO = {
@@ -30,6 +32,114 @@ describe('Utils', function () {
 
     var browserSupportsTouch = Utils.browserSupportsTouch();
     expect(browserSupportsTouch).toBeFalsy();
+  });
+
+  describe('autoFocusFirstElement', function() {
+    var container, elem1, elem2, elem3;
+
+    beforeEach(function() {
+      container = document.createElement('div');
+
+      elem1 = document.createElement('div');
+      elem1.setAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR, '1');
+      container.appendChild(elem1);
+
+      elem2 = document.createElement('div');
+      elem2.setAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR, '2');
+      container.appendChild(elem2);
+
+      elem3 = document.createElement('div');
+      elem3.setAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR, '3');
+      container.appendChild(elem3);
+    });
+
+    it('should focus on first focusable element', function() {
+      var focusCalled = false;
+      elem1.focus = function() {
+        focusCalled = true;
+      };
+      Utils.autoFocusFirstElement(container);
+      expect(focusCalled).toBe(true);
+    });
+
+    it('should focus on next focusable element if first is excluded by class', function() {
+      var focus1Called = false;
+      var focus2Called = false;
+      elem1.setAttribute('class', 'exclude');
+      elem1.focus = function() {
+        focus1Called = true;
+      };
+      elem2.focus = function() {
+        focus2Called = true;
+      };
+      Utils.autoFocusFirstElement(container, 'exclude');
+      expect(focus1Called).toBe(false);
+      expect(focus2Called).toBe(true);
+    });
+
+  });
+
+  describe('blurOnMouseUp', function() {
+
+    it('should call blur() on currentTarget', function() {
+      var blurCalled = false;
+      var event = {
+        currentTarget: {
+          blur: function() {
+            blurCalled = true;
+          }
+        }
+      };
+      Utils.blurOnMouseUp(event);
+      expect(blurCalled).toBe(true);
+    });
+
+  });
+
+  describe('ensureNumber', function() {
+
+    it('should return the Number equivalent of a string', function() {
+      expect(Utils.ensureNumber('233')).toBe(233);
+      expect(Utils.ensureNumber('10.233')).toBe(10.233);
+    });
+
+    it('should return null when the input value is not finite or a parsable Number', function() {
+      expect(Utils.ensureNumber('w00t233')).toBeNull();
+      expect(Utils.ensureNumber(Infinity)).toBeNull();
+      expect(Utils.ensureNumber({})).toBeNull();
+      expect(Utils.ensureNumber(NaN)).toBeNull();
+    });
+
+    it('should return defaultValue when provided if input value is not finite or a parsable Number', function() {
+      expect(Utils.ensureNumber('w00t233', 1)).toBe(1);
+      expect(Utils.ensureNumber(Infinity, 2)).toBe(2);
+      expect(Utils.ensureNumber({}, 'error')).toBe('error');
+      expect(Utils.ensureNumber(NaN, 3)).toBe(3);
+    });
+
+  });
+
+  describe('constrainToRange', function() {
+
+    it('should return the Number equivalent of value if it falls within range', function() {
+      expect(Utils.constrainToRange(5, 1, 10)).toBe(5);
+      expect(Utils.constrainToRange(0, -5, 5)).toBe(0);
+      expect(Utils.constrainToRange('50', '1', '100')).toBe(50);
+    });
+
+    it('should return min or max when value is outside of range', function() {
+      expect(Utils.constrainToRange(1, 5, 10)).toBe(5);
+      expect(Utils.constrainToRange(15, 5, 10)).toBe(10);
+      expect(Utils.constrainToRange(-10, 0, 100)).toBe(0);
+    });
+
+    it('should return the Number equivalent of input values', function() {
+      expect(Utils.constrainToRange(1, '5', 10)).toBe(5);
+      expect(Utils.constrainToRange(15, 5, '10')).toBe(10);
+      expect(Utils.constrainToRange(-10, '0', 100)).toBe(0);
+      expect(Utils.constrainToRange('50', '1', '100')).toBe(50);
+    });
+
   });
 
   describe('getTimeDisplayValues', function() {
@@ -165,19 +275,19 @@ describe('Utils', function () {
         availableLanguageFile: [
           {
             "language": "en",
-            "languageFile": "//player.ooyala.com/static/v4/stable/4.17.4/skin-plugin/en.json",
+            "languageFile": "//player.ooyala.com/static/v4/stable/4.19.3/skin-plugin/en.json",
             "androidResource": "skin-config/en.json",
             "iosResource": "en"
           },
           {
             "language": "es",
-            "languageFile": "//player.ooyala.com/static/v4/stable/4.17.4/skin-plugin/es.json",
+            "languageFile": "//player.ooyala.com/static/v4/stable/4.19.3/skin-plugin/es.json",
             "androidResource": "skin-config/es.json",
             "iosResource": "es"
           },
           {
             "language": "zh",
-            "languageFile": "//player.ooyala.com/static/v4/stable/4.17.4/skin-plugin/zh.json",
+            "languageFile": "//player.ooyala.com/static/v4/stable/4.19.3/skin-plugin/zh.json",
             "androidResource": "skin-config/zh.json",
             "iosResource": "zh"
           }
@@ -197,6 +307,15 @@ describe('Utils', function () {
     expect(localizedString).toBe(text);
 
     localizedString = Utils.getLocalizedString(null, null, null);
+    expect(localizedString).toBe("");
+  });
+
+  it('tests getStartCountdown', function () {
+    var text = "6 days, 5 hours, and 14 minutes";
+    var countDownText = Utils.getStartCountdown(537289879);
+    expect(countDownText).toBe(text);
+
+    localizedString = Utils.getStartCountdown(-100000000);
     expect(localizedString).toBe("");
   });
 
@@ -404,7 +523,7 @@ describe('Utils', function () {
     expect(finalConfig.shareScreen.shareContent[1]).not.toBe(SkinJSON.shareScreen.shareContent[1]);
     expect(finalConfig.shareScreen.shareContent).toEqual(['social', 'ooyala']);
     // test array merge for buttons (prepend)
-    expect(finalConfig.buttons.desktopContent.length).toBe(14);
+    expect(finalConfig.buttons.desktopContent.length).toBe(16);
     // test new buttons are placed after flexibleSpace
     expect(finalConfig.buttons.desktopContent[4].name).toBe("flexibleSpace");
     expect(finalConfig.buttons.desktopContent[5].name).toBe("ooyala");

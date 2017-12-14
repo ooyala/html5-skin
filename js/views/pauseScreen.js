@@ -12,7 +12,9 @@ var React = require('react'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon'),
     Utils = require('../components/utils'),
-    AnimateMixin = require('../mixins/animateMixin');
+    CONSTANTS = require('./../constants/constants'),
+    AnimateMixin = require('../mixins/animateMixin'),
+    ViewControlsVr = require('../components/viewControlsVr');
 
 var PauseScreen = React.createClass({
   mixins: [ResizeMixin, AnimateMixin],
@@ -44,8 +46,30 @@ var PauseScreen = React.createClass({
 
   handleClick: function(event) {
     event.preventDefault();
-    this.props.controller.togglePlayPause();
+    if(!this.props.isVrMouseMove){
+      this.props.controller.togglePlayPause(event);
+    }
     this.props.controller.state.accessibilityControlsEnabled = true;
+    this.props.controller.state.isClickedOutside = false;
+    this.props.handleVrPlayerClick();
+  },
+
+  handlePlayerMouseDown: function(e) {
+    this.props.controller.state.accessibilityControlsEnabled = true;
+    this.props.controller.state.isClickedOutside = false;
+    this.props.handleVrPlayerMouseDown(e);
+  },
+  handlePlayerMouseMove: function(e) {
+    e.preventDefault();
+    this.props.handleVrPlayerMouseMove(e);
+  },
+  handlePlayerMouseUp: function(e) {
+    e.stopPropagation(); // W3C
+    e.cancelBubble = true; // IE
+    this.props.handleVrPlayerMouseUp();
+  },
+  handlePlayerMouseLeave: function() {
+    this.props.handleVrPlayerMouseLeave()
   },
 
   /**
@@ -54,9 +78,10 @@ var PauseScreen = React.createClass({
    * @param {object} event Focus event object
    */
   handleFocus: function(event) {
-    var isControlBarElement = event.target || event.target.hasAttribute('data-focus-id');
+    var isControlBarElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
     if (isControlBarElement) {
       this.props.controller.state.accessibilityControlsEnabled = true;
+      this.props.controller.state.isClickedOutside = false;
     }
   },
 
@@ -109,22 +134,54 @@ var PauseScreen = React.createClass({
 
     var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
     var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.state.descriptionText}</div>);
+
     var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
-      <AdOverlay {...this.props}
+      <AdOverlay
+        {...this.props}
         overlay={this.props.controller.state.adOverlayUrl}
         showOverlay={this.props.controller.state.showAdOverlay}
-        showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}/> : null;
+        showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
+      />
+      :
+      null;
 
     var upNextPanel = (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
-      <UpNextPanel {...this.props}
+      <UpNextPanel
+        {...this.props}
         controlBarVisible={this.state.controlBarVisible}
-        currentPlayhead={this.props.currentPlayhead}/> : null;
+        currentPlayhead={this.props.currentPlayhead}
+      />
+      :
+      null;
 
+    var viewControlsVr = this.props.controller.videoVr ?
+      <ViewControlsVr
+        {...this.props}
+        controlBarVisible={this.state.controlBarVisible}
+      /> : null;
+
+      // OLD CODE
+      // <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
+      //
+      // <a ngIf="!this.isMobile" className={actionIconClass} onClick={this.handleClick}>
+      //   <Icon {...this.props} icon="pause" style={actionIconStyle}/>
+      // </a>
     return (
       <div className="oo-state-screen oo-pause-screen">
-        <div className={fadeUnderlayClass}></div>
 
-        <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
+        {
+          !this.props.controller.videoVr &&
+          <div className={fadeUnderlayClass} />
+        }
+
+        <div
+          className="oo-state-screen-selectable"
+          onClick={this.handleClick}
+          onMouseDown={this.handlePlayerMouseDown}
+          onMouseUp={this.handlePlayerMouseUp}
+          onMouseMove={this.handlePlayerMouseMove}
+          onMouseLeave={this.handlePlayerMouseLeave}
+        />
 
         <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
 
@@ -133,17 +190,23 @@ var PauseScreen = React.createClass({
           {this.props.skinConfig.pauseScreen.showDescription ? descriptionMetadata : null}
         </div>
 
-        <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
-
-        <a ngIf="!this.isMobile" className={actionIconClass} onClick={this.handleClick}>
+        <button
+          type="button"
+          className={actionIconClass}
+          onClick={this.handleClick}
+          aria-hidden="true"
+          tabIndex="-1">
           <Icon {...this.props} icon="pause" style={actionIconStyle}/>
-        </a>
+        </button>
+
+        {viewControlsVr}
 
         <div className="oo-interactive-container" onFocus={this.handleFocus}>
           {this.props.closedCaptionOptions.enabled ?
             <TextTrack
               closedCaptionOptions={this.props.closedCaptionOptions}
               cueText={this.props.closedCaptionOptions.cueText}
+              direction={this.props.captionDirection}
               responsiveView={this.props.responsiveView}
             /> : null
           }
@@ -152,10 +215,12 @@ var PauseScreen = React.createClass({
 
           {upNextPanel}
 
-          <ControlBar {...this.props}
+          <ControlBar
+            {...this.props}
             controlBarVisible={this.state.controlBarVisible}
             playerState={this.state.playerState}
-            isLiveStream={this.props.isLiveStream}/>
+            isLiveStream={this.props.isLiveStream}
+          />
         </div>
       </div>
     );

@@ -7,6 +7,7 @@ var React = require('react'),
     Thumbnail = require('./thumbnail'),
     ThumbnailCarousel = require('./thumbnailCarousel'),
     Utils = require('./utils'),
+    MACROS = require('../constants/macros'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
@@ -67,7 +68,10 @@ var ScrubberBar = React.createClass({
   },
 
   handlePlayheadMouseDown: function(evt) {
-    if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
+    if (this.props.controller.state.screenToShow === CONSTANTS.SCREEN.AD_SCREEN) {
+      evt.preventDefault();
+      return;
+    }
     this.props.controller.startHideControlBarTimer();
     if (evt.target.className.match("playhead") && evt.type !== "mousedown") {
         this.touchInitiated = true;
@@ -174,7 +178,10 @@ var ScrubberBar = React.createClass({
   },
 
   handleScrubberBarMouseDown: function(evt) {
-    if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
+    if (this.props.controller.state.screenToShow === CONSTANTS.SCREEN.AD_SCREEN) {
+      evt.preventDefault();
+      return;
+    }
     if (evt.target.className.match("oo-playhead")) { return; }
     if (this.touchInitiated && evt.type === "mousedown") { return; }
     var offsetX = 0;
@@ -225,14 +232,14 @@ var ScrubberBar = React.createClass({
 
     if (this.props.isLiveStream) {
       if (timeDisplayValues.totalTime) {
-        ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY_DVR.replace('{currentTime}', timeDisplayValues.currentTime);
-        ariaValueText = ariaValueText.replace('{totalTime}', timeDisplayValues.totalTime);
+        ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY_DVR.replace(MACROS.CURRENT_TIME, timeDisplayValues.currentTime);
+        ariaValueText = ariaValueText.replace(MACROS.TOTAL_TIME, timeDisplayValues.totalTime);
       } else {
         ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY_LIVE;
       }
     } else {
-      ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY.replace('{currentTime}', timeDisplayValues.currentTime);
-      ariaValueText = ariaValueText.replace('{totalTime}', timeDisplayValues.totalTime);
+      ariaValueText = CONSTANTS.ARIA_LABELS.TIME_DISPLAY.replace(MACROS.CURRENT_TIME, timeDisplayValues.currentTime);
+      ariaValueText = ariaValueText.replace(MACROS.TOTAL_TIME, timeDisplayValues.totalTime);
     }
     return ariaValueText;
   },
@@ -324,12 +331,27 @@ var ScrubberBar = React.createClass({
         playheadClassName += " oo-playhead-hovering";
       }
       if (!thumbnailCarousel) {
+        var vrViewingDirection = { yaw: 0, roll: 0, pitch: 0 };
+        if (this.props.controller && this.props.controller.state && this.props.controller.state.vrViewingDirection) {
+          vrViewingDirection = this.props.controller.state.vrViewingDirection;
+        }
+        var fullscreen = false;
+        if (this.props.controller && this.props.controller.state && this.props.controller.state.fullscreen) {
+          fullscreen = this.props.controller.state.fullscreen;
+        }
+        var videoVr = false;
+        if (this.props.controller && this.props.controller.videoVr) {
+          videoVr = this.props.controller.videoVr;
+        }
         thumbnailContainer = (
           <Thumbnail
            thumbnails={this.props.controller.state.thumbnails}
            hoverPosition={hoverPosition}
            duration={this.props.duration}
-           hoverTime={hoverTime > 0 ? hoverTime : 0} />
+           hoverTime={hoverTime > 0 ? hoverTime : 0}
+           vrViewingDirection={vrViewingDirection}
+           videoVr={videoVr}
+           fullscreen={fullscreen} />
         )
       }
     }
@@ -351,7 +373,7 @@ var ScrubberBar = React.createClass({
             aria-valuemax={this.props.duration}
             aria-valuenow={Utils.ensureNumber(this.props.currentPlayhead, 0).toFixed(2)}
             aria-valuetext={ariaValueText}
-            data-focus-id="scrubberBar"
+            data-focus-id={CONSTANTS.FOCUS_IDS.SCRUBBER_BAR}
             tabIndex="0"
             onKeyDown={this.handleScrubberBarKeyDown}>
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle}></div>
