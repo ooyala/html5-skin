@@ -295,8 +295,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (!this.state.mainVideoInnerWrapper.children('.oo-player-skin').length) {
         this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
       }
-      //https://stackoverflow.com/questions/42206645/konvajs-unable-to-preventdefault-inside-passive-event-listener-due-to-target-be
-      this.state.mainVideoInnerWrapper.attr('style', 'touch-action: none');
+
+      this.state.mainVideoInnerWrapper.attr('style', '');
 
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
@@ -1270,6 +1270,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //called when event listener triggered
     onFullscreenChanged: function() {
+
       if (this.state.isFullScreenSupported) {
         this.state.fullscreen = Fullscreen.isFullscreen;
       } else {

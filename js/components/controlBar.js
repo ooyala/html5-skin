@@ -111,9 +111,9 @@ var ControlBar = React.createClass({
       evt.stopPropagation();
       evt.cancelBubble = true;
       evt.preventDefault();
-
+      //
       this.toggleStereoVr();
-
+      //
       if (this.props.controller) {
         var fullscreen = false;
         //depends on the switching type
@@ -128,7 +128,7 @@ var ControlBar = React.createClass({
         if (!fullscreen && typeof this.props.controller.toggleFullscreen === "function") {
           this.props.controller.toggleFullscreen();
         }
-
+        //
         if (this.vr.stereo) {
           this.setLandscapeScreenOrientation();
         } else {
