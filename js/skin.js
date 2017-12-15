@@ -109,7 +109,6 @@ var Skin = React.createClass({
 
       if (typeof this.props.controller.onTouchMove === 'function') {
         var params = this.getDirectionParams(coords.x, coords.y);
-        console.log('BBB params', params);
         this.props.controller.onTouchMove(params, true);
       }
     }
