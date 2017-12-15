@@ -800,7 +800,6 @@ var ControlBar = React.createClass({
     });
 
     var controlBarItems = this.populateControlBar();
-
     var controlBarStyle = {
       height: this.props.skinConfig.controlBar.height
     };
