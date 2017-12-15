@@ -46,9 +46,9 @@ var PlayingScreen = React.createClass({
       this.handleVrAnimationEnd("vrNotificatioContainer", "isVrNotificationHidden");
       this.handleVrAnimationEnd("vrIconContainer", "isVrIconHidden");
 
-      if (window.DeviceOrientationEvent) {
-        window.addEventListener('deviceorientation', this.props.handleVrMobileOrientation.bind(this), false);
-      }
+      // if (window.DeviceOrientationEvent) {
+      //   window.addEventListener('deviceorientation', this.props.handleVrMobileOrientation.bind(this), false);
+      // }
       // if (window.DeviceMotionEvent) {
       //   window.addEventListener("devicemotion", this.props.handleVrMobileOrientation.bind(this));
       // }

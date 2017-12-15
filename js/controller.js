@@ -322,9 +322,48 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.videoVrSource = params.source || null; //if we need video vr params
       }
       this.vrMobileOrientationChecked = false;
-      if (window.DeviceOrientationEvent) {
+      // if (window.DeviceOrientationEvent) {
         // new DeviceOrientationEvent();
         // window.dispatchEvent(new DeviceOrientationEvent("deviceorientation"));
+      // }
+      if (window.DeviceOrientationEvent) {
+        window.addEventListener('deviceorientation', this.handleVrMobileOrientation.bind(this), false);
+      }
+    },
+
+    handleVrMobileOrientation: function(e) {
+      if (!this.vrMobileOrientationChecked) {
+
+        console.log('BBB e', e);
+
+        // var beta = e.beta; //x
+        var alpha = e.alpha; //z
+        var gamma = e.gamma; //y
+
+        var yaw = this.state.vrViewingDirection["yaw"];
+        var pitch = this.state.vrViewingDirection["pitch"];
+        console.log('BBB yaw', yaw);
+        console.log('BBB pitch', pitch);
+
+        if (alpha !== undefined && alpha !== null && Utils.ensureNumber(alpha, 0) &&
+            gamma !== undefined && gamma !== null && Utils.ensureNumber(gamma, 0) ) {
+
+          console.log('BBB alpha', alpha);
+          console.log('BBB Math.round(alpha)', Math.round(alpha));
+          console.log('BBB gamma', gamma);
+          console.log('BBB Math.round(gamma)', Math.round(gamma));
+
+          yaw += Math.round(alpha);
+          pitch += Math.round(gamma);
+
+          console.log('BBB yaw2', yaw);
+          console.log('BBB pitch2', pitch);
+
+          var params = [yaw, 0, pitch];
+          this.onTouchMove(params);
+        }
+
+        this.vrMobileOrientationChecked = true;
       }
     },
 
