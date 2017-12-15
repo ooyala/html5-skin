@@ -319,7 +319,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (params) {
         this.videoVrSource = params.source || null; //if we need video vr params
       }
-      this.vrMobileOrientationChecked = false;
     },
 
     handleVrMobileOrientation: function(e) {
@@ -328,7 +327,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         var yaw = this.state.vrViewingDirection["yaw"];
         var pitch = this.state.vrViewingDirection["pitch"];
         if (beta !== undefined && beta !== null && Utils.ensureNumber(beta, 0)) {
-          console.log('BBB beta', beta);
           pitch += -90 + Math.round(beta);
           var params = [yaw, 0, pitch];
           this.onTouchMove(params);
@@ -339,6 +337,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onClearVideoType: function(event, params) {
       this.videoVr = false;
       this.videoVrSource = null;
+      this.vrMobileOrientationChecked = false;
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -370,7 +369,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.enableFullScreen();
         this.updateAspectRatio();
       }
-      console.log('BBB onVcVideoElementCreated this.videoVr', this.videoVr);
       if (this.videoVr) {
         if (window.DeviceOrientationEvent) {
           window.addEventListener('deviceorientation', this.handleVrMobileOrientation.bind(this), false);
@@ -643,6 +641,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.initialPlayHasOccurred = true;
       this.startHideControlBarTimer();
       this.isNewVrVideo = true;
+      if (this.videoVr) {
+        this.vrMobileOrientationChecked = true;
+      }
     },
 
     onVcPlay: function(event, source) {
@@ -790,7 +791,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onTouchMove: function(params) {
-      console.log('BBB onTouchMove params', params, ' this.videoVr ', this.videoVr);
       if (this.videoVr) {
         this.mb.publish(OO.EVENTS.TOUCH_MOVE, this.focusedElement, params);
       }
@@ -1530,9 +1530,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     togglePlayPause: function() {
-      if (this.videoVr) {
-        this.vrMobileOrientationChecked = true;
-      }
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
           if (!this.state.isInitialPlay){
