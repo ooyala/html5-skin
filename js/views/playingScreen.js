@@ -45,15 +45,6 @@ var PlayingScreen = React.createClass({
     if (this.props.controller.videoVr) {
       this.handleVrAnimationEnd("vrNotificatioContainer", "isVrNotificationHidden");
       this.handleVrAnimationEnd("vrIconContainer", "isVrIconHidden");
-
-      // if (window.DeviceOrientationEvent) {
-      //   window.addEventListener('deviceorientation', this.props.handleVrMobileOrientation.bind(this), false);
-      // }
-      // if (window.DeviceMotionEvent) {
-      //   window.addEventListener("devicemotion", this.props.handleVrMobileOrientation.bind(this));
-      // }
-      // this.props.handleGyroscopeChange();
-      // console.log('BBB this.props.controller.state.vrGyroscopeEnabled DID', this.props.controller.state.vrGyroscopeEnabled);
     }
   },
 

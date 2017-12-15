@@ -48,14 +48,6 @@ var Skin = React.createClass({
 
   componentDidMount: function () {
     window.addEventListener('mouseup', this.handleClickOutsidePlayer);
-
-    // if (window.DeviceOrientationEvent) {
-    //   console.log('BBB this.props.controller', this.props.controller);
-    //   if (this.props.controller) {
-    //     console.log('BBB this.props.controller.videoVr', this.props.controller.videoVr);
-    //   }
-    //   window.addEventListener('deviceorientation', this.handleVrMobileOrientation.bind(this), false);
-    // }
   },
 
   componentWillUnmount: function () {
@@ -70,119 +62,6 @@ var Skin = React.createClass({
       this.props.controller.checkVrGyroscopeEnabled();
     }
   },
-
-  handleVrDevicemotion: function () {
-    window.addEventListener("devicemotion", function(e) {
-    console.log('BBB e.rotationRate',  e.rotationRate);
-    console.log('BBB e.interval',  e.interval);
-// e.acceleration
-// e.accelerationIncludingGravity
-// e.rotationRate (Returns the rate at which the device is rotating around each of its axes in degrees per second)
-// e.interval(Returns the interval, in milliseconds, at which data is obtained from the underlaying hardware)
-    }, true);
-  },
-
-  handleVrMobileOrientation: function(e) {
-    if (this.props.controller) {
-      console.log('BBB handleVrMobileOrientation this.props.controller.videoVr', this.props.controller.videoVr);
-    }
-    if (!(this.props.controller || this.props.controller.videoVr)) {
-      console.log('BBB WTF');
-      return;
-    }
-    if (!this.props.controller.vrMobileOrientationChecked) {
-
-      console.log('BBB e', e);
-
-      var beta = e.beta; //x
-      var alpha = e.alpha; //z
-      var gamma = e.gamma; //y
-
-
-      var yaw = this.getVrViewingDirectionParamValue("yaw");
-      var pitch = this.getVrViewingDirectionParamValue("pitch");
-      console.log('BBB beta', beta);
-      console.log('BBB Math.round(event.beta)', Math.round(beta));
-      console.log('BBB alpha', alpha);
-      console.log('BBB Math.round(alpha)', Math.round(alpha));
-      console.log('BBB gamma', gamma);
-      console.log('BBB Math.round(gamma)', Math.round(gamma));
-      console.log('BBB yaw', yaw);
-      console.log('BBB pitch', pitch);
-
-      if (alpha !== undefined && alpha !== null) {
-        // yaw += beta;
-        yaw += alpha;
-        pitch += gamma;
-
-        console.log('BBB yaw2', yaw);
-        console.log('BBB pitch2', pitch);
-
-        if (typeof this.props.controller.onTouchMove === 'function') {
-          var params = [yaw, 0, pitch];
-          this.props.controller.onTouchMove(params);
-        }
-      }
-
-      this.props.controller.vrMobileOrientationChecked = true;
-    }
-  },
-
-  // handleVrMobileOrientation: function(e) {
-  //   if (typeof e.rotationRate === "undefined") { return; }
-  //   var mobileVibrationValue = Utils.isIos() ? 0.022 : 1;
-  //   // var ratio = 0.00277778;
-  //   // var ratio = 0.0159154943;
-  //   var ratio = 1;
-  //   var x = e.rotationRate.alpha * ratio;
-  //   var y = e.rotationRate.beta * ratio;
-  //   var portrait = typeof e.portrait !== "undefined" ? e.portrait : window.matchMedia("(orientation: portrait)").matches;
-  //   var landscape = typeof e.landscape !== "undefined" ? e.landscape : window.matchMedia("(orientation: landscape)").matches;
-  //   var orientation = e.orientation || window.orientation;
-  //
-  //   var yaw = this.getVrViewingDirectionParamValue("yaw");
-  //   var pitch = this.getVrViewingDirectionParamValue("pitch");
-  //   if (portrait) {
-  //     yaw = yaw - y * mobileVibrationValue;
-  //     pitch = pitch + x * mobileVibrationValue;
-  //     // yaw = yaw - y;
-  //     // pitch = pitch + x;
-  //   } else if (landscape) {
-  //     var orientationDegree = -90;
-  //     if (typeof orientation != "undefined") {
-  //       orientationDegree = orientation;
-  //     }
-  //
-  //     yaw = orientationDegree === -90 ? yaw + x * mobileVibrationValue : yaw - x * mobileVibrationValue;
-  //     pitch = orientationDegree === -90 ? pitch + y * mobileVibrationValue : pitch - y * mobileVibrationValue;
-  //   }
-  //
-  //   console.log('BBB yaw ', yaw, ' pitch ', pitch);
-  //   return [yaw, 0, pitch];
-  // },
-
-  // handleMobileOrientation: function(event) {
-  //   if (typeof event.rotationRate === "undefined") return;
-  //   var mobileVibrationValue = Utils.isIos() ? 0.022 : 1;
-  //   var x = event.rotationRate.alpha;
-  //   var y = event.rotationRate.beta;
-  //   var portrait = typeof event.portrait !== "undefined" ? event.portrait : window.matchMedia("(orientation: portrait)").matches;
-  //   var landscape = typeof event.landscape !== "undefined" ? event.landscape : window.matchMedia("(orientation: landscape)").matches;
-  //   var orientation = event.orientation || window.orientation;
-  //
-  //   if (portrait) {
-  //     this.lon = this.lon - y * this.mobileVibrationValue;
-  //     this.lat = this.lat + x * this.mobileVibrationValue;
-  //   } else if (landscape) {
-  //     var orientationDegree = -90;
-  //     if (typeof orientation != "undefined") {
-  //       orientationDegree = orientation;
-  //     }
-  //
-  //     this.lon = orientationDegree == -90 ? this.lon + x * this.mobileVibrationValue : this.lon - x * this.mobileVibrationValue;
-  //     this.lat = orientationDegree == -90 ? this.lat + y * this.mobileVibrationValue : this.lat - y * this.mobileVibrationValue;
-  //   }
-  // },
 
   handleClickOutsidePlayer: function() {
     this.props.controller.state.accessibilityControlsEnabled = false;
@@ -381,7 +260,6 @@ var Skin = React.createClass({
               handleVrPlayerClick={this.handleVrPlayerClick}
               handleVrPlayerFocus={this.handleVrPlayerFocus}
               checkVrGyroscopeEnabled={this.checkVrGyroscopeEnabled}
-              handleVrMobileOrientation={this.handleVrMobileOrientation}
               isVrMouseMove={this.state.isVrMouseMove}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
