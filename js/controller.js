@@ -296,9 +296,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
       }
 
-      //https://stackoverflow.com/questions/42206645/konvajs-unable-to-preventdefault-inside-passive-event-listener-due-to-target-be
-      this.state.mainVideoInnerWrapper.attr('style', 'touch-action: none');
-
+      if(this.videoVr && this.state.isMobile) {
+        //https://stackoverflow.com/questions/42206645/konvajs-unable-to-preventdefault-inside-passive-event-listener-due-to-target-be
+        this.state.mainVideoInnerWrapper.attr('style', 'touch-action: none');
+      }
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
         $.getJSON(params.skin.config, function(data) {
