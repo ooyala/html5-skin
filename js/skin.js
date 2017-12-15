@@ -54,15 +54,6 @@ var Skin = React.createClass({
     window.removeEventListener('mouseup', this.handleClickOutsidePlayer);
   },
 
-  checkVrGyroscopeEnabled: function() {
-    if (this.props.controller &&
-      this.props.controller.videoVr &&
-      this.props.controller.state.isMobile &&
-      typeof this.props.controller.checkVrGyroscopeEnabled === 'function') {
-      this.props.controller.checkVrGyroscopeEnabled();
-    }
-  },
-
   handleClickOutsidePlayer: function() {
     this.props.controller.state.accessibilityControlsEnabled = false;
     this.props.controller.state.isClickedOutside = true;
@@ -259,7 +250,6 @@ var Skin = React.createClass({
               handleVrPlayerMouseLeave={this.handleVrPlayerMouseLeave}
               handleVrPlayerClick={this.handleVrPlayerClick}
               handleVrPlayerFocus={this.handleVrPlayerFocus}
-              checkVrGyroscopeEnabled={this.checkVrGyroscopeEnabled}
               isVrMouseMove={this.state.isVrMouseMove}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}

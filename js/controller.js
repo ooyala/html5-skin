@@ -852,12 +852,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    checkVrGyroscopeEnabled: function () {
-      if (this.videoVr) {
-        this.mb.publish(OO.EVENTS.CHECK_VR_GYROSCOPE_ENABLED, this.focusedElement);
-      }
-    },
-
     setVrGyroscopeEnabled: function (event, isVrGyroscopeEnabled) {
       this.state.vrGyroscopeEnabled = isVrGyroscopeEnabled;
     },
