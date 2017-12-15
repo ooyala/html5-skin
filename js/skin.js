@@ -25,8 +25,6 @@ var Skin = React.createClass({
 
   getInitialState: function() {
     this.overlayRenderingEventSent = false;
-    // this.lon = 0;
-    // this.lat = 0;
     return {
       screenToShow: null,
       currentPlayhead: 0,
@@ -72,7 +70,7 @@ var Skin = React.createClass({
       this.props.controller.checkVrGyroscopeEnabled();
     }
   },
-  
+
   handleVrDevicemotion: function () {
     window.addEventListener("devicemotion", function(e) {
     console.log('BBB e.rotationRate',  e.rotationRate);

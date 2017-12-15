@@ -186,6 +186,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setVrViewingDirection, this));
       this.mb.subscribe(OO.EVENTS.VR_GYROSCOPE_ENABLED_CHEKED, 'customerUi', _.bind(this.setVrGyroscopeEnabled, this));
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
+      this.mb.subscribe(OO.EVENTS.SET_VR_VIEWING_DERECTION_CALLED, 'customerUi', _.bind(this.onSetVrViewingDirectionCalled, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -322,13 +323,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.videoVrSource = params.source || null; //if we need video vr params
       }
       this.vrMobileOrientationChecked = false;
+      // // if (window.DeviceOrientationEvent) {
+      //   // new DeviceOrientationEvent();
+      //   // window.dispatchEvent(new DeviceOrientationEvent("deviceorientation"));
+      // // }
       // if (window.DeviceOrientationEvent) {
-        // new DeviceOrientationEvent();
-        // window.dispatchEvent(new DeviceOrientationEvent("deviceorientation"));
+      //   window.addEventListener('deviceorientation', this.handleVrMobileOrientation.bind(this), false);
       // }
-      if (window.DeviceOrientationEvent) {
-        window.addEventListener('deviceorientation', this.handleVrMobileOrientation.bind(this), false);
-      }
     },
 
     handleVrMobileOrientation: function(e) {
@@ -336,7 +337,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
         console.log('BBB e', e);
 
-        // var beta = e.beta; //x
+        var beta = e.beta; //x
         var alpha = e.alpha; //z
         var gamma = e.gamma; //y
 
@@ -349,12 +350,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             gamma !== undefined && gamma !== null && Utils.ensureNumber(gamma, 0) ) {
 
           console.log('BBB alpha', alpha);
-          console.log('BBB Math.round(alpha)', Math.round(alpha));
+          // console.log('BBB Math.round(alpha)', Math.round(alpha));
+          console.log('BBB beta', beta);
+          // console.log('BBB Math.round(beta)', Math.round(beta));
           console.log('BBB gamma', gamma);
-          console.log('BBB Math.round(gamma)', Math.round(gamma));
+          // console.log('BBB Math.round(gamma)', Math.round(gamma));
 
-          yaw += Math.round(alpha);
-          pitch += Math.round(gamma);
+          // yaw += Math.round(beta);
+          var gammaRounded = Math.round(beta);
+          // if (gammaRounded > 0) {
+          //   gammaRounded -= 90;
+          // }
+          pitch += -90 + gammaRounded;
+          // pitch += gammaRounded;
 
           console.log('BBB yaw2', yaw);
           console.log('BBB pitch2', pitch);
@@ -362,9 +370,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           var params = [yaw, 0, pitch];
           this.onTouchMove(params);
         }
-
-        this.vrMobileOrientationChecked = true;
       }
+    },
+
+    onSetVrViewingDirectionCalled: function() {
+      console.log('BBB in onSetVrViewingDirectionCalled');
+      // this.vrMobileOrientationChecked = true;
     },
 
     onClearVideoType: function(event, params) {
@@ -401,6 +412,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoElement = videoElement;
         this.enableFullScreen();
         this.updateAspectRatio();
+      }
+      console.log('BBB onVcVideoElementCreated this.videoVr', this.videoVr);
+      if (this.videoVr) {
+        // this.vrMobileOrientationChecked = false;
+        // if (window.DeviceOrientationEvent) {
+        // new DeviceOrientationEvent();
+        // window.dispatchEvent(new DeviceOrientationEvent("deviceorientation"));
+        // }
+        if (window.DeviceOrientationEvent) {
+          window.addEventListener('deviceorientation', this.handleVrMobileOrientation.bind(this), false);
+        }
       }
     },
 
@@ -439,6 +461,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
       }
+      console.log('BBB onSetEmbedCode this.videoVr', this.videoVr);
     },
 
     onEmbedCodeChangedAfterOoyalaAd: function(event, embedCode, options) {
@@ -820,7 +843,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.videoVr) {
         console.log('BBB before firing TOUCH_MOVE');
         this.mb.publish(OO.EVENTS.TOUCH_MOVE, this.focusedElement, params);
-        // this.mb.publish(OO.EVENTS.ON_VR_VIEWING_DIRECTION_CHANGED, params);
       }
     },
 
@@ -1569,6 +1591,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     togglePlayPause: function() {
+      if (this.videoVr) {
+        this.vrMobileOrientationChecked = true;
+      }
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
           if (!this.state.isInitialPlay){
