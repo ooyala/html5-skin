@@ -157,8 +157,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "autoPauseDisabled": false,
 
       "isClickedOutside": false,
-      "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0},
-      "vrGyroscopeEnabled": false
+      "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0}
     };
 
     this.init();
