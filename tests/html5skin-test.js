@@ -2,6 +2,7 @@ jest
 .dontMock('../js/skin')
 .dontMock('../js/components/utils')
 .dontMock('../js/components/accessibilityControls')
+.dontMock('../js/components/higher-order/accessibleMenu')
 .dontMock('../js/constants/constants')
 .dontMock('../config/skin.json')
 .dontMock('classnames');
@@ -13,6 +14,20 @@ var skinJson = require('../config/skin.json');
 var CONSTANTS = require('../js/constants/constants');
 
 var Html5Skin;
+
+var elementId = 'adrfgyi';
+var videoId = 'ag5dfdtooon2cncj714i';
+var videoElement = document.createElement('video');
+videoElement.className = "video";
+videoElement.id = videoId;
+videoElement.preload = "none";
+videoElement.src = "http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor";
+var persistentSettings = {"closedCaptionOptions":{"textColor":"Blue","backgroundColor":"Transparent","windowColor":"Yellow","windowOpacity":"0.3","fontType":"Proportional Serif","fontSize":"Medium","textEnhancement":"Shadow","enabled":true,"language":"unknown","backgroundOpacity":"0.2","textOpacity":"1"}};
+//setup document body for valid DOM elements
+document.body.innerHTML =
+  '<div id='+elementId+'>' +
+  '  <div class="oo-player-skin">' + videoElement + '</div>' +
+  '</div>';
 
 // Mock OO environment needed for skin plugin initialization
 OO = {
@@ -65,6 +80,7 @@ describe('Controller', function() {
     controller.state.pluginsElement = $('<div/>');
     controller.state.pluginsClickElement = $('<div/>');
     controller.state.mainVideoElement = mockDomElement;
+    controller.state.mainVideoElementContainer = mockDomElement;
     controller.skin = {
       state: {},
       updatePlayhead: function(currentPlayhead, duration, buffered, currentAdPlayhead) {
@@ -446,4 +462,81 @@ describe('Controller', function() {
 
   });
 
+  describe("Show player controls over ads", function() {
+    beforeEach(function(){
+      controller.state.elementId = elementId;
+      //setup original css values
+      var temp1 = $("#" + controller.state.elementId + " .oo-player-skin-plugins");
+      var temp2 = $("#" + controller.state.elementId + " .oo-player-skin-plugins-click-layer");
+      temp1.css("bottom", 10);
+      temp2.css("bottom", 10);
+    });
+
+    it('playerControlsOverAds = true  and no skin setting for adscreen overwrites css and showControlBar', function() {
+      var playerParam = {
+        playerControlsOverAds: true,
+      };
+      controller.state.playerParam = playerParam;
+      controller.createPluginElements();
+      //make sure showControlBar is overwritten
+      expect(controller.state.config.adScreen.showControlBar).toBe(true);
+      //make sure css for the plugin elements is overwritten
+      expect(controller.state.pluginsElement.css("bottom")).toBe("0px");
+      expect(controller.state.pluginsClickElement.css("bottom")).toBe("0px");
+    });
+
+    it('playerControlsOverAds = false doesn\'t overwrite the plugin element css', function() {
+      var playerParam = {
+        playerControlsOverAds: false,
+      };
+      controller.state.playerParam = playerParam;
+      controller.createPluginElements();
+      expect(controller.state.pluginsElement.css("bottom")).toBe("10px");
+      expect(controller.state.pluginsClickElement.css("bottom")).toBe("10px");
+    });
+
+   it('playerControlsOverAds = true  and skin set showControlBar to false should overwrite css and showControlBar', function() {
+      var playerParam = {
+        playerControlsOverAds: true,
+        skin: {
+          inline: {
+            adScreen: {
+              showControlBar: false
+            }
+          }
+        }
+      };
+      controller.state.playerParam = playerParam;
+      controller.state.elementId = elementId;
+      controller.state.config = {};
+      controller.state.config.adScreen = {};
+      controller.state.config.adScreen.showControlBar = false;
+      controller.createPluginElements();
+      expect(controller.state.config.adScreen.showControlBar).toBe(true);
+      expect(controller.state.pluginsElement.css("bottom")).toBe("0px");
+      expect(controller.state.pluginsClickElement.css("bottom")).toBe("0px");
+    });
+
+    it('playerControlsOverAds = true  and skin set showControlBar to true should overwrite css and showControlBar should be still true', function() {
+      var playerParam = {
+        playerControlsOverAds: true,
+        skin: {
+          inline: {
+            adScreen: {
+              showControlBar: true
+            }
+          }
+        }
+      };
+      controller.state.playerParam = playerParam;
+      controller.state.elementId = elementId;
+      controller.state.config = {};
+      controller.state.config.adScreen = {};
+      controller.state.config.adScreen.showControlBar = true;
+      controller.createPluginElements();
+      expect(controller.state.config.adScreen.showControlBar).toBe(true);
+      expect(controller.state.pluginsElement.css("bottom")).toBe("0px");
+      expect(controller.state.pluginsClickElement.css("bottom")).toBe("0px");
+    });
+  });
 });

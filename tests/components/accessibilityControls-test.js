@@ -11,7 +11,8 @@ describe('AccessibilityControls', function () {
       state: {
         accessibilityControlsEnabled: true
       },
-      togglePlayPause: function() {}
+      togglePlayPause: function() {},
+      moveVrToDirection: function() {}
     };
 
     var mockEvent = {
@@ -32,7 +33,8 @@ describe('AccessibilityControls', function () {
         }
       },
       togglePlayPause: function() {},
-      setVolume: function() {}
+      setVolume: function() {},
+      moveVrToDirection: function() {}
     };
 
     var mockEvent = {
@@ -53,7 +55,8 @@ describe('AccessibilityControls', function () {
         }
       },
       togglePlayPause: function() {},
-      setVolume: function() {}
+      setVolume: function() {},
+      moveVrToDirection: function() {}
     };
 
     var mockEvent = {
@@ -81,7 +84,8 @@ describe('AccessibilityControls', function () {
       togglePlayPause: function() {},
       setVolume: function() {},
       updateSeekingPlayhead: function() {},
-      seek: function() {}
+      seek: function() {},
+      moveVrToDirection: function() {}
     };
 
     var mockEvent = {
@@ -109,7 +113,8 @@ describe('AccessibilityControls', function () {
       togglePlayPause: function() {},
       setVolume: function() {},
       updateSeekingPlayhead: function() {},
-      seek: function() {}
+      seek: function() {},
+      moveVrToDirection: function() {}
     };
 
     var mockEvent = {

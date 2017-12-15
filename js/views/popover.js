@@ -5,7 +5,6 @@ var CONSTANTS = require('../constants/constants');
 var Popover = React.createClass({
 
   componentDidMount: function() {
-    this.onKeyDown = this.onKeyDown.bind(this);
     // We listen to the event on the document instead of the element in order to
     // allow closing the popover with ESC even when it doesn't have focus.
     document.addEventListener('keydown', this.onKeyDown);

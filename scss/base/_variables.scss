@@ -112,6 +112,7 @@ $cursor-disabled:                not-allowed !default;
 //
 $zindex-player-skin-plugins-blur:        -10000 !default;
 $zindex-closed-caption-overlay:              -1 !default;
+$zindex-color-item-focus:                    -1 !default;
 $zindex-playhead-padding:                     1 !default;
 $zindex-scrollbar:                         9999 !default;
 $VIDEO_Z_INDEX:                           10000 !default; //in core, here for bird's eye view tracking
@@ -135,6 +136,7 @@ $zindex-state-screen:                      1000 !default;
 $zindex-vr-controls:                       1001 !default;
 $zindex-up-next-panel:                     1002 !default;
 $zindex-unmute:                           19999 !default;
+$vr-animated-icons:                         998 !default;
 
 //// Form states and alerts
 ////
@@ -194,7 +196,7 @@ $unmute-transition: transition, width .5s ease-in-out;
 $watermark-margin: 15px;
 
 //vr controls sizes
-$vr-controls-size: 50px;
+$vr-controls-size: 56px;
 $vr-controls-substrate: 56px;
 $vr-substrate-diff: $vr-controls-substrate - $vr-controls-size;
 $vr-controls-move: $vr-controls-size / 4;

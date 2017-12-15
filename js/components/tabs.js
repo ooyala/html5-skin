@@ -1,6 +1,10 @@
 // taken from https://github.com/pedronauck/react-simpletabs
 
 var React = require('react'),
+    AccessibleButton = require('./accessibleButton'),
+    AccessibleMenu = require('./higher-order/accessibleMenu'),
+    CONSTANTS = require('../constants/constants'),
+    Utils = require('./utils'),
     ClassNames = require('classnames'),
     Icon = require('./icon');
 
@@ -72,36 +76,56 @@ var Tabs = React.createClass({
       .map(function(panel)  {return typeof panel === 'function' ? panel() : panel;})
       .filter(function(panel)  {return panel;})
       .map(function(panel, index)  {
-        var ref = ("tab-menu-" + (index + 1));
+        var tabIndex = index + 1;
+        var ref = ("tab-menu-" + tabIndex);
         var title = panel.props.title;
         var activeTabStyle = {};
+        var isSelected = this.state.tabActive === tabIndex;
 
         var classes = ClassNames(
           'tabs-menu-item',
-          this.state.tabActive === (index + 1) && 'is-active',
-          'tabs-menu-item-' + index
+          'tabs-menu-item-' + index, {
+            'is-active': isSelected
+          }
         );
 
         //accent color
-        if (this.state.tabActive === (index+1) && this.props.skinConfig.general.accentColor) {
+        if (isSelected && this.props.skinConfig.general.accentColor) {
           var activeMenuColor =  "solid ";
           activeMenuColor += this.props.skinConfig.general.accentColor;
           activeTabStyle = {borderBottom: activeMenuColor};
         }
 
         return (
-          <li ref={ref} key={index} className={classes}>
-            <a onClick={this.setActive.bind(this, index + 1)} style={activeTabStyle} onMouseOver={this.highlight} onMouseOut={this.removeHighlight}>
+          <li ref={ref} key={index} className={classes} role={CONSTANTS.ARIA_ROLES.PRESENTATION}>
+            <AccessibleButton
+              style={activeTabStyle}
+              className="tabs-menu-item-btn"
+              ariaLabel={title}
+              ariaSelected={isSelected}
+              role={CONSTANTS.ARIA_ROLES.TAB}
+              onClick={this.setActive.bind(this, tabIndex)}
+              onMouseOver={this.highlight}
+              onMouseOut={this.removeHighlight}
+              onFocus={this.onMenuItemFocus}>
               {title}
-            </a>
+            </AccessibleButton>
           </li>
         );
       }.bind(this));
 
     return (
-      <nav className='tabs-navigation' ref='tabsNavigation'>
-        <ul className='tabs-menu'>{menuItems}</ul>
-      </nav>
+      <div
+        className='tabs-navigation'
+        ref={function(e) { this.tabsNavigationElement = e }.bind(this)}
+        tabIndex="-1">
+        <ul
+          className='tabs-menu'
+          role={CONSTANTS.ARIA_ROLES.TAB_LIST}
+          aria-label={CONSTANTS.ARIA_LABELS.CAPTION_OPTIONS}>
+          {menuItems}
+        </ul>
+      </div>
     );
   },
 
@@ -110,20 +134,60 @@ var Tabs = React.createClass({
     var panel = this.props.children[index];
 
     return (
-      <article ref='tab-panel' className='tab-panel'>
+      <div ref='tab-panel' className='tab-panel' role={CONSTANTS.ARIA_ROLES.TAB_PANEL}>
         {panel}
-      </article>
+      </div>
     );
   },
 
   handleLeftChevronClick: function(event) {
     event.preventDefault();
-    this.refs.tabsNavigation.scrollLeft -= 30;
+    if (this.tabsNavigationElement) {
+      this.tabsNavigationElement.scrollLeft -= 30;
+    }
   },
 
   handleRightChevronClick: function(event) {
     event.preventDefault();
-    this.refs.tabsNavigation.scrollLeft += 30;
+    if (this.tabsNavigationElement) {
+      this.tabsNavigationElement.scrollLeft += 30;
+    }
+  },
+
+  onMenuItemFocus: function(event) {
+    if (event.currentTarget) {
+      this.scrollIntoViewIfNeeded(event.currentTarget);
+    }
+  },
+
+  /**
+   * Ensures that the given menu item is completely visible inside the tabs navigation.
+   * Adjusts the tabs navigation's scroll position when this is not the case.
+   * @private
+   * @param {HTMLElement} menuItem The menu item which we want to make sure is visible.
+   */
+  scrollIntoViewIfNeeded: function(menuItem) {
+    if (
+      !this.tabsNavigationElement ||
+      !menuItem ||
+      typeof menuItem.clientWidth === 'undefined'
+    ) {
+      return;
+    }
+    // Element is at a position that starts before the current navigation's scroll
+    // position. This will cause the element to be cut-off, so we set the scroll position
+    // to the value of the element's offset.
+    if (menuItem.offsetLeft < this.tabsNavigationElement.scrollLeft) {
+      this.tabsNavigationElement.scrollLeft = menuItem.offsetLeft;
+    } else {
+      var menuItemRightEdge = menuItem.offsetLeft + menuItem.clientWidth;
+      var maxVisiblePoint = this.tabsNavigationElement.scrollLeft + this.tabsNavigationElement.clientWidth;
+      // Element overflows from the currently visible navigation area. Adjust the
+      // navigation's scroll value so that the whole menu item fits inside the visible area.
+      if (menuItemRightEdge > maxVisiblePoint) {
+        this.tabsNavigationElement.scrollLeft += menuItemRightEdge - maxVisiblePoint;
+      }
+    }
   },
 
   render: function() {
@@ -142,13 +206,19 @@ var Tabs = React.createClass({
       <div className={className}>
         {this.getMenuItems()}
         {this.getSelectedPanel()}
-        <a className={leftScrollButton} ref="leftChevron" onClick={this.handleLeftChevronClick}>
+        <a className={leftScrollButton}
+          ref="leftChevron"
+          role={CONSTANTS.ARIA_ROLES.PRESENTATION}
+          onClick={this.handleLeftChevronClick}>
           <Icon
             {...this.props}
             icon="left"
           />
         </a>
-        <a className={rightScrollButton} ref="rightChevron" onClick={this.handleRightChevronClick}>
+        <a className={rightScrollButton}
+          ref="rightChevron"
+          role={CONSTANTS.ARIA_ROLES.PRESENTATION}
+          onClick={this.handleRightChevronClick}>
           <Icon
             {...this.props}
             icon="right"
@@ -158,6 +228,8 @@ var Tabs = React.createClass({
     );
   }
 });
+
+Tabs = AccessibleMenu(Tabs, { selector: '.tabs-menu', useRovingTabindex: true });
 
 Tabs.propTypes = {
   className: React.PropTypes.oneOfType([

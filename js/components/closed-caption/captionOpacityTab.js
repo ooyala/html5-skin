@@ -7,27 +7,24 @@ var React = require('react'),
 
 var CaptionOpacityTab = React.createClass({
 
-  changeTextOpacity: function(event) {
+  changeTextOpacity: function(value) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
-    var value = event.target.value;
     this.props.controller.onClosedCaptionChange('textOpacity', value);
   },
 
-  changeBackgroundOpacity: function(event) {
+  changeBackgroundOpacity: function(value) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
-    var value = event.target.value;
     this.props.controller.onClosedCaptionChange('backgroundOpacity', value);
   },
 
-  changeWindowOpacity: function(event) {
+  changeWindowOpacity: function(value) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
-    var value = event.target.value;
     this.props.controller.onClosedCaptionChange('windowOpacity', value);
   },
 
@@ -44,50 +41,56 @@ var CaptionOpacityTab = React.createClass({
 
     return(
       <div className="oo-caption-opacity-tab">
-        <div className="oo-caption-opacity-inner-wrapper">
+        <div
+          className="oo-caption-opacity-inner-wrapper"
+          aria-label={CONSTANTS.ARIA_LABELS.CAPTION_OPACITY_MENU}
+          role={CONSTANTS.ARIA_ROLES.MENU}>
           <SelectionContainer
             title={textOpacityTitle}
-            selectionText={this.percentString(this.props.closedCaptionOptions.textOpacity)}
-            >
+            selectionText={this.percentString(this.props.closedCaptionOptions.textOpacity)}>
             <Slider
               value={parseFloat(this.props.closedCaptionOptions.textOpacity)}
               onChange={this.changeTextOpacity}
-              className={"oo-slider oo-slider-caption-opacity"}
-              itemRef={"textOpacitySlider"}
-              minValue={"0"}
-              maxValue={"1"}
-              step={"0.1"}
-            />
+              className="oo-slider-caption-opacity"
+              itemRef="textOpacitySlider"
+              minValue={0}
+              maxValue={1}
+              step={0.1}
+              usePercentageForAria={true}
+              ariaLabel={textOpacityTitle}
+              settingName={textOpacityTitle}/>
           </SelectionContainer>
 
           <SelectionContainer
             title={backgroundOpacityTitle}
-            selectionText={this.percentString(this.props.closedCaptionOptions.backgroundOpacity)}
-            >
+            selectionText={this.percentString(this.props.closedCaptionOptions.backgroundOpacity)}>
             <Slider
               value={parseFloat(this.props.closedCaptionOptions.backgroundOpacity)}
               onChange={this.changeBackgroundOpacity}
-              className={"oo-slider oo-slider-caption-opacity"}
-              itemRef={"backgroundOpacitySlider"}
-              minValue={"0"}
-              maxValue={"1"}
-              step={"0.1"}
-            />
+              className="oo-slider-caption-opacity"
+              itemRef="backgroundOpacitySlider"
+              minValue={0}
+              maxValue={1}
+              step={0.1}
+              usePercentageForAria={true}
+              ariaLabel={backgroundOpacityTitle}
+              settingName={backgroundOpacityTitle}/>
           </SelectionContainer>
 
           <SelectionContainer
             title={windowOpacityTitle}
-            selectionText={this.percentString(this.props.closedCaptionOptions.windowOpacity)}
-            >
+            selectionText={this.percentString(this.props.closedCaptionOptions.windowOpacity)}>
             <Slider
               value={parseFloat(this.props.closedCaptionOptions.windowOpacity)}
               onChange={this.changeWindowOpacity}
-              className={"oo-slider oo-slider-caption-opacity"}
-              itemRef={"windowOpacitySlider"}
-              minValue={"0"}
-              maxValue={"1"}
-              step={"0.1"}
-            />
+              className="oo-slider-caption-opacity"
+              itemRef="windowOpacitySlider"
+              minValue={0}
+              maxValue={1}
+              step={0.1}
+              usePercentageForAria={true}
+              ariaLabel={windowOpacityTitle}
+              settingName={windowOpacityTitle}/>
           </SelectionContainer>
         </div>
       </div>

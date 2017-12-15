@@ -38,6 +38,11 @@ module.exports = {
     SOURCE: "ooyala-discovery"
   },
 
+  MENU_OPTIONS: {
+    VIDEO_QUALITY: "videoQualityOptions",
+    CLOSED_CAPTIONS: "closedCaptionOptions"
+  },
+
   SKIN_TEXT: {
     LEARN_MORE: "Learn More",
     CLOSED_CAPTION_PREVIEW: "CLOSED CAPTION PREVIEW",
@@ -118,30 +123,64 @@ module.exports = {
     REPLAY: "Replay",
     MUTE: "Mute",
     UNMUTE: "Unmute",
+    CLOSED_CAPTIONS: "Closed Captions",
     VIDEO_QUALITY: "Video Quality",
     AUTO_QUALITY: "Auto",
     FULLSCREEN: "Fullscreen",
     EXIT_FULLSCREEN: "Exit Fullscreen",
     SEEK_SLIDER: "Seek slider",
-    VOLUME_SLIDER: "Volume slider",
+    VOLUME_SLIDER: "Volume",
     VOLUME_PERCENT: MACROS.VOLUME + "% volume",
     TIME_DISPLAY: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME,
     TIME_DISPLAY_LIVE: "Live video",
     TIME_DISPLAY_DVR: MACROS.CURRENT_TIME + " of " + MACROS.TOTAL_TIME + " live video",
-    QUALITY_LEVEL: "Quality level " + MACROS.LEVEL + ", " + MACROS.QUALITY,
     CLOSE: "Close",
+    TOGGLE_CLOSED_CAPTIONS: "Toggle Closed Captions",
+    CAPTION_OPTIONS: "Closed Caption Options",
     STEREO_ON: "Stereoscopic",
-    STEREO_OFF: "Monoscopic"
+    STEREO_OFF: "Monoscopic",
+    MORE_OPTIONS: "More Options",
+    PREVIOUS_OPTIONS: "Previous Options",
+    SLIDER_VALUE_TEXT: MACROS.PERCENT + "% " + MACROS.SETTING,
+    LANGUAGE_MENU: "Language",
+    CAPTION_OPACITY_MENU: "Caption Opacity",
+    TEXT_COLOR_MENU: "Text Color",
+    BACKGROUND_COLOR_MENU: "Background Color",
+    WINDOW_COLOR_MENU: "Window Color",
+    FONT_TYPE_MENU: "Font Type",
+    FONT_SIZE_MENU: "Font Size",
+    TEXT_ENHANCEMENTS_MENU: "Text Enhancements"
   },
 
   ARIA_ROLES: {
+    PRESENTATION: "presentation",
     SLIDER: "slider",
     MENU: "menu",
     MENU_ITEM: "menuitem",
-    MENU_ITEM_RADIO: "menuitemradio"
+    MENU_ITEM_RADIO: "menuitemradio",
+    MENU_ITEM_CHECKBOX: "menuitemcheckbox",
+    CHECKBOX: "checkbox",
+    TAB_LIST: "tablist",
+    TAB: "tab",
+    TAB_PANEL: "tabpanel"
   },
 
   KEYBD_FOCUS_ID_ATTR: "data-focus-id",
+
+  FOCUS_IDS: {
+    PLAY_PAUSE: "playPause",
+    MUTE_UNMUTE: "muteUnmute",
+    STEREO: "stereo",
+    VIDEO_QUALITY: "videoQuality",
+    CLOSED_CAPTIONS: "closedCaptions",
+    FULLSCREEN: "fullscreen",
+    SCRUBBER_BAR: "scrubberBar",
+    VOLUME_CONTROLS: "volumeControls",
+    VOLUME_SLIDER: "volumeSlider",
+    QUALITY_LEVEL: "qualityLevel",
+    AUTO_QUALITY: "autoQuality",
+    CLOSE: "close"
+  },
 
   A11Y_CTRLS: {
     SEEK_DELTA: 5,
@@ -255,6 +294,31 @@ module.exports = {
 
   CLOSED_CAPTIONS: {
     NO_LANGUAGE: 'none'
+  },
+
+  QUALITY_SELECTION: {
+    FORMAT: {
+      RESOLUTION: "resolution",
+      BITRATE: "bitrate"
+    },
+    TEXT: {
+      RESOLUTION_BITRATE: MACROS.RESOLUTION + "p (" + MACROS.BITRATE + ")",
+      RESOLUTION_ONLY: MACROS.RESOLUTION + "p",
+      TIERED_RESOLUTION_ONLY: MACROS.RESOLUTION + "p (" + MACROS.RESOLUTION_TIER + ")",
+      BITRATE_ONLY: MACROS.BITRATE
+    }
+  },
+
+  RESOLUTION_TIER: {
+    TWO: [
+      "Low",
+      "High"
+    ],
+    THREE: [
+      "Low",
+      "Medium",
+      "High"
+    ]
   },
 
   ERROR_MESSAGE: {
@@ -407,5 +471,11 @@ module.exports = {
       name: "OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT",
       description: "Something happened while we were trying to play your video! Click replay or simply reload your page."
     }
+  },
+  THUMBNAIL: {
+    MAX_VR_THUMBNAIL_BG_WIDTH: 380,
+    MAX_VR_THUMBNAIL_CAROUSEL_BG_WIDTH: 320,
+    THUMBNAIL_VR_RATIO: 4,
+    THUMBNAIL_CAROUSEL_VR_RATIO: 3
   }
 };

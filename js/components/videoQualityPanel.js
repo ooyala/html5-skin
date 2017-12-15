@@ -6,6 +6,8 @@
 var React = require('react'),
     ScrollArea = require('react-scrollbar/dist/no-css'),
     ClassNames = require('classnames'),
+    AccessibleMenu = require('../components/higher-order/accessibleMenu'),
+    AccessibleButton = require('../components/accessibleButton'),
     Icon = require('../components/icon'),
     Utils = require('../components/utils'),
     MACROS = require('../constants/macros'),
@@ -15,7 +17,8 @@ var VideoQualityPanel = React.createClass({
 
   getInitialState: function() {
     return {
-      selected: this.props.videoQualityOptions.selectedBitrate ? this.props.videoQualityOptions.selectedBitrate.id : 'auto'
+      selected: this.props.videoQualityOptions.selectedBitrate ? this.props.videoQualityOptions.selectedBitrate.id : 'auto',
+      wideFormat: false
     };
   },
 
@@ -33,87 +36,6 @@ var VideoQualityPanel = React.createClass({
     });
   },
 
-  /**
-   * Keydown event handler. Implements arrow key navigation for menu items.
-   * TODO:
-   * Export this logic to a generic higher order component so that this is reusable
-   * by other menu components.
-   * @private
-   * @param {event} event The keyboard event object.
-   */
-  handleVideoQualityKeyDown: function(event) {
-    if (!event.target || !event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)) {
-      return;
-    }
-    switch (event.key) {
-      case CONSTANTS.KEY_VALUES.ARROW_UP:
-      case CONSTANTS.KEY_VALUES.ARROW_LEFT:
-        event.preventDefault();
-        this.focusOnMenuItemSibling(event.target, false);
-        break;
-      case CONSTANTS.KEY_VALUES.ARROW_DOWN:
-      case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
-        event.preventDefault();
-        this.focusOnMenuItemSibling(event.target, true);
-        break;
-      default:
-        break;
-    }
-  },
-
-  /**
-   * Finds the previous or next sibling of the given menu item and gives it focus.
-   * @private
-   * @param {Element} menuItem The menuItem element whose sibling we want to focus on.
-   * @param {Boolean} useNextSibling Choses the sibling next to menuItem when true and the previous one when false.
-   */
-  focusOnMenuItemSibling: function(menuItem, useNextSibling) {
-    var menuItemsList = [];
-    if (this.menuDomElement) {
-      menuItemsList = this.menuDomElement.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
-    }
-    if (!menuItemsList.length) {
-      return;
-    }
-    // Since these elements aren't actually next to each other in the DOM, their position
-    // relative to one another is implied from their tab order, which should be the same as
-    // the one returned by querySelectorAll as long as tabindex is set to 0 (which should be the case).
-    var siblingIndex = this.getMenuItemSiblingIndex(menuItemsList, menuItem, useNextSibling);
-    var menuItem = menuItemsList[siblingIndex];
-
-    if (menuItem && typeof menuItem.focus === 'function') {
-      menuItem.focus();
-    }
-  },
-
-  /**
-   * Gets the index of the previous or next menu item on the list relative to
-   * the given menu item. The returned index will loop around so that the previous sibling of
-   * the first element is the last element, and the next sibling of the last element is
-   * the first element.
-   * @private
-   * @param {NodeList} menuItemList An ordered list of elements that comprise a menu.
-   * @param {Element} menuItem The menu item whose sibling we want to find.
-   * @param {Boolean} useNextSibling Choses the sibling next to menuItem when true and the previous one when false.
-   * @return {Number} The index where the sibling menu items is located in the list, -1 if menuItem is absent from the list.
-   */
-  getMenuItemSiblingIndex: function (menuItemList, menuItem, useNextSibling) {
-    if (!menuItemList || !menuItemList.length) {
-      return -1;
-    }
-    var menuItemIndex = Array.prototype.indexOf.call(menuItemList, menuItem);
-    var siblingIndex = useNextSibling ? menuItemIndex + 1 : menuItemIndex - 1;
-    // Note that the code below will have the intended result even if
-    // menuItemIndex is -1
-    if (siblingIndex < 0) {
-      siblingIndex = menuItemList.length - 1;
-    }
-    if (siblingIndex >= menuItemList.length) {
-      siblingIndex = 0;
-    }
-    return siblingIndex;
-  },
-
   addAutoButton: function(bitrateButtons) {
     var isSelected = this.state.selected === 'auto';
     var autoQualityBtn = ClassNames({
@@ -125,16 +47,13 @@ var VideoQualityPanel = React.createClass({
     //add auto btn to beginning of array
     bitrateButtons.unshift(
       <li className="oo-auto-li" key='auto-li' role="presentation">
-        <button
-          type="button"
+        <AccessibleButton
           className={autoQualityBtn}
           key="auto"
-          data-focus-id="auto"
-          tabIndex="0"
-          role="menuitemradio"
-          aria-label={CONSTANTS.ARIA_LABELS.AUTO_QUALITY}
-          aria-checked={isSelected}
-          onMouseUp={Utils.blurOnMouseUp}
+          focusId={CONSTANTS.FOCUS_IDS.AUTO_QUALITY}
+          role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
+          ariaLabel={CONSTANTS.ARIA_LABELS.AUTO_QUALITY}
+          ariaChecked={isSelected}
           onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
           <span className="oo-quality-auto-icon" style={selectedBitrateStyle}>
             <Icon {...this.props} icon="auto" />
@@ -142,19 +61,52 @@ var VideoQualityPanel = React.createClass({
           <span className="oo-quality-auto-label" style={selectedBitrateStyle}>
             {CONSTANTS.SKIN_TEXT.AUTO_QUALITY}
           </span>
-        </button>
+        </AccessibleButton>
       </li>
     );
   },
 
-  render: function() {
+  addBitrateButtons: function(bitrateButtons) {
     var availableBitrates  = this.props.videoQualityOptions.availableBitrates;
-    var bitrateButtons = [];
     var isSelected = false;
     var label = '';
+    var availableResolution = null;
+    var availableBitrate = null;
+    var qualityTextFormat = this.props.skinConfig.controlBar && this.props.skinConfig.controlBar.qualitySelection &&
+                            this.props.skinConfig.controlBar.qualitySelection.format ?
+                            this.props.skinConfig.controlBar.qualitySelection.format : CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE;
+    var showResolution = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.RESOLUTION) >= 0;
+    var showBitrate = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE) >= 0;
+    var qualityText = null;
+    var ariaLabel = null;
+    var i = 0;
+    var resolutions = {};
+    var buttonCount = 0;
+
+    if (showResolution) {
+      //Group into buckets so we can assign quality tiers
+      for (i = 0; i < availableBitrates.length; i++) {
+        if (typeof availableBitrates[i].height === 'number') {
+          if (!resolutions[availableBitrates[i].height]) {
+            resolutions[availableBitrates[i].height] = [];
+          }
+          resolutions[availableBitrates[i].height].push(availableBitrates[i]);
+        }
+      }
+      //sort by ascending bitrate
+      for (var res in resolutions) {
+        if (resolutions.hasOwnProperty(res)) {
+          resolutions[res].sort(function(a, b) {
+            return a.bitrate - b.bitrate;
+          });
+        }
+      }
+    }
+
+    this.state.wideFormat = false;
 
     //available bitrates
-    for (var i = 0; i < availableBitrates.length; i++) {
+    for (i = 0; i < availableBitrates.length; i++) {
       isSelected = this.state.selected === availableBitrates[i].id;
 
       var qualityBtn = ClassNames({
@@ -166,32 +118,99 @@ var VideoQualityPanel = React.createClass({
       if (availableBitrates[i].id == 'auto') {
         this.addAutoButton(bitrateButtons);
       } else {
-        if (typeof availableBitrates[i].bitrate === 'number') {
-          label = Math.round(availableBitrates[i].bitrate/1000) + ' kbps';
-        } else {
-          label = availableBitrates[i].bitrate;
+        label = null;
+        availableResolution = null;
+        availableBitrate = null;
+        qualityText = null;
+        ariaLabel = null;
+
+        if (typeof availableBitrates[i].height === 'number') {
+          availableResolution = availableBitrates[i].height;
         }
-        var ariaLabel = CONSTANTS.ARIA_LABELS.QUALITY_LEVEL.replace(MACROS.LEVEL, i).replace(MACROS.QUALITY, label);
-        bitrateButtons.push(
-          <li key={i} role="presentation">
-            <button
-              key={i}
-              type="button"
-              className={qualityBtn}
-              style={selectedBitrateStyle}
-              data-focus-id={'quality' + i}
-              tabIndex="0"
-              role="menuitemradio"
-              aria-label={ariaLabel}
-              aria-checked={isSelected}
-              onMouseUp={Utils.blurOnMouseUp}
-              onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>
-              {label}
-            </button>
-          </li>
-        );
+
+        if (typeof availableBitrates[i].bitrate === 'number') {
+          var suffix = 'kbps';
+          availableBitrate = Math.round(availableBitrates[i].bitrate/1000);
+          if (availableBitrate >= 1000) {
+            availableBitrate = Math.round(availableBitrate/10) / 100;
+            suffix = 'mbps';
+          }
+          availableBitrate += ' ' + suffix;
+        } else {
+          availableBitrate = availableBitrates[i].bitrate;
+        }
+
+        if (showResolution && showBitrate && typeof availableResolution === 'number' && availableBitrate) {
+          qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_BITRATE;
+        } else if (showBitrate && availableBitrate) {
+          qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.BITRATE_ONLY;
+        } else if (showResolution && typeof availableResolution === 'number') {
+          qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY;
+        }
+
+        switch(qualityText) {
+          case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_BITRATE:
+            this.state.wideFormat = true;
+            label = qualityText.replace(MACROS.BITRATE, availableBitrate).replace(MACROS.RESOLUTION, availableResolution);
+            ariaLabel = label;
+            break;
+          case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY:
+            if (resolutions[availableResolution] && resolutions[availableResolution].length > 1) {
+              var sameResolutionLength = resolutions[availableResolution].length;
+              var tiering = null;
+              if (sameResolutionLength === 2) {
+                tiering = CONSTANTS.RESOLUTION_TIER.TWO;
+              } else if (sameResolutionLength >= 3) {
+                tiering = CONSTANTS.RESOLUTION_TIER.THREE;
+              }
+              if (tiering) {
+                //We want to use top 3 resolutions if we are using 3 resolution tiers
+                var resolutionIndex = resolutions[availableResolution].indexOf(availableBitrates[i]);
+                var extraResolutionLength = resolutions[availableResolution].length - tiering.length;
+                var trueResolutionIndex = resolutionIndex - extraResolutionLength;
+                if (trueResolutionIndex >= 0 && trueResolutionIndex < tiering.length) {
+                  this.state.wideFormat = true;
+                  qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.TIERED_RESOLUTION_ONLY;
+                  label = qualityText.replace(MACROS.RESOLUTION, availableResolution).replace(MACROS.RESOLUTION_TIER, tiering[trueResolutionIndex]);
+                }
+              }
+            } else {
+              label = qualityText.replace(MACROS.RESOLUTION, availableResolution);
+            }
+            ariaLabel = label;
+            break;
+          case CONSTANTS.QUALITY_SELECTION.TEXT.BITRATE_ONLY:
+            label = qualityText.replace(MACROS.BITRATE, availableBitrate);
+            ariaLabel = label;
+            break;
+        }
+
+        if (label) {
+          buttonCount++;
+          bitrateButtons.push(
+            <li key={buttonCount} role="presentation">
+              <AccessibleButton
+                key={buttonCount}
+                className={qualityBtn}
+                style={selectedBitrateStyle}
+                focusId={CONSTANTS.FOCUS_IDS.QUALITY_LEVEL + buttonCount}
+                role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
+                ariaLabel={ariaLabel}
+                ariaChecked={isSelected}
+                onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>
+                {label}
+              </AccessibleButton>
+            </li>
+          );
+        }
       }
     }
+  },
+
+  render: function() {
+    var bitrateButtons = [];
+
+    this.addBitrateButtons(bitrateButtons);
 
     var qualityScreenClass = ClassNames({
       'oo-content-panel': !this.props.popover,
@@ -200,17 +219,18 @@ var VideoQualityPanel = React.createClass({
       'oo-mobile-fullscreen': !this.props.popover && this.props.controller.state.isMobile && (this.props.controller.state.fullscreen || this.props.controller.state.isFullWindow)
     });
 
+    var screenContentClass = ClassNames({
+      'oo-quality-screen-content': true,
+      'oo-quality-screen-content-wide': this.state.wideFormat
+    });
+
     return (
-      <div
-        className={qualityScreenClass}
-        onKeyDown={this.handleVideoQualityKeyDown}>
+      <div className={qualityScreenClass}>
         <ScrollArea
-          className="oo-quality-screen-content"
+          className={screenContentClass}
           speed={this.props.popover ? 0.6 : 1}
           horizontal={!this.props.popover}>
-          <ul
-            ref={function(e) { this.menuDomElement = e; }.bind(this)}
-            role="menu">
+          <ul role="menu">
             {bitrateButtons}
           </ul>
         </ScrollArea>
@@ -218,6 +238,9 @@ var VideoQualityPanel = React.createClass({
     );
   }
 });
+
+// Extend with AccessibleMenu features
+VideoQualityPanel = AccessibleMenu(VideoQualityPanel);
 
 VideoQualityPanel.propTypes = {
   videoQualityOptions: React.PropTypes.shape({
@@ -238,6 +261,7 @@ VideoQualityPanel.propTypes = {
 
 VideoQualityPanel.defaultProps = {
   popover: false,
+  wideFormat: false,
   skinConfig: {
     icons: {
       quality:{fontStyleClass:'oo-icon oo-icon-topmenu-quality'}

@@ -21,12 +21,12 @@
 
   //Closed Caption Settings
   .captions-navbar {
-    margin-top:10px;
+    margin-top: 8px;
   }
   .tabs-menu {
     width: 685px;
   }
-  .tabs-menu-item a {
+  .tabs-menu-item .tabs-menu-item-btn {
     font-size: 15px;
   }
   .oo-left-tab-button-active {
@@ -162,5 +162,16 @@
 
   .oo-scrubber-carousel-container {
    bottom: 103px;
+  }
+
+  .oo-state-screen-vr {
+    &-bg {
+      width: 180px;
+      height: 180px;
+    }
+    &-icon {
+      top: -3px;
+      font-size: 100px;
+    }
   }
 }

@@ -11,21 +11,24 @@
   margin-right: 40px;
 }
 
-.tabs-menu-item a {
+.tabs-menu-item .tabs-menu-item-btn {
   border-bottom: 2px solid transparent;
   cursor: pointer;
   display: block;
   color: $white;
   font-family: $font-family-roboto-condensed-bold;
   font-size: 18px;
+  padding: 0 1px;
+  border: none;
+  background-color: transparent;
   @include vendor-prefixes (transition, 0.3s);
 }
 
-.tabs-menu-item.is-active a {
+.tabs-menu-item.is-active .tabs-menu-item-btn {
   border-bottom: 2px solid $blue-light;
 }
 
-.tabs-menu-item:not(.is-active) a:hover {
+.tabs-menu-item:not(.is-active) .tabs-menu-item-btn:hover {
   color:$blue-light;
   opacity: 0.7;
 }
@@ -38,8 +41,11 @@
 .tabs-navigation {
   width: 100%;
   margin: 0 auto;
+  padding: 2px 2px 0 2px;
   overflow-x: scroll;
   padding-bottom: 1000%;
+  position: relative;
+  outline: none;
 
   //override default scrollbar style
   .scrollarea-content{
@@ -84,8 +90,10 @@
 
 .oo-left-tab-button {
   display: none;
+  @include vendor-prefixes(user-select, none);
 }
 
 .oo-right-tab-button {
   display: none;
+  @include vendor-prefixes(user-select, none);
 }

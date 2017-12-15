@@ -1,6 +1,8 @@
 var React = require('react'),
     ClassNames = require('classnames'),
     Utils = require('../utils'),
+    AccessibleButton = require('../accessibleButton'),
+    AccessibleMenu = require('../higher-order/accessibleMenu'),
     CONSTANTS = require('../../constants/constants'),
     SelectionContainer = require('./selectionContainer');
 
@@ -40,24 +42,38 @@ var FontSizeTab = React.createClass({
       this.props.localizableStrings
     );
     var fontItems = [];
-    for(var i = 0; i < this.state.fontSizes.length; i++) {
+    for (var i = 0; i < this.state.fontSizes.length; i++) {
       //accent color
+      var isSelected = this.props.closedCaptionOptions.fontSize === this.state.fontSizes[i];
       var selectedFontSizeStyle = {};
-      if (this.props.closedCaptionOptions.enabled && this.props.skinConfig.general.accentColor && this.props.closedCaptionOptions.fontSize == this.state.fontSizes[i]) {
+      if (this.props.closedCaptionOptions.enabled && this.props.skinConfig.general.accentColor && isSelected) {
         selectedFontSizeStyle = {color: this.props.skinConfig.general.accentColor};
       }
+      var itemLabel = Utils.getLocalizedString(
+        this.props.language,
+        CONSTANTS.SKIN_TEXT[this.state.fontSizes[i].toUpperCase().replace(" ", "_")],
+        this.props.localizableStrings
+      );
 
       fontItems.push(
-      <a className="oo-font-size-container" onClick={this.changeFontSize.bind(this, this.state.fontSizes[i])} key={i}>
-        <div className={this.setClassname(this.state.fontSizes[i], "letter") + " oo-font-size-letter-" + this.state.fontSizes[i].replace(" ", "-")} style={selectedFontSizeStyle}>A</div>
-        <div className={this.setClassname(this.state.fontSizes[i], "label")} style={selectedFontSizeStyle} >{
-          Utils.getLocalizedString(
-            this.props.language,
-            CONSTANTS.SKIN_TEXT[this.state.fontSizes[i].toUpperCase().replace(" ", "_")],
-            this.props.localizableStrings
-          )
-        }</div>
-      </a>
+        <AccessibleButton
+          key={i}
+          className="oo-font-size-container"
+          ariaLabel={itemLabel}
+          ariaChecked={isSelected}
+          role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
+          onClick={this.changeFontSize.bind(this, this.state.fontSizes[i])} >
+          <span
+            className={this.setClassname(this.state.fontSizes[i], "letter") + " oo-font-size-letter-" + this.state.fontSizes[i].replace(" ", "-")}
+            style={selectedFontSizeStyle}>
+            A
+          </span>
+          <span
+            className={this.setClassname(this.state.fontSizes[i], "label")}
+            style={selectedFontSizeStyle}>
+            {itemLabel}
+          </span>
+        </AccessibleButton>
       );
     }
 
@@ -67,7 +83,8 @@ var FontSizeTab = React.createClass({
           <SelectionContainer
             title={fontSizeTitle}
             selectionText={fontSizeSelection}
-            >
+            ariaLabel={CONSTANTS.ARIA_LABELS.FONT_SIZE_MENU}
+            role={CONSTANTS.ARIA_ROLES.MENU}>
             {fontItems}
           </SelectionContainer>
         </div>
@@ -75,5 +92,25 @@ var FontSizeTab = React.createClass({
     );
   }
 });
+
+FontSizeTab = AccessibleMenu(FontSizeTab, { useRovingTabindex: true });
+
+FontSizeTab.propTypes = {
+  language: React.PropTypes.string,
+  localizableStrings: React.PropTypes.objectOf(React.PropTypes.objectOf(React.PropTypes.string)),
+  closedCaptionOptions: React.PropTypes.shape({
+    enabled:  React.PropTypes.bool,
+    fontSize: React.PropTypes.string,
+  }),
+  controller: React.PropTypes.shape({
+    toggleClosedCaptionEnabled: React.PropTypes.func.isRequired,
+    onClosedCaptionChange: React.PropTypes.func.isRequired
+  }),
+  skinConfig: React.PropTypes.shape({
+    general: React.PropTypes.shape({
+      accentColor: React.PropTypes.string
+    })
+  })
+};
 
 module.exports = FontSizeTab;

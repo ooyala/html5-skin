@@ -80,10 +80,13 @@ var Skin = React.createClass({
    */
   handleVrPlayerMouseDown: function(e) {
     if (this.props.controller.videoVr) {
+
+      var coords = Utils.getCoords(e);
+
       this.setState({
         isVrMouseDown: true,
-        xVrMouseStart: e.pageX,
-        yVrMouseStart: e.pageY
+        xVrMouseStart: coords.x,
+        yVrMouseStart: coords.y
       });
       if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
@@ -101,8 +104,11 @@ var Skin = React.createClass({
       this.setState({
         isVrMouseMove: true
       });
+
+      var coords = Utils.getCoords(e);
+
       if (typeof this.props.controller.onTouchMove === 'function') {
-        var params = this.getDirectionParams(e.pageX, e.pageY);
+        var params = this.getDirectionParams(coords.x, coords.y);
         this.props.controller.onTouchMove(params, true);
       }
     }
@@ -259,6 +265,7 @@ var Skin = React.createClass({
               componentHeight={this.state.componentHeight}
               videoQualityOptions={this.state.videoQualityOptions}
               closedCaptionOptions={this.props.closedCaptionOptions}
+              captionDirection={this.props.controller.captionDirection}
               ref="playScreen" />
           );
           break;
@@ -299,6 +306,7 @@ var Skin = React.createClass({
               responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}
+              captionDirection={this.props.controller.captionDirection}
               ref="pauseScreen"
             />
           );
@@ -378,8 +386,9 @@ var Skin = React.createClass({
             screen={CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN}
             screenClassName="oo-content-screen oo-content-screen-closed-captions"
             titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
+            autoFocus={this.state.closedCaptionOptions.autoFocus}
             closedCaptionOptions={this.props.closedCaptionOptions}
-            element={<OnOffSwitch {...this.props} />}
+            element={<OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_CLOSED_CAPTIONS} />}
             icon="cc">
             <ClosedCaptionPanel
               {...this.props}

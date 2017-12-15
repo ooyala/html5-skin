@@ -1,5 +1,6 @@
 jest.dontMock('../../js/views/playingScreen')
-  .dontMock('../../js/mixins/resizeMixin');
+  .dontMock('../../js/mixins/resizeMixin')
+  .dontMock('../../js/components/higher-order/accessibleMenu');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -22,6 +23,12 @@ describe('PlayingScreen', function () {
         },
         volumeState: {
           muted: false
+        },
+        config: {
+          isVrAnimationEnabled: {
+            vrNotification: true,
+            vrIcon: true
+          },
         }
       },
       togglePlayPause: function() {
@@ -77,6 +84,12 @@ describe('PlayingScreen', function () {
         viewingDirection: {yaw: 0, roll: 0, pitch: 0},
         volumeState: {
           muted: false
+        },
+        config: {
+          isVrAnimationEnabled: {
+            vrNotification: true,
+            vrIcon: true
+          },
         }
       },
       startHideControlBarTimer: function () {
@@ -135,6 +148,12 @@ describe('PlayingScreen', function () {
         },
         volumeState: {
           muted: false
+        },
+        config: {
+          isVrAnimationEnabled: {
+            vrNotification: true,
+            vrIcon: true
+          },
         }
       },
       togglePlayPause: function() {
@@ -171,6 +190,12 @@ describe('PlayingScreen', function () {
         },
         volumeState: {
           muted: false
+        },
+        config: {
+          isVrAnimationEnabled: {
+            vrNotification: true,
+            vrIcon: true
+          },
         }
       },
       startHideControlBarTimer: function() {
@@ -226,6 +251,12 @@ describe('PlayingScreen', function () {
         viewingDirection: {yaw: 0, roll: 0, pitch: 0},
         volumeState: {
           muted: false
+        },
+        config: {
+          isVrAnimationEnabled: {
+            vrNotification: true,
+            vrIcon: true
+          },
         }
       },
       startHideControlBarTimer: function() {
@@ -296,6 +327,12 @@ describe('PlayingScreen', function () {
         },
         volumeState: {
           muted: false
+        },
+        config: {
+          isVrAnimationEnabled: {
+            vrNotification: true,
+            vrIcon: true
+          },
         }
       },
       togglePlayPause: function(){
@@ -339,6 +376,12 @@ describe('PlayingScreen', function () {
         },
         volumeState: {
           muted: false
+        },
+        config: {
+          isVrAnimationEnabled: {
+            vrNotification: true,
+            vrIcon: true
+          },
         }
       },
       startHideControlBarTimer: function() {
@@ -373,6 +416,12 @@ describe('PlayingScreen', function () {
         },
         volumeState: {
           muted: false
+        },
+        config: {
+          isVrAnimationEnabled: {
+            vrNotification: true,
+            vrIcon: true
+          },
         }
       },
       startHideControlBarTimer: function() {
@@ -422,6 +471,12 @@ describe('PlayingScreen', function () {
         },
         volumeState: {
           muted: false
+        },
+        config: {
+          isVrAnimationEnabled: {
+            vrNotification: true,
+            vrIcon: true
+          },
         }
       },
       startHideControlBarTimer: function() {moved = true},
@@ -465,6 +520,12 @@ describe('PlayingScreen', function () {
         volumeState: {
           muted: true,
           mutingForAutoplay: true
+        },
+        config: {
+          isVrAnimationEnabled: {
+            vrNotification: true,
+            vrIcon: true
+          },
         }
       }
     };
@@ -487,6 +548,12 @@ describe('PlayingScreen', function () {
         volumeState: {
           muted: false,
           mutingForAutoplay: true
+        },
+        config: {
+          isVrAnimationEnabled: {
+            vrNotification: true,
+            vrIcon: true
+          }
         }
       }
     };

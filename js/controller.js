@@ -31,6 +31,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.accessibilityControls = null;
     this.videoVrSource = null;
     this.videoVr = false;
+    this.captionDirection = '';
+    this.isNewVrVideo = true;
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
@@ -74,6 +76,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoContainer": null,
       "mainVideoInnerWrapper": null,
       "mainVideoElement": null,
+      "mainVideoElementContainer": null, // TODO: Temporary workaround for PBW-6954
       "mainVideoMediaType": null,
       "mainVideoAspectRatio": 0,
       "pluginsElement": null,
@@ -97,7 +100,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "language": null,
         "availableLanguages": null,
         "cueText": null,
-        "showClosedCaptionPopover": false,
+        "showPopover": false,
+        "autoFocus": false,
         "textColor": null,
         "windowColor": null,
         "backgroundColor": null,
@@ -112,7 +116,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "videoQualityOptions": {
         "availableBitrates": null,
         "selectedBitrate": null,
-        "showVideoQualityPopover": false,
+        "showPopover": false,
         "autoFocus": false
       },
 
@@ -289,9 +293,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // identified with the ARIA label above. We set it to -1 in order to prevent actual keyboard focus
       this.state.mainVideoInnerWrapper.attr('tabindex', '-1');
 
-      if (!$('.oo-player-skin').length) {
+      if (!this.state.mainVideoInnerWrapper.children('.oo-player-skin').length) {
         this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
       }
+
+      this.state.mainVideoInnerWrapper.attr('style', '');
 
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
@@ -333,6 +339,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
 
       if (params.videoId === OO.VIDEO.MAIN) {
+        // [PBW-6954]
+        // We store mainVideoElementContainer as a temporary workaround in order to
+        // make sure that we don't leave the oo-blur class on the wrong element (since
+        // the skin can pick the container rather than the video due to a race condition).
+        // Note that this could end up being the video itself, but it shouldn't matter.
+        var videoElementContainer = params.videoElement;
+        if (videoElementContainer && videoElementContainer.length) {
+          videoElementContainer = videoElementContainer[0];
+        }
+        this.state.mainVideoElementContainer = videoElementContainer;
+
         this.state.mainVideoElement = videoElement;
         this.enableFullScreen();
         this.updateAspectRatio();
@@ -606,6 +623,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isInitialPlay = true;
       this.state.initialPlayHasOccurred = true;
       this.startHideControlBarTimer();
+      this.isNewVrVideo = true;
     },
 
     onVcPlay: function(event, source) {
@@ -622,7 +640,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.setClosedCaptionsLanguage();
-        this.state.mainVideoElement.classList.remove('oo-blur');
+        this.removeBlur();
         this.state.isInitialPlay = false;
         this.renderSkin();
       }
@@ -944,7 +962,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.adStartTime = 0;
         }
         this.skin.state.currentPlayhead = 0;
-        this.state.mainVideoElement.classList.remove('oo-blur');
+        this.removeBlur();
         this.renderSkin();
       }
     },
@@ -1127,14 +1145,39 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.configLoaded = true;
       this.renderSkin();
       this.createPluginElements();
+
+      if (typeof this.state.config.closedCaptionOptions === 'object' &&
+        this.state.config.closedCaptionOptions.language !== undefined) {
+        this.setCaptionDirection(this.state.config.closedCaptionOptions.language);
+      }
     },
 
     //create plugin container elements
     createPluginElements: function() {
-      var fullClass = (this.state.config.adScreen.showControlBar ? "" : " oo-full");
+      //if playerControlsOverAds is true then we need to override the setting
+      //for showing the control bar during ads.
+      if (this.state.playerParam && this.state.playerParam.playerControlsOverAds) {
+        if (this.state.config) {
+          this.state.config.adScreen = this.state.config.adScreen || {};
+          this.state.config.adScreen.showControlBar = true;
+        }
+      }
+
+      var fullClass = "";
+      if (!this.state.config || !this.state.config.adScreen || !this.state.config.adScreen.showControlBar) {
+        fullClass = " oo-full";
+      }
       $("#" + this.state.elementId + " .oo-player-skin").append("<div class='oo-player-skin-plugins"+fullClass+"'></div><div class='oo-player-skin-plugins-click-layer"+fullClass+"'></div>");
       this.state.pluginsElement = $("#" + this.state.elementId + " .oo-player-skin-plugins");
       this.state.pluginsClickElement = $("#" + this.state.elementId + " .oo-player-skin-plugins-click-layer");
+
+      //if playerControlsOverAds is true, then we need to set the size of the
+      //elements to be the full size of the player and not end where the control bar begins.
+      if (this.state.playerParam && this.state.playerParam.playerControlsOverAds) {
+        this.state.pluginsElement.css("bottom", 0);
+        this.state.pluginsClickElement.css("bottom", 0);
+      }
+
       this.state.pluginsElement.mouseover(
         function() {
           this.showControlBar();
@@ -1233,6 +1276,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //called when event listener triggered
     onFullscreenChanged: function() {
+
       if (this.state.isFullScreenSupported) {
         this.state.fullscreen = Fullscreen.isFullscreen;
       } else {
@@ -1250,14 +1294,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       // partial support, video element only (iOS)
       else if (this.state.isVideoFullScreenSupported) {
-        if(this.state.fullscreen) {
+        if (this.state.fullscreen) {
           this.state.mainVideoElement.webkitExitFullscreen();
         } else {
           this.state.mainVideoElement.webkitEnterFullscreen();
         }
-      }
-      // no support
-      else {
+      } else { // no support
         if(this.state.isFullWindow) {
           this.exitFullWindow();
         } else {
@@ -1498,6 +1540,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.mb.publish(OO.EVENTS.PLAY);
           break;
         case CONSTANTS.STATE.PLAYING:
+          this.isNewVrVideo = false;
           this.mb.publish(OO.EVENTS.PAUSE);
           break;
       }
@@ -1547,6 +1590,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleScreen: function(screen) {
+      this.isNewVrVideo = false;
       if (this.state.screenToShow == screen) {
         this.closeScreen();
       }
@@ -1622,19 +1666,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    toggleVideoQualityPopOver: function() {
-      this.state.videoQualityOptions.showVideoQualityPopover = !this.state.videoQualityOptions.showVideoQualityPopover;
-      this.renderSkin();
-    },
+    togglePopover: function(menu) {
+      var menuOptions = this.state[menu];
 
-    toggleClosedCaptionPopOver: function() {
-      this.state.closedCaptionOptions.showClosedCaptionPopover = !this.state.closedCaptionOptions.showClosedCaptionPopover;
-      this.renderSkin();
+      if (menuOptions) {
+        menuOptions.showPopover = !menuOptions.showPopover;
+        this.renderSkin();
+      }
     },
 
     closePopovers: function() {
-      this.state.closedCaptionOptions.showClosedCaptionPopover = false;
-      this.state.videoQualityOptions.showVideoQualityPopover = false;
+      this.state.closedCaptionOptions.showPopover = false;
+      this.state.videoQualityOptions.showPopover = false;
       this.renderSkin();
     },
 
@@ -1646,11 +1689,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           "videoQualityOptions": {
             "availableBitrates": this.state.videoQualityOptions.availableBitrates,
             "selectedBitrate": this.state.videoQualityOptions.selectedBitrate,
-            "showVideoQualityPopover":this.state.videoQualityOptions.showVideoQualityPopover
+            "showPopover": this.state.videoQualityOptions.showPopover
           }
         });
-      if(this.state.videoQualityOptions.showVideoQualityPopover == true) {
-        this.toggleVideoQualityPopOver();
+      if (this.state.videoQualityOptions.showPopover === true) {
+        this.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
       }
     },
 
@@ -1732,9 +1775,30 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.closedCaptionOptions[name] = this.state.persistentSettings.closedCaptionOptions[name] = value;
       if (name === 'language') {
         this.setClosedCaptionsLanguage();
+        this.setCaptionDirection(value);
       }
       this.renderSkin();
       this.mb.publish(OO.EVENTS.SAVE_PLAYER_SETTINGS, this.state.persistentSettings);
+    },
+
+    /**
+     * @description the function set direction for CC;
+     * if chosen language is right-to-left language set rtl as value for this.captionDirection
+     * else set this.captionDirection as ''
+     * @private
+     * @param languageCode
+     */
+    setCaptionDirection: function(languageCode) {
+      if (typeof languageCode === 'string' &&
+        languageCode.length === 2 &&
+        this.state.config.languageDirections !== null &&
+        typeof this.state.config.languageDirections === 'object') {
+        if (this.state.config.languageDirections[languageCode]) {
+          this.captionDirection = this.state.config.languageDirections[languageCode];
+        } else {
+          this.captionDirection = '';
+        }
+      }
     },
 
     /**
@@ -1933,7 +1997,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
       }
       return element;
+    },
+
+    removeBlur: function() {
+      if (this.state.mainVideoElement && this.state.mainVideoElement.classList) {
+        this.state.mainVideoElement.classList.remove('oo-blur');
+      }
+      // [PBW-6954]
+      // A race condition is causing the skin to pick the div container rather than
+      // the actual video element when VC_VIDEO_ELEMENT_CREATED is fired. As a temporary
+      // workaround, we remove the blur class from both the video element and it's container.
+      if (this.state.mainVideoElementContainer && this.state.mainVideoElementContainer.classList) {
+        this.state.mainVideoElementContainer.classList.remove('oo-blur');
+      }
     }
+
   };
 
   return Html5Skin;

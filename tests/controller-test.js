@@ -37,6 +37,7 @@ jest.dontMock('../js/controller');
 jest.dontMock('screenfull');
 jest.dontMock('../js/constants/constants');
 jest.dontMock('../js/components/utils');
+jest.dontMock('../js/components/higher-order/accessibleMenu');
 jest.dontMock('../config/skin');
 jest.dontMock('deepmerge');
 jest.dontMock('underscore');
@@ -114,7 +115,7 @@ OO = {
             languages: ['en','es']
           },
           cueText: null,
-          showClosedCaptionPopover: false,
+          showPopover: false,
           textColor: null,
           windowColor: null,
           backgroundColor: null,
@@ -235,7 +236,7 @@ OO = {
       closePopovers: function() {},
       setVolume: function(a) {},
       toggleMute: function(a) {},
-      toggleVideoQualityPopOver: function(a) {},
+      togglePopover: function(a) {},
       setClosedCaptionsInfo: function(a) {},
       setClosedCaptionsLanguage: function() {},
       displayMoreOptionsScreen: function(a) {},
@@ -304,11 +305,11 @@ OO = {
     Html5Skin.onThumbnailsFetched('customerUi', {thumb: 'nail'});
 
     Html5Skin.onVolumeChanged('customerUi', 0.5);
-    
+
     Html5Skin.onPlayheadTimeChanged('customerUi', 5, 10, 7, null, 'main');
     Html5Skin.onPlayheadTimeChanged('customerUi', 5, 0, 7, null, OO.VIDEO.ADS);
     Html5Skin.state.fullscreen = true;     Html5Skin.onPlayheadTimeChanged('customerUi', 5, 0, 7, null, 'child');
-    Html5Skin.state.fullscreen = false; 
+    Html5Skin.state.fullscreen = false;
     Html5Skin.onInitialPlay();
 
     Html5Skin.onPlaying('customerUi', OO.VIDEO.MAIN);
@@ -328,12 +329,12 @@ OO = {
     Html5Skin.state.upNextInfo.delayedSetEmbedCodeEvent = null;
     Html5Skin.state.fullscreen = true;     Html5Skin.onPlayed();
     Html5Skin.state.upNextInfo.delayedContentData = {clickedVideo: {embed_code: false}};
-    Html5Skin.state.fullscreen = false; 
+    Html5Skin.state.fullscreen = false;
     Html5Skin.onVcPlayed('customerUi', OO.VIDEO.MAIN);
 
     Html5Skin.onSeeked('customerUi');
     Html5Skin.onSeeked('customerUi');
-    Html5Skin.state.fullscreen = false; 
+    Html5Skin.state.fullscreen = false;
     Html5Skin.onPlaybackReady('customerUi');
 
     Html5Skin.onBuffering('customerUi');
@@ -494,8 +495,8 @@ OO = {
     Html5Skin.sendDiscoveryClickEvent({clickedVideo:{asset: true}}, false);
 
     Html5Skin.sendDiscoveryDisplayEventOld(CONSTANTS.SCREEN.DISCOVERY_SCREEN);
-    Html5Skin.toggleVideoQualityPopOver();
-    Html5Skin.toggleClosedCaptionPopOver();
+    Html5Skin.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
+    Html5Skin.togglePopover(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS);
     Html5Skin.closePopovers();
     Html5Skin.receiveVideoQualityChangeEvent(null, 312);
     Html5Skin.sendVideoQualityChangeEvent({id:2});
@@ -545,9 +546,9 @@ OO = {
     Html5Skin.startHideVolumeSliderTimer();
 
     Html5Skin.showControlBar();
-    
+
     Html5Skin.hideControlBar();
-    
+
     // test timer
     Html5Skin.cancelTimer();
     Html5Skin.cancelTimer.call({state: {timer: null}});
