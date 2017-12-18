@@ -33,6 +33,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.videoVr = false;
     this.captionDirection = '';
     this.isNewVrVideo = true;
+    this.vrMobileOrientationChecked = false;
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
@@ -334,9 +335,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    handleVrMobileOrientation: function(e) {
+      if (!this.vrMobileOrientationChecked) {
+        var beta = e.beta;
+        var yaw = this.state.vrViewingDirection["yaw"];
+        var pitch = this.state.vrViewingDirection["pitch"];
+        if (beta !== undefined && beta !== null && Utils.ensureNumber(beta, 0)) {
+          pitch += -90 + Math.round(beta);
+          var params = [yaw, 0, pitch];
+          this.onTouchMove(params);
+        }
+      }
+    },
+
     onClearVideoType: function(event, params) {
       this.videoVr = false;
       this.videoVrSource = null;
+      this.vrMobileOrientationChecked = false;
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -367,6 +382,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoElement = videoElement;
         this.enableFullScreen();
         this.updateAspectRatio();
+      }
+      if (this.videoVr) {
+        if (window.DeviceOrientationEvent) {
+          window.addEventListener('deviceorientation', this.handleVrMobileOrientation.bind(this), false);
+        }
       }
     },
 
@@ -635,6 +655,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.initialPlayHasOccurred = true;
       this.startHideControlBarTimer();
       this.isNewVrVideo = true;
+      if (this.videoVr) {
+        this.vrMobileOrientationChecked = true;
+      }
     },
 
     onVcPlay: function(event, source) {
