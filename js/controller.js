@@ -1564,6 +1564,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }
           break;
         case CONSTANTS.STATE.PAUSE:
+          this.isNewVrVideo = false;
           this.mb.publish(OO.EVENTS.PLAY);
           break;
         case CONSTANTS.STATE.PLAYING:
