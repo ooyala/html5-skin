@@ -312,9 +312,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
     },
 
+    /**
+     * Set style "touch-action: none" only for video 360 on mobile devices
+     * see details: https://stackoverflow.com/questions/42206645/konvajs-unable-to-preventdefault-inside-passive-event-listener-due-to-target-be
+     */
     setInlineStyles: function () {
       if(this.videoVr && this.state.isMobile) {
-        //https://stackoverflow.com/questions/42206645/konvajs-unable-to-preventdefault-inside-passive-event-listener-due-to-target-be
         this.state.mainVideoInnerWrapper.attr('style', 'touch-action: none');
       } else {
         this.state.mainVideoInnerWrapper.attr('style', '');
@@ -1421,7 +1424,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_VR, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi');
-      this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
