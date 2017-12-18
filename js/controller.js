@@ -296,7 +296,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
       }
 
-      this.state.mainVideoInnerWrapper.attr('style', '');
+      this.setInlineStyles();
 
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
@@ -312,8 +312,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
     },
 
+    /**
+     * Set style "touch-action: none" only for video 360 on mobile devices
+     * see details: https://stackoverflow.com/questions/42206645/konvajs-unable-to-preventdefault-inside-passive-event-listener-due-to-target-be
+     */
+    setInlineStyles: function () {
+      if (this.videoVr) {
+        if (this.state.isMobile) {
+          this.state.mainVideoInnerWrapper.attr('style', 'touch-action: none');
+        } else {
+          this.state.mainVideoInnerWrapper.attr('style', '');
+        }
+      }
+    },
+
     onSetVideoVr: function(event, params) {
       this.videoVr = true;
+      this.setInlineStyles();
       if (params) {
         this.videoVrSource = params.source || null; //if we need video vr params
       }
@@ -1270,7 +1285,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //called when event listener triggered
     onFullscreenChanged: function() {
-
       if (this.state.isFullScreenSupported) {
         this.state.fullscreen = Fullscreen.isFullscreen;
       } else {
@@ -1412,7 +1426,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_VR, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi');
-      this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
