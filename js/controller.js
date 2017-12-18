@@ -318,12 +318,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * see details: https://stackoverflow.com/questions/42206645/konvajs-unable-to-preventdefault-inside-passive-event-listener-due-to-target-be
      */
     setInlineStyles: function () {
-      if (this.videoVr) {
-        if (this.state.isMobile) {
-          this.state.mainVideoInnerWrapper.attr('style', 'touch-action: none');
-        } else {
-          this.state.mainVideoInnerWrapper.attr('style', '');
-        }
+      if (this.videoVr && this.state.isMobile) {
+        this.state.mainVideoInnerWrapper.attr('style', 'touch-action: none');
       }
     },
 
