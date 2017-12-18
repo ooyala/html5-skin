@@ -132,20 +132,11 @@ var PlayingScreen = React.createClass({
 
   handleTouchEnd: function(event) {
     event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
-
-    if(this.props.controller && this.props.controller.videoVr){
-      if (this.state.controlBarVisible || this.props.isVrMouseMove) {
-        this.setState({controlBarVisible: false});
-        this.props.controller.hideControlBar();
-      } else {
-        this.showControlBar(event);
-      }
-      this.props.handleVrPlayerClick();
-    } else {
-      if (!this.state.controlBarVisible){
-        this.showControlBar(event);
-        this.props.controller.startHideControlBarTimer();
-      }
+    if (!this.state.controlBarVisible){
+      this.showControlBar(event);
+      this.props.controller.startHideControlBarTimer();
+    }
+    else if (!this.props.controller.videoVr) {
       this.props.controller.togglePlayPause(event);
     }
   },
@@ -153,12 +144,7 @@ var PlayingScreen = React.createClass({
   handlePlayerMouseDown: function(e) {
 
     if (this.props.controller.videoVr) {
-      e.preventDefault();
       e.persist();
-    }
-
-    if(this.isMobile){
-      this.props.controller.startHideControlBarTimer();
     }
     this.props.handleVrPlayerMouseDown(e);
   },
