@@ -142,6 +142,7 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseDown: function(e) {
+
     if (this.props.controller.videoVr) {
       e.persist();
     }

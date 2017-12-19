@@ -33,6 +33,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.videoVr = false;
     this.captionDirection = '';
     this.isNewVrVideo = true;
+    this.vrMobileOrientationChecked = false;
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
@@ -296,7 +297,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
       }
 
-      this.state.mainVideoInnerWrapper.attr('style', '');
+      this.setInlineStyles();
 
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
@@ -312,16 +313,41 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
     },
 
+    /**
+     * Set style "touch-action: none" only for video 360 on mobile devices
+     * see details: https://stackoverflow.com/questions/42206645/konvajs-unable-to-preventdefault-inside-passive-event-listener-due-to-target-be
+     */
+    setInlineStyles: function () {
+      if (this.videoVr && this.state.isMobile) {
+        this.state.mainVideoInnerWrapper.attr('style', 'touch-action: none');
+      }
+    },
+
     onSetVideoVr: function(event, params) {
       this.videoVr = true;
+      this.setInlineStyles();
       if (params) {
         this.videoVrSource = params.source || null; //if we need video vr params
+      }
+    },
+
+    handleVrMobileOrientation: function(e) {
+      if (!this.vrMobileOrientationChecked) {
+        var beta = e.beta;
+        var yaw = this.state.vrViewingDirection["yaw"];
+        var pitch = this.state.vrViewingDirection["pitch"];
+        if (beta !== undefined && beta !== null && Utils.ensureNumber(beta, 0)) {
+          pitch += -90 + Math.round(beta);
+          var params = [yaw, 0, pitch];
+          this.onTouchMove(params);
+        }
       }
     },
 
     onClearVideoType: function(event, params) {
       this.videoVr = false;
       this.videoVrSource = null;
+      this.vrMobileOrientationChecked = false;
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -352,6 +378,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoElement = videoElement;
         this.enableFullScreen();
         this.updateAspectRatio();
+      }
+      if (this.videoVr) {
+        if (window.DeviceOrientationEvent) {
+          window.addEventListener('deviceorientation', this.handleVrMobileOrientation.bind(this), false);
+        }
       }
     },
 
@@ -620,6 +651,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.initialPlayHasOccurred = true;
       this.startHideControlBarTimer();
       this.isNewVrVideo = true;
+      if (this.videoVr) {
+        this.vrMobileOrientationChecked = true;
+      }
     },
 
     onVcPlay: function(event, source) {
@@ -1270,7 +1304,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //called when event listener triggered
     onFullscreenChanged: function() {
-
       if (this.state.isFullScreenSupported) {
         this.state.fullscreen = Fullscreen.isFullscreen;
       } else {
@@ -1412,7 +1445,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_VR, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi');
-      this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
@@ -1527,6 +1560,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }
           break;
         case CONSTANTS.STATE.PAUSE:
+          this.isNewVrVideo = false;
           this.mb.publish(OO.EVENTS.PLAY);
           break;
         case CONSTANTS.STATE.PLAYING:
