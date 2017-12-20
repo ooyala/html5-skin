@@ -335,7 +335,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @description
      * Should be used with deviceorientation event listener.
      * Uses for video 360 on mobile devices for setting necessary coordinates (relevant with start device orientation)
-     * @param e
+     * @param e - event
      */
     handleVrMobileOrientation: function(e) {
       if (!this.vrMobileOrientationChecked) {
@@ -411,7 +411,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     cleanUpEventListeners : function() {
-      this.accessibilityControls.cleanUp();
+      this.accessibilityControls.cleanUp()
     },
 
 
