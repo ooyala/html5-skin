@@ -27,7 +27,6 @@ AccessibilityControls.prototype = {
   cleanUp : function() {
     document.removeEventListener("keydown", this.keyEventDown);
     document.removeEventListener("keyup", this.keyEventUp);
-    document.removeEventListener("deviceorientation", this.controller.handleVrMobileOrientation);
   },
 
   keyEventDown: function(e) {
