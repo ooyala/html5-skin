@@ -34,6 +34,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.captionDirection = '';
     this.isNewVrVideo = true;
     this.vrMobileOrientationChecked = false;
+    this.handleVrMobileOrientation = this.handleVrMobileOrientation.bind(this);
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
