@@ -131,8 +131,10 @@ var ControlBar = React.createClass({
 
         if (this.vr.stereo) {
           this.setLandscapeScreenOrientation();
+          window.addEventListener("orientationchange", this.setLandscapeScreenOrientation, false);
         } else {
           this.unlockScreenOrientation();
+          window.removeEventListener("orientationchange", this.setLandscapeScreenOrientation);
         }
       }
     }
