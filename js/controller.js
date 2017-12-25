@@ -658,7 +658,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isInitialPlay = true;
       this.state.initialPlayHasOccurred = true;
       this.startHideControlBarTimer();
-      this.isNewVrVideo = true;
       if (this.videoVr) {
         this.vrMobileOrientationChecked = true;
       }
@@ -976,6 +975,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         width: ""
       });
       this.state.forceControlBarVisible = (this.state.pluginsElement.children().length > 0);
+      if (this.state.mainVideoPlayhead > 0) {
+        this.isNewVrVideo = false;
+      }
     },
 
     onAdPodStarted: function(event, numberOfAds) {
