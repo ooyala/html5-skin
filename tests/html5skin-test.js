@@ -44,6 +44,7 @@ OO = {
     MAIN: 'main'
   },
   init: function() {},
+  handleVrMobileOrientation: function() {},
   log: function() {},
   plugin: function(module, callback) {
     var plugin = callback(OO, _, $);

@@ -78,6 +78,7 @@ OO = {
   },
   log: function(a) {console.info(a);},
   init: function() {},
+  handleVrMobileOrientation: function() {},
   plugin: function(module, callback) {
     _ = require('underscore');
     $ = require('jquery');
