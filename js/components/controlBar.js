@@ -100,9 +100,11 @@ var ControlBar = React.createClass({
     evt.stopPropagation();
     evt.cancelBubble = true;
     evt.preventDefault();
-    this.props.controller.toggleFullscreen();
-    if (this.vr && this.isMobile && this.vr.stereo) {
-      this.toggleStereoVr();
+    if (this.props.controller) {
+      this.props.controller.toggleFullscreen();
+      if (this.vr && this.isMobile && this.props.controller.isVrStereo) {
+        this.toggleStereoVr();
+      }
     }
   },
 
@@ -129,7 +131,8 @@ var ControlBar = React.createClass({
           this.props.controller.toggleFullscreen();
         }
 
-        if (this.vr.stereo) {
+        if (this.props.controller.isVrStereo) {
+          this.props.controller.checkDeviceOrientation = true;
           this.setLandscapeScreenOrientation();
           window.addEventListener("orientationchange", this.setLandscapeScreenOrientation, false);
         } else {
@@ -178,7 +181,6 @@ var ControlBar = React.createClass({
 
   toggleStereoVr: function() {
     if (this.props.controller && typeof this.props.controller.toggleStereoVr === "function") {
-      this.vr.stereo = !this.vr.stereo;
       this.props.controller.toggleStereoVr();
     }
   },
@@ -439,7 +441,7 @@ var ControlBar = React.createClass({
     if (this.vr) {
       stereoIcon = "stereoOff";
       stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
-      if (this.vr.stereo) {
+      if (this.props.controller && this.props.controller.isVrStereo) {
         stereoIcon = "stereoOn";
         stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
       }
