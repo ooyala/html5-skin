@@ -1330,7 +1330,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       } else {
         this.toggleFullscreen();
       }
-
+      if (this.videoVr && this.state.isMobile && this.isVrStereo && !this.state.fullscreen) {
+        this.toggleStereoVr();
+      }
       this.renderSkin();
     },
 
