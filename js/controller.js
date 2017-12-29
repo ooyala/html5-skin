@@ -1358,7 +1358,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       this.state.fullscreen = !this.state.fullscreen;
       this.renderSkin();
-      console.log('BBB toggleFullscreen this.state.fullscreen', this.state.fullscreen);
     },
 
     // if fullscreen is not supported natively, "full window" style
