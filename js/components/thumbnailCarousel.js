@@ -11,11 +11,6 @@ var React = require('react'),
 
 var ThumbnailCarousel = React.createClass({
   getInitialState: function() {
-    this.positionY = 0;
-    this.positionX = -320;
-    this.imageWidth = 0;
-    this.thumbnailWidth = 0;
-    this.thumbnailHeight = 0;
     this.carouselPositionX = 0;
     this.carouselPositionY = 0;
     return {
@@ -202,8 +197,6 @@ ThumbnailCarousel.defaultProps = {
   vrViewingDirection: { yaw: 0, roll: 0, pitch: 0 },
   videoVr: false,
   fullscreen: false,
-  positionY: 0,
-  positionX: 0,
   imageWidth: 0
 };
 
@@ -223,8 +216,6 @@ ThumbnailCarousel.propTypes = {
   }),
   videoVr: React.PropTypes.bool,
   fullscreen: React.PropTypes.bool,
-  positionY: React.PropTypes.number,
-  positionX: React.PropTypes.number,
   imageWidth: React.PropTypes.number,
   setBgPositionVr: React.PropTypes.func,
   thumbnailCarouselWidth: React.PropTypes.number,
