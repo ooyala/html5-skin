@@ -79,10 +79,10 @@ var Skin = React.createClass({
    * @param e - event
    */
   handleVrPlayerMouseDown: function(e) {
+    if (this.props.controller && this.props.controller.isVrStereo) {
+      return;
+    }
     if (this.props.controller && this.props.controller.videoVr) {
-      if (this.props.controller.isVrStereo) {
-        return;
-      }
       var coords = Utils.getCoords(e);
 
       this.setState({
@@ -102,6 +102,9 @@ var Skin = React.createClass({
    * @param e - event
    */
   handleVrPlayerMouseMove: function(e) {
+    if (this.props.controller && this.props.controller.isVrStereo) {
+      return;
+    }
     if (this.props.controller && this.props.controller.videoVr && this.state.isVrMouseDown) {
       this.setState({
         isVrMouseMove: true
@@ -121,10 +124,10 @@ var Skin = React.createClass({
    * @description the function is called when we stop the rotation
    */
   handleVrPlayerMouseUp: function() {
+    if (this.props.controller && this.props.controller.isVrStereo) {
+      return;
+    }
     if (this.props.controller && this.props.controller.videoVr) {
-      if (this.props.controller.isVrStereo) {
-        return;
-      }
       this.setState({
         isVrMouseDown: false,
         xVrMouseStart: 0,
