@@ -79,7 +79,7 @@ var Skin = React.createClass({
    * @param e - event
    */
   handleVrPlayerMouseDown: function(e) {
-    if (this.props.controller.isVrStereo) {
+    if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
     if (this.props.controller && this.props.controller.videoVr) {
@@ -102,7 +102,7 @@ var Skin = React.createClass({
    * @param e - event
    */
   handleVrPlayerMouseMove: function(e) {
-    if (this.props.controller.isVrStereo) {
+    if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
     if (this.props.controller && this.props.controller.videoVr && this.state.isVrMouseDown) {
@@ -124,7 +124,7 @@ var Skin = React.createClass({
    * @description the function is called when we stop the rotation
    */
   handleVrPlayerMouseUp: function() {
-    if (this.props.controller.isVrStereo) {
+    if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
     if (this.props.controller && this.props.controller.videoVr) {
