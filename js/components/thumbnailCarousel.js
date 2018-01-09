@@ -14,7 +14,6 @@ var ThumbnailCarousel = React.createClass({
     this.positionY = 0;
     this.positionX = -320;
     this.imageWidth = 0;
-    this.imageHeight = 0;
     this.thumbnailWidth = 0;
     this.thumbnailHeight = 0;
     this.carouselPositionX = 0;
@@ -160,7 +159,6 @@ var ThumbnailCarousel = React.createClass({
   },
 
   render: function() {
-    var centralThumbnail = Utils.findThumbnail(this.props.thumbnails, this.props.hoverTime, this.props.duration, this.props.videoVr);
     var data = {
       thumbnails: this.props.thumbnails,
       timeSlices: this.props.thumbnails.data.available_time_slices,
@@ -169,34 +167,26 @@ var ThumbnailCarousel = React.createClass({
       centerWidth: this.state.centerThumbnailWidth,
       scrubberBarWidth: this.props.scrubberBarWidth,
       top: this.state.centerThumbnailHeight - this.state.thumbnailHeight,
-      pos: centralThumbnail.pos,
+      pos: this.props.centralThumbnail.pos,
       padding: this.state.thumbnailPadding
     };
 
     var thumbnailsBefore = this.findThumbnailsBefore(data);
     var thumbnailsAfter = this.findThumbnailsAfter(data);
     var thumbnailClassName = "oo-thumbnail-carousel-center-image";
-    var thumbnailStyle = {
-      left: (data.scrubberBarWidth - data.centerWidth) / 2
-    };
-    if (Utils.isValidString(centralThumbnail.url)) {
-      thumbnailStyle.backgroundImage = "url('" + centralThumbnail.url + "')";
-    }
 
     if (this.props.videoVr) {
-      thumbnailStyle.backgroundSize = this.props.imageWidth + "px " + this.props.imageHeight + "px";
-      thumbnailStyle.backgroundPosition = this.props.positionX + "px " + this.props.positionY + "px";
-      thumbnailStyle.repeat = "repeat no-repeat";
       thumbnailClassName += " oo-thumbnail-vr";
     }
 
-    var time = isFinite(parseInt(this.props.hoverTime)) ? Utils.formatSeconds(parseInt(this.props.hoverTime)) : null;
+    var thumbnailStyle = this.props.thumbnailStyle;
+    thumbnailStyle.left = (data.scrubberBarWidth - data.centerWidth) / 2;
 
     return (
       <div className="oo-scrubber-carousel-container">
         {thumbnailsBefore}
         <div className={thumbnailClassName} ref="thumbnail" style={thumbnailStyle}>
-          <div className="oo-thumbnail-carousel-time">{time}</div>
+          <div className="oo-thumbnail-carousel-time">{this.props.time}</div>
         </div>
         {thumbnailsAfter}
       </div>
@@ -214,14 +204,14 @@ ThumbnailCarousel.defaultProps = {
   fullscreen: false,
   positionY: 0,
   positionX: 0,
-  imageWidth: 0,
-  imageHeight: 0
+  imageWidth: 0
 };
 
 ThumbnailCarousel.propTypes = {
   onRef: React.PropTypes.func,
-  time: React.PropTypes.number,
+  time: React.PropTypes.string,
   thumbnails: React.PropTypes.object,
+  centralThumbnail: React.PropTypes.object,
   duration: React.PropTypes.number,
   hoverTime: React.PropTypes.number,
   scrubberBarWidth: React.PropTypes.number,
@@ -236,7 +226,6 @@ ThumbnailCarousel.propTypes = {
   positionY: React.PropTypes.number,
   positionX: React.PropTypes.number,
   imageWidth: React.PropTypes.number,
-  imageHeight: React.PropTypes.number,
   setBgPositionVr: React.PropTypes.func,
   thumbnailCarouselWidth: React.PropTypes.number,
   thumbnailCarouselHeight: React.PropTypes.number
