@@ -1,5 +1,6 @@
 jest
 .dontMock('../../js/components/volumeControls')
+.dontMock('../../js/components/slider')
 .dontMock('../../js/components/utils')
 .dontMock('../../js/constants/constants')
 .dontMock('../../config/skin.json')
@@ -22,7 +23,8 @@ describe('VolumeControls', function() {
         isMobile: false,
         volumeState: {
           volumeSliderVisible: false,
-          volume: 1.0
+          volume: 1.0,
+          muted: false
         }
       },
       setVolume: function(volume) {
@@ -148,6 +150,33 @@ describe('VolumeControls', function() {
       var volumeBar = volumeBars[i];
       expect(volumeBar.className).toEqual('oo-volume-bar');
     }
+  });
+
+  it('mobile volume slider should have correct value when not muted', function() {
+    mockCtrl.state.isMobile = true;
+    mockCtrl.state.volumeState.volume = 0.5;
+    mockCtrl.state.volumeState.volumeSliderVisible = true;
+
+    var DOM = TestUtils.renderIntoDocument(
+      <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
+    );
+
+    var volumeSlider = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-slider');
+    expect(volumeSlider.value).toEqual('0.5');
+  });
+
+  it('mobile volume slider should have value of 0 when muted', function() {
+    mockCtrl.state.isMobile = true;
+    mockCtrl.state.volumeState.volume = 0.5;
+    mockCtrl.state.volumeState.volumeSliderVisible = true;
+    mockCtrl.state.volumeState.muted = true;
+
+    var DOM = TestUtils.renderIntoDocument(
+      <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
+    );
+
+    var volumeSlider = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-slider');
+    expect(volumeSlider.value).toEqual('0');
   });
 
 });
