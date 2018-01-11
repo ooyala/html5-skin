@@ -39,7 +39,6 @@ var SharePanel = React.createClass({
 
   getActivePanel: function() {
     if (this.state.activeTab === this.tabs.SHARE) {
-      var titleString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION, this.props.localizableStrings);
       var socialContent = _.uniq(Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', []));
 
       var shareButtons = [];
@@ -62,7 +61,6 @@ var SharePanel = React.createClass({
 
       return (
         <div className="oo-share-tab-panel">
-          <div className="oo-social-action-text oo-text-capitalize">{titleString}</div>
           {shareButtons}
         </div>
       );
