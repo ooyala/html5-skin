@@ -174,7 +174,10 @@ var ThumbnailCarousel = React.createClass({
       thumbnailClassName += " oo-thumbnail-vr";
     }
 
-    var thumbnailStyle = this.props.thumbnailStyle;
+    var thumbnailStyle = {};
+    if (this.props.thumbnailStyle !== null && typeof this.props.thumbnailStyle === 'object') {
+      thumbnailStyle = this.props.thumbnailStyle;
+    }
     thumbnailStyle.left = (data.scrubberBarWidth - data.centerWidth) / 2;
 
     return (
@@ -205,6 +208,7 @@ ThumbnailCarousel.propTypes = {
   time: React.PropTypes.string,
   thumbnails: React.PropTypes.object,
   centralThumbnail: React.PropTypes.object,
+  thumbnailStyle: React.PropTypes.object,
   duration: React.PropTypes.number,
   hoverTime: React.PropTypes.number,
   scrubberBarWidth: React.PropTypes.number,
