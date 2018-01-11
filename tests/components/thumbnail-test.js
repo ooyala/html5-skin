@@ -133,13 +133,6 @@ describe('Thumbnail', function () {
       );
       var thumbnail = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail');
       var thumbnailTime = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail-time');
-      var hoverPosition = Utils.findThumbnail(thumbnails, hoverTime, duration).pos;
-      var node = ReactDOM.findDOMNode(DOM.refs.thumbnail);
-      if (hoverTime % 10 == 0) {
-        expect(node.style._values['background-image']).toBe("url("+thumbnails.data.thumbnails[hoverTime][width]["url"]+")");
-      } else {
-        expect(node.style._values['background-image']).toBe("url("+thumbnails.data.thumbnails[(hoverTime - 5).toString()][width]["url"]+")");
-      }
       expect(thumbnail.length).toBe(1);
       expect(thumbnailTime.length).toBe(1);
     }
