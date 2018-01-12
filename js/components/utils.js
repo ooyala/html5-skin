@@ -882,6 +882,24 @@ var Utils = {
 
     return coords;
   },
+
+  /**
+   * get mobile device orientation type
+   * @returns {string} - one of the following:
+   * "portrait-primary"
+   * "portrait-secondary" (portrait upside down)
+   * "landscape-primary"
+   * "landscape-secondary" (landscape upside down)
+   */
+  getOrientationType: function() {
+     var orientationType = window.screen.orientation;
+     if (orientationType && orientationType !== null && typeof orientationType === 'object') {
+       orientationType = orientationType.type;
+     } else {
+       orientationType = window.screen.mozOrientation || window.screen.msOrientation;
+     }
+     return orientationType;
+  }
 };
 
 module.exports = Utils;

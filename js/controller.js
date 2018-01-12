@@ -349,8 +349,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         var yaw = this.state.vrViewingDirection["yaw"];
         var pitch = this.state.vrViewingDirection["pitch"];
         var dir = beta;
-        var orientation = window.screen.orientation || window.screen.mozOrientation || window.screen.msOrientation;
-        if (orientation && orientation.type && (orientation.type === "landscape-secondary" || orientation.type === "landscape-primary")) {
+        var orientationType = Utils.getOrientationType();
+        if (orientationType && (orientationType === "landscape-secondary" || orientationType === "landscape-primary")) {
           dir = gamma;
         }
         if (dir !== undefined && dir !== null && Utils.ensureNumber(dir, 0)) {
