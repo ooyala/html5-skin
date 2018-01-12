@@ -36,6 +36,7 @@ var PlayingScreen = React.createClass({
   componentWillMount: function() {
     this.props.handleVrPlayerMouseUp();
   },
+
   componentDidMount: function () {
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen || this.browserSupportsTouch){

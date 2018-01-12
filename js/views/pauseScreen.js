@@ -28,6 +28,7 @@ var PauseScreen = React.createClass({
 
   componentDidMount: function() {
     this.handleResize();
+    this.hideVrPauseButton();
   },
 
   componentWillUnmount: function() {
@@ -52,6 +53,18 @@ var PauseScreen = React.createClass({
     this.props.controller.state.accessibilityControlsEnabled = true;
     this.props.controller.state.isClickedOutside = false;
     this.props.handleVrPlayerClick();
+  },
+
+  /**
+   * remove the button on pause screen for correct checking mouse movement
+   */
+  hideVrPauseButton: function() {
+    if (this.props.controller.videoVr) {
+      var pauseButton = document.getElementById('oo-pause-button');
+      setTimeout(function() {
+        pauseButton.style.display="none";
+      }, 1000);
+    }
   },
 
   handlePlayerMouseDown: function(e) {
@@ -194,6 +207,7 @@ var PauseScreen = React.createClass({
         </div>
 
         <button
+          id="oo-pause-button"
           type="button"
           className={actionIconClass}
           onClick={this.handleClick}
