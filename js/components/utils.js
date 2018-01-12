@@ -166,6 +166,94 @@ var Utils = {
   },
 
   /**
+   * Convenience function for base64 decoding.
+   *
+   * @function decode64
+   * @param {String} s The base64 encoded string to decode.
+   * @return {String} The String representing the decoded base64.
+   */
+  decode64: function(s) {
+    s = s.replace(/\n/g,"");
+    var results = "";
+    var j, i = 0;
+    var enc = [];
+    var b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+    //shortcut for browsers with atob
+    if (window.atob) {
+      return atob(s);
+    }
+
+    do {
+      for (j = 0; j < 4; j++) {
+        enc[j] = b64.indexOf(s.charAt(i++));
+      }
+      results += String.fromCharCode((enc[0] << 2) | (enc[1] >> 4),
+                                      enc[2] == 64 ? 0 : ((enc[1] & 15) << 4) | (enc[2] >> 2),
+                                      enc[3] == 64 ? 0 : ((enc[2] & 3) << 6) | enc[3]);
+    } while (i < s.length);
+
+    //trim tailing null characters
+    return results.replace(/\0/g, "");
+  },
+/**
+   * Returns a standard object containing fields required for discovery event data.
+
+   * @function getDiscoveryEventData
+   * @param {Number} assetPosition The position of the discovery asset in the carousel
+   * @param {Number} pageSize  The total number of discovery assets in the carousel shown
+   * @param {String} uiTag UI tag of the element that generated the discovery event
+   * @param {Object} asset Object containing the asset data, including embed code and context
+   * @param {Object} customData Object containing custom data for the discovery event
+   * @return {Object} An object with the discovery event data.
+   */
+  getDiscoveryEventData: function(assetPosition, pageSize, uiTag, asset, customData){
+    var assetData = { "embed_code" : asset.embed_code, 
+                      "idType" : CONSTANTS.DISCOVERY.ID_TYPE, 
+                      "ooyalaDiscoveryContext": this.getDiscoveryContext(asset)
+                    };
+    var eventData = { "customData" : customData,
+                      "asset" : assetData,
+                      "contentSource" : CONSTANTS.DISCOVERY.SOURCE,
+                      "assetPosition" : assetPosition, 
+                      "pageSize" : pageSize, 
+                      "uiTag" : uiTag
+                    };
+    return eventData;
+  },
+  
+  /**
+  * Gets the ooyalaDiscovery context for a discovery asset. If asset has bucket info instead of
+  * ooyalaDiscovery context, decode bucket info and convert to discovery context
+  *
+  * @function getDiscoveryContext
+  * @param {Object} discoveryAsset - The discovery asset data
+  * @returns {Object} This ooyala discovery context
+  */
+  getDiscoveryContext: function(discoveryAsset) {
+    if (discoveryAsset == null) 
+      return {};
+
+    // If a discovery context is already attached, no need to do any conversion
+    if (discoveryAsset.ooyalaDiscoveryContext != null)
+    {
+      return discoveryAsset.ooyalaDiscoveryContext;
+    }
+
+    if (discoveryAsset.bucket_info == null) 
+      return {};
+    
+    // Remove the first char that indicates the bucket number
+    var bucket_info = JSON.parse(discoveryAsset.bucket_info.substring(1));
+
+    // Decode the Base64 data and parse as JSON
+    var bucket_decode = JSON.parse(Utils.decode64(bucket_info.encoded));
+
+    // Return the new context with converted bucket info
+    return { "version": "1", "data": bucket_decode };
+  },
+
+  /**
   * Trims the given text to fit inside of the given element, truncating with ellipsis.
   *
   * @function truncateTextToWidth

@@ -6,6 +6,7 @@
 var React = require('react'),
     ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
+    Utils = require('./utils'),
     CONSTANTS = require('../constants/constants'),
     CountDownClock = require('./countDownClock'),
     DiscoverItem = require('./discoverItem'),
@@ -19,7 +20,8 @@ var DiscoveryPanel = React.createClass({
     return {
       showDiscoveryCountDown: this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen || this.props.forceCountDownTimer,
       currentPage: 1,
-      componentHeight: null
+      componentHeight: null,
+      shownAssets: -1
     };
   },
 
@@ -54,9 +56,15 @@ var DiscoveryPanel = React.createClass({
   },
 
   handleDiscoveryContentClick: function(index) {
+    var currentViewSize = this.props.responsiveView;
+    var videosPerPage = this.props.videosPerPage[currentViewSize];
+    var assetPosition = (index % videosPerPage) + 1;
+    var asset = this.props.discoveryData.relatedVideos[index];
+    var customData = {"source": CONSTANTS.SCREEN.DISCOVERY_SCREEN, "autoplay": false};
     var eventData = {
-      "clickedVideo": this.props.discoveryData.relatedVideos[index],
-      "custom": this.props.discoveryData.custom
+      "clickedVideo": asset,
+      "custom": this.props.discoveryData.custom,
+      "metadata" : Utils.getDiscoveryEventData(assetPosition, videosPerPage, CONSTANTS.UI_TAG.DISCOVERY, asset, customData)
     };
     // TODO: figure out countdown value
     // eventData.custom.countdown = 0;
@@ -97,7 +105,15 @@ var DiscoveryPanel = React.createClass({
     var startAt = videosPerPage * (this.state.currentPage - 1);
     var endAt = videosPerPage * this.state.currentPage;
     var relatedVideoPage = relatedVideos.slice(startAt, endAt);
-
+    var position = 1;
+    // Send impression events for each discovery asset shown
+    for (var i = startAt; i < endAt; i++){
+      if (i > this.state.shownAssets && i < relatedVideos.length){
+        this.props.controller.sendDiscoveryDisplayEvent(position, videosPerPage, CONSTANTS.UI_TAG.DISCOVERY, relatedVideos[i], {});
+        this.state.shownAssets++;
+        position++;
+      }
+    }
     // discovery content
     var discoveryContentName = ClassNames({
       'oo-discovery-content-name': true,
@@ -183,7 +199,8 @@ DiscoveryPanel.propTypes = {
     icons: React.PropTypes.objectOf(React.PropTypes.object)
   }),
   controller: React.PropTypes.shape({
-    sendDiscoveryClickEvent: React.PropTypes.func
+    sendDiscoveryClickEvent: React.PropTypes.func,
+    sendDiscoveryDisplayEvent: React.PropTypes.func
   })
 };
 
@@ -221,7 +238,10 @@ DiscoveryPanel.defaultProps = {
     relatedVideos: []
   },
   controller: {
-    sendDiscoveryClickEvent: function(a,b){}
+    sendDiscoveryClickEvent: function(a,b){},
+    sendDiscoveryDisplayEvent: function(a,b,c,d,e){}
+
+
   },
   responsiveView: 'md'
 };
