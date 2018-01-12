@@ -59,7 +59,6 @@ describe('SharePanel', function () {
         var shareTab = tabs[0];
         expect(shareTab.textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
         TestUtils.Simulate.click(shareTab);
-        expect(shareTabPanel.textContent).toContain(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION]);
 
         //test social links
         var twitter = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-twitter');
@@ -97,7 +96,6 @@ it('tests share email option when device is ios and browser is safari', function
       var shareTab = tabs[0];
       expect(shareTab.textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
       TestUtils.Simulate.click(shareTab);
-      expect(shareTabPanel.textContent).toContain(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION]);
 
       var emailShare = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-email-share');
       OO = {};
@@ -130,7 +128,6 @@ it('tests share email option when device is ios and browser is chrome', function
       var shareTab = tabs[0];
       expect(shareTab.textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
       TestUtils.Simulate.click(shareTab);
-      expect(shareTabPanel.textContent).toContain(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE_CALL_TO_ACTION]);
 
       var emailShare = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-email-share');
 
@@ -157,9 +154,11 @@ it('tests conditional rendering of social share buttons', function () {
   TestUtils.Simulate.click(twitter);
   TestUtils.Simulate.click(facebook);
 
-  var buttons = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel').props.children[1];
+  var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel');
+  var buttons = shareTabPanel.childNodes;
+
   var childClasses = _.map(buttons, function(child) {
-    return child.props.className;
+    return child.className;
   });
   expect(childClasses).toEqual(['oo-twitter', 'oo-facebook']);
 });
