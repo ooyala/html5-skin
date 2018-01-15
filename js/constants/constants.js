@@ -46,7 +46,6 @@ module.exports = {
     OFF: "Off",
     DISCOVER: "Discover",
     UP_NEXT: "Up next",
-    SHARE_CALL_TO_ACTION: "Invest In Social Change",
     START_AT: "Start at",
     EMBED: "Embed",
     EMAIL: "Email",

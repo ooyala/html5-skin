@@ -144,10 +144,11 @@ var VolumeControls = React.createClass({
    * Renders the volume slider that is shown on mobile web.
    */
   renderVolumeSlider: function() {
+    var volume = this.props.controller.state.volumeState.muted ? 0 : parseFloat(this.props.controller.state.volumeState.volume);
     return (
       <div className="oo-volume-slider">
         <Slider
-          value={parseFloat(this.props.controller.state.volumeState.volume)}
+          value={volume}
           className="oo-slider-volume"
           itemRef="volumeSlider"
           role="presentation"
