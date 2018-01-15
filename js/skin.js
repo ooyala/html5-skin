@@ -247,6 +247,17 @@ var Skin = React.createClass({
               isInitializing={false} />
           );
           break;
+        case CONSTANTS.SCREEN.START_LOADING_SCREEN:
+          screen = (
+            <StartScreen
+              {...this.props}
+              componentWidth={this.state.componentWidth}
+              contentTree={this.state.contentTree}
+              isInitializing={false}
+              showSpinner={true}
+            />
+          );
+          break;
         case CONSTANTS.SCREEN.PLAYING_SCREEN:
           screen = (
             <PlayingScreen
