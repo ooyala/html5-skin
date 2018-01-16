@@ -20,6 +20,9 @@ var PauseScreen = React.createClass({
   mixins: [ResizeMixin, AnimateMixin],
 
   getInitialState: function() {
+    this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
+    this.handlePlayerMouseUp = this.handlePlayerMouseUp.bind(this);
+
     return {
       descriptionText: this.props.contentTree.description,
       controlBarVisible: true
@@ -29,10 +32,16 @@ var PauseScreen = React.createClass({
   componentDidMount: function() {
     this.handleResize();
     this.hideVrPauseButton();
+    document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
+    document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
+    document.addEventListener('mouseup', this.handlePlayerMouseUp, false);
   },
 
   componentWillUnmount: function() {
     this.props.controller.enablePauseAnimation();
+    document.removeEventListener('mousemove', this.handlePlayerMouseMove);
+    document.removeEventListener('touchmove', this.handlePlayerMouseMove);
+    document.removeEventListener('mouseup', this.handlePlayerMouseUp);
   },
 
   handleResize: function() {
@@ -75,21 +84,18 @@ var PauseScreen = React.createClass({
     this.props.controller.state.isClickedOutside = false;
     this.props.handleVrPlayerMouseDown(e);
   },
+
   handlePlayerMouseMove: function(e) {
     if (this.props.controller.videoVr) {
       e.preventDefault();
-      e.persist();
     }
     this.props.handleVrPlayerMouseMove(e);
   },
+
   handlePlayerMouseUp: function(e) {
     e.stopPropagation(); // W3C
     e.cancelBubble = true; // IE
     this.props.handleVrPlayerMouseUp();
-  },
-
-  handlePlayerMouseLeave: function() {
-    this.props.handleVrPlayerMouseLeave()
   },
 
   /**
@@ -194,9 +200,6 @@ var PauseScreen = React.createClass({
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
           onMouseUp={this.handlePlayerMouseUp}
-          onMouseMove={this.handlePlayerMouseMove}
-          onTouchMove={this.handlePlayerMouseMove}
-          onMouseLeave={this.handlePlayerMouseLeave}
         />
 
         <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>

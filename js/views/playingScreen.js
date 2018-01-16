@@ -24,6 +24,8 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
+    this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
+    this.handlePlayerMouseUp = this.handlePlayerMouseUp.bind(this);
 
     return {
       controlBarVisible: true,
@@ -38,6 +40,9 @@ var PlayingScreen = React.createClass({
   },
 
   componentDidMount: function () {
+    document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
+    document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
+    document.addEventListener('mouseup', this.handlePlayerMouseUp, false);
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen || this.browserSupportsTouch){
       this.props.controller.startHideControlBarTimer();
@@ -66,6 +71,9 @@ var PlayingScreen = React.createClass({
 
   componentWillUnmount: function () {
     this.props.controller.cancelTimer();
+    document.removeEventListener('mousemove', this.handlePlayerMouseMove);
+    document.removeEventListener('touchmove', this.handlePlayerMouseMove);
+    document.removeEventListener('mouseup', this.handlePlayerMouseUp);
   },
 
   /**
@@ -146,7 +154,6 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseDown: function(e) {
-
     if (this.props.controller.videoVr) {
       e.persist();
     }
@@ -156,7 +163,6 @@ var PlayingScreen = React.createClass({
   handlePlayerMouseMove: function(e) {
     if (this.props.controller.videoVr) {
       e.preventDefault();
-      e.persist();
     }
 
     if(!this.isMobile && this.props.fullscreen) {
@@ -179,10 +185,6 @@ var PlayingScreen = React.createClass({
     }
     this.props.handleVrPlayerMouseUp();
     // for mobile, touch is handled in handleTouchEnd
-  },
-
-  handlePlayerMouseLeave: function () {
-    this.props.handleVrPlayerMouseLeave();
   },
 
   handlePlayerClicked: function (event) {
@@ -304,10 +306,6 @@ var PlayingScreen = React.createClass({
         className="oo-state-screen-selectable"
         onMouseDown={this.handlePlayerMouseDown}
         onTouchStart={this.handlePlayerMouseDown}
-        onMouseUp={this.handlePlayerMouseUp}
-        onMouseMove={this.handlePlayerMouseMove}
-        onTouchMove={this.handlePlayerMouseMove}
-        onMouseLeave={this.handlePlayerMouseLeave}
         onTouchEnd={this.handleTouchEnd}
         onClick={this.handlePlayerClicked}
         onFocus={this.handlePlayerFocus}

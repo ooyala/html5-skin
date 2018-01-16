@@ -141,18 +141,6 @@ var Skin = React.createClass({
 
   /**
    * @public
-   * @description set isVrMouseDown to false for mouseleave event
-   */
-  handleVrPlayerMouseLeave: function () {
-    if (this.props.controller.videoVr) {
-      this.setState({
-        isVrMouseDown: false,
-      });
-    }
-  },
-
-  /**
-   * @public
    * @description set isVrMouseMove to false for click event
    */
   handleVrPlayerClick: function () {
@@ -265,7 +253,6 @@ var Skin = React.createClass({
               handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
               handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
               handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
-              handleVrPlayerMouseLeave={this.handleVrPlayerMouseLeave}
               handleVrPlayerClick={this.handleVrPlayerClick}
               handleVrPlayerFocus={this.handleVrPlayerFocus}
               isVrMouseMove={this.state.isVrMouseMove}
@@ -309,7 +296,6 @@ var Skin = React.createClass({
               handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
               handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
               handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
-              handleVrPlayerMouseLeave={this.handleVrPlayerMouseLeave}
               handleVrPlayerClick={this.handleVrPlayerClick}
               isVrMouseMove={this.state.isVrMouseMove}
               contentTree={this.state.contentTree}
