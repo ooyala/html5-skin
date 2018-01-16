@@ -12,7 +12,6 @@ describe('PlayingScreen', function () {
   var handleVrPlayerMouseUp = function() {};
   it('creates a PlayingScreen and checks mouseMove, mouseUp without video360', function () {
     var isMoved = false
-      , isPlayPause = false
       , isTouched = false;
     var mockController = {
       videoVr: false,
@@ -31,9 +30,6 @@ describe('PlayingScreen', function () {
             vrIcon: true
           },
         }
-      },
-      togglePlayPause: function() {
-        isPlayPause = true;
       },
       startHideControlBarTimer: function() {
         isMoved = true;
@@ -66,9 +62,6 @@ describe('PlayingScreen', function () {
 
     TestUtils.Simulate.mouseMove(screen[0]);
     expect(isMoved).toBe(false);
-
-    TestUtils.Simulate.mouseUp(screen[0]);
-    expect(isPlayPause).toBe(true);
   });
 
   it('creates a PlayingScreen and checks mouseDown, mouseUp with video360', function() {
