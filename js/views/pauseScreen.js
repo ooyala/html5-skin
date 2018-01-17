@@ -20,9 +20,6 @@ var PauseScreen = React.createClass({
   mixins: [ResizeMixin, AnimateMixin],
 
   getInitialState: function() {
-    this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
-    this.handlePlayerMouseUp = this.handlePlayerMouseUp.bind(this);
-
     return {
       descriptionText: this.props.contentTree.description,
       controlBarVisible: true
