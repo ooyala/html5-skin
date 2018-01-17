@@ -603,6 +603,13 @@ OO = {
         expect(Html5Skin.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
       });
 
+      it('test start screen is shown on playback ready and autoplay param is set', function() {
+        Html5Skin.state.afterOoyalaAd = false;
+        Html5Skin.state.initialPlayHasOccurred = false;
+        Html5Skin.onPlaybackReady('customerUi', null, {willAutoplay: true});
+        expect(Html5Skin.state.screenToShow).toBe(CONSTANTS.SCREEN.START_LOADING_SCREEN);
+      });
+
       it('test loading screen is shown on playback ready after an Ooyala ad', function() {
         Html5Skin.state.afterOoyalaAd = true;
         Html5Skin.onPlaybackReady('customerUi');

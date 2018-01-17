@@ -24,8 +24,6 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
-    this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
-    this.handlePlayerMouseUp = this.handlePlayerMouseUp.bind(this);
 
     return {
       controlBarVisible: true,
