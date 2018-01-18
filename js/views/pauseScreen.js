@@ -68,7 +68,9 @@ var PauseScreen = React.createClass({
     if (this.props.controller.videoVr) {
       var pauseButton = document.getElementById('oo-pause-button');
       setTimeout(function() {
-        pauseButton.style.display="none";
+        if (pauseButton) {
+          pauseButton.style.display="none";
+        }
       }, 1000);
     }
   },
