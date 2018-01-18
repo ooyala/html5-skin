@@ -79,8 +79,10 @@ var Skin = React.createClass({
    * @param e - event
    */
   handleVrPlayerMouseDown: function(e) {
-    if (this.props.controller.videoVr) {
-
+    if (this.props.controller && this.props.controller.isVrStereo) {
+      return;
+    }
+    if (this.props.controller && this.props.controller.videoVr) {
       var coords = Utils.getCoords(e);
 
       this.setState({
@@ -100,7 +102,10 @@ var Skin = React.createClass({
    * @param e - event
    */
   handleVrPlayerMouseMove: function(e) {
-    if (this.props.controller.videoVr && this.state.isVrMouseDown) {
+    if (this.props.controller && this.props.controller.isVrStereo) {
+      return;
+    }
+    if (this.props.controller && this.props.controller.videoVr && this.state.isVrMouseDown) {
       this.setState({
         isVrMouseMove: true
       });
@@ -119,6 +124,9 @@ var Skin = React.createClass({
    * @description the function is called when we stop the rotation
    */
   handleVrPlayerMouseUp: function() {
+    if (this.props.controller && this.props.controller.isVrStereo) {
+      return;
+    }
     if (this.props.controller && this.props.controller.videoVr) {
       this.setState({
         isVrMouseDown: false,
@@ -128,18 +136,6 @@ var Skin = React.createClass({
       if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
       }
-    }
-  },
-
-  /**
-   * @public
-   * @description set isVrMouseDown to false for mouseleave event
-   */
-  handleVrPlayerMouseLeave: function () {
-    if (this.props.controller.videoVr) {
-      this.setState({
-        isVrMouseDown: false,
-      });
     }
   },
 
@@ -239,6 +235,17 @@ var Skin = React.createClass({
               isInitializing={false} />
           );
           break;
+        case CONSTANTS.SCREEN.START_LOADING_SCREEN:
+          screen = (
+            <StartScreen
+              {...this.props}
+              componentWidth={this.state.componentWidth}
+              contentTree={this.state.contentTree}
+              isInitializing={false}
+              showSpinner={true}
+            />
+          );
+          break;
         case CONSTANTS.SCREEN.PLAYING_SCREEN:
           screen = (
             <PlayingScreen
@@ -246,7 +253,6 @@ var Skin = React.createClass({
               handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
               handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
               handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
-              handleVrPlayerMouseLeave={this.handleVrPlayerMouseLeave}
               handleVrPlayerClick={this.handleVrPlayerClick}
               handleVrPlayerFocus={this.handleVrPlayerFocus}
               isVrMouseMove={this.state.isVrMouseMove}
@@ -290,7 +296,6 @@ var Skin = React.createClass({
               handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
               handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
               handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
-              handleVrPlayerMouseLeave={this.handleVrPlayerMouseLeave}
               handleVrPlayerClick={this.handleVrPlayerClick}
               isVrMouseMove={this.state.isVrMouseMove}
               contentTree={this.state.contentTree}

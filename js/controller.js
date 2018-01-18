@@ -34,6 +34,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.captionDirection = '';
     this.isNewVrVideo = true;
     this.vrMobileOrientationChecked = false;
+    this.checkDeviceOrientation = false;
+    this.isVrStereo = false;
+    this.handleVrMobileOrientation = this.handleVrMobileOrientation.bind(this);
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
@@ -335,18 +338,27 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @description
      * Should be used with deviceorientation event listener.
      * Uses for video 360 on mobile devices for setting necessary coordinates (relevant with start device orientation)
+     * Before playing this.vrMobileOrientationChecked is equal false,
+     * if need to check value for device orientation set this.checkDeviceOrientation = true
      * @param {object} e The event object
      */
     handleVrMobileOrientation: function(e) {
-      if (!this.vrMobileOrientationChecked) {
+      if (!this.vrMobileOrientationChecked || this.checkDeviceOrientation) {
         var beta = e.beta;
+        var gamma = e.gamma;
         var yaw = this.state.vrViewingDirection["yaw"];
         var pitch = this.state.vrViewingDirection["pitch"];
-        if (beta !== undefined && beta !== null && Utils.ensureNumber(beta, 0)) {
-          pitch += -90 + Math.round(beta);
+        var dir = beta;
+        var orientationType = Utils.getOrientationType();
+        if (orientationType && (orientationType === "landscape-secondary" || orientationType === "landscape-primary")) {
+          dir = gamma;
+        }
+        if (dir !== undefined && dir !== null && Utils.ensureNumber(dir, 0)) {
+          pitch += -90 + Math.abs(Math.round(dir));
           var params = [yaw, 0, pitch];
           this.onTouchMove(params);
         }
+        this.checkDeviceOrientation = false;
       }
     },
 
@@ -657,7 +669,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isInitialPlay = true;
       this.state.initialPlayHasOccurred = true;
       this.startHideControlBarTimer();
-      this.isNewVrVideo = true;
       if (this.videoVr) {
         this.vrMobileOrientationChecked = true;
       }
@@ -857,7 +868,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         // If the core tells us that it will autoplay then we just display the loading
         // spinner, otherwise we need to render the big play button.
         if (params.willAutoplay) {
-          this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+          this.state.screenToShow = CONSTANTS.SCREEN.START_LOADING_SCREEN;
         } else {
           this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
         }
@@ -975,6 +986,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         width: ""
       });
       this.state.forceControlBarVisible = (this.state.pluginsElement.children().length > 0);
+      if (this.state.mainVideoPlayhead > 0) {
+        this.isNewVrVideo = false;
+      }
     },
 
     onAdPodStarted: function(event, numberOfAds) {
@@ -1316,7 +1330,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       } else {
         this.toggleFullscreen();
       }
-
+      if (this.videoVr && this.state.isMobile && this.isVrStereo && !this.state.fullscreen) {
+        this.toggleStereoVr();
+      }
       this.renderSkin();
     },
 
@@ -1539,6 +1555,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleStereoVr: function () {
+      this.isVrStereo = !this.isVrStereo;
       this.mb.publish(OO.EVENTS.TOGGLE_STEREO_VR);
     },
 

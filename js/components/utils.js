@@ -882,6 +882,48 @@ var Utils = {
 
     return coords;
   },
+
+  /**
+   * get mobile device orientation type
+   * @returns {string} - one of the following:
+   * "portrait-primary"
+   * "portrait-secondary" (portrait upside down)
+   * "landscape-primary"
+   * "landscape-secondary" (landscape upside down)
+   */
+  getOrientationType: function() {
+     var orientationType = window.screen.orientation;
+     if (orientationType && orientationType !== null && typeof orientationType === 'object') {
+       orientationType = orientationType.type;
+     } else {
+       orientationType = window.screen.mozOrientation || window.screen.msOrientation;
+     }
+     return orientationType;
+  },
+
+  /**
+   * if device orientation is portrait set "landscape-primary" orientation for the device
+   * @returns {boolean} - true if "landscape-primary" orientation was set, returns false in otherwise
+   */
+  setLandscapeScreenOrientation: function() {
+    var orientationType = this.getOrientationType();
+    if (orientationType && (orientationType === "portrait-secondary" || orientationType === "portrait-primary")) {
+      var landscapeOrientation = "landscape-primary";
+      if (screen.orientation && screen.orientation.lock) { //chrome browser
+        screen.orientation.lock(landscapeOrientation);
+      } else if (screen.lockOrientation) { //other
+        screen.lockOrientation(landscapeOrientation);
+      } else if (screen.mozLockOrientation) { //ff
+        screen.mozLockOrientation(landscapeOrientation);
+      } else if (screen.msLockOrientation) { //ie
+        screen.msLockOrientation(landscapeOrientation);
+      } else {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
 };
 
 module.exports = Utils;

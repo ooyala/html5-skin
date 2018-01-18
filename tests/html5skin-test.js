@@ -44,6 +44,7 @@ OO = {
     MAIN: 'main'
   },
   init: function() {},
+  handleVrMobileOrientation: function() {},
   log: function() {},
   plugin: function(module, callback) {
     var plugin = callback(OO, _, $);
@@ -319,7 +320,7 @@ describe('Controller', function() {
     it('should show loading screen on playback ready when core reports it will autoplay', function() {
       expect(controller.state.screenToShow).not.toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
       controller.onPlaybackReady('event', null, { willAutoplay: true });
-      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.START_LOADING_SCREEN);
     });
 
     it('should reset playhead on embed code changed', function() {
