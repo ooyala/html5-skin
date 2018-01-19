@@ -80,6 +80,7 @@ describe('Controller', function() {
     controller.state.pluginsElement = $('<div/>');
     controller.state.pluginsClickElement = $('<div/>');
     controller.state.mainVideoElement = mockDomElement;
+    controller.state.mainVideoInnerWrapper = $('<div/>');
     controller.state.mainVideoElementContainer = mockDomElement;
     controller.skin = {
       state: {},
@@ -361,6 +362,30 @@ describe('Controller', function() {
       expect(controller.skin.state.duration).toBe(120);
     });
 
+    it('should set aspect ratio when main content is playing', function() {
+      var spy = sinon.spy(controller, 'setAspectRatio');
+      controller.state.currentVideoId = OO.VIDEO.MAIN;
+      controller.onAssetDimensionsReceived('event', {
+        videoId: OO.VIDEO.MAIN,
+        width: 640,
+        height: 480
+      });
+      expect(spy.callCount).toBe(1);
+      spy.restore();
+    });
+
+    it('should not set aspect ratio when main content is not playing', function() {
+      var spy = sinon.spy(controller, 'setAspectRatio');
+      controller.state.currentVideoId = OO.VIDEO.ADS;
+      controller.onAssetDimensionsReceived('event', {
+        videoId: OO.VIDEO.MAIN,
+        width: 640,
+        height: 480
+      });
+      expect(spy.callCount).toBe(0);
+      spy.restore();
+    });
+
   });
 
   describe('Volume state', function() {
@@ -474,7 +499,7 @@ describe('Controller', function() {
 
     it('playerControlsOverAds = true  and no skin setting for adscreen overwrites css and showControlBar', function() {
       var playerParam = {
-        playerControlsOverAds: true,
+        playerControlsOverAds: true
       };
       controller.state.playerParam = playerParam;
       controller.createPluginElements();
@@ -487,7 +512,7 @@ describe('Controller', function() {
 
     it('playerControlsOverAds = false doesn\'t overwrite the plugin element css', function() {
       var playerParam = {
-        playerControlsOverAds: false,
+        playerControlsOverAds: false
       };
       controller.state.playerParam = playerParam;
       controller.createPluginElements();
