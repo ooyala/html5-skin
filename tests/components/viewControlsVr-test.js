@@ -67,7 +67,7 @@ describe('viewControlsVr', function () {
     var DOM = TestUtils.renderIntoDocument(
       <DirectionControlVr {...mockProps} handleVrViewControlsClick={mockProps.handleVrViewControlsClick} dir="left"/>
     );
-    
+
     var button = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-direction-control');
     
     expect(mockProps.clickButton).toBe(false);
@@ -112,7 +112,6 @@ describe('viewControlsVr', function () {
       playerState: CONSTANTS.STATE.PLAYING,
       controller: controller
     };
-
     var DOM = TestUtils.renderIntoDocument( <ViewControlsVr {...mockProps}/> );
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
     
@@ -123,5 +122,29 @@ describe('viewControlsVr', function () {
     var DOM = TestUtils.renderIntoDocument( <ViewControlsVr {...baseMockProps}/> );
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
     expect(buttons.length).toBe(0);
+  });
+
+  it('------2323232323232--------------', function () {
+    this.icon = {
+      "name":"arrowsBlack",
+      "location": "mainView",
+      "whenDoesNotFit":"keep",
+      "minWidth":45
+    };
+
+    var mockProps = {
+      skinConfig: skinConfig,
+      playerState: CONSTANTS.STATE.PLAYING,
+    };
+
+    mockProps = _.extend(mockProps, baseMockProps);
+
+    console.log('mockProps', mockProps);
+
+    var DOM = TestUtils.renderIntoDocument( <ViewControlsVr {...mockProps}/> );
+    var icons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-icon--substrate');
+
+    console.log('icons', icons.length);
+    expect(icons.length).toBe(2);
   });
 });
