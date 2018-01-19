@@ -119,6 +119,34 @@ describe('ThumbnailContainer', function () {
       ]
     }
   };
+
+  var testThumbnails = function(DOM, thumbnails, hoverTime, width, duration) {
+    var hoverPosition = Utils.findThumbnail(thumbnails, hoverTime, duration).pos;
+    var centerImage = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-thumbnail');
+    var images = centerImage._parentNode._childNodes;
+
+    var lastLeft = 0;
+    var next = 0;
+    for (var i = 0; i < hoverPosition && i < images.length; i++) {
+      var imageStyle = images[i].style;
+      var img = imageStyle._values["background-image"];
+      var left = parseInt(imageStyle._values["left"]);
+      if (i > 0 && left > lastLeft) { // left edge of scrubber bar reached,  now check images to the right of central, remember index where we stopped
+        next = hoverPosition - i;
+        break;
+      }
+      var offset = img.indexOf("url(") + 4;
+      lastLeft = left;
+      expect(img.slice(offset, -1)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[hoverPosition - i]][width]["url"]);
+    }
+    for (var i = hoverPosition + 1 - next; i < images.length; i++) {
+      var imageStyle = images[i]._style;
+      var img = imageStyle._values["background-image"];
+      var offset = img.indexOf("url(") + 4;
+      expect(img.slice(offset, -1)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[i + next]][width]["url"]);
+    }
+  };
+
   var vrViewingDirection = {yaw: 180, roll: 0, pitch: 0};
   var duration = 100;
   var hoverTime = 80;
@@ -143,6 +171,52 @@ describe('ThumbnailContainer', function () {
     var thumbnailContainer = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-thumbnail-wrapper');
     var thumbnail = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-thumbnail-container');
     expect(thumbnail).not.toBeNull();
+  });
+
+  it('creates and verifies thumbnails at hover times of [0, 100], step 5', function () {
+    var width = thumbnails.data.available_widths[0];
+    for (var hoverTime = 0; hoverTime <= 100; hoverTime += 5) {
+      var DOM = TestUtils.renderIntoDocument
+      (
+        <ThumbnailContainer
+          thumbnails={thumbnails}
+          isCarousel={false}
+          hoverPosition={hoverPosition}
+          duration={duration}
+          hoverTime={hoverTime}
+          scrubberBarWidth={scrubberBarWidth}
+          vrViewingDirection={vrViewingDirection}
+          videoVr={true}
+          fullscreen={false}
+        />
+      );
+      var node = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-thumbnail');
+      if (hoverTime % 10 == 0) {
+        expect(node.style._values['background-image']).toBe("url("+thumbnails.data.thumbnails[hoverTime][width]["url"]+")");
+      } else {
+        expect(node.style._values['background-image']).toBe("url("+thumbnails.data.thumbnails[(hoverTime - 5).toString()][width]["url"]+")");
+      }
+    }
+  });
+
+  it('test generation of left and right thumbnails at various times', function () {
+    var width = thumbnails.data.available_widths[0];
+    for (var hoverTime = 0; hoverTime <= 100; hoverTime += 5) {
+      var DOM = TestUtils.renderIntoDocument(
+        <ThumbnailContainer
+          thumbnails={thumbnails}
+          isCarousel={false}
+          hoverPosition={hoverPosition}
+          duration={duration}
+          hoverTime={hoverTime}
+          scrubberBarWidth={scrubberBarWidth}
+          vrViewingDirection={vrViewingDirection}
+          videoVr={true}
+          fullscreen={false}
+        />
+      );
+      testThumbnails(DOM, thumbnails, hoverTime, width, duration);
+    }
   });
 
   it('for isCarousel = true need to show thumbnails', function () {

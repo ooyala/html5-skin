@@ -5,36 +5,7 @@ jest.dontMock('../../js/components/thumbnailCarousel')
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
 var ReactDOM = require('react-dom');
-var Thumbnail = require('../../js/components/thumbnail');
 var ThumbnailCarousel = require('../../js/components/thumbnailCarousel');
-var Utils = require('../../js/components/utils');
-
-var testThumbnails = function(DOM, thumbnails, hoverTime, width, duration) {
-  var hoverPosition = Utils.findThumbnail(thumbnails, hoverTime, duration).pos;
-  var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnail);
-  var images = centerImage._parentNode._childNodes;
-
-  var lastLeft = 0;
-  var next = 0;
-  for (var i = 0; i < hoverPosition && i < images.length; i++) {
-    var imageStyle = images[i]._style;
-    var img = imageStyle._values["background-image"];
-    var left = parseInt(imageStyle._values["left"]);
-    if (i > 0 && left > lastLeft) { // left edge of scrubber bar reached,  now check images to the right of central, remember index where we stopped
-      next = hoverPosition - i;
-      break;
-    }
-    var offset = img.indexOf("url(") + 4;
-    lastLeft = left;
-    expect(img.slice(offset, -1)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[hoverPosition - i - 1]][width]["url"]);
-  }
-  for (var i = hoverPosition + 1 - next; i < images.length; i++) {
-    var imageStyle = images[i]._style;
-    var img = imageStyle._values["background-image"];
-    var offset = img.indexOf("url(") + 4;
-    expect(img.slice(offset, -1)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[i + next]][width]["url"]);
-  }
-}
 
 describe('ThumbnailCarousel', function () {
   var thumbnails = {
