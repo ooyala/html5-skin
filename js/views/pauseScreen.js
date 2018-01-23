@@ -65,8 +65,8 @@ var PauseScreen = React.createClass({
 
   handleTouchEnd: function(e) {
     if (e.target.className === "oo-state-screen-selectable") {
-      e.preventDefault();
       if (this.props.controller.videoVr) {
+        e.preventDefault();
         if (!this.props.isVrMouseMove) {
           this.props.controller.togglePlayPause(e);
         }
