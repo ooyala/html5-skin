@@ -127,12 +127,17 @@ var Skin = React.createClass({
       return;
     }
     if (this.props.controller && this.props.controller.videoVr) {
+      var isVrMouseMove = this.state.isVrMouseMove;
+      if (Utils.isIos()) {
+        isVrMouseMove = false;
+      }
       this.setState({
         isVrMouseDown: false,
-        isVrMouseMove: false,
+        isVrMouseMove: isVrMouseMove,
         xVrMouseStart: 0,
         yVrMouseStart: 0
       });
+
       if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
       }
