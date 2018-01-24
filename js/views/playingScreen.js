@@ -164,7 +164,6 @@ var PlayingScreen = React.createClass({
         }
       }
     }
-    console.warn('handleVrPlayerMouseUp', event);
     this.props.handleVrPlayerMouseUp(event);
   },
 
