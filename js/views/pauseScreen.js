@@ -32,6 +32,7 @@ var PauseScreen = React.createClass({
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
     document.addEventListener('mouseup', this.handlePlayerMouseUp, false);
+    document.addEventListener('touchend', this.handleTouchEnd, false);
   },
 
   componentWillUnmount: function() {
@@ -39,6 +40,7 @@ var PauseScreen = React.createClass({
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
     document.removeEventListener('mouseup', this.handlePlayerMouseUp);
+    document.removeEventListener('touchend', this.handleTouchEnd);
   },
 
   handleResize: function() {
@@ -59,6 +61,18 @@ var PauseScreen = React.createClass({
     this.props.controller.state.accessibilityControlsEnabled = true;
     this.props.controller.state.isClickedOutside = false;
     this.props.handleVrPlayerClick();
+  },
+
+  handleTouchEnd: function(e) {
+    if (e.target.className === "oo-state-screen-selectable") {
+      if (this.props.controller.videoVr) {
+        e.preventDefault();
+        if (!this.props.isVrMouseMove) {
+          this.props.controller.togglePlayPause(e);
+        }
+      }
+    }
+    this.props.handleVrPlayerMouseUp();
   },
 
   /**
@@ -85,9 +99,6 @@ var PauseScreen = React.createClass({
   },
 
   handlePlayerMouseMove: function(e) {
-    if (this.props.controller.videoVr) {
-      e.preventDefault();
-    }
     this.props.handleVrPlayerMouseMove(e);
   },
 
@@ -198,7 +209,6 @@ var PauseScreen = React.createClass({
           onClick={this.handleClick}
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
-          onMouseUp={this.handlePlayerMouseUp}
         />
 
         <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>

@@ -106,6 +106,7 @@ var Skin = React.createClass({
       return;
     }
     if (this.props.controller && this.props.controller.videoVr && this.state.isVrMouseDown) {
+      e.preventDefault();
       this.setState({
         isVrMouseMove: true
       });
@@ -129,6 +130,7 @@ var Skin = React.createClass({
     if (this.props.controller && this.props.controller.videoVr) {
       this.setState({
         isVrMouseDown: false,
+        isVrMouseMove: false,
         xVrMouseStart: 0,
         yVrMouseStart: 0
       });
