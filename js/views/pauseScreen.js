@@ -72,7 +72,7 @@ var PauseScreen = React.createClass({
         }
       }
     }
-    this.props.handleVrPlayerMouseUp();
+    this.props.handleVrPlayerMouseUp(e);
   },
 
   /**
@@ -105,7 +105,7 @@ var PauseScreen = React.createClass({
   handlePlayerMouseUp: function(e) {
     e.stopPropagation(); // W3C
     e.cancelBubble = true; // IE
-    this.props.handleVrPlayerMouseUp();
+    this.props.handleVrPlayerMouseUp(e);
   },
 
   /**
