@@ -142,11 +142,9 @@ var Skin = React.createClass({
         this.props.controller.checkVrDirection();
       }
 
-      console.warn('!!e', !!e);
-      if (!!e && typeof this.props.controller.onTouchEnd === 'function') {
-        var coords = Utils.getCoords(e);
-        var params = this.getDirectionParams(coords.x, coords.y);
-        this.props.controller.onTouchEnd(params);
+      var endMove = this.state.isVrMouseMove || OO.isAndroid || OO.isIos;
+      if (endMove && typeof this.props.controller.onEndMove === 'function') {
+        this.props.controller.onEndMove();
       }
     }
   },
