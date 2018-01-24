@@ -110,10 +110,8 @@ var Skin = React.createClass({
       this.setState({
         isVrMouseMove: true
       });
-
-      var coords = Utils.getCoords(e);
-
       if (typeof this.props.controller.onTouchMove === 'function') {
+        var coords = Utils.getCoords(e);
         var params = this.getDirectionParams(coords.x, coords.y);
         this.props.controller.onTouchMove(params, true);
       }
@@ -124,7 +122,7 @@ var Skin = React.createClass({
    * @public
    * @description the function is called when we stop the rotation
    */
-  handleVrPlayerMouseUp: function() {
+  handleVrPlayerMouseUp: function(e) {
     if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
@@ -142,6 +140,13 @@ var Skin = React.createClass({
 
       if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
+      }
+
+      console.warn('!!e', !!e);
+      if (!!e && typeof this.props.controller.onTouchEnd === 'function') {
+        var coords = Utils.getCoords(e);
+        var params = this.getDirectionParams(coords.x, coords.y);
+        this.props.controller.onTouchEnd(params);
       }
     }
   },

@@ -41,6 +41,8 @@ var PlayingScreen = React.createClass({
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
     document.addEventListener('mouseup', this.handlePlayerMouseUp, false);
+    document.addEventListener('touchend', this.handleTouchEnd, false);
+
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen || this.browserSupportsTouch){
       this.props.controller.startHideControlBarTimer();
@@ -142,18 +144,28 @@ var PlayingScreen = React.createClass({
   },
 
   handleTouchEnd: function(event) {
-
-    console.log('handleTouchEnd event', event);
-
-    event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
-    if (!this.state.controlBarVisible){
-      this.showControlBar(event);
-      this.props.controller.startHideControlBarTimer();
+    if (event.target.className === "oo-state-screen-selectable") {
+      event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
+      if (!this.state.controlBarVisible){
+        this.showControlBar(event);
+        this.props.controller.startHideControlBarTimer();
+      }
+      else {
+        var isNeedToggle = false;
+        if (this.props.controller.videoVr) {
+          if (!this.props.isVrMouseMove) {
+            isNeedToggle = true;
+          }
+        } else {
+          isNeedToggle = true;
+        }
+        if (isNeedToggle) {
+          this.props.controller.togglePlayPause(event);
+        }
+      }
     }
-    else if (!this.props.controller.videoVr) {
-      this.props.controller.togglePlayPause(event);
-    }
-    this.props.handleVrPlayerMouseUp();
+    console.warn('handleVrPlayerMouseUp', event);
+    this.props.handleVrPlayerMouseUp(event);
   },
 
   handlePlayerMouseDown: function(e) {
@@ -182,7 +194,7 @@ var PlayingScreen = React.createClass({
         this.props.controller.togglePlayPause();
       }
     }
-    this.props.handleVrPlayerMouseUp();
+    this.props.handleVrPlayerMouseUp(e);
     // for mobile, touch is handled in handleTouchEnd
   },
 
