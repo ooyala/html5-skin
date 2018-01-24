@@ -131,7 +131,7 @@ describe('PlayingScreen', function () {
   });
 
   it('creates a PlayingScreen and checks touchEnd without video360', function () {
-    var clicked = false;
+    var isInHandleTouchEnd = false;
     var mockController = {
       videoVr: false,
       state: {
@@ -150,14 +150,15 @@ describe('PlayingScreen', function () {
           },
         }
       },
-      togglePlayPause: function() {
-        clicked = !clicked;
-      },
       startHideControlBarTimer: function() {}
     };
 
     var closedCaptionOptions = {
       cueText: "cue text"
+    };
+
+    var handleVrPlayerMouseUp = function() {
+      isInHandleTouchEnd = true;
     };
 
     // Render pause screen into DOM
@@ -168,10 +169,9 @@ describe('PlayingScreen', function () {
             handleVrPlayerMouseUp = {handleVrPlayerMouseUp}
         />);
 
-    var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
-
-    // TestUtils.Simulate.touchEnd(screen[0]);
-    // expect(clicked).toBe(true);
+    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
+    TestUtils.Simulate.touchEnd(screen);
+    expect(isInHandleTouchEnd).toBe(true);
   });
 
   it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp without video360 fullscreen', function () {
