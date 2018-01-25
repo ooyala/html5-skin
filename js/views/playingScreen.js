@@ -150,15 +150,15 @@ var PlayingScreen = React.createClass({
         this.props.controller.startHideControlBarTimer();
       }
       else {
-        var isNeedToggle = false;
+        var shouldToggle = false;
         if (this.props.controller.videoVr) {
           if (!this.props.isVrMouseMove) {
-            isNeedToggle = true;
+            shouldToggle = true;
           }
         } else {
-          isNeedToggle = true;
+          shouldToggle = true;
         }
-        if (isNeedToggle) {
+        if (shouldToggle) {
           this.props.controller.togglePlayPause(event);
         }
       }

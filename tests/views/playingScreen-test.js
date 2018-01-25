@@ -130,7 +130,7 @@ describe('PlayingScreen', function () {
 
   });
 
-  it('creates a PlayingScreen and checks touchEnd without video360', function () {
+  it('creates a PlayingScreen and checks touchEnd', function () {
     var isInHandleTouchEnd = false;
     var mockController = {
       videoVr: false,
