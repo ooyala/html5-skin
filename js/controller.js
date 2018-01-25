@@ -824,9 +824,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onEndMove: function (params) {
+    onEndMove: function () {
       if (this.videoVr) {
-        this.mb.publish(OO.EVENTS.END_VR_MOVE, this.focusedElement, params);
+        this.mb.publish(OO.EVENTS.END_VR_MOVE, this.focusedElement);
       }
     },
 
