@@ -42,6 +42,7 @@ var PlayingScreen = React.createClass({
     document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
     document.addEventListener('mouseup', this.handlePlayerMouseUp, false);
     document.addEventListener('touchend', this.handleTouchEnd, false);
+
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen || this.browserSupportsTouch){
       this.props.controller.startHideControlBarTimer();
@@ -163,7 +164,7 @@ var PlayingScreen = React.createClass({
         }
       }
     }
-    this.props.handleVrPlayerMouseUp();
+    this.props.handleVrPlayerMouseUp(event);
   },
 
   handlePlayerMouseDown: function(e) {
@@ -192,7 +193,7 @@ var PlayingScreen = React.createClass({
         this.props.controller.togglePlayPause();
       }
     }
-    this.props.handleVrPlayerMouseUp();
+    this.props.handleVrPlayerMouseUp(e);
     // for mobile, touch is handled in handleTouchEnd
   },
 

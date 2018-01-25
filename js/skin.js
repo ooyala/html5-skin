@@ -122,7 +122,7 @@ var Skin = React.createClass({
    * @public
    * @description the function is called when we stop the rotation
    */
-  handleVrPlayerMouseUp: function() {
+  handleVrPlayerMouseUp: function(e) {
     if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
@@ -140,6 +140,11 @@ var Skin = React.createClass({
 
       if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
+      }
+
+      var endMove = this.state.isVrMouseMove || OO.isAndroid || OO.isIos;
+      if (endMove && typeof this.props.controller.onEndMove === 'function') {
+        this.props.controller.onEndMove();
       }
     }
   },
