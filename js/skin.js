@@ -142,6 +142,8 @@ var Skin = React.createClass({
         this.props.controller.checkVrDirection();
       }
 
+      // The camera decelerate after the "touchmove" on the mobile device or on the desktop after the "mousemove",
+      // but not after using the rotation controls
       var endMove = this.state.isVrMouseMove || OO.isAndroid || OO.isIos;
       if (endMove && typeof this.props.controller.onEndMove === 'function') {
         this.props.controller.onEndMove();
