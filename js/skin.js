@@ -122,14 +122,14 @@ var Skin = React.createClass({
    * @public
    * @description the function is called when we stop the rotation
    */
-  handleVrPlayerMouseUp: function(e) {
+  handleVrPlayerMouseUp: function() {
     if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
     if (this.props.controller && this.props.controller.videoVr) {
       var isVrMouseMove = this.state.isVrMouseMove;
       if (Utils.isIos()) {
-        isVrMouseMove = false;
+        isVrMouseMove = false; //for the opportunity to stop video on iPhone by touching on the screen
       }
       this.setState({
         isVrMouseDown: false,
