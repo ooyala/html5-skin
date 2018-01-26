@@ -106,13 +106,12 @@ var Skin = React.createClass({
       return;
     }
     if (this.props.controller && this.props.controller.videoVr && this.state.isVrMouseDown) {
+      e.preventDefault();
       this.setState({
         isVrMouseMove: true
       });
-
-      var coords = Utils.getCoords(e);
-
       if (typeof this.props.controller.onTouchMove === 'function') {
+        var coords = Utils.getCoords(e);
         var params = this.getDirectionParams(coords.x, coords.y);
         this.props.controller.onTouchMove(params, true);
       }
@@ -128,13 +127,26 @@ var Skin = React.createClass({
       return;
     }
     if (this.props.controller && this.props.controller.videoVr) {
+      var isVrMouseMove = this.state.isVrMouseMove;
+      if (Utils.isIos()) {
+        isVrMouseMove = false; //for the opportunity to stop video on iPhone by touching on the screen
+      }
       this.setState({
         isVrMouseDown: false,
+        isVrMouseMove: isVrMouseMove,
         xVrMouseStart: 0,
         yVrMouseStart: 0
       });
+
       if (typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
+      }
+
+      // The camera decelerate after the "touchmove" on the mobile device or on the desktop after the "mousemove",
+      // but not after using the rotation controls
+      var endMove = this.state.isVrMouseMove || OO.isAndroid || OO.isIos;
+      if (endMove && typeof this.props.controller.onEndMove === 'function') {
+        this.props.controller.onEndMove();
       }
     }
   },

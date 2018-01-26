@@ -41,6 +41,8 @@ var PlayingScreen = React.createClass({
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
     document.addEventListener('mouseup', this.handlePlayerMouseUp, false);
+    document.addEventListener('touchend', this.handleTouchEnd, false);
+
     //for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen || this.browserSupportsTouch){
       this.props.controller.startHideControlBarTimer();
@@ -72,6 +74,7 @@ var PlayingScreen = React.createClass({
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
     document.removeEventListener('mouseup', this.handlePlayerMouseUp);
+    document.removeEventListener('touchend', this.handleTouchEnd);
   },
 
   /**
@@ -141,14 +144,27 @@ var PlayingScreen = React.createClass({
   },
 
   handleTouchEnd: function(event) {
-    event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
-    if (!this.state.controlBarVisible){
-      this.showControlBar(event);
-      this.props.controller.startHideControlBarTimer();
+    if (event.target.className === "oo-state-screen-selectable") {
+      event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
+      if (!this.state.controlBarVisible){
+        this.showControlBar(event);
+        this.props.controller.startHideControlBarTimer();
+      }
+      else {
+        var shouldToggle = false;
+        if (this.props.controller.videoVr) {
+          if (!this.props.isVrMouseMove) {
+            shouldToggle = true;
+          }
+        } else {
+          shouldToggle = true;
+        }
+        if (shouldToggle) {
+          this.props.controller.togglePlayPause(event);
+        }
+      }
     }
-    else if (!this.props.controller.videoVr) {
-      this.props.controller.togglePlayPause(event);
-    }
+    this.props.handleVrPlayerMouseUp(event);
   },
 
   handlePlayerMouseDown: function(e) {
@@ -159,10 +175,6 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseMove: function(e) {
-    if (this.props.controller.videoVr) {
-      e.preventDefault();
-    }
-
     if(!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
@@ -181,7 +193,7 @@ var PlayingScreen = React.createClass({
         this.props.controller.togglePlayPause();
       }
     }
-    this.props.handleVrPlayerMouseUp();
+    this.props.handleVrPlayerMouseUp(e);
     // for mobile, touch is handled in handleTouchEnd
   },
 
@@ -304,7 +316,6 @@ var PlayingScreen = React.createClass({
         className="oo-state-screen-selectable"
         onMouseDown={this.handlePlayerMouseDown}
         onTouchStart={this.handlePlayerMouseDown}
-        onTouchEnd={this.handleTouchEnd}
         onClick={this.handlePlayerClicked}
         onFocus={this.handlePlayerFocus}
       />
