@@ -52,6 +52,11 @@
     display: inline-block;
   }
 
+  //hide horizontal scrollbars
+  .scrollbar-container.horizontal {
+    display:none;
+  }
+
   .oo-scrollarea-tabs {
     ul {
       display: inline-block;
