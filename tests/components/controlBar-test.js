@@ -1303,7 +1303,6 @@ describe('ControlBar', function () {
     expect(buttons.length).toBe(1);
   });
 
-
   it("shows the more options button when ooyala ad is not playing", function() {
     var mockController = {
       state: {
