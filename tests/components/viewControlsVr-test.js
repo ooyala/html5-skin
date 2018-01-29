@@ -124,7 +124,19 @@ describe('viewControlsVr', function () {
     expect(buttons.length).toBe(0);
   });
 
-  it('------2323232323232--------------', function () {
+  it('on the ViewControlsVr should be two icons: one icon of the background and one icon of the symbol', function () {
+    var controller = {
+      state: {
+        isPlayingAd: false,
+        isMobile: false
+      },
+      videoVrSource: {
+        vr: {
+          stereo: false
+        }
+      }
+    };
+
     this.icon = {
       "name":"arrowsBlack",
       "location": "mainView",
@@ -132,19 +144,33 @@ describe('viewControlsVr', function () {
       "minWidth":45
     };
 
+    skinConfig.buttons.desktopContent =  [
+      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
+      {"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":240 },
+      {"name":"live", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45},
+      {"name":"timeDuration", "location":"controlBar", "whenDoesNotFit":"drop", "minWidth":145 },
+      {"name":"flexibleSpace", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":1 },
+      {"name":"share", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
+      {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
+      {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
+      {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
+      {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":125 },
+      {"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
+      {"name":"fullscreen", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
+      {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
+      {"name":"arrowsBlack", "location": "mainView", "whenDoesNotFit":"keep", "minWidth":45 }
+    ];
+
     var mockProps = {
       skinConfig: skinConfig,
       playerState: CONSTANTS.STATE.PLAYING,
+      controller: controller
     };
-
-    mockProps = _.extend(mockProps, baseMockProps);
-
-    console.log('mockProps', mockProps);
-
     var DOM = TestUtils.renderIntoDocument( <ViewControlsVr {...mockProps}/> );
-    var icons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-icon--substrate');
+    var iconSubstrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-icon--substrate');
+    var iconSymbol = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-icon--icon-symbol');
 
-    console.log('icons', icons.length);
-    expect(icons.length).toBe(2);
+    expect(iconSubstrate.length).toBe(1);
+    expect(iconSymbol.length).toBe(1);
   });
 });
