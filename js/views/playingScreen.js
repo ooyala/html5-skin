@@ -187,11 +187,11 @@ var PlayingScreen = React.createClass({
     if (!this.isMobile) {
       e.stopPropagation(); // W3C
       e.cancelBubble = true; // IE
-      this.props.controller.state.accessibilityControlsEnabled = true;
-      this.props.controller.state.isClickedOutside = false;
-      if (!this.props.controller.videoVr) {
+      if (!this.props.controller.videoVr && !this.props.controller.state.accessibilityControlsEnabled) {
         this.props.controller.togglePlayPause();
       }
+      this.props.controller.state.accessibilityControlsEnabled = true;
+      this.props.controller.state.isClickedOutside = false;
     }
     this.props.handleVrPlayerMouseUp(e);
     // for mobile, touch is handled in handleTouchEnd
