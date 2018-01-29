@@ -141,6 +141,7 @@ var PlayingScreen = React.createClass({
   },
 
   handleTouchEnd: function(event) {
+    console.log('BBB handleTouchEnd');
     event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
     if (!this.state.controlBarVisible){
       this.showControlBar(event);
@@ -152,6 +153,7 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseDown: function(e) {
+    console.log('BBB handlePlayerMouseDown');
     if (this.props.controller.videoVr) {
       e.persist();
     }
@@ -175,11 +177,11 @@ var PlayingScreen = React.createClass({
     if (!this.isMobile) {
       e.stopPropagation(); // W3C
       e.cancelBubble = true; // IE
-      this.props.controller.state.accessibilityControlsEnabled = true;
-      this.props.controller.state.isClickedOutside = false;
-      if (!this.props.controller.videoVr) {
+      if (!this.props.controller.videoVr && !this.props.controller.state.accessibilityControlsEnabled) {
         this.props.controller.togglePlayPause();
       }
+      this.props.controller.state.accessibilityControlsEnabled = true;
+      this.props.controller.state.isClickedOutside = false;
     }
     this.props.handleVrPlayerMouseUp();
     // for mobile, touch is handled in handleTouchEnd
