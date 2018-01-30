@@ -190,6 +190,7 @@ var PauseScreen = React.createClass({
       :
       null;
 
+      console.log('this.props.controller.videoVr', this.props.controller.videoVr)
     var viewControlsVr = this.props.controller.videoVr ?
       <ViewControlsVr
         {...this.props}

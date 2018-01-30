@@ -64,18 +64,4 @@ describe('PauseScreen', function () {
     TestUtils.Simulate.click(pauseIcon);
     expect(clicked).toBe(true);
   });
-
-  it('should viewControlsVr', function () {
-    var DOM = TestUtils.renderIntoDocument(
-      <PauseScreen
-        skinConfig={mockSkinConfig}
-        controller={mockController}
-        contentTree={mockContentTree}
-        handleVrPlayerClick={handleVrPlayerClick}
-        closedCaptionOptions={{cueText: "sample text"}}
-      />
-    );
-
-    var viewControlsVr = TestUtils.findRenderedDOMComponentWithClass(DOM, 'view-controls');
-  });
 });
