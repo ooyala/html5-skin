@@ -65,7 +65,7 @@ var PauseScreen = React.createClass({
   },
 
   handleTouchEnd: function(e) {
-    var isSelectableScreen = this.props.checkClassName(e.target.className, this.selectableScreenClassName);
+    var isSelectableScreen = this.props.areClassNamesEquals(e.target.className, this.selectableScreenClassName);
     if (isSelectableScreen) {
       if (this.props.controller.videoVr) {
         e.preventDefault();
@@ -105,7 +105,7 @@ var PauseScreen = React.createClass({
   },
 
   handlePlayerMouseUp: function(e) {
-    var isSelectableScreen = this.props.checkClassName(e.target.className, this.selectableScreenClassName);
+    var isSelectableScreen = this.props.areClassNamesEquals(e.target.className, this.selectableScreenClassName);
     if (isSelectableScreen) {
       e.stopPropagation(); // W3C
       e.cancelBubble = true; // IE

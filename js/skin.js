@@ -214,7 +214,7 @@ var Skin = React.createClass({
    * @param originClass {string} - className for comparing
    * @returns {boolean} returns true if classes are identical
    */
-  checkClassName: function(comparableClass, originClass) {
+  areClassNamesEquals: function(comparableClass, originClass) {
     return !!(comparableClass === originClass);
   },
 
@@ -278,7 +278,7 @@ var Skin = React.createClass({
               handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
               handleVrPlayerClick={this.handleVrPlayerClick}
               handleVrPlayerFocus={this.handleVrPlayerFocus}
-              checkClassName={this.checkClassName}
+              areClassNamesEquals={this.areClassNamesEquals}
               isVrMouseMove={this.state.isVrMouseMove}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
@@ -321,7 +321,7 @@ var Skin = React.createClass({
               handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
               handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
               handleVrPlayerClick={this.handleVrPlayerClick}
-              checkClassName={this.checkClassName}
+              areClassNamesEquals={this.areClassNamesEquals}
               isVrMouseMove={this.state.isVrMouseMove}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
