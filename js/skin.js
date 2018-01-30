@@ -207,6 +207,17 @@ var Skin = React.createClass({
     return vrViewingDirectionValue
   },
 
+
+  /**
+   *
+   * @param comparableClass {string} - className for comparing
+   * @param originClass {string} - className for comparing
+   * @returns {boolean} returns true if classes are identical
+   */
+  checkClassName: function(comparableClass, originClass) {
+    return !!(comparableClass === originClass);
+  },
+
   render: function() {
     var screen;
 
@@ -267,6 +278,7 @@ var Skin = React.createClass({
               handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
               handleVrPlayerClick={this.handleVrPlayerClick}
               handleVrPlayerFocus={this.handleVrPlayerFocus}
+              checkClassName={this.checkClassName}
               isVrMouseMove={this.state.isVrMouseMove}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
@@ -309,6 +321,7 @@ var Skin = React.createClass({
               handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
               handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
               handleVrPlayerClick={this.handleVrPlayerClick}
+              checkClassName={this.checkClassName}
               isVrMouseMove={this.state.isVrMouseMove}
               contentTree={this.state.contentTree}
               currentPlayhead={this.state.currentPlayhead}
