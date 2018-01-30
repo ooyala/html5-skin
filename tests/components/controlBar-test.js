@@ -120,6 +120,7 @@ describe('ControlBar', function () {
     TestUtils.Simulate.click(fullscreenButton);
     expect(fullscreenToggled).toBe(true);
   });
+
   it('render one stereo button if content vr', function () {
     var mockController = {
       state: {
@@ -144,7 +145,6 @@ describe('ControlBar', function () {
     var toggleSkinConfig = Utils.clone(skinConfig);
     toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
 
-
     var mockProps = {
       isLiveStream: false,
       controller: mockController,
@@ -167,7 +167,7 @@ describe('ControlBar', function () {
   it('not render stereo button if content not vr', function () {
     var mockController = {
       state: {
-        isMobile: false,
+        isMobile: true,
         volumeState: {
           volume: 1
         },
@@ -177,6 +177,45 @@ describe('ControlBar', function () {
         }
       },
       videoVr: false,
+      videoVrSource: false
+    };
+
+    var toggleSkinConfig = Utils.clone(skinConfig);
+    toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
+
+
+    var mockProps = {
+      isLiveStream: false,
+      controller: mockController,
+      skinConfig: toggleSkinConfig,
+      duration: 30,
+      vr: mockController.videoVr
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+                  componentWidth={500}
+                  playerState={CONSTANTS.STATE.PLAYING}
+                  isLiveStream={mockProps.isLiveStream} />
+    );
+
+    var toggleStereoVrButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
+    expect(toggleStereoVrButtons.length).toBe(0);
+  });
+
+  it('not render stereo button on desktop', function () {
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
+      },
+      videoVr: true,
       videoVrSource: false
     };
 
@@ -252,6 +291,7 @@ describe('ControlBar', function () {
     TestUtils.Simulate.click(toggleStereoVrButton);
     expect(stereoMode).toBe(true);
   });
+
   it('renders one button', function() {
     var mockController = {
       state: {
@@ -1262,7 +1302,6 @@ describe('ControlBar', function () {
     buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-play-pause');
     expect(buttons.length).toBe(1);
   });
-
 
   it("shows the more options button when ooyala ad is not playing", function() {
     var mockController = {
