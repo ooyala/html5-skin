@@ -467,5 +467,8 @@ module.exports = {
     MAX_VR_THUMBNAIL_CAROUSEL_BG_WIDTH: 320,
     THUMBNAIL_VR_RATIO: 4,
     THUMBNAIL_CAROUSEL_VR_RATIO: 3
+  },
+  CLASS_NAMES: {
+    SELECTABLE_SCREEN: "oo-state-screen-selectable"
   }
 };

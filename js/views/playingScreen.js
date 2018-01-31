@@ -144,7 +144,8 @@ var PlayingScreen = React.createClass({
   },
 
   handleTouchEnd: function(event) {
-    if (event.target.className === "oo-state-screen-selectable") {
+    var isSelectableScreen = Utils.areArgumentsEqual(event.target.className, CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN);
+    if (isSelectableScreen) {
       event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
       if (!this.state.controlBarVisible){
         this.showControlBar(event);
@@ -187,9 +188,11 @@ var PlayingScreen = React.createClass({
     if (!this.isMobile) {
       e.stopPropagation(); // W3C
       e.cancelBubble = true; // IE
-      if (!this.props.controller.videoVr && !this.props.controller.state.accessibilityControlsEnabled) {
-        this.props.controller.togglePlayPause();
+      var isSelectableScreen = Utils.areArgumentsEqual(e.target.className, CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN);
+      if (!this.props.controller.videoVr && isSelectableScreen) {
+        this.props.controller.togglePlayPause();//if clicked on selectableSceen
       }
+      //the order of the loop and this.props.controller.state is not important
       this.props.controller.state.accessibilityControlsEnabled = true;
       this.props.controller.state.isClickedOutside = false;
     }
@@ -313,7 +316,7 @@ var PlayingScreen = React.createClass({
         onKeyDown={this.handleKeyDown}
       >
       <div
-        className="oo-state-screen-selectable"
+        className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
         onMouseDown={this.handlePlayerMouseDown}
         onTouchStart={this.handlePlayerMouseDown}
         onClick={this.handlePlayerClicked}

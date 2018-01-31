@@ -32,6 +32,11 @@ describe('Utils', function () {
 
     var browserSupportsTouch = Utils.browserSupportsTouch();
     expect(browserSupportsTouch).toBeFalsy();
+
+    var areClassNameEqual = Utils.areArgumentsEqual('test', 'test', 'test', 'test');
+    expect(areClassNameEqual).toBe(true);
+    var areClassNameNotEqual = Utils.areArgumentsEqual('test', 'test2', 'test');
+    expect(areClassNameNotEqual).toBe(false);
   });
 
   describe('autoFocusFirstElement', function() {

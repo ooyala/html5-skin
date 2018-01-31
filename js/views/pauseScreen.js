@@ -64,7 +64,8 @@ var PauseScreen = React.createClass({
   },
 
   handleTouchEnd: function(e) {
-    if (e.target.className === "oo-state-screen-selectable") {
+    var isSelectableScreen = Utils.areArgumentsEqual(e.target.className, CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN);
+    if (isSelectableScreen) {
       if (this.props.controller.videoVr) {
         e.preventDefault();
         if (!this.props.isVrMouseMove) {
@@ -103,8 +104,11 @@ var PauseScreen = React.createClass({
   },
 
   handlePlayerMouseUp: function(e) {
-    e.stopPropagation(); // W3C
-    e.cancelBubble = true; // IE
+    var isSelectableScreen = Utils.areArgumentsEqual(e.target.className, CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN);
+    if (isSelectableScreen) {
+      e.stopPropagation(); // W3C
+      e.cancelBubble = true; // IE
+    }
     this.props.handleVrPlayerMouseUp(e);
   },
 
@@ -205,7 +209,7 @@ var PauseScreen = React.createClass({
         }
 
         <div
-          className="oo-state-screen-selectable"
+          className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
           onClick={this.handleClick}
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
