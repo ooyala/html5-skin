@@ -924,25 +924,6 @@ var Utils = {
     }
     return false;
   },
-
-  /**
-   * Check if arguments are equal
-   * @public
-   * @returns {boolean} returns true if values are identical
-   */
-  areArgumentsEqual: function() {
-    var args = Array.prototype.slice.call(arguments);
-    var areEqual = true;
-    if (args.length) {
-      for (var i=(args.length-1); i>=0; i--) {
-        if ((i-1) >= 0 && args[i] !== args[i-1]) {
-          areEqual = false;
-          break;
-        }
-      }
-    }
-    return areEqual;
-  },
 };
 
 module.exports = Utils;

@@ -132,6 +132,7 @@ describe('PlayingScreen', function () {
 
   it('creates a PlayingScreen and checks touchEnd', function () {
     var isInHandleTouchEnd = false;
+    var clicked = false;
     var mockController = {
       videoVr: false,
       state: {
@@ -147,8 +148,11 @@ describe('PlayingScreen', function () {
           isVrAnimationEnabled: {
             vrNotification: true,
             vrIcon: true
-          },
-        }
+          }
+        },
+      },
+      togglePlayPause: function() {
+        clicked = true;
       },
       startHideControlBarTimer: function() {}
     };
@@ -172,6 +176,7 @@ describe('PlayingScreen', function () {
     var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
     TestUtils.Simulate.touchEnd(screen);
     expect(isInHandleTouchEnd).toBe(true);
+    expect(clicked).toBe(true);
   });
 
   it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp without video360 fullscreen', function () {
