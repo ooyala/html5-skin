@@ -145,7 +145,7 @@ var PlayingScreen = React.createClass({
   },
 
   handleTouchEnd: function(event) {
-    var isSelectableScreen = this.props.areClassNamesEquals(event.target.className, this.selectableScreenClassName);
+    var isSelectableScreen = Utils.areArgumentsEqual(event.target.className, this.selectableScreenClassName);
     if (isSelectableScreen) {
       event.preventDefault();//to prevent mobile from propagating click to discovery shown on pause
       if (!this.state.controlBarVisible){
@@ -189,7 +189,7 @@ var PlayingScreen = React.createClass({
     if (!this.isMobile) {
       e.stopPropagation(); // W3C
       e.cancelBubble = true; // IE
-      var isSelectableScreen = this.props.areClassNamesEquals(e.target.className, this.selectableScreenClassName);
+      var isSelectableScreen = Utils.areArgumentsEqual(e.target.className, this.selectableScreenClassName);
       if (!this.props.controller.videoVr && isSelectableScreen) {
         this.props.controller.togglePlayPause();//if clicked on selectableSceen
       }

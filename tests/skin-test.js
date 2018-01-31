@@ -16,10 +16,6 @@ describe('Skin', function () {
     skinComponent.handleClickOutsidePlayer();
     skinComponent.updatePlayhead(4,6,8);
     skinComponent.componentWillUnmount();
-    var areClassNameEqual = skinComponent.areClassNamesEquals('test', 'test');
-    expect(areClassNameEqual).toBe(true);
-    var areClassNameNotEqual = skinComponent.areClassNamesEquals('test', 'test2');
-    expect(areClassNameNotEqual).toBe(false);
   });
 });
 
