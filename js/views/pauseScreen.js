@@ -31,16 +31,16 @@ var PauseScreen = React.createClass({
     this.hideVrPauseButton();
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
-    document.addEventListener('mouseup', this.handlePlayerMouseUp, false);
-    document.addEventListener('touchend', this.handleTouchEnd, false);
+    document.addEventListener('mouseup', this.handleVrMouseUp, false);
+    document.addEventListener('touchend', this.handleVrTouchEnd, false);
   },
 
   componentWillUnmount: function() {
     this.props.controller.enablePauseAnimation();
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
-    document.removeEventListener('mouseup', this.handlePlayerMouseUp);
-    document.removeEventListener('touchend', this.handleTouchEnd);
+    document.removeEventListener('mouseup', this.handleVrMouseUp);
+    document.removeEventListener('touchend', this.handleVrTouchEnd);
   },
 
   handleResize: function() {
@@ -63,16 +63,24 @@ var PauseScreen = React.createClass({
     this.props.handleVrPlayerClick();
   },
 
+  /**
+   * call handleTouchEnd when touchend was called on selectedScreen and videoType is Vr
+   * @param e {object} - event object
+   */
   handleTouchEnd: function(e) {
-    var isSelectableScreen = Utils.areArgumentsEqual(e.target.className, CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN);
-    if (isSelectableScreen) {
-      if (this.props.controller.videoVr) {
-        e.preventDefault();
-        if (!this.props.isVrMouseMove) {
-          this.props.controller.togglePlayPause(e);
-        }
+    if (this.props.controller.videoVr) {
+      e.preventDefault();
+      if (!this.props.isVrMouseMove) {
+        this.props.controller.togglePlayPause(e);
       }
     }
+  },
+
+  /**
+   * call handleVrTouchEnd when touchend was called on selectedScreen and videoType is Vr
+   * @param e {object} - event object
+   */
+  handleVrTouchEnd: function(e) {
     this.props.handleVrPlayerMouseUp(e);
   },
 
@@ -103,12 +111,20 @@ var PauseScreen = React.createClass({
     this.props.handleVrPlayerMouseMove(e);
   },
 
+  /**
+   * call handleVrMouseUp when mouseup was called on selectedScreen
+   * @param e {object} - event object
+   */
   handlePlayerMouseUp: function(e) {
-    var isSelectableScreen = Utils.areArgumentsEqual(e.target.className, CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN);
-    if (isSelectableScreen) {
-      e.stopPropagation(); // W3C
-      e.cancelBubble = true; // IE
-    }
+    e.stopPropagation(); // W3C
+    e.cancelBubble = true; // IE
+  },
+
+  /**
+   * call handleVrMouseUp when mouseup was called on document
+   * @param e {object} - event object
+   */
+  handleVrMouseUp: function(e) {
     this.props.handleVrPlayerMouseUp(e);
   },
 
@@ -213,6 +229,8 @@ var PauseScreen = React.createClass({
           onClick={this.handleClick}
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
+          onMouseUp={this.handlePlayerMouseUp}
+          onTouchEnd={this.handleTouchEnd}
         />
 
         <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
