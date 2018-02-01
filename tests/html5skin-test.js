@@ -564,5 +564,18 @@ describe('Controller', function() {
       expect(controller.state.pluginsElement.css("bottom")).toBe("0px");
       expect(controller.state.pluginsClickElement.css("bottom")).toBe("0px");
     });
+
+    it('showControlBar is true when ad is paused', function() {
+      var playerParam = {
+        playerControlsOverAds: false
+      };
+      controller.state.playerParam = playerParam;
+      controller.createPluginElements();
+      //make sure showControlBar is overwritten
+      expect(controller.state.config.adScreen.showControlBar).toBeFalsy();
+      controller.focusedElement = OO.VIDEO.ADS;
+      controller.onPaused('event', OO.VIDEO.ADS);
+      expect(controller.state.config.adScreen.showControlBar).toBe(true);
+    });
   });
 });

@@ -753,6 +753,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       else if (videoId == OO.VIDEO.ADS){
+        //If we pause during an ad (such as for clickthroughs or when autoplay fails)
+        //we'll show the control bar so that the user has an indication that the video
+        //must be unpaused to resume
+        this.state.config.adScreen.showControlBar = true;
         this.state.adPauseAnimationDisabled = false;
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
@@ -1213,11 +1217,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //create plugin container elements
     createPluginElements: function() {
+      this.state.config.adScreen = this.state.config.adScreen || {};
       //if playerControlsOverAds is true then we need to override the setting
       //for showing the control bar during ads.
       if (this.state.playerParam && this.state.playerParam.playerControlsOverAds) {
         if (this.state.config) {
-          this.state.config.adScreen = this.state.config.adScreen || {};
           this.state.config.adScreen.showControlBar = true;
         }
       }
