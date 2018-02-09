@@ -847,7 +847,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onCancelGeoChecking: function () {
       //PLAYER-2900 If geo-blocking on ios, then you need to exit full-screen mode
-
       if (OO.isIos && this.state.fullscreen){
         this.toggleFullscreen();
       }
