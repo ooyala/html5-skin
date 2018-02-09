@@ -848,7 +848,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onCancelGeoChecking: function () {
       //PLAYER-2900 If geo-blocking on ios, then you need to exit full-screen mode
 
-      if (Utils.isIos() && this.state.fullscreen){
+      if (OO.isIos && this.state.fullscreen){
         this.toggleFullscreen();
       }
     },
@@ -1492,7 +1492,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_VR, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.CANCEL_GEO_CHECKING, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
