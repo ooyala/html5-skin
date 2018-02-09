@@ -578,4 +578,14 @@ describe('Controller', function() {
       expect(controller.state.config.adScreen.showControlBar).toBe(true);
     });
   });
+
+  describe('Geo-checking', function () {
+    it('should exit full-screen mode, if geo-blocking on ios', function () {
+      controller.state.fullscreen = true;
+      OO.isIos = true;
+
+      controller.onCancelGeoChecking();
+      expect(controller.state.fullscreen).toBe(false);
+    });
+  });
 });
