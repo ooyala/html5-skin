@@ -187,6 +187,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi', _.bind(this.onClearVideoType, this));
       this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setVrViewingDirection, this));
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
+      this.mb.subscribe(OO.EVENTS.CANCEL_GEO_CHECKING, 'customerUi', _.bind(this.onCancelGeoChecking, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -844,6 +845,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.vrViewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
     },
 
+    onCancelGeoChecking: function () {
+      //PLAYER-2900 If geo-blocking on ios, then you need to exit full-screen mode
+
+      if (Utils.isIos() && this.state.fullscreen){
+        this.toggleFullscreen();
+      }
+    },
+
     recreatingUI: function (event, elementId, params, settings) {
       if (!$('.oo-player-skin').length) {
         this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
@@ -1483,6 +1492,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_VR, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.CANCEL_GEO_CHECKING, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
