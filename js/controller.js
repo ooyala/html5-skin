@@ -749,7 +749,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
-        this.state.mainVideoElement.classList.add('oo-blur');
+
+        // [PLAYER-2220]: videoVr should not blur. This prevents a circular review on a pause.
+        if (!this.videoVr) {
+          this.state.mainVideoElement.classList.add('oo-blur');
+        }
         this.renderSkin();
       }
       else if (videoId == OO.VIDEO.ADS){
