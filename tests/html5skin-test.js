@@ -44,6 +44,7 @@ OO = {
     MAIN: 'main'
   },
   init: function() {},
+  handleVrMobileOrientation: function() {},
   log: function() {},
   plugin: function(module, callback) {
     var plugin = callback(OO, _, $);
@@ -80,6 +81,7 @@ describe('Controller', function() {
     controller.state.pluginsElement = $('<div/>');
     controller.state.pluginsClickElement = $('<div/>');
     controller.state.mainVideoElement = mockDomElement;
+    controller.state.mainVideoInnerWrapper = $('<div/>');
     controller.state.mainVideoElementContainer = mockDomElement;
     controller.skin = {
       state: {},
@@ -319,7 +321,7 @@ describe('Controller', function() {
     it('should show loading screen on playback ready when core reports it will autoplay', function() {
       expect(controller.state.screenToShow).not.toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
       controller.onPlaybackReady('event', null, { willAutoplay: true });
-      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.START_LOADING_SCREEN);
     });
 
     it('should reset playhead on embed code changed', function() {
@@ -359,6 +361,30 @@ describe('Controller', function() {
       expect(controller.skin.state.duration).not.toBe(120);
       controller.onContentTreeFetched('event', { duration: 120000 });
       expect(controller.skin.state.duration).toBe(120);
+    });
+
+    it('should set aspect ratio when main content is playing', function() {
+      var spy = sinon.spy(controller, 'setAspectRatio');
+      controller.state.currentVideoId = OO.VIDEO.MAIN;
+      controller.onAssetDimensionsReceived('event', {
+        videoId: OO.VIDEO.MAIN,
+        width: 640,
+        height: 480
+      });
+      expect(spy.callCount).toBe(1);
+      spy.restore();
+    });
+
+    it('should not set aspect ratio when main content is not playing', function() {
+      var spy = sinon.spy(controller, 'setAspectRatio');
+      controller.state.currentVideoId = OO.VIDEO.ADS;
+      controller.onAssetDimensionsReceived('event', {
+        videoId: OO.VIDEO.MAIN,
+        width: 640,
+        height: 480
+      });
+      expect(spy.callCount).toBe(0);
+      spy.restore();
     });
 
   });
@@ -474,7 +500,7 @@ describe('Controller', function() {
 
     it('playerControlsOverAds = true  and no skin setting for adscreen overwrites css and showControlBar', function() {
       var playerParam = {
-        playerControlsOverAds: true,
+        playerControlsOverAds: true
       };
       controller.state.playerParam = playerParam;
       controller.createPluginElements();
@@ -487,7 +513,7 @@ describe('Controller', function() {
 
     it('playerControlsOverAds = false doesn\'t overwrite the plugin element css', function() {
       var playerParam = {
-        playerControlsOverAds: false,
+        playerControlsOverAds: false
       };
       controller.state.playerParam = playerParam;
       controller.createPluginElements();
@@ -537,6 +563,19 @@ describe('Controller', function() {
       expect(controller.state.config.adScreen.showControlBar).toBe(true);
       expect(controller.state.pluginsElement.css("bottom")).toBe("0px");
       expect(controller.state.pluginsClickElement.css("bottom")).toBe("0px");
+    });
+
+    it('showControlBar is true when ad is paused', function() {
+      var playerParam = {
+        playerControlsOverAds: false
+      };
+      controller.state.playerParam = playerParam;
+      controller.createPluginElements();
+      //make sure showControlBar is overwritten
+      expect(controller.state.config.adScreen.showControlBar).toBeFalsy();
+      controller.focusedElement = OO.VIDEO.ADS;
+      controller.onPaused('event', OO.VIDEO.ADS);
+      expect(controller.state.config.adScreen.showControlBar).toBe(true);
     });
   });
 });

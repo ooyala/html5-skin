@@ -5,36 +5,7 @@ jest.dontMock('../../js/components/thumbnailCarousel')
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
 var ReactDOM = require('react-dom');
-var Thumbnail = require('../../js/components/thumbnail');
 var ThumbnailCarousel = require('../../js/components/thumbnailCarousel');
-var Utils = require('../../js/components/utils');
-
-var testThumbnails = function(DOM, thumbnails, hoverTime, width, duration) {
-  var hoverPosition = Utils.findThumbnail(thumbnails, hoverTime, duration).pos;
-  var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnail);
-  var images = centerImage._parentNode._childNodes;
-
-  var lastLeft = 0;
-  var next = 0;
-  for (var i = 0; i < hoverPosition && i < images.length; i++) {
-    var imageStyle = images[i]._style;
-    var img = imageStyle._values["background-image"];
-    var left = parseInt(imageStyle._values["left"]);
-    if (i > 0 && left > lastLeft) { // left edge of scrubber bar reached,  now check images to the right of central, remember index where we stopped
-      next = hoverPosition - i;
-      break;
-    }
-    var offset = img.indexOf("url(") + 4;
-    lastLeft = left;
-    expect(img.slice(offset, -1)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[hoverPosition - i - 1]][width]["url"]);
-  }
-  for (var i = hoverPosition + 1 - next; i < images.length; i++) {
-    var imageStyle = images[i]._style;
-    var img = imageStyle._values["background-image"];
-    var offset = img.indexOf("url(") + 4;
-    expect(img.slice(offset, -1)).toBe(thumbnails.data.thumbnails[thumbnails.data.available_time_slices[i + next]][width]["url"]);
-  }
-}
 
 describe('ThumbnailCarousel', function () {
   var thumbnails = {
@@ -144,11 +115,23 @@ describe('ThumbnailCarousel', function () {
       ]
     }
   };
+  var centralThumbnail = {
+    imageHeight: 120,
+    imageWidth: 80,
+    pos: 1,
+    url: "http://media.video-cdn.espn.com/motion/Miercoles_100.jpg"
+  };
 
   it('creates a ThumbnailCarousel at 50 sec', function () {
     var hoverTime = 50; // should find thumbnails that correspond to time slice of 50 as there is a time slice for the value of 50
     var width = thumbnails.data.available_widths[0];
     var onRef = function() {};
+    var thumbnailStyle = {
+      left: 23,
+      backgroundImage: "url('http://media.video-cdn.espn.com/motion/Miercoles_050.jpg')",
+      backgroundSize: "120px 80px",
+      backgroundPosition: "0px 0px"
+    };
     var DOM = TestUtils.renderIntoDocument(
       <ThumbnailCarousel
         onRef={onRef}
@@ -159,6 +142,8 @@ describe('ThumbnailCarousel', function () {
         carouselHeight="102"
         thumbnailWidth="93"
         thumbnailHeight="63"
+        centralThumbnail={centralThumbnail}
+        thumbnailStyle={thumbnailStyle}
         thumbnails={thumbnails}/>
     );
     var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnail).style._values['background-image'];
@@ -170,6 +155,12 @@ describe('ThumbnailCarousel', function () {
     var hoverTime = 45; // should find thumbnails that correspond to time slice of 40 as there is no exact time slice match for the value of 45
     var width = thumbnails.data.available_widths[0];
     var onRef = function() {};
+    var thumbnailStyle = {
+      left: 23,
+      backgroundImage: "url('http://media.video-cdn.espn.com/motion/Miercoles_040.jpg')",
+      backgroundSize: "120px 80px",
+      backgroundPosition: "0px 0px"
+    };
     var DOM = TestUtils.renderIntoDocument(
       <ThumbnailCarousel
         onRef={onRef}
@@ -180,32 +171,12 @@ describe('ThumbnailCarousel', function () {
         carouselHeight="102"
         thumbnailWidth="93"
         thumbnailHeight="63"
+        centralThumbnail={centralThumbnail}
+        thumbnailStyle={thumbnailStyle}
         thumbnails={thumbnails}/>
     );
     var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnail).style._values['background-image'];
     centerImage = centerImage.slice(centerImage.indexOf("url(") + 4, -1);
     expect(centerImage).toBe(thumbnails.data.thumbnails[hoverTime - 5][width]["url"]);//45 is not present in the data, so hoverTime of 45 should find previous value
-  });
-
-  it('test generation of left and right thumbnails at various times', function () {
-    var duration = 100;
-    var width = thumbnails.data.available_widths[0];
-    var onRef = function() {};
-    for (var hoverTime = 0; hoverTime <= 100; hoverTime += 5) {
-      var DOM = TestUtils.renderIntoDocument(
-        <ThumbnailCarousel
-          onRef={onRef}
-          duration={duration}
-          hoverTime={hoverTime}
-          scrubberBarWidth={800}
-          carouselWidth="154"
-          carouselHeight="102"
-          thumbnailWidth="93"
-          thumbnailHeight="63"
-          thumbnails={thumbnails}/>
-      );
-
-      testThumbnails(DOM, thumbnails, hoverTime, width, duration);
-    }
   });
 });

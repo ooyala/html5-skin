@@ -28,10 +28,19 @@ var PauseScreen = React.createClass({
 
   componentDidMount: function() {
     this.handleResize();
+    this.hideVrPauseButton();
+    document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
+    document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
+    document.addEventListener('mouseup', this.handleVrMouseUp, false);
+    document.addEventListener('touchend', this.handleVrTouchEnd, false);
   },
 
   componentWillUnmount: function() {
     this.props.controller.enablePauseAnimation();
+    document.removeEventListener('mousemove', this.handlePlayerMouseMove);
+    document.removeEventListener('touchmove', this.handlePlayerMouseMove);
+    document.removeEventListener('mouseup', this.handleVrMouseUp);
+    document.removeEventListener('touchend', this.handleVrTouchEnd);
   },
 
   handleResize: function() {
@@ -54,6 +63,41 @@ var PauseScreen = React.createClass({
     this.props.handleVrPlayerClick();
   },
 
+  /**
+   * call handleTouchEnd when touchend was called on selectedScreen and videoType is Vr
+   * @param e {object} - event object
+   */
+  handleTouchEnd: function(e) {
+    if (this.props.controller.videoVr) {
+      e.preventDefault();
+      if (!this.props.isVrMouseMove) {
+        this.props.controller.togglePlayPause(e);
+      }
+    }
+  },
+
+  /**
+   * call handleVrTouchEnd when touchend was called on selectedScreen and videoType is Vr
+   * @param e {object} - event object
+   */
+  handleVrTouchEnd: function(e) {
+    this.props.handleVrPlayerMouseUp(e);
+  },
+
+  /**
+   * remove the button on pause screen for correct checking mouse movement
+   */
+  hideVrPauseButton: function() {
+    if (this.props.controller.videoVr) {
+      var pauseButton = document.getElementById('oo-pause-button');
+      setTimeout(function() {
+        if (pauseButton) {
+          pauseButton.style.display="none";
+        }
+      }, 1000);
+    }
+  },
+
   handlePlayerMouseDown: function(e) {
     if (this.props.controller.videoVr) {
       e.persist();
@@ -62,21 +106,26 @@ var PauseScreen = React.createClass({
     this.props.controller.state.isClickedOutside = false;
     this.props.handleVrPlayerMouseDown(e);
   },
+
   handlePlayerMouseMove: function(e) {
-    if (this.props.controller.videoVr) {
-      e.preventDefault();
-      e.persist();
-    }
     this.props.handleVrPlayerMouseMove(e);
   },
+
+  /**
+   * call handleVrMouseUp when mouseup was called on selectedScreen
+   * @param e {object} - event object
+   */
   handlePlayerMouseUp: function(e) {
     e.stopPropagation(); // W3C
     e.cancelBubble = true; // IE
-    this.props.handleVrPlayerMouseUp();
   },
 
-  handlePlayerMouseLeave: function() {
-    this.props.handleVrPlayerMouseLeave()
+  /**
+   * call handleVrMouseUp when mouseup was called on document
+   * @param e {object} - event object
+   */
+  handleVrMouseUp: function(e) {
+    this.props.handleVrPlayerMouseUp(e);
   },
 
   /**
@@ -176,14 +225,12 @@ var PauseScreen = React.createClass({
         }
 
         <div
-          className="oo-state-screen-selectable"
+          className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
           onClick={this.handleClick}
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
           onMouseUp={this.handlePlayerMouseUp}
-          onMouseMove={this.handlePlayerMouseMove}
-          onTouchMove={this.handlePlayerMouseMove}
-          onMouseLeave={this.handlePlayerMouseLeave}
+          onTouchEnd={this.handleTouchEnd}
         />
 
         <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
@@ -194,6 +241,7 @@ var PauseScreen = React.createClass({
         </div>
 
         <button
+          id="oo-pause-button"
           type="button"
           className={actionIconClass}
           onClick={this.handleClick}

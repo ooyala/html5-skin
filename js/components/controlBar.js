@@ -34,6 +34,7 @@ var ControlBar = React.createClass({
 
   componentDidMount: function () {
     window.addEventListener('orientationchange', this.closePopovers);
+    window.addEventListener("orientationchange", this.setLandscapeScreenOrientation, false);
     document.addEventListener('keydown', this.handleControlBarKeyDown);
     this.restoreFocusedControl();
   },
@@ -52,6 +53,7 @@ var ControlBar = React.createClass({
       this.props.controller.hideVolumeSliderBar();
     }
     window.removeEventListener('orientationchange', this.closePopovers);
+    window.removeEventListener("orientationchange", this.setLandscapeScreenOrientation);
     document.removeEventListener('keydown', this.handleControlBarKeyDown);
   },
 
@@ -100,9 +102,11 @@ var ControlBar = React.createClass({
     evt.stopPropagation();
     evt.cancelBubble = true;
     evt.preventDefault();
-    this.props.controller.toggleFullscreen();
-    if (this.vr && this.isMobile && this.vr.stereo) {
-      this.toggleStereoVr();
+    if (this.props.controller) {
+      this.props.controller.toggleFullscreen();
+      if (this.vr && this.isMobile && this.props.controller.isVrStereo) {
+        this.toggleStereoVr();
+      }
     }
   },
 
@@ -111,9 +115,9 @@ var ControlBar = React.createClass({
       evt.stopPropagation();
       evt.cancelBubble = true;
       evt.preventDefault();
-      //
+
       this.toggleStereoVr();
-      //
+
       if (this.props.controller) {
         var fullscreen = false;
         //depends on the switching type
@@ -128,8 +132,9 @@ var ControlBar = React.createClass({
         if (!fullscreen && typeof this.props.controller.toggleFullscreen === "function") {
           this.props.controller.toggleFullscreen();
         }
-        //
-        if (this.vr.stereo) {
+
+        if (this.props.controller.isVrStereo) {
+          this.props.controller.checkDeviceOrientation = true;
           this.setLandscapeScreenOrientation();
         } else {
           this.unlockScreenOrientation();
@@ -143,17 +148,9 @@ var ControlBar = React.createClass({
    * @private
    */
   setLandscapeScreenOrientation: function() {
-    var orientation = window.screen.orientation || window.screen.mozOrientation || window.screen.msOrientation;
-    if (orientation && orientation.type && (orientation.type === "portrait-secondary" || orientation.type === "portrait-primary")) {
-      var orientations = "landscape-primary";
-      if (screen.orientation && screen.orientation.lock) { //chrome browser
-        screen.orientation.lock(orientations);
-      } else if (screen.lockOrientation) { //new one
-        screen.lockOrientation(orientations);
-      } else if (screen.mozLockOrientation) { //ff
-        screen.mozLockOrientation(orientations);
-      } else if (screen.msLockOrientation) { //ie
-        screen.msLockOrientation(orientations);
+    if (this.props.controller && this.props.controller.checkDeviceOrientation) {
+      if (Utils.setLandscapeScreenOrientation) {
+        Utils.setLandscapeScreenOrientation();
       }
     }
   },
@@ -176,7 +173,6 @@ var ControlBar = React.createClass({
 
   toggleStereoVr: function() {
     if (this.props.controller && typeof this.props.controller.toggleStereoVr === "function") {
-      this.vr.stereo = !this.vr.stereo;
       this.props.controller.toggleStereoVr();
     }
   },
@@ -437,7 +433,7 @@ var ControlBar = React.createClass({
     if (this.vr) {
       stereoIcon = "stereoOff";
       stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
-      if (this.vr.stereo) {
+      if (this.props.controller && this.props.controller.isVrStereo) {
         stereoIcon = "stereoOn";
         stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_ON;
       }
@@ -746,7 +742,7 @@ var ControlBar = React.createClass({
         continue;
       }
 
-      if (Utils.isIos() && (defaultItems[k].name === "volume")) {
+      if (Utils.isIos() && (defaultItems[k].name === "volume") && !this.vr) {
         continue;
       }
 
@@ -800,7 +796,6 @@ var ControlBar = React.createClass({
     });
 
     var controlBarItems = this.populateControlBar();
-
     var controlBarStyle = {
       height: this.props.skinConfig.controlBar.height
     };

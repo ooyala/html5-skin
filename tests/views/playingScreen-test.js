@@ -9,9 +9,9 @@ var PlayingScreen = require('../../js/views/playingScreen');
 var UnmuteIcon = require('../../js/components/unmuteIcon');
 
 describe('PlayingScreen', function () {
+  var handleVrPlayerMouseUp = function() {};
   it('creates a PlayingScreen and checks mouseMove, mouseUp without video360', function () {
     var isMoved = false
-      , isPlayPause = false
       , isTouched = false;
     var mockController = {
       videoVr: false,
@@ -30,9 +30,6 @@ describe('PlayingScreen', function () {
             vrIcon: true
           },
         }
-      },
-      togglePlayPause: function() {
-        isPlayPause = true;
       },
       startHideControlBarTimer: function() {
         isMoved = true;
@@ -65,9 +62,6 @@ describe('PlayingScreen', function () {
 
     TestUtils.Simulate.mouseMove(screen[0]);
     expect(isMoved).toBe(false);
-
-    TestUtils.Simulate.mouseUp(screen[0]);
-    expect(isPlayPause).toBe(true);
   });
 
   it('creates a PlayingScreen and checks mouseDown, mouseUp with video360', function() {
@@ -136,7 +130,8 @@ describe('PlayingScreen', function () {
 
   });
 
-  it('creates a PlayingScreen and checks touchEnd without video360', function () {
+  it('creates a PlayingScreen and checks touchEnd', function () {
+    var isInHandleTouchEnd = false;
     var clicked = false;
     var mockController = {
       videoVr: false,
@@ -153,8 +148,8 @@ describe('PlayingScreen', function () {
           isVrAnimationEnabled: {
             vrNotification: true,
             vrIcon: true
-          },
-        }
+          }
+        },
       },
       togglePlayPause: function() {
         clicked = true;
@@ -166,11 +161,21 @@ describe('PlayingScreen', function () {
       cueText: "cue text"
     };
 
-    // Render pause screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
+    var handleVrPlayerMouseUp = function() {
+      isInHandleTouchEnd = true;
+    };
 
-    var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
-    TestUtils.Simulate.touchEnd(screen[0]);
+    // Render pause screen into DOM
+    var DOM = TestUtils.renderIntoDocument(
+        <PlayingScreen
+            controller = {mockController}
+            closedCaptionOptions = {closedCaptionOptions}
+            handleVrPlayerMouseUp = {handleVrPlayerMouseUp}
+        />);
+
+    var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
+    TestUtils.Simulate.touchEnd(screen);
+    expect(isInHandleTouchEnd).toBe(true);
     expect(clicked).toBe(true);
   });
 
@@ -217,7 +222,14 @@ describe('PlayingScreen', function () {
     };
 
     // Render pause screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} fullscreen = {true} controlBarAutoHide={true} closedCaptionOptions = {closedCaptionOptions}/>);
+    var DOM = TestUtils.renderIntoDocument(
+      <PlayingScreen
+        controller = {mockController}
+        fullscreen = {true}
+        controlBarAutoHide={true}
+        closedCaptionOptions = {closedCaptionOptions}
+        handleVrPlayerMouseUp = {handleVrPlayerMouseUp}
+      />);
 
     var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playing-screen');
     TestUtils.Simulate.mouseMove(screen);
@@ -286,6 +298,7 @@ describe('PlayingScreen', function () {
         componentHeight={40}
         controlBarAutoHide={true}
         closedCaptionOptions={closedCaptionOptions}
+        handleVrPlayerMouseUp={handleVrPlayerMouseUp}
       />
     );
 
@@ -354,6 +367,7 @@ describe('PlayingScreen', function () {
         controller = {mockController}
         closedCaptionOptions = {closedCaptionOptions}
         handleVrPlayerClick={handleVrPlayerClick}
+        handleVrPlayerMouseUp={handleVrPlayerMouseUp}
       />
     );
     var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
@@ -396,7 +410,12 @@ describe('PlayingScreen', function () {
       cueText: "cue text"
     };
 
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
+    var DOM = TestUtils.renderIntoDocument(
+      <PlayingScreen
+          controller = {mockController}
+          closedCaptionOptions = {closedCaptionOptions}
+          handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+      />);
     var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playing-screen');
 
     TestUtils.Simulate.keyDown(screen, {key: 'Tab', which: 9, keyCode: 9});
@@ -436,7 +455,12 @@ describe('PlayingScreen', function () {
       cueText: "cue text"
     };
 
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions = {closedCaptionOptions}/>);
+    var DOM = TestUtils.renderIntoDocument(
+      <PlayingScreen
+        controller = {mockController}
+        closedCaptionOptions = {closedCaptionOptions}
+        handleVrPlayerMouseUp = {handleVrPlayerMouseUp}
+      />);
     var screen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playing-screen');
 
     TestUtils.Simulate.keyDown(screen, {key: 'Tab', which: 9, keyCode: 9});
@@ -496,6 +520,7 @@ describe('PlayingScreen', function () {
         fullscreen = {true}
         controlBarAutoHide={true}
         componentWidth={400}
+        handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         closedCaptionOptions={closedCaptionOptions} />, node
     );
 
@@ -505,6 +530,7 @@ describe('PlayingScreen', function () {
         fullscreen = {true}
         controlBarAutoHide={true}
         componentWidth={800}
+        handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         closedCaptionOptions={closedCaptionOptions} />, node
     );
 
@@ -534,7 +560,12 @@ describe('PlayingScreen', function () {
       cueText: "cue text"
     };
 
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions={closedCaptionOptions} />);
+    var DOM = TestUtils.renderIntoDocument(
+      <PlayingScreen
+        controller = {mockController}
+        closedCaptionOptions={closedCaptionOptions}
+        handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+      />);
     var unmuteIcon = TestUtils.findRenderedComponentWithType(DOM, UnmuteIcon);
     expect(unmuteIcon).toBeTruthy();
   });
@@ -562,7 +593,12 @@ describe('PlayingScreen', function () {
       cueText: "cue text"
     };
 
-    var DOM = TestUtils.renderIntoDocument(<PlayingScreen  controller = {mockController} closedCaptionOptions={closedCaptionOptions} />);
+    var DOM = TestUtils.renderIntoDocument(
+      <PlayingScreen
+        controller = {mockController}
+        closedCaptionOptions={closedCaptionOptions}
+        handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+      />);
     var unmuteIcons = TestUtils.scryRenderedComponentsWithType(DOM, UnmuteIcon);
     expect(unmuteIcons.length).toBe(0);
   });

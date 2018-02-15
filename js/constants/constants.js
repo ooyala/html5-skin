@@ -23,6 +23,7 @@ module.exports = {
     AD_SCREEN: "adScreen",
     MORE_OPTIONS_SCREEN: "moreOptionsScreen",
     LOADING_SCREEN: "loadingScreen",
+    START_LOADING_SCREEN: "startLoadingScreen",
     CLOSEDCAPTION_SCREEN: "closedCaptionScreen",
     VIDEO_QUALITY_SCREEN: "videoQualityScreen",
     ERROR_SCREEN: "errorScreen"
@@ -56,7 +57,6 @@ module.exports = {
     OFF: "Off",
     DISCOVER: "Discover",
     UP_NEXT: "Up next",
-    SHARE_CALL_TO_ACTION: "Invest In Social Change",
     START_AT: "Start at",
     EMBED: "Embed",
     EMAIL: "Email",
@@ -477,5 +477,8 @@ module.exports = {
     MAX_VR_THUMBNAIL_CAROUSEL_BG_WIDTH: 320,
     THUMBNAIL_VR_RATIO: 4,
     THUMBNAIL_CAROUSEL_VR_RATIO: 3
+  },
+  CLASS_NAMES: {
+    SELECTABLE_SCREEN: "oo-state-screen-selectable"
   }
 };

@@ -33,6 +33,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.videoVr = false;
     this.captionDirection = '';
     this.isNewVrVideo = true;
+    this.vrMobileOrientationChecked = false;
+    this.checkDeviceOrientation = false;
+    this.isVrStereo = false;
+    this.handleVrMobileOrientation = this.handleVrMobileOrientation.bind(this);
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
@@ -297,7 +301,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
       }
 
-      this.state.mainVideoInnerWrapper.attr('style', '');
+      this.setInlineStyles();
 
       //load player with page level config param if exist
       if (params.skin && params.skin.config) {
@@ -313,16 +317,56 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
     },
 
+    /**
+     * Set style "touch-action: none" only for video 360 on mobile devices
+     * see details: https://stackoverflow.com/questions/42206645/konvajs-unable-to-preventdefault-inside-passive-event-listener-due-to-target-be
+     */
+    setInlineStyles: function () {
+      if (this.videoVr && this.state.isMobile) {
+        this.state.mainVideoInnerWrapper.attr('style', 'touch-action: none');
+      }
+    },
+
     onSetVideoVr: function(event, params) {
       this.videoVr = true;
+      this.setInlineStyles();
       if (params) {
         this.videoVrSource = params.source || null; //if we need video vr params
+      }
+    },
+
+    /**
+     * @description
+     * Should be used with deviceorientation event listener.
+     * Uses for video 360 on mobile devices for setting necessary coordinates (relevant with start device orientation)
+     * Before playing this.vrMobileOrientationChecked is equal false,
+     * if need to check value for device orientation set this.checkDeviceOrientation = true
+     * @param {object} e The event object
+     */
+    handleVrMobileOrientation: function(e) {
+      if (!this.vrMobileOrientationChecked || this.checkDeviceOrientation) {
+        var beta = e.beta;
+        var gamma = e.gamma;
+        var yaw = this.state.vrViewingDirection["yaw"];
+        var pitch = this.state.vrViewingDirection["pitch"];
+        var dir = beta;
+        var orientationType = Utils.getOrientationType();
+        if (orientationType && (orientationType === "landscape-secondary" || orientationType === "landscape-primary")) {
+          dir = gamma;
+        }
+        if (dir !== undefined && dir !== null && Utils.ensureNumber(dir, 0)) {
+          pitch += -90 + Math.abs(Math.round(dir));
+          var params = [yaw, 0, pitch];
+          this.onTouchMove(params);
+        }
+        this.checkDeviceOrientation = false;
       }
     },
 
     onClearVideoType: function(event, params) {
       this.videoVr = false;
       this.videoVrSource = null;
+      this.vrMobileOrientationChecked = false;
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -354,6 +398,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.enableFullScreen();
         this.updateAspectRatio();
       }
+      if (this.videoVr) {
+        if (window.DeviceOrientationEvent) {
+          window.addEventListener('deviceorientation', this.handleVrMobileOrientation, false);
+        }
+      }
     },
 
     // functions dependent on video metadata
@@ -370,6 +419,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       this.stopBufferingTimer();
       this.cleanUpEventListeners();
+      document.removeEventListener("deviceorientation", this.handleVrMobileOrientation);
       this.mb = null;
     },
 
@@ -623,7 +673,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isInitialPlay = true;
       this.state.initialPlayHasOccurred = true;
       this.startHideControlBarTimer();
-      this.isNewVrVideo = true;
+      if (this.videoVr) {
+        this.vrMobileOrientationChecked = true;
+      }
     },
 
     onVcPlay: function(event, source) {
@@ -706,6 +758,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       else if (videoId == OO.VIDEO.ADS){
+        //If we pause during an ad (such as for clickthroughs or when autoplay fails)
+        //we'll show the control bar so that the user has an indication that the video
+        //must be unpaused to resume
+        this.state.config.adScreen.showControlBar = true;
         this.state.adPauseAnimationDisabled = false;
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
@@ -778,6 +834,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    onEndMove: function () {
+      if (this.videoVr) {
+        this.mb.publish(OO.EVENTS.END_VR_MOVE, this.focusedElement);
+      }
+    },
+
     checkVrDirection: function () {
       if (this.videoVr) {
         this.mb.publish(OO.EVENTS.CHECK_VR_DIRECTION, this.focusedElement);
@@ -822,7 +884,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         // If the core tells us that it will autoplay then we just display the loading
         // spinner, otherwise we need to render the big play button.
         if (params.willAutoplay) {
-          this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+          this.state.screenToShow = CONSTANTS.SCREEN.START_LOADING_SCREEN;
         } else {
           this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
         }
@@ -906,7 +968,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onAssetDimensionsReceived: function(event, params) {
       if (params.videoId == OO.VIDEO.MAIN && (this.skin.props.skinConfig.responsive.aspectRatio == "auto" || !this.skin.props.skinConfig.responsive.aspectRatio)) {
         this.state.mainVideoAspectRatio = this.calculateAspectRatio(params.width, params.height);
-        this.setAspectRatio();
+        //Do not set aspect ratio if content is not playing. The aspect ratio will be set
+        //when switching back to content
+        if (this.state.currentVideoId === OO.VIDEO.MAIN) {
+          this.setAspectRatio();
+        }
       }
     },
 
@@ -940,6 +1006,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         width: ""
       });
       this.state.forceControlBarVisible = (this.state.pluginsElement.children().length > 0);
+      if (this.state.mainVideoPlayhead > 0) {
+        this.isNewVrVideo = false;
+      }
     },
 
     onAdPodStarted: function(event, numberOfAds) {
@@ -1154,11 +1223,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //create plugin container elements
     createPluginElements: function() {
+      this.state.config.adScreen = this.state.config.adScreen || {};
       //if playerControlsOverAds is true then we need to override the setting
       //for showing the control bar during ads.
       if (this.state.playerParam && this.state.playerParam.playerControlsOverAds) {
         if (this.state.config) {
-          this.state.config.adScreen = this.state.config.adScreen || {};
           this.state.config.adScreen.showControlBar = true;
         }
       }
@@ -1276,13 +1345,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //called when event listener triggered
     onFullscreenChanged: function() {
-
       if (this.state.isFullScreenSupported) {
         this.state.fullscreen = Fullscreen.isFullscreen;
       } else {
         this.toggleFullscreen();
       }
-
+      if (this.videoVr && this.state.isMobile && this.isVrStereo && !this.state.fullscreen) {
+        this.toggleStereoVr();
+      }
       this.renderSkin();
     },
 
@@ -1416,10 +1486,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CHECK_VR_DIRECTION, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.TOUCH_MOVE, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.END_VR_MOVE, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_VR, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi');
-      this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
@@ -1509,6 +1580,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleStereoVr: function () {
+      this.isVrStereo = !this.isVrStereo;
       this.mb.publish(OO.EVENTS.TOGGLE_STEREO_VR);
     },
 
@@ -1537,6 +1609,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }
           break;
         case CONSTANTS.STATE.PAUSE:
+          this.isNewVrVideo = false;
           this.mb.publish(OO.EVENTS.PLAY);
           break;
         case CONSTANTS.STATE.PLAYING:

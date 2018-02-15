@@ -207,24 +207,20 @@ var ThumbnailContainer = React.createClass({
   },
 
   render: function() {
-    var thumbnail = Utils.findThumbnail(this.props.thumbnails, this.props.hoverTime, this.props.duration, this.props.videoVr);
     var time = isFinite(parseInt(this.props.hoverTime)) ? Utils.formatSeconds(parseInt(this.props.hoverTime)) : null;
+    var thumbnail = null;
 
+    var thumbnails = Utils.findThumbnail(this.props.thumbnails, this.props.hoverTime, this.props.duration, this.props.videoVr);
     var thumbnailStyle = {};
     thumbnailStyle.left = this.props.hoverPosition;
-    if (Utils.isValidString(thumbnail.url)) {
-      thumbnailStyle.backgroundImage = "url('" + thumbnail.url + "')";
+    if (Utils.isValidString(thumbnails.url)) {
+      thumbnailStyle.backgroundImage = "url('" + thumbnails.url + "')";
     }
-
-    var thumbnailClassName = "oo-thumbnail";
 
     if (this.props.videoVr) {
       thumbnailStyle.backgroundSize = this.imageWidth + "px " + this.imageHeight + "px";
       thumbnailStyle.backgroundPosition = this.positionX + "px " + this.positionY + "px";
-      thumbnailClassName += " oo-thumbnail-vr";
     }
-
-    var thumbnail = null;
 
     if (this.props.isCarousel) {
       thumbnail =
@@ -239,19 +235,17 @@ var ThumbnailContainer = React.createClass({
           vrViewingDirection={this.props.vrViewingDirection}
           videoVr={this.props.videoVr}
           fullscreen={this.props.fullscreen}
-          positionY={this.positionY}
-          positionX={this.positionX}
           imageWidth={this.imageWidth}
-          imageHeight={this.imageHeight}
           setBgPositionVr={this.setBgPositionVr}
           thumbnailCarouselWidth={this.thumbnailCarouselWidth}
           thumbnailCarouselHeight={this.thumbnailCarouselHeight}
+          centralThumbnail={thumbnails}
+          thumbnailStyle={thumbnailStyle}
         />
     } else {
       thumbnail = (
         <Thumbnail
           onRef={this.onRef}
-          thumbnailClassName={thumbnailClassName}
           time={time}
           thumbnails={this.props.thumbnails}
           hoverPosition={this.props.hoverPosition}
@@ -263,7 +257,7 @@ var ThumbnailContainer = React.createClass({
           positionY={this.positionY}
           positionX={this.positionX}
           imageWidth={this.imageWidth}
-          imageHeight={this.imageHeight}
+          thumbnailStyle={thumbnailStyle}
         />
       )
     }
