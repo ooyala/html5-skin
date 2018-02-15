@@ -578,4 +578,35 @@ describe('Controller', function() {
       expect(controller.state.config.adScreen.showControlBar).toBe(true);
     });
   });
+
+  describe('Video Qualities', function() {
+    var qualities;
+
+    beforeEach(function() {
+      qualities = {
+        bitrates: [
+          { "id": "1", "width": 640, "height": 360, "bitrate": 150000 },
+          { "id": "2", "width": 320, "height": 180, "bitrate": 2500000 },
+          { "id": "auto", "width": 0, "height": 0, "bitrate": 0 }
+        ]
+      };
+    });
+
+    it('should sort qualities by bitrate when quality selection format = bitrate', function() {
+      controller.skin.props.skinConfig.controlBar.qualitySelection.format = CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE;
+      controller.onBitrateInfoAvailable('event', qualities);
+      expect(controller.state.videoQualityOptions.availableBitrates).toEqual([
+        { "id": "2", "width": 320, "height": 180, "bitrate": 2500000 },
+        { "id": "1", "width": 640, "height": 360, "bitrate": 150000 },
+        { "id": "auto", "width": 0, "height": 0, "bitrate": 0 }
+      ]);
+    });
+
+    it('should NOT sort qualities by bitrate when quality selection format != bitrate', function() {
+      controller.skin.props.skinConfig.controlBar.qualitySelection.format = CONSTANTS.QUALITY_SELECTION.FORMAT.RESOLUTION;
+      controller.onBitrateInfoAvailable('event', qualities);
+      expect(controller.state.videoQualityOptions.availableBitrates).toBe(qualities.bitrates);
+    });
+
+  });
 });
