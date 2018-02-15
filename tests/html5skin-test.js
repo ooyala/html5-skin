@@ -387,6 +387,21 @@ describe('Controller', function() {
       spy.restore();
     });
 
+    it('should not be blur when videoVr is paused', function () {
+      var spy = sinon.spy(controller.state.mainVideoElement.classList, 'add');
+      var playerParam = {
+        playerControlsOverAds: false
+      };
+      controller.videoVr = true;
+      controller.state.playerParam = playerParam;
+      controller.createPluginElements();
+
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
+      controller.onPaused('event', OO.VIDEO.MAIN);
+
+      expect(spy.callCount).toBe(0);
+      spy.restore();
+    });
   });
 
   describe('Volume state', function() {
