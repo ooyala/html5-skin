@@ -191,6 +191,59 @@ describe('Utils', function () {
 
   });
 
+  describe('sortQualitiesByBitrate', function() {
+
+    it('should gracefully handle invalid input', function() {
+      expect(Array.isArray(Utils.sortQualitiesByBitrate({}))).toBe(true);
+      expect(Array.isArray(Utils.sortQualitiesByBitrate([null, {}, { bitrate: '2000' }]))).toBe(true);
+    });
+
+    it('should sort qualities in descending order by bitrate then resolution', function() {
+      var sourceBitrates = [ // Sorted by resolution by VTC
+        { "id": "4", "width": 320, "height": 180, "bitrate": 1800000 },
+        { "id": "5", "width": 320, "height": 180, "bitrate": 1200000 },
+        { "id": "3", "width": 640, "height": 360, "bitrate": 2500000 },
+        { "id": "2", "width": 640, "height": 360, "bitrate": 3300000 },
+        { "id": "1", "width": 1280, "height": 720, "bitrate": 4400000 },
+        { "id": "auto", "width": 0, "height": 0, "bitrate": 0 }
+      ];
+      var sortedBitrates = [
+        { "id": "1", "width": 1280, "height": 720, "bitrate": 4400000 },
+        { "id": "2", "width": 640, "height": 360, "bitrate": 3300000 },
+        { "id": "3", "width": 640, "height": 360, "bitrate": 2500000 },
+        { "id": "4", "width": 320, "height": 180, "bitrate": 1800000 },
+        { "id": "5", "width": 320, "height": 180, "bitrate": 1200000 },
+        { "id": "auto", "width": 0, "height": 0, "bitrate": 0 }
+      ];
+      expect(Utils.sortQualitiesByBitrate(sourceBitrates)).toEqual(sortedBitrates);
+    });
+
+    it('should give priority to bitrate over resolution when sorting', function() {
+      var sourceBitrates = [ // Sorted by resolution by VTC
+        { "id": "1", "width": 1280, "height": 720, "bitrate": 4400000 },
+        { "id": "2", "width": 640, "height": 360, "bitrate": 3300000 },
+        { "id": "3", "width": 640, "height": 360, "bitrate": 1200000 },
+        { "id": "4", "width": 320, "height": 180, "bitrate": 1800000 },
+        { "id": "5", "width": 320, "height": 180, "bitrate": 1200000 },
+        { "id": "6", "width": 320, "height": 180, "bitrate": 400000 },
+        { "id": "7", "width": 320, "height": 180, "bitrate": 150000 },
+        { "id": "auto", "width": 0, "height": 0, "bitrate": 0 }
+      ];
+      var sortedBitrates = [
+        { "id": "1", "width": 1280, "height": 720, "bitrate": 4400000 },
+        { "id": "2", "width": 640, "height": 360, "bitrate": 3300000 },
+        { "id": "4", "width": 320, "height": 180, "bitrate": 1800000 },
+        { "id": "3", "width": 640, "height": 360, "bitrate": 1200000 },
+        { "id": "5", "width": 320, "height": 180, "bitrate": 1200000 },
+        { "id": "6", "width": 320, "height": 180, "bitrate": 400000 },
+        { "id": "7", "width": 320, "height": 180, "bitrate": 150000 },
+        { "id": "auto", "width": 0, "height": 0, "bitrate": 0 }
+      ];
+      expect(Utils.sortQualitiesByBitrate(sourceBitrates)).toEqual(sortedBitrates);
+    });
+
+  });
+
   it('tests isSafari', function () {
     window.navigator.userAgent = 'AppleWebKit';
     var isSafari = Utils.isSafari();
@@ -311,7 +364,7 @@ describe('Utils', function () {
   });
 
   it('tests getStartCountdown', function () {
-    var text = "6 days, 5 hours, and 14 minutes"; 
+    var text = "6 days, 5 hours, and 14 minutes";
     var countDownText = Utils.getStartCountdown(537289879);
     expect(countDownText).toBe(text);
 

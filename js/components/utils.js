@@ -166,6 +166,31 @@ var Utils = {
   },
 
   /**
+   * Sorts the qualities provided by the BITRATE_INFO_AVAILABLE event in descending
+   * order by bitrate and then by resolution.
+   * @function sortQualitiesByBitrate
+   * @param {Array} qualities The array of qualities in the format provided by the BITRATE_INFO_AVAILABLE event.
+   * @return {Array} A new array with the qualities sorted in descending order by bitrate and then resolution.
+   */
+  sortQualitiesByBitrate: function(qualities) {
+    // Avoid modifying the array that was passed
+    qualities = Array.isArray(qualities) ? qualities.slice() : [];
+    // Sort bitrates by resolution and then by bitrate in descending order
+    qualities.sort(function(a, b) {
+      a = a || {};
+      b = b || {};
+      var bitrateA = this.ensureNumber(a.bitrate, 0);
+      var bitrateB = this.ensureNumber(b.bitrate, 0);
+      var resolutionA = this.ensureNumber(a.width, 1) * this.ensureNumber(a.height, 1);
+      var resolutionB = this.ensureNumber(b.width, 1) * this.ensureNumber(b.height, 1);
+      // When both bitrates are equal the difference will be falsy (zero) and
+      // the second condition (resolution) will be used instead
+      return bitrateB - bitrateA || resolutionB - resolutionA;
+    }.bind(this));
+    return qualities;
+  },
+
+  /**
   * Trims the given text to fit inside of the given element, truncating with ellipsis.
   *
   * @function truncateTextToWidth
