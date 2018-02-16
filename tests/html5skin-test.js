@@ -318,10 +318,18 @@ describe('Controller', function() {
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
     });
 
-    it('should show loading screen on playback ready when core reports it will autoplay', function() {
-      expect(controller.state.screenToShow).not.toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
+    it('should show start loading screen on playback ready when core reports it will autoplay and playback hasn\'t happened before', function() {
+      controller.state.initialPlayHasOccurred = false;
+      expect(controller.state.screenToShow).not.toBe(CONSTANTS.SCREEN.START_LOADING_SCREEN);
       controller.onPlaybackReady('event', null, { willAutoplay: true });
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.START_LOADING_SCREEN);
+    });
+
+    it('should show regular loading screen on playback ready when core reports it will autoplay and initial video has already played', function() {
+      controller.state.initialPlayHasOccurred = true;
+      expect(controller.state.screenToShow).not.toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
+      controller.onPlaybackReady('event', null, { willAutoplay: true });
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
     });
 
     it('should reset playhead on embed code changed', function() {

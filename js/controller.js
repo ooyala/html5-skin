@@ -882,7 +882,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         // If the core tells us that it will autoplay then we just display the loading
         // spinner, otherwise we need to render the big play button.
         if (params.willAutoplay) {
-          this.state.screenToShow = CONSTANTS.SCREEN.START_LOADING_SCREEN;
+          // Show just the loading spinner when transitioning to another Discovery or
+          // Playlist video, otherwise show the spinner and thumbnail.
+          if (this.state.initialPlayHasOccurred) {
+            this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+          } else {
+            this.state.screenToShow = CONSTANTS.SCREEN.START_LOADING_SCREEN;
+          }
         } else {
           this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
         }

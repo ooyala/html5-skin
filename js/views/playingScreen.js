@@ -26,7 +26,7 @@ var PlayingScreen = React.createClass({
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
 
     return {
-      controlBarVisible: true,
+      controlBarVisible: this.props.controller.state.controlBarVisible,
       isVrNotificationHidden: false,
       isVrIconHidden: false,
       timer: null
