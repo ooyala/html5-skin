@@ -1622,6 +1622,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           break;
         case CONSTANTS.STATE.PLAYING:
           this.isNewVrVideo = false;
+          // In some cases the controlBarVisible var might get out of sync if not
+          // set explicitly when pausing. When this happens the control bar flashes
+          // when the playingScreen is rendered, so we want to avoid that.
+          this.showControlBar();
           this.mb.publish(OO.EVENTS.PAUSE);
           break;
       }

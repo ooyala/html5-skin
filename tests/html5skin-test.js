@@ -395,7 +395,14 @@ describe('Controller', function() {
       spy.restore();
     });
 
-    it('should not be blur when videoVr is paused', function () {
+    it('should set controlBarVisible to true when video is paused', function() {
+      controller.state.controlBarVisible = false;
+      controller.state.playerState = CONSTANTS.STATE.PLAYING;
+      controller.togglePlayPause();
+      expect(controller.state.controlBarVisible).toBe(true);
+    });
+
+    it('should not be blurred when videoVr is paused', function () {
       var spy = sinon.spy(controller.state.mainVideoElement.classList, 'add');
       var playerParam = {
         playerControlsOverAds: false
