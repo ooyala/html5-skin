@@ -1295,6 +1295,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onBitrateInfoAvailable: function(event, bitrates) {
       if (bitrates && bitrates.bitrates) {
+        var qualityFormat = Utils.getPropertyValue(this.skin, 'props.skinConfig.controlBar.qualitySelection.format');
+        // Bitrates will be presorted by the VTC which will work in most cases, however,
+        // when displaying only bitrates we need to give priority to bitrates over
+        // resolutions when sorting, otherwise the quality display might appear unsorted to the user.
+        if (qualityFormat === CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE) {
+          bitrates.bitrates = Utils.sortQualitiesByBitrate(bitrates.bitrates);
+        }
+
         this.state.videoQualityOptions.availableBitrates = bitrates.bitrates;
         this.renderSkin({
           "videoQualityOptions": {
