@@ -1495,7 +1495,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi");
-      this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_AVAILABLE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, "customerUi");
@@ -1508,7 +1507,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.VIDEO_VR, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_AVAILABLE, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
