@@ -208,7 +208,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.BUFFERING, 'customerUi', _.bind(this.onBuffering, this));
         this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
-        this.mb.subscribe(OO.EVENTS.CHECK_MULTI_AUDIO, "customerUi", _.bind(this.checkMultiAudio, this));
         this.mb.subscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi", _.bind(this.onBitrateInfoAvailable, this));
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
         this.mb.subscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, 'customerUi', _.bind(this.onChangeClosedCaptionLanguage, this));
@@ -1321,10 +1320,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // if this video element looses and then regains focus (like when an ad plays)
       this.state.closedCaptionsInfoCache[info.videoId] = info;
       this.setClosedCaptionsInfo(info.videoId);
-    },
-
-    checkMultiAudio: function() {
-
     },
 
     onClosedCaptionCueChanged: function(event, data) {
