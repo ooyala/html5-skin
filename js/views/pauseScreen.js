@@ -22,6 +22,8 @@ var PauseScreen = React.createClass({
   getInitialState: function() {
     return {
       descriptionText: this.props.contentTree.description,
+      containsText: (this.props.skinConfig.pauseScreen.showTitle && !!this.props.contentTree.title)
+                      || (this.props.skinConfig.pauseScreen.showDescription && !!this.props.contentTree.description),
       controlBarVisible: true
     };
   },
@@ -33,6 +35,10 @@ var PauseScreen = React.createClass({
     document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
     document.addEventListener('mouseup', this.handleVrMouseUp, false);
     document.addEventListener('touchend', this.handleVrTouchEnd, false);
+
+    if (this.state.containsText) {
+      this.props.controller.addBlur();
+    }
   },
 
   componentWillUnmount: function() {
@@ -188,11 +194,8 @@ var PauseScreen = React.createClass({
       'oo-hidden': !this.props.skinConfig.pauseScreen.showPauseIcon || this.props.pauseAnimationDisabled
     });
 
-    var title = this.props.contentTree.title;
-    var description = this.state.descriptionText;
-
-    var titleMetadata = (<div className={titleClass} style={titleStyle}>{title}</div>);
-    var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{description}</div>);
+    var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
+    var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.state.descriptionText}</div>);
 
     var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
       <AdOverlay
@@ -219,19 +222,11 @@ var PauseScreen = React.createClass({
         controlBarVisible={this.state.controlBarVisible}
       /> : null;
 
-    var containsTitle = this.props.skinConfig.pauseScreen.showTitle && !!title;
-    var containsDescription = this.props.skinConfig.pauseScreen.showDescription && !!description;
-    var containsText = containsTitle || containsDescription;
-
-    if (containsText) {
-      this.props.controller.addBlur();
-    }
-
     return (
       <div className="oo-state-screen oo-pause-screen">
 
         {
-          !this.props.controller.videoVr && containsText &&
+          !this.props.controller.videoVr && this.state.containsText &&
           <div className={fadeUnderlayClass} />
         }
 

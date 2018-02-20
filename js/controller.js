@@ -2064,7 +2064,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      */
     addBlur: function() {
       // [PLAYER-2220]: videoVr should not blur. This prevents a circular review on a pause.
-      if (!this.videoVr) {
+      if (!this.videoVr && this.state.mainVideoElement && this.state.mainVideoElement.classList) {
         this.state.mainVideoElement.classList.add('oo-blur');
       }
     },
