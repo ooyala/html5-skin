@@ -160,7 +160,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "autoPauseDisabled": false,
 
       "isClickedOutside": false,
-      "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0}
+      "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0},
+
+      "multiAudio": null,
+      "currentAudioId": null,
+      "multiAudioOptions": {
+        "enabled": null,
+        "showPopover": false,
+        "autoFocus": false
+      },
     };
 
     this.init();
@@ -863,7 +871,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @param multiAudio.multiAudio {Array} - list of objects with data for each audio
      */
     onMultiAudioFetched: function(event, multiAudio) {
-    //  TODO: code for a video with multiaudio should be here
+      this.state.multiAudio = multiAudio;
+    },
+
+    setCurrentAudio: function(id) {
+      this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, id);
+      this.setCurrentAudioId(id);
+    },
+
+    setCurrentAudioId: function(id) {
+      this.state.currentAudioId = id;
     },
 
     onSeeked: function(event) {
