@@ -22,6 +22,8 @@ var PauseScreen = React.createClass({
   getInitialState: function() {
     return {
       descriptionText: this.props.contentTree.description,
+      containsText: (this.props.skinConfig.pauseScreen.showTitle && !!this.props.contentTree.title)
+                      || (this.props.skinConfig.pauseScreen.showDescription && !!this.props.contentTree.description),
       controlBarVisible: true
     };
   },
@@ -33,6 +35,10 @@ var PauseScreen = React.createClass({
     document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
     document.addEventListener('mouseup', this.handleVrMouseUp, false);
     document.addEventListener('touchend', this.handleVrTouchEnd, false);
+
+    if (this.state.containsText) {
+      this.props.controller.addBlur();
+    }
   },
 
   componentWillUnmount: function() {
@@ -220,7 +226,7 @@ var PauseScreen = React.createClass({
       <div className="oo-state-screen oo-pause-screen">
 
         {
-          !this.props.controller.videoVr &&
+          !this.props.controller.videoVr && this.state.containsText &&
           <div className={fadeUnderlayClass} />
         }
 
