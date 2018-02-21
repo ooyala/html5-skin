@@ -187,6 +187,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi', _.bind(this.onClearVideoType, this));
       this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setVrViewingDirection, this));
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
+      this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -851,6 +852,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
     },
 
+    /**
+     *
+     * @param event {String} name of a event
+     * @param multiAudio {Object} - audio which fetched for the current video
+     * @param multiAudio.multiAudio {Array} - list of objects with data for each audio
+     */
+    onMultiAudioFetched: function(event, multiAudio) {
+    //  TODO: code for a video with multiaudio should be here
+    },
+
     onSeeked: function(event) {
       this.state.seeking = false;
       if (this.state.queuedPlayheadUpdate) {
@@ -1492,6 +1503,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.VIDEO_VR, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
