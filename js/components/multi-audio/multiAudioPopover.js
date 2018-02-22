@@ -4,6 +4,9 @@ var React = require('react'),
   CloseButton = require('../closeButton');
 
 var MultiAudioPopover = React.createClass({
+  /**
+   * close the popover
+   */
   handleClose: function() {
     this.props.togglePopoverAction({
       restoreToggleButtonFocus: true

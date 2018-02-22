@@ -870,11 +870,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.multiAudio = multiAudio;
     },
 
+    /**
+     * @fires OO.EVENTS.SET_CURRENT_AUDIO
+     * @param {String} id - the id of the audio track to activate
+     */
     setCurrentAudio: function(id) {
       this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, id);
       this.setCurrentAudioId(id);
     },
 
+    /**
+     * Sets this.state.currentAudioId
+     * @param id - the id of the audio track to activate
+     */
     setCurrentAudioId: function(id) {
       this.state.currentAudioId = id;
     },
