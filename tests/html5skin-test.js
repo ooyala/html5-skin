@@ -35,7 +35,13 @@ OO = {
     "core_version" : 4
   },
   publicApi: {},
-  EVENTS: {},
+  EVENTS: {
+    INITIAL_PLAY: "initialPlay",
+    CHANGE_MUTE_STATE: "changeMuteState",
+    DISCOVERY_API: {
+      SEND_CLICK_EVENT: "sendClickEvent"
+    }
+  },
   CONSTANTS: {
     CLOSED_CAPTIONS: {}
   },
@@ -402,7 +408,16 @@ describe('Controller', function() {
       expect(controller.state.controlBarVisible).toBe(true);
     });
 
-    it('should not be blurred when videoVr is paused', function () {
+    it('should blur when addBlur API is called', function () {
+      var spy = sinon.spy(controller.state.mainVideoElement.classList, 'add');
+      controller.videoVr = false;
+      controller.addBlur();
+      expect(spy.callCount).toBe(1);
+      expect(spy.calledWith('oo-blur')).toBe(true);
+      spy.restore();
+    });
+
+    it('should not blur when videoVr is paused', function () {
       var spy = sinon.spy(controller.state.mainVideoElement.classList, 'add');
       var playerParam = {
         playerControlsOverAds: false
@@ -411,10 +426,36 @@ describe('Controller', function() {
       controller.state.playerParam = playerParam;
       controller.createPluginElements();
 
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
       controller.onVcPlay('event', OO.VIDEO.MAIN);
       controller.onPaused('event', OO.VIDEO.MAIN);
 
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PAUSE_SCREEN);
       expect(spy.callCount).toBe(0);
+      spy.restore();
+    });
+
+    it('should blur when discovery screen is shown on pause', function () {
+      var spy = sinon.spy(controller.state.mainVideoElement.classList, 'add');
+      var playerParam = {
+        playerControlsOverAds: false
+      };
+      controller.videoVr = false;
+      controller.state.playerParam = playerParam;
+      controller.createPluginElements();
+      controller.state.discoveryData = {};
+      controller.skin.props.skinConfig.pauseScreen.screenToShowOnPause = "discovery";
+      controller.state.duration = 10000;
+      controller.state.mainVideoPlayhead = 0;
+
+      controller.enablePauseAnimation();
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
+      controller.onPaused('event', OO.VIDEO.MAIN);
+
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.DISCOVERY_SCREEN);
+      expect(spy.callCount).toBe(1);
+      expect(spy.calledWith('oo-blur')).toBe(true);
       spy.restore();
     });
   });

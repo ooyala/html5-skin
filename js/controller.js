@@ -187,6 +187,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi', _.bind(this.onClearVideoType, this));
       this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setVrViewingDirection, this));
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
+      this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -738,6 +739,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           OO.log("Should display DISCOVERY_SCREEN on pause");
           this.sendDiscoveryDisplayEvent("pauseScreen");
           this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
+          this.addBlur();
         } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
           // Remove this comment once pause screen implemented
         } else {
@@ -749,11 +751,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
-
-        // [PLAYER-2220]: videoVr should not blur. This prevents a circular review on a pause.
-        if (!this.videoVr) {
-          this.state.mainVideoElement.classList.add('oo-blur');
-        }
         this.renderSkin();
       }
       else if (videoId == OO.VIDEO.ADS){
@@ -853,6 +850,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
       }
       this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
+    },
+
+    /**
+     *
+     * @param event {String} name of a event
+     * @param multiAudio {Object} - audio which fetched for the current video
+     * @param multiAudio.multiAudio {Array} - list of objects with data for each audio
+     */
+    onMultiAudioFetched: function(event, multiAudio) {
+    //  TODO: code for a video with multiaudio should be here
     },
 
     onSeeked: function(event) {
@@ -1502,6 +1509,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.VIDEO_VR, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
@@ -2069,6 +2077,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
       }
       return element;
+    },
+
+    /**
+     * Adds a blur effect to the video
+     * @protected
+     * @method Html5Skin#addBlur
+     */
+    addBlur: function() {
+      // [PLAYER-2220]: videoVr should not blur. This prevents a circular review on a pause.
+      if (!this.videoVr && this.state.mainVideoElement && this.state.mainVideoElement.classList) {
+        this.state.mainVideoElement.classList.add('oo-blur');
+      }
     },
 
     removeBlur: function() {
