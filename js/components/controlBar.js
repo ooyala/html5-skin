@@ -693,7 +693,7 @@ var ControlBar = React.createClass({
           </AccessibleButton>
       }).bind(this),
 
-      "fullscreen": (function (alignment) {
+    "fullscreen": (function (alignment) {
         return <AccessibleButton
           className="oo-fullscreen oo-control-bar-item"
           onClick={this.handleFullscreenClick}
@@ -716,10 +716,9 @@ var ControlBar = React.createClass({
           width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
           height={this.props.skinConfig.controlBar.logo.height} />
       }).bind(this)
-    };
+    }
 
     var controlBarItems = [];
-
     var defaultItems = this.props.controller.state.isPlayingAd ? this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
 
     //if mobile and not showing the slider or the icon, extra space can be added to control bar width. If volume bar is shown instead of slider, add some space as well:
@@ -798,7 +797,8 @@ var ControlBar = React.createClass({
         continue;
       }
 
-      if (!this.props.controller.state.multiAudio) {
+      if (defaultItems[k].name === "multiAudio" &&
+        !this.props.controller.state.multiAudio) {
         continue;
       }
 

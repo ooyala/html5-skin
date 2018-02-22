@@ -163,7 +163,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0},
 
       "multiAudio": null,
-      "currentAudioId": null,
+      "currentAudioId": "",
       "multiAudioOptions": {
         "enabled": null,
         "showPopover": false,

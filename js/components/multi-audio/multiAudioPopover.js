@@ -37,7 +37,16 @@ var MultiAudioPopover = React.createClass({
             closeAction={this.handleClose} />
         </li>
         {multiAudio.map(function(audio){
-          return <li><span onClick={this.handleMultiAudioClick.bind(this, audio.id)}>{audio.label}</span></li>;
+          return (
+            <li>
+              <span
+                className="oo-multiaudio-element"
+                onClick={this.handleMultiAudioClick.bind(this, audio.id)}
+              >
+                {audio.label}
+              </span>
+            </li>
+          );
         }, this)}
       </ul>
     );
