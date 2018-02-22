@@ -13,6 +13,7 @@ var React = require('react'),
   VolumeControls = require('./volumeControls'),
   VideoQualityPanel = require('./videoQualityPanel'),
   ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
+  MultiAudioPopover = require('./multi-audio/multiAudioPopover'),
   Logo = require('./logo'),
   Icon = require('./icon'),
   Tooltip = require('./tooltip');
@@ -230,6 +231,13 @@ var ControlBar = React.createClass({
       this.togglePopover(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS);
       this.closeQualityPopover();
     }
+  },
+
+  handleMultiAudioClick: function () {
+    this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
+
+    this.togglePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
+    this.closePopovers();
   },
 
   configureMenuAutofocus: function(menu) {
@@ -478,6 +486,12 @@ var ControlBar = React.createClass({
       "oo-selected": this.props.controller.state.closedCaptionOptions.showPopover
     });
 
+    var multiAudioClass = ClassNames({
+      "oo-multiaudio": true,
+      "oo-control-bar-item": true,
+      "oo-selected": this.props.controller.state.multiAudioOptions.showPopover
+    });
+
     var selectedStyle = {};
     selectedStyle["color"] = this.props.skinConfig.general.accentColor ? this.props.skinConfig.general.accentColor : null;
 
@@ -623,6 +637,36 @@ var ControlBar = React.createClass({
         )
       }).bind(this),
 
+      "multiAudio": (function (alignment) {
+        return (
+          <div className="oo-multiaudio-container" key="multiAudio">
+            <AccessibleButton
+              ref={function(e) { this.toggleButtons[CONSTANTS.MENU_OPTIONS.MULTI_AUDIO] = e }.bind(this)}
+              style={selectedStyle}
+              className={multiAudioClass}
+              focusId={CONSTANTS.FOCUS_IDS.MULTI_AUDIO}
+              ariaLabel={CONSTANTS.ARIA_LABELS.MULTI_AUDIO}
+              ariaHasPopup={true}
+              ariaExpanded={this.props.controller.state.multiAudioOptions.showPopover ? true : null}
+              onClick={this.handleMultiAudioClick}
+            >
+              <Icon {...this.props} icon="multiAudio" style={dynamicStyles.iconCharacter}
+                    onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
+              <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.MULTI_AUDIO, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
+            </AccessibleButton>
+            {this.props.controller.state.multiAudioOptions.showPopover &&
+            <Popover
+              popoverClassName="oo-popover oo-popover-pull-right"
+              autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}
+              closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
+              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}>
+              <MultiAudioPopover {...this.props} togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)} />
+            </Popover>
+            }
+          </div>
+        )
+      }).bind(this),
+
       "share": (function (alignment) {
         return <a className="oo-share oo-control-bar-item"
           onClick={this.handleShareClick} key="share" aria-hidden="true">
@@ -750,6 +794,11 @@ var ControlBar = React.createClass({
       if (defaultItems[k].name === "live" &&
         (typeof this.props.isLiveStream === 'undefined' ||
           !(this.props.isLiveStream))) {
+        continue;
+      }
+
+      if (defaultItems[k].name === "multiAudio" &&
+        !this.props.controller.state.multiAudio) {
         continue;
       }
 
