@@ -29,7 +29,7 @@ describe('MultiAudioPopover', function () {
         state: {
           focusedControl: null,
           multiAudioOptions: {},
-          multiAudio: {"multiAudio": [{id: "0", enabled: false}, {id: "1", enabled: true}]}
+          multiAudio: {"tracks": [{id: "0", enabled: false}, {id: "1", enabled: true}]}
         },
         toggleScreen: function() {},
         setCurrentAudio: function(id) {

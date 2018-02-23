@@ -19,17 +19,15 @@ var MultiAudioPopover = React.createClass({
    */
   handleMultiAudioClick: function(id) {
     //change audio only if try to set not current audio track
-    if (this.props.controller && this.props.controller.state.currentAudioId !== id) {
-      if (typeof this.props.controller.setCurrentAudio === 'function') {
-        this.props.controller.setCurrentAudio(id);
-      }
+    if (typeof this.props.controller.setCurrentAudio === 'function') {
+      this.props.controller.setCurrentAudio(id);
     }
   },
 
   render: function() {
     var multiAudio = [];
     if (this.props.controller && this.props.controller.state && !!this.props.controller.state.multiAudio) {
-      multiAudio = this.props.controller.state.multiAudio.multiAudio;
+      multiAudio = this.props.controller.state.multiAudio.tracks;
     }
     return (
       <ul className="oo-popover-horizontal" role="menu">
@@ -58,5 +56,17 @@ var MultiAudioPopover = React.createClass({
 
 // Extend with AccessibleMenu features
 MultiAudioPopover = AccessibleMenu(MultiAudioPopover);
+
+MultiAudioPopover.propTypes = {
+  controller: React.PropTypes.shape({
+    state: React.PropTypes.shape({
+      currentAudioId: React.PropTypes.string,
+      setCurrentAudio: React.PropTypes.func,
+      multiAudio: React.PropTypes.object
+    })
+  }),
+  togglePopoverAction: React.PropTypes.func
+};
+
 
 module.exports = MultiAudioPopover;

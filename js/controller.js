@@ -864,7 +864,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      *
      * @param event {String} name of a event
      * @param multiAudio {Object} - audio which fetched for the current video
-     * @param multiAudio.multiAudio {Array} - list of objects with data for each audio
+     * @param multiAudio.tracks {Array} - list of objects with data for each audio
      */
     onMultiAudioFetched: function(event, multiAudio) {
       this.state.multiAudio = multiAudio;
@@ -875,8 +875,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @param {String} id - the id of the audio track to activate
      */
     setCurrentAudio: function(id) {
-      this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, id);
-      this.setCurrentAudioId(id);
+      if (this.state.currentAudioId !== id) {
+        this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, id);
+        this.setCurrentAudioId(id);
+      }
     },
 
     /**

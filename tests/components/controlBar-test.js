@@ -953,36 +953,15 @@ describe('ControlBar', function () {
   });
 
   it('shows/hides multiaudio button if multiaudio available', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      }
-    };
-
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {"name":"multiAudio", "location": "controlBar", "whenDoesNotFit":"keep", "minWidth":45 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
                   componentWidth={500}
                   playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
+                  isLiveStream={baseMockProps.isLiveStream} />
     );
 
     var multiAudioBtn = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-multiaudio');
@@ -990,35 +969,16 @@ describe('ControlBar', function () {
 
     var toggleScreenClicked = false;
     var multiaudioClicked = false;
-    mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudio: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      toggleScreen: function() {toggleScreenClicked = true;},
-      togglePopover: function(){multiaudioClicked = true;}
-    };
 
-    // md, test cc popover
-    mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
+    baseMockController.state.multiAudio = {};
+    baseMockController.toggleScreen = function() {toggleScreenClicked = true;};
+    baseMockController.togglePopover = function() {multiaudioClicked = true;};
 
     DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
                   componentWidth={500}
                   playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
+                  isLiveStream={baseMockProps.isLiveStream} />
     );
 
     var multiAudioBtn2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-multiaudio');
