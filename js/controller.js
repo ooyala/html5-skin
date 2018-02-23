@@ -886,8 +886,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.afterOoyalaAd) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
       } else {
-        // If the core tells us that it will autoplay then we just display the loading
-        // spinner, otherwise we need to render the big play button.
+        // If the core tells us that it will autoplay then we display the loading
+        // spinner (with the thumbnail and description if it's the first video, or just a
+        // black background when transitioning to a new one), otherwise we need to render
+        // the big play button.
         if (params.willAutoplay) {
           // Show just the loading spinner when transitioning to another Discovery or
           // Playlist video, otherwise show the spinner and thumbnail.
