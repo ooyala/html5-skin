@@ -8,9 +8,9 @@ var MultiAudioPopover = React.createClass({
    * close the popover
    */
   handleClose: function() {
-    this.props.togglePopoverAction({
-      restoreToggleButtonFocus: true
-    });
+    if (typeof this.props.togglePopoverAction === 'function') {
+      this.props.togglePopoverAction();
+    }
   },
 
   /**
@@ -65,7 +65,7 @@ MultiAudioPopover.propTypes = {
       multiAudio: React.PropTypes.object
     })
   }),
-  togglePopoverAction: React.PropTypes.func
+  togglePopoverAction: React.PropTypes.func.isRequired
 };
 
 
