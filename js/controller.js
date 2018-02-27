@@ -160,7 +160,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "autoPauseDisabled": false,
 
       "isClickedOutside": false,
-      "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0}
+      "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0},
+
+      "multiAudio": null,
+      "currentAudioId": "",
+      "multiAudioOptions": {
+        "enabled": null,
+        "showPopover": false,
+        "autoFocus": false
+      },
     };
 
     this.init();
@@ -856,10 +864,29 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      *
      * @param event {String} name of a event
      * @param multiAudio {Object} - audio which fetched for the current video
-     * @param multiAudio.multiAudio {Array} - list of objects with data for each audio
+     * @param multiAudio.tracks {Array} - list of objects with data for each audio
      */
     onMultiAudioFetched: function(event, multiAudio) {
-    //  TODO: code for a video with multiaudio should be here
+      this.state.multiAudio = multiAudio;
+    },
+
+    /**
+     * @fires OO.EVENTS.SET_CURRENT_AUDIO
+     * @param {String} id - the id of the audio track to activate
+     */
+    setCurrentAudio: function(id) {
+      if (this.state.currentAudioId !== id) {
+        this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, id);
+        this.setCurrentAudioId(id);
+      }
+    },
+
+    /**
+     * Sets this.state.currentAudioId
+     * @param id - the id of the audio track to activate
+     */
+    setCurrentAudioId: function(id) {
+      this.state.currentAudioId = id;
     },
 
     onSeeked: function(event) {

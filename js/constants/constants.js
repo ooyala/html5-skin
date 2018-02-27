@@ -26,12 +26,14 @@ module.exports = {
     START_LOADING_SCREEN: "startLoadingScreen",
     CLOSEDCAPTION_SCREEN: "closedCaptionScreen",
     VIDEO_QUALITY_SCREEN: "videoQualityScreen",
-    ERROR_SCREEN: "errorScreen"
+    ERROR_SCREEN: "errorScreen",
+    MULTI_AUDIO_SCREEN: "multiAudioScreen"
   },
 
   MENU_OPTIONS: {
     VIDEO_QUALITY: "videoQualityOptions",
-    CLOSED_CAPTIONS: "closedCaptionOptions"
+    CLOSED_CAPTIONS: "closedCaptionOptions",
+    MULTI_AUDIO: "multiAudioOptions"
   },
 
   SKIN_TEXT: {
@@ -43,6 +45,7 @@ module.exports = {
     LIVE: "LIVE",
     GO_LIVE: "GO LIVE",
     CC_OPTIONS: "CC Options",
+    MULTI_AUDIO_OPTIONS: "Multi Audio Options",
     ON: "On",
     OFF: "Off",
     DISCOVER: "Discover",
@@ -96,6 +99,7 @@ module.exports = {
     MUTE: "Mute",
     UNMUTE: "Unmute",
     CLOSED_CAPTIONS: "Closed Captions",
+    MULTI_AUDIO: "Multi Audio",
     FULL_SCREEN: "Full Screen",
     EXIT_FULL_SCREEN: "Exit Full Screen",
     VIDEO_QUALITY: "Video Quality",
@@ -116,6 +120,7 @@ module.exports = {
     CLOSED_CAPTIONS: "Closed Captions",
     VIDEO_QUALITY: "Video Quality",
     AUTO_QUALITY: "Auto",
+    MULTI_AUDIO: "Multi Audio",
     FULLSCREEN: "Fullscreen",
     EXIT_FULLSCREEN: "Exit Fullscreen",
     SEEK_SLIDER: "Seek slider",
@@ -139,7 +144,9 @@ module.exports = {
     WINDOW_COLOR_MENU: "Window Color",
     FONT_TYPE_MENU: "Font Type",
     FONT_SIZE_MENU: "Font Size",
-    TEXT_ENHANCEMENTS_MENU: "Text Enhancements"
+    TEXT_ENHANCEMENTS_MENU: "Text Enhancements",
+    TOGGLE_MULTI_AUDIO: "Toggle Multi Audio",
+    MULTI_AUDIO_OPTIONS: "Closed Multi Audio Options"
   },
 
   ARIA_ROLES: {
@@ -169,7 +176,8 @@ module.exports = {
     VOLUME_SLIDER: "volumeSlider",
     QUALITY_LEVEL: "qualityLevel",
     AUTO_QUALITY: "autoQuality",
-    CLOSE: "close"
+    CLOSE: "close",
+    MULTI_AUDIO: "multiAudio"
   },
 
   A11Y_CTRLS: {

@@ -36,6 +36,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -61,7 +62,8 @@ describe('ControlBar', function () {
           volume: 1
         },
         videoQualityOptions: {},
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        multiAudioOptions: {}
       }
     };
 
@@ -90,6 +92,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -129,6 +132,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -172,6 +176,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -211,6 +216,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -252,6 +258,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -300,6 +307,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -334,6 +342,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         },
@@ -379,6 +388,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -484,6 +494,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -585,6 +596,7 @@ describe('ControlBar', function () {
     baseMockController.state.closedCaptionOptions.availableLanguages = [];
     baseMockController.state.videoQualityOptions.showPopover = true;
     baseMockController.state.closedCaptionOptions.showPopover = true;
+    baseMockController.state.multiAudioOptions.showPopover = false;
     baseMockProps.skinConfig.buttons.desktopContent = [
       { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
       { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
@@ -697,6 +709,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -736,6 +749,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         },
@@ -775,6 +789,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -811,6 +826,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {availableLanguages: true},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -868,6 +884,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {availableLanguages: true},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         },
@@ -905,6 +922,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {availableLanguages: true},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         },
@@ -934,6 +952,43 @@ describe('ControlBar', function () {
     expect(ccButtons.length).toBe(1);
   });
 
+  it('shows/hides multiaudio button if multiaudio available', function() {
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      {"name":"multiAudio", "location": "controlBar", "whenDoesNotFit":"keep", "minWidth":45 }
+    ];
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...baseMockProps} controlBarVisible={true}
+                  componentWidth={500}
+                  playerState={CONSTANTS.STATE.PLAYING}
+                  isLiveStream={baseMockProps.isLiveStream} />
+    );
+
+    var multiAudioBtn = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-multiaudio');
+    expect(multiAudioBtn.length).toBe(0);
+
+    var toggleScreenClicked = false;
+    var multiaudioClicked = false;
+
+    baseMockController.state.multiAudio = {};
+    baseMockController.toggleScreen = function() {toggleScreenClicked = true;};
+    baseMockController.togglePopover = function() {multiaudioClicked = true;};
+
+    DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...baseMockProps} controlBarVisible={true}
+                  componentWidth={500}
+                  playerState={CONSTANTS.STATE.PLAYING}
+                  isLiveStream={baseMockProps.isLiveStream} />
+    );
+
+    var multiAudioBtn2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-multiaudio');
+    expect(multiAudioBtn2.length).toBe(1);
+
+    var multiAudioBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-multiaudio').firstChild;
+    TestUtils.Simulate.click(multiAudioBtn);
+    expect(multiaudioClicked).toBe(true);
+  });
+
   it('hides share button if share options are not provided', function() {
     var customSkinConfig = JSON.parse(JSON.stringify(skinConfig));
     var mockController = {
@@ -941,7 +996,8 @@ describe('ControlBar', function () {
         isMobile: false,
         volumeState: { volume: 1 },
         videoQualityOptions: {},
-        closedCaptionOptions: {}
+        closedCaptionOptions: {},
+        multiAudioOptions: {}
       }
     };
     var mockProps = {
@@ -986,6 +1042,7 @@ describe('ControlBar', function () {
         volumeState: { volume: 1 },
         videoQualityOptions: {},
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         isOoyalaAds: true
       }
     };
@@ -1019,6 +1076,7 @@ describe('ControlBar', function () {
         volumeState: { volume: 1 },
         videoQualityOptions: {},
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         isOoyalaAds: false
       }
     };
@@ -1052,6 +1110,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         },
@@ -1088,6 +1147,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         },
@@ -1125,6 +1185,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         },
@@ -1163,6 +1224,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         },
@@ -1201,6 +1263,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -1267,6 +1330,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         },
@@ -1311,6 +1375,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         },
@@ -1356,6 +1421,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -1401,6 +1467,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -1438,6 +1505,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -1494,6 +1562,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -1539,6 +1608,7 @@ describe('ControlBar', function () {
           volumeSliderVisible: true
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -1573,6 +1643,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -1607,6 +1678,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -1642,6 +1714,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {availableLanguages: true},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: true
         }
@@ -1725,6 +1798,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: true
         },
@@ -1762,6 +1836,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: true
         },
@@ -1799,6 +1874,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -1835,6 +1911,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -1874,6 +1951,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -1936,6 +2014,7 @@ describe('ControlBar', function () {
           volume: 1
         },
         closedCaptionOptions: {},
+        multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
         }
