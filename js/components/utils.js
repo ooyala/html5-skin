@@ -490,16 +490,15 @@ var Utils = {
     var currentProp = null;
 
     try {
-      var propList = propertyPath.split('.');
-      for (var propIndex = 0; propIndex < propList.length; propIndex++) {
-        currentProp = propList[propIndex];
-        if (currentObject.hasOwnProperty(currentProp)) {
-          value = currentObject[currentProp];
-          currentObject = value;
-        }
-        else {
-          return defaultValue;
-        }
+      var props = propertyPath.split('.');
+
+      for (var i = 0; i < props.length; i++) {
+        currentProp = props[i];
+        currentObject = value = currentObject[currentProp];
+      }
+
+      if (value === undefined) {
+        return defaultValue;
       }
       return value;
     } catch (err) {
