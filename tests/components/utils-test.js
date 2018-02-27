@@ -381,6 +381,13 @@ describe('Utils', function () {
 
     var existingVal = Utils.getPropertyValue({ property: { nestedProp: 'value' } }, 'property.nestedProp');
     expect(existingVal).toEqual('value');
+
+    //comaparing the falsy values with === so I'm sure types match and that there is no implicit conversion.
+    var falsyVal = Utils.getPropertyValue({ property: { nestedProp: 0 } }, 'property.nestedProp', 1);
+    expect(falsyVal === 0).toEqual(true);
+
+    falsyVal = Utils.getPropertyValue({ property: { nestedProp: null } }, 'property.nestedProp', 1);
+    expect(falsyVal === null).toEqual(true);
   });
 
   it('tests elementHasClass', function() {
