@@ -163,7 +163,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0},
 
       "multiAudio": null,
-      "defaultAudioId": "",
       "multiAudioOptions": {
         "enabled": null,
         "showPopover": false,
@@ -1211,9 +1210,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name'});
       this.state.config = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', buttonArrayFusion:buttonArrayFusion});
       this.state.closedCaptionOptions = this.state.config.closedCaptionOptions;
-      if (typeof this.state.config.defaultAudioId === 'string') {
-        this.state.defaultAudioId = this.state.config.defaultAudioId;
-      }
 
       //remove 'url' from the list until the tab is worked on
       var shareContent = Utils.getPropertyValue(this.state.config, 'shareScreen.shareContent');
