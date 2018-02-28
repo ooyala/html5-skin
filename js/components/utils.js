@@ -482,7 +482,7 @@ var Utils = {
    * @param {Object} object - The object we want to extract the property form
    * @param {String} propertyPath - A path that points to a nested property in the object with a form like 'prop.nestedProp1.nestedProp2'
    * @param {Object} defaultValue - (Optional) A default value to return when the property is undefined
-   * @return {Object} - The value of the nested property, the default value if nested property was undefined
+   * @return {Object|String|Number} - The value of the nested property, the default value if nested property is undefined. If the value is null, null will be returned.
    */
   getPropertyValue: function(object, propertyPath, defaultValue) {
     var value = null;

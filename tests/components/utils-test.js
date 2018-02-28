@@ -392,8 +392,12 @@ describe('Utils', function () {
     var stringVal = Utils.getPropertyValue({ property: { nestedProp: { test:'test' } } }, 'property.nestedProp.test', 1);
     expect(stringVal === 'test').toEqual(true);
 
-    functionVal = Utils.getPropertyValue({ property: { nestedProp: { test:'test' } } }, 'property.nestedProp.toString', 1);
+    var functionVal = Utils.getPropertyValue({ property: { nestedProp: { test:'test' } } }, 'property.nestedProp.toString', 1);
     expect(typeof functionVal === 'function').toEqual(true);
+
+    var myFunc = function() { return "myTestFunc"; };
+    functionVal = Utils.getPropertyValue({ property: { nestedProp: { func: myFunc } } }, 'property.nestedProp.func', 1);
+    expect(functionVal() === "myTestFunc").toEqual(true);
   });
 
   it('tests elementHasClass', function() {
