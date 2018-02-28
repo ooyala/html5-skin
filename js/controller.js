@@ -196,7 +196,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setVrViewingDirection, this));
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
-      this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi', _.bind(this.setMultiAudio, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -862,38 +861,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     /**
-     * The function is called when event MULTI_AUDIO_FETCHED was caught
+     * The function is called when event MULTI_AUDIO_FETCHED was caught;
+     * The function sets value for this.state.multiAudio
      * @param event {String} name of a event
      * @param multiAudio {Object} - audio which fetched for the current video
      * @param multiAudio.tracks {Array} - list of objects with data for each audio
      */
     onMultiAudioFetched: function(event, multiAudio) {
-      if (this.state.defaultAudioId !== '') { //if have default track in config
-        this.setCurrentAudio(this.state.defaultAudioId);
-      } else if (this.state.persistentSettings &&
-        this.state.persistentSettings.chosenAudioId !== '') { //if trackId is set in localStorage
-        this.setCurrentAudio(this.state.persistentSettings.chosenAudioId);
-      } else { //if we do not have any information about trackId
-        this.setMultiAudio(event, multiAudio);
-      }
+      this.state.multiAudio = multiAudio;
     },
 
     /**
+     * The function is called when we want to change audio track
      * @fires OO.EVENTS.SET_CURRENT_AUDIO
      * @param {String} id - the id of the audio track to activate
      */
     setCurrentAudio: function(id) {
       this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, id);
-    },
-
-    /**
-     *
-     * @param  eventName {String} - name of the event
-     * @param multiAudio {Object} - audio which fetched for the current video
-     * @param multiAudio.tracks {Array} - list of objects with data for each audio
-     */
-    setMultiAudio: function(eventName, multiAudio) {
-      this.state.multiAudio = multiAudio;
     },
 
     onSeeked: function(event) {
@@ -1541,7 +1525,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
