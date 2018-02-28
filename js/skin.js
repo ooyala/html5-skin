@@ -61,7 +61,6 @@ var Skin = React.createClass({
 
   switchComponent: function(args) {
     var newState = args || {};
-    console.warn("switchComponent newState", newState);
     this.setState(newState);
   },
 
