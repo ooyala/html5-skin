@@ -679,5 +679,16 @@ describe('Controller', function() {
       expect(controller.state.videoQualityOptions.availableBitrates).toBe(qualities.bitrates);
     });
 
+    it('should set currect multiAudio state', function() {
+      // this.state.multiAudio = multiAudio;
+      var multiAudio = {"tracks": [
+        {id: "0", kind: "main", label: "eng", lang: "eng", enabled: true},
+        {id: "1", kind: "main", label: "ger", lang: "ger", enabled: false}
+      ]};
+      mb.publish(OO.EVENTS.MULTI_AUDIO_FETCHED, multiAudio);
+      console.log('!!!!!!!!!!!!!! controller.state.multiAudio !!!!!!!!!!!!!!', controller.state.multiAudio);
+      // expect(controller.state.multiAudio).toEqual(multiAudio);
+    });
+
   });
 });
