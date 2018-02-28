@@ -388,6 +388,12 @@ describe('Utils', function () {
 
     falsyVal = Utils.getPropertyValue({ property: { nestedProp: null } }, 'property.nestedProp', 1);
     expect(falsyVal === null).toEqual(true);
+
+    var stringVal = Utils.getPropertyValue({ property: { nestedProp: { test:'test' } } }, 'property.nestedProp.test', 1);
+    expect(stringVal === 'test').toEqual(true);
+
+    functionVal = Utils.getPropertyValue({ property: { nestedProp: { test:'test' } } }, 'property.nestedProp.toString', 1);
+    expect(typeof functionVal === 'function').toEqual(true);
   });
 
   it('tests elementHasClass', function() {

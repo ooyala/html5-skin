@@ -497,7 +497,7 @@ var Utils = {
         currentObject = value = currentObject[currentProp];
       }
 
-      if (value === undefined) {
+      if (typeof value === 'undefined') {
         return defaultValue;
       }
       return value;
