@@ -1393,6 +1393,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //called when event listener triggered
     onFullscreenChanged: function() {
+      console.warn("onFullscreenChanged")
       if (this.state.isFullScreenSupported) {
         this.state.fullscreen = Fullscreen.isFullscreen;
       } else {
@@ -1410,22 +1411,36 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if(this.state.isFullScreenSupported) {
         Fullscreen.toggle(this.state.mainVideoInnerWrapper.get(0));
       }
-      // partial support, video element only (iOS)
-      else if (this.state.isVideoFullScreenSupported) {
-        if (this.state.fullscreen) {
-          this.state.mainVideoElement.webkitExitFullscreen();
-        } else {
-          this.state.mainVideoElement.webkitEnterFullscreen();
-        }
+      // partial support, video element only (iOS) and not vr
+      else if (this.state.isVideoFullScreenSupported && !this.videoVr) {
+        this.fullscreenIosNative();
       } else { // no support
-        if(this.state.isFullWindow) {
-          this.exitFullWindow();
-        } else {
-          this.enterFullWindow();
+        if (this.videoVr) {
+          this.mb.publish(OO.EVENTS.TOGGLE_FULLSCREEN_VR, this.focusedElement);
         }
+        this.noSupportFullscreen();
       }
+
       this.state.fullscreen = !this.state.fullscreen;
       this.renderSkin();
+    },
+
+    //video element only (iOS)
+    fullscreenIosNative: function () {
+      if(this.state.fullscreen) {
+        this.state.mainVideoInnerWrapper.removeClass('oo-fullscreen');
+      } else {
+        this.state.mainVideoElement.webkitEnterFullscreen();
+      }
+    },
+
+    // if native fullscreen is not supported
+    noSupportFullscreen: function () {
+      if(this.state.isFullWindow) {
+        this.exitFullWindow();
+      } else {
+        this.enterFullWindow();
+      }
     },
 
     // if fullscreen is not supported natively, "full window" style
