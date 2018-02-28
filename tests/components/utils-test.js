@@ -381,6 +381,23 @@ describe('Utils', function () {
 
     var existingVal = Utils.getPropertyValue({ property: { nestedProp: 'value' } }, 'property.nestedProp');
     expect(existingVal).toEqual('value');
+
+    //comaparing the falsy values with === so I'm sure types match and that there is no implicit conversion.
+    var falsyVal = Utils.getPropertyValue({ property: { nestedProp: 0 } }, 'property.nestedProp', 1);
+    expect(falsyVal === 0).toEqual(true);
+
+    falsyVal = Utils.getPropertyValue({ property: { nestedProp: null } }, 'property.nestedProp', 1);
+    expect(falsyVal === null).toEqual(true);
+
+    var stringVal = Utils.getPropertyValue({ property: { nestedProp: { test:'test' } } }, 'property.nestedProp.test', 1);
+    expect(stringVal === 'test').toEqual(true);
+
+    var functionVal = Utils.getPropertyValue({ property: { nestedProp: { test:'test' } } }, 'property.nestedProp.toString', 1);
+    expect(typeof functionVal === 'function').toEqual(true);
+
+    var myFunc = function() { return "myTestFunc"; };
+    functionVal = Utils.getPropertyValue({ property: { nestedProp: { func: myFunc } } }, 'property.nestedProp.func', 1);
+    expect(functionVal() === "myTestFunc").toEqual(true);
   });
 
   it('tests elementHasClass', function() {

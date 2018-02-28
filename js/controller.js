@@ -904,10 +904,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.afterOoyalaAd) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
       } else {
-        // If the core tells us that it will autoplay then we just display the loading
-        // spinner, otherwise we need to render the big play button.
+        // If the core tells us that it will autoplay then we display the loading
+        // spinner (with the thumbnail and description if it's the first video, or just a
+        // black background when transitioning to a new one), otherwise we need to render
+        // the big play button.
         if (params.willAutoplay) {
-          this.state.screenToShow = CONSTANTS.SCREEN.START_LOADING_SCREEN;
+          // Show just the loading spinner when transitioning to another Discovery or
+          // Playlist video, otherwise show the spinner and thumbnail.
+          if (this.state.initialPlayHasOccurred) {
+            this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+          } else {
+            this.state.screenToShow = CONSTANTS.SCREEN.START_LOADING_SCREEN;
+          }
         } else {
           this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
         }
@@ -1645,6 +1653,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           break;
         case CONSTANTS.STATE.PLAYING:
           this.isNewVrVideo = false;
+          // In some cases the controlBarVisible var might get out of sync if not
+          // set explicitly when pausing. When this happens the control bar flashes
+          // when the playingScreen is rendered, so we want to avoid that.
+          this.showControlBar();
           this.mb.publish(OO.EVENTS.PAUSE);
           break;
       }
