@@ -26,7 +26,10 @@ var MultiAudioPopover = React.createClass({
 
   render: function() {
     var multiAudio = [];
-    if (this.props.controller && this.props.controller.state && !!this.props.controller.state.multiAudio) {
+    if (this.props.controller &&
+      this.props.controller.state &&
+      !!this.props.controller.state.multiAudio &&
+      Array.isArray(this.props.controller.state.multiAudio.tracks) ) {
       multiAudio = this.props.controller.state.multiAudio.tracks;
     }
     return (
@@ -38,11 +41,17 @@ var MultiAudioPopover = React.createClass({
             closeAction={this.handleClose} />
         </li>
         {multiAudio.map(function(audio){
+          var color = "white";
+          if (audio.enabled) {
+            color = "blue";
+          }
+
           return (
             <li>
               <span
                 className="oo-multiaudio-element"
                 onClick={this.handleMultiAudioClick.bind(this, audio.id)}
+                style={{color:color}}
               >
                 {audio.label}
               </span>

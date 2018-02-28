@@ -163,7 +163,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0},
 
       "multiAudio": null,
-      "currentAudioId": "",
+      "defaultAudioId": "",
       "multiAudioOptions": {
         "enabled": null,
         "showPopover": false,
@@ -862,18 +862,19 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     /**
-     *
+     * The function is called when event MULTI_AUDIO_FETCHED was caught
      * @param event {String} name of a event
      * @param multiAudio {Object} - audio which fetched for the current video
      * @param multiAudio.tracks {Array} - list of objects with data for each audio
      */
     onMultiAudioFetched: function(event, multiAudio) {
-      console.log('BBB skin onMultiAudioFetched : this.state.persistentSettings', this.state.persistentSettings);
-      if (this.state.persistentSettings && typeof this.state.persistentSettings.chosenAudioId === 'string') {
+      if (this.state.defaultAudioId !== '') { //if have default track in config
+        this.setCurrentAudio(this.state.defaultAudioId);
+      } else if (this.state.persistentSettings &&
+        this.state.persistentSettings.chosenAudioId !== '') { //if trackId is set in localStorage
         this.setCurrentAudio(this.state.persistentSettings.chosenAudioId);
-      } else {
-        console.log('BBB skin onMultiAudioFetched : no chosenAudioId in localStorage');
-        this.setMultiAudio(multiAudio);
+      } else { //if we do not have any information about trackId
+        this.setMultiAudio(event, multiAudio);
       }
     },
 
@@ -882,23 +883,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @param {String} id - the id of the audio track to activate
      */
     setCurrentAudio: function(id) {
-      if (this.state.currentAudioId !== id) {
-        console.log('BBB skin setCurrentAudio : typeof id', typeof id);
-        this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, id);
-        this.setCurrentAudioId(id);
-      }
-    },
-
-    setMultiAudio: function(multiAudio) {
-      this.state.multiAudio = multiAudio;
+      this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, id);
     },
 
     /**
-     * Sets this.state.currentAudioId
-     * @param id - the id of the audio track to activate
+     *
+     * @param  eventName {String} - name of the event
+     * @param multiAudio {Object} - audio which fetched for the current video
+     * @param multiAudio.tracks {Array} - list of objects with data for each audio
      */
-    setCurrentAudioId: function(id) {
-      this.state.currentAudioId = id;
+    setMultiAudio: function(eventName, multiAudio) {
+      this.state.multiAudio = multiAudio;
     },
 
     onSeeked: function(event) {
@@ -1225,7 +1220,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.config = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', buttonArrayFusion:buttonArrayFusion});
       this.state.closedCaptionOptions = this.state.config.closedCaptionOptions;
       if (typeof this.state.config.defaultAudioId === 'string') {
-        this.state.currentAudioId = this.state.config.defaultAudioId;
+        this.state.defaultAudioId = this.state.config.defaultAudioId;
       }
 
       //remove 'url' from the list until the tab is worked on
