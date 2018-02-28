@@ -650,6 +650,28 @@ describe('Controller', function() {
     });
   });
 
+  describe('MultiAudio', function() {
+    it('should set correct multiAudio state', function() {
+      var multiAudio = {"tracks": [
+        {id: "0", kind: "main", label: "eng", lang: "eng", enabled: true},
+        {id: "1", kind: "main", label: "ger", lang: "ger", enabled: false}
+      ]};
+
+      controller.state.multiAudio = null;
+      expect(controller.state.multiAudio).toBe(null);
+      controller.onMultiAudioFetched('eventName', multiAudio);
+      expect(controller.state.multiAudio).toEqual(multiAudio);
+    });
+
+    it('Calling of setCurrentAudio should throw SET_CURRENT_AUDIO event with id', function() {
+      var id = "1";
+      var spy = sinon.spy(OO.mb, 'publish');
+
+      controller.setCurrentAudio(id);
+      expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, id)).toBe(true);
+    });
+  });
+
   describe('Video Qualities', function() {
     var qualities;
 
@@ -678,17 +700,5 @@ describe('Controller', function() {
       controller.onBitrateInfoAvailable('event', qualities);
       expect(controller.state.videoQualityOptions.availableBitrates).toBe(qualities.bitrates);
     });
-
-    it('should set currect multiAudio state', function() {
-      // this.state.multiAudio = multiAudio;
-      var multiAudio = {"tracks": [
-        {id: "0", kind: "main", label: "eng", lang: "eng", enabled: true},
-        {id: "1", kind: "main", label: "ger", lang: "ger", enabled: false}
-      ]};
-      mb.publish(OO.EVENTS.MULTI_AUDIO_FETCHED, multiAudio);
-      console.log('!!!!!!!!!!!!!! controller.state.multiAudio !!!!!!!!!!!!!!', controller.state.multiAudio);
-      // expect(controller.state.multiAudio).toEqual(multiAudio);
-    });
-
   });
 });
