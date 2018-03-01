@@ -1373,7 +1373,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     // check if fullscreen is supported natively, set flag, add event listener for change
     enableFullScreen: function() {
-      console.warn("call enableFullScreen Fullscreen.enabled", Fullscreen.enabled);
       if (Fullscreen.enabled) {
         this.state.isFullScreenSupported = true;
         document.addEventListener(Fullscreen.raw.fullscreenchange, this.onFullscreenChanged.bind(this));
@@ -1417,9 +1416,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       } else { // no support
         if (this.videoVr) {
           this.mb.publish(OO.EVENTS.TOGGLE_FULLSCREEN_VR, this.focusedElement);
-          // if (this.videoVr && this.state.isMobile && this.isVrStereo && !this.state.isFullWindow) {
-          //   this.toggleStereoVr();
-          // }
         }
         this.noSupportFullscreen();
       }
