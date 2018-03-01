@@ -1415,6 +1415,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.fullscreenIosNative();
       } else { // no support
         if (this.videoVr) {
+          // if videoVr we don't use native fullscreen (IOS)
           this.mb.publish(OO.EVENTS.TOGGLE_FULLSCREEN_VR, this.focusedElement);
         }
         this.noSupportFullscreen();
@@ -1424,7 +1425,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    //video element only (iOS)
+    /**
+     * Toggle fullscreen for video element only (iOS)
+     * @private
+     */
     fullscreenIosNative: function () {
       if(this.state.fullscreen) {
         this.state.mainVideoInnerWrapper.removeClass('oo-fullscreen');
@@ -1433,7 +1437,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    // if native fullscreen is not supported
+    /**
+     * Toggle fullscreen if native fullscreen is not supported (pseudo fullscreen)
+     * @private
+     */
     noSupportFullscreen: function () {
       if(this.state.isFullWindow) {
         this.exitFullWindow();
