@@ -1412,13 +1412,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       // partial support, video element only (iOS) and not vr
       else if (this.state.isVideoFullScreenSupported && !this.videoVr) {
-        this.enterIOSNativeFullscreen();
+        this.toggleIOSNativeFullscreen();
       } else { // no support
         if (this.videoVr) {
           // if videoVr we don't use native fullscreen (IOS)
           this.mb.publish(OO.EVENTS.TOGGLE_FULLSCREEN_VR, this.focusedElement);
         }
-        this.enterPseudoFullscreenMode();
+        this.togglePseudoFullscreenMode();
       }
 
       this.state.fullscreen = !this.state.fullscreen;
@@ -1429,7 +1429,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * Toggle fullscreen for video element only (iOS)
      * @private
      */
-    enterIOSNativeFullscreen: function () {
+    toggleIOSNativeFullscreen: function () {
       if(this.state.fullscreen) {
         this.state.mainVideoInnerWrapper.removeClass('oo-fullscreen');
       } else {
@@ -1441,7 +1441,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * Toggle fullscreen if native fullscreen is not supported (pseudo fullscreen)
      * @private
      */
-    enterPseudoFullscreenMode: function () {
+    togglePseudoFullscreenMode: function () {
       if(this.state.isFullWindow) {
         this.exitFullWindow();
       } else {
