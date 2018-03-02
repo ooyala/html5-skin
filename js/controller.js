@@ -1430,8 +1430,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @private
      */
     toggleIOSNativeFullscreen: function () {
-      if(this.state.fullscreen) {
-        this.state.mainVideoInnerWrapper.removeClass('oo-fullscreen');
+      if (this.state.fullscreen) {
+        this.state.mainVideoElement.webkitExitFullscreen();
       } else {
         this.state.mainVideoElement.webkitEnterFullscreen();
       }
