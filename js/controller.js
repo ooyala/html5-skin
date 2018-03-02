@@ -162,6 +162,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isClickedOutside": false,
       "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0},
 
+      "showMultiAudioIcon": false,
       "multiAudio": null,
       "currentAudioId": "",
       "multiAudioOptions": {
@@ -296,6 +297,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.elementId = elementId;
       this.state.isMobile = Utils.isMobile();
       this.state.browserSupportsTouch = Utils.browserSupportsTouch();
+
+      this.state.showMultiAudioIcon = !!params.showMultiAudioIcon;
 
       //initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');
@@ -867,7 +870,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @param multiAudio.tracks {Array} - list of objects with data for each audio
      */
     onMultiAudioFetched: function(event, multiAudio) {
-      this.state.multiAudio = multiAudio;
+      if (this.state.showMultiAudioIcon) { //if param showMultiAudioIcon is set to true
+        this.state.multiAudio = multiAudio;
+      }
     },
 
     /**
