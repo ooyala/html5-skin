@@ -678,18 +678,17 @@ describe('Controller', function() {
       controller.onBitrateInfoAvailable('event', qualities);
       expect(controller.state.videoQualityOptions.availableBitrates).toBe(qualities.bitrates);
     });
+  });
 
-    describe('Toggle fullscreen', function () {
-      it('should publish event OO.EVENTS.TOGGLE_FULLSCREEN_VR on ios deivce with vr content', function () {
-        var spy = sinon.spy(controller.mb, 'publish');
-        controller.videoVr = true;
-        OO.isIos = true;
+  describe('Toggle fullscreen', function () {
+    it('should publish event OO.EVENTS.TOGGLE_FULLSCREEN_VR on ios deivce with vr content', function () {
+      var spy = sinon.spy(controller.mb, 'publish');
+      controller.videoVr = true;
+      OO.isIos = true;
 
-        controller.toggleFullscreen();
-        expect(spy.callCount).toBe(1);
-        expect(spy.calledWith(OO.EVENTS.TOGGLE_FULLSCREEN_VR)).toBe(true);
-      });
+      controller.toggleFullscreen();
+      expect(spy.callCount).toBe(1);
+      expect(spy.calledWith(OO.EVENTS.TOGGLE_FULLSCREEN_VR)).toBe(true);
     });
-
   });
 });

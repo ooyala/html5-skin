@@ -47,14 +47,14 @@
 
   // "full window" style, if fullscreen is not supported natively
   &.oo-fullscreen {
-    width: 100%!important;
-    height: 100%!important;
+    width: 100%;
+    height: 100%;
     top: 0px;
     bottom: 0px;
     left: 0px;
     right: 100%;
-    position: fixed!important;
-    overflow: hidden!important;
+    position: fixed;
+    overflow: hidden;
   }
 }
 
