@@ -89,6 +89,7 @@ describe('Controller', function() {
     controller.state.mainVideoElement = mockDomElement;
     controller.state.mainVideoInnerWrapper = $('<div/>');
     controller.state.mainVideoElementContainer = mockDomElement;
+    controller.state.showMultiAudioIcon = true;
     controller.skin = {
       state: {},
       updatePlayhead: function(currentPlayhead, duration, buffered, currentAdPlayhead) {
