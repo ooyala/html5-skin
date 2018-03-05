@@ -28,8 +28,8 @@ var CloseCaptionMultiAudioMenu = React.createClass({
 
 
     if(this.props.controller && this.props.controller.state) {
-      multiAudioList = this.getMultiAudioList();
-      closeCaptionsList = this.getMultiAudioList();
+      multiAudioList = this._getMultiAudioList();
+      closeCaptionsList = this._getCloseCaptionsList();
     }
 
     console.warn("multiAudioList", multiAudioList);
@@ -41,10 +41,14 @@ var CloseCaptionMultiAudioMenu = React.createClass({
     }
   },
 
-  getMultiAudioList: function () {
+  /**
+   * Getting a list of available audio tracks
+   * @return {Array} - list of available audio tracks
+   * @private
+   */
+  _getMultiAudioList: function () {
     var multiAudioList = [];
-    if(this.props.controller.state &&
-      !!this.props.controller.state.multiAudio &&
+    if(!!this.props.controller.state.multiAudio &&
       Array.isArray(this.props.controller.state.multiAudio.tracks)) {
       multiAudioList = this.props.controller.state.multiAudio.tracks;
     }
@@ -52,8 +56,22 @@ var CloseCaptionMultiAudioMenu = React.createClass({
     return multiAudioList;
   },
 
-  getCloseCaptionsList: function () {
+  /**
+   * Getting the list of available languages for subtitles
+   * @return {Array} list of available languages for subtitles
+   * @private
+   */
+  _getCloseCaptionsList: function () {
+    var closeCaptionsList = [];
+    if(this.props.controller.state.closedCaptionOptions &&
+      this.props.controller.state.closedCaptionOptions.availableLanguages &&
+      this.props.controller.state.closedCaptionOptions.availableLanguages.languages &&
+      Array.isArray(this.props.controller.state.closedCaptionOptions.availableLanguages.languages)
+    ) {
+      closeCaptionsList = this.props.controller.state.closedCaptionOptions.availableLanguages.languages;
+    }
 
+    return closeCaptionsList;
   },
 
   render: function () {
