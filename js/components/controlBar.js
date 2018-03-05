@@ -14,6 +14,7 @@ var React = require('react'),
   VideoQualityPanel = require('./videoQualityPanel'),
   ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
   MultiAudioPopover = require('./multi-audio/multiAudioPopover'),
+  CloseCaptionMultiAudioMenu = require('./closeCaptionMultiAudioMenu'),
   Logo = require('./logo'),
   Icon = require('./icon'),
   Tooltip = require('./tooltip');
@@ -660,7 +661,8 @@ var ControlBar = React.createClass({
               autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}
               closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
               closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}>
-              <MultiAudioPopover {...this.props} togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)} />
+              {/*<MultiAudioPopover {...this.props} togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)} />*/}
+              <CloseCaptionMultiAudioMenu {...this.props}/>
             </Popover>
             }
           </div>
