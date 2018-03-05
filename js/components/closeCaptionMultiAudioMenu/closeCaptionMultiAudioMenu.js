@@ -1,6 +1,8 @@
 var React = require('react');
-var CONSTANTS = require('../constants/constants');
-var Utils = require('./utils');
+// var CONSTANTS = require('../../constants/constants');
+// var Utils = require('../utils');
+var CloseCaptionTab = require('./closeCaptionTab');
+var MultiAudioTab = require('./multiAudioTab');
 
 var CloseCaptionMultiAudioMenu = React.createClass({
 
@@ -75,7 +77,12 @@ var CloseCaptionMultiAudioMenu = React.createClass({
 
   render: function () {
     console.warn('render state', this.state);
-    return null;
+    return (
+      <div>
+        <CloseCaptionTab {...this.state.closeCaptions}/>
+        <MultiAudioTab {...this.state.multiAudio}/>
+      </div>
+    );
   }
 });
 
