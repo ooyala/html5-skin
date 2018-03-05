@@ -7,75 +7,74 @@ var CloseCaptionMultiAudioMenu = React.createClass({
   getInitialState: function () {
     console.warn('getInitialState props', this.props);
 
-    var multiAudioList = [];
-    var closeCaptionsList = [];
-    // if (this.props.controller &&
-    //   this.props.controller.state &&
-    //   !!this.props.controller.state.multiAudio &&
-    //   Array.isArray(this.props.controller.state.multiAudio.tracks) ) {
-    //   multiAudio = this.props.controller.state.multiAudio.tracks;
-    // }
-
-    // if(this.props.closedCaptionOptions &&
-    //   this.props.closedCaptionOptions.availableLanguages &&
-    //   this.props.closedCaptionOptions.availableLanguages.languages &&
-    //   Array.isArray(this.props.closedCaptionOptions.availableLanguages.languages)
-    // ) {
-    //   closeCaptions = this.props.closedCaptionOptions.availableLanguages.languages;
-    // }
-
-    // var this.props.closedCaptionOptions.availableLanguages.locale
-
+    var multiAudio = {};
+    var closeCaptions = {};
 
     if(this.props.controller && this.props.controller.state) {
-      multiAudioList = this._getMultiAudioList();
-      closeCaptionsList = this._getCloseCaptionsList();
+      multiAudio = this._getMultiAudio();
+      closeCaptions = this._getCloseCaptions();
     }
 
-    console.warn("multiAudioList", multiAudioList);
-    console.warn("closeCaptionsList", closeCaptionsList);
+    console.warn("multiAudio", multiAudio);
+    console.warn("closeCaptions", closeCaptions);
 
     return {
-      multiAudioList: multiAudioList,
-      closeCaptionsList: closeCaptionsList
+      multiAudio: multiAudio,
+      closeCaptions: closeCaptions
     }
   },
 
   /**
    * Getting a list of available audio tracks
-   * @return {Array} - list of available audio tracks
+   * @return {object} - list of available audio tracks and selected track
    * @private
    */
-  _getMultiAudioList: function () {
-    var multiAudioList = [];
-    if(!!this.props.controller.state.multiAudio &&
-      Array.isArray(this.props.controller.state.multiAudio.tracks)) {
-      multiAudioList = this.props.controller.state.multiAudio.tracks;
+  _getMultiAudio: function () {
+    var multiAudio = {
+      list: [],
+      selected: null
+    };
+
+    if(!!this.props.controller.state.multiAudio) {
+      if(Array.isArray(this.props.controller.state.multiAudio.tracks)) {
+        multiAudio.list = this.props.controller.state.multiAudio.tracks;
+        multiAudio.selected = _.find(this.props.controller.state.multiAudio.tracks, function (track) {
+          return track.enabled === true;
+        });
+      }
     }
 
-    return multiAudioList;
+    return multiAudio;
   },
 
   /**
    * Getting the list of available languages for subtitles
-   * @return {Array} list of available languages for subtitles
+   * @return {object} list of available languages for subtitles and selected language
    * @private
    */
-  _getCloseCaptionsList: function () {
-    var closeCaptionsList = [];
-    if(this.props.controller.state.closedCaptionOptions &&
-      this.props.controller.state.closedCaptionOptions.availableLanguages &&
-      this.props.controller.state.closedCaptionOptions.availableLanguages.languages &&
-      Array.isArray(this.props.controller.state.closedCaptionOptions.availableLanguages.languages)
-    ) {
-      closeCaptionsList = this.props.controller.state.closedCaptionOptions.availableLanguages.languages;
+  _getCloseCaptions: function () {
+    var closeCaptions = {
+      list: [],
+      selected: null
+    };
+
+    if (this.props.controller.state.closedCaptionOptions) {
+      if (this.props.controller.state.closedCaptionOptions.availableLanguages &&
+        this.props.controller.state.closedCaptionOptions.availableLanguages.languages &&
+        Array.isArray(this.props.controller.state.closedCaptionOptions.availableLanguages.languages)) {
+        closeCaptions.list = this.props.controller.state.closedCaptionOptions.availableLanguages.languages;
+      }
+
+      if (this.props.controller.state.closedCaptionOptions.language) {
+        closeCaptions.selected = this.props.controller.state.closedCaptionOptions.language;
+      }
     }
 
-    return closeCaptionsList;
+    return closeCaptions;
   },
 
   render: function () {
-    console.warn('render props', this.props);
+    console.warn('render state', this.state);
     return null;
   }
 });
