@@ -681,4 +681,21 @@ describe('Controller', function() {
     });
 
   });
+  
+  describe('Multi audio', function () {
+    beforeEach(function() {
+      controller.state.showMultiAudioIcon = true;
+    });
+
+    it('should check if the icon exists if showMultiAudioIcon is true', function () {
+      controller.onMultiAudioFetched('event', true);
+      expect(controller.state.multiAudio).toBe(true);
+    });
+
+    it('should check if the icon not exists if showMultiAudioIcon is false', function () {
+      controller.state.showMultiAudioIcon = false;
+      controller.onMultiAudioFetched('event', true);
+      expect(controller.state.multiAudio).toBe(null);
+    });
+  });
 });
