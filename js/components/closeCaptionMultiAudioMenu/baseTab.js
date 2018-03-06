@@ -3,9 +3,12 @@ var BaseElement = require('./baseElement');
 
 var BaseTab = React.createClass({
   render: function () {
-    this.props.list.forEach(function (element) {
-      return <BaseElement {...element}/>
-    });
+    if(this.props.list) {
+      this.props.list.map(function (element, index) {
+        console.warn('element', element);
+        return <BaseElement key={index} {...element}/>
+      });
+    }
   }
 });
 
