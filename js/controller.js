@@ -297,7 +297,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isMobile = Utils.isMobile();
       this.state.browserSupportsTouch = Utils.browserSupportsTouch();
 
-      this.state.showMultiAudioIcon = !!params.showMultiAudioIcon;
+      // this.state.showMultiAudioIcon = !!params.showMultiAudioIcon;
+      //ToDo
+      this.state.showMultiAudioIcon = true;
 
       //initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');
@@ -870,6 +872,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @param multiAudio.tracks {Array} - list of objects with data for each audio
      */
     onMultiAudioFetched: function(event, multiAudio) {
+      console.log('multiAudio', multiAudio)
+      console.log("this.state.showMultiAudioIcon", this.state.showMultiAudioIcon)
       if (this.state.showMultiAudioIcon) { //if param showMultiAudioIcon is set to true
         this.state.multiAudio = multiAudio;
       }

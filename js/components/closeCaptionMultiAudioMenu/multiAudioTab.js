@@ -2,29 +2,29 @@ var React = require('react');
 var BaseTab = require('./baseTab');
 
 var MultiAudioTab = React.createClass({
-  getInitialState: function () {
-    var list = [];
-    console.log('MultiAudioTab props', this.props);
-
-    this.props.list.forEach(function (el) {
-      list.push({
-        selected: el.enabled,
-        name: el.label,
-        id: el.id
-      });
-    });
-
-    console.log('list', list);
-    return {
-      list: list
-    };
+  componentWillMount: function () {
+    this.list = [];
+    this.updateList(this.props);
   },
 
+  componentWillUpdate: function (nextProps, nextState) {
+    this.updateList(nextProps);
+  },
 
+  updateList: function (props) {
+    if(props && props.list){
+      props.list.forEach(function (el, index) {
+        this.list[index] = {
+          selected: el.enabled,
+          name: el.label,
+          id: el.id
+        };
+      }.bind(this));
+    }
+  },
 
   render: function () {
-    console.log('this.state', this.state);
-    return <BaseTab {...this.state}/>;
+    return <BaseTab list={this.list}/>;
   }
 });
 

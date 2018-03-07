@@ -76,7 +76,6 @@ var CloseCaptionMultiAudioMenu = React.createClass({
   },
 
   render: function () {
-    console.warn('render state', this.state);
     return (
       <div>
         <CloseCaptionTab {...this.state.closeCaptions}/>
