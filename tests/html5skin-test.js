@@ -651,28 +651,6 @@ describe('Controller', function() {
     });
   });
 
-  describe('MultiAudio', function() {
-    it('should set correct multiAudio state', function() {
-      var multiAudio = {"tracks": [
-        {id: "0", kind: "main", label: "eng", lang: "eng", enabled: true},
-        {id: "1", kind: "main", label: "ger", lang: "ger", enabled: false}
-      ]};
-
-      controller.state.multiAudio = null;
-      expect(controller.state.multiAudio).toBe(null);
-      controller.onMultiAudioFetched('eventName', multiAudio);
-      expect(controller.state.multiAudio).toEqual(multiAudio);
-    });
-
-    it('Calling of setCurrentAudio should throw SET_CURRENT_AUDIO event with id', function() {
-      var id = "1";
-      var spy = sinon.spy(OO.mb, 'publish');
-
-      controller.setCurrentAudio(id);
-      expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, id)).toBe(true);
-    });
-  });
-
   describe('Video Qualities', function() {
     var qualities;
 
@@ -712,12 +690,37 @@ describe('Controller', function() {
       controller.toggleFullscreen();
       expect(spy.callCount).toBe(1);
       expect(spy.calledWith(OO.EVENTS.TOGGLE_FULLSCREEN_VR)).toBe(true);
+      spy.restore();
     });
   });
 
-  describe('Multi audio', function () {
+  describe('Multiaudio', function () {
+    var spy;
     beforeEach(function() {
+      spy = sinon.spy(controller.mb, 'publish');
       controller.state.showMultiAudioIcon = true;
+    });
+
+    afterEach(function () {
+      spy.restore();
+    });
+
+    it('should set correct multiAudio state', function() {
+      var multiAudio = {"tracks": [
+          {id: "0", kind: "main", label: "eng", lang: "eng", enabled: true},
+          {id: "1", kind: "main", label: "ger", lang: "ger", enabled: false}
+        ]};
+
+      controller.state.multiAudio = null;
+      expect(controller.state.multiAudio).toBe(null);
+      controller.onMultiAudioFetched('eventName', multiAudio);
+      expect(controller.state.multiAudio).toEqual(multiAudio);
+    });
+
+    it('Calling of setCurrentAudio should throw SET_CURRENT_AUDIO event with id', function() {
+      var id = "1";
+      controller.setCurrentAudio(id);
+      expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, id)).toBe(true);
     });
 
     it('should check if the icon exists if showMultiAudioIcon is true', function () {
