@@ -89,6 +89,7 @@ describe('Controller', function() {
     controller.state.mainVideoElement = mockDomElement;
     controller.state.mainVideoInnerWrapper = $('<div/>');
     controller.state.mainVideoElementContainer = mockDomElement;
+    controller.state.showMultiAudioIcon = true;
     controller.skin = {
       state: {},
       updatePlayhead: function(currentPlayhead, duration, buffered, currentAdPlayhead) {
@@ -678,6 +679,34 @@ describe('Controller', function() {
       controller.onBitrateInfoAvailable('event', qualities);
       expect(controller.state.videoQualityOptions.availableBitrates).toBe(qualities.bitrates);
     });
+  });
 
+  describe('Toggle fullscreen', function () {
+    it('should publish event OO.EVENTS.TOGGLE_FULLSCREEN_VR on ios deivce with vr content', function () {
+      var spy = sinon.spy(controller.mb, 'publish');
+      controller.videoVr = true;
+      OO.isIos = true;
+
+      controller.toggleFullscreen();
+      expect(spy.callCount).toBe(1);
+      expect(spy.calledWith(OO.EVENTS.TOGGLE_FULLSCREEN_VR)).toBe(true);
+    });
+  });
+  
+  describe('Multi audio', function () {
+    beforeEach(function() {
+      controller.state.showMultiAudioIcon = true;
+    });
+
+    it('should check if the icon exists if showMultiAudioIcon is true', function () {
+      controller.onMultiAudioFetched('event', true);
+      expect(controller.state.multiAudio).toBe(true);
+    });
+
+    it('should check if the icon not exists if showMultiAudioIcon is false', function () {
+      controller.state.showMultiAudioIcon = false;
+      controller.onMultiAudioFetched('event', true);
+      expect(controller.state.multiAudio).toBe(null);
+    });
   });
 });
