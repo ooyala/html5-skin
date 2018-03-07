@@ -9,6 +9,7 @@ var React = require('react'),
     ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel'),
     DiscoveryPanel = require('./components/discoveryPanel'),
     VideoQualityPanel = require('./components/videoQualityPanel'),
+    CloseCaptionMultiAudioMenu = require('./components/closeCaptionMultiAudioMenu/closeCaptionMultiAudioMenu'),
     SharePanel = require('./components/sharePanel'),
     MoreOptionsPanel = require('./components/moreOptionsPanel'),
     AdScreen = require('./views/adScreen'),
@@ -430,6 +431,23 @@ var Skin = React.createClass({
               videoQualityOptions={this.state.videoQualityOptions}
               responsiveView={this.state.responsiveId}/>
           </ContentScreen>
+          );
+          break;
+        case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
+          console.log("CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN", CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
+          screen = (
+            <ContentScreen
+              {...this.props}
+              screen={CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN}
+              // screenClassName="oo-content-screen oo-content-screen-closed-captions"
+              // titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
+              autoFocus={this.state.multiAudioOptions.autoFocus}
+              // closedCaptionOptions={this.props.closedCaptionOptions}
+              element={<OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_MULTI_AUDIO} />}
+              icon="cc"
+            >
+              <CloseCaptionMultiAudioMenu {...this.props}/>
+            </ContentScreen>
           );
           break;
         case CONSTANTS.SCREEN.ERROR_SCREEN:

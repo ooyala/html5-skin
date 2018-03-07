@@ -1753,6 +1753,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    toggleMultiAudio: function () {
+      this.state.pluginsElement.addClass("oo-overlay-blur");
+      this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
+      this.renderSkin();
+    },
+
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
       this.state.pluginsElement.removeClass("oo-overlay-blur");
       if (isAutoUpNext){

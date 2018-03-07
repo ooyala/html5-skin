@@ -236,9 +236,10 @@ var ControlBar = React.createClass({
 
   handleMultiAudioClick: function () {
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
-
-    this.togglePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
-    this.closePopovers();
+    // this.props.controller.toggleShareScreen();
+    this.props.controller.toggleMultiAudio();
+    // this.togglePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
+    // this.closePopovers();
   },
 
   configureMenuAutofocus: function(menu) {
@@ -655,16 +656,16 @@ var ControlBar = React.createClass({
                     onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
               <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.MULTI_AUDIO, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
             </AccessibleButton>
-            {this.props.controller.state.multiAudioOptions.showPopover &&
-            <Popover
-              popoverClassName="oo-popover oo-popover-pull-right"
-              autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}
-              closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
-              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}>
-              {/*<MultiAudioPopover {...this.props} togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)} />*/}
-              <CloseCaptionMultiAudioMenu {...this.props}/>
-            </Popover>
-            }
+            {/*{this.props.controller.state.multiAudioOptions.showPopover &&*/}
+            {/*<Popover*/}
+              {/*popoverClassName="oo-popover oo-popover-pull-right"*/}
+              {/*autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}*/}
+              {/*closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}*/}
+              {/*closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}>*/}
+              {/*/!*<MultiAudioPopover {...this.props} togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)} />*!/*/}
+              {/*<CloseCaptionMultiAudioMenu {...this.props}/>*/}
+            {/*</Popover>*/}
+            {/*}*/}
           </div>
         )
       }).bind(this),
