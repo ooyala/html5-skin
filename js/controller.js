@@ -164,7 +164,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       "showMultiAudioIcon": false,
       "multiAudio": null,
-      "currentAudioId": "",
       "multiAudioOptions": {
         "enabled": null,
         "showPopover": false,
@@ -864,7 +863,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     /**
-     *
+     * The function is called when event MULTI_AUDIO_FETCHED was caught;
+     * The function sets value for this.state.multiAudio
      * @param event {String} name of a event
      * @param multiAudio {Object} - audio which fetched for the current video
      * @param multiAudio.tracks {Array} - list of objects with data for each audio
@@ -876,22 +876,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     /**
+     * The function is called when we want to change audio track
      * @fires OO.EVENTS.SET_CURRENT_AUDIO
      * @param {String} id - the id of the audio track to activate
      */
     setCurrentAudio: function(id) {
-      if (this.state.currentAudioId !== id) {
-        this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, id);
-        this.setCurrentAudioId(id);
-      }
-    },
-
-    /**
-     * Sets this.state.currentAudioId
-     * @param id - the id of the audio track to activate
-     */
-    setCurrentAudioId: function(id) {
-      this.state.currentAudioId = id;
+      this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, id);
     },
 
     onSeeked: function(event) {
