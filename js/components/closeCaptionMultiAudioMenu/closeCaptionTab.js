@@ -3,6 +3,7 @@ var BaseTab = require('./baseTab');
 
 var CloseCaptionTab = React.createClass({
   componentWillMount: function () {
+    this.header = 'Subtitles';
     this.list = [];
     this.updateList(this.props);
   },
@@ -27,7 +28,7 @@ var CloseCaptionTab = React.createClass({
   },
 
   render: function () {
-    return <BaseTab list={this.list}/>;
+    return <BaseTab header={this.header} list={this.list}/>;
   }
 });
 

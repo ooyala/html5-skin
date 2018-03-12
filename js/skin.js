@@ -438,6 +438,7 @@ var Skin = React.createClass({
           screen = (
             <ContentScreen
               {...this.props}
+              dataItemsPerPage={{xs:1, sm:4, md:8, lg:8}}
               screen={CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN}
               // screenClassName="oo-content-screen oo-content-screen-closed-captions"
               // titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}

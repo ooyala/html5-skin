@@ -3,6 +3,7 @@ var BaseTab = require('./baseTab');
 
 var MultiAudioTab = React.createClass({
   componentWillMount: function () {
+    this.header = "Audio";
     this.list = [];
     this.updateList(this.props);
   },
@@ -24,7 +25,7 @@ var MultiAudioTab = React.createClass({
   },
 
   render: function () {
-    return <BaseTab list={this.list}/>;
+    return <BaseTab header={this.header} list={this.list}/>;
   }
 });
 
