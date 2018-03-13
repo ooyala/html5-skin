@@ -6,7 +6,6 @@ var BaseElement = React.createClass({
     var styleCell = {
       'padding': '9px',
       backgroundColor:'rgba(0, 0, 0, 0)'
-      // opacity: 0
     };
 
     var styleIcon = {
@@ -16,22 +15,22 @@ var BaseElement = React.createClass({
       visibility: 'hidden'
     };
 
-    var styleBackground = {
-      zIndex: -1,
-      width: '100%',
-      height: '100%',
-      backgroundColor: '#000'
-    };
+    var styleText = {
+      width: '100px',
+      paddingLeft: '31px',
+      fontWeight: 'normal',
+      color: '#ffffff'
+
+  };
 
     if (this.props.selected) {
       styleCell.backgroundColor ='rgba(0, 0, 0, 0.2)';
       styleIcon.visibility = 'visible';
+      styleText.fontWeight = 'bold';
+      styleText.color = '#448aff';
     }
 
-    var styleText = {
-      width: '100px',
-      paddingLeft: '31px'
-    };
+
 
     return (
       <div style={styleCell}>
