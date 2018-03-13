@@ -435,8 +435,6 @@ var Skin = React.createClass({
           );
           break;
         case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
-          console.log("CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN", CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
-
           screen = (
             <ContentScreen
               {...this.props}
@@ -445,7 +443,6 @@ var Skin = React.createClass({
               // screenClassName="oo-content-screen oo-content-screen-closed-captions"
               // titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
               autoFocus={this.state.multiAudioOptions.autoFocus}
-              // closedCaptionOptions={this.props.closedCaptionOptions}
               element={<OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_MULTI_AUDIO} />}
               icon="cc"
             >
