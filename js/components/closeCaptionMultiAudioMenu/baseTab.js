@@ -5,6 +5,8 @@ var BaseTab = React.createClass({
 
   handleSelect: function (id) {
     console.warn('baseTab id', id);
+
+    this.props.handleSelect(id);
   },
 
   render: function () {

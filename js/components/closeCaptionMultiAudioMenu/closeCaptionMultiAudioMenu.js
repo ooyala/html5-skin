@@ -7,8 +7,6 @@ var MultiAudioTab = require('./multiAudioTab');
 var CloseCaptionMultiAudioMenu = React.createClass({
 
   getInitialState: function () {
-    console.warn('getInitialState props', this.props);
-
     var multiAudio = {};
     var closeCaptions = {};
 
@@ -16,9 +14,6 @@ var CloseCaptionMultiAudioMenu = React.createClass({
       multiAudio = this._getMultiAudio();
       closeCaptions = this._getCloseCaptions();
     }
-
-    console.warn("multiAudio", multiAudio);
-    console.warn("closeCaptions", closeCaptions);
 
     return {
       multiAudio: multiAudio,
@@ -75,6 +70,14 @@ var CloseCaptionMultiAudioMenu = React.createClass({
     return closeCaptions;
   },
 
+  handleSelectCC: function (id) {
+    console.warn('closeCaptionMultiAudioMenu handleSelectCC id', id);
+  },
+
+  handleSelectMA: function (id) {
+    console.warn('closeCaptionMultiAudioMenu handleSelectMA id', id);
+  },
+
   render: function () {
     var styleMenu = {
       display: 'block',
@@ -101,10 +104,10 @@ var CloseCaptionMultiAudioMenu = React.createClass({
     return (
       <div style={styleMenu}>
         <div style={styleColumnLeft}>
-          <CloseCaptionTab {...this.state.closeCaptions}/>
+          <CloseCaptionTab handleSelect={this.handleSelectCC} {...this.state.closeCaptions}/>
         </div>
         <div style={styleColumnRight}>
-          <MultiAudioTab {...this.state.multiAudio}/>
+          <MultiAudioTab handleSelect={this.handleSelectMA} {...this.state.multiAudio}/>
         </div>
       </div>
     );
