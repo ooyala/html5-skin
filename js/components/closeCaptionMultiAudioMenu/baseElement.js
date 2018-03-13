@@ -35,8 +35,6 @@ var BaseElement = React.createClass({
       styleText.color = '#448aff';
     }
 
-
-
     return (
       <div onClick={this.handleSelect} style={styleCell}>
         <span style={styleIcon}> Q </span>

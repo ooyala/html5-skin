@@ -7,17 +7,17 @@ var MultiAudioTab = require('./multiAudioTab');
 var CloseCaptionMultiAudioMenu = React.createClass({
 
   getInitialState: function () {
-    var multiAudio = {};
-    var closeCaptions = {};
+    this.multiAudio = {};
+    this.closeCaptions = {};
 
     if(this.props.controller && this.props.controller.state) {
-      multiAudio = this._getMultiAudio();
-      closeCaptions = this._getCloseCaptions();
+      this.multiAudio = this._getMultiAudio();
+      this.closeCaptions = this._getCloseCaptions();
     }
 
     return {
-      multiAudio: multiAudio,
-      closeCaptions: closeCaptions
+      multiAudio: this.multiAudio,
+      closeCaptions: this.closeCaptions
     }
   },
 
@@ -72,10 +72,36 @@ var CloseCaptionMultiAudioMenu = React.createClass({
 
   handleSelectCC: function (id) {
     console.warn('closeCaptionMultiAudioMenu handleSelectCC id', id);
+    console.warn('closeCaptionMultiAudioMenu handleSelectCC state', this.state);
+
+    this.setState({
+      closeCaptions: {
+        list: this.closeCaptions.list,
+        selected: id
+      }
+    });
   },
 
   handleSelectMA: function (id) {
     console.warn('closeCaptionMultiAudioMenu handleSelectMA id', id);
+    console.warn('closeCaptionMultiAudioMenu handleSelectCC state', this.state);
+    console.warn('closeCaptionMultiAudioMenu handleSelectCC this.multiAudio', this.multiAudio);
+
+    var selectedElement = null;
+
+    this.multiAudio.list.forEach(function (el) {
+      if (el.id === id) {
+        el.enabled = true;
+        selectedElement = el;
+      } else {
+        el.enabled = false;
+      }
+    });
+    this.multiAudio.selected = selectedElement;
+
+    this.setState({
+      multiAudio: this.multiAudio
+    });
   },
 
   render: function () {
@@ -100,6 +126,7 @@ var CloseCaptionMultiAudioMenu = React.createClass({
       top: 0,
       height: '100%'
     };
+    console.log('call render state.closeCaptions', this.state.closeCaptions);
 
     return (
       <div style={styleMenu}>

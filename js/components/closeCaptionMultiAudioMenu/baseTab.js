@@ -34,7 +34,7 @@ var BaseTab = React.createClass({
       'borderColor': '#000',
       height: '100%'
   };
-
+    console.warn('list', list)
     return (
       <div style={{height: '100%'}}>
         <div style={styleHeader}>{this.props.header}</div>
