@@ -11,6 +11,7 @@ var LanguageTab = React.createClass({
   },
 
   changeLanguage: function(language){
+    console.log('changeLanguage language', language)
     var availableLanguages = this.props.closedCaptionOptions.availableLanguages;
     var invertedLocale = {};
     for (var i = 0; i < availableLanguages.languages.length; i++) {

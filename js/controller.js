@@ -872,8 +872,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @param multiAudio.tracks {Array} - list of objects with data for each audio
      */
     onMultiAudioFetched: function(event, multiAudio) {
-      console.log('multiAudio', multiAudio)
-      console.log("this.state.showMultiAudioIcon", this.state.showMultiAudioIcon)
+      console.log('multiAudio', multiAudio);
+      console.log("this.state.showMultiAudioIcon", this.state.showMultiAudioIcon);
       if (this.state.showMultiAudioIcon) { //if param showMultiAudioIcon is set to true
         this.state.multiAudio = multiAudio;
       }
@@ -1353,6 +1353,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onClosedCaptionCueChanged: function(event, data) {
+      console.warn('onClosedCaptionCueChanged');
       if (data && data.length > 0) {
         this.state.closedCaptionOptions.cueText = data;
       } else {
@@ -1887,10 +1888,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       else if (this.state.playerState == CONSTANTS.STATE.END) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
       }
+
+      console.warn('closeScreen');
       this.renderSkin();
     },
 
     onChangeClosedCaptionLanguage: function(event, language) {
+      console.log('onChangeClosedCaptionLanguage language', language);
       if (language === CONSTANTS.CLOSED_CAPTIONS.NO_LANGUAGE) {
         if (this.state.closedCaptionOptions.enabled) {
           this.toggleClosedCaptionEnabled();

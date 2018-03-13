@@ -93,6 +93,8 @@ var CloseCaptionMultiAudioMenu = React.createClass({
     this.setState({
       multiAudio: this.multiAudio
     });
+
+    this.props.controller.setCurrentAudio(this.multiAudio.selected.id);
   },
 
   render: function () {
