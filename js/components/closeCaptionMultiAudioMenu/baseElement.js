@@ -5,6 +5,8 @@ var BaseElement = React.createClass({
   render: function () {
     var styleCell = {
       'padding': '9px',
+      backgroundColor:'rgba(0, 0, 0, 0)'
+      // opacity: 0
     };
 
     var styleIcon = {
@@ -14,7 +16,15 @@ var BaseElement = React.createClass({
       visibility: 'hidden'
     };
 
+    var styleBackground = {
+      zIndex: -1,
+      width: '100%',
+      height: '100%',
+      backgroundColor: '#000'
+    };
+
     if (this.props.selected) {
+      styleCell.backgroundColor ='rgba(0, 0, 0, 0.2)';
       styleIcon.visibility = 'visible';
     }
 
@@ -22,9 +32,6 @@ var BaseElement = React.createClass({
       width: '100px',
       paddingLeft: '31px'
     };
-
-    console.warn('selected', this.props.selected);
-
 
     return (
       <div style={styleCell}>
