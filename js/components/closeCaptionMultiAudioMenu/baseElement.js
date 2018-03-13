@@ -15,7 +15,7 @@ var BaseElement = React.createClass({
 
     var styleText = {
       float: 'right'
-    }
+    };
 
     return (
       <div style={styleCell}>
