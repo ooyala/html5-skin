@@ -328,19 +328,19 @@ describe('Utils', function () {
         availableLanguageFile: [
           {
             "language": "en",
-            "languageFile": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/en.json",
+            "languageFile": "//player.ooyala.com/static/v4/stable/4.22.11/skin-plugin/en.json",
             "androidResource": "skin-config/en.json",
             "iosResource": "en"
           },
           {
             "language": "es",
-            "languageFile": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/es.json",
+            "languageFile": "//player.ooyala.com/static/v4/stable/4.22.11/skin-plugin/es.json",
             "androidResource": "skin-config/es.json",
             "iosResource": "es"
           },
           {
             "language": "zh",
-            "languageFile": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/zh.json",
+            "languageFile": "//player.ooyala.com/static/v4/stable/4.22.11/skin-plugin/zh.json",
             "androidResource": "skin-config/zh.json",
             "iosResource": "zh"
           }
