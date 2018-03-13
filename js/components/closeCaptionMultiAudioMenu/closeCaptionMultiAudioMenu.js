@@ -75,6 +75,10 @@ var CloseCaptionMultiAudioMenu = React.createClass({
     this.setState({
       closeCaptions: this.closeCaptions
     });
+
+    if (this.props.controller && this.props.controller.onClosedCaptionChange) {
+      this.props.controller.onClosedCaptionChange('language', id);
+    }
   },
 
   handleSelectMA: function (id) {
@@ -94,7 +98,9 @@ var CloseCaptionMultiAudioMenu = React.createClass({
       multiAudio: this.multiAudio
     });
 
-    this.props.controller.setCurrentAudio(this.multiAudio.selected.id);
+    if (this.props.controller && this.props.controller.setCurrentAudio) {
+      this.props.controller.setCurrentAudio(id);
+    }
   },
 
   render: function () {
