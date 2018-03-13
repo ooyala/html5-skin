@@ -33,7 +33,7 @@ var Skin = React.createClass({
       isVrMouseDown: false,
       isVrMouseMove: false,
       xVrMouseStart: 0,
-      yVrMouseStart: 0,
+      yVrMouseStart: 0
     };
   },
 
@@ -226,6 +226,7 @@ var Skin = React.createClass({
     }
     //switch screenToShow
     else {
+
       switch (this.state.screenToShow) {
         case CONSTANTS.SCREEN.INITIAL_SCREEN:
           screen = (
@@ -435,6 +436,7 @@ var Skin = React.createClass({
           break;
         case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
           console.log("CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN", CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
+
           screen = (
             <ContentScreen
               {...this.props}

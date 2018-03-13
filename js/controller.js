@@ -1754,9 +1754,22 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleMultiAudio: function () {
-      this.state.pluginsElement.addClass("oo-overlay-blur");
-      this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
-      this.renderSkin();
+      if (this.state.screenToShow == CONSTANTS.SCREEN.SHARE_SCREEN) {
+        this.closeScreen();
+      }
+      else {
+        if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
+          this.pausedCallback = function() {
+            this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
+            this.renderSkin();
+          }.bind(this);
+          this.mb.publish(OO.EVENTS.PAUSE);
+        }
+        else {
+          this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
+          this.renderSkin();
+        }
+      }
     },
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
