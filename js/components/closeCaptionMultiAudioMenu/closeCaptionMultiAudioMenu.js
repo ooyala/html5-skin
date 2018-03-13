@@ -71,22 +71,13 @@ var CloseCaptionMultiAudioMenu = React.createClass({
   },
 
   handleSelectCC: function (id) {
-    console.warn('closeCaptionMultiAudioMenu handleSelectCC id', id);
-    console.warn('closeCaptionMultiAudioMenu handleSelectCC state', this.state);
-
+    this.closeCaptions.selected = id;
     this.setState({
-      closeCaptions: {
-        list: this.closeCaptions.list,
-        selected: id
-      }
+      closeCaptions: this.closeCaptions
     });
   },
 
   handleSelectMA: function (id) {
-    console.warn('closeCaptionMultiAudioMenu handleSelectMA id', id);
-    console.warn('closeCaptionMultiAudioMenu handleSelectCC state', this.state);
-    console.warn('closeCaptionMultiAudioMenu handleSelectCC this.multiAudio', this.multiAudio);
-
     var selectedElement = null;
 
     this.multiAudio.list.forEach(function (el) {
