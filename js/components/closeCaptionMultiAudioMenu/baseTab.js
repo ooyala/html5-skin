@@ -2,10 +2,15 @@ var React = require('react');
 var BaseElement = require('./baseElement');
 
 var BaseTab = React.createClass({
+
+  handleSelect: function (id) {
+    console.warn('baseTab id', id);
+  },
+
   render: function () {
     var list = this.props.list.map(function (element, index) {
-      return <BaseElement key={index} {...element}/>;
-    });
+      return <BaseElement handleSelect={this.handleSelect} key={index} {...element}/>;
+    }.bind(this));
 
     var styleHeader = {
       'fontSize': '16px',

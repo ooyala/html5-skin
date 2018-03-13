@@ -2,6 +2,11 @@ var React = require('react');
 
 var BaseElement = React.createClass({
 
+  handleSelect: function () {
+    console.warn('BaseElement this', this);
+    this.props.handleSelect(this.props.id);
+  },
+
   render: function () {
     var styleCell = {
       'padding': '9px',
@@ -33,7 +38,7 @@ var BaseElement = React.createClass({
 
 
     return (
-      <div style={styleCell}>
+      <div onClick={this.handleSelect} style={styleCell}>
         <span style={styleIcon}> Q </span>
         <span style={styleText}>{this.props.name}</span>
       </div>
