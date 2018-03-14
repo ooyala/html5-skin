@@ -7,8 +7,9 @@
     text-align: left;
     color: #ffffff;
     border-style: none none solid none;
-    border-width: 1px;
+    border-width: 2px;
     border-color: #000;
+    padding-left: 10px;
   }
 
   .list-body {
@@ -17,7 +18,7 @@
     text-align: left;
     color: #ffffff;
     border-style: none solid none none;
-    border-width: 1px;
+    border-width: 2px;
     border-color: #000;
     height: 100%;
   }
@@ -41,7 +42,7 @@
 
     .text {
       width: 100px;
-      padding-left: 31px;
+      padding-left: 15px;
       font-weight: normal;
       color: #fff;
       &.select {

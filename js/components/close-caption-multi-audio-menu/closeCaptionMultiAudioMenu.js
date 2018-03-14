@@ -107,10 +107,10 @@ var CloseCaptionMultiAudioMenu = React.createClass({
     return (
       <div className="oo-cc-ma-menu">
         <div className="column-left">
-          <CloseCaptionTab handleSelect={this.handleSelectCC} {...this.state.closeCaptions}/>
+          <MultiAudioTab handleSelect={this.handleSelectMA} {...this.state.multiAudio}/>
         </div>
         <div className="column-right">
-          <MultiAudioTab handleSelect={this.handleSelectMA} {...this.state.multiAudio}/>
+          <CloseCaptionTab handleSelect={this.handleSelectCC} {...this.state.closeCaptions}/>
         </div>
       </div>
     );
