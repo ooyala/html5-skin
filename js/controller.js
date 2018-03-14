@@ -297,9 +297,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isMobile = Utils.isMobile();
       this.state.browserSupportsTouch = Utils.browserSupportsTouch();
 
-      // this.state.showMultiAudioIcon = !!params.showMultiAudioIcon;
+      this.state.showMultiAudioIcon = !!params.showMultiAudioIcon;
       //ToDo
-      this.state.showMultiAudioIcon = true;
+      // this.state.showMultiAudioIcon = true;
 
       //initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');
