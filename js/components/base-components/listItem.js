@@ -21,7 +21,7 @@ var listItem = React.createClass({
 
     return (
       <div onClick={this.handleSelect} className={classes.listItem}>
-        <span className={classes.icon}> Q </span>
+        <span className={classes.icon}> X </span>
         <span className={classes.text}>{this.props.name}</span>
       </div>
     )

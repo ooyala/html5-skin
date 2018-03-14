@@ -11,30 +11,10 @@ var listWithChoice = React.createClass({
       return <BaseElement handleSelect={this.handleSelect} key={index} {...element}/>;
     }.bind(this));
 
-    var styleHeader = {
-      'fontSize': '16px',
-      'fontWeight': 'bold',
-      'textAlign': 'left',
-      'color': '#ffffff',
-      'borderStyle': 'none none solid none',
-      'borderWidth': '1px',
-      'borderColor': '#000'
-    };
-
-    var styleList = {
-      'fontSize': '13px',
-      'fontWeight': 'normal',
-      'textAlign': 'left',
-      'color': '#ffffff',
-      'borderStyle': 'none solid none none',
-      'borderWidth': '1px',
-      'borderColor': '#000',
-      height: '100%'
-  };
     return (
       <div className="oo-list-with-choice">
-        <div className="header">{this.props.header}</div>
-        <div className="body">{list}</div>
+        <div className="list-header">{this.props.header}</div>
+        <div className="list-body">{list}</div>
       </div>
     );
   }
