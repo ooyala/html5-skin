@@ -1,9 +1,9 @@
 var React = require('react');
 
-var BaseElement = React.createClass({
+var listItem = React.createClass({
 
   handleSelect: function () {
-    console.warn('BaseElement this', this);
+    console.warn('listItem this', this);
     this.props.handleSelect(this.props.id);
   },
 
@@ -44,10 +44,10 @@ var BaseElement = React.createClass({
   }
 });
 
-BaseElement.defaultProps = {
+listItem.defaultProps = {
   selected: false,
   name: "",
   id: ""
 };
 
-module.exports = BaseElement;
+module.exports = listItem;

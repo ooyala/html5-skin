@@ -1,11 +1,8 @@
 var React = require('react');
-var BaseElement = require('./baseElement');
+var BaseElement = require('./listItem');
 
-var BaseTab = React.createClass({
-
+var listWithChoice = React.createClass({
   handleSelect: function (id) {
-    console.warn('baseTab id', id);
-
     this.props.handleSelect(id);
   },
 
@@ -34,7 +31,6 @@ var BaseTab = React.createClass({
       'borderColor': '#000',
       height: '100%'
   };
-    console.warn('list', list)
     return (
       <div style={{height: '100%'}}>
         <div style={styleHeader}>{this.props.header}</div>
@@ -44,7 +40,7 @@ var BaseTab = React.createClass({
   }
 });
 
-BaseTab.defaultProps = {
+listWithChoice.defaultProps = {
   header: '',
   list: [{
     name: '',
@@ -53,4 +49,4 @@ BaseTab.defaultProps = {
   }]
 };
 
-module.exports = BaseTab;
+module.exports = listWithChoice;

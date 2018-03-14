@@ -104,28 +104,6 @@ var CloseCaptionMultiAudioMenu = React.createClass({
   },
 
   render: function () {
-    var styleMenu = {
-      display: 'block',
-      width: '100%',
-      height: '100%'
-    };
-
-    var styleColumnLeft = {
-      display: 'block',
-      width: '50%',
-      top: 0,
-      float: 'left',
-      height: '100%'
-    };
-
-    var styleColumnRight = {
-      display: 'block',
-      width: '50%',
-      float: 'right',
-      top: 0,
-      height: '100%'
-    };
-
     return (
       <div className="oo-cc-ma-menu">
         <div className="column-left">

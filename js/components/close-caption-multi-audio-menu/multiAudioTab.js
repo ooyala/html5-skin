@@ -1,9 +1,9 @@
 var React = require('react');
-var BaseTab = require('./baseTab');
+var BaseTab = require('../base-components/listWithChoice');
 
-var CloseCaptionTab = React.createClass({
+var MultiAudioTab = React.createClass({
   componentWillMount: function () {
-    this.header = 'Subtitles';
+    this.header = "Audio";
     this.list = [];
     this.updateList(this.props);
   },
@@ -13,15 +13,12 @@ var CloseCaptionTab = React.createClass({
   },
 
   updateList: function (props) {
-    var isSelected;
     if(props && props.list){
       props.list.forEach(function (el, index) {
-        isSelected = el === props.selected ? true : false;
-
         this.list[index] = {
-          selected: isSelected,
-          name: el,
-          id: el
+          selected: el.enabled,
+          name: el.label,
+          id: el.id
         };
       }.bind(this));
     }
@@ -38,4 +35,4 @@ var CloseCaptionTab = React.createClass({
   }
 });
 
-module.exports = CloseCaptionTab;
+module.exports = MultiAudioTab;
