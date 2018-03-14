@@ -32,9 +32,9 @@ var listWithChoice = React.createClass({
       height: '100%'
   };
     return (
-      <div style={{height: '100%'}}>
-        <div style={styleHeader}>{this.props.header}</div>
-        <div style={styleList}>{list}</div>
+      <div className="oo-list-with-choice">
+        <div className="header">{this.props.header}</div>
+        <div className="body">{list}</div>
       </div>
     );
   }

@@ -1,0 +1,53 @@
+.oo-list-with-choice {
+  height: 100%;
+
+  .list-header {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+    color: #ffffff;
+    border-style: none none solid none;
+    border-width: 1px;
+    border-color: #000;
+  }
+
+  .list-body {
+    font-size: 13px;
+    font-weight: normal;
+    text-align: left;
+    color: #ffffff;
+    border-style: none solid none none;
+    border-width: 1px;
+    border-color: #000;
+    height: 100%;
+  }
+
+  .list-item {
+    padding: 9px;
+    background-color: rgba(0, 0, 0, 0);
+    &.select {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .icon {
+      font-size: 14px;
+      color: #448aff;
+      width: 14px;
+      visibility: hidden;
+      &.select {
+        visibility: visible;
+      }
+    }
+
+    .text {
+      width: 100px;
+      padding-left: 31px;
+      font-weight: normal;
+      color: #fff;
+      &.select {
+        font-weight: bold;
+        color: #448aff;
+      }
+    }
+  }
+}

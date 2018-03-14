@@ -3,42 +3,26 @@ var React = require('react');
 var listItem = React.createClass({
 
   handleSelect: function () {
-    console.warn('listItem this', this);
     this.props.handleSelect(this.props.id);
   },
 
   render: function () {
-    var styleCell = {
-      'padding': '9px',
-      backgroundColor:'rgba(0, 0, 0, 0)'
+    var classes = {
+      listItem: 'list-item',
+      icon: 'icon',
+      text: 'text'
     };
-
-    var styleIcon = {
-      fontSize: '14px',
-      color: '#448aff',
-      width: '14px',
-      visibility: 'hidden'
-    };
-
-    var styleText = {
-      width: '100px',
-      paddingLeft: '31px',
-      fontWeight: 'normal',
-      color: '#ffffff'
-
-  };
 
     if (this.props.selected) {
-      styleCell.backgroundColor ='rgba(0, 0, 0, 0.2)';
-      styleIcon.visibility = 'visible';
-      styleText.fontWeight = 'bold';
-      styleText.color = '#448aff';
+      for (var key in classes){
+        classes[key] = classes[key] + ' select';
+      }
     }
 
     return (
-      <div onClick={this.handleSelect} style={styleCell}>
-        <span style={styleIcon}> Q </span>
-        <span style={styleText}>{this.props.name}</span>
+      <div onClick={this.handleSelect} className={classes.listItem}>
+        <span className={classes.icon}> Q </span>
+        <span className={classes.text}>{this.props.name}</span>
       </div>
     )
   }
