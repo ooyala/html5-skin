@@ -2,8 +2,6 @@ var React = require('react'),
   CloseButton = require('../components/closeButton'),
   Utils = require('../components/utils'),
   CONSTANTS = require('../constants/constants'),
-  Icon = require('../components/icon'),
-  Watermark = require('../components/watermark'),
   AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var multiAudioCloseCaptionScreen = React.createClass({

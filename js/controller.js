@@ -1757,8 +1757,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     toggleMultiAudio: function () {
       if (this.state.screenToShow == CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
         this.closeScreen();
-      }
-      else {
+      } else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
           this.pausedCallback = function() {
             this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
