@@ -13,8 +13,8 @@ var MultiAudioTab = React.createClass({
   },
 
   updateList: function (props) {
-    if(props && props.list){
-      props.list.forEach(function (el, index) {
+    if(props.multiAudio && props.multiAudio.list){
+      props.multiAudio.list.forEach(function (el, index) {
         this.list[index] = {
           selected: el.enabled,
           name: el.label,

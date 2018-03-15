@@ -15,9 +15,12 @@ var CloseCaptionMultiAudioMenu = React.createClass({
       this.closeCaptions = this._getCloseCaptions();
     }
 
+    console.warn('props', this.props);
+
     return {
       multiAudio: this.multiAudio,
-      closeCaptions: this.closeCaptions
+      closeCaptions: this.closeCaptions,
+      skinConfig: this.props.skinConfig
     }
   },
 
@@ -107,11 +110,19 @@ var CloseCaptionMultiAudioMenu = React.createClass({
     return (
       <div className="oo-cc-ma-menu">
         <div className="column-left">
-          <MultiAudioTab handleSelect={this.handleSelectMA} {...this.state.multiAudio}/>
+          <MultiAudioTab
+            handleSelect={this.handleSelectMA}
+            skinConfig={this.state.skinConfig}
+            multiAudio={this.state.multiAudio}
+          />
         </div>
         <div className="separator"></div>
         <div className="column-right">
-          <CloseCaptionTab handleSelect={this.handleSelectCC} {...this.state.closeCaptions}/>
+          <CloseCaptionTab
+            handleSelect={this.handleSelectCC}
+            skinConfig={this.state.skinConfig}
+            closeCaptions={this.state.closeCaptions}
+          />
         </div>
       </div>
     );

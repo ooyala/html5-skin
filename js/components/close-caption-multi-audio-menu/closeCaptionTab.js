@@ -14,9 +14,9 @@ var CloseCaptionTab = React.createClass({
 
   updateList: function (props) {
     var isSelected;
-    if(props && props.list){
-      props.list.forEach(function (el, index) {
-        isSelected = el === props.selected ? true : false;
+    if(props.closeCaptions && props.closeCaptions.list){
+      props.closeCaptions.list.forEach(function (el, index) {
+        isSelected = el === props.closeCaptions.selected ? true : false;
 
         this.list[index] = {
           selected: isSelected,
