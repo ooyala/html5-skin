@@ -236,10 +236,14 @@ var ControlBar = React.createClass({
 
   handleMultiAudioClick: function () {
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
-    // this.props.controller.toggleShareScreen();
-    this.props.controller.toggleMultiAudio();
-    // this.togglePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
-    // this.closePopovers();
+    // console.warn('this.props.responsiveView', this.props.responsiveView)
+    if (
+      this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.xs.id ||
+      this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.sm.id ||
+      this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.md.id
+    ) {
+      this.props.controller.toggleMultiAudio();
+    }
   },
 
   configureMenuAutofocus: function(menu) {

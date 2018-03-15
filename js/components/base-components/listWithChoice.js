@@ -8,7 +8,7 @@ var listWithChoice = React.createClass({
 
   render: function () {
     var list = this.props.list.map(function (element, index) {
-      return <BaseElement handleSelect={this.handleSelect} key={index} {...element}/>;
+      return <BaseElement skinConfig={this.props.skinConfig} handleSelect={this.handleSelect} key={index} {...element}/>;
     }.bind(this));
 
     return (
@@ -26,7 +26,18 @@ listWithChoice.defaultProps = {
     name: '',
     id: '',
     selected: false
-  }]
+  }],
+  skinConfig: {
+    responsive: {
+      breakpoints: {
+        xs: { id: 'xs' },
+        sm: { id: 'sm' },
+        md: { id: 'md' },
+        lg: { id: 'lg' }
+      }
+    }
+  },
+  responsiveView: 'md'
 };
 
 module.exports = listWithChoice;

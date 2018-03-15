@@ -29,7 +29,7 @@ var MultiAudioTab = React.createClass({
   },
 
   render: function () {
-    return <BaseTab handleSelect={this.handleSelect} header={this.header} list={this.list}/>;
+    return <BaseTab handleSelect={this.handleSelect} skinConfig={this.props.skinConfig} header={this.header} list={this.list}/>;
   }
 });
 

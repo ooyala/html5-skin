@@ -1755,7 +1755,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleMultiAudio: function () {
-      if (this.state.screenToShow == CONSTANTS.SCREEN.SHARE_SCREEN) {
+      if (this.state.screenToShow == CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
         this.closeScreen();
       }
       else {
@@ -1765,8 +1765,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             this.renderSkin();
           }.bind(this);
           this.mb.publish(OO.EVENTS.PAUSE);
-        }
-        else {
+        } else {
           this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
           this.renderSkin();
         }
