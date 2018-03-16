@@ -872,8 +872,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @param multiAudio.tracks {Array} - list of objects with data for each audio
      */
     onMultiAudioFetched: function(event, multiAudio) {
-      console.log('multiAudio', multiAudio);
-      console.log("this.state.showMultiAudioIcon", this.state.showMultiAudioIcon);
       if (this.state.showMultiAudioIcon) { //if param showMultiAudioIcon is set to true
         this.state.multiAudio = multiAudio;
       }
@@ -1757,6 +1755,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     toggleMultiAudio: function () {
       if (this.state.screenToShow == CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
         this.closeScreen();
+        this.renderSkin();
       } else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
           this.pausedCallback = function() {
