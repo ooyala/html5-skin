@@ -48,7 +48,7 @@ var CloseCaptionMultiAudioMenu = React.createClass({
    * @return {object} list of available languages for subtitles and selected language
    * @private
    */
-  _getCloseCaptions: function () {
+  _getClosedCaptions: function () {
     var closeCaptions = {
       list: [],
       selected: null
