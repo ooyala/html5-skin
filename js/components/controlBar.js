@@ -642,6 +642,23 @@ var ControlBar = React.createClass({
       }).bind(this),
 
       "multiAudio": (function (alignment) {
+        var closeCaptionsList =  [];
+        var multiAudioList = [];
+
+        if(this.props.controller.state.closedCaptionOptions.availableLanguages &&
+          this.props.controller.state.closedCaptionOptions.availableLanguages.languages){
+          closeCaptionsList =  this.props.controller.state.closedCaptionOptions.availableLanguages.languages;
+        }
+
+        if(this.props.controller.state.multiAudio &&
+          this.props.controller.state.multiAudio.tracks){
+          multiAudioList = this.props.controller.state.multiAudio.tracks;
+        }
+
+        if(closeCaptionsList.length == 0 && multiAudioList.length == 0){
+          return null;
+        }
+
         return (
           <div className="oo-popover-button-container" key="multiAudio">
             <AccessibleButton
