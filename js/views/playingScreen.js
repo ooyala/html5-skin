@@ -316,7 +316,6 @@ var PlayingScreen = React.createClass({
       this.props.controller.isNewVrVideo) {
       var defaultDuration = 3;
       var style = this.setAnimationDuration("vrIcon", defaultDuration);
-      console.warn('vrIcon this.props', this.props)
       vrIcon = (
         <div id="vrIconContainer" className="oo-state-screen-vr-container" style={style}>
           <div className="oo-state-screen-vr-bg">

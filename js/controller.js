@@ -297,9 +297,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isMobile = Utils.isMobile();
       this.state.browserSupportsTouch = Utils.browserSupportsTouch();
 
-      // this.state.showMultiAudioIcon = !!params.showMultiAudioIcon;
-      //ToDo
-      this.state.showMultiAudioIcon = true;
+      this.state.showMultiAudioIcon = !!params.showMultiAudioIcon;
+      //ToDo: it's needs to test
+      // this.state.showMultiAudioIcon = true;
 
       //initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');
@@ -1351,7 +1351,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onClosedCaptionCueChanged: function(event, data) {
-      console.warn('onClosedCaptionCueChanged');
       if (data && data.length > 0) {
         this.state.closedCaptionOptions.cueText = data;
       } else {
@@ -1814,7 +1813,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     togglePopover: function(menu) {
       var menuOptions = this.state[menu];
-      console.warn("menuOptions", menuOptions)
 
       if (menuOptions) {
         menuOptions.showPopover = !menuOptions.showPopover;
@@ -1886,8 +1884,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       else if (this.state.playerState == CONSTANTS.STATE.END) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
       }
-
-      console.warn('closeScreen');
       this.renderSkin();
     },
 

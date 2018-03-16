@@ -227,7 +227,6 @@ var Skin = React.createClass({
     }
     //switch screenToShow
     else {
-
       switch (this.state.screenToShow) {
         case CONSTANTS.SCREEN.INITIAL_SCREEN:
           screen = (

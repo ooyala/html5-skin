@@ -1,6 +1,4 @@
 var React = require('react');
-// var CONSTANTS = require('../../constants/constants');
-// var Utils = require('../utils');
 var CloseCaptionTab = require('./closeCaptionTab');
 var MultiAudioTab = require('./multiAudioTab');
 
@@ -14,8 +12,6 @@ var CloseCaptionMultiAudioMenu = React.createClass({
       this.multiAudio = this._getMultiAudio();
       this.closeCaptions = this._getCloseCaptions();
     }
-
-    console.warn('props', this.props);
 
     return {
       multiAudio: this.multiAudio,
