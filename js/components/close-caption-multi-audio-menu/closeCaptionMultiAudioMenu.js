@@ -10,7 +10,7 @@ var CloseCaptionMultiAudioMenu = React.createClass({
 
     if(this.props.controller && this.props.controller.state) {
       this.multiAudio = this._getMultiAudio();
-      this.closeCaptions = this._getCloseCaptions();
+      this.closeCaptions = this._getClosedCaptions();
     }
 
     return {
