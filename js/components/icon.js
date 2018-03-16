@@ -9,6 +9,7 @@ var Icon = React.createClass({
 
   render: function() {
     var iconStyle = Utils.extend({fontFamily: this.props.skinConfig.icons[this.props.icon].fontFamilyName}, this.props.style);
+
     return (
       <span
         className={this.props.skinConfig.icons[this.props.icon].fontStyleClass + " " + this.props.className}

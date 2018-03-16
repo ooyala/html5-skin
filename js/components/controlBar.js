@@ -13,7 +13,7 @@ var React = require('react'),
   VolumeControls = require('./volumeControls'),
   VideoQualityPanel = require('./videoQualityPanel'),
   ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
-  MultiAudioPopover = require('./multi-audio/multiAudioPopover'),
+  CloseCaptionMultiAudioMenu = require('./close-caption-multi-audio-menu/closeCaptionMultiAudioMenu'),
   Logo = require('./logo'),
   Icon = require('./icon'),
   Tooltip = require('./tooltip');
@@ -236,8 +236,12 @@ var ControlBar = React.createClass({
   handleMultiAudioClick: function () {
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
 
-    this.togglePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
-    this.closePopovers();
+    if (this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.lg.id) {
+      this.togglePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
+      this.closeCaptionPopover();
+    } else {
+      this.props.controller.toggleMultiAudio();
+    }
   },
 
   configureMenuAutofocus: function(menu) {
@@ -639,7 +643,7 @@ var ControlBar = React.createClass({
 
       "multiAudio": (function (alignment) {
         return (
-          <div className="oo-multiaudio-container" key="multiAudio">
+          <div className="oo-popover-button-container" key="multiAudio">
             <AccessibleButton
               ref={function(e) { this.toggleButtons[CONSTANTS.MENU_OPTIONS.MULTI_AUDIO] = e }.bind(this)}
               style={selectedStyle}
@@ -656,11 +660,11 @@ var ControlBar = React.createClass({
             </AccessibleButton>
             {this.props.controller.state.multiAudioOptions.showPopover &&
             <Popover
-              popoverClassName="oo-popover oo-popover-pull-right"
+              popoverClassName="oo-popover oo-popover-cc-ma"
               autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}
               closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
               closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}>
-              <MultiAudioPopover {...this.props} togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)} />
+              <CloseCaptionMultiAudioMenu {...this.props}/>
             </Popover>
             }
           </div>

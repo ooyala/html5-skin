@@ -298,6 +298,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.browserSupportsTouch = Utils.browserSupportsTouch();
 
       this.state.showMultiAudioIcon = !!params.showMultiAudioIcon;
+      //ToDo: it's needs to test
+      // this.state.showMultiAudioIcon = true;
 
       //initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');
@@ -1744,6 +1746,24 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         else {
           this.state.screenToShow = screen;
           this.state.pluginsElement.addClass("oo-overlay-blur");
+          this.renderSkin();
+        }
+      }
+    },
+
+    toggleMultiAudio: function () {
+      if (this.state.screenToShow == CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
+        this.closeScreen();
+        this.renderSkin();
+      } else {
+        if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
+          this.pausedCallback = function() {
+            this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
+            this.renderSkin();
+          }.bind(this);
+          this.mb.publish(OO.EVENTS.PAUSE);
+        } else {
+          this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
           this.renderSkin();
         }
       }

@@ -1,0 +1,58 @@
+.oo-list-with-choice {
+  position: absolute;
+  height: calc(100% - 15px);
+  width: 50%;
+  top: 0px;
+
+  .oo-list-header {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+    color: #ffffff;
+    border-style: none none solid none;
+    border-width: 1px;
+    border-color: #000;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    padding-top: 12px;
+    width: 100%;
+  }
+
+  .oo-list-body {
+    font-size: 13px;
+    font-weight: normal;
+    text-align: left;
+    width: 100%;
+    height: calc(100% - 44px);
+  }
+
+  .oo-list-item {
+    padding: 9px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    &.select {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .icon {
+      font-size: 14px;
+      color: #448aff;
+      width: 14px;
+      visibility: hidden;
+      &.select {
+        visibility: visible;
+      }
+    }
+
+    .text {
+      width: 100px;
+      padding-left: 8px;
+      font-weight: normal;
+      color: #fff;
+      &.select {
+        font-weight: bold;
+        color: #448aff;
+      }
+    }
+  }
+}
