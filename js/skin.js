@@ -442,7 +442,6 @@ var Skin = React.createClass({
               dataItemsPerPage={{xs:1, sm:4, md:8, lg:8}}
               screen={CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN}
               screenClassName="oo-content-screen oo-screen-cc-ma"
-              // titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
               autoFocus={this.state.multiAudioOptions.autoFocus}
               element={<OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_MULTI_AUDIO} />}
               icon="cc"

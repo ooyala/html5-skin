@@ -9,7 +9,7 @@ var listItem = React.createClass({
 
   render: function () {
     var classes = {
-      listItem: 'list-item',
+      listItem: 'oo-list-item',
       icon: 'icon',
       text: 'text'
     };

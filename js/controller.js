@@ -1814,6 +1814,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     togglePopover: function(menu) {
       var menuOptions = this.state[menu];
+      console.warn("menuOptions", menuOptions)
 
       if (menuOptions) {
         menuOptions.showPopover = !menuOptions.showPopover;
@@ -1891,7 +1892,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onChangeClosedCaptionLanguage: function(event, language) {
-      console.log('onChangeClosedCaptionLanguage language', language);
       if (language === CONSTANTS.CLOSED_CAPTIONS.NO_LANGUAGE) {
         if (this.state.closedCaptionOptions.enabled) {
           this.toggleClosedCaptionEnabled();

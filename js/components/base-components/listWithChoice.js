@@ -13,8 +13,8 @@ var listWithChoice = React.createClass({
 
     return (
       <div className="oo-list-with-choice">
-        <div className="list-header">{this.props.header}</div>
-        <div className="list-body">{list}</div>
+        <div className="oo-list-header">{this.props.header}</div>
+        <div className="oo-list-body">{list}</div>
       </div>
     );
   }

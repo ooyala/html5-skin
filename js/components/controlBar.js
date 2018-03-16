@@ -236,12 +236,11 @@ var ControlBar = React.createClass({
 
   handleMultiAudioClick: function () {
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
-    // console.warn('this.props.responsiveView', this.props.responsiveView)
-    if (
-      this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.xs.id ||
-      this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.sm.id ||
-      this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.md.id
-    ) {
+
+    if (this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.lg.id) {
+      this.togglePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
+      this.closeCaptionPopover();
+    } else {
       this.props.controller.toggleMultiAudio();
     }
   },
@@ -645,7 +644,7 @@ var ControlBar = React.createClass({
 
       "multiAudio": (function (alignment) {
         return (
-          <div className="oo-multiaudio-container" key="multiAudio">
+          <div className="oo-popover-button-container" key="multiAudio">
             <AccessibleButton
               ref={function(e) { this.toggleButtons[CONSTANTS.MENU_OPTIONS.MULTI_AUDIO] = e }.bind(this)}
               style={selectedStyle}
@@ -660,16 +659,16 @@ var ControlBar = React.createClass({
                     onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
               <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.MULTI_AUDIO, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
             </AccessibleButton>
-            {/*{this.props.controller.state.multiAudioOptions.showPopover &&*/}
-            {/*<Popover*/}
-              {/*popoverClassName="oo-popover oo-popover-pull-right"*/}
-              {/*autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}*/}
-              {/*closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}*/}
-              {/*closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}>*/}
-              {/*/!*<MultiAudioPopover {...this.props} togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)} />*!/*/}
-              {/*<CloseCaptionMultiAudioMenu {...this.props}/>*/}
-            {/*</Popover>*/}
-            {/*}*/}
+            {this.props.controller.state.multiAudioOptions.showPopover &&
+            <Popover
+              popoverClassName="oo-popover oo-popover-cc-ma"
+              autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}
+              closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
+              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}>
+              {/*<MultiAudioPopover {...this.props} togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)} />*/}
+              <CloseCaptionMultiAudioMenu {...this.props}/>
+            </Popover>
+            }
           </div>
         )
       }).bind(this),
