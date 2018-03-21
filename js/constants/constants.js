@@ -254,7 +254,8 @@ module.exports = {
     ENGLISH: "en",
     SPANISH: "es",
     CHINESE: "zh",
-    JAPANESE: "ja"
+    JAPANESE: "ja",
+    NOT_MATCHED: "und"
   },
 
   ERROR_CODE: {
