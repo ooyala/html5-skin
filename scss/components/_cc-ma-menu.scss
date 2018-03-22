@@ -1,0 +1,95 @@
+.oo-content-screen.oo-cc-ma-container,
+.oo-cc-ma-container {
+  padding: 0;
+  background-color: rgba(255, 255, 255, .2);
+  @include linear-gradient(bottom, #000, #000);
+
+  .oo-cc-ma-menu {
+    @include flexbox();
+    height: 100%;
+    &--popover {
+      max-height: 180px;
+    }
+  }
+
+  .oo-cc-ma-menu__coll {
+    @include flexbox();
+    @include flex-grow(1);
+    @include flex-direction(column);
+    @include flex-basis(50%);
+    font-family: $font-family-roboto;
+    &:nth-of-type(even) {
+      .oo-cc-ma-menu__list {
+        border-left: 1px solid rgba(0, 0, 0, .7);
+      }
+    }
+    &:last-of-type {
+      .oo-cc-ma-menu__header {
+        padding-right: 40px;
+      }
+    }
+  }
+
+  $inner-menu-padding: 10px;
+  .oo-cc-ma-menu__header {
+    @include flexbox();
+    @include align-items(center);
+    height: 44px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    font-weight: bold;
+    padding: $inner-menu-padding;
+    border-bottom: 1px solid rgba(0, 0, 0, .7);
+  }
+  .oo-cc-ma-menu__list {
+    @include flex(1);
+    overflow: auto;
+    list-style: none;
+    font-size: 13px;
+    padding: 0;
+    margin: 0;
+  }
+  .oo-cc-ma-menu__element {
+    @include transition(all .5s ease);
+    cursor: pointer;
+    padding: $inner-menu-padding;
+    &--active,
+    &:hover,
+    &:active,
+    &:focus {
+      color: $blue-light;
+      background-color: rgba(0, 0, 0,.2);
+      .oo-cc-ma-menu__name {
+        font-weight: bold;
+      }
+    }
+  }
+  .oo-cc-ma-menu__name {
+    vertical-align: middle;
+    &:after {
+      display: block;
+      content: attr(title);
+      font-weight: bold;
+      height: 0;
+      color: transparent;
+      overflow: hidden;
+      visibility: hidden;
+      padding-left: 23px;
+    }
+  }
+  .oo-icon-selected {
+    vertical-align: middle;
+    font-size: 16px;
+    padding: 0 7px 0 0;
+  }
+  .oo-icon-hidden {
+    visibility: hidden;
+  }
+  .oo-close-button.oo-close-button--ma {
+    top: 14px;
+    right: 14px;
+    font-size: 16px;
+  }
+}

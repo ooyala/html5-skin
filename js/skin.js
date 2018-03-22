@@ -9,6 +9,7 @@ var React = require('react'),
     ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel'),
     DiscoveryPanel = require('./components/discoveryPanel'),
     VideoQualityPanel = require('./components/videoQualityPanel'),
+    CloseCaptionMultiAudioMenu = require('./components/close-caption-multi-audio-menu/closeCaptionMultiAudioMenu'),
     SharePanel = require('./components/sharePanel'),
     MoreOptionsPanel = require('./components/moreOptionsPanel'),
     AdScreen = require('./views/adScreen'),
@@ -18,6 +19,7 @@ var React = require('react'),
     PlayingScreen = require('./views/playingScreen'),
     ErrorScreen = require('./views/errorScreen'),
     ContentScreen = require('./views/contentScreen'),
+    MultiAudioCloseCaptionScreen = require('./views/multiAudioCloseCaptionScreen'),
     ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
 
 var Skin = React.createClass({
@@ -32,7 +34,7 @@ var Skin = React.createClass({
       isVrMouseDown: false,
       isVrMouseMove: false,
       xVrMouseStart: 0,
-      yVrMouseStart: 0,
+      yVrMouseStart: 0
     };
   },
 
@@ -430,6 +432,22 @@ var Skin = React.createClass({
               videoQualityOptions={this.state.videoQualityOptions}
               responsiveView={this.state.responsiveId}/>
           </ContentScreen>
+          );
+          break;
+        case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
+          screen = (
+            <ContentScreen
+              {...this.props}
+              cssClass="oo-close-button oo-close-button--ma"
+              dataItemsPerPage={{xs:1, sm:4, md:8, lg:8}}
+              screen={CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN}
+              screenClassName="oo-content-screen oo-cc-ma-container"
+              autoFocus={this.state.multiAudioOptions.autoFocus}
+              element={<OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_MULTI_AUDIO} />}
+              icon="cc"
+            >
+              <CloseCaptionMultiAudioMenu {...this.props}/>
+            </ContentScreen>
           );
           break;
         case CONSTANTS.SCREEN.ERROR_SCREEN:

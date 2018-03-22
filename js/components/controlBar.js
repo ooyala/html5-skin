@@ -13,7 +13,7 @@ var React = require('react'),
   VolumeControls = require('./volumeControls'),
   VideoQualityPanel = require('./videoQualityPanel'),
   ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
-  MultiAudioPopover = require('./multi-audio/multiAudioPopover'),
+  CloseCaptionMultiAudioMenu = require('./close-caption-multi-audio-menu/closeCaptionMultiAudioMenu'),
   Logo = require('./logo'),
   Icon = require('./icon'),
   Tooltip = require('./tooltip');
@@ -236,8 +236,12 @@ var ControlBar = React.createClass({
   handleMultiAudioClick: function () {
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
 
-    this.togglePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
-    this.closePopovers();
+    if (this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.lg.id) {
+      this.togglePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
+      this.closeCaptionPopover();
+    } else {
+      this.props.controller.toggleMultiAudio();
+    }
   },
 
   configureMenuAutofocus: function(menu) {
@@ -637,9 +641,26 @@ var ControlBar = React.createClass({
         )
       }).bind(this),
 
-      "multiAudio": (function (alignment) {
+      "audioAndCC": (function (alignment) {
+        var closeCaptionsList =  [];
+        var multiAudioList = [];
+
+        if(this.props.controller.state.closedCaptionOptions.availableLanguages &&
+          this.props.controller.state.closedCaptionOptions.availableLanguages.languages){
+          closeCaptionsList =  this.props.controller.state.closedCaptionOptions.availableLanguages.languages;
+        }
+
+        if(this.props.controller.state.multiAudio &&
+          this.props.controller.state.multiAudio.tracks){
+          multiAudioList = this.props.controller.state.multiAudio.tracks;
+        }
+
+        if(closeCaptionsList.length == 0 && multiAudioList.length == 0){
+          return null;
+        }
+
         return (
-          <div className="oo-multiaudio-container" key="multiAudio">
+          <div className="oo-popover-button-container" key="multiAudio">
             <AccessibleButton
               ref={function(e) { this.toggleButtons[CONSTANTS.MENU_OPTIONS.MULTI_AUDIO] = e }.bind(this)}
               style={selectedStyle}
@@ -650,17 +671,17 @@ var ControlBar = React.createClass({
               ariaExpanded={this.props.controller.state.multiAudioOptions.showPopover ? true : null}
               onClick={this.handleMultiAudioClick}
             >
-              <Icon {...this.props} icon="multiAudio" style={dynamicStyles.iconCharacter}
+              <Icon {...this.props} icon="audioAndCC" style={dynamicStyles.iconCharacter}
                     onMouseOver={this.highlight} onMouseOut={this.removeHighlight} />
               <Tooltip enabled={isTooltipEnabled} text={Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.MULTI_AUDIO, this.props.localizableStrings)} responsivenessMultiplier={this.responsiveUIMultiple} bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height} alignment={alignment} />
             </AccessibleButton>
             {this.props.controller.state.multiAudioOptions.showPopover &&
             <Popover
-              popoverClassName="oo-popover oo-popover-pull-right"
+              popoverClassName="oo-popover oo-popover-pull-right oo-cc-ma-container"
               autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}
               closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
               closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}>
-              <MultiAudioPopover {...this.props} togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)} />
+              <CloseCaptionMultiAudioMenu menuClassName={"oo-cc-ma-menu--popover"} {...this.props}/>
             </Popover>
             }
           </div>
@@ -797,7 +818,7 @@ var ControlBar = React.createClass({
         continue;
       }
 
-      if (defaultItems[k].name === "multiAudio" &&
+      if (defaultItems[k].name === "audioAndCC" &&
         !this.props.controller.state.multiAudio) {
         continue;
       }
