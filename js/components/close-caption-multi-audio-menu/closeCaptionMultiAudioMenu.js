@@ -1,6 +1,6 @@
 var React = require('react');
 var CloseCaptionTab = require('./closeCaptionTab');
-var MultiAudioTab = require('./multiAudioTab');
+var MultiAudioTab = require('./multiAudioTab').MultiAudioTab;
 
 var CloseCaptionMultiAudioMenu = React.createClass({
 
