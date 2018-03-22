@@ -22,7 +22,7 @@ var Tab = React.createClass({
                 onClick={this.handleClick.bind(this, el.id)}
                 className={classnames("oo-cc-ma-menu__element", {"oo-cc-ma-menu__element--active" : el.enabled})}
               >
-                <Icon skinConfig={this.props.skinConfig} icon="check" className={classnames({"oo-icon-hidden": !el.enabled})} />
+                <Icon skinConfig={this.props.skinConfig} icon="selected" className={classnames({"oo-icon-hidden": !el.enabled})} />
                 <span className="oo-cc-ma-menu__name" title={el.label}>{el.label}</span>
               </li>
             )
