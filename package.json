@@ -92,7 +92,7 @@
     "testPathDirs": [
       "<rootDir>"
     ],
-    "testDirectoryName": "tests/components/multi-audio",
+    "testDirectoryName": "tests",
     "collectCoverage": true
   }
 }
