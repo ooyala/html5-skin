@@ -3,6 +3,7 @@ var ListWithChoice = require("../base-components/listWithChoice");
 var iso639 = require("iso-639-3");
 var CONSTANTS = require("../../constants/constants");
 var _ = require("underscore");
+
 /**
  * Gets display label by checking
  * roles - e.g. nullable field from DASH manifest
@@ -68,9 +69,16 @@ function getDisplayLanguage(languageList, languageCode) {
 
   return displayLanguage;
 }
-
+/**
+ * Gets display title based on language and label
+ * @param {String} language 
+ * @param {String} label 
+ * @returns {String} displayTitle
+ */
 function getDisplayTitle(language, label) {
   var displayTitle = "";
+
+  // set default function params
   var displayLanguage = language || "";
   var displayLabel = label || "";
 

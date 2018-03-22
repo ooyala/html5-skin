@@ -4,6 +4,9 @@ jest.dontMock(
 jest.dontMock(
   "../../../js/components/base-components/listWithChoice"
 );
+jest.dontMock(
+  "../../../js/components/base-components/listItem"
+);
 jest.dontMock("../../../js/components/closeButton");
 jest.dontMock("../../../js/components/higher-order/accessibleMenu");
 jest.dontMock("../../../js/constants/constants");
@@ -16,6 +19,7 @@ var React = require("react");
 var TestUtils = require("react-addons-test-utils");
 var multiAudioTabModule = require("../../../js/components/close-caption-multi-audio-menu/multiAudioTab");
 var ListWithChoice = require("../../../js/components/base-components/listWithChoice");
+var ListItem = require("../../../js/components/base-components/listItem");
 var CONSTANTS = require("../../../js/constants/constants");
 var iso639 = require("iso-639-3");
 
@@ -107,10 +111,12 @@ describe("MultiAudioTab", function() {
       multiAudio: {
         list: [{
           label: null,
-          lang: "eng"
+          lang: "eng",
+          id: "1"
         }, {
           label: null,
-          lang: "deu"
+          lang: "deu",
+          id: "2"
         }]
       },
       skinConfig: {},
@@ -128,6 +134,16 @@ describe("MultiAudioTab", function() {
       var list = TestUtils.scryRenderedComponentsWithType(tree, ListWithChoice);
 
       expect(list).toBeTruthy();
-    })
+    });
+
+    it("should render list component with items", function() {
+      var tree = TestUtils.renderIntoDocument(<MultiAudioTab {...props} />);
+      var component = TestUtils.findRenderedComponentWithType(tree, MultiAudioTab);
+      var items = TestUtils.scryRenderedComponentsWithType(tree, ListItem);
+
+      expect(items.length).toEqual(2);
+      expect(items[0].props.name).toEqual("English");
+    });
+    
   });
 });

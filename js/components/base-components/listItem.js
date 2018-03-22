@@ -2,7 +2,7 @@ var React = require('react');
 var Icon = require('../icon');
 var classnames = require('classnames');
 
-var listItem = React.createClass({
+var ListItem = React.createClass({
   handleSelect: function () {
     this.props.handleSelect(this.props.id);
   },
@@ -23,15 +23,38 @@ var listItem = React.createClass({
     return (
       <div onClick={this.handleSelect} className={classes.listItem}>
         <span className={classes.icon}> X </span>
-        {/*<Icon skinConfig={this.props.skinConfig} icon="selectedIcon" className={classes.icon} />*/}
-
         <span className={classes.text}>{this.props.name}</span>
       </div>
     )
   }
 });
 
-listItem.defaultProps = {
+ListItem.propTypes = {
+  selected: React.PropTypes.bool,
+  name: React.PropTypes.string,
+  id: React.PropTypes.string,
+  skinConfig: React.PropTypes.shape({
+    responsive: React.PropTypes.shape({
+      breakpoints: React.PropTypes.shape({
+        xs: React.PropTypes.shape({
+          id: React.PropTypes.string
+        }),
+        sm: React.PropTypes.shape({
+          id: React.PropTypes.string
+        }),
+        md: React.PropTypes.shape({
+          id: React.PropTypes.string
+        }),
+        lg: React.PropTypes.shape({
+          id: React.PropTypes.string
+        }),
+      })
+    })
+  }),
+  responsiveView: React.PropTypes.string
+};
+
+ListItem.defaultProps = {
   selected: false,
   name: "",
   id: "",
@@ -48,4 +71,4 @@ listItem.defaultProps = {
   responsiveView: 'md'
 };
 
-module.exports = listItem;
+module.exports = ListItem;

@@ -1,7 +1,7 @@
 var React = require("react");
 var BaseElement = require("./listItem");
 
-var listWithChoice = React.createClass({
+var ListWithChoice = React.createClass({
   render: function() {
     var list = this.props.list.map(
       function(element, index) {
@@ -25,7 +25,14 @@ var listWithChoice = React.createClass({
   }
 });
 
-listWithChoice.defaultProps = {
+ListWithChoice.propTypes = {
+  header: React.PropTypes.string,
+  list: React.PropTypes.array,
+  skinConfig: React.PropTypes.object,
+  responsiveView: React.PropTypes.string
+};
+
+ListWithChoice.defaultProps = {
   header: "",
   list: [
     {
@@ -47,4 +54,4 @@ listWithChoice.defaultProps = {
   responsiveView: "md"
 };
 
-module.exports = listWithChoice;
+module.exports = ListWithChoice;
