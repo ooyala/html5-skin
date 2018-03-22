@@ -1,145 +1,114 @@
 var React = require('react');
-var CloseCaptionTab = require('./closeCaptionTab');
-var MultiAudioTab = require('./multiAudioTab');
+var ReactDOM = require('react-dom');
+var Utils = require('../utils');
+var classnames = require('classnames');
+var CONSTANTS = require('../../constants/constants');
+var Tab = require('./tab');
 
 var CloseCaptionMultiAudioMenu = React.createClass({
-
-  getInitialState: function () {
-    this.multiAudio = {};
-    this.closeCaptions = {};
-
-    if(this.props.controller && this.props.controller.state) {
-      this.multiAudio = this._getMultiAudio();
-      this.closeCaptions = this._getClosedCaptions();
-    }
-
-    return {
-      multiAudio: this.multiAudio,
-      closeCaptions: this.closeCaptions,
-      skinConfig: this.props.skinConfig
+  componentDidMount: function() {
+    var multiAudioCol = ReactDOM.findDOMNode(this.refs.multiAudioCol);
+    var closeCaptionsCol = ReactDOM.findDOMNode(this.refs.closeCaptionsCol);
+    if (multiAudioCol && closeCaptionsCol && typeof Utils.getMaxElementWidth === 'function') {
+      var maxWidth = Utils.getMaxElementWidth(multiAudioCol, closeCaptionsCol);
+      multiAudioCol.style.width = maxWidth + "px";
+      closeCaptionsCol.style.width = maxWidth + "px";
     }
   },
-
   /**
-   * Getting a list of available audio tracks
-   * @return {object} - list of available audio tracks and selected track
+   *
+   * @param languages {Array} - list of available languages
+   * @param language {String} - a selected language
+   * @returns {Array<{id: String, label: String, enabled: Boolean}>} an array of languages info objects
    * @private
    */
-  _getMultiAudio: function () {
-    var multiAudio = {
-      list: [],
-      selected: null
-    };
-
-    if(!!this.props.controller.state.multiAudio) {
-      if(Array.isArray(this.props.controller.state.multiAudio.tracks)) {
-        multiAudio.list = this.props.controller.state.multiAudio.tracks;
-        multiAudio.selected = _.find(this.props.controller.state.multiAudio.tracks, function (track) {
-          return track.enabled === true;
-        });
+  getClosedCaptions: function (languages, language) {
+    var closeCaptions = [];
+    if (Array.isArray(languages)) {
+      for (var index = 0; index < languages.length; index++) {
+        var isSelectedCc = languages[index] === language;
+        var cc = {id: languages[index], label: languages[index], enabled: isSelectedCc};
+        closeCaptions.push(cc);
       }
     }
-
-    return multiAudio;
-  },
-
-  /**
-   * Getting the list of available languages for subtitles
-   * @return {object} list of available languages for subtitles and selected language
-   * @private
-   */
-  _getClosedCaptions: function () {
-    var closeCaptions = {
-      list: [],
-      selected: null
-    };
-
-    if (this.props.controller.state.closedCaptionOptions) {
-      if (this.props.controller.state.closedCaptionOptions.availableLanguages &&
-        this.props.controller.state.closedCaptionOptions.availableLanguages.languages &&
-        Array.isArray(this.props.controller.state.closedCaptionOptions.availableLanguages.languages)) {
-        closeCaptions.list = this.props.controller.state.closedCaptionOptions.availableLanguages.languages;
-      }
-
-      if (this.props.controller.state.closedCaptionOptions.language) {
-        closeCaptions.selected = this.props.controller.state.closedCaptionOptions.language;
-      }
-    }
-
     return closeCaptions;
   },
 
-  handleSelectCC: function (id) {
-    this.closeCaptions.selected = id;
-    this.setState({
-      closeCaptions: this.closeCaptions
-    });
-
-    if (this.props.controller && this.props.controller.onClosedCaptionChange) {
+  /**
+   * when clicking on an item from an cc list, set the corresponding cc value
+   * @param id {string} - id of clicked element
+   */
+  handleClickCC: function (id) {
+    if (this.props.controller && typeof this.props.controller.onClosedCaptionChange === 'function') {
       this.props.controller.onClosedCaptionChange('language', id);
     }
   },
 
-  handleSelectMA: function (id) {
-    var selectedElement = null;
-
-    this.multiAudio.list.forEach(function (el) {
-      if (el.id === id) {
-        el.enabled = true;
-        selectedElement = el;
-      } else {
-        el.enabled = false;
-      }
-    });
-    this.multiAudio.selected = selectedElement;
-
-    this.setState({
-      multiAudio: this.multiAudio
-    });
-
-    if (this.props.controller && this.props.controller.setCurrentAudio) {
+  /**
+   * when clicking on an item from an audio list, set the corresponding audio value
+   * @param id {string} - id of clicked element
+   */
+  handleClickMA: function (id) {
+    if (this.props.controller && typeof this.props.controller.setCurrentAudio === 'function') {
       this.props.controller.setCurrentAudio(id);
     }
   },
 
   render: function () {
-    var menuClass = "oo-cc-ma-menu";
-    var columnLeftClass = "oo-column-left";
-    var columnRightClass = "oo-column-right";
-    var separatorClass = "oo-separator";
-
-    if(this.state.multiAudio.list.length === 0){
-      columnLeftClass = columnLeftClass + " hidden";
-      separatorClass = separatorClass + " hidden";
-      columnRightClass = columnRightClass + " full";
+    var multiAudioCol = null;
+    var closeCaptionsCol = null;
+    if (this.props.controller &&
+      this.props.controller.state &&
+      this.props.controller.state.multiAudio &&
+      this.props.controller.state.multiAudio.tracks &&
+      this.props.controller.state.multiAudio.tracks.length > 0) {
+      multiAudioCol = (<Tab
+        ref="multiAudioCol"
+        handleClick={this.handleClickMA}
+        skinConfig={this.props.skinConfig}
+        list={this.props.controller.state.multiAudio.tracks}
+        header={CONSTANTS.SKIN_TEXT.AUDIO}
+      />);
     }
-
-    if(this.state.closeCaptions.list.length === 0) {
-      columnRightClass = columnRightClass + " hidden";
-      separatorClass = separatorClass + " hidden";
-      columnLeftClass = columnLeftClass + " full"
+    if (this.props.controller &&
+      this.props.controller.state &&
+      this.props.controller.state.closedCaptionOptions &&
+      this.props.controller.state.closedCaptionOptions.availableLanguages &&
+      this.props.controller.state.closedCaptionOptions.availableLanguages.languages &&
+      this.props.controller.state.closedCaptionOptions.availableLanguages.languages.length > 0) {
+      var closedCaptions = this.getClosedCaptions(
+        this.props.controller.state.closedCaptionOptions.availableLanguages.languages,
+        this.props.controller.state.closedCaptionOptions.language
+      );
+      closeCaptionsCol = (<Tab
+        ref="closeCaptionsCol"
+        handleClick={this.handleClickCC}
+        skinConfig={this.props.skinConfig}
+        list={closedCaptions}
+        header={CONSTANTS.SKIN_TEXT.SUBTITLES}
+      />);
     }
 
     return (
-      <div className={menuClass}>
-        <div className={columnLeftClass}>
-          <MultiAudioTab
-            handleSelect={this.handleSelectMA}
-            skinConfig={this.state.skinConfig}
-            multiAudio={this.state.multiAudio}
-          />
-        </div>
-        <div className={separatorClass}></div>
-        <div className={columnRightClass}>
-          <CloseCaptionTab
-            handleSelect={this.handleSelectCC}
-            skinConfig={this.state.skinConfig}
-            closeCaptions={this.state.closeCaptions}
-          />
-        </div>
+      <div className={classnames("oo-cc-ma-menu", this.props.menuClassName)}>
+        {multiAudioCol}
+        {closeCaptionsCol}
       </div>
     );
   }
 });
+
+CloseCaptionMultiAudioMenu.propTypes = {
+  menuClassName: React.PropTypes.string,
+  skinConfig: React.PropTypes.object,
+  controller: React.PropTypes.shape({
+    state: React.PropTypes.shape({
+      setCurrentAudio: React.PropTypes.func,
+      onClosedCaptionChange: React.PropTypes.func,
+      closedCaptionOptions: React.PropTypes.object,
+      multiAudio: React.PropTypes.object,
+    })
+  })
+};
 
 module.exports = CloseCaptionMultiAudioMenu;

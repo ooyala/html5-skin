@@ -677,11 +677,11 @@ var ControlBar = React.createClass({
             </AccessibleButton>
             {this.props.controller.state.multiAudioOptions.showPopover &&
             <Popover
-              popoverClassName="oo-popover oo-popover-cc-ma"
+              popoverClassName="oo-popover oo-popover-pull-right oo-cc-ma-container"
               autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}
               closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
               closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}>
-              <CloseCaptionMultiAudioMenu {...this.props}/>
+              <CloseCaptionMultiAudioMenu menuClassName={"oo-cc-ma-menu--popover"} {...this.props}/>
             </Popover>
             }
           </div>
