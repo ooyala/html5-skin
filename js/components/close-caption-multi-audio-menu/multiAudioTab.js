@@ -71,8 +71,8 @@ function getDisplayLanguage(languageList, languageCode) {
 }
 /**
  * Gets display title based on language and label
- * @param {String} language 
- * @param {String} label 
+ * @param {String} language
+ * @param {String} label
  * @returns {String} displayTitle
  */
 function getDisplayTitle(language, label) {
@@ -95,14 +95,66 @@ function getDisplayTitle(language, label) {
   return displayTitle;
 }
 
+/**
+ * Get unique tracks by name
+ * @param {Array<{ name: String, selected: Boolean, id: String }>} audioTracksList
+ * @returns {Array<{ name: String, selected: Boolean, id: String }>} uniqueTracksList
+ */
+function getUniqueTracks(audioTracksList) {
+  var uniqueTracksList = [];
+
+  if (
+    audioTracksList &&
+    audioTracksList.length &&
+    Array.isArray(audioTracksList)
+  ) {
+    var groupedTracks = _.groupBy(audioTracksList, "name");
+    var uniqueKeys = _.keys(groupedTracks);
+
+    // if all keys are unique - return non-modified tracks
+    if (uniqueKeys.length === audioTracksList.length) {
+      uniqueTracksList = audioTracksList;
+    } else {
+      /* 
+      * after grouping we get an object where key is name of the track 
+      * and value is tracks with the same name so we need to iterate over keys
+      * and flatten it afterwards
+      */
+
+      var uniqueTracks = uniqueKeys.map(function(key) {
+        if (groupedTracks[key].length > 1) {
+          return groupedTracks[key].map(function(audioTrack, index) {
+            // modify zero-based index of array to get user-friendly index
+            var trackIndex = index + 1;
+
+            // add track index
+            var uniqueTrack = {
+              selected: audioTrack.selected,
+              name: audioTrack.name.concat(" ", trackIndex),
+              id: audioTrack.id
+            };
+
+            return uniqueTrack;
+          });
+        } else {
+          return _.head(groupedTracks[key]);
+        }
+      });
+
+      uniqueTracksList = _.flatten(uniqueTracks);
+    }
+  }
+
+  return uniqueTracksList;
+}
+
 var MultiAudioTab = React.createClass({
   render: function() {
-    var list = [];
+    var audioTracksList = [],
+      uniqueTracksList = [];
 
     if (this.props.multiAudio && this.props.multiAudio.list) {
-      console.log(this.props.multiAudio.list);
-
-      list = this.props.multiAudio.list.map(
+      audioTracksList = this.props.multiAudio.list.map(
         function(audioTrack, index) {
           var displayLanguage = getDisplayLanguage(iso639, audioTrack.lang);
           var displayLabel = getDisplayLabel(audioTrack);
@@ -118,6 +170,8 @@ var MultiAudioTab = React.createClass({
           return languageElement;
         }.bind(this)
       );
+
+      uniqueTracksList = getUniqueTracks(audioTracksList);
     }
 
     return (
@@ -125,7 +179,7 @@ var MultiAudioTab = React.createClass({
         handleSelect={this.props.handleSelect}
         skinConfig={this.props.skinConfig}
         header={"Audio"}
-        list={list}
+        list={uniqueTracksList}
       />
     );
   }
@@ -144,5 +198,6 @@ module.exports = {
   MultiAudioTab: MultiAudioTab,
   getDisplayLabel: getDisplayLabel,
   getDisplayLanguage: getDisplayLanguage,
-  getDisplayTitle: getDisplayTitle
+  getDisplayTitle: getDisplayTitle,
+  getUniqueTracks: getUniqueTracks
 };

@@ -1,12 +1,12 @@
 var React = require("react");
-var BaseElement = require("./listItem");
+var ListItem = require("./listItem");
 
 var ListWithChoice = React.createClass({
   render: function() {
     var list = this.props.list.map(
       function(element, index) {
         return (
-          <BaseElement
+          <ListItem
             skinConfig={this.props.skinConfig}
             handleSelect={this.props.handleSelect}
             key={index}
@@ -27,7 +27,13 @@ var ListWithChoice = React.createClass({
 
 ListWithChoice.propTypes = {
   header: React.PropTypes.string,
-  list: React.PropTypes.array,
+  list: React.PropTypes.arrayOf(
+    React.PropTypes.shape({
+      name: React.PropTypes.string,
+      id: React.PropTypes.string,
+      selected: React.PropTypes.bool
+    })
+  ),
   skinConfig: React.PropTypes.object,
   responsiveView: React.PropTypes.string
 };

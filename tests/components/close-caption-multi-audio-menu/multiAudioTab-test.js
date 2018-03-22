@@ -1,22 +1,17 @@
 jest.dontMock(
   "../../../js/components/close-caption-multi-audio-menu/multiAudioTab"
 );
-jest.dontMock(
-  "../../../js/components/base-components/listWithChoice"
-);
-jest.dontMock(
-  "../../../js/components/base-components/listItem"
-);
-jest.dontMock("../../../js/components/closeButton");
-jest.dontMock("../../../js/components/higher-order/accessibleMenu");
+jest.dontMock("../../../js/components/base-components/listWithChoice");
+jest.dontMock("../../../js/components/base-components/listItem");
 jest.dontMock("../../../js/constants/constants");
-jest.dontMock("classnames");
 jest.dontMock("iso-639-3");
 jest.dontMock("underscore");
 
 var _ = require("underscore");
 var React = require("react");
 var TestUtils = require("react-addons-test-utils");
+var sinon = require("sinon");
+
 var multiAudioTabModule = require("../../../js/components/close-caption-multi-audio-menu/multiAudioTab");
 var ListWithChoice = require("../../../js/components/base-components/listWithChoice");
 var ListItem = require("../../../js/components/base-components/listItem");
@@ -26,6 +21,7 @@ var iso639 = require("iso-639-3");
 var getDisplayLabel = multiAudioTabModule.getDisplayLabel;
 var getDisplayLanguage = multiAudioTabModule.getDisplayLanguage;
 var getDisplayTitle = multiAudioTabModule.getDisplayTitle;
+var getUniqueTracks = multiAudioTabModule.getUniqueTracks;
 var MultiAudioTab = multiAudioTabModule.MultiAudioTab;
 
 describe("MultiAudioTab", function() {
@@ -106,31 +102,134 @@ describe("MultiAudioTab", function() {
     });
   });
 
+  describe("getUniqueTracks function", function() {
+    it("should return tracks with unique names", function() {
+      var tracks = [
+        {
+          name: "und",
+          id: 1,
+          selected: false
+        },
+        {
+          name: "und",
+          id: 2,
+          selected: false
+        },
+        {
+          name: "eng",
+          id: 3,
+          selected: false
+        },
+        {
+          name: "eng",
+          id: 4,
+          selected: false
+        },
+        {
+          name: "ger",
+          id: 5,
+          selected: false
+        }
+      ];
+
+      var expectedTracks = [
+        {
+          name: "und 1",
+          id: 1,
+          selected: false
+        },
+        {
+          name: "und 2",
+          id: 2,
+          selected: false
+        },
+        {
+          name: "eng 1",
+          id: 3,
+          selected: false
+        },
+        {
+          name: "eng 2",
+          id: 4,
+          selected: false
+        },
+        {
+          name: "ger",
+          id: 5,
+          selected: false
+        }
+      ];
+
+      expect(getUniqueTracks(tracks)).toEqual(expectedTracks);
+    });
+
+    it("should return not modify tracks with unique names", function() {
+      var tracks = [
+        {
+          name: "English",
+          id: 1,
+          selected: false
+        },
+        {
+          name: "German",
+          id: 2,
+          selected: true
+        }
+      ];
+
+      expect(getUniqueTracks(tracks)).toEqual(tracks);
+    });
+
+    it("should return empty array when provided faulty data", function() {
+      expect(getUniqueTracks()).toEqual([]);
+      expect(getUniqueTracks(null)).toEqual([]);
+      expect(getUniqueTracks(undefined)).toEqual([]);
+      expect(getUniqueTracks(1)).toEqual([]);
+      expect(getUniqueTracks("123456")).toEqual([]);
+    });
+  });
+
   describe("MultiAudioTab component", function() {
+    var selectedId = null;
+
     var props = {
       multiAudio: {
-        list: [{
-          label: null,
-          lang: "eng",
-          id: "1"
-        }, {
-          label: null,
-          lang: "deu",
-          id: "2"
-        }]
+        list: [
+          {
+            label: null,
+            lang: "eng",
+            id: "1"
+          },
+          {
+            label: null,
+            lang: "deu",
+            id: "2"
+          }
+        ]
       },
       skinConfig: {},
 
-      handleSelect: function(id) {}
+      handleSelect: function(id) {
+        selectedId = id;
+      }
     };
 
     it("should be rendered", function() {
       var DOM = TestUtils.renderIntoDocument(<MultiAudioTab {...props} />);
+      var component = TestUtils.findRenderedComponentWithType(
+        DOM,
+        MultiAudioTab
+      );
+
+      expect(component).toBeTruthy();
     });
 
     it("should render list component", function() {
       var tree = TestUtils.renderIntoDocument(<MultiAudioTab {...props} />);
-      var component = TestUtils.findRenderedComponentWithType(tree, MultiAudioTab);
+      var component = TestUtils.findRenderedComponentWithType(
+        tree,
+        MultiAudioTab
+      );
       var list = TestUtils.scryRenderedComponentsWithType(tree, ListWithChoice);
 
       expect(list).toBeTruthy();
@@ -138,12 +237,24 @@ describe("MultiAudioTab", function() {
 
     it("should render list component with items", function() {
       var tree = TestUtils.renderIntoDocument(<MultiAudioTab {...props} />);
-      var component = TestUtils.findRenderedComponentWithType(tree, MultiAudioTab);
       var items = TestUtils.scryRenderedComponentsWithType(tree, ListItem);
 
       expect(items.length).toEqual(2);
       expect(items[0].props.name).toEqual("English");
+      expect(items[1].props.name).toEqual("German");
     });
-    
+
+    it("should call method from props with corrent id", function() {
+      var tree = TestUtils.renderIntoDocument(<MultiAudioTab {...props} />);
+      var items = TestUtils.scryRenderedDOMComponentsWithClass(
+        tree,
+        "oo-list-item"
+      );
+
+      TestUtils.Simulate.click(items[0]);
+      expect(selectedId).toBe("1");
+      TestUtils.Simulate.click(items[1]);
+      expect(selectedId).toBe("2");
+    });
   });
 });
