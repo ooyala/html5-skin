@@ -655,7 +655,7 @@ var ControlBar = React.createClass({
           multiAudioList = this.props.controller.state.multiAudio.tracks;
         }
 
-        if(closeCaptionsList.length == 0 && multiAudioList.length == 0){
+        if(closeCaptionsList.length === 0 && multiAudioList.length === 0){
           return null;
         }
 
