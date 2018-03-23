@@ -874,6 +874,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onMultiAudioFetched: function(event, multiAudio) {
       if (this.state.showMultiAudioIcon) { //if param showMultiAudioIcon is set to true
         this.state.multiAudio = multiAudio;
+        this.renderSkin();
       }
     },
 

@@ -107,6 +107,8 @@ module.exports = {
     SHARE: "Share",
     MORE_OPTIONS: "More Options",
     SELECT_TO_UNMUTE: "SELECT TO UNMUTE",
+    AUDIO: "Audio",
+    SUBTITLES: "Subtitles",
     UNDEFINED_LANGUAGE: "Undefined language"
   },
 

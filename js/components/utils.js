@@ -953,6 +953,27 @@ var Utils = {
     }
     return false;
   },
+
+  /**
+   * the function returns the maximum width of the elements
+   * @param {...Element} DOM Element
+   * @returns {number} - max width of the elements
+   */
+  getMaxElementWidth: function() {
+    var argumentsArray = Array.prototype.slice.call(arguments);
+    var startWidth = 0;
+    if (argumentsArray.length) {
+      for (var index = 0; index < argumentsArray.length; index++) {
+        if (!argumentsArray[index] instanceof Element) {
+          continue;
+        }
+        if (argumentsArray[index].offsetWidth && startWidth < argumentsArray[index].offsetWidth) {
+          startWidth = argumentsArray[index].offsetWidth;
+        }
+      }
+    }
+    return startWidth;
+  },
 };
 
 module.exports = Utils;

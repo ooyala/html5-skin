@@ -4,12 +4,11 @@ var React = require('react'),
 
 var Icon = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
-    return  (nextProps.icon != this.props.icon);
+    return  (nextProps.icon != this.props.icon || nextProps.className !== this.props.className);
   },
 
   render: function() {
     var iconStyle = Utils.extend({fontFamily: this.props.skinConfig.icons[this.props.icon].fontFamilyName}, this.props.style);
-
     return (
       <span
         className={this.props.skinConfig.icons[this.props.icon].fontStyleClass + " " + this.props.className}
