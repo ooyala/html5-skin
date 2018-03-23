@@ -1,4 +1,4 @@
-jest.dontMock('../../../js/components/close-caption-multi-audio-menu/helpers');
+jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/helpers');
 jest.dontMock('../../../js/constants/constants');
 jest.dontMock('underscore');
 jest.dontMock('iso-639-3');
@@ -9,7 +9,7 @@ var TestUtils = require('react-addons-test-utils');
 var iso639 = require('iso-639-3');
 
 var CONSTANTS = require('../../../js/constants/constants');
-var helpers = require('../../../js/components/close-caption-multi-audio-menu/helpers');
+var helpers = require('../../../js/components/closed-caption-multi-audio-menu/helpers');
 
 describe('closed caption & multi-audio helpers', function() {
   describe('getDisplayLanguage function', function() {
@@ -73,6 +73,7 @@ describe('closed caption & multi-audio helpers', function() {
       expect(helpers.getDisplayTitle('', '')).toEqual('Undefined language');
       expect(helpers.getDisplayTitle(null, null)).toEqual('Undefined language');
       expect(helpers.getDisplayTitle(undefined, undefined)).toEqual('Undefined language');
+      expect(helpers.getDisplayTitle()).toEqual('Undefined language');
     });
   });
 
