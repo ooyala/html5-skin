@@ -6,15 +6,23 @@
   bottom: $control-bar-height;
   position: absolute;
   overflow: hidden;
-  display: none;
+  //display: none;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .oo-player-skin-plugins.oo-showing:not(:empty) {
-  display: block;
+  //display: block;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .oo-player-skin-plugins.oo-overlay-showing:not(:empty) {
-  display: block;
+  //display: block;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .oo-player-skin-plugins.oo-overlay-blur:not(:empty) {

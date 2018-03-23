@@ -1032,18 +1032,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onWillPlayAds: function(event) {
       OO.log("onWillPlayAds is called from event = " + event);
-      this.state.isPlayingAd = true;
-      // Anamorphic videos fix should not be active during ad playback
-      this.trySetAnamorphicFixState(false);
-      this.state.pluginsElement.addClass("oo-showing");
-      this.state.pluginsElement.css({
-        height: "",
-        width: ""
-      });
-      this.state.forceControlBarVisible = (this.state.pluginsElement.children().length > 0);
-      if (this.state.mainVideoPlayhead > 0) {
-        this.isNewVrVideo = false;
-      }
+
     },
 
     onAdPodStarted: function(event, numberOfAds) {
@@ -1055,6 +1044,32 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onWillPlaySingleAd: function(event, adItem) {
       OO.log("onWillPlaySingleAd is called with adItem = " + adItem);
       if (adItem !== null) {
+        if (this.state.isPlayingAd) {
+          this.state.isPlayingAd = true;
+          // Anamorphic videos fix should not be active during ad playback
+          this.trySetAnamorphicFixState(false);
+
+
+          //this.state.pluginsElement.css({
+          //  visibility: "hidden",
+          //  "pointer-events": "none"
+          //});
+          this.state.forceControlBarVisible = (this.state.pluginsElement.children().length > 0);
+          if (this.state.mainVideoPlayhead > 0) {
+            this.isNewVrVideo = false;
+          }
+
+          this.state.pluginsElement.addClass("oo-showing");
+          //this.state.pluginsElement.css({
+          //  visibility: "visible",
+          //  "pointer-events": "auto"
+          //});
+          this.state.pluginsElement.css({
+            height: "",
+            width: ""
+          });
+        }
+
         this.state.adVideoDuration = adItem.duration;
         this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
         this.state.isPlayingAd = true;
