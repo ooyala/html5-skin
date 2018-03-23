@@ -1,5 +1,5 @@
-var React = require("react");
-var classnames = require("classnames");
+var React = require('react');
+var classnames = require('classnames');
 
 var ListItem = React.createClass({
   handleSelect: function() {
@@ -8,22 +8,19 @@ var ListItem = React.createClass({
 
   render: function() {
     var classes = {
-      listItem: "oo-list-item",
-      icon: "icon",
-      text: "text"
+      listItem: 'oo-list-item',
+      icon: 'icon',
+      text: 'text'
     };
 
     if (this.props.selected) {
       for (var key in classes) {
-        classes[key] = classes[key] + " select";
+        classes[key] = classes[key] + ' select';
       }
     }
 
     return (
-      <div
-        onClick={this.handleSelect}
-        className={classes.listItem}
-      >
+      <div onClick={this.handleSelect} className={classes.listItem}>
         <span className={classes.icon}> X </span>
         <span className={classes.text}>{this.props.name}</span>
       </div>
@@ -58,19 +55,19 @@ ListItem.propTypes = {
 
 ListItem.defaultProps = {
   selected: false,
-  name: "",
-  id: "",
+  name: '',
+  id: '',
   skinConfig: {
     responsive: {
       breakpoints: {
-        xs: { id: "xs" },
-        sm: { id: "sm" },
-        md: { id: "md" },
-        lg: { id: "lg" }
+        xs: { id: 'xs' },
+        sm: { id: 'sm' },
+        md: { id: 'md' },
+        lg: { id: 'lg' }
       }
     }
   },
-  responsiveView: "md"
+  responsiveView: 'md'
 };
 
 module.exports = ListItem;

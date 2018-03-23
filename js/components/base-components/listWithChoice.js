@@ -1,5 +1,5 @@
-var React = require("react");
-var ListItem = require("./listItem");
+var React = require('react');
+var ListItem = require('./listItem');
 
 var ListWithChoice = React.createClass({
   render: function() {
@@ -39,25 +39,25 @@ ListWithChoice.propTypes = {
 };
 
 ListWithChoice.defaultProps = {
-  header: "",
+  header: '',
   list: [
     {
-      name: "",
-      id: "",
+      name: '',
+      id: '',
       selected: false
     }
   ],
   skinConfig: {
     responsive: {
       breakpoints: {
-        xs: { id: "xs" },
-        sm: { id: "sm" },
-        md: { id: "md" },
-        lg: { id: "lg" }
+        xs: { id: 'xs' },
+        sm: { id: 'sm' },
+        md: { id: 'md' },
+        lg: { id: 'lg' }
       }
     }
   },
-  responsiveView: "md"
+  responsiveView: 'md'
 };
 
 module.exports = ListWithChoice;

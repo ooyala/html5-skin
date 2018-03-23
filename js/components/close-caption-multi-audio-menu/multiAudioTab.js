@@ -1,8 +1,8 @@
-var React = require("react");
-var ListWithChoice = require("../base-components/listWithChoice");
-var iso639 = require("iso-639-3");
-var CONSTANTS = require("../../constants/constants");
-var _ = require("underscore");
+var React = require('react');
+var ListWithChoice = require('../base-components/listWithChoice');
+var iso639 = require('iso-639-3');
+var CONSTANTS = require('../../constants/constants');
+var _ = require('underscore');
 
 /**
  * Gets display label by checking
@@ -13,7 +13,7 @@ var _ = require("underscore");
  * @returns {String} displayLabel
  */
 function getDisplayLabel(audioTrack) {
-  var displayLabel = "";
+  var displayLabel = '';
 
   if (audioTrack && audioTrack.label) {
     // special case for DASH where label is per default equal to lang
@@ -35,7 +35,7 @@ function getDisplayLabel(audioTrack) {
  * @returns {String} displayLanguage
  */
 function getDisplayLanguage(languageList, languageCode) {
-  var displayLanguage = "";
+  var displayLanguage = '';
   /*
   * check if language is defined and it's name can be obtained by matching
   * against iso-639 standart
@@ -48,7 +48,7 @@ function getDisplayLanguage(languageList, languageCode) {
   ) {
     var livingLanguages = _.filter(languageList, function(language) {
       // Only search in still spoken languages
-      return language.type === "living";
+      return language.type === 'living';
     });
 
     var matchingLanguage = _.find(livingLanguages, function(language) {
@@ -64,7 +64,7 @@ function getDisplayLanguage(languageList, languageCode) {
     * if matching language is found - return its name, otherwise 
     * just return empty string
     */
-    displayLanguage = matchingLanguage ? matchingLanguage.name : "";
+    displayLanguage = matchingLanguage ? matchingLanguage.name : '';
   }
 
   return displayLanguage;
@@ -76,11 +76,11 @@ function getDisplayLanguage(languageList, languageCode) {
  * @returns {String} displayTitle
  */
 function getDisplayTitle(language, label) {
-  var displayTitle = "";
+  var displayTitle = '';
 
   // set default function params
-  var displayLanguage = language || "";
-  var displayLabel = label || "";
+  var displayLanguage = language || '';
+  var displayLabel = label || '';
 
   if (!displayLanguage.length && !displayLabel.length) {
     return CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
@@ -89,7 +89,7 @@ function getDisplayTitle(language, label) {
   } else if (!displayLanguage.length && displayLabel.length) {
     return displayLabel;
   } else {
-    return displayLanguage.concat(" ", displayLabel);
+    return displayLanguage.concat(' ', displayLabel);
   }
 
   return displayTitle;
@@ -108,7 +108,7 @@ function getUniqueTracks(audioTracksList) {
     audioTracksList.length &&
     Array.isArray(audioTracksList)
   ) {
-    var groupedTracks = _.groupBy(audioTracksList, "name");
+    var groupedTracks = _.groupBy(audioTracksList, 'name');
     var uniqueKeys = _.keys(groupedTracks);
 
     // if all keys are unique - return non-modified tracks
@@ -130,7 +130,7 @@ function getUniqueTracks(audioTracksList) {
             // add track index
             var uniqueTrack = {
               selected: audioTrack.selected,
-              name: audioTrack.name.concat(" ", trackIndex),
+              name: audioTrack.name.concat(' ', trackIndex),
               id: audioTrack.id
             };
 
@@ -178,7 +178,7 @@ var MultiAudioTab = React.createClass({
       <ListWithChoice
         handleSelect={this.props.handleSelect}
         skinConfig={this.props.skinConfig}
-        header={"Audio"}
+        header={'Audio'}
         list={uniqueTracksList}
       />
     );
