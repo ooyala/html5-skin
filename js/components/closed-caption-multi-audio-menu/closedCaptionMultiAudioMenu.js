@@ -6,7 +6,7 @@ var CONSTANTS = require('../../constants/constants');
 var Tab = require('./tab');
 var MultiAudioTab = require('./multiAudioTab');
 
-var CloseCaptionMultiAudioMenu = React.createClass({
+var ClosedCaptionMultiAudioMenu = React.createClass({
   componentDidMount: function() {
     var multiAudioCol = ReactDOM.findDOMNode(this.refs.multiAudioCol);
     var closeCaptionsCol = ReactDOM.findDOMNode(this.refs.closeCaptionsCol);
@@ -110,17 +110,19 @@ var CloseCaptionMultiAudioMenu = React.createClass({
   }
 });
 
-CloseCaptionMultiAudioMenu.propTypes = {
+ClosedCaptionMultiAudioMenu.propTypes = {
   menuClassName: React.PropTypes.string,
   skinConfig: React.PropTypes.object,
   controller: React.PropTypes.shape({
+    setCurrentAudio: React.PropTypes.func,
+    onClosedCaptionChange: React.PropTypes.func,
     state: React.PropTypes.shape({
-      setCurrentAudio: React.PropTypes.func,
-      onClosedCaptionChange: React.PropTypes.func,
       closedCaptionOptions: React.PropTypes.object,
-      multiAudio: React.PropTypes.object
+      multiAudio: React.PropTypes.shape({
+        tracks: React.PropTypes.array
+      })
     })
   })
 };
 
-module.exports = CloseCaptionMultiAudioMenu;
+module.exports = ClosedCaptionMultiAudioMenu;

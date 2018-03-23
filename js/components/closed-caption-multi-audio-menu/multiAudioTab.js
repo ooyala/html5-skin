@@ -7,29 +7,24 @@ var CONSTANTS = require('../../constants/constants');
 
 var MultiAudioTab = React.createClass({
   render: function() {
-    var audioTracksList = [],
-      uniqueTracksList = [];
+    var audioTracksList = this.props.list.map(
+      function(audioTrack, index) {
+        var displayLanguage = helpers.getDisplayLanguage(iso639, audioTrack.lang);
+        var displayLabel = helpers.getDisplayLabel(audioTrack);
 
-    if (this.props.list) {
-      audioTracksList = this.props.list.map(
-        function(audioTrack, index) {
-          var displayLanguage = helpers.getDisplayLanguage(iso639, audioTrack.lang);
-          var displayLabel = helpers.getDisplayLabel(audioTrack);
+        var displayTitle = helpers.getDisplayTitle(displayLanguage, displayLabel);
 
-          var displayTitle = helpers.getDisplayTitle(displayLanguage, displayLabel);
+        var languageElement = {
+          enabled: audioTrack.enabled,
+          label: displayTitle,
+          id: audioTrack.id
+        };
 
-          var languageElement = {
-            enabled: audioTrack.enabled,
-            label: displayTitle,
-            id: audioTrack.id
-          };
+        return languageElement;
+      }.bind(this)
+    );
 
-          return languageElement;
-        }.bind(this)
-      );
-
-      uniqueTracksList = helpers.getUniqueTracks(audioTracksList);
-    }
+    var uniqueTracksList = helpers.getUniqueTracks(audioTracksList);
 
     return (
       <Tab
