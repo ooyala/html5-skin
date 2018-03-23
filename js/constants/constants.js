@@ -108,7 +108,8 @@ module.exports = {
     MORE_OPTIONS: "More Options",
     SELECT_TO_UNMUTE: "SELECT TO UNMUTE",
     AUDIO: "Audio",
-    SUBTITLES: "Subtitles"
+    SUBTITLES: "Subtitles",
+    UNDEFINED_LANGUAGE: "Undefined language"
   },
 
   ARIA_LABELS: {
@@ -235,7 +236,7 @@ module.exports = {
     DEFAULT_SCALING_PERCENTAGE: 10
   },
 
-  AD_CLICK_SOURCE:{
+  AD_CLICK_SOURCE: {
     VIDEO_WINDOW: "videoWindow",
     LEARN_MORE_BUTTON: "learnMoreButton",
     OVERLAY: "overlay"
@@ -256,7 +257,8 @@ module.exports = {
     ENGLISH: "en",
     SPANISH: "es",
     CHINESE: "zh",
-    JAPANESE: "ja"
+    JAPANESE: "ja",
+    NOT_MATCHED: "und"
   },
 
   ERROR_CODE: {

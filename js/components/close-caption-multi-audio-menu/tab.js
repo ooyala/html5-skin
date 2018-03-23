@@ -3,14 +3,13 @@ var Icon = require('../icon');
 var classnames = require('classnames');
 
 var Tab = React.createClass({
-
-  handleClick: function (id) {
+  handleClick: function(id) {
     if (typeof this.props.handleClick === 'function') {
       this.props.handleClick(id);
     }
   },
 
-  render: function () {
+  render: function() {
     return (
       <div className="oo-cc-ma-menu__coll">
         <div className="oo-cc-ma-menu__header">{this.props.header}</div>
@@ -20,12 +19,20 @@ var Tab = React.createClass({
               <li
                 key={index}
                 onClick={this.handleClick.bind(this, el.id)}
-                className={classnames("oo-cc-ma-menu__element", {"oo-cc-ma-menu__element--active" : el.enabled})}
+                className={classnames('oo-cc-ma-menu__element', {
+                  'oo-cc-ma-menu__element--active': el.enabled
+                })}
               >
-                <Icon skinConfig={this.props.skinConfig} icon="selected" className={classnames({"oo-icon-hidden": !el.enabled})} />
-                <span className="oo-cc-ma-menu__name" title={el.label}>{el.label}</span>
+                <Icon
+                  skinConfig={this.props.skinConfig}
+                  icon="selected"
+                  className={classnames({ 'oo-icon-hidden': !el.enabled })}
+                />
+                <span className="oo-cc-ma-menu__name" title={el.label}>
+                  {el.label}
+                </span>
               </li>
-            )
+            );
           }, this)}
         </ul>
       </div>
@@ -48,11 +55,13 @@ Tab.defaultProps = {
 
 Tab.propTypes = {
   header: React.PropTypes.string,
-  list: React.PropTypes.arrayOf(React.PropTypes.shape({
-    id: React.PropTypes.string.isRequired,
-    label: React.PropTypes.number.isRequired,
-    enabled: React.PropTypes.number.isRequired,
-  })).isRequired,
+  list: React.PropTypes.arrayOf(
+    React.PropTypes.shape({
+      id: React.PropTypes.string.isRequired,
+      label: React.PropTypes.string.isRequired,
+      enabled: React.PropTypes.bool.isRequired
+    })
+  ).isRequired,
   skinConfig: React.PropTypes.object,
   handleClick: React.PropTypes.func
 };
