@@ -13,16 +13,10 @@ var MultiAudioTab = React.createClass({
     if (this.props.list) {
       audioTracksList = this.props.list.map(
         function(audioTrack, index) {
-          var displayLanguage = helpers.getDisplayLanguage(
-            iso639,
-            audioTrack.lang
-          );
+          var displayLanguage = helpers.getDisplayLanguage(iso639, audioTrack.lang);
           var displayLabel = helpers.getDisplayLabel(audioTrack);
 
-          var displayTitle = helpers.getDisplayTitle(
-            displayLanguage,
-            displayLabel
-          );
+          var displayTitle = helpers.getDisplayTitle(displayLanguage, displayLabel);
 
           var languageElement = {
             enabled: audioTrack.enabled,

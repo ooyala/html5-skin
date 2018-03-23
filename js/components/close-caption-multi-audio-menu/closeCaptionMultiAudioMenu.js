@@ -10,11 +10,7 @@ var CloseCaptionMultiAudioMenu = React.createClass({
   componentDidMount: function() {
     var multiAudioCol = ReactDOM.findDOMNode(this.refs.multiAudioCol);
     var closeCaptionsCol = ReactDOM.findDOMNode(this.refs.closeCaptionsCol);
-    if (
-      multiAudioCol &&
-      closeCaptionsCol &&
-      typeof Utils.getMaxElementWidth === 'function'
-    ) {
+    if (multiAudioCol && closeCaptionsCol && typeof Utils.getMaxElementWidth === 'function') {
       var maxWidth = Utils.getMaxElementWidth(multiAudioCol, closeCaptionsCol);
       multiAudioCol.style.width = maxWidth + 'px';
       closeCaptionsCol.style.width = maxWidth + 'px';
@@ -48,10 +44,7 @@ var CloseCaptionMultiAudioMenu = React.createClass({
    * @param id {string} - id of clicked element
    */
   handleClickCC: function(id) {
-    if (
-      this.props.controller &&
-      typeof this.props.controller.onClosedCaptionChange === 'function'
-    ) {
+    if (this.props.controller && typeof this.props.controller.onClosedCaptionChange === 'function') {
       this.props.controller.onClosedCaptionChange('language', id);
     }
   },
@@ -61,10 +54,7 @@ var CloseCaptionMultiAudioMenu = React.createClass({
    * @param id {string} - id of clicked element
    */
   handleClickMA: function(id) {
-    if (
-      this.props.controller &&
-      typeof this.props.controller.setCurrentAudio === 'function'
-    ) {
+    if (this.props.controller && typeof this.props.controller.setCurrentAudio === 'function') {
       this.props.controller.setCurrentAudio(id);
     }
   },
@@ -93,14 +83,11 @@ var CloseCaptionMultiAudioMenu = React.createClass({
       this.props.controller.state &&
       this.props.controller.state.closedCaptionOptions &&
       this.props.controller.state.closedCaptionOptions.availableLanguages &&
-      this.props.controller.state.closedCaptionOptions.availableLanguages
-        .languages &&
-      this.props.controller.state.closedCaptionOptions.availableLanguages
-        .languages.length > 0
+      this.props.controller.state.closedCaptionOptions.availableLanguages.languages &&
+      this.props.controller.state.closedCaptionOptions.availableLanguages.languages.length > 0
     ) {
       var closedCaptions = this.getClosedCaptions(
-        this.props.controller.state.closedCaptionOptions.availableLanguages
-          .languages,
+        this.props.controller.state.closedCaptionOptions.availableLanguages.languages,
         this.props.controller.state.closedCaptionOptions.language
       );
       closeCaptionsCol = (

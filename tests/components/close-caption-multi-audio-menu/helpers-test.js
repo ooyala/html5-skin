@@ -53,9 +53,7 @@ describe('closed caption & multi-audio helpers', function() {
 
   describe('getDisplayTitle function', function() {
     it('should return title from language and label', function() {
-      expect(helpers.getDisplayTitle('English', 'with Commentary')).toEqual(
-        'English with Commentary'
-      );
+      expect(helpers.getDisplayTitle('English', 'with Commentary')).toEqual('English with Commentary');
     });
 
     it('should return title from just language', function() {
@@ -65,26 +63,16 @@ describe('closed caption & multi-audio helpers', function() {
     });
 
     it('should return title from just label', function() {
-      expect(helpers.getDisplayTitle('', 'with Commentary')).toEqual(
-        'with Commentary'
-      );
-      expect(helpers.getDisplayTitle(null, 'with Commentary')).toEqual(
-        'with Commentary'
-      );
-      expect(helpers.getDisplayTitle(undefined, 'with Commentary')).toEqual(
-        'with Commentary'
-      );
-      expect(helpers.getDisplayTitle(undefined, 'with Commentary')).toEqual(
-        'with Commentary'
-      );
+      expect(helpers.getDisplayTitle('', 'with Commentary')).toEqual('with Commentary');
+      expect(helpers.getDisplayTitle(null, 'with Commentary')).toEqual('with Commentary');
+      expect(helpers.getDisplayTitle(undefined, 'with Commentary')).toEqual('with Commentary');
+      expect(helpers.getDisplayTitle(undefined, 'with Commentary')).toEqual('with Commentary');
     });
 
     it('should return Undefined language if none of params are provided', function() {
       expect(helpers.getDisplayTitle('', '')).toEqual('Undefined language');
       expect(helpers.getDisplayTitle(null, null)).toEqual('Undefined language');
-      expect(helpers.getDisplayTitle(undefined, undefined)).toEqual(
-        'Undefined language'
-      );
+      expect(helpers.getDisplayTitle(undefined, undefined)).toEqual('Undefined language');
     });
   });
 

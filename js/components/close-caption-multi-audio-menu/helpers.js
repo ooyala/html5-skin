@@ -102,11 +102,7 @@ function getDisplayTitle(language, label) {
 function getUniqueTracks(audioTracksList) {
   var uniqueTracksList = [];
 
-  if (
-    audioTracksList &&
-    audioTracksList.length &&
-    Array.isArray(audioTracksList)
-  ) {
+  if (audioTracksList && audioTracksList.length && Array.isArray(audioTracksList)) {
     var groupedTracks = _.groupBy(audioTracksList, 'label');
     var uniqueKeys = _.keys(groupedTracks);
 
@@ -151,4 +147,4 @@ module.exports = {
   getDisplayLanguage: getDisplayLanguage,
   getDisplayTitle: getDisplayTitle,
   getUniqueTracks: getUniqueTracks
-}
+};
