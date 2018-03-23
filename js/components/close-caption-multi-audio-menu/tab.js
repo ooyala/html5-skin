@@ -58,8 +58,8 @@ Tab.propTypes = {
   list: React.PropTypes.arrayOf(
     React.PropTypes.shape({
       id: React.PropTypes.string.isRequired,
-      label: React.PropTypes.number.isRequired,
-      enabled: React.PropTypes.number.isRequired
+      label: React.PropTypes.string.isRequired,
+      enabled: React.PropTypes.bool.isRequired
     })
   ).isRequired,
   skinConfig: React.PropTypes.object,

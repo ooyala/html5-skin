@@ -4,6 +4,7 @@ var Utils = require('../utils');
 var classnames = require('classnames');
 var CONSTANTS = require('../../constants/constants');
 var Tab = require('./tab');
+var MultiAudioTab = require('./multiAudioTab');
 
 var CloseCaptionMultiAudioMenu = React.createClass({
   componentDidMount: function() {
@@ -79,12 +80,11 @@ var CloseCaptionMultiAudioMenu = React.createClass({
       this.props.controller.state.multiAudio.tracks.length > 0
     ) {
       multiAudioCol = (
-        <Tab
+        <MultiAudioTab
           ref="multiAudioCol"
           handleClick={this.handleClickMA}
           skinConfig={this.props.skinConfig}
           list={this.props.controller.state.multiAudio.tracks}
-          header={CONSTANTS.SKIN_TEXT.AUDIO}
         />
       );
     }
