@@ -62,7 +62,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
         <MultiAudioTab
           handleClick={this.handleMultiAudioClick}
           skinConfig={this.props.skinConfig}
-          list={this.props.controller.state.multiAudio.tracks}
+          audioTracksList={this.props.controller.state.multiAudio.tracks}
         />
       );
     }
@@ -82,7 +82,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
         <Tab
           handleClick={this.handleClosedCaptionClick}
           skinConfig={this.props.skinConfig}
-          list={closedCaptionList}
+          itemsList={closedCaptionList}
           header={CONSTANTS.SKIN_TEXT.SUBTITLES}
         />
       );
