@@ -56,7 +56,6 @@ describe('MultiAudioTab component', function() {
   });
 
   it('should render Tab component', function() {
-    console.log(props.audioTracksList);
     var component = TestUtils.findRenderedComponentWithType(DOM, MultiAudioTab);
     var tab = TestUtils.findRenderedComponentWithType(DOM, Tab);
 
