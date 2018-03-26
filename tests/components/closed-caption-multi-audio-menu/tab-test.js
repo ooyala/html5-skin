@@ -14,7 +14,7 @@ describe('Tab component', function() {
 
   var props = {
     header: 'Tab Header',
-    list: [
+    itemsList: [
       {
         id: '1',
         label: 'label 1',
@@ -69,7 +69,7 @@ describe('Tab component', function() {
   it('should not call handler if its not present', function() {
     var propsNoHandler = {
       header: 'Tab Header',
-      list: [
+      itemsList: [
         {
           id: '1',
           label: 'label 1',

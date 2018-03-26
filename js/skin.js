@@ -9,7 +9,7 @@ var React = require('react'),
     ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel'),
     DiscoveryPanel = require('./components/discoveryPanel'),
     VideoQualityPanel = require('./components/videoQualityPanel'),
-    CloseCaptionMultiAudioMenu = require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
+    ClosedCaptionMultiAudioMenu = require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
     SharePanel = require('./components/sharePanel'),
     MoreOptionsPanel = require('./components/moreOptionsPanel'),
     AdScreen = require('./views/adScreen'),
@@ -19,7 +19,6 @@ var React = require('react'),
     PlayingScreen = require('./views/playingScreen'),
     ErrorScreen = require('./views/errorScreen'),
     ContentScreen = require('./views/contentScreen'),
-    MultiAudioCloseCaptionScreen = require('./views/multiAudioCloseCaptionScreen'),
     ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
 
 var Skin = React.createClass({
@@ -446,7 +445,7 @@ var Skin = React.createClass({
               element={<OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_MULTI_AUDIO} />}
               icon="cc"
             >
-              <CloseCaptionMultiAudioMenu {...this.props}/>
+              <ClosedCaptionMultiAudioMenu {...this.props}/>
             </ContentScreen>
           );
           break;

@@ -13,7 +13,7 @@ var React = require('react'),
   VolumeControls = require('./volumeControls'),
   VideoQualityPanel = require('./videoQualityPanel'),
   ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
-  CloseCaptionMultiAudioMenu = require('./closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
+  ClosedCaptionMultiAudioMenu = require('./closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
   Logo = require('./logo'),
   Icon = require('./icon'),
   Tooltip = require('./tooltip');
@@ -236,7 +236,10 @@ var ControlBar = React.createClass({
   handleMultiAudioClick: function () {
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
 
-    if (this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.lg.id) {
+    if (this.props.skinConfig.resposive &&
+      this.props.skinConfig.responsive.breakpoints &&
+      this.props.skinConfig.responsive.breakpoints.lg &&
+      (this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.lg.id) ) {
       this.togglePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
       this.closeCaptionPopover();
     } else {
@@ -642,12 +645,12 @@ var ControlBar = React.createClass({
       }).bind(this),
 
       "audioAndCC": (function (alignment) {
-        var closeCaptionsList =  [];
+        var closedCaptionsList =  [];
         var multiAudioList = [];
 
         if(this.props.controller.state.closedCaptionOptions.availableLanguages &&
           this.props.controller.state.closedCaptionOptions.availableLanguages.languages){
-          closeCaptionsList =  this.props.controller.state.closedCaptionOptions.availableLanguages.languages;
+          closedCaptionsList =  this.props.controller.state.closedCaptionOptions.availableLanguages.languages;
         }
 
         if(this.props.controller.state.multiAudio &&
@@ -655,7 +658,7 @@ var ControlBar = React.createClass({
           multiAudioList = this.props.controller.state.multiAudio.tracks;
         }
 
-        if(closeCaptionsList.length === 0 && multiAudioList.length === 0){
+        if(closedCaptionsList.length === 0 && multiAudioList.length === 0){
           return null;
         }
 
@@ -681,7 +684,7 @@ var ControlBar = React.createClass({
               autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}
               closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
               closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}>
-              <CloseCaptionMultiAudioMenu menuClassName={"oo-cc-ma-menu--popover"} {...this.props}/>
+              <ClosedCaptionMultiAudioMenu menuClassName={"oo-cc-ma-menu--popover"} {...this.props}/>
             </Popover>
             }
           </div>
