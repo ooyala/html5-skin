@@ -952,7 +952,6 @@ describe('ControlBar', function () {
     expect(ccButtons.length).toBe(1);
   });
 
-  //ToDo: it needs fixed and return
   // it('shows/hides multiaudio button if multiaudio available', function() {
   //   baseMockProps.skinConfig.buttons.desktopContent = [
   //     {"name":"multiAudio", "location": "controlBar", "whenDoesNotFit":"keep", "minWidth":45 }
