@@ -1,49 +1,38 @@
 var React = require('react');
-var ReactDOM = require('react-dom');
-var Utils = require('../utils');
 var classnames = require('classnames');
 var CONSTANTS = require('../../constants/constants');
 var Tab = require('./tab');
 var MultiAudioTab = require('./multiAudioTab');
 
 var ClosedCaptionMultiAudioMenu = React.createClass({
-  componentDidMount: function() {
-    var multiAudioCol = ReactDOM.findDOMNode(this.refs.multiAudioCol);
-    var closeCaptionsCol = ReactDOM.findDOMNode(this.refs.closeCaptionsCol);
-    if (multiAudioCol && closeCaptionsCol && typeof Utils.getMaxElementWidth === 'function') {
-      var maxWidth = Utils.getMaxElementWidth(multiAudioCol, closeCaptionsCol);
-      multiAudioCol.style.width = maxWidth + 'px';
-      closeCaptionsCol.style.width = maxWidth + 'px';
-    }
-  },
   /**
    *
-   * @param languages {Array} - list of available languages
-   * @param language {String} - a selected language
+   * @param languageList {Array} - list of available languages
+   * @param language {String} - the selected language
    * @returns {Array<{id: String, label: String, enabled: Boolean}>} an array of languages info objects
    * @private
    */
-  getClosedCaptions: function(languages, language) {
-    var closeCaptions = [];
-    if (Array.isArray(languages)) {
-      for (var index = 0; index < languages.length; index++) {
-        var isSelectedCc = languages[index] === language;
+  getClosedCaptions: function(languageList, language) {
+    var closedCaptionList = [];
+    if (Array.isArray(languageList)) {
+      for (var index = 0; index < languageList.length; index++) {
+        var isSelectedCc = languageList[index] === language;
         var cc = {
-          id: languages[index],
-          label: languages[index],
+          id: languageList[index],
+          label: languageList[index],
           enabled: isSelectedCc
         };
-        closeCaptions.push(cc);
+        closedCaptionList.push(cc);
       }
     }
-    return closeCaptions;
+    return closedCaptionList;
   },
 
   /**
    * when clicking on an item from an cc list, set the corresponding cc value
    * @param id {string} - id of clicked element
    */
-  handleClickCC: function(id) {
+  handleClosedCaptionClick: function(id) {
     if (this.props.controller && typeof this.props.controller.onClosedCaptionChange === 'function') {
       this.props.controller.onClosedCaptionChange('language', id);
     }
@@ -53,7 +42,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
    * when clicking on an item from an audio list, set the corresponding audio value
    * @param id {string} - id of clicked element
    */
-  handleClickMA: function(id) {
+  handleMultiAudioClick: function(id) {
     if (this.props.controller && typeof this.props.controller.setCurrentAudio === 'function') {
       this.props.controller.setCurrentAudio(id);
     }
@@ -61,7 +50,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
 
   render: function() {
     var multiAudioCol = null;
-    var closeCaptionsCol = null;
+    var closedCaptionsCol = null;
     if (
       this.props.controller &&
       this.props.controller.state &&
@@ -71,8 +60,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
     ) {
       multiAudioCol = (
         <MultiAudioTab
-          ref="multiAudioCol"
-          handleClick={this.handleClickMA}
+          handleClick={this.handleMultiAudioClick}
           skinConfig={this.props.skinConfig}
           list={this.props.controller.state.multiAudio.tracks}
         />
@@ -86,16 +74,15 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
       this.props.controller.state.closedCaptionOptions.availableLanguages.languages &&
       this.props.controller.state.closedCaptionOptions.availableLanguages.languages.length > 0
     ) {
-      var closedCaptions = this.getClosedCaptions(
+      var closedCaptionList = this.getClosedCaptions(
         this.props.controller.state.closedCaptionOptions.availableLanguages.languages,
         this.props.controller.state.closedCaptionOptions.language
       );
-      closeCaptionsCol = (
+      closedCaptionsCol = (
         <Tab
-          ref="closeCaptionsCol"
-          handleClick={this.handleClickCC}
+          handleClick={this.handleClosedCaptionClick}
           skinConfig={this.props.skinConfig}
-          list={closedCaptions}
+          list={closedCaptionList}
           header={CONSTANTS.SKIN_TEXT.SUBTITLES}
         />
       );
@@ -104,7 +91,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
     return (
       <div className={classnames('oo-cc-ma-menu', this.props.menuClassName)}>
         {multiAudioCol}
-        {closeCaptionsCol}
+        {closedCaptionsCol}
       </div>
     );
   }
