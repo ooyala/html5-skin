@@ -32,7 +32,9 @@ var MoreOptionsPanel = React.createClass({
   },
 
   handleMultiAudioClick: function() {
-    this.props.controller.toggleMultiAudio();
+    if (this.props.controller && typeof this.props.controller.toggleMultiAudio === 'function') {
+      this.props.controller.toggleMultiAudio();
+    }
   },
 
   highlight: function (evt) {
