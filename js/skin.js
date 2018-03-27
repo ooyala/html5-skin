@@ -9,6 +9,7 @@ var React = require('react'),
     ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel'),
     DiscoveryPanel = require('./components/discoveryPanel'),
     VideoQualityPanel = require('./components/videoQualityPanel'),
+    ClosedCaptionMultiAudioMenu = require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
     SharePanel = require('./components/sharePanel'),
     MoreOptionsPanel = require('./components/moreOptionsPanel'),
     AdScreen = require('./views/adScreen'),
@@ -32,7 +33,7 @@ var Skin = React.createClass({
       isVrMouseDown: false,
       isVrMouseMove: false,
       xVrMouseStart: 0,
-      yVrMouseStart: 0,
+      yVrMouseStart: 0
     };
   },
 
@@ -430,6 +431,22 @@ var Skin = React.createClass({
               videoQualityOptions={this.state.videoQualityOptions}
               responsiveView={this.state.responsiveId}/>
           </ContentScreen>
+          );
+          break;
+        case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
+          screen = (
+            <ContentScreen
+              {...this.props}
+              cssClass="oo-close-button oo-close-button--ma"
+              dataItemsPerPage={{xs:1, sm:4, md:8, lg:8}}
+              screen={CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN}
+              screenClassName="oo-content-screen oo-cc-ma-container"
+              autoFocus={this.state.multiAudioOptions.autoFocus}
+              element={<OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_MULTI_AUDIO} />}
+              icon="cc"
+            >
+              <ClosedCaptionMultiAudioMenu {...this.props}/>
+            </ContentScreen>
           );
           break;
         case CONSTANTS.SCREEN.ERROR_SCREEN:

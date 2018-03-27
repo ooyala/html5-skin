@@ -4,7 +4,7 @@ var React = require('react'),
 
 var Icon = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
-    return  (nextProps.icon != this.props.icon);
+    return  (nextProps.icon !== this.props.icon || nextProps.className !== this.props.className);
   },
 
   render: function() {
