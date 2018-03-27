@@ -1751,9 +1751,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleMultiAudio: function () {
+      console.log('BBB this.state.screenToShow', this.state.screenToShow);
       if (this.state.screenToShow == CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
         this.closeScreen();
-        this.renderSkin();
+        // this.renderSkin();
       } else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
           this.pausedCallback = function() {
@@ -1767,6 +1768,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
       }
     },
+
+    // toggleMoreOptionsScreen: function(moreOptionsItems) {
+    //   if (this.state.screenToShow == CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN) {
+    //     this.closeMoreOptionsScreen();
+    //   } else {
+    //     this.displayMoreOptionsScreen(moreOptionsItems);
+    //   }
+    // },
+
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
       this.state.pluginsElement.removeClass("oo-overlay-blur");
