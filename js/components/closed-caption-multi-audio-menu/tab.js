@@ -16,7 +16,7 @@ var Tab = React.createClass({
         <div className="oo-cc-ma-menu__header">{this.props.header}</div>
         <ScrollArea
           className="oo-cc-ma-menu__scrollarea"
-          speed={this.props.popover ? 0.6 : 1}
+          speed={1}
           horizontal={false}
         >
           <ul className="oo-cc-ma-menu__list">
