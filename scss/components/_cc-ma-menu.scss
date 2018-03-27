@@ -20,7 +20,7 @@
     min-width: 200px;
     font-family: $font-family-roboto;
     &:nth-of-type(even) {
-      .oo-cc-ma-menu__list {
+      .oo-cc-ma-menu__scrollarea {
         border-left: 1px solid rgba(0, 0, 0, .7);
       }
     }
@@ -44,9 +44,10 @@
     padding: $inner-menu-padding;
     border-bottom: 1px solid rgba(0, 0, 0, .7);
   }
-  .oo-cc-ma-menu__list {
+  .oo-cc-ma-menu__scrollarea {
     @include flex(1);
-    overflow: auto;
+  }
+  .oo-cc-ma-menu__list {
     list-style: none;
     font-size: 13px;
     padding: 0;
