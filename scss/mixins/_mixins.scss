@@ -273,6 +273,12 @@
   flex: $values;
 }
 
+@mixin hyphens() {
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
 
 @function get-direction($direction) {
   $direction-map: (

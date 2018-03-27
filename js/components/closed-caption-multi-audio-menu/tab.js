@@ -14,7 +14,7 @@ var Tab = React.createClass({
       <div className="oo-cc-ma-menu__coll">
         <div className="oo-cc-ma-menu__header">{this.props.header}</div>
         <ul className="oo-cc-ma-menu__list">
-          {this.props.list.map(function(el, index) {
+          {this.props.itemsList.map(function(el, index) {
             return (
               <li
                 key={index}
@@ -55,7 +55,7 @@ Tab.defaultProps = {
 
 Tab.propTypes = {
   header: React.PropTypes.string,
-  list: React.PropTypes.arrayOf(
+  itemsList: React.PropTypes.arrayOf(
     React.PropTypes.shape({
       id: React.PropTypes.string.isRequired,
       label: React.PropTypes.string.isRequired,

@@ -298,8 +298,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.browserSupportsTouch = Utils.browserSupportsTouch();
 
       this.state.showMultiAudioIcon = !!params.showMultiAudioIcon;
-      //ToDo: it's needs to test
-      // this.state.showMultiAudioIcon = true;
 
       //initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');

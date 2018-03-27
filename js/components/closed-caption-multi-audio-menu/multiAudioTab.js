@@ -7,7 +7,7 @@ var CONSTANTS = require('../../constants/constants');
 
 var MultiAudioTab = React.createClass({
   render: function() {
-    var audioTracksList = this.props.list.map(
+    var audioTracksList = this.props.audioTracksList.map(
       function(audioTrack, index) {
         var displayLanguage = helpers.getDisplayLanguage(iso639, audioTrack.lang);
         var displayLabel = helpers.getDisplayLabel(audioTrack);
@@ -25,12 +25,11 @@ var MultiAudioTab = React.createClass({
     );
 
     var uniqueTracksList = helpers.getUniqueTracks(audioTracksList);
-
     return (
       <Tab
         handleClick={this.props.handleClick}
         skinConfig={this.props.skinConfig}
-        list={uniqueTracksList}
+        itemsList={uniqueTracksList}
         header={CONSTANTS.SKIN_TEXT.AUDIO}
       />
     );
@@ -38,7 +37,7 @@ var MultiAudioTab = React.createClass({
 });
 
 MultiAudioTab.propTypes = {
-  list: React.PropTypes.arrayOf(
+  audioTracksList: React.PropTypes.arrayOf(
     React.PropTypes.shape({
       id: React.PropTypes.string.isRequired,
       lang: React.PropTypes.string.isRequired,
