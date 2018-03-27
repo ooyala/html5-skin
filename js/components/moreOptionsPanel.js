@@ -31,6 +31,10 @@ var MoreOptionsPanel = React.createClass({
     this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
   },
 
+  handleMultiAudioClick: function() {
+    this.props.controller.toggleMultiAudio();
+  },
+
   highlight: function (evt) {
     var iconElement = Utils.getEventIconElement(evt);
     if (iconElement) {
@@ -66,6 +70,11 @@ var MoreOptionsPanel = React.createClass({
       "discovery": <a className="oo-discovery oo-control-bar-item" onClick={this.handleDiscoveryClick} key="discovery">
         <Icon {...this.props} icon="discovery" style={buttonStyle}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+      </a>,
+
+      "audioAndCC": <a className="oo-multiaudio oo-control-bar-item" onClick={this.handleMultiAudioClick} key="audioAndCC">
+        <Icon {...this.props} icon="audioAndCC" style={buttonStyle}
+              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
       </a>,
 
       "closedCaption": <a className="oo-closed-caption oo-control-bar-item" onClick={this.handleClosedCaptionClick} key="closedCaption">

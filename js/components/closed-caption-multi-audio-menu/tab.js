@@ -1,4 +1,5 @@
 var React = require('react');
+var ScrollArea = require('react-scrollbar/dist/no-css');
 var Icon = require('../icon');
 var classnames = require('classnames');
 
@@ -13,28 +14,34 @@ var Tab = React.createClass({
     return (
       <div className="oo-cc-ma-menu__coll">
         <div className="oo-cc-ma-menu__header">{this.props.header}</div>
-        <ul className="oo-cc-ma-menu__list">
-          {this.props.itemsList.map(function(el, index) {
-            return (
-              <li
-                key={index}
-                onClick={this.handleClick.bind(this, el.id)}
-                className={classnames('oo-cc-ma-menu__element', {
-                  'oo-cc-ma-menu__element--active': el.enabled
-                })}
-              >
-                <Icon
-                  skinConfig={this.props.skinConfig}
-                  icon="selected"
-                  className={classnames({ 'oo-icon-hidden': !el.enabled })}
-                />
-                <span className="oo-cc-ma-menu__name" title={el.label}>
-                  {el.label}
-                </span>
-              </li>
-            );
-          }, this)}
-        </ul>
+        <ScrollArea
+          className="oo-cc-ma-menu__scrollarea"
+          speed={this.props.popover ? 0.6 : 1}
+          horizontal={false}
+        >
+          <ul className="oo-cc-ma-menu__list">
+            {this.props.itemsList.map(function(el, index) {
+              return (
+                <li
+                  key={index}
+                  onClick={this.handleClick.bind(this, el.id)}
+                  className={classnames('oo-cc-ma-menu__element', {
+                    'oo-cc-ma-menu__element--active': el.enabled
+                  })}
+                >
+                  <Icon
+                    skinConfig={this.props.skinConfig}
+                    icon="selected"
+                    className={classnames({ 'oo-icon-hidden': !el.enabled })}
+                  />
+                  <span className="oo-cc-ma-menu__name" title={el.label}>
+                    {el.label}
+                  </span>
+                </li>
+              );
+            }, this)}
+          </ul>
+        </ScrollArea>
       </div>
     );
   }
