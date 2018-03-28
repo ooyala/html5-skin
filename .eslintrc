@@ -1,0 +1,45 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": false,
+        "node": false
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 5,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "no-unreachable": ["error"],
+        "no-unused-vars": ["warn"],
+        "valid-typeof": ["warn"],
+        "space-before-function-paren": ["warn"],
+        "space-before-blocks": ["warn"],
+        "spaced-comment": ["warn"],
+        "brace-style": ["warn"],
+        "one-var-declaration-per-line": ["warn"],
+        "no-magic-numbers": ["warn"],
+        "valid-jsdoc": ["warn"],
+        
+        "max-len": ["error", 110],
+        "semi": ["error", "always"],
+        "quotes": ["error", "single"],
+
+        "no-dupe-args": ["error"],
+        "no-dupe-keys": ["error"],
+        "default-case": ["error"],
+        "eqeqeq": ["error"],
+        "no-fallthrough": ["error"],
+
+        "no-mixed-spaces-and-tabs": ["error"],
+        "no-unneeded-ternary": ["error"],
+
+        "react/jsx-uses-vars": ["error"]
+    }
+}

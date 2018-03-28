@@ -11,8 +11,8 @@
   ],
   "main": "html5-skin.js",
   "scripts": {
-    "build": "",
-    "test": "jest"
+    "test": "jest",
+    "eslint": "LIST=`git diff --name-only | grep -f *.js | grep -v json;`; if [ $LIST ]; then eslint $LIST; fi"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,8 @@
     "browserify": "13.0.0",
     "bulk-require": "^1.0.0",
     "bulkify": "^1.4.2",
+    "eslint": "2.13.1",
+    "eslint-plugin-react": "3.7.0",
     "git-rev": "0.2.1",
     "graceful-fs": "*",
     "gulp": "3.9.1",
