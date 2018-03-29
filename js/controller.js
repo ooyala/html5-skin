@@ -1750,33 +1750,38 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    /**
+     * @description Show or close the the multiAudio popover
+     * @public
+     */
     toggleMultiAudio: function () {
-      console.log('BBB this.state.screenToShow', this.state.screenToShow);
-      if (this.state.screenToShow == CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
-        this.closeScreen();
-        // this.renderSkin();
+      if (this.state.screenToShow == CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) { //close multiaudio popover
+        this.closeScreen(true);
       } else {
-        if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
+        if (this.state.playerState === CONSTANTS.STATE.PLAYING) { //show multiaudio popover
+          console.log('BBB toggleMultiAudio before pausedCallback');
           this.pausedCallback = function() {
-            this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
-            this.renderSkin();
+            console.log('BBB in pausedCallback this', this, 'this.showMultiAudioScreen', this.showMultiAudioScreen);
+            this.showMultiAudioScreen();
+            OO.log("finished toggleMultiAudioScreen");
           }.bind(this);
           this.mb.publish(OO.EVENTS.PAUSE);
         } else {
-          this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
-          this.renderSkin();
+          this.showMultiAudioScreen();
         }
       }
     },
 
-    // toggleMoreOptionsScreen: function(moreOptionsItems) {
-    //   if (this.state.screenToShow == CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN) {
-    //     this.closeMoreOptionsScreen();
-    //   } else {
-    //     this.displayMoreOptionsScreen(moreOptionsItems);
-    //   }
-    // },
-
+    /**
+     * @description Set multiAudioScreen as screenToShow and render the screen
+     * @private
+     */
+    showMultiAudioScreen: function() {
+      console.log('BBB CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN', CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
+      console.log('BBB this.renderSkin', this.renderSkin);
+      this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
+      this.renderSkin();
+    },
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
       this.state.pluginsElement.removeClass("oo-overlay-blur");
@@ -1884,11 +1889,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       });
     },
 
-    closeScreen: function() {
+    /**
+     * @description Close an extra screen
+     * @param continuePlaying {boolean} - true if it needs to continue playing
+     * @private
+     */
+    closeScreen: function(continuePlaying) {
       this.state.pluginsElement.removeClass("oo-overlay-blur");
       this.state.pauseAnimationDisabled = true;
       if (this.state.playerState == CONSTANTS.STATE.PAUSE) {
-        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+        if (continuePlaying) {
+          this.mb.publish(OO.EVENTS.PLAY);
+        } else {
+          this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+        }
       }
       else if (this.state.playerState == CONSTANTS.STATE.END) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
