@@ -12,7 +12,7 @@ var Tab = React.createClass({
 
   render: function() {
     return (
-      <div className="oo-cc-ma-menu__coll">
+      <div className={classnames("oo-cc-ma-menu__coll", this.props.tabClassName)}>
         <div className="oo-cc-ma-menu__header">{this.props.header}</div>
         <ScrollArea
           className="oo-cc-ma-menu__scrollarea"
@@ -61,6 +61,7 @@ Tab.defaultProps = {
 };
 
 Tab.propTypes = {
+  tabClassName: React.PropTypes.string,
   header: React.PropTypes.string,
   itemsList: React.PropTypes.arrayOf(
     React.PropTypes.shape({
