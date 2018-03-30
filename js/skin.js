@@ -61,8 +61,9 @@ var Skin = React.createClass({
   },
 
   switchComponent: function(args) {
+    console.log('BBB switchComponent');
     var newState = args || {};
-    this.setState(newState);
+    this.setState(newState, function(){console.log('BBB calback of switchComponent, screenTohow is', this.state.screenToShow);});
   },
 
   updatePlayhead: function(newPlayhead, newDuration, newBuffered, adPlayhead) {
@@ -434,6 +435,7 @@ var Skin = React.createClass({
           );
           break;
         case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
+          console.log('In skin, screen to Show is MultiAudioScreen');
           screen = (
             <ContentScreen
               {...this.props}

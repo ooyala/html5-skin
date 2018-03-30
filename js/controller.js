@@ -753,6 +753,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
           // Remove this comment once pause screen implemented
         } else {
+          console.log('BBB in onPaused (default)');
           // default
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
@@ -773,6 +774,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (this.pausedCallback) {
+        console.log('BBB in if with this.pausedCallback');
         this.pausedCallback();
         this.pausedCallback = null;
       }
@@ -1755,6 +1757,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @public
      */
     toggleMultiAudio: function () {
+      this.isNewVrVideo = false;
       if (this.state.screenToShow == CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) { //close multiaudio popover
         this.closeScreen(true);
       } else {
@@ -1777,9 +1780,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @private
      */
     showMultiAudioScreen: function() {
-      console.log('BBB CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN', CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
-      console.log('BBB this.renderSkin', this.renderSkin);
       this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
+      console.log('BBB this.state.screenToShow', this.state.screenToShow);
       this.renderSkin();
     },
 
