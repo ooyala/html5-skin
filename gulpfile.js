@@ -119,7 +119,7 @@ gulp.task('external-react', function() {
 // Watchify JS
 gulp.task('watchify', function() {
   git.long(function (hash) {
-    return buildJS('html5-skin.js', hash, true, false, false, false, false);
+    return buildJS('html5-skin.js', hash, true, false, true, false, false);
   })
 });
 

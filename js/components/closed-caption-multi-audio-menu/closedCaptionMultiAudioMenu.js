@@ -3,6 +3,7 @@ var classnames = require('classnames');
 var CONSTANTS = require('../../constants/constants');
 var Tab = require('./tab');
 var MultiAudioTab = require('./multiAudioTab');
+var _ = require('underscore');
 
 var ClosedCaptionMultiAudioMenu = React.createClass({
   /**
@@ -12,7 +13,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
    * @returns {Array<{id: String, label: String, enabled: Boolean}>} an array of languages info objects
    * @private
    */
-  getClosedCaptions: function(languageList, language) {
+  getClosedCaptions: function (languageList, language) {
     var closedCaptionList = [];
     if (Array.isArray(languageList)) {
       for (var index = 0; index < languageList.length; index++) {
@@ -32,7 +33,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
    * when clicking on an item from an cc list, set the corresponding cc value
    * @param id {string} - id of clicked element
    */
-  handleClosedCaptionClick: function(id) {
+  handleClosedCaptionClick: function (id) {
     if (this.props.controller && typeof this.props.controller.onClosedCaptionChange === 'function') {
       this.props.controller.onClosedCaptionChange('language', id);
     }
@@ -42,13 +43,26 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
    * when clicking on an item from an audio list, set the corresponding audio value
    * @param id {string} - id of clicked element
    */
-  handleMultiAudioClick: function(id) {
-    if (this.props.controller && typeof this.props.controller.setCurrentAudio === 'function') {
-      this.props.controller.setCurrentAudio(id);
+  handleMultiAudioClick: function (id) {
+    if (
+      this.props.controller &&
+      typeof this.props.controller.setCurrentAudio === 'function' &&
+      this.props.controller.state &&
+      this.props.controller.state.multiAudio &&
+      this.props.controller.state.multiAudio.tracks
+    ) {
+      var tracks = this.props.controller.state.multiAudio.tracks;
+
+      // find selected track in a list of available tracks
+      var selectedAudioTrack = _.find(tracks, function (track) {
+        return track.id === id;
+      });
+
+      this.props.controller.setCurrentAudio(selectedAudioTrack);
     }
   },
 
-  render: function() {
+  render: function () {
     var multiAudioCol = null;
     var closedCaptionsCol = null;
     if (

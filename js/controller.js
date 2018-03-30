@@ -879,10 +879,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /**
      * The function is called when we want to change audio track
      * @fires OO.EVENTS.SET_CURRENT_AUDIO
-     * @param {String} id - the id of the audio track to activate
+     * @param currentTrack {{id: String, label: String, lang: String}} - current active audio track
      */
-    setCurrentAudio: function(id) {
-      this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, id);
+    setCurrentAudio: function(currentTrack) {
+      this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, currentTrack);
     },
 
     onSeeked: function(event) {
