@@ -2,7 +2,9 @@
 
   // Content Screens
   .oo-content-screen {
-    padding: $panel-padding-lg;
+    &:not(.oo-cc-ma-container) {
+      padding: $panel-padding-lg;
+    }
   }
   .oo-content-screen-title {
     font-size: $font-size-lg-screen-title;

@@ -236,7 +236,7 @@ var ControlBar = React.createClass({
   handleMultiAudioClick: function () {
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
 
-    if (this.props.skinConfig.resposive &&
+    if (this.props.skinConfig.responsive &&
       this.props.skinConfig.responsive.breakpoints &&
       this.props.skinConfig.responsive.breakpoints.lg &&
       (this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.lg.id) ) {
