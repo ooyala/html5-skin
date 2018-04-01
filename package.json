@@ -12,8 +12,7 @@
   "main": "html5-skin.js",
   "scripts": {
     "test": "jest",
-    "eslint:all": "eslint js/",
-    "eslint:changed": "sh scripts/hooks/pre-commit"
+    "eslint": "git diff --cached --name-only --diff-filter=ACMRTUB | grep .js$ | xargs ./node_modules/.bin/eslint --"
   },
   "repository": {
     "type": "git",
