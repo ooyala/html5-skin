@@ -12,7 +12,8 @@
   "main": "html5-skin.js",
   "scripts": {
     "test": "jest",
-    "eslint": "LIST=`git diff --name-only | grep -f *.js | grep -v json;`; if [ $LIST ]; then eslint $LIST; fi"
+    "eslint:all": "eslint js/",
+    "eslint:changed": "sh scripts/hooks/pre-commit"
   },
   "repository": {
     "type": "git",
