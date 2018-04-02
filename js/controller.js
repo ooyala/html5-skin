@@ -1731,7 +1731,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     toggleScreen: function(screen) {
       this.isNewVrVideo = false;
       if (this.state.screenToShow == screen) {
-        this.closeScreen();
+        var continuePlaying = false;
+        if (screen === CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
+          continuePlaying = true;
+        }
+        this.closeScreen(continuePlaying);
       }
       else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
@@ -1745,24 +1749,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         else {
           this.state.screenToShow = screen;
           this.state.pluginsElement.addClass("oo-overlay-blur");
-          this.renderSkin();
-        }
-      }
-    },
-
-    toggleMultiAudio: function () {
-      if (this.state.screenToShow == CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
-        this.closeScreen();
-        this.renderSkin();
-      } else {
-        if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
-          this.pausedCallback = function() {
-            this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
-            this.renderSkin();
-          }.bind(this);
-          this.mb.publish(OO.EVENTS.PAUSE);
-        } else {
-          this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
           this.renderSkin();
         }
       }
@@ -1874,11 +1860,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       });
     },
 
-    closeScreen: function() {
+    /**
+     * @description Close an extra screen
+     * @param continuePlaying {boolean} - true if it needs to continue playing
+     * @private
+     */
+    closeScreen: function(continuePlaying) {
       this.state.pluginsElement.removeClass("oo-overlay-blur");
       this.state.pauseAnimationDisabled = true;
       if (this.state.playerState == CONSTANTS.STATE.PAUSE) {
-        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+        if (continuePlaying) {
+          this.mb.publish(OO.EVENTS.PLAY);
+        } else {
+          this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+        }
       }
       else if (this.state.playerState == CONSTANTS.STATE.END) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
