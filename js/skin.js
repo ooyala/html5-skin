@@ -61,9 +61,8 @@ var Skin = React.createClass({
   },
 
   switchComponent: function(args) {
-    console.log('BBB switchComponent');
     var newState = args || {};
-    this.setState(newState, function(){console.log('BBB calback of switchComponent, screenTohow is', this.state.screenToShow);});
+    this.setState(newState);
   },
 
   updatePlayhead: function(newPlayhead, newDuration, newBuffered, adPlayhead) {

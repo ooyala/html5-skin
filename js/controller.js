@@ -753,7 +753,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
           // Remove this comment once pause screen implemented
         } else {
-          console.log('BBB in onPaused (default)');
           // default
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
@@ -774,7 +773,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.renderSkin();
       }
       if (this.pausedCallback) {
-        console.log('BBB in if with this.pausedCallback');
         this.pausedCallback();
         this.pausedCallback = null;
       }
@@ -1733,7 +1731,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     toggleScreen: function(screen) {
       this.isNewVrVideo = false;
       if (this.state.screenToShow == screen) {
-        this.closeScreen();
+        var continuePlaying = false;
+        if (screen === CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
+          continuePlaying = true;
+        }
+        this.closeScreen(continuePlaying);
       }
       else {
         if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
@@ -1750,39 +1752,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.renderSkin();
         }
       }
-    },
-
-    /**
-     * @description Show or close the the multiAudio popover
-     * @public
-     */
-    toggleMultiAudio: function () {
-      this.isNewVrVideo = false;
-      if (this.state.screenToShow == CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) { //close multiaudio popover
-        this.closeScreen(true);
-      } else {
-        if (this.state.playerState === CONSTANTS.STATE.PLAYING) { //show multiaudio popover
-          console.log('BBB toggleMultiAudio before pausedCallback');
-          this.pausedCallback = function() {
-            console.log('BBB in pausedCallback this', this, 'this.showMultiAudioScreen', this.showMultiAudioScreen);
-            this.showMultiAudioScreen();
-            OO.log("finished toggleMultiAudioScreen");
-          }.bind(this);
-          this.mb.publish(OO.EVENTS.PAUSE);
-        } else {
-          this.showMultiAudioScreen();
-        }
-      }
-    },
-
-    /**
-     * @description Set multiAudioScreen as screenToShow and render the screen
-     * @private
-     */
-    showMultiAudioScreen: function() {
-      this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
-      console.log('BBB this.state.screenToShow', this.state.screenToShow);
-      this.renderSkin();
     },
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {

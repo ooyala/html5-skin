@@ -20,7 +20,6 @@ describe('ContentScreen', function () {
     ctrl = {
       toggleScreen: function() {},
       toggleDiscoveryScreen: function() {},
-      toggleMultiAudio: function() {},
       state: {
         accessibilityControlsEnabled: true
       }

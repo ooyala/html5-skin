@@ -997,7 +997,6 @@ describe('ControlBar', function () {
     // there are no CC, but multiaudio is available
     mockController.state.multiAudio = {};
     mockController.state.multiAudio.tracks = [{id: 1, label: "test"}];
-    // mockController.toggleMultiAudio = function() {multiAudioClicked = true;};
 
     var DOM2 = TestUtils.renderIntoDocument(
       <ControlBar
@@ -1067,7 +1066,7 @@ describe('ControlBar', function () {
         isOoyalaAds: false,
         showMultiAudioIcon: true
       },
-      toggleMultiAudio: function() {multiAudioClicked = true;},
+      toggleScreen: function() {multiAudioClicked = true;},
       togglePopover: function() {popoverStateChanged = true},
     };
 
