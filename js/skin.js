@@ -263,6 +263,7 @@ var Skin = React.createClass({
           screen = (
             <PlayingScreen
               {...this.props}
+              params={this.state.playerParam}
               handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
               handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
               handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
@@ -306,6 +307,7 @@ var Skin = React.createClass({
           screen = (
             <PauseScreen
               {...this.props}
+              params={this.state.playerParam}
               handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
               handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
               handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
