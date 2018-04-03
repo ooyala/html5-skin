@@ -409,35 +409,35 @@
   }
 
   //Scrubber Bar
-  .oo-scrubber-bar-container {
-    height: 20px * $xsmall-multiple;
-
-    .oo-scrubber-bar-padding {
-      .oo-scrubber-bar {
-        height: 6px * $xsmall-multiple;
-      }
-
-      .oo-playhead-padding {
-        width: 25px * $xsmall-multiple;
-        height: 25px * $xsmall-multiple;
-
-        .oo-playhead {
-          width: 9px;
-          height: 9px;
-          border-width: 2px * $xsmall-multiple;
-          border-radius: 10px * $xsmall-multiple;
-        }
-        .oo-playhead-scrubbing {
-          width: 14px * $xsmall-multiple;
-          height: 14px * $xsmall-multiple;
-        }
-
-        .oo-playhead-hovering {
-          top: 39%;
-        }
-      }
-    }
-  }
+  // .oo-scrubber-bar-container {
+  //   height: 20px * $xsmall-multiple;
+  //
+  //   .oo-scrubber-bar-padding {
+  //     .oo-scrubber-bar {
+  //       height: 6px * $xsmall-multiple;
+  //     }
+  //
+  //     .oo-playhead-padding {
+  //       width: 25px * $xsmall-multiple;
+  //       height: 25px * $xsmall-multiple;
+  //
+  //       .oo-playhead {
+  //         width: 9px;
+  //         height: 9px;
+  //         border-width: 2px * $xsmall-multiple;
+  //         border-radius: 10px * $xsmall-multiple;
+  //       }
+  //       .oo-playhead-scrubbing {
+  //         width: 14px * $xsmall-multiple;
+  //         height: 14px * $xsmall-multiple;
+  //       }
+  //
+  //       .oo-playhead-hovering {
+  //         top: 39%;
+  //       }
+  //     }
+  //   }
+  // }
 
   //Close Buttons
   button.oo-close-btn, button.oo-close-button {
