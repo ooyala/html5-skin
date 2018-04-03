@@ -5,6 +5,7 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
     ControlBar = require('../components/controlBar'),
+    Controls = require('../components/controls'),
     AdOverlay = require('../components/adOverlay'),
     UpNextPanel = require('../components/upNextPanel'),
     TextTrack = require('../components/textTrackPanel'),
@@ -272,13 +273,16 @@ var PauseScreen = React.createClass({
 
           {upNextPanel}
 
-          <ControlBar
-            {...this.props}
-            controlBarVisible={this.state.controlBarVisible}
-            playerState={this.state.playerState}
-            isLiveStream={this.props.isLiveStream}
-          />
+          {
+          // <ControlBar
+          //   {...this.props}
+          //   controlBarVisible={this.state.controlBarVisible}
+          //   playerState={this.state.playerState}
+          //   isLiveStream={this.props.isLiveStream}
+          }
+
         </div>
+        <Controls {...this.props} controlBarVisible={this.state.controlBarVisible} />
       </div>
     );
   }

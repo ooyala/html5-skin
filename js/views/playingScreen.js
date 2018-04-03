@@ -5,6 +5,7 @@ var React = require('react'),
   ReactDOM = require('react-dom'),
   Utils = require('../components/utils'),
   ControlBar = require('../components/controlBar'),
+  Controls = require('../components/controls'),
   AdOverlay = require('../components/adOverlay'),
   ClassNames = require('classnames'),
   UpNextPanel = require('../components/upNextPanel'),
@@ -367,12 +368,15 @@ var PlayingScreen = React.createClass({
 
         {upNextPanel}
 
-        <ControlBar {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-          playerState={this.props.playerState}
-          isLiveStream={this.props.isLiveStream} />
+        {
+        // <ControlBar {...this.props}
+        //   controlBarVisible={this.state.controlBarVisible}
+        //   playerState={this.props.playerState}
+        //   isLiveStream={this.props.isLiveStream} />
+        }
 
       </div>
+      <Controls {...this.props} controlBarVisible={this.state.controlBarVisible} />
 
       {showUnmute ? <UnmuteIcon {...this.props}/> : null}
 
