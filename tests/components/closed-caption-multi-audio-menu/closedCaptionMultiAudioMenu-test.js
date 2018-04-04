@@ -22,19 +22,19 @@ var MultiAudioTab = require('../../../js/components/closed-caption-multi-audio-m
 var Tab = require('../../../js/components/closed-caption-multi-audio-menu/tab');
 
 describe('ClosedCaptionMultiAudioMenu component', function() {
-  var selectedAudioId = null,
-      selectedCaptionsId = null,
-      currentAudioId,
-      props = {},
-      DOM;
+  var selectedAudio = null,
+    selectedCaptionsId = null,
+    currentAudioId,
+    props = {},
+    DOM;
 
   beforeEach(function() {
     props = {
       menuClassName: undefined,
       skinConfig: {},
       controller: {
-        setCurrentAudio: function(id) {
-          selectedAudioId = id;
+        setCurrentAudio: function(track) {
+          selectedAudio = track;
         },
         onClosedCaptionChange: function(id) {
           selectedCaptionsId = id;
@@ -42,7 +42,7 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
         state: {
           closedCaptionOptions: {
             availableLanguages: {
-              languages: ["en", "de", "fr"]
+              languages: ['en', 'de', 'fr']
             }
           },
           multiAudio: {
@@ -69,7 +69,7 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
   });
 
   afterEach(function() {
-    selectedAudioId = null;
+    selectedAudio = null;
     selectedCaptionsId = null;
     props = {};
     DOM = null;
@@ -91,7 +91,12 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
 
     TestUtils.Simulate.click(items[0]);
 
-    expect(selectedAudioId).toBe('1');
+    expect(selectedAudio).toEqual({
+      enabled: true,
+      label: '',
+      lang: 'eng',
+      id: '1'
+    });
   });
 
   it('should also render Tab component when options are provided', function() {
@@ -107,15 +112,13 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
       menuClassName: undefined,
       skinConfig: {},
       controller: {
-        setCurrentAudio: function(id) {
-          selectedAudioId = id;
+        setCurrentAudio: function(audioTrack) {
+          selectedAudio = audioTrack;
         },
         onClosedCaptionChange: function(id) {
           selectedCaptionsId = id;
         },
-        state: {
-          
-        }
+        state: {}
       }
     };
 
@@ -133,7 +136,7 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
         state: {
           closedCaptionOptions: {
             availableLanguages: {
-              languages: ["en", "fr"]
+              languages: ['en', 'fr']
             }
           }
         }
@@ -147,7 +150,6 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
 
     TestUtils.Simulate.click(items[0]);
 
-    expect(selectedAudioId).toBe(null);
+    expect(selectedAudio).toEqual(null);
   });
-
 });
