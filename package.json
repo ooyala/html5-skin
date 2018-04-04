@@ -49,7 +49,7 @@
     "jsdoc": "^3.3.3",
     "jsdoc-jsx": "^0.1.0",
     "react-addons-test-utils": "0.14.7",
-    "react-scrollbar": "https://registry.npmjs.org/react-scrollbar/-/react-scrollbar-0.4.0.tgz",
+    "react-scrollbar": "0.4.0",
     "react-tools": "*",
     "reactify": "1.1.1",
     "sinon": "^2.1.0",

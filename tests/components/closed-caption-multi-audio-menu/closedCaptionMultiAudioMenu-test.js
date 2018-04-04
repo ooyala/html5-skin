@@ -69,7 +69,7 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
   });
 
   afterEach(function() {
-    selectedAudioId = null;
+    selectedAudio = null;
     selectedCaptionsId = null;
     props = {};
     DOM = null;
@@ -150,6 +150,6 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
 
     TestUtils.Simulate.click(items[0]);
 
-    expect(selectedAudioId).toEqual(null);
+    expect(selectedAudio).toEqual(null);
   });
 });
