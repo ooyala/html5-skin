@@ -870,7 +870,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @param multiAudio {Object} - audio which fetched for the current video
      * @param multiAudio.tracks {Array} - list of objects with data for each audio
      */
-    onMultiAudioFetched: function(event, multiAudio) {
+    onMultiAudioFetched: function (event, multiAudio) {
       if (this.state.showMultiAudioIcon) { // if param showMultiAudioIcon is set to true
         this.state.multiAudio = multiAudio;
         this.renderSkin();
@@ -884,7 +884,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @param multiAudio {Object} - audio which fetched for the current video
      * @param multiAudio.tracks {Array} - list of objects with data for each audio
      */
-    onMultiAudioChanged: function(event, multiAudio) {
+    onMultiAudioChanged: function (event, multiAudio) {
       if (this.state.showMultiAudioIcon) {
         this.state.multiAudio = multiAudio;
         this.renderSkin();
@@ -1270,7 +1270,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             closedCaptionOptions: this.state.closedCaptionOptions, 
             pauseAnimationDisabled: this.state.pauseAnimationDisabled
           }), 
-          document.querySelector("#" + this.state.elementId + " .oo-player-skin")
+          document.querySelector('#' + this.state.elementId + ' .oo-player-skin')
       );
 
       this.state.configLoaded = true;

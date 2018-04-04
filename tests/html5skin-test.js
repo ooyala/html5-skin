@@ -721,9 +721,9 @@ describe('Controller', function() {
     });
 
     it('Calling of setCurrentAudio should throw SET_CURRENT_AUDIO event with id', function() {
-      var id = "1";
-      controller.setCurrentAudio(id);
-      expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, id)).toBe(true);
+      var track = { id: '1', lang: 'eng', label: 'eng' };
+      controller.setCurrentAudio(track);
+      expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, track)).toBe(true);
     });
 
     it('should check if the icon exists if showMultiAudioIcon is true', function () {
@@ -740,62 +740,62 @@ describe('Controller', function() {
     it('should set correct state after MULTI_AUDIO_FETCHED was called', function() {
       var multiAudio = {
         tracks: [
-          {id: "0", kind: "main", label: "eng", lang: "eng", enabled: true},
-          {id: "1", kind: "main", label: "ger", lang: "ger", enabled: false}
+          { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true },
+          { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
         ]
-      }
+      };
       controller.onMultiAudioFetched('event', multiAudio);
       expect(controller.state.multiAudio.tracks).toEqual(multiAudio.tracks);
     });
-
+    
     it('should set correct state after MULTI_AUDIO_CHANGED was called', function() {
       var multiAudio = {
         tracks: [
-          {id: "0", kind: "main", label: "eng", lang: "eng", enabled: true},
-          {id: "1", kind: "main", label: "ger", lang: "ger", enabled: false}
+          { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true },
+          { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
         ]
-      }
+      };
       controller.onMultiAudioFetched('event', multiAudio);
       expect(controller.state.multiAudio.tracks).toEqual(multiAudio.tracks);
     });
-
+    
     it('should set correct state after MULTI_AUDIO_CHANGED after MULTI_AUDIO_FETCHED was already called', 
       function() {
-
         var multiAudio = {
           tracks: [
-            { id: "0", kind: "main", label: "eng", lang: "eng", enabled: true },
-            { id: "1", kind: "main", label: "ger", lang: "ger", enabled: false }
+            { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true },
+            { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
           ]
-        }
-        
+        };
+      
         controller.onMultiAudioFetched('event', multiAudio);
         expect(controller.state.multiAudio.tracks).toEqual(multiAudio.tracks);
-
+      
         // change the state to have more tracks
         var newAudio = {
           tracks: [
-            { id: "0", kind: "main", label: "eng", lang: "eng", enabled: true },
-            { id: "1", kind: "main", label: "ger", lang: "ger", enabled: false },
-            { id: "2", kind: "main", label: "ger", lang: "ger", enabled: false },
+            { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true },
+            { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false },
+            { id: '2', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
           ]
-        }
+        };
         controller.onMultiAudioChanged('event', newAudio);
-
+      
         expect(controller.state.multiAudio.tracks).toEqual(newAudio.tracks);
-
-        // change the state to have different active track
+      
+        // change the state to have a different active track
         var newActiveAudio = {
           tracks: [
-            { id: "0", kind: "main", label: "eng", lang: "eng", enabled: false },
-            { id: "1", kind: "main", label: "ger", lang: "ger", enabled: true },
-            { id: "2", kind: "main", label: "ger", lang: "ger", enabled: false },
+            { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: false },
+            { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: true },
+            { id: '2', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
           ]
-        }
+        };
         controller.onMultiAudioChanged('event', newActiveAudio);
-
+      
         expect(controller.state.multiAudio.tracks).toEqual(newActiveAudio.tracks);
       }
     );
+    
   });
 });

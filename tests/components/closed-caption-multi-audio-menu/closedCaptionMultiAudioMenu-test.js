@@ -15,7 +15,9 @@ var sinon = require('sinon');
 var CONSTANTS = require('../../../js/constants/constants');
 var helpers = require('../../../js/components/closed-caption-multi-audio-menu/helpers');
 
-var ClosedCaptionMultiAudioMenu = require('../../../js/components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
+var ClosedCaptionMultiAudioMenu = require(
+  '../../../js/components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'
+);
 var MultiAudioTab = require('../../../js/components/closed-caption-multi-audio-menu/multiAudioTab');
 var Tab = require('../../../js/components/closed-caption-multi-audio-menu/tab');
 
@@ -105,7 +107,7 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
     expect(items.length).toBe(3);
   });
 
-  it("should not render neither tab not multiaudio when there's no data", function() {
+  it('should not render neither tab not multiaudio when there\'s no data', function() {
     var emptyProps = {
       menuClassName: undefined,
       skinConfig: {},
