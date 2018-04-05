@@ -80,6 +80,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
       );
       closedCaptionsCol = (
         <Tab
+          tabClassName="oo-hidden"
           handleClick={this.handleClosedCaptionClick}
           skinConfig={this.props.skinConfig}
           itemsList={closedCaptionList}
