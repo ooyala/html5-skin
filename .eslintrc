@@ -19,7 +19,7 @@
         "no-unreachable": ["error"],
         "no-unused-vars": ["warn"],
         "valid-typeof": ["warn"],
-        "space-before-function-paren": ["warn"],
+        "space-before-function-paren": ["never"],
         "space-before-blocks": ["warn"],
         "spaced-comment": ["warn"],
         "brace-style": ["warn"],
