@@ -23,7 +23,7 @@
         "spaced-comment": ["warn"],
         "brace-style": ["warn"],
         "one-var-declaration-per-line": ["warn"],
-        "no-magic-numbers": ["warn"],
+        "no-magic-numbers": ["warn", { "ignore": [0, -1, 1] }],
         "valid-jsdoc": ["warn"],
         
         "max-len": ["error", 110],
