@@ -3,6 +3,7 @@ var classnames = require('classnames');
 var CONSTANTS = require('../../constants/constants');
 var Tab = require('./tab');
 var MultiAudioTab = require('./multiAudioTab');
+var _ = require('underscore');
 
 var ClosedCaptionMultiAudioMenu = React.createClass({
   /**
@@ -43,8 +44,21 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
    * @param id {string} - id of clicked element
    */
   handleMultiAudioClick: function(id) {
-    if (this.props.controller && typeof this.props.controller.setCurrentAudio === 'function') {
-      this.props.controller.setCurrentAudio(id);
+    if (
+      this.props.controller &&
+      typeof this.props.controller.setCurrentAudio === 'function' &&
+      this.props.controller.state &&
+      this.props.controller.state.multiAudio &&
+      this.props.controller.state.multiAudio.tracks
+    ) {
+      var tracks = this.props.controller.state.multiAudio.tracks;
+
+      // find selected track in a list of available tracks
+      var selectedAudioTrack = _.find(tracks, function (track) {
+        return track.id === id;
+      });
+
+      this.props.controller.setCurrentAudio(selectedAudioTrack);
     }
   },
 

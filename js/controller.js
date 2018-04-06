@@ -196,6 +196,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setVrViewingDirection, this));
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
+      this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi', _.bind(this.onMultiAudioChanged, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -870,7 +871,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * @param multiAudio.tracks {Array} - list of objects with data for each audio
      */
     onMultiAudioFetched: function(event, multiAudio) {
-      if (this.state.showMultiAudioIcon) { //if param showMultiAudioIcon is set to true
+      if (this.state.showMultiAudioIcon) { // if param showMultiAudioIcon is set to true
+        this.state.multiAudio = multiAudio;
+        this.renderSkin();
+      }
+    },
+
+    /**
+     * The function is called when event MULTI_AUDIO_CHANGED was caught;
+     * The function sets value for this.state.multiAudio
+     * @param event {String} name of a event
+     * @param multiAudio {Object} - audio which fetched for the current video
+     * @param multiAudio.tracks {Array} - list of objects with data for each audio
+     */
+    onMultiAudioChanged: function(event, multiAudio) {
+      if (this.state.showMultiAudioIcon) {
         this.state.multiAudio = multiAudio;
         this.renderSkin();
       }
@@ -879,10 +894,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /**
      * The function is called when we want to change audio track
      * @fires OO.EVENTS.SET_CURRENT_AUDIO
-     * @param {String} id - the id of the audio track to activate
+     * @param currentTrack {{id: String, label: String, lang: String}} - current active audio track
      */
-    setCurrentAudio: function(id) {
-      this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, id);
+    setCurrentAudio: function(currentTrack) {
+      this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, currentTrack);
     },
 
     onSeeked: function(event) {
@@ -1245,9 +1260,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       //load player
       this.skin = ReactDOM.render(
-        React.createElement(Skin, {skinConfig: this.state.config, localizableStrings: Localization.languageFiles, language: Utils.getLanguageToUse(this.state.config), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .oo-player-skin")
+        React.createElement(
+          Skin, 
+          {
+            skinConfig: this.state.config, 
+            localizableStrings: Localization.languageFiles, 
+            language: Utils.getLanguageToUse(this.state.config), 
+            controller: this, 
+            closedCaptionOptions: this.state.closedCaptionOptions, 
+            pauseAnimationDisabled: this.state.pauseAnimationDisabled
+          }), 
+          document.querySelector('#' + this.state.elementId + ' .oo-player-skin')
       );
+
       this.state.configLoaded = true;
+
+      this.mb.publish(OO.EVENTS.SKIN_CONFIG_LOADED, this.state.config);
+      
       this.renderSkin();
       this.createPluginElements();
 
@@ -1556,6 +1585,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events

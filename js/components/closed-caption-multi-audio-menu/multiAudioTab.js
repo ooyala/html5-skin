@@ -8,7 +8,7 @@ var CONSTANTS = require('../../constants/constants');
 var MultiAudioTab = React.createClass({
   render: function() {
     var audioTracksList = this.props.audioTracksList.map(
-      function(audioTrack, index) {
+      function(audioTrack) {
         var displayLanguage = helpers.getDisplayLanguage(iso639, audioTrack.lang);
         var displayLabel = helpers.getDisplayLabel(audioTrack);
 
