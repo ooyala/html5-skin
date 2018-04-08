@@ -21,13 +21,28 @@
         "no-unused-vars": ["warn"],
         "no-param-reassign": ["warn"],
         "valid-typeof": ["warn"],
-        "space-before-blocks": ["warn"],
+        "space-before-blocks": ["error", "always"],
+        "space-before-function-paren": ["error", "never"],
+        "space-in-parens": ["error", "never"],
+        
         "keyword-spacing": ["warn"],
         "spaced-comment": ["warn"],
         "brace-style": ["warn"],
+
+        "no-multiple-empty-lines": ["error"],
         "one-var-declaration-per-line": ["warn"],
+
         "no-magic-numbers": ["warn", { "ignore": [0, -1, 1] }],
-        "valid-jsdoc": ["warn"],
+
+        "valid-jsdoc": ["error"],
+        "require-jsdoc": ["error", {
+            "require": {
+                "MethodDefinition": true,
+                "ClassDeclaration": true,
+                "FunctionDeclaration": true
+            }
+        }],
+
         "camelcase": ["warn"],
 
         "id-length": ["warn"],
@@ -45,6 +60,8 @@
         "no-mixed-spaces-and-tabs": ["error"],
         "no-unneeded-ternary": ["error"],
 
-        "react/jsx-uses-vars": ["error"]
+        "react/jsx-uses-vars": ["error"],
+
+        "yoda": ["error"]
     }
 }
