@@ -1,58 +1,61 @@
 {
-    "env": {
-        "browser": true,
-        "commonjs": true,
-        "es6": false,
-        "node": false
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": false,
+    "node": false
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 5,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react"
-    ],
-    "rules": {
-        "no-unused-vars": ["warn"],
-        "no-param-reassign": ["warn"],
-        "valid-typeof": ["warn"],
-        "keyword-spacing": ["warn"],
-        "spaced-comment": ["warn"],
-        "brace-style": ["warn"],
-        "one-var-declaration-per-line": ["warn"],
-        "no-magic-numbers": ["warn", { "ignore": [0, -1, 1] }],
-        "camelcase": ["warn"],
-        "id-length": ["warn"],
+    "ecmaVersion": 5,
+    "sourceType": "module"
+  },
+  "plugins": ["react"],
+  "rules": {
+    "brace-style": ["warn"],
+    "camelcase": ["warn"],
+    "id-length": ["warn"],
+    "keyword-spacing": ["warn"],
+    "no-magic-numbers": ["warn", { "ignore": [0, -1, 1] }],
+    "no-param-reassign": ["warn"],
+    "no-unused-vars": ["warn"],
+    "one-var-declaration-per-line": ["warn"],
+    "spaced-comment": ["warn"],
+    "valid-typeof": ["warn"],
 
-        "space-before-blocks": ["error", "always"],
-        "space-before-function-paren": ["error", "never"],
-        "no-unreachable": ["error"],
-        "no-continue": ["error"],
-        "space-in-parens": ["error", "never"],
-        "no-multiple-empty-lines": ["error"],
-        "valid-jsdoc": ["error"],
-        "require-jsdoc": ["error", {
-            "require": {
-                "MethodDefinition": true,
-                "ClassDeclaration": true,
-                "FunctionDeclaration": true
-            }
-        }],
-        "max-len": ["error", 110],
-        "semi": ["error", "always"],
-        "quotes": ["error", "single"],
-        "indent": ["error", 2],
-        "no-dupe-args": ["error"],
-        "no-dupe-keys": ["error"],
-        "default-case": ["error"],
-        "eqeqeq": ["error"],
-        "no-fallthrough": ["error"],
-        "no-mixed-spaces-and-tabs": ["error"],
-        "no-unneeded-ternary": ["error"],
-        "react/jsx-uses-vars": ["error"],
-        "yoda": ["error"]
-    }
+    "default-case": ["error"],
+    "eqeqeq": ["error"],
+    "indent": ["error", 2],
+    "max-len": ["error", 110],
+    "no-unreachable": ["error"],
+    "no-continue": ["error"],
+    "no-dupe-args": ["error"],
+    "no-dupe-keys": ["error"],
+    "no-fallthrough": ["error"],
+    "no-mixed-spaces-and-tabs": ["error"],
+    "no-multiple-empty-lines": ["error"],
+    "no-undef": ["error"],
+    "no-unneeded-ternary": ["error"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "space-before-blocks": ["error", "always"],
+    "space-before-function-paren": ["error", "never"],
+    "space-in-parens": ["error", "never"],
+    "valid-jsdoc": ["error"],
+    "require-jsdoc": [
+      "error",
+      {
+        "require": {
+          "MethodDefinition": true,
+          "ClassDeclaration": true,
+          "FunctionDeclaration": true
+        }
+      }
+    ],
+    "yoda": ["error"],
+
+    "react/jsx-uses-vars": ["error"]
+  }
 }
