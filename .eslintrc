@@ -16,24 +16,23 @@
         "react"
     ],
     "rules": {
-        "no-unreachable": ["error"],
-        "no-continue": ["error"],
         "no-unused-vars": ["warn"],
         "no-param-reassign": ["warn"],
         "valid-typeof": ["warn"],
-        "space-before-blocks": ["error", "always"],
-        "space-before-function-paren": ["error", "never"],
-        "space-in-parens": ["error", "never"],
-        
         "keyword-spacing": ["warn"],
         "spaced-comment": ["warn"],
         "brace-style": ["warn"],
-
-        "no-multiple-empty-lines": ["error"],
         "one-var-declaration-per-line": ["warn"],
-
         "no-magic-numbers": ["warn", { "ignore": [0, -1, 1] }],
+        "camelcase": ["warn"],
+        "id-length": ["warn"],
 
+        "space-before-blocks": ["error", "always"],
+        "space-before-function-paren": ["error", "never"],
+        "no-unreachable": ["error"],
+        "no-continue": ["error"],
+        "space-in-parens": ["error", "never"],
+        "no-multiple-empty-lines": ["error"],
         "valid-jsdoc": ["error"],
         "require-jsdoc": ["error", {
             "require": {
@@ -42,26 +41,18 @@
                 "FunctionDeclaration": true
             }
         }],
-
-        "camelcase": ["warn"],
-
-        "id-length": ["warn"],
         "max-len": ["error", 110],
         "semi": ["error", "always"],
         "quotes": ["error", "single"],
         "indent": ["error", 2],
-
         "no-dupe-args": ["error"],
         "no-dupe-keys": ["error"],
         "default-case": ["error"],
         "eqeqeq": ["error"],
         "no-fallthrough": ["error"],
-
         "no-mixed-spaces-and-tabs": ["error"],
         "no-unneeded-ternary": ["error"],
-
         "react/jsx-uses-vars": ["error"],
-
         "yoda": ["error"]
     }
 }
