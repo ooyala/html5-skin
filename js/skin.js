@@ -82,14 +82,15 @@ var Skin = React.createClass({
   /**
    * @public
    * @description the function is called when we start the rotation
-   * @param e - event
+   * @param {MouseEvent} event - event
+   * @return {undefined}
    */
-  handleVrPlayerMouseDown: function (e) {
+  handleVrPlayerMouseDown: function (event) {
     if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
     if (this.props.controller && this.props.controller.videoVr) {
-      var coords = Utils.getCoords(e);
+      var coords = Utils.getCoords(event);
 
       this.setState({
         isVrMouseDown: true,
@@ -105,9 +106,9 @@ var Skin = React.createClass({
   /**
    * @public
    * @description the function is called while rotation is active
-   * @param e - event
+   * @param {MouseEvent} event - event
    */
-  handleVrPlayerMouseMove: function (e) {
+  handleVrPlayerMouseMove: function (event) {
     if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
@@ -117,7 +118,7 @@ var Skin = React.createClass({
         isVrMouseMove: true
       });
       if (typeof this.props.controller.onTouchMove === 'function') {
-        var coords = Utils.getCoords(e);
+        var coords = Utils.getCoords(event);
         var params = this.getDirectionParams(coords.x, coords.y);
         this.props.controller.onTouchMove(params, true);
       }
@@ -135,7 +136,7 @@ var Skin = React.createClass({
     if (this.props.controller && this.props.controller.videoVr) {
       var isVrMouseMove = this.state.isVrMouseMove;
       if (Utils.isIos()) {
-        isVrMouseMove = false; //for the opportunity to stop video on iPhone by touching on the screen
+        isVrMouseMove = false; // for the opportunity to stop video on iPhone by touching on the screen
       }
       this.setState({
         isVrMouseDown: false,
@@ -161,6 +162,7 @@ var Skin = React.createClass({
   /**
    * @public
    * @description set isVrMouseMove to false for click event
+   * @return {undefined}
    */
   handleVrPlayerClick: function () {
     this.setState({
@@ -171,6 +173,7 @@ var Skin = React.createClass({
   /**
    * @public
    * @description set accessibilityControlsEnabled to true for focus event
+   * @return {undefined}
    */
   handleVrPlayerFocus: function () {
     this.props.controller.state.accessibilityControlsEnabled = true;
@@ -201,7 +204,7 @@ var Skin = React.createClass({
   /**
    * @description check vrViewingDirection existing and return the value
    * @private
-   * @param paramName {string} "yaw", "pitch"
+   * @param {string} paramName - one of "yaw" or "pitch"
    * @returns {number} value of vrViewingDirection param
    */
   getVrViewingDirectionParamValue: function (paramName) {
@@ -218,7 +221,7 @@ var Skin = React.createClass({
   render: function () {
     var screen;
 
-    //For IE10, use the start screen and that's it.
+    // For IE10, use the start screen and that's it.
     if (Utils.isIE10()) {
       if (this.state.screenToShow === CONSTANTS.SCREEN.START_SCREEN) {
         screen = (
@@ -226,13 +229,10 @@ var Skin = React.createClass({
                        componentWidth={this.state.componentWidth}
                        contentTree={this.state.contentTree}/>
         );
-      }
-      else {
+      } else {
         screen = (<div></div>);
       }
-    }
-    //switch screenToShow
-    else {
+    } else { // switch screenToShow
       switch (this.state.screenToShow) {
       case CONSTANTS.SCREEN.INITIAL_SCREEN:
         screen = (
