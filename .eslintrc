@@ -6,6 +6,9 @@
     "es6": false,
     "node": false
   },
+  "globals": {
+      "OO": true
+  },
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -17,7 +20,7 @@
   "rules": {
     "brace-style": ["warn"],
     "camelcase": ["warn"],
-    "id-length": ["warn"],
+    "id-length": ["warn", { "exceptions": ["_", "$"]}],
     "keyword-spacing": ["warn"],
     "no-magic-numbers": ["warn", { "ignore": [0, -1, 1] }],
     "no-param-reassign": ["warn"],
