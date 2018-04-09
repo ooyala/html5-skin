@@ -9,7 +9,7 @@ var TestUtils = require('react-addons-test-utils');
 var StartScreen = require('../../js/views/startScreen');
 var skinConfig = require('../../config/skin.json');
 
-describe('StartScreen', function () {
+describe('StartScreen', function() {
   var mockController, mockProps;
 
   beforeEach(function() {
@@ -42,11 +42,11 @@ describe('StartScreen', function () {
     };
   });
 
-  it('should render start screen', function () {
+  it('should render start screen', function() {
     // Render start screen into DOM
     var DOM = TestUtils.renderIntoDocument(<StartScreen />);
 
-    //test play
+    // test play
     var playBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
     TestUtils.Simulate.click(playBtn);
   });

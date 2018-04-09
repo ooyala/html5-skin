@@ -62,8 +62,8 @@ describe('Tab component', function() {
     var component = TestUtils.renderIntoDocument(<Tab {...props} />);
     var listItems = TestUtils.scryRenderedDOMComponentsWithClass(component, 'oo-cc-ma-menu__element');
     
-    TestUtils.Simulate.click(listItems[0])
-    expect(clickedId).toBe("1");
+    TestUtils.Simulate.click(listItems[0]);
+    expect(clickedId).toBe('1');
   });
 
   it('should not call handler if its not present', function() {
@@ -92,7 +92,7 @@ describe('Tab component', function() {
     var component = TestUtils.renderIntoDocument(<Tab {...propsNoHandler} />);
     var listItems = TestUtils.scryRenderedDOMComponentsWithClass(component, 'oo-cc-ma-menu__element');
     
-    TestUtils.Simulate.click(listItems[0])
+    TestUtils.Simulate.click(listItems[0]);
     expect(clickedId).toBe(null);
   });
 });

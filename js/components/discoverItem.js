@@ -27,7 +27,7 @@ var DiscoverItem = React.createClass({
     }
 
     var thumbnailStyle = {
-      backgroundImage: "url('" + this.props.src + "')"
+      backgroundImage: 'url(\'' + this.props.src + '\')'
     };
 
     var itemTitleStyle = {

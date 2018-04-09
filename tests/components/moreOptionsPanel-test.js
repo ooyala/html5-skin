@@ -13,16 +13,16 @@ var skinConfig = require('../../config/skin.json');
 var Utils = require('../../js/components/utils');
 
 // start unit test
-describe('MoreOptionsPanel', function () {
-  it('creates more options panel', function () {
+describe('MoreOptionsPanel', function() {
+  it('creates more options panel', function() {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"share", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
-      {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
-      {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
-      {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 },
-      {"name":"audioAndCC", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":200 }
+      {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':200 },
+      {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':200 },
+      {'name':'closedCaption', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':200 },
+      {'name':'quality', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':200 },
+      {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':200 }
     ];
 
     var mockController = {
@@ -61,16 +61,16 @@ describe('MoreOptionsPanel', function () {
         controlBarWidth={100} />
     );
 
-    //test mouseover highlight
+    // test mouseover highlight
     var span = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'span');
-    for(var i=0; i<span.length; i++){
+    for (var i=0; i<span.length; i++) {
       TestUtils.Simulate.mouseOver(span[i]);
       TestUtils.Simulate.mouseOut(span[i]);
     }
 
-    //test btn clicks
+    // test btn clicks
     var button = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
-    for(var j=0; j<button.length; j++){
+    for (var j=0; j<button.length; j++) {
       TestUtils.Simulate.click(button[j]);
     }
     expect(toggleScreenClicked).toBe(true);
@@ -79,9 +79,9 @@ describe('MoreOptionsPanel', function () {
   });
 });
 
-//bitrate selection, closed captions, discovery buttons not available
-describe('MoreOptionsPanel', function () {
-  it('checks cc button not available', function () {
+// bitrate selection, closed captions, discovery buttons not available
+describe('MoreOptionsPanel', function() {
+  it('checks cc button not available', function() {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [];

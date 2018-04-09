@@ -10,8 +10,8 @@ var AdScreen = require('../../js/views/adScreen');
 var defaultSkinConfig = require('../../config/skin.json');
 var UnmuteIcon = require('../../js/components/unmuteIcon');
 
-describe('AdScreen', function () {
-  it('creates an ad screen', function () {
+describe('AdScreen', function() {
+  it('creates an ad screen', function() {
 
     // Render ad screen into DOM
     var mockController = {
@@ -29,14 +29,14 @@ describe('AdScreen', function () {
       },
       pauseScreen: {
         showPauseIcon: true,
-        pauseIconPosition: "center",
+        pauseIconPosition: 'center',
         PauseIconStyle: {
-          color: "white",
+          color: 'white',
           opacity: 1
         }
       },
       icons: {
-        pause: {"fontStyleClass": "oo-icon oo-icon-pause"}
+        pause: {'fontStyleClass': 'oo-icon oo-icon-pause'}
       }
     };
     var DOM = TestUtils.renderIntoDocument(
@@ -47,7 +47,7 @@ describe('AdScreen', function () {
 
   });
 
-  it('handles mouseover and mouseout', function () {
+  it('handles mouseover and mouseout', function() {
 
     // Render ad screen into DOM
     var controlBarVisible = true;
@@ -72,14 +72,14 @@ describe('AdScreen', function () {
       },
       pauseScreen: {
         showPauseIcon: true,
-        pauseIconPosition: "center",
+        pauseIconPosition: 'center',
         PauseIconStyle: {
-          color: "white",
+          color: 'white',
           opacity: 1
         }
       },
       icons: {
-        pause: {"fontStyleClass": "oo-icon oo-icon-pause"}
+        pause: {'fontStyleClass': 'oo-icon oo-icon-pause'}
       }
     };
     var DOM = TestUtils.renderIntoDocument(
@@ -99,7 +99,7 @@ describe('AdScreen', function () {
     expect(controlBarVisible).toBe(true);
   });
 
-it('checks that ad marquee is shown/not shown when appropriate', function () {
+  it('checks that ad marquee is shown/not shown when appropriate', function() {
 
     // Render ad screen into DOM
     var mockController = {
@@ -118,18 +118,18 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
       },
       pauseScreen: {
         showPauseIcon: true,
-        pauseIconPosition: "center",
+        pauseIconPosition: 'center',
         PauseIconStyle: {
-          color: "white",
+          color: 'white',
           opacity: 1
         }
       },
       icons: {
-        pause: {"fontStyleClass": "oo-icon oo-icon-pause"}
+        pause: {'fontStyleClass': 'oo-icon oo-icon-pause'}
       }
     };
 
-    //showing ad marquee
+    // showing ad marquee
     var DOM = TestUtils.renderIntoDocument(
       <AdScreen
         controller={mockController}
@@ -140,7 +140,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
     var adPanel = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-ad-panel');
     expect(adPanel[0]._childNodes.length).not.toBe(0);
 
-    //not showing ad marquee
+    // not showing ad marquee
     mockController.state.showAdMarquee = true;
     mockSkinConfig.adScreen.showAdMarquee = false;
 
@@ -154,7 +154,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
     var adPanel1 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-ad-panel');
     expect(adPanel1[0]._childNodes.length).toBe(0);
 
-    //not showing ad marquee
+    // not showing ad marquee
     mockController.state.showAdMarquee = false;
     mockSkinConfig.adScreen.showAdMarquee = true;
 
@@ -170,7 +170,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
 
   });
 
-  it('handles mousemove', function () {
+  it('handles mousemove', function() {
 
     // Render ad screen into DOM
     var controlBarVisible = true;
@@ -197,14 +197,14 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
       },
       pauseScreen: {
         showPauseIcon: true,
-        pauseIconPosition: "center",
+        pauseIconPosition: 'center',
         PauseIconStyle: {
-          color: "white",
+          color: 'white',
           opacity: 1
         }
       },
       icons: {
-        pause: {"fontStyleClass": "icon icon-pause"}
+        pause: {'fontStyleClass': 'icon icon-pause'}
       }
     };
     var DOM = TestUtils.renderIntoDocument(
@@ -222,7 +222,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
 
   });
 
-  it('test player clicks', function () {
+  it('test player clicks', function() {
 
     // Render ad screen into DOM
     var adsClicked = false;
@@ -245,14 +245,14 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
       },
       pauseScreen: {
         showPauseIcon: true,
-        pauseIconPosition: "center",
+        pauseIconPosition: 'center',
         PauseIconStyle: {
-          color: "white",
+          color: 'white',
           opacity: 1
         }
       },
       icons: {
-        pause: {"fontStyleClass": "icon icon-pause"}
+        pause: {'fontStyleClass': 'icon icon-pause'}
       }
     };
     var DOM = TestUtils.renderIntoDocument(
@@ -268,7 +268,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
     expect(adsClicked).toBe(true);
   });
 
-  it('tests ad componentWill*', function () {
+  it('tests ad componentWill*', function() {
     var adsClicked = false;
     var mockController = {
       state: {
@@ -307,14 +307,14 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
       },
       pauseScreen: {
         showPauseIcon: true,
-        pauseIconPosition: "center",
+        pauseIconPosition: 'center',
         PauseIconStyle: {
-          color: "white",
+          color: 'white',
           opacity: 1
         }
       },
       icons: {
-        pause: {"fontStyleClass": "icon icon-pause"}
+        pause: {'fontStyleClass': 'icon icon-pause'}
       }
     };
 
@@ -345,7 +345,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
     ReactDOM.unmountComponentAtNode(node);
   });
 
-  it('should display unmute icon when handling muted autoplay', function () {
+  it('should display unmute icon when handling muted autoplay', function() {
     var mockController = {
       state: {
         upNextInfo: {
@@ -367,7 +367,7 @@ it('checks that ad marquee is shown/not shown when appropriate', function () {
     expect(unmuteIcon).toBeTruthy();
   });
 
-  it('should not display unmute icon when not muted', function () {
+  it('should not display unmute icon when not muted', function() {
     var mockController = {
       state: {
         upNextInfo: {

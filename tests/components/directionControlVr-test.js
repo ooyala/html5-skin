@@ -9,17 +9,17 @@ var skinConfig = require('../../config/skin.json');
 var CONSTANTS = require('../../js/constants/constants');
 var DirectionControlVr = require('../../js/components/directionControlVr');
 
-describe('directionControlVr', function () {
-  it('should creates a directionControlVr', function () {
+describe('directionControlVr', function() {
+  it('should creates a directionControlVr', function() {
     var mockProps = {
       skinConfig: skinConfig,
       playerState: CONSTANTS.STATE.PLAYING,
       clickButton: false,
-      handleVrViewControlsClick: function () {
-        mockProps.clickButton = true
+      handleVrViewControlsClick: function() {
+        mockProps.clickButton = true;
       }
     };
-    var DOM = TestUtils.renderIntoDocument(	<DirectionControlVr {...mockProps}/> );
+    var DOM = TestUtils.renderIntoDocument(<DirectionControlVr {...mockProps}/>);
     var button = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-direction-control');
 
     expect(mockProps.clickButton).toBe(false);

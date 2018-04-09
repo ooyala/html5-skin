@@ -2,8 +2,12 @@
   "env": {
     "browser": true,
     "commonjs": true,
+    "jest": true,
     "es6": false,
     "node": false
+  },
+  "globals": {
+    "OO": true
   },
   "parserOptions": {
     "ecmaFeatures": {
@@ -16,20 +20,27 @@
   "rules": {
     "brace-style": ["warn"],
     "camelcase": ["warn"],
-    "id-length": ["warn"],
+    "id-length": ["warn", { "exceptions": ["_", "$"] }],
     "keyword-spacing": ["warn"],
     "no-magic-numbers": ["warn", { "ignore": [0, -1, 1] }],
     "no-param-reassign": ["warn"],
     "no-unused-vars": ["warn"],
+    "one-var": ["warn", "never"],
     "one-var-declaration-per-line": ["warn"],
     "spaced-comment": ["warn"],
     "valid-typeof": ["warn"],
 
     "default-case": ["error"],
     "eqeqeq": ["error"],
-    "indent": ["error", 2],
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1,
+        "VariableDeclarator": { "var": 2 }
+      }
+    ],
     "max-len": ["error", 110],
-    "no-unreachable": ["error"],
     "no-continue": ["error"],
     "no-dupe-args": ["error"],
     "no-dupe-keys": ["error"],
@@ -38,6 +49,7 @@
     "no-multiple-empty-lines": ["error"],
     "no-undef": ["error"],
     "no-unneeded-ternary": ["error"],
+    "no-unreachable": ["error"],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
     "space-before-blocks": ["error", "always"],
@@ -56,6 +68,8 @@
     ],
     "yoda": ["error"],
 
-    "react/jsx-uses-vars": ["error"]
+    "react/jsx-uses-vars": ["error"],
+    "react/jsx-uses-react": ["error"],
+    "react/react-in-jsx-scope": ["error"]
   }
 }

@@ -42,7 +42,7 @@ var ClosedCaptionPopover = React.createClass({
         </li>
         <li role="presentation">
           <AccessibleButton
-            ref={function(e) { this.moreOptionsBtn = e }.bind(this)}
+            ref={function(e) { this.moreOptionsBtn = e; }.bind(this)}
             className="oo-more-captions"
             ariaLabel={CONSTANTS.ARIA_LABELS.CAPTION_OPTIONS}
             role={CONSTANTS.ARIA_ROLES.MENU_ITEM}

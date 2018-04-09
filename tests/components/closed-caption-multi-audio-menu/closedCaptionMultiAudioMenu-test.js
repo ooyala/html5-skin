@@ -23,10 +23,10 @@ var Tab = require('../../../js/components/closed-caption-multi-audio-menu/tab');
 
 describe('ClosedCaptionMultiAudioMenu component', function() {
   var selectedAudio = null,
-    selectedCaptionsId = null,
-    currentAudioId,
-    props = {},
-    DOM;
+      selectedCaptionsId = null,
+      currentAudioId,
+      props = {},
+      DOM;
 
   beforeEach(function() {
     props = {

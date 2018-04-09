@@ -26,22 +26,22 @@ var Slider = React.createClass({
     }
   },
 
-  handleSliderColoring: function(props){
-    if (!Utils.isEdge()){
+  handleSliderColoring: function(props) {
+    if (!Utils.isEdge()) {
       var input = this.refs[this.props.itemRef];
       var style = window.getComputedStyle(input, null);
 
-      var colorBeforeThumb = style.getPropertyValue("border-left-color");
-      var colorAfterThumb = style.getPropertyValue("border-right-color");
+      var colorBeforeThumb = style.getPropertyValue('border-left-color');
+      var colorAfterThumb = style.getPropertyValue('border-right-color');
 
       var value = (props.value - props.minValue)/(props.maxValue - props.minValue);
       input.style.backgroundImage = [
         '-webkit-gradient(',
-          'linear, ',
-          'left top, ',
-          'right top, ',
-          'color-stop(' + value + ', '+ colorBeforeThumb + '), ',
-          'color-stop(' + value + ', '+ colorAfterThumb + ')',
+        'linear, ',
+        'left top, ',
+        'right top, ',
+        'color-stop(' + value + ', '+ colorBeforeThumb + '), ',
+        'color-stop(' + value + ', '+ colorAfterThumb + ')',
         ')'
       ].join('');
     }
