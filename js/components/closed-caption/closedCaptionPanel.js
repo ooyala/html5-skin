@@ -8,17 +8,17 @@
 * @constructor
 */
 var React = require('react'),
-  Utils = require('../utils'),
-  CONSTANTS = require('../../constants/constants'),
-  LanguageTab = require('./languageTab'),
-  ColorSelectionTab = require('./colorSelectionTab'),
-  CaptionOpacityTab = require('./captionOpacityTab'),
-  FontTypeTab = require('./fontTypeTab'),
-  FontSizeTab = require('./fontSizeTab'),
-  TextEnhancementsTab = require('./textEnhancementsTab'),
-  CCPreviewPanel = require('./ccPreviewPanel'),
-  Tabs = require('../tabs'),
-  Tab = Tabs.Panel;
+    Utils = require('../utils'),
+    CONSTANTS = require('../../constants/constants'),
+    LanguageTab = require('./languageTab'),
+    ColorSelectionTab = require('./colorSelectionTab'),
+    CaptionOpacityTab = require('./captionOpacityTab'),
+    FontTypeTab = require('./fontTypeTab'),
+    FontSizeTab = require('./fontSizeTab'),
+    TextEnhancementsTab = require('./textEnhancementsTab'),
+    CCPreviewPanel = require('./ccPreviewPanel'),
+    Tabs = require('../tabs'),
+    Tab = Tabs.Panel;
 
 // The scroll buttons are not needed until the player's width is below a specific amount. This varies by language.
 var tabMenuOverflowMap = {

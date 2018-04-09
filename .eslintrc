@@ -7,7 +7,7 @@
     "node": false
   },
   "globals": {
-      "OO": true
+    "OO": true
   },
   "parserOptions": {
     "ecmaFeatures": {
@@ -20,7 +20,7 @@
   "rules": {
     "brace-style": ["warn"],
     "camelcase": ["warn"],
-    "id-length": ["warn", { "exceptions": ["_", "$"]}],
+    "id-length": ["warn", { "exceptions": ["_", "$"] }],
     "keyword-spacing": ["warn"],
     "no-magic-numbers": ["warn", { "ignore": [0, -1, 1] }],
     "no-param-reassign": ["warn"],
@@ -31,7 +31,14 @@
 
     "default-case": ["error"],
     "eqeqeq": ["error"],
-    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1,
+        "VariableDeclarator": { "var": 2 }
+      }
+    ],
     "max-len": ["error", 110],
     "no-unreachable": ["error"],
     "no-continue": ["error"],

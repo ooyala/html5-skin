@@ -2,21 +2,21 @@
   CONTROL BAR
 *********************************************************************/
 var React = require('react'),
-  ReactDOM = require('react-dom'),
-  CONSTANTS = require('../constants/constants'),
-  ClassNames = require('classnames'),
-  ScrubberBar = require('./scrubberBar'),
-  Slider = require('./slider'),
-  Utils = require('./utils'),
-  Popover = require('../views/popover'),
-  AccessibleButton = require('./accessibleButton'),
-  VolumeControls = require('./volumeControls'),
-  VideoQualityPanel = require('./videoQualityPanel'),
-  ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
-  ClosedCaptionMultiAudioMenu = require('./closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
-  Logo = require('./logo'),
-  Icon = require('./icon'),
-  Tooltip = require('./tooltip');
+    ReactDOM = require('react-dom'),
+    CONSTANTS = require('../constants/constants'),
+    ClassNames = require('classnames'),
+    ScrubberBar = require('./scrubberBar'),
+    Slider = require('./slider'),
+    Utils = require('./utils'),
+    Popover = require('../views/popover'),
+    AccessibleButton = require('./accessibleButton'),
+    VolumeControls = require('./volumeControls'),
+    VideoQualityPanel = require('./videoQualityPanel'),
+    ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
+    ClosedCaptionMultiAudioMenu = require('./closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
+    Logo = require('./logo'),
+    Icon = require('./icon'),
+    Tooltip = require('./tooltip');
 
 
 var ControlBar = React.createClass({

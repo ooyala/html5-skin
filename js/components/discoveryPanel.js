@@ -4,13 +4,13 @@
  * @module DiscoveryPanel
  */
 var React = require('react'),
-  ReactDOM = require('react-dom'),
-  ClassNames = require('classnames'),
-  CONSTANTS = require('../constants/constants'),
-  CountDownClock = require('./countDownClock'),
-  DiscoverItem = require('./discoverItem'),
-  ResizeMixin = require('../mixins/resizeMixin'),
-  Icon = require('../components/icon');
+    ReactDOM = require('react-dom'),
+    ClassNames = require('classnames'),
+    CONSTANTS = require('../constants/constants'),
+    CountDownClock = require('./countDownClock'),
+    DiscoverItem = require('./discoverItem'),
+    ResizeMixin = require('../mixins/resizeMixin'),
+    Icon = require('../components/icon');
 
 var DiscoveryPanel = React.createClass({
   mixins: [ResizeMixin],

@@ -4,9 +4,9 @@
  * @module Watermark
  */
 var React = require('react'),
-  CONSTANTS = require('../constants/constants'),
-  Utils = require('../components/utils'),
-  ClassNames = require('classnames');
+    CONSTANTS = require('../constants/constants'),
+    Utils = require('../components/utils'),
+    ClassNames = require('classnames');
 
 var Watermark = React.createClass({
 

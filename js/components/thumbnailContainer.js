@@ -4,10 +4,10 @@
  * @module Thumbnail
  */
 var React = require('react'),
-  Utils = require('./utils'),
-  CONSTANTS = require('../constants/constants'),
-  Thumbnail = require('./thumbnail'),
-  ThumbnailCarousel = require('./thumbnailCarousel');
+    Utils = require('./utils'),
+    CONSTANTS = require('../constants/constants'),
+    Thumbnail = require('./thumbnail'),
+    ThumbnailCarousel = require('./thumbnailCarousel');
 
 var ThumbnailContainer = React.createClass({
   getInitialState: function() {

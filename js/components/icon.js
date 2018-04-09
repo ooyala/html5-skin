@@ -1,5 +1,5 @@
 var React = require('react'),
-  Utils = require('./utils');
+    Utils = require('./utils');
 
 
 var Icon = React.createClass({

@@ -1,8 +1,8 @@
 var React = require('react'),
-  Utils = require('../utils'),
-  CONSTANTS = require('../../constants/constants'),
-  ClassNames = require('classnames'),
-  TextTrack = require('../textTrackPanel');
+    Utils = require('../utils'),
+    CONSTANTS = require('../../constants/constants'),
+    ClassNames = require('classnames'),
+    TextTrack = require('../textTrackPanel');
 
 var CCPreviewPanel = React.createClass({
   render: function() {

@@ -1,6 +1,6 @@
 var React = require('react'),
-  CONSTANTS = require('../../constants/constants'),
-  DataSelector = require('../dataSelector');
+    CONSTANTS = require('../../constants/constants'),
+    DataSelector = require('../dataSelector');
 
 var FontTypeTab = React.createClass({
   getInitialState: function() {

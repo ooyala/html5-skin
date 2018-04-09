@@ -2,14 +2,14 @@
  START SCREEN
  *********************************************************************/
 var React = require('react'),
-  ReactDOM = require('react-dom'),
-  ClassNames = require('classnames'),
-  CONSTANTS = require('../constants/constants'),
-  Spinner = require('../components/spinner'),
-  Icon = require('../components/icon'),
-  Watermark = require('../components/watermark'),
-  ResizeMixin = require('../mixins/resizeMixin'),
-  Utils = require('../components/utils');
+    ReactDOM = require('react-dom'),
+    ClassNames = require('classnames'),
+    CONSTANTS = require('../constants/constants'),
+    Spinner = require('../components/spinner'),
+    Icon = require('../components/icon'),
+    Watermark = require('../components/watermark'),
+    ResizeMixin = require('../mixins/resizeMixin'),
+    Utils = require('../components/utils');
 
 var StartScreen = React.createClass({
   mixins: [ResizeMixin],

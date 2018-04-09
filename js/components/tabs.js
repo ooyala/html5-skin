@@ -1,12 +1,12 @@
 // taken from https://github.com/pedronauck/react-simpletabs
 
 var React = require('react'),
-  AccessibleButton = require('./accessibleButton'),
-  AccessibleMenu = require('./higher-order/accessibleMenu'),
-  CONSTANTS = require('../constants/constants'),
-  Utils = require('./utils'),
-  ClassNames = require('classnames'),
-  Icon = require('./icon');
+    AccessibleButton = require('./accessibleButton'),
+    AccessibleMenu = require('./higher-order/accessibleMenu'),
+    CONSTANTS = require('../constants/constants'),
+    Utils = require('./utils'),
+    ClassNames = require('classnames'),
+    Icon = require('./icon');
 
 var Tabs = React.createClass({
   highlight: function(evt) {

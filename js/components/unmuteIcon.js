@@ -1,7 +1,7 @@
 var React = require('react'),
-  Icon = require('./icon'),
-  ClassNames = require('classnames'),
-  CONSTANTS = require('../constants/constants');
+    Icon = require('./icon'),
+    ClassNames = require('classnames'),
+    CONSTANTS = require('../constants/constants');
 
 var UnmuteIcon = React.createClass({
   getInitialState: function() {

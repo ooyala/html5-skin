@@ -2,10 +2,10 @@
   ERROR SCREEN
 *********************************************************************/
 var React = require('react'),
-  ClassNames = require('classnames'),
-  CONSTANTS = require('../constants/constants'),
-  Utils = require('../components/utils'),
-  AccessibilityMixin = require('../mixins/accessibilityMixin');
+    ClassNames = require('classnames'),
+    CONSTANTS = require('../constants/constants'),
+    Utils = require('../components/utils'),
+    AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var ErrorScreen = React.createClass({
   mixins: [AccessibilityMixin],

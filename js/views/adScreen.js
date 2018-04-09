@@ -2,14 +2,14 @@
   AD SCREEN
 *********************************************************************/
 var React = require('react'),
-  CONSTANTS = require('../constants/constants'),
-  AdPanel = require('../components/adPanel'),
-  ControlBar = require('../components/controlBar'),
-  ClassNames = require('classnames'),
-  Utils = require('../components/utils'),
-  ResizeMixin = require('../mixins/resizeMixin'),
-  Icon = require('../components/icon'),
-  UnmuteIcon = require('../components/unmuteIcon');
+    CONSTANTS = require('../constants/constants'),
+    AdPanel = require('../components/adPanel'),
+    ControlBar = require('../components/controlBar'),
+    ClassNames = require('classnames'),
+    Utils = require('../components/utils'),
+    ResizeMixin = require('../mixins/resizeMixin'),
+    Icon = require('../components/icon'),
+    UnmuteIcon = require('../components/unmuteIcon');
 
 var AdScreen = React.createClass({
   mixins: [ResizeMixin],

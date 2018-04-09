@@ -1,8 +1,8 @@
 var React = require('react'),
-  Utils = require('./../utils'),
-  AccessibleButton = require('../accessibleButton'),
-  CONSTANTS = require('../../constants/constants'),
-  ClassNames = require('classnames');
+    Utils = require('./../utils'),
+    AccessibleButton = require('../accessibleButton'),
+    CONSTANTS = require('../../constants/constants'),
+    ClassNames = require('classnames');
 
 var OnOffSwitch = React.createClass({
   handleOnOffSwitch: function() {

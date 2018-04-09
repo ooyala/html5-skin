@@ -1,5 +1,5 @@
 var React = require('react'),
-  Utils = require('./utils');
+    Utils = require('./utils');
 
 var DiscoverItem = React.createClass({
   getInitialState: function() {

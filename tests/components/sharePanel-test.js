@@ -12,8 +12,8 @@ var TestUtils = require('react-addons-test-utils');
 var CONSTANTS = require('../../js/constants/constants');
 var SharePanel = require('../../js/components/sharePanel');
 var en = require('../../config/languageFiles/en.json'),
-  es = require('../../config/languageFiles/es.json'),
-  zh = require('../../config/languageFiles/zh.json');
+    es = require('../../config/languageFiles/es.json'),
+    zh = require('../../config/languageFiles/zh.json');
 
 // manual mock of OO.ready player skin params
 var playerParam = null;

@@ -8,9 +8,9 @@
  * @constructor
  */
 var React = require('react'),
-  ClassNames = require('classnames'),
-  Utils = require('./utils'),
-  CONSTANTS = require('../constants/constants');
+    ClassNames = require('classnames'),
+    Utils = require('./utils'),
+    CONSTANTS = require('../constants/constants');
 
 var SharePanel = React.createClass({
   tabs: {SHARE: 'social', EMBED: 'embed'},
@@ -160,7 +160,7 @@ var SharePanel = React.createClass({
     });
 
     var shareString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SHARE, this.props.localizableStrings),
-      embedString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMBED, this.props.localizableStrings);
+        embedString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.EMBED, this.props.localizableStrings);
 
     return (
       <div className="oo-content-panel oo-share-panel">

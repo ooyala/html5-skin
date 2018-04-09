@@ -21,7 +21,7 @@ describe('MultiAudioTab component', function() {
   var currentAudioId;
 
   var props = {}, 
-    DOM;
+      DOM;
 
   beforeEach(function() {
     props = {

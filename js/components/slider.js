@@ -1,8 +1,8 @@
 var React = require('react'),
-  ClassNames = require('classnames'),
-  MACROS = require('../constants/macros'),
-  CONSTANTS = require('../constants/constants'),
-  Utils = require('./utils');
+    ClassNames = require('classnames'),
+    MACROS = require('../constants/macros'),
+    CONSTANTS = require('../constants/constants'),
+    Utils = require('./utils');
 
 var Slider = React.createClass({
 

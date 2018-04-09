@@ -1,9 +1,9 @@
 var React = require('react'),
-  ClassNames = require('classnames'),
-  Utils = require('../utils'),
-  CONSTANTS = require('../../constants/constants'),
-  SelectionContainer = require('./selectionContainer'),
-  Slider = require('../slider');
+    ClassNames = require('classnames'),
+    Utils = require('../utils'),
+    CONSTANTS = require('../../constants/constants'),
+    SelectionContainer = require('./selectionContainer'),
+    Slider = require('../slider');
 
 var CaptionOpacityTab = React.createClass({
 

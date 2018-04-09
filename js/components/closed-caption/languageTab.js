@@ -1,7 +1,7 @@
 var React = require('react'),
-  DataSelector = require('../dataSelector'),
-  CONSTANTS = require('../../constants/constants'),
-  values = require('lodash.values');
+    DataSelector = require('../dataSelector'),
+    CONSTANTS = require('../../constants/constants'),
+    values = require('lodash.values');
 
 var LanguageTab = React.createClass({
   getInitialState: function() {

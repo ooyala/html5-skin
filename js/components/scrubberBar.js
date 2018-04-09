@@ -2,12 +2,12 @@
   SCRUBBER BAR
 *********************************************************************/
 var React = require('react'),
-  ReactDOM = require('react-dom'),
-  ResizeMixin = require('../mixins/resizeMixin'),
-  ThumbnailsContainer = require('./thumbnailContainer'),
-  Utils = require('./utils'),
-  MACROS = require('../constants/macros'),
-  CONSTANTS = require('../constants/constants');
+    ReactDOM = require('react-dom'),
+    ResizeMixin = require('../mixins/resizeMixin'),
+    ThumbnailsContainer = require('./thumbnailContainer'),
+    Utils = require('./utils'),
+    MACROS = require('../constants/macros'),
+    CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
   mixins: [ResizeMixin],

@@ -2,19 +2,19 @@
  PAUSE SCREEN
  *********************************************************************/
 var React = require('react'),
-  ReactDOM = require('react-dom'),
-  ClassNames = require('classnames'),
-  ControlBar = require('../components/controlBar'),
-  AdOverlay = require('../components/adOverlay'),
-  UpNextPanel = require('../components/upNextPanel'),
-  TextTrack = require('../components/textTrackPanel'),
-  Watermark = require('../components/watermark'),
-  ResizeMixin = require('../mixins/resizeMixin'),
-  Icon = require('../components/icon'),
-  Utils = require('../components/utils'),
-  CONSTANTS = require('./../constants/constants'),
-  AnimateMixin = require('../mixins/animateMixin'),
-  ViewControlsVr = require('../components/viewControlsVr');
+    ReactDOM = require('react-dom'),
+    ClassNames = require('classnames'),
+    ControlBar = require('../components/controlBar'),
+    AdOverlay = require('../components/adOverlay'),
+    UpNextPanel = require('../components/upNextPanel'),
+    TextTrack = require('../components/textTrackPanel'),
+    Watermark = require('../components/watermark'),
+    ResizeMixin = require('../mixins/resizeMixin'),
+    Icon = require('../components/icon'),
+    Utils = require('../components/utils'),
+    CONSTANTS = require('./../constants/constants'),
+    AnimateMixin = require('../mixins/animateMixin'),
+    ViewControlsVr = require('../components/viewControlsVr');
 
 var PauseScreen = React.createClass({
   mixins: [ResizeMixin, AnimateMixin],

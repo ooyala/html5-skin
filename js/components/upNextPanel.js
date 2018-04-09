@@ -8,11 +8,11 @@
 * @constructor
 */
 var React = require('react'),
-  CONSTANTS = require('./../constants/constants'),
-  Utils = require('./utils'),
-  CloseButton = require('./closeButton'),
-  CountDownClock = require('./countDownClock'),
-  Icon = require('../components/icon');
+    CONSTANTS = require('./../constants/constants'),
+    Utils = require('./utils'),
+    CloseButton = require('./closeButton'),
+    CountDownClock = require('./countDownClock'),
+    Icon = require('../components/icon');
 
 var UpNextPanel = React.createClass({
   closeUpNextPanel: function() {

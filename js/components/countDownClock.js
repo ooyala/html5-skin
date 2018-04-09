@@ -8,9 +8,9 @@
 * @constructor
 */
 var React = require('react'),
-  ReactDOM = require('react-dom'),
-  ClassNames = require('classnames'),
-  CONSTANTS = require('../constants/constants');
+    ReactDOM = require('react-dom'),
+    ClassNames = require('classnames'),
+    CONSTANTS = require('../constants/constants');
 
 var CountDownClock = React.createClass({
   getInitialState: function() {

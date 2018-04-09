@@ -1,10 +1,10 @@
 var React = require('react'),
-  CONSTANTS = require('../../constants/constants'),
-  Utils = require('../utils'),
-  AccessibleMenu = require('../higher-order/accessibleMenu'),
-  AccessibleButton = require('../accessibleButton'),
-  OnOffSwitch = require('./onOffSwitch'),
-  CloseButton = require('../closeButton');
+    CONSTANTS = require('../../constants/constants'),
+    Utils = require('../utils'),
+    AccessibleMenu = require('../higher-order/accessibleMenu'),
+    AccessibleButton = require('../accessibleButton'),
+    OnOffSwitch = require('./onOffSwitch'),
+    CloseButton = require('../closeButton');
 
 var ClosedCaptionPopover = React.createClass({
 

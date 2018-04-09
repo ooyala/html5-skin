@@ -8,11 +8,11 @@
  * @constructor
  */
 var React = require('react'),
-  CONSTANTS = require('../constants/constants'),
-  Spinner = require('./spinner'),
-  ClassNames = require('classnames'),
-  Utils = require('./utils'),
-  Icon = require('../components/icon');
+    CONSTANTS = require('../constants/constants'),
+    Spinner = require('./spinner'),
+    ClassNames = require('classnames'),
+    Utils = require('./utils'),
+    Icon = require('../components/icon');
 
 var AdPanelTopBarItem = React.createClass({
   render: function() {

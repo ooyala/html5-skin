@@ -1,7 +1,7 @@
 var React = require('react'),
-  AccessibleButton = require('./accessibleButton'),
-  Icon = require('../components/icon'),
-  CONSTANTS = require('../constants/constants');
+    AccessibleButton = require('./accessibleButton'),
+    Icon = require('../components/icon'),
+    CONSTANTS = require('../constants/constants');
 
 var CloseButton = React.createClass({
   render: function() {

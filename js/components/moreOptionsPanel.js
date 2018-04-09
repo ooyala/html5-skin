@@ -6,11 +6,11 @@
  * @constructor
  */
 var React = require('react'),
-  Utils = require('./utils'),
-  CONSTANTS = require('../constants/constants'),
-  ClassNames = require('classnames'),
-  AnimateMixin = require('../mixins/animateMixin'),
-  Icon = require('../components/icon');
+    Utils = require('./utils'),
+    CONSTANTS = require('../constants/constants'),
+    ClassNames = require('classnames'),
+    AnimateMixin = require('../mixins/animateMixin'),
+    Icon = require('../components/icon');
 
 var MoreOptionsPanel = React.createClass({
   mixins: [AnimateMixin],

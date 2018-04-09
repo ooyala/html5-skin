@@ -2,14 +2,14 @@
   END SCREEN
 *********************************************************************/
 var React = require('react'),
-  ReactDOM = require('react-dom'),
-  ClassNames = require('classnames'),
-  CONSTANTS = require('../constants/constants'),
-  ControlBar = require('../components/controlBar'),
-  Watermark = require('../components/watermark'),
-  Icon = require('../components/icon'),
-  ResizeMixin = require('../mixins/resizeMixin'),
-  Utils = require('../components/utils');
+    ReactDOM = require('react-dom'),
+    ClassNames = require('classnames'),
+    CONSTANTS = require('../constants/constants'),
+    ControlBar = require('../components/controlBar'),
+    Watermark = require('../components/watermark'),
+    Icon = require('../components/icon'),
+    ResizeMixin = require('../mixins/resizeMixin'),
+    Utils = require('../components/utils');
 
 var EndScreen = React.createClass({
   mixins: [ResizeMixin],

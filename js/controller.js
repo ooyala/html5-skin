@@ -2,16 +2,16 @@
  CONTROLLER
  *********************************************************************/
 var React = require('react'),
-  ReactDOM = require('react-dom'),
-  Utils = require('./components/utils'),
-  CONSTANTS = require('./constants/constants'),
-  AccessibilityControls = require('./components/accessibilityControls'),
-  DeepMerge = require('deepmerge'),
-  Fullscreen = require('screenfull'),
-  Skin = require('./skin'),
-  SkinJSON = require('../config/skin'),
-  Bulk = require('bulk-require'),
-  Localization = Bulk('./config', ['languageFiles/*.json']);
+    ReactDOM = require('react-dom'),
+    Utils = require('./components/utils'),
+    CONSTANTS = require('./constants/constants'),
+    AccessibilityControls = require('./components/accessibilityControls'),
+    DeepMerge = require('deepmerge'),
+    Fullscreen = require('screenfull'),
+    Skin = require('./skin'),
+    SkinJSON = require('../config/skin'),
+    Bulk = require('bulk-require'),
+    Localization = Bulk('./config', ['languageFiles/*.json']);
 
 OO.plugin('Html5Skin', function(OO, _, $, W) {
   // Check if the player is at least v4. If not, the skin cannot load.

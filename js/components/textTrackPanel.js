@@ -4,7 +4,7 @@
  * @module TextTrackPanel
  */
 var React = require('react'),
-  Utils = require('./utils');
+    Utils = require('./utils');
 
 var baseFontSize = 1.0;
 

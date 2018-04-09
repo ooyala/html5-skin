@@ -1,10 +1,10 @@
 var React = require('react'),
-  ClassNames = require('classnames'),
-  Utils = require('../utils'),
-  AccessibleButton = require('../accessibleButton'),
-  AccessibleMenu = require('../higher-order/accessibleMenu'),
-  CONSTANTS = require('../../constants/constants'),
-  SelectionContainer = require('./selectionContainer');
+    ClassNames = require('classnames'),
+    Utils = require('../utils'),
+    AccessibleButton = require('../accessibleButton'),
+    AccessibleMenu = require('../higher-order/accessibleMenu'),
+    CONSTANTS = require('../../constants/constants'),
+    SelectionContainer = require('./selectionContainer');
 
 var TextEnhancementsTab = React.createClass({
   getInitialState: function() {

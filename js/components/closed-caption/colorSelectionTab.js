@@ -1,8 +1,8 @@
 var React = require('react'),
-  Utils = require('../utils'),
-  CONSTANTS = require('../../constants/constants'),
-  SelectionContainer = require('./selectionContainer'),
-  ColorSelector = require('../colorSelector');
+    Utils = require('../utils'),
+    CONSTANTS = require('../../constants/constants'),
+    SelectionContainer = require('./selectionContainer'),
+    ColorSelector = require('../colorSelector');
 
 var ColorSelectionTab = React.createClass({
 

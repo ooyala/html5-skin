@@ -2,9 +2,9 @@
   AD OVERLAY
 *********************************************************************/
 var React = require('react'),
-  ClassNames = require('classnames'),
-  CloseButton = require('./closeButton'),
-  CONSTANTS = require('../constants/constants');
+    ClassNames = require('classnames'),
+    CloseButton = require('./closeButton'),
+    CONSTANTS = require('../constants/constants');
 
 var AdOverlay = React.createClass({
   closeOverlay: function() {

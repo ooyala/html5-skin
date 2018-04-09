@@ -1,8 +1,8 @@
 var React = require('react'),
-  ClassNames = require('classnames'),
-  AccessibleButton = require('./accessibleButton'),
-  AccessibleMenu = require('./higher-order/accessibleMenu'),
-  CONSTANTS = require('../constants/constants');
+    ClassNames = require('classnames'),
+    AccessibleButton = require('./accessibleButton'),
+    AccessibleMenu = require('./higher-order/accessibleMenu'),
+    CONSTANTS = require('../constants/constants');
 
 var ColorSelector = React.createClass({
   setClassname: function(item) {

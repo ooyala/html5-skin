@@ -4,14 +4,14 @@
  * @module VideoQualityPanel
  */
 var React = require('react'),
-  ScrollArea = require('react-scrollbar/dist/no-css'),
-  ClassNames = require('classnames'),
-  AccessibleMenu = require('../components/higher-order/accessibleMenu'),
-  AccessibleButton = require('../components/accessibleButton'),
-  Icon = require('../components/icon'),
-  Utils = require('../components/utils'),
-  MACROS = require('../constants/macros'),
-  CONSTANTS = require('../constants/constants');
+    ScrollArea = require('react-scrollbar/dist/no-css'),
+    ClassNames = require('classnames'),
+    AccessibleMenu = require('../components/higher-order/accessibleMenu'),
+    AccessibleButton = require('../components/accessibleButton'),
+    Icon = require('../components/icon'),
+    Utils = require('../components/utils'),
+    MACROS = require('../constants/macros'),
+    CONSTANTS = require('../constants/constants');
 
 var VideoQualityPanel = React.createClass({
 

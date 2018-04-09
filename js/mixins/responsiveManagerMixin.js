@@ -1,6 +1,6 @@
 var ReactDOM = require('react-dom'),
-  ClassNames = require('classnames'),
-  debounce = require('lodash.debounce');
+    ClassNames = require('classnames'),
+    debounce = require('lodash.debounce');
 
 var ResponsiveManagerMixin = {
   getInitialState: function() {

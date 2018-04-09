@@ -5,9 +5,9 @@
  */
 
 var React = require('react'),
-  ReactDOM = require('react-dom'),
-  CONSTANTS = require('../constants/constants'),
-  Utils = require('./utils');
+    ReactDOM = require('react-dom'),
+    CONSTANTS = require('../constants/constants'),
+    Utils = require('./utils');
 
 var ThumbnailCarousel = React.createClass({
   getInitialState: function() {
