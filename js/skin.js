@@ -107,6 +107,7 @@ var Skin = React.createClass({
    * @public
    * @description the function is called while rotation is active
    * @param {MouseEvent} event - event
+   * @return {undefined}
    */
   handleVrPlayerMouseMove: function (event) {
     if (this.props.controller && this.props.controller.isVrStereo) {
@@ -128,6 +129,7 @@ var Skin = React.createClass({
   /**
    * @public
    * @description the function is called when we stop the rotation
+   * @return {undefined}
    */
   handleVrPlayerMouseUp: function () {
     if (this.props.controller && this.props.controller.isVrStereo) {
@@ -185,7 +187,7 @@ var Skin = React.createClass({
    * @private
    * @param {number} pageX - x coordinate
    * @param {number} pageY - y coordinate
-   * @returns {[number, number, number]}
+   * @returns {[number, number, number]} array with yaw, roll, pitch
    */
   getDirectionParams: function (pageX, pageY) {
     pageX = Utils.ensureNumber(pageX, 0);
