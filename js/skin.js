@@ -434,7 +434,6 @@ var Skin = React.createClass({
           );
           break;
         case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
-          console.log('In skin, screen to Show is MultiAudioScreen');
           screen = (
             <ContentScreen
               {...this.props}
