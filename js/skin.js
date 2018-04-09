@@ -1,25 +1,25 @@
-/********************************************************************
+/** ******************************************************************
   RENDERER PLACEHOLDER
 *********************************************************************/
 var React = require('react'),
-    Utils = require('./components/utils'),
-    CONSTANTS = require('./constants/constants'),
-    Spinner = require('./components/spinner'),
-    OnOffSwitch = require('./components/closed-caption/onOffSwitch'),
-    ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel'),
-    DiscoveryPanel = require('./components/discoveryPanel'),
-    VideoQualityPanel = require('./components/videoQualityPanel'),
-    ClosedCaptionMultiAudioMenu = require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
-    SharePanel = require('./components/sharePanel'),
-    MoreOptionsPanel = require('./components/moreOptionsPanel'),
-    AdScreen = require('./views/adScreen'),
-    EndScreen = require('./views/endScreen'),
-    StartScreen = require('./views/startScreen'),
-    PauseScreen = require('./views/pauseScreen'),
-    PlayingScreen = require('./views/playingScreen'),
-    ErrorScreen = require('./views/errorScreen'),
-    ContentScreen = require('./views/contentScreen'),
-    ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
+  Utils = require('./components/utils'),
+  CONSTANTS = require('./constants/constants'),
+  Spinner = require('./components/spinner'),
+  OnOffSwitch = require('./components/closed-caption/onOffSwitch'),
+  ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel'),
+  DiscoveryPanel = require('./components/discoveryPanel'),
+  VideoQualityPanel = require('./components/videoQualityPanel'),
+  ClosedCaptionMultiAudioMenu = require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
+  SharePanel = require('./components/sharePanel'),
+  MoreOptionsPanel = require('./components/moreOptionsPanel'),
+  AdScreen = require('./views/adScreen'),
+  EndScreen = require('./views/endScreen'),
+  StartScreen = require('./views/startScreen'),
+  PauseScreen = require('./views/pauseScreen'),
+  PlayingScreen = require('./views/playingScreen'),
+  ErrorScreen = require('./views/errorScreen'),
+  ContentScreen = require('./views/contentScreen'),
+  ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
 
 var Skin = React.createClass({
   mixins: [ResponsiveManagerMixin],
@@ -47,11 +47,11 @@ var Skin = React.createClass({
     }
   },
 
-  componentDidMount: function () {
+  componentDidMount: function() {
     window.addEventListener('mouseup', this.handleClickOutsidePlayer);
   },
 
-  componentWillUnmount: function () {
+  componentWillUnmount: function() {
     window.removeEventListener('mouseup', this.handleClickOutsidePlayer);
   },
 
@@ -130,7 +130,7 @@ var Skin = React.createClass({
     if (this.props.controller && this.props.controller.videoVr) {
       var isVrMouseMove = this.state.isVrMouseMove;
       if (Utils.isIos()) {
-        isVrMouseMove = false; //for the opportunity to stop video on iPhone by touching on the screen
+        isVrMouseMove = false; // for the opportunity to stop video on iPhone by touching on the screen
       }
       this.setState({
         isVrMouseDown: false,
@@ -156,7 +156,7 @@ var Skin = React.createClass({
    * @public
    * @description set isVrMouseMove to false for click event
    */
-  handleVrPlayerClick: function () {
+  handleVrPlayerClick: function() {
     this.setState({
       isVrMouseMove: false,
     });
@@ -186,8 +186,8 @@ var Skin = React.createClass({
     var maxDegreesY = 120;
     var degreesForPixelYaw = maxDegreesX / this.state.componentWidth;
     var degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
-    var yaw = this.getVrViewingDirectionParamValue("yaw") + dx * degreesForPixelYaw;
-    var pitch = this.getVrViewingDirectionParamValue("pitch") + dy * degreesForPixelPitch;
+    var yaw = this.getVrViewingDirectionParamValue('yaw') + dx * degreesForPixelYaw;
+    var pitch = this.getVrViewingDirectionParamValue('pitch') + dy * degreesForPixelPitch;
     return [yaw, 0, pitch];
   },
 
@@ -202,18 +202,18 @@ var Skin = React.createClass({
     if (this.props.controller &&
       this.props.controller.state &&
       this.props.controller.state.vrViewingDirection &&
-      typeof this.props.controller.state.vrViewingDirection[paramName] === "number") {
-      vrViewingDirectionValue = this.props.controller.state.vrViewingDirection[paramName]
+      typeof this.props.controller.state.vrViewingDirection[paramName] === 'number') {
+      vrViewingDirectionValue = this.props.controller.state.vrViewingDirection[paramName];
     }
-    return vrViewingDirectionValue
+    return vrViewingDirectionValue;
   },
 
   render: function() {
     var screen;
 
-    //For IE10, use the start screen and that's it.
-    if (Utils.isIE10()){
-      if (this.state.screenToShow == CONSTANTS.SCREEN.START_SCREEN){
+    // For IE10, use the start screen and that's it.
+    if (Utils.isIE10()) {
+      if (this.state.screenToShow == CONSTANTS.SCREEN.START_SCREEN) {
         screen = (
           <StartScreen {...this.props}
             componentWidth={this.state.componentWidth}
@@ -224,32 +224,32 @@ var Skin = React.createClass({
         screen = (<div></div>);
       }
     }
-    //switch screenToShow
+    // switch screenToShow
     else {
       switch (this.state.screenToShow) {
-        case CONSTANTS.SCREEN.INITIAL_SCREEN:
-          screen = (
+      case CONSTANTS.SCREEN.INITIAL_SCREEN:
+        screen = (
             <StartScreen {...this.props}
               componentWidth={this.state.componentWidth}
               contentTree={this.state.contentTree}
               isInitializing={true} />
           );
-          break;
-        case CONSTANTS.SCREEN.LOADING_SCREEN:
-          screen = (
+        break;
+      case CONSTANTS.SCREEN.LOADING_SCREEN:
+        screen = (
             <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/>
           );
-          break;
-        case CONSTANTS.SCREEN.START_SCREEN:
-          screen = (
+        break;
+      case CONSTANTS.SCREEN.START_SCREEN:
+        screen = (
             <StartScreen {...this.props}
               componentWidth={this.state.componentWidth}
               contentTree={this.state.contentTree}
               isInitializing={false} />
           );
-          break;
-        case CONSTANTS.SCREEN.START_LOADING_SCREEN:
-          screen = (
+        break;
+      case CONSTANTS.SCREEN.START_LOADING_SCREEN:
+        screen = (
             <StartScreen
               {...this.props}
               componentWidth={this.state.componentWidth}
@@ -258,9 +258,9 @@ var Skin = React.createClass({
               showSpinner={true}
             />
           );
-          break;
-        case CONSTANTS.SCREEN.PLAYING_SCREEN:
-          screen = (
+        break;
+      case CONSTANTS.SCREEN.PLAYING_SCREEN:
+        screen = (
             <PlayingScreen
               {...this.props}
               handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
@@ -287,9 +287,9 @@ var Skin = React.createClass({
               captionDirection={this.props.controller.captionDirection}
               ref="playScreen" />
           );
-          break;
-        case CONSTANTS.SCREEN.SHARE_SCREEN:
-          screen = (
+        break;
+      case CONSTANTS.SCREEN.SHARE_SCREEN:
+        screen = (
           <ContentScreen
             {...this.props}
             screen={CONSTANTS.SCREEN.SHARE_SCREEN}
@@ -301,9 +301,9 @@ var Skin = React.createClass({
               contentTree={this.state.contentTree} />
           </ContentScreen>
           );
-          break;
-        case CONSTANTS.SCREEN.PAUSE_SCREEN:
-          screen = (
+        break;
+      case CONSTANTS.SCREEN.PAUSE_SCREEN:
+        screen = (
             <PauseScreen
               {...this.props}
               handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
@@ -328,9 +328,9 @@ var Skin = React.createClass({
               ref="pauseScreen"
             />
           );
-          break;
-        case CONSTANTS.SCREEN.END_SCREEN:
-          screen = (
+        break;
+      case CONSTANTS.SCREEN.END_SCREEN:
+        screen = (
             <EndScreen {...this.props}
               contentTree={this.state.contentTree}
               discoveryData={this.state.discoveryData}
@@ -346,9 +346,9 @@ var Skin = React.createClass({
               componentWidth={this.state.componentWidth}
               ref="endScreen" />
           );
-          break;
-        case CONSTANTS.SCREEN.AD_SCREEN:
-          screen = (
+        break;
+      case CONSTANTS.SCREEN.AD_SCREEN:
+        screen = (
             <AdScreen {...this.props}
               contentTree={this.state.contentTree}
               currentAdsInfo={this.state.currentAdsInfo}
@@ -367,9 +367,9 @@ var Skin = React.createClass({
               adStartTime={this.state.adStartTime}
               ref="adScreen" />
           );
-          break;
-        case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
-          screen = (
+        break;
+      case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
+        screen = (
             <ContentScreen
               {...this.props}
               screen={CONSTANTS.SCREEN.DISCOVERY_SCREEN}
@@ -385,9 +385,9 @@ var Skin = React.createClass({
                 componentWidth={this.state.componentWidth}/>
             </ContentScreen>
           );
-          break;
-        case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
-          screen = (
+        break;
+      case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
+        screen = (
           <ContentScreen
             {...this.props}
             screen={CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN}>
@@ -396,9 +396,9 @@ var Skin = React.createClass({
               fullscreen={this.state.fullscreen}/>
           </ContentScreen>
           );
-          break;
-        case CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN:
-          screen = (
+        break;
+      case CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN:
+        screen = (
           <ContentScreen
             {...this.props}
             screen={CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN}
@@ -416,9 +416,9 @@ var Skin = React.createClass({
               componentWidth={this.state.componentWidth}/>
           </ContentScreen>
           );
-          break;
-        case CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN:
-          screen = (
+        break;
+      case CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN:
+        screen = (
           <ContentScreen
             {...this.props}
             screen={CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN}
@@ -432,9 +432,9 @@ var Skin = React.createClass({
               responsiveView={this.state.responsiveId}/>
           </ContentScreen>
           );
-          break;
-        case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
-          screen = (
+        break;
+      case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
+        screen = (
             <ContentScreen
               {...this.props}
               cssClass="oo-close-button oo-close-button--ma"
@@ -447,15 +447,15 @@ var Skin = React.createClass({
               <ClosedCaptionMultiAudioMenu {...this.props}/>
             </ContentScreen>
           );
-          break;
-        case CONSTANTS.SCREEN.ERROR_SCREEN:
-          screen = (
+        break;
+      case CONSTANTS.SCREEN.ERROR_SCREEN:
+        screen = (
             <ErrorScreen {...this.props}
               errorCode={this.props.controller.state.errorCode} />
           );
-          break;
-        default:
-          screen = (<div></div>);
+        break;
+      default:
+        screen = (<div></div>);
       }
     }
 

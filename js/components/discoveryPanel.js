@@ -4,13 +4,13 @@
  * @module DiscoveryPanel
  */
 var React = require('react'),
-    ReactDOM = require('react-dom'),
-    ClassNames = require('classnames'),
-    CONSTANTS = require('../constants/constants'),
-    CountDownClock = require('./countDownClock'),
-    DiscoverItem = require('./discoverItem'),
-    ResizeMixin = require('../mixins/resizeMixin'),
-    Icon = require('../components/icon');
+  ReactDOM = require('react-dom'),
+  ClassNames = require('classnames'),
+  CONSTANTS = require('../constants/constants'),
+  CountDownClock = require('./countDownClock'),
+  DiscoverItem = require('./discoverItem'),
+  ResizeMixin = require('../mixins/resizeMixin'),
+  Icon = require('../components/icon');
 
 var DiscoveryPanel = React.createClass({
   mixins: [ResizeMixin],
@@ -23,12 +23,12 @@ var DiscoveryPanel = React.createClass({
     };
   },
 
-  componentDidMount: function () {
+  componentDidMount: function() {
     this.detectHeight();
   },
 
   handleResize: function(nextProps) {
-    //If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
+    // If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
     var currentViewSize = this.props.responsiveView;
     var nextViewSize = nextProps.responsiveView;
     var firstDiscoverIndex = this.state.currentPage * this.props.videosPerPage[currentViewSize] - this.props.videosPerPage[currentViewSize];
@@ -55,8 +55,8 @@ var DiscoveryPanel = React.createClass({
 
   handleDiscoveryContentClick: function(index) {
     var eventData = {
-      "clickedVideo": this.props.discoveryData.relatedVideos[index],
-      "custom": this.props.discoveryData.custom
+      'clickedVideo': this.props.discoveryData.relatedVideos[index],
+      'custom': this.props.discoveryData.custom
     };
     // TODO: figure out countdown value
     // eventData.custom.countdown = 0;
@@ -91,7 +91,7 @@ var DiscoveryPanel = React.createClass({
       // TODO: get msg if no discovery related videos
     }
 
-    //pagination
+    // pagination
     var currentViewSize = this.props.responsiveView;
     var videosPerPage = this.props.videosPerPage[currentViewSize];
     var startAt = videosPerPage * (this.state.currentPage - 1);
@@ -221,7 +221,7 @@ DiscoveryPanel.defaultProps = {
     relatedVideos: []
   },
   controller: {
-    sendDiscoveryClickEvent: function(a,b){}
+    sendDiscoveryClickEvent: function(a,b) {}
   },
   responsiveView: 'md'
 };

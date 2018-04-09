@@ -1,15 +1,15 @@
-/********************************************************************
+/** ******************************************************************
  START SCREEN
  *********************************************************************/
 var React = require('react'),
-    ReactDOM = require('react-dom'),
-    ClassNames = require('classnames'),
-    CONSTANTS = require('../constants/constants'),
-    Spinner = require('../components/spinner'),
-    Icon = require('../components/icon'),
-    Watermark = require('../components/watermark'),
-    ResizeMixin = require('../mixins/resizeMixin'),
-    Utils = require('../components/utils');
+  ReactDOM = require('react-dom'),
+  ClassNames = require('classnames'),
+  CONSTANTS = require('../constants/constants'),
+  Spinner = require('../components/spinner'),
+  Icon = require('../components/icon'),
+  Watermark = require('../components/watermark'),
+  ResizeMixin = require('../mixins/resizeMixin'),
+  Utils = require('../components/utils');
 
 var StartScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -33,7 +33,7 @@ var StartScreen = React.createClass({
 
   handleResize: function(nextProps) {
     var description = nextProps ? nextProps.contentTree.description : this.props.contentTree.description;
-    if (ReactDOM.findDOMNode(this.refs.description)){
+    if (ReactDOM.findDOMNode(this.refs.description)) {
       this.setState({
         descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), description)
       });
@@ -52,7 +52,7 @@ var StartScreen = React.createClass({
   },
 
   render: function() {
-    //inline style for config/skin.json elements only
+    // inline style for config/skin.json elements only
     var titleStyle = {
       color: this.props.skinConfig.startScreen.titleFont.color
     };
@@ -66,41 +66,41 @@ var StartScreen = React.createClass({
     var posterImageUrl = this.props.skinConfig.startScreen.showPromo ? this.props.contentTree.promo_image : '';
     var posterStyle = {};
     if (Utils.isValidString(posterImageUrl)) {
-      posterStyle.backgroundImage = "url('" + posterImageUrl + "')";
+      posterStyle.backgroundImage = 'url(\'' + posterImageUrl + '\')';
     }
 
-    //CSS class manipulation from config/skin.json
+    // CSS class manipulation from config/skin.json
     var stateScreenPosterClass = ClassNames({
-      'oo-state-screen-poster': this.props.skinConfig.startScreen.promoImageSize != "small",
-      'oo-state-screen-poster-small': this.props.skinConfig.startScreen.promoImageSize == "small"
+      'oo-state-screen-poster': this.props.skinConfig.startScreen.promoImageSize != 'small',
+      'oo-state-screen-poster-small': this.props.skinConfig.startScreen.promoImageSize == 'small'
     });
     var infoPanelClass = ClassNames({
       'oo-state-screen-info': true,
-      'oo-info-panel-top': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("top") > -1,
-      'oo-info-panel-bottom': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("bottom") > -1,
-      'oo-info-panel-left': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("left") > -1,
-      'oo-info-panel-right': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+      'oo-info-panel-top': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf('top') > -1,
+      'oo-info-panel-bottom': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf('bottom') > -1,
+      'oo-info-panel-left': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf('left') > -1,
+      'oo-info-panel-right': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
     });
     var titleClass = ClassNames({
       'oo-state-screen-title': true,
       'oo-text-truncate': true,
-      'oo-pull-right': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+      'oo-pull-right': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
     });
     var descriptionClass = ClassNames({
       'oo-state-screen-description': true,
-      'oo-pull-right': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+      'oo-pull-right': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
     });
     var actionIconClass = ClassNames({
       'oo-action-icon': true,
-      'oo-action-icon-top': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("top") > -1,
-      'oo-action-icon-bottom': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("bottom") > -1,
-      'oo-action-icon-left': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("left") > -1,
-      'oo-action-icon-right': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf("right") > -1,
+      'oo-action-icon-top': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf('top') > -1,
+      'oo-action-icon-bottom': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf('bottom') > -1,
+      'oo-action-icon-left': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf('left') > -1,
+      'oo-action-icon-right': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf('right') > -1,
       'oo-hidden': !this.props.skinConfig.startScreen.showPlayButton
     });
 
     var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
-    var iconName = (this.props.controller.state.playerState == CONSTANTS.STATE.END ? "replay" : "play");
+    var iconName = (this.props.controller.state.playerState == CONSTANTS.STATE.END ? 'replay' : 'play');
     // The descriptionText value doesn't react to changes in contentTree.description since
     // it's being handled as internal state in order to allow truncating it on player resize.
     // We need to migrate truncateTextToWidth to a CSS solution in order to avoid this.
@@ -192,7 +192,7 @@ StartScreen.defaultProps = {
     }
   },
   controller: {
-    togglePlayPause: function(){},
+    togglePlayPause: function() {},
     state: {
       playerState:'start',
       buffering: false

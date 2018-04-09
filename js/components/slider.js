@@ -1,8 +1,8 @@
 var React = require('react'),
-    ClassNames = require('classnames'),
-    MACROS = require('../constants/macros'),
-    CONSTANTS = require('../constants/constants'),
-    Utils = require('./utils');
+  ClassNames = require('classnames'),
+  MACROS = require('../constants/macros'),
+  CONSTANTS = require('../constants/constants'),
+  Utils = require('./utils');
 
 var Slider = React.createClass({
 
@@ -26,22 +26,22 @@ var Slider = React.createClass({
     }
   },
 
-  handleSliderColoring: function(props){
-    if (!Utils.isEdge()){
+  handleSliderColoring: function(props) {
+    if (!Utils.isEdge()) {
       var input = this.refs[this.props.itemRef];
       var style = window.getComputedStyle(input, null);
 
-      var colorBeforeThumb = style.getPropertyValue("border-left-color");
-      var colorAfterThumb = style.getPropertyValue("border-right-color");
+      var colorBeforeThumb = style.getPropertyValue('border-left-color');
+      var colorAfterThumb = style.getPropertyValue('border-right-color');
 
       var value = (props.value - props.minValue)/(props.maxValue - props.minValue);
       input.style.backgroundImage = [
         '-webkit-gradient(',
-          'linear, ',
-          'left top, ',
-          'right top, ',
-          'color-stop(' + value + ', '+ colorBeforeThumb + '), ',
-          'color-stop(' + value + ', '+ colorAfterThumb + ')',
+        'linear, ',
+        'left top, ',
+        'right top, ',
+        'color-stop(' + value + ', '+ colorBeforeThumb + '), ',
+        'color-stop(' + value + ', '+ colorAfterThumb + ')',
         ')'
       ].join('');
     }
@@ -144,24 +144,24 @@ var Slider = React.createClass({
     var value;
 
     switch (event.key) {
-      case CONSTANTS.KEY_VALUES.ARROW_UP:
-      case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
-        value = this.getNextSliderValue(true);
-        event.target.setAttribute('value', value);
-        break;
-      case CONSTANTS.KEY_VALUES.ARROW_DOWN:
-      case CONSTANTS.KEY_VALUES.ARROW_LEFT:
-        value = this.getNextSliderValue(false);
-        event.target.setAttribute('value', value);
-        break;
-      case CONSTANTS.KEY_VALUES.HOME:
-        event.target.setAttribute('value', Utils.ensureNumber(this.props.minValue, this.props.value));
-        break;
-      case CONSTANTS.KEY_VALUES.END:
-        event.target.setAttribute('value', Utils.ensureNumber(this.props.maxValue, this.props.value));
-        break;
-      default:
-        break;
+    case CONSTANTS.KEY_VALUES.ARROW_UP:
+    case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
+      value = this.getNextSliderValue(true);
+      event.target.setAttribute('value', value);
+      break;
+    case CONSTANTS.KEY_VALUES.ARROW_DOWN:
+    case CONSTANTS.KEY_VALUES.ARROW_LEFT:
+      value = this.getNextSliderValue(false);
+      event.target.setAttribute('value', value);
+      break;
+    case CONSTANTS.KEY_VALUES.HOME:
+      event.target.setAttribute('value', Utils.ensureNumber(this.props.minValue, this.props.value));
+      break;
+    case CONSTANTS.KEY_VALUES.END:
+      event.target.setAttribute('value', Utils.ensureNumber(this.props.maxValue, this.props.value));
+      break;
+    default:
+      break;
     }
   },
 

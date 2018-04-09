@@ -5,8 +5,8 @@ jest.dontMock('../../js/components/utils');
 var CONSTANTS = require('../../js/constants/constants');
 var AccessibilityControls = require('../../js/components/accessibilityControls');
 
-describe('AccessibilityControls', function () {
-  it('test space key', function () {
+describe('AccessibilityControls', function() {
+  it('test space key', function() {
     var controllerMock = {
       state: {
         accessibilityControlsEnabled: true
@@ -21,10 +21,10 @@ describe('AccessibilityControls', function () {
     };
 
     var accessibilityControls = new AccessibilityControls(controllerMock);
-    accessibilityControls.keyEventDown(mockEvent)
+    accessibilityControls.keyEventDown(mockEvent);
   });
 
-  it('tests down arrow key', function () {
+  it('tests down arrow key', function() {
     var controllerMock = {
       state: {
         accessibilityControlsEnabled: true,
@@ -43,10 +43,10 @@ describe('AccessibilityControls', function () {
     };
 
     var accessibilityControls = new AccessibilityControls(controllerMock);
-    accessibilityControls.keyEventDown(mockEvent)
+    accessibilityControls.keyEventDown(mockEvent);
   });
 
-  it('tests up arrow key', function () {
+  it('tests up arrow key', function() {
     var controllerMock = {
       state: {
         accessibilityControlsEnabled: true,
@@ -65,10 +65,10 @@ describe('AccessibilityControls', function () {
     };
 
     var accessibilityControls = new AccessibilityControls(controllerMock);
-    accessibilityControls.keyEventDown(mockEvent)
+    accessibilityControls.keyEventDown(mockEvent);
   });
 
-  it('tests right arrow key', function () {
+  it('tests right arrow key', function() {
     var controllerMock = {
       state: {
         accessibilityControlsEnabled: true,
@@ -94,10 +94,10 @@ describe('AccessibilityControls', function () {
     };
 
     var accessibilityControls = new AccessibilityControls(controllerMock);
-    accessibilityControls.keyEventDown(mockEvent)
+    accessibilityControls.keyEventDown(mockEvent);
   });
 
-  it('tests left arrow key', function () {
+  it('tests left arrow key', function() {
     var controllerMock = {
       state: {
         accessibilityControlsEnabled: true,
@@ -127,7 +127,7 @@ describe('AccessibilityControls', function () {
     accessibilityControls.keyEventDown(mockEvent);
   });
 
-  it('tests "A" key', function () {
+  it('tests "A" key', function() {
     var controllerMock = {
       videoVr: true,
       state: {
@@ -144,7 +144,7 @@ describe('AccessibilityControls', function () {
     accessibilityControls.keyEventDown(mockEvent);
   });
 
-  it('tests disabled accessibility controls', function () {
+  it('tests disabled accessibility controls', function() {
     var controllerMock = {
       state: {
         accessibilityControlsEnabled: false
@@ -218,14 +218,14 @@ describe('AccessibilityControls', function () {
         for (var currentScreen in CONSTANTS.SCREEN) {
           mockCtrl.state.screenToShow = currentScreen;
           switch (currentScreen) {
-            case CONSTANTS.SCREEN.PLAYING_SCREEN:
-            case CONSTANTS.SCREEN.PAUSE_SCREEN:
-            case CONSTANTS.SCREEN.END_SCREEN:
-              expect(a11yCtrls.canSeek()).toBe(true);
-              break;
-            default:
-              expect(a11yCtrls.canSeek()).toBe(false);
-              break;
+          case CONSTANTS.SCREEN.PLAYING_SCREEN:
+          case CONSTANTS.SCREEN.PAUSE_SCREEN:
+          case CONSTANTS.SCREEN.END_SCREEN:
+            expect(a11yCtrls.canSeek()).toBe(true);
+            break;
+          default:
+            expect(a11yCtrls.canSeek()).toBe(false);
+            break;
           }
         }
       });

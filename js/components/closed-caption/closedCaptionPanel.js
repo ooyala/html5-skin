@@ -1,4 +1,4 @@
-/********************************************************************
+/** ******************************************************************
   CLOSED CAPTION PANEL
 *********************************************************************/
 /**
@@ -8,27 +8,27 @@
 * @constructor
 */
 var React = require('react'),
-    Utils = require('../utils'),
-    CONSTANTS = require('../../constants/constants'),
-    LanguageTab = require('./languageTab'),
-    ColorSelectionTab = require('./colorSelectionTab'),
-    CaptionOpacityTab = require('./captionOpacityTab'),
-    FontTypeTab = require('./fontTypeTab'),
-    FontSizeTab = require('./fontSizeTab'),
-    TextEnhancementsTab = require('./textEnhancementsTab'),
-    CCPreviewPanel = require('./ccPreviewPanel'),
-    Tabs = require('../tabs'),
-    Tab = Tabs.Panel;
+  Utils = require('../utils'),
+  CONSTANTS = require('../../constants/constants'),
+  LanguageTab = require('./languageTab'),
+  ColorSelectionTab = require('./colorSelectionTab'),
+  CaptionOpacityTab = require('./captionOpacityTab'),
+  FontTypeTab = require('./fontTypeTab'),
+  FontSizeTab = require('./fontSizeTab'),
+  TextEnhancementsTab = require('./textEnhancementsTab'),
+  CCPreviewPanel = require('./ccPreviewPanel'),
+  Tabs = require('../tabs'),
+  Tab = Tabs.Panel;
 
-//The scroll buttons are not needed until the player's width is below a specific amount. This varies by language.
+// The scroll buttons are not needed until the player's width is below a specific amount. This varies by language.
 var tabMenuOverflowMap = {
-  "en": 730,
-  "es": 995,
-  "zh": 610
+  'en': 730,
+  'es': 995,
+  'zh': 610
 };
 
 var ClosedCaptionPanel = React.createClass({
-  render: function(){
+  render: function() {
 
     var languageTabTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LANGUAGE_TAB_TITLE, this.props.localizableStrings);
     var colorSelectionTabTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.COLOR_SELECTION_TAB_TITLE, this.props.localizableStrings);

@@ -4,14 +4,14 @@
  * @module VideoQualityPanel
  */
 var React = require('react'),
-    ScrollArea = require('react-scrollbar/dist/no-css'),
-    ClassNames = require('classnames'),
-    AccessibleMenu = require('../components/higher-order/accessibleMenu'),
-    AccessibleButton = require('../components/accessibleButton'),
-    Icon = require('../components/icon'),
-    Utils = require('../components/utils'),
-    MACROS = require('../constants/macros'),
-    CONSTANTS = require('../constants/constants');
+  ScrollArea = require('react-scrollbar/dist/no-css'),
+  ClassNames = require('classnames'),
+  AccessibleMenu = require('../components/higher-order/accessibleMenu'),
+  AccessibleButton = require('../components/accessibleButton'),
+  Icon = require('../components/icon'),
+  Utils = require('../components/utils'),
+  MACROS = require('../constants/macros'),
+  CONSTANTS = require('../constants/constants');
 
 var VideoQualityPanel = React.createClass({
 
@@ -25,7 +25,7 @@ var VideoQualityPanel = React.createClass({
   handleVideoQualityClick: function(selectedBitrateId, event) {
     event.preventDefault();
     var eventData = {
-      "id": selectedBitrateId
+      'id': selectedBitrateId
     };
     this.props.controller.sendVideoQualityChangeEvent(eventData);
     this.setState({
@@ -44,7 +44,7 @@ var VideoQualityPanel = React.createClass({
     });
     var selectedBitrateStyle = {color: (this.props.skinConfig.general.accentColor && this.state.selected == 'auto') ? this.props.skinConfig.general.accentColor : null};
 
-    //add auto btn to beginning of array
+    // add auto btn to beginning of array
     bitrateButtons.unshift(
       <li className="oo-auto-li" key='auto-li' role="presentation">
         <AccessibleButton
@@ -84,7 +84,7 @@ var VideoQualityPanel = React.createClass({
     var buttonCount = 0;
 
     if (showResolution) {
-      //Group into buckets so we can assign quality tiers
+      // Group into buckets so we can assign quality tiers
       for (i = 0; i < availableBitrates.length; i++) {
         if (typeof availableBitrates[i].height === 'number') {
           if (!resolutions[availableBitrates[i].height]) {
@@ -93,7 +93,7 @@ var VideoQualityPanel = React.createClass({
           resolutions[availableBitrates[i].height].push(availableBitrates[i]);
         }
       }
-      //sort by ascending bitrate
+      // sort by ascending bitrate
       for (var res in resolutions) {
         if (resolutions.hasOwnProperty(res)) {
           resolutions[res].sort(function(a, b) {
@@ -105,7 +105,7 @@ var VideoQualityPanel = React.createClass({
 
     this.state.wideFormat = false;
 
-    //available bitrates
+    // available bitrates
     for (i = 0; i < availableBitrates.length; i++) {
       isSelected = this.state.selected === availableBitrates[i].id;
 
@@ -148,41 +148,41 @@ var VideoQualityPanel = React.createClass({
           qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY;
         }
 
-        switch(qualityText) {
-          case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_BITRATE:
-            this.state.wideFormat = true;
-            label = qualityText.replace(MACROS.BITRATE, availableBitrate).replace(MACROS.RESOLUTION, availableResolution);
-            ariaLabel = label;
-            break;
-          case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY:
-            if (resolutions[availableResolution] && resolutions[availableResolution].length > 1) {
-              var sameResolutionLength = resolutions[availableResolution].length;
-              var tiering = null;
-              if (sameResolutionLength === 2) {
-                tiering = CONSTANTS.RESOLUTION_TIER.TWO;
-              } else if (sameResolutionLength >= 3) {
-                tiering = CONSTANTS.RESOLUTION_TIER.THREE;
-              }
-              if (tiering) {
-                //We want to use top 3 resolutions if we are using 3 resolution tiers
-                var resolutionIndex = resolutions[availableResolution].indexOf(availableBitrates[i]);
-                var extraResolutionLength = resolutions[availableResolution].length - tiering.length;
-                var trueResolutionIndex = resolutionIndex - extraResolutionLength;
-                if (trueResolutionIndex >= 0 && trueResolutionIndex < tiering.length) {
-                  this.state.wideFormat = true;
-                  qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.TIERED_RESOLUTION_ONLY;
-                  label = qualityText.replace(MACROS.RESOLUTION, availableResolution).replace(MACROS.RESOLUTION_TIER, tiering[trueResolutionIndex]);
-                }
-              }
-            } else {
-              label = qualityText.replace(MACROS.RESOLUTION, availableResolution);
+        switch (qualityText) {
+        case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_BITRATE:
+          this.state.wideFormat = true;
+          label = qualityText.replace(MACROS.BITRATE, availableBitrate).replace(MACROS.RESOLUTION, availableResolution);
+          ariaLabel = label;
+          break;
+        case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY:
+          if (resolutions[availableResolution] && resolutions[availableResolution].length > 1) {
+            var sameResolutionLength = resolutions[availableResolution].length;
+            var tiering = null;
+            if (sameResolutionLength === 2) {
+              tiering = CONSTANTS.RESOLUTION_TIER.TWO;
+            } else if (sameResolutionLength >= 3) {
+              tiering = CONSTANTS.RESOLUTION_TIER.THREE;
             }
-            ariaLabel = label;
-            break;
-          case CONSTANTS.QUALITY_SELECTION.TEXT.BITRATE_ONLY:
-            label = qualityText.replace(MACROS.BITRATE, availableBitrate);
-            ariaLabel = label;
-            break;
+            if (tiering) {
+                // We want to use top 3 resolutions if we are using 3 resolution tiers
+              var resolutionIndex = resolutions[availableResolution].indexOf(availableBitrates[i]);
+              var extraResolutionLength = resolutions[availableResolution].length - tiering.length;
+              var trueResolutionIndex = resolutionIndex - extraResolutionLength;
+              if (trueResolutionIndex >= 0 && trueResolutionIndex < tiering.length) {
+                this.state.wideFormat = true;
+                qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.TIERED_RESOLUTION_ONLY;
+                label = qualityText.replace(MACROS.RESOLUTION, availableResolution).replace(MACROS.RESOLUTION_TIER, tiering[trueResolutionIndex]);
+              }
+            }
+          } else {
+            label = qualityText.replace(MACROS.RESOLUTION, availableResolution);
+          }
+          ariaLabel = label;
+          break;
+        case CONSTANTS.QUALITY_SELECTION.TEXT.BITRATE_ONLY:
+          label = qualityText.replace(MACROS.BITRATE, availableBitrate);
+          ariaLabel = label;
+          break;
         }
 
         if (label) {
@@ -247,8 +247,8 @@ VideoQualityPanel.propTypes = {
     availableBitrates: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.string,
       bitrate: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
+        React.PropTypes.string,
+        React.PropTypes.number,
       ]),
       label: React.PropTypes.string
     }))
@@ -272,7 +272,7 @@ VideoQualityPanel.defaultProps = {
   },
   closeAction: function() {},
   controller: {
-    sendVideoQualityChangeEvent: function(a){}
+    sendVideoQualityChangeEvent: function(a) {}
   }
 };
 

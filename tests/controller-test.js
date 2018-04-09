@@ -9,30 +9,6 @@
  */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 jest.dontMock('../js/controller');
 jest.dontMock('screenfull');
 jest.dontMock('../js/constants/constants');
@@ -53,7 +29,7 @@ var Html5Skin;
  */
 OO = {
   playerParams: {
-    "core_version" : 4
+    'core_version' : 4
   },
   publicApi: {
     VERSION: {
@@ -161,7 +137,7 @@ OO = {
           removeClass: function(a) {},
           css: function(a,b) {},
           children: function() {
-            return {length:2}
+            return {length:2};
           }
         },
         pluginsClickElement: {
@@ -255,8 +231,8 @@ OO = {
       createPluginElements: function() {},
       findMainVideoElement: function(a) {},
       loadConfigData: function(a, b, c, d) {},
-      cleanUpEventListeners: function(){},
-      toggleStereoVr: function () {}
+      cleanUpEventListeners: function() {},
+      toggleStereoVr: function() {}
     };
 
 
@@ -267,34 +243,34 @@ OO = {
     var elementId = 'adrfgyi';
     var videoId = 'ag5dfdtooon2cncj714i';
     var videoElement = document.createElement('video');
-    videoElement.className = "video";
+    videoElement.className = 'video';
     videoElement.id = videoId;
-    videoElement.preload = "none";
-    videoElement.src = "http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor";
-    var persistentSettings = {"closedCaptionOptions":{"textColor":"Blue","backgroundColor":"Transparent","windowColor":"Yellow","windowOpacity":"0.3","fontType":"Proportional Serif","fontSize":"Medium","textEnhancement":"Shadow","enabled":true,"language":"unknown","backgroundOpacity":"0.2","textOpacity":"1"}};
-    //setup document body for valid DOM elements
+    videoElement.preload = 'none';
+    videoElement.src = 'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor';
+    var persistentSettings = {'closedCaptionOptions':{'textColor':'Blue','backgroundColor':'Transparent','windowColor':'Yellow','windowOpacity':'0.3','fontType':'Proportional Serif','fontSize':'Medium','textEnhancement':'Shadow','enabled':true,'language':'unknown','backgroundOpacity':'0.2','textOpacity':'1'}};
+    // setup document body for valid DOM elements
     document.body.innerHTML =
       '<div id='+elementId+'>' +
       '  <div class="oo-player-skin">' + videoElement + '</div>' +
       '</div>';
 
-    //test mb subscribe
+    // test mb subscribe
     Html5Skin = new plugin(OO.mb, 'id');
     Html5Skin.init();
     Html5Skin.state.isPlaybackReadySubscribed = false;
     Html5Skin.subscribeBasicPlaybackEvents();
     Html5Skin.externalPluginSubscription();
 
-    //test player state
+    // test player state
     Html5Skin.onPlayerCreated('customerUi', elementId, {skin:{config:{}}}, persistentSettings);
     Html5Skin.onSkinMetaDataFetched('customerUi', {});
-    Html5Skin.onAttributesFetched('customerUi', {"attributes":{"provider":{"ots_stretch_to_output":"true"}}});
+    Html5Skin.onAttributesFetched('customerUi', {'attributes':{'provider':{'ots_stretch_to_output':'true'}}});
     Html5Skin.loadConfigData('customerUi', {skin:{config:{}}}, {}, {}, {});
-    Html5Skin.loadConfigData('customerUi', {skin:{config:[]}}, {}, {}, {}); //invalid
+    Html5Skin.loadConfigData('customerUi', {skin:{config:[]}}, {}, {}, {}); // invalid
     Html5Skin.loadConfigData('customerUi', {skin:{inline:{}}}, {}, {}, {});
-    Html5Skin.loadConfigData('customerUi', {skin:{inline:[]}}, {}, {}, {}); //invalid
+    Html5Skin.loadConfigData('customerUi', {skin:{inline:[]}}, {}, {}, {}); // invalid
     Html5Skin.createPluginElements();
-    Html5Skin.skin = controllerMock.skin; //reset skin, onPlayerCreated updates skin
+    Html5Skin.skin = controllerMock.skin; // reset skin, onPlayerCreated updates skin
 
     Html5Skin.onVcVideoElementCreated('customerUi', {videoId: OO.VIDEO.MAIN, videoElement: videoElement});
     Html5Skin.state.mainVideoElement = controllerMock.state.mainVideoElement;
@@ -394,8 +370,8 @@ OO = {
     Html5Skin.toggleFullscreen();
     Html5Skin.state.isFullWindow = false;
     Html5Skin.toggleFullscreen();
-    //Html5Skin.state.isFullScreenSupported = true;
-    //Html5Skin.toggleFullscreen();
+    // Html5Skin.state.isFullScreenSupported = true;
+    // Html5Skin.toggleFullscreen();
     Html5Skin.state.isFullScreenSupported = false;
     Html5Skin.state.isVideoFullScreenSupported = true;
     Html5Skin.toggleFullscreen();
@@ -502,9 +478,9 @@ OO = {
     Html5Skin.sendVideoQualityChangeEvent({id:2});
     Html5Skin.setClosedCaptionsInfo(elementId);
 
-    Html5Skin.state.closedCaptionOptions.availableLanguages = {languages: ["en", "es", "de", "cs"]};
-    Html5Skin.onChangeClosedCaptionLanguage('changeClosedCaptionLanguage', 'de'); //valid language test
-    Html5Skin.onChangeClosedCaptionLanguage('changeClosedCaptionLanguage', 'sderfes'); //invalid language test
+    Html5Skin.state.closedCaptionOptions.availableLanguages = {languages: ['en', 'es', 'de', 'cs']};
+    Html5Skin.onChangeClosedCaptionLanguage('changeClosedCaptionLanguage', 'de'); // valid language test
+    Html5Skin.onChangeClosedCaptionLanguage('changeClosedCaptionLanguage', 'sderfes'); // invalid language test
     Html5Skin.setClosedCaptionsLanguage();
     Html5Skin.state.closedCaptionOptions.availableLanguages = null;
     Html5Skin.state.closedCaptionOptions.enabled = true;
@@ -561,15 +537,15 @@ OO = {
     Html5Skin.setAspectRatio();
     Html5Skin.setAspectRatio.call({state: {mainVideoAspectRatio: 0}});
 
-    //test find main video element
+    // test find main video element
     Html5Skin.findMainVideoElement(videoElement);
     var div2 = document.createElement('div');
     div2.appendChild(videoElement);
     Html5Skin.findMainVideoElement(div2);
     var flashVideoElement = document.createElement('object');
-    flashVideoElement.className = "video";
+    flashVideoElement.className = 'video';
     flashVideoElement.id = videoId;
-    flashVideoElement.src = "http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor";
+    flashVideoElement.src = 'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor';
     Html5Skin.findMainVideoElement(flashVideoElement);
     var div = document.createElement('div');
     div.appendChild(flashVideoElement);
@@ -584,7 +560,7 @@ OO = {
 
     });
 
-    describe('Controller testing Ooyala Ads', function () {
+    describe('Controller testing Ooyala Ads', function() {
 
       it('test after Ooyala ad state', function() {
         expect(Html5Skin.state.afterOoyalaAd).toBe(false);
@@ -666,7 +642,7 @@ OO = {
 
     describe('Controller destruction', function() {
       it('should destroy gracefully', function() {
-        //test destroy functions last
+        // test destroy functions last
         Html5Skin.onEmbedCodeChanged('customerUi', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', {});
         Html5Skin.onAssetChanged('customerUi', {content: {streams: [{is_live_stream: true}], title: 'Title', posterImages: [{url:'www.ooyala.com'}]}});
         Html5Skin.onAssetUpdated('customerUi', {content: {streams: [{is_live_stream: true}], title: 'Title', posterImages: [{url:'www.ooyala.com'}]}});

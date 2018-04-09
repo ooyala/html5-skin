@@ -8,8 +8,8 @@ var AdPanel = require('../../js/components/adPanel');
 var Spinner = require('../../js/components/spinner');
 var CONSTANTS = require('../../js/constants/constants');
 
-describe('AdPanel', function () {
-  it('creates an AdPanel', function () {
+describe('AdPanel', function() {
+  it('creates an AdPanel', function() {
     var mockController = {
       state: {
         isMobile: false
@@ -23,13 +23,13 @@ describe('AdPanel', function () {
       },
       icons: {
         skip: {
-          fontStyleClass: "skip"
+          fontStyleClass: 'skip'
         },
       }
     };
     var currentAdsInfo = {
       currentAdItem: {
-        name: "Test Ad",
+        name: 'Test Ad',
         isLive: true
       }
     };
@@ -42,10 +42,10 @@ describe('AdPanel', function () {
 
   });
 
-  it('handles clicks', function () {
+  it('handles clicks', function() {
     var isSkipAdClicked = false;
     var learnMoreClicked = false;
-    var clickSource = "";
+    var clickSource = '';
     var mockController = {
       state: {
         isMobile: false
@@ -66,16 +66,16 @@ describe('AdPanel', function () {
       },
       icons: {
         skip: {
-          fontStyleClass: "skip"
+          fontStyleClass: 'skip'
         },
         learn: {
-          fontStyleClass: "learn"
+          fontStyleClass: 'learn'
         }
       }
     };
     var currentAdsInfo = {
       currentAdItem: {
-        name: "Test Ad",
+        name: 'Test Ad',
         skippable: true,
         skipAdButtonEnabled: true,
         hasClickUrl: true,
@@ -91,20 +91,20 @@ describe('AdPanel', function () {
 
     TestUtils.Simulate.click(DOM.refs.adTopBar);
 
-    //our callback doesn't get assigned to the click event in testing
-    DOM.refs.skipButton.props.onButtonClicked({type: "click",
-      stopPropagation: function(){}
+    // our callback doesn't get assigned to the click event in testing
+    DOM.refs.skipButton.props.onButtonClicked({type: 'click',
+      stopPropagation: function() {}
     });
     expect(isSkipAdClicked).toBe(true);
 
-    DOM.refs.learnMoreButton.props.onButtonClicked({type: "click",
-      stopPropagation: function(){}
+    DOM.refs.learnMoreButton.props.onButtonClicked({type: 'click',
+      stopPropagation: function() {}
     });
     expect(learnMoreClicked).toBe(true);
     expect(clickSource).toBe(CONSTANTS.AD_CLICK_SOURCE.LEARN_MORE_BUTTON);
   });
 
-  it('shows the ad metadata', function () {
+  it('shows the ad metadata', function() {
     var mockController = {
       state: {
         isMobile: false
@@ -118,14 +118,14 @@ describe('AdPanel', function () {
       },
       icons: {
         skip: {
-          fontStyleClass: "skip"
+          fontStyleClass: 'skip'
         },
       }
     };
     var currentAdsInfo = {
       numberOfAds: 1,
       currentAdItem: {
-        name: "Test Ad",
+        name: 'Test Ad',
         indexInPod: 1
       }
     };
@@ -139,7 +139,7 @@ describe('AdPanel', function () {
 
     expect(DOM.refs.adTitle).toBeDefined();
 
-      DOM = TestUtils.renderIntoDocument(
+    DOM = TestUtils.renderIntoDocument(
         <AdPanel
           controller={mockController}
           skinConfig={mockSkinConfig}
@@ -147,10 +147,10 @@ describe('AdPanel', function () {
           componentWidth={500}
         />);
 
-      expect(DOM.refs.adTitle).toBeUndefined();
+    expect(DOM.refs.adTitle).toBeUndefined();
   });
 
-  it('shows the buffering spinner', function () {
+  it('shows the buffering spinner', function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -171,14 +171,14 @@ describe('AdPanel', function () {
       },
       icons: {
         skip: {
-          fontStyleClass: "skip"
+          fontStyleClass: 'skip'
         },
       }
     };
     var currentAdsInfo = {
       numberOfAds: 1,
       currentAdItem: {
-        name: "Test Ad",
+        name: 'Test Ad',
         indexInPod: 1,
       }
     };
@@ -190,7 +190,7 @@ describe('AdPanel', function () {
         componentWidth={600}
       />);
 
-      expect(TestUtils.findRenderedComponentWithType(DOM, Spinner)).toBeDefined();
+    expect(TestUtils.findRenderedComponentWithType(DOM, Spinner)).toBeDefined();
 
   });
 

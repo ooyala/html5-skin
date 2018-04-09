@@ -109,9 +109,9 @@ var ThumbnailContainer = React.createClass({
 
   setThumbnailSizesVr: function() {
     if (this.child !== null && typeof this.child === 'object') {
-      this.setThumbnailSize("thumbnail", "thumbnailWidth", "thumbnailHeight");
+      this.setThumbnailSize('thumbnail', 'thumbnailWidth', 'thumbnailHeight');
       if (this.props.isCarousel) {
-        this.setThumbnailSize("thumbnailCarousel", "thumbnailCarouselWidth", "thumbnailCarouselHeight");
+        this.setThumbnailSize('thumbnailCarousel', 'thumbnailCarouselWidth', 'thumbnailCarouselHeight');
       }
     }
   },
@@ -152,7 +152,7 @@ var ThumbnailContainer = React.createClass({
     }
   },
 
-  /**x
+  /** x
    * @description set positions for a thumbnail image when a video is vr
    * @param {Number} params - object with keys:
    * - {Number} yaw - rotation around the vertical axis in degrees (returns after changing direction)
@@ -172,8 +172,8 @@ var ThumbnailContainer = React.createClass({
     var pitch = Utils.ensureNumber(params.pitch, 0);
     var imageWidth = Utils.ensureNumber(params.imageWidth, 0);
     var imageHeight = Utils.ensureNumber(params.imageHeight, 0);
-    var thumbnailWidth = Utils.ensureNumber(params.thumbnailWidth, 0); //this.thumbnailWidth;
-    var thumbnailHeight = Utils.ensureNumber(params.thumbnailHeight, 0); //this.thumbnailHeight;
+    var thumbnailWidth = Utils.ensureNumber(params.thumbnailWidth, 0); // this.thumbnailWidth;
+    var thumbnailHeight = Utils.ensureNumber(params.thumbnailHeight, 0); // this.thumbnailHeight;
     yaw = this.getCurrentYawVr(yaw);
     pitch = pitch >= 360 ? 0 : pitch;
 
@@ -185,7 +185,7 @@ var ThumbnailContainer = React.createClass({
       positionY = bottomCoordinate;
     }
     var positionX = -(imageWidth - thumbnailWidth / 2 - imageWidth * yaw / 360);
-    return {positionX: positionX, positionY: positionY}
+    return {positionX: positionX, positionY: positionY};
   },
 
   /**
@@ -214,12 +214,12 @@ var ThumbnailContainer = React.createClass({
     var thumbnailStyle = {};
     thumbnailStyle.left = this.props.hoverPosition;
     if (Utils.isValidString(thumbnails.url)) {
-      thumbnailStyle.backgroundImage = "url('" + thumbnails.url + "')";
+      thumbnailStyle.backgroundImage = 'url(\'' + thumbnails.url + '\')';
     }
 
     if (this.props.videoVr) {
-      thumbnailStyle.backgroundSize = this.imageWidth + "px " + this.imageHeight + "px";
-      thumbnailStyle.backgroundPosition = this.positionX + "px " + this.positionY + "px";
+      thumbnailStyle.backgroundSize = this.imageWidth + 'px ' + this.imageHeight + 'px';
+      thumbnailStyle.backgroundPosition = this.positionX + 'px ' + this.positionY + 'px';
     }
 
     if (this.props.isCarousel) {
@@ -241,7 +241,7 @@ var ThumbnailContainer = React.createClass({
           thumbnailCarouselHeight={this.thumbnailCarouselHeight}
           centralThumbnail={thumbnails}
           thumbnailStyle={thumbnailStyle}
-        />
+        />;
     } else {
       thumbnail = (
         <Thumbnail
@@ -259,7 +259,7 @@ var ThumbnailContainer = React.createClass({
           imageWidth={this.imageWidth}
           thumbnailStyle={thumbnailStyle}
         />
-      )
+      );
     }
 
     return (

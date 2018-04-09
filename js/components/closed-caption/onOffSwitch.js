@@ -1,15 +1,15 @@
 var React = require('react'),
-    Utils = require('./../utils'),
-    AccessibleButton = require('../accessibleButton'),
-    CONSTANTS = require('../../constants/constants'),
-    ClassNames = require('classnames');
+  Utils = require('./../utils'),
+  AccessibleButton = require('../accessibleButton'),
+  CONSTANTS = require('../../constants/constants'),
+  ClassNames = require('classnames');
 
 var OnOffSwitch = React.createClass({
   handleOnOffSwitch: function() {
     this.props.controller.toggleClosedCaptionEnabled();
   },
 
-  render: function(){
+  render: function() {
     var switchThumbClassName = ClassNames({
       'oo-switch-thumb': true,
       'oo-switch-thumb-on': this.props.closedCaptionOptions.enabled,

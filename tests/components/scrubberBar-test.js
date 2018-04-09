@@ -16,10 +16,10 @@ var ScrubberBar = require('../../js/components/scrubberBar');
 var Utils = require('../../js/components/utils');
 var _ = require('underscore');
 
-var thumbnails = { "data":{ "available_time_slices":[ 0, 10 ], "available_widths":[ 120 ], "thumbnails":{ "0":{ "120":{ "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_1.jpg", "width":120, "height":80 } }, "10":{ "120":{ "url":"http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_2.jpg", "width":120, "height":80 } }, "errors":[ { "status":404, "code":"Not Found", "title":"unable to find thumbnail images", "detail":"embed code not found" } ] } }};
+var thumbnails = { 'data':{ 'available_time_slices':[ 0, 10 ], 'available_widths':[ 120 ], 'thumbnails':{ '0':{ '120':{ 'url':'http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_1.jpg', 'width':120, 'height':80 } }, '10':{ '120':{ 'url':'http://media.video-cdn.espn.com/motion/2016/0504/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles/chaptertn/Hu_160504_Deportes_Pura_Quimica_MiltonCenter_Miercoles_2.jpg', 'width':120, 'height':80 } }, 'errors':[ { 'status':404, 'code':'Not Found', 'title':'unable to find thumbnail images', 'detail':'embed code not found' } ] } }};
 
 // start unit test
-describe('ScrubberBar', function () {
+describe('ScrubberBar', function() {
 
   var baseMockController, baseMockProps;
   var defaultSkinConfig = JSON.parse(JSON.stringify(skinConfig));
@@ -59,7 +59,7 @@ describe('ScrubberBar', function () {
     updateBaseMockProps();
   });
 
-  it('creates a scrubber bar', function () {
+  it('creates a scrubber bar', function() {
 
     var mockController = {
       state: {
@@ -77,15 +77,15 @@ describe('ScrubberBar', function () {
     );
   });
 
-  it('creates a scrubber bar played bar and play head with accent color', function () {
+  it('creates a scrubber bar played bar and play head with accent color', function() {
     var mockController = {
       state: {
         isMobile: false
       }
     };
     var mockSkinConfig = Utils.clone(skinConfig);
-    mockSkinConfig.general.accentColor = "blue";
-    mockSkinConfig.controlBar.scrubberBar.playedColor = "";
+    mockSkinConfig.general.accentColor = 'blue';
+    mockSkinConfig.controlBar.scrubberBar.playedColor = '';
 
     var DOM = TestUtils.renderIntoDocument(
       <ScrubberBar
@@ -95,23 +95,23 @@ describe('ScrubberBar', function () {
         skinConfig={mockSkinConfig}
         />
     );
-    var playheadBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-playhead");
-    expect(playheadBar.style.backgroundColor).toBe("blue");
-    expect(ReactDOM.findDOMNode(DOM.refs.playhead).style.backgroundColor).toBe("blue");
+    var playheadBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playhead');
+    expect(playheadBar.style.backgroundColor).toBe('blue');
+    expect(ReactDOM.findDOMNode(DOM.refs.playhead).style.backgroundColor).toBe('blue');
   });
 
-  it('should render ARIA attributes', function () {
+  it('should render ARIA attributes', function() {
     baseMockController.state.currentPlayhead = 0;
     baseMockController.state.duration = 60;
     updateBaseMockProps();
     var DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
-    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-scrubber-bar");
+    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar');
     expect(scrubberBar.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.SEEK_SLIDER);
-    expect(scrubberBar.getAttribute('aria-valuemin')).toBe("0");
+    expect(scrubberBar.getAttribute('aria-valuemin')).toBe('0');
     expect(scrubberBar.getAttribute('aria-valuemax')).toBe(baseMockController.state.duration.toString());
     expect(scrubberBar.getAttribute('aria-valuenow')).toBe(baseMockController.state.currentPlayhead.toFixed(2));
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('00:00 of 01:00');
-    expect(scrubberBar.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR )).toBe('scrubberBar');
+    expect(scrubberBar.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe('scrubberBar');
   });
 
   it('should update the ARIA value in order to reflect the current playhead', function() {
@@ -119,14 +119,14 @@ describe('ScrubberBar', function () {
     baseMockController.state.duration = 60;
     updateBaseMockProps();
     var DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
-    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-scrubber-bar");
+    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar');
     expect(scrubberBar.getAttribute('aria-valuenow')).toBe('2.00');
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('00:02 of 01:00');
 
     baseMockController.state.currentPlayhead = 60;
     updateBaseMockProps();
     DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
-    scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-scrubber-bar");
+    scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar');
     expect(scrubberBar.getAttribute('aria-valuenow')).toBe('60.00');
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('01:00 of 01:00');
   });
@@ -137,14 +137,14 @@ describe('ScrubberBar', function () {
     baseMockController.state.duration = 0;
     updateBaseMockProps();
     var DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
-    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-scrubber-bar");
+    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar');
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('Live video');
 
     baseMockController.state.currentPlayhead = 60;
     baseMockController.state.duration = 120;
     updateBaseMockProps();
     DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
-    scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-scrubber-bar");
+    scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar');
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('01:00 of 02:00 live video');
   });
 
@@ -163,7 +163,7 @@ describe('ScrubberBar', function () {
     };
     updateBaseMockProps();
     var DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
-    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-scrubber-bar");
+    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar');
     TestUtils.Simulate.keyDown(scrubberBar, { key: CONSTANTS.KEY_VALUES.ARROW_UP });
     TestUtils.Simulate.keyDown(scrubberBar, { key: CONSTANTS.KEY_VALUES.ARROW_RIGHT });
     expect(seekForwardCalled).toBe(2);
@@ -174,15 +174,15 @@ describe('ScrubberBar', function () {
     expect(seekBackCalled).toBe(2);
   });
 
-  it('creates a scrubber bar played bar and play head with scrubberbar played color setting', function () {
+  it('creates a scrubber bar played bar and play head with scrubberbar played color setting', function() {
     var mockController = {
       state: {
         isMobile: false
       }
     };
     var mockSkinConfig = Utils.clone(skinConfig);
-    mockSkinConfig.general.accentColor = "blue";
-    mockSkinConfig.controlBar.scrubberBar.playedColor = "green";
+    mockSkinConfig.general.accentColor = 'blue';
+    mockSkinConfig.controlBar.scrubberBar.playedColor = 'green';
     var DOM = TestUtils.renderIntoDocument(
       <ScrubberBar
         controlBarVisible={true}
@@ -191,9 +191,9 @@ describe('ScrubberBar', function () {
         skinConfig={mockSkinConfig}
         />
     );
-    var playheadBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-playhead");
-    expect(playheadBar.style.backgroundColor).toBe("green");
-    expect(ReactDOM.findDOMNode(DOM.refs.playhead).style.backgroundColor).toBe("green");
+    var playheadBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playhead');
+    expect(playheadBar.style.backgroundColor).toBe('green');
+    expect(ReactDOM.findDOMNode(DOM.refs.playhead).style.backgroundColor).toBe('green');
   });
 
   it('handles a mousedown', function() {
@@ -218,7 +218,7 @@ describe('ScrubberBar', function () {
         />
     );
 
-    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-scrubber-bar-padding");
+    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar-padding');
     TestUtils.Simulate.mouseDown(scrubberBar);
     expect(scrubberBarClicked).toBe(true);
   });
@@ -339,10 +339,10 @@ describe('ScrubberBar', function () {
         isMobile: false,
         thumbnails: thumbnails
       },
-      updateSeekingPlayhead: function () {},
-      startHideControlBarTimer: function () {},
-      beginSeeking: function () {},
-      renderSkin: function () {}
+      updateSeekingPlayhead: function() {},
+      startHideControlBarTimer: function() {},
+      beginSeeking: function() {},
+      renderSkin: function() {}
     };
     var DOM = TestUtils.renderIntoDocument(
       <ScrubberBar
@@ -361,7 +361,7 @@ describe('ScrubberBar', function () {
     expect(thumbnailCarousel.length).toBe(1);
   });
 
-  it('tests a scrubber bar componentWillReceiveProps', function () {
+  it('tests a scrubber bar componentWillReceiveProps', function() {
     var mockController = {
       state: {
         isMobile: false
@@ -388,7 +388,7 @@ describe('ScrubberBar', function () {
     ReactDOM.unmountComponentAtNode(node);
   });
 
-  it('tests a scrubber bar functions', function () {
+  it('tests a scrubber bar functions', function() {
     var mockController = {
       state: {
         isMobile: true
@@ -422,7 +422,7 @@ describe('ScrubberBar', function () {
       target: {
         className: 'padding',
         getBoundingClientRect: function() {
-          return {left: 33}
+          return {left: 33};
         }
       },
       type: 'mousedown',
@@ -438,7 +438,7 @@ describe('ScrubberBar', function () {
       target: {
         className: 'oo-playhead',
         getBoundingClientRect: function() {
-          return {left: 33}
+          return {left: 33};
         }
       },
       type: 'mouseup',
@@ -456,7 +456,7 @@ describe('ScrubberBar', function () {
       target: {
         className: 'playhead',
         getBoundingClientRect: function() {
-          return {left: 33}
+          return {left: 33};
         }
       },
       type: 'touchstart'
@@ -473,7 +473,7 @@ describe('ScrubberBar', function () {
     scrubber.handleScrubberBarMouseOut(event4);
   });
 
-  it('tests a scrubber bar componentWillUnmount', function () {
+  it('tests a scrubber bar componentWillUnmount', function() {
     var mockController = {
       state: {
         isMobile: true

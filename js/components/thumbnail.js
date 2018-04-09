@@ -23,10 +23,10 @@ var Thumbnail = React.createClass({
   },
 
   render: function() {
-    var thumbnailClassName = "oo-thumbnail";
+    var thumbnailClassName = 'oo-thumbnail';
 
     if (this.props.videoVr) {
-      thumbnailClassName += " oo-thumbnail-vr";
+      thumbnailClassName += ' oo-thumbnail-vr';
     }
 
     return (

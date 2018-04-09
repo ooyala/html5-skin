@@ -1,11 +1,11 @@
 var React = require('react'),
-    ClassNames = require('classnames'),
-    AccessibleButton = require('./accessibleButton'),
-    AccessibleMenu = require('./higher-order/accessibleMenu'),
-    CONSTANTS = require('../constants/constants');
+  ClassNames = require('classnames'),
+  AccessibleButton = require('./accessibleButton'),
+  AccessibleMenu = require('./higher-order/accessibleMenu'),
+  CONSTANTS = require('../constants/constants');
 
 var ColorSelector = React.createClass({
-  setClassname: function(item){
+  setClassname: function(item) {
     return ClassNames({
       'oo-item': true,
       'oo-item-selected': this.props.selectedColor == item && this.props.enabled,
@@ -20,15 +20,15 @@ var ColorSelector = React.createClass({
   render: function() {
     var colorItems = [];
     for (var i = 0; i < this.props.colors.length; i++) {
-      //accent color
+      // accent color
       var isSelected = this.props.selectedColor === this.props.colors[i];
       var activeColorStyle = {};
       if (this.props.enabled && isSelected && this.props.skinConfig.general.accentColor) {
-        var selectedColorStyle =  "solid ";
+        var selectedColorStyle =  'solid ';
         selectedColorStyle += this.props.skinConfig.general.accentColor;
         activeColorStyle = {border: selectedColorStyle};
       }
-      var ariaLabel = this.props.ariaLabel + " " + this.props.colors[i];
+      var ariaLabel = this.props.ariaLabel + ' ' + this.props.colors[i];
 
       colorItems.push(
         <div
@@ -37,7 +37,7 @@ var ColorSelector = React.createClass({
           style={activeColorStyle}
           role={CONSTANTS.ARIA_ROLES.PRESENTATION}>
           <AccessibleButton
-            className={"oo-color-item oo-color-item-" + this.props.colors[i]}
+            className={'oo-color-item oo-color-item-' + this.props.colors[i]}
             ariaLabel={ariaLabel}
             ariaChecked={isSelected}
             role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}

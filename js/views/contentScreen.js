@@ -1,10 +1,10 @@
 var React = require('react'),
-    CloseButton = require('../components/closeButton'),
-    Utils = require('../components/utils'),
-    CONSTANTS = require('../constants/constants'),
-    Icon = require('../components/icon'),
-    Watermark = require('../components/watermark'),
-    AccessibilityMixin = require('../mixins/accessibilityMixin');
+  CloseButton = require('../components/closeButton'),
+  Utils = require('../components/utils'),
+  CONSTANTS = require('../constants/constants'),
+  Icon = require('../components/icon'),
+  Watermark = require('../components/watermark'),
+  AccessibilityMixin = require('../mixins/accessibilityMixin');
 
 var ContentScreen = React.createClass({
   mixins: [AccessibilityMixin],
@@ -22,25 +22,25 @@ var ContentScreen = React.createClass({
    */
   handleKeyDown: function(event) {
     switch (event.key) {
-      case CONSTANTS.KEY_VALUES.ESCAPE:
-        this.handleClose();
-      default:
-        break;
+    case CONSTANTS.KEY_VALUES.ESCAPE:
+      this.handleClose();
+    default:
+      break;
     }
   },
 
   handleClose: function() {
-    switch(this.props.screen) {
-      case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
-        this.props.controller.toggleDiscoveryScreen();
-        break;
-      default:
-        this.props.controller.toggleScreen(this.props.screen);
+    switch (this.props.screen) {
+    case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
+      this.props.controller.toggleDiscoveryScreen();
+      break;
+    default:
+      this.props.controller.toggleScreen(this.props.screen);
     }
   },
 
   render: function() {
-    //overlay only for the closed captions screen. Needs to be different than the other screens because of closed caption preview.
+    // overlay only for the closed captions screen. Needs to be different than the other screens because of closed caption preview.
     var closedCaptionOverlay = this.props.screen == CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN ? (
       <div className="oo-closed-caption-overlay"></div>
     ) :
@@ -48,13 +48,13 @@ var ContentScreen = React.createClass({
 
     var titleBarStyle = {};
     switch (this.props.screen) {
-      case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
-        titleBarStyle.fontFamily = Utils.getPropertyValue(this.props.skinConfig, 'discoveryScreen.panelTitle.titleFont.fontFamily');
-        titleBarStyle.color = Utils.getPropertyValue(this.props.skinConfig, 'discoveryScreen.panelTitle.titleFont.color');
-        break;
+    case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
+      titleBarStyle.fontFamily = Utils.getPropertyValue(this.props.skinConfig, 'discoveryScreen.panelTitle.titleFont.fontFamily');
+      titleBarStyle.color = Utils.getPropertyValue(this.props.skinConfig, 'discoveryScreen.panelTitle.titleFont.color');
+      break;
     }
 
-    //localized title bar, show nothing if no title text
+    // localized title bar, show nothing if no title text
     var titleBar = this.props.titleText ? (
       <div className="oo-content-screen-title" style={titleBarStyle}>
         {Utils.getLocalizedString(this.props.language, this.props.titleText, this.props.localizableStrings)}
@@ -104,7 +104,7 @@ ContentScreen.defaultProps = {
   element: null,
   icon: 'share',
   controller: {
-    toggleScreen: function(){},
+    toggleScreen: function() {},
     state: {
       accessibilityControlsEnabled: true
     }

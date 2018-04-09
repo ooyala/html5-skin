@@ -1,15 +1,15 @@
-/********************************************************************
+/** ******************************************************************
   END SCREEN
 *********************************************************************/
 var React = require('react'),
-    ReactDOM = require('react-dom'),
-    ClassNames = require('classnames'),
-    CONSTANTS = require('../constants/constants'),
-    ControlBar = require('../components/controlBar'),
-    Watermark = require('../components/watermark'),
-    Icon = require('../components/icon'),
-    ResizeMixin = require('../mixins/resizeMixin'),
-    Utils = require('../components/utils');
+  ReactDOM = require('react-dom'),
+  ClassNames = require('classnames'),
+  CONSTANTS = require('../constants/constants'),
+  ControlBar = require('../components/controlBar'),
+  Watermark = require('../components/watermark'),
+  Icon = require('../components/icon'),
+  ResizeMixin = require('../mixins/resizeMixin'),
+  Utils = require('../components/utils');
 
 var EndScreen = React.createClass({
   mixins: [ResizeMixin],
@@ -27,7 +27,7 @@ var EndScreen = React.createClass({
   },
 
   handleResize: function() {
-    if (ReactDOM.findDOMNode(this.refs.description)){
+    if (ReactDOM.findDOMNode(this.refs.description)) {
       this.setState({
         descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), this.props.contentTree.description)
       });
@@ -64,20 +64,20 @@ var EndScreen = React.createClass({
     if (infoPanelPosition) {
       var infoPanelClass = ClassNames({
         'oo-state-screen-info': true,
-        'oo-info-panel-top': infoPanelPosition.toLowerCase().indexOf("top") > -1,
-        'oo-info-panel-bottom': infoPanelPosition.toLowerCase().indexOf("bottom") > -1,
-        'oo-info-panel-left': infoPanelPosition.toLowerCase().indexOf("left") > -1,
-        'oo-info-panel-right': infoPanelPosition.toLowerCase().indexOf("right") > -1
+        'oo-info-panel-top': infoPanelPosition.toLowerCase().indexOf('top') > -1,
+        'oo-info-panel-bottom': infoPanelPosition.toLowerCase().indexOf('bottom') > -1,
+        'oo-info-panel-left': infoPanelPosition.toLowerCase().indexOf('left') > -1,
+        'oo-info-panel-right': infoPanelPosition.toLowerCase().indexOf('right') > -1
       });
       var titleClass = ClassNames({
         'oo-state-screen-title': true,
         'oo-text-truncate': true,
-        'oo-pull-right': infoPanelPosition.toLowerCase().indexOf("right") > -1,
+        'oo-pull-right': infoPanelPosition.toLowerCase().indexOf('right') > -1,
         'oo-hidden': !Utils.getPropertyValue(this.props.skinConfig, 'endScreen.showTitle')
       });
       var descriptionClass = ClassNames({
         'oo-state-screen-description': true,
-        'oo-pull-right': infoPanelPosition.toLowerCase().indexOf("right") > -1,
+        'oo-pull-right': infoPanelPosition.toLowerCase().indexOf('right') > -1,
         'oo-hidden': !Utils.getPropertyValue(this.props.skinConfig, 'endScreen.showDescription')
       });
     }

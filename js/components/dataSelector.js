@@ -1,9 +1,9 @@
 var React = require('react'),
-    ClassNames = require('classnames'),
-    AccessibleButton = require('./accessibleButton'),
-    AccessibleMenu = require('./higher-order/accessibleMenu'),
-    Icon = require('./icon'),
-    CONSTANTS = require('../constants/constants');
+  ClassNames = require('classnames'),
+  AccessibleButton = require('./accessibleButton'),
+  AccessibleMenu = require('./higher-order/accessibleMenu'),
+  Icon = require('./icon'),
+  CONSTANTS = require('../constants/constants');
 
 var DataSelector = React.createClass({
 
@@ -75,7 +75,7 @@ var DataSelector = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    //If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
+    // If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
     if (nextProps.viewSize !== this.props.viewSize) {
       var currentViewSize = this.props.viewSize;
       var nextViewSize = nextProps.viewSize;
@@ -119,18 +119,18 @@ var DataSelector = React.createClass({
   },
 
   render: function() {
-    //pagination
+    // pagination
     var currentViewSize = this.props.viewSize;
     var dataItemsPerPage = this.props.dataItemsPerPage[currentViewSize];
     var startAt = dataItemsPerPage * (this.state.currentPage - 1);
     var endAt = dataItemsPerPage * this.state.currentPage;
     var dataItems = this.props.availableDataItems.slice(startAt, endAt);
 
-    //Build data content blocks
+    // Build data content blocks
     var dataContentBlocks = [];
     for (var i = 0; i < dataItems.length; i++) {
       var currentDataItem = dataItems[i];
-      //accent color
+      // accent color
       var isSelected = this.props.selectedData === currentDataItem;
       var selectedItemStyle = {};
       if (isSelected && this.props.enabled && this.props.skinConfig.general.accentColor) {
@@ -164,14 +164,14 @@ var DataSelector = React.createClass({
       'oo-hidden': !this.props.enabled || endAt >= this.props.availableDataItems.length
     });
 
-    return(
+    return (
       <div
         className="oo-data-selector"
         aria-label={this.props.ariaLabel}
         role={CONSTANTS.ARIA_ROLES.MENU}>
 
         <AccessibleButton
-          ref={function(e) {this.leftChevronBtn = e}.bind(this)}
+          ref={function(e) {this.leftChevronBtn = e;}.bind(this)}
           className={leftChevron}
           ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_OPTIONS}
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM}
@@ -187,7 +187,7 @@ var DataSelector = React.createClass({
         </div>
 
         <AccessibleButton
-          ref={function(e) {this.rightChevronBtn = e}.bind(this)}
+          ref={function(e) {this.rightChevronBtn = e;}.bind(this)}
           className={rightChevron}
           ariaLabel={CONSTANTS.ARIA_LABELS.MORE_OPTIONS}
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM}

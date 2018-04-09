@@ -2,6 +2,7 @@
   "env": {
     "browser": true,
     "commonjs": true,
+    "jest": true,
     "es6": false,
     "node": false
   },
@@ -56,6 +57,8 @@
     ],
     "yoda": ["error"],
 
-    "react/jsx-uses-vars": ["error"]
+    "react/jsx-uses-vars": ["error"],
+    "react/jsx-uses-react": ["error"],
+    "react/react-in-jsx-scope": ["error"]
   }
 }

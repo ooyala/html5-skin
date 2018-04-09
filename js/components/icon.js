@@ -1,5 +1,5 @@
 var React = require('react'),
-    Utils = require('./utils');
+  Utils = require('./utils');
 
 
 var Icon = React.createClass({
@@ -11,7 +11,7 @@ var Icon = React.createClass({
     var iconStyle = Utils.extend({fontFamily: this.props.skinConfig.icons[this.props.icon].fontFamilyName}, this.props.style);
     return (
       <span
-        className={this.props.skinConfig.icons[this.props.icon].fontStyleClass + " " + this.props.className}
+        className={this.props.skinConfig.icons[this.props.icon].fontStyleClass + ' ' + this.props.className}
         style={iconStyle}
         onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}
         onClick={this.props.onClick}>
@@ -29,9 +29,9 @@ Icon.propTypes = {
 };
 
 Icon.defaultProps = {
-  icon: "",
+  icon: '',
   skinConfig: {},
-  className: "",
+  className: '',
   style: {}
 };
 

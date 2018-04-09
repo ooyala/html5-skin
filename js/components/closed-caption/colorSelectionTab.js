@@ -1,8 +1,8 @@
 var React = require('react'),
-    Utils = require('../utils'),
-    CONSTANTS = require('../../constants/constants'),
-    SelectionContainer = require('./selectionContainer'),
-    ColorSelector = require('../colorSelector');
+  Utils = require('../utils'),
+  CONSTANTS = require('../../constants/constants'),
+  SelectionContainer = require('./selectionContainer'),
+  ColorSelector = require('../colorSelector');
 
 var ColorSelectionTab = React.createClass({
 
@@ -11,13 +11,13 @@ var ColorSelectionTab = React.createClass({
       selectedTextColor: this.props.closedCaptionOptions.textColor,
       selectedWindowColor: this.props.closedCaptionOptions.windowColor,
       selectedBackgroundColor: this.props.closedCaptionOptions.backgroundColor,
-      textColors: ["White", "Blue", "Magenta", "Green", "Yellow", "Red", "Cyan", "Black"],
-      windowColors: ["Transparent", "White", "Blue", "Magenta", "Green", "Yellow", "Red", "Cyan", "Black"],
-      backgroundColors: ["Transparent", "White", "Blue", "Magenta", "Green", "Yellow", "Red", "Cyan", "Black"]
+      textColors: ['White', 'Blue', 'Magenta', 'Green', 'Yellow', 'Red', 'Cyan', 'Black'],
+      windowColors: ['Transparent', 'White', 'Blue', 'Magenta', 'Green', 'Yellow', 'Red', 'Cyan', 'Black'],
+      backgroundColors: ['Transparent', 'White', 'Blue', 'Magenta', 'Green', 'Yellow', 'Red', 'Cyan', 'Black']
     };
   },
 
-  changeTextColor: function(color){
+  changeTextColor: function(color) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
@@ -27,7 +27,7 @@ var ColorSelectionTab = React.createClass({
     });
   },
 
-  changeWindowColor: function(color){
+  changeWindowColor: function(color) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
@@ -37,7 +37,7 @@ var ColorSelectionTab = React.createClass({
     });
   },
 
-  changeBackgroundColor: function(color){
+  changeBackgroundColor: function(color) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
@@ -47,7 +47,7 @@ var ColorSelectionTab = React.createClass({
     });
   },
 
-  render: function(){
+  render: function() {
 
     var textColorTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.TEXT_COLOR, this.props.localizableStrings);
     var textColorSelection = Utils.getLocalizedString(
@@ -70,7 +70,7 @@ var ColorSelectionTab = React.createClass({
       this.props.localizableStrings
     );
 
-    return(
+    return (
       <div className="oo-color-selection-tab">
         <div className="oo-color-selection-inner-wrapper">
           <SelectionContainer

@@ -1,20 +1,20 @@
-/********************************************************************
+/** ******************************************************************
  PAUSE SCREEN
  *********************************************************************/
 var React = require('react'),
-    ReactDOM = require('react-dom'),
-    ClassNames = require('classnames'),
-    ControlBar = require('../components/controlBar'),
-    AdOverlay = require('../components/adOverlay'),
-    UpNextPanel = require('../components/upNextPanel'),
-    TextTrack = require('../components/textTrackPanel'),
-    Watermark = require('../components/watermark'),
-    ResizeMixin = require('../mixins/resizeMixin'),
-    Icon = require('../components/icon'),
-    Utils = require('../components/utils'),
-    CONSTANTS = require('./../constants/constants'),
-    AnimateMixin = require('../mixins/animateMixin'),
-    ViewControlsVr = require('../components/viewControlsVr');
+  ReactDOM = require('react-dom'),
+  ClassNames = require('classnames'),
+  ControlBar = require('../components/controlBar'),
+  AdOverlay = require('../components/adOverlay'),
+  UpNextPanel = require('../components/upNextPanel'),
+  TextTrack = require('../components/textTrackPanel'),
+  Watermark = require('../components/watermark'),
+  ResizeMixin = require('../mixins/resizeMixin'),
+  Icon = require('../components/icon'),
+  Utils = require('../components/utils'),
+  CONSTANTS = require('./../constants/constants'),
+  AnimateMixin = require('../mixins/animateMixin'),
+  ViewControlsVr = require('../components/viewControlsVr');
 
 var PauseScreen = React.createClass({
   mixins: [ResizeMixin, AnimateMixin],
@@ -50,7 +50,7 @@ var PauseScreen = React.createClass({
   },
 
   handleResize: function() {
-    if (ReactDOM.findDOMNode(this.refs.description)){
+    if (ReactDOM.findDOMNode(this.refs.description)) {
       this.setState({
         descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), this.props.contentTree.description)
       });
@@ -61,7 +61,7 @@ var PauseScreen = React.createClass({
     if (this.props.controller.videoVr) {
       event.preventDefault();
     }
-    if (!this.props.isVrMouseMove){
+    if (!this.props.isVrMouseMove) {
       this.props.controller.togglePlayPause(event);
     }
     this.props.controller.state.accessibilityControlsEnabled = true;
@@ -98,7 +98,7 @@ var PauseScreen = React.createClass({
       var pauseButton = document.getElementById('oo-pause-button');
       setTimeout(function() {
         if (pauseButton) {
-          pauseButton.style.display="none";
+          pauseButton.style.display='none';
         }
       }, 1000);
     }
@@ -148,7 +148,7 @@ var PauseScreen = React.createClass({
   },
 
   render: function() {
-    //inline style for config/skin.json elements only
+    // inline style for config/skin.json elements only
     var titleStyle = {
       color: this.props.skinConfig.startScreen.titleFont.color
     };
@@ -160,7 +160,7 @@ var PauseScreen = React.createClass({
       opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity
     };
 
-    //CSS class manipulation from config/skin.json
+    // CSS class manipulation from config/skin.json
     var fadeUnderlayClass = ClassNames({
       'oo-fading-underlay': !this.props.pauseAnimationDisabled,
       'oo-fading-underlay-active': this.props.pauseAnimationDisabled,
@@ -168,29 +168,29 @@ var PauseScreen = React.createClass({
     });
     var infoPanelClass = ClassNames({
       'oo-state-screen-info': true,
-      'oo-info-panel-top': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("top") > -1,
-      'oo-info-panel-bottom': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("bottom") > -1,
-      'oo-info-panel-left': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("left") > -1,
-      'oo-info-panel-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+      'oo-info-panel-top': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('top') > -1,
+      'oo-info-panel-bottom': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('bottom') > -1,
+      'oo-info-panel-left': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('left') > -1,
+      'oo-info-panel-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
     });
     var titleClass = ClassNames({
       'oo-state-screen-title': true,
       'oo-text-truncate': true,
-      'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+      'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
     });
     var descriptionClass = ClassNames({
       'oo-state-screen-description': true,
-      'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf("right") > -1
+      'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
     });
 
     var actionIconClass = ClassNames({
       'oo-action-icon-pause': !this.props.pauseAnimationDisabled,
       'oo-action-icon': this.props.pauseAnimationDisabled,
       'oo-animate-pause': this.state.animate && !this.props.pauseAnimationDisabled,
-      'oo-action-icon-top': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("top") > -1,
-      'oo-action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("bottom") > -1,
-      'oo-action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("left") > -1,
-      'oo-action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf("right") > -1,
+      'oo-action-icon-top': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('top') > -1,
+      'oo-action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('bottom') > -1,
+      'oo-action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('left') > -1,
+      'oo-action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('right') > -1,
       'oo-hidden': !this.props.skinConfig.pauseScreen.showPauseIcon || this.props.pauseAnimationDisabled
     });
 

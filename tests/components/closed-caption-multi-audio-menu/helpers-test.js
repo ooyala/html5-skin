@@ -13,7 +13,7 @@ var helpers = require('../../../js/components/closed-caption-multi-audio-menu/he
 
 describe('closed caption & multi-audio helpers', function() {
   describe('getDisplayLanguage function', function() {
-    it("should return empty string when can't be matched", function() {
+    it('should return empty string when can\'t be matched', function() {
       expect(helpers.getDisplayLanguage()).toEqual('');
       expect(helpers.getDisplayLanguage([], 2)).toEqual('');
       expect(helpers.getDisplayLanguage([], 'w00t')).toEqual('');
