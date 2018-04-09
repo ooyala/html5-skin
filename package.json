@@ -12,7 +12,7 @@
   "main": "html5-skin.js",
   "scripts": {
     "test": "jest",
-    "eslint": "LIST=`git diff --name-only | grep -f *.js | grep -v json;`; if [ $LIST ]; then eslint $LIST; fi"
+    "eslint": "git diff --cached --name-only --diff-filter=ACMRTUB | grep .js$ | xargs ./node_modules/.bin/eslint --"
   },
   "repository": {
     "type": "git",

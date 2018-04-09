@@ -755,7 +755,7 @@ describe('Controller', function() {
           { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
         ]
       };
-      controller.onMultiAudioFetched('event', multiAudio);
+      controller.onMultiAudioChanged('event', multiAudio);
       expect(controller.state.multiAudio.tracks).toEqual(multiAudio.tracks);
     });
     

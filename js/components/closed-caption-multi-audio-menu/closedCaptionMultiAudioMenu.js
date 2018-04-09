@@ -13,7 +13,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
    * @returns {Array<{id: String, label: String, enabled: Boolean}>} an array of languages info objects
    * @private
    */
-  getClosedCaptions: function (languageList, language) {
+  getClosedCaptions: function(languageList, language) {
     var closedCaptionList = [];
     if (Array.isArray(languageList)) {
       for (var index = 0; index < languageList.length; index++) {
@@ -33,7 +33,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
    * when clicking on an item from an cc list, set the corresponding cc value
    * @param id {string} - id of clicked element
    */
-  handleClosedCaptionClick: function (id) {
+  handleClosedCaptionClick: function(id) {
     if (this.props.controller && typeof this.props.controller.onClosedCaptionChange === 'function') {
       this.props.controller.onClosedCaptionChange('language', id);
     }
@@ -43,7 +43,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
    * when clicking on an item from an audio list, set the corresponding audio value
    * @param id {string} - id of clicked element
    */
-  handleMultiAudioClick: function (id) {
+  handleMultiAudioClick: function(id) {
     if (
       this.props.controller &&
       typeof this.props.controller.setCurrentAudio === 'function' &&
@@ -62,7 +62,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
     }
   },
 
-  render: function () {
+  render: function() {
     var multiAudioCol = null;
     var closedCaptionsCol = null;
     if (
