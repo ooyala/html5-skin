@@ -952,42 +952,221 @@ describe('ControlBar', function () {
     expect(ccButtons.length).toBe(1);
   });
 
-  // it('shows/hides multiaudio button if multiaudio available', function() {
-  //   baseMockProps.skinConfig.buttons.desktopContent = [
-  //     {"name":"multiAudio", "location": "controlBar", "whenDoesNotFit":"keep", "minWidth":45 }
-  //   ];
-  //
-  //   var DOM = TestUtils.renderIntoDocument(
-  //     <ControlBar {...baseMockProps} controlBarVisible={true}
-  //                 componentWidth={500}
-  //                 playerState={CONSTANTS.STATE.PLAYING}
-  //                 isLiveStream={baseMockProps.isLiveStream} />
-  //   );
-  //
-  //   var multiAudioBtn = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-multiaudio');
-  //   expect(multiAudioBtn.length).toBe(0);
-  //
-  //   var toggleScreenClicked = false;
-  //   var multiaudioClicked = false;
-  //
-  //   baseMockController.state.multiAudio = {};
-  //   baseMockController.toggleScreen = function() {toggleScreenClicked = true;};
-  //   baseMockController.togglePopover = function() {multiaudioClicked = true;};
-  //
-  //   DOM = TestUtils.renderIntoDocument(
-  //     <ControlBar {...baseMockProps} controlBarVisible={true}
-  //                 componentWidth={500}
-  //                 playerState={CONSTANTS.STATE.PLAYING}
-  //                 isLiveStream={baseMockProps.isLiveStream} />
-  //   );
-  //
-  //   var multiAudioBtn2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-multiaudio');
-  //   expect(multiAudioBtn2.length).toBe(1);
-  //
-  //   var multiAudioBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-multiaudio').firstChild;
-  //   TestUtils.Simulate.click(multiAudioBtn);
-  //   expect(multiaudioClicked).toBe(true);
-  // });
+  it('show/hide audioAndCC button if multiAudio or CC is available', function() {
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {},
+        multiAudioOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        },
+        isOoyalaAds: false,
+        showMultiAudioIcon: true
+      }
+    };
+
+    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig.buttons.desktopContent = [
+      {"name":"audioAndCC", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 }
+    ];
+
+    var mockProps = {
+      isLiveStream: false,
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar
+        {...mockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={baseMockProps.isLiveStream}
+      />
+    );
+
+    // there are no CC, no multiaudio
+    var multiAudioBtn = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-multiaudio');
+    expect(multiAudioBtn.length).toBe(0);
+
+    // there are no CC, but multiaudio is available
+    mockController.state.multiAudio = {};
+    mockController.state.multiAudio.tracks = [{id: 1, label: "test"}];
+
+    var DOM2 = TestUtils.renderIntoDocument(
+      <ControlBar
+        {...mockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={baseMockProps.isLiveStream}
+      />
+    );
+
+    var multiAudioBtn2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM2, 'oo-multiaudio');
+    expect(multiAudioBtn2.length).toBe(1);
+
+    // there are no multiaudio, but CC is available
+    mockController.state.multiAudio = {};
+    mockController.state.closedCaptionOptions = {};
+    mockController.state.closedCaptionOptions.availableLanguages = {};
+    mockController.state.closedCaptionOptions.availableLanguages.languages = [ "en", "de", "es", "fr" ];
+
+    var DOM3 = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+                  componentWidth={500}
+                  playerState={CONSTANTS.STATE.PLAYING}
+                  isLiveStream={mockProps.isLiveStream} />
+    );
+
+    var multiAudioBtn3 = TestUtils.scryRenderedDOMComponentsWithClass(DOM3, 'oo-multiaudio');
+    expect(multiAudioBtn3.length).toBe(1);
+
+    // there are multilaudio, but param showMultiAudioIcon was set to false
+    mockController.state.showMultiAudioIcon = false;
+    mockController.state.closedCaptionOptions.availableLanguages = {};
+
+    var DOM4 = TestUtils.renderIntoDocument(
+      <ControlBar {...mockProps} controlBarVisible={true}
+                  componentWidth={500}
+                  playerState={CONSTANTS.STATE.PLAYING}
+                  isLiveStream={mockProps.isLiveStream} />
+    );
+
+    var multiAudioBtn4 = TestUtils.scryRenderedDOMComponentsWithClass(DOM4, 'oo-multiaudio');
+    expect(multiAudioBtn4.length).toBe(0);
+  });
+
+  it('click on the multiAudioBtn should call the corresponding function', function () {
+    var multiAudioClicked = false;
+    var popoverStateChanged = false;
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {
+          availableLanguages: {
+            languages: [ "en", "de", "es", "fr" ]
+          }
+        },
+        multiAudio: {
+          tracks: [{id: 1, label: "test"}]
+        },
+        multiAudioOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        },
+        isOoyalaAds: false,
+        showMultiAudioIcon: true
+      },
+      toggleScreen: function() {multiAudioClicked = true;},
+      togglePopover: function() {popoverStateChanged = true},
+    };
+
+    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig.buttons.desktopContent = [
+      {"name":"audioAndCC", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 }
+    ];
+
+    var mockProps = {
+      isLiveStream: false,
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    //small screen
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar
+        {...mockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={baseMockProps.isLiveStream} />
+    );
+
+    var controlBar = TestUtils.findRenderedComponentWithType(DOM, ControlBar);
+    var multiAudioBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-multiaudio').firstChild;
+    TestUtils.Simulate.click(multiAudioBtn);
+    expect(multiAudioClicked).toBe(true);
+
+    var twoButtonSkinConfig = Utils.clone(skinConfig);
+    twoButtonSkinConfig.buttons.desktopContent = [
+      {"name":"audioAndCC", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 }
+    ];
+    twoButtonSkinConfig.responsive = {breakpoints: {lg: {id: "lg", multiplier: true}}};
+    var mockProps2 = {
+      isLiveStream: false,
+      controller: mockController,
+      skinConfig: twoButtonSkinConfig,
+      responsiveView: "lg"
+    };
+    //large screen
+    var DOM2 = TestUtils.renderIntoDocument(
+      <ControlBar
+        {...mockProps2}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={baseMockProps.isLiveStream} />
+    );
+    var controlBar2 = TestUtils.findRenderedComponentWithType(DOM2, ControlBar);
+    var multiAudioBtn2 = TestUtils.findRenderedDOMComponentWithClass(DOM2, 'oo-multiaudio').firstChild;
+    TestUtils.Simulate.click(multiAudioBtn2);
+    expect(popoverStateChanged).toBe(true);
+  });
+
+  it('closeOtherPopovers must close all the popovers, except that which is passed in the parameter', function() {
+    var buttonSkinConfig = Utils.clone(skinConfig);
+    buttonSkinConfig.buttons.desktopContent = [
+      {"name":"audioAndCC", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 }
+    ];
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {
+          showPopover: true
+        },
+        multiAudio: {},
+        multiAudioOptions: {
+          showPopover: true
+        },
+        videoQualityOptions: {
+          showPopover: true,
+          availableBitrates: null
+        },
+        isOoyalaAds: false,
+        showMultiAudioIcon: true
+      },
+      togglePopover: function(popoverName) { this.state[popoverName].showPopover = !this.state[popoverName].showPopover}
+    };
+    var mockProps = {
+      isLiveStream: false,
+      controller: mockController,
+      skinConfig: buttonSkinConfig
+    };
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar
+        {...mockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={baseMockProps.isLiveStream} />
+    );
+    var controlBar = TestUtils.findRenderedComponentWithType(DOM, ControlBar);
+    controlBar.closeOtherPopovers('multiAudioOptions');
+    expect(mockController.state.closedCaptionOptions.showPopover).toBe(false);
+    expect(mockController.state.videoQualityOptions.showPopover).toBe(false);
+  });
 
   it('hides share button if share options are not provided', function() {
     var customSkinConfig = JSON.parse(JSON.stringify(skinConfig));
