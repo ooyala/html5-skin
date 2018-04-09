@@ -109,18 +109,18 @@ var PlayingScreen = React.createClass({
     // - Space/Enter: Press active control
     // - Arrow keys: Either seek forward/back, volume up/down or interact with focused slider
     switch (event.key) {
-    case CONSTANTS.KEY_VALUES.TAB:
-    case CONSTANTS.KEY_VALUES.SPACE:
-    case CONSTANTS.KEY_VALUES.ENTER:
-    case CONSTANTS.KEY_VALUES.ARROW_UP:
-    case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
-    case CONSTANTS.KEY_VALUES.ARROW_DOWN:
-    case CONSTANTS.KEY_VALUES.ARROW_LEFT:
-      this.showControlBar();
-      this.props.controller.startHideControlBarTimer();
-      break;
-    default:
-      break;
+      case CONSTANTS.KEY_VALUES.TAB:
+      case CONSTANTS.KEY_VALUES.SPACE:
+      case CONSTANTS.KEY_VALUES.ENTER:
+      case CONSTANTS.KEY_VALUES.ARROW_UP:
+      case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
+      case CONSTANTS.KEY_VALUES.ARROW_DOWN:
+      case CONSTANTS.KEY_VALUES.ARROW_LEFT:
+        this.showControlBar();
+        this.props.controller.startHideControlBarTimer();
+        break;
+      default:
+        break;
     }
   },
 

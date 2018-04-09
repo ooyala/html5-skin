@@ -149,40 +149,40 @@ var VideoQualityPanel = React.createClass({
         }
 
         switch (qualityText) {
-        case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_BITRATE:
-          this.state.wideFormat = true;
-          label = qualityText.replace(MACROS.BITRATE, availableBitrate).replace(MACROS.RESOLUTION, availableResolution);
-          ariaLabel = label;
-          break;
-        case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY:
-          if (resolutions[availableResolution] && resolutions[availableResolution].length > 1) {
-            var sameResolutionLength = resolutions[availableResolution].length;
-            var tiering = null;
-            if (sameResolutionLength === 2) {
-              tiering = CONSTANTS.RESOLUTION_TIER.TWO;
-            } else if (sameResolutionLength >= 3) {
-              tiering = CONSTANTS.RESOLUTION_TIER.THREE;
-            }
-            if (tiering) {
-                // We want to use top 3 resolutions if we are using 3 resolution tiers
-              var resolutionIndex = resolutions[availableResolution].indexOf(availableBitrates[i]);
-              var extraResolutionLength = resolutions[availableResolution].length - tiering.length;
-              var trueResolutionIndex = resolutionIndex - extraResolutionLength;
-              if (trueResolutionIndex >= 0 && trueResolutionIndex < tiering.length) {
-                this.state.wideFormat = true;
-                qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.TIERED_RESOLUTION_ONLY;
-                label = qualityText.replace(MACROS.RESOLUTION, availableResolution).replace(MACROS.RESOLUTION_TIER, tiering[trueResolutionIndex]);
+          case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_BITRATE:
+            this.state.wideFormat = true;
+            label = qualityText.replace(MACROS.BITRATE, availableBitrate).replace(MACROS.RESOLUTION, availableResolution);
+            ariaLabel = label;
+            break;
+          case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY:
+            if (resolutions[availableResolution] && resolutions[availableResolution].length > 1) {
+              var sameResolutionLength = resolutions[availableResolution].length;
+              var tiering = null;
+              if (sameResolutionLength === 2) {
+                tiering = CONSTANTS.RESOLUTION_TIER.TWO;
+              } else if (sameResolutionLength >= 3) {
+                tiering = CONSTANTS.RESOLUTION_TIER.THREE;
               }
+              if (tiering) {
+                // We want to use top 3 resolutions if we are using 3 resolution tiers
+                var resolutionIndex = resolutions[availableResolution].indexOf(availableBitrates[i]);
+                var extraResolutionLength = resolutions[availableResolution].length - tiering.length;
+                var trueResolutionIndex = resolutionIndex - extraResolutionLength;
+                if (trueResolutionIndex >= 0 && trueResolutionIndex < tiering.length) {
+                  this.state.wideFormat = true;
+                  qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.TIERED_RESOLUTION_ONLY;
+                  label = qualityText.replace(MACROS.RESOLUTION, availableResolution).replace(MACROS.RESOLUTION_TIER, tiering[trueResolutionIndex]);
+                }
+              }
+            } else {
+              label = qualityText.replace(MACROS.RESOLUTION, availableResolution);
             }
-          } else {
-            label = qualityText.replace(MACROS.RESOLUTION, availableResolution);
-          }
-          ariaLabel = label;
-          break;
-        case CONSTANTS.QUALITY_SELECTION.TEXT.BITRATE_ONLY:
-          label = qualityText.replace(MACROS.BITRATE, availableBitrate);
-          ariaLabel = label;
-          break;
+            ariaLabel = label;
+            break;
+          case CONSTANTS.QUALITY_SELECTION.TEXT.BITRATE_ONLY:
+            label = qualityText.replace(MACROS.BITRATE, availableBitrate);
+            ariaLabel = label;
+            break;
         }
 
         if (label) {

@@ -75,18 +75,18 @@ var AccessibleMenu = function(ComposedComponent, options) {
       }
 
       switch (event.which || event.keyCode) {
-      case CONSTANTS.KEYCODES.UP_ARROW_KEY:
-      case CONSTANTS.KEYCODES.LEFT_ARROW_KEY:
-        event.preventDefault();
-        this.focusOnMenuItemSibling(event.target, false);
-        break;
-      case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
-      case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
-        event.preventDefault();
-        this.focusOnMenuItemSibling(event.target, true);
-        break;
-      default:
-        break;
+        case CONSTANTS.KEYCODES.UP_ARROW_KEY:
+        case CONSTANTS.KEYCODES.LEFT_ARROW_KEY:
+          event.preventDefault();
+          this.focusOnMenuItemSibling(event.target, false);
+          break;
+        case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
+        case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
+          event.preventDefault();
+          this.focusOnMenuItemSibling(event.target, true);
+          break;
+        default:
+          break;
       }
     },
 

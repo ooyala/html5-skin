@@ -44,18 +44,18 @@ var SharePanel = React.createClass({
       var shareButtons = [];
       socialContent.forEach(function(shareButton) {
         switch (shareButton) {
-        case 'twitter':
-          shareButtons.push(<a className="oo-twitter" onClick={this.handleTwitterClick}></a>);
-          break;
-        case 'facebook':
-          shareButtons.push(<a className="oo-facebook" onClick={this.handleFacebookClick}></a>);
-          break;
-        case 'google+':
-          shareButtons.push(<a className="oo-google-plus" onClick={this.handleGPlusClick}></a>);
-          break;
-        case 'email':
-          shareButtons.push(<a className="oo-email-share" onClick={this.handleEmailClick}></a>);
-          break;
+          case 'twitter':
+            shareButtons.push(<a className="oo-twitter" onClick={this.handleTwitterClick}></a>);
+            break;
+          case 'facebook':
+            shareButtons.push(<a className="oo-facebook" onClick={this.handleFacebookClick}></a>);
+            break;
+          case 'google+':
+            shareButtons.push(<a className="oo-google-plus" onClick={this.handleGPlusClick}></a>);
+            break;
+          case 'email':
+            shareButtons.push(<a className="oo-email-share" onClick={this.handleEmailClick}></a>);
+            break;
         }
       }, this);
 

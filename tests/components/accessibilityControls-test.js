@@ -218,14 +218,14 @@ describe('AccessibilityControls', function() {
         for (var currentScreen in CONSTANTS.SCREEN) {
           mockCtrl.state.screenToShow = currentScreen;
           switch (currentScreen) {
-          case CONSTANTS.SCREEN.PLAYING_SCREEN:
-          case CONSTANTS.SCREEN.PAUSE_SCREEN:
-          case CONSTANTS.SCREEN.END_SCREEN:
-            expect(a11yCtrls.canSeek()).toBe(true);
-            break;
-          default:
-            expect(a11yCtrls.canSeek()).toBe(false);
-            break;
+            case CONSTANTS.SCREEN.PLAYING_SCREEN:
+            case CONSTANTS.SCREEN.PAUSE_SCREEN:
+            case CONSTANTS.SCREEN.END_SCREEN:
+              expect(a11yCtrls.canSeek()).toBe(true);
+              break;
+            default:
+              expect(a11yCtrls.canSeek()).toBe(false);
+              break;
           }
         }
       });

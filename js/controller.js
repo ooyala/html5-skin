@@ -1628,41 +1628,41 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      ---------------------------------------------------------------------*/
     toggleDiscoveryScreen: function() {
       switch (this.state.playerState) {
-      case CONSTANTS.STATE.PLAYING:
-        this.pausedCallback = function() {
-          this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
-          this.state.playerState = CONSTANTS.STATE.PAUSE;
-          this.state.pluginsElement.addClass('oo-overlay-blur');
-          this.renderSkin();
-          OO.log('finished toggleDiscoveryScreen');
-        }.bind(this);
-        this.togglePlayPause();
-        this.sendDiscoveryDisplayEvent('pauseScreen');
-        break;
-      case CONSTANTS.STATE.PAUSE:
-        if (this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
-          this.state.pauseAnimationDisabled = true;
-          this.state.pluginsElement.removeClass('oo-overlay-blur');
-          this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
-        }
-        else {
+        case CONSTANTS.STATE.PLAYING:
+          this.pausedCallback = function() {
+            this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
+            this.state.playerState = CONSTANTS.STATE.PAUSE;
+            this.state.pluginsElement.addClass('oo-overlay-blur');
+            this.renderSkin();
+            OO.log('finished toggleDiscoveryScreen');
+          }.bind(this);
+          this.togglePlayPause();
           this.sendDiscoveryDisplayEvent('pauseScreen');
-          this.state.pluginsElement.addClass('oo-overlay-blur');
-          this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
-        }
-        break;
-      case CONSTANTS.STATE.END:
-        if (this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
-          this.state.pluginsElement.removeClass('oo-overlay-blur');
-          this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
-        }
-        else {
-          this.sendDiscoveryDisplayEvent('endScreen');
-          this.state.pluginsElement.addClass('oo-overlay-blur');
-          this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
-          this.skin.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen = false;
-        }
-        break;
+          break;
+        case CONSTANTS.STATE.PAUSE:
+          if (this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
+            this.state.pauseAnimationDisabled = true;
+            this.state.pluginsElement.removeClass('oo-overlay-blur');
+            this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+          }
+          else {
+            this.sendDiscoveryDisplayEvent('pauseScreen');
+            this.state.pluginsElement.addClass('oo-overlay-blur');
+            this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
+          }
+          break;
+        case CONSTANTS.STATE.END:
+          if (this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
+            this.state.pluginsElement.removeClass('oo-overlay-blur');
+            this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
+          }
+          else {
+            this.sendDiscoveryDisplayEvent('endScreen');
+            this.state.pluginsElement.addClass('oo-overlay-blur');
+            this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
+            this.skin.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen = false;
+          }
+          break;
       }
       this.renderSkin();
     },
@@ -1682,36 +1682,36 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     togglePlayPause: function() {
       switch (this.state.playerState) {
-      case CONSTANTS.STATE.START:
-        if (!this.state.isInitialPlay) {
-          this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now(), false);
-        }
-        break;
-      case CONSTANTS.STATE.END:
-        if (Utils.isAndroid() || Utils.isIos()) {
-          if (this.state.isSkipAdClicked) {
-            this.state.isSkipAdClicked = false;
+        case CONSTANTS.STATE.START:
+          if (!this.state.isInitialPlay) {
+            this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now(), false);
           }
-          else
+          break;
+        case CONSTANTS.STATE.END:
+          if (Utils.isAndroid() || Utils.isIos()) {
+            if (this.state.isSkipAdClicked) {
+              this.state.isSkipAdClicked = false;
+            }
+            else
             {
+              this.mb.publish(OO.EVENTS.REPLAY);
+            }
+          } else {
             this.mb.publish(OO.EVENTS.REPLAY);
           }
-        } else {
-          this.mb.publish(OO.EVENTS.REPLAY);
-        }
-        break;
-      case CONSTANTS.STATE.PAUSE:
-        this.isNewVrVideo = false;
-        this.mb.publish(OO.EVENTS.PLAY);
-        break;
-      case CONSTANTS.STATE.PLAYING:
-        this.isNewVrVideo = false;
+          break;
+        case CONSTANTS.STATE.PAUSE:
+          this.isNewVrVideo = false;
+          this.mb.publish(OO.EVENTS.PLAY);
+          break;
+        case CONSTANTS.STATE.PLAYING:
+          this.isNewVrVideo = false;
           // In some cases the controlBarVisible var might get out of sync if not
           // set explicitly when pausing. When this happens the control bar flashes
           // when the playingScreen is rendered, so we want to avoid that.
-        this.showControlBar();
-        this.mb.publish(OO.EVENTS.PAUSE);
-        break;
+          this.showControlBar();
+          this.mb.publish(OO.EVENTS.PAUSE);
+          break;
       }
     },
 

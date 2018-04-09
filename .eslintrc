@@ -31,7 +31,7 @@
 
     "default-case": ["error"],
     "eqeqeq": ["error"],
-    "indent": ["error", 2],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
     "max-len": ["error", 110],
     "no-unreachable": ["error"],
     "no-continue": ["error"],

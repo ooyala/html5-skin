@@ -144,24 +144,24 @@ var Slider = React.createClass({
     var value;
 
     switch (event.key) {
-    case CONSTANTS.KEY_VALUES.ARROW_UP:
-    case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
-      value = this.getNextSliderValue(true);
-      event.target.setAttribute('value', value);
-      break;
-    case CONSTANTS.KEY_VALUES.ARROW_DOWN:
-    case CONSTANTS.KEY_VALUES.ARROW_LEFT:
-      value = this.getNextSliderValue(false);
-      event.target.setAttribute('value', value);
-      break;
-    case CONSTANTS.KEY_VALUES.HOME:
-      event.target.setAttribute('value', Utils.ensureNumber(this.props.minValue, this.props.value));
-      break;
-    case CONSTANTS.KEY_VALUES.END:
-      event.target.setAttribute('value', Utils.ensureNumber(this.props.maxValue, this.props.value));
-      break;
-    default:
-      break;
+      case CONSTANTS.KEY_VALUES.ARROW_UP:
+      case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
+        value = this.getNextSliderValue(true);
+        event.target.setAttribute('value', value);
+        break;
+      case CONSTANTS.KEY_VALUES.ARROW_DOWN:
+      case CONSTANTS.KEY_VALUES.ARROW_LEFT:
+        value = this.getNextSliderValue(false);
+        event.target.setAttribute('value', value);
+        break;
+      case CONSTANTS.KEY_VALUES.HOME:
+        event.target.setAttribute('value', Utils.ensureNumber(this.props.minValue, this.props.value));
+        break;
+      case CONSTANTS.KEY_VALUES.END:
+        event.target.setAttribute('value', Utils.ensureNumber(this.props.maxValue, this.props.value));
+        break;
+      default:
+        break;
     }
   },
 

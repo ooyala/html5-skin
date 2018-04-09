@@ -41,34 +41,34 @@ AccessibilityControls.prototype = {
     }
 
     switch (charCode) {
-    case CONSTANTS.KEYCODES.SPACE_KEY:
+      case CONSTANTS.KEYCODES.SPACE_KEY:
         // We override the default behavior when the target element is a button (pressing
         // the spacebar on a button should activate it).
         // Note that this is not a comprehensive fix for all clickable elements, this is
         // mostly meant to enable keyboard navigation on control bar elements.
-      if (targetTagName !== 'button') {
-        e.preventDefault();
-        this.controller.togglePlayPause();
-      }
-      break;
-    case CONSTANTS.KEYCODES.UP_ARROW_KEY:
-    case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
-      if (this.areArrowKeysAllowed()) {
-        e.preventDefault();
-        var increase = charCode === CONSTANTS.KEYCODES.UP_ARROW_KEY;
-        this.changeVolumeBy(CONSTANTS.A11Y_CTRLS.VOLUME_CHANGE_DELTA, increase);
-      }
-      break;
-    case CONSTANTS.KEYCODES.LEFT_ARROW_KEY:
-    case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
-      if (this.areArrowKeysAllowed()) {
-        e.preventDefault();
-        var forward = e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY ? true : false;
-        this.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, forward);
-      }
-      break;
-    default:
-      break;
+        if (targetTagName !== 'button') {
+          e.preventDefault();
+          this.controller.togglePlayPause();
+        }
+        break;
+      case CONSTANTS.KEYCODES.UP_ARROW_KEY:
+      case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
+        if (this.areArrowKeysAllowed()) {
+          e.preventDefault();
+          var increase = charCode === CONSTANTS.KEYCODES.UP_ARROW_KEY;
+          this.changeVolumeBy(CONSTANTS.A11Y_CTRLS.VOLUME_CHANGE_DELTA, increase);
+        }
+        break;
+      case CONSTANTS.KEYCODES.LEFT_ARROW_KEY:
+      case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
+        if (this.areArrowKeysAllowed()) {
+          e.preventDefault();
+          var forward = e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY ? true : false;
+          this.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, forward);
+        }
+        break;
+      default:
+        break;
     }
   },
 
@@ -87,13 +87,13 @@ AccessibilityControls.prototype = {
     }
 
     switch (activeElementRole) {
-    case CONSTANTS.ARIA_ROLES.SLIDER:
-    case CONSTANTS.ARIA_ROLES.MENU_ITEM:
-    case CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO:
-    case CONSTANTS.ARIA_ROLES.MENU_ITEM_CHECKBOX:
-      return false;
-    default:
-      return true;
+      case CONSTANTS.ARIA_ROLES.SLIDER:
+      case CONSTANTS.ARIA_ROLES.MENU_ITEM:
+      case CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO:
+      case CONSTANTS.ARIA_ROLES.MENU_ITEM_CHECKBOX:
+        return false;
+      default:
+        return true;
     }
   },
 
@@ -218,18 +218,18 @@ AccessibilityControls.prototype = {
   canSeek: function() {
     var seekingEnabled = false;
     switch (this.controller.state.screenToShow) {
-    case CONSTANTS.SCREEN.PLAYING_SCREEN:
-    case CONSTANTS.SCREEN.PAUSE_SCREEN:
-    case CONSTANTS.SCREEN.END_SCREEN:
-      if (this.controller.state.isPlayingAd) {
+      case CONSTANTS.SCREEN.PLAYING_SCREEN:
+      case CONSTANTS.SCREEN.PAUSE_SCREEN:
+      case CONSTANTS.SCREEN.END_SCREEN:
+        if (this.controller.state.isPlayingAd) {
+          seekingEnabled = false;
+        } else {
+          seekingEnabled = true;
+        }
+        break;
+      default:
         seekingEnabled = false;
-      } else {
-        seekingEnabled = true;
-      }
-      break;
-    default:
-      seekingEnabled = false;
-      break;
+        break;
     }
     return seekingEnabled;
   },

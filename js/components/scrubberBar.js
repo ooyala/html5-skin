@@ -161,18 +161,18 @@ var ScrubberBar = React.createClass({
 
   handleScrubberBarKeyDown: function(evt) {
     switch (evt.key) {
-    case CONSTANTS.KEY_VALUES.ARROW_UP:
-    case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
-      evt.preventDefault();
-      this.props.controller.accessibilityControls.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, true);
-      break;
-    case CONSTANTS.KEY_VALUES.ARROW_DOWN:
-    case CONSTANTS.KEY_VALUES.ARROW_LEFT:
-      evt.preventDefault();
-      this.props.controller.accessibilityControls.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, false);
-      break;
-    default:
-      break;
+      case CONSTANTS.KEY_VALUES.ARROW_UP:
+      case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
+        evt.preventDefault();
+        this.props.controller.accessibilityControls.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, true);
+        break;
+      case CONSTANTS.KEY_VALUES.ARROW_DOWN:
+      case CONSTANTS.KEY_VALUES.ARROW_LEFT:
+        evt.preventDefault();
+        this.props.controller.accessibilityControls.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, false);
+        break;
+      default:
+        break;
     }
   },
 
