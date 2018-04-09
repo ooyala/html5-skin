@@ -109,6 +109,11 @@ var ControlBar = React.createClass({
         this.toggleStereoVr();
       }
     }
+    if (this.props.controller &&
+      this.props.controller.state &&
+      !this.props.controller.state.fullscreen) {
+      this.closeOtherPopovers();
+    }
   },
 
   handleStereoVrClick: function (evt) {
@@ -234,6 +239,7 @@ var ControlBar = React.createClass({
   },
 
   handleMultiAudioClick: function () {
+    console.log('BBB handleMultiAudioClick');
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
 
     if (this.props.skinConfig.responsive &&
