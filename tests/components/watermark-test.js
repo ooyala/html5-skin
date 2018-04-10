@@ -5,7 +5,7 @@ var React = require('react');
 var TestUtils = require('react-addons-test-utils');
 var Watermark = require('../../js/components/watermark');
 
-describe('Watermark', function () {
+describe('Watermark', function() {
   var clicked = false;
   var paused = false;
   var playerState = 'playing';
@@ -27,7 +27,7 @@ describe('Watermark', function () {
     },
     playerState: playerState,
     controller: {
-      togglePlayPause: function(){
+      togglePlayPause: function() {
         if (playerState == 'playing') {
           paused = true;
           playerState = 'paused';
@@ -38,18 +38,18 @@ describe('Watermark', function () {
         isMobile: false
       }
     }
-  }
-  it('renders watermark', function () {
+  };
+  it('renders watermark', function() {
     DOM = TestUtils.renderIntoDocument(
       <Watermark {...mockProps}
         controlBarVisible={true}/>
     );
 
-    //test clickable watermark
+    // test clickable watermark
     var watermark = DOM.refs['watermark'];
   });
 
-  it('tests watermark position', function () {
+  it('tests watermark position', function() {
     mockProps.skinConfig.general.watermark.position = 'left';
     DOM = TestUtils.renderIntoDocument(
       <Watermark {...mockProps}
@@ -59,7 +59,7 @@ describe('Watermark', function () {
     var watermark = DOM.refs['watermark'];
   });
 
-  it('tests watermark position', function () {
+  it('tests watermark position', function() {
     mockProps.skinConfig.general.watermark.position = 'right';
     DOM = TestUtils.renderIntoDocument(
       <Watermark {...mockProps}
@@ -69,7 +69,7 @@ describe('Watermark', function () {
     var watermark = DOM.refs['watermark'];
   });
 
-  it('tests watermark position', function () {
+  it('tests watermark position', function() {
     mockProps.skinConfig.general.watermark.position = 'bottom';
     DOM = TestUtils.renderIntoDocument(
       <Watermark {...mockProps}
@@ -79,7 +79,7 @@ describe('Watermark', function () {
     var watermark = DOM.refs['watermark'];
   });
 
-  it('tests watermark position', function () {
+  it('tests watermark position', function() {
     mockProps.skinConfig.general.watermark.position = 'top';
     DOM = TestUtils.renderIntoDocument(
       <Watermark {...mockProps}
@@ -89,58 +89,58 @@ describe('Watermark', function () {
     var watermark = DOM.refs['watermark'];
   });
 
-  it('tests watermark image default width', function () {
+  it('tests watermark image default width', function() {
     mockProps.skinConfig.general.watermark.scalingOption = 'default';
     DOM = TestUtils.renderIntoDocument(
       <Watermark {...mockProps}
         controlBarVisible={true}/>
     );
 
-    //test watermark width is default
+    // test watermark width is default
     var image = DOM.refs['watermark'];
     expect(image.style.width).toBe('10%');
   });
 
-  it('tests watermark image with set width', function () {
+  it('tests watermark image with set width', function() {
     mockProps.skinConfig.general.watermark.scalingOption = 'width';
     DOM = TestUtils.renderIntoDocument(
       <Watermark {...mockProps}
         controlBarVisible={true}/>
     );
 
-    //test watermark width
+    // test watermark width
     var image = DOM.refs['watermark'];
     expect(image.style.width).toBe(mockProps.skinConfig.general.watermark.scalingPercentage +'%');
   });
 
-  it('tests watermark image with set height', function () {
+  it('tests watermark image with set height', function() {
     mockProps.skinConfig.general.watermark.scalingOption = 'height';
     DOM = TestUtils.renderIntoDocument(
       <Watermark {...mockProps}
         controlBarVisible={true}/>
     );
 
-    //test watermark height
+    // test watermark height
     var image = DOM.refs['watermark'];
     expect(image.style.height).toBe(mockProps.skinConfig.general.watermark.scalingPercentage +'%');
   });
 
-  it('tests watermark image with no scaling option', function () {
+  it('tests watermark image with no scaling option', function() {
     mockProps.skinConfig.general.watermark.scalingOption = 'none';
     DOM = TestUtils.renderIntoDocument(
       <Watermark {...mockProps}
         controlBarVisible={true}/>
     );
 
-    //test watermark width is not changed
+    // test watermark width is not changed
     var image = DOM.refs['watermark'];
-    var check = (image.style.width == 'auto' || image.style.width == '')
+    var check = (image.style.width == 'auto' || image.style.width == '');
     expect(check).toBe(true);
   });
 
-  it('tests watermark click', function () {
+  it('tests watermark click', function() {
     var clicked = false;
-    //Render watermark into DOM
+    // Render watermark into DOM
     DOM = TestUtils.renderIntoDocument(
       <Watermark {...mockProps}
         controlBarVisible={false}/>
@@ -159,7 +159,7 @@ describe('Watermark', function () {
     playerState = 'playing';
   });
 
-  it('tests watermark not clickable', function () {
+  it('tests watermark not clickable', function() {
     var clicked = false;
     DOM = TestUtils.renderIntoDocument(
       <Watermark {...mockProps}
@@ -176,7 +176,7 @@ describe('Watermark', function () {
     playerState = 'playing';
   });
 
-  it('tests no watermark shown', function () {
+  it('tests no watermark shown', function() {
     mockProps.skinConfig.general.watermark.imageResource.url = '';
     DOM = TestUtils.renderIntoDocument(
       <Watermark {...mockProps}

@@ -30,7 +30,7 @@ var ContentScreen = React.createClass({
   },
 
   handleClose: function() {
-    switch(this.props.screen) {
+    switch (this.props.screen) {
       case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
         this.props.controller.toggleDiscoveryScreen();
         break;
@@ -40,7 +40,7 @@ var ContentScreen = React.createClass({
   },
 
   render: function() {
-    //overlay only for the closed captions screen. Needs to be different than the other screens because of closed caption preview.
+    // overlay only for the closed captions screen. Needs to be different than the other screens because of closed caption preview.
     var closedCaptionOverlay = this.props.screen == CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN ? (
       <div className="oo-closed-caption-overlay"></div>
     ) :
@@ -54,7 +54,7 @@ var ContentScreen = React.createClass({
         break;
     }
 
-    //localized title bar, show nothing if no title text
+    // localized title bar, show nothing if no title text
     var titleBar = this.props.titleText ? (
       <div className="oo-content-screen-title" style={titleBarStyle}>
         {Utils.getLocalizedString(this.props.language, this.props.titleText, this.props.localizableStrings)}
@@ -104,7 +104,7 @@ ContentScreen.defaultProps = {
   element: null,
   icon: 'share',
   controller: {
-    toggleScreen: function(){},
+    toggleScreen: function() {},
     state: {
       accessibilityControlsEnabled: true
     }

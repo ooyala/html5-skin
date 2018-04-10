@@ -10,7 +10,7 @@ var TestUtils = require('react-addons-test-utils');
 var PauseScreen = require('../../js/views/pauseScreen');
 var ClassNames = require('classnames');
 
-describe('PauseScreen', function () {
+describe('PauseScreen', function() {
   var mockController, mockContentTree, mockSkinConfig;
 
   beforeEach(function() {
@@ -24,39 +24,39 @@ describe('PauseScreen', function () {
       addBlur: function() {}
     };
     mockContentTree = {
-      title: "title"
+      title: 'title'
     };
     mockSkinConfig = {
       startScreen:{
         titleFont: {
-          color: "white"
+          color: 'white'
         },
         descriptionFont: {
-          color: "white"
+          color: 'white'
         }
       },
       pauseScreen: {
-        infoPanelPosition: "topLeft",
-        pauseIconPosition: "center",
+        infoPanelPosition: 'topLeft',
+        pauseIconPosition: 'center',
         PauseIconStyle: {
-          color: "white",
-          opacity: "1"
+          color: 'white',
+          opacity: '1'
         },
         showPauseIcon: true
       },
       icons: {
         pause: {
-          fontStyleClass: "pause"
+          fontStyleClass: 'pause'
         }
       }
     };
   });
 
-  it('creates an PauseScreen', function () {
+  it('creates an PauseScreen', function() {
     var clicked = false;
 
     mockController.togglePlayPause = function() {
-      clicked = true
+      clicked = true;
     };
 
     var handleVrPlayerClick = function() {};
@@ -67,7 +67,7 @@ describe('PauseScreen', function () {
         controller={mockController}
         contentTree={mockContentTree}
         handleVrPlayerClick={handleVrPlayerClick}
-        closedCaptionOptions={{cueText: "sample text"}}
+        closedCaptionOptions={{cueText: 'sample text'}}
       />
     );
 
@@ -76,10 +76,10 @@ describe('PauseScreen', function () {
     expect(clicked).toBe(true);
   });
 
-  it('does show the fade underlay when there is a title', function () {
+  it('does show the fade underlay when there is a title', function() {
     var spy = sinon.spy(mockController, 'addBlur');
     mockSkinConfig.pauseScreen.showTitle = true;
-    mockContentTree.title = "Video title";
+    mockContentTree.title = 'Video title';
     var handleVrPlayerClick = function() {};
     var DOM = TestUtils.renderIntoDocument(
       <PauseScreen
@@ -87,7 +87,7 @@ describe('PauseScreen', function () {
         controller={mockController}
         contentTree={mockContentTree}
         handleVrPlayerClick={handleVrPlayerClick}
-        closedCaptionOptions={{cueText: "sample text"}}
+        closedCaptionOptions={{cueText: 'sample text'}}
       />
     );
 
@@ -96,10 +96,10 @@ describe('PauseScreen', function () {
     spy.restore();
   });
 
-  it('does show the fade underlay when there is a description', function () {
+  it('does show the fade underlay when there is a description', function() {
     var spy = sinon.spy(mockController, 'addBlur');
     mockSkinConfig.pauseScreen.showDescription = true;
-    mockContentTree.description = "Video description";
+    mockContentTree.description = 'Video description';
     var handleVrPlayerClick = function() {};
     var DOM = TestUtils.renderIntoDocument(
       <PauseScreen
@@ -107,17 +107,17 @@ describe('PauseScreen', function () {
         controller={mockController}
         contentTree={mockContentTree}
         handleVrPlayerClick={handleVrPlayerClick}
-        closedCaptionOptions={{cueText: "sample text"}}
+        closedCaptionOptions={{cueText: 'sample text'}}
       />
     );
 
     var underlay = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fading-underlay');
-    //render gets called more than once due to a descriptino text state change when component is mounted
+    // render gets called more than once due to a descriptino text state change when component is mounted
     expect(spy.callCount).toNotBe(0);
     spy.restore();
   });
 
-  it('does not show the fade underlay when we do not show a title or description', function () {
+  it('does not show the fade underlay when we do not show a title or description', function() {
     var spy = sinon.spy(mockController, 'addBlur');
     mockSkinConfig.pauseScreen.showTitle = false;
     mockSkinConfig.pauseScreen.showDescription = false;
@@ -128,7 +128,7 @@ describe('PauseScreen', function () {
         controller={mockController}
         contentTree={mockContentTree}
         handleVrPlayerClick={handleVrPlayerClick}
-        closedCaptionOptions={{cueText: "sample text"}}
+        closedCaptionOptions={{cueText: 'sample text'}}
       />
     );
 
@@ -138,7 +138,7 @@ describe('PauseScreen', function () {
     spy.restore();
   });
 
-  it('does not show the fade underlay when there is no description and no title', function () {
+  it('does not show the fade underlay when there is no description and no title', function() {
     var spy = sinon.spy(mockController, 'addBlur');
     mockSkinConfig.pauseScreen.showTitle = true;
     mockSkinConfig.pauseScreen.showDescription = true;
@@ -151,7 +151,7 @@ describe('PauseScreen', function () {
         controller={mockController}
         contentTree={mockContentTree}
         handleVrPlayerClick={handleVrPlayerClick}
-        closedCaptionOptions={{cueText: "sample text"}}
+        closedCaptionOptions={{cueText: 'sample text'}}
       />
     );
 

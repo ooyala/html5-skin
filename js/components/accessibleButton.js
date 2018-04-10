@@ -63,7 +63,7 @@ var AccessibleButton = React.createClass({
   render: function() {
     return (
       <button
-        ref={function(e) { this.domElement = e }.bind(this)}
+        ref={function(e) { this.domElement = e; }.bind(this)}
         type="button"
         autoFocus={this.props.autoFocus}
         style={this.props.style}

@@ -1,34 +1,30 @@
-/**
- ********************************************************************
- RENDERER PLACEHOLDER
- ********************************************************************
- **/
+/** ******************************************************************
+  RENDERER PLACEHOLDER
+*********************************************************************/
 var React = require('react'),
-  Utils = require('./components/utils'),
-  CONSTANTS = require('./constants/constants'),
-  Spinner = require('./components/spinner'),
-  OnOffSwitch = require('./components/closed-caption/onOffSwitch'),
-  ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel'),
-  DiscoveryPanel = require('./components/discoveryPanel'),
-  VideoQualityPanel = require('./components/videoQualityPanel'),
-  ClosedCaptionMultiAudioMenu = require(
-    './components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'
-  ),
-  SharePanel = require('./components/sharePanel'),
-  MoreOptionsPanel = require('./components/moreOptionsPanel'),
-  AdScreen = require('./views/adScreen'),
-  EndScreen = require('./views/endScreen'),
-  StartScreen = require('./views/startScreen'),
-  PauseScreen = require('./views/pauseScreen'),
-  PlayingScreen = require('./views/playingScreen'),
-  ErrorScreen = require('./views/errorScreen'),
-  ContentScreen = require('./views/contentScreen'),
-  ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
+    Utils = require('./components/utils'),
+    CONSTANTS = require('./constants/constants'),
+    Spinner = require('./components/spinner'),
+    OnOffSwitch = require('./components/closed-caption/onOffSwitch'),
+    ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel'),
+    DiscoveryPanel = require('./components/discoveryPanel'),
+    VideoQualityPanel = require('./components/videoQualityPanel'),
+    ClosedCaptionMultiAudioMenu = require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
+    SharePanel = require('./components/sharePanel'),
+    MoreOptionsPanel = require('./components/moreOptionsPanel'),
+    AdScreen = require('./views/adScreen'),
+    EndScreen = require('./views/endScreen'),
+    StartScreen = require('./views/startScreen'),
+    PauseScreen = require('./views/pauseScreen'),
+    PlayingScreen = require('./views/playingScreen'),
+    ErrorScreen = require('./views/errorScreen'),
+    ContentScreen = require('./views/contentScreen'),
+    ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
 
 var Skin = React.createClass({
   mixins: [ResponsiveManagerMixin],
 
-  getInitialState: function () {
+  getInitialState: function() {
     this.overlayRenderingEventSent = false;
     return {
       screenToShow: null,
@@ -41,7 +37,7 @@ var Skin = React.createClass({
     };
   },
 
-  componentDidUpdate: function () {
+  componentDidUpdate: function() {
     // Notify AMC the correct overlay rendering info
     if (this.state.screenToShow !== null && !this.overlayRenderingEventSent) {
       var responsiveUIMultiple = this.props.skinConfig.responsive
@@ -52,25 +48,25 @@ var Skin = React.createClass({
     }
   },
 
-  componentDidMount: function () {
+  componentDidMount: function() {
     window.addEventListener('mouseup', this.handleClickOutsidePlayer);
   },
 
-  componentWillUnmount: function () {
+  componentWillUnmount: function() {
     window.removeEventListener('mouseup', this.handleClickOutsidePlayer);
   },
 
-  handleClickOutsidePlayer: function () {
+  handleClickOutsidePlayer: function() {
     this.props.controller.state.accessibilityControlsEnabled = false;
     this.props.controller.state.isClickedOutside = true;
   },
 
-  switchComponent: function (args) {
+  switchComponent: function(args) {
     var newState = args || {};
     this.setState(newState);
   },
 
-  updatePlayhead: function (newPlayhead, newDuration, newBuffered, adPlayhead) {
+  updatePlayhead: function(newPlayhead, newDuration, newBuffered, adPlayhead) {
     this.setState({
       currentPlayhead: Utils.ensureNumber(newPlayhead, this.state.currentPlayhead),
       duration: Utils.ensureNumber(newDuration, this.state.duration),
@@ -85,7 +81,7 @@ var Skin = React.createClass({
    * @param {MouseEvent} event - event
    * @return {undefined}
    */
-  handleVrPlayerMouseDown: function (event) {
+  handleVrPlayerMouseDown: function(event) {
     if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
@@ -109,7 +105,7 @@ var Skin = React.createClass({
    * @param {MouseEvent} event - event
    * @return {undefined}
    */
-  handleVrPlayerMouseMove: function (event) {
+  handleVrPlayerMouseMove: function(event) {
     if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
@@ -131,7 +127,7 @@ var Skin = React.createClass({
    * @description the function is called when we stop the rotation
    * @return {undefined}
    */
-  handleVrPlayerMouseUp: function () {
+  handleVrPlayerMouseUp: function() {
     if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
@@ -166,7 +162,7 @@ var Skin = React.createClass({
    * @description set isVrMouseMove to false for click event
    * @return {undefined}
    */
-  handleVrPlayerClick: function () {
+  handleVrPlayerClick: function() {
     this.setState({
       isVrMouseMove: false,
     });
@@ -177,7 +173,7 @@ var Skin = React.createClass({
    * @description set accessibilityControlsEnabled to true for focus event
    * @return {undefined}
    */
-  handleVrPlayerFocus: function () {
+  handleVrPlayerFocus: function() {
     this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
@@ -189,7 +185,7 @@ var Skin = React.createClass({
    * @param {number} pageY - y coordinate
    * @returns {[number, number, number]} array with yaw, roll, pitch
    */
-  getDirectionParams: function (pageX, pageY) {
+  getDirectionParams: function(pageX, pageY) {
     pageX = Utils.ensureNumber(pageX, 0);
     pageY = Utils.ensureNumber(pageY, 0);
     var dx = pageX - this.state.xVrMouseStart;
@@ -209,7 +205,7 @@ var Skin = React.createClass({
    * @param {string} paramName - one of "yaw" or "pitch"
    * @returns {number} value of vrViewingDirection param
    */
-  getVrViewingDirectionParamValue: function (paramName) {
+  getVrViewingDirectionParamValue: function(paramName) {
     var vrViewingDirectionValue = 0;
     if (this.props.controller &&
       this.props.controller.state &&
@@ -220,16 +216,16 @@ var Skin = React.createClass({
     return vrViewingDirectionValue;
   },
 
-  render: function () {
+  render: function() {
     var screen;
 
     // For IE10, use the start screen and that's it.
     if (Utils.isIE10()) {
-      if (this.state.screenToShow === CONSTANTS.SCREEN.START_SCREEN) {
+      if (this.state.screenToShow == CONSTANTS.SCREEN.START_SCREEN) {
         screen = (
           <StartScreen {...this.props}
-                       componentWidth={this.state.componentWidth}
-                       contentTree={this.state.contentTree}/>
+            componentWidth={this.state.componentWidth}
+            contentTree={this.state.contentTree} />
         );
       } else {
         screen = (<div></div>);
@@ -307,7 +303,7 @@ var Skin = React.createClass({
               {...this.props}
               assetId={this.state.assetId}
               playerParam={this.state.playerParam}
-              contentTree={this.state.contentTree}/>
+              contentTree={this.state.contentTree} />
           </ContentScreen>
         );
         break;
@@ -415,7 +411,7 @@ var Skin = React.createClass({
             titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
             autoFocus={this.state.closedCaptionOptions.autoFocus}
             closedCaptionOptions={this.props.closedCaptionOptions}
-            element={<OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_CLOSED_CAPTIONS}/>}
+            element={<OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_CLOSED_CAPTIONS} />}
             icon="cc">
             <ClosedCaptionPanel
               {...this.props}
@@ -501,8 +497,7 @@ Skin.defaultProps = {
       adVideoDuration: 0,
       errorCode: 404
     },
-    publishOverlayRenderingEvent: function () {
-    }
+    publishOverlayRenderingEvent: function() {}
   }
 
 };

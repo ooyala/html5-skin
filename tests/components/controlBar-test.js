@@ -19,7 +19,7 @@ var Utils = require('../../js/components/utils');
 var _ = require('underscore');
 
 // start unit test
-describe('ControlBar', function () {
+describe('ControlBar', function() {
 
   var baseMockController, baseMockProps;
   var defaultSkinConfig = JSON.parse(JSON.stringify(skinConfig));
@@ -53,7 +53,7 @@ describe('ControlBar', function () {
     };
   });
 
-  it('creates a control bar', function () {
+  it('creates a control bar', function() {
 
     var mockController = {
       state: {
@@ -103,7 +103,7 @@ describe('ControlBar', function () {
     };
 
     var fullscreenSkinConfig = Utils.clone(skinConfig);
-    fullscreenSkinConfig.buttons.desktopContent = [{"name":"fullscreen", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
+    fullscreenSkinConfig.buttons.desktopContent = [{'name':'fullscreen', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
     var mockProps = {
       isLiveStream: false,
@@ -124,7 +124,7 @@ describe('ControlBar', function () {
     expect(fullscreenToggled).toBe(true);
   });
 
-  it('render one stereo button if content vr', function () {
+  it('render one stereo button if content vr', function() {
     var mockController = {
       state: {
         isMobile: true,
@@ -140,14 +140,14 @@ describe('ControlBar', function () {
       videoVrSource: {
         vr: {
           stereo: false,
-          contentType: "single",
+          contentType: 'single',
           startPosition: 0
         }
       }
     };
 
     var toggleSkinConfig = Utils.clone(skinConfig);
-    toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
+    toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
     var mockProps = {
       isLiveStream: false,
@@ -168,7 +168,7 @@ describe('ControlBar', function () {
     expect(typeof toggleStereoVrButton).toBe('object');
   });
 
-  it('not render stereo button if content not vr', function () {
+  it('not render stereo button if content not vr', function() {
     var mockController = {
       state: {
         isMobile: true,
@@ -186,7 +186,7 @@ describe('ControlBar', function () {
     };
 
     var toggleSkinConfig = Utils.clone(skinConfig);
-    toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
+    toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
 
     var mockProps = {
@@ -208,7 +208,7 @@ describe('ControlBar', function () {
     expect(toggleStereoVrButtons.length).toBe(0);
   });
 
-  it('not render stereo button on desktop', function () {
+  it('not render stereo button on desktop', function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -226,7 +226,7 @@ describe('ControlBar', function () {
     };
 
     var toggleSkinConfig = Utils.clone(skinConfig);
-    toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
+    toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
 
     var mockProps = {
@@ -248,7 +248,7 @@ describe('ControlBar', function () {
     expect(toggleStereoVrButtons.length).toBe(0);
   });
 
-  it('enter stereo mode', function () {
+  it('enter stereo mode', function() {
     var stereoMode = false;
 
     var mockController = {
@@ -266,17 +266,17 @@ describe('ControlBar', function () {
       videoVrSource: {
         vr: {
           stereo: false,
-          contentType: "single",
+          contentType: 'single',
           startPosition: 0
         }
       },
-      toggleStereoVr: function () {
+      toggleStereoVr: function() {
         stereoMode = true;
       }
     };
 
     var toggleSkinConfig = Utils.clone(skinConfig);
-    toggleSkinConfig.buttons.desktopContent = [{"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
+    toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
     var mockProps = {
       isLiveStream: false,
@@ -315,7 +315,7 @@ describe('ControlBar', function () {
     };
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [{"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
+    oneButtonSkinConfig.buttons.desktopContent = [{'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
     var mockProps = {
       isLiveStream: false,
@@ -352,14 +352,14 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 },
-      {"name":"share", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"fullscreen", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
+      {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'fullscreen', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
     // This might no longer be necessary after the skin.json submodule is updated
-    oneButtonSkinConfig.shareScreen.shareContent = ["social", "embed"];
-    oneButtonSkinConfig.shareScreen.socialContent = ["twitter", "facebook", "google+", "email"];
+    oneButtonSkinConfig.shareScreen.shareContent = ['social', 'embed'];
+    oneButtonSkinConfig.shareScreen.socialContent = ['twitter', 'facebook', 'google+', 'email'];
 
     var mockProps = {
       isLiveStream: false,
@@ -400,7 +400,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":105 }
+      {'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':105 }
     ];
 
     var mockProps = {
@@ -420,7 +420,7 @@ describe('ControlBar', function () {
     TestUtils.Simulate.click(volumeButton);
     expect(muteClicked).toBe(true);
     var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
-    //JEST doesn't support dataset at the time of writing
+    // JEST doesn't support dataset at the time of writing
     TestUtils.Simulate.click(volumeBars[5], {target: {dataset: {volume: 5}}});
     expect(newVolume).toBeGreaterThan(-1);
   });
@@ -442,7 +442,7 @@ describe('ControlBar', function () {
                   isLiveStream={mockProps.isLiveStream} />
     );
 
-    expect(DOM.refs.volumeIcon.props.icon).toBe("volume");
+    expect(DOM.refs.volumeIcon.props.icon).toBe('volume');
   });
 
   it('should display mute volume icon when volume is set to 0', function() {
@@ -462,7 +462,7 @@ describe('ControlBar', function () {
                   isLiveStream={mockProps.isLiveStream} />
     );
 
-    expect(DOM.refs.volumeIcon.props.icon).toBe("volumeOff");
+    expect(DOM.refs.volumeIcon.props.icon).toBe('volumeOff');
   });
 
   it('should display mute volume icon when volume is muted', function() {
@@ -482,7 +482,7 @@ describe('ControlBar', function () {
                   isLiveStream={mockProps.isLiveStream} />
     );
 
-    expect(DOM.refs.volumeIcon.props.icon).toBe("volumeOff");
+    expect(DOM.refs.volumeIcon.props.icon).toBe('volumeOff');
   });
 
   it('to play on play click', function() {
@@ -504,7 +504,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":105 }
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':105 }
     ];
 
     var mockProps = {
@@ -528,7 +528,7 @@ describe('ControlBar', function () {
   it('should reset quality menu toggle keyboard flag when closing video quality popover', function() {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
     baseMockProps.skinConfig.buttons.desktopContent = [
-      { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 }
+      { 'name': 'quality', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 }
     ];
     baseMockController.togglePopover = function() {
       this.state.videoQualityOptions.showPopover = !this.state.videoQualityOptions.showPopover;
@@ -559,11 +559,11 @@ describe('ControlBar', function () {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
     baseMockController.state.closedCaptionOptions.availableLanguages = [];
     baseMockProps.skinConfig.buttons.desktopContent = [
-      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
-      { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      { "name": "closedCaption", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+      { 'name': 'playPause', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
+      { 'name': 'volume', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 240 },
+      { 'name': 'quality', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
+      { 'name': 'closedCaption', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
+      { 'name': 'fullscreen', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
     ];
 
     var DOM = TestUtils.renderIntoDocument(
@@ -598,11 +598,11 @@ describe('ControlBar', function () {
     baseMockController.state.closedCaptionOptions.showPopover = true;
     baseMockController.state.multiAudioOptions.showPopover = false;
     baseMockProps.skinConfig.buttons.desktopContent = [
-      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
-      { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      { "name": "closedCaption", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+      { 'name': 'playPause', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
+      { 'name': 'volume', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 240 },
+      { 'name': 'quality', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
+      { 'name': 'closedCaption', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
+      { 'name': 'fullscreen', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
     ];
 
     baseMockController.state.fullscreen = true;
@@ -633,10 +633,10 @@ describe('ControlBar', function () {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
     baseMockController.state.videoQualityOptions.showPopover = true;
     baseMockProps.skinConfig.buttons.desktopContent = [
-      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
-      { "name": "quality", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-      { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+      { 'name': 'playPause', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
+      { 'name': 'volume', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 240 },
+      { 'name': 'quality', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
+      { 'name': 'fullscreen', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
     ];
 
     baseMockController.state.volumeState.volume = 0;
@@ -657,7 +657,7 @@ describe('ControlBar', function () {
   it('should store playPause button focus state', function() {
     baseMockController.state.focusedControl = null;
     baseMockProps.skinConfig.buttons.desktopContent = [
-      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 }
+      { 'name': 'playPause', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 }
     ];
 
     var DOM = TestUtils.renderIntoDocument(
@@ -679,7 +679,7 @@ describe('ControlBar', function () {
   it('should start auto hide timer after restoring focused control', function() {
     var startHideControlBarTimerCalled = false;
     baseMockProps.skinConfig.buttons.desktopContent = [
-      { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 }
+      { 'name': 'playPause', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 }
     ];
     baseMockController.startHideControlBarTimer = function() {
       startHideControlBarTimerCalled = true;
@@ -719,7 +719,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"share", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+      {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
     var mockProps = {
@@ -760,7 +760,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+      {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
     var mockProps = {
@@ -798,7 +798,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+      {'name':'closedCaption', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
     var mockProps = {
@@ -832,7 +832,7 @@ describe('ControlBar', function () {
         }
       },
       toggleScreen: function() {toggleScreenClicked = true;},
-      togglePopover: function(){captionClicked = true;}
+      togglePopover: function() {captionClicked = true;}
     };
 
     // md, test cc popover
@@ -894,7 +894,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+      {'name':'closedCaption', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
     var mockProps = {
@@ -932,7 +932,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+      {'name':'closedCaption', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
     var mockProps = {
@@ -971,7 +971,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"audioAndCC", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 }
+      {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 }
     ];
 
     var mockProps = {
@@ -996,7 +996,7 @@ describe('ControlBar', function () {
 
     // there are no CC, but multiaudio is available
     mockController.state.multiAudio = {};
-    mockController.state.multiAudio.tracks = [{id: 1, label: "test"}];
+    mockController.state.multiAudio.tracks = [{id: 1, label: 'test'}];
 
     var DOM2 = TestUtils.renderIntoDocument(
       <ControlBar
@@ -1015,7 +1015,7 @@ describe('ControlBar', function () {
     mockController.state.multiAudio = {};
     mockController.state.closedCaptionOptions = {};
     mockController.state.closedCaptionOptions.availableLanguages = {};
-    mockController.state.closedCaptionOptions.availableLanguages.languages = [ "en", "de", "es", "fr" ];
+    mockController.state.closedCaptionOptions.availableLanguages.languages = [ 'en', 'de', 'es', 'fr' ];
 
     var DOM3 = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps} controlBarVisible={true}
@@ -1042,7 +1042,7 @@ describe('ControlBar', function () {
     expect(multiAudioBtn4.length).toBe(0);
   });
 
-  it('click on the multiAudioBtn should call the corresponding function', function () {
+  it('click on the multiAudioBtn should call the corresponding function', function() {
     var multiAudioClicked = false;
     var popoverStateChanged = false;
     var mockController = {
@@ -1053,11 +1053,11 @@ describe('ControlBar', function () {
         },
         closedCaptionOptions: {
           availableLanguages: {
-            languages: [ "en", "de", "es", "fr" ]
+            languages: [ 'en', 'de', 'es', 'fr' ]
           }
         },
         multiAudio: {
-          tracks: [{id: 1, label: "test"}]
+          tracks: [{id: 1, label: 'test'}]
         },
         multiAudioOptions: {},
         videoQualityOptions: {
@@ -1067,12 +1067,12 @@ describe('ControlBar', function () {
         showMultiAudioIcon: true
       },
       toggleScreen: function() {multiAudioClicked = true;},
-      togglePopover: function() {popoverStateChanged = true},
+      togglePopover: function() {popoverStateChanged = true;},
     };
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"audioAndCC", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 }
+      {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 }
     ];
 
     var mockProps = {
@@ -1081,7 +1081,7 @@ describe('ControlBar', function () {
       skinConfig: oneButtonSkinConfig
     };
 
-    //small screen
+    // small screen
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar
         {...mockProps}
@@ -1098,16 +1098,16 @@ describe('ControlBar', function () {
 
     var twoButtonSkinConfig = Utils.clone(skinConfig);
     twoButtonSkinConfig.buttons.desktopContent = [
-      {"name":"audioAndCC", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 }
+      {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 }
     ];
-    twoButtonSkinConfig.responsive = {breakpoints: {lg: {id: "lg", multiplier: true}}};
+    twoButtonSkinConfig.responsive = {breakpoints: {lg: {id: 'lg', multiplier: true}}};
     var mockProps2 = {
       isLiveStream: false,
       controller: mockController,
       skinConfig: twoButtonSkinConfig,
-      responsiveView: "lg"
+      responsiveView: 'lg'
     };
-    //large screen
+    // large screen
     var DOM2 = TestUtils.renderIntoDocument(
       <ControlBar
         {...mockProps2}
@@ -1125,7 +1125,7 @@ describe('ControlBar', function () {
   it('closeOtherPopovers must close all the popovers, except that which is passed in the parameter', function() {
     var buttonSkinConfig = Utils.clone(skinConfig);
     buttonSkinConfig.buttons.desktopContent = [
-      {"name":"audioAndCC", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 }
+      {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 }
     ];
     var mockController = {
       state: {
@@ -1147,7 +1147,7 @@ describe('ControlBar', function () {
         isOoyalaAds: false,
         showMultiAudioIcon: true
       },
-      togglePopover: function(popoverName) { this.state[popoverName].showPopover = !this.state[popoverName].showPopover}
+      togglePopover: function(popoverName) { this.state[popoverName].showPopover = !this.state[popoverName].showPopover;}
     };
     var mockProps = {
       isLiveStream: false,
@@ -1186,9 +1186,9 @@ describe('ControlBar', function () {
     };
 
     customSkinConfig.buttons.desktopContent = [
-      { "name": "share", "location": "controlBar", "whenDoesNotFit": "moveToMoreOptions", "minWidth": 45 }
+      { 'name': 'share', 'location': 'controlBar', 'whenDoesNotFit': 'moveToMoreOptions', 'minWidth': 45 }
     ];
-    customSkinConfig.shareScreen.shareContent = ["social"];
+    customSkinConfig.shareScreen.shareContent = ['social'];
     customSkinConfig.shareScreen.socialContent = [];
 
     var DOM = TestUtils.renderIntoDocument(
@@ -1201,7 +1201,7 @@ describe('ControlBar', function () {
     expect(TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-share').length).toBe(0);
 
     customSkinConfig.shareScreen.shareContent = [];
-    customSkinConfig.shareScreen.socialContent = ["twitter"];
+    customSkinConfig.shareScreen.socialContent = ['twitter'];
 
     DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps}
@@ -1232,10 +1232,10 @@ describe('ControlBar', function () {
     };
 
     customSkinConfig.buttons.desktopContent = [
-      { "name": "share", "location": "controlBar", "whenDoesNotFit": "moveToMoreOptions", "minWidth": 45 }
+      { 'name': 'share', 'location': 'controlBar', 'whenDoesNotFit': 'moveToMoreOptions', 'minWidth': 45 }
     ];
-    customSkinConfig.shareScreen.shareContent = ["social"];
-    customSkinConfig.shareScreen.socialContent = ["twitter"];
+    customSkinConfig.shareScreen.shareContent = ['social'];
+    customSkinConfig.shareScreen.socialContent = ['twitter'];
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps}
@@ -1247,7 +1247,7 @@ describe('ControlBar', function () {
     expect(TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-share').length).toBe(0);
   });
 
-   it('shows share button when ooyala ad is not playing', function() {
+  it('shows share button when ooyala ad is not playing', function() {
     var customSkinConfig = JSON.parse(JSON.stringify(skinConfig));
     var mockController = {
       state: {
@@ -1266,10 +1266,10 @@ describe('ControlBar', function () {
     };
 
     customSkinConfig.buttons.desktopContent = [
-      { "name": "share", "location": "controlBar", "whenDoesNotFit": "moveToMoreOptions", "minWidth": 45 }
+      { 'name': 'share', 'location': 'controlBar', 'whenDoesNotFit': 'moveToMoreOptions', 'minWidth': 45 }
     ];
-    customSkinConfig.shareScreen.shareContent = ["social"];
-    customSkinConfig.shareScreen.socialContent = ["twitter"];
+    customSkinConfig.shareScreen.shareContent = ['social'];
+    customSkinConfig.shareScreen.socialContent = ['twitter'];
 
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar {...mockProps}
@@ -1299,7 +1299,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+      {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
     var mockProps = {
@@ -1375,7 +1375,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+      {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
     var mockProps = {
@@ -1395,7 +1395,7 @@ describe('ControlBar', function () {
     expect(discoveryButtons.length).toBe(0);
   });
 
- it('shows discovery button when ooyala ad is not playing', function() {
+  it('shows discovery button when ooyala ad is not playing', function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -1414,7 +1414,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+      {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
     var mockProps = {
@@ -1434,7 +1434,7 @@ describe('ControlBar', function () {
     expect(discoveryButtons.length).toBe(1);
   });
 
-  it("shows/hides the more options button appropriately", function() {
+  it('shows/hides the more options button appropriately', function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -1451,8 +1451,8 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 },
-      {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
+      {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
     var mockProps = {
@@ -1474,12 +1474,12 @@ describe('ControlBar', function () {
     expect(buttons.length).toBe(1);
 
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
 
     mockProps = {
@@ -1501,7 +1501,7 @@ describe('ControlBar', function () {
     expect(buttons.length).toBeLessThan(5);
   });
 
-  it("hides the more options button when ooyala ad is playing", function() {
+  it('hides the more options button when ooyala ad is playing', function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -1519,12 +1519,12 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
 
     mockProps = {
@@ -1546,7 +1546,7 @@ describe('ControlBar', function () {
     expect(buttons.length).toBe(1);
   });
 
-  it("shows the more options button when ooyala ad is not playing", function() {
+  it('shows the more options button when ooyala ad is not playing', function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -1564,12 +1564,12 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
 
     mockProps = {
@@ -1591,7 +1591,7 @@ describe('ControlBar', function () {
     expect(buttons.length).toBeLessThan(5);
   });
 
-  it("handles more options click", function() {
+  it('handles more options click', function() {
     var moreOptionsClicked = false;
     var mockController = {
       state: {
@@ -1612,12 +1612,12 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 },
-      {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
     var mockProps = {
       isLiveStream: false,
@@ -1638,7 +1638,7 @@ describe('ControlBar', function () {
     expect(moreOptionsClicked).toBe(true);
   });
 
-  it("handles bad button input", function() {
+  it('handles bad button input', function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -1655,8 +1655,8 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 },
-      {"name":"doesNotExist", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
+      {'name':'doesNotExist', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
     var mockProps = {
@@ -1676,7 +1676,7 @@ describe('ControlBar', function () {
     expect(buttons.length).toBe(1);
   });
 
-  it("shows/hides the live indicator appropriately", function() {
+  it('shows/hides the live indicator appropriately', function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -1693,7 +1693,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"live", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }
+      {'name':'live', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
 
     var mockProps = {
@@ -1713,7 +1713,7 @@ describe('ControlBar', function () {
     expect(buttons.length).toBe(1);
 
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"live", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }
+      {'name':'live', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
 
     mockProps = {
@@ -1749,11 +1749,11 @@ describe('ControlBar', function () {
     };
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":100 }];
+    oneButtonSkinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
     oneButtonSkinConfig.controlBar.iconStyle.inactive.opacity = 0;
     oneButtonSkinConfig.controlBar.iconStyle.active.opacity = 1;
-    oneButtonSkinConfig.controlBar.iconStyle.active.color = "red";
-    oneButtonSkinConfig.controlBar.iconStyle.inactive.color = "blue";
+    oneButtonSkinConfig.controlBar.iconStyle.active.color = 'red';
+    oneButtonSkinConfig.controlBar.iconStyle.inactive.color = 'blue';
 
     var mockProps = {
       isLiveStream: false,
@@ -1768,14 +1768,14 @@ describe('ControlBar', function () {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe("0");
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe("blue");
+    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe('0');
+    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe('blue');
     TestUtils.Simulate.mouseOver(ReactDOM.findDOMNode(DOM.refs.volumeIcon));
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe("1");
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe("red");
+    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe('1');
+    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe('red');
     TestUtils.Simulate.mouseOut(ReactDOM.findDOMNode(DOM.refs.volumeIcon));
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe("0");
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe("blue");
+    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe('0');
+    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe('blue');
   });
 
   it('uses the volume slider on mobile', function() {
@@ -1795,7 +1795,7 @@ describe('ControlBar', function () {
     };
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":100 }];
+    oneButtonSkinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
 
     var mockProps = {
       isLiveStream: false,
@@ -1809,12 +1809,12 @@ describe('ControlBar', function () {
         playerState={CONSTANTS.STATE.PAUSED}
         isLiveStream={mockProps.isLiveStream} />
     );
-    var slider = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-volume-slider");
+    var slider = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume-slider');
     expect(slider).not.toBe(null);
   });
 
   it('hides the volume on iOS', function() {
-    window.navigator.platform = "iPhone";
+    window.navigator.platform = 'iPhone';
     var mockController = {
       state: {
         isMobile: true,
@@ -1830,7 +1830,7 @@ describe('ControlBar', function () {
     };
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":100 }];
+    oneButtonSkinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
 
     var mockProps = {
       isLiveStream: false,
@@ -1866,7 +1866,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+      {'name':'quality', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
     var mockProps = {
@@ -1899,10 +1899,10 @@ describe('ControlBar', function () {
         }
       },
       toggleScreen: function() {qualityClicked = true;},
-      togglePopover: function(){qualityClicked = true;}
+      togglePopover: function() {qualityClicked = true;}
     };
 
-    //xsmall
+    // xsmall
     mockProps = {
       isLiveStream: false,
       controller: mockController,
@@ -1924,7 +1924,7 @@ describe('ControlBar', function () {
     TestUtils.Simulate.click(qualityButton);
     expect(qualityClicked).toBe(true);
 
-    //medium
+    // medium
     mockProps = {
       isLiveStream: false,
       controller: mockController,
@@ -1946,7 +1946,7 @@ describe('ControlBar', function () {
     TestUtils.Simulate.click(qualityButton);
     expect(qualityClicked).toBe(true);
 
-    //large
+    // large
     mockProps = {
       isLiveStream: false,
       controller: mockController,
@@ -1987,7 +1987,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+      {'name':'quality', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
     var mockProps = {
@@ -2025,7 +2025,7 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":35 }
+      {'name':'quality', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
     var mockProps = {
@@ -2045,7 +2045,7 @@ describe('ControlBar', function () {
     expect(qualityButtons.length).toBe(1);
   });
 
-  it("renders nonclickable logo", function() {
+  it('renders nonclickable logo', function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -2062,9 +2062,9 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
+      {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':130 }
     ];
-    oneButtonSkinConfig.controlBar.logo.clickUrl = "";
+    oneButtonSkinConfig.controlBar.logo.clickUrl = '';
 
     var mockProps = {
       controller: mockController,
@@ -2082,7 +2082,7 @@ describe('ControlBar', function () {
     expect(nonClickableLogo.length).toBe(0);
   });
 
-  it("renders clickable logo", function() {
+  it('renders clickable logo', function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -2099,10 +2099,10 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
+      {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':130 }
     ];
-    oneButtonSkinConfig.controlBar.logo.imageResource.url = "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/assets/images/ooyala-logo.svg";
-    oneButtonSkinConfig.controlBar.logo.clickUrl = "http://www.ooyala.com";
+    oneButtonSkinConfig.controlBar.logo.imageResource.url = '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/assets/images/ooyala-logo.svg';
+    oneButtonSkinConfig.controlBar.logo.clickUrl = 'http://www.ooyala.com';
 
     var mockProps = {
       controller: mockController,
@@ -2122,7 +2122,7 @@ describe('ControlBar', function () {
     TestUtils.Simulate.click(logo);
   });
 
-  it('tests controlbar componentWill*', function () {
+  it('tests controlbar componentWill*', function() {
     var mockController = {
       state: {
         isMobile: true,
@@ -2146,9 +2146,9 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
+      {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':130 }
     ];
-    oneButtonSkinConfig.controlBar.logo.clickUrl = "http://www.ooyala.com";
+    oneButtonSkinConfig.controlBar.logo.clickUrl = 'http://www.ooyala.com';
     var mockProps = {
       controller: mockController,
       skinConfig: oneButtonSkinConfig
@@ -2185,7 +2185,7 @@ describe('ControlBar', function () {
     ReactDOM.unmountComponentAtNode(node);
   });
 
-  it("tests logo without image resource url", function() {
+  it('tests logo without image resource url', function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -2202,10 +2202,10 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
+      {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':130 }
     ];
-    oneButtonSkinConfig.controlBar.logo.imageResource.url = "";
-    oneButtonSkinConfig.controlBar.logo.clickUrl = "http://www.ooyala.com";
+    oneButtonSkinConfig.controlBar.logo.imageResource.url = '';
+    oneButtonSkinConfig.controlBar.logo.clickUrl = 'http://www.ooyala.com';
 
     var mockProps = {
       controller: mockController,
@@ -2228,9 +2228,9 @@ describe('ControlBar', function () {
 
     beforeEach(function() {
       baseMockProps.skinConfig.buttons.desktopContent = [
-        { "name": "playPause", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
-        { "name": "volume", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 240 },
-        { "name": "fullscreen", "location": "controlBar", "whenDoesNotFit": "keep", "minWidth": 45 },
+        { 'name': 'playPause', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
+        { 'name': 'volume', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 240 },
+        { 'name': 'fullscreen', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
       ];
       // Mock addEventListener on document object since TestUtils.Simulate will not work in this case
       eventMap = {};
@@ -2264,24 +2264,24 @@ describe('ControlBar', function () {
       document.activeElement = null;
       mockEvent.target = document.body;
       eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR )).toBe(focusableElements[0].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR ));
+      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe(focusableElements[0].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR));
       // Tab on last element, focuses on first
       document.activeElement = null;
       mockEvent.target = focusableElements[focusableElements.length - 1];
       eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR )).toBe(focusableElements[0].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR ));
+      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe(focusableElements[0].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR));
       // Shift + tab on document, focuses on last element
       document.activeElement = null;
       mockEvent.target = document.body;
       mockEvent.shiftKey = true;
       eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR )).toBe(focusableElements[focusableElements.length - 1].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR ));
+      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe(focusableElements[focusableElements.length - 1].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR));
       // Shift + tab on first element, focuses on last
       document.activeElement = null;
       mockEvent.target = focusableElements[0];
       mockEvent.shiftKey = true;
       eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR )).toBe(focusableElements[focusableElements.length - 1].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR ));
+      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe(focusableElements[focusableElements.length - 1].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR));
     });
 
     it('should NOT constrain tab navigation to control bar elements when NOT in fullscreen mode', function() {

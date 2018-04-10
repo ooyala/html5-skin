@@ -8,7 +8,7 @@ var TestUtils = require('react-addons-test-utils');
 var PlayingScreen = require('../../js/views/playingScreen');
 var UnmuteIcon = require('../../js/components/unmuteIcon');
 
-describe('PlayingScreen', function () {
+describe('PlayingScreen', function() {
   var mockController, closedCaptionOptions;
   var handleVrPlayerMouseUp = function() {};
 
@@ -34,11 +34,11 @@ describe('PlayingScreen', function () {
       }
     };
     closedCaptionOptions = {
-      cueText: "cue text"
+      cueText: 'cue text'
     };
   });
 
-  it('creates a PlayingScreen and checks mouseMove, mouseUp without video360', function () {
+  it('creates a PlayingScreen and checks mouseMove, mouseUp without video360', function() {
     var isMoved = false
       , isTouched = false;
 
@@ -77,7 +77,7 @@ describe('PlayingScreen', function () {
 
     mockController.state.videoVr = true;
     mockController.state.viewingDirection = {yaw: 0, roll: 0, pitch: 0},
-    mockController.startHideControlBarTimer = function () {
+    mockController.startHideControlBarTimer = function() {
       isStartHideControlBarTimer = true;
     };
     mockController.checkVrDirection = function() {
@@ -119,7 +119,7 @@ describe('PlayingScreen', function () {
 
   });
 
-  it('creates a PlayingScreen and checks touchEnd', function () {
+  it('creates a PlayingScreen and checks touchEnd', function() {
     var isInHandleTouchEnd = false;
     var clicked = false;
 
@@ -148,7 +148,7 @@ describe('PlayingScreen', function () {
     expect(clicked).toBe(true);
   });
 
-  it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp without video360 fullscreen', function () {
+  it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp without video360 fullscreen', function() {
     var over = false;
     var out = false;
     var moved = false;
@@ -193,7 +193,7 @@ describe('PlayingScreen', function () {
     expect(over).toBe(true);
   });
 
-  it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp with video360 fullscreen', function () {
+  it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp with video360 fullscreen', function() {
     var over = false;
     var out = false;
     var moved = false;
@@ -251,7 +251,7 @@ describe('PlayingScreen', function () {
     expect(clicked).toBe(false);
   });
 
-  it('creates a PlayingScreen and check play&pause', function () {
+  it('creates a PlayingScreen and check play&pause', function() {
     var clicked = false;
     var isMouseMove = true;
 
@@ -259,7 +259,7 @@ describe('PlayingScreen', function () {
     mockController.state.isMobile = true;
     mockController.state.isVrMouseDown = false;
     mockController.state.isMouseMove = false;
-    mockController.togglePlayPause = function(){
+    mockController.togglePlayPause = function() {
       clicked = !clicked;
     };
     mockController.startHideControlBarTimer = function() {};
@@ -284,7 +284,7 @@ describe('PlayingScreen', function () {
     expect(isMouseMove).toBe(false);
   });
 
-  it('should show control bar when pressing the tab key', function () {
+  it('should show control bar when pressing the tab key', function() {
     var autoHide = false;
     var controlBar = false;
 
@@ -307,7 +307,7 @@ describe('PlayingScreen', function () {
     expect(autoHide && controlBar).toBe(true);
   });
 
-  it('should show control bar when pressing the tab, space bar or enter key', function () {
+  it('should show control bar when pressing the tab, space bar or enter key', function() {
     var autoHide = false;
     var controlBar = false;
 
@@ -348,10 +348,10 @@ describe('PlayingScreen', function () {
     expect(autoHide && controlBar).toBe(false);
   });
 
-  it('tests playing screen componentWill*', function () {
-    mockController.startHideControlBarTimer = function() { moved = true };
-    mockController.showControlBar = function() { over = true };
-    mockController.hideControlBar = function() { out = true };
+  it('tests playing screen componentWill*', function() {
+    mockController.startHideControlBarTimer = function() { moved = true; };
+    mockController.showControlBar = function() { over = true; };
+    mockController.hideControlBar = function() { out = true; };
     mockController.cancelTimer = function() {};
 
     var node = document.createElement('div');
@@ -378,7 +378,7 @@ describe('PlayingScreen', function () {
     ReactDOM.unmountComponentAtNode(node);
   });
 
-  it('should display unmute icon when handling muted autoplay', function () {
+  it('should display unmute icon when handling muted autoplay', function() {
     mockController.state.volumeState.muted = true;
     mockController.state.volumeState.mutingForAutoplay = true;
 
@@ -392,7 +392,7 @@ describe('PlayingScreen', function () {
     expect(unmuteIcon).toBeTruthy();
   });
 
-  it('should not display unmute icon when not muted', function () {
+  it('should not display unmute icon when not muted', function() {
     mockController.state.volumeState.muted = false;
     mockController.state.volumeState.mutingForAutoplay = true;
 
@@ -406,7 +406,7 @@ describe('PlayingScreen', function () {
     expect(unmuteIcons.length).toBe(0);
   });
 
-  it('should initialize with control bar state from controller', function () {
+  it('should initialize with control bar state from controller', function() {
     var DOM, playingScreen;
 
     mockController.state.controlBarVisible = true;
@@ -414,7 +414,7 @@ describe('PlayingScreen', function () {
       <PlayingScreen
         controller={mockController}
         closedCaptionOptions={{}}
-        handleVrPlayerMouseUp={function(){}} />
+        handleVrPlayerMouseUp={function() {}} />
     );
     playingScreen = TestUtils.findRenderedComponentWithType(DOM, PlayingScreen);
     expect(playingScreen.state.controlBarVisible).toBe(true);
@@ -424,7 +424,7 @@ describe('PlayingScreen', function () {
       <PlayingScreen
         controller={mockController}
         closedCaptionOptions={{}}
-        handleVrPlayerMouseUp={function(){}} />
+        handleVrPlayerMouseUp={function() {}} />
     );
     playingScreen = TestUtils.findRenderedComponentWithType(DOM, PlayingScreen);
     expect(playingScreen.state.controlBarVisible).toBe(false);

@@ -4,7 +4,7 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants');
 
 var UnmuteIcon = React.createClass({
-  getInitialState: function () {
+  getInitialState: function() {
     return {
       collapseTime: 2000
     };
@@ -32,10 +32,10 @@ var UnmuteIcon = React.createClass({
   render: function() {
     var volumeIcon, volumeAriaLabel;
     if (this.props.controller.state.volumeState.muted) {
-      volumeIcon = "volumeOff";
+      volumeIcon = 'volumeOff';
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.UNMUTE;
     } else {
-      volumeIcon = "volume";
+      volumeIcon = 'volume';
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.MUTE;
     }
 
