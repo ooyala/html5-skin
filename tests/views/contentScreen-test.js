@@ -13,7 +13,7 @@ var ContentScreen = require('../../js/views/contentScreen');
 var AccessibleButton = require('../../js/components/accessibleButton');
 var CONSTANTS = require('../../js/constants/constants');
 
-describe('ContentScreen', function () {
+describe('ContentScreen', function() {
   var ctrl;
 
   beforeEach(function() {
@@ -26,22 +26,22 @@ describe('ContentScreen', function () {
     };
   });
 
-  it('test content screen', function () {
+  it('test content screen', function() {
 
     // Render content screen into DOM
     var DOM = TestUtils.renderIntoDocument(<ContentScreen />);
 
-    //test close btn
+    // test close btn
     var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-close-button');
     TestUtils.Simulate.click(closeBtn);
   });
 
-  it('test content screen for Discovery Screen', function () {
+  it('test content screen for Discovery Screen', function() {
 
     // Render content screen into DOM
     var DOM = TestUtils.renderIntoDocument(<ContentScreen controller={ctrl} screen={CONSTANTS.SCREEN.DISCOVERY_SCREEN} />);
 
-    //test close btn
+    // test close btn
     var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-close-button');
     TestUtils.Simulate.click(closeBtn);
   });

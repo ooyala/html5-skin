@@ -27,7 +27,7 @@ var ThumbnailCarousel = React.createClass({
 
     var thumbnail = ReactDOM.findDOMNode(this.refs.thumbnailCarousel);
     var carousel = ReactDOM.findDOMNode(this.refs.thumbnail);
-    var thumbnailStylePadding = thumbnail ? window.getComputedStyle(thumbnail, null).getPropertyValue("padding") : 0;
+    var thumbnailStylePadding = thumbnail ? window.getComputedStyle(thumbnail, null).getPropertyValue('padding') : 0;
     thumbnailStylePadding = parseFloat(thumbnailStylePadding); // convert css px to number
     var thumbnailPadding = !isNaN(thumbnailStylePadding) ? thumbnailStylePadding : this.state.thumbnailPadding;
 
@@ -41,19 +41,19 @@ var ThumbnailCarousel = React.createClass({
           thumbnailPadding: thumbnailPadding
         });
       } else {
-        var thumbnailStyleWidth = thumbnail ? window.getComputedStyle(thumbnail, null).getPropertyValue("width") : 0;
+        var thumbnailStyleWidth = thumbnail ? window.getComputedStyle(thumbnail, null).getPropertyValue('width') : 0;
         thumbnailStyleWidth = parseFloat(thumbnailStyleWidth); // convert css px to number
         var thumbnailWidth = !isNaN(thumbnailStyleWidth) ? thumbnailStyleWidth : parseInt(this.props.thumbnailWidth);
 
-        var thumbnailStyleHeight = thumbnail ? window.getComputedStyle(thumbnail, null).getPropertyValue("height") : 0;
+        var thumbnailStyleHeight = thumbnail ? window.getComputedStyle(thumbnail, null).getPropertyValue('height') : 0;
         thumbnailStyleHeight = parseFloat(thumbnailStyleHeight); // convert css px to number
         var thumbnailHeight = !isNaN(thumbnailStyleHeight) ? thumbnailStyleHeight : parseInt(this.props.thumbnailHeight);
 
-        var carouselStyleWidth = carousel ? window.getComputedStyle(carousel, null).getPropertyValue("width") : 0;
+        var carouselStyleWidth = carousel ? window.getComputedStyle(carousel, null).getPropertyValue('width') : 0;
         carouselStyleWidth = parseFloat(carouselStyleWidth); // convert css px to number
         var carouselWidth = !isNaN(carouselStyleWidth) ? carouselStyleWidth : parseInt(this.props.carouselWidth);
 
-        var carouselStyleHeight = carousel ? window.getComputedStyle(carousel, null).getPropertyValue("height") : 0;
+        var carouselStyleHeight = carousel ? window.getComputedStyle(carousel, null).getPropertyValue('height') : 0;
         carouselStyleHeight = parseFloat(carouselStyleHeight); // convert css px to number
         var carouselHeight = !isNaN(carouselStyleHeight) ? carouselStyleHeight : parseInt(this.props.carouselHeight);
 
@@ -126,7 +126,7 @@ var ThumbnailCarousel = React.createClass({
     }
     var thumbUrl = thumb.url;
     if (Utils.isValidString(thumbUrl)) {
-      thumbStyle.backgroundImage = "url('" + thumbUrl + "')";
+      thumbStyle.backgroundImage = 'url(\'' + thumbUrl + '\')';
     }
 
     if (this.props.videoVr) {
@@ -146,9 +146,9 @@ var ThumbnailCarousel = React.createClass({
         this.carouselPositionY = carouselBgPositions.positionY;
       }
 
-      thumbStyle.backgroundRepeat = "repeat no-repeat";
-      thumbStyle.backgroundSize = bgWidth + "px " + bgHeight + "px";
-      thumbStyle.backgroundPosition = this.carouselPositionX + "px " + this.carouselPositionY + "px";
+      thumbStyle.backgroundRepeat = 'repeat no-repeat';
+      thumbStyle.backgroundSize = bgWidth + 'px ' + bgHeight + 'px';
+      thumbStyle.backgroundPosition = this.carouselPositionX + 'px ' + this.carouselPositionY + 'px';
     }
     return thumbStyle;
   },
@@ -168,10 +168,10 @@ var ThumbnailCarousel = React.createClass({
 
     var thumbnailsBefore = this.findThumbnailsBefore(data);
     var thumbnailsAfter = this.findThumbnailsAfter(data);
-    var thumbnailClassName = "oo-thumbnail-carousel-center-image";
+    var thumbnailClassName = 'oo-thumbnail-carousel-center-image';
 
     if (this.props.videoVr) {
-      thumbnailClassName += " oo-thumbnail-vr";
+      thumbnailClassName += ' oo-thumbnail-vr';
     }
 
     var thumbnailStyle = {};

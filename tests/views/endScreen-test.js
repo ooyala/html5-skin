@@ -10,8 +10,8 @@ var EndScreen = require('../../js/views/endScreen');
 var ClassNames = require('classnames');
 var ResizeMixin = require('../../js/mixins/resizeMixin');
 
-describe('EndScreen', function () {
-  it('creates an EndScreen with replay button', function () {
+describe('EndScreen', function() {
+  it('creates an EndScreen with replay button', function() {
 
     var clicked = false;
     var mockContentTree = {'description': 'description'};
@@ -19,30 +19,30 @@ describe('EndScreen', function () {
       state: {
         accessibilityControlsEnabled: false
       },
-      togglePlayPause: function(){clicked = true}
+      togglePlayPause: function() {clicked = true;}
     };
     var mockSkinConfig = {
       startScreen: {
         titleFont: {
-          color: "red"
+          color: 'red'
         },
         descriptionFont: {
-          color: "green"
+          color: 'green'
         }
       },
       endScreen: {
         replayIconStyle: {
-          color: "white",
-          opacity: "1"
+          color: 'white',
+          opacity: '1'
         },
         showReplayButton: true,
         showTitle: true,
         showDescription: true,
-        infoPanelPosition: "topLeft"
+        infoPanelPosition: 'topLeft'
       },
       icons: {
         replay: {
-          fontStyleClass: "replay"
+          fontStyleClass: 'replay'
         }
       }
     };
@@ -55,38 +55,38 @@ describe('EndScreen', function () {
     expect(clicked).toBe(true);
   });
 
-  //replay without button, click on screen
-  it('creates an EndScreen without replay button', function () {
+  // replay without button, click on screen
+  it('creates an EndScreen without replay button', function() {
     var clicked = false;
     var mockContentTree = {'description': 'description'};
     var mockController = {
       state: {
         accessibilityControlsEnabled: false
       },
-      togglePlayPause: function(){clicked = true}
+      togglePlayPause: function() {clicked = true;}
     };
     var mockSkinConfig = {
       startScreen: {
         titleFont: {
-          color: "red"
+          color: 'red'
         },
         descriptionFont: {
-          color: "green"
+          color: 'green'
         }
       },
       endScreen: {
         replayIconStyle: {
-          color: "white",
-          opacity: "1"
+          color: 'white',
+          opacity: '1'
         },
         showReplayButton: false,
         showTitle: false,
         showDescription: false,
-        infoPanelPosition: "topLeft"
+        infoPanelPosition: 'topLeft'
       },
       icons: {
         replay: {
-          fontStyleClass: "replay"
+          fontStyleClass: 'replay'
         }
       }
     };
@@ -94,47 +94,47 @@ describe('EndScreen', function () {
     // Render end screen into DOM
     var DOM = TestUtils.renderIntoDocument(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree}/>);
 
-    //replay button hidden
+    // replay button hidden
     var replayButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-action-icon');
-    expect(replayButton.className).toMatch("hidden");
+    expect(replayButton.className).toMatch('hidden');
 
-    //test replay clicking on screen
+    // test replay clicking on screen
     var replayScreen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
     TestUtils.Simulate.click(replayScreen);
 
     expect(clicked).toBe(true);
   });
 
-it('creates an EndScreen with description and title', function () {
+  it('creates an EndScreen with description and title', function() {
     var mockContentTree = {'description': 'mock description', 'title': 'mock title'};
     var mockController = {
       state: {
         accessibilityControlsEnabled: false
       },
-      togglePlayPause: function(){clicked = true}
+      togglePlayPause: function() {clicked = true;}
     };
     var mockSkinConfig = {
       startScreen: {
         titleFont: {
-          color: "red"
+          color: 'red'
         },
         descriptionFont: {
-          color: "green"
+          color: 'green'
         }
       },
       endScreen: {
         replayIconStyle: {
-          color: "white",
-          opacity: "1"
+          color: 'white',
+          opacity: '1'
         },
         showReplayButton: false,
         showTitle: true,
         showDescription: true,
-        infoPanelPosition: "topLeft"
+        infoPanelPosition: 'topLeft'
       },
       icons: {
         replay: {
-          fontStyleClass: "replay"
+          fontStyleClass: 'replay'
         }
       }
     };
@@ -142,41 +142,41 @@ it('creates an EndScreen with description and title', function () {
     // Render end screen into DOM
     var DOM = TestUtils.renderIntoDocument(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree}/>);
 
-    //description and title are shown
+    // description and title are shown
     var title = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-title');
-    expect(title.className).not.toMatch("hidden");
+    expect(title.className).not.toMatch('hidden');
   });
 
-it('creates an EndScreen without description and title', function () {
+  it('creates an EndScreen without description and title', function() {
     var mockContentTree = {'description': 'mock description', 'title': 'mock title'};
     var mockController = {
       state: {
         accessibilityControlsEnabled: false
       },
-      togglePlayPause: function(){clicked = true}
+      togglePlayPause: function() {clicked = true;}
     };
     var mockSkinConfig = {
       startScreen: {
         titleFont: {
-          color: "red"
+          color: 'red'
         },
         descriptionFont: {
-          color: "green"
+          color: 'green'
         }
       },
       endScreen: {
         replayIconStyle: {
-          color: "white",
-          opacity: "1"
+          color: 'white',
+          opacity: '1'
         },
         showReplayButton: false,
         showTitle: false,
         showDescription: false,
-        infoPanelPosition: "topLeft"
+        infoPanelPosition: 'topLeft'
       },
       icons: {
         replay: {
-          fontStyleClass: "replay"
+          fontStyleClass: 'replay'
         }
       }
     };
@@ -184,8 +184,8 @@ it('creates an EndScreen without description and title', function () {
     // Render end screen into DOM
     var DOM = TestUtils.renderIntoDocument(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree}/>);
 
-    //description and title are hidden
+    // description and title are hidden
     var title = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-title');
-    expect(title.className).toMatch("hidden");
+    expect(title.className).toMatch('hidden');
   });
 });

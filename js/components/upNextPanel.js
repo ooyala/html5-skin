@@ -1,4 +1,4 @@
-/********************************************************************
+/** ******************************************************************
   UP NEXT PANEL
 *********************************************************************/
 /**
@@ -23,11 +23,11 @@ var UpNextPanel = React.createClass({
     event.preventDefault();
     // Use the same way as sending out the click event on discovery content
     var eventData = {
-      "clickedVideo": this.props.upNextInfo.upNextData,
-      "custom": {
-        "source": CONSTANTS.SCREEN.UP_NEXT_SCREEN,
-        "countdown": 0,
-        "autoplay": true
+      'clickedVideo': this.props.upNextInfo.upNextData,
+      'custom': {
+        'source': CONSTANTS.SCREEN.UP_NEXT_SCREEN,
+        'countdown': 0,
+        'autoplay': true
       }
     };
     this.props.controller.sendDiscoveryClickEvent(eventData, false);
@@ -37,7 +37,7 @@ var UpNextPanel = React.createClass({
     var upNextString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UP_NEXT, this.props.localizableStrings);
     var thumbnailStyle = {};
     if (Utils.isValidString(this.props.upNextInfo.upNextData.preview_image_url)) {
-      thumbnailStyle.backgroundImage = "url('" + this.props.upNextInfo.upNextData.preview_image_url + "')";
+      thumbnailStyle.backgroundImage = 'url(\'' + this.props.upNextInfo.upNextData.preview_image_url + '\')';
     }
 
     return (
@@ -95,8 +95,8 @@ UpNextPanel.defaultProps = {
     upNextData: {}
   },
   controller: {
-    upNextDismissButtonClicked: function(){},
-    sendDiscoveryClickEvent: function(a,b){}
+    upNextDismissButtonClicked: function() {},
+    sendDiscoveryClickEvent: function(a,b) {}
   }
 };
 

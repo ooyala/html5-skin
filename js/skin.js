@@ -1,4 +1,4 @@
-/********************************************************************
+/** ******************************************************************
   RENDERER PLACEHOLDER
 *********************************************************************/
 var React = require('react'),
@@ -47,11 +47,11 @@ var Skin = React.createClass({
     }
   },
 
-  componentDidMount: function () {
+  componentDidMount: function() {
     window.addEventListener('mouseup', this.handleClickOutsidePlayer);
   },
 
-  componentWillUnmount: function () {
+  componentWillUnmount: function() {
     window.removeEventListener('mouseup', this.handleClickOutsidePlayer);
   },
 
@@ -130,7 +130,7 @@ var Skin = React.createClass({
     if (this.props.controller && this.props.controller.videoVr) {
       var isVrMouseMove = this.state.isVrMouseMove;
       if (Utils.isIos()) {
-        isVrMouseMove = false; //for the opportunity to stop video on iPhone by touching on the screen
+        isVrMouseMove = false; // for the opportunity to stop video on iPhone by touching on the screen
       }
       this.setState({
         isVrMouseDown: false,
@@ -156,7 +156,7 @@ var Skin = React.createClass({
    * @public
    * @description set isVrMouseMove to false for click event
    */
-  handleVrPlayerClick: function () {
+  handleVrPlayerClick: function() {
     this.setState({
       isVrMouseMove: false,
     });
@@ -186,8 +186,8 @@ var Skin = React.createClass({
     var maxDegreesY = 120;
     var degreesForPixelYaw = maxDegreesX / this.state.componentWidth;
     var degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
-    var yaw = this.getVrViewingDirectionParamValue("yaw") + dx * degreesForPixelYaw;
-    var pitch = this.getVrViewingDirectionParamValue("pitch") + dy * degreesForPixelPitch;
+    var yaw = this.getVrViewingDirectionParamValue('yaw') + dx * degreesForPixelYaw;
+    var pitch = this.getVrViewingDirectionParamValue('pitch') + dy * degreesForPixelPitch;
     return [yaw, 0, pitch];
   },
 
@@ -202,18 +202,18 @@ var Skin = React.createClass({
     if (this.props.controller &&
       this.props.controller.state &&
       this.props.controller.state.vrViewingDirection &&
-      typeof this.props.controller.state.vrViewingDirection[paramName] === "number") {
-      vrViewingDirectionValue = this.props.controller.state.vrViewingDirection[paramName]
+      typeof this.props.controller.state.vrViewingDirection[paramName] === 'number') {
+      vrViewingDirectionValue = this.props.controller.state.vrViewingDirection[paramName];
     }
-    return vrViewingDirectionValue
+    return vrViewingDirectionValue;
   },
 
   render: function() {
     var screen;
 
-    //For IE10, use the start screen and that's it.
-    if (Utils.isIE10()){
-      if (this.state.screenToShow == CONSTANTS.SCREEN.START_SCREEN){
+    // For IE10, use the start screen and that's it.
+    if (Utils.isIE10()) {
+      if (this.state.screenToShow == CONSTANTS.SCREEN.START_SCREEN) {
         screen = (
           <StartScreen {...this.props}
             componentWidth={this.state.componentWidth}
@@ -224,7 +224,7 @@ var Skin = React.createClass({
         screen = (<div></div>);
       }
     }
-    //switch screenToShow
+    // switch screenToShow
     else {
       switch (this.state.screenToShow) {
         case CONSTANTS.SCREEN.INITIAL_SCREEN:
@@ -434,7 +434,6 @@ var Skin = React.createClass({
           );
           break;
         case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
-          console.log('In skin, screen to Show is MultiAudioScreen');
           screen = (
             <ContentScreen
               {...this.props}

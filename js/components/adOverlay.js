@@ -1,4 +1,4 @@
-/********************************************************************
+/** ******************************************************************
   AD OVERLAY
 *********************************************************************/
 var React = require('react'),
@@ -17,19 +17,19 @@ var AdOverlay = React.createClass({
   },
 
   overlayLoaded: function() {
-    if (this.props.overlay && this.props.showOverlay){
+    if (this.props.overlay && this.props.showOverlay) {
       this.props.controller.onAdOverlayLoaded();
     }
   },
 
   render: function() {
     var adOverlayClass = ClassNames({
-      "oo-ad-overlay": true,
-      "oo-hidden": !this.props.overlay && this.props.showOverlay
+      'oo-ad-overlay': true,
+      'oo-hidden': !this.props.overlay && this.props.showOverlay
     });
     var closeButtonClass = ClassNames({
-      "oo-ad-overlay-close-button": true,
-      "oo-hidden": !this.props.showOverlayCloseButton
+      'oo-ad-overlay-close-button': true,
+      'oo-hidden': !this.props.showOverlayCloseButton
     });
 
     return (

@@ -11,7 +11,7 @@ var TestUtils = require('react-addons-test-utils');
 var ClosedCaptionPopover = require('../../../js/components/closed-caption/closedCaptionPopover');
 var CONSTANTS = require('../../../js/constants/constants');
 
-describe('ClosedCaptionPopover', function () {
+describe('ClosedCaptionPopover', function() {
   var props;
 
   beforeEach(function() {
@@ -39,11 +39,11 @@ describe('ClosedCaptionPopover', function () {
     };
   });
 
-  it('should render a ClosedCaptionPopover', function () {
+  it('should render a ClosedCaptionPopover', function() {
     var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPopover {...props}/>);
   });
 
-  it('should render ARIA attributes on "More Captions" button', function () {
+  it('should render ARIA attributes on "More Captions" button', function() {
     var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPopover {...props}/>);
     var moreCaptionsBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-more-captions');
     expect(moreCaptionsBtn.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.CAPTION_OPTIONS);

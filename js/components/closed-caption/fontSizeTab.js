@@ -10,7 +10,7 @@ var FontSizeTab = React.createClass({
   getInitialState: function() {
     return {
       selectedFontSize: this.props.closedCaptionOptions.fontSize,
-      fontSizes: ["Small", "Medium", "Large", "Extra Large"]
+      fontSizes: ['Small', 'Medium', 'Large', 'Extra Large']
     };
   },
 
@@ -26,10 +26,10 @@ var FontSizeTab = React.createClass({
 
   setClassname: function(item, elementType) {
     return ClassNames({
-      'oo-font-size-letter': elementType == "letter",
-      'oo-font-size-label': elementType == "label",
+      'oo-font-size-letter': elementType == 'letter',
+      'oo-font-size-label': elementType == 'label',
       'oo-font-size-selected': this.props.closedCaptionOptions.fontSize == item && this.props.closedCaptionOptions.enabled,
-      'oo-font-size-label-selected': this.props.closedCaptionOptions.fontSize == item && this.props.closedCaptionOptions.enabled && elementType == "label",
+      'oo-font-size-label-selected': this.props.closedCaptionOptions.fontSize == item && this.props.closedCaptionOptions.enabled && elementType == 'label',
       'oo-disabled': !this.props.closedCaptionOptions.enabled
     });
   },
@@ -38,12 +38,12 @@ var FontSizeTab = React.createClass({
     var fontSizeTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.FONT_SIZE, this.props.localizableStrings);
     var fontSizeSelection = Utils.getLocalizedString(
       this.props.language,
-      CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.fontSize.toUpperCase().replace(" ", "_")],
+      CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.fontSize.toUpperCase().replace(' ', '_')],
       this.props.localizableStrings
     );
     var fontItems = [];
     for (var i = 0; i < this.state.fontSizes.length; i++) {
-      //accent color
+      // accent color
       var isSelected = this.props.closedCaptionOptions.fontSize === this.state.fontSizes[i];
       var selectedFontSizeStyle = {};
       if (this.props.closedCaptionOptions.enabled && this.props.skinConfig.general.accentColor && isSelected) {
@@ -51,7 +51,7 @@ var FontSizeTab = React.createClass({
       }
       var itemLabel = Utils.getLocalizedString(
         this.props.language,
-        CONSTANTS.SKIN_TEXT[this.state.fontSizes[i].toUpperCase().replace(" ", "_")],
+        CONSTANTS.SKIN_TEXT[this.state.fontSizes[i].toUpperCase().replace(' ', '_')],
         this.props.localizableStrings
       );
 
@@ -64,12 +64,12 @@ var FontSizeTab = React.createClass({
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
           onClick={this.changeFontSize.bind(this, this.state.fontSizes[i])} >
           <span
-            className={this.setClassname(this.state.fontSizes[i], "letter") + " oo-font-size-letter-" + this.state.fontSizes[i].replace(" ", "-")}
+            className={this.setClassname(this.state.fontSizes[i], 'letter') + ' oo-font-size-letter-' + this.state.fontSizes[i].replace(' ', '-')}
             style={selectedFontSizeStyle}>
             A
           </span>
           <span
-            className={this.setClassname(this.state.fontSizes[i], "label")}
+            className={this.setClassname(this.state.fontSizes[i], 'label')}
             style={selectedFontSizeStyle}>
             {itemLabel}
           </span>

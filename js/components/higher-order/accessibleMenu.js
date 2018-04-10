@@ -139,7 +139,7 @@ var AccessibleMenu = function(ComposedComponent, options) {
      * @param {Boolean} useNextSibling Chooses the sibling next to menuItem when true and the previous one when false.
      * @return {Number} The index where the sibling menu items is located in the list, -1 if menuItem is absent from the list.
      */
-    getMenuItemSiblingIndex: function (menuItemList, menuItem, useNextSibling) {
+    getMenuItemSiblingIndex: function(menuItemList, menuItem, useNextSibling) {
       if (!menuItemList || !menuItemList.length) {
         return -1;
       }
@@ -189,7 +189,7 @@ var AccessibleMenu = function(ComposedComponent, options) {
     render: function() {
       return (
         <ComposedComponent
-          ref={function(c) { this.composedComponent = c }.bind(this)}
+          ref={function(c) { this.composedComponent = c; }.bind(this)}
           {...this.props} />
       );
     }

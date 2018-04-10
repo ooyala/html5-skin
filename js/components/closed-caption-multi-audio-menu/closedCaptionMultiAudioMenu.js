@@ -54,7 +54,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
       var tracks = this.props.controller.state.multiAudio.tracks;
 
       // find selected track in a list of available tracks
-      var selectedAudioTrack = _.find(tracks, function (track) {
+      var selectedAudioTrack = _.find(tracks, function(track) {
         return track.id === id;
       });
 

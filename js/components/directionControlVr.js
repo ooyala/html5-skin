@@ -8,11 +8,11 @@ var DirectionControlVr = React.createClass({
     };
   },
 
-  handleEvent: function (ev) {
+  handleEvent: function(ev) {
     var isRotated = ev.type === 'mousedown' || ev.type === 'touchstart';
 
-    //The call always happens, except for the mouse movement without pressing the mouse button
-    if(this.state.isTouched || ev.type !== 'mouseout'){
+    // The call always happens, except for the mouse movement without pressing the mouse button
+    if (this.state.isTouched || ev.type !== 'mouseout') {
       this.props.handleVrViewControlsClick(ev, isRotated, this.props.dir);
     }
     
@@ -21,7 +21,7 @@ var DirectionControlVr = React.createClass({
     });
   },
 
-  render: function () {
+  render: function() {
     var baseDirectionClass = 'oo-vr-icon--move';
     var directionClass = baseDirectionClass + '--' + this.props.dir;
     var touchedDirectionClass = '';
