@@ -738,7 +738,24 @@ describe('Controller', function() {
       };
 
       OO.getItem = function(key) {
-        return localStorage[key];
+        return JSON.parse(localStorage[key]);
+      };
+
+      var track = { id: '1', lang: 'eng', label: 'eng' };
+      controller.setCurrentAudio(track);
+
+      expect(OO.getItem(OO.CONSTANTS.SELECTED_AUDIO)).toEqual(track);
+    });
+
+    it('should save stringified audioTrack to storage', function() {
+      var localStorage = {};
+
+      OO.setItem = function(key, item) {
+        localStorage[key] = item;
+      };
+
+      OO.getItem = function(key) {
+        return JSON.parse(localStorage[key]);
       };
 
       var setItemSpy = sinon.spy(OO, 'setItem');
@@ -746,8 +763,9 @@ describe('Controller', function() {
       var track = { id: '1', lang: 'eng', label: 'eng' };
       controller.setCurrentAudio(track);
 
-      expect(setItemSpy.calledWith(OO.CONSTANTS.SELECTED_AUDIO, track)).toBeTruthy();
-      expect(OO.getItem(OO.CONSTANTS.SELECTED_AUDIO)).toEqual(track);
+      var stringifiedTrack = JSON.stringify(track);
+
+      expect(setItemSpy.calledWith(OO.CONSTANTS.SELECTED_AUDIO, stringifiedTrack)).toBeTruthy();
     });
 
     it('should check if the icon exists if showMultiAudioIcon is true', function() {
