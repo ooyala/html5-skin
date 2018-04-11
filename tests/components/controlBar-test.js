@@ -127,7 +127,7 @@ describe('ControlBar', function() {
     var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
     TestUtils.Simulate.click(fullscreenButton);
     expect(fullscreenToggled).toBe(true);
-    expect(mockController.state.multiAudioOptions.showPopover).toBe(false); //
+    expect(mockController.state.multiAudioOptions.showPopover).toBe(false); // popover should be closed
   });
 
   it('render one stereo button if content vr', function() {
