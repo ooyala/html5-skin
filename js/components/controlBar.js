@@ -61,7 +61,6 @@ var ControlBar = React.createClass({
    * This is needed as a workaround because switching between play and pause states
    * currently causes the control bar to re-render.
    * @private
-   * @return {undefined}
    */
   restoreFocusedControl: function() {
     if (!this.props.controller.state.focusedControl || !this.domNode) {
@@ -151,7 +150,6 @@ var ControlBar = React.createClass({
   /**
    * @description set landscape orientation if it is possible
    * @private
-   * @return {undefined}
    */
   setLandscapeScreenOrientation: function() {
     if (this.props.controller && this.props.controller.checkDeviceOrientation) {
@@ -164,7 +162,6 @@ var ControlBar = React.createClass({
   /**
    * @description set possibility to use all orientations
    * @private
-   * @return {undefined}
    */
   unlockScreenOrientation: function() {
     if (screen.orientation && screen.orientation.unlock) {
@@ -289,7 +286,6 @@ var ControlBar = React.createClass({
    * if the parameter specifies the name of the popover, then its state does not change
    * @param {string} popoverName - the name of the popover that does not need to be closed
    * @private
-   * @return {undefined}
    */
   closeOtherPopovers: function(popoverName) {
     var popoversNameList = [CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO];
@@ -349,7 +345,6 @@ var ControlBar = React.createClass({
    * the focused control.
    * @param {FocusEvent} evt - Focus event object
    * @private
-   * @return {undefined}
    */
   handleControlBarFocus: function(evt) {
     var focusId = evt.target ? evt.target.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR) : null;
@@ -361,7 +356,6 @@ var ControlBar = React.createClass({
   /**
    * Clears the currently focused control.
    * @private
-   * @return {undefined}
    */
   handleControlBarBlur: function() {
     this.props.controller.state.focusedControl = null;
@@ -374,7 +368,6 @@ var ControlBar = React.createClass({
    * focus. Tabbing in between the elements is handled by the browser.
    * @private
    * @param {Object} evt Keydown event object.
-   * @return {undefined}
    */
   handleControlBarKeyDown: function(evt) {
     if (

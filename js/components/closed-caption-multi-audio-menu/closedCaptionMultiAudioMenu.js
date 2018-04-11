@@ -32,7 +32,6 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
   /**
    * when clicking on an item from an cc list, set the corresponding cc value
    * @param {string} id - id of clicked element
-   * @return {undefined}
    */
   handleClosedCaptionClick: function(id) {
     if (this.props.controller && typeof this.props.controller.onClosedCaptionChange === 'function') {
@@ -43,7 +42,6 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
   /**
    * when clicking on an item from an audio list, set the corresponding audio value
    * @param {string} id - id of clicked element
-   * @return {undefined}
    */
   handleMultiAudioClick: function(id) {
     if (
