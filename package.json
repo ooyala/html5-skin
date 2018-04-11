@@ -12,7 +12,8 @@
   "main": "html5-skin.js",
   "scripts": {
     "test": "jest",
-    "eslint": "git diff --cached --name-only --diff-filter=ACMRTUB | grep .js$ | xargs ./node_modules/.bin/eslint --"
+    "eslint": "git diff --cached --name-only --diff-filter=ACMRTUB | grep .js$ | xargs ./node_modules/.bin/eslint --",
+    "eslint:fix": "git diff --cached --name-only --diff-filter=ACMRTUB | grep .js$ | xargs ./node_modules/.bin/eslint -- --fix"
   },
   "repository": {
     "type": "git",

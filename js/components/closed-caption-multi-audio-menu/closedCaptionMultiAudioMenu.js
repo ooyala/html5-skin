@@ -8,8 +8,8 @@ var _ = require('underscore');
 var ClosedCaptionMultiAudioMenu = React.createClass({
   /**
    *
-   * @param languageList {Array} - list of available languages
-   * @param language {String} - the selected language
+   * @param {Array} languageList - list of available languages
+   * @param {String} language - the selected language
    * @returns {Array<{id: String, label: String, enabled: Boolean}>} an array of languages info objects
    * @private
    */
@@ -31,7 +31,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
 
   /**
    * when clicking on an item from an cc list, set the corresponding cc value
-   * @param id {string} - id of clicked element
+   * @param {string} id - id of clicked element
    */
   handleClosedCaptionClick: function(id) {
     if (this.props.controller && typeof this.props.controller.onClosedCaptionChange === 'function') {
@@ -41,7 +41,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
 
   /**
    * when clicking on an item from an audio list, set the corresponding audio value
-   * @param id {string} - id of clicked element
+   * @param {string} id - id of clicked element
    */
   handleMultiAudioClick: function(id) {
     if (
@@ -59,6 +59,11 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
       });
 
       this.props.controller.setCurrentAudio(selectedAudioTrack);
+    }
+    if (this.props.togglePopoverAction && typeof this.props.togglePopoverAction === 'function') {
+      this.props.togglePopoverAction({
+        restoreToggleButtonFocus: true
+      });
     }
   },
 
@@ -115,6 +120,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
 ClosedCaptionMultiAudioMenu.propTypes = {
   menuClassName: React.PropTypes.string,
   skinConfig: React.PropTypes.object,
+  togglePopoverAction: React.PropTypes.func,
   controller: React.PropTypes.shape({
     setCurrentAudio: React.PropTypes.func,
     onClosedCaptionChange: React.PropTypes.func,

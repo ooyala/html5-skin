@@ -92,19 +92,24 @@ describe('ControlBar', function() {
           volume: 1
         },
         closedCaptionOptions: {},
-        multiAudioOptions: {},
+        multiAudioOptions: {
+          showPopover: true
+        },
         videoQualityOptions: {
           availableBitrates: null
         }
       },
       toggleFullscreen: function() {
         fullscreenToggled = true;
-      }
+      },
+      togglePopover: function() { this.state.multiAudioOptions.showPopover = !this.state.multiAudioOptions.showPopover;}
     };
 
     var fullscreenSkinConfig = Utils.clone(skinConfig);
-    fullscreenSkinConfig.buttons.desktopContent = [{'name':'fullscreen', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
-
+    fullscreenSkinConfig.buttons.desktopContent = [
+      {'name':'fullscreen', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
+      {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 }
+    ];
     var mockProps = {
       isLiveStream: false,
       controller: mockController,
@@ -122,6 +127,7 @@ describe('ControlBar', function() {
     var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
     TestUtils.Simulate.click(fullscreenButton);
     expect(fullscreenToggled).toBe(true);
+    expect(mockController.state.multiAudioOptions.showPopover).toBe(false); // popover should be closed
   });
 
   it('render one stereo button if content vr', function() {
