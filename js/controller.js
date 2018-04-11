@@ -897,6 +897,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * @param currentTrack {{id: String, label: String, lang: String}} - current active audio track
      */
     setCurrentAudio: function(currentTrack) {
+      // user selected track should be saved to localstorage
+      OO.setItem(OO.CONSTANTS.SELECTED_AUDIO, currentTrack);
+
       this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, currentTrack);
     },
 
