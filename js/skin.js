@@ -79,7 +79,6 @@ var Skin = React.createClass({
    * @public
    * @description the function is called when we start the rotation
    * @param {MouseEvent} event - event
-   * @return {undefined}
    */
   handleVrPlayerMouseDown: function(event) {
     if (this.props.controller && this.props.controller.isVrStereo) {
@@ -103,7 +102,6 @@ var Skin = React.createClass({
    * @public
    * @description the function is called while rotation is active
    * @param {MouseEvent} event - event
-   * @return {undefined}
    */
   handleVrPlayerMouseMove: function(event) {
     if (this.props.controller && this.props.controller.isVrStereo) {
@@ -125,7 +123,6 @@ var Skin = React.createClass({
   /**
    * @public
    * @description the function is called when we stop the rotation
-   * @return {undefined}
    */
   handleVrPlayerMouseUp: function() {
     if (this.props.controller && this.props.controller.isVrStereo) {
@@ -160,7 +157,6 @@ var Skin = React.createClass({
   /**
    * @public
    * @description set isVrMouseMove to false for click event
-   * @return {undefined}
    */
   handleVrPlayerClick: function() {
     this.setState({
@@ -171,7 +167,6 @@ var Skin = React.createClass({
   /**
    * @public
    * @description set accessibilityControlsEnabled to true for focus event
-   * @return {undefined}
    */
   handleVrPlayerFocus: function() {
     this.props.controller.state.accessibilityControlsEnabled = true;
