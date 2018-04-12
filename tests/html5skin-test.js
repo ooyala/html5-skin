@@ -44,7 +44,8 @@ OO = {
     SET_CURRENT_AUDIO: 'setCurrentAudio'
   },
   CONSTANTS: {
-    CLOSED_CAPTIONS: {}
+    CLOSED_CAPTIONS: {},
+    SELECTED_AUDIO: 'selectedAudio'
   },
   VIDEO: {
     ADS: 'ads',
@@ -53,6 +54,8 @@ OO = {
   init: function() {},
   handleVrMobileOrientation: function() {},
   log: function() {},
+  setItem: function() {},
+  getItem: function() {},
   plugin: function(module, callback) {
     var plugin = callback(OO, _, $);
     plugin.call(OO, OO.mb, 0);
@@ -721,9 +724,48 @@ describe('Controller', function() {
     });
 
     it('Calling of setCurrentAudio should throw SET_CURRENT_AUDIO event with id', function() {
+
       var track = { id: '1', lang: 'eng', label: 'eng' };
       controller.setCurrentAudio(track);
       expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, track)).toBe(true);
+    });
+
+    it('Calling of setCurrentAudio should save audioTrack to storage', function() {
+      var localStorage = {};
+
+      OO.setItem = function(key, item) {
+        localStorage[key] = item;
+      };
+
+      OO.getItem = function(key) {
+        return JSON.parse(localStorage[key]);
+      };
+
+      var track = { id: '1', lang: 'eng', label: 'eng' };
+      controller.setCurrentAudio(track);
+
+      expect(OO.getItem(OO.CONSTANTS.SELECTED_AUDIO)).toEqual(track);
+    });
+
+    it('should save stringified audioTrack to storage', function() {
+      var localStorage = {};
+
+      OO.setItem = function(key, item) {
+        localStorage[key] = item;
+      };
+
+      OO.getItem = function(key) {
+        return JSON.parse(localStorage[key]);
+      };
+
+      var setItemSpy = sinon.spy(OO, 'setItem');
+
+      var track = { id: '1', lang: 'eng', label: 'eng' };
+      controller.setCurrentAudio(track);
+
+      var stringifiedTrack = JSON.stringify(track);
+
+      expect(setItemSpy.calledWith(OO.CONSTANTS.SELECTED_AUDIO, stringifiedTrack)).toBeTruthy();
     });
 
     it('should check if the icon exists if showMultiAudioIcon is true', function() {
