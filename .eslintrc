@@ -40,7 +40,12 @@
         "VariableDeclarator": { "var": 2 }
       }
     ],
-    "max-len": ["error", 110],
+    "max-len": [
+      "error", 110, 
+      {
+        "ignoreComments": true
+      }
+    ],
     "no-continue": ["error"],
     "no-dupe-args": ["error"],
     "no-dupe-keys": ["error"],
