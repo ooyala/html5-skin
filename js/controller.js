@@ -1384,7 +1384,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       } else {
         this.state.closedCaptionOptions.cueText = null;
       }
-      this.renderSkin();
     },
 
     onRelatedVideosFetched: function(event, relatedVideos) {
