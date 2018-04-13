@@ -838,6 +838,16 @@ describe('Controller', function() {
         expect(controller.state.multiAudio.tracks).toEqual(newActiveAudio.tracks);
       }
     );
-    
+
+    it('should set correct state after REMOVE_MULTI_AUDIO was called', function() {
+      controller.state.multiAudio = {
+        tracks: [
+          { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true },
+          { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
+        ]
+      };
+      controller.onRemoveMultiAudio();
+      expect(controller.state.multiAudio).toEqual(null);
+    });
   });
 });

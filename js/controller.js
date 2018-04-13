@@ -197,6 +197,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi', _.bind(this.onMultiAudioChanged, this));
+      this.mb.subscribe(OO.EVENTS.REMOVE_MULTI_AUDIO, 'customerUi', _.bind(this.onRemoveMultiAudio, this));
       this.mb.subscribe(OO.EVENTS.ERROR, 'customerUi', _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -889,6 +890,16 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.multiAudio = multiAudio;
         this.renderSkin();
       }
+    },
+
+    /**
+     * The function is called when event REMOVE_MULTI_AUDIO was caught;
+     * That means that we need to remove multiAudio icon from controlBar
+     * @public
+     */
+    onRemoveMultiAudio: function() {
+      this.state.multiAudio = null;
+      this.renderSkin();
     },
 
     /**
@@ -1590,6 +1601,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.REMOVE_MULTI_AUDIO, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
