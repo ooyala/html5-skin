@@ -1,4 +1,3 @@
-var iso639 = require('iso-639-3');
 var CONSTANTS = require('../../constants/constants');
 var _ = require('underscore');
 
@@ -7,8 +6,8 @@ var _ = require('underscore');
  * roles - e.g. nullable field from DASH manifest
  * and labels - e.g. non-nullable field from HSL manifest
  * @function getDisplayLabel
- * @param {Object} audioTrack
- * @returns {String} displayLabel
+ * @param {Object} audioTrack - AudioTrack object
+ * @returns {String} displayLabel - readable display label
  */
 function getDisplayLabel(audioTrack) {
   var displayLabel = '';
@@ -29,8 +28,9 @@ function getDisplayLabel(audioTrack) {
  * Gets user friendly language name in English by
  * matching language code against one of the ISO-639 standarts
  * @function getDisplayLanguage
- * @param {String} languageCode
- * @returns {String} displayLanguage
+ * @param {String} languageList - ISO-639 dictionary
+ * @param {String} languageCode - ISO-639 language code
+ * @returns {String} displayLanguage - language name in ISO-639 format in english
  */
 function getDisplayLanguage(languageList, languageCode) {
   var displayLanguage = '';
@@ -70,13 +70,11 @@ function getDisplayLanguage(languageList, languageCode) {
 
 /**
  * Gets display title based on language and label
- * @param {String} language
- * @param {String} label
- * @returns {String} displayTitle
+ * @param {String} language - language string attribute
+ * @param {String} label - label string attribute
+ * @returns {String} displayTitle - human readable display title
  */
 function getDisplayTitle(language, label) {
-  var displayTitle = '';
-
   // set default function params
   var displayLanguage = language || '';
   var displayLabel = label || '';
@@ -90,13 +88,75 @@ function getDisplayTitle(language, label) {
   } else {
     return displayLanguage.concat(' ', displayLabel);
   }
+}
 
-  return displayTitle;
+/**
+ * Transforms tracks list based on criteria
+ * if all tracks are distinct - only use language attribute
+ * if there are duplicates - append label to the language attribute
+ * @param {Array} tracksList - list of all tracks
+ * @returns {Array} transformedTracksList - list of transformed tracks
+ */
+function transformTracksList(tracksList) {
+  var transformedTracksList = [];
+  // first we group by language to know if we have distinct tracks
+  if (tracksList && tracksList.length) {
+    var groupedTracks = _.groupBy(tracksList, 'language');
+    var groupedKeys = _.keys(groupedTracks);
+
+    // if all languages are distinct - discard labels
+    if (groupedKeys.length === tracksList.length) {
+      transformedTracksList = tracksList.map(function(audioTrack) {
+        var trackDisplayTitle = getDisplayTitle(audioTrack.language);
+        var transformedTrack = {
+          id: audioTrack.id,
+          label: trackDisplayTitle,
+          enabled: audioTrack.enabled
+        };
+
+        return transformedTrack;
+      });
+    } else {
+      var uniqueTracks = groupedKeys.map(function(key) {
+        // if there are multiple tracks with the same language code
+        if (groupedTracks[key].length > 1) {
+          // get each list of duplicating tracks
+          return groupedTracks[key].map(function(audioTrack) {
+            // get display title based on language and label
+            var trackDisplayTitle = getDisplayTitle(audioTrack.language, audioTrack.label);
+            
+            var transformedTrack = {
+              enabled: audioTrack.enabled,
+              label: trackDisplayTitle,
+              id: audioTrack.id
+            };
+
+            return transformedTrack;
+          });
+        } else {
+          // this track is distinct
+          var audioTrack = _.head(groupedTracks[key]);
+          var trackDisplayTitle = getDisplayTitle(audioTrack.language);
+          var transformedTrack = {
+            enabled: audioTrack.enabled,
+            label: trackDisplayTitle,
+            id: audioTrack.id
+          };
+
+          return transformedTrack;
+        }
+      });
+
+      transformedTracksList = _.flatten(uniqueTracks);
+    }
+  }
+
+  return transformedTracksList;
 }
 
 /**
  * Get unique tracks by name
- * @param {Array<{ label: String, enabled: Boolean, id: String }>} audioTracksList
+ * @param {Array<{ label: String, enabled: Boolean, id: String }>} audioTracksList - all available tracks
  * @returns {Array<{ label: String, enabled: Boolean, id: String }>} uniqueTracksList
  */
 function getUniqueTracks(audioTracksList) {
@@ -119,12 +179,12 @@ function getUniqueTracks(audioTracksList) {
         if (groupedTracks[key].length > 1) {
           return groupedTracks[key].map(function(audioTrack, index) {
             // modify zero-based index of array to get user-friendly index
-            var trackIndex = index + 1;
-
+            var trackIndex = index ? ' ' + index : '';
+            var audioTrackLabel = audioTrack.label.concat(trackIndex);
             // add track index
             var uniqueTrack = {
               enabled: audioTrack.enabled,
-              label: audioTrack.label.concat(' ', trackIndex),
+              label: audioTrackLabel,
               id: audioTrack.id
             };
 
@@ -146,5 +206,6 @@ module.exports = {
   getDisplayLabel: getDisplayLabel,
   getDisplayLanguage: getDisplayLanguage,
   getDisplayTitle: getDisplayTitle,
+  transformTracksList: transformTracksList,
   getUniqueTracks: getUniqueTracks
 };
