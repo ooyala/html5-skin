@@ -77,6 +77,138 @@ describe('closed caption & multi-audio helpers', function() {
     });
   });
 
+  describe('transform tracks list function', function() {
+    it('should return tracks list without labels if tracks are distinct', function() {
+      var tracksList = [
+        { id: 1, language: 'English', label: 'discard this', enabled: true },
+        { id: 2, language: 'German', label: 'discard this', enabled: false },
+        { id: 3, language: 'Spanish', label: 'discard this', enabled: false },
+        { id: 4, language: 'Russian', label: 'discard this', enabled: false }
+      ];
+
+      var expectedTracksList = [
+        { id: 1, label: 'English', enabled: true },
+        { id: 2, label: 'German', enabled: false },
+        { id: 3, label: 'Spanish', enabled: false },
+        { id: 4, label: 'Russian', enabled: false }
+      ];
+
+      var transformedTracksList = helpers.transformTracksList(tracksList);
+
+      expect(transformedTracksList).toEqual(expectedTracksList);
+    });
+
+    it('should return tracks list with labels if tracks are not distinct', function() {
+      var tracksList = [
+        { id: 1, language: 'English', label: 'discard this', enabled: true },
+        { id: 2, language: 'English', label: 'discard this', enabled: false },
+        { id: 3, language: 'Spanish', label: 'discard this', enabled: false },
+        { id: 4, language: 'Spanish', label: 'discard this', enabled: false }
+      ];
+
+      var expectedTracksList = [
+        { id: 1, label: 'English discard this', enabled: true },
+        { id: 2, label: 'English discard this', enabled: false },
+        { id: 3, label: 'Spanish discard this', enabled: false },
+        { id: 4, label: 'Spanish discard this', enabled: false }
+      ];
+
+      var transformedTracksList = helpers.transformTracksList(tracksList);
+
+      expect(transformedTracksList).toEqual(expectedTracksList);
+    });
+
+    it('should return tracks list with labels it tracks are not distinct and contain undefined language', 
+      function() {
+        var tracksList = [
+          { id: 1, language: 'English', label: 'discard this', enabled: true },
+          { id: 2, language: 'Spanish', label: 'discard this', enabled: false },
+          { id: 3, language: '', label: 'discard this', enabled: false },
+          { id: 4, language: '', label: 'discard this', enabled: false }
+        ];
+
+        var expectedTracksList = [
+          { id: 1, label: 'English', enabled: true },
+          { id: 2, label: 'Spanish', enabled: false },
+          { id: 3, label: 'discard this', enabled: false },
+          { id: 4, label: 'discard this', enabled: false }
+        ];
+
+        var transformedTracksList = helpers.transformTracksList(tracksList);
+
+        expect(transformedTracksList).toEqual(expectedTracksList);
+      }
+    );
+
+    it('should return tracks list with labels it tracks are not distinct and contain undefined language', 
+      function() {
+        var tracksList = [
+          { id: 1, language: 'English', label: 'discard this', enabled: true },
+          { id: 2, language: 'Spanish', label: 'discard this', enabled: false },
+          { id: 3, language: '', label: '', enabled: false },
+          { id: 4, language: '', label: '', enabled: false }
+        ];
+
+        var expectedTracksList = [
+          { id: 1, label: 'English', enabled: true },
+          { id: 2, label: 'Spanish', enabled: false },
+          { id: 3, label: 'Undefined language', enabled: false },
+          { id: 4, label: 'Undefined language', enabled: false }
+        ];
+
+        var transformedTracksList = helpers.transformTracksList(tracksList);
+
+        expect(transformedTracksList).toEqual(expectedTracksList);
+      }
+    );
+    
+    it('should return tracks list with labels it tracks are not distinct and contain undefined language', 
+      function() {
+        var tracksList = [
+          { id: 1, language: 'English', label: 'discard this', enabled: true },
+          { id: 2, language: 'Spanish', label: 'discard this', enabled: false },
+          { id: 3, language: '', label: 'discard this', enabled: false },
+          { id: 4, language: '', label: '', enabled: false }
+        ];
+
+        var expectedTracksList = [
+          { id: 1, label: 'English', enabled: true },
+          { id: 2, label: 'Spanish', enabled: false },
+          { id: 3, label: 'discard this', enabled: false },
+          { id: 4, label: 'Undefined language', enabled: false }
+        ];
+
+        var transformedTracksList = helpers.transformTracksList(tracksList);
+
+        expect(transformedTracksList).toEqual(expectedTracksList);
+      }
+    );
+
+    it('should return tracks list with labels it tracks are not distinct and contain undefined language', 
+      function() {
+        var tracksList = [
+          { id: 1, language: 'English', label: 'discard this', enabled: true },
+          { id: 2, language: 'Spanish', label: 'discard this', enabled: false },
+          { id: 3, language: '', label: 'discard this', enabled: false },
+          { id: 4, language: '', label: '', enabled: false },
+          { id: 4, language: '', label: '', enabled: false },
+        ];
+
+        var expectedTracksList = [
+          { id: 1, label: 'English', enabled: true },
+          { id: 2, label: 'Spanish', enabled: false },
+          { id: 3, label: 'discard this', enabled: false },
+          { id: 4, label: 'Undefined language', enabled: false },
+          { id: 4, label: 'Undefined language', enabled: false }
+        ];
+
+        var transformedTracksList = helpers.transformTracksList(tracksList);
+
+        expect(transformedTracksList).toEqual(expectedTracksList);
+      }
+    );
+  });
+
   describe('getUniqueTracks function', function() {
     it('should return tracks with unique names', function() {
       var tracks = [
@@ -109,22 +241,22 @@ describe('closed caption & multi-audio helpers', function() {
 
       var expectedTracks = [
         {
-          label: 'und 1',
+          label: 'und',
           id: 1,
           enabled: false
         },
         {
-          label: 'und 2',
+          label: 'und 1',
           id: 2,
           enabled: false
         },
         {
-          label: 'eng 1',
+          label: 'eng',
           id: 3,
           enabled: false
         },
         {
-          label: 'eng 2',
+          label: 'eng 1',
           id: 4,
           enabled: false
         },
