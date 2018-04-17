@@ -44,6 +44,7 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
    * @param {string} id - id of clicked element
    */
   handleMultiAudioClick: function(id) {
+    console.log('BBB handleMultiAudioClick start');
     if (
       this.props.controller &&
       typeof this.props.controller.setCurrentAudio === 'function' &&
@@ -57,10 +58,12 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
       var selectedAudioTrack = _.find(tracks, function(track) {
         return track.id === id;
       });
-
+      console.log('BBB handleMultiAudioClick selectedAudioTrack', selectedAudioTrack);
       this.props.controller.setCurrentAudio(selectedAudioTrack);
     }
+    console.log('BBB handleMultiAudioClick this.props.togglePopoverAction', this.props.togglePopoverAction);
     if (this.props.togglePopoverAction && typeof this.props.togglePopoverAction === 'function') {
+      console.log('BBB handleMultiAudioClick before togglePopoverAction');
       this.props.togglePopoverAction({
         restoreToggleButtonFocus: true
       });
