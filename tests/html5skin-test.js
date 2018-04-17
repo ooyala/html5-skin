@@ -16,7 +16,7 @@ var CONSTANTS = require('../js/constants/constants');
 var Html5Skin;
 
 var elementId = 'adrfgyi';
-var videoId = 'ag5dfdtooon2cncj714i';
+var videoId = 'ag5dfdto oon2cncj714i';
 var videoElement = document.createElement('video');
 videoElement.className = 'video';
 videoElement.id = videoId;
@@ -352,6 +352,8 @@ describe('Controller', function() {
       controller.onSetEmbedCode('newEmbedCode');
       controller.onEmbedCodeChanged('newEmbedCode');
       expect(controller.skin.state.currentPlayhead).toBe(0);
+      controller.toggleMultiAudioScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
     });
 
     it('should reset playhead on asset changed', function() {

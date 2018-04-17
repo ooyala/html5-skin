@@ -35,7 +35,6 @@ var ContentScreen = React.createClass({
         this.props.controller.toggleDiscoveryScreen();
         break;
       case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
-        console.log('BBB handleClose CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN');
         this.props.controller.toggleMultiAudioScreen();
         break;
       default:

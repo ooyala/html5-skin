@@ -636,7 +636,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           if (!(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))) {// no UpNext for iPhone < iOS10 or fullscreen iOS
             this.showUpNextScreenWhenReady(currentPlayhead, duration);
           }
-        } else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
+        } else if (this.state.playerState === CONSTANTS.STATE.PLAYING &&
+          this.state.screenToShow !== CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
           this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         } else if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
@@ -897,7 +898,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * @param currentTrack {{id: String, label: String, lang: String}} - current active audio track
      */
     setCurrentAudio: function(currentTrack) {
-      console.log('BBB setCurrentAudio start');
       // user selected track should be saved to localstorage
       var currentAudioTrack = JSON.stringify(currentTrack);
       OO.setItem(OO.CONSTANTS.SELECTED_AUDIO, currentAudioTrack);
@@ -1789,7 +1789,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * The function handles a click on multiAudio icon
      */
     toggleMultiAudioScreen: function() {
-      console.log('BBB toggleMultiAudioScreen start');
       if (this.state.screenToShow === CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
         if (this.state.playerState === CONSTANTS.STATE.END) {
           this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
@@ -1801,26 +1800,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       } else {
         this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
       }
-      // this.renderSkin();
-      // this.isNewVrVideo = false;
-      // if (this.state.screenToShow === CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
-      //   this.closeScreen();
-      // }
-      // else {
-      //   if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
-      //     this.pausedCallback = function() {
-      //       this.state.pluginsElement.addClass('oo-overlay-blur');
-      //       this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
-      //       this.renderSkin();
-      //     }.bind(this);
-      //     this.mb.publish(OO.EVENTS.PAUSE);
-      //   }
-      //   else {
-      //     this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
-      //     this.state.pluginsElement.addClass('oo-overlay-blur');
-      //     this.renderSkin();
-      //   }
-      // }
+      this.renderSkin();
     },
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
