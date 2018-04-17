@@ -472,6 +472,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.state.thumbnails = null;
       this.state.afterOoyalaAd = false;
       this.state.currentVideoId = null;
+      this.state.multiAudio = null;
       this.resetUpNextInfo(true);
 
       if (options && options.ooyalaAds === true) {
