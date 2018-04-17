@@ -352,6 +352,7 @@ describe('Controller', function() {
       controller.onSetEmbedCode('newEmbedCode');
       controller.onEmbedCodeChanged('newEmbedCode');
       expect(controller.skin.state.currentPlayhead).toBe(0);
+      expect(controller.state.multiAudio).toBe(null);
     });
 
     it('should reset playhead on asset changed', function() {
