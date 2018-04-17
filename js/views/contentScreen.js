@@ -34,6 +34,9 @@ var ContentScreen = React.createClass({
       case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
         this.props.controller.toggleDiscoveryScreen();
         break;
+      case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
+        this.props.controller.toggleMultiAudioScreen();
+        break;
       default:
         this.props.controller.toggleScreen(this.props.screen);
     }

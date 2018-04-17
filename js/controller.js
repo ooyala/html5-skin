@@ -1764,15 +1764,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     toggleScreen: function(screen) {
       this.isNewVrVideo = false;
-      if (this.state.screenToShow == screen) {
-        var continuePlaying = false;
-        if (screen === CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
-          continuePlaying = true;
-        }
-        this.closeScreen(continuePlaying);
+      if (this.state.screenToShow === screen) {
+        this.closeScreen();
       }
       else {
-        if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
+        if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
           this.pausedCallback = function() {
             this.state.pluginsElement.addClass('oo-overlay-blur');
             this.state.screenToShow = screen;
@@ -1786,6 +1782,24 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           this.renderSkin();
         }
       }
+    },
+
+    /**
+     * The function handles a click on multiAudio icon
+     */
+    toggleMultiAudioScreen: function() {
+      if (this.state.screenToShow === CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
+        if (this.state.playerState === CONSTANTS.STATE.END) {
+          this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
+        } else if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
+          this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+        } else {
+          this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+        }
+      } else {
+        this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
+      }
+      this.renderSkin();
     },
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
@@ -1899,17 +1913,13 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * @param continuePlaying {boolean} - true if it needs to continue playing
      * @private
      */
-    closeScreen: function(continuePlaying) {
+    closeScreen: function() {
       this.state.pluginsElement.removeClass('oo-overlay-blur');
       this.state.pauseAnimationDisabled = true;
-      if (this.state.playerState == CONSTANTS.STATE.PAUSE) {
-        if (continuePlaying) {
-          this.mb.publish(OO.EVENTS.PLAY);
-        } else {
-          this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
-        }
+      if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
+        this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
       }
-      else if (this.state.playerState == CONSTANTS.STATE.END) {
+      else if (this.state.playerState === CONSTANTS.STATE.END) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
       }
       this.renderSkin();

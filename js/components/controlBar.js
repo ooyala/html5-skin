@@ -244,7 +244,7 @@ var ControlBar = React.createClass({
       this.togglePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
       this.closeOtherPopovers(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
     } else {
-      this.props.controller.toggleScreen(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
+      this.props.controller.toggleMultiAudioScreen(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
     }
   },
 
