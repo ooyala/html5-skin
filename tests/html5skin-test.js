@@ -352,7 +352,6 @@ describe('Controller', function() {
       controller.onSetEmbedCode('newEmbedCode');
       controller.onEmbedCodeChanged('newEmbedCode');
       expect(controller.skin.state.currentPlayhead).toBe(0);
-      expect(controller.state.multiAudio).toBe(null);
     });
 
     it('should reset playhead on asset changed', function() {
@@ -722,6 +721,14 @@ describe('Controller', function() {
       expect(controller.state.multiAudio).toBe(null);
       controller.onMultiAudioFetched('eventName', multiAudio);
       expect(controller.state.multiAudio).toEqual(multiAudio);
+    });
+
+    it('MultiAudio State should be null after embed code was changed', function(){
+      var obj = {};
+      controller.onMultiAudioFetched('event', obj);
+      expect(controller.state.multiAudio).toBe(obj);
+      controller.onEmbedCodeChanged('newEmbedCode');
+      expect(controller.state.multiAudio).toBe(null);
     });
 
     it('Calling of setCurrentAudio should throw SET_CURRENT_AUDIO event with id', function() {
