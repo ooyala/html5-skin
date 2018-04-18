@@ -352,8 +352,6 @@ describe('Controller', function() {
       controller.onSetEmbedCode('newEmbedCode');
       controller.onEmbedCodeChanged('newEmbedCode');
       expect(controller.skin.state.currentPlayhead).toBe(0);
-      controller.toggleMultiAudioScreen();
-      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
     });
 
     it('should reset playhead on asset changed', function() {
@@ -709,6 +707,29 @@ describe('Controller', function() {
 
     afterEach(function() {
       spy.restore();
+    });
+
+    it('Should save playerState when multiAudio screen is active', function() {
+      controller.onPlaying('event', OO.VIDEO.MAIN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PLAYING_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PLAYING);
+      controller.toggleMultiAudioScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PLAYING);
+      controller.toggleMultiAudioScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PLAYING_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PLAYING);
+
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.onPaused('event', OO.VIDEO.MAIN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PAUSE_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PAUSE);
+      controller.toggleMultiAudioScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PAUSE);
+      controller.toggleMultiAudioScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PAUSE_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PAUSE);
     });
 
     it('should set correct multiAudio state', function() {
