@@ -16,28 +16,28 @@ var ViewControlsVr = require('../../js/components/viewControlsVr');
 var DirectionControlVr = require('../../js/components/directionControlVr');
 var _ = require('underscore');
 
-describe('viewControlsVr', function () {
+describe('viewControlsVr', function() {
   
   var baseMockController, baseMockProps;
   var defaultSkinConfig = JSON.parse(JSON.stringify(skinConfig));
   skinConfig.buttons.desktopContent =  [
-    {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
-    {"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":240 },
-    {"name":"live", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45},
-    {"name":"timeDuration", "location":"controlBar", "whenDoesNotFit":"drop", "minWidth":145 },
-    {"name":"flexibleSpace", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":1 },
-    {"name":"share", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
-    {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
-    {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
-    {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
-    {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":125 },
-    {"name":"stereoscopic", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
-    {"name":"fullscreen", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
-    {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
-    {"name":"arrowsBlack", "location": "mainView", "whenDoesNotFit":"keep", "minWidth":45 }
+    {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 },
+    {'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':240 },
+    {'name':'live', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45},
+    {'name':'timeDuration', 'location':'controlBar', 'whenDoesNotFit':'drop', 'minWidth':145 },
+    {'name':'flexibleSpace', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':1 },
+    {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 },
+    {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 },
+    {'name':'closedCaption', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 },
+    {'name':'quality', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 },
+    {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':125 },
+    {'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 },
+    {'name':'fullscreen', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 },
+    {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 },
+    {'name':'arrowsBlack', 'location': 'mainView', 'whenDoesNotFit':'keep', 'minWidth':45 }
   ];
   
-  beforeEach(function () {
+  beforeEach(function() {
     baseMockProps = {
       isLiveStream: false,
       controller: baseMockController,
@@ -45,7 +45,7 @@ describe('viewControlsVr', function () {
     };
   });
   
-  it('creates a viewControlsVr', function () {
+  it('creates a viewControlsVr', function() {
     var controller = {
       state: {
         isPlayingAd: false
@@ -65,15 +65,15 @@ describe('viewControlsVr', function () {
 
     mockProps = _.extend(mockProps, baseMockProps);
 
-    var DOM = TestUtils.renderIntoDocument(	<ViewControlsVr {...mockProps}/> );
+    var DOM = TestUtils.renderIntoDocument(<ViewControlsVr {...mockProps}/>);
   });
   
-  it('create buttons in a viewControlsVr', function () {
+  it('create buttons in a viewControlsVr', function() {
     var mockProps = {
       skinConfig: skinConfig,
       playerState: CONSTANTS.STATE.PLAYING,
       clickButton: false,
-      handleVrViewControlsClick: function () {
+      handleVrViewControlsClick: function() {
         mockProps.clickButton = true;
       }
     };
@@ -91,7 +91,7 @@ describe('viewControlsVr', function () {
     expect(mockProps.clickButton).toBe(true);
   });
   
-  it('check condition: if video support vr360 then viewControlsVr exist', function () {
+  it('check condition: if video support vr360 then viewControlsVr exist', function() {
     var controller = {
       state: {
         isPlayingAd: false,
@@ -104,26 +104,26 @@ describe('viewControlsVr', function () {
       }
     };
 
-    this.icon = {"name":"arrowsBlack", "location": "mainView", "whenDoesNotFit":"keep", "minWidth":45 };
+    this.icon = {'name':'arrowsBlack', 'location': 'mainView', 'whenDoesNotFit':'keep', 'minWidth':45 };
     
     var mockProps = {
       skinConfig: skinConfig,
       playerState: CONSTANTS.STATE.PLAYING,
       controller: controller
     };
-    var DOM = TestUtils.renderIntoDocument( <ViewControlsVr {...mockProps}/> );
+    var DOM = TestUtils.renderIntoDocument(<ViewControlsVr {...mockProps}/>);
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
     
     expect(buttons.length).toBe(5);
   });
   
-  it('check condition: if video does not support vr360 then viewControlsVr does not exist', function () {
-    var DOM = TestUtils.renderIntoDocument( <ViewControlsVr {...baseMockProps}/> );
+  it('check condition: if video does not support vr360 then viewControlsVr does not exist', function() {
+    var DOM = TestUtils.renderIntoDocument(<ViewControlsVr {...baseMockProps}/>);
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
     expect(buttons.length).toBe(0);
   });
 
-  it('on the ViewControlsVr should be two icons: one icon of the background and one icon of the symbol', function () {
+  it('on the ViewControlsVr should be two icons: one icon of the background and one icon of the symbol', function() {
     var controller = {
       state: {
         isPlayingAd: false,
@@ -137,10 +137,10 @@ describe('viewControlsVr', function () {
     };
 
     this.icon = {
-      "name":"arrowsBlack",
-      "location": "mainView",
-      "whenDoesNotFit":"keep",
-      "minWidth":45
+      'name':'arrowsBlack',
+      'location': 'mainView',
+      'whenDoesNotFit':'keep',
+      'minWidth':45
     };
 
     var mockProps = {
@@ -148,7 +148,7 @@ describe('viewControlsVr', function () {
       playerState: CONSTANTS.STATE.PLAYING,
       controller: controller
     };
-    var DOM = TestUtils.renderIntoDocument( <ViewControlsVr {...mockProps}/> );
+    var DOM = TestUtils.renderIntoDocument(<ViewControlsVr {...mockProps}/>);
     var iconSubstrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-icon--substrate');
     var iconSymbol = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-icon--icon-symbol');
 
@@ -156,7 +156,7 @@ describe('viewControlsVr', function () {
     expect(iconSymbol.length).toBe(1);
   });
 
-  it('should be render viewControlsVr only desktop', function () {
+  it('should be render viewControlsVr only desktop', function() {
     var controller = {
       state: {
         isPlayingAd: false,
@@ -170,10 +170,10 @@ describe('viewControlsVr', function () {
     };
 
     this.icon = {
-      "name":"arrowsBlack",
-      "location": "mainView",
-      "whenDoesNotFit":"keep",
-      "minWidth":45
+      'name':'arrowsBlack',
+      'location': 'mainView',
+      'whenDoesNotFit':'keep',
+      'minWidth':45
     };
 
     var mockProps = {
@@ -181,13 +181,13 @@ describe('viewControlsVr', function () {
       playerState: CONSTANTS.STATE.PLAYING,
       controller: controller
     };
-    var DOM = TestUtils.renderIntoDocument( <ViewControlsVr {...mockProps}/> );
+    var DOM = TestUtils.renderIntoDocument(<ViewControlsVr {...mockProps}/>);
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
 
     expect(buttons.length).toBe(0);
   });
 
-  it('should not be rendered on advertising', function () {
+  it('should not be rendered on advertising', function() {
     var controller = {
       state: {
         isPlayingAd: true,
@@ -201,10 +201,10 @@ describe('viewControlsVr', function () {
     };
 
     this.icon = {
-      "name":"arrowsBlack",
-      "location": "mainView",
-      "whenDoesNotFit":"keep",
-      "minWidth":45
+      'name':'arrowsBlack',
+      'location': 'mainView',
+      'whenDoesNotFit':'keep',
+      'minWidth':45
     };
 
     var mockProps = {
@@ -212,7 +212,7 @@ describe('viewControlsVr', function () {
       playerState: CONSTANTS.STATE.PLAYING,
       controller: controller
     };
-    var DOM = TestUtils.renderIntoDocument( <ViewControlsVr {...mockProps}/> );
+    var DOM = TestUtils.renderIntoDocument(<ViewControlsVr {...mockProps}/>);
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
 
     expect(buttons.length).toBe(0);

@@ -11,7 +11,7 @@ var VolumeControls = React.createClass({
   volumeChange: function(vol) {
     var newVol = Utils.ensureNumber(vol, 1);
     this.props.controller.setVolume(newVol);
-    //unmute when volume is changed when muted
+    // unmute when volume is changed when muted
     if (newVol !== 0) {
       this.props.controller.toggleMute(false, true);
     }
@@ -164,7 +164,7 @@ var VolumeControls = React.createClass({
     );
   },
 
-  render: function () {
+  render: function() {
     if (this.props.controller.state.isMobile) {
       if (this.props.controller.state.volumeState.volumeSliderVisible) {
         return this.renderVolumeSlider();

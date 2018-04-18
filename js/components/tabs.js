@@ -30,7 +30,7 @@ var Tabs = React.createClass({
   componentDidMount: function() {
     var index = this.state.tabActive;
     var selectedPanel = this.refs['tab-panel'];
-    var selectedMenu = this.refs[("tab-menu-" + index)];
+    var selectedMenu = this.refs[('tab-menu-' + index)];
 
     if (this.props.onMount) {
       this.props.onMount(index, selectedPanel, selectedMenu);
@@ -38,7 +38,7 @@ var Tabs = React.createClass({
   },
 
   componentWillReceiveProps: function(newProps) {
-    if(newProps.tabActive && newProps.tabActive !== this.props.tabActive){
+    if (newProps.tabActive && newProps.tabActive !== this.props.tabActive) {
       this.setState({tabActive: newProps.tabActive});
     }
   },
@@ -49,11 +49,11 @@ var Tabs = React.createClass({
     var onAfterChange = this.props.onAfterChange;
     var onBeforeChange = this.props.onBeforeChange;
     var selectedPanel = this.refs['tab-panel'];
-    var selectedTabMenu = this.refs[("tab-menu-" + index)];
+    var selectedTabMenu = this.refs[('tab-menu-' + index)];
 
     if (onBeforeChange) {
       var cancel = onBeforeChange(index, selectedPanel, selectedTabMenu);
-      if(cancel === false){ return }
+      if (cancel === false) { return; }
     }
 
     this.setState({ tabActive: index }, function()  {
@@ -77,7 +77,7 @@ var Tabs = React.createClass({
       .filter(function(panel)  {return panel;})
       .map(function(panel, index)  {
         var tabIndex = index + 1;
-        var ref = ("tab-menu-" + tabIndex);
+        var ref = ('tab-menu-' + tabIndex);
         var title = panel.props.title;
         var activeTabStyle = {};
         var isSelected = this.state.tabActive === tabIndex;
@@ -89,9 +89,9 @@ var Tabs = React.createClass({
           }
         );
 
-        //accent color
+        // accent color
         if (isSelected && this.props.skinConfig.general.accentColor) {
-          var activeMenuColor =  "solid ";
+          var activeMenuColor =  'solid ';
           activeMenuColor += this.props.skinConfig.general.accentColor;
           activeTabStyle = {borderBottom: activeMenuColor};
         }
@@ -117,7 +117,7 @@ var Tabs = React.createClass({
     return (
       <div
         className='tabs-navigation'
-        ref={function(e) { this.tabsNavigationElement = e }.bind(this)}
+        ref={function(e) { this.tabsNavigationElement = e; }.bind(this)}
         tabIndex="-1">
         <ul
           className='tabs-menu'

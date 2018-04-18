@@ -22,46 +22,46 @@ var CONSTANTS = require('../../js/constants/constants');
 var skinConfig = require('../../config/skin.json');
 var Utils = require('../../js/components/utils');
 
-describe('ClosedCaptionPanel', function () {
-  var availableLanguages = {"languages":["en","fr","de","ru","it"],
-                            "locale":{"en": "English", "fr": "français", "de": "Deutsch", "ru": "русский", "it": "italiano"}};
+describe('ClosedCaptionPanel', function() {
+  var availableLanguages = {'languages':['en','fr','de','ru','it'],
+                            'locale':{'en': 'English', 'fr': 'français', 'de': 'Deutsch', 'ru': 'русский', 'it': 'italiano'}};
   var mockSkinConfig = Utils.clone(skinConfig);
-  mockSkinConfig.icons = {"cc": [], "left": [], "right": []};
+  mockSkinConfig.icons = {'cc': [], 'left': [], 'right': []};
   mockSkinConfig.defaultEnabled = true;
-  mockSkinConfig.defaultLanguage = "en";
+  mockSkinConfig.defaultLanguage = 'en';
 
-  var closedCaptionOptions = {"enabled": true,
-                              "availableLanguages": availableLanguages};
+  var closedCaptionOptions = {'enabled': true,
+                              'availableLanguages': availableLanguages};
 
-  it('tests languages displayed in closed caption panel', function () {
-    //Render closed caption panel into DOM
+  it('tests languages displayed in closed caption panel', function() {
+    // Render closed caption panel into DOM
     var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPanel skinConfig={mockSkinConfig} closedCaptionOptions={closedCaptionOptions}/>);
 
     var items0 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item');
     var leftButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-left-button');
     var rightButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-right-button');
 
-    function testItemsOnPage(items, page){
+    function testItemsOnPage(items, page) {
       var j = items0.length*(page);
-      for (var i=0; i<items.length; i++){
+      for (var i=0; i<items.length; i++) {
         var itemText = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item')[i].textContent;
-          expect(itemText).toEqual(availableLanguages.locale[availableLanguages.languages[i+j]]);
+        expect(itemText).toEqual(availableLanguages.locale[availableLanguages.languages[i+j]]);
       }
     }
-    //checking that languages on page 0 are as expected
+    // checking that languages on page 0 are as expected
     testItemsOnPage(items0, 0);
 
-    //checking that languages displayed on page 1 are as expected after clicking right chevron
+    // checking that languages displayed on page 1 are as expected after clicking right chevron
     TestUtils.Simulate.click(rightButton);
     var items1 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item');
     testItemsOnPage(items1, 1);
 
-    //checking that languages displayed on page 0 are as expected after clicking left chevron
+    // checking that languages displayed on page 0 are as expected after clicking left chevron
     TestUtils.Simulate.click(leftButton);
     testItemsOnPage(items0, 0);
   });
 
-  it('checks closed caption switch works', function () {
+  it('checks closed caption switch works', function() {
     var mockController = {
       toggleClosedCaptionEnabled: function() {
         closedCaptionsEnabled = !closedCaptionsEnabled;
@@ -89,14 +89,14 @@ describe('ClosedCaptionPanel', function () {
     expect(closedCaptionsEnabled).toBe(closedCaptionOptions.enabled);
   });
 
-  it('checks closed caption on switch with accent color', function () {
+  it('checks closed caption on switch with accent color', function() {
     var mockController = {
       toggleClosedCaptionEnabled: function() {
         closedCaptionsEnabled = !closedCaptionsEnabled;
       }
     };
 
-    mockSkinConfig.general.accentColor = "blue";
+    mockSkinConfig.general.accentColor = 'blue';
 
     var DOM = TestUtils.renderIntoDocument(
       <ContentScreen
@@ -111,17 +111,17 @@ describe('ClosedCaptionPanel', function () {
     );
 
     var onOffSwitch = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-switch-body');
-    expect(onOffSwitch.style.backgroundColor).toBe("blue");
+    expect(onOffSwitch.style.backgroundColor).toBe('blue');
   });
 
-  it('checks closed caption off switch with accent color', function () {
+  it('checks closed caption off switch with accent color', function() {
     var mockController = {
       toggleClosedCaptionEnabled: function() {
         closedCaptionsEnabled = closedCaptionsEnabled;
       }
     };
 
-    mockSkinConfig.general.accentColor = "blue";
+    mockSkinConfig.general.accentColor = 'blue';
 
     var DOM = TestUtils.renderIntoDocument(
       <ContentScreen
@@ -136,10 +136,10 @@ describe('ClosedCaptionPanel', function () {
     );
 
     var onOffSwitch = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-switch-body');
-    expect(onOffSwitch.style.backgroundColor).toBe("blue");
+    expect(onOffSwitch.style.backgroundColor).toBe('blue');
   });
 
-  it('checks changing the closed caption language', function () {
+  it('checks changing the closed caption language', function() {
     var selectedLanguage = skinConfig.closedCaptionOptions.defaultLanguage;
     var mockController = {
       onClosedCaptionChange: function(name, value) {
@@ -154,7 +154,7 @@ describe('ClosedCaptionPanel', function () {
     expect(selectedLanguage).toBe(availableLanguages.languages[1]);
   });
 
-  it('checks changing the closed caption language with accent color', function () {
+  it('checks changing the closed caption language with accent color', function() {
     var selectedLanguage = skinConfig.closedCaptionOptions.defaultLanguage;
     var mockController = {
       onClosedCaptionChange: function(name, value) {
@@ -162,12 +162,12 @@ describe('ClosedCaptionPanel', function () {
       }
     };
 
-    mockSkinConfig.general.accentColor = "blue";
+    mockSkinConfig.general.accentColor = 'blue';
 
     var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPanel skinConfig={mockSkinConfig} closedCaptionOptions={closedCaptionOptions} controller={mockController}/>);
     var newLanguage = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-item')[1];
     TestUtils.Simulate.click(newLanguage);
-    expect(newLanguage.style.backgroundColor).toBe("blue");
+    expect(newLanguage.style.backgroundColor).toBe('blue');
     expect(selectedLanguage).toBe(availableLanguages.languages[1]);
   });
 });

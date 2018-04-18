@@ -32,7 +32,7 @@ function getContainerStyle(bottom, visible, responsivenessMultiplier, alignment)
     bottom: bottom,
     transition: '1s',
     visibility: visible ? 'visible' : 'hidden',
-  }
+  };
 
   return deepmerge(alignmentStyle[alignment], style);
 
@@ -48,14 +48,14 @@ function getBoxStyle(responsivenessMultiplier) {
     paddingRight: 20 * responsivenessMultiplier,
     paddingBottom: 8 * responsivenessMultiplier,
     paddingLeft: 20 * responsivenessMultiplier
-  }
+  };
 }
 
 var pointerAlignment = {
   left: '10%',
   center: '45%',
   right: '85%'
-}
+};
 function getPointerStyle(alignment) {
   return {
     position: 'absolute',
@@ -69,7 +69,7 @@ function getPointerStyle(alignment) {
 
 var Tooltip = React.createClass({
 
-  componentDidMount: function () {
+  componentDidMount: function() {
     this.parentElement = (ReactDOM.findDOMNode(this) || {}).parentElement;
     if (this.parentElement) {
       this.parentElement.addEventListener('mouseover', this.onMouseOver);
@@ -77,14 +77,14 @@ var Tooltip = React.createClass({
     }
   },
 
-  componentWillUnmount: function () {
+  componentWillUnmount: function() {
     if (this.parentElement) {
       this.parentElement.removeEventListener('mouseover', this.onMouseOver);
       this.parentElement.removeEventListener('mouseleave', this.onMouseLeave);
     }
   },
 
-  render: function () {
+  render: function() {
     if (this.props.enabled) {
       return (
         <div style={{ position: 'relative' }}>
@@ -101,15 +101,15 @@ var Tooltip = React.createClass({
     }
   },
 
-  getInitialState: function () {
-    return { visible: false }
+  getInitialState: function() {
+    return { visible: false };
   },
 
-  onMouseOver: function () {
+  onMouseOver: function() {
     this.setState({ visible: true });
   },
 
-  onMouseLeave: function () {
+  onMouseLeave: function() {
     this.setState({ visible: false });
   }
 });

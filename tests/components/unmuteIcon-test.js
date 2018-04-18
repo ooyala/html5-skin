@@ -10,7 +10,7 @@ var CONSTANTS = require('../../js/constants/constants');
 var skinConfig = require('../../config/skin.json');
 var sinon = require('sinon');
 
-describe('UnmuteIcon', function () {
+describe('UnmuteIcon', function() {
   var mockController = null;
 
   beforeEach(function() {
@@ -25,7 +25,7 @@ describe('UnmuteIcon', function () {
     };
   });
 
-  it('creates an expanded UnmuteIcon', function () {
+  it('creates an expanded UnmuteIcon', function() {
     var DOM = TestUtils.renderIntoDocument(
       <UnmuteIcon
         controller={mockController}
@@ -37,7 +37,7 @@ describe('UnmuteIcon', function () {
     expect(expanded).toEqual(unmuteIcon);
   });
 
-  it('creates a collapsed UnmuteIcon', function () {
+  it('creates a collapsed UnmuteIcon', function() {
     mockController.state.volumeState.unmuteIconCollapsed = true;
     var DOM = TestUtils.renderIntoDocument(
       <UnmuteIcon
@@ -51,7 +51,7 @@ describe('UnmuteIcon', function () {
     expect(unmuteIcon).toBeTruthy();
   });
 
-  it('collapses an expanded UnmuteIcon', function () {
+  it('collapses an expanded UnmuteIcon', function() {
     jest.useFakeTimers();
     var DOM = TestUtils.renderIntoDocument(
       <UnmuteIcon
@@ -70,10 +70,10 @@ describe('UnmuteIcon', function () {
     expect(unmuteIcon).toBeTruthy();
   });
 
-  it('handles clicks on collapsed unmute icon', function () {
+  it('handles clicks on collapsed unmute icon', function() {
     mockController.state.volumeState.unmuteIconCollapsed = true;
     mockController.handleMuteClick = function() {};
-    var spy = sinon.spy(mockController, "handleMuteClick");
+    var spy = sinon.spy(mockController, 'handleMuteClick');
     var DOM = TestUtils.renderIntoDocument(
       <UnmuteIcon
         controller={mockController}
@@ -87,9 +87,9 @@ describe('UnmuteIcon', function () {
     spy.restore();
   });
 
-  it('handles clicks on expanded unmute icon', function () {
+  it('handles clicks on expanded unmute icon', function() {
     mockController.handleMuteClick = function() {};
-    var spy = sinon.spy(mockController, "handleMuteClick");
+    var spy = sinon.spy(mockController, 'handleMuteClick');
     var DOM = TestUtils.renderIntoDocument(
       <UnmuteIcon
         controller={mockController}

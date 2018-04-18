@@ -9,7 +9,7 @@ var OnOffSwitch = React.createClass({
     this.props.controller.toggleClosedCaptionEnabled();
   },
 
-  render: function(){
+  render: function() {
     var switchThumbClassName = ClassNames({
       'oo-switch-thumb': true,
       'oo-switch-thumb-on': this.props.closedCaptionOptions.enabled,

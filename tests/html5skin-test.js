@@ -18,12 +18,12 @@ var Html5Skin;
 var elementId = 'adrfgyi';
 var videoId = 'ag5dfdtooon2cncj714i';
 var videoElement = document.createElement('video');
-videoElement.className = "video";
+videoElement.className = 'video';
 videoElement.id = videoId;
-videoElement.preload = "none";
-videoElement.src = "http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor";
-var persistentSettings = {"closedCaptionOptions":{"textColor":"Blue","backgroundColor":"Transparent","windowColor":"Yellow","windowOpacity":"0.3","fontType":"Proportional Serif","fontSize":"Medium","textEnhancement":"Shadow","enabled":true,"language":"unknown","backgroundOpacity":"0.2","textOpacity":"1"}};
-//setup document body for valid DOM elements
+videoElement.preload = 'none';
+videoElement.src = 'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor';
+var persistentSettings = {'closedCaptionOptions':{'textColor':'Blue','backgroundColor':'Transparent','windowColor':'Yellow','windowOpacity':'0.3','fontType':'Proportional Serif','fontSize':'Medium','textEnhancement':'Shadow','enabled':true,'language':'unknown','backgroundOpacity':'0.2','textOpacity':'1'}};
+// setup document body for valid DOM elements
 document.body.innerHTML =
   '<div id='+elementId+'>' +
   '  <div class="oo-player-skin">' + videoElement + '</div>' +
@@ -32,18 +32,20 @@ document.body.innerHTML =
 // Mock OO environment needed for skin plugin initialization
 OO = {
   playerParams: {
-    "core_version" : 4
+    'core_version' : 4
   },
   publicApi: {},
   EVENTS: {
-    INITIAL_PLAY: "initialPlay",
-    CHANGE_MUTE_STATE: "changeMuteState",
+    INITIAL_PLAY: 'initialPlay',
+    CHANGE_MUTE_STATE: 'changeMuteState',
     DISCOVERY_API: {
-      SEND_CLICK_EVENT: "sendClickEvent"
-    }
+      SEND_CLICK_EVENT: 'sendClickEvent'
+    },
+    SET_CURRENT_AUDIO: 'setCurrentAudio'
   },
   CONSTANTS: {
-    CLOSED_CAPTIONS: {}
+    CLOSED_CAPTIONS: {},
+    SELECTED_AUDIO: 'selectedAudio'
   },
   VIDEO: {
     ADS: 'ads',
@@ -52,6 +54,8 @@ OO = {
   init: function() {},
   handleVrMobileOrientation: function() {},
   log: function() {},
+  setItem: function() {},
+  getItem: function() {},
   plugin: function(module, callback) {
     var plugin = callback(OO, _, $);
     plugin.call(OO, OO.mb, 0);
@@ -75,7 +79,7 @@ describe('Controller', function() {
       add: function() {},
       remove: function() {}
     },
-    getElementsByTagName: function() { return [mockDomElement] },
+    getElementsByTagName: function() { return [mockDomElement]; },
     webkitSupportsFullscreen: true,
     webkitEnterFullscreen: function() {},
     webkitExitFullscreen: function() {},
@@ -272,7 +276,7 @@ describe('Controller', function() {
 
   });
 
-  describe('Video start state', function(){
+  describe('Video start state', function() {
     var spy;
 
     beforeEach(function() {
@@ -409,7 +413,7 @@ describe('Controller', function() {
       expect(controller.state.controlBarVisible).toBe(true);
     });
 
-    it('should blur when addBlur API is called', function () {
+    it('should blur when addBlur API is called', function() {
       var spy = sinon.spy(controller.state.mainVideoElement.classList, 'add');
       controller.videoVr = false;
       controller.addBlur();
@@ -418,7 +422,7 @@ describe('Controller', function() {
       spy.restore();
     });
 
-    it('should not blur when videoVr is paused', function () {
+    it('should not blur when videoVr is paused', function() {
       var spy = sinon.spy(controller.state.mainVideoElement.classList, 'add');
       var playerParam = {
         playerControlsOverAds: false
@@ -436,7 +440,7 @@ describe('Controller', function() {
       spy.restore();
     });
 
-    it('should blur when discovery screen is shown on pause', function () {
+    it('should blur when discovery screen is shown on pause', function() {
       var spy = sinon.spy(controller.state.mainVideoElement.classList, 'add');
       var playerParam = {
         playerControlsOverAds: false
@@ -445,7 +449,7 @@ describe('Controller', function() {
       controller.state.playerParam = playerParam;
       controller.createPluginElements();
       controller.state.discoveryData = {};
-      controller.skin.props.skinConfig.pauseScreen.screenToShowOnPause = "discovery";
+      controller.skin.props.skinConfig.pauseScreen.screenToShowOnPause = 'discovery';
       controller.state.duration = 10000;
       controller.state.mainVideoPlayhead = 0;
 
@@ -560,14 +564,14 @@ describe('Controller', function() {
 
   });
 
-  describe("Show player controls over ads", function() {
-    beforeEach(function(){
+  describe('Show player controls over ads', function() {
+    beforeEach(function() {
       controller.state.elementId = elementId;
-      //setup original css values
-      var temp1 = $("#" + controller.state.elementId + " .oo-player-skin-plugins");
-      var temp2 = $("#" + controller.state.elementId + " .oo-player-skin-plugins-click-layer");
-      temp1.css("bottom", 10);
-      temp2.css("bottom", 10);
+      // setup original css values
+      var temp1 = $('#' + controller.state.elementId + ' .oo-player-skin-plugins');
+      var temp2 = $('#' + controller.state.elementId + ' .oo-player-skin-plugins-click-layer');
+      temp1.css('bottom', 10);
+      temp2.css('bottom', 10);
     });
 
     it('playerControlsOverAds = true  and no skin setting for adscreen overwrites css and showControlBar', function() {
@@ -576,11 +580,11 @@ describe('Controller', function() {
       };
       controller.state.playerParam = playerParam;
       controller.createPluginElements();
-      //make sure showControlBar is overwritten
+      // make sure showControlBar is overwritten
       expect(controller.state.config.adScreen.showControlBar).toBe(true);
-      //make sure css for the plugin elements is overwritten
-      expect(controller.state.pluginsElement.css("bottom")).toBe("0px");
-      expect(controller.state.pluginsClickElement.css("bottom")).toBe("0px");
+      // make sure css for the plugin elements is overwritten
+      expect(controller.state.pluginsElement.css('bottom')).toBe('0px');
+      expect(controller.state.pluginsClickElement.css('bottom')).toBe('0px');
     });
 
     it('playerControlsOverAds = false doesn\'t overwrite the plugin element css', function() {
@@ -589,11 +593,11 @@ describe('Controller', function() {
       };
       controller.state.playerParam = playerParam;
       controller.createPluginElements();
-      expect(controller.state.pluginsElement.css("bottom")).toBe("10px");
-      expect(controller.state.pluginsClickElement.css("bottom")).toBe("10px");
+      expect(controller.state.pluginsElement.css('bottom')).toBe('10px');
+      expect(controller.state.pluginsClickElement.css('bottom')).toBe('10px');
     });
 
-   it('playerControlsOverAds = true  and skin set showControlBar to false should overwrite css and showControlBar', function() {
+    it('playerControlsOverAds = true  and skin set showControlBar to false should overwrite css and showControlBar', function() {
       var playerParam = {
         playerControlsOverAds: true,
         skin: {
@@ -611,8 +615,8 @@ describe('Controller', function() {
       controller.state.config.adScreen.showControlBar = false;
       controller.createPluginElements();
       expect(controller.state.config.adScreen.showControlBar).toBe(true);
-      expect(controller.state.pluginsElement.css("bottom")).toBe("0px");
-      expect(controller.state.pluginsClickElement.css("bottom")).toBe("0px");
+      expect(controller.state.pluginsElement.css('bottom')).toBe('0px');
+      expect(controller.state.pluginsClickElement.css('bottom')).toBe('0px');
     });
 
     it('playerControlsOverAds = true  and skin set showControlBar to true should overwrite css and showControlBar should be still true', function() {
@@ -633,8 +637,8 @@ describe('Controller', function() {
       controller.state.config.adScreen.showControlBar = true;
       controller.createPluginElements();
       expect(controller.state.config.adScreen.showControlBar).toBe(true);
-      expect(controller.state.pluginsElement.css("bottom")).toBe("0px");
-      expect(controller.state.pluginsClickElement.css("bottom")).toBe("0px");
+      expect(controller.state.pluginsElement.css('bottom')).toBe('0px');
+      expect(controller.state.pluginsClickElement.css('bottom')).toBe('0px');
     });
 
     it('showControlBar is true when ad is paused', function() {
@@ -643,7 +647,7 @@ describe('Controller', function() {
       };
       controller.state.playerParam = playerParam;
       controller.createPluginElements();
-      //make sure showControlBar is overwritten
+      // make sure showControlBar is overwritten
       expect(controller.state.config.adScreen.showControlBar).toBeFalsy();
       controller.focusedElement = OO.VIDEO.ADS;
       controller.onPaused('event', OO.VIDEO.ADS);
@@ -657,9 +661,9 @@ describe('Controller', function() {
     beforeEach(function() {
       qualities = {
         bitrates: [
-          { "id": "1", "width": 640, "height": 360, "bitrate": 150000 },
-          { "id": "2", "width": 320, "height": 180, "bitrate": 2500000 },
-          { "id": "auto", "width": 0, "height": 0, "bitrate": 0 }
+          { 'id': '1', 'width': 640, 'height': 360, 'bitrate': 150000 },
+          { 'id': '2', 'width': 320, 'height': 180, 'bitrate': 2500000 },
+          { 'id': 'auto', 'width': 0, 'height': 0, 'bitrate': 0 }
         ]
       };
     });
@@ -668,9 +672,9 @@ describe('Controller', function() {
       controller.skin.props.skinConfig.controlBar.qualitySelection.format = CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE;
       controller.onBitrateInfoAvailable('event', qualities);
       expect(controller.state.videoQualityOptions.availableBitrates).toEqual([
-        { "id": "2", "width": 320, "height": 180, "bitrate": 2500000 },
-        { "id": "1", "width": 640, "height": 360, "bitrate": 150000 },
-        { "id": "auto", "width": 0, "height": 0, "bitrate": 0 }
+        { 'id': '2', 'width': 320, 'height': 180, 'bitrate': 2500000 },
+        { 'id': '1', 'width': 640, 'height': 360, 'bitrate': 150000 },
+        { 'id': 'auto', 'width': 0, 'height': 0, 'bitrate': 0 }
       ]);
     });
 
@@ -681,8 +685,8 @@ describe('Controller', function() {
     });
   });
 
-  describe('Toggle fullscreen', function () {
-    it('should publish event OO.EVENTS.TOGGLE_FULLSCREEN_VR on ios deivce with vr content', function () {
+  describe('Toggle fullscreen', function() {
+    it('should publish event OO.EVENTS.TOGGLE_FULLSCREEN_VR on ios deivce with vr content', function() {
       var spy = sinon.spy(controller.mb, 'publish');
       controller.videoVr = true;
       OO.isIos = true;
@@ -694,22 +698,24 @@ describe('Controller', function() {
     });
   });
 
-  describe('Multiaudio', function () {
+  describe('Multiaudio', function() {
     var spy;
     beforeEach(function() {
       spy = sinon.spy(controller.mb, 'publish');
       controller.state.showMultiAudioIcon = true;
     });
 
-    afterEach(function () {
+    afterEach(function() {
       spy.restore();
     });
 
     it('should set correct multiAudio state', function() {
-      var multiAudio = {"tracks": [
-          {id: "0", kind: "main", label: "eng", lang: "eng", enabled: true},
-          {id: "1", kind: "main", label: "ger", lang: "ger", enabled: false}
-        ]};
+      var multiAudio = {
+        'tracks': [
+          {id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true},
+          {id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false}
+        ]
+      };
 
       controller.state.multiAudio = null;
       expect(controller.state.multiAudio).toBe(null);
@@ -718,20 +724,120 @@ describe('Controller', function() {
     });
 
     it('Calling of setCurrentAudio should throw SET_CURRENT_AUDIO event with id', function() {
-      var id = "1";
-      controller.setCurrentAudio(id);
-      expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, id)).toBe(true);
+
+      var track = { id: '1', lang: 'eng', label: 'eng' };
+      controller.setCurrentAudio(track);
+      expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, track)).toBe(true);
     });
 
-    it('should check if the icon exists if showMultiAudioIcon is true', function () {
+    it('Calling of setCurrentAudio should save audioTrack to storage', function() {
+      var localStorage = {};
+
+      OO.setItem = function(key, item) {
+        localStorage[key] = item;
+      };
+
+      OO.getItem = function(key) {
+        return JSON.parse(localStorage[key]);
+      };
+
+      var track = { id: '1', lang: 'eng', label: 'eng' };
+      controller.setCurrentAudio(track);
+
+      expect(OO.getItem(OO.CONSTANTS.SELECTED_AUDIO)).toEqual(track);
+    });
+
+    it('should save stringified audioTrack to storage', function() {
+      var localStorage = {};
+
+      OO.setItem = function(key, item) {
+        localStorage[key] = item;
+      };
+
+      OO.getItem = function(key) {
+        return JSON.parse(localStorage[key]);
+      };
+
+      var setItemSpy = sinon.spy(OO, 'setItem');
+
+      var track = { id: '1', lang: 'eng', label: 'eng' };
+      controller.setCurrentAudio(track);
+
+      var stringifiedTrack = JSON.stringify(track);
+
+      expect(setItemSpy.calledWith(OO.CONSTANTS.SELECTED_AUDIO, stringifiedTrack)).toBeTruthy();
+    });
+
+    it('should check if the icon exists if showMultiAudioIcon is true', function() {
       controller.onMultiAudioFetched('event', true);
       expect(controller.state.multiAudio).toBe(true);
     });
 
-    it('should check if the icon not exists if showMultiAudioIcon is false', function () {
+    it('should check if the icon not exists if showMultiAudioIcon is false', function() {
       controller.state.showMultiAudioIcon = false;
       controller.onMultiAudioFetched('event', true);
       expect(controller.state.multiAudio).toBe(null);
     });
+
+    it('should set correct state after MULTI_AUDIO_FETCHED was called', function() {
+      var multiAudio = {
+        tracks: [
+          { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true },
+          { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
+        ]
+      };
+      controller.onMultiAudioFetched('event', multiAudio);
+      expect(controller.state.multiAudio.tracks).toEqual(multiAudio.tracks);
+    });
+    
+    it('should set correct state after MULTI_AUDIO_CHANGED was called', function() {
+      var multiAudio = {
+        tracks: [
+          { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true },
+          { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
+        ]
+      };
+      controller.onMultiAudioChanged('event', multiAudio);
+      expect(controller.state.multiAudio.tracks).toEqual(multiAudio.tracks);
+    });
+    
+    it('should set correct state after MULTI_AUDIO_CHANGED after MULTI_AUDIO_FETCHED was already called', 
+      function() {
+        var multiAudio = {
+          tracks: [
+            { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true },
+            { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
+          ]
+        };
+      
+        controller.onMultiAudioFetched('event', multiAudio);
+        expect(controller.state.multiAudio.tracks).toEqual(multiAudio.tracks);
+      
+        // change the state to have more tracks
+        var newAudio = {
+          tracks: [
+            { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true },
+            { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false },
+            { id: '2', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
+          ]
+        };
+        controller.onMultiAudioChanged('event', newAudio);
+      
+        expect(controller.state.multiAudio.tracks).toEqual(newAudio.tracks);
+      
+        // change the state to have a different active track
+        var newActiveAudio = {
+          tracks: [
+            { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: false },
+            { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: true },
+            { id: '2', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
+          ]
+        };
+        controller.onMultiAudioChanged('event', newActiveAudio);
+      
+        expect(controller.state.multiAudio.tracks).toEqual(newActiveAudio.tracks);
+      }
+    );
+    
   });
 });

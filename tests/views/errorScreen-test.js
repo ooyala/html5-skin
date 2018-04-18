@@ -8,18 +8,18 @@ var React = require('react');
 var TestUtils = require('react-addons-test-utils');
 var ErrorScreen = require('../../js/views/errorScreen');
 
-describe('ErrorScreen', function () {
-  it('test error screen with valid error code', function () {
+describe('ErrorScreen', function() {
+  it('test error screen with valid error code', function() {
     var errorCode = {
-      code: "network"
+      code: 'network'
     };
     // Render error screen into DOM
     var DOM = TestUtils.renderIntoDocument(<ErrorScreen errorCode={errorCode} />);
   });
 
-  it('test error screen with invalid error code', function () {
+  it('test error screen with invalid error code', function() {
     var errorCode = {
-      code: "404"
+      code: '404'
     };
     // Render error screen into DOM
     var DOM = TestUtils.renderIntoDocument(<ErrorScreen errorCode={errorCode} />);

@@ -8,7 +8,7 @@ var TestUtils = require('react-addons-test-utils');
 var OnOffSwitch = require('../../../js/components/closed-caption/onOffSwitch');
 var CONSTANTS = require('../../../js/constants/constants');
 
-describe('OnOffSwitch', function () {
+describe('OnOffSwitch', function() {
   var props;
 
   beforeEach(function() {
@@ -32,7 +32,7 @@ describe('OnOffSwitch', function () {
     };
   });
 
-  it('should render an OnOffSwitch', function () {
+  it('should render an OnOffSwitch', function() {
     var DOM = TestUtils.renderIntoDocument(<OnOffSwitch {...props}/>);
   });
 
