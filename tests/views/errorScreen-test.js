@@ -20,10 +20,12 @@ describe('ErrorScreen', function() {
     var component = TestUtils.renderIntoDocument(<ErrorScreen {...props} />);
     var titleElement = TestUtils.findRenderedDOMComponentWithClass(component, 'oo-error-title');
     var descriptionElement = TestUtils.findRenderedDOMComponentWithClass(component, 'oo-error-description');
+    var actionElement = TestUtils.findRenderedDOMComponentWithClass(component, 'oo-error-action');
 
     return {
       titleElement: titleElement,
-      descriptionElement: descriptionElement
+      descriptionElement: descriptionElement,
+      actionElement: actionElement
     };
   }
 
@@ -70,11 +72,13 @@ describe('ErrorScreen', function() {
         language: 'en',
         localizableStrings: {
           en: {
-            'NON REGISTERED DEVICE': 'NON REGISTERED DEVICE',
+            'AUTHORIZATION ERROR': 'AUTHORIZATION ERROR',
             // eslint-disable-next-line max-len
             'Unable to register this device to this account, as the maximum number of authorized devices has already been reached. Error Code 22':
               'Unable to register this device to this account, as the maximum' +
-              ' number of authorized devices has already been reached. Error Code 22'
+              ' number of authorized devices has already been reached. Error Code 22',
+            'Please remove one of your authorized devices to enable this device.':
+                'Please remove one of your authorized devices to enable this device.'
           }
         }
       };
@@ -82,9 +86,11 @@ describe('ErrorScreen', function() {
       var elements = renderComponentAndFind(props);
 
       it('should render correct title, description and action', function() {
-        expect(elements.titleElement.textContent).toEqual('NON REGISTERED DEVICE');
+        expect(elements.titleElement.textContent).toEqual('AUTHORIZATION ERROR');
         // eslint-disable-next-line
         expect(elements.descriptionElement.textContent).toEqual('Unable to register this device to this account, as the maximum number of authorized devices has already been reached. Error Code 22');
+        // eslint-disable-next-line
+        expect(elements.actionElement.textContent).toEqual('Please remove one of your authorized devices to enable this device.');
       });
     });
 
@@ -94,11 +100,13 @@ describe('ErrorScreen', function() {
         language: 'en',
         localizableStrings: {
           en: {
-            'DEVICE LIMIT REACHED': 'DEVICE LIMIT REACHED',
+            'AUTHORIZATION ERROR': 'AUTHORIZATION ERROR',
             // eslint-disable-next-line max-len
             'Unable to access this content, as the maximum number of devices has already been authorized. Error Code 29':
               'Unable to access this content, as the maximum number of devices' +
-              ' has already been authorized. Error Code 29'
+              ' has already been authorized. Error Code 29',
+            'Please remove one of your authorized devices to enable this device.':
+              'Please remove one of your authorized devices to enable this device.'
           }
         }
       };
@@ -106,9 +114,11 @@ describe('ErrorScreen', function() {
       var elements = renderComponentAndFind(props);
 
       it('should render correct title, description and action', function() {
-        expect(elements.titleElement.textContent).toEqual('DEVICE LIMIT REACHED');
+        expect(elements.titleElement.textContent).toEqual('AUTHORIZATION ERROR');
         // eslint-disable-next-line
         expect(elements.descriptionElement.textContent).toEqual('Unable to access this content, as the maximum number of devices has already been authorized. Error Code 29');
+        // eslint-disable-next-line
+        expect(elements.actionElement.textContent).toEqual('Please remove one of your authorized devices to enable this device.');
       });
     });
   });

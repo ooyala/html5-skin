@@ -388,15 +388,17 @@ module.exports = {
     },
     'device_limit_reached':{
       name: 'OO.ERROR.API.SAS.ERROR.ERROR_DEVICE_LIMIT_REACHED',
-      title: 'DEVICE LIMIT REACHED',
+      title: 'AUTHORIZATION ERROR',
       description: 'Unable to access this content, as the maximum number of devices' + 
-      ' has already been authorized. Error Code 29'
+      ' has already been authorized. Error Code 29',
+      action: 'Please remove one of your authorized devices to enable this device.'
     },
     'non_registered_device':{
       name: 'OO.ERROR.API.SAS.ERROR.ERROR_NON_REGISTERED_DEVICE',
-      title: 'NON REGISTERED DEVICE',
+      title: 'AUTHORIZATION ERROR',
       description: 'Unable to register this device to this account, as the maximum' + 
-      ' number of authorized devices has already been reached. Error Code 22'
+      ' number of authorized devices has already been reached. Error Code 22',
+      action: 'Please remove one of your authorized devices to enable this device.'
     },
     'drm_general_failure':{
       name: 'OO.ERROR.API.SAS.ERROR_DRM_GENERAL_FAILURE',
