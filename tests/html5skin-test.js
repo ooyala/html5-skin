@@ -723,6 +723,14 @@ describe('Controller', function() {
       expect(controller.state.multiAudio).toEqual(multiAudio);
     });
 
+    it('MultiAudio State should be null after embed code was changed', function(){
+      var obj = {};
+      controller.onMultiAudioFetched('event', obj);
+      expect(controller.state.multiAudio).toBe(obj);
+      controller.onEmbedCodeChanged('newEmbedCode');
+      expect(controller.state.multiAudio).toBe(null);
+    });
+
     it('Calling of setCurrentAudio should throw SET_CURRENT_AUDIO event with id', function() {
 
       var track = { id: '1', lang: 'eng', label: 'eng' };
