@@ -36,6 +36,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     this.vrMobileOrientationChecked = false;
     this.checkDeviceOrientation = false;
     this.isVrStereo = false;
+    this.toggleButtons = {};
     this.handleVrMobileOrientation = this.handleVrMobileOrientation.bind(this);
     this.state = {
       'playerParam': {},
@@ -1430,7 +1431,53 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       if (this.videoVr && this.state.isMobile && this.isVrStereo && !this.state.fullscreen) {
         this.toggleStereoVr();
       }
+      if (!this.state.fullscreen) {
+        this.closeOtherPopovers();
+      }
       this.renderSkin();
+    },
+
+    /**
+     * @description the function closes popovers (closedCaptionPopover, videoQualityPopover, multiAudioPopover);
+     * if the parameter specifies the name of the popover, then its state does not change
+     * @param {string} popoverName - the name of the popover that does not need to be closed
+     * @public
+     */
+    closeOtherPopovers: function(popoverName) {
+      var popoversNameList = [CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO];
+      for (var index = 0; index < popoversNameList.length; index++) {
+        var closedPopoverName = popoversNameList[index];
+        if (closedPopoverName !== popoverName) {
+          this.closePopover(closedPopoverName);
+        }
+      }
+    },
+
+    /**
+     * @description It close popover with name = menu
+     * @param {string} menu - the name of the popover to be closed
+     * @param {Object} [params] - params for the function
+     * @public
+     */
+    closePopover: function(menu, params) {
+      params = params || {};
+      var menuOptions = this.state[menu];
+      var menuToggleButton = this.toggleButtons[menu];
+
+      if (menuOptions && menuOptions.showPopover) {
+        // Re-focus on toggle button when closing the menu popover if the latter
+        // was originally opened with a key press.
+        if (params.restoreToggleButtonFocus &&
+          menuToggleButton &&
+          menuToggleButton.wasTriggeredWithKeyboard()
+        ) {
+          menuToggleButton.focus();
+        }
+        if (menuToggleButton) {
+          menuToggleButton.wasTriggeredWithKeyboard(false);
+        }
+        this.togglePopover(menu);
+      }
     },
 
     // called when user selects fullscreen icon
@@ -1837,12 +1884,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         menuOptions.showPopover = !menuOptions.showPopover;
         this.renderSkin();
       }
-    },
-
-    closePopovers: function() {
-      this.state.closedCaptionOptions.showPopover = false;
-      this.state.videoQualityOptions.showPopover = false;
-      this.renderSkin();
     },
 
     receiveVideoQualityChangeEvent: function(event, targetBitrate) {

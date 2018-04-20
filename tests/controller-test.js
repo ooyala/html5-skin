@@ -473,7 +473,7 @@ OO = {
     Html5Skin.sendDiscoveryDisplayEvent(CONSTANTS.SCREEN.DISCOVERY_SCREEN);
     Html5Skin.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
     Html5Skin.togglePopover(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS);
-    Html5Skin.closePopovers();
+    Html5Skin.closeOtherPopovers();
     Html5Skin.receiveVideoQualityChangeEvent(null, 312);
     Html5Skin.sendVideoQualityChangeEvent({id:2});
     Html5Skin.setClosedCaptionsInfo(elementId);
