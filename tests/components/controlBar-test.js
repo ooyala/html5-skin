@@ -127,7 +127,6 @@ describe('ControlBar', function() {
     var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
     TestUtils.Simulate.click(fullscreenButton);
     expect(fullscreenToggled).toBe(true);
-    expect(mockController.state.multiAudioOptions.showPopover).toBe(false); // popover should be closed
   });
 
   it('render one stereo button if content vr', function() {
@@ -533,6 +532,7 @@ describe('ControlBar', function() {
 
   it('should reset quality menu toggle keyboard flag when closing video quality popover', function() {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
+    baseMockController.toggleButtons = {};
     baseMockProps.skinConfig.buttons.desktopContent = [
       { 'name': 'quality', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 }
     ];
@@ -799,7 +799,8 @@ describe('ControlBar', function() {
         videoQualityOptions: {
           availableBitrates: null
         }
-      }
+      },
+      toggleButtons: {}
     };
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
@@ -837,6 +838,7 @@ describe('ControlBar', function() {
           availableBitrates: null
         }
       },
+      toggleButtons: {},
       toggleScreen: function() {toggleScreenClicked = true;},
       togglePopover: function() {captionClicked = true;}
     };
@@ -1072,6 +1074,7 @@ describe('ControlBar', function() {
         isOoyalaAds: false,
         showMultiAudioIcon: true
       },
+      toggleButtons: {},
       toggleScreen: function() {multiAudioClicked = true;},
       togglePopover: function() {popoverStateChanged = true;},
     };
@@ -1126,52 +1129,6 @@ describe('ControlBar', function() {
     var multiAudioBtn2 = TestUtils.findRenderedDOMComponentWithClass(DOM2, 'oo-multiaudio').firstChild;
     TestUtils.Simulate.click(multiAudioBtn2);
     expect(popoverStateChanged).toBe(true);
-  });
-
-  it('closeOtherPopovers must close all the popovers, except that which is passed in the parameter', function() {
-    var buttonSkinConfig = Utils.clone(skinConfig);
-    buttonSkinConfig.buttons.desktopContent = [
-      {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 }
-    ];
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {
-          showPopover: true
-        },
-        multiAudio: {},
-        multiAudioOptions: {
-          showPopover: true
-        },
-        videoQualityOptions: {
-          showPopover: true,
-          availableBitrates: null
-        },
-        isOoyalaAds: false,
-        showMultiAudioIcon: true
-      },
-      togglePopover: function(popoverName) { this.state[popoverName].showPopover = !this.state[popoverName].showPopover;}
-    };
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: buttonSkinConfig
-    };
-    var DOM = TestUtils.renderIntoDocument(
-      <ControlBar
-        {...mockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={baseMockProps.isLiveStream} />
-    );
-    var controlBar = TestUtils.findRenderedComponentWithType(DOM, ControlBar);
-    controlBar.closeOtherPopovers('multiAudioOptions');
-    expect(mockController.state.closedCaptionOptions.showPopover).toBe(false);
-    expect(mockController.state.videoQualityOptions.showPopover).toBe(false);
   });
 
   it('hides share button if share options are not provided', function() {
@@ -1904,6 +1861,7 @@ describe('ControlBar', function() {
           availableBitrates: true
         }
       },
+      toggleButtons: {},
       toggleScreen: function() {qualityClicked = true;},
       togglePopover: function() {qualityClicked = true;}
     };

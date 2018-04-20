@@ -698,6 +698,24 @@ describe('Controller', function() {
     });
   });
 
+  describe('Toggle popovers', function() {
+    it('should close current popover', function() {
+      controller.state[CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY].showPopover = false;
+      controller.state[CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS].showPopover = false;
+      controller.state[CONSTANTS.MENU_OPTIONS.MULTI_AUDIO].showPopover = true;
+
+      controller.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
+      expect(controller.state[CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY].showPopover).toBe(true);
+      controller.closePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
+      expect(controller.state[CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY].showPopover).toBe(false);
+      controller.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
+      controller.closeOtherPopovers(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
+      expect(controller.state[CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY].showPopover).toBe(true);
+      expect(controller.state[CONSTANTS.MENU_OPTIONS.MULTI_AUDIO].showPopover).toBe(false);
+      expect(controller.state[CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS].showPopover).toBe(false);
+    });
+  });
+
   describe('Multiaudio', function() {
     var spy;
     beforeEach(function() {
