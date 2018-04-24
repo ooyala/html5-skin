@@ -227,7 +227,7 @@ var ControlBar = React.createClass({
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS);
 
     if (this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.xs.id) {
-      this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
+      this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
     } else {
       this.togglePopover(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS);
       this.closeOtherPopovers(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS);

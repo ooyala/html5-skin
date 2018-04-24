@@ -19,7 +19,7 @@ var ClosedCaptionPopover = React.createClass({
       this.props.controller.state.closedCaptionOptions.autoFocus = this.moreOptionsBtn.wasTriggeredWithKeyboard();
       this.moreOptionsBtn.wasTriggeredWithKeyboard(false);
     }
-    this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
+    this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
     this.handleClose();
   },
 

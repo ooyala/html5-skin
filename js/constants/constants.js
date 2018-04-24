@@ -24,7 +24,7 @@ module.exports = {
     MORE_OPTIONS_SCREEN: 'moreOptionsScreen',
     LOADING_SCREEN: 'loadingScreen',
     START_LOADING_SCREEN: 'startLoadingScreen',
-    CLOSEDCAPTION_SCREEN: 'closedCaptionScreen',
+    CLOSED_CAPTION_SCREEN: 'closedCaptionScreen',
     VIDEO_QUALITY_SCREEN: 'videoQualityScreen',
     ERROR_SCREEN: 'errorScreen',
     MULTI_AUDIO_SCREEN: 'multiAudioScreen'

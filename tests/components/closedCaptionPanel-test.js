@@ -70,7 +70,7 @@ describe('ClosedCaptionPanel', function() {
 
     var DOM = TestUtils.renderIntoDocument(
       <ContentScreen
-        screen={CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN}
+        screen={CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN}
         screenClassName="oo-content-screen oo-content-screen-closed-captions"
         titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
         element={<OnOffSwitch controller={mockController} skinConfig={mockSkinConfig} closedCaptionOptions={closedCaptionOptions}/>}
@@ -100,7 +100,7 @@ describe('ClosedCaptionPanel', function() {
 
     var DOM = TestUtils.renderIntoDocument(
       <ContentScreen
-        screen={CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN}
+        screen={CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN}
         screenClassName="oo-content-screen oo-content-screen-closed-captions"
         titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
         element={<OnOffSwitch controller={mockController} skinConfig={mockSkinConfig} closedCaptionOptions={closedCaptionOptions}/>}
@@ -125,7 +125,7 @@ describe('ClosedCaptionPanel', function() {
 
     var DOM = TestUtils.renderIntoDocument(
       <ContentScreen
-        screen={CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN}
+        screen={CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN}
         screenClassName="oo-content-screen oo-content-screen-closed-captions"
         titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
         element={<OnOffSwitch controller={mockController} skinConfig={mockSkinConfig} closedCaptionOptions={closedCaptionOptions}/>}
