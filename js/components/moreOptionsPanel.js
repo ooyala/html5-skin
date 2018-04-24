@@ -28,7 +28,7 @@ var MoreOptionsPanel = React.createClass({
   },
 
   handleClosedCaptionClick: function() {
-    this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
+    this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
   },
 
   handleMultiAudioClick: function() {

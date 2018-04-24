@@ -639,7 +639,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         } else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
           this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         } else if (this.state.playerState === CONSTANTS.STATE.PAUSE &&
-          this.state.screenToShow !== CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN) {
+          this.state.screenToShow !== CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN) {
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
       }

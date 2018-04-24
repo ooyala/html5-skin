@@ -146,14 +146,14 @@ describe('Controller', function() {
       expect(controller.state.playerState).toBe(CONSTANTS.STATE.PLAYING);
       controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
       controller.pausedCallback = function() {
-        controller.state.screenToShow = CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN;
+        controller.state.screenToShow = CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN;
       };
       controller.onPaused('event', OO.VIDEO.MAIN);
-      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
       controller.onPlayheadTimeChanged('event', 5, 60, 30, null, OO.VIDEO.MAIN);
-      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
       controller.onClosedCaptionChange('language', 'en');
-      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
     });
 
   });
