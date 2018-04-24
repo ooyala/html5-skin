@@ -1,16 +1,13 @@
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/multiAudioTab');
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/tab');
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/helpers');
-jest.dontMock('../../../js/constants/constants');
+jest.dontMock('../../../js/constants/languages');
 jest.dontMock('underscore');
-jest.dontMock('iso-639-3');
 
 var _ = require('underscore');
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-var iso639 = require('iso-639-3');
 
-var CONSTANTS = require('../../../js/constants/constants');
 var helpers = require('../../../js/components/closed-caption-multi-audio-menu/helpers');
 
 var MultiAudioTab = require('../../../js/components/closed-caption-multi-audio-menu/multiAudioTab');
@@ -82,7 +79,7 @@ describe('MultiAudioTab component', function() {
         return item.textContent;
       });
 
-      expect(itemsTextContent).toEqual([ 'English', 'German', 'Spanish', 'French' ]);
+      expect(itemsTextContent).toEqual([ 'English', 'Deutsch', 'Español', 'Français' ]);
     });
   });
 
@@ -106,7 +103,7 @@ describe('MultiAudioTab component', function() {
             return item.textContent;
           });
   
-          expect(itemsTextContent).toEqual([ 'English we', 'English wes', 'Spanish we', 'Spanish wes' ]);
+          expect(itemsTextContent).toEqual([ 'English we', 'English wes', 'Español we', 'Español wes' ]);
         });
       });
 
@@ -127,7 +124,7 @@ describe('MultiAudioTab component', function() {
             return item.textContent;
           });
   
-          expect(itemsTextContent).toEqual([ 'English we', 'English we 1', 'Spanish we', 'Spanish we 1' ]);
+          expect(itemsTextContent).toEqual([ 'English we', 'English we 1', 'Español we', 'Español we 1' ]);
         });
       });
       
@@ -148,7 +145,7 @@ describe('MultiAudioTab component', function() {
             return item.textContent;
           });
   
-          expect(itemsTextContent).toEqual([ 'English', 'English 1', 'Spanish', 'Spanish 1' ]);
+          expect(itemsTextContent).toEqual([ 'English', 'English 1', 'Español', 'Español 1' ]);
         });
       });
     }
@@ -174,7 +171,7 @@ describe('MultiAudioTab component', function() {
             return item.textContent;
           });
   
-          expect(itemsTextContent).toEqual([ 'English', 'German', 'NAME', 'NAME NAME' ]);
+          expect(itemsTextContent).toEqual([ 'English', 'Deutsch', 'NAME', 'NAME NAME' ]);
         });
       });
 
@@ -195,7 +192,7 @@ describe('MultiAudioTab component', function() {
             return item.textContent;
           });
   
-          expect(itemsTextContent).toEqual([ 'English', 'German', 'NAME', 'NAME 1' ]);
+          expect(itemsTextContent).toEqual([ 'English', 'Deutsch', 'NAME', 'NAME 1' ]);
         });
       });
       

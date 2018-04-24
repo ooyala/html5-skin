@@ -1,6 +1,7 @@
 var CONSTANTS = require('../../constants/constants');
 var _ = require('underscore');
 
+
 /**
  * Gets display label by checking
  * roles - e.g. nullable field from DASH manifest
@@ -25,46 +26,31 @@ function getDisplayLabel(audioTrack) {
 }
 
 /**
- * Gets user friendly language name in English by
- * matching language code against one of the ISO-639 standarts
+ * Gets user friendly language name in local language
  * @function getDisplayLanguage
- * @param {String} languageList - ISO-639 dictionary
+ * @param {Array.<{Object}>} languagesList - list of languages with regional names and codes
  * @param {String} languageCode - ISO-639 language code
- * @returns {String} displayLanguage - language name in ISO-639 format in english
+ * @returns {String} displayLanguage - localized language
  */
-function getDisplayLanguage(languageList, languageCode) {
+function getDisplayLanguage(languagesList, languageCode) {
   var displayLanguage = '';
-  /*
-  * check if language is defined and it's name can be obtained by matching
-  * against iso-639 standart
-  */
-  if (
-    languageList &&
-    languageList.length &&
-    languageCode &&
-    languageCode !== CONSTANTS.LANGUAGE.NOT_MATCHED
-  ) {
-    var livingLanguages = _.filter(languageList, function(language) {
-      // Only search in still spoken languages
-      return language.type === 'living';
-    });
-
-    var matchingLanguage = _.find(livingLanguages, function(language) {
-      // Find if one of the standarts contains language code
+  if (typeof languageCode !== 'undefined' &&
+    languagesList &&
+    _.isArray(languagesList) &&
+    languagesList.length) {
+    var matchingLanguage =  _.find(languagesList, function(language) {
       return (
-        language.iso6393 === languageCode ||
-        language.iso6392B === languageCode ||
-        language.iso6392T === languageCode ||
-        language.iso6391 === languageCode
+        language['1'] === languageCode ||
+        language['2'] === languageCode ||
+        language['2T'] === languageCode ||
+        language['2B'] === languageCode ||
+        language['3'] === languageCode
       );
     });
-    /* 
-    * if matching language is found - return its name, otherwise 
-    * just return empty string
-    */
-    displayLanguage = matchingLanguage ? matchingLanguage.name : '';
+    if (matchingLanguage) {
+      displayLanguage = matchingLanguage.local;
+    }
   }
-
   return displayLanguage;
 }
 
