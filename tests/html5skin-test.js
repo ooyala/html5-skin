@@ -16,7 +16,7 @@ var CONSTANTS = require('../js/constants/constants');
 var Html5Skin;
 
 var elementId = 'adrfgyi';
-var videoId = 'ag5dfdtooon2cncj714i';
+var videoId = 'ag5dfdto oon2cncj714i';
 var videoElement = document.createElement('video');
 videoElement.className = 'video';
 videoElement.id = videoId;
@@ -707,6 +707,29 @@ describe('Controller', function() {
 
     afterEach(function() {
       spy.restore();
+    });
+
+    it('Should save playerState when multiAudio screen is active', function() {
+      controller.onPlaying('event', OO.VIDEO.MAIN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PLAYING_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PLAYING);
+      controller.toggleMultiAudioScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PLAYING);
+      controller.toggleMultiAudioScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PLAYING_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PLAYING);
+
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.onPaused('event', OO.VIDEO.MAIN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PAUSE_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PAUSE);
+      controller.toggleMultiAudioScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PAUSE);
+      controller.toggleMultiAudioScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PAUSE_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PAUSE);
     });
 
     it('should set correct multiAudio state', function() {
