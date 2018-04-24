@@ -275,6 +275,7 @@ module.exports = {
     DEVICE_ID_TOO_LONG: 'device_id_too_long',
     DEVICE_INVALID_AUTH_TOKEN: 'device_invalid_auth_token',
     DEVICE_LIMIT_REACHED: 'device_limit_reached',
+    NON_REGISTERED_DEVICE: 'non_registered_device',
     DRM_GENERAL_FAILURE: 'drm_general_failure',
     DRM_SERVER_ERROR: 'drm_server_error',
     INVALID_ENTITLEMENTS: 'invalid_entitlements',
@@ -386,9 +387,18 @@ module.exports = {
       description: 'Invalid Ooyala Player token'
     },
     'device_limit_reached':{
-      name: 'OO.ERROR.API.SAS.ERROR.DEVICE_LIMIT_REACHED',
-      title: 'DEVICE LIMIT REACHED',
-      description: 'Device limit has been reached'
+      name: 'OO.ERROR.API.SAS.ERROR.ERROR_DEVICE_LIMIT_REACHED',
+      title: 'AUTHORIZATION ERROR',
+      description: 'Unable to access this content, as the maximum number of devices' + 
+      ' has already been authorized. Error Code 29',
+      action: 'Please remove one of your authorized devices to enable this device.'
+    },
+    'non_registered_device':{
+      name: 'OO.ERROR.API.SAS.ERROR.ERROR_NON_REGISTERED_DEVICE',
+      title: 'AUTHORIZATION ERROR',
+      description: 'Unable to register this device to this account, as the maximum' + 
+      ' number of authorized devices has already been reached. Error Code 22',
+      action: 'Please remove one of your authorized devices to enable this device.'
     },
     'drm_general_failure':{
       name: 'OO.ERROR.API.SAS.ERROR_DRM_GENERAL_FAILURE',
