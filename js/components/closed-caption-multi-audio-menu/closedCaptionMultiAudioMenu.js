@@ -57,7 +57,6 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
       var selectedAudioTrack = _.find(tracks, function(track) {
         return track.id === id;
       });
-
       this.props.controller.setCurrentAudio(selectedAudioTrack);
     }
     if (this.props.togglePopoverAction && typeof this.props.togglePopoverAction === 'function') {
