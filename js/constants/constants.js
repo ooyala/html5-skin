@@ -61,7 +61,8 @@ module.exports = {
     OPTIONAL_MESSAGE: 'Optional Message',
     SEND: 'Send',
     ERROR_ACTION: 'RELOAD YOUR SCREEN OR TRY SELECTING A DIFFERENT VIDEO',
-    UNKNOWN_ERROR: 'Something happened while we were trying to play your video! Click replay or simply reload your page.',
+    UNKNOWN_ERROR: 'Something happened while we were trying to play your video! ' +
+    'Click replay or simply reload your page.',
     LANGUAGE_TAB_TITLE: 'Language',
     COLOR_SELECTION_TAB_TITLE: 'Color Selection',
     CAPTION_OPACITY_TAB_TITLE: 'Caption Opacity',
@@ -109,7 +110,8 @@ module.exports = {
     SELECT_TO_UNMUTE: 'SELECT TO UNMUTE',
     AUDIO: 'Audio',
     SUBTITLES: 'Subtitles',
-    UNDEFINED_LANGUAGE: 'Undefined language'
+    UNDEFINED_LANGUAGE: 'Undefined language',
+    NO_LINGUISTIC_CONTENT: 'No linguistic content'
   },
 
   ARIA_LABELS: {
@@ -481,7 +483,8 @@ module.exports = {
     },
     'unable_to_create_video_element':{
       name: 'OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT',
-      description: 'Something happened while we were trying to play your video! Click replay or simply reload your page.'
+      description: 'Something happened while we were trying to play your video! ' +
+      'Click replay or simply reload your page.'
     }
   },
   THUMBNAIL: {
