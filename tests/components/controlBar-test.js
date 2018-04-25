@@ -1075,7 +1075,7 @@ describe('ControlBar', function() {
         showMultiAudioIcon: true
       },
       toggleButtons: {},
-      toggleScreen: function() {multiAudioClicked = true;},
+      toggleMultiAudioScreen: function() {multiAudioClicked = true;},
       togglePopover: function() {popoverStateChanged = true;},
     };
 
@@ -1125,7 +1125,6 @@ describe('ControlBar', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         isLiveStream={baseMockProps.isLiveStream} />
     );
-    var controlBar2 = TestUtils.findRenderedComponentWithType(DOM2, ControlBar);
     var multiAudioBtn2 = TestUtils.findRenderedDOMComponentWithClass(DOM2, 'oo-multiaudio').firstChild;
     TestUtils.Simulate.click(multiAudioBtn2);
     expect(popoverStateChanged).toBe(true);

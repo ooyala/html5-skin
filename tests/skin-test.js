@@ -90,7 +90,7 @@ describe('Skin screenToShow state', function() {
 
   it('tests CLOSED CAPTION SCREEN', function() {
     this.skin.switchComponent({
-      screenToShow: CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN,
+      screenToShow: CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN,
       responsiveId: 'md',
       closedCaptionOptions: {
         autoFocus: false

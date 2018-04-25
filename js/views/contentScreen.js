@@ -34,6 +34,9 @@ var ContentScreen = React.createClass({
       case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
         this.props.controller.toggleDiscoveryScreen();
         break;
+      case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
+        this.props.controller.toggleMultiAudioScreen();
+        break;
       default:
         this.props.controller.toggleScreen(this.props.screen);
     }
@@ -41,7 +44,7 @@ var ContentScreen = React.createClass({
 
   render: function() {
     // overlay only for the closed captions screen. Needs to be different than the other screens because of closed caption preview.
-    var closedCaptionOverlay = this.props.screen == CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN ? (
+    var closedCaptionOverlay = this.props.screen == CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN ? (
       <div className="oo-closed-caption-overlay"></div>
     ) :
     null;
