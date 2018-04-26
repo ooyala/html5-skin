@@ -9,6 +9,7 @@ var React = require('react');
 var TestUtils = require('react-addons-test-utils');
 var Skin = require('../js/skin');
 var CONSTANTS = require('../js/constants/constants');
+var sinon = require('sinon');
 
 describe('Skin', function() {
   it('tests methods', function() {
@@ -119,10 +120,67 @@ describe('Skin screenToShow state', function() {
     this.skin.switchComponent({
       responsiveId: 'md'
     });
+
   });
 
   it('tests w/o args', function() {
     this.skin.switchComponent();
+  });
+
+  describe('Vr methods tests', function() {
+    it('getDirectionParams should returns correct values', function() {
+      this.skin.state.xVrMouseStart = 0;
+      this.skin.state.yVrMouseStart = 0;
+      this.skin.state.componentWidth = 300;
+      this.skin.state.componentHeight = 180;
+      var res = this.skin.getDirectionParams(20, 90);
+      /*
+      * An explanation:
+      *
+      * pageX = 20;
+      * pageY = 90;
+      * dx = 20 - 0 = 20;
+      * dy = 90 - 0 = 90;
+      * maxDegreesX = 90;
+      * maxDegreesY = 120;
+      * degreesForPixelYaw = 90 / 300 = 0.3;
+      * degreesForPixelPitch = 120 / 180 = 0.666666667;
+      * yaw = 0 + 20 * 0.3 = 6;
+      * pitch = 0 + 90 * 0.666666667 = 60;
+      */
+      expect(res).toEqual([ 6, 0, 60 ]);
+      var res2 = this.skin.getDirectionParams('', undefined);
+      expect(res2).toEqual([ 0, 0, 0 ]);
+    });
+    it('handleVrPlayerMouseMove should returns correct values', function() {
+      var mockController = {
+        onTouchMove: function() {}
+      };
+
+      var event = {
+        preventDefault: function() {},
+        pageX: 20,
+        pageY: 90
+      };
+
+      OO = {};
+
+      var skinComponent = TestUtils.renderIntoDocument(<Skin controller={mockController} />);
+
+      skinComponent.state.componentWidth = 300;
+      skinComponent.state.componentHeight = 180;
+
+      var preventDefaultSpy = sinon.spy(event, 'preventDefault');
+      var onTouchMoveSpy = sinon.spy(skinComponent.props.controller, 'onTouchMove');
+
+      skinComponent.state.isVrMouseDown = true;
+      skinComponent.props.controller.videoVr = true;
+      skinComponent.handleVrPlayerMouseMove(event);
+
+      expect(preventDefaultSpy.called).toBe(true);
+      var params = [6, 0, 60]; //this value was tested in prev test
+      expect(onTouchMoveSpy.args[0][0]).toEqual(params);
+    });
   });
 });
 
