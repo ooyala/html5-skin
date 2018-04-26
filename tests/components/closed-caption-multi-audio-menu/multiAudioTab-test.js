@@ -148,6 +148,26 @@ describe('MultiAudioTab component', function() {
           expect(itemsTextContent).toEqual([ 'English', 'English 1', 'Español', 'Español 1' ]);
         });
       });
+
+      describe('and there\'s zxx as a lang', function() {
+        it('should render correct language list', function() {
+          props.audioTracksList = [
+            { id: '1', lang: 'en', label: '' },
+            { id: '2', lang: 'spa', label: '' },
+            { id: '3', lang: 'zxx', label: '' },
+          ];
+
+          var multiAudioTab = TestUtils.renderIntoDocument(<MultiAudioTab {...props} />);
+
+          var items = TestUtils.scryRenderedDOMComponentsWithClass(multiAudioTab, 'oo-cc-ma-menu__element');
+
+          var itemsTextContent = [].map.call(items, function(item) {
+            return item.textContent;
+          });
+
+          expect(itemsTextContent).toEqual([ 'English', 'Español', 'No linguistic content' ]);
+        });
+      });
     }
   );
 
