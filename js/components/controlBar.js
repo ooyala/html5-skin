@@ -21,7 +21,6 @@ var ControlBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.domNode = null;
-    this.toggleButtons = {};
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
     this.vr = null;
@@ -106,11 +105,6 @@ var ControlBar = React.createClass({
       if (this.vr && this.isMobile && this.props.controller.isVrStereo) {
         this.toggleStereoVr();
       }
-    }
-    if (this.props.controller &&
-      this.props.controller.state &&
-      !this.props.controller.state.fullscreen) {
-      this.closeOtherPopovers();
     }
   },
 
@@ -250,7 +244,7 @@ var ControlBar = React.createClass({
 
   configureMenuAutofocus: function(menu) {
     var menuOptions = this.props.controller.state[menu] || {};
-    var menuToggleButton = this.toggleButtons[menu];
+    var menuToggleButton = this.getToggleButtons(menu);
 
     if (menuOptions.showPopover) {
       // Reset autoFocus property when closing the menu
@@ -262,44 +256,58 @@ var ControlBar = React.createClass({
     }
   },
 
-  closePopover: function(menu, params) {
-    params = params || {};
-    var menuOptions = this.props.controller.state[menu];
-    var menuToggleButton = this.toggleButtons[menu];
+  /**
+   * @description It gets value of toggleButtons from controller.js by popoverName
+   * @param {string} popoverName - the name of the popover
+   * @private
+   * @returns {Object} - if toggleButtons (object) has key = popoverName it returns the value,
+   * otherwise it returns empty object
+   */
+  getToggleButtons: function(popoverName) {
+    if (this.props.controller && this.props.controller.toggleButtons) {
+      return this.props.controller.toggleButtons[popoverName];
+    }
+    return {};
+  },
 
-    if (menuOptions && menuOptions.showPopover) {
-      // Re-focus on toggle button when closing the menu popover if the latter
-      // was originally opened with a key press.
-      if (
-        params.restoreToggleButtonFocus &&
-        menuToggleButton &&
-        menuToggleButton.wasTriggeredWithKeyboard()
-      ) {
-        menuToggleButton.focus();
-      }
-      this.togglePopover(menu);
+  /**
+   * @description It sets this.props.controller.toggleButtons value (menu) for key = popoverName
+   * @param {string} popoverName - the name of the popover
+   * @param {HTMLElement} menu - an accessible button
+   * @private
+   */
+  setToggleButtons: function(popoverName, menu) {
+    if (this.props.controller && this.props.controller.toggleButtons) {
+      this.props.controller.toggleButtons[popoverName] = menu;
     }
   },
 
   /**
-   * @description the function closes popovers (closedCaptionPopover, videoQualityPopover, multiAudioPopover);
-   * if the parameter specifies the name of the popover, then its state does not change
+   * @description It calls function closePopover from controller.js
+   * @param {string} menu - the name of the popover to be closed
+   * @param {Object} [params] - params for closePopover function
+   * @private
+   */
+  closePopover: function(menu, params) {
+    if (this.props.controller && typeof this.props.controller.closePopover === 'function') {
+      this.props.controller.closePopover(menu, params);
+    }
+  },
+
+  /**
+   * @description It calls function closeOtherPopovers from controller.js
    * @param {string} popoverName - the name of the popover that does not need to be closed
    * @private
    */
   closeOtherPopovers: function(popoverName) {
-    var popoversNameList = [CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO];
-    for (var index = 0; index < popoversNameList.length; index++) {
-      var closedPopoverName = popoversNameList[index];
-      if (popoversNameList[index] !== popoverName) {
-        this.closePopover(closedPopoverName);
-      }
+    if (this.props.controller && typeof this.props.controller.closeOtherPopovers === 'function') {
+      this.props.controller.closeOtherPopovers(popoverName);
     }
   },
 
   togglePopover: function(menu) {
     var menuOptions = this.props.controller.state[menu];
-    var menuToggleButton = this.toggleButtons[menu];
+    var menuToggleButton = this.getToggleButtons(menu);
     // Reset button flag that tracks keyboard interaction
     if (
       menuToggleButton &&
@@ -599,7 +607,7 @@ var ControlBar = React.createClass({
       'quality': (function(alignment) {
         return <div className="oo-popover-button-container" key="quality">
           <AccessibleButton
-            ref={function(e) { this.toggleButtons[CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY] = e; }.bind(this)}
+            ref={function(e) {this.setToggleButtons(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY, e)}.bind(this)}
             style={selectedStyle}
             className={qualityClass}
             focusId={CONSTANTS.FOCUS_IDS.VIDEO_QUALITY}
@@ -616,7 +624,8 @@ var ControlBar = React.createClass({
             <Popover
               autoFocus={this.props.controller.state.videoQualityOptions.autoFocus}
               closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
-              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}>
+              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
+            >
               <VideoQualityPanel
                 {...this.props}
                 closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
@@ -639,7 +648,7 @@ var ControlBar = React.createClass({
         return (
           <div className="oo-popover-button-container" key="closedCaption">
             <AccessibleButton
-              ref={function(e) { this.toggleButtons[CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS] = e; }.bind(this)}
+              ref={function(e) { this.setToggleButtons(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS, e)}.bind(this)}
               style={selectedStyle}
               className={captionClass}
               focusId={CONSTANTS.FOCUS_IDS.CLOSED_CAPTIONS}
@@ -656,7 +665,8 @@ var ControlBar = React.createClass({
                 popoverClassName="oo-popover oo-popover-pull-right"
                 autoFocus={this.props.controller.state.closedCaptionOptions.autoFocus}
                 closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
-                closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}>
+                closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
+              >
                 <ClosedCaptionPopover
                   {...this.props}
                   togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
@@ -688,7 +698,7 @@ var ControlBar = React.createClass({
         return (
           <div className="oo-popover-button-container" key="multiAudio">
             <AccessibleButton
-              ref={function(e) { this.toggleButtons[CONSTANTS.MENU_OPTIONS.MULTI_AUDIO] = e; }.bind(this)}
+              ref={function(e) { this.setToggleButtons(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO, e)}.bind(this)}
               style={selectedStyle}
               className={multiAudioClass}
               focusId={CONSTANTS.FOCUS_IDS.MULTI_AUDIO}
@@ -716,7 +726,8 @@ var ControlBar = React.createClass({
               popoverClassName="oo-popover oo-popover-pull-right oo-cc-ma-container"
               autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}
               closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
-              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}>
+              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
+            >
               <ClosedCaptionMultiAudioMenu
                 menuClassName={"oo-cc-ma-menu--popover"}
                 togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
@@ -946,6 +957,35 @@ ControlBar.defaultProps = {
     }
   },
   responsiveView: 'md'
+};
+
+ControlBar.propTypes = {
+  isLiveStream: React.PropTypes.bool,
+  controlBarVisible: React.PropTypes.bool,
+  playerState: React.PropTypes.string,
+  responsiveView: React.PropTypes.string,
+  language: React.PropTypes.string,
+  localizableStrings: React.PropTypes.string,
+  duration: React.PropTypes.number,
+  currentPlayhead: React.PropTypes.number,
+  componentWidth: React.PropTypes.number,
+  skinConfig: React.PropTypes.shape({
+    responsive: React.PropTypes.shape({
+      breakpoints: React.PropTypes.object
+    })
+  }),
+  controller: React.PropTypes.shape({
+    state: React.PropTypes.object,
+    videoVrSource: React.PropTypes.shape({
+      vr: React.PropTypes.object
+    }),
+    cancelTimer: React.PropTypes.func,
+    startHideControlBarTimer: React.PropTypes.func,
+    hideVolumeSliderBar: React.PropTypes.func,
+    closePopover: React.PropTypes.func,
+    closeOtherPopovers: React.PropTypes.func,
+    isVrStereo: React.PropTypes.bool
+  })
 };
 
 module.exports = ControlBar;
