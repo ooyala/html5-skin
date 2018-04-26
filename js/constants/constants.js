@@ -260,7 +260,8 @@ module.exports = {
     SPANISH: 'es',
     CHINESE: 'zh',
     JAPANESE: 'ja',
-    NOT_MATCHED: 'und'
+    NOT_MATCHED: 'und',
+    NO_LINGUISTIC_CONTENT: 'zxx'
   },
 
   ERROR_CODE: {

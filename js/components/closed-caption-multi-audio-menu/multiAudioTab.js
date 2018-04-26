@@ -11,8 +11,7 @@ var MultiAudioTab = React.createClass({
     var readableTracksList = this.props.audioTracksList.map(
       function(audioTrack) {
         var displayLanguage = '';
-        var NO_LINGUISTIC_CONTENT = 'zxx';
-        if (audioTrack.lang === NO_LINGUISTIC_CONTENT) {
+        if (audioTrack.lang === CONSTANTS.LANGUAGE.NO_LINGUISTIC_CONTENT) {
           displayLanguage = CONSTANTS.SKIN_TEXT.NO_LINGUISTIC_CONTENT;
         } else {
           displayLanguage = helpers.getDisplayLanguage(LANGUAGE_LIST, audioTrack.lang);
