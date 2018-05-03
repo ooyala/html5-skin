@@ -15,6 +15,7 @@
 
 .oo-player-skin-plugins.oo-overlay-showing:not(:empty) {
   display: block;
+  z-index:12005;
 }
 
 .oo-player-skin-plugins.oo-overlay-blur:not(:empty) {
