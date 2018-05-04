@@ -2115,8 +2115,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         return;
       }
       // Load the CC info for the video with the given id onto the state
-      this.state.closedCaptionOptions.availableLanguages = closedCaptionsInfo;
       if (this.state.closedCaptionOptions.enabled) {
+        this.state.closedCaptionOptions.availableLanguages = closedCaptionsInfo;
         this.setClosedCaptionsLanguage();
       }
     },
