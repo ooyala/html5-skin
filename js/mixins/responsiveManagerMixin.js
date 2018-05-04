@@ -13,14 +13,15 @@ var ResponsiveManagerMixin = {
   },
 
   componentDidMount: function() {
-    window.addEventListener('resize', debounce(this.onResize, 150));
-    window.addEventListener('webkitfullscreenchange', debounce(this.onResize, 150));
+    this.debouncedResize = debounce(this.onResize, 150);
+    window.addEventListener('resize', this.debouncedResize);
+    window.addEventListener('webkitfullscreenchange', this.debouncedResize);
     this.generateResponsiveData();
   },
 
   componentWillUnmount: function() {
-    window.removeEventListener('resize', this.onResize);
-    window.removeEventListener('webkitfullscreenchange', this.onResize);
+    window.removeEventListener('resize', this.debouncedResize);
+    window.removeEventListener('webkitfullscreenchange', this.debouncedResize);
   },
 
   onResize: function() {
