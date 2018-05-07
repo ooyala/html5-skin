@@ -191,7 +191,6 @@ describe('Utils', function() {
 
   });
 
-<<<<<<< HEAD
   describe('getDiscoveryContext', function() {
     it('should return ooyalaDiscoveryContext if present', function() {
       var discoveryAsset = {"id" : "abcd", "ooyalaDiscoveryContext" : { "data": "something", "version" : "1"} };
@@ -231,8 +230,6 @@ describe('Utils', function() {
     });
   });
 
-  it('tests isSafari', function () {
-=======
   describe('sortQualitiesByBitrate', function() {
 
     it('should gracefully handle invalid input', function() {
@@ -283,11 +280,9 @@ describe('Utils', function() {
       ];
       expect(Utils.sortQualitiesByBitrate(sourceBitrates)).toEqual(sortedBitrates);
     });
-
   });
 
   it('tests isSafari', function() {
->>>>>>> master
     window.navigator.userAgent = 'AppleWebKit';
     var isSafari = Utils.isSafari();
     expect(isSafari).toBeTruthy();
