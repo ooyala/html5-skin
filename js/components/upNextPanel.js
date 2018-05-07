@@ -1,4 +1,4 @@
-/********************************************************************
+/** ******************************************************************
   UP NEXT PANEL
 *********************************************************************/
 /**
@@ -36,7 +36,7 @@ var UpNextPanel = React.createClass({
     var upNextString = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.UP_NEXT, this.props.localizableStrings);
     var thumbnailStyle = {};
     if (Utils.isValidString(this.props.upNextInfo.upNextData.preview_image_url)) {
-      thumbnailStyle.backgroundImage = "url('" + this.props.upNextInfo.upNextData.preview_image_url + "')";
+      thumbnailStyle.backgroundImage = 'url(\'' + this.props.upNextInfo.upNextData.preview_image_url + '\')';
     }
 
     return (
@@ -94,8 +94,8 @@ UpNextPanel.defaultProps = {
     upNextData: {}
   },
   controller: {
-    upNextDismissButtonClicked: function(){},
-    sendDiscoveryClickEvent: function(a,b){}
+    upNextDismissButtonClicked: function() {},
+    sendDiscoveryClickEvent: function(a,b) {}
   }
 };
 

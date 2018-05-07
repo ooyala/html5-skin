@@ -253,6 +253,31 @@ var Utils = {
     return { "version": "1", "data": bucket_decode };
   },
 
+  /*
+   * Sorts the qualities provided by the BITRATE_INFO_AVAILABLE event in descending
+   * order by bitrate and then by resolution.
+   * @function sortQualitiesByBitrate
+   * @param {Array} qualities The array of qualities in the format provided by the BITRATE_INFO_AVAILABLE event.
+   * @return {Array} A new array with the qualities sorted in descending order by bitrate and then resolution.
+   */
+  sortQualitiesByBitrate: function(qualities) {
+    // Avoid modifying the array that was passed
+    qualities = Array.isArray(qualities) ? qualities.slice() : [];
+    // Sort bitrates by resolution and then by bitrate in descending order
+    qualities.sort(function(a, b) {
+      a = a || {};
+      b = b || {};
+      var bitrateA = this.ensureNumber(a.bitrate, 0);
+      var bitrateB = this.ensureNumber(b.bitrate, 0);
+      var resolutionA = this.ensureNumber(a.width, 1) * this.ensureNumber(a.height, 1);
+      var resolutionB = this.ensureNumber(b.width, 1) * this.ensureNumber(b.height, 1);
+      // When both bitrates are equal the difference will be falsy (zero) and
+      // the second condition (resolution) will be used instead
+      return bitrateB - bitrateA || resolutionB - resolutionA;
+    }.bind(this));
+    return qualities;
+  },
+
   /**
   * Trims the given text to fit inside of the given element, truncating with ellipsis.
   *
@@ -262,21 +287,21 @@ var Utils = {
   * @returns {String} String truncated to fit the width of the element
   */
   truncateTextToWidth: function(element, text) {
-    var testText = document.createElement("span");
-    testText.style.visibility = "hidden";
-    testText.style.position = "absolute";
-    testText.style.top = "0";
-    testText.style.left = "0";
-    testText.style.whiteSpace = "nowrap";
+    var testText = document.createElement('span');
+    testText.style.visibility = 'hidden';
+    testText.style.position = 'absolute';
+    testText.style.top = '0';
+    testText.style.left = '0';
+    testText.style.whiteSpace = 'nowrap';
     testText.innerHTML = text;
     element.appendChild(testText);
     var actualWidth = element.clientWidth;
     var textWidth = testText.scrollWidth;
-    var truncatedText = "";
-    if (textWidth > (actualWidth * 1.8)){
+    var truncatedText = '';
+    if (textWidth > (actualWidth * 1.8)) {
       var truncPercent = actualWidth / textWidth;
       var newWidth = (Math.floor(truncPercent * text.length) * 1.8) - 3;
-      truncatedText = text.slice(0,newWidth) + "...";
+      truncatedText = text.slice(0,newWidth) + '...';
     }
     else {
       truncatedText = text;
@@ -348,11 +373,11 @@ var Utils = {
       seconds = '0' + seconds;
     }
 
-    var timeStr = (parseInt(hours,10) > 0) ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
+    var timeStr = (parseInt(hours,10) > 0) ? (hours + ':' + minutes + ':' + seconds) : (minutes + ':' + seconds);
     if (time >= 0) {
       return timeStr;
     } else {
-      return "-" + timeStr;
+      return '-' + timeStr;
     }
   },
 
@@ -362,7 +387,7 @@ var Utils = {
   * @function isSafari
   * @returns {Boolean} Whether the browser is Safari or not
   */
-  isSafari: function () {
+  isSafari: function() {
     return (!!window.navigator.userAgent.match(/AppleWebKit/) &&
             !window.navigator.userAgent.match(/Chrome/));
   },
@@ -373,7 +398,7 @@ var Utils = {
    * @function isChrome
    * @returns {Boolean} Whether the browser is Chrome or not
    */
-  isChrome: function () {
+  isChrome: function() {
     return (!!window.navigator.userAgent.match(/Chrome/) && !!window.navigator.vendor.match(/Google Inc/));
   },
 
@@ -383,7 +408,7 @@ var Utils = {
   * @function isEdge
   * @returns {Boolean} Whether the browser is Edge or not
   */
-  isEdge: function () {
+  isEdge: function() {
     return (!!window.navigator.userAgent.match(/Edge/));
   },
 
@@ -465,8 +490,8 @@ var Utils = {
     language = localization.defaultLanguage;
 
     // if no default lang in skin config check browser lang settings
-    if(!language) {
-      if(window.navigator.languages){
+    if (!language) {
+      if (window.navigator.languages) {
         // A String, representing the language version of the browser.
         // Examples of valid language codes are: "en", "en-US", "de", "fr", etc.
         language = window.navigator.languages[0];
@@ -482,10 +507,10 @@ var Utils = {
       var primaryLanguage = language.substr(0,2);
 
       // check available lang file for browser lang
-      for(var i = 0; i < localization.availableLanguageFile.length; i++) {
+      for (var i = 0; i < localization.availableLanguageFile.length; i++) {
         availableLanguages = localization.availableLanguageFile[i];
         // if lang file available set lang to browser primary lang
-        if (primaryLanguage == availableLanguages.language){
+        if (primaryLanguage == availableLanguages.language) {
           language = primaryLanguage;
         }
       }
@@ -506,7 +531,7 @@ var Utils = {
     try {
       return localizedStrings[language][stringId];
     } catch (e) {
-      return "";
+      return '';
     }
 
   },
@@ -519,22 +544,22 @@ var Utils = {
   * @returns {String} The countdown time string
   */
   getStartCountdown: function(countdownTimestamp) {
-    var dayString = "day";
-    var hourString = "hour";
-    var minuteString = "minute";
+    var dayString = 'day';
+    var hourString = 'hour';
+    var minuteString = 'minute';
     try {
-      if (countdownTimestamp < 0) return "";
+      if (countdownTimestamp < 0) return '';
       var days = Math.floor(countdownTimestamp / (24 * 60 * 60 * 1000));
-      if (days != 1) dayString += "s";
+      if (days != 1) dayString += 's';
       countdownTimestamp -= days * 24 * 60 * 60 * 1000;
       var hours = Math.floor(countdownTimestamp / (60 * 60 * 1000));
-      if (hours != 1) hourString += "s";
+      if (hours != 1) hourString += 's';
       countdownTimestamp -= hours * 60 * 60 * 1000;
       var minutes = Math.floor(countdownTimestamp / (60 * 1000));
-      if (minutes != 1) minuteString += "s";
-      return "" + days + " " + dayString + ", " + hours + " " + hourString + ", and " + minutes + " " + minuteString;
+      if (minutes != 1) minuteString += 's';
+      return '' + days + ' ' + dayString + ', ' + hours + ' ' + hourString + ', and ' + minutes + ' ' + minuteString;
     } catch (e) {
-      return "";
+      return '';
     }
   },
 
@@ -544,10 +569,10 @@ var Utils = {
    * @function getPropertyValue
    * @param {Object} object - The object we want to extract the property form
    * @param {String} propertyPath - A path that points to a nested property in the object with a form like 'prop.nestedProp1.nestedProp2'
-   * @param {Object} defaltValue - (Optional) A default value to return when the property is undefined
-   * @return {Object} - The value of the nested property, the default value if nested property was undefined
+   * @param {Object} defaultValue - (Optional) A default value to return when the property is undefined
+   * @return {Object|String|Number} - The value of the nested property, the default value if nested property is undefined. If the value is null, null will be returned.
    */
-  getPropertyValue: function(object, propertyPath, defaltValue) {
+  getPropertyValue: function(object, propertyPath, defaultValue) {
     var value = null;
     var currentObject = object;
     var currentProp = null;
@@ -559,9 +584,13 @@ var Utils = {
         currentProp = props[i];
         currentObject = value = currentObject[currentProp];
       }
-      return value || defaltValue;
+
+      if (typeof value === 'undefined') {
+        return defaultValue;
+      }
+      return value;
     } catch (err) {
-      return defaltValue;
+      return defaultValue;
     }
   },
 
@@ -573,7 +602,7 @@ var Utils = {
    * @return {Number}
    */
   convertStringToNumber: function(property) {
-    if (property.toString().indexOf('%') > -1){
+    if (property.toString().indexOf('%') > -1) {
       property = parseInt(property)/100;
     }
     return isFinite(Number(property)) ? Number(property) : 0;
@@ -638,7 +667,7 @@ var Utils = {
     // HEADSUP
     // This is currently the same style as the one used in _mixins.scss.
     // We should change both styles whenever we update this.
-    target.style.textShadow = "0px 0px 3px rgba(255, 255, 255, 0.5), 0px 0px 6px rgba(255, 255, 255, 0.5), 0px 0px 9px rgba(255, 255, 255, 0.5)";
+    target.style.textShadow = '0px 0px 3px rgba(255, 255, 255, 0.5), 0px 0px 6px rgba(255, 255, 255, 0.5), 0px 0px 9px rgba(255, 255, 255, 0.5)';
   },
 
   /**
@@ -651,7 +680,7 @@ var Utils = {
   removeHighlight: function(target, opacity, color) {
     target.style.opacity = opacity;
     target.style.color = color;
-    target.style.textShadow = "";
+    target.style.textShadow = '';
   },
 
   /**
@@ -664,12 +693,12 @@ var Utils = {
   * @returns {Object} An object of the structure {fit:[], overflow:[]} where the fit object is
   *   an array of buttons that fit in the control bar and overflow are the ones that should be hidden
   */
-  collapse: function( barWidth, orderedItems, responsiveUIMultiple ) {
-    if( isNaN( barWidth ) || barWidth === undefined ) { return orderedItems; }
-    if( ! orderedItems ) { return []; }
+  collapse: function(barWidth, orderedItems, responsiveUIMultiple) {
+    if (isNaN(barWidth) || barWidth === undefined) { return orderedItems; }
+    if (! orderedItems) { return []; }
     var self = this;
-    var validItems = orderedItems.filter( function(item) { return self._isValid(item); } );
-    var r = this._collapse( barWidth, validItems, responsiveUIMultiple );
+    var validItems = orderedItems.filter(function(item) { return self._isValid(item); });
+    var r = this._collapse(barWidth, validItems, responsiveUIMultiple);
     return r;
   },
 
@@ -685,7 +714,7 @@ var Utils = {
   */
   findThumbnail: function(thumbnails, hoverTime, duration, isVideoVr) {
     var timeSlices = thumbnails.data.available_time_slices;
-    var width = thumbnails.data.available_widths[0]; //choosing the lowest size
+    var width = thumbnails.data.available_widths[0]; // choosing the lowest size
     if (isVideoVr && width < CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH) {
       // it is necessary to take bigger image for showing part of the image
       // so choose not the lowest size but bigger one, the best width is 380
@@ -785,7 +814,7 @@ var Utils = {
     var targetArray = optionsArgument.arraySwap ? source : target;
     var sourceArray = optionsArgument.arraySwap ? target : source;
     var self = this;
-    var uniqueSourceArray = sourceArray.slice(); //array used to keep track of objects that do not exist in target
+    var uniqueSourceArray = sourceArray.slice(); // array used to keep track of objects that do not exist in target
     var destination = targetArray.slice();
 
     sourceArray.forEach(function(sourceItem, i) {
@@ -836,7 +865,7 @@ var Utils = {
       // loop through uniqueSourceArray array, add unique objects
       // to destination array after flexible space btn
       if (flexibleSpaceIndex) {
-        flexibleSpaceIndex += 1; //after flexible space
+        flexibleSpaceIndex += 1; // after flexible space
         for (var z in uniqueSourceArray) {
           destination.splice(flexibleSpaceIndex, 0, uniqueSourceArray[z]);
         }
@@ -855,7 +884,7 @@ var Utils = {
    * @returns {Boolean} true if string is valid, false if not
    */
   isValidString: function(src) {
-    return (src && (typeof src === 'string' || src instanceof String))
+    return (src && (typeof src === 'string' || src instanceof String));
   },
 
   /**
@@ -867,9 +896,9 @@ var Utils = {
    */
   sanitizeConfigData: function(data) {
     if (data && (!Array.isArray(data))) {
-      return data
+      return data;
     } else {
-      OO.log("Invalid player configuration json data: ", data);
+      OO.log('Invalid player configuration json data: ', data);
       return {};
     }
   },
@@ -883,11 +912,11 @@ var Utils = {
     return result;
   },
 
-  _isValid: function( item ) {
+  _isValid: function(item) {
     var valid = (
       item &&
-      item.location == "moreOptions" ||
-      (item.location == "controlBar" &&
+      item.location == 'moreOptions' ||
+      (item.location == 'controlBar' &&
         item.whenDoesNotFit &&
         item.minWidth !== undefined &&
         item.minWidth >= 0)
@@ -895,58 +924,58 @@ var Utils = {
     return valid;
   },
 
-  _collapse: function( barWidth, orderedItems, responsiveUIMultiple ) {
+  _collapse: function(barWidth, orderedItems, responsiveUIMultiple) {
     var r = { fit : orderedItems.slice(), overflow : [] };
-    var usedWidth = orderedItems.reduce( function(p,c,i,a) { return p + responsiveUIMultiple * c.minWidth; }, 0 );
-    for( var i = orderedItems.length-1; i >= 0; --i ) {
+    var usedWidth = orderedItems.reduce(function(p,c,i,a) { return p + responsiveUIMultiple * c.minWidth; }, 0);
+    for (var i = orderedItems.length-1; i >= 0; --i) {
       var item = orderedItems[ i ];
-      if( this._isOnlyInMoreOptions(item) ) {
+      if (this._isOnlyInMoreOptions(item)) {
         usedWidth = this._collapseLastItemMatching(r, item, usedWidth);
       }
-      if( usedWidth > barWidth && this._isCollapsable(item) ) {
+      if (usedWidth > barWidth && this._isCollapsable(item)) {
         usedWidth = this._collapseLastItemMatching(r, item, usedWidth);
       }
     }
     return r;
   },
 
-  _isOnlyInMoreOptions: function( item ) {
-    var must = item.location == "moreOptions";
+  _isOnlyInMoreOptions: function(item) {
+    var must = item.location == 'moreOptions';
     return must;
   },
 
-  _isCollapsable: function( item ) {
-    var collapsable = item.location == "controlBar" && item.whenDoesNotFit && item.whenDoesNotFit != "keep";
+  _isCollapsable: function(item) {
+    var collapsable = item.location == 'controlBar' && item.whenDoesNotFit && item.whenDoesNotFit != 'keep';
     return collapsable;
   },
 
-  _collapseLastItemMatching: function( results, item, usedWidth ) {
-    var i = results.fit.lastIndexOf( item );
-    if( i > -1 ) {
-      results.fit.splice( i, 1 );
-      results.overflow.unshift( item );
-      if( item.minWidth ) {
+  _collapseLastItemMatching: function(results, item, usedWidth) {
+    var i = results.fit.lastIndexOf(item);
+    if (i > -1) {
+      results.fit.splice(i, 1);
+      results.overflow.unshift(item);
+      if (item.minWidth) {
         usedWidth -= item.minWidth;
       }
     }
     return usedWidth;
   },
 
-  _isMergeableObject: function (val) {
+  _isMergeableObject: function(val) {
     var nonNullObject = val && typeof val === 'object';
 
     return nonNullObject
       && Object.prototype.toString.call(val) !== '[object RegExp]'
-      && Object.prototype.toString.call(val) !== '[object Date]'
+      && Object.prototype.toString.call(val) !== '[object Date]';
   },
 
-  _emptyTarget: function (val) {
+  _emptyTarget: function(val) {
     return Array.isArray(val) ? [] : {};
   },
 
-  _cloneIfNecessary: function (value, optionsArgument) {
+  _cloneIfNecessary: function(value, optionsArgument) {
     var clone = optionsArgument && optionsArgument.clone === true;
-    return (clone && this._isMergeableObject(value)) ? DeepMerge(this._emptyTarget(value), value, optionsArgument) : value
+    return (clone && this._isMergeableObject(value)) ? DeepMerge(this._emptyTarget(value), value, optionsArgument) : value;
   },
 
   /**
@@ -960,7 +989,7 @@ var Utils = {
       e.touches &&
       !!e.touches.length;
 
-    if(isMobileTouhes){
+    if (isMobileTouhes) {
       coords.x = e.touches[0].pageX;
       coords.y = e.touches[0].pageY;
     } else {
@@ -980,13 +1009,13 @@ var Utils = {
    * "landscape-secondary" (landscape upside down)
    */
   getOrientationType: function() {
-     var orientationType = window.screen.orientation;
-     if (orientationType && orientationType !== null && typeof orientationType === 'object') {
-       orientationType = orientationType.type;
-     } else {
-       orientationType = window.screen.mozOrientation || window.screen.msOrientation;
-     }
-     return orientationType;
+    var orientationType = window.screen.orientation;
+    if (orientationType && orientationType !== null && typeof orientationType === 'object') {
+      orientationType = orientationType.type;
+    } else {
+      orientationType = window.screen.mozOrientation || window.screen.msOrientation;
+    }
+    return orientationType;
   },
 
   /**
@@ -995,15 +1024,15 @@ var Utils = {
    */
   setLandscapeScreenOrientation: function() {
     var orientationType = this.getOrientationType();
-    if (orientationType && (orientationType === "portrait-secondary" || orientationType === "portrait-primary")) {
-      var landscapeOrientation = "landscape-primary";
-      if (screen.orientation && screen.orientation.lock) { //chrome browser
+    if (orientationType && (orientationType === 'portrait-secondary' || orientationType === 'portrait-primary')) {
+      var landscapeOrientation = 'landscape-primary';
+      if (screen.orientation && screen.orientation.lock) { // chrome browser
         screen.orientation.lock(landscapeOrientation);
-      } else if (screen.lockOrientation) { //other
+      } else if (screen.lockOrientation) { // other
         screen.lockOrientation(landscapeOrientation);
-      } else if (screen.mozLockOrientation) { //ff
+      } else if (screen.mozLockOrientation) { // ff
         screen.mozLockOrientation(landscapeOrientation);
-      } else if (screen.msLockOrientation) { //ie
+      } else if (screen.msLockOrientation) { // ie
         screen.msLockOrientation(landscapeOrientation);
       } else {
         return false;

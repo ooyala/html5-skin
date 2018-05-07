@@ -11,8 +11,8 @@ var React = require('react'),
 var Watermark = React.createClass({
 
   handleWatermarkClick: function() {
-    if (this.props.playerState == CONSTANTS.STATE.PLAYING){
-        this.props.controller.togglePlayPause();
+    if (this.props.playerState == CONSTANTS.STATE.PLAYING) {
+      this.props.controller.togglePlayPause();
     }
   },
 
@@ -53,7 +53,7 @@ var Watermark = React.createClass({
 
     watermarkPosition = watermarkPosition.toLowerCase();
 
-    //the position from db passed with the metadata uses 'right' instead of 'centerRight', etc.
+    // the position from db passed with the metadata uses 'right' instead of 'centerRight', etc.
     if (watermarkPosition == 'left' || watermarkPosition == 'right') {
       watermarkPosition = 'center' + watermarkPosition;
     }
@@ -73,10 +73,10 @@ var Watermark = React.createClass({
       'oo-watermark-center-vertical': watermarkPosition.indexOf('centerright') > -1 || watermarkPosition.indexOf('centerleft') > -1
     });
 
-  var watermarkImageClass = ClassNames({
-    'oo-blur': this.props.nonClickable,
-    'oo-watermark': true
-  });
+    var watermarkImageClass = ClassNames({
+      'oo-blur': this.props.nonClickable,
+      'oo-watermark': true
+    });
 
     var watermarkImage = <img className={watermarkImageClass} style={watermarkImageStyle} src={watermarkUrl} ref='watermarkImage'/>;
     if (this.props.nonClickable || !clickUrl)
@@ -129,7 +129,7 @@ Watermark.defaultProps = {
     }
   },
   controller: {
-    togglePlayPause: function(){},
+    togglePlayPause: function() {},
   }
 };
 

@@ -8,39 +8,46 @@ var TestUtils = require('react-addons-test-utils');
 var PlayingScreen = require('../../js/views/playingScreen');
 var UnmuteIcon = require('../../js/components/unmuteIcon');
 
-describe('PlayingScreen', function () {
+describe('PlayingScreen', function() {
+  var mockController, closedCaptionOptions;
   var handleVrPlayerMouseUp = function() {};
-  it('creates a PlayingScreen and checks mouseMove, mouseUp without video360', function () {
-    var isMoved = false
-      , isTouched = false;
-    var mockController = {
-      videoVr: false,
+
+  beforeEach(function() {
+    mockController = {
       state: {
         isMobile: false,
         accessibilityControlsEnabled: false,
+        controlBarVisible: true,
         upNextInfo: {
           showing: false
         },
         volumeState: {
-          muted: false
+          muted: false,
+          mutingForAutoplay: false
         },
         config: {
           isVrAnimationEnabled: {
             vrNotification: true,
             vrIcon: true
-          },
+          }
         }
-      },
-      startHideControlBarTimer: function() {
-        isMoved = true;
-      },
-      onTouched: function() {
-        isTouched = true;
       }
     };
+    closedCaptionOptions = {
+      cueText: 'cue text'
+    };
+  });
 
-    var closedCaptionOptions = {
-      cueText: "cue text"
+  it('creates a PlayingScreen and checks mouseMove, mouseUp without video360', function() {
+    var isMoved = false
+      , isTouched = false;
+
+    mockController.state.videoVr = false;
+    mockController.startHideControlBarTimer = function() {
+      isMoved = true;
+    };
+    mockController.onTouched = function() {
+      isTouched = true;
     };
 
     var handleVrPlayerMouseMove = function() {};
@@ -67,35 +74,17 @@ describe('PlayingScreen', function () {
   it('creates a PlayingScreen and checks mouseDown, mouseUp with video360', function() {
     var isVrDirectionChecked = false;
     var isStartHideControlBarTimer = false;
-    var mockController = {
-      videoVr: true,
-      state: {
-        isMobile: false,
-        accessibilityControlsEnabled: false,
-        upNextInfo: {
-          showing: false
-        },
-        viewingDirection: {yaw: 0, roll: 0, pitch: 0},
-        volumeState: {
-          muted: false
-        },
-        config: {
-          isVrAnimationEnabled: {
-            vrNotification: true,
-            vrIcon: true
-          },
-        }
-      },
-      startHideControlBarTimer: function () {
-        isStartHideControlBarTimer = true;
-      },
-      checkVrDirection: function() {
-        isVrDirectionChecked = true;
-      },
+
+    mockController.state.videoVr = true;
+    mockController.state.viewingDirection = {yaw: 0, roll: 0, pitch: 0},
+    mockController.startHideControlBarTimer = function() {
+      isStartHideControlBarTimer = true;
     };
-    var closedCaptionOptions = {
-      cueText: "cue text"
+    mockController.checkVrDirection = function() {
+      isVrDirectionChecked = true;
     };
+    mockController.togglePlayPause = function() {};
+
     var handleVrPlayerMouseDown = function() {
       mockController.checkVrDirection();
     };
@@ -130,36 +119,16 @@ describe('PlayingScreen', function () {
 
   });
 
-  it('creates a PlayingScreen and checks touchEnd', function () {
+  it('creates a PlayingScreen and checks touchEnd', function() {
     var isInHandleTouchEnd = false;
     var clicked = false;
-    var mockController = {
-      videoVr: false,
-      state: {
-        isMobile: true,
-        accessibilityControlsEnabled: false,
-        upNextInfo: {
-          showing: false
-        },
-        volumeState: {
-          muted: false
-        },
-        config: {
-          isVrAnimationEnabled: {
-            vrNotification: true,
-            vrIcon: true
-          }
-        },
-      },
-      togglePlayPause: function() {
-        clicked = true;
-      },
-      startHideControlBarTimer: function() {}
-    };
 
-    var closedCaptionOptions = {
-      cueText: "cue text"
+    mockController.state.videoVr = false;
+    mockController.state.isMobile = true;
+    mockController.togglePlayPause = function() {
+      clicked = true;
     };
+    mockController.startHideControlBarTimer = function() {};
 
     var handleVrPlayerMouseUp = function() {
       isInHandleTouchEnd = true;
@@ -179,46 +148,24 @@ describe('PlayingScreen', function () {
     expect(clicked).toBe(true);
   });
 
-  it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp without video360 fullscreen', function () {
+  it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp without video360 fullscreen', function() {
     var over = false;
     var out = false;
     var moved = false;
     var clicked = false;
 
-    var mockController = {
-      videoVr: false,
-      state: {
-        isMobile: false,
-        accessibilityControlsEnabled: false,
-        upNextInfo: {
-          showing: false
-        },
-        volumeState: {
-          muted: false
-        },
-        config: {
-          isVrAnimationEnabled: {
-            vrNotification: true,
-            vrIcon: true
-          },
-        }
-      },
-      startHideControlBarTimer: function() {
-        moved = true;
-      },
-      togglePlayPause: function() {
-        clicked = true;
-      },
-      showControlBar: function() {
-        over = true;
-      },
-      hideControlBar: function() {
-        out = true;
-      }
+    mockController.state.videoVr = false;
+    mockController.startHideControlBarTimer = function() {
+      moved = true;
     };
-
-    var closedCaptionOptions = {
-      cueText: "cue text"
+    mockController.togglePlayPause = function() {
+      clicked = true;
+    };
+    mockController.showControlBar = function() {
+      over = true;
+    };
+    mockController.hideControlBar = function() {
+      out = true;
     };
 
     // Render pause screen into DOM
@@ -246,47 +193,26 @@ describe('PlayingScreen', function () {
     expect(over).toBe(true);
   });
 
-  it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp with video360 fullscreen', function () {
+  it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp with video360 fullscreen', function() {
     var over = false;
     var out = false;
     var moved = false;
     var clicked = false;
 
-    var mockController = {
-      videoVr: true,
-      state: {
-        isMobile: false,
-        accessibilityControlsEnabled: false,
-        upNextInfo: {
-          showing: false
-        },
-        viewingDirection: {yaw: 0, roll: 0, pitch: 0},
-        volumeState: {
-          muted: false
-        },
-        config: {
-          isVrAnimationEnabled: {
-            vrNotification: true,
-            vrIcon: true
-          },
-        }
-      },
-      startHideControlBarTimer: function() {
-        moved = true;
-      },
-      togglePlayPause: function() {
-        clicked = true;
-      },
-      showControlBar: function() {
-        over = true;
-      },
-      hideControlBar: function() {
-        out = true;
-      },
-    };
+    mockController.state.videoVr = true;
+    mockController.state.viewingDirection = {yaw: 0, roll: 0, pitch: 0};
 
-    var closedCaptionOptions = {
-      cueText: "cue text"
+    mockController.startHideControlBarTimer = function() {
+      moved = true;
+    };
+    mockController.togglePlayPause = function() {
+      clicked = true;
+    };
+    mockController.showControlBar = function() {
+      over = true;
+    };
+    mockController.hideControlBar = function() {
+      out = true;
     };
 
     // Render pause screen into DOM
@@ -325,38 +251,19 @@ describe('PlayingScreen', function () {
     expect(clicked).toBe(false);
   });
 
-  it('creates a PlayingScreen and check play&pause', function () {
+  it('creates a PlayingScreen and check play&pause', function() {
     var clicked = false;
     var isMouseMove = true;
-    var mockController = {
-      videoVr: true,
-      state: {
-        isMobile: true,
-        isVrMouseDown: false,
-        isMouseMove: false,
-        accessibilityControlsEnabled: false,
-        upNextInfo: {
-          showing: false
-        },
-        volumeState: {
-          muted: false
-        },
-        config: {
-          isVrAnimationEnabled: {
-            vrNotification: true,
-            vrIcon: true
-          },
-        }
-      },
-      togglePlayPause: function(){
-        clicked = !clicked;
-      },
-      togglePlayPause: function(){ clicked = true},
-      startHideControlBarTimer: function() {},
+
+    mockController.state.videoVr = true;
+    mockController.state.isMobile = true;
+    mockController.state.isVrMouseDown = false;
+    mockController.state.isMouseMove = false;
+    mockController.togglePlayPause = function() {
+      clicked = !clicked;
     };
-    var closedCaptionOptions = {
-      cueText: "cue text"
-    };
+    mockController.startHideControlBarTimer = function() {};
+
     var handleVrPlayerClick = function() {
       isMouseMove = false;
     };
@@ -377,37 +284,15 @@ describe('PlayingScreen', function () {
     expect(isMouseMove).toBe(false);
   });
 
-  it('should show control bar when pressing the tab key', function () {
+  it('should show control bar when pressing the tab key', function() {
     var autoHide = false;
     var controlBar = false;
 
-    var mockController = {
-      state: {
-        isMobile: false,
-        accessibilityControlsEnabled: false,
-        upNextInfo: {
-          showing: false
-        },
-        volumeState: {
-          muted: false
-        },
-        config: {
-          isVrAnimationEnabled: {
-            vrNotification: true,
-            vrIcon: true
-          },
-        }
-      },
-      startHideControlBarTimer: function() {
-        autoHide = true;
-      },
-      showControlBar: function() {
-        controlBar = true;
-      }
+    mockController.startHideControlBarTimer = function() {
+      autoHide = true;
     };
-
-    var closedCaptionOptions = {
-      cueText: "cue text"
+    mockController.showControlBar = function() {
+      controlBar = true;
     };
 
     var DOM = TestUtils.renderIntoDocument(
@@ -422,37 +307,15 @@ describe('PlayingScreen', function () {
     expect(autoHide && controlBar).toBe(true);
   });
 
-  it('should show control bar when pressing the tab, space bar or enter key', function () {
+  it('should show control bar when pressing the tab, space bar or enter key', function() {
     var autoHide = false;
     var controlBar = false;
 
-    var mockController = {
-      state: {
-        isMobile: false,
-        accessibilityControlsEnabled: false,
-        upNextInfo: {
-          showing: false
-        },
-        volumeState: {
-          muted: false
-        },
-        config: {
-          isVrAnimationEnabled: {
-            vrNotification: true,
-            vrIcon: true
-          },
-        }
-      },
-      startHideControlBarTimer: function() {
-        autoHide = true;
-      },
-      showControlBar: function() {
-        controlBar = true;
-      }
+    mockController.startHideControlBarTimer = function() {
+      autoHide = true;
     };
-
-    var closedCaptionOptions = {
-      cueText: "cue text"
+    mockController.showControlBar = function() {
+      controlBar = true;
     };
 
     var DOM = TestUtils.renderIntoDocument(
@@ -485,33 +348,11 @@ describe('PlayingScreen', function () {
     expect(autoHide && controlBar).toBe(false);
   });
 
-  it('tests playing screen componentWill*', function () {
-    var mockController = {
-      state: {
-        isMobile: false,
-        accessibilityControlsEnabled: false,
-        upNextInfo: {
-          showing: false
-        },
-        volumeState: {
-          muted: false
-        },
-        config: {
-          isVrAnimationEnabled: {
-            vrNotification: true,
-            vrIcon: true
-          },
-        }
-      },
-      startHideControlBarTimer: function() {moved = true},
-      showControlBar: function() {over = true},
-      hideControlBar: function() {out = true},
-      cancelTimer:function() {}
-    };
-
-    var closedCaptionOptions = {
-      cueText: "cue text"
-    };
+  it('tests playing screen componentWill*', function() {
+    mockController.startHideControlBarTimer = function() { moved = true; };
+    mockController.showControlBar = function() { over = true; };
+    mockController.hideControlBar = function() { out = true; };
+    mockController.cancelTimer = function() {};
 
     var node = document.createElement('div');
     var playScreen = ReactDOM.render(
@@ -537,28 +378,9 @@ describe('PlayingScreen', function () {
     ReactDOM.unmountComponentAtNode(node);
   });
 
-  it('should display unmute icon when handling muted autoplay', function () {
-    var mockController = {
-      state: {
-        upNextInfo: {
-          showing: false
-        },
-        volumeState: {
-          muted: true,
-          mutingForAutoplay: true
-        },
-        config: {
-          isVrAnimationEnabled: {
-            vrNotification: true,
-            vrIcon: true
-          },
-        }
-      }
-    };
-
-    var closedCaptionOptions = {
-      cueText: "cue text"
-    };
+  it('should display unmute icon when handling muted autoplay', function() {
+    mockController.state.volumeState.muted = true;
+    mockController.state.volumeState.mutingForAutoplay = true;
 
     var DOM = TestUtils.renderIntoDocument(
       <PlayingScreen
@@ -570,28 +392,9 @@ describe('PlayingScreen', function () {
     expect(unmuteIcon).toBeTruthy();
   });
 
-  it('should not display unmute icon when not muted', function () {
-    var mockController = {
-      state: {
-        upNextInfo: {
-          showing: false
-        },
-        volumeState: {
-          muted: false,
-          mutingForAutoplay: true
-        },
-        config: {
-          isVrAnimationEnabled: {
-            vrNotification: true,
-            vrIcon: true
-          }
-        }
-      }
-    };
-
-    var closedCaptionOptions = {
-      cueText: "cue text"
-    };
+  it('should not display unmute icon when not muted', function() {
+    mockController.state.volumeState.muted = false;
+    mockController.state.volumeState.mutingForAutoplay = true;
 
     var DOM = TestUtils.renderIntoDocument(
       <PlayingScreen
@@ -601,6 +404,30 @@ describe('PlayingScreen', function () {
       />);
     var unmuteIcons = TestUtils.scryRenderedComponentsWithType(DOM, UnmuteIcon);
     expect(unmuteIcons.length).toBe(0);
+  });
+
+  it('should initialize with control bar state from controller', function() {
+    var DOM, playingScreen;
+
+    mockController.state.controlBarVisible = true;
+    DOM = TestUtils.renderIntoDocument(
+      <PlayingScreen
+        controller={mockController}
+        closedCaptionOptions={{}}
+        handleVrPlayerMouseUp={function() {}} />
+    );
+    playingScreen = TestUtils.findRenderedComponentWithType(DOM, PlayingScreen);
+    expect(playingScreen.state.controlBarVisible).toBe(true);
+
+    mockController.state.controlBarVisible = false;
+    DOM = TestUtils.renderIntoDocument(
+      <PlayingScreen
+        controller={mockController}
+        closedCaptionOptions={{}}
+        handleVrPlayerMouseUp={function() {}} />
+    );
+    playingScreen = TestUtils.findRenderedComponentWithType(DOM, PlayingScreen);
+    expect(playingScreen.state.controlBarVisible).toBe(false);
   });
 
 });

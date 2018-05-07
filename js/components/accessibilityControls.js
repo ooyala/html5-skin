@@ -1,7 +1,7 @@
 var CONSTANTS = require('./../constants/constants');
 var Utils = require('./utils');
 
-var AccessibilityControls = function (controller) {
+var AccessibilityControls = function(controller) {
   this.controller = controller;
   this.vrRotationAllowed = true; // flag for checking repeat of keyDown
   this.keyDirectionMap = {};
@@ -13,20 +13,20 @@ var AccessibilityControls = function (controller) {
     seekRate: 1,
     lastKeyDownTime: 0,
   };
-  this.prevKeyPressedArr = []; //list of codes of pressed buttons
+  this.prevKeyPressedArr = []; // list of codes of pressed buttons
   this.keyEventDown = this.keyEventDown.bind(this);
   this.keyEventUp = this.keyEventUp.bind(this);
   this.moveVrToDirection = this.moveVrToDirection.bind(this);
   this.getTargetTagName = this.getTargetTagName.bind(this);
 
-  document.addEventListener("keydown", this.keyEventDown);
-  document.addEventListener("keyup", this.keyEventUp);
+  document.addEventListener('keydown', this.keyEventDown);
+  document.addEventListener('keyup', this.keyEventUp);
 };
 
 AccessibilityControls.prototype = {
   cleanUp : function() {
-    document.removeEventListener("keydown", this.keyEventDown);
-    document.removeEventListener("keyup", this.keyEventUp);
+    document.removeEventListener('keydown', this.keyEventDown);
+    document.removeEventListener('keyup', this.keyEventUp);
   },
 
   keyEventDown: function(e) {
@@ -37,7 +37,7 @@ AccessibilityControls.prototype = {
     var targetTagName = this.getTargetTagName(e);
     var charCode = e.which || e.keyCode;
     if (this.controller.videoVr) {
-      this.moveVrToDirection(e, charCode, true, targetTagName); //start rotate 360
+      this.moveVrToDirection(e, charCode, true, targetTagName); // start rotate 360
     }
 
     switch (charCode) {
@@ -109,7 +109,7 @@ AccessibilityControls.prototype = {
     if (this.controller.videoVr) {
       var targetTagName = this.getTargetTagName(e);
       var charCode = e.which || e.keyCode;
-      this.moveVrToDirection(e, charCode, false, targetTagName);  //stop rotate 360
+      this.moveVrToDirection(e, charCode, false, targetTagName);  // stop rotate 360
     }
   },
 
@@ -120,8 +120,8 @@ AccessibilityControls.prototype = {
    * @returns {string} name of the target tag
    */
   getTargetTagName: function(e) {
-    var targetTagName = "";
-    if (e.target && typeof e.target.tagName === "string") {
+    var targetTagName = '';
+    if (e.target && typeof e.target.tagName === 'string') {
       targetTagName = e.target.tagName.toLowerCase();
     }
     return targetTagName;
@@ -138,7 +138,7 @@ AccessibilityControls.prototype = {
    */
   moveVrToDirection: function(e, charCode, isKeyDown, targetTagName) {
     var keyDirectionMap = this.keyDirectionMap;
-    if (!(this.controller.videoVr || keyDirectionMap[charCode] || targetTagName !== "button")) {
+    if (!(this.controller.videoVr || keyDirectionMap[charCode] || targetTagName !== 'button')) {
       return false;
     }
     if (e.repeat !== undefined) {
@@ -147,8 +147,8 @@ AccessibilityControls.prototype = {
     if (!this.vrRotationAllowed) {
       return false;
     }
-    this.vrRotationAllowed = !isKeyDown; //prevent repeat of keyDown
-    this.controller.moveVrToDirection(false, keyDirectionMap[charCode]); //stop rotation if isKeyDown === false or prevent prev rotation if press a button (isKeyDown === true)
+    this.vrRotationAllowed = !isKeyDown; // prevent repeat of keyDown
+    this.controller.moveVrToDirection(false, keyDirectionMap[charCode]); // stop rotation if isKeyDown === false or prevent prev rotation if press a button (isKeyDown === true)
 
     if (isKeyDown === true) {
       var newBtn = true;
@@ -163,8 +163,8 @@ AccessibilityControls.prototype = {
       }
     } else { // if button is up, remove it from this.prevKeyPressedArr
       var inPrevKeyPressedArrIndex = -1;
-      //check if button code is already in list of pressed buttons (this.prevKeyPressedArr)
-      //if code is in the array return index of the code
+      // check if button code is already in list of pressed buttons (this.prevKeyPressedArr)
+      // if code is in the array return index of the code
       for (var i = this.prevKeyPressedArr.length - 1; i >= 0; i--) {
         if (this.prevKeyPressedArr[i] === charCode) {
           inPrevKeyPressedArrIndex = i;
@@ -179,7 +179,7 @@ AccessibilityControls.prototype = {
       isKeyDown = true;
       charCode = this.prevKeyPressedArr[this.prevKeyPressedArr.length-1];
     }
-    //rotate if a button is pressed, stop rotate if other case
+    // rotate if a button is pressed, stop rotate if other case
     this.controller.moveVrToDirection(isKeyDown, keyDirectionMap[charCode]);
     return isKeyDown;
   },

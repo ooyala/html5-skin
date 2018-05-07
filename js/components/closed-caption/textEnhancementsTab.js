@@ -10,7 +10,7 @@ var TextEnhancementsTab = React.createClass({
   getInitialState: function() {
     return {
       selectedTextEnhancement: this.props.closedCaptionOptions.textEnhancement,
-      textEnhancements: ["Uniform", "Depressed", "Raised", "Shadow"]
+      textEnhancements: ['Uniform', 'Depressed', 'Raised', 'Shadow']
     };
   },
 
@@ -26,10 +26,10 @@ var TextEnhancementsTab = React.createClass({
 
   setClassname: function(item, elementType) {
     return ClassNames({
-      'oo-text-enhancement-letter': elementType == "letter",
-      'oo-text-enhancement-label': elementType == "label",
+      'oo-text-enhancement-letter': elementType == 'letter',
+      'oo-text-enhancement-label': elementType == 'label',
       'oo-text-enhancement-selected': this.props.closedCaptionOptions.textEnhancement == item && this.props.closedCaptionOptions.enabled,
-      'oo-text-enhancement-label-selected': this.props.closedCaptionOptions.textEnhancement == item && this.props.closedCaptionOptions.enabled && elementType == "label",
+      'oo-text-enhancement-label-selected': this.props.closedCaptionOptions.textEnhancement == item && this.props.closedCaptionOptions.enabled && elementType == 'label',
       'oo-disabled': !this.props.closedCaptionOptions.enabled
     });
   },
@@ -42,8 +42,8 @@ var TextEnhancementsTab = React.createClass({
       this.props.localizableStrings
     );
     var textEnhancementItems = [];
-    for(var i = 0; i < this.state.textEnhancements.length; i++) {
-      //accent color
+    for (var i = 0; i < this.state.textEnhancements.length; i++) {
+      // accent color
       var isSelected = this.props.closedCaptionOptions.textEnhancement === this.state.textEnhancements[i];
       var selectedTextEnhancementStyle = {};
       if (this.props.closedCaptionOptions.enabled && this.props.skinConfig.general.accentColor && isSelected) {
@@ -64,12 +64,12 @@ var TextEnhancementsTab = React.createClass({
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
           onClick={this.changeTextEnhancement.bind(this, this.state.textEnhancements[i])}>
           <span
-            className={this.setClassname(this.state.textEnhancements[i], "letter") + " oo-text-enhancement-letter-" + this.state.textEnhancements[i]}
+            className={this.setClassname(this.state.textEnhancements[i], 'letter') + ' oo-text-enhancement-letter-' + this.state.textEnhancements[i]}
             style={selectedTextEnhancementStyle}>
             A
           </span>
           <span
-            className={this.setClassname(this.state.textEnhancements[i], "label")}
+            className={this.setClassname(this.state.textEnhancements[i], 'label')}
             style={selectedTextEnhancementStyle}>
             {itemLabel}
           </span>

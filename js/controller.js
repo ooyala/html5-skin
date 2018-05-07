@@ -1,31 +1,33 @@
-/********************************************************************
+/** ******************************************************************
  CONTROLLER
  *********************************************************************/
-var React = require('react'),
-    ReactDOM = require('react-dom'),
-    Utils = require('./components/utils'),
-    CONSTANTS = require('./constants/constants'),
-    AccessibilityControls = require('./components/accessibilityControls'),
-    DeepMerge = require('deepmerge'),
-    Fullscreen = require('screenfull'),
-    Skin = require('./skin'),
-    SkinJSON = require('../config/skin'),
-    Bulk = require('bulk-require'),
-    Localization = Bulk('./config', ['languageFiles/*.json']);
+var React = require('react');
+var ReactDOM = require('react-dom');
+var Utils = require('./components/utils');
+var CONSTANTS = require('./constants/constants');
+var AccessibilityControls = require('./components/accessibilityControls');
+var DeepMerge = require('deepmerge');
+var Fullscreen = require('screenfull');
+var Skin = require('./skin');
+var SkinJSON = require('../config/skin');
+var Bulk = require('bulk-require');
+var Localization = Bulk('./config', ['languageFiles/*.json']);
 
-OO.plugin("Html5Skin", function (OO, _, $, W) {
-  //Check if the player is at least v4. If not, the skin cannot load.
-  if (!OO.playerParams.core_version || OO.playerParams.core_version <= 3) {
-    console.error("Html5Skin requires at least player version 4.");
+OO.plugin('Html5Skin', function(OO, _, $, W) {
+  // Check if the player is at least v4. If not, the skin cannot load.
+  var UNSUPPORTED_PLAYER_VERSION = 3;
+
+  if (!OO.playerParams.core_version || OO.playerParams.core_version <= UNSUPPORTED_PLAYER_VERSION) {
+    console.error('Html5Skin requires at least player version 4.');
     return null;
   }
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "<SKIN_VERSION>", "rev": "<SKIN_REV>"};
+    OO.publicApi.VERSION.skin = { releaseVersion: '<SKIN_VERSION>', rev: '<SKIN_REV>' };
   }
 
-  var Html5Skin = function (mb, id) {
+  var Html5Skin = function(mb, id) {
     this.mb = mb;
     this.id = id;
     this.accessibilityControls = null;
@@ -36,166 +38,205 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.vrMobileOrientationChecked = false;
     this.checkDeviceOrientation = false;
     this.isVrStereo = false;
+    this.toggleButtons = {};
     this.handleVrMobileOrientation = this.handleVrMobileOrientation.bind(this);
     this.state = {
-      "playerParam": {},
-      "skinMetaData": {},
-      "attributes": {},
-      "persistentSettings": {
-        "closedCaptionOptions": {}
-      },
-      "assetId": null,
-      "contentTree": {},
-      "thumbnails": null,
-      "isLiveStream": false,
-      "screenToShow": null,
-      "discoverySource": "pauseScreen",
-      "playerState": null,
-      "currentVideoId": null,
-      "discoveryData": null,
-      "forceCountDownTimerOnEndScreen": false,
-      "isPlayingAd": false,
-      "adOverlayUrl": null,
-      "showAdOverlay": false,
-      "showAdOverlayCloseButton": false,
-      "showAdControls": true,
-      "showAdMarquee": true,
-      "isOoyalaAds": false,
-      "afterOoyalaAd": false,
-      "configLoaded": false,
-      "config": {},
-      "customSkinJSON": {},
-      "fullscreen": false,
-      "pauseAnimationDisabled": false,
-      "adPauseAnimationDisabled": true,
-      "pausedCallback": null,
-      "seeking": false,
-      "queuedPlayheadUpdate": null,
-      "accessibilityControlsEnabled": false,
-      "duration": 0,
-      "mainVideoDuration": 0,
-      "adVideoDuration": 0,
-      "adStartTime": 0,
-      "elementId": null,
-      "mainVideoContainer": null,
-      "mainVideoInnerWrapper": null,
-      "mainVideoElement": null,
-      "mainVideoElementContainer": null, // TODO: Temporary workaround for PBW-6954
-      "mainVideoMediaType": null,
-      "mainVideoAspectRatio": 0,
-      "pluginsElement": null,
-      "pluginsClickElement": null,
-      "buffering": false, // Do NOT set manually, call setBufferingState
-      "mainVideoBuffered": null,
-      "mainVideoPlayhead": 0,
-      "adVideoPlayhead": 0,
-      "focusedElement": null,
-      "focusedControl": null, // Stores the id of the control bar element that is currently focused
-
-      "currentAdsInfo": {
-        "currentAdItem": null,
-        "numberOfAds": 0,
-        "skipAdButtonEnabled": false
+      playerParam: {},
+      skinMetaData: {},
+      attributes: {},
+      persistentSettings: {
+        closedCaptionOptions: {}
       },
 
-      "closedCaptionsInfoCache": {},
-      "closedCaptionOptions": {
-        "enabled": null,
-        "language": null,
-        "availableLanguages": null,
-        "cueText": null,
-        "showPopover": false,
-        "autoFocus": false,
-        "textColor": null,
-        "windowColor": null,
-        "backgroundColor": null,
-        "textOpacity": null,
-        "backgroundOpacity": null,
-        "windowOpacity": null,
-        "fontType": null,
-        "fontSize": null,
-        "textEnhancement": null
+      assetId: null,
+      contentTree: {},
+      thumbnails: null,
+      isLiveStream: false,
+      screenToShow: null,
+      playerState: null,
+      currentVideoId: null,
+      discoveryData: null,
+      forceCountDownTimerOnEndScreen: false,
+      isPlayingAd: false,
+      adOverlayUrl: null,
+      showAdOverlay: false,
+      showAdOverlayCloseButton: false,
+      showAdControls: true,
+      showAdMarquee: true,
+      isOoyalaAds: false,
+      afterOoyalaAd: false,
+      configLoaded: false,
+      config: {},
+      customSkinJSON: {},
+      fullscreen: false,
+      pauseAnimationDisabled: false,
+      adPauseAnimationDisabled: true,
+      pausedCallback: null,
+      seeking: false,
+      queuedPlayheadUpdate: null,
+      accessibilityControlsEnabled: false,
+      duration: 0,
+      mainVideoDuration: 0,
+      adVideoDuration: 0,
+      adStartTime: 0,
+      elementId: null,
+      mainVideoContainer: null,
+      mainVideoInnerWrapper: null,
+      mainVideoElement: null,
+      mainVideoElementContainer: null, // TODO: Temporary workaround for PBW-6954
+      mainVideoMediaType: null,
+      mainVideoAspectRatio: 0,
+      pluginsElement: null,
+      pluginsClickElement: null,
+      buffering: false, // Do NOT set manually, call setBufferingState
+      mainVideoBuffered: null,
+      mainVideoPlayhead: 0,
+      adVideoPlayhead: 0,
+      focusedElement: null,
+      focusedControl: null, // Stores the id of the control bar element that is currently focused
+
+      currentAdsInfo: {
+        currentAdItem: null,
+        numberOfAds: 0,
+        skipAdButtonEnabled: false
       },
 
-      "videoQualityOptions": {
-        "availableBitrates": null,
-        "selectedBitrate": null,
-        "showPopover": false,
-        "autoFocus": false
+      closedCaptionsInfoCache: {},
+      closedCaptionOptions: {
+        enabled: null,
+        language: null,
+        availableLanguages: null,
+        cueText: null,
+        showPopover: false,
+        autoFocus: false,
+        textColor: null,
+        windowColor: null,
+        backgroundColor: null,
+        textOpacity: null,
+        backgroundOpacity: null,
+        windowOpacity: null,
+        fontType: null,
+        fontSize: null,
+        textEnhancement: null
       },
 
-      "volumeState": {
-        "volume": 1,
-        "muted": false,
-        "volumeSliderVisible": false,
-        "mutingForAutoplay": false,
-        "unmuteIconCollapsed": false
+      videoQualityOptions: {
+        availableBitrates: null,
+        selectedBitrate: null,
+        showPopover: false,
+        autoFocus: false
       },
 
-      "upNextInfo": {
-        "upNextData": null,
-        "countDownFinished": false,
-        "countDownCancelled": false,
-        "timeToShow": 0,
-        "showing": false,
-        "delayedSetEmbedCodeEvent": false,
-        "delayedContentData": null
+      volumeState: {
+        volume: 1,
+        muted: false,
+        volumeSliderVisible: false,
+        mutingForAutoplay: false,
+        unmuteIconCollapsed: false
       },
 
-      "moreOptionsItems": null,
+      upNextInfo: {
+        upNextData: null,
+        countDownFinished: false,
+        countDownCancelled: false,
+        timeToShow: 0,
+        showing: false,
+        delayedSetEmbedCodeEvent: false,
+        delayedContentData: null
+      },
 
-      "isMobile": false,
-      "controlBarVisible": true,
-      "forceControlBarVisible": false,
-      "timer": null,
-      "bufferingTimer": null,
-      "errorCode": null,
-      "isSubscribed": false,
-      "isPlaybackReadySubscribed": false,
-      "isSkipAdClicked": false,
-      "isInitialPlay": false,
-      "initialPlayHasOccurred": false,
-      "isFullScreenSupported": false,
-      "isVideoFullScreenSupported": false,
-      "isFullWindow": false,
-      "autoPauseDisabled": false,
+      moreOptionsItems: null,
 
-      "isClickedOutside": false,
-      "vrViewingDirection": {yaw: 0, roll: 0, pitch: 0}
+      isMobile: false,
+      controlBarVisible: true,
+      forceControlBarVisible: false,
+      timer: null,
+      bufferingTimer: null,
+      errorCode: null,
+      isSubscribed: false,
+      isPlaybackReadySubscribed: false,
+      isSkipAdClicked: false,
+      isInitialPlay: false,
+      initialPlayHasOccurred: false,
+      isFullScreenSupported: false,
+      isVideoFullScreenSupported: false,
+      isFullWindow: false,
+      autoPauseDisabled: false,
+
+      isClickedOutside: false,
+      vrViewingDirection: { yaw: 0, roll: 0, pitch: 0 },
+
+      showMultiAudioIcon: false,
+      multiAudio: null,
+      multiAudioOptions: {
+        enabled: null,
+        showPopover: false,
+        autoFocus: false
+      }
     };
 
     this.init();
   };
 
   Html5Skin.prototype = {
-    init: function () {
+    init: function() {
       // player events
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
-      this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_CREATED, 'customerUi', _.bind(this.onVcVideoElementCreated, this));
+      this.mb.subscribe(
+        OO.EVENTS.VC_VIDEO_ELEMENT_CREATED,
+        'customerUi',
+        _.bind(this.onVcVideoElementCreated, this)
+      );
       this.mb.subscribe(OO.EVENTS.DESTROY, 'customerUi', _.bind(this.onPlayerDestroy, this));
       this.mb.subscribe(OO.EVENTS.SET_EMBED_CODE, 'customerUi', _.bind(this.onSetEmbedCode, this));
       this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED, 'customerUi', _.bind(this.onEmbedCodeChanged, this));
-      this.mb.subscribe(OO.EVENTS.EMBED_CODE_CHANGED_AFTER_OOYALA_AD, 'customerUi', _.bind(this.onEmbedCodeChangedAfterOoyalaAd, this));
-      this.mb.subscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi', _.bind(this.onContentTreeFetched, this));
-      this.mb.subscribe(OO.EVENTS.THUMBNAILS_FETCHED, 'customerUi', _.bind(this.onThumbnailsFetched, this));//xenia: to be replaced by a more appropriate event
-      this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
-      this.mb.subscribe(OO.EVENTS.SKIN_METADATA_FETCHED, 'customerUi', _.bind(this.onSkinMetaDataFetched, this));
+      this.mb.subscribe(
+        OO.EVENTS.EMBED_CODE_CHANGED_AFTER_OOYALA_AD,
+        'customerUi',
+        _.bind(this.onEmbedCodeChangedAfterOoyalaAd, this)
+      );
+      this.mb.subscribe(
+        OO.EVENTS.CONTENT_TREE_FETCHED,
+        'customerUi',
+        _.bind(this.onContentTreeFetched, this)
+      );
+      this.mb.subscribe(OO.EVENTS.THUMBNAILS_FETCHED, 'customerUi', _.bind(this.onThumbnailsFetched, this)); // xenia: to be replaced by a more appropriate event
+      this.mb.subscribe(
+        OO.EVENTS.AUTHORIZATION_FETCHED,
+        'customerUi',
+        _.bind(this.onAuthorizationFetched, this)
+      );
+      this.mb.subscribe(
+        OO.EVENTS.SKIN_METADATA_FETCHED,
+        'customerUi',
+        _.bind(this.onSkinMetaDataFetched, this)
+      );
       this.mb.subscribe(OO.EVENTS.ATTRIBUTES_FETCHED, 'customerUi', _.bind(this.onAttributesFetched, this));
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.VIDEO_VR, 'customerUi', _.bind(this.onSetVideoVr, this));
       this.mb.subscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi', _.bind(this.onClearVideoType, this));
-      this.mb.subscribe(OO.EVENTS.VR_DIRECTION_CHANGED, 'customerUi', _.bind(this.setVrViewingDirection, this));
+      this.mb.subscribe(
+        OO.EVENTS.VR_DIRECTION_CHANGED,
+        'customerUi',
+        _.bind(this.setVrViewingDirection, this)
+      );
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
-      this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
+      this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
+      this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi', _.bind(this.onMultiAudioChanged, this));
+      this.mb.subscribe(OO.EVENTS.ERROR, 'customerUi', _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
     },
 
-    subscribeBasicPlaybackEvents: function () {
-      if(!this.state.isSubscribed) {
-        this.mb.subscribe(OO.EVENTS.SEND_QUALITY_CHANGE, 'customerUi', _.bind(this.receiveVideoQualityChangeEvent, this));
+    subscribeBasicPlaybackEvents: function() {
+      if (!this.state.isSubscribed) {
+        this.mb.subscribe(
+          OO.EVENTS.SEND_QUALITY_CHANGE,
+          'customerUi',
+          _.bind(this.receiveVideoQualityChangeEvent, this)
+        );
         this.mb.subscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi', _.bind(this.onInitialPlay, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAY, 'customerUi', _.bind(this.onVcPlay, this));
         this.mb.subscribe(OO.EVENTS.VC_PLAYED, 'customerUi', _.bind(this.onVcPlayed, this));
@@ -203,46 +244,90 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.VC_PAUSED, 'customerUi', _.bind(this.onPaused, this));
         this.mb.subscribe(OO.EVENTS.VC_PAUSE, 'customerUi', _.bind(this.onPause, this));
         this.mb.subscribe(OO.EVENTS.PLAYED, 'customerUi', _.bind(this.onPlayed, this));
-        this.mb.subscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi', _.bind(this.onPlayheadTimeChanged, this));
+        this.mb.subscribe(
+          OO.EVENTS.PLAYHEAD_TIME_CHANGED,
+          'customerUi',
+          _.bind(this.onPlayheadTimeChanged, this)
+        );
         this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
         this.mb.subscribe(OO.EVENTS.BUFFERING, 'customerUi', _.bind(this.onBuffering, this));
         this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
-        this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
-        this.mb.subscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi", _.bind(this.onBitrateInfoAvailable, this));
-        this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
-        this.mb.subscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, 'customerUi', _.bind(this.onChangeClosedCaptionLanguage, this));
-        this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
-        this.mb.subscribe(OO.EVENTS.MUTE_STATE_CHANGED, "customerUi", _.bind(this.onMuteStateChanged, this));
-        this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
-        this.mb.subscribe(OO.EVENTS.REPLAY, "customerUi", _.bind(this.onReplay, this));
-        this.mb.subscribe(OO.EVENTS.ASSET_DIMENSION, "customerUi", _.bind(this.onAssetDimensionsReceived, this));
+        this.mb.subscribe(
+          OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE,
+          'customerUi',
+          _.bind(this.onClosedCaptionsInfoAvailable, this)
+        );
+        this.mb.subscribe(
+          OO.EVENTS.BITRATE_INFO_AVAILABLE,
+          'customerUi',
+          _.bind(this.onBitrateInfoAvailable, this)
+        );
+        this.mb.subscribe(
+          OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED,
+          'customerUi',
+          _.bind(this.onClosedCaptionCueChanged, this)
+        );
+        this.mb.subscribe(
+          OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE,
+          'customerUi',
+          _.bind(this.onChangeClosedCaptionLanguage, this)
+        );
+        this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, 'customerUi', _.bind(this.onVolumeChanged, this));
+        this.mb.subscribe(OO.EVENTS.MUTE_STATE_CHANGED, 'customerUi', _.bind(this.onMuteStateChanged, this));
+        this.mb.subscribe(
+          OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS,
+          'customerUi',
+          _.bind(this.onVideoElementFocus, this)
+        );
+        this.mb.subscribe(OO.EVENTS.REPLAY, 'customerUi', _.bind(this.onReplay, this));
+        this.mb.subscribe(
+          OO.EVENTS.ASSET_DIMENSION,
+          'customerUi',
+          _.bind(this.onAssetDimensionsReceived, this)
+        );
 
-        this.mb.subscribe(OO.EVENTS.HA_WILL_FAILOVER, "customerUi", _.bind(this.onHAWillFailover, this));
-        this.mb.subscribe(OO.EVENTS.HA_FAILOVER_COMPLETE, "customerUi", _.bind(this.onHAFailoverComplete, this));
-        this.mb.subscribe(OO.EVENTS.HA_FAILOVER_ERROR, "customerUi", _.bind(this.onHAFailoverError, this));
+        this.mb.subscribe(OO.EVENTS.HA_WILL_FAILOVER, 'customerUi', _.bind(this.onHAWillFailover, this));
+        this.mb.subscribe(
+          OO.EVENTS.HA_FAILOVER_COMPLETE,
+          'customerUi',
+          _.bind(this.onHAFailoverComplete, this)
+        );
+        this.mb.subscribe(OO.EVENTS.HA_FAILOVER_ERROR, 'customerUi', _.bind(this.onHAFailoverError, this));
 
         // PLAYBACK_READY is a fundamental event in the init process that can be unsubscribed by errors.
         // If and only if such has occured, it needs a route to being resubscribed.
-        if(!this.state.isPlaybackReadySubscribed) {
+        if (!this.state.isPlaybackReadySubscribed) {
           this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
         }
 
         // ad events
         if (Utils.canRenderSkin()) {
-          //since iPhone < iOS10 is always playing in full screen and not showing our skin, don't need to render skin
-          this.mb.subscribe(OO.EVENTS.ADS_PLAYED, "customerUi", _.bind(this.onAdsPlayed, this));
-          this.mb.subscribe(OO.EVENTS.WILL_PLAY_ADS , "customerUi", _.bind(this.onWillPlayAds, this));
-          this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, "customerUi", _.bind(this.onAdPodStarted, this));
-          this.mb.subscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi", _.bind(this.onWillPlaySingleAd, this));
-          this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi", _.bind(this.onSingleAdPlayed, this));
-          this.mb.subscribe(OO.EVENTS.PLAY_NONLINEAR_AD, "customerUi", _.bind(this.onPlayNonlinearAd, this));
-          this.mb.subscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi", _.bind(this.closeNonlinearAd, this));
-          this.mb.subscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi", _.bind(this.hideNonlinearAd, this));
-          this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi", _.bind(this.showNonlinearAd, this));
-          this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD_CLOSE_BUTTON, "customerUi", _.bind(this.showNonlinearAdCloseButton, this));
-          this.mb.subscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi", _.bind(this.onShowAdSkipButton, this));
-          this.mb.subscribe(OO.EVENTS.SHOW_AD_CONTROLS, "customerUi", _.bind(this.onShowAdControls, this));
-          this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi", _.bind(this.onShowAdMarquee, this));
+          // since iPhone < iOS10 is always playing in full screen and not showing our skin, don't need to render skin
+          this.mb.subscribe(OO.EVENTS.ADS_PLAYED, 'customerUi', _.bind(this.onAdsPlayed, this));
+          this.mb.subscribe(OO.EVENTS.WILL_PLAY_ADS, 'customerUi', _.bind(this.onWillPlayAds, this));
+          this.mb.subscribe(OO.EVENTS.AD_POD_STARTED, 'customerUi', _.bind(this.onAdPodStarted, this));
+          this.mb.subscribe(
+            OO.EVENTS.WILL_PLAY_SINGLE_AD,
+            'customerUi',
+            _.bind(this.onWillPlaySingleAd, this)
+          );
+          this.mb.subscribe(OO.EVENTS.SINGLE_AD_PLAYED, 'customerUi', _.bind(this.onSingleAdPlayed, this));
+          this.mb.subscribe(OO.EVENTS.PLAY_NONLINEAR_AD, 'customerUi', _.bind(this.onPlayNonlinearAd, this));
+          this.mb.subscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, 'customerUi', _.bind(this.closeNonlinearAd, this));
+          this.mb.subscribe(OO.EVENTS.HIDE_NONLINEAR_AD, 'customerUi', _.bind(this.hideNonlinearAd, this));
+          this.mb.subscribe(OO.EVENTS.SHOW_NONLINEAR_AD, 'customerUi', _.bind(this.showNonlinearAd, this));
+          this.mb.subscribe(
+            OO.EVENTS.SHOW_NONLINEAR_AD_CLOSE_BUTTON,
+            'customerUi',
+            _.bind(this.showNonlinearAdCloseButton, this)
+          );
+          this.mb.subscribe(
+            OO.EVENTS.SHOW_AD_SKIP_BUTTON,
+            'customerUi',
+            _.bind(this.onShowAdSkipButton, this)
+          );
+          this.mb.subscribe(OO.EVENTS.SHOW_AD_CONTROLS, 'customerUi', _.bind(this.onShowAdControls, this));
+          this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, 'customerUi', _.bind(this.onShowAdMarquee, this));
         }
       }
       this.state.isSubscribed = true;
@@ -250,46 +335,51 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     externalPluginSubscription: function() {
       if (OO.EVENTS.DISCOVERY_API) {
-        this.mb.subscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi", _.bind(this.onRelatedVideosFetched, this));
+        this.mb.subscribe(
+          OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED,
+          'customerUi',
+          _.bind(this.onRelatedVideosFetched, this)
+        );
       }
     },
 
-    onHAWillFailover: function(){
+    onHAWillFailover: function() {
       this.state.failoverInProgress = true;
       this.state.pauseAnimationDisabled = true;
       this.renderSkin();
     },
 
-    onHAFailoverComplete: function(){
+    onHAFailoverComplete: function() {
       this.state.failoverInProgress = false;
       this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       this.renderSkin();
     },
 
-    onHAFailoverError: function(){
+    onHAFailoverError: function() {
       this.state.failoverInProgress = false;
       // this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.renderSkin();
     },
 
-
-    /*--------------------------------------------------------------------
+    /* --------------------------------------------------------------------
      event listeners from core player -> regulate skin STATE
      ---------------------------------------------------------------------*/
-    onPlayerCreated: function (event, elementId, params, settings) {
-      //subscribe to plugin events
+    onPlayerCreated: function(event, elementId, params, settings) {
+      // subscribe to plugin events
       this.externalPluginSubscription();
 
-      //set state variables
-      this.state.mainVideoContainer = $("#" + elementId);
-      this.state.mainVideoInnerWrapper = $("#" + elementId + " .innerWrapper");
+      // set state variables
+      this.state.mainVideoContainer = $('#' + elementId);
+      this.state.mainVideoInnerWrapper = $('#' + elementId + ' .innerWrapper');
       this.state.playerParam = params;
       this.state.persistentSettings = settings;
       this.state.elementId = elementId;
       this.state.isMobile = Utils.isMobile();
       this.state.browserSupportsTouch = Utils.browserSupportsTouch();
 
-      //initial DOM manipulation
+      this.state.showMultiAudioIcon = !!params.showMultiAudioIcon;
+
+      // initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');
       this.state.mainVideoInnerWrapper.addClass('oo-player');
       this.state.mainVideoInnerWrapper.attr('aria-label', CONSTANTS.ARIA_LABELS.VIDEO_PLAYER);
@@ -298,22 +388,35 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.mainVideoInnerWrapper.attr('tabindex', '-1');
 
       if (!this.state.mainVideoInnerWrapper.children('.oo-player-skin').length) {
-        this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
+        this.state.mainVideoInnerWrapper.append('<div class=\'oo-player-skin\'></div>');
       }
 
       this.setInlineStyles();
 
-      //load player with page level config param if exist
+      // load player with page level config param if exist
       if (params.skin && params.skin.config) {
-        $.getJSON(params.skin.config, function(data) {
-          this.state.customSkinJSON = data;
-          this.loadConfigData(this.state.playerParam, this.state.persistentSettings, data, this.state.skinMetaData);
-        }.bind(this));
+        $.getJSON(
+          params.skin.config,
+          function(data) {
+            this.state.customSkinJSON = data;
+            this.loadConfigData(
+              this.state.playerParam,
+              this.state.persistentSettings,
+              data,
+              this.state.skinMetaData
+            );
+          }.bind(this)
+        );
       } else {
-        this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
+        this.loadConfigData(
+          this.state.playerParam,
+          this.state.persistentSettings,
+          this.state.customSkinJSON,
+          this.state.skinMetaData
+        );
       }
 
-      this.accessibilityControls = this.accessibilityControls || new AccessibilityControls(this); //keyboard support
+      this.accessibilityControls = this.accessibilityControls || new AccessibilityControls(this); // keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
     },
 
@@ -321,7 +424,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * Set style "touch-action: none" only for video 360 on mobile devices
      * see details: https://stackoverflow.com/questions/42206645/konvajs-unable-to-preventdefault-inside-passive-event-listener-due-to-target-be
      */
-    setInlineStyles: function () {
+    setInlineStyles: function() {
       if (this.videoVr && this.state.isMobile) {
         this.state.mainVideoInnerWrapper.attr('style', 'touch-action: none');
       }
@@ -331,7 +434,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.videoVr = true;
       this.setInlineStyles();
       if (params) {
-        this.videoVrSource = params.source || null; //if we need video vr params
+        this.videoVrSource = params.source || null; // if we need video vr params
       }
     },
 
@@ -347,11 +450,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (!this.vrMobileOrientationChecked || this.checkDeviceOrientation) {
         var beta = e.beta;
         var gamma = e.gamma;
-        var yaw = this.state.vrViewingDirection["yaw"];
-        var pitch = this.state.vrViewingDirection["pitch"];
+        var yaw = this.state.vrViewingDirection['yaw'];
+        var pitch = this.state.vrViewingDirection['pitch'];
         var dir = beta;
         var orientationType = Utils.getOrientationType();
-        if (orientationType && (orientationType === "landscape-secondary" || orientationType === "landscape-primary")) {
+        if (
+          orientationType &&
+          (orientationType === 'landscape-secondary' || orientationType === 'landscape-primary')
+        ) {
           dir = gamma;
         }
         if (dir !== undefined && dir !== null && Utils.ensureNumber(dir, 0)) {
@@ -373,13 +479,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var videoElement = params.videoElement;
       videoElement = this.findMainVideoElement(videoElement);
 
-      //add loadedmetadata event listener to main video element
+      // add loadedmetadata event listener to main video element
       if (videoElement) {
-        videoElement.addEventListener("loadedmetadata", this.metaDataLoaded.bind(this));
+        videoElement.addEventListener('loadedmetadata', this.metaDataLoaded.bind(this));
       }
 
       if (Utils.isIE10()) {
-        videoElement.attr("controls", "controls");
+        videoElement.attr('controls', 'controls');
       }
 
       if (params.videoId === OO.VIDEO.MAIN) {
@@ -406,11 +512,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     // functions dependent on video metadata
-    metaDataLoaded: function () {
+    metaDataLoaded: function() {
       this.enableIosFullScreen();
     },
 
-    onPlayerDestroy: function (event) {
+    onPlayerDestroy: function(event) {
       var elementId = this.state.elementId;
       var mountNode = document.querySelector('#' + elementId + ' .oo-player-skin');
       // remove mounted Skin component
@@ -419,14 +525,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       this.stopBufferingTimer();
       this.cleanUpEventListeners();
-      document.removeEventListener("deviceorientation", this.handleVrMobileOrientation);
+      document.removeEventListener('deviceorientation', this.handleVrMobileOrientation);
       this.mb = null;
     },
 
-    cleanUpEventListeners : function() {
-      this.accessibilityControls.cleanUp()
+    cleanUpEventListeners: function() {
+      this.accessibilityControls.cleanUp();
     },
-
 
     /**
      * Event handler for SET_EMBED_CODE message bus event.
@@ -461,6 +566,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.thumbnails = null;
       this.state.afterOoyalaAd = false;
       this.state.currentVideoId = null;
+      this.state.multiAudio = null;
       this.resetUpNextInfo(true);
 
       if (options && options.ooyalaAds === true) {
@@ -485,7 +591,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isLiveStream = authorization.streams[0].is_live_stream;
     },
 
-    onContentTreeFetched: function (event, contentTree) {
+    onContentTreeFetched: function(event, contentTree) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       var duration = Utils.ensureNumber(contentTree.duration, 0) / 1000;
@@ -495,23 +601,28 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin({ contentTree: contentTree });
     },
 
-    onSkinMetaDataFetched: function (event, skinMetaData) {
+    onSkinMetaDataFetched: function(event, skinMetaData) {
       this.state.skinMetaData = skinMetaData;
-      this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
+      this.loadConfigData(
+        this.state.playerParam,
+        this.state.persistentSettings,
+        this.state.customSkinJSON,
+        this.state.skinMetaData
+      );
     },
 
-    onAttributesFetched: function (event, attributes) {
+    onAttributesFetched: function(event, attributes) {
       this.state.attributes = attributes;
       // This is the first point at which we know whether the video is anamorphic or not,
       // apply fix if necessary
       this.trySetAnamorphicFixState(true);
     },
 
-    onThumbnailsFetched: function (event, thumbnails) {
+    onThumbnailsFetched: function(event, thumbnails) {
       this.state.thumbnails = thumbnails;
     },
 
-    onAssetChanged: function (event, asset) {
+    onAssetChanged: function(event, asset) {
       this.state.videoQualityOptions.availableBitrates = null;
       this.state.closedCaptionOptions.availableLanguages = null;
       this.state.closedCaptionsInfoCache = {};
@@ -523,7 +634,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       this.state.isLiveStream = asset.content.streams[0].is_live_stream;
 
-      var contentTree  = {};
+      var contentTree = {};
       contentTree.title = asset.content.title;
       contentTree.description = asset.content.description;
       contentTree.duration = asset.content.duration;
@@ -533,10 +644,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.playerState = CONSTANTS.STATE.START;
       // Make sure playhead is reset when we switch to a new video
       this.skin.updatePlayhead(0, contentTree.duration, 0, 0);
-      this.renderSkin({"contentTree": contentTree});
+      this.renderSkin({ contentTree: contentTree });
     },
 
-    onAssetUpdated: function (event, asset) {
+    onAssetUpdated: function(event, asset) {
       this.resetUpNextInfo(true);
 
       this.state.isLiveStream = asset.content.streams[0].is_live_stream;
@@ -546,17 +657,21 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.contentTree.duration = asset.content.duration;
       this.state.contentTree.promo_image = asset.content.posterImages[0].url;
 
-      this.renderSkin({"contentTree": this.state.contentTree});
+      this.renderSkin({ contentTree: this.state.contentTree });
     },
 
     isPlaying: function() {
-      return this.state.currentVideoId && this.state.playerState !== CONSTANTS.STATE.START && this.state.playerState !== CONSTANTS.STATE.ERROR;
+      return (
+        this.state.currentVideoId &&
+        this.state.playerState !== CONSTANTS.STATE.START &&
+        this.state.playerState !== CONSTANTS.STATE.ERROR
+      );
     },
 
-    onVolumeChanged: function (event, newVolume, videoId) {
-      //ignore the volume change if it came from a source other than the currently playing video
-      //but only if currently playing a video. This is to prevent desyncs between video volume
-      //and the UI
+    onVolumeChanged: function(event, newVolume, videoId) {
+      // ignore the volume change if it came from a source other than the currently playing video
+      // but only if currently playing a video. This is to prevent desyncs between video volume
+      // and the UI
       if (videoId && videoId !== this.state.currentVideoId && this.isPlaying()) {
         return;
       }
@@ -569,9 +684,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onMuteStateChanged: function(event, muted, videoId, forAutoplay) {
-      //ignore the volume change if it came from a source other than the currently playing video
-      //but only if currently playing a video. This is to prevent desyncs between video volume
-      //and the UI
+      // ignore the volume change if it came from a source other than the currently playing video
+      // but only if currently playing a video. This is to prevent desyncs between video volume
+      // and the UI
       if (videoId && videoId !== this.state.currentVideoId && this.isPlaying()) {
         return;
       }
@@ -586,7 +701,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    resetUpNextInfo: function (purge) {
+    resetUpNextInfo: function(purge) {
       if (purge) {
         this.state.upNextInfo.upNextData = null;
       }
@@ -595,22 +710,25 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered, startEnd, videoId) {
-      if (videoId == OO.VIDEO.MAIN) {
+      if (videoId === OO.VIDEO.MAIN) {
         this.state.mainVideoPlayhead = currentPlayhead;
         this.state.mainVideoDuration = duration;
         this.state.mainVideoBuffered = buffered;
-      }
-      else if (videoId == OO.VIDEO.ADS) {
-        //adVideoDuration is only used in adPanel ad marquee
+      } else if (videoId === OO.VIDEO.ADS) {
+        // adVideoDuration is only used in adPanel ad marquee
         this.state.adVideoDuration = duration;
         this.state.adVideoPlayhead = currentPlayhead;
       }
       this.state.duration = duration;
 
       // lower skin z-index if Chrome auto-pauses flash content
-      if(!this.state.autoPauseDisabled && Utils.isChrome() && this.state.mainVideoMediaType == CONSTANTS.MEDIA_TYPE.FLASH) {
-        var skinElement = $("#"+this.state.elementId+" .oo-player-skin");
-        if(currentPlayhead == 0 && this.state.playerState == CONSTANTS.STATE.PLAYING) {
+      if (
+        !this.state.autoPauseDisabled &&
+        Utils.isChrome() &&
+        this.state.mainVideoMediaType === CONSTANTS.MEDIA_TYPE.FLASH
+      ) {
+        var skinElement = $('#' + this.state.elementId + ' .oo-player-skin');
+        if (currentPlayhead === 0 && this.state.playerState === CONSTANTS.STATE.PLAYING) {
           skinElement.addClass('oo-z-index-auto');
         } else {
           skinElement.removeClass('oo-z-index-auto');
@@ -620,14 +738,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       // The code inside if statement is only for up next, however, up next does not apply to Ad screen.
       // So we only need to update the playhead for ad screen.
-      if (this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN ) {
+      if (this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN) {
         if (this.skin.props.skinConfig.upNext.showUpNext) {
-          if (!(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))){//no UpNext for iPhone < iOS10 or fullscreen iOS
+          if (!(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))) {
+            // no UpNext for iPhone < iOS10 or fullscreen iOS
             this.showUpNextScreenWhenReady(currentPlayhead, duration);
           }
-        } else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
+        } else if (this.state.playerState === CONSTANTS.STATE.PLAYING &&
+          this.state.screenToShow !== CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
           this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
-        } else if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
+        } else if (this.state.playerState === CONSTANTS.STATE.PAUSE &&
+          this.state.screenToShow !== CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN) {
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
       }
@@ -641,18 +762,24 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     showUpNextScreenWhenReady: function(currentPlayhead, duration) {
       var timeToShow = this.skin.props.skinConfig.upNext.timeToShow;
 
-      if (timeToShow < 1){
+      if (timeToShow < 1) {
         // time to show is based on percentage of duration from the beginning
         timeToShow = (1 - timeToShow) * duration;
       }
 
       this.state.upNextInfo.timeToShow = timeToShow;
 
-      if ((this.state.mainVideoPlayhead != 0 && currentPlayhead != 0) && duration !==0 &&
+      if (
+        this.state.mainVideoPlayhead !== 0 &&
+        currentPlayhead !== 0 &&
+        duration !== 0 &&
         duration - currentPlayhead <= timeToShow &&
         !this.state.upNextInfo.countDownCancelled &&
         this.state.isPlayingAd !== true &&
-        this.state.upNextInfo.upNextData !== null && (this.state.playerState === CONSTANTS.STATE.PLAYING || this.state.playerState === CONSTANTS.STATE.PAUSE)) {
+        this.state.upNextInfo.upNextData !== null &&
+        (this.state.playerState === CONSTANTS.STATE.PLAYING ||
+          this.state.playerState === CONSTANTS.STATE.PAUSE)
+      ) {
         // Trigger discovery event only the first time we
         // switch from hidden to showing
         if (!this.state.upNextInfo.showing) {
@@ -663,8 +790,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.sendDiscoveryDisplayEvent(1, 1, CONSTANTS.UI_TAG.UP_NEXT, this.state.upNextInfo.upNextData, customData);
         }
         this.state.upNextInfo.showing = true;
-      }
-      else {
+      } else {
         this.state.upNextInfo.showing = false;
       }
     },
@@ -683,8 +809,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaying: function(event, source) {
-      if (source == OO.VIDEO.MAIN) {
-        //set mainVideoElement if not set during video plugin initialization
+      if (source === OO.VIDEO.MAIN) {
+        // set mainVideoElement if not set during video plugin initialization
         if (!this.state.mainVideoMediaType) {
           this.state.mainVideoElement = this.findMainVideoElement(this.state.mainVideoElement);
         }
@@ -696,13 +822,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.isInitialPlay = false;
         this.renderSkin();
       }
-      if (source == OO.VIDEO.ADS) {
+      if (source === OO.VIDEO.ADS) {
         this.state.adPauseAnimationDisabled = true;
-        this.state.pluginsElement.addClass("oo-showing");
-        this.state.pluginsClickElement.removeClass("oo-showing");
+        this.state.pluginsElement.addClass('oo-showing');
+        this.state.pluginsClickElement.removeClass('oo-showing');
         if (this.state.currentAdsInfo.currentAdItem !== null) {
           this.state.playerState = CONSTANTS.STATE.PLAYING;
-          //Set the screen to ad screen in case current screen does not involve video playback, such as discovery
+          // Set the screen to ad screen in case current screen does not involve video playback, such as discovery
           this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
           this.renderSkin();
         }
@@ -713,54 +839,65 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPause: function(event, source, pauseReason) {
-      if(this.state.failoverInProgress) {
+      if (this.state.failoverInProgress) {
         return;
       }
 
-      if (pauseReason === CONSTANTS.PAUSE_REASON.TRANSITION){
+      if (pauseReason === CONSTANTS.PAUSE_REASON.TRANSITION) {
         this.state.pauseAnimationDisabled = true;
         this.endSeeking();
       }
       // If an ad using the custom ad element has issued a pause, activate the click layer
-      if (source == OO.VIDEO.ADS && this.state.pluginsElement.children().length > 0) {
-        this.state.pluginsClickElement.addClass("oo-showing");
+      if (source === OO.VIDEO.ADS && this.state.pluginsElement.children().length > 0) {
+        this.state.pluginsClickElement.addClass('oo-showing');
       }
     },
 
     onPaused: function(event, videoId) {
-      if(this.state.failoverInProgress) {
+      if (this.state.failoverInProgress) {
         return;
       }
 
-      if (videoId != this.focusedElement || this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN) { return; }
-      if (videoId == OO.VIDEO.MAIN && this.state.screenToShow != CONSTANTS.SCREEN.AD_SCREEN && this.state.screenToShow != CONSTANTS.SCREEN.LOADING_SCREEN) {
-        if (this.state.duration - this.state.mainVideoPlayhead < 0.01) { //when video ends, we get paused event before played event
+      if (videoId !== this.focusedElement || this.state.screenToShow === CONSTANTS.SCREEN.END_SCREEN) {
+        return;
+      }
+      if (
+        videoId === OO.VIDEO.MAIN &&
+        this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN &&
+        this.state.screenToShow !== CONSTANTS.SCREEN.LOADING_SCREEN
+      ) {
+        var PLAYHEAD_STARTING_TIME = 0.01;
+        if (this.state.duration - this.state.mainVideoPlayhead < PLAYHEAD_STARTING_TIME) {
+          // when video ends, we get paused event before played event
           this.state.pauseAnimationDisabled = true;
         }
-        if (this.state.pauseAnimationDisabled == false && this.state.discoveryData && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery"
-            && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))) {
+        if (
+          this.state.pauseAnimationDisabled == false && 
+          this.state.discoveryData && 
+          this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "discovery" && 
+          !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
+        ) {
           OO.log("Should display DISCOVERY_SCREEN on pause");
           this.sendDiscoveryDisplayEventOld("pauseScreen");
           this.state.discoverySource = CONSTANTS.SCREEN.PAUSE_SCREEN;
           this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
-        } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === "social") {
+          this.addBlur();
+        } else if (this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === 'social') {
           // Remove this comment once pause screen implemented
         } else {
           // default
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
-        if (!Utils.canRenderSkin()){
-          //iPhone < iOS10 pause screen is the same as start screen
+        if (!Utils.canRenderSkin()) {
+          // iPhone < iOS10 pause screen is the same as start screen
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
-        this.state.mainVideoElement.classList.add('oo-blur');
         this.renderSkin();
-      }
-      else if (videoId == OO.VIDEO.ADS){
-        //If we pause during an ad (such as for clickthroughs or when autoplay fails)
-        //we'll show the control bar so that the user has an indication that the video
-        //must be unpaused to resume
+      } else if (videoId === OO.VIDEO.ADS) {
+        // If we pause during an ad (such as for clickthroughs or when autoplay fails)
+        // we'll show the control bar so that the user has an indication that the video
+        // must be unpaused to resume
         this.state.config.adScreen.showControlBar = true;
         this.state.adPauseAnimationDisabled = false;
         this.state.playerState = CONSTANTS.STATE.PAUSE;
@@ -782,10 +919,13 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         var delayedContentData = this.state.upNextInfo.delayedContentData;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
 
-        if (delayedContentData.clickedVideo.embed_code){
-          this.mb.publish(OO.EVENTS.SET_EMBED_CODE, delayedContentData.clickedVideo.embed_code, this.state.playerParam);
-        }
-        else if (delayedContentData.clickedVideo.asset){
+        if (delayedContentData.clickedVideo.embed_code) {
+          this.mb.publish(
+            OO.EVENTS.SET_EMBED_CODE,
+            delayedContentData.clickedVideo.embed_code,
+            this.state.playerParam
+          );
+        } else if (delayedContentData.clickedVideo.asset) {
           this.mb.publish(OO.EVENTS.SET_ASSET, delayedContentData.clickedVideo.asset, this.state.playerParam);
         }
 
@@ -794,20 +934,23 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
         this.state.upNextInfo.delayedContentData = null;
       }
-      else if (this.state.discoveryData && this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery"
-               && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))) {
+      else if (
+        this.state.discoveryData && 
+        this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "discovery" && 
+        !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
+      ) {
         OO.log("Should display DISCOVERY_SCREEN on end");
         this.sendDiscoveryDisplayEventOld("endScreen");
         this.state.discoverySource = CONSTANTS.SCREEN.END_SCREEN;
         this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
-      } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === "share") {
+      } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === 'share') {
         this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
       } else {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
         this.mb.publish(OO.EVENTS.END_SCREEN_SHOWN);
       }
       if (!Utils.canRenderSkin()) {
-        //iPhone < iOS10 end screen is the same as start screen, except for the replay button
+        // iPhone < iOS10 end screen is the same as start screen, except for the replay button
         this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       }
       // In case a video plugin fires PLAYED event after stalling without firing BUFFERED or PLAYING first
@@ -817,8 +960,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onVcPlayed: function(event, source) {
       this.onBuffered();
-      if (source == OO.VIDEO.MAIN) {
-        var language = "";
+      if (source === OO.VIDEO.MAIN) {
+        var language = '';
         var mode = 'disabled';
         this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {
           mode: mode,
@@ -834,38 +977,85 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onEndMove: function () {
+    onEndMove: function() {
       if (this.videoVr) {
         this.mb.publish(OO.EVENTS.END_VR_MOVE, this.focusedElement);
       }
     },
 
-    checkVrDirection: function () {
+    checkVrDirection: function() {
       if (this.videoVr) {
         this.mb.publish(OO.EVENTS.CHECK_VR_DIRECTION, this.focusedElement);
       }
     },
 
     setVrViewingDirection: function(event, yaw, roll, pitch) {
-      this.state.vrViewingDirection = {yaw: yaw, roll: roll, pitch: pitch};
+      this.state.vrViewingDirection = { yaw: yaw, roll: roll, pitch: pitch };
     },
 
-    recreatingUI: function (event, elementId, params, settings) {
+    recreatingUI: function(event, elementId, params, settings) {
       if (!$('.oo-player-skin').length) {
-        this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>")
+        this.state.mainVideoInnerWrapper.append('<div class=\'oo-player-skin\'></div>');
       }
-      this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
+      this.loadConfigData(
+        this.state.playerParam,
+        this.state.persistentSettings,
+        this.state.customSkinJSON,
+        this.state.skinMetaData
+      );
+    },
+
+    /**
+     * The function is called when event MULTI_AUDIO_FETCHED was caught;
+     * The function sets value for this.state.multiAudio
+     * @param {String} event  name of a event
+     * @param {Object} multiAudio  - audio which fetched for the current video
+     * @param {Array} multiAudio.tracks - list of objects with data for each audio
+     */
+    onMultiAudioFetched: function(event, multiAudio) {
+      if (this.state.showMultiAudioIcon) {
+        // if param showMultiAudioIcon is set to true
+        this.state.multiAudio = multiAudio;
+        this.renderSkin();
+      }
+    },
+
+    /**
+     * The function is called when event MULTI_AUDIO_CHANGED was caught;
+     * The function sets value for this.state.multiAudio
+     * @param {String} event - name of a event
+     * @param {Object} multiAudio - audio which fetched for the current video
+     * @param {Array} multiAudio.tracks - list of objects with data for each audio
+     */
+    onMultiAudioChanged: function(event, multiAudio) {
+      if (this.state.showMultiAudioIcon) {
+        this.state.multiAudio = multiAudio;
+        this.renderSkin();
+      }
+    },
+
+    /**
+     * The function is called when we want to change audio track
+     * @fires OO.EVENTS.SET_CURRENT_AUDIO
+     * @param {{id: String, label: String, lang: String}} currentTrack  - current active audio track
+     */
+    setCurrentAudio: function(currentTrack) {
+      // user selected track should be saved to localstorage
+      var currentAudioTrack = JSON.stringify(currentTrack);
+      OO.setItem(OO.CONSTANTS.SELECTED_AUDIO, currentAudioTrack);
+
+      this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, currentTrack);
     },
 
     onSeeked: function(event) {
       this.state.seeking = false;
       if (this.state.queuedPlayheadUpdate) {
-        OO.log("popping queued update");
+        OO.log('popping queued update');
         this.skin.updatePlayhead.apply(this.skin, this.state.queuedPlayheadUpdate);
         this.state.queuedPlayheadUpdate = null;
         this.renderSkin();
       }
-      if (Utils.isIos() && this.state.screenToShow == CONSTANTS.SCREEN.END_SCREEN && this.state.fullscreen) {
+      if (Utils.isIos() && this.state.screenToShow === CONSTANTS.SCREEN.END_SCREEN && this.state.fullscreen) {
         this.state.pauseAnimationDisabled = true;
         this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PAUSE;
@@ -873,29 +1063,39 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaybackReady: function(event, timeSincePlayerCreated, params) {
-      if(this.state.failoverInProgress) {
+      if (this.state.failoverInProgress) {
         return;
       }
+
       params = params || {};
 
       if (this.state.afterOoyalaAd) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
       } else {
-        // If the core tells us that it will autoplay then we just display the loading
-        // spinner, otherwise we need to render the big play button.
+        // If the core tells us that it will autoplay then we display the loading
+        // spinner (with the thumbnail and description if it's the first video, or just a
+        // black background when transitioning to a new one), otherwise we need to render
+        // the big play button.
         if (params.willAutoplay) {
-          this.state.screenToShow = CONSTANTS.SCREEN.START_LOADING_SCREEN;
+          // Show just the loading spinner when transitioning to another Discovery or
+          // Playlist video, otherwise show the spinner and thumbnail.
+          if (this.state.initialPlayHasOccurred) {
+            this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+          } else {
+            this.state.screenToShow = CONSTANTS.SCREEN.START_LOADING_SCREEN;
+          }
         } else {
           this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
         }
       }
 
-      this.renderSkin({"contentTree": this.state.contentTree});
+      this.renderSkin({ contentTree: this.state.contentTree });
     },
 
     /**
      * Fired by the video plugin when the video stalls due to buffering.
      * @private
+     * @param {Event} event - message bus event
      */
     onBuffering: function(event) {
       if (this.state.isInitialPlay === false && this.state.screenToShow === CONSTANTS.SCREEN.START_SCREEN) {
@@ -908,6 +1108,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     /**
      * Fired by the video plugin when video stalling has ended.
      * @private
+     * @param {Event} event - message bus event
      */
     onBuffered: function(event) {
       this.setBufferingState(false);
@@ -920,12 +1121,22 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      */
     startBufferingTimer: function() {
       this.stopBufferingTimer();
-      var bufferingSpinnerDelay = Utils.getPropertyValue(this.skin.props.skinConfig, 'general.bufferingSpinnerDelay');
-      bufferingSpinnerDelay = Utils.constrainToRange(bufferingSpinnerDelay, 0, CONSTANTS.UI.MAX_BUFFERING_SPINNER_DELAY);
+      var bufferingSpinnerDelay = Utils.getPropertyValue(
+        this.skin.props.skinConfig,
+        'general.bufferingSpinnerDelay'
+      );
+      bufferingSpinnerDelay = Utils.constrainToRange(
+        bufferingSpinnerDelay,
+        0,
+        CONSTANTS.UI.MAX_BUFFERING_SPINNER_DELAY
+      );
 
-      this.state.bufferingTimer = setTimeout(function() {
-        this.setBufferingState(true);
-      }.bind(this), bufferingSpinnerDelay);
+      this.state.bufferingTimer = setTimeout(
+        function() {
+          this.setBufferingState(true);
+        }.bind(this),
+        bufferingSpinnerDelay
+      );
     },
 
     /**
@@ -966,28 +1177,36 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onAssetDimensionsReceived: function(event, params) {
-      if (params.videoId == OO.VIDEO.MAIN && (this.skin.props.skinConfig.responsive.aspectRatio == "auto" || !this.skin.props.skinConfig.responsive.aspectRatio)) {
+      if (
+        params.videoId === OO.VIDEO.MAIN &&
+        (this.skin.props.skinConfig.responsive.aspectRatio === 'auto' ||
+          !this.skin.props.skinConfig.responsive.aspectRatio)
+      ) {
         this.state.mainVideoAspectRatio = this.calculateAspectRatio(params.width, params.height);
-        //Do not set aspect ratio if content is not playing. The aspect ratio will be set
-        //when switching back to content
+        // Do not set aspect ratio if content is not playing. The aspect ratio will be set
+        // when switching back to content
         if (this.state.currentVideoId === OO.VIDEO.MAIN) {
           this.setAspectRatio();
         }
       }
     },
 
-    /********************************************************************
+    /** ******************************************************************
       ADS RELATED EVENTS
     *********************************************************************/
 
     onAdsPlayed: function(event) {
-      OO.log("onAdsPlayed is called from event = " + event);
+      OO.log('onAdsPlayed is called from event = ' + event);
       this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
-      this.skin.updatePlayhead(this.state.mainVideoPlayhead, this.state.mainVideoDuration, this.state.mainVideoBuffered);
+      this.skin.updatePlayhead(
+        this.state.mainVideoPlayhead,
+        this.state.mainVideoDuration,
+        this.state.mainVideoBuffered
+      );
       this.state.duration = this.state.contentTree.duration / 1000;
       this.state.isPlayingAd = false;
-      this.state.pluginsElement.removeClass("oo-showing");
-      this.state.pluginsClickElement.removeClass("oo-showing");
+      this.state.pluginsElement.removeClass('oo-showing');
+      this.state.pluginsClickElement.removeClass('oo-showing');
       // Restore anamorphic videos fix after ad playback if necessary
       this.trySetAnamorphicFixState(true);
       // In case ad was skipped or errored while stalled
@@ -996,29 +1215,29 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onWillPlayAds: function(event) {
-      OO.log("onWillPlayAds is called from event = " + event);
+      OO.log('onWillPlayAds is called from event = ' + event);
       this.state.isPlayingAd = true;
       // Anamorphic videos fix should not be active during ad playback
       this.trySetAnamorphicFixState(false);
-      this.state.pluginsElement.addClass("oo-showing");
+      this.state.pluginsElement.addClass('oo-showing');
       this.state.pluginsElement.css({
-        height: "",
-        width: ""
+        height: '',
+        width: ''
       });
-      this.state.forceControlBarVisible = (this.state.pluginsElement.children().length > 0);
+      this.state.forceControlBarVisible = this.state.pluginsElement.children().length > 0;
       if (this.state.mainVideoPlayhead > 0) {
         this.isNewVrVideo = false;
       }
     },
 
     onAdPodStarted: function(event, numberOfAds) {
-      OO.log("onAdPodStarted is called from event = " + event + " with " + numberOfAds + " ads");
+      OO.log('onAdPodStarted is called from event = ' + event + ' with ' + numberOfAds + ' ads');
       this.state.currentAdsInfo.numberOfAds = numberOfAds;
       this.renderSkin();
     },
 
     onWillPlaySingleAd: function(event, adItem) {
-      OO.log("onWillPlaySingleAd is called with adItem = " + adItem);
+      OO.log('onWillPlaySingleAd is called with adItem = ' + adItem);
       if (adItem !== null) {
         this.state.adVideoDuration = adItem.duration;
         this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
@@ -1037,7 +1256,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onSingleAdPlayed: function(event) {
-      OO.log("onSingleAdPlayed is called");
+      OO.log('onSingleAdPlayed is called');
       this.state.isPlayingAd = false;
       this.state.adVideoDuration = 0;
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
@@ -1051,11 +1270,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onShowAdControls: function(event, showAdControls) {
       this.state.showAdControls = showAdControls;
       if (showAdControls && this.state.config.adScreen.showControlBar) {
-        this.state.pluginsElement.removeClass("oo-full");
-        this.state.pluginsClickElement.removeClass("oo-full");
+        this.state.pluginsElement.removeClass('oo-full');
+        this.state.pluginsClickElement.removeClass('oo-full');
       } else {
-        this.state.pluginsElement.addClass("oo-full");
-        this.state.pluginsClickElement.addClass("oo-full");
+        this.state.pluginsElement.addClass('oo-full');
+        this.state.pluginsClickElement.addClass('oo-full');
       }
       this.renderSkin();
     },
@@ -1067,45 +1286,49 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onSkipAdClicked: function(event) {
       this.state.isSkipAdClicked = true;
-      OO.log("onSkipAdClicked is called");
-      this.skin.updatePlayhead(this.state.mainVideoPlayhead, this.state.mainVideoDuration, this.state.mainVideoBuffered);
+      OO.log('onSkipAdClicked is called');
+      this.skin.updatePlayhead(
+        this.state.mainVideoPlayhead,
+        this.state.mainVideoDuration,
+        this.state.mainVideoBuffered
+      );
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
       this.mb.publish(OO.EVENTS.SKIP_AD);
       this.renderSkin();
     },
 
     onAdsClicked: function(source) {
-      OO.log("on ads clicked is called", source);
-      this.mb.publish(OO.EVENTS.ADS_CLICKED, {"source": source});
+      OO.log('on ads clicked is called', source);
+      this.mb.publish(OO.EVENTS.ADS_CLICKED, { source: source });
     },
 
     publishOverlayRenderingEvent: function(marginHeight) {
-      this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, {"marginHeight": marginHeight});
+      this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, { marginHeight: marginHeight });
     },
 
     onPlayNonlinearAd: function(event, adInfo) {
-      if(adInfo.url) {
+      if (adInfo.url) {
         this.state.adOverlayUrl = adInfo.url;
         this.state.showAdOverlay = true;
       }
-      this.state.pluginsElement.addClass("oo-overlay-showing");
-      var skinElement = $("#"+this.state.elementId+" .oo-player-skin");
+      this.state.pluginsElement.addClass('oo-overlay-showing');
+      var skinElement = $('#' + this.state.elementId + ' .oo-player-skin');
       var elementWidth = skinElement.width();
       var elementHeight = skinElement.height();
       var newCSS = {};
       if (adInfo.ad.height && adInfo.ad.height !== -1) {
-        var padding = (adInfo.ad.paddingHeight ? adInfo.ad.paddingHeight : 0);
-        newCSS.height = (adInfo.ad.height + padding) + "px";
-        newCSS.top = "auto";
+        var padding = adInfo.ad.paddingHeight ? adInfo.ad.paddingHeight : 0;
+        newCSS.height = adInfo.ad.height + padding + 'px';
+        newCSS.top = 'auto';
       } else {
         newCSS.top = 0;
         newCSS.bottom = 0;
       }
       if (adInfo.ad.width && adInfo.ad.width !== -1) {
-        var padding = (adInfo.ad.paddingWidth ? adInfo.ad.paddingWidth : 0);
-        newCSS.width = (adInfo.ad.width + padding) + "px";
-        newCSS.left = "50%";
-        newCSS.transform = "translateX(-50%)"
+        var padding = adInfo.ad.paddingWidth ? adInfo.ad.paddingWidth : 0;
+        newCSS.width = adInfo.ad.width + padding + 'px';
+        newCSS.left = '50%';
+        newCSS.transform = 'translateX(-50%)';
       }
       this.state.pluginsElement.css(newCSS);
       this.renderSkin();
@@ -1124,9 +1347,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       // Make sure that the skin uses the captions that correspond
       // to the newly focused video element
       this.setClosedCaptionsInfo(source);
-      if (source == OO.VIDEO.MAIN) {
-        this.state.pluginsElement.removeClass("oo-showing");
-        this.state.pluginsClickElement.removeClass("oo-showing");
+      if (source === OO.VIDEO.MAIN) {
+        this.state.pluginsElement.removeClass('oo-showing');
+        this.state.pluginsClickElement.removeClass('oo-showing');
       }
     },
 
@@ -1134,28 +1357,28 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.adOverlayUrl = null;
       this.state.showAdOverlay = false;
       this.state.showAdOverlayCloseButton = false;
-      this.state.pluginsElement.removeClass("oo-overlay-showing");
+      this.state.pluginsElement.removeClass('oo-overlay-showing');
       this.state.pluginsElement.css({
-        top: "",
-        left: "",
-        right: "",
-        bottom: "",
-        height: "0",
-        width: "0",
-        transform: ""
+        top: '',
+        left: '',
+        right: '',
+        bottom: '',
+        height: '0',
+        width: '0',
+        transform: ''
       });
       this.renderSkin();
     },
 
     hideNonlinearAd: function(event) {
       this.state.showAdOverlay = false;
-      this.state.pluginsElement.removeClass("oo-overlay-showing");
+      this.state.pluginsElement.removeClass('oo-overlay-showing');
       this.renderSkin();
     },
 
     showNonlinearAd: function(event) {
       this.state.showAdOverlay = true;
-      this.state.pluginsElement.addClass("oo-overlay-showing");
+      this.state.pluginsElement.addClass('oo-overlay-showing');
       this.renderSkin();
     },
 
@@ -1164,11 +1387,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
-    /********************************************************************
+    /** ******************************************************************
      MAIN VIDEO RELATED EVENTS
      *********************************************************************/
 
-    //merge and load config data
+    // merge and load config data
     loadConfigData: function(params, settings, data, skinMetaData) {
       var localSettings = Utils.sanitizeConfigData(settings);
       var inlinePageParams = Utils.sanitizeConfigData(Utils.getPropertyValue(params, 'skin.inline'));
@@ -1176,25 +1399,32 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var metaDataSettings = Utils.sanitizeConfigData(skinMetaData);
       var buttonArrayFusion = params.buttonMerge ? params.buttonMerge : 'replace';
 
-      //override data in skin config with possible local storage settings, inline data input by user, and CMS settings in backlot/themebuilder
-      var mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name'});
-      this.state.config = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', buttonArrayFusion:buttonArrayFusion});
+      // override data in skin config with possible local storage settings, inline data input by user, and CMS settings in backlot/themebuilder
+      var mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {
+        arrayMerge: Utils.arrayDeepMerge.bind(Utils),
+        arrayUnionBy: 'name'
+      });
+      this.state.config = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {
+        arrayMerge: Utils.arrayDeepMerge.bind(Utils),
+        arrayUnionBy: 'name',
+        buttonArrayFusion: buttonArrayFusion
+      });
       this.state.closedCaptionOptions = this.state.config.closedCaptionOptions;
 
-      //remove 'url' from the list until the tab is worked on
+      // remove 'url' from the list until the tab is worked on
       var shareContent = Utils.getPropertyValue(this.state.config, 'shareScreen.shareContent');
       if (shareContent) {
         for (var i = 0; i < shareContent.length; i++) {
-          if (shareContent[i] == 'url') {
+          if (shareContent[i] === 'url') {
             shareContent.splice(i, 1);
           }
         }
         this.state.config.shareScreen.shareContent = shareContent;
       }
 
-      //load config language json if exist
+      // load config language json if exist
       if (this.state.config.localization.availableLanguageFile) {
-        this.state.config.localization.availableLanguageFile.forEach(function(languageObj){
+        this.state.config.localization.availableLanguageFile.forEach(function(languageObj) {
           if (languageObj.languageFile) {
             $.getJSON(languageObj.languageFile, function(data) {
               Localization.languageFiles[languageObj.language] = data;
@@ -1203,48 +1433,70 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         });
       }
 
-      //backwards compatibility with string parameters in skin.json
+      // backwards compatibility with string parameters in skin.json
       this.state.config.upNext.timeToShow = Utils.convertStringToNumber(this.state.config.upNext.timeToShow);
-      this.state.config.discoveryScreen.countDownTime = Utils.convertStringToNumber(this.state.config.discoveryScreen.countDownTime);
-
-      //load player
-      this.skin = ReactDOM.render(
-        React.createElement(Skin, {skinConfig: this.state.config, localizableStrings: Localization.languageFiles, language: Utils.getLanguageToUse(this.state.config), controller: this, closedCaptionOptions: this.state.closedCaptionOptions, pauseAnimationDisabled: this.state.pauseAnimationDisabled}), document.querySelector("#" + this.state.elementId + " .oo-player-skin")
+      this.state.config.discoveryScreen.countDownTime = Utils.convertStringToNumber(
+        this.state.config.discoveryScreen.countDownTime
       );
+
+      // load player
+      this.skin = ReactDOM.render(
+        React.createElement(Skin, {
+          skinConfig: this.state.config,
+          localizableStrings: Localization.languageFiles,
+          language: Utils.getLanguageToUse(this.state.config),
+          controller: this,
+          closedCaptionOptions: this.state.closedCaptionOptions,
+          pauseAnimationDisabled: this.state.pauseAnimationDisabled
+        }),
+        document.querySelector('#' + this.state.elementId + ' .oo-player-skin')
+      );
+
       this.state.configLoaded = true;
+
+      this.mb.publish(OO.EVENTS.SKIN_CONFIG_LOADED, this.state.config);
+
       this.renderSkin();
       this.createPluginElements();
 
-      if (typeof this.state.config.closedCaptionOptions === 'object' &&
-        this.state.config.closedCaptionOptions.language !== undefined) {
+      if (
+        typeof this.state.config.closedCaptionOptions === 'object' &&
+        this.state.config.closedCaptionOptions.language !== undefined
+      ) {
         this.setCaptionDirection(this.state.config.closedCaptionOptions.language);
       }
     },
 
-    //create plugin container elements
+    // create plugin container elements
     createPluginElements: function() {
       this.state.config.adScreen = this.state.config.adScreen || {};
-      //if playerControlsOverAds is true then we need to override the setting
-      //for showing the control bar during ads.
+      // if playerControlsOverAds is true then we need to override the setting
+      // for showing the control bar during ads.
       if (this.state.playerParam && this.state.playerParam.playerControlsOverAds) {
         if (this.state.config) {
           this.state.config.adScreen.showControlBar = true;
         }
       }
 
-      var fullClass = "";
+      var fullClass = '';
       if (!this.state.config || !this.state.config.adScreen || !this.state.config.adScreen.showControlBar) {
-        fullClass = " oo-full";
+        fullClass = ' oo-full';
       }
-      $("#" + this.state.elementId + " .oo-player-skin").append("<div class='oo-player-skin-plugins"+fullClass+"'></div><div class='oo-player-skin-plugins-click-layer"+fullClass+"'></div>");
-      this.state.pluginsElement = $("#" + this.state.elementId + " .oo-player-skin-plugins");
-      this.state.pluginsClickElement = $("#" + this.state.elementId + " .oo-player-skin-plugins-click-layer");
+      $('#' + this.state.elementId + ' .oo-player-skin').append(
+        '<div class=\'oo-player-skin-plugins' +
+          fullClass +
+          '\'></div><div class=\'oo-player-skin-plugins-click-layer' +
+          fullClass +
+          '\'></div>'
+      );
+      this.state.pluginsElement = $('#' + this.state.elementId + ' .oo-player-skin-plugins');
+      this.state.pluginsClickElement = $('#' + this.state.elementId + ' .oo-player-skin-plugins-click-layer');
 
-      //if playerControlsOverAds is true, then we need to set the size of the
-      //elements to be the full size of the player and not end where the control bar begins.
+      // if playerControlsOverAds is true, then we need to set the size of the
+      // elements to be the full size of the player and not end where the control bar begins.
       if (this.state.playerParam && this.state.playerParam.playerControlsOverAds) {
-        this.state.pluginsElement.css("bottom", 0);
-        this.state.pluginsClickElement.css("bottom", 0);
+        this.state.pluginsElement.css('bottom', 0);
+        this.state.pluginsClickElement.css('bottom', 0);
       }
 
       this.state.pluginsElement.mouseover(
@@ -1261,7 +1513,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       );
       this.state.pluginsClickElement.click(
         function() {
-          this.state.pluginsClickElement.removeClass("oo-showing");
+          this.state.pluginsClickElement.removeClass('oo-showing');
           this.mb.publish(OO.EVENTS.PLAY);
         }.bind(this)
       );
@@ -1278,18 +1530,29 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }.bind(this)
       );
       this.mb.publish(OO.EVENTS.UI_READY, {
-        videoWrapperClass: "innerWrapper",
-        pluginsClass: "oo-player-skin-plugins"
+        videoWrapperClass: 'innerWrapper',
+        pluginsClass: 'oo-player-skin-plugins'
       });
     },
 
     onBitrateInfoAvailable: function(event, bitrates) {
       if (bitrates && bitrates.bitrates) {
+        var qualityFormat = Utils.getPropertyValue(
+          this.skin,
+          'props.skinConfig.controlBar.qualitySelection.format'
+        );
+        // Bitrates will be presorted by the VTC which will work in most cases, however,
+        // when displaying only bitrates we need to give priority to bitrates over
+        // resolutions when sorting, otherwise the quality display might appear unsorted to the user.
+        if (qualityFormat === CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE) {
+          bitrates.bitrates = Utils.sortQualitiesByBitrate(bitrates.bitrates);
+        }
+
         this.state.videoQualityOptions.availableBitrates = bitrates.bitrates;
         this.renderSkin({
-          "videoQualityOptions": {
-            "availableBitrates": bitrates.bitrates,
-            "selectedBitrate": this.state.videoQualityOptions.selectedBitrate
+          videoQualityOptions: {
+            availableBitrates: bitrates.bitrates,
+            selectedBitrate: this.state.videoQualityOptions.selectedBitrate
           }
         });
       }
@@ -1315,9 +1578,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onRelatedVideosFetched: function(event, relatedVideos) {
-      OO.log("onRelatedVideosFetched is called");
+      OO.log('onRelatedVideosFetched is called');
       if (relatedVideos.videos) {
-        this.state.discoveryData = {relatedVideos: relatedVideos.videos};
+        this.state.discoveryData = { relatedVideos: relatedVideos.videos };
         this.state.upNextInfo.upNextData = relatedVideos.videos[0];
         this.renderSkin();
       }
@@ -1334,16 +1597,22 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     // iOS webkitSupportsFullscreen property is not valid until metadata has loaded
     // https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/ControllingMediaWithJavaScript/ControllingMediaWithJavaScript.html#//apple_ref/doc/uid/TP40009523-CH3-SW13
     enableIosFullScreen: function() {
-      if(!this.state.isFullScreenSupported) {
+      if (!this.state.isFullScreenSupported) {
         if (this.state.mainVideoElement.webkitSupportsFullscreen) {
           this.state.isVideoFullScreenSupported = true;
-          this.state.mainVideoElement.addEventListener("webkitbeginfullscreen", this.webkitBeginFullscreen.bind(this));
-          this.state.mainVideoElement.addEventListener("webkitendfullscreen", this.webkitEndFullscreen.bind(this));
+          this.state.mainVideoElement.addEventListener(
+            'webkitbeginfullscreen',
+            this.webkitBeginFullscreen.bind(this)
+          );
+          this.state.mainVideoElement.addEventListener(
+            'webkitendfullscreen',
+            this.webkitEndFullscreen.bind(this)
+          );
         }
       }
     },
 
-    //called when event listener triggered
+    // called when event listener triggered
     onFullscreenChanged: function() {
       if (this.state.isFullScreenSupported) {
         this.state.fullscreen = Fullscreen.isFullscreen;
@@ -1353,31 +1622,98 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.videoVr && this.state.isMobile && this.isVrStereo && !this.state.fullscreen) {
         this.toggleStereoVr();
       }
+      if (!this.state.fullscreen) {
+        this.closeOtherPopovers();
+      }
       this.renderSkin();
     },
 
-    //called when user selects fullscreen icon
+    /**
+     * @description the function closes popovers (closedCaptionPopover, videoQualityPopover, multiAudioPopover);
+     * if the parameter specifies the name of the popover, then its state does not change
+     * @param {string} popoverName - the name of the popover that does not need to be closed
+     * @public
+     */
+    closeOtherPopovers: function(popoverName) {
+      var popoversNameList = [CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO];
+      for (var index = 0; index < popoversNameList.length; index++) {
+        var closedPopoverName = popoversNameList[index];
+        if (closedPopoverName !== popoverName) {
+          this.closePopover(closedPopoverName);
+        }
+      }
+    },
+
+    /**
+     * @description It close popover with name = menu
+     * @param {string} menu - the name of the popover to be closed
+     * @param {Object} [params] - params for the function
+     * @public
+     */
+    closePopover: function(menu, params) {
+      params = params || {};
+      var menuOptions = this.state[menu];
+      var menuToggleButton = this.toggleButtons[menu];
+
+      if (menuOptions && menuOptions.showPopover) {
+        // Re-focus on toggle button when closing the menu popover if the latter
+        // was originally opened with a key press.
+        if (params.restoreToggleButtonFocus &&
+          menuToggleButton &&
+          menuToggleButton.wasTriggeredWithKeyboard()
+        ) {
+          menuToggleButton.focus();
+        }
+        if (menuToggleButton) {
+          menuToggleButton.wasTriggeredWithKeyboard(false);
+        }
+        this.togglePopover(menu);
+      }
+    },
+
+    // called when user selects fullscreen icon
     toggleFullscreen: function() {
       // full support, any element
-      if(this.state.isFullScreenSupported) {
+      if (this.state.isFullScreenSupported) {
         Fullscreen.toggle(this.state.mainVideoInnerWrapper.get(0));
-      }
-      // partial support, video element only (iOS)
-      else if (this.state.isVideoFullScreenSupported) {
-        if (this.state.fullscreen) {
-          this.state.mainVideoElement.webkitExitFullscreen();
-        } else {
-          this.state.mainVideoElement.webkitEnterFullscreen();
+      } else if (this.state.isVideoFullScreenSupported && !this.videoVr) {
+        // partial support, video element only (iOS) and not vr
+        this.toggleIOSNativeFullscreen();
+      } else {
+        // no support
+        if (this.videoVr) {
+          // if videoVr we don't use native fullscreen (IOS)
+          this.mb.publish(OO.EVENTS.TOGGLE_FULLSCREEN_VR, this.focusedElement);
         }
-      } else { // no support
-        if(this.state.isFullWindow) {
-          this.exitFullWindow();
-        } else {
-          this.enterFullWindow();
-        }
+        this.togglePseudoFullscreenMode();
       }
+
       this.state.fullscreen = !this.state.fullscreen;
       this.renderSkin();
+    },
+
+    /**
+     * Toggle fullscreen for video element only (iOS)
+     * @private
+     */
+    toggleIOSNativeFullscreen: function() {
+      if (this.state.fullscreen) {
+        this.state.mainVideoElement.webkitExitFullscreen();
+      } else {
+        this.state.mainVideoElement.webkitEnterFullscreen();
+      }
+    },
+
+    /**
+     * Toggle fullscreen if native fullscreen is not supported (pseudo fullscreen)
+     * @private
+     */
+    togglePseudoFullscreenMode: function() {
+      if (this.state.isFullWindow) {
+        this.exitFullWindow();
+      } else {
+        this.enterFullWindow();
+      }
     },
 
     // if fullscreen is not supported natively, "full window" style
@@ -1386,10 +1722,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isFullWindow = this.state.fullscreen = true;
 
       // add listener for esc key
-      document.addEventListener("keydown", this.exitFullWindowOnEscKey.bind(this));
+      document.addEventListener('keydown', this.exitFullWindowOnEscKey.bind(this));
       // hide scroll bars
       document.documentElement.style.overflow = 'hidden';
-      //apply full window style
+      // apply full window style
       this.state.mainVideoInnerWrapper.addClass('oo-fullscreen');
     },
 
@@ -1398,10 +1734,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isFullWindow = this.state.fullscreen = false;
 
       // remove event listener
-      document.removeEventListener("keydown", this.exitFullWindowOnEscKey);
+      document.removeEventListener('keydown', this.exitFullWindowOnEscKey);
       // unhide scroll bars
       document.documentElement.style.overflow = 'visible';
-      //remove full window style
+      // remove full window style
       this.state.mainVideoInnerWrapper.removeClass('oo-fullscreen');
     },
 
@@ -1413,7 +1749,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     // iOS event fires when a video exits full-screen mode
     webkitEndFullscreen: function() {
       this.state.fullscreen = false;
-      var showUpNext = this.skin.props.skinConfig.upNext.showUpNext || this.skin.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen;
+      var showUpNext =
+        this.skin.props.skinConfig.upNext.showUpNext ||
+        this.skin.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen;
 
       // [PLAYER-212]
       // We can't show UI such as the "Up Next" countdown on fullscreen iOS. If a countdown
@@ -1437,7 +1775,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onErrorEvent: function(event, errorCode){
+    onErrorEvent: function(event, errorCode) {
       this.unsubscribeBasicPlaybackEvents();
       this.setBufferingState(false);
 
@@ -1461,7 +1799,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.ERROR, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE_AFTER_OOYALA_AD, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE, 'customerUi');
     },
@@ -1478,11 +1816,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
-      this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi");
-      this.mb.unsubscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi");
-      this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
-      this.mb.unsubscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, "customerUi");
-      this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CHECK_VR_DIRECTION, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.TOUCH_MOVE, 'customerUi');
@@ -1491,32 +1829,34 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.VIDEO_VR, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VIDEO_TYPE_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.RECREATING_UI, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
 
       // ad events
       if (Utils.canRenderSkin()) {
-        //since iPhone < iOS10 is always playing in full screen and not showing our skin, don't need to render skin
-        this.mb.unsubscribe(OO.EVENTS.ADS_PLAYED, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_ADS , "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.AD_POD_STARTED, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD , "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.SINGLE_AD_PLAYED , "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.PLAY_NONLINEAR_AD, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.HIDE_NONLINEAR_AD, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.SHOW_AD_CONTROLS, "customerUi");
-        this.mb.unsubscribe(OO.EVENTS.SHOW_AD_MARQUEE, "customerUi");
+        // since iPhone < iOS10 is always playing in full screen and not showing our skin, don't need to render skin
+        this.mb.unsubscribe(OO.EVENTS.ADS_PLAYED, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_ADS, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.AD_POD_STARTED, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.WILL_PLAY_SINGLE_AD, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.SINGLE_AD_PLAYED, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.PLAY_NONLINEAR_AD, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.NONLINEAR_AD_PLAYED, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.HIDE_NONLINEAR_AD, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.SHOW_NONLINEAR_AD, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.SHOW_AD_SKIP_BUTTON, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.SHOW_AD_CONTROLS, 'customerUi');
+        this.mb.unsubscribe(OO.EVENTS.SHOW_AD_MARQUEE, 'customerUi');
 
         if (OO.EVENTS.DISCOVERY_API) {
-          this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, "customerUi");
+          this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, 'customerUi');
         }
       }
       this.state.isSubscribed = false;
     },
 
-    /*--------------------------------------------------------------------
+    /* --------------------------------------------------------------------
      Skin state -> control skin
      ---------------------------------------------------------------------*/
     renderSkin: function(args) {
@@ -1528,27 +1868,27 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    /*--------------------------------------------------------------------
+    /* --------------------------------------------------------------------
      skin UI-action -> publish event to core player
      ---------------------------------------------------------------------*/
     toggleDiscoveryScreen: function() {
-      switch(this.state.playerState) {
+      switch (this.state.playerState) {
         case CONSTANTS.STATE.PLAYING:
           this.pausedCallback = function() {
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
             this.state.playerState = CONSTANTS.STATE.PAUSE;
-            this.state.pluginsElement.addClass("oo-overlay-blur");
+            this.state.pluginsElement.addClass('oo-overlay-blur');
             this.renderSkin();
-            OO.log("finished toggleDiscoveryScreen");
+            OO.log('finished toggleDiscoveryScreen');
           }.bind(this);
           this.togglePlayPause();
           this.sendDiscoveryDisplayEventOld("pauseScreen");
           this.state.discoverySource = CONSTANTS.SCREEN.PAUSE_SCREEN;
           break;
         case CONSTANTS.STATE.PAUSE:
-          if(this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
+          if (this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
             this.state.pauseAnimationDisabled = true;
-            this.state.pluginsElement.removeClass("oo-overlay-blur");
+            this.state.pluginsElement.removeClass('oo-overlay-blur');
             this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
           }
           else {
@@ -1559,8 +1899,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }
           break;
         case CONSTANTS.STATE.END:
-          if(this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
-            this.state.pluginsElement.removeClass("oo-overlay-blur");
+          if (this.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
+            this.state.pluginsElement.removeClass('oo-overlay-blur');
             this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
           }
           else {
@@ -1571,6 +1911,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             this.skin.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen = false;
           }
           break;
+        default:
+          break;
       }
       this.renderSkin();
     },
@@ -1579,30 +1921,28 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.publish(OO.EVENTS.CHANGE_MUTE_STATE, muted, null, fromUser);
     },
 
-    toggleStereoVr: function () {
+    toggleStereoVr: function() {
       this.isVrStereo = !this.isVrStereo;
       this.mb.publish(OO.EVENTS.TOGGLE_STEREO_VR);
     },
 
-    moveVrToDirection: function (rotate, direction) {
+    moveVrToDirection: function(rotate, direction) {
       this.mb.publish(OO.EVENTS.MOVE_VR_TO_DIRECTION, this.focusedElement, rotate, direction);
     },
 
     togglePlayPause: function() {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
-          if (!this.state.isInitialPlay){
+          if (!this.state.isInitialPlay) {
             this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now(), false);
           }
           break;
         case CONSTANTS.STATE.END:
-          if(Utils.isAndroid() || Utils.isIos()) {
-            if(this.state.isSkipAdClicked) {
-             this.state.isSkipAdClicked = false;
-            }
-            else
-            {
-               this.mb.publish(OO.EVENTS.REPLAY);
+          if (Utils.isAndroid() || Utils.isIos()) {
+            if (this.state.isSkipAdClicked) {
+              this.state.isSkipAdClicked = false;
+            } else {
+              this.mb.publish(OO.EVENTS.REPLAY);
             }
           } else {
             this.mb.publish(OO.EVENTS.REPLAY);
@@ -1614,17 +1954,22 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           break;
         case CONSTANTS.STATE.PLAYING:
           this.isNewVrVideo = false;
+          // In some cases the controlBarVisible var might get out of sync if not
+          // set explicitly when pausing. When this happens the control bar flashes
+          // when the playingScreen is rendered, so we want to avoid that.
+          this.showControlBar();
           this.mb.publish(OO.EVENTS.PAUSE);
+          break;
+        default:
           break;
       }
     },
 
     seek: function(seconds) {
-      if (this.state.playerState == CONSTANTS.STATE.END) {
+      if (this.state.playerState === CONSTANTS.STATE.END) {
         this.endSeeking();
         this.mb.publish(OO.EVENTS.REPLAY, seconds);
-      }
-      else {
+      } else {
         this.mb.publish(OO.EVENTS.SEEK, seconds);
       }
     },
@@ -1642,21 +1987,22 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleShareScreen: function() {
-      if (this.state.screenToShow == CONSTANTS.SCREEN.SHARE_SCREEN) {
+      if (this.state.screenToShow === CONSTANTS.SCREEN.SHARE_SCREEN) {
         this.closeScreen();
-      }
-      else {
-        if (this.state.playerState == CONSTANTS.STATE.PLAYING || this.state.playerState == CONSTANTS.STATE.START) {
+      } else {
+        if (
+          this.state.playerState === CONSTANTS.STATE.PLAYING ||
+          this.state.playerState === CONSTANTS.STATE.START
+        ) {
           this.pausedCallback = function() {
-            this.state.pluginsElement.addClass("oo-overlay-blur");
+            this.state.pluginsElement.addClass('oo-overlay-blur');
             this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
             this.renderSkin();
           }.bind(this);
           this.mb.publish(OO.EVENTS.PAUSE);
-        }
-        else {
+        } else {
           this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
-          this.state.pluginsElement.addClass("oo-overlay-blur");
+          this.state.pluginsElement.addClass('oo-overlay-blur');
           this.renderSkin();
         }
       }
@@ -1664,28 +2010,80 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     toggleScreen: function(screen) {
       this.isNewVrVideo = false;
-      if (this.state.screenToShow == screen) {
+      if (this.state.screenToShow === screen) {
         this.closeScreen();
       }
       else {
-        if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
+        if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
           this.pausedCallback = function() {
-            this.state.pluginsElement.addClass("oo-overlay-blur");
+            this.state.pluginsElement.addClass('oo-overlay-blur');
             this.state.screenToShow = screen;
             this.renderSkin();
           }.bind(this);
           this.mb.publish(OO.EVENTS.PAUSE);
-        }
-        else {
+        } else {
           this.state.screenToShow = screen;
-          this.state.pluginsElement.addClass("oo-overlay-blur");
+          this.state.pluginsElement.addClass('oo-overlay-blur');
           this.renderSkin();
         }
       }
     },
 
+    /**
+     * The function handles a click on multiAudio icon
+     */
+    toggleMultiAudioScreen: function() {
+      if (this.state.screenToShow === CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
+        if (this.state.playerState === CONSTANTS.STATE.END) {
+          this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
+        } else if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
+          this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+        } else {
+          this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+        }
+      } else {
+        this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
+      }
+      this.renderSkin();
+    },
+
+    sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
+      this.state.pluginsElement.removeClass("oo-overlay-blur");
+      if (isAutoUpNext){
+        this.state.upNextInfo.delayedContentData = selectedContentData;
+        this.state.upNextInfo.delayedSetEmbedCodeEvent = true;
+      } else {
+        this.state.upNextInfo.showing = false;
+        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+        this.renderSkin();
+        this.mb.publish(OO.EVENTS.PAUSE);
+        if (selectedContentData.clickedVideo.embed_code) {
+          this.mb.publish(
+            OO.EVENTS.SET_EMBED_CODE,
+            selectedContentData.clickedVideo.embed_code,
+            this.state.playerParam
+          );
+        } else if (selectedContentData.clickedVideo.asset) {
+          this.mb.publish(OO.EVENTS.SET_ASSET, selectedContentData.clickedVideo.asset);
+        }
+        this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
+      }
+    },
+
+    sendDiscoveryDisplayEvent: function(assetPosition, pageSize, uiTag, asset, customData) {
+      customData.source = this.state.discoverySource;
+      // With "Up Next" panel we only pass the data of the asset
+      // that is currently shown
+      if (asset.embed_code) {
+        var eventData = {
+          "metadata" : Utils.getDiscoveryEventData(assetPosition, pageSize, uiTag, asset, customData)
+        };
+        this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
+      }
+    },
+
     sendDiscoveryDisplayEventOld: function(screenName, embedCode) {
-      var relatedVideosData = Utils.getPropertyValue(this.state.discoveryData, "relatedVideos", []);
+      var relatedVideosData = Utils.getPropertyValue(this.state.discoveryData, 'relatedVideos', []);
       var relatedVideos = relatedVideosData;
 
       // With "Up Next" panel we only pass the data of the asset
@@ -1698,45 +2096,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
 
       var eventData = {
-        "relatedVideos" : relatedVideos,
-        "custom" : { "source" : screenName }
+        relatedVideos: relatedVideos,
+        custom: { source: screenName }
       };
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
-    },
-
-     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
-      this.state.pluginsElement.removeClass("oo-overlay-blur");
-      if (isAutoUpNext){
-        this.state.upNextInfo.delayedContentData = selectedContentData;
-        this.state.upNextInfo.delayedSetEmbedCodeEvent = true;
-      }
-      else {
-        this.state.upNextInfo.showing = false;
-        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
-        this.renderSkin();
-        this.mb.publish(OO.EVENTS.PAUSE);
-        if (selectedContentData.clickedVideo.embed_code){
-          this.mb.publish(OO.EVENTS.SET_EMBED_CODE, selectedContentData.clickedVideo.embed_code,
-                          this.state.playerParam);
-        }
-        else if (selectedContentData.clickedVideo.asset){
-          this.mb.publish(OO.EVENTS.SET_ASSET, selectedContentData.clickedVideo.asset);
-        }
-        this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_CLICK_EVENT, selectedContentData);
-      }
-    },
-
-    sendDiscoveryDisplayEvent: function(assetPosition, pageSize, uiTag, asset, customData) {
-      customData.source = this.state.discoverySource;
-      // With "Up Next" panel we only pass the data of the asset
-      // that is currently shown
-
-      if (asset.embed_code) {
-        var eventData = {
-          "metadata" : Utils.getDiscoveryEventData(assetPosition, pageSize, uiTag, asset, customData)
-        };
-        this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
-      }
     },
 
     togglePopover: function(menu) {
@@ -1748,23 +2111,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    closePopovers: function() {
-      this.state.closedCaptionOptions.showPopover = false;
-      this.state.videoQualityOptions.showPopover = false;
-      this.renderSkin();
-    },
-
     receiveVideoQualityChangeEvent: function(event, targetBitrate) {
-        this.state.videoQualityOptions.selectedBitrate = {
-        "id": targetBitrate
+      this.state.videoQualityOptions.selectedBitrate = {
+        id: targetBitrate
       };
       this.renderSkin({
-          "videoQualityOptions": {
-            "availableBitrates": this.state.videoQualityOptions.availableBitrates,
-            "selectedBitrate": this.state.videoQualityOptions.selectedBitrate,
-            "showPopover": this.state.videoQualityOptions.showPopover
-          }
-        });
+        videoQualityOptions: {
+          availableBitrates: this.state.videoQualityOptions.availableBitrates,
+          selectedBitrate: this.state.videoQualityOptions.selectedBitrate,
+          showPopover: this.state.videoQualityOptions.showPopover
+        }
+      });
       if (this.state.videoQualityOptions.showPopover === true) {
         this.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
       }
@@ -1772,7 +2129,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     sendVideoQualityChangeEvent: function(selectedContentData) {
       this.state.videoQualityOptions.selectedBitrate = {
-        "id": selectedContentData.id
+        id: selectedContentData.id
       };
       this.mb.publish(OO.EVENTS.SET_TARGET_BITRATE, selectedContentData.id);
     },
@@ -1789,27 +2146,37 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    setClosedCaptionsLanguage: function(){
+    setClosedCaptionsLanguage: function() {
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
-      //if saved language not in available languages, set to first available language
-      if (availableLanguages && (this.state.closedCaptionOptions.language == null || !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))) {
+      // if saved language not in available languages, set to first available language
+      if (
+        availableLanguages &&
+        (this.state.closedCaptionOptions.language === null ||
+          !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))
+      ) {
         this.state.closedCaptionOptions.language = availableLanguages.languages[0];
       }
-      var language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : "";
-      var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
+      var language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : '';
+      var mode = this.state.closedCaptionOptions.enabled
+        ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN
+        : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {
         mode: mode,
         isFullScreen: this.state.fullscreen
       });
     },
 
+    /**
+     * @description Close an extra screen
+     * @private
+     */
     closeScreen: function() {
-      this.state.pluginsElement.removeClass("oo-overlay-blur");
+      this.state.pluginsElement.removeClass('oo-overlay-blur');
       this.state.pauseAnimationDisabled = true;
-      if (this.state.playerState == CONSTANTS.STATE.PAUSE) {
+      if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
         this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
       }
-      else if (this.state.playerState == CONSTANTS.STATE.END) {
+      else if (this.state.playerState === CONSTANTS.STATE.END) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
       }
       this.renderSkin();
@@ -1824,28 +2191,32 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
 
-      //validate language is available before update and save
+      // validate language is available before update and save
       if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
-        this.state.closedCaptionOptions.language = this.state.persistentSettings.closedCaptionOptions.language = language;
-        var captionLanguage = this.state.closedCaptionOptions.enabled ? language : "";
-        var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
-        //publish set closed caption event
+        this.state.closedCaptionOptions.language =
+          this.state.persistentSettings.closedCaptionOptions.language = language;
+        var captionLanguage = this.state.closedCaptionOptions.enabled ? language : '';
+        var mode = this.state.closedCaptionOptions.enabled
+          ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN
+          : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
+        // publish set closed caption event
         this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, captionLanguage, {
           mode: mode,
           isFullScreen: this.state.fullscreen
         });
-        //update skin, save new closed caption language
+        // update skin, save new closed caption language
         this.renderSkin();
         this.mb.publish(OO.EVENTS.SAVE_PLAYER_SETTINGS, this.state.persistentSettings);
-      }
-      //if language not in available languages, log error
-      else {
-        OO.log("Invalid closed caption language.");
+      } else {
+        // if language not in available languages, log error
+        OO.log('Invalid closed caption language.');
       }
     },
 
     onClosedCaptionChange: function(name, value) {
-      this.state.closedCaptionOptions[name] = this.state.persistentSettings.closedCaptionOptions[name] = value;
+      this.state.closedCaptionOptions[name] = this.state.persistentSettings.closedCaptionOptions[
+        name
+      ] = value;
       if (name === 'language') {
         this.setClosedCaptionsLanguage();
         this.setCaptionDirection(value);
@@ -1859,13 +2230,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
      * if chosen language is right-to-left language set rtl as value for this.captionDirection
      * else set this.captionDirection as ''
      * @private
-     * @param languageCode
+     * @param {String} languageCode - ISO-639 language code
      */
     setCaptionDirection: function(languageCode) {
-      if (typeof languageCode === 'string' &&
+      if (
+        typeof languageCode === 'string' &&
         languageCode.length === 2 &&
         this.state.config.languageDirections !== null &&
-        typeof this.state.config.languageDirections === 'object') {
+        typeof this.state.config.languageDirections === 'object'
+      ) {
         if (this.state.config.languageDirections[languageCode]) {
           this.captionDirection = this.state.config.languageDirections[languageCode];
         } else {
@@ -1902,7 +2275,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     toggleClosedCaptionEnabled: function() {
       this.state.closedCaptionOptions.enabled = !this.state.closedCaptionOptions.enabled;
-      this.state.persistentSettings.closedCaptionOptions['enabled'] = !!this.state.closedCaptionOptions.enabled;
+      this.state.persistentSettings.closedCaptionOptions['enabled'] = !!this.state.closedCaptionOptions
+        .enabled;
       this.setClosedCaptionsLanguage();
       this.renderSkin();
       this.mb.publish(OO.EVENTS.SAVE_PLAYER_SETTINGS, this.state.persistentSettings);
@@ -1915,7 +2289,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     toggleMoreOptionsScreen: function(moreOptionsItems) {
-      if (this.state.screenToShow == CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN) {
+      if (this.state.screenToShow === CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN) {
         this.closeMoreOptionsScreen();
       } else {
         this.displayMoreOptionsScreen(moreOptionsItems);
@@ -1927,28 +2301,27 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
       this.state.playerState = CONSTANTS.STATE.PAUSE;
       this.state.moreOptionsItems = null;
-      this.state.pluginsElement.removeClass("oo-overlay-blur");
+      this.state.pluginsElement.removeClass('oo-overlay-blur');
       this.renderSkin();
     },
 
     displayMoreOptionsScreen: function(moreOptionsItems) {
-      if (this.state.playerState == CONSTANTS.STATE.PLAYING) {
+      if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
         this.pausedCallback = function() {
           this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
-          this.state.pluginsElement.addClass("oo-overlay-blur");
+          this.state.pluginsElement.addClass('oo-overlay-blur');
           this.renderSkin();
         }.bind(this);
         this.mb.publish(OO.EVENTS.PAUSE);
-      }
-      else {
+      } else {
         this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
-        this.state.pluginsElement.addClass("oo-overlay-blur");
+        this.state.pluginsElement.addClass('oo-overlay-blur');
         this.renderSkin();
       }
       this.state.moreOptionsItems = moreOptionsItems;
     },
 
-    enablePauseAnimation: function(){
+    enablePauseAnimation: function() {
       this.state.pauseAnimationDisabled = false;
     },
 
@@ -1979,23 +2352,29 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     startHideVolumeSliderTimer: function() {
-        this.cancelTimer();
-        var timer = setTimeout(function() {
-          if(this.state.volumeState.volumeSliderVisible === true){
+      this.cancelTimer();
+      var timer = setTimeout(
+        function() {
+          if (this.state.volumeState.volumeSliderVisible === true) {
             this.hideVolumeSliderBar();
           }
-        }.bind(this), 3000);
-        this.state.timer = timer;
+        }.bind(this),
+        3000
+      );
+      this.state.timer = timer;
     },
 
     startHideControlBarTimer: function() {
-      if (this.skin.props.skinConfig.controlBar.autoHide == true) {
+      if (this.skin.props.skinConfig.controlBar.autoHide === true) {
         this.cancelTimer();
-        var timer = setTimeout(function() {
-          if(this.state.controlBarVisible === true){
-            this.hideControlBar();
-          }
-        }.bind(this), 3000);
+        var timer = setTimeout(
+          function() {
+            if (this.state.controlBarVisible === true) {
+              this.hideControlBar();
+            }
+          }.bind(this),
+          3000
+        );
         this.state.timer = timer;
       }
     },
@@ -2012,57 +2391,61 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     cancelTimer: function() {
-      if (this.state.timer !== null){
+      if (this.state.timer !== null) {
         clearTimeout(this.state.timer);
         this.state.timer = null;
       }
     },
 
-    //use fixed aspect ratio number from skinConfig
+    // use fixed aspect ratio number from skinConfig
     updateAspectRatio: function() {
-      if(this.skin && this.skin.props.skinConfig.responsive.aspectRatio && this.skin.props.skinConfig.responsive.aspectRatio != "auto") {
+      if (
+        this.skin &&
+        this.skin.props.skinConfig.responsive.aspectRatio &&
+        this.skin.props.skinConfig.responsive.aspectRatio !== 'auto'
+      ) {
         this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
         this.setAspectRatio();
       }
     },
 
-    //returns original video aspect ratio
+    // returns original video aspect ratio
     calculateAspectRatio: function(width, height) {
-      var aspectRatio = ((height / width) * 100).toFixed(2);
+      var aspectRatio = (height / width * 100).toFixed(2);
       return aspectRatio;
     },
 
-    //set Main Video Element Wrapper padding-top to aspect ratio
+    // set Main Video Element Wrapper padding-top to aspect ratio
     setAspectRatio: function() {
-      if(this.state.mainVideoAspectRatio > 0) {
-        this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
+      if (this.state.mainVideoAspectRatio > 0) {
+        this.state.mainVideoInnerWrapper.css('padding-top', this.state.mainVideoAspectRatio + '%');
       }
     },
 
-    //find descendant video element
+    // find descendant video element
     findMainVideoElement: function(element) {
       var elements = [];
-      //use actual element
+      // use actual element
       if (element[0]) {
         element = element[0];
       }
 
-      //find html5 video
-      if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) != -1) {
+      // find html5 video
+      if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) !== -1) {
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
-      }
-      else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
+      } else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
         elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO);
         if (elements.length) {
           element = elements[0];
           this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
         }
-      }
-      //find flash object
-      else if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) != -1) {
+      } else if (
+        element.tagName &&
+        element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) !== -1
+      ) {
+        // find flash object
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
-      }
-      else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
+      } else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
         elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT);
         if (elements.length) {
           element = elements[0];
@@ -2070,6 +2453,18 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
       }
       return element;
+    },
+
+    /**
+     * Adds a blur effect to the video
+     * @protected
+     * @method Html5Skin#addBlur
+     */
+    addBlur: function() {
+      // [PLAYER-2220]: videoVr should not blur. This prevents a circular review on a pause.
+      if (!this.videoVr && this.state.mainVideoElement && this.state.mainVideoElement.classList) {
+        this.state.mainVideoElement.classList.add('oo-blur');
+      }
     },
 
     removeBlur: function() {
@@ -2084,7 +2479,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoElementContainer.classList.remove('oo-blur');
       }
     }
-
   };
 
   return Html5Skin;

@@ -19,7 +19,7 @@ var ClosedCaptionPopover = React.createClass({
       this.props.controller.state.closedCaptionOptions.autoFocus = this.moreOptionsBtn.wasTriggeredWithKeyboard();
       this.moreOptionsBtn.wasTriggeredWithKeyboard(false);
     }
-    this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
+    this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
     this.handleClose();
   },
 
@@ -42,7 +42,7 @@ var ClosedCaptionPopover = React.createClass({
         </li>
         <li role="presentation">
           <AccessibleButton
-            ref={function(e) { this.moreOptionsBtn = e }.bind(this)}
+            ref={function(e) { this.moreOptionsBtn = e; }.bind(this)}
             className="oo-more-captions"
             ariaLabel={CONSTANTS.ARIA_LABELS.CAPTION_OPTIONS}
             role={CONSTANTS.ARIA_ROLES.MENU_ITEM}

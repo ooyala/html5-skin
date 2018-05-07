@@ -13,7 +13,7 @@ var ViewControlsVr = React.createClass({
    * @param direction {string} direction for rotation: "left", "right", "up", "down"
    */
   handleVrViewControlsClick: function(e, isRotated, direction) {
-    if (e.type === "touchend" || !this.props.controller.state.isMobile) {
+    if (e.type === 'touchend' || !this.props.controller.state.isMobile) {
       e.stopPropagation(); // W3C
       e.cancelBubble = true; // IE
       this.props.controller.state.accessibilityControlsEnabled = true;
@@ -26,10 +26,10 @@ var ViewControlsVr = React.createClass({
    * @method ViewControlsVr#_setupIconSymbol
    * @private
    */
-  _setupIconSymbol: function () {
+  _setupIconSymbol: function() {
     var desktopContent = this.props.skinConfig.buttons.desktopContent;
-    this.icon = _.find(desktopContent, function (el) {
-      return el.location === "mainView";
+    this.icon = _.find(desktopContent, function(el) {
+      return el.location === 'mainView';
     });
   },
 
@@ -37,9 +37,9 @@ var ViewControlsVr = React.createClass({
    * @method ViewControlsVr#_setupBackgroundSymbol
    * @private
    */
-  _setupBackgroundSymbol: function () {
-    if(this.icon){
-      if(this.icon.name === 'arrowsBlack'){
+  _setupBackgroundSymbol: function() {
+    if (this.icon) {
+      if (this.icon.name === 'arrowsBlack') {
         this.backgroundIcon = 'circleArrowsBlack';
       } else {
         this.backgroundIcon = 'circleArrowsWhite';
@@ -47,7 +47,7 @@ var ViewControlsVr = React.createClass({
     }
   },
 
-  componentWillMount: function () {
+  componentWillMount: function() {
     // if we have vr mode, and the device !== mobile, we need to add control element to the screen of the player.
     // control element is covered with icon from fonts
     this.isMobile = false;
@@ -72,13 +72,13 @@ var ViewControlsVr = React.createClass({
     }
   },
 
-  render: function () {
+  render: function() {
     var isShowing = !!(this.icon && this.icon.name);
 
     return !isShowing ? null :
-      (<div className={classnames("oo-vr-icon-container view-controls", {"oo-vr-icon-container--hidden": !this.props.controlBarVisible})}>
-        <Icon {...this.props} icon={this.backgroundIcon} className={classnames("oo-vr-icon--substrate")}/>
-        <Icon {...this.props} icon={this.icon.name} className={classnames("oo-vr-icon--icon-symbol")}/>
+      (<div className={classnames('oo-vr-icon-container view-controls', {'oo-vr-icon-container--hidden': !this.props.controlBarVisible})}>
+        <Icon {...this.props} icon={this.backgroundIcon} className={classnames('oo-vr-icon--substrate')}/>
+        <Icon {...this.props} icon={this.icon.name} className={classnames('oo-vr-icon--icon-symbol')}/>
         <DirectionControlVr {...this.props} handleVrViewControlsClick = {this.handleVrViewControlsClick} dir = "left"/>
         <DirectionControlVr {...this.props} handleVrViewControlsClick = {this.handleVrViewControlsClick} dir = "right"/>
         <DirectionControlVr {...this.props} handleVrViewControlsClick = {this.handleVrViewControlsClick} dir = "up"/>

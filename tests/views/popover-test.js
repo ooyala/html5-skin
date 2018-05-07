@@ -8,7 +8,7 @@ var TestUtils = require('react-addons-test-utils');
 var Popover = require('../../js/views/popover');
 var CONSTANTS = require('../../js/constants/constants');
 
-describe('Popover', function () {
+describe('Popover', function() {
 
   function getDOM(popoverClassName, closeActionEnabled, closeAction) {
     var DOM = TestUtils.renderIntoDocument(

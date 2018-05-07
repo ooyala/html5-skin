@@ -10,7 +10,7 @@ var LanguageTab = React.createClass({
     };
   },
 
-  changeLanguage: function(language){
+  changeLanguage: function(language) {
     var availableLanguages = this.props.closedCaptionOptions.availableLanguages;
     var invertedLocale = {};
     for (var i = 0; i < availableLanguages.languages.length; i++) {
@@ -27,8 +27,8 @@ var LanguageTab = React.createClass({
     });
   },
 
-  render: function(){
-    return(
+  render: function() {
+    return (
       <div className="oo-language-tab">
         <DataSelector
           {...this.props}

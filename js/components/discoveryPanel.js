@@ -25,12 +25,12 @@ var DiscoveryPanel = React.createClass({
     };
   },
 
-  componentDidMount: function () {
+  componentDidMount: function() {
     this.detectHeight();
   },
 
   handleResize: function(nextProps) {
-    //If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
+    // If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
     var currentViewSize = this.props.responsiveView;
     var nextViewSize = nextProps.responsiveView;
     var firstDiscoverIndex = this.state.currentPage * this.props.videosPerPage[currentViewSize] - this.props.videosPerPage[currentViewSize];
@@ -99,7 +99,7 @@ var DiscoveryPanel = React.createClass({
       // TODO: get msg if no discovery related videos
     }
 
-    //pagination
+    // pagination
     var currentViewSize = this.props.responsiveView;
     var videosPerPage = this.props.videosPerPage[currentViewSize];
     var startAt = videosPerPage * (this.state.currentPage - 1);
@@ -240,8 +240,6 @@ DiscoveryPanel.defaultProps = {
   controller: {
     sendDiscoveryClickEvent: function(a,b){},
     sendDiscoveryDisplayEvent: function(a,b,c,d,e){}
-
-
   },
   responsiveView: 'md'
 };
