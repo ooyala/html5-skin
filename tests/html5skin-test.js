@@ -840,4 +840,40 @@ describe('Controller', function() {
     );
     
   });
+
+  describe('Ad Plugins Element', function() {
+    afterEach(function() {
+      controller.onAdsPlayed();
+    });
+
+    it('should set the correct class for the ad plugins element for a linear ad', function() {
+      controller.state.elementId = elementId;
+      controller.state.config = {};
+      controller.state.config.adScreen = {};
+      controller.createPluginElements();
+      expect(controller.state.pluginsElement.hasClass('oo-player-skin-plugins')).toEqual(true);
+      expect(controller.state.pluginsElement.hasClass('oo-showing')).toEqual(false);
+      expect(controller.state.pluginsElement.hasClass('oo-overlay-showing')).toEqual(false);
+
+      controller.onPlaying('', OO.VIDEO.ADS);
+      expect(controller.state.pluginsElement.hasClass('oo-player-skin-plugins')).toEqual(true);
+      expect(controller.state.pluginsElement.hasClass('oo-showing')).toEqual(true);
+      expect(controller.state.pluginsElement.hasClass('oo-overlay-showing')).toEqual(false);
+    });
+
+    it('should set the correct class for the ad plugins element for a nonlinear ad', function() {
+      controller.state.elementId = elementId;
+      controller.state.config = {};
+      controller.state.config.adScreen = {};
+      controller.createPluginElements();
+      expect(controller.state.pluginsElement.hasClass('oo-player-skin-plugins')).toEqual(true);
+      expect(controller.state.pluginsElement.hasClass('oo-showing')).toEqual(false);
+      expect(controller.state.pluginsElement.hasClass('oo-overlay-showing')).toEqual(false);
+
+      controller.onPlayNonlinearAd('customerUi', {isLive:true, duration:10, url:'www.ooyala.com', ad:{height:12, width:14}});
+      expect(controller.state.pluginsElement.hasClass('oo-player-skin-plugins')).toEqual(true);
+      expect(controller.state.pluginsElement.hasClass('oo-showing')).toEqual(false);
+      expect(controller.state.pluginsElement.hasClass('oo-overlay-showing')).toEqual(true);
+    });
+  });
 });
