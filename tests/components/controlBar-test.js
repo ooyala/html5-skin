@@ -2064,7 +2064,7 @@ describe('ControlBar', function() {
     oneButtonSkinConfig.buttons.desktopContent = [
       {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':130 }
     ];
-    oneButtonSkinConfig.controlBar.logo.imageResource.url = '//player.ooyala.com/static/v4/stable/4.24.9/skin-plugin/assets/images/ooyala-logo.svg';
+    oneButtonSkinConfig.controlBar.logo.imageResource.url = '//player.ooyala.com/static/v4/stable/4.24.11/skin-plugin/assets/images/ooyala-logo.svg';
     oneButtonSkinConfig.controlBar.logo.clickUrl = 'http://www.ooyala.com';
 
     var mockProps = {
