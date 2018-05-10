@@ -58,15 +58,20 @@ function getDisplayLanguage(languagesList, languageCode) {
  * Gets display title based on language and label
  * @param {String} language - language string attribute
  * @param {String} label - label string attribute
+ * @param {String} noLanguageText - label for a case when
+ * we do not have values for language and label of an audioTrack
  * @returns {String} displayTitle - human readable display title
  */
-function getDisplayTitle(language, label) {
+function getDisplayTitle(language, label, noLanguageText) {
   // set default function params
   var displayLanguage = language || '';
   var displayLabel = label || '';
 
   if (!displayLanguage.length && !displayLabel.length) {
-    return CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
+    if (typeof noLanguageText === 'undefined' || !noLanguageText.length) {
+      noLanguageText = CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
+    }
+    return noLanguageText;
   } else if (displayLanguage.length && !displayLabel.length) {
     return displayLanguage;
   } else if (!displayLanguage.length && displayLabel.length) {
@@ -81,9 +86,11 @@ function getDisplayTitle(language, label) {
  * if all tracks are distinct - only use language attribute
  * if there are duplicates - append label to the language attribute
  * @param {Array} tracksList - list of all tracks
+ * @param {String} noLanguageText - label for a case when
+ * we do not have values for language and label of an audioTrack
  * @returns {Array} transformedTracksList - list of transformed tracks
  */
-function transformTracksList(tracksList) {
+function transformTracksList(tracksList, noLanguageText) {
   var transformedTracksList = [];
   // first we group by language to know if we have distinct tracks
   if (tracksList && tracksList.length) {
@@ -93,7 +100,7 @@ function transformTracksList(tracksList) {
     // if all languages are distinct - discard labels
     if (groupedKeys.length === tracksList.length) {
       transformedTracksList = tracksList.map(function(audioTrack) {
-        var trackDisplayTitle = getDisplayTitle(audioTrack.language);
+        var trackDisplayTitle = getDisplayTitle(audioTrack.language, '', noLanguageText);
         var transformedTrack = {
           id: audioTrack.id,
           label: trackDisplayTitle,
@@ -109,7 +116,7 @@ function transformTracksList(tracksList) {
           // get each list of duplicating tracks
           return groupedTracks[key].map(function(audioTrack) {
             // get display title based on language and label
-            var trackDisplayTitle = getDisplayTitle(audioTrack.language, audioTrack.label);
+            var trackDisplayTitle = getDisplayTitle(audioTrack.language, audioTrack.label, noLanguageText);
             
             var transformedTrack = {
               enabled: audioTrack.enabled,
@@ -122,7 +129,7 @@ function transformTracksList(tracksList) {
         } else {
           // this track is distinct
           var audioTrack = _.head(groupedTracks[key]);
-          var trackDisplayTitle = getDisplayTitle(audioTrack.language);
+          var trackDisplayTitle = getDisplayTitle(audioTrack.language, '', noLanguageText);
           var transformedTrack = {
             enabled: audioTrack.enabled,
             label: trackDisplayTitle,
