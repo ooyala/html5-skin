@@ -2,6 +2,7 @@ jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/closedCapt
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/multiAudioTab');
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/tab');
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/helpers');
+jest.dontMock('../../../js/components/utils');
 jest.dontMock('../../../js/constants/languages');
 jest.dontMock('underscore');
 
@@ -55,6 +56,18 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
             ]
           }
         }
+      },
+      language: 'sp',
+      localizableStrings: {
+        en: {
+          Audio: 'MockTitleEn'
+        },
+        sp: {
+          Audio: 'MockTitleSp'
+        },
+        ja: {
+          Audio: 'MockTitleJa'
+        }
       }
     };
 
@@ -90,6 +103,17 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
       lang: 'eng',
       id: '1'
     });
+  });
+
+  it('should render MultiAudioTab component with translated title', function() {
+    var component = TestUtils.findRenderedComponentWithType(DOM, MultiAudioTab);
+
+    expect(component).toBeTruthy();
+
+    var tabComponent = TestUtils.scryRenderedComponentsWithType(DOM, Tab);
+
+    var header = TestUtils.findRenderedDOMComponentWithClass(tabComponent[0], 'oo-cc-ma-menu__header');
+    expect(header.textContent).toEqual('MockTitleSp');
   });
 
   it('should also render Tab component when options are provided', function() {

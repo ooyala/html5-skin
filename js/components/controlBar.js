@@ -729,6 +729,8 @@ var ControlBar = React.createClass({
               closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
             >
               <ClosedCaptionMultiAudioMenu
+                language={this.props.language}
+                localizableStrings={this.props.localizableStrings}
                 menuClassName={"oo-cc-ma-menu--popover"}
                 togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
                 {...this.props}
