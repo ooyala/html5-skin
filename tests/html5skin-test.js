@@ -413,6 +413,13 @@ describe('Controller', function() {
       expect(controller.state.controlBarVisible).toBe(true);
     });
 
+    it('should hide control bar when playing ads', function() {
+      controller.state.controlBarVisible = true;
+      controller.state.playerState = CONSTANTS.STATE.PLAYING;
+      controller.onWillPlayAds();
+      expect(controller.state.controlBarVisible).toBe(false);
+    });
+
     it('should blur when addBlur API is called', function() {
       var spy = sinon.spy(controller.state.mainVideoElement.classList, 'add');
       controller.videoVr = false;
