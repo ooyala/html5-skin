@@ -3,6 +3,7 @@ jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/tab');
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/helpers');
 jest.dontMock('../../../js/constants/languages');
 jest.dontMock('underscore');
+jest.dontMock('../../../js/components/utils');
 
 var _ = require('underscore');
 var React = require('react');
@@ -18,6 +19,17 @@ describe('MultiAudioTab component', function() {
 
   var props = {};
   var DOM;
+  var language = 'en';
+  var localizableStrings = {
+    'en': {
+      'No linguistic content' : 'No linguistic content',
+      'Undefined language' : 'Undefined language'
+    },
+    'es': {
+      'No linguistic content' : 'Contenido no lingüístico',
+      'Undefined language' : 'Lenguaje indefinido'
+    },
+  };
 
   beforeEach(function() {
     props = {
@@ -85,7 +97,6 @@ describe('MultiAudioTab component', function() {
 
   describe('when language list contains duplicate valid Language codes (not "und") with Name attribute', 
     function() {
-
       describe('and labels are distinct', function() {
         it('should render correct language list', function() {
           props.audioTracksList = [
@@ -156,8 +167,15 @@ describe('MultiAudioTab component', function() {
             { id: '2', lang: 'spa', label: '' },
             { id: '3', lang: 'zxx', label: '' },
           ];
+          var NO_LINGUISTIC_CONTENT = 'No linguistic content';
+          var language = 'es';
 
-          var multiAudioTab = TestUtils.renderIntoDocument(<MultiAudioTab {...props} />);
+          var multiAudioTab = TestUtils.renderIntoDocument(
+            <MultiAudioTab
+              {...props}
+              language={language}
+              localizableStrings={localizableStrings}
+            />);
 
           var items = TestUtils.scryRenderedDOMComponentsWithClass(multiAudioTab, 'oo-cc-ma-menu__element');
 
@@ -165,7 +183,9 @@ describe('MultiAudioTab component', function() {
             return item.textContent;
           });
 
-          expect(itemsTextContent).toEqual([ 'English', 'Español', 'No linguistic content' ]);
+          expect(itemsTextContent).toEqual(
+            [ 'English', 'Español', localizableStrings[language][NO_LINGUISTIC_CONTENT] ]
+          );
         });
       });
     }
@@ -215,17 +235,25 @@ describe('MultiAudioTab component', function() {
           expect(itemsTextContent).toEqual([ 'English', 'Deutsch', 'NAME', 'NAME 1' ]);
         });
       });
-      
+
       describe('and there\'s no label', function() {
-        it('should render correct language list', function() {
-          props.audioTracksList = [
-            { id: '1', lang: 'und', label: '' }, 
-            { id: '1', lang: 'und', label: '' }, 
-            { id: '1', lang: 'und', label: '' }, 
-            { id: '1', lang: 'und', label: '' }, 
-          ];
+
+        var undAudioTracksList = [
+          { id: '1', lang: 'und', label: '' },
+          { id: '1', lang: 'und', label: '' },
+          { id: '1', lang: 'und', label: '' },
+          { id: '1', lang: 'und', label: '' },
+        ];
+
+        it('should render correct language list when user language is en', function() {
+          props.audioTracksList = undAudioTracksList;
       
-          var multiAudioTab = TestUtils.renderIntoDocument(<MultiAudioTab {...props} />);
+          var multiAudioTab = TestUtils.renderIntoDocument(
+            <MultiAudioTab
+              {...props}
+              language={language}
+              localizableStrings={localizableStrings}
+            />);
       
           var items = TestUtils.scryRenderedDOMComponentsWithClass(multiAudioTab, 'oo-cc-ma-menu__element');
       
@@ -235,6 +263,48 @@ describe('MultiAudioTab component', function() {
   
           expect(itemsTextContent).toEqual(
             [ 'Undefined language', 'Undefined language 1', 'Undefined language 2', 'Undefined language 3' ]
+          );
+        });
+
+        it('should render correct language list when user language is unknown', function() {
+          props.audioTracksList = undAudioTracksList;
+          var language = undefined;
+          var multiAudioTab = TestUtils.renderIntoDocument(
+            <MultiAudioTab
+              {...props}
+              language={language}
+              localizableStrings={localizableStrings}
+            />);
+
+          var items = TestUtils.scryRenderedDOMComponentsWithClass(multiAudioTab, 'oo-cc-ma-menu__element');
+
+          var itemsTextContent = [].map.call(items, function(item) {
+            return item.textContent;
+          });
+
+          expect(itemsTextContent).toEqual(
+            [ 'Undefined language', 'Undefined language 1', 'Undefined language 2', 'Undefined language 3' ]
+          );
+        });
+
+        it('should render correct language list when user language is es', function() {
+          props.audioTracksList = undAudioTracksList;
+          var language='es';
+          var multiAudioTab = TestUtils.renderIntoDocument(
+            <MultiAudioTab
+              {...props}
+              language={language}
+              localizableStrings={localizableStrings}
+            />);
+
+          var items = TestUtils.scryRenderedDOMComponentsWithClass(multiAudioTab, 'oo-cc-ma-menu__element');
+
+          var itemsTextContent = [].map.call(items, function(item) {
+            return item.textContent;
+          });
+
+          expect(itemsTextContent).toEqual(
+            ['Lenguaje indefinido', 'Lenguaje indefinido 1', 'Lenguaje indefinido 2', 'Lenguaje indefinido 3']
           );
         });
       });

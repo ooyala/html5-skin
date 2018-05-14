@@ -89,6 +89,8 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
           handleClick={this.handleMultiAudioClick}
           skinConfig={this.props.skinConfig}
           audioTracksList={this.props.controller.state.multiAudio.tracks}
+          language={this.props.language}
+          localizableStrings={this.props.localizableStrings}
         />
       );
     }
@@ -130,6 +132,8 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
 
 ClosedCaptionMultiAudioMenu.propTypes = {
   menuClassName: React.PropTypes.string,
+  language: React.PropTypes.string,
+  localizableStrings: React.PropTypes.string,
   skinConfig: React.PropTypes.object,
   togglePopoverAction: React.PropTypes.func,
   language: React.PropTypes.string,
