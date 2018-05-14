@@ -32,19 +32,20 @@ var MultiAudioTab = React.createClass({
     var transformedTracksList = helpers.transformTracksList(readableTracksList);
 
     var uniqueTracksList = helpers.getUniqueTracks(transformedTracksList);
-    
+
     return (
       <Tab
         handleClick={this.props.handleClick}
         skinConfig={this.props.skinConfig}
         itemsList={uniqueTracksList}
-        header={CONSTANTS.SKIN_TEXT.AUDIO}
+        header={this.props.header}
       />
     );
   }
 });
 
 MultiAudioTab.propTypes = {
+  header: React.PropTypes.string.isRequired,
   audioTracksList: React.PropTypes.arrayOf(
     React.PropTypes.shape({
       id: React.PropTypes.string.isRequired,
