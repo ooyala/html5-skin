@@ -2,6 +2,7 @@ var React = require('react');
 var ScrollArea = require('react-scrollbar/dist/no-css');
 var Icon = require('../icon');
 var AccessibleButton = require('../accessibleButton');
+var AccessibleMenu = require('../higher-order/accessibleMenu');
 var classnames = require('classnames');
 var CONSTANTS = require('../../constants/constants');
 
@@ -21,7 +22,10 @@ var Tab = React.createClass({
           speed={1}
           horizontal={false}
         >
-          <ul className="oo-cc-ma-menu__list">
+          <ul
+            className="oo-cc-ma-menu__list"
+            role={CONSTANTS.ARIA_ROLES.MENU}
+          >
             {this.props.itemsList.map(function(el, index) {
               return (
                 <li
@@ -57,6 +61,8 @@ var Tab = React.createClass({
     );
   }
 });
+
+Tab = AccessibleMenu(Tab, { useRovingTabindex: true });
 
 Tab.defaultProps = {
   skinConfig: {

@@ -3,6 +3,7 @@ jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/multiAudio
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/tab');
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/helpers');
 jest.dontMock('../../../js/components/accessibleButton');
+jest.dontMock('../../../js/components/higher-order/accessibleMenu');
 jest.dontMock('../../../js/constants/languages');
 jest.dontMock('underscore');
 

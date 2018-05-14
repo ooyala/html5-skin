@@ -1,6 +1,7 @@
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/tab');
 jest.dontMock('../../../js/constants/constants');
 jest.dontMock('../../../js/components/accessibleButton');
+jest.dontMock('../../../js/components/higher-order/accessibleMenu');
 jest.dontMock('classnames');
 
 var React = require('react');
