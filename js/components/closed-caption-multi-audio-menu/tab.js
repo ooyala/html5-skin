@@ -1,7 +1,9 @@
 var React = require('react');
 var ScrollArea = require('react-scrollbar/dist/no-css');
 var Icon = require('../icon');
+var AccessibleButton = require('../accessibleButton');
 var classnames = require('classnames');
+var CONSTANTS = require('../../constants/constants');
 
 var Tab = React.createClass({
   handleClick: function(id) {
@@ -24,19 +26,28 @@ var Tab = React.createClass({
               return (
                 <li
                   key={index}
-                  onClick={this.handleClick.bind(this, el.id)}
                   className={classnames('oo-cc-ma-menu__element', {
                     'oo-cc-ma-menu__element--active': el.enabled
                   })}
                 >
-                  <Icon
-                    skinConfig={this.props.skinConfig}
-                    icon="selected"
-                    className={classnames({ 'oo-icon-hidden': !el.enabled })}
-                  />
-                  <span className="oo-cc-ma-menu__name" title={el.label}>
+                  <AccessibleButton
+                    key={index}
+                    className={'oo-ma-btn'}
+                    focusId={CONSTANTS.FOCUS_IDS.MULTI_AUDIO + index}
+                    role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
+                    ariaLabel={el.label}
+                    ariaChecked={el.enabled}
+                    onClick={this.handleClick.bind(this, el.id)}
+                  >
+                    <Icon
+                      skinConfig={this.props.skinConfig}
+                      icon="selected"
+                      className={classnames({ 'oo-icon-hidden': !el.enabled })}
+                    />
+                    <span className="oo-cc-ma-menu__name" title={el.label}>
                     {el.label}
                   </span>
+                  </AccessibleButton>
                 </li>
               );
             }, this)}

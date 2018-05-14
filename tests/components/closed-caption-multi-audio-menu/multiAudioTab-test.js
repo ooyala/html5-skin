@@ -1,14 +1,12 @@
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/multiAudioTab');
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/tab');
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/helpers');
+jest.dontMock('../../../js/components/accessibleButton');
 jest.dontMock('../../../js/constants/languages');
 jest.dontMock('underscore');
 
-var _ = require('underscore');
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-
-var helpers = require('../../../js/components/closed-caption-multi-audio-menu/helpers');
 
 var MultiAudioTab = require('../../../js/components/closed-caption-multi-audio-menu/multiAudioTab');
 var Tab = require('../../../js/components/closed-caption-multi-audio-menu/tab');

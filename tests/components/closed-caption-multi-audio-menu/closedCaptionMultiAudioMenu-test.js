@@ -2,11 +2,12 @@ jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/closedCapt
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/multiAudioTab');
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/tab');
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/helpers');
+jest.dontMock('../../../js/components/accessibleButton');
 jest.dontMock('../../../js/constants/languages');
 jest.dontMock('underscore');
 
-var _ = require('underscore');
 var React = require('react');
+var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 
 var ClosedCaptionMultiAudioMenu = require(
@@ -14,6 +15,7 @@ var ClosedCaptionMultiAudioMenu = require(
 );
 var MultiAudioTab = require('../../../js/components/closed-caption-multi-audio-menu/multiAudioTab');
 var Tab = require('../../../js/components/closed-caption-multi-audio-menu/tab');
+var AccessibleButton = require('../../../js/components/accessibleButton');
 
 describe('ClosedCaptionMultiAudioMenu component', function() {
   var selectedAudio = null;
@@ -27,7 +29,11 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
       skinConfig: {},
       controller: {
         setCurrentAudio: function(track) {
+          if (selectedAudio) {
+            selectedAudio.enabled = false;
+          }
           selectedAudio = track;
+          selectedAudio.enabled = true;
         },
         onClosedCaptionChange: function(id) {
           selectedCaptionsId = id;
@@ -79,16 +85,17 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
     expect(component).toBeTruthy();
 
     var tabComponent = TestUtils.scryRenderedComponentsWithType(DOM, Tab);
-
-    var items = TestUtils.scryRenderedDOMComponentsWithClass(tabComponent[0], 'oo-cc-ma-menu__element');
-
-    TestUtils.Simulate.click(items[0]);
+    var accessibleButtonComponent = TestUtils.scryRenderedComponentsWithType(
+      tabComponent[0], AccessibleButton
+    )[1];
+    var btn = ReactDOM.findDOMNode(accessibleButtonComponent);
+    TestUtils.Simulate.click(btn);
 
     expect(selectedAudio).toEqual({
       enabled: true,
       label: '',
-      lang: 'eng',
-      id: '1'
+      lang: 'deu',
+      id: '2'
     });
   });
 
