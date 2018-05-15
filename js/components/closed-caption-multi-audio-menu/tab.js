@@ -36,7 +36,7 @@ var Tab = React.createClass({
                   })}
                 >
                   <AccessibleButton
-                    key={index}
+                    key={item.id}
                     className={'oo-multi-audio-btn'}
                     focusId={CONSTANTS.FOCUS_IDS.MULTI_AUDIO + index}
                     role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
