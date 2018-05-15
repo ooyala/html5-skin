@@ -32,7 +32,7 @@ var MultiAudioTab = React.createClass({
     var transformedTracksList = helpers.transformTracksList(readableTracksList);
 
     var uniqueTracksList = helpers.getUniqueTracks(transformedTracksList);
-    
+
     return (
       <Tab
         handleClick={this.props.handleClick}

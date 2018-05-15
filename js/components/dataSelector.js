@@ -6,7 +6,6 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants');
 
 var DataSelector = React.createClass({
-
   getInitialState: function() {
     return {
       currentPage: 1
@@ -62,7 +61,7 @@ var DataSelector = React.createClass({
    * reset the button's triggered with keyboard state.
    * @private
    * @param {AccessibleButton} accessibleButton The button component which we want to check.
-   * @return {Boolean} True if button state suggests that auto focus is required, false otherwise.
+   * @returns {Boolean} True if button state suggests that auto focus is required, false otherwise.
    */
   checkAndResetBtnAutoFocus: function(accessibleButton) {
     var autoFocus = false;
@@ -79,8 +78,10 @@ var DataSelector = React.createClass({
     if (nextProps.viewSize !== this.props.viewSize) {
       var currentViewSize = this.props.viewSize;
       var nextViewSize = nextProps.viewSize;
-      var firstDataIndex = this.state.currentPage * this.props.dataItemsPerPage[currentViewSize] - this.props.dataItemsPerPage[currentViewSize];
-      var newCurrentPage = Math.floor(firstDataIndex/nextProps.dataItemsPerPage[nextViewSize]) + 1;
+      var firstDataIndex =
+        this.state.currentPage * this.props.dataItemsPerPage[currentViewSize] -
+        this.props.dataItemsPerPage[currentViewSize];
+      var newCurrentPage = Math.floor(firstDataIndex / nextProps.dataItemsPerPage[nextViewSize]) + 1;
       this.setState({
         currentPage: newCurrentPage
       });
@@ -90,7 +91,7 @@ var DataSelector = React.createClass({
   setClassname: function(item) {
     return ClassNames({
       'oo-item': true,
-      'oo-item-selected': this.props.selectedData == item && this.props.enabled,
+      'oo-item-selected': this.props.selectedData === item && this.props.enabled,
       'oo-disabled': !this.props.enabled
     });
   },
@@ -109,7 +110,7 @@ var DataSelector = React.createClass({
    * in a loop and ref is async, so we need to freeze the value of dataItem with the closure.
    * @private
    * @param {String} dataItem The value of the data button whose ref we want to store.
-   * @return {Function} A callback that will store the ref of the corresponding item button.
+   * @returns {Function} A callback that will store the ref of the corresponding item button.
    */
   getItemButtonRefCallback: function(dataItem) {
     var refCallback = function(component) {
@@ -134,7 +135,7 @@ var DataSelector = React.createClass({
       var isSelected = this.props.selectedData === currentDataItem;
       var selectedItemStyle = {};
       if (isSelected && this.props.enabled && this.props.skinConfig.general.accentColor) {
-        selectedItemStyle = {backgroundColor: this.props.skinConfig.general.accentColor};
+        selectedItemStyle = { backgroundColor: this.props.skinConfig.general.accentColor };
       }
       // Determine whether we should auto focus or not
       var autoFocus = this.shouldAutoFocusItem(dataItems, i, isSelected);
@@ -149,7 +150,8 @@ var DataSelector = React.createClass({
           ariaLabel={currentDataItem}
           ariaChecked={isSelected}
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
-          onClick={this.handleDataSelection.bind(this, currentDataItem)}>
+          onClick={this.handleDataSelection.bind(this, currentDataItem)}
+        >
           <span className="oo-data">{currentDataItem}</span>
         </AccessibleButton>
       );
@@ -165,39 +167,32 @@ var DataSelector = React.createClass({
     });
 
     return (
-      <div
-        className="oo-data-selector"
-        aria-label={this.props.ariaLabel}
-        role={CONSTANTS.ARIA_ROLES.MENU}>
-
+      <div className="oo-data-selector" aria-label={this.props.ariaLabel} role={CONSTANTS.ARIA_ROLES.MENU}>
         <AccessibleButton
-          ref={function(e) {this.leftChevronBtn = e;}.bind(this)}
+          ref={function(e) {
+            this.leftChevronBtn = e;
+          }.bind(this)}
           className={leftChevron}
           ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_OPTIONS}
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM}
-          onClick={this.handleLeftChevronClick}>
-          <Icon
-            {...this.props}
-            icon="left"
-          />
+          onClick={this.handleLeftChevronClick}
+        >
+          <Icon {...this.props} icon="left" />
         </AccessibleButton>
 
-        <div className="oo-data-panel oo-flexcontainer">
-          {dataContentBlocks}
-        </div>
+        <div className="oo-data-panel oo-flexcontainer">{dataContentBlocks}</div>
 
         <AccessibleButton
-          ref={function(e) {this.rightChevronBtn = e;}.bind(this)}
+          ref={function(e) {
+            this.rightChevronBtn = e;
+          }.bind(this)}
           className={rightChevron}
           ariaLabel={CONSTANTS.ARIA_LABELS.MORE_OPTIONS}
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM}
-          onClick={this.handleRightChevronClick}>
-          <Icon
-            {...this.props}
-            icon="right"
-          />
+          onClick={this.handleRightChevronClick}
+        >
+          <Icon {...this.props} icon="right" />
         </AccessibleButton>
-
       </div>
     );
   }

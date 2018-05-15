@@ -1,20 +1,28 @@
 var React = require('react'),
     Utils = require('./utils');
 
-
 var Icon = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
-    return  (nextProps.icon !== this.props.icon || nextProps.className !== this.props.className);
+    if (this.props && this.props.icon && this.props.className) {
+      return nextProps.icon !== this.props.icon || nextProps.className !== this.props.className;
+    }
+    
+    return false;
   },
 
   render: function() {
-    var iconStyle = Utils.extend({fontFamily: this.props.skinConfig.icons[this.props.icon].fontFamilyName}, this.props.style);
+    var iconStyle = Utils.extend(
+      { fontFamily: this.props.skinConfig.icons[this.props.icon].fontFamilyName },
+      this.props.style
+    );
     return (
       <span
         className={this.props.skinConfig.icons[this.props.icon].fontStyleClass + ' ' + this.props.className}
         style={iconStyle}
-        onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut}
-        onClick={this.props.onClick}>
+        onMouseOver={this.props.onMouseOver}
+        onMouseOut={this.props.onMouseOut}
+        onClick={this.props.onClick}
+      >
         {this.props.skinConfig.icons[this.props.icon].fontString}
       </span>
     );

@@ -1,4 +1,3 @@
-
 module.exports = {
   VOLUME: '{volume}',
   CURRENT_TIME: '{currentTime}',

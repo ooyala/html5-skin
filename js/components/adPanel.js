@@ -39,7 +39,7 @@ var AdPanel = React.createClass({
   },
 
   handleAdTopBarClick: function(event) {
-    if (event.type == 'touchend' || !this.isMobile) {
+    if (event.type === 'touchend' || !this.isMobile) {
       // since mobile would fire both click and touched events,
       // we need to make sure only one actually does the work
       event.stopPropagation(); // W3C
@@ -48,9 +48,7 @@ var AdPanel = React.createClass({
   },
 
   isValidAdPlaybackInfo: function(playbackInfo) {
-    return (playbackInfo !== null &&
-      typeof playbackInfo !== 'undefined' &&
-      playbackInfo !== '');
+    return playbackInfo !== null && typeof playbackInfo !== 'undefined' && playbackInfo !== '';
   },
 
   populateAdTopBar: function() {
@@ -58,23 +56,33 @@ var AdPanel = React.createClass({
 
     // // Ad title
     var adTitle = 'Unknown';
-    if (this.props.currentAdsInfo && 
-        this.props.currentAdsInfo.currentAdItem && 
-        this.props.contentTree && 
-        this.props.currentAdsInfo.currentAdItem.ooyalaAds && 
-        this.props.contentTree.title) {
+    if (
+      this.props.currentAdsInfo &&
+      this.props.currentAdsInfo.currentAdItem &&
+      this.props.contentTree &&
+      this.props.currentAdsInfo.currentAdItem.ooyalaAds &&
+      this.props.contentTree.title
+    ) {
       adTitle = this.props.contentTree.title;
     } else {
       adTitle = this.props.currentAdsInfo.currentAdItem.name;
     }
     // AMC puts "Unknown" in the name field if ad name unavailable
     if (this.isValidAdPlaybackInfo(adTitle) && this.props.componentWidth > 560) {
-      var adTitleDiv = <AdPanelTopBarItem key="adTitle" ref="adTitle" itemClassName="oo-ad-title">{adTitle}</AdPanelTopBarItem>;
+      var adTitleDiv = (
+        <AdPanelTopBarItem key="adTitle" ref="adTitle" itemClassName="oo-ad-title">
+          {adTitle}
+        </AdPanelTopBarItem>
+      );
       adTopBarItems.push(adTitleDiv);
     }
 
     // Ad playback Info
-    var adPlaybackInfo = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.AD, this.props.localizableStrings);
+    var adPlaybackInfo = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT.AD,
+      this.props.localizableStrings
+    );
     var currentAdIndex = this.props.currentAdsInfo.currentAdItem.indexInPod;
     var totalNumberOfAds = this.props.currentAdsInfo.numberOfAds;
     if (this.isValidAdPlaybackInfo(currentAdIndex) && this.isValidAdPlaybackInfo(totalNumberOfAds)) {
@@ -86,7 +94,9 @@ var AdPanel = React.createClass({
     if (this.props.skinConfig.adScreen.showAdCountDown) {
       var remainingTime;
       if (isLive) {
-        remainingTime = parseInt((this.props.adStartTime + this.props.adVideoDuration * 1000 - new Date().getTime())/1000);
+        remainingTime = parseInt(
+          (this.props.adStartTime + this.props.adVideoDuration * 1000 - new Date().getTime()) / 1000
+        );
       } else {
         remainingTime = parseInt(this.props.adVideoDuration - this.props.currentAdPlayhead);
       }
@@ -94,17 +104,20 @@ var AdPanel = React.createClass({
       if (isFinite(remainingTime)) {
         remainingTime = Utils.formatSeconds(Math.max(0, remainingTime));
         adPlaybackInfo = adPlaybackInfo + ' - ' + remainingTime;
-      }
-      else {
+      } else {
         OO.log('ad remaining time is not a finite number');
       }
     }
 
-    var adPlaybackInfoDiv = <AdPanelTopBarItem key="adPlaybackInfo" itemClassName="oo-ad-playback-info">{adPlaybackInfo}</AdPanelTopBarItem>;
+    var adPlaybackInfoDiv = (
+      <AdPanelTopBarItem key="adPlaybackInfo" itemClassName="oo-ad-playback-info">
+        {adPlaybackInfo}
+      </AdPanelTopBarItem>
+    );
     adTopBarItems.push(adPlaybackInfoDiv);
 
     // Flexible space
-    var flexibleSpaceDiv = <AdPanelTopBarItem key="flexibleSpace" itemClassName="oo-flexible-space"/>;
+    var flexibleSpaceDiv = <AdPanelTopBarItem key="flexibleSpace" itemClassName="oo-flexible-space" />;
     adTopBarItems.push(flexibleSpaceDiv);
 
     // Learn more
@@ -112,13 +125,26 @@ var AdPanel = React.createClass({
       'oo-learn-more': true,
       'oo-hidden': !this.props.currentAdsInfo.currentAdItem.hasClickUrl
     });
-    if (this.props.currentAdsInfo.currentAdItem !== null && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.hasClickUrl)) {
-      var learnMoreText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.LEARN_MORE, this.props.localizableStrings);
-      var learnMoreButtonDiv = <AdPanelTopBarItem key="learnMoreButton" ref="learnMoreButton"
-                                onButtonClicked={this.handleLearnMoreButtonClick} itemClassName={learnMoreClass}>
-                                  <Icon {...this.props} icon="learn" className="oo-button-icon"/>
-                                  {learnMoreText}
-                              </AdPanelTopBarItem>;
+    if (
+      this.props.currentAdsInfo.currentAdItem !== null &&
+      this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.hasClickUrl)
+    ) {
+      var learnMoreText = Utils.getLocalizedString(
+        this.props.language,
+        CONSTANTS.SKIN_TEXT.LEARN_MORE,
+        this.props.localizableStrings
+      );
+      var learnMoreButtonDiv = (
+        <AdPanelTopBarItem
+          key="learnMoreButton"
+          ref="learnMoreButton"
+          onButtonClicked={this.handleLearnMoreButtonClick}
+          itemClassName={learnMoreClass}
+        >
+          <Icon {...this.props} icon="learn" className="oo-button-icon" />
+          {learnMoreText}
+        </AdPanelTopBarItem>
+      );
       adTopBarItems.push(learnMoreButtonDiv);
     }
 
@@ -128,29 +154,43 @@ var AdPanel = React.createClass({
       'oo-visible': this.props.currentAdsInfo.skipAdButtonEnabled,
       'oo-enabled': this.props.currentAdsInfo.skipAdButtonEnabled
     });
-    var skipButtonText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.SKIP_AD, this.props.localizableStrings);
-    var skipButtonDiv = <AdPanelTopBarItem key="skipButton" ref="skipButton"
-                          onButtonClicked={this.handleSkipAdButtonClick} itemClassName={skipButtonClass}>
-                          <Icon {...this.props} icon="skip" className="oo-button-icon"/>
-                            {skipButtonText}
-                        </AdPanelTopBarItem>;
+    var skipButtonText = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT.SKIP_AD,
+      this.props.localizableStrings
+    );
+    var skipButtonDiv = (
+      <AdPanelTopBarItem
+        key="skipButton"
+        ref="skipButton"
+        onButtonClicked={this.handleSkipAdButtonClick}
+        itemClassName={skipButtonClass}
+      >
+        <Icon {...this.props} icon="skip" className="oo-button-icon" />
+        {skipButtonText}
+      </AdPanelTopBarItem>
+    );
     adTopBarItems.push(skipButtonDiv);
 
     return adTopBarItems;
   },
 
-
   render: function() {
     var spinner = null;
     if (this.props.controller.state.buffering === true) {
-      spinner = <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/>;
+      spinner = <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />;
     }
     var adTopBarItems = this.populateAdTopBar();
     return (
       <div className="oo-ad-screen-panel">
         {spinner}
-        <div className="oo-ad-screen-panel-click-layer"></div>
-        <div className="oo-ad-top-bar" ref="adTopBar" onClick={this.handleAdTopBarClick} onTouchEnd={this.handleAdTopBarClick}>
+        <div className="oo-ad-screen-panel-click-layer" />
+        <div
+          className="oo-ad-top-bar"
+          ref="adTopBar"
+          onClick={this.handleAdTopBarClick}
+          onTouchEnd={this.handleAdTopBarClick}
+        >
           {adTopBarItems}
         </div>
       </div>

@@ -14,11 +14,7 @@ var Tab = React.createClass({
     return (
       <div className={classnames('oo-cc-ma-menu__coll', this.props.tabClassName)}>
         <div className="oo-cc-ma-menu__header">{this.props.header}</div>
-        <ScrollArea
-          className="oo-cc-ma-menu__scrollarea"
-          speed={1}
-          horizontal={false}
-        >
+        <ScrollArea className="oo-cc-ma-menu__scrollarea" speed={1} horizontal={false}>
           <ul className="oo-cc-ma-menu__list">
             {this.props.itemsList.map(function(el, index) {
               return (

@@ -1,7 +1,6 @@
 var CONSTANTS = require('../../constants/constants');
 var _ = require('underscore');
 
-
 /**
  * Gets display label by checking
  * roles - e.g. nullable field from DASH manifest
@@ -34,11 +33,13 @@ function getDisplayLabel(audioTrack) {
  */
 function getDisplayLanguage(languagesList, languageCode) {
   var displayLanguage = '';
-  if (typeof languageCode !== 'undefined' &&
+  if (
+    typeof languageCode !== 'undefined' &&
     languagesList &&
     _.isArray(languagesList) &&
-    languagesList.length) {
-    var matchingLanguage =  _.find(languagesList, function(language) {
+    languagesList.length
+  ) {
+    var matchingLanguage = _.find(languagesList, function(language) {
       return (
         language['1'] === languageCode ||
         language['2'] === languageCode ||
@@ -110,7 +111,7 @@ function transformTracksList(tracksList) {
           return groupedTracks[key].map(function(audioTrack) {
             // get display title based on language and label
             var trackDisplayTitle = getDisplayTitle(audioTrack.language, audioTrack.label);
-            
+
             var transformedTrack = {
               enabled: audioTrack.enabled,
               label: trackDisplayTitle,
