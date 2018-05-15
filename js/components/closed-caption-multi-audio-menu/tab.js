@@ -26,31 +26,32 @@ var Tab = React.createClass({
             className="oo-cc-ma-menu__list"
             role={CONSTANTS.ARIA_ROLES.MENU}
           >
-            {this.props.itemsList.map(function(el, index) {
+            {this.props.itemsList.map(function(item, index) {
               return (
                 <li
-                  key={index}
+                  key={item.id}
+                  role={CONSTANTS.ARIA_ROLES.PRESENTATION}
                   className={classnames('oo-cc-ma-menu__element', {
-                    'oo-cc-ma-menu__element--active': el.enabled
+                    'oo-cc-ma-menu__element--active': item.enabled
                   })}
                 >
                   <AccessibleButton
                     key={index}
-                    className={'oo-ma-btn'}
+                    className={'oo-multi-audio-btn'}
                     focusId={CONSTANTS.FOCUS_IDS.MULTI_AUDIO + index}
                     role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
-                    ariaLabel={el.label}
-                    ariaChecked={el.enabled}
-                    onClick={this.handleClick.bind(this, el.id)}
+                    ariaLabel={item.label}
+                    ariaChecked={item.enabled}
+                    onClick={this.handleClick.bind(this, item.id)}
                   >
                     <Icon
                       skinConfig={this.props.skinConfig}
                       icon="selected"
-                      className={classnames({ 'oo-icon-hidden': !el.enabled })}
+                      className={classnames({ 'oo-icon-hidden': !item.enabled })}
                     />
-                    <span className="oo-cc-ma-menu__name" title={el.label}>
-                    {el.label}
-                  </span>
+                    <span className="oo-cc-ma-menu__name" title={item.label}>
+                      {item.label}
+                    </span>
                   </AccessibleButton>
                 </li>
               );

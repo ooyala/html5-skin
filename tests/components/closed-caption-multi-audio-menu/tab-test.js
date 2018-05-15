@@ -65,7 +65,7 @@ describe('Tab component', function() {
 
   it('should call handler on click', function() {
     var component = TestUtils.renderIntoDocument(<Tab {...props} />);
-    var listItemBtns = TestUtils.scryRenderedDOMComponentsWithClass(component, 'oo-ma-btn');
+    var listItemBtns = TestUtils.scryRenderedDOMComponentsWithClass(component, 'oo-multi-audio-btn');
     
     TestUtils.Simulate.click(listItemBtns[0]);
     expect(clickedId).toBe('1');
@@ -95,7 +95,7 @@ describe('Tab component', function() {
     };
 
     var component = TestUtils.renderIntoDocument(<Tab {...propsNoHandler} />);
-    var listItemBtns = TestUtils.scryRenderedDOMComponentsWithClass(component, 'oo-ma-btn');
+    var listItemBtns = TestUtils.scryRenderedDOMComponentsWithClass(component, 'oo-multi-audio-btn');
     
     TestUtils.Simulate.click(listItemBtns[0]);
     expect(clickedId).toBe(null);
