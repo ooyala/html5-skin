@@ -78,6 +78,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       mainVideoDuration: 0,
       adVideoDuration: 0,
       adStartTime: 0,
+      currentAdPlayhead: 0,
+      adPausedTime: 0,
+      adPausedDuration: 0,
       elementId: null,
       mainVideoContainer: null,
       mainVideoInnerWrapper: null,
@@ -93,6 +96,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       adVideoPlayhead: 0,
       focusedElement: null,
       focusedControl: null, // Stores the id of the control bar element that is currently focused
+      timelineControl:false, //Timeline control on SSAI ads playback.
 
       currentAdsInfo: {
         currentAdItem: null,
@@ -327,6 +331,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           );
           this.mb.subscribe(OO.EVENTS.SHOW_AD_CONTROLS, 'customerUi', _.bind(this.onShowAdControls, this));
           this.mb.subscribe(OO.EVENTS.SHOW_AD_MARQUEE, 'customerUi', _.bind(this.onShowAdMarquee, this));
+          this.mb.subscribe(OO.EVENTS.DISABLE_TIMELINE_CONTROL, 'customerUi', _.bind(this.disableTimelineControl, this));
+          this.mb.subscribe(OO.EVENTS.ENABLE_TIMELINE_CONTROL, 'customerUi', _.bind(this.enableTimelineControl, this));
         }
       }
       this.state.isSubscribed = true;
@@ -713,7 +719,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.mainVideoPlayhead = currentPlayhead;
         this.state.mainVideoDuration = duration;
         this.state.mainVideoBuffered = buffered;
-      } else if (videoId === OO.VIDEO.ADS) {
+      } else if (videoId === OO.VIDEO.ADS || this.state.isPlayingAd) {
         // adVideoDuration is only used in adPanel ad marquee
         this.state.adVideoDuration = duration;
         this.state.adVideoPlayhead = currentPlayhead;
@@ -818,7 +824,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.isInitialPlay = false;
         this.renderSkin();
       }
-      if (source === OO.VIDEO.ADS) {
+      if (source === OO.VIDEO.ADS || this.state.isPlayingAd) {
         this.state.adPauseAnimationDisabled = true;
         this.state.pluginsElement.addClass('oo-showing');
         this.state.pluginsClickElement.removeClass('oo-showing');
@@ -844,7 +850,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.endSeeking();
       }
       // If an ad using the custom ad element has issued a pause, activate the click layer
-      if (source === OO.VIDEO.ADS && this.state.pluginsElement.children().length > 0) {
+      if ((source === OO.VIDEO.ADS && this.state.pluginsElement.children().length > 0) || this.state.isPlayingAd) {
         this.state.pluginsClickElement.addClass('oo-showing');
       }
     },
@@ -889,12 +895,13 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
-      } else if (videoId === OO.VIDEO.ADS) {
+      } else if (videoId === OO.VIDEO.ADS || this.state.isPlayingAd) {
         // If we pause during an ad (such as for clickthroughs or when autoplay fails)
         // we'll show the control bar so that the user has an indication that the video
         // must be unpaused to resume
         this.state.config.adScreen.showControlBar = true;
         this.state.adPauseAnimationDisabled = false;
+        this.state.adPausedTime = new Date().getTime(); //milliseconds
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
       }
@@ -1221,6 +1228,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       if (this.state.mainVideoPlayhead > 0) {
         this.isNewVrVideo = false;
       }
+      this.state.adPausedTime = 0;
+      this.state.adPausedDuration = 0;
     },
 
     onAdPodStarted: function(event, numberOfAds) {
@@ -1378,6 +1387,14 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     showNonlinearAdCloseButton: function(event) {
       this.state.showAdOverlayCloseButton = true;
       this.renderSkin();
+    },
+
+    disableTimelineControl: function(event) {
+      this.state.timelineControl = false;
+    },
+
+    enableTimelineControl: function(event) {
+      this.state.timelineControl = true;
     },
 
     /** ******************************************************************

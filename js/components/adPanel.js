@@ -53,6 +53,11 @@ var AdPanel = React.createClass({
       playbackInfo !== '');
   },
 
+  getCurrentAdPlayhead: function(adPausedDuration, adStartTime){
+    //We return current time in milliseconds without time that ad was paused.
+    return (new Date().getTime() - adPausedDuration - adStartTime)/1000;
+  },
+
   populateAdTopBar: function() {
     var adTopBarItems = [];
 
@@ -82,11 +87,20 @@ var AdPanel = React.createClass({
     }
 
     var isLive = this.props.currentAdsInfo.currentAdItem.isLive;
+    var isSSAI = this.props.currentAdsInfo.currentAdItem.ssai;
 
     if (this.props.skinConfig.adScreen.showAdCountDown) {
       var remainingTime;
       if (isLive) {
         remainingTime = parseInt((this.props.adStartTime + this.props.adVideoDuration * 1000 - new Date().getTime())/1000);
+        if (isSSAI) {
+          if (this.props.playerState === CONSTANTS.STATE.PAUSE) {
+          //we save ad pause durations
+          this.props.controller.state.adPausedDuration = new Date().getTime() - this.props.controller.state.adPausedTime;
+          }
+          this.props.currentAdPlayhead = this.getCurrentAdPlayhead(this.props.controller.state.adPausedDuration, this.props.adStartTime);
+          remainingTime = this.props.adVideoDuration - this.props.currentAdPlayhead;
+        }
       } else {
         remainingTime = parseInt(this.props.adVideoDuration - this.props.currentAdPlayhead);
       }
@@ -172,7 +186,9 @@ AdPanel.defaultProps = {
       indexInPod: 0,
       isLive: false
     }
-  }
+  },
+  adPausedTime: 0,
+  adPausedDuration: 0
 };
 
 module.exports = AdPanel;
