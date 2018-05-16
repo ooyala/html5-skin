@@ -1,14 +1,13 @@
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/helpers');
 jest.dontMock('../../../js/constants/constants');
+jest.dontMock('../../../js/constants/languages');
 jest.dontMock('underscore');
-jest.dontMock('iso-639-3');
 
 var React = require('react');
 var _ = require('underscore');
 var TestUtils = require('react-addons-test-utils');
-var iso639 = require('iso-639-3');
 
-var CONSTANTS = require('../../../js/constants/constants');
+var LANGUAGE_CONSTANTS = require('../../../js/constants/languages');
 var helpers = require('../../../js/components/closed-caption-multi-audio-menu/helpers');
 
 describe('closed caption & multi-audio helpers', function() {
@@ -22,10 +21,10 @@ describe('closed caption & multi-audio helpers', function() {
     });
 
     it('should return matched english equivalent', function() {
-      expect(helpers.getDisplayLanguage(iso639, 'eng')).toEqual('English');
-      expect(helpers.getDisplayLanguage(iso639, 'en')).toEqual('English');
-      expect(helpers.getDisplayLanguage(iso639, 'ger')).toEqual('German');
-      expect(helpers.getDisplayLanguage(iso639, 'deu')).toEqual('German');
+      expect(helpers.getDisplayLanguage(LANGUAGE_CONSTANTS, 'eng')).toEqual('English');
+      expect(helpers.getDisplayLanguage(LANGUAGE_CONSTANTS, 'en')).toEqual('English');
+      expect(helpers.getDisplayLanguage(LANGUAGE_CONSTANTS, 'ger')).toEqual('Deutsch');
+      expect(helpers.getDisplayLanguage(LANGUAGE_CONSTANTS, 'deu')).toEqual('Deutsch');
     });
   });
 
@@ -69,11 +68,12 @@ describe('closed caption & multi-audio helpers', function() {
       expect(helpers.getDisplayTitle(undefined, 'with Commentary')).toEqual('with Commentary');
     });
 
-    it('should return Undefined language if none of params are provided', function() {
+    it('should return value for noLanguageText if none of params are provided', function() {
       expect(helpers.getDisplayTitle('', '')).toEqual('Undefined language');
       expect(helpers.getDisplayTitle(null, null)).toEqual('Undefined language');
       expect(helpers.getDisplayTitle(undefined, undefined)).toEqual('Undefined language');
       expect(helpers.getDisplayTitle()).toEqual('Undefined language');
+      expect(helpers.getDisplayTitle('', '', 'Unknown track')).toEqual('Unknown track');
     });
   });
 

@@ -24,7 +24,7 @@ module.exports = {
     MORE_OPTIONS_SCREEN: 'moreOptionsScreen',
     LOADING_SCREEN: 'loadingScreen',
     START_LOADING_SCREEN: 'startLoadingScreen',
-    CLOSEDCAPTION_SCREEN: 'closedCaptionScreen',
+    CLOSED_CAPTION_SCREEN: 'closedCaptionScreen',
     VIDEO_QUALITY_SCREEN: 'videoQualityScreen',
     ERROR_SCREEN: 'errorScreen',
     MULTI_AUDIO_SCREEN: 'multiAudioScreen'
@@ -61,7 +61,8 @@ module.exports = {
     OPTIONAL_MESSAGE: 'Optional Message',
     SEND: 'Send',
     ERROR_ACTION: 'RELOAD YOUR SCREEN OR TRY SELECTING A DIFFERENT VIDEO',
-    UNKNOWN_ERROR: 'Something happened while we were trying to play your video! Click replay or simply reload your page.',
+    UNKNOWN_ERROR: 'Something happened while we were trying to play your video! ' +
+    'Click replay or simply reload your page.',
     LANGUAGE_TAB_TITLE: 'Language',
     COLOR_SELECTION_TAB_TITLE: 'Color Selection',
     CAPTION_OPACITY_TAB_TITLE: 'Caption Opacity',
@@ -109,7 +110,8 @@ module.exports = {
     SELECT_TO_UNMUTE: 'SELECT TO UNMUTE',
     AUDIO: 'Audio',
     SUBTITLES: 'Subtitles',
-    UNDEFINED_LANGUAGE: 'Undefined language'
+    UNDEFINED_LANGUAGE: 'Undefined language',
+    NO_LINGUISTIC_CONTENT: 'No linguistic content'
   },
 
   ARIA_LABELS: {
@@ -258,7 +260,8 @@ module.exports = {
     SPANISH: 'es',
     CHINESE: 'zh',
     JAPANESE: 'ja',
-    NOT_MATCHED: 'und'
+    NOT_MATCHED: 'und',
+    NO_LINGUISTIC_CONTENT: 'zxx'
   },
 
   ERROR_CODE: {
@@ -275,6 +278,7 @@ module.exports = {
     DEVICE_ID_TOO_LONG: 'device_id_too_long',
     DEVICE_INVALID_AUTH_TOKEN: 'device_invalid_auth_token',
     DEVICE_LIMIT_REACHED: 'device_limit_reached',
+    NON_REGISTERED_DEVICE: 'non_registered_device',
     DRM_GENERAL_FAILURE: 'drm_general_failure',
     DRM_SERVER_ERROR: 'drm_server_error',
     INVALID_ENTITLEMENTS: 'invalid_entitlements',
@@ -386,9 +390,18 @@ module.exports = {
       description: 'Invalid Ooyala Player token'
     },
     'device_limit_reached':{
-      name: 'OO.ERROR.API.SAS.ERROR.DEVICE_LIMIT_REACHED',
-      title: 'DEVICE LIMIT REACHED',
-      description: 'Device limit has been reached'
+      name: 'OO.ERROR.API.SAS.ERROR.ERROR_DEVICE_LIMIT_REACHED',
+      title: 'AUTHORIZATION ERROR',
+      description: 'Unable to access this content, as the maximum number of devices' + 
+      ' has already been authorized. Error Code 29',
+      action: 'Please remove one of your authorized devices to enable this device.'
+    },
+    'non_registered_device':{
+      name: 'OO.ERROR.API.SAS.ERROR.ERROR_NON_REGISTERED_DEVICE',
+      title: 'AUTHORIZATION ERROR',
+      description: 'Unable to register this device to this account, as the maximum' + 
+      ' number of authorized devices has already been reached. Error Code 22',
+      action: 'Please remove one of your authorized devices to enable this device.'
     },
     'drm_general_failure':{
       name: 'OO.ERROR.API.SAS.ERROR_DRM_GENERAL_FAILURE',
@@ -471,7 +484,8 @@ module.exports = {
     },
     'unable_to_create_video_element':{
       name: 'OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT',
-      description: 'Something happened while we were trying to play your video! Click replay or simply reload your page.'
+      description: 'Something happened while we were trying to play your video! ' +
+      'Click replay or simply reload your page.'
     }
   },
   THUMBNAIL: {

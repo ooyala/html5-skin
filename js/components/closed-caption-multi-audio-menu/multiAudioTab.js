@@ -1,16 +1,26 @@
 var React = require('react');
-var iso639 = require('iso-639-3');
 
 var Tab = require('./tab');
 var helpers = require('./helpers');
 var CONSTANTS = require('../../constants/constants');
+var LANGUAGE_LIST = require('../../constants/languages');
+var Utils = require('../utils');
 
 var MultiAudioTab = React.createClass({
   render: function() {
     // transform tracks to human readable format
     var readableTracksList = this.props.audioTracksList.map(
       function(audioTrack) {
-        var displayLanguage = helpers.getDisplayLanguage(iso639, audioTrack.lang);
+        var displayLanguage = '';
+        if (audioTrack.lang === CONSTANTS.LANGUAGE.NO_LINGUISTIC_CONTENT) {
+          displayLanguage =  Utils.getLocalizedString(
+            this.props.language,
+            CONSTANTS.SKIN_TEXT.NO_LINGUISTIC_CONTENT,
+            this.props.localizableStrings
+          );
+        } else {
+          displayLanguage = helpers.getDisplayLanguage(LANGUAGE_LIST, audioTrack.lang);
+        }
         var displayLabel = helpers.getDisplayLabel(audioTrack);
 
         var languageElement = {
@@ -24,22 +34,28 @@ var MultiAudioTab = React.createClass({
       }.bind(this)
     );
 
-    var transformedTracksList = helpers.transformTracksList(readableTracksList);
+    var noLanguageText = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE,
+      this.props.localizableStrings
+    );
+    var transformedTracksList = helpers.transformTracksList(readableTracksList, noLanguageText);
 
     var uniqueTracksList = helpers.getUniqueTracks(transformedTracksList);
-    
+
     return (
       <Tab
         handleClick={this.props.handleClick}
         skinConfig={this.props.skinConfig}
         itemsList={uniqueTracksList}
-        header={CONSTANTS.SKIN_TEXT.AUDIO}
+        header={this.props.header}
       />
     );
   }
 });
 
 MultiAudioTab.propTypes = {
+  header: React.PropTypes.string.isRequired,
   audioTracksList: React.PropTypes.arrayOf(
     React.PropTypes.shape({
       id: React.PropTypes.string.isRequired,
@@ -50,7 +66,9 @@ MultiAudioTab.propTypes = {
   ).isRequired,
   skinConfig: React.PropTypes.object,
 
-  handleClick: React.PropTypes.func
+  handleClick: React.PropTypes.func,
+  language: React.PropTypes.string,
+  localizableStrings: React.PropTypes.string
 };
 
 module.exports = MultiAudioTab;

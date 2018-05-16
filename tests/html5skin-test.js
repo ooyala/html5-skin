@@ -16,7 +16,7 @@ var CONSTANTS = require('../js/constants/constants');
 var Html5Skin;
 
 var elementId = 'adrfgyi';
-var videoId = 'ag5dfdtooon2cncj714i';
+var videoId = 'ag5dfdto oon2cncj714i';
 var videoElement = document.createElement('video');
 videoElement.className = 'video';
 videoElement.id = videoId;
@@ -138,6 +138,22 @@ describe('Controller', function() {
       controller.toggleClosedCaptionEnabled();
       expect(controller.state.closedCaptionOptions.enabled).toBe(true);
       expect(controller.state.closedCaptionOptions.language).toBe('en');
+    });
+
+    it('should save closedCaptionScreen when closedCaption screen is open', function() {
+      controller.onPlaying('event', OO.VIDEO.MAIN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PLAYING_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PLAYING);
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.pausedCallback = function() {
+        controller.state.screenToShow = CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN;
+      };
+      controller.onPaused('event', OO.VIDEO.MAIN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
+      controller.onPlayheadTimeChanged('event', 5, 60, 30, null, OO.VIDEO.MAIN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
+      controller.onClosedCaptionChange('language', 'en');
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
     });
 
   });
@@ -705,6 +721,24 @@ describe('Controller', function() {
     });
   });
 
+  describe('Toggle popovers', function() {
+    it('should close current popover', function() {
+      controller.state[CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY].showPopover = false;
+      controller.state[CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS].showPopover = false;
+      controller.state[CONSTANTS.MENU_OPTIONS.MULTI_AUDIO].showPopover = true;
+
+      controller.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
+      expect(controller.state[CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY].showPopover).toBe(true);
+      controller.closePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
+      expect(controller.state[CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY].showPopover).toBe(false);
+      controller.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
+      controller.closeOtherPopovers(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
+      expect(controller.state[CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY].showPopover).toBe(true);
+      expect(controller.state[CONSTANTS.MENU_OPTIONS.MULTI_AUDIO].showPopover).toBe(false);
+      expect(controller.state[CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS].showPopover).toBe(false);
+    });
+  });
+
   describe('Multiaudio', function() {
     var spy;
     beforeEach(function() {
@@ -714,6 +748,29 @@ describe('Controller', function() {
 
     afterEach(function() {
       spy.restore();
+    });
+
+    it('Should save playerState when multiAudio screen is active', function() {
+      controller.onPlaying('event', OO.VIDEO.MAIN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PLAYING_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PLAYING);
+      controller.toggleMultiAudioScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PLAYING);
+      controller.toggleMultiAudioScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PLAYING_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PLAYING);
+
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.onPaused('event', OO.VIDEO.MAIN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PAUSE_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PAUSE);
+      controller.toggleMultiAudioScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PAUSE);
+      controller.toggleMultiAudioScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PAUSE_SCREEN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PAUSE);
     });
 
     it('should set correct multiAudio state', function() {
@@ -728,6 +785,14 @@ describe('Controller', function() {
       expect(controller.state.multiAudio).toBe(null);
       controller.onMultiAudioFetched('eventName', multiAudio);
       expect(controller.state.multiAudio).toEqual(multiAudio);
+    });
+
+    it('MultiAudio State should be null after embed code was changed', function(){
+      var obj = {};
+      controller.onMultiAudioFetched('event', obj);
+      expect(controller.state.multiAudio).toBe(obj);
+      controller.onEmbedCodeChanged('newEmbedCode');
+      expect(controller.state.multiAudio).toBe(null);
     });
 
     it('Calling of setCurrentAudio should throw SET_CURRENT_AUDIO event with id', function() {

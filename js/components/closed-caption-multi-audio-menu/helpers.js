@@ -1,6 +1,7 @@
 var CONSTANTS = require('../../constants/constants');
 var _ = require('underscore');
 
+
 /**
  * Gets display label by checking
  * roles - e.g. nullable field from DASH manifest
@@ -25,46 +26,31 @@ function getDisplayLabel(audioTrack) {
 }
 
 /**
- * Gets user friendly language name in English by
- * matching language code against one of the ISO-639 standarts
+ * Gets user friendly language name in local language
  * @function getDisplayLanguage
- * @param {String} languageList - ISO-639 dictionary
+ * @param {Array.<{Object}>} languagesList - list of languages with regional names and codes
  * @param {String} languageCode - ISO-639 language code
- * @returns {String} displayLanguage - language name in ISO-639 format in english
+ * @returns {String} displayLanguage - localized language
  */
-function getDisplayLanguage(languageList, languageCode) {
+function getDisplayLanguage(languagesList, languageCode) {
   var displayLanguage = '';
-  /*
-  * check if language is defined and it's name can be obtained by matching
-  * against iso-639 standart
-  */
-  if (
-    languageList &&
-    languageList.length &&
-    languageCode &&
-    languageCode !== CONSTANTS.LANGUAGE.NOT_MATCHED
-  ) {
-    var livingLanguages = _.filter(languageList, function(language) {
-      // Only search in still spoken languages
-      return language.type === 'living';
-    });
-
-    var matchingLanguage = _.find(livingLanguages, function(language) {
-      // Find if one of the standarts contains language code
+  if (typeof languageCode !== 'undefined' &&
+    languagesList &&
+    _.isArray(languagesList) &&
+    languagesList.length) {
+    var matchingLanguage =  _.find(languagesList, function(language) {
       return (
-        language.iso6393 === languageCode ||
-        language.iso6392B === languageCode ||
-        language.iso6392T === languageCode ||
-        language.iso6391 === languageCode
+        language['1'] === languageCode ||
+        language['2'] === languageCode ||
+        language['2T'] === languageCode ||
+        language['2B'] === languageCode ||
+        language['3'] === languageCode
       );
     });
-    /* 
-    * if matching language is found - return its name, otherwise 
-    * just return empty string
-    */
-    displayLanguage = matchingLanguage ? matchingLanguage.name : '';
+    if (matchingLanguage) {
+      displayLanguage = matchingLanguage.local;
+    }
   }
-
   return displayLanguage;
 }
 
@@ -72,15 +58,20 @@ function getDisplayLanguage(languageList, languageCode) {
  * Gets display title based on language and label
  * @param {String} language - language string attribute
  * @param {String} label - label string attribute
+ * @param {String} noLanguageText - label for a case when
+ * we do not have values for language and label of an audioTrack
  * @returns {String} displayTitle - human readable display title
  */
-function getDisplayTitle(language, label) {
+function getDisplayTitle(language, label, noLanguageText) {
   // set default function params
   var displayLanguage = language || '';
   var displayLabel = label || '';
 
   if (!displayLanguage.length && !displayLabel.length) {
-    return CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
+    if (typeof noLanguageText === 'undefined' || !noLanguageText.length) {
+      noLanguageText = CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
+    }
+    return noLanguageText;
   } else if (displayLanguage.length && !displayLabel.length) {
     return displayLanguage;
   } else if (!displayLanguage.length && displayLabel.length) {
@@ -95,9 +86,11 @@ function getDisplayTitle(language, label) {
  * if all tracks are distinct - only use language attribute
  * if there are duplicates - append label to the language attribute
  * @param {Array} tracksList - list of all tracks
+ * @param {String} noLanguageText - label for a case when
+ * we do not have values for language and label of an audioTrack
  * @returns {Array} transformedTracksList - list of transformed tracks
  */
-function transformTracksList(tracksList) {
+function transformTracksList(tracksList, noLanguageText) {
   var transformedTracksList = [];
   // first we group by language to know if we have distinct tracks
   if (tracksList && tracksList.length) {
@@ -107,7 +100,7 @@ function transformTracksList(tracksList) {
     // if all languages are distinct - discard labels
     if (groupedKeys.length === tracksList.length) {
       transformedTracksList = tracksList.map(function(audioTrack) {
-        var trackDisplayTitle = getDisplayTitle(audioTrack.language);
+        var trackDisplayTitle = getDisplayTitle(audioTrack.language, '', noLanguageText);
         var transformedTrack = {
           id: audioTrack.id,
           label: trackDisplayTitle,
@@ -123,7 +116,7 @@ function transformTracksList(tracksList) {
           // get each list of duplicating tracks
           return groupedTracks[key].map(function(audioTrack) {
             // get display title based on language and label
-            var trackDisplayTitle = getDisplayTitle(audioTrack.language, audioTrack.label);
+            var trackDisplayTitle = getDisplayTitle(audioTrack.language, audioTrack.label, noLanguageText);
             
             var transformedTrack = {
               enabled: audioTrack.enabled,
@@ -136,7 +129,7 @@ function transformTracksList(tracksList) {
         } else {
           // this track is distinct
           var audioTrack = _.head(groupedTracks[key]);
-          var trackDisplayTitle = getDisplayTitle(audioTrack.language);
+          var trackDisplayTitle = getDisplayTitle(audioTrack.language, '', noLanguageText);
           var transformedTrack = {
             enabled: audioTrack.enabled,
             label: trackDisplayTitle,

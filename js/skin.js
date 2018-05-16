@@ -108,7 +108,7 @@ var Skin = React.createClass({
       return;
     }
     if (this.props.controller && this.props.controller.videoVr && this.state.isVrMouseDown) {
-      e.preventDefault();
+      event.preventDefault();
       this.setState({
         isVrMouseMove: true
       });
@@ -397,11 +397,11 @@ var Skin = React.createClass({
           </ContentScreen>
         );
         break;
-      case CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN:
+      case CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN:
         screen = (
           <ContentScreen
             {...this.props}
-            screen={CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN}
+            screen={CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN}
             screenClassName="oo-content-screen oo-content-screen-closed-captions"
             titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
             autoFocus={this.state.closedCaptionOptions.autoFocus}
