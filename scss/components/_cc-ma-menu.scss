@@ -1,3 +1,5 @@
+$inner-menu-padding: 10px;
+$tab-border-width: 2px;
 .oo-content-screen.oo-cc-ma-container,
 .oo-cc-ma-container {
   padding: 0;
@@ -31,7 +33,6 @@
     }
   }
 
-  $inner-menu-padding: 10px;
   .oo-cc-ma-menu__header {
     @include flexbox();
     @include align-items(center);
@@ -57,8 +58,8 @@
     @include flexbox();
     @include hyphens();
     @include transition(all .5s ease);
+    padding: $tab-border-width;
     cursor: pointer;
-    padding: $inner-menu-padding;
 
     white-space: normal;
     line-height: 1.3;
@@ -100,4 +101,13 @@
     right: 14px;
     font-size: 16px;
   }
+}
+.oo-multi-audio-btn {
+  width: 100%;
+  text-align: left;
+  padding: $inner-menu-padding - $tab-border-width;
+  background-color: transparent;
+  color: inherit;
+  outline: none;
+  border: none;
 }

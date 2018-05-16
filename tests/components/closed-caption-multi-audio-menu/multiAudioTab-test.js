@@ -1,15 +1,14 @@
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/multiAudioTab');
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/tab');
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/helpers');
+jest.dontMock('../../../js/components/accessibleButton');
+jest.dontMock('../../../js/components/higher-order/accessibleMenu');
 jest.dontMock('../../../js/constants/languages');
 jest.dontMock('underscore');
 jest.dontMock('../../../js/components/utils');
 
-var _ = require('underscore');
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
-
-var helpers = require('../../../js/components/closed-caption-multi-audio-menu/helpers');
 
 var MultiAudioTab = require('../../../js/components/closed-caption-multi-audio-menu/multiAudioTab');
 var Tab = require('../../../js/components/closed-caption-multi-audio-menu/tab');
@@ -78,15 +77,15 @@ describe('MultiAudioTab component', function() {
     it('should render correct language list', function() {
       props.audioTracksList = [
         { id: '1', lang: 'en', label: 'we' }, 
-        { id: '1', lang: 'ger', label: 'wes ' }, 
-        { id: '1', lang: 'spa', label: 'weweq' }, 
-        { id: '1', lang: 'fra', label: 'weqwfa' }, 
+        { id: '2', lang: 'ger', label: 'wes ' },
+        { id: '3', lang: 'spa', label: 'weweq' },
+        { id: '4', lang: 'fra', label: 'weqwfa' },
       ];
   
       var multiAudioTab = TestUtils.renderIntoDocument(<MultiAudioTab {...props} />);
   
       var items = TestUtils.scryRenderedDOMComponentsWithClass(multiAudioTab, 'oo-cc-ma-menu__element');
-  
+
       var itemsTextContent = [].map.call(items, function(item) {
         return item.textContent;
       });
@@ -95,25 +94,25 @@ describe('MultiAudioTab component', function() {
     });
   });
 
-  describe('when language list contains duplicate valid Language codes (not "und") with Name attribute', 
+  describe('when language list contains duplicate valid Language codes (not "und") with Name attribute',
     function() {
       describe('and labels are distinct', function() {
         it('should render correct language list', function() {
           props.audioTracksList = [
-            { id: '1', lang: 'en', label: 'we' }, 
-            { id: '1', lang: 'en', label: 'wes' }, 
-            { id: '1', lang: 'spa', label: 'we' }, 
-            { id: '1', lang: 'spa', label: 'wes' }, 
+            { id: '1', lang: 'en', label: 'we' },
+            { id: '2', lang: 'en', label: 'wes' },
+            { id: '3', lang: 'spa', label: 'we' },
+            { id: '4', lang: 'spa', label: 'wes' },
           ];
-      
+
           var multiAudioTab = TestUtils.renderIntoDocument(<MultiAudioTab {...props} />);
-      
+
           var items = TestUtils.scryRenderedDOMComponentsWithClass(multiAudioTab, 'oo-cc-ma-menu__element');
-      
+
           var itemsTextContent = [].map.call(items, function(item) {
             return item.textContent;
           });
-  
+
           expect(itemsTextContent).toEqual([ 'English we', 'English wes', 'Español we', 'Español wes' ]);
         });
       });
@@ -121,41 +120,41 @@ describe('MultiAudioTab component', function() {
       describe('and labels duplicate', function() {
         it('should render correct language list', function() {
           props.audioTracksList = [
-            { id: '1', lang: 'en', label: 'we' }, 
-            { id: '1', lang: 'en', label: 'we' }, 
-            { id: '1', lang: 'spa', label: 'we' }, 
-            { id: '1', lang: 'spa', label: 'we' }, 
+            { id: '1', lang: 'en', label: 'we' },
+            { id: '2', lang: 'en', label: 'we' },
+            { id: '3', lang: 'spa', label: 'we' },
+            { id: '4', lang: 'spa', label: 'we' },
           ];
-      
+
           var multiAudioTab = TestUtils.renderIntoDocument(<MultiAudioTab {...props} />);
-      
+
           var items = TestUtils.scryRenderedDOMComponentsWithClass(multiAudioTab, 'oo-cc-ma-menu__element');
-      
+
           var itemsTextContent = [].map.call(items, function(item) {
             return item.textContent;
           });
-  
+
           expect(itemsTextContent).toEqual([ 'English we', 'English we 1', 'Español we', 'Español we 1' ]);
         });
       });
-      
+
       describe('and there\'s no label', function() {
         it('should render correct language list', function() {
           props.audioTracksList = [
-            { id: '1', lang: 'en', label: '' }, 
-            { id: '1', lang: 'en', label: '' }, 
-            { id: '1', lang: 'spa', label: '' }, 
-            { id: '1', lang: 'spa', label: '' }, 
+            { id: '1', lang: 'en', label: '' },
+            { id: '2', lang: 'en', label: '' },
+            { id: '3', lang: 'spa', label: '' },
+            { id: '4', lang: 'spa', label: '' },
           ];
-      
+
           var multiAudioTab = TestUtils.renderIntoDocument(<MultiAudioTab {...props} />);
-      
+
           var items = TestUtils.scryRenderedDOMComponentsWithClass(multiAudioTab, 'oo-cc-ma-menu__element');
-      
+
           var itemsTextContent = [].map.call(items, function(item) {
             return item.textContent;
           });
-  
+
           expect(itemsTextContent).toEqual([ 'English', 'English 1', 'Español', 'Español 1' ]);
         });
       });
@@ -191,26 +190,26 @@ describe('MultiAudioTab component', function() {
     }
   );
 
-  describe('when language list contains duplicate "und" language code with Name attribute', 
+  describe('when language list contains duplicate "und" language code with Name attribute',
     function() {
 
       describe('and labels are distinct', function() {
         it('should render correct language list', function() {
           props.audioTracksList = [
-            { id: '1', lang: 'eng', label: 'we' }, 
-            { id: '1', lang: 'ger', label: 'wes' }, 
-            { id: '1', lang: 'und', label: 'NAME' }, 
-            { id: '1', lang: 'und', label: 'NAME NAME' }, 
+            { id: '1', lang: 'eng', label: 'we' },
+            { id: '2', lang: 'ger', label: 'wes' },
+            { id: '3', lang: 'und', label: 'NAME' },
+            { id: '4', lang: 'und', label: 'NAME NAME' },
           ];
-      
+
           var multiAudioTab = TestUtils.renderIntoDocument(<MultiAudioTab {...props} />);
-      
+
           var items = TestUtils.scryRenderedDOMComponentsWithClass(multiAudioTab, 'oo-cc-ma-menu__element');
-      
+
           var itemsTextContent = [].map.call(items, function(item) {
             return item.textContent;
           });
-  
+
           expect(itemsTextContent).toEqual([ 'English', 'Deutsch', 'NAME', 'NAME NAME' ]);
         });
       });
@@ -218,20 +217,20 @@ describe('MultiAudioTab component', function() {
       describe('and labels duplicate', function() {
         it('should render correct language list', function() {
           props.audioTracksList = [
-            { id: '1', lang: 'eng', label: 'we' }, 
-            { id: '1', lang: 'ger', label: 'wes' }, 
-            { id: '1', lang: 'und', label: 'NAME' }, 
-            { id: '1', lang: 'und', label: 'NAME' }, 
+            { id: '1', lang: 'eng', label: 'we' },
+            { id: '2', lang: 'ger', label: 'wes' },
+            { id: '3', lang: 'und', label: 'NAME' },
+            { id: '4', lang: 'und', label: 'NAME' },
           ];
-      
+
           var multiAudioTab = TestUtils.renderIntoDocument(<MultiAudioTab {...props} />);
-      
+
           var items = TestUtils.scryRenderedDOMComponentsWithClass(multiAudioTab, 'oo-cc-ma-menu__element');
-      
+
           var itemsTextContent = [].map.call(items, function(item) {
             return item.textContent;
           });
-  
+
           expect(itemsTextContent).toEqual([ 'English', 'Deutsch', 'NAME', 'NAME 1' ]);
         });
       });
@@ -240,27 +239,27 @@ describe('MultiAudioTab component', function() {
 
         var undAudioTracksList = [
           { id: '1', lang: 'und', label: '' },
-          { id: '1', lang: 'und', label: '' },
-          { id: '1', lang: 'und', label: '' },
-          { id: '1', lang: 'und', label: '' },
+          { id: '2', lang: 'und', label: '' },
+          { id: '3', lang: 'und', label: '' },
+          { id: '4', lang: 'und', label: '' },
         ];
 
         it('should render correct language list when user language is en', function() {
           props.audioTracksList = undAudioTracksList;
-      
+
           var multiAudioTab = TestUtils.renderIntoDocument(
             <MultiAudioTab
               {...props}
               language={language}
               localizableStrings={localizableStrings}
             />);
-      
+
           var items = TestUtils.scryRenderedDOMComponentsWithClass(multiAudioTab, 'oo-cc-ma-menu__element');
-      
+
           var itemsTextContent = [].map.call(items, function(item) {
             return item.textContent;
           });
-  
+
           expect(itemsTextContent).toEqual(
             [ 'Undefined language', 'Undefined language 1', 'Undefined language 2', 'Undefined language 3' ]
           );
