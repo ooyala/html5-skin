@@ -14,6 +14,13 @@ var React = require('react'),
     Utils = require('./utils'),
     Icon = require('../components/icon');
 
+var state = { 
+  adPauseDuration: 0, 
+  wasPaused: false, 
+  adTotalPause: 0,
+  adEndTime: 0
+  }
+
 var AdPanelTopBarItem = React.createClass({
   render: function() {
     return (
@@ -27,6 +34,7 @@ var AdPanelTopBarItem = React.createClass({
 var AdPanel = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
+    state.adTotalPause = 0;
     return null;
   },
 
@@ -54,7 +62,7 @@ var AdPanel = React.createClass({
   },
 
   getCurrentAdPlayhead: function(adPausedDuration, adStartTime){
-    //We return current time in milliseconds without time that ad was paused.
+    //We return current ad time in milliseconds except ad paused time.
     return (new Date().getTime() - adPausedDuration - adStartTime)/1000;
   },
 
@@ -90,16 +98,26 @@ var AdPanel = React.createClass({
     var isSSAI = this.props.currentAdsInfo.currentAdItem.ssai;
 
     if (this.props.skinConfig.adScreen.showAdCountDown) {
-      var remainingTime;
+      var remainingTime = 0;
       if (isLive) {
         remainingTime = parseInt((this.props.adStartTime + this.props.adVideoDuration * 1000 - new Date().getTime())/1000);
         if (isSSAI) {
           if (this.props.playerState === CONSTANTS.STATE.PAUSE) {
-          //we save ad pause durations
-          this.props.controller.state.adPausedDuration = new Date().getTime() - this.props.controller.state.adPausedTime;
-          }
-          this.props.currentAdPlayhead = this.getCurrentAdPlayhead(this.props.controller.state.adPausedDuration, this.props.adStartTime);
-          remainingTime = this.props.adVideoDuration - this.props.currentAdPlayhead;
+            //we calculate time passed since ad pause. 
+            state.adPauseDuration = new Date().getTime() - this.props.controller.state.adPausedTime + state.adTotalPause;
+            //we calculate new ad end time, based on the time that ad was paused.
+            state.adEndTime = this.props.adStartTime + this.props.adVideoDuration * 1000 + state.adPauseDuration; //milliseconds
+            state.wasPaused = true;
+          } else{
+            if (state.wasPaused) {
+              //if same ad was already paused before, we add that previous pause duration to have accumulated pause time.
+              state.adTotalPause = state.adPauseDuration;
+              state.wasPaused = false;
+            }
+            //the ad end time when ad is playing. AdTotalPause will have the accumulated pause time.
+            state.adEndTime = this.props.adStartTime + this.props.adVideoDuration * 1000 + state.adTotalPause; //milliseconds
+          }  
+          remainingTime = (state.adEndTime - new Date().getTime())/1000;     
         }
       } else {
         remainingTime = parseInt(this.props.adVideoDuration - this.props.currentAdPlayhead);
@@ -187,8 +205,7 @@ AdPanel.defaultProps = {
       isLive: false
     }
   },
-  adPausedTime: 0,
-  adPausedDuration: 0
+  adPausedTime: 0
 };
 
 module.exports = AdPanel;

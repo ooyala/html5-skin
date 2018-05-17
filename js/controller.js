@@ -78,9 +78,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       mainVideoDuration: 0,
       adVideoDuration: 0,
       adStartTime: 0,
-      currentAdPlayhead: 0,
       adPausedTime: 0,
-      adPausedDuration: 0,
       elementId: null,
       mainVideoContainer: null,
       mainVideoInnerWrapper: null,
@@ -1229,7 +1227,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.isNewVrVideo = false;
       }
       this.state.adPausedTime = 0;
-      this.state.adPausedDuration = 0;
     },
 
     onAdPodStarted: function(event, numberOfAds) {
