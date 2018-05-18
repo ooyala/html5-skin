@@ -317,7 +317,11 @@ var ControlBar = React.createClass({
     var menuOptions = this.props.controller.state[menu];
     var menuToggleButton = this.getToggleButtons(menu);
     // Reset button flag that tracks keyboard interaction
-    if (menuToggleButton && menuOptions && menuOptions.showPopover) {
+    if (
+      menuToggleButton &&
+      menuOptions &&
+      menuOptions.showPopover
+    ) {
       menuToggleButton.wasTriggeredWithKeyboard(false);
     }
     this.props.controller.togglePopover(menu);
@@ -336,9 +340,10 @@ var ControlBar = React.createClass({
     if (!this.isMobile) {
       var iconElement = Utils.getEventIconElement(evt);
       if (iconElement) {
-        var color = this.props.skinConfig.controlBar.iconStyle.active.color
-          ? this.props.skinConfig.controlBar.iconStyle.active.color
-          : this.props.skinConfig.general.accentColor;
+        var color = this.props.skinConfig.controlBar.iconStyle.active.color ?
+          this.props.skinConfig.controlBar.iconStyle.active.color
+          :
+          this.props.skinConfig.general.accentColor;
         var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
         Utils.highlight(iconElement, opacity, color);
       }
@@ -361,7 +366,10 @@ var ControlBar = React.createClass({
    * @private
    */
   handleControlBarFocus: function(evt) {
-    var focusId = evt.target ? evt.target.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR) : null;
+    var focusId = evt.target ?
+      evt.target.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)
+      :
+      null;
     if (focusId) {
       this.props.controller.state.focusedControl = focusId;
     }
@@ -431,7 +439,8 @@ var ControlBar = React.createClass({
 
   populateControlBar: function() {
     var dynamicStyles = this.setupItemStyle();
-    var playIcon, playPauseAriaLabel;
+    var playIcon;
+    var playPauseAriaLabel;
     if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
       playIcon = 'pause';
       playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PAUSE;
@@ -443,9 +452,10 @@ var ControlBar = React.createClass({
       playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PLAY;
     }
 
-    var volumeIcon, volumeAriaLabel;
-    var mutedInUi =
-      this.props.controller.state.volumeState.muted || this.props.controller.state.volumeState.volume === 0;
+    var volumeIcon;
+    var volumeAriaLabel;
+    var mutedInUi = this.props.controller.state.volumeState.muted ||
+      this.props.controller.state.volumeState.volume === 0;
     if (mutedInUi) {
       volumeIcon = 'volumeOff';
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.UNMUTE;
@@ -454,7 +464,8 @@ var ControlBar = React.createClass({
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.MUTE;
     }
 
-    var fullscreenIcon, fullscreenAriaLabel;
+    var fullscreenIcon;
+    var fullscreenAriaLabel;
     if (this.props.controller.state.fullscreen) {
       fullscreenIcon = 'compress';
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.EXIT_FULLSCREEN;
@@ -463,7 +474,8 @@ var ControlBar = React.createClass({
       fullscreenAriaLabel = CONSTANTS.ARIA_LABELS.FULLSCREEN;
     }
 
-    var stereoIcon, stereoAriaLabel;
+    var stereoIcon;
+    var stereoAriaLabel;
     if (this.vr) {
       stereoIcon = 'stereoOff';
       stereoAriaLabel = CONSTANTS.ARIA_LABELS.STEREO_OFF;
@@ -485,20 +497,20 @@ var ControlBar = React.createClass({
     }
 
     // TODO - Replace time display logic with Utils.getTimeDisplayValues()
-    var playheadTime = isFinite(parseInt(this.props.currentPlayhead))
-      ? Utils.formatSeconds(parseInt(this.props.currentPlayhead))
-      : null;
+    var playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ?
+      Utils.formatSeconds(parseInt(this.props.currentPlayhead))
+      :
+      null;
     var isLiveStream = this.props.isLiveStream;
     var durationSetting = { color: this.props.skinConfig.controlBar.iconStyle.inactive.color };
     var timeShift = this.props.currentPlayhead - this.props.duration;
     // checking timeShift < 1 seconds (not === 0) as processing of the click after we rewinded and then went live may take some time
     var isLiveNow = Math.abs(timeShift) < 1;
     var liveClick = isLiveNow ? null : this.handleLiveClick;
-    var playheadTimeContent = isLiveStream
-      ? isLiveNow
-        ? null
-        : Utils.formatSeconds(timeShift)
-      : playheadTime;
+    var playheadTimeContent = isLiveStream ?
+      (isLiveNow ? null : Utils.formatSeconds(timeShift))
+      :
+      playheadTime;
     var totalTimeContent = isLiveStream ? null : <span className="oo-total-time">{totalTime}</span>;
 
     // TODO: Update when implementing localization
@@ -532,58 +544,58 @@ var ControlBar = React.createClass({
     });
 
     var selectedStyle = {};
-    selectedStyle['color'] = this.props.skinConfig.general.accentColor
-      ? this.props.skinConfig.general.accentColor
-      : null;
+    selectedStyle['color'] = this.props.skinConfig.general.accentColor ?
+      this.props.skinConfig.general.accentColor
+      :
+      null;
 
     var isTooltipEnabled = false;
     if (!this.isMobile) {
-      isTooltipEnabled = this.props.skinConfig.controlBar.tooltips
-        ? this.props.skinConfig.controlBar.tooltips.enabled
-        : false;
+      isTooltipEnabled = this.props.skinConfig.controlBar.tooltips ?
+        this.props.skinConfig.controlBar.tooltips.enabled
+        :
+        false;
     }
 
     var controlItemTemplates = {
-      playPause: function(alignment) {
-        return (
-          <AccessibleButton
-            className="oo-play-pause oo-control-bar-item"
-            onClick={this.handlePlayClick}
-            onMouseOver={this.highlight}
-            onMouseOut={this.removeHighlight}
-            key="playPause"
-            focusId={CONSTANTS.FOCUS_IDS.PLAY_PAUSE}
-            ariaLabel={playPauseAriaLabel}
+      playPause: (function(alignment) {
+        return <AccessibleButton
+          className="oo-play-pause oo-control-bar-item"
+          onClick={this.handlePlayClick}
+          onMouseOver={this.highlight}
+          onMouseOut={this.removeHighlight}
+          key="playPause"
+          focusId={CONSTANTS.FOCUS_IDS.PLAY_PAUSE}
+          ariaLabel={playPauseAriaLabel}>
+          <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
+          <Tooltip enabled={isTooltipEnabled}
+            alignment={alignment}
+            responsivenessMultiplier={this.responsiveUIMultiple}
+            bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height}
+            text={this.props.playerState === CONSTANTS.STATE.PLAYING ?
+              Utils.getLocalizedString(
+                this.props.language,
+                CONSTANTS.SKIN_TEXT.PAUSE,
+                this.props.localizableStrings
+              )
+              :
+              this.props.playerState === CONSTANTS.STATE.END ?
+                Utils.getLocalizedString(
+                  this.props.language,
+                  CONSTANTS.SKIN_TEXT.REPLAY,
+                  this.props.localizableStrings
+                )
+                :
+                Utils.getLocalizedString(
+                  this.props.language,
+                  CONSTANTS.SKIN_TEXT.PLAY,
+                  this.props.localizableStrings
+                )
+            }
           >
-            <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
-            <Tooltip
-              enabled={isTooltipEnabled}
-              alignment={alignment}
-              responsivenessMultiplier={this.responsiveUIMultiple}
-              bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height}
-              text={
-                this.props.playerState === CONSTANTS.STATE.PLAYING
-                  ? Utils.getLocalizedString(
-                      this.props.language,
-                      CONSTANTS.SKIN_TEXT.PAUSE,
-                      this.props.localizableStrings
-                    )
-                  : this.props.playerState === CONSTANTS.STATE.END
-                    ? Utils.getLocalizedString(
-                        this.props.language,
-                        CONSTANTS.SKIN_TEXT.REPLAY,
-                        this.props.localizableStrings
-                      )
-                    : Utils.getLocalizedString(
-                        this.props.language,
-                        CONSTANTS.SKIN_TEXT.PLAY,
-                        this.props.localizableStrings
-                      )
-              }
-            />
-          </AccessibleButton>
-        );
-      }.bind(this),
+          </Tooltip>
+        </AccessibleButton>;
+      }).bind(this),
 
       live: function() {
         return (
@@ -614,17 +626,18 @@ var ControlBar = React.createClass({
               <Tooltip
                 enabled={isTooltipEnabled}
                 text={
-                  mutedInUi
-                    ? Utils.getLocalizedString(
-                        this.props.language,
-                        CONSTANTS.SKIN_TEXT.UNMUTE,
-                        this.props.localizableStrings
-                      )
-                    : Utils.getLocalizedString(
-                        this.props.language,
-                        CONSTANTS.SKIN_TEXT.MUTE,
-                        this.props.localizableStrings
-                      )
+                  mutedInUi ?
+                    Utils.getLocalizedString(
+                      this.props.language,
+                      CONSTANTS.SKIN_TEXT.UNMUTE,
+                      this.props.localizableStrings
+                    )
+                    :
+                    Utils.getLocalizedString(
+                      this.props.language,
+                      CONSTANTS.SKIN_TEXT.MUTE,
+                      this.props.localizableStrings
+                    )
                 }
                 responsivenessMultiplier={this.responsiveUIMultiple}
                 bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height}
@@ -638,9 +651,12 @@ var ControlBar = React.createClass({
 
       timeDuration: function() {
         return (
-          <a className="oo-time-duration oo-control-bar-duration" style={durationSetting} key="timeDuration">
-            <span>{playheadTimeContent}</span>
-            {totalTimeContent}
+          <a
+            className="oo-time-duration oo-control-bar-duration"
+            style={durationSetting}
+            key="timeDuration"
+          >
+            <span>{playheadTimeContent}</span>{totalTimeContent}
           </a>
         );
       }.bind(this),
@@ -863,20 +879,22 @@ var ControlBar = React.createClass({
                 alignment={alignment}
               />
             </AccessibleButton>
-            {this.props.controller.state.multiAudioOptions.showPopover && (
-              <Popover
-                popoverClassName="oo-popover oo-popover-pull-right oo-cc-ma-container"
-                autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}
-                closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
-                closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
-              >
-                <ClosedCaptionMultiAudioMenu
-                  menuClassName={'oo-cc-ma-menu--popover'}
-                  togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
-                  {...this.props}
-                />
-              </Popover>
-            )}
+            {this.props.controller.state.multiAudioOptions.showPopover &&
+            <Popover
+              popoverClassName="oo-popover oo-popover-pull-right oo-cc-ma-container"
+              autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}
+              closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
+              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
+            >
+              <ClosedCaptionMultiAudioMenu
+                language={this.props.language}
+                localizableStrings={this.props.localizableStrings}
+                menuClassName={"oo-cc-ma-menu--popover"}
+                togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
+                {...this.props}
+              />
+            </Popover>
+            }
           </div>
         );
       }.bind(this),
@@ -935,38 +953,35 @@ var ControlBar = React.createClass({
       }.bind(this),
 
       fullscreen: function(alignment) {
-        return (
-          <AccessibleButton
-            className="oo-fullscreen oo-control-bar-item"
-            onClick={this.handleFullscreenClick}
-            onMouseOver={this.highlight}
-            onMouseOut={this.removeHighlight}
-            key="fullscreen"
-            focusId={CONSTANTS.FOCUS_IDS.FULLSCREEN}
-            ariaLabel={fullscreenAriaLabel}
-          >
-            <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
-            <Tooltip
-              enabled={isTooltipEnabled}
-              responsivenessMultiplier={this.responsiveUIMultiple}
-              text={
-                this.props.controller.state.fullscreen
-                  ? Utils.getLocalizedString(
-                      this.props.language,
-                      CONSTANTS.SKIN_TEXT.EXIT_FULL_SCREEN,
-                      this.props.localizableStrings
-                    )
-                  : Utils.getLocalizedString(
-                      this.props.language,
-                      CONSTANTS.SKIN_TEXT.FULL_SCREEN,
-                      this.props.localizableStrings
-                    )
-              }
-              bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height}
-              alignment={alignment}
-            />
-          </AccessibleButton>
-        );
+        return <AccessibleButton
+          className="oo-fullscreen oo-control-bar-item"
+          onClick={this.handleFullscreenClick}
+          onMouseOver={this.highlight}
+          onMouseOut={this.removeHighlight}
+          key="fullscreen"
+          focusId={CONSTANTS.FOCUS_IDS.FULLSCREEN}
+          ariaLabel={fullscreenAriaLabel}>
+          <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
+          <Tooltip
+            enabled={isTooltipEnabled}
+            responsivenessMultiplier={this.responsiveUIMultiple}
+            text={this.props.controller.state.fullscreen ?
+              Utils.getLocalizedString(
+                this.props.language,
+                CONSTANTS.SKIN_TEXT.EXIT_FULL_SCREEN,
+                this.props.localizableStrings
+              )
+              :
+              Utils.getLocalizedString(
+                this.props.language,
+                CONSTANTS.SKIN_TEXT.FULL_SCREEN,
+                this.props.localizableStrings
+              )
+            }
+            bottom={this.responsiveUIMultiple * this.props.skinConfig.controlBar.height}
+            alignment={alignment}
+          />
+        </AccessibleButton>;
       }.bind(this),
 
       logo: function() {
@@ -977,9 +992,10 @@ var ControlBar = React.createClass({
             clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
             target={this.props.skinConfig.controlBar.logo.target}
             width={
-              this.props.responsiveView !== this.props.skinConfig.responsive.breakpoints.xs.id
-                ? this.props.skinConfig.controlBar.logo.width
-                : null
+              this.props.responsiveView !== this.props.skinConfig.responsive.breakpoints.xs.id ?
+                this.props.skinConfig.controlBar.logo.width
+                :
+                null
             }
             height={this.props.skinConfig.controlBar.logo.height}
           />
@@ -988,9 +1004,10 @@ var ControlBar = React.createClass({
     };
 
     var controlBarItems = [];
-    var defaultItems = this.props.controller.state.isPlayingAd
-      ? this.props.skinConfig.buttons.desktopAd
-      : this.props.skinConfig.buttons.desktopContent;
+    var defaultItems = this.props.controller.state.isPlayingAd ?
+      this.props.skinConfig.buttons.desktopAd
+      :
+      this.props.skinConfig.buttons.desktopContent;
 
     // if mobile and not showing the slider or the icon, extra space can be added to control bar width. If volume bar is shown instead of slider, add some space as well:
     var volumeItem = null;
@@ -1002,8 +1019,8 @@ var ControlBar = React.createClass({
 
         var extraSpaceVolumeSlider =
           (volumeItem && this.isMobile && !this.props.controller.state.volumeState.volumeSliderVisible) ||
-          (volumeItem && Utils.isIos())
-            ? parseInt(volumeItem.minWidth)
+          (volumeItem && Utils.isIos()) ?
+            parseInt(volumeItem.minWidth)
             : 0;
         var extraSpaceVolumeBar = this.isMobile ? 0 : parseInt(volumeItem.minWidth) / 2;
         extraSpaceVolume = extraSpaceVolumeSlider + extraSpaceVolumeBar;
@@ -1013,7 +1030,8 @@ var ControlBar = React.createClass({
     }
 
     // if no hours, add extra space to control bar width:
-    var hours = parseInt(this.props.duration / 3600, 10);
+    var hourInSec = 3600;
+    var hours = parseInt(this.props.duration / hourInSec, 10);
     var extraSpaceDuration = hours > 0 ? 0 : 45;
 
     var controlBarLeftRightPadding = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
@@ -1096,7 +1114,7 @@ var ControlBar = React.createClass({
 
     var collapsedResult = Utils.collapse(
       this.props.componentWidth +
-        this.responsiveUIMultiple * (extraSpaceDuration + extraSpaceVolume - controlBarLeftRightPadding),
+      this.responsiveUIMultiple * (extraSpaceDuration + extraSpaceVolume - controlBarLeftRightPadding),
       controlBarItems,
       this.responsiveUIMultiple
     );
@@ -1105,14 +1123,14 @@ var ControlBar = React.createClass({
     this.moreOptionsItems = collapsedMoreOptionsItems;
 
     var finalControlBarItems = [];
-    var lastItem =
-      this.props.controller.state.isOoyalaAds || collapsedMoreOptionsItems.length === 0
-        ? collapsedControlBarItems.length - 2
-        : collapsedControlBarItems.length - 1;
+    var lastItem = (this.props.controller.state.isOoyalaAds || collapsedMoreOptionsItems.length === 0) ?
+      collapsedControlBarItems.length - 2
+      :
+      collapsedControlBarItems.length - 1;
     for (var k = 0; k < collapsedControlBarItems.length; k++) {
-      if (
-        collapsedControlBarItems[k].name === 'moreOptions' &&
-        (this.props.controller.state.isOoyalaAds || collapsedMoreOptionsItems.length === 0)
+      if (collapsedControlBarItems[k].name === 'moreOptions' &&
+        (this.props.controller.state.isOoyalaAds ||
+        collapsedMoreOptionsItems.length === 0)
       ) {
         continue;
       }
@@ -1162,7 +1180,9 @@ var ControlBar = React.createClass({
       >
         <ScrubberBar {...this.props} />
 
-        <div className="oo-control-bar-items-wrapper">{controlBarItems}</div>
+        <div className="oo-control-bar-items-wrapper">
+          {controlBarItems}
+        </div>
       </div>
     );
   }

@@ -1,11 +1,16 @@
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/tab');
 jest.dontMock('../../../js/constants/constants');
+jest.dontMock('../../../js/components/accessibleButton');
+jest.dontMock('../../../js/components/higher-order/accessibleMenu');
 jest.dontMock('classnames');
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 
 var helpers = require('../../../js/components/closed-caption-multi-audio-menu/helpers');
+var CONSTANTS = require('../../../js/constants/constants');
+var AccessibleButton = require('../../../js/components/accessibleButton');
 
 var Tab = require('../../../js/components/closed-caption-multi-audio-menu/tab');
 
@@ -60,9 +65,9 @@ describe('Tab component', function() {
 
   it('should call handler on click', function() {
     var component = TestUtils.renderIntoDocument(<Tab {...props} />);
-    var listItems = TestUtils.scryRenderedDOMComponentsWithClass(component, 'oo-cc-ma-menu__element');
-    
-    TestUtils.Simulate.click(listItems[0]);
+    var listItemBtns = TestUtils.scryRenderedDOMComponentsWithClass(component, 'oo-multi-audio-btn');
+
+    TestUtils.Simulate.click(listItemBtns[0]);
     expect(clickedId).toBe('1');
   });
 
@@ -90,9 +95,20 @@ describe('Tab component', function() {
     };
 
     var component = TestUtils.renderIntoDocument(<Tab {...propsNoHandler} />);
-    var listItems = TestUtils.scryRenderedDOMComponentsWithClass(component, 'oo-cc-ma-menu__element');
-    
-    TestUtils.Simulate.click(listItems[0]);
+    var listItemBtns = TestUtils.scryRenderedDOMComponentsWithClass(component, 'oo-multi-audio-btn');
+
+    TestUtils.Simulate.click(listItemBtns[0]);
     expect(clickedId).toBe(null);
   });
+
+  it('should detect when button is triggered with keyboard', function() {
+    var component = TestUtils.renderIntoDocument(<Tab {...props} />);
+    var accessibleButtonComponent = TestUtils.scryRenderedComponentsWithType(component, AccessibleButton)[0];
+
+    var listItemBtn = ReactDOM.findDOMNode(accessibleButtonComponent);
+    expect(accessibleButtonComponent.triggeredWithKeyboard).toBe(false);
+    TestUtils.Simulate.keyDown(listItemBtn, { key: CONSTANTS.KEY_VALUES.ENTER });
+    expect(accessibleButtonComponent.triggeredWithKeyboard).toBe(true);
+  });
+
 });

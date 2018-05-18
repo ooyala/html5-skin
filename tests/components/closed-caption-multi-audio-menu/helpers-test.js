@@ -68,11 +68,12 @@ describe('closed caption & multi-audio helpers', function() {
       expect(helpers.getDisplayTitle(undefined, 'with Commentary')).toEqual('with Commentary');
     });
 
-    it('should return Undefined language if none of params are provided', function() {
+    it('should return value for noLanguageText if none of params are provided', function() {
       expect(helpers.getDisplayTitle('', '')).toEqual('Undefined language');
       expect(helpers.getDisplayTitle(null, null)).toEqual('Undefined language');
       expect(helpers.getDisplayTitle(undefined, undefined)).toEqual('Undefined language');
       expect(helpers.getDisplayTitle()).toEqual('Undefined language');
+      expect(helpers.getDisplayTitle('', '', 'Unknown track')).toEqual('Unknown track');
     });
   });
 
