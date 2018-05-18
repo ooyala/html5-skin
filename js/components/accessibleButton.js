@@ -115,9 +115,7 @@ AccessibleButton.defaultProps = Object.create(
     focusId: {
       enumerable: true,
       get: function() {
-        return Math.random()
-          .toString(36)
-          .substr(2, 10);
+        return Math.random().toString(36).substr(2, 10);
       }
     }
   }
