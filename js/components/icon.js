@@ -4,7 +4,7 @@ var Utils = require('./utils');
 var Icon = React.createClass({
   shouldComponentUpdate: function(nextProps) {
     var updateComponent = false;
-    if (this.props && (this.props.icon || this.props.className)) {
+    if (this.props && (this.props.icon !== nextProps.icon || this.props.className !== nextProps.className)) {
       updateComponent = true;
     }
     return updateComponent;
