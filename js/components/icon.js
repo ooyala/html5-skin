@@ -1,8 +1,8 @@
-var React = require('react'),
-    Utils = require('./utils');
+var React = require('react');
+var Utils = require('./utils');
 
 var Icon = React.createClass({
-  shouldComponentUpdate: function(nextProps, nextState) {
+  shouldComponentUpdate: function(nextProps) {
     var updateComponent = false;
     if (this.props && (this.props.icon || this.props.className)) {
       updateComponent = true;
