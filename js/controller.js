@@ -1217,6 +1217,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         height: '',
         width: ''
       });
+      this.cancelTimer();
+      this.hideControlBar();
       this.state.forceControlBarVisible = this.state.pluginsElement.children().length > 0;
       if (this.state.mainVideoPlayhead > 0) {
         this.isNewVrVideo = false;
