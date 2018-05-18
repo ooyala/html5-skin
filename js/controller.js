@@ -1262,11 +1262,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     onShowAdControls: function(event, showAdControls, autoHide) {
       this.state.showAdControls = showAdControls;
-      this.state.forceControlBarVisible = undefined;
+      this.state.forceControlBarVisible = false;
       if (showAdControls && this.state.config.adScreen.showControlBar) {
         this.state.pluginsElement.removeClass('oo-full');
         this.state.pluginsClickElement.removeClass('oo-full');
-        if (typeof autoHide !== undefined) {
+        if (typeof autoHide !== 'undefined') {
           this.state.forceControlBarVisible = !autoHide;
         }
       } else {

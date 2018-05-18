@@ -669,6 +669,26 @@ describe('Controller', function() {
       controller.onPaused('event', OO.VIDEO.ADS);
       expect(controller.state.config.adScreen.showControlBar).toBe(true);
     });
+
+    it('testing onShowAdControls and forceControlBarVisible', function() {
+      var event = {};
+      controller.createPluginElements();
+      controller.state.config.adScreen.showControlBar = true;
+
+      controller.onShowAdControls(event, true);
+      expect(controller.state.forceControlBarVisible).toBe(false);
+      controller.onShowAdControls(event, true, true);
+      expect(controller.state.forceControlBarVisible).toBe(false);
+      controller.onShowAdControls(event, true, false);
+      expect(controller.state.forceControlBarVisible).toBe(true);
+
+      controller.onShowAdControls(event, false);
+      expect(controller.state.forceControlBarVisible).toBe(false);
+      controller.onShowAdControls(event, false, true);
+      expect(controller.state.forceControlBarVisible).toBe(false);
+      controller.onShowAdControls(event, false, false);
+      expect(controller.state.forceControlBarVisible).toBe(false);
+    });
   });
 
   describe('Video Qualities', function() {
@@ -854,7 +874,7 @@ describe('Controller', function() {
       controller.onMultiAudioFetched('event', multiAudio);
       expect(controller.state.multiAudio.tracks).toEqual(multiAudio.tracks);
     });
-    
+
     it('should set correct state after MULTI_AUDIO_CHANGED was called', function() {
       var multiAudio = {
         tracks: [
@@ -865,8 +885,8 @@ describe('Controller', function() {
       controller.onMultiAudioChanged('event', multiAudio);
       expect(controller.state.multiAudio.tracks).toEqual(multiAudio.tracks);
     });
-    
-    it('should set correct state after MULTI_AUDIO_CHANGED after MULTI_AUDIO_FETCHED was already called', 
+
+    it('should set correct state after MULTI_AUDIO_CHANGED after MULTI_AUDIO_FETCHED was already called',
       function() {
         var multiAudio = {
           tracks: [
@@ -874,10 +894,10 @@ describe('Controller', function() {
             { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
           ]
         };
-      
+
         controller.onMultiAudioFetched('event', multiAudio);
         expect(controller.state.multiAudio.tracks).toEqual(multiAudio.tracks);
-      
+
         // change the state to have more tracks
         var newAudio = {
           tracks: [
@@ -887,9 +907,9 @@ describe('Controller', function() {
           ]
         };
         controller.onMultiAudioChanged('event', newAudio);
-      
+
         expect(controller.state.multiAudio.tracks).toEqual(newAudio.tracks);
-      
+
         // change the state to have a different active track
         var newActiveAudio = {
           tracks: [
@@ -899,10 +919,10 @@ describe('Controller', function() {
           ]
         };
         controller.onMultiAudioChanged('event', newActiveAudio);
-      
+
         expect(controller.state.multiAudio.tracks).toEqual(newActiveAudio.tracks);
       }
     );
-    
+
   });
 });
