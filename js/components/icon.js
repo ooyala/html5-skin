@@ -3,11 +3,11 @@ var React = require('react'),
 
 var Icon = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
-    if (this.props && this.props.icon && this.props.className) {
-      return nextProps.icon !== this.props.icon || nextProps.className !== this.props.className;
+    var updateComponent = false;
+    if (this.props && (this.props.icon || this.props.className)) {
+      updateComponent = true;
     }
-    
-    return false;
+    return updateComponent;
   },
 
   render: function() {
