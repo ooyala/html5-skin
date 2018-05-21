@@ -14,10 +14,11 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants');
 
 var VideoQualityPanel = React.createClass({
-
   getInitialState: function() {
     return {
-      selected: this.props.videoQualityOptions.selectedBitrate ? this.props.videoQualityOptions.selectedBitrate.id : 'auto',
+      selected: this.props.videoQualityOptions.selectedBitrate
+        ? this.props.videoQualityOptions.selectedBitrate.id
+        : 'auto',
       wideFormat: false
     };
   },
@@ -25,7 +26,7 @@ var VideoQualityPanel = React.createClass({
   handleVideoQualityClick: function(selectedBitrateId, event) {
     event.preventDefault();
     var eventData = {
-      'id': selectedBitrateId
+      id: selectedBitrateId
     };
     this.props.controller.sendVideoQualityChangeEvent(eventData);
     this.setState({
@@ -42,11 +43,16 @@ var VideoQualityPanel = React.createClass({
       'oo-quality-auto-btn': true,
       'oo-selected': isSelected
     });
-    var selectedBitrateStyle = {color: (this.props.skinConfig.general.accentColor && this.state.selected == 'auto') ? this.props.skinConfig.general.accentColor : null};
+    var selectedBitrateStyle = {
+      color:
+        this.props.skinConfig.general.accentColor && this.state.selected === 'auto'
+          ? this.props.skinConfig.general.accentColor
+          : null
+    };
 
     // add auto btn to beginning of array
     bitrateButtons.unshift(
-      <li className="oo-auto-li" key='auto-li' role="presentation">
+      <li className="oo-auto-li" key="auto-li" role="presentation">
         <AccessibleButton
           className={autoQualityBtn}
           key="auto"
@@ -54,7 +60,8 @@ var VideoQualityPanel = React.createClass({
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
           ariaLabel={CONSTANTS.ARIA_LABELS.AUTO_QUALITY}
           ariaChecked={isSelected}
-          onClick={this.handleVideoQualityClick.bind(this, 'auto')}>
+          onClick={this.handleVideoQualityClick.bind(this, 'auto')}
+        >
           <span className="oo-quality-auto-icon" style={selectedBitrateStyle}>
             <Icon {...this.props} icon="auto" />
           </span>
@@ -67,14 +74,17 @@ var VideoQualityPanel = React.createClass({
   },
 
   addBitrateButtons: function(bitrateButtons) {
-    var availableBitrates  = this.props.videoQualityOptions.availableBitrates;
+    var availableBitrates = this.props.videoQualityOptions.availableBitrates;
     var isSelected = false;
     var label = '';
     var availableResolution = null;
     var availableBitrate = null;
-    var qualityTextFormat = this.props.skinConfig.controlBar && this.props.skinConfig.controlBar.qualitySelection &&
-                            this.props.skinConfig.controlBar.qualitySelection.format ?
-                            this.props.skinConfig.controlBar.qualitySelection.format : CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE;
+    var qualityTextFormat =
+      this.props.skinConfig.controlBar &&
+      this.props.skinConfig.controlBar.qualitySelection &&
+      this.props.skinConfig.controlBar.qualitySelection.format
+        ? this.props.skinConfig.controlBar.qualitySelection.format
+        : CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE;
     var showResolution = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.RESOLUTION) >= 0;
     var showBitrate = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE) >= 0;
     var qualityText = null;
@@ -113,9 +123,14 @@ var VideoQualityPanel = React.createClass({
         'oo-quality-btn': true,
         'oo-selected': isSelected
       });
-      var selectedBitrateStyle = {color: (this.props.skinConfig.general.accentColor && this.state.selected == availableBitrates[i].id) ? this.props.skinConfig.general.accentColor : null};
+      var selectedBitrateStyle = {
+        color:
+          this.props.skinConfig.general.accentColor && this.state.selected === availableBitrates[i].id
+            ? this.props.skinConfig.general.accentColor
+            : null
+      };
 
-      if (availableBitrates[i].id == 'auto') {
+      if (availableBitrates[i].id === 'auto') {
         this.addAutoButton(bitrateButtons);
       } else {
         label = null;
@@ -130,9 +145,9 @@ var VideoQualityPanel = React.createClass({
 
         if (typeof availableBitrates[i].bitrate === 'number') {
           var suffix = 'kbps';
-          availableBitrate = Math.round(availableBitrates[i].bitrate/1000);
+          availableBitrate = Math.round(availableBitrates[i].bitrate / 1000);
           if (availableBitrate >= 1000) {
-            availableBitrate = Math.round(availableBitrate/10) / 100;
+            availableBitrate = Math.round(availableBitrate / 10) / 100;
             suffix = 'mbps';
           }
           availableBitrate += ' ' + suffix;
@@ -151,7 +166,9 @@ var VideoQualityPanel = React.createClass({
         switch (qualityText) {
           case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_BITRATE:
             this.state.wideFormat = true;
-            label = qualityText.replace(MACROS.BITRATE, availableBitrate).replace(MACROS.RESOLUTION, availableResolution);
+            label = qualityText
+              .replace(MACROS.BITRATE, availableBitrate)
+              .replace(MACROS.RESOLUTION, availableResolution);
             ariaLabel = label;
             break;
           case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY:
@@ -171,7 +188,9 @@ var VideoQualityPanel = React.createClass({
                 if (trueResolutionIndex >= 0 && trueResolutionIndex < tiering.length) {
                   this.state.wideFormat = true;
                   qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.TIERED_RESOLUTION_ONLY;
-                  label = qualityText.replace(MACROS.RESOLUTION, availableResolution).replace(MACROS.RESOLUTION_TIER, tiering[trueResolutionIndex]);
+                  label = qualityText
+                    .replace(MACROS.RESOLUTION, availableResolution)
+                    .replace(MACROS.RESOLUTION_TIER, tiering[trueResolutionIndex]);
                 }
               }
             } else {
@@ -197,7 +216,8 @@ var VideoQualityPanel = React.createClass({
                 role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
                 ariaLabel={ariaLabel}
                 ariaChecked={isSelected}
-                onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}>
+                onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}
+              >
                 {label}
               </AccessibleButton>
             </li>
@@ -216,7 +236,10 @@ var VideoQualityPanel = React.createClass({
       'oo-content-panel': !this.props.popover,
       'oo-quality-panel': !this.props.popover,
       'oo-quality-popover': this.props.popover,
-      'oo-mobile-fullscreen': !this.props.popover && this.props.controller.state.isMobile && (this.props.controller.state.fullscreen || this.props.controller.state.isFullWindow)
+      'oo-mobile-fullscreen':
+        !this.props.popover &&
+        this.props.controller.state.isMobile &&
+        (this.props.controller.state.fullscreen || this.props.controller.state.isFullWindow)
     });
 
     var screenContentClass = ClassNames({
@@ -229,10 +252,9 @@ var VideoQualityPanel = React.createClass({
         <ScrollArea
           className={screenContentClass}
           speed={this.props.popover ? 0.6 : 1}
-          horizontal={!this.props.popover}>
-          <ul role="menu">
-            {bitrateButtons}
-          </ul>
+          horizontal={!this.props.popover}
+        >
+          <ul role="menu">{bitrateButtons}</ul>
         </ScrollArea>
       </div>
     );
@@ -244,14 +266,13 @@ VideoQualityPanel = AccessibleMenu(VideoQualityPanel);
 
 VideoQualityPanel.propTypes = {
   videoQualityOptions: React.PropTypes.shape({
-    availableBitrates: React.PropTypes.arrayOf(React.PropTypes.shape({
-      id: React.PropTypes.string,
-      bitrate: React.PropTypes.oneOfType([
-        React.PropTypes.string,
-        React.PropTypes.number,
-      ]),
-      label: React.PropTypes.string
-    }))
+    availableBitrates: React.PropTypes.arrayOf(
+      React.PropTypes.shape({
+        id: React.PropTypes.string,
+        bitrate: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
+        label: React.PropTypes.string
+      })
+    )
   }),
   closeAction: React.PropTypes.func,
   controller: React.PropTypes.shape({
@@ -264,7 +285,7 @@ VideoQualityPanel.defaultProps = {
   wideFormat: false,
   skinConfig: {
     icons: {
-      quality:{fontStyleClass:'oo-icon oo-icon-topmenu-quality'}
+      quality: { fontStyleClass: 'oo-icon oo-icon-topmenu-quality' }
     }
   },
   videoQualityOptions: {

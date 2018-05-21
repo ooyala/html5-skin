@@ -46,10 +46,10 @@
         "ignoreComments": true
       }
     ],
-    "no-continue": ["error"],
+    "no-continue": ["warn"],
     "no-dupe-args": ["error"],
     "no-dupe-keys": ["error"],
-    "no-fallthrough": ["error"],
+    "no-fallthrough": ["warn"],
     "no-mixed-spaces-and-tabs": ["error"],
     "no-multiple-empty-lines": ["error"],
     "no-undef": ["error"],

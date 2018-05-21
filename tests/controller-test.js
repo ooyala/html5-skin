@@ -8,7 +8,6 @@
  *
  */
 
-
 jest.dontMock('../js/controller');
 jest.dontMock('screenfull');
 jest.dontMock('../js/constants/constants');
@@ -29,7 +28,7 @@ var Html5Skin;
  */
 OO = {
   playerParams: {
-    'core_version' : 4
+    core_version: 4
   },
   publicApi: {
     VERSION: {
@@ -52,7 +51,9 @@ OO = {
     publish: function() {},
     addDependent: function() {}
   },
-  log: function(a) {console.info(a);},
+  log: function(a) {
+    console.info(a);
+  },
   init: function() {},
   handleVrMobileOrientation: function() {},
   plugin: function(module, callback) {
@@ -89,7 +90,7 @@ OO = {
           enabled: null,
           language: null,
           availableLanguages: {
-            languages: ['en','es']
+            languages: ['en', 'es']
           },
           cueText: null,
           showPopover: false,
@@ -106,8 +107,8 @@ OO = {
         upNextInfo: {
           countDownCancelled: false,
           showing: null,
-          upNextData: {data: 2},
-          delayedSetEmbedCodeEvent:{},
+          upNextData: { data: 2 },
+          delayedSetEmbedCodeEvent: {},
           delayedContentData: {
             clickedVideo: {
               embed_code: true,
@@ -118,7 +119,7 @@ OO = {
         isPlayingAd: false,
         mainVideoAspectRatio: 6,
         mainVideoInnerWrapper: {
-          css: function(a,b) {},
+          css: function(a, b) {},
           addClass: function(a) {},
           removeClass: function(a) {}
         },
@@ -135,9 +136,9 @@ OO = {
         pluginsElement: {
           addClass: function(a) {},
           removeClass: function(a) {},
-          css: function(a,b) {},
+          css: function(a, b) {},
           children: function() {
-            return {length:2};
+            return { length: 2 };
           }
         },
         pluginsClickElement: {
@@ -152,7 +153,7 @@ OO = {
           webkitSupportsFullscreen: true,
           webkitEnterFullscreen: function() {},
           webkitExitFullscreen: function() {},
-          addEventListener: function(a,b) {}
+          addEventListener: function(a, b) {}
         },
         mainVideoMediaType: CONSTANTS.MEDIA_TYPE.FLASH
       },
@@ -183,7 +184,7 @@ OO = {
           }
         },
         updatePlayhead: function(playhead, duration, buffered) {},
-        switchComponent: function(a) {},
+        switchComponent: function(a) {}
       },
       enableFullScreen: function() {},
       enableIosFullScreen: function() {},
@@ -201,7 +202,7 @@ OO = {
       onInitialPlayRequested: function() {},
       unsubscribeBasicPlaybackEvents: function() {},
       resetUpNextInfo: function(a) {},
-      showUpNextScreenWhenReady: function(a,b) {},
+      showUpNextScreenWhenReady: function(a, b) {},
       subscribeBasicPlaybackEvents: function() {},
       externalPluginSubscription: function() {},
       addDependent: function() {},
@@ -226,7 +227,7 @@ OO = {
       hideControlBar: function() {},
       hideVolumeSliderBar: function() {},
       updateAspectRatio: function() {},
-      calculateAspectRatio: function(a,b) {},
+      calculateAspectRatio: function(a, b) {},
       setAspectRatio: function() {},
       createPluginElements: function() {},
       findMainVideoElement: function(a) {},
@@ -234,7 +235,6 @@ OO = {
       cleanUpEventListeners: function() {},
       toggleStereoVr: function() {}
     };
-
 
     /**
      * The unit tests
@@ -246,13 +246,26 @@ OO = {
     videoElement.className = 'video';
     videoElement.id = videoId;
     videoElement.preload = 'none';
-    videoElement.src = 'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor';
-    var persistentSettings = {'closedCaptionOptions':{'textColor':'Blue','backgroundColor':'Transparent','windowColor':'Yellow','windowOpacity':'0.3','fontType':'Proportional Serif','fontSize':'Medium','textEnhancement':'Shadow','enabled':true,'language':'unknown','backgroundOpacity':'0.2','textOpacity':'1'}};
+    videoElement.src =
+      'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor';
+    var persistentSettings = {
+      closedCaptionOptions: {
+        textColor: 'Blue',
+        backgroundColor: 'Transparent',
+        windowColor: 'Yellow',
+        windowOpacity: '0.3',
+        fontType: 'Proportional Serif',
+        fontSize: 'Medium',
+        textEnhancement: 'Shadow',
+        enabled: true,
+        language: 'unknown',
+        backgroundOpacity: '0.2',
+        textOpacity: '1'
+      }
+    };
     // setup document body for valid DOM elements
     document.body.innerHTML =
-      '<div id='+elementId+'>' +
-      '  <div class="oo-player-skin">' + videoElement + '</div>' +
-      '</div>';
+      '<div id=' + elementId + '>' + '  <div class="oo-player-skin">' + videoElement + '</div>' + '</div>';
 
     // test mb subscribe
     Html5Skin = new plugin(OO.mb, 'id');
@@ -262,29 +275,32 @@ OO = {
     Html5Skin.externalPluginSubscription();
 
     // test player state
-    Html5Skin.onPlayerCreated('customerUi', elementId, {skin:{config:{}}}, persistentSettings);
+    Html5Skin.onPlayerCreated('customerUi', elementId, { skin: { config: {} } }, persistentSettings);
     Html5Skin.onSkinMetaDataFetched('customerUi', {});
-    Html5Skin.onAttributesFetched('customerUi', {'attributes':{'provider':{'ots_stretch_to_output':'true'}}});
-    Html5Skin.loadConfigData('customerUi', {skin:{config:{}}}, {}, {}, {});
-    Html5Skin.loadConfigData('customerUi', {skin:{config:[]}}, {}, {}, {}); // invalid
-    Html5Skin.loadConfigData('customerUi', {skin:{inline:{}}}, {}, {}, {});
-    Html5Skin.loadConfigData('customerUi', {skin:{inline:[]}}, {}, {}, {}); // invalid
+    Html5Skin.onAttributesFetched('customerUi', {
+      attributes: { provider: { ots_stretch_to_output: 'true' } }
+    });
+    Html5Skin.loadConfigData('customerUi', { skin: { config: {} } }, {}, {}, {});
+    Html5Skin.loadConfigData('customerUi', { skin: { config: [] } }, {}, {}, {}); // invalid
+    Html5Skin.loadConfigData('customerUi', { skin: { inline: {} } }, {}, {}, {});
+    Html5Skin.loadConfigData('customerUi', { skin: { inline: [] } }, {}, {}, {}); // invalid
     Html5Skin.createPluginElements();
     Html5Skin.skin = controllerMock.skin; // reset skin, onPlayerCreated updates skin
 
-    Html5Skin.onVcVideoElementCreated('customerUi', {videoId: OO.VIDEO.MAIN, videoElement: videoElement});
+    Html5Skin.onVcVideoElementCreated('customerUi', { videoId: OO.VIDEO.MAIN, videoElement: videoElement });
     Html5Skin.state.mainVideoElement = controllerMock.state.mainVideoElement;
 
     Html5Skin.metaDataLoaded();
-    Html5Skin.onAuthorizationFetched('customerUi', {streams: [{is_live_stream: true}]});
-    Html5Skin.onContentTreeFetched('customerUi', {someContent: true});
-    Html5Skin.onThumbnailsFetched('customerUi', {thumb: 'nail'});
+    Html5Skin.onAuthorizationFetched('customerUi', { streams: [{ is_live_stream: true }] });
+    Html5Skin.onContentTreeFetched('customerUi', { someContent: true });
+    Html5Skin.onThumbnailsFetched('customerUi', { thumb: 'nail' });
 
     Html5Skin.onVolumeChanged('customerUi', 0.5);
 
     Html5Skin.onPlayheadTimeChanged('customerUi', 5, 10, 7, null, 'main');
     Html5Skin.onPlayheadTimeChanged('customerUi', 5, 0, 7, null, OO.VIDEO.ADS);
-    Html5Skin.state.fullscreen = true;     Html5Skin.onPlayheadTimeChanged('customerUi', 5, 0, 7, null, 'child');
+    Html5Skin.state.fullscreen = true;
+    Html5Skin.onPlayheadTimeChanged('customerUi', 5, 0, 7, null, 'child');
     Html5Skin.state.fullscreen = false;
     Html5Skin.onInitialPlay();
 
@@ -299,12 +315,13 @@ OO = {
     Html5Skin.onPaused('customerUi', OO.VIDEO.MAIN);
 
     Html5Skin.onPlayed();
-    Html5Skin.state.upNextInfo.delayedContentData = {clickedVideo: {embed_code: false}};
+    Html5Skin.state.upNextInfo.delayedContentData = { clickedVideo: { embed_code: false } };
     Html5Skin.onPlayed();
-    Html5Skin.state.upNextInfo.delayedContentData = {clickedVideo: {embed_code: false}};
+    Html5Skin.state.upNextInfo.delayedContentData = { clickedVideo: { embed_code: false } };
     Html5Skin.state.upNextInfo.delayedSetEmbedCodeEvent = null;
-    Html5Skin.state.fullscreen = true;     Html5Skin.onPlayed();
-    Html5Skin.state.upNextInfo.delayedContentData = {clickedVideo: {embed_code: false}};
+    Html5Skin.state.fullscreen = true;
+    Html5Skin.onPlayed();
+    Html5Skin.state.upNextInfo.delayedContentData = { clickedVideo: { embed_code: false } };
     Html5Skin.state.fullscreen = false;
     Html5Skin.onVcPlayed('customerUi', OO.VIDEO.MAIN);
 
@@ -326,14 +343,14 @@ OO = {
 
     Html5Skin.onAssetDimensionsReceived('customerUi', {});
     Html5Skin.skin.props.skinConfig.responsive.aspectRatio = 'auto';
-    Html5Skin.onAssetDimensionsReceived('customerUi', {videoId: OO.VIDEO.MAIN});
+    Html5Skin.onAssetDimensionsReceived('customerUi', { videoId: OO.VIDEO.MAIN });
 
     // test ad events
     Html5Skin.onAdsPlayed('customerUi');
     Html5Skin.onWillPlayAds('customerUi');
 
     Html5Skin.onAdPodStarted('customerUi', 2);
-    Html5Skin.onWillPlaySingleAd('customerUi', {isLive:true, duration:10});
+    Html5Skin.onWillPlaySingleAd('customerUi', { isLive: true, duration: 10 });
 
     Html5Skin.onSingleAdPlayed('customerUi');
     Html5Skin.onShowAdSkipButton('customerUi');
@@ -345,22 +362,27 @@ OO = {
     Html5Skin.onSkipAdClicked('customerUi');
     Html5Skin.onAdsClicked(OO.VIDEO.ADS);
     Html5Skin.publishOverlayRenderingEvent(20);
-    Html5Skin.onPlayNonlinearAd('customerUi', {isLive:true, duration:10, url:'www.ooyala.com', ad:{height:12, width:14}});
+    Html5Skin.onPlayNonlinearAd('customerUi', {
+      isLive: true,
+      duration: 10,
+      url: 'www.ooyala.com',
+      ad: { height: 12, width: 14 }
+    });
     Html5Skin.onAdOverlayLoaded();
     Html5Skin.onVideoElementFocus('customerUi', OO.VIDEO.MAIN);
     Html5Skin.closeNonlinearAd('customerUi');
     Html5Skin.hideNonlinearAd('customerUi');
     Html5Skin.showNonlinearAd('customerUi');
     Html5Skin.showNonlinearAdCloseButton('customerUi');
-    Html5Skin.onBitrateInfoAvailable('customerUi', {bitrates:{}});
+    Html5Skin.onBitrateInfoAvailable('customerUi', { bitrates: {} });
 
     Html5Skin.state.closedCaptionOptions.enabled = true;
-    Html5Skin.onClosedCaptionsInfoAvailable('customerUi', {languages: ['en', 'es']});
+    Html5Skin.onClosedCaptionsInfoAvailable('customerUi', { languages: ['en', 'es'] });
 
     Html5Skin.onClosedCaptionCueChanged('customerUi', ['Hi, this is caption text', 'more captions']);
     Html5Skin.onClosedCaptionCueChanged('customerUi', []);
 
-    Html5Skin.onRelatedVideosFetched('customerUi', {videos:['vid1', 'vid2']});
+    Html5Skin.onRelatedVideosFetched('customerUi', { videos: ['vid1', 'vid2'] });
     Html5Skin.enableFullScreen();
     Html5Skin.enableIosFullScreen();
     Html5Skin.onFullscreenChanged();
@@ -382,7 +404,10 @@ OO = {
     Html5Skin.exitFullWindow();
     Html5Skin.webkitBeginFullscreen();
     Html5Skin.webkitEndFullscreen();
-    Html5Skin.exitFullWindowOnEscKey({keyCode: CONSTANTS.KEYCODES.ESCAPE_KEY, preventDefault: function() {}});
+    Html5Skin.exitFullWindowOnEscKey({
+      keyCode: CONSTANTS.KEYCODES.ESCAPE_KEY,
+      preventDefault: function() {}
+    });
     Html5Skin.onErrorEvent({}, '404');
 
     // test up next
@@ -397,7 +422,7 @@ OO = {
     Html5Skin.unsubscribeBasicPlaybackEvents();
 
     // test render skin
-    Html5Skin.renderSkin({state: 'state extended'});
+    Html5Skin.renderSkin({ state: 'state extended' });
 
     // test UI functions
     Html5Skin.state.playerState = CONSTANTS.STATE.PLAYING;
@@ -467,18 +492,18 @@ OO = {
     Html5Skin.toggleScreen(CONSTANTS.SCREEN.SHARE_SCREEN);
 
     Html5Skin.sendDiscoveryClickEvent({}, true);
-    Html5Skin.sendDiscoveryClickEvent({clickedVideo:{embed_code: true}}, false);
-    Html5Skin.sendDiscoveryClickEvent({clickedVideo:{asset: true}}, false);
+    Html5Skin.sendDiscoveryClickEvent({ clickedVideo: { embed_code: true } }, false);
+    Html5Skin.sendDiscoveryClickEvent({ clickedVideo: { asset: true } }, false);
 
     Html5Skin.sendDiscoveryDisplayEvent(CONSTANTS.SCREEN.DISCOVERY_SCREEN);
     Html5Skin.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
     Html5Skin.togglePopover(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS);
     Html5Skin.closeOtherPopovers();
     Html5Skin.receiveVideoQualityChangeEvent(null, 312);
-    Html5Skin.sendVideoQualityChangeEvent({id:2});
+    Html5Skin.sendVideoQualityChangeEvent({ id: 2 });
     Html5Skin.setClosedCaptionsInfo(elementId);
 
-    Html5Skin.state.closedCaptionOptions.availableLanguages = {languages: ['en', 'es', 'de', 'cs']};
+    Html5Skin.state.closedCaptionOptions.availableLanguages = { languages: ['en', 'es', 'de', 'cs'] };
     Html5Skin.onChangeClosedCaptionLanguage('changeClosedCaptionLanguage', 'de'); // valid language test
     Html5Skin.onChangeClosedCaptionLanguage('changeClosedCaptionLanguage', 'sderfes'); // invalid language test
     Html5Skin.setClosedCaptionsLanguage();
@@ -527,7 +552,7 @@ OO = {
 
     // test timer
     Html5Skin.cancelTimer();
-    Html5Skin.cancelTimer.call({state: {timer: null}});
+    Html5Skin.cancelTimer.call({ state: { timer: null } });
 
     // test aspect ratio
     Html5Skin.skin.props.skinConfig.responsive.aspectRatio = 45;
@@ -535,7 +560,7 @@ OO = {
     Html5Skin.updateAspectRatio.call({});
 
     Html5Skin.setAspectRatio();
-    Html5Skin.setAspectRatio.call({state: {mainVideoAspectRatio: 0}});
+    Html5Skin.setAspectRatio.call({ state: { mainVideoAspectRatio: 0 } });
 
     // test find main video element
     Html5Skin.findMainVideoElement(videoElement);
@@ -545,23 +570,22 @@ OO = {
     var flashVideoElement = document.createElement('object');
     flashVideoElement.className = 'video';
     flashVideoElement.id = videoId;
-    flashVideoElement.src = 'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor';
+    flashVideoElement.src =
+      'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor';
     Html5Skin.findMainVideoElement(flashVideoElement);
     var div = document.createElement('div');
     div.appendChild(flashVideoElement);
     Html5Skin.findMainVideoElement(div);
-    Html5Skin.findMainVideoElement({0:videoElement});
+    Html5Skin.findMainVideoElement({ 0: videoElement });
 
     describe('Controller testing skin initialization', function() {
       it('should show Initial Screen after player created', function() {
         Html5Skin.onPlayerCreated('customerUi', elementId, {});
         expect(Html5Skin.state.screenToShow).toBe(CONSTANTS.SCREEN.INITIAL_SCREEN);
       });
-
     });
 
     describe('Controller testing Ooyala Ads', function() {
-
       it('test after Ooyala ad state', function() {
         expect(Html5Skin.state.afterOoyalaAd).toBe(false);
         Html5Skin.onEmbedCodeChanged('customerUi');
@@ -582,7 +606,7 @@ OO = {
       it('test start screen is shown on playback ready and autoplay param is set', function() {
         Html5Skin.state.afterOoyalaAd = false;
         Html5Skin.state.initialPlayHasOccurred = false;
-        Html5Skin.onPlaybackReady('customerUi', null, {willAutoplay: true});
+        Html5Skin.onPlaybackReady('customerUi', null, { willAutoplay: true });
         expect(Html5Skin.state.screenToShow).toBe(CONSTANTS.SCREEN.START_LOADING_SCREEN);
       });
 
@@ -603,7 +627,7 @@ OO = {
       beforeEach(function() {
         attributesParam = {
           provider: {
-            'ots_stretch_to_output': true
+            ots_stretch_to_output: true
           }
         };
         addClassSpy = sinon.spy(Html5Skin.state.mainVideoInnerWrapper, 'addClass');
@@ -625,7 +649,7 @@ OO = {
       it('should not apply anamorphic CSS fix when ots_stretch_to_output isn\'t true', function() {
         attributesParam.provider = {};
         Html5Skin.onAttributesFetched('customerUi', attributesParam);
-        attributesParam.provider = { 'ots_stretch_to_output': false };
+        attributesParam.provider = { ots_stretch_to_output: false };
         Html5Skin.onAttributesFetched('customerUi', attributesParam);
         expect(addClassSpy.callCount).toBe(0);
         expect(removeClassSpy.callCount).toBe(0);
@@ -644,8 +668,20 @@ OO = {
       it('should destroy gracefully', function() {
         // test destroy functions last
         Html5Skin.onEmbedCodeChanged('customerUi', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', {});
-        Html5Skin.onAssetChanged('customerUi', {content: {streams: [{is_live_stream: true}], title: 'Title', posterImages: [{url:'www.ooyala.com'}]}});
-        Html5Skin.onAssetUpdated('customerUi', {content: {streams: [{is_live_stream: true}], title: 'Title', posterImages: [{url:'www.ooyala.com'}]}});
+        Html5Skin.onAssetChanged('customerUi', {
+          content: {
+            streams: [{ is_live_stream: true }],
+            title: 'Title',
+            posterImages: [{ url: 'www.ooyala.com' }]
+          }
+        });
+        Html5Skin.onAssetUpdated('customerUi', {
+          content: {
+            streams: [{ is_live_stream: true }],
+            title: 'Title',
+            posterImages: [{ url: 'www.ooyala.com' }]
+          }
+        });
         Html5Skin.state.elementId = 'oo-video';
         Html5Skin.onPlayerDestroy('customerUi');
       });

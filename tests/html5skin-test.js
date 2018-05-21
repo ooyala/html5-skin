@@ -1,11 +1,11 @@
 jest
-.dontMock('../js/skin')
-.dontMock('../js/components/utils')
-.dontMock('../js/components/accessibilityControls')
-.dontMock('../js/components/higher-order/accessibleMenu')
-.dontMock('../js/constants/constants')
-.dontMock('../config/skin.json')
-.dontMock('classnames');
+  .dontMock('../js/skin')
+  .dontMock('../js/components/utils')
+  .dontMock('../js/components/accessibilityControls')
+  .dontMock('../js/components/higher-order/accessibleMenu')
+  .dontMock('../js/constants/constants')
+  .dontMock('../config/skin.json')
+  .dontMock('classnames');
 
 var $ = require('jquery');
 var _ = require('underscore');
@@ -21,18 +21,31 @@ var videoElement = document.createElement('video');
 videoElement.className = 'video';
 videoElement.id = videoId;
 videoElement.preload = 'none';
-videoElement.src = 'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor';
-var persistentSettings = {'closedCaptionOptions':{'textColor':'Blue','backgroundColor':'Transparent','windowColor':'Yellow','windowOpacity':'0.3','fontType':'Proportional Serif','fontSize':'Medium','textEnhancement':'Shadow','enabled':true,'language':'unknown','backgroundOpacity':'0.2','textOpacity':'1'}};
+videoElement.src =
+  'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor';
+var persistentSettings = {
+  closedCaptionOptions: {
+    textColor: 'Blue',
+    backgroundColor: 'Transparent',
+    windowColor: 'Yellow',
+    windowOpacity: '0.3',
+    fontType: 'Proportional Serif',
+    fontSize: 'Medium',
+    textEnhancement: 'Shadow',
+    enabled: true,
+    language: 'unknown',
+    backgroundOpacity: '0.2',
+    textOpacity: '1'
+  }
+};
 // setup document body for valid DOM elements
 document.body.innerHTML =
-  '<div id='+elementId+'>' +
-  '  <div class="oo-player-skin">' + videoElement + '</div>' +
-  '</div>';
+  '<div id=' + elementId + '>' + '  <div class="oo-player-skin">' + videoElement + '</div>' + '</div>';
 
 // Mock OO environment needed for skin plugin initialization
 OO = {
   playerParams: {
-    'core_version' : 4
+    core_version: 4
   },
   publicApi: {},
   EVENTS: {
@@ -79,7 +92,9 @@ describe('Controller', function() {
       add: function() {},
       remove: function() {}
     },
-    getElementsByTagName: function() { return [mockDomElement]; },
+    getElementsByTagName: function() {
+      return [mockDomElement];
+    },
     webkitSupportsFullscreen: true,
     webkitEnterFullscreen: function() {},
     webkitExitFullscreen: function() {},
@@ -109,14 +124,13 @@ describe('Controller', function() {
   });
 
   describe('Closed Captions', function() {
-
     beforeEach(function() {
       controller.state.closedCaptionOptions = {
         enabled: true,
         language: 'en',
         availableLanguages: {
           videoId: 'main',
-          languages: [ 'en', 'fr' ],
+          languages: ['en', 'fr'],
           locale: {
             en: 'English',
             fr: 'français'
@@ -155,7 +169,6 @@ describe('Controller', function() {
       controller.onClosedCaptionChange('language', 'en');
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
     });
-
   });
 
   describe('Buffering state', function() {
@@ -289,7 +302,6 @@ describe('Controller', function() {
       expect(stopBufferingTimerSpy.callCount).toBe(8);
       expect(controller.state.bufferingTimer).toBeFalsy();
     });
-
   });
 
   describe('Video start state', function() {
@@ -311,7 +323,6 @@ describe('Controller', function() {
       expect(spy.callCount).toBe(1);
       expect(spy.args[0][0]).toBe(OO.EVENTS.INITIAL_PLAY);
       expect(spy.args[0][2]).toBe(false);
-
     });
 
     it('should not fire initial play again if initial play has already happened', function() {
@@ -321,11 +332,9 @@ describe('Controller', function() {
       controller.togglePlayPause();
       expect(spy.callCount).toBe(0);
     });
-
   });
 
   describe('New video transitions', function() {
-
     it('should set initialPlayHasOccurred to true if initial play has been requested', function() {
       expect(controller.state.initialPlayHasOccurred).toBe(false);
       controller.onInitialPlay();
@@ -489,7 +498,6 @@ describe('Controller', function() {
   });
 
   describe('Volume state', function() {
-
     it('should mute on mute state changed', function() {
       expect(controller.state.volumeState.muted).toBe(false);
       controller.onMuteStateChanged('event', false);
@@ -584,7 +592,6 @@ describe('Controller', function() {
       controller.onEmbedCodeChanged();
       expect(controller.state.currentVideoId).toBe(null);
     });
-
   });
 
   describe('Show player controls over ads', function() {
@@ -704,25 +711,27 @@ describe('Controller', function() {
     beforeEach(function() {
       qualities = {
         bitrates: [
-          { 'id': '1', 'width': 640, 'height': 360, 'bitrate': 150000 },
-          { 'id': '2', 'width': 320, 'height': 180, 'bitrate': 2500000 },
-          { 'id': 'auto', 'width': 0, 'height': 0, 'bitrate': 0 }
+          { id: '1', width: 640, height: 360, bitrate: 150000 },
+          { id: '2', width: 320, height: 180, bitrate: 2500000 },
+          { id: 'auto', width: 0, height: 0, bitrate: 0 }
         ]
       };
     });
 
     it('should sort qualities by bitrate when quality selection format = bitrate', function() {
-      controller.skin.props.skinConfig.controlBar.qualitySelection.format = CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE;
+      controller.skin.props.skinConfig.controlBar.qualitySelection.format =
+        CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE;
       controller.onBitrateInfoAvailable('event', qualities);
       expect(controller.state.videoQualityOptions.availableBitrates).toEqual([
-        { 'id': '2', 'width': 320, 'height': 180, 'bitrate': 2500000 },
-        { 'id': '1', 'width': 640, 'height': 360, 'bitrate': 150000 },
-        { 'id': 'auto', 'width': 0, 'height': 0, 'bitrate': 0 }
+        { id: '2', width: 320, height: 180, bitrate: 2500000 },
+        { id: '1', width: 640, height: 360, bitrate: 150000 },
+        { id: 'auto', width: 0, height: 0, bitrate: 0 }
       ]);
     });
 
     it('should NOT sort qualities by bitrate when quality selection format != bitrate', function() {
-      controller.skin.props.skinConfig.controlBar.qualitySelection.format = CONSTANTS.QUALITY_SELECTION.FORMAT.RESOLUTION;
+      controller.skin.props.skinConfig.controlBar.qualitySelection.format =
+        CONSTANTS.QUALITY_SELECTION.FORMAT.RESOLUTION;
       controller.onBitrateInfoAvailable('event', qualities);
       expect(controller.state.videoQualityOptions.availableBitrates).toBe(qualities.bitrates);
     });
@@ -795,9 +804,9 @@ describe('Controller', function() {
 
     it('should set correct multiAudio state', function() {
       var multiAudio = {
-        'tracks': [
-          {id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true},
-          {id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false}
+        tracks: [
+          { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true },
+          { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
         ]
       };
 
@@ -807,7 +816,7 @@ describe('Controller', function() {
       expect(controller.state.multiAudio).toEqual(multiAudio);
     });
 
-    it('MultiAudio State should be null after embed code was changed', function(){
+    it('MultiAudio State should be null after embed code was changed', function() {
       var obj = {};
       controller.onMultiAudioFetched('event', obj);
       expect(controller.state.multiAudio).toBe(obj);
@@ -816,7 +825,6 @@ describe('Controller', function() {
     });
 
     it('Calling of setCurrentAudio should throw SET_CURRENT_AUDIO event with id', function() {
-
       var track = { id: '1', lang: 'eng', label: 'eng' };
       controller.setCurrentAudio(track);
       expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, track)).toBe(true);
@@ -893,44 +901,41 @@ describe('Controller', function() {
       expect(controller.state.multiAudio.tracks).toEqual(multiAudio.tracks);
     });
 
-    it('should set correct state after MULTI_AUDIO_CHANGED after MULTI_AUDIO_FETCHED was already called',
-      function() {
-        var multiAudio = {
-          tracks: [
-            { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true },
-            { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
-          ]
-        };
+    it('should set correct state after MULTI_AUDIO_CHANGED after MULTI_AUDIO_FETCHED was already called', function() {
+      var multiAudio = {
+        tracks: [
+          { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true },
+          { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
+        ]
+      };
 
-        controller.onMultiAudioFetched('event', multiAudio);
-        expect(controller.state.multiAudio.tracks).toEqual(multiAudio.tracks);
+      controller.onMultiAudioFetched('event', multiAudio);
+      expect(controller.state.multiAudio.tracks).toEqual(multiAudio.tracks);
 
-        // change the state to have more tracks
-        var newAudio = {
-          tracks: [
-            { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true },
-            { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false },
-            { id: '2', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
-          ]
-        };
-        controller.onMultiAudioChanged('event', newAudio);
+      // change the state to have more tracks
+      var newAudio = {
+        tracks: [
+          { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true },
+          { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: false },
+          { id: '2', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
+        ]
+      };
+      controller.onMultiAudioChanged('event', newAudio);
 
-        expect(controller.state.multiAudio.tracks).toEqual(newAudio.tracks);
+      expect(controller.state.multiAudio.tracks).toEqual(newAudio.tracks);
 
-        // change the state to have a different active track
-        var newActiveAudio = {
-          tracks: [
-            { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: false },
-            { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: true },
-            { id: '2', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
-          ]
-        };
-        controller.onMultiAudioChanged('event', newActiveAudio);
+      // change the state to have a different active track
+      var newActiveAudio = {
+        tracks: [
+          { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: false },
+          { id: '1', kind: 'main', label: 'ger', lang: 'ger', enabled: true },
+          { id: '2', kind: 'main', label: 'ger', lang: 'ger', enabled: false }
+        ]
+      };
+      controller.onMultiAudioChanged('event', newActiveAudio);
 
-        expect(controller.state.multiAudio.tracks).toEqual(newActiveAudio.tracks);
-      }
-    );
-
+      expect(controller.state.multiAudio.tracks).toEqual(newActiveAudio.tracks);
+    });
   });
 
   describe('Ad Plugins Element', function() {

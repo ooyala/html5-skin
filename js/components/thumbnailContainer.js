@@ -137,14 +137,20 @@ var ThumbnailContainer = React.createClass({
   },
 
   setImageSizes: function() {
-    var thumbnail = Utils.findThumbnail(this.props.thumbnails, this.props.hoverTime, this.props.duration, this.props.videoVr);
+    var thumbnail = Utils.findThumbnail(
+      this.props.thumbnails,
+      this.props.hoverTime,
+      this.props.duration,
+      this.props.videoVr
+    );
     if (thumbnail !== null && typeof thumbnail === 'object') {
       var imageWidth = thumbnail.imageWidth;
       var imageHeight = thumbnail.imageHeight;
       if (imageWidth && imageHeight) {
         if (imageWidth > CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH) {
           imageWidth = CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH;
-          imageHeight = thumbnail.imageHeight * CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH / thumbnail.imageWidth;
+          imageHeight =
+            thumbnail.imageHeight * CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH / thumbnail.imageWidth;
         }
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
@@ -177,7 +183,7 @@ var ThumbnailContainer = React.createClass({
     yaw = this.getCurrentYawVr(yaw);
     pitch = pitch >= 360 ? 0 : pitch;
 
-    var positionY = -(((imageHeight - thumbnailHeight) / 2) - pitch);
+    var positionY = -((imageHeight - thumbnailHeight) / 2 - pitch);
     var bottomCoordinate = -(imageHeight - thumbnailHeight);
     if (positionY > 0) {
       positionY = 0;
@@ -185,7 +191,7 @@ var ThumbnailContainer = React.createClass({
       positionY = bottomCoordinate;
     }
     var positionX = -(imageWidth - thumbnailWidth / 2 - imageWidth * yaw / 360);
-    return {positionX: positionX, positionY: positionY};
+    return { positionX: positionX, positionY: positionY };
   },
 
   /**
@@ -207,10 +213,17 @@ var ThumbnailContainer = React.createClass({
   },
 
   render: function() {
-    var time = isFinite(parseInt(this.props.hoverTime)) ? Utils.formatSeconds(parseInt(this.props.hoverTime)) : null;
+    var time = isFinite(parseInt(this.props.hoverTime))
+      ? Utils.formatSeconds(parseInt(this.props.hoverTime))
+      : null;
     var thumbnail = null;
 
-    var thumbnails = Utils.findThumbnail(this.props.thumbnails, this.props.hoverTime, this.props.duration, this.props.videoVr);
+    var thumbnails = Utils.findThumbnail(
+      this.props.thumbnails,
+      this.props.hoverTime,
+      this.props.duration,
+      this.props.videoVr
+    );
     var thumbnailStyle = {};
     thumbnailStyle.left = this.props.hoverPosition;
     if (Utils.isValidString(thumbnails.url)) {
@@ -223,7 +236,7 @@ var ThumbnailContainer = React.createClass({
     }
 
     if (this.props.isCarousel) {
-      thumbnail =
+      thumbnail = (
         <ThumbnailCarousel
           onRef={this.onRef}
           time={time}
@@ -241,7 +254,8 @@ var ThumbnailContainer = React.createClass({
           thumbnailCarouselHeight={this.thumbnailCarouselHeight}
           centralThumbnail={thumbnails}
           thumbnailStyle={thumbnailStyle}
-        />;
+        />
+      );
     } else {
       thumbnail = (
         <Thumbnail
@@ -262,11 +276,7 @@ var ThumbnailContainer = React.createClass({
       );
     }
 
-    return (
-      <div className="oo-scrubber-thumbnail-wrapper">
-        {thumbnail}
-      </div>
-    );
+    return <div className="oo-scrubber-thumbnail-wrapper">{thumbnail}</div>;
   }
 });
 

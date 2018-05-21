@@ -26,7 +26,7 @@ var StartScreen = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if (nextProps.contentTree.description != this.props.contentTree.description) {
+    if (nextProps.contentTree.description !== this.props.contentTree.description) {
       this.handleResize(nextProps);
     }
   },
@@ -47,7 +47,7 @@ var StartScreen = React.createClass({
       event.preventDefault();
       this.props.controller.togglePlayPause();
       this.props.controller.state.accessibilityControlsEnabled = true;
-      this.setState({playButtonClicked: true});
+      this.setState({ playButtonClicked: true });
     }
   },
 
@@ -63,7 +63,9 @@ var StartScreen = React.createClass({
       color: this.props.skinConfig.startScreen.playIconStyle.color,
       opacity: this.props.skinConfig.startScreen.playIconStyle.opacity
     };
-    var posterImageUrl = this.props.skinConfig.startScreen.showPromo ? this.props.contentTree.promo_image : '';
+    var posterImageUrl = this.props.skinConfig.startScreen.showPromo
+      ? this.props.contentTree.promo_image
+      : '';
     var posterStyle = {};
     if (Utils.isValidString(posterImageUrl)) {
       posterStyle.backgroundImage = 'url(\'' + posterImageUrl + '\')';
@@ -71,15 +73,19 @@ var StartScreen = React.createClass({
 
     // CSS class manipulation from config/skin.json
     var stateScreenPosterClass = ClassNames({
-      'oo-state-screen-poster': this.props.skinConfig.startScreen.promoImageSize != 'small',
-      'oo-state-screen-poster-small': this.props.skinConfig.startScreen.promoImageSize == 'small'
+      'oo-state-screen-poster': this.props.skinConfig.startScreen.promoImageSize !== 'small',
+      'oo-state-screen-poster-small': this.props.skinConfig.startScreen.promoImageSize === 'small'
     });
     var infoPanelClass = ClassNames({
       'oo-state-screen-info': true,
-      'oo-info-panel-top': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf('top') > -1,
-      'oo-info-panel-bottom': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf('bottom') > -1,
-      'oo-info-panel-left': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf('left') > -1,
-      'oo-info-panel-right': this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
+      'oo-info-panel-top':
+        this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf('top') > -1,
+      'oo-info-panel-bottom':
+        this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf('bottom') > -1,
+      'oo-info-panel-left':
+        this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf('left') > -1,
+      'oo-info-panel-right':
+        this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
     });
     var titleClass = ClassNames({
       'oo-state-screen-title': true,
@@ -92,15 +98,23 @@ var StartScreen = React.createClass({
     });
     var actionIconClass = ClassNames({
       'oo-action-icon': true,
-      'oo-action-icon-top': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf('top') > -1,
-      'oo-action-icon-bottom': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf('bottom') > -1,
-      'oo-action-icon-left': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf('left') > -1,
-      'oo-action-icon-right': this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf('right') > -1,
+      'oo-action-icon-top':
+        this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf('top') > -1,
+      'oo-action-icon-bottom':
+        this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf('bottom') > -1,
+      'oo-action-icon-left':
+        this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf('left') > -1,
+      'oo-action-icon-right':
+        this.props.skinConfig.startScreen.playButtonPosition.toLowerCase().indexOf('right') > -1,
       'oo-hidden': !this.props.skinConfig.startScreen.showPlayButton
     });
 
-    var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
-    var iconName = (this.props.controller.state.playerState == CONSTANTS.STATE.END ? 'replay' : 'play');
+    var titleMetadata = (
+      <div className={titleClass} style={titleStyle}>
+        {this.props.contentTree.title}
+      </div>
+    );
+    var iconName = this.props.controller.state.playerState === CONSTANTS.STATE.END ? 'replay' : 'play';
     // The descriptionText value doesn't react to changes in contentTree.description since
     // it's being handled as internal state in order to allow truncating it on player resize.
     // We need to migrate truncateTextToWidth to a CSS solution in order to avoid this.
@@ -120,8 +134,9 @@ var StartScreen = React.createClass({
           onMouseUp={Utils.blurOnMouseUp}
           onClick={this.handleClick}
           tabIndex="0"
-          aria-label={CONSTANTS.ARIA_LABELS.START_PLAYBACK}>
-          <Icon {...this.props} icon={iconName} style={actionIconStyle}/>
+          aria-label={CONSTANTS.ARIA_LABELS.START_PLAYBACK}
+        >
+          <Icon {...this.props} icon={iconName} style={actionIconStyle} />
         </button>
       );
       infoPanel = (
@@ -135,13 +150,19 @@ var StartScreen = React.createClass({
     return (
       <div className="oo-state-screen oo-start-screen">
         <div className={stateScreenPosterClass} style={posterStyle}>
-          <div className="oo-start-screen-linear-gradient"></div>
-          <a className="oo-state-screen-selectable" onClick={this.handleClick}></a>
+          <div className="oo-start-screen-linear-gradient" />
+          <a className="oo-state-screen-selectable" onClick={this.handleClick} />
         </div>
-        <Watermark {...this.props} controlBarVisible={false}/>
+        <Watermark {...this.props} controlBarVisible={false} />
         {infoPanel}
-        {(this.state.playButtonClicked && this.props.controller.state.playerState == CONSTANTS.STATE.START) || this.props.controller.state.buffering || this.props.showSpinner ?
-          <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : actionIcon}
+        {(this.state.playButtonClicked &&
+          this.props.controller.state.playerState === CONSTANTS.STATE.START) ||
+        this.props.controller.state.buffering ||
+        this.props.showSpinner ? (
+          <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
+        ) : (
+          actionIcon
+        )}
       </div>
     );
   }
@@ -171,10 +192,8 @@ StartScreen.defaultProps = {
       }
     },
     startScreen: {
-      titleFont: {
-      },
-      descriptionFont: {
-      },
+      titleFont: {},
+      descriptionFont: {},
       playIconStyle: {
         color: 'white'
       },
@@ -187,21 +206,21 @@ StartScreen.defaultProps = {
       promoImageSize: 'default'
     },
     icons: {
-      play:{fontStyleClass:'oo-icon oo-icon-play'},
-      replay:{fontStyleClass:'oo-icon oo-icon-upnext-replay'}
+      play: { fontStyleClass: 'oo-icon oo-icon-play' },
+      replay: { fontStyleClass: 'oo-icon oo-icon-upnext-replay' }
     }
   },
   controller: {
     togglePlayPause: function() {},
     state: {
-      playerState:'start',
+      playerState: 'start',
       buffering: false
     }
   },
   contentTree: {
     promo_image: '',
-    description:'',
-    title:''
+    description: '',
+    title: ''
   },
   showSpinner: false
 };

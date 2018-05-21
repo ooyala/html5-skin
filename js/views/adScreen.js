@@ -31,15 +31,19 @@ var AdScreen = React.createClass({
 
   componentWillUpdate: function(nextProps) {
     if (nextProps) {
-      if (nextProps.controller.state.controlBarVisible == false && this.state.controlBarVisible == true) {
+      if (nextProps.controller.state.controlBarVisible === false && this.state.controlBarVisible === true) {
         this.hideControlBar();
       }
 
-      if (nextProps.controller.state.controlBarVisible == true && this.state.controlBarVisible == false) {
+      if (nextProps.controller.state.controlBarVisible === true && this.state.controlBarVisible === false) {
         this.showControlBar();
       }
 
-      if (!this.props.fullscreen && nextProps.fullscreen && this.state.playerState != CONSTANTS.STATE.PAUSE) {
+      if (
+        !this.props.fullscreen &&
+        nextProps.fullscreen &&
+        this.state.playerState !== CONSTANTS.STATE.PAUSE
+      ) {
         this.props.controller.startHideControlBarTimer();
       }
       if (this.props.fullscreen && !nextProps.fullscreen && this.isMobile) {
@@ -64,22 +68,21 @@ var AdScreen = React.createClass({
     event.cancelBubble = true; // IE
 
     this.props.controller.state.accessibilityControlsEnabled = true;
-    if ((event.type == 'click' || !this.isMobile) && !this.props.skinConfig.adScreen.showAdMarquee) {
+    if ((event.type === 'click' || !this.isMobile) && !this.props.skinConfig.adScreen.showAdMarquee) {
       this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.VIDEO_WINDOW);
     }
   },
 
   handlePlayerClicked: function(event) {
-    if (event.type == 'touchend' || !this.isMobile) {
+    if (event.type === 'touchend' || !this.isMobile) {
       // since mobile would fire both click and touched events,
       // we need to make sure only one actually does the work
 
       // since after exiting the full screen, iPhone pauses the video and places an overlay play button in the middle
       // of the screen (which we can't remove), clicking the screen would start the video.
-      if (!Utils.canRenderSkin() && this.state.playerState == CONSTANTS.STATE.PAUSE) {
+      if (!Utils.canRenderSkin() && this.state.playerState === CONSTANTS.STATE.PAUSE) {
         this.props.controller.togglePlayPause();
-      }
-      else {
+      } else {
         event.stopPropagation(); // W3C
         event.cancelBubble = true; // IE
         this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.VIDEO_WINDOW);
@@ -88,13 +91,13 @@ var AdScreen = React.createClass({
   },
 
   showControlBar: function() {
-    this.setState({controlBarVisible: true});
+    this.setState({ controlBarVisible: true });
     this.props.controller.showControlBar();
   },
 
   hideControlBar: function(event) {
-    if (this.props.controlBarAutoHide == true && !(this.isMobile && event)) {
-      this.setState({controlBarVisible: false});
+    if (this.props.controlBarAutoHide === true && !(this.isMobile && event)) {
+      this.setState({ controlBarVisible: false });
       this.props.controller.hideControlBar();
     }
   },
@@ -104,7 +107,7 @@ var AdScreen = React.createClass({
     if (!this.state.controlBarVisible && this.props.skinConfig.adScreen.showControlBar) {
       this.showControlBar();
       // Do not start the process to hide the control bar unless we are leaving pause state.
-      if (this.props.playerState == CONSTANTS.STATE.PAUSE) {
+      if (this.props.playerState === CONSTANTS.STATE.PAUSE) {
         this.props.controller.startHideControlBarTimer();
       }
     }
@@ -124,15 +127,19 @@ var AdScreen = React.createClass({
     if (!this.props.controller.state.showAdControls) return null;
 
     var showControlBar =
-      this.props.playerState == CONSTANTS.STATE.PAUSE ||
+      this.props.playerState === CONSTANTS.STATE.PAUSE ||
       this.props.controller.state.forceControlBarVisible ||
       this.state.controlBarVisible;
 
     var playbackControlItemTemplates = {
-      'controlBar': <ControlBar {...this.props}
-       controlBarVisible={showControlBar}
-       playerState={this.props.playerState}
-       key='controlBar' />
+      controlBar: (
+        <ControlBar
+          {...this.props}
+          controlBarVisible={showControlBar}
+          playerState={this.props.playerState}
+          key="controlBar"
+        />
+      )
     };
 
     var playbackControlItems = [];
@@ -158,12 +165,16 @@ var AdScreen = React.createClass({
       'oo-action-icon-pause': !this.props.controller.state.adPauseAnimationDisabled,
       'oo-action-icon': this.props.controller.state.adPauseAnimationDisabled,
       'oo-animate-pause': !this.props.controller.state.adPauseAnimationDisabled,
-      'oo-action-icon-top': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('top') > -1,
-      'oo-action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('bottom') > -1,
-      'oo-action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('left') > -1,
-      'oo-action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('right') > -1,
+      'oo-action-icon-top':
+        this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('top') > -1,
+      'oo-action-icon-bottom':
+        this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('bottom') > -1,
+      'oo-action-icon-left':
+        this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('left') > -1,
+      'oo-action-icon-right':
+        this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('right') > -1,
       'oo-hidden': !this.props.skinConfig.pauseScreen.showPauseIcon,
-      'oo-icon-hidden': this.props.playerState != CONSTANTS.STATE.PAUSE
+      'oo-icon-hidden': this.props.playerState !== CONSTANTS.STATE.PAUSE
     });
     var adPanel = null;
     if (this.props.skinConfig.adScreen.showAdMarquee && this.props.controller.state.showAdMarquee) {
@@ -174,28 +185,33 @@ var AdScreen = React.createClass({
       playbackControlItems = this.getPlaybackControlItems();
     }
 
-    var showUnmute = this.props.controller.state.volumeState.mutingForAutoplay && this.props.controller.state.volumeState.muted;
+    var showUnmute =
+      this.props.controller.state.volumeState.mutingForAutoplay &&
+      this.props.controller.state.volumeState.muted;
 
     return (
-      <div className="oo-state-screen oo-ad-screen"
-         ref="adScreen"
-         onMouseOver={this.showControlBar}
-         onMouseOut={this.hideControlBar}
-         onMouseMove={this.handlePlayerMouseMove}
-         onMouseUp={this.handleClick}>
-
+      <div
+        className="oo-state-screen oo-ad-screen"
+        ref="adScreen"
+        onMouseOver={this.showControlBar}
+        onMouseOut={this.hideControlBar}
+        onMouseMove={this.handlePlayerMouseMove}
+        onMouseUp={this.handleClick}
+      >
         <a className={actionIconClass}>
-          <Icon {...this.props} icon="pause" style={actionIconStyle}/>
+          <Icon {...this.props} icon="pause" style={actionIconStyle} />
         </a>
-        <div className="oo-ad-panel" ref="adPanel" onClick={this.handlePlayerClicked} onTouchEnd={this.handleTouchEnd}>
+        <div
+          className="oo-ad-panel"
+          ref="adPanel"
+          onClick={this.handlePlayerClicked}
+          onTouchEnd={this.handleTouchEnd}
+        >
           {adPanel}
         </div>
-        <div className="oo-interactive-container">
-          {playbackControlItems}
-        </div>
+        <div className="oo-interactive-container">{playbackControlItems}</div>
 
-        {showUnmute ? <UnmuteIcon {...this.props}/> : null}
-
+        {showUnmute ? <UnmuteIcon {...this.props} /> : null}
       </div>
     );
   }
