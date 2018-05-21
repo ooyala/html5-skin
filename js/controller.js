@@ -1217,7 +1217,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         height: '',
         width: ''
       });
-
+      this.cancelTimer();
+      this.hideControlBar();
       if (this.state.mainVideoPlayhead > 0) {
         this.isNewVrVideo = false;
       }
