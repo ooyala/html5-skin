@@ -973,7 +973,7 @@ describe('ControlBar', function() {
           availableBitrates: null
         },
         isOoyalaAds: false,
-        showMultiAudioIcon: true
+        hideMultiAudioIcon: false
       }
     };
 
@@ -1035,8 +1035,8 @@ describe('ControlBar', function() {
     var multiAudioBtn3 = TestUtils.scryRenderedDOMComponentsWithClass(DOM3, 'oo-multiaudio');
     expect(multiAudioBtn3.length).toBe(1);
 
-    // there are multilaudio, but param showMultiAudioIcon was set to false
-    mockController.state.showMultiAudioIcon = false;
+    // there are multilaudio, but param hideMultiAudioIcon was set to true
+    mockController.state.hideMultiAudioIcon = true;
     mockController.state.closedCaptionOptions.availableLanguages = {};
 
     var DOM4 = TestUtils.renderIntoDocument(
@@ -1072,7 +1072,7 @@ describe('ControlBar', function() {
           availableBitrates: null
         },
         isOoyalaAds: false,
-        showMultiAudioIcon: true
+        hideMultiAudioIcon: false
       },
       toggleButtons: {},
       toggleMultiAudioScreen: function() {multiAudioClicked = true;},
