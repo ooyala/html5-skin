@@ -4,7 +4,6 @@ var Utils = require('./utils');
 var CONSTANTS = require('../constants/constants');
 
 var AccessibleButton = React.createClass({
-
   getInitialState: function() {
     this.triggeredWithKeyboard = false;
     return {};
@@ -63,7 +62,9 @@ var AccessibleButton = React.createClass({
   render: function() {
     return (
       <button
-        ref={function(e) { this.domElement = e; }.bind(this)}
+        ref={function(e) {
+          this.domElement = e;
+        }.bind(this)}
         type="button"
         autoFocus={this.props.autoFocus}
         style={this.props.style}
@@ -81,12 +82,12 @@ var AccessibleButton = React.createClass({
         onMouseOver={this.props.onMouseOver}
         onMouseOut={this.props.onMouseOut}
         onFocus={this.props.onFocus}
-        onClick={this.props.onClick}>
+        onClick={this.props.onClick}
+      >
         {this.props.children}
       </button>
     );
   }
-
 });
 
 AccessibleButton.propTypes = {
@@ -108,14 +109,17 @@ AccessibleButton.propTypes = {
 
 // Define focusId as a getter so that it returns a different value
 // for each instance of AccessibleButton (defaultProps is static)
-AccessibleButton.defaultProps = Object.create({}, {
-  focusId: {
-    enumerable: true,
-    get: function() {
-      return Math.random().toString(36).substr(2, 10);
+AccessibleButton.defaultProps = Object.create(
+  {},
+  {
+    focusId: {
+      enumerable: true,
+      get: function() {
+        return Math.random().toString(36).substr(2, 10);
+      }
     }
   }
-});
+);
 
 AccessibleButton.defaultProps.autoFocus = false;
 AccessibleButton.defaultProps.ariaChecked = null;

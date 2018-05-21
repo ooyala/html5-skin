@@ -24,6 +24,7 @@ var ContentScreen = React.createClass({
     switch (event.key) {
       case CONSTANTS.KEY_VALUES.ESCAPE:
         this.handleClose();
+        break;
       default:
         break;
     }
@@ -44,41 +45,45 @@ var ContentScreen = React.createClass({
 
   render: function() {
     // overlay only for the closed captions screen. Needs to be different than the other screens because of closed caption preview.
-    var closedCaptionOverlay = this.props.screen == CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN ? (
-      <div className="oo-closed-caption-overlay"></div>
-    ) :
-    null;
+    var closedCaptionOverlay =
+      this.props.screen === CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN ? (
+        <div className="oo-closed-caption-overlay" />
+      ) : null;
 
     var titleBarStyle = {};
-    switch (this.props.screen) {
-      case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
-        titleBarStyle.fontFamily = Utils.getPropertyValue(this.props.skinConfig, 'discoveryScreen.panelTitle.titleFont.fontFamily');
-        titleBarStyle.color = Utils.getPropertyValue(this.props.skinConfig, 'discoveryScreen.panelTitle.titleFont.color');
-        break;
+    if (this.props.screen === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
+      titleBarStyle.fontFamily = Utils.getPropertyValue(
+        this.props.skinConfig,
+        'discoveryScreen.panelTitle.titleFont.fontFamily'
+      );
+      titleBarStyle.color = Utils.getPropertyValue(
+        this.props.skinConfig,
+        'discoveryScreen.panelTitle.titleFont.color'
+      );
     }
 
     // localized title bar, show nothing if no title text
     var titleBar = this.props.titleText ? (
       <div className="oo-content-screen-title" style={titleBarStyle}>
         {Utils.getLocalizedString(this.props.language, this.props.titleText, this.props.localizableStrings)}
-        <Icon {...this.props} icon={this.props.icon}/>
+        <Icon {...this.props} icon={this.props.icon} />
         {this.props.element}
       </div>
-    ) :
-    null;
+    ) : null;
 
     return (
       <div
         onKeyDown={this.handleKeyDown}
-        ref={function(e) { this.domElement = e; }.bind(this)}>
-        <Watermark {...this.props} controlBarVisible={false} nonClickable={true}/>
+        ref={function(e) {
+          this.domElement = e;
+        }.bind(this)}
+      >
+        <Watermark {...this.props} controlBarVisible={false} nonClickable={true} />
         <div className={this.props.screenClassName}>
           {closedCaptionOverlay}
-          <div className={this.props.titleBarClassName}>
-            {titleBar}
-          </div>
+          <div className={this.props.titleBarClassName}>{titleBar}</div>
           {this.props.children}
-          <CloseButton {...this.props} closeAction={this.handleClose}/>
+          <CloseButton {...this.props} closeAction={this.handleClose} />
         </div>
       </div>
     );

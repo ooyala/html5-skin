@@ -30,7 +30,7 @@ var Tabs = React.createClass({
   componentDidMount: function() {
     var index = this.state.tabActive;
     var selectedPanel = this.refs['tab-panel'];
-    var selectedMenu = this.refs[('tab-menu-' + index)];
+    var selectedMenu = this.refs['tab-menu-' + index];
 
     if (this.props.onMount) {
       this.props.onMount(index, selectedPanel, selectedMenu);
@@ -39,7 +39,7 @@ var Tabs = React.createClass({
 
   componentWillReceiveProps: function(newProps) {
     if (newProps.tabActive && newProps.tabActive !== this.props.tabActive) {
-      this.setState({tabActive: newProps.tabActive});
+      this.setState({ tabActive: newProps.tabActive });
     }
   },
 
@@ -49,14 +49,16 @@ var Tabs = React.createClass({
     var onAfterChange = this.props.onAfterChange;
     var onBeforeChange = this.props.onBeforeChange;
     var selectedPanel = this.refs['tab-panel'];
-    var selectedTabMenu = this.refs[('tab-menu-' + index)];
+    var selectedTabMenu = this.refs['tab-menu-' + index];
 
     if (onBeforeChange) {
       var cancel = onBeforeChange(index, selectedPanel, selectedTabMenu);
-      if (cancel === false) { return; }
+      if (cancel === false) {
+        return;
+      }
     }
 
-    this.setState({ tabActive: index }, function()  {
+    this.setState({ tabActive: index }, function() {
       if (onAfterChange) {
         onAfterChange(index, selectedPanel, selectedTabMenu);
       }
@@ -73,56 +75,64 @@ var Tabs = React.createClass({
     }
 
     var menuItems = this.props.children
-      .map(function(panel)  {return typeof panel === 'function' ? panel() : panel;})
-      .filter(function(panel)  {return panel;})
-      .map(function(panel, index)  {
-        var tabIndex = index + 1;
-        var ref = ('tab-menu-' + tabIndex);
-        var title = panel.props.title;
-        var activeTabStyle = {};
-        var isSelected = this.state.tabActive === tabIndex;
+      .map(function(panel) {
+        return typeof panel === 'function' ? panel() : panel;
+      })
+      .filter(function(panel) {
+        return panel;
+      })
+      .map(
+        function(panel, index) {
+          var tabIndex = index + 1;
+          var ref = 'tab-menu-' + tabIndex;
+          var title = panel.props.title;
+          var activeTabStyle = {};
+          var isSelected = this.state.tabActive === tabIndex;
 
-        var classes = ClassNames(
-          'tabs-menu-item',
-          'tabs-menu-item-' + index, {
+          var classes = ClassNames('tabs-menu-item', 'tabs-menu-item-' + index, {
             'is-active': isSelected
+          });
+
+          // accent color
+          if (isSelected && this.props.skinConfig.general.accentColor) {
+            var activeMenuColor = 'solid ';
+            activeMenuColor += this.props.skinConfig.general.accentColor;
+            activeTabStyle = { borderBottom: activeMenuColor };
           }
-        );
 
-        // accent color
-        if (isSelected && this.props.skinConfig.general.accentColor) {
-          var activeMenuColor =  'solid ';
-          activeMenuColor += this.props.skinConfig.general.accentColor;
-          activeTabStyle = {borderBottom: activeMenuColor};
-        }
-
-        return (
-          <li ref={ref} key={index} className={classes} role={CONSTANTS.ARIA_ROLES.PRESENTATION}>
-            <AccessibleButton
-              style={activeTabStyle}
-              className="tabs-menu-item-btn"
-              ariaLabel={title}
-              ariaSelected={isSelected}
-              role={CONSTANTS.ARIA_ROLES.TAB}
-              onClick={this.setActive.bind(this, tabIndex)}
-              onMouseOver={this.highlight}
-              onMouseOut={this.removeHighlight}
-              onFocus={this.onMenuItemFocus}>
-              {title}
-            </AccessibleButton>
-          </li>
-        );
-      }.bind(this));
+          return (
+            <li ref={ref} key={index} className={classes} role={CONSTANTS.ARIA_ROLES.PRESENTATION}>
+              <AccessibleButton
+                style={activeTabStyle}
+                className="tabs-menu-item-btn"
+                ariaLabel={title}
+                ariaSelected={isSelected}
+                role={CONSTANTS.ARIA_ROLES.TAB}
+                onClick={this.setActive.bind(this, tabIndex)}
+                onMouseOver={this.highlight}
+                onMouseOut={this.removeHighlight}
+                onFocus={this.onMenuItemFocus}
+              >
+                {title}
+              </AccessibleButton>
+            </li>
+          );
+        }.bind(this)
+      );
 
     return (
       <div
-        className='tabs-navigation'
-        ref={function(e) { this.tabsNavigationElement = e; }.bind(this)}
-        tabIndex="-1">
+        className="tabs-navigation"
+        ref={function(e) {
+          this.tabsNavigationElement = e;
+        }.bind(this)}
+        tabIndex="-1"
+      >
         <ul
-          className='tabs-menu'
+          className="tabs-menu"
           role={CONSTANTS.ARIA_ROLES.TAB_LIST}
-          aria-label={CONSTANTS.ARIA_LABELS.CAPTION_OPTIONS}>
+          aria-label={CONSTANTS.ARIA_LABELS.CAPTION_OPTIONS}
+        >
           {menuItems}
         </ul>
       </div>
@@ -134,7 +144,7 @@ var Tabs = React.createClass({
     var panel = this.props.children[index];
 
     return (
-      <div ref='tab-panel' className='tab-panel' role={CONSTANTS.ARIA_ROLES.TAB_PANEL}>
+      <div ref="tab-panel" className="tab-panel" role={CONSTANTS.ARIA_ROLES.TAB_PANEL}>
         {panel}
       </div>
     );
@@ -167,11 +177,7 @@ var Tabs = React.createClass({
    * @param {HTMLElement} menuItem The menu item which we want to make sure is visible.
    */
   scrollIntoViewIfNeeded: function(menuItem) {
-    if (
-      !this.tabsNavigationElement ||
-      !menuItem ||
-      typeof menuItem.clientWidth === 'undefined'
-    ) {
+    if (!this.tabsNavigationElement || !menuItem || typeof menuItem.clientWidth === 'undefined') {
       return;
     }
     // Element is at a position that starts before the current navigation's scroll
@@ -206,23 +212,21 @@ var Tabs = React.createClass({
       <div className={className}>
         {this.getMenuItems()}
         {this.getSelectedPanel()}
-        <a className={leftScrollButton}
+        <a
+          className={leftScrollButton}
           ref="leftChevron"
           role={CONSTANTS.ARIA_ROLES.PRESENTATION}
-          onClick={this.handleLeftChevronClick}>
-          <Icon
-            {...this.props}
-            icon="left"
-          />
+          onClick={this.handleLeftChevronClick}
+        >
+          <Icon {...this.props} icon="left" />
         </a>
-        <a className={rightScrollButton}
+        <a
+          className={rightScrollButton}
           ref="rightChevron"
           role={CONSTANTS.ARIA_ROLES.PRESENTATION}
-          onClick={this.handleRightChevronClick}>
-          <Icon
-            {...this.props}
-            icon="right"
-          />
+          onClick={this.handleRightChevronClick}
+        >
+          <Icon {...this.props} icon="right" />
         </a>
       </div>
     );
@@ -241,10 +245,7 @@ Tabs.propTypes = {
   onMount: React.PropTypes.func,
   onBeforeChange: React.PropTypes.func,
   onAfterChange: React.PropTypes.func,
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.element
-  ]).isRequired
+  children: React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.element]).isRequired
 };
 
 Tabs.defaultProps = {
@@ -253,20 +254,14 @@ Tabs.defaultProps = {
 
 module.exports = Tabs;
 
-
 Tabs.Panel = React.createClass({
   displayName: 'Panel',
   propTypes: {
     title: React.PropTypes.string.isRequired,
-    children: React.PropTypes.oneOfType([
-      React.PropTypes.array,
-      React.PropTypes.element
-    ]).isRequired
+    children: React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.element]).isRequired
   },
 
   render: function() {
-    return (
-      <span>{this.props.children}</span>
-    );
+    return <span>{this.props.children}</span>;
   }
 });

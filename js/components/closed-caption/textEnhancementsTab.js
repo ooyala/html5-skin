@@ -26,16 +26,24 @@ var TextEnhancementsTab = React.createClass({
 
   setClassname: function(item, elementType) {
     return ClassNames({
-      'oo-text-enhancement-letter': elementType == 'letter',
-      'oo-text-enhancement-label': elementType == 'label',
-      'oo-text-enhancement-selected': this.props.closedCaptionOptions.textEnhancement == item && this.props.closedCaptionOptions.enabled,
-      'oo-text-enhancement-label-selected': this.props.closedCaptionOptions.textEnhancement == item && this.props.closedCaptionOptions.enabled && elementType == 'label',
+      'oo-text-enhancement-letter': elementType === 'letter',
+      'oo-text-enhancement-label': elementType === 'label',
+      'oo-text-enhancement-selected':
+        this.props.closedCaptionOptions.textEnhancement === item && this.props.closedCaptionOptions.enabled,
+      'oo-text-enhancement-label-selected':
+        this.props.closedCaptionOptions.textEnhancement === item &&
+        this.props.closedCaptionOptions.enabled &&
+        elementType === 'label',
       'oo-disabled': !this.props.closedCaptionOptions.enabled
     });
   },
 
   render: function() {
-    var textEnhancementTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.TEXT_ENHANCEMENT, this.props.localizableStrings);
+    var textEnhancementTitle = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT.TEXT_ENHANCEMENT,
+      this.props.localizableStrings
+    );
     var textEnhancementSelection = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.textEnhancement.toUpperCase()],
@@ -46,8 +54,12 @@ var TextEnhancementsTab = React.createClass({
       // accent color
       var isSelected = this.props.closedCaptionOptions.textEnhancement === this.state.textEnhancements[i];
       var selectedTextEnhancementStyle = {};
-      if (this.props.closedCaptionOptions.enabled && this.props.skinConfig.general.accentColor && isSelected) {
-        selectedTextEnhancementStyle = {color: this.props.skinConfig.general.accentColor};
+      if (
+        this.props.closedCaptionOptions.enabled &&
+        this.props.skinConfig.general.accentColor &&
+        isSelected
+      ) {
+        selectedTextEnhancementStyle = { color: this.props.skinConfig.general.accentColor };
       }
       var itemLabel = Utils.getLocalizedString(
         this.props.language,
@@ -62,15 +74,22 @@ var TextEnhancementsTab = React.createClass({
           ariaLabel={itemLabel}
           ariaChecked={isSelected}
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
-          onClick={this.changeTextEnhancement.bind(this, this.state.textEnhancements[i])}>
+          onClick={this.changeTextEnhancement.bind(this, this.state.textEnhancements[i])}
+        >
           <span
-            className={this.setClassname(this.state.textEnhancements[i], 'letter') + ' oo-text-enhancement-letter-' + this.state.textEnhancements[i]}
-            style={selectedTextEnhancementStyle}>
+            className={
+              this.setClassname(this.state.textEnhancements[i], 'letter') +
+              ' oo-text-enhancement-letter-' +
+              this.state.textEnhancements[i]
+            }
+            style={selectedTextEnhancementStyle}
+          >
             A
           </span>
           <span
             className={this.setClassname(this.state.textEnhancements[i], 'label')}
-            style={selectedTextEnhancementStyle}>
+            style={selectedTextEnhancementStyle}
+          >
             {itemLabel}
           </span>
         </AccessibleButton>
@@ -84,7 +103,8 @@ var TextEnhancementsTab = React.createClass({
             title={textEnhancementTitle}
             selectionText={textEnhancementSelection}
             ariaLabel={CONSTANTS.ARIA_LABELS.TEXT_ENHANCEMENTS_MENU}
-            role={CONSTANTS.ARIA_ROLES.MENU}>
+            role={CONSTANTS.ARIA_ROLES.MENU}
+          >
             {textEnhancementItems}
           </SelectionContainer>
         </div>

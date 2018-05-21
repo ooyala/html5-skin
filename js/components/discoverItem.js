@@ -32,18 +32,25 @@ var DiscoverItem = React.createClass({
 
     var itemTitleStyle = {
       color: Utils.getPropertyValue(this.props.skinConfig, 'discoveryScreen.contentTitle.font.color'),
-      fontFamily: Utils.getPropertyValue(this.props.skinConfig, 'discoveryScreen.contentTitle.font.fontFamily')
+      fontFamily: Utils.getPropertyValue(
+        this.props.skinConfig,
+        'discoveryScreen.contentTitle.font.fontFamily'
+      )
     };
 
     return (
       <div className="oo-discovery-image-wrapper-style">
         <div className="oo-discovery-wrapper">
           <a onClick={this.props.onClickAction}>
-            <div className="oo-image-style" style={thumbnailStyle}></div>
+            <div className="oo-image-style" style={thumbnailStyle} />
           </a>
           {this.props.children}
         </div>
-        <div className={this.props.contentTitleClassName} style={itemTitleStyle} dangerouslySetInnerHTML={Utils.createMarkup(this.props.contentTitle)}></div>
+        <div
+          className={this.props.contentTitleClassName}
+          style={itemTitleStyle}
+          dangerouslySetInnerHTML={Utils.createMarkup(this.props.contentTitle)}
+        />
       </div>
     );
   }

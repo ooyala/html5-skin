@@ -6,7 +6,9 @@ var React = require('react'),
 var LanguageTab = React.createClass({
   getInitialState: function() {
     return {
-      selectedLanguage: this.props.closedCaptionOptions.availableLanguages.locale[this.props.closedCaptionOptions.language]
+      selectedLanguage: this.props.closedCaptionOptions.availableLanguages.locale[
+        this.props.closedCaptionOptions.language
+      ]
     };
   },
 
@@ -14,7 +16,8 @@ var LanguageTab = React.createClass({
     var availableLanguages = this.props.closedCaptionOptions.availableLanguages;
     var invertedLocale = {};
     for (var i = 0; i < availableLanguages.languages.length; i++) {
-      invertedLocale[availableLanguages.locale[availableLanguages.languages[i]]] = availableLanguages.languages[i];
+      invertedLocale[availableLanguages.locale[availableLanguages.languages[i]]] =
+        availableLanguages.languages[i];
     }
 
     if (!this.props.closedCaptionOptions.enabled) {

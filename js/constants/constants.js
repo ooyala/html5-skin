@@ -4,11 +4,11 @@ var MACROS = require('./macros');
  *********************************************************************/
 module.exports = {
   STATE: {
-    START : 'start',
-    PLAYING : 'playing',
-    PAUSE : 'pause',
-    END : 'end',
-    ERROR : 'error'
+    START: 'start',
+    PLAYING: 'playing',
+    PAUSE: 'pause',
+    END: 'end',
+    ERROR: 'error'
   },
 
   SCREEN: {
@@ -61,8 +61,9 @@ module.exports = {
     OPTIONAL_MESSAGE: 'Optional Message',
     SEND: 'Send',
     ERROR_ACTION: 'RELOAD YOUR SCREEN OR TRY SELECTING A DIFFERENT VIDEO',
-    UNKNOWN_ERROR: 'Something happened while we were trying to play your video! ' +
-    'Click replay or simply reload your page.',
+    UNKNOWN_ERROR:
+      'Something happened while we were trying to play your video! ' +
+      'Click replay or simply reload your page.',
     LANGUAGE_TAB_TITLE: 'Language',
     COLOR_SELECTION_TAB_TITLE: 'Color Selection',
     CAPTION_OPACITY_TAB_TITLE: 'Caption Opacity',
@@ -316,176 +317,172 @@ module.exports = {
   },
 
   RESOLUTION_TIER: {
-    TWO: [
-      'Low',
-      'High'
-    ],
-    THREE: [
-      'Low',
-      'Medium',
-      'High'
-    ]
+    TWO: ['Low', 'High'],
+    THREE: ['Low', 'Medium', 'High']
   },
 
   ERROR_MESSAGE: {
-    'network':{
+    network: {
       name: 'OO.ERROR.API.NETWORK',
       title: 'NETWORK ERROR',
       description: 'Cannot Contact Server'
     },
-    'sas':{
+    sas: {
       name: 'OO.ERROR.API.SAS.GENERIC',
       title: 'SAS ERROR',
       description: 'Invalid Authorization Response'
     },
-    'geo':{
+    geo: {
       name: 'OO.ERROR.API.SAS.GEO',
       title: 'SAS GEO ERROR',
       description: 'This video is not authorized in your location'
     },
-    'domain':{
+    domain: {
       name: 'OO.ERROR.API.SAS.DOMAIN',
       title: 'SAS DOMAIN ERROR',
       description: 'This video is not authorized for your domain'
     },
-    'future':{
+    future: {
       name: 'OO.ERROR.API.SAS.FUTURE',
       title: 'VIDEO COMING SOON!',
       description: 'This video is not available yet',
       action: 'You may need to refresh the page to access the video after it becomes available'
     },
-    'past':{
+    past: {
       name: 'OO.ERROR.API.SAS.PAST',
       title: 'VIDEO NO LONGER AVAILABLE',
       description: 'This video is no longer available'
     },
-    'device':{
+    device: {
       name: 'OO.ERROR.API.SAS.DEVICE',
       title: 'SAS DEVICE ERROR',
       description: 'This video is not authorized for playback on this device'
     },
-    'proxy':{
+    proxy: {
       name: 'OO.ERROR.API.SAS.PROXY',
       title: 'SAS PROXY ERROR',
       description: 'An anonymous proxy was detected. Please disable the proxy and retry.'
     },
-    'concurrent_streams':{
+    concurrent_streams: {
       name: 'OO.ERROR.API.SAS.CONCURRENT_STREAMS',
       title: 'CONCURRENT STREAMS NUMBER EXCEEDED',
       description: 'You have exceeded the maximum number of concurrent streams'
     },
-    'device_binding_failed':{
+    device_binding_failed: {
       name: 'OO.ERROR.API.SAS.ERROR.DEVICE_BINDING_FAILED',
       title: 'DEVICE BINDING ERROR',
       description: 'Device binding failed'
     },
-    'device_id_too_long':{
+    device_id_too_long: {
       name: 'OO.ERROR.API.SAS.ERROR.DEVICE_ID_TOO_LONG',
       title: 'DEVICE ID TOO LONG',
       description: 'Device ID is too long'
     },
-    'device_invalid_auth_token':{
+    device_invalid_auth_token: {
       name: 'OO.ERROR.API.SAS.ERROR.DEVICE_INVALID_AUTH_TOKEN',
       title: 'INVALID PLAYER TOKEN',
       description: 'Invalid Ooyala Player token'
     },
-    'device_limit_reached':{
+    device_limit_reached: {
       name: 'OO.ERROR.API.SAS.ERROR.ERROR_DEVICE_LIMIT_REACHED',
       title: 'AUTHORIZATION ERROR',
-      description: 'Unable to access this content, as the maximum number of devices' + 
-      ' has already been authorized. Error Code 29',
+      description:
+        'Unable to access this content, as the maximum number of devices' +
+        ' has already been authorized. Error Code 29',
       action: 'Please remove one of your authorized devices to enable this device.'
     },
-    'non_registered_device':{
+    non_registered_device: {
       name: 'OO.ERROR.API.SAS.ERROR.ERROR_NON_REGISTERED_DEVICE',
       title: 'AUTHORIZATION ERROR',
-      description: 'Unable to register this device to this account, as the maximum' + 
-      ' number of authorized devices has already been reached. Error Code 22',
+      description:
+        'Unable to register this device to this account, as the maximum' +
+        ' number of authorized devices has already been reached. Error Code 22',
       action: 'Please remove one of your authorized devices to enable this device.'
     },
-    'drm_general_failure':{
+    drm_general_failure: {
       name: 'OO.ERROR.API.SAS.ERROR_DRM_GENERAL_FAILURE',
       title: 'LICENSE ERROR',
       description: 'General error acquiring license'
     },
-    'drm_server_error':{
+    drm_server_error: {
       name: 'OO.ERROR.API.SAS.ERROR_DRM_RIGHTS_SERVER_ERROR',
       title: 'DRM SERVER ERROR',
       description: 'DRM server error'
     },
-    'invalid_entitlements':{
+    invalid_entitlements: {
       name: 'OO.ERROR.API.SAS.ERROR_INVALID_ENTITLEMENTS',
       title: 'INVALID ENTITLEMENTS ERROR',
       description: 'User Entitlement Terminated - Stream No Longer Active for the User'
     },
-    'invalid_heartbeat':{
+    invalid_heartbeat: {
       name: 'OO.ERROR.API.SAS.INVALID_HEARTBEAT',
       title: 'INVALID HEARTBEAT',
       description: 'Invalid heartbeat response'
     },
-    'content_tree':{
+    content_tree: {
       name: 'OO.ERROR.API.CONTENT_TREE',
       title: 'INVALID CONTENT',
       description: 'Invalid Content'
     },
-    'metadata':{
+    metadata: {
       name: 'OO.ERROR.API.METADATA',
       title: 'INVALID METADATA',
       description: 'Invalid Metadata'
     },
-    'playback':{
+    playback: {
       name: 'OO.ERROR.PLAYBACK.GENERIC',
       title: 'PLAYBACK ERROR',
       description: 'Could not play the content'
     },
-    'stream':{
+    stream: {
       name: 'OO.ERROR.PLAYBACK.STREAM',
       title: 'PLAYBACK STREAM ERROR',
       description: 'This video isn\'t encoded for your device'
     },
-    'livestream':{
+    livestream: {
       name: 'OO.ERROR.PLAYBACK.LIVESTREAM',
       title: 'PLAYBACK LIVESTREAM ERROR',
       description: 'Live stream is off air'
     },
-    'network_error':{
+    network_error: {
       name: 'OO.ERROR.PLAYBACK.NETWORK',
       title: 'PLAYBACK NETWORK ERROR',
       description: 'Network connection temporarily lost'
     },
-    'unplayable_content':{
+    unplayable_content: {
       name: 'OO.ERROR.UNPLAYABLE_CONTENT',
       title: 'UNPLAYABLE CONTENT ERROR',
       description: 'This video is not playable on this player'
     },
-    'invalid_external_id':{
+    invalid_external_id: {
       name: 'OO.ERROR.INVALID.EXTERNAL_ID',
       title: 'INVALID EXTERNAL ID',
       description: 'Invalid External ID'
     },
-    'empty_channel':{
+    empty_channel: {
       name: 'OO.ERROR.EMPTY_CHANNEL',
       title: 'EMPTY CHANNEL ERROR',
       description: 'This channel is empty'
     },
-    'empty_channel_set':{
+    empty_channel_set: {
       name: 'OO.ERROR.EMPTY_CHANNEL_SET',
       title: 'EMPTY CHANNEL SET ERROR',
       description: 'This channel set is empty'
     },
-    'channel_content':{
+    channel_content: {
       name: 'OO.ERROR.CHANNEL_CONTENT',
       title: 'CHANNEL CONTENT ERROR',
       description: 'This channel is not playable at this time'
     },
-    'unsupported_encoding':{
+    unsupported_encoding: {
       name: 'OO.ERROR.VC.UNSUPPORTED_ENCODING',
       description: 'This video isn\'t encoded for your device'
     },
-    'unable_to_create_video_element':{
+    unable_to_create_video_element: {
       name: 'OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT',
-      description: 'Something happened while we were trying to play your video! ' +
-      'Click replay or simply reload your page.'
+      description:
+        'Something happened while we were trying to play your video! ' +
+        'Click replay or simply reload your page.'
     }
   },
   THUMBNAIL: {
