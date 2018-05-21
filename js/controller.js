@@ -1271,7 +1271,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       if (showAdControls && this.state.config.adScreen.showControlBar) {
         this.state.pluginsElement.removeClass('oo-full');
         this.state.pluginsClickElement.removeClass('oo-full');
-        if (typeof autoHide !== 'undefined') {
+        if (typeof autoHide === 'boolean') {
           this.state.forceControlBarVisible = !autoHide;
         }
       } else {
