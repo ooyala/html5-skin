@@ -6,7 +6,6 @@ var AccessibleMenu = function(ComposedComponent, options) {
   var _options = options || {};
 
   return React.createClass({
-
     componentDidMount: function() {
       this.menuDomElement = ReactDOM.findDOMNode(this.composedComponent);
       this.applyOptions();
@@ -95,13 +94,15 @@ var AccessibleMenu = function(ComposedComponent, options) {
      * considered to be menu items. Menu items are assumed to be any non-hidden elements with the
      * data-focus-id attribute which is set by the AccessibleButton and Slider components.
      * @private
-     * @return {NodeList} An ordered list of elements that comprise a menu.
+     * @returns {NodeList} An ordered list of elements that comprise a menu.
      */
     getMenuItemList: function() {
       var menuItemList = [];
 
       if (this.menuDomElement) {
-        menuItemList = this.menuDomElement.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']:not(.oo-hidden)');
+        menuItemList = this.menuDomElement.querySelectorAll(
+          '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']:not(.oo-hidden)'
+        );
       }
       return menuItemList;
     },
@@ -137,7 +138,7 @@ var AccessibleMenu = function(ComposedComponent, options) {
      * @param {NodeList} menuItemList An ordered list of elements that comprise a menu.
      * @param {Element} menuItem The menu item whose sibling we want to find.
      * @param {Boolean} useNextSibling Chooses the sibling next to menuItem when true and the previous one when false.
-     * @return {Number} The index where the sibling menu items is located in the list, -1 if menuItem is absent from the list.
+     * @returns {Number} The index where the sibling menu items is located in the list, -1 if menuItem is absent from the list.
      */
     getMenuItemSiblingIndex: function(menuItemList, menuItem, useNextSibling) {
       if (!menuItemList || !menuItemList.length) {
@@ -189,11 +190,13 @@ var AccessibleMenu = function(ComposedComponent, options) {
     render: function() {
       return (
         <ComposedComponent
-          ref={function(c) { this.composedComponent = c; }.bind(this)}
-          {...this.props} />
+          ref={function(c) {
+            this.composedComponent = c;
+          }.bind(this)}
+          {...this.props}
+        />
       );
     }
-
   });
 };
 

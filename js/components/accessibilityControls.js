@@ -11,7 +11,7 @@ var AccessibilityControls = function(controller) {
   this.keyDirectionMap[CONSTANTS.KEYCODES.S] = CONSTANTS.DIRECTIONS.DOWN;
   this.state = {
     seekRate: 1,
-    lastKeyDownTime: 0,
+    lastKeyDownTime: 0
   };
   this.prevKeyPressedArr = []; // list of codes of pressed buttons
   this.keyEventDown = this.keyEventDown.bind(this);
@@ -24,7 +24,7 @@ var AccessibilityControls = function(controller) {
 };
 
 AccessibilityControls.prototype = {
-  cleanUp : function() {
+  cleanUp: function() {
     document.removeEventListener('keydown', this.keyEventDown);
     document.removeEventListener('keyup', this.keyEventUp);
   },
@@ -63,7 +63,7 @@ AccessibilityControls.prototype = {
       case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
         if (this.areArrowKeysAllowed()) {
           e.preventDefault();
-          var forward = e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY ? true : false;
+          var forward = e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY;
           this.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, forward);
         }
         break;
@@ -78,7 +78,7 @@ AccessibilityControls.prototype = {
    * Please note that this doesn't cover all possible cases at the moment, only
    * roles that are in use in this project have been added so far.
    * @private
-   * @return {Boolean} True if arrow key shortcuts are allowed, false otherwise.
+   * @returns {Boolean} True if arrow key shortcuts are allowed, false otherwise.
    */
   areArrowKeysAllowed: function() {
     var activeElementRole = '';
@@ -100,7 +100,7 @@ AccessibilityControls.prototype = {
   /**
    * @description handlers for keyup event
    * @private
-   * @param e - event
+   * @param {Event} e - event
    */
   keyEventUp: function(e) {
     if (!(this.controller.state.accessibilityControlsEnabled || this.controller.state.isClickedOutside)) {
@@ -109,14 +109,14 @@ AccessibilityControls.prototype = {
     if (this.controller.videoVr) {
       var targetTagName = this.getTargetTagName(e);
       var charCode = e.which || e.keyCode;
-      this.moveVrToDirection(e, charCode, false, targetTagName);  // stop rotate 360
+      this.moveVrToDirection(e, charCode, false, targetTagName); // stop rotate 360
     }
   },
 
   /**
    * @description get name of target tag, for example "button" etc
    * @private
-   * @param e - event
+   * @param {Event} e - event
    * @returns {string} name of the target tag
    */
   getTargetTagName: function(e) {
@@ -130,10 +130,10 @@ AccessibilityControls.prototype = {
   /**
    * @description call moveVrToDirection from controller for rotation a vr video
    * @private
-   * @param e - event
-   * @param charCode {number} - char code;
-   * @param isKeyDown {boolean} - true if key is pressed
-   * @param targetTagName {string} - name of the clicked tag
+   * @param {Event} e - event
+   * @param {number} charCode - char code;
+   * @param {boolean} isKeyDown - true if key is pressed
+   * @param {string} targetTagName - name of the clicked tag
    * @returns {boolean} true if moved
    */
   moveVrToDirection: function(e, charCode, isKeyDown, targetTagName) {
@@ -161,7 +161,8 @@ AccessibilityControls.prototype = {
       if (newBtn) {
         this.prevKeyPressedArr.push(charCode);
       }
-    } else { // if button is up, remove it from this.prevKeyPressedArr
+    } else {
+      // if button is up, remove it from this.prevKeyPressedArr
       var inPrevKeyPressedArrIndex = -1;
       // check if button code is already in list of pressed buttons (this.prevKeyPressedArr)
       // if code is in the array return index of the code
@@ -177,7 +178,7 @@ AccessibilityControls.prototype = {
     }
     if (this.prevKeyPressedArr.length) {
       isKeyDown = true;
-      charCode = this.prevKeyPressedArr[this.prevKeyPressedArr.length-1];
+      charCode = this.prevKeyPressedArr[this.prevKeyPressedArr.length - 1];
     }
     // rotate if a button is pressed, stop rotate if other case
     this.controller.moveVrToDirection(isKeyDown, keyDirectionMap[charCode]);
@@ -213,7 +214,7 @@ AccessibilityControls.prototype = {
   /**
    * Determines whether or not the controller is in a state that allows seeking the video.
    * @private
-   * @return {Boolean} True if seeking is possible, false otherwise.
+   * @returns {Boolean} True if seeking is possible, false otherwise.
    */
   canSeek: function() {
     var seekingEnabled = false;

@@ -6,7 +6,6 @@ var React = require('react'),
     Slider = require('../slider');
 
 var CaptionOpacityTab = React.createClass({
-
   changeTextOpacity: function(value) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
@@ -34,20 +33,33 @@ var CaptionOpacityTab = React.createClass({
   },
 
   render: function() {
-
-    var textOpacityTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.TEXT_OPACITY, this.props.localizableStrings);
-    var backgroundOpacityTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.BACKGROUND_OPACITY, this.props.localizableStrings);
-    var windowOpacityTitle = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.WINDOW_OPACITY, this.props.localizableStrings);
+    var textOpacityTitle = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT.TEXT_OPACITY,
+      this.props.localizableStrings
+    );
+    var backgroundOpacityTitle = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT.BACKGROUND_OPACITY,
+      this.props.localizableStrings
+    );
+    var windowOpacityTitle = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT.WINDOW_OPACITY,
+      this.props.localizableStrings
+    );
 
     return (
       <div className="oo-caption-opacity-tab">
         <div
           className="oo-caption-opacity-inner-wrapper"
           aria-label={CONSTANTS.ARIA_LABELS.CAPTION_OPACITY_MENU}
-          role={CONSTANTS.ARIA_ROLES.MENU}>
+          role={CONSTANTS.ARIA_ROLES.MENU}
+        >
           <SelectionContainer
             title={textOpacityTitle}
-            selectionText={this.percentString(this.props.closedCaptionOptions.textOpacity)}>
+            selectionText={this.percentString(this.props.closedCaptionOptions.textOpacity)}
+          >
             <Slider
               value={parseFloat(this.props.closedCaptionOptions.textOpacity)}
               onChange={this.changeTextOpacity}
@@ -58,12 +70,14 @@ var CaptionOpacityTab = React.createClass({
               step={0.1}
               usePercentageForAria={true}
               ariaLabel={textOpacityTitle}
-              settingName={textOpacityTitle}/>
+              settingName={textOpacityTitle}
+            />
           </SelectionContainer>
 
           <SelectionContainer
             title={backgroundOpacityTitle}
-            selectionText={this.percentString(this.props.closedCaptionOptions.backgroundOpacity)}>
+            selectionText={this.percentString(this.props.closedCaptionOptions.backgroundOpacity)}
+          >
             <Slider
               value={parseFloat(this.props.closedCaptionOptions.backgroundOpacity)}
               onChange={this.changeBackgroundOpacity}
@@ -74,12 +88,14 @@ var CaptionOpacityTab = React.createClass({
               step={0.1}
               usePercentageForAria={true}
               ariaLabel={backgroundOpacityTitle}
-              settingName={backgroundOpacityTitle}/>
+              settingName={backgroundOpacityTitle}
+            />
           </SelectionContainer>
 
           <SelectionContainer
             title={windowOpacityTitle}
-            selectionText={this.percentString(this.props.closedCaptionOptions.windowOpacity)}>
+            selectionText={this.percentString(this.props.closedCaptionOptions.windowOpacity)}
+          >
             <Slider
               value={parseFloat(this.props.closedCaptionOptions.windowOpacity)}
               onChange={this.changeWindowOpacity}
@@ -90,7 +106,8 @@ var CaptionOpacityTab = React.createClass({
               step={0.1}
               usePercentageForAria={true}
               ariaLabel={windowOpacityTitle}
-              settingName={windowOpacityTitle}/>
+              settingName={windowOpacityTitle}
+            />
           </SelectionContainer>
         </div>
       </div>

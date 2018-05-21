@@ -12,9 +12,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 
-var ClosedCaptionMultiAudioMenu = require(
-  '../../../js/components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'
-);
+var ClosedCaptionMultiAudioMenu = require('../../../js/components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
 var MultiAudioTab = require('../../../js/components/closed-caption-multi-audio-menu/multiAudioTab');
 var Tab = require('../../../js/components/closed-caption-multi-audio-menu/tab');
 var AccessibleButton = require('../../../js/components/accessibleButton');

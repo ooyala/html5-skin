@@ -7,7 +7,6 @@ var React = require('react'),
     CloseButton = require('../closeButton');
 
 var ClosedCaptionPopover = React.createClass({
-
   handleMoreCaptions: function() {
     if (this.moreOptionsBtn) {
       // When the Closed Captions screen is closed it will go straight to the control bar without
@@ -30,7 +29,11 @@ var ClosedCaptionPopover = React.createClass({
   },
 
   render: function() {
-    var captionBtnText = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.CC_OPTIONS, this.props.localizableStrings);
+    var captionBtnText = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT.CC_OPTIONS,
+      this.props.localizableStrings
+    );
 
     return (
       <ul className="oo-popover-horizontal" role="menu">
@@ -38,23 +41,24 @@ var ClosedCaptionPopover = React.createClass({
           <OnOffSwitch
             {...this.props}
             ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_CLOSED_CAPTIONS}
-            role={CONSTANTS.ARIA_ROLES.MENU_ITEM_CHECKBOX} />
+            role={CONSTANTS.ARIA_ROLES.MENU_ITEM_CHECKBOX}
+          />
         </li>
         <li role="presentation">
           <AccessibleButton
-            ref={function(e) { this.moreOptionsBtn = e; }.bind(this)}
+            ref={function(e) {
+              this.moreOptionsBtn = e;
+            }.bind(this)}
             className="oo-more-captions"
             ariaLabel={CONSTANTS.ARIA_LABELS.CAPTION_OPTIONS}
             role={CONSTANTS.ARIA_ROLES.MENU_ITEM}
-            onClick={this.handleMoreCaptions}>
+            onClick={this.handleMoreCaptions}
+          >
             {captionBtnText}
           </AccessibleButton>
         </li>
         <li role="presentation">
-          <CloseButton
-            {...this.props}
-            role={CONSTANTS.ARIA_ROLES.MENU_ITEM}
-            closeAction={this.handleClose} />
+          <CloseButton {...this.props} role={CONSTANTS.ARIA_ROLES.MENU_ITEM} closeAction={this.handleClose} />
         </li>
       </ul>
     );

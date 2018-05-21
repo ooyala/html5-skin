@@ -9,7 +9,7 @@
 
 var ResizeMixin = {
   componentWillReceiveProps: function(nextProps) {
-    if (nextProps.componentWidth != this.props.componentWidth) {
+    if (nextProps.componentWidth !== this.props.componentWidth) {
       this.handleResize(nextProps);
     }
   }

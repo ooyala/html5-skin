@@ -22,8 +22,9 @@ var PauseScreen = React.createClass({
   getInitialState: function() {
     return {
       descriptionText: this.props.contentTree.description,
-      containsText: (this.props.skinConfig.pauseScreen.showTitle && !!this.props.contentTree.title)
-                      || (this.props.skinConfig.pauseScreen.showDescription && !!this.props.contentTree.description),
+      containsText:
+        (this.props.skinConfig.pauseScreen.showTitle && !!this.props.contentTree.title) ||
+        (this.props.skinConfig.pauseScreen.showDescription && !!this.props.contentTree.description),
       controlBarVisible: true
     };
   },
@@ -52,7 +53,10 @@ var PauseScreen = React.createClass({
   handleResize: function() {
     if (ReactDOM.findDOMNode(this.refs.description)) {
       this.setState({
-        descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), this.props.contentTree.description)
+        descriptionText: Utils.truncateTextToWidth(
+          ReactDOM.findDOMNode(this.refs.description),
+          this.props.contentTree.description
+        )
       });
     }
   },
@@ -71,7 +75,7 @@ var PauseScreen = React.createClass({
 
   /**
    * call handleTouchEnd when touchend was called on selectedScreen and videoType is Vr
-   * @param e {object} - event object
+   * @param {Event} e - event object
    */
   handleTouchEnd: function(e) {
     if (this.props.controller.videoVr) {
@@ -84,7 +88,7 @@ var PauseScreen = React.createClass({
 
   /**
    * call handleVrTouchEnd when touchend was called on selectedScreen and videoType is Vr
-   * @param e {object} - event object
+   * @param {Event} e - event object
    */
   handleVrTouchEnd: function(e) {
     this.props.handleVrPlayerMouseUp(e);
@@ -98,7 +102,7 @@ var PauseScreen = React.createClass({
       var pauseButton = document.getElementById('oo-pause-button');
       setTimeout(function() {
         if (pauseButton) {
-          pauseButton.style.display='none';
+          pauseButton.style.display = 'none';
         }
       }, 1000);
     }
@@ -119,7 +123,7 @@ var PauseScreen = React.createClass({
 
   /**
    * call handleVrMouseUp when mouseup was called on selectedScreen
-   * @param e {object} - event object
+   * @param {Event} e - event object
    */
   handlePlayerMouseUp: function(e) {
     e.stopPropagation(); // W3C
@@ -128,7 +132,7 @@ var PauseScreen = React.createClass({
 
   /**
    * call handleVrMouseUp when mouseup was called on document
-   * @param e {object} - event object
+   * @param {Event} e - event object
    */
   handleVrMouseUp: function(e) {
     this.props.handleVrPlayerMouseUp(e);
@@ -137,7 +141,7 @@ var PauseScreen = React.createClass({
   /**
    * Make sure keyboard controls are active when a control bar element has focus.
    *
-   * @param {object} event Focus event object
+   * @param {Event} event - Focus event object
    */
   handleFocus: function(event) {
     var isControlBarElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
@@ -168,10 +172,14 @@ var PauseScreen = React.createClass({
     });
     var infoPanelClass = ClassNames({
       'oo-state-screen-info': true,
-      'oo-info-panel-top': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('top') > -1,
-      'oo-info-panel-bottom': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('bottom') > -1,
-      'oo-info-panel-left': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('left') > -1,
-      'oo-info-panel-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
+      'oo-info-panel-top':
+        this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('top') > -1,
+      'oo-info-panel-bottom':
+        this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('bottom') > -1,
+      'oo-info-panel-left':
+        this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('left') > -1,
+      'oo-info-panel-right':
+        this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
     });
     var titleClass = ClassNames({
       'oo-state-screen-title': true,
@@ -187,48 +195,54 @@ var PauseScreen = React.createClass({
       'oo-action-icon-pause': !this.props.pauseAnimationDisabled,
       'oo-action-icon': this.props.pauseAnimationDisabled,
       'oo-animate-pause': this.state.animate && !this.props.pauseAnimationDisabled,
-      'oo-action-icon-top': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('top') > -1,
-      'oo-action-icon-bottom': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('bottom') > -1,
-      'oo-action-icon-left': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('left') > -1,
-      'oo-action-icon-right': this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('right') > -1,
+      'oo-action-icon-top':
+        this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('top') > -1,
+      'oo-action-icon-bottom':
+        this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('bottom') > -1,
+      'oo-action-icon-left':
+        this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('left') > -1,
+      'oo-action-icon-right':
+        this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('right') > -1,
       'oo-hidden': !this.props.skinConfig.pauseScreen.showPauseIcon || this.props.pauseAnimationDisabled
     });
 
-    var titleMetadata = (<div className={titleClass} style={titleStyle}>{this.props.contentTree.title}</div>);
-    var descriptionMetadata = (<div className={descriptionClass} ref="description" style={descriptionStyle}>{this.state.descriptionText}</div>);
+    var titleMetadata = (
+      <div className={titleClass} style={titleStyle}>
+        {this.props.contentTree.title}
+      </div>
+    );
+    var descriptionMetadata = (
+      <div className={descriptionClass} ref="description" style={descriptionStyle}>
+        {this.state.descriptionText}
+      </div>
+    );
 
-    var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
-      <AdOverlay
-        {...this.props}
-        overlay={this.props.controller.state.adOverlayUrl}
-        showOverlay={this.props.controller.state.showAdOverlay}
-        showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
-      />
-      :
-      null;
+    var adOverlay =
+      this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay ? (
+        <AdOverlay
+          {...this.props}
+          overlay={this.props.controller.state.adOverlayUrl}
+          showOverlay={this.props.controller.state.showAdOverlay}
+          showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
+        />
+      ) : null;
 
-    var upNextPanel = (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
-      <UpNextPanel
-        {...this.props}
-        controlBarVisible={this.state.controlBarVisible}
-        currentPlayhead={this.props.currentPlayhead}
-      />
-      :
-      null;
+    var upNextPanel =
+      this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData ? (
+        <UpNextPanel
+          {...this.props}
+          controlBarVisible={this.state.controlBarVisible}
+          currentPlayhead={this.props.currentPlayhead}
+        />
+      ) : null;
 
-    var viewControlsVr = this.props.controller.videoVr ?
-      <ViewControlsVr
-        {...this.props}
-        controlBarVisible={this.state.controlBarVisible}
-      /> : null;
+    var viewControlsVr = this.props.controller.videoVr ? (
+      <ViewControlsVr {...this.props} controlBarVisible={this.state.controlBarVisible} />
+    ) : null;
 
     return (
       <div className="oo-state-screen oo-pause-screen">
-
-        {
-          !this.props.controller.videoVr && this.state.containsText &&
-          <div className={fadeUnderlayClass} />
-        }
+        {!this.props.controller.videoVr && this.state.containsText && <div className={fadeUnderlayClass} />}
 
         <div
           className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
@@ -239,7 +253,7 @@ var PauseScreen = React.createClass({
           onTouchEnd={this.handleTouchEnd}
         />
 
-        <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
+        <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible} />
 
         <div className={infoPanelClass}>
           {this.props.skinConfig.pauseScreen.showTitle ? titleMetadata : null}
@@ -252,21 +266,22 @@ var PauseScreen = React.createClass({
           className={actionIconClass}
           onClick={this.handleClick}
           aria-hidden="true"
-          tabIndex="-1">
-          <Icon {...this.props} icon="pause" style={actionIconStyle}/>
+          tabIndex="-1"
+        >
+          <Icon {...this.props} icon="pause" style={actionIconStyle} />
         </button>
 
         {viewControlsVr}
 
         <div className="oo-interactive-container" onFocus={this.handleFocus}>
-          {this.props.closedCaptionOptions.enabled ?
+          {this.props.closedCaptionOptions.enabled ? (
             <TextTrack
               closedCaptionOptions={this.props.closedCaptionOptions}
               cueText={this.props.closedCaptionOptions.cueText}
               direction={this.props.captionDirection}
               responsiveView={this.props.responsiveView}
-            /> : null
-          }
+            />
+          ) : null}
 
           {adOverlay}
 
