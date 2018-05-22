@@ -683,6 +683,26 @@ describe('Controller', function() {
       controller.onPaused('event', OO.VIDEO.ADS);
       expect(controller.state.config.adScreen.showControlBar).toBe(true);
     });
+
+    it('testing onShowAdControls and forceControlBarVisible', function() {
+      var event = {};
+      controller.createPluginElements();
+      controller.state.config.adScreen.showControlBar = true;
+
+      controller.onShowAdControls(event, true);
+      expect(controller.state.forceControlBarVisible).toBe(false);
+      controller.onShowAdControls(event, true, true);
+      expect(controller.state.forceControlBarVisible).toBe(false);
+      controller.onShowAdControls(event, true, false);
+      expect(controller.state.forceControlBarVisible).toBe(true);
+
+      controller.onShowAdControls(event, false);
+      expect(controller.state.forceControlBarVisible).toBe(false);
+      controller.onShowAdControls(event, false, true);
+      expect(controller.state.forceControlBarVisible).toBe(false);
+      controller.onShowAdControls(event, false, false);
+      expect(controller.state.forceControlBarVisible).toBe(false);
+    });
   });
 
   describe('Video Qualities', function() {

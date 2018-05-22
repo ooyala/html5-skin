@@ -1223,7 +1223,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       });
       this.cancelTimer();
       this.hideControlBar();
-      this.state.forceControlBarVisible = this.state.pluginsElement.children().length > 0;
       if (this.state.mainVideoPlayhead > 0) {
         this.isNewVrVideo = false;
       }
@@ -1266,15 +1265,20 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    onShowAdControls: function(event, showAdControls) {
+    onShowAdControls: function(event, showAdControls, autoHide) {
       this.state.showAdControls = showAdControls;
+      this.state.forceControlBarVisible = false;
       if (showAdControls && this.state.config.adScreen.showControlBar) {
         this.state.pluginsElement.removeClass('oo-full');
         this.state.pluginsClickElement.removeClass('oo-full');
+        if (typeof autoHide === 'boolean') {
+          this.state.forceControlBarVisible = !autoHide;
+        }
       } else {
         this.state.pluginsElement.addClass('oo-full');
         this.state.pluginsClickElement.addClass('oo-full');
       }
+
       this.renderSkin();
     },
 
