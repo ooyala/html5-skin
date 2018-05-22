@@ -1,9 +1,12 @@
 var React = require('react');
 var classnames = require('classnames');
+var _ = require('underscore');
+
+var Utils = require('../utils');
+
 var CONSTANTS = require('../../constants/constants');
 var Tab = require('./tab');
 var MultiAudioTab = require('./multiAudioTab');
-var _ = require('underscore');
 
 var ClosedCaptionMultiAudioMenu = React.createClass({
   /**
@@ -78,9 +81,16 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
     ) {
       multiAudioCol = (
         <MultiAudioTab
+          header={Utils.getLocalizedString(
+            this.props.language,
+            CONSTANTS.SKIN_TEXT.AUDIO,
+            this.props.localizableStrings
+          )}
           handleClick={this.handleMultiAudioClick}
           skinConfig={this.props.skinConfig}
           audioTracksList={this.props.controller.state.multiAudio.tracks}
+          language={this.props.language}
+          localizableStrings={this.props.localizableStrings}
         />
       );
     }
@@ -102,7 +112,11 @@ var ClosedCaptionMultiAudioMenu = React.createClass({
           handleClick={this.handleClosedCaptionClick}
           skinConfig={this.props.skinConfig}
           itemsList={closedCaptionList}
-          header={CONSTANTS.SKIN_TEXT.SUBTITLES}
+          header={Utils.getLocalizedString(
+            this.props.language,
+            CONSTANTS.SKIN_TEXT.SUBTITLES,
+            this.props.localizableStrings
+          )}
         />
       );
     }
@@ -120,6 +134,8 @@ ClosedCaptionMultiAudioMenu.propTypes = {
   menuClassName: React.PropTypes.string,
   skinConfig: React.PropTypes.object,
   togglePopoverAction: React.PropTypes.func,
+  language: React.PropTypes.string,
+  localizableStrings: React.PropTypes.object,
   controller: React.PropTypes.shape({
     setCurrentAudio: React.PropTypes.func,
     onClosedCaptionChange: React.PropTypes.func,

@@ -744,11 +744,15 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
             // no UpNext for iPhone < iOS10 or fullscreen iOS
             this.showUpNextScreenWhenReady(currentPlayhead, duration);
           }
-        } else if (this.state.playerState === CONSTANTS.STATE.PLAYING &&
-          this.state.screenToShow !== CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
+        } else if (
+          this.state.playerState === CONSTANTS.STATE.PLAYING &&
+          this.state.screenToShow !== CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN
+        ) {
           this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
-        } else if (this.state.playerState === CONSTANTS.STATE.PAUSE &&
-          this.state.screenToShow !== CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN) {
+        } else if (
+          this.state.playerState === CONSTANTS.STATE.PAUSE &&
+          this.state.screenToShow !== CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN
+        ) {
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
       }
@@ -1219,7 +1223,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         height: '',
         width: ''
       });
-      this.state.forceControlBarVisible = this.state.pluginsElement.children().length > 0;
+      this.cancelTimer();
+      this.hideControlBar();
       if (this.state.mainVideoPlayhead > 0) {
         this.isNewVrVideo = false;
       }
@@ -1263,15 +1268,20 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    onShowAdControls: function(event, showAdControls) {
+    onShowAdControls: function(event, showAdControls, autoHide) {
       this.state.showAdControls = showAdControls;
+      this.state.forceControlBarVisible = false;
       if (showAdControls && this.state.config.adScreen.showControlBar) {
         this.state.pluginsElement.removeClass('oo-full');
         this.state.pluginsClickElement.removeClass('oo-full');
+        if (typeof autoHide === 'boolean') {
+          this.state.forceControlBarVisible = !autoHide;
+        }
       } else {
         this.state.pluginsElement.addClass('oo-full');
         this.state.pluginsClickElement.addClass('oo-full');
       }
+
       this.renderSkin();
     },
 
@@ -1631,7 +1641,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * @public
      */
     closeOtherPopovers: function(popoverName) {
-      var popoversNameList = [CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO];
+      var popoversNameList = [
+        CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS,
+        CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY,
+        CONSTANTS.MENU_OPTIONS.MULTI_AUDIO
+      ];
       for (var index = 0; index < popoversNameList.length; index++) {
         var closedPopoverName = popoversNameList[index];
         if (closedPopoverName !== popoverName) {
@@ -1654,7 +1668,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       if (menuOptions && menuOptions.showPopover) {
         // Re-focus on toggle button when closing the menu popover if the latter
         // was originally opened with a key press.
-        if (params.restoreToggleButtonFocus &&
+        if (
+          params.restoreToggleButtonFocus &&
           menuToggleButton &&
           menuToggleButton.wasTriggeredWithKeyboard()
         ) {
@@ -2002,8 +2017,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.isNewVrVideo = false;
       if (this.state.screenToShow === screen) {
         this.closeScreen();
-      }
-      else {
+      } else {
         if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
           this.pausedCallback = function() {
             this.state.pluginsElement.addClass('oo-overlay-blur');
@@ -2153,8 +2167,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.state.pauseAnimationDisabled = true;
       if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
         this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
-      }
-      else if (this.state.playerState === CONSTANTS.STATE.END) {
+      } else if (this.state.playerState === CONSTANTS.STATE.END) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
       }
       this.renderSkin();
@@ -2171,8 +2184,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
       // validate language is available before update and save
       if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
-        this.state.closedCaptionOptions.language =
-          this.state.persistentSettings.closedCaptionOptions.language = language;
+        this.state.closedCaptionOptions.language = this.state.persistentSettings.closedCaptionOptions.language = language;
         var captionLanguage = this.state.closedCaptionOptions.enabled ? language : '';
         var mode = this.state.closedCaptionOptions.enabled
           ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN

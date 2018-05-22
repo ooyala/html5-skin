@@ -11,11 +11,9 @@ var CloseButton = React.createClass({
         focusId={CONSTANTS.FOCUS_IDS.CLOSE + '-' + Date.now()}
         ariaLabel={CONSTANTS.ARIA_LABELS.CLOSE}
         role={this.props.role}
-        onClick={this.props.closeAction}>
-        <Icon
-          {...this.props}
-          icon="dismiss"
-          className={this.props.className}/>
+        onClick={this.props.closeAction}
+      >
+        <Icon {...this.props} icon="dismiss" className={this.props.className} />
       </AccessibleButton>
     );
   }
