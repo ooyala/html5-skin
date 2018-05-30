@@ -14,6 +14,7 @@ var React = require('react'),
     Utils = require('../components/utils'),
     CONSTANTS = require('./../constants/constants'),
     AnimateMixin = require('../mixins/animateMixin'),
+    Toolbar = require('../components/toolbar'),
     ViewControlsVr = require('../components/viewControlsVr');
 
 var PauseScreen = React.createClass({
@@ -242,6 +243,7 @@ var PauseScreen = React.createClass({
 
     return (
       <div className="oo-state-screen oo-pause-screen">
+
         {!this.props.controller.videoVr && this.state.containsText && <div className={fadeUnderlayClass} />}
 
         <div
@@ -294,6 +296,8 @@ var PauseScreen = React.createClass({
             isLiveStream={this.props.isLiveStream}
           />
         </div>
+
+        <Toolbar {...this.props}></Toolbar>
       </div>
     );
   }

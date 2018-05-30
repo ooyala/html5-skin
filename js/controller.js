@@ -1414,6 +1414,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       });
       this.state.closedCaptionOptions = this.state.config.closedCaptionOptions;
 
+      this.state.config.icons["skipForward"] = {"fontFamilyName": "ooyala-slick-type", "fontString": "\u0024", "fontStyleClass": "oo-icon"};
+      this.state.config.icons["previousVideo"] = {"fontFamilyName": "ooyala-slick-type", "fontString": "\u0025", "fontStyleClass": "oo-icon"};
+      this.state.config.icons["nextVideo"] = {"fontFamilyName": "ooyala-slick-type", "fontString": "\u0044", "fontStyleClass": "oo-icon"};
+
       // remove 'url' from the list until the tab is worked on
       var shareContent = Utils.getPropertyValue(this.state.config, 'shareScreen.shareContent');
       if (shareContent) {

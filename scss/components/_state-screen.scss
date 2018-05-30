@@ -295,3 +295,11 @@
     filter: alpha(opacity=0);
   }
 }
+
+.oo-playing-screen {
+  transition: background-color 0.2s ease-in-out;
+}
+
+.oo-playing-screen.oo-blurry {
+  background-color: rgba(0, 0, 0, 0.3);
+}
