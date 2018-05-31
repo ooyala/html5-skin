@@ -401,7 +401,11 @@ var PlayingScreen = React.createClass({
 
         {showUnmute ? <UnmuteIcon {...this.props} /> : null}
 
-        <Toolbar {...this.props} hidden={!this.state.controlBarVisible}></Toolbar>
+        <Toolbar
+          {...this.props}
+          controls={this.props.controller.accessibilityControls} 
+          hidden={!this.state.controlBarVisible}>
+        </Toolbar>
       </div>
     );
   }

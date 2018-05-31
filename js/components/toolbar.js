@@ -21,6 +21,14 @@ var Toolbar = React.createClass({
     console.log(">>>>clickbait");
   },
 
+  onSkipForward: function() {
+    this.props.controls.seekBy(30, true);
+  },
+
+  onSkipBack: function() {
+    this.props.controls.seekBy(30, false);
+  },
+
   render: function() {
 
     var dynamicStyles = this.setupItemStyle();
@@ -31,11 +39,11 @@ var Toolbar = React.createClass({
         <AccessibleButton className="oo-control-bar-item">
           <Icon {...this.props} icon="previousVideo" style={dynamicStyles.iconCharacter}/>
         </AccessibleButton>
-        <AccessibleButton className="oo-control-bar-item oo-center-button">
+        <AccessibleButton className="oo-control-bar-item oo-center-button" onClick={this.onSkipBack}>
           <Icon {...this.props} icon="replay" style={dynamicStyles.iconCharacter}/>
           <span className="oo-digit">30</span>
         </AccessibleButton>
-        <AccessibleButton className="oo-control-bar-item oo-center-button">
+        <AccessibleButton className="oo-control-bar-item oo-center-button" onClick={this.onSkipForward}>
           <Icon {...this.props} icon="skipForward" style={dynamicStyles.iconCharacter}/>
           <span className="oo-digit">30</span>
         </AccessibleButton>
