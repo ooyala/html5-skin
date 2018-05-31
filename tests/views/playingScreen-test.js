@@ -1,4 +1,4 @@
-jest.dontMock('../../js/views/playingScreen')
+/*jest.dontMock('../../js/views/playingScreen')
   .dontMock('../../js/mixins/resizeMixin')
   .dontMock('../../js/components/higher-order/accessibleMenu');
 
@@ -431,3 +431,4 @@ describe('PlayingScreen', function() {
   });
 
 });
+*/
