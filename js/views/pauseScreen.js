@@ -296,7 +296,9 @@ var PauseScreen = React.createClass({
           />
         </div>
 
-        <Toolbar {...this.props} />
+        <Toolbar
+          {...this.props}
+          controls={this.props.controller.accessibilityControls} />
 
       </div>
     );

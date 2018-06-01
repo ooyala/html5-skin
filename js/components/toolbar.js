@@ -5,6 +5,24 @@ var Icon = require('./icon');
 
 var Toolbar = React.createClass({
 
+  onSkipBack: function() {
+    if (
+      this.props.controls &&
+      typeof this.props.controls.seekBy === 'function'
+    ) {
+      this.props.controls.seekBy(30, false, true);
+    }
+  },
+
+  onSkipForward: function() {
+    if (
+      this.props.controls &&
+      typeof this.props.controls.seekBy === 'function'
+    ) {
+      this.props.controls.seekBy(30, true, true);
+    }
+  },
+
   getIconStyles: function() {
     var iconStyles = {
       color: this.props.skinConfig.controlBar.iconStyle.inactive.color,
@@ -15,10 +33,11 @@ var Toolbar = React.createClass({
 
   render: function() {
     var iconStyles = this.getIconStyles();
+
     var className = classNames('oo-toolbar', {
       'oo-inactive': this.props.inactive
     });
-    
+
     return (
       <div className={className}>
 

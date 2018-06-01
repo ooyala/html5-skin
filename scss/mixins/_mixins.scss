@@ -209,13 +209,6 @@
   display: flex;
 }
 
-@mixin flex-direction($direction) {
-  -webkit-flex-direction: $direction;
-  -moz-flex-direction: $direction;
-  -ms-flex-direction: $direction;
-  flex-direction: $direction;
-}
-
 @mixin justify-content($justify) {
   -webkit-justify-content: $justify;
   -moz-justify-content: $justify;
