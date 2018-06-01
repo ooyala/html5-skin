@@ -1,0 +1,63 @@
+
+.oo-toolbar {
+  $oo-toolbar-btn-size: 1.52em;
+  @include flex-center-children(row);
+  @include absolute-center;
+  font-size: 14px;
+  pointer-events: none;
+  transition: 0.2s opacity ease-in-out, 0.3s transform ease-in-out;
+
+  &.oo-inactive {
+    opacity: 0;
+    transform: translate(-50%, -100%);
+  }
+
+  .oo-focusable-btn {
+    @include flex-center-children(row);
+    position: relative;
+    width: $oo-toolbar-btn-size;
+    height: $oo-toolbar-btn-size;
+    margin: 0 10px;
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 1.7em;
+    pointer-events: auto;
+  }
+
+  .oo-center-button .oo-icon {
+    font-size: 1.4em;
+  }
+
+  .oo-btn-counter {
+    @include flex-center-children(row);
+    color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding-top: 2px;
+    font-size: 12px;
+    font-size: 0.53em;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .oo-focusable-btn:nth-child(2) .oo-btn-counter {
+    padding-right: 2px;
+  }
+
+  .oo-focusable-btn:nth-child(3) .oo-btn-counter {
+    padding-left: 2px;
+  }
+
+  .oo-focusable-btn:nth-child(1) .oo-icon {
+    transform: rotateY(180deg);
+  }
+
+  .oo-focusable-btn:nth-child(3) .oo-icon {
+    transform: rotateY(180deg);
+  }
+
+}

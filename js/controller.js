@@ -1414,6 +1414,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       });
       this.state.closedCaptionOptions = this.state.config.closedCaptionOptions;
 
+      // WIP
+      this.state.config.icons["nextVideo"] = {"fontFamilyName": "ooyala-slick-type", "fontString": "\u0044", "fontStyleClass": "oo-icon"};
+
       // remove 'url' from the list until the tab is worked on
       var shareContent = Utils.getPropertyValue(this.state.config, 'shareScreen.shareContent');
       if (shareContent) {

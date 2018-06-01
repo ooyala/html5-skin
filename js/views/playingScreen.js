@@ -16,6 +16,7 @@ var React = require('react'),
     ViewControlsVr = require('../components/viewControlsVr'),
     Icon = require('../components/icon'),
     Tooltip = require('../components/tooltip'),
+    Toolbar = require('../components/toolbar'),
     UnmuteIcon = require('../components/unmuteIcon');
 
 var PlayingScreen = React.createClass({
@@ -344,9 +345,13 @@ var PlayingScreen = React.createClass({
       );
     }
 
+    var className = ClassNames('oo-state-screen oo-playing-screen', {
+      'oo-controls-active': this.props.controller.state.controlBarVisible
+    });
+
     return (
       <div
-        className="oo-state-screen oo-playing-screen"
+        className={className}
         ref="PlayingScreen"
         onMouseOver={this.showControlBar}
         onMouseOut={this.hideControlBar}
@@ -394,6 +399,8 @@ var PlayingScreen = React.createClass({
             isLiveStream={this.props.isLiveStream}
           />
         </div>
+
+        <Toolbar {...this.props} inactive={!this.props.controller.state.controlBarVisible} />
 
         {showUnmute ? <UnmuteIcon {...this.props} /> : null}
       </div>

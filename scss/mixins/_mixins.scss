@@ -273,6 +273,13 @@
   flex: $values;
 }
 
+@mixin flex-center-children($flex-direction) {
+  @include flexbox;
+  @include flex-direction($flex-direction);
+  @include justify-content(center);
+  @include align-items(center);
+}
+
 @mixin hyphens() {
   -webkit-hyphens: auto;
   -moz-hyphens: auto;

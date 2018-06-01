@@ -11,6 +11,7 @@ var React = require('react'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon'),
+    Toolbar = require('../components/toolbar'),
     Utils = require('../components/utils'),
     CONSTANTS = require('./../constants/constants'),
     AnimateMixin = require('../mixins/animateMixin'),
@@ -294,6 +295,9 @@ var PauseScreen = React.createClass({
             isLiveStream={this.props.isLiveStream}
           />
         </div>
+
+        <Toolbar {...this.props} />
+
       </div>
     );
   }
