@@ -5,6 +5,24 @@ var Icon = require('./icon');
 
 var Toolbar = React.createClass({
 
+  onPreviousVideo: function() {
+    if (
+      this.props.controller &&
+      typeof this.props.controller.previousVideo === 'function'
+    ) {
+      this.props.controller.previousVideo();
+    }
+  },
+
+  onNextVideo: function() {
+    if (
+      this.props.controller &&
+      typeof this.props.controller.nextVideo === 'function'
+    ) {
+      this.props.controller.nextVideo();
+    }
+  },
+
   onSkipBack: function() {
     if (
       this.props.controls &&
@@ -42,7 +60,8 @@ var Toolbar = React.createClass({
       <div className={className}>
 
         <AccessibleButton
-          className="oo-control-bar-item">
+          className="oo-control-bar-item"
+          onClick={this.onPreviousVideo}>
           <Icon {...this.props} icon="nextVideo" style={iconStyles} />
         </AccessibleButton>
 
@@ -62,7 +81,7 @@ var Toolbar = React.createClass({
 
         <AccessibleButton
           className="oo-control-bar-item"
-          onClick={this.onClick}>
+          onClick={this.onNextVideo}>
           <Icon {...this.props} icon="nextVideo" style={iconStyles} />
         </AccessibleButton>
 

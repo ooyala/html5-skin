@@ -1587,7 +1587,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       OO.log('onRelatedVideosFetched is called');
       if (relatedVideos.videos) {
         this.state.discoveryData = { relatedVideos: relatedVideos.videos };
-        this.state.upNextInfo.upNextData = relatedVideos.videos[0];
+
+        if (relatedVideos.upNextVideo) {
+          this.state.upNextInfo.upNextData = relatedVideos.upNextVideo;
+        } else {
+          this.state.upNextInfo.upNextData = relatedVideos.videos[0];
+        }
         this.renderSkin();
       }
     },
@@ -2049,6 +2054,14 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
       }
       this.renderSkin();
+    },
+
+    previousVideo: function() {
+      this.mb.publish(OO.EVENTS.REQUEST_PREVIOUS_VIDEO || 'requestPreviousVideo');
+    },
+
+    nextVideo: function() {
+      this.mb.publish(OO.EVENTS.REQUEST_NEXT_VIDEO || 'requestNextVideo');
     },
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
