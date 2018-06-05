@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var deepmerge = require('deepmerge');
+var Utils = require('./utils');
 
 var verticalOffset = 80;
 function getContainerStyle(bottom, visible, responsivenessMultiplier, alignment) {
@@ -92,9 +93,14 @@ var Tooltip = React.createClass({
               this.state.visible,
               this.props.responsivenessMultiplier,
               this.props.alignment
-            )}
-          >
-            <div style={getBoxStyle(this.props.responsivenessMultiplier)}>{this.props.text}</div>
+            )}>
+            <div style={getBoxStyle(this.props.responsivenessMultiplier)}>
+              {Utils.getLocalizedString(
+                this.props.language,
+                this.props.text,
+                this.props.localizableStrings
+              )}
+            </div>
             <div style={getPointerStyle(this.props.alignment)} />
           </div>
         </div>
@@ -120,6 +126,8 @@ var Tooltip = React.createClass({
 Tooltip.propTypes = {
   enabled: React.PropTypes.bool.isRequired,
   text: React.PropTypes.string.isRequired,
+  language: React.PropTypes.string,
+  localizableStrings: React.PropTypes.object,
   alignment: React.PropTypes.oneOf(['left', 'center', 'right']),
   responsivenessMultiplier: React.PropTypes.number.isRequired,
   bottom: React.PropTypes.number.isRequired
@@ -128,6 +136,7 @@ Tooltip.propTypes = {
 Tooltip.defaultProps = {
   enabled: false,
   text: '',
+  language: 'en',
   alignment: 'center',
   responsivenessMultiplier: 1,
   bottom: 0
