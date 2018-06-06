@@ -771,7 +771,7 @@ var ControlBar = React.createClass({
         }
 
         return (
-          <div key={CONSTANTS.CONTROL_BAR_KEYS.MULTI_AUDIO} className="oo-popover-button-container">
+          <div key={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC} className="oo-popover-button-container">
             <AccessibleButton
               ref={function(e) {
                 this.setToggleButtons(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO, e);
@@ -791,7 +791,7 @@ var ControlBar = React.createClass({
                 onMouseOut={this.removeHighlight} />
               <Tooltip
                 {...tooltipConfig}
-                parentKey={CONSTANTS.CONTROL_BAR_KEYS.MULTI_AUDIO}
+                parentKey={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC}
                 text={CONSTANTS.SKIN_TEXT.AUDIO} />
             </AccessibleButton>
             {this.props.controller.state.multiAudioOptions.showPopover &&
@@ -833,7 +833,7 @@ var ControlBar = React.createClass({
 
       stereoscopic: !!(this.vr && this.isMobile) && (
         <AccessibleButton
-          key={CONSTANTS.CONTROL_BAR_KEYS.STEREO}
+          key={CONSTANTS.CONTROL_BAR_KEYS.STEREOSCOPIC}
           className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
           onClick={this.handleStereoVrClick}
           onMouseOver={this.highlight}
