@@ -101,7 +101,7 @@ var AdPanel = React.createClass({
         if (isSSAI) {
           if (this.props.controller.state.playerState != CONSTANTS.STATE.PAUSE){
             remainingTime = (this.state.adEndTime - new Date().getTime()) / 1000;
-          } else{
+          } else {
             remainingTime = this.props.adVideoDuration - (this.props.controller.state.adPausedTime - this.props.adStartTime) / 1000;
           }
         }
