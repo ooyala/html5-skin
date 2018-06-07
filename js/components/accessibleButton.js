@@ -82,8 +82,7 @@ var AccessibleButton = React.createClass({
         onMouseOver={this.props.onMouseOver}
         onMouseOut={this.props.onMouseOut}
         onFocus={this.props.onFocus}
-        onClick={this.props.onClick}
-      >
+        onClick={this.props.onClick}>
         {this.props.children}
       </button>
     );

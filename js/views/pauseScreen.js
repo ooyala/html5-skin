@@ -297,8 +297,12 @@ var PauseScreen = React.createClass({
         </div>
 
         <Toolbar
-          {...this.props}
-          controls={this.props.controller.accessibilityControls} />
+          language={this.props.language}
+          localizableStrings={this.props.localizableStrings}
+          responsiveView={this.props.responsiveView}
+          skinConfig={this.props.skinConfig}
+          controller={this.props.controller}
+          a11yControls={this.props.controller.accessibilityControls} />
 
       </div>
     );

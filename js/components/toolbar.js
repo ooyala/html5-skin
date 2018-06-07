@@ -1,57 +1,35 @@
 var React = require('react');
 var classNames = require('classnames');
-var AccessibleButton = require('./accessibleButton');
+var ControlButton = require('./controlButton');
 var Icon = require('./icon');
 
 var Toolbar = React.createClass({
 
   onPreviousVideo: function() {
-    if (
-      this.props.controller &&
-      typeof this.props.controller.previousVideo === 'function'
-    ) {
+    if (typeof this.props.controller.previousVideo === 'function') {
       this.props.controller.previousVideo();
     }
   },
 
   onNextVideo: function() {
-    if (
-      this.props.controller &&
-      typeof this.props.controller.nextVideo === 'function'
-    ) {
+    if (typeof this.props.controller.nextVideo === 'function') {
       this.props.controller.nextVideo();
     }
   },
 
   onSkipBack: function() {
-    if (
-      this.props.controls &&
-      typeof this.props.controls.seekBy === 'function'
-    ) {
-      this.props.controls.seekBy(30, false, true);
+    if (typeof this.props.a11yControls.seekBy === 'function') {
+      this.props.a11yControls.seekBy(30, false, true);
     }
   },
 
   onSkipForward: function() {
-    if (
-      this.props.controls &&
-      typeof this.props.controls.seekBy === 'function'
-    ) {
-      this.props.controls.seekBy(30, true, true);
+    if (typeof this.props.a11yControls.seekBy === 'function') {
+      this.props.a11yControls.seekBy(30, true, true);
     }
   },
 
-  getIconStyles: function() {
-    var iconStyles = {
-      color: this.props.skinConfig.controlBar.iconStyle.inactive.color,
-      opacity: this.props.skinConfig.controlBar.iconStyle.inactive.opacity
-    };
-    return iconStyles;
-  },
-
   render: function() {
-    var iconStyles = this.getIconStyles();
-
     var className = classNames('oo-toolbar', {
       'oo-inactive': this.props.inactive
     });
@@ -59,36 +37,55 @@ var Toolbar = React.createClass({
     return (
       <div className={className}>
 
-        <AccessibleButton
-          className="oo-control-bar-item"
+        <ControlButton
+          {...this.props}
+          icon="nextVideo"
           onClick={this.onPreviousVideo}>
-          <Icon {...this.props} icon="nextVideo" style={iconStyles} />
-        </AccessibleButton>
+        </ControlButton>
 
-        <AccessibleButton
-          className="oo-control-bar-item oo-center-button"
+        <ControlButton
+          {...this.props}
+          className="oo-center-button"
+          icon="replay"
           onClick={this.onSkipBack}>
-          <Icon {...this.props} icon="replay" style={iconStyles} />
           <span className="oo-btn-counter">30</span>
-        </AccessibleButton>
+        </ControlButton>
 
-        <AccessibleButton
-          className="oo-control-bar-item oo-center-button"
+        <ControlButton
+          {...this.props}
+          className="oo-center-button"
+          icon="replay"
           onClick={this.onSkipForward}>
-          <Icon {...this.props} icon="replay" style={iconStyles} />
           <span className="oo-btn-counter">30</span>
-        </AccessibleButton>
+        </ControlButton>
 
-        <AccessibleButton
-          className="oo-control-bar-item"
+        <ControlButton
+          {...this.props}
+          icon="nextVideo"
           onClick={this.onNextVideo}>
-          <Icon {...this.props} icon="nextVideo" style={iconStyles} />
-        </AccessibleButton>
+        </ControlButton>
 
       </div>
     );
   }
 
 });
+
+Toolbar.propTypes = {
+  language: React.PropTypes.string,
+  localizableStrings: React.PropTypes.object,
+  responsiveView: React.PropTypes.bool.isRequired,
+  skinConfig: React.PropTypes.object.isRequired,
+  controller: React.PropTypes.shape({
+    state: React.PropTypes.shape({
+      isMobile: React.PropTypes.bool.isRequired
+    }),
+    previousVideo: React.PropTypes.func.isRequired,
+    nextVideo: React.PropTypes.func.isRequired,
+  }),
+  a11yControls: React.PropTypes.shape({
+    seekBy: React.PropTypes.func.isRequired
+  })
+};
 
 module.exports = Toolbar;
