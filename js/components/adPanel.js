@@ -58,7 +58,8 @@ var AdPanel = React.createClass({
 
     // // Ad title
     var adTitle = 'Unknown';
-    if (this.props.currentAdsInfo &&
+    if (
+        this.props.currentAdsInfo &&
         this.props.currentAdsInfo.currentAdItem &&
         this.props.contentTree &&
         this.props.currentAdsInfo.currentAdItem.ooyalaAds &&

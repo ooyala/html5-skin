@@ -80,7 +80,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       adStartTime: 0,
       adPausedTime: 0,
       adEndTime: 0,
-      adTotalPause: 0,
       wasPaused: false,
       adPauseDuration: 0,
       elementId: null,
@@ -812,7 +811,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     onVcPlay: function(event, source) {
       this.state.currentVideoId = source;
       if (this.state.wasPaused){
-        this.state.adPauseDuration = new Date().getTime() - this.state.adPausedTime + this.state.adTotalPause;
+        this.state.adPauseDuration = new Date().getTime() - this.state.adPausedTime;
         //we calculate new ad end time, based on the time that ad was paused.
         this.state.adEndTime = this.state.adEndTime + this.state.adPauseDuration; //milliseconds
         this.state.wasPaused = false;
