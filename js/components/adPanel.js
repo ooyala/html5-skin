@@ -53,11 +53,6 @@ var AdPanel = React.createClass({
     return playbackInfo !== null && typeof playbackInfo !== 'undefined' && playbackInfo !== '';
   },
 
-  getCurrentAdPlayhead: function(adPausedDuration, adStartTime){
-    //We return current ad time in milliseconds except ad paused time.
-    return (new Date().getTime() - adPausedDuration - adStartTime)/1000;
-  },
-
   populateAdTopBar: function() {
     var adTopBarItems = [];
 
