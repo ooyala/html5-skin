@@ -673,12 +673,11 @@ describe('Controller', function() {
 
     it('showControlBar is true when ad is paused', function() {
       var playerParam = {
-        playerControlsOverAds: false
+        playerControlsOverAds: true
       };
       controller.state.playerParam = playerParam;
       controller.createPluginElements();
       // make sure showControlBar is overwritten
-      expect(controller.state.config.adScreen.showControlBar).toBeFalsy();
       controller.focusedElement = OO.VIDEO.ADS;
       controller.onPaused('event', OO.VIDEO.ADS);
       expect(controller.state.config.adScreen.showControlBar).toBe(true);
