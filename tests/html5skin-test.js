@@ -108,7 +108,7 @@ describe('Controller', function() {
     controller.state.mainVideoElement = mockDomElement;
     controller.state.mainVideoInnerWrapper = $('<div/>');
     controller.state.mainVideoElementContainer = mockDomElement;
-    controller.state.showMultiAudioIcon = true;
+    controller.state.showMultiAudioIcon = false;
     controller.skin = {
       state: {},
       updatePlayhead: function(currentPlayhead, duration, buffered, currentAdPlayhead) {
@@ -772,7 +772,7 @@ describe('Controller', function() {
     var spy;
     beforeEach(function() {
       spy = sinon.spy(controller.mb, 'publish');
-      controller.state.showMultiAudioIcon = true;
+      controller.state.showMultiAudioIcon = false;
     });
 
     afterEach(function() {
@@ -868,13 +868,13 @@ describe('Controller', function() {
       expect(setItemSpy.calledWith(OO.CONSTANTS.SELECTED_AUDIO, stringifiedTrack)).toBeTruthy();
     });
 
-    it('should check if the icon exists if showMultiAudioIcon is true', function() {
+    it('should check if the icon exists if hideMultiAudioIcon is false', function() {
       controller.onMultiAudioFetched('event', true);
       expect(controller.state.multiAudio).toBe(true);
     });
 
-    it('should check if the icon not exists if showMultiAudioIcon is false', function() {
-      controller.state.showMultiAudioIcon = false;
+    it('should check if the icon not exists if hideMultiAudioIcon is true', function() {
+      controller.state.hideMultiAudioIcon = true;
       controller.onMultiAudioFetched('event', true);
       expect(controller.state.multiAudio).toBe(null);
     });
