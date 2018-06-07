@@ -31,11 +31,10 @@ function getContainerStyle(bottom, visible, responsivenessMultiplier, alignment)
     fontWeight: 'normal',
     bottom: bottom,
     transition: '1s',
-    visibility: visible ? 'visible' : 'hidden',
+    visibility: visible ? 'visible' : 'hidden'
   };
 
   return deepmerge(alignmentStyle[alignment], style);
-
 }
 
 function getBoxStyle(responsivenessMultiplier) {
@@ -66,9 +65,7 @@ function getPointerStyle(alignment) {
   };
 }
 
-
 var Tooltip = React.createClass({
-
   componentDidMount: function() {
     this.parentElement = (ReactDOM.findDOMNode(this) || {}).parentElement;
     if (this.parentElement) {
@@ -88,11 +85,17 @@ var Tooltip = React.createClass({
     if (this.props.enabled) {
       return (
         <div style={{ position: 'relative' }}>
-          <div className='oo-tooltip' style={getContainerStyle(this.props.bottom, this.state.visible, this.props.responsivenessMultiplier, this.props.alignment)}>
-            <div style={getBoxStyle(this.props.responsivenessMultiplier)}>
-              {this.props.text}
-            </div>
-            <div style={getPointerStyle(this.props.alignment)}></div>
+          <div
+            className="oo-tooltip"
+            style={getContainerStyle(
+              this.props.bottom,
+              this.state.visible,
+              this.props.responsivenessMultiplier,
+              this.props.alignment
+            )}
+          >
+            <div style={getBoxStyle(this.props.responsivenessMultiplier)}>{this.props.text}</div>
+            <div style={getPointerStyle(this.props.alignment)} />
           </div>
         </div>
       );
@@ -119,7 +122,7 @@ Tooltip.propTypes = {
   text: React.PropTypes.string.isRequired,
   alignment: React.PropTypes.oneOf(['left', 'center', 'right']),
   responsivenessMultiplier: React.PropTypes.number.isRequired,
-  bottom: React.PropTypes.number.isRequired,
+  bottom: React.PropTypes.number.isRequired
 };
 
 Tooltip.defaultProps = {

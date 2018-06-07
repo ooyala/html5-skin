@@ -15,7 +15,7 @@ var DirectionControlVr = React.createClass({
     if (this.state.isTouched || ev.type !== 'mouseout') {
       this.props.handleVrViewControlsClick(ev, isRotated, this.props.dir);
     }
-    
+
     this.setState({
       isTouched: isRotated
     });
@@ -30,13 +30,18 @@ var DirectionControlVr = React.createClass({
     }
     return (
       <div
-        className = {classnames('oo-direction-control', baseDirectionClass, directionClass, touchedDirectionClass)}
-        key = {this.props.dir}
-        onMouseDown = {this.handleEvent}
-        onTouchStart = {this.handleEvent}
-        onMouseUp = {this.handleEvent}
-        onTouchEnd = {this.handleEvent}
-        onMouseOut = {this.handleEvent}
+        className={classnames(
+          'oo-direction-control',
+          baseDirectionClass,
+          directionClass,
+          touchedDirectionClass
+        )}
+        key={this.props.dir}
+        onMouseDown={this.handleEvent}
+        onTouchStart={this.handleEvent}
+        onMouseUp={this.handleEvent}
+        onTouchEnd={this.handleEvent}
+        onMouseOut={this.handleEvent}
       />
     );
   }

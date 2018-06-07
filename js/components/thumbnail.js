@@ -11,11 +11,11 @@ var Thumbnail = React.createClass({
   },
 
   shouldComponentUpdate: function(nextProps) {
-    var updateHoverPositon = nextProps.hoverPosition != this.props.hoverPosition;
-    var updateFullscreen  = nextProps.fullscreen != this.props.fullscreen && this.props.videoVr;
-    var updateVrViewDirection = nextProps.vrViewingDirection != this.props.vrViewingDirection;
+    var updateHoverPositon = nextProps.hoverPosition !== this.props.hoverPosition;
+    var updateFullscreen = nextProps.fullscreen !== this.props.fullscreen && this.props.videoVr;
+    var updateVrViewDirection = nextProps.vrViewingDirection !== this.props.vrViewingDirection;
     var updateImageWidth = nextProps.imageWidth !== this.props.imageWidth;
-    return (updateHoverPositon || updateFullscreen || updateVrViewDirection || updateImageWidth);
+    return updateHoverPositon || updateFullscreen || updateVrViewDirection || updateImageWidth;
   },
 
   componentWillUnmount: function() {

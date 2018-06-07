@@ -55,14 +55,14 @@ var PlayingScreen = React.createClass({
 
   componentWillUpdate: function(nextProps) {
     if (nextProps) {
-      if (nextProps.controller.state.controlBarVisible == false && this.state.controlBarVisible == true) {
+      if (nextProps.controller.state.controlBarVisible === false && this.state.controlBarVisible === true) {
         this.hideControlBar();
       }
       if (!this.props.fullscreen && nextProps.fullscreen) {
         this.props.controller.startHideControlBarTimer();
       }
       if (this.props.fullscreen && !nextProps.fullscreen && this.isMobile) {
-        this.setState({controlBarVisible: true});
+        this.setState({ controlBarVisible: true });
         this.props.controller.showControlBar();
         this.props.controller.startHideControlBarTimer();
       }
@@ -82,8 +82,8 @@ var PlayingScreen = React.createClass({
    * The labels should be animated.
    * Need to remove the labels (icons) after animation
    * Animation should be only one time
-   * @param id - unique identificator of the label(icon)
-   * @param stateName - name for a state which indicates about necessary to show the label(icon)
+   * @param {string} id - unique identificator of the label(icon)
+   * @param {string} stateName - name for a state which indicates about necessary to show the label(icon)
    */
   handleVrAnimationEnd: function(id, stateName) {
     var vrContainer = document.getElementById(id);
@@ -145,15 +145,14 @@ var PlayingScreen = React.createClass({
 
   /**
    * call handleTouchEnd when touchend was called on selectedScreen
-   * @param event {object} - event object
+   * @param {Event} event - event object
    */
   handleTouchEnd: function(event) {
-    event.preventDefault();// to prevent mobile from propagating click to discovery shown on pause
+    event.preventDefault(); // to prevent mobile from propagating click to discovery shown on pause
     if (!this.state.controlBarVisible) {
       this.showControlBar(event);
       this.props.controller.startHideControlBarTimer();
-    }
-    else {
+    } else {
       var shouldToggle = false;
       if (this.props.controller.videoVr) {
         if (!this.props.isVrMouseMove) {
@@ -170,7 +169,7 @@ var PlayingScreen = React.createClass({
 
   /**
    * call handleVrTouchEnd when touchend was called on document and videoType is Vr
-   * @param e {object} - event object
+   * @param {Event} e - event object
    */
   handleVrTouchEnd: function(e) {
     this.props.handleVrPlayerMouseUp(e);
@@ -193,7 +192,7 @@ var PlayingScreen = React.createClass({
 
   /**
    * call handleVrMouseUp when mouseup was called on selectedScreen
-   * @param e {object} - event object
+   * @param {Event} e - event object
    */
   handlePlayerMouseUp: function(e) {
     // pause or play the video if the skin is clicked on desktop
@@ -201,7 +200,7 @@ var PlayingScreen = React.createClass({
       e.stopPropagation(); // W3C
       e.cancelBubble = true; // IE
       if (!this.props.controller.videoVr) {
-        this.props.controller.togglePlayPause();// if clicked on selectableSceen
+        this.props.controller.togglePlayPause(); // if clicked on selectableSceen
       }
       // the order of the loop and this.props.controller.state is not important
       this.props.controller.state.accessibilityControlsEnabled = true;
@@ -212,7 +211,7 @@ var PlayingScreen = React.createClass({
 
   /**
    * call handleVrMouseUp when mouseup was called on document
-   * @param e {object} - event object
+   * @param {Event} e - event object
    */
   handleVrMouseUp: function(e) {
     this.props.handleVrPlayerMouseUp(e);
@@ -231,17 +230,17 @@ var PlayingScreen = React.createClass({
 
   showControlBar: function(event) {
     if (!this.isMobile || (event && event.type === 'touchend')) {
-      this.setState({controlBarVisible: true});
+      this.setState({ controlBarVisible: true });
       this.props.controller.showControlBar();
-      ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor='auto';
+      ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor = 'auto';
     }
   },
 
   hideControlBar: function(event) {
-    if (this.props.controlBarAutoHide == true && !(this.isMobile && event)) {
-      this.setState({controlBarVisible: false});
+    if (this.props.controlBarAutoHide === true && !(this.isMobile && event)) {
+      this.setState({ controlBarVisible: false });
       this.props.controller.hideControlBar();
-      ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor='none';
+      ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor = 'none';
     }
   },
 
@@ -251,69 +250,89 @@ var PlayingScreen = React.createClass({
 
   /**
    *
-   * @param vrDuration - key for duraction in config
-   * @param defaultDuration - default value for duration
+   * @param {number} vrDuration - key for duraction in config
+   * @param {number} defaultDuration - default value for duration
    * @returns {object} empty object or object with animationDuration
    */
   setAnimationDuration: function(vrDuration, defaultDuration) {
     var style = {};
     defaultDuration = Utils.ensureNumber(defaultDuration, 3);
-    if (this.props.controller.state.config.animationDurations !== null &&
+    if (
+      this.props.controller.state.config.animationDurations !== null &&
       typeof this.props.controller.state.config.animationDurations === 'object' &&
-      this.props.controller.state.config.animationDurations[vrDuration] !== undefined) {
-      var duration = Utils.ensureNumber(this.props.controller.state.config.animationDurations[vrDuration], defaultDuration) + 's';
+      this.props.controller.state.config.animationDurations[vrDuration] !== undefined
+    ) {
+      var duration =
+        Utils.ensureNumber(
+          this.props.controller.state.config.animationDurations[vrDuration],
+          defaultDuration
+        ) + 's';
       style = {
-        'animationDuration': duration,
-        'webkitAnimationDuration': duration
+        animationDuration: duration,
+        webkitAnimationDuration: duration
       };
     }
     return style;
   },
 
   render: function() {
-    var adOverlay = (this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay) ?
-      <AdOverlay {...this.props}
-        overlay={this.props.controller.state.adOverlayUrl}
-        showOverlay={this.props.controller.state.showAdOverlay}
-        showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}/> : null;
+    var adOverlay =
+      this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay ? (
+        <AdOverlay
+          {...this.props}
+          overlay={this.props.controller.state.adOverlayUrl}
+          showOverlay={this.props.controller.state.showAdOverlay}
+          showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
+        />
+      ) : null;
 
-    var upNextPanel = (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
-      <UpNextPanel {...this.props}
-        controlBarVisible={this.state.controlBarVisible}
-        currentPlayhead={this.props.currentPlayhead}/> : null;
+    var upNextPanel =
+      this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData ? (
+        <UpNextPanel
+          {...this.props}
+          controlBarVisible={this.state.controlBarVisible}
+          currentPlayhead={this.props.currentPlayhead}
+        />
+      ) : null;
 
-    var viewControlsVr = this.props.controller.videoVr ?
-      <ViewControlsVr
-        {...this.props}
-        controlBarVisible={this.state.controlBarVisible}
-      /> : null;
+    var viewControlsVr = this.props.controller.videoVr ? (
+      <ViewControlsVr {...this.props} controlBarVisible={this.state.controlBarVisible} />
+    ) : null;
 
-    var showUnmute = this.props.controller.state.volumeState.mutingForAutoplay && this.props.controller.state.volumeState.muted;
+    var showUnmute =
+      this.props.controller.state.volumeState.mutingForAutoplay &&
+      this.props.controller.state.volumeState.muted;
 
     var vrNotification = null;
-    if (this.props.controller.state.config.isVrAnimationEnabled !== null &&
+    if (
+      this.props.controller.state.config.isVrAnimationEnabled !== null &&
       typeof this.props.controller.state.config.isVrAnimationEnabled === 'object' &&
       this.props.controller.state.config.isVrAnimationEnabled.vrNotification &&
       this.props.controller.videoVr &&
       !this.state.isVrNotificationHidden &&
-      this.props.controller.isNewVrVideo) {
+      this.props.controller.isNewVrVideo
+    ) {
       // @Todo: When we know about the rules for vrIcon, change checking "if isNewVrVideo"
       var defaultDuration = 5;
       var style = this.setAnimationDuration('vrNotification', defaultDuration);
       vrNotification = (
         <div id="vrNotificatioContainer" className="oo-state-screen-vr-notification-container">
-          <p className="oo-state-screen-vr-notification" style={style}>{"Select and drag to look around"}</p>
+          <p className="oo-state-screen-vr-notification" style={style}>
+            {'Select and drag to look around'}
+          </p>
         </div>
       );
     }
 
     var vrIcon = null;
-    if (this.props.controller.state.config.isVrAnimationEnabled !== null &&
+    if (
+      this.props.controller.state.config.isVrAnimationEnabled !== null &&
       typeof this.props.controller.state.config.isVrAnimationEnabled === 'object' &&
       this.props.controller.state.config.isVrAnimationEnabled.vrIcon &&
       this.props.controller.videoVr &&
       !this.state.isVrIconHidden &&
-      this.props.controller.isNewVrVideo) {
+      this.props.controller.isNewVrVideo
+    ) {
       var defaultDuration = 3;
       var style = this.setAnimationDuration('vrIcon', defaultDuration);
       vrIcon = (
@@ -333,50 +352,51 @@ var PlayingScreen = React.createClass({
         onMouseOut={this.hideControlBar}
         onKeyDown={this.handleKeyDown}
       >
-      <div
-        className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
-        onMouseDown={this.handlePlayerMouseDown}
-        onTouchStart={this.handlePlayerMouseDown}
-        onClick={this.handlePlayerClicked}
-        onFocus={this.handlePlayerFocus}
-        onMouseUp={this.handlePlayerMouseUp}
-        onTouchEnd={this.handleTouchEnd}
-      />
+        <div
+          className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
+          onMouseDown={this.handlePlayerMouseDown}
+          onTouchStart={this.handlePlayerMouseDown}
+          onClick={this.handlePlayerClicked}
+          onFocus={this.handlePlayerFocus}
+          onMouseUp={this.handlePlayerMouseUp}
+          onTouchEnd={this.handleTouchEnd}
+        />
 
-      {vrNotification}
-      {vrIcon}
+        {vrNotification}
+        {vrIcon}
 
-      <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible}/>
+        <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible} />
 
-      {this.props.controller.state.buffering ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url}/> : null}
+        {this.props.controller.state.buffering ? (
+          <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
+        ) : null}
 
-      {viewControlsVr}
+        {viewControlsVr}
 
-      <div className="oo-interactive-container" onFocus={this.handleFocus}>
+        <div className="oo-interactive-container" onFocus={this.handleFocus}>
+          {this.props.closedCaptionOptions.enabled ? (
+            <TextTrack
+              closedCaptionOptions={this.props.closedCaptionOptions}
+              cueText={this.props.closedCaptionOptions.cueText}
+              direction={this.props.captionDirection}
+              responsiveView={this.props.responsiveView}
+            />
+          ) : null}
 
-        {this.props.closedCaptionOptions.enabled ?
-          <TextTrack
-            closedCaptionOptions={this.props.closedCaptionOptions}
-            cueText={this.props.closedCaptionOptions.cueText}
-            direction={this.props.captionDirection}
-            responsiveView={this.props.responsiveView}
-          /> : null
-        }
+          {adOverlay}
 
-        {adOverlay}
+          {upNextPanel}
 
-        {upNextPanel}
+          <ControlBar
+            {...this.props}
+            controlBarVisible={this.state.controlBarVisible}
+            playerState={this.props.playerState}
+            isLiveStream={this.props.isLiveStream}
+          />
+        </div>
 
-        <ControlBar {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
-          playerState={this.props.playerState}
-          isLiveStream={this.props.isLiveStream} />
-
+        {showUnmute ? <UnmuteIcon {...this.props} /> : null}
       </div>
-
-      {showUnmute ? <UnmuteIcon {...this.props}/> : null}
-
-    </div>
     );
   }
 });
