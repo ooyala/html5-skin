@@ -79,6 +79,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       adVideoDuration: 0,
       adStartTime: 0,
       adPausedTime: 0,
+      adEndTime: 0,
+      adTotalPause: 0,
+      wasPaused: false,
+      adPauseDuration: 0,
       elementId: null,
       mainVideoContainer: null,
       mainVideoInnerWrapper: null,
@@ -803,6 +807,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     onVcPlay: function(event, source) {
       this.state.currentVideoId = source;
+      if (this.state.wasPaused){
+        this.state.adPauseDuration = new Date().getTime() - this.state.adPausedTime + this.state.adTotalPause;
+        //we calculate new ad end time, based on the time that ad was paused.
+        this.state.adEndTime = this.state.adEndTime + this.state.adPauseDuration; //milliseconds
+        this.state.wasPaused = false;
+      }
     },
 
     onPlaying: function(event, source) {
@@ -897,6 +907,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.config.adScreen.showControlBar = true;
         this.state.adPauseAnimationDisabled = false;
         this.state.adPausedTime = new Date().getTime(); //milliseconds
+        this.state.wasPaused = true;
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
       }
@@ -1245,6 +1256,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         } else {
           this.state.adStartTime = 0;
         }
+        this.state.adEndTime = this.state.adStartTime + this.state.adVideoDuration * 1000;
         this.skin.state.currentPlayhead = 0;
         this.removeBlur();
         this.renderSkin();

@@ -14,13 +14,6 @@ var React = require('react'),
     Utils = require('./utils'),
     Icon = require('../components/icon');
 
-var state = { 
-  adPauseDuration: 0, 
-  wasPaused: false, 
-  adTotalPause: 0,
-  adEndTime: 0
-  }
-
 var AdPanelTopBarItem = React.createClass({
   render: function() {
     return (
@@ -34,8 +27,9 @@ var AdPanelTopBarItem = React.createClass({
 var AdPanel = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
-    state.adTotalPause = 0;
-    return null;
+    return {
+      adEndTime: this.props.controller.state.adEndTime
+    };
   },
 
   handleSkipAdButtonClick: function() {
@@ -71,10 +65,10 @@ var AdPanel = React.createClass({
 
     // // Ad title
     var adTitle = 'Unknown';
-    if (this.props.currentAdsInfo && 
-        this.props.currentAdsInfo.currentAdItem && 
-        this.props.contentTree && 
-        this.props.currentAdsInfo.currentAdItem.ooyalaAds && 
+    if (this.props.currentAdsInfo &&
+        this.props.currentAdsInfo.currentAdItem &&
+        this.props.contentTree &&
+        this.props.currentAdsInfo.currentAdItem.ooyalaAds &&
         this.props.contentTree.title) {
       adTitle = this.props.contentTree.title;
     } else {
@@ -100,24 +94,13 @@ var AdPanel = React.createClass({
     if (this.props.skinConfig.adScreen.showAdCountDown) {
       var remainingTime = 0;
       if (isLive) {
-        remainingTime = parseInt((this.props.adStartTime + this.props.adVideoDuration * 1000 - new Date().getTime())/1000);
+        remainingTime = parseInt((this.props.adStartTime + this.props.adVideoDuration * 1000 - new Date().getTime()) / 1000);
         if (isSSAI) {
-          if (this.props.playerState === CONSTANTS.STATE.PAUSE) {
-            //we calculate time passed since ad pause. 
-            state.adPauseDuration = new Date().getTime() - this.props.controller.state.adPausedTime + state.adTotalPause;
-            //we calculate new ad end time, based on the time that ad was paused.
-            state.adEndTime = this.props.adStartTime + this.props.adVideoDuration * 1000 + state.adPauseDuration; //milliseconds
-            state.wasPaused = true;
+          if (this.props.controller.state.playerState != CONSTANTS.STATE.PAUSE){
+            remainingTime = (this.state.adEndTime - new Date().getTime()) / 1000;
           } else{
-            if (state.wasPaused) {
-              //if same ad was already paused before, we add that previous pause duration to have accumulated pause time.
-              state.adTotalPause = state.adPauseDuration;
-              state.wasPaused = false;
-            }
-            //the ad end time when ad is playing. AdTotalPause will have the accumulated pause time.
-            state.adEndTime = this.props.adStartTime + this.props.adVideoDuration * 1000 + state.adTotalPause; //milliseconds
-          }  
-          remainingTime = (state.adEndTime - new Date().getTime())/1000;     
+            remainingTime = this.props.adVideoDuration - (this.props.controller.state.adPausedTime - this.props.adStartTime) / 1000;
+          }
         }
       } else {
         remainingTime = parseInt(this.props.adVideoDuration - this.props.currentAdPlayhead);
@@ -205,7 +188,7 @@ AdPanel.defaultProps = {
       isLive: false
     }
   },
-  adPausedTime: 0
+  adEndTime: 0
 };
 
 module.exports = AdPanel;
