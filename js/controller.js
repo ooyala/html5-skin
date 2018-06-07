@@ -713,11 +713,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered, startEnd, videoId) {
-      if (!this.state.isPlayingAd) {
+      if (videoId === OO.VIDEO.MAIN) {
         this.state.mainVideoPlayhead = currentPlayhead;
         this.state.mainVideoDuration = duration;
         this.state.mainVideoBuffered = buffered;
-      } else {
+      } else if (videoId === OO.VIDEO.ADS || this.state.isPlayingAd) {
         // adVideoDuration is only used in adPanel ad marquee
         this.state.adVideoDuration = duration;
         this.state.adVideoPlayhead = currentPlayhead;
@@ -819,8 +819,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     onPlaying: function(event, source) {
-      this.state.isPlayingAd = this.state.isPlayingAd || (source == OO.VIDEO.ADS);
-      if (!this.state.isPlayingAd) {
+      if (source == OO.VIDEO.MAIN) {
         // set mainVideoElement if not set during video plugin initialization
         if (!this.state.mainVideoMediaType) {
           this.state.mainVideoElement = this.findMainVideoElement(this.state.mainVideoElement);
@@ -832,7 +831,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.removeBlur();
         this.state.isInitialPlay = false;
         this.renderSkin();
-      } else {
+      }
+      if (source === OO.VIDEO.ADS || this.state.isPlayingAd){
         this.state.adPauseAnimationDisabled = true;
         this.state.pluginsElement.addClass('oo-showing');
         this.state.pluginsClickElement.removeClass('oo-showing');
