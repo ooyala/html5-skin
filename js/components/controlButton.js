@@ -123,7 +123,7 @@ var ControlButton = React.createClass({
     this.highlight(event);
 
     if (typeof this.props.onMouseOver === 'function') {
-      this.props.onMouseOver();
+      this.props.onMouseOver(event);
     }
   },
 
@@ -131,7 +131,7 @@ var ControlButton = React.createClass({
     this.removeHighlight(event);
 
     if (typeof this.props.onMouseOut === 'function') {
-      this.props.onMouseOut();
+      this.props.onMouseOut(event);
     }
   },
 
@@ -145,8 +145,7 @@ var ControlButton = React.createClass({
         {...this.props}
         className={className}
         onMouseOver={this.onMouseOver}
-        onMouseOut={this.onMouseOut}
-        onClick={this.props.onClick}>
+        onMouseOut={this.onMouseOut}>
 
         <Icon
           icon={this.props.icon}

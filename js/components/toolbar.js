@@ -1,6 +1,7 @@
 var React = require('react');
 var classNames = require('classnames');
 var ControlButton = require('./controlButton');
+var HoldControlButton = require('./holdControlButton');
 var Icon = require('./icon');
 
 var Toolbar = React.createClass({
@@ -43,21 +44,21 @@ var Toolbar = React.createClass({
           onClick={this.onPreviousVideo}>
         </ControlButton>
 
-        <ControlButton
+        <HoldControlButton
           {...this.props}
           className="oo-center-button"
           icon="replay"
           onClick={this.onSkipBack}>
           <span className="oo-btn-counter">30</span>
-        </ControlButton>
+        </HoldControlButton>
 
-        <ControlButton
+        <HoldControlButton
           {...this.props}
           className="oo-center-button"
           icon="replay"
           onClick={this.onSkipForward}>
           <span className="oo-btn-counter">30</span>
-        </ControlButton>
+        </HoldControlButton>
 
         <ControlButton
           {...this.props}
