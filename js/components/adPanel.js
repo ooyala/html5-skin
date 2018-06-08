@@ -28,7 +28,8 @@ var AdPanel = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
-      adEndTime: this.props.controller.state.adEndTime
+      adEndTime: this.props.controller.state.adEndTime,
+      adRemainingTime: this.props.controller.getAdRemainingTime()
     };
   },
 
@@ -91,23 +92,8 @@ var AdPanel = React.createClass({
       adPlaybackInfo = adPlaybackInfo + ': (' + currentAdIndex + '/' + totalNumberOfAds + ')';
     }
 
-    var isLive = this.props.currentAdsInfo.currentAdItem.isLive;
-    var isSSAI = this.props.currentAdsInfo.currentAdItem.ssai;
-
     if (this.props.skinConfig.adScreen.showAdCountDown) {
-      var remainingTime = 0;
-      if (isLive) {
-        remainingTime = parseInt((this.props.adStartTime + this.props.adVideoDuration * 1000 - new Date().getTime()) / 1000);
-        if (isSSAI) {
-          if (this.props.controller.state.playerState != CONSTANTS.STATE.PAUSE){
-            remainingTime = (this.state.adEndTime - new Date().getTime()) / 1000;
-          } else {
-            remainingTime = this.props.adVideoDuration - (this.props.controller.state.adPausedTime - this.props.adStartTime) / 1000;
-          }
-        }
-      } else {
-        remainingTime = parseInt(this.props.adVideoDuration - this.props.currentAdPlayhead);
-      }
+      remainingTime = this.props.controller.getAdRemainingTime();
 
       if (isFinite(remainingTime)) {
         remainingTime = Utils.formatSeconds(Math.max(0, remainingTime));
@@ -221,7 +207,8 @@ AdPanel.defaultProps = {
       isLive: false
     }
   },
-  adEndTime: 0
+  adEndTime: 0,
+  adRemainingTime: 0
 };
 
 module.exports = AdPanel;
