@@ -703,6 +703,35 @@ describe('Controller', function() {
       controller.onShowAdControls(event, false, false);
       expect(controller.state.forceControlBarVisible).toBe(false);
     });
+
+    it('ad countdown works for SSAI Live asset', function() {
+      var adItem = {
+          duration: 15,
+          isLive: true,
+          name: "test",
+          ssai: true
+      };
+      var clock = sinon.useFakeTimers(Date.now());
+      controller.createPluginElements();
+      controller.onPlaying(null, OO.VIDEO.MAIN);
+      controller.onWillPlayAds();
+      controller.onWillPlaySingleAd(null, adItem);
+      controller.onPlayheadTimeChanged(null, 0.00, adItem.duration, 0, adItem.duration, "main");
+      expect(controller.state.adRemainingTime).toBe(15);
+      clock.tick(5000);
+      controller.onPlayheadTimeChanged(null, 0.05, adItem.duration, 0, adItem.duration, "main");
+      expect(controller.state.adRemainingTime).toBe(10);
+      clock.tick(4000);
+      controller.onPlayheadTimeChanged(null, 0.09, adItem.duration, 0, adItem.duration, "main");
+      expect(controller.state.adRemainingTime).toBe(6);
+      clock.tick(3000);
+      controller.onPlayheadTimeChanged(null, 0.12, adItem.duration, 0, adItem.duration, "main");
+      expect(controller.state.adRemainingTime).toBe(3);
+      clock.tick(3000);
+      controller.onPlayheadTimeChanged(null, 0.15, adItem.duration, 0, adItem.duration, "main");
+      expect(controller.state.adRemainingTime).toBe(0);
+      clock.restore();
+    });
   });
 
   describe('Video Qualities', function() {

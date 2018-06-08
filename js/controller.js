@@ -814,7 +814,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     onVcPlay: function(event, source) {
       this.state.currentVideoId = source;
       if (this.state.wasPaused){
-        this.state.adPauseDuration = new Date().getTime() - this.state.adPausedTime;
+        this.state.adPauseDuration = Date.now() - this.state.adPausedTime;
         //we calculate new ad end time, based on the time that ad was paused.
         this.state.adEndTime = this.state.adEndTime + this.state.adPauseDuration; //milliseconds
         this.state.wasPaused = false;
@@ -913,7 +913,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         // must be unpaused to resume
         this.state.config.adScreen.showControlBar = true;
         this.state.adPauseAnimationDisabled = false;
-        this.state.adPausedTime = new Date().getTime(); //milliseconds
+        this.state.adPausedTime = Date.now(); //milliseconds
         this.state.wasPaused = true;
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
@@ -1260,7 +1260,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.currentAdsInfo.currentAdItem = adItem;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         if (adItem.isLive) {
-          this.state.adStartTime = new Date().getTime();
+          this.state.adStartTime = Date.now();
         } else {
           this.state.adStartTime = 0;
         }
@@ -1411,14 +1411,14 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     getAdRemainingTime: function(){
       var remainingTime = 0;
 
-      var isLive = this.state.currentAdsInfo.currentAdItem.isLive;
-      var isSSAI = this.state.currentAdsInfo.currentAdItem.ssai;
+      var isLive = (this.state.currentAdsInfo.currentAdItem) ? this.state.currentAdsInfo.currentAdItem.isLive : false;
+      var isSSAI = (this.state.currentAdsInfo.currentAdItem) ? this.state.currentAdsInfo.currentAdItem.ssai : false;
 
       if (isLive) {
-        remainingTime = parseInt((this.state.adStartTime + this.state.adVideoDuration * 1000 - new Date().getTime()) / 1000);
+        remainingTime = parseInt((this.state.adStartTime + this.state.adVideoDuration * 1000 - Date.now()) / 1000);
         if (isSSAI) {
           if (this.state.playerState != CONSTANTS.STATE.PAUSE){
-            remainingTime = (this.state.adEndTime - new Date().getTime()) / 1000;
+            remainingTime = (this.state.adEndTime - Date.now()) / 1000;
           } else {
             remainingTime = (this.state.adEndTime - this.state.adPausedTime) / 1000;
           }
