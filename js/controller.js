@@ -82,6 +82,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       adEndTime: 0,
       wasPaused: false,
       adPauseDuration: 0,
+      adRemainingTime: 0,
       elementId: null,
       mainVideoContainer: null,
       mainVideoInnerWrapper: null,
@@ -717,10 +718,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.mainVideoPlayhead = currentPlayhead;
         this.state.mainVideoDuration = duration;
         this.state.mainVideoBuffered = buffered;
-      } else if (videoId === OO.VIDEO.ADS || this.state.isPlayingAd) {
+      }
+      if (videoId === OO.VIDEO.ADS || this.state.isPlayingAd) {
         // adVideoDuration is only used in adPanel ad marquee
         this.state.adVideoDuration = duration;
         this.state.adVideoPlayhead = currentPlayhead;
+        this.state.adRemainingTime = this.getAdRemainingTime();
       }
       this.state.duration = duration;
 
@@ -815,11 +818,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         //we calculate new ad end time, based on the time that ad was paused.
         this.state.adEndTime = this.state.adEndTime + this.state.adPauseDuration; //milliseconds
         this.state.wasPaused = false;
+        this.state.adPauseDuration = 0;
       }
     },
 
     onPlaying: function(event, source) {
-      if (source == OO.VIDEO.MAIN) {
+      if (source === OO.VIDEO.MAIN) {
         // set mainVideoElement if not set during video plugin initialization
         if (!this.state.mainVideoMediaType) {
           this.state.mainVideoElement = this.findMainVideoElement(this.state.mainVideoElement);
@@ -903,7 +907,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
-      } else if (this.state.isPlayingAd) {
+      } else if (videoId === OO.VIDEO.ADS || this.state.isPlayingAd) {
         // If we pause during an ad (such as for clickthroughs or when autoplay fails)
         // we'll show the control bar so that the user has an indication that the video
         // must be unpaused to resume
@@ -1402,6 +1406,27 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     showNonlinearAdCloseButton: function(event) {
       this.state.showAdOverlayCloseButton = true;
       this.renderSkin();
+    },
+
+    getAdRemainingTime: function(){
+      var remainingTime = 0;
+
+      var isLive = this.state.currentAdsInfo.currentAdItem.isLive;
+      var isSSAI = this.state.currentAdsInfo.currentAdItem.ssai;
+
+      if (isLive) {
+        remainingTime = parseInt((this.state.adStartTime + this.state.adVideoDuration * 1000 - new Date().getTime()) / 1000);
+        if (isSSAI) {
+          if (this.state.playerState != CONSTANTS.STATE.PAUSE){
+            remainingTime = (this.state.adEndTime - new Date().getTime()) / 1000;
+          } else {
+            remainingTime = (this.state.adEndTime - this.state.adPausedTime) / 1000;
+          }
+        }
+      } else {
+        remainingTime = parseInt(this.state.adVideoDuration - this.state.currentAdPlayhead);
+      }
+      return remainingTime;
     },
 
     /** ******************************************************************
