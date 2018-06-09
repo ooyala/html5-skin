@@ -152,7 +152,11 @@ module.exports = {
     FONT_SIZE_MENU: 'Font Size',
     TEXT_ENHANCEMENTS_MENU: 'Text Enhancements',
     TOGGLE_MULTI_AUDIO: 'Toggle Multi Audio',
-    MULTI_AUDIO_OPTIONS: 'Closed Multi Audio Options'
+    MULTI_AUDIO_OPTIONS: 'Closed Multi Audio Options',
+    PREVIOUS_VIDEO: 'Previous Video',
+    NEXT_VIDEO: 'Next Video',
+    SKIP_BACKWARD: 'Rewind'  + MACROS.SECONDS + ' Seconds',
+    SKIP_FORWARD: 'Skip ' + MACROS.SECONDS + ' Seconds Forward'
   },
 
   ARIA_ROLES: {
@@ -184,6 +188,13 @@ module.exports = {
     AUTO_QUALITY: 'autoQuality',
     CLOSE: 'close',
     MULTI_AUDIO: 'multiAudio'
+  },
+
+  SKIP_CTRLS_KEYS: {
+    PREVIOUS_VIDEO: 'previousVideo',
+    SKIP_BACKWARD: 'skipBackward',
+    SKIP_FORWARD: 'skipForward',
+    NEXT_VIDEO: 'nextVideo'
   },
 
   A11Y_CTRLS: {
@@ -232,7 +243,9 @@ module.exports = {
   UI: {
     defaultScrubberBarHeight: 4,
     DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15,
-    MAX_BUFFERING_SPINNER_DELAY: 60000 // Max allowed value of bufferingSpinnerDelay in milliseconds
+    MAX_BUFFERING_SPINNER_DELAY: 60000, // Max allowed value of bufferingSpinnerDelay in milliseconds
+    DEFAULT_SKIP_BACKWARD_TIME: 10, // In seconds
+    DEFAULT_SKIP_FORWARD_TIME: 10 // In seconds
   },
 
   WATERMARK: {

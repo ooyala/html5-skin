@@ -16,7 +16,7 @@ var React = require('react'),
     ViewControlsVr = require('../components/viewControlsVr'),
     Icon = require('../components/icon'),
     Tooltip = require('../components/tooltip'),
-    Toolbar = require('../components/toolbar'),
+    SkipControls = require('../components/skipControls'),
     UnmuteIcon = require('../components/unmuteIcon');
 
 var PlayingScreen = React.createClass({
@@ -348,6 +348,11 @@ var PlayingScreen = React.createClass({
     var className = ClassNames('oo-state-screen oo-playing-screen', {
       'oo-controls-active': this.props.controller.state.controlBarVisible
     });
+    var skipControlsEnabled = Utils.getPropertyValue(
+      this.props.skinConfig,
+      'skipControls.enabled',
+      false
+    );
 
     return (
       <div
@@ -400,14 +405,16 @@ var PlayingScreen = React.createClass({
           />
         </div>
 
-        <Toolbar
-          language={this.props.language}
-          localizableStrings={this.props.localizableStrings}
-          responsiveView={this.props.responsiveView}
-          skinConfig={this.props.skinConfig}
-          controller={this.props.controller}
-          a11yControls={this.props.controller.accessibilityControls}
-          inactive={!this.props.controller.state.controlBarVisible} />
+        {skipControlsEnabled &&
+          <SkipControls
+            language={this.props.language}
+            localizableStrings={this.props.localizableStrings}
+            responsiveView={this.props.responsiveView}
+            skinConfig={this.props.skinConfig}
+            controller={this.props.controller}
+            a11yControls={this.props.controller.accessibilityControls}
+            inactive={!this.props.controller.state.controlBarVisible} />
+        }
 
         {showUnmute ? <UnmuteIcon {...this.props} /> : null}
       </div>

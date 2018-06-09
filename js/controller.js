@@ -2056,11 +2056,23 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    previousVideo: function() {
-      this.mb.publish(OO.EVENTS.REQUEST_PREVIOUS_VIDEO || 'requestPreviousVideo');
+    /**
+     *
+     * @private
+     */
+    rewindOrRequestPreviousVideo: function() {
+      if (this.state.mainVideoPlayhead >= 1) {
+        this.mb.publish(OO.EVENTS.REPLAY);
+      } else {
+        this.mb.publish(OO.EVENTS.REQUEST_PREVIOUS_VIDEO || 'requestPreviousVideo');
+      }
     },
 
-    nextVideo: function() {
+    /**
+     *
+     * @private
+     */
+    requestNextVideo: function() {
       this.mb.publish(OO.EVENTS.REQUEST_NEXT_VIDEO || 'requestNextVideo');
     },
 

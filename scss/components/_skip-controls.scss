@@ -1,6 +1,6 @@
 
-.oo-toolbar {
-  $oo-toolbar-btn-size: 1.52em;
+.oo-skip-controls {
+  $oo-skip-controls-btn-size: 1.52em;
   @include flex-center-children(row);
   @include absolute-center;
   font-size: 14px;
@@ -15,8 +15,8 @@
   .oo-focusable-btn {
     @include flex-center-children(row);
     position: relative;
-    width: $oo-toolbar-btn-size;
-    height: $oo-toolbar-btn-size;
+    width: $oo-skip-controls-btn-size;
+    height: $oo-skip-controls-btn-size;
     margin: 0 10px;
     padding: 0;
     border: none;

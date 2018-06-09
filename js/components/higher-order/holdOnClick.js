@@ -106,7 +106,8 @@ var holdOnClick = function(ComposedComponent) {
           onClick={null}
           onKeyDown={this.onKeyDown}
           onMouseDown={this.onMouseDown}
-          onMouseUp={this.releaseClick}>
+          onMouseUp={this.releaseClick}
+          onMouseLeave={this.releaseClick}>
           {this.props.children}
         </ComposedComponent>
       );

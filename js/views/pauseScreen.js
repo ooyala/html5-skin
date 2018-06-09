@@ -11,7 +11,7 @@ var React = require('react'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon'),
-    Toolbar = require('../components/toolbar'),
+    SkipControls = require('../components/skipControls'),
     Utils = require('../components/utils'),
     CONSTANTS = require('./../constants/constants'),
     AnimateMixin = require('../mixins/animateMixin'),
@@ -241,6 +241,12 @@ var PauseScreen = React.createClass({
       <ViewControlsVr {...this.props} controlBarVisible={this.state.controlBarVisible} />
     ) : null;
 
+    var skipControlsEnabled = Utils.getPropertyValue(
+      this.props.skinConfig,
+      'skipControls.enabled',
+      false
+    );
+
     return (
       <div className="oo-state-screen oo-pause-screen">
         {!this.props.controller.videoVr && this.state.containsText && <div className={fadeUnderlayClass} />}
@@ -296,13 +302,15 @@ var PauseScreen = React.createClass({
           />
         </div>
 
-        <Toolbar
-          language={this.props.language}
-          localizableStrings={this.props.localizableStrings}
-          responsiveView={this.props.responsiveView}
-          skinConfig={this.props.skinConfig}
-          controller={this.props.controller}
-          a11yControls={this.props.controller.accessibilityControls} />
+        {skipControlsEnabled &&
+          <SkipControls
+            language={this.props.language}
+            localizableStrings={this.props.localizableStrings}
+            responsiveView={this.props.responsiveView}
+            skinConfig={this.props.skinConfig}
+            controller={this.props.controller}
+            a11yControls={this.props.controller.accessibilityControls} />
+        }
 
       </div>
     );

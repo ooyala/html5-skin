@@ -60,7 +60,7 @@ var ControlButton = React.createClass({
     var iconElement = Utils.getEventIconElement(event);
 
     if (iconElement) {
-      var baseOpacity =  Utils.getPropertyValue(
+      var baseOpacity = Utils.getPropertyValue(
         this.props.skinConfig,
         'controlBar.iconStyle.inactive.opacity'
       );

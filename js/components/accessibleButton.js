@@ -101,6 +101,8 @@ var AccessibleButton = React.createClass({
         onMouseUp={this.onMouseUp}
         onMouseOver={this.props.onMouseOver}
         onMouseOut={this.props.onMouseOut}
+        onMouseEnter={this.props.onMouseEnter}
+        onMouseLeave={this.props.onMouseLeave}
         onFocus={this.props.onFocus}
         onClick={this.props.onClick}>
         {this.props.children}
@@ -126,6 +128,8 @@ AccessibleButton.propTypes = {
   onMouseUp: React.PropTypes.func,
   onMouseOver: React.PropTypes.func,
   onMouseOut: React.PropTypes.func,
+  onMouseEnter: React.PropTypes.func,
+  onMouseLeave: React.PropTypes.func,
   onFocus: React.PropTypes.func,
   onClick: React.PropTypes.func
 };
