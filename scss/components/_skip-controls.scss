@@ -25,6 +25,10 @@
     pointer-events: auto;
   }
 
+  .oo-focusable-btn:disabled {
+    opacity: 0.4;
+  }
+
   .oo-center-button .oo-icon {
     font-size: 1.4em;
   }
@@ -44,19 +48,19 @@
     box-sizing: border-box;
   }
 
-  .oo-focusable-btn:nth-child(2) .oo-btn-counter {
+  .oo-focusable-btn.oo-skip-backward .oo-btn-counter {
     padding-right: 2px;
   }
 
-  .oo-focusable-btn:nth-child(3) .oo-btn-counter {
+  .oo-focusable-btn.oo-skip-forward .oo-btn-counter {
     padding-left: 2px;
   }
 
-  .oo-focusable-btn:nth-child(1) .oo-icon {
+  .oo-focusable-btn.oo-previous-video .oo-icon {
     transform: rotateY(180deg);
   }
 
-  .oo-focusable-btn:nth-child(3) .oo-icon {
+  .oo-focusable-btn.oo-skip-forward .oo-icon {
     transform: rotateY(180deg);
   }
 

@@ -4,6 +4,7 @@ var Utils = require('./utils');
 var CONSTANTS = require('../constants/constants');
 
 var AccessibleButton = React.createClass({
+
   getInitialState: function() {
     this.triggeredWithKeyboard = false;
     return {};
@@ -95,6 +96,7 @@ var AccessibleButton = React.createClass({
         aria-haspopup={this.props.ariaHasPopup}
         aria-expanded={this.props.ariaExpanded}
         role={this.props.role}
+        disabled={this.props.disabled}
         onKeyDown={this.onKeyDown}
         onKeyUp={this.props.onKeyUp}
         onMouseDown={this.props.onMouseDown}
@@ -122,6 +124,7 @@ AccessibleButton.propTypes = {
   ariaHasPopup: React.PropTypes.bool,
   ariaExpanded: React.PropTypes.bool,
   role: React.PropTypes.string,
+  disabled: React.PropTypes.bool,
   onKeyDown: React.PropTypes.func,
   onKeyUp: React.PropTypes.func,
   onMouseDown: React.PropTypes.func,

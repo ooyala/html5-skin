@@ -407,6 +407,7 @@ var PlayingScreen = React.createClass({
 
         {skipControlsEnabled &&
           <SkipControls
+            config={this.props.controller.state.skipControls}
             language={this.props.language}
             localizableStrings={this.props.localizableStrings}
             responsiveView={this.props.responsiveView}

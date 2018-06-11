@@ -87,9 +87,11 @@ var SkipControls = React.createClass({
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO] = (
       <ControlButton
         {...this.props}
+        className="oo-previous-video"
         icon="nextVideo"
         focusId={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
         ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_VIDEO}
+        disabled={!this.props.config.hasPreviousVideos}
         onClick={this.onPreviousVideo}>
       </ControlButton>
     );
@@ -97,7 +99,7 @@ var SkipControls = React.createClass({
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD] = (
       <HoldControlButton
         {...this.props}
-        className="oo-center-button"
+        className="oo-center-button oo-skip-backward"
         icon="replay"
         focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD}
         ariaLabel={skipBackwardAriaLabel}
@@ -109,7 +111,7 @@ var SkipControls = React.createClass({
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD] = (
       <HoldControlButton
         {...this.props}
-        className="oo-center-button"
+        className="oo-center-button oo-skip-forward"
         icon="replay"
         focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD}
         ariaLabel={skipForwardAriaLabel}
@@ -121,13 +123,35 @@ var SkipControls = React.createClass({
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO] = (
       <ControlButton
         {...this.props}
+        className="oo-next-video"
         icon="nextVideo"
         focusId={CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO}
         ariaLabel={CONSTANTS.ARIA_LABELS.NEXT_VIDEO}
+        disabled={!this.props.config.hasNextVideos}
         onClick={this.onNextVideo}>
       </ControlButton>
     );
     return buttonTemplate;
+  },
+
+  /**
+   * Determines whether or not the button with the particular id can be displayed
+   * considering the current configuration.
+   * @private
+   * @param {string} buttonId The id of the button we want to check
+   * @return {boolean} True if the button should be displayed, false otherwise
+   */
+  shouldDisplayButton: function(buttonId) {
+    var config = this.props.config;
+    var isSingleVideo = !config.hasPreviousVideos && !config.hasNextVideos;
+
+    var disabled = (
+      isSingleVideo && (
+        buttonId === CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO ||
+        buttonId === CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO
+      )
+    );
+    return !disabled;
   },
 
   /**
@@ -148,7 +172,7 @@ var SkipControls = React.createClass({
     for (var buttonId in buttonConfig) {
       var button = buttonConfig[buttonId];
 
-      if (button && button.enabled) {
+      if (button && button.enabled && this.shouldDisplayButton(buttonId)) {
         buttons.push({
           id: buttonId,
           index: button.index
@@ -186,6 +210,10 @@ SkipControls.propTypes = {
   localizableStrings: React.PropTypes.object,
   responsiveView: React.PropTypes.bool.isRequired,
   skinConfig: React.PropTypes.object.isRequired,
+  config: React.PropTypes.shape({
+    hasPreviousVideos: React.PropTypes.bool.isRequired,
+    hasNextVideos: React.PropTypes.bool.isRequired
+  }),
   controller: React.PropTypes.shape({
     state: React.PropTypes.shape({
       isMobile: React.PropTypes.bool.isRequired

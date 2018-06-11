@@ -27,7 +27,10 @@ var ControlButton = React.createClass({
    * @param {event} event
    */
   highlight: function(event) {
-    if (this.props.controller.state.isMobile) {
+    if (
+      event.currentTarget.disabled ||
+      this.props.controller.state.isMobile
+    ) {
       return;
     }
     var iconElement = Utils.getEventIconElement(event);

@@ -145,6 +145,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       },
 
       skipControls: {
+        hasPreviousVideos: false,
+        hasNextVideos: false,
         requestPreviousTimestamp: 0
       },
 
@@ -228,6 +230,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi', _.bind(this.onMultiAudioChanged, this));
+      this.mb.subscribe(OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED || 'positionInPlaylistDetermined', 'customerUi', _.bind(this.onPositionInPlaylistDetermined, this));
       this.mb.subscribe(OO.EVENTS.ERROR, 'customerUi', _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -1821,6 +1824,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.ERROR, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE_AFTER_OOYALA_AD, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED, 'customerUi');
     },
 
     unsubscribeBasicPlaybackEvents: function() {
@@ -2058,6 +2062,19 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
       }
       this.renderSkin();
+    },
+
+    /**
+     * Handler for the POSITION_IN_PLAYLIST_DETERMINED event, which controls whether
+     * the Previous/Next video buttons are displayed.
+     * @private
+     * @param {type} eventName The name of the event
+     * @param {type} params The event's parameters
+     */
+    onPositionInPlaylistDetermined: function(eventName, params) {
+      params = params || {};
+      this.state.skipControls.hasPreviousVideos = !!params.hasPreviousVideos;
+      this.state.skipControls.hasNextVideos = !!params.hasNextVideos;
     },
 
     /**
