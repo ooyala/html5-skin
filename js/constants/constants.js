@@ -245,7 +245,14 @@ module.exports = {
     DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15,
     MAX_BUFFERING_SPINNER_DELAY: 60000, // Max allowed value of bufferingSpinnerDelay in milliseconds
     DEFAULT_SKIP_BACKWARD_TIME: 10, // In seconds
-    DEFAULT_SKIP_FORWARD_TIME: 10 // In seconds
+    DEFAULT_SKIP_FORWARD_TIME: 10, // In seconds
+    // If the previous video button is clicked more than once, this
+    // is the maximum amount of time (in milliseconds) between calls that would
+    // cause the controller to request the previous video instead of rewinding
+    REQUEST_PREVIOUS_TIME_TRESHOLD: 1500,
+    // When the previous video button is clicked, if the playhead value (in seconds) is
+    // below this constant the controller will request the previous video instead of rewinding
+    REQUEST_PREVIOUS_PLAYHEAD_TRESHOLD: 1
   },
 
   WATERMARK: {

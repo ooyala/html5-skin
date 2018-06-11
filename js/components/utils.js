@@ -192,6 +192,27 @@ var Utils = {
   },
 
   /**
+   * Returns a number that represents the current moment in time. Falls back to
+   * Date.now() in platforms that don't support window.performance, which means that
+   * the value could be relative to either the Unix epoch or the page load. For
+   * this reason, values returned by this function should only be used for calculating
+   * elapsed times.
+   * @function getCurrentTimestamp
+   * @return {Number} A value in milliseconds that will be either performance.now() or
+   * Date.now, depending on whether or not window.performance is available.
+   */
+  getCurrentTimestamp: function() {
+    if (
+      window.performance &&
+      typeof window.performance.now === 'function'
+    ) {
+      return performance.now();
+    } else {
+      return Date.now();
+    }
+  },
+
+  /**
    * Trims the given text to fit inside of the given element, truncating with ellipsis.
    *
    * @function truncateTextToWidth
@@ -616,7 +637,7 @@ var Utils = {
    * @function collapse
    * @param {Number} barWidth - Width of the control bar
    * @param {Object[]} orderedItems - array of left to right ordered items. Each item meets the skin's "button" schema.
-   * @param {number} responsiveUIMultiple - 
+   * @param {number} responsiveUIMultiple -
    * @returns {Object} An object of the structure {fit:[], overflow:[]} where the fit object is
    *   an array of buttons that fit in the control bar and overflow are the ones that should be hidden
    */

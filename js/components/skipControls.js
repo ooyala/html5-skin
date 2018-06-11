@@ -181,6 +181,7 @@ var SkipControls = React.createClass({
 });
 
 SkipControls.propTypes = {
+  inactive: React.PropTypes.bool,
   language: React.PropTypes.string,
   localizableStrings: React.PropTypes.object,
   responsiveView: React.PropTypes.bool.isRequired,

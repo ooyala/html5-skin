@@ -144,6 +144,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         delayedContentData: null
       },
 
+      skipControls: {
+        requestPreviousTimestamp: 0
+      },
+
       moreOptionsItems: null,
 
       isMobile: false,
@@ -2057,19 +2061,29 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     /**
-     *
+     * "Previous video" button handler. Either rewinds the video or requests the
+     * previous video if the playhead is close to the beggining of the video or the
+     * button is clicked repeatedly in quick succession.
      * @private
      */
     rewindOrRequestPreviousVideo: function() {
-      if (this.state.mainVideoPlayhead >= 1) {
-        this.mb.publish(OO.EVENTS.REPLAY);
-      } else {
+      var currentTimestamp = Utils.getCurrentTimestamp();
+      var timeElapsed = currentTimestamp - this.state.skipControls.requestPreviousTimestamp;
+      // Button has been clicked once more in a short amount of time or playhead
+      // is below a certain treshold, request previous video.
+      if (
+        timeElapsed < CONSTANTS.UI.REQUEST_PREVIOUS_TIME_TRESHOLD ||
+        this.state.mainVideoPlayhead < CONSTANTS.UI.REQUEST_PREVIOUS_PLAYHEAD_TRESHOLD
+      ) {
         this.mb.publish(OO.EVENTS.REQUEST_PREVIOUS_VIDEO || 'requestPreviousVideo');
+      } else {
+        this.mb.publish(OO.EVENTS.REPLAY);
       }
+      this.state.skipControls.requestPreviousTimestamp = currentTimestamp;
     },
 
     /**
-     *
+     * Requests the next video from either the Playlists or Discovery plugins.
      * @private
      */
     requestNextVideo: function() {
