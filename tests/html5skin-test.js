@@ -731,6 +731,7 @@ describe('Controller', function() {
       controller.onPlayheadTimeChanged(null, 0.15, adItem.duration, 0, adItem.duration, "main");
       expect(controller.state.adRemainingTime).toBe(0);
       clock.restore();
+      controller.onAdsPlayed();
     });
   });
 

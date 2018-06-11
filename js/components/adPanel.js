@@ -28,8 +28,7 @@ var AdPanel = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
-      adEndTime: this.props.controller.state.adEndTime,
-      adRemainingTime: this.props.controller.getAdRemainingTime()
+      adEndTime: this.props.controller.state.adEndTime
     };
   },
 
@@ -207,8 +206,7 @@ AdPanel.defaultProps = {
       isLive: false
     }
   },
-  adEndTime: 0,
-  adRemainingTime: 0
+  adEndTime: 0
 };
 
 module.exports = AdPanel;

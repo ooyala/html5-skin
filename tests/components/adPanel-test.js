@@ -13,6 +13,9 @@ describe('AdPanel', function() {
     var mockController = {
       state: {
         isMobile: false
+      },
+      getAdRemainingTime: function(){
+        return 0
       }
     };
     var mockSkinConfig = {
@@ -56,6 +59,9 @@ describe('AdPanel', function() {
       onAdsClicked: function(source) {
         learnMoreClicked = true;
         clickSource = source;
+      },
+      getAdRemainingTime: function(){
+        return 0
       }
     };
     var mockSkinConfig = {
