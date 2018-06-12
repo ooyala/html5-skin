@@ -114,6 +114,9 @@ describe('AdPanel', function() {
     var mockController = {
       state: {
         isMobile: false
+      },
+      getAdRemainingTime: function() {
+        return 0
       }
     };
     var mockSkinConfig = {
@@ -161,6 +164,9 @@ describe('AdPanel', function() {
       state: {
         isMobile: false,
         buffering: true
+      },
+      getAdRemainingTime: function() {
+        return 0
       }
     };
     var mockSkinConfig = {
@@ -197,6 +203,47 @@ describe('AdPanel', function() {
       />);
 
     expect(TestUtils.findRenderedComponentWithType(DOM, Spinner)).toBeDefined();
+
+  });
+
+  it('shows the ad count down when enabled', function() {
+    var mockController = {
+      state: {
+        isMobile: false
+      },
+      getAdRemainingTime: function() {
+        return 0
+      }
+    };
+    var mockSkinConfig = {
+      adScreen: {
+        showControlBar: true,
+        showAdCountDown: true,
+        showAdMarquee: true
+      },
+      icons: {
+        skip: {
+          fontStyleClass: 'skip'
+        },
+      }
+    };
+    var currentAdsInfo = {
+      numberOfAds: 1,
+      currentAdItem: {
+        name: 'Test Ad',
+        indexInPod: 1,
+        duration: 15
+      }
+    };
+    var DOM = TestUtils.renderIntoDocument(
+      <AdPanel
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        currentAdsInfo={currentAdsInfo}
+        componentWidth={600}
+      />);
+
+    expect(DOM.refs.adPlaybackInfo).toBeDefined();
 
   });
 
