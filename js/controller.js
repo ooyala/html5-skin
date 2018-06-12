@@ -813,9 +813,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     onVcPlay: function(event, source) {
       this.state.currentVideoId = source;
-      if (this.state.wasPaused){
+      if (this.state.wasPaused) {
         this.state.adPauseDuration = Date.now() - this.state.adPausedTime;
-        //we calculate new ad end time, based on the time that ad was paused.
+        //we calculate new ad end time, based on the time that the ad was paused.
         this.state.adEndTime = this.state.adEndTime + this.state.adPauseDuration; //milliseconds
         this.state.wasPaused = false;
         this.state.adPauseDuration = 0;
@@ -836,7 +836,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.isInitialPlay = false;
         this.renderSkin();
       }
-      if (source === OO.VIDEO.ADS || this.state.isPlayingAd){
+      if (source === OO.VIDEO.ADS || this.state.isPlayingAd) {
         this.state.adPauseAnimationDisabled = true;
         this.state.pluginsElement.addClass('oo-showing');
         this.state.pluginsClickElement.removeClass('oo-showing');
@@ -1408,7 +1408,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    getAdRemainingTime: function(){
+    getAdRemainingTime: function() {
       var remainingTime = 0;
 
       var isLive = (this.state.currentAdsInfo.currentAdItem) ? this.state.currentAdsInfo.currentAdItem.isLive : false;

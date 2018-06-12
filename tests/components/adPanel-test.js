@@ -14,7 +14,7 @@ describe('AdPanel', function() {
       state: {
         isMobile: false
       },
-      getAdRemainingTime: function(){
+      getAdRemainingTime: function() {
         return 0
       }
     };
@@ -60,7 +60,7 @@ describe('AdPanel', function() {
         learnMoreClicked = true;
         clickSource = source;
       },
-      getAdRemainingTime: function(){
+      getAdRemainingTime: function() {
         return 0
       }
     };
