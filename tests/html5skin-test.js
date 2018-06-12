@@ -713,23 +713,54 @@ describe('Controller', function() {
       };
       var clock = sinon.useFakeTimers(Date.now());
       controller.createPluginElements();
-      controller.onPlaying(null, OO.VIDEO.MAIN);
+      controller.onPlaying('event', OO.VIDEO.MAIN);
       controller.onWillPlayAds();
-      controller.onWillPlaySingleAd(null, adItem);
-      controller.onPlayheadTimeChanged(null, 0.00, adItem.duration, 0, adItem.duration, "main");
+      controller.onWillPlaySingleAd('event', adItem);
+      controller.onPlayheadTimeChanged('event', 0.00, adItem.duration, 0, adItem.duration, "main");
       expect(controller.state.adRemainingTime).toBe(15);
       clock.tick(5000);
-      controller.onPlayheadTimeChanged(null, 0.05, adItem.duration, 0, adItem.duration, "main");
+      controller.onPlayheadTimeChanged('event', 0.05, adItem.duration, 0, adItem.duration, "main");
       expect(controller.state.adRemainingTime).toBe(10);
       clock.tick(4000);
-      controller.onPlayheadTimeChanged(null, 0.09, adItem.duration, 0, adItem.duration, "main");
+      controller.onPlayheadTimeChanged('event', 0.09, adItem.duration, 0, adItem.duration, "main");
       expect(controller.state.adRemainingTime).toBe(6);
       clock.tick(3000);
-      controller.onPlayheadTimeChanged(null, 0.12, adItem.duration, 0, adItem.duration, "main");
+      controller.onPlayheadTimeChanged('event', 0.12, adItem.duration, 0, adItem.duration, "main");
       expect(controller.state.adRemainingTime).toBe(3);
       clock.tick(3000);
-      controller.onPlayheadTimeChanged(null, 0.15, adItem.duration, 0, adItem.duration, "main");
+      controller.onPlayheadTimeChanged('event', 0.15, adItem.duration, 0, adItem.duration, "main");
       expect(controller.state.adRemainingTime).toBe(0);
+      clock.restore();
+      controller.onAdsPlayed();
+    });
+
+    it('pause ad works for SSAI Live asset', function() {
+      var adItem = {
+          duration: 20,
+          isLive: true,
+          name: "test",
+          ssai: true
+      };
+      var clock = sinon.useFakeTimers(Date.now());
+      controller.createPluginElements();
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
+      controller.onPlaying('event', OO.VIDEO.MAIN);
+      controller.onWillPlayAds('event');
+      controller.onWillPlaySingleAd('event', adItem);
+      clock.tick(5000);
+      controller.onPlayheadTimeChanged('event', 0.05, adItem.duration, 0, adItem.duration, "main");
+      expect(controller.state.adRemainingTime).toBe(15);
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.onPaused('event', OO.VIDEO.MAIN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PAUSE);
+      clock.tick(2000);
+      expect(controller.state.adRemainingTime).toBe(15);
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
+      controller.onPlaying('event', OO.VIDEO.MAIN);
+      clock.tick(5000);
+      controller.onPlayheadTimeChanged('event', 0.10, adItem.duration, 0, adItem.duration, "main");
+      expect(controller.state.adRemainingTime).toBe(10);
       clock.restore();
       controller.onAdsPlayed();
     });
