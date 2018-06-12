@@ -4,6 +4,7 @@ var ControlButton = require('./controlButton');
 var HoldControlButton = require('./holdControlButton');
 var Icon = require('./icon');
 var Utils = require('./utils');
+var preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus');
 var CONSTANTS = require('../constants/constants');
 var MACROS = require('../constants/macros');
 
@@ -136,7 +137,7 @@ var SkipControls = React.createClass({
 
   /**
    * Determines whether or not the button with the particular id can be displayed
-   * considering the current configuration.
+   * considering the current player state and configuration.
    * @private
    * @param {string} buttonId The id of the button we want to check
    * @return {boolean} True if the button should be displayed, false otherwise
@@ -144,14 +145,22 @@ var SkipControls = React.createClass({
   shouldDisplayButton: function(buttonId) {
     var config = this.props.config;
     var isSingleVideo = !config.hasPreviousVideos && !config.hasNextVideos;
+    var duration = Utils.getPropertyValue(this.props.controller, 'state.duration');
 
-    var disabled = (
-      isSingleVideo && (
-        buttonId === CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO ||
-        buttonId === CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO
-      )
+    var isPrevNextButton = (
+      buttonId === CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO ||
+      buttonId === CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO
     );
-    return !disabled;
+    var isSkipButton = (
+      buttonId === CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD ||
+      buttonId === CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD
+    );
+
+    var isDisabled = (
+      (isSkipButton && !duration) ||
+      (isPrevNextButton && isSingleVideo)
+    );
+    return !isDisabled;
   },
 
   /**
@@ -187,14 +196,22 @@ var SkipControls = React.createClass({
   },
 
   render: function() {
+    var buttons = this.getSortedButtonEntries();
+    // Nothing to render if we don't have buttons
+    if (!buttons.length) {
+      return null;
+    }
+
     var className = classNames('oo-skip-controls', {
       'oo-inactive': this.props.inactive
     });
-    var buttons = this.getSortedButtonEntries();
     var buttonTemplate = this.getButtonTemplate();
 
     return (
-      <div className={className}>
+      <div
+        className={className}
+        onFocus={this.props.onFocus}
+        onBlur={this.props.onBlur}>
         {buttons.map(function(button) {
           return buttonTemplate[button.id];
         })}
@@ -210,13 +227,16 @@ SkipControls.propTypes = {
   localizableStrings: React.PropTypes.object,
   responsiveView: React.PropTypes.bool.isRequired,
   skinConfig: React.PropTypes.object.isRequired,
+  onFocus: React.PropTypes.func,
+  onBlur: React.PropTypes.func,
   config: React.PropTypes.shape({
     hasPreviousVideos: React.PropTypes.bool.isRequired,
     hasNextVideos: React.PropTypes.bool.isRequired
   }),
   controller: React.PropTypes.shape({
     state: React.PropTypes.shape({
-      isMobile: React.PropTypes.bool.isRequired
+      isMobile: React.PropTypes.bool.isRequired,
+      duration: React.PropTypes.number.isRequired
     }),
     rewindOrRequestPreviousVideo: React.PropTypes.func.isRequired,
     requestNextVideo: React.PropTypes.func.isRequired,
@@ -226,4 +246,4 @@ SkipControls.propTypes = {
   })
 };
 
-module.exports = SkipControls;
+module.exports = preserveKeyboardFocus(SkipControls);

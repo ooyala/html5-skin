@@ -12,6 +12,7 @@ var React = require('react'),
     VideoQualityPanel = require('./videoQualityPanel'),
     ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
     ClosedCaptionMultiAudioMenu = require('./closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
+    preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus');
     Logo = require('./logo'),
     Icon = require('./icon'),
     Tooltip = require('./tooltip');
@@ -37,7 +38,6 @@ var ControlBar = React.createClass({
     window.addEventListener('orientationchange', this.closeOtherPopovers);
     window.addEventListener('orientationchange', this.setLandscapeScreenOrientation, false);
     document.addEventListener('keydown', this.handleControlBarKeyDown);
-    this.restoreFocusedControl();
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -56,31 +56,6 @@ var ControlBar = React.createClass({
     window.removeEventListener('orientationchange', this.closeOtherPopovers);
     window.removeEventListener('orientationchange', this.setLandscapeScreenOrientation);
     document.removeEventListener('keydown', this.handleControlBarKeyDown);
-  },
-
-  /**
-   * Restores the focus of a previously selected control bar item.
-   * This is needed as a workaround because switching between play and pause states
-   * currently causes the control bar to re-render.
-   * @private
-   */
-  restoreFocusedControl: function() {
-    if (!this.props.controller.state.focusedControl || !this.domNode) {
-      return;
-    }
-    var selector =
-      '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + '="' + this.props.controller.state.focusedControl + '"]';
-    var control = this.domNode.querySelector(selector);
-
-    if (control && typeof control.focus === 'function') {
-      control.focus();
-      // If we got to this point it means that play was triggered using the spacebar
-      // (since a click would've cleared the focused element) and we need to
-      // trigger control bar auto hide
-      if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
-        this.props.controller.startHideControlBarTimer();
-      }
-    }
   },
 
   getResponsiveUIMultiple: function(responsiveView) {
@@ -357,30 +332,6 @@ var ControlBar = React.createClass({
       var opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
       Utils.removeHighlight(iconElement, opacity, color);
     }
-  },
-
-  /**
-   * Fires whenever an item is focused inside the control bar. Stores the id of
-   * the focused control.
-   * @param {FocusEvent} evt - Focus event object
-   * @private
-   */
-  handleControlBarFocus: function(evt) {
-    var focusId = evt.target ?
-      evt.target.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)
-      :
-      null;
-    if (focusId) {
-      this.props.controller.state.focusedControl = focusId;
-    }
-  },
-
-  /**
-   * Clears the currently focused control.
-   * @private
-   */
-  handleControlBarBlur: function() {
-    this.props.controller.state.focusedControl = null;
   },
 
   /**
@@ -1168,16 +1119,13 @@ var ControlBar = React.createClass({
 
     return (
       <div
-        ref={function(domNode) {
-          this.domNode = domNode;
-        }.bind(this)}
+        ref={function(domNode) { this.domNode = domNode; }.bind(this)}
         className={controlBarClass}
         style={controlBarStyle}
-        onFocus={this.handleControlBarFocus}
-        onBlur={this.handleControlBarBlur}
+        onFocus={this.props.onFocus}
+        onBlur={this.props.onBlur}
         onMouseUp={this.handleControlBarMouseUp}
-        onTouchEnd={this.handleControlBarMouseUp}
-      >
+        onTouchEnd={this.handleControlBarMouseUp}>
         <ScrubberBar {...this.props} />
 
         <div className="oo-control-bar-items-wrapper">
@@ -1213,6 +1161,8 @@ ControlBar.propTypes = {
   duration: React.PropTypes.number,
   currentPlayhead: React.PropTypes.number,
   componentWidth: React.PropTypes.number,
+  onFocus: React.PropTypes.func,
+  onBlur: React.PropTypes.func,
   skinConfig: React.PropTypes.shape({
     responsive: React.PropTypes.shape({
       breakpoints: React.PropTypes.object
@@ -1232,4 +1182,4 @@ ControlBar.propTypes = {
   })
 };
 
-module.exports = ControlBar;
+module.exports = preserveKeyboardFocus(ControlBar);
