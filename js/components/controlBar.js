@@ -34,6 +34,7 @@ var ControlBar = React.createClass({
   },
 
   componentDidMount: function() {
+    console.log('BBB controlBar this.props.controller.toggleButtons', this.props.controller.toggleButtons);
     window.addEventListener('orientationchange', this.closeOtherPopovers);
     window.addEventListener('orientationchange', this.setLandscapeScreenOrientation, false);
     document.addEventListener('keydown', this.handleControlBarKeyDown);
@@ -65,6 +66,8 @@ var ControlBar = React.createClass({
    * @private
    */
   restoreFocusedControl: function() {
+    console.log('BBB restoreFocusedControl this.props.controller.state.focusedControl',
+      this.props.controller.state.focusedControl);
     if (!this.props.controller.state.focusedControl || !this.domNode) {
       return;
     }
@@ -234,7 +237,7 @@ var ControlBar = React.createClass({
     }
   },
 
-  handleMultiAudioClick: function() {
+  handleMultiAudioClick: function(evt) {
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
 
     if (
@@ -248,6 +251,7 @@ var ControlBar = React.createClass({
     } else {
       this.props.controller.toggleMultiAudioScreen();
     }
+    this.handleControlBarFocus(evt);
   },
 
   configureMenuAutofocus: function(menu) {
@@ -370,6 +374,7 @@ var ControlBar = React.createClass({
       evt.target.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)
       :
       null;
+    console.log('BBB controlBar handleControlBarFocus focusId', focusId);
     if (focusId) {
       this.props.controller.state.focusedControl = focusId;
     }
@@ -380,6 +385,7 @@ var ControlBar = React.createClass({
    * @private
    */
   handleControlBarBlur: function() {
+    console.log('BBB controlBar handleControlBarBlur');
     this.props.controller.state.focusedControl = null;
   },
 
@@ -858,7 +864,9 @@ var ControlBar = React.createClass({
               ariaLabel={CONSTANTS.ARIA_LABELS.MULTI_AUDIO}
               ariaHasPopup={true}
               ariaExpanded={this.props.controller.state.multiAudioOptions.showPopover ? true : null}
-              onClick={this.handleMultiAudioClick}
+              onClick={function(evt) {
+                this.handleMultiAudioClick(evt);
+              }.bind(this)}
             >
               <Icon
                 {...this.props}

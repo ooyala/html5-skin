@@ -42,9 +42,12 @@ var AccessibleButton = React.createClass({
    * @param {type} event The keydown event object.
    */
   onKeyDown: function(event) {
+    console.log('BBB accessebleButton onKeyDown event.which', event.which ,
+      ' event.key', event.key, 'event.keyCode', event.keyCode);
     switch (event.key) {
       case CONSTANTS.KEY_VALUES.SPACE:
       case CONSTANTS.KEY_VALUES.ENTER:
+        console.log('BBB accessebleButton onKeyDown enter');
       // Ctrl and Alt are needed as a workaround for VoiceOver, which uses the
       // CTRL + OPTION + SPACE combination to activate buttons. VoiceOver actually
       // suppresses the spacebar keyboard event when this combination is used, so we
