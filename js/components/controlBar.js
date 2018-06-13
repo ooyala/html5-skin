@@ -20,7 +20,6 @@ var React = require('react'),
 var ControlBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
-    this.domNode = null;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
     this.vr = null;
@@ -37,7 +36,6 @@ var ControlBar = React.createClass({
   componentDidMount: function() {
     window.addEventListener('orientationchange', this.closeOtherPopovers);
     window.addEventListener('orientationchange', this.setLandscapeScreenOrientation, false);
-    document.addEventListener('keydown', this.handleControlBarKeyDown);
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -55,7 +53,6 @@ var ControlBar = React.createClass({
     }
     window.removeEventListener('orientationchange', this.closeOtherPopovers);
     window.removeEventListener('orientationchange', this.setLandscapeScreenOrientation);
-    document.removeEventListener('keydown', this.handleControlBarKeyDown);
   },
 
   getResponsiveUIMultiple: function(responsiveView) {
@@ -331,60 +328,6 @@ var ControlBar = React.createClass({
       var color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
       var opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
       Utils.removeHighlight(iconElement, opacity, color);
-    }
-  },
-
-  /**
-   * Will handle the keydown event when the controlBar is active and it will restrict
-   * tab navigation to elements that are within it when the player is in fullscreen mode.
-   * Note that this only handles the edge cases that are needed in order to loop the tab
-   * focus. Tabbing in between the elements is handled by the browser.
-   * @private
-   * @param {Object} evt Keydown event object.
-   */
-  handleControlBarKeyDown: function(evt) {
-    if (
-      evt.key !== CONSTANTS.KEY_VALUES.TAB ||
-      !this.props.controller.state.fullscreen ||
-      !this.domNode ||
-      !evt.target
-    ) {
-      return;
-    }
-    // Focusable elements on the control bar (this.domNode) are expected to have the
-    // data-focus-id attribute
-    var focusableElements = this.domNode.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
-
-    if (focusableElements.length) {
-      var firstFocusableElement = focusableElements[0];
-      var lastFocusableElement = focusableElements[focusableElements.length - 1];
-      // This indicates we're tabbing over the focusable control bar elements
-      if (evt.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)) {
-        if (evt.shiftKey) {
-          // Shift + tabbing on first element, focus on last
-          if (evt.target === firstFocusableElement) {
-            evt.preventDefault();
-            lastFocusableElement.focus();
-          }
-        } else {
-          // Tabbing on last element, focus on first
-          if (evt.target === lastFocusableElement) {
-            evt.preventDefault();
-            firstFocusableElement.focus();
-          }
-        }
-        // Keydown happened on a non-controlbar element
-      } else {
-        evt.preventDefault();
-
-        if (evt.shiftKey) {
-          lastFocusableElement.focus();
-        } else {
-          firstFocusableElement.focus();
-        }
-      }
-    } else {
-      OO.log('ControlBar: No focusable elements found');
     }
   },
 
@@ -1119,7 +1062,6 @@ var ControlBar = React.createClass({
 
     return (
       <div
-        ref={function(domNode) { this.domNode = domNode; }.bind(this)}
         className={controlBarClass}
         style={controlBarStyle}
         onFocus={this.props.onFocus}
