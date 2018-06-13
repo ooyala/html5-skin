@@ -813,12 +813,16 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     onVcPlay: function(event, source) {
       this.state.currentVideoId = source;
-      if (this.state.adWasPaused && this.state.currentAdsInfo.currentAdItem.ssai) {
-        this.state.adPauseDuration = Date.now() - this.state.adPausedTime;
-        //we calculate new ad end time, based on the time that the ad was paused.
-        this.state.adEndTime = this.state.adEndTime + this.state.adPauseDuration; //milliseconds
-        this.state.adWasPaused = false;
-        this.state.adPauseDuration = 0;
+      if (this.state.currentAdsInfo.currentAdItem.ssai) {
+        //When pause come from ad source, for SSAI we still want source to be main, for consistency.
+        this.state.currentVideoId = OO.VIDEO.MAIN;
+        if (this.state.adWasPaused && this.state.currentAdsInfo && this.state.currentAdsInfo.currentAdItem) {
+          this.state.adPauseDuration = Date.now() - this.state.adPausedTime;
+          //we calculate new ad end time, based on the time that the ad was paused.
+          this.state.adEndTime = this.state.adEndTime + this.state.adPauseDuration; //milliseconds
+          this.state.adWasPaused = false;
+          this.state.adPauseDuration = 0;
+        }
       }
     },
 
@@ -913,7 +917,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         // must be unpaused to resume
         this.state.config.adScreen.showControlBar = true;
         this.state.adPauseAnimationDisabled = false;
-        if (this.state.currentAdsInfo.currentAdItem && this.state.currentAdsInfo.currentAdItem.ssai) {
+        if (this.state.currentAdsInfo && this.state.currentAdsInfo.currentAdItem && this.state.currentAdsInfo.currentAdItem.ssai) {
           this.state.adWasPaused = true;
           this.state.adPausedTime = Date.now(); //milliseconds
         }
@@ -1410,6 +1414,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.renderSkin();
     },
 
+    /**
+     * Returns ad remaining time that will be displayed in ad marquee
+     * when playing ads.
+     * @private
+     */
     getAdRemainingTime: function() {
       var remainingTime = 0;
 
