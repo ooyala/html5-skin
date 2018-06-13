@@ -764,6 +764,35 @@ describe('Controller', function() {
       clock.restore();
       controller.onAdsPlayed();
     });
+
+    it('pause ad works for SSAI VOD asset', function() {
+      var adItem = {
+          duration: 15,
+          name: "test",
+          ssai: true
+      };
+      var clock = sinon.useFakeTimers(Date.now());
+      controller.createPluginElements();
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
+      controller.onPlaying('event', OO.VIDEO.MAIN);
+      controller.onWillPlayAds('event');
+      controller.onWillPlaySingleAd('event', adItem);
+      clock.tick(5000);
+      controller.onPlayheadTimeChanged('event', 0.05, adItem.duration, 0, adItem.duration, "main");
+      expect(controller.state.adRemainingTime).toBe(10);
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.onPaused('event', OO.VIDEO.MAIN);
+      expect(controller.state.playerState).toBe(CONSTANTS.STATE.PAUSE);
+      clock.tick(3000);
+      expect(controller.state.adRemainingTime).toBe(10);
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
+      controller.onPlaying('event', OO.VIDEO.MAIN);
+      controller.onPlayheadTimeChanged('event', 0.06, adItem.duration, 0, adItem.duration, "main");
+      expect(controller.state.adRemainingTime).toBe(9);
+      clock.restore();
+      controller.onAdsPlayed();
+    });
   });
 
   describe('Video Qualities', function() {
