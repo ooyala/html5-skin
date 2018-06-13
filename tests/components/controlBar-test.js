@@ -1,12 +1,14 @@
-jest.dontMock('../../js/components/controlBar')
-    .dontMock('../../js/components/volumeControls')
-    .dontMock('../../js/components/utils')
-    .dontMock('../../js/components/icon')
-    .dontMock('../../js/components/logo')
-    .dontMock('../../js/components/higher-order/accessibleMenu')
-    .dontMock('../../js/constants/constants')
-    .dontMock('../../js/components/accessibleButton')
-    .dontMock('classnames');
+jest
+.dontMock('../../js/components/controlBar')
+.dontMock('../../js/components/volumeControls')
+.dontMock('../../js/components/utils')
+.dontMock('../../js/components/icon')
+.dontMock('../../js/components/logo')
+.dontMock('../../js/components/higher-order/accessibleMenu')
+.dontMock('../../js/components/higher-order/preserveKeyboardFocus')
+.dontMock('../../js/constants/constants')
+.dontMock('../../js/components/accessibleButton')
+.dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -23,6 +25,15 @@ describe('ControlBar', function() {
 
   var baseMockController, baseMockProps;
   var defaultSkinConfig = JSON.parse(JSON.stringify(skinConfig));
+
+  // The ControlBar is wrapped by the preserveKeyboardFocus higher order component.
+  // For some tests it is necessary to reference the inner component directly, so
+  // that's why we have this helper function which can be used instead of
+  // TestUtils.renderIntoDocument()
+  var renderAndGetComposedComponent = function(Component) {
+    var renderedComponent = TestUtils.renderIntoDocument(Component);
+    return renderedComponent.composedComponent;
+  };
 
   // TODO
   // Old unit tests should use the base mock controller and props
@@ -440,7 +451,7 @@ describe('ControlBar', function() {
       skinConfig: skinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var DOM = renderAndGetComposedComponent(
       <ControlBar {...mockProps} controlBarVisible={true}
                   componentWidth={500}
                   playerState={CONSTANTS.STATE.PLAYING}
@@ -460,7 +471,7 @@ describe('ControlBar', function() {
       skinConfig: skinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var DOM = renderAndGetComposedComponent(
       <ControlBar {...mockProps} controlBarVisible={true}
                   componentWidth={500}
                   playerState={CONSTANTS.STATE.PLAYING}
@@ -480,7 +491,7 @@ describe('ControlBar', function() {
       skinConfig: skinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var DOM = renderAndGetComposedComponent(
       <ControlBar {...mockProps} controlBarVisible={true}
                   componentWidth={500}
                   playerState={CONSTANTS.STATE.PLAYING}
@@ -540,7 +551,7 @@ describe('ControlBar', function() {
       this.state.videoQualityOptions.showPopover = !this.state.videoQualityOptions.showPopover;
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var controlBar = renderAndGetComposedComponent(
       <ControlBar
         {...baseMockProps}
         controlBarVisible={true}
@@ -549,8 +560,7 @@ describe('ControlBar', function() {
         isLiveStream={baseMockProps.isLiveStream} />
     );
 
-    var controlBar = TestUtils.findRenderedComponentWithType(DOM, ControlBar);
-    var qualityBtn = TestUtils.findRenderedComponentWithType(DOM, AccessibleButton);
+    var qualityBtn = TestUtils.findRenderedComponentWithType(controlBar, AccessibleButton);
     var qualityBtnElement = qualityBtn.getDOMNode();
 
     expect(qualityBtn.wasTriggeredWithKeyboard()).toBe(false);
@@ -1723,7 +1733,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var DOM = renderAndGetComposedComponent(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSED}
@@ -2118,7 +2128,7 @@ describe('ControlBar', function() {
     };
 
     var node = document.createElement('div');
-    var controlBar = ReactDOM.render(
+    var controlBar = renderAndGetComposedComponent(
       <ControlBar
         {...mockProps}
         controlBarVisible={true}
