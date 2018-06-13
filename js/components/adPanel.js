@@ -103,7 +103,7 @@ var AdPanel = React.createClass({
     }
 
     var adPlaybackInfoDiv = (
-      <AdPanelTopBarItem key="adPlaybackInfo" itemClassName="oo-ad-playback-info">
+      <AdPanelTopBarItem ref="adPlaybackInfo" key="adPlaybackInfo" itemClassName="oo-ad-playback-info">
         {adPlaybackInfo}
       </AdPanelTopBarItem>
     );

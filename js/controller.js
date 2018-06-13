@@ -724,6 +724,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.adVideoDuration = duration;
         this.state.adVideoPlayhead = currentPlayhead;
         this.state.adRemainingTime = this.getAdRemainingTime();
+        console.log("  this.state.adRemainingTime " +   this.state.adRemainingTime );
       }
       this.state.duration = duration;
 
@@ -1424,7 +1425,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           }
         }
       } else {
-        remainingTime = parseInt(this.state.adVideoDuration - this.state.currentAdPlayhead);
+        remainingTime = parseInt(this.state.adVideoDuration - (this.state.adVideoPlayhead * 100));
       }
       return remainingTime;
     },
