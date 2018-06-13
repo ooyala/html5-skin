@@ -78,6 +78,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       mainVideoDuration: 0,
       adVideoDuration: 0,
       adStartTime: 0,
+      adPausedTime: 0,
+      adEndTime: 0,
+      adWasPaused: false,
+      adPauseDuration: 0,
+      adRemainingTime: 0,
       elementId: null,
       mainVideoContainer: null,
       mainVideoInnerWrapper: null,
@@ -713,10 +718,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.mainVideoPlayhead = currentPlayhead;
         this.state.mainVideoDuration = duration;
         this.state.mainVideoBuffered = buffered;
-      } else if (videoId === OO.VIDEO.ADS) {
+      }
+      if (videoId === OO.VIDEO.ADS || this.state.isPlayingAd) {
         // adVideoDuration is only used in adPanel ad marquee
         this.state.adVideoDuration = duration;
         this.state.adVideoPlayhead = currentPlayhead;
+        this.state.adRemainingTime = this.getAdRemainingTime();
       }
       this.state.duration = duration;
 
@@ -806,6 +813,13 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     onVcPlay: function(event, source) {
       this.state.currentVideoId = source;
+      if (this.state.adWasPaused && this.state.currentAdsInfo && this.state.currentAdsInfo.currentAdItem && this.state.currentAdsInfo.currentAdItem.ssai) {
+        this.state.adPauseDuration = Date.now() - this.state.adPausedTime;
+        //we calculate new ad end time, based on the time that the ad was paused.
+        this.state.adEndTime = this.state.adEndTime + this.state.adPauseDuration; //milliseconds
+        this.state.adWasPaused = false;
+        this.state.adPauseDuration = 0;
+      }
     },
 
     onPlaying: function(event, source) {
@@ -822,7 +836,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.isInitialPlay = false;
         this.renderSkin();
       }
-      if (source === OO.VIDEO.ADS) {
+      if (source === OO.VIDEO.ADS || this.state.isPlayingAd) {
         this.state.adPauseAnimationDisabled = true;
         this.state.pluginsElement.addClass('oo-showing');
         this.state.pluginsClickElement.removeClass('oo-showing');
@@ -848,7 +862,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.endSeeking();
       }
       // If an ad using the custom ad element has issued a pause, activate the click layer
-      if (source === OO.VIDEO.ADS && this.state.pluginsElement.children().length > 0) {
+      if (this.state.isPlayingAd) {
         this.state.pluginsClickElement.addClass('oo-showing');
       }
     },
@@ -893,12 +907,16 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
-      } else if (videoId === OO.VIDEO.ADS) {
+      } else if (videoId === OO.VIDEO.ADS || this.state.isPlayingAd) {
         // If we pause during an ad (such as for clickthroughs or when autoplay fails)
         // we'll show the control bar so that the user has an indication that the video
         // must be unpaused to resume
         this.state.config.adScreen.showControlBar = true;
         this.state.adPauseAnimationDisabled = false;
+        if (this.state.currentAdsInfo && this.state.currentAdsInfo.currentAdItem && this.state.currentAdsInfo.currentAdItem.ssai) {
+          this.state.adWasPaused = true;
+          this.state.adPausedTime = Date.now(); //milliseconds
+        }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
       }
@@ -1226,6 +1244,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       if (this.state.mainVideoPlayhead > 0) {
         this.isNewVrVideo = false;
       }
+      this.state.adPausedTime = 0;
     },
 
     onAdPodStarted: function(event, numberOfAds) {
@@ -1237,16 +1256,17 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     onWillPlaySingleAd: function(event, adItem) {
       OO.log('onWillPlaySingleAd is called with adItem = ' + adItem);
       if (adItem !== null) {
-        this.state.adVideoDuration = adItem.duration;
+        this.state.adVideoDuration = adItem.duration * 1000;
         this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
         this.state.isPlayingAd = true;
         this.state.currentAdsInfo.currentAdItem = adItem;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         if (adItem.isLive) {
-          this.state.adStartTime = new Date().getTime();
+          this.state.adStartTime = Date.now();
         } else {
           this.state.adStartTime = 0;
         }
+        this.state.adEndTime = this.state.adStartTime + this.state.adVideoDuration;
         this.skin.state.currentPlayhead = 0;
         this.removeBlur();
         this.renderSkin();
@@ -1388,6 +1408,32 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     showNonlinearAdCloseButton: function(event) {
       this.state.showAdOverlayCloseButton = true;
       this.renderSkin();
+    },
+
+    /**
+     * Returns ad remaining time that will be displayed in ad marquee
+     * when playing ads.
+     * @private
+     */
+    getAdRemainingTime: function() {
+      var remainingTime = 0;
+
+      var isLive = (this.state.currentAdsInfo.currentAdItem) ? this.state.currentAdsInfo.currentAdItem.isLive : false;
+      var isSSAI = (this.state.currentAdsInfo.currentAdItem) ? this.state.currentAdsInfo.currentAdItem.ssai : false;
+
+      if (isLive) {
+        remainingTime = parseInt((this.state.adStartTime + this.state.adVideoDuration - Date.now()) / 1000);
+        if (isSSAI) {
+          if (this.state.playerState != CONSTANTS.STATE.PAUSE){
+            remainingTime = (this.state.adEndTime - Date.now()) / 1000;
+          } else {
+            remainingTime = (this.state.adEndTime - this.state.adPausedTime) / 1000;
+          }
+        }
+      } else {
+        remainingTime = parseInt(this.state.adVideoDuration - (this.state.adVideoPlayhead * 100));
+      }
+      return remainingTime;
     },
 
     /** ******************************************************************
