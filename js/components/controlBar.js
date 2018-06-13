@@ -822,7 +822,7 @@ var ControlBar = React.createClass({
                 enabled={isTooltipEnabled}
                 text={Utils.getLocalizedString(
                   this.props.language,
-                  CONSTANTS.SKIN_TEXT.MULTI_AUDIO,
+                  CONSTANTS.SKIN_TEXT.AUDIO,
                   this.props.localizableStrings
                 )}
                 responsivenessMultiplier={this.responsiveUIMultiple}
