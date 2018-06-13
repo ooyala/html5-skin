@@ -80,7 +80,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       adStartTime: 0,
       adPausedTime: 0,
       adEndTime: 0,
-      wasPaused: false,
+      adWasPaused: false,
       adPauseDuration: 0,
       adRemainingTime: 0,
       elementId: null,
@@ -724,7 +724,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.adVideoDuration = duration;
         this.state.adVideoPlayhead = currentPlayhead;
         this.state.adRemainingTime = this.getAdRemainingTime();
-        console.log("  this.state.adRemainingTime " +   this.state.adRemainingTime );
       }
       this.state.duration = duration;
 
@@ -814,11 +813,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     onVcPlay: function(event, source) {
       this.state.currentVideoId = source;
-      if (this.state.wasPaused) {
+      if (this.state.adWasPaused && this.state.currentAdsInfo.currentAdItem.ssai) {
         this.state.adPauseDuration = Date.now() - this.state.adPausedTime;
         //we calculate new ad end time, based on the time that the ad was paused.
         this.state.adEndTime = this.state.adEndTime + this.state.adPauseDuration; //milliseconds
-        this.state.wasPaused = false;
+        this.state.adWasPaused = false;
         this.state.adPauseDuration = 0;
       }
     },
@@ -914,8 +913,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         // must be unpaused to resume
         this.state.config.adScreen.showControlBar = true;
         this.state.adPauseAnimationDisabled = false;
-        this.state.adPausedTime = Date.now(); //milliseconds
-        this.state.wasPaused = true;
+        if (this.state.currentAdsInfo.currentAdItem && this.state.currentAdsInfo.currentAdItem.ssai) {
+          this.state.adWasPaused = true;
+          this.state.adPausedTime = Date.now(); //milliseconds
+        }
         this.state.playerState = CONSTANTS.STATE.PAUSE;
         this.renderSkin();
       }
@@ -1255,7 +1256,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     onWillPlaySingleAd: function(event, adItem) {
       OO.log('onWillPlaySingleAd is called with adItem = ' + adItem);
       if (adItem !== null) {
-        this.state.adVideoDuration = adItem.duration;
+        this.state.adVideoDuration = adItem.duration * 1000;
         this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
         this.state.isPlayingAd = true;
         this.state.currentAdsInfo.currentAdItem = adItem;
@@ -1265,7 +1266,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         } else {
           this.state.adStartTime = 0;
         }
-        this.state.adEndTime = this.state.adStartTime + this.state.adVideoDuration * 1000;
+        this.state.adEndTime = this.state.adStartTime + this.state.adVideoDuration;
         this.skin.state.currentPlayhead = 0;
         this.removeBlur();
         this.renderSkin();
@@ -1416,7 +1417,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       var isSSAI = (this.state.currentAdsInfo.currentAdItem) ? this.state.currentAdsInfo.currentAdItem.ssai : false;
 
       if (isLive) {
-        remainingTime = parseInt((this.state.adStartTime + this.state.adVideoDuration * 1000 - Date.now()) / 1000);
+        remainingTime = parseInt((this.state.adStartTime + this.state.adVideoDuration - Date.now()) / 1000);
         if (isSSAI) {
           if (this.state.playerState != CONSTANTS.STATE.PAUSE){
             remainingTime = (this.state.adEndTime - Date.now()) / 1000;
