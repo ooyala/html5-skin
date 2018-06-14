@@ -34,7 +34,6 @@ var ControlBar = React.createClass({
   },
 
   componentDidMount: function() {
-    console.log('BBB controlBar this.props.controller.toggleButtons', this.props.controller.toggleButtons);
     window.addEventListener('orientationchange', this.closeOtherPopovers);
     window.addEventListener('orientationchange', this.setLandscapeScreenOrientation, false);
     document.addEventListener('keydown', this.handleControlBarKeyDown);
@@ -66,8 +65,6 @@ var ControlBar = React.createClass({
    * @private
    */
   restoreFocusedControl: function() {
-    console.log('BBB restoreFocusedControl this.props.controller.state.focusedControl',
-      this.props.controller.state.focusedControl);
     if (!this.props.controller.state.focusedControl || !this.domNode) {
       return;
     }
@@ -374,7 +371,6 @@ var ControlBar = React.createClass({
       evt.target.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)
       :
       null;
-    console.log('BBB controlBar handleControlBarFocus focusId', focusId);
     if (focusId) {
       this.props.controller.state.focusedControl = focusId;
     }
@@ -385,7 +381,6 @@ var ControlBar = React.createClass({
    * @private
    */
   handleControlBarBlur: function() {
-    console.log('BBB controlBar handleControlBarBlur');
     this.props.controller.state.focusedControl = null;
   },
 
