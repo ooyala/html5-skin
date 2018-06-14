@@ -27,7 +27,9 @@ var AdPanelTopBarItem = React.createClass({
 var AdPanel = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
-    return null;
+    return {
+      adEndTime: this.props.controller.state.adEndTime
+    };
   },
 
   handleSkipAdButtonClick: function() {
@@ -89,17 +91,8 @@ var AdPanel = React.createClass({
       adPlaybackInfo = adPlaybackInfo + ': (' + currentAdIndex + '/' + totalNumberOfAds + ')';
     }
 
-    var isLive = this.props.currentAdsInfo.currentAdItem.isLive;
-
     if (this.props.skinConfig.adScreen.showAdCountDown) {
-      var remainingTime;
-      if (isLive) {
-        remainingTime = parseInt(
-          (this.props.adStartTime + this.props.adVideoDuration * 1000 - new Date().getTime()) / 1000
-        );
-      } else {
-        remainingTime = parseInt(this.props.adVideoDuration - this.props.currentAdPlayhead);
-      }
+      remainingTime = this.props.controller.getAdRemainingTime();
 
       if (isFinite(remainingTime)) {
         remainingTime = Utils.formatSeconds(Math.max(0, remainingTime));
@@ -110,7 +103,7 @@ var AdPanel = React.createClass({
     }
 
     var adPlaybackInfoDiv = (
-      <AdPanelTopBarItem key="adPlaybackInfo" itemClassName="oo-ad-playback-info">
+      <AdPanelTopBarItem ref="adPlaybackInfo" key="adPlaybackInfo" itemClassName="oo-ad-playback-info">
         {adPlaybackInfo}
       </AdPanelTopBarItem>
     );
@@ -212,7 +205,8 @@ AdPanel.defaultProps = {
       indexInPod: 0,
       isLive: false
     }
-  }
+  },
+  adEndTime: 0
 };
 
 module.exports = AdPanel;
