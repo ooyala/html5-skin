@@ -75,7 +75,11 @@ AccessibilityControls.prototype = {
         if (this.areArrowKeysAllowed()) {
           e.preventDefault();
           var forward = e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY;
-          this.seekBy(CONSTANTS.A11Y_CTRLS.SEEK_DELTA, forward);
+          var skinConfig = Utils.getPropertyValue(this.controller, 'skin.props.skinConfig');
+          var skipTimes = Utils.getSkipTimes(skinConfig);
+          var delta = forward ? skipTimes.forward : skipTimes.backward;
+
+          this.seekBy(delta, forward, true);
         }
         break;
       default:

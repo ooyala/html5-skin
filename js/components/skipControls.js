@@ -24,44 +24,16 @@ var SkipControls = React.createClass({
 
   onSkipBackward: function() {
     if (typeof this.props.a11yControls.seekBy === 'function') {
-      var skipTimes = this.getSkipTimes();
+      var skipTimes = Utils.getSkipTimes(this.props.skinConfig);
       this.props.a11yControls.seekBy(skipTimes.backward, false, true);
     }
   },
 
   onSkipForward: function() {
     if (typeof this.props.a11yControls.seekBy === 'function') {
-      var skipTimes = this.getSkipTimes();
+      var skipTimes = Utils.getSkipTimes(this.props.skinConfig);
       this.props.a11yControls.seekBy(skipTimes.forward, true, true);
     }
-  },
-
-  /**
-   * Gets the values of skip forward/back times configured in skin.json.
-   * Falls back to default values.
-   * @private
-   * @return {object} An object with two properties, 'forward' and 'backward',
-   * which represent the amount of seconds to skip in each respective direction.
-   */
-  getSkipTimes: function() {
-    var skipTimes = {};
-    skipTimes.backward = Utils.getPropertyValue(
-      this.props.skinConfig,
-      'skipControls.skipBackwardTime'
-    );
-    skipTimes.forward = Utils.getPropertyValue(
-      this.props.skinConfig,
-      'skipControls.skipForwardTime'
-    );
-    skipTimes.backward = Utils.ensureNumber(
-      skipTimes.backward,
-      CONSTANTS.UI.DEFAULT_SKIP_BACKWARD_TIME
-    );
-    skipTimes.forward = Utils.ensureNumber(
-      skipTimes.forward,
-      CONSTANTS.UI.DEFAULT_SKIP_FORWARD_TIME
-    );
-    return skipTimes;
   },
 
   /**
@@ -74,7 +46,7 @@ var SkipControls = React.createClass({
    */
   getButtonTemplate: function() {
     var buttonTemplate = {};
-    var skipTimes = this.getSkipTimes();
+    var skipTimes = Utils.getSkipTimes(this.props.skinConfig);
 
     var skipBackwardAriaLabel = CONSTANTS.ARIA_LABELS.SKIP_BACKWARD.replace(
       MACROS.SECONDS,
@@ -203,7 +175,12 @@ var SkipControls = React.createClass({
     }
 
     var className = classNames('oo-skip-controls', {
-      'oo-inactive': this.props.inactive
+      'oo-inactive': this.props.inactive,
+      'oo-in-background': Utils.getPropertyValue(
+        this.props.controller,
+        'state.scrubberBar.isHovered',
+        false
+      )
     });
     var buttonTemplate = this.getButtonTemplate();
 

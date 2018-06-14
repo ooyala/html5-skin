@@ -246,6 +246,8 @@ module.exports = {
     MAX_BUFFERING_SPINNER_DELAY: 60000, // Max allowed value of bufferingSpinnerDelay in milliseconds
     DEFAULT_SKIP_BACKWARD_TIME: 10, // In seconds
     DEFAULT_SKIP_FORWARD_TIME: 10, // In seconds
+    MIN_SKIP_TIME: 1, // Min allowed value for skip controls, in seconds
+    MAX_SKIP_TIME: 60, // Max allowed value for skip controls, in seconds
     // If the previous video button is clicked more than once, this
     // is the maximum amount of time (in milliseconds) between calls that would
     // cause the controller to request the previous video instead of rewinding

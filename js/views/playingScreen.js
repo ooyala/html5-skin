@@ -128,15 +128,17 @@ var PlayingScreen = React.createClass({
   /**
    * The keydown event is not fired when the scrubber bar is first focused with
    * a tab unless playback was activated with a click. As a workaround, we make sure
-   * that the control bar is shown when a control bar element is focused.
-   *
+   * that the controls are shown when a focusable element is focused.
+   * @private
    * @param {object} event Focus event object.
    */
   handleFocus: function(event) {
-    var isControlBarElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
+    var isFocusableElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
     // Only do this if the control bar hasn't been shown by now and limit to focus
-    // events that are triggered on known control bar elements
-    if (!this.state.controlBarVisible && isControlBarElement) {
+    // events that are triggered on known focusable elements (control bar items and
+    // skip buttons). Note that controlBarVisible controls both the control bar and
+    // the skip buttons
+    if (!this.state.controlBarVisible && isFocusableElement) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
       this.props.controller.state.accessibilityControlsEnabled = true;
@@ -383,6 +385,19 @@ var PlayingScreen = React.createClass({
 
         {viewControlsVr}
 
+        {skipControlsEnabled &&
+          <SkipControls
+            config={this.props.controller.state.skipControls}
+            language={this.props.language}
+            localizableStrings={this.props.localizableStrings}
+            responsiveView={this.props.responsiveView}
+            skinConfig={this.props.skinConfig}
+            controller={this.props.controller}
+            a11yControls={this.props.controller.accessibilityControls}
+            inactive={!this.props.controller.state.controlBarVisible}
+            onFocus={this.handleFocus} />
+        }
+
         <div className="oo-interactive-container" onFocus={this.handleFocus}>
           {this.props.closedCaptionOptions.enabled ? (
             <TextTrack
@@ -404,18 +419,6 @@ var PlayingScreen = React.createClass({
             isLiveStream={this.props.isLiveStream}
           />
         </div>
-
-        {skipControlsEnabled &&
-          <SkipControls
-            config={this.props.controller.state.skipControls}
-            language={this.props.language}
-            localizableStrings={this.props.localizableStrings}
-            responsiveView={this.props.responsiveView}
-            skinConfig={this.props.skinConfig}
-            controller={this.props.controller}
-            a11yControls={this.props.controller.accessibilityControls}
-            inactive={!this.props.controller.state.controlBarVisible} />
-        }
 
         {showUnmute ? <UnmuteIcon {...this.props} /> : null}
       </div>

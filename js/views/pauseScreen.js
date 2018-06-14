@@ -140,13 +140,13 @@ var PauseScreen = React.createClass({
   },
 
   /**
-   * Make sure keyboard controls are active when a control bar element has focus.
+   * Make sure keyboard controls are active when a focusable element has focus.
    *
    * @param {Event} event - Focus event object
    */
   handleFocus: function(event) {
-    var isControlBarElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
-    if (isControlBarElement) {
+    var isFocusableElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
+    if (isFocusableElement) {
       this.props.controller.state.accessibilityControlsEnabled = true;
       this.props.controller.state.isClickedOutside = false;
     }
@@ -280,6 +280,18 @@ var PauseScreen = React.createClass({
 
         {viewControlsVr}
 
+        {skipControlsEnabled &&
+          <SkipControls
+            config={this.props.controller.state.skipControls}
+            language={this.props.language}
+            localizableStrings={this.props.localizableStrings}
+            responsiveView={this.props.responsiveView}
+            skinConfig={this.props.skinConfig}
+            controller={this.props.controller}
+            a11yControls={this.props.controller.accessibilityControls}
+            onFocus={this.handleFocus} />
+        }
+
         <div className="oo-interactive-container" onFocus={this.handleFocus}>
           {this.props.closedCaptionOptions.enabled ? (
             <TextTrack
@@ -301,17 +313,6 @@ var PauseScreen = React.createClass({
             isLiveStream={this.props.isLiveStream}
           />
         </div>
-
-        {skipControlsEnabled &&
-          <SkipControls
-            config={this.props.controller.state.skipControls}
-            language={this.props.language}
-            localizableStrings={this.props.localizableStrings}
-            responsiveView={this.props.responsiveView}
-            skinConfig={this.props.skinConfig}
-            controller={this.props.controller}
-            a11yControls={this.props.controller.accessibilityControls} />
-        }
 
       </div>
     );

@@ -192,6 +192,41 @@ var Utils = {
   },
 
   /**
+   * Gets the values of skip forward/back times configured in skin.json. The values
+   * from the skin config are processed in order to ensure valid values: Numbers are
+   * converted to integers and constrained to allowed minimum and maximums. Falls
+   * back to default values when none are specified.
+   * @function getSkipTimes
+   * @param {Object}
+   * @return {Object} An object with two properties, 'forward' and 'backward',
+   * which represent the amount of seconds to skip in each respective direction.
+   */
+  getSkipTimes: function(skinConfig) {
+    var skipTimes = {};
+    skipTimes.backward = this.getPropertyValue(
+      skinConfig,
+      'skipControls.skipBackwardTime',
+      CONSTANTS.UI.DEFAULT_SKIP_BACKWARD_TIME
+    );
+    skipTimes.forward = this.getPropertyValue(
+      skinConfig,
+      'skipControls.skipForwardTime',
+      CONSTANTS.UI.DEFAULT_SKIP_FORWARD_TIME
+    );
+    skipTimes.backward = this.constrainToRange(
+      Math.floor(skipTimes.backward),
+      CONSTANTS.UI.MIN_SKIP_TIME,
+      CONSTANTS.UI.MAX_SKIP_TIME
+    );
+    skipTimes.forward = this.constrainToRange(
+      Math.floor(skipTimes.forward),
+      CONSTANTS.UI.MIN_SKIP_TIME,
+      CONSTANTS.UI.MAX_SKIP_TIME
+    );
+    return skipTimes;
+  },
+
+  /**
    * Returns a number that represents the current moment in time. Falls back to
    * Date.now() in platforms that don't support window.performance, which means that
    * the value could be relative to either the Unix epoch or the page load. For

@@ -6,10 +6,15 @@
   font-size: 14px;
   pointer-events: none;
   transition: 0.2s opacity ease-in-out, 0.3s transform ease-in-out;
+  will-change: transform, opacity;
 
   &.oo-inactive {
     opacity: 0;
     transform: translate(-50%, -90%);
+  }
+
+  &.oo-in-background {
+    opacity: 0.5;
   }
 
   .oo-focusable-btn {
@@ -46,6 +51,8 @@
     font-size: 0.53em;
     text-align: center;
     box-sizing: border-box;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   .oo-focusable-btn.oo-skip-backward .oo-btn-counter {
