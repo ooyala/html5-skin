@@ -159,6 +159,23 @@ module.exports = {
     SKIP_FORWARD: 'Skip ' + MACROS.SECONDS + ' Seconds Forward'
   },
 
+  CONTROL_BAR_KEYS: {
+    PLAY_PAUSE: 'playPause',
+    LIVE: 'live',
+    VOLUME: 'volume',
+    TIME_DURATION: 'timeDuration',
+    FLEXIBLE_SPACE: 'flexibleSpace',
+    MORE_OPTIONS: 'moreOptions',
+    QUALITY: 'quality',
+    DISCOVERY: 'discovery',
+    CLOSED_CAPTION: 'closedCaption',
+    AUDIO_AND_CC: 'audioAndCC',
+    SHARE: 'share',
+    STEREOSCOPIC: 'stereoscopic',
+    FULLSCREEN: 'fullscreen',
+    LOGO: 'logo',
+  },
+
   ARIA_ROLES: {
     PRESENTATION: 'presentation',
     SLIDER: 'slider',
@@ -255,6 +272,12 @@ module.exports = {
     // When the previous video button is clicked, if the playhead value (in seconds) is
     // below this constant the controller will request the previous video instead of rewinding
     REQUEST_PREVIOUS_PLAYHEAD_TRESHOLD: 1
+  },
+
+  TOOLTIP_ALIGNMENT: {
+    LEFT: 'left',
+    CENTER: 'center',
+    RIGHT: 'right',
   },
 
   WATERMARK: {
