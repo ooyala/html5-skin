@@ -859,9 +859,7 @@ var ControlBar = React.createClass({
               ariaLabel={CONSTANTS.ARIA_LABELS.MULTI_AUDIO}
               ariaHasPopup={true}
               ariaExpanded={this.props.controller.state.multiAudioOptions.showPopover ? true : null}
-              onClick={function(evt) {
-                this.handleMultiAudioClick(evt);
-              }.bind(this)}
+              onClick={this.handleMultiAudioClick}
             >
               <Icon
                 {...this.props}
