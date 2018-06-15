@@ -2,8 +2,10 @@ var React = require('react');
 var ClassNames = require('classnames');
 var Utils = require('./utils');
 var CONSTANTS = require('../constants/constants');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var AccessibleButton = React.createClass({
+var AccessibleButton = createReactClass({
   getInitialState: function() {
     this.triggeredWithKeyboard = false;
     return {};
@@ -91,20 +93,20 @@ var AccessibleButton = React.createClass({
 });
 
 AccessibleButton.propTypes = {
-  autoFocus: React.PropTypes.bool,
-  style: React.PropTypes.object,
-  className: React.PropTypes.string,
-  focusId: React.PropTypes.string,
-  ariaLabel: React.PropTypes.string.isRequired,
-  ariaChecked: React.PropTypes.bool,
-  ariaSelected: React.PropTypes.bool,
-  ariaHasPopup: React.PropTypes.bool,
-  ariaExpanded: React.PropTypes.bool,
-  role: React.PropTypes.string,
-  onMouseOver: React.PropTypes.func,
-  onMouseOut: React.PropTypes.func,
-  onFocus: React.PropTypes.func,
-  onClick: React.PropTypes.func
+  autoFocus: PropTypes.bool,
+  style: PropTypes.object,
+  className: PropTypes.string,
+  focusId: PropTypes.string,
+  ariaLabel: PropTypes.string.isRequired,
+  ariaChecked: PropTypes.bool,
+  ariaSelected: PropTypes.bool,
+  ariaHasPopup: PropTypes.bool,
+  ariaExpanded: PropTypes.bool,
+  role: PropTypes.string,
+  onMouseOver: PropTypes.func,
+  onMouseOut: PropTypes.func,
+  onFocus: PropTypes.func,
+  onClick: PropTypes.func
 };
 
 // Define focusId as a getter so that it returns a different value
