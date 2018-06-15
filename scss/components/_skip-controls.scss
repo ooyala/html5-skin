@@ -18,7 +18,6 @@
   }
 
   .oo-focusable-btn {
-    @include flex-center-children(row);
     position: relative;
     width: $oo-skip-controls-btn-size;
     height: $oo-skip-controls-btn-size;
@@ -34,6 +33,15 @@
     opacity: 0.4;
   }
 
+  .oo-icon {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
   .oo-center-button .oo-icon {
     font-size: 1.4em;
   }
@@ -46,9 +54,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    padding-top: 3px;
-    font-size: 12px;
-    font-size: 0.53em;
+    font-size: 0.55em;
     text-align: center;
     box-sizing: border-box;
     backface-visibility: hidden;
@@ -56,11 +62,11 @@
   }
 
   .oo-focusable-btn.oo-skip-backward .oo-btn-counter {
-    padding-right: 2px;
+    padding-right: 0.2em;
   }
 
   .oo-focusable-btn.oo-skip-forward .oo-btn-counter {
-    padding-left: 2px;
+    padding-left: 0.05em;
   }
 
   .oo-focusable-btn.oo-previous-video .oo-icon {

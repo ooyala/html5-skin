@@ -25,6 +25,9 @@ var PlayingScreen = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
+    this.skipControlsClientRect = null;
+    this.hasCheckedMouseOverControls = false;
+    this.mousePosition = { clientX: 0, clientY: 0 };
 
     return {
       controlBarVisible: this.props.controller.state.controlBarVisible,
@@ -186,6 +189,7 @@ var PlayingScreen = React.createClass({
   },
 
   handlePlayerMouseMove: function(e) {
+    this.storeMousePosition(e);
     if (!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
@@ -210,6 +214,72 @@ var PlayingScreen = React.createClass({
       this.props.controller.state.isClickedOutside = false;
     }
     // for mobile, touch is handled in handleTouchEnd
+  },
+
+  /**
+   * Handles the mouseover event.
+   * @private
+   * @param {Event} event The mouseover event object
+   */
+  handleMouseOver: function(event) {
+    this.storeMousePosition(event);
+    this.showControlBar();
+  },
+
+  /**
+   * Extracts and stores the clientX and clientY values from a mouse event. This
+   * is used in order to keep track of the last known position. Triggers a check
+   * that determines whether the mouse is over the skip controls.
+   * @param {Event} event
+   */
+  storeMousePosition: function(event) {
+    if (!event) {
+      return;
+    }
+    this.mousePosition.clientX = event.clientX;
+    this.mousePosition.clientY = event.clientY;
+    this.tryCheckMouseOverControls();
+  },
+
+  /**
+   * Called by the SkipControls component when it's done mounting. It informs this
+   * component about the position of the SkipControls so that it can determine
+   * whether or not the mouse cursor is over the controls.
+   * @private
+   * @param {DOMRect} clientRect A DOMRect returned by an element's getBoundingClientRect() function
+   */
+  onSkipControlsMount: function(clientRect) {
+    this.skipControlsClientRect = clientRect;
+    this.tryCheckMouseOverControls();
+  },
+
+  /**
+   * Checks to see whether or not the mouse is over the skip controls element and
+   * prevents the controls from autohiding if that is the case.
+   *
+   * IMPORTANT:
+   * There's a much simpler way to do this which is just listening to the
+   * mouseenter event inside the SkipControls, however, the SkipControls have
+   * pointer-events set to 'none' in order to allow clicking through it, so we
+   * are unable to listen to any mouse events on said component. This workaround
+   * is a bit convoluted but it's needed in order to get a decent user experience.
+   * @private
+   */
+  tryCheckMouseOverControls: function() {
+    if (
+      this.hasCheckedMouseOverControls ||
+      !this.skipControlsClientRect ||
+      !(this.mousePosition.clientX && this.mousePosition.clientY)
+    ) {
+      return;
+    }
+    // Cancel auto-hide controls timer if mouse is over controls
+    if (
+      Utils.isMouseInsideRect(this.mousePosition, this.skipControlsClientRect)
+    ) {
+      this.props.controller.cancelTimer();
+    }
+    this.hasCheckedMouseOverControls = true;
   },
 
   /**
@@ -360,10 +430,9 @@ var PlayingScreen = React.createClass({
       <div
         className={className}
         ref="PlayingScreen"
-        onMouseOver={this.showControlBar}
+        onMouseOver={this.handleMouseOver}
         onMouseOut={this.hideControlBar}
-        onKeyDown={this.handleKeyDown}
-      >
+        onKeyDown={this.handleKeyDown}>
         <div
           className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
           onMouseDown={this.handlePlayerMouseDown}
@@ -371,8 +440,7 @@ var PlayingScreen = React.createClass({
           onClick={this.handlePlayerClicked}
           onFocus={this.handlePlayerFocus}
           onMouseUp={this.handlePlayerMouseUp}
-          onTouchEnd={this.handleTouchEnd}
-        />
+          onTouchEnd={this.handleTouchEnd} />
 
         {vrNotification}
         {vrIcon}
@@ -395,6 +463,7 @@ var PlayingScreen = React.createClass({
             controller={this.props.controller}
             a11yControls={this.props.controller.accessibilityControls}
             inactive={!this.props.controller.state.controlBarVisible}
+            onMount={this.onSkipControlsMount}
             onFocus={this.handleFocus} />
         }
 
@@ -404,8 +473,7 @@ var PlayingScreen = React.createClass({
               closedCaptionOptions={this.props.closedCaptionOptions}
               cueText={this.props.closedCaptionOptions.cueText}
               direction={this.props.captionDirection}
-              responsiveView={this.props.responsiveView}
-            />
+              responsiveView={this.props.responsiveView} />
           ) : null}
 
           {adOverlay}
@@ -416,8 +484,7 @@ var PlayingScreen = React.createClass({
             {...this.props}
             controlBarVisible={this.state.controlBarVisible}
             playerState={this.props.playerState}
-            isLiveStream={this.props.isLiveStream}
-          />
+            isLiveStream={this.props.isLiveStream} />
         </div>
 
         {showUnmute ? <UnmuteIcon {...this.props} /> : null}

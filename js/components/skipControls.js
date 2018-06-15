@@ -9,19 +9,51 @@ var CONSTANTS = require('../constants/constants');
 var MACROS = require('../constants/macros');
 
 var SkipControls = React.createClass({
+  /**
+   * Stores a ref to this component's main element.
+   * @private
+   * @param {HTMLElement} domElement
+   */
+  storeRef: function(domElement) {
+    this.domElement = domElement;
+  },
 
+  /**
+   * Fired when the component is mounted. Notifies its parent about it's position
+   * and dimensions (client rect).
+   * @private
+   */
+  componentDidMount: function() {
+    if (this.domElement && typeof this.props.onMount === 'function') {
+      var clientRect = this.domElement.getBoundingClientRect();
+      this.props.onMount(clientRect);
+    }
+  },
+
+  /**
+   * Previous Video button click handler.
+   * @private
+   */
   onPreviousVideo: function() {
     if (typeof this.props.controller.rewindOrRequestPreviousVideo === 'function') {
       this.props.controller.rewindOrRequestPreviousVideo();
     }
   },
 
+  /**
+   * Next Video button click handler.
+   * @private
+   */
   onNextVideo: function() {
     if (typeof this.props.controller.requestNextVideo === 'function') {
       this.props.controller.requestNextVideo();
     }
   },
 
+  /**
+   * Skip Backward button click handler.
+   * @private
+   */
   onSkipBackward: function() {
     if (typeof this.props.a11yControls.seekBy === 'function') {
       var skipTimes = Utils.getSkipTimes(this.props.skinConfig);
@@ -29,6 +61,10 @@ var SkipControls = React.createClass({
     }
   },
 
+  /**
+   * Skip Forward button click handler.
+   * @private
+   */
   onSkipForward: function() {
     if (typeof this.props.a11yControls.seekBy === 'function') {
       var skipTimes = Utils.getSkipTimes(this.props.skinConfig);
@@ -186,6 +222,7 @@ var SkipControls = React.createClass({
 
     return (
       <div
+        ref={this.storeRef}
         className={className}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}>

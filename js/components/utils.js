@@ -227,6 +227,29 @@ var Utils = {
   },
 
   /**
+   * Determines whether a mouse cursor represented by its clientX and clientY
+   * properties is inside a DOM element contained within the given DOMRect.
+   * @function isMouseInsideRect
+   * @param {Object} mousePosition An object with the clientX and clientY coordinates of the mouse pointer.
+   * @param {DOMRect} clientRect DOMRect returned by an element's getBoundingClientRect() function
+   * @return {Boolean} True if the mouse is inside the element, false otherwise
+   */
+  isMouseInsideRect: function(mousePosition, clientRect) {
+    if (!mousePosition || !clientRect) {
+      return false;
+    }
+    if (
+      mousePosition.clientX >= clientRect.left &&
+      mousePosition.clientX <= clientRect.right &&
+      mousePosition.clientY >= clientRect.top &&
+      mousePosition.clientY <= clientRect.bottom
+    ) {
+      return true;
+    }
+    return false;
+  },
+
+  /**
    * Returns a number that represents the current moment in time. Falls back to
    * Date.now() in platforms that don't support window.performance, which means that
    * the value could be relative to either the Unix epoch or the page load. For
