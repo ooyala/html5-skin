@@ -1109,7 +1109,7 @@ describe('ControlBar', function() {
     twoButtonSkinConfig.buttons.desktopContent = [
       {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 }
     ];
-    twoButtonSkinConfig.responsive = {breakpoints: {lg: {id: 'lg', multiplier: true}}};
+    twoButtonSkinConfig.responsive.breakpoints.lg.multiplier = true;
     var mockProps2 = {
       isLiveStream: false,
       controller: mockController,

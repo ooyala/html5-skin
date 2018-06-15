@@ -155,6 +155,23 @@ module.exports = {
     MULTI_AUDIO_OPTIONS: 'Closed Multi Audio Options'
   },
 
+  CONTROL_BAR_KEYS: {
+    PLAY_PAUSE: 'playPause',
+    LIVE: 'live',
+    VOLUME: 'volume',
+    TIME_DURATION: 'timeDuration',
+    FLEXIBLE_SPACE: 'flexibleSpace',
+    MORE_OPTIONS: 'moreOptions',
+    QUALITY: 'quality',
+    DISCOVERY: 'discovery',
+    CLOSED_CAPTION: 'closedCaption',
+    AUDIO_AND_CC: 'audioAndCC',
+    SHARE: 'share',
+    STEREOSCOPIC: 'stereoscopic',
+    FULLSCREEN: 'fullscreen',
+    LOGO: 'logo',
+  },
+
   ARIA_ROLES: {
     PRESENTATION: 'presentation',
     SLIDER: 'slider',
@@ -233,6 +250,12 @@ module.exports = {
     defaultScrubberBarHeight: 4,
     DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15,
     MAX_BUFFERING_SPINNER_DELAY: 60000 // Max allowed value of bufferingSpinnerDelay in milliseconds
+  },
+
+  TOOLTIP_ALIGNMENT: {
+    LEFT: 'left',
+    CENTER: 'center',
+    RIGHT: 'right',
   },
 
   WATERMARK: {
