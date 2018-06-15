@@ -279,7 +279,7 @@ AccessibilityControls.prototype = {
     seekTo = Utils.constrainToRange(seekTo, 0, this.controller.skin.state.duration);
 
     // Refresh UI and then instruct the player to seek
-    this.controller.  updateSeekingPlayhead(seekTo);
+    this.controller.updateSeekingPlayhead(seekTo);
     this.controller.seek(seekTo);
   },
 

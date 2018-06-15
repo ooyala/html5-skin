@@ -417,14 +417,14 @@ var PlayingScreen = React.createClass({
       );
     }
 
-    var className = ClassNames('oo-state-screen oo-playing-screen', {
-      'oo-controls-active': this.props.controller.state.controlBarVisible
-    });
     var skipControlsEnabled = Utils.getPropertyValue(
       this.props.skinConfig,
       'skipControls.enabled',
       false
     );
+    var className = ClassNames('oo-state-screen oo-playing-screen', {
+      'oo-controls-active': skipControlsEnabled && this.props.controller.state.controlBarVisible
+    });
 
     return (
       <div

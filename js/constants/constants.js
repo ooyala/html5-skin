@@ -271,7 +271,7 @@ module.exports = {
     REQUEST_PREVIOUS_TIME_TRESHOLD: 1500,
     // When the previous video button is clicked, if the playhead value (in seconds) is
     // below this constant the controller will request the previous video instead of rewinding
-    REQUEST_PREVIOUS_PLAYHEAD_TRESHOLD: 1
+    REQUEST_PREVIOUS_PLAYHEAD_TRESHOLD: 2
   },
 
   TOOLTIP_ALIGNMENT: {

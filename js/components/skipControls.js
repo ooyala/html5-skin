@@ -73,6 +73,17 @@ var SkipControls = React.createClass({
   },
 
   /**
+   * Handles the mouseenter event. Given that the SkipControls have pointer-events
+   * set to 'none' in order to allow clicking through them, this event is only fired
+   * when the mouse is over a button. Whenever this happens we cancel the auto-hide
+   * controls timer.
+   * @private
+   */
+  onMouseEnter: function() {
+    this.props.controller.cancelTimer();
+  },
+
+  /**
    * Gets a map which contains templates for each of the available buttons in
    * this component.
    * @private
@@ -224,6 +235,7 @@ var SkipControls = React.createClass({
       <div
         ref={this.storeRef}
         className={className}
+        onMouseEnter={this.onMouseEnter}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}>
         {buttons.map(function(button) {
@@ -254,6 +266,7 @@ SkipControls.propTypes = {
     }),
     rewindOrRequestPreviousVideo: React.PropTypes.func.isRequired,
     requestNextVideo: React.PropTypes.func.isRequired,
+    cancelTimer: React.PropTypes.func.isRequired,
   }),
   a11yControls: React.PropTypes.shape({
     seekBy: React.PropTypes.func.isRequired

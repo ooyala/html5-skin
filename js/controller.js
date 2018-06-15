@@ -738,6 +738,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       }
       this.state.duration = duration;
 
+      // For the off chance that a video plugin resumes playback without firing
+      // the ON_BUFFERED event. This will have no effect if it was set previously
+      if (this.state.buffering) {
+        this.setBufferingState(false);
+      }
+
       // lower skin z-index if Chrome auto-pauses flash content
       if (
         !this.state.autoPauseDisabled &&
@@ -858,9 +864,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           this.renderSkin();
         }
       }
-      // For the off chance that a video plugin resumes playback without firing
-      // the ON_BUFFERED event. This will have no effect if it was set previously
-      this.setBufferingState(false);
     },
 
     onPause: function(event, source, pauseReason) {
