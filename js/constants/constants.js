@@ -155,7 +155,7 @@ module.exports = {
     MULTI_AUDIO_OPTIONS: 'Closed Multi Audio Options',
     PREVIOUS_VIDEO: 'Previous Video',
     NEXT_VIDEO: 'Next Video',
-    SKIP_BACKWARD: 'Rewind'  + MACROS.SECONDS + ' Seconds',
+    SKIP_BACKWARD: 'Rewind '  + MACROS.SECONDS + ' Seconds',
     SKIP_FORWARD: 'Skip ' + MACROS.SECONDS + ' Seconds Forward'
   },
 
