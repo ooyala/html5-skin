@@ -129,94 +129,155 @@ describe('ControlBar', function() {
     expect(fullscreenToggled).toBe(true);
   });
 
-  it('render one stereo button if content vr', function() {
-    var mockController = {
-      state: {
-        isMobile: true,
-        volumeState: {
-          volume: 1
+  describe('Vr on phones', function(){
+    beforeEach(function() {
+      window.navigator.userAgent = 'phone';
+    });
+    afterEach(function() {
+      window.navigator.userAgent = 'desktop';
+    });
+
+    it('render one stereo button if content vr', function() {
+      var mockController = {
+        state: {
+          isMobile: true,
+          volumeState: {
+            volume: 1
+          },
+          closedCaptionOptions: {},
+          multiAudioOptions: {},
+          videoQualityOptions: {
+            availableBitrates: null
+          }
         },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
+        videoVrSource: {
+          vr: {
+            stereo: false,
+            contentType: 'single',
+            startPosition: 0
+          }
         }
-      },
-      videoVrSource: {
-        vr: {
-          stereo: false,
-          contentType: 'single',
-          startPosition: 0
-        }
-      }
-    };
+      };
 
-    var toggleSkinConfig = Utils.clone(skinConfig);
-    toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
+      var toggleSkinConfig = Utils.clone(skinConfig);
+      toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: toggleSkinConfig,
-      duration: 30,
-      vr: mockController.videoVrSource
-    };
+      var mockProps = {
+        isLiveStream: false,
+        controller: mockController,
+        skinConfig: toggleSkinConfig,
+        duration: 30,
+        vr: mockController.videoVrSource
+      };
 
-    var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
-    );
+      var DOM = TestUtils.renderIntoDocument(
+        <ControlBar {...mockProps} controlBarVisible={true}
+                    componentWidth={500}
+                    playerState={CONSTANTS.STATE.PLAYING}
+                    isLiveStream={mockProps.isLiveStream} />
+      );
 
-    var toggleStereoVrButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-vr-stereo-button');
-    expect(typeof toggleStereoVrButton).toBe('object');
-  });
+      var toggleStereoVrButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
+      expect(toggleStereoVrButton.length).toBe(1);
+    });
 
-  it('not render stereo button if content not vr', function() {
-    var mockController = {
-      state: {
-        isMobile: true,
-        volumeState: {
-          volume: 1
+    it('not render stereo button if content not vr', function() {
+      var mockController = {
+        state: {
+          isMobile: true,
+          volumeState: {
+            volume: 1
+          },
+          closedCaptionOptions: {},
+          multiAudioOptions: {},
+          videoQualityOptions: {
+            availableBitrates: null
+          }
         },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
+        videoVr: false,
+        videoVrSource: false
+      };
+
+      var toggleSkinConfig = Utils.clone(skinConfig);
+      toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
+
+
+      var mockProps = {
+        isLiveStream: false,
+        controller: mockController,
+        skinConfig: toggleSkinConfig,
+        duration: 30,
+        vr: mockController.videoVr
+      };
+
+      var DOM = TestUtils.renderIntoDocument(
+        <ControlBar {...mockProps} controlBarVisible={true}
+                    componentWidth={500}
+                    playerState={CONSTANTS.STATE.PLAYING}
+                    isLiveStream={mockProps.isLiveStream} />
+      );
+
+      var toggleStereoVrButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
+      expect(toggleStereoVrButtons.length).toBe(0);
+    });
+
+    it('enter stereo mode', function() {
+      var stereoMode = false;
+
+      var mockController = {
+        state: {
+          isMobile: true,
+          volumeState: {
+            volume: 1
+          },
+          closedCaptionOptions: {},
+          multiAudioOptions: {},
+          videoQualityOptions: {
+            availableBitrates: null
+          }
+        },
+        videoVrSource: {
+          vr: {
+            stereo: false,
+            contentType: 'single',
+            startPosition: 0
+          }
+        },
+        toggleStereoVr: function() {
+          stereoMode = true;
         }
-      },
-      videoVr: false,
-      videoVrSource: false
-    };
+      };
 
-    var toggleSkinConfig = Utils.clone(skinConfig);
-    toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
+      var toggleSkinConfig = Utils.clone(skinConfig);
+      toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
+      var mockProps = {
+        isLiveStream: false,
+        controller: mockController,
+        skinConfig: toggleSkinConfig,
+        duration: 30,
+        vr: mockController.videoVrSource
+      };
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: toggleSkinConfig,
-      duration: 30,
-      vr: mockController.videoVr
-    };
+      var DOM = TestUtils.renderIntoDocument(
+        <ControlBar {...mockProps} controlBarVisible={true}
+                    componentWidth={500}
+                    playerState={CONSTANTS.STATE.PLAYING}
+                    isLiveStream={mockProps.isLiveStream} />
+      );
+      DOM.isPhone = true;
 
-    var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
-    );
+      expect(stereoMode).toBe(false);
+      var toggleStereoVrButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-vr-stereo-button');
+      TestUtils.Simulate.click(toggleStereoVrButton);
+      expect(stereoMode).toBe(true);
+    });
 
-    var toggleStereoVrButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
-    expect(toggleStereoVrButtons.length).toBe(0);
   });
 
   it('not render stereo button on desktop', function() {
     var mockController = {
       state: {
-        isMobile: false,
         volumeState: {
           volume: 1
         },
@@ -233,7 +294,6 @@ describe('ControlBar', function() {
     var toggleSkinConfig = Utils.clone(skinConfig);
     toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
-
     var mockProps = {
       isLiveStream: false,
       controller: mockController,
@@ -251,57 +311,6 @@ describe('ControlBar', function() {
 
     var toggleStereoVrButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
     expect(toggleStereoVrButtons.length).toBe(0);
-  });
-
-  it('enter stereo mode', function() {
-    var stereoMode = false;
-
-    var mockController = {
-      state: {
-        isMobile: true,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      videoVrSource: {
-        vr: {
-          stereo: false,
-          contentType: 'single',
-          startPosition: 0
-        }
-      },
-      toggleStereoVr: function() {
-        stereoMode = true;
-      }
-    };
-
-    var toggleSkinConfig = Utils.clone(skinConfig);
-    toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
-
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: toggleSkinConfig,
-      duration: 30,
-      vr: mockController.videoVrSource
-    };
-
-    var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
-    );
-
-    expect(stereoMode).toBe(false);
-    var toggleStereoVrButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-vr-stereo-button');
-    TestUtils.Simulate.click(toggleStereoVrButton);
-    expect(stereoMode).toBe(true);
   });
 
   it('renders one button', function() {

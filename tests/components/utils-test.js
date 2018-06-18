@@ -600,4 +600,16 @@ describe('Utils', function() {
     expect(finalConfig.buttons.desktopContent[6].name).toBe('alice');
     expect(finalConfig.buttons.desktopContent[10].alice).toBe('video');
   });
+
+  it('tests getUserDevice', function() {
+    window.navigator.userAgent = 'Phone';
+    var device = Utils.getUserDevice();
+    expect(device).toBe('phone');
+    window.navigator.userAgent = 'Tablet';
+    device = Utils.getUserDevice();
+    expect(device).toBe('tablet');
+    window.navigator.userAgent = 'Webkit';
+    device = Utils.getUserDevice();
+    expect(device).toBe('desktop');
+  });
 });
