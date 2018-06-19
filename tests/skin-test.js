@@ -3,6 +3,7 @@ jest.dontMock('../js/views/pauseScreen');
 jest.dontMock('../js/constants/constants');
 jest.dontMock('../js/components/controlBar');
 jest.dontMock('../js/components/accessibleButton')
+jest.dontMock('../js/components/controlButton')
 jest.dontMock('../js/components/utils');
 jest.dontMock('../js/components/higher-order/accessibleMenu');
 jest.dontMock('../js/components/higher-order/preserveKeyboardFocus');

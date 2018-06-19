@@ -8,6 +8,7 @@ jest
 .dontMock('../../js/components/higher-order/preserveKeyboardFocus')
 .dontMock('../../js/constants/constants')
 .dontMock('../../js/components/accessibleButton')
+.dontMock('../../js/components/controlButton')
 .dontMock('classnames');
 
 var React = require('react');
@@ -16,6 +17,7 @@ var TestUtils = require('react-addons-test-utils');
 var CONSTANTS = require('../../js/constants/constants');
 var ControlBar = require('../../js/components/controlBar');
 var AccessibleButton = require('../../js/components/accessibleButton');
+var ControlButton = require('../../js/components/controlButton');
 var skinConfig = require('../../config/skin.json');
 var Utils = require('../../js/components/utils');
 var _ = require('underscore');
@@ -33,6 +35,22 @@ describe('ControlBar', function() {
   var renderAndGetComposedComponent = function(Component) {
     var renderedComponent = TestUtils.renderIntoDocument(Component);
     return renderedComponent.composedComponent;
+  };
+
+  // Finds a control bar button component using its class as an id. Will throw
+  // an error if zero or more than one components are found.
+  var getControlBarButtonWithClass = function(DOM, className) {
+    var controlBarButtons = TestUtils.scryRenderedComponentsWithType(DOM, ControlButton);
+
+    var result = controlBarButtons.filter(function(button) {
+      return (' ' + button.props.className + ' ').indexOf(' ' + className + ' ') > -1;
+    });
+
+    if (result.length === 1) {
+      return result[0];
+    } else {
+      throw new Error('Found ' + result.length + ' matches for class instead of one.');
+    }
   };
 
   // TODO
@@ -458,7 +476,8 @@ describe('ControlBar', function() {
                   isLiveStream={mockProps.isLiveStream} />
     );
 
-    expect(DOM.refs.volumeIcon.props.icon).toBe('volume');
+    var muteUnmuteBtn = getControlBarButtonWithClass(DOM, 'oo-mute-unmute');
+    expect(muteUnmuteBtn.props.icon).toBe('volume');
   });
 
   it('should display mute volume icon when volume is set to 0', function() {
@@ -478,7 +497,8 @@ describe('ControlBar', function() {
                   isLiveStream={mockProps.isLiveStream} />
     );
 
-    expect(DOM.refs.volumeIcon.props.icon).toBe('volumeOff');
+    var muteUnmuteBtn = getControlBarButtonWithClass(DOM, 'oo-mute-unmute');
+    expect(muteUnmuteBtn.props.icon).toBe('volumeOff');
   });
 
   it('should display mute volume icon when volume is muted', function() {
@@ -498,7 +518,8 @@ describe('ControlBar', function() {
                   isLiveStream={mockProps.isLiveStream} />
     );
 
-    expect(DOM.refs.volumeIcon.props.icon).toBe('volumeOff');
+    var muteUnmuteBtn = getControlBarButtonWithClass(DOM, 'oo-mute-unmute');
+    expect(muteUnmuteBtn.props.icon).toBe('volumeOff');
   });
 
   it('to play on play click', function() {
@@ -1705,7 +1726,7 @@ describe('ControlBar', function() {
     expect(buttons.length).toBe(0);
   });
 
-  it('highlights volume on mouseover', function() {
+  it('highlights volume on mouseenter', function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -1740,14 +1761,16 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe('0');
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe('blue');
-    TestUtils.Simulate.mouseOver(ReactDOM.findDOMNode(DOM.refs.volumeIcon));
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe('1');
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe('red');
-    TestUtils.Simulate.mouseOut(ReactDOM.findDOMNode(DOM.refs.volumeIcon));
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe('0');
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe('blue');
+    var muteUnmuteBtn = getControlBarButtonWithClass(DOM, 'oo-mute-unmute');
+    var volumeIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-icon-volume-on-ooyala-default');
+    expect(volumeIcon.style.opacity).toBe('0');
+    expect(volumeIcon.style.color).toBe('blue');
+    TestUtils.Simulate.mouseEnter(ReactDOM.findDOMNode(muteUnmuteBtn));
+    expect(volumeIcon.style.opacity).toBe('1');
+    expect(volumeIcon.style.color).toBe('red');
+    TestUtils.Simulate.mouseLeave(ReactDOM.findDOMNode(muteUnmuteBtn));
+    expect(volumeIcon.style.opacity).toBe('0');
+    expect(volumeIcon.style.color).toBe('blue');
   });
 
   it('uses the volume slider on mobile', function() {

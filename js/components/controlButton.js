@@ -6,12 +6,66 @@ var Tooltip = require('./tooltip');
 var Utils = require('./utils');
 var CONSTANTS = require('../constants/constants');
 
+/**
+ * Template component that is used for buttons that don't have accessibility enabled.
+ * The component is picked at runtime by ControlButton depending on the props that
+ * were passed to it.
+ * @param {Object} props Component's props
+ * @return {Component} React component
+ */
+var NonAccessibleButton = function(props) {
+  return (
+    <a
+      {...props}
+      aria-hidden={props.ariaHidden}>
+      {props.children}
+    </a>
+  );
+};
+
+/**
+ * Component used for action buttons within the skin. Currently used for both control
+ * bar and skip buttons. Implements common functionality for these buttons which includes
+ * icons, highlighting, tooltips and accessibility.
+ */
 var ControlButton = React.createClass({
+  /**
+   * Stores a ref to this component's main element or component.
+   * @private
+   * @param {*} buttonRef Either a reference to an AccessibleButton or a DOM element,
+   * depending on the component that was rendered
+   */
+  storeRef: function(buttonRef) {
+    this.buttonRef = buttonRef;
+    // Pass ref on to parent, if subscribed
+    if (typeof this.props.onRef === 'function') {
+      this.props.onRef(this.buttonRef);
+    }
+  },
 
   /**
-   *
+   * Chooses a component (either AccessibleButton or NonAccessibleButton) to use
+   * as base for the ControlButton depending on whether or not accessibility is
+   * enabled for this particular instance. Accessibility is enabled by default
+   * unless the ariaHidden prop is set to false explicitly.
    * @private
-   * @return {object}
+   * @return {Component} An AccessibleButton or NonAccessibleButton component, depending on the case
+   */
+  getButtonComponent: function() {
+    var Component;
+
+    if (this.props.ariaHidden === true) {
+      Component = NonAccessibleButton;
+    } else {
+      Component = AccessibleButton;
+    }
+    return Component;
+  },
+
+  /**
+   * Extracts the default styles for the button icon from the skin.json.
+   * @private
+   * @return {Object} An object with color and opacity properties which represent the default style of the button
    */
   getIconStyles: function() {
     var iconStyles = {
@@ -22,9 +76,13 @@ var ControlButton = React.createClass({
   },
 
   /**
-   *
+   * Applies the highlighted styles to the button icon on hover.
+   * TODO
+   * This was moved over from ControlBar but the original implementation sets the
+   * styles directly on the rendered element, which is an anti-pattern in React.
+   * Eventually we should update this in order to accomplish the same with setState().
    * @private
-   * @param {event} event
+   * @param {Event} event The mousenter event object that triggered the action
    */
   highlight: function(event) {
     if (
@@ -55,9 +113,9 @@ var ControlButton = React.createClass({
   },
 
   /**
-   *
+   * Restores the default button styles after hover ends.
    * @private
-   * @param {event} event
+   * @param {Event} event The mouseleave event object that triggered the action
    */
   removeHighlight: function(event) {
     var iconElement = Utils.getEventIconElement(event);
@@ -76,9 +134,10 @@ var ControlButton = React.createClass({
   },
 
   /**
-   *
+   * Extracts the responsive UI multiple value from the skin config depending on the
+   * responsive view that is currently active.
    * @private
-   * @return {number}
+   * @return {Number} The numeric value of the UI multiple that matches the current responsive view.
    */
   getResponsiveUiMultiple: function() {
     var responsiveView = this.props.responsiveView;
@@ -88,9 +147,10 @@ var ControlButton = React.createClass({
   },
 
   /**
-   *
+   * Determines whether or not tooltips are enabled considering the current
+   * platform and skin configuration.
    * @private
-   * @return {boolean}
+   * @return {Boolean} True if tooltips are enabled, false otherwise
    */
   areTooltipsEnabled: function() {
     var enabled = false;
@@ -106,13 +166,14 @@ var ControlButton = React.createClass({
   },
 
   /**
-   *
+   * Determines the vertical offset value to use for tooltips depending on the
+   * props that were passed to this component.
    * @private
-   * @return {Number}
+   * @return {Number} A numerical value representing the vertical offset at which tooltips will be rendered
    */
   getTooltipVerticalOffset: function() {
     var tooltipVerticalOffset;
-
+    // Use tooltipVerticalOffset if provided, otherwise use control bar height as default
     if (typeof this.props.tooltipVerticalOffset !== 'undefined') {
       tooltipVerticalOffset = this.props.tooltipVerticalOffset;
     } else {
@@ -126,10 +187,11 @@ var ControlButton = React.createClass({
   },
 
   /**
-   *
+   * Either executes a callback passed by the parent that determines the tooltip
+   * alignment or returns the default tooltip alignment value.
    * @private
-   * @param {type} key
-   * @return {string}
+   * @param {type} key An id (usually the focusId prop) that identifies the button whose tooltip alignment we want to determine
+   * @return {string} A value from CONSTANTS.TOOLTIP_ALIGNMENT which represents the tooltip alignment
    */
   getTooltipAlignment: function(key) {
     if (typeof this.props.getTooltipAlignment === 'function') {
@@ -140,11 +202,11 @@ var ControlButton = React.createClass({
   },
 
   /**
-   *
+   * Handler for the mouseenter event.
    * @private
-   * @param {Event} event
+   * @param {Event} The mouseenter event object
    */
-  onMouseOver: function(event) {
+  onMouseEnter: function(event) {
     this.highlight(event);
 
     if (typeof this.props.onMouseOver === 'function') {
@@ -153,11 +215,11 @@ var ControlButton = React.createClass({
   },
 
   /**
-   *
+   * Handler for the mouseleave event.
    * @private
-   * @param {Event} event
+   * @param {Event} The mouseleave event object
    */
-  onMouseOut: function(event) {
+  onMouseLeave: function(event) {
     this.removeHighlight(event);
 
     if (typeof this.props.onMouseOut === 'function') {
@@ -166,6 +228,7 @@ var ControlButton = React.createClass({
   },
 
   render: function() {
+    var Component = this.getButtonComponent();
     var className = classNames('oo-control-bar-item', this.props.className);
     var iconStyles = this.getIconStyles();
     var areTooltipsEnabled = this.areTooltipsEnabled();
@@ -176,12 +239,12 @@ var ControlButton = React.createClass({
     }
 
     return (
-      <AccessibleButton
+      <Component
         {...this.props}
+        ref={this.storeRef}
         className={className}
-        focusId={this.props.focusId}
-        onMouseOver={this.onMouseOver}
-        onMouseOut={this.onMouseOut}>
+        onMouseEnter={this.onMouseEnter}
+        onMouseLeave={this.onMouseLeave}>
 
         <Icon
           icon={this.props.icon}
@@ -202,7 +265,7 @@ var ControlButton = React.createClass({
 
         {this.props.children}
 
-      </AccessibleButton>
+      </Component>
     );
   }
 });
@@ -217,6 +280,7 @@ ControlButton.propTypes = {
   localizableStrings: React.PropTypes.object,
   responsiveView: React.PropTypes.string.isRequired,
   getTooltipAlignment: React.PropTypes.func,
+  onRef: React.PropTypes.func,
   onClick: React.PropTypes.func,
   skinConfig: React.PropTypes.shape({
     general: React.PropTypes.shape({
