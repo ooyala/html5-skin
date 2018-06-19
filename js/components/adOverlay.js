@@ -5,8 +5,10 @@ var React = require('react'),
     ClassNames = require('classnames'),
     CloseButton = require('./closeButton'),
     CONSTANTS = require('../constants/constants');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var AdOverlay = React.createClass({
+var AdOverlay = createReactClass({
   closeOverlay: function() {
     this.props.controller.closeNonlinearAd();
     this.props.controller.onSkipAdClicked();

@@ -6,22 +6,19 @@ jest.dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
 var AdOverlay = require('../../js/components/adOverlay');
 var CONSTANTS = require('../../js/constants/constants');
+var Enzyme = require('enzyme');
 
 describe('AdOverlay', function() {
-  it('creates an AdOverlay', function() {
-    var loaded = false;
-    var mockController = {
+  var mockController, mockSkinConfig;
+  beforeEach(function() {
+    mockController = {
       state: {
         isMobile: false
-      },
-      onAdOverlayLoaded: function() {
-        loaded = true;
       }
     };
-    var mockSkinConfig = {
+    mockSkinConfig = {
       adScreen: {
         showControlBar: true,
         showAdMarquee: true
@@ -32,86 +29,73 @@ describe('AdOverlay', function() {
         }
       }
     };
-    var DOM = TestUtils.renderIntoDocument(
+  });
+
+  afterEach(function() {
+
+  });
+
+  it('creates an AdOverlay', function() {
+    var loaded = false;
+    mockController.onAdOverlayLoaded = function() {
+      loaded = true;
+    };
+
+    var wrapper = Enzyme.mount(
       <AdOverlay
         controller={mockController}
         skinConfig={mockSkinConfig}
-        overlay={true}
+        overlay={"overlay"}
         showOverlay={true}
       />);
-
-    var adOverlayImage = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-ad-overlay-image');
-    TestUtils.Simulate.load(adOverlayImage);
+    var adOverlayImage = wrapper.find('.oo-ad-overlay-image');
+    adOverlayImage.simulate('load');
     expect(loaded).toBe(true);
   });
 
   it('handles a click', function() {
     var clickSource = '';
-    var mockController = {
-      state: {
-        isMobile: false
-      },
-      onAdsClicked: function(source) {
-        clickSource = source;
-      }
+
+    mockController.onAdsClicked= function(source) {
+      clickSource = source;
     };
-    var mockSkinConfig = {
-      adScreen: {
-        showControlBar: true,
-        showAdMarquee: true
-      },
-      icons: {
-        dismiss: {
-          fontStyleClass: 'dismiss'
-        }
-      }
-    };
-    var DOM = TestUtils.renderIntoDocument(
+
+    var wrapper = Enzyme.mount(
       <AdOverlay
         controller={mockController}
         skinConfig={mockSkinConfig}
+        overlay={"overlay"}
+        showOverlay={true}
       />);
 
-    var ad = TestUtils.findRenderedDOMComponentWithTag(DOM, 'a');
-    TestUtils.Simulate.click(ad);
+    var ad = wrapper.find('a');
+    ad.simulate('click');
     expect(clickSource).toBe(CONSTANTS.AD_CLICK_SOURCE.OVERLAY);
   });
 
   it('closes', function() {
     var nonLinearHidden = false;
     var adSkipped = false;
-    var mockController = {
-      state: {
-        isMobile: false
-      },
-      onSkipAdClicked: function() {
-        adSkipped = true;
-      },
-      onAdsClicked: function(source) {
-      },
-      closeNonlinearAd: function() {
-        nonLinearHidden = true;
-      }
+
+    mockController.onSkipAdClicked = function() {
+      adSkipped = true;
     };
-    var mockSkinConfig = {
-      adScreen: {
-        showControlBar: true,
-        showAdMarquee: true
-      },
-      icons: {
-        dismiss: {
-          fontStyleClass: 'dismiss'
-        }
-      }
+    mockController.onAdsClicked = function(source) {
     };
-    var DOM = TestUtils.renderIntoDocument(
+    mockController.closeNonlinearAd = function() {
+      nonLinearHidden = true;
+    };
+
+    var wrapper = Enzyme.mount(
       <AdOverlay
         controller={mockController}
         skinConfig={mockSkinConfig}
+        overlay={"overlay"}
+        showOverlay={true}
       />);
 
-    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-ad-overlay-close-button');
-    TestUtils.Simulate.click(closeBtn);
+    var closeBtn = wrapper.find('button.oo-ad-overlay-close-button');
+    closeBtn.simulate('click');
     expect(nonLinearHidden).toBe(true);
     expect(adSkipped).toBe(true);
   });
@@ -119,48 +103,38 @@ describe('AdOverlay', function() {
   it('hides and shows the close button', function() {
     var nonLinearHidden = false;
     var adSkipped = false;
-    var mockController = {
-      state: {
-        isMobile: false
-      },
-      onSkipAdClicked: function() {
-        adSkipped = true;
-      },
-      onAdsClicked: function(source) {
-      },
-      closeNonlinearAd: function() {
-        nonLinearHidden = true;
-      }
+
+    mockController.onSkipAdClicked = function() {
+      adSkipped = true;
     };
-    var mockSkinConfig = {
-      adScreen: {
-        showControlBar: true,
-        showAdMarquee: true
-      },
-      icons: {
-        dismiss: {
-          fontStyleClass: 'dismiss'
-        }
-      }
+    mockController.onAdsClicked = function(source) {
     };
-    var DOM = TestUtils.renderIntoDocument(
+    mockController.closeNonlinearAd = function() {
+      nonLinearHidden = true;
+    };
+
+    var wrapper = Enzyme.mount(
       <AdOverlay
         controller={mockController}
         skinConfig={mockSkinConfig}
         showOverlayCloseButton={false}
+        overlay={"overlay"}
+        showOverlay={true}
       />);
 
-    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-ad-overlay-close-button');
-    expect(closeBtn.className).toMatch('hidden');
+    var closeBtn = wrapper.find('button.oo-ad-overlay-close-button');
+    expect(ReactDOM.findDOMNode(closeBtn.instance()).className).toMatch('hidden');
 
-    DOM = TestUtils.renderIntoDocument(
+    wrapper = Enzyme.mount(
       <AdOverlay
         controller={mockController}
         skinConfig={mockSkinConfig}
         showOverlayCloseButton={true}
+        overlay={"overlay"}
+        showOverlay={true}
       />);
 
-    closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-ad-overlay-close-button');
-    expect(closeBtn.className).not.toMatch('hidden');
+    closeBtn = wrapper.find('button.oo-ad-overlay-close-button');
+    expect(ReactDOM.findDOMNode(closeBtn.instance()).className).not.toMatch('hidden');
   });
 });
