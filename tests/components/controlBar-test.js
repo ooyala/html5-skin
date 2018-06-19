@@ -22,7 +22,7 @@ var _ = require('underscore');
 describe('ControlBar', function() {
 
   var baseMockController, baseMockProps;
-  var defaultSkinConfig = JSON.parse(JSON.stringify(skinConfig));
+  var defaultSkinConfig = Utils.clone(skinConfig);
 
   // TODO
   // Old unit tests should use the base mock controller and props
@@ -37,9 +37,7 @@ describe('ControlBar', function() {
         },
         closedCaptionOptions: {},
         multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
+        videoQualityOptions: {}
       },
       cancelTimer: function() {},
       hideVolumeSliderBar: function() {},
@@ -49,78 +47,39 @@ describe('ControlBar', function() {
     baseMockProps = {
       isLiveStream: false,
       controller: baseMockController,
-      skinConfig: JSON.parse(JSON.stringify(defaultSkinConfig))
+      skinConfig: defaultSkinConfig
     };
   });
 
   it('creates a control bar', function() {
-
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        videoQualityOptions: {},
-        closedCaptionOptions: {},
-        multiAudioOptions: {}
-      }
-    };
-
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: skinConfig,
-      duration: 30
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+        isLiveStream={baseMockProps.isLiveStream} />
     );
   });
 
   it('enters fullscreen', function() {
     var fullscreenToggled = false;
-
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {
-          showPopover: true
-        },
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      toggleFullscreen: function() {
-        fullscreenToggled = true;
-      },
-      togglePopover: function() { this.state.multiAudioOptions.showPopover = !this.state.multiAudioOptions.showPopover;}
+    baseMockController.state.multiAudioOptions.showPopover = true;
+    baseMockController.toggleFullscreen = function() {
+      fullscreenToggled = true;
+    };
+    baseMockController.togglePopover = function() {
+      this.state.multiAudioOptions.showPopover = !this.state.multiAudioOptions.showPopover;
     };
 
-    var fullscreenSkinConfig = Utils.clone(skinConfig);
-    fullscreenSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'fullscreen', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
       {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 }
     ];
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: fullscreenSkinConfig
-    };
 
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     expect(fullscreenToggled).toBe(false);
@@ -129,8 +88,10 @@ describe('ControlBar', function() {
     expect(fullscreenToggled).toBe(true);
   });
 
-  describe('Vr on phones', function(){
+  describe('Vr on phones', function() {
     beforeEach(function() {
+      baseMockController.videoVrSource = {};
+      baseMockController.videoVrSource.vr = {};
       window.navigator.userAgent = 'phone';
     });
     afterEach(function() {
@@ -138,43 +99,17 @@ describe('ControlBar', function() {
     });
 
     it('render one stereo button if content vr', function() {
-      var mockController = {
-        state: {
-          isMobile: true,
-          volumeState: {
-            volume: 1
-          },
-          closedCaptionOptions: {},
-          multiAudioOptions: {},
-          videoQualityOptions: {
-            availableBitrates: null
-          }
-        },
-        videoVrSource: {
-          vr: {
-            stereo: false,
-            contentType: 'single',
-            startPosition: 0
-          }
-        }
-      };
+      baseMockProps.skinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
-      var toggleSkinConfig = Utils.clone(skinConfig);
-      toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
-
-      var mockProps = {
-        isLiveStream: false,
-        controller: mockController,
-        skinConfig: toggleSkinConfig,
-        duration: 30,
-        vr: mockController.videoVrSource
-      };
+      baseMockProps.vr = baseMockController.videoVrSource;
 
       var DOM = TestUtils.renderIntoDocument(
-        <ControlBar {...mockProps} controlBarVisible={true}
-                    componentWidth={500}
-                    playerState={CONSTANTS.STATE.PLAYING}
-                    isLiveStream={mockProps.isLiveStream} />
+        <ControlBar
+          {...baseMockProps}
+          controlBarVisible={true}
+          componentWidth={500}
+          playerState={CONSTANTS.STATE.PLAYING}
+        />
       );
 
       var toggleStereoVrButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
@@ -182,39 +117,19 @@ describe('ControlBar', function() {
     });
 
     it('not render stereo button if content not vr', function() {
-      var mockController = {
-        state: {
-          isMobile: true,
-          volumeState: {
-            volume: 1
-          },
-          closedCaptionOptions: {},
-          multiAudioOptions: {},
-          videoQualityOptions: {
-            availableBitrates: null
-          }
-        },
-        videoVr: false,
-        videoVrSource: false
-      };
+      baseMockController.videoVr = false;
+      baseMockController.videoVrSource = false;
 
-      var toggleSkinConfig = Utils.clone(skinConfig);
-      toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
-
-
-      var mockProps = {
-        isLiveStream: false,
-        controller: mockController,
-        skinConfig: toggleSkinConfig,
-        duration: 30,
-        vr: mockController.videoVr
-      };
+      baseMockProps.skinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
+      baseMockProps.vr = baseMockController.videoVr;
 
       var DOM = TestUtils.renderIntoDocument(
-        <ControlBar {...mockProps} controlBarVisible={true}
-                    componentWidth={500}
-                    playerState={CONSTANTS.STATE.PLAYING}
-                    isLiveStream={mockProps.isLiveStream} />
+        <ControlBar
+          {...baseMockProps}
+          controlBarVisible={true}
+          componentWidth={500}
+          playerState={CONSTANTS.STATE.PLAYING}
+        />
       );
 
       var toggleStereoVrButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
@@ -223,49 +138,21 @@ describe('ControlBar', function() {
 
     it('enter stereo mode', function() {
       var stereoMode = false;
-
-      var mockController = {
-        state: {
-          isMobile: true,
-          volumeState: {
-            volume: 1
-          },
-          closedCaptionOptions: {},
-          multiAudioOptions: {},
-          videoQualityOptions: {
-            availableBitrates: null
-          }
-        },
-        videoVrSource: {
-          vr: {
-            stereo: false,
-            contentType: 'single',
-            startPosition: 0
-          }
-        },
-        toggleStereoVr: function() {
-          stereoMode = true;
-        }
+      baseMockController.videoVrSource.vr.stereo = false;
+      baseMockController.toggleStereoVr = function() {
+        stereoMode = true;
       };
 
-      var toggleSkinConfig = Utils.clone(skinConfig);
-      toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
-
-      var mockProps = {
-        isLiveStream: false,
-        controller: mockController,
-        skinConfig: toggleSkinConfig,
-        duration: 30,
-        vr: mockController.videoVrSource
-      };
+      baseMockProps.skinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
       var DOM = TestUtils.renderIntoDocument(
-        <ControlBar {...mockProps} controlBarVisible={true}
-                    componentWidth={500}
-                    playerState={CONSTANTS.STATE.PLAYING}
-                    isLiveStream={mockProps.isLiveStream} />
+        <ControlBar
+          {...baseMockProps}
+          controlBarVisible={true}
+          componentWidth={500}
+          playerState={CONSTANTS.STATE.PLAYING}
+        />
       );
-      DOM.isPhone = true;
 
       expect(stereoMode).toBe(false);
       var toggleStereoVrButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-vr-stereo-button');
@@ -273,75 +160,37 @@ describe('ControlBar', function() {
       expect(stereoMode).toBe(true);
     });
 
-  });
+    it('not render stereo button on desktop', function() {
+      baseMockController.videoVrSource = false;
 
-  it('not render stereo button on desktop', function() {
-    var mockController = {
-      state: {
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      videoVr: true,
-      videoVrSource: false
-    };
+      baseMockProps.skinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
+      baseMockProps.vr = baseMockController.videoVr;
 
-    var toggleSkinConfig = Utils.clone(skinConfig);
-    toggleSkinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
+      var DOM = TestUtils.renderIntoDocument(
+        <ControlBar
+          {...baseMockProps}
+          controlBarVisible={true}
+          componentWidth={500}
+          playerState={CONSTANTS.STATE.PLAYING}
+        />
+      );
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: toggleSkinConfig,
-      duration: 30,
-      vr: mockController.videoVr
-    };
+      var toggleStereoVrButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
+      expect(toggleStereoVrButtons.length).toBe(0);
+    });
 
-    var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
-    );
-
-    var toggleStereoVrButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
-    expect(toggleStereoVrButtons.length).toBe(0);
   });
 
   it('renders one button', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      }
-    };
-
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [{'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
-
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
+    baseMockProps.skinConfig.buttons.desktopContent = [{'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-control-bar-item');
@@ -349,43 +198,25 @@ describe('ControlBar', function() {
   });
 
   it('renders multiple buttons', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        },
-        discoveryData: true
-      }
-    };
+    baseMockController.state.discoveryData = true;
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
       {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
       {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
       {'name':'fullscreen', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
     // This might no longer be necessary after the skin.json submodule is updated
-    oneButtonSkinConfig.shareScreen.shareContent = ['social', 'embed'];
-    oneButtonSkinConfig.shareScreen.socialContent = ['twitter', 'facebook', 'google+', 'email'];
-
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
+    baseMockProps.skinConfig.shareScreen.shareContent = ['social', 'embed'];
+    baseMockProps.skinConfig.shareScreen.socialContent = ['twitter', 'facebook', 'google+', 'email'];
 
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
         componentWidth={1200}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-control-bar-item');
@@ -395,39 +226,19 @@ describe('ControlBar', function() {
   it('should mute on click and change volume', function() {
     var muteClicked = false;
     var newVolume = -1;
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      handleMuteClick: function() {muteClicked = true;},
-      setVolume: function(volume) {newVolume = volume;},
-      toggleMute: function() {}
-    };
-
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockController.handleMuteClick = function() {muteClicked = true;};
+    baseMockController.setVolume = function(volume) {newVolume = volume;};
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':105 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var volumeButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-mute-unmute').firstChild;
@@ -443,17 +254,13 @@ describe('ControlBar', function() {
     baseMockController.state.volumeState.volume = 1;
     baseMockController.state.volumeState.muted = false;
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: baseMockController,
-      skinConfig: skinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+       />
     );
 
     expect(DOM.refs.volumeIcon.props.icon).toBe('volume');
@@ -463,17 +270,12 @@ describe('ControlBar', function() {
     baseMockController.state.volumeState.volume = 0;
     baseMockController.state.volumeState.muted = false;
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: baseMockController,
-      skinConfig: skinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
+      <ControlBar
+        {...baseMockProps} controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+      />
     );
 
     expect(DOM.refs.volumeIcon.props.icon).toBe('volumeOff');
@@ -483,17 +285,12 @@ describe('ControlBar', function() {
     baseMockController.state.volumeState.volume = 1;
     baseMockController.state.volumeState.muted = true;
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: baseMockController,
-      skinConfig: skinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
+      <ControlBar
+        {...baseMockProps} controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+      />
     );
 
     expect(DOM.refs.volumeIcon.props.icon).toBe('volumeOff');
@@ -501,37 +298,17 @@ describe('ControlBar', function() {
 
   it('to play on play click', function() {
     var playClicked = false;
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      togglePlayPause: function() {playClicked = true;}
-    };
+    baseMockController.togglePlayPause = function() {playClicked = true;};
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':105 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var playButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause').firstChild;
@@ -717,37 +494,18 @@ describe('ControlBar', function() {
 
   it('to toggle share screen', function() {
     var shareClicked = false;
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      toggleShareScreen: function() {shareClicked = true;}
-    };
-
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockController.toggleShareScreen = function() {shareClicked = true;};
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var shareButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share').firstChild;
@@ -757,38 +515,21 @@ describe('ControlBar', function() {
 
   it('to toggle discovery screen', function() {
     var discoveryClicked = false;
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        },
-        discoveryData: true
-      },
-      toggleDiscoveryScreen: function() {discoveryClicked = true;}
-    };
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockController.state.discoveryData = true;
+    baseMockController.toggleDiscoveryScreen = function() {discoveryClicked = true;};
+
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.END}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var discoveryButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-discovery').firstChild;
@@ -797,37 +538,18 @@ describe('ControlBar', function() {
   });
 
   it('shows/hides closed caption button if captions available', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      toggleButtons: {}
-    };
+    baseMockController.toggleButtons = {};
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    // var oneButtonSkinConfig = Utils.clone(skinConfig);
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'closedCaption', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var ccButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-closed-caption');
@@ -835,35 +557,16 @@ describe('ControlBar', function() {
 
     var toggleScreenClicked = false;
     var captionClicked = false;
-    mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {availableLanguages: true},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      toggleButtons: {},
-      toggleScreen: function() {toggleScreenClicked = true;},
-      togglePopover: function() {captionClicked = true;}
-    };
+    baseMockController.state.closedCaptionOptions.availableLanguages = true;
+    baseMockController.toggleScreen = function() {toggleScreenClicked = true;};
+    baseMockController.togglePopover = function() {captionClicked = true;};
 
     // md, test cc popover
-    mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var ccButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-closed-caption');
@@ -873,19 +576,13 @@ describe('ControlBar', function() {
     TestUtils.Simulate.click(ccButton);
     expect(captionClicked).toBe(true);
 
-    // xs, test full window view
-    mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig,
-      responsiveView: skinConfig.responsive.breakpoints.xs.id
-    };
+    baseMockProps.responsiveView = skinConfig.responsive.breakpoints.xs.id;
 
     DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
        componentWidth={350}
        playerState={CONSTANTS.STATE.PLAYING}
-       isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-closed-caption').firstChild;
@@ -894,37 +591,18 @@ describe('ControlBar', function() {
   });
 
   it('hides closed caption button if ooyala ad is playing', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {availableLanguages: true},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        },
-        isOoyalaAds: true
-      }
-    };
+    baseMockController.state.closedCaptionOptions.availableLanguages = true;
+    baseMockController.state.isOoyalaAds = true;
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'closedCaption', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+       />
     );
 
     var ccButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-closed-caption');
@@ -932,37 +610,18 @@ describe('ControlBar', function() {
   });
 
   it('shows closed caption button if ooyala ad is not playing', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {availableLanguages: true},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        },
-        isOoyalaAds: false
-      }
-    };
+    baseMockController.state.closedCaptionOptions.availableLanguages = true;
+    baseMockController.state.isOoyalaAds = false;
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'closedCaption', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var ccButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-closed-caption');
@@ -970,40 +629,18 @@ describe('ControlBar', function() {
   });
 
   it('show/hide audioAndCC button if multiAudio or CC is available', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        },
-        isOoyalaAds: false,
-        hideMultiAudioIcon: false
-      }
-    };
+    baseMockController.state.hideMultiAudioIcon = false;
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar
-        {...mockProps}
+        {...baseMockProps}
         controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={baseMockProps.isLiveStream}
       />
     );
 
@@ -1012,16 +649,15 @@ describe('ControlBar', function() {
     expect(multiAudioBtn.length).toBe(0);
 
     // there are no CC, but multiaudio is available
-    mockController.state.multiAudio = {};
-    mockController.state.multiAudio.tracks = [{id: 1, label: 'test'}];
+    baseMockController.state.multiAudio = {};
+    baseMockController.state.multiAudio.tracks = [{id: 1, label: 'test'}];
 
     var DOM2 = TestUtils.renderIntoDocument(
       <ControlBar
-        {...mockProps}
+        {...baseMockProps}
         controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={baseMockProps.isLiveStream}
       />
     );
 
@@ -1029,30 +665,34 @@ describe('ControlBar', function() {
     expect(multiAudioBtn2.length).toBe(1);
 
     // there are no multiaudio, but CC is available
-    mockController.state.multiAudio = {};
-    mockController.state.closedCaptionOptions = {};
-    mockController.state.closedCaptionOptions.availableLanguages = {};
-    mockController.state.closedCaptionOptions.availableLanguages.languages = [ 'en', 'de', 'es', 'fr' ];
+    baseMockController.state.multiAudio = {};
+    baseMockController.state.closedCaptionOptions = {};
+    baseMockController.state.closedCaptionOptions.availableLanguages = {};
+    baseMockController.state.closedCaptionOptions.availableLanguages.languages = [ 'en', 'de', 'es', 'fr' ];
 
     var DOM3 = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+      />
     );
 
     var multiAudioBtn3 = TestUtils.scryRenderedDOMComponentsWithClass(DOM3, 'oo-multiaudio');
     expect(multiAudioBtn3.length).toBe(1);
 
     // there are multilaudio, but param hideMultiAudioIcon was set to true
-    mockController.state.hideMultiAudioIcon = true;
-    mockController.state.closedCaptionOptions.availableLanguages = {};
+    baseMockController.state.hideMultiAudioIcon = true;
+    baseMockController.state.closedCaptionOptions.availableLanguages = {};
 
     var DOM4 = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={500}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+      />
     );
 
     var multiAudioBtn4 = TestUtils.scryRenderedDOMComponentsWithClass(DOM4, 'oo-multiaudio');
@@ -1062,51 +702,27 @@ describe('ControlBar', function() {
   it('click on the multiAudioBtn should call the corresponding function', function() {
     var multiAudioClicked = false;
     var popoverStateChanged = false;
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {
-          availableLanguages: {
-            languages: [ 'en', 'de', 'es', 'fr' ]
-          }
-        },
-        multiAudio: {
-          tracks: [{id: 1, label: 'test'}]
-        },
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        },
-        isOoyalaAds: false,
-        hideMultiAudioIcon: false
-      },
-      toggleButtons: {},
-      toggleMultiAudioScreen: function() {multiAudioClicked = true;},
-      togglePopover: function() {popoverStateChanged = true;},
-    };
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockController.state.closedCaptionOptions.availableLanguages = {};
+    baseMockController.state.closedCaptionOptions.availableLanguages.languages = [ 'en', 'de', 'es', 'fr' ];
+    baseMockController.state.multiAudio = {};
+    baseMockController.state.multiAudio.tracks = [{id: 1, label: 'test'}];
+    baseMockController.toggleButtons = {};
+    baseMockController.toggleMultiAudioScreen = function() {multiAudioClicked = true;};
+    baseMockController.togglePopover = function() {popoverStateChanged = true;};
+
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 }
     ];
-
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
 
     // small screen
     var DOM = TestUtils.renderIntoDocument(
       <ControlBar
-        {...mockProps}
+        {...baseMockProps}
         controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={baseMockProps.isLiveStream} />
+      />
     );
 
     var controlBar = TestUtils.findRenderedComponentWithType(DOM, ControlBar);
@@ -1114,21 +730,15 @@ describe('ControlBar', function() {
     TestUtils.Simulate.click(multiAudioBtn);
     expect(multiAudioClicked).toBe(true);
 
-    var twoButtonSkinConfig = Utils.clone(skinConfig);
-    twoButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 }
     ];
-    twoButtonSkinConfig.responsive.breakpoints.lg.multiplier = true;
-    var mockProps2 = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: twoButtonSkinConfig,
-      responsiveView: 'lg'
-    };
+    baseMockProps.skinConfig.responsive.breakpoints.lg.multiplier = true;
+    baseMockProps.responsiveView = 'lg';
     // large screen
     var DOM2 = TestUtils.renderIntoDocument(
       <ControlBar
-        {...mockProps2}
+        {...baseMockProps}
         controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -1140,183 +750,98 @@ describe('ControlBar', function() {
   });
 
   it('hides share button if share options are not provided', function() {
-    var customSkinConfig = JSON.parse(JSON.stringify(skinConfig));
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: { volume: 1 },
-        videoQualityOptions: {},
-        closedCaptionOptions: {},
-        multiAudioOptions: {}
-      }
-    };
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: customSkinConfig
-    };
-
-    customSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       { 'name': 'share', 'location': 'controlBar', 'whenDoesNotFit': 'moveToMoreOptions', 'minWidth': 45 }
     ];
-    customSkinConfig.shareScreen.shareContent = ['social'];
-    customSkinConfig.shareScreen.socialContent = [];
+    baseMockProps.skinConfig.shareScreen.shareContent = ['social'];
+    baseMockProps.skinConfig.shareScreen.socialContent = [];
 
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps}
+      <ControlBar {...baseMockProps}
         controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
     expect(TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-share').length).toBe(0);
 
-    customSkinConfig.shareScreen.shareContent = [];
-    customSkinConfig.shareScreen.socialContent = ['twitter'];
+    baseMockProps.skinConfig.shareScreen.shareContent = [];
+    baseMockProps.skinConfig.shareScreen.socialContent = ['twitter'];
 
     DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps}
+      <ControlBar {...baseMockProps}
         controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
     expect(TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-share').length).toBe(0);
   });
 
   it('hides share button when ooyala ad is playing', function() {
-    var customSkinConfig = JSON.parse(JSON.stringify(skinConfig));
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: { volume: 1 },
-        videoQualityOptions: {},
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        isOoyalaAds: true
-      }
-    };
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: customSkinConfig
-    };
+    baseMockController.state.isOoyalaAds = true;
 
-    customSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       { 'name': 'share', 'location': 'controlBar', 'whenDoesNotFit': 'moveToMoreOptions', 'minWidth': 45 }
     ];
-    customSkinConfig.shareScreen.shareContent = ['social'];
-    customSkinConfig.shareScreen.socialContent = ['twitter'];
+    baseMockProps.skinConfig.shareScreen.shareContent = ['social'];
+    baseMockProps.skinConfig.shareScreen.socialContent = ['twitter'];
 
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps}
+      <ControlBar {...baseMockProps}
         controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
     expect(TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-share').length).toBe(0);
   });
 
   it('shows share button when ooyala ad is not playing', function() {
-    var customSkinConfig = JSON.parse(JSON.stringify(skinConfig));
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: { volume: 1 },
-        videoQualityOptions: {},
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        isOoyalaAds: false
-      }
-    };
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: customSkinConfig
-    };
+    baseMockController.state.isOoyalaAds = false;
 
-    customSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       { 'name': 'share', 'location': 'controlBar', 'whenDoesNotFit': 'moveToMoreOptions', 'minWidth': 45 }
     ];
-    customSkinConfig.shareScreen.shareContent = ['social'];
-    customSkinConfig.shareScreen.socialContent = ['twitter'];
+    baseMockProps.skinConfig.shareScreen.shareContent = ['social'];
+    baseMockProps.skinConfig.shareScreen.socialContent = ['twitter'];
 
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps}
+      <ControlBar {...baseMockProps}
         controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
     expect(TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-share').length).toBe(1);
   });
 
   it('shows/hides discovery button if discovery available', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        },
-        discoveryData: false
-      }
-    };
-
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockController.state.discoveryData = false;
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var discoveryButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery');
     expect(discoveryButtons.length).toBe(0);
 
     var discoveryClicked = false;
-    mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        },
-        discoveryData: true
-      },
-      toggleDiscoveryScreen: function() {discoveryClicked = true;}
-    };
 
-    mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
+    baseMockController.state.discoveryData = true;
+    baseMockController.toggleDiscoveryScreen = function() {discoveryClicked = true;};
 
     DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var discoveryButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery');
@@ -1328,38 +853,18 @@ describe('ControlBar', function() {
   });
 
   it('hides discovery button when ooyala ad is playing', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        },
-        discoveryData: true,
-        isOoyalaAds: true
-      }
-    };
+    baseMockController.state.discoveryData = true;
+    baseMockController.state.isOoyalaAds = true;
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var discoveryButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery');
@@ -1367,38 +872,18 @@ describe('ControlBar', function() {
   });
 
   it('shows discovery button when ooyala ad is not playing', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        },
-        discoveryData: true,
-        isOoyalaAds: false
-      }
-    };
+    baseMockController.state.discoveryData = true;
+    baseMockController.state.isOoyalaAds = false;
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var discoveryButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery');
@@ -1406,37 +891,16 @@ describe('ControlBar', function() {
   });
 
   it('shows/hides the more options button appropriately', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      }
-    };
-
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
       {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var optionsButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-more-options');
@@ -1444,7 +908,7 @@ describe('ControlBar', function() {
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-control-bar-item');
     expect(buttons.length).toBe(1);
 
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
@@ -1453,17 +917,11 @@ describe('ControlBar', function() {
       {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
 
-    mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     optionsButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-more-options');
@@ -1473,23 +931,9 @@ describe('ControlBar', function() {
   });
 
   it('hides the more options button when ooyala ad is playing', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        },
-        isOoyalaAds: true
-      }
-    };
+    baseMockController.state.isOoyalaAds = true;
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
@@ -1498,17 +942,11 @@ describe('ControlBar', function() {
       {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
 
-    mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
-    DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     optionsButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-more-options');
@@ -1518,23 +956,9 @@ describe('ControlBar', function() {
   });
 
   it('shows the more options button when ooyala ad is not playing', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        },
-        isOoyalaAds: false
-      }
-    };
+    baseMockController.state.isOoyalaAds = false;
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
@@ -1543,46 +967,27 @@ describe('ControlBar', function() {
       {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
 
-    mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
-    DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
-    optionsButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-more-options');
+    var optionsButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-more-options');
     expect(optionsButton.length).toBe(1);
-    buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-play-pause');
+    var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-play-pause');
     expect(buttons.length).toBeLessThan(5);
   });
 
   it('handles more options click', function() {
     var moreOptionsClicked = false;
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      toggleMoreOptionsScreen: function() {
-        moreOptionsClicked = true;
-      }
+
+    baseMockController.toggleMoreOptionsScreen = function() {
+      moreOptionsClicked = true;
     };
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
@@ -1590,17 +995,12 @@ describe('ControlBar', function() {
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
       {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
 
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var optionsButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-more-options');
@@ -1610,37 +1010,16 @@ describe('ControlBar', function() {
   });
 
   it('handles bad button input', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      }
-    };
-
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
       {'name':'doesNotExist', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-control-bar-item');
@@ -1648,56 +1027,32 @@ describe('ControlBar', function() {
   });
 
   it('shows/hides the live indicator appropriately', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      }
-    };
-
     var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'live', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
 
-    var mockProps = {
-      isLiveStream: true,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+        isLiveStream={true}
+      />
     );
 
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-live');
     expect(buttons.length).toBe(1);
 
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'live', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
 
-    mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+        isLiveStream={false}
+      />
     );
 
     buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-live');
@@ -1705,38 +1060,17 @@ describe('ControlBar', function() {
   });
 
   it('highlights volume on mouseover', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      }
-    };
-
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
-    oneButtonSkinConfig.controlBar.iconStyle.inactive.opacity = 0;
-    oneButtonSkinConfig.controlBar.iconStyle.active.opacity = 1;
-    oneButtonSkinConfig.controlBar.iconStyle.active.color = 'red';
-    oneButtonSkinConfig.controlBar.iconStyle.inactive.color = 'blue';
-
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
+    baseMockProps.skinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
+    baseMockProps.skinConfig.controlBar.iconStyle.inactive.opacity = 0;
+    baseMockProps.skinConfig.controlBar.iconStyle.active.opacity = 1;
+    baseMockProps.skinConfig.controlBar.iconStyle.active.color = 'red';
+    baseMockProps.skinConfig.controlBar.iconStyle.inactive.color = 'blue';
 
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSED}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe('0');
@@ -1750,35 +1084,16 @@ describe('ControlBar', function() {
   });
 
   it('uses the volume slider on mobile', function() {
-    var mockController = {
-      state: {
-        isMobile: true,
-        volumeState: {
-          volume: 1,
-          volumeSliderVisible: true
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      }
-    };
+    baseMockController.state.isMobile = true;
+    baseMockController.state.volumeState.volumeSliderVisible = true;
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
-
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
+    baseMockProps.skinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
 
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSED}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
     var slider = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume-slider');
     expect(slider).not.toBe(null);
@@ -1786,107 +1101,49 @@ describe('ControlBar', function() {
 
   it('hides the volume on iOS', function() {
     window.navigator.platform = 'iPhone';
-    var mockController = {
-      state: {
-        isMobile: true,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      }
-    };
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
-
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
+    baseMockProps.skinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
 
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSED}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     expect(DOM.refs.volumeIcon).toBe(undefined);
-
   });
 
   it('shows/hides quality button if bitrates available/not available', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      }
-    };
-
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'quality', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
     expect(qualityButtons.length).toBe(0);
 
     var qualityClicked = false;
-    mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {availableLanguages: true},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: true
-        }
-      },
-      toggleButtons: {},
-      toggleScreen: function() {qualityClicked = true;},
-      togglePopover: function() {qualityClicked = true;}
-    };
+    baseMockController.state.closedCaptionOptions.availableLanguages = true;
+    baseMockController.state.videoQualityOptions.availableBitrates = true;
+    baseMockController.toggleButtons = {};
+    baseMockController.toggleScreen = function() {qualityClicked = true;};
+    baseMockController.togglePopover = function() {qualityClicked = true;};
 
     // xsmall
-    mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig,
-      responsiveView: skinConfig.responsive.breakpoints.xs.id
-    };
+    baseMockProps.responsiveView = skinConfig.responsive.breakpoints.xs.id;
 
     DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var qualityButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
@@ -1897,18 +1154,13 @@ describe('ControlBar', function() {
     expect(qualityClicked).toBe(true);
 
     // medium
-    mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig,
-      responsiveView: skinConfig.responsive.breakpoints.md.id
-    };
+    baseMockProps.responsiveView = skinConfig.responsive.breakpoints.md.id;
 
     DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var qualityButtons3 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
@@ -1919,18 +1171,13 @@ describe('ControlBar', function() {
     expect(qualityClicked).toBe(true);
 
     // large
-    mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig,
-      responsiveView: skinConfig.responsive.breakpoints.lg.id
-    };
+    baseMockProps.responsiveView = skinConfig.responsive.breakpoints.lg.id;
 
     DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var qualityButtons4 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
@@ -1942,37 +1189,17 @@ describe('ControlBar', function() {
   });
 
   it('hides quality button if ooyala ad is playing', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: true
-        },
-        isOoyalaAds: true
-      }
-    };
+    baseMockController.state.isOoyalaAds = true;
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'quality', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
@@ -1980,37 +1207,18 @@ describe('ControlBar', function() {
   });
 
   it('shows quality button if ooyala ad is not playing', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: true
-        },
-        isOoyalaAds: false
-      }
-    };
+    baseMockController.state.videoQualityOptions.availableBitrates = true;
+    baseMockController.state.isOoyalaAds = false;
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'quality', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var mockProps = {
-      isLiveStream: false,
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
-
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
@@ -2018,36 +1226,16 @@ describe('ControlBar', function() {
   });
 
   it('renders nonclickable logo', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      }
-    };
-
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':130 }
     ];
-    oneButtonSkinConfig.controlBar.logo.clickUrl = '';
-
-    var mockProps = {
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
+    baseMockProps.skinConfig.controlBar.logo.clickUrl = '';
 
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var nonClickableLogo = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
@@ -2055,37 +1243,17 @@ describe('ControlBar', function() {
   });
 
   it('renders clickable logo', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      }
-    };
-
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':130 }
     ];
-    oneButtonSkinConfig.controlBar.logo.imageResource.url = '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/assets/images/ooyala-logo.svg';
-    oneButtonSkinConfig.controlBar.logo.clickUrl = 'http://www.ooyala.com';
-
-    var mockProps = {
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
+    baseMockProps.skinConfig.controlBar.logo.imageResource.url = '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/assets/images/ooyala-logo.svg';
+    baseMockProps.skinConfig.controlBar.logo.clickUrl = 'http://www.ooyala.com';
 
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
+      <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={mockProps.isLiveStream} />
+      />
     );
 
     var logo = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-logo');
@@ -2095,41 +1263,24 @@ describe('ControlBar', function() {
   });
 
   it('tests controlbar componentWill*', function() {
-    var mockController = {
-      state: {
-        isMobile: true,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      },
-      cancelTimer:function() {},
-      hideVolumeSliderBar:function() {},
-      startHideControlBarTimer:function() {},
-      onLiveClick:function() {},
-      seek: function() {},
-      handleMuteClick: function() {},
-      showVolumeSliderBar: function() {}
-    };
+    baseMockController.state.isMobile = true;
+    baseMockController.cancelTimer = function() {};
+    baseMockController.hideVolumeSliderBar = function() {};
+    baseMockController.startHideControlBarTimer = function() {};
+    baseMockController.onLiveClick = function() {};
+    baseMockController.seek = function() {};
+    baseMockController.handleMuteClick = function() {};
+    baseMockController.showVolumeSliderBar = function() {};
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':130 }
     ];
-    oneButtonSkinConfig.controlBar.logo.clickUrl = 'http://www.ooyala.com';
-    var mockProps = {
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
+    baseMockProps.skinConfig.controlBar.logo.clickUrl = 'http://www.ooyala.com';
 
     var node = document.createElement('div');
     var controlBar = ReactDOM.render(
       <ControlBar
-        {...mockProps}
+        {...baseMockProps}
         controlBarVisible={true}
         componentWidth={100}
         responsiveView="sm" />, node
@@ -2137,7 +1288,7 @@ describe('ControlBar', function() {
 
     ReactDOM.render(
       <ControlBar
-        {...mockProps}
+        {...baseMockProps}
         controlBarVisible={true}
         componentWidth={300}
         responsiveView="md" />, node
@@ -2158,37 +1309,19 @@ describe('ControlBar', function() {
   });
 
   it('tests logo without image resource url', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          volume: 1
-        },
-        closedCaptionOptions: {},
-        multiAudioOptions: {},
-        videoQualityOptions: {
-          availableBitrates: null
-        }
-      }
-    };
-
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
-    oneButtonSkinConfig.buttons.desktopContent = [
+    baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':130 }
     ];
-    oneButtonSkinConfig.controlBar.logo.imageResource.url = '';
-    oneButtonSkinConfig.controlBar.logo.clickUrl = 'http://www.ooyala.com';
-
-    var mockProps = {
-      controller: mockController,
-      skinConfig: oneButtonSkinConfig
-    };
+    baseMockProps.skinConfig.controlBar.logo.imageResource.url = '';
+    baseMockProps.skinConfig.controlBar.logo.clickUrl = 'http://www.ooyala.com';
 
     var DOM = TestUtils.renderIntoDocument(
-      <ControlBar {...mockProps} controlBarVisible={true}
-                  componentWidth={100}
-                  playerState={CONSTANTS.STATE.PLAYING}
-                  isLiveStream={mockProps.isLiveStream} />
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={100}
+        playerState={CONSTANTS.STATE.PLAYING}
+      />
     );
 
     var logo = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-logo');
