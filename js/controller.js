@@ -239,7 +239,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi', _.bind(this.onMultiAudioChanged, this));
-      this.mb.subscribe(OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED || 'positionInPlaylistDetermined', 'customerUi', _.bind(this.onPositionInPlaylistDetermined, this));
+      this.mb.subscribe(OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED, 'customerUi', _.bind(this.onPositionInPlaylistDetermined, this));
       this.mb.subscribe(OO.EVENTS.ERROR, 'customerUi', _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -1474,9 +1474,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       });
       this.state.closedCaptionOptions = this.state.config.closedCaptionOptions;
 
-      // WIP
-      this.state.config.icons["nextVideo"] = {"fontFamilyName": "ooyala-slick-type", "fontString": "\u0044", "fontStyleClass": "oo-icon"};
-
       // remove 'url' from the list until the tab is worked on
       var shareContent = Utils.getPropertyValue(this.state.config, 'shareScreen.shareContent');
       if (shareContent) {
@@ -2158,7 +2155,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         timeElapsed < CONSTANTS.UI.REQUEST_PREVIOUS_TIME_TRESHOLD ||
         this.state.mainVideoPlayhead < CONSTANTS.UI.REQUEST_PREVIOUS_PLAYHEAD_TRESHOLD
       ) {
-        this.mb.publish(OO.EVENTS.REQUEST_PREVIOUS_VIDEO || 'requestPreviousVideo');
+        this.mb.publish(OO.EVENTS.REQUEST_PREVIOUS_VIDEO);
       } else {
         this.mb.publish(OO.EVENTS.REPLAY);
       }
@@ -2170,7 +2167,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * @private
      */
     requestNextVideo: function() {
-      this.mb.publish(OO.EVENTS.REQUEST_NEXT_VIDEO || 'requestNextVideo');
+      this.mb.publish(OO.EVENTS.REQUEST_NEXT_VIDEO);
     },
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
