@@ -15,8 +15,10 @@ var React = require('react'),
     CONSTANTS = require('./../constants/constants'),
     AnimateMixin = require('../mixins/animateMixin'),
     ViewControlsVr = require('../components/viewControlsVr');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var PauseScreen = React.createClass({
+var PauseScreen = createReactClass({
   mixins: [ResizeMixin, AnimateMixin],
 
   getInitialState: function() {

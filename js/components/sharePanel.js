@@ -11,8 +11,9 @@ var React = require('react'),
     ClassNames = require('classnames'),
     Utils = require('./utils'),
     CONSTANTS = require('../constants/constants');
+var createReactClass = require('create-react-class');
 
-var SharePanel = React.createClass({
+var SharePanel = createReactClass({
   tabs: { SHARE: 'social', EMBED: 'embed' },
 
   getInitialState: function() {

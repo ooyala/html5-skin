@@ -8,8 +8,10 @@ var React = require('react'),
     Utils = require('./utils'),
     MACROS = require('../constants/macros'),
     CONSTANTS = require('../constants/constants');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var ScrubberBar = React.createClass({
+var ScrubberBar = createReactClass({
   mixins: [ResizeMixin],
 
   getInitialState: function() {

@@ -3,22 +3,32 @@ jest.dontMock('../../js/components/spinner');
 jest.dontMock('../../js/constants/constants');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var ReactDOM = require('react-dom');
 var AdPanel = require('../../js/components/adPanel');
 var Spinner = require('../../js/components/spinner');
 var CONSTANTS = require('../../js/constants/constants');
+var Enzyme = require('enzyme');
 
 describe('AdPanel', function() {
-  it('creates an AdPanel', function() {
-    var mockController = {
+  var mockController, mockSkinConfig, currentAdsInfo;
+  beforeEach(function() {
+    mockController = {
       state: {
         isMobile: false
       },
       getAdRemainingTime: function() {
-        return 0
+        return 0;
       }
     };
-    var mockSkinConfig = {
+
+    mockSkinConfig = {
+      general: {
+        loadingImage: {
+          imageResource: {
+            url: "url"
+          }
+        }
+      },
       adScreen: {
         showControlBar: true,
         showAdCountDown: true,
@@ -27,83 +37,59 @@ describe('AdPanel', function() {
       icons: {
         skip: {
           fontStyleClass: 'skip'
-        },
+        }
       }
     };
-    var currentAdsInfo = {
+
+    currentAdsInfo = {
+      numberOfAds: 1,
       currentAdItem: {
         name: 'Test Ad',
-        isLive: true
+        isLive: true,
+        indexInPod: 1,
+        duration: 15
       }
     };
-    var DOM = TestUtils.renderIntoDocument(
+  });
+  it('creates an AdPanel', function() {
+    var wrapper = Enzyme.mount(
       <AdPanel
         controller={mockController}
         skinConfig={mockSkinConfig}
         currentAdsInfo={currentAdsInfo}
       />);
-
   });
 
   it('handles clicks', function() {
     var isSkipAdClicked = false;
     var learnMoreClicked = false;
     var clickSource = '';
-    var mockController = {
-      state: {
-        isMobile: false
-      },
-      onSkipAdClicked: function() {
-        isSkipAdClicked = true;
-      },
-      onAdsClicked: function(source) {
-        learnMoreClicked = true;
-        clickSource = source;
-      },
-      getAdRemainingTime: function() {
-        return 0
-      }
+
+    mockController.onSkipAdClicked = function() {
+      isSkipAdClicked = true;
     };
-    var mockSkinConfig = {
-      adScreen: {
-        showControlBar: true,
-        showAdCountDown: true,
-        showAdMarquee: true
-      },
-      icons: {
-        skip: {
-          fontStyleClass: 'skip'
-        },
-        learn: {
-          fontStyleClass: 'learn'
-        }
-      }
+
+    mockController.onAdsClicked = function(source) {
+      learnMoreClicked = true;
+      clickSource = source;
     };
-    var currentAdsInfo = {
-      currentAdItem: {
-        name: 'Test Ad',
-        skippable: true,
-        skipAdButtonEnabled: true,
-        hasClickUrl: true,
-        isLive: false
-      }
-    };
-    var DOM = TestUtils.renderIntoDocument(
+
+    currentAdsInfo.currentAdItem.hasClickUrl = true;
+
+    var wrapper = Enzyme.mount(
       <AdPanel
         controller={mockController}
         skinConfig={mockSkinConfig}
         currentAdsInfo={currentAdsInfo}
       />);
 
-    TestUtils.Simulate.click(DOM.refs.adTopBar);
-
     // our callback doesn't get assigned to the click event in testing
-    DOM.refs.skipButton.props.onButtonClicked({type: 'click',
+    wrapper.ref('skipButton').props.onButtonClicked({type: 'click',
       stopPropagation: function() {}
     });
     expect(isSkipAdClicked).toBe(true);
 
-    DOM.refs.learnMoreButton.props.onButtonClicked({type: 'click',
+    wrapper.ref('learnMoreButton').props.onButtonClicked({type: 'click',
       stopPropagation: function() {}
     });
     expect(learnMoreClicked).toBe(true);
@@ -111,34 +97,9 @@ describe('AdPanel', function() {
   });
 
   it('shows the ad metadata', function() {
-    var mockController = {
-      state: {
-        isMobile: false
-      },
-      getAdRemainingTime: function() {
-        return 0
-      }
-    };
-    var mockSkinConfig = {
-      adScreen: {
-        showControlBar: true,
-        showAdCountDown: false,
-        showAdMarquee: true
-      },
-      icons: {
-        skip: {
-          fontStyleClass: 'skip'
-        },
-      }
-    };
-    var currentAdsInfo = {
-      numberOfAds: 1,
-      currentAdItem: {
-        name: 'Test Ad',
-        indexInPod: 1
-      }
-    };
-    var DOM = TestUtils.renderIntoDocument(
+    mockSkinConfig.adScreen.showAdCountDown = false;
+
+    var wrapper = Enzyme.mount(
       <AdPanel
         controller={mockController}
         skinConfig={mockSkinConfig}
@@ -146,55 +107,23 @@ describe('AdPanel', function() {
         componentWidth={600}
       />);
 
-    expect(DOM.refs.adTitle).toBeDefined();
+    expect(wrapper.ref('adTitle')).toBeDefined();
 
-    DOM = TestUtils.renderIntoDocument(
-        <AdPanel
-          controller={mockController}
-          skinConfig={mockSkinConfig}
-          currentAdsInfo={currentAdsInfo}
-          componentWidth={500}
-        />);
+    wrapper = Enzyme.mount(
+      <AdPanel
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        currentAdsInfo={currentAdsInfo}
+        componentWidth={500}
+      />);
 
-    expect(DOM.refs.adTitle).toBeUndefined();
+    expect(wrapper.ref('adTitle')).toBeUndefined();
   });
 
   it('shows the buffering spinner', function() {
-    var mockController = {
-      state: {
-        isMobile: false,
-        buffering: true
-      },
-      getAdRemainingTime: function() {
-        return 0
-      }
-    };
-    var mockSkinConfig = {
-      general: {
-        loadingImage: {
-          imageResource: {
-            url: true
-          }
-        }
-      },
-      adScreen: {
-        showControlBar: true,
-        showAdMarquee: true
-      },
-      icons: {
-        skip: {
-          fontStyleClass: 'skip'
-        },
-      }
-    };
-    var currentAdsInfo = {
-      numberOfAds: 1,
-      currentAdItem: {
-        name: 'Test Ad',
-        indexInPod: 1,
-      }
-    };
-    var DOM = TestUtils.renderIntoDocument(
+    mockController.state.buffering = true;
+
+    var wrapper = Enzyme.mount(
       <AdPanel
         controller={mockController}
         skinConfig={mockSkinConfig}
@@ -202,40 +131,11 @@ describe('AdPanel', function() {
         componentWidth={600}
       />);
 
-    expect(TestUtils.findRenderedComponentWithType(DOM, Spinner)).toBeDefined();
-
+    expect(wrapper.find(Spinner)).toBeDefined();
   });
 
   it('shows the ad count down when enabled', function() {
-    var mockController = {
-      state: {
-        isMobile: false
-      },
-      getAdRemainingTime: function() {
-        return 0
-      }
-    };
-    var mockSkinConfig = {
-      adScreen: {
-        showControlBar: true,
-        showAdCountDown: true,
-        showAdMarquee: true
-      },
-      icons: {
-        skip: {
-          fontStyleClass: 'skip'
-        },
-      }
-    };
-    var currentAdsInfo = {
-      numberOfAds: 1,
-      currentAdItem: {
-        name: 'Test Ad',
-        indexInPod: 1,
-        duration: 15
-      }
-    };
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <AdPanel
         controller={mockController}
         skinConfig={mockSkinConfig}
@@ -243,8 +143,7 @@ describe('AdPanel', function() {
         componentWidth={600}
       />);
 
-    expect(DOM.refs.adPlaybackInfo).toBeDefined();
-
+    expect(wrapper.ref('adPlaybackInfo')).toBeDefined();
   });
 
 });

@@ -5,10 +5,12 @@
  */
 var React = require('react'),
     Utils = require('./utils');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
 var baseFontSize = 1.0;
 
-var TextTrackPanel = React.createClass({
+var TextTrackPanel = createReactClass({
   colorMap: {
     White: '255,255,255',
     Blue: '0,0,255',
@@ -140,19 +142,19 @@ var TextTrackPanel = React.createClass({
 });
 
 TextTrackPanel.propTypes = {
-  cueText: React.PropTypes.string,
-  closedCaptionOptions: React.PropTypes.shape({
-    textColor: React.PropTypes.string,
-    windowColor: React.PropTypes.string,
-    backgroundColor: React.PropTypes.string,
-    textOpacity: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
-    backgroundOpacity: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
-    windowOpacity: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
-    fontType: React.PropTypes.string,
-    fontSize: React.PropTypes.string,
-    textEnhancement: React.PropTypes.string
+  cueText: PropTypes.string,
+  closedCaptionOptions: PropTypes.shape({
+    textColor: PropTypes.string,
+    windowColor: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    textOpacity: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    backgroundOpacity: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    windowOpacity: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    fontType: PropTypes.string,
+    fontSize: PropTypes.string,
+    textEnhancement: PropTypes.string
   }),
-  direction: React.PropTypes.string
+  direction: PropTypes.string
 };
 
 TextTrackPanel.defaultProps = {

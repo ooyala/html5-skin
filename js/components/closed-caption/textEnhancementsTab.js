@@ -5,8 +5,10 @@ var React = require('react'),
     AccessibleMenu = require('../higher-order/accessibleMenu'),
     CONSTANTS = require('../../constants/constants'),
     SelectionContainer = require('./selectionContainer');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var TextEnhancementsTab = React.createClass({
+var TextEnhancementsTab = createReactClass({
   getInitialState: function() {
     return {
       selectedTextEnhancement: this.props.closedCaptionOptions.textEnhancement,
@@ -116,20 +118,20 @@ var TextEnhancementsTab = React.createClass({
 TextEnhancementsTab = AccessibleMenu(TextEnhancementsTab, { useRovingTabindex: true });
 
 TextEnhancementsTab.propTypes = {
-  language: React.PropTypes.string,
-  localizableStrings: React.PropTypes.objectOf(React.PropTypes.objectOf(React.PropTypes.string)),
-  controller: React.PropTypes.shape({
-    toggleClosedCaptionEnabled: React.PropTypes.func.isRequired,
-    onClosedCaptionChange: React.PropTypes.func.isRequired
+  language: PropTypes.string,
+  localizableStrings: PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)),
+  controller: PropTypes.shape({
+    toggleClosedCaptionEnabled: PropTypes.func.isRequired,
+    onClosedCaptionChange: PropTypes.func.isRequired
   }),
-  skinConfig: React.PropTypes.shape({
-    general: React.PropTypes.shape({
-      accentColor: React.PropTypes.string
+  skinConfig: PropTypes.shape({
+    general: PropTypes.shape({
+      accentColor: PropTypes.string
     })
   }),
-  closedCaptionOptions: React.PropTypes.shape({
-    textEnhancement: React.PropTypes.string,
-    enabled: React.PropTypes.bool
+  closedCaptionOptions: PropTypes.shape({
+    textEnhancement: PropTypes.string,
+    enabled: PropTypes.bool
   })
 };
 

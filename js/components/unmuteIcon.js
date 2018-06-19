@@ -2,8 +2,10 @@ var React = require('react'),
     Icon = require('./icon'),
     ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var UnmuteIcon = React.createClass({
+var UnmuteIcon = createReactClass({
   getInitialState: function() {
     return {
       collapseTime: 2000
@@ -68,11 +70,11 @@ var UnmuteIcon = React.createClass({
 });
 
 UnmuteIcon.propTypes = {
-  controller: React.PropTypes.shape({
-    state: React.PropTypes.shape({
-      volumeState: React.PropTypes.shape({
-        muted: React.PropTypes.bool,
-        unmuteIconCollapsed: React.PropTypes.bool
+  controller: PropTypes.shape({
+    state: PropTypes.shape({
+      volumeState: PropTypes.shape({
+        muted: PropTypes.bool,
+        unmuteIconCollapsed: PropTypes.bool
       })
     })
   })

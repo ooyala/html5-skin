@@ -8,8 +8,10 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     Thumbnail = require('./thumbnail'),
     ThumbnailCarousel = require('./thumbnailCarousel');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var ThumbnailContainer = React.createClass({
+var ThumbnailContainer = createReactClass({
   getInitialState: function() {
     this.child = null;
     this.positionY = 0;
@@ -292,19 +294,19 @@ ThumbnailContainer.defaultProps = {
 };
 
 ThumbnailContainer.propTypes = {
-  vrViewingDirection: React.PropTypes.shape({
-    yaw: React.PropTypes.number,
-    roll: React.PropTypes.number,
-    pitch: React.PropTypes.number
+  vrViewingDirection: PropTypes.shape({
+    yaw: PropTypes.number,
+    roll: PropTypes.number,
+    pitch: PropTypes.number
   }),
-  thumbnails: React.PropTypes.object,
-  hoverPosition: React.PropTypes.number,
-  hoverTime: React.PropTypes.number,
-  duration: React.PropTypes.number,
-  scrubberBarWidth: React.PropTypes.number,
-  isCarousel: React.PropTypes.bool,
-  videoVr: React.PropTypes.bool,
-  fullscreen: React.PropTypes.bool
+  thumbnails: PropTypes.object,
+  hoverPosition: PropTypes.number,
+  hoverTime: PropTypes.number,
+  duration: PropTypes.number,
+  scrubberBarWidth: PropTypes.number,
+  isCarousel: PropTypes.bool,
+  videoVr: PropTypes.bool,
+  fullscreen: PropTypes.bool
 };
 
 module.exports = ThumbnailContainer;

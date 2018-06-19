@@ -1,11 +1,12 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var CONSTANTS = require('../../constants/constants');
+var createReactClass = require('create-react-class');
 
 var AccessibleMenu = function(ComposedComponent, options) {
   var _options = options || {};
 
-  return React.createClass({
+  return createReactClass({
     componentDidMount: function() {
       this.menuDomElement = ReactDOM.findDOMNode(this.composedComponent);
       this.applyOptions();

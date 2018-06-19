@@ -2,6 +2,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var deepmerge = require('deepmerge');
 var Utils = require('./utils');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
 var verticalOffset = 80;
 function getContainerStyle(bottom, visible, responsivenessMultiplier, alignment) {
@@ -66,7 +68,7 @@ function getPointerStyle(alignment) {
   };
 }
 
-var Tooltip = React.createClass({
+var Tooltip = createReactClass({
   componentDidMount: function() {
     this.parentElement = (ReactDOM.findDOMNode(this) || {}).parentElement;
     if (this.parentElement) {
@@ -133,14 +135,14 @@ var Tooltip = React.createClass({
 });
 
 Tooltip.propTypes = {
-  enabled: React.PropTypes.bool.isRequired,
-  parentKey: React.PropTypes.string.isRequired,
-  text: React.PropTypes.string.isRequired,
-  language: React.PropTypes.string,
-  localizableStrings: React.PropTypes.object,
-  getAlignment: React.PropTypes.func,
-  responsivenessMultiplier: React.PropTypes.number.isRequired,
-  bottom: React.PropTypes.number.isRequired
+  enabled: PropTypes.bool.isRequired,
+  parentKey: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  language: PropTypes.string,
+  localizableStrings: PropTypes.object,
+  getAlignment: PropTypes.func,
+  responsivenessMultiplier: PropTypes.number.isRequired,
+  bottom: PropTypes.number.isRequired
 };
 
 Tooltip.defaultProps = {

@@ -19,6 +19,7 @@ var React = require('react'),
     CCPreviewPanel = require('./ccPreviewPanel'),
     Tabs = require('../tabs'),
     Tab = Tabs.Panel;
+var createReactClass = require('create-react-class');
 
 // The scroll buttons are not needed until the player's width is below a specific amount. This varies by language.
 var tabMenuOverflowMap = {
@@ -27,7 +28,7 @@ var tabMenuOverflowMap = {
   zh: 610
 };
 
-var ClosedCaptionPanel = React.createClass({
+var ClosedCaptionPanel = createReactClass({
   render: function() {
     var languageTabTitle = Utils.getLocalizedString(
       this.props.language,

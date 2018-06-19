@@ -11,8 +11,9 @@ var React = require('react'),
     ClassNames = require('classnames'),
     AnimateMixin = require('../mixins/animateMixin'),
     Icon = require('../components/icon');
+var createReactClass = require('create-react-class');
 
-var MoreOptionsPanel = React.createClass({
+var MoreOptionsPanel = createReactClass({
   mixins: [AnimateMixin],
 
   handleShareClick: function() {

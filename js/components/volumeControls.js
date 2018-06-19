@@ -5,8 +5,10 @@ var Slider = require('./slider');
 var Utils = require('./utils');
 var MACROS = require('../constants/macros');
 var CONSTANTS = require('../constants/constants');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var VolumeControls = React.createClass({
+var VolumeControls = createReactClass({
   volumeChange: function(vol) {
     var newVol = Utils.ensureNumber(vol, 1);
     this.props.controller.setVolume(newVol);
@@ -195,24 +197,24 @@ var VolumeControls = React.createClass({
 });
 
 VolumeControls.propTypes = {
-  controller: React.PropTypes.shape({
-    state: React.PropTypes.shape({
-      isMobile: React.PropTypes.bool.isRequired,
-      volumeState: React.PropTypes.shape({
-        volumeSliderVisible: React.PropTypes.bool.isRequired,
-        volume: React.PropTypes.number.isRequired,
-        muted: React.PropTypes.bool.isRequired
+  controller: PropTypes.shape({
+    state: PropTypes.shape({
+      isMobile: PropTypes.bool.isRequired,
+      volumeState: PropTypes.shape({
+        volumeSliderVisible: PropTypes.bool.isRequired,
+        volume: PropTypes.number.isRequired,
+        muted: PropTypes.bool.isRequired
       })
     }),
-    setVolume: React.PropTypes.func.isRequired
+    setVolume: PropTypes.func.isRequired
   }),
-  skinConfig: React.PropTypes.shape({
-    general: React.PropTypes.shape({
-      accentColor: React.PropTypes.string
+  skinConfig: PropTypes.shape({
+    general: PropTypes.shape({
+      accentColor: PropTypes.string
     }),
-    controlBar: React.PropTypes.shape({
-      volumeControl: React.PropTypes.shape({
-        color: React.PropTypes.string
+    controlBar: PropTypes.shape({
+      volumeControl: PropTypes.shape({
+        color: PropTypes.string
       })
     })
   })

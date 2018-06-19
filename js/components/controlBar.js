@@ -15,8 +15,10 @@ var React = require('react'),
     Logo = require('./logo'),
     Icon = require('./icon'),
     Tooltip = require('./tooltip');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var ControlBar = React.createClass({
+var ControlBar = createReactClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.domNode = null;
@@ -1083,31 +1085,31 @@ ControlBar.defaultProps = {
 };
 
 ControlBar.propTypes = {
-  isLiveStream: React.PropTypes.bool,
-  controlBarVisible: React.PropTypes.bool,
-  playerState: React.PropTypes.string,
-  responsiveView: React.PropTypes.string,
-  language: React.PropTypes.string,
-  localizableStrings: React.PropTypes.string,
-  duration: React.PropTypes.number,
-  currentPlayhead: React.PropTypes.number,
-  componentWidth: React.PropTypes.number,
-  skinConfig: React.PropTypes.shape({
-    responsive: React.PropTypes.shape({
-      breakpoints: React.PropTypes.object
+  isLiveStream: PropTypes.bool,
+  controlBarVisible: PropTypes.bool,
+  playerState: PropTypes.string,
+  responsiveView: PropTypes.string,
+  language: PropTypes.string,
+  localizableStrings: PropTypes.string,
+  duration: PropTypes.number,
+  currentPlayhead: PropTypes.number,
+  componentWidth: PropTypes.number,
+  skinConfig: PropTypes.shape({
+    responsive: PropTypes.shape({
+      breakpoints: PropTypes.object
     })
   }),
-  controller: React.PropTypes.shape({
-    state: React.PropTypes.object,
-    videoVrSource: React.PropTypes.shape({
-      vr: React.PropTypes.object
+  controller: PropTypes.shape({
+    state: PropTypes.object,
+    videoVrSource: PropTypes.shape({
+      vr: PropTypes.object
     }),
-    cancelTimer: React.PropTypes.func,
-    startHideControlBarTimer: React.PropTypes.func,
-    hideVolumeSliderBar: React.PropTypes.func,
-    closePopover: React.PropTypes.func,
-    closeOtherPopovers: React.PropTypes.func,
-    isVrStereo: React.PropTypes.bool
+    cancelTimer: PropTypes.func,
+    startHideControlBarTimer: PropTypes.func,
+    hideVolumeSliderBar: PropTypes.func,
+    closePopover: PropTypes.func,
+    closeOtherPopovers: PropTypes.func,
+    isVrStereo: PropTypes.bool
   })
 };
 

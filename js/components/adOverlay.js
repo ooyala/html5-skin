@@ -6,7 +6,6 @@ var React = require('react'),
     CloseButton = require('./closeButton'),
     CONSTANTS = require('../constants/constants');
 var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
 
 var AdOverlay = createReactClass({
   closeOverlay: function() {
