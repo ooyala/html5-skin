@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "HTML5 skin over an Ooyala video player",
   "engines": {
-    "node": ">=0.10.33 <=0.10.46"
+    "node": ">=8.11.3"
   },
   "keywords": [
     "html5",

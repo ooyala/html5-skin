@@ -6,23 +6,23 @@ jest
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
 var AccessibleButton = require('../../js/components/accessibleButton');
 var CONSTANTS = require('../../js/constants/constants');
+var Enzyme = require('enzyme');
 
 describe('AccessibleButton', function() {
-  var props, component;
+  var wrapper, component;
 
-  function renderComponent() {
-    var tree = TestUtils.renderIntoDocument(<AccessibleButton {...props} />);
-    component = TestUtils.findRenderedComponentWithType(tree, AccessibleButton);
+  function renderComponent(props) {
+    props = props || {};
+    wrapper = Enzyme.mount(<AccessibleButton ariaLabel='ariaLabel' {...props} />);
+    component = wrapper.instance();
+    //component = TestUtils.findRenderedComponentWithType(tree, AccessibleButton);
   }
 
   beforeEach(function() {
+    wrapper = null;
     component = null;
-    props = {
-      ariaLabel: 'ariaLabel'
-    };
   });
 
   it('should render an AccessibleButton', function() {
@@ -31,39 +31,50 @@ describe('AccessibleButton', function() {
   });
 
   it('should set random focusId when none is passed', function() {
-    props.focusId = 'customFocusId';
+    renderComponent({
+      focusId: 'customFocusId'
+    });
+    var props = wrapper.props();
+    expect(props.focusId).toBe('customFocusId');
+
     renderComponent();
-    expect(component.props.focusId).toBe('customFocusId');
-    delete props.focusId;
-    renderComponent();
-    expect(component.props.focusId.length).toBe(10);
+    props = wrapper.props();
+    expect(props.focusId.length).toBe(10);
   });
 
   it('should detect when button is triggered with keyboard', function() {
     renderComponent();
     expect(component.wasTriggeredWithKeyboard()).toBe(false);
-    TestUtils.Simulate.keyDown(ReactDOM.findDOMNode(component), { key: CONSTANTS.KEY_VALUES.SPACE });
+    var button = wrapper.find('button');
+    button.simulate('keyDown', {key: CONSTANTS.KEY_VALUES.SPACE});
     expect(component.wasTriggeredWithKeyboard()).toBe(true);
   });
 
   it('should auto focus on render if specified in props', function() {
-    props.autoFocus = false;
-    renderComponent();
-    expect(document.activeElement).toBeFalsy();
-    props.autoFocus = true;
-    renderComponent();
+    renderComponent({
+      autoFocus: false
+    });
+    expect(document.activeElement).not.toBe(ReactDOM.findDOMNode(component));
+
+    renderComponent({
+      autoFocus: true
+    });
     expect(document.activeElement).toBe(ReactDOM.findDOMNode(component));
   });
 
   it('should render ARIA attributes', function() {
-    props.ariaLabel = 'label';
-    props.ariaChecked = true;
-    props.role = 'role';
-    renderComponent();
+    var label = 'label';
+    var ariaChecked = true;
+    var role = 'role';
+    renderComponent({
+      ariaLabel: label,
+      ariaChecked: ariaChecked,
+      role: role
+    });
     var element = ReactDOM.findDOMNode(component);
-    expect(element.getAttribute('aria-label')).toBe(props.ariaLabel);
-    expect(element.getAttribute('aria-checked')).toBe(props.ariaChecked.toString());
-    expect(element.getAttribute('role')).toBe(props.role);
+    expect(element.getAttribute('aria-label')).toBe(label);
+    expect(element.getAttribute('aria-checked')).toBe(ariaChecked.toString());
+    expect(element.getAttribute('role')).toBe(role);
   });
 
   it('should NOT render undefined ARIA attributes', function() {
