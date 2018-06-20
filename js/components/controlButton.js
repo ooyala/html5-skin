@@ -134,16 +134,16 @@ var ControlButton = React.createClass({
   },
 
   /**
-   * Extracts the responsive UI multiple value from the skin config depending on the
+   * Extracts the responsive UI multiplier value from the skin config depending on the
    * responsive view that is currently active.
    * @private
-   * @return {Number} The numeric value of the UI multiple that matches the current responsive view.
+   * @return {Number} The numeric value of the UI multiplier that matches the current responsive view.
    */
-  getResponsiveUiMultiple: function() {
+  getResponsiveUiMultiplier: function() {
     var responsiveView = this.props.responsiveView;
     var breakpoints = Utils.getPropertyValue(this.props.skinConfig, 'responsive.breakpoints', {});
-    var responsiveUiMultiple = (breakpoints[responsiveView] || {}).multiplier || 1;
-    return responsiveUiMultiple;
+    var responsiveUiMultiplier = (breakpoints[responsiveView] || {}).multiplier || 1;
+    return responsiveUiMultiplier;
   },
 
   /**
@@ -234,7 +234,7 @@ var ControlButton = React.createClass({
     var areTooltipsEnabled = this.areTooltipsEnabled();
 
     if (areTooltipsEnabled && this.props.tooltip) {
-      var responsiveUiMultiple = this.getResponsiveUiMultiple();
+      var responsiveUiMultiplier = this.getResponsiveUiMultiplier();
       var tooltipVerticalOffset = this.getTooltipVerticalOffset();
     }
 
@@ -256,8 +256,8 @@ var ControlButton = React.createClass({
             enabled={areTooltipsEnabled}
             text={this.props.tooltip}
             parentKey={this.props.focusId}
-            responsivenessMultiplier={responsiveUiMultiple}
-            bottom={responsiveUiMultiple * tooltipVerticalOffset}
+            responsivenessMultiplier={responsiveUiMultiplier}
+            bottom={responsiveUiMultiplier * tooltipVerticalOffset}
             language={this.props.language}
             localizableStrings={this.props.localizableStrings}
             getAlignment={this.getTooltipAlignment}/>

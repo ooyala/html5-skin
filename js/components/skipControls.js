@@ -159,9 +159,10 @@ var SkipControls = React.createClass({
    * considering the current player state and configuration.
    * @private
    * @param {string} buttonId The id of the button we want to check
+   * @param {object} buttonConfig The configuration object from the skin config for the given button
    * @return {boolean} True if the button should be displayed, false otherwise
    */
-  shouldDisplayButton: function(buttonId) {
+  shouldDisplayButton: function(buttonId, buttonConfig) {
     var config = this.props.config;
     var isSingleVideo = !config.hasPreviousVideos && !config.hasNextVideos;
     var duration = Utils.getPropertyValue(this.props.controller, 'state.duration');
@@ -177,14 +178,15 @@ var SkipControls = React.createClass({
 
     var isDisabled = (
       (isSkipButton && !duration) ||
-      (isPrevNextButton && isSingleVideo)
+      (isPrevNextButton && isSingleVideo) ||
+      !(buttonConfig && buttonConfig.enabled)
     );
     return !isDisabled;
   },
 
   /**
-   * Parses the skin.json's skip button configuration and returns the ids of the
-   * enabled buttons sorted by index in ascending order.
+   * Parses the skin.json's skip button configuration and returns the ids (button
+   * names from the skin config) of the enabled buttons sorted by index in ascending order.
    * @private
    * @return {array} An array of button objects. Each object contains the id and index
    * of the button.
@@ -200,7 +202,7 @@ var SkipControls = React.createClass({
     for (var buttonId in buttonConfig) {
       var button = buttonConfig[buttonId];
 
-      if (button && button.enabled && this.shouldDisplayButton(buttonId)) {
+      if (this.shouldDisplayButton(buttonId, button)) {
         buttons.push({
           id: buttonId,
           index: button.index
@@ -225,7 +227,7 @@ var SkipControls = React.createClass({
       'oo-inactive': this.props.inactive,
       'oo-in-background': Utils.getPropertyValue(
         this.props.controller,
-        'state.scrubberBar.isHovered',
+        'state.scrubberBar.isHovering',
         false
       )
     });
@@ -262,7 +264,10 @@ SkipControls.propTypes = {
   controller: React.PropTypes.shape({
     state: React.PropTypes.shape({
       isMobile: React.PropTypes.bool.isRequired,
-      duration: React.PropTypes.number.isRequired
+      duration: React.PropTypes.number.isRequired,
+      scrubberBar: React.PropTypes.shape({
+        isHovering: React.PropTypes.bool
+      })
     }),
     rewindOrRequestPreviousVideo: React.PropTypes.func.isRequired,
     requestNextVideo: React.PropTypes.func.isRequired,

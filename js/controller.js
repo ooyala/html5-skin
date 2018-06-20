@@ -150,7 +150,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       },
 
       scrubberBar: {
-        isHovered: false
+        isHovering: false
       },
 
       skipControls: {
@@ -1642,7 +1642,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     onRelatedVideosFetched: function(event, relatedVideos) {
       OO.log('onRelatedVideosFetched is called');
-      if (relatedVideos.videos) {
+      if (relatedVideos.videos && relatedVideos.videos.length) {
         this.state.discoveryData = { relatedVideos: relatedVideos.videos };
 
         if (relatedVideos.upNextVideo) {
@@ -2131,11 +2131,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * Update the scrubber bar hover state for other components that react to it.
      * Called by the scrubber bar component when its hover state changes.
      * @private
-     * @param {boolean} isHovered True if the control bar is hovered, false otherwises
+     * @param {boolean} isHovering True if the control bar is hovered, false otherwise
      */
-    setScrubberBarHoverState: function(isHovered) {
-      if (this.state.scrubberBar.isHovered !== isHovered) {
-        this.state.scrubberBar.isHovered = isHovered;
+    setScrubberBarHoverState: function(isHovering) {
+      if (this.state.scrubberBar.isHovering !== isHovering) {
+        this.state.scrubberBar.isHovering = isHovering;
         this.renderSkin();
       }
     },
