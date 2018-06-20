@@ -82,7 +82,7 @@ var ControlButton = React.createClass({
    * styles directly on the rendered element, which is an anti-pattern in React.
    * Eventually we should update this in order to accomplish the same with setState().
    * @private
-   * @param {Event} event The mousenter event object that triggered the action
+   * @param {Event} event The mouseenter event object that triggered the action
    */
   highlight: function(event) {
     if (
