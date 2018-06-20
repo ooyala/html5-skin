@@ -149,6 +149,16 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         delayedContentData: null
       },
 
+      scrubberBar: {
+        isHovering: false
+      },
+
+      skipControls: {
+        hasPreviousVideos: false,
+        hasNextVideos: false,
+        requestPreviousTimestamp: 0
+      },
+
       moreOptionsItems: null,
 
       isMobile: false,
@@ -229,6 +239,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi', _.bind(this.onMultiAudioChanged, this));
+      this.mb.subscribe(OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED, 'customerUi', _.bind(this.onPositionInPlaylistDetermined, this));
       this.mb.subscribe(OO.EVENTS.ERROR, 'customerUi', _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -727,6 +738,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       }
       this.state.duration = duration;
 
+      // For the off chance that a video plugin resumes playback without firing
+      // the ON_BUFFERED event. This will have no effect if it was set previously
+      if (this.state.buffering) {
+        this.setBufferingState(false);
+      }
+
       // lower skin z-index if Chrome auto-pauses flash content
       if (
         !this.state.autoPauseDisabled &&
@@ -847,9 +864,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           this.renderSkin();
         }
       }
-      // For the off chance that a video plugin resumes playback without firing
-      // the ON_BUFFERED event. This will have no effect if it was set previously
-      this.setBufferingState(false);
     },
 
     onPause: function(event, source, pauseReason) {
@@ -1628,9 +1642,14 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     onRelatedVideosFetched: function(event, relatedVideos) {
       OO.log('onRelatedVideosFetched is called');
-      if (relatedVideos.videos) {
+      if (relatedVideos.videos && relatedVideos.videos.length) {
         this.state.discoveryData = { relatedVideos: relatedVideos.videos };
-        this.state.upNextInfo.upNextData = relatedVideos.videos[0];
+
+        if (relatedVideos.upNextVideo) {
+          this.state.upNextInfo.upNextData = relatedVideos.upNextVideo;
+        } else {
+          this.state.upNextInfo.upNextData = relatedVideos.videos[0];
+        }
         this.renderSkin();
       }
     },
@@ -1855,6 +1874,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.ERROR, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE_AFTER_OOYALA_AD, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED, 'customerUi');
     },
 
     unsubscribeBasicPlaybackEvents: function() {
@@ -2092,6 +2112,62 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
       }
       this.renderSkin();
+    },
+
+    /**
+     * Handler for the POSITION_IN_PLAYLIST_DETERMINED event, which controls whether
+     * the Previous/Next video buttons are displayed.
+     * @private
+     * @param {type} eventName The name of the event
+     * @param {type} params The event's parameters
+     */
+    onPositionInPlaylistDetermined: function(eventName, params) {
+      params = params || {};
+      this.state.skipControls.hasPreviousVideos = !!params.hasPreviousVideos;
+      this.state.skipControls.hasNextVideos = !!params.hasNextVideos;
+    },
+
+    /**
+     * Update the scrubber bar hover state for other components that react to it.
+     * Called by the scrubber bar component when its hover state changes.
+     * @private
+     * @param {boolean} isHovering True if the control bar is hovered, false otherwise
+     */
+    setScrubberBarHoverState: function(isHovering) {
+      if (this.state.scrubberBar.isHovering !== isHovering) {
+        this.state.scrubberBar.isHovering = isHovering;
+        this.renderSkin();
+      }
+    },
+
+    /**
+     * "Previous video" button handler. Either rewinds the video or requests the
+     * previous video if the playhead is close to the beginning of the video or the
+     * button is clicked repeatedly in quick succession.
+     * @private
+     */
+    rewindOrRequestPreviousVideo: function() {
+      var currentTimestamp = Utils.getCurrentTimestamp();
+      var timeElapsed = currentTimestamp - this.state.skipControls.requestPreviousTimestamp;
+      // Button has been clicked once more in a short amount of time or playhead
+      // is below a certain threshold, request previous video.
+      if (
+        timeElapsed < CONSTANTS.UI.REQUEST_PREVIOUS_TIME_THRESHOLD ||
+        this.state.mainVideoPlayhead < CONSTANTS.UI.REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD
+      ) {
+        this.mb.publish(OO.EVENTS.REQUEST_PREVIOUS_VIDEO);
+      } else {
+        this.mb.publish(OO.EVENTS.REPLAY);
+      }
+      this.state.skipControls.requestPreviousTimestamp = currentTimestamp;
+    },
+
+    /**
+     * Requests the next video from either the Playlists or Discovery plugins.
+     * @private
+     */
+    requestNextVideo: function() {
+      this.mb.publish(OO.EVENTS.REQUEST_NEXT_VIDEO);
     },
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {

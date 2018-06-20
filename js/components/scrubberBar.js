@@ -205,7 +205,7 @@ var ScrubberBar = React.createClass({
     this.handlePlayheadMouseDown(evt);
   },
 
-  handleScrubberBarMouseOver: function(evt) {
+  handleScrubberBarMouseEnter: function(evt) {
     if (!this.props.skinConfig.controlBar.scrubberBar.thumbnailPreview) return;
     if (this.props.controller.state.screenToShow === CONSTANTS.SCREEN.AD_SCREEN) return;
     if (this.isMobile) {
@@ -214,6 +214,7 @@ var ScrubberBar = React.createClass({
     if (evt.target.className.match('oo-playhead')) {
       return;
     }
+    this.props.controller.setScrubberBarHoverState(true);
 
     this.setState({
       hoveringX: evt.nativeEvent.offsetX
@@ -221,11 +222,12 @@ var ScrubberBar = React.createClass({
   },
 
   handleScrubberBarMouseMove: function(evt) {
-    this.handleScrubberBarMouseOver(evt);
+    this.handleScrubberBarMouseEnter(evt);
   },
 
-  handleScrubberBarMouseOut: function(evt) {
+  handleScrubberBarMouseLeave: function(evt) {
     if (!this.props.controller.state.thumbnails) return;
+    this.props.controller.setScrubberBarHoverState(false);
     this.setState({
       hoveringX: 0
     });
@@ -309,8 +311,8 @@ var ScrubberBar = React.createClass({
 
     var playheadMouseDown = this.handlePlayheadMouseDown;
     var scrubberBarMouseDown = this.handleScrubberBarMouseDown;
-    var scrubberBarMouseOver = this.handleScrubberBarMouseOver;
-    var scrubberBarMouseOut = this.handleScrubberBarMouseOut;
+    var scrubberBarMouseEnter = this.handleScrubberBarMouseEnter;
+    var scrubberBarMouseLeave = this.handleScrubberBarMouseLeave;
     var scrubberBarMouseMove = this.handleScrubberBarMouseMove;
     var playedIndicatorClassName = 'oo-played-indicator';
     var playheadClassName = 'oo-playhead';
@@ -396,8 +398,8 @@ var ScrubberBar = React.createClass({
       <div
         className="oo-scrubber-bar-container"
         ref="scrubberBarContainer"
-        onMouseOver={scrubberBarMouseOver}
-        onMouseOut={scrubberBarMouseOut}
+        onMouseEnter={scrubberBarMouseEnter}
+        onMouseLeave={scrubberBarMouseLeave}
         onMouseMove={scrubberBarMouseMove}
       >
         {thumbnailsContainer}

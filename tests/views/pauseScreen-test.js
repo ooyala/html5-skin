@@ -1,8 +1,10 @@
-jest.dontMock('../../js/views/pauseScreen')
-    .dontMock('../../js/components/icon')
-    .dontMock('../../js/components/higher-order/accessibleMenu')
-    .dontMock('../../js/components/utils')
-    .dontMock('classnames');
+jest
+.dontMock('../../js/views/pauseScreen')
+.dontMock('../../js/components/icon')
+.dontMock('../../js/components/higher-order/accessibleMenu')
+.dontMock('../../js/components/higher-order/preserveKeyboardFocus')
+.dontMock('../../js/components/utils')
+.dontMock('classnames');
 
 var React = require('react');
 var sinon = require('sinon');

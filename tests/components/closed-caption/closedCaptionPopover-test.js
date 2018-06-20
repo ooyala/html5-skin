@@ -65,7 +65,7 @@ describe('ClosedCaptionPopover', function() {
     expect(props.controller.state.focusedControl).toBeNull();
     TestUtils.Simulate.keyDown(moreCaptionsBtn, { key: CONSTANTS.KEY_VALUES.SPACE });
     TestUtils.Simulate.click(moreCaptionsBtn);
-    expect(props.controller.state.focusedControl).toBe(CONSTANTS.FOCUS_IDS.CLOSED_CAPTIONS);
+    expect(props.controller.state.focusedControl).toBe(CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION);
   });
 
   describe('keyboard navigation', function() {

@@ -13,7 +13,7 @@ var ClosedCaptionPopover = React.createClass({
       // showing this popover. Make sure CC button gets focus when that happens if it was originally
       // triggered with the keyboard.
       if (this.moreOptionsBtn.wasTriggeredWithKeyboard()) {
-        this.props.controller.state.focusedControl = CONSTANTS.FOCUS_IDS.CLOSED_CAPTIONS;
+        this.props.controller.state.focusedControl = CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION;
       }
       this.props.controller.state.closedCaptionOptions.autoFocus = this.moreOptionsBtn.wasTriggeredWithKeyboard();
       this.moreOptionsBtn.wasTriggeredWithKeyboard(false);
