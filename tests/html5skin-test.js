@@ -254,10 +254,10 @@ describe('Controller', function() {
       expect(controller.state.buffering).toBe(true);
     });
 
-    it('should reset buffering state if it hasn\'t been cleared by the time PLAYING is fired', function() {
+    it('should reset buffering state if it hasn\'t been cleared by the time PLAYHEAD_TIME_CHANGED is fired', function() {
       controller.setBufferingState(true);
       expect(controller.state.buffering).toBe(true);
-      controller.onPlaying('', OO.VIDEO.MAIN);
+      controller.onPlayheadTimeChanged('', OO.VIDEO.MAIN);
       expect(controller.state.buffering).toBe(false);
     });
 

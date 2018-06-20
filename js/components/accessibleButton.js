@@ -59,6 +59,24 @@ var AccessibleButton = createReactClass({
       default:
         break;
     }
+
+    if (typeof this.props.onKeyDown === 'function') {
+      this.props.onKeyDown(event);
+    }
+  },
+
+  /**
+   * Handles the mouseup event. Automatically removes keyboard focus
+   * from the button and calls a custom mouseup handler if it was passed.
+   * @private
+   * @param {event} event The mouseup event object
+   */
+  onMouseUp: function(event) {
+    Utils.blurOnMouseUp(event);
+
+    if (typeof this.props.onMouseUp === 'function') {
+      this.props.onMouseUp(event);
+    }
   },
 
   render: function() {
@@ -79,13 +97,17 @@ var AccessibleButton = createReactClass({
         aria-haspopup={this.props.ariaHasPopup}
         aria-expanded={this.props.ariaExpanded}
         role={this.props.role}
+        disabled={this.props.disabled}
         onKeyDown={this.onKeyDown}
-        onMouseUp={Utils.blurOnMouseUp}
+        onKeyUp={this.props.onKeyUp}
+        onMouseDown={this.props.onMouseDown}
+        onMouseUp={this.onMouseUp}
         onMouseOver={this.props.onMouseOver}
         onMouseOut={this.props.onMouseOut}
+        onMouseEnter={this.props.onMouseEnter}
+        onMouseLeave={this.props.onMouseLeave}
         onFocus={this.props.onFocus}
-        onClick={this.props.onClick}
-      >
+        onClick={this.props.onClick}>
         {this.props.children}
       </button>
     );
@@ -103,8 +125,15 @@ AccessibleButton.propTypes = {
   ariaHasPopup: PropTypes.bool,
   ariaExpanded: PropTypes.bool,
   role: PropTypes.string,
+  disabled: PropTypes.bool,
+  onKeyDown: PropTypes.func,
+  onKeyUp: PropTypes.func,
+  onMouseDown: PropTypes.func,
+  onMouseUp: PropTypes.func,
   onMouseOver: PropTypes.func,
   onMouseOut: PropTypes.func,
+  onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
   onFocus: PropTypes.func,
   onClick: PropTypes.func
 };

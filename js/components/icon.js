@@ -39,9 +39,8 @@ var Icon = createReactClass({
         style={iconStyle}
         onMouseOver={this.props.onMouseOver}
         onMouseOut={this.props.onMouseOut}
-        onClick={this.props.onClick}
-      >
-        {fontString}
+        onClick={this.props.onClick}>
+        {this.props.skinConfig.icons[this.props.icon].fontString}
       </span>
     );
   }

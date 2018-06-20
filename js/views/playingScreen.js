@@ -16,6 +16,7 @@ var React = require('react'),
     ViewControlsVr = require('../components/viewControlsVr'),
     Icon = require('../components/icon'),
     Tooltip = require('../components/tooltip'),
+    SkipControls = require('../components/skipControls'),
     UnmuteIcon = require('../components/unmuteIcon');
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
@@ -26,6 +27,9 @@ var PlayingScreen = createReactClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
+    this.skipControlsClientRect = null;
+    this.hasCheckedMouseOverControls = false;
+    this.mousePosition = { clientX: 0, clientY: 0 };
 
     return {
       controlBarVisible: this.props.controller.state.controlBarVisible,
@@ -129,15 +133,17 @@ var PlayingScreen = createReactClass({
   /**
    * The keydown event is not fired when the scrubber bar is first focused with
    * a tab unless playback was activated with a click. As a workaround, we make sure
-   * that the control bar is shown when a control bar element is focused.
-   *
+   * that the controls are shown when a focusable element is focused.
+   * @private
    * @param {object} event Focus event object.
    */
   handleFocus: function(event) {
-    var isControlBarElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
+    var isFocusableElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
     // Only do this if the control bar hasn't been shown by now and limit to focus
-    // events that are triggered on known control bar elements
-    if (!this.state.controlBarVisible && isControlBarElement) {
+    // events that are triggered on known focusable elements (control bar items and
+    // skip buttons). Note that controlBarVisible controls both the control bar and
+    // the skip buttons
+    if (!this.state.controlBarVisible && isFocusableElement) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
       this.props.controller.state.accessibilityControlsEnabled = true;
@@ -185,6 +191,7 @@ var PlayingScreen = createReactClass({
   },
 
   handlePlayerMouseMove: function(e) {
+    this.storeMousePosition(e);
     if (!this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
@@ -209,6 +216,72 @@ var PlayingScreen = createReactClass({
       this.props.controller.state.isClickedOutside = false;
     }
     // for mobile, touch is handled in handleTouchEnd
+  },
+
+  /**
+   * Handles the mouseover event.
+   * @private
+   * @param {Event} event The mouseover event object
+   */
+  handleMouseOver: function(event) {
+    this.storeMousePosition(event);
+    this.showControlBar();
+  },
+
+  /**
+   * Extracts and stores the clientX and clientY values from a mouse event. This
+   * is used in order to keep track of the last known position. Triggers a check
+   * that determines whether the mouse is over the skip controls.
+   * @param {Event} event
+   */
+  storeMousePosition: function(event) {
+    if (!event) {
+      return;
+    }
+    this.mousePosition.clientX = event.clientX;
+    this.mousePosition.clientY = event.clientY;
+    this.tryCheckMouseOverControls();
+  },
+
+  /**
+   * Called by the SkipControls component when it's done mounting. It informs this
+   * component about the position of the SkipControls so that it can determine
+   * whether or not the mouse cursor is over the controls.
+   * @private
+   * @param {DOMRect} clientRect A DOMRect returned by an element's getBoundingClientRect() function
+   */
+  onSkipControlsMount: function(clientRect) {
+    this.skipControlsClientRect = clientRect;
+    this.tryCheckMouseOverControls();
+  },
+
+  /**
+   * Checks to see whether or not the mouse is over the skip controls element and
+   * prevents the controls from autohiding if that is the case.
+   *
+   * IMPORTANT:
+   * There's a much simpler way to do this which is just listening to the
+   * mouseenter event inside the SkipControls, however, the SkipControls have
+   * pointer-events set to 'none' in order to allow clicking through it, so we
+   * are unable to listen to any mouse events on said component. This workaround
+   * is a bit convoluted but it's needed in order to get a decent user experience.
+   * @private
+   */
+  tryCheckMouseOverControls: function() {
+    if (
+      this.hasCheckedMouseOverControls ||
+      !this.skipControlsClientRect ||
+      !(this.mousePosition.clientX && this.mousePosition.clientY)
+    ) {
+      return;
+    }
+    // Cancel auto-hide controls timer if mouse is over controls
+    if (
+      Utils.isMouseInsideRect(this.mousePosition, this.skipControlsClientRect)
+    ) {
+      this.props.controller.cancelTimer();
+    }
+    this.hasCheckedMouseOverControls = true;
   },
 
   /**
@@ -346,14 +419,22 @@ var PlayingScreen = createReactClass({
       );
     }
 
+    var skipControlsEnabled = Utils.getPropertyValue(
+      this.props.skinConfig,
+      'skipControls.enabled',
+      false
+    );
+    var className = ClassNames('oo-state-screen oo-playing-screen', {
+      'oo-controls-active': skipControlsEnabled && this.props.controller.state.controlBarVisible
+    });
+
     return (
       <div
-        className="oo-state-screen oo-playing-screen"
+        className={className}
         ref="PlayingScreen"
-        onMouseOver={this.showControlBar}
+        onMouseOver={this.handleMouseOver}
         onMouseOut={this.hideControlBar}
-        onKeyDown={this.handleKeyDown}
-      >
+        onKeyDown={this.handleKeyDown}>
         <div
           className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
           onMouseDown={this.handlePlayerMouseDown}
@@ -361,8 +442,7 @@ var PlayingScreen = createReactClass({
           onClick={this.handlePlayerClicked}
           onFocus={this.handlePlayerFocus}
           onMouseUp={this.handlePlayerMouseUp}
-          onTouchEnd={this.handleTouchEnd}
-        />
+          onTouchEnd={this.handleTouchEnd} />
 
         {vrNotification}
         {vrIcon}
@@ -375,14 +455,27 @@ var PlayingScreen = createReactClass({
 
         {viewControlsVr}
 
+        {skipControlsEnabled &&
+          <SkipControls
+            config={this.props.controller.state.skipControls}
+            language={this.props.language}
+            localizableStrings={this.props.localizableStrings}
+            responsiveView={this.props.responsiveView}
+            skinConfig={this.props.skinConfig}
+            controller={this.props.controller}
+            a11yControls={this.props.controller.accessibilityControls}
+            inactive={!this.props.controller.state.controlBarVisible}
+            onMount={this.onSkipControlsMount}
+            onFocus={this.handleFocus} />
+        }
+
         <div className="oo-interactive-container" onFocus={this.handleFocus}>
           {this.props.closedCaptionOptions.enabled ? (
             <TextTrack
               closedCaptionOptions={this.props.closedCaptionOptions}
               cueText={this.props.closedCaptionOptions.cueText}
               direction={this.props.captionDirection}
-              responsiveView={this.props.responsiveView}
-            />
+              responsiveView={this.props.responsiveView} />
           ) : null}
 
           {adOverlay}
@@ -393,8 +486,7 @@ var PlayingScreen = createReactClass({
             {...this.props}
             controlBarVisible={this.state.controlBarVisible}
             playerState={this.props.playerState}
-            isLiveStream={this.props.isLiveStream}
-          />
+            isLiveStream={this.props.isLiveStream} />
         </div>
 
         {showUnmute ? <UnmuteIcon {...this.props} /> : null}

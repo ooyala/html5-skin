@@ -7,5 +7,6 @@ module.exports = {
   RESOLUTION_TIER: '{resolutionTier}',
   BITRATE: '{bitrate}',
   PERCENT: '{percent}',
-  SETTING: '{setting}'
+  SETTING: '{setting}',
+  SECONDS: '{seconds}'
 };

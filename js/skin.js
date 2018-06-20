@@ -24,6 +24,15 @@ var ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
 var Skin = React.createClass({
   mixins: [ResponsiveManagerMixin],
 
+  /**
+   * Ref callback, stores reference to DOM element.
+   * @private
+   * @param {HTMLElement} domElement A reference to the component's DOM element
+   */
+  storeRef: function(domElement) {
+    this.domElement = domElement;
+  },
+
   getInitialState: function() {
     this.overlayRenderingEventSent = false;
     return {
@@ -50,10 +59,12 @@ var Skin = React.createClass({
 
   componentDidMount: function() {
     window.addEventListener('mouseup', this.handleClickOutsidePlayer);
+    document.addEventListener('keydown', this.onKeyDown);
   },
 
   componentWillUnmount: function() {
     window.removeEventListener('mouseup', this.handleClickOutsidePlayer);
+    document.removeEventListener('keydown', this.onKeyDown);
   },
 
   handleClickOutsidePlayer: function() {
@@ -211,6 +222,61 @@ var Skin = React.createClass({
       vrViewingDirectionValue = this.props.controller.state.vrViewingDirection[paramName];
     }
     return vrViewingDirectionValue;
+  },
+
+  /**
+   * Will handle the keydown event when the player is active and it will restrict
+   * tab navigation to elements that are within it when it is in fullscreen mode.
+   * Note that this only handles the edge cases that are needed in order to loop the tab
+   * focus. Tabbing in between the elements is handled by the browser.
+   * @private
+   * @param {Event} evt Keydown event object.
+   */
+  onKeyDown: function(evt) {
+    if (
+      !evt.target ||
+      !this.domElement ||
+      !this.props.controller.state.fullscreen ||
+      evt.key !== CONSTANTS.KEY_VALUES.TAB
+    ) {
+      return;
+    }
+    // Focusable elements on the player (this.domElement) are expected to have the
+    // data-focus-id attribute, this is a convention used throughout this project.
+    var selector = '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']';
+    var focusableElements = this.domElement.querySelectorAll(selector);
+
+    if (focusableElements.length) {
+      var firstFocusableElement = focusableElements[0];
+      var lastFocusableElement = focusableElements[focusableElements.length - 1];
+      // This indicates we're tabbing over the focusable player elements
+      if (evt.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)) {
+        if (evt.shiftKey) {
+          // Shift + tabbing on first element, focus on last
+          if (evt.target === firstFocusableElement) {
+            evt.preventDefault();
+            lastFocusableElement.focus();
+          }
+        } else {
+          // Tabbing on last element, focus on first
+          if (evt.target === lastFocusableElement) {
+            evt.preventDefault();
+            firstFocusableElement.focus();
+          }
+        }
+        // Keydown happened on a non-player element
+      } else {
+        evt.preventDefault();
+
+        if (evt.shiftKey) {
+          lastFocusableElement.focus();
+        } else {
+          firstFocusableElement.focus();
+        }
+      }
+    } else {
+      OO.log('Skin: No focusable elements found');
+    }
   },
 
   render: function() {
@@ -471,7 +537,10 @@ var Skin = React.createClass({
     }
 
     return (
-      <div id="oo-responsive" className={this.state.responsiveClass}>
+      <div
+        id="oo-responsive"
+        ref={this.storeRef}
+        className={this.state.responsiveClass}>
         {screen}
       </div>
     );
