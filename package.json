@@ -83,27 +83,22 @@
   },
   "homepage": "https://github.com/ooyala/html5-skin",
   "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/scripts/jest/setup.js",
     "modulePathIgnorePatterns": [
       "/build/",
       "/node_modules/"
     ],
-    "persistModuleRegistryBetweenSpecs": true,
-    "preprocessorIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "rootDir": "",
+    "transformIgnorePatterns": ["/node_modules/"],
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/react",
       "react",
       "<rootDir>/node_modules/fbjs",
-      "<rootDir>/node_modules/react-dom",
-      "<rootDir>/node_modules/react-addons-test-utils"
+      "<rootDir>/node_modules/react-dom"
     ],
     "testMatch": [
       "**/tests/**/*.js?(x)",
       "**/?(*.)+(spec|test).js?(x)"
     ],
-    "collectCoverage": true,
-    "setupTestFrameworkScriptFile": "<rootDir>/scripts/jest/enzymeSetup.js"
+    "collectCoverage": true
   }
 }

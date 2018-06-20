@@ -8,7 +8,7 @@ var ReactDOM = require('react-dom');
 var CloseButton = require('../../js/components/closeButton');
 var CONSTANTS = require('../../js/constants/constants');
 var $ = require('jquery');
-var Enzyme = require('Enzyme');
+var Enzyme = require('enzyme');
 
 describe('CloseButton', function() {
 

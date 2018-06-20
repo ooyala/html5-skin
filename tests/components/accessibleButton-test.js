@@ -17,7 +17,6 @@ describe('AccessibleButton', function() {
     props = props || {};
     wrapper = Enzyme.mount(<AccessibleButton ariaLabel='ariaLabel' {...props} />);
     component = wrapper.instance();
-    //component = TestUtils.findRenderedComponentWithType(tree, AccessibleButton);
   }
 
   beforeEach(function() {
@@ -45,7 +44,7 @@ describe('AccessibleButton', function() {
   it('should detect when button is triggered with keyboard', function() {
     renderComponent();
     expect(component.wasTriggeredWithKeyboard()).toBe(false);
-    var button = wrapper.find('button');
+    var button = wrapper.find(AccessibleButton);
     button.simulate('keyDown', {key: CONSTANTS.KEY_VALUES.SPACE});
     expect(component.wasTriggeredWithKeyboard()).toBe(true);
   });

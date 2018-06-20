@@ -123,7 +123,7 @@ describe('AdOverlay', function() {
       />);
 
     var closeBtn = wrapper.find('button.oo-ad-overlay-close-button');
-    expect(ReactDOM.findDOMNode(closeBtn.instance()).className).toMatch('hidden');
+    expect(closeBtn.instance().className).toMatch('hidden');
 
     wrapper = Enzyme.mount(
       <AdOverlay
@@ -135,6 +135,6 @@ describe('AdOverlay', function() {
       />);
 
     closeBtn = wrapper.find('button.oo-ad-overlay-close-button');
-    expect(ReactDOM.findDOMNode(closeBtn.instance()).className).not.toMatch('hidden');
+    expect(closeBtn.instance().className).not.toMatch('hidden');
   });
 });
