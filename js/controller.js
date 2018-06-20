@@ -2142,7 +2142,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     /**
      * "Previous video" button handler. Either rewinds the video or requests the
-     * previous video if the playhead is close to the beggining of the video or the
+     * previous video if the playhead is close to the beginning of the video or the
      * button is clicked repeatedly in quick succession.
      * @private
      */
@@ -2150,10 +2150,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       var currentTimestamp = Utils.getCurrentTimestamp();
       var timeElapsed = currentTimestamp - this.state.skipControls.requestPreviousTimestamp;
       // Button has been clicked once more in a short amount of time or playhead
-      // is below a certain treshold, request previous video.
+      // is below a certain threshold, request previous video.
       if (
-        timeElapsed < CONSTANTS.UI.REQUEST_PREVIOUS_TIME_TRESHOLD ||
-        this.state.mainVideoPlayhead < CONSTANTS.UI.REQUEST_PREVIOUS_PLAYHEAD_TRESHOLD
+        timeElapsed < CONSTANTS.UI.REQUEST_PREVIOUS_TIME_THRESHOLD ||
+        this.state.mainVideoPlayhead < CONSTANTS.UI.REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD
       ) {
         this.mb.publish(OO.EVENTS.REQUEST_PREVIOUS_VIDEO);
       } else {

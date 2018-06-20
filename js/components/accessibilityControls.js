@@ -32,7 +32,7 @@ AccessibilityControls.prototype = {
     MAXIMUM: 300,
     // Calling getSeekRate() with a frequency below this threshold
     // will result in a seek rate increase
-    TIME_TRESHOLD: 500,
+    TIME_THRESHOLD: 500,
   },
 
   cleanUp: function() {
@@ -285,8 +285,8 @@ AccessibilityControls.prototype = {
 
   /**
    * Linearly increases the seeking rate every time that the function is called
-   * within a certain time treshold. The seeking rate is reset when the last time
-   * the function was called exceeds the time treshold.
+   * within a certain time threshold. The seeking rate is reset when the last time
+   * the function was called exceeds the time threshold.
    * @public
    * @return {Number} A number between 1 and this.SEEK_RATE.MAXIMUM which represents the current seeking rate.
    */
@@ -294,7 +294,7 @@ AccessibilityControls.prototype = {
     var currentTime = Date.now();
     var timeSinceLastSeek = currentTime - this.state.lastKeyDownTime;
 
-    if (timeSinceLastSeek < this.SEEK_RATE.TIME_TRESHOLD) {
+    if (timeSinceLastSeek < this.SEEK_RATE.TIME_THRESHOLD) {
       // Increasing seek rate to go faster if key is pressed often
       if (this.state.seekRate < this.SEEK_RATE.MAXIMUM) {
         this.state.seekRate *= this.SEEK_RATE.INCREASE;

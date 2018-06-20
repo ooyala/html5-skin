@@ -262,10 +262,10 @@ module.exports = {
     // If the previous video button is clicked more than once, this
     // is the maximum amount of time (in milliseconds) between calls that would
     // cause the controller to request the previous video instead of rewinding
-    REQUEST_PREVIOUS_TIME_TRESHOLD: 1500,
+    REQUEST_PREVIOUS_TIME_THRESHOLD: 1500,
     // When the previous video button is clicked, if the playhead value (in seconds) is
     // below this constant the controller will request the previous video instead of rewinding
-    REQUEST_PREVIOUS_PLAYHEAD_TRESHOLD: 2
+    REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD: 2
   },
 
   TOOLTIP_ALIGNMENT: {
