@@ -24,6 +24,7 @@
   @import "components/state-screen";
   @import "components/start-screen";
   @import "components/pause-screen";
+  @import "components/playing-screen";
   @import "components/error-screen";
   @import "components/ad-screen";
   @import "components/popover";
@@ -56,6 +57,7 @@
   @import "components/watermark";
   @import "components/unmute";
   @import "components/cc-ma-menu";
+  @import "components/skip-controls";
 
   // Responsive
   @import "responsive/xsmall";

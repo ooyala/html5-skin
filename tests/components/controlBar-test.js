@@ -1,12 +1,15 @@
-jest.dontMock('../../js/components/controlBar')
-    .dontMock('../../js/components/volumeControls')
-    .dontMock('../../js/components/utils')
-    .dontMock('../../js/components/icon')
-    .dontMock('../../js/components/logo')
-    .dontMock('../../js/components/higher-order/accessibleMenu')
-    .dontMock('../../js/constants/constants')
-    .dontMock('../../js/components/accessibleButton')
-    .dontMock('classnames');
+jest
+.dontMock('../../js/components/controlBar')
+.dontMock('../../js/components/volumeControls')
+.dontMock('../../js/components/utils')
+.dontMock('../../js/components/icon')
+.dontMock('../../js/components/logo')
+.dontMock('../../js/components/higher-order/accessibleMenu')
+.dontMock('../../js/components/higher-order/preserveKeyboardFocus')
+.dontMock('../../js/constants/constants')
+.dontMock('../../js/components/accessibleButton')
+.dontMock('../../js/components/controlButton')
+.dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -14,6 +17,7 @@ var TestUtils = require('react-addons-test-utils');
 var CONSTANTS = require('../../js/constants/constants');
 var ControlBar = require('../../js/components/controlBar');
 var AccessibleButton = require('../../js/components/accessibleButton');
+var ControlButton = require('../../js/components/controlButton');
 var skinConfig = require('../../config/skin.json');
 var Utils = require('../../js/components/utils');
 var _ = require('underscore');
@@ -23,6 +27,31 @@ describe('ControlBar', function() {
 
   var baseMockController, baseMockProps;
   var defaultSkinConfig = Utils.clone(skinConfig);
+
+  // The ControlBar is wrapped by the preserveKeyboardFocus higher order component.
+  // For some tests it is necessary to reference the inner component directly, so
+  // that's why we have this helper function which can be used instead of
+  // TestUtils.renderIntoDocument()
+  var renderAndGetComposedComponent = function(Component) {
+    var renderedComponent = TestUtils.renderIntoDocument(Component);
+    return renderedComponent.composedComponent;
+  };
+
+  // Finds a control bar button component using its class as an id. Will throw
+  // an error if zero or more than one components are found.
+  var getControlBarButtonWithClass = function(DOM, className) {
+    var controlBarButtons = TestUtils.scryRenderedComponentsWithType(DOM, ControlButton);
+
+    var result = controlBarButtons.filter(function(button) {
+      return (' ' + button.props.className + ' ').indexOf(' ' + className + ' ') > -1;
+    });
+
+    if (result.length === 1) {
+      return result[0];
+    } else {
+      throw new Error('Found ' + result.length + ' matches for class instead of one.');
+    }
+  };
 
   // TODO
   // Old unit tests should use the base mock controller and props
@@ -37,7 +66,9 @@ describe('ControlBar', function() {
         },
         closedCaptionOptions: {},
         multiAudioOptions: {},
-        videoQualityOptions: {}
+        videoQualityOptions: {
+          availableBitrates: null
+        }
       },
       cancelTimer: function() {},
       hideVolumeSliderBar: function() {},
@@ -254,7 +285,7 @@ describe('ControlBar', function() {
     baseMockController.state.volumeState.volume = 1;
     baseMockController.state.volumeState.muted = false;
 
-    var DOM = TestUtils.renderIntoDocument(
+    var DOM = renderAndGetComposedComponent(
       <ControlBar
         {...baseMockProps}
         controlBarVisible={true}
@@ -263,14 +294,15 @@ describe('ControlBar', function() {
        />
     );
 
-    expect(DOM.refs.volumeIcon.props.icon).toBe('volume');
+    var muteUnmuteBtn = getControlBarButtonWithClass(DOM, 'oo-mute-unmute');
+    expect(muteUnmuteBtn.props.icon).toBe('volume');
   });
 
   it('should display mute volume icon when volume is set to 0', function() {
     baseMockController.state.volumeState.volume = 0;
     baseMockController.state.volumeState.muted = false;
 
-    var DOM = TestUtils.renderIntoDocument(
+    var DOM = renderAndGetComposedComponent(
       <ControlBar
         {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
@@ -278,14 +310,15 @@ describe('ControlBar', function() {
       />
     );
 
-    expect(DOM.refs.volumeIcon.props.icon).toBe('volumeOff');
+    var muteUnmuteBtn = getControlBarButtonWithClass(DOM, 'oo-mute-unmute');
+    expect(muteUnmuteBtn.props.icon).toBe('volumeOff');
   });
 
   it('should display mute volume icon when volume is muted', function() {
     baseMockController.state.volumeState.volume = 1;
     baseMockController.state.volumeState.muted = true;
 
-    var DOM = TestUtils.renderIntoDocument(
+    var DOM = renderAndGetComposedComponent(
       <ControlBar
         {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
@@ -293,7 +326,8 @@ describe('ControlBar', function() {
       />
     );
 
-    expect(DOM.refs.volumeIcon.props.icon).toBe('volumeOff');
+    var muteUnmuteBtn = getControlBarButtonWithClass(DOM, 'oo-mute-unmute');
+    expect(muteUnmuteBtn.props.icon).toBe('volumeOff');
   });
 
   it('to play on play click', function() {
@@ -326,7 +360,7 @@ describe('ControlBar', function() {
       this.state.videoQualityOptions.showPopover = !this.state.videoQualityOptions.showPopover;
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var controlBar = renderAndGetComposedComponent(
       <ControlBar
         {...baseMockProps}
         controlBarVisible={true}
@@ -335,8 +369,7 @@ describe('ControlBar', function() {
         isLiveStream={baseMockProps.isLiveStream} />
     );
 
-    var controlBar = TestUtils.findRenderedComponentWithType(DOM, ControlBar);
-    var qualityBtn = TestUtils.findRenderedComponentWithType(DOM, AccessibleButton);
+    var qualityBtn = TestUtils.findRenderedComponentWithType(controlBar, AccessibleButton);
     var qualityBtnElement = qualityBtn.getDOMNode();
 
     expect(qualityBtn.wasTriggeredWithKeyboard()).toBe(false);
@@ -540,7 +573,6 @@ describe('ControlBar', function() {
   it('shows/hides closed caption button if captions available', function() {
     baseMockController.toggleButtons = {};
 
-    // var oneButtonSkinConfig = Utils.clone(skinConfig);
     baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'closedCaption', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
@@ -1059,28 +1091,30 @@ describe('ControlBar', function() {
     expect(buttons.length).toBe(0);
   });
 
-  it('highlights volume on mouseover', function() {
+  it('highlights volume on mouseenter', function() {
     baseMockProps.skinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
     baseMockProps.skinConfig.controlBar.iconStyle.inactive.opacity = 0;
     baseMockProps.skinConfig.controlBar.iconStyle.active.opacity = 1;
     baseMockProps.skinConfig.controlBar.iconStyle.active.color = 'red';
     baseMockProps.skinConfig.controlBar.iconStyle.inactive.color = 'blue';
 
-    var DOM = TestUtils.renderIntoDocument(
+    var DOM = renderAndGetComposedComponent(
       <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSED}
       />
     );
 
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe('0');
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe('blue');
-    TestUtils.Simulate.mouseOver(ReactDOM.findDOMNode(DOM.refs.volumeIcon));
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe('1');
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe('red');
-    TestUtils.Simulate.mouseOut(ReactDOM.findDOMNode(DOM.refs.volumeIcon));
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe('0');
-    expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.color).toBe('blue');
+    var muteUnmuteBtn = getControlBarButtonWithClass(DOM, 'oo-mute-unmute');
+    var volumeIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-icon-volume-on-ooyala-default');
+    expect(volumeIcon.style.opacity).toBe('0');
+    expect(volumeIcon.style.color).toBe('blue');
+    TestUtils.Simulate.mouseEnter(ReactDOM.findDOMNode(muteUnmuteBtn));
+    expect(volumeIcon.style.opacity).toBe('1');
+    expect(volumeIcon.style.color).toBe('red');
+    TestUtils.Simulate.mouseLeave(ReactDOM.findDOMNode(muteUnmuteBtn));
+    expect(volumeIcon.style.opacity).toBe('0');
+    expect(volumeIcon.style.color).toBe('blue');
   });
 
   it('uses the volume slider on mobile', function() {
@@ -1278,7 +1312,7 @@ describe('ControlBar', function() {
     baseMockProps.skinConfig.controlBar.logo.clickUrl = 'http://www.ooyala.com';
 
     var node = document.createElement('div');
-    var controlBar = ReactDOM.render(
+    var controlBar = renderAndGetComposedComponent(
       <ControlBar
         {...baseMockProps}
         controlBarVisible={true}
@@ -1326,83 +1360,6 @@ describe('ControlBar', function() {
 
     var logo = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-logo');
     expect(logo.length).toBe(0);
-  });
-
-  describe('Tab Navigation', function() {
-    var eventMap, ctrlBarElement, focusableElements, mockEvent, originalAddEventListener;
-
-    beforeEach(function() {
-      baseMockProps.skinConfig.buttons.desktopContent = [
-        { 'name': 'playPause', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
-        { 'name': 'volume', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 240 },
-        { 'name': 'fullscreen', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
-      ];
-      // Mock addEventListener on document object since TestUtils.Simulate will not work in this case
-      eventMap = {};
-      originalAddEventListener = document.addEventListener;
-      document.addEventListener = function(event, cb) {
-        eventMap[event] = cb;
-      };
-      ReactDOM.render(
-        <ControlBar
-          {...baseMockProps}
-          controlBarVisible={true}
-          componentWidth={500}
-          playerState={CONSTANTS.STATE.PLAYING}
-          isLiveStream={baseMockProps.isLiveStream} />
-      , document.body);
-      ctrlBarElement = document.body.querySelector('.oo-control-bar');
-      focusableElements = ctrlBarElement.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
-      mockEvent = { key: CONSTANTS.KEY_VALUES.TAB, preventDefault: function() {} };
-    });
-
-    afterEach(function() {
-      ReactDOM.unmountComponentAtNode(document.body);
-      // Our version of jest doesn't seem to support mockRestore()
-      document.addEventListener = originalAddEventListener;
-      document.body.innerHTML = '';
-    });
-
-    it('should constrain tab navigation to control bar elements when in fullscreen mode', function() {
-      baseMockController.state.fullscreen = true;
-      // Tab on document, focuses first element
-      document.activeElement = null;
-      mockEvent.target = document.body;
-      eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe(focusableElements[0].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR));
-      // Tab on last element, focuses on first
-      document.activeElement = null;
-      mockEvent.target = focusableElements[focusableElements.length - 1];
-      eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe(focusableElements[0].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR));
-      // Shift + tab on document, focuses on last element
-      document.activeElement = null;
-      mockEvent.target = document.body;
-      mockEvent.shiftKey = true;
-      eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe(focusableElements[focusableElements.length - 1].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR));
-      // Shift + tab on first element, focuses on last
-      document.activeElement = null;
-      mockEvent.target = focusableElements[0];
-      mockEvent.shiftKey = true;
-      eventMap.keydown(mockEvent);
-      expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe(focusableElements[focusableElements.length - 1].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR));
-    });
-
-    it('should NOT constrain tab navigation to control bar elements when NOT in fullscreen mode', function() {
-      baseMockController.state.fullscreen = false;
-      // Tab on last focusable element, should NOT go back to the first
-      document.activeElement = null;
-      mockEvent.target = focusableElements[focusableElements.length - 1];
-      eventMap.keydown(mockEvent);
-      expect(document.activeElement).toBeNull();
-      // Shift + tab on first element, should NOT focus on last
-      document.activeElement = null;
-      mockEvent.target = focusableElements[0];
-      mockEvent.shiftKey = true;
-      eventMap.keydown(mockEvent);
-      expect(document.activeElement).toBeNull();
-    });
   });
 
 });

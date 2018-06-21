@@ -8,10 +8,12 @@ var React = require('react'),
     Utils = require('./utils'),
     Popover = require('../views/popover'),
     AccessibleButton = require('./accessibleButton'),
+    ControlButton = require('./controlButton'),
     VolumeControls = require('./volumeControls'),
     VideoQualityPanel = require('./videoQualityPanel'),
     ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
     ClosedCaptionMultiAudioMenu = require('./closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
+    preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus');
     Logo = require('./logo'),
     Icon = require('./icon'),
     Tooltip = require('./tooltip');
@@ -20,7 +22,6 @@ var ControlBar = React.createClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     this.isPhone = Utils.getUserDevice() === 'phone';
-    this.domNode = null;
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
     this.vr = null;
@@ -37,8 +38,6 @@ var ControlBar = React.createClass({
   componentDidMount: function() {
     window.addEventListener('orientationchange', this.closeOtherPopovers);
     window.addEventListener('orientationchange', this.setLandscapeScreenOrientation, false);
-    document.addEventListener('keydown', this.handleControlBarKeyDown);
-    this.restoreFocusedControl();
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -56,32 +55,6 @@ var ControlBar = React.createClass({
     }
     window.removeEventListener('orientationchange', this.closeOtherPopovers);
     window.removeEventListener('orientationchange', this.setLandscapeScreenOrientation);
-    document.removeEventListener('keydown', this.handleControlBarKeyDown);
-  },
-
-  /**
-   * Restores the focus of a previously selected control bar item.
-   * This is needed as a workaround because switching between play and pause states
-   * currently causes the control bar to re-render.
-   * @private
-   */
-  restoreFocusedControl: function() {
-    if (!this.props.controller.state.focusedControl || !this.domNode) {
-      return;
-    }
-    var selector =
-      '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + '="' + this.props.controller.state.focusedControl + '"]';
-    var control = this.domNode.querySelector(selector);
-
-    if (control && typeof control.focus === 'function') {
-      control.focus();
-      // If we got to this point it means that play was triggered using the spacebar
-      // (since a click would've cleared the focused element) and we need to
-      // trigger control bar auto hide
-      if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
-        this.props.controller.startHideControlBarTimer();
-      }
-    }
   },
 
   getResponsiveUIMultiple: function(responsiveView) {
@@ -336,110 +309,7 @@ var ControlBar = React.createClass({
     this.props.controller.toggleMoreOptionsScreen(this.moreOptionsItems);
   },
 
-  // TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
-  highlight: function(evt) {
-    if (!this.isMobile) {
-      var iconElement = Utils.getEventIconElement(evt);
-      if (iconElement) {
-        var color = this.props.skinConfig.controlBar.iconStyle.active.color ?
-          this.props.skinConfig.controlBar.iconStyle.active.color
-          :
-          this.props.skinConfig.general.accentColor;
-        var opacity = this.props.skinConfig.controlBar.iconStyle.active.opacity;
-        Utils.highlight(iconElement, opacity, color);
-      }
-    }
-  },
-
-  removeHighlight: function(evt) {
-    var iconElement = Utils.getEventIconElement(evt);
-    if (iconElement) {
-      var color = this.props.skinConfig.controlBar.iconStyle.inactive.color;
-      var opacity = this.props.skinConfig.controlBar.iconStyle.inactive.opacity;
-      Utils.removeHighlight(iconElement, opacity, color);
-    }
-  },
-
-  /**
-   * Fires whenever an item is focused inside the control bar. Stores the id of
-   * the focused control.
-   * @param {FocusEvent} evt - Focus event object
-   * @private
-   */
-  handleControlBarFocus: function(evt) {
-    var focusId = evt.target ?
-      evt.target.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)
-      :
-      null;
-    if (focusId) {
-      this.props.controller.state.focusedControl = focusId;
-    }
-  },
-
-  /**
-   * Clears the currently focused control.
-   * @private
-   */
-  handleControlBarBlur: function() {
-    this.props.controller.state.focusedControl = null;
-  },
-
-  /**
-   * Will handle the keydown event when the controlBar is active and it will restrict
-   * tab navigation to elements that are within it when the player is in fullscreen mode.
-   * Note that this only handles the edge cases that are needed in order to loop the tab
-   * focus. Tabbing in between the elements is handled by the browser.
-   * @private
-   * @param {Object} evt Keydown event object.
-   */
-  handleControlBarKeyDown: function(evt) {
-    if (
-      evt.key !== CONSTANTS.KEY_VALUES.TAB ||
-      !this.props.controller.state.fullscreen ||
-      !this.domNode ||
-      !evt.target
-    ) {
-      return;
-    }
-    // Focusable elements on the control bar (this.domNode) are expected to have the
-    // data-focus-id attribute
-    var focusableElements = this.domNode.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
-
-    if (focusableElements.length) {
-      var firstFocusableElement = focusableElements[0];
-      var lastFocusableElement = focusableElements[focusableElements.length - 1];
-      // This indicates we're tabbing over the focusable control bar elements
-      if (evt.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)) {
-        if (evt.shiftKey) {
-          // Shift + tabbing on first element, focus on last
-          if (evt.target === firstFocusableElement) {
-            evt.preventDefault();
-            lastFocusableElement.focus();
-          }
-        } else {
-          // Tabbing on last element, focus on first
-          if (evt.target === lastFocusableElement) {
-            evt.preventDefault();
-            firstFocusableElement.focus();
-          }
-        }
-        // Keydown happened on a non-controlbar element
-      } else {
-        evt.preventDefault();
-
-        if (evt.shiftKey) {
-          lastFocusableElement.focus();
-        } else {
-          firstFocusableElement.focus();
-        }
-      }
-    } else {
-      OO.log('ControlBar: No focusable elements found');
-    }
-  },
-
   populateControlBar: function() {
-    var dynamicStyles = this.setupItemStyle();
     var playIcon;
     var playPauseAriaLabel;
     if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
@@ -550,19 +420,17 @@ var ControlBar = React.createClass({
       :
       null;
 
-    var isTooltipEnabled = false;
-    if (!this.isMobile && this.props.skinConfig.controlBar.tooltips) {
-      isTooltipEnabled = this.props.skinConfig.controlBar.tooltips.enabled;
-    }
-
+    // Map of tooltip aligments, which vary depending of the button's order within
+    // the control bar. This is populated below.
     var tooltipAlignments = {};
-    var tooltipConfig = {
-      enabled: isTooltipEnabled,
-      responsivenessMultiplier: this.responsiveUIMultiple,
-      bottom: this.responsiveUIMultiple * this.props.skinConfig.controlBar.height,
+    // Props that need to be passed to all control bar buttons
+    var commonButtonProps = {
       language: this.props.language,
       localizableStrings: this.props.localizableStrings,
-      getAlignment: function(key) {
+      responsiveView: this.props.responsiveView,
+      skinConfig: this.props.skinConfig,
+      controller: this.props.controller,
+      getTooltipAlignment: function(key) {
         return tooltipAlignments[key] || CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
       }
     };
@@ -578,21 +446,16 @@ var ControlBar = React.createClass({
 
     var controlItemTemplates = {
       playPause: (
-        <AccessibleButton
+        <ControlButton
+          {...commonButtonProps}
           key={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
-          className="oo-play-pause oo-control-bar-item"
-          onClick={this.handlePlayClick}
-          onMouseOver={this.highlight}
-          onMouseOut={this.removeHighlight}
-          focusId={CONSTANTS.FOCUS_IDS.PLAY_PAUSE}
-          ariaLabel={playPauseAriaLabel}>
-          <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
-          <Tooltip
-            {...tooltipConfig}
-            parentKey={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
-            text={playBtnTooltip}>
-          </Tooltip>
-        </AccessibleButton>
+          className="oo-play-pause"
+          focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
+          ariaLabel={playPauseAriaLabel}
+          icon={playIcon}
+          tooltip={playBtnTooltip}
+          onClick={this.handlePlayClick}>
+        </ControlButton>
       ),
 
       live: (
@@ -604,23 +467,15 @@ var ControlBar = React.createClass({
 
       volume: (
         <div key={CONSTANTS.CONTROL_BAR_KEYS.VOLUME} className="oo-volume oo-control-bar-item">
-          <AccessibleButton
-            className="oo-mute-unmute oo-control-bar-item"
-            onClick={this.handleVolumeIconClick}
-            onMouseOver={this.highlight}
-            onMouseOut={this.removeHighlight}
-            focusId={CONSTANTS.FOCUS_IDS.MUTE_UNMUTE}
-            ariaLabel={volumeAriaLabel}>
-            <Icon
-              {...this.props}
-              icon={volumeIcon}
-              ref="volumeIcon"
-              style={this.props.skinConfig.controlBar.iconStyle.inactive} />
-            <Tooltip
-              {...tooltipConfig}
-              parentKey={CONSTANTS.CONTROL_BAR_KEYS.VOLUME}
-              text={mutedInUi ? CONSTANTS.SKIN_TEXT.UNMUTE : CONSTANTS.SKIN_TEXT.MUTE} />
-          </AccessibleButton>
+          <ControlButton
+            {...commonButtonProps}
+            className="oo-mute-unmute"
+            focusId={CONSTANTS.CONTROL_BAR_KEYS.VOLUME}
+            ariaLabel={volumeAriaLabel}
+            icon={volumeIcon}
+            tooltip={mutedInUi ? CONSTANTS.SKIN_TEXT.UNMUTE : CONSTANTS.SKIN_TEXT.MUTE}
+            onClick={this.handleVolumeIconClick}>
+          </ControlButton>
           <VolumeControls {...this.props} />
         </div>
       ),
@@ -642,48 +497,35 @@ var ControlBar = React.createClass({
       ),
 
       moreOptions: (
-        <a
+        <ControlButton
+          {...commonButtonProps}
           key={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
-          className="oo-more-options oo-control-bar-item"
-          onClick={this.handleMoreOptionsClick}
-          aria-hidden="true">
-          <Icon
-            {...this.props}
-            icon="ellipsis"
-            style={dynamicStyles.iconCharacter}
-            onMouseOver={this.highlight}
-            onMouseOut={this.removeHighlight} />
-          <Tooltip
-            {...tooltipConfig}
-            parentKey={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
-            text={CONSTANTS.SKIN_TEXT.MORE_OPTIONS} />
-        </a>
+          className="oo-more-options"
+          focusId={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
+          ariaHidden={true}
+          icon="ellipsis"
+          tooltip={CONSTANTS.SKIN_TEXT.MORE_OPTIONS}
+          onClick={this.handleMoreOptionsClick}>
+        </ControlButton>
       ),
 
       quality: (
         <div key={CONSTANTS.CONTROL_BAR_KEYS.QUALITY} className="oo-popover-button-container">
-          <AccessibleButton
-            ref={function(e) {
+          <ControlButton
+            {...commonButtonProps}
+            onRef={function(e) {
               this.setToggleButtons(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY, e);
             }.bind(this)}
             style={selectedStyle}
             className={qualityClass}
-            focusId={CONSTANTS.FOCUS_IDS.VIDEO_QUALITY}
+            focusId={CONSTANTS.CONTROL_BAR_KEYS.QUALITY}
             ariaLabel={CONSTANTS.ARIA_LABELS.VIDEO_QUALITY}
             ariaHasPopup={true}
             ariaExpanded={this.props.controller.state.videoQualityOptions.showPopover ? true : null}
+            icon="quality"
+            tooltip={CONSTANTS.SKIN_TEXT.VIDEO_QUALITY}
             onClick={this.handleQualityClick}>
-            <Icon
-              {...this.props}
-              icon="quality"
-              style={dynamicStyles.iconCharacter}
-              onMouseOver={this.highlight}
-              onMouseOut={this.removeHighlight} />
-            <Tooltip
-              {...tooltipConfig}
-              parentKey={CONSTANTS.CONTROL_BAR_KEYS.QUALITY}
-              text={CONSTANTS.SKIN_TEXT.VIDEO_QUALITY} />
-          </AccessibleButton>
+          </ControlButton>
           {this.props.controller.state.videoQualityOptions.showPopover && (
             <Popover
               autoFocus={this.props.controller.state.videoQualityOptions.autoFocus}
@@ -699,48 +541,35 @@ var ControlBar = React.createClass({
       ),
 
       discovery: (
-        <a
+        <ControlButton
+          {...commonButtonProps}
           key={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
-          className="oo-discovery oo-control-bar-item"
-          onClick={this.handleDiscoveryClick}
-          aria-hidden="true">
-          <Icon
-            {...this.props}
-            icon="discovery"
-            style={dynamicStyles.iconCharacter}
-            onMouseOver={this.highlight}
-            onMouseOut={this.removeHighlight} />
-          <Tooltip
-            {...tooltipConfig}
-            parentKey={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
-            text={CONSTANTS.SKIN_TEXT.DISCOVER} />
-        </a>
+          className="oo-discovery"
+          focusId={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
+          ariaHidden={true}
+          icon="discovery"
+          tooltip={CONSTANTS.SKIN_TEXT.DISCOVER}
+          onClick={this.handleDiscoveryClick}>
+        </ControlButton>
       ),
 
       closedCaption: (
         <div key={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION} className="oo-popover-button-container">
-          <AccessibleButton
-            ref={function(e) {
+          <ControlButton
+            {...commonButtonProps}
+            onRef={function(e) {
               this.setToggleButtons(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS, e);
             }.bind(this)}
             style={selectedStyle}
             className={captionClass}
-            focusId={CONSTANTS.FOCUS_IDS.CLOSED_CAPTIONS}
+            focusId={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION}
             ariaLabel={CONSTANTS.ARIA_LABELS.CLOSED_CAPTIONS}
             ariaHasPopup={true}
             ariaExpanded={this.props.controller.state.closedCaptionOptions.showPopover ? true : null}
+            icon="cc"
+            tooltip={CONSTANTS.SKIN_TEXT.CLOSED_CAPTIONS}
             onClick={this.handleClosedCaptionClick}>
-            <Icon
-              {...this.props}
-              icon="cc"
-              style={dynamicStyles.iconCharacter}
-              onMouseOver={this.highlight}
-              onMouseOut={this.removeHighlight} />
-            <Tooltip
-              {...tooltipConfig}
-              parentKey={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION}
-              text={CONSTANTS.SKIN_TEXT.CLOSED_CAPTIONS} />
-          </AccessibleButton>
+          </ControlButton>
           {this.props.controller.state.closedCaptionOptions.showPopover && (
             <Popover
               popoverClassName="oo-popover oo-popover-pull-right"
@@ -776,28 +605,21 @@ var ControlBar = React.createClass({
 
         return (
           <div key={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC} className="oo-popover-button-container">
-            <AccessibleButton
-              ref={function(e) {
+            <ControlButton
+              {...commonButtonProps}
+              onRef={function(e) {
                 this.setToggleButtons(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO, e);
               }.bind(this)}
               style={selectedStyle}
               className={multiAudioClass}
-              focusId={CONSTANTS.FOCUS_IDS.MULTI_AUDIO}
+              focusId={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC}
               ariaLabel={CONSTANTS.ARIA_LABELS.MULTI_AUDIO}
               ariaHasPopup={true}
               ariaExpanded={this.props.controller.state.multiAudioOptions.showPopover ? true : null}
+              icon="audioAndCC"
+              tooltip={CONSTANTS.SKIN_TEXT.AUDIO}
               onClick={this.handleMultiAudioClick}>
-              <Icon
-                {...this.props}
-                icon="audioAndCC"
-                style={dynamicStyles.iconCharacter}
-                onMouseOver={this.highlight}
-                onMouseOut={this.removeHighlight} />
-              <Tooltip
-                {...tooltipConfig}
-                parentKey={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC}
-                text={CONSTANTS.SKIN_TEXT.AUDIO} />
-            </AccessibleButton>
+            </ControlButton>
             {this.props.controller.state.multiAudioOptions.showPopover &&
               <Popover
                 popoverClassName="oo-popover oo-popover-pull-right oo-cc-ma-container"
@@ -817,56 +639,46 @@ var ControlBar = React.createClass({
       }.bind(this)(),
 
       share: (
-        <a
+        <ControlButton
+          {...commonButtonProps}
           key={CONSTANTS.CONTROL_BAR_KEYS.SHARE}
-          className="oo-share oo-control-bar-item"
-          onClick={this.handleShareClick}
-          aria-hidden="true">
-          <Icon
-            {...this.props}
-            icon="share"
-            style={dynamicStyles.iconCharacter}
-            onMouseOver={this.highlight}
-            onMouseOut={this.removeHighlight} />
-          <Tooltip
-            {...tooltipConfig}
-            parentKey={CONSTANTS.CONTROL_BAR_KEYS.SHARE}
-            text={CONSTANTS.SKIN_TEXT.SHARE} />
-        </a>
+          className="oo-share"
+          focusId={CONSTANTS.CONTROL_BAR_KEYS.SHARE}
+          ariaHidden={true}
+          icon="share"
+          tooltip={CONSTANTS.SKIN_TEXT.SHARE}
+          onClick={this.handleShareClick}>
+        </ControlButton>
       ),
 
       stereoscopic: !!(this.vr && this.isPhone) && (
-        <AccessibleButton
+        <ControlButton
+          {...commonButtonProps}
           key={CONSTANTS.CONTROL_BAR_KEYS.STEREOSCOPIC}
-          className="oo-video-type oo-control-bar-item oo-vr-stereo-button"
-          onClick={this.handleStereoVrClick}
-          onMouseOver={this.highlight}
-          onMouseOut={this.removeHighlight}
-          focusId={CONSTANTS.FOCUS_IDS.STEREO}
-          ariaLabel={stereoAriaLabel}>
-          <Icon {...this.props} icon={stereoIcon} style={dynamicStyles.iconCharacter} />
-        </AccessibleButton>
+          className="oo-video-type oo-vr-stereo-button"
+          focusId={CONSTANTS.CONTROL_BAR_KEYS.STEREOSCOPIC}
+          ariaLabel={stereoAriaLabel}
+          icon={stereoIcon}
+          onClick={this.handleStereoVrClick}>
+        </ControlButton>
       ),
 
       fullscreen: (
-        <AccessibleButton
+        <ControlButton
+          {...commonButtonProps}
           key={CONSTANTS.CONTROL_BAR_KEYS.FULLSCREEN}
-          className="oo-fullscreen oo-control-bar-item"
-          onClick={this.handleFullscreenClick}
-          onMouseOver={this.highlight}
-          onMouseOut={this.removeHighlight}
-          focusId={CONSTANTS.FOCUS_IDS.FULLSCREEN}
-          ariaLabel={fullscreenAriaLabel}>
-          <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter} />
-          <Tooltip
-            {...tooltipConfig}
-            parentKey={CONSTANTS.CONTROL_BAR_KEYS.FULLSCREEN}
-            text={this.props.controller.state.fullscreen ?
+          className="oo-fullscreen"
+          focusId={CONSTANTS.CONTROL_BAR_KEYS.FULLSCREEN}
+          ariaLabel={fullscreenAriaLabel}
+          icon={fullscreenIcon}
+          tooltip={
+            this.props.controller.state.fullscreen ?
               CONSTANTS.SKIN_TEXT.EXIT_FULL_SCREEN
-              :
+            :
               CONSTANTS.SKIN_TEXT.FULL_SCREEN
-            } />
-        </AccessibleButton>
+          }
+          onClick={this.handleFullscreenClick}>
+        </ControlButton>
       ),
 
       logo: (
@@ -1028,16 +840,6 @@ var ControlBar = React.createClass({
     return finalControlBarItems;
   },
 
-  setupItemStyle: function() {
-    var returnStyles = {};
-
-    returnStyles.iconCharacter = {
-      color: this.props.skinConfig.controlBar.iconStyle.inactive.color,
-      opacity: this.props.skinConfig.controlBar.iconStyle.inactive.opacity
-    };
-    return returnStyles;
-  },
-
   render: function() {
     var controlBarClass = ClassNames({
       'oo-control-bar': true,
@@ -1051,16 +853,12 @@ var ControlBar = React.createClass({
 
     return (
       <div
-        ref={function(domNode) {
-          this.domNode = domNode;
-        }.bind(this)}
         className={controlBarClass}
         style={controlBarStyle}
-        onFocus={this.handleControlBarFocus}
-        onBlur={this.handleControlBarBlur}
+        onFocus={this.props.onFocus}
+        onBlur={this.props.onBlur}
         onMouseUp={this.handleControlBarMouseUp}
-        onTouchEnd={this.handleControlBarMouseUp}
-      >
+        onTouchEnd={this.handleControlBarMouseUp}>
         <ScrubberBar {...this.props} />
 
         <div className="oo-control-bar-items-wrapper">
@@ -1096,6 +894,8 @@ ControlBar.propTypes = {
   duration: React.PropTypes.number,
   currentPlayhead: React.PropTypes.number,
   componentWidth: React.PropTypes.number,
+  onFocus: React.PropTypes.func,
+  onBlur: React.PropTypes.func,
   skinConfig: React.PropTypes.shape({
     responsive: React.PropTypes.shape({
       breakpoints: React.PropTypes.object
@@ -1115,4 +915,4 @@ ControlBar.propTypes = {
   })
 };
 
-module.exports = ControlBar;
+module.exports = preserveKeyboardFocus(ControlBar);

@@ -1,8 +1,10 @@
-jest.dontMock('../../js/views/endScreen')
-    .dontMock('../../js/components/icon')
-    .dontMock('../../js/components/utils')
-    .dontMock('../../js/components/higher-order/accessibleMenu')
-    .dontMock('classnames');
+jest
+.dontMock('../../js/views/endScreen')
+.dontMock('../../js/components/icon')
+.dontMock('../../js/components/utils')
+.dontMock('../../js/components/higher-order/accessibleMenu')
+.dontMock('../../js/components/higher-order/preserveKeyboardFocus')
+.dontMock('classnames');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');

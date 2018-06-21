@@ -315,7 +315,8 @@ describe('ScrubberBar', function() {
       state: {
         isMobile: false,
         thumbnails: thumbnails
-      }
+      },
+      setScrubberBarHoverState: function() {},
     };
     var DOM = TestUtils.renderIntoDocument(
       <ScrubberBar
@@ -328,7 +329,7 @@ describe('ScrubberBar', function() {
     );
 
     var evt = {nativeEvent: {offsetX: 10}};
-    TestUtils.Simulate.mouseOver(ReactDOM.findDOMNode(DOM.refs.scrubberBarContainer), evt);
+    TestUtils.Simulate.mouseEnter(ReactDOM.findDOMNode(DOM.refs.scrubberBarContainer), evt);
     var thumbnailContainer = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-scrubber-thumbnail-wrapper');
     expect(thumbnailContainer.length).toBe(1);
   });
@@ -398,7 +399,8 @@ describe('ScrubberBar', function() {
       beginSeeking: function() {},
       endSeeking: function() {},
       seek: function() {},
-      renderSkin: function() {}
+      renderSkin: function() {},
+      setScrubberBarHoverState: function() {}
     };
 
     var node = document.createElement('div');
@@ -470,7 +472,7 @@ describe('ScrubberBar', function() {
     };
     scrubber.handlePlayheadMouseMove(event4);
     scrubber.handleScrubberBarMouseMove(event4);
-    scrubber.handleScrubberBarMouseOut(event4);
+    scrubber.handleScrubberBarMouseLeave(event4);
   });
 
   it('tests a scrubber bar componentWillUnmount', function() {

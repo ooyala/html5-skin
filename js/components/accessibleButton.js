@@ -4,6 +4,7 @@ var Utils = require('./utils');
 var CONSTANTS = require('../constants/constants');
 
 var AccessibleButton = React.createClass({
+
   getInitialState: function() {
     this.triggeredWithKeyboard = false;
     return {};
@@ -57,6 +58,24 @@ var AccessibleButton = React.createClass({
       default:
         break;
     }
+
+    if (typeof this.props.onKeyDown === 'function') {
+      this.props.onKeyDown(event);
+    }
+  },
+
+  /**
+   * Handles the mouseup event. Automatically removes keyboard focus
+   * from the button and calls a custom mouseup handler if it was passed.
+   * @private
+   * @param {event} event The mouseup event object
+   */
+  onMouseUp: function(event) {
+    Utils.blurOnMouseUp(event);
+
+    if (typeof this.props.onMouseUp === 'function') {
+      this.props.onMouseUp(event);
+    }
   },
 
   render: function() {
@@ -77,13 +96,17 @@ var AccessibleButton = React.createClass({
         aria-haspopup={this.props.ariaHasPopup}
         aria-expanded={this.props.ariaExpanded}
         role={this.props.role}
+        disabled={this.props.disabled}
         onKeyDown={this.onKeyDown}
-        onMouseUp={Utils.blurOnMouseUp}
+        onKeyUp={this.props.onKeyUp}
+        onMouseDown={this.props.onMouseDown}
+        onMouseUp={this.onMouseUp}
         onMouseOver={this.props.onMouseOver}
         onMouseOut={this.props.onMouseOut}
+        onMouseEnter={this.props.onMouseEnter}
+        onMouseLeave={this.props.onMouseLeave}
         onFocus={this.props.onFocus}
-        onClick={this.props.onClick}
-      >
+        onClick={this.props.onClick}>
         {this.props.children}
       </button>
     );
@@ -101,8 +124,15 @@ AccessibleButton.propTypes = {
   ariaHasPopup: React.PropTypes.bool,
   ariaExpanded: React.PropTypes.bool,
   role: React.PropTypes.string,
+  disabled: React.PropTypes.bool,
+  onKeyDown: React.PropTypes.func,
+  onKeyUp: React.PropTypes.func,
+  onMouseDown: React.PropTypes.func,
+  onMouseUp: React.PropTypes.func,
   onMouseOver: React.PropTypes.func,
   onMouseOut: React.PropTypes.func,
+  onMouseEnter: React.PropTypes.func,
+  onMouseLeave: React.PropTypes.func,
   onFocus: React.PropTypes.func,
   onClick: React.PropTypes.func
 };
