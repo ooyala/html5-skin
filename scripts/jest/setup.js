@@ -42,3 +42,9 @@ window.HTMLCanvasElement.prototype.getContext = function () {
 window.HTMLCanvasElement.prototype.toDataURL = function () {
   return "";
 };
+
+//mock window.open since jsdom does not support it
+window.open = function() {};
+
+//mock our OO object
+window.OO = {};
