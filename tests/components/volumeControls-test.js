@@ -8,7 +8,7 @@ jest
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var VolumeControls = require('../../js/components/volumeControls');
 var defaultSkinConfig = require('../../config/skin.json');
 var CONSTANTS = require('../../js/constants/constants');
@@ -39,7 +39,7 @@ describe('VolumeControls', function() {
   });
 
   it('should change volume according to value of clicked volume bar', function() {
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
     );
     var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
@@ -51,7 +51,7 @@ describe('VolumeControls', function() {
 
   it('should set active css class on bars that match the current volume level', function() {
     mockCtrl.state.volumeState.volume = 0.5;
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
     );
     var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
@@ -67,10 +67,10 @@ describe('VolumeControls', function() {
 
   it('should set the right ARIA attributes on volume controls', function() {
     mockCtrl.state.volumeState.volume = 0.5;
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
     );
-    var volumeControls = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume-controls');
+    var volumeControls = wrapper.find('.oo-volume-controls');
     expect(volumeControls.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.VOLUME_SLIDER);
     expect(volumeControls.getAttribute('aria-valuemin')).toBe('0');
     expect(volumeControls.getAttribute('aria-valuemax')).toBe('100');
@@ -90,10 +90,10 @@ describe('VolumeControls', function() {
         }
       }
     };
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
     );
-    var volumeControls = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume-controls');
+    var volumeControls = wrapper.find('.oo-volume-controls');
     TestUtils.Simulate.keyDown(volumeControls, { key: CONSTANTS.KEY_VALUES.ARROW_UP });
     TestUtils.Simulate.keyDown(volumeControls, { key: CONSTANTS.KEY_VALUES.ARROW_RIGHT });
     expect(increaseVolumeCalled).toBe(2);
@@ -112,10 +112,10 @@ describe('VolumeControls', function() {
         volumeIncrease = increase;
       }
     };
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
     );
-    var volumeControls = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume-controls');
+    var volumeControls = wrapper.find('.oo-volume-controls');
     TestUtils.Simulate.keyDown(volumeControls, { key: CONSTANTS.KEY_VALUES.HOME });
     expect(volumePercent).toBe(100);
     expect(volumeIncrease).toBe(false);
@@ -126,7 +126,7 @@ describe('VolumeControls', function() {
 
   it('should unmute when volume is changed when muted', function() {
     var spy = sinon.spy(mockCtrl, 'toggleMute');
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
     );
     var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
@@ -142,7 +142,7 @@ describe('VolumeControls', function() {
     mockCtrl.state.volumeState.volume = 0.5;
     mockCtrl.state.volumeState.muted = true;
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
     );
     var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
@@ -157,11 +157,11 @@ describe('VolumeControls', function() {
     mockCtrl.state.volumeState.volume = 0.5;
     mockCtrl.state.volumeState.volumeSliderVisible = true;
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
     );
 
-    var volumeSlider = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-slider');
+    var volumeSlider = wrapper.find('.oo-slider');
     expect(volumeSlider.value).toEqual('0.5');
   });
 
@@ -171,11 +171,11 @@ describe('VolumeControls', function() {
     mockCtrl.state.volumeState.volumeSliderVisible = true;
     mockCtrl.state.volumeState.muted = true;
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
     );
 
-    var volumeSlider = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-slider');
+    var volumeSlider = wrapper.find('.oo-slider');
     expect(volumeSlider.value).toEqual('0');
   });
 

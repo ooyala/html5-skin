@@ -6,7 +6,7 @@ jest
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var SelectionContainer = require('../../../js/components/closed-caption/selectionContainer');
 var CONSTANTS = require('../../../js/constants/constants');
 

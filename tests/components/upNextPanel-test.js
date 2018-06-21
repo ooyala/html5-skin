@@ -4,7 +4,7 @@ jest.dontMock('../../js/components/closeButton');
 jest.dontMock('classnames');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var UpNextPanel = require('../../js/components/upNextPanel');
 
 describe('UpNextPanel', function() {
@@ -15,11 +15,11 @@ describe('UpNextPanel', function() {
     DOM = TestUtils.renderIntoDocument(<UpNextPanel upNextInfo={data} />);
 
     // test up next content link
-    var upNextContent = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-up-next-content');
+    var upNextContent = wrapper.find('.oo-up-next-content');
     TestUtils.Simulate.click(upNextContent);
 
     // test close btn
-    var closeBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-up-next-close-btn');
+    var closeBtn = wrapper.find('.oo-up-next-close-btn');
     TestUtils.Simulate.click(closeBtn);
   });
 });

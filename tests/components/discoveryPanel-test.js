@@ -6,8 +6,8 @@ jest.dontMock('../../js/components/discoveryPanel')
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var DiscoveryPanel = require('../../js/components/discoveryPanel');
 var Enzyme = require('enzyme');
+var DiscoveryPanel = require('../../js/components/discoveryPanel');
 
 describe('DiscoveryPanel', function() {
   it('tests displays discovery panel', function() {
@@ -17,18 +17,12 @@ describe('DiscoveryPanel', function() {
     var wrapper = Enzyme.mount(<DiscoveryPanel discoveryData={data} />);
 
     // test left btn
-    var leftBtn = wrapper.ref("ChevronLeftButton");
-    //TODO: Note that this does not actually trigger handleLeftButtonClick. Need to figure out why.
-    //However the previous test did not check this either
-    //Also can't simulate click because the ref API returns an HTML element and not a ReactWrapper
-    leftBtn.click();
+    var leftBtn = wrapper.find('.oo-left-button');
+    leftBtn.simulate('click');
 
     // test right btn
-    var rightBtn = wrapper.ref("ChevronRightButton");
-    //TODO: Note that this does not actually trigger handleRightButtonClick. Need to figure out why
-    //However the previous test did not check this either
-    //Also can't simulate click because the ref API returns an HTML element and not a ReactWrapper
-    rightBtn.click();
+    var rightBtn = wrapper.find('.oo-right-button');
+    rightBtn.simulate('click');
 
     // test discovery videos
     var vidImg = wrapper.find('.oo-image-style');

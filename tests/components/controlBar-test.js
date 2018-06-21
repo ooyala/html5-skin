@@ -13,7 +13,7 @@ jest
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var CONSTANTS = require('../../js/constants/constants');
 var ControlBar = require('../../js/components/controlBar');
 var AccessibleButton = require('../../js/components/accessibleButton');
@@ -103,7 +103,7 @@ describe('ControlBar', function() {
       duration: 30
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -145,7 +145,7 @@ describe('ControlBar', function() {
       skinConfig: fullscreenSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -153,7 +153,7 @@ describe('ControlBar', function() {
     );
 
     expect(fullscreenToggled).toBe(false);
-    var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
+    var fullscreenButton = wrapper.find('.oo-fullscreen');
     TestUtils.Simulate.click(fullscreenButton);
     expect(fullscreenToggled).toBe(true);
   });
@@ -191,14 +191,14 @@ describe('ControlBar', function() {
       vr: mockController.videoVrSource
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
                   componentWidth={500}
                   playerState={CONSTANTS.STATE.PLAYING}
                   isLiveStream={mockProps.isLiveStream} />
     );
 
-    var toggleStereoVrButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-vr-stereo-button');
+    var toggleStereoVrButton = wrapper.find('.oo-vr-stereo-button');
     expect(typeof toggleStereoVrButton).toBe('object');
   });
 
@@ -231,7 +231,7 @@ describe('ControlBar', function() {
       vr: mockController.videoVr
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
                   componentWidth={500}
                   playerState={CONSTANTS.STATE.PLAYING}
@@ -271,7 +271,7 @@ describe('ControlBar', function() {
       vr: mockController.videoVr
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
                   componentWidth={500}
                   playerState={CONSTANTS.STATE.PLAYING}
@@ -320,7 +320,7 @@ describe('ControlBar', function() {
       vr: mockController.videoVrSource
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
                   componentWidth={500}
                   playerState={CONSTANTS.STATE.PLAYING}
@@ -328,7 +328,7 @@ describe('ControlBar', function() {
     );
 
     expect(stereoMode).toBe(false);
-    var toggleStereoVrButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-vr-stereo-button');
+    var toggleStereoVrButton = wrapper.find('.oo-vr-stereo-button');
     TestUtils.Simulate.click(toggleStereoVrButton);
     expect(stereoMode).toBe(true);
   });
@@ -357,7 +357,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -401,7 +401,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={1200}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -443,14 +443,14 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var volumeButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-mute-unmute').firstChild;
+    var volumeButton = wrapper.find('.oo-mute-unmute').firstChild;
     TestUtils.Simulate.click(volumeButton);
     expect(muteClicked).toBe(true);
     var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
@@ -550,14 +550,14 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var playButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause').firstChild;
+    var playButton = wrapper.find('.oo-play-pause').firstChild;
     TestUtils.Simulate.click(playButton);
     expect(playClicked).toBe(true);
   });
@@ -603,7 +603,7 @@ describe('ControlBar', function() {
       { 'name': 'fullscreen', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
     ];
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar
         {...baseMockProps}
         controlBarVisible={true}
@@ -612,11 +612,11 @@ describe('ControlBar', function() {
         isLiveStream={baseMockProps.isLiveStream} />
     );
 
-    var playPauseButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause');
-    var muteUnmuteButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').querySelector('.oo-mute-unmute');
-    var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
-    var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality');
-    var ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-closed-caption');
+    var playPauseButton = wrapper.find('.oo-play-pause');
+    var muteUnmuteButton = wrapper.find('.oo-volume').querySelector('.oo-mute-unmute');
+    var fullscreenButton = wrapper.find('.oo-fullscreen');
+    var qualityButton = wrapper.find('.oo-quality');
+    var ccButton = wrapper.find('.oo-closed-caption');
     expect(playPauseButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PAUSE);
     expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.MUTE);
     expect(fullscreenButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.FULLSCREEN);
@@ -645,7 +645,7 @@ describe('ControlBar', function() {
     baseMockController.state.fullscreen = true;
     baseMockController.state.volumeState.muted = true;
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar
         {...baseMockProps}
         controlBarVisible={true}
@@ -654,11 +654,11 @@ describe('ControlBar', function() {
         isLiveStream={baseMockProps.isLiveStream} />
     );
 
-    var playPauseButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause');
-    var muteUnmuteButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').querySelector('.oo-mute-unmute');
-    var fullscreenButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fullscreen');
-    var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality');
-    var ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-closed-caption');
+    var playPauseButton = wrapper.find('.oo-play-pause');
+    var muteUnmuteButton = wrapper.find('.oo-volume').querySelector('.oo-mute-unmute');
+    var fullscreenButton = wrapper.find('.oo-fullscreen');
+    var qualityButton = wrapper.find('.oo-quality');
+    var ccButton = wrapper.find('.oo-closed-caption');
     expect(playPauseButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PLAY);
     expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.UNMUTE);
     expect(fullscreenButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.EXIT_FULLSCREEN);
@@ -678,7 +678,7 @@ describe('ControlBar', function() {
 
     baseMockController.state.volumeState.volume = 0;
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar
         {...baseMockProps}
         controlBarVisible={true}
@@ -687,7 +687,7 @@ describe('ControlBar', function() {
         isLiveStream={baseMockProps.isLiveStream} />
     );
 
-    var muteUnmuteButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').querySelector('.oo-mute-unmute');
+    var muteUnmuteButton = wrapper.find('.oo-volume').querySelector('.oo-mute-unmute');
     expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.UNMUTE);
   });
 
@@ -697,7 +697,7 @@ describe('ControlBar', function() {
       { 'name': 'playPause', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 }
     ];
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar
         {...baseMockProps}
         controlBarVisible={true}
@@ -706,7 +706,7 @@ describe('ControlBar', function() {
         isLiveStream={baseMockProps.isLiveStream} />
     );
 
-    var playPauseButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause');
+    var playPauseButton = wrapper.find('.oo-play-pause');
     TestUtils.Simulate.focus(playPauseButton);
     expect(baseMockController.state.focusedControl).toBe('playPause');
     TestUtils.Simulate.blur(playPauseButton);
@@ -730,10 +730,10 @@ describe('ControlBar', function() {
         isLiveStream={baseMockProps.isLiveStream} />
     );
     baseMockController.state.focusedControl = null;
-    var DOM = TestUtils.renderIntoDocument(controlBar);
+    var wrapper = Enzyme.mount(controlBar);
     expect(startHideControlBarTimerCalled).toBe(false);
     baseMockController.state.focusedControl = 'playPause';
-    var DOM = TestUtils.renderIntoDocument(controlBar);
+    var wrapper = Enzyme.mount(controlBar);
     expect(startHideControlBarTimerCalled).toBe(true);
   });
 
@@ -765,14 +765,14 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var shareButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share').firstChild;
+    var shareButton = wrapper.find('.oo-share').firstChild;
     TestUtils.Simulate.click(shareButton);
     expect(shareClicked).toBe(true);
   });
@@ -806,14 +806,14 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.END}
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var discoveryButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-discovery').firstChild;
+    var discoveryButton = wrapper.find('.oo-discovery').firstChild;
     TestUtils.Simulate.click(discoveryButton);
     expect(discoveryClicked).toBe(true);
   });
@@ -845,7 +845,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -891,7 +891,7 @@ describe('ControlBar', function() {
     var ccButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-closed-caption');
     expect(ccButtons2.length).toBe(1);
 
-    var ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-closed-caption').firstChild;
+    var ccButton = wrapper.find('.oo-closed-caption').firstChild;
     TestUtils.Simulate.click(ccButton);
     expect(captionClicked).toBe(true);
 
@@ -910,7 +910,7 @@ describe('ControlBar', function() {
        isLiveStream={mockProps.isLiveStream} />
     );
 
-    ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-closed-caption').firstChild;
+    ccButton = wrapper.find('.oo-closed-caption').firstChild;
     TestUtils.Simulate.click(ccButton);
     expect(toggleScreenClicked).toBe(true);
   });
@@ -942,7 +942,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -980,7 +980,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -1019,7 +1019,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar
         {...mockProps}
         controlBarVisible={true}
@@ -1122,7 +1122,7 @@ describe('ControlBar', function() {
     };
 
     // small screen
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar
         {...mockProps}
         controlBarVisible={true}
@@ -1132,7 +1132,7 @@ describe('ControlBar', function() {
     );
 
     var controlBar = TestUtils.findRenderedComponentWithType(DOM, ControlBar);
-    var multiAudioBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-multiaudio').firstChild;
+    var multiAudioBtn = wrapper.find('.oo-multiaudio').firstChild;
     TestUtils.Simulate.click(multiAudioBtn);
     expect(multiAudioClicked).toBe(true);
 
@@ -1184,7 +1184,7 @@ describe('ControlBar', function() {
     customSkinConfig.shareScreen.shareContent = ['social'];
     customSkinConfig.shareScreen.socialContent = [];
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps}
         controlBarVisible={true}
         componentWidth={500}
@@ -1230,7 +1230,7 @@ describe('ControlBar', function() {
     customSkinConfig.shareScreen.shareContent = ['social'];
     customSkinConfig.shareScreen.socialContent = ['twitter'];
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps}
         controlBarVisible={true}
         componentWidth={500}
@@ -1264,7 +1264,7 @@ describe('ControlBar', function() {
     customSkinConfig.shareScreen.shareContent = ['social'];
     customSkinConfig.shareScreen.socialContent = ['twitter'];
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps}
         controlBarVisible={true}
         componentWidth={500}
@@ -1301,7 +1301,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -1344,7 +1344,7 @@ describe('ControlBar', function() {
     var discoveryButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery');
     expect(discoveryButtons2.length).toBe(1);
 
-    var discoveryButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-discovery').firstChild;
+    var discoveryButton = wrapper.find('.oo-discovery').firstChild;
     TestUtils.Simulate.click(discoveryButton);
     expect(discoveryClicked).toBe(true);
   });
@@ -1377,7 +1377,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -1416,7 +1416,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -1454,7 +1454,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -1618,14 +1618,14 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var optionsButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-more-options');
+    var optionsButton = wrapper.find('.oo-more-options');
     expect(optionsButton).not.toBe(null);
     TestUtils.Simulate.click(optionsButton);
     expect(moreOptionsClicked).toBe(true);
@@ -1658,7 +1658,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -1695,7 +1695,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -1762,7 +1762,7 @@ describe('ControlBar', function() {
     );
 
     var muteUnmuteBtn = getControlBarButtonWithClass(DOM, 'oo-mute-unmute');
-    var volumeIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-icon-volume-on-ooyala-default');
+    var volumeIcon = wrapper.find('.oo-icon-volume-on-ooyala-default');
     expect(volumeIcon.style.opacity).toBe('0');
     expect(volumeIcon.style.color).toBe('blue');
     TestUtils.Simulate.mouseEnter(ReactDOM.findDOMNode(muteUnmuteBtn));
@@ -1798,13 +1798,13 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSED}
         isLiveStream={mockProps.isLiveStream} />
     );
-    var slider = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume-slider');
+    var slider = wrapper.find('.oo-volume-slider');
     expect(slider).not.toBe(null);
   });
 
@@ -1833,7 +1833,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSED}
@@ -1870,7 +1870,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -1916,7 +1916,7 @@ describe('ControlBar', function() {
     var qualityButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
     expect(qualityButtons2.length).toBe(1);
 
-    qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality').firstChild;
+    qualityButton = wrapper.find('.oo-quality').firstChild;
     TestUtils.Simulate.click(qualityButton);
     expect(qualityClicked).toBe(true);
 
@@ -1938,7 +1938,7 @@ describe('ControlBar', function() {
     var qualityButtons3 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
     expect(qualityButtons3.length).toBe(1);
 
-    var qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality').firstChild;
+    var qualityButton = wrapper.find('.oo-quality').firstChild;
     TestUtils.Simulate.click(qualityButton);
     expect(qualityClicked).toBe(true);
 
@@ -1960,7 +1960,7 @@ describe('ControlBar', function() {
     var qualityButtons4 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
     expect(qualityButtons4.length).toBe(1);
 
-    qualityButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-quality').firstChild;
+    qualityButton = wrapper.find('.oo-quality').firstChild;
     TestUtils.Simulate.click(qualityButton);
     expect(qualityClicked).toBe(true);
   });
@@ -1992,7 +1992,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -2030,7 +2030,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -2067,7 +2067,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -2105,14 +2105,14 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var logo = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-logo');
+    var logo = wrapper.find('.oo-logo');
     var clickableLogo = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
     expect(clickableLogo.length).toBe(1);
     TestUtils.Simulate.click(logo);
@@ -2208,7 +2208,7 @@ describe('ControlBar', function() {
       skinConfig: oneButtonSkinConfig
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ControlBar {...mockProps} controlBarVisible={true}
                   componentWidth={100}
                   playerState={CONSTANTS.STATE.PLAYING}

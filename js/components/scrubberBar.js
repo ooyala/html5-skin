@@ -13,6 +13,8 @@ var PropTypes = require('prop-types');
 
 var ScrubberBar = createReactClass({
   mixins: [ResizeMixin],
+  //Using temporary isMounted strategy mentioned in https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html
+  _isMounted: false,
 
   getInitialState: function() {
     this.lastScrubX = null;
@@ -36,6 +38,7 @@ var ScrubberBar = createReactClass({
   },
 
   componentDidMount: function() {
+    this._isMounted = true;
     this.handleResize();
   },
 
@@ -46,6 +49,7 @@ var ScrubberBar = createReactClass({
   },
 
   componentWillUnmount: function() {
+    this._isMounted = false;
     if (!this.isMobile) {
       ReactDOM.findDOMNode(this).parentNode.removeEventListener('mousemove', this.handlePlayheadMouseMove);
       document.removeEventListener('mouseup', this.handlePlayheadMouseUp, true);
@@ -130,7 +134,7 @@ var ScrubberBar = createReactClass({
   },
 
   handlePlayheadMouseUp: function(evt) {
-    if (!this.isMounted()) {
+    if (!this._isMounted) {
       return;
     }
     this.props.controller.startHideControlBarTimer();
@@ -154,7 +158,7 @@ var ScrubberBar = createReactClass({
       document.removeEventListener('touchend', this.handlePlayheadMouseUp, true);
     }
     this.props.controller.seek(this.props.currentPlayhead);
-    if (this.isMounted()) {
+    if (this._isMounted) {
       this.setState({
         currentPlayhead: this.props.currentPlayhead,
         scrubbingPlayheadX: 0

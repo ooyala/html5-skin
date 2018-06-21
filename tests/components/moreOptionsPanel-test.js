@@ -6,17 +6,21 @@ jest.dontMock('../../js/components/moreOptionsPanel')
     .dontMock('classnames');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
 var CONSTANTS = require('../../js/constants/constants');
 var MoreOptionsPanel = require('../../js/components/moreOptionsPanel');
 var skinConfig = require('../../config/skin.json');
 var Utils = require('../../js/components/utils');
+var Enzyme = require('enzyme');
 
 // start unit test
 describe('MoreOptionsPanel', function() {
-  it('creates more options panel', function() {
+  var oneButtonSkinConfig, mockController, mockProps;
+  var discoveryScreenToggled = false;
+  var shareScreenToggled = false;
+  var toggleScreenClicked = false;
 
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
+  beforeEach(function() {
+    oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
       {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':200 },
       {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':200 },
@@ -25,7 +29,7 @@ describe('MoreOptionsPanel', function() {
       {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':200 }
     ];
 
-    var mockController = {
+    mockController = {
       state: {
         isMobile: false,
         volumeState: {
@@ -49,12 +53,14 @@ describe('MoreOptionsPanel', function() {
       }
     };
 
-    var mockProps = {
+    mockProps = {
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
+  });
 
-    var DOM = TestUtils.renderIntoDocument(
+  it('creates more options panel', function() {
+    var wrapper = Enzyme.mount(
       <MoreOptionsPanel {...mockProps}
         playerState={CONSTANTS.STATE.PLAYING}
         controlBarVisible={true}
@@ -62,16 +68,16 @@ describe('MoreOptionsPanel', function() {
     );
 
     // test mouseover highlight
-    var span = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'span');
+    var span = wrapper.find('span');
     for (var i=0; i<span.length; i++) {
-      TestUtils.Simulate.mouseOver(span[i]);
-      TestUtils.Simulate.mouseOut(span[i]);
+      span.at(i).simulate('mouseOver');
+      span.at(i).simulate('mouseOut');
     }
 
     // test btn clicks
-    var button = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
+    var button = wrapper.find('a');
     for (var j=0; j<button.length; j++) {
-      TestUtils.Simulate.click(button[j]);
+      button.at(j).simulate('click');
     }
     expect(toggleScreenClicked).toBe(true);
     expect(shareScreenToggled).toBe(true);
@@ -81,9 +87,9 @@ describe('MoreOptionsPanel', function() {
 
 // bitrate selection, closed captions, discovery buttons not available
 describe('MoreOptionsPanel', function() {
-  it('checks cc button not available', function() {
-
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
+  var oneButtonSkinConfig, mockController, mockProps;
+  beforeEach(function() {
+    oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [];
 
     mockController = {
@@ -100,28 +106,29 @@ describe('MoreOptionsPanel', function() {
         moreOptionsItems: oneButtonSkinConfig.buttons.desktopContent
       }
     };
-    var mockProps = {
+    mockProps = {
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
-
-    var DOM = TestUtils.renderIntoDocument(
+  });
+  it('checks cc button not available', function() {
+    var wrapper = Enzyme.mount(
       <MoreOptionsPanel {...mockProps}
         playerState={CONSTANTS.STATE.PLAYING}
         controlBarVisible={true}
         controlBarWidth={100} />
     );
 
-    var ccButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-closed-caption');
+    var ccButtons = wrapper.find('.oo-closed-caption');
     expect(ccButtons.length).toBe(0);
 
-    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
+    var qualityButtons = wrapper.find('.oo-quality');
     expect(qualityButtons.length).toBe(0);
 
-    var discoveryButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery');
+    var discoveryButtons = wrapper.find('.oo-discovery');
     expect(discoveryButtons.length).toBe(0);
 
-    var audioAndCCButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery');
+    var audioAndCCButtons = wrapper.find('.oo-discovery');
     expect(audioAndCCButtons.length).toBe(0);
   });
 });

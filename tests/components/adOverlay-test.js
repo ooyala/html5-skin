@@ -6,9 +6,9 @@ jest.dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+var Enzyme = require('enzyme');
 var AdOverlay = require('../../js/components/adOverlay');
 var CONSTANTS = require('../../js/constants/constants');
-var Enzyme = require('enzyme');
 
 describe('AdOverlay', function() {
   var mockController, mockSkinConfig;

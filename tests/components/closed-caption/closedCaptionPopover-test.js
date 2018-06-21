@@ -7,7 +7,7 @@ jest.dontMock('../../../js/constants/constants');
 jest.dontMock('classnames');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var ClosedCaptionPopover = require('../../../js/components/closed-caption/closedCaptionPopover');
 var CONSTANTS = require('../../../js/constants/constants');
 
@@ -40,19 +40,19 @@ describe('ClosedCaptionPopover', function() {
   });
 
   it('should render a ClosedCaptionPopover', function() {
-    var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPopover {...props}/>);
+    var wrapper = Enzyme.mount(<ClosedCaptionPopover {...props}/>);
   });
 
   it('should render ARIA attributes on "More Captions" button', function() {
-    var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPopover {...props}/>);
-    var moreCaptionsBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-more-captions');
+    var wrapper = Enzyme.mount(<ClosedCaptionPopover {...props}/>);
+    var moreCaptionsBtn = wrapper.find('.oo-more-captions');
     expect(moreCaptionsBtn.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.CAPTION_OPTIONS);
     expect(moreCaptionsBtn.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU_ITEM);
   });
 
   it('should set closed caption options autofocus to true when triggered with keyboard', function() {
-    var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPopover {...props}/>);
-    var moreCaptionsBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-more-captions');
+    var wrapper = Enzyme.mount(<ClosedCaptionPopover {...props}/>);
+    var moreCaptionsBtn = wrapper.find('.oo-more-captions');
     expect(props.controller.state.closedCaptionOptions.autoFocus).toBe(false);
     TestUtils.Simulate.keyDown(moreCaptionsBtn, { key: CONSTANTS.KEY_VALUES.SPACE });
     TestUtils.Simulate.click(moreCaptionsBtn);
@@ -60,8 +60,8 @@ describe('ClosedCaptionPopover', function() {
   });
 
   it('should preemptively set the control bar CC button as the focused control when opening CC menu with keyboard', function() {
-    var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPopover {...props}/>);
-    var moreCaptionsBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-more-captions');
+    var wrapper = Enzyme.mount(<ClosedCaptionPopover {...props}/>);
+    var moreCaptionsBtn = wrapper.find('.oo-more-captions');
     expect(props.controller.state.focusedControl).toBeNull();
     TestUtils.Simulate.keyDown(moreCaptionsBtn, { key: CONSTANTS.KEY_VALUES.SPACE });
     TestUtils.Simulate.click(moreCaptionsBtn);
@@ -81,8 +81,8 @@ describe('ClosedCaptionPopover', function() {
     };
 
     beforeEach(function() {
-      var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPopover {...props} />);
-      popover = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-popover-horizontal');
+      var wrapper = Enzyme.mount(<ClosedCaptionPopover {...props} />);
+      popover = wrapper.find('.oo-popover-horizontal');
       popoverMenuItems = popover.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
     });
 

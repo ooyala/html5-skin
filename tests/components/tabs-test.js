@@ -8,7 +8,7 @@ jest
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var Tabs = require('../../js/components/tabs');
 var Tab = Tabs.Panel;
 var AccessibleButton = require('../../js/components/accessibleButton');

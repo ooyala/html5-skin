@@ -4,10 +4,10 @@ jest.dontMock('../../js/constants/constants');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+var Enzyme = require('enzyme');
 var AdPanel = require('../../js/components/adPanel');
 var Spinner = require('../../js/components/spinner');
 var CONSTANTS = require('../../js/constants/constants');
-var Enzyme = require('enzyme');
 
 describe('AdPanel', function() {
   var mockController, mockSkinConfig, currentAdsInfo;

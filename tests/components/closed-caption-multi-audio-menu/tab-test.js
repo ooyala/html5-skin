@@ -6,7 +6,7 @@ jest.dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 
 var helpers = require('../../../js/components/closed-caption-multi-audio-menu/helpers');
 var CONSTANTS = require('../../../js/constants/constants');

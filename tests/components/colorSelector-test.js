@@ -8,10 +8,10 @@ jest
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+var Enzyme = require('enzyme');
 var ColorSelector = require('../../js/components/colorSelector');
 var AccessibleButton = require('../../js/components/accessibleButton');
 var CONSTANTS = require('../../js/constants/constants');
-var Enzyme = require('enzyme');
 
 describe('Tabs', function() {
   var props, colors, node, wrapper, component, buttons;

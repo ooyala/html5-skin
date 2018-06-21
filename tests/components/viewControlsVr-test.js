@@ -9,7 +9,7 @@ jest.dontMock('../../js/components/viewControlsVr')
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var skinConfig = require('../../config/skin.json');
 var CONSTANTS = require('../../js/constants/constants');
 var ViewControlsVr = require('../../js/components/viewControlsVr');
@@ -65,7 +65,7 @@ describe('viewControlsVr', function() {
 
     mockProps = _.extend(mockProps, baseMockProps);
 
-    var DOM = TestUtils.renderIntoDocument(<ViewControlsVr {...mockProps}/>);
+    var wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
   });
   
   it('create buttons in a viewControlsVr', function() {
@@ -80,11 +80,11 @@ describe('viewControlsVr', function() {
 
     mockProps = _.extend(mockProps, baseMockProps);
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <DirectionControlVr {...mockProps} handleVrViewControlsClick={mockProps.handleVrViewControlsClick} dir="left"/>
     );
 
-    var button = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-direction-control');
+    var button = wrapper.find('.oo-direction-control');
     
     expect(mockProps.clickButton).toBe(false);
     TestUtils.Simulate.mouseDown(button);
@@ -111,14 +111,14 @@ describe('viewControlsVr', function() {
       playerState: CONSTANTS.STATE.PLAYING,
       controller: controller
     };
-    var DOM = TestUtils.renderIntoDocument(<ViewControlsVr {...mockProps}/>);
+    var wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
     
     expect(buttons.length).toBe(5);
   });
   
   it('check condition: if video does not support vr360 then viewControlsVr does not exist', function() {
-    var DOM = TestUtils.renderIntoDocument(<ViewControlsVr {...baseMockProps}/>);
+    var wrapper = Enzyme.mount(<ViewControlsVr {...baseMockProps}/>);
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
     expect(buttons.length).toBe(0);
   });
@@ -148,7 +148,7 @@ describe('viewControlsVr', function() {
       playerState: CONSTANTS.STATE.PLAYING,
       controller: controller
     };
-    var DOM = TestUtils.renderIntoDocument(<ViewControlsVr {...mockProps}/>);
+    var wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
     var iconSubstrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-icon--substrate');
     var iconSymbol = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-icon--icon-symbol');
 
@@ -181,7 +181,7 @@ describe('viewControlsVr', function() {
       playerState: CONSTANTS.STATE.PLAYING,
       controller: controller
     };
-    var DOM = TestUtils.renderIntoDocument(<ViewControlsVr {...mockProps}/>);
+    var wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
 
     expect(buttons.length).toBe(0);
@@ -212,7 +212,7 @@ describe('viewControlsVr', function() {
       playerState: CONSTANTS.STATE.PLAYING,
       controller: controller
     };
-    var DOM = TestUtils.renderIntoDocument(<ViewControlsVr {...mockProps}/>);
+    var wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
 
     expect(buttons.length).toBe(0);

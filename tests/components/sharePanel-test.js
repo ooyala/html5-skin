@@ -8,7 +8,7 @@ jest.dontMock('../../js/components/sharePanel')
 
 _ = require('underscore');
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var CONSTANTS = require('../../js/constants/constants');
 var SharePanel = require('../../js/components/sharePanel');
 var en = require('../../config/languageFiles/en.json'),
@@ -47,12 +47,12 @@ describe('SharePanel', function() {
       if (localizableStrings.hasOwnProperty(key)) {
 
         // Render share panel into DOM
-        var DOM = TestUtils.renderIntoDocument(
+        var wrapper = Enzyme.mount(
           <SharePanel language={key} localizableStrings={localizableStrings} skinConfig={skinConfig} assetId={"aa"} playerParam={playerParam} />
         );
 
         // parent elements
-        var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel');
+        var shareTabPanel = wrapper.find('.oo-share-tab-panel');
         var tabs = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
 
         // test share tab
@@ -61,10 +61,10 @@ describe('SharePanel', function() {
         TestUtils.Simulate.click(shareTab);
 
         // test social links
-        var twitter = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-twitter');
-        var facebook = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-facebook');
-        var googlePlus = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-google-plus');
-        var emailShare = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-email-share');
+        var twitter = wrapper.find('.oo-twitter');
+        var facebook = wrapper.find('.oo-facebook');
+        var googlePlus = wrapper.find('.oo-google-plus');
+        var emailShare = wrapper.find('.oo-email-share');
         TestUtils.Simulate.click(twitter);
         TestUtils.Simulate.click(facebook);
         TestUtils.Simulate.click(googlePlus);
@@ -83,13 +83,13 @@ describe('SharePanel', function() {
       if (localizableStrings.hasOwnProperty(key)) {
 
       // Render share panel into DOM
-        var DOM = TestUtils.renderIntoDocument(
+        var wrapper = Enzyme.mount(
         <SharePanel language={key} localizableStrings={localizableStrings} skinConfig={skinConfig} assetId={"aa"}
                     playerParam={playerParam}/>
       );
 
       // parent elements
-        var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel');
+        var shareTabPanel = wrapper.find('.oo-share-tab-panel');
         var tabs = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
 
       // test share tab
@@ -97,7 +97,7 @@ describe('SharePanel', function() {
         expect(shareTab.textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
         TestUtils.Simulate.click(shareTab);
 
-        var emailShare = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-email-share');
+        var emailShare = wrapper.find('.oo-email-share');
         OO = {};
         OO.isIos = true;
         OO.isSafari = true;
@@ -115,13 +115,13 @@ describe('SharePanel', function() {
       if (localizableStrings.hasOwnProperty(key)) {
 
       // Render share panel into DOM
-        var DOM = TestUtils.renderIntoDocument(
+        var wrapper = Enzyme.mount(
         <SharePanel language={key} localizableStrings={localizableStrings} skinConfig={skinConfig} assetId={"aa"}
                     playerParam={playerParam}/>
       );
 
       // parent elements
-        var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel');
+        var shareTabPanel = wrapper.find('.oo-share-tab-panel');
         var tabs = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
 
       // test share tab
@@ -129,7 +129,7 @@ describe('SharePanel', function() {
         expect(shareTab.textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
         TestUtils.Simulate.click(shareTab);
 
-        var emailShare = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-email-share');
+        var emailShare = wrapper.find('.oo-email-share');
 
         OO = {};
         OO.isIos = true;
@@ -145,16 +145,16 @@ describe('SharePanel', function() {
   it('tests conditional rendering of social share buttons', function() {
     skinConfig.shareScreen.socialContent = ['twitter', 'facebook'];
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
     <SharePanel language={"en"} localizableStrings={localizableStrings} skinConfig={skinConfig} assetId={"aa"} playerParam={playerParam} />
   );
 
-    var twitter = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-twitter');
-    var facebook = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-facebook');
+    var twitter = wrapper.find('.oo-twitter');
+    var facebook = wrapper.find('.oo-facebook');
     TestUtils.Simulate.click(twitter);
     TestUtils.Simulate.click(facebook);
 
-    var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel');
+    var shareTabPanel = wrapper.find('.oo-share-tab-panel');
     var buttons = shareTabPanel.childNodes;
 
     var childClasses = _.map(buttons, function(child) {
@@ -166,11 +166,11 @@ describe('SharePanel', function() {
   it('tests that share tab is hidden when social buttons are empty', function() {
     skinConfig.shareScreen.socialContent = [];
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
     <SharePanel language={"en"} localizableStrings={localizableStrings} skinConfig={skinConfig} assetId={"aa"} playerParam={playerParam} />
   );
 
-    var shareTab = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab');
+    var shareTab = wrapper.find('.oo-share-tab');
     expect(shareTab.className).toMatch('hidden');
   });
 
@@ -183,12 +183,12 @@ describe('SharePanel', function() {
         playerParam.skin.inline.shareScreen.shareContent = ['embed'];
 
         // Render share panel into DOM
-        var DOM = TestUtils.renderIntoDocument(
+        var wrapper = Enzyme.mount(
           <SharePanel language={key} localizableStrings={localizableStrings} skinConfig={skinConfig} assetId={"aa"} playerParam={playerParam} />
         );
 
         // parent elements
-        var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel');
+        var shareTabPanel = wrapper.find('.oo-share-tab-panel');
         var tabs = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
 
         // test embed tab shown, share not shown
@@ -214,12 +214,12 @@ describe('SharePanel', function() {
         playerParam.skin.inline.shareScreen.shareContent = ['social'];
 
         // Render share panel into DOM
-        var DOM = TestUtils.renderIntoDocument(
+        var wrapper = Enzyme.mount(
           <SharePanel language={key} localizableStrings={localizableStrings} skinConfig={skinConfig} assetId={"aa"} playerParam={playerParam} />
         );
 
         // parent elements
-        var shareTabPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share-tab-panel');
+        var shareTabPanel = wrapper.find('.oo-share-tab-panel');
         var tabs = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
 
         // test share tabs shown, embed not shown

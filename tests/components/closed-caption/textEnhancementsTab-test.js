@@ -9,7 +9,7 @@ jest
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var TextEnhancementsTab = require('../../../js/components/closed-caption/textEnhancementsTab');
 var AccessibleButton = require('../../../js/components/accessibleButton');
 var CONSTANTS = require('../../../js/constants/constants');

@@ -4,7 +4,7 @@ jest.dontMock('../../../js/constants/constants');
 jest.dontMock('classnames');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var OnOffSwitch = require('../../../js/components/closed-caption/onOffSwitch');
 var CONSTANTS = require('../../../js/constants/constants');
 
@@ -33,14 +33,14 @@ describe('OnOffSwitch', function() {
   });
 
   it('should render an OnOffSwitch', function() {
-    var DOM = TestUtils.renderIntoDocument(<OnOffSwitch {...props}/>);
+    var wrapper = Enzyme.mount(<OnOffSwitch {...props}/>);
   });
 
   it('should render ARIA attributes on switch button', function() {
     props.ariaLabel = 'ariaLabel';
     props.role = 'customRole';
-    var DOM = TestUtils.renderIntoDocument(<OnOffSwitch {...props}/>);
-    var switchButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-switch-container-selectable');
+    var wrapper = Enzyme.mount(<OnOffSwitch {...props}/>);
+    var switchButton = wrapper.find('.oo-switch-container-selectable');
     expect(switchButton.getAttribute('aria-label')).toBe(props.ariaLabel);
     expect(switchButton.getAttribute('role')).toBe(props.role);
   });
@@ -49,11 +49,11 @@ describe('OnOffSwitch', function() {
     var DOM, switchButton;
     props.closedCaptionOptions.enabled = false;
     DOM = TestUtils.renderIntoDocument(<OnOffSwitch {...props}/>);
-    switchButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-switch-container-selectable');
+    switchButton = wrapper.find('.oo-switch-container-selectable');
     expect(switchButton.getAttribute('aria-checked')).toBe('false');
     props.closedCaptionOptions.enabled = true;
     DOM = TestUtils.renderIntoDocument(<OnOffSwitch {...props}/>);
-    switchButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-switch-container-selectable');
+    switchButton = wrapper.find('.oo-switch-container-selectable');
     expect(switchButton.getAttribute('aria-checked')).toBe('true');
   });
 

@@ -8,10 +8,10 @@ jest
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+var Enzyme = require('enzyme');
 var DataSelector = require('../../js/components/dataSelector');
 var AccessibleButton = require('../../js/components/accessibleButton');
 var CONSTANTS = require('../../js/constants/constants');
-var Enzyme = require('enzyme');
 
 describe('DataSelector', function() {
   var node, props, component, items, availableDataItems, wrapper;

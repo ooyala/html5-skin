@@ -5,10 +5,10 @@ jest.dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+var Enzyme = require('enzyme');
 var CloseButton = require('../../js/components/closeButton');
 var CONSTANTS = require('../../js/constants/constants');
 var $ = require('jquery');
-var Enzyme = require('enzyme');
 
 describe('CloseButton', function() {
 

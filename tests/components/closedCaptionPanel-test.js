@@ -14,13 +14,13 @@ jest.dontMock('../../js/views/contentScreen')
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+var Enzyme = require('enzyme');
 var ContentScreen = require('../../js/views/contentScreen');
 var ClosedCaptionPanel = require('../../js/components/closed-caption/closedCaptionPanel');
 var OnOffSwitch = require('../../js/components/closed-caption/onOffSwitch');
 var CONSTANTS = require('../../js/constants/constants');
 var skinConfig = require('../../config/skin.json');
 var Utils = require('../../js/components/utils');
-var Enzyme = require('enzyme');
 
 describe('ClosedCaptionPanel', function() {
   var availableLanguages = {'languages':['en','fr','de','ru','it'],

@@ -6,7 +6,7 @@ jest
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var sinon = require('sinon');
 var Utils = require('../../js/components/utils');
 var Slider = require('../../js/components/slider');

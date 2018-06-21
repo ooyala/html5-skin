@@ -6,9 +6,9 @@ jest
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+var Enzyme = require('enzyme');
 var AccessibleButton = require('../../js/components/accessibleButton');
 var CONSTANTS = require('../../js/constants/constants');
-var Enzyme = require('enzyme');
 
 describe('AccessibleButton', function() {
   var wrapper, component;

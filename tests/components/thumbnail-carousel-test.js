@@ -3,7 +3,7 @@ jest.dontMock('../../js/components/thumbnailCarousel')
   .dontMock('../../js/components/utils');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var ReactDOM = require('react-dom');
 var ThumbnailCarousel = require('../../js/components/thumbnailCarousel');
 
@@ -132,7 +132,7 @@ describe('ThumbnailCarousel', function() {
       backgroundSize: '120px 80px',
       backgroundPosition: '0px 0px'
     };
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ThumbnailCarousel
         onRef={onRef}
         duration={100}
@@ -161,7 +161,7 @@ describe('ThumbnailCarousel', function() {
       backgroundSize: '120px 80px',
       backgroundPosition: '0px 0px'
     };
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ThumbnailCarousel
         onRef={onRef}
         duration={100}
