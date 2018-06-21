@@ -4,10 +4,10 @@ jest
   .dontMock('classnames');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
 var skinConfig = require('../../config/skin.json');
 var CONSTANTS = require('../../js/constants/constants');
 var DirectionControlVr = require('../../js/components/directionControlVr');
+var Enzyme = require('enzyme');
 
 describe('directionControlVr', function() {
   it('should creates a directionControlVr', function() {
@@ -19,11 +19,11 @@ describe('directionControlVr', function() {
         mockProps.clickButton = true;
       }
     };
-    var DOM = TestUtils.renderIntoDocument(<DirectionControlVr {...mockProps}/>);
-    var button = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-direction-control');
+    var wrapper = Enzyme.mount(<DirectionControlVr {...mockProps}/>);
+    var button = wrapper.find('.oo-direction-control');
 
     expect(mockProps.clickButton).toBe(false);
-    TestUtils.Simulate.mouseDown(button);
+    button.simulate('mouseDown');
     expect(mockProps.clickButton).toBe(true);
   });
 });
