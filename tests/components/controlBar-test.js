@@ -26,7 +26,7 @@ var _ = require('underscore');
 describe('ControlBar', function() {
 
   var baseMockController, baseMockProps;
-  var defaultSkinConfig = Utils.clone(skinConfig);
+  var defaultSkinConfig = JSON.parse(JSON.stringify(skinConfig));
 
   // The ControlBar is wrapped by the preserveKeyboardFocus higher order component.
   // For some tests it is necessary to reference the inner component directly, so
