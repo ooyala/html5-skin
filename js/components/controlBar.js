@@ -23,6 +23,7 @@ var PropTypes = require('prop-types');
 var ControlBar = createReactClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
+    this.isPhone = Utils.getUserDevice() === 'phone';
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
     this.vr = null;
@@ -81,7 +82,7 @@ var ControlBar = createReactClass({
     evt.preventDefault();
     if (this.props.controller) {
       this.props.controller.toggleFullscreen();
-      if (this.vr && this.isMobile && this.props.controller.isVrStereo) {
+      if (this.vr && this.isPhone && this.props.controller.isVrStereo) {
         this.toggleStereoVr();
       }
     }
@@ -491,7 +492,10 @@ var ControlBar = createReactClass({
       ),
 
       flexibleSpace: (
-        <div key={CONSTANTS.CONTROL_BAR_KEYS.FLEXIBLE_SPACE} className="oo-flexible-space oo-control-bar-flex-space" />
+        <div
+          key={CONSTANTS.CONTROL_BAR_KEYS.FLEXIBLE_SPACE}
+          className="oo-flexible-space oo-control-bar-flex-space"
+        />
       ),
 
       moreOptions: (
@@ -649,7 +653,7 @@ var ControlBar = createReactClass({
         </ControlButton>
       ),
 
-      stereoscopic: !!(this.vr && this.isMobile) && (
+      stereoscopic: !!(this.vr && this.isPhone) && (
         <ControlButton
           {...commonButtonProps}
           key={CONSTANTS.CONTROL_BAR_KEYS.STEREOSCOPIC}

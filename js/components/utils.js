@@ -455,6 +455,28 @@ var Utils = {
     return this.isAndroid() || this.isIos();
   },
 
+
+  /**
+   * Get type of user device.
+   *
+   * @returns {string} - name of the user device, may be one of the values 'desktop', 'phone' or 'tablet'.
+   */
+  getUserDevice: function() {
+    var device = 'desktop';
+    var userAgent = navigator.userAgent;
+    if (userAgent) {
+      var lowerUserAgent = userAgent.toLowerCase();
+      if (/(mobi|ipod|phone|blackberry|opera mini|fennec|minimo|symbian|psp|nintendo ds|archos|skyfire|puffin|blazer|bolt|gobrowser|iris|maemo|semc|teashark|uzard)/
+          .test(lowerUserAgent)) {
+        device = 'phone';
+      } else if (/(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/
+          .test(lowerUserAgent)) {
+        device = 'tablet';
+      }
+    }
+    return device;
+  },
+
   /**
    * Check if the current browser is Internet Explorer 10
    *
@@ -671,7 +693,9 @@ var Utils = {
     // This is currently the same style as the one used in _mixins.scss.
     // We should change both styles whenever we update this.
     target.style.textShadow =
-      '0px 0px 3px rgba(255, 255, 255, 0.5), 0px 0px 6px rgba(255, 255, 255, 0.5), 0px 0px 9px rgba(255, 255, 255, 0.5)';
+      '0px 0px 3px rgba(255, 255, 255, 0.5), ' +
+      '0px 0px 6px rgba(255, 255, 255, 0.5), ' +
+      '0px 0px 9px rgba(255, 255, 255, 0.5)';
   },
 
   /**
