@@ -35,7 +35,7 @@ window.HTMLCanvasElement.prototype.getContext = function () {
     },
     transform: function(){},
     rect: function(){},
-    clip: function(){},
+    clip: function(){}
   };
 };
 

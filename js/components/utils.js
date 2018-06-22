@@ -287,7 +287,7 @@ var Utils = {
     testText.style.whiteSpace = 'nowrap';
     testText.innerHTML = text;
     element.appendChild(testText);
-    var actualWidth = element.clientWidth;
+    var actualWidth = element.clientWidth || element.getBoundingClientRect().width;
     var textWidth = testText.scrollWidth;
     var truncatedText = '';
     if (textWidth > actualWidth * 1.8) {

@@ -45,7 +45,7 @@ describe('UnmuteIcon', function() {
         skinConfig={skinConfig}
       />);
 
-    var expandeds = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-expanded');
+    var expandeds = wrapper.find('.oo-expanded');
     expect(expandeds.length).toBe(0);
     var unmuteIcon = wrapper.find('.oo-unmute');
     expect(unmuteIcon).toBeTruthy();
@@ -64,7 +64,8 @@ describe('UnmuteIcon', function() {
     expect(expanded).toEqual(unmuteIcon);
 
     jest.runAllTimers();
-    var expandeds = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-expanded');
+    wrapper.update();
+    var expandeds = wrapper.find('.oo-expanded');
     expect(expandeds.length).toBe(0);
     unmuteIcon = wrapper.find('.oo-unmute');
     expect(unmuteIcon).toBeTruthy();
@@ -82,7 +83,7 @@ describe('UnmuteIcon', function() {
     var unmuteIcon = wrapper.find('.oo-unmute');
     expect(spy.callCount).toBe(0);
 
-    TestUtils.Simulate.click(unmuteIcon);
+    unmuteIcon.simulate('click');
     expect(spy.callCount).toBe(1);
     spy.restore();
   });
@@ -98,7 +99,7 @@ describe('UnmuteIcon', function() {
     var unmuteIcon = wrapper.find('.oo-unmute');
     expect(spy.callCount).toBe(0);
 
-    TestUtils.Simulate.click(unmuteIcon);
+    unmuteIcon.simulate('click');
     expect(spy.callCount).toBe(1);
     spy.restore();
   });

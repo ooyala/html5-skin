@@ -121,8 +121,7 @@ describe('Thumbnail', function() {
     var duration = 100;
     var onRef = function() {};
     for (var hoverTime = 0; hoverTime <= 100; hoverTime += 5) {
-      var DOM = TestUtils.renderIntoDocument
-      (
+      var wrapper = Enzyme.mount(
         <Thumbnail
           onRef={onRef}
           hoverPosition={hoverTime}
@@ -131,8 +130,8 @@ describe('Thumbnail', function() {
           scrubberBarWidth={100}
           thumbnails={thumbnails}/>
       );
-      var thumbnail = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail');
-      var thumbnailTime = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail-time');
+      var thumbnail = wrapper.find('.oo-thumbnail');
+      var thumbnailTime = wrapper.find('.oo-thumbnail-time');
       expect(thumbnail.length).toBe(1);
       expect(thumbnailTime.length).toBe(1);
     }
