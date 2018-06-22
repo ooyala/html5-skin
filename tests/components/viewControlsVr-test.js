@@ -87,7 +87,7 @@ describe('viewControlsVr', function() {
     var button = wrapper.find('.oo-direction-control');
     
     expect(mockProps.clickButton).toBe(false);
-    TestUtils.Simulate.mouseDown(button);
+    button.simulate('mouseDown');
     expect(mockProps.clickButton).toBe(true);
   });
   
@@ -105,7 +105,7 @@ describe('viewControlsVr', function() {
     };
 
     this.icon = {'name':'arrowsBlack', 'location': 'mainView', 'whenDoesNotFit':'keep', 'minWidth':45 };
-    
+
     var mockProps = {
       skinConfig: skinConfig,
       playerState: CONSTANTS.STATE.PLAYING,
@@ -113,10 +113,10 @@ describe('viewControlsVr', function() {
     };
     var wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
     var buttons = wrapper.find('.oo-direction-control');
-    
+
     expect(buttons.length).toBe(5);
   });
-  
+
   it('check condition: if video does not support vr360 then viewControlsVr does not exist', function() {
     var wrapper = Enzyme.mount(<ViewControlsVr {...baseMockProps}/>);
     var buttons = wrapper.find('.oo-direction-control');
@@ -149,8 +149,8 @@ describe('viewControlsVr', function() {
       controller: controller
     };
     var wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
-    var iconSubstrate = wrapper.find('.oo-vr-icon--substrate');
-    var iconSymbol = wrapper.find('.oo-vr-icon--icon-symbol');
+    var iconSubstrate = wrapper.find('.oo-vr-icon--substrate').hostNodes();
+    var iconSymbol = wrapper.find('.oo-vr-icon--icon-symbol').hostNodes();
 
     expect(iconSubstrate.length).toBe(1);
     expect(iconSymbol.length).toBe(1);
