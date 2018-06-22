@@ -58,7 +58,7 @@ describe('SharePanel', function() {
 
         // test share tab
         var shareTab = tabs.at(0);
-        expect(ReactDOM.findDOMNode(shareTab.instance()).textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
+        expect(shareTab.getDOMNode().textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
         shareTab.simulate('click');
 
         // test social links
@@ -92,7 +92,7 @@ describe('SharePanel', function() {
   //
   //      // test share tab
   //      var shareTab = tabs.at(0);
-  //      expect(ReactDOM.findDOMNode(shareTab.instance()).textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
+  //      expect(shareTab.getDOMNode().textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.SHARE]);
   //      shareTab.simulate('click');
   //
   //      var emailShare = wrapper.find('.oo-email-share');
@@ -154,7 +154,7 @@ describe('SharePanel', function() {
     facebook.simulate('click');
 
     var shareTabPanel = wrapper.find('.oo-share-tab-panel');
-    var buttons = ReactDOM.findDOMNode(shareTabPanel.instance()).childNodes;
+    var buttons = shareTabPanel.getDOMNode().childNodes;
 
     var childClasses = _.map(buttons, function(child) {
       return child.className;
@@ -170,7 +170,7 @@ describe('SharePanel', function() {
     );
 
     var shareTab = wrapper.find('.oo-share-tab');
-    expect(ReactDOM.findDOMNode(shareTab.instance()).className).toMatch('hidden');
+    expect(shareTab.getDOMNode().className).toMatch('hidden');
   });
 
   it('tests embed tab in social screen is shown, social tab is not shown', function() {
@@ -192,13 +192,13 @@ describe('SharePanel', function() {
         // test embed tab shown, share not shown
         var shareTab = tabs.at(0);
         var embedTab = tabs.at(1);
-        expect(ReactDOM.findDOMNode(embedTab.instance()).textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.EMBED]);
+        expect(embedTab.getDOMNode().textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.EMBED]);
         embedTab.simulate('click');
         var textArea = wrapper.find('textarea');
-        expect(ReactDOM.findDOMNode(textArea.instance()).value).toContain('iframe_aa_bb_cc');
+        expect(textArea.getDOMNode().value).toContain('iframe_aa_bb_cc');
 
-        expect(ReactDOM.findDOMNode(embedTab.instance()).className).not.toMatch('hidden');
-        expect(ReactDOM.findDOMNode(shareTab.instance()).className).toMatch('hidden');
+        expect(embedTab.getDOMNode().className).not.toMatch('hidden');
+        expect(shareTab.getDOMNode().className).toMatch('hidden');
       }
     }
   });
@@ -221,13 +221,13 @@ describe('SharePanel', function() {
         // test share tabs shown, embed not shown
         var shareTab = tabs.at(0);
         var embedTab = tabs.at(1);
-        expect(ReactDOM.findDOMNode(embedTab.instance()).textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.EMBED]);
+        expect(embedTab.getDOMNode().textContent).toEqual(localizableStrings[key][CONSTANTS.SKIN_TEXT.EMBED]);
         embedTab.simulate('click');
         var textArea = wrapper.find('textarea');
-        expect(ReactDOM.findDOMNode(textArea.instance()).value).toContain('iframe_aa_bb_cc');
+        expect(textArea.getDOMNode().value).toContain('iframe_aa_bb_cc');
 
-        expect(ReactDOM.findDOMNode(shareTab.instance()).className).not.toMatch('hidden');
-        expect(ReactDOM.findDOMNode(embedTab.instance()).className).toMatch('hidden');
+        expect(shareTab.getDOMNode().className).not.toMatch('hidden');
+        expect(embedTab.getDOMNode().className).toMatch('hidden');
       }
     }
   });

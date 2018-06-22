@@ -58,7 +58,7 @@ describe('Tabs', function() {
 
   it('should set ARIA attributes on tab elements', function() {
     renderComponent();
-    var tabButton = ReactDOM.findDOMNode(tabButtons.at(0).instance());
+    var tabButton = tabButtons.at(0).getDOMNode();
     expect(tabButton.getAttribute('aria-label')).toBe('a');
     expect(tabButton.getAttribute('aria-selected')).toBe('false');
     expect(tabButton.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.TAB);
@@ -67,7 +67,7 @@ describe('Tabs', function() {
   it('should update aria-selected attribute when tab selection state changes', function() {
     renderComponent();
     var button = tabButtons.at(0);
-    var tabButton = ReactDOM.findDOMNode(button.instance());
+    var tabButton = button.getDOMNode();
     expect(tabButton.getAttribute('aria-selected')).toBe('false');
     button.simulate('click');
     expect(tabButton.getAttribute('aria-selected')).toBe('true');
@@ -75,14 +75,14 @@ describe('Tabs', function() {
 
   it('should set menu role and ARIA label on ul element', function() {
     renderComponent();
-    var ulElement = ReactDOM.findDOMNode(wrapper.find('.tabs-menu').instance());
+    var ulElement = wrapper.find('.tabs-menu').getDOMNode();
     expect(ulElement.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.CAPTION_OPTIONS);
     expect(ulElement.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.TAB_LIST);
   });
 
   it('should set tab panel role on tab panel', function() {
     renderComponent();
-    var panelElement = ReactDOM.findDOMNode(wrapper.find('.tab-panel').instance());
+    var panelElement = wrapper.find('.tab-panel').getDOMNode();
     expect(panelElement.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.TAB_PANEL);
   });
 

@@ -122,7 +122,7 @@ describe('ThumbnailContainer', function() {
 
   var testThumbnails = function(wrapper, thumbnails, hoverTime, width, duration) {
     var hoverPosition = Utils.findThumbnail(thumbnails, hoverTime, duration).pos;
-    var centerImage = ReactDOM.findDOMNode(wrapper.find('.oo-thumbnail').instance());
+    var centerImage = wrapper.find('.oo-thumbnail').getDOMNode();
     var images = centerImage.parentNode.childNodes;
 
     var lastLeft = 0;
@@ -188,7 +188,7 @@ describe('ThumbnailContainer', function() {
           fullscreen={false}
         />
       );
-      var node = ReactDOM.findDOMNode(wrapper.find('.oo-thumbnail').instance());
+      var node = wrapper.find('.oo-thumbnail').getDOMNode();
       if (hoverTime % 10 == 0) {
         expect(node.style._values['background-image']).toBe('url('+thumbnails.data.thumbnails[hoverTime][width]['url']+')');
       } else {
@@ -267,7 +267,7 @@ describe('ThumbnailContainer', function() {
     expect(positionX).toBe(120);
     expect(positionY).toBe(0);
 
-    //var thumbnail = ReactDOM.findDOMNode(wrapper.instance());
+    //var thumbnail = wrapper.getDOMNode();
     var thumbnail = wrapper.instance().child.refs.thumbnail;
     thumbnail.getBoundingClientRect = function() {
       return {

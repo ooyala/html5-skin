@@ -96,7 +96,7 @@ describe('ScrubberBar', function() {
         />
     );
     var playheadBar = wrapper.find('.oo-playhead');
-    expect(ReactDOM.findDOMNode(playheadBar.instance()).style.backgroundColor).toBe('blue');
+    expect(playheadBar.getDOMNode().style.backgroundColor).toBe('blue');
     expect(wrapper.ref('playhead').style.backgroundColor).toBe('blue');
   });
 
@@ -105,7 +105,7 @@ describe('ScrubberBar', function() {
     baseMockController.state.duration = 60;
     updateBaseMockProps();
     var wrapper = Enzyme.mount(<ScrubberBar {...baseMockProps}/>);
-    var scrubberBar = ReactDOM.findDOMNode(wrapper.find('.oo-scrubber-bar').instance());
+    var scrubberBar = wrapper.find('.oo-scrubber-bar').getDOMNode();
     expect(scrubberBar.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.SEEK_SLIDER);
     expect(scrubberBar.getAttribute('aria-valuemin')).toBe('0');
     expect(scrubberBar.getAttribute('aria-valuemax')).toBe(baseMockController.state.duration.toString());
@@ -119,14 +119,14 @@ describe('ScrubberBar', function() {
     baseMockController.state.duration = 60;
     updateBaseMockProps();
     var wrapper = Enzyme.mount(<ScrubberBar {...baseMockProps}/>);
-    var scrubberBar = ReactDOM.findDOMNode(wrapper.find('.oo-scrubber-bar').instance());
+    var scrubberBar = wrapper.find('.oo-scrubber-bar').getDOMNode();
     expect(scrubberBar.getAttribute('aria-valuenow')).toBe('2.00');
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('00:02 of 01:00');
 
     baseMockController.state.currentPlayhead = 60;
     updateBaseMockProps();
     wrapper = Enzyme.mount(<ScrubberBar {...baseMockProps}/>);
-    scrubberBar = ReactDOM.findDOMNode(wrapper.find('.oo-scrubber-bar').instance());
+    scrubberBar = wrapper.find('.oo-scrubber-bar').getDOMNode();
     expect(scrubberBar.getAttribute('aria-valuenow')).toBe('60.00');
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('01:00 of 01:00');
   });
@@ -137,14 +137,14 @@ describe('ScrubberBar', function() {
     baseMockController.state.duration = 0;
     updateBaseMockProps();
     var wrapper = Enzyme.mount(<ScrubberBar {...baseMockProps}/>);
-    var scrubberBar = ReactDOM.findDOMNode(wrapper.find('.oo-scrubber-bar').instance());
+    var scrubberBar = wrapper.find('.oo-scrubber-bar').getDOMNode();
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('Live video');
 
     baseMockController.state.currentPlayhead = 60;
     baseMockController.state.duration = 120;
     updateBaseMockProps();
     wrapper = Enzyme.mount(<ScrubberBar {...baseMockProps}/>);
-    scrubberBar = ReactDOM.findDOMNode(wrapper.find('.oo-scrubber-bar').instance());
+    scrubberBar = wrapper.find('.oo-scrubber-bar').getDOMNode();
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('01:00 of 02:00 live video');
   });
 
@@ -191,7 +191,7 @@ describe('ScrubberBar', function() {
         skinConfig={mockSkinConfig}
         />
     );
-    var playheadBar = ReactDOM.findDOMNode(wrapper.find('.oo-playhead').instance());
+    var playheadBar = wrapper.find('.oo-playhead').getDOMNode();
     expect(playheadBar.style.backgroundColor).toBe('green');
     expect(wrapper.ref('playhead').style.backgroundColor).toBe('green');
   });
@@ -282,7 +282,7 @@ describe('ScrubberBar', function() {
       playheadWidth: 10
     });
 
-    var playhead = ReactDOM.findDOMNode(wrapper.find('.oo-playhead-padding').instance());
+    var playhead = wrapper.find('.oo-playhead-padding').getDOMNode();
     var leftPos = parseInt(playhead.style.left);
     expect(leftPos).toBeGreaterThan(200);
     expect(leftPos).toBeLessThan(300);
@@ -305,7 +305,7 @@ describe('ScrubberBar', function() {
         skinConfig={skinConfig} />
     );
 
-    var playhead = ReactDOM.findDOMNode(wrapper.find('.oo-playhead').instance());
+    var playhead = wrapper.find('.oo-playhead').getDOMNode();
     expect(playhead.className).toMatch('oo-ad-playhead');
   });
 

@@ -238,7 +238,7 @@ describe('ControlBar', function() {
                   isLiveStream={mockProps.isLiveStream} />
     );
 
-    var toggleStereoVrButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
+    var toggleStereoVrButtons = wrapper.find('.oo-vr-stereo-button');
     expect(toggleStereoVrButtons.length).toBe(0);
   });
 
@@ -278,7 +278,7 @@ describe('ControlBar', function() {
                   isLiveStream={mockProps.isLiveStream} />
     );
 
-    var toggleStereoVrButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-stereo-button');
+    var toggleStereoVrButtons = wrapper.find('.oo-vr-stereo-button');
     expect(toggleStereoVrButtons.length).toBe(0);
   });
 
@@ -364,7 +364,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-control-bar-item');
+    var buttons = wrapper.find('.oo-control-bar-item');
     expect(buttons.length).toBe(1);
   });
 
@@ -408,7 +408,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-control-bar-item');
+    var buttons = wrapper.find('.oo-control-bar-item');
     expect(buttons.length).toBe(4);
   });
 
@@ -453,7 +453,7 @@ describe('ControlBar', function() {
     var volumeButton = wrapper.find('.oo-mute-unmute').firstChild;
     TestUtils.Simulate.click(volumeButton);
     expect(muteClicked).toBe(true);
-    var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
+    var volumeBars = wrapper.find('.oo-volume-bar');
     // JEST doesn't support dataset at the time of writing
     TestUtils.Simulate.click(volumeBars[5], {target: {dataset: {volume: 5}}});
     expect(newVolume).toBeGreaterThan(-1);
@@ -852,7 +852,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var ccButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-closed-caption');
+    var ccButtons = wrapper.find('.oo-closed-caption');
     expect(ccButtons.length).toBe(0);
 
     var toggleScreenClicked = false;
@@ -888,7 +888,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var ccButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-closed-caption');
+    var ccButtons2 = wrapper.find('.oo-closed-caption');
     expect(ccButtons2.length).toBe(1);
 
     var ccButton = wrapper.find('.oo-closed-caption').firstChild;
@@ -949,7 +949,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var ccButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-closed-caption');
+    var ccButtons = wrapper.find('.oo-closed-caption');
     expect(ccButtons.length).toBe(0);
   });
 
@@ -987,7 +987,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var ccButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-closed-caption');
+    var ccButtons = wrapper.find('.oo-closed-caption');
     expect(ccButtons.length).toBe(1);
   });
 
@@ -1030,7 +1030,7 @@ describe('ControlBar', function() {
     );
 
     // there are no CC, no multiaudio
-    var multiAudioBtn = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-multiaudio');
+    var multiAudioBtn = wrapper.find('.oo-multiaudio');
     expect(multiAudioBtn.length).toBe(0);
 
     // there are no CC, but multiaudio is available
@@ -1191,7 +1191,7 @@ describe('ControlBar', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         isLiveStream={mockProps.isLiveStream} />
     );
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-share').length).toBe(0);
+    expect(wrapper.find('.oo-share').length).toBe(0);
 
     customSkinConfig.shareScreen.shareContent = [];
     customSkinConfig.shareScreen.socialContent = ['twitter'];
@@ -1203,7 +1203,7 @@ describe('ControlBar', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         isLiveStream={mockProps.isLiveStream} />
     );
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-share').length).toBe(0);
+    expect(wrapper.find('.oo-share').length).toBe(0);
   });
 
   it('hides share button when ooyala ad is playing', function() {
@@ -1237,7 +1237,7 @@ describe('ControlBar', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         isLiveStream={mockProps.isLiveStream} />
     );
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-share').length).toBe(0);
+    expect(wrapper.find('.oo-share').length).toBe(0);
   });
 
   it('shows share button when ooyala ad is not playing', function() {
@@ -1271,7 +1271,7 @@ describe('ControlBar', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         isLiveStream={mockProps.isLiveStream} />
     );
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-share').length).toBe(1);
+    expect(wrapper.find('.oo-share').length).toBe(1);
   });
 
   it('shows/hides discovery button if discovery available', function() {
@@ -1308,7 +1308,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var discoveryButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery');
+    var discoveryButtons = wrapper.find('.oo-discovery');
     expect(discoveryButtons.length).toBe(0);
 
     var discoveryClicked = false;
@@ -1341,7 +1341,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var discoveryButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery');
+    var discoveryButtons2 = wrapper.find('.oo-discovery');
     expect(discoveryButtons2.length).toBe(1);
 
     var discoveryButton = wrapper.find('.oo-discovery').firstChild;
@@ -1384,7 +1384,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var discoveryButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery');
+    var discoveryButtons = wrapper.find('.oo-discovery');
     expect(discoveryButtons.length).toBe(0);
   });
 
@@ -1423,7 +1423,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var discoveryButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery');
+    var discoveryButtons = wrapper.find('.oo-discovery');
     expect(discoveryButtons.length).toBe(1);
   });
 
@@ -1461,9 +1461,9 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var optionsButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-more-options');
+    var optionsButton = wrapper.find('.oo-more-options');
     expect(optionsButton.length).toBe(0);
-    var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-control-bar-item');
+    var buttons = wrapper.find('.oo-control-bar-item');
     expect(buttons.length).toBe(1);
 
     oneButtonSkinConfig.buttons.desktopContent = [
@@ -1488,9 +1488,9 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    optionsButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-more-options');
+    optionsButton = wrapper.find('.oo-more-options');
     expect(optionsButton.length).toBe(1);
-    buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-play-pause');
+    buttons = wrapper.find('.oo-play-pause');
     expect(buttons.length).toBeLessThan(5);
   });
 
@@ -1533,9 +1533,9 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    optionsButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-more-options');
+    optionsButton = wrapper.find('.oo-more-options');
     expect(optionsButton.length).toBe(0);
-    buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-play-pause');
+    buttons = wrapper.find('.oo-play-pause');
     expect(buttons.length).toBe(1);
   });
 
@@ -1578,9 +1578,9 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    optionsButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-more-options');
+    optionsButton = wrapper.find('.oo-more-options');
     expect(optionsButton.length).toBe(1);
-    buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-play-pause');
+    buttons = wrapper.find('.oo-play-pause');
     expect(buttons.length).toBeLessThan(5);
   });
 
@@ -1665,7 +1665,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-control-bar-item');
+    var buttons = wrapper.find('.oo-control-bar-item');
     expect(buttons.length).toBe(1);
   });
 
@@ -1702,7 +1702,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-live');
+    var buttons = wrapper.find('.oo-live');
     expect(buttons.length).toBe(1);
 
     oneButtonSkinConfig.buttons.desktopContent = [
@@ -1722,7 +1722,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-live');
+    buttons = wrapper.find('.oo-live');
     expect(buttons.length).toBe(0);
   });
 
@@ -1877,7 +1877,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
+    var qualityButtons = wrapper.find('.oo-quality');
     expect(qualityButtons.length).toBe(0);
 
     var qualityClicked = false;
@@ -1913,7 +1913,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var qualityButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
+    var qualityButtons2 = wrapper.find('.oo-quality');
     expect(qualityButtons2.length).toBe(1);
 
     qualityButton = wrapper.find('.oo-quality').firstChild;
@@ -1935,7 +1935,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var qualityButtons3 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
+    var qualityButtons3 = wrapper.find('.oo-quality');
     expect(qualityButtons3.length).toBe(1);
 
     var qualityButton = wrapper.find('.oo-quality').firstChild;
@@ -1957,7 +1957,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var qualityButtons4 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
+    var qualityButtons4 = wrapper.find('.oo-quality');
     expect(qualityButtons4.length).toBe(1);
 
     qualityButton = wrapper.find('.oo-quality').firstChild;
@@ -1999,7 +1999,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
+    var qualityButtons = wrapper.find('.oo-quality');
     expect(qualityButtons.length).toBe(0);
   });
 
@@ -2037,7 +2037,7 @@ describe('ControlBar', function() {
         isLiveStream={mockProps.isLiveStream} />
     );
 
-    var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
+    var qualityButtons = wrapper.find('.oo-quality');
     expect(qualityButtons.length).toBe(1);
   });
 
@@ -2215,7 +2215,7 @@ describe('ControlBar', function() {
                   isLiveStream={mockProps.isLiveStream} />
     );
 
-    var logo = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-logo');
+    var logo = wrapper.find('.oo-logo');
     expect(logo.length).toBe(0);
   });
 

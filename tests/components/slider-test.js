@@ -18,7 +18,7 @@ describe('Slider', function() {
   function renderComponent() {
     wrapper = Enzyme.mount(<Slider {...props} />, node);
     component = wrapper.find(Slider);
-    element = ReactDOM.findDOMNode(component.instance());
+    element = component.getDOMNode();
   }
 
   beforeEach(function() {

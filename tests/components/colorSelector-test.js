@@ -55,14 +55,14 @@ describe('Tabs', function() {
   it('should set menu role and ARIA label on main element', function() {
     props.ariaLabel = 'customAriaLabel';
     renderComponent();
-    var mainElement = ReactDOM.findDOMNode(component.instance());
+    var mainElement = component.getDOMNode();
     expect(mainElement.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU);
     expect(mainElement.getAttribute('aria-label')).toBe(props.ariaLabel);
   });
 
   it('should set ARIA attributes on buttons', function() {
     renderComponent();
-    var colorButton = ReactDOM.findDOMNode(buttons.at(0).instance());
+    var colorButton = buttons.at(0).getDOMNode();
     expect(colorButton.getAttribute('aria-label')).toBe(props.ariaLabel + ' White');
     expect(colorButton.getAttribute('aria-checked')).toBe('false');
     expect(colorButton.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO);
@@ -70,18 +70,18 @@ describe('Tabs', function() {
 
   it('should update aria-checked attribute when tab selection state changes', function() {
     renderComponent();
-    var colorButton = ReactDOM.findDOMNode(buttons.at(0).instance());
+    var colorButton = buttons.at(0).getDOMNode();
     expect(colorButton.getAttribute('aria-checked')).toBe('false');
     buttons.at(0).simulate('click');
     renderComponent();
-    colorButton = ReactDOM.findDOMNode(buttons.at(0).instance());
+    colorButton = buttons.at(0).getDOMNode();
     expect(colorButton.getAttribute('aria-checked')).toBe('true');
   });
 
   //// Needed in order for NVDA to read out the correct number of items
   it('should set presentation role on item container', function() {
     renderComponent();
-    var container = ReactDOM.findDOMNode(wrapper.find('.oo-item').at(0).instance());
+    var container = wrapper.find('.oo-item').at(0).getDOMNode();
     expect(container.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.PRESENTATION);
   });
 

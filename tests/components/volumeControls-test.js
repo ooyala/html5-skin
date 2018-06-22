@@ -42,7 +42,7 @@ describe('VolumeControls', function() {
     var wrapper = Enzyme.mount(
       <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
     );
-    var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
+    var volumeBars = wrapper.find('.oo-volume-bar');
     TestUtils.Simulate.click(volumeBars[4], { target: { dataset: { volume: 0.5 } } });
     expect(mockCtrl.state.volumeState.volume).toBe(0.5);
     TestUtils.Simulate.click(volumeBars[0], { target: { dataset: { volume: 0.1 } } });
@@ -54,7 +54,7 @@ describe('VolumeControls', function() {
     var wrapper = Enzyme.mount(
       <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
     );
-    var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
+    var volumeBars = wrapper.find('.oo-volume-bar');
     for (var i = 0; i < volumeBars.length; i++) {
       var volumeBar = volumeBars[i];
       if (i < 5) {
@@ -129,7 +129,7 @@ describe('VolumeControls', function() {
     var wrapper = Enzyme.mount(
       <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
     );
-    var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
+    var volumeBars = wrapper.find('.oo-volume-bar');
     TestUtils.Simulate.click(volumeBars[4], { target: { dataset: { volume: 0.5 } } });
     expect(mockCtrl.state.volumeState.volume).toBe(0.5);
     expect(spy.callCount).toBe(1);
@@ -145,7 +145,7 @@ describe('VolumeControls', function() {
     var wrapper = Enzyme.mount(
       <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
     );
-    var volumeBars = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-volume-bar');
+    var volumeBars = wrapper.find('.oo-volume-bar');
     for (var i = 0; i < volumeBars.length; i++) {
       var volumeBar = volumeBars[i];
       expect(volumeBar.className).toEqual('oo-volume-bar');

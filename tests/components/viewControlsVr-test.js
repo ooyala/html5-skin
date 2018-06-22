@@ -112,14 +112,14 @@ describe('viewControlsVr', function() {
       controller: controller
     };
     var wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
-    var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
+    var buttons = wrapper.find('.oo-direction-control');
     
     expect(buttons.length).toBe(5);
   });
   
   it('check condition: if video does not support vr360 then viewControlsVr does not exist', function() {
     var wrapper = Enzyme.mount(<ViewControlsVr {...baseMockProps}/>);
-    var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
+    var buttons = wrapper.find('.oo-direction-control');
     expect(buttons.length).toBe(0);
   });
 
@@ -149,8 +149,8 @@ describe('viewControlsVr', function() {
       controller: controller
     };
     var wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
-    var iconSubstrate = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-icon--substrate');
-    var iconSymbol = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-vr-icon--icon-symbol');
+    var iconSubstrate = wrapper.find('.oo-vr-icon--substrate');
+    var iconSymbol = wrapper.find('.oo-vr-icon--icon-symbol');
 
     expect(iconSubstrate.length).toBe(1);
     expect(iconSymbol.length).toBe(1);
@@ -182,7 +182,7 @@ describe('viewControlsVr', function() {
       controller: controller
     };
     var wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
-    var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
+    var buttons = wrapper.find('.oo-direction-control');
 
     expect(buttons.length).toBe(0);
   });
@@ -213,7 +213,7 @@ describe('viewControlsVr', function() {
       controller: controller
     };
     var wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
-    var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-direction-control');
+    var buttons = wrapper.find('.oo-direction-control');
 
     expect(buttons.length).toBe(0);
   });

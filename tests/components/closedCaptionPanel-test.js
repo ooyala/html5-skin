@@ -13,7 +13,6 @@ jest.dontMock('../../js/views/contentScreen')
     .dontMock('classnames');
 
 var React = require('react');
-var ReactDOM = require('react-dom');
 var Enzyme = require('enzyme');
 var ContentScreen = require('../../js/views/contentScreen');
 var ClosedCaptionPanel = require('../../js/components/closed-caption/closedCaptionPanel');
@@ -56,7 +55,7 @@ describe('ClosedCaptionPanel', function() {
     function testItemsOnPage(items, page) {
       var j = items0.length*(page);
       for (var i=0; i<items.length; i++) {
-        var domNode = ReactDOM.findDOMNode(items.at(i).instance());
+        var domNode = items.at(i).getDOMNode();
         var itemText = domNode.textContent;
         expect(itemText).toEqual(availableLanguages.locale[availableLanguages.languages[i+j]]);
       }

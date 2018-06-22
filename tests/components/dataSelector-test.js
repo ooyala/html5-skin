@@ -87,13 +87,9 @@ describe('DataSelector', function() {
     secondItemElement = findItemByLabel(availableDataItems[1]);
     secondItemElement.simulate('keyDown', { key: CONSTANTS.KEY_VALUES.SPACE });
     secondItemElement.simulate('click');
-    //TestUtils.Simulate.keyDown(secondItemElement, { key: CONSTANTS.KEY_VALUES.SPACE });
-    //TestUtils.Simulate.click(secondItemElement);
     // Re-render in order to reflect new prop state, focus should be set afterwards
     updateComponent();
-    ////secondItemElement = findItemByLabel(availableDataItems[1]);
-    ////console.log(ReactDOM.findDOMNode(secondItemElement.instance()));
-    expect(document.activeElement).toBe(ReactDOM.findDOMNode(secondItemElement.instance()));
+    expect(document.activeElement).toBe(secondItemElement.getDOMNode());
   });
 
   it('should auto focus on the first element when moving to next page with keyboard', function() {
@@ -108,7 +104,7 @@ describe('DataSelector', function() {
     nextButton.simulate('click');
 
     updateComponent();
-    var firstBtnSecondPage = ReactDOM.findDOMNode(findItemByLabel('e').instance());
+    var firstBtnSecondPage = findItemByLabel('e').getDOMNode();
     expect(document.activeElement).toBe(firstBtnSecondPage);
   });
 
@@ -126,14 +122,14 @@ describe('DataSelector', function() {
     prevButton.simulate('click');
 
     updateComponent();
-    var lastBtnFirstPage = ReactDOM.findDOMNode(findItemByLabel('d').instance());
+    var lastBtnFirstPage = findItemByLabel('d').getDOMNode();
     expect(document.activeElement).toBe(lastBtnFirstPage);
   });
 
   it('should render ARIA attributes on previous and next buttons', function() {
     renderComponent();
-    var prevButton = ReactDOM.findDOMNode(findItemByLabel(CONSTANTS.ARIA_LABELS.PREVIOUS_OPTIONS).instance());
-    var nextButton = ReactDOM.findDOMNode(findItemByLabel(CONSTANTS.ARIA_LABELS.MORE_OPTIONS).instance());
+    var prevButton = findItemByLabel(CONSTANTS.ARIA_LABELS.PREVIOUS_OPTIONS).getDOMNode();
+    var nextButton = findItemByLabel(CONSTANTS.ARIA_LABELS.MORE_OPTIONS).getDOMNode();
     expect(prevButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PREVIOUS_OPTIONS);
     expect(nextButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.MORE_OPTIONS);
     expect(prevButton.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU_ITEM);
@@ -142,7 +138,7 @@ describe('DataSelector', function() {
 
   it('should render ARIA attributes on menu items', function() {
     renderComponent();
-    var menuItem = ReactDOM.findDOMNode(findItemByLabel('a').instance());
+    var menuItem = findItemByLabel('a').getDOMNode();
     expect(menuItem.getAttribute('aria-label')).toBe('a');
     expect(menuItem.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO);
   });
@@ -150,7 +146,7 @@ describe('DataSelector', function() {
   it('should set menu role and ARIA label on main element', function() {
     props.ariaLabel = 'customAriaLabel';
     renderComponent();
-    var mainElement = ReactDOM.findDOMNode(component.instance());
+    var mainElement = component.getDOMNode();
     expect(mainElement.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU);
     expect(mainElement.getAttribute('aria-label')).toBe(props.ariaLabel);
   });
@@ -160,11 +156,11 @@ describe('DataSelector', function() {
     props.selectedData = 'a';
     renderComponent();
     var secondMenuWrapper = findItemByLabel('b');
-    secondMenuItem = ReactDOM.findDOMNode(secondMenuWrapper.instance());
+    secondMenuItem = secondMenuWrapper.getDOMNode();
     expect(secondMenuItem.getAttribute('aria-checked')).toBe('false');
     secondMenuWrapper.simulate('click');
     renderComponent();
-    secondMenuItem = ReactDOM.findDOMNode(findItemByLabel('b').instance());
+    secondMenuItem = findItemByLabel('b').getDOMNode();
     expect(secondMenuItem.getAttribute('aria-checked')).toBe('true');
   });
 

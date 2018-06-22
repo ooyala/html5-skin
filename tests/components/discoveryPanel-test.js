@@ -29,8 +29,8 @@ describe('DiscoveryPanel', function() {
     var vidName = wrapper.find('.oo-discovery-content-name');
     // loop through all videos, test expected values from mock data
     for (var i=0; i<data.relatedVideos.length; i++) {
-      expect(ReactDOM.findDOMNode(vidImg.at(i).instance()).style.backgroundImage).toEqual('url('+data.relatedVideos[i].preview_image_url+')');
-      expect(ReactDOM.findDOMNode(vidName.at(i).instance()).textContent).toEqual(data.relatedVideos[i].name);
+      expect(vidImg.at(i).getDOMNode().style.backgroundImage).toEqual('url('+data.relatedVideos[i].preview_image_url+')');
+      expect(vidName.at(i).getDOMNode().textContent).toEqual(data.relatedVideos[i].name);
     }
 
     // test discovery video click

@@ -69,7 +69,7 @@ describe('MultiAudioTab component', function() {
   });
 
   it('should render list of languages', function() {
-    var items = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-cc-ma-menu__element');
+    var items = wrapper.find('.oo-cc-ma-menu__element');
     expect(items.length).toBe(2);
   });
 
