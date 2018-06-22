@@ -10,6 +10,7 @@ var React = require('react'),
     Utils = require('./utils');
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
+var _ = require('underscore');
 
 var ThumbnailCarousel = createReactClass({
   getInitialState: function() {
@@ -69,7 +70,7 @@ var ThumbnailCarousel = createReactClass({
         carouselStyleWidth = parseFloat(carouselStyleWidth); // convert css px to number
         var carouselWidth = !isNaN(carouselStyleWidth)
           ? carouselStyleWidth
-          : parseInt(this.props.carouselWidth);
+          : parseInt(this.props.thumbnailCarouselWidth);
 
         var carouselStyleHeight = carousel
           ? window.getComputedStyle(carousel, null).getPropertyValue('height')
@@ -77,7 +78,7 @@ var ThumbnailCarousel = createReactClass({
         carouselStyleHeight = parseFloat(carouselStyleHeight); // convert css px to number
         var carouselHeight = !isNaN(carouselStyleHeight)
           ? carouselStyleHeight
-          : parseInt(this.props.carouselHeight);
+          : parseInt(this.props.thumbnailCarouselHeight);
 
         this.setState({
           thumbnailWidth: thumbnailWidth,
@@ -204,7 +205,7 @@ var ThumbnailCarousel = createReactClass({
 
     var thumbnailStyle = {};
     if (this.props.thumbnailStyle !== null && typeof this.props.thumbnailStyle === 'object') {
-      thumbnailStyle = this.props.thumbnailStyle;
+      _.extend(thumbnailStyle, this.props.thumbnailStyle);
     }
     thumbnailStyle.left = (data.scrubberBarWidth - data.centerWidth) / 2;
 

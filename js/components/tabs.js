@@ -189,7 +189,10 @@ var Tabs = createReactClass({
       this.tabsNavigationElement.scrollLeft = menuItem.offsetLeft;
     } else {
       var menuItemRightEdge = menuItem.offsetLeft + menuItem.clientWidth;
-      var maxVisiblePoint = this.tabsNavigationElement.scrollLeft + this.tabsNavigationElement.clientWidth;
+      //getBoundingClientRect().width returns the unrounded clientWidth. However, jsdom won't allow us to set clientWidth,
+      //but we can mock getBoundingClientRect.
+      var tabsNavigationElementClientWidth = this.tabsNavigationElement.clientWidth || this.tabsNavigationElement.getBoundingClientRect().width;
+      var maxVisiblePoint = this.tabsNavigationElement.scrollLeft + tabsNavigationElementClientWidth;
       // Element overflows from the currently visible navigation area. Adjust the
       // navigation's scroll value so that the whole menu item fits inside the visible area.
       if (menuItemRightEdge > maxVisiblePoint) {

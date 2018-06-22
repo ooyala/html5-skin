@@ -146,7 +146,7 @@ describe('ThumbnailCarousel', function() {
         thumbnailStyle={thumbnailStyle}
         thumbnails={thumbnails}/>
     );
-    var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnail).style._values['background-image'];
+    var centerImage = ReactDOM.findDOMNode(wrapper.ref('thumbnail')).style._values['background-image'];
     centerImage = centerImage.slice(centerImage.indexOf('url(') + 4, -1);
     expect(centerImage).toBe(thumbnails.data.thumbnails[hoverTime][width]['url']); // 50 is present in the data, so hoverTime of 50 should find exact match
   });
@@ -175,7 +175,7 @@ describe('ThumbnailCarousel', function() {
         thumbnailStyle={thumbnailStyle}
         thumbnails={thumbnails}/>
     );
-    var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnail).style._values['background-image'];
+    var centerImage = ReactDOM.findDOMNode(wrapper.ref('thumbnail')).style._values['background-image'];
     centerImage = centerImage.slice(centerImage.indexOf('url(') + 4, -1);
     expect(centerImage).toBe(thumbnails.data.thumbnails[hoverTime - 5][width]['url']);// 45 is not present in the data, so hoverTime of 45 should find previous value
   });

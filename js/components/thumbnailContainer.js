@@ -71,8 +71,8 @@ var ThumbnailContainer = createReactClass({
     if (this.props.videoVr) {
       if (this.child !== null && typeof this.child === 'object') {
         if (this.child.refs && this.child.refs.thumbnail) {
-          var newThumbnailWidth = this.child.refs.thumbnail.clientWidth;
-          var newThumbnailHeight = this.child.refs.thumbnail.clientHeight;
+          var newThumbnailWidth = this.getClientWidth(this.child.refs.thumbnail);
+          var newThumbnailHeight = this.getClientHeight(this.child.refs.thumbnail);
           if (newThumbnailWidth !== this.thumbnailWidth || newThumbnailHeight !== this.thumbnailHeight) {
             this.thumbnailWidth = newThumbnailWidth;
             this.thumbnailHeight = newThumbnailHeight;
@@ -95,8 +95,8 @@ var ThumbnailContainer = createReactClass({
         }
         if (this.props.isCarousel) {
           if (this.child.refs && this.child.refs.thumbnailCarousel) {
-            var newThumbnailCarouselWidth = this.child.refs.thumbnailCarousel.clientWidth;
-            var newThumbnailCarouselHeight = this.child.refs.thumbnailCarousel.clientHeight;
+            var newThumbnailCarouselWidth = this.getClientWidth(this.child.refs.thumbnailCarousel);
+            var newThumbnailCarouselHeight = this.getClientHeight(this.child.refs.thumbnailCarousel);
             if (newThumbnailCarouselWidth !== this.thumbnailCarouselWidth) {
               this.thumbnailCarouselWidth = newThumbnailCarouselWidth;
             }
@@ -107,6 +107,18 @@ var ThumbnailContainer = createReactClass({
         }
       }
     }
+  },
+
+  getClientWidth: function(element) {
+    //getBoundingClientRect().width returns the unrounded clientWidth. However, jsdom won't allow us to set clientWidth,
+    //but we can mock getBoundingClientRect.
+    return element && (element.clientWidth || element.getBoundingClientRect().width);
+  },
+
+  getClientHeight: function(element) {
+    //getBoundingClientRect().height returns the unrounded clientHeight. However, jsdom won't allow us to set clientHeight,
+    //but we can mock getBoundingClientRect.
+    return element && (element.clientHeight || element.getBoundingClientRect().height);
   },
 
   setThumbnailSizesVr: function() {
@@ -127,8 +139,8 @@ var ThumbnailContainer = createReactClass({
    */
   setThumbnailSize: function(refName, widthName, heightName) {
     if (this.child.refs && this.child.refs[refName]) {
-      var width = this.child.refs[refName].clientWidth;
-      var height = this.child.refs[refName].clientHeight;
+      var width = this.getClientWidth(this.child.refs[refName]);
+      var height = this.getClientHeight(this.child.refs[refName]);
       if (width) {
         this[widthName] = width;
       }
