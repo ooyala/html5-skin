@@ -3,8 +3,9 @@
  *
  * @module TextTrackPanel
  */
-var React = require('react'),
-    Utils = require('./utils');
+var React = require('react');
+var Utils = require('./utils');
+var classNames = require('classnames');
 
 var baseFontSize = 1.0;
 
@@ -101,9 +102,12 @@ var TextTrackPanel = React.createClass({
     if (!this.props.cueText) {
       return null;
     }
+    var className = classNames('oo-text-track-container', {
+      'oo-in-background': this.props.isInBackground
+    });
 
     return (
-      <div className="oo-text-track-container">
+      <div className={className}>
         <div
           className={'oo-text-track-window'}
           style={this.setWindowBackgroundStyle(
@@ -141,6 +145,7 @@ var TextTrackPanel = React.createClass({
 
 TextTrackPanel.propTypes = {
   cueText: React.PropTypes.string,
+  isInBackground: React.PropTypes.bool,
   closedCaptionOptions: React.PropTypes.shape({
     textColor: React.PropTypes.string,
     windowColor: React.PropTypes.string,
