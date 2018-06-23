@@ -611,13 +611,13 @@ describe('Utils', function() {
   });
 
   it('tests getUserDevice', function() {
-    window.navigator.userAgent = 'Phone';
+    Object.defineProperty(window.navigator, 'userAgent', {value: 'Phone', configurable: true});
     var device = Utils.getUserDevice();
     expect(device).toBe('phone');
-    window.navigator.userAgent = 'Tablet';
+    Object.defineProperty(window.navigator, 'userAgent', {value: 'Tablet', configurable: true});
     device = Utils.getUserDevice();
     expect(device).toBe('tablet');
-    window.navigator.userAgent = 'Webkit';
+    Object.defineProperty(window.navigator, 'userAgent', {value: 'Webkit', configurable: true});
     device = Utils.getUserDevice();
     expect(device).toBe('desktop');
   });

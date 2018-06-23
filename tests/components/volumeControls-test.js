@@ -7,7 +7,6 @@ jest
 .dontMock('classnames');
 
 var React = require('react');
-var ReactDOM = require('react-dom');
 var Enzyme = require('enzyme');
 var VolumeControls = require('../../js/components/volumeControls');
 var defaultSkinConfig = require('../../config/skin.json');

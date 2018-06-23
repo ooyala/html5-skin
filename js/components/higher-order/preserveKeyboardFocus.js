@@ -1,6 +1,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var CONSTANTS = require('../../constants/constants');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
 /**
  * Extends a Component with the ability to store its focused element id in the
@@ -16,7 +18,7 @@ var CONSTANTS = require('../../constants/constants');
  */
 var preserveKeyboardFocus = function(ComposedComponent) {
 
-  var PreserveKeyboardFocus = React.createClass({
+  var PreserveKeyboardFocus = createReactClass({
     /**
      * Stores a ref to the composed component.
      * @private
@@ -108,13 +110,13 @@ var preserveKeyboardFocus = function(ComposedComponent) {
   });
 
   PreserveKeyboardFocus.propTypes = {
-    playerState: React.PropTypes.string.isRequired,
-    controller: React.PropTypes.shape({
-      state: React.PropTypes.shape({
-        focusedControl: React.PropTypes.string,
+    playerState: PropTypes.string.isRequired,
+    controller: PropTypes.shape({
+      state: PropTypes.shape({
+        focusedControl: PropTypes.string
       }),
-      startHideControlBarTimer: React.PropTypes.func.isRequired
-    }),
+      startHideControlBarTimer: PropTypes.func.isRequired
+    })
   };
 
   return PreserveKeyboardFocus;
