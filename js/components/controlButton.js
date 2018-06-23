@@ -16,8 +16,10 @@ var CONSTANTS = require('../constants/constants');
 var NonAccessibleButton = function(props) {
   return (
     <a
-      {...props}
-      aria-hidden={props.ariaHidden}>
+      style={props.style}
+      className={props.className}
+      aria-hidden={props.ariaHidden}
+      onClick={props.onClick}>
       {props.children}
     </a>
   );

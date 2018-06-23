@@ -93,6 +93,7 @@ var SkipControls = React.createClass({
    */
   getButtonTemplate: function() {
     var buttonTemplate = {};
+    var buttonStyle = {};
     var skipTimes = Utils.getSkipTimes(this.props.skinConfig);
 
     var skipBackwardAriaLabel = CONSTANTS.ARIA_LABELS.SKIP_BACKWARD.replace(
@@ -103,12 +104,20 @@ var SkipControls = React.createClass({
       MACROS.SECONDS,
       skipTimes.forward
     );
+    // Note that the button elements are still in the DOM even when the controls
+    // are hidden. When controls are inactive we disable pointer events so that
+    // the user won't accidentally trigger a button when bringing up the controls
+    // on touch devices.
+    if (this.props.isInactive) {
+      buttonStyle.pointerEvents = 'none';
+    }
 
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO] = (
       <ControlButton
         {...this.props}
         key={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
         focusId={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
+        style={buttonStyle}
         className="oo-previous-video"
         icon="nextVideo"
         ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_VIDEO}
@@ -122,6 +131,7 @@ var SkipControls = React.createClass({
         {...this.props}
         key={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD}
         focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD}
+        style={buttonStyle}
         className="oo-center-button oo-skip-backward"
         icon="replay"
         ariaLabel={skipBackwardAriaLabel}
@@ -135,6 +145,7 @@ var SkipControls = React.createClass({
         {...this.props}
         key={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD}
         focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD}
+        style={buttonStyle}
         className="oo-center-button oo-skip-forward"
         icon="replay"
         ariaLabel={skipForwardAriaLabel}
@@ -148,6 +159,7 @@ var SkipControls = React.createClass({
         {...this.props}
         key={CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO}
         focusId={CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO}
+        style={buttonStyle}
         className="oo-next-video"
         icon="nextVideo"
         ariaLabel={CONSTANTS.ARIA_LABELS.NEXT_VIDEO}

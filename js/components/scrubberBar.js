@@ -233,6 +233,10 @@ var ScrubberBar = React.createClass({
     });
   },
 
+  handleScrubberBarMouseLeave: function(evt) {
+    this.props.controller.setScrubberBarHoverState(false);
+  },
+
   /**
    * Gets a string that describes the current status of the progress bar in a screen
    * reader friendly format.
@@ -400,6 +404,7 @@ var ScrubberBar = React.createClass({
         ref="scrubberBarContainer"
         onMouseOver={scrubberBarMouseOver}
         onMouseOut={scrubberBarMouseOut}
+        onMouseLeave={this.handleScrubberBarMouseLeave}
         onMouseMove={scrubberBarMouseMove}>
         {thumbnailsContainer}
         <div
