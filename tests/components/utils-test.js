@@ -249,73 +249,73 @@ describe('Utils', function() {
   });
 
   it('tests isSafari', function() {
-    Object.defineProperty(window.navigator, 'userAgent', {value: 'AppleWebKit', configurable: true});
+    OO_checkWindowNavigator('userAgent', 'AppleWebKit');
     var isSafari = Utils.isSafari();
     expect(isSafari).toBeTruthy();
-    Object.defineProperty(window.navigator, 'userAgent', {value: 'jsdom', configurable: true});
+    OO_checkWindowNavigator('userAgent', 'jsdom');
     isSafari = Utils.isSafari();
     expect(isSafari).toBeFalsy();
   });
 
   it('tests isEdge', function() {
-    Object.defineProperty(window.navigator, 'userAgent', {value: 'Edge', configurable: true});
+    OO_checkWindowNavigator('userAgent', 'Edge');
     var isEdge = Utils.isEdge();
     expect(isEdge).toBeTruthy();
-    Object.defineProperty(window.navigator, 'userAgent', {value: 'jsdom', configurable: true});
+    OO_checkWindowNavigator('userAgent', 'jsdom');
     isEdge = Utils.isEdge();
     expect(isEdge).toBeFalsy();
   });
 
   it('tests isIE', function() {
-    Object.defineProperty(window.navigator, 'userAgent', {value: 'MSIE', configurable: true});
+    OO_checkWindowNavigator('userAgent', 'MSIE');
     var isIE = Utils.isIE();
     expect(isIE).toBeTruthy();
-    Object.defineProperty(window.navigator, 'userAgent', {value: 'jsdom', configurable: true});
+    OO_checkWindowNavigator('userAgent', 'jsdom');
     isIE = Utils.isIE();
     expect(isIE).toBeFalsy();
   });
 
   it('tests isAndroid', function() {
-    Object.defineProperty(window.navigator, 'appVersion', {value: 'Android', configurable: true});
+    OO_checkWindowNavigator('appVersion', 'Android');
     var isAndroid = Utils.isAndroid();
     expect(isAndroid).toBeTruthy();
-    Object.defineProperty(window.navigator, 'appVersion', {value: 'jsdom', configurable: true});
+    OO_checkWindowNavigator('appVersion', 'jsdom');
     isAndroid = Utils.isAndroid();
     expect(isAndroid).toBeFalsy();
   });
 
   it('tests isIos', function() {
-    Object.defineProperty(window.navigator, 'platform', {value: 'iPhone', configurable: true});
+    OO_checkWindowNavigator('platform', 'iPhone');
     var isIos = Utils.isIos();
     expect(isIos).toBeTruthy();
-    Object.defineProperty(window.navigator, 'platform', {value: 'jsdom', configurable: true});
+    OO_checkWindowNavigator('platform', 'jsdom');
     isIos = Utils.isIos();
     expect(isIos).toBeFalsy();
   });
 
   it('tests isIPhone', function() {
-    Object.defineProperty(window.navigator, 'platform', {value: 'iPod', configurable: true});
+    OO_checkWindowNavigator('platform', 'iPod');
     var isIPhone = Utils.isIPhone();
     expect(isIPhone).toBeTruthy();
-    Object.defineProperty(window.navigator, 'platform', {value: 'jsdom', configurable: true});
+    OO_checkWindowNavigator('platform', 'jsdom');
     isIPhone = Utils.isIPhone();
     expect(isIPhone).toBeFalsy();
   });
 
   it('tests isMobile', function() {
-    Object.defineProperty(window.navigator, 'platform', {value: 'iPod', configurable: true});
+    OO_checkWindowNavigator('platform', 'iPod');
     var isMobile = Utils.isMobile();
     expect(isMobile).toBeTruthy();
-    Object.defineProperty(window.navigator, 'platform', {value: 'jsdom', configurable: true});
+    OO_checkWindowNavigator('platform', 'jsdom');
     isMobile = Utils.isMobile();
     expect(isMobile).toBeFalsy();
   });
 
   it('tests isIE10', function() {
-    Object.defineProperty(window.navigator, 'userAgent', {value: 'MSIE 10', configurable: true});
+    OO_checkWindowNavigator('userAgent', 'MSIE 10');
     var isIE10 = Utils.isIE10();
     expect(isIE10).toBeTruthy();
-    Object.defineProperty(window.navigator, 'userAgent', {value: 'jsdom', configurable: true});
+    OO_checkWindowNavigator('userAgent', 'jsdom');
     isIE10 = Utils.isIE10();
     expect(isIE10).toBeFalsy();
   });
@@ -357,7 +357,7 @@ describe('Utils', function() {
     getLanguageToUse = Utils.getLanguageToUse(skinConfig2);
     expect(getLanguageToUse).toEqual('en');
     //test window.navigator.browserLanguage
-    Object.defineProperty(window.navigator, 'languages', {value: null, configurable: true});
+    OO_checkWindowNavigator('languages', null);
     window.navigator.browserLanguage = 'es-US';
     getLanguageToUse = Utils.getLanguageToUse(skinConfig2);
     expect(getLanguageToUse).toEqual('es');
@@ -611,13 +611,13 @@ describe('Utils', function() {
   });
 
   it('tests getUserDevice', function() {
-    Object.defineProperty(window.navigator, 'userAgent', {value: 'Phone', configurable: true});
+    OO_checkWindowNavigator('userAgent', 'Phone');
     var device = Utils.getUserDevice();
     expect(device).toBe('phone');
-    Object.defineProperty(window.navigator, 'userAgent', {value: 'Tablet', configurable: true});
+    OO_checkWindowNavigator('userAgent', 'Tablet');
     device = Utils.getUserDevice();
     expect(device).toBe('tablet');
-    Object.defineProperty(window.navigator, 'userAgent', {value: 'Webkit', configurable: true});
+    OO_checkWindowNavigator('userAgent', 'Webkit');
     device = Utils.getUserDevice();
     expect(device).toBe('desktop');
   });

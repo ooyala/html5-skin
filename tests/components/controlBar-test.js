@@ -28,31 +28,6 @@ describe('ControlBar', function() {
   var baseMockController, baseMockProps;
   var defaultSkinConfig = Utils.clone(skinConfig);
 
-  // The ControlBar is wrapped by the preserveKeyboardFocus higher order component.
-  // For some tests it is necessary to reference the inner component directly, so
-  // that's why we have this helper function which can be used instead of
-  // Enzyme.mount()
-  var renderAndGetComposedComponent = function(Component) {
-    var renderedComponent = Enzyme.mount(Component);
-    return renderedComponent.instance().composedComponent;
-  };
-
-  // Finds a control bar button component using its class as an id. Will throw
-  // an error if zero or more than one components are found.
-  var getControlBarButtonWithClass = function(wrapper, className) {
-    var controlBarButtons = wrapper.find(ControlButton);
-
-    var result = controlBarButtons.filter(function(button) {
-      return (' ' + button.props.className + ' ').indexOf(' ' + className + ' ') > -1;
-    });
-
-    if (result.length === 1) {
-      return result[0];
-    } else {
-      throw new Error('Found ' + result.length + ' matches for class instead of one.');
-    }
-  };
-
   // TODO
   // Old unit tests should use the base mock controller and props
   // instead of defining them manually each time
@@ -128,10 +103,10 @@ describe('ControlBar', function() {
     beforeEach(function() {
       baseMockController.videoVrSource = {};
       baseMockController.videoVrSource.vr = {};
-      Object.defineProperty(window.navigator, 'userAgent', {value: 'phone', configurable: true});
+      OO_checkWindowNavigator('userAgent', 'phone');
     });
     afterEach(function() {
-      Object.defineProperty(window.navigator, 'userAgent', {value: 'desktop', configurable: true});
+      OO_checkWindowNavigator('userAgent', 'desktop');
     });
 
     it('render one stereo button if content vr', function() {
@@ -1139,7 +1114,7 @@ describe('ControlBar', function() {
   });
 
   it('hides the volume on iOS', function() {
-    Object.defineProperty(window.navigator, 'platform', {value: 'iPhone', configurable: true});
+    OO_checkWindowNavigator('platform', 'iPhone');
 
     baseMockProps.skinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
 
@@ -1342,7 +1317,7 @@ describe('ControlBar', function() {
     wrapper.instance().composedComponent.handleControlBarMouseUp(event);
     wrapper.instance().composedComponent.handleLiveClick(event);
 
-    Object.defineProperty(window.navigator, 'appVersion', {value: 'Android', configurable: true});
+    OO_checkWindowNavigator('appVersion', 'Android');
     wrapper.instance().composedComponent.handleVolumeIconClick(event);
     ReactDOM.unmountComponentAtNode(node);
   });

@@ -70,7 +70,7 @@ MultiAudioTab.propTypes = {
 
   handleClick: PropTypes.func,
   language: PropTypes.string,
-  localizableStrings: PropTypes.string
+  localizableStrings: PropTypes.object
 };
 
 module.exports = MultiAudioTab;

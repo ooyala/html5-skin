@@ -40,20 +40,20 @@ describe('OnOffSwitch', function() {
     props.ariaLabel = 'ariaLabel';
     props.role = 'customRole';
     var wrapper = Enzyme.mount(<OnOffSwitch {...props}/>);
-    var switchButton = wrapper.find('.oo-switch-container-selectable');
+    var switchButton = wrapper.find('.oo-switch-container-selectable').hostNodes().getDOMNode();
     expect(switchButton.getAttribute('aria-label')).toBe(props.ariaLabel);
     expect(switchButton.getAttribute('role')).toBe(props.role);
   });
 
   it('should update aria-checked attribute when switch is selected', function() {
-    var DOM, switchButton;
+    var wrapper, switchButton;
     props.closedCaptionOptions.enabled = false;
-    DOM = TestUtils.renderIntoDocument(<OnOffSwitch {...props}/>);
-    switchButton = wrapper.find('.oo-switch-container-selectable');
+    wrapper = Enzyme.mount(<OnOffSwitch {...props}/>);
+    switchButton = wrapper.find('.oo-switch-container-selectable').hostNodes().getDOMNode();
     expect(switchButton.getAttribute('aria-checked')).toBe('false');
     props.closedCaptionOptions.enabled = true;
-    DOM = TestUtils.renderIntoDocument(<OnOffSwitch {...props}/>);
-    switchButton = wrapper.find('.oo-switch-container-selectable');
+    wrapper = Enzyme.mount(<OnOffSwitch {...props}/>);
+    switchButton = wrapper.find('.oo-switch-container-selectable').hostNodes().getDOMNode();
     expect(switchButton.getAttribute('aria-checked')).toBe('true');
   });
 

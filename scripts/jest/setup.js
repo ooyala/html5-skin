@@ -39,7 +39,7 @@ window.HTMLCanvasElement.prototype.getContext = function () {
   };
 };
 
-window.HTMLCanvasElement.prototype.toDataURL = function () {
+window.HTMLCanvasElement.prototype.toDataURL = function() {
   return "";
 };
 
@@ -48,3 +48,8 @@ window.open = function() {};
 
 //mock our OO object
 window.OO = {};
+
+//window navigator property check utility function
+window.OO_checkWindowNavigator = function(property, value) {
+  Object.defineProperty(window.navigator, property, {value: value, configurable: true});
+};
