@@ -6,7 +6,7 @@ jest.dontMock('../../js/mixins/accessibilityMixin');
 jest.dontMock('../../js/constants/constants');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var ErrorScreen = require('../../js/views/errorScreen');
 
 describe('ErrorScreen', function() {
@@ -34,7 +34,7 @@ describe('ErrorScreen', function() {
       code: 'network'
     };
     // Render error screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<ErrorScreen errorCode={errorCode} />);
+    var wrapper = Enzyme.mount(<ErrorScreen errorCode={errorCode} />);
   });
 
   it('test error screen with invalid error code', function() {
@@ -42,7 +42,7 @@ describe('ErrorScreen', function() {
       code: '404'
     };
     // Render error screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<ErrorScreen errorCode={errorCode} />);
+    var wrapper = Enzyme.mount(<ErrorScreen errorCode={errorCode} />);
   });
 
   describe('when passing error codes into the component', function() {

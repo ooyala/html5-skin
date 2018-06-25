@@ -4,14 +4,14 @@ jest.dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var Popover = require('../../js/views/popover');
 var CONSTANTS = require('../../js/constants/constants');
 
 describe('Popover', function() {
 
   function getDOM(popoverClassName, closeActionEnabled, closeAction) {
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <Popover
         popoverClassName={popoverClassName}
         closeActionEnabled={closeActionEnabled}

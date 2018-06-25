@@ -7,187 +7,106 @@ jest
 .dontMock('classnames');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var EndScreen = require('../../js/views/endScreen');
 var ClassNames = require('classnames');
 var ResizeMixin = require('../../js/mixins/resizeMixin');
+var skinConfig = require('../../config/skin.json');
+var Utils = require('../../js/components/utils');
+var CONSTANTS = require('../../js/constants/constants');
 
 describe('EndScreen', function() {
+  var mockController, mockSkinConfig, mockContentTree;
+
+  beforeEach(function() {
+    mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          muted: false,
+          volume: 1,
+          volumeStateVisible: true, 
+          volumeSliderVisible: true
+        },
+        closedCaptionOptions: {},
+        multiAudioOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        }
+      },
+      cancelTimer: function() {},
+      hideVolumeSliderBar: function() {},
+      toggleMute: function() {},
+      startHideControlBarTimer: function() {},
+      setVolume: function() {}
+    };
+    mockSkinConfig = Utils.clone(skinConfig);
+    mockContentTree = {'description': 'description', 'title': 'title'};
+  });
+
   it('creates an EndScreen with replay button', function() {
 
     var clicked = false;
-    var mockContentTree = {'description': 'description'};
-    var mockController = {
-      state: {
-        accessibilityControlsEnabled: false
-      },
-      togglePlayPause: function() {clicked = true;}
-    };
-    var mockSkinConfig = {
-      startScreen: {
-        titleFont: {
-          color: 'red'
-        },
-        descriptionFont: {
-          color: 'green'
-        }
-      },
-      endScreen: {
-        replayIconStyle: {
-          color: 'white',
-          opacity: '1'
-        },
-        showReplayButton: true,
-        showTitle: true,
-        showDescription: true,
-        infoPanelPosition: 'topLeft'
-      },
-      icons: {
-        replay: {
-          fontStyleClass: 'replay'
-        }
-      }
+    mockController.togglePlayPause = function() {
+      clicked = true;
     };
 
     // Render end screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree}/>);
+    var wrapper = Enzyme.mount(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree} playerState={CONSTANTS.STATE.END}/>);
 
-    var replayButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-action-icon');
-    TestUtils.Simulate.click(replayButton);
+    var replayButton = wrapper.find('.oo-action-icon');
+    replayButton.simulate('click');
     expect(clicked).toBe(true);
   });
 
   // replay without button, click on screen
   it('creates an EndScreen without replay button', function() {
     var clicked = false;
-    var mockContentTree = {'description': 'description'};
-    var mockController = {
-      state: {
-        accessibilityControlsEnabled: false
-      },
-      togglePlayPause: function() {clicked = true;}
+    mockController.state.accessibilityControlsEnabled = false;
+    mockController.togglePlayPause = function() {
+      clicked = true;
     };
-    var mockSkinConfig = {
-      startScreen: {
-        titleFont: {
-          color: 'red'
-        },
-        descriptionFont: {
-          color: 'green'
-        }
-      },
-      endScreen: {
-        replayIconStyle: {
-          color: 'white',
-          opacity: '1'
-        },
-        showReplayButton: false,
-        showTitle: false,
-        showDescription: false,
-        infoPanelPosition: 'topLeft'
-      },
-      icons: {
-        replay: {
-          fontStyleClass: 'replay'
-        }
-      }
-    };
+    mockSkinConfig.endScreen.showReplayButton = false;
 
     // Render end screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree}/>);
+    var wrapper = Enzyme.mount(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree} playerState={CONSTANTS.STATE.END}/>);
 
     // replay button hidden
-    var replayButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-action-icon');
-    expect(replayButton.className).toMatch('hidden');
+    var replayButton = wrapper.find('.oo-action-icon');
+    expect(replayButton.getDOMNode().className).toMatch('hidden');
 
     // test replay clicking on screen
-    var replayScreen = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
-    TestUtils.Simulate.click(replayScreen);
+    var replayScreen = wrapper.find('.oo-state-screen-selectable');
+    replayScreen.simulate('click');
 
     expect(clicked).toBe(true);
   });
 
   it('creates an EndScreen with description and title', function() {
-    var mockContentTree = {'description': 'mock description', 'title': 'mock title'};
-    var mockController = {
-      state: {
-        accessibilityControlsEnabled: false
-      },
-      togglePlayPause: function() {clicked = true;}
-    };
-    var mockSkinConfig = {
-      startScreen: {
-        titleFont: {
-          color: 'red'
-        },
-        descriptionFont: {
-          color: 'green'
-        }
-      },
-      endScreen: {
-        replayIconStyle: {
-          color: 'white',
-          opacity: '1'
-        },
-        showReplayButton: false,
-        showTitle: true,
-        showDescription: true,
-        infoPanelPosition: 'topLeft'
-      },
-      icons: {
-        replay: {
-          fontStyleClass: 'replay'
-        }
-      }
-    };
+    mockController.state.accessibilityControlsEnabled = false;
+    mockController.togglePlayPause = function() {};
+    mockSkinConfig.endScreen.showTitle = true;
+    mockSkinConfig.endScreen.showDescription = true;
 
     // Render end screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree}/>);
+    var wrapper = Enzyme.mount(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree} playerState={CONSTANTS.STATE.END}/>);
 
     // description and title are shown
-    var title = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-title');
-    expect(title.className).not.toMatch('hidden');
+    var title = wrapper.find('.oo-state-screen-title');
+    expect(title.getDOMNode().className).not.toMatch('hidden');
   });
 
   it('creates an EndScreen without description and title', function() {
-    var mockContentTree = {'description': 'mock description', 'title': 'mock title'};
-    var mockController = {
-      state: {
-        accessibilityControlsEnabled: false
-      },
-      togglePlayPause: function() {clicked = true;}
-    };
-    var mockSkinConfig = {
-      startScreen: {
-        titleFont: {
-          color: 'red'
-        },
-        descriptionFont: {
-          color: 'green'
-        }
-      },
-      endScreen: {
-        replayIconStyle: {
-          color: 'white',
-          opacity: '1'
-        },
-        showReplayButton: false,
-        showTitle: false,
-        showDescription: false,
-        infoPanelPosition: 'topLeft'
-      },
-      icons: {
-        replay: {
-          fontStyleClass: 'replay'
-        }
-      }
-    };
+    mockController.state.accessibilityControlsEnabled = false;
+    mockController.togglePlayPause = function() {};
+    mockSkinConfig.endScreen.showTitle = false;
+    mockSkinConfig.endScreen.showDescription = false;
 
     // Render end screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree}/>);
+    var wrapper = Enzyme.mount(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree} playerState={CONSTANTS.STATE.END}/>);
 
     // description and title are hidden
-    var title = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-title');
-    expect(title.className).toMatch('hidden');
+    var title = wrapper.find('.oo-state-screen-title');
+    expect(title.getDOMNode().className).toMatch('hidden');
   });
 });

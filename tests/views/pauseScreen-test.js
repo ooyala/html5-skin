@@ -8,7 +8,7 @@ jest
 
 var React = require('react');
 var sinon = require('sinon');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var PauseScreen = require('../../js/views/pauseScreen');
 var ClassNames = require('classnames');
 
@@ -63,7 +63,7 @@ describe('PauseScreen', function() {
 
     var handleVrPlayerClick = function() {};
     // Render pause screen into DOM
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <PauseScreen
         skinConfig={mockSkinConfig}
         controller={mockController}
@@ -73,8 +73,8 @@ describe('PauseScreen', function() {
       />
     );
 
-    var pauseIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-action-icon-pause');
-    TestUtils.Simulate.click(pauseIcon);
+    var pauseIcon = wrapper.find('.oo-action-icon-pause');
+    pauseIcon.simulate('click');
     expect(clicked).toBe(true);
   });
 
@@ -83,7 +83,7 @@ describe('PauseScreen', function() {
     mockSkinConfig.pauseScreen.showTitle = true;
     mockContentTree.title = 'Video title';
     var handleVrPlayerClick = function() {};
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <PauseScreen
         skinConfig={mockSkinConfig}
         controller={mockController}
@@ -93,7 +93,7 @@ describe('PauseScreen', function() {
       />
     );
 
-    var underlay = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fading-underlay');
+    var underlay = wrapper.find('.oo-fading-underlay');
     expect(spy.callCount).toBe(1);
     spy.restore();
   });
@@ -103,7 +103,7 @@ describe('PauseScreen', function() {
     mockSkinConfig.pauseScreen.showDescription = true;
     mockContentTree.description = 'Video description';
     var handleVrPlayerClick = function() {};
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <PauseScreen
         skinConfig={mockSkinConfig}
         controller={mockController}
@@ -113,7 +113,7 @@ describe('PauseScreen', function() {
       />
     );
 
-    var underlay = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-fading-underlay');
+    var underlay = wrapper.find('.oo-fading-underlay');
     // render gets called more than once due to a descriptino text state change when component is mounted
     expect(spy.callCount).toNotBe(0);
     spy.restore();
@@ -124,7 +124,7 @@ describe('PauseScreen', function() {
     mockSkinConfig.pauseScreen.showTitle = false;
     mockSkinConfig.pauseScreen.showDescription = false;
     var handleVrPlayerClick = function() {};
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <PauseScreen
         skinConfig={mockSkinConfig}
         controller={mockController}
@@ -147,7 +147,7 @@ describe('PauseScreen', function() {
     delete mockContentTree.title;
     delete mockContentTree.description;
     var handleVrPlayerClick = function() {};
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <PauseScreen
         skinConfig={mockSkinConfig}
         controller={mockController}

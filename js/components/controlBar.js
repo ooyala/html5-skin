@@ -814,8 +814,8 @@ var ControlBar = createReactClass({
       controlBarItems,
       this.responsiveUIMultiple
     );
-    var collapsedControlBarItems = collapsedResult.fit;
-    var collapsedMoreOptionsItems = collapsedResult.overflow;
+    var collapsedControlBarItems = collapsedResult.fit || {};
+    var collapsedMoreOptionsItems = collapsedResult.overflow || {};
     this.moreOptionsItems = collapsedMoreOptionsItems;
 
     var finalControlBarItems = [];
