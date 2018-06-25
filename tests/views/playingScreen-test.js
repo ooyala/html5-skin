@@ -10,9 +10,12 @@ var ReactDOM = require('react-dom');
 var Enzyme = require('enzyme');
 var PlayingScreen = require('../../js/views/playingScreen');
 var UnmuteIcon = require('../../js/components/unmuteIcon');
+var skinConfig = require('../../config/skin.json');
+var Utils = require('../../js/components/utils');
+var CONSTANTS = require('../../js/constants/constants');
 
 describe('PlayingScreen', function() {
-  var mockController, closedCaptionOptions;
+  var mockController, mockSkinConfig, closedCaptionOptions;
   var handleVrPlayerMouseUp = function() {};
 
   beforeEach(function() {
@@ -25,17 +28,31 @@ describe('PlayingScreen', function() {
           showing: false
         },
         volumeState: {
+          volume: 1,
           muted: false,
-          mutingForAutoplay: false
+          mutingForAutoplay: false,
+          volumeStateVisible: true, 
+          volumeSliderVisible: true
         },
         config: {
           isVrAnimationEnabled: {
             vrNotification: true,
             vrIcon: true
           }
+        },
+        closedCaptionOptions: {},
+        multiAudioOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
         }
-      }
+      },
+      cancelTimer: function() {},
+      hideVolumeSliderBar: function() {},
+      toggleMute: function() {},
+      startHideControlBarTimer: function() {},
+      setVolume: function() {}
     };
+    mockSkinConfig = Utils.clone(skinConfig);
     closedCaptionOptions = {
       cueText: 'cue text'
     };
@@ -62,15 +79,17 @@ describe('PlayingScreen', function() {
     var wrapper = Enzyme.mount(
       <PlayingScreen
         controller={mockController}
+        skinConfig={mockSkinConfig}
         closedCaptionOptions={closedCaptionOptions}
         handleVrPlayerMouseMove={handleVrPlayerMouseMove}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp.bind(this)}
+        playerState={CONSTANTS.STATE.PLAYING}
       />
     );
 
-    var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
+    var screen = wrapper.find('.oo-state-screen-selectable');
 
-    screen[0].simulate('mouseMove');
+    screen.at(0).simulate('mouseMove');
     expect(isMoved).toBe(false);
   });
 
@@ -98,26 +117,28 @@ describe('PlayingScreen', function() {
     var wrapper = Enzyme.mount(
       <PlayingScreen
         controller={mockController}
+        skinConfig={mockSkinConfig}
         componentWidth={90}
         componentHeight={45}
         fullscreen={false}
         handleVrPlayerMouseDown={handleVrPlayerMouseDown}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         closedCaptionOptions={closedCaptionOptions}
+        playerState={CONSTANTS.STATE.PLAYING}
       />
     );
-    DOM.setState({
+    wrapper.instance().setState({
       isVrMouseDown: true,
       xVrMouseStart: -10,
       yVrMouseStart: -20
     });
 
-    var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-selectable');
+    var screen = wrapper.find('.oo-state-screen-selectable');
 
-    screen[0].simulate('mouseDown');
+    screen.at(0).simulate('mouseDown');
     expect(isVrDirectionChecked).toBe(true);
 
-    screen[0].simulate('mouseUp');
+    screen.at(0).simulate('mouseUp');
     expect(isVrDirectionChecked).toBe(true);
 
   });
@@ -140,9 +161,11 @@ describe('PlayingScreen', function() {
     // Render pause screen into DOM
     var wrapper = Enzyme.mount(
         <PlayingScreen
-            controller = {mockController}
-            closedCaptionOptions = {closedCaptionOptions}
-            handleVrPlayerMouseUp = {handleVrPlayerMouseUp}
+            controller={mockController}
+            skinConfig={mockSkinConfig}
+            closedCaptionOptions={closedCaptionOptions}
+            handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+            playerState={CONSTANTS.STATE.PLAYING}
         />);
 
     var screen = wrapper.find('.oo-state-screen-selectable');
@@ -175,10 +198,12 @@ describe('PlayingScreen', function() {
     var wrapper = Enzyme.mount(
       <PlayingScreen
         controller = {mockController}
+        skinConfig={mockSkinConfig}
         fullscreen = {true}
         controlBarAutoHide={true}
         closedCaptionOptions = {closedCaptionOptions}
         handleVrPlayerMouseUp = {handleVrPlayerMouseUp}
+        playerState={CONSTANTS.STATE.PLAYING}
       />);
 
     var screen = wrapper.find('.oo-playing-screen');
@@ -222,30 +247,32 @@ describe('PlayingScreen', function() {
     var wrapper = Enzyme.mount(
       <PlayingScreen
         controller={mockController}
+        skinConfig={mockSkinConfig}
         fullscreen={true}
         componentWidth={90}
         componentHeight={40}
         controlBarAutoHide={true}
         closedCaptionOptions={closedCaptionOptions}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+        playerState={CONSTANTS.STATE.PLAYING}
       />
     );
 
-    DOM.setState({
+    wrapper.instance().setState({
       isVrMouseDown: true,
       xVrMouseStart: -10,
       yVrMouseStart: -20
     });
 
-    var screen = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-playing-screen');
+    var screen = wrapper.find('.oo-playing-screen');
 
-    screen[0].simulate('mouseMove');
+    screen.at(0).simulate('mouseMove');
     expect(moved).toBe(true);
 
-    screen[0].simulate('mouseOut');
+    screen.at(0).simulate('mouseOut');
     expect(out).toBe(true);
 
-    screen[0].simulate('mouseOver');
+    screen.at(0).simulate('mouseOver');
     expect(over).toBe(true);
 
     var screen1 = wrapper.find('.oo-interactive-container');
@@ -275,9 +302,11 @@ describe('PlayingScreen', function() {
     var wrapper = Enzyme.mount(
       <PlayingScreen
         controller = {mockController}
+        skinConfig={mockSkinConfig}
         closedCaptionOptions = {closedCaptionOptions}
         handleVrPlayerClick={handleVrPlayerClick}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+        playerState={CONSTANTS.STATE.PLAYING}
       />
     );
     var screen = wrapper.find('.oo-state-screen-selectable');
@@ -301,12 +330,14 @@ describe('PlayingScreen', function() {
     var wrapper = Enzyme.mount(
       <PlayingScreen
           controller = {mockController}
+          skinConfig={mockSkinConfig}
           closedCaptionOptions = {closedCaptionOptions}
           handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+          playerState={CONSTANTS.STATE.PLAYING}
       />);
     var screen = wrapper.find('.oo-playing-screen');
 
-    screen, {key: 'Tab', which: 9, keyCode: 9}.simulate('keyDown');
+    screen.simulate('keyDown', {key: 'Tab', which: 9, keyCode: 9});
     expect(autoHide && controlBar).toBe(true);
   });
 
@@ -324,61 +355,67 @@ describe('PlayingScreen', function() {
     var wrapper = Enzyme.mount(
       <PlayingScreen
         controller = {mockController}
+        skinConfig={mockSkinConfig}
         closedCaptionOptions = {closedCaptionOptions}
         handleVrPlayerMouseUp = {handleVrPlayerMouseUp}
+        playerState={CONSTANTS.STATE.PLAYING}
       />);
     var screen = wrapper.find('.oo-playing-screen');
 
-    screen, {key: 'Tab', which: 9, keyCode: 9}.simulate('keyDown');
+    screen.simulate('keyDown', {key: 'Tab', which: 9, keyCode: 9});
     expect(autoHide && controlBar).toBe(true);
 
     autoHide = false;
     controlBar = false;
 
-    screen, {key: 'Enter', which: 13, keyCode: 13}.simulate('keyDown');
+    screen.simulate('keyDown', {key: 'Enter', which: 13, keyCode: 13});
     expect(autoHide && controlBar).toBe(true);
 
     autoHide = false;
     controlBar = false;
 
-    screen, {key: ' ', which: 32, keyCode: 32}.simulate('keyDown');
+    screen.simulate('keyDown', {key: ' ', which: 32, keyCode: 32});
     expect(autoHide && controlBar).toBe(true);
 
     autoHide = false;
     controlBar = false;
 
-    screen, {key: 'Dead', which: 16, keyCode: 16}.simulate('keyDown');
+    screen.simulate('keyDown', {key: 'Dead', which: 16, keyCode: 16});
     expect(autoHide && controlBar).toBe(false);
   });
 
   it('tests playing screen componentWill*', function() {
-    mockController.startHideControlBarTimer = function() { moved = true; };
-    mockController.showControlBar = function() { over = true; };
-    mockController.hideControlBar = function() { out = true; };
+    mockController.startHideControlBarTimer = function() {};
+    mockController.showControlBar = function() {};
+    mockController.hideControlBar = function() {};
     mockController.cancelTimer = function() {};
 
     var node = document.createElement('div');
-    var playScreen = ReactDOM.render(
+    var wrapper = Enzyme.mount(
       <PlayingScreen
         controller = {mockController}
+        skinConfig={mockSkinConfig}
         fullscreen = {true}
         controlBarAutoHide={true}
         componentWidth={400}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+        playerState={CONSTANTS.STATE.PLAYING}
         closedCaptionOptions={closedCaptionOptions} />, node
     );
 
-    ReactDOM.render(
+    Enzyme.mount(
       <PlayingScreen
         controller = {mockController}
+        skinConfig={mockSkinConfig}
         fullscreen = {true}
         controlBarAutoHide={true}
         componentWidth={800}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+        playerState={CONSTANTS.STATE.PLAYING}
         closedCaptionOptions={closedCaptionOptions} />, node
     );
 
-    ReactDOM.unmountComponentAtNode(node);
+    wrapper.unmount();
   });
 
   it('should display unmute icon when handling muted autoplay', function() {
@@ -388,10 +425,12 @@ describe('PlayingScreen', function() {
     var wrapper = Enzyme.mount(
       <PlayingScreen
         controller = {mockController}
+        skinConfig={mockSkinConfig}
         closedCaptionOptions={closedCaptionOptions}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+        playerState={CONSTANTS.STATE.PLAYING}
       />);
-    var unmuteIcon = TestUtils.findRenderedComponentWithType(DOM, UnmuteIcon);
+    var unmuteIcon = wrapper.find(UnmuteIcon);
     expect(unmuteIcon).toBeTruthy();
   });
 
@@ -402,35 +441,41 @@ describe('PlayingScreen', function() {
     var wrapper = Enzyme.mount(
       <PlayingScreen
         controller = {mockController}
+        skinConfig={mockSkinConfig}
         closedCaptionOptions={closedCaptionOptions}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+        playerState={CONSTANTS.STATE.PLAYING}
       />);
-    var unmuteIcons = TestUtils.scryRenderedComponentsWithType(DOM, UnmuteIcon);
+    var unmuteIcons = wrapper.find(UnmuteIcon);
     expect(unmuteIcons.length).toBe(0);
   });
 
   it('should initialize with control bar state from controller', function() {
-    var DOM, playingScreen;
+    var wrapper;
 
     mockController.state.controlBarVisible = true;
     wrapper = Enzyme.mount(
       <PlayingScreen
         controller={mockController}
+        skinConfig={mockSkinConfig}
         closedCaptionOptions={{}}
-        handleVrPlayerMouseUp={function() {}} />
+        handleVrPlayerMouseUp={function() {}}
+        playerState={CONSTANTS.STATE.PLAYING}
+      />
     );
-    playingScreen = TestUtils.findRenderedComponentWithType(DOM, PlayingScreen);
-    expect(playingScreen.state.controlBarVisible).toBe(true);
+    expect(wrapper.state('controlBarVisible')).toBe(true);
 
     mockController.state.controlBarVisible = false;
     wrapper = Enzyme.mount(
       <PlayingScreen
         controller={mockController}
+        skinConfig={mockSkinConfig}
         closedCaptionOptions={{}}
-        handleVrPlayerMouseUp={function() {}} />
+        handleVrPlayerMouseUp={function() {}}
+        playerState={CONSTANTS.STATE.PLAYING}
+      />
     );
-    playingScreen = TestUtils.findRenderedComponentWithType(DOM, PlayingScreen);
-    expect(playingScreen.state.controlBarVisible).toBe(false);
+    expect(wrapper.state('controlBarVisible')).toBe(false);
   });
 
 });

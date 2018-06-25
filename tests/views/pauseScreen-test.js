@@ -11,6 +11,9 @@ var sinon = require('sinon');
 var Enzyme = require('enzyme');
 var PauseScreen = require('../../js/views/pauseScreen');
 var ClassNames = require('classnames');
+var skinConfig = require('../../config/skin.json');
+var Utils = require('../../js/components/utils');
+var CONSTANTS = require('../../js/constants/constants');
 
 describe('PauseScreen', function() {
   var mockController, mockContentTree, mockSkinConfig;
@@ -21,37 +24,31 @@ describe('PauseScreen', function() {
         accessibilityControlsEnabled: false,
         upNextInfo: {
           showing: false
+        },
+        isMobile: false,
+        volumeState: {
+          muted: false,
+          volume: 1,
+          volumeStateVisible: true, 
+          volumeSliderVisible: true
+        },
+        closedCaptionOptions: {},
+        multiAudioOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
         }
       },
-      addBlur: function() {}
+      addBlur: function() {},
+      cancelTimer: function() {},
+      hideVolumeSliderBar: function() {},
+      toggleMute: function() {},
+      startHideControlBarTimer: function() {},
+      setVolume: function() {}
     };
     mockContentTree = {
       title: 'title'
     };
-    mockSkinConfig = {
-      startScreen:{
-        titleFont: {
-          color: 'white'
-        },
-        descriptionFont: {
-          color: 'white'
-        }
-      },
-      pauseScreen: {
-        infoPanelPosition: 'topLeft',
-        pauseIconPosition: 'center',
-        PauseIconStyle: {
-          color: 'white',
-          opacity: '1'
-        },
-        showPauseIcon: true
-      },
-      icons: {
-        pause: {
-          fontStyleClass: 'pause'
-        }
-      }
-    };
+    mockSkinConfig = Utils.clone(skinConfig);
   });
 
   it('creates an PauseScreen', function() {
@@ -70,6 +67,7 @@ describe('PauseScreen', function() {
         contentTree={mockContentTree}
         handleVrPlayerClick={handleVrPlayerClick}
         closedCaptionOptions={{cueText: 'sample text'}}
+        playerState={CONSTANTS.STATE.PAUSE}
       />
     );
 
@@ -90,6 +88,7 @@ describe('PauseScreen', function() {
         contentTree={mockContentTree}
         handleVrPlayerClick={handleVrPlayerClick}
         closedCaptionOptions={{cueText: 'sample text'}}
+        playerState={CONSTANTS.STATE.PAUSE}
       />
     );
 
@@ -110,12 +109,13 @@ describe('PauseScreen', function() {
         contentTree={mockContentTree}
         handleVrPlayerClick={handleVrPlayerClick}
         closedCaptionOptions={{cueText: 'sample text'}}
+        playerState={CONSTANTS.STATE.PAUSE}
       />
     );
 
     var underlay = wrapper.find('.oo-fading-underlay');
     // render gets called more than once due to a descriptino text state change when component is mounted
-    expect(spy.callCount).toNotBe(0);
+    expect(spy.callCount).not.toBe(0);
     spy.restore();
   });
 
@@ -131,10 +131,11 @@ describe('PauseScreen', function() {
         contentTree={mockContentTree}
         handleVrPlayerClick={handleVrPlayerClick}
         closedCaptionOptions={{cueText: 'sample text'}}
+        playerState={CONSTANTS.STATE.PAUSE}
       />
     );
 
-    var underlays = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-fading-underlay');
+    var underlays = wrapper.find('.oo-fading-underlay');
     expect(underlays.length).toBe(0);
     expect(spy.callCount).toBe(0);
     spy.restore();
@@ -154,10 +155,11 @@ describe('PauseScreen', function() {
         contentTree={mockContentTree}
         handleVrPlayerClick={handleVrPlayerClick}
         closedCaptionOptions={{cueText: 'sample text'}}
+        playerState={CONSTANTS.STATE.PAUSE}
       />
     );
 
-    var underlays = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-fading-underlay');
+    var underlays = wrapper.find('.oo-fading-underlay');
     expect(underlays.length).toBe(0);
     expect(spy.callCount).toBe(0);
     spy.restore();

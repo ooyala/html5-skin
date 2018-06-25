@@ -10,7 +10,7 @@ var CONSTANTS = require('../../js/constants/constants');
 
 describe('Popover', function() {
 
-  function getDOM(popoverClassName, closeActionEnabled, closeAction) {
+  function mountComponent(popoverClassName, closeActionEnabled, closeAction) {
     var wrapper = Enzyme.mount(
       <Popover
         popoverClassName={popoverClassName}
@@ -19,7 +19,7 @@ describe('Popover', function() {
         <div className="child-element" tabIndex="0"></div>
       </Popover>
     );
-    return DOM;
+    return wrapper;
   }
 
   describe('keyboard navigation', function() {
@@ -45,16 +45,16 @@ describe('Popover', function() {
     });
 
     it('should execute close action when ESC key is pressed inside container', function() {
-      var DOM = getDOM('class', true, closeAction);
-      var popover = ReactDOM.findDOMNode(DOM);
+      var wrapper = mountComponent('class', true, closeAction);
+      var popover = wrapper.getDOMNode();
       popover.contains = function() { return true; };
       eventMap.keydown(mockEscEvent);
       expect(closeActionCalled).toBe(true);
     });
 
     it('should NOT execute close action when ESC key is pressed and closeActionEnabled is false', function() {
-      var DOM = getDOM('class', false, closeAction);
-      var popover = ReactDOM.findDOMNode(DOM);
+      var wrapper = mountComponent('class', false, closeAction);
+      var popover = wrapper.getDOMNode();
       popover.contains = function() { return true; };
       eventMap.keydown(mockEscEvent);
       expect(closeActionCalled).toBe(false);
@@ -65,8 +65,8 @@ describe('Popover', function() {
       var customCloseAction = function(params) {
         restoreToggleButtonFocus = params.restoreToggleButtonFocus;
       };
-      var DOM = getDOM('class', true, customCloseAction);
-      var popover = ReactDOM.findDOMNode(DOM);
+      var wrapper = mountComponent('class', true, customCloseAction);
+      var popover = wrapper.getDOMNode();
       popover.contains = function() { return true; };
       eventMap.keydown(mockEscEvent);
       expect(restoreToggleButtonFocus).toBe(true);
