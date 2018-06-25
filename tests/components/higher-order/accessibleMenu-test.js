@@ -11,11 +11,12 @@ var Enzyme = require('enzyme');
 var AccessibleMenu = require('../../../js/components/higher-order/accessibleMenu');
 var AccessibleButton = require('../../../js/components/accessibleButton');
 var CONSTANTS = require('../../../js/constants/constants');
+var createReactClass = require('create-react-class');
 
 describe('AccessibleMenu', function() {
-  var node, options, props, tree, component, menuItems, renderedMenuItems;
+  var node, options, props, wrapper, component, menuItems, renderedMenuItems;
 
-  var DummyComponent = React.createClass({
+  var DummyComponent = createReactClass({
     render: function() {
       return (
         <div>{this.props.children}</div>
@@ -25,14 +26,14 @@ describe('AccessibleMenu', function() {
 
   function renderComponent() {
     var ComposedComponent = AccessibleMenu(DummyComponent, options);
-    tree = ReactDOM.render(<ComposedComponent {...props}>{menuItems}</ComposedComponent>, node);
-    component = TestUtils.findRenderedComponentWithType(tree, ComposedComponent);
-    renderedMenuItems = TestUtils.scryRenderedComponentsWithType(tree, AccessibleButton);
+    wrapper = Enzyme.mount(<ComposedComponent {...props}>{menuItems}</ComposedComponent>, node);
+    component = wrapper.find(ComposedComponent);
+    renderedMenuItems = wrapper.find(AccessibleButton);
   }
 
   beforeEach(function() {
     node = document.createElement('div');
-    tree = null;
+    wrapper = null;
     component = null;
     options = {
       selector: null,
@@ -77,10 +78,10 @@ describe('AccessibleMenu', function() {
   it('should apply roving tab index properly when there are no selected items', function() {
     options.useRovingTabindex = true;
     renderComponent();
-    expect(ReactDOM.findDOMNode(renderedMenuItems[0]).getAttribute('tabindex')).toBe('0');
-    expect(ReactDOM.findDOMNode(renderedMenuItems[1]).getAttribute('tabindex')).toBe('-1');
-    expect(ReactDOM.findDOMNode(renderedMenuItems[2]).getAttribute('tabindex')).toBe('-1');
-    expect(ReactDOM.findDOMNode(renderedMenuItems[3]).getAttribute('tabindex')).toBe('-1');
+    expect(renderedMenuItems.at(0).getDOMNode().getAttribute('tabindex')).toBe('0');
+    expect(renderedMenuItems.at(1).getDOMNode().getAttribute('tabindex')).toBe('-1');
+    expect(renderedMenuItems.at(2).getDOMNode().getAttribute('tabindex')).toBe('-1');
+    expect(renderedMenuItems.at(3).getDOMNode().getAttribute('tabindex')).toBe('-1');
   });
 
   it('should apply roving tab index properly when there is a selected item', function() {
@@ -94,10 +95,10 @@ describe('AccessibleMenu', function() {
       </AccessibleButton>
     );
     renderComponent();
-    expect(ReactDOM.findDOMNode(renderedMenuItems[0]).getAttribute('tabindex')).toBe('-1');
-    expect(ReactDOM.findDOMNode(renderedMenuItems[1]).getAttribute('tabindex')).toBe('-1');
-    expect(ReactDOM.findDOMNode(renderedMenuItems[2]).getAttribute('tabindex')).toBe('0');
-    expect(ReactDOM.findDOMNode(renderedMenuItems[3]).getAttribute('tabindex')).toBe('-1');
+    expect(renderedMenuItems.at(0).getDOMNode().getAttribute('tabindex')).toBe('-1');
+    expect(renderedMenuItems.at(1).getDOMNode().getAttribute('tabindex')).toBe('-1');
+    expect(renderedMenuItems.at(2).getDOMNode().getAttribute('tabindex')).toBe('0');
+    expect(renderedMenuItems.at(3).getDOMNode().getAttribute('tabindex')).toBe('-1');
   });
 
 });
