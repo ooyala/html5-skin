@@ -39,6 +39,8 @@ var MultiAudioTab = React.createClass({
       CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE,
       this.props.localizableStrings
     );
+    console.log('BBB this.props.audioTracksList', this.props.audioTracksList);
+    console.log('BBB readableTracksList', readableTracksList);
     var transformedTracksList = helpers.transformTracksList(readableTracksList, noLanguageText);
 
     var uniqueTracksList = helpers.getUniqueTracks(transformedTracksList);

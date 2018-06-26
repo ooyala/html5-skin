@@ -1,242 +1,3550 @@
-module.exports = [
-  { name: 'Abkhaz', local: 'Аҧсуа', '1': 'ab', '2': 'abk', '2T': 'abk', '2B': 'abk', '3': 'abk' },
-  { name: 'Afar', local: 'Afaraf', '1': 'aa', '2': 'aar', '2T': 'aar', '2B': 'aar', '3': 'aar' },
-  { name: 'Afrikaans', local: 'Afrikaans', '1': 'af', '2': 'afr', '2T': 'afr', '2B': 'afr', '3': 'afr' },
-  { name: 'Akan', local: 'Akan', '1': 'ak', '2': 'aka', '2T': 'aka', '2B': 'aka', '3': 'aka' },
-  { name: 'Albanian', local: 'Shqip', '1': 'sq', '2': 'sqi', '2T': 'sqi', '2B': 'alb', '3': 'sqi' },
-  { name: 'Amharic', local: 'አማርኛ', '1': 'am', '2': 'amh', '2T': 'amh', '2B': 'amh', '3': 'amh' },
-  { name: 'Arabic', local: 'العربية', '1': 'ar', '2': 'ara', '2T': 'ara', '2B': 'ara', '3': 'ara' },
-  { name: 'Aragonese', local: 'Aragonés', '1': 'an', '2': 'arg', '2T': 'arg', '2B': 'arg', '3': 'arg' },
-  { name: 'Armenian', local: 'Հայերեն', '1': 'hy', '2': 'hye', '2T': 'hye', '2B': 'arm', '3': 'hye' },
-  { name: 'Assamese', local: 'অসমীয়া', '1': 'as', '2': 'asm', '2T': 'asm', '2B': 'asm', '3': 'asm' },
-  { name: 'Avaric', local: 'Авар', '1': 'av', '2': 'ava', '2T': 'ava', '2B': 'ava', '3': 'ava' },
-  { name: 'Avestan', local: 'avesta', '1': 'ae', '2': 'ave', '2T': 'ave', '2B': 'ave', '3': 'ave' },
-  { name: 'Aymara', local: 'Aymar', '1': 'ay', '2': 'aym', '2T': 'aym', '2B': 'aym', '3': 'aym' },
-  { name: 'Azerbaijani', local: 'Azərbaycanca', '1': 'az', '2': 'aze', '2T': 'aze', '2B': 'aze', '3': 'aze' },
-  { name: 'Bambara', local: 'Bamanankan', '1': 'bm', '2': 'bam', '2T': 'bam', '2B': 'bam', '3': 'bam' },
-  { name: 'Bashkir', local: 'Башҡортса', '1': 'ba', '2': 'bak', '2T': 'bak', '2B': 'bak', '3': 'bak' },
-  { name: 'Basque', local: 'Euskara', '1': 'eu', '2': 'eus', '2T': 'eus', '2B': 'baq', '3': 'eus' },
-  { name: 'Belarusian', local: 'Беларуская', '1': 'be', '2': 'bel', '2T': 'bel', '2B': 'bel', '3': 'bel' },
-  { name: 'Bengali', local: 'বাংলা', '1': 'bn', '2': 'ben', '2T': 'ben', '2B': 'ben', '3': 'ben' },
-  { name: 'Bihari', local: 'भोजपुरी', '1': 'bh', '2': 'bih', '2T': 'bih', '2B': 'bih', '3': 'bih' },
-  { name: 'Bislama', local: 'Bislama', '1': 'bi', '2': 'bis', '2T': 'bis', '2B': 'bis', '3': 'bis' },
-  { name: 'Bosnian', local: 'Bosanski', '1': 'bs', '2': 'bos', '2T': 'bos', '2B': 'bos', '3': 'bos' },
-  { name: 'Breton', local: 'Brezhoneg', '1': 'br', '2': 'bre', '2T': 'bre', '2B': 'bre', '3': 'bre' },
-  { name: 'Bulgarian', local: 'Български', '1': 'bg', '2': 'bul', '2T': 'bul', '2B': 'bul', '3': 'bul' },
-  { name: 'Burmese', local: 'မြန်မာဘာသာ', '1': 'my', '2': 'mya', '2T': 'mya', '2B': 'bur', '3': 'mya' },
-  { name: 'Catalan', local: 'Català', '1': 'ca', '2': 'cat', '2T': 'cat', '2B': 'cat', '3': 'cat' },
-  { name: 'Chamorro', local: 'Chamoru', '1': 'ch', '2': 'cha', '2T': 'cha', '2B': 'cha', '3': 'cha' },
-  { name: 'Chechen', local: 'Нохчийн', '1': 'ce', '2': 'che', '2T': 'che', '2B': 'che', '3': 'che' },
-  { name: 'Chichewa', local: 'Chichewa', '1': 'ny', '2': 'nya', '2T': 'nya', '2B': 'nya', '3': 'nya' },
-  { name: 'Chinese', local: '中文', '1': 'zh', '2': 'zho', '2T': 'zho', '2B': 'chi', '3': 'zho' },
-  { name: 'Chuvash', local: 'Чӑвашла', '1': 'cv', '2': 'chv', '2T': 'chv', '2B': 'chv', '3': 'chv' },
-  { name: 'Cornish', local: 'Kernewek', '1': 'kw', '2': 'cor', '2T': 'cor', '2B': 'cor', '3': 'cor' },
-  { name: 'Corsican', local: 'Corsu', '1': 'co', '2': 'cos', '2T': 'cos', '2B': 'cos', '3': 'cos' },
-  { name: 'Cree', local: 'ᓀᐦᐃᔭᐍᐏᐣ', '1': 'cr', '2': 'cre', '2T': 'cre', '2B': 'cre', '3': 'cre' },
-  { name: 'Croatian', local: 'Hrvatski', '1': 'hr', '2': 'hrv', '2T': 'hrv', '2B': 'hrv', '3': 'hrv' },
-  { name: 'Czech', local: 'Čeština', '1': 'cs', '2': 'ces', '2T': 'ces', '2B': 'cze', '3': 'ces' },
-  { name: 'Danish', local: 'Dansk', '1': 'da', '2': 'dan', '2T': 'dan', '2B': 'dan', '3': 'dan' },
-  { name: 'Divehi', local: 'Divehi', '1': 'dv', '2': 'div', '2T': 'div', '2B': 'div', '3': 'div' },
-  { name: 'Dutch', local: 'Nederlands', '1': 'nl', '2': 'nld', '2T': 'nld', '2B': 'dut', '3': 'nld' },
-  { name: 'Dzongkha', local: 'རྫོང་ཁ', '1': 'dz', '2': 'dzo', '2T': 'dzo', '2B': 'dzo', '3': 'dzo' },
-  { name: 'English', local: 'English', '1': 'en', '2': 'eng', '2T': 'eng', '2B': 'eng', '3': 'eng' },
-  { name: 'Esperanto', local: 'Esperanto', '1': 'eo', '2': 'epo', '2T': 'epo', '2B': 'epo', '3': 'epo' },
-  { name: 'Estonian', local: 'Eesti', '1': 'et', '2': 'est', '2T': 'est', '2B': 'est', '3': 'est' },
-  { name: 'Ewe', local: 'Eʋegbe', '1': 'ee', '2': 'ewe', '2T': 'ewe', '2B': 'ewe', '3': 'ewe' },
-  { name: 'Faroese', local: 'Føroyskt', '1': 'fo', '2': 'fao', '2T': 'fao', '2B': 'fao', '3': 'fao' },
-  { name: 'Fijian', local: 'Na Vosa Vaka-Viti', '1': 'fj', '2': 'fij', '2T': 'fij', '2B': 'fij', '3': 'fij' },
-  { name: 'Finnish', local: 'Suomi', '1': 'fi', '2': 'fin', '2T': 'fin', '2B': 'fin', '3': 'fin' },
-  { name: 'French', local: 'Français', '1': 'fr', '2': 'fra', '2T': 'fra', '2B': 'fre', '3': 'fra' },
-  { name: 'Fula', local: 'Fulfulde', '1': 'ff', '2': 'ful', '2T': 'ful', '2B': 'ful', '3': 'ful' },
-  { name: 'Galician', local: 'Galego', '1': 'gl', '2': 'glg', '2T': 'glg', '2B': 'glg', '3': 'glg' },
-  { name: 'Georgian', local: 'ქართული', '1': 'ka', '2': 'kat', '2T': 'kat', '2B': 'geo', '3': 'kat' },
-  { name: 'German', local: 'Deutsch', '1': 'de', '2': 'deu', '2T': 'deu', '2B': 'ger', '3': 'deu' },
-  { name: 'Greek', local: 'Ελληνικά', '1': 'el', '2': 'ell', '2T': 'ell', '2B': 'gre', '3': 'ell' },
-  { name: 'Guaraní', local: 'Avañe', '1': 'gn', '2': 'grn', '2T': 'grn', '2B': 'grn', '3': 'grn' },
-  { name: 'Gujarati', local: 'ગુજરાતી', '1': 'gu', '2': 'guj', '2T': 'guj', '2B': 'guj', '3': 'guj' },
-  { name: 'Haitian', local: 'Kreyòl Ayisyen', '1': 'ht', '2': 'hat', '2T': 'hat', '2B': 'hat', '3': 'hat' },
-  { name: 'Hausa', local: 'هَوُسَ', '1': 'ha', '2': 'hau', '2T': 'hau', '2B': 'hau', '3': 'hau' },
-  { name: 'Hebrew', local: 'עברית', '1': 'he', '2': 'heb', '2T': 'heb', '2B': 'heb', '3': 'heb' },
-  { name: 'Herero', local: 'Otjiherero', '1': 'hz', '2': 'her', '2T': 'her', '2B': 'her', '3': 'her' },
-  { name: 'Hindi', local: 'हिन्दी', '1': 'hi', '2': 'hin', '2T': 'hin', '2B': 'hin', '3': 'hin' },
-  { name: 'Hiri Motu', local: 'Hiri Motu', '1': 'ho', '2': 'hmo', '2T': 'hmo', '2B': 'hmo', '3': 'hmo' },
-  { name: 'Hungarian', local: 'Magyar', '1': 'hu', '2': 'hun', '2T': 'hun', '2B': 'hun', '3': 'hun' },
-  { name: 'Interlingua', local: 'Interlingua', '1': 'ia', '2': 'ina', '2T': 'ina', '2B': 'ina', '3': 'ina' },
-  {
-    name: 'Indonesian',
-    local: 'Bahasa Indonesia',
-    '1': 'id',
-    '2': 'ind',
-    '2T': 'ind',
-    '2B': 'ind',
-    '3': 'ind'
-  },
-  { name: 'Interlingue', local: 'Interlingue', '1': 'ie', '2': 'ile', '2T': 'ile', '2B': 'ile', '3': 'ile' },
-  { name: 'Irish', local: 'Gaeilge', '1': 'ga', '2': 'gle', '2T': 'gle', '2B': 'gle', '3': 'gle' },
-  { name: 'Igbo', local: 'Igbo', '1': 'ig', '2': 'ibo', '2T': 'ibo', '2B': 'ibo', '3': 'ibo' },
-  { name: 'Inupiaq', local: 'Iñupiak', '1': 'ik', '2': 'ipk', '2T': 'ipk', '2B': 'ipk', '3': 'ipk' },
-  { name: 'Ido', local: 'Ido', '1': 'io', '2': 'ido', '2T': 'ido', '2B': 'ido', '3': 'ido' },
-  { name: 'Icelandic', local: 'Íslenska', '1': 'is', '2': 'isl', '2T': 'isl', '2B': 'ice', '3': 'isl' },
-  { name: 'Italian', local: 'Italiano', '1': 'it', '2': 'ita', '2T': 'ita', '2B': 'ita', '3': 'ita' },
-  { name: 'Inuktitut', local: 'ᐃᓄᒃᑎᑐᑦ', '1': 'iu', '2': 'iku', '2T': 'iku', '2B': 'iku', '3': 'iku' },
-  { name: 'Japanese', local: '日本語', '1': 'ja', '2': 'jpn', '2T': 'jpn', '2B': 'jpn', '3': 'jpn' },
-  { name: 'Javanese', local: 'Basa Jawa', '1': 'jv', '2': 'jav', '2T': 'jav', '2B': 'jav', '3': 'jav' },
-  { name: 'Kalaallisut', local: 'Kalaallisut', '1': 'kl', '2': 'kal', '2T': 'kal', '2B': 'kal', '3': 'kal' },
-  { name: 'Kannada', local: 'ಕನ್ನಡ', '1': 'kn', '2': 'kan', '2T': 'kan', '2B': 'kan', '3': 'kan' },
-  { name: 'Kanuri', local: 'Kanuri', '1': 'kr', '2': 'kau', '2T': 'kau', '2B': 'kau', '3': 'kau' },
-  { name: 'Kashmiri', local: 'كشميري', '1': 'ks', '2': 'kas', '2T': 'kas', '2B': 'kas', '3': 'kas' },
-  { name: 'Kazakh', local: 'Қазақша', '1': 'kk', '2': 'kaz', '2T': 'kaz', '2B': 'kaz', '3': 'kaz' },
-  { name: 'Khmer', local: 'ភាសាខ្មែរ', '1': 'km', '2': 'khm', '2T': 'khm', '2B': 'khm', '3': 'khm' },
-  { name: 'Kikuyu', local: 'Gĩkũyũ', '1': 'ki', '2': 'kik', '2T': 'kik', '2B': 'kik', '3': 'kik' },
-  { name: 'Kinyarwanda', local: 'Kinyarwanda', '1': 'rw', '2': 'kin', '2T': 'kin', '2B': 'kin', '3': 'kin' },
-  { name: 'Kyrgyz', local: 'Кыргызча', '1': 'ky', '2': 'kir', '2T': 'kir', '2B': 'kir', '3': 'kir' },
-  { name: 'Komi', local: 'Коми', '1': 'kv', '2': 'kom', '2T': 'kom', '2B': 'kom', '3': 'kom' },
-  { name: 'Kongo', local: 'Kongo', '1': 'kg', '2': 'kon', '2T': 'kon', '2B': 'kon', '3': 'kon' },
-  { name: 'Korean', local: '한국어', '1': 'ko', '2': 'kor', '2T': 'kor', '2B': 'kor', '3': 'kor' },
-  { name: 'Kurdish', local: 'Kurdî', '1': 'ku', '2': 'kur', '2T': 'kur', '2B': 'kur', '3': 'kur' },
-  { name: 'Kwanyama', local: 'Kuanyama', '1': 'kj', '2': 'kua', '2T': 'kua', '2B': 'kua', '3': 'kua' },
-  { name: 'Latin', local: 'Latina', '1': 'la', '2': 'lat', '2T': 'lat', '2B': 'lat', '3': 'lat' },
-  {
-    name: 'Luxembourgish',
-    local: 'Lëtzebuergesch',
-    '1': 'lb',
-    '2': 'ltz',
-    '2T': 'ltz',
-    '2B': 'ltz',
-    '3': 'ltz'
-  },
-  { name: 'Ganda', local: 'Luganda', '1': 'lg', '2': 'lug', '2T': 'lug', '2B': 'lug', '3': 'lug' },
-  { name: 'Limburgish', local: 'Limburgs', '1': 'li', '2': 'lim', '2T': 'lim', '2B': 'lim', '3': 'lim' },
-  { name: 'Lingala', local: 'Lingála', '1': 'ln', '2': 'lin', '2T': 'lin', '2B': 'lin', '3': 'lin' },
-  { name: 'Lao', local: 'ພາສາລາວ', '1': 'lo', '2': 'lao', '2T': 'lao', '2B': 'lao', '3': 'lao' },
-  { name: 'Lithuanian', local: 'Lietuvių', '1': 'lt', '2': 'lit', '2T': 'lit', '2B': 'lit', '3': 'lit' },
-  { name: 'Luba-Katanga', local: 'Tshiluba', '1': 'lu', '2': 'lub', '2T': 'lub', '2B': 'lub', '3': 'lub' },
-  { name: 'Latvian', local: 'Latviešu', '1': 'lv', '2': 'lav', '2T': 'lav', '2B': 'lav', '3': 'lav' },
-  { name: 'Manx', local: 'Gaelg', '1': 'gv', '2': 'glv', '2T': 'glv', '2B': 'glv', '3': 'glv' },
-  { name: 'Macedonian', local: 'Македонски', '1': 'mk', '2': 'mkd', '2T': 'mkd', '2B': 'mac', '3': 'mkd' },
-  { name: 'Malagasy', local: 'Malagasy', '1': 'mg', '2': 'mlg', '2T': 'mlg', '2B': 'mlg', '3': 'mlg' },
-  { name: 'Malay', local: 'Bahasa Melayu', '1': 'ms', '2': 'msa', '2T': 'msa', '2B': 'may', '3': 'msa' },
-  { name: 'Malayalam', local: 'മലയാളം', '1': 'ml', '2': 'mal', '2T': 'mal', '2B': 'mal', '3': 'mal' },
-  { name: 'Maltese', local: 'Malti', '1': 'mt', '2': 'mlt', '2T': 'mlt', '2B': 'mlt', '3': 'mlt' },
-  { name: 'Māori', local: 'Māori', '1': 'mi', '2': 'mri', '2T': 'mri', '2B': 'mao', '3': 'mri' },
-  { name: 'Marathi', local: 'मराठी', '1': 'mr', '2': 'mar', '2T': 'mar', '2B': 'mar', '3': 'mar' },
-  { name: 'Marshallese', local: 'Kajin M̧ajeļ', '1': 'mh', '2': 'mah', '2T': 'mah', '2B': 'mah', '3': 'mah' },
-  { name: 'Mongolian', local: 'Монгол', '1': 'mn', '2': 'mon', '2T': 'mon', '2B': 'mon', '3': 'mon' },
-  { name: 'Nauru', local: 'Dorerin Naoero', '1': 'na', '2': 'nau', '2T': 'nau', '2B': 'nau', '3': 'nau' },
-  { name: 'Navajo', local: 'Diné Bizaad', '1': 'nv', '2': 'nav', '2T': 'nav', '2B': 'nav', '3': 'nav' },
-  {
-    name: 'Northern Ndebele',
-    local: 'isiNdebele',
-    '1': 'nd',
-    '2': 'nde',
-    '2T': 'nde',
-    '2B': 'nde',
-    '3': 'nde'
-  },
-  { name: 'Nepali', local: 'नेपाली', '1': 'ne', '2': 'nep', '2T': 'nep', '2B': 'nep', '3': 'nep' },
-  { name: 'Ndonga', local: 'Owambo', '1': 'ng', '2': 'ndo', '2T': 'ndo', '2B': 'ndo', '3': 'ndo' },
-  {
-    name: 'Norwegian Bokmål',
-    local: 'Norsk (Bokmål)',
-    '1': 'nb',
-    '2': 'nob',
-    '2T': 'nob',
-    '2B': 'nob',
-    '3': 'nob'
-  },
-  {
-    name: 'Norwegian Nynorsk',
-    local: 'Norsk (Nynorsk)',
-    '1': 'nn',
-    '2': 'nno',
-    '2T': 'nno',
-    '2B': 'nno',
-    '3': 'nno'
-  },
-  { name: 'Norwegian', local: 'Norsk', '1': 'no', '2': 'nor', '2T': 'nor', '2B': 'nor', '3': 'nor' },
-  { name: 'Nuosu', local: 'ꆈꌠ꒿ Nuosuhxop', '1': 'ii', '2': 'iii', '2T': 'iii', '2B': 'iii', '3': 'iii' },
-  {
-    name: 'Southern Ndebele',
-    local: 'isiNdebele',
-    '1': 'nr',
-    '2': 'nbl',
-    '2T': 'nbl',
-    '2B': 'nbl',
-    '3': 'nbl'
-  },
-  { name: 'Occitan', local: 'Occitan', '1': 'oc', '2': 'oci', '2T': 'oci', '2B': 'oci', '3': 'oci' },
-  { name: 'Ojibwe', local: 'ᐊᓂᔑᓈᐯᒧᐎᓐ', '1': 'oj', '2': 'oji', '2T': 'oji', '2B': 'oji', '3': 'oji' },
-  {
-    name: 'Old Church Slavonic',
-    local: 'Словѣ́ньскъ',
-    '1': 'cu',
-    '2': 'chu',
-    '2T': 'chu',
-    '2B': 'chu',
-    '3': 'chu'
-  },
-  { name: 'Oromo', local: 'Afaan Oromoo', '1': 'om', '2': 'orm', '2T': 'orm', '2B': 'orm', '3': 'orm' },
-  { name: 'Oriya', local: 'ଓଡି଼ଆ', '1': 'or', '2': 'ori', '2T': 'ori', '2B': 'ori', '3': 'ori' },
-  { name: 'Ossetian', local: 'Ирон æвзаг', '1': 'os', '2': 'oss', '2T': 'oss', '2B': 'oss', '3': 'oss' },
-  { name: 'Panjabi', local: 'ਪੰਜਾਬੀ', '1': 'pa', '2': 'pan', '2T': 'pan', '2B': 'pan', '3': 'pan' },
-  { name: 'Pāli', local: 'पाऴि', '1': 'pi', '2': 'pli', '2T': 'pli', '2B': 'pli', '3': 'pli' },
-  { name: 'Persian', local: 'فارسی', '1': 'fa', '2': 'fas', '2T': 'fas', '2B': 'per', '3': 'fas' },
-  { name: 'Polish', local: 'Polski', '1': 'pl', '2': 'pol', '2T': 'pol', '2B': 'pol', '3': 'pol' },
-  { name: 'Pashto', local: 'پښتو', '1': 'ps', '2': 'pus', '2T': 'pus', '2B': 'pus', '3': 'pus' },
-  { name: 'Portuguese', local: 'Português', '1': 'pt', '2': 'por', '2T': 'por', '2B': 'por', '3': 'por' },
-  { name: 'Quechua', local: 'Runa Simi', '1': 'qu', '2': 'que', '2T': 'que', '2B': 'que', '3': 'que' },
-  { name: 'Romansh', local: 'Rumantsch', '1': 'rm', '2': 'roh', '2T': 'roh', '2B': 'roh', '3': 'roh' },
-  { name: 'Kirundi', local: 'Kirundi', '1': 'rn', '2': 'run', '2T': 'run', '2B': 'run', '3': 'run' },
-  { name: 'Romanian', local: 'Română', '1': 'ro', '2': 'ron', '2T': 'ron', '2B': 'rum', '3': 'ron' },
-  { name: 'Russian', local: 'Русский', '1': 'ru', '2': 'rus', '2T': 'rus', '2B': 'rus', '3': 'rus' },
-  { name: 'Sanskrit', local: 'संस्कृतम्', '1': 'sa', '2': 'san', '2T': 'san', '2B': 'san', '3': 'san' },
-  { name: 'Sardinian', local: 'Sardu', '1': 'sc', '2': 'srd', '2T': 'srd', '2B': 'srd', '3': 'srd' },
-  { name: 'Sindhi', local: 'سنڌي‎', '1': 'sd', '2': 'snd', '2T': 'snd', '2B': 'snd', '3': 'snd' },
-  { name: 'Northern Sami', local: 'Sámegiella', '1': 'se', '2': 'sme', '2T': 'sme', '2B': 'sme', '3': 'sme' },
-  { name: 'Samoan', local: 'Gagana Sāmoa', '1': 'sm', '2': 'smo', '2T': 'smo', '2B': 'smo', '3': 'smo' },
-  { name: 'Sango', local: 'Sängö', '1': 'sg', '2': 'sag', '2T': 'sag', '2B': 'sag', '3': 'sag' },
-  { name: 'Serbian', local: 'Српски', '1': 'sr', '2': 'srp', '2T': 'srp', '2B': 'srp', '3': 'srp' },
-  { name: 'Gaelic', local: 'Gàidhlig', '1': 'gd', '2': 'gla', '2T': 'gla', '2B': 'gla', '3': 'gla' },
-  { name: 'Shona', local: 'ChiShona', '1': 'sn', '2': 'sna', '2T': 'sna', '2B': 'sna', '3': 'sna' },
-  { name: 'Sinhala', local: 'සිංහල', '1': 'si', '2': 'sin', '2T': 'sin', '2B': 'sin', '3': 'sin' },
-  { name: 'Slovak', local: 'Slovenčina', '1': 'sk', '2': 'slk', '2T': 'slk', '2B': 'slo', '3': 'slk' },
-  { name: 'Slovene', local: 'Slovenščina', '1': 'sl', '2': 'slv', '2T': 'slv', '2B': 'slv', '3': 'slv' },
-  { name: 'Somali', local: 'Soomaaliga', '1': 'so', '2': 'som', '2T': 'som', '2B': 'som', '3': 'som' },
-  { name: 'Southern Sotho', local: 'Sesotho', '1': 'st', '2': 'sot', '2T': 'sot', '2B': 'sot', '3': 'sot' },
-  { name: 'Spanish', local: 'Español', '1': 'es', '2': 'spa', '2T': 'spa', '2B': 'spa', '3': 'spa' },
-  { name: 'Sundanese', local: 'Basa Sunda', '1': 'su', '2': 'sun', '2T': 'sun', '2B': 'sun', '3': 'sun' },
-  { name: 'Swahili', local: 'Kiswahili', '1': 'sw', '2': 'swa', '2T': 'swa', '2B': 'swa', '3': 'swa' },
-  { name: 'Swati', local: 'SiSwati', '1': 'ss', '2': 'ssw', '2T': 'ssw', '2B': 'ssw', '3': 'ssw' },
-  { name: 'Swedish', local: 'Svenska', '1': 'sv', '2': 'swe', '2T': 'swe', '2B': 'swe', '3': 'swe' },
-  { name: 'Tamil', local: 'தமிழ்', '1': 'ta', '2': 'tam', '2T': 'tam', '2B': 'tam', '3': 'tam' },
-  { name: 'Telugu', local: 'తెలుగు', '1': 'te', '2': 'tel', '2T': 'tel', '2B': 'tel', '3': 'tel' },
-  { name: 'Tajik', local: 'Тоҷикӣ', '1': 'tg', '2': 'tgk', '2T': 'tgk', '2B': 'tgk', '3': 'tgk' },
-  { name: 'Thai', local: 'ภาษาไทย', '1': 'th', '2': 'tha', '2T': 'tha', '2B': 'tha', '3': 'tha' },
-  { name: 'Tigrinya', local: 'ትግርኛ', '1': 'ti', '2': 'tir', '2T': 'tir', '2B': 'tir', '3': 'tir' },
-  { name: 'Tibetan Standard', local: 'བོད་ཡིག', '1': 'bo', '2': 'bod', '2T': 'bod', '2B': 'tib', '3': 'bod' },
-  { name: 'Turkmen', local: 'Türkmençe', '1': 'tk', '2': 'tuk', '2T': 'tuk', '2B': 'tuk', '3': 'tuk' },
-  { name: 'Tagalog', local: 'Tagalog', '1': 'tl', '2': 'tgl', '2T': 'tgl', '2B': 'tgl', '3': 'tgl' },
-  { name: 'Tswana', local: 'Setswana', '1': 'tn', '2': 'tsn', '2T': 'tsn', '2B': 'tsn', '3': 'tsn' },
-  { name: 'Tonga', local: 'faka Tonga', '1': 'to', '2': 'ton', '2T': 'ton', '2B': 'ton', '3': 'ton' },
-  { name: 'Turkish', local: 'Türkçe', '1': 'tr', '2': 'tur', '2T': 'tur', '2B': 'tur', '3': 'tur' },
-  { name: 'Tsonga', local: 'Xitsonga', '1': 'ts', '2': 'tso', '2T': 'tso', '2B': 'tso', '3': 'tso' },
-  { name: 'Tatar', local: 'Татарча', '1': 'tt', '2': 'tat', '2T': 'tat', '2B': 'tat', '3': 'tat' },
-  { name: 'Twi', local: 'Twi', '1': 'tw', '2': 'twi', '2T': 'twi', '2B': 'twi', '3': 'twi' },
-  { name: 'Tahitian', local: 'Reo Mā’ohi', '1': 'ty', '2': 'tah', '2T': 'tah', '2B': 'tah', '3': 'tah' },
-  { name: 'Uyghur', local: 'ئۇيغۇرچه', '1': 'ug', '2': 'uig', '2T': 'uig', '2B': 'uig', '3': 'uig' },
-  { name: 'Ukrainian', local: 'Українська', '1': 'uk', '2': 'ukr', '2T': 'ukr', '2B': 'ukr', '3': 'ukr' },
-  { name: 'Urdu', local: 'اردو', '1': 'ur', '2': 'urd', '2T': 'urd', '2B': 'urd', '3': 'urd' },
-  { name: 'Uzbek', local: 'O‘zbek', '1': 'uz', '2': 'uzb', '2T': 'uzb', '2B': 'uzb', '3': 'uzb' },
-  { name: 'Venda', local: 'Tshivenḓa', '1': 've', '2': 'ven', '2T': 'ven', '2B': 'ven', '3': 'ven' },
-  { name: 'Vietnamese', local: 'Tiếng Việt', '1': 'vi', '2': 'vie', '2T': 'vie', '2B': 'vie', '3': 'vie' },
-  { name: 'Volapük', local: 'Volapük', '1': 'vo', '2': 'vol', '2T': 'vol', '2B': 'vol', '3': 'vol' },
-  { name: 'Walloon', local: 'Walon', '1': 'wa', '2': 'wln', '2T': 'wln', '2B': 'wln', '3': 'wln' },
-  { name: 'Welsh', local: 'Cymraeg', '1': 'cy', '2': 'cym', '2T': 'cym', '2B': 'wel', '3': 'cym' },
-  { name: 'Wolof', local: 'Wolof', '1': 'wo', '2': 'wol', '2T': 'wol', '2B': 'wol', '3': 'wol' },
-  { name: 'Western Frisian', local: 'Frysk', '1': 'fy', '2': 'fry', '2T': 'fry', '2B': 'fry', '3': 'fry' },
-  { name: 'Xhosa', local: 'isiXhosa', '1': 'xh', '2': 'xho', '2T': 'xho', '2B': 'xho', '3': 'xho' },
-  { name: 'Yiddish', local: 'ייִדיש', '1': 'yi', '2': 'yid', '2T': 'yid', '2B': 'yid', '3': 'yid' },
-  { name: 'Yoruba', local: 'Yorùbá', '1': 'yo', '2': 'yor', '2T': 'yor', '2B': 'yor', '3': 'yor' },
-  { name: 'Zhuang', local: 'Cuengh', '1': 'za', '2': 'zha', '2T': 'zha', '2B': 'zha', '3': 'zha' },
-  { name: 'Zulu', local: 'isiZulu', '1': 'zu', '2': 'zul', '2T': 'zul', '2B': 'zul', '3': 'zul' }
-];
+module.exports = [{
+  '1': 'aa',
+  '3': 'aar',
+  'name': 'Afar',
+  '2B': 'aar',
+  '2T': '',
+  'local': 'Qafaraf'
+}, {
+  '1': 'ab',
+  '3': 'abk',
+  'name': 'Abkhazian',
+  '2B': 'abk',
+  '2T': '',
+  'local': 'Аҧсуа бызшәа'
+}, {
+  '1': '',
+  '3': 'ace',
+  'name': 'Achinese',
+  '2B': 'ace',
+  '2T': '',
+  'local': 'بهسا اچيه'
+}, {
+  '1': '',
+  '3': 'ach',
+  'name': 'Acoli',
+  '2B': 'ach',
+  '2T': '',
+  'local': 'Lwo'
+}, {
+  '1': '',
+  '3': 'ada',
+  'name': 'Adangme',
+  '2B': 'ada',
+  '2T': '',
+  'local': 'Dangme'
+}, {
+  '1': '',
+  '3': 'ady',
+  'name': 'Adyghe',
+  '2B': 'ady',
+  '2T': '',
+  'local': 'Адыгабзэ'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Afro-Asiatic languages',
+  '2B': 'afa',
+  '2T': '',
+  'local': 'Afro-Asiatic languages'
+}, {
+  '1': '',
+  '3': 'afh',
+  'name': 'Afrihili',
+  '2B': 'afh',
+  '2T': '',
+  'local': 'El-Afrihili'
+}, {
+  '1': 'af',
+  '3': 'afr',
+  'name': 'Afrikaans',
+  '2B': 'afr',
+  '2T': '',
+  'local': 'Afrikaans'
+}, {
+  '1': '',
+  '3': 'ain',
+  'name': 'Ainu',
+  '2B': 'ain',
+  '2T': '',
+  'local': 'アイヌ・イタㇰ'
+}, {
+  '1': 'ak',
+  '3': 'aka',
+  'name': 'Akan',
+  '2B': 'aka',
+  '2T': '',
+  'local': 'Akan'
+}, {
+  '1': '',
+  '3': 'akk',
+  'name': 'Akkadian',
+  '2B': 'akk',
+  '2T': '',
+  'local': '𒀝𒅗𒁺𒌑'
+}, {
+  '1': 'sq',
+  '3': 'sqi',
+  'name': 'Albanian',
+  '2B': 'alb',
+  '2T': 'sqi',
+  'local': 'Shqip'
+}, {
+  '1': '',
+  '3': 'ale',
+  'name': 'Aleut',
+  '2B': 'ale',
+  '2T': '',
+  'local': 'Унáӈам тунуý'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Algonquian languages',
+  '2B': 'alg',
+  '2T': '',
+  'local': 'Algonquian languages'
+}, {
+  '1': '',
+  '3': 'alt',
+  'name': 'Southern Altai',
+  '2B': 'alt',
+  '2T': '',
+  'local': 'Алтай тили'
+}, {
+  '1': 'am',
+  '3': 'amh',
+  'name': 'Amharic',
+  '2B': 'amh',
+  '2T': '',
+  'local': 'አማርኛ'
+}, {
+  '1': '',
+  '3': 'ang',
+  'name': 'Old English (ca. 450–1100)',
+  '2B': 'ang',
+  '2T': '',
+  'local': 'Ænglisc'
+}, {
+  '1': '',
+  '3': 'anp',
+  'name': 'Angika',
+  '2B': 'anp',
+  '2T': '',
+  'local': 'Angika'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Apache languages',
+  '2B': 'apa',
+  '2T': '',
+  'local': 'Apache languages'
+}, {
+  '1': 'ar',
+  '3': 'ara',
+  'name': 'Arabic',
+  '2B': 'ara',
+  '2T': '',
+  'local': 'العَرَبِيَّة'
+}, {
+  '1': '',
+  '3': 'arc',
+  'name': 'Official Aramaic (700–300 BCE)',
+  '2B': 'arc',
+  '2T': '',
+  'local': 'Official Aramaic (700–300 BCE)'
+}, {
+  '1': 'an',
+  '3': 'arg',
+  'name': 'Aragonese',
+  '2B': 'arg',
+  '2T': '',
+  'local': 'aragonés'
+}, {
+  '1': 'hy',
+  '3': 'hye',
+  'name': 'Armenian',
+  '2B': 'arm',
+  '2T': 'hye',
+  'local': 'Հայերէն'
+}, {
+  '1': '',
+  '3': 'arn',
+  'name': 'Mapudungun',
+  '2B': 'arn',
+  '2T': '',
+  'local': 'Mapudungun'
+}, {
+  '1': '',
+  '3': 'arp',
+  'name': 'Arapaho',
+  '2B': 'arp',
+  '2T': '',
+  'local': 'Hinónoʼeitíít'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Artificial languages',
+  '2B': 'art',
+  '2T': '',
+  'local': 'Artificial languages'
+}, {
+  '1': '',
+  '3': 'arw',
+  'name': 'Arawak',
+  '2B': 'arw',
+  '2T': '',
+  'local': 'Lokono'
+}, {
+  '1': 'as',
+  '3': 'asm',
+  'name': 'Assamese',
+  '2B': 'asm',
+  '2T': '',
+  'local': 'অসমীয়া'
+}, {
+  '1': '',
+  '3': 'ast',
+  'name': 'Asturian',
+  '2B': 'ast',
+  '2T': '',
+  'local': 'Asturianu'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Athapascan languages',
+  '2B': 'ath',
+  '2T': '',
+  'local': 'Athapascan languages'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Australian languages',
+  '2B': 'aus',
+  '2T': '',
+  'local': 'Australian languages'
+}, {
+  '1': 'av',
+  '3': 'ava',
+  'name': 'Avaric',
+  '2B': 'ava',
+  '2T': '',
+  'local': 'Магӏарул мацӏ'
+}, {
+  '1': 'ae',
+  '3': 'ave',
+  'name': 'Avestan',
+  '2B': 'ave',
+  '2T': '',
+  'local': 'Avestan'
+}, {
+  '1': '',
+  '3': 'awa',
+  'name': 'Awadhi',
+  '2B': 'awa',
+  '2T': '',
+  'local': 'अवधी'
+}, {
+  '1': 'ay',
+  '3': 'aym',
+  'name': 'Aymara',
+  '2B': 'aym',
+  '2T': '',
+  'local': 'Aymar aru'
+}, {
+  '1': 'az',
+  '3': 'aze',
+  'name': 'Azerbaijani',
+  '2B': 'aze',
+  '2T': '',
+  'local': 'Azərbaycan dili'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Banda languages',
+  '2B': 'bad',
+  '2T': '',
+  'local': 'Banda languages'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Bamileke languages',
+  '2B': 'bai',
+  '2T': '',
+  'local': 'Bamiléké'
+}, {
+  '1': 'ba',
+  '3': 'bak',
+  'name': 'Bashkir',
+  '2B': 'bak',
+  '2T': '',
+  'local': 'Башҡорт теле'
+}, {
+  '1': '',
+  '3': 'bal',
+  'name': 'Baluchi',
+  '2B': 'bal',
+  '2T': '',
+  'local': 'بلوچی'
+}, {
+  '1': 'bm',
+  '3': 'bam',
+  'name': 'Bambara',
+  '2B': 'bam',
+  '2T': '',
+  'local': 'ߓߊߡߊߣߊߣߞߊߣ'
+}, {
+  '1': '',
+  '3': 'ban',
+  'name': 'Balinese',
+  '2B': 'ban',
+  '2T': '',
+  'local': 'ᬪᬵᬱᬩᬮᬶ'
+}, {
+  '1': 'eu',
+  '3': 'eus',
+  'name': 'Basque',
+  '2B': 'baq',
+  '2T': 'eus',
+  'local': 'euskara'
+}, {
+  '1': '',
+  '3': 'bas',
+  'name': 'Basa',
+  '2B': 'bas',
+  '2T': '',
+  'local': 'Mbene'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Baltic languages',
+  '2B': 'bat',
+  '2T': '',
+  'local': 'Baltic languages'
+}, {
+  '1': '',
+  '3': 'bej',
+  'name': 'Beja',
+  '2B': 'bej',
+  '2T': '',
+  'local': 'Bidhaawyeet'
+}, {
+  '1': 'be',
+  '3': 'bel',
+  'name': 'Belarusian',
+  '2B': 'bel',
+  '2T': '',
+  'local': 'Беларуская мова'
+}, {
+  '1': '',
+  '3': 'bem',
+  'name': 'Bemba',
+  '2B': 'bem',
+  '2T': '',
+  'local': 'Chibemba'
+}, {
+  '1': 'bn',
+  '3': 'ben',
+  'name': 'Bengali',
+  '2B': 'ben',
+  '2T': '',
+  'local': 'বাংলা'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Berber languages',
+  '2B': 'ber',
+  '2T': '',
+  'local': 'Tamaziɣt'
+}, {
+  '1': '',
+  '3': 'bho',
+  'name': 'Bhojpuri',
+  '2B': 'bho',
+  '2T': '',
+  'local': 'भोजपुरी'
+}, {
+  '1': 'bh',
+  '3': '',
+  'name': 'Bihari languages',
+  '2B': 'bih',
+  '2T': '',
+  'local': 'Bihari languages'
+}, {
+  '1': '',
+  '3': 'bik',
+  'name': 'Bikol',
+  '2B': 'bik',
+  '2T': '',
+  'local': 'Bikol'
+}, {
+  '1': '',
+  '3': 'bin',
+  'name': 'Bini',
+  '2B': 'bin',
+  '2T': '',
+  'local': 'Ẹ̀dó'
+}, {
+  '1': 'bi',
+  '3': 'bis',
+  'name': 'Bislama',
+  '2B': 'bis',
+  '2T': '',
+  'local': 'Bislama'
+}, {
+  '1': '',
+  '3': 'bla',
+  'name': 'Siksika',
+  '2B': 'bla',
+  '2T': '',
+  'local': 'ᓱᖽᐧᖿ'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Bantu languages',
+  '2B': 'bnt',
+  '2T': '',
+  'local': 'Bantu languages'
+}, {
+  '1': 'bo',
+  '3': 'bod',
+  'name': 'Tibetan',
+  '2B': 'ib',
+  '2T': 'bod',
+  'local': 'བོད་སྐད་'
+}, {
+  '1': 'bs',
+  '3': 'bos',
+  'name': 'Bosnian',
+  '2B': 'bos',
+  '2T': '',
+  'local': 'bosanski'
+}, {
+  '1': '',
+  '3': 'bra',
+  'name': 'Braj',
+  '2B': 'bra',
+  '2T': '',
+  'local': 'Braj'
+}, {
+  '1': 'br',
+  '3': 'bre',
+  'name': 'Breton',
+  '2B': 'bre',
+  '2T': '',
+  'local': 'Brezhoneg'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Batak languages',
+  '2B': 'btk',
+  '2T': '',
+  'local': 'Batak languages'
+}, {
+  '1': '',
+  '3': 'bua',
+  'name': 'Buriat',
+  '2B': 'bua',
+  '2T': '',
+  'local': 'буряад хэлэн'
+}, {
+  '1': '',
+  '3': 'bug',
+  'name': 'Buginese',
+  '2B': 'bug',
+  '2T': '',
+  'local': 'ᨅᨔ ᨕᨘᨁᨗ'
+}, {
+  '1': 'bg',
+  '3': 'bul',
+  'name': 'Bulgarian',
+  '2B': 'bul',
+  '2T': '',
+  'local': 'български език'
+}, {
+  '1': 'my',
+  '3': 'mya',
+  'name': 'Burmese',
+  '2B': 'bur',
+  '2T': 'mya',
+  'local': 'မြန်မာစာ'
+}, {
+  '1': '',
+  '3': 'byn',
+  'name': 'Bilin',
+  '2B': 'byn',
+  '2T': '',
+  'local': 'ብሊና, ብሊን'
+}, {
+  '1': '',
+  '3': 'cad',
+  'name': 'Caddo',
+  '2B': 'cad',
+  '2T': '',
+  'local': 'Hasí:nay'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Central American Indian languages',
+  '2B': 'cai',
+  '2T': '',
+  'local': 'Central American Indian languages'
+}, {
+  '1': '',
+  '3': 'car',
+  'name': 'Galibi Carib',
+  '2B': 'car',
+  '2T': '',
+  'local': 'Kari\'nja'
+}, {
+  '1': 'ca',
+  '3': 'cat',
+  'name': 'Catalan',
+  '2B': 'cat',
+  '2T': '',
+  'local': 'català'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Caucasian languages',
+  '2B': 'cau',
+  '2T': '',
+  'local': 'Caucasian languages'
+}, {
+  '1': '',
+  '3': 'ceb',
+  'name': 'Cebuano',
+  '2B': 'ceb',
+  '2T': '',
+  'local': 'Sinugbuanong Binisayâ'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Celtic languages',
+  '2B': 'cel',
+  '2T': '',
+  'local': 'Celtic languages'
+}, {
+  '1': 'cs',
+  '3': 'ces',
+  'name': 'Czech',
+  '2B': 'ze',
+  '2T': 'ces',
+  'local': 'čeština'
+}, {
+  '1': 'ch',
+  '3': 'cha',
+  'name': 'Chamorro',
+  '2B': 'cha',
+  '2T': '',
+  'local': 'Finu\' Chamoru'
+}, {
+  '1': '',
+  '3': 'chb',
+  'name': 'Chibcha',
+  '2B': 'chb',
+  '2T': '',
+  'local': 'Muysccubun'
+}, {
+  '1': 'ce',
+  '3': 'che',
+  'name': 'Chechen',
+  '2B': 'che',
+  '2T': '',
+  'local': 'Нохчийн мотт'
+}, {
+  '1': '',
+  '3': 'chg',
+  'name': 'Chagatai',
+  '2B': 'chg',
+  '2T': '',
+  'local': 'جغتای'
+}, {
+  '1': 'zh',
+  '3': 'zho',
+  'name': 'Chinese',
+  '2B': 'chi',
+  '2T': 'zho',
+  'local': '中文'
+}, {
+  '1': '',
+  '3': 'chk',
+  'name': 'Chuukese',
+  '2B': 'chk',
+  '2T': '',
+  'local': 'Chuukese'
+}, {
+  '1': '',
+  '3': 'chm',
+  'name': 'Mari',
+  '2B': 'chm',
+  '2T': '',
+  'local': 'марий йылме'
+}, {
+  '1': '',
+  '3': 'chn',
+  'name': 'Chinook jargon',
+  '2B': 'chn',
+  '2T': '',
+  'local': 'chinuk wawa'
+}, {
+  '1': '',
+  '3': 'cho',
+  'name': 'Choctaw',
+  '2B': 'cho',
+  '2T': '',
+  'local': 'Chahta\''
+}, {
+  '1': '',
+  '3': 'chp',
+  'name': 'Chipewyan',
+  '2B': 'chp',
+  '2T': '',
+  'local': 'ᑌᓀᓱᒼᕄᓀ (Dënesųłiné)'
+}, {
+  '1': '',
+  '3': 'chr',
+  'name': 'Cherokee',
+  '2B': 'chr',
+  '2T': '',
+  'local': 'ᏣᎳᎩ ᎦᏬᏂᎯᏍᏗ'
+}, {
+  '1': 'cu',
+  '3': 'chu',
+  'name': 'Church Slavic',
+  '2B': 'chu',
+  '2T': '',
+  'local': 'Славе́нскїй ѧ҆зы́къ'
+}, {
+  '1': 'cv',
+  '3': 'chv',
+  'name': 'Chuvash',
+  '2B': 'chv',
+  '2T': '',
+  'local': 'Чӑвашла'
+}, {
+  '1': '',
+  '3': 'chy',
+  'name': 'Cheyenne',
+  '2B': 'chy',
+  '2T': '',
+  'local': 'Tsėhésenėstsestȯtse'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Chamic languages',
+  '2B': 'cmc',
+  '2T': '',
+  'local': 'Chamic languages'
+}, {
+  '1': '',
+  '3': 'cnr',
+  'name': 'Montenegrin',
+  '2B': 'cnr',
+  '2T': '',
+  'local': 'crnogorski / црногорски'
+}, {
+  '1': '',
+  '3': 'cop',
+  'name': 'Coptic',
+  '2B': 'cop',
+  '2T': '',
+  'local': 'ϯⲙⲉⲑⲣⲉⲙⲛ̀ⲭⲏⲙⲓ'
+}, {
+  '1': 'kw',
+  '3': 'cor',
+  'name': 'Cornish',
+  '2B': 'cor',
+  '2T': '',
+  'local': 'Kernowek'
+}, {
+  '1': 'co',
+  '3': 'cos',
+  'name': 'Corsican',
+  '2B': 'cos',
+  '2T': '',
+  'local': 'Corsu'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'English based Creoles and pidgins',
+  '2B': 'cpe',
+  '2T': '',
+  'local': 'English based Creoles and pidgins'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'French-based Creoles and pidgins',
+  '2B': 'cpf',
+  '2T': '',
+  'local': 'French-based Creoles and pidgins'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Portuguese-based Creoles and pidgins',
+  '2B': 'cpp',
+  '2T': '',
+  'local': 'Portuguese-based Creoles and pidgins'
+}, {
+  '1': 'cr',
+  '3': 'cre',
+  'name': 'Cree',
+  '2B': 'cre',
+  '2T': '',
+  'local': 'Cree'
+}, {
+  '1': '',
+  '3': 'crh',
+  'name': 'Crimean Tatar',
+  '2B': 'crh',
+  '2T': '',
+  'local': 'Къырымтатарджа'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Creoles and pidgins',
+  '2B': 'crp',
+  '2T': '',
+  'local': 'Creoles and pidgins'
+}, {
+  '1': '',
+  '3': 'csb',
+  'name': 'Kashubian',
+  '2B': 'csb',
+  '2T': '',
+  'local': 'Kaszëbsczi jãzëk'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Cushitic languages',
+  '2B': 'cus',
+  '2T': '',
+  'local': 'Cushitic languages'
+}, {
+  '1': 'cy',
+  '3': 'cym',
+  'name': 'Welsh',
+  '2B': 'el',
+  '2T': 'cym',
+  'local': 'Cymraeg'
+}, {
+  '1': 'cs',
+  '3': 'ces',
+  'name': 'Czech',
+  '2B': 'cze',
+  '2T': 'ces',
+  'local': 'čeština'
+}, {
+  '1': '',
+  '3': 'dak',
+  'name': 'Dakota',
+  '2B': 'dak',
+  '2T': '',
+  'local': 'Dakhótiyapi'
+}, {
+  '1': 'da',
+  '3': 'dan',
+  'name': 'Danish',
+  '2B': 'dan',
+  '2T': '',
+  'local': 'dansk'
+}, {
+  '1': '',
+  '3': 'dar',
+  'name': 'Dargwa',
+  '2B': 'dar',
+  '2T': '',
+  'local': 'дарган мез'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Land Dayak languages',
+  '2B': 'day',
+  '2T': '',
+  'local': 'Land Dayak languages'
+}, {
+  '1': '',
+  '3': 'del',
+  'name': 'Delaware',
+  '2B': 'del',
+  '2T': '',
+  'local': 'Delaware'
+}, {
+  '1': '',
+  '3': 'den',
+  'name': 'Slave (Athapascan)',
+  '2B': 'den',
+  '2T': '',
+  'local': 'Dene K\'e'
+}, {
+  '1': 'de',
+  '3': 'deu',
+  'name': 'German',
+  '2B': 'er',
+  '2T': 'deu',
+  'local': 'Deutsch'
+}, {
+  '1': '',
+  '3': 'dgr',
+  'name': 'Dogrib',
+  '2B': 'dgr',
+  '2T': '',
+  'local': 'डोगरी ڈوگرى'
+}, {
+  '1': '',
+  '3': 'din',
+  'name': 'Dinka',
+  '2B': 'din',
+  '2T': '',
+  'local': 'Thuɔŋjäŋ'
+}, {
+  '1': 'dv',
+  '3': 'div',
+  'name': 'Dhivehi',
+  '2B': 'div',
+  '2T': '',
+  'local': 'ދިވެހި'
+}, {
+  '1': '',
+  '3': 'doi',
+  'name': 'Dogri',
+  '2B': 'doi',
+  '2T': '',
+  'local': 'डोगरी'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Dravidian languages',
+  '2B': 'dra',
+  '2T': '',
+  'local': 'Dravidian languages'
+}, {
+  '1': '',
+  '3': 'dsb',
+  'name': 'Lower Sorbian',
+  '2B': 'dsb',
+  '2T': '',
+  'local': 'Dolnoserbski'
+}, {
+  '1': '',
+  '3': 'dua',
+  'name': 'Duala',
+  '2B': 'dua',
+  '2T': '',
+  'local': 'Duala'
+}, {
+  '1': '',
+  '3': 'dum',
+  'name': 'Middle Dutch (ca. 1050–1350)',
+  '2B': 'dum',
+  '2T': '',
+  'local': 'Middle Dutch (ca. 1050–1350)'
+}, {
+  '1': 'nl',
+  '3': 'nld',
+  'name': 'Dutch',
+  '2B': 'dut',
+  '2T': 'nld',
+  'local': 'Nederlands'
+}, {
+  '1': '',
+  '3': 'dyu',
+  'name': 'Dyula',
+  '2B': 'dyu',
+  '2T': '',
+  'local': 'Julakan'
+}, {
+  '1': 'dz',
+  '3': 'dzo',
+  'name': 'Dzongkha',
+  '2B': 'dzo',
+  '2T': '',
+  'local': 'རྫོང་ཁ་'
+}, {
+  '1': '',
+  '3': 'efi',
+  'name': 'Efik',
+  '2B': 'efi',
+  '2T': '',
+  'local': 'Efik'
+}, {
+  '1': '',
+  '3': 'egy',
+  'name': 'Egyptian (Ancient)',
+  '2B': 'egy',
+  '2T': '',
+  'local': 'Egyptian (Ancient)'
+}, {
+  '1': '',
+  '3': 'eka',
+  'name': 'Ekajuk',
+  '2B': 'eka',
+  '2T': '',
+  'local': 'Ekajuk'
+}, {
+  '1': 'el',
+  '3': 'ell',
+  'name': 'Modern Greek (1453–)',
+  '2B': 're',
+  '2T': 'ell',
+  'local': 'Νέα Ελληνικά'
+}, {
+  '1': '',
+  '3': 'elx',
+  'name': 'Elamite',
+  '2B': 'elx',
+  '2T': '',
+  'local': 'Elamite'
+}, {
+  '1': 'en',
+  '3': 'eng',
+  'name': 'English',
+  '2B': 'eng',
+  '2T': '',
+  'local': 'English'
+}, {
+  '1': '',
+  '3': 'enm',
+  'name': 'Middle English (1100–1500)',
+  '2B': 'enm',
+  '2T': '',
+  'local': 'Middle English (1100–1500)'
+}, {
+  '1': 'eo',
+  '3': 'epo',
+  'name': 'Esperanto',
+  '2B': 'epo',
+  '2T': '',
+  'local': 'Esperanto'
+}, {
+  '1': 'et',
+  '3': 'est',
+  'name': 'Estonian',
+  '2B': 'est',
+  '2T': '',
+  'local': 'eesti keel'
+}, {
+  '1': 'eu',
+  '3': 'eus',
+  'name': 'Basque',
+  '2B': 'aq',
+  '2T': 'eus',
+  'local': 'euskara'
+}, {
+  '1': 'ee',
+  '3': 'ewe',
+  'name': 'Ewe',
+  '2B': 'ewe',
+  '2T': '',
+  'local': 'Èʋegbe'
+}, {
+  '1': '',
+  '3': 'ewo',
+  'name': 'Ewondo',
+  '2B': 'ewo',
+  '2T': '',
+  'local': 'Ewondo'
+}, {
+  '1': '',
+  '3': 'fan',
+  'name': 'Fang',
+  '2B': 'fan',
+  '2T': '',
+  'local': 'Fang'
+}, {
+  '1': 'fo',
+  '3': 'fao',
+  'name': 'Faroese',
+  '2B': 'fao',
+  '2T': '',
+  'local': 'føroyskt'
+}, {
+  '1': 'fa',
+  '3': 'fas',
+  'name': 'Persian',
+  '2B': 'er',
+  '2T': 'fas',
+  'local': 'فارسی'
+}, {
+  '1': '',
+  '3': 'fat',
+  'name': 'Fanti',
+  '2B': 'fat',
+  '2T': '',
+  'local': 'Mfantse'
+}, {
+  '1': 'fj',
+  '3': 'fij',
+  'name': 'Fijian',
+  '2B': 'fij',
+  '2T': '',
+  'local': 'Na Vosa Vakaviti'
+}, {
+  '1': '',
+  '3': 'fil',
+  'name': 'Filipino',
+  '2B': 'fil',
+  '2T': '',
+  'local': 'Wikang Filipino'
+}, {
+  '1': 'fi',
+  '3': 'fin',
+  'name': 'Finnish',
+  '2B': 'fin',
+  '2T': '',
+  'local': 'suomen kieli'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Finno-Ugrian languages',
+  '2B': 'fiu',
+  '2T': '',
+  'local': 'Finno-Ugrian languages'
+}, {
+  '1': '',
+  '3': 'fon',
+  'name': 'Fon',
+  '2B': 'fon',
+  '2T': '',
+  'local': 'Fon gbè'
+}, {
+  '1': 'fr',
+  '3': 'fra',
+  'name': 'French',
+  '2B': 're',
+  '2T': 'fra',
+  'local': 'français'
+}, {
+  '1': 'fr',
+  '3': 'fra',
+  'name': 'French',
+  '2B': 'fre',
+  '2T': 'fra',
+  'local': 'français'
+}, {
+  '1': '',
+  '3': 'frm',
+  'name': 'Middle French (ca. 1400–1600)',
+  '2B': 'frm',
+  '2T': '',
+  'local': 'françois'
+}, {
+  '1': '',
+  '3': 'fro',
+  'name': 'Old French (842–ca. 1400)',
+  '2B': 'fro',
+  '2T': '',
+  'local': 'Franceis'
+}, {
+  '1': '',
+  '3': 'frr',
+  'name': 'Northern Frisian',
+  '2B': 'frr',
+  '2T': '',
+  'local': 'Frasch'
+}, {
+  '1': '',
+  '3': 'frs',
+  'name': 'Eastern Frisian',
+  '2B': 'frs',
+  '2T': '',
+  'local': 'Seeltersk'
+}, {
+  '1': 'fy',
+  '3': 'fry',
+  'name': 'Western Frisian',
+  '2B': 'fry',
+  '2T': '',
+  'local': 'Frysk'
+}, {
+  '1': 'ff',
+  '3': 'ful',
+  'name': 'Fulah',
+  '2B': 'ful',
+  '2T': '',
+  'local': 'Fulfulde'
+}, {
+  '1': '',
+  '3': 'fur',
+  'name': 'Friulian',
+  '2B': 'fur',
+  '2T': '',
+  'local': 'Furlan'
+}, {
+  '1': '',
+  '3': 'gaa',
+  'name': 'Ga',
+  '2B': 'gaa',
+  '2T': '',
+  'local': 'Gã'
+}, {
+  '1': '',
+  '3': 'gay',
+  'name': 'Gayo',
+  '2B': 'gay',
+  '2T': '',
+  'local': 'Basa Gayo'
+}, {
+  '1': '',
+  '3': 'gba',
+  'name': 'Gbaya',
+  '2B': 'gba',
+  '2T': '',
+  'local': 'Gbaya'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Germanic languages',
+  '2B': 'gem',
+  '2T': '',
+  'local': 'Germanic languages'
+}, {
+  '1': 'ka',
+  '3': 'kat',
+  'name': 'Georgian',
+  '2B': 'geo',
+  '2T': 'kat',
+  'local': 'ქართული'
+}, {
+  '1': 'de',
+  '3': 'deu',
+  'name': 'German',
+  '2B': 'ger',
+  '2T': 'deu',
+  'local': 'Deutsch'
+}, {
+  '1': '',
+  '3': 'gez',
+  'name': 'Geez',
+  '2B': 'gez',
+  '2T': '',
+  'local': 'ግዕዝ'
+}, {
+  '1': '',
+  '3': 'gil',
+  'name': 'Gilbertese',
+  '2B': 'gil',
+  '2T': '',
+  'local': 'Taetae ni Kiribati'
+}, {
+  '1': 'gd',
+  '3': 'gla',
+  'name': 'Gaelic',
+  '2B': 'gla',
+  '2T': '',
+  'local': 'Gàidhlig'
+}, {
+  '1': 'ga',
+  '3': 'gle',
+  'name': 'Irish',
+  '2B': 'gle',
+  '2T': '',
+  'local': 'Gaeilge'
+}, {
+  '1': 'gl',
+  '3': 'glg',
+  'name': 'Galician',
+  '2B': 'glg',
+  '2T': '',
+  'local': 'galego'
+}, {
+  '1': 'gv',
+  '3': 'glv',
+  'name': 'Manx',
+  '2B': 'glv',
+  '2T': '',
+  'local': 'Gaelg'
+}, {
+  '1': '',
+  '3': 'gmh',
+  'name': 'Middle High German (ca. 1050–1500)',
+  '2B': 'gmh',
+  '2T': '',
+  'local': 'Diutsch'
+}, {
+  '1': '',
+  '3': 'goh',
+  'name': 'Old High German (ca. 750–1050)',
+  '2B': 'goh',
+  '2T': '',
+  'local': 'Diutisk'
+}, {
+  '1': '',
+  '3': 'gon',
+  'name': 'Gondi',
+  '2B': 'gon',
+  '2T': '',
+  'local': 'Gondi'
+}, {
+  '1': '',
+  '3': 'gor',
+  'name': 'Gorontalo',
+  '2B': 'gor',
+  '2T': '',
+  'local': 'Bahasa Hulontalo'
+}, {
+  '1': '',
+  '3': 'got',
+  'name': 'Gothic',
+  '2B': 'got',
+  '2T': '',
+  'local': 'Gothic'
+}, {
+  '1': '',
+  '3': 'grb',
+  'name': 'Grebo',
+  '2B': 'grb',
+  '2T': '',
+  'local': 'Grebo'
+}, {
+  '1': '',
+  '3': 'grc',
+  'name': 'Ancient Greek (to 1453)',
+  '2B': 'grc',
+  '2T': '',
+  'local': 'Ἑλληνική'
+}, {
+  '1': 'el',
+  '3': 'ell',
+  'name': 'Modern Greek (1453–)',
+  '2B': 'gre',
+  '2T': 'ell',
+  'local': 'Νέα Ελληνικά'
+}, {
+  '1': 'gn',
+  '3': 'grn',
+  'name': 'Guarani',
+  '2B': 'grn',
+  '2T': '',
+  'local': 'Avañe\'ẽ'
+}, {
+  '1': '',
+  '3': 'gsw',
+  'name': 'Swiss German',
+  '2B': 'gsw',
+  '2T': '',
+  'local': 'Schwiizerdütsch'
+}, {
+  '1': 'gu',
+  '3': 'guj',
+  'name': 'Gujarati',
+  '2B': 'guj',
+  '2T': '',
+  'local': 'ગુજરાતી'
+}, {
+  '1': '',
+  '3': 'gwi',
+  'name': 'Gwichʼin',
+  '2B': 'gwi',
+  '2T': '',
+  'local': 'Dinjii Zhu’ Ginjik'
+}, {
+  '1': '',
+  '3': 'hai',
+  'name': 'Haida',
+  '2B': 'hai',
+  '2T': '',
+  'local': 'X̱aat Kíl'
+}, {
+  '1': 'ht',
+  '3': 'hat',
+  'name': 'Haitian',
+  '2B': 'hat',
+  '2T': '',
+  'local': 'kreyòl ayisyen'
+}, {
+  '1': 'ha',
+  '3': 'hau',
+  'name': 'Hausa',
+  '2B': 'hau',
+  '2T': '',
+  'local': 'Harshen Hausa'
+}, {
+  '1': '',
+  '3': 'haw',
+  'name': 'Hawaiian',
+  '2B': 'haw',
+  '2T': '',
+  'local': 'ʻŌlelo Hawaiʻi'
+}, {
+  '1': 'he',
+  '3': 'heb',
+  'name': 'Hebrew',
+  '2B': 'heb',
+  '2T': '',
+  'local': 'עברית'
+}, {
+  '1': 'hz',
+  '3': 'her',
+  'name': 'Herero',
+  '2B': 'her',
+  '2T': '',
+  'local': 'Otjiherero'
+}, {
+  '1': '',
+  '3': 'hil',
+  'name': 'Hiligaynon',
+  '2B': 'hil',
+  '2T': '',
+  'local': 'Ilonggo'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Himachali languages',
+  '2B': 'him',
+  '2T': '',
+  'local': 'Himachali languages'
+}, {
+  '1': 'hi',
+  '3': 'hin',
+  'name': 'Hindi',
+  '2B': 'hin',
+  '2T': '',
+  'local': 'हिन्दी'
+}, {
+  '1': '',
+  '3': 'hit',
+  'name': 'Hittite',
+  '2B': 'hit',
+  '2T': '',
+  'local': '𒉈𒅆𒇷'
+}, {
+  '1': '',
+  '3': 'hmn',
+  'name': 'Hmong',
+  '2B': 'hmn',
+  '2T': '',
+  'local': 'lus Hmoob'
+}, {
+  '1': 'ho',
+  '3': 'hmo',
+  'name': 'Hiri Motu',
+  '2B': 'hmo',
+  '2T': '',
+  'local': 'Hiri Motu'
+}, {
+  '1': 'hr',
+  '3': 'hrv',
+  'name': 'Croatian',
+  '2B': 'hrv',
+  '2T': '',
+  'local': 'hrvatski'
+}, {
+  '1': '',
+  '3': 'hsb',
+  'name': 'Upper Sorbian',
+  '2B': 'hsb',
+  '2T': '',
+  'local': 'hornjoserbšćina'
+}, {
+  '1': 'hu',
+  '3': 'hun',
+  'name': 'Hungarian',
+  '2B': 'hun',
+  '2T': '',
+  'local': 'magyar nyelv'
+}, {
+  '1': '',
+  '3': 'hup',
+  'name': 'Hupa',
+  '2B': 'hup',
+  '2T': '',
+  'local': 'Na:tinixwe Mixine:whe\''
+}, {
+  '1': 'hy',
+  '3': 'hye',
+  'name': 'Armenian',
+  '2B': 'rm',
+  '2T': 'hye',
+  'local': 'Հայերէն'
+}, {
+  '1': '',
+  '3': 'iba',
+  'name': 'Iban',
+  '2B': 'iba',
+  '2T': '',
+  'local': 'Jaku Iban'
+}, {
+  '1': 'ig',
+  '3': 'ibo',
+  'name': 'Igbo',
+  '2B': 'ibo',
+  '2T': '',
+  'local': 'Asụsụ Igbo'
+}, {
+  '1': 'is',
+  '3': 'isl',
+  'name': 'Icelandic',
+  '2B': 'ice',
+  '2T': 'isl',
+  'local': 'íslenska'
+}, {
+  '1': 'io',
+  '3': 'ido',
+  'name': 'Ido',
+  '2B': 'ido',
+  '2T': '',
+  'local': 'Ido'
+}, {
+  '1': 'ii',
+  '3': 'iii',
+  'name': 'Sichuan Yi',
+  '2B': 'iii',
+  '2T': '',
+  'local': 'ꆈꌠꉙ'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Ijo languages',
+  '2B': 'ijo',
+  '2T': '',
+  'local': 'Ịjọ'
+}, {
+  '1': 'iu',
+  '3': 'iku',
+  'name': 'Inuktitut',
+  '2B': 'iku',
+  '2T': '',
+  'local': 'ᐃᓄᒃᑎᑐᑦ'
+}, {
+  '1': 'ie',
+  '3': 'ile',
+  'name': 'Interlingue',
+  '2B': 'ile',
+  '2T': '',
+  'local': 'Interlingue'
+}, {
+  '1': '',
+  '3': 'ilo',
+  'name': 'Iloko',
+  '2B': 'ilo',
+  '2T': '',
+  'local': 'Pagsasao nga Ilokano'
+}, {
+  '1': 'ia',
+  '3': 'ina',
+  'name': 'Interlingua (International Auxiliary Language Association)',
+  '2B': 'ina',
+  '2T': '',
+  'local': 'Interlingua (International Auxiliary Language Association)'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Indic languages',
+  '2B': 'inc',
+  '2T': '',
+  'local': 'Indic languages'
+}, {
+  '1': 'id',
+  '3': 'ind',
+  'name': 'Indonesian',
+  '2B': 'ind',
+  '2T': '',
+  'local': 'bahasa Indonesia'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Indo-European languages',
+  '2B': 'ine',
+  '2T': '',
+  'local': 'Indo-European languages'
+}, {
+  '1': '',
+  '3': 'inh',
+  'name': 'Ingush',
+  '2B': 'inh',
+  '2T': '',
+  'local': 'ГӀалгӀай мотт'
+}, {
+  '1': 'ik',
+  '3': 'ipk',
+  'name': 'Inupiaq',
+  '2B': 'ipk',
+  '2T': '',
+  'local': 'Iñupiaq'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Iranian languages',
+  '2B': 'ira',
+  '2T': '',
+  'local': 'Iranian languages'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Iroquoian languages',
+  '2B': 'iro',
+  '2T': '',
+  'local': 'Iroquoian languages'
+}, {
+  '1': 'is',
+  '3': 'isl',
+  'name': 'Icelandic',
+  '2B': 'ce',
+  '2T': 'isl',
+  'local': 'íslenska'
+}, {
+  '1': 'it',
+  '3': 'ita',
+  'name': 'Italian',
+  '2B': 'ita',
+  '2T': '',
+  'local': 'italiano'
+}, {
+  '1': 'jv',
+  '3': 'jav',
+  'name': 'Javanese',
+  '2B': 'jav',
+  '2T': '',
+  'local': 'ꦧꦱꦗꦮ'
+}, {
+  '1': '',
+  '3': 'jbo',
+  'name': 'Lojban',
+  '2B': 'jbo',
+  '2T': '',
+  'local': 'la .lojban.'
+}, {
+  '1': 'ja',
+  '3': 'jpn',
+  'name': 'Japanese',
+  '2B': 'jpn',
+  '2T': '',
+  'local': '日本語'
+}, {
+  '1': '',
+  '3': 'jpr',
+  'name': 'Judeo-Persian',
+  '2B': 'jpr',
+  '2T': '',
+  'local': 'Dzhidi'
+}, {
+  '1': '',
+  '3': 'jrb',
+  'name': 'Judeo-Arabic',
+  '2B': 'jrb',
+  '2T': '',
+  'local': 'عربية يهودية / ערבית יהודית'
+}, {
+  '1': '',
+  '3': 'kaa',
+  'name': 'Kara-Kalpak',
+  '2B': 'kaa',
+  '2T': '',
+  'local': 'Qaraqalpaq tili'
+}, {
+  '1': '',
+  '3': 'kab',
+  'name': 'Kabyle',
+  '2B': 'kab',
+  '2T': '',
+  'local': 'Tamaziɣt Taqbaylit'
+}, {
+  '1': '',
+  '3': 'kac',
+  'name': 'Kachin',
+  '2B': 'kac',
+  '2T': '',
+  'local': 'Jingpho'
+}, {
+  '1': 'kl',
+  '3': 'kal',
+  'name': 'Kalaallisut',
+  '2B': 'kal',
+  '2T': '',
+  'local': 'Kalaallisut'
+}, {
+  '1': '',
+  '3': 'kam',
+  'name': 'Kamba',
+  '2B': 'kam',
+  '2T': '',
+  'local': 'Kamba'
+}, {
+  '1': 'kn',
+  '3': 'kan',
+  'name': 'Kannada',
+  '2B': 'kan',
+  '2T': '',
+  'local': 'ಕನ್ನಡ'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Karen languages',
+  '2B': 'kar',
+  '2T': '',
+  'local': 'Karen languages'
+}, {
+  '1': 'ks',
+  '3': 'kas',
+  'name': 'Kashmiri',
+  '2B': 'kas',
+  '2T': '',
+  'local': 'कॉशुर / كأشُر'
+}, {
+  '1': 'ka',
+  '3': 'kat',
+  'name': 'Georgian',
+  '2B': 'eo',
+  '2T': 'kat',
+  'local': 'ქართული'
+}, {
+  '1': 'kr',
+  '3': 'kau',
+  'name': 'Kanuri',
+  '2B': 'kau',
+  '2T': '',
+  'local': 'Kanuri'
+}, {
+  '1': '',
+  '3': 'kaw',
+  'name': 'Kawi',
+  '2B': 'kaw',
+  '2T': '',
+  'local': 'ꦧꦱꦗꦮ'
+}, {
+  '1': 'kk',
+  '3': 'kaz',
+  'name': 'Kazakh',
+  '2B': 'kaz',
+  '2T': '',
+  'local': 'қазақ тілі / qazaq tili'
+}, {
+  '1': '',
+  '3': 'kbd',
+  'name': 'Kabardian',
+  '2B': 'kbd',
+  '2T': '',
+  'local': 'Адыгэбзэ (Къэбэрдейбзэ)'
+}, {
+  '1': '',
+  '3': 'kha',
+  'name': 'Khasi',
+  '2B': 'kha',
+  '2T': '',
+  'local': 'কা কতিয়েন খাশি'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Khoisan languages',
+  '2B': 'khi',
+  '2T': '',
+  'local': 'Khoisan languages'
+}, {
+  '1': 'km',
+  '3': 'khm',
+  'name': 'Central Khmer',
+  '2B': 'khm',
+  '2T': '',
+  'local': 'ភាសាខ្មែរ'
+}, {
+  '1': '',
+  '3': 'kho',
+  'name': 'Khotanese',
+  '2B': 'kho',
+  '2T': '',
+  'local': 'Khotanese'
+}, {
+  '1': 'ki',
+  '3': 'kik',
+  'name': 'Kikuyu',
+  '2B': 'kik',
+  '2T': '',
+  'local': 'Gĩkũyũ'
+}, {
+  '1': 'rw',
+  '3': 'kin',
+  'name': 'Kinyarwanda',
+  '2B': 'kin',
+  '2T': '',
+  'local': 'Kinyarwanda'
+}, {
+  '1': 'ky',
+  '3': 'kir',
+  'name': 'Kirghiz',
+  '2B': 'kir',
+  '2T': '',
+  'local': 'кыргызча'
+}, {
+  '1': '',
+  '3': 'kmb',
+  'name': 'Kimbundu',
+  '2B': 'kmb',
+  '2T': '',
+  'local': 'Kimbundu'
+}, {
+  '1': '',
+  '3': 'kok',
+  'name': 'Konkani',
+  '2B': 'kok',
+  '2T': '',
+  'local': 'कोंकणी'
+}, {
+  '1': 'kv',
+  '3': 'kom',
+  'name': 'Komi',
+  '2B': 'kom',
+  '2T': '',
+  'local': 'Коми кыв'
+}, {
+  '1': 'kg',
+  '3': 'kon',
+  'name': 'Kongo',
+  '2B': 'kon',
+  '2T': '',
+  'local': 'Kongo'
+}, {
+  '1': 'ko',
+  '3': 'kor',
+  'name': 'Korean',
+  '2B': 'kor',
+  '2T': '',
+  'local': '한국어'
+}, {
+  '1': '',
+  '3': 'kos',
+  'name': 'Kosraean',
+  '2B': 'kos',
+  '2T': '',
+  'local': 'Kosraean'
+}, {
+  '1': '',
+  '3': 'kpe',
+  'name': 'Kpelle',
+  '2B': 'kpe',
+  '2T': '',
+  'local': 'Kpɛlɛwoo'
+}, {
+  '1': '',
+  '3': 'krc',
+  'name': 'Karachay-Balkar',
+  '2B': 'krc',
+  '2T': '',
+  'local': 'Къарачай-Малкъар тил'
+}, {
+  '1': '',
+  '3': 'krl',
+  'name': 'Karelian',
+  '2B': 'krl',
+  '2T': '',
+  'local': 'karjal'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Kru languages',
+  '2B': 'kro',
+  '2T': '',
+  'local': 'Kru languages'
+}, {
+  '1': '',
+  '3': 'kru',
+  'name': 'Kurukh',
+  '2B': 'kru',
+  '2T': '',
+  'local': 'कुड़ुख़'
+}, {
+  '1': 'kj',
+  '3': 'kua',
+  'name': 'Kuanyama',
+  '2B': 'kua',
+  '2T': '',
+  'local': 'Kuanyama'
+}, {
+  '1': '',
+  '3': 'kum',
+  'name': 'Kumyk',
+  '2B': 'kum',
+  '2T': '',
+  'local': 'къумукъ тил/qumuq til'
+}, {
+  '1': 'ku',
+  '3': 'kur',
+  'name': 'Kurdish',
+  '2B': 'kur',
+  '2T': '',
+  'local': 'Kurdî / کوردی'
+}, {
+  '1': '',
+  '3': 'kut',
+  'name': 'Kutenai',
+  '2B': 'kut',
+  '2T': '',
+  'local': 'Kutenai'
+}, {
+  '1': '',
+  '3': 'lad',
+  'name': 'Ladino',
+  '2B': 'lad',
+  '2T': '',
+  'local': 'Judeo-español'
+}, {
+  '1': '',
+  '3': 'lah',
+  'name': 'Lahnda',
+  '2B': 'lah',
+  '2T': '',
+  'local': 'بھارت کا'
+}, {
+  '1': '',
+  '3': 'lam',
+  'name': 'Lamba',
+  '2B': 'lam',
+  '2T': '',
+  'local': 'Lamba'
+}, {
+  '1': 'lo',
+  '3': 'lao',
+  'name': 'Lao',
+  '2B': 'lao',
+  '2T': '',
+  'local': 'ພາສາລາວ'
+}, {
+  '1': 'la',
+  '3': 'lat',
+  'name': 'Latin',
+  '2B': 'lat',
+  '2T': '',
+  'local': 'Lingua latīna'
+}, {
+  '1': 'lv',
+  '3': 'lav',
+  'name': 'Latvian',
+  '2B': 'lav',
+  '2T': '',
+  'local': 'Latviešu valoda'
+}, {
+  '1': '',
+  '3': 'lez',
+  'name': 'Lezghian',
+  '2B': 'lez',
+  '2T': '',
+  'local': 'Лезги чӏал'
+}, {
+  '1': 'li',
+  '3': 'lim',
+  'name': 'Limburgan',
+  '2B': 'lim',
+  '2T': '',
+  'local': 'Lèmburgs'
+}, {
+  '1': 'ln',
+  '3': 'lin',
+  'name': 'Lingala',
+  '2B': 'lin',
+  '2T': '',
+  'local': 'Lingala'
+}, {
+  '1': 'lt',
+  '3': 'lit',
+  'name': 'Lithuanian',
+  '2B': 'lit',
+  '2T': '',
+  'local': 'lietuvių kalba'
+}, {
+  '1': '',
+  '3': 'lol',
+  'name': 'Mongo',
+  '2B': 'lol',
+  '2T': '',
+  'local': 'Lomongo'
+}, {
+  '1': '',
+  '3': 'loz',
+  'name': 'Lozi',
+  '2B': 'loz',
+  '2T': '',
+  'local': 'Lozi'
+}, {
+  '1': 'lb',
+  '3': 'ltz',
+  'name': 'Luxembourgish',
+  '2B': 'ltz',
+  '2T': '',
+  'local': 'Lëtzebuergesch'
+}, {
+  '1': '',
+  '3': 'lua',
+  'name': 'Luba-Lulua',
+  '2B': 'lua',
+  '2T': '',
+  'local': 'Tshiluba'
+}, {
+  '1': 'lu',
+  '3': 'lub',
+  'name': 'Luba-Katanga',
+  '2B': 'lub',
+  '2T': '',
+  'local': 'Kiluba'
+}, {
+  '1': 'lg',
+  '3': 'lug',
+  'name': 'Ganda',
+  '2B': 'lug',
+  '2T': '',
+  'local': 'Luganda'
+}, {
+  '1': '',
+  '3': 'lui',
+  'name': 'Luiseno',
+  '2B': 'lui',
+  '2T': '',
+  'local': 'Cham\'teela'
+}, {
+  '1': '',
+  '3': 'lun',
+  'name': 'Lunda',
+  '2B': 'lun',
+  '2T': '',
+  'local': 'Chilunda'
+}, {
+  '1': '',
+  '3': 'luo',
+  'name': 'Luo (Kenya and Tanzania)',
+  '2B': 'luo',
+  '2T': '',
+  'local': 'Dholuo'
+}, {
+  '1': '',
+  '3': 'lus',
+  'name': 'Lushai',
+  '2B': 'lus',
+  '2T': '',
+  'local': 'Mizo ṭawng'
+}, {
+  '1': 'mk',
+  '3': 'mkd',
+  'name': 'Macedonian',
+  '2B': 'mac',
+  '2T': 'mkd',
+  'local': 'македонски јазик'
+}, {
+  '1': '',
+  '3': 'mad',
+  'name': 'Madurese',
+  '2B': 'mad',
+  '2T': '',
+  'local': 'Madhura'
+}, {
+  '1': '',
+  '3': 'mag',
+  'name': 'Magahi',
+  '2B': 'mag',
+  '2T': '',
+  'local': 'मगही'
+}, {
+  '1': 'mh',
+  '3': 'mah',
+  'name': 'Marshallese',
+  '2B': 'mah',
+  '2T': '',
+  'local': 'Kajin M̧ajeļ'
+}, {
+  '1': '',
+  '3': 'mai',
+  'name': 'Maithili',
+  '2B': 'mai',
+  '2T': '',
+  'local': 'मैथिली'
+}, {
+  '1': '',
+  '3': 'mak',
+  'name': 'Makasar',
+  '2B': 'mak',
+  '2T': '',
+  'local': 'Basa Mangkasara\' / ᨅᨔ ᨆᨀᨔᨑ'
+}, {
+  '1': 'ml',
+  '3': 'mal',
+  'name': 'Malayalam',
+  '2B': 'mal',
+  '2T': '',
+  'local': 'മലയാളം'
+}, {
+  '1': '',
+  '3': 'man',
+  'name': 'Mandingo',
+  '2B': 'man',
+  '2T': '',
+  'local': 'Mandi\'nka kango'
+}, {
+  '1': 'mi',
+  '3': 'mri',
+  'name': 'Maori',
+  '2B': 'mao',
+  '2T': 'mri',
+  'local': 'Te Reo Māori'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Austronesian languages',
+  '2B': 'map',
+  '2T': '',
+  'local': 'Austronesian languages'
+}, {
+  '1': 'mr',
+  '3': 'mar',
+  'name': 'Marathi',
+  '2B': 'mar',
+  '2T': '',
+  'local': 'मराठी'
+}, {
+  '1': '',
+  '3': 'mas',
+  'name': 'Masai',
+  '2B': 'mas',
+  '2T': '',
+  'local': 'ɔl'
+}, {
+  '1': 'ms',
+  '3': 'msa',
+  'name': 'Malay',
+  '2B': 'may',
+  '2T': 'msa',
+  'local': 'Bahasa Melayu'
+}, {
+  '1': '',
+  '3': 'mdf',
+  'name': 'Moksha',
+  '2B': 'mdf',
+  '2T': '',
+  'local': 'мокшень кяль'
+}, {
+  '1': '',
+  '3': 'mdr',
+  'name': 'Mandar',
+  '2B': 'mdr',
+  '2T': '',
+  'local': 'Mandar'
+}, {
+  '1': '',
+  '3': 'men',
+  'name': 'Mende',
+  '2B': 'men',
+  '2T': '',
+  'local': 'Mɛnde yia'
+}, {
+  '1': '',
+  '3': 'mga',
+  'name': 'Middle Irish (900–1200)',
+  '2B': 'mga',
+  '2T': '',
+  'local': 'Gaoidhealg'
+}, {
+  '1': '',
+  '3': 'mic',
+  'name': 'Mi\'kmaq',
+  '2B': 'mic',
+  '2T': '',
+  'local': 'Míkmawísimk'
+}, {
+  '1': '',
+  '3': 'min',
+  'name': 'Minangkabau',
+  '2B': 'min',
+  '2T': '',
+  'local': 'Baso Minang'
+}, {
+  '1': '',
+  '3': 'mis',
+  'name': 'Uncoded languages',
+  '2B': 'mis',
+  '2T': '',
+  'local': 'Uncoded languages'
+}, {
+  '1': 'mk',
+  '3': 'mkd',
+  'name': 'Macedonian',
+  '2B': 'ac',
+  '2T': 'mkd',
+  'local': 'македонски јазик'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Mon-Khmer languages',
+  '2B': 'mkh',
+  '2T': '',
+  'local': 'Mon-Khmer languages'
+}, {
+  '1': 'mg',
+  '3': 'mlg',
+  'name': 'Malagasy',
+  '2B': 'mlg',
+  '2T': '',
+  'local': 'Malagasy'
+}, {
+  '1': 'mt',
+  '3': 'mlt',
+  'name': 'Maltese',
+  '2B': 'mlt',
+  '2T': '',
+  'local': 'Malti'
+}, {
+  '1': '',
+  '3': 'mnc',
+  'name': 'Manchu',
+  '2B': 'mnc',
+  '2T': '',
+  'local': 'ᠮᠠᠨᠵᡠ ᡤᡳᠰᡠᠨ'
+}, {
+  '1': '',
+  '3': 'mni',
+  'name': 'Manipuri',
+  '2B': 'mni',
+  '2T': '',
+  'local': 'Manipuri'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Manobo languages',
+  '2B': 'mno',
+  '2T': '',
+  'local': 'Manobo languages'
+}, {
+  '1': '',
+  '3': 'moh',
+  'name': 'Mohawk',
+  '2B': 'moh',
+  '2T': '',
+  'local': 'Kanien’kéha'
+}, {
+  '1': 'mn',
+  '3': 'mon',
+  'name': 'Mongolian',
+  '2B': 'mon',
+  '2T': '',
+  'local': 'монгол хэл'
+}, {
+  '1': '',
+  '3': 'mos',
+  'name': 'Mossi',
+  '2B': 'mos',
+  '2T': '',
+  'local': 'Mooré'
+}, {
+  '1': 'mi',
+  '3': 'mri',
+  'name': 'Maori',
+  '2B': 'ao',
+  '2T': 'mri',
+  'local': 'Te Reo Māori'
+}, {
+  '1': 'ms',
+  '3': 'msa',
+  'name': 'Malay',
+  '2B': 'ay',
+  '2T': 'msa',
+  'local': 'Bahasa Melayu'
+}, {
+  '1': '',
+  '3': 'mul',
+  'name': 'Multiple languages',
+  '2B': 'mul',
+  '2T': '',
+  'local': 'Multiple languages'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Munda languages',
+  '2B': 'mun',
+  '2T': '',
+  'local': 'Munda languages'
+}, {
+  '1': '',
+  '3': 'mus',
+  'name': 'Creek',
+  '2B': 'mus',
+  '2T': '',
+  'local': 'Mvskoke'
+}, {
+  '1': '',
+  '3': 'mwl',
+  'name': 'Mirandese',
+  '2B': 'mwl',
+  '2T': '',
+  'local': 'mirandés'
+}, {
+  '1': '',
+  '3': 'mwr',
+  'name': 'Marwari',
+  '2B': 'mwr',
+  '2T': '',
+  'local': 'मारवाड़ी'
+}, {
+  '1': 'my',
+  '3': 'mya',
+  'name': 'Burmese',
+  '2B': 'ur',
+  '2T': 'mya',
+  'local': 'မြန်မာစာ'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Mayan languages',
+  '2B': 'myn',
+  '2T': '',
+  'local': 'Mayan languages'
+}, {
+  '1': '',
+  '3': 'myv',
+  'name': 'Erzya',
+  '2B': 'myv',
+  '2T': '',
+  'local': 'эрзянь кель'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Nahuatl languages',
+  '2B': 'nah',
+  '2T': '',
+  'local': 'Nahuatl languages'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'North American Indian languages',
+  '2B': 'nai',
+  '2T': '',
+  'local': 'North American Indian languages'
+}, {
+  '1': '',
+  '3': 'nap',
+  'name': 'Neapolitan',
+  '2B': 'nap',
+  '2T': '',
+  'local': 'napulitano'
+}, {
+  '1': 'na',
+  '3': 'nau',
+  'name': 'Nauru',
+  '2B': 'nau',
+  '2T': '',
+  'local': 'dorerin Naoero'
+}, {
+  '1': 'nv',
+  '3': 'nav',
+  'name': 'Navajo',
+  '2B': 'nav',
+  '2T': '',
+  'local': 'Diné bizaad'
+}, {
+  '1': 'nr',
+  '3': 'nbl',
+  'name': 'South Ndebele',
+  '2B': 'nbl',
+  '2T': '',
+  'local': 'isiNdebele seSewula'
+}, {
+  '1': 'nd',
+  '3': 'nde',
+  'name': 'North Ndebele',
+  '2B': 'nde',
+  '2T': '',
+  'local': 'siNdebele saseNyakatho'
+}, {
+  '1': 'ng',
+  '3': 'ndo',
+  'name': 'Ndonga',
+  '2B': 'ndo',
+  '2T': '',
+  'local': 'ndonga'
+}, {
+  '1': '',
+  '3': 'nds',
+  'name': 'Low German',
+  '2B': 'nds',
+  '2T': '',
+  'local': 'Plattdütsch'
+}, {
+  '1': 'ne',
+  '3': 'nep',
+  'name': 'Nepali',
+  '2B': 'nep',
+  '2T': '',
+  'local': 'नेपाली भाषा'
+}, {
+  '1': '',
+  '3': 'new',
+  'name': 'Nepal Bhasa',
+  '2B': 'new',
+  '2T': '',
+  'local': 'नेवाः भाय्'
+}, {
+  '1': '',
+  '3': 'nia',
+  'name': 'Nias',
+  '2B': 'nia',
+  '2T': '',
+  'local': 'Li Niha'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Niger-Kordofanian languages',
+  '2B': 'nic',
+  '2T': '',
+  'local': 'Niger-Kordofanian languages'
+}, {
+  '1': '',
+  '3': 'niu',
+  'name': 'Niuean',
+  '2B': 'niu',
+  '2T': '',
+  'local': 'ko e vagahau Niuē'
+}, {
+  '1': 'nl',
+  '3': 'nld',
+  'name': 'Dutch',
+  '2B': 'ut',
+  '2T': 'nld',
+  'local': 'Nederlands'
+}, {
+  '1': 'nn',
+  '3': 'nno',
+  'name': 'Norwegian Nynorsk',
+  '2B': 'nno',
+  '2T': '',
+  'local': 'nynorsk'
+}, {
+  '1': 'nb',
+  '3': 'nob',
+  'name': 'Norwegian Bokmål',
+  '2B': 'nob',
+  '2T': '',
+  'local': 'bokmål'
+}, {
+  '1': '',
+  '3': 'nog',
+  'name': 'Nogai',
+  '2B': 'nog',
+  '2T': '',
+  'local': 'Ногай тили'
+}, {
+  '1': '',
+  '3': 'non',
+  'name': 'Old Norse',
+  '2B': 'non',
+  '2T': '',
+  'local': 'Dǫnsk tunga'
+}, {
+  '1': 'no',
+  '3': 'nor',
+  'name': 'Norwegian',
+  '2B': 'nor',
+  '2T': '',
+  'local': 'norsk'
+}, {
+  '1': '',
+  '3': 'nqo',
+  'name': 'N\'Ko',
+  '2B': 'nqo',
+  '2T': '',
+  'local': 'N\'Ko'
+}, {
+  '1': '',
+  '3': 'nso',
+  'name': 'Pedi',
+  '2B': 'nso',
+  '2T': '',
+  'local': 'Sesotho sa Leboa'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Nubian languages',
+  '2B': 'nub',
+  '2T': '',
+  'local': 'لغات نوبية'
+}, {
+  '1': '',
+  '3': 'nwc',
+  'name': 'Classical Newari',
+  '2B': 'nwc',
+  '2T': '',
+  'local': 'पुलां भाय्'
+}, {
+  '1': 'ny',
+  '3': 'nya',
+  'name': 'Chichewa',
+  '2B': 'nya',
+  '2T': '',
+  'local': 'Chichewa'
+}, {
+  '1': '',
+  '3': 'nym',
+  'name': 'Nyamwezi',
+  '2B': 'nym',
+  '2T': '',
+  'local': 'Nyamwezi'
+}, {
+  '1': '',
+  '3': 'nyn',
+  'name': 'Nyankole',
+  '2B': 'nyn',
+  '2T': '',
+  'local': 'Nyankole'
+}, {
+  '1': '',
+  '3': 'nyo',
+  'name': 'Nyoro',
+  '2B': 'nyo',
+  '2T': '',
+  'local': 'Runyoro'
+}, {
+  '1': '',
+  '3': 'nzi',
+  'name': 'Nzima',
+  '2B': 'nzi',
+  '2T': '',
+  'local': 'Nzima'
+}, {
+  '1': 'oc',
+  '3': 'oci',
+  'name': 'Occitan (post 1500)',
+  '2B': 'oci',
+  '2T': '',
+  'local': 'occitan'
+}, {
+  '1': 'oj',
+  '3': 'oji',
+  'name': 'Ojibwa',
+  '2B': 'oji',
+  '2T': '',
+  'local': 'Ojibwa'
+}, {
+  '1': 'or',
+  '3': 'ori',
+  'name': 'Oriya',
+  '2B': 'ori',
+  '2T': '',
+  'local': 'ଓଡ଼ିଆ'
+}, {
+  '1': 'om',
+  '3': 'orm',
+  'name': 'Oromo',
+  '2B': 'orm',
+  '2T': '',
+  'local': 'Afaan Oromoo'
+}, {
+  '1': '',
+  '3': 'osa',
+  'name': 'Osage',
+  '2B': 'osa',
+  '2T': '',
+  'local': 'Wazhazhe ie / 𐓏𐓘𐓻𐓘𐓻𐓟 𐒻𐓟'
+}, {
+  '1': 'os',
+  '3': 'oss',
+  'name': 'Ossetian',
+  '2B': 'oss',
+  '2T': '',
+  'local': 'Ирон æвзаг'
+}, {
+  '1': '',
+  '3': 'ota',
+  'name': 'Ottoman Turkish (1500–1928)',
+  '2B': 'ota',
+  '2T': '',
+  'local': 'لسان عثمانى / lisân-ı Osmânî'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Otomian languages',
+  '2B': 'oto',
+  '2T': '',
+  'local': 'Otomian languages'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Papuan languages',
+  '2B': 'paa',
+  '2T': '',
+  'local': 'Papuan languages'
+}, {
+  '1': '',
+  '3': 'pag',
+  'name': 'Pangasinan',
+  '2B': 'pag',
+  '2T': '',
+  'local': 'Salitan Pangasinan'
+}, {
+  '1': '',
+  '3': 'pal',
+  'name': 'Pahlavi',
+  '2B': 'pal',
+  '2T': '',
+  'local': 'Pārsīk'
+}, {
+  '1': '',
+  '3': 'pam',
+  'name': 'Pampanga',
+  '2B': 'pam',
+  '2T': '',
+  'local': 'Amánung Kapampangan'
+}, {
+  '1': 'pa',
+  '3': 'pan',
+  'name': 'Panjabi',
+  '2B': 'pan',
+  '2T': '',
+  'local': 'ਪੰਜਾਬੀ / پنجابی'
+}, {
+  '1': '',
+  '3': 'pap',
+  'name': 'Papiamento',
+  '2B': 'pap',
+  '2T': '',
+  'local': 'Papiamentu'
+}, {
+  '1': '',
+  '3': 'pau',
+  'name': 'Palauan',
+  '2B': 'pau',
+  '2T': '',
+  'local': 'a tekoi er a Belau'
+}, {
+  '1': '',
+  '3': 'peo',
+  'name': 'Old Persian (ca. 600–400 B.C.)',
+  '2B': 'peo',
+  '2T': '',
+  'local': 'Old Persian (ca. 600–400 B.C.)'
+}, {
+  '1': 'fa',
+  '3': 'fas',
+  'name': 'Persian',
+  '2B': 'per',
+  '2T': 'fas',
+  'local': 'فارسی'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Philippine languages',
+  '2B': 'phi',
+  '2T': '',
+  'local': 'Philippine languages'
+}, {
+  '1': '',
+  '3': 'phn',
+  'name': 'Phoenician',
+  '2B': 'phn',
+  '2T': '',
+  'local': '𐤃𐤁𐤓𐤉𐤌 𐤊𐤍𐤏𐤍𐤉𐤌'
+}, {
+  '1': 'pi',
+  '3': 'pli',
+  'name': 'Pali',
+  '2B': 'pli',
+  '2T': '',
+  'local': 'Pāli'
+}, {
+  '1': 'pl',
+  '3': 'pol',
+  'name': 'Polish',
+  '2B': 'pol',
+  '2T': '',
+  'local': 'Język polski'
+}, {
+  '1': '',
+  '3': 'pon',
+  'name': 'Pohnpeian',
+  '2B': 'pon',
+  '2T': '',
+  'local': 'Pohnpeian'
+}, {
+  '1': 'pt',
+  '3': 'por',
+  'name': 'Portuguese',
+  '2B': 'por',
+  '2T': '',
+  'local': 'português'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Prakrit languages',
+  '2B': 'pra',
+  '2T': '',
+  'local': 'Prakrit languages'
+}, {
+  '1': '',
+  '3': 'pro',
+  'name': 'Old Provençal (to 1500)',
+  '2B': 'pro',
+  '2T': '',
+  'local': 'Old Provençal (to 1500)'
+}, {
+  '1': 'ps',
+  '3': 'pus',
+  'name': 'Pushto',
+  '2B': 'pus',
+  '2T': '',
+  'local': 'پښتو'
+}, {
+  '1': '',
+  '3': 'qaa-qtz',
+  'name': 'Reserved for local use',
+  '2B': 'qaa-qtz',
+  '2T': '',
+  'local': 'Reserved for local use'
+}, {
+  '1': 'qu',
+  '3': 'que',
+  'name': 'Quechua',
+  '2B': 'que',
+  '2T': '',
+  'local': 'Runa simi'
+}, {
+  '1': '',
+  '3': 'raj',
+  'name': 'Rajasthani',
+  '2B': 'raj',
+  '2T': '',
+  'local': 'राजस्थानी'
+}, {
+  '1': '',
+  '3': 'rap',
+  'name': 'Rapanui',
+  '2B': 'rap',
+  '2T': '',
+  'local': 'Vananga rapa nui'
+}, {
+  '1': '',
+  '3': 'rar',
+  'name': 'Rarotongan',
+  '2B': 'rar',
+  '2T': '',
+  'local': 'Māori Kūki \'Āirani'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Romance languages',
+  '2B': 'roa',
+  '2T': '',
+  'local': 'Romance languages'
+}, {
+  '1': 'rm',
+  '3': 'roh',
+  'name': 'Romansh',
+  '2B': 'roh',
+  '2T': '',
+  'local': 'Rumantsch'
+}, {
+  '1': '',
+  '3': 'rom',
+  'name': 'Romany',
+  '2B': 'rom',
+  '2T': '',
+  'local': 'romani čhib'
+}, {
+  '1': 'ro',
+  '3': 'ron',
+  'name': 'Romanian',
+  '2B': 'um',
+  '2T': 'ron',
+  'local': 'limba română'
+}, {
+  '1': 'ro',
+  '3': 'ron',
+  'name': 'Romanian',
+  '2B': 'rum',
+  '2T': 'ron',
+  'local': 'limba română'
+}, {
+  '1': 'rn',
+  '3': 'run',
+  'name': 'Rundi',
+  '2B': 'run',
+  '2T': '',
+  'local': 'Ikirundi'
+}, {
+  '1': '',
+  '3': 'rup',
+  'name': 'Aromanian',
+  '2B': 'rup',
+  '2T': '',
+  'local': 'armãneashce'
+}, {
+  '1': 'ru',
+  '3': 'rus',
+  'name': 'Russian',
+  '2B': 'rus',
+  '2T': '',
+  'local': 'русский язык'
+}, {
+  '1': '',
+  '3': 'sad',
+  'name': 'Sandawe',
+  '2B': 'sad',
+  '2T': '',
+  'local': 'Sandaweeki'
+}, {
+  '1': 'sg',
+  '3': 'sag',
+  'name': 'Sango',
+  '2B': 'sag',
+  '2T': '',
+  'local': 'yângâ tî sängö'
+}, {
+  '1': '',
+  '3': 'sah',
+  'name': 'Yakut',
+  '2B': 'sah',
+  '2T': '',
+  'local': 'Сахалыы'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'South American Indian languages',
+  '2B': 'sai',
+  '2T': '',
+  'local': 'South American Indian languages'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Salishan languages',
+  '2B': 'sal',
+  '2T': '',
+  'local': 'Salishan languages'
+}, {
+  '1': '',
+  '3': 'sam',
+  'name': 'Samaritan Aramaic',
+  '2B': 'sam',
+  '2T': '',
+  'local': 'ארמית'
+}, {
+  '1': 'sa',
+  '3': 'san',
+  'name': 'Sanskrit',
+  '2B': 'san',
+  '2T': '',
+  'local': 'संस्कृतम्'
+}, {
+  '1': '',
+  '3': 'sas',
+  'name': 'Sasak',
+  '2B': 'sas',
+  '2T': '',
+  'local': 'Sasak'
+}, {
+  '1': '',
+  '3': 'sat',
+  'name': 'Santali',
+  '2B': 'sat',
+  '2T': '',
+  'local': 'ᱥᱟᱱᱛᱟᱲᱤ'
+}, {
+  '1': '',
+  '3': 'scn',
+  'name': 'Sicilian',
+  '2B': 'scn',
+  '2T': '',
+  'local': 'Sicilianu'
+}, {
+  '1': '',
+  '3': 'sco',
+  'name': 'Scots',
+  '2B': 'sco',
+  '2T': '',
+  'local': 'Braid Scots'
+}, {
+  '1': '',
+  '3': 'sel',
+  'name': 'Selkup',
+  '2B': 'sel',
+  '2T': '',
+  'local': 'Selkup'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Semitic languages',
+  '2B': 'sem',
+  '2T': '',
+  'local': 'Semitic languages'
+}, {
+  '1': '',
+  '3': 'sga',
+  'name': 'Old Irish (to 900)',
+  '2B': 'sga',
+  '2T': '',
+  'local': 'Goídelc'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Sign languages',
+  '2B': 'sgn',
+  '2T': '',
+  'local': 'Sign languages'
+}, {
+  '1': '',
+  '3': 'shn',
+  'name': 'Shan',
+  '2B': 'shn',
+  '2T': '',
+  'local': 'ၵႂၢမ်းတႆးယႂ်'
+}, {
+  '1': '',
+  '3': 'sid',
+  'name': 'Sidamo',
+  '2B': 'sid',
+  '2T': '',
+  'local': 'Sidaamu Afoo'
+}, {
+  '1': 'si',
+  '3': 'sin',
+  'name': 'Sinhala',
+  '2B': 'sin',
+  '2T': '',
+  'local': 'සිංහල'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Siouan languages',
+  '2B': 'sio',
+  '2T': '',
+  'local': 'Siouan languages'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Sino-Tibetan languages',
+  '2B': 'sit',
+  '2T': '',
+  'local': 'Sino-Tibetan languages'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Slavic languages',
+  '2B': 'sla',
+  '2T': '',
+  'local': 'Slavic languages'
+}, {
+  '1': 'sk',
+  '3': 'slk',
+  'name': 'Slovak',
+  '2B': 'slo',
+  '2T': 'slk',
+  'local': 'slovenčina'
+}, {
+  '1': 'sk',
+  '3': 'slk',
+  'name': 'Slovak',
+  '2B': 'lo',
+  '2T': 'slk',
+  'local': 'slovenčina'
+}, {
+  '1': 'sl',
+  '3': 'slv',
+  'name': 'Slovenian',
+  '2B': 'slv',
+  '2T': '',
+  'local': 'slovenski jezik'
+}, {
+  '1': '',
+  '3': 'sma',
+  'name': 'Southern Sami',
+  '2B': 'sma',
+  '2T': '',
+  'local': 'Åarjelsaemien gïele'
+}, {
+  '1': 'se',
+  '3': 'sme',
+  'name': 'Northern Sami',
+  '2B': 'sme',
+  '2T': '',
+  'local': 'davvisámegiella'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Sami languages',
+  '2B': 'smi',
+  '2T': '',
+  'local': 'Sami languages'
+}, {
+  '1': '',
+  '3': 'smj',
+  'name': 'Lule Sami',
+  '2B': 'smj',
+  '2T': '',
+  'local': 'julevsámegiella'
+}, {
+  '1': '',
+  '3': 'smn',
+  'name': 'Inari Sami',
+  '2B': 'smn',
+  '2T': '',
+  'local': 'anarâškielâ'
+}, {
+  '1': 'sm',
+  '3': 'smo',
+  'name': 'Samoan',
+  '2B': 'smo',
+  '2T': '',
+  'local': 'Gagana faʻa Sāmoa'
+}, {
+  '1': '',
+  '3': 'sms',
+  'name': 'Skolt Sami',
+  '2B': 'sms',
+  '2T': '',
+  'local': 'sääʹmǩiõll'
+}, {
+  '1': 'sn',
+  '3': 'sna',
+  'name': 'Shona',
+  '2B': 'sna',
+  '2T': '',
+  'local': 'chiShona'
+}, {
+  '1': 'sd',
+  '3': 'snd',
+  'name': 'Sindhi',
+  '2B': 'snd',
+  '2T': '',
+  'local': 'سنڌي / सिन्धी / ਸਿੰਧੀ'
+}, {
+  '1': '',
+  '3': 'snk',
+  'name': 'Soninke',
+  '2B': 'snk',
+  '2T': '',
+  'local': 'Sooninkanxanne'
+}, {
+  '1': '',
+  '3': 'sog',
+  'name': 'Sogdian',
+  '2B': 'sog',
+  '2T': '',
+  'local': 'Sogdian'
+}, {
+  '1': 'so',
+  '3': 'som',
+  'name': 'Somali',
+  '2B': 'som',
+  '2T': '',
+  'local': 'af Soomaali'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Songhai languages',
+  '2B': 'son',
+  '2T': '',
+  'local': 'Songhai languages'
+}, {
+  '1': 'st',
+  '3': 'sot',
+  'name': 'Southern Sotho',
+  '2B': 'sot',
+  '2T': '',
+  'local': 'Sesotho [southern]'
+}, {
+  '1': 'es',
+  '3': 'spa',
+  'name': 'Spanish',
+  '2B': 'spa',
+  '2T': '',
+  'local': 'español'
+}, {
+  '1': 'sq',
+  '3': 'sqi',
+  'name': 'Albanian',
+  '2B': 'lb',
+  '2T': 'sqi',
+  'local': 'Shqip'
+}, {
+  '1': 'sc',
+  '3': 'srd',
+  'name': 'Sardinian',
+  '2B': 'srd',
+  '2T': '',
+  'local': 'sardu'
+}, {
+  '1': '',
+  '3': 'srn',
+  'name': 'Sranan Tongo',
+  '2B': 'srn',
+  '2T': '',
+  'local': 'Sranan Tongo'
+}, {
+  '1': 'sr',
+  '3': 'srp',
+  'name': 'Serbian',
+  '2B': 'srp',
+  '2T': '',
+  'local': 'српски / srpski'
+}, {
+  '1': '',
+  '3': 'srr',
+  'name': 'Serer',
+  '2B': 'srr',
+  '2T': '',
+  'local': 'Seereer'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Nilo-Saharan languages',
+  '2B': 'ssa',
+  '2T': '',
+  'local': 'Nilo-Saharan languages'
+}, {
+  '1': 'ss',
+  '3': 'ssw',
+  'name': 'Swati',
+  '2B': 'ssw',
+  '2T': '',
+  'local': 'siSwati'
+}, {
+  '1': '',
+  '3': 'suk',
+  'name': 'Sukuma',
+  '2B': 'suk',
+  '2T': '',
+  'local': 'Kɪsukuma'
+}, {
+  '1': 'su',
+  '3': 'sun',
+  'name': 'Sundanese',
+  '2B': 'sun',
+  '2T': '',
+  'local': 'ᮘᮞ ᮞᮥᮔ᮪ᮓ / Basa Sunda'
+}, {
+  '1': '',
+  '3': 'sus',
+  'name': 'Susu',
+  '2B': 'sus',
+  '2T': '',
+  'local': 'Sosoxui'
+}, {
+  '1': '',
+  '3': 'sux',
+  'name': 'Sumerian',
+  '2B': 'sux',
+  '2T': '',
+  'local': '𒅴𒂠'
+}, {
+  '1': 'sw',
+  '3': 'swa',
+  'name': 'Swahili',
+  '2B': 'swa',
+  '2T': '',
+  'local': 'Kiswahili'
+}, {
+  '1': 'sv',
+  '3': 'swe',
+  'name': 'Swedish',
+  '2B': 'swe',
+  '2T': '',
+  'local': 'svenska'
+}, {
+  '1': '',
+  '3': 'syc',
+  'name': 'Classical Syriac',
+  '2B': 'syc',
+  '2T': '',
+  'local': 'Classical Syriac'
+}, {
+  '1': '',
+  '3': 'syr',
+  'name': 'Syriac',
+  '2B': 'syr',
+  '2T': '',
+  'local': 'ܠܫܢܐ ܣܘܪܝܝܐ'
+}, {
+  '1': 'ty',
+  '3': 'tah',
+  'name': 'Tahitian',
+  '2B': 'tah',
+  '2T': '',
+  'local': 'Reo Tahiti'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Tai languages',
+  '2B': 'tai',
+  '2T': '',
+  'local': 'ภาษาไท'
+}, {
+  '1': 'ta',
+  '3': 'tam',
+  'name': 'Tamil',
+  '2B': 'tam',
+  '2T': '',
+  'local': 'தமிழ்'
+}, {
+  '1': 'tt',
+  '3': 'tat',
+  'name': 'Tatar',
+  '2B': 'tat',
+  '2T': '',
+  'local': 'татар теле / tatar tele / تاتار'
+}, {
+  '1': 'te',
+  '3': 'tel',
+  'name': 'Telugu',
+  '2B': 'tel',
+  '2T': '',
+  'local': 'తెలుగు'
+}, {
+  '1': '',
+  '3': 'tem',
+  'name': 'Timne',
+  '2B': 'tem',
+  '2T': '',
+  'local': 'KʌThemnɛ'
+}, {
+  '1': '',
+  '3': 'ter',
+  'name': 'Tereno',
+  '2B': 'ter',
+  '2T': '',
+  'local': 'Terêna'
+}, {
+  '1': '',
+  '3': 'tet',
+  'name': 'Tetum',
+  '2B': 'tet',
+  '2T': '',
+  'local': 'Lia-Tetun'
+}, {
+  '1': 'tg',
+  '3': 'tgk',
+  'name': 'Tajik',
+  '2B': 'tgk',
+  '2T': '',
+  'local': 'тоҷикӣ / tojikī'
+}, {
+  '1': 'tl',
+  '3': 'tgl',
+  'name': 'Tagalog',
+  '2B': 'tgl',
+  '2T': '',
+  'local': 'Wikang Tagalog'
+}, {
+  '1': 'th',
+  '3': 'tha',
+  'name': 'Thai',
+  '2B': 'tha',
+  '2T': '',
+  'local': 'ภาษาไทย'
+}, {
+  '1': 'bo',
+  '3': 'bod',
+  'name': 'Tibetan',
+  '2B': 'tib',
+  '2T': 'bod',
+  'local': 'བོད་སྐད་'
+}, {
+  '1': '',
+  '3': 'tig',
+  'name': 'Tigre',
+  '2B': 'tig',
+  '2T': '',
+  'local': 'ትግረ'
+}, {
+  '1': 'ti',
+  '3': 'tir',
+  'name': 'Tigrinya',
+  '2B': 'tir',
+  '2T': '',
+  'local': 'ትግርኛ'
+}, {
+  '1': '',
+  '3': 'tiv',
+  'name': 'Tiv',
+  '2B': 'tiv',
+  '2T': '',
+  'local': 'Tiv'
+}, {
+  '1': '',
+  '3': 'tkl',
+  'name': 'Tokelau',
+  '2B': 'tkl',
+  '2T': '',
+  'local': 'Tokelau'
+}, {
+  '1': '',
+  '3': 'tlh',
+  'name': 'Klingon',
+  '2B': 'tlh',
+  '2T': '',
+  'local': 'Klingon'
+}, {
+  '1': '',
+  '3': 'tli',
+  'name': 'Tlingit',
+  '2B': 'tli',
+  '2T': '',
+  'local': 'Lingít'
+}, {
+  '1': '',
+  '3': 'tmh',
+  'name': 'Tamashek',
+  '2B': 'tmh',
+  '2T': '',
+  'local': 'Tamashek'
+}, {
+  '1': '',
+  '3': 'tog',
+  'name': 'Tonga (Nyasa)',
+  '2B': 'tog',
+  '2T': '',
+  'local': 'chiTonga'
+}, {
+  '1': 'to',
+  '3': 'ton',
+  'name': 'Tonga (Tonga Islands)',
+  '2B': 'ton',
+  '2T': '',
+  'local': 'lea faka-Tonga'
+}, {
+  '1': '',
+  '3': 'tpi',
+  'name': 'Tok Pisin',
+  '2B': 'tpi',
+  '2T': '',
+  'local': 'Tok Pisin'
+}, {
+  '1': '',
+  '3': 'tsi',
+  'name': 'Tsimshian',
+  '2B': 'tsi',
+  '2T': '',
+  'local': 'Tsimshian'
+}, {
+  '1': 'tn',
+  '3': 'tsn',
+  'name': 'Tswana',
+  '2B': 'tsn',
+  '2T': '',
+  'local': 'Setswana'
+}, {
+  '1': 'ts',
+  '3': 'tso',
+  'name': 'Tsonga',
+  '2B': 'tso',
+  '2T': '',
+  'local': 'Xitsonga'
+}, {
+  '1': 'tk',
+  '3': 'tuk',
+  'name': 'Turkmen',
+  '2B': 'tuk',
+  '2T': '',
+  'local': 'Türkmençe / Түркменче / تورکمن تیلی ,تورکمنچه'
+}, {
+  '1': '',
+  '3': 'tum',
+  'name': 'Tumbuka',
+  '2B': 'tum',
+  '2T': '',
+  'local': 'chiTumbuka'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Tupi languages',
+  '2B': 'tup',
+  '2T': '',
+  'local': 'Tupi languages'
+}, {
+  '1': 'tr',
+  '3': 'tur',
+  'name': 'Turkish',
+  '2B': 'tur',
+  '2T': '',
+  'local': 'Türkçe'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Altaic languages',
+  '2B': 'tut',
+  '2T': '',
+  'local': 'Altaic languages'
+}, {
+  '1': '',
+  '3': 'tvl',
+  'name': 'Tuvalua',
+  '2B': 'tvl',
+  '2T': '',
+  'local': 'Te Ggana Tuuvalu'
+}, {
+  '1': 'tw',
+  '3': 'twi',
+  'name': 'Twi',
+  '2B': 'twi',
+  '2T': '',
+  'local': 'Twi'
+}, {
+  '1': '',
+  '3': 'tyv',
+  'name': 'Tuvinian',
+  '2B': 'tyv',
+  '2T': '',
+  'local': 'тыва дыл'
+}, {
+  '1': '',
+  '3': 'udm',
+  'name': 'Udmurt',
+  '2B': 'udm',
+  '2T': '',
+  'local': 'удмурт кыл'
+}, {
+  '1': '',
+  '3': 'uga',
+  'name': 'Ugaritic',
+  '2B': 'uga',
+  '2T': '',
+  'local': 'Ugaritic'
+}, {
+  '1': 'ug',
+  '3': 'uig',
+  'name': 'Uighur',
+  '2B': 'uig',
+  '2T': '',
+  'local': 'ئۇيغۇرچە  '
+}, {
+  '1': 'uk',
+  '3': 'ukr',
+  'name': 'Ukrainian',
+  '2B': 'ukr',
+  '2T': '',
+  'local': 'українська мова'
+}, {
+  '1': '',
+  '3': 'umb',
+  'name': 'Umbundu',
+  '2B': 'umb',
+  '2T': '',
+  'local': 'Úmbúndú'
+}, {
+  '1': '',
+  '3': 'und',
+  'name': 'Undetermined',
+  '2B': 'und',
+  '2T': '',
+  'local': 'Undetermined'
+}, {
+  '1': 'ur',
+  '3': 'urd',
+  'name': 'Urdu',
+  '2B': 'urd',
+  '2T': '',
+  'local': 'اُردُو'
+}, {
+  '1': 'uz',
+  '3': 'uzb',
+  'name': 'Uzbek',
+  '2B': 'uzb',
+  '2T': '',
+  'local': 'Oʻzbekcha / ўзбекча / ئوزبېچه'
+}, {
+  '1': '',
+  '3': 'vai',
+  'name': 'Vai',
+  '2B': 'vai',
+  '2T': '',
+  'local': 'ꕙꔤ'
+}, {
+  '1': 've',
+  '3': 'ven',
+  'name': 'Venda',
+  '2B': 'ven',
+  '2T': '',
+  'local': 'Tshivenḓa'
+}, {
+  '1': 'vi',
+  '3': 'vie',
+  'name': 'Vietnamese',
+  '2B': 'vie',
+  '2T': '',
+  'local': 'Tiếng Việt'
+}, {
+  '1': 'vo',
+  '3': 'vol',
+  'name': 'Volapük',
+  '2B': 'vol',
+  '2T': '',
+  'local': 'Volapük'
+}, {
+  '1': '',
+  '3': 'vot',
+  'name': 'Votic',
+  '2B': 'vot',
+  '2T': '',
+  'local': 'vađđa ceeli'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Wakashan languages',
+  '2B': 'wak',
+  '2T': '',
+  'local': 'Wakashan languages'
+}, {
+  '1': '',
+  '3': 'wal',
+  'name': 'Wolaitta',
+  '2B': 'wal',
+  '2T': '',
+  'local': 'Wolaitta'
+}, {
+  '1': '',
+  '3': 'war',
+  'name': 'Waray',
+  '2B': 'war',
+  '2T': '',
+  'local': 'Winaray'
+}, {
+  '1': '',
+  '3': 'was',
+  'name': 'Washo',
+  '2B': 'was',
+  '2T': '',
+  'local': 'wá:šiw ʔítlu'
+}, {
+  '1': 'cy',
+  '3': 'cym',
+  'name': 'Welsh',
+  '2B': 'wel',
+  '2T': 'cym',
+  'local': 'Cymraeg'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Sorbian languages',
+  '2B': 'wen',
+  '2T': '',
+  'local': 'Serbsce / Serbski'
+}, {
+  '1': 'wa',
+  '3': 'wln',
+  'name': 'Walloon',
+  '2B': 'wln',
+  '2T': '',
+  'local': 'Walon'
+}, {
+  '1': 'wo',
+  '3': 'wol',
+  'name': 'Wolof',
+  '2B': 'wol',
+  '2T': '',
+  'local': 'Wolof'
+}, {
+  '1': '',
+  '3': 'xal',
+  'name': 'Kalmyk',
+  '2B': 'xal',
+  '2T': '',
+  'local': 'Хальмг келн / Xaľmg keln'
+}, {
+  '1': 'xh',
+  '3': 'xho',
+  'name': 'Xhosa',
+  '2B': 'xho',
+  '2T': '',
+  'local': 'isiXhosa'
+}, {
+  '1': '',
+  '3': 'yao',
+  'name': 'Yao',
+  '2B': 'yao',
+  '2T': '',
+  'local': 'Yao'
+}, {
+  '1': '',
+  '3': 'yap',
+  'name': 'Yapese',
+  '2B': 'yap',
+  '2T': '',
+  'local': 'Yapese'
+}, {
+  '1': 'yi',
+  '3': 'yid',
+  'name': 'Yiddish',
+  '2B': 'yid',
+  '2T': '',
+  'local': 'ייִדיש, יידיש'
+}, {
+  '1': 'yo',
+  '3': 'yor',
+  'name': 'Yoruba',
+  '2B': 'yor',
+  '2T': '',
+  'local': 'èdè Yorùbá'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Yupik languages',
+  '2B': 'ypk',
+  '2T': '',
+  'local': 'Yupik languages'
+}, {
+  '1': '',
+  '3': 'zap',
+  'name': 'Zapotec',
+  '2B': 'zap',
+  '2T': '',
+  'local': 'Diidxazá'
+}, {
+  '1': '',
+  '3': 'zbl',
+  'name': 'Blissymbols',
+  '2B': 'zbl',
+  '2T': '',
+  'local': 'Blissymbols'
+}, {
+  '1': '',
+  '3': 'zen',
+  'name': 'Zenaga',
+  '2B': 'zen',
+  '2T': '',
+  'local': 'Tuḍḍungiyya'
+}, {
+  '1': '',
+  '3': 'zgh',
+  'name': 'Standard Moroccan Tamazight',
+  '2B': 'zgh',
+  '2T': '',
+  'local': 'ⵜⴰⵎⴰⵣⵉⵖⵜ ⵜⴰⵏⴰⵡⴰⵢⵜ'
+}, {
+  '1': 'za',
+  '3': 'zha',
+  'name': 'Zhuang',
+  '2B': 'zha',
+  '2T': '',
+  'local': 'Vahcuengh / 話僮'
+}, {
+  '1': 'zh',
+  '3': 'zho',
+  'name': 'Chinese',
+  '2B': 'hi',
+  '2T': 'zho',
+  'local': '中文'
+}, {
+  '1': '',
+  '3': '',
+  'name': 'Zande languages',
+  '2B': 'znd',
+  '2T': '',
+  'local': 'Zande languages'
+}, {
+  '1': 'zu',
+  '3': 'zul',
+  'name': 'Zulu',
+  '2B': 'zul',
+  '2T': '',
+  'local': 'isiZulu'
+}, {
+  '1': '',
+  '3': 'zun',
+  'name': 'Zuni',
+  '2B': 'zun',
+  '2T': '',
+  'local': 'Shiwi\'ma'
+}, {
+  '1': '',
+  '3': 'zxx',
+  'name': 'No linguistic content',
+  '2B': 'zxx',
+  '2T': '',
+  'local': 'No linguistic content'
+}, {
+  '1': '',
+  '3': 'zza',
+  'name': 'Zaza',
+  '2B': 'zza',
+  '2T': '',
+  'local': 'Zaza'
+}];

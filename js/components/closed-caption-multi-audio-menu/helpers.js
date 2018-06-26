@@ -42,7 +42,6 @@ function getDisplayLanguage(languagesList, languageCode) {
     var matchingLanguage = _.find(languagesList, function(language) {
       return (
         language['1'] === languageCode ||
-        language['2'] === languageCode ||
         language['2T'] === languageCode ||
         language['2B'] === languageCode ||
         language['3'] === languageCode
