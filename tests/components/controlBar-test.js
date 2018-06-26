@@ -256,7 +256,6 @@ describe('ControlBar', function() {
     volumeButton.simulate('click');
     expect(muteClicked).toBe(true);
     var volumeBars = wrapper.find('.oo-volume-bar').hostNodes();
-    // JEST doesn't support dataset at the time of writing
     volumeBars.at(5).simulate('click');
     expect(newVolume).toBeGreaterThan(-1);
   });

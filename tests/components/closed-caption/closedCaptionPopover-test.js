@@ -73,9 +73,8 @@ describe('ClosedCaptionPopover', function() {
 
     var getMockKeydownEvent = function(target, keyCode) {
       return {
-        _type: 'keydown',
-        target: target,
         keyCode: keyCode,
+        target: target,
         preventDefault: function() {}
       };
     };
@@ -97,50 +96,26 @@ describe('ClosedCaptionPopover', function() {
     it('should focus on previous menu item when pressing UP or LEFT arrow keys', function() {
       var activeIndex = popoverMenuItems.length - 1;
       popoverMenuItems[activeIndex].focus();
-      wrapper.instance().onKeyDown({
-        keyCode: CONSTANTS.KEYCODES.UP_ARROW_KEY,
-        target: document.activeElement,
-        preventDefault: function() {}
-      });
+      wrapper.instance().onKeyDown(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.UP_ARROW_KEY));
       expect(document.activeElement).toBe(popoverMenuItems[activeIndex - 1]);
-      wrapper.instance().onKeyDown({
-        keyCode: CONSTANTS.KEYCODES.LEFT_ARROW_KEY,
-        target: document.activeElement,
-        preventDefault: function() {}
-      });
+      wrapper.instance().onKeyDown(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.LEFT_ARROW_KEY));
       expect(document.activeElement).toBe(popoverMenuItems[activeIndex - 2]);
     });
 
     it('should focus on next menu item when pressing DOWN or RIGHT arrow keys', function() {
       var activeIndex = 0;
       popoverMenuItems[activeIndex].focus();
-      wrapper.instance().onKeyDown({
-        keyCode: CONSTANTS.KEYCODES.DOWN_ARROW_KEY,
-        target: document.activeElement,
-        preventDefault: function() {}
-      });
+      wrapper.instance().onKeyDown(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.DOWN_ARROW_KEY));
       expect(document.activeElement).toBe(popoverMenuItems[activeIndex + 1]);
-      wrapper.instance().onKeyDown({
-        keyCode: CONSTANTS.KEYCODES.RIGHT_ARROW_KEY,
-        target: document.activeElement,
-        preventDefault: function() {}
-      });
+      wrapper.instance().onKeyDown(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.RIGHT_ARROW_KEY));
       expect(document.activeElement).toBe(popoverMenuItems[activeIndex + 2]);
     });
 
     it('should loop focus when navigating with arrow keys', function() {
       popoverMenuItems[0].focus();
-      wrapper.instance().onKeyDown({
-        keyCode: CONSTANTS.KEYCODES.UP_ARROW_KEY,
-        target: document.activeElement,
-        preventDefault: function() {}
-      });
+      wrapper.instance().onKeyDown(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.UP_ARROW_KEY));
       expect(document.activeElement).toBe(popoverMenuItems[popoverMenuItems.length - 1]);
-      wrapper.instance().onKeyDown({
-        keyCode: CONSTANTS.KEYCODES.RIGHT_ARROW_KEY,
-        target: document.activeElement,
-        preventDefault: function() {}
-      });
+      wrapper.instance().onKeyDown(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.RIGHT_ARROW_KEY));
       expect(document.activeElement).toBe(popoverMenuItems[0]);
     });
 
