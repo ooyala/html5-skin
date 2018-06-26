@@ -50,6 +50,6 @@ window.open = function() {};
 window.OO = {};
 
 //window navigator property check utility function
-window.OO_checkWindowNavigator = function(property, value) {
+window.OO_setWindowNavigatorProperty = function(property, value) {
   Object.defineProperty(window.navigator, property, {value: value, configurable: true});
 };

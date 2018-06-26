@@ -2,8 +2,8 @@ jest.dontMock('../js/skin');
 jest.dontMock('../js/views/pauseScreen');
 jest.dontMock('../js/constants/constants');
 jest.dontMock('../js/components/controlBar');
-jest.dontMock('../js/components/accessibleButton')
-jest.dontMock('../js/components/controlButton')
+jest.dontMock('../js/components/accessibleButton');
+jest.dontMock('../js/components/controlButton');
 jest.dontMock('../js/components/utils');
 jest.dontMock('../js/components/higher-order/accessibleMenu');
 jest.dontMock('../js/components/higher-order/preserveKeyboardFocus');
@@ -12,17 +12,13 @@ jest.dontMock('screenfull');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var Skin = require('../js/skin');
 var skinConfig = require('../config/skin.json');
 var CONSTANTS = require('../js/constants/constants');
 var sinon = require('sinon');
 
 var _ = require('underscore');
-
-OO = {
-  log: function() {}
-};
 
 var skinControllerMock = {
   state: {
@@ -37,7 +33,9 @@ var skinControllerMock = {
     },
     videoQualityOptions: {},
     multiAudioOptions: {},
-    closedCaptionOptions: {}
+    closedCaptionOptions: {},
+    config: {},
+    moreOptionsItems: []
   },
   cancelTimer: function() {},
   enablePauseAnimation: function() {},
@@ -54,7 +52,7 @@ var getMockController = function() {
 
 describe('Skin', function() {
   it('tests methods', function() {
-    var skinComponent = TestUtils.renderIntoDocument(<Skin />);
+    var skinComponent = Enzyme.mount(<Skin />).instance();
     skinComponent.handleClickOutsidePlayer();
     skinComponent.updatePlayhead(4,6,8);
     skinComponent.componentWillUnmount();
@@ -62,102 +60,114 @@ describe('Skin', function() {
 });
 
 describe('Skin screenToShow state', function() {
+  var wrapper, controller, state, skin;
   beforeEach(function() {
-    this.controller = getMockController();
-    this.state = {
+    controller = getMockController();
+    state = {
       responsiveId: 'md',
       contentTree: {}
     };
     // Render skin into DOM
-    this.skin = TestUtils.renderIntoDocument(
+    wrapper = Enzyme.mount(
       <Skin
-        controller={this.controller}
+        controller={controller}
         skinConfig={skinConfig}
-        closedCaptionOptions={{ enabled: false }} />
+        closedCaptionOptions={{
+          enabled: false,
+          availableLanguages: {
+            locale: []
+          }
+        }}
+      />
     );
+    skin = wrapper.instance();
   });
 
   it('tests LOADING SCREEN', function() {
-    this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
-    this.skin.switchComponent(this.state);
+    state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+    skin.switchComponent(state);
   });
 
   it('tests START SCREEN', function() {
-    this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
-    this.skin.switchComponent(this.state);
+    state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+    skin.switchComponent(state);
   });
 
   it('tests PLAYING SCREEN', function() {
-    this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
-    this.skin.switchComponent(this.state);
+    state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+    skin.switchComponent(state);
   });
 
   it('tests SHARE SCREEN', function() {
-    this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
-    this.skin.switchComponent(this.state);
+    state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
+    skin.switchComponent(state);
   });
 
   it('tests PAUSE SCREEN', function() {
-    this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
-    this.skin.switchComponent(this.state);
+    state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
+    skin.switchComponent(state);
   });
 
   it('tests END SCREEN', function() {
-    this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
-    this.skin.switchComponent(this.state);
+    state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
+    skin.switchComponent(state);
   });
 
   it('tests AD SCREEN', function() {
-    this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
-    this.skin.switchComponent(this.state);
+    state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
+    skin.switchComponent(state);
   });
 
   it('tests DISCOVERY SCREEN', function() {
-    this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
-    this.skin.switchComponent(this.state);
+    state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
+    state.discoveryData = {
+      relatedVideos: []
+    };
+    skin.switchComponent(state);
   });
 
   it('tests MORE OPTIONS SCREEN', function() {
-    this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
-    this.skin.switchComponent(this.state);
+    state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
+    skin.switchComponent(state);
   });
 
   it('tests CLOSED CAPTION SCREEN', function() {
-    this.state.screenToShow = CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN;
-    this.state.closedCaptionOptions = {
+    state.screenToShow = CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN;
+    state.closedCaptionOptions = {
       autoFocus: false
     };
-    this.skin.switchComponent(this.state);
+    skin.switchComponent(state);
   });
 
   it('tests VIDEO QUALITY SCREEN', function() {
-    this.state.screenToShow = CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN;
-    this.state.videoQualityOptions ={
-      autoFocus: false
-    }
-    this.skin.switchComponent(this.state);
+    state.screenToShow = CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN;
+    state.videoQualityOptions = {
+      autoFocus: false,
+      availableBitrates: []
+    };
+    skin.switchComponent(state);
   });
 
   it('tests ERROR SCREEN', function() {
-    this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
-    this.skin.switchComponent(this.state);
+    state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
+    skin.switchComponent(state);
   });
 
   it('tests DEFAULT SCREEN', function() {
-    this.skin.switchComponent(this.state);
+    skin.switchComponent(state);
   });
 
   it('tests w/o args', function() {
-    this.skin.switchComponent();
+    skin.switchComponent();
   });
 
   describe('Vr methods tests', function() {
-    it('getDirectionParams should returns correct values', function() {
-      this.skin.state.xVrMouseStart = 0;
-      this.skin.state.yVrMouseStart = 0;
-      this.skin.state.componentWidth = 300;
-      this.skin.state.componentHeight = 180;
-      var res = this.skin.getDirectionParams(20, 90);
+    it('getDirectionParams should return correct values', function() {
+      skin.state.xVrMouseStart = 0;
+      skin.state.yVrMouseStart = 0;
+      skin.state.componentWidth = 300;
+      skin.state.componentHeight = 180;
+      var res = skin.getDirectionParams(20, 90);
       /*
       * An explanation:
       *
@@ -173,10 +183,11 @@ describe('Skin screenToShow state', function() {
       * pitch = 0 + 90 * 0.666666667 = 60;
       */
       expect(res).toEqual([ 6, 0, 60 ]);
-      var res2 = this.skin.getDirectionParams('', undefined);
+      var res2 = skin.getDirectionParams('', undefined);
       expect(res2).toEqual([ 0, 0, 0 ]);
     });
-    it('handleVrPlayerMouseMove should returns correct values', function() {
+
+    it('handleVrPlayerMouseMove should return correct values', function() {
       var mockController = {
         onTouchMove: function() {}
       };
@@ -187,7 +198,8 @@ describe('Skin screenToShow state', function() {
         pageY: 90
       };
 
-      var skinComponent = TestUtils.renderIntoDocument(<Skin controller={mockController} />);
+      var wrapper = Enzyme.mount(<Skin controller={mockController} />);
+      var skinComponent = wrapper.instance();
 
       skinComponent.state.componentWidth = 300;
       skinComponent.state.componentHeight = 180;
@@ -215,6 +227,7 @@ describe('Tab Navigation', function() {
   var mockSkinConfig;
   var focusableElements;
   var originalAddEventListener;
+  var wrapper;
 
   // Mock addEventListener on document object since TestUtils.Simulate will not work in this case
   var mockEventListener = function() {
@@ -237,13 +250,14 @@ describe('Tab Navigation', function() {
   };
 
   var renderSkin = function() {
-    skin = ReactDOM.render(
+    wrapper = Enzyme.mount(
       <Skin
         controller={mockController}
         skinConfig={mockSkinConfig}
         closedCaptionOptions={{ enabled: false }} />
       , document.body
     );
+    skin = wrapper.instance();
     skin.switchComponent({
       screenToShow: CONSTANTS.SCREEN.PAUSE_SCREEN,
       responsiveId: 'md',
@@ -264,8 +278,8 @@ describe('Tab Navigation', function() {
     ];
     // Render and get focusable elements
     renderSkin();
-    var skinElement = document.body.querySelector('#oo-responsive');
-    focusableElements = skinElement.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
+    var skinElement = wrapper.find('#oo-responsive');
+    focusableElements = skinElement.getDOMNode().querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
   });
 
   afterEach(function() {
@@ -273,28 +287,30 @@ describe('Tab Navigation', function() {
     // Our version of jest doesn't seem to support mockRestore()
     document.addEventListener = originalAddEventListener;
     document.body.innerHTML = '';
+    if (document.activeElement) {
+      document.activeElement.blur();
+    }
   });
 
   it('should constrain tab navigation to control bar elements when in fullscreen mode', function() {
     mockController.state.fullscreen = true;
     // Tab on document, focuses first element
-    document.activeElement = null;
     mockEvent.target = document.body;
     eventMap.keydown(mockEvent);
     expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe(focusableElements[0].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR));
     // Tab on last element, focuses on first
-    document.activeElement = null;
+    document.activeElement.blur();
     mockEvent.target = focusableElements[focusableElements.length - 1];
     eventMap.keydown(mockEvent);
     expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe(focusableElements[0].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR));
     // Shift + tab on document, focuses on last element
-    document.activeElement = null;
+    document.activeElement.blur();
     mockEvent.target = document.body;
     mockEvent.shiftKey = true;
     eventMap.keydown(mockEvent);
     expect(document.activeElement.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)).toBe(focusableElements[focusableElements.length - 1].getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR));
     // Shift + tab on first element, focuses on last
-    document.activeElement = null;
+    document.activeElement.blur();
     mockEvent.target = focusableElements[0];
     mockEvent.shiftKey = true;
     eventMap.keydown(mockEvent);
@@ -303,35 +319,40 @@ describe('Tab Navigation', function() {
 
   it('should NOT constrain tab navigation to control bar elements when NOT in fullscreen mode', function() {
     mockController.state.fullscreen = false;
+    //document.activeElement starts as an object with jsdom. We also cannot
+    //set document.activeElement to null. We'll instead check that the docment.activeElement
+    //does not change from its original state
+    var originalActiveElement = document.activeElement;
     // Tab on last focusable element, should NOT go back to the first
-    document.activeElement = null;
     mockEvent.target = focusableElements[focusableElements.length - 1];
     eventMap.keydown(mockEvent);
-    expect(document.activeElement).toBeNull();
+    expect(document.activeElement).toBe(originalActiveElement);
     // Shift + tab on first element, should NOT focus on last
-    document.activeElement = null;
+    document.activeElement.blur();
     mockEvent.target = focusableElements[0];
     mockEvent.shiftKey = true;
     eventMap.keydown(mockEvent);
-    expect(document.activeElement).toBeNull();
+    expect(document.activeElement).toBe(originalActiveElement);
   });
 });
 
 describe('Skin', function() {
   it('tests IE10', function() {
     // set user agent to IE 10
-    window.navigator.userAgent = 'MSIE 10';
+    OO_setWindowNavigatorProperty('userAgent', 'MSIE 10');
 
     // render skin into DOM
-    var skinComponent = TestUtils.renderIntoDocument(<Skin />);
+    var wrapper = Enzyme.mount(<Skin />);
   });
 
   it('tests IE10 START SCREEN', function() {
     // set user agent to IE 10
-    window.navigator.userAgent = 'MSIE 10';
+    OO_setWindowNavigatorProperty('userAgent', 'MSIE 10');
 
     // render skin into DOM
-    var skinComponent = TestUtils.renderIntoDocument(<Skin />);
+    var skinComponent = Enzyme.mount(<Skin
+      skinConfig={skinConfig}
+    />).instance();
     skinComponent.switchComponent({
       screenToShow: CONSTANTS.SCREEN.START_SCREEN,
       responsiveId: 'md'

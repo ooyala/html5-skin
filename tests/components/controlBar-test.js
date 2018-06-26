@@ -103,10 +103,10 @@ describe('ControlBar', function() {
     beforeEach(function() {
       baseMockController.videoVrSource = {};
       baseMockController.videoVrSource.vr = {};
-      OO_checkWindowNavigator('userAgent', 'phone');
+      OO_setWindowNavigatorProperty('userAgent', 'phone');
     });
     afterEach(function() {
-      OO_checkWindowNavigator('userAgent', 'desktop');
+      OO_setWindowNavigatorProperty('userAgent', 'desktop');
     });
 
     it('render one stereo button if content vr', function() {
@@ -1114,7 +1114,7 @@ describe('ControlBar', function() {
   });
 
   it('hides the volume on iOS', function() {
-    OO_checkWindowNavigator('platform', 'iPhone');
+    OO_setWindowNavigatorProperty('platform', 'iPhone');
 
     baseMockProps.skinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
 
@@ -1317,7 +1317,7 @@ describe('ControlBar', function() {
     wrapper.instance().composedComponent.handleControlBarMouseUp(event);
     wrapper.instance().composedComponent.handleLiveClick(event);
 
-    OO_checkWindowNavigator('appVersion', 'Android');
+    OO_setWindowNavigatorProperty('appVersion', 'Android');
     wrapper.instance().composedComponent.handleVolumeIconClick(event);
     ReactDOM.unmountComponentAtNode(node);
   });

@@ -20,8 +20,9 @@ var PlayingScreen = require('./views/playingScreen');
 var ErrorScreen = require('./views/errorScreen');
 var ContentScreen = require('./views/contentScreen');
 var ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
+var createReactClass = require('create-react-class');
 
-var Skin = React.createClass({
+var Skin = createReactClass({
   mixins: [ResponsiveManagerMixin],
 
   /**
