@@ -248,10 +248,12 @@ describe('Controller', function() {
     });
 
     it('should set buffering state to true after buffering timer time has elapsed', function() {
+      jest.useFakeTimers();
       controller.startBufferingTimer();
       expect(controller.state.buffering).toBe(false);
       jest.runAllTimers();
       expect(controller.state.buffering).toBe(true);
+      jest.clearAllTimers();
     });
 
     it('should reset buffering state if it hasn\'t been cleared by the time PLAYHEAD_TIME_CHANGED is fired', function() {
@@ -515,7 +517,7 @@ describe('Controller', function() {
       expect(spy.callCount).toBe(1);
       expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, false, null, false)).toBe(true);
 
-      spy.reset();
+      spy.resetHistory();
       controller.toggleMute(true, false);
       expect(spy.callCount).toBe(1);
       expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, true, null, false)).toBe(true);
@@ -533,7 +535,7 @@ describe('Controller', function() {
       expect(spy.callCount).toBe(1);
       expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, true, null, true)).toBe(true);
 
-      spy.reset();
+      spy.resetHistory();
 
       controller.state.volumeState.muted = true;
       expect(controller.state.volumeState.muted).toBe(true);
@@ -956,6 +958,7 @@ describe('Controller', function() {
       var stringifiedTrack = JSON.stringify(track);
 
       expect(setItemSpy.calledWith(OO.CONSTANTS.SELECTED_AUDIO, stringifiedTrack)).toBeTruthy();
+      setItemSpy.restore();
     });
 
     it('should check if the icon exists if hideMultiAudioIcon is false', function() {

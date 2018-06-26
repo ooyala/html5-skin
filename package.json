@@ -101,6 +101,10 @@
       "**/tests/**/*.js?(x)",
       "**/?(*.)+(spec|test).js?(x)"
     ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/tests/controller-test.js"
+    ],
     "collectCoverage": true
   }
 }
