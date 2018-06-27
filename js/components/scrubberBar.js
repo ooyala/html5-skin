@@ -205,7 +205,7 @@ var ScrubberBar = React.createClass({
     this.handlePlayheadMouseDown(evt);
   },
 
-  handleScrubberBarMouseEnter: function(evt) {
+  handleScrubberBarMouseOver: function(evt) {
     if (!this.props.skinConfig.controlBar.scrubberBar.thumbnailPreview) return;
     if (this.props.controller.state.screenToShow === CONSTANTS.SCREEN.AD_SCREEN) return;
     if (this.isMobile) {
@@ -222,15 +222,19 @@ var ScrubberBar = React.createClass({
   },
 
   handleScrubberBarMouseMove: function(evt) {
-    this.handleScrubberBarMouseEnter(evt);
+    this.handleScrubberBarMouseOver(evt);
   },
 
-  handleScrubberBarMouseLeave: function(evt) {
+  handleScrubberBarMouseOut: function(evt) {
     if (!this.props.controller.state.thumbnails) return;
     this.props.controller.setScrubberBarHoverState(false);
     this.setState({
       hoveringX: 0
     });
+  },
+
+  handleScrubberBarMouseLeave: function(evt) {
+    this.props.controller.setScrubberBarHoverState(false);
   },
 
   /**
@@ -311,8 +315,8 @@ var ScrubberBar = React.createClass({
 
     var playheadMouseDown = this.handlePlayheadMouseDown;
     var scrubberBarMouseDown = this.handleScrubberBarMouseDown;
-    var scrubberBarMouseEnter = this.handleScrubberBarMouseEnter;
-    var scrubberBarMouseLeave = this.handleScrubberBarMouseLeave;
+    var scrubberBarMouseOver = this.handleScrubberBarMouseOver;
+    var scrubberBarMouseOut = this.handleScrubberBarMouseOut;
     var scrubberBarMouseMove = this.handleScrubberBarMouseMove;
     var playedIndicatorClassName = 'oo-played-indicator';
     var playheadClassName = 'oo-playhead';
@@ -398,17 +402,16 @@ var ScrubberBar = React.createClass({
       <div
         className="oo-scrubber-bar-container"
         ref="scrubberBarContainer"
-        onMouseEnter={scrubberBarMouseEnter}
-        onMouseLeave={scrubberBarMouseLeave}
-        onMouseMove={scrubberBarMouseMove}
-      >
+        onMouseOver={scrubberBarMouseOver}
+        onMouseOut={scrubberBarMouseOut}
+        onMouseLeave={this.handleScrubberBarMouseLeave}
+        onMouseMove={scrubberBarMouseMove}>
         {thumbnailsContainer}
         <div
           className="oo-scrubber-bar-padding"
           ref="scrubberBarPadding"
           onMouseDown={scrubberBarMouseDown}
-          onTouchStart={scrubberBarMouseDown}
-        >
+          onTouchStart={scrubberBarMouseDown}>
           <div
             ref="scrubberBar"
             className={scrubberBarClassName}
@@ -421,8 +424,7 @@ var ScrubberBar = React.createClass({
             aria-valuetext={ariaValueText}
             data-focus-id={CONSTANTS.FOCUS_IDS.SCRUBBER_BAR}
             tabIndex="0"
-            onKeyDown={this.handleScrubberBarKeyDown}
-          >
+            onKeyDown={this.handleScrubberBarKeyDown}>
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle} />
             <div className="oo-hovered-indicator" style={hoveredIndicatorStyle} />
             <div className={playedIndicatorClassName} style={playedIndicatorStyle} />
@@ -430,8 +432,7 @@ var ScrubberBar = React.createClass({
               className="oo-playhead-padding"
               style={playheadPaddingStyle}
               onMouseDown={playheadMouseDown}
-              onTouchStart={playheadMouseDown}
-            >
+              onTouchStart={playheadMouseDown}>
               <div ref="playhead" className={playheadClassName} style={playheadStyle} />
             </div>
           </div>

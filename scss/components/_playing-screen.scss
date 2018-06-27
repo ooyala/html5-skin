@@ -5,4 +5,8 @@
   &.oo-controls-active {
     background-color: rgba(0, 0, 0, 0.3);
   }
+
+  .oo-text-track-container.oo-in-background {
+    z-index: $zindex-background-captions;
+  }
 }

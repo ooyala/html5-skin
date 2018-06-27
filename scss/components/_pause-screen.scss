@@ -1,3 +1,11 @@
+
+.oo-pause-screen {
+
+  .oo-text-track-container.oo-in-background {
+    z-index: $zindex-background-captions;
+  }
+}
+
 .oo-action-icon-pause {
   @extend .oo-center-vertical-horizontal;
   opacity: 1;
