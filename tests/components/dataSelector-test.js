@@ -8,27 +8,36 @@ jest
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var DataSelector = require('../../js/components/dataSelector');
 var AccessibleButton = require('../../js/components/accessibleButton');
 var CONSTANTS = require('../../js/constants/constants');
 
 describe('DataSelector', function() {
-  var node, props, component, items, availableDataItems;
+  var node, props, component, items, availableDataItems, wrapper;
 
   function renderComponent() {
     // Note that these can be updated right before rendering
     props.availableDataItems = availableDataItems;
     // Using ReactDOM.render instead of test utils in order to allow re-render to simulate props update
-    var tree = ReactDOM.render(<DataSelector {...props} />, node);
-    component = TestUtils.findRenderedComponentWithType(tree, DataSelector);
-    items = TestUtils.scryRenderedComponentsWithType(tree, AccessibleButton);
+    wrapper = Enzyme.mount(<DataSelector {...props} />, node);
+    component = wrapper.find(DataSelector);
+    items = wrapper.find(AccessibleButton);
+  }
+
+  function updateComponent() {
+    //wrapper.update() is not working properly, see:
+    //https://github.com/airbnb/enzyme/issues/1245#issuecomment-335355420
+    //Using alternative suggested in that comment instead
+    wrapper.setProps(props);
+    component = wrapper.find(DataSelector);
+    items = wrapper.find(AccessibleButton);
   }
 
   function findItemByLabel(label) {
     for (var i = 0; i < items.length; i++) {
-      if (items[i].props.ariaLabel === label) {
-        return items[i];
+      if (items.at(i).props().ariaLabel === label) {
+        return items.at(i);
       }
     }
     return null;
@@ -59,7 +68,7 @@ describe('DataSelector', function() {
 
   afterEach(function() {
     if (document.activeElement) {
-      document.activeElement = null;
+      document.activeElement.blur();
     }
   });
 
@@ -73,15 +82,14 @@ describe('DataSelector', function() {
     props.selectedData = 'a';
 
     renderComponent();
-    expect(document.activeElement).toBeFalsy();
+    //TODO: There is no easy way to check the initial activeElement
     // Simulate click on a different element than the one currently selected
-    secondItemElement = ReactDOM.findDOMNode(findItemByLabel(availableDataItems[1]));
-    TestUtils.Simulate.keyDown(secondItemElement, { key: CONSTANTS.KEY_VALUES.SPACE });
-    TestUtils.Simulate.click(secondItemElement);
+    secondItemElement = findItemByLabel(availableDataItems[1]);
+    secondItemElement.simulate('keyDown', { key: CONSTANTS.KEY_VALUES.SPACE });
+    secondItemElement.simulate('click');
     // Re-render in order to reflect new prop state, focus should be set afterwards
-    renderComponent();
-    secondItemElement = ReactDOM.findDOMNode(findItemByLabel(availableDataItems[1]));
-    expect(document.activeElement).toBe(secondItemElement);
+    updateComponent();
+    expect(document.activeElement).toBe(secondItemElement.getDOMNode());
   });
 
   it('should auto focus on the first element when moving to next page with keyboard', function() {
@@ -89,14 +97,14 @@ describe('DataSelector', function() {
     props.viewSize = 'md';
     props.dataItemsPerPage.md = 4;
 
-    expect(document.activeElement).toBeFalsy();
+    //TODO: There is no easy way to check the initial activeElement
     renderComponent();
-    var nextButton = ReactDOM.findDOMNode(findItemByLabel(CONSTANTS.ARIA_LABELS.MORE_OPTIONS));
-    TestUtils.Simulate.keyDown(nextButton, { key: CONSTANTS.KEY_VALUES.SPACE });
-    TestUtils.Simulate.click(nextButton);
+    var nextButton = findItemByLabel(CONSTANTS.ARIA_LABELS.MORE_OPTIONS);
+    nextButton.simulate('keyDown', { key: CONSTANTS.KEY_VALUES.SPACE });
+    nextButton.simulate('click');
 
-    renderComponent();
-    var firstBtnSecondPage = ReactDOM.findDOMNode(findItemByLabel('e'));
+    updateComponent();
+    var firstBtnSecondPage = findItemByLabel('e').getDOMNode();
     expect(document.activeElement).toBe(firstBtnSecondPage);
   });
 
@@ -105,23 +113,23 @@ describe('DataSelector', function() {
     props.viewSize = 'md';
     props.dataItemsPerPage.md = 4;
 
-    expect(document.activeElement).toBeFalsy();
+    //TODO: There is no easy way to check the initial activeElement
     renderComponent();
-    var prevButton = ReactDOM.findDOMNode(findItemByLabel(CONSTANTS.ARIA_LABELS.PREVIOUS_OPTIONS));
-    var nextButton = ReactDOM.findDOMNode(findItemByLabel(CONSTANTS.ARIA_LABELS.MORE_OPTIONS));
-    TestUtils.Simulate.click(nextButton);
-    TestUtils.Simulate.keyDown(prevButton, { key: CONSTANTS.KEY_VALUES.SPACE });
-    TestUtils.Simulate.click(prevButton);
+    var prevButton = findItemByLabel(CONSTANTS.ARIA_LABELS.PREVIOUS_OPTIONS);
+    var nextButton = findItemByLabel(CONSTANTS.ARIA_LABELS.MORE_OPTIONS);
+    nextButton.simulate('click');
+    prevButton.simulate('keyDown', { key: CONSTANTS.KEY_VALUES.SPACE });
+    prevButton.simulate('click');
 
-    renderComponent();
-    var lastBtnFirstPage = ReactDOM.findDOMNode(findItemByLabel('d'));
+    updateComponent();
+    var lastBtnFirstPage = findItemByLabel('d').getDOMNode();
     expect(document.activeElement).toBe(lastBtnFirstPage);
   });
 
   it('should render ARIA attributes on previous and next buttons', function() {
     renderComponent();
-    var prevButton = ReactDOM.findDOMNode(findItemByLabel(CONSTANTS.ARIA_LABELS.PREVIOUS_OPTIONS));
-    var nextButton = ReactDOM.findDOMNode(findItemByLabel(CONSTANTS.ARIA_LABELS.MORE_OPTIONS));
+    var prevButton = findItemByLabel(CONSTANTS.ARIA_LABELS.PREVIOUS_OPTIONS).getDOMNode();
+    var nextButton = findItemByLabel(CONSTANTS.ARIA_LABELS.MORE_OPTIONS).getDOMNode();
     expect(prevButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PREVIOUS_OPTIONS);
     expect(nextButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.MORE_OPTIONS);
     expect(prevButton.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU_ITEM);
@@ -130,7 +138,7 @@ describe('DataSelector', function() {
 
   it('should render ARIA attributes on menu items', function() {
     renderComponent();
-    var menuItem = ReactDOM.findDOMNode(findItemByLabel('a'));
+    var menuItem = findItemByLabel('a').getDOMNode();
     expect(menuItem.getAttribute('aria-label')).toBe('a');
     expect(menuItem.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO);
   });
@@ -138,7 +146,7 @@ describe('DataSelector', function() {
   it('should set menu role and ARIA label on main element', function() {
     props.ariaLabel = 'customAriaLabel';
     renderComponent();
-    var mainElement = ReactDOM.findDOMNode(component);
+    var mainElement = component.getDOMNode();
     expect(mainElement.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU);
     expect(mainElement.getAttribute('aria-label')).toBe(props.ariaLabel);
   });
@@ -147,11 +155,12 @@ describe('DataSelector', function() {
     var secondMenuItem;
     props.selectedData = 'a';
     renderComponent();
-    secondMenuItem = ReactDOM.findDOMNode(findItemByLabel('b'));
+    var secondMenuWrapper = findItemByLabel('b');
+    secondMenuItem = secondMenuWrapper.getDOMNode();
     expect(secondMenuItem.getAttribute('aria-checked')).toBe('false');
-    TestUtils.Simulate.click(secondMenuItem);
+    secondMenuWrapper.simulate('click');
     renderComponent();
-    secondMenuItem = ReactDOM.findDOMNode(findItemByLabel('b'));
+    secondMenuItem = findItemByLabel('b').getDOMNode();
     expect(secondMenuItem.getAttribute('aria-checked')).toBe('true');
   });
 

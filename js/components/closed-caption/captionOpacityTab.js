@@ -4,8 +4,9 @@ var React = require('react'),
     CONSTANTS = require('../../constants/constants'),
     SelectionContainer = require('./selectionContainer'),
     Slider = require('../slider');
+var createReactClass = require('create-react-class');
 
-var CaptionOpacityTab = React.createClass({
+var CaptionOpacityTab = createReactClass({
   changeTextOpacity: function(value) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();

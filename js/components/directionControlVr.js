@@ -1,7 +1,9 @@
 var React = require('react');
 var classnames = require('classnames');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var DirectionControlVr = React.createClass({
+var DirectionControlVr = createReactClass({
   getInitialState: function() {
     return {
       isTouched: false
@@ -48,7 +50,7 @@ var DirectionControlVr = React.createClass({
 });
 
 DirectionControlVr.propTypes = {
-  handleVrViewControlsClick: React.PropTypes.func
+  handleVrViewControlsClick: PropTypes.func
 };
 
 module.exports = DirectionControlVr;

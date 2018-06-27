@@ -7,7 +7,7 @@ jest.dontMock('../../../js/constants/constants');
 jest.dontMock('classnames');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var ClosedCaptionPopover = require('../../../js/components/closed-caption/closedCaptionPopover');
 var CONSTANTS = require('../../../js/constants/constants');
 
@@ -40,79 +40,82 @@ describe('ClosedCaptionPopover', function() {
   });
 
   it('should render a ClosedCaptionPopover', function() {
-    var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPopover {...props}/>);
+    var wrapper = Enzyme.mount(<ClosedCaptionPopover {...props}/>);
   });
 
   it('should render ARIA attributes on "More Captions" button', function() {
-    var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPopover {...props}/>);
-    var moreCaptionsBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-more-captions');
-    expect(moreCaptionsBtn.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.CAPTION_OPTIONS);
-    expect(moreCaptionsBtn.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU_ITEM);
+    var wrapper = Enzyme.mount(<ClosedCaptionPopover {...props}/>);
+    var moreCaptionsBtn = wrapper.find('.oo-more-captions').hostNodes();
+    expect(moreCaptionsBtn.getDOMNode().getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.CAPTION_OPTIONS);
+    expect(moreCaptionsBtn.getDOMNode().getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU_ITEM);
   });
 
   it('should set closed caption options autofocus to true when triggered with keyboard', function() {
-    var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPopover {...props}/>);
-    var moreCaptionsBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-more-captions');
-    expect(props.controller.state.closedCaptionOptions.autoFocus).toBe(false);
-    TestUtils.Simulate.keyDown(moreCaptionsBtn, { key: CONSTANTS.KEY_VALUES.SPACE });
-    TestUtils.Simulate.click(moreCaptionsBtn);
-    expect(props.controller.state.closedCaptionOptions.autoFocus).toBe(true);
+    var wrapper = Enzyme.mount(<ClosedCaptionPopover {...props}/>);
+    var moreCaptionsBtn = wrapper.find('.oo-more-captions').hostNodes();
+    expect(wrapper.instance().composedComponent.props.controller.state.closedCaptionOptions.autoFocus).toBe(false);
+    moreCaptionsBtn.simulate('keyDown', { key: CONSTANTS.KEY_VALUES.SPACE });
+    moreCaptionsBtn.simulate('click');
+    expect(wrapper.instance().composedComponent.props.controller.state.closedCaptionOptions.autoFocus).toBe(true);
   });
 
   it('should preemptively set the control bar CC button as the focused control when opening CC menu with keyboard', function() {
-    var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPopover {...props}/>);
-    var moreCaptionsBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-more-captions');
-    expect(props.controller.state.focusedControl).toBeNull();
-    TestUtils.Simulate.keyDown(moreCaptionsBtn, { key: CONSTANTS.KEY_VALUES.SPACE });
-    TestUtils.Simulate.click(moreCaptionsBtn);
-    expect(props.controller.state.focusedControl).toBe(CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION);
+    var wrapper = Enzyme.mount(<ClosedCaptionPopover {...props}/>);
+    var moreCaptionsBtn = wrapper.find('.oo-more-captions').hostNodes();
+    expect(wrapper.instance().composedComponent.props.controller.state.focusedControl).toBeNull();
+    moreCaptionsBtn.simulate('keyDown', { key: CONSTANTS.KEY_VALUES.SPACE });
+    moreCaptionsBtn.simulate('click');
+    expect(wrapper.instance().composedComponent.props.controller.state.focusedControl).toBe(CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION);
   });
 
   describe('keyboard navigation', function() {
-    var popover, popoverMenuItems;
+    var popover, popoverMenuItems, wrapper;
 
     var getMockKeydownEvent = function(target, keyCode) {
       return {
-        _type: 'keydown',
-        target: target,
         keyCode: keyCode,
+        target: target,
         preventDefault: function() {}
       };
     };
 
     beforeEach(function() {
-      var DOM = TestUtils.renderIntoDocument(<ClosedCaptionPopover {...props} />);
-      popover = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-popover-horizontal');
-      popoverMenuItems = popover.querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
+      wrapper = Enzyme.mount(<ClosedCaptionPopover {...props} />);
+      popover = wrapper.find('.oo-popover-horizontal');
+      popoverMenuItems = popover.getDOMNode().querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
     });
 
     afterEach(function() {
-      document.activeElement = null;
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
     });
 
+    //TODO: I couldn't find an easy way to simulate the keydown event with the proper event target,
+      //so I'm calling onKeyDown manually for the below tests for now
     it('should focus on previous menu item when pressing UP or LEFT arrow keys', function() {
       var activeIndex = popoverMenuItems.length - 1;
-      document.activeElement = popoverMenuItems[activeIndex];
-      popover.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.UP_ARROW_KEY));
+      popoverMenuItems[activeIndex].focus();
+      wrapper.instance().onKeyDown(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.UP_ARROW_KEY));
       expect(document.activeElement).toBe(popoverMenuItems[activeIndex - 1]);
-      popover.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.LEFT_ARROW_KEY));
+      wrapper.instance().onKeyDown(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.LEFT_ARROW_KEY));
       expect(document.activeElement).toBe(popoverMenuItems[activeIndex - 2]);
     });
 
     it('should focus on next menu item when pressing DOWN or RIGHT arrow keys', function() {
       var activeIndex = 0;
-      document.activeElement = popoverMenuItems[activeIndex];
-      popover.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.DOWN_ARROW_KEY));
+      popoverMenuItems[activeIndex].focus();
+      wrapper.instance().onKeyDown(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.DOWN_ARROW_KEY));
       expect(document.activeElement).toBe(popoverMenuItems[activeIndex + 1]);
-      popover.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.RIGHT_ARROW_KEY));
+      wrapper.instance().onKeyDown(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.RIGHT_ARROW_KEY));
       expect(document.activeElement).toBe(popoverMenuItems[activeIndex + 2]);
     });
 
     it('should loop focus when navigating with arrow keys', function() {
-      document.activeElement = popoverMenuItems[0];
-      popover.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.UP_ARROW_KEY));
+      popoverMenuItems[0].focus();
+      wrapper.instance().onKeyDown(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.UP_ARROW_KEY));
       expect(document.activeElement).toBe(popoverMenuItems[popoverMenuItems.length - 1]);
-      popover.dispatchEvent(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.RIGHT_ARROW_KEY));
+      wrapper.instance().onKeyDown(getMockKeydownEvent(document.activeElement, CONSTANTS.KEYCODES.RIGHT_ARROW_KEY));
       expect(document.activeElement).toBe(popoverMenuItems[0]);
     });
 

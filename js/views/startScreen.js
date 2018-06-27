@@ -10,8 +10,10 @@ var React = require('react'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Utils = require('../components/utils');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var StartScreen = React.createClass({
+var StartScreen = createReactClass({
   mixins: [ResizeMixin],
 
   getInitialState: function() {
@@ -169,16 +171,16 @@ var StartScreen = React.createClass({
 });
 
 StartScreen.propTypes = {
-  isInitializing: React.PropTypes.bool,
-  skinConfig: React.PropTypes.shape({
-    startScreen: React.PropTypes.shape({
-      playIconStyle: React.PropTypes.shape({
-        color: React.PropTypes.string
+  isInitializing: PropTypes.bool,
+  skinConfig: PropTypes.shape({
+    startScreen: PropTypes.shape({
+      playIconStyle: PropTypes.shape({
+        color: PropTypes.string
       })
     }),
-    icons: React.PropTypes.objectOf(React.PropTypes.object)
+    icons: PropTypes.objectOf(PropTypes.object)
   }),
-  showSpinner: React.PropTypes.bool
+  showSpinner: PropTypes.bool
 };
 
 StartScreen.defaultProps = {

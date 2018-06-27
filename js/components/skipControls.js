@@ -7,8 +7,10 @@ var Utils = require('./utils');
 var preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus');
 var CONSTANTS = require('../constants/constants');
 var MACROS = require('../constants/macros');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var SkipControls = React.createClass({
+var SkipControls = createReactClass({
   /**
    * Stores a ref to this component's main element.
    * @private
@@ -262,32 +264,32 @@ var SkipControls = React.createClass({
 });
 
 SkipControls.propTypes = {
-  isInactive: React.PropTypes.bool,
-  isInBackground: React.PropTypes.bool,
-  language: React.PropTypes.string,
-  localizableStrings: React.PropTypes.object,
-  responsiveView: React.PropTypes.bool.isRequired,
-  skinConfig: React.PropTypes.object.isRequired,
-  onFocus: React.PropTypes.func,
-  onBlur: React.PropTypes.func,
-  config: React.PropTypes.shape({
-    hasPreviousVideos: React.PropTypes.bool.isRequired,
-    hasNextVideos: React.PropTypes.bool.isRequired
+  isInactive: PropTypes.bool,
+  isInBackground: PropTypes.bool,
+  language: PropTypes.string,
+  localizableStrings: PropTypes.object,
+  responsiveView: PropTypes.bool.isRequired,
+  skinConfig: PropTypes.object.isRequired,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
+  config: PropTypes.shape({
+    hasPreviousVideos: PropTypes.bool.isRequired,
+    hasNextVideos: PropTypes.bool.isRequired
   }),
-  controller: React.PropTypes.shape({
-    state: React.PropTypes.shape({
-      isMobile: React.PropTypes.bool.isRequired,
-      duration: React.PropTypes.number.isRequired,
-      scrubberBar: React.PropTypes.shape({
-        isHovering: React.PropTypes.bool
+  controller: PropTypes.shape({
+    state: PropTypes.shape({
+      isMobile: PropTypes.bool.isRequired,
+      duration: PropTypes.number.isRequired,
+      scrubberBar: PropTypes.shape({
+        isHovering: PropTypes.bool
       })
     }),
-    rewindOrRequestPreviousVideo: React.PropTypes.func.isRequired,
-    requestNextVideo: React.PropTypes.func.isRequired,
-    cancelTimer: React.PropTypes.func.isRequired,
+    rewindOrRequestPreviousVideo: PropTypes.func.isRequired,
+    requestNextVideo: PropTypes.func.isRequired,
+    cancelTimer: PropTypes.func.isRequired,
   }),
-  a11yControls: React.PropTypes.shape({
-    seekBy: React.PropTypes.func.isRequired
+  a11yControls: PropTypes.shape({
+    seekBy: PropTypes.func.isRequired
   })
 };
 

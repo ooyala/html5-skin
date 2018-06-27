@@ -11,8 +11,10 @@ var React = require('react'),
     DiscoverItem = require('./discoverItem'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var DiscoveryPanel = React.createClass({
+var DiscoveryPanel = createReactClass({
   mixins: [ResizeMixin],
 
   getInitialState: function() {
@@ -178,28 +180,28 @@ var DiscoveryPanel = React.createClass({
 });
 
 DiscoveryPanel.propTypes = {
-  responsiveView: React.PropTypes.string,
-  videosPerPage: React.PropTypes.objectOf(React.PropTypes.number),
-  discoveryData: React.PropTypes.shape({
-    relatedVideos: React.PropTypes.arrayOf(
-      React.PropTypes.shape({
-        preview_image_url: React.PropTypes.string,
-        name: React.PropTypes.string
+  responsiveView: PropTypes.string,
+  videosPerPage: PropTypes.objectOf(PropTypes.number),
+  discoveryData: PropTypes.shape({
+    relatedVideos: PropTypes.arrayOf(
+      PropTypes.shape({
+        preview_image_url: PropTypes.string,
+        name: PropTypes.string
       })
     )
   }),
-  skinConfig: React.PropTypes.shape({
-    discoveryScreen: React.PropTypes.shape({
-      showCountDownTimerOnEndScreen: React.PropTypes.bool,
-      countDownTime: React.PropTypes.number,
-      contentTitle: React.PropTypes.shape({
-        show: React.PropTypes.bool
+  skinConfig: PropTypes.shape({
+    discoveryScreen: PropTypes.shape({
+      showCountDownTimerOnEndScreen: PropTypes.bool,
+      countDownTime: PropTypes.number,
+      contentTitle: PropTypes.shape({
+        show: PropTypes.bool
       })
     }),
-    icons: React.PropTypes.objectOf(React.PropTypes.object)
+    icons: PropTypes.objectOf(PropTypes.object)
   }),
-  controller: React.PropTypes.shape({
-    sendDiscoveryClickEvent: React.PropTypes.func
+  controller: PropTypes.shape({
+    sendDiscoveryClickEvent: PropTypes.func
   })
 };
 

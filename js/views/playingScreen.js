@@ -18,8 +18,10 @@ var React = require('react'),
     Tooltip = require('../components/tooltip'),
     SkipControls = require('../components/skipControls'),
     UnmuteIcon = require('../components/unmuteIcon');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var PlayingScreen = React.createClass({
+var PlayingScreen = createReactClass({
   mixins: [ResizeMixin],
 
   getInitialState: function() {

@@ -6,7 +6,7 @@ jest.dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 
 var helpers = require('../../../js/components/closed-caption-multi-audio-menu/helpers');
 var CONSTANTS = require('../../../js/constants/constants');
@@ -14,7 +14,7 @@ var AccessibleButton = require('../../../js/components/accessibleButton');
 
 var Tab = require('../../../js/components/closed-caption-multi-audio-menu/tab');
 
-describe('Tab component', function() {
+describe('Tab wrapper', function() {
   var clickedId = null;
 
   var props = {
@@ -46,28 +46,28 @@ describe('Tab component', function() {
     clickedId = null;
   });
 
-  it('should render tab component', function() {
-    var component = TestUtils.renderIntoDocument(<Tab {...props} />);
+  it('should render tab wrapper', function() {
+    var wrapper = Enzyme.mount(<Tab {...props} />);
 
-    expect(component).toBeTruthy();
+    expect(wrapper).toBeTruthy();
   });
 
-  it('should render tab component with correct data', function() {
-    var component = TestUtils.renderIntoDocument(<Tab {...props} />);
-    var header = TestUtils.findRenderedDOMComponentWithClass(component, 'oo-cc-ma-menu__header');
-    var listItems = TestUtils.scryRenderedDOMComponentsWithClass(component, 'oo-cc-ma-menu__element');
+  it('should render tab wrapper with correct data', function() {
+    var wrapper = Enzyme.mount(<Tab {...props} />);
+    var header = wrapper.find('.oo-cc-ma-menu__header').hostNodes();
+    var listItems = wrapper.find('.oo-cc-ma-menu__element').hostNodes();
 
-    expect(header.textContent).toContain(props.header);
+    expect(header.getDOMNode().textContent).toContain(props.header);
 
     expect(listItems.length).toBe(3);
-    expect(listItems[2].className).toContain('oo-cc-ma-menu__element--active');
+    expect(listItems.at(2).getDOMNode().className).toContain('oo-cc-ma-menu__element--active');
   });
 
   it('should call handler on click', function() {
-    var component = TestUtils.renderIntoDocument(<Tab {...props} />);
-    var listItemBtns = TestUtils.scryRenderedDOMComponentsWithClass(component, 'oo-multi-audio-btn');
+    var wrapper = Enzyme.mount(<Tab {...props} />);
+    var listItemBtns = wrapper.find('.oo-multi-audio-btn').hostNodes();
 
-    TestUtils.Simulate.click(listItemBtns[0]);
+    listItemBtns.at(0).simulate('click');
     expect(clickedId).toBe('1');
   });
 
@@ -94,21 +94,20 @@ describe('Tab component', function() {
       skinConfig: {}
     };
 
-    var component = TestUtils.renderIntoDocument(<Tab {...propsNoHandler} />);
-    var listItemBtns = TestUtils.scryRenderedDOMComponentsWithClass(component, 'oo-multi-audio-btn');
+    var wrapper = Enzyme.mount(<Tab {...propsNoHandler} />);
+    var listItemBtns = wrapper.find('.oo-multi-audio-btn');
 
-    TestUtils.Simulate.click(listItemBtns[0]);
+    listItemBtns.at(0).simulate('click');
     expect(clickedId).toBe(null);
   });
 
   it('should detect when button is triggered with keyboard', function() {
-    var component = TestUtils.renderIntoDocument(<Tab {...props} />);
-    var accessibleButtonComponent = TestUtils.scryRenderedComponentsWithType(component, AccessibleButton)[0];
+    var wrapper = Enzyme.mount(<Tab {...props} />);
+    var accessibleButtonComponent = wrapper.find(AccessibleButton).at(0);
 
-    var listItemBtn = ReactDOM.findDOMNode(accessibleButtonComponent);
-    expect(accessibleButtonComponent.triggeredWithKeyboard).toBe(false);
-    TestUtils.Simulate.keyDown(listItemBtn, { key: CONSTANTS.KEY_VALUES.ENTER });
-    expect(accessibleButtonComponent.triggeredWithKeyboard).toBe(true);
+    expect(accessibleButtonComponent.instance().triggeredWithKeyboard).toBe(false);
+    accessibleButtonComponent.simulate('keyDown', { key: CONSTANTS.KEY_VALUES.ENTER });
+    expect(accessibleButtonComponent.instance().triggeredWithKeyboard).toBe(true);
   });
 
 });

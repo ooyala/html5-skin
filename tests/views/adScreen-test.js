@@ -5,16 +5,17 @@ jest.dontMock('../../js/views/adScreen')
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var AdScreen = require('../../js/views/adScreen');
 var defaultSkinConfig = require('../../config/skin.json');
 var UnmuteIcon = require('../../js/components/unmuteIcon');
+var AdPanel = require('../../js/components/adPanel');
 
 describe('AdScreen', function() {
-  it('creates an ad screen', function() {
+  var mockController, mockSkinConfig;
 
-    // Render ad screen into DOM
-    var mockController = {
+  beforeEach(function() {
+    mockController = {
       state: {
         isMobile: false,
         volumeState: {
@@ -22,7 +23,7 @@ describe('AdScreen', function() {
         }
       }
     };
-    var mockSkinConfig = {
+    mockSkinConfig = {
       adScreen: {
         showControlBar: true,
         showAdMarquee: true
@@ -39,7 +40,10 @@ describe('AdScreen', function() {
         pause: {'fontStyleClass': 'oo-icon oo-icon-pause'}
       }
     };
-    var DOM = TestUtils.renderIntoDocument(
+  });
+  it('creates an ad screen', function() {
+    // Render ad screen into DOM
+    var wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
@@ -48,125 +52,72 @@ describe('AdScreen', function() {
   });
 
   it('handles mouseover and mouseout', function() {
-
     // Render ad screen into DOM
     var controlBarVisible = true;
-    var mockController = {
-      state: {
-        isMobile: false,
-        volumeState: {
-          muted: false
-        }
-      },
-      hideControlBar: function() {
-        controlBarVisible = false;
-      },
-      showControlBar: function() {
-        controlBarVisible = true;
-      }
+    mockController.hideControlBar = function() {
+      controlBarVisible = false;
     };
-    var mockSkinConfig = {
-      adScreen: {
-        showControlBar: true,
-        showAdMarquee: true
-      },
-      pauseScreen: {
-        showPauseIcon: true,
-        pauseIconPosition: 'center',
-        PauseIconStyle: {
-          color: 'white',
-          opacity: 1
-        }
-      },
-      icons: {
-        pause: {'fontStyleClass': 'oo-icon oo-icon-pause'}
-      }
+    mockController.showControlBar = function() {
+      controlBarVisible = true;
     };
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
         controlBarAutoHide={true}
       />);
 
-    expect(DOM.state.controlBarVisible).toBe(true);
-    TestUtils.Simulate.mouseOut(ReactDOM.findDOMNode(DOM));
-    expect(DOM.state.controlBarVisible).toBe(false);
+    expect(wrapper.instance().state.controlBarVisible).toBe(true);
+    wrapper.simulate('mouseOut');
+    expect(wrapper.instance().state.controlBarVisible).toBe(false);
     expect(controlBarVisible).toBe(false);
 
-    TestUtils.Simulate.mouseOver(ReactDOM.findDOMNode(DOM));
-    expect(DOM.state.controlBarVisible).toBe(true);
+    wrapper.simulate('mouseOver');
+    expect(wrapper.instance().state.controlBarVisible).toBe(true);
     expect(controlBarVisible).toBe(true);
   });
 
   it('checks that ad marquee is shown/not shown when appropriate', function() {
-
-    // Render ad screen into DOM
-    var mockController = {
-      state: {
-        isMobile: false,
-        showAdMarquee: true,
-        volumeState: {
-          muted: false
-        }
-      }
-    };
-    var mockSkinConfig = {
-      adScreen: {
-        showControlBar: true,
-        showAdMarquee: true
-      },
-      pauseScreen: {
-        showPauseIcon: true,
-        pauseIconPosition: 'center',
-        PauseIconStyle: {
-          color: 'white',
-          opacity: 1
-        }
-      },
-      icons: {
-        pause: {'fontStyleClass': 'oo-icon oo-icon-pause'}
-      }
-    };
-
     // showing ad marquee
-    var DOM = TestUtils.renderIntoDocument(
+    mockController.state.showAdMarquee = true;
+
+    var wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
         controlBarAutoHide={true}
       />);
 
-    var adPanel = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-ad-panel');
-    expect(adPanel[0]._childNodes.length).not.toBe(0);
+    var adPanel = wrapper.find('.oo-ad-panel');
+    expect(adPanel.at(0).children().length).not.toBe(0);
 
     // not showing ad marquee
     mockController.state.showAdMarquee = true;
     mockSkinConfig.adScreen.showAdMarquee = false;
 
-    var DOM = TestUtils.renderIntoDocument(
+    wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
         controlBarAutoHide={true}
       />);
 
-    var adPanel1 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-ad-panel');
-    expect(adPanel1[0]._childNodes.length).toBe(0);
+    var adPanel1 = wrapper.find('.oo-ad-panel');
+    expect(adPanel1.at(0).children().length).toBe(0);
 
     // not showing ad marquee
     mockController.state.showAdMarquee = false;
     mockSkinConfig.adScreen.showAdMarquee = true;
 
-    var DOM = TestUtils.renderIntoDocument(
+    wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
         controlBarAutoHide={true}
       />);
 
-    var adPanel2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-ad-panel');
-    expect(adPanel2[0]._childNodes.length).toBe(0);
+    var adPanel2 = wrapper.find('.oo-ad-panel');
+    expect(adPanel2.at(0).children().length).toBe(0);
 
   });
 
@@ -174,40 +125,15 @@ describe('AdScreen', function() {
 
     // Render ad screen into DOM
     var controlBarVisible = true;
-    var mockController = {
-      state: {
-        isMobile: false,
-        controlBarVisible: false,
-        volumeState: {
-          muted: false
-        }
-      },
-      hideControlBar: function() {
-        controlBarVisible = false;
-      },
-      showControlBar: function() {
-        controlBarVisible = true;
-      },
-      startHideControlBarTimer: function() {}
+    mockController.hideControlBar = function() {
+      controlBarVisible = false;
     };
-    var mockSkinConfig = {
-      adScreen: {
-        showControlBar: true,
-        showAdMarquee: true
-      },
-      pauseScreen: {
-        showPauseIcon: true,
-        pauseIconPosition: 'center',
-        PauseIconStyle: {
-          color: 'white',
-          opacity: 1
-        }
-      },
-      icons: {
-        pause: {'fontStyleClass': 'icon icon-pause'}
-      }
+    mockController.showControlBar = function() {
+      controlBarVisible = true;
     };
-    var DOM = TestUtils.renderIntoDocument(
+    mockController.startHideControlBarTimer = function() {};
+    mockController.state.controlBarVisible = false;
+    var wrapper = Enzyme.mount(
       <AdScreen
         playerState={"playing"}
         controller={mockController}
@@ -216,75 +142,41 @@ describe('AdScreen', function() {
         fullscreen={true}
       />);
 
-    expect(DOM.state.controlBarVisible).toBe(true);
-    TestUtils.Simulate.mouseMove(ReactDOM.findDOMNode(DOM));
-    expect(DOM.state.controlBarVisible).toBe(false);
-
+    expect(wrapper.instance().state.controlBarVisible).toBe(true);
+    wrapper.simulate('mouseMove');
+    expect(wrapper.instance().state.controlBarVisible).toBe(false);
   });
 
   it('test player clicks', function() {
-
     // Render ad screen into DOM
     var adsClicked = false;
-    var mockController = {
-      state: {
-        isMobile: false,
-        accessibilityControlsEnabled: false,
-        volumeState: {
-          muted: false
-        }
-      },
-      onAdsClicked: function() {
-        adsClicked = true;
-      }
+    mockController.onAdsClicked = function() {
+      adsClicked = true;
     };
-    var mockSkinConfig = {
-      adScreen: {
-        showControlBar: true,
-        showAdMarquee: true
-      },
-      pauseScreen: {
-        showPauseIcon: true,
-        pauseIconPosition: 'center',
-        PauseIconStyle: {
-          color: 'white',
-          opacity: 1
-        }
-      },
-      icons: {
-        pause: {'fontStyleClass': 'icon icon-pause'}
-      }
-    };
-    var DOM = TestUtils.renderIntoDocument(
+    mockController.state.accessibilityControlsEnabled = false;
+    var wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
       />);
 
-    TestUtils.Simulate.mouseUp(DOM.refs.adScreen);
+    wrapper.simulate('mouseUp');
     expect(mockController.state.accessibilityControlsEnabled).toBe(true);
 
-    TestUtils.Simulate.click(DOM.refs.adPanel);
+    wrapper.find('.oo-ad-panel').simulate('click');
     expect(adsClicked).toBe(true);
   });
 
   it('tests ad componentWill*', function() {
     var adsClicked = false;
-    var mockController = {
-      state: {
-        isMobile: false,
-        accessibilityControlsEnabled: false,
-        controlBarVisible: false,
-        volumeState: {
-          muted: false
-        }
-      },
-      onAdsClicked: function() {
-        adsClicked = true;
-      },
-      cancelTimer: function() {},
-      startHideControlBarTimer: function() {}
+    mockController.onAdsClicked = function() {
+      adsClicked = true;
     };
+    mockController.cancelTimer = function() {};
+    mockController.startHideControlBarTimer = function() {};
+    mockController.state.accessibilityControlsEnabled = false;
+    mockController.state.controlBarVisible = false;
+
     var mockController2 = {
       state: {
         isMobile: true,
@@ -300,26 +192,9 @@ describe('AdScreen', function() {
       cancelTimer: function() {},
       startHideControlBarTimer: function() {}
     };
-    var mockSkinConfig = {
-      adScreen: {
-        showControlBar: true,
-        showAdMarquee: true
-      },
-      pauseScreen: {
-        showPauseIcon: true,
-        pauseIconPosition: 'center',
-        PauseIconStyle: {
-          color: 'white',
-          opacity: 1
-        }
-      },
-      icons: {
-        pause: {'fontStyleClass': 'icon icon-pause'}
-      }
-    };
 
     var node = document.createElement('div');
-    var adScreen = ReactDOM.render(
+    var wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
@@ -327,7 +202,7 @@ describe('AdScreen', function() {
         fullscreen={true} />, node
     );
 
-    ReactDOM.render(
+    Enzyme.mount(
       <AdScreen
         controller={mockController2}
         skinConfig={mockSkinConfig}
@@ -341,51 +216,43 @@ describe('AdScreen', function() {
       type: 'touchend'
     };
 
-    adScreen.handleTouchEnd(event);
-    ReactDOM.unmountComponentAtNode(node);
+    wrapper.instance().handleTouchEnd(event);
+    wrapper.unmount();
   });
 
   it('should display unmute icon when handling muted autoplay', function() {
-    var mockController = {
-      state: {
-        upNextInfo: {
-          showing: false
-        },
-        volumeState: {
-          muted: true,
-          mutingForAutoplay: true
-        }
-      }
+    mockController.state.upNextInfo = {
+      showing: false
+    };
+    mockController.state.volumeState = {
+      muted: true,
+      mutingForAutoplay: true
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={defaultSkinConfig}
       />);
-    var unmuteIcon = TestUtils.findRenderedComponentWithType(DOM, UnmuteIcon);
+    var unmuteIcon = wrapper.find(UnmuteIcon);
     expect(unmuteIcon).toBeTruthy();
   });
 
   it('should not display unmute icon when not muted', function() {
-    var mockController = {
-      state: {
-        upNextInfo: {
-          showing: false
-        },
-        volumeState: {
-          muted: false,
-          mutingForAutoplay: true
-        }
-      }
+    mockController.state.upNextInfo = {
+      showing: false
+    };
+    mockController.state.volumeState = {
+      muted: false,
+      mutingForAutoplay: true
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={defaultSkinConfig}
       />);
-    var unmuteIcons = TestUtils.scryRenderedComponentsWithType(DOM, UnmuteIcon);
+    var unmuteIcons = wrapper.find(UnmuteIcon);
     expect(unmuteIcons.length).toBe(0);
   });
 

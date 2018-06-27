@@ -5,6 +5,8 @@ var Icon = require('./icon');
 var Tooltip = require('./tooltip');
 var Utils = require('./utils');
 var CONSTANTS = require('../constants/constants');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
 /**
  * Template component that is used for buttons that don't have accessibility enabled.
@@ -14,6 +16,8 @@ var CONSTANTS = require('../constants/constants');
  * @return {Component} React component
  */
 var NonAccessibleButton = function(props) {
+  //TODO: This is causing a lot of console errors when running tests.
+  //JP will look at them
   return (
     <a
       style={props.style}
@@ -30,7 +34,7 @@ var NonAccessibleButton = function(props) {
  * bar and skip buttons. Implements common functionality for these buttons which includes
  * icons, highlighting, tooltips and accessibility.
  */
-var ControlButton = React.createClass({
+var ControlButton = createReactClass({
   /**
    * Stores a ref to this component's main element or component.
    * @private
@@ -273,44 +277,44 @@ var ControlButton = React.createClass({
 });
 
 ControlButton.propTypes = {
-  focusId: React.PropTypes.string,
-  className: React.PropTypes.string,
-  icon: React.PropTypes.string,
-  tooltip: React.PropTypes.string,
-  tooltipVerticalOffset: React.PropTypes.number,
-  language: React.PropTypes.string,
-  localizableStrings: React.PropTypes.object,
-  responsiveView: React.PropTypes.string.isRequired,
-  getTooltipAlignment: React.PropTypes.func,
-  onRef: React.PropTypes.func,
-  onClick: React.PropTypes.func,
-  skinConfig: React.PropTypes.shape({
-    general: React.PropTypes.shape({
-      accentColor: React.PropTypes.string.isRequired
+  focusId: PropTypes.string,
+  className: PropTypes.string,
+  icon: PropTypes.string,
+  tooltip: PropTypes.string,
+  tooltipVerticalOffset: PropTypes.number,
+  language: PropTypes.string,
+  localizableStrings: PropTypes.object,
+  responsiveView: PropTypes.string.isRequired,
+  getTooltipAlignment: PropTypes.func,
+  onRef: PropTypes.func,
+  onClick: PropTypes.func,
+  skinConfig: PropTypes.shape({
+    general: PropTypes.shape({
+      accentColor: PropTypes.string.isRequired
     }),
-    responsive: React.PropTypes.shape({
-      breakpoints: React.PropTypes.object
+    responsive: PropTypes.shape({
+      breakpoints: PropTypes.object
     }),
-    controlBar: React.PropTypes.shape({
-      height: React.PropTypes.number.isRequired,
-      iconStyle: React.PropTypes.shape({
-        active: React.PropTypes.shape({
-          color: React.PropTypes.string.isRequired,
-          opacity: React.PropTypes.number.isRequired
+    controlBar: PropTypes.shape({
+      height: PropTypes.number.isRequired,
+      iconStyle: PropTypes.shape({
+        active: PropTypes.shape({
+          color: PropTypes.string.isRequired,
+          opacity: PropTypes.number.isRequired
         }),
-        inactive: React.PropTypes.shape({
-          color: React.PropTypes.string.isRequired,
-          opacity: React.PropTypes.number.isRequired
+        inactive: PropTypes.shape({
+          color: PropTypes.string.isRequired,
+          opacity: PropTypes.number.isRequired
         })
       }),
-      tooltips: React.PropTypes.shape({
-        enabled: React.PropTypes.bool
+      tooltips: PropTypes.shape({
+        enabled: PropTypes.bool
       })
     })
   }),
-  controller: React.PropTypes.shape({
-    state: React.PropTypes.shape({
-      isMobile: React.PropTypes.bool.isRequired
+  controller: PropTypes.shape({
+    state: PropTypes.shape({
+      isMobile: PropTypes.bool.isRequired
     })
   })
 };

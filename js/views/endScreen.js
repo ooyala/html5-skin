@@ -10,8 +10,9 @@ var React = require('react'),
     Icon = require('../components/icon'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Utils = require('../components/utils');
+var createReactClass = require('create-react-class');
 
-var EndScreen = React.createClass({
+var EndScreen = createReactClass({
   mixins: [ResizeMixin],
 
   getInitialState: function() {

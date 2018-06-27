@@ -3,8 +3,9 @@ var React = require('react'),
     CONSTANTS = require('../../constants/constants'),
     ClassNames = require('classnames'),
     TextTrack = require('../textTrackPanel');
+var createReactClass = require('create-react-class');
 
-var CCPreviewPanel = React.createClass({
+var CCPreviewPanel = createReactClass({
   render: function() {
     var closedCaptionPreviewTitle = Utils.getLocalizedString(
       this.props.language,

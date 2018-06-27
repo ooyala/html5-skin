@@ -10,8 +10,10 @@ var React = require('react'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon'),
     UnmuteIcon = require('../components/unmuteIcon');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var AdScreen = React.createClass({
+var AdScreen = createReactClass({
   mixins: [ResizeMixin],
 
   getInitialState: function() {

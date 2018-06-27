@@ -5,8 +5,9 @@ var React = require('react'),
     AccessibleButton = require('../accessibleButton'),
     OnOffSwitch = require('./onOffSwitch'),
     CloseButton = require('../closeButton');
+var createReactClass = require('create-react-class');
 
-var ClosedCaptionPopover = React.createClass({
+var ClosedCaptionPopover = createReactClass({
   handleMoreCaptions: function() {
     if (this.moreOptionsBtn) {
       // When the Closed Captions screen is closed it will go straight to the control bar without

@@ -3,8 +3,10 @@ var React = require('react'),
     MACROS = require('../constants/macros'),
     CONSTANTS = require('../constants/constants'),
     Utils = require('./utils');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var Slider = React.createClass({
+var Slider = createReactClass({
   componentDidMount: function() {
     this.handleSliderColoring(this.props);
 
@@ -244,16 +246,16 @@ var Slider = React.createClass({
 });
 
 Slider.propTypes = {
-  value: React.PropTypes.number,
-  minValue: React.PropTypes.number,
-  maxValue: React.PropTypes.number,
-  step: React.PropTypes.number,
-  onChange: React.PropTypes.func,
-  ariaLabel: React.PropTypes.string,
-  usePercentageForAria: React.PropTypes.bool,
-  settingName: React.PropTypes.string,
-  className: React.PropTypes.string,
-  itemRef: React.PropTypes.string
+  value: PropTypes.number,
+  minValue: PropTypes.number,
+  maxValue: PropTypes.number,
+  step: PropTypes.number,
+  onChange: PropTypes.func,
+  ariaLabel: PropTypes.string,
+  usePercentageForAria: PropTypes.bool,
+  settingName: PropTypes.string,
+  className: PropTypes.string,
+  itemRef: PropTypes.string
 };
 
 Slider.defaultProps = Object.create(

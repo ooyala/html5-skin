@@ -1,5 +1,7 @@
 var React = require('react');
 var CONSTANTS = require('../../constants/constants');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
 /**
  * Extends a button component with the ability to periodically call the onClick
@@ -15,7 +17,7 @@ var holdOnClick = function(ComposedComponent) {
   var CLICK_HOLD_START_DELAY = 500;
   var CLICK_HOLD_FREQUENCY = 100;
 
-  var HoldOnClick = React.createClass({
+  var HoldOnClick = createReactClass({
 
     /**
      * Mostly for initializing member variables.
@@ -116,7 +118,7 @@ var holdOnClick = function(ComposedComponent) {
   });
 
   HoldOnClick.propTypes = {
-    onClick: React.PropTypes.func.isRequired
+    onClick: PropTypes.func.isRequired
   };
 
   return HoldOnClick;

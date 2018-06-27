@@ -16,8 +16,10 @@ var React = require('react'),
     CONSTANTS = require('./../constants/constants'),
     AnimateMixin = require('../mixins/animateMixin'),
     ViewControlsVr = require('../components/viewControlsVr');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var PauseScreen = React.createClass({
+var PauseScreen = createReactClass({
   mixins: [ResizeMixin, AnimateMixin],
 
   getInitialState: function() {
@@ -314,7 +316,7 @@ var PauseScreen = React.createClass({
           <ControlBar
             {...this.props}
             controlBarVisible={this.state.controlBarVisible}
-            playerState={this.state.playerState}
+            playerState={this.props.playerState}
             isLiveStream={this.props.isLiveStream} />
         </div>
 

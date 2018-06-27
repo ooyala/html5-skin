@@ -4,7 +4,7 @@ jest.dontMock('../../js/components/thumbnailContainer')
   .dontMock('../../js/components/utils');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var ReactDOM = require('react-dom');
 var ThumbnailContainer = require('../../js/components/thumbnailContainer');
 var ThumbnailCarousel = require('../../js/components/thumbnailCarousel');
@@ -120,10 +120,10 @@ describe('ThumbnailContainer', function() {
     }
   };
 
-  var testThumbnails = function(DOM, thumbnails, hoverTime, width, duration) {
+  var testThumbnails = function(wrapper, thumbnails, hoverTime, width, duration) {
     var hoverPosition = Utils.findThumbnail(thumbnails, hoverTime, duration).pos;
-    var centerImage = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-thumbnail');
-    var images = centerImage._parentNode._childNodes;
+    var centerImage = wrapper.find('.oo-thumbnail').getDOMNode();
+    var images = centerImage.parentNode.childNodes;
 
     var lastLeft = 0;
     var next = 0;
@@ -154,8 +154,7 @@ describe('ThumbnailContainer', function() {
   var hoverPosition = 80;
 
   it('for isCarousel = false need to show thumbnails', function() {
-    var DOM = TestUtils.renderIntoDocument
-    (
+    var wrapper = Enzyme.mount(
       <ThumbnailContainer
         thumbnails={thumbnails}
         isCarousel={false}
@@ -168,16 +167,15 @@ describe('ThumbnailContainer', function() {
         fullscreen={false}
       />
     );
-    var thumbnailContainer = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-thumbnail-wrapper');
-    var thumbnail = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-thumbnail-container');
+    var thumbnailContainer = wrapper.find('.oo-scrubber-thumbnail-wrapper');
+    var thumbnail = wrapper.find('.oo-scrubber-thumbnail-container');
     expect(thumbnail).not.toBeNull();
   });
 
   it('creates and verifies thumbnails at hover times of [0, 100], step 5', function() {
     var width = thumbnails.data.available_widths[0];
     for (var hoverTime = 0; hoverTime <= 100; hoverTime += 5) {
-      var DOM = TestUtils.renderIntoDocument
-      (
+      var wrapper = Enzyme.mount(
         <ThumbnailContainer
           thumbnails={thumbnails}
           isCarousel={false}
@@ -190,7 +188,7 @@ describe('ThumbnailContainer', function() {
           fullscreen={false}
         />
       );
-      var node = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-thumbnail');
+      var node = wrapper.find('.oo-thumbnail').getDOMNode();
       if (hoverTime % 10 == 0) {
         expect(node.style._values['background-image']).toBe('url('+thumbnails.data.thumbnails[hoverTime][width]['url']+')');
       } else {
@@ -202,7 +200,7 @@ describe('ThumbnailContainer', function() {
   it('test generation of left and right thumbnails at various times', function() {
     var width = thumbnails.data.available_widths[0];
     for (var hoverTime = 0; hoverTime <= 100; hoverTime += 5) {
-      var DOM = TestUtils.renderIntoDocument(
+      var wrapper = Enzyme.mount(
         <ThumbnailContainer
           thumbnails={thumbnails}
           isCarousel={false}
@@ -215,13 +213,12 @@ describe('ThumbnailContainer', function() {
           fullscreen={false}
         />
       );
-      testThumbnails(DOM, thumbnails, hoverTime, width, duration);
+      testThumbnails(wrapper, thumbnails, hoverTime, width, duration);
     }
   });
 
   it('for isCarousel = true need to show thumbnails', function() {
-    var DOM = TestUtils.renderIntoDocument
-    (
+    var wrapper = Enzyme.mount(
       <ThumbnailContainer
         thumbnails={thumbnails}
         isCarousel={true}
@@ -234,14 +231,13 @@ describe('ThumbnailContainer', function() {
         fullscreen={false}
       />
     );
-    var thumbnailContainer = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-thumbnail-wrapper');
-    var thumbnailCarousel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-carousel-container');
+    var thumbnailContainer = wrapper.find('.oo-scrubber-thumbnail-wrapper');
+    var thumbnailCarousel = wrapper.find('.oo-scrubber-carousel-container');
     expect(thumbnailCarousel).not.toBeNull();
   });
 
   it('tests functions for vr preview', function() {
-    var DOM = TestUtils.renderIntoDocument
-    (
+    var wrapper = Enzyme.mount(
       <ThumbnailContainer
         thumbnails={thumbnails}
         isCarousel={false}
@@ -254,32 +250,39 @@ describe('ThumbnailContainer', function() {
         fullscreen={false}
       />
     );
-    var coef = DOM.getCurrentYawVr(380);
+    var coef = wrapper.instance().getCurrentYawVr(380);
     expect(coef).toBe(20);
 
     var params = {
-      yaw: DOM.props.vrViewingDirection.yaw,
-      pitch: DOM.props.vrViewingDirection.pitch,
+      yaw: wrapper.instance().props.vrViewingDirection.yaw,
+      pitch: wrapper.instance().props.vrViewingDirection.pitch,
       imageWidth: 80,
       imageHeight: 40,
       thumbnailWidth: 320,
       thumbnailHeight: 160
     };
-    var positions = DOM.setBgPositionVr(params);
+    var positions = wrapper.instance().setBgPositionVr(params);
     var positionX = positions.positionX;
     var positionY = positions.positionY;
     expect(positionX).toBe(120);
     expect(positionY).toBe(0);
 
-    DOM.child.refs.thumbnail.clientWidth = 80;
-    DOM.child.refs.thumbnail.clientHeight = 40;
-    var refName = 'thumbnail', widthName = 'thumbnailWidth', heightName = 'thumbnailHeight';
-    DOM.setThumbnailSize(refName, widthName, heightName);
-    expect(DOM.thumbnailWidth).toBe(80);
-    expect(DOM.thumbnailHeight).toBe(40);
+    //var thumbnail = wrapper.getDOMNode();
+    var thumbnail = wrapper.instance().child.refs.thumbnail;
+    thumbnail.getBoundingClientRect = function() {
+      return {
+        width: 80,
+        height: 40
+      }
+    };
 
-    DOM.setImageSizes();
-    expect(DOM.imageWidth).toBe(320);
-    expect(DOM.imageHeight).toBe(160);
+    var refName = 'thumbnail', widthName = 'thumbnailWidth', heightName = 'thumbnailHeight';
+    wrapper.instance().setThumbnailSize(refName, widthName, heightName);
+    expect(wrapper.instance().thumbnailWidth).toBe(80);
+    expect(wrapper.instance().thumbnailHeight).toBe(40);
+
+    wrapper.instance().setImageSizes();
+    expect(wrapper.instance().imageWidth).toBe(320);
+    expect(wrapper.instance().imageHeight).toBe(160);
   });
 });

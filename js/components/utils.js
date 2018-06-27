@@ -287,7 +287,7 @@ var Utils = {
     testText.style.whiteSpace = 'nowrap';
     testText.innerHTML = text;
     element.appendChild(testText);
-    var actualWidth = element.clientWidth;
+    var actualWidth = element.clientWidth || element.getBoundingClientRect().width;
     var textWidth = testText.scrollWidth;
     var truncatedText = '';
     if (textWidth > actualWidth * 1.8) {
@@ -1096,6 +1096,30 @@ var Utils = {
       return true;
     }
     return false;
+  },
+
+  /**
+   * Gets the client width of an element. Retrieves clientWidth if it is exists, otherwise will
+   * get the width from the getBoundingClientRect
+   * @param element The element to retrieve the client width
+   * @returns {*|number} The client width of the element. Returns false if the element does not exist
+   */
+  getClientWidth: function(element) {
+    //getBoundingClientRect().width returns the unrounded clientWidth. However, jsdom won't allow us to set clientWidth,
+    //but we can mock getBoundingClientRect.
+    return element && (element.clientWidth || element.getBoundingClientRect().width);
+  },
+
+  /**
+   * Gets the client height of an element. Retrieves clientWidth if it is exists, otherwise will
+   * get the height from the getBoundingClientRect
+   * @param element The element to retrieve the client height
+   * @returns {*|number} The client height of the element. Returns false if the element does not exist
+   */
+  getClientHeight: function(element) {
+    //getBoundingClientRect().height returns the unrounded clientHeight. However, jsdom won't allow us to set clientHeight,
+    //but we can mock getBoundingClientRect.
+    return element && (element.clientHeight || element.getBoundingClientRect().height);
   }
 };
 

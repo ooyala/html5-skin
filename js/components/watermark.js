@@ -7,8 +7,10 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     Utils = require('../components/utils'),
     ClassNames = require('classnames');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var Watermark = React.createClass({
+var Watermark = createReactClass({
   handleWatermarkClick: function() {
     if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
       this.props.controller.togglePlayPause();
@@ -116,25 +118,25 @@ var Watermark = React.createClass({
 });
 
 Watermark.propTypes = {
-  controlBarVisible: React.PropTypes.bool,
-  skinConfig: React.PropTypes.shape({
-    general: React.PropTypes.shape({
-      watermark: React.PropTypes.shape({
-        imageResource: React.PropTypes.shape({
-          url: React.PropTypes.string
+  controlBarVisible: PropTypes.bool,
+  skinConfig: PropTypes.shape({
+    general: PropTypes.shape({
+      watermark: PropTypes.shape({
+        imageResource: PropTypes.shape({
+          url: PropTypes.string
         }),
-        clickUrl: React.PropTypes.string,
-        position: React.PropTypes.string,
-        target: React.PropTypes.string,
-        transparency: React.PropTypes.number,
-        scalingOption: React.PropTypes.string,
-        scalingPercentage: React.PropTypes.number,
-        nonClickable: React.PropTypes.bool
+        clickUrl: PropTypes.string,
+        position: PropTypes.string,
+        target: PropTypes.string,
+        transparency: PropTypes.number,
+        scalingOption: PropTypes.string,
+        scalingPercentage: PropTypes.number,
+        nonClickable: PropTypes.bool
       })
     })
   }),
-  controller: React.PropTypes.shape({
-    togglePlayPause: React.PropTypes.func
+  controller: PropTypes.shape({
+    togglePlayPause: PropTypes.func
   })
 };
 

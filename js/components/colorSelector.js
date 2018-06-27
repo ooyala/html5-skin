@@ -3,8 +3,10 @@ var React = require('react'),
     AccessibleButton = require('./accessibleButton'),
     AccessibleMenu = require('./higher-order/accessibleMenu'),
     CONSTANTS = require('../constants/constants');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var ColorSelector = React.createClass({
+var ColorSelector = createReactClass({
   setClassname: function(item) {
     return ClassNames({
       'oo-item': true,
@@ -59,14 +61,14 @@ var ColorSelector = React.createClass({
 ColorSelector = AccessibleMenu(ColorSelector, { useRovingTabindex: true });
 
 ColorSelector.propTypes = {
-  enabled: React.PropTypes.bool,
-  selectedColor: React.PropTypes.string,
-  colors: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-  ariaLabel: React.PropTypes.string.isRequired,
-  onColorChange: React.PropTypes.func,
-  skinConfig: React.PropTypes.shape({
-    general: React.PropTypes.shape({
-      accentColor: React.PropTypes.string
+  enabled: PropTypes.bool,
+  selectedColor: PropTypes.string,
+  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  ariaLabel: PropTypes.string.isRequired,
+  onColorChange: PropTypes.func,
+  skinConfig: PropTypes.shape({
+    general: PropTypes.shape({
+      accentColor: PropTypes.string
     })
   })
 };

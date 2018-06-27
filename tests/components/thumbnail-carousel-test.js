@@ -3,7 +3,7 @@ jest.dontMock('../../js/components/thumbnailCarousel')
   .dontMock('../../js/components/utils');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var ReactDOM = require('react-dom');
 var ThumbnailCarousel = require('../../js/components/thumbnailCarousel');
 
@@ -132,7 +132,7 @@ describe('ThumbnailCarousel', function() {
       backgroundSize: '120px 80px',
       backgroundPosition: '0px 0px'
     };
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ThumbnailCarousel
         onRef={onRef}
         duration={100}
@@ -146,7 +146,7 @@ describe('ThumbnailCarousel', function() {
         thumbnailStyle={thumbnailStyle}
         thumbnails={thumbnails}/>
     );
-    var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnail).style._values['background-image'];
+    var centerImage = ReactDOM.findDOMNode(wrapper.ref('thumbnail')).style._values['background-image'];
     centerImage = centerImage.slice(centerImage.indexOf('url(') + 4, -1);
     expect(centerImage).toBe(thumbnails.data.thumbnails[hoverTime][width]['url']); // 50 is present in the data, so hoverTime of 50 should find exact match
   });
@@ -161,7 +161,7 @@ describe('ThumbnailCarousel', function() {
       backgroundSize: '120px 80px',
       backgroundPosition: '0px 0px'
     };
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ThumbnailCarousel
         onRef={onRef}
         duration={100}
@@ -175,7 +175,7 @@ describe('ThumbnailCarousel', function() {
         thumbnailStyle={thumbnailStyle}
         thumbnails={thumbnails}/>
     );
-    var centerImage = ReactDOM.findDOMNode(DOM.refs.thumbnail).style._values['background-image'];
+    var centerImage = ReactDOM.findDOMNode(wrapper.ref('thumbnail')).style._values['background-image'];
     centerImage = centerImage.slice(centerImage.indexOf('url(') + 4, -1);
     expect(centerImage).toBe(thumbnails.data.thumbnails[hoverTime - 5][width]['url']);// 45 is not present in the data, so hoverTime of 45 should find previous value
   });
