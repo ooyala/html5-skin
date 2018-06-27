@@ -29,6 +29,9 @@ var skinControllerMock = {
     adVideoDuration: 0,
     errorCode: '',
     adOverlayUrl: '',
+    scrubberBar: {
+      isHovering: true
+    },
     upNextInfo: {
       showing: false
     },

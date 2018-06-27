@@ -19,6 +19,9 @@ describe('PauseScreen', function() {
     mockController = {
       state: {
         accessibilityControlsEnabled: false,
+        scrubberBar: {
+          isHovering: true
+        },
         upNextInfo: {
           showing: false
         }
