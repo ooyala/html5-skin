@@ -24,6 +24,9 @@ describe('PlayingScreen', function() {
         isMobile: false,
         accessibilityControlsEnabled: false,
         controlBarVisible: true,
+        scrubberBar: {
+          isHovering: true
+        },
         upNextInfo: {
           showing: false
         },
@@ -44,8 +47,7 @@ describe('PlayingScreen', function() {
         multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        },
-        scrubberBar: {}
+        }
       },
       cancelTimer: function() {},
       hideVolumeSliderBar: function() {},

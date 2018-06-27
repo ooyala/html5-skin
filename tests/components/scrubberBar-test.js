@@ -328,7 +328,7 @@ describe('ScrubberBar', function() {
     );
 
     var evt = {nativeEvent: {offsetX: 10}};
-    wrapper.simulate('mouseEnter', evt);
+    wrapper.simulate('mouseOver', evt);
     var thumbnailContainer = wrapper.find('.oo-scrubber-thumbnail-wrapper');
     expect(thumbnailContainer.length).toBe(1);
   });

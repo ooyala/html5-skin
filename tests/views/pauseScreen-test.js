@@ -22,6 +22,9 @@ describe('PauseScreen', function() {
     mockController = {
       state: {
         accessibilityControlsEnabled: false,
+        scrubberBar: {
+          isHovering: true
+        },
         upNextInfo: {
           showing: false
         },
@@ -36,8 +39,7 @@ describe('PauseScreen', function() {
         multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        },
-        scrubberBar: {}
+        }
       },
       addBlur: function() {},
       cancelTimer: function() {},
