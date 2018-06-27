@@ -21,6 +21,9 @@ describe('PlayingScreen', function() {
         isMobile: false,
         accessibilityControlsEnabled: false,
         controlBarVisible: true,
+        scrubberBar: {
+          isHovering: true
+        },
         upNextInfo: {
           showing: false
         },

@@ -329,7 +329,7 @@ describe('ScrubberBar', function() {
     );
 
     var evt = {nativeEvent: {offsetX: 10}};
-    TestUtils.Simulate.mouseEnter(ReactDOM.findDOMNode(DOM.refs.scrubberBarContainer), evt);
+    TestUtils.Simulate.mouseOver(ReactDOM.findDOMNode(DOM.refs.scrubberBarContainer), evt);
     var thumbnailContainer = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-scrubber-thumbnail-wrapper');
     expect(thumbnailContainer.length).toBe(1);
   });
