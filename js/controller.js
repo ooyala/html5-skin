@@ -1073,7 +1073,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       var currentAudioTrack = JSON.stringify(currentTrack);
       OO.setItem(OO.CONSTANTS.SELECTED_AUDIO, currentAudioTrack);
 
-      this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, currentTrack);
+      this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, this.state.currentVideoId, currentTrack);
     },
 
     onSeeked: function(event) {
@@ -2149,14 +2149,16 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     rewindOrRequestPreviousVideo: function() {
       var currentTimestamp = Utils.getCurrentTimestamp();
       var timeElapsed = currentTimestamp - this.state.skipControls.requestPreviousTimestamp;
-      // Button has been clicked once more in a short amount of time or playhead
-      // is below a certain threshold, request previous video.
+      // Button has been clicked once more in a short amount of time, playhead
+      // is below a certain threshold, or player is stalled after seeking, request previous video.
       if (
+        this.state.seeking ||
         timeElapsed < CONSTANTS.UI.REQUEST_PREVIOUS_TIME_THRESHOLD ||
         this.state.mainVideoPlayhead < CONSTANTS.UI.REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD
       ) {
         this.mb.publish(OO.EVENTS.REQUEST_PREVIOUS_VIDEO);
       } else {
+        this.updateSeekingPlayhead(0);
         this.mb.publish(OO.EVENTS.REPLAY);
       }
       this.state.skipControls.requestPreviousTimestamp = currentTimestamp;

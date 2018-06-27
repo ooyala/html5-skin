@@ -36,7 +36,8 @@ describe('PauseScreen', function() {
         multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        scrubberBar: {}
       },
       addBlur: function() {},
       cancelTimer: function() {},

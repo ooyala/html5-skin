@@ -35,7 +35,8 @@ var skinControllerMock = {
     multiAudioOptions: {},
     closedCaptionOptions: {},
     config: {},
-    moreOptionsItems: []
+    moreOptionsItems: [],
+    scrubberBar: {}
   },
   cancelTimer: function() {},
   enablePauseAnimation: function() {},

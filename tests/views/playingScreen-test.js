@@ -44,7 +44,8 @@ describe('PlayingScreen', function() {
         multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        scrubberBar: {}
       },
       cancelTimer: function() {},
       hideVolumeSliderBar: function() {},

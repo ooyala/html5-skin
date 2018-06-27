@@ -9,7 +9,7 @@ var React = require('react'),
     ClassNames = require('classnames'),
     UpNextPanel = require('../components/upNextPanel'),
     Spinner = require('../components/spinner'),
-    TextTrack = require('../components/textTrackPanel'),
+    TextTrackPanel = require('../components/textTrackPanel'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     CONSTANTS = require('../constants/constants'),
@@ -424,6 +424,10 @@ var PlayingScreen = createReactClass({
       'skipControls.enabled',
       false
     );
+    var isTextTrackInBackground = (
+      this.props.controller.state.scrubberBar.isHovering ||
+      (skipControlsEnabled && this.props.controller.state.controlBarVisible)
+    );
     var className = ClassNames('oo-state-screen oo-playing-screen', {
       'oo-controls-active': skipControlsEnabled && this.props.controller.state.controlBarVisible
     });
@@ -464,19 +468,21 @@ var PlayingScreen = createReactClass({
             skinConfig={this.props.skinConfig}
             controller={this.props.controller}
             a11yControls={this.props.controller.accessibilityControls}
-            inactive={!this.props.controller.state.controlBarVisible}
+            isInactive={!this.props.controller.state.controlBarVisible}
+            isInBackground={this.props.controller.state.scrubberBar.isHovering}
             onMount={this.onSkipControlsMount}
             onFocus={this.handleFocus} />
         }
 
         <div className="oo-interactive-container" onFocus={this.handleFocus}>
-          {this.props.closedCaptionOptions.enabled ? (
-            <TextTrack
+          {this.props.closedCaptionOptions.enabled && (
+            <TextTrackPanel
               closedCaptionOptions={this.props.closedCaptionOptions}
               cueText={this.props.closedCaptionOptions.cueText}
               direction={this.props.captionDirection}
-              responsiveView={this.props.responsiveView} />
-          ) : null}
+              responsiveView={this.props.responsiveView}
+              isInBackground={isTextTrackInBackground} />
+          )}
 
           {adOverlay}
 

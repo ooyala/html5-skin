@@ -918,8 +918,13 @@ describe('Controller', function() {
 
     it('Calling of setCurrentAudio should throw SET_CURRENT_AUDIO event with id', function() {
       var track = { id: '1', lang: 'eng', label: 'eng' };
+      controller.state.currentVideoId = OO.VIDEO.MAIN;
       controller.setCurrentAudio(track);
-      expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, track)).toBe(true);
+      expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, OO.VIDEO.MAIN, track)).toBe(true);
+
+      controller.state.currentVideoId = OO.VIDEO.ADS;
+      controller.setCurrentAudio(track);
+      expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, OO.VIDEO.ADS, track)).toBe(true);
     });
 
     it('Calling of setCurrentAudio should save audioTrack to storage', function() {

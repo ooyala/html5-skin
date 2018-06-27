@@ -7,7 +7,7 @@ var React = require('react'),
     ControlBar = require('../components/controlBar'),
     AdOverlay = require('../components/adOverlay'),
     UpNextPanel = require('../components/upNextPanel'),
-    TextTrack = require('../components/textTrackPanel'),
+    TextTrackPanel = require('../components/textTrackPanel'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon'),
@@ -248,6 +248,10 @@ var PauseScreen = createReactClass({
       'skipControls.enabled',
       false
     );
+    var isTextTrackInBackground = (
+      skipControlsEnabled ||
+      this.props.controller.state.scrubberBar.isHovering
+    );
 
     return (
       <div className="oo-state-screen oo-pause-screen">
@@ -259,10 +263,11 @@ var PauseScreen = createReactClass({
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
           onMouseUp={this.handlePlayerMouseUp}
-          onTouchEnd={this.handleTouchEnd}
-        />
+          onTouchEnd={this.handleTouchEnd} />
 
-        <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible} />
+        <Watermark
+          {...this.props}
+          controlBarVisible={this.state.controlBarVisible} />
 
         <div className={infoPanelClass}>
           {this.props.skinConfig.pauseScreen.showTitle ? titleMetadata : null}
@@ -275,8 +280,7 @@ var PauseScreen = createReactClass({
           className={actionIconClass}
           onClick={this.handleClick}
           aria-hidden="true"
-          tabIndex="-1"
-        >
+          tabIndex="-1">
           <Icon {...this.props} icon="pause" style={actionIconStyle} />
         </button>
 
@@ -291,18 +295,19 @@ var PauseScreen = createReactClass({
             skinConfig={this.props.skinConfig}
             controller={this.props.controller}
             a11yControls={this.props.controller.accessibilityControls}
+            isInBackground={this.props.controller.state.scrubberBar.isHovering}
             onFocus={this.handleFocus} />
         }
 
         <div className="oo-interactive-container" onFocus={this.handleFocus}>
-          {this.props.closedCaptionOptions.enabled ? (
-            <TextTrack
+          {this.props.closedCaptionOptions.enabled && (
+            <TextTrackPanel
               closedCaptionOptions={this.props.closedCaptionOptions}
               cueText={this.props.closedCaptionOptions.cueText}
               direction={this.props.captionDirection}
               responsiveView={this.props.responsiveView}
-            />
-          ) : null}
+              isInBackground={isTextTrackInBackground} />
+          )}
 
           {adOverlay}
 
@@ -312,8 +317,7 @@ var PauseScreen = createReactClass({
             {...this.props}
             controlBarVisible={this.state.controlBarVisible}
             playerState={this.props.playerState}
-            isLiveStream={this.props.isLiveStream}
-          />
+            isLiveStream={this.props.isLiveStream} />
         </div>
 
       </div>

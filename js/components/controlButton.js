@@ -20,8 +20,10 @@ var NonAccessibleButton = function(props) {
   //JP will look at them
   return (
     <a
-      {...props}
-      aria-hidden={props.ariaHidden}>
+      style={props.style}
+      className={props.className}
+      aria-hidden={props.ariaHidden}
+      onClick={props.onClick}>
       {props.children}
     </a>
   );
