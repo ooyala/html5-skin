@@ -51,7 +51,7 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 ## Developer Setup
 1. [Install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-2. [Install Node.js] (https://nodejs.org/download/release/v0.10.33/) v0.10.33
+2. [Install Node.js] (https://nodejs.org/download/release/v8.11.3/) v8.11.3
 
 3. Install [gulp](http://gulpjs.com) globally by running: `npm install --global gulp-cli`
 
