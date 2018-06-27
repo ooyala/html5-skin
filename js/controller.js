@@ -1073,7 +1073,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       var currentAudioTrack = JSON.stringify(currentTrack);
       OO.setItem(OO.CONSTANTS.SELECTED_AUDIO, currentAudioTrack);
 
-      this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, currentTrack);
+      this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, this.state.currentVideoId, currentTrack);
     },
 
     onSeeked: function(event) {
