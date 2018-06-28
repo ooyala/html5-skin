@@ -8,25 +8,25 @@ jest
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var ColorSelector = require('../../js/components/colorSelector');
 var AccessibleButton = require('../../js/components/accessibleButton');
 var CONSTANTS = require('../../js/constants/constants');
 
 describe('Tabs', function() {
-  var props, colors, node, tree, component, buttons;
+  var props, colors, node, wrapper, component, buttons;
 
   // Using ReactDOM.render instead of test utils in order to allow re-render to simulate props update
   function renderComponent() {
     props.colors = colors;
-    tree = ReactDOM.render(<ColorSelector {...props} />, node);
-    component = TestUtils.findRenderedComponentWithType(tree, ColorSelector);
-    buttons = TestUtils.scryRenderedComponentsWithType(tree, AccessibleButton);
+    wrapper = Enzyme.mount(<ColorSelector {...props} />, node);
+    component = wrapper.find(ColorSelector);
+    buttons = wrapper.find(AccessibleButton);
   }
 
   beforeEach(function() {
     node = document.createElement('div');
-    tree = null;
+    wrapper = null;
     component = null;
     buttons = null;
     colors = [ 'White', 'Blue', 'Magenta', 'Green', 'Yellow', 'Red' ];
@@ -55,14 +55,14 @@ describe('Tabs', function() {
   it('should set menu role and ARIA label on main element', function() {
     props.ariaLabel = 'customAriaLabel';
     renderComponent();
-    var mainElement = ReactDOM.findDOMNode(component);
+    var mainElement = component.getDOMNode();
     expect(mainElement.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU);
     expect(mainElement.getAttribute('aria-label')).toBe(props.ariaLabel);
   });
 
   it('should set ARIA attributes on buttons', function() {
     renderComponent();
-    var colorButton = ReactDOM.findDOMNode(buttons[0]);
+    var colorButton = buttons.at(0).getDOMNode();
     expect(colorButton.getAttribute('aria-label')).toBe(props.ariaLabel + ' White');
     expect(colorButton.getAttribute('aria-checked')).toBe('false');
     expect(colorButton.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO);
@@ -70,17 +70,18 @@ describe('Tabs', function() {
 
   it('should update aria-checked attribute when tab selection state changes', function() {
     renderComponent();
-    var colorButton = ReactDOM.findDOMNode(buttons[0]);
+    var colorButton = buttons.at(0).getDOMNode();
     expect(colorButton.getAttribute('aria-checked')).toBe('false');
-    TestUtils.Simulate.click(colorButton);
+    buttons.at(0).simulate('click');
     renderComponent();
+    colorButton = buttons.at(0).getDOMNode();
     expect(colorButton.getAttribute('aria-checked')).toBe('true');
   });
 
-  // Needed in order for NVDA to read out the correct number of items
+  //// Needed in order for NVDA to read out the correct number of items
   it('should set presentation role on item container', function() {
     renderComponent();
-    var container = TestUtils.scryRenderedDOMComponentsWithClass(tree, 'oo-item')[0];
+    var container = wrapper.find('.oo-item').at(0).getDOMNode();
     expect(container.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.PRESENTATION);
   });
 

@@ -3,8 +3,9 @@ var React = require('react'),
     AccessibleButton = require('../accessibleButton'),
     CONSTANTS = require('../../constants/constants'),
     ClassNames = require('classnames');
+var createReactClass = require('create-react-class');
 
-var OnOffSwitch = React.createClass({
+var OnOffSwitch = createReactClass({
   handleOnOffSwitch: function() {
     this.props.controller.toggleClosedCaptionEnabled();
   },

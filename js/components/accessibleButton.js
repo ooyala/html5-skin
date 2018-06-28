@@ -2,8 +2,10 @@ var React = require('react');
 var ClassNames = require('classnames');
 var Utils = require('./utils');
 var CONSTANTS = require('../constants/constants');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var AccessibleButton = React.createClass({
+var AccessibleButton = createReactClass({
   getInitialState: function() {
     this.triggeredWithKeyboard = false;
     return {};
@@ -57,6 +59,24 @@ var AccessibleButton = React.createClass({
       default:
         break;
     }
+
+    if (typeof this.props.onKeyDown === 'function') {
+      this.props.onKeyDown(event);
+    }
+  },
+
+  /**
+   * Handles the mouseup event. Automatically removes keyboard focus
+   * from the button and calls a custom mouseup handler if it was passed.
+   * @private
+   * @param {event} event The mouseup event object
+   */
+  onMouseUp: function(event) {
+    Utils.blurOnMouseUp(event);
+
+    if (typeof this.props.onMouseUp === 'function') {
+      this.props.onMouseUp(event);
+    }
   },
 
   render: function() {
@@ -77,13 +97,17 @@ var AccessibleButton = React.createClass({
         aria-haspopup={this.props.ariaHasPopup}
         aria-expanded={this.props.ariaExpanded}
         role={this.props.role}
+        disabled={this.props.disabled}
         onKeyDown={this.onKeyDown}
-        onMouseUp={Utils.blurOnMouseUp}
+        onKeyUp={this.props.onKeyUp}
+        onMouseDown={this.props.onMouseDown}
+        onMouseUp={this.onMouseUp}
         onMouseOver={this.props.onMouseOver}
         onMouseOut={this.props.onMouseOut}
+        onMouseEnter={this.props.onMouseEnter}
+        onMouseLeave={this.props.onMouseLeave}
         onFocus={this.props.onFocus}
-        onClick={this.props.onClick}
-      >
+        onClick={this.props.onClick}>
         {this.props.children}
       </button>
     );
@@ -91,20 +115,27 @@ var AccessibleButton = React.createClass({
 });
 
 AccessibleButton.propTypes = {
-  autoFocus: React.PropTypes.bool,
-  style: React.PropTypes.object,
-  className: React.PropTypes.string,
-  focusId: React.PropTypes.string,
-  ariaLabel: React.PropTypes.string.isRequired,
-  ariaChecked: React.PropTypes.bool,
-  ariaSelected: React.PropTypes.bool,
-  ariaHasPopup: React.PropTypes.bool,
-  ariaExpanded: React.PropTypes.bool,
-  role: React.PropTypes.string,
-  onMouseOver: React.PropTypes.func,
-  onMouseOut: React.PropTypes.func,
-  onFocus: React.PropTypes.func,
-  onClick: React.PropTypes.func
+  autoFocus: PropTypes.bool,
+  style: PropTypes.object,
+  className: PropTypes.string,
+  focusId: PropTypes.string,
+  ariaLabel: PropTypes.string.isRequired,
+  ariaChecked: PropTypes.bool,
+  ariaSelected: PropTypes.bool,
+  ariaHasPopup: PropTypes.bool,
+  ariaExpanded: PropTypes.bool,
+  role: PropTypes.string,
+  disabled: PropTypes.bool,
+  onKeyDown: PropTypes.func,
+  onKeyUp: PropTypes.func,
+  onMouseDown: PropTypes.func,
+  onMouseUp: PropTypes.func,
+  onMouseOver: PropTypes.func,
+  onMouseOut: PropTypes.func,
+  onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
+  onFocus: PropTypes.func,
+  onClick: PropTypes.func
 };
 
 // Define focusId as a getter so that it returns a different value

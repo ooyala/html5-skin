@@ -248,16 +248,18 @@ describe('Controller', function() {
     });
 
     it('should set buffering state to true after buffering timer time has elapsed', function() {
+      jest.useFakeTimers();
       controller.startBufferingTimer();
       expect(controller.state.buffering).toBe(false);
       jest.runAllTimers();
       expect(controller.state.buffering).toBe(true);
+      jest.clearAllTimers();
     });
 
-    it('should reset buffering state if it hasn\'t been cleared by the time PLAYING is fired', function() {
+    it('should reset buffering state if it hasn\'t been cleared by the time PLAYHEAD_TIME_CHANGED is fired', function() {
       controller.setBufferingState(true);
       expect(controller.state.buffering).toBe(true);
-      controller.onPlaying('', OO.VIDEO.MAIN);
+      controller.onPlayheadTimeChanged('', OO.VIDEO.MAIN);
       expect(controller.state.buffering).toBe(false);
     });
 
@@ -515,7 +517,7 @@ describe('Controller', function() {
       expect(spy.callCount).toBe(1);
       expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, false, null, false)).toBe(true);
 
-      spy.reset();
+      spy.resetHistory();
       controller.toggleMute(true, false);
       expect(spy.callCount).toBe(1);
       expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, true, null, false)).toBe(true);
@@ -533,7 +535,7 @@ describe('Controller', function() {
       expect(spy.callCount).toBe(1);
       expect(spy.calledWith(OO.EVENTS.CHANGE_MUTE_STATE, true, null, true)).toBe(true);
 
-      spy.reset();
+      spy.resetHistory();
 
       controller.state.volumeState.muted = true;
       expect(controller.state.volumeState.muted).toBe(true);
@@ -916,8 +918,13 @@ describe('Controller', function() {
 
     it('Calling of setCurrentAudio should throw SET_CURRENT_AUDIO event with id', function() {
       var track = { id: '1', lang: 'eng', label: 'eng' };
+      controller.state.currentVideoId = OO.VIDEO.MAIN;
       controller.setCurrentAudio(track);
-      expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, track)).toBe(true);
+      expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, OO.VIDEO.MAIN, track)).toBe(true);
+
+      controller.state.currentVideoId = OO.VIDEO.ADS;
+      controller.setCurrentAudio(track);
+      expect(spy.calledWith(OO.EVENTS.SET_CURRENT_AUDIO, OO.VIDEO.ADS, track)).toBe(true);
     });
 
     it('Calling of setCurrentAudio should save audioTrack to storage', function() {
@@ -956,6 +963,7 @@ describe('Controller', function() {
       var stringifiedTrack = JSON.stringify(track);
 
       expect(setItemSpy.calledWith(OO.CONSTANTS.SELECTED_AUDIO, stringifiedTrack)).toBeTruthy();
+      setItemSpy.restore();
     });
 
     it('should check if the icon exists if hideMultiAudioIcon is false', function() {

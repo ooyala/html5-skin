@@ -192,6 +192,85 @@ var Utils = {
   },
 
   /**
+   * Gets the values of skip forward/back times configured in skin.json. The values
+   * from the skin config are processed in order to ensure valid values: Numbers are
+   * converted to integers and constrained to allowed minimum and maximums. Falls
+   * back to default values when none are specified.
+   * @function getSkipTimes
+   * @param {Object}
+   * @return {Object} An object with two properties, 'forward' and 'backward',
+   * which represent the amount of seconds to skip in each respective direction.
+   */
+  getSkipTimes: function(skinConfig) {
+    var skipTimes = {};
+    skipTimes.backward = this.getPropertyValue(
+      skinConfig,
+      'skipControls.skipBackwardTime',
+      CONSTANTS.UI.DEFAULT_SKIP_BACKWARD_TIME
+    );
+    skipTimes.forward = this.getPropertyValue(
+      skinConfig,
+      'skipControls.skipForwardTime',
+      CONSTANTS.UI.DEFAULT_SKIP_FORWARD_TIME
+    );
+    skipTimes.backward = this.constrainToRange(
+      Math.floor(skipTimes.backward),
+      CONSTANTS.UI.MIN_SKIP_TIME,
+      CONSTANTS.UI.MAX_SKIP_TIME
+    );
+    skipTimes.forward = this.constrainToRange(
+      Math.floor(skipTimes.forward),
+      CONSTANTS.UI.MIN_SKIP_TIME,
+      CONSTANTS.UI.MAX_SKIP_TIME
+    );
+    return skipTimes;
+  },
+
+  /**
+   * Determines whether a mouse cursor represented by its clientX and clientY
+   * properties is inside a DOM element contained within the given DOMRect.
+   * @function isMouseInsideRect
+   * @param {Object} mousePosition An object with the clientX and clientY coordinates of the mouse pointer.
+   * @param {DOMRect} clientRect DOMRect returned by an element's getBoundingClientRect() function
+   * @return {Boolean} True if the mouse is inside the element, false otherwise
+   */
+  isMouseInsideRect: function(mousePosition, clientRect) {
+    if (!mousePosition || !clientRect) {
+      return false;
+    }
+    if (
+      mousePosition.clientX >= clientRect.left &&
+      mousePosition.clientX <= clientRect.right &&
+      mousePosition.clientY >= clientRect.top &&
+      mousePosition.clientY <= clientRect.bottom
+    ) {
+      return true;
+    }
+    return false;
+  },
+
+  /**
+   * Returns a number that represents the current moment in time. Falls back to
+   * Date.now() in platforms that don't support window.performance, which means that
+   * the value could be relative to either the Unix epoch or the page load. For
+   * this reason, values returned by this function should only be used for calculating
+   * elapsed times.
+   * @function getCurrentTimestamp
+   * @return {Number} A value in milliseconds that will be either performance.now() or
+   * Date.now, depending on whether or not window.performance is available.
+   */
+  getCurrentTimestamp: function() {
+    if (
+      window.performance &&
+      typeof window.performance.now === 'function'
+    ) {
+      return performance.now();
+    } else {
+      return Date.now();
+    }
+  },
+
+  /**
    * Trims the given text to fit inside of the given element, truncating with ellipsis.
    *
    * @function truncateTextToWidth
@@ -208,7 +287,7 @@ var Utils = {
     testText.style.whiteSpace = 'nowrap';
     testText.innerHTML = text;
     element.appendChild(testText);
-    var actualWidth = element.clientWidth;
+    var actualWidth = element.clientWidth || element.getBoundingClientRect().width;
     var textWidth = testText.scrollWidth;
     var truncatedText = '';
     if (textWidth > actualWidth * 1.8) {
@@ -374,6 +453,28 @@ var Utils = {
    */
   isMobile: function() {
     return this.isAndroid() || this.isIos();
+  },
+
+
+  /**
+   * Get type of user device.
+   *
+   * @returns {string} - name of the user device, may be one of the values 'desktop', 'phone' or 'tablet'.
+   */
+  getUserDevice: function() {
+    var device = 'desktop';
+    var userAgent = navigator.userAgent;
+    if (userAgent) {
+      var lowerUserAgent = userAgent.toLowerCase();
+      if (/(mobi|ipod|phone|blackberry|opera mini|fennec|minimo|symbian|psp|nintendo ds|archos|skyfire|puffin|blazer|bolt|gobrowser|iris|maemo|semc|teashark|uzard)/
+          .test(lowerUserAgent)) {
+        device = 'phone';
+      } else if (/(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/
+          .test(lowerUserAgent)) {
+        device = 'tablet';
+      }
+    }
+    return device;
   },
 
   /**
@@ -592,7 +693,9 @@ var Utils = {
     // This is currently the same style as the one used in _mixins.scss.
     // We should change both styles whenever we update this.
     target.style.textShadow =
-      '0px 0px 3px rgba(255, 255, 255, 0.5), 0px 0px 6px rgba(255, 255, 255, 0.5), 0px 0px 9px rgba(255, 255, 255, 0.5)';
+      '0px 0px 3px rgba(255, 255, 255, 0.5), ' +
+      '0px 0px 6px rgba(255, 255, 255, 0.5), ' +
+      '0px 0px 9px rgba(255, 255, 255, 0.5)';
   },
 
   /**
@@ -616,7 +719,7 @@ var Utils = {
    * @function collapse
    * @param {Number} barWidth - Width of the control bar
    * @param {Object[]} orderedItems - array of left to right ordered items. Each item meets the skin's "button" schema.
-   * @param {number} responsiveUIMultiple - 
+   * @param {number} responsiveUIMultiple -
    * @returns {Object} An object of the structure {fit:[], overflow:[]} where the fit object is
    *   an array of buttons that fit in the control bar and overflow are the ones that should be hidden
    */
@@ -993,6 +1096,30 @@ var Utils = {
       return true;
     }
     return false;
+  },
+
+  /**
+   * Gets the client width of an element. Retrieves clientWidth if it is exists, otherwise will
+   * get the width from the getBoundingClientRect
+   * @param element The element to retrieve the client width
+   * @returns {*|number} The client width of the element. Returns false if the element does not exist
+   */
+  getClientWidth: function(element) {
+    //getBoundingClientRect().width returns the unrounded clientWidth. However, jsdom won't allow us to set clientWidth,
+    //but we can mock getBoundingClientRect.
+    return element && (element.clientWidth || element.getBoundingClientRect().width);
+  },
+
+  /**
+   * Gets the client height of an element. Retrieves clientWidth if it is exists, otherwise will
+   * get the height from the getBoundingClientRect
+   * @param element The element to retrieve the client height
+   * @returns {*|number} The client height of the element. Returns false if the element does not exist
+   */
+  getClientHeight: function(element) {
+    //getBoundingClientRect().height returns the unrounded clientHeight. However, jsdom won't allow us to set clientHeight,
+    //but we can mock getBoundingClientRect.
+    return element && (element.clientHeight || element.getBoundingClientRect().height);
   }
 };
 

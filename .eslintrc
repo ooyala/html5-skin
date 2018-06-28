@@ -41,9 +41,10 @@
       }
     ],
     "max-len": [
-      "error", 110, 
+      "error", 110,
       {
-        "ignoreComments": true
+        "ignoreComments": true,
+        "ignorePattern": "if \\(\/\\(\\w*|\\)\/"
       }
     ],
     "no-continue": ["warn"],

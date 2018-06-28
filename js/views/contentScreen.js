@@ -5,8 +5,10 @@ var React = require('react'),
     Icon = require('../components/icon'),
     Watermark = require('../components/watermark'),
     AccessibilityMixin = require('../mixins/accessibilityMixin');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var ContentScreen = React.createClass({
+var ContentScreen = createReactClass({
   mixins: [AccessibilityMixin],
 
   componentDidMount: function() {
@@ -91,13 +93,13 @@ var ContentScreen = React.createClass({
 });
 
 ContentScreen.propTypes = {
-  element: React.PropTypes.element,
-  skinConfig: React.PropTypes.shape({
-    discoveryScreen: React.PropTypes.shape({
-      panelTitle: React.PropTypes.shape({
-        titleFont: React.PropTypes.shape({
-          color: React.PropTypes.string,
-          fontFamily: React.PropTypes.string
+  element: PropTypes.element,
+  skinConfig: PropTypes.shape({
+    discoveryScreen: PropTypes.shape({
+      panelTitle: PropTypes.shape({
+        titleFont: PropTypes.shape({
+          color: PropTypes.string,
+          fontFamily: PropTypes.string
         })
       })
     })

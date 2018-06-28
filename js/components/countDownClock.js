@@ -11,8 +11,10 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     ClassNames = require('classnames'),
     CONSTANTS = require('../constants/constants');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var CountDownClock = React.createClass({
+var CountDownClock = createReactClass({
   getInitialState: function() {
     // canvas, interval, and context are changing based on time instead of user interaction
     this.canvas = null;
@@ -227,9 +229,9 @@ var CountDownClock = React.createClass({
 });
 
 CountDownClock.propTypes = {
-  timeToShow: React.PropTypes.number,
-  clockWidth: React.PropTypes.number,
-  currentPlayhead: React.PropTypes.number
+  timeToShow: PropTypes.number,
+  clockWidth: PropTypes.number,
+  currentPlayhead: PropTypes.number
 };
 
 CountDownClock.defaultProps = {

@@ -4,8 +4,10 @@
  * @module Thumbnail
  */
 var React = require('react');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var Thumbnail = React.createClass({
+var Thumbnail = createReactClass({
   componentDidMount: function() {
     this.props.onRef(this);
   },
@@ -53,19 +55,19 @@ Thumbnail.defaultProps = {
 };
 
 Thumbnail.propTypes = {
-  onRef: React.PropTypes.func,
-  thumbnailStyle: React.PropTypes.object,
-  vrViewingDirection: React.PropTypes.shape({
-    yaw: React.PropTypes.number,
-    roll: React.PropTypes.number,
-    pitch: React.PropTypes.number
+  onRef: PropTypes.func,
+  thumbnailStyle: PropTypes.object,
+  vrViewingDirection: PropTypes.shape({
+    yaw: PropTypes.number,
+    roll: PropTypes.number,
+    pitch: PropTypes.number
   }),
-  time: React.PropTypes.string,
-  positionY: React.PropTypes.number,
-  positionX: React.PropTypes.number,
-  imageWidth: React.PropTypes.number,
-  videoVr: React.PropTypes.bool,
-  fullscreen: React.PropTypes.bool
+  time: PropTypes.string,
+  positionY: PropTypes.number,
+  positionX: PropTypes.number,
+  imageWidth: PropTypes.number,
+  videoVr: PropTypes.bool,
+  fullscreen: PropTypes.bool
 };
 
 module.exports = Thumbnail;

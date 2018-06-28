@@ -3,8 +3,10 @@ var DirectionControlVr = require('./directionControlVr');
 var Icon = require('../components/icon');
 var classnames = require('classnames');
 var _ = require('underscore');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var ViewControlsVr = React.createClass({
+var ViewControlsVr = createReactClass({
   /**
    * @method ViewControlsVr#handleVrViewControlsClick
    * @public
@@ -120,8 +122,8 @@ var ViewControlsVr = React.createClass({
 });
 
 ViewControlsVr.propTypes = {
-  controller: React.PropTypes.shape({
-    moveVrToDirection: React.PropTypes.func
+  controller: PropTypes.shape({
+    moveVrToDirection: PropTypes.func
   })
 };
 

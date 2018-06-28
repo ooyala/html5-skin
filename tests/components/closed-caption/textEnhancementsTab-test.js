@@ -9,25 +9,25 @@ jest
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var TextEnhancementsTab = require('../../../js/components/closed-caption/textEnhancementsTab');
 var AccessibleButton = require('../../../js/components/accessibleButton');
 var CONSTANTS = require('../../../js/constants/constants');
 
 describe('TextEnhancementsTab', function() {
-  var props, node, tree, component, element, textEnhancementItems;
+  var props, node, wrapper, component, element, textEnhancementItems;
 
   // Using ReactDOM.render instead of test utils in order to allow re-render to simulate props update
   function renderComponent() {
-    tree = ReactDOM.render(<TextEnhancementsTab {...props} />, node);
-    component = TestUtils.findRenderedComponentWithType(tree, TextEnhancementsTab);
-    element = ReactDOM.findDOMNode(component);
-    textEnhancementItems = TestUtils.scryRenderedComponentsWithType(tree, AccessibleButton);
+    wrapper = Enzyme.mount(<TextEnhancementsTab {...props} />, node);
+    component = wrapper.find(TextEnhancementsTab);
+    element = component.getDOMNode();
+    textEnhancementItems = wrapper.find(AccessibleButton);
   }
 
   beforeEach(function() {
     node = document.createElement('div');
-    tree = null;
+    wrapper = null;
     component = null;
     element = null;
     textEnhancementItems = null;
@@ -43,7 +43,7 @@ describe('TextEnhancementsTab', function() {
       },
       closedCaptionOptions: {
         enabled: true,
-        textEnhancement: 'Uniform',
+        textEnhancement: 'Uniform'
       },
       controller: {
         toggleClosedCaptionEnabled: function() {},
@@ -66,7 +66,7 @@ describe('TextEnhancementsTab', function() {
 
   it('should render ARIA attributes on text enhancement items', function() {
     renderComponent();
-    var firstItem = ReactDOM.findDOMNode(textEnhancementItems[0]);
+    var firstItem = textEnhancementItems.at(0).getDOMNode();
     expect(firstItem.getAttribute('aria-label')).toBe(props.localizableStrings[props.language]['Uniform']);
     expect(firstItem.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO);
   });
@@ -75,12 +75,12 @@ describe('TextEnhancementsTab', function() {
     var secondMenuItem;
     props.closedCaptionOptions.textEnhancement = 'Uniform';
     renderComponent();
-    secondMenuItem = ReactDOM.findDOMNode(textEnhancementItems[1]);
-    expect(secondMenuItem.getAttribute('aria-checked')).toBe('false');
-    TestUtils.Simulate.click(secondMenuItem);
+    secondMenuItem = textEnhancementItems.at(1);
+    expect(secondMenuItem.getDOMNode().getAttribute('aria-checked')).toBe('false');
+    secondMenuItem.simulate('click');
     renderComponent();
-    secondMenuItem = ReactDOM.findDOMNode(textEnhancementItems[1]);
-    expect(secondMenuItem.getAttribute('aria-checked')).toBe('true');
+    secondMenuItem = textEnhancementItems.at(1);
+    expect(secondMenuItem.getDOMNode().getAttribute('aria-checked')).toBe('true');
   });
 
 });

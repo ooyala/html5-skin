@@ -1,6 +1,9 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var deepmerge = require('deepmerge');
+var Utils = require('./utils');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
 var verticalOffset = 80;
 function getContainerStyle(bottom, visible, responsivenessMultiplier, alignment) {
@@ -65,7 +68,7 @@ function getPointerStyle(alignment) {
   };
 }
 
-var Tooltip = React.createClass({
+var Tooltip = createReactClass({
   componentDidMount: function() {
     this.parentElement = (ReactDOM.findDOMNode(this) || {}).parentElement;
     if (this.parentElement) {
@@ -81,8 +84,17 @@ var Tooltip = React.createClass({
     }
   },
 
+  getAlignment: function() {
+    if (typeof this.props.getAlignment === 'function') {
+      return this.props.getAlignment(this.props.parentKey) || CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
+    }
+    return CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
+  },
+
   render: function() {
     if (this.props.enabled) {
+      var alignment = this.getAlignment();
+
       return (
         <div style={{ position: 'relative' }}>
           <div
@@ -91,11 +103,16 @@ var Tooltip = React.createClass({
               this.props.bottom,
               this.state.visible,
               this.props.responsivenessMultiplier,
-              this.props.alignment
-            )}
-          >
-            <div style={getBoxStyle(this.props.responsivenessMultiplier)}>{this.props.text}</div>
-            <div style={getPointerStyle(this.props.alignment)} />
+              alignment
+            )}>
+            <div style={getBoxStyle(this.props.responsivenessMultiplier)}>
+              {Utils.getLocalizedString(
+                this.props.language,
+                this.props.text,
+                this.props.localizableStrings
+              )}
+            </div>
+            <div style={getPointerStyle(alignment)} />
           </div>
         </div>
       );
@@ -118,17 +135,20 @@ var Tooltip = React.createClass({
 });
 
 Tooltip.propTypes = {
-  enabled: React.PropTypes.bool.isRequired,
-  text: React.PropTypes.string.isRequired,
-  alignment: React.PropTypes.oneOf(['left', 'center', 'right']),
-  responsivenessMultiplier: React.PropTypes.number.isRequired,
-  bottom: React.PropTypes.number.isRequired
+  enabled: PropTypes.bool.isRequired,
+  parentKey: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  language: PropTypes.string,
+  localizableStrings: PropTypes.object,
+  getAlignment: PropTypes.func,
+  responsivenessMultiplier: PropTypes.number.isRequired,
+  bottom: PropTypes.number.isRequired
 };
 
 Tooltip.defaultProps = {
   enabled: false,
   text: '',
-  alignment: 'center',
+  language: 'en',
   responsivenessMultiplier: 1,
   bottom: 0
 };

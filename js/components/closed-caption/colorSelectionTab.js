@@ -3,8 +3,9 @@ var React = require('react'),
     CONSTANTS = require('../../constants/constants'),
     SelectionContainer = require('./selectionContainer'),
     ColorSelector = require('../colorSelector');
+var createReactClass = require('create-react-class');
 
-var ColorSelectionTab = React.createClass({
+var ColorSelectionTab = createReactClass({
   getInitialState: function() {
     return {
       selectedTextColor: this.props.closedCaptionOptions.textColor,

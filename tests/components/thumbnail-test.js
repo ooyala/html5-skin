@@ -2,7 +2,7 @@ jest.dontMock('../../js/components/thumbnail')
   .dontMock('../../js/components/utils');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var ReactDOM = require('react-dom');
 var Thumbnail = require('../../js/components/thumbnail');
 var Utils = require('../../js/components/utils');
@@ -121,8 +121,7 @@ describe('Thumbnail', function() {
     var duration = 100;
     var onRef = function() {};
     for (var hoverTime = 0; hoverTime <= 100; hoverTime += 5) {
-      var DOM = TestUtils.renderIntoDocument
-      (
+      var wrapper = Enzyme.mount(
         <Thumbnail
           onRef={onRef}
           hoverPosition={hoverTime}
@@ -131,8 +130,8 @@ describe('Thumbnail', function() {
           scrubberBarWidth={100}
           thumbnails={thumbnails}/>
       );
-      var thumbnail = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail');
-      var thumbnailTime = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-thumbnail-time');
+      var thumbnail = wrapper.find('.oo-thumbnail');
+      var thumbnailTime = wrapper.find('.oo-thumbnail-time');
       expect(thumbnail.length).toBe(1);
       expect(thumbnailTime.length).toBe(1);
     }

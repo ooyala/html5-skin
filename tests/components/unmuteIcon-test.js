@@ -4,7 +4,7 @@ jest.dontMock('classnames');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var UnmuteIcon = require('../../js/components/unmuteIcon');
 var CONSTANTS = require('../../js/constants/constants');
 var skinConfig = require('../../config/skin.json');
@@ -26,47 +26,48 @@ describe('UnmuteIcon', function() {
   });
 
   it('creates an expanded UnmuteIcon', function() {
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <UnmuteIcon
         controller={mockController}
         skinConfig={skinConfig}
       />);
 
-    var expanded = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-expanded');
-    var unmuteIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-unmute');
+    var expanded = wrapper.find('.oo-expanded');
+    var unmuteIcon = wrapper.find('.oo-unmute');
     expect(expanded).toEqual(unmuteIcon);
   });
 
   it('creates a collapsed UnmuteIcon', function() {
     mockController.state.volumeState.unmuteIconCollapsed = true;
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <UnmuteIcon
         controller={mockController}
         skinConfig={skinConfig}
       />);
 
-    var expandeds = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-expanded');
+    var expandeds = wrapper.find('.oo-expanded');
     expect(expandeds.length).toBe(0);
-    var unmuteIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-unmute');
+    var unmuteIcon = wrapper.find('.oo-unmute');
     expect(unmuteIcon).toBeTruthy();
   });
 
   it('collapses an expanded UnmuteIcon', function() {
     jest.useFakeTimers();
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <UnmuteIcon
         controller={mockController}
         skinConfig={skinConfig}
       />);
 
-    var expanded = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-expanded');
-    var unmuteIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-unmute');
+    var expanded = wrapper.find('.oo-expanded');
+    var unmuteIcon = wrapper.find('.oo-unmute');
     expect(expanded).toEqual(unmuteIcon);
 
     jest.runAllTimers();
-    var expandeds = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-expanded');
+    wrapper.update();
+    var expandeds = wrapper.find('.oo-expanded');
     expect(expandeds.length).toBe(0);
-    unmuteIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-unmute');
+    unmuteIcon = wrapper.find('.oo-unmute');
     expect(unmuteIcon).toBeTruthy();
   });
 
@@ -74,15 +75,15 @@ describe('UnmuteIcon', function() {
     mockController.state.volumeState.unmuteIconCollapsed = true;
     mockController.handleMuteClick = function() {};
     var spy = sinon.spy(mockController, 'handleMuteClick');
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <UnmuteIcon
         controller={mockController}
         skinConfig={skinConfig}
       />);
-    var unmuteIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-unmute');
+    var unmuteIcon = wrapper.find('.oo-unmute');
     expect(spy.callCount).toBe(0);
 
-    TestUtils.Simulate.click(unmuteIcon);
+    unmuteIcon.simulate('click');
     expect(spy.callCount).toBe(1);
     spy.restore();
   });
@@ -90,15 +91,15 @@ describe('UnmuteIcon', function() {
   it('handles clicks on expanded unmute icon', function() {
     mockController.handleMuteClick = function() {};
     var spy = sinon.spy(mockController, 'handleMuteClick');
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <UnmuteIcon
         controller={mockController}
         skinConfig={skinConfig}
       />);
-    var unmuteIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-unmute');
+    var unmuteIcon = wrapper.find('.oo-unmute');
     expect(spy.callCount).toBe(0);
 
-    TestUtils.Simulate.click(unmuteIcon);
+    unmuteIcon.simulate('click');
     expect(spy.callCount).toBe(1);
     spy.restore();
   });

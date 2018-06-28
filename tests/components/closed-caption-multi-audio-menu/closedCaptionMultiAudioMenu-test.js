@@ -9,8 +9,7 @@ jest.dontMock('../../../js/constants/languages');
 jest.dontMock('underscore');
 
 var React = require('react');
-var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 
 var ClosedCaptionMultiAudioMenu = require('../../../js/components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
 var MultiAudioTab = require('../../../js/components/closed-caption-multi-audio-menu/multiAudioTab');
@@ -21,7 +20,7 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
   var selectedAudio = null;
   var selectedCaptionsId = null;
   var props = {};
-  var DOM;
+  var wrapper;
 
   beforeEach(function() {
     props = {
@@ -76,32 +75,29 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
       }
     };
 
-    DOM = TestUtils.renderIntoDocument(<ClosedCaptionMultiAudioMenu {...props} />);
+    wrapper = Enzyme.mount(<ClosedCaptionMultiAudioMenu {...props} />);
   });
 
   afterEach(function() {
     selectedAudio = null;
     selectedCaptionsId = null;
     props = {};
-    DOM = null;
+    wrapper = null;
   });
 
   it('should be rendered', function() {
-    var component = TestUtils.findRenderedComponentWithType(DOM, ClosedCaptionMultiAudioMenu);
+    var component = wrapper.find(ClosedCaptionMultiAudioMenu);
     expect(component).toBeTruthy();
   });
 
   it('should render MultiAudioTab component', function() {
-    var component = TestUtils.findRenderedComponentWithType(DOM, MultiAudioTab);
+    var component = wrapper.find(MultiAudioTab);
 
     expect(component).toBeTruthy();
 
-    var tabComponent = TestUtils.scryRenderedComponentsWithType(DOM, Tab);
-    var accessibleButtonComponent = TestUtils.scryRenderedComponentsWithType(
-      tabComponent[0], AccessibleButton
-    )[1];
-    var btn = ReactDOM.findDOMNode(accessibleButtonComponent);
-    TestUtils.Simulate.click(btn);
+    var tabComponent = wrapper.find(Tab);
+    var accessibleButtonComponent = tabComponent.at(0).find(AccessibleButton).at(1);
+    accessibleButtonComponent.simulate('click');
 
     expect(selectedAudio).toEqual({
       enabled: true,
@@ -112,20 +108,20 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
   });
 
   it('should render MultiAudioTab component with translated title', function() {
-    var component = TestUtils.findRenderedComponentWithType(DOM, MultiAudioTab);
+    var component = wrapper.find(MultiAudioTab);
 
     expect(component).toBeTruthy();
 
-    var tabComponent = TestUtils.scryRenderedComponentsWithType(DOM, Tab);
+    var tabComponent = wrapper.find(Tab);
 
-    var header = TestUtils.findRenderedDOMComponentWithClass(tabComponent[0], 'oo-cc-ma-menu__header');
+    var header = tabComponent.at(0).find('.oo-cc-ma-menu__header').getDOMNode();
     expect(header.textContent).toEqual('MockTitleSp');
   });
 
   it('should also render Tab component when options are provided', function() {
-    var tabComponent = TestUtils.scryRenderedComponentsWithType(DOM, Tab);
+    var tabComponent = wrapper.find(Tab);
 
-    var items = TestUtils.scryRenderedDOMComponentsWithClass(tabComponent[1], 'oo-cc-ma-menu__element');
+    var items = tabComponent.at(1).find('.oo-cc-ma-menu__element');
 
     var amount = 3;
     expect(items.length).toBe(amount);
@@ -146,8 +142,8 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
       }
     };
 
-    var tree = TestUtils.renderIntoDocument(<ClosedCaptionMultiAudioMenu {...emptyProps} />);
-    var components = TestUtils.scryRenderedComponentsWithType(tree, Tab);
+    var wrapper = Enzyme.mount(<ClosedCaptionMultiAudioMenu {...emptyProps} />);
+    var components = wrapper.find(Tab);
 
     expect(components.length).toBe(0);
   });
@@ -167,12 +163,12 @@ describe('ClosedCaptionMultiAudioMenu component', function() {
       }
     };
 
-    var tree = TestUtils.renderIntoDocument(<ClosedCaptionMultiAudioMenu {...emptyHandlers} />);
-    var component = TestUtils.findRenderedComponentWithType(tree, Tab);
+    var wrapper = Enzyme.mount(<ClosedCaptionMultiAudioMenu {...emptyHandlers} />);
+    var component = wrapper.find(Tab);
 
-    var items = TestUtils.scryRenderedDOMComponentsWithClass(component, 'oo-cc-ma-menu__element');
+    var items = component.find('.oo-cc-ma-menu__element');
 
-    TestUtils.Simulate.click(items[0]);
+    items.at(0).simulate('click');
 
     expect(selectedAudio).toEqual(null);
   });

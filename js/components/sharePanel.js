@@ -11,8 +11,10 @@ var React = require('react'),
     ClassNames = require('classnames'),
     Utils = require('./utils'),
     CONSTANTS = require('../constants/constants');
+var createReactClass = require('create-react-class');
+var _ = require('underscore');
 
-var SharePanel = React.createClass({
+var SharePanel = createReactClass({
   tabs: { SHARE: 'social', EMBED: 'embed' },
 
   getInitialState: function() {
@@ -47,16 +49,16 @@ var SharePanel = React.createClass({
       socialContent.forEach(function(shareButton) {
         switch (shareButton) {
           case 'twitter':
-            shareButtons.push(<a className="oo-twitter" onClick={this.handleTwitterClick} />);
+            shareButtons.push(<a key='twitter' className="oo-twitter" onClick={this.handleTwitterClick} />);
             break;
           case 'facebook':
-            shareButtons.push(<a className="oo-facebook" onClick={this.handleFacebookClick} />);
+            shareButtons.push(<a key='facebook' className="oo-facebook" onClick={this.handleFacebookClick} />);
             break;
           case 'google+':
-            shareButtons.push(<a className="oo-google-plus" onClick={this.handleGPlusClick} />);
+            shareButtons.push(<a key='google+' className="oo-google-plus" onClick={this.handleGPlusClick} />);
             break;
           case 'email':
-            shareButtons.push(<a className="oo-email-share" onClick={this.handleEmailClick} />);
+            shareButtons.push(<a key='email' className="oo-email-share" onClick={this.handleEmailClick} />);
             break;
           default:
             break;
@@ -93,6 +95,7 @@ var SharePanel = React.createClass({
     mailToUrl += '?subject=' + encodeURIComponent(this.props.contentTree.title);
     mailToUrl += '&body=' + encodeURIComponent(emailBody + location.href);
     // location.href = mailToUrl; //same window
+    //TODO: Add html5-common to html5-skin?
     if (OO.isIos && OO.isSafari) {
       document.location = mailToUrl;
     } else {

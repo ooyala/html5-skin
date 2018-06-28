@@ -6,8 +6,10 @@ var ClassNames = require('classnames');
 var CONSTANTS = require('../constants/constants');
 var Utils = require('../components/utils');
 var AccessibilityMixin = require('../mixins/accessibilityMixin');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var ErrorScreen = React.createClass({
+var ErrorScreen = createReactClass({
   mixins: [AccessibilityMixin],
 
   render: function() {
@@ -72,16 +74,16 @@ var ErrorScreen = React.createClass({
 });
 
 ErrorScreen.propTypes = {
-  controller: React.PropTypes.shape({
-    state: React.PropTypes.shape({
-      accessibilityControlsEnabled: React.PropTypes.bool.isRequired
+  controller: PropTypes.shape({
+    state: PropTypes.shape({
+      accessibilityControlsEnabled: PropTypes.bool.isRequired
     }).isRequired
   }).isRequired,
-  errorCode: React.PropTypes.shape({
-    code: React.PropTypes.string
+  errorCode: PropTypes.shape({
+    code: PropTypes.string
   }).isRequired,
-  language: React.PropTypes.string,
-  localizableStrings: React.PropTypes.object
+  language: PropTypes.string,
+  localizableStrings: PropTypes.object
 };
 
 ErrorScreen.defaultProps = {

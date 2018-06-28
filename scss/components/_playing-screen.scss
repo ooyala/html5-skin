@@ -1,0 +1,12 @@
+
+.oo-playing-screen {
+  transition: background-color 0.2s ease-in-out;
+
+  &.oo-controls-active {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .oo-text-track-container.oo-in-background {
+    z-index: $zindex-background-captions;
+  }
+}

@@ -5,7 +5,6 @@
 var gulp        = require('gulp'),
     browserify  = require('browserify'),
     watchify    = require('watchify'),
-    reactify    = require('reactify'),
     bulkify     = require('bulkify'),
     source      = require('vinyl-source-stream'),
     buffer      = require('vinyl-buffer'),
@@ -23,6 +22,7 @@ var gulp        = require('gulp'),
     gracefulFs  = require('graceful-fs');
     //Fix OSX EMFILE error
     gracefulFs.gracefulify(realFs);
+var babelify = require('babelify');
 
 var path = {
   scripts: ['./js/**/*.js'],
@@ -43,7 +43,7 @@ function buildJS(file, hash, watch, ugly, sourcemap, debug, externalReact) {
   var props ={
     entries: ['./js/controller.js'],
     debug: debug,
-    transform:    [reactify, bulkify],
+    transform: [babelify, bulkify],
     cache: {},
     packageCache: {}
   };

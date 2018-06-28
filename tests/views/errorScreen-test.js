@@ -6,35 +6,16 @@ jest.dontMock('../../js/mixins/accessibilityMixin');
 jest.dontMock('../../js/constants/constants');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var ErrorScreen = require('../../js/views/errorScreen');
 
 describe('ErrorScreen', function() {
-  /**
-   * render ErrorScreen and return elements
-   * @description renders ErrorScreen in DOM and returns title and description elements
-   * @param {*} props - props to render the component with
-   * @returns {{titleElement: Element, descriptionElement: Element}} - elements
-   */
-  function renderComponentAndFind(props) {
-    var component = TestUtils.renderIntoDocument(<ErrorScreen {...props} />);
-    var titleElement = TestUtils.findRenderedDOMComponentWithClass(component, 'oo-error-title');
-    var descriptionElement = TestUtils.findRenderedDOMComponentWithClass(component, 'oo-error-description');
-    var actionElement = TestUtils.findRenderedDOMComponentWithClass(component, 'oo-error-action');
-
-    return {
-      titleElement: titleElement,
-      descriptionElement: descriptionElement,
-      actionElement: actionElement
-    };
-  }
-
   it('test error screen with valid error code', function() {
     var errorCode = {
       code: 'network'
     };
     // Render error screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<ErrorScreen errorCode={errorCode} />);
+    var wrapper = Enzyme.mount(<ErrorScreen errorCode={errorCode} />);
   });
 
   it('test error screen with invalid error code', function() {
@@ -42,7 +23,7 @@ describe('ErrorScreen', function() {
       code: '404'
     };
     // Render error screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<ErrorScreen errorCode={errorCode} />);
+    var wrapper = Enzyme.mount(<ErrorScreen errorCode={errorCode} />);
   });
 
   describe('when passing error codes into the component', function() {
@@ -58,11 +39,14 @@ describe('ErrorScreen', function() {
         }
       };
 
-      var elements = renderComponentAndFind(props);
+      var wrapper = Enzyme.mount(<ErrorScreen {...props}/>);
+      var titleElement = wrapper.find('.oo-error-title').hostNodes().getDOMNode();
+      var descriptionElement = wrapper.find('.oo-error-description').hostNodes().getDOMNode();
+      var actionElement = wrapper.find('.oo-error-action').hostNodes().getDOMNode();
 
       it('should render correct title, description and action', function() {
-        expect(elements.titleElement.textContent).toEqual('DRM SERVER ERROR');
-        expect(elements.descriptionElement.textContent).toEqual('DRM server error');
+        expect(titleElement.textContent).toEqual('DRM SERVER ERROR');
+        expect(descriptionElement.textContent).toEqual('DRM server error');
       });
     });
 
@@ -83,14 +67,17 @@ describe('ErrorScreen', function() {
         }
       };
 
-      var elements = renderComponentAndFind(props);
+      var wrapper = Enzyme.mount(<ErrorScreen {...props}/>);
+      var titleElement = wrapper.find('.oo-error-title').hostNodes().getDOMNode();
+      var descriptionElement = wrapper.find('.oo-error-description').hostNodes().getDOMNode();
+      var actionElement = wrapper.find('.oo-error-action').hostNodes().getDOMNode();
 
       it('should render correct title, description and action', function() {
-        expect(elements.titleElement.textContent).toEqual('AUTHORIZATION ERROR');
+        expect(titleElement.textContent).toEqual('AUTHORIZATION ERROR');
         // eslint-disable-next-line
-        expect(elements.descriptionElement.textContent).toEqual('Unable to register this device to this account, as the maximum number of authorized devices has already been reached. Error Code 22');
+        expect(descriptionElement.textContent).toEqual('Unable to register this device to this account, as the maximum number of authorized devices has already been reached. Error Code 22');
         // eslint-disable-next-line
-        expect(elements.actionElement.textContent).toEqual('Please remove one of your authorized devices to enable this device.');
+        expect(actionElement.textContent).toEqual('Please remove one of your authorized devices to enable this device.');
       });
     });
 
@@ -111,14 +98,17 @@ describe('ErrorScreen', function() {
         }
       };
 
-      var elements = renderComponentAndFind(props);
+      var wrapper = Enzyme.mount(<ErrorScreen {...props}/>);
+      var titleElement = wrapper.find('.oo-error-title').hostNodes().getDOMNode();
+      var descriptionElement = wrapper.find('.oo-error-description').hostNodes().getDOMNode();
+      var actionElement = wrapper.find('.oo-error-action').hostNodes().getDOMNode();
 
       it('should render correct title, description and action', function() {
-        expect(elements.titleElement.textContent).toEqual('AUTHORIZATION ERROR');
+        expect(titleElement.textContent).toEqual('AUTHORIZATION ERROR');
         // eslint-disable-next-line
-        expect(elements.descriptionElement.textContent).toEqual('Unable to access this content, as the maximum number of devices has already been authorized. Error Code 29');
+        expect(descriptionElement.textContent).toEqual('Unable to access this content, as the maximum number of devices has already been authorized. Error Code 29');
         // eslint-disable-next-line
-        expect(elements.actionElement.textContent).toEqual('Please remove one of your authorized devices to enable this device.');
+        expect(actionElement.textContent).toEqual('Please remove one of your authorized devices to enable this device.');
       });
     });
   });

@@ -5,7 +5,7 @@ jest.dontMock('underscore');
 
 var React = require('react');
 var _ = require('underscore');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 
 var LANGUAGE_CONSTANTS = require('../../../js/constants/languages');
 var helpers = require('../../../js/components/closed-caption-multi-audio-menu/helpers');
