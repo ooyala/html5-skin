@@ -67,7 +67,8 @@ function getDisplayTitle(language, label, noLanguageText) {
   var displayLanguage = language || '';
   var displayLabel = label || '';
 
-  if (!displayLanguage.length && !displayLabel.length) {
+  if ( (!displayLanguage.length && !displayLabel.length) ||
+    language === CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE ) {
     if (typeof noLanguageText === 'undefined' || !noLanguageText.length) {
       noLanguageText = CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
     }

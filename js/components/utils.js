@@ -198,7 +198,7 @@ var Utils = {
    * back to default values when none are specified.
    * @function getSkipTimes
    * @param {Object}
-   * @return {Object} An object with two properties, 'forward' and 'backward',
+   * @returns {Object} An object with two properties, 'forward' and 'backward',
    * which represent the amount of seconds to skip in each respective direction.
    */
   getSkipTimes: function(skinConfig) {
@@ -540,6 +540,9 @@ var Utils = {
    * @returns {String} The localizted string
    */
   getLocalizedString: function(language, stringId, localizedStrings) {
+    if (stringId === CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE) {
+      console.log('BBB getLocalizedString language', language);
+    }
     try {
       return localizedStrings[language][stringId];
     } catch (e) {

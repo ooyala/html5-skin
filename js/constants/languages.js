@@ -779,7 +779,7 @@ module.exports = [{
   '1': 'de',
   '3': 'deu',
   'name': 'German',
-  '2B': 'er',
+  '2B': 'ger',
   '2T': 'deu',
   'local': 'Deutsch'
 }, {
@@ -1010,23 +1010,16 @@ module.exports = [{
   '1': 'fr',
   '3': 'fra',
   'name': 'French',
-  '2B': 're',
-  '2T': 'fra',
-  'local': 'français'
-}, {
-  '1': 'fr',
-  '3': 'fra',
-  'name': 'French',
   '2B': 'fre',
   '2T': 'fra',
-  'local': 'français'
+  'local': 'Français'
 }, {
   '1': '',
   '3': 'frm',
   'name': 'Middle French (ca. 1400–1600)',
   '2B': 'frm',
   '2T': '',
-  'local': 'françois'
+  'local': 'François'
 }, {
   '1': '',
   '3': 'fro',
@@ -3312,10 +3305,10 @@ module.exports = [{
 }, {
   '1': '',
   '3': 'und',
-  'name': 'Undetermined',
+  'name': 'Undefined language',
   '2B': 'und',
   '2T': '',
-  'local': 'Undetermined'
+  'local': 'Undefined language'
 }, {
   '1': 'ur',
   '3': 'urd',
