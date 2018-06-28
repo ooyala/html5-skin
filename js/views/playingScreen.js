@@ -229,6 +229,17 @@ var PlayingScreen = createReactClass({
   },
 
   /**
+   * Handles the touchstart event. Note that this handler is for the main element.
+   * There's a similar handler for an inner element that handles 360 video interactions.
+   * @private
+   * @param {Event} event The touchstart event object
+   */
+  handleTouchStart: function(event) {
+    // Disable "mouse over controls" check for all touch interactions
+    this.hasCheckedMouseOverControls = true;
+  },
+
+  /**
    * Extracts and stores the clientX and clientY values from a mouse event. This
    * is used in order to keep track of the last known position. Triggers a check
    * that determines whether the mouse is over the skip controls.
@@ -436,6 +447,7 @@ var PlayingScreen = createReactClass({
       <div
         className={className}
         ref="PlayingScreen"
+        onTouchStart={this.handleTouchStart}
         onMouseOver={this.handleMouseOver}
         onMouseOut={this.hideControlBar}
         onKeyDown={this.handleKeyDown}>
