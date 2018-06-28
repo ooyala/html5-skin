@@ -1,9 +1,16 @@
 
 .oo-pause-screen {
+  opacity: 1;
+  @include vendor-prefixes(transition, all 0.5s ease);
 
   .oo-text-track-container.oo-in-background {
     z-index: $zindex-background-captions;
   }
+}
+
+.oo-pause-screen.oo-pause-screen-hidden {
+  opacity: 0;
+  @include vendor-prefixes(transition, all 0.5s ease);
 }
 
 .oo-action-icon-pause {

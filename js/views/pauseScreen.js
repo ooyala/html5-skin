@@ -9,30 +9,33 @@ var React = require('react'),
     UpNextPanel = require('../components/upNextPanel'),
     TextTrackPanel = require('../components/textTrackPanel'),
     Watermark = require('../components/watermark'),
-    ResizeMixin = require('../mixins/resizeMixin'),
     Icon = require('../components/icon'),
     SkipControls = require('../components/skipControls'),
     Utils = require('../components/utils'),
     CONSTANTS = require('./../constants/constants'),
-    AnimateMixin = require('../mixins/animateMixin'),
     ViewControlsVr = require('../components/viewControlsVr');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
 
-var PauseScreen = createReactClass({
-  mixins: [ResizeMixin, AnimateMixin],
-
-  getInitialState: function() {
-    return {
+class PauseScreen extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
       descriptionText: this.props.contentTree.description,
       containsText:
         (this.props.skinConfig.pauseScreen.showTitle && !!this.props.contentTree.title) ||
         (this.props.skinConfig.pauseScreen.showDescription && !!this.props.contentTree.description),
-      controlBarVisible: true
+      controlBarVisible: true,
+      animate: false,
+      hidden: false
     };
-  },
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.componentWidth !== this.props.componentWidth) {
+      this.handleResize(nextProps);
+    }
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.handleResize();
     this.hideVrPauseButton();
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
@@ -43,17 +46,39 @@ var PauseScreen = createReactClass({
     if (this.state.containsText) {
       this.props.controller.addBlur();
     }
-  },
 
-  componentWillUnmount: function() {
+    this.animateTimer = setTimeout(this.startAnimation, 1);
+  }
+
+  componentWillUnmount() {
     this.props.controller.enablePauseAnimation();
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
     document.removeEventListener('mouseup', this.handleVrMouseUp);
     document.removeEventListener('touchend', this.handleVrTouchEnd);
-  },
 
-  handleResize: function() {
+    clearTimeout(this.animateTimer);
+  }
+
+  startAnimation = () => {
+    this.setState({
+      animate: true
+    });
+  };
+
+  showPauseScreen = () => {
+    this.setState({
+      hidden: false
+    });
+  };
+
+  hidePauseScreen = () => {
+    this.setState({
+      hidden: true
+    });
+  };
+
+  handleResize = () => {
     if (ReactDOM.findDOMNode(this.refs.description)) {
       this.setState({
         descriptionText: Utils.truncateTextToWidth(
@@ -62,9 +87,9 @@ var PauseScreen = createReactClass({
         )
       });
     }
-  },
+  };
 
-  handleClick: function(event) {
+  handleClick = (event) => {
     if (this.props.controller.videoVr) {
       event.preventDefault();
     }
@@ -74,33 +99,33 @@ var PauseScreen = createReactClass({
     this.props.controller.state.accessibilityControlsEnabled = true;
     this.props.controller.state.isClickedOutside = false;
     this.props.handleVrPlayerClick();
-  },
+  };
 
   /**
    * call handleTouchEnd when touchend was called on selectedScreen and videoType is Vr
    * @param {Event} e - event object
    */
-  handleTouchEnd: function(e) {
+  handleTouchEnd = (e) => {
     if (this.props.controller.videoVr) {
       e.preventDefault();
       if (!this.props.isVrMouseMove) {
         this.props.controller.togglePlayPause(e);
       }
     }
-  },
+  };
 
   /**
    * call handleVrTouchEnd when touchend was called on selectedScreen and videoType is Vr
    * @param {Event} e - event object
    */
-  handleVrTouchEnd: function(e) {
+  handleVrTouchEnd = (e) => {
     this.props.handleVrPlayerMouseUp(e);
-  },
+  };
 
   /**
    * remove the button on pause screen for correct checking mouse movement
    */
-  hideVrPauseButton: function() {
+  hideVrPauseButton = () => {
     if (this.props.controller.videoVr) {
       var pauseButton = document.getElementById('oo-pause-button');
       setTimeout(function() {
@@ -109,52 +134,64 @@ var PauseScreen = createReactClass({
         }
       }, 1000);
     }
-  },
+  };
 
-  handlePlayerMouseDown: function(e) {
+  handlePlayerMouseDown = (e) => {
     if (this.props.controller.videoVr) {
       e.persist();
     }
     this.props.controller.state.accessibilityControlsEnabled = true;
     this.props.controller.state.isClickedOutside = false;
     this.props.handleVrPlayerMouseDown(e);
-  },
+  };
 
-  handlePlayerMouseMove: function(e) {
+  handlePlayerMouseMove = (e) => {
     this.props.handleVrPlayerMouseMove(e);
-  },
+  };
 
   /**
    * call handleVrMouseUp when mouseup was called on selectedScreen
    * @param {Event} e - event object
    */
-  handlePlayerMouseUp: function(e) {
+  handlePlayerMouseUp = (e) => {
     e.stopPropagation(); // W3C
     e.cancelBubble = true; // IE
-  },
+  };
 
   /**
    * call handleVrMouseUp when mouseup was called on document
    * @param {Event} e - event object
    */
-  handleVrMouseUp: function(e) {
+  handleVrMouseUp = (e) => {
     this.props.handleVrPlayerMouseUp(e);
-  },
+  };
 
   /**
    * Make sure keyboard controls are active when a focusable element has focus.
    *
    * @param {Event} event - Focus event object
    */
-  handleFocus: function(event) {
+  handleFocus = (event) => {
     var isFocusableElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
     if (isFocusableElement) {
       this.props.controller.state.accessibilityControlsEnabled = true;
       this.props.controller.state.isClickedOutside = false;
     }
-  },
+  };
 
-  render: function() {
+  handleMouseLeave = () => {
+    if (this.props.skinConfig.pauseScreen.autoHide) {
+      this.hidePauseScreen();
+    }
+  };
+
+  handleMouseEnter = () => {
+    if (this.props.skinConfig.pauseScreen.autoHide) {
+      this.showPauseScreen();
+    }
+  };
+
+  render() {
     // inline style for config/skin.json elements only
     var titleStyle = {
       color: this.props.skinConfig.startScreen.titleFont.color
@@ -253,8 +290,17 @@ var PauseScreen = createReactClass({
       this.props.controller.state.scrubberBar.isHovering
     );
 
+    var pauseScreenClass = ClassNames({
+      'oo-state-screen': true,
+      'oo-pause-screen': true,
+      'oo-pause-screen-hidden': this.state.hidden
+    });
+
     return (
-      <div className="oo-state-screen oo-pause-screen">
+      <div className={pauseScreenClass}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+      >
         {!this.props.controller.videoVr && this.state.containsText && <div className={fadeUnderlayClass} />}
 
         <div
@@ -263,7 +309,8 @@ var PauseScreen = createReactClass({
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
           onMouseUp={this.handlePlayerMouseUp}
-          onTouchEnd={this.handleTouchEnd} />
+          onTouchEnd={this.handleTouchEnd}
+        />
 
         <Watermark
           {...this.props}
@@ -323,5 +370,6 @@ var PauseScreen = createReactClass({
       </div>
     );
   }
-});
+}
+
 module.exports = PauseScreen;
