@@ -16,8 +16,6 @@ var PropTypes = require('prop-types');
  * @return {Component} React component
  */
 var NonAccessibleButton = function(props) {
-  //TODO: This is causing a lot of console errors when running tests.
-  //JP will look at them
   return (
     <a
       style={props.style}
