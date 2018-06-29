@@ -16,6 +16,8 @@ var React = require('react'),
     ViewControlsVr = require('../components/viewControlsVr');
 
 class PauseScreen extends React.Component{
+  //Alex: When transitioning to a class, I've removed the usage of mixins since they have been
+  //deprecated. I've brought in the animate and resize mixin functionalities directly into this class.
   constructor(props) {
     super(props);
     this.state = {
@@ -60,18 +62,31 @@ class PauseScreen extends React.Component{
     clearTimeout(this.animateTimer);
   }
 
+  /**
+   * Originally part of the animationMixin. Sets the animate state to true. Used
+   * to animate the fade of the pause button in the center of the screen upon pausing.
+   * @private
+   */
   startAnimation = () => {
     this.setState({
       animate: true
     });
   };
 
+  /**
+   * Show the pause screen by setting the hidden state to false.
+   * @private
+   */
   showPauseScreen = () => {
     this.setState({
       hidden: false
     });
   };
 
+  /**
+   * Hide the pause screen by setting the hidden state to true.
+   * @private
+   */
   hidePauseScreen = () => {
     this.setState({
       hidden: true
@@ -179,16 +194,22 @@ class PauseScreen extends React.Component{
     }
   };
 
+  /**
+   * MouseLeave event handler. Hides the pause screen if the autoHide skin config is set to true.
+   * @private
+   */
   handleMouseLeave = () => {
     if (this.props.skinConfig.pauseScreen.autoHide) {
       this.hidePauseScreen();
     }
   };
 
+  /**
+   * MouseEnter event handler. Shows the pause screen.
+   * @private
+   */
   handleMouseEnter = () => {
-    if (this.props.skinConfig.pauseScreen.autoHide) {
-      this.showPauseScreen();
-    }
+    this.showPauseScreen();
   };
 
   render() {
@@ -309,8 +330,7 @@ class PauseScreen extends React.Component{
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
           onMouseUp={this.handlePlayerMouseUp}
-          onTouchEnd={this.handleTouchEnd}
-        />
+          onTouchEnd={this.handleTouchEnd} />
 
         <Watermark
           {...this.props}
