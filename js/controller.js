@@ -2159,7 +2159,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.mb.publish(OO.EVENTS.REQUEST_PREVIOUS_VIDEO);
       } else {
         this.updateSeekingPlayhead(0);
-        this.mb.publish(OO.EVENTS.REPLAY);
+        this.seek(0);
       }
       this.state.skipControls.requestPreviousTimestamp = currentTimestamp;
     },
