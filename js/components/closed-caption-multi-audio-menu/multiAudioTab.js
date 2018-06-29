@@ -6,28 +6,38 @@ var CONSTANTS = require('../../constants/constants');
 var LANGUAGE_LIST = require('../../constants/languages');
 var Utils = require('../utils');
 
+var SPECIAL_LANGUAGES_MAP = {};
+SPECIAL_LANGUAGES_MAP[CONSTANTS.LANGUAGE.UNDEFINED_LANGUAGE] = CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
+SPECIAL_LANGUAGES_MAP[CONSTANTS.LANGUAGE.NO_LINGUISTIC_CONTENT] = CONSTANTS.SKIN_TEXT.NO_LINGUISTIC_CONTENT;
+SPECIAL_LANGUAGES_MAP[CONSTANTS.LANGUAGE.UNCODED_LANGUAGES] = CONSTANTS.SKIN_TEXT.UNCODED_LANGUAGES;
+SPECIAL_LANGUAGES_MAP[CONSTANTS.LANGUAGE.MULTIPLE_LANGUAGES] = CONSTANTS.SKIN_TEXT.MULTIPLE_LANGUAGES;
+
 var MultiAudioTab = React.createClass({
   render: function() {
     // transform tracks to human readable format
     var readableTracksList = this.props.audioTracksList.map(
       function(audioTrack) {
         var displayLanguage = '';
-        if (audioTrack.lang === CONSTANTS.LANGUAGE.NO_LINGUISTIC_CONTENT) {
-          displayLanguage =  Utils.getLocalizedString(
+        var isSpecialLanguage = helpers.isSpecialLanguage(audioTrack.lang, SPECIAL_LANGUAGES_MAP);
+        if (isSpecialLanguage) {
+          displayLanguage = helpers.getLocalizedSpecialLanguage(
+            audioTrack.lang,
             this.props.language,
-            CONSTANTS.SKIN_TEXT.NO_LINGUISTIC_CONTENT,
-            this.props.localizableStrings
+            this.props.localizableStrings,
+            SPECIAL_LANGUAGES_MAP
           );
         } else {
           displayLanguage = helpers.getDisplayLanguage(LANGUAGE_LIST, audioTrack.lang);
         }
+
         var displayLabel = helpers.getDisplayLabel(audioTrack);
 
         var languageElement = {
           enabled: audioTrack.enabled,
           language: displayLanguage,
           label: displayLabel,
-          id: audioTrack.id
+          id: audioTrack.id,
+          lang: audioTrack.lang
         };
 
         return languageElement;
@@ -42,12 +52,6 @@ var MultiAudioTab = React.createClass({
     var transformedTracksList = helpers.transformTracksList(readableTracksList, noLanguageText);
 
     var uniqueTracksList = helpers.getUniqueTracks(transformedTracksList);
-
-    console.log('BBB this.props.audioTracksList', this.props.audioTracksList);
-    console.log('BBB readableTracksList', readableTracksList);
-    console.log('BBB noLanguageText', noLanguageText);
-    console.log('BBB transformedTracksList', transformedTracksList);
-    console.log('BBB uniqueTracksList', uniqueTracksList);
 
     return (
       <Tab
@@ -74,7 +78,7 @@ MultiAudioTab.propTypes = {
 
   handleClick: React.PropTypes.func,
   language: React.PropTypes.string,
-  localizableStrings: React.PropTypes.string
+  localizableStrings: React.PropTypes.object
 };
 
 module.exports = MultiAudioTab;

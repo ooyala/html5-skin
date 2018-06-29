@@ -197,7 +197,7 @@ var Utils = {
    * converted to integers and constrained to allowed minimum and maximums. Falls
    * back to default values when none are specified.
    * @function getSkipTimes
-   * @param {Object}
+   * @param {Object} skinConfig - configuration for skin
    * @returns {Object} An object with two properties, 'forward' and 'backward',
    * which represent the amount of seconds to skip in each respective direction.
    */
@@ -232,7 +232,7 @@ var Utils = {
    * @function isMouseInsideRect
    * @param {Object} mousePosition An object with the clientX and clientY coordinates of the mouse pointer.
    * @param {DOMRect} clientRect DOMRect returned by an element's getBoundingClientRect() function
-   * @return {Boolean} True if the mouse is inside the element, false otherwise
+   * @returns {Boolean} True if the mouse is inside the element, false otherwise
    */
   isMouseInsideRect: function(mousePosition, clientRect) {
     if (!mousePosition || !clientRect) {
@@ -256,7 +256,7 @@ var Utils = {
    * this reason, values returned by this function should only be used for calculating
    * elapsed times.
    * @function getCurrentTimestamp
-   * @return {Number} A value in milliseconds that will be either performance.now() or
+   * @returns {Number} A value in milliseconds that will be either performance.now() or
    * Date.now, depending on whether or not window.performance is available.
    */
   getCurrentTimestamp: function() {
@@ -540,9 +540,6 @@ var Utils = {
    * @returns {String} The localizted string
    */
   getLocalizedString: function(language, stringId, localizedStrings) {
-    if (stringId === CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE) {
-      console.log('BBB getLocalizedString language', language);
-    }
     try {
       return localizedStrings[language][stringId];
     } catch (e) {

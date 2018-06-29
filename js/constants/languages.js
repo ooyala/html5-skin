@@ -2657,7 +2657,7 @@ module.exports = [{
   'name': 'Russian',
   '2B': 'rus',
   '2T': '',
-  'local': 'русский язык'
+  'local': 'Русский язык'
 }, {
   '1': '',
   '3': 'sad',
@@ -2930,7 +2930,7 @@ module.exports = [{
   'name': 'Spanish',
   '2B': 'spa',
   '2T': '',
-  'local': 'español'
+  'local': 'Español'
 }, {
   '1': 'sq',
   '3': 'sqi',

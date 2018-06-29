@@ -1,4 +1,5 @@
 var CONSTANTS = require('../../constants/constants');
+var Utils = require('../utils');
 var _ = require('underscore');
 
 /**
@@ -41,8 +42,8 @@ function getDisplayLanguage(languagesList, languageCode) {
   ) {
     var matchingLanguage = _.find(languagesList, function(language) {
       return (
-        language['1'] === languageCode ||
         language['2T'] === languageCode ||
+        language['1'] === languageCode ||
         language['2B'] === languageCode ||
         language['3'] === languageCode
       );
@@ -56,31 +57,71 @@ function getDisplayLanguage(languagesList, languageCode) {
 
 /**
  * Gets display title based on language and label
- * @param {String} language - language string attribute
- * @param {String} label - label string attribute
- * @param {String} noLanguageText - label for a case when
+ * @param {Object} trackParam - AudioTrack params
+ * @param {String} trackParam.language - language string attribute
+ * @param {String} trackParam.label - label string attribute
+ * @param {String} trackParam.langCode - code of the language
+ * @param {String} trackParam.noLanguageText - label for a case when
  * we do not have values for language and label of an audioTrack
  * @returns {String} displayTitle - human readable display title
  */
-function getDisplayTitle(language, label, noLanguageText) {
+function getDisplayTitle(trackParam) {
   // set default function params
-  var displayLanguage = language || '';
-  var displayLabel = label || '';
+  var displayLanguage = trackParam.language || '';
+  var displayLabel = trackParam.label || '';
+  var noLanguageText = trackParam.noLanguageText || CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
+  var langCode = trackParam.langCode;
 
-  if ( (!displayLanguage.length && !displayLabel.length) ||
-    language === CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE ) {
-    if (typeof noLanguageText === 'undefined' || !noLanguageText.length) {
-      noLanguageText = CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
-    }
+  if (!displayLanguage.length && !displayLabel.length) {
     return noLanguageText;
   } else if (displayLanguage.length && !displayLabel.length) {
     return displayLanguage;
   } else if (!displayLanguage.length && displayLabel.length) {
     return displayLabel;
   } else {
-    return displayLanguage.concat(' ', displayLabel);
+    if (langCode === CONSTANTS.LANGUAGE.UNDEFINED_LANGUAGE) {
+      displayLanguage = '';
+    }
+    return displayLanguage.concat(' ', displayLabel).trim();
   }
 }
+
+/**
+ * If language in audioTrack is special we need to use localized value if it is possible.
+ * We can localize the value using audio code.
+ * @param {String} langCode - code of the language
+ * @param {String} userLanguage - language which user would like to use
+ * @param {Object} localizableStrings - mapping of string keys to localized values
+ * @param {Object} languageMap - object with codes of special languages as keys
+ * and labels for the codes as values
+ * @returns {String} localized special audio track name or original name or empty string
+ */
+function getLocalizedSpecialLanguage(langCode, userLanguage, localizableStrings, languageMap) {
+  var phrase = languageMap ? languageMap[langCode] : '';
+  var localizedLanguage = Utils.getLocalizedString(
+    userLanguage,
+    phrase,
+    localizableStrings
+  );
+  localizedLanguage = localizedLanguage ?
+    localizedLanguage
+    :
+    phrase ? phrase : '';
+  return localizedLanguage;
+}
+
+/**
+ *
+ * @param {String} langCode - code of an audio language
+ * @param {Object} languageMap - object with codes of special languages as keys
+ * and labels for the codes as values
+ * @returns {boolean} - true if language code is one of specials, false otherwise
+ */
+function isSpecialLanguage(langCode, languageMap) {
+  var isSpecialLanguage = languageMap ? !!languageMap[langCode] : false;
+  return isSpecialLanguage;
+}
+
 
 /**
  * Transforms tracks list based on criteria
@@ -101,7 +142,11 @@ function transformTracksList(tracksList, noLanguageText) {
     // if all languages are distinct - discard labels
     if (groupedKeys.length === tracksList.length) {
       transformedTracksList = tracksList.map(function(audioTrack) {
-        var trackDisplayTitle = getDisplayTitle(audioTrack.language, '', noLanguageText);
+        var trackDisplayTitle = getDisplayTitle({
+          language: audioTrack.language,
+          langCode: audioTrack.lang,
+          noLanguageText: noLanguageText
+        });
         var transformedTrack = {
           id: audioTrack.id,
           label: trackDisplayTitle,
@@ -117,7 +162,12 @@ function transformTracksList(tracksList, noLanguageText) {
           // get each list of duplicating tracks
           return groupedTracks[key].map(function(audioTrack) {
             // get display title based on language and label
-            var trackDisplayTitle = getDisplayTitle(audioTrack.language, audioTrack.label, noLanguageText);
+            var trackDisplayTitle = getDisplayTitle({
+              language: audioTrack.language,
+              label: audioTrack.label,
+              langCode: audioTrack.lang,
+              noLanguageText: noLanguageText
+            });
             
             var transformedTrack = {
               enabled: audioTrack.enabled,
@@ -130,7 +180,11 @@ function transformTracksList(tracksList, noLanguageText) {
         } else {
           // this track is distinct
           var audioTrack = _.head(groupedTracks[key]);
-          var trackDisplayTitle = getDisplayTitle(audioTrack.language, '', noLanguageText);
+          var trackDisplayTitle = getDisplayTitle({
+            language: audioTrack.language,
+            langCode: audioTrack.lang,
+            noLanguageText: noLanguageText
+          });
           var transformedTrack = {
             enabled: audioTrack.enabled,
             label: trackDisplayTitle,
@@ -201,5 +255,7 @@ module.exports = {
   getDisplayLanguage: getDisplayLanguage,
   getDisplayTitle: getDisplayTitle,
   transformTracksList: transformTracksList,
-  getUniqueTracks: getUniqueTracks
+  getUniqueTracks: getUniqueTracks,
+  getLocalizedSpecialLanguage: getLocalizedSpecialLanguage,
+  isSpecialLanguage: isSpecialLanguage
 };
