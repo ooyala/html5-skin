@@ -167,4 +167,57 @@ describe('PauseScreen', function() {
     expect(spy.callCount).toBe(0);
     spy.restore();
   });
+
+  describe('AutoHide', function() {
+    it('hides the pause screen when autoHide is enabled and the mouse leaves the pause screen', function() {
+      mockSkinConfig.pauseScreen.autoHide = true;
+      var wrapper = Enzyme.mount(
+        <PauseScreen
+          skinConfig={mockSkinConfig}
+          controller={mockController}
+          contentTree={mockContentTree}
+          handleVrPlayerClick={() => {}}
+          closedCaptionOptions={{cueText: 'sample text'}}
+          playerState={CONSTANTS.STATE.PAUSE}
+        />
+      );
+      wrapper.simulate('mouseLeave');
+      expect(wrapper.find('.oo-pause-screen-hidden').length).toBe(1);
+    });
+
+    it('shows the pause screen when autoHide is enabled and the mouse enters the pause screen', function() {
+      mockSkinConfig.pauseScreen.autoHide = true;
+      var wrapper = Enzyme.mount(
+        <PauseScreen
+          skinConfig={mockSkinConfig}
+          controller={mockController}
+          contentTree={mockContentTree}
+          handleVrPlayerClick={() => {}}
+          closedCaptionOptions={{cueText: 'sample text'}}
+          playerState={CONSTANTS.STATE.PAUSE}
+        />
+      );
+      wrapper.simulate('mouseLeave');
+      expect(wrapper.find('.oo-pause-screen-hidden').length).toBe(1);
+
+      wrapper.simulate('mouseEnter');
+      expect(wrapper.find('.oo-pause-screen-hidden').length).toBe(0);
+    });
+
+    it('does not hide the pause screen when autoHide is disabled and the mouse leaves the pause screen', function() {
+      mockSkinConfig.pauseScreen.autoHide = false;
+      var wrapper = Enzyme.mount(
+        <PauseScreen
+          skinConfig={mockSkinConfig}
+          controller={mockController}
+          contentTree={mockContentTree}
+          handleVrPlayerClick={() => {}}
+          closedCaptionOptions={{cueText: 'sample text'}}
+          playerState={CONSTANTS.STATE.PAUSE}
+        />
+      );
+      wrapper.simulate('mouseLeave');
+      expect(wrapper.find('.oo-pause-screen-hidden').length).toBe(0);
+    });
+  });
 });
