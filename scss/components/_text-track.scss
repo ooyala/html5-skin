@@ -4,6 +4,11 @@
   display: inline-block;
   max-width: 80%;
   margin: 0 auto 12px auto;
+  transition: 0.2s opacity ease-in-out;
+
+  &.oo-in-background {
+    opacity: 0.4;
+  }
 
   .oo-text-track-window {
     padding: 10px;

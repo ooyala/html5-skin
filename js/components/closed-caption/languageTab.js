@@ -2,8 +2,10 @@ var React = require('react'),
     DataSelector = require('../dataSelector'),
     CONSTANTS = require('../../constants/constants'),
     values = require('lodash.values');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var LanguageTab = React.createClass({
+var LanguageTab = createReactClass({
   getInitialState: function() {
     return {
       selectedLanguage: this.props.closedCaptionOptions.availableLanguages.locale[
@@ -49,7 +51,7 @@ var LanguageTab = React.createClass({
 });
 
 LanguageTab.propTypes = {
-  dataItemsPerPage: React.PropTypes.objectOf(React.PropTypes.number)
+  dataItemsPerPage: PropTypes.objectOf(PropTypes.number)
 };
 
 LanguageTab.defaultProps = {

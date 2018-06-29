@@ -5,8 +5,10 @@ var AccessibleButton = require('../accessibleButton');
 var AccessibleMenu = require('../higher-order/accessibleMenu');
 var classnames = require('classnames');
 var CONSTANTS = require('../../constants/constants');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var Tab = React.createClass({
+var Tab = createReactClass({
   handleClick: function(id) {
     if (typeof this.props.handleClick === 'function') {
       this.props.handleClick(id);
@@ -79,17 +81,17 @@ Tab.defaultProps = {
 };
 
 Tab.propTypes = {
-  tabClassName: React.PropTypes.string,
-  header: React.PropTypes.string,
-  itemsList: React.PropTypes.arrayOf(
-    React.PropTypes.shape({
-      id: React.PropTypes.string.isRequired,
-      label: React.PropTypes.string.isRequired,
-      enabled: React.PropTypes.bool.isRequired
+  tabClassName: PropTypes.string,
+  header: PropTypes.string,
+  itemsList: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      enabled: PropTypes.bool.isRequired
     })
   ).isRequired,
-  skinConfig: React.PropTypes.object,
-  handleClick: React.PropTypes.func
+  skinConfig: PropTypes.object,
+  handleClick: PropTypes.func
 };
 
 module.exports = Tab;

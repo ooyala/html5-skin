@@ -2,7 +2,7 @@ jest.dontMock('../../js/components/watermark')
     .dontMock('../../js/components/utils');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var Watermark = require('../../js/components/watermark');
 
 describe('Watermark', function() {
@@ -40,100 +40,100 @@ describe('Watermark', function() {
     }
   };
   it('renders watermark', function() {
-    DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <Watermark {...mockProps}
         controlBarVisible={true}/>
     );
 
     // test clickable watermark
-    var watermark = DOM.refs['watermark'];
+    var watermark = wrapper.ref('watermark');
   });
 
   it('tests watermark position', function() {
     mockProps.skinConfig.general.watermark.position = 'left';
-    DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <Watermark {...mockProps}
         controlBarVisible={true}/>
     );
 
-    var watermark = DOM.refs['watermark'];
+    var watermark = wrapper.ref('watermark');
   });
 
   it('tests watermark position', function() {
     mockProps.skinConfig.general.watermark.position = 'right';
-    DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <Watermark {...mockProps}
         controlBarVisible={true}/>
     );
 
-    var watermark = DOM.refs['watermark'];
+    var watermark = wrapper.ref('watermark');
   });
 
   it('tests watermark position', function() {
     mockProps.skinConfig.general.watermark.position = 'bottom';
-    DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <Watermark {...mockProps}
         controlBarVisible={true}/>
     );
 
-    var watermark = DOM.refs['watermark'];
+    var watermark = wrapper.ref('watermark');
   });
 
   it('tests watermark position', function() {
     mockProps.skinConfig.general.watermark.position = 'top';
-    DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <Watermark {...mockProps}
         controlBarVisible={true}/>
     );
 
-    var watermark = DOM.refs['watermark'];
+    var watermark = wrapper.ref('watermark');
   });
 
   it('tests watermark image default width', function() {
     mockProps.skinConfig.general.watermark.scalingOption = 'default';
-    DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <Watermark {...mockProps}
         controlBarVisible={true}/>
     );
 
     // test watermark width is default
-    var image = DOM.refs['watermark'];
+    var image = wrapper.ref('watermark');
     expect(image.style.width).toBe('10%');
   });
 
   it('tests watermark image with set width', function() {
     mockProps.skinConfig.general.watermark.scalingOption = 'width';
-    DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <Watermark {...mockProps}
         controlBarVisible={true}/>
     );
 
     // test watermark width
-    var image = DOM.refs['watermark'];
+    var image = wrapper.ref('watermark');
     expect(image.style.width).toBe(mockProps.skinConfig.general.watermark.scalingPercentage +'%');
   });
 
   it('tests watermark image with set height', function() {
     mockProps.skinConfig.general.watermark.scalingOption = 'height';
-    DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <Watermark {...mockProps}
         controlBarVisible={true}/>
     );
 
     // test watermark height
-    var image = DOM.refs['watermark'];
+    var image = wrapper.ref('watermark');
     expect(image.style.height).toBe(mockProps.skinConfig.general.watermark.scalingPercentage +'%');
   });
 
   it('tests watermark image with no scaling option', function() {
     mockProps.skinConfig.general.watermark.scalingOption = 'none';
-    DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <Watermark {...mockProps}
         controlBarVisible={true}/>
     );
 
     // test watermark width is not changed
-    var image = DOM.refs['watermark'];
+    var image = wrapper.ref('watermark');
     var check = (image.style.width == 'auto' || image.style.width == '');
     expect(check).toBe(true);
   });
@@ -141,18 +141,17 @@ describe('Watermark', function() {
   it('tests watermark click', function() {
     var clicked = false;
     // Render watermark into DOM
-    DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <Watermark {...mockProps}
         controlBarVisible={false}/>
     );
 
-    var clickable = DOM.refs['watermark'];
-    TestUtils.Simulate.click(clickable);
+    wrapper.simulate('click');
     expect(paused).toBe(true);
 
     mockProps.playerState = 'paused';
     playerState = 'paused';
-    TestUtils.Simulate.click(clickable);
+    wrapper.simulate('click');
     expect(paused).toBe(false);
 
     mockProps.playerState = 'playing';
@@ -161,15 +160,14 @@ describe('Watermark', function() {
 
   it('tests watermark not clickable', function() {
     var clicked = false;
-    DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <Watermark {...mockProps}
         controlBarVisible={false}
         nonClickable = {true}/>
     );
 
-    DOM.handleWatermarkClick = function() {clicked = true;};
-    var watermark = DOM.refs['watermark'];
-    TestUtils.Simulate.click(watermark);
+    wrapper.instance().handleWatermarkClick = function() {clicked = true;};
+    wrapper.simulate('click');
     expect(clicked).toBe(false);
 
     mockProps.playerState = 'playing';
@@ -178,11 +176,11 @@ describe('Watermark', function() {
 
   it('tests no watermark shown', function() {
     mockProps.skinConfig.general.watermark.imageResource.url = '';
-    DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <Watermark {...mockProps}
         controlBarVisible={false}/>
     );
-    expect(DOM.refs['watermark']).toBe(undefined);
+    expect(wrapper.ref('watermark')).toBe(undefined);
     mockProps.skinConfig.general.watermark.imageResource.url = 'http://ooyala.com';
   });
 });

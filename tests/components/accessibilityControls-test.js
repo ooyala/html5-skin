@@ -2,6 +2,8 @@ jest.dontMock('../../js/components/accessibilityControls');
 jest.dontMock('../../js/constants/constants');
 jest.dontMock('../../js/components/utils');
 
+var React = require('react');
+var ReactDOM = require('react-dom');
 var CONSTANTS = require('../../js/constants/constants');
 var AccessibilityControls = require('../../js/components/accessibilityControls');
 
@@ -186,11 +188,14 @@ describe('AccessibilityControls', function() {
 
       beforeEach(function() {
         div = document.createElement('div');
-        document.activeElement = div;
+        //jsdom requires a valid tabindex to be set for the element to be focusable. See:
+        //https://stackoverflow.com/questions/38681827/jsdom-9-1-does-not-set-document-activeelement-when-focusing-a-node
+        div.setAttribute('tabindex', 1);
+        div.focus();
       });
 
       afterEach(function() {
-        document.activeElement = null;
+        div.blur();
       });
 
       it ('should NOT allow global arrow keys when focused element is a menu item', function() {

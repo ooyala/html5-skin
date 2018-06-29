@@ -5,7 +5,7 @@ jest.dontMock('../../js/views/startScreen')
     .dontMock('classnames');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var StartScreen = require('../../js/views/startScreen');
 var skinConfig = require('../../config/skin.json');
 
@@ -15,12 +15,29 @@ describe('StartScreen', function() {
   beforeEach(function() {
     mockController = {
       state: {
+        isMobile: false,
+        volumeState: {
+          muted: false,
+          volume: 1,
+          volumeStateVisible: true, 
+          volumeSliderVisible: true
+        },
+        closedCaptionOptions: {},
+        multiAudioOptions: {},
+        videoQualityOptions: {
+          availableBitrates: null
+        },
         contentTree: {
           promo_image: 'image.png',
           description: 'description',
           title: 'title'
         }
-      }
+      },
+      cancelTimer: function() {},
+      hideVolumeSliderBar: function() {},
+      toggleMute: function() {},
+      startHideControlBarTimer: function() {},
+      setVolume: function() {}
     };
     mockProps = {
       controller: mockController,
@@ -44,58 +61,58 @@ describe('StartScreen', function() {
 
   it('should render start screen', function() {
     // Render start screen into DOM
-    var DOM = TestUtils.renderIntoDocument(<StartScreen />);
+    var wrapper = Enzyme.mount(<StartScreen />);
 
     // test play
-    var playBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-selectable');
-    TestUtils.Simulate.click(playBtn);
+    var playBtn = wrapper.find('.oo-state-screen-selectable');
+    playBtn.simulate('click');
   });
 
   it('should render action icon when player is not initializing', function() {
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <StartScreen
         {...mockProps}
         contentTree={mockController.state.contentTree}
         isInitializing={false} />
     );
-    var actionIcon = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-action-icon');
+    var actionIcon = wrapper.find('.oo-action-icon');
     expect(actionIcon).toBeDefined();
   });
 
   it('should NOT render action icon when player is initializing', function() {
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <StartScreen
         {...mockProps}
         contentTree={mockController.state.contentTree}
         isInitializing={true} />
     );
-    var actionIcons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-action-icon');
+    var actionIcons = wrapper.find('.oo-action-icon');
     expect(actionIcons.length).toBe(0);
   });
 
   it('should render info panel when player is not initializing', function() {
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <StartScreen
         {...mockProps}
         contentTree={mockController.state.contentTree}
         isInitializing={false} />
     );
-    var infoPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-info');
+    var infoPanel = wrapper.find('.oo-state-screen-info');
     expect(infoPanel).toBeDefined();
-    var titleLabel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-title');
-    var descriptionLabel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-description');
+    var titleLabel = wrapper.find('.oo-state-screen-title').getDOMNode();
+    var descriptionLabel = wrapper.find('.oo-state-screen-description').getDOMNode();
     expect(titleLabel.innerHTML).toEqual(mockController.state.contentTree.title);
     expect(descriptionLabel.innerHTML).toEqual(mockController.state.contentTree.description);
   });
 
   it('should NOT render info panel when player is initializing', function() {
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <StartScreen
         {...mockProps}
         contentTree={mockController.state.contentTree}
         isInitializing={true} />
     );
-    var infoPanels = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-info');
+    var infoPanels = wrapper.find('.oo-state-screen-info');
     expect(infoPanels.length).toBe(0);
   });
 
@@ -103,16 +120,16 @@ describe('StartScreen', function() {
     mockProps.skinConfig.startScreen.showTitle = false;
     mockProps.skinConfig.startScreen.showDescription = false;
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <StartScreen
         {...mockProps}
         contentTree={mockController.state.contentTree}
         isInitializing={false} />
     );
-    var infoPanel = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-state-screen-info');
+    var infoPanel = wrapper.find('.oo-state-screen-info');
     expect(infoPanel).toBeDefined();
-    var titleLabels = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-title');
-    var descriptionLabels = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-state-screen-description');
+    var titleLabels = wrapper.find('.oo-state-screen-title');
+    var descriptionLabels = wrapper.find('.oo-state-screen-description');
     expect(titleLabels.length).toBe(0);
     expect(descriptionLabels.length).toEqual(0);
   });

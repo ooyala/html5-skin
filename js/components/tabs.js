@@ -7,8 +7,10 @@ var React = require('react'),
     Utils = require('./utils'),
     ClassNames = require('classnames'),
     Icon = require('./icon');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var Tabs = React.createClass({
+var Tabs = createReactClass({
   highlight: function(evt) {
     if (this.props.skinConfig.general.accentColor) {
       evt.target.style.color = this.props.skinConfig.general.accentColor;
@@ -187,7 +189,10 @@ var Tabs = React.createClass({
       this.tabsNavigationElement.scrollLeft = menuItem.offsetLeft;
     } else {
       var menuItemRightEdge = menuItem.offsetLeft + menuItem.clientWidth;
-      var maxVisiblePoint = this.tabsNavigationElement.scrollLeft + this.tabsNavigationElement.clientWidth;
+      //getBoundingClientRect().width returns the unrounded clientWidth. However, jsdom won't allow us to set clientWidth,
+      //but we can mock getBoundingClientRect.
+      var tabsNavigationElementClientWidth = this.tabsNavigationElement.clientWidth || this.tabsNavigationElement.getBoundingClientRect().width;
+      var maxVisiblePoint = this.tabsNavigationElement.scrollLeft + tabsNavigationElementClientWidth;
       // Element overflows from the currently visible navigation area. Adjust the
       // navigation's scroll value so that the whole menu item fits inside the visible area.
       if (menuItemRightEdge > maxVisiblePoint) {
@@ -236,16 +241,16 @@ var Tabs = React.createClass({
 Tabs = AccessibleMenu(Tabs, { selector: '.tabs-menu', useRovingTabindex: true });
 
 Tabs.propTypes = {
-  className: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.string,
-    React.PropTypes.object
+  className: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.string,
+    PropTypes.object
   ]),
-  tabActive: React.PropTypes.number,
-  onMount: React.PropTypes.func,
-  onBeforeChange: React.PropTypes.func,
-  onAfterChange: React.PropTypes.func,
-  children: React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.element]).isRequired
+  tabActive: PropTypes.number,
+  onMount: PropTypes.func,
+  onBeforeChange: PropTypes.func,
+  onAfterChange: PropTypes.func,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]).isRequired
 };
 
 Tabs.defaultProps = {
@@ -254,11 +259,11 @@ Tabs.defaultProps = {
 
 module.exports = Tabs;
 
-Tabs.Panel = React.createClass({
+Tabs.Panel = createReactClass({
   displayName: 'Panel',
   propTypes: {
-    title: React.PropTypes.string.isRequired,
-    children: React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.element]).isRequired
+    title: PropTypes.string.isRequired,
+    children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]).isRequired
   },
 
   render: function() {

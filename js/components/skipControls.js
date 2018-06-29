@@ -7,8 +7,10 @@ var Utils = require('./utils');
 var preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus');
 var CONSTANTS = require('../constants/constants');
 var MACROS = require('../constants/macros');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var SkipControls = React.createClass({
+var SkipControls = createReactClass({
   /**
    * Stores a ref to this component's main element.
    * @private
@@ -93,6 +95,7 @@ var SkipControls = React.createClass({
    */
   getButtonTemplate: function() {
     var buttonTemplate = {};
+    var buttonStyle = {};
     var skipTimes = Utils.getSkipTimes(this.props.skinConfig);
 
     var skipBackwardAriaLabel = CONSTANTS.ARIA_LABELS.SKIP_BACKWARD.replace(
@@ -103,13 +106,22 @@ var SkipControls = React.createClass({
       MACROS.SECONDS,
       skipTimes.forward
     );
+    // Note that the button elements are still in the DOM even when the controls
+    // are hidden. When controls are inactive we disable pointer events so that
+    // the user won't accidentally trigger a button when bringing up the controls
+    // on touch devices.
+    if (this.props.isInactive) {
+      buttonStyle.pointerEvents = 'none';
+    }
 
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO] = (
       <ControlButton
         {...this.props}
-        className="oo-previous-video"
-        icon="nextVideo"
+        key={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
         focusId={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
+        style={buttonStyle}
+        className="oo-previous-video"
+        icon="previous"
         ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_VIDEO}
         disabled={!this.props.config.hasPreviousVideos}
         onClick={this.onPreviousVideo}>
@@ -119,9 +131,11 @@ var SkipControls = React.createClass({
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD] = (
       <HoldControlButton
         {...this.props}
+        key={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD}
+        focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD}
+        style={buttonStyle}
         className="oo-center-button oo-skip-backward"
         icon="replay"
-        focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD}
         ariaLabel={skipBackwardAriaLabel}
         onClick={this.onSkipBackward}>
         <span className="oo-btn-counter">{skipTimes.backward}</span>
@@ -131,9 +145,11 @@ var SkipControls = React.createClass({
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD] = (
       <HoldControlButton
         {...this.props}
-        className="oo-center-button oo-skip-forward"
-        icon="replay"
+        key={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD}
         focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD}
+        style={buttonStyle}
+        className="oo-center-button oo-skip-forward"
+        icon="forward"
         ariaLabel={skipForwardAriaLabel}
         onClick={this.onSkipForward}>
         <span className="oo-btn-counter">{skipTimes.forward}</span>
@@ -143,9 +159,11 @@ var SkipControls = React.createClass({
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO] = (
       <ControlButton
         {...this.props}
-        className="oo-next-video"
-        icon="nextVideo"
+        key={CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO}
         focusId={CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO}
+        style={buttonStyle}
+        className="oo-next-video"
+        icon="next"
         ariaLabel={CONSTANTS.ARIA_LABELS.NEXT_VIDEO}
         disabled={!this.props.config.hasNextVideos}
         onClick={this.onNextVideo}>
@@ -224,12 +242,8 @@ var SkipControls = React.createClass({
     }
 
     var className = classNames('oo-skip-controls', {
-      'oo-inactive': this.props.inactive,
-      'oo-in-background': Utils.getPropertyValue(
-        this.props.controller,
-        'state.scrubberBar.isHovering',
-        false
-      )
+      'oo-inactive': this.props.isInactive,
+      'oo-in-background': this.props.isInBackground
     });
     var buttonTemplate = this.getButtonTemplate();
 
@@ -250,31 +264,32 @@ var SkipControls = React.createClass({
 });
 
 SkipControls.propTypes = {
-  inactive: React.PropTypes.bool,
-  language: React.PropTypes.string,
-  localizableStrings: React.PropTypes.object,
-  responsiveView: React.PropTypes.bool.isRequired,
-  skinConfig: React.PropTypes.object.isRequired,
-  onFocus: React.PropTypes.func,
-  onBlur: React.PropTypes.func,
-  config: React.PropTypes.shape({
-    hasPreviousVideos: React.PropTypes.bool.isRequired,
-    hasNextVideos: React.PropTypes.bool.isRequired
+  isInactive: PropTypes.bool,
+  isInBackground: PropTypes.bool,
+  language: PropTypes.string,
+  localizableStrings: PropTypes.object,
+  responsiveView: PropTypes.bool.isRequired,
+  skinConfig: PropTypes.object.isRequired,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
+  config: PropTypes.shape({
+    hasPreviousVideos: PropTypes.bool.isRequired,
+    hasNextVideos: PropTypes.bool.isRequired
   }),
-  controller: React.PropTypes.shape({
-    state: React.PropTypes.shape({
-      isMobile: React.PropTypes.bool.isRequired,
-      duration: React.PropTypes.number.isRequired,
-      scrubberBar: React.PropTypes.shape({
-        isHovering: React.PropTypes.bool
+  controller: PropTypes.shape({
+    state: PropTypes.shape({
+      isMobile: PropTypes.bool.isRequired,
+      duration: PropTypes.number.isRequired,
+      scrubberBar: PropTypes.shape({
+        isHovering: PropTypes.bool
       })
     }),
-    rewindOrRequestPreviousVideo: React.PropTypes.func.isRequired,
-    requestNextVideo: React.PropTypes.func.isRequired,
-    cancelTimer: React.PropTypes.func.isRequired,
+    rewindOrRequestPreviousVideo: PropTypes.func.isRequired,
+    requestNextVideo: PropTypes.func.isRequired,
+    cancelTimer: PropTypes.func.isRequired,
   }),
-  a11yControls: React.PropTypes.shape({
-    seekBy: React.PropTypes.func.isRequired
+  a11yControls: PropTypes.shape({
+    seekBy: PropTypes.func.isRequired
   })
 };
 

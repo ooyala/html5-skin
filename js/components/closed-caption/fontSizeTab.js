@@ -5,8 +5,10 @@ var React = require('react'),
     AccessibleMenu = require('../higher-order/accessibleMenu'),
     CONSTANTS = require('../../constants/constants'),
     SelectionContainer = require('./selectionContainer');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var FontSizeTab = React.createClass({
+var FontSizeTab = createReactClass({
   getInitialState: function() {
     return {
       selectedFontSize: this.props.closedCaptionOptions.fontSize,
@@ -113,19 +115,19 @@ var FontSizeTab = React.createClass({
 FontSizeTab = AccessibleMenu(FontSizeTab, { useRovingTabindex: true });
 
 FontSizeTab.propTypes = {
-  language: React.PropTypes.string,
-  localizableStrings: React.PropTypes.objectOf(React.PropTypes.objectOf(React.PropTypes.string)),
-  closedCaptionOptions: React.PropTypes.shape({
-    enabled: React.PropTypes.bool,
-    fontSize: React.PropTypes.string
+  language: PropTypes.string,
+  localizableStrings: PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)),
+  closedCaptionOptions: PropTypes.shape({
+    enabled: PropTypes.bool,
+    fontSize: PropTypes.string
   }),
-  controller: React.PropTypes.shape({
-    toggleClosedCaptionEnabled: React.PropTypes.func.isRequired,
-    onClosedCaptionChange: React.PropTypes.func.isRequired
+  controller: PropTypes.shape({
+    toggleClosedCaptionEnabled: PropTypes.func.isRequired,
+    onClosedCaptionChange: PropTypes.func.isRequired
   }),
-  skinConfig: React.PropTypes.shape({
-    general: React.PropTypes.shape({
-      accentColor: React.PropTypes.string
+  skinConfig: PropTypes.shape({
+    general: PropTypes.shape({
+      accentColor: PropTypes.string
     })
   })
 };

@@ -12,8 +12,10 @@ var React = require('react'),
     Utils = require('../components/utils'),
     MACROS = require('../constants/macros'),
     CONSTANTS = require('../constants/constants');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var VideoQualityPanel = React.createClass({
+var VideoQualityPanel = createReactClass({
   getInitialState: function() {
     return {
       selected: this.props.videoQualityOptions.selectedBitrate
@@ -265,18 +267,18 @@ var VideoQualityPanel = React.createClass({
 VideoQualityPanel = AccessibleMenu(VideoQualityPanel);
 
 VideoQualityPanel.propTypes = {
-  videoQualityOptions: React.PropTypes.shape({
-    availableBitrates: React.PropTypes.arrayOf(
-      React.PropTypes.shape({
-        id: React.PropTypes.string,
-        bitrate: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
-        label: React.PropTypes.string
+  videoQualityOptions: PropTypes.shape({
+    availableBitrates: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string,
+        bitrate: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        label: PropTypes.string
       })
     )
   }),
-  closeAction: React.PropTypes.func,
-  controller: React.PropTypes.shape({
-    sendVideoQualityChangeEvent: React.PropTypes.func
+  closeAction: PropTypes.func,
+  controller: PropTypes.shape({
+    sendVideoQualityChangeEvent: PropTypes.func
   })
 };
 

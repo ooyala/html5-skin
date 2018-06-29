@@ -8,7 +8,7 @@ jest.dontMock('../../js/components/scrubberBar')
     .dontMock('underscore');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var Enzyme = require('enzyme');
 var CONSTANTS = require('../../js/constants/constants');
 var skinConfig = require('../../config/skin.json');
 var ReactDOM = require('react-dom');
@@ -67,7 +67,7 @@ describe('ScrubberBar', function() {
       }
     };
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ScrubberBar
         controlBarVisible={true}
         seeking={false}
@@ -87,7 +87,7 @@ describe('ScrubberBar', function() {
     mockSkinConfig.general.accentColor = 'blue';
     mockSkinConfig.controlBar.scrubberBar.playedColor = '';
 
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ScrubberBar
         controlBarVisible={true}
         seeking={false}
@@ -95,17 +95,17 @@ describe('ScrubberBar', function() {
         skinConfig={mockSkinConfig}
         />
     );
-    var playheadBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playhead');
-    expect(playheadBar.style.backgroundColor).toBe('blue');
-    expect(ReactDOM.findDOMNode(DOM.refs.playhead).style.backgroundColor).toBe('blue');
+    var playheadBar = wrapper.find('.oo-playhead');
+    expect(playheadBar.getDOMNode().style.backgroundColor).toBe('blue');
+    expect(wrapper.ref('playhead').style.backgroundColor).toBe('blue');
   });
 
   it('should render ARIA attributes', function() {
     baseMockController.state.currentPlayhead = 0;
     baseMockController.state.duration = 60;
     updateBaseMockProps();
-    var DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
-    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar');
+    var wrapper = Enzyme.mount(<ScrubberBar {...baseMockProps}/>);
+    var scrubberBar = wrapper.find('.oo-scrubber-bar').getDOMNode();
     expect(scrubberBar.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.SEEK_SLIDER);
     expect(scrubberBar.getAttribute('aria-valuemin')).toBe('0');
     expect(scrubberBar.getAttribute('aria-valuemax')).toBe(baseMockController.state.duration.toString());
@@ -118,15 +118,15 @@ describe('ScrubberBar', function() {
     baseMockController.state.currentPlayhead = 2;
     baseMockController.state.duration = 60;
     updateBaseMockProps();
-    var DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
-    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar');
+    var wrapper = Enzyme.mount(<ScrubberBar {...baseMockProps}/>);
+    var scrubberBar = wrapper.find('.oo-scrubber-bar').getDOMNode();
     expect(scrubberBar.getAttribute('aria-valuenow')).toBe('2.00');
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('00:02 of 01:00');
 
     baseMockController.state.currentPlayhead = 60;
     updateBaseMockProps();
-    DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
-    scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar');
+    wrapper = Enzyme.mount(<ScrubberBar {...baseMockProps}/>);
+    scrubberBar = wrapper.find('.oo-scrubber-bar').getDOMNode();
     expect(scrubberBar.getAttribute('aria-valuenow')).toBe('60.00');
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('01:00 of 01:00');
   });
@@ -136,15 +136,15 @@ describe('ScrubberBar', function() {
     baseMockController.state.currentPlayhead = 2;
     baseMockController.state.duration = 0;
     updateBaseMockProps();
-    var DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
-    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar');
+    var wrapper = Enzyme.mount(<ScrubberBar {...baseMockProps}/>);
+    var scrubberBar = wrapper.find('.oo-scrubber-bar').getDOMNode();
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('Live video');
 
     baseMockController.state.currentPlayhead = 60;
     baseMockController.state.duration = 120;
     updateBaseMockProps();
-    DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
-    scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar');
+    wrapper = Enzyme.mount(<ScrubberBar {...baseMockProps}/>);
+    scrubberBar = wrapper.find('.oo-scrubber-bar').getDOMNode();
     expect(scrubberBar.getAttribute('aria-valuetext')).toBe('01:00 of 02:00 live video');
   });
 
@@ -162,14 +162,14 @@ describe('ScrubberBar', function() {
       }
     };
     updateBaseMockProps();
-    var DOM = TestUtils.renderIntoDocument(<ScrubberBar {...baseMockProps}/>);
-    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar');
-    TestUtils.Simulate.keyDown(scrubberBar, { key: CONSTANTS.KEY_VALUES.ARROW_UP });
-    TestUtils.Simulate.keyDown(scrubberBar, { key: CONSTANTS.KEY_VALUES.ARROW_RIGHT });
+    var wrapper = Enzyme.mount(<ScrubberBar {...baseMockProps}/>);
+    var scrubberBar = wrapper.find('.oo-scrubber-bar');
+    scrubberBar.simulate('keyDown', { key: CONSTANTS.KEY_VALUES.ARROW_UP });
+    scrubberBar.simulate('keyDown', { key: CONSTANTS.KEY_VALUES.ARROW_RIGHT });
     expect(seekForwardCalled).toBe(2);
     expect(seekBackCalled).toBe(0);
-    TestUtils.Simulate.keyDown(scrubberBar, { key: CONSTANTS.KEY_VALUES.ARROW_DOWN });
-    TestUtils.Simulate.keyDown(scrubberBar, { key: CONSTANTS.KEY_VALUES.ARROW_LEFT });
+    scrubberBar.simulate('keyDown', { key: CONSTANTS.KEY_VALUES.ARROW_DOWN });
+    scrubberBar.simulate('keyDown', { key: CONSTANTS.KEY_VALUES.ARROW_LEFT });
     expect(seekForwardCalled).toBe(2);
     expect(seekBackCalled).toBe(2);
   });
@@ -183,7 +183,7 @@ describe('ScrubberBar', function() {
     var mockSkinConfig = Utils.clone(skinConfig);
     mockSkinConfig.general.accentColor = 'blue';
     mockSkinConfig.controlBar.scrubberBar.playedColor = 'green';
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ScrubberBar
         controlBarVisible={true}
         seeking={false}
@@ -191,9 +191,9 @@ describe('ScrubberBar', function() {
         skinConfig={mockSkinConfig}
         />
     );
-    var playheadBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playhead');
+    var playheadBar = wrapper.find('.oo-playhead').getDOMNode();
     expect(playheadBar.style.backgroundColor).toBe('green');
-    expect(ReactDOM.findDOMNode(DOM.refs.playhead).style.backgroundColor).toBe('green');
+    expect(wrapper.ref('playhead').style.backgroundColor).toBe('green');
   });
 
   it('handles a mousedown', function() {
@@ -209,7 +209,7 @@ describe('ScrubberBar', function() {
       beginSeeking: function() {},
       renderSkin: function() {}
     };
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ScrubberBar
         controlBarVisible={true}
         seeking={false}
@@ -218,8 +218,8 @@ describe('ScrubberBar', function() {
         />
     );
 
-    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar-padding');
-    TestUtils.Simulate.mouseDown(scrubberBar);
+    var scrubberBar = wrapper.find('.oo-scrubber-bar-padding');
+    scrubberBar.simulate('mouseDown');
     expect(scrubberBarClicked).toBe(true);
   });
 
@@ -241,7 +241,7 @@ describe('ScrubberBar', function() {
       },
       endSeeking: function() {}
     };
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ScrubberBar
         controlBarVisible={true}
         seeking={false}
@@ -250,9 +250,9 @@ describe('ScrubberBar', function() {
         />
     );
 
-    var scrubberBar = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-scrubber-bar-padding');
-    TestUtils.Simulate.mouseDown(scrubberBar);
-    DOM.handlePlayheadMouseUp({
+    var scrubberBar = wrapper.find('.oo-scrubber-bar-padding');
+    scrubberBar.simulate('mouseDown');
+    wrapper.instance().handlePlayheadMouseUp({
       preventDefault: function() {},
       stopPropagation: function() {}
     });
@@ -261,13 +261,12 @@ describe('ScrubberBar', function() {
   });
 
   it('represents current time with playhead position', function() {
-    var scrubberBarClicked = false;
     var mockController = {
       state: {
         isMobile: false
       }
     };
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ScrubberBar
         controlBarVisible={true}
         seeking={false}
@@ -278,25 +277,25 @@ describe('ScrubberBar', function() {
         />
     );
 
-    DOM.state.scrubberBarWidth = 470;
-    DOM.state.playheadWidth = 10;
-    DOM.forceUpdate();
+    wrapper.setState({
+      scrubberBarWidth: 470,
+      playheadWidth: 10
+    });
 
-    var playhead = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playhead-padding');
+    var playhead = wrapper.find('.oo-playhead-padding').getDOMNode();
     var leftPos = parseInt(playhead.style.left);
     expect(leftPos).toBeGreaterThan(200);
     expect(leftPos).toBeLessThan(300);
   });
 
   it('enters ad mode', function() {
-    var scrubberBarClicked = false;
     var mockController = {
       state: {
         isMobile: false,
         screenToShow: CONSTANTS.SCREEN.AD_SCREEN
       }
     };
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ScrubberBar
         controlBarVisible={true}
         seeking={false}
@@ -306,7 +305,7 @@ describe('ScrubberBar', function() {
         skinConfig={skinConfig} />
     );
 
-    var playhead = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-playhead');
+    var playhead = wrapper.find('.oo-playhead').getDOMNode();
     expect(playhead.className).toMatch('oo-ad-playhead');
   });
 
@@ -318,7 +317,7 @@ describe('ScrubberBar', function() {
       },
       setScrubberBarHoverState: function() {},
     };
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ScrubberBar
         controlBarVisible={true}
         seeking={true}
@@ -329,8 +328,8 @@ describe('ScrubberBar', function() {
     );
 
     var evt = {nativeEvent: {offsetX: 10}};
-    TestUtils.Simulate.mouseEnter(ReactDOM.findDOMNode(DOM.refs.scrubberBarContainer), evt);
-    var thumbnailContainer = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-scrubber-thumbnail-wrapper');
+    wrapper.simulate('mouseOver', evt);
+    var thumbnailContainer = wrapper.find('.oo-scrubber-thumbnail-wrapper');
     expect(thumbnailContainer.length).toBe(1);
   });
 
@@ -345,7 +344,7 @@ describe('ScrubberBar', function() {
       beginSeeking: function() {},
       renderSkin: function() {}
     };
-    var DOM = TestUtils.renderIntoDocument(
+    var wrapper = Enzyme.mount(
       <ScrubberBar
         controlBarVisible={true}
         seeking={true}
@@ -357,8 +356,8 @@ describe('ScrubberBar', function() {
     );
 
     var evt = {nativeEvent: {offsetX: 10}};
-    TestUtils.Simulate.mouseDown(ReactDOM.findDOMNode(DOM.refs.scrubberBarPadding), evt);
-    var thumbnailCarousel = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-scrubber-thumbnail-wrapper');
+    wrapper.find('.oo-scrubber-bar-padding').simulate('mouseDown', evt);
+    var thumbnailCarousel = wrapper.find('.oo-scrubber-thumbnail-wrapper');
     expect(thumbnailCarousel.length).toBe(1);
   });
 
@@ -370,7 +369,7 @@ describe('ScrubberBar', function() {
     };
 
     var node = document.createElement('div');
-    var scrubber = ReactDOM.render(
+    Enzyme.mount(
       <ScrubberBar
       controlBarVisible={true}
       seeking={true}
@@ -378,7 +377,7 @@ describe('ScrubberBar', function() {
       skinConfig={skinConfig} />, node
     );
 
-    ReactDOM.render(
+    Enzyme.mount(
       <ScrubberBar
         controlBarVisible={false}
         seeking={false}
@@ -404,7 +403,7 @@ describe('ScrubberBar', function() {
     };
 
     var node = document.createElement('div');
-    var scrubber = ReactDOM.render(
+    var wrapper = Enzyme.mount(
       <ScrubberBar
         controlBarVisible={true}
         seeking={true}
@@ -413,7 +412,7 @@ describe('ScrubberBar', function() {
         skinConfig={skinConfig} />, node
     );
 
-    scrubber.getResponsiveUIMultiple('md');
+    wrapper.instance().getResponsiveUIMultiple('md');
 
     var event2 = {
       preventDefault: function() {},
@@ -430,7 +429,7 @@ describe('ScrubberBar', function() {
       type: 'mousedown',
       nativeEvent: {}
     };
-    scrubber.handleScrubberBarMouseDown(event2);
+    wrapper.instance().handleScrubberBarMouseDown(event2);
 
     var event1 = {
       preventDefault: function() {},
@@ -446,9 +445,9 @@ describe('ScrubberBar', function() {
       type: 'mouseup',
       nativeEvent: {}
     };
-    scrubber.handlePlayheadMouseDown(event1);
-    scrubber.handlePlayheadMouseDown(event2);
-    scrubber.handlePlayheadMouseUp(event2);
+    wrapper.instance().handlePlayheadMouseDown(event1);
+    wrapper.instance().handlePlayheadMouseDown(event2);
+    wrapper.instance().handlePlayheadMouseUp(event2);
 
     var event3 = {
       preventDefault: function() {},
@@ -463,27 +462,30 @@ describe('ScrubberBar', function() {
       },
       type: 'touchstart'
     };
-    scrubber.handleScrubberBarMouseDown(event3);
+    wrapper.instance().handleScrubberBarMouseDown(event3);
 
     var event4 = {
       preventDefault: function() {},
       touches: ['a', 'b'],
       clientX: 45
     };
-    scrubber.handlePlayheadMouseMove(event4);
-    scrubber.handleScrubberBarMouseMove(event4);
-    scrubber.handleScrubberBarMouseLeave(event4);
+    wrapper.instance().handlePlayheadMouseMove(event4);
+    wrapper.instance().handleScrubberBarMouseMove(event4);
+    wrapper.instance().handleScrubberBarMouseLeave(event4);
   });
 
   it('tests a scrubber bar componentWillUnmount', function() {
     var mockController = {
       state: {
         isMobile: true
-      }
+      },
+      startHideControlBarTimer: function() {},
+      seek: function() {},
+      endSeeking: function() {}
     };
 
     var node = document.createElement('div');
-    var scrubber = ReactDOM.render(
+    var wrapper = Enzyme.mount(
       <ScrubberBar
         controlBarVisible={true}
         seeking={true}
@@ -492,7 +494,7 @@ describe('ScrubberBar', function() {
         skinConfig={skinConfig} />, node
     );
 
-    ReactDOM.render(
+    Enzyme.mount(
       <ScrubberBar
         controlBarVisible={false}
         seeking={false}
@@ -501,7 +503,10 @@ describe('ScrubberBar', function() {
     );
 
     ReactDOM.unmountComponentAtNode(node);
-    scrubber.handlePlayheadMouseUp({});
+    wrapper.instance().handlePlayheadMouseUp({
+      preventDefault: function() {},
+      stopPropagation: function() {}
+    });
   });
 
 });

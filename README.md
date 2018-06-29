@@ -51,7 +51,7 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 ## Developer Setup
 1. [Install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-2. [Install Node.js] (https://nodejs.org/download/release/v0.10.33/) v0.10.33
+2. [Install Node.js] (https://nodejs.org/download/release/v8.11.3/) v8.11.3
 
 3. Install [gulp](http://gulpjs.com) globally by running: `npm install --global gulp-cli`
 
@@ -59,9 +59,7 @@ This simple test HTML page can also be hosted on your environment to showcase ht
 
 5. After cloning, just `cd` in there, install dependencies by running `npm install`
 
-6. One of our dependencies currently has an issue in which it incorrectly declares React as a dependency rather than a peer dependency. This began causing build issues after React 16.0.0 was released. Until this issue is addressed, you can work around it by running `npm dedupe`
-
-7. This project also makes use of *git submodule* for the config directory. This needs to be initialized
+6. This project also makes use of *git submodule* for the config directory. This needs to be initialized
 using *git submodule* commands:
    ```sh
        git submodule init
@@ -70,7 +68,7 @@ using *git submodule* commands:
    ```
    The *init* and *update* should only need to be run once, afterward *git pull* will update the submodule as well as the parent repo.
 
-8. Build the project by running: `gulp`
+7. Build the project by running: `gulp`
 
    This will perform an initial build and start a watch that will update the `build/` folder with any changes made in `js/` or `scss/` folders.
 

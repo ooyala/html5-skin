@@ -8,14 +8,18 @@ var CONSTANTS = require('../../js/constants/constants');
 var DeepMerge = require('deepmerge');
 var SkinJSON = require('../../config/skin');
 OO = {
-  log: function(a) {console.info(a);}
+  log: function(a) {}
 };
 
 describe('Utils', function() {
   it('tests the utility functions', function() {
     var text = 'This is text. Really really long text that needs to be truncated to smaller text the fits on X amount of lines.';
     var div = document.createElement('div');
-    div.clientWidth = 20;
+    div.getBoundingClientRect = function() {
+      return {
+        width: 20
+      }
+    };
     var truncateText = Utils.truncateTextToWidth(div, text);
     expect(truncateText).toContain(text);
 
@@ -245,73 +249,73 @@ describe('Utils', function() {
   });
 
   it('tests isSafari', function() {
-    window.navigator.userAgent = 'AppleWebKit';
+    OO_setWindowNavigatorProperty('userAgent', 'AppleWebKit');
     var isSafari = Utils.isSafari();
     expect(isSafari).toBeTruthy();
-    window.navigator.userAgent = 'jsdom';
+    OO_setWindowNavigatorProperty('userAgent', 'jsdom');
     isSafari = Utils.isSafari();
     expect(isSafari).toBeFalsy();
   });
 
   it('tests isEdge', function() {
-    window.navigator.userAgent = 'Edge';
+    OO_setWindowNavigatorProperty('userAgent', 'Edge');
     var isEdge = Utils.isEdge();
     expect(isEdge).toBeTruthy();
-    window.navigator.userAgent = 'jsdom';
+    OO_setWindowNavigatorProperty('userAgent', 'jsdom');
     isEdge = Utils.isEdge();
     expect(isEdge).toBeFalsy();
   });
 
   it('tests isIE', function() {
-    window.navigator.userAgent = 'MSIE';
+    OO_setWindowNavigatorProperty('userAgent', 'MSIE');
     var isIE = Utils.isIE();
     expect(isIE).toBeTruthy();
-    window.navigator.userAgent = 'jsdom';
+    OO_setWindowNavigatorProperty('userAgent', 'jsdom');
     isIE = Utils.isIE();
     expect(isIE).toBeFalsy();
   });
 
   it('tests isAndroid', function() {
-    window.navigator.appVersion = 'Android';
+    OO_setWindowNavigatorProperty('appVersion', 'Android');
     var isAndroid = Utils.isAndroid();
     expect(isAndroid).toBeTruthy();
-    window.navigator.appVersion = 'jsdom';
+    OO_setWindowNavigatorProperty('appVersion', 'jsdom');
     isAndroid = Utils.isAndroid();
     expect(isAndroid).toBeFalsy();
   });
 
   it('tests isIos', function() {
-    window.navigator.platform = 'iPhone';
+    OO_setWindowNavigatorProperty('platform', 'iPhone');
     var isIos = Utils.isIos();
     expect(isIos).toBeTruthy();
-    window.navigator.platform = 'jsdom';
+    OO_setWindowNavigatorProperty('platform', 'jsdom');
     isIos = Utils.isIos();
     expect(isIos).toBeFalsy();
   });
 
   it('tests isIPhone', function() {
-    window.navigator.platform = 'iPod';
+    OO_setWindowNavigatorProperty('platform', 'iPod');
     var isIPhone = Utils.isIPhone();
     expect(isIPhone).toBeTruthy();
-    window.navigator.platform = 'jsdom';
+    OO_setWindowNavigatorProperty('platform', 'jsdom');
     isIPhone = Utils.isIPhone();
     expect(isIPhone).toBeFalsy();
   });
 
   it('tests isMobile', function() {
-    window.navigator.platform = 'iPod';
+    OO_setWindowNavigatorProperty('platform', 'iPod');
     var isMobile = Utils.isMobile();
     expect(isMobile).toBeTruthy();
-    window.navigator.platform = 'jsdom';
+    OO_setWindowNavigatorProperty('platform', 'jsdom');
     isMobile = Utils.isMobile();
     expect(isMobile).toBeFalsy();
   });
 
   it('tests isIE10', function() {
-    window.navigator.userAgent = 'MSIE 10';
+    OO_setWindowNavigatorProperty('userAgent', 'MSIE 10');
     var isIE10 = Utils.isIE10();
     expect(isIE10).toBeTruthy();
-    window.navigator.userAgent = 'jsdom';
+    OO_setWindowNavigatorProperty('userAgent', 'jsdom');
     isIE10 = Utils.isIE10();
     expect(isIE10).toBeFalsy();
   });
@@ -349,6 +353,11 @@ describe('Utils', function() {
     };
     var getLanguageToUse = Utils.getLanguageToUse(skinConfig);
     expect(getLanguageToUse).toEqual('zh');
+    //window.navigator.languages defaults to ['en-US', 'en']
+    getLanguageToUse = Utils.getLanguageToUse(skinConfig2);
+    expect(getLanguageToUse).toEqual('en');
+    //test window.navigator.browserLanguage
+    OO_setWindowNavigatorProperty('languages', null);
     window.navigator.browserLanguage = 'es-US';
     getLanguageToUse = Utils.getLanguageToUse(skinConfig2);
     expect(getLanguageToUse).toEqual('es');
@@ -368,7 +377,7 @@ describe('Utils', function() {
     var countDownText = Utils.getStartCountdown(537289879);
     expect(countDownText).toBe(text);
 
-    localizedString = Utils.getStartCountdown(-100000000);
+    var localizedString = Utils.getStartCountdown(-100000000);
     expect(localizedString).toBe('');
   });
 
@@ -602,13 +611,13 @@ describe('Utils', function() {
   });
 
   it('tests getUserDevice', function() {
-    window.navigator.userAgent = 'Phone';
+    OO_setWindowNavigatorProperty('userAgent', 'Phone');
     var device = Utils.getUserDevice();
     expect(device).toBe('phone');
-    window.navigator.userAgent = 'Tablet';
+    OO_setWindowNavigatorProperty('userAgent', 'Tablet');
     device = Utils.getUserDevice();
     expect(device).toBe('tablet');
-    window.navigator.userAgent = 'Webkit';
+    OO_setWindowNavigatorProperty('userAgent', 'Webkit');
     device = Utils.getUserDevice();
     expect(device).toBe('desktop');
   });

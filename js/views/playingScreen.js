@@ -9,7 +9,7 @@ var React = require('react'),
     ClassNames = require('classnames'),
     UpNextPanel = require('../components/upNextPanel'),
     Spinner = require('../components/spinner'),
-    TextTrack = require('../components/textTrackPanel'),
+    TextTrackPanel = require('../components/textTrackPanel'),
     Watermark = require('../components/watermark'),
     ResizeMixin = require('../mixins/resizeMixin'),
     CONSTANTS = require('../constants/constants'),
@@ -18,8 +18,10 @@ var React = require('react'),
     Tooltip = require('../components/tooltip'),
     SkipControls = require('../components/skipControls'),
     UnmuteIcon = require('../components/unmuteIcon');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var PlayingScreen = React.createClass({
+var PlayingScreen = createReactClass({
   mixins: [ResizeMixin],
 
   getInitialState: function() {
@@ -227,6 +229,17 @@ var PlayingScreen = React.createClass({
   },
 
   /**
+   * Handles the touchstart event. Note that this handler is for the main element.
+   * There's a similar handler for an inner element that handles 360 video interactions.
+   * @private
+   * @param {Event} event The touchstart event object
+   */
+  handleTouchStart: function(event) {
+    // Disable "mouse over controls" check for all touch interactions
+    this.hasCheckedMouseOverControls = true;
+  },
+
+  /**
    * Extracts and stores the clientX and clientY values from a mouse event. This
    * is used in order to keep track of the last known position. Triggers a check
    * that determines whether the mouse is over the skip controls.
@@ -422,6 +435,10 @@ var PlayingScreen = React.createClass({
       'skipControls.enabled',
       false
     );
+    var isTextTrackInBackground = (
+      this.props.controller.state.scrubberBar.isHovering ||
+      (skipControlsEnabled && this.props.controller.state.controlBarVisible)
+    );
     var className = ClassNames('oo-state-screen oo-playing-screen', {
       'oo-controls-active': skipControlsEnabled && this.props.controller.state.controlBarVisible
     });
@@ -430,6 +447,7 @@ var PlayingScreen = React.createClass({
       <div
         className={className}
         ref="PlayingScreen"
+        onTouchStart={this.handleTouchStart}
         onMouseOver={this.handleMouseOver}
         onMouseOut={this.hideControlBar}
         onKeyDown={this.handleKeyDown}>
@@ -462,19 +480,21 @@ var PlayingScreen = React.createClass({
             skinConfig={this.props.skinConfig}
             controller={this.props.controller}
             a11yControls={this.props.controller.accessibilityControls}
-            inactive={!this.props.controller.state.controlBarVisible}
+            isInactive={!this.props.controller.state.controlBarVisible}
+            isInBackground={this.props.controller.state.scrubberBar.isHovering}
             onMount={this.onSkipControlsMount}
             onFocus={this.handleFocus} />
         }
 
         <div className="oo-interactive-container" onFocus={this.handleFocus}>
-          {this.props.closedCaptionOptions.enabled ? (
-            <TextTrack
+          {this.props.closedCaptionOptions.enabled && (
+            <TextTrackPanel
               closedCaptionOptions={this.props.closedCaptionOptions}
               cueText={this.props.closedCaptionOptions.cueText}
               direction={this.props.captionDirection}
-              responsiveView={this.props.responsiveView} />
-          ) : null}
+              responsiveView={this.props.responsiveView}
+              isInBackground={isTextTrackInBackground} />
+          )}
 
           {adOverlay}
 

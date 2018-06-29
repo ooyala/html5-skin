@@ -13,8 +13,10 @@ var React = require('react'),
     CloseButton = require('./closeButton'),
     CountDownClock = require('./countDownClock'),
     Icon = require('../components/icon');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var UpNextPanel = React.createClass({
+var UpNextPanel = createReactClass({
   closeUpNextPanel: function() {
     this.props.controller.upNextDismissButtonClicked();
   },
@@ -77,18 +79,18 @@ var UpNextPanel = React.createClass({
 });
 
 UpNextPanel.propTypes = {
-  upNextInfo: React.PropTypes.shape({
-    upNextData: React.PropTypes.shape({
-      preview_image_url: React.PropTypes.string,
-      name: React.PropTypes.string,
-      description: React.PropTypes.string
+  upNextInfo: PropTypes.shape({
+    upNextData: PropTypes.shape({
+      preview_image_url: PropTypes.string,
+      name: PropTypes.string,
+      description: PropTypes.string
     })
   }),
-  skinConfig: React.PropTypes.shape({
-    upNext: React.PropTypes.shape({
-      timeToShow: React.PropTypes.number
+  skinConfig: PropTypes.shape({
+    upNext: PropTypes.shape({
+      timeToShow: PropTypes.number
     }),
-    icons: React.PropTypes.objectOf(React.PropTypes.object)
+    icons: PropTypes.objectOf(PropTypes.object)
   })
 };
 

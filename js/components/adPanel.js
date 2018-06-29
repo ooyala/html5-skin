@@ -13,8 +13,9 @@ var React = require('react'),
     ClassNames = require('classnames'),
     Utils = require('./utils'),
     Icon = require('../components/icon');
+var createReactClass = require('create-react-class');
 
-var AdPanelTopBarItem = React.createClass({
+var AdPanelTopBarItem = createReactClass({
   render: function() {
     return (
       <a className={this.props.itemClassName} onClick={this.props.onButtonClicked}>
@@ -24,7 +25,7 @@ var AdPanelTopBarItem = React.createClass({
   }
 });
 
-var AdPanel = React.createClass({
+var AdPanel = createReactClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
@@ -92,7 +93,7 @@ var AdPanel = React.createClass({
     }
 
     if (this.props.skinConfig.adScreen.showAdCountDown) {
-      remainingTime = this.props.controller.getAdRemainingTime();
+      var remainingTime = this.props.controller.getAdRemainingTime();
 
       if (isFinite(remainingTime)) {
         remainingTime = Utils.formatSeconds(Math.max(0, remainingTime));

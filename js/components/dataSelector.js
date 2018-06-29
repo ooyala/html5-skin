@@ -4,8 +4,10 @@ var React = require('react'),
     AccessibleMenu = require('./higher-order/accessibleMenu'),
     Icon = require('./icon'),
     CONSTANTS = require('../constants/constants');
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
-var DataSelector = React.createClass({
+var DataSelector = createReactClass({
   getInitialState: function() {
     return {
       currentPage: 1
@@ -201,16 +203,16 @@ var DataSelector = React.createClass({
 DataSelector = AccessibleMenu(DataSelector, { useRovingTabindex: true });
 
 DataSelector.propTypes = {
-  enabled: React.PropTypes.bool.isRequired,
-  selectedData: React.PropTypes.string,
-  availableDataItems: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-  dataItemsPerPage: React.PropTypes.objectOf(React.PropTypes.number),
-  viewSize: React.PropTypes.string.isRequired,
-  ariaLabel: React.PropTypes.string,
-  onDataChange: React.PropTypes.func.isRequired,
-  skinConfig: React.PropTypes.shape({
-    general: React.PropTypes.shape({
-      accentColor: React.PropTypes.string
+  enabled: PropTypes.bool.isRequired,
+  selectedData: PropTypes.string,
+  availableDataItems: PropTypes.arrayOf(PropTypes.string).isRequired,
+  dataItemsPerPage: PropTypes.objectOf(PropTypes.number),
+  viewSize: PropTypes.string.isRequired,
+  ariaLabel: PropTypes.string,
+  onDataChange: PropTypes.func.isRequired,
+  skinConfig: PropTypes.shape({
+    general: PropTypes.shape({
+      accentColor: PropTypes.string
     })
   })
 };
