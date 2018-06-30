@@ -795,6 +795,28 @@ describe('Controller', function() {
       clock.restore();
       controller.onAdsPlayed();
     });
+
+    it('volume controls work after ssai ad pause/play', function() {
+      var adItem = {
+          duration: 15,
+          name: "test",
+          ssai: true
+      };
+      controller.createPluginElements();
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
+      controller.onWillPlayAds('event');
+      controller.onWillPlaySingleAd('event', adItem);
+      controller.onPaused('event', OO.VIDEO.MAIN);
+      expect(controller.state.volumeState.muted).toBe(false);
+      controller.onMuteStateChanged('event', true);
+      expect(controller.state.volumeState.muted).toBe(true);
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      //Even when source is "ads", volume controls should still work for ssai ads.
+      controller.onVcPlay('event', OO.VIDEO.ADS);
+      controller.onMuteStateChanged('event', false);
+      expect(controller.state.volumeState.muted).toBe(false);
+      controller.onAdsPlayed();
+    });
   });
 
   describe('Video Qualities', function() {
