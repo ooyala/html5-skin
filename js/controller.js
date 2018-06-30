@@ -830,10 +830,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     onVcPlay: function(event, source) {
       this.state.currentVideoId = source;
-      if (this.state.currentAdsInfo.currentAdItem.ssai) {
+      if (this.state.currentAdsInfo && this.state.currentAdsInfo.currentAdItem && this.state.currentAdsInfo.currentAdItem.ssai) {
         //When pause come from ad source, for SSAI we still want source to be main, for consistency.
         this.state.currentVideoId = OO.VIDEO.MAIN;
-        if (this.state.adWasPaused && this.state.currentAdsInfo && this.state.currentAdsInfo.currentAdItem) {
+        if (this.state.adWasPaused) {
           this.state.adPauseDuration = Date.now() - this.state.adPausedTime;
           //we calculate new ad end time, based on the time that the ad was paused.
           this.state.adEndTime = this.state.adEndTime + this.state.adPauseDuration; //milliseconds
