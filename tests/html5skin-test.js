@@ -1036,6 +1036,115 @@ describe('Controller', function() {
     });
   });
 
+  describe('Scrubber Bar', function() {
+    var spyRender;
+
+    beforeEach(function() {
+      spyRender = sinon.spy(controller, 'renderSkin');
+    });
+
+    afterEach(function() {
+      spyRender.restore();
+    });
+
+    it('should update scrubber bar hover state and render when setScrubberBarHoverState() is called', function() {
+      controller.state.scrubberBar.isHovering = false;
+      controller.setScrubberBarHoverState(true);
+      expect(controller.state.scrubberBar.isHovering).toBe(true);
+      expect(spyRender.callCount).toBe(1);
+    });
+
+    it('should NOT render when setScrubberBarHoverState() is called with same value', function() {
+      controller.state.scrubberBar.isHovering = false;
+      controller.setScrubberBarHoverState(false);
+      expect(spyRender.callCount).toBe(0);
+    });
+  });
+
+  describe('Skip Controls', function() {
+    var spyPublish;
+
+    beforeEach(function() {
+      spyPublish = sinon.spy(OO.mb, 'publish');
+    });
+
+    afterEach(function() {
+      spyPublish.restore()
+    });
+
+    it('should update skip controls state on POSITION_IN_PLAYLIST_DETERMINED', function() {
+      controller.state.skipControls.hasPreviousVideos = false;
+      controller.state.skipControls.hasNextVideos = false;
+      expect(controller.state.skipControls.hasPreviousVideos).toBe(false);
+      expect(controller.state.skipControls.hasNextVideos).toBe(false);
+      controller.onPositionInPlaylistDetermined('eventName', {
+        hasPreviousVideos: true,
+        hasNextVideos: true
+      });
+      expect(controller.state.skipControls.hasPreviousVideos).toBe(true);
+      expect(controller.state.skipControls.hasNextVideos).toBe(true);
+    });
+
+    it('should publish OO.EVENTS.REQUEST_NEXT_VIDEO when requestNextVideo() is called', function() {
+      controller.requestNextVideo();
+      expect(spyPublish.callCount).toBe(1);
+      expect(spyPublish.calledWith(OO.EVENTS.REQUEST_NEXT_VIDEO)).toBe(true);
+    });
+
+    describe('Previous Video', function() {
+      var spyUpdatePlayhead, spySeek;
+
+      beforeEach(function() {
+        spyUpdatePlayhead = sinon.spy(controller, 'updateSeekingPlayhead');
+        spySeek = sinon.spy(controller, 'seek');
+      });
+
+      afterEach(function() {
+        spyUpdatePlayhead.restore();
+        spySeek.restore();
+      });
+
+      it('should rewind and immediately update playhead UI on first "Previous Video" click if playhead is above threshold', function() {
+        controller.state.mainVideoPlayhead = CONSTANTS.UI.REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD + 1;
+        controller.rewindOrRequestPreviousVideo();
+        expect(spyUpdatePlayhead.callCount).toBe(1);
+        expect(spySeek.callCount).toBe(1);
+        expect(spyUpdatePlayhead.calledWith(0)).toBe(true);
+        expect(spySeek.calledWith(0)).toBe(true);
+      });
+
+      it('should request previous video on first "Previous Video" click if playhead is below threshold', function() {
+        controller.state.mainVideoPlayhead = CONSTANTS.UI.REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD - 1;
+        controller.rewindOrRequestPreviousVideo();
+        expect(spyUpdatePlayhead.callCount).toBe(0);
+        expect(spySeek.callCount).toBe(0);
+        expect(spyPublish.callCount).toBe(1);
+        expect(spyPublish.calledWith(OO.EVENTS.REQUEST_PREVIOUS_VIDEO)).toBe(true);
+      });
+
+      it('should request previous video on "Previous Video" click if player is in seeking state', function() {
+        controller.state.seeking = true;
+        controller.state.mainVideoPlayhead = CONSTANTS.UI.REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD + 1;
+        controller.rewindOrRequestPreviousVideo();
+        expect(spyUpdatePlayhead.callCount).toBe(0);
+        expect(spySeek.callCount).toBe(0);
+        expect(spyPublish.callCount).toBe(1);
+        expect(spyPublish.calledWith(OO.EVENTS.REQUEST_PREVIOUS_VIDEO)).toBe(true);
+      });
+
+      it('should request previous video on second "Previous Video" click if time elapsed since last call is below treshold', function() {
+        controller.state.mainVideoPlayhead = CONSTANTS.UI.REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD + 1;
+        controller.state.skipControls.requestPreviousTimestamp = performance.now();
+        controller.rewindOrRequestPreviousVideo();
+        expect(spyUpdatePlayhead.callCount).toBe(0);
+        expect(spySeek.callCount).toBe(0);
+        expect(spyPublish.callCount).toBe(1);
+        expect(spyPublish.calledWith(OO.EVENTS.REQUEST_PREVIOUS_VIDEO)).toBe(true);
+      });
+    });
+
+  });
+
   describe('Ad Plugins Element', function() {
     afterEach(function() {
       controller.onAdsPlayed();
