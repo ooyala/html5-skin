@@ -248,6 +248,67 @@ describe('Utils', function() {
 
   });
 
+  describe('getSkipTimes', function() {
+    let skinConfig;
+
+    beforeEach(function() {
+      skinConfig = {
+        skipControls: {
+          skipBackwardTime: 10,
+          skipForwardTime: 10,
+        }
+      };
+    });
+
+    it('should extract values from skin config', function() {
+      skinConfig.skipControls.skipBackwardTime = 5;
+      skinConfig.skipControls.skipForwardTime = 15;
+      expect(Utils.getSkipTimes(skinConfig)).toEqual({
+        backward: 5,
+        forward: 15
+      });
+    });
+
+    it('should return default values when passing invalid data', function() {
+      const defaults = {
+        backward: CONSTANTS.UI.DEFAULT_SKIP_BACKWARD_TIME,
+        forward: CONSTANTS.UI.DEFAULT_SKIP_FORWARD_TIME
+      };
+      expect(Utils.getSkipTimes(null)).toEqual(defaults);
+      expect(Utils.getSkipTimes({})).toEqual(defaults);
+      skinConfig.skipControls.skipBackwardTime = "abc";
+      skinConfig.skipControls.skipForwardTime = {};
+      expect(Utils.getSkipTimes(skinConfig)).toEqual(defaults);
+      skinConfig.skipControls.skipBackwardTime = undefined;
+      skinConfig.skipControls.skipForwardTime = undefined;
+      expect(Utils.getSkipTimes(skinConfig)).toEqual(defaults);
+    });
+
+    it('should constrain to minimum and maximum values', function() {
+      skinConfig.skipControls.skipBackwardTime = -1;
+      skinConfig.skipControls.skipForwardTime = -1;
+      expect(Utils.getSkipTimes(skinConfig)).toEqual({
+        backward: CONSTANTS.UI.MIN_SKIP_TIME,
+        forward: CONSTANTS.UI.MIN_SKIP_TIME
+      });
+      skinConfig.skipControls.skipBackwardTime = 150;
+      skinConfig.skipControls.skipForwardTime = 150;
+      expect(Utils.getSkipTimes(skinConfig)).toEqual({
+        backward: CONSTANTS.UI.MAX_SKIP_TIME,
+        forward: CONSTANTS.UI.MAX_SKIP_TIME
+      });
+    });
+
+    it('should enforce integer values', function() {
+      skinConfig.skipControls.skipBackwardTime = 10.05;
+      skinConfig.skipControls.skipForwardTime = 20.123232;
+      expect(Utils.getSkipTimes(skinConfig)).toEqual({
+        backward: 10,
+        forward: 20
+      });
+    });
+  });
+
   it('tests isSafari', function() {
     OO_setWindowNavigatorProperty('userAgent', 'AppleWebKit');
     var isSafari = Utils.isSafari();

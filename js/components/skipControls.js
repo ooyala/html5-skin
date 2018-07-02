@@ -216,7 +216,7 @@ var SkipControls = createReactClass({
       'skipControls.buttons',
       {}
     );
-    // Find de ids and indexes of all enabled buttons
+    // Find the ids and indexes of all enabled buttons
     for (var buttonId in buttonConfig) {
       var button = buttonConfig[buttonId];
 
