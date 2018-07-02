@@ -112,6 +112,7 @@ function getLocalizedSpecialLanguage(langCode, userLanguage, localizableStrings,
 
 /**
  *
+ * Check if a language code is one of keys from a special language map
  * @param {String} langCode - code of an audio language
  * @param {Object} languageMap - object with codes of special languages as keys
  * and labels for the codes as values
