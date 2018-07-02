@@ -309,6 +309,55 @@ describe('Utils', function() {
     });
   });
 
+  describe('isMouseInsideRect', function() {
+    let mousePosition, clientRect;
+
+    beforeEach(function() {
+      mousePosition = {
+        clientX: 0,
+        clientY: 0
+      };
+      clientRect = {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+      };
+    });
+
+    it('should return true when mouse position is inside rect', function() {
+      mousePosition.clientX = 50;
+      mousePosition.clientY = 50;
+      clientRect.right = 100;
+      clientRect.bottom = 100;
+      expect(Utils.isMouseInsideRect(mousePosition, clientRect)).toBe(true);
+      mousePosition.clientX = 0;
+      mousePosition.clientY = 100;
+      expect(Utils.isMouseInsideRect(mousePosition, clientRect)).toBe(true);
+    });
+
+    it('should return false when mouse position is outside rect', function() {
+      mousePosition.clientX = 120;
+      mousePosition.clientY = 50;
+      clientRect.right = 100;
+      clientRect.bottom = 100;
+      expect(Utils.isMouseInsideRect(mousePosition, clientRect)).toBe(false);
+      mousePosition.clientX = -1;
+      mousePosition.clientY = 50;
+      expect(Utils.isMouseInsideRect(mousePosition, clientRect)).toBe(false);
+    });
+
+    it('should return false when invalid values are passed', function() {
+      mousePosition.clientX = null;
+      mousePosition.clientY = undefined;
+      clientRect.right = 100;
+      clientRect.bottom = 100;
+      expect(Utils.isMouseInsideRect(mousePosition, clientRect)).toBe(false);
+      expect(Utils.isMouseInsideRect(null, null)).toBe(false);
+    });
+
+  });
+
   it('tests isSafari', function() {
     OO_setWindowNavigatorProperty('userAgent', 'AppleWebKit');
     var isSafari = Utils.isSafari();
