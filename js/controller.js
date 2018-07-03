@@ -1445,7 +1445,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           }
         }
       } else {
-        remainingTime = parseInt(this.state.adVideoDuration - (this.state.adVideoPlayhead * 100));
+        remainingTime = parseInt(this.state.adVideoDuration - (this.state.adVideoPlayhead));
       }
       return remainingTime;
     },
