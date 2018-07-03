@@ -7,6 +7,7 @@ var Utils = require('../../js/components/utils');
 var CONSTANTS = require('../../js/constants/constants');
 var DeepMerge = require('deepmerge');
 var SkinJSON = require('../../config/skin');
+var _ = require('underscore');
 OO = {
   log: function(a) {}
 };
@@ -354,6 +355,14 @@ describe('Utils', function() {
       clientRect.bottom = 100;
       expect(Utils.isMouseInsideRect(mousePosition, clientRect)).toBe(false);
       expect(Utils.isMouseInsideRect(null, null)).toBe(false);
+    });
+
+  });
+
+  describe('getCurrentTimestamp', function() {
+
+    it('should return a numerical timestamp', function() {
+      expect(_.isNumber(Utils.getCurrentTimestamp())).toBe(true);
     });
 
   });
