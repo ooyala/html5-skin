@@ -771,6 +771,7 @@ describe('Controller', function() {
       var adItem = {
           duration: 15,
           name: "test",
+          isLive: true,
           ssai: true
       };
       var clock = sinon.useFakeTimers(Date.now());
@@ -790,6 +791,7 @@ describe('Controller', function() {
       controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
       controller.onVcPlay('event', OO.VIDEO.MAIN);
       controller.onPlaying('event', OO.VIDEO.MAIN);
+      clock.tick(1000);
       controller.onPlayheadTimeChanged('event', 0.06, adItem.duration, 0, adItem.duration, "main");
       expect(controller.state.adRemainingTime).toBe(9);
       clock.restore();
