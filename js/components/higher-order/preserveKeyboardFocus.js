@@ -1,8 +1,8 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var CONSTANTS = require('../../constants/constants');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const CONSTANTS = require('../../constants/constants');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 /**
  * Extends a Component with the ability to store its focused element id in the
@@ -16,7 +16,7 @@ var PropTypes = require('prop-types');
  * @param {Component} ComposedComponent The component to extend
  * @return {Component} A component extended with PreserveKeyboardFocus functionality
  */
-var preserveKeyboardFocus = function(ComposedComponent) {
+const preserveKeyboardFocus = function(ComposedComponent) {
 
   class PreserveKeyboardFocus extends React.Component {
 
@@ -25,7 +25,7 @@ var preserveKeyboardFocus = function(ComposedComponent) {
       this.onFocus = this.onFocus.bind(this);
       this.onBlur = this.onBlur.bind(this);
 
-      this.composedComponent = React.createRef();
+      this.composedComponentRef = React.createRef();
     }
 
     /**
@@ -33,8 +33,8 @@ var preserveKeyboardFocus = function(ComposedComponent) {
      * @private
      */
     componentDidMount() {
-      this.domElement = ReactDOM.findDOMNode(this.composedComponent.current);
-      this.tryRestoreFocusedControl();
+      const domElement = ReactDOM.findDOMNode(this.composedComponentRef.current);
+      this.tryRestoreFocusedControl(domElement);
     }
 
     /**
@@ -42,13 +42,14 @@ var preserveKeyboardFocus = function(ComposedComponent) {
      * and attempts to find the element with that focus id among its children. If
      * found, the element is given focus.
      * @private
+     * @param {domElement} HTMLElement The parent element that contains the element whose focus we need to restore
      */
-    tryRestoreFocusedControl() {
-      if (!this.domElement || !this.props.controller.state.focusedControl) {
+    tryRestoreFocusedControl(domElement) {
+      if (!domElement || !this.props.controller.state.focusedControl) {
         return;
       }
       const selector = '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + '="' + this.props.controller.state.focusedControl + '"]';
-      const control = this.domElement.querySelector(selector);
+      const control = domElement.querySelector(selector);
 
       if (control && typeof control.focus === 'function') {
         control.focus();
@@ -99,7 +100,7 @@ var preserveKeyboardFocus = function(ComposedComponent) {
       return (
         <ComposedComponent
           {...this.props}
-          ref={this.composedComponent}
+          ref={this.composedComponentRef}
           onFocus={this.onFocus}
           onBlur={this.onBlur}>
           {this.props.children}

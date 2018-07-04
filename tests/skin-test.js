@@ -282,7 +282,7 @@ describe('Tab Navigation', function() {
     // Render and get focusable elements
     renderSkin();
     var skinElement = wrapper.find('#oo-responsive');
-    focusableElements = skinElement.getDOMNode().querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
+    focusableElements = skinElement.getDOMNode().querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']:enabled');
   });
 
   afterEach(function() {

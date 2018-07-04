@@ -354,7 +354,7 @@ describe('ControlBar', function() {
     qualityBtn.simulate('keyDown', { key: ' ' });
     qualityBtn.simulate('click');
     expect(qualityBtn.instance().wasTriggeredWithKeyboard()).toBe(true);
-    wrapper.instance().composedComponent.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
+    wrapper.instance().composedComponentRef.current.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
     expect(qualityBtn.instance().wasTriggeredWithKeyboard()).toBe(false);
   });
 
@@ -1313,11 +1313,12 @@ describe('ControlBar', function() {
       preventDefault: function() {},
       type: 'touchend'
     };
-    wrapper.instance().composedComponent.handleControlBarMouseUp(event);
-    wrapper.instance().composedComponent.handleLiveClick(event);
+    var composedComponent = wrapper.instance().composedComponentRef.current;
+    composedComponent.handleControlBarMouseUp(event);
+    composedComponent.handleLiveClick(event);
 
     OO_setWindowNavigatorProperty('appVersion', 'Android');
-    wrapper.instance().composedComponent.handleVolumeIconClick(event);
+    composedComponent.handleVolumeIconClick(event);
     ReactDOM.unmountComponentAtNode(node);
   });
 
