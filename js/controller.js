@@ -1445,11 +1445,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           }
         }
       } else {
-        if (isSSAI) {
-          remainingTime = parseInt(this.state.adVideoDuration - (this.state.adVideoPlayhead * 100));
-        }else {
-          remainingTime = parseInt(this.state.adVideoDuration - (this.state.adVideoPlayhead));
-        }
+        remainingTime = parseInt(this.state.adVideoDuration - this.state.adVideoPlayhead);
       }
       return remainingTime;
     },
