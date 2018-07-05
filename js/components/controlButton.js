@@ -15,16 +15,20 @@ var PropTypes = require('prop-types');
  * @param {Object} props Component's props
  * @return {Component} React component
  */
-var NonAccessibleButton = function(props) {
-  return (
-    <a
-      style={props.style}
-      className={props.className}
-      aria-hidden={props.ariaHidden}
-      onClick={props.onClick}>
-      {props.children}
-    </a>
-  );
+class NonAccessibleButton extends React.Component {
+  render() {
+    return (
+      <a
+        style={this.props.style}
+        className={this.props.className}
+        aria-hidden={this.props.ariaHidden}
+        onMouseEnter={this.props.onMouseEnter}
+        onMouseLeave={this.props.onMouseLeave}
+        onClick={this.props.onClick}>
+        {this.props.children}
+      </a>
+    );
+  };
 };
 
 /**

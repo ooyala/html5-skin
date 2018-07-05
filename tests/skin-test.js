@@ -23,8 +23,10 @@ var _ = require('underscore');
 var skinControllerMock = {
   state: {
     adVideoDuration: 0,
-    errorCode: '',
+    errorCode: {},
     adOverlayUrl: '',
+    playerState: '',
+    isMobile: false,
     scrubberBar: {
       isHovering: true
     },
@@ -32,7 +34,9 @@ var skinControllerMock = {
       showing: false
     },
     volumeState: {
-      muted: false
+      muted: false,
+      volume: 1,
+      volumeSliderVisible: true
     },
     videoQualityOptions: {},
     multiAudioOptions: {},
@@ -40,8 +44,12 @@ var skinControllerMock = {
     config: {},
     moreOptionsItems: []
   },
+  setVolume: function() {},
   cancelTimer: function() {},
   enablePauseAnimation: function() {},
+  startHideControlBarTimer: function() {},
+  toggleClosedCaptionEnabled: function() {},
+  onClosedCaptionChange: function() {},
   publishOverlayRenderingEvent: function() {}
 };
 
@@ -67,6 +75,7 @@ describe('Skin screenToShow state', function() {
   beforeEach(function() {
     controller = getMockController();
     state = {
+      playerState: '',
       responsiveId: 'md',
       contentTree: {}
     };
@@ -262,6 +271,7 @@ describe('Tab Navigation', function() {
     );
     skin = wrapper.instance();
     skin.switchComponent({
+      playerState: '',
       screenToShow: CONSTANTS.SCREEN.PAUSE_SCREEN,
       responsiveId: 'md',
       contentTree: {}

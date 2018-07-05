@@ -294,6 +294,7 @@ var PauseScreen = createReactClass({
             responsiveView={this.props.responsiveView}
             skinConfig={this.props.skinConfig}
             controller={this.props.controller}
+            currentPlayhead={this.props.currentPlayhead}
             a11yControls={this.props.controller.accessibilityControls}
             isInBackground={this.props.controller.state.scrubberBar.isHovering}
             onFocus={this.handleFocus} />

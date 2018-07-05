@@ -35,6 +35,7 @@ describe('ControlBar', function() {
     baseMockController = {
       state: {
         isMobile: false,
+        playerState: '',
         volumeState: {
           muted: false,
           volume: 1,
@@ -129,7 +130,7 @@ describe('ControlBar', function() {
 
     it('not render stereo button if content not vr', function() {
       baseMockController.videoVr = false;
-      baseMockController.videoVrSource = false;
+      baseMockController.videoVrSource = null;
 
       baseMockProps.skinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
       baseMockProps.vr = baseMockController.videoVr;
@@ -172,7 +173,7 @@ describe('ControlBar', function() {
     });
 
     it('not render stereo button on desktop', function() {
-      baseMockController.videoVrSource = false;
+      baseMockController.videoVrSource = null;
 
       baseMockProps.skinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
       baseMockProps.vr = baseMockController.videoVr;
@@ -1296,7 +1297,8 @@ describe('ControlBar', function() {
         {...baseMockProps}
         controlBarVisible={true}
         componentWidth={100}
-        responsiveView="sm" />, node
+        responsiveView="sm"
+        playerState={CONSTANTS.STATE.PLAYING} />, node
     );
 
     Enzyme.mount(
@@ -1304,7 +1306,8 @@ describe('ControlBar', function() {
         {...baseMockProps}
         controlBarVisible={true}
         componentWidth={300}
-        responsiveView="md" />, node
+        responsiveView="md"
+        playerState={CONSTANTS.STATE.PLAYING} />, node
     );
 
     var event = {
