@@ -479,6 +479,7 @@ var PlayingScreen = createReactClass({
             responsiveView={this.props.responsiveView}
             skinConfig={this.props.skinConfig}
             controller={this.props.controller}
+            currentPlayhead={this.props.currentPlayhead}
             a11yControls={this.props.controller.accessibilityControls}
             isInactive={!this.props.controller.state.controlBarVisible}
             isInBackground={this.props.controller.state.scrubberBar.isHovering}

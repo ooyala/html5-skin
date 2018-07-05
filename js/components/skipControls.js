@@ -86,6 +86,28 @@ var SkipControls = createReactClass({
   },
 
   /**
+   * Determines whether or not the current video is at the live edge based on the
+   * playhead state and duration.
+   * @private
+   * @return {Boolean} True if the video is at the live edge, false otherwise.
+   * Note: This function always returns false for VOD.
+   */
+  isAtLiveEdge: function() {
+    var isLiveStream = Utils.getPropertyValue(
+      this.props.controller,
+      'state.isLiveStream',
+      false
+    );
+    if (isLiveStream) {
+      var duration = Utils.getPropertyValue(this.props.controller, 'state.duration', 0);
+      var currentPlayhead = Utils.ensureNumber(this.props.currentPlayhead, 0);
+      var isLiveNow = Math.abs(currentPlayhead - duration) < 1;
+      return isLiveNow;
+    };
+    return false;
+  },
+
+  /**
    * Gets a map which contains templates for each of the available buttons in
    * this component.
    * @private
@@ -151,6 +173,7 @@ var SkipControls = createReactClass({
         className="oo-center-button oo-skip-forward"
         icon="forward"
         ariaLabel={skipForwardAriaLabel}
+        disabled={this.isAtLiveEdge()}
         onClick={this.onSkipForward}>
         <span className="oo-btn-counter">{skipTimes.forward}</span>
       </HoldControlButton>
@@ -216,7 +239,7 @@ var SkipControls = createReactClass({
       'skipControls.buttons',
       {}
     );
-    // Find de ids and indexes of all enabled buttons
+    // Find the ids and indexes of all enabled buttons
     for (var buttonId in buttonConfig) {
       var button = buttonConfig[buttonId];
 
@@ -270,6 +293,7 @@ SkipControls.propTypes = {
   localizableStrings: PropTypes.object,
   responsiveView: PropTypes.bool.isRequired,
   skinConfig: PropTypes.object.isRequired,
+  currentPlayhead: PropTypes.number.isRequired,
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
   config: PropTypes.shape({
@@ -279,6 +303,7 @@ SkipControls.propTypes = {
   controller: PropTypes.shape({
     state: PropTypes.shape({
       isMobile: PropTypes.bool.isRequired,
+      isLiveStream: PropTypes.bool.isRequired,
       duration: PropTypes.number.isRequired,
       scrubberBar: PropTypes.shape({
         isHovering: PropTypes.bool

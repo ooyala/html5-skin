@@ -35,6 +35,7 @@ describe('ControlBar', function() {
     baseMockController = {
       state: {
         isMobile: false,
+        playerState: '',
         volumeState: {
           muted: false,
           volume: 1,
@@ -129,7 +130,7 @@ describe('ControlBar', function() {
 
     it('not render stereo button if content not vr', function() {
       baseMockController.videoVr = false;
-      baseMockController.videoVrSource = false;
+      baseMockController.videoVrSource = null;
 
       baseMockProps.skinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
       baseMockProps.vr = baseMockController.videoVr;
@@ -172,7 +173,7 @@ describe('ControlBar', function() {
     });
 
     it('not render stereo button on desktop', function() {
-      baseMockController.videoVrSource = false;
+      baseMockController.videoVrSource = null;
 
       baseMockProps.skinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
       baseMockProps.vr = baseMockController.videoVr;
@@ -354,7 +355,7 @@ describe('ControlBar', function() {
     qualityBtn.simulate('keyDown', { key: ' ' });
     qualityBtn.simulate('click');
     expect(qualityBtn.instance().wasTriggeredWithKeyboard()).toBe(true);
-    wrapper.instance().composedComponent.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
+    wrapper.instance().composedComponentRef.current.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
     expect(qualityBtn.instance().wasTriggeredWithKeyboard()).toBe(false);
   });
 
@@ -1296,7 +1297,8 @@ describe('ControlBar', function() {
         {...baseMockProps}
         controlBarVisible={true}
         componentWidth={100}
-        responsiveView="sm" />, node
+        responsiveView="sm"
+        playerState={CONSTANTS.STATE.PLAYING} />, node
     );
 
     Enzyme.mount(
@@ -1304,7 +1306,8 @@ describe('ControlBar', function() {
         {...baseMockProps}
         controlBarVisible={true}
         componentWidth={300}
-        responsiveView="md" />, node
+        responsiveView="md"
+        playerState={CONSTANTS.STATE.PLAYING} />, node
     );
 
     var event = {
@@ -1313,11 +1316,12 @@ describe('ControlBar', function() {
       preventDefault: function() {},
       type: 'touchend'
     };
-    wrapper.instance().composedComponent.handleControlBarMouseUp(event);
-    wrapper.instance().composedComponent.handleLiveClick(event);
+    var composedComponent = wrapper.instance().composedComponentRef.current;
+    composedComponent.handleControlBarMouseUp(event);
+    composedComponent.handleLiveClick(event);
 
     OO_setWindowNavigatorProperty('appVersion', 'Android');
-    wrapper.instance().composedComponent.handleVolumeIconClick(event);
+    composedComponent.handleVolumeIconClick(event);
     ReactDOM.unmountComponentAtNode(node);
   });
 
