@@ -26,7 +26,7 @@ var _ = require('underscore');
 describe('ControlBar', function() {
 
   var baseMockController, baseMockProps;
-  var defaultSkinConfig = Utils.clone(skinConfig);
+  var defaultSkinConfig = JSON.parse(JSON.stringify(skinConfig));
 
   // TODO
   // Old unit tests should use the base mock controller and props
