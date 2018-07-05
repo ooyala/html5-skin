@@ -26,7 +26,7 @@ var _ = require('underscore');
 describe('ControlBar', function() {
 
   var baseMockController, baseMockProps;
-  var defaultSkinConfig = Utils.clone(skinConfig);
+  var defaultSkinConfig = JSON.parse(JSON.stringify(skinConfig));
 
   // TODO
   // Old unit tests should use the base mock controller and props
@@ -58,7 +58,7 @@ describe('ControlBar', function() {
     baseMockProps = {
       isLiveStream: false,
       controller: baseMockController,
-      skinConfig: defaultSkinConfig,
+      skinConfig: JSON.parse(JSON.stringify(defaultSkinConfig)),
       closedCaptionOptions: {}
     };
   });
@@ -417,7 +417,7 @@ describe('ControlBar', function() {
         {...baseMockProps}
         controlBarVisible={true}
         componentWidth={500}
-        playerState={CONSTANTS.STATE.PAUSED}
+        playerState={CONSTANTS.STATE.PAUSE}
         isLiveStream={baseMockProps.isLiveStream} />
     );
 
@@ -450,7 +450,7 @@ describe('ControlBar', function() {
         {...baseMockProps}
         controlBarVisible={true}
         componentWidth={500}
-        playerState={CONSTANTS.STATE.PAUSED}
+        playerState={CONSTANTS.STATE.PAUSE}
         isLiveStream={baseMockProps.isLiveStream} />
     );
 
@@ -920,11 +920,10 @@ describe('ControlBar', function() {
 
     baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
+      {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'fullscreen', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 }
     ];
 
     wrapper = Enzyme.mount(
@@ -936,8 +935,8 @@ describe('ControlBar', function() {
 
     optionsButton = wrapper.find('.oo-more-options').hostNodes();
     expect(optionsButton.length).toBe(1);
-    buttons = wrapper.find('.oo-play-pause').hostNodes();
-    expect(buttons.length).toBeLessThan(5);
+    buttons = wrapper.find('.oo-control-bar-item').hostNodes();
+    expect(buttons.length).toBe(3);
   });
 
   it('hides the more options button when ooyala ad is playing', function() {
@@ -945,11 +944,10 @@ describe('ControlBar', function() {
 
     baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
+      {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'fullscreen', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 }
     ];
 
     var wrapper = Enzyme.mount(
@@ -961,10 +959,8 @@ describe('ControlBar', function() {
 
     var optionsButton = wrapper.find('.oo-more-options');
     expect(optionsButton.length).toBe(0);
-    var buttons = wrapper.find('.oo-play-pause').hostNodes();
-    //TODO: This used to check for exactly 1, but 2 were rendered. There are 5 playPause buttons defined for this test
-    //I copied the next text in checking for there to be less than 5.
-    expect(buttons.length).toBeLessThan(5);
+    var buttons = wrapper.find('.oo-control-bar-item').hostNodes();
+    expect(buttons.length).toBe(2);
   });
 
   it('shows the more options button when ooyala ad is not playing', function() {
@@ -972,11 +968,10 @@ describe('ControlBar', function() {
 
     baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
+      {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'fullscreen', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 }
     ];
 
     var wrapper = Enzyme.mount(
@@ -988,8 +983,8 @@ describe('ControlBar', function() {
 
     var optionsButton = wrapper.find('.oo-more-options').hostNodes();
     expect(optionsButton.length).toBe(1);
-    var buttons = wrapper.find('.oo-play-pause').hostNodes();
-    expect(buttons.length).toBeLessThan(5);
+    var buttons = wrapper.find('.oo-control-bar-item').hostNodes();
+    expect(buttons.length).toBe(3);
   });
 
   it('handles more options click', function() {
@@ -1001,11 +996,10 @@ describe('ControlBar', function() {
 
     baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
-      {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
+      {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'fullscreen', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 },
+      {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 }
     ];
 
     var wrapper = Enzyme.mount(
@@ -1081,7 +1075,7 @@ describe('ControlBar', function() {
     var wrapper = Enzyme.mount(
       <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
-        playerState={CONSTANTS.STATE.PAUSED}
+        playerState={CONSTANTS.STATE.PAUSE}
       />
     );
 
@@ -1106,7 +1100,7 @@ describe('ControlBar', function() {
     var wrapper = Enzyme.mount(
       <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
-        playerState={CONSTANTS.STATE.PAUSED}
+        playerState={CONSTANTS.STATE.PAUSE}
       />
     );
     var slider = wrapper.find('.oo-volume-slider');
@@ -1121,7 +1115,7 @@ describe('ControlBar', function() {
     var wrapper = Enzyme.mount(
       <ControlBar {...baseMockProps} controlBarVisible={true}
         componentWidth={500}
-        playerState={CONSTANTS.STATE.PAUSED}
+        playerState={CONSTANTS.STATE.PAUSE}
       />
     );
 
