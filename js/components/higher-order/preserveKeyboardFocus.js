@@ -1,7 +1,6 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const CONSTANTS = require('../../constants/constants');
-const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 /**
