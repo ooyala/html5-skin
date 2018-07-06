@@ -110,7 +110,7 @@ describe('ControlBar', function() {
       OO_setWindowNavigatorProperty('userAgent', 'desktop');
     });
 
-    it('render one stereo button if content vr', function() {
+    it('vr: render one stereo button if content vr', function() {
       baseMockProps.skinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
       baseMockProps.vr = baseMockController.videoVrSource;
@@ -128,7 +128,7 @@ describe('ControlBar', function() {
       expect(toggleStereoVrButton.length).toBe(1);
     });
 
-    it('not render stereo button if content not vr', function() {
+    it('vr: not render stereo button if content not vr', function() {
       baseMockController.videoVr = false;
       baseMockController.videoVrSource = null;
 
@@ -148,7 +148,7 @@ describe('ControlBar', function() {
       expect(toggleStereoVrButtons.length).toBe(0);
     });
 
-    it('enter stereo mode', function() {
+    it('vr: enter stereo mode', function() {
       var stereoMode = false;
       baseMockController.videoVrSource.vr.stereo = false;
       baseMockController.toggleStereoVr = function() {
@@ -172,7 +172,7 @@ describe('ControlBar', function() {
       expect(stereoMode).toBe(true);
     });
 
-    it('not render stereo button on desktop', function() {
+    it('vr: not render stereo button on desktop', function() {
       baseMockController.videoVrSource = null;
 
       baseMockProps.skinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
@@ -189,6 +189,33 @@ describe('ControlBar', function() {
 
       var toggleStereoVrButtons = wrapper.find('.oo-vr-stereo-button');
       expect(toggleStereoVrButtons.length).toBe(0);
+    });
+
+    it('vr: should change mute state when an user clicks on volume btn on iOs', function() {
+      OO_setWindowNavigatorProperty('platform', 'iPhone');
+      var isMuted = false;
+      var isSliderShown = false;
+      baseMockController.handleMuteClick = function() {isMuted = !isMuted;};
+      baseMockController.showVolumeSliderBar = function() {isSliderShown = !isSliderShown;};
+
+      baseMockProps.skinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
+
+      var wrapper = Enzyme.mount(
+        <ControlBar
+          {...baseMockProps}
+          controlBarVisible={true}
+          componentWidth={500}
+          playerState={CONSTANTS.STATE.PLAYING}
+        />
+      );
+      var volumeButton = wrapper.find('.oo-mute-unmute').hostNodes();
+      volumeButton.simulate('click');
+      expect(isMuted).toBe(true);
+      expect(isSliderShown).toBe(false);
+      volumeButton.simulate('click');
+      expect(isMuted).toBe(false);
+      expect(isSliderShown).toBe(false);
+      OO_setWindowNavigatorProperty('platform', '');
     });
 
   });
