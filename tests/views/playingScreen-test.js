@@ -52,6 +52,7 @@ describe('PlayingScreen', function() {
       cancelTimer: function() {},
       hideVolumeSliderBar: function() {},
       toggleMute: function() {},
+      setFocusedControl: function() {},
       startHideControlBarTimer: function() {},
       setVolume: function() {}
     };

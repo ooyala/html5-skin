@@ -46,6 +46,7 @@ var skinControllerMock = {
   },
   setVolume: function() {},
   cancelTimer: function() {},
+  setFocusedControl: function() {},
   enablePauseAnimation: function() {},
   startHideControlBarTimer: function() {},
   toggleClosedCaptionEnabled: function() {},

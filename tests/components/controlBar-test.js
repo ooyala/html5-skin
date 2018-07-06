@@ -51,6 +51,7 @@ describe('ControlBar', function() {
       cancelTimer: function() {},
       hideVolumeSliderBar: function() {},
       toggleMute: function() {},
+      setFocusedControl: function() {},
       startHideControlBarTimer: function() {},
       setVolume: function() {}
     };
@@ -463,6 +464,10 @@ describe('ControlBar', function() {
     baseMockProps.skinConfig.buttons.desktopContent = [
       { 'name': 'playPause', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 }
     ];
+
+    baseMockController.setFocusedControl = function(focusedControl) {
+      baseMockController.state.focusedControl = focusedControl;
+    };
 
     var wrapper = Enzyme.mount(
       <ControlBar
