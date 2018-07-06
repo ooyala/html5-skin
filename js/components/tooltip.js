@@ -4,6 +4,7 @@ var deepmerge = require('deepmerge');
 var Utils = require('./utils');
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
+var CONSTANTS = require('../constants/constants');
 
 var verticalOffset = 80;
 function getContainerStyle(bottom, visible, responsivenessMultiplier, alignment) {
