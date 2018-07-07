@@ -291,7 +291,7 @@ SkipControls.propTypes = {
   isInBackground: PropTypes.bool,
   language: PropTypes.string,
   localizableStrings: PropTypes.object,
-  responsiveView: PropTypes.bool.isRequired,
+  responsiveView: PropTypes.string.isRequired,
   skinConfig: PropTypes.object.isRequired,
   currentPlayhead: PropTypes.number.isRequired,
   onFocus: PropTypes.func,
@@ -311,6 +311,8 @@ SkipControls.propTypes = {
     }),
     rewindOrRequestPreviousVideo: PropTypes.func.isRequired,
     requestNextVideo: PropTypes.func.isRequired,
+    setFocusedControl: PropTypes.func.isRequired,
+    startHideControlBarTimer: PropTypes.func.isRequired,
     cancelTimer: PropTypes.func.isRequired,
   }),
   a11yControls: PropTypes.shape({

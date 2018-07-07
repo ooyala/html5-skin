@@ -138,10 +138,10 @@ describe('ControlButton', function() {
     const buttonElement = button.getDOMNode();
     expect(iconElement.style.color).toBe(props.skinConfig.controlBar.iconStyle.inactive.color);
     expect(Number(iconElement.style.opacity)).toBe(props.skinConfig.controlBar.iconStyle.inactive.opacity);
-    button.simulate('mouseEnter', { currentarget: buttonElement });
+    button.simulate('mouseEnter');
     expect(iconElement.style.color).toBe(props.skinConfig.controlBar.iconStyle.active.color);
     expect(Number(iconElement.style.opacity)).toBe(props.skinConfig.controlBar.iconStyle.active.opacity);
-    button.simulate('mouseLeave', { currentarget: buttonElement });
+    button.simulate('mouseLeave');
     expect(iconElement.style.color).toBe(props.skinConfig.controlBar.iconStyle.inactive.color);
     expect(Number(iconElement.style.opacity)).toBe(props.skinConfig.controlBar.iconStyle.inactive.opacity);
   });
@@ -157,44 +157,44 @@ describe('ControlButton', function() {
       }
     };
     renderComponent();
-    expect(wrapper.instance().getResponsiveUiMultiplier()).toBe(1.2);
+    expect(component.getResponsiveUiMultiplier()).toBe(1.2);
     props.responsiveView = 'xs';
     renderComponent();
-    expect(wrapper.instance().getResponsiveUiMultiplier()).toBe(0.7);
+    expect(component.getResponsiveUiMultiplier()).toBe(0.7);
   });
 
   it('should correctly determine whether tooltips are enabled', function() {
     props.skinConfig.controlBar.tooltips.enabled = true;
     props.controller.state.isMobile = false;
     renderComponent();
-    expect(wrapper.instance().areTooltipsEnabled()).toBe(true);
+    expect(component.areTooltipsEnabled()).toBe(true);
     props.skinConfig.controlBar.tooltips.enabled = true;
     props.controller.state.isMobile = true;
     renderComponent();
-    expect(wrapper.instance().areTooltipsEnabled()).toBe(false);
+    expect(component.areTooltipsEnabled()).toBe(false);
     props.skinConfig.controlBar.tooltips.enabled = false;
     props.controller.state.isMobile = false;
     renderComponent();
-    expect(wrapper.instance().areTooltipsEnabled()).toBe(false);
+    expect(component.areTooltipsEnabled()).toBe(false);
   });
 
   it('should fallback to control bar height when tooltipVerticalOffset is not passed', function() {
     props.tooltipVerticalOffset = 10;
     renderComponent();
-    expect(wrapper.instance().getTooltipVerticalOffset()).toBe(10);
+    expect(component.getTooltipVerticalOffset()).toBe(10);
     delete props.tooltipVerticalOffset;
     props.skinConfig.controlBar.height = 50;
     renderComponent();
-    expect(wrapper.instance().getTooltipVerticalOffset()).toBe(50);
+    expect(component.getTooltipVerticalOffset()).toBe(50);
   });
 
   it('should get tooltip alignment from passed function or fall back to default', function() {
     props.getTooltipAlignment = null;
     renderComponent();
-    expect(wrapper.instance().getTooltipAlignment()).toBe(CONSTANTS.TOOLTIP_ALIGNMENT.CENTER);
+    expect(component.getTooltipAlignment()).toBe(CONSTANTS.TOOLTIP_ALIGNMENT.CENTER);
     props.getTooltipAlignment = () => 'custom';
     renderComponent();
-    expect(wrapper.instance().getTooltipAlignment()).toBe('custom');
+    expect(component.getTooltipAlignment()).toBe('custom');
   });
 
   it('should render a tooltip when tooltip prop is passed and tooltips are enabled', function() {
