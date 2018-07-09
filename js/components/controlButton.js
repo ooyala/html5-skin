@@ -1,11 +1,11 @@
-var React = require('react');
-var classNames = require('classnames');
-var AccessibleButton = require('./accessibleButton');
-var Icon = require('./icon');
-var Tooltip = require('./tooltip');
-var Utils = require('./utils');
-var CONSTANTS = require('../constants/constants');
-var PropTypes = require('prop-types');
+const React = require('react');
+const classNames = require('classnames');
+const AccessibleButton = require('./accessibleButton');
+const Icon = require('./icon');
+const Tooltip = require('./tooltip');
+const Utils = require('./utils');
+const PropTypes = require('prop-types');
+const CONSTANTS = require('../constants/constants');
 
 /**
  * Template component that is used for buttons that don't have accessibility enabled.
