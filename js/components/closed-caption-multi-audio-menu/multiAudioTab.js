@@ -3,7 +3,6 @@ var React = require('react');
 var Tab = require('./tab');
 var helpers = require('./helpers');
 var CONSTANTS = require('../../constants/constants');
-var LANGUAGE_LIST = require('../../constants/languages');
 var Utils = require('../utils');
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
@@ -29,7 +28,7 @@ var MultiAudioTab = createReactClass({
             SPECIAL_LANGUAGES_MAP
           );
         } else {
-          displayLanguage = helpers.getDisplayLanguage(LANGUAGE_LIST, audioTrack.lang);
+          displayLanguage = helpers.getDisplayLanguage(OO.LANGUAGE_LIST, audioTrack.lang);
         }
 
         var displayLabel = helpers.getDisplayLabel(audioTrack);

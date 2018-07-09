@@ -1,15 +1,15 @@
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/helpers');
 jest.dontMock('../../../js/constants/constants');
-jest.dontMock('../../../js/constants/languages');
 jest.dontMock('../../../js/components/utils');
+jest.dontMock('../../../html5-common/js/utils/languages');
 jest.dontMock('underscore');
 
 var React = require('react');
 var _ = require('underscore');
 var Enzyme = require('enzyme');
 
-var LANGUAGE_CONSTANTS = require('../../../js/constants/languages');
 var helpers = require('../../../js/components/closed-caption-multi-audio-menu/helpers');
+var LANGUAGE_CONSTANTS = require('../../../html5-common/js/utils/languages');
 
 describe('closed caption & multi-audio helpers', function() {
   describe('getDisplayLanguage function', function() {
