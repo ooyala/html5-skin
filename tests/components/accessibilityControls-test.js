@@ -174,6 +174,14 @@ describe('AccessibilityControls', function() {
           state: {
             currentPlayhead: 0,
             duration: 60
+          },
+          props: {
+            skinConfig: {
+              skipControls: {
+                skipBackwardTime: 10,
+                skipForwardTime: 10
+              }
+            }
           }
         },
         setVolume: function() {},
@@ -340,6 +348,26 @@ describe('AccessibilityControls', function() {
         mockCtrl.skin.state.currentPlayhead = 0;
         a11yCtrls.seekBy(5, true);
         expect(newPlayhead).toBeNull();
+      });
+
+      it('should call seekBy on key down using values from skin config', function() {
+        const spy = jest.spyOn(a11yCtrls, 'seekBy');
+        const mockEvent = {
+          keyCode: CONSTANTS.KEYCODES.LEFT_ARROW_KEY,
+          preventDefault: function() {}
+        };
+        a11yCtrls.controller.skin.props.skinConfig.skipControls.skipBackwardTime = 20;
+        a11yCtrls.controller.skin.props.skinConfig.skipControls.skipForwardTime = 40;
+
+        a11yCtrls.keyEventDown(mockEvent);
+        expect(spy.mock.calls.length).toBe(1);
+        expect(spy.mock.calls[0]).toEqual([20, false, true]);
+
+        mockEvent.keyCode = CONSTANTS.KEYCODES.RIGHT_ARROW_KEY;
+        a11yCtrls.keyEventDown(mockEvent);
+        expect(spy.mock.calls.length).toBe(2);
+        expect(spy.mock.calls[1]).toEqual([40, true, true]);
+        spy.mockRestore();
       });
 
     });

@@ -11,6 +11,8 @@ var Enzyme = require('enzyme');
 var PlayingScreen = require('../../js/views/playingScreen');
 var UnmuteIcon = require('../../js/components/unmuteIcon');
 var skinConfig = require('../../config/skin.json');
+var SkipControls = require('../../js/components/skipControls');
+var TextTrackPanel = require('../../js/components/textTrackPanel');
 var Utils = require('../../js/components/utils');
 var CONSTANTS = require('../../js/constants/constants');
 
@@ -18,9 +20,26 @@ describe('PlayingScreen', function() {
   var mockController, mockSkinConfig, closedCaptionOptions;
   var handleVrPlayerMouseUp = function() {};
 
+  const renderPlayingScreen = () => {
+    const wrapper = Enzyme.mount(
+      <PlayingScreen
+        responsiveView="md"
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        closedCaptionOptions={{ enabled: true }}
+        handleVrPlayerMouseUp={() => {}}
+        currentPlayhead={0}
+        playerState={CONSTANTS.STATE.PLAYING}
+      />
+    );
+    return wrapper;
+  };
+
   beforeEach(function() {
     mockController = {
       state: {
+        isLiveStream: false,
+        duration: 60,
         isMobile: false,
         accessibilityControlsEnabled: false,
         controlBarVisible: true,
@@ -36,6 +55,10 @@ describe('PlayingScreen', function() {
           mutingForAutoplay: false,
           volumeStateVisible: true, 
           volumeSliderVisible: true
+        },
+        skipControls: {
+          hasPreviousVideos: false,
+          hasNextVideos: false,
         },
         config: {
           isVrAnimationEnabled: {
@@ -54,6 +77,9 @@ describe('PlayingScreen', function() {
       toggleMute: function() {},
       setFocusedControl: function() {},
       startHideControlBarTimer: function() {},
+      rewindOrRequestPreviousVideo: function() {},
+      requestNextVideo: function() {},
+      showControlBar: function() {},
       setVolume: function() {}
     };
     mockSkinConfig = Utils.clone(skinConfig);
@@ -480,6 +506,76 @@ describe('PlayingScreen', function() {
       />
     );
     expect(wrapper.state('controlBarVisible')).toBe(false);
+  });
+
+  it('should render skip controls when enabled in skin config', function() {
+    let wrapper;
+    mockSkinConfig.skipControls.enabled = false;
+    wrapper = renderPlayingScreen();
+    expect(wrapper.find(SkipControls).length).toBe(0);
+    mockSkinConfig.skipControls.enabled = true;
+    wrapper = renderPlayingScreen();
+    expect(wrapper.find(SkipControls).length).toBe(1);
+  });
+
+  it('should set active controls class when skip controls are enabled and controls are active', function() {
+    mockSkinConfig.skipControls.enabled = true;
+    mockController.state.controlBarVisible = true;
+    const wrapper = renderPlayingScreen();
+    expect(wrapper.find('.oo-playing-screen').hostNodes().hasClass('oo-controls-active')).toBe(true);
+  });
+
+  it('should set skip controls to inactive mode when controls are not visible', function() {
+    let wrapper;
+    mockSkinConfig.skipControls.enabled = true;
+    mockController.state.controlBarVisible = true;
+    wrapper = renderPlayingScreen();
+    expect(wrapper.find(SkipControls).props().isInactive).toBe(false);
+    mockController.state.controlBarVisible = false;
+    wrapper = renderPlayingScreen();
+    expect(wrapper.find(SkipControls).props().isInactive).toBe(true);
+  });
+
+  it('should send skip controls to background when control bar is hovering', function() {
+    let wrapper;
+    mockSkinConfig.skipControls.enabled = true;
+    mockController.state.scrubberBar.isHovering = false;
+    wrapper = renderPlayingScreen();
+    expect(wrapper.find(SkipControls).props().isInBackground).toBe(false);
+    mockController.state.scrubberBar.isHovering = true;
+    wrapper = renderPlayingScreen();
+    expect(wrapper.find(SkipControls).props().isInBackground).toBe(true);
+  });
+
+  it('should send text track to background when skip controls are active', function() {
+    let wrapper;
+    mockSkinConfig.skipControls.enabled = true;
+    mockController.state.scrubberBar.isHovering = false;
+    mockController.state.controlBarVisible = false;
+    wrapper = renderPlayingScreen();
+    expect(wrapper.find(TextTrackPanel).props().isInBackground).toBe(false);
+    mockController.state.controlBarVisible = true;
+    wrapper = renderPlayingScreen();
+    expect(wrapper.find(TextTrackPanel).props().isInBackground).toBe(true);
+  });
+
+  it('should cancel auto hide timer when mouse is over skip controls when they mount', function() {
+    const spy = jest.spyOn(mockController, 'cancelTimer');
+    mockSkinConfig.skipControls.enabled = false;
+    const wrapper = renderPlayingScreen();
+    expect(spy.mock.calls.length).toBe(0);
+    wrapper.simulate('mouseOver', {
+      clientX: 50,
+      clientY: 10
+    })
+    wrapper.instance().onSkipControlsMount({
+      top: 0,
+      right: 100,
+      bottom: 100,
+      left: 0
+    });
+    expect(spy.mock.calls.length).toBe(1);
+    spy.mockRestore();
   });
 
 });

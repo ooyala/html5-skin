@@ -1,6 +1,5 @@
 var React = require('react');
 var CONSTANTS = require('../../constants/constants');
-var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 
 /**
@@ -12,31 +11,31 @@ var PropTypes = require('prop-types');
  * The component must support adding handlers the following events: click, keydown, mousedown, mouseup
  * @return {Component} A new component that supports holding the onClick handler
  */
-var holdOnClick = function(ComposedComponent) {
+const holdOnClick = function(ComposedComponent) {
 
-  var CLICK_HOLD_START_DELAY = 500;
-  var CLICK_HOLD_FREQUENCY = 100;
+  const CLICK_HOLD_START_DELAY = 500;
+  const CLICK_HOLD_FREQUENCY = 100;
 
-  var HoldOnClick = createReactClass({
+  class HoldOnClick extends React.Component {
 
-    /**
-     * Mostly for initializing member variables.
-     * @private
-     * @return {object} The initial React state of the component
-     */
-    getInitialState: function() {
+    constructor(props) {
+      super(props);
       this.startTimer = null;
       this.repeatTimer = null;
-      return {};
-    },
+
+      this.onKeyDown = this.onKeyDown.bind(this);
+      this.onMouseDown = this.onMouseDown.bind(this);
+      this.holdClick = this.holdClick.bind(this);
+      this.releaseClick = this.releaseClick.bind(this);
+    }
 
     /**
      * Cleanup when component is unmounted.
      * @private
      */
-    componentWillUnmount: function() {
+    componentWillUnmount() {
       this.releaseClick();
-    },
+    }
 
     /**
      * Handler for the keydown event. Calls the onClick handler for Enter and
@@ -45,14 +44,14 @@ var holdOnClick = function(ComposedComponent) {
      * @private
      * @param {event} event The keydown event object
      */
-    onKeyDown: function(event) {
+    onKeyDown(event) {
       switch (event.key) {
         case CONSTANTS.KEY_VALUES.SPACE:
         case CONSTANTS.KEY_VALUES.ENTER:
           this.props.onClick();
           break;
       }
-    },
+    }
 
     /**
      * Handler for the mousedown event which calls the onClick handler and starts
@@ -61,10 +60,10 @@ var holdOnClick = function(ComposedComponent) {
      * @private
      * @param {event} event The mousedown event object
      */
-    onMouseDown: function(event) {
+    onMouseDown(event) {
       this.props.onClick();
       this.queueHoldClick(true);
-    },
+    }
 
     /**
      * Starts a timer that will begin calling the onClick handling repeatedly after
@@ -72,36 +71,36 @@ var holdOnClick = function(ComposedComponent) {
      * from triggering multiple onClick events accidentally with just a single click.
      * @private
      */
-    queueHoldClick: function() {
+    queueHoldClick() {
       clearTimeout(this.startTimer);
       this.startTimer = setTimeout(this.holdClick, CLICK_HOLD_START_DELAY);
-    },
+    }
 
     /**
      * Recursively starts a timer that calls the onClick handler periodically.
      * @private
      */
-    holdClick: function() {
+    holdClick() {
       clearTimeout(this.repeatTimer);
 
       this.repeatTimer = setTimeout(function() {
         this.props.onClick();
         this.holdClick();
       }.bind(this), CLICK_HOLD_FREQUENCY);
-    },
+    }
 
     /**
      * Clears timers and stops calling the onClick handler periodically.
      * @private
      */
-    releaseClick: function() {
+    releaseClick() {
       clearTimeout(this.startTimer);
       this.startTimer = null
       clearTimeout(this.repeatTimer);
       this.repeatTimer = null;
-    },
+    }
 
-    render: function() {
+    render() {
       return (
         <ComposedComponent
           {...this.props}
@@ -115,7 +114,7 @@ var holdOnClick = function(ComposedComponent) {
       );
     }
 
-  });
+  }
 
   HoldOnClick.propTypes = {
     onClick: PropTypes.func.isRequired

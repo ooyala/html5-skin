@@ -6,7 +6,6 @@ jest
 const React = require('react');
 const ReactDOM = require('react-dom');
 const Enzyme = require('enzyme');
-const AccessibleMenu = require('../../../js/components/higher-order/accessibleMenu');
 const AccessibleButton = require('../../../js/components/accessibleButton');
 const preserveKeyboardFocus = require('../../../js/components/higher-order/preserveKeyboardFocus');
 const CONSTANTS = require('../../../js/constants/constants');
@@ -24,12 +23,11 @@ describe('preserveKeyboardFocus', function() {
 
   const renderComponent = () => {
     const EnhancedComponent = preserveKeyboardFocus(DummyComponent);
-    const node = document.createElement('div');
     wrapper = Enzyme.mount(
       <EnhancedComponent {...props}>
         {menuItems}
       </EnhancedComponent>
-    , node);
+    );
     component = wrapper.find(EnhancedComponent);
     renderedMenuItems = wrapper.find(AccessibleButton);
   };

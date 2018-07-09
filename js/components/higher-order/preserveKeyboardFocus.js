@@ -110,7 +110,7 @@ const preserveKeyboardFocus = function(ComposedComponent) {
   }
 
   PreserveKeyboardFocus.propTypes = {
-    playerState: PropTypes.string.isRequired,
+    playerState: PropTypes.string,
     controller: PropTypes.shape({
       state: PropTypes.shape({
         focusedControl: PropTypes.string

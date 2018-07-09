@@ -51,7 +51,8 @@ describe('ScrubberBar', function() {
         playerState: CONSTANTS.STATE.PLAYING,
         controlBarVisible: true,
         isLiveStream: false
-      }
+      },
+      setScrubberBarHoverState: () => {}
     };
     baseMockProps = {
       skinConfig: JSON.parse(JSON.stringify(defaultSkinConfig))
@@ -172,6 +173,24 @@ describe('ScrubberBar', function() {
     scrubberBar.simulate('keyDown', { key: CONSTANTS.KEY_VALUES.ARROW_LEFT });
     expect(seekForwardCalled).toBe(2);
     expect(seekBackCalled).toBe(2);
+  });
+
+  it('should call setScrubberBarHoverState() on mouseover, mouseleave and mouseout', function() {
+    const spy = jest.spyOn(baseMockController, 'setScrubberBarHoverState');
+    baseMockController.state.thumbnails = {};
+    updateBaseMockProps();
+    const wrapper = Enzyme.mount(<ScrubberBar {...baseMockProps}/>);
+    const scrubberBar = wrapper.find('.oo-scrubber-bar-container');
+    scrubberBar.simulate('mouseOver');
+    expect(spy.mock.calls.length).toBe(1);
+    expect(spy.mock.calls[0]).toEqual([true]);
+    scrubberBar.simulate('mouseLeave');
+    expect(spy.mock.calls.length).toBe(2);
+    expect(spy.mock.calls[1]).toEqual([false]);
+    scrubberBar.simulate('mouseOut');
+    expect(spy.mock.calls.length).toBe(3);
+    expect(spy.mock.calls[2]).toEqual([false]);
+    spy.mockRestore();
   });
 
   it('creates a scrubber bar played bar and play head with scrubberbar played color setting', function() {
