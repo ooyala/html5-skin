@@ -249,7 +249,8 @@ class ControlButton extends React.Component {
     const iconStyles = this.getIconStyles();
     const areTooltipsEnabled = this.areTooltipsEnabled();
 
-    let responsiveUiMultiplier, tooltipVerticalOffset;
+    let responsiveUiMultiplier;
+    let tooltipVerticalOffset;
 
     if (areTooltipsEnabled && this.props.tooltip) {
       responsiveUiMultiplier = this.getResponsiveUiMultiplier();
