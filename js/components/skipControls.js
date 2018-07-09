@@ -1,13 +1,13 @@
-var React = require('react');
-var classNames = require('classnames');
-var ControlButton = require('./controlButton');
-var HoldControlButton = require('./holdControlButton');
-var Icon = require('./icon');
-var Utils = require('./utils');
-var preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus');
-var CONSTANTS = require('../constants/constants');
-var MACROS = require('../constants/macros');
-var PropTypes = require('prop-types');
+const React = require('react');
+const classNames = require('classnames');
+const ControlButton = require('./controlButton');
+const HoldControlButton = require('./holdControlButton');
+const Icon = require('./icon');
+const Utils = require('./utils');
+const preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus');
+const PropTypes = require('prop-types');
+const CONSTANTS = require('../constants/constants');
+const MACROS = require('../constants/macros');
 
 class SkipControls extends React.Component {
 

@@ -1,6 +1,6 @@
-var React = require('react');
-var CONSTANTS = require('../../constants/constants');
-var PropTypes = require('prop-types');
+const React = require('react');
+const PropTypes = require('prop-types');
+const CONSTANTS = require('../../constants/constants');
 
 /**
  * Extends a button component with the ability to periodically call the onClick
