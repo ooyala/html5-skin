@@ -1502,12 +1502,15 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.config.discoveryScreen.countDownTime
       );
 
+      var uiLanguage = Utils.getLanguageToUse(this.state.config);
+      this.mb.publish(OO.EVENTS.UI_LANGUAGE, uiLanguage);
+
       // load player
       this.skin = ReactDOM.render(
         React.createElement(Skin, {
           skinConfig: this.state.config,
           localizableStrings: Localization.languageFiles,
-          language: Utils.getLanguageToUse(this.state.config),
+          language: uiLanguage,
           controller: this,
           closedCaptionOptions: this.state.closedCaptionOptions,
           pauseAnimationDisabled: this.state.pauseAnimationDisabled
