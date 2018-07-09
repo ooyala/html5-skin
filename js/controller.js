@@ -1503,7 +1503,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       );
 
       var uiLanguage = Utils.getLanguageToUse(this.state.config);
-      this.mb.publish(OO.EVENTS.UI_LANGUAGE, uiLanguage);
+      this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
 
       // load player
       this.skin = ReactDOM.render(
