@@ -286,9 +286,11 @@ describe('Controller', function() {
       expect(stopBufferingTimerSpy.callCount).toBe(3);
       expect(controller.state.bufferingTimer).toBeTruthy();
       this.focusedElement = OO.VIDEO.ADS;
+      controller.state.currentVideoId = OO.VIDEO.REPLAY;
       controller.onVideoElementFocus('', OO.VIDEO.MAIN);
       expect(stopBufferingTimerSpy.callCount).toBe(4);
       expect(controller.state.bufferingTimer).toBeFalsy();
+      expect(controller.state.currentVideoId).toBe(OO.VIDEO.MAIN);
       // PLAYED
       controller.startBufferingTimer();
       expect(stopBufferingTimerSpy.callCount).toBe(5);
