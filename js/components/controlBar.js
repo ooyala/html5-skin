@@ -789,7 +789,7 @@ var ControlBar = createReactClass({
         continue;
       }
 
-      if (Utils.isIos() && defaultItems[k].name === 'volume' && !this.vr) {
+      if (Utils.isIos() && defaultItems[k].name === 'volume') {
         continue;
       }
 

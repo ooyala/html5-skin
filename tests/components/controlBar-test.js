@@ -1112,19 +1112,41 @@ describe('ControlBar', function() {
     expect(slider).not.toBe(null);
   });
 
-  it('hides the volume on iOS', function() {
-    OO_setWindowNavigatorProperty('platform', 'iPhone');
+  describe('Hides the volume btn on iOs', function() {
+    beforeEach(function() {
+      OO_setWindowNavigatorProperty('userAgent', 'phone');
+      OO_setWindowNavigatorProperty('platform', 'iPhone');
+      baseMockProps.skinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
+    });
+    afterEach(function() {
+      OO_setWindowNavigatorProperty('userAgent', 'desktop');
+      OO_setWindowNavigatorProperty('platform', '');
+    });
 
-    baseMockProps.skinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
-
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
+    var getControlBar = function(){
+      return (<ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
         componentWidth={500}
-        playerState={CONSTANTS.STATE.PAUSE}
-      />
-    );
+        playerState={CONSTANTS.STATE.PLAYING}
+      />);
+    };
 
-    expect(typeof wrapper.ref('volumeIcon')).toBe('undefined');
+    it('hides if video is not 360', function() {
+
+      var wrapper = Enzyme.mount(getControlBar());
+
+      expect(typeof wrapper.ref('volumeIcon')).toBe('undefined');
+    });
+
+    it('hides if video is 360', function() {
+      baseMockController.videoVrSource = {};
+      baseMockController.videoVrSource.vr = {};
+
+      var wrapper = Enzyme.mount(getControlBar());
+
+      expect(typeof wrapper.ref('volumeIcon')).toBe('undefined');
+    });
   });
 
   it('shows/hides quality button if bitrates available/not available', function() {
