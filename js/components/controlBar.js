@@ -170,7 +170,7 @@ var ControlBar = createReactClass({
       this.props.controller.startHideControlBarTimer();
       evt.stopPropagation(); // W3C
       evt.cancelBubble = true; // IE
-      if (!this.props.controller.state.volumeState.volumeSliderVisible) {
+      if (!this.props.controller.state.volumeState.volumeSliderVisible && !Utils.isIos()) {
         this.props.controller.showVolumeSliderBar();
       } else {
         this.props.controller.handleMuteClick();
