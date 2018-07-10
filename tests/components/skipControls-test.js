@@ -173,7 +173,7 @@ describe('SkipControls', function() {
     props.isInactive = true;
     renderComponent();
     wrapper.find(ControlButton).forEach((button) => {
-      expect(button.props().style).toEqual({ pointerEvents: 'none' });
+      expect(button.props().style).toMatchObject({ pointerEvents: 'none' });
     });
   });
 
