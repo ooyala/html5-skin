@@ -12,6 +12,7 @@ var Enzyme = require('enzyme');
 var PauseScreen = require('../../js/views/pauseScreen');
 var ClassNames = require('classnames');
 var skinConfig = require('../../config/skin.json');
+var SkipControls = require('../../js/components/skipControls');
 var Utils = require('../../js/components/utils');
 var CONSTANTS = require('../../js/constants/constants');
 
@@ -21,6 +22,8 @@ describe('PauseScreen', function() {
   beforeEach(function() {
     mockController = {
       state: {
+        isLiveStream: false,
+        duration: 60,
         accessibilityControlsEnabled: false,
         scrubberBar: {
           isHovering: true
@@ -35,6 +38,10 @@ describe('PauseScreen', function() {
           volumeStateVisible: true, 
           volumeSliderVisible: true
         },
+        skipControls: {
+          hasPreviousVideos: false,
+          hasNextVideos: false,
+        },
         closedCaptionOptions: {},
         multiAudioOptions: {},
         videoQualityOptions: {
@@ -45,7 +52,10 @@ describe('PauseScreen', function() {
       cancelTimer: function() {},
       hideVolumeSliderBar: function() {},
       toggleMute: function() {},
+      setFocusedControl: function() {},
       startHideControlBarTimer: function() {},
+      rewindOrRequestPreviousVideo: function() {},
+      requestNextVideo: function() {},
       setVolume: function() {}
     };
     mockContentTree = {
@@ -167,4 +177,27 @@ describe('PauseScreen', function() {
     expect(spy.callCount).toBe(0);
     spy.restore();
   });
+
+  it('should render skip controls when enabled in skin config', function() {
+    let wrapper;
+    const component = (
+      <PauseScreen
+        responsiveView="md"
+        skinConfig={mockSkinConfig}
+        controller={mockController}
+        contentTree={mockContentTree}
+        handleVrPlayerClick={() => {}}
+        closedCaptionOptions={{ cueText: 'sample text' }}
+        currentPlayhead={0}
+        playerState={CONSTANTS.STATE.PAUSE}
+      />
+    );
+    mockSkinConfig.skipControls.enabled = false;
+    wrapper = Enzyme.mount(component);
+    expect(wrapper.find(SkipControls).length).toBe(0);
+    mockSkinConfig.skipControls.enabled = true;
+    wrapper = Enzyme.mount(component);
+    expect(wrapper.find(SkipControls).length).toBe(1);
+  });
+
 });

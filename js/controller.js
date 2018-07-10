@@ -97,7 +97,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       mainVideoPlayhead: 0,
       adVideoPlayhead: 0,
       focusedElement: null,
-      focusedControl: null, // Stores the id of the control bar element that is currently focused
+      focusedControl: null, // Stores the id of the control button element that is currently focused
 
       currentAdsInfo: {
         currentAdItem: null,
@@ -2170,6 +2170,15 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      */
     requestNextVideo: function() {
       this.mb.publish(OO.EVENTS.REQUEST_NEXT_VIDEO);
+    },
+
+    /**
+     * Stores the focus id of the currently focused element in the controller's state.
+     * @private
+     * @param {String} focusedControl The value of the focusId property of the currently focused control or null if no control is focused
+     */
+    setFocusedControl: function(focusedControl) {
+      this.state.focusedControl = focusedControl;
     },
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {

@@ -1,7 +1,6 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const CONSTANTS = require('../../constants/constants');
-const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 /**
@@ -75,7 +74,7 @@ const preserveKeyboardFocus = function(ComposedComponent) {
         focusId = event.target.getAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
       }
       if (focusId) {
-        this.props.controller.state.focusedControl = focusId;
+        this.props.controller.setFocusedControl(focusId);
       }
       if (typeof this.props.onFocus === 'function') {
         this.props.onFocus(event);
@@ -89,7 +88,7 @@ const preserveKeyboardFocus = function(ComposedComponent) {
      * @param {event} event The blur event object
      */
     onBlur(event) {
-      this.props.controller.state.focusedControl = null;
+      this.props.controller.setFocusedControl(null);
 
       if (typeof this.props.onBlur === 'function') {
         this.props.onBlur(event);
@@ -111,11 +110,12 @@ const preserveKeyboardFocus = function(ComposedComponent) {
   }
 
   PreserveKeyboardFocus.propTypes = {
-    playerState: PropTypes.string.isRequired,
+    playerState: PropTypes.string,
     controller: PropTypes.shape({
       state: PropTypes.shape({
         focusedControl: PropTypes.string
       }),
+      setFocusedControl: PropTypes.func.isRequired,
       startHideControlBarTimer: PropTypes.func.isRequired
     })
   };

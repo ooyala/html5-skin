@@ -142,6 +142,7 @@ describe('ThumbnailCarousel', function() {
         carouselHeight="102"
         thumbnailWidth="93"
         thumbnailHeight="63"
+        thumbnailCarouselWidth={93}
         centralThumbnail={centralThumbnail}
         thumbnailStyle={thumbnailStyle}
         thumbnails={thumbnails}/>
@@ -171,6 +172,7 @@ describe('ThumbnailCarousel', function() {
         carouselHeight="102"
         thumbnailWidth="93"
         thumbnailHeight="63"
+        thumbnailCarouselWidth={93}
         centralThumbnail={centralThumbnail}
         thumbnailStyle={thumbnailStyle}
         thumbnails={thumbnails}/>
