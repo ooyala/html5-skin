@@ -764,6 +764,52 @@ describe('ControlBar', function() {
     expect(popoverStateChanged).toBe(true);
   });
 
+  it('should store multiAudio button focus state', function() {
+    var mockController = {
+      state: {
+        isMobile: false,
+        volumeState: {
+          volume: 1
+        },
+        closedCaptionOptions: {},
+        multiAudio: {
+          tracks: [{id: 1, label: 'test'}]
+        },
+        multiAudioOptions: {},
+        videoQualityOptions: {},
+        isOoyalaAds: false,
+        focusedControl: null
+      },
+      toggleButtons: {},
+      toggleMultiAudioScreen: function() {},
+    };
+    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig.buttons.desktopContent = [
+      {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 }
+    ];
+
+    var mockProps = {
+      controller: mockController,
+      skinConfig: oneButtonSkinConfig
+    };
+
+    var DOM = TestUtils.renderIntoDocument(
+      <ControlBar
+        {...mockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING}
+        isLiveStream={false} />
+    );
+
+    var multiAudioBtn = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-multiaudio');
+    TestUtils.Simulate.focus(multiAudioBtn);
+    TestUtils.Simulate.click(multiAudioBtn);
+    expect(mockController.state.focusedControl).toBe('multiAudio');
+    TestUtils.Simulate.blur(multiAudioBtn);
+    expect(mockController.state.focusedControl).toBe(null);
+  });
+
   it('hides share button if share options are not provided', function() {
     baseMockProps.skinConfig.buttons.desktopContent = [
       { 'name': 'share', 'location': 'controlBar', 'whenDoesNotFit': 'moveToMoreOptions', 'minWidth': 45 }

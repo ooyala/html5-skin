@@ -210,7 +210,7 @@ var ControlBar = createReactClass({
     }
   },
 
-  handleMultiAudioClick: function() {
+  handleMultiAudioClick: function(evt) {
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
 
     if (
@@ -224,6 +224,7 @@ var ControlBar = createReactClass({
     } else {
       this.props.controller.toggleMultiAudioScreen();
     }
+    this.handleControlBarFocus(evt);
   },
 
   configureMenuAutofocus: function(menu) {
