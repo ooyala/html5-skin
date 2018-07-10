@@ -1186,6 +1186,7 @@ describe('Controller', function() {
     var spyPublish;
 
     beforeEach(function() {
+      controller.state.elementId = elementId;
       spyPublish = sinon.spy(OO.mb, 'publish');
     });
 
@@ -1194,13 +1195,11 @@ describe('Controller', function() {
     });
 
     it('test that the chosen ui language is sent on the message bus', function() {
-      controller.state.elementId = elementId;
       controller.loadConfigData('customerUi', {"localization":{"defaultLanguage":"es"}}, {}, {}, {});
       expect(spyPublish.withArgs(OO.EVENTS.SKIN_UI_LANGUAGE, sinon.match("es")).calledOnce).toBe(true);
     });
 
     it('test that language defaults to english if no defaultLanguage is specified', function() {
-      controller.state.elementId = elementId;
       controller.loadConfigData('customerUi', {"localization":{"defaultLanguage":""}}, {}, {}, {});
       expect(spyPublish.withArgs(OO.EVENTS.SKIN_UI_LANGUAGE, sinon.match("en")).calledOnce).toBe(true);
     });
