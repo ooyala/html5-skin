@@ -54,7 +54,8 @@ OO = {
     DISCOVERY_API: {
       SEND_CLICK_EVENT: 'sendClickEvent'
     },
-    SET_CURRENT_AUDIO: 'setCurrentAudio'
+    SET_CURRENT_AUDIO: 'setCurrentAudio',
+    SKIN_UI_LANGUAGE: 'skinUiLanguage'
   },
   CONSTANTS: {
     CLOSED_CAPTIONS: {},
@@ -1180,6 +1181,29 @@ describe('Controller', function() {
       expect(controller.state.pluginsElement.hasClass('oo-player-skin-plugins')).toEqual(true);
       expect(controller.state.pluginsElement.hasClass('oo-showing')).toEqual(false);
       expect(controller.state.pluginsElement.hasClass('oo-overlay-showing')).toEqual(true);
+    });
+  });
+
+  describe('Config settings', function() {
+    var spyPublish;
+
+    beforeEach(function() {
+      controller.state.elementId = elementId;
+      spyPublish = sinon.spy(OO.mb, 'publish');
+    });
+
+    afterEach(function() {
+      spyPublish.restore()
+    });
+
+    it('test that the chosen ui language is sent on the message bus', function() {
+      controller.loadConfigData('customerUi', {"localization":{"defaultLanguage":"es"}}, {}, {}, {});
+      expect(spyPublish.withArgs(OO.EVENTS.SKIN_UI_LANGUAGE, sinon.match("es")).calledOnce).toBe(true);
+    });
+
+    it('test that language defaults to english if no defaultLanguage is specified', function() {
+      controller.loadConfigData('customerUi', {"localization":{"defaultLanguage":""}}, {}, {}, {});
+      expect(spyPublish.withArgs(OO.EVENTS.SKIN_UI_LANGUAGE, sinon.match("en")).calledOnce).toBe(true);
     });
   });
 });
