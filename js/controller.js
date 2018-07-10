@@ -1388,6 +1388,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.pluginsElement.removeClass('oo-showing');
         this.state.pluginsClickElement.removeClass('oo-showing');
       }
+      this.state.currentVideoId = source;
     },
 
     closeNonlinearAd: function(event) {
