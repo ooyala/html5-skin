@@ -1112,7 +1112,7 @@ describe('ControlBar', function() {
     expect(slider).not.toBe(null);
   });
 
-  describe('Hides the volume btn on iOs', function() {
+  describe('Hides the volume btn on ios', function() {
     beforeEach(function() {
       OO_setWindowNavigatorProperty('userAgent', 'phone');
       OO_setWindowNavigatorProperty('platform', 'iPhone');
@@ -1123,29 +1123,33 @@ describe('ControlBar', function() {
       OO_setWindowNavigatorProperty('platform', '');
     });
 
-    var getControlBar = function(){
+    var getControlBar = function(playerState) {
       return (<ControlBar
         {...baseMockProps}
         controlBarVisible={true}
         componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
+        playerState={playerState}
       />);
     };
 
     it('hides if video is not 360', function() {
 
-      var wrapper = Enzyme.mount(getControlBar());
+      var wrapperPlaying = Enzyme.mount(getControlBar(CONSTANTS.STATE.PLAYING));
+      expect(typeof wrapperPlaying.ref('volumeIcon')).toBe('undefined');
 
-      expect(typeof wrapper.ref('volumeIcon')).toBe('undefined');
+      var wrapperPause = Enzyme.mount(getControlBar(CONSTANTS.STATE.PAUSE));
+      expect(typeof wrapperPause.ref('volumeIcon')).toBe('undefined');
     });
 
     it('hides if video is 360', function() {
       baseMockController.videoVrSource = {};
       baseMockController.videoVrSource.vr = {};
 
-      var wrapper = Enzyme.mount(getControlBar());
+      var wrapperPlaying = Enzyme.mount(getControlBar(CONSTANTS.STATE.PLAYING));
+      expect(typeof wrapperPlaying.ref('volumeIcon')).toBe('undefined');
 
-      expect(typeof wrapper.ref('volumeIcon')).toBe('undefined');
+      var wrapperPause = Enzyme.mount(getControlBar(CONSTANTS.STATE.PAUSE));
+      expect(typeof wrapperPause.ref('volumeIcon')).toBe('undefined');
     });
   });
 
