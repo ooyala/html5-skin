@@ -205,14 +205,22 @@ var Utils = {
     var skipTimes = {};
     skipTimes.backward = this.getPropertyValue(
       skinConfig,
-      'skipControls.skipBackwardTime',
-      CONSTANTS.UI.DEFAULT_SKIP_BACKWARD_TIME
+      'skipControls.skipBackwardTime'
     );
     skipTimes.forward = this.getPropertyValue(
       skinConfig,
-      'skipControls.skipForwardTime',
+      'skipControls.skipForwardTime'
+    );
+    // Use default values if not valid numbers
+    skipTimes.backward = this.ensureNumber(
+      skipTimes.backward,
+      CONSTANTS.UI.DEFAULT_SKIP_BACKWARD_TIME
+    );
+    skipTimes.forward = this.ensureNumber(
+      skipTimes.forward,
       CONSTANTS.UI.DEFAULT_SKIP_FORWARD_TIME
     );
+    // Ensure integer value and constrain to allowed min/max
     skipTimes.backward = this.constrainToRange(
       Math.floor(skipTimes.backward),
       CONSTANTS.UI.MIN_SKIP_TIME,

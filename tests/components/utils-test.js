@@ -7,6 +7,7 @@ var Utils = require('../../js/components/utils');
 var CONSTANTS = require('../../js/constants/constants');
 var DeepMerge = require('deepmerge');
 var SkinJSON = require('../../config/skin');
+var _ = require('underscore');
 OO = {
   log: function(a) {}
 };
@@ -244,6 +245,124 @@ describe('Utils', function() {
         { 'id': 'auto', 'width': 0, 'height': 0, 'bitrate': 0 }
       ];
       expect(Utils.sortQualitiesByBitrate(sourceBitrates)).toEqual(sortedBitrates);
+    });
+
+  });
+
+  describe('getSkipTimes', function() {
+    let skinConfig;
+
+    beforeEach(function() {
+      skinConfig = {
+        skipControls: {
+          skipBackwardTime: 10,
+          skipForwardTime: 10,
+        }
+      };
+    });
+
+    it('should extract values from skin config', function() {
+      skinConfig.skipControls.skipBackwardTime = 5;
+      skinConfig.skipControls.skipForwardTime = 15;
+      expect(Utils.getSkipTimes(skinConfig)).toEqual({
+        backward: 5,
+        forward: 15
+      });
+    });
+
+    it('should return default values when passing invalid data', function() {
+      const defaults = {
+        backward: CONSTANTS.UI.DEFAULT_SKIP_BACKWARD_TIME,
+        forward: CONSTANTS.UI.DEFAULT_SKIP_FORWARD_TIME
+      };
+      expect(Utils.getSkipTimes(null)).toEqual(defaults);
+      expect(Utils.getSkipTimes({})).toEqual(defaults);
+      skinConfig.skipControls.skipBackwardTime = "abc";
+      skinConfig.skipControls.skipForwardTime = {};
+      expect(Utils.getSkipTimes(skinConfig)).toEqual(defaults);
+      skinConfig.skipControls.skipBackwardTime = undefined;
+      skinConfig.skipControls.skipForwardTime = undefined;
+      expect(Utils.getSkipTimes(skinConfig)).toEqual(defaults);
+    });
+
+    it('should constrain to minimum and maximum values', function() {
+      skinConfig.skipControls.skipBackwardTime = -1;
+      skinConfig.skipControls.skipForwardTime = -1;
+      expect(Utils.getSkipTimes(skinConfig)).toEqual({
+        backward: CONSTANTS.UI.MIN_SKIP_TIME,
+        forward: CONSTANTS.UI.MIN_SKIP_TIME
+      });
+      skinConfig.skipControls.skipBackwardTime = 150;
+      skinConfig.skipControls.skipForwardTime = 150;
+      expect(Utils.getSkipTimes(skinConfig)).toEqual({
+        backward: CONSTANTS.UI.MAX_SKIP_TIME,
+        forward: CONSTANTS.UI.MAX_SKIP_TIME
+      });
+    });
+
+    it('should enforce integer values', function() {
+      skinConfig.skipControls.skipBackwardTime = 10.05;
+      skinConfig.skipControls.skipForwardTime = 20.123232;
+      expect(Utils.getSkipTimes(skinConfig)).toEqual({
+        backward: 10,
+        forward: 20
+      });
+    });
+  });
+
+  describe('isMouseInsideRect', function() {
+    let mousePosition, clientRect;
+
+    beforeEach(function() {
+      mousePosition = {
+        clientX: 0,
+        clientY: 0
+      };
+      clientRect = {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+      };
+    });
+
+    it('should return true when mouse position is inside rect', function() {
+      mousePosition.clientX = 50;
+      mousePosition.clientY = 50;
+      clientRect.right = 100;
+      clientRect.bottom = 100;
+      expect(Utils.isMouseInsideRect(mousePosition, clientRect)).toBe(true);
+      mousePosition.clientX = 0;
+      mousePosition.clientY = 100;
+      expect(Utils.isMouseInsideRect(mousePosition, clientRect)).toBe(true);
+    });
+
+    it('should return false when mouse position is outside rect', function() {
+      mousePosition.clientX = 120;
+      mousePosition.clientY = 50;
+      clientRect.right = 100;
+      clientRect.bottom = 100;
+      expect(Utils.isMouseInsideRect(mousePosition, clientRect)).toBe(false);
+      mousePosition.clientX = -1;
+      mousePosition.clientY = 50;
+      expect(Utils.isMouseInsideRect(mousePosition, clientRect)).toBe(false);
+    });
+
+    it('should return false when invalid values are passed', function() {
+      mousePosition.clientX = null;
+      mousePosition.clientY = undefined;
+      clientRect.right = 100;
+      clientRect.bottom = 100;
+      expect(Utils.isMouseInsideRect(mousePosition, clientRect)).toBe(false);
+      expect(Utils.isMouseInsideRect(null, null)).toBe(false);
+    });
+
+  });
+
+  describe('getCurrentTimestamp', function() {
+
+    it('should return a numerical timestamp', function() {
+      expect(_.isNumber(Utils.getCurrentTimestamp())).toBe(true);
     });
 
   });

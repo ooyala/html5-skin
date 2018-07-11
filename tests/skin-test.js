@@ -23,8 +23,10 @@ var _ = require('underscore');
 var skinControllerMock = {
   state: {
     adVideoDuration: 0,
-    errorCode: '',
+    errorCode: {},
     adOverlayUrl: '',
+    playerState: '',
+    isMobile: false,
     scrubberBar: {
       isHovering: true
     },
@@ -32,7 +34,9 @@ var skinControllerMock = {
       showing: false
     },
     volumeState: {
-      muted: false
+      muted: false,
+      volume: 1,
+      volumeSliderVisible: true
     },
     videoQualityOptions: {},
     multiAudioOptions: {},
@@ -40,8 +44,13 @@ var skinControllerMock = {
     config: {},
     moreOptionsItems: []
   },
+  setVolume: function() {},
   cancelTimer: function() {},
+  setFocusedControl: function() {},
   enablePauseAnimation: function() {},
+  startHideControlBarTimer: function() {},
+  toggleClosedCaptionEnabled: function() {},
+  onClosedCaptionChange: function() {},
   publishOverlayRenderingEvent: function() {}
 };
 
@@ -67,6 +76,7 @@ describe('Skin screenToShow state', function() {
   beforeEach(function() {
     controller = getMockController();
     state = {
+      playerState: '',
       responsiveId: 'md',
       contentTree: {}
     };
@@ -262,6 +272,7 @@ describe('Tab Navigation', function() {
     );
     skin = wrapper.instance();
     skin.switchComponent({
+      playerState: '',
       screenToShow: CONSTANTS.SCREEN.PAUSE_SCREEN,
       responsiveId: 'md',
       contentTree: {}
@@ -282,7 +293,7 @@ describe('Tab Navigation', function() {
     // Render and get focusable elements
     renderSkin();
     var skinElement = wrapper.find('#oo-responsive');
-    focusableElements = skinElement.getDOMNode().querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']');
+    focusableElements = skinElement.getDOMNode().querySelectorAll('[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']:enabled');
   });
 
   afterEach(function() {

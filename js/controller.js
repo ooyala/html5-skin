@@ -97,7 +97,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       mainVideoPlayhead: 0,
       adVideoPlayhead: 0,
       focusedElement: null,
-      focusedControl: null, // Stores the id of the control bar element that is currently focused
+      focusedControl: null, // Stores the id of the control button element that is currently focused
 
       currentAdsInfo: {
         currentAdItem: null,
@@ -1388,6 +1388,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.pluginsElement.removeClass('oo-showing');
         this.state.pluginsClickElement.removeClass('oo-showing');
       }
+      this.state.currentVideoId = source;
     },
 
     closeNonlinearAd: function(event) {
@@ -1445,7 +1446,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           }
         }
       } else {
-        remainingTime = parseInt(this.state.adVideoDuration - (this.state.adVideoPlayhead * 100));
+        remainingTime = parseInt(this.state.adVideoDuration - this.state.adVideoPlayhead);
       }
       return remainingTime;
     },
@@ -1502,12 +1503,15 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.config.discoveryScreen.countDownTime
       );
 
+      var uiLanguage = Utils.getLanguageToUse(this.state.config);
+      this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
+
       // load player
       this.skin = ReactDOM.render(
         React.createElement(Skin, {
           skinConfig: this.state.config,
           localizableStrings: Localization.languageFiles,
-          language: Utils.getLanguageToUse(this.state.config),
+          language: uiLanguage,
           controller: this,
           closedCaptionOptions: this.state.closedCaptionOptions,
           pauseAnimationDisabled: this.state.pauseAnimationDisabled
@@ -2159,7 +2163,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.mb.publish(OO.EVENTS.REQUEST_PREVIOUS_VIDEO);
       } else {
         this.updateSeekingPlayhead(0);
-        this.mb.publish(OO.EVENTS.REPLAY);
+        this.seek(0);
       }
       this.state.skipControls.requestPreviousTimestamp = currentTimestamp;
     },
@@ -2170,6 +2174,15 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      */
     requestNextVideo: function() {
       this.mb.publish(OO.EVENTS.REQUEST_NEXT_VIDEO);
+    },
+
+    /**
+     * Stores the focus id of the currently focused element in the controller's state.
+     * @private
+     * @param {String} focusedControl The value of the focusId property of the currently focused control or null if no control is focused
+     */
+    setFocusedControl: function(focusedControl) {
+      this.state.focusedControl = focusedControl;
     },
 
     sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
