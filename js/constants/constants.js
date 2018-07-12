@@ -106,6 +106,7 @@ module.exports = {
     EXIT_FULL_SCREEN: 'Exit Full Screen',
     VIDEO_QUALITY: 'Video Quality',
     AUTO_QUALITY: 'Auto',
+    PLAYBACK_SPEED: 'Playback Speed',
     SHARE: 'Share',
     MORE_OPTIONS: 'More Options',
     SELECT_TO_UNMUTE: 'SELECT TO UNMUTE',
@@ -156,7 +157,8 @@ module.exports = {
     PREVIOUS_VIDEO: 'Previous Video',
     NEXT_VIDEO: 'Next Video',
     SKIP_BACKWARD: 'Rewind '  + MACROS.SECONDS + ' Seconds',
-    SKIP_FORWARD: 'Skip ' + MACROS.SECONDS + ' Seconds Forward'
+    SKIP_FORWARD: 'Skip ' + MACROS.SECONDS + ' Seconds Forward',
+    PLAYBACK_SPEED: MACROS.RATE + 'x Playback Speed',
   },
 
   CONTROL_BAR_KEYS: {
@@ -170,6 +172,7 @@ module.exports = {
     DISCOVERY: 'discovery',
     CLOSED_CAPTION: 'closedCaption',
     AUDIO_AND_CC: 'audioAndCC',
+    PLAYBACK_SPEED: 'playbackSpeed',
     SHARE: 'share',
     STEREOSCOPIC: 'stereoscopic',
     FULLSCREEN: 'fullscreen',
@@ -265,7 +268,8 @@ module.exports = {
     REQUEST_PREVIOUS_TIME_THRESHOLD: 1500,
     // When the previous video button is clicked, if the playhead value (in seconds) is
     // below this constant the controller will request the previous video instead of rewinding
-    REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD: 2
+    REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD: 2,
+    DEFAULT_PLAYBACK_SPEED: 1 // Default playback rate
   },
 
   TOOLTIP_ALIGNMENT: {

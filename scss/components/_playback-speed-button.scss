@@ -1,0 +1,21 @@
+
+.oo-control-bar-item.oo-playback-speed {
+  color: $white;
+
+  &:focus .oo-current-speed {
+    @include highlight-tab();
+    opacity: 1 !important;
+  }
+
+  &:hover:active .oo-current-speed {
+    @include remove-highlight-tab();
+  }
+
+  .oo-current-speed {
+    @include flex-center-children(row);
+    display: inline-block;
+    width: 1.12em;
+    height: 1.12em;
+    font-size: 0.9em;
+  }
+}

@@ -159,6 +159,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         requestPreviousTimestamp: 0
       },
 
+      advancedPlaybackOptions: {
+        currentSpeed: CONSTANTS.UI.DEFAULT_PLAYBACK_SPEED
+      },
+
       moreOptionsItems: null,
 
       isMobile: false,

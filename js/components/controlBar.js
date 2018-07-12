@@ -9,6 +9,7 @@ var React = require('react'),
     Popover = require('../views/popover'),
     AccessibleButton = require('./accessibleButton'),
     ControlButton = require('./controlButton'),
+    PlaybackSpeedButton = require('./playbackSpeedButton'),
     VolumeControls = require('./volumeControls'),
     VideoQualityPanel = require('./videoQualityPanel'),
     ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
@@ -640,6 +641,16 @@ var ControlBar = createReactClass({
         );
       }.bind(this)(),
 
+      playbackSpeed: (
+        <PlaybackSpeedButton
+          {...commonButtonProps}
+          key={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
+          focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
+          tooltip={CONSTANTS.SKIN_TEXT.SHARE}
+          onClick={this.onPlaybackSpeedClick}>
+        </PlaybackSpeedButton>
+      ),
+
       share: (
         <ControlButton
           {...commonButtonProps}
@@ -740,6 +751,13 @@ var ControlBar = createReactClass({
 
       // filter out disabled buttons
       if (defaultItems[k].location === 'none') {
+        continue;
+      }
+
+      if (
+        this.props.controller.state.isOoyalaAds &&
+        defaultItems[k].name === CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED
+      ) {
         continue;
       }
 
