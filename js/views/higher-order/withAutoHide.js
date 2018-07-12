@@ -75,9 +75,7 @@ const withAutoHide = function(ComposedComponent) {
     }
 
     handleResize() {
-      if (this.isMounted()) {
-        this.startHideControlBarTimer();
-      }
+      this.startHideControlBarTimer();
     }
 
     handleKeyDown(event) {
@@ -135,9 +133,7 @@ const withAutoHide = function(ComposedComponent) {
     render() {
       return (
         <div
-          class="alex"
           ref="AutoHideScreen"
-          //onTouchStart={this.handleTouchStart}
           onMouseOver={this.handleMouseOver}
           onMouseOut={this.hideControlBar}
           onKeyDown={this.handleKeyDown}

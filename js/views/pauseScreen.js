@@ -42,6 +42,8 @@ class PauseScreen extends React.Component {
     this.handleTouchEnd = this.handleTouchEnd.bind(this);
 
     this.startAnimation = this.startAnimation.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
   }
 
   componentDidMount() {
@@ -52,10 +54,6 @@ class PauseScreen extends React.Component {
     document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
     document.addEventListener('mouseup', this.handleVrMouseUp, false);
     document.addEventListener('touchend', this.handleVrTouchEnd, false);
-
-    if (this.state.containsText) {
-      this.props.controller.addBlur();
-    }
   }
 
   componentWillUnmount() {
@@ -195,12 +193,13 @@ class PauseScreen extends React.Component {
 
     // CSS class manipulation from config/skin.json
     var fadeUnderlayClass = ClassNames({
-      'oo-fading-underlay': !this.props.pauseAnimationDisabled,
-      'oo-fading-underlay-active': this.props.pauseAnimationDisabled,
-      'oo-animate-fade': this.state.animate && !this.props.pauseAnimationDisabled
+      'oo-fading-underlay': true,
+      'oo-fading-underlay-active': this.props.pauseAnimationDisabled && this.props.controller.state.controlBarVisible,
+      'oo-animate-fade': this.state.animate && !this.props.pauseAnimationDisabled && this.props.controller.state.controlBarVisible
     });
     var infoPanelClass = ClassNames({
       'oo-state-screen-info': true,
+      'oo-inactive': !this.props.controller.state.controlBarVisible,
       'oo-info-panel-top':
         this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('top') > -1,
       'oo-info-panel-bottom':
@@ -279,6 +278,12 @@ class PauseScreen extends React.Component {
       this.props.controller.state.scrubberBar.isHovering
     );
 
+    if (this.state.containsText && this.props.controller.state.controlBarVisible) {
+      this.props.controller.addBlur();
+    } else {
+      this.props.controller.removeBlur();
+    }
+
     return (
       <div className="oo-state-screen oo-pause-screen">
         {!this.props.controller.videoVr && this.state.containsText && <div className={fadeUnderlayClass} />}
@@ -322,6 +327,7 @@ class PauseScreen extends React.Component {
             controller={this.props.controller}
             currentPlayhead={this.props.currentPlayhead}
             a11yControls={this.props.controller.accessibilityControls}
+            isInactive={!this.props.controller.state.controlBarVisible}
             isInBackground={this.props.controller.state.scrubberBar.isHovering}
             onFocus={this.handleFocus} />
         }
