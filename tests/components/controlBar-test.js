@@ -44,6 +44,7 @@ describe('ControlBar', function() {
         },
         closedCaptionOptions: {},
         multiAudioOptions: {},
+        playbackSpeedOptions: { currentSpeed: 1 },
         videoQualityOptions: {
           availableBitrates: null
         }

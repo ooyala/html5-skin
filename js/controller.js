@@ -159,8 +159,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         requestPreviousTimestamp: 0
       },
 
-      advancedPlaybackOptions: {
-        currentSpeed: CONSTANTS.UI.DEFAULT_PLAYBACK_SPEED
+      playbackSpeedOptions: {
+        currentSpeed: CONSTANTS.UI.DEFAULT_PLAYBACK_SPEED,
+        showPopover: false,
+        autoFocus: false,
       },
 
       moreOptionsItems: null,
@@ -2178,6 +2180,17 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      */
     requestNextVideo: function() {
       this.mb.publish(OO.EVENTS.REQUEST_NEXT_VIDEO);
+    },
+
+    /**
+     * Requests that the player set its playback speed to the specified value.
+     * @private
+     * @param {Number} playbackSpeed A number representing the rate by which playback should advance
+     */
+    setPlaybackSpeed: function(playbackSpeed) {
+      this.mb.publish(OO.EVENTS.SET_PLAYBACK_SPEED, playbackSpeed);
+      this.state.playbackSpeedOptions.currentSpeed = playbackSpeed;
+      this.renderSkin();
     },
 
     /**

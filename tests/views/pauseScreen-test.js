@@ -44,6 +44,7 @@ describe('PauseScreen', function() {
         },
         closedCaptionOptions: {},
         multiAudioOptions: {},
+        playbackSpeedOptions: { currentSpeed: 1 },
         videoQualityOptions: {
           availableBitrates: null
         }

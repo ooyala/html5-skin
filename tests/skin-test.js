@@ -40,6 +40,7 @@ var skinControllerMock = {
     },
     videoQualityOptions: {},
     multiAudioOptions: {},
+    playbackSpeedOptions: { currentSpeed: 1 },
     closedCaptionOptions: {},
     config: {},
     moreOptionsItems: []

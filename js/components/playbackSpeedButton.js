@@ -10,7 +10,7 @@ class PlaybackSpeedButton extends React.Component {
   render() {
     const currentSpeed = Utils.getPropertyValue(
       this.props.controller,
-      'state.advancedPlaybackOptions.currentSpeed',
+      'state.playbackSpeedOptions.currentSpeed',
       1
     );
     const ariaLabel = CONSTANTS.ARIA_LABELS.PLAYBACK_SPEED.replace(MACROS.RATE, currentSpeed);
@@ -30,7 +30,7 @@ class PlaybackSpeedButton extends React.Component {
 PlaybackSpeedButton.propTypes = {
   controller: PropTypes.shape({
     state: PropTypes.shape({
-      advancedPlaybackOptions: PropTypes.shape({
+      playbackSpeedOptions: PropTypes.shape({
         currentSpeed: PropTypes.number.isRequired
       })
     })

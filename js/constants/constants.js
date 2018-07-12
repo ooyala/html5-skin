@@ -2,7 +2,7 @@ var MACROS = require('./macros');
 /** ******************************************************************
  CONSTANT
  *********************************************************************/
-module.exports = {
+var CONSTANTS = {
   STATE: {
     START: 'start',
     PLAYING: 'playing',
@@ -27,13 +27,15 @@ module.exports = {
     CLOSED_CAPTION_SCREEN: 'closedCaptionScreen',
     VIDEO_QUALITY_SCREEN: 'videoQualityScreen',
     ERROR_SCREEN: 'errorScreen',
-    MULTI_AUDIO_SCREEN: 'multiAudioScreen'
+    MULTI_AUDIO_SCREEN: 'multiAudioScreen',
+    PLAYBACK_SPEED_SCREEN: 'playbackSpeedScreen'
   },
 
   MENU_OPTIONS: {
     VIDEO_QUALITY: 'videoQualityOptions',
     CLOSED_CAPTIONS: 'closedCaptionOptions',
-    MULTI_AUDIO: 'multiAudioOptions'
+    MULTI_AUDIO: 'multiAudioOptions',
+    PLAYBACK_SPEED: 'playbackSpeedOptions'
   },
 
   SKIN_TEXT: {
@@ -201,7 +203,8 @@ module.exports = {
     QUALITY_LEVEL: 'qualityLevel',
     AUTO_QUALITY: 'autoQuality',
     CLOSE: 'close',
-    MULTI_AUDIO: 'multiAudio'
+    MULTI_AUDIO: 'multiAudio',
+    PLAYBACK_SPEED: 'playbackSpeed'
   },
 
   SKIP_CTRLS_KEYS: {
@@ -256,6 +259,7 @@ module.exports = {
 
   UI: {
     defaultScrubberBarHeight: 4,
+    POPOVER_SCROLL_RATE: 0.6,
     DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15,
     MAX_BUFFERING_SPINNER_DELAY: 60000, // Max allowed value of bufferingSpinnerDelay in milliseconds
     DEFAULT_SKIP_BACKWARD_TIME: 10, // In seconds
@@ -538,3 +542,13 @@ module.exports = {
     SELECTABLE_SCREEN: 'oo-state-screen-selectable'
   }
 };
+
+// Maps menu options to their respective screens
+CONSTANTS.MENU_OPTIONS_SCREENS =  {
+  VIDEO_QUALITY: CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN,
+  CLOSED_CAPTIONS: CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN,
+  MULTI_AUDIO: CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN,
+  PLAYBACK_SPEED: CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN,
+};
+
+module.exports = CONSTANTS;
