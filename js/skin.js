@@ -394,6 +394,7 @@ var Skin = createReactClass({
               seeking={this.state.seeking}
               upNextInfo={this.state.upNextInfo}
               isLiveStream={this.state.isLiveStream}
+              controlBarAutoHide={this.props.skinConfig.controlBar.autoHide}
               responsiveView={this.state.responsiveId}
               componentWidth={this.state.componentWidth}
               videoQualityOptions={this.state.videoQualityOptions}

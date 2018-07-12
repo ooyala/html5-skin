@@ -2505,6 +2505,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     showControlBar: function() {
       this.state.controlBarVisible = true;
+      this.renderSkin();
     },
 
     hideControlBar: function() {
@@ -2512,6 +2513,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       if (Utils.isAndroid()) {
         this.hideVolumeSliderBar();
       }
+      this.renderSkin();
     },
 
     cancelTimer: function() {
