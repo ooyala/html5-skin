@@ -88,6 +88,7 @@ describe('Skin screenToShow state', function() {
         skinConfig={skinConfig}
         closedCaptionOptions={{
           enabled: false,
+          fontSize: 'Medium',
           availableLanguages: {
             locale: []
           }

@@ -68,7 +68,9 @@ var ContentScreen = createReactClass({
     var titleBar = this.props.titleText ? (
       <div className="oo-content-screen-title" style={titleBarStyle}>
         {Utils.getLocalizedString(this.props.language, this.props.titleText, this.props.localizableStrings)}
-        <Icon {...this.props} icon={this.props.icon} />
+        {this.props.icon &&
+          <Icon {...this.props} icon={this.props.icon} />
+        }
         {this.props.element}
       </div>
     ) : null;
@@ -112,7 +114,7 @@ ContentScreen.defaultProps = {
   titleBarClassName: 'oo-content-screen-title-bar',
   titleText: '',
   element: null,
-  icon: 'share',
+  icon: null,
   controller: {
     toggleScreen: function() {},
     state: {

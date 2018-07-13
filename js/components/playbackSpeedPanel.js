@@ -16,11 +16,12 @@ class PlaybackSpeedPanel extends React.Component {
   }
 
   onSpeedOptionClick(speed) {
-    this.props.controller.setPlaybackSpeed(speed);
+    const { controller, onClose } = this.props;
+    controller.setPlaybackSpeed(speed);
 
-    this.props.onClose({
-      restoreToggleButtonFocus: true
-    });
+    if (typeof onClose === 'function') {
+      onClose({ restoreToggleButtonFocus: true });
+    }
   }
 
   getPlaybackSpeedOptions() {
@@ -48,9 +49,9 @@ class PlaybackSpeedPanel extends React.Component {
 
     let buttonLabel;
     if (speedOption === CONSTANTS.UI.DEFAULT_PLAYBACK_SPEED) {
-      buttonLabel = 'Normal';
+      buttonLabel = CONSTANTS.SKIN_TEXT.NORMAL_SPEED;
     } else {
-      buttonLabel =`${speedOption}x`;
+      buttonLabel = `${speedOption}x`;
     }
 
     return (
@@ -70,32 +71,39 @@ class PlaybackSpeedPanel extends React.Component {
   }
 
   render() {
+    const { isPopover, controller, skinConfig } = this.props;
     const playbackSpeedOptions = this.getPlaybackSpeedOptions();
 
     const selectedValue = Utils.getPropertyValue(
-      this.props.controller,
+      controller,
       'state.playbackSpeedOptions.currentSpeed',
       CONSTANTS.UI.DEFAULT_PLAYBACK_SPEED
     );
     const accentColor = Utils.getPropertyValue(
-      this.props.skinConfig,
+      skinConfig,
       'general.accentColor',
       null
     );
+    const className = classNames('oo-playback-speed-panel', {
+      'oo-quality-popover': isPopover,
+      'oo-content-panel oo-quality-panel': !isPopover
+    });
 
     return (
-      <div className="oo-quality-popover oo-playback-speed-panel">
+      <div className={className}>
 
         <ScrollArea
           className="oo-quality-screen-content"
           speed={this.props.popover ? CONSTANTS.UI.POPOVER_SCROLL_RATE : 1}>
 
-          <div className="oo-menu-title">Speed</div>
+          {isPopover &&
+            <div className="oo-menu-title">{CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}</div>
+          }
 
           <ul role="menu">
-            {playbackSpeedOptions.map(speedOption => (
+            {playbackSpeedOptions.map(speedOption =>
               this.getMenuItemForOption(speedOption, selectedValue, accentColor)
-            ))}
+            )}
           </ul>
 
         </ScrollArea>
@@ -106,6 +114,7 @@ class PlaybackSpeedPanel extends React.Component {
 };
 
 PlaybackSpeedPanel.propTypes = {
+  isPopover: PropTypes.bool,
   controller: PropTypes.shape({
     state: PropTypes.shape({
       playbackSpeedOptions: PropTypes.shape({
@@ -113,7 +122,8 @@ PlaybackSpeedPanel.propTypes = {
       })
     }),
     setPlaybackSpeed: PropTypes.func.isRequired
-  })
+  }),
+  onClose: PropTypes.func
 };
 
 module.exports = AccessibleMenu(PlaybackSpeedPanel);

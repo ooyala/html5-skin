@@ -643,7 +643,7 @@ var ControlBar = createReactClass({
             focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
             ariaHasPopup={true}
             ariaExpanded={this.props.controller.state.playbackSpeedOptions.showPopover ? true : null}
-            tooltip={CONSTANTS.SKIN_TEXT.SHARE}
+            tooltip={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
             onClick={this.handleMenuToggleClick.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}>
           </PlaybackSpeedButton>
 
@@ -653,11 +653,12 @@ var ControlBar = createReactClass({
               closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
               closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}>
               <PlaybackSpeedPanel
+                isPopover
                 controller={this.props.controller}
                 onClose={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}/>
             </Popover>
           }
-          
+
         </div>
       ),
 

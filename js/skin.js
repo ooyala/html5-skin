@@ -9,6 +9,7 @@ var OnOffSwitch = require('./components/closed-caption/onOffSwitch');
 var ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel');
 var DiscoveryPanel = require('./components/discoveryPanel');
 var VideoQualityPanel = require('./components/videoQualityPanel');
+var PlaybackSpeedPanel = require('./components/playbackSpeedPanel');
 var ClosedCaptionMultiAudioMenu = require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
 var SharePanel = require('./components/sharePanel');
 var MoreOptionsPanel = require('./components/moreOptionsPanel');
@@ -514,6 +515,20 @@ var Skin = createReactClass({
             </ContentScreen>
           );
           break;
+          case CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN:
+            screen = (
+              <ContentScreen
+                {...this.props}
+                screen={CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN}
+                titleText={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
+                autoFocus={this.state.playbackSpeedOptions.autoFocus} >
+                <PlaybackSpeedPanel
+                  controller={this.props.controller}
+                  fullscreen={this.state.fullscreen}
+                  responsiveView={this.state.responsiveId} />
+              </ContentScreen>
+            );
+            break;
         case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
           screen = (
             <ContentScreen
