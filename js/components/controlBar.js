@@ -655,6 +655,7 @@ var ControlBar = createReactClass({
               <PlaybackSpeedPanel
                 isPopover
                 controller={this.props.controller}
+                skinConfig={this.props.skinConfig}
                 onClose={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}/>
             </Popover>
           }

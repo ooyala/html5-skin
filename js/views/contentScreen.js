@@ -5,6 +5,7 @@ var React = require('react'),
     Icon = require('../components/icon'),
     Watermark = require('../components/watermark'),
     AccessibilityMixin = require('../mixins/accessibilityMixin');
+var classNames = require('classnames');
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 
@@ -15,6 +16,10 @@ var ContentScreen = createReactClass({
     if (this.props.autoFocus) {
       Utils.autoFocusFirstElement(this.domElement);
     }
+  },
+
+  storeRef: function(ref) {
+    this.domElement = ref;
   },
 
   /**
@@ -78,12 +83,9 @@ var ContentScreen = createReactClass({
     return (
       <div
         onKeyDown={this.handleKeyDown}
-        ref={function(e) {
-          this.domElement = e;
-        }.bind(this)}
-      >
+        ref={this.storeRef}>
         <Watermark {...this.props} controlBarVisible={false} nonClickable={true} />
-        <div className={this.props.screenClassName}>
+        <div className={classNames('oo-content-screen', this.props.screenClassName)}>
           {closedCaptionOverlay}
           <div className={this.props.titleBarClassName}>{titleBar}</div>
           {this.props.children}
@@ -110,7 +112,6 @@ ContentScreen.propTypes = {
 
 ContentScreen.defaultProps = {
   screen: CONSTANTS.SCREEN.SHARE_SCREEN,
-  screenClassName: 'oo-content-screen',
   titleBarClassName: 'oo-content-screen-title-bar',
   titleText: '',
   element: null,

@@ -17,6 +17,14 @@
     top: xs($panel-padding);
     right: xs($panel-padding);
   }
+  .oo-content-screen.oo-menu-content-screen {
+    padding: 0;
+
+    .oo-content-screen-title-bar {
+      padding: xs($panel-padding);
+      padding-bottom: 0;
+    }
+  }
 
   // State Screens
   .oo-state-screen {

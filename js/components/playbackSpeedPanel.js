@@ -2,6 +2,7 @@ const React = require('react');
 const ScrollArea = require('react-scrollbar/dist/no-css');
 const AccessibleMenu = require('./higher-order/accessibleMenu');
 const AccessibleButton = require('./accessibleButton');
+const Icon = require('./icon');
 const classNames = require('classnames');
 const PropTypes = require('prop-types');
 const Utils = require('./utils');
@@ -39,8 +40,12 @@ class PlaybackSpeedPanel extends React.Component {
    */
   getMenuItemForOption(speedOption, selectedValue, accentColor) {
     const isSelected = speedOption === selectedValue;
+    const showSelectedIcon = !this.props.isPopover && isSelected;
 
-    const buttonClassName = classNames('oo-quality-btn', {
+    const itemClassName = classNames('oo-menu-item', {
+      'oo-selected': isSelected
+    });
+    const buttonClassName = classNames('oo-menu-btn', {
       'oo-selected': isSelected
     });
     const buttonStyle = {
@@ -55,7 +60,10 @@ class PlaybackSpeedPanel extends React.Component {
     }
 
     return (
-      <li key={speedOption} role="presentation">
+      <li
+        key={speedOption}
+        className={itemClassName}
+        role="presentation">
         <AccessibleButton
           className={buttonClassName}
           style={buttonStyle}
@@ -64,7 +72,12 @@ class PlaybackSpeedPanel extends React.Component {
           ariaLabel={CONSTANTS.ARIA_LABELS.PLAYBACK_SPEED.replace(MACROS.RATE, speedOption)}
           ariaChecked={isSelected}
           onClick={this.onSpeedOptionClick.bind(this, speedOption)}>
-          {buttonLabel}
+          {showSelectedIcon &&
+            <Icon
+              skinConfig={this.props.skinConfig}
+              icon="selected" />
+          }
+          <span>{buttonLabel}</span>
         </AccessibleButton>
       </li>
     );
@@ -84,17 +97,17 @@ class PlaybackSpeedPanel extends React.Component {
       'general.accentColor',
       null
     );
-    const className = classNames('oo-playback-speed-panel', {
-      'oo-quality-popover': isPopover,
-      'oo-content-panel oo-quality-panel': !isPopover
+    const className = classNames('oo-menu-panel oo-playback-speed-panel', {
+      'oo-menu-popover': isPopover,
+      'oo-content-panel': !isPopover
     });
 
     return (
       <div className={className}>
 
         <ScrollArea
-          className="oo-quality-screen-content"
-          speed={this.props.popover ? CONSTANTS.UI.POPOVER_SCROLL_RATE : 1}>
+          className="oo-menu-panel-content"
+          speed={isPopover ? CONSTANTS.UI.POPOVER_SCROLL_RATE : 1}>
 
           {isPopover &&
             <div className="oo-menu-title">{CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}</div>

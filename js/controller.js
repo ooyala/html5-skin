@@ -1709,19 +1709,15 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     /**
      * @description the function closes popovers (closedCaptionPopover, videoQualityPopover, multiAudioPopover);
      * if the parameter specifies the name of the popover, then its state does not change
-     * @param {string} popoverName - the name of the popover that does not need to be closed
+     * @param {string} popoverOptionsName - the name of the popover that does not need to be closed
      * @public
      */
-    closeOtherPopovers: function(popoverName) {
-      var popoversNameList = [
-        CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS,
-        CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY,
-        CONSTANTS.MENU_OPTIONS.MULTI_AUDIO
-      ];
-      for (var index = 0; index < popoversNameList.length; index++) {
-        var closedPopoverName = popoversNameList[index];
-        if (closedPopoverName !== popoverName) {
-          this.closePopover(closedPopoverName);
+    closeOtherPopovers: function(popoverOptionsName) {
+      for (var menuName in CONSTANTS.MENU_OPTIONS) {
+        var currentOptionsName = CONSTANTS.MENU_OPTIONS[menuName];
+
+        if (currentOptionsName !== popoverOptionsName) {
+          this.closePopover(currentOptionsName);
         }
       }
     },
