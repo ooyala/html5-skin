@@ -4,7 +4,7 @@
  * @module VideoQualityPanel
  */
 var React = require('react'),
-    ScrollArea = require('react-scrollbar/dist/no-css'),
+    ScrollArea = require('react-scrollbar/dist/no-css').default,
     ClassNames = require('classnames'),
     AccessibleMenu = require('../components/higher-order/accessibleMenu'),
     AccessibleButton = require('../components/accessibleButton'),

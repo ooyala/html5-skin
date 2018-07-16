@@ -1,8 +1,13 @@
 
 .oo-menu-panel {
 
-  .oo-menu-panel-content {
-    touch-action: none;
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  .oo-menu-panel-content .scrollarea-content:focus {
+    outline: none;
   }
 
   .oo-menu-btn {
@@ -40,14 +45,13 @@
   margin: 9px 0;
 
   ul {
-    list-style: none;
-    margin: 0;
     padding: 2px 0;
   }
 
   .oo-menu-item {
     display: block;
-    margin: 0 0 5px 0;
+    margin: 0;
+    margin-bottom: 5px;
     padding: 0;
   }
 
@@ -78,9 +82,7 @@
   text-align: left;
 
   ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    padding: 10px 0;
   }
 
   .oo-menu-item {
@@ -99,7 +101,6 @@
 
   .oo-menu-panel-content {
     @include expand;
-    padding-top: 10px;
     text-align: left;
   }
 

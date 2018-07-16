@@ -1,5 +1,5 @@
 const React = require('react');
-const ScrollArea = require('react-scrollbar/dist/no-css');
+const CustomScrollArea = require('./customScrollArea');
 const AccessibleMenu = require('./higher-order/accessibleMenu');
 const AccessibleButton = require('./accessibleButton');
 const Icon = require('./icon');
@@ -105,7 +105,7 @@ class PlaybackSpeedPanel extends React.Component {
     return (
       <div className={className}>
 
-        <ScrollArea
+        <CustomScrollArea
           className="oo-menu-panel-content"
           speed={isPopover ? CONSTANTS.UI.POPOVER_SCROLL_RATE : 1}>
 
@@ -119,7 +119,7 @@ class PlaybackSpeedPanel extends React.Component {
             )}
           </ul>
 
-        </ScrollArea>
+        </CustomScrollArea>
 
       </div>
     );
