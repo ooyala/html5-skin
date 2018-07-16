@@ -5,7 +5,6 @@ jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/helpers');
 jest.dontMock('../../../js/components/utils');
 jest.dontMock('../../../js/components/accessibleButton');
 jest.dontMock('../../../js/components/higher-order/accessibleMenu');
-jest.dontMock('../../../js/constants/languages');
 jest.dontMock('underscore');
 
 var React = require('react');

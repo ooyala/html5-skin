@@ -112,7 +112,9 @@ module.exports = {
     AUDIO: 'Audio',
     SUBTITLES: 'Subtitles',
     UNDEFINED_LANGUAGE: 'Undefined language',
-    NO_LINGUISTIC_CONTENT: 'No linguistic content'
+    NO_LINGUISTIC_CONTENT: 'No linguistic content',
+    UNCODED_LANGUAGES: 'Uncoded languages',
+    MULTIPLE_LANGUAGES: 'Multiple languages'
   },
 
   ARIA_LABELS: {
@@ -301,7 +303,10 @@ module.exports = {
     CHINESE: 'zh',
     JAPANESE: 'ja',
     NOT_MATCHED: 'und',
-    NO_LINGUISTIC_CONTENT: 'zxx'
+    UNDEFINED_LANGUAGE: 'und',
+    NO_LINGUISTIC_CONTENT: 'zxx',
+    UNCODED_LANGUAGES: 'mis',
+    MULTIPLE_LANGUAGES: 'mul'
   },
 
   ERROR_CODE: {
