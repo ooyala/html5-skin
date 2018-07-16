@@ -1,9 +1,5 @@
 const React = require('react');
-const CustomScrollArea = require('./customScrollArea');
-const AccessibleMenu = require('./higher-order/accessibleMenu');
-const AccessibleButton = require('./accessibleButton');
-const Icon = require('./icon');
-const classNames = require('classnames');
+const MenuPanel = require('./menuPanel');
 const PropTypes = require('prop-types');
 const Utils = require('./utils');
 const CONSTANTS = require('../constants/constants');
@@ -13,121 +9,74 @@ class PlaybackSpeedPanel extends React.Component {
 
   constructor(props) {
     super(props);
-    this.onSpeedOptionClick = this.onSpeedOptionClick.bind(this);
-  }
-
-  onSpeedOptionClick(speed) {
-    const { controller, onClose } = this.props;
-    controller.setPlaybackSpeed(speed);
-
-    if (typeof onClose === 'function') {
-      onClose({ restoreToggleButtonFocus: true });
-    }
-  }
-
-  getPlaybackSpeedOptions() {
-    const playbackSpeedOptions = [0.5, 0.75, 1, 1.25, 1.5, 2];
-    return playbackSpeedOptions;
+    this.onMenuItemClick = this.onMenuItemClick.bind(this);
   }
 
   /**
-   *
+   * Handles menu item clicks.
    * @private
-   * @param {Number} speedOption
-   * @param {String} selectedValue
-   * @param {String} accentColor
-   * @return {Component}
+   * @param {String} itemValue The value of the menu item that was clicked
    */
-  getMenuItemForOption(speedOption, selectedValue, accentColor) {
-    const isSelected = speedOption === selectedValue;
-    const showSelectedIcon = !this.props.isPopover && isSelected;
+  onMenuItemClick(itemValue) {
+    const { controller } = this.props;
+    controller.setPlaybackSpeed(itemValue);
+  }
 
-    const itemClassName = classNames('oo-menu-item', {
-      'oo-selected': isSelected
+  /**
+   * Maps playback speed options to menu item objects that contain the label, aria
+   * labe, etc., that will be displayed by the menu panel
+   * @private
+   * @return {Array} An array of menu items with the existing playback speed options
+   */
+  getMenuItems() {
+    const playbackSpeedOptions = [0.5, 0.75, 1, 1.25, 1.5, 2];
+
+    const menuItems = playbackSpeedOptions.map(option => {
+      let itemLabel;
+
+      if (option === CONSTANTS.UI.DEFAULT_PLAYBACK_SPEED) {
+        itemLabel = CONSTANTS.SKIN_TEXT.NORMAL_SPEED;
+      } else {
+        itemLabel = `${option}x`;
+      }
+
+      const menuItem = {
+        value: option,
+        label: itemLabel,
+        ariaLabel: CONSTANTS.ARIA_LABELS.PLAYBACK_SPEED.replace(MACROS.RATE, option)
+      };
+      return menuItem;
     });
-    const buttonClassName = classNames('oo-menu-btn', {
-      'oo-selected': isSelected
-    });
-    const buttonStyle = {
-      color: isSelected ? accentColor : null
-    };
-
-    let buttonLabel;
-    if (speedOption === CONSTANTS.UI.DEFAULT_PLAYBACK_SPEED) {
-      buttonLabel = CONSTANTS.SKIN_TEXT.NORMAL_SPEED;
-    } else {
-      buttonLabel = `${speedOption}x`;
-    }
-
-    return (
-      <li
-        key={speedOption}
-        className={itemClassName}
-        role="presentation">
-        <AccessibleButton
-          className={buttonClassName}
-          style={buttonStyle}
-          focusId={CONSTANTS.FOCUS_IDS.PLAYBACK_SPEED + speedOption}
-          role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
-          ariaLabel={CONSTANTS.ARIA_LABELS.PLAYBACK_SPEED.replace(MACROS.RATE, speedOption)}
-          ariaChecked={isSelected}
-          onClick={this.onSpeedOptionClick.bind(this, speedOption)}>
-          {showSelectedIcon &&
-            <Icon
-              skinConfig={this.props.skinConfig}
-              icon="selected" />
-          }
-          <span>{buttonLabel}</span>
-        </AccessibleButton>
-      </li>
-    );
+    return menuItems;
   }
 
   render() {
-    const { isPopover, controller, skinConfig } = this.props;
-    const playbackSpeedOptions = this.getPlaybackSpeedOptions();
+    const menuItems = this.getMenuItems();
+    const { isPopover, controller, skinConfig, onClose } = this.props;
 
     const selectedValue = Utils.getPropertyValue(
       controller,
       'state.playbackSpeedOptions.currentSpeed',
       CONSTANTS.UI.DEFAULT_PLAYBACK_SPEED
     );
-    const accentColor = Utils.getPropertyValue(
-      skinConfig,
-      'general.accentColor',
-      null
-    );
-    const className = classNames('oo-menu-panel oo-playback-speed-panel', {
-      'oo-menu-popover': isPopover,
-      'oo-content-panel': !isPopover
-    });
 
     return (
-      <div className={className}>
-
-        <CustomScrollArea
-          className="oo-menu-panel-content"
-          speed={isPopover ? CONSTANTS.UI.POPOVER_SCROLL_RATE : 1}>
-
-          {isPopover &&
-            <div className="oo-menu-title">{CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}</div>
-          }
-
-          <ul role="menu">
-            {playbackSpeedOptions.map(speedOption =>
-              this.getMenuItemForOption(speedOption, selectedValue, accentColor)
-            )}
-          </ul>
-
-        </CustomScrollArea>
-
-      </div>
+      <MenuPanel
+        className="oo-playback-speed-panel"
+        title={isPopover ? CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED : ''}
+        selectedValue={selectedValue}
+        isPopover={isPopover}
+        skinConfig={skinConfig}
+        menuItems={menuItems}
+        onMenuItemClick={this.onMenuItemClick}
+        onClose={onClose} />
     );
   }
 };
 
 PlaybackSpeedPanel.propTypes = {
   isPopover: PropTypes.bool,
+  onClose: PropTypes.func,
   controller: PropTypes.shape({
     state: PropTypes.shape({
       playbackSpeedOptions: PropTypes.shape({
@@ -136,7 +85,11 @@ PlaybackSpeedPanel.propTypes = {
     }),
     setPlaybackSpeed: PropTypes.func.isRequired
   }),
-  onClose: PropTypes.func
+  skinConfig: PropTypes.shape({
+    general: PropTypes.shape({
+      accentColor: PropTypes.string
+    }),
+  })
 };
 
-module.exports = AccessibleMenu(PlaybackSpeedPanel);
+module.exports = PlaybackSpeedPanel;

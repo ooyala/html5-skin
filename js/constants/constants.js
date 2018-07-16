@@ -207,7 +207,7 @@ var CONSTANTS = {
     AUTO_QUALITY: 'autoQuality',
     CLOSE: 'close',
     MULTI_AUDIO: 'multiAudio',
-    PLAYBACK_SPEED: 'playbackSpeed'
+    MENU_ITEM: 'menuItem'
   },
 
   SKIP_CTRLS_KEYS: {

@@ -1,4 +1,5 @@
 
+// Base MenuPanel styles, common for both popover and screen mode
 .oo-menu-panel {
 
   ul {
@@ -41,6 +42,7 @@
   }
 }
 
+// MenuPanel styles for popover mode
 .oo-menu-panel.oo-menu-popover {
   margin: 9px 0;
 
@@ -48,14 +50,14 @@
     padding: 2px 0;
   }
 
-  .oo-menu-item {
+  .oo-menu-panel-item {
     display: block;
     margin: 0;
     margin-bottom: 5px;
     padding: 0;
   }
 
-  .oo-menu-item:last-child {
+  .oo-menu-panel-item:last-child {
     margin-bottom: 0;
   }
 
@@ -76,6 +78,7 @@
   }
 }
 
+// MenuPanel styles for screen mode
 .oo-menu-panel.oo-content-panel {
   @include flex(1);
   position: relative;
@@ -85,16 +88,16 @@
     padding: 10px 0;
   }
 
-  .oo-menu-item {
+  .oo-menu-panel-item {
     display: block;
     padding: 2px;
   }
 
-  .oo-menu-item.oo-selected {
+  .oo-menu-panel-item.oo-selected {
     background-color: rgba(36, 40, 42, 0.6);
   }
 
-  .oo-menu-item:not(.oo-selected):hover {
+  .oo-menu-panel-item:not(.oo-selected):hover {
     background-color: rgba(36, 40, 42, 0.3);
     @include vendor-prefixes(transition, background-color 0.3s ease);
   }
