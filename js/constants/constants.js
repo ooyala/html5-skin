@@ -275,8 +275,14 @@ var CONSTANTS = {
     REQUEST_PREVIOUS_TIME_THRESHOLD: 1500,
     // When the previous video button is clicked, if the playhead value (in seconds) is
     // below this constant the controller will request the previous video instead of rewinding
-    REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD: 2,
-    DEFAULT_PLAYBACK_SPEED: 1 // Default playback rate
+    REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD: 2
+  },
+
+  PLAYBACK_SPEED: {
+    DEFAULT_VALUE: 1, // Default playback rate
+    DEFAULT_OPTIONS: [ 0.5, 0.75, 1, 1.25, 1.5, 2 ], // Default options for playback speed menu
+    MIN: 0.5,
+    MAX: 2,
   },
 
   TOOLTIP_ALIGNMENT: {

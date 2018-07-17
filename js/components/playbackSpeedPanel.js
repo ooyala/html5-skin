@@ -23,19 +23,53 @@ class PlaybackSpeedPanel extends React.Component {
   }
 
   /**
+   * Extracts and normalizes the configured speed options to use for the menu.
+   * @private
+   * @return {Array} The array of sorted values to use for the menu items, constrained
+   * to min and max values and truncated to 2 decimals
+   */
+  getPlaybackSpeedOptions() {
+    // Only process speed options once per component mount
+    if (!this.playbackSpeedOptions) {
+      // Get configured values from skin
+      this.playbackSpeedOptions = Utils.getPropertyValue(
+        this.props.skinConfig,
+        'playbackSpeed.options',
+        CONSTANTS.PLAYBACK_SPEED.DEFAULT_OPTIONS
+      );
+      // Constrain to min and max values and ensure at most 2 decimals
+      this.playbackSpeedOptions = this.playbackSpeedOptions.map(option =>
+        Utils.constrainToRange(
+          Utils.toFixedNumber(option, 2),
+          CONSTANTS.PLAYBACK_SPEED.MIN,
+          CONSTANTS.PLAYBACK_SPEED.MAX
+        )
+      );
+      // Sort in ascending order
+      this.playbackSpeedOptions.sort((a, b) => a - b);
+    }
+    return this.playbackSpeedOptions;
+  }
+
+  /**
    * Maps playback speed options to menu item objects that contain the label, aria
    * labe, etc., that will be displayed by the menu panel
    * @private
    * @return {Array} An array of menu items with the existing playback speed options
    */
   getMenuItems() {
-    const playbackSpeedOptions = [0.5, 0.75, 1, 1.25, 1.5, 2];
+    const { language, localizableStrings } = this.props;
+    const playbackSpeedOptions = this.getPlaybackSpeedOptions();
 
     const menuItems = playbackSpeedOptions.map(option => {
       let itemLabel;
 
-      if (option === CONSTANTS.UI.DEFAULT_PLAYBACK_SPEED) {
-        itemLabel = CONSTANTS.SKIN_TEXT.NORMAL_SPEED;
+      if (option === CONSTANTS.PLAYBACK_SPEED.DEFAULT_VALUE) {
+        itemLabel = Utils.getLocalizedString(
+          language,
+          CONSTANTS.SKIN_TEXT.NORMAL_SPEED,
+          localizableStrings
+        );
       } else {
         itemLabel = `${option}x`;
       }
@@ -52,18 +86,30 @@ class PlaybackSpeedPanel extends React.Component {
 
   render() {
     const menuItems = this.getMenuItems();
-    const { isPopover, controller, skinConfig, onClose } = this.props;
+    const {
+      isPopover,
+      language,
+      localizableStrings,
+      controller,
+      skinConfig,
+      onClose
+    } = this.props;
 
     const selectedValue = Utils.getPropertyValue(
       controller,
       'state.playbackSpeedOptions.currentSpeed',
       CONSTANTS.UI.DEFAULT_PLAYBACK_SPEED
     );
+    const title = Utils.getLocalizedString(
+      language,
+      isPopover ? CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED : '',
+      localizableStrings
+    );
 
     return (
       <MenuPanel
         className="oo-playback-speed-panel"
-        title={isPopover ? CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED : ''}
+        title={title}
         selectedValue={selectedValue}
         isPopover={isPopover}
         skinConfig={skinConfig}
@@ -76,6 +122,8 @@ class PlaybackSpeedPanel extends React.Component {
 
 PlaybackSpeedPanel.propTypes = {
   isPopover: PropTypes.bool,
+  language: PropTypes.string.isRequired,
+  localizableStrings: PropTypes.object.isRequired,
   onClose: PropTypes.func,
   controller: PropTypes.shape({
     state: PropTypes.shape({
@@ -89,6 +137,9 @@ PlaybackSpeedPanel.propTypes = {
     general: PropTypes.shape({
       accentColor: PropTypes.string
     }),
+    playbackSpeed: PropTypes.shape({
+      options: PropTypes.arrayOf(PropTypes.number).isRequired
+    })
   })
 };
 

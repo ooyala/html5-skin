@@ -523,6 +523,8 @@ var Skin = createReactClass({
                 titleText={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
                 autoFocus={this.state.playbackSpeedOptions.autoFocus} >
                 <PlaybackSpeedPanel
+                  language={this.props.language}
+                  localizableStrings={this.props.localizableStrings}
                   controller={this.props.controller}
                   skinConfig={this.props.skinConfig}
                   fullscreen={this.state.fullscreen}

@@ -160,7 +160,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       },
 
       playbackSpeedOptions: {
-        currentSpeed: CONSTANTS.UI.DEFAULT_PLAYBACK_SPEED,
+        currentSpeed: CONSTANTS.PLAYBACK_SPEED.DEFAULT_VALUE,
         showPopover: false,
         autoFocus: false,
       },
