@@ -295,6 +295,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         );
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, 'customerUi', _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.MUTE_STATE_CHANGED, 'customerUi', _.bind(this.onMuteStateChanged, this));
+        this.mb.subscribe(OO.EVENTS.PLAYBACK_SPEED_CHANGED, 'customerUi', _.bind(this.onPlaybackSpeedChanged, this));
         this.mb.subscribe(
           OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS,
           'customerUi',
@@ -719,6 +720,19 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       if (!muted) {
         this.state.volumeState.mutingForAutoplay = false;
       }
+      this.renderSkin();
+    },
+
+    /**
+     * Handles the PLAYBACK_SPEED_CHANGED message bus event.
+     * @private
+     * @param {String} eventName The name of the message bus event
+     * @param {String} videoId The id of the video whose playback speed change
+     * @param {Number} playbackSpeed A number that represents the new playback rate
+     */
+    onPlaybackSpeedChanged: function(eventName, videoId, playbackSpeed) {
+      playbackSpeed = Utils.ensureNumber(playbackSpeed, 1);
+      this.state.playbackSpeedOptions.currentSpeed = playbackSpeed;
       this.renderSkin();
     },
 
@@ -1900,6 +1914,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYBACK_SPEED_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CHECK_VR_DIRECTION, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.TOUCH_MOVE, 'customerUi');
@@ -2185,8 +2200,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      */
     setPlaybackSpeed: function(playbackSpeed) {
       this.mb.publish(OO.EVENTS.SET_PLAYBACK_SPEED, playbackSpeed);
-      this.state.playbackSpeedOptions.currentSpeed = playbackSpeed;
-      this.renderSkin();
     },
 
     /**

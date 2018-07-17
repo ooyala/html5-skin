@@ -2,13 +2,13 @@
 // Base MenuPanel styles, common for both popover and screen mode
 .oo-menu-panel {
 
-  ul {
-    list-style: none;
-    margin: 0;
-  }
-
   .oo-menu-panel-content .scrollarea-content:focus {
     outline: none;
+  }
+
+  .oo-menu-panel-list {
+    list-style: none;
+    margin: 0;
   }
 
   .oo-menu-btn {
@@ -46,8 +46,23 @@
 .oo-menu-panel.oo-menu-popover {
   margin: 9px 0;
 
-  ul {
+  .oo-menu-panel-content {
+    max-height: 150px;
+    width: 80px;
+    text-align: center;
+  }
+
+  .oo-menu-panel-list {
     padding: 2px 0;
+  }
+
+  .oo-menu-panel-title {
+    color: $white;
+    margin-bottom: 6px;
+    padding: 0 6px;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
   }
 
   .oo-menu-panel-item {
@@ -59,16 +74,6 @@
 
   .oo-menu-panel-item:last-child {
     margin-bottom: 0;
-  }
-
-  .scrollbar-container.horizontal {
-    display:none;
-  }
-
-  .oo-menu-panel-content {
-    max-height: 150px;
-    width: 80px;
-    text-align: center;
   }
 
   .oo-menu-btn {
@@ -84,7 +89,12 @@
   position: relative;
   text-align: left;
 
-  ul {
+  .oo-menu-panel-content {
+    @include expand;
+    text-align: left;
+  }
+
+  .oo-menu-panel-list {
     padding: 10px 0;
   }
 
@@ -102,11 +112,6 @@
     @include vendor-prefixes(transition, background-color 0.3s ease);
   }
 
-  .oo-menu-panel-content {
-    @include expand;
-    text-align: left;
-  }
-
   .oo-menu-btn {
     position: relative;
     width: 100%;
@@ -117,11 +122,6 @@
     text-align: left;
   }
 
-  .oo-menu-btn.oo-selected {
-    color: $blue-light;
-    font-weight: bold;
-  }
-
   .oo-menu-btn .oo-icon {
     @include flex-center-children(row);
     position: absolute;
@@ -130,5 +130,10 @@
     width: 2em;
     height: 100%;
     font-size: 1.1em;
+  }
+
+  .oo-menu-btn.oo-selected {
+    color: $blue-light;
+    font-weight: bold;
   }
 }

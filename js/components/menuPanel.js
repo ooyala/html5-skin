@@ -81,10 +81,10 @@ class MenuPanel extends React.Component {
           speed={isPopover ? CONSTANTS.UI.POPOVER_SCROLL_RATE : 1}>
 
           {title &&
-            <div className="oo-menu-title">{title}</div>
+            <div className="oo-menu-panel-title">{title}</div>
           }
 
-          <ul role="menu">
+          <ul className="oo-menu-panel-list" role="menu">
             {menuItems.map(menuItem =>
               this.renderMenuItem(menuItem, selectedValue, accentColor)
             )}
