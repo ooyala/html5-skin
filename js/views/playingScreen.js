@@ -41,17 +41,12 @@ class PlayingScreen extends React.Component {
     this.handleVrTouchEnd = this.handleVrTouchEnd.bind(this);
     this.onSkipControlsMount = this.onSkipControlsMount.bind(this);
     this.handleTouchStart = this.handleTouchStart.bind(this);
-
-
-
-
     this.handlePlayerClicked = this.handlePlayerClicked.bind(this);
     this.handlePlayerFocus = this.handlePlayerFocus.bind(this);
     this.handlePlayerMouseDown = this.handlePlayerMouseDown.bind(this);
     this.handlePlayerMouseUp = this.handlePlayerMouseUp.bind(this);
     this.handleTouchEnd = this.handleTouchEnd.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
-
     this.handleMouseOver = this.handleMouseOver.bind(this);
   }
 
@@ -92,8 +87,13 @@ class PlayingScreen extends React.Component {
     // skip buttons). Note that controlBarVisible controls both the control bar and
     // the skip buttons
     if (!this.props.controller.state.controlBarVisible && isFocusableElement) {
-      this.props.showControlBar();
-      this.props.startHideControlBarTimer();
+      if (typeof this.props.showControlBar === 'function') {
+        this.props.showControlBar();
+      }
+
+      if (typeof this.props.startHideControlBarTimer === 'function') {
+        this.props.startHideControlBarTimer();
+      }
       this.props.controller.state.accessibilityControlsEnabled = true;
       this.props.controller.state.isClickedOutside = false;
     }
@@ -450,4 +450,6 @@ class PlayingScreen extends React.Component {
   }
 }
 
-module.exports = withAutoHide(PlayingScreen);
+const PlayingScreenWithAutoHide = withAutoHide(PlayingScreen);
+
+export {PlayingScreen, PlayingScreenWithAutoHide};

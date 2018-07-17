@@ -15,12 +15,15 @@ var MoreOptionsPanel = require('./components/moreOptionsPanel');
 var AdScreen = require('./views/adScreen');
 var EndScreen = require('./views/endScreen');
 var StartScreen = require('./views/startScreen');
-var PauseScreen = require('./views/pauseScreen');
-var PlayingScreen = require('./views/playingScreen');
+//var PauseScreen = require('./views/pauseScreen');
+//var PlayingScreen = require('./views/playingScreen');
 var ErrorScreen = require('./views/errorScreen');
 var ContentScreen = require('./views/contentScreen');
 var ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
 var createReactClass = require('create-react-class');
+
+import {PlayingScreenWithAutoHide} from './views/playingScreen';
+import {PauseScreenWithAutoHide} from './views/pauseScreen';
 
 var Skin = createReactClass({
   mixins: [ResponsiveManagerMixin],
@@ -335,7 +338,7 @@ var Skin = createReactClass({
           break;
         case CONSTANTS.SCREEN.PLAYING_SCREEN:
           screen = (
-            <PlayingScreen
+            <PlayingScreenWithAutoHide
               {...this.props}
               handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
               handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
@@ -377,7 +380,7 @@ var Skin = createReactClass({
           break;
         case CONSTANTS.SCREEN.PAUSE_SCREEN:
           screen = (
-            <PauseScreen
+            <PauseScreenWithAutoHide
               {...this.props}
               handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
               handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}

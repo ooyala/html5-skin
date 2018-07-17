@@ -44,6 +44,8 @@ var skinControllerMock = {
     config: {},
     moreOptionsItems: []
   },
+  addBlur: function() {},
+  removeBlur: function() {},
   setVolume: function() {},
   cancelTimer: function() {},
   setFocusedControl: function() {},

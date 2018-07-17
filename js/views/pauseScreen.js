@@ -358,4 +358,6 @@ class PauseScreen extends React.Component {
   }
 }
 
-module.exports = withAutoHide(PauseScreen);
+const PauseScreenWithAutoHide = withAutoHide(PauseScreen);
+
+export {PauseScreen, PauseScreenWithAutoHide};

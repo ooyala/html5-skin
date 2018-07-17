@@ -9,12 +9,13 @@ jest
 var React = require('react');
 var sinon = require('sinon');
 var Enzyme = require('enzyme');
-var PauseScreen = require('../../js/views/pauseScreen');
 var ClassNames = require('classnames');
 var skinConfig = require('../../config/skin.json');
 var SkipControls = require('../../js/components/skipControls');
 var Utils = require('../../js/components/utils');
 var CONSTANTS = require('../../js/constants/constants');
+
+import {PauseScreen} from '../../js/views/pauseScreen';
 
 describe('PauseScreen', function() {
   var mockController, mockContentTree, mockSkinConfig;
@@ -22,6 +23,7 @@ describe('PauseScreen', function() {
   beforeEach(function() {
     mockController = {
       state: {
+        controlBarVisible: true,
         isLiveStream: false,
         duration: 60,
         accessibilityControlsEnabled: false,
@@ -40,7 +42,7 @@ describe('PauseScreen', function() {
         },
         skipControls: {
           hasPreviousVideos: false,
-          hasNextVideos: false,
+          hasNextVideos: false
         },
         closedCaptionOptions: {},
         multiAudioOptions: {},
@@ -49,6 +51,7 @@ describe('PauseScreen', function() {
         }
       },
       addBlur: function() {},
+      removeBlur: function() {},
       cancelTimer: function() {},
       hideVolumeSliderBar: function() {},
       toggleMute: function() {},
@@ -106,7 +109,7 @@ describe('PauseScreen', function() {
     );
 
     var underlay = wrapper.find('.oo-fading-underlay');
-    expect(spy.callCount).toBe(1);
+    expect(spy.callCount > 0).toBe(true);
     spy.restore();
   });
 

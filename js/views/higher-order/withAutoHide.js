@@ -23,8 +23,8 @@ const withAutoHide = function(ComposedComponent) {
     }
 
     componentDidMount() {
-      document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
-      document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
+      //document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
+      //document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
       // for mobile or desktop fullscreen, hide control bar after 3 seconds
       if (this.props.controller.state.isMobile || this.props.fullscreen || this.props.controller.state.browserSupportsTouch) {
         this.startHideControlBarTimer();
@@ -32,8 +32,8 @@ const withAutoHide = function(ComposedComponent) {
     }
 
     componentWillUnmount() {
-      document.removeEventListener('mousemove', this.handlePlayerMouseMove);
-      document.removeEventListener('touchmove', this.handlePlayerMouseMove);
+      //document.removeEventListener('mousemove', this.handlePlayerMouseMove);
+      //document.removeEventListener('touchmove', this.handlePlayerMouseMove);
       this.cancelHideControlBarTimer();
     }
 
@@ -137,6 +137,8 @@ const withAutoHide = function(ComposedComponent) {
           onMouseOver={this.handleMouseOver}
           onMouseOut={this.hideControlBar}
           onKeyDown={this.handleKeyDown}
+          onMouseMove={this.handlePlayerMouseMove}
+          onTouchMove={this.handlePlayerMouseMove}
         >
           <ComposedComponent
             {...this.props}
