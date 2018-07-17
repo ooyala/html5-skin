@@ -469,7 +469,10 @@ var Skin = createReactClass({
         case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
           screen = (
             <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN}>
-              <MoreOptionsPanel {...this.props} fullscreen={this.state.fullscreen} />
+              <MoreOptionsPanel
+                {...this.props}
+                responsiveView={this.state.responsiveId}
+                fullscreen={this.state.fullscreen} />
             </ContentScreen>
           );
           break;

@@ -86,6 +86,7 @@ describe('Skin screenToShow state', function() {
       <Skin
         controller={controller}
         skinConfig={skinConfig}
+        responsiveView="md"
         closedCaptionOptions={{
           enabled: false,
           fontSize: 'Medium',
@@ -269,6 +270,7 @@ describe('Tab Navigation', function() {
       <Skin
         controller={mockController}
         skinConfig={mockSkinConfig}
+        responsiveView="md"
         closedCaptionOptions={{ enabled: false }} />
       , document.body
     );
