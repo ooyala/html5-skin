@@ -8,5 +8,6 @@ module.exports = {
   BITRATE: '{bitrate}',
   PERCENT: '{percent}',
   SETTING: '{setting}',
-  SECONDS: '{seconds}'
+  SECONDS: '{seconds}',
+  RATE: '{rate}',
 };

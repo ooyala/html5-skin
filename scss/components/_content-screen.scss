@@ -34,3 +34,14 @@
   top: $panel-padding;
   right: $panel-padding;
 }
+
+.oo-content-screen.oo-menu-content-screen {
+  @include flexbox();
+  @include flex-direction(column);
+  padding: 0;
+
+  .oo-content-screen-title-bar {
+    padding: $panel-padding;
+    padding-bottom: 0;
+  }
+}

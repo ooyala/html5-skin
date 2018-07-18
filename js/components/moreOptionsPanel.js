@@ -5,12 +5,14 @@
  * @class MoreOptionsPanel
  * @constructor
  */
-var React = require('react'),
-    Utils = require('./utils'),
-    CONSTANTS = require('../constants/constants'),
-    ClassNames = require('classnames'),
-    AnimateMixin = require('../mixins/animateMixin'),
-    Icon = require('../components/icon');
+var React = require('react');
+var Utils = require('./utils');
+var CONSTANTS = require('../constants/constants');
+var ClassNames = require('classnames');
+var AnimateMixin = require('../mixins/animateMixin');
+var Icon = require('../components/icon');
+var ControlButton = require('./controlButton');
+var PlaybackSpeedButton = require('./playbackSpeedButton');
 var createReactClass = require('create-react-class');
 
 var MoreOptionsPanel = createReactClass({
@@ -38,113 +40,95 @@ var MoreOptionsPanel = createReactClass({
     }
   },
 
-  highlight: function(evt) {
-    var iconElement = Utils.getEventIconElement(evt);
-    if (iconElement) {
-      var color = this.props.skinConfig.moreOptionsScreen.iconStyle.active.color;
-      var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.active.opacity;
-      Utils.highlight(iconElement, opacity, color);
-    }
-  },
-
-  removeHighlight: function(evt) {
-    var iconElement = Utils.getEventIconElement(evt);
-    if (iconElement) {
-      var color = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.color;
-      var opacity = this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.opacity;
-      Utils.removeHighlight(iconElement, opacity, color);
-    }
+  handlePlaybackSpeedClick: function() {
+    this.props.controller.toggleScreen(CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN);
   },
 
   buildMoreOptionsButtonList: function() {
-    // inline style for config/skin.json elements only
-    var buttonStyle = {
-      fontSize: this.props.skinConfig.moreOptionsScreen.iconSize + 'px',
-      color: this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.color,
-      opacity: this.props.skinConfig.moreOptionsScreen.iconStyle.inactive.opacity
+    var commonButtonProps = {
+      language: this.props.language,
+      localizableStrings: this.props.localizableStrings,
+      responsiveView: this.props.responsiveView,
+      skinConfig: this.props.skinConfig,
+      controller: this.props.controller,
+      style: {
+        fontSize: this.props.skinConfig.moreOptionsScreen.iconSize + 'px',
+      },
+      getTooltipAlignment: function(key) {
+        return CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
+      }
     };
 
-    var optionsItemsTemplates = {
-      quality: (
-        <a className="oo-quality oo-control-bar-item" onClick={this.handleQualityClick} key="quality">
-          <Icon
-            {...this.props}
-            icon="quality"
-            style={buttonStyle}
-            onMouseOver={this.highlight}
-            onMouseOut={this.removeHighlight}
-          />
-        </a>
-      ),
+    var optionsItemsTemplates = {};
+    optionsItemsTemplates[CONSTANTS.CONTROL_BAR_KEYS.QUALITY] = (
+      <ControlButton
+        {...commonButtonProps}
+        key={CONSTANTS.CONTROL_BAR_KEYS.QUALITY}
+        className="oo-quality"
+        focusId={CONSTANTS.CONTROL_BAR_KEYS.QUALITY}
+        ariaHidden={true}
+        icon="quality"
+        onClick={this.handleQualityClick}>
+      </ControlButton>
+    );
 
-      discovery: (
-        <a className="oo-discovery oo-control-bar-item" onClick={this.handleDiscoveryClick} key="discovery">
-          <Icon
-            {...this.props}
-            icon="discovery"
-            style={buttonStyle}
-            onMouseOver={this.highlight}
-            onMouseOut={this.removeHighlight}
-          />
-        </a>
-      ),
+    optionsItemsTemplates[CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY] = (
+      <ControlButton
+        {...commonButtonProps}
+        key={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
+        className="oo-discovery"
+        focusId={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
+        ariaHidden={true}
+        icon="discovery"
+        onClick={this.handleDiscoveryClick}>
+      </ControlButton>
+    );
 
-      audioAndCC: (
-        <a
-          className="oo-multiaudio oo-control-bar-item"
-          onClick={this.handleMultiAudioClick}
-          key="audioAndCC"
-        >
-          <Icon
-            {...this.props}
-            icon="audioAndCC"
-            style={buttonStyle}
-            onMouseOver={this.highlight}
-            onMouseOut={this.removeHighlight}
-          />
-        </a>
-      ),
+    optionsItemsTemplates[CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC] = (
+      <ControlButton
+        {...commonButtonProps}
+        key={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC}
+        className="oo-multiaudio"
+        focusId={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC}
+        ariaHidden={true}
+        icon="audioAndCC"
+        onClick={this.handleMultiAudioClick}>
+      </ControlButton>
+    );
 
-      closedCaption: (
-        <a
-          className="oo-closed-caption oo-control-bar-item"
-          onClick={this.handleClosedCaptionClick}
-          key="closedCaption"
-        >
-          <Icon
-            {...this.props}
-            icon="cc"
-            style={buttonStyle}
-            onMouseOver={this.highlight}
-            onMouseOut={this.removeHighlight}
-          />
-        </a>
-      ),
+    optionsItemsTemplates[CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION] = (
+      <ControlButton
+        {...commonButtonProps}
+        key={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION}
+        className="oo-closed-caption"
+        focusId={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION}
+        ariaHidden={true}
+        icon="cc"
+        onClick={this.handleClosedCaptionClick}>
+      </ControlButton>
+    );
 
-      share: (
-        <a className="oo-share oo-control-bar-item" onClick={this.handleShareClick} key="share">
-          <Icon
-            {...this.props}
-            icon="share"
-            style={buttonStyle}
-            onMouseOver={this.highlight}
-            onMouseOut={this.removeHighlight}
-          />
-        </a>
-      ),
+    optionsItemsTemplates[CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED] = (
+      <PlaybackSpeedButton
+        {...commonButtonProps}
+        key={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
+        focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
+        ariaHidden={true}
+        onClick={this.handlePlaybackSpeedClick}>
+      </PlaybackSpeedButton>
+    );
 
-      settings: (
-        <div className="oo-settings" key="settings">
-          <Icon
-            {...this.props}
-            icon="setting"
-            style={buttonStyle}
-            onMouseOver={this.highlight}
-            onMouseOut={this.removeHighlight}
-          />
-        </div>
-      )
-    };
+    optionsItemsTemplates[CONSTANTS.CONTROL_BAR_KEYS.SHARE] = (
+      <ControlButton
+        {...commonButtonProps}
+        key={CONSTANTS.CONTROL_BAR_KEYS.SHARE}
+        className="oo-share"
+        focusId={CONSTANTS.CONTROL_BAR_KEYS.SHARE}
+        ariaHidden={true}
+        icon="share"
+        onClick={this.handleShareClick}>
+      </ControlButton>
+    );
 
     var items = this.props.controller.state.moreOptionsItems;
     var moreOptionsItems = [];

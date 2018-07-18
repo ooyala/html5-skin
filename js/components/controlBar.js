@@ -9,8 +9,10 @@ var React = require('react'),
     Popover = require('../views/popover'),
     AccessibleButton = require('./accessibleButton'),
     ControlButton = require('./controlButton'),
+    PlaybackSpeedButton = require('./playbackSpeedButton'),
     VolumeControls = require('./volumeControls'),
     VideoQualityPanel = require('./videoQualityPanel'),
+    PlaybackSpeedPanel = require('./playbackSpeedPanel'),
     ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
     ClosedCaptionMultiAudioMenu = require('./closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
     preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus'),
@@ -188,25 +190,21 @@ var ControlBar = createReactClass({
     this.props.controller.toggleShareScreen();
   },
 
-  handleQualityClick: function() {
-    this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
+  /**
+   * Generic toggle logic for menus that display as popover on large screen sizes
+   * and as a fullscreen menu on smaller ones.
+   * @private
+   * @param {String} menuOptionsId A string that identifies the menu options object of the menu we want to toggle
+   */
+  handleMenuToggleClick: function(menuOptionsId) {
+    this.configureMenuAutofocus(menuOptionsId);
 
     if (this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.xs.id) {
-      this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
+      var screenToToggle = CONSTANTS.MENU_OPTIONS_SCREENS[menuOptionsId];
+      this.props.controller.toggleScreen(screenToToggle);
     } else {
-      this.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
-      this.closeOtherPopovers(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
-    }
-  },
-
-  handleClosedCaptionClick: function() {
-    this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS);
-
-    if (this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.xs.id) {
-      this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
-    } else {
-      this.togglePopover(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS);
-      this.closeOtherPopovers(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS);
+      this.togglePopover(menuOptionsId);
+      this.closeOtherPopovers(menuOptionsId);
     }
   },
 
@@ -515,9 +513,7 @@ var ControlBar = createReactClass({
         <div key={CONSTANTS.CONTROL_BAR_KEYS.QUALITY} className="oo-popover-button-container">
           <ControlButton
             {...commonButtonProps}
-            onRef={function(e) {
-              this.setToggleButtons(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY, e);
-            }.bind(this)}
+            onRef={this.setToggleButtons.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
             style={selectedStyle}
             className={qualityClass}
             focusId={CONSTANTS.CONTROL_BAR_KEYS.QUALITY}
@@ -526,7 +522,7 @@ var ControlBar = createReactClass({
             ariaExpanded={this.props.controller.state.videoQualityOptions.showPopover ? true : null}
             icon="quality"
             tooltip={CONSTANTS.SKIN_TEXT.VIDEO_QUALITY}
-            onClick={this.handleQualityClick}>
+            onClick={this.handleMenuToggleClick.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}>
           </ControlButton>
           {this.props.controller.state.videoQualityOptions.showPopover && (
             <Popover
@@ -559,9 +555,7 @@ var ControlBar = createReactClass({
         <div key={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION} className="oo-popover-button-container">
           <ControlButton
             {...commonButtonProps}
-            onRef={function(e) {
-              this.setToggleButtons(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS, e);
-            }.bind(this)}
+            onRef={this.setToggleButtons.bind(this, CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
             style={selectedStyle}
             className={captionClass}
             focusId={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION}
@@ -570,7 +564,7 @@ var ControlBar = createReactClass({
             ariaExpanded={this.props.controller.state.closedCaptionOptions.showPopover ? true : null}
             icon="cc"
             tooltip={CONSTANTS.SKIN_TEXT.CLOSED_CAPTIONS}
-            onClick={this.handleClosedCaptionClick}>
+            onClick={this.handleMenuToggleClick.bind(this, CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}>
           </ControlButton>
           {this.props.controller.state.closedCaptionOptions.showPopover && (
             <Popover
@@ -609,9 +603,7 @@ var ControlBar = createReactClass({
           <div key={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC} className="oo-popover-button-container">
             <ControlButton
               {...commonButtonProps}
-              onRef={function(e) {
-                this.setToggleButtons(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO, e);
-              }.bind(this)}
+              onRef={this.setToggleButtons.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
               style={selectedStyle}
               className={multiAudioClass}
               focusId={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC}
@@ -639,6 +631,39 @@ var ControlBar = createReactClass({
           </div>
         );
       }.bind(this)(),
+
+      playbackSpeed: (
+        <div
+          key={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
+          className="oo-popover-button-container">
+
+          <PlaybackSpeedButton
+            {...commonButtonProps}
+            onRef={this.setToggleButtons.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}
+            focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
+            ariaHasPopup={true}
+            ariaExpanded={this.props.controller.state.playbackSpeedOptions.showPopover ? true : null}
+            tooltip={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
+            onClick={this.handleMenuToggleClick.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}>
+          </PlaybackSpeedButton>
+
+          {this.props.controller.state.playbackSpeedOptions.showPopover &&
+            <Popover
+              autoFocus={this.props.controller.state.playbackSpeedOptions.autoFocus}
+              closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
+              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}>
+              <PlaybackSpeedPanel
+                isPopover
+                language={this.props.language}
+                localizableStrings={this.props.localizableStrings}
+                controller={this.props.controller}
+                skinConfig={this.props.skinConfig}
+                onClose={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}/>
+            </Popover>
+          }
+
+        </div>
+      ),
 
       share: (
         <ControlButton
@@ -740,6 +765,13 @@ var ControlBar = createReactClass({
 
       // filter out disabled buttons
       if (defaultItems[k].location === 'none') {
+        continue;
+      }
+
+      if (
+        this.props.controller.state.isOoyalaAds &&
+        defaultItems[k].name === CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED
+      ) {
         continue;
       }
 

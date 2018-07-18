@@ -1,6 +1,6 @@
-var ControlButton = require('./controlButton');
-var holdOnClick = require('./higher-order/holdOnClick');
+const ControlButton = require('./controlButton');
+const holdOnClick = require('./higher-order/holdOnClick');
 
-var HoldControlButton = holdOnClick(ControlButton);
+const HoldControlButton = holdOnClick(ControlButton);
 
 module.exports = HoldControlButton;

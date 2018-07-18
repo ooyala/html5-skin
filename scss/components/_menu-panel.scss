@@ -1,0 +1,139 @@
+
+// Base MenuPanel styles, common for both popover and screen mode
+.oo-menu-panel {
+
+  .oo-menu-panel-content .scrollarea-content:focus {
+    outline: none;
+  }
+
+  .oo-menu-panel-list {
+    list-style: none;
+    margin: 0;
+  }
+
+  .oo-menu-btn {
+    color: $white;
+    display: block;
+    margin: 0 auto;
+    font-family: $font-family-roboto;
+    border: none;
+    outline: none;
+    opacity: 1;
+    white-space: nowrap;
+    background-color: transparent;
+    @include vendor-prefixes(transition, opacity 0.3s ease);
+  }
+
+  .oo-menu-btn:not(.oo-selected):hover {
+    opacity: 0.6;
+  }
+
+  .oo-menu-btn:focus {
+    @include highlight-tab();
+  }
+
+  .oo-menu-btn:hover:active {
+    @include remove-highlight-tab();
+  }
+
+  .oo-menu-btn.oo-selected {
+    color: $blue-light;
+    font-weight: bold;
+  }
+}
+
+// MenuPanel styles for popover mode
+.oo-menu-panel.oo-menu-popover {
+  margin: 9px 0;
+
+  .oo-menu-panel-content {
+    max-height: 150px;
+    width: 80px;
+    text-align: center;
+  }
+
+  .oo-menu-panel-list {
+    padding: 2px 0;
+  }
+
+  .oo-menu-panel-title {
+    color: $white;
+    margin-bottom: 6px;
+    padding: 0 6px;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .oo-menu-panel-item {
+    display: block;
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 0;
+  }
+
+  .oo-menu-panel-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .oo-menu-btn {
+    padding: 4px;
+    line-height: 1;
+    font-size: 0.6em;
+  }
+}
+
+// MenuPanel styles for screen mode
+.oo-menu-panel.oo-content-panel {
+  @include flex(1);
+  position: relative;
+  text-align: left;
+
+  .oo-menu-panel-content {
+    @include expand;
+    text-align: left;
+  }
+
+  .oo-menu-panel-list {
+    padding: 10px 0;
+  }
+
+  .oo-menu-panel-item {
+    display: block;
+    padding: 2px;
+  }
+
+  .oo-menu-panel-item.oo-selected {
+    background-color: rgba(36, 40, 42, 0.6);
+  }
+
+  .oo-menu-panel-item:not(.oo-selected):hover {
+    background-color: rgba(36, 40, 42, 0.3);
+    @include vendor-prefixes(transition, background-color 0.3s ease);
+  }
+
+  .oo-menu-btn {
+    position: relative;
+    width: 100%;
+    padding: 0 4px;
+    padding-left: 2em;
+    line-height: 2.5em;
+    font-size: 1em;
+    text-align: left;
+  }
+
+  .oo-menu-btn .oo-icon {
+    @include flex-center-children(row);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2em;
+    height: 100%;
+    font-size: 1.1em;
+  }
+
+  .oo-menu-btn.oo-selected {
+    color: $blue-light;
+    font-weight: bold;
+  }
+}

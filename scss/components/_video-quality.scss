@@ -12,6 +12,10 @@
     display: inline-block;
   }
 
+  .scrollarea-content:focus {
+    outline: none;
+  }
+
   //hide horizontal scrollbars
   .scrollbar-container.horizontal {
     display:none;
@@ -135,6 +139,10 @@
 .oo-popover {
   .oo-quality-popover {
     margin: 9px 0;
+  }
+
+  .scrollarea-content:focus {
+    outline: none;
   }
 
   .oo-quality-screen-content {

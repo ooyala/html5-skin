@@ -549,9 +549,9 @@ var Utils = {
    */
   getLocalizedString: function(language, stringId, localizedStrings) {
     try {
-      return localizedStrings[language][stringId];
+      return localizedStrings[language][stringId] || stringId;
     } catch (e) {
-      return '';
+      return stringId;
     }
   },
 

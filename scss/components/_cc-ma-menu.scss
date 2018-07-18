@@ -33,6 +33,10 @@ $tab-border-width: 2px;
     }
   }
 
+  .scrollarea-content:focus {
+    outline: none;
+  }
+
   .oo-cc-ma-menu__header {
     @include flexbox();
     @include align-items(center);

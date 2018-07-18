@@ -9,6 +9,7 @@ var OnOffSwitch = require('./components/closed-caption/onOffSwitch');
 var ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel');
 var DiscoveryPanel = require('./components/discoveryPanel');
 var VideoQualityPanel = require('./components/videoQualityPanel');
+var PlaybackSpeedPanel = require('./components/playbackSpeedPanel');
 var ClosedCaptionMultiAudioMenu = require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
 var SharePanel = require('./components/sharePanel');
 var MoreOptionsPanel = require('./components/moreOptionsPanel');
@@ -468,7 +469,10 @@ var Skin = createReactClass({
         case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
           screen = (
             <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN}>
-              <MoreOptionsPanel {...this.props} fullscreen={this.state.fullscreen} />
+              <MoreOptionsPanel
+                {...this.props}
+                responsiveView={this.state.responsiveId}
+                fullscreen={this.state.fullscreen} />
             </ContentScreen>
           );
           break;
@@ -477,15 +481,14 @@ var Skin = createReactClass({
             <ContentScreen
               {...this.props}
               screen={CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN}
-              screenClassName="oo-content-screen oo-content-screen-closed-captions"
+              screenClassName="oo-content-screen-closed-captions"
               titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
               autoFocus={this.state.closedCaptionOptions.autoFocus}
               closedCaptionOptions={this.props.closedCaptionOptions}
               element={
                 <OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_CLOSED_CAPTIONS} />
               }
-              icon="cc"
-            >
+              icon="cc">
               <ClosedCaptionPanel
                 {...this.props}
                 closedCaptionOptions={this.props.closedCaptionOptions}
@@ -514,6 +517,24 @@ var Skin = createReactClass({
             </ContentScreen>
           );
           break;
+          case CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN:
+            screen = (
+              <ContentScreen
+                {...this.props}
+                screenClassName="oo-menu-content-screen"
+                screen={CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN}
+                titleText={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
+                autoFocus={this.state.playbackSpeedOptions.autoFocus} >
+                <PlaybackSpeedPanel
+                  language={this.props.language}
+                  localizableStrings={this.props.localizableStrings}
+                  controller={this.props.controller}
+                  skinConfig={this.props.skinConfig}
+                  fullscreen={this.state.fullscreen}
+                  responsiveView={this.state.responsiveId} />
+              </ContentScreen>
+            );
+            break;
         case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
           screen = (
             <ContentScreen
@@ -521,10 +542,9 @@ var Skin = createReactClass({
               cssClass="oo-close-button oo-close-button--ma"
               dataItemsPerPage={{ xs: 1, sm: 4, md: 8, lg: 8 }}
               screen={CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN}
-              screenClassName="oo-content-screen oo-cc-ma-container"
+              screenClassName="oo-cc-ma-container"
               autoFocus={this.state.multiAudioOptions.autoFocus}
-              icon="cc"
-            >
+              icon="cc">
               <ClosedCaptionMultiAudioMenu {...this.props} />
             </ContentScreen>
           );

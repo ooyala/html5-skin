@@ -159,6 +159,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         requestPreviousTimestamp: 0
       },
 
+      playbackSpeedOptions: {
+        currentSpeed: CONSTANTS.PLAYBACK_SPEED.DEFAULT_VALUE,
+        showPopover: false,
+        autoFocus: false,
+      },
+
       moreOptionsItems: null,
 
       isMobile: false,
@@ -289,6 +295,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         );
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, 'customerUi', _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.MUTE_STATE_CHANGED, 'customerUi', _.bind(this.onMuteStateChanged, this));
+        this.mb.subscribe(OO.EVENTS.PLAYBACK_SPEED_CHANGED, 'customerUi', _.bind(this.onPlaybackSpeedChanged, this));
         this.mb.subscribe(
           OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS,
           'customerUi',
@@ -713,6 +720,19 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       if (!muted) {
         this.state.volumeState.mutingForAutoplay = false;
       }
+      this.renderSkin();
+    },
+
+    /**
+     * Handles the PLAYBACK_SPEED_CHANGED message bus event.
+     * @private
+     * @param {String} eventName The name of the message bus event
+     * @param {String} videoId The id of the video whose playback speed change
+     * @param {Number} playbackSpeed A number that represents the new playback rate
+     */
+    onPlaybackSpeedChanged: function(eventName, videoId, playbackSpeed) {
+      playbackSpeed = Utils.ensureNumber(playbackSpeed, 1);
+      this.state.playbackSpeedOptions.currentSpeed = playbackSpeed;
       this.renderSkin();
     },
 
@@ -1703,19 +1723,15 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     /**
      * @description the function closes popovers (closedCaptionPopover, videoQualityPopover, multiAudioPopover);
      * if the parameter specifies the name of the popover, then its state does not change
-     * @param {string} popoverName - the name of the popover that does not need to be closed
+     * @param {string} popoverOptionsName - the name of the popover that does not need to be closed
      * @public
      */
-    closeOtherPopovers: function(popoverName) {
-      var popoversNameList = [
-        CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS,
-        CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY,
-        CONSTANTS.MENU_OPTIONS.MULTI_AUDIO
-      ];
-      for (var index = 0; index < popoversNameList.length; index++) {
-        var closedPopoverName = popoversNameList[index];
-        if (closedPopoverName !== popoverName) {
-          this.closePopover(closedPopoverName);
+    closeOtherPopovers: function(popoverOptionsName) {
+      for (var menuName in CONSTANTS.MENU_OPTIONS) {
+        var currentOptionsName = CONSTANTS.MENU_OPTIONS[menuName];
+
+        if (currentOptionsName !== popoverOptionsName) {
+          this.closePopover(currentOptionsName);
         }
       }
     },
@@ -1898,6 +1914,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.PLAYBACK_SPEED_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CHECK_VR_DIRECTION, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.TOUCH_MOVE, 'customerUi');
@@ -2174,6 +2191,15 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      */
     requestNextVideo: function() {
       this.mb.publish(OO.EVENTS.REQUEST_NEXT_VIDEO);
+    },
+
+    /**
+     * Requests that the player set its playback speed to the specified value.
+     * @private
+     * @param {Number} playbackSpeed A number representing the rate by which playback should advance
+     */
+    setPlaybackSpeed: function(playbackSpeed) {
+      this.mb.publish(OO.EVENTS.SET_PLAYBACK_SPEED, playbackSpeed);
     },
 
     /**

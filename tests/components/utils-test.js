@@ -488,7 +488,7 @@ describe('Utils', function() {
     expect(localizedString).toBe(text);
 
     localizedString = Utils.getLocalizedString(null, null, null);
-    expect(localizedString).toBe('');
+    expect(localizedString).toBe(null);
   });
 
   it('tests getStartCountdown', function() {
