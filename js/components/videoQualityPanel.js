@@ -4,7 +4,6 @@
  * @module VideoQualityPanel
  */
 var React = require('react'),
-    ScrollArea = require('react-scrollbar/dist/no-css').default,
     ClassNames = require('classnames'),
     AccessibleMenu = require('../components/higher-order/accessibleMenu'),
     AccessibleButton = require('../components/accessibleButton'),
@@ -12,6 +11,7 @@ var React = require('react'),
     Utils = require('../components/utils'),
     MACROS = require('../constants/macros'),
     CONSTANTS = require('../constants/constants');
+var CustomScrollArea = require('./customScrollArea');
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 
@@ -251,13 +251,12 @@ var VideoQualityPanel = createReactClass({
 
     return (
       <div className={qualityScreenClass}>
-        <ScrollArea
+        <CustomScrollArea
           className={screenContentClass}
           speed={this.props.popover ? 0.6 : 1}
-          horizontal={!this.props.popover}
-        >
+          horizontal={!this.props.popover}>
           <ul role="menu">{bitrateButtons}</ul>
-        </ScrollArea>
+        </CustomScrollArea>
       </div>
     );
   }

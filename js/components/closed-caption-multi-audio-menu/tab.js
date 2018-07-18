@@ -1,5 +1,5 @@
 var React = require('react');
-var ScrollArea = require('react-scrollbar/dist/no-css').default;
+var CustomScrollArea = require('../customScrollArea');
 var Icon = require('../icon');
 var AccessibleButton = require('../accessibleButton');
 var AccessibleMenu = require('../higher-order/accessibleMenu');
@@ -19,7 +19,7 @@ var Tab = createReactClass({
     return (
       <div className={classnames('oo-cc-ma-menu__coll', this.props.tabClassName)}>
         <div className="oo-cc-ma-menu__header">{this.props.header}</div>
-        <ScrollArea
+        <CustomScrollArea
           className="oo-cc-ma-menu__scrollarea"
           speed={1}
           horizontal={false}
@@ -59,7 +59,7 @@ var Tab = createReactClass({
               );
             }, this)}
           </ul>
-        </ScrollArea>
+        </CustomScrollArea>
       </div>
     );
   }
