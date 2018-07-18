@@ -1,10 +1,8 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-
 const CONSTANTS = require('../../constants/constants');
 
 const withAutoHide = function(ComposedComponent) {
-
   return class extends React.Component {
     constructor(props) {
       super(props);
@@ -12,16 +10,12 @@ const withAutoHide = function(ComposedComponent) {
       this.handleMouseOver = this.handleMouseOver.bind(this);
       this.hideControlBar = this.hideControlBar.bind(this);
       this.showControlBar = this.showControlBar.bind(this);
-
       this.handleKeyDown = this.handleKeyDown.bind(this);
       this.startHideControlBarTimer = this.startHideControlBarTimer.bind(this);
       this.cancelHideControlBarTimer = this.cancelHideControlBarTimer.bind(this);
-
       this.handleMouseOut = this.handleMouseOut.bind(this);
       this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
       this.handleTouchEnd = this.handleTouchEnd.bind(this);
-
-      this.composedComponentRef = React.createRef();
     }
 
     componentDidMount() {
@@ -58,8 +52,9 @@ const withAutoHide = function(ComposedComponent) {
     }
 
     /**
-     * call handleTouchEnd when touchend was called on selectedScreen
-     * @param {Event} event - event object
+     * Handles the touchEnd event on the Auto Hide Screen.
+     * @private
+     * @param {Event} event The touchEnd event object
      */
     handleTouchEnd(event) {
       if (!this.props.controller.state.controlBarVisible) {
@@ -68,6 +63,11 @@ const withAutoHide = function(ComposedComponent) {
       }
     }
 
+    /**
+     * Handles the mouseMove and touchMove events.
+     * @private
+     * @param event The mouseMove or touchMove event object
+     */
     handlePlayerMouseMove(e) {
       if (!this.props.controller.state.isMobile && this.props.fullscreen) {
         this.showControlBar();
@@ -75,10 +75,19 @@ const withAutoHide = function(ComposedComponent) {
       }
     }
 
+    /**
+     * Handles when the player resizes.
+     * @private
+     */
     handleResize() {
       this.startHideControlBarTimer();
     }
 
+    /**
+     * Handles when a keyboard key is pressed.
+     * @private
+     * @param event The keyDown event object
+     */
     handleKeyDown(event) {
       // Show control bar when any of the following keys are pressed:
       // - Tab: Focus on next control
@@ -120,6 +129,12 @@ const withAutoHide = function(ComposedComponent) {
       this.showControlBar();
     }
 
+    /**
+     * Shows the control bar if not mobile or if mobile and was triggered
+     * by a touchend event.
+     * @public
+     * @param event The event object from the event that triggered this
+     */
     showControlBar(event) {
       if (!this.props.controller.state.isMobile || (event && event.type === 'touchend')) {
         this.props.controller.showControlBar();
@@ -127,17 +142,29 @@ const withAutoHide = function(ComposedComponent) {
       }
     }
 
-    hideControlBar(event) {
+    /**
+     * Hides the control bar if the auto hide configuration is enabled.
+     * @public
+     */
+    hideControlBar() {
       if (this.props.controlBarAutoHide === true) {
         this.props.controller.hideControlBar();
         ReactDOM.findDOMNode(this.refs.AutoHideScreen).style.cursor = 'none';
       }
     }
 
+    /**
+     * Starts the timer to hide the control bar.
+     * @public
+     */
     startHideControlBarTimer() {
       this.props.controller.startHideControlBarTimer();
     }
 
+    /**
+     * Cancels the timer that hides the control bar.
+     * @public
+     */
     cancelHideControlBarTimer() {
       this.props.controller.cancelTimer();
     }
@@ -157,7 +184,6 @@ const withAutoHide = function(ComposedComponent) {
             showControlBar={this.showControlBar}
             startHideControlBarTimer={this.startHideControlBarTimer}
             cancelHideControlBarTimer={this.cancelHideControlBarTimer}
-            ref={this.composedComponentRef}
           />
         </div>
       )

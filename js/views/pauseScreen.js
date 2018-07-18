@@ -17,11 +17,9 @@ var React = require('react'),
     AnimateMixin = require('../mixins/animateMixin'),
     ViewControlsVr = require('../components/viewControlsVr');
 var createReactClass = require('create-react-class');
-
 const withAutoHide = require('./higher-order/withAutoHide.js');
 
 class PauseScreen extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -36,11 +34,9 @@ class PauseScreen extends React.Component {
     this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
     this.handleVrMouseUp = this.handleVrMouseUp.bind(this);
     this.handleVrTouchEnd = this.handleVrTouchEnd.bind(this);
-
     this.handlePlayerMouseDown = this.handlePlayerMouseDown.bind(this);
     this.handlePlayerMouseUp = this.handlePlayerMouseUp.bind(this);
     this.handleTouchEnd = this.handleTouchEnd.bind(this);
-
     this.startAnimation = this.startAnimation.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
@@ -71,12 +67,20 @@ class PauseScreen extends React.Component {
     }
   }
 
+  /**
+   * Sets the animate state to true.
+   * @private
+   */
   startAnimation() {
     this.setState({
       animate: true
     });
   }
 
+  /**
+   * Handles when the player changes size.
+   * @private
+   */
   handleResize() {
     if (ReactDOM.findDOMNode(this.refs.description)) {
       this.setState({

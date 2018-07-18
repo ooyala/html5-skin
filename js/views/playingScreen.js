@@ -21,7 +21,6 @@ var React = require('react'),
 const withAutoHide = require('./higher-order/withAutoHide.js');
 
 class PlayingScreen extends React.Component {
-
   constructor(props) {
     super(props);
     this.isMobile = this.props.controller.state.isMobile;
