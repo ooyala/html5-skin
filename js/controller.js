@@ -2505,16 +2505,22 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     showControlBar: function() {
+      var oldState = this.state.controlBarVisible;
       this.state.controlBarVisible = true;
-      this.renderSkin();
+      if (this.state.controlBarVisible !== oldState) {
+        this.renderSkin();
+      }
     },
 
     hideControlBar: function() {
+      var oldState = this.state.controlBarVisible;
       this.state.controlBarVisible = false;
       if (Utils.isAndroid()) {
         this.hideVolumeSliderBar();
       }
-      this.renderSkin();
+      if (this.state.controlBarVisible !== oldState) {
+        this.renderSkin();
+      }
     },
 
     cancelTimer: function() {

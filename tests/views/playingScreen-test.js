@@ -223,9 +223,8 @@ describe('PlayingScreen', function() {
     var wrapper = Enzyme.mount(
       <PlayingScreen
         controller = {mockController}
-        skinConfig={mockSkinConfig}
+        skinConfig = {mockSkinConfig}
         fullscreen = {true}
-        controlBarAutoHide={true}
         closedCaptionOptions = {closedCaptionOptions}
         handleVrPlayerMouseUp = {handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -257,7 +256,6 @@ describe('PlayingScreen', function() {
         fullscreen={true}
         componentWidth={90}
         componentHeight={40}
-        controlBarAutoHide={true}
         closedCaptionOptions={closedCaptionOptions}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -360,7 +358,6 @@ describe('PlayingScreen', function() {
         controller = {mockController}
         skinConfig={mockSkinConfig}
         fullscreen = {true}
-        controlBarAutoHide={true}
         componentWidth={400}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -372,7 +369,6 @@ describe('PlayingScreen', function() {
         controller = {mockController}
         skinConfig={mockSkinConfig}
         fullscreen = {true}
-        controlBarAutoHide={true}
         componentWidth={800}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}

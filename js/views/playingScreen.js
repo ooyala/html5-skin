@@ -179,7 +179,7 @@ class PlayingScreen extends React.Component {
   }
 
   /**
-   * Handles the mouseover event.	
+   * Handles the mouseover event.
    * @private
    * @param {Event} event The mouseover event object
    */

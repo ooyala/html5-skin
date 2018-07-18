@@ -30,7 +30,7 @@ describe('withAutoHide', function() {
     return Enzyme.mount(
       <TestScreenWithAutoHide
         controller={mockController}
-        controlBarAutoHide={true}
+        skinConfig={mockSkinConfig}
         fullscreen={fullscreen}
       />
     );;

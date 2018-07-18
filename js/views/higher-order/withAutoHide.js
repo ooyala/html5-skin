@@ -2,6 +2,11 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const CONSTANTS = require('../../constants/constants');
 
+/**
+ * Wraps a component within a div that handles auto-hide functionality based on mouse, touch, or keyboard usage.
+ * @param ComposedComponent The component to wrap and add auto-hide functionality to
+ * @returns {class} The enhanced component with auto-hide functionality
+ */
 const withAutoHide = function(ComposedComponent) {
   return class extends React.Component {
     constructor(props) {
@@ -16,6 +21,8 @@ const withAutoHide = function(ComposedComponent) {
       this.handleMouseOut = this.handleMouseOut.bind(this);
       this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
       this.handleTouchEnd = this.handleTouchEnd.bind(this);
+
+      this.autoHideRef = React.createRef();
     }
 
     componentDidMount() {
@@ -138,7 +145,7 @@ const withAutoHide = function(ComposedComponent) {
     showControlBar(event) {
       if (!this.props.controller.state.isMobile || (event && event.type === 'touchend')) {
         this.props.controller.showControlBar();
-        ReactDOM.findDOMNode(this.refs.AutoHideScreen).style.cursor = 'auto';
+        this.autoHideRef.current.style.cursor = 'auto';
       }
     }
 
@@ -147,9 +154,9 @@ const withAutoHide = function(ComposedComponent) {
      * @public
      */
     hideControlBar() {
-      if (this.props.controlBarAutoHide === true) {
+      if (this.props.skinConfig.controlBar.autoHide === true) {
         this.props.controller.hideControlBar();
-        ReactDOM.findDOMNode(this.refs.AutoHideScreen).style.cursor = 'none';
+        this.autoHideRef.current.style.cursor = 'none';
       }
     }
 
@@ -172,7 +179,7 @@ const withAutoHide = function(ComposedComponent) {
     render() {
       return (
         <div
-          ref="AutoHideScreen"
+          ref={this.autoHideRef}
           onMouseOver={this.handleMouseOver}
           onMouseOut={this.handleMouseOut}
           onKeyDown={this.handleKeyDown}
