@@ -144,9 +144,8 @@ var Skin = createReactClass({
     if (this.props.controller && this.props.controller.videoVr) {
       var isVrMouseMove = this.state.isVrMouseMove;
       var isTouchEnd = typeof event === 'object' && event.type === 'touchend';
-      var endMouseMove = Utils.isIos() || isTouchEnd;
 
-      if (endMouseMove) {
+      if (isTouchEnd) {
         isVrMouseMove = false; // for the opportunity to stop video on iPhone by touching on the screen
       }
       this.setState({
