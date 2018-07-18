@@ -73,6 +73,26 @@ class PlayingScreen extends React.Component {
   }
 
   /**
+   * @description need to show special information labels (or/and icons).
+   * The labels should be animated.
+   * Need to remove the labels (icons) after animation
+   * Animation should be only one time
+   * @param {string} id - unique identificator of the label(icon)
+   * @param {string} stateName - name for a state which indicates about necessary to show the label(icon)
+   */
+  handleVrAnimationEnd(id, stateName) {
+    var vrContainer = document.getElementById(id);
+    if (vrContainer) {
+      var listener = function() {
+        var newState = {};
+        newState[stateName] = true;
+        this.setState(newState);
+      };
+      vrContainer.addEventListener('animationend', listener.bind(this), false);
+    }
+  }
+
+  /**
    * The keydown event is not fired when the scrubber bar is first focused with
    * a tab unless playback was activated with a click. As a workaround, we make sure
    * that the controls are shown when a focusable element is focused.
@@ -96,30 +116,6 @@ class PlayingScreen extends React.Component {
       this.props.controller.state.accessibilityControlsEnabled = true;
       this.props.controller.state.isClickedOutside = false;
     }
-  }
-
-  /**
-   * @description need to show special information labels (or/and icons).
-   * The labels should be animated.
-   * Need to remove the labels (icons) after animation
-   * Animation should be only one time
-   * @param {string} id - unique identificator of the label(icon)
-   * @param {string} stateName - name for a state which indicates about necessary to show the label(icon)
-   */
-  handleVrAnimationEnd(id, stateName) {
-    var vrContainer = document.getElementById(id);
-    if (vrContainer) {
-      var listener = function() {
-        var newState = {};
-        newState[stateName] = true;
-        this.setState(newState);
-      };
-      vrContainer.addEventListener('animationend', listener.bind(this), false);
-    }
-  }
-
-  handleMouseOver(event) {
-    this.storeMousePosition(event);
   }
 
   /**
@@ -180,6 +176,15 @@ class PlayingScreen extends React.Component {
       this.props.controller.state.isClickedOutside = false;
     }
     // for mobile, touch is handled in handleTouchEnd
+  }
+
+  /**
+   * Handles the mouseover event.	
+   * @private
+   * @param {Event} event The mouseover event object
+   */
+  handleMouseOver(event) {
+    this.storeMousePosition(event);
   }
 
   /**

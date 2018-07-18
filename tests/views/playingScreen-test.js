@@ -8,7 +8,6 @@ jest
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Enzyme = require('enzyme');
-//var PlayingScreen = require('../../js/views/playingScreen');
 var UnmuteIcon = require('../../js/components/unmuteIcon');
 var skinConfig = require('../../config/skin.json');
 var SkipControls = require('../../js/components/skipControls');
