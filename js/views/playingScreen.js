@@ -245,7 +245,9 @@ class PlayingScreen extends React.Component {
     if (
       Utils.isMouseInsideRect(this.mousePosition, this.skipControlsClientRect)
     ) {
-      this.props.cancelHideControlBarTimer();
+      if (typeof this.props.cancelHideControlBarTimer === 'function') {
+        this.props.cancelHideControlBarTimer();
+      }
     }
     this.hasCheckedMouseOverControls = true;
   }
@@ -259,7 +261,7 @@ class PlayingScreen extends React.Component {
   }
 
   handlePlayerClicked(event) {
-    if (!this.props.isVrMouseMove) {
+    if (!this.props.isVrMouseMove && !this.isMobile) {
       this.props.controller.togglePlayPause(event);
     }
     this.props.handleVrPlayerClick();

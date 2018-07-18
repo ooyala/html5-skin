@@ -277,12 +277,49 @@ describe('PlayingScreen', function() {
     expect(clicked).toBe(false);
   });
 
-  it('creates a PlayingScreen and check play&pause', function() {
+  it('creates a PlayingScreen and check play&pause on mobile with click', function() {
     var clicked = false;
     var isMouseMove = true;
 
     mockController.state.videoVr = true;
     mockController.state.isMobile = true;
+    mockController.state.isVrMouseDown = false;
+    mockController.state.isMouseMove = false;
+    mockController.togglePlayPause = function() {
+      clicked = !clicked;
+    };
+    mockController.startHideControlBarTimer = function() {};
+
+    var handleVrPlayerClick = function() {
+      isMouseMove = false;
+    };
+
+    // Render pause screen into DOM
+    var wrapper = Enzyme.mount(
+      <PlayingScreen
+        controller = {mockController}
+        skinConfig={mockSkinConfig}
+        closedCaptionOptions = {closedCaptionOptions}
+        handleVrPlayerClick={handleVrPlayerClick}
+        handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+        playerState={CONSTANTS.STATE.PLAYING}
+      />
+    );
+    var screen = wrapper.find('.oo-state-screen-selectable');
+
+    screen.simulate('click');
+    expect(clicked).toBe(false);
+    expect(isMouseMove).toBe(false);
+
+    screen.simulate('touchEnd');
+    expect(clicked).toBe(true);
+  });
+
+  it('creates a PlayingScreen and check play&pause with click', function() {
+    var clicked = false;
+    var isMouseMove = true;
+
+    mockController.state.videoVr = true;
     mockController.state.isVrMouseDown = false;
     mockController.state.isMouseMove = false;
     mockController.togglePlayPause = function() {

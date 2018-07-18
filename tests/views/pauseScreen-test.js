@@ -90,6 +90,40 @@ describe('PauseScreen', function() {
     var pauseIcon = wrapper.find('.oo-action-icon-pause');
     pauseIcon.simulate('click');
     expect(clicked).toBe(true);
+
+    clicked = false;
+    wrapper.find('.oo-state-screen-selectable').simulate('click');
+    expect(clicked).toBe(true);
+  });
+
+  it('toggles play pause on touch end instead of click on mobile', function() {
+    var clicked = false;
+
+    mockController.state.isMobile = true;
+    mockController.togglePlayPause = function() {
+      clicked = true;
+    };
+
+    var handleVrPlayerClick = function() {};
+    // Render pause screen into DOM
+    var wrapper = Enzyme.mount(
+      <PauseScreen
+        skinConfig={mockSkinConfig}
+        controller={mockController}
+        contentTree={mockContentTree}
+        handleVrPlayerClick={handleVrPlayerClick}
+        closedCaptionOptions={{cueText: 'sample text'}}
+        playerState={CONSTANTS.STATE.PAUSE}
+      />
+    );
+
+    var stateScreen = wrapper.find('.oo-state-screen-selectable');
+
+    stateScreen.simulate('click');
+    expect(clicked).toBe(false);
+
+    stateScreen.simulate('touchEnd');
+    expect(clicked).toBe(true);
   });
 
   it('does show the fade underlay when there is a title', function() {

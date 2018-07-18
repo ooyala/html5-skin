@@ -17,14 +17,16 @@ const withAutoHide = function(ComposedComponent) {
       this.startHideControlBarTimer = this.startHideControlBarTimer.bind(this);
       this.cancelHideControlBarTimer = this.cancelHideControlBarTimer.bind(this);
 
+      this.handleMouseOut = this.handleMouseOut.bind(this);
       this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
+      this.handleTouchEnd = this.handleTouchEnd.bind(this);
 
       this.composedComponentRef = React.createRef();
     }
 
     componentDidMount() {
-      //document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
-      //document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
+      document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
+      document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
       // for mobile or desktop fullscreen, hide control bar after 3 seconds
       if (this.props.controller.state.isMobile || this.props.fullscreen || this.props.controller.state.browserSupportsTouch) {
         this.startHideControlBarTimer();
@@ -32,8 +34,8 @@ const withAutoHide = function(ComposedComponent) {
     }
 
     componentWillUnmount() {
-      //document.removeEventListener('mousemove', this.handlePlayerMouseMove);
-      //document.removeEventListener('touchmove', this.handlePlayerMouseMove);
+      document.removeEventListener('mousemove', this.handlePlayerMouseMove);
+      document.removeEventListener('touchmove', this.handlePlayerMouseMove);
       this.cancelHideControlBarTimer();
     }
 
@@ -60,7 +62,6 @@ const withAutoHide = function(ComposedComponent) {
      * @param {Event} event - event object
      */
     handleTouchEnd(event) {
-      event.preventDefault(); // to prevent mobile from propagating click to discovery shown on pause
       if (!this.props.controller.state.controlBarVisible) {
         this.showControlBar(event);
         this.startHideControlBarTimer();
@@ -100,6 +101,17 @@ const withAutoHide = function(ComposedComponent) {
     }
 
     /**
+     * Handles the mouseout event.
+     * @private
+     * @param event The mouseout event object
+     */
+    handleMouseOut(event) {
+      if (!this.props.controller.state.isMobile) {
+        this.hideControlBar();
+      }
+    }
+
+    /**
      * Handles the mouseover event.
      * @private
      * @param {Event} event The mouseover event object
@@ -116,7 +128,7 @@ const withAutoHide = function(ComposedComponent) {
     }
 
     hideControlBar(event) {
-      if (this.props.controlBarAutoHide === true && !(this.isMobile && event)) {
+      if (this.props.controlBarAutoHide === true) {
         this.props.controller.hideControlBar();
         ReactDOM.findDOMNode(this.refs.AutoHideScreen).style.cursor = 'none';
       }
@@ -135,10 +147,9 @@ const withAutoHide = function(ComposedComponent) {
         <div
           ref="AutoHideScreen"
           onMouseOver={this.handleMouseOver}
-          onMouseOut={this.hideControlBar}
+          onMouseOut={this.handleMouseOut}
           onKeyDown={this.handleKeyDown}
-          onMouseMove={this.handlePlayerMouseMove}
-          onTouchMove={this.handlePlayerMouseMove}
+          onTouchEnd={this.handleTouchEnd}
         >
           <ComposedComponent
             {...this.props}

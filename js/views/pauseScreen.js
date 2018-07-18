@@ -92,7 +92,7 @@ class PauseScreen extends React.Component {
     if (this.props.controller.videoVr) {
       event.preventDefault();
     }
-    if (!this.props.isVrMouseMove) {
+    if (!this.props.isVrMouseMove && !this.props.controller.state.isMobile) {
       this.props.controller.togglePlayPause(event);
     }
     this.props.controller.state.accessibilityControlsEnabled = true;
@@ -105,9 +105,17 @@ class PauseScreen extends React.Component {
    * @param {Event} e - event object
    */
   handleTouchEnd(e) {
-    if (this.props.controller.videoVr) {
-      e.preventDefault();
-      if (!this.props.isVrMouseMove) {
+    if (this.props.controller.state.controlBarVisible) {
+      var shouldToggle = false;
+      if (this.props.controller.videoVr) {
+        e.preventDefault();
+        if (!this.props.isVrMouseMove) {
+          shouldToggle = true;
+        }
+      } else {
+        shouldToggle = true;
+      }
+      if (shouldToggle) {
         this.props.controller.togglePlayPause(e);
       }
     }
