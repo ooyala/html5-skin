@@ -59,6 +59,7 @@ const withAutoHide = function(ComposedComponent) {
     handleTouchEnd(event) {
       if (!this.props.controller.state.controlBarVisible) {
         this.showControlBar(event);
+        //TODO: Address an existing issue where we don't cancel the timer upon touching control buttons
         this.startHideControlBarTimer();
       }
     }
@@ -66,9 +67,8 @@ const withAutoHide = function(ComposedComponent) {
     /**
      * Handles the mouseMove and touchMove events.
      * @private
-     * @param event The mouseMove or touchMove event object
      */
-    handlePlayerMouseMove(e) {
+    handlePlayerMouseMove() {
       if (!this.props.controller.state.isMobile && this.props.fullscreen) {
         this.showControlBar();
         this.startHideControlBarTimer();

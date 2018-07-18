@@ -822,6 +822,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     onInitialPlay: function() {
       this.state.isInitialPlay = true;
       this.state.initialPlayHasOccurred = true;
+      //TODO: Why do we start a hide-control-bar timer here?
       this.startHideControlBarTimer();
       if (this.videoVr) {
         this.vrMobileOrientationChecked = true;
