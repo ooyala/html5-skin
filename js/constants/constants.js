@@ -164,6 +164,8 @@ var CONSTANTS = {
     SKIP_BACKWARD: 'Rewind '  + MACROS.SECONDS + ' Seconds',
     SKIP_FORWARD: 'Skip ' + MACROS.SECONDS + ' Seconds Forward',
     PLAYBACK_SPEED: MACROS.RATE + 'x Playback Speed',
+    PLAYBACK_SPEED_OPTION: 'Speed',
+    NORMAL_SPEED: 'Normal Speed',
   },
 
   CONTROL_BAR_KEYS: {
