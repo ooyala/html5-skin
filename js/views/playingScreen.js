@@ -391,6 +391,7 @@ class PlayingScreen extends React.Component {
     return (
       <div
         className={className}
+        onTouchStart={this.handleTouchStart}
         onMouseOver={this.handleMouseOver}
       >
         <div
