@@ -75,13 +75,12 @@
   }
 
   .oo-state-screen-info {
+    @include vendor-prefixes (transition, $fade-up-transition);
     pointer-events: none;
     position: absolute;
     width: 100%;
     top: 5%;
     left: 5%;
-
-    transition: 0.2s opacity ease-in-out, 0.3s transform ease-in-out;
 
     &.oo-inactive {
       opacity: 0;

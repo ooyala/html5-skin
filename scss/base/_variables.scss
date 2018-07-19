@@ -189,6 +189,7 @@ $control-bar-gradient: linear-gradient(to bottom, rgba(0,0,0,0) 23%,rgba(0,0,0,0
 //transition - easing
 $medium-transition: transition, opacity .2s ease-in-out, height .3s ease-in-out;
 $unmute-transition: transition, width .5s ease-in-out;
+$fade-up-transition: transition, 0.2s opacity ease-in-out, 0.3s transform ease-in-out;
 
 //watermark
 $watermark-margin: 15px;
