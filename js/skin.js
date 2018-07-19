@@ -503,17 +503,15 @@ var Skin = createReactClass({
           screen = (
             <ContentScreen
               {...this.props}
+              screenClassName="oo-menu-content-screen"
               screen={CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN}
               titleText={CONSTANTS.SKIN_TEXT.VIDEO_QUALITY}
-              autoFocus={this.state.videoQualityOptions.autoFocus}
-              icon="quality"
-            >
+              autoFocus={this.state.videoQualityOptions.autoFocus}>
               <VideoQualityPanel
                 {...this.props}
                 fullscreen={this.state.fullscreen}
                 videoQualityOptions={this.state.videoQualityOptions}
-                responsiveView={this.state.responsiveId}
-              />
+                responsiveView={this.state.responsiveId} />
             </ContentScreen>
           );
           break;

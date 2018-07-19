@@ -48,7 +48,7 @@
 
   .oo-menu-panel-content {
     max-height: 150px;
-    width: 80px;
+    min-width: 80px;
     text-align: center;
   }
 
@@ -104,7 +104,7 @@
   }
 
   .oo-menu-panel-item.oo-selected {
-    background-color: rgba(36, 40, 42, 0.6);
+    background-color: rgba(36, 40, 42, 0.7);
   }
 
   .oo-menu-panel-item:not(.oo-selected):hover {

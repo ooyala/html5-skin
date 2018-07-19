@@ -10,6 +10,7 @@ const MenuPanelItem = ({
   selectedValue,
   itemLabel,
   ariaLabel,
+  buttonClassName,
   focusId,
   accentColor,
   showCheckmark,
@@ -22,7 +23,7 @@ const MenuPanelItem = ({
   const itemClassName = classNames('oo-menu-panel-item', {
     'oo-selected': isSelected
   });
-  const buttonClassName = classNames('oo-menu-btn', {
+  const itemButtonClassName = classNames('oo-menu-btn', buttonClassName, {
     'oo-selected': isSelected
   });
   const buttonStyle = {
@@ -31,11 +32,10 @@ const MenuPanelItem = ({
 
   return (
     <li
-      key={itemValue}
       className={itemClassName}
       role="presentation">
       <AccessibleButton
-        className={buttonClassName}
+        className={itemButtonClassName}
         style={buttonStyle}
         focusId={focusId}
         role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
@@ -49,7 +49,7 @@ const MenuPanelItem = ({
             icon="selected" />
         }
 
-        <span>{itemLabel}</span>
+        <span className="oo-menu-btn-label">{itemLabel}</span>
 
       </AccessibleButton>
     </li>
@@ -61,6 +61,7 @@ MenuPanelItem.propTypes = {
   selectedValue: PropTypes.string.isRequired,
   itemLabel: PropTypes.string.isRequired,
   ariaLabel: PropTypes.string.isRequired,
+  buttonClassName: PropTypes.string,
   focusId: PropTypes.string.isRequired,
   accentColor: PropTypes.string,
   showCheckmark: PropTypes.bool,

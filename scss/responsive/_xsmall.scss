@@ -302,33 +302,6 @@
     }
   }
 
-  //Video Quality
-  .oo-quality-panel {
-    height: $bitrate-horizontal-height - 25px;
-    .oo-quality-screen-content {
-      ul {
-        height: $bitrate-horizontal-height - 30px;
-        li {
-          margin: 0 14px;
-          .oo-quality-btn {
-            padding: 8px 6px;
-            font-size: 0.8em;
-          }
-          .oo-quality-auto-btn {
-            .oo-quality-auto-icon {
-              font-size: 1.4em;
-              padding:4px;
-              margin-bottom: 0;
-            }
-            .oo-quality-auto-label {
-              font-size: 0.8em;
-            }
-          }
-        }
-      }
-    }
-  }
-
   //Control Bar
   .oo-control-bar {
     height: $control-bar-height-small !important;

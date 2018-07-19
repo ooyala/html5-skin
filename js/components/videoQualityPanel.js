@@ -3,81 +3,35 @@
  *
  * @module VideoQualityPanel
  */
-var React = require('react'),
-    ClassNames = require('classnames'),
-    AccessibleMenu = require('../components/higher-order/accessibleMenu'),
-    AccessibleButton = require('../components/accessibleButton'),
-    Icon = require('../components/icon'),
-    Utils = require('../components/utils'),
-    MACROS = require('../constants/macros'),
-    CONSTANTS = require('../constants/constants');
-var CustomScrollArea = require('./customScrollArea');
+var React = require('react');
+var MenuPanel = require('./menuPanel');
+var classNames = require('classnames');
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
+var Utils = require('../components/utils');
+var CONSTANTS = require('../constants/constants');
+var MACROS = require('../constants/macros');
 
 var VideoQualityPanel = createReactClass({
+
+  ref: React.createRef(),
+
   getInitialState: function() {
     return {
-      selected: this.props.videoQualityOptions.selectedBitrate
-        ? this.props.videoQualityOptions.selectedBitrate.id
-        : 'auto',
       wideFormat: false
     };
   },
 
-  handleVideoQualityClick: function(selectedBitrateId, event) {
-    event.preventDefault();
+  onMenuItemClick: function(itemValue) {
     var eventData = {
-      id: selectedBitrateId
+      id: itemValue
     };
     this.props.controller.sendVideoQualityChangeEvent(eventData);
-    this.setState({
-      selected: selectedBitrateId
-    });
-    this.props.closeAction({
-      restoreToggleButtonFocus: true
-    });
   },
 
-  addAutoButton: function(bitrateButtons) {
-    var isSelected = this.state.selected === 'auto';
-    var autoQualityBtn = ClassNames({
-      'oo-quality-auto-btn': true,
-      'oo-selected': isSelected
-    });
-    var selectedBitrateStyle = {
-      color:
-        this.props.skinConfig.general.accentColor && this.state.selected === 'auto'
-          ? this.props.skinConfig.general.accentColor
-          : null
-    };
-
-    // add auto btn to beginning of array
-    bitrateButtons.unshift(
-      <li className="oo-auto-li" key="auto-li" role="presentation">
-        <AccessibleButton
-          className={autoQualityBtn}
-          key="auto"
-          focusId={CONSTANTS.FOCUS_IDS.AUTO_QUALITY}
-          role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
-          ariaLabel={CONSTANTS.ARIA_LABELS.AUTO_QUALITY}
-          ariaChecked={isSelected}
-          onClick={this.handleVideoQualityClick.bind(this, 'auto')}
-        >
-          <span className="oo-quality-auto-icon" style={selectedBitrateStyle}>
-            <Icon {...this.props} icon="auto" />
-          </span>
-          <span className="oo-quality-auto-label" style={selectedBitrateStyle}>
-            {CONSTANTS.SKIN_TEXT.AUTO_QUALITY}
-          </span>
-        </AccessibleButton>
-      </li>
-    );
-  },
-
-  addBitrateButtons: function(bitrateButtons) {
+  getBitrateButtons: function() {
+    var bitrateButtons = [];
     var availableBitrates = this.props.videoQualityOptions.availableBitrates;
-    var isSelected = false;
     var label = '';
     var availableResolution = null;
     var availableBitrate = null;
@@ -119,21 +73,13 @@ var VideoQualityPanel = createReactClass({
 
     // available bitrates
     for (i = 0; i < availableBitrates.length; i++) {
-      isSelected = this.state.selected === availableBitrates[i].id;
 
-      var qualityBtn = ClassNames({
-        'oo-quality-btn': true,
-        'oo-selected': isSelected
-      });
-      var selectedBitrateStyle = {
-        color:
-          this.props.skinConfig.general.accentColor && this.state.selected === availableBitrates[i].id
-            ? this.props.skinConfig.general.accentColor
-            : null
-      };
-
-      if (availableBitrates[i].id === 'auto') {
-        this.addAutoButton(bitrateButtons);
+      if (availableBitrates[i].id === CONSTANTS.QUALITY_SELECTION.AUTO_QUALITY) {
+        bitrateButtons.unshift({
+          value: CONSTANTS.QUALITY_SELECTION.AUTO_QUALITY,
+          label: CONSTANTS.SKIN_TEXT.AUTO_QUALITY,
+          ariaLabel: CONSTANTS.ARIA_LABELS.AUTO_QUALITY
+        });
       } else {
         label = null;
         availableResolution = null;
@@ -207,95 +153,89 @@ var VideoQualityPanel = createReactClass({
         }
 
         if (label) {
-          buttonCount++;
-          bitrateButtons.push(
-            <li key={buttonCount} role="presentation">
-              <AccessibleButton
-                key={buttonCount}
-                className={qualityBtn}
-                style={selectedBitrateStyle}
-                focusId={CONSTANTS.FOCUS_IDS.QUALITY_LEVEL + buttonCount}
-                role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
-                ariaLabel={ariaLabel}
-                ariaChecked={isSelected}
-                onClick={this.handleVideoQualityClick.bind(this, availableBitrates[i].id)}
-              >
-                {label}
-              </AccessibleButton>
-            </li>
-          );
+          bitrateButtons.push({
+            value: availableBitrates[i].id,
+            label: label,
+            ariaLabel: ariaLabel
+          });
         }
       }
     }
+    return bitrateButtons;
   },
 
   render: function() {
-    var bitrateButtons = [];
+    var menuItems = this.getBitrateButtons();
 
-    this.addBitrateButtons(bitrateButtons);
+    var selectedValue = Utils.getPropertyValue(
+      this.props,
+      'videoQualityOptions.selectedBitrate.id',
+      'auto'
+    );
 
-    var qualityScreenClass = ClassNames({
-      'oo-content-panel': !this.props.popover,
-      'oo-quality-panel': !this.props.popover,
-      'oo-quality-popover': this.props.popover,
-      'oo-mobile-fullscreen':
-        !this.props.popover &&
-        this.props.controller.state.isMobile &&
-        (this.props.controller.state.fullscreen || this.props.controller.state.isFullWindow)
+    var title = Utils.getLocalizedString(
+      this.props.language,
+      this.props.isPopover ? CONSTANTS.SKIN_TEXT.VIDEO_QUALITY : '',
+      this.props.localizableStrings
+    );
+
+    var className = classNames({
+      'oo-content-panel oo-quality-panel': !this.props.isPopover,
+      'oo-quality-popover': this.props.isPopover
     });
 
-    var screenContentClass = ClassNames({
+    var contentClassName = classNames({
       'oo-quality-screen-content': true,
       'oo-quality-screen-content-wide': this.state.wideFormat
     });
 
     return (
-      <div className={qualityScreenClass}>
-        <CustomScrollArea
-          className={screenContentClass}
-          speed={this.props.popover ? 0.6 : 1}
-          horizontal={!this.props.popover}>
-          <ul role="menu">{bitrateButtons}</ul>
-        </CustomScrollArea>
-      </div>
+      <MenuPanel
+        ref={this.ref}
+        className={className}
+        contentClassName={contentClassName}
+        buttonClassName="oo-quality-btn"
+        title={title}
+        selectedValue={selectedValue}
+        isPopover={this.props.isPopover}
+        skinConfig={this.props.skinConfig}
+        menuItems={menuItems}
+        onMenuItemClick={this.onMenuItemClick}
+        onClose={this.props.onClose} />
     );
   }
 });
 
-// Extend with AccessibleMenu features
-VideoQualityPanel = AccessibleMenu(VideoQualityPanel);
-
 VideoQualityPanel.propTypes = {
+  isPopover: PropTypes.bool,
+  language: PropTypes.string.isRequired,
+  localizableStrings: PropTypes.object.isRequired,
+  onClose: PropTypes.func,
   videoQualityOptions: PropTypes.shape({
+    selectedBitrate: PropTypes.shape({
+      id: PropTypes.string
+    }).isRequired,
     availableBitrates: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string,
         bitrate: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         label: PropTypes.string
       })
-    )
+    ).isRequired
   }),
-  closeAction: PropTypes.func,
+  skinConfig: PropTypes.shape({
+    general: PropTypes.shape({
+      accentColor: PropTypes.string
+    }),
+    controlBar: PropTypes.shape({
+      qualitySelection: PropTypes.shape({
+        format: PropTypes.string.isRequired
+      })
+    })
+  }),
   controller: PropTypes.shape({
     sendVideoQualityChangeEvent: PropTypes.func
   })
-};
-
-VideoQualityPanel.defaultProps = {
-  popover: false,
-  wideFormat: false,
-  skinConfig: {
-    icons: {
-      quality: { fontStyleClass: 'oo-icon oo-icon-topmenu-quality' }
-    }
-  },
-  videoQualityOptions: {
-    availableBitrates: []
-  },
-  closeAction: function() {},
-  controller: {
-    sendVideoQualityChangeEvent: function(a) {}
-  }
 };
 
 module.exports = VideoQualityPanel;

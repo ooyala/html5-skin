@@ -363,6 +363,7 @@ var CONSTANTS = {
   },
 
   QUALITY_SELECTION: {
+    AUTO_QUALITY: 'auto',
     FORMAT: {
       RESOLUTION: 'resolution',
       BITRATE: 'bitrate'

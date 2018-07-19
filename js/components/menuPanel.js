@@ -36,10 +36,12 @@ class MenuPanel extends React.Component {
    * @return {Component} A MenuPanelItem component whose properties are mapped to the given menu item object
    */
   renderMenuItem(item = {}, selectedValue, accentColor) {
-    const { isPopover, skinConfig } = this.props;
+    const { buttonClassName, isPopover, skinConfig } = this.props;
 
     return (
       <MenuPanelItem
+        key={item.value}
+        buttonClassName={buttonClassName}
         itemValue={item.value}
         selectedValue={selectedValue}
         itemLabel={item.label}
@@ -55,6 +57,7 @@ class MenuPanel extends React.Component {
   render() {
     const {
       className,
+      contentClassName,
       title,
       selectedValue,
       isPopover,
@@ -77,7 +80,7 @@ class MenuPanel extends React.Component {
       <div className={menuClassName}>
 
         <CustomScrollArea
-          className="oo-menu-panel-content"
+          className={classNames('oo-menu-panel-content', contentClassName)}
           speed={isPopover ? CONSTANTS.UI.POPOVER_SCROLL_RATE : 1}>
 
           {title &&
@@ -99,6 +102,8 @@ class MenuPanel extends React.Component {
 
 MenuPanel.propTypes = {
   className: PropTypes.string,
+  contentClassName: PropTypes.string,
+  buttonClassName: PropTypes.string,
   title: PropTypes.string,
   selectedValue: PropTypes.string.isRequired,
   isPopover: PropTypes.bool,

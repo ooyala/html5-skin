@@ -531,8 +531,8 @@ var ControlBar = createReactClass({
               closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}>
               <VideoQualityPanel
                 {...this.props}
-                closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
-                popover={true} />
+                onClose={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
+                isPopover={true} />
             </Popover>
           )}
         </div>
@@ -653,7 +653,7 @@ var ControlBar = createReactClass({
               closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
               closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}>
               <PlaybackSpeedPanel
-                isPopover
+                isPopover={true}
                 language={this.props.language}
                 localizableStrings={this.props.localizableStrings}
                 controller={this.props.controller}
@@ -924,7 +924,7 @@ ControlBar.propTypes = {
   playerState: PropTypes.string,
   responsiveView: PropTypes.string,
   language: PropTypes.string,
-  localizableStrings: PropTypes.string,
+  localizableStrings: PropTypes.object,
   duration: PropTypes.number,
   currentPlayhead: PropTypes.number,
   componentWidth: PropTypes.number,
