@@ -1,0 +1,27 @@
+
+// MenuPanel styles for screen mode
+.oo-menu-panel.oo-content-panel {
+  $icon-size: 2em;
+  @include flex(1);
+  position: relative;
+
+  .oo-menu-panel-content {
+    @include expand;
+  }
+
+  .oo-menu-panel-list {
+    padding: 10px 0;
+  }
+
+  .oo-menu-btn {
+    padding: 0 4px;
+    padding-left: $icon-size;
+    line-height: 2.5em;
+    font-size: 1em;
+  }
+
+  .oo-menu-btn .oo-icon {
+    width: $icon-size;
+    font-size: 1.1em;
+  }
+}

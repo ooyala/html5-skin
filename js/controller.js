@@ -2283,7 +2283,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.state.videoQualityOptions.selectedBitrate = {
         id: selectedContentData.id
       };
-      this.renderSkin();
       this.mb.publish(OO.EVENTS.SET_TARGET_BITRATE, selectedContentData.id);
     },
 

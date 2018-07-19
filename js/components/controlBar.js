@@ -199,7 +199,10 @@ var ControlBar = createReactClass({
   handleMenuToggleClick: function(menuOptionsId) {
     this.configureMenuAutofocus(menuOptionsId);
 
-    if (this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.xs.id) {
+    if (
+      this.props.controller.state.isMobile ||
+      this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.xs.id
+    ) {
       var screenToToggle = CONSTANTS.MENU_OPTIONS_SCREENS[menuOptionsId];
       this.props.controller.toggleScreen(screenToToggle);
     } else {

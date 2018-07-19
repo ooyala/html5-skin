@@ -36,7 +36,7 @@ class MenuPanel extends React.Component {
    * @return {Component} A MenuPanelItem component whose properties are mapped to the given menu item object
    */
   renderMenuItem(item = {}, selectedValue, accentColor) {
-    const { buttonClassName, isPopover, skinConfig } = this.props;
+    const { buttonClassName, skinConfig } = this.props;
 
     return (
       <MenuPanelItem
@@ -48,7 +48,6 @@ class MenuPanel extends React.Component {
         ariaLabel={item.ariaLabel}
         focusId={CONSTANTS.FOCUS_IDS.MENU_ITEM + item.value}
         accentColor={accentColor}
-        showCheckmark={isPopover}
         skinConfig={skinConfig}
         onClick={this.onMenuItemClick} />
     );

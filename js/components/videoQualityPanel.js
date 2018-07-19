@@ -17,16 +17,24 @@ var VideoQualityPanel = createReactClass({
   ref: React.createRef(),
 
   getInitialState: function() {
+    var selectedValue = Utils.getPropertyValue(
+      this.props,
+      'videoQualityOptions.selectedBitrate.id',
+      CONSTANTS.QUALITY_SELECTION.AUTO_QUALITY
+    );
+
     return {
-      wideFormat: false
+      selectedValue: selectedValue
     };
   },
 
   onMenuItemClick: function(itemValue) {
-    var eventData = {
+    this.props.controller.sendVideoQualityChangeEvent({
       id: itemValue
-    };
-    this.props.controller.sendVideoQualityChangeEvent(eventData);
+    });
+    this.setState({
+      selectedValue: itemValue
+    });
   },
 
   getBitrateButtons: function() {
@@ -68,8 +76,6 @@ var VideoQualityPanel = createReactClass({
         }
       }
     }
-
-    this.state.wideFormat = false;
 
     // available bitrates
     for (i = 0; i < availableBitrates.length; i++) {
@@ -113,7 +119,6 @@ var VideoQualityPanel = createReactClass({
 
         switch (qualityText) {
           case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_BITRATE:
-            this.state.wideFormat = true;
             label = qualityText
               .replace(MACROS.BITRATE, availableBitrate)
               .replace(MACROS.RESOLUTION, availableResolution);
@@ -134,7 +139,6 @@ var VideoQualityPanel = createReactClass({
                 var extraResolutionLength = resolutions[availableResolution].length - tiering.length;
                 var trueResolutionIndex = resolutionIndex - extraResolutionLength;
                 if (trueResolutionIndex >= 0 && trueResolutionIndex < tiering.length) {
-                  this.state.wideFormat = true;
                   qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.TIERED_RESOLUTION_ONLY;
                   label = qualityText
                     .replace(MACROS.RESOLUTION, availableResolution)
@@ -167,12 +171,6 @@ var VideoQualityPanel = createReactClass({
   render: function() {
     var menuItems = this.getBitrateButtons();
 
-    var selectedValue = Utils.getPropertyValue(
-      this.props,
-      'videoQualityOptions.selectedBitrate.id',
-      'auto'
-    );
-
     var title = Utils.getLocalizedString(
       this.props.language,
       this.props.isPopover ? CONSTANTS.SKIN_TEXT.VIDEO_QUALITY : '',
@@ -184,19 +182,14 @@ var VideoQualityPanel = createReactClass({
       'oo-quality-popover': this.props.isPopover
     });
 
-    var contentClassName = classNames({
-      'oo-quality-screen-content': true,
-      'oo-quality-screen-content-wide': this.state.wideFormat
-    });
-
     return (
       <MenuPanel
         ref={this.ref}
         className={className}
-        contentClassName={contentClassName}
+        contentClassName="oo-quality-screen-content"
         buttonClassName="oo-quality-btn"
         title={title}
-        selectedValue={selectedValue}
+        selectedValue={this.state.selectedValue}
         isPopover={this.props.isPopover}
         skinConfig={this.props.skinConfig}
         menuItems={menuItems}

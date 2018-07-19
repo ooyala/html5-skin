@@ -1,0 +1,36 @@
+
+// MenuPanel styles for popover mode
+.oo-menu-panel.oo-menu-popover {
+  $icon-size: 2em;
+  margin: 9px 0;
+
+  .oo-menu-panel-content {
+    max-height: 150px;
+    min-width: 80px;
+  }
+
+  .oo-menu-panel-list {
+    padding: 2px 0;
+  }
+
+  .oo-menu-panel-title {
+    color: $white;
+    margin-bottom: 6px;
+    padding: 0 16px 0 8px;
+    font-size: 11px;
+    font-weight: bold;
+  }
+
+  .oo-menu-btn {
+    padding: 0 6px;
+    padding-left: $icon-size;
+    line-height: 2.3em;
+    font-size: 0.6em;
+  }
+
+  .oo-menu-btn .oo-icon {
+    width: $icon-size;
+    font-size: 1.1em;
+    font-weight: bold !important;
+  }
+}

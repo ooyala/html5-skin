@@ -271,7 +271,7 @@ describe('VideoQualityPanel', function() {
 
     checkAriaLabels(wrapper, bitrateResolutionLabels);
 
-    var components = wrapper.find('.oo-quality-screen-content-wide').hostNodes();
+    var components = wrapper.find('.oo-quality-screen-content').hostNodes();
     expect(components.length).toBe(1);
   });
 
