@@ -3,6 +3,7 @@
 .oo-menu-panel.oo-menu-popover {
   $icon-size: 2em;
   margin: 9px 0;
+  @include vendor-prefixes(backface-visibility, hidden);
 
   .oo-menu-panel-content {
     max-height: 150px;

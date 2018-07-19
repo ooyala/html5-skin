@@ -43,12 +43,11 @@
     opacity: 1;
     white-space: nowrap;
     background-color: transparent;
-    @include vendor-prefixes(backface-visibility, hidden);
-    @include vendor-prefixes(transition, opacity 0.3s ease);
+    @include vendor-prefixes(transition, color 0.3s ease);
   }
 
   .oo-menu-btn:not(.oo-selected):hover {
-    opacity: 0.6;
+    color: darken($white, 20%);
   }
 
   .oo-menu-btn:focus {
