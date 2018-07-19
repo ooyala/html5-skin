@@ -40,6 +40,10 @@ var MoreOptionsPanel = createReactClass({
     }
   },
 
+  /**
+   * Opens the Playback Speed menu in screen mode when the playback speed button is clicked.   
+   * @private
+   */
   handlePlaybackSpeedClick: function() {
     this.props.controller.toggleScreen(CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN);
   },

@@ -5,21 +5,22 @@ const classNames = require('classnames');
 const PropTypes = require('prop-types');
 const CONSTANTS = require('../constants/constants');
 
+/**
+ * Presentational component that handles the rendering of the menu items that
+ * are used by the MenuPanel component. Also handles styling of selected items
+ * and click logic.
+ */
 const MenuPanelItem = ({
   itemValue,
-  selectedValue,
   itemLabel,
   ariaLabel,
   buttonClassName,
+  isSelected,
   focusId,
   accentColor,
-  showCheckmark,
   skinConfig,
   onClick,
 }) => {
-  const isSelected = itemValue === selectedValue;
-  const showSelectedIcon = !showCheckmark && isSelected;
-
   const itemClassName = classNames('oo-menu-panel-item', {
     'oo-selected': isSelected
   });
@@ -43,7 +44,7 @@ const MenuPanelItem = ({
         ariaChecked={isSelected}
         onClick={() => onClick(itemValue)}>
 
-        {showSelectedIcon &&
+        {isSelected &&
           <Icon
             skinConfig={skinConfig}
             icon="selected" />
@@ -58,13 +59,12 @@ const MenuPanelItem = ({
 
 MenuPanelItem.propTypes = {
   itemValue: PropTypes.string.isRequired,
-  selectedValue: PropTypes.string.isRequired,
   itemLabel: PropTypes.string.isRequired,
   ariaLabel: PropTypes.string.isRequired,
   buttonClassName: PropTypes.string,
+  isSelected: PropTypes.bool.isRequired,
   focusId: PropTypes.string.isRequired,
   accentColor: PropTypes.string,
-  showCheckmark: PropTypes.bool,
   skinConfig: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired,
 };

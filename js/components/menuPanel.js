@@ -7,6 +7,18 @@ const PropTypes = require('prop-types');
 const Utils = require('./utils');
 const CONSTANTS = require('../constants/constants');
 
+/**
+ * Generic menu component that handles the rendering, accessibility and item selection
+ * of menus that have the following characteristics (such as the Video Quality or
+ * Playback Speed menus):
+ * - Can be displayed in both popover and fullscreen module
+ * - Display a single list of options
+ * - Only one option can be selected at a time
+ *
+ * This component only renders the menu itself, so it's meant to be used in conjunction
+ * with another component that renders the menu container, such as the Popover or
+ * ContentScreen components.
+ */
 class MenuPanel extends React.Component {
 
   constructor(props) {
@@ -37,15 +49,16 @@ class MenuPanel extends React.Component {
    */
   renderMenuItem(item = {}, selectedValue, accentColor) {
     const { buttonClassName, skinConfig } = this.props;
+    const isSelected = item.value === selectedValue;
 
     return (
       <MenuPanelItem
         key={item.value}
-        buttonClassName={buttonClassName}
         itemValue={item.value}
-        selectedValue={selectedValue}
         itemLabel={item.label}
         ariaLabel={item.ariaLabel}
+        buttonClassName={buttonClassName}
+        isSelected={isSelected}
         focusId={CONSTANTS.FOCUS_IDS.MENU_ITEM + item.value}
         accentColor={accentColor}
         skinConfig={skinConfig}

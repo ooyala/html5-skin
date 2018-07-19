@@ -22,7 +22,7 @@
 
     .oo-content-screen-title-bar {
       padding: xs($panel-padding);
-      padding-bottom: 0;
+      padding-bottom: xs($panel-padding) / 2;
     }
   }
 
