@@ -772,8 +772,12 @@ var ControlBar = createReactClass({
       }
 
       if (
-        this.props.controller.state.isOoyalaAds &&
-        defaultItems[k].name === CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED
+        defaultItems[k].name === CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED &&
+        (
+          this.props.isLiveStream ||
+          this.props.controller.videoVr ||
+          this.props.controller.state.isOoyalaAds
+        )
       ) {
         continue;
       }
