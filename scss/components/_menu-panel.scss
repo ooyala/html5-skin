@@ -25,9 +25,12 @@
     background-color: $selected-menu-item-bg;
   }
 
+  .oo-menu-panel-item:not(.oo-selected) {
+    @include vendor-prefixes(transition, background-color 0.3s ease);
+  }
+
   .oo-menu-panel-item:not(.oo-selected):hover {
     background-color: $hover-menu-item-bg;
-    @include vendor-prefixes(transition, background-color 0.3s ease);
   }
 
   .oo-menu-btn {
@@ -43,6 +46,9 @@
     opacity: 1;
     white-space: nowrap;
     background-color: transparent;
+  }
+
+  .oo-menu-btn:not(.oo-selected) {
     @include vendor-prefixes(transition, color 0.3s ease);
   }
 
