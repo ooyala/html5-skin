@@ -1,0 +1,79 @@
+
+// Base MenuPanel styles, common for both popover and screen mode
+.oo-menu-panel {
+
+  .oo-menu-panel-content {
+    text-align: left;
+  }
+
+  .oo-menu-panel-content .scrollarea-content:focus {
+    outline: none;
+  }
+
+  .oo-menu-panel-list {
+    list-style: none;
+    margin: 0;
+  }
+
+  .oo-menu-panel-item {
+    display: block;
+    margin: 0;
+    padding: 2px;
+  }
+
+  .oo-menu-panel-item.oo-selected {
+    background-color: $selected-menu-item-bg;
+  }
+
+  .oo-menu-panel-item:not(.oo-selected) {
+    @include vendor-prefixes(transition, background-color 0.3s ease);
+  }
+
+  .oo-menu-panel-item:not(.oo-selected):hover {
+    background-color: $hover-menu-item-bg;
+  }
+
+  .oo-menu-btn {
+    color: $white;
+    display: block;
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    font-family: $font-family-roboto;
+    text-align: left;
+    border: none;
+    outline: none;
+    opacity: 1;
+    white-space: nowrap;
+    background-color: transparent;
+  }
+
+  .oo-menu-btn:not(.oo-selected) {
+    @include vendor-prefixes(transition, color 0.3s ease);
+  }
+
+  .oo-menu-btn:not(.oo-selected):hover {
+    color: darken($white, 20%);
+  }
+
+  .oo-menu-btn:focus {
+    @include highlight-tab();
+  }
+
+  .oo-menu-btn:hover:active {
+    @include remove-highlight-tab();
+  }
+
+  .oo-menu-btn.oo-selected {
+    color: $blue-light;
+    font-weight: bold;
+  }
+
+  .oo-menu-btn .oo-icon {
+    @include flex-center-children(row);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+  }
+}

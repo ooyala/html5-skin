@@ -29,8 +29,8 @@ describe('ClosedCaptionPanel', function() {
   mockSkinConfig.defaultEnabled = true;
   mockSkinConfig.defaultLanguage = 'en';
 
-  var closedCaptionOptions = {'enabled': true,
-                              'availableLanguages': availableLanguages};
+  var closedCaptionOptions;
+
   var mockController = {
     toggleClosedCaptionEnabled: function() {},
     onClosedCaptionChange: function() {}
@@ -41,8 +41,11 @@ describe('ClosedCaptionPanel', function() {
       toggleClosedCaptionEnabled: function() {},
       onClosedCaptionChange: function() {}
     };
-    closedCaptionOptions = {'enabled': true,
-                            'availableLanguages': availableLanguages};
+    closedCaptionOptions = {
+      enabled: true,
+      availableLanguages: availableLanguages,
+      fontSize: 'Medium'
+    };
   });
 
   it('tests languages displayed in closed caption panel', function() {

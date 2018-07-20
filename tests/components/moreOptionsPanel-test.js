@@ -54,6 +54,7 @@ describe('MoreOptionsPanel', function() {
     };
 
     mockProps = {
+      responsiveView: 'md',
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -107,6 +108,7 @@ describe('MoreOptionsPanel', function() {
       }
     };
     mockProps = {
+      responsiveView: 'md',
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };

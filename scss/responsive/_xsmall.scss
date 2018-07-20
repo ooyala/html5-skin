@@ -17,6 +17,14 @@
     top: xs($panel-padding);
     right: xs($panel-padding);
   }
+  .oo-content-screen.oo-menu-content-screen {
+    padding: 0;
+
+    .oo-content-screen-title-bar {
+      padding: xs($panel-padding);
+      padding-bottom: xs($panel-padding) / 2;
+    }
+  }
 
   // State Screens
   .oo-state-screen {
@@ -290,33 +298,6 @@
       .oo-skip-icon {
         font-size: 0.7em;
         margin-right: 3px;
-      }
-    }
-  }
-
-  //Video Quality
-  .oo-quality-panel {
-    height: $bitrate-horizontal-height - 25px;
-    .oo-quality-screen-content {
-      ul {
-        height: $bitrate-horizontal-height - 30px;
-        li {
-          margin: 0 14px;
-          .oo-quality-btn {
-            padding: 8px 6px;
-            font-size: 0.8em;
-          }
-          .oo-quality-auto-btn {
-            .oo-quality-auto-icon {
-              font-size: 1.4em;
-              padding:4px;
-              margin-bottom: 0;
-            }
-            .oo-quality-auto-label {
-              font-size: 0.8em;
-            }
-          }
-        }
       }
     }
   }

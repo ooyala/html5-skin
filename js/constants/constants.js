@@ -2,7 +2,7 @@ var MACROS = require('./macros');
 /** ******************************************************************
  CONSTANT
  *********************************************************************/
-module.exports = {
+var CONSTANTS = {
   STATE: {
     START: 'start',
     PLAYING: 'playing',
@@ -27,13 +27,15 @@ module.exports = {
     CLOSED_CAPTION_SCREEN: 'closedCaptionScreen',
     VIDEO_QUALITY_SCREEN: 'videoQualityScreen',
     ERROR_SCREEN: 'errorScreen',
-    MULTI_AUDIO_SCREEN: 'multiAudioScreen'
+    MULTI_AUDIO_SCREEN: 'multiAudioScreen',
+    PLAYBACK_SPEED_SCREEN: 'playbackSpeedScreen'
   },
 
   MENU_OPTIONS: {
     VIDEO_QUALITY: 'videoQualityOptions',
     CLOSED_CAPTIONS: 'closedCaptionOptions',
-    MULTI_AUDIO: 'multiAudioOptions'
+    MULTI_AUDIO: 'multiAudioOptions',
+    PLAYBACK_SPEED: 'playbackSpeedOptions'
   },
 
   SKIN_TEXT: {
@@ -106,13 +108,17 @@ module.exports = {
     EXIT_FULL_SCREEN: 'Exit Full Screen',
     VIDEO_QUALITY: 'Video Quality',
     AUTO_QUALITY: 'Auto',
+    PLAYBACK_SPEED: 'Speed',
+    NORMAL_SPEED: 'Normal',
     SHARE: 'Share',
     MORE_OPTIONS: 'More Options',
     SELECT_TO_UNMUTE: 'SELECT TO UNMUTE',
     AUDIO: 'Audio',
     SUBTITLES: 'Subtitles',
     UNDEFINED_LANGUAGE: 'Undefined language',
-    NO_LINGUISTIC_CONTENT: 'No linguistic content'
+    NO_LINGUISTIC_CONTENT: 'No linguistic content',
+    UNCODED_LANGUAGES: 'Uncoded languages',
+    MULTIPLE_LANGUAGES: 'Multiple languages'
   },
 
   ARIA_LABELS: {
@@ -156,7 +162,10 @@ module.exports = {
     PREVIOUS_VIDEO: 'Previous Video',
     NEXT_VIDEO: 'Next Video',
     SKIP_BACKWARD: 'Rewind '  + MACROS.SECONDS + ' Seconds',
-    SKIP_FORWARD: 'Skip ' + MACROS.SECONDS + ' Seconds Forward'
+    SKIP_FORWARD: 'Skip ' + MACROS.SECONDS + ' Seconds Forward',
+    PLAYBACK_SPEED: MACROS.RATE + 'x Playback Speed',
+    PLAYBACK_SPEED_OPTION: 'Speed',
+    NORMAL_SPEED: 'Normal Speed',
   },
 
   CONTROL_BAR_KEYS: {
@@ -170,6 +179,7 @@ module.exports = {
     DISCOVERY: 'discovery',
     CLOSED_CAPTION: 'closedCaption',
     AUDIO_AND_CC: 'audioAndCC',
+    PLAYBACK_SPEED: 'playbackSpeed',
     SHARE: 'share',
     STEREOSCOPIC: 'stereoscopic',
     FULLSCREEN: 'fullscreen',
@@ -198,7 +208,8 @@ module.exports = {
     QUALITY_LEVEL: 'qualityLevel',
     AUTO_QUALITY: 'autoQuality',
     CLOSE: 'close',
-    MULTI_AUDIO: 'multiAudio'
+    MULTI_AUDIO: 'multiAudio',
+    MENU_ITEM: 'menuItem'
   },
 
   SKIP_CTRLS_KEYS: {
@@ -253,6 +264,7 @@ module.exports = {
 
   UI: {
     defaultScrubberBarHeight: 4,
+    POPOVER_SCROLL_RATE: 0.6,
     DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15,
     MAX_BUFFERING_SPINNER_DELAY: 60000, // Max allowed value of bufferingSpinnerDelay in milliseconds
     DEFAULT_SKIP_BACKWARD_TIME: 10, // In seconds
@@ -266,6 +278,13 @@ module.exports = {
     // When the previous video button is clicked, if the playhead value (in seconds) is
     // below this constant the controller will request the previous video instead of rewinding
     REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD: 2
+  },
+
+  PLAYBACK_SPEED: {
+    DEFAULT_VALUE: 1, // Default playback rate
+    DEFAULT_OPTIONS: [ 0.5, 0.75, 1, 1.25, 1.5, 2 ], // Default options for playback speed menu
+    MIN: 0.5,
+    MAX: 2,
   },
 
   TOOLTIP_ALIGNMENT: {
@@ -301,7 +320,10 @@ module.exports = {
     CHINESE: 'zh',
     JAPANESE: 'ja',
     NOT_MATCHED: 'und',
-    NO_LINGUISTIC_CONTENT: 'zxx'
+    UNDEFINED_LANGUAGE: 'und',
+    NO_LINGUISTIC_CONTENT: 'zxx',
+    UNCODED_LANGUAGES: 'mis',
+    MULTIPLE_LANGUAGES: 'mul'
   },
 
   ERROR_CODE: {
@@ -343,6 +365,7 @@ module.exports = {
   },
 
   QUALITY_SELECTION: {
+    AUTO_QUALITY: 'auto',
     FORMAT: {
       RESOLUTION: 'resolution',
       BITRATE: 'bitrate'
@@ -534,3 +557,12 @@ module.exports = {
     SELECTABLE_SCREEN: 'oo-state-screen-selectable'
   }
 };
+
+// Maps menu options to their respective screens
+CONSTANTS.MENU_OPTIONS_SCREENS = {};
+CONSTANTS.MENU_OPTIONS_SCREENS[CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY] = CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN;
+CONSTANTS.MENU_OPTIONS_SCREENS[CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS] = CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN;
+CONSTANTS.MENU_OPTIONS_SCREENS[CONSTANTS.MENU_OPTIONS.MULTI_AUDIO] = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
+CONSTANTS.MENU_OPTIONS_SCREENS[CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED] = CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN;
+
+module.exports = CONSTANTS;

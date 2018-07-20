@@ -97,7 +97,7 @@ var Tooltip = createReactClass({
       var alignment = this.getAlignment();
 
       return (
-        <div style={{ position: 'relative' }}>
+        <div className="oo-tooltip-container" style={{ position: 'relative' }}>
           <div
             className="oo-tooltip"
             style={getContainerStyle(

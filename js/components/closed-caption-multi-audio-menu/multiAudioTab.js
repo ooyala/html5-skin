@@ -3,10 +3,15 @@ var React = require('react');
 var Tab = require('./tab');
 var helpers = require('./helpers');
 var CONSTANTS = require('../../constants/constants');
-var LANGUAGE_LIST = require('../../constants/languages');
 var Utils = require('../utils');
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
+
+var SPECIAL_LANGUAGES_MAP = {};
+SPECIAL_LANGUAGES_MAP[CONSTANTS.LANGUAGE.UNDEFINED_LANGUAGE] = CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
+SPECIAL_LANGUAGES_MAP[CONSTANTS.LANGUAGE.NO_LINGUISTIC_CONTENT] = CONSTANTS.SKIN_TEXT.NO_LINGUISTIC_CONTENT;
+SPECIAL_LANGUAGES_MAP[CONSTANTS.LANGUAGE.UNCODED_LANGUAGES] = CONSTANTS.SKIN_TEXT.UNCODED_LANGUAGES;
+SPECIAL_LANGUAGES_MAP[CONSTANTS.LANGUAGE.MULTIPLE_LANGUAGES] = CONSTANTS.SKIN_TEXT.MULTIPLE_LANGUAGES;
 
 var MultiAudioTab = createReactClass({
   render: function() {
@@ -14,22 +19,26 @@ var MultiAudioTab = createReactClass({
     var readableTracksList = this.props.audioTracksList.map(
       function(audioTrack) {
         var displayLanguage = '';
-        if (audioTrack.lang === CONSTANTS.LANGUAGE.NO_LINGUISTIC_CONTENT) {
-          displayLanguage =  Utils.getLocalizedString(
+        var isSpecialLanguage = helpers.isSpecialLanguage(audioTrack.lang, SPECIAL_LANGUAGES_MAP);
+        if (isSpecialLanguage) {
+          displayLanguage = helpers.getLocalizedSpecialLanguage(
+            audioTrack.lang,
             this.props.language,
-            CONSTANTS.SKIN_TEXT.NO_LINGUISTIC_CONTENT,
-            this.props.localizableStrings
+            this.props.localizableStrings,
+            SPECIAL_LANGUAGES_MAP
           );
         } else {
-          displayLanguage = helpers.getDisplayLanguage(LANGUAGE_LIST, audioTrack.lang);
+          displayLanguage = helpers.getDisplayLanguage(OO.LANGUAGE_LIST, audioTrack.lang);
         }
+
         var displayLabel = helpers.getDisplayLabel(audioTrack);
 
         var languageElement = {
           enabled: audioTrack.enabled,
           language: displayLanguage,
           label: displayLabel,
-          id: audioTrack.id
+          id: audioTrack.id,
+          lang: audioTrack.lang
         };
 
         return languageElement;

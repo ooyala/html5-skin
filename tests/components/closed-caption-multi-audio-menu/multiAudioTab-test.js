@@ -3,7 +3,7 @@ jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/tab');
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/helpers');
 jest.dontMock('../../../js/components/accessibleButton');
 jest.dontMock('../../../js/components/higher-order/accessibleMenu');
-jest.dontMock('../../../js/constants/languages');
+jest.dontMock('../../../html5-common/js/utils/languages');
 jest.dontMock('underscore');
 jest.dontMock('../../../js/components/utils');
 
@@ -12,6 +12,7 @@ var Enzyme = require('enzyme');
 
 var MultiAudioTab = require('../../../js/components/closed-caption-multi-audio-menu/multiAudioTab');
 var Tab = require('../../../js/components/closed-caption-multi-audio-menu/tab');
+var LANGUAGE_LIST = require('../../../html5-common/js/utils/languages');
 
 describe('MultiAudioTab component', function() {
   var selectedId = null;
@@ -29,6 +30,9 @@ describe('MultiAudioTab component', function() {
       'Undefined language' : 'Lenguaje indefinido'
     }
   };
+
+  OO = {};
+  OO.LANGUAGE_LIST = LANGUAGE_LIST;
 
   beforeEach(function() {
     props = {

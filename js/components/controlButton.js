@@ -265,10 +265,14 @@ class ControlButton extends React.Component {
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}>
 
-        <Icon
-          icon={this.props.icon}
-          skinConfig={this.props.skinConfig}
-          style={iconStyles} />
+        {this.props.icon &&
+          <Icon
+            icon={this.props.icon}
+            skinConfig={this.props.skinConfig}
+            style={iconStyles} />
+        }
+
+        {this.props.children}
 
         {this.props.tooltip &&
           <Tooltip
@@ -281,8 +285,6 @@ class ControlButton extends React.Component {
             localizableStrings={this.props.localizableStrings}
             getAlignment={this.getTooltipAlignment}/>
         }
-
-        {this.props.children}
 
       </Component>
     );

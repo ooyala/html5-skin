@@ -18,70 +18,59 @@ var React = require('react'),
     Tooltip = require('../components/tooltip'),
     SkipControls = require('../components/skipControls'),
     UnmuteIcon = require('../components/unmuteIcon');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+const withAutoHide = require('./higher-order/withAutoHide.js');
 
-var PlayingScreen = createReactClass({
-  mixins: [ResizeMixin],
-
-  getInitialState: function() {
+class PlayingScreen extends React.Component {
+  constructor(props) {
+    super(props);
     this.isMobile = this.props.controller.state.isMobile;
     this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
     this.skipControlsClientRect = null;
     this.hasCheckedMouseOverControls = false;
     this.mousePosition = { clientX: 0, clientY: 0 };
 
-    return {
-      controlBarVisible: this.props.controller.state.controlBarVisible,
+    this.state = {
       isVrNotificationHidden: false,
       isVrIconHidden: false,
       timer: null
     };
-  },
 
-  componentWillMount: function() {
+    this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
+    this.handleVrMouseUp = this.handleVrMouseUp.bind(this);
+    this.handleVrTouchEnd = this.handleVrTouchEnd.bind(this);
+    this.onSkipControlsMount = this.onSkipControlsMount.bind(this);
+    this.handleTouchStart = this.handleTouchStart.bind(this);
+    this.handlePlayerClicked = this.handlePlayerClicked.bind(this);
+    this.handlePlayerFocus = this.handlePlayerFocus.bind(this);
+    this.handlePlayerMouseDown = this.handlePlayerMouseDown.bind(this);
+    this.handlePlayerMouseUp = this.handlePlayerMouseUp.bind(this);
+    this.handleTouchEnd = this.handleTouchEnd.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+    this.handleMouseOver = this.handleMouseOver.bind(this);
+  }
+
+  componentWillMount() {
     this.props.handleVrPlayerMouseUp();
-  },
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
     document.addEventListener('mouseup', this.handleVrMouseUp, false);
     document.addEventListener('touchend', this.handleVrTouchEnd, false);
 
-    // for mobile or desktop fullscreen, hide control bar after 3 seconds
-    if (this.isMobile || this.props.fullscreen || this.browserSupportsTouch) {
-      this.props.controller.startHideControlBarTimer();
-    }
     if (this.props.controller.videoVr) {
       this.handleVrAnimationEnd('vrNotificatioContainer', 'isVrNotificationHidden');
       this.handleVrAnimationEnd('vrIconContainer', 'isVrIconHidden');
     }
-  },
+  }
 
-  componentWillUpdate: function(nextProps) {
-    if (nextProps) {
-      if (nextProps.controller.state.controlBarVisible === false && this.state.controlBarVisible === true) {
-        this.hideControlBar();
-      }
-      if (!this.props.fullscreen && nextProps.fullscreen) {
-        this.props.controller.startHideControlBarTimer();
-      }
-      if (this.props.fullscreen && !nextProps.fullscreen && this.isMobile) {
-        this.setState({ controlBarVisible: true });
-        this.props.controller.showControlBar();
-        this.props.controller.startHideControlBarTimer();
-      }
-    }
-  },
-
-  componentWillUnmount: function() {
-    this.props.controller.cancelTimer();
+  componentWillUnmount() {
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
     document.removeEventListener('mouseup', this.handleVrMouseUp);
     document.removeEventListener('touchend', this.handleVrTouchEnd);
-  },
+  }
 
   /**
    * @description need to show special information labels (or/and icons).
@@ -91,7 +80,7 @@ var PlayingScreen = createReactClass({
    * @param {string} id - unique identificator of the label(icon)
    * @param {string} stateName - name for a state which indicates about necessary to show the label(icon)
    */
-  handleVrAnimationEnd: function(id, stateName) {
+  handleVrAnimationEnd(id, stateName) {
     var vrContainer = document.getElementById(id);
     if (vrContainer) {
       var listener = function() {
@@ -101,34 +90,7 @@ var PlayingScreen = createReactClass({
       };
       vrContainer.addEventListener('animationend', listener.bind(this), false);
     }
-  },
-
-  handleResize: function() {
-    if (this.isMounted()) {
-      this.props.controller.startHideControlBarTimer();
-    }
-  },
-
-  handleKeyDown: function(event) {
-    // Show control bar when any of the following keys are pressed:
-    // - Tab: Focus on next control
-    // - Space/Enter: Press active control
-    // - Arrow keys: Either seek forward/back, volume up/down or interact with focused slider
-    switch (event.key) {
-      case CONSTANTS.KEY_VALUES.TAB:
-      case CONSTANTS.KEY_VALUES.SPACE:
-      case CONSTANTS.KEY_VALUES.ENTER:
-      case CONSTANTS.KEY_VALUES.ARROW_UP:
-      case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
-      case CONSTANTS.KEY_VALUES.ARROW_DOWN:
-      case CONSTANTS.KEY_VALUES.ARROW_LEFT:
-        this.showControlBar();
-        this.props.controller.startHideControlBarTimer();
-        break;
-      default:
-        break;
-    }
-  },
+  }
 
   /**
    * The keydown event is not fired when the scrubber bar is first focused with
@@ -137,30 +99,32 @@ var PlayingScreen = createReactClass({
    * @private
    * @param {object} event Focus event object.
    */
-  handleFocus: function(event) {
+  handleFocus(event) {
     var isFocusableElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
     // Only do this if the control bar hasn't been shown by now and limit to focus
     // events that are triggered on known focusable elements (control bar items and
     // skip buttons). Note that controlBarVisible controls both the control bar and
     // the skip buttons
-    if (!this.state.controlBarVisible && isFocusableElement) {
-      this.showControlBar();
-      this.props.controller.startHideControlBarTimer();
+    if (!this.props.controller.state.controlBarVisible && isFocusableElement) {
+      if (typeof this.props.showControlBar === 'function') {
+        this.props.showControlBar();
+      }
+
+      if (typeof this.props.startHideControlBarTimer === 'function') {
+        this.props.startHideControlBarTimer();
+      }
       this.props.controller.state.accessibilityControlsEnabled = true;
       this.props.controller.state.isClickedOutside = false;
     }
-  },
+  }
 
   /**
    * call handleTouchEnd when touchend was called on selectedScreen
    * @param {Event} event - event object
    */
-  handleTouchEnd: function(event) {
+  handleTouchEnd(event) {
     event.preventDefault(); // to prevent mobile from propagating click to discovery shown on pause
-    if (!this.state.controlBarVisible) {
-      this.showControlBar(event);
-      this.props.controller.startHideControlBarTimer();
-    } else {
+    if (this.props.controller.state.controlBarVisible) {
       var shouldToggle = false;
       if (this.props.controller.videoVr) {
         if (!this.props.isVrMouseMove) {
@@ -173,37 +137,33 @@ var PlayingScreen = createReactClass({
         this.props.controller.togglePlayPause(event);
       }
     }
-  },
+  }
 
   /**
    * call handleVrTouchEnd when touchend was called on document and videoType is Vr
    * @param {Event} e - event object
    */
-  handleVrTouchEnd: function(e) {
+  handleVrTouchEnd(e) {
     this.props.handleVrPlayerMouseUp(e);
-  },
+  }
 
-  handlePlayerMouseDown: function(e) {
+  handlePlayerMouseDown(e) {
     if (this.props.controller.videoVr) {
       e.persist();
     }
     this.props.handleVrPlayerMouseDown(e);
-  },
+  }
 
-  handlePlayerMouseMove: function(e) {
+  handlePlayerMouseMove(e) {
     this.storeMousePosition(e);
-    if (!this.isMobile && this.props.fullscreen) {
-      this.showControlBar();
-      this.props.controller.startHideControlBarTimer();
-    }
     this.props.handleVrPlayerMouseMove(e);
-  },
+  }
 
   /**
    * call handleVrMouseUp when mouseup was called on selectedScreen
    * @param {Event} e - event object
    */
-  handlePlayerMouseUp: function(e) {
+  handlePlayerMouseUp(e) {
     // pause or play the video if the skin is clicked on desktop
     if (!this.isMobile) {
       e.stopPropagation(); // W3C
@@ -216,17 +176,16 @@ var PlayingScreen = createReactClass({
       this.props.controller.state.isClickedOutside = false;
     }
     // for mobile, touch is handled in handleTouchEnd
-  },
+  }
 
   /**
    * Handles the mouseover event.
    * @private
    * @param {Event} event The mouseover event object
    */
-  handleMouseOver: function(event) {
+  handleMouseOver(event) {
     this.storeMousePosition(event);
-    this.showControlBar();
-  },
+  }
 
   /**
    * Handles the touchstart event. Note that this handler is for the main element.
@@ -234,10 +193,10 @@ var PlayingScreen = createReactClass({
    * @private
    * @param {Event} event The touchstart event object
    */
-  handleTouchStart: function(event) {
+  handleTouchStart(event) {
     // Disable "mouse over controls" check for all touch interactions
     this.hasCheckedMouseOverControls = true;
-  },
+  }
 
   /**
    * Extracts and stores the clientX and clientY values from a mouse event. This
@@ -245,14 +204,14 @@ var PlayingScreen = createReactClass({
    * that determines whether the mouse is over the skip controls.
    * @param {Event} event
    */
-  storeMousePosition: function(event) {
+  storeMousePosition(event) {
     if (!event) {
       return;
     }
     this.mousePosition.clientX = event.clientX;
     this.mousePosition.clientY = event.clientY;
     this.tryCheckMouseOverControls();
-  },
+  }
 
   /**
    * Called by the SkipControls component when it's done mounting. It informs this
@@ -261,10 +220,10 @@ var PlayingScreen = createReactClass({
    * @private
    * @param {DOMRect} clientRect A DOMRect returned by an element's getBoundingClientRect() function
    */
-  onSkipControlsMount: function(clientRect) {
+  onSkipControlsMount(clientRect) {
     this.skipControlsClientRect = clientRect;
     this.tryCheckMouseOverControls();
-  },
+  }
 
   /**
    * Checks to see whether or not the mouse is over the skip controls element and
@@ -278,7 +237,7 @@ var PlayingScreen = createReactClass({
    * is a bit convoluted but it's needed in order to get a decent user experience.
    * @private
    */
-  tryCheckMouseOverControls: function() {
+  tryCheckMouseOverControls() {
     if (
       this.hasCheckedMouseOverControls ||
       !this.skipControlsClientRect ||
@@ -290,49 +249,35 @@ var PlayingScreen = createReactClass({
     if (
       Utils.isMouseInsideRect(this.mousePosition, this.skipControlsClientRect)
     ) {
-      this.props.controller.cancelTimer();
+      if (typeof this.props.cancelHideControlBarTimer === 'function') {
+        this.props.cancelHideControlBarTimer();
+      }
     }
     this.hasCheckedMouseOverControls = true;
-  },
+  }
 
   /**
    * call handleVrMouseUp when mouseup was called on document
    * @param {Event} e - event object
    */
-  handleVrMouseUp: function(e) {
+  handleVrMouseUp(e) {
     this.props.handleVrPlayerMouseUp(e);
-  },
+  }
 
-  handlePlayerClicked: function(event) {
-    if (!this.props.isVrMouseMove) {
+  handlePlayerClicked(event) {
+    if (!this.props.isVrMouseMove && !this.isMobile) {
       this.props.controller.togglePlayPause(event);
     }
     this.props.handleVrPlayerClick();
-  },
+  }
 
-  handlePlayerFocus: function() {
+  handlePlayerFocus() {
     this.props.handleVrPlayerFocus();
-  },
+  }
 
-  showControlBar: function(event) {
-    if (!this.isMobile || (event && event.type === 'touchend')) {
-      this.setState({ controlBarVisible: true });
-      this.props.controller.showControlBar();
-      ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor = 'auto';
-    }
-  },
-
-  hideControlBar: function(event) {
-    if (this.props.controlBarAutoHide === true && !(this.isMobile && event)) {
-      this.setState({ controlBarVisible: false });
-      this.props.controller.hideControlBar();
-      ReactDOM.findDOMNode(this.refs.PlayingScreen).style.cursor = 'none';
-    }
-  },
-
-  unmuteClick: function(event) {
+  unmuteClick(event) {
     this.props.controller.handleMuteClick();
-  },
+  }
 
   /**
    *
@@ -340,7 +285,7 @@ var PlayingScreen = createReactClass({
    * @param {number} defaultDuration - default value for duration
    * @returns {object} empty object or object with animationDuration
    */
-  setAnimationDuration: function(vrDuration, defaultDuration) {
+  setAnimationDuration(vrDuration, defaultDuration) {
     var style = {};
     defaultDuration = Utils.ensureNumber(defaultDuration, 3);
     if (
@@ -359,9 +304,9 @@ var PlayingScreen = createReactClass({
       };
     }
     return style;
-  },
+  }
 
-  render: function() {
+  render() {
     var adOverlay =
       this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay ? (
         <AdOverlay
@@ -376,13 +321,13 @@ var PlayingScreen = createReactClass({
       this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData ? (
         <UpNextPanel
           {...this.props}
-          controlBarVisible={this.state.controlBarVisible}
+          controlBarVisible={this.props.controller.state.controlBarVisible}
           currentPlayhead={this.props.currentPlayhead}
         />
       ) : null;
 
     var viewControlsVr = this.props.controller.videoVr ? (
-      <ViewControlsVr {...this.props} controlBarVisible={this.state.controlBarVisible} />
+      <ViewControlsVr {...this.props} controlBarVisible={this.props.controller.state.controlBarVisible} />
     ) : null;
 
     var showUnmute =
@@ -446,11 +391,9 @@ var PlayingScreen = createReactClass({
     return (
       <div
         className={className}
-        ref="PlayingScreen"
         onTouchStart={this.handleTouchStart}
         onMouseOver={this.handleMouseOver}
-        onMouseOut={this.hideControlBar}
-        onKeyDown={this.handleKeyDown}>
+      >
         <div
           className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
           onMouseDown={this.handlePlayerMouseDown}
@@ -463,7 +406,7 @@ var PlayingScreen = createReactClass({
         {vrNotification}
         {vrIcon}
 
-        <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible} />
+        <Watermark {...this.props} controlBarVisible={this.props.controller.state.controlBarVisible} />
 
         {this.props.controller.state.buffering ? (
           <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
@@ -503,7 +446,7 @@ var PlayingScreen = createReactClass({
 
           <ControlBar
             {...this.props}
-            controlBarVisible={this.state.controlBarVisible}
+            controlBarVisible={this.props.controller.state.controlBarVisible}
             playerState={this.props.playerState}
             isLiveStream={this.props.isLiveStream} />
         </div>
@@ -512,5 +455,8 @@ var PlayingScreen = createReactClass({
       </div>
     );
   }
-});
-module.exports = PlayingScreen;
+}
+
+const PlayingScreenWithAutoHide = withAutoHide(PlayingScreen);
+
+export {PlayingScreen, PlayingScreenWithAutoHide};

@@ -38,12 +38,19 @@ var skinControllerMock = {
       volume: 1,
       volumeSliderVisible: true
     },
-    videoQualityOptions: {},
+    videoQualityOptions: {
+      selectedBitrate: {
+        id: 'auto'
+      }
+    },
     multiAudioOptions: {},
+    playbackSpeedOptions: { currentSpeed: 1 },
     closedCaptionOptions: {},
     config: {},
     moreOptionsItems: []
   },
+  addBlur: function() {},
+  removeBlur: function() {},
   setVolume: function() {},
   cancelTimer: function() {},
   setFocusedControl: function() {},
@@ -85,8 +92,11 @@ describe('Skin screenToShow state', function() {
       <Skin
         controller={controller}
         skinConfig={skinConfig}
+        language="en"
+        localizableStrings={{}}
         closedCaptionOptions={{
           enabled: false,
+          fontSize: 'Medium',
           availableLanguages: {
             locale: []
           }
@@ -156,7 +166,10 @@ describe('Skin screenToShow state', function() {
     state.screenToShow = CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN;
     state.videoQualityOptions = {
       autoFocus: false,
-      availableBitrates: []
+      availableBitrates: [],
+      selectedBitrate: {
+        id: 'auto'
+      }
     };
     skin.switchComponent(state);
   });
@@ -267,6 +280,7 @@ describe('Tab Navigation', function() {
       <Skin
         controller={mockController}
         skinConfig={mockSkinConfig}
+        responsiveView="md"
         closedCaptionOptions={{ enabled: false }} />
       , document.body
     );

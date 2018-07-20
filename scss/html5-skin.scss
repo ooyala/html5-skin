@@ -51,19 +51,21 @@
   @import "components/plugins";
   @import "components/text-track";
   @import "components/more-options";
-  @import "components/video-quality";
   @import "components/tabs";
   @import "components/thumbnail";
   @import "components/watermark";
   @import "components/unmute";
   @import "components/cc-ma-menu";
   @import "components/skip-controls";
+  @import "components/playback-speed-button";
+  @import "components/menu-panel";
+  @import "components/menu-panel-popover";
+  @import "components/menu-panel-screen";
 
   // Responsive
   @import "responsive/xsmall";
   @import "responsive/small";
   @import "responsive/large";
-  @import "responsive/portrait";
 
   // Skin
   @import "skin/default";

@@ -52,6 +52,10 @@
     display: inline-block;
   }
 
+  .scrollarea-content:focus {
+    outline: none;
+  }
+
   //hide horizontal scrollbars
   .scrollbar-container.horizontal {
     display:none;

@@ -8,13 +8,14 @@ jest
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Enzyme = require('enzyme');
-var PlayingScreen = require('../../js/views/playingScreen');
 var UnmuteIcon = require('../../js/components/unmuteIcon');
 var skinConfig = require('../../config/skin.json');
 var SkipControls = require('../../js/components/skipControls');
 var TextTrackPanel = require('../../js/components/textTrackPanel');
 var Utils = require('../../js/components/utils');
 var CONSTANTS = require('../../js/constants/constants');
+
+import {PlayingScreen} from '../../js/views/playingScreen';
 
 describe('PlayingScreen', function() {
   var mockController, mockSkinConfig, closedCaptionOptions;
@@ -30,6 +31,11 @@ describe('PlayingScreen', function() {
         handleVrPlayerMouseUp={() => {}}
         currentPlayhead={0}
         playerState={CONSTANTS.STATE.PLAYING}
+        cancelHideControlBarTimer={() => {
+          if (mockController) {
+            mockController.cancelTimer();
+          }
+        }}
       />
     );
     return wrapper;
@@ -68,6 +74,7 @@ describe('PlayingScreen', function() {
         },
         closedCaptionOptions: {},
         multiAudioOptions: {},
+        playbackSpeedOptions: { currentSpeed: 1 },
         videoQualityOptions: {
           availableBitrates: null
         }
@@ -249,72 +256,41 @@ describe('PlayingScreen', function() {
 
 
   it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp without video360 fullscreen', function() {
-    var over = false;
-    var out = false;
-    var moved = false;
     var clicked = false;
 
     mockController.state.videoVr = false;
-    mockController.startHideControlBarTimer = function() {
-      moved = true;
-    };
+
     mockController.togglePlayPause = function() {
       clicked = true;
-    };
-    mockController.showControlBar = function() {
-      over = true;
-    };
-    mockController.hideControlBar = function() {
-      out = true;
     };
 
     // Render pause screen into DOM
     var wrapper = Enzyme.mount(
       <PlayingScreen
         controller = {mockController}
-        skinConfig={mockSkinConfig}
+        skinConfig = {mockSkinConfig}
         fullscreen = {true}
-        controlBarAutoHide={true}
         closedCaptionOptions = {closedCaptionOptions}
         handleVrPlayerMouseUp = {handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
+        startHideControlBarTimer={() => {
+          moved = true;
+        }}
       />);
-
-    var screen = wrapper.find('.oo-playing-screen');
-    screen.simulate('mouseMove');
-    expect(moved).toBe(true);
-
-    screen.simulate('mouseOut');
-    expect(out).toBe(true);
 
     var screen1 = wrapper.find('.oo-interactive-container');
     screen1.simulate('touchEnd');
     expect(clicked).toBe(false);
-
-    screen.simulate('mouseOver');
-    expect(over).toBe(true);
   });
 
   it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp with video360 fullscreen', function() {
-    var over = false;
-    var out = false;
-    var moved = false;
     var clicked = false;
 
     mockController.state.videoVr = true;
     mockController.state.viewingDirection = {yaw: 0, roll: 0, pitch: 0};
 
-    mockController.startHideControlBarTimer = function() {
-      moved = true;
-    };
     mockController.togglePlayPause = function() {
       clicked = true;
-    };
-    mockController.showControlBar = function() {
-      over = true;
-    };
-    mockController.hideControlBar = function() {
-      out = true;
     };
 
     // Render pause screen into DOM
@@ -325,7 +301,6 @@ describe('PlayingScreen', function() {
         fullscreen={true}
         componentWidth={90}
         componentHeight={40}
-        controlBarAutoHide={true}
         closedCaptionOptions={closedCaptionOptions}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -338,24 +313,13 @@ describe('PlayingScreen', function() {
       yVrMouseStart: -20
     });
 
-    var screen = wrapper.find('.oo-playing-screen');
-
-    screen.at(0).simulate('mouseMove');
-    expect(moved).toBe(true);
-
-    screen.at(0).simulate('mouseOut');
-    expect(out).toBe(true);
-
-    screen.at(0).simulate('mouseOver');
-    expect(over).toBe(true);
-
     var screen1 = wrapper.find('.oo-interactive-container');
 
     screen1.simulate('touchEnd');
     expect(clicked).toBe(false);
   });
 
-  it('creates a PlayingScreen and check play&pause', function() {
+  it('creates a PlayingScreen and check play&pause on mobile with click', function() {
     var clicked = false;
     var isMouseMove = true;
 
@@ -386,76 +350,45 @@ describe('PlayingScreen', function() {
     var screen = wrapper.find('.oo-state-screen-selectable');
 
     screen.simulate('click');
-    expect(clicked).toBe(true);
+    expect(clicked).toBe(false);
     expect(isMouseMove).toBe(false);
+
+    screen.simulate('touchEnd');
+    expect(clicked).toBe(true);
   });
 
-  it('should show control bar when pressing the tab key', function() {
-    var autoHide = false;
-    var controlBar = false;
+  it('creates a PlayingScreen and check play&pause with click', function() {
+    var clicked = false;
+    var isMouseMove = true;
 
-    mockController.startHideControlBarTimer = function() {
-      autoHide = true;
+    mockController.state.videoVr = true;
+    mockController.state.isVrMouseDown = false;
+    mockController.state.isMouseMove = false;
+    mockController.togglePlayPause = function() {
+      clicked = !clicked;
     };
-    mockController.showControlBar = function() {
-      controlBar = true;
-    };
+    mockController.startHideControlBarTimer = function() {};
 
-    var wrapper = Enzyme.mount(
-      <PlayingScreen
-          controller = {mockController}
-          skinConfig={mockSkinConfig}
-          closedCaptionOptions = {closedCaptionOptions}
-          handleVrPlayerMouseUp={handleVrPlayerMouseUp}
-          playerState={CONSTANTS.STATE.PLAYING}
-      />);
-    var screen = wrapper.find('.oo-playing-screen');
-
-    screen.simulate('keyDown', {key: 'Tab', which: 9, keyCode: 9});
-    expect(autoHide && controlBar).toBe(true);
-  });
-
-  it('should show control bar when pressing the tab, space bar or enter key', function() {
-    var autoHide = false;
-    var controlBar = false;
-
-    mockController.startHideControlBarTimer = function() {
-      autoHide = true;
-    };
-    mockController.showControlBar = function() {
-      controlBar = true;
+    var handleVrPlayerClick = function() {
+      isMouseMove = false;
     };
 
+    // Render pause screen into DOM
     var wrapper = Enzyme.mount(
       <PlayingScreen
         controller = {mockController}
         skinConfig={mockSkinConfig}
         closedCaptionOptions = {closedCaptionOptions}
-        handleVrPlayerMouseUp = {handleVrPlayerMouseUp}
+        handleVrPlayerClick={handleVrPlayerClick}
+        handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
-      />);
-    var screen = wrapper.find('.oo-playing-screen');
+      />
+    );
+    var screen = wrapper.find('.oo-state-screen-selectable');
 
-    screen.simulate('keyDown', {key: 'Tab', which: 9, keyCode: 9});
-    expect(autoHide && controlBar).toBe(true);
-
-    autoHide = false;
-    controlBar = false;
-
-    screen.simulate('keyDown', {key: 'Enter', which: 13, keyCode: 13});
-    expect(autoHide && controlBar).toBe(true);
-
-    autoHide = false;
-    controlBar = false;
-
-    screen.simulate('keyDown', {key: ' ', which: 32, keyCode: 32});
-    expect(autoHide && controlBar).toBe(true);
-
-    autoHide = false;
-    controlBar = false;
-
-    screen.simulate('keyDown', {key: 'Dead', which: 16, keyCode: 16});
-    expect(autoHide && controlBar).toBe(false);
+    screen.simulate('click');
+    expect(clicked).toBe(true);
+    expect(isMouseMove).toBe(false);
   });
 
   it('tests playing screen componentWill*', function() {
@@ -470,7 +403,6 @@ describe('PlayingScreen', function() {
         controller = {mockController}
         skinConfig={mockSkinConfig}
         fullscreen = {true}
-        controlBarAutoHide={true}
         componentWidth={400}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -482,7 +414,6 @@ describe('PlayingScreen', function() {
         controller = {mockController}
         skinConfig={mockSkinConfig}
         fullscreen = {true}
-        controlBarAutoHide={true}
         componentWidth={800}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
@@ -537,7 +468,7 @@ describe('PlayingScreen', function() {
         playerState={CONSTANTS.STATE.PLAYING}
       />
     );
-    expect(wrapper.state('controlBarVisible')).toBe(true);
+    expect(wrapper.props().controller.state.controlBarVisible).toBe(true);
 
     mockController.state.controlBarVisible = false;
     wrapper = Enzyme.mount(
@@ -549,7 +480,7 @@ describe('PlayingScreen', function() {
         playerState={CONSTANTS.STATE.PLAYING}
       />
     );
-    expect(wrapper.state('controlBarVisible')).toBe(false);
+    expect(wrapper.props().controller.state.controlBarVisible).toBe(false);
   });
 
   it('should render skip controls when enabled in skin config', function() {
@@ -611,7 +542,7 @@ describe('PlayingScreen', function() {
     wrapper.simulate('mouseOver', {
       clientX: 50,
       clientY: 10
-    })
+    });
     wrapper.instance().onSkipControlsMount({
       top: 0,
       right: 100,

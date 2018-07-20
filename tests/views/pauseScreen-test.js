@@ -9,12 +9,13 @@ jest
 var React = require('react');
 var sinon = require('sinon');
 var Enzyme = require('enzyme');
-var PauseScreen = require('../../js/views/pauseScreen');
 var ClassNames = require('classnames');
 var skinConfig = require('../../config/skin.json');
 var SkipControls = require('../../js/components/skipControls');
 var Utils = require('../../js/components/utils');
 var CONSTANTS = require('../../js/constants/constants');
+
+import {PauseScreen} from '../../js/views/pauseScreen';
 
 describe('PauseScreen', function() {
   var mockController, mockContentTree, mockSkinConfig;
@@ -22,6 +23,7 @@ describe('PauseScreen', function() {
   beforeEach(function() {
     mockController = {
       state: {
+        controlBarVisible: true,
         isLiveStream: false,
         duration: 60,
         accessibilityControlsEnabled: false,
@@ -40,15 +42,17 @@ describe('PauseScreen', function() {
         },
         skipControls: {
           hasPreviousVideos: false,
-          hasNextVideos: false,
+          hasNextVideos: false
         },
         closedCaptionOptions: {},
         multiAudioOptions: {},
+        playbackSpeedOptions: { currentSpeed: 1 },
         videoQualityOptions: {
           availableBitrates: null
         }
       },
       addBlur: function() {},
+      removeBlur: function() {},
       cancelTimer: function() {},
       hideVolumeSliderBar: function() {},
       toggleMute: function() {},
@@ -87,6 +91,40 @@ describe('PauseScreen', function() {
     var pauseIcon = wrapper.find('.oo-action-icon-pause');
     pauseIcon.simulate('click');
     expect(clicked).toBe(true);
+
+    clicked = false;
+    wrapper.find('.oo-state-screen-selectable').simulate('click');
+    expect(clicked).toBe(true);
+  });
+
+  it('toggles play pause on touch end instead of click on mobile', function() {
+    var clicked = false;
+
+    mockController.state.isMobile = true;
+    mockController.togglePlayPause = function() {
+      clicked = true;
+    };
+
+    var handleVrPlayerClick = function() {};
+    // Render pause screen into DOM
+    var wrapper = Enzyme.mount(
+      <PauseScreen
+        skinConfig={mockSkinConfig}
+        controller={mockController}
+        contentTree={mockContentTree}
+        handleVrPlayerClick={handleVrPlayerClick}
+        closedCaptionOptions={{cueText: 'sample text'}}
+        playerState={CONSTANTS.STATE.PAUSE}
+      />
+    );
+
+    var stateScreen = wrapper.find('.oo-state-screen-selectable');
+
+    stateScreen.simulate('click');
+    expect(clicked).toBe(false);
+
+    stateScreen.simulate('touchEnd');
+    expect(clicked).toBe(true);
   });
 
   it('does show the fade underlay when there is a title', function() {
@@ -106,7 +144,7 @@ describe('PauseScreen', function() {
     );
 
     var underlay = wrapper.find('.oo-fading-underlay');
-    expect(spy.callCount).toBe(1);
+    expect(spy.callCount > 0).toBe(true);
     spy.restore();
   });
 
