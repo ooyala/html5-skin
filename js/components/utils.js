@@ -235,6 +235,50 @@ var Utils = {
   },
 
   /**
+   * Ensures that the given value is a valid playback speed by doing the following:
+   * - Defaulting to 1 for unparseable values
+   * - Constraining to max and min allowed playback speeds (done by default, but can be disabled)
+   * - Truncating to at most two decimals
+   * @private
+   * @param {*} playbackSpeed The playback speed value that we want to sanitize
+   * @param {Boolean} ignoreMinMax Will not constrain to minimum and maximum values when true
+   * @return {Number} A number which is the sanitized version of the value provided
+   */
+  sanitizePlaybackSpeed: function(playbackSpeed, ignoreMinMax) {
+    let sanitizedSpeed = this.ensureNumber(
+      playbackSpeed,
+      CONSTANTS.PLAYBACK_SPEED.DEFAULT_VALUE
+    );
+    if (!ignoreMinMax) {
+      // TODO:
+      // Read values from OO.CONSTANTS once these are available in html5-common
+      sanitizedSpeed = this.constrainToRange(
+        sanitizedSpeed,
+        CONSTANTS.PLAYBACK_SPEED.MIN,
+        CONSTANTS.PLAYBACK_SPEED.MAX
+      );
+    }
+    sanitizedSpeed = Utils.toFixedNumber(sanitizedSpeed, 2);
+    return sanitizedSpeed;
+  },
+
+  /**
+   * Removes duplicate values from an array.
+   * @private
+   * @param {Array} array The array that we want to dedupe
+   * @return {Array} A new array that contains only the unique values from the array parameter
+   */
+  dedupeArray: function(array) {
+    if (!Array.isArray(array)) {
+      return [];
+    }
+    var result = array.filter(function(element, index, array) {
+      return array.indexOf(element) === index;
+    });
+    return result;
+  },
+
+  /**
    * Determines whether a mouse cursor represented by its clientX and clientY
    * properties is inside a DOM element contained within the given DOMRect.
    * @function isMouseInsideRect
