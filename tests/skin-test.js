@@ -38,13 +38,19 @@ var skinControllerMock = {
       volume: 1,
       volumeSliderVisible: true
     },
-    videoQualityOptions: {},
+    videoQualityOptions: {
+      selectedBitrate: {
+        id: 'auto'
+      }
+    },
     multiAudioOptions: {},
     playbackSpeedOptions: { currentSpeed: 1 },
     closedCaptionOptions: {},
     config: {},
     moreOptionsItems: []
   },
+  addBlur: function() {},
+  removeBlur: function() {},
   setVolume: function() {},
   cancelTimer: function() {},
   setFocusedControl: function() {},
@@ -86,7 +92,8 @@ describe('Skin screenToShow state', function() {
       <Skin
         controller={controller}
         skinConfig={skinConfig}
-        responsiveView="md"
+        language="en"
+        localizableStrings={{}}
         closedCaptionOptions={{
           enabled: false,
           fontSize: 'Medium',
@@ -159,7 +166,10 @@ describe('Skin screenToShow state', function() {
     state.screenToShow = CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN;
     state.videoQualityOptions = {
       autoFocus: false,
-      availableBitrates: []
+      availableBitrates: [],
+      selectedBitrate: {
+        id: 'auto'
+      }
     };
     skin.switchComponent(state);
   });

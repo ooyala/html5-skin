@@ -199,7 +199,10 @@ var ControlBar = createReactClass({
   handleMenuToggleClick: function(menuOptionsId) {
     this.configureMenuAutofocus(menuOptionsId);
 
-    if (this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.xs.id) {
+    if (
+      this.props.controller.state.isMobile ||
+      this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.xs.id
+    ) {
       var screenToToggle = CONSTANTS.MENU_OPTIONS_SCREENS[menuOptionsId];
       this.props.controller.toggleScreen(screenToToggle);
     } else {
@@ -531,8 +534,8 @@ var ControlBar = createReactClass({
               closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}>
               <VideoQualityPanel
                 {...this.props}
-                closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
-                popover={true} />
+                onClose={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
+                isPopover={true} />
             </Popover>
           )}
         </div>
@@ -653,7 +656,7 @@ var ControlBar = createReactClass({
               closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
               closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}>
               <PlaybackSpeedPanel
-                isPopover
+                isPopover={true}
                 language={this.props.language}
                 localizableStrings={this.props.localizableStrings}
                 controller={this.props.controller}
@@ -769,8 +772,12 @@ var ControlBar = createReactClass({
       }
 
       if (
-        this.props.controller.state.isOoyalaAds &&
-        defaultItems[k].name === CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED
+        defaultItems[k].name === CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED &&
+        (
+          this.props.isLiveStream ||
+          this.props.controller.videoVr ||
+          this.props.controller.state.isOoyalaAds
+        )
       ) {
         continue;
       }
@@ -924,7 +931,7 @@ ControlBar.propTypes = {
   playerState: PropTypes.string,
   responsiveView: PropTypes.string,
   language: PropTypes.string,
-  localizableStrings: PropTypes.string,
+  localizableStrings: PropTypes.object,
   duration: PropTypes.number,
   currentPlayhead: PropTypes.number,
   componentWidth: PropTypes.number,

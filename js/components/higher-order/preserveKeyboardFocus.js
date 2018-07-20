@@ -5,7 +5,7 @@ const PropTypes = require('prop-types');
 
 /**
  * Extends a Component with the ability to store its focused element id in the
- * controller state and to restore said element's focus after the Compoment is re-mounted.
+ * controller state and to restore said element's focus after the Component is re-mounted.
  * This is mostly used for restoring keyboard focus after actions that cause components
  * to be unmounted and re-mounted, such as play/pause and moving to previous or next videos.
  *

@@ -5,6 +5,10 @@ const Utils = require('./utils');
 const CONSTANTS = require('../constants/constants');
 const MACROS = require('../constants/macros');
 
+/**
+ * Playback Speed options menu. This component is used for both the Popover and
+ * Screen modes of the menu.
+ */
 class PlaybackSpeedPanel extends React.Component {
 
   constructor(props) {
@@ -63,6 +67,7 @@ class PlaybackSpeedPanel extends React.Component {
 
     const menuItems = playbackSpeedOptions.map(option => {
       let itemLabel;
+      let ariaLabel;
 
       if (option === CONSTANTS.PLAYBACK_SPEED.DEFAULT_VALUE) {
         itemLabel = Utils.getLocalizedString(
@@ -70,14 +75,16 @@ class PlaybackSpeedPanel extends React.Component {
           CONSTANTS.SKIN_TEXT.NORMAL_SPEED,
           localizableStrings
         );
+        ariaLabel = CONSTANTS.ARIA_LABELS.NORMAL_SPEED;
       } else {
         itemLabel = `${option}x`;
+        ariaLabel = CONSTANTS.ARIA_LABELS.PLAYBACK_SPEED.replace(MACROS.RATE, option);
       }
 
       const menuItem = {
         value: option,
         label: itemLabel,
-        ariaLabel: CONSTANTS.ARIA_LABELS.PLAYBACK_SPEED.replace(MACROS.RATE, option)
+        ariaLabel: ariaLabel
       };
       return menuItem;
     });

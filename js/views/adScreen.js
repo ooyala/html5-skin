@@ -98,7 +98,7 @@ var AdScreen = createReactClass({
   },
 
   hideControlBar: function(event) {
-    if (this.props.controlBarAutoHide === true && !(this.isMobile && event)) {
+    if (this.props.skinConfig.controlBar.autoHide === true && !(this.isMobile && event)) {
       this.setState({ controlBarVisible: false });
       this.props.controller.hideControlBar();
     }

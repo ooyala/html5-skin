@@ -42,6 +42,6 @@
 
   .oo-content-screen-title-bar {
     padding: $panel-padding;
-    padding-bottom: 0;
+    padding-bottom: $panel-padding / 2;
   }
 }
