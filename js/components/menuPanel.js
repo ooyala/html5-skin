@@ -7,6 +7,18 @@ const PropTypes = require('prop-types');
 const Utils = require('./utils');
 const CONSTANTS = require('../constants/constants');
 
+/**
+ * Generic menu component that handles the rendering, accessibility and item selection
+ * of menus that have the following characteristics (such as the Video Quality or
+ * Playback Speed menus):
+ * - Can be displayed in both popover and fullscreen module
+ * - Display a single list of options
+ * - Only one option can be selected at a time
+ *
+ * This component only renders the menu itself, so it's meant to be used in conjunction
+ * with another component that renders the menu container, such as the Popover or
+ * ContentScreen components.
+ */
 class MenuPanel extends React.Component {
 
   constructor(props) {
@@ -36,17 +48,19 @@ class MenuPanel extends React.Component {
    * @return {Component} A MenuPanelItem component whose properties are mapped to the given menu item object
    */
   renderMenuItem(item = {}, selectedValue, accentColor) {
-    const { isPopover, skinConfig } = this.props;
+    const { buttonClassName, skinConfig } = this.props;
+    const isSelected = item.value === selectedValue;
 
     return (
       <MenuPanelItem
+        key={item.value}
         itemValue={item.value}
-        selectedValue={selectedValue}
         itemLabel={item.label}
         ariaLabel={item.ariaLabel}
+        buttonClassName={buttonClassName}
+        isSelected={isSelected}
         focusId={CONSTANTS.FOCUS_IDS.MENU_ITEM + item.value}
         accentColor={accentColor}
-        showCheckmark={isPopover}
         skinConfig={skinConfig}
         onClick={this.onMenuItemClick} />
     );
@@ -55,6 +69,7 @@ class MenuPanel extends React.Component {
   render() {
     const {
       className,
+      contentClassName,
       title,
       selectedValue,
       isPopover,
@@ -77,7 +92,7 @@ class MenuPanel extends React.Component {
       <div className={menuClassName}>
 
         <CustomScrollArea
-          className="oo-menu-panel-content"
+          className={classNames('oo-menu-panel-content', contentClassName)}
           speed={isPopover ? CONSTANTS.UI.POPOVER_SCROLL_RATE : 1}>
 
           {title &&
@@ -99,6 +114,8 @@ class MenuPanel extends React.Component {
 
 MenuPanel.propTypes = {
   className: PropTypes.string,
+  contentClassName: PropTypes.string,
+  buttonClassName: PropTypes.string,
   title: PropTypes.string,
   selectedValue: PropTypes.string.isRequired,
   isPopover: PropTypes.bool,

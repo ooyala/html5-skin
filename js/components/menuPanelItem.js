@@ -5,24 +5,26 @@ const classNames = require('classnames');
 const PropTypes = require('prop-types');
 const CONSTANTS = require('../constants/constants');
 
+/**
+ * Presentational component that handles the rendering of the menu items that
+ * are used by the MenuPanel component. Also handles styling of selected items
+ * and click logic.
+ */
 const MenuPanelItem = ({
   itemValue,
-  selectedValue,
   itemLabel,
   ariaLabel,
+  buttonClassName,
+  isSelected,
   focusId,
   accentColor,
-  showCheckmark,
   skinConfig,
   onClick,
 }) => {
-  const isSelected = itemValue === selectedValue;
-  const showSelectedIcon = !showCheckmark && isSelected;
-
   const itemClassName = classNames('oo-menu-panel-item', {
     'oo-selected': isSelected
   });
-  const buttonClassName = classNames('oo-menu-btn', {
+  const itemButtonClassName = classNames('oo-menu-btn', buttonClassName, {
     'oo-selected': isSelected
   });
   const buttonStyle = {
@@ -31,11 +33,10 @@ const MenuPanelItem = ({
 
   return (
     <li
-      key={itemValue}
       className={itemClassName}
       role="presentation">
       <AccessibleButton
-        className={buttonClassName}
+        className={itemButtonClassName}
         style={buttonStyle}
         focusId={focusId}
         role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
@@ -43,13 +44,13 @@ const MenuPanelItem = ({
         ariaChecked={isSelected}
         onClick={() => onClick(itemValue)}>
 
-        {showSelectedIcon &&
+        {isSelected &&
           <Icon
             skinConfig={skinConfig}
             icon="selected" />
         }
 
-        <span>{itemLabel}</span>
+        <span className="oo-menu-btn-label">{itemLabel}</span>
 
       </AccessibleButton>
     </li>
@@ -58,12 +59,12 @@ const MenuPanelItem = ({
 
 MenuPanelItem.propTypes = {
   itemValue: PropTypes.string.isRequired,
-  selectedValue: PropTypes.string.isRequired,
   itemLabel: PropTypes.string.isRequired,
   ariaLabel: PropTypes.string.isRequired,
+  buttonClassName: PropTypes.string,
+  isSelected: PropTypes.bool.isRequired,
   focusId: PropTypes.string.isRequired,
   accentColor: PropTypes.string,
-  showCheckmark: PropTypes.bool,
   skinConfig: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired,
 };

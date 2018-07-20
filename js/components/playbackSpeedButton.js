@@ -13,7 +13,7 @@ class PlaybackSpeedButton extends React.Component {
       'state.playbackSpeedOptions.currentSpeed',
       1
     );
-    const ariaLabel = CONSTANTS.ARIA_LABELS.PLAYBACK_SPEED.replace(MACROS.RATE, currentSpeed);
+    const ariaLabel = CONSTANTS.ARIA_LABELS.PLAYBACK_SPEED_OPTION;
 
     return (
       <ControlButton

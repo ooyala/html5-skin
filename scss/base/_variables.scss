@@ -35,8 +35,10 @@ $panel-bg:                   rgba($black, 0.7) !default;
 $control-bar-bg:             rgba($black, 0.3) !default;
 $text-track-bg:              rgba($black, 0.8) !default;
 $ad-top-bar-bg:              rgba($black, 0.5) !default;
-$popover-bg:                 rgba(26, 26, 26, 0.8) !default;
+$popover-bg:                 rgba(26, 26, 26, 0.7) !default;
 $scrollbar-bg:               #545456 !default;
+$selected-menu-item-bg:      rgba(36, 40, 42, 0.7) !default;
+$hover-menu-item-bg:         rgba(36, 40, 42, 0.3) !default;
 //
 //
 //// Links

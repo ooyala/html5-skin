@@ -46,7 +46,10 @@ describe('ControlBar', function() {
         multiAudioOptions: {},
         playbackSpeedOptions: { currentSpeed: 1 },
         videoQualityOptions: {
-          availableBitrates: null
+          availableBitrates: null,
+          selectedBitrate: {
+            id: 'auto'
+          }
         }
       },
       cancelTimer: function() {},
@@ -61,6 +64,8 @@ describe('ControlBar', function() {
       isLiveStream: false,
       controller: baseMockController,
       skinConfig: JSON.parse(JSON.stringify(defaultSkinConfig)),
+      language: 'en',
+      localizableStrings: {},
       closedCaptionOptions: {}
     };
   });
@@ -420,6 +425,7 @@ describe('ControlBar', function() {
         controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSE}
+        videoQualityOptions={baseMockController.state.videoQualityOptions}
         isLiveStream={baseMockProps.isLiveStream} />
     );
 
@@ -453,6 +459,7 @@ describe('ControlBar', function() {
         controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSE}
+        videoQualityOptions={baseMockController.state.videoQualityOptions}
         isLiveStream={baseMockProps.isLiveStream} />
     );
 
