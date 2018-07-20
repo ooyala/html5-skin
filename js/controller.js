@@ -731,7 +731,22 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * @param {Number} playbackSpeed A number that represents the new playback rate
      */
     onPlaybackSpeedChanged: function(eventName, videoId, playbackSpeed) {
-      playbackSpeed = Utils.ensureNumber(playbackSpeed, 1);
+      // Note that we don't constrain to min/max values in this case since
+      // the new speed is already set, but we make sure that the value we get can
+      // be displayed in a user-friendly way
+      playbackSpeed = Utils.sanitizePlaybackSpeed(playbackSpeed, true);
+      // Add speed to options if it's not one of the predefined values
+      var playbackSpeedOptions = Utils.getPropertyValue(
+        this.skin,
+        'props.skinConfig.playbackSpeed.options'
+      );
+      if (
+        playbackSpeedOptions &&
+        playbackSpeedOptions.indexOf(playbackSpeed) < 0
+      ) {
+        playbackSpeedOptions.push(playbackSpeed);
+      }
+      // Store new current speed and update UI
       this.state.playbackSpeedOptions.currentSpeed = playbackSpeed;
       this.renderSkin();
     },
