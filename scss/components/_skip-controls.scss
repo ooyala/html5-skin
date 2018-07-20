@@ -3,9 +3,9 @@
   $oo-skip-controls-btn-size: 1.52em;
   @include flex-center-children(row);
   @include absolute-center;
+  @include vendor-prefixes (transition, $fade-up-transition);
   font-size: 14px;
   pointer-events: none;
-  transition: 0.2s opacity ease-in-out, 0.3s transform ease-in-out;
   will-change: transform, opacity;
 
   &.oo-inactive {

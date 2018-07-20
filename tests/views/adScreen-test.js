@@ -38,6 +38,9 @@ describe('AdScreen', function() {
       },
       icons: {
         pause: {'fontStyleClass': 'oo-icon oo-icon-pause'}
+      },
+      controlBar: {
+        autoHide: true
       }
     };
   });
@@ -64,7 +67,6 @@ describe('AdScreen', function() {
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
-        controlBarAutoHide={true}
       />);
 
     expect(wrapper.instance().state.controlBarVisible).toBe(true);
@@ -85,7 +87,6 @@ describe('AdScreen', function() {
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
-        controlBarAutoHide={true}
       />);
 
     var adPanel = wrapper.find('.oo-ad-panel');
@@ -99,7 +100,6 @@ describe('AdScreen', function() {
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
-        controlBarAutoHide={true}
       />);
 
     var adPanel1 = wrapper.find('.oo-ad-panel');
@@ -113,7 +113,6 @@ describe('AdScreen', function() {
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
-        controlBarAutoHide={true}
       />);
 
     var adPanel2 = wrapper.find('.oo-ad-panel');
@@ -138,7 +137,6 @@ describe('AdScreen', function() {
         playerState={"playing"}
         controller={mockController}
         skinConfig={mockSkinConfig}
-        controlBarAutoHide={true}
         fullscreen={true}
       />);
 

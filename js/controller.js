@@ -842,6 +842,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     onInitialPlay: function() {
       this.state.isInitialPlay = true;
       this.state.initialPlayHasOccurred = true;
+      //TODO: Why do we start a hide-control-bar timer here?
       this.startHideControlBarTimer();
       if (this.videoVr) {
         this.vrMobileOrientationChecked = true;
@@ -2530,13 +2531,21 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     showControlBar: function() {
+      var oldState = this.state.controlBarVisible;
       this.state.controlBarVisible = true;
+      if (this.state.controlBarVisible !== oldState) {
+        this.renderSkin();
+      }
     },
 
     hideControlBar: function() {
+      var oldState = this.state.controlBarVisible;
       this.state.controlBarVisible = false;
       if (Utils.isAndroid()) {
         this.hideVolumeSliderBar();
+      }
+      if (this.state.controlBarVisible !== oldState) {
+        this.renderSkin();
       }
     },
 

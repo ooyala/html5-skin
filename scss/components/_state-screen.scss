@@ -8,6 +8,7 @@
     @extend .oo-expand;
     background-color: #1a1a1a;
     opacity: 0;
+    transition: 0.2s opacity ease-in-out;
   }
   .oo-fading-underlay-active {
     @extend .oo-expand;
@@ -74,11 +75,17 @@
   }
 
   .oo-state-screen-info {
+    @include vendor-prefixes (transition, $fade-up-transition);
     pointer-events: none;
     position: absolute;
     width: 100%;
     top: 5%;
     left: 5%;
+
+    &.oo-inactive {
+      opacity: 0;
+      transform: translateY(-90%);
+    }
 
     .oo-state-screen-title {
       font-size: $font-size-md-screen-title; //this.props.skinConfig.startScreen.titleFont.fontSize
