@@ -211,7 +211,7 @@ describe('PlayingScreen', function() {
     expect(clicked).toBe(true);
   });
 
-////********
+  //TODO: Add onTouchMove testing by event (in the current version of JEST it does not simulate)
   it('creates a PlayingScreen, move video and checks touchEnd', function() {
     var isTouchEnd = false;
     var isTouchStart = false;
