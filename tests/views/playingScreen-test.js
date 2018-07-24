@@ -96,8 +96,8 @@ describe('PlayingScreen', function() {
   });
 
   it('creates a PlayingScreen and checks mouseMove, mouseUp without video360', function() {
-    var isMoved = false
-      , isTouched = false;
+    var isMoved = false,
+        isTouched = false;
 
     mockController.state.videoVr = false;
     mockController.startHideControlBarTimer = function() {
@@ -191,7 +191,7 @@ describe('PlayingScreen', function() {
     };
     mockController.startHideControlBarTimer = function() {};
 
-    var handleVrPlayerMouseUp = function() {
+    var handleVrPlayerMouseUp = function(e) {
       isInHandleTouchEnd = true;
     };
 
@@ -210,6 +210,50 @@ describe('PlayingScreen', function() {
     expect(isInHandleTouchEnd).toBe(true);
     expect(clicked).toBe(true);
   });
+
+  //TODO: Add onTouchMove testing by event (in the current version of JEST it does not simulate)
+  it('creates a PlayingScreen, move video and checks touchEnd', function() {
+    var isTouchEnd = false;
+    var isTouchStart = false;
+    var clicked = false;
+
+    mockController.state.videoVr = false;
+    mockController.state.isMobile = true;
+    mockController.togglePlayPause = function() {
+      clicked = true;
+    };    
+
+    var onTouchEnd = function(e) {
+        isTouchEnd = true;
+    };
+    var onTouchStart = function(e) {
+      isTouchStart = true;
+    }
+    var onTouchMove = function(e) {}
+
+    // Render pause screen into DOM
+    var wrapper = Enzyme.mount(
+        <PlayingScreen
+            controller={mockController}
+            skinConfig={mockSkinConfig}
+            closedCaptionOptions={closedCaptionOptions}
+            handleVrPlayerMouseDown={onTouchStart}
+            handleVrPlayerMouseMove={onTouchMove}
+            handleVrPlayerMouseUp={onTouchEnd}
+            playerState={CONSTANTS.STATE.PLAYING}
+        />);
+
+    var screen = wrapper.find('.oo-state-screen-selectable');
+
+    screen.simulate('touchStart');
+    screen.simulate('touchMove');
+    screen.simulate('touchEnd');
+    
+    expect(isTouchStart).toBe(true);
+    expect(isTouchEnd).toBe(true);
+    expect(clicked).toBe(true);
+  });
+
 
   it('creates a PlayingScreen and checks mouseMove, mouseOver, mouseOut, keyUp without video360 fullscreen', function() {
     var clicked = false;

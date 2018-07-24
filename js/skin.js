@@ -10,7 +10,8 @@ var ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel
 var DiscoveryPanel = require('./components/discoveryPanel');
 var VideoQualityPanel = require('./components/videoQualityPanel');
 var PlaybackSpeedPanel = require('./components/playbackSpeedPanel');
-var ClosedCaptionMultiAudioMenu = require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
+var ClosedCaptionMultiAudioMenu = 
+  require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
 var SharePanel = require('./components/sharePanel');
 var MoreOptionsPanel = require('./components/moreOptionsPanel');
 var AdScreen = require('./views/adScreen');
@@ -137,14 +138,18 @@ var Skin = createReactClass({
   /**
    * @public
    * @description the function is called when we stop the rotation
+   * @param {MouseEvent} event - mouse or touch event
    */
-  handleVrPlayerMouseUp: function() {
+  handleVrPlayerMouseUp: function(event) {
     if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
+
     if (this.props.controller && this.props.controller.videoVr) {
       var isVrMouseMove = this.state.isVrMouseMove;
-      if (Utils.isIos()) {
+      var isTouchEnd = typeof event === 'object' && event.type === 'touchend';
+
+      if (isTouchEnd) {
         isVrMouseMove = false; // for the opportunity to stop video on iPhone by touching on the screen
       }
       this.setState({
@@ -190,13 +195,13 @@ var Skin = createReactClass({
    * @description get direction params.
    * Direction params are values for new position of a vr video (yaw, roll=0, pitch)
    * @private
-   * @param {number} pageX - x coordinate
-   * @param {number} pageY - y coordinate
+   * @param {number} _pageX - x coordinate
+   * @param {number} _pageY - y coordinate
    * @returns {[number, number, number]} array with yaw, roll, pitch
    */
-  getDirectionParams: function(pageX, pageY) {
-    pageX = Utils.ensureNumber(pageX, 0);
-    pageY = Utils.ensureNumber(pageY, 0);
+  getDirectionParams: function(_pageX, _pageY) {
+    var pageX = Utils.ensureNumber(_pageX, 0);
+    var pageY = Utils.ensureNumber(_pageY, 0);
     var dx = pageX - this.state.xVrMouseStart;
     var dy = pageY - this.state.yVrMouseStart;
     var maxDegreesX = 90;
