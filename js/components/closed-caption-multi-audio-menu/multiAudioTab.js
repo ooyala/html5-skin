@@ -28,7 +28,7 @@ var MultiAudioTab = createReactClass({
             SPECIAL_LANGUAGES_MAP
           );
         } else {
-          displayLanguage = helpers.getDisplayLanguage(OO.LANGUAGE_LIST, audioTrack.lang);
+          displayLanguage = helpers.getDisplayLanguage(this.props.languageList, audioTrack.lang);
         }
 
         var displayLabel = helpers.getDisplayLabel(audioTrack);
@@ -79,6 +79,7 @@ MultiAudioTab.propTypes = {
 
   handleClick: PropTypes.func,
   language: PropTypes.string,
+  languageList: PropTypes.array,
   localizableStrings: PropTypes.object
 };
 

@@ -1,7 +1,6 @@
 jest.dontMock('../../../js/components/closed-caption-multi-audio-menu/helpers');
 jest.dontMock('../../../js/constants/constants');
 jest.dontMock('../../../js/components/utils');
-jest.dontMock('../../../html5-common/js/utils/languages');
 jest.dontMock('underscore');
 
 var React = require('react');
@@ -9,7 +8,22 @@ var _ = require('underscore');
 var Enzyme = require('enzyme');
 
 var helpers = require('../../../js/components/closed-caption-multi-audio-menu/helpers');
-var LANGUAGE_CONSTANTS = require('../../../html5-common/js/utils/languages');
+
+const LANGUAGE_LIST = [{
+  '1': 'en',
+  '3': 'eng',
+  'name': 'English',
+  '2B': 'eng',
+  '2T': '',
+  'local': 'English'
+},{
+  '1': 'de',
+  '3': 'deu',
+  'name': 'German',
+  '2B': 'ger',
+  '2T': 'deu',
+  'local': 'Deutsch'
+}];
 
 describe('closed caption & multi-audio helpers', function() {
   describe('getDisplayLanguage function', function() {
@@ -22,10 +36,10 @@ describe('closed caption & multi-audio helpers', function() {
     });
 
     it('should return matched english equivalent', function() {
-      expect(helpers.getDisplayLanguage(LANGUAGE_CONSTANTS, 'eng')).toEqual('English');
-      expect(helpers.getDisplayLanguage(LANGUAGE_CONSTANTS, 'en')).toEqual('English');
-      expect(helpers.getDisplayLanguage(LANGUAGE_CONSTANTS, 'ger')).toEqual('Deutsch');
-      expect(helpers.getDisplayLanguage(LANGUAGE_CONSTANTS, 'deu')).toEqual('Deutsch');
+      expect(helpers.getDisplayLanguage(LANGUAGE_LIST, 'eng')).toEqual('English');
+      expect(helpers.getDisplayLanguage(LANGUAGE_LIST, 'en')).toEqual('English');
+      expect(helpers.getDisplayLanguage(LANGUAGE_LIST, 'ger')).toEqual('Deutsch');
+      expect(helpers.getDisplayLanguage(LANGUAGE_LIST, 'deu')).toEqual('Deutsch');
     });
   });
 

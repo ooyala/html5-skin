@@ -914,11 +914,19 @@ describe('Controller', function() {
     });
 
     it('MultiAudio State should be null after embed code was changed', function() {
-      var obj = {};
+      let obj = {};
+      let obj2 = {tracks: [], languageList: [1,2,3]};
       controller.onMultiAudioFetched('event', obj);
-      expect(controller.state.multiAudio).toBe(obj);
+      expect(controller.state.multiAudio).toBe(null);
+      expect(controller.languageList).toEqual([]);
+
+      controller.onMultiAudioFetched('event', obj2);
+      expect(controller.state.multiAudio).toEqual({tracks: obj2.tracks});
+      expect(controller.languageList).toEqual(obj2.languageList);
+
       controller.onEmbedCodeChanged('newEmbedCode');
       expect(controller.state.multiAudio).toBe(null);
+      expect(controller.languageList).toEqual(obj2.languageList);
     });
 
     it('Calling of setCurrentAudio should throw SET_CURRENT_AUDIO event with id', function() {
@@ -972,13 +980,15 @@ describe('Controller', function() {
     });
 
     it('should check if the icon exists if hideMultiAudioIcon is false', function() {
-      controller.onMultiAudioFetched('event', true);
-      expect(controller.state.multiAudio).toBe(true);
+      let obj = {tracks: [1,2,3]};
+      controller.onMultiAudioFetched('event', obj);
+      expect(controller.state.multiAudio).toEqual(obj);
     });
 
     it('should check if the icon not exists if hideMultiAudioIcon is true', function() {
       controller.state.hideMultiAudioIcon = true;
-      controller.onMultiAudioFetched('event', true);
+      let obj = {tracks: [1,2,3]};
+      controller.onMultiAudioFetched('event', obj);
       expect(controller.state.multiAudio).toBe(null);
     });
 

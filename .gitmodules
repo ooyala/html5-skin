@@ -1,6 +1,4 @@
 [submodule "config"]
 	path = config
 	url = https://github.com/ooyala/skin-config.git
-[submodule "html5-common"]
-	path = html5-common
-	url = https://github.com/ooyala/html5-common
+
