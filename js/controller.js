@@ -1088,7 +1088,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * The function is called when event MULTI_AUDIO_FETCHED was caught;
      * The function sets value for this.state.multiAudio
      * @param {String} event  name of a event
-     * @param {Array} multiAudio - audio which fetched for the current video
+     * @param {Object} multiAudio - audio which fetched for the current video
      * @param {Array} multiAudio.tracks - list of objects with data for each audio
      * @param {Array} multiAudio.languageList - list of objects with all languages
      */
@@ -1101,7 +1101,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
             multiAudioValue = { tracks: multiAudio.tracks };
           }
           this.state.multiAudio = multiAudioValue;
-          this.languageList = multiAudio.languageList || [];
+          this.languageList = multiAudio.languageList || this.languageList;
         }
         this.renderSkin();
       }
