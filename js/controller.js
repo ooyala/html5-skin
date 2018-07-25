@@ -40,6 +40,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     this.isVrStereo = false;
     this.toggleButtons = {};
     this.handleVrMobileOrientation = this.handleVrMobileOrientation.bind(this);
+    this.languageList = [];
     this.state = {
       playerParam: {},
       skinMetaData: {},
@@ -245,7 +246,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi', _.bind(this.onMultiAudioChanged, this));
-      this.mb.subscribe(OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED, 'customerUi', _.bind(this.onPositionInPlaylistDetermined, this));
+      this.mb.subscribe(
+        OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED,
+        'customerUi',
+        _.bind(this.onPositionInPlaylistDetermined, this)
+      );
       this.mb.subscribe(OO.EVENTS.ERROR, 'customerUi', _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -295,7 +300,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         );
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, 'customerUi', _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.MUTE_STATE_CHANGED, 'customerUi', _.bind(this.onMuteStateChanged, this));
-        this.mb.subscribe(OO.EVENTS.PLAYBACK_SPEED_CHANGED, 'customerUi', _.bind(this.onPlaybackSpeedChanged, this));
+        this.mb.subscribe(
+          OO.EVENTS.PLAYBACK_SPEED_CHANGED,
+          'customerUi',
+          _.bind(this.onPlaybackSpeedChanged, this)
+        );
         this.mb.subscribe(
           OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS,
           'customerUi',
@@ -866,7 +875,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     onVcPlay: function(event, source) {
       this.state.currentVideoId = source;
-      if (this.state.adWasPaused && this.state.currentAdsInfo && this.state.currentAdsInfo.currentAdItem && this.state.currentAdsInfo.currentAdItem.ssai) {
+      if (this.state.adWasPaused &&
+        this.state.currentAdsInfo &&
+        this.state.currentAdsInfo.currentAdItem &&
+        this.state.currentAdsInfo.currentAdItem.ssai) {
         this.state.adPauseDuration = Date.now() - this.state.adPausedTime;
         //we calculate new ad end time, based on the time that the ad was paused.
         this.state.adEndTime = this.state.adEndTime + this.state.adPauseDuration; //milliseconds
@@ -963,7 +975,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         // must be unpaused to resume
         this.state.config.adScreen.showControlBar = true;
         this.state.adPauseAnimationDisabled = false;
-        if (this.state.currentAdsInfo && this.state.currentAdsInfo.currentAdItem && this.state.currentAdsInfo.currentAdItem.ssai) {
+        if (this.state.currentAdsInfo &&
+          this.state.currentAdsInfo.currentAdItem &&
+          this.state.currentAdsInfo.currentAdItem.ssai) {
           this.state.adWasPaused = true;
           this.state.adPausedTime = Date.now(); //milliseconds
         }
@@ -1074,13 +1088,21 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * The function is called when event MULTI_AUDIO_FETCHED was caught;
      * The function sets value for this.state.multiAudio
      * @param {String} event  name of a event
-     * @param {Object} multiAudio  - audio which fetched for the current video
+     * @param {Object} multiAudio - audio which fetched for the current video
      * @param {Array} multiAudio.tracks - list of objects with data for each audio
+     * @param {Array} multiAudio.languageList - list of objects with all languages
      */
     onMultiAudioFetched: function(event, multiAudio) {
       if (!this.state.hideMultiAudioIcon) {
         // if param hideMultiAudioIcon is set to false
-        this.state.multiAudio = multiAudio;
+        if (typeof multiAudio !== 'undefined') {
+          let multiAudioValue = null;
+          if (multiAudio.tracks) {
+            multiAudioValue = { tracks: multiAudio.tracks };
+          }
+          this.state.multiAudio = multiAudioValue;
+          this.languageList = multiAudio.languageList || this.languageList;
+        }
         this.renderSkin();
       }
     },
@@ -1465,17 +1487,24 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * Returns ad remaining time that will be displayed in ad marquee
      * when playing ads.
      * @private
+     * @returns {Number} remainingTime
      */
     getAdRemainingTime: function() {
       var remainingTime = 0;
 
-      var isLive = (this.state.currentAdsInfo.currentAdItem) ? this.state.currentAdsInfo.currentAdItem.isLive : false;
-      var isSSAI = (this.state.currentAdsInfo.currentAdItem) ? this.state.currentAdsInfo.currentAdItem.ssai : false;
+      var isLive = this.state.currentAdsInfo.currentAdItem ?
+        this.state.currentAdsInfo.currentAdItem.isLive
+        :
+        false;
+      var isSSAI = this.state.currentAdsInfo.currentAdItem ?
+        this.state.currentAdsInfo.currentAdItem.ssai
+        :
+        false;
 
       if (isLive) {
         remainingTime = parseInt((this.state.adStartTime + this.state.adVideoDuration - Date.now()) / 1000);
         if (isSSAI) {
-          if (this.state.playerState != CONSTANTS.STATE.PAUSE){
+          if (this.state.playerState !== CONSTANTS.STATE.PAUSE) {
             remainingTime = (this.state.adEndTime - Date.now()) / 1000;
           } else {
             remainingTime = (this.state.adEndTime - this.state.adPausedTime) / 1000;
@@ -2360,7 +2389,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
       // validate language is available before update and save
       if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
-        this.state.closedCaptionOptions.language = this.state.persistentSettings.closedCaptionOptions.language = language;
+        this.state.closedCaptionOptions.language =
+          this.state.persistentSettings.closedCaptionOptions.language = language;
         var captionLanguage = this.state.closedCaptionOptions.enabled ? language : '';
         var mode = this.state.closedCaptionOptions.enabled
           ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN

@@ -92,6 +92,7 @@ var ClosedCaptionMultiAudioMenu = createReactClass({
           skinConfig={this.props.skinConfig}
           audioTracksList={this.props.controller.state.multiAudio.tracks}
           language={this.props.language}
+          languageList={this.props.controller.languageList}
           localizableStrings={this.props.localizableStrings}
         />
       );
@@ -146,7 +147,8 @@ ClosedCaptionMultiAudioMenu.propTypes = {
       multiAudio: PropTypes.shape({
         tracks: PropTypes.array
       })
-    })
+    }),
+    languageList: PropTypes.array
   })
 };
 
