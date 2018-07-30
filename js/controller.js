@@ -192,6 +192,13 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         enabled: null,
         showPopover: false,
         autoFocus: false
+      },
+
+      deviceOrientation: {
+        allow: false,
+        alpha: 0,
+        beta: 0,
+        gamma: 0
       }
     };
 
@@ -245,7 +252,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi', _.bind(this.onMultiAudioChanged, this));
-      this.mb.subscribe(OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED, 'customerUi', _.bind(this.onPositionInPlaylistDetermined, this));
+      this.mb.subscribe(OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED, 'customerUi',
+        _.bind(this.onPositionInPlaylistDetermined, this));
       this.mb.subscribe(OO.EVENTS.ERROR, 'customerUi', _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -294,8 +302,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           _.bind(this.onChangeClosedCaptionLanguage, this)
         );
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, 'customerUi', _.bind(this.onVolumeChanged, this));
-        this.mb.subscribe(OO.EVENTS.MUTE_STATE_CHANGED, 'customerUi', _.bind(this.onMuteStateChanged, this));
-        this.mb.subscribe(OO.EVENTS.PLAYBACK_SPEED_CHANGED, 'customerUi', _.bind(this.onPlaybackSpeedChanged, this));
+        this.mb.subscribe(OO.EVENTS.MUTE_STATE_CHANGED, 'customerUi',
+          _.bind(this.onMuteStateChanged, this));
+        this.mb.subscribe(OO.EVENTS.PLAYBACK_SPEED_CHANGED, 'customerUi',
+          _.bind(this.onPlaybackSpeedChanged, this));
         this.mb.subscribe(
           OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS,
           'customerUi',
@@ -489,6 +499,26 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         }
         this.checkDeviceOrientation = false;
       }
+
+      // for Ads
+       
+      // mobile device detected
+      this.state.deviceOrientation.allow = true;
+      // current position of device
+      if(!this.state.deviceOrientation.freeze) {
+        this.state.deviceOrientation.alpha = e.alpha;
+        this.state.deviceOrientation.beta = e.beta;
+        this.state.deviceOrientation.gamma = e.gamma;
+      }
+
+      // init position cache
+      if(!this.state.deviceOrientation.lastValue) {
+        this.state.deviceOrientation.lastValue = {
+          alpha: e.alpha,
+          beta: e.beta,
+          gamma: e.gamma
+        };
+      }      
     },
 
     onClearVideoType: function(event, params) {
@@ -851,7 +881,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     onVcPlay: function(event, source) {
       this.state.currentVideoId = source;
-      if (this.state.adWasPaused && this.state.currentAdsInfo && this.state.currentAdsInfo.currentAdItem && this.state.currentAdsInfo.currentAdItem.ssai) {
+      if (this.state.adWasPaused && this.state.currentAdsInfo && this.state.currentAdsInfo.currentAdItem && 
+        this.state.currentAdsInfo.currentAdItem.ssai) {
         this.state.adPauseDuration = Date.now() - this.state.adPausedTime;
         //we calculate new ad end time, based on the time that the ad was paused.
         this.state.adEndTime = this.state.adEndTime + this.state.adPauseDuration; //milliseconds
@@ -948,7 +979,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         // must be unpaused to resume
         this.state.config.adScreen.showControlBar = true;
         this.state.adPauseAnimationDisabled = false;
-        if (this.state.currentAdsInfo && this.state.currentAdsInfo.currentAdItem && this.state.currentAdsInfo.currentAdItem.ssai) {
+        if (this.state.currentAdsInfo && this.state.currentAdsInfo.currentAdItem && 
+          this.state.currentAdsInfo.currentAdItem.ssai) {
           this.state.adWasPaused = true;
           this.state.adPausedTime = Date.now(); //milliseconds
         }
@@ -1262,6 +1294,24 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       // In case ad was skipped or errored while stalled
       this.setBufferingState(false);
       this.renderSkin();
+
+      // restore video360 pos by deviceOrientation changes (only for mobile devices)
+      // It's uses after video 360 was moved by device motion, after ads playback
+      if(this.state.deviceOrientation.allow) {
+        var orientationType = Utils.getOrientationType();
+        var params = [0, 0, 0];
+
+        params[0] = this.state.deviceOrientation.alpha;
+        params[2] = orientationType === 'landscape-primary' ? 
+          this.state.deviceOrientation.beta : 
+          this.state.deviceOrientation.gamma;
+
+        // To apply there need a time gap
+        setTimeout(function() {
+          this.onTouchMove(params);
+          this.state.deviceOrientation.freeze = false;
+        }.bind(this));        
+      }
     },
 
     onWillPlayAds: function(event) {
@@ -1286,6 +1336,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       OO.log('onAdPodStarted is called from event = ' + event + ' with ' + numberOfAds + ' ads');
       this.state.currentAdsInfo.numberOfAds = numberOfAds;
       this.renderSkin();
+      // whilew ads playing - device rotation freeze
+      this.state.deviceOrientation.freeze = true;
     },
 
     onWillPlaySingleAd: function(event, adItem) {
@@ -1450,17 +1502,22 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * Returns ad remaining time that will be displayed in ad marquee
      * when playing ads.
      * @private
+     * @returns {Integer} remainingTime
      */
     getAdRemainingTime: function() {
       var remainingTime = 0;
 
-      var isLive = (this.state.currentAdsInfo.currentAdItem) ? this.state.currentAdsInfo.currentAdItem.isLive : false;
-      var isSSAI = (this.state.currentAdsInfo.currentAdItem) ? this.state.currentAdsInfo.currentAdItem.ssai : false;
+      var isLive = (this.state.currentAdsInfo.currentAdItem) ? 
+            this.state.currentAdsInfo.currentAdItem.isLive : 
+            false;
+      var isSSAI = (this.state.currentAdsInfo.currentAdItem) ? 
+            this.state.currentAdsInfo.currentAdItem.ssai : 
+            false;
 
       if (isLive) {
         remainingTime = parseInt((this.state.adStartTime + this.state.adVideoDuration - Date.now()) / 1000);
         if (isSSAI) {
-          if (this.state.playerState != CONSTANTS.STATE.PAUSE){
+          if (this.state.playerState !== CONSTANTS.STATE.PAUSE) {
             remainingTime = (this.state.adEndTime - Date.now()) / 1000;
           } else {
             remainingTime = (this.state.adEndTime - this.state.adPausedTime) / 1000;
@@ -2345,7 +2402,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
       // validate language is available before update and save
       if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
-        this.state.closedCaptionOptions.language = this.state.persistentSettings.closedCaptionOptions.language = language;
+        this.state.closedCaptionOptions.language = 
+          this.state.persistentSettings.closedCaptionOptions.language = language;
         var captionLanguage = this.state.closedCaptionOptions.enabled ? language : '';
         var mode = this.state.closedCaptionOptions.enabled
           ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN
