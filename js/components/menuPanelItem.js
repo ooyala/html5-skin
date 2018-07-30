@@ -58,7 +58,10 @@ const MenuPanelItem = ({
 };
 
 MenuPanelItem.propTypes = {
-  itemValue: PropTypes.string.isRequired,
+  itemValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]).isRequired,
   itemLabel: PropTypes.string.isRequired,
   ariaLabel: PropTypes.string.isRequired,
   buttonClassName: PropTypes.string,

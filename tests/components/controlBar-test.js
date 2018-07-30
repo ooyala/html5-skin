@@ -9,6 +9,7 @@ jest
 .dontMock('../../js/constants/constants')
 .dontMock('../../js/components/accessibleButton')
 .dontMock('../../js/components/controlButton')
+.dontMock('../../js/components/playbackSpeedButton')
 .dontMock('classnames');
 
 var React = require('react');
@@ -18,6 +19,7 @@ var CONSTANTS = require('../../js/constants/constants');
 var ControlBar = require('../../js/components/controlBar');
 var AccessibleButton = require('../../js/components/accessibleButton');
 var ControlButton = require('../../js/components/controlButton');
+var PlaybackSpeedButton = require('../../js/components/playbackSpeedButton');
 var skinConfig = require('../../config/skin.json');
 var Utils = require('../../js/components/utils');
 var _ = require('underscore');
@@ -33,6 +35,7 @@ describe('ControlBar', function() {
   // instead of defining them manually each time
   beforeEach(function() {
     baseMockController = {
+      toggleButtons: {},
       state: {
         isMobile: false,
         playerState: '',
@@ -44,7 +47,10 @@ describe('ControlBar', function() {
         },
         closedCaptionOptions: {},
         multiAudioOptions: {},
-        playbackSpeedOptions: { currentSpeed: 1 },
+        playbackSpeedOptions: {
+          showPopover: false,
+          currentSpeed: 1
+        },
         videoQualityOptions: {
           availableBitrates: null,
           selectedBitrate: {
@@ -57,11 +63,15 @@ describe('ControlBar', function() {
       toggleMute: function() {},
       setFocusedControl: function() {},
       startHideControlBarTimer: function() {},
+      setPlaybackSpeed: function() {},
       setVolume: function() {}
     };
 
     baseMockProps = {
       isLiveStream: false,
+      controlBarVisible: true,
+      componentWidth: 500,
+      playerState: CONSTANTS.STATE.PLAYING,
       controller: baseMockController,
       skinConfig: JSON.parse(JSON.stringify(defaultSkinConfig)),
       language: 'en',
@@ -373,6 +383,7 @@ describe('ControlBar', function() {
       { 'name': 'playPause', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
       { 'name': 'volume', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 240 },
       { 'name': 'quality', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
+      { 'name': 'playbackSpeed', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
       { 'name': 'closedCaption', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
       { 'name': 'fullscreen', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
     ];
@@ -390,6 +401,7 @@ describe('ControlBar', function() {
     var muteUnmuteButton = wrapper.find('.oo-volume').hostNodes().getDOMNode().querySelector('.oo-mute-unmute');
     var fullscreenButton = wrapper.find('.oo-fullscreen').hostNodes().getDOMNode();
     var qualityButton = wrapper.find('.oo-quality').hostNodes().getDOMNode();
+    var playbackSpeedButton = wrapper.find('.oo-playback-speed').hostNodes().getDOMNode();
     var ccButton = wrapper.find('.oo-closed-caption').hostNodes().getDOMNode();
     expect(playPauseButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PAUSE);
     expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.MUTE);
@@ -397,6 +409,9 @@ describe('ControlBar', function() {
     expect(qualityButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.VIDEO_QUALITY);
     expect(qualityButton.getAttribute('aria-haspopup')).toBe('true');
     expect(qualityButton.getAttribute('aria-expanded')).toBeNull();
+    expect(playbackSpeedButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PLAYBACK_SPEED_OPTION);
+    expect(playbackSpeedButton.getAttribute('aria-haspopup')).toBe('true');
+    expect(playbackSpeedButton.getAttribute('aria-expanded')).toBeNull();
     expect(ccButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.CLOSED_CAPTIONS);
     expect(ccButton.getAttribute('aria-haspopup')).toBe('true');
     expect(ccButton.getAttribute('aria-expanded')).toBeNull();
@@ -406,12 +421,14 @@ describe('ControlBar', function() {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
     baseMockController.state.closedCaptionOptions.availableLanguages = [];
     baseMockController.state.videoQualityOptions.showPopover = true;
+    baseMockController.state.playbackSpeedOptions.showPopover = true;
     baseMockController.state.closedCaptionOptions.showPopover = true;
     baseMockController.state.multiAudioOptions.showPopover = false;
     baseMockProps.skinConfig.buttons.desktopContent = [
       { 'name': 'playPause', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
       { 'name': 'volume', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 240 },
       { 'name': 'quality', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
+      { 'name': 'playbackSpeed', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
       { 'name': 'closedCaption', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
       { 'name': 'fullscreen', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
     ];
@@ -433,11 +450,13 @@ describe('ControlBar', function() {
     var muteUnmuteButton = wrapper.find('.oo-volume').hostNodes().getDOMNode().querySelector('.oo-mute-unmute');
     var fullscreenButton = wrapper.find('.oo-fullscreen').hostNodes().getDOMNode();
     var qualityButton = wrapper.find('.oo-quality').hostNodes().getDOMNode();
+    var playbackSpeedButton = wrapper.find('.oo-playback-speed').hostNodes().getDOMNode();
     var ccButton = wrapper.find('.oo-closed-caption').hostNodes().getDOMNode();
     expect(playPauseButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.PLAY);
     expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.UNMUTE);
     expect(fullscreenButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.EXIT_FULLSCREEN);
     expect(qualityButton.getAttribute('aria-expanded')).toBe('true');
+    expect(playbackSpeedButton.getAttribute('aria-expanded')).toBe('true');
     expect(ccButton.getAttribute('aria-expanded')).toBe('true');
   });
 
@@ -1233,6 +1252,88 @@ describe('ControlBar', function() {
     qualityButton = wrapper.find('.oo-quality').hostNodes();
     qualityButton.simulate('click');
     expect(qualityClicked).toBe(true);
+  });
+
+  it ('should toggle playback speed popover on desktop devices', function() {
+    var togglePopoverCalled, toggleScreenCalled;
+
+    baseMockProps.responsiveView = 'md';
+    baseMockProps.controller.state.isMobile = false;
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { name: 'playbackSpeed', location: 'controlBar', whenDoesNotFit: 'moveToMoreOptions', minWidth: 35 }
+    ];
+    baseMockProps.controller.togglePopover = () => { togglePopoverCalled = true };
+    baseMockProps.controller.toggleScreen = () => { toggleScreenCalled = true };
+
+    var wrapper = Enzyme.mount(
+      <ControlBar {...baseMockProps} />
+    );
+    var playbackSpeedButton = wrapper.find('.oo-playback-speed').hostNodes();
+
+    playbackSpeedButton.simulate('click');
+    expect(toggleScreenCalled).toBeFalsy();
+    expect(togglePopoverCalled).toBeTruthy();
+  });
+
+  it ('should toggle playback speed screen on mobile devices', function() {
+    var wrapper, playbackSpeedButton;
+    var togglePopoverCallCount = 0;
+    var toggleScreenCallCount = 0;
+
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { name: 'playbackSpeed', location: 'controlBar', whenDoesNotFit: 'moveToMoreOptions', minWidth: 35 }
+    ];
+    baseMockProps.controller.togglePopover = () => togglePopoverCallCount++;
+    baseMockProps.controller.toggleScreen = () => toggleScreenCallCount++;
+
+    baseMockProps.responsiveView = 'xs';
+    baseMockProps.controller.state.isMobile = false;
+    wrapper = Enzyme.mount(<ControlBar {...baseMockProps} />);
+    playbackSpeedButton = wrapper.find('.oo-playback-speed').hostNodes();
+
+    playbackSpeedButton.simulate('click');
+    expect(toggleScreenCallCount).toBe(1);
+    expect(togglePopoverCallCount).toBe(0);
+
+    baseMockProps.responsiveView = 'md';
+    baseMockProps.controller.state.isMobile = true;
+    wrapper = Enzyme.mount(<ControlBar {...baseMockProps} />);
+    playbackSpeedButton = wrapper.find('.oo-playback-speed').hostNodes();
+
+    playbackSpeedButton.simulate('click');
+    expect(toggleScreenCallCount).toBe(2);
+    expect(togglePopoverCallCount).toBe(0);
+  });
+
+  it ('should show playback speed button if configured', function() {
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { name: 'playbackSpeed', location: 'controlBar', whenDoesNotFit: 'moveToMoreOptions', minWidth: 35 }
+    ];
+    var wrapper = Enzyme.mount(
+      <ControlBar {...baseMockProps} />
+    );
+    expect(wrapper.find('.oo-playback-speed').hostNodes().length).toBe(1);
+  });
+
+  it ('should hide playback speed button for Ooyala Ads, live streams and 360 videos', function() {
+    var wrapper;
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { name: 'playbackSpeed', location: 'controlBar', whenDoesNotFit: 'moveToMoreOptions', minWidth: 35 }
+    ];
+    wrapper = Enzyme.mount(<ControlBar {...baseMockProps} />);
+    expect(wrapper.find('.oo-playback-speed').hostNodes().length).toBe(1);
+
+    baseMockController.state.isOoyalaAds = true;
+    wrapper = Enzyme.mount(<ControlBar {...baseMockProps} />);
+    expect(wrapper.find('.oo-playback-speed').hostNodes().length).toBe(0);
+
+    baseMockProps.isLiveStream = true;
+    wrapper = Enzyme.mount(<ControlBar {...baseMockProps} />);
+    expect(wrapper.find('.oo-playback-speed').hostNodes().length).toBe(0);
+
+    baseMockProps.controller.videoVr = {};
+    wrapper = Enzyme.mount(<ControlBar {...baseMockProps} />);
+    expect(wrapper.find('.oo-playback-speed').hostNodes().length).toBe(0);
   });
 
   it('hides quality button if ooyala ad is playing', function() {

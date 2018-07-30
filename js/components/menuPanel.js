@@ -117,13 +117,19 @@ MenuPanel.propTypes = {
   contentClassName: PropTypes.string,
   buttonClassName: PropTypes.string,
   title: PropTypes.string,
-  selectedValue: PropTypes.string.isRequired,
+  selectedValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]).isRequired,
   isPopover: PropTypes.bool,
   onMenuItemClick: PropTypes.func.isRequired,
   onClose: PropTypes.func,
   menuItems: PropTypes.arrayOf(
     PropTypes.shape({
-      value: PropTypes.string.isRequired,
+      value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+      ]).isRequired,
       label: PropTypes.string.isRequired,
       ariaLabel: PropTypes.string.isRequired
     })
