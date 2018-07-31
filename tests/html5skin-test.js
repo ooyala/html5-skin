@@ -307,6 +307,31 @@ describe('Controller', function() {
       expect(stopBufferingTimerSpy.callCount).toBe(8);
       expect(controller.state.bufferingTimer).toBeFalsy();
     });
+
+    it('should ads played, device was moved - video should continue to play in last orientation', function() {
+      global.Utils = {
+        getOrientationType: function() {
+          return 'landscape-primary';
+        }
+      };
+
+      var params = {
+        alpha: 90,
+        beta: 45,
+        gamma: 0
+      };
+
+      controller.handleVrMobileOrientation(params);
+      controller.state.deviceOrientation.freeze = true;
+      controller.state.deviceOrientation.allow = true;
+      controller.onAdsPlayed('customerUi');
+      jest.runAllTimers();
+      expect(controller.state.deviceOrientation.freeze).toBe(false);
+      expect(controller.state.deviceOrientation.alpha).toBe(90);
+      expect(controller.state.deviceOrientation.beta).toBe(45);
+      expect(controller.state.deviceOrientation.gamma).toBe(0);
+    });
+
   });
 
   describe('Video start state', function() {
