@@ -2431,7 +2431,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
       // validate language is available before update and save
       if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
-        this.state.closedCaptionOptions.language = 
+        this.state.closedCaptionOptions.language =
           this.state.persistentSettings.closedCaptionOptions.language = language;
         var captionLanguage = this.state.closedCaptionOptions.enabled ? language : '';
         var mode = this.state.closedCaptionOptions.enabled
