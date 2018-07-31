@@ -65,7 +65,7 @@ var Tab = createReactClass({
   }
 });
 
-Tab = AccessibleMenu(Tab, { useRovingTabindex: true });
+Tab = AccessibleMenu(Tab, { useRovingTabindex: false });
 
 Tab.defaultProps = {
   skinConfig: {

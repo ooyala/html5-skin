@@ -40,6 +40,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     this.isVrStereo = false;
     this.toggleButtons = {};
     this.handleVrMobileOrientation = this.handleVrMobileOrientation.bind(this);
+    this.languageList = [];
     this.state = {
       playerParam: {},
       skinMetaData: {},
@@ -252,8 +253,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
       this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi', _.bind(this.onMultiAudioChanged, this));
-      this.mb.subscribe(OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED, 'customerUi',
-        _.bind(this.onPositionInPlaylistDetermined, this));
+      this.mb.subscribe(
+        OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED,
+        'customerUi',
+        _.bind(this.onPositionInPlaylistDetermined, this)
+      );
       this.mb.subscribe(OO.EVENTS.ERROR, 'customerUi', _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.state.isPlaybackReadySubscribed = true;
@@ -761,7 +765,22 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * @param {Number} playbackSpeed A number that represents the new playback rate
      */
     onPlaybackSpeedChanged: function(eventName, videoId, playbackSpeed) {
-      playbackSpeed = Utils.ensureNumber(playbackSpeed, 1);
+      // Note that we don't constrain to min/max values in this case since
+      // the new speed is already set, but we make sure that the value we get can
+      // be displayed in a user-friendly way
+      playbackSpeed = Utils.sanitizePlaybackSpeed(playbackSpeed, true);
+      // Add speed to options if it's not one of the predefined values
+      var playbackSpeedOptions = Utils.getPropertyValue(
+        this.skin,
+        'props.skinConfig.playbackSpeed.options'
+      );
+      if (
+        playbackSpeedOptions &&
+        playbackSpeedOptions.indexOf(playbackSpeed) < 0
+      ) {
+        playbackSpeedOptions.push(playbackSpeed);
+      }
+      // Store new current speed and update UI
       this.state.playbackSpeedOptions.currentSpeed = playbackSpeed;
       this.renderSkin();
     },
@@ -881,7 +900,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     onVcPlay: function(event, source) {
       this.state.currentVideoId = source;
-      if (this.state.adWasPaused && this.state.currentAdsInfo && this.state.currentAdsInfo.currentAdItem && 
+      if (this.state.adWasPaused &&
+        this.state.currentAdsInfo &&
+        this.state.currentAdsInfo.currentAdItem &&
         this.state.currentAdsInfo.currentAdItem.ssai) {
         this.state.adPauseDuration = Date.now() - this.state.adPausedTime;
         //we calculate new ad end time, based on the time that the ad was paused.
@@ -979,7 +1000,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         // must be unpaused to resume
         this.state.config.adScreen.showControlBar = true;
         this.state.adPauseAnimationDisabled = false;
-        if (this.state.currentAdsInfo && this.state.currentAdsInfo.currentAdItem && 
+        if (this.state.currentAdsInfo &&
+          this.state.currentAdsInfo.currentAdItem &&
           this.state.currentAdsInfo.currentAdItem.ssai) {
           this.state.adWasPaused = true;
           this.state.adPausedTime = Date.now(); //milliseconds
@@ -1091,13 +1113,21 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * The function is called when event MULTI_AUDIO_FETCHED was caught;
      * The function sets value for this.state.multiAudio
      * @param {String} event  name of a event
-     * @param {Object} multiAudio  - audio which fetched for the current video
+     * @param {Object} multiAudio - audio which fetched for the current video
      * @param {Array} multiAudio.tracks - list of objects with data for each audio
+     * @param {Array} multiAudio.languageList - list of objects with all languages
      */
     onMultiAudioFetched: function(event, multiAudio) {
       if (!this.state.hideMultiAudioIcon) {
         // if param hideMultiAudioIcon is set to false
-        this.state.multiAudio = multiAudio;
+        if (typeof multiAudio !== 'undefined') {
+          let multiAudioValue = null;
+          if (multiAudio.tracks) {
+            multiAudioValue = { tracks: multiAudio.tracks };
+          }
+          this.state.multiAudio = multiAudioValue;
+          this.languageList = multiAudio.languageList || this.languageList;
+        }
         this.renderSkin();
       }
     },
@@ -1502,11 +1532,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * Returns ad remaining time that will be displayed in ad marquee
      * when playing ads.
      * @private
-     * @returns {Integer} remainingTime
+     * @returns {Number} remainingTime
      */
     getAdRemainingTime: function() {
       var remainingTime = 0;
-
       var isLive = (this.state.currentAdsInfo.currentAdItem) ? 
             this.state.currentAdsInfo.currentAdItem.isLive : 
             false;

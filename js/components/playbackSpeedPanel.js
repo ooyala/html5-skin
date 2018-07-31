@@ -43,12 +43,10 @@ class PlaybackSpeedPanel extends React.Component {
       );
       // Constrain to min and max values and ensure at most 2 decimals
       this.playbackSpeedOptions = this.playbackSpeedOptions.map(option =>
-        Utils.constrainToRange(
-          Utils.toFixedNumber(option, 2),
-          CONSTANTS.PLAYBACK_SPEED.MIN,
-          CONSTANTS.PLAYBACK_SPEED.MAX
-        )
+        Utils.sanitizePlaybackSpeed(option)
       );
+      // Remove duplicates
+      this.playbackSpeedOptions = Utils.dedupeArray(this.playbackSpeedOptions);
       // Sort in ascending order
       this.playbackSpeedOptions.sort((a, b) => a - b);
     }
