@@ -1643,12 +1643,13 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           this.hideControlBar();
         }.bind(this)
       );
-      this.state.pluginsClickElement.click(
-        function() {
-          this.state.pluginsClickElement.removeClass('oo-showing');
-          this.mb.publish(OO.EVENTS.PLAY);
-        }.bind(this)
-      );
+
+      if (OO.isAndroid) {
+        this.state.pluginsClickElement.on('touchend touchcancel', this.resumePlaybackAfterClickthrough.bind(this));
+      } else {
+        this.state.pluginsClickElement.click(this.resumePlaybackAfterClickthrough.bind(this));
+      }
+
       this.state.pluginsClickElement.mouseover(
         function() {
           this.showControlBar();
@@ -1665,6 +1666,16 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         videoWrapperClass: 'innerWrapper',
         pluginsClass: 'oo-player-skin-plugins'
       });
+    },
+
+    /**
+     * Resumes playback and hides the plugins click element. To be called after an ad clickthrough
+     * was handled by the player.
+     * @private
+     */
+    resumePlaybackAfterClickthrough: function () {
+      this.state.pluginsClickElement.removeClass('oo-showing');
+      this.mb.publish(OO.EVENTS.PLAY);
     },
 
     onBitrateInfoAvailable: function(event, bitrates) {
