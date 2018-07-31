@@ -99,7 +99,7 @@ class MenuPanel extends React.Component {
             <div className="oo-menu-panel-title">{title}</div>
           }
 
-          <ul className="oo-menu-panel-list" role="menu">
+          <ul className="oo-menu-panel-list" role={CONSTANTS.ARIA_ROLES.MENU}>
             {menuItems.map(menuItem =>
               this.renderMenuItem(menuItem, selectedValue, accentColor)
             )}
