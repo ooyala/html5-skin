@@ -1644,6 +1644,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         }.bind(this)
       );
 
+      //PLAYER-4041: It seems like 'click' events started when a div's pointerEvents is initially 'none' but is changed to
+      //'auto' prior to the 'click' event ending will trigger 'click' event listeners on Android. We'll instead listen to
+      //'touchend' and 'touchcancel' on Android.
       if (OO.isAndroid) {
         this.state.pluginsClickElement.on('touchend touchcancel', this.resumePlaybackAfterClickthrough.bind(this));
       } else {
