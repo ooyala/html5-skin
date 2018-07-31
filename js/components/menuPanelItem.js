@@ -34,7 +34,7 @@ const MenuPanelItem = ({
   return (
     <li
       className={itemClassName}
-      role="presentation">
+      role={CONSTANTS.ARIA_ROLES.PRESENTATION}>
       <AccessibleButton
         className={itemButtonClassName}
         style={buttonStyle}

@@ -164,7 +164,9 @@ describe('MenuPanel', function() {
 
   it('should set menu role on list element', function() {
     renderComponent();
-    expect(wrapper.find('.oo-menu-panel-list').getDOMNode().getAttribute('role')).toBe('menu');
+    expect(wrapper.find('.oo-menu-panel-list').getDOMNode().getAttribute('role')).toBe(
+      CONSTANTS.ARIA_ROLES.MENU
+    );
   });
 
 });
