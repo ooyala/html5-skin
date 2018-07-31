@@ -33,6 +33,8 @@ describe('closed caption & multi-audio helpers', function() {
       expect(helpers.getDisplayLanguage([], 'w00t')).toEqual('');
       expect(helpers.getDisplayLanguage([], 'und')).toEqual('');
       expect(helpers.getDisplayLanguage([], null)).toEqual('');
+      expect(helpers.getDisplayLanguage([], '')).toEqual('');
+      expect(helpers.getDisplayLanguage([], false)).toEqual('');
     });
 
     it('should return matched english equivalent', function() {

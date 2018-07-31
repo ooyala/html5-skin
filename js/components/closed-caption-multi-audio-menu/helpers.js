@@ -35,7 +35,7 @@ function getDisplayLabel(audioTrack) {
 function getDisplayLanguage(languagesList, languageCode) {
   var displayLanguage = '';
   if (
-    typeof languageCode !== 'undefined' &&
+    !!Utils.isValidString(languageCode) &&
     languagesList &&
     _.isArray(languagesList) &&
     languagesList.length
