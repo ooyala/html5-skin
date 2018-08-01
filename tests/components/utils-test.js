@@ -318,7 +318,7 @@ describe('Utils', function() {
       expect(Utils.sanitizePlaybackSpeed('.5')).toBe(0.5);
     });
 
-    it('should truncate values to at most to decimals', function() {
+    it('should truncate values to at most two decimals', function() {
       expect(Utils.sanitizePlaybackSpeed(0.55444)).toBe(0.55);
       expect(Utils.sanitizePlaybackSpeed(0.77777)).toBe(0.78);
       expect(Utils.sanitizePlaybackSpeed('1.33333')).toBe(1.33);
