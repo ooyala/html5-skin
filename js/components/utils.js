@@ -258,7 +258,7 @@ var Utils = {
         CONSTANTS.PLAYBACK_SPEED.MAX
       );
     }
-    sanitizedSpeed = Utils.toFixedNumber(sanitizedSpeed, 2);
+    sanitizedSpeed = this.toFixedNumber(sanitizedSpeed, 2);
     return sanitizedSpeed;
   },
 

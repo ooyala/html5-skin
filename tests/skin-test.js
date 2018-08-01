@@ -1,9 +1,11 @@
 jest.dontMock('../js/skin');
 jest.dontMock('../js/views/pauseScreen');
+jest.dontMock('../js/views/contentScreen');
 jest.dontMock('../js/constants/constants');
 jest.dontMock('../js/components/controlBar');
 jest.dontMock('../js/components/accessibleButton');
 jest.dontMock('../js/components/controlButton');
+jest.dontMock('../js/components/playbackSpeedPanel');
 jest.dontMock('../js/components/utils');
 jest.dontMock('../js/components/higher-order/accessibleMenu');
 jest.dontMock('../js/components/higher-order/preserveKeyboardFocus');
@@ -15,6 +17,8 @@ var ReactDOM = require('react-dom');
 var Enzyme = require('enzyme');
 var Skin = require('../js/skin');
 var skinConfig = require('../config/skin.json');
+var ContentScreen = require('../js/views/contentScreen');
+var PlaybackSpeedPanel = require('../js/components/playbackSpeedPanel');
 var CONSTANTS = require('../js/constants/constants');
 var sinon = require('sinon');
 
@@ -55,6 +59,7 @@ var skinControllerMock = {
   cancelTimer: function() {},
   setFocusedControl: function() {},
   enablePauseAnimation: function() {},
+  setPlaybackSpeed: function() {},
   startHideControlBarTimer: function() {},
   toggleClosedCaptionEnabled: function() {},
   onClosedCaptionChange: function() {},
@@ -100,8 +105,7 @@ describe('Skin screenToShow state', function() {
           availableLanguages: {
             locale: []
           }
-        }}
-      />
+        }} />
     );
     skin = wrapper.instance();
   });
@@ -172,6 +176,19 @@ describe('Skin screenToShow state', function() {
       }
     };
     skin.switchComponent(state);
+  });
+
+  it('tests PLAYBACK SPEED SCREEN', function() {
+    state.screenToShow = CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN;
+    state.playbackSpeedOptions = {
+      currentSpeed: 1,
+      showPopover: false,
+      autoFocus: false,
+    };
+    skin.switchComponent(state);
+    wrapper.update();
+    expect(wrapper.find(ContentScreen).length).toBe(1);
+    expect(wrapper.find(ContentScreen).find(PlaybackSpeedPanel).length).toBe(1);
   });
 
   it('tests ERROR SCREEN', function() {
