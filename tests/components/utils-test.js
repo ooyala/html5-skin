@@ -310,6 +310,55 @@ describe('Utils', function() {
     });
   });
 
+  describe('sanitizePlaybackSpeed', function() {
+
+    it('should return numerical version of value', function() {
+      expect(Utils.sanitizePlaybackSpeed('2')).toBe(2);
+      expect(Utils.sanitizePlaybackSpeed('1.25')).toBe(1.25);
+      expect(Utils.sanitizePlaybackSpeed('.5')).toBe(0.5);
+    });
+
+    it('should truncate values to at most to decimals', function() {
+      expect(Utils.sanitizePlaybackSpeed(0.55444)).toBe(0.55);
+      expect(Utils.sanitizePlaybackSpeed(0.77777)).toBe(0.78);
+      expect(Utils.sanitizePlaybackSpeed('1.33333')).toBe(1.33);
+    });
+
+    it('should constrain to min and max values when ignoreMinMax is false', function() {
+      expect(Utils.sanitizePlaybackSpeed(CONSTANTS.PLAYBACK_SPEED.MIN - 1, false)).toBe(CONSTANTS.PLAYBACK_SPEED.MIN);
+      expect(Utils.sanitizePlaybackSpeed(CONSTANTS.PLAYBACK_SPEED.MAX + 1, false)).toBe(CONSTANTS.PLAYBACK_SPEED.MAX);
+    });
+
+    it('should NOT constrain to min and max values when ignoreMinMax is true', function() {
+      expect(Utils.sanitizePlaybackSpeed(CONSTANTS.PLAYBACK_SPEED.MIN - 1, true)).toBe(CONSTANTS.PLAYBACK_SPEED.MIN - 1);
+      expect(Utils.sanitizePlaybackSpeed(CONSTANTS.PLAYBACK_SPEED.MAX + 1, true)).toBe(CONSTANTS.PLAYBACK_SPEED.MAX + 1);
+    });
+
+  });
+
+  describe('dedupeArray', function() {
+
+    it('should return a new array', function() {
+      const array = [1, 2, 3];
+      expect(Utils.dedupeArray(array)).not.toBe(array);
+      expect(Utils.dedupeArray(array)).toEqual(array);
+    });
+
+    it('should remove duplicate values from array', function() {
+      expect(Utils.dedupeArray([1, 2, 1, 2, 3])).toEqual([1, 2, 3]);
+      expect(Utils.dedupeArray(['1', '2', '1', '2', '3'])).toEqual(['1', '2', '3']);
+      const obj = { prop: 1 };
+      expect(Utils.dedupeArray([{}, obj, obj, { a: 2 }, obj])).toEqual([{}, obj, { a: 2 }]);
+    });
+
+    it('should return an empty array when input is not an array', function() {
+      expect(Utils.dedupeArray({})).toEqual([]);
+      expect(Utils.dedupeArray(3)).toEqual([]);
+      expect(Utils.dedupeArray('3')).toEqual([]);
+    });
+
+  });
+
   describe('isMouseInsideRect', function() {
     let mousePosition, clientRect;
 
