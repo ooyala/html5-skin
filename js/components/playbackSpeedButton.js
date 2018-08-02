@@ -20,7 +20,7 @@ class PlaybackSpeedButton extends React.Component {
         {...this.props}
         className={classNames('oo-playback-speed', this.props.className)}
         ariaLabel={ariaLabel}>
-        <span class="oo-current-speed oo-icon">{currentSpeed}x</span>
+        <span className="oo-current-speed oo-icon">{currentSpeed}x</span>
         {this.props.children}
       </ControlButton>
     );

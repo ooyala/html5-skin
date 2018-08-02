@@ -34,7 +34,7 @@ const MenuPanelItem = ({
   return (
     <li
       className={itemClassName}
-      role="presentation">
+      role={CONSTANTS.ARIA_ROLES.PRESENTATION}>
       <AccessibleButton
         className={itemButtonClassName}
         style={buttonStyle}
@@ -58,7 +58,10 @@ const MenuPanelItem = ({
 };
 
 MenuPanelItem.propTypes = {
-  itemValue: PropTypes.string.isRequired,
+  itemValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]).isRequired,
   itemLabel: PropTypes.string.isRequired,
   ariaLabel: PropTypes.string.isRequired,
   buttonClassName: PropTypes.string,

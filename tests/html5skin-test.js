@@ -38,6 +38,7 @@ OO = {
       SEND_CLICK_EVENT: 'sendClickEvent'
     },
     SET_CURRENT_AUDIO: 'setCurrentAudio',
+    SET_PLAYBACK_SPEED: 'setPlaybackSpeed',
     SKIN_UI_LANGUAGE: 'skinUiLanguage'
   },
   CONSTANTS: {
@@ -1153,6 +1154,54 @@ describe('Controller', function() {
       });
     });
 
+  });
+
+  describe('Playback Speed', function() {
+    var spyPublish;
+
+    beforeEach(function() {
+      spyPublish = jest.spyOn(OO.mb, 'publish');
+    });
+
+    afterEach(function() {
+      spyPublish.mockRestore();
+    });
+
+    it('should publish OO.EVENTS.SET_PLAYBACK_SPEED when setPlaybackSpeed() is called', function() {
+      const playbackSpeed = 2;
+      controller.setPlaybackSpeed(playbackSpeed);
+      expect(spyPublish.mock.calls.length).toBe(1);
+      expect(spyPublish.mock.calls[0]).toEqual([OO.EVENTS.SET_PLAYBACK_SPEED, playbackSpeed]);
+    });
+
+    it('should store sanitized playback speed on PLAYBACK_SPEED_CHANGED', function() {
+      controller.state.playbackSpeedOptions.currentSpeed = 1;
+      controller.onPlaybackSpeedChanged('eventName', OO.VIDEO.MAIN, '1.5555');
+      expect(controller.state.playbackSpeedOptions.currentSpeed).toBe(1.56);
+      controller.onPlaybackSpeedChanged('eventName', OO.VIDEO.MAIN, 2.0);
+      expect(controller.state.playbackSpeedOptions.currentSpeed).toBe(2);
+      controller.onPlaybackSpeedChanged('eventName', OO.VIDEO.MAIN, 'zomg');
+      expect(controller.state.playbackSpeedOptions.currentSpeed).toBe(1);
+    });
+
+    it('should render skin on PLAYBACK_SPEED_CHANGED', function() {
+      const spy = jest.spyOn(controller, 'renderSkin');
+      controller.onPlaybackSpeedChanged('eventName', OO.VIDEO.MAIN, 2);
+      expect(spy.mock.calls.length).toBe(1);
+      spy.mockRestore();
+    });
+
+    it('should add playback speed to options if it does not already exist', function() {
+      controller.skin.props.skinConfig.playbackSpeed.options = [ 0.5, 1, 1.5];
+      controller.onPlaybackSpeedChanged('eventName', OO.VIDEO.MAIN, 2);
+      expect(controller.skin.props.skinConfig.playbackSpeed.options).toEqual([ 0.5, 1, 1.5, 2]);
+    });
+
+    it('should NOT add playback speed to options if it already exists', function() {
+      controller.skin.props.skinConfig.playbackSpeed.options = [ 0.5, 1, 1.5];
+      controller.onPlaybackSpeedChanged('eventName', OO.VIDEO.MAIN, 1.5);
+      expect(controller.skin.props.skinConfig.playbackSpeed.options).toEqual([ 0.5, 1, 1.5]);
+    });
   });
 
   describe('Ad Plugins Element', function() {
