@@ -1097,7 +1097,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         // if param hideMultiAudioIcon is set to false
         if (typeof multiAudio !== 'undefined') {
           let multiAudioValue = null;
-          if (multiAudio.tracks) {
+          if (this.containsMultiAudio(multiAudio)) {
             multiAudioValue = { tracks: multiAudio.tracks };
           }
           this.state.multiAudio = multiAudioValue;
@@ -1116,9 +1116,23 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      */
     onMultiAudioChanged: function(event, multiAudio) {
       if (!this.state.hideMultiAudioIcon) {
-        this.state.multiAudio = multiAudio;
+        if (this.containsMultiAudio(multiAudio)) {
+          this.state.multiAudio = multiAudio;
+        } else {
+          this.state.multiAudio = null;
+        }
+
         this.renderSkin();
       }
+    },
+
+    /**
+     * Checks to see if we have multiple audio tracks
+     * @param multiAudio The multiAudio object that is fetched from the current video
+     * @returns {boolean} True if the provided object contains more than one track, false otherwise
+     */
+    containsMultiAudio: function(multiAudio) {
+      return !!(multiAudio && multiAudio.tracks && multiAudio.tracks.length > 1);
     },
 
     /**
