@@ -1128,11 +1128,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     /**
      * Checks to see if we have multiple audio tracks
-     * @param multiAudio The multiAudio object that is fetched from the current video
+     * @param {Object} multiAudio The multiAudio object that is fetched from the current video
      * @returns {boolean} True if the provided object contains more than one track, false otherwise
      */
     containsMultiAudio: function(multiAudio) {
-      return !!(multiAudio && multiAudio.tracks && multiAudio.tracks.length > 1);
+      var hasMoreThanOneTrack = !!(multiAudio && multiAudio.tracks && multiAudio.tracks.length > 1);
+      return hasMoreThanOneTrack;
     },
 
     /**
