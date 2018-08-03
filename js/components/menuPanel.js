@@ -99,7 +99,7 @@ class MenuPanel extends React.Component {
             <div className="oo-menu-panel-title">{title}</div>
           }
 
-          <ul className="oo-menu-panel-list" role="menu">
+          <ul className="oo-menu-panel-list" role={CONSTANTS.ARIA_ROLES.MENU}>
             {menuItems.map(menuItem =>
               this.renderMenuItem(menuItem, selectedValue, accentColor)
             )}
@@ -117,13 +117,19 @@ MenuPanel.propTypes = {
   contentClassName: PropTypes.string,
   buttonClassName: PropTypes.string,
   title: PropTypes.string,
-  selectedValue: PropTypes.string.isRequired,
+  selectedValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]).isRequired,
   isPopover: PropTypes.bool,
   onMenuItemClick: PropTypes.func.isRequired,
   onClose: PropTypes.func,
   menuItems: PropTypes.arrayOf(
     PropTypes.shape({
-      value: PropTypes.string.isRequired,
+      value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+      ]).isRequired,
       label: PropTypes.string.isRequired,
       ariaLabel: PropTypes.string.isRequired
     })

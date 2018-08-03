@@ -23,24 +23,6 @@ videoElement.id = videoId;
 videoElement.preload = 'none';
 videoElement.src =
   'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor';
-var persistentSettings = {
-  closedCaptionOptions: {
-    textColor: 'Blue',
-    backgroundColor: 'Transparent',
-    windowColor: 'Yellow',
-    windowOpacity: '0.3',
-    fontType: 'Proportional Serif',
-    fontSize: 'Medium',
-    textEnhancement: 'Shadow',
-    enabled: true,
-    language: 'unknown',
-    backgroundOpacity: '0.2',
-    textOpacity: '1'
-  }
-};
-// setup document body for valid DOM elements
-document.body.innerHTML =
-  '<div id=' + elementId + '>' + '  <div class="oo-player-skin">' + videoElement + '</div>' + '</div>';
 
 // Mock OO environment needed for skin plugin initialization
 OO = {
@@ -49,12 +31,14 @@ OO = {
   },
   publicApi: {},
   EVENTS: {
+    PLAY: 'play',
     INITIAL_PLAY: 'initialPlay',
     CHANGE_MUTE_STATE: 'changeMuteState',
     DISCOVERY_API: {
       SEND_CLICK_EVENT: 'sendClickEvent'
     },
     SET_CURRENT_AUDIO: 'setCurrentAudio',
+    SET_PLAYBACK_SPEED: 'setPlaybackSpeed',
     SKIN_UI_LANGUAGE: 'skinUiLanguage'
   },
   CONSTANTS: {
@@ -103,13 +87,15 @@ describe('Controller', function() {
   };
 
   beforeEach(function() {
+    // setup document body for valid DOM elements
+    document.body.innerHTML =
+      '<div id=' + elementId + '>' + '  <div class="oo-player-skin">' + videoElement + '</div>' + '</div>';
     controller = new Html5Skin(OO.mb, 'id');
-    controller.state.pluginsElement = $('<div/>');
-    controller.state.pluginsClickElement = $('<div/>');
     controller.state.mainVideoElement = mockDomElement;
     controller.state.mainVideoInnerWrapper = $('<div/>');
     controller.state.mainVideoElementContainer = mockDomElement;
     controller.state.hideMultiAudioIcon = false;
+    controller.state.elementId = elementId;
     controller.skin = {
       state: {},
       updatePlayhead: function(currentPlayhead, duration, buffered, currentAdPlayhead) {
@@ -126,6 +112,7 @@ describe('Controller', function() {
 
   describe('Closed Captions', function() {
     beforeEach(function() {
+      controller.createPluginElements();
       controller.state.closedCaptionOptions = {
         enabled: true,
         language: 'en',
@@ -176,6 +163,7 @@ describe('Controller', function() {
     var startBufferingTimerSpy, stopBufferingTimerSpy;
 
     beforeEach(function() {
+      controller.createPluginElements();
       startBufferingTimerSpy = sinon.spy(controller, 'startBufferingTimer');
       stopBufferingTimerSpy = sinon.spy(controller, 'stopBufferingTimer');
     });
@@ -338,6 +326,7 @@ describe('Controller', function() {
     var spy;
 
     beforeEach(function() {
+      controller.createPluginElements();
       controller.state.playerState = CONSTANTS.STATE.START;
       spy = sinon.spy(controller.mb, 'publish');
       controller.state.isInitialPlay = false;
@@ -365,6 +354,10 @@ describe('Controller', function() {
   });
 
   describe('New video transitions', function() {
+    beforeEach(function() {
+      controller.createPluginElements();
+    });
+
     it('should set initialPlayHasOccurred to true if initial play has been requested', function() {
       expect(controller.state.initialPlayHasOccurred).toBe(false);
       controller.onInitialPlay();
@@ -491,7 +484,6 @@ describe('Controller', function() {
       };
       controller.videoVr = true;
       controller.state.playerParam = playerParam;
-      controller.createPluginElements();
 
       controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
       controller.onVcPlay('event', OO.VIDEO.MAIN);
@@ -509,7 +501,6 @@ describe('Controller', function() {
       };
       controller.videoVr = false;
       controller.state.playerParam = playerParam;
-      controller.createPluginElements();
       controller.state.discoveryData = {};
       controller.skin.props.skinConfig.pauseScreen.screenToShowOnPause = 'discovery';
       controller.state.duration = 10000;
@@ -528,6 +519,10 @@ describe('Controller', function() {
   });
 
   describe('Volume state', function() {
+    beforeEach(function() {
+      controller.createPluginElements();
+    });
+
     it('should mute on mute state changed', function() {
       expect(controller.state.volumeState.muted).toBe(false);
       controller.onMuteStateChanged('event', false);
@@ -625,15 +620,6 @@ describe('Controller', function() {
   });
 
   describe('Show player controls over ads', function() {
-    beforeEach(function() {
-      controller.state.elementId = elementId;
-      // setup original css values
-      var temp1 = $('#' + controller.state.elementId + ' .oo-player-skin-plugins');
-      var temp2 = $('#' + controller.state.elementId + ' .oo-player-skin-plugins-click-layer');
-      temp1.css('bottom', 10);
-      temp2.css('bottom', 10);
-    });
-
     it('playerControlsOverAds = true  and no skin setting for adscreen overwrites css and showControlBar', function() {
       var playerParam = {
         playerControlsOverAds: true
@@ -653,8 +639,8 @@ describe('Controller', function() {
       };
       controller.state.playerParam = playerParam;
       controller.createPluginElements();
-      expect(controller.state.pluginsElement.css('bottom')).toBe('10px');
-      expect(controller.state.pluginsClickElement.css('bottom')).toBe('10px');
+      expect(controller.state.pluginsElement.css('bottom')).toBe('');
+      expect(controller.state.pluginsClickElement.css('bottom')).toBe('');
     });
 
     it('playerControlsOverAds = true  and skin set showControlBar to false should overwrite css and showControlBar', function() {
@@ -669,7 +655,6 @@ describe('Controller', function() {
         }
       };
       controller.state.playerParam = playerParam;
-      controller.state.elementId = elementId;
       controller.state.config = {};
       controller.state.config.adScreen = {};
       controller.state.config.adScreen.showControlBar = false;
@@ -691,7 +676,6 @@ describe('Controller', function() {
         }
       };
       controller.state.playerParam = playerParam;
-      controller.state.elementId = elementId;
       controller.state.config = {};
       controller.state.config.adScreen = {};
       controller.state.config.adScreen.showControlBar = true;
@@ -831,6 +815,7 @@ describe('Controller', function() {
     var qualities;
 
     beforeEach(function() {
+      controller.createPluginElements();
       qualities = {
         bitrates: [
           { id: '1', width: 640, height: 360, bitrate: 150000 },
@@ -860,6 +845,10 @@ describe('Controller', function() {
   });
 
   describe('Toggle fullscreen', function() {
+    beforeEach(function() {
+      controller.createPluginElements();
+    });
+
     it('should publish event OO.EVENTS.TOGGLE_FULLSCREEN_VR on ios deivce with vr content', function() {
       var spy = sinon.spy(controller.mb, 'publish');
       controller.videoVr = true;
@@ -873,6 +862,10 @@ describe('Controller', function() {
   });
 
   describe('Toggle popovers', function() {
+    beforeEach(function() {
+      controller.createPluginElements();
+    });
+
     it('should close current popover', function() {
       controller.state[CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY].showPopover = false;
       controller.state[CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS].showPopover = false;
@@ -893,6 +886,7 @@ describe('Controller', function() {
   describe('Multiaudio', function() {
     var spy;
     beforeEach(function() {
+      controller.createPluginElements();
       spy = sinon.spy(controller.mb, 'publish');
       controller.state.hideMultiAudioIcon = false;
     });
@@ -1080,6 +1074,7 @@ describe('Controller', function() {
     var spyRender;
 
     beforeEach(function() {
+      controller.createPluginElements();
       spyRender = sinon.spy(controller, 'renderSkin');
     });
 
@@ -1105,6 +1100,7 @@ describe('Controller', function() {
     var spyPublish;
 
     beforeEach(function() {
+      controller.createPluginElements();
       spyPublish = sinon.spy(OO.mb, 'publish');
     });
 
@@ -1185,13 +1181,60 @@ describe('Controller', function() {
 
   });
 
+  describe('Playback Speed', function() {
+    var spyPublish;
+
+    beforeEach(function() {
+      spyPublish = jest.spyOn(OO.mb, 'publish');
+    });
+
+    afterEach(function() {
+      spyPublish.mockRestore();
+    });
+
+    it('should publish OO.EVENTS.SET_PLAYBACK_SPEED when setPlaybackSpeed() is called', function() {
+      const playbackSpeed = 2;
+      controller.setPlaybackSpeed(playbackSpeed);
+      expect(spyPublish.mock.calls.length).toBe(1);
+      expect(spyPublish.mock.calls[0]).toEqual([OO.EVENTS.SET_PLAYBACK_SPEED, playbackSpeed]);
+    });
+
+    it('should store sanitized playback speed on PLAYBACK_SPEED_CHANGED', function() {
+      controller.state.playbackSpeedOptions.currentSpeed = 1;
+      controller.onPlaybackSpeedChanged('eventName', OO.VIDEO.MAIN, '1.5555');
+      expect(controller.state.playbackSpeedOptions.currentSpeed).toBe(1.56);
+      controller.onPlaybackSpeedChanged('eventName', OO.VIDEO.MAIN, 2.0);
+      expect(controller.state.playbackSpeedOptions.currentSpeed).toBe(2);
+      controller.onPlaybackSpeedChanged('eventName', OO.VIDEO.MAIN, 'zomg');
+      expect(controller.state.playbackSpeedOptions.currentSpeed).toBe(1);
+    });
+
+    it('should render skin on PLAYBACK_SPEED_CHANGED', function() {
+      const spy = jest.spyOn(controller, 'renderSkin');
+      controller.onPlaybackSpeedChanged('eventName', OO.VIDEO.MAIN, 2);
+      expect(spy.mock.calls.length).toBe(1);
+      spy.mockRestore();
+    });
+
+    it('should add playback speed to options if it does not already exist', function() {
+      controller.skin.props.skinConfig.playbackSpeed.options = [ 0.5, 1, 1.5];
+      controller.onPlaybackSpeedChanged('eventName', OO.VIDEO.MAIN, 2);
+      expect(controller.skin.props.skinConfig.playbackSpeed.options).toEqual([ 0.5, 1, 1.5, 2]);
+    });
+
+    it('should NOT add playback speed to options if it already exists', function() {
+      controller.skin.props.skinConfig.playbackSpeed.options = [ 0.5, 1, 1.5];
+      controller.onPlaybackSpeedChanged('eventName', OO.VIDEO.MAIN, 1.5);
+      expect(controller.skin.props.skinConfig.playbackSpeed.options).toEqual([ 0.5, 1, 1.5]);
+    });
+  });
+
   describe('Ad Plugins Element', function() {
     afterEach(function() {
       controller.onAdsPlayed();
     });
 
     it('should set the correct class for the ad plugins element for a linear ad', function() {
-      controller.state.elementId = elementId;
       controller.state.config = {};
       controller.state.config.adScreen = {};
       controller.createPluginElements();
@@ -1206,7 +1249,6 @@ describe('Controller', function() {
     });
 
     it('should set the correct class for the ad plugins element for a nonlinear ad', function() {
-      controller.state.elementId = elementId;
       controller.state.config = {};
       controller.state.config.adScreen = {};
       controller.createPluginElements();
@@ -1225,7 +1267,7 @@ describe('Controller', function() {
     var spyPublish;
 
     beforeEach(function() {
-      controller.state.elementId = elementId;
+      controller.createPluginElements();
       spyPublish = sinon.spy(OO.mb, 'publish');
     });
 
@@ -1241,6 +1283,86 @@ describe('Controller', function() {
     it('test that language defaults to english if no defaultLanguage is specified', function() {
       controller.loadConfigData('customerUi', {"localization":{"defaultLanguage":""}}, {}, {}, {});
       expect(spyPublish.withArgs(OO.EVENTS.SKIN_UI_LANGUAGE, sinon.match("en")).calledOnce).toBe(true);
+    });
+  });
+
+  describe('Ad Clickthrough', function() {
+    var spyPublish;
+
+    beforeEach(function() {
+      spyPublish = sinon.spy(OO.mb, 'publish');
+    });
+
+    afterEach(function() {
+      OO.isAndroid = false;
+      spyPublish.restore();
+    });
+
+    it('test that plugins click element is hidden and playback resumes after click', function() {
+      controller.createPluginElements();
+       var adItem = {
+          duration: 15,
+          name: "test"
+      };
+      controller.onWillPlayAds();
+      controller.onWillPlaySingleAd('event', adItem);
+      controller.onPause();
+      expect(controller.state.pluginsClickElement.hasClass('oo-showing')).toEqual(true);
+      expect(spyPublish.withArgs(OO.EVENTS.PLAY).callCount).toBe(0);
+      controller.state.pluginsClickElement.trigger('click');
+      expect(spyPublish.withArgs(OO.EVENTS.PLAY).callCount).toBe(1);
+      expect(controller.state.pluginsClickElement.hasClass('oo-showing')).toEqual(false);
+    });
+
+    it('test that plugins click element is not hidden and playback does not resume after click on Android', function() {
+      OO.isAndroid = true;
+      controller.createPluginElements();
+       var adItem = {
+          duration: 15,
+          name: "test"
+      };
+      controller.onWillPlayAds();
+      controller.onWillPlaySingleAd('event', adItem);
+      controller.onPause();
+      expect(controller.state.pluginsClickElement.hasClass('oo-showing')).toEqual(true);
+      expect(spyPublish.withArgs(OO.EVENTS.PLAY).callCount).toBe(0);
+      controller.state.pluginsClickElement.trigger('click');
+      expect(spyPublish.withArgs(OO.EVENTS.PLAY).callCount).toBe(0);
+      expect(controller.state.pluginsClickElement.hasClass('oo-showing')).toEqual(true);
+    });
+
+    it('test that plugins click element is hidden and playback resumes after touchend on Android', function() {
+      OO.isAndroid = true;
+      controller.createPluginElements();
+       var adItem = {
+          duration: 15,
+          name: "test"
+      };
+      controller.onWillPlayAds();
+      controller.onWillPlaySingleAd('event', adItem);
+      controller.onPause();
+      expect(controller.state.pluginsClickElement.hasClass('oo-showing')).toEqual(true);
+      expect(spyPublish.withArgs(OO.EVENTS.PLAY).callCount).toBe(0);
+      controller.state.pluginsClickElement.trigger('touchend');
+      expect(spyPublish.withArgs(OO.EVENTS.PLAY).callCount).toBe(1);
+      expect(controller.state.pluginsClickElement.hasClass('oo-showing')).toEqual(false);
+    });
+
+    it('test that plugins click element is hidden and playback resumes after touchcancel on Android', function() {
+      OO.isAndroid = true;
+      controller.createPluginElements();
+       var adItem = {
+          duration: 15,
+          name: "test"
+      };
+      controller.onWillPlayAds();
+      controller.onWillPlaySingleAd('event', adItem);
+      controller.onPause();
+      expect(controller.state.pluginsClickElement.hasClass('oo-showing')).toEqual(true);
+      expect(spyPublish.withArgs(OO.EVENTS.PLAY).callCount).toBe(0);
+      controller.state.pluginsClickElement.trigger('touchcancel');
+      expect(spyPublish.withArgs(OO.EVENTS.PLAY).callCount).toBe(1);
+      expect(controller.state.pluginsClickElement.hasClass('oo-showing')).toEqual(false);
     });
   });
 });

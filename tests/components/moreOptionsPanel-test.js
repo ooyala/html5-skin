@@ -15,17 +15,21 @@ var Enzyme = require('enzyme');
 // start unit test
 describe('MoreOptionsPanel', function() {
   var oneButtonSkinConfig, mockController, mockProps;
-  var discoveryScreenToggled = false;
-  var shareScreenToggled = false;
-  var toggleScreenClicked = false;
+  var discoveryScreenToggled;
+  var shareScreenToggled;
+  var toggleScreenClicked;
 
   beforeEach(function() {
-    oneButtonSkinConfig = Utils.clone(skinConfig);
+    discoveryScreenToggled = false;
+    shareScreenToggled = false;
+    toggleScreenClicked = false;
+    oneButtonSkinConfig = JSON.parse(JSON.stringify(skinConfig));
     oneButtonSkinConfig.buttons.desktopContent = [
       {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':200 },
       {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':200 },
       {'name':'closedCaption', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':200 },
       {'name':'quality', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':200 },
+      {'name':'playbackSpeed', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':200 },
       {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':200 }
     ];
 
@@ -83,6 +87,20 @@ describe('MoreOptionsPanel', function() {
     expect(toggleScreenClicked).toBe(true);
     expect(shareScreenToggled).toBe(true);
     expect(discoveryScreenToggled).toBe(true);
+  });
+
+  it('should toggle playback speed screen when playback speed button is clicked', function() {
+    let toggledScreen;
+    mockController.toggleScreen = (screenName) => toggledScreen = screenName;
+    const wrapper = Enzyme.mount(
+      <MoreOptionsPanel
+        {...mockProps}
+        playerState={CONSTANTS.STATE.PLAYING}
+        controlBarVisible={true}
+        controlBarWidth={100} />
+    );
+    wrapper.find('.oo-playback-speed').hostNodes().simulate('click');
+    expect(toggledScreen).toBe(CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN);
   });
 });
 
