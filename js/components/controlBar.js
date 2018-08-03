@@ -401,19 +401,20 @@ var ControlBar = createReactClass({
 
     var qualityClass = ClassNames({
       'oo-quality': true,
-      'oo-control-bar-item': true,
       'oo-selected': this.props.controller.state.videoQualityOptions.showPopover
     });
 
     var captionClass = ClassNames({
       'oo-closed-caption': true,
-      'oo-control-bar-item': true,
       'oo-selected': this.props.controller.state.closedCaptionOptions.showPopover
+    });
+
+    var playbackSpeedClass = ClassNames({
+      'oo-selected': this.props.controller.state.playbackSpeedOptions.showPopover
     });
 
     var multiAudioClass = ClassNames({
       'oo-multiaudio': true,
-      'oo-control-bar-item': true,
       'oo-selected': this.props.controller.state.multiAudioOptions.showPopover
     });
 
@@ -643,6 +644,8 @@ var ControlBar = createReactClass({
           <PlaybackSpeedButton
             {...commonButtonProps}
             onRef={this.setToggleButtons.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}
+            className={playbackSpeedClass}
+            style={this.props.controller.state.playbackSpeedOptions.showPopover ? selectedStyle : null}
             focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
             ariaHasPopup={true}
             ariaExpanded={this.props.controller.state.playbackSpeedOptions.showPopover ? true : null}
