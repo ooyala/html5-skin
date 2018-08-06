@@ -930,6 +930,41 @@ describe('Controller', function() {
       expect(controller.state.multiAudio).toBe(null);
       controller.onMultiAudioFetched('eventName', multiAudio);
       expect(controller.state.multiAudio).toEqual(multiAudio);
+
+      multiAudio = {
+        tracks: []
+      };
+      controller.onMultiAudioFetched('eventName', multiAudio);
+      expect(controller.state.multiAudio).toBe(null);
+    });
+
+    it('should not set multiAudio state if there are less than 2 tracks', function() {
+      var multiAudio = {
+        tracks: []
+      };
+
+      controller.state.multiAudio = null;
+      expect(controller.state.multiAudio).toBe(null);
+      controller.onMultiAudioFetched('eventName', multiAudio);
+      expect(controller.state.multiAudio).toBe(null);
+
+      multiAudio = {
+        tracks: [
+          { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true }
+        ]
+      };
+
+      controller.state.multiAudio = null;
+      expect(controller.state.multiAudio).toBe(null);
+      controller.onMultiAudioFetched('eventName', multiAudio);
+      expect(controller.state.multiAudio).toBe(null);
+
+      multiAudio = {};
+
+      controller.state.multiAudio = null;
+      expect(controller.state.multiAudio).toBe(null);
+      controller.onMultiAudioFetched('eventName', multiAudio);
+      expect(controller.state.multiAudio).toBe(null);
     });
 
     it('MultiAudio State should be null after embed code was changed', function() {
@@ -940,7 +975,7 @@ describe('Controller', function() {
       expect(controller.languageList).toEqual([]);
 
       controller.onMultiAudioFetched('event', obj2);
-      expect(controller.state.multiAudio).toEqual({tracks: obj2.tracks});
+      expect(controller.state.multiAudio).toBe(null);
       expect(controller.languageList).toEqual(obj2.languageList);
 
       controller.onEmbedCodeChanged('newEmbedCode');
@@ -1031,6 +1066,33 @@ describe('Controller', function() {
       };
       controller.onMultiAudioChanged('event', multiAudio);
       expect(controller.state.multiAudio.tracks).toEqual(multiAudio.tracks);
+
+      multiAudio = {
+        tracks: []
+      };
+      controller.onMultiAudioChanged('event', multiAudio);
+      expect(controller.state.multiAudio).toBe(null);
+    });
+
+    it('should not change multiAudio state if MULTI_AUDIO_CHANGED was called was less than 2 tracks', function() {
+      var multiAudio = {
+        tracks: []
+      };
+      controller.state.multiAudio = null;
+      controller.onMultiAudioChanged('event', multiAudio);
+      expect(controller.state.multiAudio).toBe(null);
+
+      multiAudio = {
+        tracks: [
+          { id: '0', kind: 'main', label: 'eng', lang: 'eng', enabled: true }
+        ]
+      };
+      controller.onMultiAudioChanged('event', multiAudio);
+      expect(controller.state.multiAudio).toBe(null);
+
+      multiAudio = {};
+      controller.onMultiAudioChanged('event', multiAudio);
+      expect(controller.state.multiAudio).toBe(null);
     });
 
     it('should set correct state after MULTI_AUDIO_CHANGED after MULTI_AUDIO_FETCHED was already called', function() {

@@ -1336,6 +1336,21 @@ describe('ControlBar', function() {
     expect(wrapper.find('.oo-playback-speed').hostNodes().length).toBe(0);
   });
 
+  it('should set selected class on playback speed button when popover is active', function() {
+    baseMockProps.skinConfig.general.accentColor = '#0000ff';
+    baseMockProps.controller.state.playbackSpeedOptions.showPopover = true;
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { name: 'playbackSpeed', location: 'controlBar', whenDoesNotFit: 'moveToMoreOptions', minWidth: 35 }
+    ];
+    var wrapper = Enzyme.mount(
+      <ControlBar {...baseMockProps} />
+    );
+    expect(wrapper.find(PlaybackSpeedButton).props().className).toBe('oo-selected');
+    expect(wrapper.find(PlaybackSpeedButton).props().style).toEqual({
+      color: baseMockProps.skinConfig.general.accentColor
+    });
+  });
+
   it('hides quality button if ooyala ad is playing', function() {
     baseMockController.state.isOoyalaAds = true;
 
