@@ -193,6 +193,13 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         enabled: null,
         showPopover: false,
         autoFocus: false
+      },
+
+      deviceOrientation: {
+        allow: false,
+        alpha: 0,
+        beta: 0,
+        gamma: 0
       }
     };
 
@@ -299,12 +306,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           _.bind(this.onChangeClosedCaptionLanguage, this)
         );
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, 'customerUi', _.bind(this.onVolumeChanged, this));
-        this.mb.subscribe(OO.EVENTS.MUTE_STATE_CHANGED, 'customerUi', _.bind(this.onMuteStateChanged, this));
-        this.mb.subscribe(
-          OO.EVENTS.PLAYBACK_SPEED_CHANGED,
-          'customerUi',
-          _.bind(this.onPlaybackSpeedChanged, this)
-        );
+        this.mb.subscribe(OO.EVENTS.MUTE_STATE_CHANGED, 'customerUi',
+          _.bind(this.onMuteStateChanged, this));
+        this.mb.subscribe(OO.EVENTS.PLAYBACK_SPEED_CHANGED, 'customerUi',
+          _.bind(this.onPlaybackSpeedChanged, this));
         this.mb.subscribe(
           OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS,
           'customerUi',
@@ -498,6 +503,26 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         }
         this.checkDeviceOrientation = false;
       }
+
+      // for Ads
+       
+      // mobile device detected
+      this.state.deviceOrientation.allow = true;
+      // current position of device
+      if(!this.state.deviceOrientation.freeze) {
+        this.state.deviceOrientation.alpha = e.alpha;
+        this.state.deviceOrientation.beta = e.beta;
+        this.state.deviceOrientation.gamma = e.gamma;
+      }
+
+      // init position cache
+      if(!this.state.deviceOrientation.lastValue) {
+        this.state.deviceOrientation.lastValue = {
+          alpha: e.alpha,
+          beta: e.beta,
+          gamma: e.gamma
+        };
+      }      
     },
 
     onClearVideoType: function(event, params) {
@@ -1314,6 +1339,24 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       // In case ad was skipped or errored while stalled
       this.setBufferingState(false);
       this.renderSkin();
+
+      // restore video360 pos by deviceOrientation changes (only for mobile devices)
+      // It's uses after video 360 was moved by device motion, after ads playback
+      if(this.state.deviceOrientation.allow) {
+        var orientationType = Utils.getOrientationType();
+        var params = [0, 0, 0];
+
+        params[0] = this.state.deviceOrientation.alpha;
+        params[2] = orientationType === 'landscape-primary' ? 
+          this.state.deviceOrientation.beta : 
+          this.state.deviceOrientation.gamma;
+
+        // To apply there need a time gap
+        setTimeout(function() {
+          this.onTouchMove(params);
+          this.state.deviceOrientation.freeze = false;
+        }.bind(this));        
+      }
     },
 
     onWillPlayAds: function(event) {
@@ -1338,6 +1381,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       OO.log('onAdPodStarted is called from event = ' + event + ' with ' + numberOfAds + ' ads');
       this.state.currentAdsInfo.numberOfAds = numberOfAds;
       this.renderSkin();
+      // whilew ads playing - device rotation freeze
+      this.state.deviceOrientation.freeze = true;
     },
 
     onWillPlaySingleAd: function(event, adItem) {
@@ -1506,15 +1551,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      */
     getAdRemainingTime: function() {
       var remainingTime = 0;
-
-      var isLive = this.state.currentAdsInfo.currentAdItem ?
-        this.state.currentAdsInfo.currentAdItem.isLive
-        :
-        false;
-      var isSSAI = this.state.currentAdsInfo.currentAdItem ?
-        this.state.currentAdsInfo.currentAdItem.ssai
-        :
-        false;
+      var isLive = (this.state.currentAdsInfo.currentAdItem) ? 
+            this.state.currentAdsInfo.currentAdItem.isLive : 
+            false;
+      var isSSAI = (this.state.currentAdsInfo.currentAdItem) ? 
+            this.state.currentAdsInfo.currentAdItem.ssai : 
+            false;
 
       if (isLive) {
         remainingTime = parseInt((this.state.adStartTime + this.state.adVideoDuration - Date.now()) / 1000);
