@@ -1402,4 +1402,37 @@ describe('Controller', function() {
       expect(controller.state.pluginsClickElement.hasClass('oo-showing')).toEqual(false);
     });
   });
+
+  describe('Vr functionality', function() {
+    let spy;
+    beforeEach(function() {
+      controller.videoVr = true;
+      spy = sinon.spy(controller.mb, 'publish');
+    });
+    afterEach(function() {
+      controller.videoVr = false;
+      spy.restore();
+    });
+    it('should check viewing directions(before Ads starts play) and set viewing directions(after Ads)', function() {
+      controller.createPluginElements();
+
+      let focusedElement = OO.VIDEO.MAIN;
+      OO.isIos = true;
+      controller.focusedElement = focusedElement;
+      let vrViewingDirection = {
+        yaw: 90,
+        roll: 60,
+        pitch: 90
+      };
+      controller.state.vrViewingDirection = vrViewingDirection;
+
+      controller.onWillPlayAds();
+      controller.onAdsPlayed();
+
+      expect(spy.calledWith(OO.EVENTS.CHECK_VR_DIRECTION, focusedElement, true)).toBe(true);
+      expect(spy.calledWith(OO.EVENTS.TOUCH_MOVE, focusedElement,
+        [ vrViewingDirection.yaw, vrViewingDirection.roll, vrViewingDirection.pitch ]
+      )).toBe(true);
+    });
+  });
 });
