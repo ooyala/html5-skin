@@ -1417,7 +1417,6 @@ describe('Controller', function() {
       controller.createPluginElements();
 
       let focusedElement = OO.VIDEO.MAIN;
-      OO.isIos = true;
       controller.focusedElement = focusedElement;
       let vrViewingDirection = {
         yaw: 90,
@@ -1425,6 +1424,7 @@ describe('Controller', function() {
         pitch: 90
       };
       controller.state.vrViewingDirection = vrViewingDirection;
+      controller.state.isMobile = true;
 
       controller.onWillPlayAds();
       controller.onAdsPlayed();

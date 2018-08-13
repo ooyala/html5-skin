@@ -479,9 +479,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      */
     handleVrMobileOrientation: function(event) {
       if (!this.vrMobileOrientationChecked || this.checkDeviceOrientation) {
-        let beta = event.beta;
-        let gamma = event.gamma;
-        let yaw = this.state.vrViewingDirection['yaw'];
+        const beta = event.beta;
+        const gamma = event.gamma;
+        const yaw = this.state.vrViewingDirection['yaw'];
         let pitch = this.state.vrViewingDirection['pitch'];
         let dir = beta;
         let orientationType = Utils.getOrientationType();
@@ -492,7 +492,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           dir = gamma;
         }
         if (dir !== undefined && dir !== null && Utils.ensureNumber(dir, 0)) {
-          let halfAngle = 90; // in degrees
+          const halfAngle = 90; // in degrees
           pitch += -halfAngle + Math.abs(Math.round(dir));
           let params = [yaw, 0, pitch];
           this.onTouchMove(params);
@@ -1320,13 +1320,15 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       // In case ad was skipped or errored while stalled
       this.setBufferingState(false);
 
-
-      var vrViewingDirectionList = [
-        this.state.vrViewingDirection.yaw,
-        this.state.vrViewingDirection.roll,
-        this.state.vrViewingDirection.pitch
-      ]; // just for vr
-      this.onTouchMove(vrViewingDirectionList); // just for vr
+      if (this.videoVr && this.state.isMobile) { // only for vr on mobile
+        // Set current position for video 360 after Ads.
+        var vrViewingDirectionList = [
+          this.state.vrViewingDirection.yaw,
+          this.state.vrViewingDirection.roll,
+          this.state.vrViewingDirection.pitch
+        ];
+        this.onTouchMove(vrViewingDirectionList);
+      }
 
       this.renderSkin();
     },
@@ -1348,8 +1350,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       }
       this.state.adPausedTime = 0;
 
-      let useVrViewingDirection = true; //just for vr
-      this.checkVrDirection(useVrViewingDirection); //just for vr
+      if (this.videoVr && this.state.isMobile) { // only for vr on mobile
+        // Check current a vr video position (an user could change position using tilting)
+        // for setting this value after Ads in onAdsPlayed
+        const useVrViewingDirection = true;
+        this.checkVrDirection(useVrViewingDirection);
+      }
     },
 
     onAdPodStarted: function(event, numberOfAds) {
