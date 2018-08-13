@@ -475,16 +475,16 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * Uses for video 360 on mobile devices for setting necessary coordinates (relevant with start device orientation)
      * Before playing this.vrMobileOrientationChecked is equal false,
      * if need to check value for device orientation set this.checkDeviceOrientation = true
-     * @param {object} e The event object
+     * @param {object} event The event object
      */
-    handleVrMobileOrientation: function(e) {
+    handleVrMobileOrientation: function(event) {
       if (!this.vrMobileOrientationChecked || this.checkDeviceOrientation) {
-        var beta = e.beta;
-        var gamma = e.gamma;
-        var yaw = this.state.vrViewingDirection['yaw'];
-        var pitch = this.state.vrViewingDirection['pitch'];
-        var dir = beta;
-        var orientationType = Utils.getOrientationType();
+        const beta = event.beta;
+        const gamma = event.gamma;
+        const yaw = this.state.vrViewingDirection['yaw'];
+        let pitch = this.state.vrViewingDirection['pitch'];
+        let dir = beta;
+        let orientationType = Utils.getOrientationType();
         if (
           orientationType &&
           (orientationType === 'landscape-secondary' || orientationType === 'landscape-primary')
@@ -492,8 +492,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           dir = gamma;
         }
         if (dir !== undefined && dir !== null && Utils.ensureNumber(dir, 0)) {
-          pitch += -90 + Math.abs(Math.round(dir));
-          var params = [yaw, 0, pitch];
+          const halfAngle = 90; // in degrees
+          pitch += -halfAngle + Math.abs(Math.round(dir));
+          let params = [yaw, 0, pitch];
           this.onTouchMove(params);
         }
         this.checkDeviceOrientation = false;
@@ -1062,9 +1063,14 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       }
     },
 
-    checkVrDirection: function() {
+    /**
+     * Get current vr viewing directions
+     * @param {boolean} useVrViewingDirection flag says to use function 'getVrViewingDirection' from the plugin
+     * @fires OO.EVENTS.CHECK_VR_DIRECTION
+     */
+    checkVrDirection: function(useVrViewingDirection) {
       if (this.videoVr) {
-        this.mb.publish(OO.EVENTS.CHECK_VR_DIRECTION, this.focusedElement);
+        this.mb.publish(OO.EVENTS.CHECK_VR_DIRECTION, this.focusedElement, useVrViewingDirection);
       }
     },
 
@@ -1313,6 +1319,17 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.trySetAnamorphicFixState(true);
       // In case ad was skipped or errored while stalled
       this.setBufferingState(false);
+
+      if (this.videoVr && this.state.isMobile) { // only for vr on mobile
+        // Set current position for video 360 after Ads.
+        var vrViewingDirectionList = [
+          this.state.vrViewingDirection.yaw,
+          this.state.vrViewingDirection.roll,
+          this.state.vrViewingDirection.pitch
+        ];
+        this.onTouchMove(vrViewingDirectionList);
+      }
+
       this.renderSkin();
     },
 
@@ -1332,6 +1349,13 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.isNewVrVideo = false;
       }
       this.state.adPausedTime = 0;
+
+      if (this.videoVr && this.state.isMobile) { // only for vr on mobile
+        // Check current a vr video position (an user could change position using tilting)
+        // for setting this value after Ads in onAdsPlayed
+        const useVrViewingDirection = true;
+        this.checkVrDirection(useVrViewingDirection);
+      }
     },
 
     onAdPodStarted: function(event, numberOfAds) {
@@ -1663,7 +1687,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       //'auto' prior to the 'click' event ending will trigger 'click' event listeners on Android. We'll instead listen to
       //'touchend' and 'touchcancel' on Android.
       if (OO.isAndroid) {
-        this.state.pluginsClickElement.on('touchend touchcancel', this.resumePlaybackAfterClickthrough.bind(this));
+        this.state.pluginsClickElement.on('touchend touchcancel',
+          this.resumePlaybackAfterClickthrough.bind(this)
+        );
       } else {
         this.state.pluginsClickElement.click(this.resumePlaybackAfterClickthrough.bind(this));
       }
@@ -1691,7 +1717,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * was handled by the player.
      * @private
      */
-    resumePlaybackAfterClickthrough: function () {
+    resumePlaybackAfterClickthrough: function() {
       this.state.pluginsClickElement.removeClass('oo-showing');
       this.mb.publish(OO.EVENTS.PLAY);
     },
