@@ -76,7 +76,7 @@
     };
 
     var metaThumbTag = document.createElement('meta');
-	metaThumbTag.name = "og:image";
+	metaThumbTag.setAttribute("property", "og:image");
 	metaThumbTag.content = playerParams.img;
 	document.getElementsByTagName('head')[0].appendChild(metaThumbTag);
     playerParams["playerBrandingId"] = playerParams.pbid;
