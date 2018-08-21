@@ -404,45 +404,78 @@ var ScrubberBar = createReactClass({
 
     var ariaValueText = this.getAriaValueText();
 
+    //playhead
+    var totalTime = 0;
+    if (
+      this.props.duration === null ||
+      typeof this.props.duration === 'undefined' ||
+      this.props.duration === ''
+    ) {
+      totalTime = Utils.formatSeconds(0);
+    } else {
+      totalTime = Utils.formatSeconds(this.props.duration);
+    }
+    // TODO - Replace time display logic with Utils.getTimeDisplayValues()
+    var playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ?
+      Utils.formatSeconds(parseInt(this.props.currentPlayhead))
+      :
+      null;
+    var isLiveStream = this.props.isLiveStream;
+    var durationSetting = { color: this.props.skinConfig.controlBar.iconStyle.inactive.color };
+    var timeShift = this.props.currentPlayhead - this.props.duration;
+    // checking timeShift < 1 seconds (not === 0) as processing of the click after we rewinded and then went live may take some time
+    var isLiveNow = Math.abs(timeShift) < 1;
+    var liveClick = isLiveNow ? null : this.handleLiveClick;
+    var playheadTimeContent = isLiveStream ?
+      (isLiveNow ? null : Utils.formatSeconds(timeShift))
+      :
+      playheadTime;
+    var totalTimeContent = isLiveStream ? null : <span className="oo-time">{totalTime}</span>;
+    //end playhead
+
     return (
-      <div
-        className="oo-scrubber-bar-container"
-        ref="scrubberBarContainer"
-        onMouseOver={scrubberBarMouseOver}
-        onMouseOut={scrubberBarMouseOut}
-        onMouseLeave={this.handleScrubberBarMouseLeave}
-        onMouseMove={scrubberBarMouseMove}>
-        {thumbnailsContainer}
+      <div className="oo-scrubber-bar-parent">
+        {this.props.controller.state.audioOnly ? <span className="oo-time">{playheadTimeContent}</span> : ''}
         <div
-          className="oo-scrubber-bar-padding"
-          ref="scrubberBarPadding"
-          onMouseDown={scrubberBarMouseDown}
-          onTouchStart={scrubberBarMouseDown}>
+          className="oo-scrubber-bar-container"
+          ref="scrubberBarContainer"
+          onMouseOver={scrubberBarMouseOver}
+          onMouseOut={scrubberBarMouseOut}
+          onMouseLeave={this.handleScrubberBarMouseLeave}
+          onMouseMove={scrubberBarMouseMove}>
+          {thumbnailsContainer}
           <div
-            ref="scrubberBar"
-            className={scrubberBarClassName}
-            style={scrubberBarStyle}
-            role="slider"
-            aria-label={CONSTANTS.ARIA_LABELS.SEEK_SLIDER}
-            aria-valuemin="0"
-            aria-valuemax={this.props.duration}
-            aria-valuenow={Utils.ensureNumber(this.props.currentPlayhead, 0).toFixed(2)}
-            aria-valuetext={ariaValueText}
-            data-focus-id={CONSTANTS.FOCUS_IDS.SCRUBBER_BAR}
-            tabIndex="0"
-            onKeyDown={this.handleScrubberBarKeyDown}>
-            <div className="oo-buffered-indicator" style={bufferedIndicatorStyle} />
-            <div className="oo-hovered-indicator" style={hoveredIndicatorStyle} />
-            <div className={playedIndicatorClassName} style={playedIndicatorStyle} />
+            className="oo-scrubber-bar-padding"
+            ref="scrubberBarPadding"
+            onMouseDown={scrubberBarMouseDown}
+            onTouchStart={scrubberBarMouseDown}>
             <div
-              className="oo-playhead-padding"
-              style={playheadPaddingStyle}
-              onMouseDown={playheadMouseDown}
-              onTouchStart={playheadMouseDown}>
-              <div ref="playhead" className={playheadClassName} style={playheadStyle} />
+              ref="scrubberBar"
+              className={scrubberBarClassName}
+              style={scrubberBarStyle}
+              role="slider"
+              aria-label={CONSTANTS.ARIA_LABELS.SEEK_SLIDER}
+              aria-valuemin="0"
+              aria-valuemax={this.props.duration}
+              aria-valuenow={Utils.ensureNumber(this.props.currentPlayhead, 0).toFixed(2)}
+              aria-valuetext={ariaValueText}
+              data-focus-id={CONSTANTS.FOCUS_IDS.SCRUBBER_BAR}
+              tabIndex="0"
+              onKeyDown={this.handleScrubberBarKeyDown}>
+              <div className="oo-buffered-indicator" style={bufferedIndicatorStyle} />
+              <div className="oo-hovered-indicator" style={hoveredIndicatorStyle} />
+              <div className={playedIndicatorClassName} style={playedIndicatorStyle} />
+              <div
+                className="oo-playhead-padding"
+                style={playheadPaddingStyle}
+                onMouseDown={playheadMouseDown}
+                onTouchStart={playheadMouseDown}>
+                <div ref="playhead" className={playheadClassName} style={playheadStyle} />
+              </div>
             </div>
           </div>
         </div>
+        {this.props.controller.state.audioOnly ? totalTimeContent : ''}
       </div>
     );
   }

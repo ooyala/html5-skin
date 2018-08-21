@@ -24,6 +24,7 @@ var createReactClass = require('create-react-class');
 
 import {PlayingScreenWithAutoHide} from './views/playingScreen';
 import {PauseScreenWithAutoHide} from './views/pauseScreen';
+import {AudioOnlyScreen} from './views/audioOnlyScreen';
 
 var Skin = createReactClass({
   mixins: [ResponsiveManagerMixin],
@@ -304,258 +305,304 @@ var Skin = createReactClass({
         screen = <div />;
       }
     } else {
-      // switch screenToShow
-      switch (this.state.screenToShow) {
-        case CONSTANTS.SCREEN.INITIAL_SCREEN:
-          screen = (
-            <StartScreen
-              {...this.props}
-              componentWidth={this.state.componentWidth}
-              contentTree={this.state.contentTree}
-              isInitializing={true}
-            />
-          );
-          break;
-        case CONSTANTS.SCREEN.LOADING_SCREEN:
-          screen = <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />;
-          break;
-        case CONSTANTS.SCREEN.START_SCREEN:
-          screen = (
-            <StartScreen
-              {...this.props}
-              componentWidth={this.state.componentWidth}
-              contentTree={this.state.contentTree}
-              isInitializing={false}
-            />
-          );
-          break;
-        case CONSTANTS.SCREEN.START_LOADING_SCREEN:
-          screen = (
-            <StartScreen
-              {...this.props}
-              componentWidth={this.state.componentWidth}
-              contentTree={this.state.contentTree}
-              isInitializing={false}
-              showSpinner={true}
-            />
-          );
-          break;
-        case CONSTANTS.SCREEN.PLAYING_SCREEN:
-          screen = (
-            <PlayingScreenWithAutoHide
-              {...this.props}
-              handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
-              handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
-              handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
-              handleVrPlayerClick={this.handleVrPlayerClick}
-              handleVrPlayerFocus={this.handleVrPlayerFocus}
-              isVrMouseMove={this.state.isVrMouseMove}
-              contentTree={this.state.contentTree}
-              currentPlayhead={this.state.currentPlayhead}
-              duration={this.state.duration}
-              buffered={this.state.buffered}
-              fullscreen={this.state.fullscreen}
-              playerState={this.state.playerState}
-              seeking={this.state.seeking}
-              upNextInfo={this.state.upNextInfo}
-              isLiveStream={this.state.isLiveStream}
-              responsiveView={this.state.responsiveId}
-              componentWidth={this.state.componentWidth}
-              componentHeight={this.state.componentHeight}
-              videoQualityOptions={this.state.videoQualityOptions}
-              closedCaptionOptions={this.props.closedCaptionOptions}
-              captionDirection={this.props.controller.captionDirection}
-              ref="playScreen"
-            />
-          );
-          break;
-        case CONSTANTS.SCREEN.SHARE_SCREEN:
-          screen = (
-            <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.SHARE_SCREEN} icon="share">
-              <SharePanel
+      if (this.props.controller.state.audioOnly) {
+        switch (this.state.screenToShow) {
+          case CONSTANTS.SCREEN.INITIAL_SCREEN:
+            screen = (
+              <StartScreen
                 {...this.props}
-                assetId={this.state.assetId}
-                playerParam={this.state.playerParam}
+                componentWidth={this.state.componentWidth}
                 contentTree={this.state.contentTree}
+                isInitializing={true}
               />
-            </ContentScreen>
-          );
-          break;
-        case CONSTANTS.SCREEN.PAUSE_SCREEN:
-          screen = (
-            <PauseScreenWithAutoHide
-              {...this.props}
-              handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
-              handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
-              handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
-              handleVrPlayerClick={this.handleVrPlayerClick}
-              isVrMouseMove={this.state.isVrMouseMove}
-              contentTree={this.state.contentTree}
-              currentPlayhead={this.state.currentPlayhead}
-              playerState={this.state.playerState}
-              duration={this.state.duration}
-              buffered={this.state.buffered}
-              pauseAnimationDisabled={this.state.pauseAnimationDisabled}
-              fullscreen={this.state.fullscreen}
-              seeking={this.state.seeking}
-              upNextInfo={this.state.upNextInfo}
-              isLiveStream={this.state.isLiveStream}
-              responsiveView={this.state.responsiveId}
-              componentWidth={this.state.componentWidth}
-              videoQualityOptions={this.state.videoQualityOptions}
-              captionDirection={this.props.controller.captionDirection}
-              ref="pauseScreen"
-            />
-          );
-          break;
-        case CONSTANTS.SCREEN.END_SCREEN:
-          screen = (
-            <EndScreen
-              {...this.props}
-              contentTree={this.state.contentTree}
-              discoveryData={this.state.discoveryData}
-              currentPlayhead={this.state.currentPlayhead}
-              duration={this.state.duration}
-              buffered={this.state.buffered}
-              fullscreen={this.state.fullscreen}
-              playerState={this.state.playerState}
-              seeking={this.state.seeking}
-              isLiveStream={this.state.isLiveStream}
-              responsiveView={this.state.responsiveId}
-              videoQualityOptions={this.state.videoQualityOptions}
-              componentWidth={this.state.componentWidth}
-              ref="endScreen"
-            />
-          );
-          break;
-        case CONSTANTS.SCREEN.AD_SCREEN:
-          screen = (
-            <AdScreen
-              {...this.props}
-              contentTree={this.state.contentTree}
-              currentAdsInfo={this.state.currentAdsInfo}
-              currentPlayhead={this.state.currentPlayhead}
-              currentAdPlayhead={this.state.currentAdPlayhead}
-              fullscreen={this.state.fullscreen}
-              playerState={this.state.playerState}
-              duration={this.state.duration}
-              adVideoDuration={this.props.controller.state.adVideoDuration}
-              buffered={this.state.buffered}
-              seeking={this.state.seeking}
-              responsiveView={this.state.responsiveId}
-              componentWidth={this.state.componentWidth}
-              videoQualityOptions={this.state.videoQualityOptions}
-              adStartTime={this.state.adStartTime}
-              ref="adScreen"
-            />
-          );
-          break;
-        case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
-          screen = (
-            <ContentScreen
-              {...this.props}
-              screen={CONSTANTS.SCREEN.DISCOVERY_SCREEN}
-              titleText={CONSTANTS.SKIN_TEXT.DISCOVER}
-              icon="discovery"
-            >
-              <DiscoveryPanel
+            );
+            break;
+          case null:
+            screen = <div />;
+            break;
+          default:
+            screen = (
+              <AudioOnlyScreen
                 {...this.props}
-                videosPerPage={{ xs: 2, sm: 4, md: 6, lg: 8 }}
-                forceCountDownTimer={this.state.forceCountDownTimerOnEndScreen}
-                discoveryData={this.state.discoveryData}
-                playerState={this.state.playerState}
-                responsiveView={this.state.responsiveId}
-                componentWidth={this.state.componentWidth}
-              />
-            </ContentScreen>
-          );
-          break;
-        case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
-          screen = (
-            <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN}>
-              <MoreOptionsPanel
-                {...this.props}
-                responsiveView={this.state.responsiveId}
-                fullscreen={this.state.fullscreen} />
-            </ContentScreen>
-          );
-          break;
-        case CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN:
-          screen = (
-            <ContentScreen
-              {...this.props}
-              screen={CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN}
-              screenClassName="oo-content-screen-closed-captions"
-              titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
-              autoFocus={this.state.closedCaptionOptions.autoFocus}
-              closedCaptionOptions={this.props.closedCaptionOptions}
-              element={
-                <OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_CLOSED_CAPTIONS} />
-              }
-              icon="cc">
-              <ClosedCaptionPanel
-                {...this.props}
-                closedCaptionOptions={this.props.closedCaptionOptions}
-                dataItemsPerPage={{ xs: 1, sm: 4, md: 8, lg: 8 }}
-                responsiveView={this.state.responsiveId}
-                componentWidth={this.state.componentWidth}
-              />
-            </ContentScreen>
-          );
-          break;
-        case CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN:
-          screen = (
-            <ContentScreen
-              {...this.props}
-              screenClassName="oo-menu-content-screen"
-              screen={CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN}
-              titleText={CONSTANTS.SKIN_TEXT.VIDEO_QUALITY}
-              autoFocus={this.state.videoQualityOptions.autoFocus}>
-              <VideoQualityPanel
-                {...this.props}
+                handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
+                handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
+                handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
+                handleVrPlayerClick={this.handleVrPlayerClick}
+                handleVrPlayerFocus={this.handleVrPlayerFocus}
+                isVrMouseMove={this.state.isVrMouseMove}
+                contentTree={this.state.contentTree}
+                currentPlayhead={this.state.currentPlayhead}
+                duration={this.state.duration}
+                buffered={this.state.buffered}
                 fullscreen={this.state.fullscreen}
+                playerState={this.state.playerState}
+                seeking={this.state.seeking}
+                upNextInfo={this.state.upNextInfo}
+                isLiveStream={this.state.isLiveStream}
+                responsiveView={this.state.responsiveId}
+                componentWidth={this.state.componentWidth}
+                componentHeight={this.state.componentHeight}
                 videoQualityOptions={this.state.videoQualityOptions}
-                responsiveView={this.state.responsiveId} />
-            </ContentScreen>
-          );
-          break;
-          case CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN:
+                closedCaptionOptions={this.props.closedCaptionOptions}
+                captionDirection={this.props.controller.captionDirection}
+              />
+            );
+            break;
+        }
+      } else {
+        // switch screenToShow
+        switch (this.state.screenToShow) {
+          case CONSTANTS.SCREEN.INITIAL_SCREEN:
+            screen = (
+              <StartScreen
+                {...this.props}
+                componentWidth={this.state.componentWidth}
+                contentTree={this.state.contentTree}
+                isInitializing={true}
+              />
+            );
+            break;
+          case CONSTANTS.SCREEN.LOADING_SCREEN:
+            screen = <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />;
+            break;
+          case CONSTANTS.SCREEN.START_SCREEN:
+            screen = (
+              <StartScreen
+                {...this.props}
+                componentWidth={this.state.componentWidth}
+                contentTree={this.state.contentTree}
+                isInitializing={false}
+              />
+            );
+            break;
+          case CONSTANTS.SCREEN.START_LOADING_SCREEN:
+            screen = (
+              <StartScreen
+                {...this.props}
+                componentWidth={this.state.componentWidth}
+                contentTree={this.state.contentTree}
+                isInitializing={false}
+                showSpinner={true}
+              />
+            );
+            break;
+          case CONSTANTS.SCREEN.PLAYING_SCREEN:
+            screen = (
+              <PlayingScreenWithAutoHide
+                {...this.props}
+                handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
+                handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
+                handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
+                handleVrPlayerClick={this.handleVrPlayerClick}
+                handleVrPlayerFocus={this.handleVrPlayerFocus}
+                isVrMouseMove={this.state.isVrMouseMove}
+                contentTree={this.state.contentTree}
+                currentPlayhead={this.state.currentPlayhead}
+                duration={this.state.duration}
+                buffered={this.state.buffered}
+                fullscreen={this.state.fullscreen}
+                playerState={this.state.playerState}
+                seeking={this.state.seeking}
+                upNextInfo={this.state.upNextInfo}
+                isLiveStream={this.state.isLiveStream}
+                responsiveView={this.state.responsiveId}
+                componentWidth={this.state.componentWidth}
+                componentHeight={this.state.componentHeight}
+                videoQualityOptions={this.state.videoQualityOptions}
+                closedCaptionOptions={this.props.closedCaptionOptions}
+                captionDirection={this.props.controller.captionDirection}
+                ref="playScreen"
+              />
+            );
+            break;
+          case CONSTANTS.SCREEN.SHARE_SCREEN:
+            screen = (
+              <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.SHARE_SCREEN} icon="share">
+                <SharePanel
+                  {...this.props}
+                  assetId={this.state.assetId}
+                  playerParam={this.state.playerParam}
+                  contentTree={this.state.contentTree}
+                />
+              </ContentScreen>
+            );
+            break;
+          case CONSTANTS.SCREEN.PAUSE_SCREEN:
+            screen = (
+              <PauseScreenWithAutoHide
+                {...this.props}
+                handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
+                handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
+                handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
+                handleVrPlayerClick={this.handleVrPlayerClick}
+                isVrMouseMove={this.state.isVrMouseMove}
+                contentTree={this.state.contentTree}
+                currentPlayhead={this.state.currentPlayhead}
+                playerState={this.state.playerState}
+                duration={this.state.duration}
+                buffered={this.state.buffered}
+                pauseAnimationDisabled={this.state.pauseAnimationDisabled}
+                fullscreen={this.state.fullscreen}
+                seeking={this.state.seeking}
+                upNextInfo={this.state.upNextInfo}
+                isLiveStream={this.state.isLiveStream}
+                responsiveView={this.state.responsiveId}
+                componentWidth={this.state.componentWidth}
+                videoQualityOptions={this.state.videoQualityOptions}
+                captionDirection={this.props.controller.captionDirection}
+                ref="pauseScreen"
+              />
+            );
+            break;
+          case CONSTANTS.SCREEN.END_SCREEN:
+            screen = (
+              <EndScreen
+                {...this.props}
+                contentTree={this.state.contentTree}
+                discoveryData={this.state.discoveryData}
+                currentPlayhead={this.state.currentPlayhead}
+                duration={this.state.duration}
+                buffered={this.state.buffered}
+                fullscreen={this.state.fullscreen}
+                playerState={this.state.playerState}
+                seeking={this.state.seeking}
+                isLiveStream={this.state.isLiveStream}
+                responsiveView={this.state.responsiveId}
+                videoQualityOptions={this.state.videoQualityOptions}
+                componentWidth={this.state.componentWidth}
+                ref="endScreen"
+              />
+            );
+            break;
+          case CONSTANTS.SCREEN.AD_SCREEN:
+            screen = (
+              <AdScreen
+                {...this.props}
+                contentTree={this.state.contentTree}
+                currentAdsInfo={this.state.currentAdsInfo}
+                currentPlayhead={this.state.currentPlayhead}
+                currentAdPlayhead={this.state.currentAdPlayhead}
+                fullscreen={this.state.fullscreen}
+                playerState={this.state.playerState}
+                duration={this.state.duration}
+                adVideoDuration={this.props.controller.state.adVideoDuration}
+                buffered={this.state.buffered}
+                seeking={this.state.seeking}
+                responsiveView={this.state.responsiveId}
+                componentWidth={this.state.componentWidth}
+                videoQualityOptions={this.state.videoQualityOptions}
+                adStartTime={this.state.adStartTime}
+                ref="adScreen"
+              />
+            );
+            break;
+          case CONSTANTS.SCREEN.DISCOVERY_SCREEN:
+            screen = (
+              <ContentScreen
+                {...this.props}
+                screen={CONSTANTS.SCREEN.DISCOVERY_SCREEN}
+                titleText={CONSTANTS.SKIN_TEXT.DISCOVER}
+                icon="discovery"
+              >
+                <DiscoveryPanel
+                  {...this.props}
+                  videosPerPage={{ xs: 2, sm: 4, md: 6, lg: 8 }}
+                  forceCountDownTimer={this.state.forceCountDownTimerOnEndScreen}
+                  discoveryData={this.state.discoveryData}
+                  playerState={this.state.playerState}
+                  responsiveView={this.state.responsiveId}
+                  componentWidth={this.state.componentWidth}
+                />
+              </ContentScreen>
+            );
+            break;
+          case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
+            screen = (
+              <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN}>
+                <MoreOptionsPanel
+                  {...this.props}
+                  responsiveView={this.state.responsiveId}
+                  fullscreen={this.state.fullscreen} />
+              </ContentScreen>
+            );
+            break;
+          case CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN:
+            screen = (
+              <ContentScreen
+                {...this.props}
+                screen={CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN}
+                screenClassName="oo-content-screen-closed-captions"
+                titleText={CONSTANTS.SKIN_TEXT.CC_OPTIONS}
+                autoFocus={this.state.closedCaptionOptions.autoFocus}
+                closedCaptionOptions={this.props.closedCaptionOptions}
+                element={
+                  <OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_CLOSED_CAPTIONS} />
+                }
+                icon="cc">
+                <ClosedCaptionPanel
+                  {...this.props}
+                  closedCaptionOptions={this.props.closedCaptionOptions}
+                  dataItemsPerPage={{ xs: 1, sm: 4, md: 8, lg: 8 }}
+                  responsiveView={this.state.responsiveId}
+                  componentWidth={this.state.componentWidth}
+                />
+              </ContentScreen>
+            );
+            break;
+          case CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN:
             screen = (
               <ContentScreen
                 {...this.props}
                 screenClassName="oo-menu-content-screen"
-                screen={CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN}
-                titleText={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
-                autoFocus={this.state.playbackSpeedOptions.autoFocus} >
-                <PlaybackSpeedPanel
-                  language={this.props.language}
-                  localizableStrings={this.props.localizableStrings}
-                  controller={this.props.controller}
-                  skinConfig={this.props.skinConfig}
+                screen={CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN}
+                titleText={CONSTANTS.SKIN_TEXT.VIDEO_QUALITY}
+                autoFocus={this.state.videoQualityOptions.autoFocus}>
+                <VideoQualityPanel
+                  {...this.props}
                   fullscreen={this.state.fullscreen}
+                  videoQualityOptions={this.state.videoQualityOptions}
                   responsiveView={this.state.responsiveId} />
               </ContentScreen>
             );
             break;
-        case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
-          screen = (
-            <ContentScreen
-              {...this.props}
-              cssClass="oo-close-button oo-close-button--ma"
-              dataItemsPerPage={{ xs: 1, sm: 4, md: 8, lg: 8 }}
-              screen={CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN}
-              screenClassName="oo-cc-ma-container"
-              autoFocus={this.state.multiAudioOptions.autoFocus}
-              icon="cc">
-              <ClosedCaptionMultiAudioMenu {...this.props} />
-            </ContentScreen>
-          );
-          break;
-        case CONSTANTS.SCREEN.ERROR_SCREEN:
-          screen = <ErrorScreen {...this.props} errorCode={this.props.controller.state.errorCode} />;
-          break;
-        default:
-          screen = <div />;
+            case CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN:
+              screen = (
+                <ContentScreen
+                  {...this.props}
+                  screenClassName="oo-menu-content-screen"
+                  screen={CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN}
+                  titleText={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
+                  autoFocus={this.state.playbackSpeedOptions.autoFocus} >
+                  <PlaybackSpeedPanel
+                    language={this.props.language}
+                    localizableStrings={this.props.localizableStrings}
+                    controller={this.props.controller}
+                    skinConfig={this.props.skinConfig}
+                    fullscreen={this.state.fullscreen}
+                    responsiveView={this.state.responsiveId} />
+                </ContentScreen>
+              );
+              break;
+          case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
+            screen = (
+              <ContentScreen
+                {...this.props}
+                cssClass="oo-close-button oo-close-button--ma"
+                dataItemsPerPage={{ xs: 1, sm: 4, md: 8, lg: 8 }}
+                screen={CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN}
+                screenClassName="oo-cc-ma-container"
+                autoFocus={this.state.multiAudioOptions.autoFocus}
+                icon="cc">
+                <ClosedCaptionMultiAudioMenu {...this.props} />
+              </ContentScreen>
+            );
+            break;
+          case CONSTANTS.SCREEN.ERROR_SCREEN:
+            screen = <ErrorScreen {...this.props} errorCode={this.props.controller.state.errorCode} />;
+            break;
+          default:
+            screen = <div />;
+        }
       }
     }
 

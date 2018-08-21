@@ -15,7 +15,7 @@
   height:0;
   outline: none;
   // default aspect ratio 16:9
-  @include set-aspect-ratio(16, 9);
+  //@include set-aspect-ratio(16, 9);
 
   // other video objects
   & > div,

@@ -22,6 +22,9 @@ var React = require('react'),
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 
+const MACROS = require('../constants/macros');
+const HoldControlButton = require('./holdControlButton');
+
 var ControlBar = createReactClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
@@ -312,6 +315,72 @@ var ControlBar = createReactClass({
     this.props.controller.toggleMoreOptionsScreen(this.moreOptionsItems);
   },
 
+  //skip controls
+  /**
+   * Previous Video button click handler.
+   * @private
+   */
+  onPreviousVideo: function() {
+    if (typeof this.props.controller.rewindOrRequestPreviousVideo === 'function') {
+      this.props.controller.rewindOrRequestPreviousVideo();
+    }
+  },
+
+  /**
+   * Next Video button click handler.
+   * @private
+   */
+  onNextVideo: function() {
+    if (typeof this.props.controller.requestNextVideo === 'function') {
+      this.props.controller.requestNextVideo();
+    }
+  },
+
+  /**
+   * Skip Backward button click handler.
+   * @private
+   */
+  onSkipBackward: function() {
+    if (typeof this.props.a11yControls.seekBy === 'function') {
+      const skipTimes = Utils.getSkipTimes(this.props.skinConfig);
+      this.props.a11yControls.seekBy(skipTimes.backward, false, true);
+    }
+  },
+
+  /**
+   * Skip Forward button click handler.
+   * @private
+   */
+  onSkipForward: function() {
+    if (typeof this.props.a11yControls.seekBy === 'function') {
+      const skipTimes = Utils.getSkipTimes(this.props.skinConfig);
+      this.props.a11yControls.seekBy(skipTimes.forward, true, true);
+    }
+  },
+
+  /**
+   * Determines whether or not the current video is at the live edge based on the
+   * playhead state and duration.
+   * @private
+   * @return {Boolean} True if the video is at the live edge, false otherwise.
+   * Note: This function always returns false for VOD.
+   */
+  isAtLiveEdge: function() {
+    const isLiveStream = Utils.getPropertyValue(
+      this.props.controller,
+      'state.isLiveStream',
+      false
+    );
+    if (isLiveStream) {
+      const duration = Utils.getPropertyValue(this.props.controller, 'state.duration', 0);
+      const currentPlayhead = Utils.ensureNumber(this.props.currentPlayhead, 0);
+      const isLiveNow = Math.abs(currentPlayhead - duration) < 1;
+      return isLiveNow;
+    };
+    return false;
+  },
+  // end skip controls
+
   populateControlBar: function() {
     var playIcon;
     var playPauseAriaLabel;
@@ -447,6 +516,18 @@ var ControlBar = createReactClass({
     } else {
       playBtnTooltip = CONSTANTS.SKIN_TEXT.PLAY;
     }
+
+    const buttonStyle = {};
+    const skipTimes = Utils.getSkipTimes(this.props.skinConfig);
+
+    const skipBackwardAriaLabel = CONSTANTS.ARIA_LABELS.SKIP_BACKWARD.replace(
+      MACROS.SECONDS,
+      skipTimes.backward
+    );
+    const skipForwardAriaLabel = CONSTANTS.ARIA_LABELS.SKIP_FORWARD.replace(
+      MACROS.SECONDS,
+      skipTimes.forward
+    );
 
     var controlItemTemplates = {
       playPause: (
@@ -727,6 +808,63 @@ var ControlBar = createReactClass({
               null
           }
           height={this.props.skinConfig.controlBar.logo.height} />
+      ),
+
+      previousVideo: (
+        <ControlButton
+          {...this.props}
+          key={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
+          focusId={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
+          style={buttonStyle}
+          className="oo-previous-video"
+          icon="previous"
+          ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_VIDEO}
+          disabled={!this.props.skipControlsConfig.hasPreviousVideos}
+          onClick={this.onPreviousVideo}>
+        </ControlButton>
+      ),
+
+      skipBackward: (
+        <HoldControlButton
+          {...this.props}
+          key={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD}
+          focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD}
+          style={buttonStyle}
+          className="oo-center-button oo-skip-backward"
+          icon="replay"
+          ariaLabel={skipBackwardAriaLabel}
+          onClick={this.onSkipBackward}>
+          <span className="oo-btn-counter">{skipTimes.backward}</span>
+        </HoldControlButton>
+      ),
+
+      skipForward: (
+        <HoldControlButton
+          {...this.props}
+          key={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD}
+          focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD}
+          style={buttonStyle}
+          className="oo-center-button oo-skip-forward"
+          icon="forward"
+          ariaLabel={skipForwardAriaLabel}
+          disabled={this.isAtLiveEdge()}
+          onClick={this.onSkipForward}>
+          <span className="oo-btn-counter">{skipTimes.forward}</span>
+        </HoldControlButton>
+      ),
+
+      nextVideo: (
+        <ControlButton
+          {...this.props}
+          key={CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO}
+          focusId={CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO}
+          style={buttonStyle}
+          className="oo-next-video"
+          icon="next"
+          ariaLabel={CONSTANTS.ARIA_LABELS.NEXT_VIDEO}
+          disabled={!this.props.skipControlsConfig.hasNextVideos}
+          onClick={this.onNextVideo}>
+        </ControlButton>
       )
     };
 
@@ -735,6 +873,10 @@ var ControlBar = createReactClass({
       this.props.skinConfig.buttons.desktopAd
       :
       this.props.skinConfig.buttons.desktopContent;
+
+    if (this.props.controller.state.audioOnly) {
+      defaultItems = this.props.skinConfig.buttons.audioOnly;
+    }
 
     // if mobile and not showing the slider or the icon, extra space can be added to control bar width. If volume bar is shown instead of slider, add some space as well:
     var volumeItem = null;
@@ -903,11 +1045,13 @@ var ControlBar = createReactClass({
         onBlur={this.props.onBlur}
         onMouseUp={this.handleControlBarMouseUp}
         onTouchEnd={this.handleControlBarMouseUp}>
-        <ScrubberBar {...this.props} />
+        {!this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : ''}
 
         <div className="oo-control-bar-items-wrapper">
           {controlBarItems}
         </div>
+
+        {this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : ''}
       </div>
     );
   }

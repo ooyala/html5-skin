@@ -193,7 +193,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         enabled: null,
         showPopover: false,
         autoFocus: false
-      }
+      },
+
+      audioOnly: true
     };
 
     this.init();
@@ -2616,7 +2618,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     startHideControlBarTimer: function() {
-      if (this.skin.props.skinConfig.controlBar.autoHide === true) {
+      if (this.skin.props.skinConfig.controlBar.autoHide === true && !this.state.audioOnly) {
         this.cancelTimer();
         var timer = setTimeout(
           function() {
@@ -2676,7 +2678,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     // set Main Video Element Wrapper padding-top to aspect ratio
     setAspectRatio: function() {
-      if (this.state.mainVideoAspectRatio > 0) {
+      if (this.state.mainVideoAspectRatio > 0 && !this.state.audioOnly) {
         this.state.mainVideoInnerWrapper.css('padding-top', this.state.mainVideoAspectRatio + '%');
       }
     },
