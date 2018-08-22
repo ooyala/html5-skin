@@ -8,6 +8,7 @@ const preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus');
 const PropTypes = require('prop-types');
 const CONSTANTS = require('../constants/constants');
 const MACROS = require('../constants/macros');
+const withVideoNavigation = require('./higher-order/withVideoNavigation');
 
 class SkipControls extends React.Component {
 
@@ -43,48 +44,6 @@ class SkipControls extends React.Component {
   }
 
   /**
-   * Previous Video button click handler.
-   * @private
-   */
-  onPreviousVideo() {
-    if (typeof this.props.controller.rewindOrRequestPreviousVideo === 'function') {
-      this.props.controller.rewindOrRequestPreviousVideo();
-    }
-  }
-
-  /**
-   * Next Video button click handler.
-   * @private
-   */
-  onNextVideo() {
-    if (typeof this.props.controller.requestNextVideo === 'function') {
-      this.props.controller.requestNextVideo();
-    }
-  }
-
-  /**
-   * Skip Backward button click handler.
-   * @private
-   */
-  onSkipBackward() {
-    if (typeof this.props.a11yControls.seekBy === 'function') {
-      const skipTimes = Utils.getSkipTimes(this.props.skinConfig);
-      this.props.a11yControls.seekBy(skipTimes.backward, false, true);
-    }
-  }
-
-  /**
-   * Skip Forward button click handler.
-   * @private
-   */
-  onSkipForward() {
-    if (typeof this.props.a11yControls.seekBy === 'function') {
-      const skipTimes = Utils.getSkipTimes(this.props.skinConfig);
-      this.props.a11yControls.seekBy(skipTimes.forward, true, true);
-    }
-  }
-
-  /**
    * Handles the mouseenter event. Given that the SkipControls have pointer-events
    * set to 'none' in order to allow clicking through them, this event is only fired
    * when the mouse is over a button. Whenever this happens we cancel the auto-hide
@@ -93,28 +52,6 @@ class SkipControls extends React.Component {
    */
   onMouseEnter() {
     this.props.controller.cancelTimer();
-  }
-
-  /**
-   * Determines whether or not the current video is at the live edge based on the
-   * playhead state and duration.
-   * @private
-   * @return {Boolean} True if the video is at the live edge, false otherwise.
-   * Note: This function always returns false for VOD.
-   */
-  isAtLiveEdge() {
-    const isLiveStream = Utils.getPropertyValue(
-      this.props.controller,
-      'state.isLiveStream',
-      false
-    );
-    if (isLiveStream) {
-      const duration = Utils.getPropertyValue(this.props.controller, 'state.duration', 0);
-      const currentPlayhead = Utils.ensureNumber(this.props.currentPlayhead, 0);
-      const isLiveNow = Math.abs(currentPlayhead - duration) < 1;
-      return isLiveNow;
-    };
-    return false;
   }
 
   /**
@@ -330,4 +267,4 @@ SkipControls.propTypes = {
   })
 };
 
-module.exports = preserveKeyboardFocus(SkipControls);
+module.exports = preserveKeyboardFocus(withVideoNavigation(SkipControls));

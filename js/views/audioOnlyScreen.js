@@ -78,4 +78,4 @@ class AudioOnlyScreen extends React.Component {
   }
 }
 
-export {AudioOnlyScreen};
+module.exports = AudioOnlyScreen;

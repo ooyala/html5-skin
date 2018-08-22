@@ -24,6 +24,7 @@ var PropTypes = require('prop-types');
 
 const MACROS = require('../constants/macros');
 const HoldControlButton = require('./holdControlButton');
+const withVideoNavigation = require('./higher-order/withVideoNavigation');
 
 var ControlBar = createReactClass({
   getInitialState: function() {
@@ -315,71 +316,39 @@ var ControlBar = createReactClass({
     this.props.controller.toggleMoreOptionsScreen(this.moreOptionsItems);
   },
 
-  //skip controls
   /**
-   * Previous Video button click handler.
-   * @private
+   *
+   * @returns {number}
    */
-  onPreviousVideo: function() {
-    if (typeof this.props.controller.rewindOrRequestPreviousVideo === 'function') {
-      this.props.controller.rewindOrRequestPreviousVideo();
+  getTotalTime: function() {
+    let totalTime = 0;
+    if (
+      this.props.duration === null ||
+      typeof this.props.duration === 'undefined' ||
+      this.props.duration === ''
+    ) {
+      totalTime = Utils.formatSeconds(0);
+    } else {
+      totalTime = Utils.formatSeconds(this.props.duration);
     }
+    return totalTime;
   },
 
-  /**
-   * Next Video button click handler.
-   * @private
-   */
-  onNextVideo: function() {
-    if (typeof this.props.controller.requestNextVideo === 'function') {
-      this.props.controller.requestNextVideo();
-    }
+  getPlayheadTime: function() {
+    let playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ?
+      Utils.formatSeconds(parseInt(this.props.currentPlayhead))
+      :
+      null;
+    var isLiveStream = this.props.isLiveStream;
+    var timeShift = this.props.currentPlayhead - this.props.duration;
+    // checking timeShift < 1 seconds (not === 0) as processing of the click after we rewinded and then went live may take some time
+    var isLiveNow = Math.abs(timeShift) < 1;
+    playheadTime = isLiveStream ?
+      (isLiveNow ? null : Utils.formatSeconds(timeShift))
+      :
+      playheadTime;
+    return playheadTime;
   },
-
-  /**
-   * Skip Backward button click handler.
-   * @private
-   */
-  onSkipBackward: function() {
-    if (typeof this.props.a11yControls.seekBy === 'function') {
-      const skipTimes = Utils.getSkipTimes(this.props.skinConfig);
-      this.props.a11yControls.seekBy(skipTimes.backward, false, true);
-    }
-  },
-
-  /**
-   * Skip Forward button click handler.
-   * @private
-   */
-  onSkipForward: function() {
-    if (typeof this.props.a11yControls.seekBy === 'function') {
-      const skipTimes = Utils.getSkipTimes(this.props.skinConfig);
-      this.props.a11yControls.seekBy(skipTimes.forward, true, true);
-    }
-  },
-
-  /**
-   * Determines whether or not the current video is at the live edge based on the
-   * playhead state and duration.
-   * @private
-   * @return {Boolean} True if the video is at the live edge, false otherwise.
-   * Note: This function always returns false for VOD.
-   */
-  isAtLiveEdge: function() {
-    const isLiveStream = Utils.getPropertyValue(
-      this.props.controller,
-      'state.isLiveStream',
-      false
-    );
-    if (isLiveStream) {
-      const duration = Utils.getPropertyValue(this.props.controller, 'state.duration', 0);
-      const currentPlayhead = Utils.ensureNumber(this.props.currentPlayhead, 0);
-      const isLiveNow = Math.abs(currentPlayhead - duration) < 1;
-      return isLiveNow;
-    };
-    return false;
-  },
-  // end skip controls
 
   populateControlBar: function() {
     var playIcon;
@@ -428,32 +397,16 @@ var ControlBar = createReactClass({
       }
     }
 
-    var totalTime = 0;
-    if (
-      this.props.duration === null ||
-      typeof this.props.duration === 'undefined' ||
-      this.props.duration === ''
-    ) {
-      totalTime = Utils.formatSeconds(0);
-    } else {
-      totalTime = Utils.formatSeconds(this.props.duration);
-    }
+    var totalTime = this.getTotalTime();
 
     // TODO - Replace time display logic with Utils.getTimeDisplayValues()
-    var playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ?
-      Utils.formatSeconds(parseInt(this.props.currentPlayhead))
-      :
-      null;
+    var playheadTimeContent = this.getPlayheadTime();
     var isLiveStream = this.props.isLiveStream;
     var durationSetting = { color: this.props.skinConfig.controlBar.iconStyle.inactive.color };
     var timeShift = this.props.currentPlayhead - this.props.duration;
     // checking timeShift < 1 seconds (not === 0) as processing of the click after we rewinded and then went live may take some time
     var isLiveNow = Math.abs(timeShift) < 1;
     var liveClick = isLiveNow ? null : this.handleLiveClick;
-    var playheadTimeContent = isLiveStream ?
-      (isLiveNow ? null : Utils.formatSeconds(timeShift))
-      :
-      playheadTime;
     var totalTimeContent = isLiveStream ? null : <span className="oo-total-time">{totalTime}</span>;
 
     // TODO: Update when implementing localization
@@ -820,7 +773,7 @@ var ControlBar = createReactClass({
           icon="previous"
           ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_VIDEO}
           disabled={!this.props.skipControlsConfig.hasPreviousVideos}
-          onClick={this.onPreviousVideo}>
+          onClick={this.props.onPreviousVideo}>
         </ControlButton>
       ),
 
@@ -833,7 +786,7 @@ var ControlBar = createReactClass({
           className="oo-center-button oo-skip-backward"
           icon="replay"
           ariaLabel={skipBackwardAriaLabel}
-          onClick={this.onSkipBackward}>
+          onClick={this.props.onSkipBackward}>
           <span className="oo-btn-counter">{skipTimes.backward}</span>
         </HoldControlButton>
       ),
@@ -847,8 +800,8 @@ var ControlBar = createReactClass({
           className="oo-center-button oo-skip-forward"
           icon="forward"
           ariaLabel={skipForwardAriaLabel}
-          disabled={this.isAtLiveEdge()}
-          onClick={this.onSkipForward}>
+          disabled={this.props.isAtLiveEdge()}
+          onClick={this.props.onSkipForward}>
           <span className="oo-btn-counter">{skipTimes.forward}</span>
         </HoldControlButton>
       ),
@@ -863,7 +816,7 @@ var ControlBar = createReactClass({
           icon="next"
           ariaLabel={CONSTANTS.ARIA_LABELS.NEXT_VIDEO}
           disabled={!this.props.skipControlsConfig.hasNextVideos}
-          onClick={this.onNextVideo}>
+          onClick={this.props.onNextVideo}>
         </ControlButton>
       )
     };
@@ -1045,13 +998,17 @@ var ControlBar = createReactClass({
         onBlur={this.props.onBlur}
         onMouseUp={this.handleControlBarMouseUp}
         onTouchEnd={this.handleControlBarMouseUp}>
-        {!this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : ''}
+        {!this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : null}
 
         <div className="oo-control-bar-items-wrapper">
           {controlBarItems}
         </div>
 
-        {this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : ''}
+        <div className="oo-scrubber-bar-parent">
+          {this.props.controller.state.audioOnly ? <span className="oo-scrubber-bar-time">{this.getPlayheadTime()}</span> : null}
+          {this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : ''}
+          {this.props.controller.state.audioOnly ? <span className="oo-scrubber-bar-time">{this.getTotalTime()}</span> : null}
+        </div>
       </div>
     );
   }
@@ -1103,4 +1060,4 @@ ControlBar.propTypes = {
   })
 };
 
-module.exports = preserveKeyboardFocus(ControlBar);
+module.exports = preserveKeyboardFocus(withVideoNavigation(ControlBar));

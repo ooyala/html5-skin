@@ -24,7 +24,7 @@ var createReactClass = require('create-react-class');
 
 import {PlayingScreenWithAutoHide} from './views/playingScreen';
 import {PauseScreenWithAutoHide} from './views/pauseScreen';
-import {AudioOnlyScreen} from './views/audioOnlyScreen';
+const AudioOnlyScreen = require('./views/audioOnlyScreen');
 
 var Skin = createReactClass({
   mixins: [ResponsiveManagerMixin],
