@@ -378,7 +378,9 @@ describe('ControlBar', function() {
 
   it('should render default state aria labels', function() {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
-    baseMockController.state.closedCaptionOptions.availableLanguages = [];
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockProps.skinConfig.buttons.desktopContent = [
       { 'name': 'playPause', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
       { 'name': 'volume', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 240 },
@@ -419,7 +421,9 @@ describe('ControlBar', function() {
 
   it('should render alternate state aria labels', function() {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
-    baseMockController.state.closedCaptionOptions.availableLanguages = [];
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockController.state.videoQualityOptions.showPopover = true;
     baseMockController.state.playbackSpeedOptions.showPopover = true;
     baseMockController.state.closedCaptionOptions.showPopover = true;
@@ -600,7 +604,9 @@ describe('ControlBar', function() {
 
     var toggleScreenClicked = false;
     var captionClicked = false;
-    baseMockController.state.closedCaptionOptions.availableLanguages = true;
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockController.toggleScreen = function() {toggleScreenClicked = true;};
     baseMockController.togglePopover = function() {captionClicked = true;};
 
@@ -634,7 +640,9 @@ describe('ControlBar', function() {
   });
 
   it('hides closed caption button if ooyala ad is playing', function() {
-    baseMockController.state.closedCaptionOptions.availableLanguages = true;
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockController.state.isOoyalaAds = true;
 
     baseMockProps.skinConfig.buttons.desktopContent = [
@@ -653,7 +661,9 @@ describe('ControlBar', function() {
   });
 
   it('shows closed caption button if ooyala ad is not playing', function() {
-    baseMockController.state.closedCaptionOptions.availableLanguages = true;
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockController.state.isOoyalaAds = false;
 
     baseMockProps.skinConfig.buttons.desktopContent = [

@@ -1893,6 +1893,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       if (this.state.fullscreen) {
         this.state.mainVideoElement.webkitExitFullscreen();
       } else {
+        this.setClosedCaptionsLanguage({
+          isGoingFullScreen: true
+        });
         this.state.mainVideoElement.webkitEnterFullscreen();
       }
     },
@@ -2398,7 +2401,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       }
     },
 
-    setClosedCaptionsLanguage: function() {
+    setClosedCaptionsLanguage: function(params) {
+      var params = params || {};
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
       // if saved language not in available languages, set to first available language
       if (
@@ -2414,7 +2418,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {
         mode: mode,
-        isFullScreen: this.state.fullscreen
+        isFullScreen: this.state.fullscreen,
+        isGoingFullScreen: !!params.isGoingFullScreen
       });
     },
 
