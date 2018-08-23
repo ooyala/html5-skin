@@ -1,6 +1,5 @@
 .oo-scrubber-bar-parent {
-  display: flex;
-  align-items: center;
+  @include flex-center-children(row);
 
   .oo-scrubber-bar-time {
     padding-left: 5px;

@@ -33,6 +33,15 @@
       line-height: 1 !important;
     }
 
+    .oo-control-bar-center {
+      @include flex-center-children(row);
+      flex: 1;
+    }
+
+    .oo-control-bar-center:first-child > * { margin-right: auto; }
+
+    .oo-control-bar-center:last-child > * { margin-left: auto;  }
+
     .oo-popover-button-container {
       position: relative;
       height:100%;
@@ -68,7 +77,6 @@
       // Workaround for Safari clipping text shadows
       // inside buttons
       .oo-icon {
-        display: inline-block;
         @include vendor-prefixes(transform, translateZ(0));
       }
     }

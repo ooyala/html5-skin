@@ -482,19 +482,36 @@ var ControlBar = createReactClass({
       skipTimes.forward
     );
 
-    var controlItemTemplates = {
-      playPause: (
+    const playPauseTemplate = (
+      <ControlButton
+        {...commonButtonProps}
+        key={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
+        className="oo-play-pause"
+        focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
+        ariaLabel={playPauseAriaLabel}
+        icon={playIcon}
+        tooltip={playBtnTooltip}
+        onClick={this.handlePlayClick}>
+      </ControlButton>
+    );
+
+    const volumeTemplate = (
+      <div key={CONSTANTS.CONTROL_BAR_KEYS.VOLUME} className="oo-volume oo-control-bar-item">
         <ControlButton
           {...commonButtonProps}
-          key={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
-          className="oo-play-pause"
-          focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
-          ariaLabel={playPauseAriaLabel}
-          icon={playIcon}
-          tooltip={playBtnTooltip}
-          onClick={this.handlePlayClick}>
+          className="oo-mute-unmute"
+          focusId={CONSTANTS.CONTROL_BAR_KEYS.VOLUME}
+          ariaLabel={volumeAriaLabel}
+          icon={volumeIcon}
+          tooltip={mutedInUi ? CONSTANTS.SKIN_TEXT.UNMUTE : CONSTANTS.SKIN_TEXT.MUTE}
+          onClick={this.handleVolumeIconClick}>
         </ControlButton>
-      ),
+        <VolumeControls {...this.props} />
+      </div>
+    );
+
+    var controlItemTemplates = {
+      playPause: playPauseTemplate,
 
       live: (
         <a key={CONSTANTS.CONTROL_BAR_KEYS.LIVE} className={liveClass} ref="LiveButton" onClick={liveClick}>
@@ -503,20 +520,7 @@ var ControlBar = createReactClass({
         </a>
       ),
 
-      volume: (
-        <div key={CONSTANTS.CONTROL_BAR_KEYS.VOLUME} className="oo-volume oo-control-bar-item">
-          <ControlButton
-            {...commonButtonProps}
-            className="oo-mute-unmute"
-            focusId={CONSTANTS.CONTROL_BAR_KEYS.VOLUME}
-            ariaLabel={volumeAriaLabel}
-            icon={volumeIcon}
-            tooltip={mutedInUi ? CONSTANTS.SKIN_TEXT.UNMUTE : CONSTANTS.SKIN_TEXT.MUTE}
-            onClick={this.handleVolumeIconClick}>
-          </ControlButton>
-          <VolumeControls {...this.props} />
-        </div>
-      ),
+      volume: volumeTemplate,
 
       timeDuration: (
         <a
@@ -763,61 +767,67 @@ var ControlBar = createReactClass({
           height={this.props.skinConfig.controlBar.logo.height} />
       ),
 
-      previousVideo: (
-        <ControlButton
-          {...this.props}
-          key={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
-          focusId={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
-          style={buttonStyle}
-          className="oo-previous-video"
-          icon="previous"
-          ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_VIDEO}
-          disabled={!this.props.skipControlsConfig.hasPreviousVideos}
-          onClick={this.props.onPreviousVideo}>
-        </ControlButton>
+      centeredVolume: (
+        <div className="oo-control-bar-center">
+          {volumeTemplate}
+        </div>
       ),
 
-      skipBackward: (
-        <HoldControlButton
-          {...this.props}
-          key={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD}
-          focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD}
-          style={buttonStyle}
-          className="oo-center-button oo-skip-backward"
-          icon="replay"
-          ariaLabel={skipBackwardAriaLabel}
-          onClick={this.props.onSkipBackward}>
-          <span className="oo-btn-counter">{skipTimes.backward}</span>
-        </HoldControlButton>
+      centeredPlayPause: (
+        <div className="oo-control-bar-center">
+          {playPauseTemplate}
+        </div>
       ),
 
-      skipForward: (
-        <HoldControlButton
-          {...this.props}
-          key={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD}
-          focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD}
-          style={buttonStyle}
-          className="oo-center-button oo-skip-forward"
-          icon="forward"
-          ariaLabel={skipForwardAriaLabel}
-          disabled={this.props.isAtLiveEdge()}
-          onClick={this.props.onSkipForward}>
-          <span className="oo-btn-counter">{skipTimes.forward}</span>
-        </HoldControlButton>
-      ),
-
-      nextVideo: (
-        <ControlButton
-          {...this.props}
-          key={CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO}
-          focusId={CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO}
-          style={buttonStyle}
-          className="oo-next-video"
-          icon="next"
-          ariaLabel={CONSTANTS.ARIA_LABELS.NEXT_VIDEO}
-          disabled={!this.props.skipControlsConfig.hasNextVideos}
-          onClick={this.props.onNextVideo}>
-        </ControlButton>
+      skipControls: (
+        <div className="oo-skip-controls oo-control-bar-center">
+          <ControlButton
+            {...this.props}
+            key={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
+            focusId={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
+            style={buttonStyle}
+            className="oo-previous-video"
+            icon="previous"
+            ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_VIDEO}
+            disabled={!this.props.skipControlsConfig.hasPreviousVideos}
+            onClick={this.props.onPreviousVideo}>
+          </ControlButton>
+          <HoldControlButton
+            {...this.props}
+            key={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD}
+            focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD}
+            style={buttonStyle}
+            className="oo-center-button oo-skip-backward"
+            icon="replay"
+            ariaLabel={skipBackwardAriaLabel}
+            onClick={this.props.onSkipBackward}>
+            <span className="oo-btn-counter">{skipTimes.backward}</span>
+          </HoldControlButton>
+          {playPauseTemplate}
+          <HoldControlButton
+            {...this.props}
+            key={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD}
+            focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD}
+            style={buttonStyle}
+            className="oo-center-button oo-skip-forward"
+            icon="forward"
+            ariaLabel={skipForwardAriaLabel}
+            disabled={this.props.isAtLiveEdge()}
+            onClick={this.props.onSkipForward}>
+            <span className="oo-btn-counter">{skipTimes.forward}</span>
+          </HoldControlButton>
+          <ControlButton
+            {...this.props}
+            key={CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO}
+            focusId={CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO}
+            style={buttonStyle}
+            className="oo-next-video"
+            icon="next"
+            ariaLabel={CONSTANTS.ARIA_LABELS.NEXT_VIDEO}
+            disabled={!this.props.skipControlsConfig.hasNextVideos}
+            onClick={this.props.onNextVideo}>
+          </ControlButton>
+        </div>
       )
     };
 
