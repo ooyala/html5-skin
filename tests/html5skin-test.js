@@ -346,6 +346,13 @@ describe('Controller', function() {
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
     });
 
+    it('should reset isPlayingAd state when embed code is set after video has started', function() {
+      controller.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
+      controller.state.initialPlayHasOccurred = true;
+      controller.onSetEmbedCode('newEmbedCode');
+      expect(controller.state.isPlayingAd).toBe(false);
+    });
+
     it('should show start screen on playback ready when core reports it will NOT autoplay', function() {
       expect(controller.state.screenToShow).not.toBe(CONSTANTS.SCREEN.START_SCREEN);
       controller.onPlaybackReady('event', null, { willAutoplay: false });

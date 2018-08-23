@@ -575,6 +575,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       // If a video has played and we're setting a new embed code it means that we
       // will be transitioning to a new video. We make sure to display the loading screen.
       if (this.state.initialPlayHasOccurred && this.state.assetId !== embedCode) {
+        this.state.isPlayingAd = false;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
       }
