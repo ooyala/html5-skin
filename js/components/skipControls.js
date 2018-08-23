@@ -15,10 +15,6 @@ class SkipControls extends React.Component {
   constructor(props) {
     super(props);
     this.storeRef = this.storeRef.bind(this);
-    this.onPreviousVideo = this.onPreviousVideo.bind(this);
-    this.onNextVideo = this.onNextVideo.bind(this);
-    this.onSkipBackward = this.onSkipBackward.bind(this);
-    this.onSkipForward = this.onSkipForward.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
   }
 
@@ -93,7 +89,7 @@ class SkipControls extends React.Component {
         icon="previous"
         ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_VIDEO}
         disabled={!this.props.config.hasPreviousVideos}
-        onClick={this.onPreviousVideo}>
+        onClick={this.props.onPreviousVideo}>
       </ControlButton>
     );
 
@@ -106,7 +102,7 @@ class SkipControls extends React.Component {
         className="oo-center-button oo-skip-backward"
         icon="replay"
         ariaLabel={skipBackwardAriaLabel}
-        onClick={this.onSkipBackward}>
+        onClick={this.props.onSkipBackward}>
         <span className="oo-btn-counter">{skipTimes.backward}</span>
       </HoldControlButton>
     );
@@ -120,8 +116,8 @@ class SkipControls extends React.Component {
         className="oo-center-button oo-skip-forward"
         icon="forward"
         ariaLabel={skipForwardAriaLabel}
-        disabled={this.isAtLiveEdge()}
-        onClick={this.onSkipForward}>
+        disabled={this.props.isAtLiveEdge()}
+        onClick={this.props.onSkipForward}>
         <span className="oo-btn-counter">{skipTimes.forward}</span>
       </HoldControlButton>
     );
@@ -136,7 +132,7 @@ class SkipControls extends React.Component {
         icon="next"
         ariaLabel={CONSTANTS.ARIA_LABELS.NEXT_VIDEO}
         disabled={!this.props.config.hasNextVideos}
-        onClick={this.onNextVideo}>
+        onClick={this.props.onNextVideo}>
       </ControlButton>
     );
     return buttonTemplate;
@@ -213,7 +209,8 @@ class SkipControls extends React.Component {
 
     const className = classNames('oo-skip-controls', {
       'oo-inactive': this.props.isInactive,
-      'oo-in-background': this.props.isInBackground
+      'oo-in-background': this.props.isInBackground,
+      'oo-skip-controls-centered': true
     });
     const buttonTemplate = this.getButtonTemplate();
 

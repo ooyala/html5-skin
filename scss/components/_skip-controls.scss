@@ -70,3 +70,7 @@
   }
 
 }
+
+.oo-skip-controls-centered {
+  @include absolute-center;
+}

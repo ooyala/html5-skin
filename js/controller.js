@@ -195,7 +195,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         autoFocus: false
       },
 
-      audioOnly: true
+      audioOnly: false
     };
 
     this.init();
@@ -1626,6 +1626,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       );
 
       this.state.configLoaded = true;
+
+      this.state.audioOnly = this.skin.props.skinConfig.audio.audioOnly;
+
+      if (!this.state.audioOnly) {
+        this.state.mainVideoInnerWrapper.addClass('oo-video-player');
+      }
 
       this.mb.publish(OO.EVENTS.SKIN_CONFIG_LOADED, this.state.config);
 

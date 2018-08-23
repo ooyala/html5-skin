@@ -68,7 +68,6 @@ class AudioOnlyScreen extends React.Component {
               controlBarVisible={this.props.controller.state.controlBarVisible}
               playerState={this.props.playerState}
               isLiveStream={this.props.isLiveStream}
-              skipControlsConfig={this.props.controller.state.skipControls}
               a11yControls={this.props.controller.accessibilityControls}
             />
           </div>

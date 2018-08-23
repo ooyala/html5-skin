@@ -789,7 +789,7 @@ var ControlBar = createReactClass({
             className="oo-previous-video"
             icon="previous"
             ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_VIDEO}
-            disabled={!this.props.skipControlsConfig.hasPreviousVideos}
+            disabled={!this.props.controller.state.skipControls.hasPreviousVideos}
             onClick={this.props.onPreviousVideo}>
           </ControlButton>
           <HoldControlButton
@@ -824,7 +824,7 @@ var ControlBar = createReactClass({
             className="oo-next-video"
             icon="next"
             ariaLabel={CONSTANTS.ARIA_LABELS.NEXT_VIDEO}
-            disabled={!this.props.skipControlsConfig.hasNextVideos}
+            disabled={!this.props.controller.state.skipControls.hasNextVideos}
             onClick={this.props.onNextVideo}>
           </ControlButton>
         </div>
