@@ -16,7 +16,7 @@
     "ecmaVersion": 5,
     "sourceType": "module"
   },
-  "plugins": ["react"],
+  "plugins": ["react", "require-jsdoc-except"],
   "rules": {
     "brace-style": ["warn"],
     "camelcase": ["warn"],
@@ -70,14 +70,15 @@
         "requireReturn": false
       }
     ],
-    "require-jsdoc": [
+    "require-jsdoc-except/require-jsdoc": [
       "error",
       {
         "require": {
           "MethodDefinition": true,
           "ClassDeclaration": true,
           "FunctionDeclaration": true
-        }
+        },
+        "ignore": ["constructor", "componentWillMount", "componentDidMount", "componentWillUnmount", "render"]
       }
     ],
     "yoda": ["error"],
