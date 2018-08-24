@@ -349,6 +349,7 @@ describe('Controller', function() {
     it('should reset isPlayingAd state when embed code is set after video has started', function() {
       controller.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
       controller.state.initialPlayHasOccurred = true;
+      controller.state.isPlayingAd = true;
       controller.onSetEmbedCode('newEmbedCode');
       expect(controller.state.isPlayingAd).toBe(false);
     });
