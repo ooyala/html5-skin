@@ -125,7 +125,7 @@ class PlayingScreen extends React.Component {
    */
   handleTouchEnd(event) {
     event.preventDefault(); // to prevent mobile from propagating click to discovery shown on pause
-    if (this.props.controller.state.controlBarVisible) {
+    if (this.props.controller.state.controlBarVisible || this.isMobile) {
       let shouldToggle = false;
       if (this.props.controller.videoVr) {
         if (!this.props.isVrMouseMove) {
@@ -136,6 +136,18 @@ class PlayingScreen extends React.Component {
       }
       if (shouldToggle) {
         this.props.controller.togglePlayPause(event);
+        
+        if (this.isMobile) { // only for vr on mobile
+          // Check current a vr video position (an user could change position using tilting)
+          const useVrViewingDirection = true;
+          this.props.controller.checkVrDirection(useVrViewingDirection);
+          var vrViewingDirectionList = [
+            this.props.controller.state.vrViewingDirection.yaw,
+            this.props.controller.state.vrViewingDirection.roll,
+            this.props.controller.state.vrViewingDirection.pitch
+          ];
+          this.props.controller.onTouchMove(vrViewingDirectionList);
+        }
       }
     }
   }
