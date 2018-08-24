@@ -78,7 +78,14 @@
           "ClassDeclaration": true,
           "FunctionDeclaration": true
         },
-        "ignore": ["constructor", "componentWillMount", "componentDidMount", "componentWillUnmount", "render"]
+        "ignore": [
+          "constructor",
+          "componentWillMount",
+          "componentDidMount",
+          "componentWillUnmount",
+          "componentWillReceiveProps",
+          "render"
+        ]
       }
     ],
     "yoda": ["error"],
