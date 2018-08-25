@@ -184,6 +184,7 @@ var CONSTANTS = {
     STEREOSCOPIC: 'stereoscopic',
     FULLSCREEN: 'fullscreen',
     LOGO: 'logo',
+    CHROMECAST: 'chromecast'
   },
 
   ARIA_ROLES: {

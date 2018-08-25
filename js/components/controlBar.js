@@ -190,6 +190,10 @@ var ControlBar = createReactClass({
     this.props.controller.toggleShareScreen();
   },
 
+  handleChromecastClick: function() {
+    this.props.controller.onChromecastClicked();//mb.publish(OO.EVENTS.CHROMECAST_CLICKED);
+  },
+
   /**
    * Generic toggle logic for menus that display as popover on large screen sizes
    * and as a fullscreen menu on smaller ones.
@@ -582,6 +586,19 @@ var ControlBar = createReactClass({
             </Popover>
           )}
         </div>
+      ),
+
+      chromecast: (
+        <ControlButton
+          {...commonButtonProps}
+          key={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
+          className="oo-chromecast-disconnected"
+          focusId={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
+          ariaHidden={true}
+          icon="chromecast"
+          tooltip={CONSTANTS.SKIN_TEXT.CHROMECAST}
+          onClick={this.handleChromecastClick}>
+        </ControlButton>
       ),
 
       audioAndCC: function() {

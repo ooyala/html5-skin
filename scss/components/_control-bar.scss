@@ -165,6 +165,16 @@
     .oo-live-nonclickable {
       cursor: default;
     }
+
+    .oo-chromecast-connected {
+      background-image: url("//localhost:8000/html5-skin/build/assets/images/ic_cast_connected_24dp.svg");
+      background-position: center;
+    }
+
+    .oo-chromecast-disconnected {
+      background-image: url("//localhost:8000/html5-skin/build/assets/images/ic_cast_24dp.svg");
+      background-position: center;
+    }
   }
 }
 

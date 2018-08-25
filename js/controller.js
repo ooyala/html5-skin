@@ -2236,6 +2236,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.renderSkin();
     },
 
+
+    onChromecastClicked: function() {
+      this.mb.publish(OO.EVENTS.CHROMECAST_CLICKED);
+    },
+
     /**
      * Handler for the POSITION_IN_PLAYLIST_DETERMINED event, which controls whether
      * the Previous/Next video buttons are displayed.
