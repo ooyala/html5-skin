@@ -37,7 +37,6 @@ class PauseScreen extends React.Component {
     this.handleVrTouchEnd = this.handleVrTouchEnd.bind(this);
     this.handlePlayerMouseDown = this.handlePlayerMouseDown.bind(this);
     this.handlePlayerMouseUp = this.handlePlayerMouseUp.bind(this);
-    // this.handleTouchEnd = this.handleTouchEnd.bind(this);
     this.startAnimation = this.startAnimation.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
