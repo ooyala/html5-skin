@@ -204,58 +204,131 @@ describe('Skin screenToShow state', function() {
     skin.switchComponent();
   });
 
-  describe('Vr methods tests', function() {
+});
+
+describe('Methods tests', function() {
+  let wrapper;
+  let controller;
+  let state;
+  let skin;
+  beforeEach(function() {
+    controller = getMockController();
+    state = {
+      playerState: '',
+      responsiveId: 'md',
+      contentTree: {}
+    };
+    // Render skin into DOM
+    wrapper = Enzyme.mount(
+      <Skin
+        controller={controller}
+        skinConfig={skinConfig}
+        language="en"
+        localizableStrings={{}}
+        closedCaptionOptions={{
+          enabled: false,
+          fontSize: 'Medium',
+          availableLanguages: {
+            locale: []
+          }
+        }} />
+    );
+    skin = wrapper.instance();
+  });
+
+  it('handleTouchEnd should called togglePlayPause if controlBarVisible is true', function() {
+    skin.props.controller.state.controlBarVisible = false;
+    let isTouched = false;
+    skin.props.controller.togglePlayPause = function() {
+      isTouched = !isTouched;
+    };
+    const event = {
+      preventDefault: function() {}
+    };
+    skin.handleTouchEnd(event);
+    expect(isTouched).toBe(false);
+
+    skin.props.controller.state.controlBarVisible = true;
+    skin.handleTouchEnd(event);
+    expect(isTouched).toBe(true);
+  });
+
+  it('handleTouchEnd should check and set vrVievingDirection if videoVr is true', function() {
+    skin.props.controller.videoVr = false;
+    let vrVievingDirectionChecked = false;
+    let vVrViewingDiractionSet = false;
+    skin.props.controller.checkVrDirection = function() {
+      vrVievingDirectionChecked = true;
+    };
+    skin.props.controller.setControllerVrViewingDiraction = function() {
+      vVrViewingDiractionSet = true;
+    };
+    skin.props.controller.togglePlayPause = function() {};
+    const event = {
+      preventDefault: function() {}
+    };
+    skin.handleTouchEnd(event);
+    expect(vrVievingDirectionChecked).toBe(false);
+    expect(vVrViewingDiractionSet).toBe(false);
+
+    skin.props.controller.videoVr = true;
+    skin.handleTouchEnd(event);
+    expect(vrVievingDirectionChecked).toBe(true);
+    expect(vVrViewingDiractionSet).toBe(true);
+  });
+
+  describe('Vr methods', function() {
     it('getDirectionParams should return correct values', function() {
       skin.state.xVrMouseStart = 0;
       skin.state.yVrMouseStart = 0;
       skin.state.componentWidth = 300;
       skin.state.componentHeight = 180;
-      var res = skin.getDirectionParams(20, 90);
+      const res = skin.getDirectionParams(20, 90);
       /*
-      * An explanation:
-      *
-      * pageX = 20;
-      * pageY = 90;
-      * dx = 20 - 0 = 20;
-      * dy = 90 - 0 = 90;
-      * maxDegreesX = 90;
-      * maxDegreesY = 120;
-      * degreesForPixelYaw = 90 / 300 = 0.3;
-      * degreesForPixelPitch = 120 / 180 = 0.666666667;
-      * yaw = 0 + 20 * 0.3 = 6;
-      * pitch = 0 + 90 * 0.666666667 = 60;
-      */
+       * An explanation:
+       *
+       * pageX = 20;
+       * pageY = 90;
+       * dx = 20 - 0 = 20;
+       * dy = 90 - 0 = 90;
+       * maxDegreesX = 90;
+       * maxDegreesY = 120;
+       * degreesForPixelYaw = 90 / 300 = 0.3;
+       * degreesForPixelPitch = 120 / 180 = 0.666666667;
+       * yaw = 0 + 20 * 0.3 = 6;
+       * pitch = 0 + 90 * 0.666666667 = 60;
+       */
       expect(res).toEqual([ 6, 0, 60 ]);
-      var res2 = skin.getDirectionParams('', undefined);
+      const res2 = skin.getDirectionParams('', undefined);
       expect(res2).toEqual([ 0, 0, 0 ]);
     });
 
     it('handleVrPlayerMouseMove should return correct values', function() {
-      var mockController = {
+      const mockController = {
         onTouchMove: function() {}
       };
 
-      var event = {
+      const event = {
         preventDefault: function() {},
         pageX: 20,
         pageY: 90
       };
 
-      var wrapper = Enzyme.mount(<Skin controller={mockController} />);
-      var skinComponent = wrapper.instance();
+      const wrapper = Enzyme.mount(<Skin controller={mockController} />);
+      const skinComponent = wrapper.instance();
 
       skinComponent.state.componentWidth = 300;
       skinComponent.state.componentHeight = 180;
 
-      var preventDefaultSpy = sinon.spy(event, 'preventDefault');
-      var onTouchMoveSpy = sinon.spy(skinComponent.props.controller, 'onTouchMove');
+      const preventDefaultSpy = sinon.spy(event, 'preventDefault');
+      const onTouchMoveSpy = sinon.spy(skinComponent.props.controller, 'onTouchMove');
 
       skinComponent.state.isVrMouseDown = true;
       skinComponent.props.controller.videoVr = true;
       skinComponent.handleVrPlayerMouseMove(event);
 
       expect(preventDefaultSpy.called).toBe(true);
-      var params = [6, 0, 60]; //this value was tested in prev test
+      let params = [6, 0, 60]; //this value was tested in prev test
       expect(onTouchMoveSpy.args[0][0]).toEqual(params);
     });
   });

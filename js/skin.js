@@ -289,6 +289,7 @@ const Skin = createReactClass({
 
   /**
    * call handleTouchEnd when touchend was called on selectedScreen
+   * @public
    * @param {Event} event - event object
    */
   handleTouchEnd: function(event) {
@@ -309,9 +310,14 @@ const Skin = createReactClass({
     }
     if (this.props.controller.videoVr) { // only for vr on mobile
       // Check current a vr video position (an user could change position using tilting)
-      const useVrViewingDirection = true;
-      this.props.controller.checkVrDirection(useVrViewingDirection);
-      this.props.controller.setControllerVrViewingDiraction();
+      if (
+        typeof this.props.controller.checkVrDirection === 'function' &&
+        typeof this.props.controller.setControllerVrViewingDiraction === 'function'
+      ) {
+        const useVrViewingDirection = true;
+        this.props.controller.checkVrDirection(useVrViewingDirection);
+        this.props.controller.setControllerVrViewingDiraction();
+      }
     }
   },
 
