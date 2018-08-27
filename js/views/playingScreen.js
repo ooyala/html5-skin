@@ -44,7 +44,6 @@ class PlayingScreen extends React.Component {
     this.handlePlayerFocus = this.handlePlayerFocus.bind(this);
     this.handlePlayerMouseDown = this.handlePlayerMouseDown.bind(this);
     this.handlePlayerMouseUp = this.handlePlayerMouseUp.bind(this);
-    this.handleTouchEnd = this.handleTouchEnd.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleMouseOver = this.handleMouseOver.bind(this);
   }
@@ -116,39 +115,6 @@ class PlayingScreen extends React.Component {
       }
       this.props.controller.state.accessibilityControlsEnabled = true;
       this.props.controller.state.isClickedOutside = false;
-    }
-  }
-
-  /**
-   * call handleTouchEnd when touchend was called on selectedScreen
-   * @param {Event} event - event object
-   */
-  handleTouchEnd(event) {
-    event.preventDefault(); // to prevent mobile from propagating click to discovery shown on pause
-    if (this.props.controller.state.controlBarVisible || this.isMobile) {
-      let shouldToggle = false;
-      if (this.props.controller.videoVr) {
-        if (!this.props.isVrMouseMove) {
-          shouldToggle = true;
-        }
-      } else {
-        shouldToggle = true;
-      }
-      if (shouldToggle) {
-        this.props.controller.togglePlayPause(event);
-        
-        if (this.isMobile) { // only for vr on mobile
-          // Check current a vr video position (an user could change position using tilting)
-          const useVrViewingDirection = true;
-          this.props.controller.checkVrDirection(useVrViewingDirection);
-          var vrViewingDirectionList = [
-            this.props.controller.state.vrViewingDirection.yaw,
-            this.props.controller.state.vrViewingDirection.roll,
-            this.props.controller.state.vrViewingDirection.pitch
-          ];
-          this.props.controller.onTouchMove(vrViewingDirectionList);
-        }
-      }
     }
   }
 
@@ -296,7 +262,7 @@ class PlayingScreen extends React.Component {
   }
 
   /**
-   * call handlePlayerClicked when the player is in focus
+   * call handlePlayerFocus when the player is in focus
    */
   handlePlayerFocus() {
     this.props.handleVrPlayerFocus();
@@ -428,7 +394,8 @@ class PlayingScreen extends React.Component {
           onClick={this.handlePlayerClicked}
           onFocus={this.handlePlayerFocus}
           onMouseUp={this.handlePlayerMouseUp}
-          onTouchEnd={this.handleTouchEnd} />
+          onTouchEnd={this.props.handleTouchEnd}
+        />
 
         {vrNotification}
         {vrIcon}

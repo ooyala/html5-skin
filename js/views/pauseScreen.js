@@ -37,7 +37,7 @@ class PauseScreen extends React.Component {
     this.handleVrTouchEnd = this.handleVrTouchEnd.bind(this);
     this.handlePlayerMouseDown = this.handlePlayerMouseDown.bind(this);
     this.handlePlayerMouseUp = this.handlePlayerMouseUp.bind(this);
-    this.handleTouchEnd = this.handleTouchEnd.bind(this);
+    // this.handleTouchEnd = this.handleTouchEnd.bind(this);
     this.startAnimation = this.startAnimation.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
@@ -107,27 +107,6 @@ class PauseScreen extends React.Component {
     this.props.controller.state.accessibilityControlsEnabled = true;
     this.props.controller.state.isClickedOutside = false;
     this.props.handleVrPlayerClick();
-  }
-
-  /**
-   * call handleTouchEnd when touchend was called on selectedScreen and videoType is Vr
-   * @param {Event} event - event object
-   */
-  handleTouchEnd(event) {
-    if (this.props.controller.state.controlBarVisible) {
-      let shouldToggle = false;
-      if (this.props.controller.videoVr) {
-        event.preventDefault();
-        if (!this.props.isVrMouseMove) {
-          shouldToggle = true;
-        }
-      } else {
-        shouldToggle = true;
-      }
-      if (shouldToggle) {
-        this.props.controller.togglePlayPause(event);
-      }
-    }
   }
 
   /**
@@ -327,7 +306,8 @@ class PauseScreen extends React.Component {
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
           onMouseUp={this.handlePlayerMouseUp}
-          onTouchEnd={this.handleTouchEnd} />
+          onTouchEnd={this.props.handleTouchEnd}
+        />
 
         <Watermark
           {...this.props}

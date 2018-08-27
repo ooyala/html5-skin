@@ -507,6 +507,18 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.vrMobileOrientationChecked = false;
     },
 
+    /**
+     * Pass into onTouchMove function current controller state values for vrViewingDirection
+     */
+    setControllerVrViewingDiraction: function() {
+      let vrViewingDirectionList = [
+        this.state.vrViewingDirection.yaw,
+        this.state.vrViewingDirection.roll,
+        this.state.vrViewingDirection.pitch
+      ];
+      this.onTouchMove(vrViewingDirectionList);
+    },
+
     onVcVideoElementCreated: function(event, params) {
       var videoElement = params.videoElement;
       videoElement = this.findMainVideoElement(videoElement);
@@ -1320,14 +1332,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       // In case ad was skipped or errored while stalled
       this.setBufferingState(false);
 
+      // Set current position for video 360 after Ads.
       if (this.videoVr && this.state.isMobile) { // only for vr on mobile
-        // Set current position for video 360 after Ads.
-        var vrViewingDirectionList = [
-          this.state.vrViewingDirection.yaw,
-          this.state.vrViewingDirection.roll,
-          this.state.vrViewingDirection.pitch
-        ];
-        this.onTouchMove(vrViewingDirectionList);
+        this.setControllerVrViewingDiraction();
       }
 
       this.renderSkin();
