@@ -508,7 +508,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     /**
-     * Pass into onTouchMove function current controller state values for vrViewingDirection
+     * Pass into onTouchMove current controller state values for vrViewingDirection
      */
     setControllerVrViewingDiraction: function() {
       let vrViewingDirectionList = [
