@@ -37,7 +37,6 @@ class PlayingScreen extends React.Component {
 
     this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
     this.handleVrMouseUp = this.handleVrMouseUp.bind(this);
-    this.handleVrTouchEnd = this.handleVrTouchEnd.bind(this);
     this.onSkipControlsMount = this.onSkipControlsMount.bind(this);
     this.handleTouchStart = this.handleTouchStart.bind(this);
     this.handlePlayerClicked = this.handlePlayerClicked.bind(this);
@@ -56,7 +55,7 @@ class PlayingScreen extends React.Component {
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
     document.addEventListener('mouseup', this.handleVrMouseUp, false);
-    document.addEventListener('touchend', this.handleVrTouchEnd, false);
+    document.addEventListener('touchend', this.props.handleVrPlayerMouseUp, false);
 
     if (this.props.controller.videoVr) {
       this.handleVrAnimationEnd(this.vrNotificatioContainer, 'isVrNotificationHidden');
@@ -68,7 +67,7 @@ class PlayingScreen extends React.Component {
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
     document.removeEventListener('mouseup', this.handleVrMouseUp);
-    document.removeEventListener('touchend', this.handleVrTouchEnd);
+    document.removeEventListener('touchend', this.props.handleVrPlayerMouseUp);
   }
 
   /**
@@ -116,14 +115,6 @@ class PlayingScreen extends React.Component {
       this.props.controller.state.accessibilityControlsEnabled = true;
       this.props.controller.state.isClickedOutside = false;
     }
-  }
-
-  /**
-   * call handleVrTouchEnd when touchend was called on document and videoType is Vr
-   * @param {Event} event - touch event object
-   */
-  handleVrTouchEnd(event) {
-    this.props.handleVrPlayerMouseUp(event);
   }
 
   /**
@@ -278,14 +269,15 @@ class PlayingScreen extends React.Component {
     let style = {};
     const functionDefaultfDuration = 3; // default value for Duration if userDefaultDuration is undefined
     const defaultDuration = Utils.ensureNumber(userDefaultDuration, functionDefaultfDuration);
+    const animationDurations = this.props.controller.state.config.animationDurations;
     if (
-      this.props.controller.state.config.animationDurations !== null &&
-      typeof this.props.controller.state.config.animationDurations === 'object' &&
-      this.props.controller.state.config.animationDurations[vrDuration] !== undefined
+      animationDurations !== null &&
+      typeof animationDurations === 'object' &&
+      typeof animationDurations[vrDuration] !== 'undefined'
     ) {
       const duration =
         Utils.ensureNumber(
-          this.props.controller.state.config.animationDurations[vrDuration],
+          animationDurations[vrDuration],
           defaultDuration
         ) + 's';
       style = {

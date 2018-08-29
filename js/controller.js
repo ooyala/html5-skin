@@ -510,7 +510,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     /**
      * Pass into onTouchMove current controller state values for vrViewingDirection
      */
-    setControllerVrViewingDiraction: function() {
+    setControllerVrViewingDirection: function() {
       let vrViewingDirectionList = [
         this.state.vrViewingDirection.yaw,
         this.state.vrViewingDirection.roll,
@@ -1335,7 +1335,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
       // Set current position for video 360 after Ads.
       if (this.videoVr && this.state.isMobile) { // only for vr on mobile
-        this.setControllerVrViewingDiraction();
+        this.setControllerVrViewingDirection();
       }
 
       this.renderSkin();

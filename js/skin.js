@@ -77,7 +77,7 @@ const Skin = createReactClass({
   },
 
   switchComponent: function(args) {
-    let newState = args || {};
+    const newState = args || {};
     this.setState(newState);
   },
 
@@ -128,8 +128,8 @@ const Skin = createReactClass({
         isVrMouseMove: true
       });
       if (typeof this.props.controller.onTouchMove === 'function') {
-        let coords = Utils.getCoords(event);
-        let params = this.getDirectionParams(coords.x, coords.y);
+        const coords = Utils.getCoords(event);
+        const params = this.getDirectionParams(coords.x, coords.y);
         this.props.controller.onTouchMove(params, true);
       }
     }
@@ -255,8 +255,8 @@ const Skin = createReactClass({
     let focusableElements = this.domElement.querySelectorAll(selector);
 
     if (focusableElements.length) {
-      let firstFocusableElement = focusableElements[0];
-      let lastFocusableElement = focusableElements[focusableElements.length - 1];
+      const firstFocusableElement = focusableElements[0];
+      const lastFocusableElement = focusableElements[focusableElements.length - 1];
       // This indicates we're tabbing over the focusable player elements
       if (evt.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)) {
         if (evt.shiftKey) {
@@ -288,12 +288,14 @@ const Skin = createReactClass({
   },
 
   /**
-   * call handleTouchEnd when touchend was called on selectedScreen
+   * This function changes a screen (pause/play) and
+   * sets current direction for vr video (it is necessary for tilting)
+   * when touchend was called on selected screen
    * @public
    * @param {Event} event - event object
    */
   handleTouchEnd: function(event) {
-    event.preventDefault(); // to prevent mobile from propagating click to discovery shown on pause
+    event.preventDefault();
     if (this.props.controller.state.controlBarVisible) {
       let shouldToggle = false;
       if (this.props.controller.videoVr) {
@@ -312,11 +314,11 @@ const Skin = createReactClass({
       // Check current a vr video position (an user could change position using tilting)
       if (
         typeof this.props.controller.checkVrDirection === 'function' &&
-        typeof this.props.controller.setControllerVrViewingDiraction === 'function'
+        typeof this.props.controller.setControllerVrViewingDirection === 'function'
       ) {
         const useVrViewingDirection = true;
         this.props.controller.checkVrDirection(useVrViewingDirection);
-        this.props.controller.setControllerVrViewingDiraction();
+        this.props.controller.setControllerVrViewingDirection();
       }
     }
   },

@@ -260,7 +260,7 @@ describe('Methods tests', function() {
     skin.props.controller.checkVrDirection = function() {
       vrVievingDirectionChecked = true;
     };
-    skin.props.controller.setControllerVrViewingDiraction = function() {
+    skin.props.controller.setControllerVrViewingDirection = function() {
       vVrViewingDiractionSet = true;
     };
     skin.props.controller.togglePlayPause = function() {};

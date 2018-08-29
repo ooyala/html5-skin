@@ -34,7 +34,6 @@ class PauseScreen extends React.Component {
 
     this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
     this.handleVrMouseUp = this.handleVrMouseUp.bind(this);
-    this.handleVrTouchEnd = this.handleVrTouchEnd.bind(this);
     this.handlePlayerMouseDown = this.handlePlayerMouseDown.bind(this);
     this.handlePlayerMouseUp = this.handlePlayerMouseUp.bind(this);
     this.startAnimation = this.startAnimation.bind(this);
@@ -49,7 +48,7 @@ class PauseScreen extends React.Component {
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
     document.addEventListener('mouseup', this.handleVrMouseUp, false);
-    document.addEventListener('touchend', this.handleVrTouchEnd, false);
+    document.addEventListener('touchend', this.props.handleVrPlayerMouseUp, false);
   }
 
   componentWillUnmount() {
@@ -58,7 +57,7 @@ class PauseScreen extends React.Component {
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
     document.removeEventListener('mouseup', this.handleVrMouseUp);
-    document.removeEventListener('touchend', this.handleVrTouchEnd);
+    document.removeEventListener('touchend', this.props.handleVrPlayerMouseUp);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -109,25 +108,13 @@ class PauseScreen extends React.Component {
   }
 
   /**
-   * call handleVrTouchEnd when touchend was called on selectedScreen and videoType is Vr
-   * @param {Event} event - event object
-   */
-  handleVrTouchEnd(event) {
-    this.props.handleVrPlayerMouseUp(event);
-  }
-
-  /**
    * remove the button on pause screen for correct checking mouse movement
    */
   hideVrPauseButton() {
-    if (this.props.controller.videoVr) {
-      const pauseButton = this.pauseButton;
-      setTimeout(function() {
-        if (pauseButton) {
-          pauseButton.style.display = 'none';
-        }
-      }, 1000);
+    if (!(this.props.controller.videoVr && this.pauseButton)) {
+      return;
     }
+    setTimeout(() => this.pauseButton.style.display = 'none', 1000);
   }
 
   /**
