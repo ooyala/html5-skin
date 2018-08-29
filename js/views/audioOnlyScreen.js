@@ -28,7 +28,7 @@ class AudioOnlyScreen extends React.Component {
     var infoPanelClass = ClassNames({
       'oo-state-screen-audio-title': true,
       'oo-inactive': !this.props.controller.state.controlBarVisible,
-      'oo-state-screen-audio-group': true
+      'oo-flex-column': true
     });
     var titleClass = ClassNames({
       'oo-state-screen-audio-info': true
@@ -59,17 +59,18 @@ class AudioOnlyScreen extends React.Component {
     //  </div>
     //);
     return (
-      <div className="oo-state-screen-audio">
+      <div className="oo-state-screen-audio oo-flex-column-parent">
         <div className={infoPanelClass}>
           {this.props.skinConfig.pauseScreen.showTitle ? titleMetadata : null}
         </div>
-        <div className="oo-interactive-container oo-state-screen-audio-group">
+        <div className="oo-interactive-container oo-flex-column">
           <ControlBar
             {...this.props}
             controlBarVisible={this.props.controller.state.controlBarVisible}
             playerState={this.props.playerState}
             isLiveStream={this.props.isLiveStream}
             a11yControls={this.props.controller.accessibilityControls}
+
           />
         </div>
       </div>

@@ -17,30 +17,21 @@
   pointer-events: auto;
 
   .oo-control-bar-items-wrapper {
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: row;
-    flex-direction: row;
-    flex-flow: row nowrap;
-    -webkit-align-items: center;
-    align-items: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-    white-space: nowrap;
+    //display: -webkit-flex;
+    //display: flex;
+    //-webkit-flex-direction: row;
+    //flex-direction: row;
+    //flex-flow: row nowrap;
+    //-webkit-align-items: center;
+    //align-items: center;
+    //-webkit-justify-content: center;
+    //justify-content: center;
+    //white-space: nowrap;
     margin-top: 10px;
 
     & > * {
       line-height: 1 !important;
     }
-
-    .oo-control-bar-group {
-      @include flex-center-children(row);
-      flex: 1;
-    }
-
-    .oo-control-bar-group:first-child > * { margin-right: auto; }
-
-    .oo-control-bar-group:last-child > * { margin-left: auto;  }
 
     .oo-popover-button-container {
       position: relative;
@@ -178,7 +169,7 @@
 
 .oo-interactive-container {
   width: 100%;
-  
+
   .oo-control-bar.oo-control-bar-hidden {
     height: 0 !important;
     opacity: 0;

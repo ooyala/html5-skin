@@ -768,19 +768,19 @@ var ControlBar = createReactClass({
       ),
 
       centeredVolume: (
-        <div className="oo-control-bar-group">
+        <div className="oo-flex-row">
           {volumeTemplate}
         </div>
       ),
 
       centeredPlayPause: (
-        <div className="oo-control-bar-group">
+        <div className="oo-flex-row">
           {playPauseTemplate}
         </div>
       ),
 
       skipControls: (
-        <div className="oo-skip-controls oo-control-bar-group">
+        <div className="oo-skip-controls oo-flex-row">
           <ControlButton
             {...this.props}
             key={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
@@ -1001,23 +1001,24 @@ var ControlBar = createReactClass({
     };
 
     return (
-      <div
-        className={controlBarClass}
-        style={controlBarStyle}
-        onFocus={this.props.onFocus}
-        onBlur={this.props.onBlur}
-        onMouseUp={this.handleControlBarMouseUp}
-        onTouchEnd={this.handleControlBarMouseUp}>
-        {!this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : null}
+      <div>
+        <div
+          className={controlBarClass}
+          style={controlBarStyle}
+          onFocus={this.props.onFocus}
+          onBlur={this.props.onBlur}
+          onMouseUp={this.handleControlBarMouseUp}
+          onTouchEnd={this.handleControlBarMouseUp}>
+          {!this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : null}
 
-        <div className="oo-control-bar-items-wrapper">
-          {controlBarItems}
-        </div>
-
-        <div className="oo-scrubber-bar-parent">
-          {this.props.controller.state.audioOnly ? <span className="oo-scrubber-bar-current-time">{this.getPlayheadTime()}</span> : null}
-          {this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : ''}
-          {this.props.controller.state.audioOnly ? <span className="oo-scrubber-bar-duration">{this.getTotalTime()}</span> : null}
+          <div className="oo-control-bar-items-wrapper oo-flex-row-parent">
+            {controlBarItems}
+          </div>
+          <div className="oo-scrubber-bar-parent oo-flex-row-parent">
+            {this.props.controller.state.audioOnly ? <span className="oo-scrubber-bar-current-time">{this.getPlayheadTime()}</span> : null}
+            {this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : ''}
+            {this.props.controller.state.audioOnly ? <span className="oo-scrubber-bar-duration">{this.getTotalTime()}</span> : null}
+          </div>
         </div>
       </div>
     );

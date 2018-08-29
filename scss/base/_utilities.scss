@@ -26,6 +26,38 @@
   @include text-truncate;
 }
 
+.oo-flex-row-parent {
+  @include flex-center-children(row);
+  white-space: nowrap;
+  flex-flow: row nowrap;
+}
+
+.oo-flex-row {
+  @include flexbox;
+  @include flex-direction(row);
+  flex: 1;
+}
+
+.oo-flex-row:first-child > * { margin-right: auto; }
+
+.oo-flex-row:last-child > * { margin-left: auto; }
+
+.oo-flex-column-parent {
+  @include flex-center-children(column);
+  white-space: nowrap;
+  flex-flow: column nowrap;
+}
+
+.oo-flex-column {
+  @include flexbox;
+  @include flex-direction(column);
+  flex: 1;
+}
+
+.oo-flex-column:first-child > * { margin-bottom: auto; }
+
+.oo-flex-column:last-child > * { margin-top: auto; }
+
 .oo-text-lowercase      { text-transform: lowercase; }
 .oo-text-uppercase      { text-transform: uppercase; }
 .oo-text-capitalize     { text-transform: capitalize; }
