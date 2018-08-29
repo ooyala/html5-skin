@@ -200,16 +200,16 @@ const Skin = createReactClass({
    * @returns {[number, number, number]} array with yaw, roll, pitch
    */
   getDirectionParams: function(_pageX, _pageY) {
-    let pageX = Utils.ensureNumber(_pageX, 0);
-    let pageY = Utils.ensureNumber(_pageY, 0);
-    let dx = pageX - this.state.xVrMouseStart;
-    let dy = pageY - this.state.yVrMouseStart;
+    const pageX = Utils.ensureNumber(_pageX, 0);
+    const pageY = Utils.ensureNumber(_pageY, 0);
+    const dx = pageX - this.state.xVrMouseStart;
+    const dy = pageY - this.state.yVrMouseStart;
     const maxDegreesX = 90;
     const maxDegreesY = 120;
-    let degreesForPixelYaw = maxDegreesX / this.state.componentWidth;
-    let degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
-    let yaw = this.getVrViewingDirectionParamValue('yaw') + dx * degreesForPixelYaw;
-    let pitch = this.getVrViewingDirectionParamValue('pitch') + dy * degreesForPixelPitch;
+    const degreesForPixelYaw = maxDegreesX / this.state.componentWidth;
+    const degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
+    const yaw = this.getVrViewingDirectionParamValue('yaw') + dx * degreesForPixelYaw;
+    const pitch = this.getVrViewingDirectionParamValue('pitch') + dy * degreesForPixelPitch;
     return [yaw, 0, pitch];
   },
 
