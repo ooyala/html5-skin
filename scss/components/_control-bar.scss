@@ -1,9 +1,5 @@
 .oo-control-bar {
-  background: $control-bar-bg;
-  @include vendor-prefixes (background, $control-bar-gradient);
-  @include vendor-prefixes (transition, $medium-transition);
   width: 100%;
-  height: $control-bar-height;
   position: relative;
   margin: 0;
   padding: 0 15px;
@@ -174,4 +170,11 @@
     height: 0 !important;
     opacity: 0;
   }
+}
+
+.oo-control-bar-video {
+  background: $control-bar-bg;
+  @include vendor-prefixes (background, $control-bar-gradient);
+  @include vendor-prefixes (transition, $medium-transition);
+  height: $control-bar-height;
 }

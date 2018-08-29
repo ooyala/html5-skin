@@ -25,6 +25,7 @@ var PropTypes = require('prop-types');
 const MACROS = require('../constants/macros');
 const HoldControlButton = require('./holdControlButton');
 const withVideoNavigation = require('./higher-order/withVideoNavigation');
+const withPlayhead = require('./higher-order/withPlayhead');
 
 var ControlBar = createReactClass({
   getInitialState: function() {
@@ -316,40 +317,6 @@ var ControlBar = createReactClass({
     this.props.controller.toggleMoreOptionsScreen(this.moreOptionsItems);
   },
 
-  /**
-   *
-   * @returns {number}
-   */
-  getTotalTime: function() {
-    let totalTime = 0;
-    if (
-      this.props.duration === null ||
-      typeof this.props.duration === 'undefined' ||
-      this.props.duration === ''
-    ) {
-      totalTime = Utils.formatSeconds(0);
-    } else {
-      totalTime = Utils.formatSeconds(this.props.duration);
-    }
-    return totalTime;
-  },
-
-  getPlayheadTime: function() {
-    let playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ?
-      Utils.formatSeconds(parseInt(this.props.currentPlayhead))
-      :
-      null;
-    var isLiveStream = this.props.isLiveStream;
-    var timeShift = this.props.currentPlayhead - this.props.duration;
-    // checking timeShift < 1 seconds (not === 0) as processing of the click after we rewinded and then went live may take some time
-    var isLiveNow = Math.abs(timeShift) < 1;
-    playheadTime = isLiveStream ?
-      (isLiveNow ? null : Utils.formatSeconds(timeShift))
-      :
-      playheadTime;
-    return playheadTime;
-  },
-
   populateControlBar: function() {
     var playIcon;
     var playPauseAriaLabel;
@@ -397,10 +364,10 @@ var ControlBar = createReactClass({
       }
     }
 
-    var totalTime = this.getTotalTime();
+    var totalTime = this.props.getTotalTime();
 
     // TODO - Replace time display logic with Utils.getTimeDisplayValues()
-    var playheadTimeContent = this.getPlayheadTime();
+    var playheadTimeContent = this.props.getPlayheadTime();
     var isLiveStream = this.props.isLiveStream;
     var durationSetting = { color: this.props.skinConfig.controlBar.iconStyle.inactive.color };
     var timeShift = this.props.currentPlayhead - this.props.duration;
@@ -992,33 +959,29 @@ var ControlBar = createReactClass({
   render: function() {
     var controlBarClass = ClassNames({
       'oo-control-bar': true,
-      'oo-control-bar-hidden': !this.props.controlBarVisible
+      'oo-control-bar-hidden': !this.props.controlBarVisible,
+      'oo-control-bar-video': !this.props.controller.state.audioOnly
     });
 
     var controlBarItems = this.populateControlBar();
-    var controlBarStyle = {
-      height: this.props.skinConfig.controlBar.height
-    };
+    var controlBarStyle = {};
+
+    if (!this.props.controller.state.audioOnly) {
+      controlBarStyle.height = this.props.skinConfig.controlBar.height;
+    }
 
     return (
-      <div>
-        <div
-          className={controlBarClass}
-          style={controlBarStyle}
-          onFocus={this.props.onFocus}
-          onBlur={this.props.onBlur}
-          onMouseUp={this.handleControlBarMouseUp}
-          onTouchEnd={this.handleControlBarMouseUp}>
-          {!this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : null}
+      <div
+        className={controlBarClass}
+        style={controlBarStyle}
+        onFocus={this.props.onFocus}
+        onBlur={this.props.onBlur}
+        onMouseUp={this.handleControlBarMouseUp}
+        onTouchEnd={this.handleControlBarMouseUp}>
+        {!this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : null}
 
-          <div className="oo-control-bar-items-wrapper oo-flex-row-parent">
-            {controlBarItems}
-          </div>
-          <div className="oo-scrubber-bar-parent oo-flex-row-parent">
-            {this.props.controller.state.audioOnly ? <span className="oo-scrubber-bar-current-time">{this.getPlayheadTime()}</span> : null}
-            {this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : ''}
-            {this.props.controller.state.audioOnly ? <span className="oo-scrubber-bar-duration">{this.getTotalTime()}</span> : null}
-          </div>
+        <div className="oo-control-bar-items-wrapper oo-flex-row-parent">
+          {controlBarItems}
         </div>
       </div>
     );
@@ -1071,4 +1034,4 @@ ControlBar.propTypes = {
   })
 };
 
-module.exports = preserveKeyboardFocus(withVideoNavigation(ControlBar));
+module.exports = preserveKeyboardFocus(withPlayhead(withVideoNavigation(ControlBar)));
