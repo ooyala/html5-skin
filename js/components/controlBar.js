@@ -768,19 +768,19 @@ var ControlBar = createReactClass({
       ),
 
       centeredVolume: (
-        <div className="oo-control-bar-center">
+        <div className="oo-control-bar-group">
           {volumeTemplate}
         </div>
       ),
 
       centeredPlayPause: (
-        <div className="oo-control-bar-center">
+        <div className="oo-control-bar-group">
           {playPauseTemplate}
         </div>
       ),
 
       skipControls: (
-        <div className="oo-skip-controls oo-control-bar-center">
+        <div className="oo-skip-controls oo-control-bar-group">
           <ControlButton
             {...this.props}
             key={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
@@ -1015,9 +1015,9 @@ var ControlBar = createReactClass({
         </div>
 
         <div className="oo-scrubber-bar-parent">
-          {this.props.controller.state.audioOnly ? <span className="oo-scrubber-bar-time">{this.getPlayheadTime()}</span> : null}
+          {this.props.controller.state.audioOnly ? <span className="oo-scrubber-bar-current-time">{this.getPlayheadTime()}</span> : null}
           {this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : ''}
-          {this.props.controller.state.audioOnly ? <span className="oo-scrubber-bar-time">{this.getTotalTime()}</span> : null}
+          {this.props.controller.state.audioOnly ? <span className="oo-scrubber-bar-duration">{this.getTotalTime()}</span> : null}
         </div>
       </div>
     );

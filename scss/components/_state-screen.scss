@@ -1,3 +1,34 @@
+.oo-state-screen-audio {
+  @include flex-center-children(column);
+  //padding: 15px 0 15px 0;
+  height: 100%;
+
+  .oo-state-screen-audio-group {
+    @include flexbox;
+    @include flex-direction(column);
+    flex: 1;
+  }
+
+  .oo-state-screen-audio-group:first-child > * { margin-bottom: auto; }
+
+  .oo-state-screen-audio-group:last-child > * { margin-top: auto;  }
+
+  .oo-state-screen-audio-title {
+    @include vendor-prefixes (transition, $fade-up-transition);
+    pointer-events: none;
+    width: 100%;
+    padding: 0 15px;  //same as control bar padding
+    font-size: 1em;
+
+    .oo-state-screen-audio-info {
+      font-family: $font-family-roboto-condensed; //this.props.skinConfig.startScreen.titleFont.fontFamily
+      font-weight: bold;
+      resize: none;
+      margin-bottom: 15px;
+    }
+  }
+}
+
 .oo-state-screen {
   @extend .oo-expand;
   overflow: hidden;

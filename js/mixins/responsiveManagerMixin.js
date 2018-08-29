@@ -48,17 +48,20 @@ var ResponsiveManagerMixin = {
         // min width only, 1st breakpoint
         if (breakpoints[key].minWidth && !breakpoints[key].maxWidth) {
           breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] =
-            componentWidth >= breakpoints[key].minWidth;
+            componentWidth >= breakpoints[key].minWidth && !this.props.controller.state.audioOnly;
         }
         // min and max, middle breakpoints
         else if (breakpoints[key].minWidth && breakpoints[key].maxWidth) {
           breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] =
-            componentWidth >= breakpoints[key].minWidth && componentWidth <= breakpoints[key].maxWidth;
+            componentWidth >= breakpoints[key].minWidth && componentWidth <= breakpoints[key].maxWidth && !this.props.controller.state.audioOnly;
         }
         // max width only, last breakpoint
         else if (breakpoints[key].maxWidth && !breakpoints[key].minWidth) {
-          breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] =
-            componentWidth <= breakpoints[key].maxWidth;
+          var withinBreakpoint = componentWidth <= breakpoints[key].maxWidth || this.props.controller.state.audioOnly;
+          breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] = withinBreakpoint;
+          if (withinBreakpoint) {
+            break;
+          }
         }
       }
     }

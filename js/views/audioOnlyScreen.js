@@ -1,5 +1,5 @@
 /** ******************************************************************
-  AD SCREEN
+  AUDIO ONLY SCREEN
 *********************************************************************/
 const React = require('React');
 const ControlBar = require('../components/controlBar');
@@ -26,51 +26,51 @@ class AudioOnlyScreen extends React.Component {
     //  color: this.props.skinConfig.startScreen.descriptionFont.color
     //};
     var infoPanelClass = ClassNames({
-      'oo-state-screen-info': true,
+      'oo-state-screen-audio-title': true,
       'oo-inactive': !this.props.controller.state.controlBarVisible,
-      'oo-info-panel-top':
-        this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('top') > -1,
-      'oo-info-panel-bottom':
-        this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('bottom') > -1,
-      'oo-info-panel-left':
-        this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('left') > -1,
-      'oo-info-panel-right':
-        this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
+      'oo-state-screen-audio-group': true
     });
     var titleClass = ClassNames({
-      'oo-state-screen-title': true,
-      'oo-text-truncate': true,
-      'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
+      'oo-state-screen-audio-info': true
+      //'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
     });
     //var descriptionClass = ClassNames({
     //  'oo-state-screen-description': true,
     //  'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
     //});
+    var textStyle = {
+      'max-width': '70%'
+    };
+    var textClass = ClassNames({
+      'oo-text-truncate': true
+    });
     var titleMetadata = (
-      <div className={titleClass} style={titleStyle}>
-        {this.props.contentTree.title}
+      <div style={textStyle} className={textClass}>
+        <span className={titleClass} style={titleStyle}>
+          {this.props.contentTree.title}
+        </span>
+        : {this.props.contentTree.description}
       </div>
     );
+    //{this.props.contentTree.description ? ':' + {this.props.contentTree.description} : null}
     //var descriptionMetadata = (
     //  <div className={descriptionClass} style={descriptionStyle}>
     //    {this.state.descriptionText}
     //  </div>
     //);
     return (
-      <div>
-        <div className="oo-state-screen">
-          <div className={infoPanelClass}>
-            {this.props.skinConfig.pauseScreen.showTitle ? titleMetadata : null}
-          </div>
-          <div className="oo-interactive-container">
-            <ControlBar
-              {...this.props}
-              controlBarVisible={this.props.controller.state.controlBarVisible}
-              playerState={this.props.playerState}
-              isLiveStream={this.props.isLiveStream}
-              a11yControls={this.props.controller.accessibilityControls}
-            />
-          </div>
+      <div className="oo-state-screen-audio">
+        <div className={infoPanelClass}>
+          {this.props.skinConfig.pauseScreen.showTitle ? titleMetadata : null}
+        </div>
+        <div className="oo-interactive-container oo-state-screen-audio-group">
+          <ControlBar
+            {...this.props}
+            controlBarVisible={this.props.controller.state.controlBarVisible}
+            playerState={this.props.playerState}
+            isLiveStream={this.props.isLiveStream}
+            a11yControls={this.props.controller.accessibilityControls}
+          />
         </div>
       </div>
     );

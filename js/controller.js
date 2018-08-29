@@ -1612,6 +1612,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       var uiLanguage = Utils.getLanguageToUse(this.state.config);
       this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
 
+      this.state.audioOnly = this.state.config.audio.audioOnly;
+
       // load player
       this.skin = ReactDOM.render(
         React.createElement(Skin, {
@@ -1626,8 +1628,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       );
 
       this.state.configLoaded = true;
-
-      this.state.audioOnly = this.skin.props.skinConfig.audio.audioOnly;
 
       if (!this.state.audioOnly) {
         this.state.mainVideoInnerWrapper.addClass('oo-video-player');
