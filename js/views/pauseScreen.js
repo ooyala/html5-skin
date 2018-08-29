@@ -33,7 +33,6 @@ class PauseScreen extends React.Component {
     };
 
     this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
-    this.handleVrMouseUp = this.handleVrMouseUp.bind(this);
     this.handlePlayerMouseDown = this.handlePlayerMouseDown.bind(this);
     this.handlePlayerMouseUp = this.handlePlayerMouseUp.bind(this);
     this.startAnimation = this.startAnimation.bind(this);
@@ -47,7 +46,7 @@ class PauseScreen extends React.Component {
     this.hideVrPauseButton();
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
-    document.addEventListener('mouseup', this.handleVrMouseUp, false);
+    document.addEventListener('mouseup', this.props.handleVrPlayerMouseUp, false);
     document.addEventListener('touchend', this.props.handleVrPlayerMouseUp, false);
   }
 
@@ -56,7 +55,7 @@ class PauseScreen extends React.Component {
     this.props.controller.enablePauseAnimation();
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
-    document.removeEventListener('mouseup', this.handleVrMouseUp);
+    document.removeEventListener('mouseup', this.props.handleVrPlayerMouseUp);
     document.removeEventListener('touchend', this.props.handleVrPlayerMouseUp);
   }
 
@@ -139,20 +138,13 @@ class PauseScreen extends React.Component {
   }
 
   /**
-   * call handleVrMouseUp when mouseup was called on selectedScreen
+   * call handlePlayerMouseUp when mouseup was called on selectedScreen
+   * it prevents propagation
    * @param {Event} event - event object
    */
   handlePlayerMouseUp(event) {
     event.stopPropagation(); // W3C
     event.cancelBubble = true; // IE
-  }
-
-  /**
-   * call handleVrMouseUp when mouseup was called on document
-   * @param {Event} event - event object
-   */
-  handleVrMouseUp(event) {
-    this.props.handleVrPlayerMouseUp(event);
   }
 
   /**

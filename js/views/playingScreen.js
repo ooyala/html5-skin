@@ -36,7 +36,6 @@ class PlayingScreen extends React.Component {
     };
 
     this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
-    this.handleVrMouseUp = this.handleVrMouseUp.bind(this);
     this.onSkipControlsMount = this.onSkipControlsMount.bind(this);
     this.handleTouchStart = this.handleTouchStart.bind(this);
     this.handlePlayerClicked = this.handlePlayerClicked.bind(this);
@@ -54,7 +53,7 @@ class PlayingScreen extends React.Component {
   componentDidMount() {
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
-    document.addEventListener('mouseup', this.handleVrMouseUp, false);
+    document.addEventListener('mouseup', this.props.handleVrPlayerMouseUp, false);
     document.addEventListener('touchend', this.props.handleVrPlayerMouseUp, false);
 
     if (this.props.controller.videoVr) {
@@ -66,7 +65,7 @@ class PlayingScreen extends React.Component {
   componentWillUnmount() {
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
-    document.removeEventListener('mouseup', this.handleVrMouseUp);
+    document.removeEventListener('mouseup', this.props.handleVrPlayerMouseUp);
     document.removeEventListener('touchend', this.props.handleVrPlayerMouseUp);
   }
 
@@ -138,7 +137,7 @@ class PlayingScreen extends React.Component {
   }
 
   /**
-   * call handleVrMouseUp when mouseup was called on selectedScreen
+   * it prevents propagetion, changes screens and sets states to support accessibility
    * @param {Event} event - event object
    */
   handlePlayerMouseUp(event) {
@@ -231,14 +230,6 @@ class PlayingScreen extends React.Component {
       }
     }
     this.hasCheckedMouseOverControls = true;
-  }
-
-  /**
-   * call handleVrMouseUp when mouseup was called on document
-   * @param {Event} event - event object
-   */
-  handleVrMouseUp(event) {
-    this.props.handleVrPlayerMouseUp(event);
   }
 
   /**
