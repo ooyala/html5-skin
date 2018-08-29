@@ -100,7 +100,7 @@ const Skin = createReactClass({
       return;
     }
     if (this.props.controller && this.props.controller.videoVr) {
-      let coords = Utils.getCoords(event);
+      const coords = Utils.getCoords(event);
 
       this.setState({
         isVrMouseDown: true,
