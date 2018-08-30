@@ -756,7 +756,7 @@ var ControlBar = createReactClass({
       ),
 
       skipControls: (
-        <div className="oo-skip-controls oo-flex-row">
+        <div className="oo-skip-controls oo-flex-row oo-control-bar-skip-controls">
           <ControlButton
             {...this.props}
             key={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}

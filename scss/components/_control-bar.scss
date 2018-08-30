@@ -2,7 +2,6 @@
   width: 100%;
   position: relative;
   margin: 0;
-  padding: 0 15px;
   list-style: none;
   font-size: 18px;
   -webkit-user-select: none;
@@ -177,4 +176,5 @@
   @include vendor-prefixes (background, $control-bar-gradient);
   @include vendor-prefixes (transition, $medium-transition);
   height: $control-bar-height;
+  padding: 0 15px;
 }

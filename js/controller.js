@@ -2188,8 +2188,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.closeScreen();
       } else {
         if (
-          this.state.playerState === CONSTANTS.STATE.PLAYING ||
-          this.state.playerState === CONSTANTS.STATE.START
+          this.state.playerState === CONSTANTS.STATE.PLAYING
         ) {
           this.pausedCallback = function() {
             this.state.pluginsElement.addClass('oo-overlay-blur');
@@ -2437,6 +2436,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
       } else if (this.state.playerState === CONSTANTS.STATE.END) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
+      } else if (this.state.playerState === CONSTANTS.STATE.START) {
+        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       }
       this.renderSkin();
     },

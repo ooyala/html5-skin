@@ -307,16 +307,26 @@ var Skin = createReactClass({
     } else {
       if (this.props.controller.state.audioOnly) {
         switch (this.state.screenToShow) {
-          case CONSTANTS.SCREEN.INITIAL_SCREEN:
-            screen = (
-              <StartScreen
-                {...this.props}
-                componentWidth={this.state.componentWidth}
-                contentTree={this.state.contentTree}
-                isInitializing={true}
-              />
-            );
-            break;
+          //case CONSTANTS.SCREEN.INITIAL_SCREEN:
+          //  screen = (
+          //    <StartScreen
+          //      {...this.props}
+          //      componentWidth={this.state.componentWidth}
+          //      contentTree={this.state.contentTree}
+          //      isInitializing={true}
+          //    />
+          //  );
+          //  break;
+          //case CONSTANTS.SCREEN.START_SCREEN:
+          //  screen = (
+          //    <StartScreen
+          //      {...this.props}
+          //      componentWidth={this.state.componentWidth}
+          //      contentTree={this.state.contentTree}
+          //      isInitializing={false}
+          //    />
+          //  );
+          //  break;
           case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
             screen = (
               <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN}>
