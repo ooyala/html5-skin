@@ -252,7 +252,7 @@ class PlayingScreen extends React.Component {
 
   /**
    *
-   * @param {number} vrDuration - key for duraction in config
+   * @param {number} vrDuration - key for duration in config
    * @param {number} userDefaultDuration - default value for duration
    * @returns {object} empty object or object with animationDuration
    */

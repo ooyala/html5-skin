@@ -288,9 +288,9 @@ const Skin = createReactClass({
   },
 
   /**
-   * This function changes a screen (pause/play) and
+   * This function toggles the current screen (pause/play) and
    * sets current direction for vr video (it is necessary for tilting)
-   * when touchend was called on selected screen
+   * when touchend is called on selected screen
    * @public
    * @param {Event} event - event object
    */
