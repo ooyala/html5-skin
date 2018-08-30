@@ -317,6 +317,46 @@ var Skin = createReactClass({
               />
             );
             break;
+          case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
+            screen = (
+              <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN}>
+                <MoreOptionsPanel
+                  {...this.props}
+                  responsiveView={this.state.responsiveId}
+                  fullscreen={this.state.fullscreen} />
+              </ContentScreen>
+            );
+            break;
+          case CONSTANTS.SCREEN.SHARE_SCREEN:
+            screen = (
+              <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.SHARE_SCREEN} icon="share">
+                <SharePanel
+                  {...this.props}
+                  assetId={this.state.assetId}
+                  playerParam={this.state.playerParam}
+                  contentTree={this.state.contentTree}
+                />
+              </ContentScreen>
+            );
+            break;
+          case CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN:
+            screen = (
+              <ContentScreen
+                {...this.props}
+                screenClassName="oo-menu-content-screen"
+                screen={CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN}
+                titleText={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
+                autoFocus={this.state.playbackSpeedOptions.autoFocus} >
+                <PlaybackSpeedPanel
+                  language={this.props.language}
+                  localizableStrings={this.props.localizableStrings}
+                  controller={this.props.controller}
+                  skinConfig={this.props.skinConfig}
+                  fullscreen={this.state.fullscreen}
+                  responsiveView={this.state.responsiveId} />
+              </ContentScreen>
+            );
+            break;
           case null:
             screen = <div />;
             break;

@@ -740,9 +740,18 @@ var ControlBar = createReactClass({
         </div>
       ),
 
-      centeredPlayPause: (
+      audioOptions: (
         <div className="oo-flex-row">
-          {playPauseTemplate}
+          <ControlButton
+            {...commonButtonProps}
+            key={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
+            className="oo-more-options"
+            focusId={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
+            ariaHidden={true}
+            icon="ellipsis"
+            tooltip={CONSTANTS.SKIN_TEXT.MORE_OPTIONS}
+            onClick={this.handleMoreOptionsClick}>
+          </ControlButton>
         </div>
       ),
 
