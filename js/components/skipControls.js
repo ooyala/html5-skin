@@ -16,6 +16,8 @@ class SkipControls extends React.Component {
     super(props);
     this.storeRef = this.storeRef.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
+
+    this.handlePlayClick = this.handlePlayClick.bind(this);
   }
 
   /**
@@ -51,6 +53,13 @@ class SkipControls extends React.Component {
   }
 
   /**
+   * 
+   */
+  handlePlayClick() {
+    this.props.controller.togglePlayPause();
+  }
+
+  /**
    * Gets a map which contains templates for each of the available buttons in
    * this component.
    * @private
@@ -77,6 +86,24 @@ class SkipControls extends React.Component {
     // on touch devices.
     if (this.props.isInactive) {
       buttonStyle.pointerEvents = 'none';
+    }
+
+    //TODO: This is duplicate code from controlBar.js
+    var playIcon;
+    var playPauseAriaLabel;
+    var playBtnTooltip;
+    if (this.props.controller.state.playerState === CONSTANTS.STATE.PLAYING) {
+      playIcon = 'pause';
+      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PAUSE;
+      playBtnTooltip = CONSTANTS.SKIN_TEXT.PAUSE;
+    } else if (this.props.controller.state.playerState === CONSTANTS.STATE.END) {
+      playIcon = 'replay';
+      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.REPLAY;
+      playBtnTooltip = CONSTANTS.SKIN_TEXT.REPLAY;
+    } else {
+      playIcon = 'play';
+      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PLAY;
+      playBtnTooltip = CONSTANTS.SKIN_TEXT.PLAY;
     }
 
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO] = (
@@ -135,6 +162,20 @@ class SkipControls extends React.Component {
         onClick={this.props.onNextVideo}>
       </ControlButton>
     );
+
+    buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.PLAY_PAUSE] = (
+      <ControlButton
+        {...this.props}
+        key={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
+        className="oo-play-pause"
+        focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
+        ariaLabel={playPauseAriaLabel}
+        icon={playIcon}
+        tooltip={playBtnTooltip}
+        onClick={this.handlePlayClick}>
+      </ControlButton>
+    );
+
     return buttonTemplate;
   }
 
@@ -161,7 +202,7 @@ class SkipControls extends React.Component {
     );
 
     const isDisabled = (
-      (isSkipButton && !duration) ||
+      (isSkipButton && (!duration && !this.props.controller.state.audioOnly)) ||
       (isPrevNextButton && isSingleVideo) ||
       !(buttonConfig && buttonConfig.enabled)
     );
@@ -177,11 +218,19 @@ class SkipControls extends React.Component {
    */
   getSortedButtonEntries() {
     const buttons = [];
-    const buttonConfig = Utils.getPropertyValue(
+    var buttonConfig = Utils.getPropertyValue(
       this.props.skinConfig,
       'skipControls.buttons',
       {}
     );
+
+    if (this.props.controller.state.audioOnly) {
+      buttonConfig = Utils.getPropertyValue(
+        this.props.skinConfig,
+        'skipControls.audioOnlyButtons',
+        {}
+      );
+    }
     // Find the ids and indexes of all enabled buttons
     for (let buttonId in buttonConfig) {
       const button = buttonConfig[buttonId];
@@ -210,7 +259,8 @@ class SkipControls extends React.Component {
     const className = classNames('oo-skip-controls', {
       'oo-inactive': this.props.isInactive,
       'oo-in-background': this.props.isInBackground,
-      'oo-skip-controls-centered': true
+      'oo-skip-controls-centered': true,
+      'oo-skip-controls-compact': this.props.controller.state.audioOnly
     });
     const buttonTemplate = this.getButtonTemplate();
 

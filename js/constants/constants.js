@@ -216,7 +216,8 @@ var CONSTANTS = {
     PREVIOUS_VIDEO: 'previousVideo',
     SKIP_BACKWARD: 'skipBackward',
     SKIP_FORWARD: 'skipForward',
-    NEXT_VIDEO: 'nextVideo'
+    NEXT_VIDEO: 'nextVideo',
+    PLAY_PAUSE: 'playPause'
   },
 
   A11Y_CTRLS: {

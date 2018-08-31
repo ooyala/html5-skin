@@ -26,6 +26,7 @@ const MACROS = require('../constants/macros');
 const HoldControlButton = require('./holdControlButton');
 const withVideoNavigation = require('./higher-order/withVideoNavigation');
 const withPlayhead = require('./higher-order/withPlayhead');
+const SkipControls = require('../components/skipControls');
 
 var ControlBar = createReactClass({
   getInitialState: function() {
@@ -756,53 +757,19 @@ var ControlBar = createReactClass({
       ),
 
       skipControls: (
-        <div className="oo-skip-controls oo-flex-row oo-control-bar-skip-controls">
-          <ControlButton
-            {...this.props}
-            key={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
-            focusId={CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO}
-            style={buttonStyle}
-            className="oo-previous-video"
-            icon="previous"
-            ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_VIDEO}
-            disabled={!this.props.controller.state.skipControls.hasPreviousVideos}
-            onClick={this.props.onPreviousVideo}>
-          </ControlButton>
-          <HoldControlButton
-            {...this.props}
-            key={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD}
-            focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD}
-            style={buttonStyle}
-            className="oo-center-button oo-skip-backward"
-            icon="replay"
-            ariaLabel={skipBackwardAriaLabel}
-            onClick={this.props.onSkipBackward}>
-            <span className="oo-btn-counter">{skipTimes.backward}</span>
-          </HoldControlButton>
-          {playPauseTemplate}
-          <HoldControlButton
-            {...this.props}
-            key={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD}
-            focusId={CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD}
-            style={buttonStyle}
-            className="oo-center-button oo-skip-forward"
-            icon="forward"
-            ariaLabel={skipForwardAriaLabel}
-            disabled={this.props.isAtLiveEdge()}
-            onClick={this.props.onSkipForward}>
-            <span className="oo-btn-counter">{skipTimes.forward}</span>
-          </HoldControlButton>
-          <ControlButton
-            {...this.props}
-            key={CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO}
-            focusId={CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO}
-            style={buttonStyle}
-            className="oo-next-video"
-            icon="next"
-            ariaLabel={CONSTANTS.ARIA_LABELS.NEXT_VIDEO}
-            disabled={!this.props.controller.state.skipControls.hasNextVideos}
-            onClick={this.props.onNextVideo}>
-          </ControlButton>
+        <div className="oo-flex-row">
+          <SkipControls
+            config={this.props.controller.state.skipControls}
+            language={this.props.language}
+            localizableStrings={this.props.localizableStrings}
+            responsiveView={this.props.responsiveView}
+            skinConfig={this.props.skinConfig}
+            controller={this.props.controller}
+            currentPlayhead={this.props.currentPlayhead}
+            a11yControls={this.props.controller.accessibilityControls}
+            isInactive={!this.props.controller.state.controlBarVisible}
+            isInBackground={this.props.controller.state.scrubberBar.isHovering}
+            onFocus={this.handleFocus} />
         </div>
       )
     };
