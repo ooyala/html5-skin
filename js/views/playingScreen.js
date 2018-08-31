@@ -1,25 +1,25 @@
 /** ******************************************************************
   PLAYING SCREEN
 *********************************************************************/
-var React = require('react'),
-    ReactDOM = require('react-dom'),
-    Utils = require('../components/utils'),
-    ControlBar = require('../components/controlBar'),
-    AdOverlay = require('../components/adOverlay'),
-    ClassNames = require('classnames'),
-    UpNextPanel = require('../components/upNextPanel'),
-    Spinner = require('../components/spinner'),
-    TextTrackPanel = require('../components/textTrackPanel'),
-    Watermark = require('../components/watermark'),
-    ResizeMixin = require('../mixins/resizeMixin'),
-    CONSTANTS = require('../constants/constants'),
-    ViewControlsVr = require('../components/viewControlsVr'),
-    Icon = require('../components/icon'),
-    Tooltip = require('../components/tooltip'),
-    SkipControls = require('../components/skipControls'),
-    UnmuteIcon = require('../components/unmuteIcon');
+const React = require('react');
+const Utils = require('../components/utils');
+const ControlBar = require('../components/controlBar');
+const AdOverlay = require('../components/adOverlay');
+const ClassNames = require('classnames');
+const UpNextPanel = require('../components/upNextPanel');
+const Spinner = require('../components/spinner');
+const TextTrackPanel = require('../components/textTrackPanel');
+const Watermark = require('../components/watermark');
+const CONSTANTS = require('../constants/constants');
+const ViewControlsVr = require('../components/viewControlsVr');
+const Icon = require('../components/icon');
+const SkipControls = require('../components/skipControls');
+const UnmuteIcon = require('../components/unmuteIcon');
 const withAutoHide = require('./higher-order/withAutoHide.js');
 
+/**
+ * Represents a screen when a video is played
+ */
 class PlayingScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -36,15 +36,12 @@ class PlayingScreen extends React.Component {
     };
 
     this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
-    this.handleVrMouseUp = this.handleVrMouseUp.bind(this);
-    this.handleVrTouchEnd = this.handleVrTouchEnd.bind(this);
     this.onSkipControlsMount = this.onSkipControlsMount.bind(this);
     this.handleTouchStart = this.handleTouchStart.bind(this);
     this.handlePlayerClicked = this.handlePlayerClicked.bind(this);
     this.handlePlayerFocus = this.handlePlayerFocus.bind(this);
     this.handlePlayerMouseDown = this.handlePlayerMouseDown.bind(this);
     this.handlePlayerMouseUp = this.handlePlayerMouseUp.bind(this);
-    this.handleTouchEnd = this.handleTouchEnd.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleMouseOver = this.handleMouseOver.bind(this);
   }
@@ -56,20 +53,20 @@ class PlayingScreen extends React.Component {
   componentDidMount() {
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
-    document.addEventListener('mouseup', this.handleVrMouseUp, false);
-    document.addEventListener('touchend', this.handleVrTouchEnd, false);
+    document.addEventListener('mouseup', this.props.handleVrPlayerMouseUp, false);
+    document.addEventListener('touchend', this.props.handleVrPlayerMouseUp, false);
 
     if (this.props.controller.videoVr) {
-      this.handleVrAnimationEnd('vrNotificatioContainer', 'isVrNotificationHidden');
-      this.handleVrAnimationEnd('vrIconContainer', 'isVrIconHidden');
+      this.handleVrAnimationEnd(this.vrNotificatioContainer, 'isVrNotificationHidden');
+      this.handleVrAnimationEnd(this.vrIconContainer, 'isVrIconHidden');
     }
   }
 
   componentWillUnmount() {
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
-    document.removeEventListener('mouseup', this.handleVrMouseUp);
-    document.removeEventListener('touchend', this.handleVrTouchEnd);
+    document.removeEventListener('mouseup', this.props.handleVrPlayerMouseUp);
+    document.removeEventListener('touchend', this.props.handleVrPlayerMouseUp);
   }
 
   /**
@@ -77,18 +74,19 @@ class PlayingScreen extends React.Component {
    * The labels should be animated.
    * Need to remove the labels (icons) after animation
    * Animation should be only one time
-   * @param {string} id - unique identificator of the label(icon)
+   * @param {string} ref - unique identificator of the label(icon)
    * @param {string} stateName - name for a state which indicates about necessary to show the label(icon)
    */
-  handleVrAnimationEnd(id, stateName) {
-    var vrContainer = document.getElementById(id);
-    if (vrContainer) {
-      var listener = function() {
-        var newState = {};
-        newState[stateName] = true;
-        this.setState(newState);
-      };
-      vrContainer.addEventListener('animationend', listener.bind(this), false);
+  handleVrAnimationEnd(ref, stateName) {
+    if (ref) {
+      ref.addEventListener('animationend', function _animationEndHandler(stateName) {
+        if (stateName) {
+          let newState = {};
+          newState[stateName] = true;
+          this.setState(newState);
+        }
+        ref.removeEventListener('animationend', _animationEndHandler, false);
+      }, false);
     }
   }
 
@@ -100,7 +98,7 @@ class PlayingScreen extends React.Component {
    * @param {object} event Focus event object.
    */
   handleFocus(event) {
-    var isFocusableElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
+    const isFocusableElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
     // Only do this if the control bar hasn't been shown by now and limit to focus
     // events that are triggered on known focusable elements (control bar items and
     // skip buttons). Note that controlBarVisible controls both the control bar and
@@ -119,55 +117,34 @@ class PlayingScreen extends React.Component {
   }
 
   /**
-   * call handleTouchEnd when touchend was called on selectedScreen
+   * call handlePlayerMouseDown when mouseDown was called on document and videoType is Vr
+   * @param {Event} event - mouse down event object
+   */
+  handlePlayerMouseDown(event) {
+    if (this.props.controller.videoVr) {
+      event.persist();
+    }
+    this.props.handleVrPlayerMouseDown(event);
+  }
+
+  /**
+   * call handlePlayerMouseMove when mouseMove was called on document and videoType is Vr
+   * @param {Event} event - mouse move event object
+   */
+  handlePlayerMouseMove(event) {
+    this.storeMousePosition(event);
+    this.props.handleVrPlayerMouseMove(event);
+  }
+
+  /**
+   * it prevents propagetion, changes screens and sets states to support accessibility
    * @param {Event} event - event object
    */
-  handleTouchEnd(event) {
-    event.preventDefault(); // to prevent mobile from propagating click to discovery shown on pause
-    if (this.props.controller.state.controlBarVisible) {
-      var shouldToggle = false;
-      if (this.props.controller.videoVr) {
-        if (!this.props.isVrMouseMove) {
-          shouldToggle = true;
-        }
-      } else {
-        shouldToggle = true;
-      }
-      if (shouldToggle) {
-        this.props.controller.togglePlayPause(event);
-      }
-    }
-  }
-
-  /**
-   * call handleVrTouchEnd when touchend was called on document and videoType is Vr
-   * @param {Event} e - event object
-   */
-  handleVrTouchEnd(e) {
-    this.props.handleVrPlayerMouseUp(e);
-  }
-
-  handlePlayerMouseDown(e) {
-    if (this.props.controller.videoVr) {
-      e.persist();
-    }
-    this.props.handleVrPlayerMouseDown(e);
-  }
-
-  handlePlayerMouseMove(e) {
-    this.storeMousePosition(e);
-    this.props.handleVrPlayerMouseMove(e);
-  }
-
-  /**
-   * call handleVrMouseUp when mouseup was called on selectedScreen
-   * @param {Event} e - event object
-   */
-  handlePlayerMouseUp(e) {
+  handlePlayerMouseUp(event) {
     // pause or play the video if the skin is clicked on desktop
     if (!this.isMobile) {
-      e.stopPropagation(); // W3C
-      e.cancelBubble = true; // IE
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
       if (!this.props.controller.videoVr) {
         this.props.controller.togglePlayPause(); // if clicked on selectableSceen
       }
@@ -191,9 +168,8 @@ class PlayingScreen extends React.Component {
    * Handles the touchstart event. Note that this handler is for the main element.
    * There's a similar handler for an inner element that handles 360 video interactions.
    * @private
-   * @param {Event} event The touchstart event object
    */
-  handleTouchStart(event) {
+  handleTouchStart() {
     // Disable "mouse over controls" check for all touch interactions
     this.hasCheckedMouseOverControls = true;
   }
@@ -202,7 +178,7 @@ class PlayingScreen extends React.Component {
    * Extracts and stores the clientX and clientY values from a mouse event. This
    * is used in order to keep track of the last known position. Triggers a check
    * that determines whether the mouse is over the skip controls.
-   * @param {Event} event
+   * @param {Event} event - event object
    */
   storeMousePosition(event) {
     if (!event) {
@@ -257,13 +233,9 @@ class PlayingScreen extends React.Component {
   }
 
   /**
-   * call handleVrMouseUp when mouseup was called on document
-   * @param {Event} e - event object
+   * call handlePlayerClicked when an user clicked on document
+   * @param {Event} event - event object
    */
-  handleVrMouseUp(e) {
-    this.props.handleVrPlayerMouseUp(e);
-  }
-
   handlePlayerClicked(event) {
     if (!this.props.isVrMouseMove && !this.isMobile) {
       this.props.controller.togglePlayPause(event);
@@ -271,31 +243,32 @@ class PlayingScreen extends React.Component {
     this.props.handleVrPlayerClick();
   }
 
+  /**
+   * call handlePlayerFocus when the player is in focus
+   */
   handlePlayerFocus() {
     this.props.handleVrPlayerFocus();
   }
 
-  unmuteClick(event) {
-    this.props.controller.handleMuteClick();
-  }
-
   /**
    *
-   * @param {number} vrDuration - key for duraction in config
-   * @param {number} defaultDuration - default value for duration
+   * @param {number} vrDuration - key for duration in config
+   * @param {number} userDefaultDuration - default value for duration
    * @returns {object} empty object or object with animationDuration
    */
-  setAnimationDuration(vrDuration, defaultDuration) {
-    var style = {};
-    defaultDuration = Utils.ensureNumber(defaultDuration, 3);
+  setAnimationDuration(vrDuration, userDefaultDuration) {
+    let style = {};
+    const functionDefaultfDuration = 3; // default value for Duration if userDefaultDuration is undefined
+    const defaultDuration = Utils.ensureNumber(userDefaultDuration, functionDefaultfDuration);
+    const animationDurations = this.props.controller.state.config.animationDurations;
     if (
-      this.props.controller.state.config.animationDurations !== null &&
-      typeof this.props.controller.state.config.animationDurations === 'object' &&
-      this.props.controller.state.config.animationDurations[vrDuration] !== undefined
+      animationDurations !== null &&
+      typeof animationDurations === 'object' &&
+      typeof animationDurations[vrDuration] !== 'undefined'
     ) {
-      var duration =
+      const duration =
         Utils.ensureNumber(
-          this.props.controller.state.config.animationDurations[vrDuration],
+          animationDurations[vrDuration],
           defaultDuration
         ) + 's';
       style = {
@@ -307,7 +280,7 @@ class PlayingScreen extends React.Component {
   }
 
   render() {
-    var adOverlay =
+    const adOverlay =
       this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay ? (
         <AdOverlay
           {...this.props}
@@ -317,7 +290,7 @@ class PlayingScreen extends React.Component {
         />
       ) : null;
 
-    var upNextPanel =
+    const upNextPanel =
       this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData ? (
         <UpNextPanel
           {...this.props}
@@ -326,15 +299,15 @@ class PlayingScreen extends React.Component {
         />
       ) : null;
 
-    var viewControlsVr = this.props.controller.videoVr ? (
+    const viewControlsVr = this.props.controller.videoVr ? (
       <ViewControlsVr {...this.props} controlBarVisible={this.props.controller.state.controlBarVisible} />
     ) : null;
 
-    var showUnmute =
+    const showUnmute =
       this.props.controller.state.volumeState.mutingForAutoplay &&
       this.props.controller.state.volumeState.muted;
 
-    var vrNotification = null;
+    let vrNotification = null;
     if (
       this.props.controller.state.config.isVrAnimationEnabled !== null &&
       typeof this.props.controller.state.config.isVrAnimationEnabled === 'object' &&
@@ -344,10 +317,13 @@ class PlayingScreen extends React.Component {
       this.props.controller.isNewVrVideo
     ) {
       // @Todo: When we know about the rules for vrIcon, change checking "if isNewVrVideo"
-      var defaultDuration = 5;
-      var style = this.setAnimationDuration('vrNotification', defaultDuration);
+      let defaultDuration = 5;
+      let style = this.setAnimationDuration('vrNotification', defaultDuration);
       vrNotification = (
-        <div id="vrNotificatioContainer" className="oo-state-screen-vr-notification-container">
+        <div
+          ref={notification => this.vrNotificatioContainer = notification}
+          className="oo-state-screen-vr-notification-container"
+        >
           <p className="oo-state-screen-vr-notification" style={style}>
             {'Select and drag to look around'}
           </p>
@@ -355,7 +331,7 @@ class PlayingScreen extends React.Component {
       );
     }
 
-    var vrIcon = null;
+    let vrIcon = null;
     if (
       this.props.controller.state.config.isVrAnimationEnabled !== null &&
       typeof this.props.controller.state.config.isVrAnimationEnabled === 'object' &&
@@ -364,10 +340,10 @@ class PlayingScreen extends React.Component {
       !this.state.isVrIconHidden &&
       this.props.controller.isNewVrVideo
     ) {
-      var defaultDuration = 3;
-      var style = this.setAnimationDuration('vrIcon', defaultDuration);
+      let defaultDuration = 3;
+      let style = this.setAnimationDuration('vrIcon', defaultDuration);
       vrIcon = (
-        <div id="vrIconContainer" className="oo-state-screen-vr-container" style={style}>
+        <div ref={icon => this.vrIconContainer = icon} className="oo-state-screen-vr-container" style={style}>
           <div className="oo-state-screen-vr-bg">
             <Icon {...this.props} icon="vrIcon" className="oo-state-screen-vr-icon" />
           </div>
@@ -375,16 +351,16 @@ class PlayingScreen extends React.Component {
       );
     }
 
-    var skipControlsEnabled = Utils.getPropertyValue(
+    const skipControlsEnabled = Utils.getPropertyValue(
       this.props.skinConfig,
       'skipControls.enabled',
       false
     );
-    var isTextTrackInBackground = (
+    const isTextTrackInBackground = (
       this.props.controller.state.scrubberBar.isHovering ||
       (skipControlsEnabled && this.props.controller.state.controlBarVisible)
     );
-    var className = ClassNames('oo-state-screen oo-playing-screen', {
+    const className = ClassNames('oo-state-screen oo-playing-screen', {
       'oo-controls-active': skipControlsEnabled && this.props.controller.state.controlBarVisible
     });
 
@@ -401,7 +377,8 @@ class PlayingScreen extends React.Component {
           onClick={this.handlePlayerClicked}
           onFocus={this.handlePlayerFocus}
           onMouseUp={this.handlePlayerMouseUp}
-          onTouchEnd={this.handleTouchEnd} />
+          onTouchEnd={this.props.handleTouchEnd}
+        />
 
         {vrNotification}
         {vrIcon}
