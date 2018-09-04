@@ -53,7 +53,7 @@ class SkipControls extends React.Component {
   }
 
   /**
-   * 
+   *
    */
   handlePlayClick() {
     this.props.controller.togglePlayPause();

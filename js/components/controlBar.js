@@ -463,21 +463,6 @@ var ControlBar = createReactClass({
       </ControlButton>
     );
 
-    const volumeTemplate = (
-      <div key={CONSTANTS.CONTROL_BAR_KEYS.VOLUME} className="oo-volume oo-control-bar-item">
-        <ControlButton
-          {...commonButtonProps}
-          className="oo-mute-unmute"
-          focusId={CONSTANTS.CONTROL_BAR_KEYS.VOLUME}
-          ariaLabel={volumeAriaLabel}
-          icon={volumeIcon}
-          tooltip={mutedInUi ? CONSTANTS.SKIN_TEXT.UNMUTE : CONSTANTS.SKIN_TEXT.MUTE}
-          onClick={this.handleVolumeIconClick}>
-        </ControlButton>
-        <VolumeControls {...this.props} />
-      </div>
-    );
-
     var controlItemTemplates = {
       playPause: playPauseTemplate,
 
@@ -488,7 +473,20 @@ var ControlBar = createReactClass({
         </a>
       ),
 
-      volume: volumeTemplate,
+      volume: (
+        <div key={CONSTANTS.CONTROL_BAR_KEYS.VOLUME} className="oo-volume oo-control-bar-item">
+          <ControlButton
+            {...commonButtonProps}
+            className="oo-mute-unmute"
+            focusId={CONSTANTS.CONTROL_BAR_KEYS.VOLUME}
+            ariaLabel={volumeAriaLabel}
+            icon={volumeIcon}
+            tooltip={mutedInUi ? CONSTANTS.SKIN_TEXT.UNMUTE : CONSTANTS.SKIN_TEXT.MUTE}
+            onClick={this.handleVolumeIconClick}>
+          </ControlButton>
+          <VolumeControls {...this.props} />
+        </div>
+      ),
 
       timeDuration: (
         <a
@@ -735,42 +733,19 @@ var ControlBar = createReactClass({
           height={this.props.skinConfig.controlBar.logo.height} />
       ),
 
-      centeredVolume: (
-        <div className="oo-flex-row">
-          {volumeTemplate}
-        </div>
-      ),
-
-      audioOptions: (
-        <div className="oo-flex-row">
-          <ControlButton
-            {...commonButtonProps}
-            key={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
-            className="oo-more-options"
-            focusId={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
-            ariaHidden={true}
-            icon="ellipsis"
-            tooltip={CONSTANTS.SKIN_TEXT.MORE_OPTIONS}
-            onClick={this.handleMoreOptionsClick}>
-          </ControlButton>
-        </div>
-      ),
-
       skipControls: (
-        <div className="oo-flex-row">
-          <SkipControls
-            config={this.props.controller.state.skipControls}
-            language={this.props.language}
-            localizableStrings={this.props.localizableStrings}
-            responsiveView={this.props.responsiveView}
-            skinConfig={this.props.skinConfig}
-            controller={this.props.controller}
-            currentPlayhead={this.props.currentPlayhead}
-            a11yControls={this.props.controller.accessibilityControls}
-            isInactive={!this.props.controller.state.controlBarVisible}
-            isInBackground={this.props.controller.state.scrubberBar.isHovering}
-            onFocus={this.handleFocus} />
-        </div>
+        <SkipControls
+          config={this.props.controller.state.skipControls}
+          language={this.props.language}
+          localizableStrings={this.props.localizableStrings}
+          responsiveView={this.props.responsiveView}
+          skinConfig={this.props.skinConfig}
+          controller={this.props.controller}
+          currentPlayhead={this.props.currentPlayhead}
+          a11yControls={this.props.controller.accessibilityControls}
+          isInactive={!this.props.controller.state.controlBarVisible}
+          isInBackground={this.props.controller.state.scrubberBar.isHovering}
+          onFocus={this.handleFocus} />
       )
     };
 
@@ -927,8 +902,17 @@ var ControlBar = createReactClass({
         alignment = CONSTANTS.TOOLTIP_ALIGNMENT.LEFT;
       }
       tooltipAlignments[collapsedControlBarItems[k].name] = alignment;
-      finalControlBarItems.push(controlItemTemplates[collapsedControlBarItems[k].name]);
+      var item = controlItemTemplates[collapsedControlBarItems[k].name];
+      if (this.props.controller.state.audioOnly) {
+        item = (
+          <div className="oo-flex-row">
+            {item}
+          </div>
+        );
+      }
+      finalControlBarItems.push(item);
     }
+
     return finalControlBarItems;
   },
 
