@@ -41,26 +41,28 @@ var ResponsiveManagerMixin = {
       ids: {}
     };
 
-    // loop through breakpoints from skinConfig
-    // generate Classname object with name and min/max width
-    for (var key in breakpoints) {
-      if (breakpoints.hasOwnProperty(key)) {
-        // min width only, 1st breakpoint
-        if (breakpoints[key].minWidth && !breakpoints[key].maxWidth) {
-          breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] =
-            componentWidth >= breakpoints[key].minWidth && !this.props.controller.state.audioOnly;
-        }
-        // min and max, middle breakpoints
-        else if (breakpoints[key].minWidth && breakpoints[key].maxWidth) {
-          breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] =
-            componentWidth >= breakpoints[key].minWidth && componentWidth <= breakpoints[key].maxWidth && !this.props.controller.state.audioOnly;
-        }
-        // max width only, last breakpoint
-        else if (breakpoints[key].maxWidth && !breakpoints[key].minWidth) {
-          var withinBreakpoint = componentWidth <= breakpoints[key].maxWidth || this.props.controller.state.audioOnly;
-          breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] = withinBreakpoint;
-          if (withinBreakpoint) {
-            break;
+    if (this.props.controller.state.audioOnly) {
+      breakpointData.classes['oo-xsmall'] = true;
+      breakpointData.ids['xs'] = true;
+    } else {
+      // loop through breakpoints from skinConfig
+      // generate Classname object with name and min/max width
+      for (var key in breakpoints) {
+        if (breakpoints.hasOwnProperty(key)) {
+          // min width only, 1st breakpoint
+          if (breakpoints[key].minWidth && !breakpoints[key].maxWidth) {
+            breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] =
+              componentWidth >= breakpoints[key].minWidth;
+          }
+          // min and max, middle breakpoints
+          else if (breakpoints[key].minWidth && breakpoints[key].maxWidth) {
+            breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] =
+              componentWidth >= breakpoints[key].minWidth && componentWidth <= breakpoints[key].maxWidth;
+          }
+          // max width only, last breakpoint
+          else if (breakpoints[key].maxWidth && !breakpoints[key].minWidth) {
+            breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] =
+              componentWidth <= breakpoints[key].maxWidth;
           }
         }
       }

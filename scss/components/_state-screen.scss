@@ -1,5 +1,4 @@
 .oo-state-screen-audio {
-  //padding: 15px 0 15px 0;
   height: 100%;
 
   .oo-state-screen-audio-title {
@@ -10,7 +9,7 @@
     font-size: 1em;
 
     .oo-state-screen-audio-info {
-      font-family: $font-family-roboto-condensed; //this.props.skinConfig.startScreen.titleFont.fontFamily
+      font-family: $font-family-roboto-condensed;
       font-weight: bold;
       resize: none;
       margin-bottom: 15px;

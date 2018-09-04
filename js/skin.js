@@ -92,8 +92,9 @@ var Skin = createReactClass({
   },
 
   /**
-   *
-   * @returns {number}
+   * Gets the total time of the video.
+   * @private
+   * @returns {number} The total time of the video
    */
   getTotalTime: function() {
     let totalTime = 0;
@@ -110,8 +111,9 @@ var Skin = createReactClass({
   },
 
   /**
-   *
-   * @returns {*}
+   * Gets the current playhead time of the video
+   * @private
+   * @returns {number} The current playhead time
    */
   getPlayheadTime: function() {
     let playheadTime = isFinite(parseInt(this.state.currentPlayhead)) ?
@@ -345,70 +347,11 @@ var Skin = createReactClass({
     } else {
       if (this.props.controller.state.audioOnly) {
         switch (this.state.screenToShow) {
-          //case CONSTANTS.SCREEN.INITIAL_SCREEN:
-          //  screen = (
-          //    <StartScreen
-          //      {...this.props}
-          //      componentWidth={this.state.componentWidth}
-          //      contentTree={this.state.contentTree}
-          //      isInitializing={true}
-          //    />
-          //  );
-          //  break;
-          //case CONSTANTS.SCREEN.START_SCREEN:
-          //  screen = (
-          //    <StartScreen
-          //      {...this.props}
-          //      componentWidth={this.state.componentWidth}
-          //      contentTree={this.state.contentTree}
-          //      isInitializing={false}
-          //    />
-          //  );
-          //  break;
-          case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
-            screen = (
-              <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN}>
-                <MoreOptionsPanel
-                  {...this.props}
-                  responsiveView={this.state.responsiveId}
-                  fullscreen={this.state.fullscreen} />
-              </ContentScreen>
-            );
-            break;
-          case CONSTANTS.SCREEN.SHARE_SCREEN:
-            screen = (
-              <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.SHARE_SCREEN} icon="share">
-                <SharePanel
-                  {...this.props}
-                  assetId={this.state.assetId}
-                  playerParam={this.state.playerParam}
-                  contentTree={this.state.contentTree}
-                />
-              </ContentScreen>
-            );
-            break;
-          case CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN:
-            screen = (
-              <ContentScreen
-                {...this.props}
-                screenClassName="oo-menu-content-screen"
-                screen={CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN}
-                titleText={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
-                autoFocus={this.state.playbackSpeedOptions.autoFocus} >
-                <PlaybackSpeedPanel
-                  language={this.props.language}
-                  localizableStrings={this.props.localizableStrings}
-                  controller={this.props.controller}
-                  skinConfig={this.props.skinConfig}
-                  fullscreen={this.state.fullscreen}
-                  responsiveView={this.state.responsiveId} />
-              </ContentScreen>
-            );
-            break;
-          case null:
-            screen = <div />;
-            break;
-          default:
+          case CONSTANTS.SCREEN.INITIAL_SCREEN:
+          case CONSTANTS.SCREEN.START_SCREEN:
+          case CONSTANTS.SCREEN.PLAYING_SCREEN:
+          case CONSTANTS.SCREEN.PAUSE_SCREEN:
+          case CONSTANTS.SCREEN.END_SCREEN:
             screen = (
               <AudioOnlyScreen
                 {...this.props}
@@ -419,8 +362,11 @@ var Skin = createReactClass({
                 handleVrPlayerFocus={this.handleVrPlayerFocus}
                 isVrMouseMove={this.state.isVrMouseMove}
                 contentTree={this.state.contentTree}
+                currentPlayhead={this.state.currentPlayhead}
+                duration={this.state.duration}
                 getTotalTime={this.getTotalTime}
                 getPlayheadTime={this.getPlayheadTime}
+                buffered={this.state.buffered}
                 fullscreen={this.state.fullscreen}
                 playerState={this.state.playerState}
                 seeking={this.state.seeking}
@@ -436,7 +382,8 @@ var Skin = createReactClass({
             );
             break;
         }
-      } else {
+      }
+      if (!screen) {
         // switch screenToShow
         switch (this.state.screenToShow) {
           case CONSTANTS.SCREEN.INITIAL_SCREEN:

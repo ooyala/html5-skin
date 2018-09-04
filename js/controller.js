@@ -2648,13 +2648,15 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     hideControlBar: function() {
-      var oldState = this.state.controlBarVisible;
-      this.state.controlBarVisible = false;
-      if (Utils.isAndroid()) {
-        this.hideVolumeSliderBar();
-      }
-      if (this.state.controlBarVisible !== oldState) {
-        this.renderSkin();
+      if (!this.state.audioOnly) {
+        var oldState = this.state.controlBarVisible;
+        this.state.controlBarVisible = false;
+        if (Utils.isAndroid()) {
+          this.hideVolumeSliderBar();
+        }
+        if (this.state.controlBarVisible !== oldState) {
+          this.renderSkin();
+        }
       }
     },
 

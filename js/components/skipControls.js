@@ -268,8 +268,8 @@ class SkipControls extends React.Component {
       buttonId === CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD
     );
 
-    const isDisabled = (
-      (isSkipButton && (!duration && !this.props.controller.state.audioOnly)) ||
+    const isDisabled = !this.props.audioOnly && (
+      (isSkipButton && !duration) ||
       (isPrevNextButton && isSingleVideo) ||
       !(buttonConfig && buttonConfig.enabled)
     );
@@ -286,7 +286,7 @@ class SkipControls extends React.Component {
   getSortedButtonEntries() {
     const buttons = [];
     var key = 'skipControls.buttons';
-    if (this.props.controller.state.audioOnly) {
+    if (this.props.audioOnly) {
       key = 'skipControls.audioOnlyButtons';
     }
     const buttonConfig = Utils.getPropertyValue(
@@ -323,7 +323,7 @@ class SkipControls extends React.Component {
       'oo-inactive': this.props.isInactive,
       'oo-in-background': this.props.isInBackground,
       'oo-skip-controls-centered': true,
-      'oo-skip-controls-compact': this.props.controller.state.audioOnly
+      'oo-skip-controls-compact': this.props.audioOnly
     });
     const buttonTemplate = this.getButtonTemplate();
 
@@ -344,6 +344,7 @@ class SkipControls extends React.Component {
 }
 
 SkipControls.propTypes = {
+  audioOnly: PropTypes.bool,
   isInactive: PropTypes.bool,
   isInBackground: PropTypes.bool,
   language: PropTypes.string,

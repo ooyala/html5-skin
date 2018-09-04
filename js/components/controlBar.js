@@ -718,6 +718,7 @@ var ControlBar = createReactClass({
 
       skipControls: (
         <SkipControls
+          audioOnly={this.props.audioOnly}
           config={this.props.controller.state.skipControls}
           language={this.props.language}
           localizableStrings={this.props.localizableStrings}
@@ -735,7 +736,7 @@ var ControlBar = createReactClass({
     var controlBarItems = [];
     var defaultItems;
 
-    if (this.props.controller.state.audioOnly) {
+    if (this.props.audioOnly) {
       defaultItems = this.props.skinConfig.buttons.audioOnly;
     } else {
       defaultItems = this.props.controller.state.isPlayingAd ?
@@ -886,7 +887,7 @@ var ControlBar = createReactClass({
       }
       tooltipAlignments[collapsedControlBarItems[k].name] = alignment;
       var item = controlItemTemplates[collapsedControlBarItems[k].name];
-      if (this.props.controller.state.audioOnly) {
+      if (this.props.audioOnly) {
         item = (
           <div className="oo-flex-row">
             {item}
@@ -903,15 +904,11 @@ var ControlBar = createReactClass({
     var controlBarClass = ClassNames({
       'oo-control-bar': true,
       'oo-control-bar-hidden': !this.props.controlBarVisible,
-      'oo-control-bar-video': !this.props.controller.state.audioOnly
+      'oo-control-bar-video': !this.props.audioOnly
     });
 
     var controlBarItems = this.populateControlBar();
     var controlBarStyle = {};
-
-    if (!this.props.controller.state.audioOnly) {
-      controlBarStyle.height = this.props.skinConfig.controlBar.height;
-    }
 
     return (
       <div
@@ -921,7 +918,7 @@ var ControlBar = createReactClass({
         onBlur={this.props.onBlur}
         onMouseUp={this.handleControlBarMouseUp}
         onTouchEnd={this.handleControlBarMouseUp}>
-        {!this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : null}
+        {!this.props.audioOnly ? <ScrubberBar {...this.props} /> : null}
 
         <div className="oo-control-bar-items-wrapper oo-flex-row-parent">
           {controlBarItems}
@@ -947,6 +944,7 @@ ControlBar.defaultProps = {
 };
 
 ControlBar.propTypes = {
+  audioOnly: PropTypes.bool,
   isLiveStream: PropTypes.bool,
   controlBarVisible: PropTypes.bool,
   playerState: PropTypes.string,
