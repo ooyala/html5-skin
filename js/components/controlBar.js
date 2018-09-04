@@ -23,9 +23,6 @@ var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 
 const MACROS = require('../constants/macros');
-const HoldControlButton = require('./holdControlButton');
-const withVideoNavigation = require('./higher-order/withVideoNavigation');
-const withPlayhead = require('./higher-order/withPlayhead');
 const SkipControls = require('../components/skipControls');
 
 var ControlBar = createReactClass({
@@ -438,33 +435,19 @@ var ControlBar = createReactClass({
       playBtnTooltip = CONSTANTS.SKIN_TEXT.PLAY;
     }
 
-    const buttonStyle = {};
-    const skipTimes = Utils.getSkipTimes(this.props.skinConfig);
-
-    const skipBackwardAriaLabel = CONSTANTS.ARIA_LABELS.SKIP_BACKWARD.replace(
-      MACROS.SECONDS,
-      skipTimes.backward
-    );
-    const skipForwardAriaLabel = CONSTANTS.ARIA_LABELS.SKIP_FORWARD.replace(
-      MACROS.SECONDS,
-      skipTimes.forward
-    );
-
-    const playPauseTemplate = (
-      <ControlButton
-        {...commonButtonProps}
-        key={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
-        className="oo-play-pause"
-        focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
-        ariaLabel={playPauseAriaLabel}
-        icon={playIcon}
-        tooltip={playBtnTooltip}
-        onClick={this.handlePlayClick}>
-      </ControlButton>
-    );
-
     var controlItemTemplates = {
-      playPause: playPauseTemplate,
+      playPause: (
+        <ControlButton
+          {...commonButtonProps}
+          key={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
+          className="oo-play-pause"
+          focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
+          ariaLabel={playPauseAriaLabel}
+          icon={playIcon}
+          tooltip={playBtnTooltip}
+          onClick={this.handlePlayClick}>
+        </ControlButton>
+      ),
 
       live: (
         <a key={CONSTANTS.CONTROL_BAR_KEYS.LIVE} className={liveClass} ref="LiveButton" onClick={liveClick}>
@@ -750,13 +733,13 @@ var ControlBar = createReactClass({
     };
 
     var controlBarItems = [];
-    var defaultItems = this.props.controller.state.isPlayingAd ?
-      this.props.skinConfig.buttons.desktopAd
-      :
-      this.props.skinConfig.buttons.desktopContent;
+    var defaultItems;
 
     if (this.props.controller.state.audioOnly) {
       defaultItems = this.props.skinConfig.buttons.audioOnly;
+    } else {
+      defaultItems = this.props.controller.state.isPlayingAd ?
+        this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
     }
 
     // if mobile and not showing the slider or the icon, extra space can be added to control bar width. If volume bar is shown instead of slider, add some space as well:
@@ -994,4 +977,4 @@ ControlBar.propTypes = {
   })
 };
 
-module.exports = preserveKeyboardFocus(withPlayhead(withVideoNavigation(ControlBar)));
+module.exports = preserveKeyboardFocus(ControlBar);

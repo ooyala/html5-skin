@@ -8,15 +8,18 @@ const preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus');
 const PropTypes = require('prop-types');
 const CONSTANTS = require('../constants/constants');
 const MACROS = require('../constants/macros');
-const withVideoNavigation = require('./higher-order/withVideoNavigation');
 
 class SkipControls extends React.Component {
 
   constructor(props) {
     super(props);
     this.storeRef = this.storeRef.bind(this);
+    this.onPreviousVideo = this.onPreviousVideo.bind(this);
+    this.onNextVideo = this.onNextVideo.bind(this);
+    this.onSkipBackward = this.onSkipBackward.bind(this);
+    this.onSkipForward = this.onSkipForward.bind(this);
+    this.isAtLiveEdge = this.isAtLiveEdge.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
-
     this.handlePlayClick = this.handlePlayClick.bind(this);
   }
 
@@ -42,6 +45,48 @@ class SkipControls extends React.Component {
   }
 
   /**
+   * Previous Video button click handler.
+   * @private
+   */
+  onPreviousVideo() {
+    if (typeof this.props.controller.rewindOrRequestPreviousVideo === 'function') {
+      this.props.controller.rewindOrRequestPreviousVideo();
+    }
+  }
+
+  /**
+   * Next Video button click handler.
+   * @private
+   */
+  onNextVideo() {
+    if (typeof this.props.controller.requestNextVideo === 'function') {
+      this.props.controller.requestNextVideo();
+    }
+  }
+
+  /**
+   * Skip Backward button click handler.
+   * @private
+   */
+  onSkipBackward() {
+    if (typeof this.props.a11yControls.seekBy === 'function') {
+      const skipTimes = Utils.getSkipTimes(this.props.skinConfig);
+      this.props.a11yControls.seekBy(skipTimes.backward, false, true);
+    }
+  }
+
+  /**
+   * Skip Forward button click handler.
+   * @private
+   */
+  onSkipForward() {
+    if (typeof this.props.a11yControls.seekBy === 'function') {
+      const skipTimes = Utils.getSkipTimes(this.props.skinConfig);
+      this.props.a11yControls.seekBy(skipTimes.forward, true, true);
+    }
+  }
+
+  /**
    * Handles the mouseenter event. Given that the SkipControls have pointer-events
    * set to 'none' in order to allow clicking through them, this event is only fired
    * when the mouse is over a button. Whenever this happens we cancel the auto-hide
@@ -50,6 +95,28 @@ class SkipControls extends React.Component {
    */
   onMouseEnter() {
     this.props.controller.cancelTimer();
+  }
+
+  /**
+   * Determines whether or not the current video is at the live edge based on the
+   * playhead state and duration.
+   * @private
+   * @return {Boolean} True if the video is at the live edge, false otherwise.
+   * Note: This function always returns false for VOD.
+   */
+  isAtLiveEdge() {
+    const isLiveStream = Utils.getPropertyValue(
+      this.props.controller,
+      'state.isLiveStream',
+      false
+    );
+    if (isLiveStream) {
+      const duration = Utils.getPropertyValue(this.props.controller, 'state.duration', 0);
+      const currentPlayhead = Utils.ensureNumber(this.props.currentPlayhead, 0);
+      const isLiveNow = Math.abs(currentPlayhead - duration) < 1;
+      return isLiveNow;
+    }
+    return false;
   }
 
   /**
@@ -116,7 +183,7 @@ class SkipControls extends React.Component {
         icon="previous"
         ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_VIDEO}
         disabled={!this.props.config.hasPreviousVideos}
-        onClick={this.props.onPreviousVideo}>
+        onClick={this.onPreviousVideo}>
       </ControlButton>
     );
 
@@ -129,7 +196,7 @@ class SkipControls extends React.Component {
         className="oo-center-button oo-skip-backward"
         icon="replay"
         ariaLabel={skipBackwardAriaLabel}
-        onClick={this.props.onSkipBackward}>
+        onClick={this.onSkipBackward}>
         <span className="oo-btn-counter">{skipTimes.backward}</span>
       </HoldControlButton>
     );
@@ -143,8 +210,8 @@ class SkipControls extends React.Component {
         className="oo-center-button oo-skip-forward"
         icon="forward"
         ariaLabel={skipForwardAriaLabel}
-        disabled={this.props.isAtLiveEdge()}
-        onClick={this.props.onSkipForward}>
+        disabled={this.isAtLiveEdge()}
+        onClick={this.onSkipForward}>
         <span className="oo-btn-counter">{skipTimes.forward}</span>
       </HoldControlButton>
     );
@@ -159,7 +226,7 @@ class SkipControls extends React.Component {
         icon="next"
         ariaLabel={CONSTANTS.ARIA_LABELS.NEXT_VIDEO}
         disabled={!this.props.config.hasNextVideos}
-        onClick={this.props.onNextVideo}>
+        onClick={this.onNextVideo}>
       </ControlButton>
     );
 
@@ -218,19 +285,15 @@ class SkipControls extends React.Component {
    */
   getSortedButtonEntries() {
     const buttons = [];
-    var buttonConfig = Utils.getPropertyValue(
+    var key = 'skipControls.buttons';
+    if (this.props.controller.state.audioOnly) {
+      key = 'skipControls.audioOnlyButtons';
+    }
+    const buttonConfig = Utils.getPropertyValue(
       this.props.skinConfig,
-      'skipControls.buttons',
+      key,
       {}
     );
-
-    if (this.props.controller.state.audioOnly) {
-      buttonConfig = Utils.getPropertyValue(
-        this.props.skinConfig,
-        'skipControls.audioOnlyButtons',
-        {}
-      );
-    }
     // Find the ids and indexes of all enabled buttons
     for (let buttonId in buttonConfig) {
       const button = buttonConfig[buttonId];
@@ -314,4 +377,4 @@ SkipControls.propTypes = {
   })
 };
 
-module.exports = preserveKeyboardFocus(withVideoNavigation(SkipControls));
+module.exports = preserveKeyboardFocus(SkipControls);

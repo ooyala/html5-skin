@@ -92,6 +92,44 @@ var Skin = createReactClass({
   },
 
   /**
+   *
+   * @returns {number}
+   */
+  getTotalTime: function() {
+    let totalTime = 0;
+    if (
+      this.state.duration === null ||
+      typeof this.state.duration === 'undefined' ||
+      this.state.duration === ''
+    ) {
+      totalTime = Utils.formatSeconds(0);
+    } else {
+      totalTime = Utils.formatSeconds(this.state.duration);
+    }
+    return totalTime;
+  },
+
+  /**
+   *
+   * @returns {*}
+   */
+  getPlayheadTime: function() {
+    let playheadTime = isFinite(parseInt(this.state.currentPlayhead)) ?
+      Utils.formatSeconds(parseInt(this.state.currentPlayhead))
+      :
+      null;
+    var isLiveStream = this.state.isLiveStream;
+    var timeShift = this.state.currentPlayhead - this.state.duration;
+    // checking timeShift < 1 seconds (not === 0) as processing of the click after we rewinded and then went live may take some time
+    var isLiveNow = Math.abs(timeShift) < 1;
+    playheadTime = isLiveStream ?
+      (isLiveNow ? null : Utils.formatSeconds(timeShift))
+      :
+      playheadTime;
+    return playheadTime;
+  },
+
+  /**
    * @public
    * @description the function is called when we start the rotation
    * @param {MouseEvent} event - event
@@ -381,9 +419,8 @@ var Skin = createReactClass({
                 handleVrPlayerFocus={this.handleVrPlayerFocus}
                 isVrMouseMove={this.state.isVrMouseMove}
                 contentTree={this.state.contentTree}
-                currentPlayhead={this.state.currentPlayhead}
-                duration={this.state.duration}
-                buffered={this.state.buffered}
+                getTotalTime={this.getTotalTime}
+                getPlayheadTime={this.getPlayheadTime}
                 fullscreen={this.state.fullscreen}
                 playerState={this.state.playerState}
                 seeking={this.state.seeking}
@@ -449,6 +486,8 @@ var Skin = createReactClass({
                 contentTree={this.state.contentTree}
                 currentPlayhead={this.state.currentPlayhead}
                 duration={this.state.duration}
+                getTotalTime={this.getTotalTime}
+                getPlayheadTime={this.getPlayheadTime}
                 buffered={this.state.buffered}
                 fullscreen={this.state.fullscreen}
                 playerState={this.state.playerState}
@@ -490,6 +529,8 @@ var Skin = createReactClass({
                 currentPlayhead={this.state.currentPlayhead}
                 playerState={this.state.playerState}
                 duration={this.state.duration}
+                getTotalTime={this.getTotalTime}
+                getPlayheadTime={this.getPlayheadTime}
                 buffered={this.state.buffered}
                 pauseAnimationDisabled={this.state.pauseAnimationDisabled}
                 fullscreen={this.state.fullscreen}
@@ -512,6 +553,8 @@ var Skin = createReactClass({
                 discoveryData={this.state.discoveryData}
                 currentPlayhead={this.state.currentPlayhead}
                 duration={this.state.duration}
+                getTotalTime={this.getTotalTime}
+                getPlayheadTime={this.getPlayheadTime}
                 buffered={this.state.buffered}
                 fullscreen={this.state.fullscreen}
                 playerState={this.state.playerState}
@@ -535,6 +578,8 @@ var Skin = createReactClass({
                 fullscreen={this.state.fullscreen}
                 playerState={this.state.playerState}
                 duration={this.state.duration}
+                getTotalTime={this.getTotalTime}
+                getPlayheadTime={this.getPlayheadTime}
                 adVideoDuration={this.props.controller.state.adVideoDuration}
                 buffered={this.state.buffered}
                 seeking={this.state.seeking}

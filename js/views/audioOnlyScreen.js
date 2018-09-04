@@ -5,7 +5,6 @@ const React = require('React');
 const ControlBar = require('../components/controlBar');
 const ClassNames = require('classnames');
 
-const withPlayhead = require('../components/higher-order/withPlayhead');
 const ScrubberBar = require('../components/scrubberBar');
 
 class AudioOnlyScreen extends React.Component {
@@ -87,4 +86,4 @@ class AudioOnlyScreen extends React.Component {
   }
 }
 
-module.exports = withPlayhead(AudioOnlyScreen);
+module.exports = AudioOnlyScreen;
