@@ -44,6 +44,7 @@ var ResponsiveManagerMixin = {
     if (this.props.controller.state.audioOnly) {
       breakpointData.classes['oo-xsmall'] = true;
       breakpointData.ids['xs'] = true;
+      breakpointData.classes['oo-audio-only'] = true;
     } else {
       // loop through breakpoints from skinConfig
       // generate Classname object with name and min/max width
