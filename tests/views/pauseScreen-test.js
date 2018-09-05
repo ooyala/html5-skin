@@ -98,27 +98,31 @@ describe('PauseScreen', function() {
   });
 
   it('toggles play pause on touch end instead of click on mobile', function() {
-    var clicked = false;
+    let clicked = false;
 
     mockController.state.isMobile = true;
     mockController.togglePlayPause = function() {
       clicked = true;
     };
 
-    var handleVrPlayerClick = function() {};
+    const handleVrPlayerClick = function() {};
+    const handleTouchEnd = function() {
+      mockController.togglePlayPause();
+    };
     // Render pause screen into DOM
-    var wrapper = Enzyme.mount(
+    const wrapper = Enzyme.mount(
       <PauseScreen
         skinConfig={mockSkinConfig}
         controller={mockController}
         contentTree={mockContentTree}
         handleVrPlayerClick={handleVrPlayerClick}
+        handleTouchEnd={handleTouchEnd}
         closedCaptionOptions={{cueText: 'sample text'}}
         playerState={CONSTANTS.STATE.PAUSE}
       />
     );
 
-    var stateScreen = wrapper.find('.oo-state-screen-selectable');
+    const stateScreen = wrapper.find('.oo-state-screen-selectable');
 
     stateScreen.simulate('click');
     expect(clicked).toBe(false);

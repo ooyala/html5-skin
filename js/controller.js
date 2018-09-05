@@ -509,6 +509,18 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.vrMobileOrientationChecked = false;
     },
 
+    /**
+     * Pass into onTouchMove current controller state values for vrViewingDirection
+     */
+    setControllerVrViewingDirection: function() {
+      let vrViewingDirectionList = [
+        this.state.vrViewingDirection.yaw,
+        this.state.vrViewingDirection.roll,
+        this.state.vrViewingDirection.pitch
+      ];
+      this.onTouchMove(vrViewingDirectionList);
+    },
+
     onVcVideoElementCreated: function(event, params) {
       var videoElement = params.videoElement;
       videoElement = this.findMainVideoElement(videoElement);
@@ -577,6 +589,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       // If a video has played and we're setting a new embed code it means that we
       // will be transitioning to a new video. We make sure to display the loading screen.
       if (this.state.initialPlayHasOccurred && this.state.assetId !== embedCode) {
+        this.state.isPlayingAd = false;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         this.renderSkin();
       }
@@ -1322,14 +1335,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       // In case ad was skipped or errored while stalled
       this.setBufferingState(false);
 
+      // Set current position for video 360 after Ads.
       if (this.videoVr && this.state.isMobile) { // only for vr on mobile
-        // Set current position for video 360 after Ads.
-        var vrViewingDirectionList = [
-          this.state.vrViewingDirection.yaw,
-          this.state.vrViewingDirection.roll,
-          this.state.vrViewingDirection.pitch
-        ];
-        this.onTouchMove(vrViewingDirectionList);
+        this.setControllerVrViewingDirection();
       }
 
       this.renderSkin();

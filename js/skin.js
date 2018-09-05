@@ -1,33 +1,33 @@
 /** ******************************************************************
   RENDERER PLACEHOLDER
 *********************************************************************/
-var React = require('react');
-var Utils = require('./components/utils');
-var CONSTANTS = require('./constants/constants');
-var Spinner = require('./components/spinner');
-var OnOffSwitch = require('./components/closed-caption/onOffSwitch');
-var ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel');
-var DiscoveryPanel = require('./components/discoveryPanel');
-var VideoQualityPanel = require('./components/videoQualityPanel');
-var PlaybackSpeedPanel = require('./components/playbackSpeedPanel');
-var ClosedCaptionMultiAudioMenu = 
+const React = require('react');
+const Utils = require('./components/utils');
+const CONSTANTS = require('./constants/constants');
+const Spinner = require('./components/spinner');
+const OnOffSwitch = require('./components/closed-caption/onOffSwitch');
+const ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPanel');
+const DiscoveryPanel = require('./components/discoveryPanel');
+const VideoQualityPanel = require('./components/videoQualityPanel');
+const PlaybackSpeedPanel = require('./components/playbackSpeedPanel');
+const ClosedCaptionMultiAudioMenu = 
   require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
-var SharePanel = require('./components/sharePanel');
-var MoreOptionsPanel = require('./components/moreOptionsPanel');
-var AdScreen = require('./views/adScreen');
-var EndScreen = require('./views/endScreen');
-var StartScreen = require('./views/startScreen');
-var ErrorScreen = require('./views/errorScreen');
-var ContentScreen = require('./views/contentScreen');
-var ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
-var createReactClass = require('create-react-class');
+const SharePanel = require('./components/sharePanel');
+const MoreOptionsPanel = require('./components/moreOptionsPanel');
+const AdScreen = require('./views/adScreen');
+const EndScreen = require('./views/endScreen');
+const StartScreen = require('./views/startScreen');
+const ErrorScreen = require('./views/errorScreen');
+const ContentScreen = require('./views/contentScreen');
+const ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
+const createReactClass = require('create-react-class');
 
 import {PlayingScreenWithAutoHide} from './views/playingScreen';
 import {PauseScreenWithAutoHide} from './views/pauseScreen';
 const AudioOnlyScreen = require('./views/audioOnlyScreen');
 const ControlBar = require('./components/controlBar');
 
-var Skin = createReactClass({
+const Skin = createReactClass({
   mixins: [ResponsiveManagerMixin],
 
   /**
@@ -55,9 +55,9 @@ var Skin = createReactClass({
   componentDidUpdate: function() {
     // Notify AMC the correct overlay rendering info
     if (this.state.screenToShow !== null && !this.overlayRenderingEventSent) {
-      var responsiveUIMultiple = this.props.skinConfig.responsive.breakpoints[this.state.responsiveId]
+      const responsiveUIMultiple = this.props.skinConfig.responsive.breakpoints[this.state.responsiveId]
         .multiplier;
-      var marginHeight = responsiveUIMultiple * this.props.skinConfig.controlBar.height;
+      const marginHeight = responsiveUIMultiple * this.props.skinConfig.controlBar.height;
       this.props.controller.publishOverlayRenderingEvent(marginHeight);
       this.overlayRenderingEventSent = true;
     }
@@ -79,7 +79,7 @@ var Skin = createReactClass({
   },
 
   switchComponent: function(args) {
-    var newState = args || {};
+    const newState = args || {};
     this.setState(newState);
   },
 
@@ -142,7 +142,7 @@ var Skin = createReactClass({
       return;
     }
     if (this.props.controller && this.props.controller.videoVr) {
-      var coords = Utils.getCoords(event);
+      const coords = Utils.getCoords(event);
 
       this.setState({
         isVrMouseDown: true,
@@ -170,8 +170,8 @@ var Skin = createReactClass({
         isVrMouseMove: true
       });
       if (typeof this.props.controller.onTouchMove === 'function') {
-        var coords = Utils.getCoords(event);
-        var params = this.getDirectionParams(coords.x, coords.y);
+        const coords = Utils.getCoords(event);
+        const params = this.getDirectionParams(coords.x, coords.y);
         this.props.controller.onTouchMove(params, true);
       }
     }
@@ -188,8 +188,8 @@ var Skin = createReactClass({
     }
 
     if (this.props.controller && this.props.controller.videoVr) {
-      var isVrMouseMove = this.state.isVrMouseMove;
-      var isTouchEnd = typeof event === 'object' && event.type === 'touchend';
+      let isVrMouseMove = this.state.isVrMouseMove;
+      let isTouchEnd = typeof event === 'object' && event.type === 'touchend';
 
       if (isTouchEnd) {
         isVrMouseMove = false; // for the opportunity to stop video on iPhone by touching on the screen
@@ -208,7 +208,7 @@ var Skin = createReactClass({
       // The camera decelerate after the "touchmove" on the mobile device
       // or on the desktop after the "mousemove",
       // but not after using the rotation controls
-      var endMove = this.state.isVrMouseMove || OO.isAndroid || OO.isIos;
+      let endMove = this.state.isVrMouseMove || OO.isAndroid || OO.isIos;
       if (endMove && typeof this.props.controller.onEndMove === 'function') {
         this.props.controller.onEndMove();
       }
@@ -242,16 +242,16 @@ var Skin = createReactClass({
    * @returns {[number, number, number]} array with yaw, roll, pitch
    */
   getDirectionParams: function(_pageX, _pageY) {
-    var pageX = Utils.ensureNumber(_pageX, 0);
-    var pageY = Utils.ensureNumber(_pageY, 0);
-    var dx = pageX - this.state.xVrMouseStart;
-    var dy = pageY - this.state.yVrMouseStart;
-    var maxDegreesX = 90;
-    var maxDegreesY = 120;
-    var degreesForPixelYaw = maxDegreesX / this.state.componentWidth;
-    var degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
-    var yaw = this.getVrViewingDirectionParamValue('yaw') + dx * degreesForPixelYaw;
-    var pitch = this.getVrViewingDirectionParamValue('pitch') + dy * degreesForPixelPitch;
+    const pageX = Utils.ensureNumber(_pageX, 0);
+    const pageY = Utils.ensureNumber(_pageY, 0);
+    const dx = pageX - this.state.xVrMouseStart;
+    const dy = pageY - this.state.yVrMouseStart;
+    const maxDegreesX = 90;
+    const maxDegreesY = 120;
+    const degreesForPixelYaw = maxDegreesX / this.state.componentWidth;
+    const degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
+    const yaw = this.getVrViewingDirectionParamValue('yaw') + dx * degreesForPixelYaw;
+    const pitch = this.getVrViewingDirectionParamValue('pitch') + dy * degreesForPixelPitch;
     return [yaw, 0, pitch];
   },
 
@@ -262,7 +262,7 @@ var Skin = createReactClass({
    * @returns {number} value of vrViewingDirection param
    */
   getVrViewingDirectionParamValue: function(paramName) {
-    var vrViewingDirectionValue = 0;
+    let vrViewingDirectionValue = 0;
     if (
       this.props.controller &&
       this.props.controller.state &&
@@ -293,12 +293,12 @@ var Skin = createReactClass({
     }
     // Focusable elements on the player (this.domElement) are expected to have the
     // data-focus-id attribute, this is a convention used throughout this project.
-    var selector = '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']:enabled';
-    var focusableElements = this.domElement.querySelectorAll(selector);
+    const selector = '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']:enabled';
+    let focusableElements = this.domElement.querySelectorAll(selector);
 
     if (focusableElements.length) {
-      var firstFocusableElement = focusableElements[0];
-      var lastFocusableElement = focusableElements[focusableElements.length - 1];
+      const firstFocusableElement = focusableElements[0];
+      const lastFocusableElement = focusableElements[focusableElements.length - 1];
       // This indicates we're tabbing over the focusable player elements
       if (evt.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)) {
         if (evt.shiftKey) {
@@ -329,8 +329,44 @@ var Skin = createReactClass({
     }
   },
 
+  /**
+   * This function toggles the current screen (pause/play) and
+   * sets current direction for vr video (it is necessary for tilting)
+   * when touchend is called on selected screen
+   * @public
+   * @param {Event} event - event object
+   */
+  handleTouchEnd: function(event) {
+    event.preventDefault();
+    if (this.props.controller.state.controlBarVisible) {
+      let shouldToggle = false;
+      if (this.props.controller.videoVr) {
+        if (!this.state.isVrMouseMove) {
+          shouldToggle = true;
+        }
+      } else {
+        shouldToggle = true;
+      }
+      if (shouldToggle) {
+        this.props.controller.togglePlayPause(event);
+      }
+      // set value for this.state.isVrMouseMove in this.handleVrPlayerMouseUp
+    }
+    if (this.props.controller.videoVr) { // only for vr on mobile
+      // Check current a vr video position (an user could change position using tilting)
+      if (
+        typeof this.props.controller.checkVrDirection === 'function' &&
+        typeof this.props.controller.setControllerVrViewingDirection === 'function'
+      ) {
+        const useVrViewingDirection = true;
+        this.props.controller.checkVrDirection(useVrViewingDirection);
+        this.props.controller.setControllerVrViewingDirection();
+      }
+    }
+  },
+
   render: function() {
-    var screen;
+    let screen;
 
     // For IE10, use the start screen and that's it.
     if (Utils.isIE10()) {
@@ -430,12 +466,11 @@ var Skin = createReactClass({
                 handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
                 handleVrPlayerClick={this.handleVrPlayerClick}
                 handleVrPlayerFocus={this.handleVrPlayerFocus}
+                handleTouchEnd={this.handleTouchEnd}
                 isVrMouseMove={this.state.isVrMouseMove}
                 contentTree={this.state.contentTree}
                 currentPlayhead={this.state.currentPlayhead}
                 duration={this.state.duration}
-                getTotalTime={this.getTotalTime}
-                getPlayheadTime={this.getPlayheadTime}
                 buffered={this.state.buffered}
                 fullscreen={this.state.fullscreen}
                 playerState={this.state.playerState}
@@ -465,30 +500,30 @@ var Skin = createReactClass({
             );
             break;
           case CONSTANTS.SCREEN.VOLUME_SCREEN:
-            screen = (
-              <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.VOLUME_SCREEN} icon="volume">
-                <div className="oo-absolute-centered">
-                  <ControlBar
-                    {...this.props}
-                    audioOnly={true}
-                    hideScrubberBar={true}
-                    controlBarVisible={true}
-                    playerState={this.state.playerState}
-                    isLiveStream={this.state.isLiveStream}
-                    a11yControls={this.props.controller.accessibilityControls}
-                    currentPlayhead={this.state.currentPlayhead}
-                    duration={this.state.duration}
-                    getTotalTime={this.getTotalTime}
-                    getPlayheadTime={this.getPlayheadTime}
-                    buffered={this.state.buffered}
-                    responsiveView={this.state.responsiveId}
-                    componentWidth={this.state.componentWidth}
-                    controlBarItems={[{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }]}
-                    />
-                </div>
-              </ContentScreen>
-            );
-            break;
+              screen = (
+                <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.VOLUME_SCREEN} icon="volume">
+                  <div className="oo-absolute-centered">
+                    <ControlBar
+                      {...this.props}
+                      audioOnly={true}
+                      hideScrubberBar={true}
+                      controlBarVisible={true}
+                      playerState={this.state.playerState}
+                      isLiveStream={this.state.isLiveStream}
+                      a11yControls={this.props.controller.accessibilityControls}
+                      currentPlayhead={this.state.currentPlayhead}
+                      duration={this.state.duration}
+                      getTotalTime={this.getTotalTime}
+                      getPlayheadTime={this.getPlayheadTime}
+                      buffered={this.state.buffered}
+                      responsiveView={this.state.responsiveId}
+                      componentWidth={this.state.componentWidth}
+                      controlBarItems={[{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }]}
+                      />
+                  </div>
+                </ContentScreen>
+              );
+              break;
           case CONSTANTS.SCREEN.PAUSE_SCREEN:
             screen = (
               <PauseScreenWithAutoHide
@@ -497,13 +532,12 @@ var Skin = createReactClass({
                 handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
                 handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
                 handleVrPlayerClick={this.handleVrPlayerClick}
+                handleTouchEnd={this.handleTouchEnd}
                 isVrMouseMove={this.state.isVrMouseMove}
                 contentTree={this.state.contentTree}
                 currentPlayhead={this.state.currentPlayhead}
                 playerState={this.state.playerState}
                 duration={this.state.duration}
-                getTotalTime={this.getTotalTime}
-                getPlayheadTime={this.getPlayheadTime}
                 buffered={this.state.buffered}
                 pauseAnimationDisabled={this.state.pauseAnimationDisabled}
                 fullscreen={this.state.fullscreen}
@@ -526,8 +560,6 @@ var Skin = createReactClass({
                 discoveryData={this.state.discoveryData}
                 currentPlayhead={this.state.currentPlayhead}
                 duration={this.state.duration}
-                getTotalTime={this.getTotalTime}
-                getPlayheadTime={this.getPlayheadTime}
                 buffered={this.state.buffered}
                 fullscreen={this.state.fullscreen}
                 playerState={this.state.playerState}
@@ -551,8 +583,6 @@ var Skin = createReactClass({
                 fullscreen={this.state.fullscreen}
                 playerState={this.state.playerState}
                 duration={this.state.duration}
-                getTotalTime={this.getTotalTime}
-                getPlayheadTime={this.getPlayheadTime}
                 adVideoDuration={this.props.controller.state.adVideoDuration}
                 buffered={this.state.buffered}
                 seeking={this.state.seeking}
@@ -633,24 +663,24 @@ var Skin = createReactClass({
               </ContentScreen>
             );
             break;
-            case CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN:
-              screen = (
-                <ContentScreen
-                  {...this.props}
-                  screenClassName="oo-menu-content-screen"
-                  screen={CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN}
-                  titleText={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
-                  autoFocus={this.state.playbackSpeedOptions.autoFocus} >
-                  <PlaybackSpeedPanel
-                    language={this.props.language}
-                    localizableStrings={this.props.localizableStrings}
-                    controller={this.props.controller}
-                    skinConfig={this.props.skinConfig}
-                    fullscreen={this.state.fullscreen}
-                    responsiveView={this.state.responsiveId} />
-                </ContentScreen>
-              );
-              break;
+          case CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN:
+            screen = (
+              <ContentScreen
+                {...this.props}
+                screenClassName="oo-menu-content-screen"
+                screen={CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN}
+                titleText={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
+                autoFocus={this.state.playbackSpeedOptions.autoFocus} >
+                <PlaybackSpeedPanel
+                  language={this.props.language}
+                  localizableStrings={this.props.localizableStrings}
+                  controller={this.props.controller}
+                  skinConfig={this.props.skinConfig}
+                  fullscreen={this.state.fullscreen}
+                  responsiveView={this.state.responsiveId} />
+              </ContentScreen>
+            );
+            break;
           case CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN:
             screen = (
               <ContentScreen
