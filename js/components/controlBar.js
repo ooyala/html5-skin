@@ -950,6 +950,8 @@ ControlBar.defaultProps = {
 };
 
 ControlBar.propTypes = {
+  getTotalTime: PropTypes.func.isRequired,
+  getPlayheadTime: PropTypes.func.isRequired,
   clickToVolumeScreen: PropTypes.bool,
   hideVolumeControls: PropTypes.bool,
   hideScrubberBar: PropTypes.bool,

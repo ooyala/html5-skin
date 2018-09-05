@@ -18,6 +18,17 @@ var CONSTANTS = require('../../js/constants/constants');
 describe('EndScreen', function() {
   var mockController, mockSkinConfig, mockContentTree;
 
+  var getEndScreen = () => {
+    return <EndScreen
+      skinConfig={mockSkinConfig}
+      controller = {mockController}
+      contentTree = {mockContentTree}
+      playerState={CONSTANTS.STATE.END}
+      getTotalTime={() => {}}
+      getPlayheadTime={() => {}}
+    />
+  };
+
   beforeEach(function() {
     mockController = {
       state: {
@@ -33,6 +44,9 @@ describe('EndScreen', function() {
         playbackSpeedOptions: { currentSpeed: 1 },
         videoQualityOptions: {
           availableBitrates: null
+        },
+        scrubberBar: {
+          isHovering: false
         }
       },
       cancelTimer: function() {},
@@ -54,7 +68,7 @@ describe('EndScreen', function() {
     };
 
     // Render end screen into DOM
-    var wrapper = Enzyme.mount(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree} playerState={CONSTANTS.STATE.END}/>);
+    var wrapper = Enzyme.mount(getEndScreen());
 
     var replayButton = wrapper.find('.oo-action-icon');
     replayButton.simulate('click');
@@ -71,7 +85,7 @@ describe('EndScreen', function() {
     mockSkinConfig.endScreen.showReplayButton = false;
 
     // Render end screen into DOM
-    var wrapper = Enzyme.mount(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree} playerState={CONSTANTS.STATE.END}/>);
+    var wrapper = Enzyme.mount(getEndScreen());
 
     // replay button hidden
     var replayButton = wrapper.find('.oo-action-icon');
@@ -91,7 +105,7 @@ describe('EndScreen', function() {
     mockSkinConfig.endScreen.showDescription = true;
 
     // Render end screen into DOM
-    var wrapper = Enzyme.mount(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree} playerState={CONSTANTS.STATE.END}/>);
+    var wrapper = Enzyme.mount(getEndScreen());
 
     // description and title are shown
     var title = wrapper.find('.oo-state-screen-title');
@@ -105,7 +119,7 @@ describe('EndScreen', function() {
     mockSkinConfig.endScreen.showDescription = false;
 
     // Render end screen into DOM
-    var wrapper = Enzyme.mount(<EndScreen skinConfig={mockSkinConfig} controller = {mockController} contentTree = {mockContentTree} playerState={CONSTANTS.STATE.END}/>);
+    var wrapper = Enzyme.mount(getEndScreen());
 
     // description and title are hidden
     var title = wrapper.find('.oo-state-screen-title');

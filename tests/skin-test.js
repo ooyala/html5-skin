@@ -305,6 +305,7 @@ describe('Methods tests', function() {
 
     it('handleVrPlayerMouseMove should return correct values', function() {
       const mockController = {
+        state: {},
         onTouchMove: function() {}
       };
 
