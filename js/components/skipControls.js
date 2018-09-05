@@ -322,7 +322,7 @@ class SkipControls extends React.Component {
     const className = classNames('oo-skip-controls', {
       'oo-inactive': this.props.isInactive,
       'oo-in-background': this.props.isInBackground,
-      'oo-skip-controls-centered': true,
+      'oo-absolute-centered': true,
       'oo-skip-controls-compact': this.props.audioOnly
     });
     const buttonTemplate = this.getButtonTemplate();

@@ -184,8 +184,8 @@ var VolumeControls = createReactClass({
   },
 
   render: function() {
-    if (this.props.controller.state.isMobile) {
-      if (this.props.controller.state.volumeState.volumeSliderVisible) {
+    if (this.props.controller.state.isMobile || this.props.controller.state.audioOnly) {
+      if (this.props.controller.state.volumeState.volumeSliderVisible || this.props.controller.state.audioOnly) {
         return this.renderVolumeSlider();
       } else {
         return null;

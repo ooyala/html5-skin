@@ -387,6 +387,7 @@ var ScrubberBar = createReactClass({
         scrubberBarClassName += ' oo-scrubber-bar-hover';
         playheadClassName += ' oo-playhead-hovering';
       }
+
       thumbnailsContainer = (
         <ThumbnailsContainer
           isCarousel={isCarousel}
@@ -400,6 +401,10 @@ var ScrubberBar = createReactClass({
           vrViewingDirection={vrViewingDirection}
         />
       );
+    }
+
+    if (!this.props.audioOnly) {
+      scrubberBarClassName += ' oo-scrubber-bar-video';
     }
 
     var ariaValueText = this.getAriaValueText();

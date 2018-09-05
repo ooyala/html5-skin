@@ -26,6 +26,10 @@
   @include text-truncate;
 }
 
+.oo-absolute-centered {
+  @include absolute-center;
+}
+
 .oo-flex-row-parent {
   @include flex-center-children(row);
   white-space: nowrap;

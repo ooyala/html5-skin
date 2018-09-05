@@ -171,17 +171,21 @@ var ControlBar = createReactClass({
   },
 
   handleVolumeIconClick: function(evt) {
-    if (this.isMobile) {
-      this.props.controller.startHideControlBarTimer();
-      evt.stopPropagation(); // W3C
-      evt.cancelBubble = true; // IE
-      if (!this.props.controller.state.volumeState.volumeSliderVisible) {
-        this.props.controller.showVolumeSliderBar();
+    if (this.props.clickToVolumeScreen) {
+      this.props.controller.toggleScreen(CONSTANTS.SCREEN.VOLUME_SCREEN, true);
+    } else {
+      if (this.isMobile) {
+        this.props.controller.startHideControlBarTimer();
+        evt.stopPropagation(); // W3C
+        evt.cancelBubble = true; // IE
+        if (!this.props.controller.state.volumeState.volumeSliderVisible) {
+          this.props.controller.showVolumeSliderBar();
+        } else {
+          this.props.controller.handleMuteClick();
+        }
       } else {
         this.props.controller.handleMuteClick();
       }
-    } else {
-      this.props.controller.handleMuteClick();
     }
   },
 
@@ -467,7 +471,7 @@ var ControlBar = createReactClass({
             tooltip={mutedInUi ? CONSTANTS.SKIN_TEXT.UNMUTE : CONSTANTS.SKIN_TEXT.MUTE}
             onClick={this.handleVolumeIconClick}>
           </ControlButton>
-          <VolumeControls {...this.props} />
+          {!this.props.hideVolumeControls ? <VolumeControls {...this.props} /> : null}
         </div>
       ),
 
@@ -736,7 +740,9 @@ var ControlBar = createReactClass({
     var controlBarItems = [];
     var defaultItems;
 
-    if (this.props.audioOnly) {
+    if (this.props.controlBarItems) {
+      defaultItems = this.props.controlBarItems;
+    } else if (this.props.audioOnly) {
       defaultItems = this.props.skinConfig.buttons.audioOnly;
     } else {
       defaultItems = this.props.controller.state.isPlayingAd ?
@@ -918,7 +924,7 @@ var ControlBar = createReactClass({
         onBlur={this.props.onBlur}
         onMouseUp={this.handleControlBarMouseUp}
         onTouchEnd={this.handleControlBarMouseUp}>
-        {!this.props.audioOnly ? <ScrubberBar {...this.props} /> : null}
+        {!this.props.hideScrubberBar ? <ScrubberBar {...this.props} /> : null}
 
         <div className="oo-control-bar-items-wrapper oo-flex-row-parent">
           {controlBarItems}
@@ -944,7 +950,11 @@ ControlBar.defaultProps = {
 };
 
 ControlBar.propTypes = {
+  clickToVolumeScreen: PropTypes.bool,
+  hideVolumeControls: PropTypes.bool,
+  hideScrubberBar: PropTypes.bool,
   audioOnly: PropTypes.bool,
+  controlBarItems: PropTypes.array,
   isLiveStream: PropTypes.bool,
   controlBarVisible: PropTypes.bool,
   playerState: PropTypes.string,

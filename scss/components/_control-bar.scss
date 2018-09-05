@@ -12,11 +12,7 @@
   pointer-events: auto;
 
   .oo-control-bar-items-wrapper {
-    margin-top: 10px;
-
-    & > * {
-      line-height: 1 !important;
-    }
+    margin-top: 5px;
 
     .oo-popover-button-container {
       position: relative;
@@ -167,4 +163,12 @@
   @include vendor-prefixes (transition, $medium-transition);
   height: $control-bar-height;
   padding: 0 15px;
+
+  .oo-control-bar-items-wrapper {
+    margin-top: 10px;
+
+    & > * {
+      line-height: 1 !important;
+    }
+  }
 }

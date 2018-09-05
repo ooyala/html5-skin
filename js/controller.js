@@ -2204,7 +2204,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       }
     },
 
-    toggleScreen: function(screen) {
+    toggleScreen: function(screen, doNotPause) {
       this.isNewVrVideo = false;
       if (this.state.screenToShow === screen) {
         this.closeScreen();
@@ -2215,7 +2215,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
             this.state.screenToShow = screen;
             this.renderSkin();
           }.bind(this);
-          this.mb.publish(OO.EVENTS.PAUSE);
+          if (doNotPause) {
+            this.pausedCallback();
+            this.pausedCallback = null;
+          } else {
+            this.mb.publish(OO.EVENTS.PAUSE);
+          }
         } else {
           this.state.screenToShow = screen;
           this.state.pluginsElement.addClass('oo-overlay-blur');
@@ -2438,6 +2443,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
       } else if (this.state.playerState === CONSTANTS.STATE.START) {
         this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      } else {
+        this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       }
       this.renderSkin();
     },

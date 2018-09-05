@@ -51,17 +51,22 @@ class AudioOnlyScreen extends React.Component {
           <ControlBar
             {...this.props}
             audioOnly={true}
+            hideVolumeControls={true}
+            hideScrubberBar={true}
             controlBarVisible={true}
             playerState={this.props.playerState}
             isLiveStream={this.props.isLiveStream}
             a11yControls={this.props.controller.accessibilityControls}
+            clickToVolumeScreen={true}
           />
         </div>
         <div className="oo-interactive-container oo-flex-column">
           <div className="oo-scrubber-bar-parent oo-flex-row-parent">
-            {this.props.controller.state.audioOnly ? <span className="oo-scrubber-bar-current-time">{this.props.getPlayheadTime()}</span> : null}
-            {this.props.controller.state.audioOnly ? <ScrubberBar {...this.props} /> : ''}
-            {this.props.controller.state.audioOnly ? <span className="oo-scrubber-bar-duration">{this.props.getTotalTime()}</span> : null}
+            <span className="oo-scrubber-bar-current-time">{this.props.getPlayheadTime()}</span>
+            <ScrubberBar {...this.props}
+              audioOnly={true}
+            />
+            <span className="oo-scrubber-bar-duration">{this.props.getTotalTime()}</span>
           </div>
         </div>
       </div>

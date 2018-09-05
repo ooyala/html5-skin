@@ -25,6 +25,7 @@ var createReactClass = require('create-react-class');
 import {PlayingScreenWithAutoHide} from './views/playingScreen';
 import {PauseScreenWithAutoHide} from './views/pauseScreen';
 const AudioOnlyScreen = require('./views/audioOnlyScreen');
+const ControlBar = require('./components/controlBar');
 
 var Skin = createReactClass({
   mixins: [ResponsiveManagerMixin],
@@ -460,6 +461,31 @@ var Skin = createReactClass({
                   playerParam={this.state.playerParam}
                   contentTree={this.state.contentTree}
                 />
+              </ContentScreen>
+            );
+            break;
+          case CONSTANTS.SCREEN.VOLUME_SCREEN:
+            screen = (
+              <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.VOLUME_SCREEN} icon="volume">
+                <div className="oo-absolute-centered">
+                  <ControlBar
+                    {...this.props}
+                    audioOnly={true}
+                    hideScrubberBar={true}
+                    controlBarVisible={true}
+                    playerState={this.state.playerState}
+                    isLiveStream={this.state.isLiveStream}
+                    a11yControls={this.props.controller.accessibilityControls}
+                    currentPlayhead={this.state.currentPlayhead}
+                    duration={this.state.duration}
+                    getTotalTime={this.getTotalTime}
+                    getPlayheadTime={this.getPlayheadTime}
+                    buffered={this.state.buffered}
+                    responsiveView={this.state.responsiveId}
+                    componentWidth={this.state.componentWidth}
+                    controlBarItems={[{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }]}
+                    />
+                </div>
               </ContentScreen>
             );
             break;

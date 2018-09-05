@@ -18,6 +18,7 @@ var CONSTANTS = {
     PAUSE_SCREEN: 'pauseScreen',
     END_SCREEN: 'endScreen',
     SHARE_SCREEN: 'shareScreen',
+    VOLUME_SCREEN: 'volumeScreen',
     DISCOVERY_SCREEN: 'discoveryScreen',
     UP_NEXT_SCREEN: 'upNextScreen',
     AD_SCREEN: 'adScreen',
