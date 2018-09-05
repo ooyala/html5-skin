@@ -639,6 +639,25 @@ describe('ControlBar', function() {
     expect(toggleScreenClicked).toBe(true);
   });
 
+  it('should hide closed caption button if there are no languages available', function() {
+    baseMockController.state.isOoyalaAds = false;
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: []
+    };
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { name: 'closedCaption', location: 'controlBar', whenDoesNotFit: 'moveToMoreOptions', minWidth:35 }
+    ];
+    var wrapper = Enzyme.mount(
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING} />
+    );
+    var ccButton = wrapper.find('.oo-closed-caption');
+    expect(ccButton.length).toBe(0);
+  });
+
   it('hides closed caption button if ooyala ad is playing', function() {
     baseMockController.state.closedCaptionOptions.availableLanguages = {
       languages: ['en']

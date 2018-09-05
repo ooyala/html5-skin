@@ -1901,6 +1901,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       if (this.state.fullscreen) {
         this.state.mainVideoElement.webkitExitFullscreen();
       } else {
+        // PLAYER-4216
+        // iOS will only recognize active text tracks and show the selected state
+        // checkmark if these are set to "showing" mode prior to entering fullscreen.
+        // The isGoingFullScreen flag will ensure that the correct mode is set on the
+        // active track (if existent) right before entering fullscreen
         this.setClosedCaptionsLanguage({
           isGoingFullScreen: true
         });

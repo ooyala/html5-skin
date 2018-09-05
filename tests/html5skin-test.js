@@ -32,6 +32,7 @@ OO = {
   publicApi: {},
   EVENTS: {
     PLAY: 'play',
+    SET_CLOSED_CAPTIONS_LANGUAGE: 'setClosedCaptionsLanguage',
     INITIAL_PLAY: 'initialPlay',
     CHANGE_MUTE_STATE: 'changeMuteState',
     DISCOVERY_API: {
@@ -42,7 +43,10 @@ OO = {
     SKIN_UI_LANGUAGE: 'skinUiLanguage'
   },
   CONSTANTS: {
-    CLOSED_CAPTIONS: {},
+    CLOSED_CAPTIONS: {
+      HIDDEN: 'hidden',
+      SHOWING: 'showing',
+    },
     SELECTED_AUDIO: 'selectedAudio'
   },
   VIDEO: {
@@ -156,6 +160,23 @@ describe('Controller', function() {
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
       controller.onClosedCaptionChange('language', 'en');
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
+    });
+
+    it('should set closed captions with "isGoingFullScreen" flag before going fullscreen on iOS', function() {
+      const spyPublish = jest.spyOn(OO.mb, 'publish');
+      controller.state.closedCaptionOptions.enabled = true;
+      controller.toggleIOSNativeFullscreen();
+      expect(spyPublish.mock.calls.length).toBe(1);
+      expect(spyPublish.mock.calls[0]).toEqual([
+        OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE,
+        controller.state.closedCaptionOptions.language,
+        {
+          mode: 'hidden',
+          isFullScreen: controller.state.fullscreen,
+          isGoingFullScreen: true
+        }
+      ]);
+      spyPublish.mockRestore();
     });
   });
 
