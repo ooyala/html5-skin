@@ -320,18 +320,10 @@ var ControlBar = createReactClass({
   },
 
   populateControlBar: function() {
-    var playIcon;
-    var playPauseAriaLabel;
-    if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
-      playIcon = 'pause';
-      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PAUSE;
-    } else if (this.props.playerState === CONSTANTS.STATE.END) {
-      playIcon = 'replay';
-      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.REPLAY;
-    } else {
-      playIcon = 'play';
-      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PLAY;
-    }
+    var playButtonDetails = Utils.getPlayButtonDetails(this.props.playerState);
+    var playIcon = playButtonDetails.icon;
+    var playPauseAriaLabel = playButtonDetails.ariaLabel;
+    var playBtnTooltip = playButtonDetails.buttonTooltip;
 
     var volumeIcon;
     var volumeAriaLabel;
@@ -429,15 +421,6 @@ var ControlBar = createReactClass({
         return tooltipAlignments[key] || CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
       }
     };
-
-    var playBtnTooltip;
-    if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
-      playBtnTooltip = CONSTANTS.SKIN_TEXT.PAUSE;
-    } else if (this.props.playerState === CONSTANTS.STATE.END) {
-      playBtnTooltip = CONSTANTS.SKIN_TEXT.REPLAY;
-    } else {
-      playBtnTooltip = CONSTANTS.SKIN_TEXT.PLAY;
-    }
 
     var controlItemTemplates = {
       playPause: (
@@ -893,7 +876,7 @@ var ControlBar = createReactClass({
       }
       tooltipAlignments[collapsedControlBarItems[k].name] = alignment;
       var item = controlItemTemplates[collapsedControlBarItems[k].name];
-      if (this.props.audioOnly) {
+      if (this.props.equalSpacing) {
         item = (
           <div className="oo-flex-row">
             {item}
@@ -914,12 +897,9 @@ var ControlBar = createReactClass({
     });
 
     var controlBarItems = this.populateControlBar();
-    var controlBarStyle = {};
-
     return (
       <div
         className={controlBarClass}
-        style={controlBarStyle}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
         onMouseUp={this.handleControlBarMouseUp}
@@ -956,6 +936,7 @@ ControlBar.propTypes = {
   hideVolumeControls: PropTypes.bool,
   hideScrubberBar: PropTypes.bool,
   audioOnly: PropTypes.bool,
+  equalSpacing: PropTypes.bool,
   controlBarItems: PropTypes.array,
   isLiveStream: PropTypes.bool,
   controlBarVisible: PropTypes.bool,

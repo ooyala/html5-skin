@@ -20,7 +20,7 @@ class SkipControls extends React.Component {
     this.onSkipForward = this.onSkipForward.bind(this);
     this.isAtLiveEdge = this.isAtLiveEdge.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
-    this.handlePlayClick = this.handlePlayClick.bind(this);
+    this.onPlayPauseClick = this.onPlayPauseClick.bind(this);
   }
 
   /**
@@ -120,9 +120,10 @@ class SkipControls extends React.Component {
   }
 
   /**
-   *
+   * Play/Pause button click handler.
+   * @private
    */
-  handlePlayClick() {
+  onPlayPauseClick() {
     this.props.controller.togglePlayPause();
   }
 
@@ -155,23 +156,10 @@ class SkipControls extends React.Component {
       buttonStyle.pointerEvents = 'none';
     }
 
-    //TODO: This is duplicate code from controlBar.js
-    var playIcon;
-    var playPauseAriaLabel;
-    var playBtnTooltip;
-    if (this.props.controller.state.playerState === CONSTANTS.STATE.PLAYING) {
-      playIcon = 'pause';
-      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PAUSE;
-      playBtnTooltip = CONSTANTS.SKIN_TEXT.PAUSE;
-    } else if (this.props.controller.state.playerState === CONSTANTS.STATE.END) {
-      playIcon = 'replay';
-      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.REPLAY;
-      playBtnTooltip = CONSTANTS.SKIN_TEXT.REPLAY;
-    } else {
-      playIcon = 'play';
-      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PLAY;
-      playBtnTooltip = CONSTANTS.SKIN_TEXT.PLAY;
-    }
+    var playButtonDetails = Utils.getPlayButtonDetails(this.props.controller.state.playerState);
+    var playIcon = playButtonDetails.icon;
+    var playPauseAriaLabel = playButtonDetails.ariaLabel;
+    var playBtnTooltip = playButtonDetails.buttonTooltip;
 
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO] = (
       <ControlButton
@@ -239,7 +227,7 @@ class SkipControls extends React.Component {
         ariaLabel={playPauseAriaLabel}
         icon={playIcon}
         tooltip={playBtnTooltip}
-        onClick={this.handlePlayClick}>
+        onClick={this.onPlayPauseClick}>
       </ControlButton>
     );
 
@@ -285,9 +273,11 @@ class SkipControls extends React.Component {
    */
   getSortedButtonEntries() {
     const buttons = [];
-    var key = 'skipControls.buttons';
+    var key;
     if (this.props.audioOnly) {
       key = 'skipControls.audioOnlyButtons';
+    } else {
+      key = 'skipControls.buttons';
     }
     const buttonConfig = Utils.getPropertyValue(
       this.props.skinConfig,

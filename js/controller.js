@@ -1042,6 +1042,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
       } else {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
+        //TODO: END_SCREEN_SHOWN is not consumed by anyone, should we remove? If not, should
+        //we publish this when the end screen is actually shown?
         this.mb.publish(OO.EVENTS.END_SCREEN_SHOWN);
       }
       if (!Utils.canRenderSkin()) {

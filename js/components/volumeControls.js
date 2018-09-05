@@ -184,8 +184,10 @@ var VolumeControls = createReactClass({
   },
 
   render: function() {
-    if (this.props.controller.state.isMobile || this.props.controller.state.audioOnly) {
-      if (this.props.controller.state.volumeState.volumeSliderVisible || this.props.controller.state.audioOnly) {
+    if (this.props.controller.state.audioOnly) {
+      return this.renderVolumeSlider();
+    } else if (this.props.controller.state.isMobile) {
+      if (this.props.controller.state.volumeState.volumeSliderVisible) {
         return this.renderVolumeSlider();
       } else {
         return null;
@@ -199,6 +201,7 @@ var VolumeControls = createReactClass({
 VolumeControls.propTypes = {
   controller: PropTypes.shape({
     state: PropTypes.shape({
+      audioOnly: PropTypes.bool.isRequired,
       isMobile: PropTypes.bool.isRequired,
       volumeState: PropTypes.shape({
         volumeSliderVisible: PropTypes.bool.isRequired,

@@ -710,11 +710,16 @@ const Skin = createReactClass({
       }
     }
 
+    var className = this.state.responsiveClass;
+    if (this.props.controller.state.audioOnly) {
+      className += " oo-audio-only";
+    }
+
     return (
       <div
         id="oo-responsive"
         ref={this.storeRef}
-        className={this.state.responsiveClass}>
+        className={className}>
         {screen}
       </div>
     );

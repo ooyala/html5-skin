@@ -18,7 +18,7 @@ const withAutoHide = require('./higher-order/withAutoHide.js');
 
 
 /**
- * Represents a screen when a video is stoped
+ * Represents a screen when a video is paused
  */
 class PauseScreen extends React.Component {
   constructor(props) {

@@ -1,4 +1,4 @@
-/** ******************************************************************
+/*********************************************************************
   AUDIO ONLY SCREEN
 *********************************************************************/
 const React = require('React');
@@ -7,6 +7,10 @@ const ClassNames = require('classnames');
 
 const ScrubberBar = require('../components/scrubberBar');
 
+/**
+ * The screen that is shown while the player state is playing, paused, or ended for the audio only player.
+ * Will display a title with description, a control bar, and a scrubber bar.
+ */
 class AudioOnlyScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -51,6 +55,7 @@ class AudioOnlyScreen extends React.Component {
           <ControlBar
             {...this.props}
             audioOnly={true}
+            equalSpacing={true}
             hideVolumeControls={true}
             hideScrubberBar={true}
             controlBarVisible={true}

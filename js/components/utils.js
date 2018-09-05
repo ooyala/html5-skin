@@ -1172,6 +1172,37 @@ var Utils = {
     //getBoundingClientRect().height returns the unrounded clientHeight. However, jsdom won't allow us to set clientHeight,
     //but we can mock getBoundingClientRect.
     return element && (element.clientHeight || element.getBoundingClientRect().height);
+  },
+
+  /**
+   * Gets the icon, aria label, and button tooltip for the play icon based on the current player state.
+   * @param playerState The current player state
+   * @returns {object} icon - the icon to display
+   *                   ariaLabel - the aria label to display
+   *                   buttonTooltip - the button tooltip to display
+   */
+  getPlayButtonDetails: (playerState) => {
+    var playIcon;
+    var playPauseAriaLabel;
+    var playBtnTooltip;
+    if (playerState === CONSTANTS.STATE.PLAYING) {
+      playIcon = 'pause';
+      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PAUSE;
+      playBtnTooltip = CONSTANTS.SKIN_TEXT.PAUSE;
+    } else if (playerState === CONSTANTS.STATE.END) {
+      playIcon = 'replay';
+      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.REPLAY;
+      playBtnTooltip = CONSTANTS.SKIN_TEXT.REPLAY;
+    } else {
+      playIcon = 'play';
+      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PLAY;
+      playBtnTooltip = CONSTANTS.SKIN_TEXT.PLAY;
+    }
+    return {
+      icon: playIcon,
+      ariaLabel: playPauseAriaLabel,
+      buttonTooltip: playBtnTooltip
+    };
   }
 };
 
