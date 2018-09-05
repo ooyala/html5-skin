@@ -52,7 +52,7 @@ class PlayingScreen extends React.Component {
 
   componentDidMount() {
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
-    document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
+    document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
     document.addEventListener('mouseup', this.props.handleVrPlayerMouseUp, false);
     document.addEventListener('touchend', this.props.handleVrPlayerMouseUp, false);
 
