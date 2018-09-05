@@ -253,6 +253,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       );
       this.mb.subscribe(OO.EVENTS.ERROR, 'customerUi', _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
+      this.mb.subscribe(OO.EVENTS.CHROMECAST_AVAILABLE, 'customerUi', _.bind(this.onChromecastAvailable, this));
+      this.mb.subscribe(OO.EVENTS.CHROMECAST_START_CAST, 'customerUi', _.bind(this.onChromecastStartCast, this));
+      this.mb.subscribe(OO.EVENTS.CHROMECAST_END_CAST, 'customerUi', _.bind(this.onChromecastEndCast, this));
       this.state.isPlaybackReadySubscribed = true;
     },
 
@@ -1131,6 +1134,21 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
         this.renderSkin();
       }
+    },
+
+    onChromecastAvailable: function(event) {
+      this.state.chromecastAvailable = true;
+    },
+
+    onChromecastStartCast: function(event) {
+      this.state.chromecastConnected = true;
+      this.renderSkin();
+      //todo bring up ui permanently
+    },
+
+    onChromecastEndCast: function(event) {
+      this.state.chromecastConnected = false;
+      this.renderSkin();
     },
 
     /**
@@ -2238,6 +2256,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
 
     onChromecastClicked: function() {
+      if (!this.state.chromecastConnected) {
+        this.mb.publish(OO.EVENTS.PAUSE, OO.VIDEO.MAIN);
+      }
       this.mb.publish(OO.EVENTS.CHROMECAST_CLICKED);
     },
 
