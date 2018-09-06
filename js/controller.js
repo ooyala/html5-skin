@@ -2451,7 +2451,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    onChangeClosedCaptionLanguage: function(event, language) {
+    onChangeClosedCaptionLanguage: function(event, language, params = {}) {
       if (language === CONSTANTS.CLOSED_CAPTIONS.NO_LANGUAGE) {
         if (this.state.closedCaptionOptions.enabled) {
           this.toggleClosedCaptionEnabled();
@@ -2462,6 +2462,14 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
       // validate language is available before update and save
       if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
+        // The act of changing the CC language doesn't currently enable captions
+        // automatically. The core will set the forceEnabled parameter to true when
+        // it is necessary to also enable captions themselves
+        if (params.forceEnabled) {
+          this.state.closedCaptionOptions.enabled = true;
+          this.state.persistentSettings.closedCaptionOptions.enabled = true;
+        }
+
         this.state.closedCaptionOptions.language =
           this.state.persistentSettings.closedCaptionOptions.language = language;
         var captionLanguage = this.state.closedCaptionOptions.enabled ? language : '';

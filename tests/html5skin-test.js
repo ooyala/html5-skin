@@ -178,6 +178,14 @@ describe('Controller', function() {
       ]);
       spyPublish.mockRestore();
     });
+
+    it('should enable captions on CHANGE_CLOSED_CAPTION_LANGUAGE event when forceEnabled is true', function() {
+      controller.state.closedCaptionOptions.enabled = false;
+      controller.state.persistentSettings.closedCaptionOptions.enabled = false;
+      controller.onChangeClosedCaptionLanguage('', 'en', { forceEnabled: true });
+      expect(controller.state.closedCaptionOptions.enabled).toBe(true);
+      expect(controller.state.persistentSettings.closedCaptionOptions.enabled).toBe(true);
+    });
   });
 
   describe('Buffering state', function() {
