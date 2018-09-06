@@ -161,6 +161,8 @@ class SkipControls extends React.Component {
     var playPauseAriaLabel = playButtonDetails.ariaLabel;
     var playBtnTooltip = playButtonDetails.buttonTooltip;
 
+    const duration = Utils.getPropertyValue(this.props.controller, 'state.duration');
+
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO] = (
       <ControlButton
         {...this.props}
@@ -184,6 +186,7 @@ class SkipControls extends React.Component {
         className="oo-center-button oo-skip-backward"
         icon="replay"
         ariaLabel={skipBackwardAriaLabel}
+        disabled={!duration}
         onClick={this.onSkipBackward}>
         <span className="oo-btn-counter">{skipTimes.backward}</span>
       </HoldControlButton>
@@ -198,7 +201,7 @@ class SkipControls extends React.Component {
         className="oo-center-button oo-skip-forward"
         icon="forward"
         ariaLabel={skipForwardAriaLabel}
-        disabled={this.isAtLiveEdge()}
+        disabled={this.isAtLiveEdge() || !duration}
         onClick={this.onSkipForward}>
         <span className="oo-btn-counter">{skipTimes.forward}</span>
       </HoldControlButton>
@@ -256,7 +259,7 @@ class SkipControls extends React.Component {
       buttonId === CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD
     );
 
-    const isDisabled = (
+    const isDisabled = !this.props.audioOnly && (
       (isSkipButton && !duration) ||
       (isPrevNextButton && isSingleVideo) ||
       !(buttonConfig && buttonConfig.enabled)

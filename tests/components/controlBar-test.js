@@ -74,7 +74,11 @@ describe('ControlBar', function() {
           isHovering: false
         },
         isLiveStream: false,
-        duration: 60
+        duration: 60,
+        skipControls: {
+          hasPreviousVideos: false,
+          hasNextVideos: false
+        }
       },
       cancelTimer: function() {},
       hideVolumeSliderBar: function() {},
@@ -84,7 +88,8 @@ describe('ControlBar', function() {
       setPlaybackSpeed: function() {},
       setVolume: function() {},
       rewindOrRequestPreviousVideo: () => {},
-      requestNextVideo: () => {}
+      requestNextVideo: () => {},
+      togglePlayPause: () => {}
     };
 
     baseMockProps = {
@@ -97,10 +102,6 @@ describe('ControlBar', function() {
       language: 'en',
       localizableStrings: {},
       closedCaptionOptions: {},
-      config: {
-        hasPreviousVideos: false,
-        hasNextVideos: false
-      },
       currentPlayhead: 0
     };
   });

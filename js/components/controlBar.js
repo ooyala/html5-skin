@@ -711,7 +711,6 @@ var ControlBar = createReactClass({
           localizableStrings={this.props.localizableStrings}
           responsiveView={this.props.responsiveView}
           skinConfig={this.props.skinConfig}
-          config={this.props.config}
           controller={this.props.controller}
           currentPlayhead={this.props.currentPlayhead}
           a11yControls={this.props.controller.accessibilityControls}

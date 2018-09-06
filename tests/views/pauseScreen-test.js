@@ -79,7 +79,8 @@ describe('PauseScreen', function() {
       startHideControlBarTimer: function() {},
       rewindOrRequestPreviousVideo: function() {},
       requestNextVideo: function() {},
-      setVolume: function() {}
+      setVolume: function() {},
+      togglePlayPause: () => {}
     };
     mockContentTree = {
       title: 'title'

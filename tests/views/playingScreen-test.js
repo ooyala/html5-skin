@@ -89,7 +89,8 @@ describe('PlayingScreen', function() {
       rewindOrRequestPreviousVideo: function() {},
       requestNextVideo: function() {},
       showControlBar: function() {},
-      setVolume: function() {}
+      setVolume: function() {},
+      togglePlayPause: () => {}
     };
     mockSkinConfig = Utils.clone(skinConfig);
     closedCaptionOptions = {

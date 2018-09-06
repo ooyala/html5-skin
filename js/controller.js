@@ -1641,6 +1641,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
       if (!this.state.audioOnly) {
         this.state.mainVideoInnerWrapper.addClass('oo-video-player');
+      } else {
+        this.state.mainVideoInnerWrapper.removeClass('oo-video-player');
       }
 
       this.mb.publish(OO.EVENTS.SKIN_CONFIG_LOADED, this.state.config);

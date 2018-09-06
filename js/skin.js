@@ -93,9 +93,9 @@ const Skin = createReactClass({
   },
 
   /**
-   * Gets the total time of the video.
+   * Gets the total time of the video in (HH:)MM:SS format
    * @private
-   * @returns {number} The total time of the video
+   * @returns {string} The total time of the video in (HH:)MM:SS format
    */
   getTotalTime: function() {
     let totalTime = 0;
@@ -112,9 +112,10 @@ const Skin = createReactClass({
   },
 
   /**
-   * Gets the current playhead time of the video
+   * Gets the current playhead time of the video in (HH:)MM:SS format. If the stream is live,
+   * will return the time shift instead.
    * @private
-   * @returns {number} The current playhead time
+   * @returns {string} The current playhead time in (HH:)MM:SS format or null if the current playhead is invalid or timeshift is 0
    */
   getPlayheadTime: function() {
     let playheadTime = isFinite(parseInt(this.state.currentPlayhead)) ?

@@ -3,6 +3,7 @@ jest.dontMock('../js/views/pauseScreen');
 jest.dontMock('../js/views/contentScreen');
 jest.dontMock('../js/constants/constants');
 jest.dontMock('../js/components/controlBar');
+jest.dontMock('../js/components/volumeControls');
 jest.dontMock('../js/components/accessibleButton');
 jest.dontMock('../js/components/controlButton');
 jest.dontMock('../js/components/playbackSpeedPanel');
@@ -23,6 +24,10 @@ var CONSTANTS = require('../js/constants/constants');
 var sinon = require('sinon');
 
 var _ = require('underscore');
+
+const VolumeControls = require('../js/components/volumeControls');
+const AudioOnlyScreen = require('../js/views/audioOnlyScreen');
+const SharePanel = require('../js/components/sharePanel');
 
 var skinControllerMock = {
   state: {
@@ -51,7 +56,14 @@ var skinControllerMock = {
     playbackSpeedOptions: { currentSpeed: 1 },
     closedCaptionOptions: {},
     config: {},
-    moreOptionsItems: []
+    moreOptionsItems: [],
+    isLiveStream: false,
+    duration: 60,
+    currentPlayhead: 10,
+    skipControls: {
+      hasPreviousVideos: false,
+      hasNextVideos: false
+    }
   },
   addBlur: function() {},
   removeBlur: function() {},
@@ -63,7 +75,10 @@ var skinControllerMock = {
   startHideControlBarTimer: function() {},
   toggleClosedCaptionEnabled: function() {},
   onClosedCaptionChange: function() {},
-  publishOverlayRenderingEvent: function() {}
+  publishOverlayRenderingEvent: function() {},
+  rewindOrRequestPreviousVideo: () => {},
+  requestNextVideo: () => {},
+  togglePlayPause: () => {}
 };
 
 var getMockController = function() {
@@ -130,6 +145,15 @@ describe('Skin screenToShow state', function() {
     skin.switchComponent(state);
   });
 
+  it('tests VOLUME SCREEN', function() {
+    state.screenToShow = CONSTANTS.SCREEN.VOLUME_SCREEN;
+    skin.switchComponent(state);
+
+    wrapper.update();
+    expect(wrapper.find(ContentScreen).length).toBe(1);
+    expect(wrapper.find(ContentScreen).find(VolumeControls).length).toBe(1);
+  });
+
   it('tests PAUSE SCREEN', function() {
     state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
     skin.switchComponent(state);
@@ -183,7 +207,7 @@ describe('Skin screenToShow state', function() {
     state.playbackSpeedOptions = {
       currentSpeed: 1,
       showPopover: false,
-      autoFocus: false,
+      autoFocus: false
     };
     skin.switchComponent(state);
     wrapper.update();
@@ -275,6 +299,39 @@ describe('Methods tests', function() {
     skin.handleTouchEnd(event);
     expect(vrVievingDirectionChecked).toBe(true);
     expect(vVrViewingDiractionSet).toBe(true);
+  });
+
+  it('getTotalTime should return the duration of the video', () => {
+    skin.state.duration = 60;
+    expect(skin.getTotalTime()).toBe("01:00");
+
+    skin.state.duration = 3600;
+    expect(skin.getTotalTime()).toBe("01:00:00");
+
+    skin.state.duration = null;
+    expect(skin.getTotalTime()).toBe("00:00");
+
+    delete skin.state.duration;
+    expect(skin.getTotalTime()).toBe("00:00");
+  });
+
+  it('getPlayheadTime should return the current playhead of the video', () => {
+    skin.state.currentPlayhead = 120;
+    expect(skin.getPlayheadTime()).toBe("02:00");
+
+    skin.state.currentPlayhead = 7200;
+    expect(skin.getPlayheadTime()).toBe("02:00:00");
+
+    skin.state.currentPlayhead = null;
+    expect(skin.getPlayheadTime()).toBe(null);
+
+    delete skin.state.currentPlayhead;
+    expect(skin.getPlayheadTime()).toBe(null);
+
+    skin.state.isLiveStream = true;
+    skin.state.currentPlayhead = 120;
+    skin.state.duration = 60;
+    expect(skin.getPlayheadTime()).toBe("01:00");
   });
 
   describe('Vr methods', function() {
@@ -456,6 +513,10 @@ describe('Tab Navigation', function() {
 });
 
 describe('Skin', function() {
+  afterEach(() => {
+    OO_setWindowNavigatorProperty('userAgent', '');
+  });
+
   it('tests IE10', function() {
     // set user agent to IE 10
     OO_setWindowNavigatorProperty('userAgent', 'MSIE 10');
@@ -476,5 +537,121 @@ describe('Skin', function() {
       screenToShow: CONSTANTS.SCREEN.START_SCREEN,
       responsiveId: 'md'
     });
+  });
+});
+
+describe('Audio only', () => {
+  var controller;
+
+  beforeEach(() => {
+    controller = getMockController();
+    controller.state.audioOnly = true;
+  });
+
+  it('sets oo-audio-only class if player is audio only', () => {
+    let wrapper = Enzyme.mount(
+      <Skin
+        controller={controller}
+        skinConfig={skinConfig}
+        responsiveView="md"
+        closedCaptionOptions={{ enabled: false }}
+      />
+      , document.body
+    );
+    expect(wrapper.find('.oo-audio-only').length).toBe(1);
+
+    controller.state.audioOnly = false;
+    wrapper = Enzyme.mount(
+      <Skin
+        controller={controller}
+        skinConfig={skinConfig}
+        responsiveView="md"
+        closedCaptionOptions={{ enabled: false }} />
+      , document.body
+    );
+    expect(wrapper.find('.oo-audio-only').length).toBe(0);
+  });
+
+  it('displays audio only screen for initial, start, playing, pause, and end screens', () => {
+    controller.alex = true;
+    let wrapper = Enzyme.mount(
+      <Skin
+        controller={controller}
+        skinConfig={skinConfig}
+        responsiveView="md"
+        closedCaptionOptions={{ enabled: false }}
+      />
+      , document.body
+    );
+    let skin = wrapper.instance();
+    skin.switchComponent({
+      screenToShow: CONSTANTS.SCREEN.START_SCREEN,
+      contentTree: {}
+    });
+
+    wrapper.update();
+    expect(wrapper.find(AudioOnlyScreen).length).toBe(1);
+
+    skin.switchComponent({
+      screenToShow: CONSTANTS.SCREEN.INITIAL_SCREEN
+    });
+    wrapper.update();
+    expect(wrapper.find(AudioOnlyScreen).length).toBe(1);
+
+    skin.switchComponent({
+      screenToShow: CONSTANTS.SCREEN.PLAYING_SCREEN
+    });
+    wrapper.update();
+    expect(wrapper.find(AudioOnlyScreen).length).toBe(1);
+
+    skin.switchComponent({
+      screenToShow: CONSTANTS.SCREEN.PAUSE_SCREEN
+    });
+    wrapper.update();
+    expect(wrapper.find(AudioOnlyScreen).length).toBe(1);
+
+    skin.switchComponent({
+      screenToShow: CONSTANTS.SCREEN.END_SCREEN
+    });
+    wrapper.update();
+    expect(wrapper.find(AudioOnlyScreen).length).toBe(1);
+  });
+
+  it('displays regular screens for other screens', () => {
+    let wrapper = Enzyme.mount(
+      <Skin
+        controller={controller}
+        skinConfig={skinConfig}
+        responsiveView="md"
+        closedCaptionOptions={{ enabled: false }}
+      />
+      , document.body
+    );
+    var skin = wrapper.instance();
+    skin.switchComponent({
+      screenToShow: CONSTANTS.SCREEN.START_SCREEN,
+      contentTree: {}
+    });
+    wrapper.update();
+    expect(wrapper.find(AudioOnlyScreen).length).toBe(1);
+
+    skin.switchComponent({
+      screenToShow: CONSTANTS.SCREEN.SHARE_SCREEN
+    });
+    wrapper.update();
+    expect(wrapper.find(AudioOnlyScreen).length).toBe(0);
+    expect(wrapper.find(SharePanel).length).toBe(1);
+
+    skin.switchComponent({
+      screenToShow: CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN,
+      playbackSpeedOptions: {
+        currentSpeed: 1,
+        showPopover: false,
+        autoFocus: false
+      }
+    });
+    wrapper.update();
+    expect(wrapper.find(AudioOnlyScreen).length).toBe(0);
+    expect(wrapper.find(PlaybackSpeedPanel).length).toBe(1);
   });
 });

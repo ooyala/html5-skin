@@ -1443,4 +1443,88 @@ describe('Controller', function() {
       )).toBe(true);
     });
   });
+
+  describe('Audio only', () => {
+    it('adds oo-video-player class to the video container when not audio only and removes it when audio only', () => {
+      controller.loadConfigData('customerUi', {
+        audio: {
+          audioOnly: true
+        }
+      }, {}, {}, {});
+      expect(controller.state.mainVideoInnerWrapper.hasClass('oo-video-player')).toBe(false);
+
+      controller.loadConfigData('customerUi', {
+        audio: {
+          audioOnly: false
+        }
+      }, {}, {}, {});
+      expect(controller.state.mainVideoInnerWrapper.hasClass('oo-video-player')).toBe(true);
+
+      controller.loadConfigData('customerUi', {
+        audio: {
+          audioOnly: true
+        }
+      }, {}, {}, {});
+      expect(controller.state.mainVideoInnerWrapper.hasClass('oo-video-player')).toBe(false);
+    });
+
+    it('does not pause the video if toggleScreen was provided a value of true for doNotPause', () => {
+      let spy = sinon.spy(controller.mb, 'publish');
+      controller.createPluginElements();
+
+      controller.toggleScreen(CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN, false);
+      expect(spy.calledWith(OO.EVENTS.PAUSE)).toBe(true);
+
+      spy.resetHistory();
+
+      controller.toggleScreen(CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN, true);
+      expect(spy.calledWith(OO.EVENTS.PAUSE)).toBe(false);
+
+      spy.restore();
+    });
+
+    it('tests closeScreen', () => {
+      controller.createPluginElements();
+      controller.state.playerState = CONSTANTS.STATE.PAUSE;
+      controller.closeScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PAUSE_SCREEN);
+
+      controller.state.playerState = CONSTANTS.STATE.END;
+      controller.closeScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.END_SCREEN);
+
+      controller.state.playerState = CONSTANTS.STATE.START;
+      controller.closeScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
+
+      controller.state.playerState = CONSTANTS.STATE.PLAYING;
+      controller.closeScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PLAYING_SCREEN);
+    });
+
+    it('does not hide the control bar if player is audio only', () => {
+      controller.loadConfigData('customerUi', {
+        audio: {
+          audioOnly: true
+        }
+      }, {}, {}, {});
+
+      controller.startHideControlBarTimer();
+      expect(controller.state.timer).toBeFalsy();
+
+      controller.hideControlBar();
+      expect(controller.state.controlBarVisible).toBe(true);
+    });
+
+    it('does not apply aspect ratio if player is audio only', () => {
+      controller.loadConfigData('customerUi', {
+        audio: {
+          audioOnly: true
+        }
+      }, {}, {}, {});
+
+      controller.setAspectRatio();
+      expect(controller.state.mainVideoInnerWrapper.css('padding-top')).toBeFalsy();
+    });
+  });
 });
