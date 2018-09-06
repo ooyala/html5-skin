@@ -256,7 +256,7 @@ class SkipControls extends React.Component {
       buttonId === CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD
     );
 
-    const isDisabled = !this.props.audioOnly && (
+    const isDisabled = (
       (isSkipButton && !duration) ||
       (isPrevNextButton && isSingleVideo) ||
       !(buttonConfig && buttonConfig.enabled)
@@ -362,6 +362,7 @@ SkipControls.propTypes = {
     setFocusedControl: PropTypes.func.isRequired,
     startHideControlBarTimer: PropTypes.func.isRequired,
     cancelTimer: PropTypes.func.isRequired,
+    togglePlayPause: PropTypes.func.isRequired
   }),
   a11yControls: PropTypes.shape({
     seekBy: PropTypes.func.isRequired

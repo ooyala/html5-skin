@@ -789,4 +789,27 @@ describe('Utils', function() {
     device = Utils.getUserDevice();
     expect(device).toBe('desktop');
   });
+
+  it('tests getPlayButtonDetails', function() {
+    let playingDetails = Utils.getPlayButtonDetails(CONSTANTS.STATE.PAUSE);
+    expect(playingDetails).toEqual({
+      icon: 'play',
+      ariaLabel: CONSTANTS.ARIA_LABELS.PLAY,
+      buttonTooltip: CONSTANTS.SKIN_TEXT.PLAY
+    });
+
+    playingDetails = Utils.getPlayButtonDetails(CONSTANTS.STATE.PLAYING);
+    expect(playingDetails).toEqual({
+      icon: 'pause',
+      ariaLabel: CONSTANTS.ARIA_LABELS.PAUSE,
+      buttonTooltip: CONSTANTS.SKIN_TEXT.PAUSE
+    });
+
+    playingDetails = Utils.getPlayButtonDetails(CONSTANTS.STATE.END);
+    expect(playingDetails).toEqual({
+      icon: 'replay',
+      ariaLabel: CONSTANTS.ARIA_LABELS.REPLAY,
+      buttonTooltip: CONSTANTS.SKIN_TEXT.REPLAY
+    });
+  });
 });
