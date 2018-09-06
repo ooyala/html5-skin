@@ -1,23 +1,24 @@
 var React = require('react');
-var DirectionControlVr = require('./directionControlVr');
 var Icon = require('../components/icon');
 var classnames = require('classnames');
 var _ = require('underscore');
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 
+import { DirectionControlVr } from './directionControlVr';
+
 var ViewControlsVr = createReactClass({
   /**
    * @method ViewControlsVr#handleVrViewControlsClick
    * @public
-   * @param {Event} e - event
+   * @param {Event} event - event object
    * @param {boolean} isRotated - true - if need to rotate; false - stop rotation
    * @param {string} direction - direction for rotation: "left", "right", "up", "down"
    */
-  handleVrViewControlsClick: function(e, isRotated, direction) {
-    if (e.type === 'touchend' || !this.props.controller.state.isMobile) {
-      e.stopPropagation(); // W3C
-      e.cancelBubble = true; // IE
+  handleVrViewControlsClick: function(event, isRotated, direction) {
+    if (event.type === 'touchend' || !this.props.controller.state.isMobile) {
+      event.stopPropagation(); // W3C
+      event.cancelBubble = true; // IE
       this.props.controller.state.accessibilityControlsEnabled = true;
     }
 

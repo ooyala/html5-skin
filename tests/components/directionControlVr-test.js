@@ -7,7 +7,7 @@ var React = require('react');
 var Enzyme = require('enzyme');
 var skinConfig = require('../../config/skin.json');
 var CONSTANTS = require('../../js/constants/constants');
-var DirectionControlVr = require('../../js/components/directionControlVr');
+import { DirectionControlVr } from '../../js/components/directionControlVr';
 
 describe('directionControlVr', function() {
   it('should creates a directionControlVr', function() {
