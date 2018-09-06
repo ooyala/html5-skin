@@ -201,7 +201,7 @@ var VolumeControls = createReactClass({
 VolumeControls.propTypes = {
   controller: PropTypes.shape({
     state: PropTypes.shape({
-      audioOnly: PropTypes.bool.isRequired,
+      audioOnly: PropTypes.bool,
       isMobile: PropTypes.bool.isRequired,
       volumeState: PropTypes.shape({
         volumeSliderVisible: PropTypes.bool.isRequired,

@@ -72,7 +72,9 @@ describe('ControlBar', function() {
         },
         scrubberBar: {
           isHovering: false
-        }
+        },
+        isLiveStream: false,
+        duration: 60
       },
       cancelTimer: function() {},
       hideVolumeSliderBar: function() {},
@@ -80,7 +82,9 @@ describe('ControlBar', function() {
       setFocusedControl: function() {},
       startHideControlBarTimer: function() {},
       setPlaybackSpeed: function() {},
-      setVolume: function() {}
+      setVolume: function() {},
+      rewindOrRequestPreviousVideo: () => {},
+      requestNextVideo: () => {}
     };
 
     baseMockProps = {
@@ -92,7 +96,12 @@ describe('ControlBar', function() {
       skinConfig: JSON.parse(JSON.stringify(defaultSkinConfig)),
       language: 'en',
       localizableStrings: {},
-      closedCaptionOptions: {}
+      closedCaptionOptions: {},
+      config: {
+        hasPreviousVideos: false,
+        hasNextVideos: false
+      },
+      currentPlayhead: 0
     };
   });
 
@@ -1152,6 +1161,95 @@ describe('ControlBar', function() {
 
     var logo = wrapper.find('.oo-logo');
     expect(logo.length).toBe(0);
+  });
+
+  describe('Audio only', () => {
+    it('tests volume icon click to volume screen', () => {
+      let toggledScreen = null;
+      let doNotPause = null;
+      baseMockProps.clickToVolumeScreen = true;
+      baseMockController.toggleScreen = (screen, dontPause) => {
+        toggledScreen = screen;
+        doNotPause = dontPause;
+      };
+      var wrapper = Enzyme.mount(getControlBar());
+      var composedComponent = wrapper.instance().composedComponentRef.current;
+      composedComponent.handleVolumeIconClick();
+      expect(toggledScreen).toBe(CONSTANTS.SCREEN.VOLUME_SCREEN);
+      expect(doNotPause).toBe(true);
+    });
+
+    it('tests hiding volume controls', () => {
+      baseMockProps.hideVolumeControls = false;
+      var wrapper = Enzyme.mount(getControlBar());
+      var volumeBars = wrapper.find('.oo-volume-bar');
+      expect(volumeBars.length > 0).toBe(true);
+
+      baseMockProps.hideVolumeControls = true;
+      wrapper = Enzyme.mount(getControlBar());
+      volumeBars = wrapper.find('.oo-volume-bar');
+      expect(volumeBars.length).toBe(0);
+    });
+
+    it('tests rendering skip controls', () => {
+      baseMockProps.skinConfig.buttons.desktopContent = [
+        {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }
+      ];
+      var wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-skip-controls').length).toBe(1);
+    });
+
+    it('tests rendering control bar items when provided as a prop', () => {
+      baseMockProps.controlBarItems = [
+        {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }
+      ];
+      var wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-skip-controls').length).toBe(1);
+    });
+
+    it('tests rendering audio only buttons', () => {
+      baseMockProps.skinConfig.buttons.audioOnly = [
+        {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }
+      ];
+      baseMockProps.audioOnly = true;
+      var wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-skip-controls').length).toBe(1);
+    });
+
+    it('tests equal spacing', () => {
+      baseMockProps.skinConfig.buttons.desktopContent = [
+        {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 },
+        {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 }
+      ];
+      baseMockProps.equalSpacing = true;
+      var wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-flex-row').length).toBe(2);
+    });
+
+    it('tests audio only does not use oo-control-bar-video class', () => {
+      baseMockProps.skinConfig.buttons.desktopContent = [
+        {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }
+      ];
+
+      var wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-control-bar-video').length).toBe(1);
+
+      baseMockProps.audioOnly = true;
+      wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-control-bar-video').length).toBe(0);
+    });
+
+    it('tests hiding scrubber bar', () => {
+      baseMockProps.hideScrubberBar = false;
+      var wrapper = Enzyme.mount(getControlBar());
+      var scrubberBar = wrapper.find('.oo-scrubber-bar');
+      expect(scrubberBar.length).toBe(1);
+
+      baseMockProps.hideScrubberBar = true;
+      wrapper = Enzyme.mount(getControlBar());
+      scrubberBar = wrapper.find('.oo-scrubber-bar');
+      expect(scrubberBar.length).toBe(0);
+    });
   });
 
 });

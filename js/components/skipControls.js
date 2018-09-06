@@ -273,7 +273,7 @@ class SkipControls extends React.Component {
    */
   getSortedButtonEntries() {
     const buttons = [];
-    var key;
+    let key;
     if (this.props.audioOnly) {
       key = 'skipControls.audioOnlyButtons';
     } else {
