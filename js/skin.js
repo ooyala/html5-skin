@@ -13,6 +13,7 @@ const PlaybackSpeedPanel = require('./components/playbackSpeedPanel');
 const ClosedCaptionMultiAudioMenu = 
   require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
 const SharePanel = require('./components/sharePanel');
+const VolumePanel = require('./components/volumePanel');
 const MoreOptionsPanel = require('./components/moreOptionsPanel');
 const AdScreen = require('./views/adScreen');
 const EndScreen = require('./views/endScreen');
@@ -505,25 +506,19 @@ const Skin = createReactClass({
           case CONSTANTS.SCREEN.VOLUME_SCREEN:
               screen = (
                 <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.VOLUME_SCREEN} icon="volume">
-                  <div className="oo-absolute-centered">
-                    <ControlBar
-                      {...this.props}
-                      audioOnly={true}
-                      hideScrubberBar={true}
-                      controlBarVisible={true}
-                      playerState={this.state.playerState}
-                      isLiveStream={this.state.isLiveStream}
-                      a11yControls={this.props.controller.accessibilityControls}
-                      currentPlayhead={this.state.currentPlayhead}
-                      duration={this.state.duration}
-                      getTotalTime={this.getTotalTime}
-                      getPlayheadTime={this.getPlayheadTime}
-                      buffered={this.state.buffered}
-                      responsiveView={this.state.responsiveId}
-                      componentWidth={this.state.componentWidth}
-                      controlBarItems={[{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }]}
-                      />
-                  </div>
+                  <VolumePanel
+                    {...this.props}
+                    playerState={this.state.playerState}
+                    isLiveStream={this.state.isLiveStream}
+                    a11yControls={this.props.controller.accessibilityControls}
+                    currentPlayhead={this.state.currentPlayhead}
+                    duration={this.state.duration}
+                    getTotalTime={this.getTotalTime}
+                    getPlayheadTime={this.getPlayheadTime}
+                    buffered={this.state.buffered}
+                    responsiveView={this.state.responsiveId}
+                    componentWidth={this.state.componentWidth}
+                    />
                 </ContentScreen>
               );
               break;

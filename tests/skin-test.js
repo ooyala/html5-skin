@@ -25,7 +25,7 @@ var sinon = require('sinon');
 
 var _ = require('underscore');
 
-const VolumeControls = require('../js/components/volumeControls');
+const VolumePanel = require('../js/components/volumePanel');
 const AudioOnlyScreen = require('../js/views/audioOnlyScreen');
 const SharePanel = require('../js/components/sharePanel');
 
@@ -151,7 +151,7 @@ describe('Skin screenToShow state', function() {
 
     wrapper.update();
     expect(wrapper.find(ContentScreen).length).toBe(1);
-    expect(wrapper.find(ContentScreen).find(VolumeControls).length).toBe(1);
+    expect(wrapper.find(ContentScreen).find(VolumePanel).length).toBe(1);
   });
 
   it('tests PAUSE SCREEN', function() {
@@ -643,7 +643,7 @@ describe('Audio only', () => {
     expect(wrapper.find(SharePanel).length).toBe(1);
 
     skin.switchComponent({
-      screenToShow: CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN,
+      screenToShow: CONSTANTS.SCREEN.VOLUME_SCREEN,
       playbackSpeedOptions: {
         currentSpeed: 1,
         showPopover: false,
@@ -652,6 +652,6 @@ describe('Audio only', () => {
     });
     wrapper.update();
     expect(wrapper.find(AudioOnlyScreen).length).toBe(0);
-    expect(wrapper.find(PlaybackSpeedPanel).length).toBe(1);
+    expect(wrapper.find(VolumePanel).length).toBe(1);
   });
 });

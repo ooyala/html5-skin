@@ -55,6 +55,7 @@ class AudioOnlyScreen extends React.Component {
           <ControlBar
             {...this.props}
             audioOnly={true}
+            simpleControlBar={true}
             equalSpacing={true}
             hideVolumeControls={true}
             hideScrubberBar={true}

@@ -1235,7 +1235,7 @@ describe('ControlBar', function() {
       var wrapper = Enzyme.mount(getControlBar());
       expect(wrapper.find('.oo-control-bar-video').length).toBe(1);
 
-      baseMockProps.audioOnly = true;
+      baseMockProps.simpleControlBar = true;
       wrapper = Enzyme.mount(getControlBar());
       expect(wrapper.find('.oo-control-bar-video').length).toBe(0);
     });

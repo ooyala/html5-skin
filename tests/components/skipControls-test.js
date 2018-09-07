@@ -299,6 +299,36 @@ describe('SkipControls', function() {
     expect(wrapper.find('.oo-skip-forward').hostNodes().props().disabled).toBe(true);
   });
 
+  it('should disable Skip Forward button when duration is 0', function() {
+    enableAllButtons();
+    props.audioOnly = true;
+    props.controller.state.duration = 0;
+    renderComponent();
+    expect(wrapper.find('.oo-skip-forward').hostNodes().props().disabled).toBe(true);
+  });
+
+  it('should disable Skip Backward button when duration is 0', function() {
+    enableAllButtons();
+    props.audioOnly = true;
+    props.controller.state.duration = 0;
+    renderComponent();
+    expect(wrapper.find('.oo-skip-backward').hostNodes().props().disabled).toBe(true);
+  });
+
+  it('should render all buttons if audio only', function() {
+    enableAllButtons();
+    props.controller.state.duration = 0;
+    props.config.hasPreviousVideos = false;
+    props.config.hasNextVideos = false;
+    props.audioOnly = true;
+    renderComponent();
+    expect(wrapper.find(ControlButton).length).toBe(5);
+    expect(wrapper.find('.oo-previous-video').hostNodes().length).toBe(1);
+    expect(wrapper.find('.oo-skip-backward').hostNodes().length).toBe(1);
+    expect(wrapper.find('.oo-skip-forward').hostNodes().length).toBe(1);
+    expect(wrapper.find('.oo-next-video').hostNodes().length).toBe(1);
+  });
+
   it('should render appropriate Aria labels', function() {
     enableAllButtons();
     props.skinConfig.skipControls.skipBackwardTime = 5;

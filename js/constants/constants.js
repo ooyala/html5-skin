@@ -185,6 +185,7 @@ var CONSTANTS = {
     STEREOSCOPIC: 'stereoscopic',
     FULLSCREEN: 'fullscreen',
     LOGO: 'logo',
+    SKIP_CONTROLS: 'skipControls'
   },
 
   ARIA_ROLES: {

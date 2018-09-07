@@ -705,6 +705,7 @@ var ControlBar = createReactClass({
 
       skipControls: (
         <SkipControls
+          key={CONSTANTS.CONTROL_BAR_KEYS.SKIP_CONTROLS}
           audioOnly={this.props.audioOnly}
           config={this.props.controller.state.skipControls}
           language={this.props.language}
@@ -878,7 +879,7 @@ var ControlBar = createReactClass({
       var item = controlItemTemplates[collapsedControlBarItems[k].name];
       if (this.props.equalSpacing) {
         item = (
-          <div className="oo-flex-row">
+          <div className="oo-flex-row" key={collapsedControlBarItems[k].name}>
             {item}
           </div>
         );
@@ -893,7 +894,7 @@ var ControlBar = createReactClass({
     var controlBarClass = ClassNames({
       'oo-control-bar': true,
       'oo-control-bar-hidden': !this.props.controlBarVisible,
-      'oo-control-bar-video': !this.props.audioOnly
+      'oo-control-bar-video': !this.props.simpleControlBar
     });
 
     var controlBarItems = this.populateControlBar();
@@ -936,6 +937,7 @@ ControlBar.propTypes = {
   hideVolumeControls: PropTypes.bool,
   hideScrubberBar: PropTypes.bool,
   audioOnly: PropTypes.bool,
+  simpleControlBar: PropTypes.bool,
   equalSpacing: PropTypes.bool,
   controlBarItems: PropTypes.array,
   isLiveStream: PropTypes.bool,
