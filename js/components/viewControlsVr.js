@@ -18,7 +18,6 @@ var ViewControlsVr = createReactClass({
   handleVrViewControlsClick: function(event, isRotated, direction) {
     if (event.type === 'touchend' || !this.props.controller.state.isMobile) {
       event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
       this.props.controller.state.accessibilityControlsEnabled = true;
     }
 

@@ -20,11 +20,13 @@ class DirectionControlVr extends React.Component {
    */
   rotateVrVideo(event) {
     const isRotated = event && (event.type === 'mousedown' || event.type === 'touchstart');
-    this.props.handleVrViewControlsClick(event, isRotated, this.props.dir);
+    if ((!this.state.isTouched && isRotated) || (this.state.isTouched && !isRotated)) {
+      this.props.handleVrViewControlsClick(event, isRotated, this.props.dir);
 
-    this.setState({
-      isTouched: isRotated
-    });
+      this.setState({
+        isTouched: isRotated
+      });
+    }
   };
 
   render() {

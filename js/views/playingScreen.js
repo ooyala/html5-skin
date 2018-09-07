@@ -79,15 +79,15 @@ class PlayingScreen extends React.Component {
    */
   handleVrAnimationEnd(ref, stateName) {
     if (ref) {
-      const _this = this;
-      ref.addEventListener('animationend', function _animationEndHandler(stateName) {
+      const _animationEndHandler = () => {
         if (stateName) {
           let newState = {};
           newState[stateName] = true;
-          _this.setState(newState);
+          this.setState(newState);
         }
         ref.removeEventListener('animationend', _animationEndHandler, false);
-      }, false);
+      };
+      ref.addEventListener('animationend', _animationEndHandler, false);
     }
   }
 
