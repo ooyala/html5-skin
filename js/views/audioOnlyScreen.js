@@ -32,14 +32,14 @@ class AudioOnlyScreen extends React.Component {
     var titleClass = ClassNames({
       'oo-state-screen-audio-info': true
     });
-    //var textStyle = {
-    //  'max-width': '70%'
-    //};
+    var textStyle = {
+      'maxWidth': '70%'
+    };
     var textClass = ClassNames({
       'oo-text-truncate': true
     });
     var titleMetadata = (
-      <div className={textClass}>
+      <div style={textStyle} className={textClass}>
         <span className={titleClass} style={titleStyle}>
           {this.props.contentTree.title}
         </span>
