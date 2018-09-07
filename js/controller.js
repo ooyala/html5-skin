@@ -1901,6 +1901,14 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       if (this.state.fullscreen) {
         this.state.mainVideoElement.webkitExitFullscreen();
       } else {
+        // PLAYER-4216
+        // iOS will only recognize active text tracks and show the selected state
+        // checkmark if these are set to "showing" mode prior to entering fullscreen.
+        // The isGoingFullScreen flag will ensure that the correct mode is set on the
+        // active track (if existent) right before entering fullscreen
+        this.setClosedCaptionsLanguage({
+          isGoingFullScreen: true
+        });
         this.state.mainVideoElement.webkitEnterFullscreen();
       }
     },
@@ -2406,7 +2414,17 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       }
     },
 
-    setClosedCaptionsLanguage: function() {
+    /**
+     * Requests that closed captions either be set with the currently active
+     * language or be disabled.
+     * @private
+     * @param {Object} An object with properties that provide additional information
+     * about the requested operation.
+     *  - isGoingFullScreen: {Boolean} Determines whether or not the player is about
+     * to enter fullscreen mode when this operation is requested.
+     */
+    setClosedCaptionsLanguage: function(params) {
+      var params = params || {};
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
       // if saved language not in available languages, set to first available language
       if (
@@ -2422,7 +2440,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {
         mode: mode,
-        isFullScreen: this.state.fullscreen
+        isFullScreen: this.state.fullscreen,
+        isGoingFullScreen: !!params.isGoingFullScreen
       });
     },
 
@@ -2441,7 +2460,16 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    onChangeClosedCaptionLanguage: function(event, language) {
+    /**
+     * Handles the CHANGE_CLOSED_CAPTION_LANGUAGE event. Fired by the core when
+     * a change in closed captions language is requested.
+     * @private
+     * @param {String} eventName The name of the event that was fired
+     * @param {String} language The new closed captions language to set, or 'none' if captions are to be disabled
+     * @param {Object} params An object with additional options for this operation
+     *  - forceEnabled: {Boolean} If true this will ensure that captions are also turned on after the new language is set
+     */
+    onChangeClosedCaptionLanguage: function(event, language, params = {}) {
       if (language === CONSTANTS.CLOSED_CAPTIONS.NO_LANGUAGE) {
         if (this.state.closedCaptionOptions.enabled) {
           this.toggleClosedCaptionEnabled();
@@ -2452,6 +2480,14 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
       // validate language is available before update and save
       if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
+        // The act of changing the CC language doesn't currently enable captions
+        // automatically. The core will set the forceEnabled parameter to true when
+        // it is necessary to also enable captions themselves
+        if (params.forceEnabled) {
+          this.state.closedCaptionOptions.enabled = true;
+          this.state.persistentSettings.closedCaptionOptions.enabled = true;
+        }
+
         this.state.closedCaptionOptions.language =
           this.state.persistentSettings.closedCaptionOptions.language = language;
         var captionLanguage = this.state.closedCaptionOptions.enabled ? language : '';

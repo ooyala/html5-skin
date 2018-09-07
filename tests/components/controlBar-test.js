@@ -378,7 +378,9 @@ describe('ControlBar', function() {
 
   it('should render default state aria labels', function() {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
-    baseMockController.state.closedCaptionOptions.availableLanguages = [];
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockProps.skinConfig.buttons.desktopContent = [
       { 'name': 'playPause', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
       { 'name': 'volume', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 240 },
@@ -419,7 +421,9 @@ describe('ControlBar', function() {
 
   it('should render alternate state aria labels', function() {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
-    baseMockController.state.closedCaptionOptions.availableLanguages = [];
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockController.state.videoQualityOptions.showPopover = true;
     baseMockController.state.playbackSpeedOptions.showPopover = true;
     baseMockController.state.closedCaptionOptions.showPopover = true;
@@ -600,7 +604,9 @@ describe('ControlBar', function() {
 
     var toggleScreenClicked = false;
     var captionClicked = false;
-    baseMockController.state.closedCaptionOptions.availableLanguages = true;
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockController.toggleScreen = function() {toggleScreenClicked = true;};
     baseMockController.togglePopover = function() {captionClicked = true;};
 
@@ -633,8 +639,29 @@ describe('ControlBar', function() {
     expect(toggleScreenClicked).toBe(true);
   });
 
+  it('should hide closed caption button if there are no languages available', function() {
+    baseMockController.state.isOoyalaAds = false;
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: []
+    };
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { name: 'closedCaption', location: 'controlBar', whenDoesNotFit: 'moveToMoreOptions', minWidth:35 }
+    ];
+    var wrapper = Enzyme.mount(
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING} />
+    );
+    var ccButton = wrapper.find('.oo-closed-caption');
+    expect(ccButton.length).toBe(0);
+  });
+
   it('hides closed caption button if ooyala ad is playing', function() {
-    baseMockController.state.closedCaptionOptions.availableLanguages = true;
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockController.state.isOoyalaAds = true;
 
     baseMockProps.skinConfig.buttons.desktopContent = [
@@ -653,7 +680,9 @@ describe('ControlBar', function() {
   });
 
   it('shows closed caption button if ooyala ad is not playing', function() {
-    baseMockController.state.closedCaptionOptions.availableLanguages = true;
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockController.state.isOoyalaAds = false;
 
     baseMockProps.skinConfig.buttons.desktopContent = [

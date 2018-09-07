@@ -800,11 +800,19 @@ var ControlBar = createReactClass({
         }
       }
 
+      var availableLanguages = Utils.getPropertyValue(
+        this.props.controller,
+        'state.closedCaptionOptions.availableLanguages.languages',
+        []
+      );
+      
       // do not show CC button if no CC available
       if (
-        (this.props.controller.state.isOoyalaAds ||
-          !this.props.controller.state.closedCaptionOptions.availableLanguages) &&
-        defaultItems[k].name === 'closedCaption'
+        defaultItems[k].name === CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION &&
+        (
+          !availableLanguages.length ||
+          this.props.controller.state.isOoyalaAds
+        )
       ) {
         continue;
       }
