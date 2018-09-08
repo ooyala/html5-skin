@@ -55,7 +55,6 @@ class AudioOnlyScreen extends React.Component {
           <ControlBar
             {...this.props}
             audioOnly={true}
-            simpleControlBar={true}
             equalSpacing={true}
             hideVolumeControls={true}
             hideScrubberBar={true}
@@ -68,11 +67,11 @@ class AudioOnlyScreen extends React.Component {
         </div>
         <div className="oo-interactive-container oo-flex-column">
           <div className="oo-scrubber-bar-parent oo-flex-row-parent">
-            <span className="oo-scrubber-bar-current-time">{this.props.getPlayheadTime()}</span>
+            <span className="oo-scrubber-bar-current-time">{this.props.playheadTime}</span>
             <ScrubberBar {...this.props}
               audioOnly={true}
             />
-            <span className="oo-scrubber-bar-duration">{this.props.getTotalTime()}</span>
+            <span className="oo-scrubber-bar-duration">{this.props.totalTime}</span>
           </div>
         </div>
       </div>

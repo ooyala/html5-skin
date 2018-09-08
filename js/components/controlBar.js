@@ -72,7 +72,6 @@ var ControlBar = createReactClass({
   handleControlBarMouseUp: function(evt) {
     if (evt.type === 'touchend' || !this.isMobile) {
       evt.stopPropagation(); // W3C
-      evt.cancelBubble = true; // IE
       this.props.controller.state.accessibilityControlsEnabled = true;
       this.props.controller.startHideControlBarTimer();
     }
@@ -358,17 +357,14 @@ var ControlBar = createReactClass({
       }
     }
 
-    var totalTime = this.props.getTotalTime();
-
     // TODO - Replace time display logic with Utils.getTimeDisplayValues()
-    var playheadTimeContent = this.props.getPlayheadTime();
     var isLiveStream = this.props.isLiveStream;
     var durationSetting = { color: this.props.skinConfig.controlBar.iconStyle.inactive.color };
     var timeShift = this.props.currentPlayhead - this.props.duration;
     // checking timeShift < 1 seconds (not === 0) as processing of the click after we rewinded and then went live may take some time
     var isLiveNow = Math.abs(timeShift) < 1;
     var liveClick = isLiveNow ? null : this.handleLiveClick;
-    var totalTimeContent = isLiveStream ? null : <span className="oo-total-time">{totalTime}</span>;
+    var totalTimeContent = isLiveStream ? null : <span className="oo-total-time">{this.props.totalTime}</span>;
 
     // TODO: Update when implementing localization
     var liveText = Utils.getLocalizedString(
@@ -454,7 +450,7 @@ var ControlBar = createReactClass({
             tooltip={mutedInUi ? CONSTANTS.SKIN_TEXT.UNMUTE : CONSTANTS.SKIN_TEXT.MUTE}
             onClick={this.handleVolumeIconClick}>
           </ControlButton>
-          {!this.props.hideVolumeControls ? <VolumeControls {...this.props} /> : null}
+          {!this.props.hideVolumeControls && <VolumeControls {...this.props} />}
         </div>
       ),
 
@@ -463,7 +459,7 @@ var ControlBar = createReactClass({
           key={CONSTANTS.CONTROL_BAR_KEYS.TIME_DURATION}
           className="oo-time-duration oo-control-bar-duration"
           style={durationSetting}>
-          <span>{playheadTimeContent}</span>{totalTimeContent}
+          <span>{this.props.playheadTime}</span>{totalTimeContent}
         </a>
       ),
 
@@ -706,7 +702,31 @@ var ControlBar = createReactClass({
       skipControls: (
         <SkipControls
           key={CONSTANTS.CONTROL_BAR_KEYS.SKIP_CONTROLS}
-          audioOnly={this.props.audioOnly}
+          buttonConfig={{
+            "previousVideo": {
+              "enabled": true,
+              "index": 1
+            },
+            "skipBackward": {
+              "enabled": true,
+              "index": 2
+            },
+            "playPause": {
+              "enabled": true,
+              "index": 3
+            },
+            "skipForward": {
+              "enabled": true,
+              "index": 4
+            },
+            "nextVideo": {
+              "enabled": true,
+              "index": 5
+            }
+          }}
+          forceShowButtons={true}
+          maxWidth={200}
+          className={'oo-absolute-centered'}
           config={this.props.controller.state.skipControls}
           language={this.props.language}
           localizableStrings={this.props.localizableStrings}
@@ -894,13 +914,20 @@ var ControlBar = createReactClass({
     var controlBarClass = ClassNames({
       'oo-control-bar': true,
       'oo-control-bar-hidden': !this.props.controlBarVisible,
-      'oo-control-bar-video': !this.props.simpleControlBar
+      'oo-animating-control-bar': this.props.animatingControlBar
     });
 
     var controlBarItems = this.populateControlBar();
+    var controlBarStyle = {};
+
+    if (this.props.height) {
+      controlBarStyle.height = this.props.height;
+    }
+
     return (
       <div
         className={controlBarClass}
+        style={controlBarStyle}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
         onMouseUp={this.handleControlBarMouseUp}
@@ -931,13 +958,13 @@ ControlBar.defaultProps = {
 };
 
 ControlBar.propTypes = {
-  getTotalTime: PropTypes.func.isRequired,
-  getPlayheadTime: PropTypes.func.isRequired,
+  totalTime: PropTypes.string.isRequired,
+  playheadTime: PropTypes.string.isRequired,
   clickToVolumeScreen: PropTypes.bool,
   hideVolumeControls: PropTypes.bool,
   hideScrubberBar: PropTypes.bool,
   audioOnly: PropTypes.bool,
-  simpleControlBar: PropTypes.bool,
+  animatingControlBar: PropTypes.bool,
   equalSpacing: PropTypes.bool,
   controlBarItems: PropTypes.array,
   isLiveStream: PropTypes.bool,

@@ -156,10 +156,7 @@ class SkipControls extends React.Component {
       buttonStyle.pointerEvents = 'none';
     }
 
-    var playButtonDetails = Utils.getPlayButtonDetails(this.props.controller.state.playerState);
-    var playIcon = playButtonDetails.icon;
-    var playPauseAriaLabel = playButtonDetails.ariaLabel;
-    var playBtnTooltip = playButtonDetails.buttonTooltip;
+    const playButtonDetails = Utils.getPlayButtonDetails(this.props.controller.state.playerState);
 
     const duration = Utils.getPropertyValue(this.props.controller, 'state.duration');
 
@@ -227,9 +224,8 @@ class SkipControls extends React.Component {
         key={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
         className="oo-play-pause"
         focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
-        ariaLabel={playPauseAriaLabel}
-        icon={playIcon}
-        tooltip={playBtnTooltip}
+        ariaLabel={playButtonDetails.ariaLabel}
+        icon={playButtonDetails.icon}
         onClick={this.onPlayPauseClick}>
       </ControlButton>
     );
@@ -259,7 +255,7 @@ class SkipControls extends React.Component {
       buttonId === CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD
     );
 
-    const isDisabled = !this.props.audioOnly && (
+    const isDisabled = !this.props.forceShowButtons && (
       (isSkipButton && !duration) ||
       (isPrevNextButton && isSingleVideo) ||
       !(buttonConfig && buttonConfig.enabled)
@@ -276,15 +272,10 @@ class SkipControls extends React.Component {
    */
   getSortedButtonEntries() {
     const buttons = [];
-    let key;
-    if (this.props.audioOnly) {
-      key = 'skipControls.audioOnlyButtons';
-    } else {
-      key = 'skipControls.buttons';
-    }
-    const buttonConfig = Utils.getPropertyValue(
+    const buttonConfig = this.props.buttonConfig ? this.props.buttonConfig :
+      Utils.getPropertyValue(
       this.props.skinConfig,
-      key,
+      'skipControls.buttons',
       {}
     );
     // Find the ids and indexes of all enabled buttons
@@ -312,17 +303,21 @@ class SkipControls extends React.Component {
       return null;
     }
 
-    const className = classNames('oo-skip-controls', {
+    const className = classNames('oo-skip-controls', this.props.className, {
       'oo-inactive': this.props.isInactive,
-      'oo-in-background': this.props.isInBackground,
-      'oo-absolute-centered': true,
-      'oo-skip-controls-compact': this.props.audioOnly
+      'oo-in-background': this.props.isInBackground
     });
     const buttonTemplate = this.getButtonTemplate();
+
+    const skipControlsStyle = {};
+    if (this.props.maxWidth) {
+      skipControlsStyle.maxWidth = this.props.maxWidth;
+    }
 
     return (
       <div
         ref={this.storeRef}
+        style={skipControlsStyle}
         className={className}
         onMouseEnter={this.onMouseEnter}
         onFocus={this.props.onFocus}
@@ -337,7 +332,10 @@ class SkipControls extends React.Component {
 }
 
 SkipControls.propTypes = {
-  audioOnly: PropTypes.bool,
+  className: PropTypes.string,
+  maxWidth: PropTypes.number,
+  forceShowButtons: PropTypes.bool,
+  buttonConfig: PropTypes.object,
   isInactive: PropTypes.bool,
   isInBackground: PropTypes.bool,
   language: PropTypes.string,

@@ -15,10 +15,9 @@ class VolumePanel extends React.Component {
   render() {
 
     return (
-      <div className="oo-absolute-centered">
+      <div className="oo-absolute-centered oo-volume-panel">
         <ControlBar
           {...this.props}
-          simpleControlBar={true}
           hideScrubberBar={true}
           controlBarVisible={true}
           playerState={this.props.playerState}

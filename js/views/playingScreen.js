@@ -393,6 +393,7 @@ class PlayingScreen extends React.Component {
 
         {skipControlsEnabled &&
           <SkipControls
+            className={'oo-absolute-centered'}
             config={this.props.controller.state.skipControls}
             language={this.props.language}
             localizableStrings={this.props.localizableStrings}
@@ -423,6 +424,8 @@ class PlayingScreen extends React.Component {
 
           <ControlBar
             {...this.props}
+            height={this.props.skinConfig.controlBar.height}
+            animatingControlBar={true}
             controlBarVisible={this.props.controller.state.controlBarVisible}
             playerState={this.props.playerState}
             isLiveStream={this.props.isLiveStream} />

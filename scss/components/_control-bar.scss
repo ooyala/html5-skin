@@ -157,7 +157,7 @@
   }
 }
 
-.oo-control-bar-video {
+.oo-animating-control-bar {
   background: $control-bar-bg;
   @include vendor-prefixes (background, $control-bar-gradient);
   @include vendor-prefixes (transition, $medium-transition);
