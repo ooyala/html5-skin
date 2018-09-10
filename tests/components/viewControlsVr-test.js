@@ -13,8 +13,9 @@ var Enzyme = require('enzyme');
 var skinConfig = require('../../config/skin.json');
 var CONSTANTS = require('../../js/constants/constants');
 var ViewControlsVr = require('../../js/components/viewControlsVr');
-var DirectionControlVr = require('../../js/components/directionControlVr');
 var _ = require('underscore');
+
+import { DirectionControlVr } from '../../js/components/directionControlVr';
 
 describe('viewControlsVr', function() {
   

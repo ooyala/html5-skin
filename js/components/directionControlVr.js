@@ -1,32 +1,38 @@
-var React = require('react');
-var classnames = require('classnames');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+const React = require('react');
+const classnames = require('classnames');
+const PropTypes = require('prop-types');
 
-var DirectionControlVr = createReactClass({
-  getInitialState: function() {
-    return {
+/**
+ * A vr video rotation control button
+ */
+class DirectionControlVr extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       isTouched: false
     };
-  },
+    this.rotateVrVideo = this.rotateVrVideo.bind(this);
+  };
 
-  handleEvent: function(ev) {
-    var isRotated = ev.type === 'mousedown' || ev.type === 'touchstart';
+  /**
+   * Rotate the image in the specified direction or stop the rotation if the user has stopped clicking on the item
+   * @param {Event} event - event object
+   */
+  rotateVrVideo(event) {
+    const isRotated = event && (event.type === 'mousedown' || event.type === 'touchstart');
+    if ((!this.state.isTouched && isRotated) || (this.state.isTouched && !isRotated)) {
+      this.props.handleVrViewControlsClick(event, isRotated, this.props.dir);
 
-    // The call always happens, except for the mouse movement without pressing the mouse button
-    if (this.state.isTouched || ev.type !== 'mouseout') {
-      this.props.handleVrViewControlsClick(ev, isRotated, this.props.dir);
+      this.setState({
+        isTouched: isRotated
+      });
     }
+  };
 
-    this.setState({
-      isTouched: isRotated
-    });
-  },
-
-  render: function() {
-    var baseDirectionClass = 'oo-vr-icon--move';
-    var directionClass = baseDirectionClass + '--' + this.props.dir;
-    var touchedDirectionClass = '';
+  render() {
+    const baseDirectionClass = 'oo-vr-icon--move';
+    const directionClass = baseDirectionClass + '--' + this.props.dir;
+    let touchedDirectionClass = '';
     if (this.state.isTouched) {
       touchedDirectionClass = directionClass + '--touched';
     }
@@ -39,18 +45,18 @@ var DirectionControlVr = createReactClass({
           touchedDirectionClass
         )}
         key={this.props.dir}
-        onMouseDown={this.handleEvent}
-        onTouchStart={this.handleEvent}
-        onMouseUp={this.handleEvent}
-        onTouchEnd={this.handleEvent}
-        onMouseOut={this.handleEvent}
+        onMouseDown={this.rotateVrVideo}
+        onTouchStart={this.rotateVrVideo}
+        onMouseUp={this.rotateVrVideo}
+        onTouchEnd={this.rotateVrVideo}
+        onMouseOut={this.rotateVrVideo}
       />
     );
   }
-});
+};
 
 DirectionControlVr.propTypes = {
   handleVrViewControlsClick: PropTypes.func
 };
 
-module.exports = DirectionControlVr;
+export { DirectionControlVr };
