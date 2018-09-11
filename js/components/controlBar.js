@@ -593,18 +593,29 @@ var ControlBar = createReactClass({
         </div>
       ),
 
-      chromecast: (
+      chromecast: function() {
+        if (this.props.controller.state.chromecastAvailable !== true)
+        {
+          return null;
+        }
+
+        let castIcon = "chromecast-disconnected";
+        if (this.props.controller.state.chromecastConnected === true)
+        {
+          castIcon = "chromecast-connected";
+        }
+        return (
         <ControlButton
           {...commonButtonProps}
           key={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
           className={chromecastClass}
           focusId={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
           ariaHidden={true}
-          icon="chromecast"
+          icon={castIcon}
           tooltip={CONSTANTS.SKIN_TEXT.CHROMECAST}
           onClick={this.handleChromecastClick}>
         </ControlButton>
-      ),
+      )}.bind(this)(),
 
       audioAndCC: function() {
         var closedCaptionsList = [];
