@@ -39,13 +39,13 @@ describe('SkipControls', function() {
     props.controller.state.duration = 60;
   };
 
-  const enableAudioOnlyButtons = () => {
+  const enableButtonsWithPlayPause = () => {
     props.skinConfig.skipControls.enabled = true;
-    props.skinConfig.skipControls.audioOnlyButtons.previousVideo.enabled = true;
-    props.skinConfig.skipControls.audioOnlyButtons.skipBackward.enabled = true;
-    props.skinConfig.skipControls.audioOnlyButtons.skipForward.enabled = true;
-    props.skinConfig.skipControls.audioOnlyButtons.nextVideo.enabled = true;
-    props.skinConfig.skipControls.audioOnlyButtons.playPause.enabled = true;
+    props.skinConfig.skipControls.buttonsWithPlayPause.previousVideo.enabled = true;
+    props.skinConfig.skipControls.buttonsWithPlayPause.skipBackward.enabled = true;
+    props.skinConfig.skipControls.buttonsWithPlayPause.skipForward.enabled = true;
+    props.skinConfig.skipControls.buttonsWithPlayPause.nextVideo.enabled = true;
+    props.skinConfig.skipControls.buttonsWithPlayPause.playPause.enabled = true;
     props.config.hasPreviousVideos = true;
     props.config.hasNextVideos = true;
     props.controller.state.duration = 60;
@@ -86,7 +86,7 @@ describe('SkipControls', function() {
               enabled: false
             }
           },
-          audioOnlyButtons: {
+          buttonsWithPlayPause: {
             previousVideo: {
               enabled: true,
               index: 1
@@ -227,18 +227,39 @@ describe('SkipControls', function() {
     expect(wrapper.find(ControlButton).length).toBe(4);
   });
 
-  it('should render audio only buttons with includes a play/pause button', function() {
-    props.audioOnly = true;
-    enableAudioOnlyButtons();
+  it('should render prop buttons', function() {
+    props.buttonConfig = {
+      previousVideo: {
+        enabled: true,
+        index: 1
+      },
+      skipBackward: {
+        enabled: true,
+        index: 2
+      },
+      playPause: {
+        enabled: true,
+        index: 3
+      },
+      skipForward: {
+        enabled: true,
+        index: 4
+      },
+      nextVideo: {
+        enabled: true,
+        index: 5
+      }
+    };
+    enableButtonsWithPlayPause();
     renderComponent();
     expect(wrapper.find(ControlButton).length).toBe(5);
     expect(wrapper.find('.oo-play-pause').hostNodes().length).toBe(1);
   });
 
   it('should render compact skip controls when audio only', function() {
-    props.audioOnly = true;
+    props.maxWidth = 300;
     renderComponent();
-    expect(wrapper.find('.oo-skip-controls-compact').length).toBe(1);
+    expect(wrapper.getDOMNode().style.maxWidth).toBe('300px');
   });
 
   it('should NOT render buttons that are disabled in the skin config', function() {
@@ -301,7 +322,7 @@ describe('SkipControls', function() {
 
   it('should disable Skip Forward button when duration is 0', function() {
     enableAllButtons();
-    props.audioOnly = true;
+    props.forceShowButtons = true;
     props.controller.state.duration = 0;
     renderComponent();
     expect(wrapper.find('.oo-skip-forward').hostNodes().props().disabled).toBe(true);
@@ -309,18 +330,18 @@ describe('SkipControls', function() {
 
   it('should disable Skip Backward button when duration is 0', function() {
     enableAllButtons();
-    props.audioOnly = true;
+    props.forceShowButtons = true;
     props.controller.state.duration = 0;
     renderComponent();
     expect(wrapper.find('.oo-skip-backward').hostNodes().props().disabled).toBe(true);
   });
 
-  it('should render all buttons if audio only', function() {
+  it('should render all buttons if forceShowButtons is true', function() {
     enableAllButtons();
     props.controller.state.duration = 0;
     props.config.hasPreviousVideos = false;
     props.config.hasNextVideos = false;
-    props.audioOnly = true;
+    props.forceShowButtons = true;
     renderComponent();
     expect(wrapper.find(ControlButton).length).toBe(5);
     expect(wrapper.find('.oo-previous-video').hostNodes().length).toBe(1);

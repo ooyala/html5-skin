@@ -38,8 +38,8 @@ describe('ControlBar', function() {
         playerState={state ? state : CONSTANTS.STATE.PLAYING}
         isLiveStream={baseMockProps.isLiveStream}
         videoQualityOptions={baseMockController.state.videoQualityOptions}
-        getTotalTime={() => {}}
-        getPlayheadTime={() => {}}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />;
   };
 
@@ -1119,8 +1119,8 @@ describe('ControlBar', function() {
         componentWidth={100}
         responsiveView="sm"
         playerState={CONSTANTS.STATE.PLAYING}
-        getTotalTime={() => {}}
-        getPlayheadTime={() => {}}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />, node
     );
 
@@ -1131,8 +1131,8 @@ describe('ControlBar', function() {
         componentWidth={300}
         responsiveView="md"
         playerState={CONSTANTS.STATE.PLAYING}
-        getTotalTime={() => {}}
-        getPlayheadTime={() => {}}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />, node
     );
 
@@ -1227,17 +1227,18 @@ describe('ControlBar', function() {
       expect(wrapper.find('.oo-flex-row').length).toBe(2);
     });
 
-    it('tests audio only does not use oo-control-bar-video class', () => {
+    it('tests audio only does not use oo-animating-control-bar class', () => {
       baseMockProps.skinConfig.buttons.desktopContent = [
         {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }
       ];
 
+      baseMockProps.animatingControlBar = true;
       var wrapper = Enzyme.mount(getControlBar());
-      expect(wrapper.find('.oo-control-bar-video').length).toBe(1);
+      expect(wrapper.find('.oo-animating-control-bar').length).toBe(1);
 
-      baseMockProps.simpleControlBar = true;
+      baseMockProps.animatingControlBar = false;
       wrapper = Enzyme.mount(getControlBar());
-      expect(wrapper.find('.oo-control-bar-video').length).toBe(0);
+      expect(wrapper.find('.oo-animating-control-bar').length).toBe(0);
     });
 
     it('tests hiding scrubber bar', () => {

@@ -25,8 +25,8 @@ class VolumePanel extends React.Component {
           a11yControls={this.props.a11yControls}
           currentPlayhead={this.props.currentPlayhead}
           duration={this.props.duration}
-          getTotalTime={this.props.getTotalTime}
-          getPlayheadTime={this.props.getPlayheadTime}
+          totalTime={this.props.totalTime}
+          playheadTime={this.props.playheadTime}
           buffered={this.props.buffered}
           responsiveView={this.props.responsiveId}
           componentWidth={this.props.componentWidth}
@@ -38,8 +38,8 @@ class VolumePanel extends React.Component {
 }
 
 VolumePanel.propTypes = {
-  getTotalTime: PropTypes.func.isRequired,
-  getPlayheadTime: PropTypes.func.isRequired,
+  totalTime: PropTypes.string.isRequired,
+  playheadTime: PropTypes.string.isRequired,
   clickToVolumeScreen: PropTypes.bool,
   hideVolumeControls: PropTypes.bool,
   hideScrubberBar: PropTypes.bool,

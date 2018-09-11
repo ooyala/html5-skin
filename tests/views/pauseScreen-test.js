@@ -34,8 +34,8 @@ describe('PauseScreen', function() {
         handleTouchEnd={handleTouchEnd}
         closedCaptionOptions={{cueText: 'sample text'}}
         playerState={CONSTANTS.STATE.PAUSE}
-        getTotalTime={() => {}}
-        getPlayheadTime={() => {}}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
   };
 
@@ -189,8 +189,8 @@ describe('PauseScreen', function() {
         closedCaptionOptions={{ cueText: 'sample text' }}
         currentPlayhead={0}
         playerState={CONSTANTS.STATE.PAUSE}
-        getTotalTime={() => {}}
-        getPlayheadTime={() => {}}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
     mockSkinConfig.skipControls.enabled = false;

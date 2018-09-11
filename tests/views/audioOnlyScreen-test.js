@@ -28,8 +28,8 @@ describe('Audio Only Screen', () => {
         handleVrPlayerMouseUp={() => {}}
         currentPlayhead={0}
         playerState={CONSTANTS.STATE.PLAYING}
-        getTotalTime={() => {}}
-        getPlayheadTime={() => {}}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
     return wrapper;
@@ -117,7 +117,6 @@ describe('Audio Only Screen', () => {
 
     var props = controlBar.props();
     expect(props.audioOnly).toBe(true);
-    expect(props.simpleControlBar).toBe(true);
     expect(props.equalSpacing).toBe(true);
     expect(props.hideVolumeControls).toBe(true);
     expect(props.hideScrubberBar).toBe(true);

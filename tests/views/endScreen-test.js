@@ -24,8 +24,8 @@ describe('EndScreen', function() {
       controller = {mockController}
       contentTree = {mockContentTree}
       playerState={CONSTANTS.STATE.END}
-      getTotalTime={() => {}}
-      getPlayheadTime={() => {}}
+      totalTime={"60:00"}
+      playheadTime={"00:00"}
     />
   };
 
