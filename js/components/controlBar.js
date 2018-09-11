@@ -322,7 +322,7 @@ var ControlBar = createReactClass({
     var playButtonDetails = Utils.getPlayButtonDetails(this.props.playerState);
     var playIcon = playButtonDetails.icon;
     var playPauseAriaLabel = playButtonDetails.ariaLabel;
-    var playBtnTooltip = playButtonDetails.buttonTooltip;
+    var playButtonTooltip = playButtonDetails.buttonTooltip;
 
     var volumeIcon;
     var volumeAriaLabel;
@@ -427,7 +427,7 @@ var ControlBar = createReactClass({
           focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
           ariaLabel={playPauseAriaLabel}
           icon={playIcon}
-          tooltip={playBtnTooltip}
+          tooltip={playButtonTooltip}
           onClick={this.handlePlayClick}>
         </ControlButton>
       ),
@@ -702,28 +702,11 @@ var ControlBar = createReactClass({
       skipControls: (
         <SkipControls
           key={CONSTANTS.CONTROL_BAR_KEYS.SKIP_CONTROLS}
-          buttonConfig={{
-            "previousVideo": {
-              "enabled": true,
-              "index": 1
-            },
-            "skipBackward": {
-              "enabled": true,
-              "index": 2
-            },
-            "playPause": {
-              "enabled": true,
-              "index": 3
-            },
-            "skipForward": {
-              "enabled": true,
-              "index": 4
-            },
-            "nextVideo": {
-              "enabled": true,
-              "index": 5
-            }
-          }}
+          buttonConfig={Utils.getPropertyValue(
+            this.props.skinConfig,
+            'skipControls.buttonsWithPlayPause',
+            {}
+          )}
           forceShowButtons={true}
           maxWidth={200}
           className={'oo-absolute-centered'}

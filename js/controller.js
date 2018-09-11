@@ -2216,6 +2216,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       }
     },
 
+    /**
+     * Toggles the provided screen. Will switch to the provided screen
+     * if that screen is not active, otherwise it will close the screen.
+     * @param screen The screen to toggle
+     * @param {boolean} doNotPause Set to true to avoid pausing when toggling the screen
+     */
     toggleScreen: function(screen, doNotPause) {
       this.isNewVrVideo = false;
       if (this.state.screenToShow === screen) {

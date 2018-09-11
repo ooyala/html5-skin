@@ -26,7 +26,7 @@ const createReactClass = require('create-react-class');
 import {PlayingScreenWithAutoHide} from './views/playingScreen';
 import {PauseScreenWithAutoHide} from './views/pauseScreen';
 const AudioOnlyScreen = require('./views/audioOnlyScreen');
-const ControlBar = require('./components/controlBar');
+const ClassNames = require('classnames');
 
 const Skin = createReactClass({
   mixins: [ResponsiveManagerMixin],
@@ -394,12 +394,6 @@ const Skin = createReactClass({
             screen = (
               <AudioOnlyScreen
                 {...this.props}
-                handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
-                handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
-                handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
-                handleVrPlayerClick={this.handleVrPlayerClick}
-                handleVrPlayerFocus={this.handleVrPlayerFocus}
-                isVrMouseMove={this.state.isVrMouseMove}
                 contentTree={this.state.contentTree}
                 currentPlayhead={this.state.currentPlayhead}
                 duration={this.state.duration}
@@ -706,10 +700,9 @@ const Skin = createReactClass({
       }
     }
 
-    var className = this.state.responsiveClass;
-    if (this.props.controller.state.audioOnly) {
-      className += " oo-audio-only";
-    }
+    var className = ClassNames(this.state.responsiveClass, {
+      'oo-audio-only': this.props.controller.state.audioOnly
+    });
 
     return (
       <div

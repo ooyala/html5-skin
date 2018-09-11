@@ -21,24 +21,23 @@ class AudioOnlyScreen extends React.Component {
   }
 
   render() {
-    var titleStyle = {
+    const titleStyle = {
       color: this.props.skinConfig.startScreen.titleFont.color
     };
-    var infoPanelClass = ClassNames({
+    const infoPanelClass = ClassNames({
       'oo-state-screen-audio-title': true,
-      'oo-inactive': false,
       'oo-flex-column': true
     });
-    var titleClass = ClassNames({
+    const titleClass = ClassNames({
       'oo-state-screen-audio-info': true
     });
-    var textStyle = {
+    const textStyle = {
       'maxWidth': '70%'
     };
-    var textClass = ClassNames({
+    const textClass = ClassNames({
       'oo-text-truncate': true
     });
-    var titleMetadata = (
+    const titleMetadata = (
       <div style={textStyle} className={textClass}>
         <span className={titleClass} style={titleStyle}>
           {this.props.contentTree.title}
@@ -46,6 +45,7 @@ class AudioOnlyScreen extends React.Component {
         : {this.props.contentTree.description}
       </div>
     );
+    //TODO: Consider multiple styling options for the control bar. We are restricted to a single row at this moment
     return (
       <div className="oo-state-screen-audio oo-flex-column-parent">
         <div className={infoPanelClass}>

@@ -157,7 +157,6 @@ class SkipControls extends React.Component {
     }
 
     const playButtonDetails = Utils.getPlayButtonDetails(this.props.controller.state.playerState);
-
     const duration = Utils.getPropertyValue(this.props.controller, 'state.duration');
 
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO] = (
