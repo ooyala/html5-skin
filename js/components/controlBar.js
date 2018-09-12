@@ -176,7 +176,6 @@ var ControlBar = createReactClass({
       if (this.isMobile) {
         this.props.controller.startHideControlBarTimer();
         evt.stopPropagation(); // W3C
-        evt.cancelBubble = true; // IE
         if (!this.props.controller.state.volumeState.volumeSliderVisible) {
           this.props.controller.showVolumeSliderBar();
         } else {
@@ -709,7 +708,7 @@ var ControlBar = createReactClass({
           )}
           forceShowButtons={true}
           maxWidth={200}
-          className={'oo-absolute-centered'}
+          className={'oo-absolute-centered oo-control-bar-item'}
           config={this.props.controller.state.skipControls}
           language={this.props.language}
           localizableStrings={this.props.localizableStrings}
@@ -880,13 +879,6 @@ var ControlBar = createReactClass({
       }
       tooltipAlignments[collapsedControlBarItems[k].name] = alignment;
       var item = controlItemTemplates[collapsedControlBarItems[k].name];
-      if (this.props.equalSpacing) {
-        item = (
-          <div className="oo-flex-row" key={collapsedControlBarItems[k].name}>
-            {item}
-          </div>
-        );
-      }
       finalControlBarItems.push(item);
     }
 
@@ -907,6 +899,10 @@ var ControlBar = createReactClass({
       controlBarStyle.height = this.props.height;
     }
 
+    var wrapperClass = ClassNames('oo-control-bar-items-wrapper', {
+      'oo-flex-row-parent': this.props.audioOnly
+    });
+
     return (
       <div
         className={controlBarClass}
@@ -917,7 +913,7 @@ var ControlBar = createReactClass({
         onTouchEnd={this.handleControlBarMouseUp}>
         {!this.props.hideScrubberBar ? <ScrubberBar {...this.props} /> : null}
 
-        <div className="oo-control-bar-items-wrapper oo-flex-row-parent">
+        <div className={wrapperClass}>
           {controlBarItems}
         </div>
       </div>
@@ -948,7 +944,6 @@ ControlBar.propTypes = {
   hideScrubberBar: PropTypes.bool,
   audioOnly: PropTypes.bool,
   animatingControlBar: PropTypes.bool,
-  equalSpacing: PropTypes.bool,
   controlBarItems: PropTypes.array,
   isLiveStream: PropTypes.bool,
   controlBarVisible: PropTypes.bool,

@@ -44,7 +44,6 @@ VolumePanel.propTypes = {
   hideVolumeControls: PropTypes.bool,
   hideScrubberBar: PropTypes.bool,
   audioOnly: PropTypes.bool,
-  equalSpacing: PropTypes.bool,
   isLiveStream: PropTypes.bool,
   controlBarVisible: PropTypes.bool,
   playerState: PropTypes.string,

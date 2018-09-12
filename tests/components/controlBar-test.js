@@ -1217,14 +1217,14 @@ describe('ControlBar', function() {
       expect(wrapper.find('.oo-skip-controls').length).toBe(1);
     });
 
-    it('tests equal spacing', () => {
+    it('tests row format for audio only', () => {
       baseMockProps.skinConfig.buttons.desktopContent = [
         {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 },
         {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 }
       ];
-      baseMockProps.equalSpacing = true;
+      baseMockProps.audioOnly = true;
       var wrapper = Enzyme.mount(getControlBar());
-      expect(wrapper.find('.oo-flex-row').length).toBe(2);
+      expect(wrapper.find('.oo-flex-row-parent').length).toBe(1);
     });
 
     it('tests audio only does not use oo-animating-control-bar class', () => {

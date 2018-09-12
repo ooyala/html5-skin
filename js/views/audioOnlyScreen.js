@@ -25,8 +25,7 @@ class AudioOnlyScreen extends React.Component {
       color: this.props.skinConfig.startScreen.titleFont.color
     };
     const infoPanelClass = ClassNames({
-      'oo-state-screen-audio-title': true,
-      'oo-flex-column': true
+      'oo-state-screen-audio-title': true
     });
     const titleClass = ClassNames({
       'oo-state-screen-audio-info': true
@@ -51,11 +50,10 @@ class AudioOnlyScreen extends React.Component {
         <div className={infoPanelClass}>
           {titleMetadata}
         </div>
-        <div className="oo-interactive-container oo-flex-column oo-flex-column-parent">
+        <div className="oo-interactive-container">
           <ControlBar
             {...this.props}
             audioOnly={true}
-            equalSpacing={true}
             hideVolumeControls={true}
             hideScrubberBar={true}
             controlBarVisible={true}
@@ -65,7 +63,7 @@ class AudioOnlyScreen extends React.Component {
             clickToVolumeScreen={true}
           />
         </div>
-        <div className="oo-interactive-container oo-flex-column">
+        <div className="oo-interactive-container">
           <div className="oo-scrubber-bar-parent oo-flex-row-parent">
             <span className="oo-scrubber-bar-current-time">{this.props.playheadTime}</span>
             <ScrubberBar {...this.props}

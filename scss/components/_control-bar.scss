@@ -12,6 +12,16 @@
   pointer-events: auto;
 
   .oo-control-bar-items-wrapper {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    flex-flow: row nowrap;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    white-space: nowrap;
     margin-top: 5px;
 
     .oo-popover-button-container {
@@ -32,11 +42,11 @@
       opacity: 1;
     }
 
-    & .oo-control-bar-item:first-child {
+    & > .oo-control-bar-item:first-child {
       padding-left:0 !important;
     }
 
-    & .oo-control-bar-item:last-child {
+    & > .oo-control-bar-item:last-child {
       padding-right:0 !important;
     }
 

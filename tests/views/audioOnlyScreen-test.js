@@ -117,7 +117,6 @@ describe('Audio Only Screen', () => {
 
     var props = controlBar.props();
     expect(props.audioOnly).toBe(true);
-    expect(props.equalSpacing).toBe(true);
     expect(props.hideVolumeControls).toBe(true);
     expect(props.hideScrubberBar).toBe(true);
     expect(props.controlBarVisible).toBe(true);
