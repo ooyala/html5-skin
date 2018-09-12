@@ -91,6 +91,7 @@ describe('Controller', function() {
     document.body.innerHTML =
       '<div id=' + elementId + '>' + '  <div class="oo-player-skin">' + videoElement + '</div>' + '</div>';
     controller = new Html5Skin(OO.mb, 'id');
+    controller.state.mainVideoContainer = $(elementId);
     controller.state.mainVideoElement = mockDomElement;
     controller.state.mainVideoInnerWrapper = $('<div/>');
     controller.state.mainVideoElementContainer = mockDomElement;
@@ -1525,6 +1526,23 @@ describe('Controller', function() {
 
       controller.setAspectRatio();
       expect(controller.state.mainVideoInnerWrapper.css('padding-top')).toBeFalsy();
+    });
+
+    it('sets a height of 138px if height was not provided for an audio only player', () => {
+      //jsdom does not calculate layouts so let's overwrite the jquery height function to see if the height changed
+      var height;
+      var originalHeightFunc = controller.state.mainVideoContainer.height;
+      controller.state.mainVideoContainer.height = (h) => {
+        height = h;
+      };
+      controller.loadConfigData('customerUi', {
+        audio: {
+          audioOnly: true
+        }
+      }, {}, {}, {});
+
+      expect(height).toBe('138px');
+      controller.state.mainVideoContainer.height = originalHeightFunc;
     });
   });
 });

@@ -16,6 +16,7 @@ var Localization = Bulk('./config', ['languageFiles/*.json']);
 OO.plugin('Html5Skin', function(OO, _, $, W) {
   // Check if the player is at least v4. If not, the skin cannot load.
   var UNSUPPORTED_PLAYER_VERSION = 3;
+  const AUDIO_ONLY_DEFAULT_HEIGHT = '138px';
 
   if (!OO.playerParams.core_version || OO.playerParams.core_version <= UNSUPPORTED_PLAYER_VERSION) {
     console.error('Html5Skin requires at least player version 4.');
@@ -1643,6 +1644,13 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.mainVideoInnerWrapper.addClass('oo-video-player');
       } else {
         this.state.mainVideoInnerWrapper.removeClass('oo-video-player');
+        //If height was not provided for an audio only player, set a height of 138px.
+        //Note that our debug page that QA uses does not currently set a height
+        //138px was the value recommended by Fernando. See JIRA ticket PLAYER-4170
+        var containerHeight = this.state.mainVideoContainer.height();
+        if (!containerHeight) {
+          this.state.mainVideoContainer.height(AUDIO_ONLY_DEFAULT_HEIGHT);
+        }
       }
 
       this.mb.publish(OO.EVENTS.SKIN_CONFIG_LOADED, this.state.config);
