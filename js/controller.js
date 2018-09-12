@@ -16,7 +16,6 @@ var Localization = Bulk('./config', ['languageFiles/*.json']);
 OO.plugin('Html5Skin', function(OO, _, $, W) {
   // Check if the player is at least v4. If not, the skin cannot load.
   var UNSUPPORTED_PLAYER_VERSION = 3;
-  const AUDIO_ONLY_DEFAULT_HEIGHT = '138px';
 
   if (!OO.playerParams.core_version || OO.playerParams.core_version <= UNSUPPORTED_PLAYER_VERSION) {
     console.error('Html5Skin requires at least player version 4.');
@@ -1649,7 +1648,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         //138px was the value recommended by Fernando. See JIRA ticket PLAYER-4170
         var containerHeight = this.state.mainVideoContainer.height();
         if (!containerHeight) {
-          this.state.mainVideoContainer.height(AUDIO_ONLY_DEFAULT_HEIGHT);
+          this.state.mainVideoContainer.height(CONSTANTS.UI.AUDIO_ONLY_DEFAULT_HEIGHT);
         }
       }
 

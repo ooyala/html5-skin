@@ -1541,7 +1541,7 @@ describe('Controller', function() {
         }
       }, {}, {}, {});
 
-      expect(height).toBe('138px');
+      expect(height).toBe(CONSTANTS.UI.AUDIO_ONLY_DEFAULT_HEIGHT);
       controller.state.mainVideoContainer.height = originalHeightFunc;
     });
   });

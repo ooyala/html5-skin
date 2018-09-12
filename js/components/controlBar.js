@@ -703,7 +703,7 @@ var ControlBar = createReactClass({
           key={CONSTANTS.CONTROL_BAR_KEYS.SKIP_CONTROLS}
           buttonConfig={Utils.getPropertyValue(
             this.props.skinConfig,
-            'skipControls.controlBarButtons',
+            'skipControls.controlBarSkipControls',
             {}
           )}
           forceShowButtons={true}

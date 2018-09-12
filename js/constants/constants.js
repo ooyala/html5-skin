@@ -280,7 +280,8 @@ var CONSTANTS = {
     REQUEST_PREVIOUS_TIME_THRESHOLD: 1500,
     // When the previous video button is clicked, if the playhead value (in seconds) is
     // below this constant the controller will request the previous video instead of rewinding
-    REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD: 2
+    REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD: 2,
+    AUDIO_ONLY_DEFAULT_HEIGHT: '138px'
   },
 
   PLAYBACK_SPEED: {
