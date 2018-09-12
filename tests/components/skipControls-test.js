@@ -256,12 +256,6 @@ describe('SkipControls', function() {
     expect(wrapper.find('.oo-play-pause').hostNodes().length).toBe(1);
   });
 
-  it('should render compact skip controls when audio only', function() {
-    props.maxWidth = 300;
-    renderComponent();
-    expect(wrapper.getDOMNode().style.maxWidth).toBe('300px');
-  });
-
   it('should NOT render buttons that are disabled in the skin config', function() {
     enableAllButtons();
     props.skinConfig.skipControls.buttons.skipBackward.enabled = false;

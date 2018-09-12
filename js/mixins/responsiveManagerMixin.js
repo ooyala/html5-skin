@@ -43,7 +43,7 @@ var ResponsiveManagerMixin = {
 
     var key;
     if (this.props.controller.state.audioOnly) {
-      key = "audioOnly";
+      key = "audio-only-xs";
       breakpointData.classes[breakpoints[key].name] = true;
       breakpointData.ids[breakpoints[key].id] = true;
     } else {

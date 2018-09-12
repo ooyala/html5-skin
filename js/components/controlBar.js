@@ -703,12 +703,11 @@ var ControlBar = createReactClass({
           key={CONSTANTS.CONTROL_BAR_KEYS.SKIP_CONTROLS}
           buttonConfig={Utils.getPropertyValue(
             this.props.skinConfig,
-            'skipControls.buttonsWithPlayPause',
+            'skipControls.controlBarButtons',
             {}
           )}
           forceShowButtons={true}
-          maxWidth={200}
-          className={'oo-absolute-centered oo-control-bar-item'}
+          className="oo-absolute-centered oo-control-bar-item"
           config={this.props.controller.state.skipControls}
           language={this.props.language}
           localizableStrings={this.props.localizableStrings}

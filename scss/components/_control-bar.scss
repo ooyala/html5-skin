@@ -91,6 +91,10 @@
       cursor: auto;
     }
 
+    .oo-control-bar-item.oo-skip-controls {
+      max-width: 200px;
+    }
+
     a.oo-control-bar-item {
       display: block;
     }

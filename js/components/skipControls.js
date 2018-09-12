@@ -308,15 +308,9 @@ class SkipControls extends React.Component {
     });
     const buttonTemplate = this.getButtonTemplate();
 
-    const skipControlsStyle = {};
-    if (this.props.maxWidth) {
-      skipControlsStyle.maxWidth = this.props.maxWidth;
-    }
-
     return (
       <div
         ref={this.storeRef}
-        style={skipControlsStyle}
         className={className}
         onMouseEnter={this.onMouseEnter}
         onFocus={this.props.onFocus}
