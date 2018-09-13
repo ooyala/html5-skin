@@ -1476,13 +1476,13 @@ describe('Controller', function() {
 
   describe('Chromecast functionality', function() {
     it('test that onChromecastAvailable sets the appropriate variable', function() {
-      expect(controller.state.chromecastAvailable).toBe(false);
+      expect(controller.state.chromecastAvailable).toBe(undefined);
       controller.onChromecastAvailable();
       expect(controller.state.chromecastAvailable).toBe(true);
     });
 
     it('test that we update the chromecast icon state with the callbacks', function() {
-      expect(controller.state.chromecastConnected).toBe(false);
+      expect(controller.state.chromecastConnected).toBe(undefined);
       //the calls will be repeated to double check that we aren't just toggling the state
       controller.onChromecastStartCast();
       expect(controller.state.chromecastConnected).toBe(true);
