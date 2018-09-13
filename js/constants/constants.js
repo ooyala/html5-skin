@@ -118,7 +118,8 @@ var CONSTANTS = {
     UNDEFINED_LANGUAGE: 'Undefined language',
     NO_LINGUISTIC_CONTENT: 'No linguistic content',
     UNCODED_LANGUAGES: 'Uncoded languages',
-    MULTIPLE_LANGUAGES: 'Multiple languages'
+    MULTIPLE_LANGUAGES: 'Multiple languages',
+    CHROMECAST: 'Chromecast'
   },
 
   ARIA_LABELS: {
@@ -166,6 +167,7 @@ var CONSTANTS = {
     PLAYBACK_SPEED: MACROS.RATE + 'x Playback Speed',
     PLAYBACK_SPEED_OPTION: 'Speed',
     NORMAL_SPEED: 'Normal Speed',
+    CHROMECAST: 'Chromecast'
   },
 
   CONTROL_BAR_KEYS: {

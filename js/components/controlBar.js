@@ -422,11 +422,6 @@ var ControlBar = createReactClass({
       'oo-selected': this.props.controller.state.multiAudioOptions.showPopover
     });
 
-    var chromecastClass = ClassNames({
-      'oo-chromecast-disconnected': true,
-      'oo-chromecast-connected': false
-    });
-
     var selectedStyle = {};
     selectedStyle['color'] = this.props.skinConfig.general.accentColor ?
       this.props.skinConfig.general.accentColor
@@ -608,7 +603,6 @@ var ControlBar = createReactClass({
         <ControlButton
           {...commonButtonProps}
           key={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
-          className={chromecastClass}
           focusId={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
           ariaHidden={true}
           icon={castIcon}
