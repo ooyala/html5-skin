@@ -2,7 +2,6 @@
 .oo-skip-controls {
   $oo-skip-controls-btn-size: 1.52em;
   @include flex-center-children(row);
-  @include absolute-center;
   @include vendor-prefixes (transition, $fade-up-transition);
   font-size: 14px;
   pointer-events: none;

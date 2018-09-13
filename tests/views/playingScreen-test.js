@@ -16,6 +16,7 @@ var Utils = require('../../js/components/utils');
 var CONSTANTS = require('../../js/constants/constants');
 
 import {PlayingScreen} from '../../js/views/playingScreen';
+const ControlBar = require('../../js/components/controlBar');
 
 describe('PlayingScreen', function() {
   var mockController, mockSkinConfig, closedCaptionOptions;
@@ -31,6 +32,8 @@ describe('PlayingScreen', function() {
         handleVrPlayerMouseUp={() => {}}
         currentPlayhead={0}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
         cancelHideControlBarTimer={() => {
           if (mockController) {
             mockController.cancelTimer();
@@ -87,7 +90,8 @@ describe('PlayingScreen', function() {
       rewindOrRequestPreviousVideo: function() {},
       requestNextVideo: function() {},
       showControlBar: function() {},
-      setVolume: function() {}
+      setVolume: function() {},
+      togglePlayPause: () => {}
     };
     mockSkinConfig = Utils.clone(skinConfig);
     closedCaptionOptions = {
@@ -121,6 +125,8 @@ describe('PlayingScreen', function() {
         handleVrPlayerMouseMove={handleVrPlayerMouseMove}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp.bind(this)}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
 
@@ -162,6 +168,8 @@ describe('PlayingScreen', function() {
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         closedCaptionOptions={closedCaptionOptions}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
     wrapper.instance().setState({
@@ -207,6 +215,8 @@ describe('PlayingScreen', function() {
             handleVrPlayerMouseUp={handleVrPlayerMouseUp}
             handleTouchEnd={handleTouchEnd}
             playerState={CONSTANTS.STATE.PLAYING}
+            totalTime={"60:00"}
+            playheadTime={"00:00"}
         />);
 
     var screen = wrapper.find('.oo-state-screen-selectable');
@@ -249,6 +259,8 @@ describe('PlayingScreen', function() {
             handleVrPlayerMouseUp={onTouchEnd}
             handleTouchEnd={handleTouchEnd}
             playerState={CONSTANTS.STATE.PLAYING}
+            totalTime={"60:00"}
+            playheadTime={"00:00"}
         />);
 
     var screen = wrapper.find('.oo-state-screen-selectable');
@@ -281,9 +293,9 @@ describe('PlayingScreen', function() {
         closedCaptionOptions = {closedCaptionOptions}
         handleVrPlayerMouseUp = {handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
-        startHideControlBarTimer={() => {
-          moved = true;
-        }}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+        startHideControlBarTimer={() => {}}
       />);
 
     var screen1 = wrapper.find('.oo-interactive-container');
@@ -312,6 +324,8 @@ describe('PlayingScreen', function() {
         closedCaptionOptions={closedCaptionOptions}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
 
@@ -358,6 +372,8 @@ describe('PlayingScreen', function() {
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         handleTouchEnd={handleTouchEnd}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
     const screen = wrapper.find('.oo-state-screen-selectable');
@@ -395,6 +411,8 @@ describe('PlayingScreen', function() {
         handleVrPlayerClick={handleVrPlayerClick}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
     var screen = wrapper.find('.oo-state-screen-selectable');
@@ -419,7 +437,10 @@ describe('PlayingScreen', function() {
         componentWidth={400}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
-        closedCaptionOptions={closedCaptionOptions} />, node
+        closedCaptionOptions={closedCaptionOptions}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+      />, node
     );
 
     Enzyme.mount(
@@ -430,7 +451,10 @@ describe('PlayingScreen', function() {
         componentWidth={800}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
-        closedCaptionOptions={closedCaptionOptions} />, node
+        closedCaptionOptions={closedCaptionOptions}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+      />, node
     );
 
     wrapper.unmount();
@@ -447,6 +471,8 @@ describe('PlayingScreen', function() {
         closedCaptionOptions={closedCaptionOptions}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />);
     var unmuteIcon = wrapper.find(UnmuteIcon);
     expect(unmuteIcon).toBeTruthy();
@@ -463,6 +489,8 @@ describe('PlayingScreen', function() {
         closedCaptionOptions={closedCaptionOptions}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />);
     var unmuteIcons = wrapper.find(UnmuteIcon);
     expect(unmuteIcons.length).toBe(0);
@@ -479,6 +507,8 @@ describe('PlayingScreen', function() {
         closedCaptionOptions={{}}
         handleVrPlayerMouseUp={function() {}}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
     expect(wrapper.props().controller.state.controlBarVisible).toBe(true);
@@ -491,9 +521,12 @@ describe('PlayingScreen', function() {
         closedCaptionOptions={{}}
         handleVrPlayerMouseUp={function() {}}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
     expect(wrapper.props().controller.state.controlBarVisible).toBe(false);
+    expect(wrapper.find(ControlBar).props().animatingControlBar).toBe(true);
   });
 
   it('should render skip controls when enabled in skin config', function() {

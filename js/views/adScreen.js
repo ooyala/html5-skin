@@ -137,6 +137,8 @@ var AdScreen = createReactClass({
       controlBar: (
         <ControlBar
           {...this.props}
+          height={this.props.skinConfig.controlBar.height}
+          animatingControlBar={true}
           controlBarVisible={showControlBar}
           playerState={this.props.playerState}
           key="controlBar"

@@ -193,7 +193,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         enabled: null,
         showPopover: false,
         autoFocus: false
-      }
+      },
+
+      audioOnly: false
     };
 
     this.init();
@@ -1040,6 +1042,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
       } else {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
+        //TODO: END_SCREEN_SHOWN is not consumed by anyone, should we remove? If not, should
+        //we publish this when the end screen is actually shown?
         this.mb.publish(OO.EVENTS.END_SCREEN_SHOWN);
       }
       if (!Utils.canRenderSkin()) {
@@ -1618,6 +1622,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       var uiLanguage = Utils.getLanguageToUse(this.state.config);
       this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
 
+      this.state.audioOnly = this.state.config.audio.audioOnly;
+
       // load player
       this.skin = ReactDOM.render(
         React.createElement(Skin, {
@@ -1632,6 +1638,19 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       );
 
       this.state.configLoaded = true;
+
+      if (!this.state.audioOnly) {
+        this.state.mainVideoInnerWrapper.addClass('oo-video-player');
+      } else {
+        this.state.mainVideoInnerWrapper.removeClass('oo-video-player');
+        //If height was not provided for an audio only player, set a height of 138px.
+        //Note that our debug page that QA uses does not currently set a height
+        //138px was the value recommended by Fernando. See JIRA ticket PLAYER-4170
+        var containerHeight = this.state.mainVideoContainer.height();
+        if (!containerHeight) {
+          this.state.mainVideoContainer.height(CONSTANTS.UI.AUDIO_ONLY_DEFAULT_HEIGHT);
+        }
+      }
 
       this.mb.publish(OO.EVENTS.SKIN_CONFIG_LOADED, this.state.config);
 
@@ -2196,8 +2215,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.closeScreen();
       } else {
         if (
-          this.state.playerState === CONSTANTS.STATE.PLAYING ||
-          this.state.playerState === CONSTANTS.STATE.START
+          this.state.playerState === CONSTANTS.STATE.PLAYING
         ) {
           this.pausedCallback = function() {
             this.state.pluginsElement.addClass('oo-overlay-blur');
@@ -2213,7 +2231,13 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       }
     },
 
-    toggleScreen: function(screen) {
+    /**
+     * Toggles the provided screen. Will switch to the provided screen
+     * if that screen is not active, otherwise it will close the screen.
+     * @param screen The screen to toggle
+     * @param {boolean} doNotPause Set to true to avoid pausing when toggling the screen
+     */
+    toggleScreen: function(screen, doNotPause) {
       this.isNewVrVideo = false;
       if (this.state.screenToShow === screen) {
         this.closeScreen();
@@ -2224,7 +2248,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
             this.state.screenToShow = screen;
             this.renderSkin();
           }.bind(this);
-          this.mb.publish(OO.EVENTS.PAUSE);
+          if (doNotPause) {
+            this.pausedCallback();
+            this.pausedCallback = null;
+          } else {
+            this.mb.publish(OO.EVENTS.PAUSE);
+          }
         } else {
           this.state.screenToShow = screen;
           this.state.pluginsElement.addClass('oo-overlay-blur');
@@ -2456,6 +2485,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
       } else if (this.state.playerState === CONSTANTS.STATE.END) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
+      } else if (this.state.playerState === CONSTANTS.STATE.START) {
+        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      } else {
+        this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       }
       this.renderSkin();
     },
@@ -2660,7 +2693,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     startHideControlBarTimer: function() {
-      if (this.skin.props.skinConfig.controlBar.autoHide === true) {
+      if (this.skin.props.skinConfig.controlBar.autoHide === true && !this.state.audioOnly) {
         this.cancelTimer();
         var timer = setTimeout(
           function() {
@@ -2683,13 +2716,15 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     hideControlBar: function() {
-      var oldState = this.state.controlBarVisible;
-      this.state.controlBarVisible = false;
-      if (Utils.isAndroid()) {
-        this.hideVolumeSliderBar();
-      }
-      if (this.state.controlBarVisible !== oldState) {
-        this.renderSkin();
+      if (!this.state.audioOnly) {
+        var oldState = this.state.controlBarVisible;
+        this.state.controlBarVisible = false;
+        if (Utils.isAndroid()) {
+          this.hideVolumeSliderBar();
+        }
+        if (this.state.controlBarVisible !== oldState) {
+          this.renderSkin();
+        }
       }
     },
 
@@ -2720,7 +2755,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     // set Main Video Element Wrapper padding-top to aspect ratio
     setAspectRatio: function() {
-      if (this.state.mainVideoAspectRatio > 0) {
+      if (this.state.mainVideoAspectRatio > 0 && !this.state.audioOnly) {
         this.state.mainVideoInnerWrapper.css('padding-top', this.state.mainVideoAspectRatio + '%');
       }
     },

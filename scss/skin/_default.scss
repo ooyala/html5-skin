@@ -14,8 +14,6 @@
   width: 100%;
   height:0;
   outline: none;
-  // default aspect ratio 16:9
-  @include set-aspect-ratio(16, 9);
 
   // other video objects
   & > div,
@@ -56,6 +54,11 @@
   }
 }
 
+.oo-video-player {
+  // default aspect ratio 16:9
+  @include set-aspect-ratio(16, 9);
+}
+
 // player skin container
 .oo-player-skin {
   @extend .oo-expand;
@@ -81,4 +84,8 @@ video {
 
 .oo-z-index-auto {
   z-index:auto !important;
+}
+
+.oo-audio-only {
+  padding: 12px;
 }

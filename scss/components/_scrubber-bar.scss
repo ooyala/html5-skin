@@ -1,3 +1,18 @@
+.oo-scrubber-bar-parent {
+
+  .oo-scrubber-bar-current-time {
+    padding-bottom: 5px;
+    padding-right: 10px;
+    font-size: 0.8em;
+  }
+
+  .oo-scrubber-bar-duration {
+    padding-bottom: 5px;
+    padding-left: 10px;
+    font-size: 0.8em;
+  }
+}
+
 .oo-scrubber-bar-container {
   padding: 0;
   margin: 0;
@@ -17,14 +32,18 @@
       background-color: $gray-lighter;
       height: $scrubber-bar-height;
       width: 100%;
-      margin: 0;
-      position: absolute;
+      margin: 0 0 2px 0;
       cursor: pointer;
       padding: 0;
       bottom: 50%;
       border-radius: 3px;
       transform: translateY(50%);
       @include vendor-prefixes(transition, all 0.15s);
+    }
+
+    .oo-scrubber-bar-video {
+      position: absolute;
+      margin: 0;
     }
 
     .oo-scrubber-bar:focus {

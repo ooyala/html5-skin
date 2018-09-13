@@ -528,4 +528,33 @@ describe('ScrubberBar', function() {
     });
   });
 
+  it('tests audio only does not use oo-scrubber-bar-video class', () => {
+    var mockController = {
+      state: {
+        isMobile: false
+      }
+    };
+
+    var wrapper = Enzyme.mount(
+      <ScrubberBar
+        controlBarVisible={true}
+        seeking={false}
+        controller={mockController}
+        skinConfig={skinConfig}
+        />
+    );
+    expect(wrapper.find('.oo-scrubber-bar-video').length).toBe(1);
+
+    wrapper = Enzyme.mount(
+      <ScrubberBar
+        controlBarVisible={true}
+        seeking={false}
+        controller={mockController}
+        skinConfig={skinConfig}
+        audioOnly={true}
+        />
+    );
+    expect(wrapper.find('.oo-scrubber-bar-video').length).toBe(0);
+  });
+
 });

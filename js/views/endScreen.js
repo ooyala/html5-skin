@@ -123,6 +123,8 @@ var EndScreen = createReactClass({
         <div className="oo-interactive-container">
           <ControlBar
             {...this.props}
+            height={this.props.skinConfig.controlBar.height}
+            animatingControlBar={true}
             controlBarVisible={this.state.controlBarVisible}
             playerState={this.props.playerState}
             isLiveStream={this.props.isLiveStream}
