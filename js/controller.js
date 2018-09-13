@@ -1136,16 +1136,35 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       }
     },
 
+    /**
+     * Callback for event OO.EVENTS.CHROMECAST_AVAILABLE. It records that
+     * chromecasting is available on this player.
+     * @private
+     * @param  {string} event The event name OO.EVENTS.CHROMECAST_AVAILABLE
+     */
     onChromecastAvailable: function(event) {
       this.state.chromecastAvailable = true;
     },
 
+    /**
+     * Callback for event OO.EVENTS.CHROMECAST_START_CAST. It records that
+     * the player is connected to a chromecast receiver and should update the UI.
+     * @private
+     * @param  {string} event The event name OO.EVENTS.CHROMECAST_START_CAST
+     */
     onChromecastStartCast: function(event) {
       this.state.chromecastConnected = true;
       this.renderSkin();
-      //todo bring up ui permanently
+      //TODO bring up ui permanently
     },
 
+    /**
+     * Callback for event OO.EVENTS.CHROMECAST_END_CAST. It records that
+     * the player has disconnected from a chromecast receiver and should update
+     * the UI.
+     * @private
+     * @param  {string} event The event name OO.EVENTS.CHROMECAST_END_CAST
+     */
     onChromecastEndCast: function(event) {
       this.state.chromecastConnected = false;
       this.renderSkin();

@@ -1443,4 +1443,26 @@ describe('Controller', function() {
       )).toBe(true);
     });
   });
+
+  describe('Chromecast functionality', function() {
+    it('test that onChromecastAvailable sets the appropriate variable', function() {
+      expect(controller.state.chromecastAvailable).toBe(false);
+      controller.onChromecastAvailable();
+      expect(controller.state.chromecastAvailable).toBe(true);
+    });
+
+    it('test that we update the chromecast icon state with the callbacks', function() {
+      expect(controller.state.chromecastConnected).toBe(false);
+      //the calls will be repeated to double check that we aren't just toggling the state
+      controller.onChromecastStartCast();
+      expect(controller.state.chromecastConnected).toBe(true);
+      controller.onChromecastStartCast();
+      expect(controller.state.chromecastConnected).toBe(true);
+
+      controller.onChromecastEndCast();
+      expect(controller.state.chromecastConnected).toBe(false);
+      controller.onChromecastEndCast();
+      expect(controller.state.chromecastConnected).toBe(false);
+    });
+  });
 });
