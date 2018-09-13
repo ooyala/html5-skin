@@ -16,6 +16,7 @@ var Utils = require('../../js/components/utils');
 var CONSTANTS = require('../../js/constants/constants');
 
 import {PlayingScreen} from '../../js/views/playingScreen';
+const ControlBar = require('../../js/components/controlBar');
 
 describe('PlayingScreen', function() {
   var mockController, mockSkinConfig, closedCaptionOptions;
@@ -31,6 +32,8 @@ describe('PlayingScreen', function() {
         handleVrPlayerMouseUp={() => {}}
         currentPlayhead={0}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
         cancelHideControlBarTimer={() => {
           if (mockController) {
             mockController.cancelTimer();
@@ -87,7 +90,8 @@ describe('PlayingScreen', function() {
       rewindOrRequestPreviousVideo: function() {},
       requestNextVideo: function() {},
       showControlBar: function() {},
-      setVolume: function() {}
+      setVolume: function() {},
+      togglePlayPause: () => {}
     };
     mockSkinConfig = Utils.clone(skinConfig);
     closedCaptionOptions = {
@@ -121,6 +125,8 @@ describe('PlayingScreen', function() {
         handleVrPlayerMouseMove={handleVrPlayerMouseMove}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp.bind(this)}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
 
@@ -162,6 +168,8 @@ describe('PlayingScreen', function() {
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         closedCaptionOptions={closedCaptionOptions}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
     wrapper.instance().setState({
@@ -194,6 +202,9 @@ describe('PlayingScreen', function() {
     var handleVrPlayerMouseUp = function(e) {
       isInHandleTouchEnd = true;
     };
+    var handleTouchEnd = function() {
+      mockController.togglePlayPause();
+    };
 
     // Render pause screen into DOM
     var wrapper = Enzyme.mount(
@@ -202,7 +213,10 @@ describe('PlayingScreen', function() {
             skinConfig={mockSkinConfig}
             closedCaptionOptions={closedCaptionOptions}
             handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+            handleTouchEnd={handleTouchEnd}
             playerState={CONSTANTS.STATE.PLAYING}
+            totalTime={"60:00"}
+            playheadTime={"00:00"}
         />);
 
     var screen = wrapper.find('.oo-state-screen-selectable');
@@ -213,9 +227,9 @@ describe('PlayingScreen', function() {
 
   //TODO: Add onTouchMove testing by event (in the current version of JEST it does not simulate)
   it('creates a PlayingScreen, move video and checks touchEnd', function() {
-    var isTouchEnd = false;
-    var isTouchStart = false;
-    var clicked = false;
+    let isTouchEnd = false;
+    let isTouchStart = false;
+    let clicked = false;
 
     mockController.state.videoVr = false;
     mockController.state.isMobile = true;
@@ -223,13 +237,16 @@ describe('PlayingScreen', function() {
       clicked = true;
     };    
 
-    var onTouchEnd = function(e) {
+    const handleTouchEnd = function() {
+      mockController.togglePlayPause();
+    };
+    const onTouchEnd = function(e) {
         isTouchEnd = true;
     };
-    var onTouchStart = function(e) {
+    const onTouchStart = function(e) {
       isTouchStart = true;
-    }
-    var onTouchMove = function(e) {}
+    };
+    const onTouchMove = function(e) {};
 
     // Render pause screen into DOM
     var wrapper = Enzyme.mount(
@@ -240,7 +257,10 @@ describe('PlayingScreen', function() {
             handleVrPlayerMouseDown={onTouchStart}
             handleVrPlayerMouseMove={onTouchMove}
             handleVrPlayerMouseUp={onTouchEnd}
+            handleTouchEnd={handleTouchEnd}
             playerState={CONSTANTS.STATE.PLAYING}
+            totalTime={"60:00"}
+            playheadTime={"00:00"}
         />);
 
     var screen = wrapper.find('.oo-state-screen-selectable');
@@ -273,9 +293,9 @@ describe('PlayingScreen', function() {
         closedCaptionOptions = {closedCaptionOptions}
         handleVrPlayerMouseUp = {handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
-        startHideControlBarTimer={() => {
-          moved = true;
-        }}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+        startHideControlBarTimer={() => {}}
       />);
 
     var screen1 = wrapper.find('.oo-interactive-container');
@@ -304,6 +324,8 @@ describe('PlayingScreen', function() {
         closedCaptionOptions={closedCaptionOptions}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
 
@@ -320,8 +342,8 @@ describe('PlayingScreen', function() {
   });
 
   it('creates a PlayingScreen and check play&pause on mobile with click', function() {
-    var clicked = false;
-    var isMouseMove = true;
+    let clicked = false;
+    let isMouseMove = true;
 
     mockController.state.videoVr = true;
     mockController.state.isMobile = true;
@@ -332,22 +354,29 @@ describe('PlayingScreen', function() {
     };
     mockController.startHideControlBarTimer = function() {};
 
-    var handleVrPlayerClick = function() {
+    const handleVrPlayerClick = function() {
       isMouseMove = false;
     };
 
+    const handleTouchEnd = function() {
+      mockController.togglePlayPause();
+    };
+
     // Render pause screen into DOM
-    var wrapper = Enzyme.mount(
+    const wrapper = Enzyme.mount(
       <PlayingScreen
         controller = {mockController}
         skinConfig={mockSkinConfig}
         closedCaptionOptions = {closedCaptionOptions}
         handleVrPlayerClick={handleVrPlayerClick}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+        handleTouchEnd={handleTouchEnd}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
-    var screen = wrapper.find('.oo-state-screen-selectable');
+    const screen = wrapper.find('.oo-state-screen-selectable');
 
     screen.simulate('click');
     expect(clicked).toBe(false);
@@ -382,6 +411,8 @@ describe('PlayingScreen', function() {
         handleVrPlayerClick={handleVrPlayerClick}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
     var screen = wrapper.find('.oo-state-screen-selectable');
@@ -406,7 +437,10 @@ describe('PlayingScreen', function() {
         componentWidth={400}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
-        closedCaptionOptions={closedCaptionOptions} />, node
+        closedCaptionOptions={closedCaptionOptions}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+      />, node
     );
 
     Enzyme.mount(
@@ -417,7 +451,10 @@ describe('PlayingScreen', function() {
         componentWidth={800}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
-        closedCaptionOptions={closedCaptionOptions} />, node
+        closedCaptionOptions={closedCaptionOptions}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+      />, node
     );
 
     wrapper.unmount();
@@ -434,6 +471,8 @@ describe('PlayingScreen', function() {
         closedCaptionOptions={closedCaptionOptions}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />);
     var unmuteIcon = wrapper.find(UnmuteIcon);
     expect(unmuteIcon).toBeTruthy();
@@ -450,6 +489,8 @@ describe('PlayingScreen', function() {
         closedCaptionOptions={closedCaptionOptions}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />);
     var unmuteIcons = wrapper.find(UnmuteIcon);
     expect(unmuteIcons.length).toBe(0);
@@ -466,6 +507,8 @@ describe('PlayingScreen', function() {
         closedCaptionOptions={{}}
         handleVrPlayerMouseUp={function() {}}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
     expect(wrapper.props().controller.state.controlBarVisible).toBe(true);
@@ -478,9 +521,12 @@ describe('PlayingScreen', function() {
         closedCaptionOptions={{}}
         handleVrPlayerMouseUp={function() {}}
         playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
     expect(wrapper.props().controller.state.controlBarVisible).toBe(false);
+    expect(wrapper.find(ControlBar).props().animatingControlBar).toBe(true);
   });
 
   it('should render skip controls when enabled in skin config', function() {

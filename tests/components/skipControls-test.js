@@ -39,6 +39,18 @@ describe('SkipControls', function() {
     props.controller.state.duration = 60;
   };
 
+  const enableButtonsWithPlayPause = () => {
+    props.skinConfig.skipControls.enabled = true;
+    props.skinConfig.skipControls.buttonsWithPlayPause.previousVideo.enabled = true;
+    props.skinConfig.skipControls.buttonsWithPlayPause.skipBackward.enabled = true;
+    props.skinConfig.skipControls.buttonsWithPlayPause.skipForward.enabled = true;
+    props.skinConfig.skipControls.buttonsWithPlayPause.nextVideo.enabled = true;
+    props.skinConfig.skipControls.buttonsWithPlayPause.playPause.enabled = true;
+    props.config.hasPreviousVideos = true;
+    props.config.hasNextVideos = true;
+    props.controller.state.duration = 60;
+  };
+
   beforeEach(function() {
     wrapper = null;
     component = null;
@@ -69,6 +81,31 @@ describe('SkipControls', function() {
             nextVideo: {
               enabled: true,
               index: 4
+            },
+            playPause: {
+              enabled: false
+            }
+          },
+          buttonsWithPlayPause: {
+            previousVideo: {
+              enabled: true,
+              index: 1
+            },
+            skipBackward: {
+              enabled: true,
+              index: 2
+            },
+            playPause: {
+              enabled: true,
+              index: 3
+            },
+            skipForward: {
+              enabled: true,
+              index: 4
+            },
+            nextVideo: {
+              enabled: true,
+              index: 5
             }
           }
         }
@@ -94,7 +131,8 @@ describe('SkipControls', function() {
         requestNextVideo: () => {},
         setFocusedControl: () => {},
         cancelTimer: () => {},
-        startHideControlBarTimer: () => {}
+        startHideControlBarTimer: () => {},
+        togglePlayPause: () => {}
       },
       a11yControls: {
         seekBy: () => {}
@@ -189,6 +227,35 @@ describe('SkipControls', function() {
     expect(wrapper.find(ControlButton).length).toBe(4);
   });
 
+  it('should render prop buttons', function() {
+    props.buttonConfig = {
+      previousVideo: {
+        enabled: true,
+        index: 1
+      },
+      skipBackward: {
+        enabled: true,
+        index: 2
+      },
+      playPause: {
+        enabled: true,
+        index: 3
+      },
+      skipForward: {
+        enabled: true,
+        index: 4
+      },
+      nextVideo: {
+        enabled: true,
+        index: 5
+      }
+    };
+    enableButtonsWithPlayPause();
+    renderComponent();
+    expect(wrapper.find(ControlButton).length).toBe(5);
+    expect(wrapper.find('.oo-play-pause').hostNodes().length).toBe(1);
+  });
+
   it('should NOT render buttons that are disabled in the skin config', function() {
     enableAllButtons();
     props.skinConfig.skipControls.buttons.skipBackward.enabled = false;
@@ -245,6 +312,36 @@ describe('SkipControls', function() {
     props.currentPlayhead = 100;
     renderComponent();
     expect(wrapper.find('.oo-skip-forward').hostNodes().props().disabled).toBe(true);
+  });
+
+  it('should disable Skip Forward button when duration is 0', function() {
+    enableAllButtons();
+    props.forceShowButtons = true;
+    props.controller.state.duration = 0;
+    renderComponent();
+    expect(wrapper.find('.oo-skip-forward').hostNodes().props().disabled).toBe(true);
+  });
+
+  it('should disable Skip Backward button when duration is 0', function() {
+    enableAllButtons();
+    props.forceShowButtons = true;
+    props.controller.state.duration = 0;
+    renderComponent();
+    expect(wrapper.find('.oo-skip-backward').hostNodes().props().disabled).toBe(true);
+  });
+
+  it('should render all buttons if forceShowButtons is true', function() {
+    enableAllButtons();
+    props.controller.state.duration = 0;
+    props.config.hasPreviousVideos = false;
+    props.config.hasNextVideos = false;
+    props.forceShowButtons = true;
+    renderComponent();
+    expect(wrapper.find(ControlButton).length).toBe(5);
+    expect(wrapper.find('.oo-previous-video').hostNodes().length).toBe(1);
+    expect(wrapper.find('.oo-skip-backward').hostNodes().length).toBe(1);
+    expect(wrapper.find('.oo-skip-forward').hostNodes().length).toBe(1);
+    expect(wrapper.find('.oo-next-video').hostNodes().length).toBe(1);
   });
 
   it('should render appropriate Aria labels', function() {
@@ -335,6 +432,17 @@ describe('SkipControls', function() {
     renderComponent();
     wrapper.find('.oo-skip-forward').hostNodes().simulate('mouseDown');
     expect(parameters).toEqual([30, true, true]);
+  });
+
+  it('should call togglePlayPause() when clicking on play/pause button', function() {
+    const spy = jest.spyOn(props.controller, 'togglePlayPause');
+    enableAllButtons();
+    props.skinConfig.skipControls.buttons.playPause.enabled = true;
+    renderComponent();
+    expect(spy.mock.calls.length).toBe(0);
+    wrapper.find('.oo-play-pause').hostNodes().simulate('click');
+    expect(spy.mock.calls.length).toBe(1);
+    spy.mockRestore();
   });
 
 });

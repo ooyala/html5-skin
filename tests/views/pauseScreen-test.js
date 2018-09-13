@@ -20,6 +20,25 @@ import {PauseScreen} from '../../js/views/pauseScreen';
 describe('PauseScreen', function() {
   var mockController, mockContentTree, mockSkinConfig;
 
+  const handleVrPlayerClick = () => {};
+  const handleTouchEnd = () => {
+    mockController.togglePlayPause();
+  };
+
+  var getPauseScreen = () => {
+    return <PauseScreen
+        skinConfig={mockSkinConfig}
+        controller={mockController}
+        contentTree={mockContentTree}
+        handleVrPlayerClick={handleVrPlayerClick}
+        handleTouchEnd={handleTouchEnd}
+        closedCaptionOptions={{cueText: 'sample text'}}
+        playerState={CONSTANTS.STATE.PAUSE}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+      />
+  };
+
   beforeEach(function() {
     mockController = {
       state: {
@@ -60,7 +79,8 @@ describe('PauseScreen', function() {
       startHideControlBarTimer: function() {},
       rewindOrRequestPreviousVideo: function() {},
       requestNextVideo: function() {},
-      setVolume: function() {}
+      setVolume: function() {},
+      togglePlayPause: () => {}
     };
     mockContentTree = {
       title: 'title'
@@ -75,18 +95,8 @@ describe('PauseScreen', function() {
       clicked = true;
     };
 
-    var handleVrPlayerClick = function() {};
     // Render pause screen into DOM
-    var wrapper = Enzyme.mount(
-      <PauseScreen
-        skinConfig={mockSkinConfig}
-        controller={mockController}
-        contentTree={mockContentTree}
-        handleVrPlayerClick={handleVrPlayerClick}
-        closedCaptionOptions={{cueText: 'sample text'}}
-        playerState={CONSTANTS.STATE.PAUSE}
-      />
-    );
+    var wrapper = Enzyme.mount(getPauseScreen());
 
     var pauseIcon = wrapper.find('.oo-action-icon-pause');
     pauseIcon.simulate('click');
@@ -98,27 +108,18 @@ describe('PauseScreen', function() {
   });
 
   it('toggles play pause on touch end instead of click on mobile', function() {
-    var clicked = false;
+    let clicked = false;
 
     mockController.state.isMobile = true;
     mockController.togglePlayPause = function() {
       clicked = true;
     };
 
-    var handleVrPlayerClick = function() {};
-    // Render pause screen into DOM
-    var wrapper = Enzyme.mount(
-      <PauseScreen
-        skinConfig={mockSkinConfig}
-        controller={mockController}
-        contentTree={mockContentTree}
-        handleVrPlayerClick={handleVrPlayerClick}
-        closedCaptionOptions={{cueText: 'sample text'}}
-        playerState={CONSTANTS.STATE.PAUSE}
-      />
-    );
 
-    var stateScreen = wrapper.find('.oo-state-screen-selectable');
+    // Render pause screen into DOM
+    const wrapper = Enzyme.mount(getPauseScreen());
+
+    const stateScreen = wrapper.find('.oo-state-screen-selectable');
 
     stateScreen.simulate('click');
     expect(clicked).toBe(false);
@@ -131,17 +132,7 @@ describe('PauseScreen', function() {
     var spy = sinon.spy(mockController, 'addBlur');
     mockSkinConfig.pauseScreen.showTitle = true;
     mockContentTree.title = 'Video title';
-    var handleVrPlayerClick = function() {};
-    var wrapper = Enzyme.mount(
-      <PauseScreen
-        skinConfig={mockSkinConfig}
-        controller={mockController}
-        contentTree={mockContentTree}
-        handleVrPlayerClick={handleVrPlayerClick}
-        closedCaptionOptions={{cueText: 'sample text'}}
-        playerState={CONSTANTS.STATE.PAUSE}
-      />
-    );
+    var wrapper = Enzyme.mount(getPauseScreen());
 
     var underlay = wrapper.find('.oo-fading-underlay');
     expect(spy.callCount > 0).toBe(true);
@@ -152,17 +143,7 @@ describe('PauseScreen', function() {
     var spy = sinon.spy(mockController, 'addBlur');
     mockSkinConfig.pauseScreen.showDescription = true;
     mockContentTree.description = 'Video description';
-    var handleVrPlayerClick = function() {};
-    var wrapper = Enzyme.mount(
-      <PauseScreen
-        skinConfig={mockSkinConfig}
-        controller={mockController}
-        contentTree={mockContentTree}
-        handleVrPlayerClick={handleVrPlayerClick}
-        closedCaptionOptions={{cueText: 'sample text'}}
-        playerState={CONSTANTS.STATE.PAUSE}
-      />
-    );
+    var wrapper = Enzyme.mount(getPauseScreen());
 
     var underlay = wrapper.find('.oo-fading-underlay');
     // render gets called more than once due to a descriptino text state change when component is mounted
@@ -174,17 +155,7 @@ describe('PauseScreen', function() {
     var spy = sinon.spy(mockController, 'addBlur');
     mockSkinConfig.pauseScreen.showTitle = false;
     mockSkinConfig.pauseScreen.showDescription = false;
-    var handleVrPlayerClick = function() {};
-    var wrapper = Enzyme.mount(
-      <PauseScreen
-        skinConfig={mockSkinConfig}
-        controller={mockController}
-        contentTree={mockContentTree}
-        handleVrPlayerClick={handleVrPlayerClick}
-        closedCaptionOptions={{cueText: 'sample text'}}
-        playerState={CONSTANTS.STATE.PAUSE}
-      />
-    );
+    var wrapper = Enzyme.mount(getPauseScreen());
 
     var underlays = wrapper.find('.oo-fading-underlay');
     expect(underlays.length).toBe(0);
@@ -198,17 +169,7 @@ describe('PauseScreen', function() {
     mockSkinConfig.pauseScreen.showDescription = true;
     delete mockContentTree.title;
     delete mockContentTree.description;
-    var handleVrPlayerClick = function() {};
-    var wrapper = Enzyme.mount(
-      <PauseScreen
-        skinConfig={mockSkinConfig}
-        controller={mockController}
-        contentTree={mockContentTree}
-        handleVrPlayerClick={handleVrPlayerClick}
-        closedCaptionOptions={{cueText: 'sample text'}}
-        playerState={CONSTANTS.STATE.PAUSE}
-      />
-    );
+    var wrapper = Enzyme.mount(getPauseScreen());
 
     var underlays = wrapper.find('.oo-fading-underlay');
     expect(underlays.length).toBe(0);
@@ -228,6 +189,8 @@ describe('PauseScreen', function() {
         closedCaptionOptions={{ cueText: 'sample text' }}
         currentPlayhead={0}
         playerState={CONSTANTS.STATE.PAUSE}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
       />
     );
     mockSkinConfig.skipControls.enabled = false;

@@ -30,6 +30,19 @@ describe('ControlBar', function() {
   var baseMockController, baseMockProps;
   var defaultSkinConfig = JSON.parse(JSON.stringify(skinConfig));
 
+  var getControlBar = (state, width) => {
+    return <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={width ? width : 500}
+        playerState={state ? state : CONSTANTS.STATE.PLAYING}
+        isLiveStream={baseMockProps.isLiveStream}
+        videoQualityOptions={baseMockController.state.videoQualityOptions}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+      />;
+  };
+
   // TODO
   // Old unit tests should use the base mock controller and props
   // instead of defining them manually each time
@@ -56,6 +69,15 @@ describe('ControlBar', function() {
           selectedBitrate: {
             id: 'auto'
           }
+        },
+        scrubberBar: {
+          isHovering: false
+        },
+        isLiveStream: false,
+        duration: 60,
+        skipControls: {
+          hasPreviousVideos: false,
+          hasNextVideos: false
         }
       },
       cancelTimer: function() {},
@@ -64,7 +86,10 @@ describe('ControlBar', function() {
       setFocusedControl: function() {},
       startHideControlBarTimer: function() {},
       setPlaybackSpeed: function() {},
-      setVolume: function() {}
+      setVolume: function() {},
+      rewindOrRequestPreviousVideo: () => {},
+      requestNextVideo: () => {},
+      togglePlayPause: () => {}
     };
 
     baseMockProps = {
@@ -76,17 +101,13 @@ describe('ControlBar', function() {
       skinConfig: JSON.parse(JSON.stringify(defaultSkinConfig)),
       language: 'en',
       localizableStrings: {},
-      closedCaptionOptions: {}
+      closedCaptionOptions: {},
+      currentPlayhead: 0
     };
   });
 
   it('creates a control bar', function() {
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={baseMockProps.isLiveStream} />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
   });
 
   it('enters fullscreen', function() {
@@ -104,12 +125,7 @@ describe('ControlBar', function() {
       {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     expect(fullscreenToggled).toBe(false);
     var fullscreenButton = wrapper.find('.oo-fullscreen').hostNodes();
@@ -132,14 +148,7 @@ describe('ControlBar', function() {
 
       baseMockProps.vr = baseMockController.videoVrSource;
 
-      var wrapper = Enzyme.mount(
-        <ControlBar
-          {...baseMockProps}
-          controlBarVisible={true}
-          componentWidth={500}
-          playerState={CONSTANTS.STATE.PLAYING}
-        />
-      );
+      var wrapper = Enzyme.mount(getControlBar());
 
       var toggleStereoVrButton = wrapper.find('.oo-vr-stereo-button').hostNodes();
       expect(toggleStereoVrButton.length).toBe(1);
@@ -152,14 +161,7 @@ describe('ControlBar', function() {
       baseMockProps.skinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
       baseMockProps.vr = baseMockController.videoVr;
 
-      var wrapper = Enzyme.mount(
-        <ControlBar
-          {...baseMockProps}
-          controlBarVisible={true}
-          componentWidth={500}
-          playerState={CONSTANTS.STATE.PLAYING}
-        />
-      );
+      var wrapper = Enzyme.mount(getControlBar());
 
       var toggleStereoVrButtons = wrapper.find('.oo-vr-stereo-button');
       expect(toggleStereoVrButtons.length).toBe(0);
@@ -174,14 +176,7 @@ describe('ControlBar', function() {
 
       baseMockProps.skinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
-      var wrapper = Enzyme.mount(
-        <ControlBar
-          {...baseMockProps}
-          controlBarVisible={true}
-          componentWidth={500}
-          playerState={CONSTANTS.STATE.PLAYING}
-        />
-      );
+      var wrapper = Enzyme.mount(getControlBar());
 
       expect(stereoMode).toBe(false);
       var toggleStereoVrButton = wrapper.find('.oo-vr-stereo-button').hostNodes();
@@ -195,14 +190,7 @@ describe('ControlBar', function() {
       baseMockProps.skinConfig.buttons.desktopContent = [{'name':'stereoscopic', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
       baseMockProps.vr = baseMockController.videoVr;
 
-      var wrapper = Enzyme.mount(
-        <ControlBar
-          {...baseMockProps}
-          controlBarVisible={true}
-          componentWidth={500}
-          playerState={CONSTANTS.STATE.PLAYING}
-        />
-      );
+      var wrapper = Enzyme.mount(getControlBar());
 
       var toggleStereoVrButtons = wrapper.find('.oo-vr-stereo-button');
       expect(toggleStereoVrButtons.length).toBe(0);
@@ -213,14 +201,7 @@ describe('ControlBar', function() {
   it('renders one button', function() {
     baseMockProps.skinConfig.buttons.desktopContent = [{'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var buttons = wrapper.find('.oo-control-bar-item').hostNodes();
     expect(buttons.length).toBe(1);
@@ -239,14 +220,7 @@ describe('ControlBar', function() {
     baseMockProps.skinConfig.shareScreen.shareContent = ['social', 'embed'];
     baseMockProps.skinConfig.shareScreen.socialContent = ['twitter', 'facebook', 'google+', 'email'];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={1200}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var buttons = wrapper.find('.oo-control-bar-item').hostNodes();
     expect(buttons.length).toBe(4);
@@ -261,14 +235,7 @@ describe('ControlBar', function() {
       {'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':105 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var volumeButton = wrapper.find('.oo-mute-unmute').hostNodes();
     volumeButton.simulate('click');
@@ -282,14 +249,7 @@ describe('ControlBar', function() {
     baseMockController.state.volumeState.volume = 1;
     baseMockController.state.volumeState.muted = false;
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-       />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var muteUnmuteBtn = wrapper.find('.oo-volume').childAt(0);
     expect(muteUnmuteBtn.props().icon).toBe('volume');
@@ -299,13 +259,7 @@ describe('ControlBar', function() {
     baseMockController.state.volumeState.volume = 0;
     baseMockController.state.volumeState.muted = false;
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var muteUnmuteBtn = wrapper.find('.oo-volume').childAt(0);
     expect(muteUnmuteBtn.props().icon).toBe('volumeOff');
@@ -315,13 +269,7 @@ describe('ControlBar', function() {
     baseMockController.state.volumeState.volume = 1;
     baseMockController.state.volumeState.muted = true;
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var muteUnmuteBtn = wrapper.find('.oo-volume').childAt(0);
     expect(muteUnmuteBtn.props().icon).toBe('volumeOff');
@@ -335,12 +283,7 @@ describe('ControlBar', function() {
       {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':105 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var playButton = wrapper.find('.oo-play-pause').hostNodes();
     playButton.simulate('click');
@@ -357,14 +300,7 @@ describe('ControlBar', function() {
       this.state.videoQualityOptions.showPopover = !this.state.videoQualityOptions.showPopover;
     };
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={baseMockProps.isLiveStream} />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var qualityBtn = wrapper.find(AccessibleButton);
 
@@ -378,7 +314,9 @@ describe('ControlBar', function() {
 
   it('should render default state aria labels', function() {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
-    baseMockController.state.closedCaptionOptions.availableLanguages = [];
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockProps.skinConfig.buttons.desktopContent = [
       { 'name': 'playPause', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
       { 'name': 'volume', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 240 },
@@ -388,14 +326,7 @@ describe('ControlBar', function() {
       { 'name': 'fullscreen', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 45 },
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={baseMockProps.isLiveStream} />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var playPauseButton = wrapper.find('.oo-play-pause').hostNodes().getDOMNode();
     var muteUnmuteButton = wrapper.find('.oo-volume').hostNodes().getDOMNode().querySelector('.oo-mute-unmute');
@@ -419,7 +350,9 @@ describe('ControlBar', function() {
 
   it('should render alternate state aria labels', function() {
     baseMockController.state.videoQualityOptions.availableBitrates = [];
-    baseMockController.state.closedCaptionOptions.availableLanguages = [];
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockController.state.videoQualityOptions.showPopover = true;
     baseMockController.state.playbackSpeedOptions.showPopover = true;
     baseMockController.state.closedCaptionOptions.showPopover = true;
@@ -436,15 +369,7 @@ describe('ControlBar', function() {
     baseMockController.state.fullscreen = true;
     baseMockController.state.volumeState.muted = true;
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PAUSE}
-        videoQualityOptions={baseMockController.state.videoQualityOptions}
-        isLiveStream={baseMockProps.isLiveStream} />
-    );
+    var wrapper = Enzyme.mount(getControlBar(CONSTANTS.STATE.PAUSE));
 
     var playPauseButton = wrapper.find('.oo-play-pause').hostNodes().getDOMNode();
     var muteUnmuteButton = wrapper.find('.oo-volume').hostNodes().getDOMNode().querySelector('.oo-mute-unmute');
@@ -472,15 +397,7 @@ describe('ControlBar', function() {
 
     baseMockController.state.volumeState.volume = 0;
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PAUSE}
-        videoQualityOptions={baseMockController.state.videoQualityOptions}
-        isLiveStream={baseMockProps.isLiveStream} />
-    );
+    var wrapper = Enzyme.mount(getControlBar(CONSTANTS.STATE.PAUSE));
 
     var muteUnmuteButton = wrapper.find('.oo-volume').hostNodes().getDOMNode().querySelector('.oo-mute-unmute');
     expect(muteUnmuteButton.getAttribute('aria-label')).toBe(CONSTANTS.ARIA_LABELS.UNMUTE);
@@ -496,14 +413,7 @@ describe('ControlBar', function() {
       baseMockController.state.focusedControl = focusedControl;
     };
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={baseMockProps.isLiveStream} />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var playPauseButton = wrapper.find('.oo-play-pause').hostNodes();
     playPauseButton.simulate('focus');
@@ -520,14 +430,7 @@ describe('ControlBar', function() {
     baseMockController.startHideControlBarTimer = function() {
       startHideControlBarTimerCalled = true;
     };
-    var controlBar = (
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={baseMockProps.isLiveStream} />
-    );
+    var controlBar = getControlBar();
     baseMockController.state.focusedControl = null;
     Enzyme.mount(controlBar);
     expect(startHideControlBarTimerCalled).toBe(false);
@@ -543,14 +446,7 @@ describe('ControlBar', function() {
       {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var shareButton = wrapper.find('.oo-share').hostNodes();
     shareButton.simulate('click');
@@ -567,14 +463,7 @@ describe('ControlBar', function() {
       {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.END}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar(CONSTANTS.STATE.END));
 
     var discoveryButton = wrapper.find('.oo-discovery').hostNodes();
     discoveryButton.simulate('click');
@@ -588,29 +477,21 @@ describe('ControlBar', function() {
       {'name':'closedCaption', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var ccButtons = wrapper.find('.oo-closed-caption');
     expect(ccButtons.length).toBe(0);
 
     var toggleScreenClicked = false;
     var captionClicked = false;
-    baseMockController.state.closedCaptionOptions.availableLanguages = true;
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockController.toggleScreen = function() {toggleScreenClicked = true;};
     baseMockController.togglePopover = function() {captionClicked = true;};
 
     // md, test cc popover
-    wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    wrapper = Enzyme.mount(getControlBar());
 
     var ccButtons2 = wrapper.find('.oo-closed-caption').hostNodes();
     expect(ccButtons2.length).toBe(1);
@@ -621,51 +502,59 @@ describe('ControlBar', function() {
 
     baseMockProps.responsiveView = skinConfig.responsive.breakpoints.xs.id;
 
-    wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-       componentWidth={350}
-       playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    wrapper = Enzyme.mount(getControlBar(CONSTANTS.STATE.PLAYING, 350));
 
     ccButton = wrapper.find('.oo-closed-caption').hostNodes();
     ccButton.simulate('click');
     expect(toggleScreenClicked).toBe(true);
   });
 
+  it('should hide closed caption button if there are no languages available', function() {
+    baseMockController.state.isOoyalaAds = false;
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: []
+    };
+    baseMockProps.skinConfig.buttons.desktopContent = [
+      { name: 'closedCaption', location: 'controlBar', whenDoesNotFit: 'moveToMoreOptions', minWidth:35 }
+    ];
+    var wrapper = Enzyme.mount(
+      <ControlBar
+        {...baseMockProps}
+        controlBarVisible={true}
+        componentWidth={500}
+        playerState={CONSTANTS.STATE.PLAYING} />
+    );
+    var ccButton = wrapper.find('.oo-closed-caption');
+    expect(ccButton.length).toBe(0);
+  });
+
   it('hides closed caption button if ooyala ad is playing', function() {
-    baseMockController.state.closedCaptionOptions.availableLanguages = true;
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockController.state.isOoyalaAds = true;
 
     baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'closedCaption', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-       />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var ccButtons = wrapper.find('.oo-closed-caption');
     expect(ccButtons.length).toBe(0);
   });
 
   it('shows closed caption button if ooyala ad is not playing', function() {
-    baseMockController.state.closedCaptionOptions.availableLanguages = true;
+    baseMockController.state.closedCaptionOptions.availableLanguages = {
+      languages: ['en']
+    };
     baseMockController.state.isOoyalaAds = false;
 
     baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'closedCaption', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var ccButtons = wrapper.find('.oo-closed-caption').hostNodes();
     expect(ccButtons.length).toBe(1);
@@ -678,14 +567,7 @@ describe('ControlBar', function() {
       {'name':'audioAndCC', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':45 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     // there are no CC, no multiaudio
     var multiAudioBtn = wrapper.find('.oo-multiaudio');
@@ -695,14 +577,7 @@ describe('ControlBar', function() {
     baseMockController.state.multiAudio = {};
     baseMockController.state.multiAudio.tracks = [{id: 1, label: 'test'}];
 
-    var wrapper2 = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper2 = Enzyme.mount(getControlBar());
 
     var multiAudioBtn2 = wrapper2.find('.oo-multiaudio').hostNodes();
     expect(multiAudioBtn2.length).toBe(1);
@@ -713,14 +588,7 @@ describe('ControlBar', function() {
     baseMockController.state.closedCaptionOptions.availableLanguages = {};
     baseMockController.state.closedCaptionOptions.availableLanguages.languages = [ 'en', 'de', 'es', 'fr' ];
 
-    var wrapper3 = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper3 = Enzyme.mount(getControlBar());
 
     var multiAudioBtn3 = wrapper3.find('.oo-multiaudio').hostNodes();
     expect(multiAudioBtn3.length).toBe(1);
@@ -729,14 +597,7 @@ describe('ControlBar', function() {
     baseMockController.state.hideMultiAudioIcon = true;
     baseMockController.state.closedCaptionOptions.availableLanguages = {};
 
-    var wrapper4 = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper4 = Enzyme.mount(getControlBar());
 
     var multiAudioBtn4 = wrapper4.find('.oo-multiaudio').hostNodes();
     expect(multiAudioBtn4.length).toBe(0);
@@ -759,14 +620,7 @@ describe('ControlBar', function() {
     ];
 
     // small screen
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var multiAudioBtn = wrapper.find('.oo-multiaudio').hostNodes();
     multiAudioBtn.simulate('click');
@@ -778,14 +632,7 @@ describe('ControlBar', function() {
     baseMockProps.skinConfig.responsive.breakpoints.lg.multiplier = true;
     baseMockProps.responsiveView = 'lg';
     // large screen
-    var wrapper2 = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={baseMockProps.isLiveStream} />
-    );
+    var wrapper2 = Enzyme.mount(getControlBar());
     var multiAudioBtn2 = wrapper2.find('.oo-multiaudio').hostNodes();
     multiAudioBtn2.simulate('click');
     expect(popoverStateChanged).toBe(true);
@@ -798,25 +645,13 @@ describe('ControlBar', function() {
     baseMockProps.skinConfig.shareScreen.shareContent = ['social'];
     baseMockProps.skinConfig.shareScreen.socialContent = [];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
     expect(wrapper.find('.oo-share').length).toBe(0);
 
     baseMockProps.skinConfig.shareScreen.shareContent = [];
     baseMockProps.skinConfig.shareScreen.socialContent = ['twitter'];
 
-    wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    wrapper = Enzyme.mount(getControlBar());
     expect(wrapper.find('.oo-share').length).toBe(0);
   });
 
@@ -829,13 +664,7 @@ describe('ControlBar', function() {
     baseMockProps.skinConfig.shareScreen.shareContent = ['social'];
     baseMockProps.skinConfig.shareScreen.socialContent = ['twitter'];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
     expect(wrapper.find('.oo-share').length).toBe(0);
   });
 
@@ -848,13 +677,7 @@ describe('ControlBar', function() {
     baseMockProps.skinConfig.shareScreen.shareContent = ['social'];
     baseMockProps.skinConfig.shareScreen.socialContent = ['twitter'];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
     expect(wrapper.find('.oo-share').hostNodes().length).toBe(1);
   });
 
@@ -864,12 +687,7 @@ describe('ControlBar', function() {
       {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var discoveryButtons = wrapper.find('.oo-discovery');
     expect(discoveryButtons.length).toBe(0);
@@ -879,12 +697,7 @@ describe('ControlBar', function() {
     baseMockController.state.discoveryData = true;
     baseMockController.toggleDiscoveryScreen = function() {discoveryClicked = true;};
 
-    wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    wrapper = Enzyme.mount(getControlBar());
 
     var discoveryButtons2 = wrapper.find('.oo-discovery').hostNodes();
     expect(discoveryButtons2.length).toBe(1);
@@ -902,12 +715,7 @@ describe('ControlBar', function() {
       {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var discoveryButtons = wrapper.find('.oo-discovery');
     expect(discoveryButtons.length).toBe(0);
@@ -921,12 +729,7 @@ describe('ControlBar', function() {
       {'name':'discovery', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var discoveryButtons = wrapper.find('.oo-discovery').hostNodes();
     expect(discoveryButtons.length).toBe(1);
@@ -938,12 +741,7 @@ describe('ControlBar', function() {
       {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var optionsButton = wrapper.find('.oo-more-options');
     expect(optionsButton.length).toBe(0);
@@ -958,12 +756,7 @@ describe('ControlBar', function() {
       {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 }
     ];
 
-    wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={100}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    wrapper = Enzyme.mount(getControlBar(CONSTANTS.STATE.PLAYING, 100));
 
     optionsButton = wrapper.find('.oo-more-options').hostNodes();
     expect(optionsButton.length).toBe(1);
@@ -982,12 +775,7 @@ describe('ControlBar', function() {
       {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={100}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar(CONSTANTS.STATE.PLAYING, 100));
 
     var optionsButton = wrapper.find('.oo-more-options');
     expect(optionsButton.length).toBe(0);
@@ -1006,12 +794,7 @@ describe('ControlBar', function() {
       {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={100}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar(CONSTANTS.STATE.PLAYING, 100));
 
     var optionsButton = wrapper.find('.oo-more-options').hostNodes();
     expect(optionsButton.length).toBe(1);
@@ -1034,12 +817,7 @@ describe('ControlBar', function() {
       {'name':'moreOptions', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={100}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar(CONSTANTS.STATE.PLAYING, 100));
 
     var optionsButton = wrapper.find('.oo-more-options').hostNodes();
     expect(optionsButton).not.toBe(null);
@@ -1053,12 +831,7 @@ describe('ControlBar', function() {
       {'name':'doesNotExist', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var buttons = wrapper.find('.oo-control-bar-item').hostNodes();
     expect(buttons.length).toBe(1);
@@ -1070,13 +843,9 @@ describe('ControlBar', function() {
       {'name':'live', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={true}
-      />
-    );
+    baseMockProps.isLiveStream = true;
+
+    var wrapper = Enzyme.mount(getControlBar());
 
     var buttons = wrapper.find('.oo-live').hostNodes();
     expect(buttons.length).toBe(1);
@@ -1085,13 +854,9 @@ describe('ControlBar', function() {
       {'name':'live', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];
 
-    wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={100}
-        playerState={CONSTANTS.STATE.PLAYING}
-        isLiveStream={false}
-      />
-    );
+    baseMockProps.isLiveStream = false;
+
+    wrapper = Enzyme.mount(getControlBar());
 
     buttons = wrapper.find('.oo-live');
     expect(buttons.length).toBe(0);
@@ -1104,12 +869,7 @@ describe('ControlBar', function() {
     baseMockProps.skinConfig.controlBar.iconStyle.active.color = 'red';
     baseMockProps.skinConfig.controlBar.iconStyle.inactive.color = 'blue';
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PAUSE}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar(CONSTANTS.STATE.PAUSE));
 
     var muteUnmuteBtn = wrapper.find('.oo-mute-unmute').hostNodes();
     var volumeIcon = wrapper.find('.oo-icon-volume-on-ooyala-default').hostNodes().getDOMNode();
@@ -1129,12 +889,7 @@ describe('ControlBar', function() {
 
     baseMockProps.skinConfig.buttons.desktopContent = [{'name':'volume', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':100 }];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PAUSE}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar(CONSTANTS.STATE.PAUSE));
     var slider = wrapper.find('.oo-volume-slider');
     expect(slider).not.toBe(null);
   });
@@ -1149,15 +904,6 @@ describe('ControlBar', function() {
       OO_setWindowNavigatorProperty('userAgent', 'desktop');
       OO_setWindowNavigatorProperty('platform', '');
     });
-
-    var getControlBar = function(playerState) {
-      return (<ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={500}
-        playerState={playerState}
-      />);
-    };
 
     it('hides if video is not 360', function() {
 
@@ -1185,12 +931,7 @@ describe('ControlBar', function() {
       {'name':'quality', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var qualityButtons = wrapper.find('.oo-quality');
     expect(qualityButtons.length).toBe(0);
@@ -1205,12 +946,7 @@ describe('ControlBar', function() {
     // xsmall
     baseMockProps.responsiveView = skinConfig.responsive.breakpoints.xs.id;
 
-    wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    wrapper = Enzyme.mount(getControlBar());
 
     var qualityButtons2 = wrapper.find('.oo-quality').hostNodes();
     expect(qualityButtons2.length).toBe(1);
@@ -1222,12 +958,7 @@ describe('ControlBar', function() {
     // medium
     baseMockProps.responsiveView = skinConfig.responsive.breakpoints.md.id;
 
-    wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    wrapper = Enzyme.mount(getControlBar());
 
     var qualityButtons3 = wrapper.find('.oo-quality').hostNodes();
     expect(qualityButtons3.length).toBe(1);
@@ -1239,12 +970,7 @@ describe('ControlBar', function() {
     // large
     baseMockProps.responsiveView = skinConfig.responsive.breakpoints.lg.id;
 
-    wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    wrapper = Enzyme.mount(getControlBar());
 
     var qualityButtons4 = wrapper.find('.oo-quality').hostNodes();
     expect(qualityButtons4.length).toBe(1);
@@ -1265,9 +991,7 @@ describe('ControlBar', function() {
     baseMockProps.controller.togglePopover = () => { togglePopoverCalled = true };
     baseMockProps.controller.toggleScreen = () => { toggleScreenCalled = true };
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
     var playbackSpeedButton = wrapper.find('.oo-playback-speed').hostNodes();
 
     playbackSpeedButton.simulate('click');
@@ -1288,7 +1012,7 @@ describe('ControlBar', function() {
 
     baseMockProps.responsiveView = 'xs';
     baseMockProps.controller.state.isMobile = false;
-    wrapper = Enzyme.mount(<ControlBar {...baseMockProps} />);
+    wrapper = Enzyme.mount(getControlBar());
     playbackSpeedButton = wrapper.find('.oo-playback-speed').hostNodes();
 
     playbackSpeedButton.simulate('click');
@@ -1297,7 +1021,7 @@ describe('ControlBar', function() {
 
     baseMockProps.responsiveView = 'md';
     baseMockProps.controller.state.isMobile = true;
-    wrapper = Enzyme.mount(<ControlBar {...baseMockProps} />);
+    wrapper = Enzyme.mount(getControlBar());
     playbackSpeedButton = wrapper.find('.oo-playback-speed').hostNodes();
 
     playbackSpeedButton.simulate('click');
@@ -1309,9 +1033,7 @@ describe('ControlBar', function() {
     baseMockProps.skinConfig.buttons.desktopContent = [
       { name: 'playbackSpeed', location: 'controlBar', whenDoesNotFit: 'moveToMoreOptions', minWidth: 35 }
     ];
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
     expect(wrapper.find('.oo-playback-speed').hostNodes().length).toBe(1);
   });
 
@@ -1320,19 +1042,19 @@ describe('ControlBar', function() {
     baseMockProps.skinConfig.buttons.desktopContent = [
       { name: 'playbackSpeed', location: 'controlBar', whenDoesNotFit: 'moveToMoreOptions', minWidth: 35 }
     ];
-    wrapper = Enzyme.mount(<ControlBar {...baseMockProps} />);
+    wrapper = Enzyme.mount(getControlBar());
     expect(wrapper.find('.oo-playback-speed').hostNodes().length).toBe(1);
 
     baseMockController.state.isOoyalaAds = true;
-    wrapper = Enzyme.mount(<ControlBar {...baseMockProps} />);
+    wrapper = Enzyme.mount(getControlBar());
     expect(wrapper.find('.oo-playback-speed').hostNodes().length).toBe(0);
 
     baseMockProps.isLiveStream = true;
-    wrapper = Enzyme.mount(<ControlBar {...baseMockProps} />);
+    wrapper = Enzyme.mount(getControlBar());
     expect(wrapper.find('.oo-playback-speed').hostNodes().length).toBe(0);
 
     baseMockProps.controller.videoVr = {};
-    wrapper = Enzyme.mount(<ControlBar {...baseMockProps} />);
+    wrapper = Enzyme.mount(getControlBar());
     expect(wrapper.find('.oo-playback-speed').hostNodes().length).toBe(0);
   });
 
@@ -1342,9 +1064,7 @@ describe('ControlBar', function() {
     baseMockProps.skinConfig.buttons.desktopContent = [
       { name: 'playbackSpeed', location: 'controlBar', whenDoesNotFit: 'moveToMoreOptions', minWidth: 35 }
     ];
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
     expect(wrapper.find(PlaybackSpeedButton).props().className).toBe('oo-selected');
     expect(wrapper.find(PlaybackSpeedButton).props().style).toEqual({
       color: baseMockProps.skinConfig.general.accentColor
@@ -1358,12 +1078,7 @@ describe('ControlBar', function() {
       {'name':'quality', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var qualityButtons = wrapper.find('.oo-quality');
     expect(qualityButtons.length).toBe(0);
@@ -1377,12 +1092,7 @@ describe('ControlBar', function() {
       {'name':'quality', 'location':'controlBar', 'whenDoesNotFit':'moveToMoreOptions', 'minWidth':35 }
     ];
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={500}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar());
 
     var qualityButtons = wrapper.find('.oo-quality').hostNodes();
     expect(qualityButtons.length).toBe(1);
@@ -1394,12 +1104,7 @@ describe('ControlBar', function() {
     ];
     baseMockProps.skinConfig.controlBar.logo.clickUrl = '';
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={100}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar(CONSTANTS.STATE.PLAYING, 100));
 
     var nonClickableLogo = wrapper.find('a');
     expect(nonClickableLogo.length).toBe(0);
@@ -1412,12 +1117,7 @@ describe('ControlBar', function() {
     baseMockProps.skinConfig.controlBar.logo.imageResource.url = '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/assets/images/ooyala-logo.svg';
     baseMockProps.skinConfig.controlBar.logo.clickUrl = 'http://www.ooyala.com';
 
-    var wrapper = Enzyme.mount(
-      <ControlBar {...baseMockProps} controlBarVisible={true}
-        componentWidth={100}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar(CONSTANTS.STATE.PLAYING, 100));
 
     var logo = wrapper.find('.oo-logo');
     var clickableLogo = wrapper.find('a');
@@ -1447,7 +1147,10 @@ describe('ControlBar', function() {
         controlBarVisible={true}
         componentWidth={100}
         responsiveView="sm"
-        playerState={CONSTANTS.STATE.PLAYING} />, node
+        playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+      />, node
     );
 
     Enzyme.mount(
@@ -1456,7 +1159,10 @@ describe('ControlBar', function() {
         controlBarVisible={true}
         componentWidth={300}
         responsiveView="md"
-        playerState={CONSTANTS.STATE.PLAYING} />, node
+        playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+      />, node
     );
 
     var event = {
@@ -1481,17 +1187,100 @@ describe('ControlBar', function() {
     baseMockProps.skinConfig.controlBar.logo.imageResource.url = '';
     baseMockProps.skinConfig.controlBar.logo.clickUrl = 'http://www.ooyala.com';
 
-    var wrapper = Enzyme.mount(
-      <ControlBar
-        {...baseMockProps}
-        controlBarVisible={true}
-        componentWidth={100}
-        playerState={CONSTANTS.STATE.PLAYING}
-      />
-    );
+    var wrapper = Enzyme.mount(getControlBar(CONSTANTS.STATE.PLAYING, 100));
 
     var logo = wrapper.find('.oo-logo');
     expect(logo.length).toBe(0);
+  });
+
+  describe('Audio only', () => {
+    it('tests volume icon click to volume screen', () => {
+      let toggledScreen = null;
+      let doNotPause = null;
+      baseMockProps.clickToVolumeScreen = true;
+      baseMockController.toggleScreen = (screen, dontPause) => {
+        toggledScreen = screen;
+        doNotPause = dontPause;
+      };
+      var wrapper = Enzyme.mount(getControlBar());
+      var composedComponent = wrapper.instance().composedComponentRef.current;
+      composedComponent.handleVolumeIconClick();
+      expect(toggledScreen).toBe(CONSTANTS.SCREEN.VOLUME_SCREEN);
+      expect(doNotPause).toBe(true);
+    });
+
+    it('tests hiding volume controls', () => {
+      baseMockProps.hideVolumeControls = false;
+      var wrapper = Enzyme.mount(getControlBar());
+      var volumeBars = wrapper.find('.oo-volume-bar');
+      expect(volumeBars.length > 0).toBe(true);
+
+      baseMockProps.hideVolumeControls = true;
+      wrapper = Enzyme.mount(getControlBar());
+      volumeBars = wrapper.find('.oo-volume-bar');
+      expect(volumeBars.length).toBe(0);
+    });
+
+    it('tests rendering skip controls', () => {
+      baseMockProps.skinConfig.buttons.desktopContent = [
+        {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }
+      ];
+      var wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-skip-controls').length).toBe(1);
+    });
+
+    it('tests rendering control bar items when provided as a prop', () => {
+      baseMockProps.controlBarItems = [
+        {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }
+      ];
+      var wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-skip-controls').length).toBe(1);
+    });
+
+    it('tests rendering audio only buttons', () => {
+      baseMockProps.skinConfig.buttons.audioOnly = [
+        {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }
+      ];
+      baseMockProps.audioOnly = true;
+      var wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-skip-controls').length).toBe(1);
+    });
+
+    it('tests row format for audio only', () => {
+      baseMockProps.skinConfig.buttons.desktopContent = [
+        {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 },
+        {'name':'share', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 }
+      ];
+      baseMockProps.audioOnly = true;
+      var wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-flex-row-parent').length).toBe(1);
+    });
+
+    it('tests audio only does not use oo-animating-control-bar class', () => {
+      baseMockProps.skinConfig.buttons.desktopContent = [
+        {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }
+      ];
+
+      baseMockProps.animatingControlBar = true;
+      var wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-animating-control-bar').length).toBe(1);
+
+      baseMockProps.animatingControlBar = false;
+      wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-animating-control-bar').length).toBe(0);
+    });
+
+    it('tests hiding scrubber bar', () => {
+      baseMockProps.hideScrubberBar = false;
+      var wrapper = Enzyme.mount(getControlBar());
+      var scrubberBar = wrapper.find('.oo-scrubber-bar');
+      expect(scrubberBar.length).toBe(1);
+
+      baseMockProps.hideScrubberBar = true;
+      wrapper = Enzyme.mount(getControlBar());
+      scrubberBar = wrapper.find('.oo-scrubber-bar');
+      expect(scrubberBar.length).toBe(0);
+    });
   });
 
 });

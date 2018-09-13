@@ -18,6 +18,7 @@ var CONSTANTS = {
     PAUSE_SCREEN: 'pauseScreen',
     END_SCREEN: 'endScreen',
     SHARE_SCREEN: 'shareScreen',
+    VOLUME_SCREEN: 'volumeScreen',
     DISCOVERY_SCREEN: 'discoveryScreen',
     UP_NEXT_SCREEN: 'upNextScreen',
     AD_SCREEN: 'adScreen',
@@ -186,7 +187,8 @@ var CONSTANTS = {
     STEREOSCOPIC: 'stereoscopic',
     FULLSCREEN: 'fullscreen',
     LOGO: 'logo',
-    CHROMECAST: 'chromecast'
+    CHROMECAST: 'chromecast',
+    SKIP_CONTROLS: 'skipControls'
   },
 
   ARIA_ROLES: {
@@ -219,7 +221,8 @@ var CONSTANTS = {
     PREVIOUS_VIDEO: 'previousVideo',
     SKIP_BACKWARD: 'skipBackward',
     SKIP_FORWARD: 'skipForward',
-    NEXT_VIDEO: 'nextVideo'
+    NEXT_VIDEO: 'nextVideo',
+    PLAY_PAUSE: 'playPause'
   },
 
   A11Y_CTRLS: {
@@ -280,7 +283,8 @@ var CONSTANTS = {
     REQUEST_PREVIOUS_TIME_THRESHOLD: 1500,
     // When the previous video button is clicked, if the playhead value (in seconds) is
     // below this constant the controller will request the previous video instead of rewinding
-    REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD: 2
+    REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD: 2,
+    AUDIO_ONLY_DEFAULT_HEIGHT: '138px'
   },
 
   PLAYBACK_SPEED: {

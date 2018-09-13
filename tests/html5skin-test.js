@@ -32,6 +32,7 @@ OO = {
   publicApi: {},
   EVENTS: {
     PLAY: 'play',
+    SET_CLOSED_CAPTIONS_LANGUAGE: 'setClosedCaptionsLanguage',
     INITIAL_PLAY: 'initialPlay',
     CHANGE_MUTE_STATE: 'changeMuteState',
     DISCOVERY_API: {
@@ -42,7 +43,10 @@ OO = {
     SKIN_UI_LANGUAGE: 'skinUiLanguage'
   },
   CONSTANTS: {
-    CLOSED_CAPTIONS: {},
+    CLOSED_CAPTIONS: {
+      HIDDEN: 'hidden',
+      SHOWING: 'showing',
+    },
     SELECTED_AUDIO: 'selectedAudio'
   },
   VIDEO: {
@@ -91,6 +95,7 @@ describe('Controller', function() {
     document.body.innerHTML =
       '<div id=' + elementId + '>' + '  <div class="oo-player-skin">' + videoElement + '</div>' + '</div>';
     controller = new Html5Skin(OO.mb, 'id');
+    controller.state.mainVideoContainer = $(elementId);
     controller.state.mainVideoElement = mockDomElement;
     controller.state.mainVideoInnerWrapper = $('<div/>');
     controller.state.mainVideoElementContainer = mockDomElement;
@@ -156,6 +161,31 @@ describe('Controller', function() {
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
       controller.onClosedCaptionChange('language', 'en');
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
+    });
+
+    it('should set closed captions with "isGoingFullScreen" flag before going fullscreen on iOS', function() {
+      const spyPublish = jest.spyOn(OO.mb, 'publish');
+      controller.state.closedCaptionOptions.enabled = true;
+      controller.toggleIOSNativeFullscreen();
+      expect(spyPublish.mock.calls.length).toBe(1);
+      expect(spyPublish.mock.calls[0]).toEqual([
+        OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE,
+        controller.state.closedCaptionOptions.language,
+        {
+          mode: 'hidden',
+          isFullScreen: controller.state.fullscreen,
+          isGoingFullScreen: true
+        }
+      ]);
+      spyPublish.mockRestore();
+    });
+
+    it('should enable captions on CHANGE_CLOSED_CAPTION_LANGUAGE event when forceEnabled is true', function() {
+      controller.state.closedCaptionOptions.enabled = false;
+      controller.state.persistentSettings.closedCaptionOptions.enabled = false;
+      controller.onChangeClosedCaptionLanguage('', 'en', { forceEnabled: true });
+      expect(controller.state.closedCaptionOptions.enabled).toBe(true);
+      expect(controller.state.persistentSettings.closedCaptionOptions.enabled).toBe(true);
     });
   });
 
@@ -1463,6 +1493,107 @@ describe('Controller', function() {
       expect(controller.state.chromecastConnected).toBe(false);
       controller.onChromecastEndCast();
       expect(controller.state.chromecastConnected).toBe(false);
+    });
+  });
+
+  describe('Audio only', () => {
+    it('adds oo-video-player class to the video container when not audio only and removes it when audio only', () => {
+      controller.loadConfigData('customerUi', {
+        audio: {
+          audioOnly: true
+        }
+      }, {}, {}, {});
+      expect(controller.state.mainVideoInnerWrapper.hasClass('oo-video-player')).toBe(false);
+
+      controller.loadConfigData('customerUi', {
+        audio: {
+          audioOnly: false
+        }
+      }, {}, {}, {});
+      expect(controller.state.mainVideoInnerWrapper.hasClass('oo-video-player')).toBe(true);
+
+      controller.loadConfigData('customerUi', {
+        audio: {
+          audioOnly: true
+        }
+      }, {}, {}, {});
+      expect(controller.state.mainVideoInnerWrapper.hasClass('oo-video-player')).toBe(false);
+    });
+
+    it('does not pause the video if toggleScreen was provided a value of true for doNotPause', () => {
+      let spy = sinon.spy(controller.mb, 'publish');
+      controller.createPluginElements();
+
+      controller.toggleScreen(CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN, false);
+      expect(spy.calledWith(OO.EVENTS.PAUSE)).toBe(true);
+
+      spy.resetHistory();
+
+      controller.toggleScreen(CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN, true);
+      expect(spy.calledWith(OO.EVENTS.PAUSE)).toBe(false);
+
+      spy.restore();
+    });
+
+    it('tests closeScreen', () => {
+      controller.createPluginElements();
+      controller.state.playerState = CONSTANTS.STATE.PAUSE;
+      controller.closeScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PAUSE_SCREEN);
+
+      controller.state.playerState = CONSTANTS.STATE.END;
+      controller.closeScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.END_SCREEN);
+
+      controller.state.playerState = CONSTANTS.STATE.START;
+      controller.closeScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
+
+      controller.state.playerState = CONSTANTS.STATE.PLAYING;
+      controller.closeScreen();
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PLAYING_SCREEN);
+    });
+
+    it('does not hide the control bar if player is audio only', () => {
+      controller.loadConfigData('customerUi', {
+        audio: {
+          audioOnly: true
+        }
+      }, {}, {}, {});
+
+      controller.startHideControlBarTimer();
+      expect(controller.state.timer).toBeFalsy();
+
+      controller.hideControlBar();
+      expect(controller.state.controlBarVisible).toBe(true);
+    });
+
+    it('does not apply aspect ratio if player is audio only', () => {
+      controller.loadConfigData('customerUi', {
+        audio: {
+          audioOnly: true
+        }
+      }, {}, {}, {});
+
+      controller.setAspectRatio();
+      expect(controller.state.mainVideoInnerWrapper.css('padding-top')).toBeFalsy();
+    });
+
+    it('sets a height of 138px if height was not provided for an audio only player', () => {
+      //jsdom does not calculate layouts so let's overwrite the jquery height function to see if the height changed
+      var height;
+      var originalHeightFunc = controller.state.mainVideoContainer.height;
+      controller.state.mainVideoContainer.height = (h) => {
+        height = h;
+      };
+      controller.loadConfigData('customerUi', {
+        audio: {
+          audioOnly: true
+        }
+      }, {}, {}, {});
+
+      expect(height).toBe(CONSTANTS.UI.AUDIO_ONLY_DEFAULT_HEIGHT);
+      controller.state.mainVideoContainer.height = originalHeightFunc;
     });
   });
 });

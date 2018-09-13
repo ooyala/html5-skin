@@ -1,12 +1,7 @@
 .oo-control-bar {
-  background: $control-bar-bg;
-  @include vendor-prefixes (background, $control-bar-gradient);
-  @include vendor-prefixes (transition, $medium-transition);
   width: 100%;
-  height: $control-bar-height;
   position: relative;
   margin: 0;
-  padding: 0 15px;
   list-style: none;
   font-size: 18px;
   -webkit-user-select: none;
@@ -27,11 +22,7 @@
     -webkit-justify-content: center;
     justify-content: center;
     white-space: nowrap;
-    margin-top: 10px;
-
-    & > * {
-      line-height: 1 !important;
-    }
+    margin-top: 5px;
 
     .oo-popover-button-container {
       position: relative;
@@ -68,7 +59,6 @@
       // Workaround for Safari clipping text shadows
       // inside buttons
       .oo-icon {
-        display: inline-block;
         @include vendor-prefixes(transform, translateZ(0));
       }
     }
@@ -99,6 +89,10 @@
 
     .oo-control-bar-item.oo-logo {
       cursor: auto;
+    }
+
+    .oo-control-bar-item.oo-skip-controls {
+      max-width: 200px;
     }
 
     a.oo-control-bar-item {
@@ -169,8 +163,26 @@
 }
 
 .oo-interactive-container {
+  width: 100%;
+
   .oo-control-bar.oo-control-bar-hidden {
     height: 0 !important;
     opacity: 0;
+  }
+}
+
+.oo-animating-control-bar {
+  background: $control-bar-bg;
+  @include vendor-prefixes (background, $control-bar-gradient);
+  @include vendor-prefixes (transition, $medium-transition);
+  height: $control-bar-height;
+  padding: 0 15px;
+
+  .oo-control-bar-items-wrapper {
+    margin-top: 10px;
+
+    & > * {
+      line-height: 1 !important;
+    }
   }
 }

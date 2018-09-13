@@ -11,6 +11,8 @@ var React = require('react'),
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 
+const ClassNames = require('classnames');
+
 var ScrubberBar = createReactClass({
   mixins: [ResizeMixin],
   //Using temporary isMounted strategy mentioned in https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html
@@ -326,7 +328,6 @@ var ScrubberBar = createReactClass({
     var scrubberBarMouseMove = this.handleScrubberBarMouseMove;
     var playedIndicatorClassName = 'oo-played-indicator';
     var playheadClassName = 'oo-playhead';
-    var scrubberBarClassName = 'oo-scrubber-bar';
 
     if (this.props.controller.state.screenToShow === CONSTANTS.SCREEN.AD_SCREEN) {
       playheadClassName += ' oo-ad-playhead';
@@ -341,6 +342,7 @@ var ScrubberBar = createReactClass({
     var hoverTime = 0;
     var hoverPosition = 0;
     var hoveredIndicatorStyle = null;
+    var hovering = false;
 
     var thumbnailsContainer = null;
 
@@ -384,9 +386,10 @@ var ScrubberBar = createReactClass({
             ? this.props.skinConfig.controlBar.scrubberBar.playedColor
             : this.props.skinConfig.general.accentColor
         };
-        scrubberBarClassName += ' oo-scrubber-bar-hover';
+        hovering = true;
         playheadClassName += ' oo-playhead-hovering';
       }
+
       thumbnailsContainer = (
         <ThumbnailsContainer
           isCarousel={isCarousel}
@@ -401,6 +404,12 @@ var ScrubberBar = createReactClass({
         />
       );
     }
+
+    const scrubberBarClass = ClassNames({
+      'oo-scrubber-bar': true,
+      'oo-scrubber-bar-hover': hovering,
+      'oo-scrubber-bar-video': !this.props.audioOnly
+    });
 
     var ariaValueText = this.getAriaValueText();
 
@@ -420,7 +429,7 @@ var ScrubberBar = createReactClass({
           onTouchStart={scrubberBarMouseDown}>
           <div
             ref="scrubberBar"
-            className={scrubberBarClassName}
+            className={scrubberBarClass}
             style={scrubberBarStyle}
             role="slider"
             aria-label={CONSTANTS.ARIA_LABELS.SEEK_SLIDER}

@@ -18,7 +18,9 @@ class SkipControls extends React.Component {
     this.onNextVideo = this.onNextVideo.bind(this);
     this.onSkipBackward = this.onSkipBackward.bind(this);
     this.onSkipForward = this.onSkipForward.bind(this);
+    this.isAtLiveEdge = this.isAtLiveEdge.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onPlayPauseClick = this.onPlayPauseClick.bind(this);
   }
 
   /**
@@ -113,8 +115,16 @@ class SkipControls extends React.Component {
       const currentPlayhead = Utils.ensureNumber(this.props.currentPlayhead, 0);
       const isLiveNow = Math.abs(currentPlayhead - duration) < 1;
       return isLiveNow;
-    };
+    }
     return false;
+  }
+
+  /**
+   * Play/Pause button click handler.
+   * @private
+   */
+  onPlayPauseClick() {
+    this.props.controller.togglePlayPause();
   }
 
   /**
@@ -146,6 +156,9 @@ class SkipControls extends React.Component {
       buttonStyle.pointerEvents = 'none';
     }
 
+    const playButtonDetails = Utils.getPlayButtonDetails(this.props.controller.state.playerState);
+    const duration = Utils.getPropertyValue(this.props.controller, 'state.duration');
+
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO] = (
       <ControlButton
         {...this.props}
@@ -169,6 +182,7 @@ class SkipControls extends React.Component {
         className="oo-center-button oo-skip-backward"
         icon="replay"
         ariaLabel={skipBackwardAriaLabel}
+        disabled={!duration}
         onClick={this.onSkipBackward}>
         <span className="oo-btn-counter">{skipTimes.backward}</span>
       </HoldControlButton>
@@ -183,7 +197,7 @@ class SkipControls extends React.Component {
         className="oo-center-button oo-skip-forward"
         icon="forward"
         ariaLabel={skipForwardAriaLabel}
-        disabled={this.isAtLiveEdge()}
+        disabled={this.isAtLiveEdge() || !duration}
         onClick={this.onSkipForward}>
         <span className="oo-btn-counter">{skipTimes.forward}</span>
       </HoldControlButton>
@@ -202,6 +216,19 @@ class SkipControls extends React.Component {
         onClick={this.onNextVideo}>
       </ControlButton>
     );
+
+    buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.PLAY_PAUSE] = (
+      <ControlButton
+        {...this.props}
+        key={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
+        className="oo-play-pause"
+        focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
+        ariaLabel={playButtonDetails.ariaLabel}
+        icon={playButtonDetails.icon}
+        onClick={this.onPlayPauseClick}>
+      </ControlButton>
+    );
+
     return buttonTemplate;
   }
 
@@ -227,7 +254,7 @@ class SkipControls extends React.Component {
       buttonId === CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD
     );
 
-    const isDisabled = (
+    const isDisabled = !this.props.forceShowButtons && (
       (isSkipButton && !duration) ||
       (isPrevNextButton && isSingleVideo) ||
       !(buttonConfig && buttonConfig.enabled)
@@ -244,7 +271,8 @@ class SkipControls extends React.Component {
    */
   getSortedButtonEntries() {
     const buttons = [];
-    const buttonConfig = Utils.getPropertyValue(
+    const buttonConfig = this.props.buttonConfig ? this.props.buttonConfig :
+      Utils.getPropertyValue(
       this.props.skinConfig,
       'skipControls.buttons',
       {}
@@ -274,7 +302,7 @@ class SkipControls extends React.Component {
       return null;
     }
 
-    const className = classNames('oo-skip-controls', {
+    const className = classNames('oo-skip-controls', this.props.className, {
       'oo-inactive': this.props.isInactive,
       'oo-in-background': this.props.isInBackground
     });
@@ -297,6 +325,10 @@ class SkipControls extends React.Component {
 }
 
 SkipControls.propTypes = {
+  className: PropTypes.string,
+  maxWidth: PropTypes.number,
+  forceShowButtons: PropTypes.bool,
+  buttonConfig: PropTypes.object,
   isInactive: PropTypes.bool,
   isInBackground: PropTypes.bool,
   language: PropTypes.string,
@@ -324,6 +356,7 @@ SkipControls.propTypes = {
     setFocusedControl: PropTypes.func.isRequired,
     startHideControlBarTimer: PropTypes.func.isRequired,
     cancelTimer: PropTypes.func.isRequired,
+    togglePlayPause: PropTypes.func.isRequired
   }),
   a11yControls: PropTypes.shape({
     seekBy: PropTypes.func.isRequired

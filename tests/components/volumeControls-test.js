@@ -178,4 +178,17 @@ describe('VolumeControls', function() {
     expect(volumeSlider.value).toEqual('0');
   });
 
+  it('should render slider with correct volume when audio only', function() {
+    mockCtrl.state.audioOnly = true;
+    mockCtrl.state.volumeState.volume = 0.5;
+    mockCtrl.state.volumeState.volumeSliderVisible = true;
+
+    var wrapper = Enzyme.mount(
+      <VolumeControls controller={mockCtrl} skinConfig={skinConfig} />
+    );
+
+    var volumeSlider = wrapper.find('.oo-slider').getDOMNode();
+    expect(volumeSlider.value).toEqual('0.5');
+  });
+
 });

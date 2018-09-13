@@ -193,7 +193,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         enabled: null,
         showPopover: false,
         autoFocus: false
-      }
+      },
+
+      audioOnly: false
     };
 
     this.init();
@@ -508,6 +510,18 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.videoVr = false;
       this.videoVrSource = null;
       this.vrMobileOrientationChecked = false;
+    },
+
+    /**
+     * Pass into onTouchMove current controller state values for vrViewingDirection
+     */
+    setControllerVrViewingDirection: function() {
+      let vrViewingDirectionList = [
+        this.state.vrViewingDirection.yaw,
+        this.state.vrViewingDirection.roll,
+        this.state.vrViewingDirection.pitch
+      ];
+      this.onTouchMove(vrViewingDirectionList);
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -1031,6 +1045,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
       } else {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
+        //TODO: END_SCREEN_SHOWN is not consumed by anyone, should we remove? If not, should
+        //we publish this when the end screen is actually shown?
         this.mb.publish(OO.EVENTS.END_SCREEN_SHOWN);
       }
       if (!Utils.canRenderSkin()) {
@@ -1358,14 +1374,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       // In case ad was skipped or errored while stalled
       this.setBufferingState(false);
 
+      // Set current position for video 360 after Ads.
       if (this.videoVr && this.state.isMobile) { // only for vr on mobile
-        // Set current position for video 360 after Ads.
-        var vrViewingDirectionList = [
-          this.state.vrViewingDirection.yaw,
-          this.state.vrViewingDirection.roll,
-          this.state.vrViewingDirection.pitch
-        ];
-        this.onTouchMove(vrViewingDirectionList);
+        this.setControllerVrViewingDirection();
       }
 
       this.renderSkin();
@@ -1648,6 +1659,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       var uiLanguage = Utils.getLanguageToUse(this.state.config);
       this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
 
+      this.state.audioOnly = this.state.config.audio.audioOnly;
+
       // load player
       this.skin = ReactDOM.render(
         React.createElement(Skin, {
@@ -1662,6 +1675,19 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       );
 
       this.state.configLoaded = true;
+
+      if (!this.state.audioOnly) {
+        this.state.mainVideoInnerWrapper.addClass('oo-video-player');
+      } else {
+        this.state.mainVideoInnerWrapper.removeClass('oo-video-player');
+        //If height was not provided for an audio only player, set a height of 138px.
+        //Note that our debug page that QA uses does not currently set a height
+        //138px was the value recommended by Fernando. See JIRA ticket PLAYER-4170
+        var containerHeight = this.state.mainVideoContainer.height();
+        if (!containerHeight) {
+          this.state.mainVideoContainer.height(CONSTANTS.UI.AUDIO_ONLY_DEFAULT_HEIGHT);
+        }
+      }
 
       this.mb.publish(OO.EVENTS.SKIN_CONFIG_LOADED, this.state.config);
 
@@ -1931,6 +1957,14 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       if (this.state.fullscreen) {
         this.state.mainVideoElement.webkitExitFullscreen();
       } else {
+        // PLAYER-4216
+        // iOS will only recognize active text tracks and show the selected state
+        // checkmark if these are set to "showing" mode prior to entering fullscreen.
+        // The isGoingFullScreen flag will ensure that the correct mode is set on the
+        // active track (if existent) right before entering fullscreen
+        this.setClosedCaptionsLanguage({
+          isGoingFullScreen: true
+        });
         this.state.mainVideoElement.webkitEnterFullscreen();
       }
     },
@@ -2218,8 +2252,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.closeScreen();
       } else {
         if (
-          this.state.playerState === CONSTANTS.STATE.PLAYING ||
-          this.state.playerState === CONSTANTS.STATE.START
+          this.state.playerState === CONSTANTS.STATE.PLAYING
         ) {
           this.pausedCallback = function() {
             this.state.pluginsElement.addClass('oo-overlay-blur');
@@ -2235,7 +2268,13 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       }
     },
 
-    toggleScreen: function(screen) {
+    /**
+     * Toggles the provided screen. Will switch to the provided screen
+     * if that screen is not active, otherwise it will close the screen.
+     * @param screen The screen to toggle
+     * @param {boolean} doNotPause Set to true to avoid pausing when toggling the screen
+     */
+    toggleScreen: function(screen, doNotPause) {
       this.isNewVrVideo = false;
       if (this.state.screenToShow === screen) {
         this.closeScreen();
@@ -2246,7 +2285,12 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
             this.state.screenToShow = screen;
             this.renderSkin();
           }.bind(this);
-          this.mb.publish(OO.EVENTS.PAUSE);
+          if (doNotPause) {
+            this.pausedCallback();
+            this.pausedCallback = null;
+          } else {
+            this.mb.publish(OO.EVENTS.PAUSE);
+          }
         } else {
           this.state.screenToShow = screen;
           this.state.pluginsElement.addClass('oo-overlay-blur');
@@ -2444,7 +2488,17 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       }
     },
 
-    setClosedCaptionsLanguage: function() {
+    /**
+     * Requests that closed captions either be set with the currently active
+     * language or be disabled.
+     * @private
+     * @param {Object} An object with properties that provide additional information
+     * about the requested operation.
+     *  - isGoingFullScreen: {Boolean} Determines whether or not the player is about
+     * to enter fullscreen mode when this operation is requested.
+     */
+    setClosedCaptionsLanguage: function(params) {
+      var params = params || {};
       var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
       // if saved language not in available languages, set to first available language
       if (
@@ -2460,7 +2514,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {
         mode: mode,
-        isFullScreen: this.state.fullscreen
+        isFullScreen: this.state.fullscreen,
+        isGoingFullScreen: !!params.isGoingFullScreen
       });
     },
 
@@ -2475,11 +2530,24 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
       } else if (this.state.playerState === CONSTANTS.STATE.END) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
+      } else if (this.state.playerState === CONSTANTS.STATE.START) {
+        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      } else {
+        this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       }
       this.renderSkin();
     },
 
-    onChangeClosedCaptionLanguage: function(event, language) {
+    /**
+     * Handles the CHANGE_CLOSED_CAPTION_LANGUAGE event. Fired by the core when
+     * a change in closed captions language is requested.
+     * @private
+     * @param {String} eventName The name of the event that was fired
+     * @param {String} language The new closed captions language to set, or 'none' if captions are to be disabled
+     * @param {Object} params An object with additional options for this operation
+     *  - forceEnabled: {Boolean} If true this will ensure that captions are also turned on after the new language is set
+     */
+    onChangeClosedCaptionLanguage: function(event, language, params = {}) {
       if (language === CONSTANTS.CLOSED_CAPTIONS.NO_LANGUAGE) {
         if (this.state.closedCaptionOptions.enabled) {
           this.toggleClosedCaptionEnabled();
@@ -2490,6 +2558,14 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
       // validate language is available before update and save
       if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
+        // The act of changing the CC language doesn't currently enable captions
+        // automatically. The core will set the forceEnabled parameter to true when
+        // it is necessary to also enable captions themselves
+        if (params.forceEnabled) {
+          this.state.closedCaptionOptions.enabled = true;
+          this.state.persistentSettings.closedCaptionOptions.enabled = true;
+        }
+
         this.state.closedCaptionOptions.language =
           this.state.persistentSettings.closedCaptionOptions.language = language;
         var captionLanguage = this.state.closedCaptionOptions.enabled ? language : '';
@@ -2662,7 +2738,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     startHideControlBarTimer: function() {
-      if (this.skin.props.skinConfig.controlBar.autoHide === true) {
+      if (this.skin.props.skinConfig.controlBar.autoHide === true && !this.state.audioOnly) {
         this.cancelTimer();
         var timer = setTimeout(
           function() {
@@ -2685,13 +2761,15 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     hideControlBar: function() {
-      var oldState = this.state.controlBarVisible;
-      this.state.controlBarVisible = false;
-      if (Utils.isAndroid()) {
-        this.hideVolumeSliderBar();
-      }
-      if (this.state.controlBarVisible !== oldState) {
-        this.renderSkin();
+      if (!this.state.audioOnly) {
+        var oldState = this.state.controlBarVisible;
+        this.state.controlBarVisible = false;
+        if (Utils.isAndroid()) {
+          this.hideVolumeSliderBar();
+        }
+        if (this.state.controlBarVisible !== oldState) {
+          this.renderSkin();
+        }
       }
     },
 
@@ -2722,7 +2800,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     // set Main Video Element Wrapper padding-top to aspect ratio
     setAspectRatio: function() {
-      if (this.state.mainVideoAspectRatio > 0) {
+      if (this.state.mainVideoAspectRatio > 0 && !this.state.audioOnly) {
         this.state.mainVideoInnerWrapper.css('padding-top', this.state.mainVideoAspectRatio + '%');
       }
     },

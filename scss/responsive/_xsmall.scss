@@ -1,4 +1,5 @@
 .oo-xsmall {
+  height: 100%;
 
   // Content Screens
   .oo-content-screen {
@@ -304,7 +305,6 @@
 
   //Control Bar
   .oo-control-bar {
-    height: $control-bar-height-small !important;
     font-size: 25px * $xsmall-multiple;
 
     .oo-control-bar-items-wrapper {
@@ -337,6 +337,10 @@
         max-height: 24px * $xsmall-multiple;
       }
     }
+  }
+
+  .oo-animating-control-bar {
+    height: $control-bar-height-small !important;
   }
 
   //Volume Controls

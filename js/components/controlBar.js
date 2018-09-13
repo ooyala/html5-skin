@@ -22,6 +22,9 @@ var React = require('react'),
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 
+const MACROS = require('../constants/macros');
+const SkipControls = require('../components/skipControls');
+
 var ControlBar = createReactClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
@@ -69,7 +72,6 @@ var ControlBar = createReactClass({
   handleControlBarMouseUp: function(evt) {
     if (evt.type === 'touchend' || !this.isMobile) {
       evt.stopPropagation(); // W3C
-      evt.cancelBubble = true; // IE
       this.props.controller.state.accessibilityControlsEnabled = true;
       this.props.controller.startHideControlBarTimer();
     }
@@ -168,17 +170,20 @@ var ControlBar = createReactClass({
   },
 
   handleVolumeIconClick: function(evt) {
-    if (this.isMobile) {
-      this.props.controller.startHideControlBarTimer();
-      evt.stopPropagation(); // W3C
-      evt.cancelBubble = true; // IE
-      if (!this.props.controller.state.volumeState.volumeSliderVisible) {
-        this.props.controller.showVolumeSliderBar();
+    if (this.props.clickToVolumeScreen) {
+      this.props.controller.toggleScreen(CONSTANTS.SCREEN.VOLUME_SCREEN, true);
+    } else {
+      if (this.isMobile) {
+        this.props.controller.startHideControlBarTimer();
+        evt.stopPropagation(); // W3C
+        if (!this.props.controller.state.volumeState.volumeSliderVisible) {
+          this.props.controller.showVolumeSliderBar();
+        } else {
+          this.props.controller.handleMuteClick();
+        }
       } else {
         this.props.controller.handleMuteClick();
       }
-    } else {
-      this.props.controller.handleMuteClick();
     }
   },
 
@@ -317,18 +322,10 @@ var ControlBar = createReactClass({
   },
 
   populateControlBar: function() {
-    var playIcon;
-    var playPauseAriaLabel;
-    if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
-      playIcon = 'pause';
-      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PAUSE;
-    } else if (this.props.playerState === CONSTANTS.STATE.END) {
-      playIcon = 'replay';
-      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.REPLAY;
-    } else {
-      playIcon = 'play';
-      playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PLAY;
-    }
+    var playButtonDetails = Utils.getPlayButtonDetails(this.props.playerState);
+    var playIcon = playButtonDetails.icon;
+    var playPauseAriaLabel = playButtonDetails.ariaLabel;
+    var playButtonTooltip = playButtonDetails.buttonTooltip;
 
     var volumeIcon;
     var volumeAriaLabel;
@@ -363,33 +360,14 @@ var ControlBar = createReactClass({
       }
     }
 
-    var totalTime = 0;
-    if (
-      this.props.duration === null ||
-      typeof this.props.duration === 'undefined' ||
-      this.props.duration === ''
-    ) {
-      totalTime = Utils.formatSeconds(0);
-    } else {
-      totalTime = Utils.formatSeconds(this.props.duration);
-    }
-
     // TODO - Replace time display logic with Utils.getTimeDisplayValues()
-    var playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ?
-      Utils.formatSeconds(parseInt(this.props.currentPlayhead))
-      :
-      null;
     var isLiveStream = this.props.isLiveStream;
     var durationSetting = { color: this.props.skinConfig.controlBar.iconStyle.inactive.color };
     var timeShift = this.props.currentPlayhead - this.props.duration;
     // checking timeShift < 1 seconds (not === 0) as processing of the click after we rewinded and then went live may take some time
     var isLiveNow = Math.abs(timeShift) < 1;
     var liveClick = isLiveNow ? null : this.handleLiveClick;
-    var playheadTimeContent = isLiveStream ?
-      (isLiveNow ? null : Utils.formatSeconds(timeShift))
-      :
-      playheadTime;
-    var totalTimeContent = isLiveStream ? null : <span className="oo-total-time">{totalTime}</span>;
+    var totalTimeContent = isLiveStream ? null : <span className="oo-total-time">{this.props.totalTime}</span>;
 
     // TODO: Update when implementing localization
     var liveText = Utils.getLocalizedString(
@@ -443,15 +421,6 @@ var ControlBar = createReactClass({
       }
     };
 
-    var playBtnTooltip;
-    if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
-      playBtnTooltip = CONSTANTS.SKIN_TEXT.PAUSE;
-    } else if (this.props.playerState === CONSTANTS.STATE.END) {
-      playBtnTooltip = CONSTANTS.SKIN_TEXT.REPLAY;
-    } else {
-      playBtnTooltip = CONSTANTS.SKIN_TEXT.PLAY;
-    }
-
     var controlItemTemplates = {
       playPause: (
         <ControlButton
@@ -461,7 +430,7 @@ var ControlBar = createReactClass({
           focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
           ariaLabel={playPauseAriaLabel}
           icon={playIcon}
-          tooltip={playBtnTooltip}
+          tooltip={playButtonTooltip}
           onClick={this.handlePlayClick}>
         </ControlButton>
       ),
@@ -484,7 +453,7 @@ var ControlBar = createReactClass({
             tooltip={mutedInUi ? CONSTANTS.SKIN_TEXT.UNMUTE : CONSTANTS.SKIN_TEXT.MUTE}
             onClick={this.handleVolumeIconClick}>
           </ControlButton>
-          <VolumeControls {...this.props} />
+          {!this.props.hideVolumeControls && <VolumeControls {...this.props} />}
         </div>
       ),
 
@@ -493,7 +462,7 @@ var ControlBar = createReactClass({
           key={CONSTANTS.CONTROL_BAR_KEYS.TIME_DURATION}
           className="oo-time-duration oo-control-bar-duration"
           style={durationSetting}>
-          <span>{playheadTimeContent}</span>{totalTimeContent}
+          <span>{this.props.playheadTime}</span>{totalTimeContent}
         </a>
       ),
 
@@ -754,14 +723,43 @@ var ControlBar = createReactClass({
               null
           }
           height={this.props.skinConfig.controlBar.logo.height} />
+      ),
+
+      skipControls: (
+        <SkipControls
+          key={CONSTANTS.CONTROL_BAR_KEYS.SKIP_CONTROLS}
+          buttonConfig={Utils.getPropertyValue(
+            this.props.skinConfig,
+            'skipControls.controlBarSkipControls',
+            {}
+          )}
+          forceShowButtons={true}
+          className="oo-absolute-centered oo-control-bar-item"
+          config={this.props.controller.state.skipControls}
+          language={this.props.language}
+          localizableStrings={this.props.localizableStrings}
+          responsiveView={this.props.responsiveView}
+          skinConfig={this.props.skinConfig}
+          controller={this.props.controller}
+          currentPlayhead={this.props.currentPlayhead}
+          a11yControls={this.props.controller.accessibilityControls}
+          isInactive={!this.props.controller.state.controlBarVisible}
+          isInBackground={this.props.controller.state.scrubberBar.isHovering}
+          onFocus={this.handleFocus} />
       )
     };
 
     var controlBarItems = [];
-    var defaultItems = this.props.controller.state.isPlayingAd ?
-      this.props.skinConfig.buttons.desktopAd
-      :
-      this.props.skinConfig.buttons.desktopContent;
+    var defaultItems;
+
+    if (this.props.controlBarItems) {
+      defaultItems = this.props.controlBarItems;
+    } else if (this.props.audioOnly) {
+      defaultItems = this.props.skinConfig.buttons.audioOnly;
+    } else {
+      defaultItems = this.props.controller.state.isPlayingAd ?
+        this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
+    }
 
     // if mobile and not showing the slider or the icon, extra space can be added to control bar width. If volume bar is shown instead of slider, add some space as well:
     var volumeItem = null;
@@ -827,11 +825,19 @@ var ControlBar = createReactClass({
         }
       }
 
+      var availableLanguages = Utils.getPropertyValue(
+        this.props.controller,
+        'state.closedCaptionOptions.availableLanguages.languages',
+        []
+      );
+      
       // do not show CC button if no CC available
       if (
-        (this.props.controller.state.isOoyalaAds ||
-          !this.props.controller.state.closedCaptionOptions.availableLanguages) &&
-        defaultItems[k].name === 'closedCaption'
+        defaultItems[k].name === CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION &&
+        (
+          !availableLanguages.length ||
+          this.props.controller.state.isOoyalaAds
+        )
       ) {
         continue;
       }
@@ -906,21 +912,30 @@ var ControlBar = createReactClass({
         alignment = CONSTANTS.TOOLTIP_ALIGNMENT.LEFT;
       }
       tooltipAlignments[collapsedControlBarItems[k].name] = alignment;
-      finalControlBarItems.push(controlItemTemplates[collapsedControlBarItems[k].name]);
+      var item = controlItemTemplates[collapsedControlBarItems[k].name];
+      finalControlBarItems.push(item);
     }
+
     return finalControlBarItems;
   },
 
   render: function() {
     var controlBarClass = ClassNames({
       'oo-control-bar': true,
-      'oo-control-bar-hidden': !this.props.controlBarVisible
+      'oo-control-bar-hidden': !this.props.controlBarVisible,
+      'oo-animating-control-bar': this.props.animatingControlBar
     });
 
     var controlBarItems = this.populateControlBar();
-    var controlBarStyle = {
-      height: this.props.skinConfig.controlBar.height
-    };
+    var controlBarStyle = {};
+
+    if (this.props.height) {
+      controlBarStyle.height = this.props.height;
+    }
+
+    var wrapperClass = ClassNames('oo-control-bar-items-wrapper', {
+      'oo-flex-row-parent': this.props.audioOnly
+    });
 
     return (
       <div
@@ -930,9 +945,9 @@ var ControlBar = createReactClass({
         onBlur={this.props.onBlur}
         onMouseUp={this.handleControlBarMouseUp}
         onTouchEnd={this.handleControlBarMouseUp}>
-        <ScrubberBar {...this.props} />
+        {!this.props.hideScrubberBar ? <ScrubberBar {...this.props} /> : null}
 
-        <div className="oo-control-bar-items-wrapper">
+        <div className={wrapperClass}>
           {controlBarItems}
         </div>
       </div>
@@ -956,6 +971,14 @@ ControlBar.defaultProps = {
 };
 
 ControlBar.propTypes = {
+  totalTime: PropTypes.string.isRequired,
+  playheadTime: PropTypes.string.isRequired,
+  clickToVolumeScreen: PropTypes.bool,
+  hideVolumeControls: PropTypes.bool,
+  hideScrubberBar: PropTypes.bool,
+  audioOnly: PropTypes.bool,
+  animatingControlBar: PropTypes.bool,
+  controlBarItems: PropTypes.array,
   isLiveStream: PropTypes.bool,
   controlBarVisible: PropTypes.bool,
   playerState: PropTypes.string,
