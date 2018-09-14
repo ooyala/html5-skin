@@ -1,7 +1,7 @@
 /*********************************************************************
   AUDIO ONLY SCREEN
 *********************************************************************/
-const React = require('React');
+const React = require('react');
 const ControlBar = require('../components/controlBar');
 const ClassNames = require('classnames');
 
