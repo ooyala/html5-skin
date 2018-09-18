@@ -194,6 +194,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         showPopover: false,
         autoFocus: false
       },
+      chromecast: {
+        isAvailable: false,
+        isConnected: false
+      },
 
       audioOnly: false
     };
@@ -1159,7 +1163,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * @param  {string} event The event name OO.EVENTS.CHROMECAST_AVAILABLE
      */
     onChromecastAvailable: function(event) {
-      this.state.chromecastAvailable = true;
+      this.state.chromecast.isAvailable = true;
     },
 
     /**
@@ -1169,7 +1173,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * @param  {string} event The event name OO.EVENTS.CHROMECAST_START_CAST
      */
     onChromecastStartCast: function(event) {
-      this.state.chromecastConnected = true;
+      this.state.chromecast.isConnected = true;
       this.renderSkin();
       //TODO bring up ui permanently
     },

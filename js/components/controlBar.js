@@ -557,14 +557,15 @@ var ControlBar = createReactClass({
         </div>
       ),
 
+      /**
+       * This function returns the chromecast button definition based on if
+       * it's connected to a chromecast or not
+       * @private
+       * @return {Object} The button definition
+       */
       chromecast: function() {
-        if (this.props.controller.state.chromecastAvailable !== true)
-        {
-          return null;
-        }
-
         let castIcon = "chromecast-disconnected";
-        if (this.props.controller.state.chromecastConnected === true)
+        if (this.props.controller.state.chromecast.isConnected === true)
         {
           castIcon = "chromecast-connected";
         }
@@ -573,7 +574,8 @@ var ControlBar = createReactClass({
           {...commonButtonProps}
           key={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
           focusId={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
-          ariaHidden={true}
+          ariaHidden={false}
+          ariaLabel={CONSTANTS.ARIA_LABELS.CHROMECAST}
           icon={castIcon}
           tooltip={CONSTANTS.SKIN_TEXT.CHROMECAST}
           onClick={this.handleChromecastClick}>
@@ -877,6 +879,10 @@ var ControlBar = createReactClass({
       }
 
       if (defaultItems[k].name === 'audioAndCC' && !this.props.controller.state.multiAudio) {
+        continue;
+      }
+
+      if (defaultItems[k].name === 'chromecast' && this.props.controller.state.chromecast.isAvailable !== true) {
         continue;
       }
 
