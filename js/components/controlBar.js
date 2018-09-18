@@ -574,7 +574,6 @@ var ControlBar = createReactClass({
           {...commonButtonProps}
           key={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
           focusId={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
-          ariaHidden={false}
           ariaLabel={CONSTANTS.ARIA_LABELS.CHROMECAST}
           icon={castIcon}
           tooltip={CONSTANTS.SKIN_TEXT.CHROMECAST}
@@ -832,7 +831,7 @@ var ControlBar = createReactClass({
         'state.closedCaptionOptions.availableLanguages.languages',
         []
       );
-      
+
       // do not show CC button if no CC available
       if (
         defaultItems[k].name === CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION &&

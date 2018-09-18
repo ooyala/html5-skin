@@ -1186,7 +1186,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
      * @param  {string} event The event name OO.EVENTS.CHROMECAST_END_CAST
      */
     onChromecastEndCast: function(event) {
-      this.state.chromecastConnected = false;
+      this.state.chromecast.isConnected = false;
       this.renderSkin();
     },
 
