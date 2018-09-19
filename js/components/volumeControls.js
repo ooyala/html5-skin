@@ -92,6 +92,9 @@ var VolumeControls = createReactClass({
    * @returns {String} The current volume in a screen reader friendly format (i.e. 20% volume).
    */
   getAriaValueText: function() {
+    if (this.props.controller.state.volumeState.muted) {
+      return CONSTANTS.ARIA_LABELS.MUTED;
+    }
     return CONSTANTS.ARIA_LABELS.VOLUME_PERCENT.replace(MACROS.VOLUME, this.getVolumePercent());
   },
 
