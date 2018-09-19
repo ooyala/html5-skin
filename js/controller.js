@@ -2323,7 +2323,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
 
     onChromecastClicked: function() {
-      if (!this.state.chromecastConnected) {
+      if (!this.state.chromecast.isConnected) {
         this.mb.publish(OO.EVENTS.PAUSE, OO.VIDEO.MAIN);
       }
       this.mb.publish(OO.EVENTS.CHROMECAST_CLICKED);
