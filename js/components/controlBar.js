@@ -565,8 +565,7 @@ var ControlBar = createReactClass({
        */
       chromecast: function() {
         let castIcon = "chromecast-disconnected";
-        if (this.props.controller.state.chromecast.isConnected === true)
-        {
+        if (this.props.controller.state.chromecast.isConnected === true) {
           castIcon = "chromecast-connected";
         }
         return (
