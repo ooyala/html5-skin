@@ -3,3 +3,4 @@ build
 coverage
 .idea
 .DS_Store
+.vscode/
