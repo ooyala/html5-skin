@@ -244,16 +244,20 @@ const Skin = createReactClass({
    * @returns {[number, number, number]} array with yaw, roll, pitch
    */
   getDirectionParams: function(_pageX, _pageY) {
-    const pageX = Utils.ensureNumber(_pageX, 0);
-    const pageY = Utils.ensureNumber(_pageY, 0);
-    const dx = pageX - this.state.xVrMouseStart;
-    const dy = pageY - this.state.yVrMouseStart;
-    const maxDegreesX = 90;
-    const maxDegreesY = 120;
-    const degreesForPixelYaw = maxDegreesX / this.state.componentWidth;
-    const degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
-    const yaw = this.getVrViewingDirectionParamValue('yaw') + dx * degreesForPixelYaw;
-    const pitch = this.getVrViewingDirectionParamValue('pitch') + dy * degreesForPixelPitch;
+    let yaw = this.getVrViewingDirectionParamValue('yaw');
+    let pitch = this.getVrViewingDirectionParamValue('pitch');
+    if (this.state.componentWidth && this.state.componentHeight) {
+      const pageX = Utils.ensureNumber(_pageX, 0);
+      const pageY = Utils.ensureNumber(_pageY, 0);
+      const dx = pageX - this.state.xVrMouseStart;
+      const dy = pageY - this.state.yVrMouseStart;
+      const maxDegreesX = 90;
+      const maxDegreesY = 120;
+      const degreesForPixelYaw = maxDegreesX / this.state.componentWidth;
+      const degreesForPixelPitch = maxDegreesY / this.state.componentHeight;
+      yaw += dx * degreesForPixelYaw;
+      pitch += dy * degreesForPixelPitch;
+    }
     return [yaw, 0, pitch];
   },
 
@@ -414,6 +418,8 @@ const Skin = createReactClass({
               />
             );
             break;
+          default:
+            break;
         }
       }
       if (!screen) {
@@ -498,24 +504,24 @@ const Skin = createReactClass({
             );
             break;
           case CONSTANTS.SCREEN.VOLUME_SCREEN:
-              screen = (
-                <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.VOLUME_SCREEN} icon="volume">
-                  <VolumePanel
-                    {...this.props}
-                    playerState={this.state.playerState}
-                    isLiveStream={this.state.isLiveStream}
-                    a11yControls={this.props.controller.accessibilityControls}
-                    currentPlayhead={this.state.currentPlayhead}
-                    duration={this.state.duration}
-                    totalTime={this.getTotalTime()}
-                    playheadTime={this.getPlayheadTime()}
-                    buffered={this.state.buffered}
-                    responsiveView={this.state.responsiveId}
-                    componentWidth={this.state.componentWidth}
-                    />
-                </ContentScreen>
-              );
-              break;
+            screen = (
+              <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.VOLUME_SCREEN} icon="volume">
+                <VolumePanel
+                  {...this.props}
+                  playerState={this.state.playerState}
+                  isLiveStream={this.state.isLiveStream}
+                  a11yControls={this.props.controller.accessibilityControls}
+                  currentPlayhead={this.state.currentPlayhead}
+                  duration={this.state.duration}
+                  totalTime={this.getTotalTime()}
+                  playheadTime={this.getPlayheadTime()}
+                  buffered={this.state.buffered}
+                  responsiveView={this.state.responsiveId}
+                  componentWidth={this.state.componentWidth}
+                />
+              </ContentScreen>
+            );
+            break;
           case CONSTANTS.SCREEN.PAUSE_SCREEN:
             screen = (
               <PauseScreenWithAutoHide

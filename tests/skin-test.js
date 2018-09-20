@@ -356,8 +356,21 @@ describe('Methods tests', function() {
        * pitch = 0 + 90 * 0.666666667 = 60;
        */
       expect(res).toEqual([ 6, 0, 60 ]);
+
       const res2 = skin.getDirectionParams('', undefined);
       expect(res2).toEqual([ 0, 0, 0 ]);
+
+      skin.state.componentHeight = 0;
+      const res3 = skin.getDirectionParams(20, 90);
+      expect(res3).toEqual([ 0, 0, 0 ]);
+
+      skin.state.componentHeight = 180;
+      const res4 = skin.getDirectionParams(20, 90);
+      expect(res4).toEqual([ 6, 0, 60 ]);
+
+      skin.state.componentHeight = NaN;
+      const res5 = skin.getDirectionParams(20, 90);
+      expect(res5).toEqual([ 0, 0, 0 ]);
     });
 
     it('handleVrPlayerMouseMove should return correct values', function() {
