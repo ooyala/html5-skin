@@ -129,6 +129,7 @@ var CONSTANTS = {
     PAUSE: 'Pause',
     REPLAY: 'Replay',
     MUTE: 'Mute',
+    MUTED: 'Player is muted',
     UNMUTE: 'Unmute',
     CLOSED_CAPTIONS: 'Closed Captions',
     VIDEO_QUALITY: 'Video Quality',
