@@ -1574,4 +1574,19 @@ describe('Controller', function() {
       controller.state.mainVideoContainer.height = originalHeightFunc;
     });
   });
+
+  it('that we show playing screen when ads have finished playing and end screen if the video has finished', function() {
+    controller.createPluginElements();
+    controller.state.playerState = CONSTANTS.STATE.START;
+    controller.onAdsPlayed();
+    expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PLAYING_SCREEN);
+
+    controller.state.playerState = CONSTANTS.STATE.PLAYING;
+    controller.onAdsPlayed();
+    expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PLAYING_SCREEN);
+
+    controller.state.playerState = CONSTANTS.STATE.END;
+    controller.onAdsPlayed();
+    expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.END_SCREEN);
+  });
 });
