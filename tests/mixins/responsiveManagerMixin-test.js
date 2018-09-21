@@ -1,13 +1,12 @@
 jest.dontMock('../../js/mixins/responsiveManagerMixin');
 jest.dontMock('../../js/components/utils');
 
-const React = require('react');
-const Enzyme = require('enzyme');
-const debounce = require('lodash.debounce');
-const createReactClass = require('create-react-class');
-const responsiveManagerMixin = require('../../js/mixins/responsiveManagerMixin');
+import React from 'react';
+import Enzyme from 'enzyme';
+import createReactClass from 'create-react-class';
+import responsiveManagerMixin from '../../js/mixins/responsiveManagerMixin';
 
-let Foo = createReactClass({
+const Foo = createReactClass({
   mixins: [responsiveManagerMixin],
   render: function() {
     return (
@@ -17,7 +16,7 @@ let Foo = createReactClass({
 });
 
 describe('responsiveManagerMixin', function() {
-  let props =  {
+  const props =  {
     controller: {
       state: {
         mainVideoContainer: {

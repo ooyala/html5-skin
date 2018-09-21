@@ -1,7 +1,7 @@
-const ReactDOM = require('react-dom');
-const ClassNames = require('classnames');
-const debounce = require('lodash.debounce');
-const Utils = require('../components/utils');
+import ReactDOM from 'react-dom';
+import ClassNames from 'classnames';
+import debounce from 'lodash.debounce';
+import Utils from '../components/utils';
 
 const ResponsiveManagerMixin = {
   getInitialState: function() {
