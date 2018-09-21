@@ -73,6 +73,10 @@ describe('ControlBar', function() {
         scrubberBar: {
           isHovering: false
         },
+        chromecast: {
+          isAvailable: false,
+          isConnected: false
+        },
         isLiveStream: false,
         duration: 60,
         skipControls: {

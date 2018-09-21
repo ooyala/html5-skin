@@ -194,6 +194,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         showPopover: false,
         autoFocus: false
       },
+      chromecast: {
+        isAvailable: false,
+        isConnected: false
+      },
 
       audioOnly: false
     };
@@ -255,6 +259,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       );
       this.mb.subscribe(OO.EVENTS.ERROR, 'customerUi', _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
+      this.mb.subscribe(OO.EVENTS.CHROMECAST_AVAILABLE, 'customerUi', _.bind(this.onChromecastAvailable, this));
+      this.mb.subscribe(OO.EVENTS.CHROMECAST_START_CAST, 'customerUi', _.bind(this.onChromecastStartCast, this));
+      this.mb.subscribe(OO.EVENTS.CHROMECAST_END_CAST, 'customerUi', _.bind(this.onChromecastEndCast, this));
       this.state.isPlaybackReadySubscribed = true;
     },
 
@@ -1150,6 +1157,40 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     /**
+     * Callback for event OO.EVENTS.CHROMECAST_AVAILABLE. It records that
+     * chromecasting is available on this player.
+     * @private
+     * @param  {string} event The event name OO.EVENTS.CHROMECAST_AVAILABLE
+     */
+    onChromecastAvailable: function(event) {
+      this.state.chromecast.isAvailable = true;
+    },
+
+    /**
+     * Callback for event OO.EVENTS.CHROMECAST_START_CAST. It records that
+     * the player is connected to a chromecast receiver and should update the UI.
+     * @private
+     * @param  {string} event The event name OO.EVENTS.CHROMECAST_START_CAST
+     */
+    onChromecastStartCast: function(event) {
+      this.state.chromecast.isConnected = true;
+      this.renderSkin();
+      //TODO bring up ui permanently
+    },
+
+    /**
+     * Callback for event OO.EVENTS.CHROMECAST_END_CAST. It records that
+     * the player has disconnected from a chromecast receiver and should update
+     * the UI.
+     * @private
+     * @param  {string} event The event name OO.EVENTS.CHROMECAST_END_CAST
+     */
+    onChromecastEndCast: function(event) {
+      this.state.chromecast.isConnected = false;
+      this.renderSkin();
+    },
+
+    /**
      * Checks to see if we have multiple audio tracks
      * @param {Object} multiAudio The multiAudio object that is fetched from the current video
      * @returns {boolean} True if the provided object contains more than one track, false otherwise
@@ -1322,7 +1363,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     onAdsPlayed: function(event) {
       OO.log('onAdsPlayed is called from event = ' + event);
-      this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+      if (this.state.playerState === CONSTANTS.STATE.END) {
+        this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
+      } else {
+        this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+      }
       this.skin.updatePlayhead(
         this.state.mainVideoPlayhead,
         this.state.mainVideoDuration,
@@ -2278,6 +2323,14 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN;
       }
       this.renderSkin();
+    },
+
+
+    onChromecastClicked: function() {
+      if (!this.state.chromecast.isConnected) {
+        this.mb.publish(OO.EVENTS.PAUSE, OO.VIDEO.MAIN);
+      }
+      this.mb.publish(OO.EVENTS.CHROMECAST_CLICKED);
     },
 
     /**

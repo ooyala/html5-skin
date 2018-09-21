@@ -66,6 +66,10 @@ describe('Audio Only Screen', () => {
             vrIcon: true
           }
         },
+        chromecast: {
+          isAvailable: false,
+          isConnected: false
+        },
         closedCaptionOptions: {},
         multiAudioOptions: {},
         playbackSpeedOptions: { currentSpeed: 1 },
