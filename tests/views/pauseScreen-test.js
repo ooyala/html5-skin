@@ -63,6 +63,10 @@ describe('PauseScreen', function() {
           hasPreviousVideos: false,
           hasNextVideos: false
         },
+        chromecast: {
+          isAvailable: false,
+          isConnected: false
+        },
         closedCaptionOptions: {},
         multiAudioOptions: {},
         playbackSpeedOptions: { currentSpeed: 1 },

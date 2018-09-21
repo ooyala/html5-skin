@@ -195,6 +195,10 @@ var ControlBar = createReactClass({
     this.props.controller.toggleShareScreen();
   },
 
+  handleChromecastClick: function() {
+    this.props.controller.onChromecastClicked();
+  },
+
   /**
    * Generic toggle logic for menus that display as popover on large screen sizes
    * and as a fullscreen menu on smaller ones.
@@ -553,6 +557,29 @@ var ControlBar = createReactClass({
         </div>
       ),
 
+      /**
+       * This function returns the chromecast button definition based on if
+       * it's connected to a chromecast or not
+       * @private
+       * @return {Object} The button definition
+       */
+      chromecast: function() {
+        let castIcon = "chromecast-disconnected";
+        if (this.props.controller.state.chromecast.isConnected === true) {
+          castIcon = "chromecast-connected";
+        }
+        return (
+        <ControlButton
+          {...commonButtonProps}
+          key={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
+          focusId={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
+          ariaLabel={CONSTANTS.ARIA_LABELS.CHROMECAST}
+          icon={castIcon}
+          tooltip={CONSTANTS.SKIN_TEXT.CHROMECAST}
+          onClick={this.handleChromecastClick}>
+        </ControlButton>
+      )}.bind(this)(),
+
       audioAndCC: function() {
         var closedCaptionsList = [];
         var multiAudioList = [];
@@ -803,7 +830,7 @@ var ControlBar = createReactClass({
         'state.closedCaptionOptions.availableLanguages.languages',
         []
       );
-      
+
       // do not show CC button if no CC available
       if (
         defaultItems[k].name === CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION &&
@@ -850,6 +877,10 @@ var ControlBar = createReactClass({
       }
 
       if (defaultItems[k].name === 'audioAndCC' && !this.props.controller.state.multiAudio) {
+        continue;
+      }
+
+      if (defaultItems[k].name === 'chromecast' && this.props.controller.state.chromecast.isAvailable !== true) {
         continue;
       }
 

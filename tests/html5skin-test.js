@@ -1474,6 +1474,28 @@ describe('Controller', function() {
     });
   });
 
+  describe('Chromecast functionality', function() {
+    it('test that onchromecast.isAvailable sets the appropriate variable', function() {
+      expect(controller.state.chromecast.isAvailable).toBe(false);
+      controller.onChromecastAvailable();
+      expect(controller.state.chromecast.isAvailable).toBe(true);
+    });
+
+    it('test that we update the chromecast icon state with the callbacks', function() {
+      expect(controller.state.chromecast.isConnected).toBe(false);
+      //the calls will be repeated to double check that we aren't just toggling the state
+      controller.onChromecastStartCast();
+      expect(controller.state.chromecast.isConnected).toBe(true);
+      controller.onChromecastStartCast();
+      expect(controller.state.chromecast.isConnected).toBe(true);
+
+      controller.onChromecastEndCast();
+      expect(controller.state.chromecast.isConnected).toBe(false);
+      controller.onChromecastEndCast();
+      expect(controller.state.chromecast.isConnected).toBe(false);
+    });
+  });
+
   describe('Audio only', () => {
     it('adds oo-video-player class to the video container when not audio only and removes it when audio only', () => {
       controller.loadConfigData('customerUi', {
