@@ -27,7 +27,14 @@ describe('responsiveManagerMixin', function() {
     },
     skinConfig: {
       responsive: {
-        breakpoints: 'xs'
+        breakpoints: {
+          xs: {
+            id: 'xs',
+            maxWidth: 559,
+            multiplier: 0.7,
+            name: 'oo-xsmall'
+          }
+        }
       }
     }
   };
