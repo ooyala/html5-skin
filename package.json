@@ -35,11 +35,11 @@
     "screenfull": "3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.0",
-    "@babel/preset-env": "^7.1.0",
-    "@babel/preset-react": "^7.1.0",
+    "@babel/core": "^7.0.0-beta.51",
+    "@babel/preset-env": "^7.0.0-beta.51",
+    "@babel/preset-react": "^7.0.0-beta.51",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.6.0",
+    "babel-jest": "^23.2.0",
     "babel-polyfill": "^6.26.0",
     "babelify": "^9.0.0",
     "browserify": "^16.2.2",
