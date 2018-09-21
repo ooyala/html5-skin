@@ -31,10 +31,10 @@ const ResponsiveManagerMixin = {
   /**
    * It gives the value of height, based on the width of mainVideoContainer (in a ratio 16:9);
    * @param {number} componentWidth - width of the element
-   * @returns {number} - default height of mainVideoContainer
+   * @returns {number} - default height of the element
    * If we do not have width of mainVideoContainer it returns 0
    */
-  getDefaultMainVideoContainerHeight: function(componentWidth) {
+  getDefaultElementHeight: function(componentWidth) {
     const ratioCoef = 0.5625; // y - coefficient for default aspect ratio 16:9
     let componentHeight = 0;
     if (componentWidth && Utils.ensureNumber(componentWidth)) {
@@ -57,7 +57,7 @@ const ResponsiveManagerMixin = {
           width = this.props.controller.state.mainVideoContainer.width();
         }
         // Height must exist, if height is 0 or do not exist, we should use default value for height
-        componentHeight = this.getDefaultMainVideoContainerHeight(width);
+        componentHeight = this.getDefaultElementHeight(width);
       }
     }
     const breakpoints = this.props.skinConfig.responsive.breakpoints;
