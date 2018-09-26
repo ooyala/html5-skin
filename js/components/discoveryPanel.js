@@ -164,7 +164,7 @@ var DiscoveryPanel = createReactClass({
 
     return (
       <div className="oo-content-panel oo-discovery-panel" ref="discoveryPanel">
-        <div className={discoveryToaster} id="DiscoveryToasterContainer" ref="DiscoveryToasterContainer">
+        <div className={discoveryToaster} ref="DiscoveryToasterContainer">
           {discoveryContentBlocks}
         </div>
 
