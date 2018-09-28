@@ -1,8 +1,9 @@
-var ReactDOM = require('react-dom'),
-    ClassNames = require('classnames'),
-    debounce = require('lodash.debounce');
+import ReactDOM from 'react-dom';
+import ClassNames from 'classnames';
+import debounce from 'lodash.debounce';
+import Utils from '../components/utils';
 
-var ResponsiveManagerMixin = {
+const ResponsiveManagerMixin = {
   getInitialState: function() {
     return {
       componentWidth: null,
@@ -27,23 +28,47 @@ var ResponsiveManagerMixin = {
     this.generateResponsiveData();
   },
 
+  /**
+   * It gives the value of height, based on the width of mainVideoContainer (in a ratio 16:9);
+   * @param {number} componentWidth - width of the element
+   * @returns {number} - default height of the element
+   * If we do not have width of mainVideoContainer it returns 0
+   */
+  getDefaultElementHeight: function(componentWidth) {
+    const ratioCoef = 0.5625; // y - coefficient for default aspect ratio 16:9
+    let componentHeight = 0;
+    if (componentWidth && Utils.ensureNumber(componentWidth)) {
+      componentHeight = componentWidth * ratioCoef;
+    }
+    return componentHeight;
+  },
+
   generateResponsiveData: function() {
-    var componentWidth = 0;
-    var componentHeight = 1;
-    var dom = ReactDOM.findDOMNode(this);
+    let componentWidth = 0;
+    let componentHeight = 0;
+    const dom = ReactDOM.findDOMNode(this);
     if (dom) {
       componentWidth = Math.ceil(dom.getBoundingClientRect().width);
       componentHeight = dom.parentNode ? dom.parentNode.getBoundingClientRect().height : componentHeight;
+      if (!componentHeight) {
+        let width = componentWidth;
+        // If width === 0, we can use width of mainVideoContainer
+        if (!width && !!this.props.controller.state.mainVideoContainer) {
+          width = this.props.controller.state.mainVideoContainer.width();
+        }
+        // Height must exist, if height is 0 or do not exist, we should use default value for height
+        componentHeight = this.getDefaultElementHeight(width);
+      }
     }
-    var breakpoints = this.props.skinConfig.responsive.breakpoints;
-    var breakpointData = {
+    const breakpoints = this.props.skinConfig.responsive.breakpoints;
+    let breakpointData = {
       classes: {},
       ids: {}
     };
 
-    var key;
+    let key;
     if (this.props.controller.state.audioOnly) {
-      key = "audio-only-xs";
+      key = 'audio-only-xs';
       breakpointData.classes[breakpoints[key].name] = true;
       breakpointData.ids[breakpoints[key].id] = true;
     } else {
