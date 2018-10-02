@@ -195,10 +195,6 @@ var ControlBar = createReactClass({
     this.props.controller.toggleShareScreen();
   },
 
-  handleChromecastClick: function() {
-    this.props.controller.onChromecastClicked();
-  },
-
   /**
    * Generic toggle logic for menus that display as popover on large screen sizes
    * and as a fullscreen menu on smaller ones.
@@ -558,27 +554,21 @@ var ControlBar = createReactClass({
       ),
 
       /**
-       * This function returns the chromecast button definition based on if
-       * it's connected to a chromecast or not
+       * This function returns the chromecast button definition using
+       * the provided button from the sdk (agnostic web component) 
        * @private
        * @return {Object} The button definition
        */
       chromecast: function() {
-        let castIcon = "chromecast-disconnected";
-        if (this.props.controller.state.chromecast.isConnected === true) {
-          castIcon = "chromecast-connected";
-        }
         return (
-        <ControlButton
-          {...commonButtonProps}
-          key={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
-          focusId={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
-          ariaLabel={CONSTANTS.ARIA_LABELS.CHROMECAST}
-          icon={castIcon}
-          tooltip={CONSTANTS.SKIN_TEXT.CHROMECAST}
-          onClick={this.handleChromecastClick}>
-        </ControlButton>
-      )}.bind(this)(),
+          <div 
+            key={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
+            tooltip={CONSTANTS.SKIN_TEXT.CHROMECAST}
+            className="oo-cast oo-control-bar-item">
+              <google-cast-launcher class="oo-icon"/>
+          </div>
+        )
+      }.bind(this)(),
 
       audioAndCC: function() {
         var closedCaptionsList = [];
@@ -879,11 +869,7 @@ var ControlBar = createReactClass({
       if (defaultItems[k].name === 'audioAndCC' && !this.props.controller.state.multiAudio) {
         continue;
       }
-
-      if (defaultItems[k].name === 'chromecast' && this.props.controller.state.chromecast.isAvailable !== true) {
-        continue;
-      }
-
+      
       controlBarItems.push(defaultItems[k]);
     }
 
