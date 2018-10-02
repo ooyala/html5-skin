@@ -60,10 +60,6 @@ var skinControllerMock = {
     isLiveStream: false,
     duration: 60,
     currentPlayhead: 10,
-    chromecast: {
-      isAvailable: false,
-      isConnected: false
-    },
     skipControls: {
       hasPreviousVideos: false,
       hasNextVideos: false

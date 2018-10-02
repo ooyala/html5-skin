@@ -45,10 +45,6 @@ describe('EndScreen', function() {
         videoQualityOptions: {
           availableBitrates: null
         },
-        chromecast: {
-          isAvailable: false,
-          isConnected: false
-        },
         scrubberBar: {
           isHovering: false
         }

@@ -69,10 +69,6 @@ describe('PlayingScreen', function() {
           hasPreviousVideos: false,
           hasNextVideos: false,
         },
-        chromecast: {
-          isAvailable: false,
-          isConnected: false
-        },
         config: {
           isVrAnimationEnabled: {
             vrNotification: true,
