@@ -869,6 +869,10 @@ var ControlBar = createReactClass({
       if (defaultItems[k].name === 'audioAndCC' && !this.props.controller.state.multiAudio) {
         continue;
       }
+
+      if (defaultItems[k].name === 'chromecast' && !this.props.controller.state.enableChromecast) {
+        continue;
+      }
       
       controlBarItems.push(defaultItems[k]);
     }

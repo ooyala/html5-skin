@@ -195,6 +195,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         autoFocus: false
       },
 
+      enableChromecast: false,
+
       audioOnly: false
     };
 
@@ -411,6 +413,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.state.browserSupportsTouch = Utils.browserSupportsTouch();
 
       this.state.hideMultiAudioIcon = !!params.hideMultiAudioIcon;
+
+      if (this.state.playerParam.chromecast && this.state.playerParam.chromecast.enable && this.state.playerParam.chromecast.enable == true) {
+        this.state.enableChromecast = true;
+      }
 
       // initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');

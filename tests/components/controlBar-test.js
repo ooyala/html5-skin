@@ -1283,4 +1283,18 @@ describe('ControlBar', function() {
     });
   });
 
+  describe('Chromecast button', ()=> {
+    it('Should not show chromecast button when player param not exist', () => {
+      var wrapper = Enzyme.mount(getControlBar());
+      var chromecastBtn = wrapper.find(".oo-cast");
+      expect(chromecastBtn.length).toBe(0); 
+    });
+
+    it('Should not show chromecast button when player param not exist', () => {
+      baseMockController.state.enableChromecast = true;
+      var wrapper = Enzyme.mount(getControlBar());
+      var chromecastBtn = wrapper.find(".oo-cast");
+      expect(chromecastBtn.length).toBe(1); 
+    });
+  });
 });
