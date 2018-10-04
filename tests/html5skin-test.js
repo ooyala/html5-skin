@@ -1575,6 +1575,77 @@ describe('Controller', function() {
     });
   });
 
+  describe('Chromecast button', () => {
+    it('Should enable the chromecast button at state when appId is valid and enable it is true', () => {
+      controller.loadConfigData({
+        chromecast: {
+          enable: true,
+          appId: "45APPID"
+        }
+      }, {}, {}, {});
+      expect(controller.state.enableChromecast).toBe(true);
+    });
+
+    it('Should disable the chromecast button at state when appId is not an string and enable it is true', () => {
+      controller.loadConfigData({
+        chromecast: {
+          enable: true,
+          appId: 45
+        }
+      }, {}, {}, {});
+      expect(controller.state.enableChromecast).toBe(false);
+    });
+
+    it('Should disable the chromecast button at state when appId is empty and enable it is true', () => {
+      controller.loadConfigData({
+        chromecast: {
+          enable: true,
+          appId: ""
+        }
+      }, {}, {}, {});
+      expect(controller.state.enableChromecast).toBe(false);
+    });
+
+    it('Should disable the chromecast button at state when appId is not provided and enable it is true', () => {
+      controller.loadConfigData({
+        chromecast: {
+          enable: true
+        }
+      }, {}, {}, {});
+      expect(controller.state.enableChromecast).toBe(false);
+    });
+
+    it('Should disable the chromecast button at state when appId is valid and enable it is false', () => {
+      controller.loadConfigData({
+        chromecast: {
+          enable: false,
+          appId: "45APPID"
+        }
+      }, {}, {}, {});
+      expect(controller.state.enableChromecast).toBe(false);
+    });
+
+    it('Should disable the chromecast button at state when appId is valid and there is no enable property', () => {
+      controller.loadConfigData({
+        chromecast: {
+          appId: "45APPID"
+        }
+      }, {}, {}, {});
+      expect(controller.state.enableChromecast).toBe(false);
+    });
+
+    it('Should disable the chromecast button at state when appId is valid and enable it is false', () => {
+      controller.loadConfigData({
+        chromecast: {
+          enable: false,
+          appId: "45APPID"
+        }
+      }, {}, {}, {});
+      expect(controller.state.enableChromecast).toBe(false);
+    });
+
+  });
+
   it('that we show playing screen when ads have finished playing and end screen if the video has finished', function() {
     controller.createPluginElements();
     controller.state.playerState = CONSTANTS.STATE.START;

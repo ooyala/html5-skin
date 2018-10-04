@@ -414,10 +414,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
       this.state.hideMultiAudioIcon = !!params.hideMultiAudioIcon;
 
-      if (this.state.playerParam.chromecast && this.state.playerParam.chromecast.enable && this.state.playerParam.chromecast.enable == true) {
-        this.state.enableChromecast = true;
-      }
-
       // initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');
       this.state.mainVideoInnerWrapper.addClass('oo-player');
@@ -457,6 +453,16 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
       this.accessibilityControls = this.accessibilityControls || new AccessibilityControls(this); // keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
+    },
+
+
+    isChromecastEnabled: function (params) {
+      var chromecastConfig = params.chromecast;
+      var appId = Utils.getPropertyValue(chromecastConfig, 'appId', '');
+      if (typeof appId === 'string' && appId !== '' && Utils.getPropertyValue(chromecastConfig, 'enable', false)) {
+          return true;
+        }
+      return false;
     },
 
     /**
@@ -1633,6 +1639,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
 
       this.state.audioOnly = this.state.config.audio.audioOnly;
+      this.state.enableChromecast = this.isChromecastEnabled(params);
 
       // load player
       this.skin = ReactDOM.render(
