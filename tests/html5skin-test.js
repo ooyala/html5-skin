@@ -1606,6 +1606,16 @@ describe('Controller', function() {
       expect(controller.state.enableChromecast).toBe(false);
     });
 
+    it('Should disable the chromecast button at state when appId is null and enable it is true', () => {
+      controller.loadConfigData({
+        chromecast: {
+          enable: true,
+          appId: null
+        }
+      }, {}, {}, {});
+      expect(controller.state.enableChromecast).toBe(false);
+    });
+
     it('Should disable the chromecast button at state when appId is not provided and enable it is true', () => {
       controller.loadConfigData({
         chromecast: {
@@ -1619,6 +1629,16 @@ describe('Controller', function() {
       controller.loadConfigData({
         chromecast: {
           enable: false,
+          appId: "45APPID"
+        }
+      }, {}, {}, {});
+      expect(controller.state.enableChromecast).toBe(false);
+    });
+
+    it('Should disable the chromecast button at state when appId is valid and enable it is null', () => {
+      controller.loadConfigData({
+        chromecast: {
+          enable: null,
           appId: "45APPID"
         }
       }, {}, {}, {});
@@ -1641,6 +1661,21 @@ describe('Controller', function() {
           appId: "45APPID"
         }
       }, {}, {}, {});
+      expect(controller.state.enableChromecast).toBe(false);
+    });
+
+    it('Should disable the chromecast button at state when appId is null and enable it is false', () => {
+      controller.loadConfigData({
+        chromecast: {
+          enable: false,
+          appId: null
+        }
+      }, {}, {}, {});
+      expect(controller.state.enableChromecast).toBe(false);
+    });
+
+    it('Should disable the chromecast button at state when chromecaste param is not present', () => {
+      controller.loadConfigData({}, {}, {}, {});
       expect(controller.state.enableChromecast).toBe(false);
     });
 
