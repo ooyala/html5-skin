@@ -43,6 +43,10 @@ OO = {
     SKIN_UI_LANGUAGE: 'skinUiLanguage'
   },
   CONSTANTS: {
+    PLAYER_TYPE: {
+      VIDEO: 'video',
+      AUDIO: 'audio',
+    },
     CLOSED_CAPTIONS: {
       HIDDEN: 'hidden',
       SHOWING: 'showing',
@@ -1475,26 +1479,37 @@ describe('Controller', function() {
   });
 
   describe('Audio only', () => {
+
+    it('should set the correct audioOnly value depending on player type', () => {
+      expect(controller.state.audioOnly).toBe(false);
+      controller.loadConfigData({
+        playerType: OO.CONSTANTS.PLAYER_TYPE.AUDIO
+      }, {}, {}, {}, {});
+      expect(controller.state.audioOnly).toBe(true);
+      controller.loadConfigData({
+        playerType: OO.CONSTANTS.PLAYER_TYPE.VIDEO
+      }, {}, {}, {}, {});
+      expect(controller.state.audioOnly).toBe(false);
+      controller.state.audioOnly = true;
+      // No player type specified
+      controller.loadConfigData({}, {}, {}, {}, {});
+      expect(controller.state.audioOnly).toBe(false);
+    });
+
     it('adds oo-video-player class to the video container when not audio only and removes it when audio only', () => {
-      controller.loadConfigData('customerUi', {
-        audio: {
-          audioOnly: true
-        }
-      }, {}, {}, {});
+      controller.loadConfigData({
+        playerType: OO.CONSTANTS.PLAYER_TYPE.AUDIO
+      }, {}, {}, {}, {});
       expect(controller.state.mainVideoInnerWrapper.hasClass('oo-video-player')).toBe(false);
 
-      controller.loadConfigData('customerUi', {
-        audio: {
-          audioOnly: false
-        }
-      }, {}, {}, {});
+      controller.loadConfigData({
+        playerType: OO.CONSTANTS.PLAYER_TYPE.VIDEO
+      }, {}, {}, {}, {});
       expect(controller.state.mainVideoInnerWrapper.hasClass('oo-video-player')).toBe(true);
 
-      controller.loadConfigData('customerUi', {
-        audio: {
-          audioOnly: true
-        }
-      }, {}, {}, {});
+      controller.loadConfigData({
+        playerType: OO.CONSTANTS.PLAYER_TYPE.AUDIO
+      }, {}, {}, {}, {});
       expect(controller.state.mainVideoInnerWrapper.hasClass('oo-video-player')).toBe(false);
     });
 
@@ -1533,11 +1548,9 @@ describe('Controller', function() {
     });
 
     it('does not hide the control bar if player is audio only', () => {
-      controller.loadConfigData('customerUi', {
-        audio: {
-          audioOnly: true
-        }
-      }, {}, {}, {});
+      controller.loadConfigData({
+        playerType: OO.CONSTANTS.PLAYER_TYPE.AUDIO
+      }, {}, {}, {}, {});
 
       controller.startHideControlBarTimer();
       expect(controller.state.timer).toBeFalsy();
@@ -1564,11 +1577,9 @@ describe('Controller', function() {
       controller.state.mainVideoContainer.height = (h) => {
         height = h;
       };
-      controller.loadConfigData('customerUi', {
-        audio: {
-          audioOnly: true
-        }
-      }, {}, {}, {});
+      controller.loadConfigData({
+        playerType: OO.CONSTANTS.PLAYER_TYPE.AUDIO
+      }, {}, {}, {}, {});
 
       expect(height).toBe(CONSTANTS.UI.AUDIO_ONLY_DEFAULT_HEIGHT);
       controller.state.mainVideoContainer.height = originalHeightFunc;
