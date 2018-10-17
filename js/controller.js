@@ -1639,7 +1639,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
 
       // Check for valid player type, otherwise default to video
-      switch(params.playerType) {
+      switch (params.playerType) {
         case OO.CONSTANTS.PLAYER_TYPE.AUDIO:
           this.state.audioOnly = true;
           break;
