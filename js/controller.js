@@ -1638,17 +1638,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       var uiLanguage = Utils.getLanguageToUse(this.state.config);
       this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
 
-      // Check for valid player type, otherwise default to video
-      switch (params.playerType) {
-        case OO.CONSTANTS.PLAYER_TYPE.AUDIO:
-          this.state.audioOnly = true;
-          break;
-        case OO.CONSTANTS.PLAYER_TYPE.VIDEO:
-        default:
-          this.state.audioOnly = false;
-          break;
-      }
-
+      this.state.audioOnly = params.playerType === OO.CONSTANTS.PLAYER_TYPE.AUDIO;
       this.state.enableChromecast = this.isChromecastEnabled(params);
 
       // load player
