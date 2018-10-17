@@ -1638,7 +1638,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       var uiLanguage = Utils.getLanguageToUse(this.state.config);
       this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
 
-      this.state.audioOnly = this.state.config.audio.audioOnly;
+      this.state.audioOnly = params.playerType === OO.CONSTANTS.PLAYER_TYPE.AUDIO;
       this.state.enableChromecast = this.isChromecastEnabled(params);
 
       // load player

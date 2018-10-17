@@ -522,6 +522,8 @@ describe('ControlBar', function() {
         {...baseMockProps}
         controlBarVisible={true}
         componentWidth={500}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
         playerState={CONSTANTS.STATE.PLAYING} />
     );
     var ccButton = wrapper.find('.oo-closed-caption');
@@ -1287,14 +1289,14 @@ describe('ControlBar', function() {
     it('Should not show chromecast button when player param not exist', () => {
       var wrapper = Enzyme.mount(getControlBar());
       var chromecastBtn = wrapper.find(".oo-cast");
-      expect(chromecastBtn.length).toBe(0); 
+      expect(chromecastBtn.length).toBe(0);
     });
 
     it('Should not show chromecast button when player param not exist', () => {
       baseMockController.state.enableChromecast = true;
       var wrapper = Enzyme.mount(getControlBar());
       var chromecastBtn = wrapper.find(".oo-cast");
-      expect(chromecastBtn.length).toBe(1); 
+      expect(chromecastBtn.length).toBe(1);
     });
   });
 });
