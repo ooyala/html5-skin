@@ -10,14 +10,12 @@ var DeepMerge = require('deepmerge');
 var Fullscreen = require('screenfull');
 var Skin = require('./skin');
 var SkinJSON = require('../config/skin');
-// var Bulk = require('bulk-require');
-// var Localization = Bulk('./config', ['languageFiles/*.json']);
 var Localization = {
   languageFiles: {}
 };
-let context = require.context('../config/languageFiles', false, /\.json$/);
-context.keys().forEach(path => {
-  const module = context(path);
+const localizationFilesContext = require.context('../config/languageFiles', false, /\.json$/);
+localizationFilesContext.keys().forEach(path => {
+  const module = localizationFilesContext(path);
   Localization.languageFiles[path.slice(2, path.indexOf('.', 2))] = module;
 });
 
