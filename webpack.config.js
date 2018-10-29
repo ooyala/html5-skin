@@ -49,7 +49,10 @@ module.exports = {
     minimizer: [
       new OptimizeCSSAssetsPlugin({
         cssProcessorOptions: {
-          map: { inline: false } // generate sourcemap use an external file
+          map: {
+            inline: false,
+            annotation: true
+          }
         }
       }),
       new UglifyJsPlugin({
