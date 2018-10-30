@@ -163,6 +163,10 @@
     .oo-cast {
         width: 45px;
     }
+
+    &.oo-flex-end {
+      @include justify-content(flex-end);
+    }
   }
 }
 

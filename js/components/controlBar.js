@@ -928,7 +928,8 @@ var ControlBar = createReactClass({
     }
 
     var wrapperClass = ClassNames('oo-control-bar-items-wrapper', {
-      'oo-flex-row-parent': this.props.audioOnly
+      'oo-flex-row-parent': this.props.audioOnly,
+      'oo-flex-end': this.props.audioOnly && Utils.isIos()
     });
 
     return (
