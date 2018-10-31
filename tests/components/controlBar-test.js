@@ -926,6 +926,12 @@ describe('ControlBar', function() {
       var wrapperPause = Enzyme.mount(getControlBar(CONSTANTS.STATE.PAUSE));
       expect(typeof wrapperPause.ref('volumeIcon')).toBe('undefined');
     });
+
+    it('uses oo-flex-end class if audio-only', function () {
+      baseMockProps.audioOnly = true;
+      var wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-flex-end').length).toBe(1);
+    });
   });
 
   it('shows/hides quality button if bitrates available/not available', function() {
