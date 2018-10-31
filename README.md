@@ -73,6 +73,16 @@ using *git submodule* commands:
 
    Once the app is built a webserver will start and serve `sample.html` in your browser [http://0.0.0.0:4444/](http://0.0.0.0:4444/).
 
+You can also use webpack-dev-server instead of gulp:
+
+1. Start dev-server by running: `npm start`
+
+   This will start webpack dev-server in your browser [http://localhost:4444/](http://localhost:4444/).
+
+2. Build the project by running: `npm run build` or `npm run build-prod`
+
+   This will perform an initial build and start a watch that will update the `build/` folder with any changes made in `js/` or `scss/` folders.
+
 ## Style
 We use [Sass](http://sass-lang.com/) (SCSS) for CSS preprocessor.
 
