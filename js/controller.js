@@ -11,13 +11,14 @@ var Fullscreen = require('screenfull');
 var Skin = require('./skin');
 var SkinJSON = require('../config/skin');
 var Localization = {
-  languageFiles: {}
+  languageFiles: {
+    en: require('../config/languageFiles/en.json'),
+    es: require('../config/languageFiles/es.json'),
+    ja: require('../config/languageFiles/ja.json'),
+    ko: require('../config/languageFiles/ko.json'),
+    zh: require('../config/languageFiles/zh.json'),
+  }
 };
-const localizationFilesContext = require.context('../config/languageFiles', false, /\.json$/);
-localizationFilesContext.keys().forEach(path => {
-  const module = localizationFilesContext(path);
-  Localization.languageFiles[path.slice(2, path.indexOf('.', 2))] = module;
-});
 
 OO.plugin('Html5Skin', function(OO, _, $, W) {
   // Check if the player is at least v4. If not, the skin cannot load.
