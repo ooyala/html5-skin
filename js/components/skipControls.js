@@ -18,7 +18,7 @@ class SkipControls extends React.Component {
     this.onNextVideo = this.onNextVideo.bind(this);
     this.onSkipBackward = this.onSkipBackward.bind(this);
     this.onSkipForward = this.onSkipForward.bind(this);
-    this.isAtLiveEdge = this.isAtLiveEdge.bind(this);
+    this.isAtVideoEnd = this.isAtVideoEnd.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onPlayPauseClick = this.onPlayPauseClick.bind(this);
   }
@@ -98,25 +98,27 @@ class SkipControls extends React.Component {
   }
 
   /**
-   * Determines whether or not the current video is at the live edge based on the
-   * playhead state and duration.
+   * Determines whether or not the current video is at the end (VOD) or at the
+   * live edge (DVR Live Streams) based on the playhead state and duration.
    * @private
-   * @return {Boolean} True if the video is at the live edge, false otherwise.
-   * Note: This function always returns false for VOD.
+   * @return {Boolean} True if the video is at the video end/live edge, false otherwise.
    */
-  isAtLiveEdge() {
+  isAtVideoEnd() {
     const isLiveStream = Utils.getPropertyValue(
       this.props.controller,
       'state.isLiveStream',
       false
     );
+    let isVideoEnd = false;
+    const duration = Utils.getPropertyValue(this.props.controller, 'state.duration', 0);
+    const currentPlayhead = Utils.ensureNumber(this.props.currentPlayhead, 0);
+
     if (isLiveStream) {
-      const duration = Utils.getPropertyValue(this.props.controller, 'state.duration', 0);
-      const currentPlayhead = Utils.ensureNumber(this.props.currentPlayhead, 0);
-      const isLiveNow = Math.abs(currentPlayhead - duration) < 1;
-      return isLiveNow;
+      isVideoEnd = Math.abs(currentPlayhead - duration) < 1;
+    } else {
+      isVideoEnd = currentPlayhead >= duration;
     }
-    return false;
+    return isVideoEnd;
   }
 
   /**
@@ -197,7 +199,7 @@ class SkipControls extends React.Component {
         className="oo-center-button oo-skip-forward"
         icon="forward"
         ariaLabel={skipForwardAriaLabel}
-        disabled={this.isAtLiveEdge() || !duration}
+        disabled={this.isAtVideoEnd() || !duration}
         onClick={this.onSkipForward}>
         <span className="oo-btn-counter">{skipTimes.forward}</span>
       </HoldControlButton>

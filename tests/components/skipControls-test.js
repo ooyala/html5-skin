@@ -187,17 +187,34 @@ describe('SkipControls', function() {
     props.controller.state.duration = 100;
     props.currentPlayhead = 100;
     renderComponent();
-    expect(component.isAtLiveEdge()).toBe(true);
-    props.controller.state.isLiveStream = false;
+    expect(component.isAtVideoEnd()).toBe(true);
+    props.controller.state.isLiveStream = true;
     props.controller.state.duration = 100;
-    props.currentPlayhead = 100;
+    props.currentPlayhead = 50;
     renderComponent();
-    expect(component.isAtLiveEdge()).toBe(false);
+    expect(component.isAtVideoEnd()).toBe(false);
     props.controller.state.isLiveStream = true;
     props.controller.state.duration = 100;
     props.currentPlayhead = 0;
     renderComponent();
-    expect(component.isAtLiveEdge()).toBe(false);
+    expect(component.isAtVideoEnd()).toBe(false);
+  });
+
+  it('should correctly determine whether video is at end', function() {
+    props.controller.state.isLiveStream = false;
+    props.controller.state.duration = 100;
+    props.currentPlayhead = 100;
+    renderComponent();
+    expect(component.isAtVideoEnd()).toBe(true);
+    props.currentPlayhead = 99;
+    renderComponent();
+    expect(component.isAtVideoEnd()).toBe(false);
+    props.currentPlayhead = 0;
+    renderComponent();
+    expect(component.isAtVideoEnd()).toBe(false);
+    props.currentPlayhead = 101;
+    renderComponent();
+    expect(component.isAtVideoEnd()).toBe(true);
   });
 
   it('should set inactive class when component is inactive', function() {
