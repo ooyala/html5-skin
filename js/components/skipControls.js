@@ -18,7 +18,7 @@ class SkipControls extends React.Component {
     this.onNextVideo = this.onNextVideo.bind(this);
     this.onSkipBackward = this.onSkipBackward.bind(this);
     this.onSkipForward = this.onSkipForward.bind(this);
-    this.isAtVideoEnd = this.isAtVideoEnd.bind(this);
+    this.isAtVideoEdge = this.isAtVideoEdge.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onPlayPauseClick = this.onPlayPauseClick.bind(this);
   }
@@ -103,22 +103,22 @@ class SkipControls extends React.Component {
    * @private
    * @return {Boolean} True if the video is at the video end/live edge, false otherwise.
    */
-  isAtVideoEnd() {
+  isAtVideoEdge() {
     const isLiveStream = Utils.getPropertyValue(
       this.props.controller,
       'state.isLiveStream',
       false
     );
-    let isVideoEnd = false;
+    let isVideoEdge = false;
     const duration = Utils.getPropertyValue(this.props.controller, 'state.duration', 0);
     const currentPlayhead = Utils.ensureNumber(this.props.currentPlayhead, 0);
 
     if (isLiveStream) {
-      isVideoEnd = Math.abs(currentPlayhead - duration) < 1;
+      isVideoEdge = Math.abs(currentPlayhead - duration) < 1;
     } else {
-      isVideoEnd = currentPlayhead >= duration;
+      isVideoEdge = currentPlayhead >= duration;
     }
-    return isVideoEnd;
+    return isVideoEdge;
   }
 
   /**
@@ -199,7 +199,7 @@ class SkipControls extends React.Component {
         className="oo-center-button oo-skip-forward"
         icon="forward"
         ariaLabel={skipForwardAriaLabel}
-        disabled={this.isAtVideoEnd() || !duration}
+        disabled={this.isAtVideoEdge() || !duration}
         onClick={this.onSkipForward}>
         <span className="oo-btn-counter">{skipTimes.forward}</span>
       </HoldControlButton>
