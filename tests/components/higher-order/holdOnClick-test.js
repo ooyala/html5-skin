@@ -87,4 +87,13 @@ describe('holdOnClick', function() {
     clickSpy.mockRestore();
   });
 
+  it('should release click when component is disabled', function() {
+    renderComponent();
+    const spy = jest.spyOn(wrapper.instance(), 'releaseClick');
+    expect(spy.mock.calls.length).toBe(0);
+    wrapper.setProps({ disabled: true });
+    expect(spy.mock.calls.length).toBe(1);
+    clickSpy.mockRestore();
+  });
+
 });
