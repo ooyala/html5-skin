@@ -38,6 +38,16 @@ const holdOnClick = function(ComposedComponent) {
     }
 
     /**
+     * Make sure to release click when button is disabled.
+     * @private
+     */
+    componentDidUpdate() {
+      if (this.props.disabled) {
+        this.releaseClick();
+      }
+    }
+
+    /**
      * Handler for the keydown event. Calls the onClick handler for Enter and
      * Space keys. Note that the keydown event has the "hold down to continue triggering"
      * behavior that we want by default, so there's not need to use timers when using the keyboard.
