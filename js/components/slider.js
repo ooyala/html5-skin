@@ -7,6 +7,13 @@ var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 
 var Slider = createReactClass({
+
+  getInitialState: function() {
+    return {
+      isDragging: false
+    };
+  },
+
   componentDidMount: function() {
     this.handleSliderColoring(this.props);
 
@@ -116,19 +123,16 @@ var Slider = createReactClass({
   },
 
   onMouseDown: function() {
-    this.dragging = true;
+    this.setState({
+      isDragging: true
+    });
   },
 
   onMouseUp: function(event) {
-    this.dragging = false;
     Utils.blurOnMouseUp(event);
   },
 
   onMouseMove: function(event) {
-    // Avoid showing the keyboard focus outline when dragging the slider with the mouse
-    if (this.dragging) {
-      Utils.blurOnMouseUp(event);
-    }
     // IE11 doesn't update the value by itself when dragging the slider
     // with the mouse
     if (this.isIeFixRequired()) {
@@ -217,11 +221,15 @@ var Slider = createReactClass({
   render: function() {
     var aria = this.getAriaValues();
 
+    const className = ClassNames('oo-slider', this.props.className, {
+      'oo-dragging': this.state.isDragging
+    });
+
     return (
       <input
         type="range"
         ref={this.props.itemRef}
-        className={ClassNames('oo-slider', this.props.className)}
+        className={className}
         min={this.props.minValue}
         max={this.props.maxValue}
         value={this.props.value}
