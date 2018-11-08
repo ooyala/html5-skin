@@ -161,7 +161,7 @@ describe('Slider', function() {
     component.simulate('mouseMove', { currentTarget: element });
     expect(element.classList.contains('oo-dragging')).toBe(true);
     component.simulate('mouseUp', { currentTarget: element });
-    expect(element.classList.contains('oo-dragging')).toBe(true);
+    expect(element.classList.contains('oo-dragging')).toBe(false);
   });
 
 });

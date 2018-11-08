@@ -130,6 +130,10 @@ var Slider = createReactClass({
 
   onMouseUp: function(event) {
     Utils.blurOnMouseUp(event);
+
+    this.setState({
+      isDragging: false
+    });
   },
 
   onMouseMove: function(event) {
