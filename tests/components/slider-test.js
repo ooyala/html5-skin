@@ -153,13 +153,15 @@ describe('Slider', function() {
     expect(element.getAttribute('value')).toBe('0.5');
   });
 
-  it('should blur focus on mousemove', function() {
-    var spy = sinon.spy(Utils, 'blurOnMouseUp');
+  it('should set oo-dragging class on mouse down and remove it on mouse up', function() {
     renderComponent();
+    expect(element.classList.contains('oo-dragging')).toBe(false);
     component.simulate('mouseDown', { currentTarget: element });
+    expect(element.classList.contains('oo-dragging')).toBe(true);
     component.simulate('mouseMove', { currentTarget: element });
-    expect(spy.callCount).toBe(1);
-    spy.restore();
+    expect(element.classList.contains('oo-dragging')).toBe(true);
+    component.simulate('mouseUp', { currentTarget: element });
+    expect(element.classList.contains('oo-dragging')).toBe(false);
   });
 
 });

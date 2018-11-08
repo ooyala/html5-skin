@@ -51,6 +51,11 @@
   @include remove-highlight-tab();
 }
 
+[type=range].oo-slider.oo-dragging,
+[type=range].oo-slider.oo-dragging:focus {
+  @include remove-highlight-tab();
+}
+
 //moz
 .oo-slider[type=range]::-moz-range-track {
     width: #{$slider-width};
