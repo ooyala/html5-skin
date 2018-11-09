@@ -870,7 +870,7 @@ var ControlBar = createReactClass({
         continue;
       }
 
-      if (defaultItems[k].name === 'chromecast' && !this.props.controller.state.enableChromecast) {
+      if (defaultItems[k].name === 'chromecast' && !this.props.controller.state.cast.showButton) {
         continue;
       }
       

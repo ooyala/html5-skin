@@ -135,6 +135,36 @@
     left:-3%;
   }
 
+  .oo-info-panel-cast {
+    @extend .oo-center-vertical-horizontal;
+    @include vendor-prefixes (transition, $fade-up-transition);
+    text-align: center;
+    max-width: 80%;
+    border: 1px solid gray;
+    border-radius: 3px;
+    width: 100%;
+
+    &.oo-inactive {
+      opacity: 0;
+      transform: translate(-50%, -90%);
+    }
+
+    &.oo-info-panel-cast-bottom {
+      top: 70%;
+    }
+
+    p {
+      font-family: $font-family-roboto-condensed; //this.props.skinConfig.startScreen.titleFont.fontFamily
+      font-size: $font-size-md-screen-desc; //this.props.skinConfig.startScreen.descriptionFont.fontSize
+      padding: 2%;
+      margin: 0;
+
+      span {
+        font-weight: bold;
+      }
+    }
+  }
+
   button.oo-action-icon {
     margin: 0;
     padding: 0;

@@ -29,7 +29,8 @@ var CONSTANTS = {
     VIDEO_QUALITY_SCREEN: 'videoQualityScreen',
     ERROR_SCREEN: 'errorScreen',
     MULTI_AUDIO_SCREEN: 'multiAudioScreen',
-    PLAYBACK_SPEED_SCREEN: 'playbackSpeedScreen'
+    PLAYBACK_SPEED_SCREEN: 'playbackSpeedScreen',
+    CAST_SCREEN: 'castScreen'
   },
 
   MENU_OPTIONS: {

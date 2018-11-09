@@ -50,6 +50,13 @@ var EndScreen = createReactClass({
       opacity: this.props.skinConfig.endScreen.replayIconStyle.opacity
     };
 
+    if (this.props.controller.state.cast.connected) {
+      actionIconStyle = Utils.extend(
+        {fontSize: '125px'},
+        actionIconStyle
+      );
+    }
+
     var titleStyle = {
       color: this.props.skinConfig.startScreen.titleFont.color
     };
@@ -85,6 +92,13 @@ var EndScreen = createReactClass({
       });
     }
 
+    // Shows the information of the chromecast device just below the replay icon
+    const castPanelClass = ClassNames({
+      'oo-info-panel-cast': true,
+      'oo-inactive': !this.props.controller.state.cast.connected,
+      'oo-info-panel-cast-bottom': true
+    })
+
     var titleMetadata = (
       <div className={titleClass} style={titleStyle}>
         {this.props.contentTree.title}
@@ -119,6 +133,10 @@ var EndScreen = createReactClass({
         >
           <Icon {...this.props} icon="replay" style={actionIconStyle} />
         </button>
+
+        <div className={castPanelClass}>
+          <p>Connected to <span>{this.props.controller.state.cast.device}</span></p>
+        </div>
 
         <div className="oo-interactive-container">
           <ControlBar

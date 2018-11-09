@@ -202,7 +202,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         autoFocus: false
       },
 
-      enableChromecast: false,
+      cast: {
+        showButton: false,
+        connected: false,
+        device: ""
+      },
 
       audioOnly: false
     };
@@ -264,6 +268,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       );
       this.mb.subscribe(OO.EVENTS.ERROR, 'customerUi', _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
+      this.mb.subscribe(OO.EVENTS.CHROMECAST_START_CAST, 'customerUi', _.bind(this.onChromecastStartCast, this));
+      this.mb.subscribe(OO.EVENTS.CHROMECAST_END_CAST, 'customerUi', _.bind(this.onChromecastEndCast, this));
       this.state.isPlaybackReadySubscribed = true;
     },
 
@@ -470,6 +476,18 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           return true;
         }
       return false;
+    },
+
+    onChromecastStartCast: function (event, deviceName) {
+      OO.log("Chromecast Skin:", event, deviceName);
+      this.state.pauseAnimationDisabled = true;
+      this.renderSkin({cast: {connected:true, device: deviceName}});
+    },
+
+    onChromecastEndCast: function (event) {
+      OO.log("Chromecast Skin:", event);
+      this.state.pauseAnimationDisabled  = false;
+      this.renderSkin({cast: {connected:false, device: ""}});
     },
 
     /**
@@ -927,8 +945,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         // set mainVideoElement if not set during video plugin initialization
         if (!this.state.mainVideoMediaType) {
           this.state.mainVideoElement = this.findMainVideoElement(this.state.mainVideoElement);
-        }
-        this.state.pauseAnimationDisabled = false;
+        }        
+        this.state.pauseAnimationDisabled = this.state.cast.connected;
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
         this.setClosedCaptionsLanguage();
@@ -1646,7 +1664,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
 
       this.state.audioOnly = params.playerType === OO.CONSTANTS.PLAYER_TYPE.AUDIO;
-      this.state.enableChromecast = this.isChromecastEnabled(params);
+      this.state.cast.showButton = this.isChromecastEnabled(params);
 
       // load player
       this.skin = ReactDOM.render(
@@ -2054,6 +2072,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE_AFTER_OOYALA_AD, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.CHROMECAST_START_CAST, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.CHROMECAST_END_CAST, 'customerUi');
     },
 
     unsubscribeBasicPlaybackEvents: function() {
