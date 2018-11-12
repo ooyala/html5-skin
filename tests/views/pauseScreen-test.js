@@ -15,6 +15,8 @@ var SkipControls = require('../../js/components/skipControls');
 var Utils = require('../../js/components/utils');
 var CONSTANTS = require('../../js/constants/constants');
 
+const CastPanel = require('../../js/components/castPanel');
+
 import {PauseScreen} from '../../js/views/pauseScreen';
 
 describe('PauseScreen', function() {
@@ -68,6 +70,11 @@ describe('PauseScreen', function() {
         playbackSpeedOptions: { currentSpeed: 1 },
         videoQualityOptions: {
           availableBitrates: null
+        },
+        cast: {
+          showButton: false,
+          connected: false,
+          device: ""
         }
       },
       addBlur: function() {},
@@ -83,6 +90,8 @@ describe('PauseScreen', function() {
       togglePlayPause: () => {}
     };
     mockContentTree = {
+      promo_image: 'image.png',
+      description: 'description',
       title: 'title'
     };
     mockSkinConfig = Utils.clone(skinConfig);
@@ -199,6 +208,68 @@ describe('PauseScreen', function() {
     mockSkinConfig.skipControls.enabled = true;
     wrapper = Enzyme.mount(component);
     expect(wrapper.find(SkipControls).length).toBe(1);
+  });
+
+  it('[Chromecast] should not display cast panel', function(){
+    mockSkinConfig.skipControls.enabled = false;
+    const wrapper = Enzyme.mount(getPauseScreen());
+    const castPanel = wrapper.find(CastPanel);
+    expect(castPanel.props().connected).toBe(false);
+  });
+
+  it('[Chromecast] should display cast panel with poster image and blur effect', function(){
+    let wrapper;
+    const component = (
+      <PauseScreen
+        responsiveView="md"
+        skinConfig={mockSkinConfig}
+        controller={mockController}
+        contentTree={mockContentTree}
+        handleVrPlayerClick={() => {}}
+        closedCaptionOptions={{ cueText: 'sample text' }}
+        currentPlayhead={0}
+        playerState={CONSTANTS.STATE.PAUSE}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+      />
+    );
+    mockController.state.cast = {
+      connected: true,
+      device: "PlayerTV"
+    }
+    wrapper = Enzyme.mount(component);
+    const castPanel = wrapper.find(CastPanel);
+    expect(castPanel.props().connected).toBe(true);
+    expect(castPanel.props().device).toBe("PlayerTV");
+    expect(wrapper.find('.oo-state-screen-poster.oo-blur').length).toBe(1);
+  });
+
+  it('[Chromecast] should display cast panel with poster image, blur effect and located near to the bottom', function(){
+    const component = (
+      <PauseScreen
+        responsiveView="md"
+        skinConfig={mockSkinConfig}
+        controller={mockController}
+        contentTree={mockContentTree}
+        handleVrPlayerClick={() => {}}
+        closedCaptionOptions={{ cueText: 'sample text' }}
+        currentPlayhead={0}
+        playerState={CONSTANTS.STATE.PAUSE}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+      />
+    );
+    mockController.state.cast = {
+      connected: true,
+      device: "PlayerTV"
+    }
+    mockSkinConfig.skipControls.enabled = true;
+    const wrapper = Enzyme.mount(component);
+    const castPanel = wrapper.find(CastPanel);
+    expect(castPanel.props().connected).toBe(true);
+    expect(castPanel.props().device).toBe("PlayerTV");
+    expect(wrapper.find('.oo-info-panel-cast.oo-info-panel-cast-bottom').length).toBe(1);
+    expect(wrapper.find('.oo-state-screen-poster.oo-blur').length).toBe(1);
   });
 
 });

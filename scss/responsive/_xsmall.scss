@@ -34,12 +34,12 @@
         font-size: 1em;
       }
       .oo-state-screen-description {
-        font-size: 0.6em;
+        font-size: $font-size-xs;
       }
     }
     .oo-info-panel-cast {
       p {
-        font-size: 0.6em;
+        font-size: $font-size-xs;
       }
     }
   }

@@ -63,6 +63,11 @@ var skinControllerMock = {
     skipControls: {
       hasPreviousVideos: false,
       hasNextVideos: false
+    },
+    cast: {
+      showButton: false,
+      connected: false,
+      device: ""
     }
   },
   addBlur: function() {},

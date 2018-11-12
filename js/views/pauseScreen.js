@@ -15,6 +15,7 @@ const Utils = require('../components/utils');
 const CONSTANTS = require('./../constants/constants');
 const ViewControlsVr = require('../components/viewControlsVr');
 const withAutoHide = require('./higher-order/withAutoHide.js');
+const CastPanel = require('../components/castPanel');
 
 
 /**
@@ -293,8 +294,6 @@ class PauseScreen extends React.Component {
     // Depends of there's another element/panel at the center of the player we will push down
     // the cast panel to allow both elements be visible to the user
     const castPanelClass = ClassNames({
-      'oo-info-panel-cast': true,
-      'oo-inactive': !this.props.controller.state.cast.connected,
       'oo-info-panel-cast-bottom': skipControlsEnabled
     })
 
@@ -333,9 +332,11 @@ class PauseScreen extends React.Component {
           <Icon {...this.props} icon="pause" style={actionIconStyle} />
         </button>
 
-        <div className={castPanelClass}>
-          <p>Connected to <span>{this.props.controller.state.cast.device}</span></p>
-        </div>
+        <CastPanel
+          device={this.props.controller.state.cast.device}
+          connected={this.props.controller.state.cast.connected}
+          className={castPanelClass}
+        />
 
         {viewControlsVr}
 

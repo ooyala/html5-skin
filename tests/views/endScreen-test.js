@@ -15,6 +15,8 @@ var skinConfig = require('../../config/skin.json');
 var Utils = require('../../js/components/utils');
 var CONSTANTS = require('../../js/constants/constants');
 
+const CastPanel = require('../../js/components/castPanel');
+
 describe('EndScreen', function() {
   var mockController, mockSkinConfig, mockContentTree;
 
@@ -36,7 +38,7 @@ describe('EndScreen', function() {
         volumeState: {
           muted: false,
           volume: 1,
-          volumeStateVisible: true, 
+          volumeStateVisible: true,
           volumeSliderVisible: true
         },
         closedCaptionOptions: {},
@@ -47,6 +49,11 @@ describe('EndScreen', function() {
         },
         scrubberBar: {
           isHovering: false
+        },
+        cast: {
+          showButton: false,
+          connected: false,
+          device: ""
         }
       },
       cancelTimer: function() {},
@@ -57,7 +64,7 @@ describe('EndScreen', function() {
       setVolume: function() {}
     };
     mockSkinConfig = Utils.clone(skinConfig);
-    mockContentTree = {'description': 'description', 'title': 'title'};
+    mockContentTree = {'description': 'description', 'title': 'title', promo_image: 'image.png'};
   });
 
   it('creates an EndScreen with replay button', function() {
@@ -124,5 +131,24 @@ describe('EndScreen', function() {
     // description and title are hidden
     var title = wrapper.find('.oo-state-screen-title');
     expect(title.getDOMNode().className).toMatch('hidden');
+  });
+
+  it('[Chromecast] should not display cast panel', function(){
+    const wrapper = Enzyme.mount(getEndScreen());
+    const castPanel = wrapper.find(CastPanel);
+    expect(castPanel.props().connected).toBe(false);
+  });
+
+  it('[Chromecast] should display the cast panel located near to the bottom', function(){
+    mockController.state.cast = {
+      connected: true,
+      device: "PlayerTV"
+    }
+    mockSkinConfig.skipControls.enabled = true;
+    const wrapper = Enzyme.mount(getEndScreen());
+    const castPanel = wrapper.find(CastPanel);
+    expect(castPanel.props().connected).toBe(true);
+    expect(castPanel.props().device).toBe("PlayerTV");
+    expect(wrapper.find('.oo-info-panel-cast.oo-info-panel-cast-bottom').length).toBe(1);
   });
 });

@@ -16,6 +16,7 @@ const Icon = require('../components/icon');
 const SkipControls = require('../components/skipControls');
 const UnmuteIcon = require('../components/unmuteIcon');
 const withAutoHide = require('./higher-order/withAutoHide.js');
+const CastPanel = require('../components/castPanel');
 
 /**
  * Represents a screen when a video is played
@@ -383,8 +384,6 @@ class PlayingScreen extends React.Component {
     // Depends of there's another element/panel at the center of the player we will push down
     // the cast panel to allow both elements be visible to the user
     const castPanelClass = ClassNames({
-      'oo-info-panel-cast': true,
-      'oo-inactive': !this.props.controller.state.cast.connected,
       'oo-info-panel-cast-bottom': skipControlsEnabled
     })
 
@@ -425,10 +424,12 @@ class PlayingScreen extends React.Component {
         {vrIcon}
 
         <Watermark {...this.props} controlBarVisible={this.props.controller.state.controlBarVisible} />
-
-        <div className={castPanelClass}>
-          <p>Connected to <span>{this.props.controller.state.cast.device}</span></p>
-        </div>
+        
+        <CastPanel
+          device={this.props.controller.state.cast.device}
+          connected={this.props.controller.state.cast.connected}
+          className={castPanelClass}
+        />
 
         {this.props.controller.state.buffering ? (
           <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />

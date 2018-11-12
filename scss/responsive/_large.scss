@@ -21,12 +21,12 @@
         font-size: 3.0em;
       }
       .oo-state-screen-description {
-        font-size: 1.8em;
+        font-size: $font-size-lg-screen-desc;
       }
     }
     .oo-info-panel-cast {
       p {
-        font-size: 1.8em;
+        font-size: $font-size-lg-screen-desc;
       }
     }
   }

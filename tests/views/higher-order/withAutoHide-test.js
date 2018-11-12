@@ -71,6 +71,11 @@ describe('withAutoHide', function() {
         multiAudioOptions: {},
         videoQualityOptions: {
           availableBitrates: null
+        },
+        cast: {
+          showButton: false,
+          connected: false,
+          device: ""
         }
       },
       cancelTimer: function() {},
@@ -197,6 +202,22 @@ describe('withAutoHide', function() {
 
     wrapper.simulate('keyDown', {key: 'Dead', which: 16, keyCode: 16});
     expect(autoHide && controlBar).toBe(false);
+  });
+
+  it('Should deactivate the autohide when a cast session is started', function(){
+    var controlBar = false;
+
+    mockController.showControlBar = function() {
+      controlBar = true;
+    };
+
+    const wrapper = renderAutoHideScreen(false);
+    expect(controlBar).toBe(false);
+
+    mockController.state.cast.connected = true;
+    wrapper.setProps({controller: mockController});
+
+    expect(controlBar).toBe(true);
   });
 
 });
