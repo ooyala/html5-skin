@@ -78,6 +78,11 @@ describe('ControlBar', function() {
         skipControls: {
           hasPreviousVideos: false,
           hasNextVideos: false
+        },
+        cast: {
+          showButton: false,
+          connected: false,
+          device: ""
         }
       },
       cancelTimer: function() {},
@@ -1299,7 +1304,7 @@ describe('ControlBar', function() {
     });
 
     it('Should not show chromecast button when player param not exist', () => {
-      baseMockController.state.enableChromecast = true;
+      baseMockController.state.cast.showButton = true;
       var wrapper = Enzyme.mount(getControlBar());
       var chromecastBtn = wrapper.find(".oo-cast");
       expect(chromecastBtn.length).toBe(1);

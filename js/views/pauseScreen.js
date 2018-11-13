@@ -15,6 +15,7 @@ const Utils = require('../components/utils');
 const CONSTANTS = require('./../constants/constants');
 const ViewControlsVr = require('../components/viewControlsVr');
 const withAutoHide = require('./higher-order/withAutoHide.js');
+const CastPanel = require('../components/castPanel');
 
 
 /**
@@ -180,7 +181,8 @@ class PauseScreen extends React.Component {
         this.props.controller.state.controlBarVisible,
       'oo-animate-fade':
         this.state.animate &&
-        !this.props.pauseAnimationDisabled &&
+        (!this.props.pauseAnimationDisabled ||
+          this.props.controller.state.cast.connected) &&
         this.props.controller.state.controlBarVisible
     });
     const infoPanelClass = ClassNames({
@@ -274,8 +276,32 @@ class PauseScreen extends React.Component {
       this.props.controller.removeBlur();
     }
 
+    // Always show the poster image on cast session
+    const posterImageUrl = this.props.skinConfig.startScreen.showPromo
+      ? this.props.contentTree.promo_image
+      : '';
+    const posterStyle = {};
+    if (Utils.isValidString(posterImageUrl)) {
+      posterStyle.backgroundImage = 'url(\'' + posterImageUrl + '\')';
+    }
+
+    const stateScreenPosterClass = ClassNames({
+      'oo-blur': true,
+      'oo-state-screen-poster': this.props.skinConfig.startScreen.promoImageSize !== 'small',
+      'oo-state-screen-poster-small': this.props.skinConfig.startScreen.promoImageSize === 'small'
+    });
+
+    // Depends of there's another element/panel at the center of the player we will push down
+    // the cast panel to allow both elements be visible to the user
+    const castPanelClass = ClassNames({
+      'oo-info-panel-cast-bottom': skipControlsEnabled
+    })
+
+
     return (
       <div className="oo-state-screen oo-pause-screen">
+        {this.props.controller.state.cast.connected && <div className={stateScreenPosterClass} style={posterStyle}></div>}
+
         {!this.props.controller.videoVr && this.state.containsText && <div className={fadeUnderlayClass} />}
 
         <div
@@ -305,6 +331,12 @@ class PauseScreen extends React.Component {
           tabIndex="-1">
           <Icon {...this.props} icon="pause" style={actionIconStyle} />
         </button>
+
+        <CastPanel
+          device={this.props.controller.state.cast.device}
+          connected={this.props.controller.state.cast.connected}
+          className={castPanelClass}
+        />
 
         {viewControlsVr}
 

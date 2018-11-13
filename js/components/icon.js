@@ -7,7 +7,7 @@ var PropTypes = require('prop-types');
 var Icon = createReactClass({
   shouldComponentUpdate: function(nextProps) {
     var updateComponent = false;
-    if (this.props && (this.props.icon !== nextProps.icon || this.props.className !== nextProps.className)) {
+    if (this.props && (this.props.icon !== nextProps.icon || this.props.className !== nextProps.className || this.props.style !== nextProps.style)) {
       updateComponent = true;
     }
     return updateComponent;

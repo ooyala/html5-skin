@@ -16,6 +16,7 @@ const Icon = require('../components/icon');
 const SkipControls = require('../components/skipControls');
 const UnmuteIcon = require('../components/unmuteIcon');
 const withAutoHide = require('./higher-order/withAutoHide.js');
+const CastPanel = require('../components/castPanel');
 
 /**
  * Represents a screen when a video is played
@@ -365,12 +366,50 @@ class PlayingScreen extends React.Component {
       'oo-controls-active': skipControlsEnabled && this.props.controller.state.controlBarVisible
     });
 
+    // Always show the poster image on cast session
+    const posterImageUrl = this.props.skinConfig.startScreen.showPromo
+      ? this.props.contentTree.promo_image
+      : '';
+    const posterStyle = {};
+    if (Utils.isValidString(posterImageUrl)) {
+      posterStyle.backgroundImage = 'url(\'' + posterImageUrl + '\')';
+    }
+
+    const stateScreenPosterClass = ClassNames({
+      'oo-blur': true,
+      'oo-state-screen-poster': this.props.skinConfig.startScreen.promoImageSize !== 'small',
+      'oo-state-screen-poster-small': this.props.skinConfig.startScreen.promoImageSize === 'small'
+    });
+
+    // Depends of there's another element/panel at the center of the player we will push down
+    // the cast panel to allow both elements be visible to the user
+    const castPanelClass = ClassNames({
+      'oo-info-panel-cast-bottom': skipControlsEnabled
+    })
+
+    // Add a blur only when the content it being casted on a chromecast device and a fading layer
+    if (this.props.controller.state.cast.connected) {
+      this.props.controller.addBlur();
+    } else {
+      this.props.controller.removeBlur();
+    }
+
+    const fadeUnderlayClass = ClassNames({
+      'oo-fading-underlay': true,
+      'oo-fading-underlay-active': this.props.controller.state.cast.connected,
+      'oo-animate-fade': true
+    });
+
     return (
       <div
         className={className}
         onTouchStart={this.handleTouchStart}
         onMouseOver={this.handleMouseOver}
       >
+        {this.props.controller.state.cast.connected && <div className={stateScreenPosterClass} style={posterStyle}></div>}
+
+        {this.props.controller.state.cast.connected && <div className={fadeUnderlayClass} />}
+
         <div
           className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
           onMouseDown={this.handlePlayerMouseDown}
@@ -385,6 +424,12 @@ class PlayingScreen extends React.Component {
         {vrIcon}
 
         <Watermark {...this.props} controlBarVisible={this.props.controller.state.controlBarVisible} />
+        
+        <CastPanel
+          device={this.props.controller.state.cast.device}
+          connected={this.props.controller.state.cast.connected}
+          className={castPanelClass}
+        />
 
         {this.props.controller.state.buffering ? (
           <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />

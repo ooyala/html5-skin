@@ -12,6 +12,8 @@ var React = require('react'),
     Utils = require('../components/utils');
 var createReactClass = require('create-react-class');
 
+const CastPanel = require('../components/castPanel');
+
 var EndScreen = createReactClass({
   mixins: [ResizeMixin],
 
@@ -50,6 +52,10 @@ var EndScreen = createReactClass({
       opacity: this.props.skinConfig.endScreen.replayIconStyle.opacity
     };
 
+    if (this.props.controller.state.cast.connected) {
+      actionIconStyle['fontSize'] = '125px';
+    }
+
     var titleStyle = {
       color: this.props.skinConfig.startScreen.titleFont.color
     };
@@ -85,6 +91,11 @@ var EndScreen = createReactClass({
       });
     }
 
+    // Shows the information of the chromecast device just below the replay icon
+    const castPanelClass = ClassNames({
+      'oo-info-panel-cast-bottom': true
+    })
+
     var titleMetadata = (
       <div className={titleClass} style={titleStyle}>
         {this.props.contentTree.title}
@@ -119,6 +130,12 @@ var EndScreen = createReactClass({
         >
           <Icon {...this.props} icon="replay" style={actionIconStyle} />
         </button>
+
+        <CastPanel
+          device={this.props.controller.state.cast.device}
+          connected={this.props.controller.state.cast.connected}
+          className={castPanelClass}
+        />
 
         <div className="oo-interactive-container">
           <ControlBar

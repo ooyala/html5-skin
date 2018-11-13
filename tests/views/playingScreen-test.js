@@ -15,6 +15,8 @@ var TextTrackPanel = require('../../js/components/textTrackPanel');
 var Utils = require('../../js/components/utils');
 var CONSTANTS = require('../../js/constants/constants');
 
+const CastPanel = require('../../js/components/castPanel');
+
 import {PlayingScreen} from '../../js/views/playingScreen';
 const ControlBar = require('../../js/components/controlBar');
 
@@ -34,6 +36,7 @@ describe('PlayingScreen', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         totalTime={"60:00"}
         playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
         cancelHideControlBarTimer={() => {
           if (mockController) {
             mockController.cancelTimer();
@@ -62,7 +65,7 @@ describe('PlayingScreen', function() {
           volume: 1,
           muted: false,
           mutingForAutoplay: false,
-          volumeStateVisible: true, 
+          volumeStateVisible: true,
           volumeSliderVisible: true
         },
         skipControls: {
@@ -80,6 +83,16 @@ describe('PlayingScreen', function() {
         playbackSpeedOptions: { currentSpeed: 1 },
         videoQualityOptions: {
           availableBitrates: null
+        },
+        cast: {
+          showButton: false,
+          connected: false,
+          device: ""
+        },
+        contentTree: {
+          promo_image: 'image.png',
+          description: 'description',
+          title: 'title'
         }
       },
       cancelTimer: function() {},
@@ -91,7 +104,9 @@ describe('PlayingScreen', function() {
       requestNextVideo: function() {},
       showControlBar: function() {},
       setVolume: function() {},
-      togglePlayPause: () => {}
+      togglePlayPause: () => {},
+      addBlur: () => {},
+      removeBlur: () => {}
     };
     mockSkinConfig = Utils.clone(skinConfig);
     closedCaptionOptions = {
@@ -127,6 +142,7 @@ describe('PlayingScreen', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         totalTime={"60:00"}
         playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
       />
     );
 
@@ -170,6 +186,7 @@ describe('PlayingScreen', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         totalTime={"60:00"}
         playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
       />
     );
     wrapper.instance().setState({
@@ -217,6 +234,7 @@ describe('PlayingScreen', function() {
             playerState={CONSTANTS.STATE.PLAYING}
             totalTime={"60:00"}
             playheadTime={"00:00"}
+            contentTree={mockController.state.contentTree}
         />);
 
     var screen = wrapper.find('.oo-state-screen-selectable');
@@ -261,6 +279,7 @@ describe('PlayingScreen', function() {
             playerState={CONSTANTS.STATE.PLAYING}
             totalTime={"60:00"}
             playheadTime={"00:00"}
+            contentTree={mockController.state.contentTree}
         />);
 
     var screen = wrapper.find('.oo-state-screen-selectable');
@@ -296,6 +315,7 @@ describe('PlayingScreen', function() {
         totalTime={"60:00"}
         playheadTime={"00:00"}
         startHideControlBarTimer={() => {}}
+        contentTree={mockController.state.contentTree}
       />);
 
     var screen1 = wrapper.find('.oo-interactive-container');
@@ -326,6 +346,7 @@ describe('PlayingScreen', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         totalTime={"60:00"}
         playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
       />
     );
 
@@ -374,6 +395,7 @@ describe('PlayingScreen', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         totalTime={"60:00"}
         playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
       />
     );
     const screen = wrapper.find('.oo-state-screen-selectable');
@@ -413,6 +435,7 @@ describe('PlayingScreen', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         totalTime={"60:00"}
         playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
       />
     );
     var screen = wrapper.find('.oo-state-screen-selectable');
@@ -440,6 +463,7 @@ describe('PlayingScreen', function() {
         closedCaptionOptions={closedCaptionOptions}
         totalTime={"60:00"}
         playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
       />, node
     );
 
@@ -454,6 +478,7 @@ describe('PlayingScreen', function() {
         closedCaptionOptions={closedCaptionOptions}
         totalTime={"60:00"}
         playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
       />, node
     );
 
@@ -473,6 +498,7 @@ describe('PlayingScreen', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         totalTime={"60:00"}
         playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
       />);
     var unmuteIcon = wrapper.find(UnmuteIcon);
     expect(unmuteIcon).toBeTruthy();
@@ -491,6 +517,7 @@ describe('PlayingScreen', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         totalTime={"60:00"}
         playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
       />);
     var unmuteIcons = wrapper.find(UnmuteIcon);
     expect(unmuteIcons.length).toBe(0);
@@ -509,6 +536,7 @@ describe('PlayingScreen', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         totalTime={"60:00"}
         playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
       />
     );
     expect(wrapper.props().controller.state.controlBarVisible).toBe(true);
@@ -523,6 +551,7 @@ describe('PlayingScreen', function() {
         playerState={CONSTANTS.STATE.PLAYING}
         totalTime={"60:00"}
         playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
       />
     );
     expect(wrapper.props().controller.state.controlBarVisible).toBe(false);
@@ -597,6 +626,38 @@ describe('PlayingScreen', function() {
     });
     expect(spy.mock.calls.length).toBe(1);
     spy.mockRestore();
+  });
+
+  it('[Chromecast] should not display cast panel', function(){
+    const wrapper = renderPlayingScreen();
+    const castPanel = wrapper.find(CastPanel);
+    expect(castPanel.props().connected).toBe(false);
+  });
+
+  it('[Chromecast] should display cast panel with poster image and blur effect', function(){
+    mockController.state.cast = {
+      connected: true,
+      device: "PlayerTV"
+    }
+    const wrapper = renderPlayingScreen();
+    const castPanel = wrapper.find(CastPanel);
+    expect(castPanel.props().connected).toBe(true);
+    expect(castPanel.props().device).toBe("PlayerTV");
+    expect(wrapper.find('.oo-state-screen-poster.oo-blur').length).toBe(1);
+  });
+
+  it('[Chromecast] should display cast panel with poster image, blur effect and located near to the bottom', function(){
+    mockController.state.cast = {
+      connected: true,
+      device: "PlayerTV"
+    }
+    mockSkinConfig.skipControls.enabled = true;
+    const wrapper = renderPlayingScreen();
+    const castPanel = wrapper.find(CastPanel);
+    expect(castPanel.props().connected).toBe(true);
+    expect(castPanel.props().device).toBe("PlayerTV");
+    expect(wrapper.find('.oo-info-panel-cast.oo-info-panel-cast-bottom').length).toBe(1);
+    expect(wrapper.find('.oo-state-screen-poster.oo-blur').length).toBe(1);
   });
 
 });

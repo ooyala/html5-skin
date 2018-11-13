@@ -55,6 +55,11 @@ const withAutoHide = function(ComposedComponent) {
           this.props.controller.showControlBar();
           this.startHideControlBarTimer();
         }
+
+        if (nextProps.controller.state.cast.connected) {
+          this.props.controller.showControlBar();
+          this.cancelHideControlBarTimer();
+        }
       }
     }
 
