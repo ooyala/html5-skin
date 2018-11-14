@@ -13,7 +13,12 @@ var UnmuteIcon = createReactClass({
   },
 
   unmuteClick: function(event) {
+    event.stopPropagation();
     this.props.controller.handleMuteClick();
+  },
+
+  onMouseUp: function(event) {
+    event.stopPropagation();
   },
 
   componentDidMount: function() {
@@ -55,6 +60,7 @@ var UnmuteIcon = createReactClass({
       <button
         className={myClass}
         onClick={this.unmuteClick}
+        onMouseUp={this.onMouseUp}
         type="button"
         tabIndex="0"
         aria-label={volumeAriaLabel}
