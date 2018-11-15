@@ -76,7 +76,7 @@ const Skin = createReactClass({
 
   handleClickOutsidePlayer: function() {
     this.props.controller.state.accessibilityControlsEnabled = false;
-    this.props.controller.state.isClickedOutside = true;
+    // this.props.controller.state.isClickedOutside = true;
   },
 
   switchComponent: function(args) {
@@ -140,6 +140,9 @@ const Skin = createReactClass({
    * @param {MouseEvent} event - event
    */
   handleVrPlayerMouseDown: function(event) {
+    // console.log('BBB handleVrPlayerMouseDown this.props.controller.state.isClickedOutside', this.props.controller.state.isClickedOutside);
+    this.props.controller.state.isClickedOutside = false;
+
     if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
@@ -152,7 +155,16 @@ const Skin = createReactClass({
         yVrMouseStart: coords.y
       });
       if (typeof this.props.controller.checkVrDirection === 'function') {
-        this.props.controller.checkVrDirection();
+        // this.props.controller.checkVrDirection();
+
+        //TODO move to one common function
+        if (
+          typeof this.props.controller.setControllerVrViewingDirection === 'function'
+        ) {
+          const useVrViewingDirection = true;
+          this.props.controller.checkVrDirection(useVrViewingDirection);
+          this.props.controller.setControllerVrViewingDirection();
+        }
       }
     }
   },
@@ -185,35 +197,30 @@ const Skin = createReactClass({
    * @param {MouseEvent} event - mouse or touch event
    */
   handleVrPlayerMouseUp: function(event) {
+    // console.log('BBB handleVrPlayerMouseUp event.type', event ? event.type : 'undefined');
     if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
 
     if (this.props.controller && this.props.controller.videoVr) {
-      let isVrMouseMove = this.state.isVrMouseMove;
+      // let isVrMouseMove = this.state.isVrMouseMove;
       let isTouchEnd = typeof event === 'object' && event.type === 'touchend';
 
-      if (isTouchEnd) {
-        isVrMouseMove = false; // for the opportunity to stop video on iPhone by touching on the screen
-      }
-      this.setState({
-        isVrMouseDown: false,
-        isVrMouseMove: isVrMouseMove,
-        xVrMouseStart: 0,
-        yVrMouseStart: 0
-      });
+      // if (isTouchEnd) {
+      //   isVrMouseMove = false; // for the opportunity to stop video on iPhone by touching on the screen
+      // }
 
-      if (typeof this.props.controller.checkVrDirection === 'function') {
+      if (!isTouchEnd && typeof this.props.controller.checkVrDirection === 'function') {
         this.props.controller.checkVrDirection();
+
+        this.setState({
+          isVrMouseDown: false,
+          // isVrMouseMove: isVrMouseMove,
+          xVrMouseStart: 0,
+          yVrMouseStart: 0
+        });
       }
 
-      // The camera decelerate after the "touchmove" on the mobile device
-      // or on the desktop after the "mousemove",
-      // but not after using the rotation controls
-      let endMove = this.state.isVrMouseMove || OO.isAndroid || OO.isIos;
-      if (endMove && typeof this.props.controller.onEndMove === 'function') {
-        this.props.controller.onEndMove();
-      }
     }
   },
 
@@ -343,21 +350,35 @@ const Skin = createReactClass({
    * @param {Event} event - event object
    */
   handleTouchEnd: function(event) {
+    // console.log(
+    //   'BBB handleTouchEnd 1 this.props.controller.state.accessibilityControlsEnabled',
+    //   this.props.controller.state.accessibilityControlsEnabled,
+    //   'this.props.controller.state.isClickedOutside',
+    //   this.props.controller.state.isClickedOutside
+    // );
     event.preventDefault();
-    if (this.props.controller.state.controlBarVisible) {
-      let shouldToggle = false;
-      if (this.props.controller.videoVr) {
-        if (!this.state.isVrMouseMove) {
+    if (!this.props.controller.state.isClickedOutside) {
+      if (this.props.controller.state.controlBarVisible) {
+        let shouldToggle = false;
+        if (this.props.controller.videoVr) {
+          if (!this.state.isVrMouseMove) {
+            shouldToggle = true;
+          }
+        } else {
           shouldToggle = true;
         }
+        // console.log('BBB handleTouchEnd shouldToggle', shouldToggle);
+        if (shouldToggle) {
+          this.props.controller.togglePlayPause(event);
+        }
+        // set value for this.state.isVrMouseMove in this.handleVrPlayerMouseUp
       } else {
-        shouldToggle = true;
+        this.props.controller.showControlBar();
+        //TODO: Address an existing issue where we don't cancel the timer upon touching control buttons
+        this.props.controller.startHideControlBarTimer();
       }
-      if (shouldToggle) {
-        this.props.controller.togglePlayPause(event);
-      }
-      // set value for this.state.isVrMouseMove in this.handleVrPlayerMouseUp
     }
+
     if (this.props.controller.videoVr) { // only for vr on mobile
       // Check current a vr video position (an user could change position using tilting)
       if (
@@ -368,7 +389,25 @@ const Skin = createReactClass({
         this.props.controller.checkVrDirection(useVrViewingDirection);
         this.props.controller.setControllerVrViewingDirection();
       }
+
+      this.setState({
+        isVrMouseDown: false,
+        isVrMouseMove: false,
+        xVrMouseStart: 0,
+        yVrMouseStart: 0
+      });
     }
+
+    this.props.controller.state.isClickedOutside = true;
+
+    // The camera decelerate after the "touchmove" on the mobile device
+    // or on the desktop after the "mousemove",
+    // but not after using the rotation controls
+
+    // let endMove = this.state.isVrMouseMove || OO.isAndroid || OO.isIos;
+    // if (endMove && typeof this.props.controller.onEndMove === 'function') {
+    //   this.props.controller.onEndMove();
+    // }
   },
 
   render: function() {

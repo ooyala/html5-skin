@@ -138,6 +138,7 @@
   .oo-info-panel-cast {
     @extend .oo-center-vertical-horizontal;
     @include vendor-prefixes (transition, $fade-up-transition);
+    display: block;
     text-align: center;
     max-width: 80%;
     border: 1px solid gray;
@@ -145,6 +146,7 @@
     width: 100%;
 
     &.oo-inactive {
+      display: none;
       opacity: 0;
       transform: translate(-50%, -90%);
     }

@@ -54,8 +54,9 @@ class PlayingScreen extends React.Component {
   componentDidMount() {
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
-    document.addEventListener('mouseup', this.props.handleVrPlayerMouseUp, false);
-    document.addEventListener('touchend', this.props.handleVrPlayerMouseUp, false);
+    document.addEventListener('mouseup', this.handlePlayerMouseUp, false);
+    document.addEventListener('touchstart', this.test, { passive: false });
+    document.addEventListener('touchend', this.props.handleTouchEnd, { passive: false });
 
     if (this.props.controller.videoVr) {
       this.handleVrAnimationEnd(this.vrNotificatioContainer, 'isVrNotificationHidden');
@@ -66,8 +67,14 @@ class PlayingScreen extends React.Component {
   componentWillUnmount() {
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
-    document.removeEventListener('mouseup', this.props.handleVrPlayerMouseUp);
-    document.removeEventListener('touchend', this.props.handleVrPlayerMouseUp);
+    document.removeEventListener('mouseup', this.handlePlayerMouseUp);
+    document.removeEventListener('touchstart', this.test);
+    document.removeEventListener('touchend', this.props.handleTouchEnd);
+  }
+
+
+  test(event) {
+    // console.log('BBB PlayingScreen event.target', event ? event.target : 'unknwown');
   }
 
   /**
@@ -123,6 +130,8 @@ class PlayingScreen extends React.Component {
    * @param {Event} event - mouse down event object
    */
   handlePlayerMouseDown(event) {
+    // console.log('BBB PLAYING_SCREEN handlePlayerMouseDown');
+    event.preventDefault();
     if (this.props.controller.videoVr) {
       event.persist();
     }
@@ -148,12 +157,15 @@ class PlayingScreen extends React.Component {
       event.stopPropagation(); // W3C
       event.cancelBubble = true; // IE
       if (!this.props.controller.videoVr) {
+        // console.log('BBB playingScreen handlePlayerMouseUp');
         this.props.controller.togglePlayPause(); // if clicked on selectableSceen
       }
       // the order of the loop and this.props.controller.state is not important
       this.props.controller.state.accessibilityControlsEnabled = true;
       this.props.controller.state.isClickedOutside = false;
     }
+
+    this.props.handleVrPlayerMouseUp(event);
     // for mobile, touch is handled in handleTouchEnd
   }
 
@@ -416,8 +428,6 @@ class PlayingScreen extends React.Component {
           onTouchStart={this.handlePlayerMouseDown}
           onClick={this.handlePlayerClicked}
           onFocus={this.handlePlayerFocus}
-          onMouseUp={this.handlePlayerMouseUp}
-          onTouchEnd={this.props.handleTouchEnd}
         />
 
         {vrNotification}
@@ -472,7 +482,7 @@ class PlayingScreen extends React.Component {
             {...this.props}
             height={this.props.skinConfig.controlBar.height}
             animatingControlBar={true}
-            controlBarVisible={this.props.controller.state.controlBarVisible}
+            controlBarVisible={true}
             playerState={this.props.playerState}
             isLiveStream={this.props.isLiveStream} />
         </div>
