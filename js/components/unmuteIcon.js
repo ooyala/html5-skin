@@ -13,11 +13,14 @@ var UnmuteIcon = createReactClass({
   },
 
   unmuteClick: function(event) {
+    // Clicking on this button shouldn't trigger clicks on parent components
     event.stopPropagation();
     this.props.controller.handleMuteClick();
   },
 
   onMouseUp: function(event) {
+    // The AdScreen currently uses the mouseup event to handle ad clickthroughs,
+    // otherwise stopping propagation on the click event should've been enough
     event.stopPropagation();
   },
 
