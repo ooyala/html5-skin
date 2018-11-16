@@ -191,7 +191,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       isFullWindow: false,
       autoPauseDisabled: false,
 
-      isClickedOutside: true,
+      isClickedOutside: false,
       vrViewingDirection: { yaw: 0, roll: 0, pitch: 0 },
 
       hideMultiAudioIcon: false,
@@ -534,9 +534,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           const halfAngle = 90; // in degrees
           pitch += -halfAngle + Math.abs(Math.round(dir));
           let params = [yaw, 0, pitch];
-          this.state.vrViewingDirection.yaw = yaw;
-          this.state.vrViewingDirection.roll = 0;
-          this.state.vrViewingDirection.pitch = pitch;
+          this.setVrViewingDirection(event, yaw, 0, pitch);
           this.onTouchMove(params);
         }
         this.checkDeviceOrientation = false;

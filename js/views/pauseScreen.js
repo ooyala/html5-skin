@@ -48,7 +48,6 @@ class PauseScreen extends React.Component {
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
     document.addEventListener('mouseup', this.props.handleVrPlayerMouseUp, false);
-    document.addEventListener('touchstart', this.test, { passive: false });
     document.addEventListener('touchend', this.props.handleTouchEnd, { passive: false });
   }
 
@@ -58,7 +57,6 @@ class PauseScreen extends React.Component {
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
     document.removeEventListener('mouseup', this.props.handleVrPlayerMouseUp);
-    document.removeEventListener('touchstart', this.test);
     document.removeEventListener('touchend', this.props.handleTouchEnd);
   }
 
@@ -66,10 +64,6 @@ class PauseScreen extends React.Component {
     if (nextProps.componentWidth !== this.props.componentWidth) {
       this.handleResize(nextProps);
     }
-  }
-
-  test(event) {
-    // console.log('BBB PauseScreen event.target', event ? event.target : 'unknwown');
   }
 
   /**
@@ -128,13 +122,12 @@ class PauseScreen extends React.Component {
    * @param {Event} event - mouse down event object
    */
   handlePlayerMouseDown(event) {
-    // console.log('BBB PAUSE_SCREEN handlePlayerMouseDown');
     event.preventDefault();
     if (this.props.controller.videoVr) {
       event.persist();
     }
     this.props.controller.state.accessibilityControlsEnabled = true;
-    // this.props.controller.state.isClickedOutside = false;
+    this.props.controller.state.isClickedOutside = false;
     this.props.handleVrPlayerMouseDown(event);
   }
 
@@ -164,7 +157,7 @@ class PauseScreen extends React.Component {
     const isFocusableElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
     if (isFocusableElement) {
       this.props.controller.state.accessibilityControlsEnabled = true;
-      this.props.controller.state.isClickedOutside = false;
+      // this.props.controller.state.isClickedOutside = false;
     }
   }
 
@@ -317,6 +310,7 @@ class PauseScreen extends React.Component {
           onClick={this.handleClick}
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
+          onTouchEnd={this.props.handlePlayerTouchEnd}
           onMouseUp={this.handlePlayerMouseUp}
         />
 

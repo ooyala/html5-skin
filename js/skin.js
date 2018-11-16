@@ -76,7 +76,7 @@ const Skin = createReactClass({
 
   handleClickOutsidePlayer: function() {
     this.props.controller.state.accessibilityControlsEnabled = false;
-    // this.props.controller.state.isClickedOutside = true;
+    this.props.controller.state.isClickedOutside = true;
   },
 
   switchComponent: function(args) {
@@ -140,33 +140,20 @@ const Skin = createReactClass({
    * @param {MouseEvent} event - event
    */
   handleVrPlayerMouseDown: function(event) {
-    // console.log('BBB handleVrPlayerMouseDown this.props.controller.state.isClickedOutside', this.props.controller.state.isClickedOutside);
-    this.props.controller.state.isClickedOutside = false;
 
-    if (this.props.controller && this.props.controller.isVrStereo) {
+    if (!this.props.controller || this.props.controller.isVrStereo || !this.props.controller.videoVr) {
       return;
     }
-    if (this.props.controller && this.props.controller.videoVr) {
-      const coords = Utils.getCoords(event);
 
-      this.setState({
-        isVrMouseDown: true,
-        xVrMouseStart: coords.x,
-        yVrMouseStart: coords.y
-      });
-      if (typeof this.props.controller.checkVrDirection === 'function') {
-        // this.props.controller.checkVrDirection();
+    const coords = Utils.getCoords(event);
+    this.setState({
+      isVrMouseDown: true,
+      xVrMouseStart: coords.x,
+      yVrMouseStart: coords.y
+    });
 
-        //TODO move to one common function
-        if (
-          typeof this.props.controller.setControllerVrViewingDirection === 'function'
-        ) {
-          const useVrViewingDirection = true;
-          this.props.controller.checkVrDirection(useVrViewingDirection);
-          this.props.controller.setControllerVrViewingDirection();
-        }
-      }
-    }
+    const useVrViewingDirection = true;
+    this.updateVrDirection(useVrViewingDirection);
   },
 
   /**
@@ -186,6 +173,7 @@ const Skin = createReactClass({
       if (typeof this.props.controller.onTouchMove === 'function') {
         const coords = Utils.getCoords(event);
         const params = this.getDirectionParams(coords.x, coords.y);
+        console.log('BBB params', params);
         this.props.controller.onTouchMove(params, true);
       }
     }
@@ -197,31 +185,23 @@ const Skin = createReactClass({
    * @param {MouseEvent} event - mouse or touch event
    */
   handleVrPlayerMouseUp: function(event) {
-    // console.log('BBB handleVrPlayerMouseUp event.type', event ? event.type : 'undefined');
-    if (this.props.controller && this.props.controller.isVrStereo) {
+    if (!this.props.controller || !this.props.controller.videoVr || this.props.controller.isVrStereo) {
       return;
     }
 
-    if (this.props.controller && this.props.controller.videoVr) {
-      // let isVrMouseMove = this.state.isVrMouseMove;
-      let isTouchEnd = typeof event === 'object' && event.type === 'touchend';
+    let isTouchEnd = typeof event === 'object' && event.type === 'touchend';
 
-      // if (isTouchEnd) {
-      //   isVrMouseMove = false; // for the opportunity to stop video on iPhone by touching on the screen
-      // }
+    if (!isTouchEnd && typeof this.props.controller.checkVrDirection === 'function') {
 
-      if (!isTouchEnd && typeof this.props.controller.checkVrDirection === 'function') {
-        this.props.controller.checkVrDirection();
+      // this.props.controller.checkVrDirection();
 
-        this.setState({
-          isVrMouseDown: false,
-          // isVrMouseMove: isVrMouseMove,
-          xVrMouseStart: 0,
-          yVrMouseStart: 0
-        });
-      }
-
+      this.setState({
+        isVrMouseDown: false,
+        xVrMouseStart: 0,
+        yVrMouseStart: 0
+      });
     }
+
   },
 
   /**
@@ -350,45 +330,8 @@ const Skin = createReactClass({
    * @param {Event} event - event object
    */
   handleTouchEnd: function(event) {
-    // console.log(
-    //   'BBB handleTouchEnd 1 this.props.controller.state.accessibilityControlsEnabled',
-    //   this.props.controller.state.accessibilityControlsEnabled,
-    //   'this.props.controller.state.isClickedOutside',
-    //   this.props.controller.state.isClickedOutside
-    // );
-    event.preventDefault();
-    if (!this.props.controller.state.isClickedOutside) {
-      if (this.props.controller.state.controlBarVisible) {
-        let shouldToggle = false;
-        if (this.props.controller.videoVr) {
-          if (!this.state.isVrMouseMove) {
-            shouldToggle = true;
-          }
-        } else {
-          shouldToggle = true;
-        }
-        // console.log('BBB handleTouchEnd shouldToggle', shouldToggle);
-        if (shouldToggle) {
-          this.props.controller.togglePlayPause(event);
-        }
-        // set value for this.state.isVrMouseMove in this.handleVrPlayerMouseUp
-      } else {
-        this.props.controller.showControlBar();
-        //TODO: Address an existing issue where we don't cancel the timer upon touching control buttons
-        this.props.controller.startHideControlBarTimer();
-      }
-    }
-
     if (this.props.controller.videoVr) { // only for vr on mobile
       // Check current a vr video position (an user could change position using tilting)
-      if (
-        typeof this.props.controller.checkVrDirection === 'function' &&
-        typeof this.props.controller.setControllerVrViewingDirection === 'function'
-      ) {
-        const useVrViewingDirection = true;
-        this.props.controller.checkVrDirection(useVrViewingDirection);
-        this.props.controller.setControllerVrViewingDirection();
-      }
 
       this.setState({
         isVrMouseDown: false,
@@ -396,18 +339,39 @@ const Skin = createReactClass({
         xVrMouseStart: 0,
         yVrMouseStart: 0
       });
+
+      // const useVrViewingDirection = true;
+      // this.updateVrDirection(useVrViewingDirection);
+
+      //@TODO: now function this.props.controller.onEndMove(); is not worked correctly now. Fix it.
     }
+  },
 
-    this.props.controller.state.isClickedOutside = true;
+  handlePlayerTouchEnd: function(event) {
+    if (this.props.controller.state.controlBarVisible) {
+      let shouldToggle = false;
+      if (!this.props.controller.videoVr || !this.state.isVrMouseMove) {
+        shouldToggle = true;
+      }
+      if (shouldToggle) {
+        this.props.controller.togglePlayPause(event);
+      }
+    }
+  },
 
-    // The camera decelerate after the "touchmove" on the mobile device
-    // or on the desktop after the "mousemove",
-    // but not after using the rotation controls
-
-    // let endMove = this.state.isVrMouseMove || OO.isAndroid || OO.isIos;
-    // if (endMove && typeof this.props.controller.onEndMove === 'function') {
-    //   this.props.controller.onEndMove();
-    // }
+  /**
+   * Ask for last direction and set it to vrViewingDirection.
+   * @param {boolean} useVrViewingDirection - true if function 'getVrViewingDirection' is needed to be used
+   * from the plugin, false - if function 'getCurrentDirection' will be used
+   */
+  updateVrDirection: function(useVrViewingDirection) {
+    if (
+      typeof this.props.controller.checkVrDirection === 'function' &&
+      typeof this.props.controller.setControllerVrViewingDirection === 'function'
+    ) {
+      this.props.controller.checkVrDirection(useVrViewingDirection);
+      this.props.controller.setControllerVrViewingDirection();
+    }
   },
 
   render: function() {
@@ -502,6 +466,7 @@ const Skin = createReactClass({
             screen = (
               <PlayingScreenWithAutoHide
                 {...this.props}
+                handlePlayerTouchEnd={this.handlePlayerTouchEnd}
                 handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
                 handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
                 handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
@@ -565,6 +530,7 @@ const Skin = createReactClass({
             screen = (
               <PauseScreenWithAutoHide
                 {...this.props}
+                handlePlayerTouchEnd={this.handlePlayerTouchEnd}
                 handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
                 handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
                 handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}

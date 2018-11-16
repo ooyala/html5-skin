@@ -55,7 +55,6 @@ class PlayingScreen extends React.Component {
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
     document.addEventListener('mouseup', this.handlePlayerMouseUp, false);
-    document.addEventListener('touchstart', this.test, { passive: false });
     document.addEventListener('touchend', this.props.handleTouchEnd, { passive: false });
 
     if (this.props.controller.videoVr) {
@@ -68,13 +67,7 @@ class PlayingScreen extends React.Component {
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
     document.removeEventListener('mouseup', this.handlePlayerMouseUp);
-    document.removeEventListener('touchstart', this.test);
     document.removeEventListener('touchend', this.props.handleTouchEnd);
-  }
-
-
-  test(event) {
-    // console.log('BBB PlayingScreen event.target', event ? event.target : 'unknwown');
   }
 
   /**
@@ -130,7 +123,6 @@ class PlayingScreen extends React.Component {
    * @param {Event} event - mouse down event object
    */
   handlePlayerMouseDown(event) {
-    // console.log('BBB PLAYING_SCREEN handlePlayerMouseDown');
     event.preventDefault();
     if (this.props.controller.videoVr) {
       event.persist();
@@ -157,7 +149,6 @@ class PlayingScreen extends React.Component {
       event.stopPropagation(); // W3C
       event.cancelBubble = true; // IE
       if (!this.props.controller.videoVr) {
-        // console.log('BBB playingScreen handlePlayerMouseUp');
         this.props.controller.togglePlayPause(); // if clicked on selectableSceen
       }
       // the order of the loop and this.props.controller.state is not important
@@ -166,7 +157,6 @@ class PlayingScreen extends React.Component {
     }
 
     this.props.handleVrPlayerMouseUp(event);
-    // for mobile, touch is handled in handleTouchEnd
   }
 
   /**
@@ -426,6 +416,7 @@ class PlayingScreen extends React.Component {
           className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
+          onTouchEnd={this.props.handlePlayerTouchEnd}
           onClick={this.handlePlayerClicked}
           onFocus={this.handlePlayerFocus}
         />

@@ -69,11 +69,11 @@ const withAutoHide = function(ComposedComponent) {
      * @param {Event} event The touchEnd event object
      */
     handleTouchEnd(event) {
-      // if (!this.props.controller.state.controlBarVisible) {
-      //   this.showControlBar(event);
-      //   //TODO: Address an existing issue where we don't cancel the timer upon touching control buttons
-      //   this.startHideControlBarTimer();
-      // }
+      if (!this.props.controller.state.controlBarVisible) {
+        this.showControlBar(event);
+        //TODO: Address an existing issue where we don't cancel the timer upon touching control buttons
+        this.startHideControlBarTimer();
+      }
     }
 
     /**
