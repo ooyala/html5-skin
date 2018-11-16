@@ -111,10 +111,9 @@ class PauseScreen extends React.Component {
    * remove the button on pause screen for correct checking mouse movement
    */
   hideVrPauseButton() {
-    if (!(this.props.controller.videoVr && this.pauseButton)) {
-      return;
+    if (this.props.controller.videoVr && this.pauseButton) {
+      setTimeout(() => this.pauseButton.style.display = 'none', 1000);
     }
-    setTimeout(() => this.pauseButton.style.display = 'none', 1000);
   }
 
   /**
