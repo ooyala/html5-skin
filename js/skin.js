@@ -135,16 +135,21 @@ const Skin = createReactClass({
   },
 
   /**
+   * Handles mouseDown or touchStart events
+   * Used for vr video
+   * Checks and sets the current value of coordinates, which could be changed when the user used tilting
+   * Sets coordinate values for further calculation of rotation coordinates
    * @public
-   * @description the function is called when we start the rotation
    * @param {MouseEvent} event - event
    */
   handleVrPlayerMouseDown: function(event) {
 
+    // continue only if video is vr and non in stereo mode
     if (!this.props.controller || this.props.controller.isVrStereo || !this.props.controller.videoVr) {
       return;
     }
 
+    //Sets coordinate values for further calculation of rotation coordinates
     const coords = Utils.getCoords(event);
     this.setState({
       isVrMouseDown: true,
@@ -152,13 +157,16 @@ const Skin = createReactClass({
       yVrMouseStart: coords.y
     });
 
+    // Check current a vr video position (an user could change position using tilting)
     const useVrViewingDirection = true;
     this.updateVrDirection(useVrViewingDirection);
   },
 
   /**
+   * Should be called when an user rotates a vr video
+   * Sets the desired coordinate values during vr video rotation
+   * Sets the state "isVrMouseMove" to true, indicating that the video is currently rotating.
    * @public
-   * @description the function is called while rotation is active
    * @param {MouseEvent} event - event
    */
   handleVrPlayerMouseMove: function(event) {
@@ -173,28 +181,30 @@ const Skin = createReactClass({
       if (typeof this.props.controller.onTouchMove === 'function') {
         const coords = Utils.getCoords(event);
         const params = this.getDirectionParams(coords.x, coords.y);
-        console.log('BBB params', params);
         this.props.controller.onTouchMove(params, true);
       }
     }
   },
 
   /**
+   * Should be called when an user stopped rotating vr video
+   * Use only for mouseUp event,
+   * !!! handlers for toucheEnd event are in handleTouchEndOnWindow and handleTouchEndOnPlayer !!!
+   * Used for vr video
+   * Resets the initial values to calculate the coordinates of rotation
+   * Says that the rotation of vr video is ended - set state "isVrMouseDown" to false
    * @public
-   * @description the function is called when we stop the rotation
    * @param {MouseEvent} event - mouse or touch event
    */
   handleVrPlayerMouseUp: function(event) {
+    // continue only if video is vr and non in stereo mode
     if (!this.props.controller || !this.props.controller.videoVr || this.props.controller.isVrStereo) {
       return;
     }
 
     let isTouchEnd = typeof event === 'object' && event.type === 'touchend';
-
+    // do not continue if the event is 'touchend'
     if (!isTouchEnd && typeof this.props.controller.checkVrDirection === 'function') {
-
-      // this.props.controller.checkVrDirection();
-
       this.setState({
         isVrMouseDown: false,
         xVrMouseStart: 0,
@@ -329,9 +339,8 @@ const Skin = createReactClass({
    * @public
    * @param {Event} event - event object
    */
-  handleTouchEnd: function(event) {
+  handleTouchEndOnWindow: function() {
     if (this.props.controller.videoVr) { // only for vr on mobile
-      // Check current a vr video position (an user could change position using tilting)
 
       this.setState({
         isVrMouseDown: false,
@@ -340,14 +349,17 @@ const Skin = createReactClass({
         yVrMouseStart: 0
       });
 
-      // const useVrViewingDirection = true;
-      // this.updateVrDirection(useVrViewingDirection);
-
       //@TODO: now function this.props.controller.onEndMove(); is not worked correctly now. Fix it.
     }
   },
 
-  handlePlayerTouchEnd: function(event) {
+  /**
+   * Handles touchEnd Event within the player screen.
+   * Should play/pause the video
+   * @public
+   * @param {Object} event - event object
+   */
+  handleTouchEndOnPlayer: function(event) {
     if (this.props.controller.state.controlBarVisible) {
       let shouldToggle = false;
       if (!this.props.controller.videoVr || !this.state.isVrMouseMove) {
@@ -361,6 +373,7 @@ const Skin = createReactClass({
 
   /**
    * Ask for last direction and set it to vrViewingDirection.
+   * @public
    * @param {boolean} useVrViewingDirection - true if function 'getVrViewingDirection' is needed to be used
    * from the plugin, false - if function 'getCurrentDirection' will be used
    */
@@ -466,13 +479,13 @@ const Skin = createReactClass({
             screen = (
               <PlayingScreenWithAutoHide
                 {...this.props}
-                handlePlayerTouchEnd={this.handlePlayerTouchEnd}
+                handleTouchEndOnPlayer={this.handleTouchEndOnPlayer}
                 handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
                 handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
                 handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
                 handleVrPlayerClick={this.handleVrPlayerClick}
                 handleVrPlayerFocus={this.handleVrPlayerFocus}
-                handleTouchEnd={this.handleTouchEnd}
+                handleTouchEndOnWindow={this.handleTouchEndOnWindow}
                 isVrMouseMove={this.state.isVrMouseMove}
                 contentTree={this.state.contentTree}
                 currentPlayhead={this.state.currentPlayhead}
@@ -530,12 +543,12 @@ const Skin = createReactClass({
             screen = (
               <PauseScreenWithAutoHide
                 {...this.props}
-                handlePlayerTouchEnd={this.handlePlayerTouchEnd}
+                handleTouchEndOnPlayer={this.handleTouchEndOnPlayer}
                 handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
                 handleVrPlayerMouseMove={this.handleVrPlayerMouseMove}
                 handleVrPlayerMouseUp={this.handleVrPlayerMouseUp}
                 handleVrPlayerClick={this.handleVrPlayerClick}
-                handleTouchEnd={this.handleTouchEnd}
+                handleTouchEndOnWindow={this.handleTouchEndOnWindow}
                 isVrMouseMove={this.state.isVrMouseMove}
                 contentTree={this.state.contentTree}
                 currentPlayhead={this.state.currentPlayhead}

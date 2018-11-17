@@ -55,7 +55,7 @@ class PlayingScreen extends React.Component {
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
     document.addEventListener('mouseup', this.handlePlayerMouseUp, false);
-    document.addEventListener('touchend', this.props.handleTouchEnd, { passive: false });
+    document.addEventListener('touchend', this.props.handleTouchEndOnWindow, { passive: false });
 
     if (this.props.controller.videoVr) {
       this.handleVrAnimationEnd(this.vrNotificatioContainer, 'isVrNotificationHidden');
@@ -67,7 +67,7 @@ class PlayingScreen extends React.Component {
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
     document.removeEventListener('mouseup', this.handlePlayerMouseUp);
-    document.removeEventListener('touchend', this.props.handleTouchEnd);
+    document.removeEventListener('touchend', this.props.handleTouchEndOnWindow);
   }
 
   /**
@@ -416,7 +416,7 @@ class PlayingScreen extends React.Component {
           className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
-          onTouchEnd={this.props.handlePlayerTouchEnd}
+          onTouchEnd={this.props.handleTouchEndOnPlayer}
           onClick={this.handlePlayerClicked}
           onFocus={this.handlePlayerFocus}
         />

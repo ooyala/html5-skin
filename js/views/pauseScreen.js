@@ -48,7 +48,7 @@ class PauseScreen extends React.Component {
     document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
     document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
     document.addEventListener('mouseup', this.props.handleVrPlayerMouseUp, false);
-    document.addEventListener('touchend', this.props.handleTouchEnd, { passive: false });
+    document.addEventListener('touchend', this.props.handleTouchEndOnWindow, { passive: false });
   }
 
   componentWillUnmount() {
@@ -57,7 +57,7 @@ class PauseScreen extends React.Component {
     document.removeEventListener('mousemove', this.handlePlayerMouseMove);
     document.removeEventListener('touchmove', this.handlePlayerMouseMove);
     document.removeEventListener('mouseup', this.props.handleVrPlayerMouseUp);
-    document.removeEventListener('touchend', this.props.handleTouchEnd);
+    document.removeEventListener('touchend', this.props.handleTouchEndOnWindow);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -309,7 +309,7 @@ class PauseScreen extends React.Component {
           onClick={this.handleClick}
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
-          onTouchEnd={this.props.handlePlayerTouchEnd}
+          onTouchEnd={this.props.handleTouchEndOnPlayer}
           onMouseUp={this.handlePlayerMouseUp}
         />
 
