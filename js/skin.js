@@ -189,7 +189,7 @@ const Skin = createReactClass({
   /**
    * Should be called when an user stopped rotating vr video
    * Use only for mouseUp event,
-   * !!! handlers for toucheEnd event are in handleTouchEndOnWindow and handleTouchEndOnPlayer !!!
+   * !!! handlers for touchEnd event are in handleTouchEndOnWindow and handleTouchEndOnPlayer !!!
    * Used for vr video
    * Resets the initial values to calculate the coordinates of rotation
    * Says that the rotation of vr video is ended - set state "isVrMouseDown" to false

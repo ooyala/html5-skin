@@ -45,19 +45,23 @@ class PauseScreen extends React.Component {
     this.animateTimer = setTimeout(this.startAnimation, 1);
     this.handleResize();
     this.hideVrPauseButton();
-    document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
-    document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
-    document.addEventListener('mouseup', this.props.handleVrPlayerMouseUp, false);
-    document.addEventListener('touchend', this.props.handleTouchEndOnWindow, { passive: false });
+    if (this.props.controller.videoVr) {
+      document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
+      document.addEventListener('touchmove', this.handlePlayerMouseMove, {passive: false});
+      document.addEventListener('mouseup', this.props.handleVrPlayerMouseUp, false);
+      document.addEventListener('touchend', this.props.handleTouchEndOnWindow, {passive: false});
+    }
   }
 
   componentWillUnmount() {
     clearTimeout(this.animateTimer);
     this.props.controller.enablePauseAnimation();
-    document.removeEventListener('mousemove', this.handlePlayerMouseMove);
-    document.removeEventListener('touchmove', this.handlePlayerMouseMove);
-    document.removeEventListener('mouseup', this.props.handleVrPlayerMouseUp);
-    document.removeEventListener('touchend', this.props.handleTouchEndOnWindow);
+    if (this.props.controller.videoVr) {
+      document.removeEventListener('mousemove', this.handlePlayerMouseMove);
+      document.removeEventListener('touchmove', this.handlePlayerMouseMove);
+      document.removeEventListener('mouseup', this.props.handleVrPlayerMouseUp);
+      document.removeEventListener('touchend', this.props.handleTouchEndOnWindow);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -111,8 +115,12 @@ class PauseScreen extends React.Component {
    * remove the button on pause screen for correct checking mouse movement
    */
   hideVrPauseButton() {
-    if (this.props.controller.videoVr && this.pauseButton) {
-      setTimeout(() => this.pauseButton.style.display = 'none', 1000);
+    if (this.props.controller.videoVr) {
+      setTimeout(() => {
+        if (this.pauseButton) {
+          this.pauseButton.style.display = 'none';
+        }
+      }, 1000);
     }
   }
 

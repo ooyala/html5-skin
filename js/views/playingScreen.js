@@ -52,22 +52,23 @@ class PlayingScreen extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
-    document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
-    document.addEventListener('mouseup', this.handlePlayerMouseUp, false);
-    document.addEventListener('touchend', this.props.handleTouchEndOnWindow, { passive: false });
-
     if (this.props.controller.videoVr) {
+      document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
+      document.addEventListener('mouseup', this.handlePlayerMouseUp, false);
+      document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
+      document.addEventListener('touchend', this.props.handleTouchEndOnWindow, { passive: false });
       this.handleVrAnimationEnd(this.vrNotificatioContainer, 'isVrNotificationHidden');
       this.handleVrAnimationEnd(this.vrIconContainer, 'isVrIconHidden');
     }
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousemove', this.handlePlayerMouseMove);
-    document.removeEventListener('touchmove', this.handlePlayerMouseMove);
-    document.removeEventListener('mouseup', this.handlePlayerMouseUp);
-    document.removeEventListener('touchend', this.props.handleTouchEndOnWindow);
+    if (this.props.controller.videoVr) {
+      document.removeEventListener('mousemove', this.handlePlayerMouseMove);
+      document.removeEventListener('touchmove', this.handlePlayerMouseMove);
+      document.removeEventListener('mouseup', this.handlePlayerMouseUp);
+      document.removeEventListener('touchend', this.props.handleTouchEndOnWindow);
+    }
   }
 
   /**
