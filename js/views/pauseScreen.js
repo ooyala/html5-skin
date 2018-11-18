@@ -164,7 +164,7 @@ class PauseScreen extends React.Component {
     const isFocusableElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
     if (isFocusableElement) {
       this.props.controller.state.accessibilityControlsEnabled = true;
-      // this.props.controller.state.isClickedOutside = false;
+      this.props.controller.state.isClickedOutside = false;
     }
   }
 
