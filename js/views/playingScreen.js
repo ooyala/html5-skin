@@ -426,6 +426,8 @@ class PlayingScreen extends React.Component {
         <Watermark {...this.props} controlBarVisible={this.props.controller.state.controlBarVisible} />
         
         <CastPanel
+          language={this.props.language}
+          localizableStrings={this.props.localizableStrings}
           device={this.props.controller.state.cast.device}
           connected={this.props.controller.state.cast.connected}
           className={castPanelClass}

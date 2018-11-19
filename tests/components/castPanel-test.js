@@ -10,7 +10,7 @@ describe('CastPanel', function(){
     
     function renderComponent(className) {
         return Enzyme.mount(
-            <CastPanel 
+            <CastPanel
                 device="Test Panel"
                 connected={false}
                 className={className}

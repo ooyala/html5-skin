@@ -333,6 +333,8 @@ class PauseScreen extends React.Component {
         </button>
 
         <CastPanel
+          language={this.props.language}
+          localizableStrings={this.props.localizableStrings}
           device={this.props.controller.state.cast.device}
           connected={this.props.controller.state.cast.connected}
           className={castPanelClass}
