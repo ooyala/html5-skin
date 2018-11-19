@@ -579,6 +579,7 @@ var Utils = {
         }
       }
     }
+
     return language;
   },
 
