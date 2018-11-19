@@ -28,6 +28,10 @@
     pointer-events: auto;
   }
 
+  .oo-play-pause span {
+    font-size: 2em;
+  }
+
   .oo-focusable-btn:disabled {
     opacity: 0.4;
   }
