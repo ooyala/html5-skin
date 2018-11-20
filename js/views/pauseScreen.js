@@ -300,7 +300,10 @@ class PauseScreen extends React.Component {
 
     return (
       <div className="oo-state-screen oo-pause-screen">
-        {this.props.controller.state.cast.connected && <div className={stateScreenPosterClass} style={posterStyle}></div>}
+        {
+          this.props.controller.state.cast.connected &&
+          <div className={stateScreenPosterClass} style={posterStyle} />
+        }
 
         {!this.props.controller.videoVr && this.state.containsText && <div className={fadeUnderlayClass} />}
 
@@ -332,13 +335,15 @@ class PauseScreen extends React.Component {
           <Icon {...this.props} icon="pause" style={actionIconStyle} />
         </button>
 
-        <CastPanel
-          language={this.props.language}
-          localizableStrings={this.props.localizableStrings}
-          device={this.props.controller.state.cast.device}
-          connected={this.props.controller.state.cast.connected}
-          className={castPanelClass}
-        />
+        {
+          this.props.controller.state.cast.connected &&
+          <CastPanel
+            language={this.props.language}
+            localizableStrings={this.props.localizableStrings}
+            device={this.props.controller.state.cast.device}
+            className={castPanelClass}
+          />
+        }
 
         {viewControlsVr}
 

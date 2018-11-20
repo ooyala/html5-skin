@@ -23,19 +23,6 @@ describe('CastPanel', function(){
         expect(panel).toBeTruthy();
     });
 
-    it('Should render a hidden cast panel', function(){
-        const panel = renderComponent();
-        expect(panel.getDOMNode().classList.contains('oo-inactive')).toBe(true);
-    });
-
-    it('Should render and show a cast panel', function(){
-        const panel = renderComponent();
-        expect(panel.getDOMNode().classList.contains('oo-inactive')).toBe(true);
-        panel.setProps({connected:true});
-        expect(panel.getDOMNode().classList.contains('oo-inactive')).toBe(false);
-        expect(panel.find('p span').text()).toBe('Test Panel');
-    });
-
     it('Should render a cast panel with a given className', function(){
         const panel = renderComponent('my-class-test');
         expect(panel.getDOMNode().classList.contains('my-class-test')).toBe(true);

@@ -9,26 +9,13 @@ const utils = require('./utils');
  */
 class CastPanel extends React.Component {
 
-  /**
-   * Prevent update if connection status not changed
-   * @param {Object} nextProps - list of props
-   * @returns {boolean} to update or not
-   */
-  shouldComponentUpdate(nextProps) {
-    return nextProps.connected !== this.props.connected;
-  }
-
   render() {
     const connectedText = utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.CONNECTED_TO,
       this.props.localizableStrings
     );
-    const castPanelClass = ClassNames({
-      'oo-info-panel-cast': true,
-      'oo-inactive': !this.props.connected
-    },
-    this.props.className);
+    const castPanelClass = ClassNames('oo-info-panel-cast', this.props.className);
     
     return (
       <div className={castPanelClass}>
@@ -40,14 +27,12 @@ class CastPanel extends React.Component {
 
 CastPanel.propTypes = {
   device: PropTypes.string,
-  connected: PropTypes.bool,
   language: PropTypes.string,
   localizableStrings: PropTypes.object,
 };
 
 CastPanel.defaultProps = {
   device: '',
-  connected: false,
   language: 'en',
   localizableStrings: { 'en': {} },
 };

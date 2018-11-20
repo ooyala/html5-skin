@@ -424,14 +424,16 @@ class PlayingScreen extends React.Component {
         {vrIcon}
 
         <Watermark {...this.props} controlBarVisible={this.props.controller.state.controlBarVisible} />
-        
-        <CastPanel
-          language={this.props.language}
-          localizableStrings={this.props.localizableStrings}
-          device={this.props.controller.state.cast.device}
-          connected={this.props.controller.state.cast.connected}
-          className={castPanelClass}
-        />
+
+        {
+          this.props.controller.state.cast.connected &&
+          <CastPanel
+            language={this.props.language}
+            localizableStrings={this.props.localizableStrings}
+            device={this.props.controller.state.cast.device}
+            className={castPanelClass}
+          />
+        }
 
         {this.props.controller.state.buffering ? (
           <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
