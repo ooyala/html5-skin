@@ -15,6 +15,7 @@ describe('UnmuteIcon', function() {
 
   beforeEach(function() {
     mockController = {
+      handleMuteClick: () => {},
       state: {
         volumeState: {
           muted: true,
@@ -35,6 +36,30 @@ describe('UnmuteIcon', function() {
     var expanded = wrapper.find('.oo-expanded');
     var unmuteIcon = wrapper.find('.oo-unmute');
     expect(expanded).toEqual(unmuteIcon);
+  });
+
+  it('should not bubble click events up to parent', function() {
+    let parentClickCount = 0;
+    const spy = sinon.spy(mockController, 'handleMuteClick');
+    const onParentClick =  () => parentClickCount++;
+
+    const wrapper = Enzyme.mount(
+      <div
+        id="parent"
+        onClick={onParentClick}
+        onMouseUp={onParentClick}>
+        <UnmuteIcon
+          controller={mockController}
+          skinConfig={skinConfig} />
+      </div>
+    );
+    const button = wrapper.find('.oo-unmute');
+
+    button.simulate('click');
+    button.simulate('mouseup');
+    expect(parentClickCount).toBe(0);
+    expect(spy.callCount).toBe(1);
+    spy.restore();
   });
 
   it('creates a collapsed UnmuteIcon', function() {
