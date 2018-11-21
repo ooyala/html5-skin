@@ -131,11 +131,15 @@ var EndScreen = createReactClass({
           <Icon {...this.props} icon="replay" style={actionIconStyle} />
         </button>
 
-        <CastPanel
-          device={this.props.controller.state.cast.device}
-          connected={this.props.controller.state.cast.connected}
-          className={castPanelClass}
-        />
+        {
+          this.props.controller.state.cast.connected &&
+          <CastPanel
+            language={this.props.language}
+            localizableStrings={this.props.localizableStrings}
+            device={this.props.controller.state.cast.device}
+            className={castPanelClass}
+          />
+        }
 
         <div className="oo-interactive-container">
           <ControlBar

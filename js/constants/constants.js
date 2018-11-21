@@ -40,6 +40,7 @@ var CONSTANTS = {
   },
 
   SKIN_TEXT: {
+    CONNECTED_TO: 'Connected to',
     LEARN_MORE: 'Learn More',
     CLOSED_CAPTION_PREVIEW: 'CLOSED CAPTION PREVIEW',
     SAMPLE_TEXT: 'Sample Text',

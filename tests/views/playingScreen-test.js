@@ -653,17 +653,17 @@ describe('PlayingScreen', function() {
   it('[Chromecast] should not display cast panel', function(){
     const wrapper = renderPlayingScreen();
     const castPanel = wrapper.find(CastPanel);
-    expect(castPanel.props().connected).toBe(false);
+    expect(castPanel.exists()).toBe(false);
   });
 
   it('[Chromecast] should display cast panel with poster image and blur effect', function(){
     mockController.state.cast = {
       connected: true,
       device: "PlayerTV"
-    }
+    };
     const wrapper = renderPlayingScreen();
     const castPanel = wrapper.find(CastPanel);
-    expect(castPanel.props().connected).toBe(true);
+    expect(castPanel.exists()).toBe(true);
     expect(castPanel.props().device).toBe("PlayerTV");
     expect(wrapper.find('.oo-state-screen-poster.oo-blur').length).toBe(1);
   });
@@ -672,11 +672,11 @@ describe('PlayingScreen', function() {
     mockController.state.cast = {
       connected: true,
       device: "PlayerTV"
-    }
+    };
     mockSkinConfig.skipControls.enabled = true;
     const wrapper = renderPlayingScreen();
     const castPanel = wrapper.find(CastPanel);
-    expect(castPanel.props().connected).toBe(true);
+    expect(castPanel.exists()).toBe(true);
     expect(castPanel.props().device).toBe("PlayerTV");
     expect(wrapper.find('.oo-info-panel-cast.oo-info-panel-cast-bottom').length).toBe(1);
     expect(wrapper.find('.oo-state-screen-poster.oo-blur').length).toBe(1);
