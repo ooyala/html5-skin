@@ -21,8 +21,9 @@ import {PlayingScreen} from '../../js/views/playingScreen';
 const ControlBar = require('../../js/components/controlBar');
 
 describe('PlayingScreen', function() {
-  var mockController, mockSkinConfig, closedCaptionOptions;
-  var handleVrPlayerMouseUp = function() {};
+  let mockController, mockSkinConfig, closedCaptionOptions;
+  const handleVrPlayerMouseUp = () => {};
+  const eventMap = {};
 
   const renderPlayingScreen = () => {
     const wrapper = Enzyme.mount(
@@ -32,6 +33,8 @@ describe('PlayingScreen', function() {
         skinConfig={mockSkinConfig}
         closedCaptionOptions={{ enabled: true }}
         handleVrPlayerMouseUp={() => {}}
+        handleVrPlayerMouseDown={() => {}}
+        handleVrPlayerMouseMove={() => {}}
         currentPlayhead={0}
         playerState={CONSTANTS.STATE.PLAYING}
         totalTime={"60:00"}
@@ -48,6 +51,10 @@ describe('PlayingScreen', function() {
   };
 
   beforeEach(function() {
+    document.addEventListener = jest.fn((event, callback) => {
+      eventMap[event] = callback;
+    });
+    document.removeEventListener = () => {};
     mockController = {
       state: {
         isLiveStream: false,
@@ -206,47 +213,59 @@ describe('PlayingScreen', function() {
   });
 
   it('creates a PlayingScreen and checks touchEnd', function() {
-    var isInHandleTouchEnd = false;
-    var clicked = false;
+    let isInHandleTouchEndOnPlayer = false;
+    let isInHandleTouchEndOnWindow = false;
+    let clicked = false;
 
-    mockController.state.videoVr = false;
+    mockController.videoVr = true;
     mockController.state.isMobile = true;
-    mockController.togglePlayPause = function() {
+    mockController.togglePlayPause = () => {
       clicked = true;
     };
-    mockController.startHideControlBarTimer = function() {};
+    mockController.startHideControlBarTimer = () => {};
 
-    var handleVrPlayerMouseUp = function(e) {
-      isInHandleTouchEnd = true;
+    const handleVrPlayerMouseUp = () => {
+      isInHandleTouchEndOnPlayer = true;
     };
-    var handleTouchEnd = function() {
+    const handleTouchEndOnPlayer = () => {
       mockController.togglePlayPause();
+    };
+    const handleTouchEndOnWindow = () => {
+      isInHandleTouchEndOnWindow = true;
     };
 
     // Render pause screen into DOM
-    var wrapper = Enzyme.mount(
-        <PlayingScreen
-            controller={mockController}
-            skinConfig={mockSkinConfig}
-            closedCaptionOptions={closedCaptionOptions}
-            handleVrPlayerMouseUp={handleVrPlayerMouseUp}
-            handleTouchEnd={handleTouchEnd}
-            playerState={CONSTANTS.STATE.PLAYING}
-            totalTime={"60:00"}
-            playheadTime={"00:00"}
-            contentTree={mockController.state.contentTree}
-        />);
+    const wrapper = Enzyme.mount(
+      <PlayingScreen
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        closedCaptionOptions={closedCaptionOptions}
+        handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+        handleTouchEndOnPlayer={handleTouchEndOnPlayer}
+        handleTouchEndOnWindow={handleTouchEndOnWindow}
+        handleVrPlayerMouseDown={() => {}}
+        handleVrPlayerMouseMove={() => {}}
+        playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
+      />);
 
-    var screen = wrapper.find('.oo-state-screen-selectable');
+    const screen = wrapper.find('.oo-state-screen-selectable');
     screen.simulate('touchEnd');
-    expect(isInHandleTouchEnd).toBe(true);
+    expect(isInHandleTouchEndOnPlayer).toBe(true);
+
+    eventMap.touchend();
+    expect(document.addEventListener).toHaveBeenCalled();
+    expect(isInHandleTouchEndOnWindow).toBe(true);
+
     expect(clicked).toBe(true);
   });
 
   //TODO: Add onTouchMove testing by event (in the current version of JEST it does not simulate)
   it('creates a PlayingScreen, move video and checks touchEnd', function() {
-    let isTouchEnd = false;
-    let isTouchStart = false;
+    let isMouseUp = false;
+    let isMouseDown = false;
     let clicked = false;
 
     mockController.state.videoVr = false;
@@ -255,41 +274,43 @@ describe('PlayingScreen', function() {
       clicked = true;
     };    
 
-    const handleTouchEnd = function() {
+    const handleTouchEndOnPlayer = function() {
       mockController.togglePlayPause();
     };
-    const onTouchEnd = function(e) {
-        isTouchEnd = true;
+    const handleTouchEndOnWindow = function() {};
+    const handleMouseUp = function() {
+      isMouseUp = true;
     };
-    const onTouchStart = function(e) {
-      isTouchStart = true;
+    const onTouchStart = function() {
+      isMouseDown = true;
     };
-    const onTouchMove = function(e) {};
+    const onTouchMove = function() {};
 
     // Render pause screen into DOM
-    var wrapper = Enzyme.mount(
-        <PlayingScreen
-            controller={mockController}
-            skinConfig={mockSkinConfig}
-            closedCaptionOptions={closedCaptionOptions}
-            handleVrPlayerMouseDown={onTouchStart}
-            handleVrPlayerMouseMove={onTouchMove}
-            handleVrPlayerMouseUp={onTouchEnd}
-            handleTouchEnd={handleTouchEnd}
-            playerState={CONSTANTS.STATE.PLAYING}
-            totalTime={"60:00"}
-            playheadTime={"00:00"}
-            contentTree={mockController.state.contentTree}
-        />);
+    const wrapper = Enzyme.mount(
+      <PlayingScreen
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        closedCaptionOptions={closedCaptionOptions}
+        handleVrPlayerMouseDown={onTouchStart}
+        handleVrPlayerMouseMove={onTouchMove}
+        handleVrPlayerMouseUp={handleMouseUp}
+        handleTouchEndOnPlayer={handleTouchEndOnPlayer}
+        handleTouchEndOnWindow={handleTouchEndOnWindow}
+        playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
+      />);
 
-    var screen = wrapper.find('.oo-state-screen-selectable');
+    const screen = wrapper.find('.oo-state-screen-selectable');
 
     screen.simulate('touchStart');
     screen.simulate('touchMove');
     screen.simulate('touchEnd');
     
-    expect(isTouchStart).toBe(true);
-    expect(isTouchEnd).toBe(true);
+    expect(isMouseDown).toBe(true);
+    expect(isMouseUp).toBe(true);
     expect(clicked).toBe(true);
   });
 
@@ -375,13 +396,13 @@ describe('PlayingScreen', function() {
     };
     mockController.startHideControlBarTimer = function() {};
 
-    const handleVrPlayerClick = function() {
+    const handleVrPlayerClick = () => {
       isMouseMove = false;
     };
-
-    const handleTouchEnd = function() {
+    const handleTouchEndOnPlayer = () => {
       mockController.togglePlayPause();
     };
+    const handleTouchEndOnWindow = () => {};
 
     // Render pause screen into DOM
     const wrapper = Enzyme.mount(
@@ -391,7 +412,8 @@ describe('PlayingScreen', function() {
         closedCaptionOptions = {closedCaptionOptions}
         handleVrPlayerClick={handleVrPlayerClick}
         handleVrPlayerMouseUp={handleVrPlayerMouseUp}
-        handleTouchEnd={handleTouchEnd}
+        handleTouchEndOnPlayer={handleTouchEndOnPlayer}
+        handleTouchEndOnWindow={handleTouchEndOnWindow}
         playerState={CONSTANTS.STATE.PLAYING}
         totalTime={"60:00"}
         playheadTime={"00:00"}

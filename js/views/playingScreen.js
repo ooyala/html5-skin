@@ -52,22 +52,23 @@ class PlayingScreen extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
-    document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
-    document.addEventListener('mouseup', this.props.handleVrPlayerMouseUp, false);
-    document.addEventListener('touchend', this.props.handleVrPlayerMouseUp, false);
-
     if (this.props.controller.videoVr) {
+      document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
+      document.addEventListener('mouseup', this.handlePlayerMouseUp, false);
+      document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
+      document.addEventListener('touchend', this.props.handleTouchEndOnWindow, { passive: false });
       this.handleVrAnimationEnd(this.vrNotificatioContainer, 'isVrNotificationHidden');
       this.handleVrAnimationEnd(this.vrIconContainer, 'isVrIconHidden');
     }
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousemove', this.handlePlayerMouseMove);
-    document.removeEventListener('touchmove', this.handlePlayerMouseMove);
-    document.removeEventListener('mouseup', this.props.handleVrPlayerMouseUp);
-    document.removeEventListener('touchend', this.props.handleVrPlayerMouseUp);
+    if (this.props.controller.videoVr) {
+      document.removeEventListener('mousemove', this.handlePlayerMouseMove);
+      document.removeEventListener('touchmove', this.handlePlayerMouseMove);
+      document.removeEventListener('mouseup', this.handlePlayerMouseUp);
+      document.removeEventListener('touchend', this.props.handleTouchEndOnWindow);
+    }
   }
 
   /**
@@ -123,6 +124,7 @@ class PlayingScreen extends React.Component {
    * @param {Event} event - mouse down event object
    */
   handlePlayerMouseDown(event) {
+    event.preventDefault();
     if (this.props.controller.videoVr) {
       event.persist();
     }
@@ -154,7 +156,8 @@ class PlayingScreen extends React.Component {
       this.props.controller.state.accessibilityControlsEnabled = true;
       this.props.controller.state.isClickedOutside = false;
     }
-    // for mobile, touch is handled in handleTouchEnd
+
+    this.props.handleVrPlayerMouseUp(event);
   }
 
   /**
@@ -414,10 +417,9 @@ class PlayingScreen extends React.Component {
           className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
+          onTouchEnd={this.props.handleTouchEndOnPlayer}
           onClick={this.handlePlayerClicked}
           onFocus={this.handlePlayerFocus}
-          onMouseUp={this.handlePlayerMouseUp}
-          onTouchEnd={this.props.handleTouchEnd}
         />
 
         {vrNotification}

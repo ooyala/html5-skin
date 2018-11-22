@@ -274,34 +274,34 @@ describe('Methods tests', function() {
     const event = {
       preventDefault: function() {}
     };
-    skin.handleTouchEnd(event);
+    skin.handleTouchEndOnPlayer(event);
     expect(isTouched).toBe(false);
 
     skin.props.controller.state.controlBarVisible = true;
-    skin.handleTouchEnd(event);
+    skin.handleTouchEndOnPlayer(event);
     expect(isTouched).toBe(true);
   });
 
-  it('handleTouchEnd should check and set vrVievingDirection if videoVr is true', function() {
+  it('handleVrPlayerMouseDown should check and set vrVievingDirection if videoVr is true', function() {
     skin.props.controller.videoVr = false;
     let vrVievingDirectionChecked = false;
     let vVrViewingDiractionSet = false;
-    skin.props.controller.checkVrDirection = function() {
+    skin.props.controller.checkVrDirection = () => {
       vrVievingDirectionChecked = true;
     };
-    skin.props.controller.setControllerVrViewingDirection = function() {
+    skin.props.controller.setControllerVrViewingDirection = () => {
       vVrViewingDiractionSet = true;
     };
-    skin.props.controller.togglePlayPause = function() {};
+    skin.props.controller.togglePlayPause = () => {};
     const event = {
       preventDefault: function() {}
     };
-    skin.handleTouchEnd(event);
+    skin.handleVrPlayerMouseDown(event);
     expect(vrVievingDirectionChecked).toBe(false);
     expect(vVrViewingDiractionSet).toBe(false);
 
     skin.props.controller.videoVr = true;
-    skin.handleTouchEnd(event);
+    skin.handleVrPlayerMouseDown(event);
     expect(vrVievingDirectionChecked).toBe(true);
     expect(vVrViewingDiractionSet).toBe(true);
   });

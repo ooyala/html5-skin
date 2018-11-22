@@ -45,19 +45,23 @@ class PauseScreen extends React.Component {
     this.animateTimer = setTimeout(this.startAnimation, 1);
     this.handleResize();
     this.hideVrPauseButton();
-    document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
-    document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
-    document.addEventListener('mouseup', this.props.handleVrPlayerMouseUp, false);
-    document.addEventListener('touchend', this.props.handleVrPlayerMouseUp, false);
+    if (this.props.controller.videoVr) {
+      document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
+      document.addEventListener('touchmove', this.handlePlayerMouseMove, {passive: false});
+      document.addEventListener('mouseup', this.props.handleVrPlayerMouseUp, false);
+      document.addEventListener('touchend', this.props.handleTouchEndOnWindow, {passive: false});
+    }
   }
 
   componentWillUnmount() {
     clearTimeout(this.animateTimer);
     this.props.controller.enablePauseAnimation();
-    document.removeEventListener('mousemove', this.handlePlayerMouseMove);
-    document.removeEventListener('touchmove', this.handlePlayerMouseMove);
-    document.removeEventListener('mouseup', this.props.handleVrPlayerMouseUp);
-    document.removeEventListener('touchend', this.props.handleVrPlayerMouseUp);
+    if (this.props.controller.videoVr) {
+      document.removeEventListener('mousemove', this.handlePlayerMouseMove);
+      document.removeEventListener('touchmove', this.handlePlayerMouseMove);
+      document.removeEventListener('mouseup', this.props.handleVrPlayerMouseUp);
+      document.removeEventListener('touchend', this.props.handleTouchEndOnWindow);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -111,10 +115,13 @@ class PauseScreen extends React.Component {
    * remove the button on pause screen for correct checking mouse movement
    */
   hideVrPauseButton() {
-    if (!(this.props.controller.videoVr && this.pauseButton)) {
-      return;
+    if (this.props.controller.videoVr) {
+      setTimeout(() => {
+        if (this.pauseButton) {
+          this.pauseButton.style.display = 'none';
+        }
+      }, 1000);
     }
-    setTimeout(() => this.pauseButton.style.display = 'none', 1000);
   }
 
   /**
@@ -122,6 +129,7 @@ class PauseScreen extends React.Component {
    * @param {Event} event - mouse down event object
    */
   handlePlayerMouseDown(event) {
+    event.preventDefault();
     if (this.props.controller.videoVr) {
       event.persist();
     }
@@ -312,8 +320,8 @@ class PauseScreen extends React.Component {
           onClick={this.handleClick}
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
+          onTouchEnd={this.props.handleTouchEndOnPlayer}
           onMouseUp={this.handlePlayerMouseUp}
-          onTouchEnd={this.props.handleTouchEnd}
         />
 
         <Watermark

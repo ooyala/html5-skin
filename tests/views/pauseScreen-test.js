@@ -23,21 +23,23 @@ describe('PauseScreen', function() {
   var mockController, mockContentTree, mockSkinConfig;
 
   const handleVrPlayerClick = () => {};
-  const handleTouchEnd = () => {
+  const handleTouchEndOnPlayer = () => {
     mockController.togglePlayPause();
   };
+  const handleTouchEndOnWindow = () => {};
 
   var getPauseScreen = () => {
     return <PauseScreen
-        skinConfig={mockSkinConfig}
-        controller={mockController}
-        contentTree={mockContentTree}
-        handleVrPlayerClick={handleVrPlayerClick}
-        handleTouchEnd={handleTouchEnd}
-        closedCaptionOptions={{cueText: 'sample text'}}
-        playerState={CONSTANTS.STATE.PAUSE}
-        totalTime={"60:00"}
-        playheadTime={"00:00"}
+      skinConfig={mockSkinConfig}
+      controller={mockController}
+      contentTree={mockContentTree}
+      handleVrPlayerClick={handleVrPlayerClick}
+      handleTouchEndOnPlayer={handleTouchEndOnPlayer}
+      handleTouchEndOnWindow={handleTouchEndOnWindow}
+      closedCaptionOptions={{cueText: 'sample text'}}
+      playerState={CONSTANTS.STATE.PAUSE}
+      totalTime={"60:00"}
+      playheadTime={"00:00"}
       />
   };
 
