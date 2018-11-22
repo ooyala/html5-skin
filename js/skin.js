@@ -350,6 +350,7 @@ const Skin = createReactClass({
       });
 
       //@TODO: now function this.props.controller.onEndMove(); is not worked correctly now. Fix it.
+      // Related bug is https://jira.corp.ooyala.com/browse/PLAYER-4797
     }
   },
 
