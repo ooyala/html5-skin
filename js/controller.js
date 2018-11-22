@@ -259,8 +259,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         _.bind(this.setVrViewingDirection, this)
       );
       this.mb.subscribe(OO.EVENTS.RECREATING_UI, 'customerUi', _.bind(this.recreatingUI, this));
-      this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
-      this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi', _.bind(this.onMultiAudioChanged, this));
       this.mb.subscribe(
         OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED,
         'customerUi',
@@ -300,6 +298,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           'customerUi',
           _.bind(this.onClosedCaptionsInfoAvailable, this)
         );
+        this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
+        this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi', _.bind(this.onMultiAudioChanged, this));
         this.mb.subscribe(
           OO.EVENTS.BITRATE_INFO_AVAILABLE,
           'customerUi',
