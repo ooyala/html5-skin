@@ -275,8 +275,8 @@ AccessibilityControls.prototype = {
 
     // Calculate the new playhead
     var delta = shiftSeconds * shiftSign * seekRate;
-    var seekTo = Utils.ensureNumber(this.controller.skin.state.currentPlayhead, 0) + delta;
-    seekTo = Utils.constrainToRange(seekTo, 0, this.controller.skin.state.duration);
+    let seekTo = Utils.ensureNumber(this.controller.skin.currentPlayhead, 0) + delta;
+    seekTo = Utils.constrainToRange(seekTo, 0, this.controller.skin.duration);
 
     // Refresh UI and then instruct the player to seek
     this.controller.updateSeekingPlayhead(seekTo);

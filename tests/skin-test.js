@@ -307,35 +307,35 @@ describe('Methods tests', function() {
   });
 
   it('getTotalTime should return the duration of the video', () => {
-    skin.state.duration = 60;
+    skin.duration = 60;
     expect(skin.getTotalTime()).toBe("01:00");
 
-    skin.state.duration = 3600;
+    skin.duration = 3600;
     expect(skin.getTotalTime()).toBe("01:00:00");
 
-    skin.state.duration = null;
+    skin.duration = null;
     expect(skin.getTotalTime()).toBe("00:00");
 
-    delete skin.state.duration;
+    delete skin.duration;
     expect(skin.getTotalTime()).toBe("00:00");
   });
 
   it('getPlayheadTime should return the current playhead of the video', () => {
-    skin.state.currentPlayhead = 120;
+    skin.currentPlayhead = 120;
     expect(skin.getPlayheadTime()).toBe("02:00");
 
-    skin.state.currentPlayhead = 7200;
+    skin.currentPlayhead = 7200;
     expect(skin.getPlayheadTime()).toBe("02:00:00");
 
-    skin.state.currentPlayhead = null;
+    skin.currentPlayhead = null;
     expect(skin.getPlayheadTime()).toBe(null);
 
-    delete skin.state.currentPlayhead;
+    delete skin.currentPlayhead;
     expect(skin.getPlayheadTime()).toBe(null);
 
     skin.state.isLiveStream = true;
-    skin.state.currentPlayhead = 120;
-    skin.state.duration = 60;
+    skin.currentPlayhead = 120;
+    skin.duration = 60;
     expect(skin.getPlayheadTime()).toBe("01:00");
   });
 

@@ -42,9 +42,11 @@ const Skin = createReactClass({
 
   getInitialState: function() {
     this.overlayRenderingEventSent = false;
+    this.duration = 0;
+    this.currentPlayhead = 0;
+    this.buffered;
     return {
       screenToShow: null,
-      currentPlayhead: 0,
       discoveryData: null,
       isVrMouseDown: false,
       isVrMouseMove: false,
@@ -85,12 +87,10 @@ const Skin = createReactClass({
   },
 
   updatePlayhead: function(newPlayhead, newDuration, newBuffered, adPlayhead) {
-    this.setState({
-      currentPlayhead: Utils.ensureNumber(newPlayhead, this.state.currentPlayhead),
-      duration: Utils.ensureNumber(newDuration, this.state.duration),
-      buffered: Utils.ensureNumber(newBuffered, this.state.buffered),
-      currentAdPlayhead: Utils.ensureNumber(adPlayhead, this.state.currentAdPlayhead)
-    });
+    this.duration = Utils.ensureNumber(newDuration, this.duration);
+    this.buffered = Utils.ensureNumber(newBuffered, this.buffered);
+    this.currentAdPlayhead = Utils.ensureNumber(adPlayhead, this.currentAdPlayhead);
+    this.currentPlayhead = Utils.ensureNumber(newPlayhead, this.currentPlayhead);
   },
 
   /**
@@ -101,13 +101,13 @@ const Skin = createReactClass({
   getTotalTime: function() {
     let totalTime = 0;
     if (
-      this.state.duration === null ||
-      typeof this.state.duration === 'undefined' ||
-      this.state.duration === ''
+      this.duration === null ||
+      typeof this.duration === 'undefined' ||
+      this.duration === ''
     ) {
       totalTime = Utils.formatSeconds(0);
     } else {
-      totalTime = Utils.formatSeconds(this.state.duration);
+      totalTime = Utils.formatSeconds(this.duration);
     }
     return totalTime;
   },
@@ -119,14 +119,14 @@ const Skin = createReactClass({
    * @returns {string} The current playhead time in (HH:)MM:SS format or null if the current playhead is invalid or timeshift is 0
    */
   getPlayheadTime: function() {
-    let playheadTime = isFinite(parseInt(this.state.currentPlayhead)) ?
-      Utils.formatSeconds(parseInt(this.state.currentPlayhead))
+    let playheadTime = isFinite(parseInt(this.currentPlayhead)) ?
+      Utils.formatSeconds(parseInt(this.currentPlayhead))
       :
       null;
-    var isLiveStream = this.state.isLiveStream;
-    var timeShift = this.state.currentPlayhead - this.state.duration;
+    const isLiveStream = this.state.isLiveStream;
+    const timeShift = this.currentPlayhead - this.duration;
     // checking timeShift < 1 seconds (not === 0) as processing of the click after we rewinded and then went live may take some time
-    var isLiveNow = Math.abs(timeShift) < 1;
+    const isLiveNow = Math.abs(timeShift) < 1;
     playheadTime = isLiveStream ?
       (isLiveNow ? null : Utils.formatSeconds(timeShift))
       :
@@ -416,11 +416,11 @@ const Skin = createReactClass({
               <AudioOnlyScreen
                 {...this.props}
                 contentTree={this.state.contentTree}
-                currentPlayhead={this.state.currentPlayhead}
-                duration={this.state.duration}
+                currentPlayhead={this.currentPlayhead}
+                duration={this.duration}
                 totalTime={this.getTotalTime()}
                 playheadTime={this.getPlayheadTime()}
-                buffered={this.state.buffered}
+                buffered={this.buffered}
                 fullscreen={this.state.fullscreen}
                 playerState={this.state.playerState}
                 seeking={this.state.seeking}
@@ -489,11 +489,11 @@ const Skin = createReactClass({
                 handleTouchEndOnWindow={this.handleTouchEndOnWindow}
                 isVrMouseMove={this.state.isVrMouseMove}
                 contentTree={this.state.contentTree}
-                currentPlayhead={this.state.currentPlayhead}
-                duration={this.state.duration}
+                currentPlayhead={this.currentPlayhead}
+                duration={this.duration}
                 totalTime={this.getTotalTime()}
                 playheadTime={this.getPlayheadTime()}
-                buffered={this.state.buffered}
+                buffered={this.buffered}
                 fullscreen={this.state.fullscreen}
                 playerState={this.state.playerState}
                 seeking={this.state.seeking}
@@ -529,11 +529,11 @@ const Skin = createReactClass({
                   playerState={this.state.playerState}
                   isLiveStream={this.state.isLiveStream}
                   a11yControls={this.props.controller.accessibilityControls}
-                  currentPlayhead={this.state.currentPlayhead}
-                  duration={this.state.duration}
+                  currentPlayhead={this.currentPlayhead}
+                  duration={this.duration}
                   totalTime={this.getTotalTime()}
                   playheadTime={this.getPlayheadTime()}
-                  buffered={this.state.buffered}
+                  buffered={this.buffered}
                   responsiveView={this.state.responsiveId}
                   componentWidth={this.state.componentWidth}
                 />
@@ -552,12 +552,12 @@ const Skin = createReactClass({
                 handleTouchEndOnWindow={this.handleTouchEndOnWindow}
                 isVrMouseMove={this.state.isVrMouseMove}
                 contentTree={this.state.contentTree}
-                currentPlayhead={this.state.currentPlayhead}
+                currentPlayhead={this.currentPlayhead}
                 playerState={this.state.playerState}
-                duration={this.state.duration}
+                duration={this.duration}
                 totalTime={this.getTotalTime()}
                 playheadTime={this.getPlayheadTime()}
-                buffered={this.state.buffered}
+                buffered={this.buffered}
                 pauseAnimationDisabled={this.state.pauseAnimationDisabled}
                 fullscreen={this.state.fullscreen}
                 seeking={this.state.seeking}
@@ -577,11 +577,11 @@ const Skin = createReactClass({
                 {...this.props}
                 contentTree={this.state.contentTree}
                 discoveryData={this.state.discoveryData}
-                currentPlayhead={this.state.currentPlayhead}
-                duration={this.state.duration}
+                currentPlayhead={this.currentPlayhead}
+                duration={this.duration}
                 totalTime={this.getTotalTime()}
                 playheadTime={this.getPlayheadTime()}
-                buffered={this.state.buffered}
+                buffered={this.buffered}
                 fullscreen={this.state.fullscreen}
                 playerState={this.state.playerState}
                 seeking={this.state.seeking}
@@ -599,13 +599,13 @@ const Skin = createReactClass({
                 {...this.props}
                 contentTree={this.state.contentTree}
                 currentAdsInfo={this.state.currentAdsInfo}
-                currentPlayhead={this.state.currentPlayhead}
-                currentAdPlayhead={this.state.currentAdPlayhead}
+                currentPlayhead={this.currentPlayhead}
+                currentAdPlayhead={this.currentAdPlayhead}
                 fullscreen={this.state.fullscreen}
                 playerState={this.state.playerState}
-                duration={this.state.duration}
+                duration={this.duration}
                 adVideoDuration={this.props.controller.state.adVideoDuration}
-                buffered={this.state.buffered}
+                buffered={this.buffered}
                 seeking={this.state.seeking}
                 responsiveView={this.state.responsiveId}
                 componentWidth={this.state.componentWidth}

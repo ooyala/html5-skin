@@ -308,44 +308,44 @@ describe('AccessibilityControls', function() {
       });
 
       it('should seek the specified amount of seconds forward', function() {
-        mockCtrl.skin.state.duration = 60;
-        mockCtrl.skin.state.currentPlayhead = 0;
+        mockCtrl.skin.duration = 60;
+        mockCtrl.skin.currentPlayhead = 0;
         a11yCtrls.seekBy(5, true);
         expect(newPlayhead).toBe(5);
       });
 
       it('should seek back the specified amount of seconds', function() {
-        mockCtrl.skin.state.duration = 60;
-        mockCtrl.skin.state.currentPlayhead = 10;
+        mockCtrl.skin.duration = 60;
+        mockCtrl.skin.currentPlayhead = 10;
         a11yCtrls.seekBy(5, false);
         expect(newPlayhead).toBe(5);
       });
 
       it('should handle negative values gracefully by inverting the direction of the seek', function() {
-        mockCtrl.skin.state.duration = 60;
-        mockCtrl.skin.state.currentPlayhead = 10;
+        mockCtrl.skin.duration = 60;
+        mockCtrl.skin.currentPlayhead = 10;
         a11yCtrls.seekBy(-5, false);
         expect(newPlayhead).toBe(15);
       });
 
       it('should not seek past the video\'s duration', function() {
-        mockCtrl.skin.state.duration = 60;
-        mockCtrl.skin.state.currentPlayhead = 10;
+        mockCtrl.skin.duration = 60;
+        mockCtrl.skin.currentPlayhead = 10;
         a11yCtrls.seekBy(120, true);
-        expect(newPlayhead).toBe(mockCtrl.skin.state.duration);
+        expect(newPlayhead).toBe(mockCtrl.skin.duration);
       });
 
       it('should not seek past the video\'s start time', function() {
-        mockCtrl.skin.state.duration = 60;
-        mockCtrl.skin.state.currentPlayhead = 30;
+        mockCtrl.skin.duration = 60;
+        mockCtrl.skin.currentPlayhead = 30;
         a11yCtrls.seekBy(120, false);
         expect(newPlayhead).toBe(0);
       });
 
       it('should not seek when seeking is disabled', function() {
         mockCtrl.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
-        mockCtrl.skin.state.duration = 60;
-        mockCtrl.skin.state.currentPlayhead = 0;
+        mockCtrl.skin.duration = 60;
+        mockCtrl.skin.currentPlayhead = 0;
         a11yCtrls.seekBy(5, true);
         expect(newPlayhead).toBeNull();
       });

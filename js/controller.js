@@ -1432,7 +1432,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           this.state.adStartTime = 0;
         }
         this.state.adEndTime = this.state.adStartTime + this.state.adVideoDuration;
-        this.skin.state.currentPlayhead = 0;
+        this.skin.currentPlayhead = 0;
         this.removeBlur();
         this.renderSkin();
       }
@@ -2708,8 +2708,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     updateSeekingPlayhead: function(playhead) {
-      playhead = Math.min(Math.max(0, playhead), this.skin.state.duration);
-      this.skin.updatePlayhead(playhead, this.skin.state.duration, this.skin.state.buffered);
+      playhead = Math.min(Math.max(0, playhead), this.skin.duration);
+      this.skin.updatePlayhead(playhead, this.skin.duration, this.skin.buffered);
     },
 
     hideVolumeSliderBar: function() {
