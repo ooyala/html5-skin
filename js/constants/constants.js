@@ -547,7 +547,8 @@ var CONSTANTS = {
     },
     unsupported_encoding: {
       name: 'OO.ERROR.VC.UNSUPPORTED_ENCODING',
-      description: 'This video isn\'t encoded for your device'
+      title: 'UNSUPPORTED CONTENT TYPE',
+      description: 'This video encoding is not supported on your device'
     },
     unable_to_create_video_element: {
       name: 'OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT',
