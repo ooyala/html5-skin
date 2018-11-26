@@ -43,6 +43,7 @@ const Skin = createReactClass({
   getInitialState: function() {
     this.overlayRenderingEventSent = false;
     return {
+      totalTime: '00:00',
       screenToShow: null,
       currentPlayhead: 0,
       discoveryData: null,
@@ -85,30 +86,36 @@ const Skin = createReactClass({
   },
 
   updatePlayhead: function(newPlayhead, newDuration, newBuffered, adPlayhead) {
-    this.setState({
-      currentPlayhead: Utils.ensureNumber(newPlayhead, this.state.currentPlayhead),
-      duration: Utils.ensureNumber(newDuration, this.state.duration),
-      buffered: Utils.ensureNumber(newBuffered, this.state.buffered),
-      currentAdPlayhead: Utils.ensureNumber(adPlayhead, this.state.currentAdPlayhead)
+    let promise = new Promise((resolve, reject) => {
+      this.setState(function(prevState) {
+        const duration = Utils.ensureNumber(newDuration, prevState.duration);
+        const totalTime = this.getTotalTime(duration);
+        const currentPlayhead = Utils.ensureNumber(newPlayhead, prevState.currentPlayhead);
+        const buffered = Utils.ensureNumber(newBuffered, prevState.buffered);
+        const currentAdPlayhead = Utils.ensureNumber(adPlayhead, prevState.currentAdPlayhead);
+        return {
+          currentPlayhead: currentPlayhead,
+          duration: duration,
+          buffered: buffered,
+          currentAdPlayhead: currentAdPlayhead,
+          totalTime: totalTime
+        }
+      });
+      resolve(true);
+      reject(false);
     });
+    return promise;
   },
-
   /**
    * Gets the total time of the video in (HH:)MM:SS format
    * @private
+   * @param {number} duration - time to format HH:mm
    * @returns {string} The total time of the video in (HH:)MM:SS format
    */
-  getTotalTime: function() {
-    let totalTime = 0;
-    if (
-      this.state.duration === null ||
-      typeof this.state.duration === 'undefined' ||
-      this.state.duration === ''
-    ) {
-      totalTime = Utils.formatSeconds(0);
-    } else {
-      totalTime = Utils.formatSeconds(this.state.duration);
-    }
+  getTotalTime: function(duration) {
+    let totalTime = '00:00';
+    const ensureNumberDuration = Utils.ensureNumber(duration) ? Utils.ensureNumber(duration) : 0;
+    totalTime = Utils.formatSeconds(ensureNumberDuration);
     return totalTime;
   },
 
@@ -337,7 +344,6 @@ const Skin = createReactClass({
    * sets current direction for vr video (it is necessary for tilting)
    * when touchend is called on selected screen
    * @public
-   * @param {Event} event - event object
    */
   handleTouchEndOnWindow: function() {
     if (this.props.controller.videoVr) { // only for vr on mobile
@@ -418,7 +424,7 @@ const Skin = createReactClass({
                 contentTree={this.state.contentTree}
                 currentPlayhead={this.state.currentPlayhead}
                 duration={this.state.duration}
-                totalTime={this.getTotalTime()}
+                totalTime={this.state.totalTime}
                 playheadTime={this.getPlayheadTime()}
                 buffered={this.state.buffered}
                 fullscreen={this.state.fullscreen}
@@ -491,7 +497,7 @@ const Skin = createReactClass({
                 contentTree={this.state.contentTree}
                 currentPlayhead={this.state.currentPlayhead}
                 duration={this.state.duration}
-                totalTime={this.getTotalTime()}
+                totalTime={this.state.totalTime}
                 playheadTime={this.getPlayheadTime()}
                 buffered={this.state.buffered}
                 fullscreen={this.state.fullscreen}
@@ -531,7 +537,7 @@ const Skin = createReactClass({
                   a11yControls={this.props.controller.accessibilityControls}
                   currentPlayhead={this.state.currentPlayhead}
                   duration={this.state.duration}
-                  totalTime={this.getTotalTime()}
+                  totalTime={this.state.totalTime}
                   playheadTime={this.getPlayheadTime()}
                   buffered={this.state.buffered}
                   responsiveView={this.state.responsiveId}
@@ -555,7 +561,7 @@ const Skin = createReactClass({
                 currentPlayhead={this.state.currentPlayhead}
                 playerState={this.state.playerState}
                 duration={this.state.duration}
-                totalTime={this.getTotalTime()}
+                totalTime={this.state.totalTime}
                 playheadTime={this.getPlayheadTime()}
                 buffered={this.state.buffered}
                 pauseAnimationDisabled={this.state.pauseAnimationDisabled}
@@ -579,7 +585,7 @@ const Skin = createReactClass({
                 discoveryData={this.state.discoveryData}
                 currentPlayhead={this.state.currentPlayhead}
                 duration={this.state.duration}
-                totalTime={this.getTotalTime()}
+                totalTime={this.state.totalTime}
                 playheadTime={this.getPlayheadTime()}
                 buffered={this.state.buffered}
                 fullscreen={this.state.fullscreen}

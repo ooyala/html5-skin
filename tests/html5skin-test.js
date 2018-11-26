@@ -108,10 +108,14 @@ describe('Controller', function() {
     controller.skin = {
       state: {},
       updatePlayhead: function(currentPlayhead, duration, buffered, currentAdPlayhead) {
-        this.state.currentPlayhead = currentPlayhead;
-        this.state.duration = duration;
-        this.state.buffered = buffered;
-        this.state.currentAdPlayhead = currentAdPlayhead;
+        return new Promise((resolve, reject) => {
+          this.state.currentPlayhead = currentPlayhead;
+          this.state.duration = duration;
+          this.state.buffered = buffered;
+          this.state.currentAdPlayhead = currentAdPlayhead;
+          resolve(true);
+          reject(false);
+        });
       },
       props: {
         skinConfig: JSON.parse(JSON.stringify(skinJson))
