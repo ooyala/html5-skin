@@ -681,8 +681,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.state.playerState = CONSTANTS.STATE.START;
       var duration = Utils.ensureNumber(contentTree.duration, 0) / 1000;
       if (this.skin) {
-        let promise = this.skin.updatePlayhead(null, duration);
-        promise.then(() => {
+        this.skin.updatePlayhead(null, duration).then(() => {
           this.renderSkin({ contentTree: contentTree });
         });
       }
