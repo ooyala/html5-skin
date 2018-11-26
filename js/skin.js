@@ -86,7 +86,7 @@ const Skin = createReactClass({
   },
 
   updatePlayhead: function(newPlayhead, newDuration, newBuffered, adPlayhead) {
-    let promise = new Promise((resolve, reject) => {
+    let promise = new Promise((resolve) => {
       this.setState(function(prevState) {
         const duration = Utils.ensureNumber(newDuration, prevState.duration);
         const totalTime = this.getTotalTime(duration);
@@ -94,15 +94,15 @@ const Skin = createReactClass({
         const buffered = Utils.ensureNumber(newBuffered, prevState.buffered);
         const currentAdPlayhead = Utils.ensureNumber(adPlayhead, prevState.currentAdPlayhead);
         return {
-          currentPlayhead: currentPlayhead,
-          duration: duration,
-          buffered: buffered,
-          currentAdPlayhead: currentAdPlayhead,
-          totalTime: totalTime
+          currentPlayhead,
+          duration,
+          buffered,
+          currentAdPlayhead,
+          totalTime
         }
+      }, function() {
+        resolve(true);
       });
-      resolve(true);
-      reject(false);
     });
     return promise;
   },
