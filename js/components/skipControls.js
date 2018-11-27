@@ -256,6 +256,12 @@ class SkipControls extends React.Component {
       buttonId === CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD
     );
 
+    if (
+      buttonConfig && buttonConfig.enabled === false && (isPrevNextButton || isSkipButton) 
+    ) {
+      return false;
+    }
+
     const isDisabled = !this.props.forceShowButtons && (
       (isSkipButton && !duration) ||
       (isPrevNextButton && isSingleVideo) ||
