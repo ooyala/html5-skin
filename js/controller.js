@@ -1215,7 +1215,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         OO.log('popping queued update');
         this.skin.updatePlayhead.apply(this.skin, this.state.queuedPlayheadUpdate).then(() => {
           this.state.queuedPlayheadUpdate = null;
-        }).catch(OO.log('onSeeked: Could not set new state for skin'));
+        }).catch(() => {OO.log('onSeeked: Could not set new state for skin')});
       }
       if (Utils.isIos() && this.state.screenToShow === CONSTANTS.SCREEN.END_SCREEN && this.state.fullscreen) {
         this.state.pauseAnimationDisabled = true;
