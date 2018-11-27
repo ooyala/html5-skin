@@ -86,7 +86,7 @@ const Skin = createReactClass({
   },
 
   updatePlayhead: function(newPlayhead, newDuration, newBuffered, adPlayhead) {
-    let promise = new Promise((resolve) => {
+    return new Promise((resolve) => {
       this.setState(function(prevState) {
         const duration = Utils.ensureNumber(newDuration, prevState.duration);
         const totalTime = this.getTotalTime(duration);
@@ -100,11 +100,8 @@ const Skin = createReactClass({
           currentAdPlayhead,
           totalTime
         }
-      }, function() {
-        resolve(true);
-      });
+      }, resolve);
     });
-    return promise;
   },
   /**
    * Gets the total time of the video in (HH:)MM:SS format

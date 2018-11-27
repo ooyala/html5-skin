@@ -668,7 +668,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       // New video starts at 0, duration is still unknown.
       // Setting this here will prevent flashing a full progress bar on video transitions.
       if (this.skin) {
-        this.skin.updatePlayhead(0, 0, 0, 0);
+        this.skin.updatePlayhead(0, 0, 0, 0)
+          .catch(() => {OO.log('onEmbedCodeChanged: Could not set new state for skin')})
       }
     },
 
@@ -681,9 +682,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.state.playerState = CONSTANTS.STATE.START;
       var duration = Utils.ensureNumber(contentTree.duration, 0) / 1000;
       if (this.skin) {
-        this.skin.updatePlayhead(null, duration).then(() => {
-          this.renderSkin({ contentTree: contentTree });
-        });
+        this.skin.updatePlayhead(null, duration)
+        .catch(() => {OO.log('onContentTreeFetched: Could not set new state for skin')});
       }
     },
 
@@ -729,9 +729,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       // Make sure playhead is reset when we switch to a new video
-      this.skin.updatePlayhead(0, contentTree.duration, 0, 0).then(() => {
-        this.renderSkin({ contentTree: contentTree });
-      });
+      this.skin.updatePlayhead(0, contentTree.duration, 0, 0);
     },
 
     onAssetUpdated: function(event, asset) {
@@ -1091,9 +1089,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       }
       // In case a video plugin fires PLAYED event after stalling without firing BUFFERED or PLAYING first
       this.setBufferingState(false);
-      this.skin.updatePlayhead(duration, duration, duration).then(() => {
-        this.renderSkin();
-      });
+      this.skin.updatePlayhead(duration, duration, duration);
     },
 
     onVcPlayed: function(event, source) {
@@ -1213,14 +1209,13 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, this.state.currentVideoId, currentTrack);
     },
 
-    onSeeked: function(event) {
+    onSeeked: function() {
       this.state.seeking = false;
       if (this.state.queuedPlayheadUpdate) {
         OO.log('popping queued update');
         this.skin.updatePlayhead.apply(this.skin, this.state.queuedPlayheadUpdate).then(() => {
           this.state.queuedPlayheadUpdate = null;
-          this.renderSkin();
-        });
+        }).catch(OO.log('onSeeked: Could not set new state for skin'));
       }
       if (Utils.isIos() && this.state.screenToShow === CONSTANTS.SCREEN.END_SCREEN && this.state.fullscreen) {
         this.state.pauseAnimationDisabled = true;
@@ -1386,9 +1381,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.mainVideoPlayhead,
         this.state.mainVideoDuration,
         this.state.mainVideoBuffered
-      ).then(() => {
-        this.renderSkin();
-      });
+      ).catch(() => {OO.log('onAdsPlayed: Could not set new state for skin')});
     },
 
     onWillPlayAds: function(event) {
@@ -1486,8 +1479,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       ).then(() => {
         this.state.currentAdsInfo.skipAdButtonEnabled = false;
         this.mb.publish(OO.EVENTS.SKIP_AD);
-        this.renderSkin();
-      });
+      }).catch(() => {OO.log('onSkipAdClicked: Could not set new state for skin')});
     },
 
     onAdsClicked: function(source) {
@@ -2714,7 +2706,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
     updateSeekingPlayhead: function(playhead) {
       playhead = Math.min(Math.max(0, playhead), this.skin.state.duration);
-      this.skin.updatePlayhead(playhead, this.skin.state.duration, this.skin.state.buffered);
+      this.skin.updatePlayhead(
+        playhead,
+        this.skin.state.duration,
+        this.skin.state.buffered
+      ).catch(() => {OO.log('updateSeekingPlayhead: Could not set new state for skin')});
     },
 
     hideVolumeSliderBar: function() {

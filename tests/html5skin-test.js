@@ -12,6 +12,7 @@ var _ = require('underscore');
 var sinon = require('sinon');
 var skinJson = require('../config/skin.json');
 var CONSTANTS = require('../js/constants/constants');
+const DeepMerge = require('deepmerge');
 
 var Html5Skin;
 
@@ -79,8 +80,8 @@ OO = {
 require('../js/controller');
 
 describe('Controller', function() {
-  var controller;
-  var mockDomElement = {
+  let controller;
+  const mockDomElement = {
     classList: {
       add: function() {},
       remove: function() {}
@@ -107,14 +108,18 @@ describe('Controller', function() {
     controller.state.elementId = elementId;
     controller.skin = {
       state: {},
+      setState: (newStateObj, callback) => {
+        controller.skin.state = DeepMerge(controller.skin.state, newStateObj);
+        setTimeout(() => callback(), 500);
+      },
       updatePlayhead: function(currentPlayhead, duration, buffered, currentAdPlayhead) {
         return new Promise((resolve, reject) => {
-          this.state.currentPlayhead = currentPlayhead;
-          this.state.duration = duration;
-          this.state.buffered = buffered;
-          this.state.currentAdPlayhead = currentAdPlayhead;
-          resolve(true);
-          reject(false);
+          this.setState({
+            currentPlayhead,
+            duration,
+            buffered,
+            currentAdPlayhead,
+          }, resolve);
         });
       },
       props: {
@@ -412,15 +417,20 @@ describe('Controller', function() {
       expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
     });
 
-    it('should reset playhead on embed code changed', function() {
+    it('should reset playhead on embed code changed', () => {
       controller.onSetEmbedCode('oldEmbedCode');
       controller.onPlaybackReady();
       controller.onPlaying();
       controller.onPlayheadTimeChanged('event', 5, 60, 30, null, OO.VIDEO.MAIN);
-      expect(controller.skin.state.currentPlayhead).toBe(5);
-      controller.onSetEmbedCode('newEmbedCode');
-      controller.onEmbedCodeChanged('newEmbedCode');
-      expect(controller.skin.state.currentPlayhead).toBe(0);
+      return Promise.resolve().then(() => {
+          setTimeout(() => {
+            expect(controller.skin.state.currentPlayhead).toBe(5);
+            controller.onSetEmbedCode('newEmbedCode');
+            controller.onEmbedCodeChanged('newEmbedCode');
+            expect(controller.skin.state.currentPlayhead).toBe(0);
+          }, 1000);
+        }
+      );
     });
 
     it('should reset playhead on asset changed', function() {
@@ -741,10 +751,10 @@ describe('Controller', function() {
 
     it('ad countdown works for SSAI Live asset', function() {
       var adItem = {
-          duration: 15,
-          isLive: true,
-          name: "test",
-          ssai: true
+        duration: 15,
+        isLive: true,
+        name: "test",
+        ssai: true
       };
       var clock = sinon.useFakeTimers(Date.now());
       controller.createPluginElements();
@@ -771,10 +781,10 @@ describe('Controller', function() {
 
     it('pause ad works for SSAI Live asset', function() {
       var adItem = {
-          duration: 20,
-          isLive: true,
-          name: "test",
-          ssai: true
+        duration: 20,
+        isLive: true,
+        name: "test",
+        ssai: true
       };
       var clock = sinon.useFakeTimers(Date.now());
       controller.createPluginElements();
@@ -802,10 +812,10 @@ describe('Controller', function() {
 
     it('pause ad works for SSAI VOD asset', function() {
       var adItem = {
-          duration: 15,
-          name: "test",
-          isLive: true,
-          ssai: true
+        duration: 15,
+        name: "test",
+        isLive: true,
+        ssai: true
       };
       var clock = sinon.useFakeTimers(Date.now());
       controller.createPluginElements();
@@ -1383,9 +1393,9 @@ describe('Controller', function() {
 
     it('test that plugins click element is hidden and playback resumes after click', function() {
       controller.createPluginElements();
-       var adItem = {
-          duration: 15,
-          name: "test"
+      var adItem = {
+        duration: 15,
+        name: "test"
       };
       controller.onWillPlayAds();
       controller.onWillPlaySingleAd('event', adItem);
@@ -1400,9 +1410,9 @@ describe('Controller', function() {
     it('test that plugins click element is not hidden and playback does not resume after click on Android', function() {
       OO.isAndroid = true;
       controller.createPluginElements();
-       var adItem = {
-          duration: 15,
-          name: "test"
+      var adItem = {
+        duration: 15,
+        name: "test"
       };
       controller.onWillPlayAds();
       controller.onWillPlaySingleAd('event', adItem);
@@ -1417,9 +1427,9 @@ describe('Controller', function() {
     it('test that plugins click element is hidden and playback resumes after touchend on Android', function() {
       OO.isAndroid = true;
       controller.createPluginElements();
-       var adItem = {
-          duration: 15,
-          name: "test"
+      var adItem = {
+        duration: 15,
+        name: "test"
       };
       controller.onWillPlayAds();
       controller.onWillPlaySingleAd('event', adItem);
@@ -1434,9 +1444,9 @@ describe('Controller', function() {
     it('test that plugins click element is hidden and playback resumes after touchcancel on Android', function() {
       OO.isAndroid = true;
       controller.createPluginElements();
-       var adItem = {
-          duration: 15,
-          name: "test"
+      var adItem = {
+        duration: 15,
+        name: "test"
       };
       controller.onWillPlayAds();
       controller.onWillPlaySingleAd('event', adItem);
