@@ -308,16 +308,16 @@ describe('Methods tests', function() {
 
   it('getTotalTime should return the duration of the video', () => {
     skin.state.duration = 60;
-    expect(skin.getTotalTime()).toBe("01:00");
+    expect(skin.getTotalTime(skin.state.duration)).toBe("01:00");
 
     skin.state.duration = 3600;
-    expect(skin.getTotalTime()).toBe("01:00:00");
+    expect(skin.getTotalTime(skin.state.duration)).toBe("01:00:00");
 
     skin.state.duration = null;
-    expect(skin.getTotalTime()).toBe("00:00");
+    expect(skin.getTotalTime(skin.state.duration)).toBe("00:00");
 
     delete skin.state.duration;
-    expect(skin.getTotalTime()).toBe("00:00");
+    expect(skin.getTotalTime(skin.state.duration)).toBe("00:00");
   });
 
   it('getPlayheadTime should return the current playhead of the video', () => {
