@@ -16,7 +16,9 @@ class AudioOnlyScreen extends React.Component {
     super(props);
     this.state = {
       controlBarVisible: true,
-      animate: false
+      animate: false,
+      isLive: false,
+      forceUpdate: false
     };
   }
 
@@ -44,7 +46,27 @@ class AudioOnlyScreen extends React.Component {
         : {this.props.contentTree.description}
       </div>
     );
-    //TODO: Consider multiple styling options for the control bar. We are restricted to a single row at this moment
+    let forceUpdate = false;
+    if (this.state.forceUpdate && this.props.playerState === "playing") {
+      forceUpdate = true;
+      this.setState({ forceUpdate: false });
+    }
+    if (this.state.isLive !== this.props.isLiveStream && this.props.isLiveStream !== undefined) {
+      this.setState({ isLive: this.props.isLiveStream, forceUpdate: true });
+    }
+    let scrubberCurrentTime = (<span className="oo-scrubber-bar-current-time">{this.props.playheadTime}</span>);
+    let scrubberDuration =  (<span className="oo-scrubber-bar-duration">{this.props.totalTime}</span>);
+    if (this.state.isLive) {
+      scrubberCurrentTime = null;
+      let timeShift = this.props.currentPlayhead - this.props.duration;
+      let isLiveNow = Math.abs(timeShift) < 1;
+      if (isLiveNow) {
+        this.props.playheadTime = "[LIVE]";
+      }
+      scrubberDuration = (<span className="oo-scrubber-bar-duration">{this.props.playheadTime}</span>);
+    }
+
+   //TODO: Consider multiple styling options for the control bar. We are restricted to a single row at this moment
     return (
       <div className="oo-state-screen-audio oo-flex-column-parent">
         <div className={infoPanelClass}>
@@ -65,11 +87,12 @@ class AudioOnlyScreen extends React.Component {
         </div>
         <div className="oo-interactive-container">
           <div className="oo-scrubber-bar-parent oo-flex-row-parent">
-            <span className="oo-scrubber-bar-current-time">{this.props.playheadTime}</span>
+            {scrubberCurrentTime}
             <ScrubberBar {...this.props}
               audioOnly={true}
+              forceUpdate={forceUpdate}
             />
-            <span className="oo-scrubber-bar-duration">{this.props.totalTime}</span>
+            {scrubberDuration}
           </div>
         </div>
       </div>

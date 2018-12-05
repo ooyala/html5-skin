@@ -300,6 +300,10 @@ var ScrubberBar = createReactClass({
     };
     var playheadPaddingStyle = {};
 
+    if (this.props.forceUpdate) {
+      this.handleResize();
+    }
+
     if (!this.state.transitionedDuringSeek) {
       if (this.state.scrubbingPlayheadX && this.state.scrubbingPlayheadX !== 0) {
         playheadPaddingStyle.left = this.state.scrubbingPlayheadX;
