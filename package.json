@@ -32,7 +32,7 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-scrollbar": "^0.5.4",
-    "screenfull": "3.0.0"
+    "screenfull": "3.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
