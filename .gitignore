@@ -4,3 +4,4 @@ coverage
 .idea
 .DS_Store
 .vscode/
+nvm.env
