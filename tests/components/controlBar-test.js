@@ -1127,7 +1127,7 @@ describe('ControlBar', function() {
     baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'logo', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':130 }
     ];
-    baseMockProps.skinConfig.controlBar.logo.imageResource.url = '//player.ooyala.com/static/v4/stable/4.29.12/skin-plugin/assets/images/ooyala-logo.svg';
+    baseMockProps.skinConfig.controlBar.logo.imageResource.url = '//player.ooyala.com/static/v4/stable/4.29.14/skin-plugin/assets/images/ooyala-logo.svg';
     baseMockProps.skinConfig.controlBar.logo.clickUrl = 'http://www.ooyala.com';
 
     var wrapper = Enzyme.mount(getControlBar(CONSTANTS.STATE.PLAYING, 100));
