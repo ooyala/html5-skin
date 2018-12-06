@@ -23,7 +23,7 @@ class AudioOnlyScreen extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // If we find out that this is a live stream, we need to force a resize of the scrubber bar.
+    // [PLAYER-4848] If we find out that this is a live stream, we need to force a resize of the scrubber bar.
     // This ensures the playhead offset is correctly calculated for the UI differences when the stream is LIVE.
     if (this.state.forceResize !== prevState.forceResize){
       this.setState({ forceResize: false });
