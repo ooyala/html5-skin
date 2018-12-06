@@ -2,6 +2,7 @@
   AUDIO ONLY SCREEN
 *********************************************************************/
 const React = require('react');
+const CONSTANTS = require('../constants/constants');
 const ControlBar = require('../components/controlBar');
 const ClassNames = require('classnames');
 
@@ -17,9 +18,20 @@ class AudioOnlyScreen extends React.Component {
     this.state = {
       controlBarVisible: true,
       animate: false,
-      isLive: false,
-      forceUpdate: false
+      forceResize: false
     };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.forceResize !== prevState.forceResize){
+      this.setState({ forceResize: false });
+    } else if (
+        !prevState.forceResize &&
+        this.props.isLiveStream !== prevProps.isLiveStream &&
+        this.props.isLiveStream
+      ) {
+      this.setState({ forceResize: true });
+    }
   }
 
   render() {
@@ -46,24 +58,18 @@ class AudioOnlyScreen extends React.Component {
         : {this.props.contentTree.description}
       </div>
     );
-    let forceUpdate = false;
-    if (this.state.forceUpdate && this.props.playerState === "playing") {
-      forceUpdate = true;
-      this.setState({ forceUpdate: false });
-    }
-    if (this.state.isLive !== this.props.isLiveStream && this.props.isLiveStream !== undefined) {
-      this.setState({ isLive: this.props.isLiveStream, forceUpdate: true });
-    }
+
     let scrubberCurrentTime = (<span className="oo-scrubber-bar-current-time">{this.props.playheadTime}</span>);
     let scrubberDuration =  (<span className="oo-scrubber-bar-duration">{this.props.totalTime}</span>);
-    if (this.state.isLive) {
+    if (this.props.isLiveStream) {
+      let durationText = this.props.playheadTime;
       scrubberCurrentTime = null;
       let timeShift = this.props.currentPlayhead - this.props.duration;
       let isLiveNow = Math.abs(timeShift) < 1;
       if (isLiveNow) {
-        this.props.playheadTime = "[LIVE]";
+        durationText = "[LIVE]";
       }
-      scrubberDuration = (<span className="oo-scrubber-bar-duration">{this.props.playheadTime}</span>);
+      scrubberDuration = (<span className="oo-scrubber-bar-duration">{durationText}</span>);
     }
 
    //TODO: Consider multiple styling options for the control bar. We are restricted to a single row at this moment
@@ -90,7 +96,7 @@ class AudioOnlyScreen extends React.Component {
             {scrubberCurrentTime}
             <ScrubberBar {...this.props}
               audioOnly={true}
-              forceUpdate={forceUpdate}
+              forceResize={this.state.forceResize}
             />
             {scrubberDuration}
           </div>

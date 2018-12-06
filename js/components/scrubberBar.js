@@ -44,6 +44,12 @@ var ScrubberBar = createReactClass({
     this.handleResize();
   },
 
+  componentDidUpdate: function(){
+    if (this.props.forceResize) {
+      this.handleResize();
+    }
+  },
+
   componentWillReceiveProps: function(nextProps) {
     if (this.state.transitionedDuringSeek && !nextProps.seeking) {
       this.setState({ transitionedDuringSeek: false });
@@ -299,10 +305,6 @@ var ScrubberBar = createReactClass({
         : this.props.skinConfig.general.accentColor
     };
     var playheadPaddingStyle = {};
-
-    if (this.props.forceUpdate) {
-      this.handleResize();
-    }
 
     if (!this.state.transitionedDuringSeek) {
       if (this.state.scrubbingPlayheadX && this.state.scrubbingPlayheadX !== 0) {
