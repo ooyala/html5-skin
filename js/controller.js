@@ -1431,7 +1431,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.state.adEndTime = this.state.adStartTime + this.state.adVideoDuration;
         this.skin.state.currentPlayhead = 0;
         this.removeBlur();
-        this.renderSkin();
       }
     },
 
