@@ -44,6 +44,12 @@ var ScrubberBar = createReactClass({
     this.handleResize();
   },
 
+  componentDidUpdate: function(){
+    if (this.props.forceResize) {
+      this.handleResize();
+    }
+  },
+
   componentWillReceiveProps: function(nextProps) {
     if (this.state.transitionedDuringSeek && !nextProps.seeking) {
       this.setState({ transitionedDuringSeek: false });

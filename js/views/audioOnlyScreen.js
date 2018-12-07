@@ -2,6 +2,7 @@
   AUDIO ONLY SCREEN
 *********************************************************************/
 const React = require('react');
+const CONSTANTS = require('../constants/constants');
 const ControlBar = require('../components/controlBar');
 const ClassNames = require('classnames');
 
@@ -16,8 +17,23 @@ class AudioOnlyScreen extends React.Component {
     super(props);
     this.state = {
       controlBarVisible: true,
-      animate: false
+      animate: false,
+      forceResize: false
     };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // [PLAYER-4848] If we find out that this is a live stream, we need to force a resize of the scrubber bar.
+    // This ensures the playhead offset is correctly calculated for the UI differences when the stream is LIVE.
+    if (this.state.forceResize !== prevState.forceResize){
+      this.setState({ forceResize: false });
+    } else if (
+        !prevState.forceResize &&
+        this.props.isLiveStream !== prevProps.isLiveStream &&
+        this.props.isLiveStream
+      ) {
+      this.setState({ forceResize: true });
+    }
   }
 
   render() {
@@ -44,7 +60,21 @@ class AudioOnlyScreen extends React.Component {
         : {this.props.contentTree.description}
       </div>
     );
-    //TODO: Consider multiple styling options for the control bar. We are restricted to a single row at this moment
+
+    let scrubberCurrentTime = (<span className="oo-scrubber-bar-current-time">{this.props.playheadTime}</span>);
+    let scrubberDuration =  (<span className="oo-scrubber-bar-duration">{this.props.totalTime}</span>);
+    if (this.props.isLiveStream) {
+      let durationText = this.props.playheadTime;
+      scrubberCurrentTime = null;
+      let timeShift = this.props.currentPlayhead - this.props.duration;
+      let isLiveNow = Math.abs(timeShift) < 1;
+      if (isLiveNow) {
+        durationText = "[LIVE]";
+      }
+      scrubberDuration = (<span className="oo-scrubber-bar-duration">{durationText}</span>);
+    }
+
+   //TODO: Consider multiple styling options for the control bar. We are restricted to a single row at this moment
     return (
       <div className="oo-state-screen-audio oo-flex-column-parent">
         <div className={infoPanelClass}>
@@ -65,11 +95,12 @@ class AudioOnlyScreen extends React.Component {
         </div>
         <div className="oo-interactive-container">
           <div className="oo-scrubber-bar-parent oo-flex-row-parent">
-            <span className="oo-scrubber-bar-current-time">{this.props.playheadTime}</span>
+            {scrubberCurrentTime}
             <ScrubberBar {...this.props}
               audioOnly={true}
+              forceResize={this.state.forceResize}
             />
-            <span className="oo-scrubber-bar-duration">{this.props.totalTime}</span>
+            {scrubberDuration}
           </div>
         </div>
       </div>
