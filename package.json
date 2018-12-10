@@ -27,6 +27,7 @@
     "url": "https://github.com/ooyala/html5-skin.git"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "classnames": "^2.2.6",
     "create-react-class": "^15.6.3",
     "deepmerge": "^1.4.0",
