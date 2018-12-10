@@ -151,21 +151,21 @@ describe('Audio Only Screen', () => {
   it('renders playhead and total time', () => {
     var wrapper = renderAudioOnlyScreen();
     expect(wrapper.find('.oo-scrubber-bar-current-time').length).toBe(1);
-    expect(wrapper.find('.oo-scrubber-bar-duration').length).toBe(1);
+    expect(wrapper.find('.oo-scrubber-bar-right').length).toBe(1);
   });
 
   it('renders LIVE indicator on right of scrubber bar for live stream when playing from live edge', () => {
     mockController.state.isLiveStream = true;
     var wrapper = renderAudioOnlyLiveScreen(30, "");
-    var scrubberDuration = wrapper.find('.oo-scrubber-bar-duration').hostNodes().getDOMNode();
-    expect(scrubberDuration.innerHTML).toBe("[LIVE]")
+    var dvrText = wrapper.find('.oo-scrubber-bar-right').hostNodes().getDOMNode();
+    expect(dvrText.innerHTML).toBe("--:--")
   });
 
   it('renders DVR position on right of scrubber bar for live stream when playing from DVR', () => {
     mockController.state.isLiveStream = true;
     var wrapper = renderAudioOnlyLiveScreen(15, "-15:00");
-    var scrubberDuration = wrapper.find('.oo-scrubber-bar-duration').hostNodes().getDOMNode();
-    expect(scrubberDuration.innerHTML).toBe("-15:00")
+    var dvrText = wrapper.find('.oo-scrubber-bar-right').hostNodes().getDOMNode();
+    expect(dvrText.innerHTML).toBe("-15:00")
   });
 
 });
