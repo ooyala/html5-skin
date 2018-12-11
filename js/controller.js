@@ -1,6 +1,7 @@
 /** ******************************************************************
  CONTROLLER
  *********************************************************************/
+import '@babel/polyfill';
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Utils = require('./components/utils');
