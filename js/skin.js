@@ -23,8 +23,8 @@ const ContentScreen = require('./views/contentScreen');
 const ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
 const createReactClass = require('create-react-class');
 
-import {PlayingScreenWithAutoHide} from './views/playingScreen';
-import {PauseScreenWithAutoHide} from './views/pauseScreen';
+import {PlayingScreen, PlayingScreenWithAutoHide} from './views/playingScreen';
+import {PauseScreen, PauseScreenWithAutoHide} from './views/pauseScreen';
 const AudioOnlyScreen = require('./views/audioOnlyScreen');
 const ClassNames = require('classnames');
 
@@ -393,6 +393,7 @@ const Skin = createReactClass({
 
   render: function() {
     let screen;
+    const isReceiver = this.props.controller.state.cast.isReceiver;
 
     // For IE10, use the start screen and that's it.
     if (Utils.isIE10()) {
@@ -480,8 +481,11 @@ const Skin = createReactClass({
             );
             break;
           case CONSTANTS.SCREEN.PLAYING_SCREEN:
+
+            const PlayingScreenToRender = isReceiver ? PlayingScreen : PlayingScreenWithAutoHide;
+
             screen = (
-              <PlayingScreenWithAutoHide
+              <PlayingScreenToRender
                 {...this.props}
                 handleTouchEndOnPlayer={this.handleTouchEndOnPlayer}
                 handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
@@ -544,8 +548,11 @@ const Skin = createReactClass({
             );
             break;
           case CONSTANTS.SCREEN.PAUSE_SCREEN:
+
+            const PauseScreenToRender = isReceiver ? PauseScreen : PauseScreenWithAutoHide;
+
             screen = (
-              <PauseScreenWithAutoHide
+              <PauseScreenToRender
                 {...this.props}
                 handleTouchEndOnPlayer={this.handleTouchEndOnPlayer}
                 handleVrPlayerMouseDown={this.handleVrPlayerMouseDown}
