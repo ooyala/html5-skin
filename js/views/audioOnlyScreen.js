@@ -21,6 +21,7 @@ class AudioOnlyScreen extends React.Component {
       animate: false,
       forceResize: false
     };
+    this.handleLiveClick = this.handleLiveClick.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -87,7 +88,7 @@ class AudioOnlyScreen extends React.Component {
         'oo-live-nonclickable': liveClick
       });
       scrubberLeft = (
-        <a key={CONSTANTS.CONTROL_BAR_KEYS.LIVE} className={liveClass} ref="LiveButton">
+        <a key={CONSTANTS.CONTROL_BAR_KEYS.LIVE} className={liveClass} ref="LiveButton" onClick={liveClick}>
         <div className="oo-live-circle" />
         <span className="oo-live-text">{liveText}</span></a>);
       scrubberRight = (<span className="oo-scrubber-bar-right oo-scrubber-bar-current-time">{dvrText}</span>);
