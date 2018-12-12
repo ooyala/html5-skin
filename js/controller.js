@@ -2112,6 +2112,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.VC_PAUSED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.SEEK, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');
