@@ -206,7 +206,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       cast: {
         showButton: false,
         connected: false,
-        device: ""
+        device: "",
+        isReceiver: false
       },
 
       audioOnly: false
@@ -291,6 +292,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           'customerUi',
           _.bind(this.onPlayheadTimeChanged, this)
         );
+        this.mb.subscribe(OO.EVENTS.SEEK, 'customerUi', this.onSeek.bind(this));
         this.mb.subscribe(OO.EVENTS.SEEKED, 'customerUi', _.bind(this.onSeeked, this));
         this.mb.subscribe(OO.EVENTS.BUFFERING, 'customerUi', _.bind(this.onBuffering, this));
         this.mb.subscribe(OO.EVENTS.BUFFERED, 'customerUi', _.bind(this.onBuffered, this));
@@ -929,6 +931,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     },
 
     onVcPlay: function(event, source) {
+
+      if (this.state.cast.isReceiver) {
+        this.hideControlBar();
+      }
+
       this.state.currentVideoId = source;
       if (this.state.adWasPaused &&
         this.state.currentAdsInfo &&
@@ -972,6 +979,10 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
     onPause: function(event, source, pauseReason) {
       if (this.state.failoverInProgress) {
         return;
+      }
+
+      if (this.state.cast.isReceiver) {
+        this.showControlBar();
       }
 
       if (pauseReason === CONSTANTS.PAUSE_REASON.TRANSITION) {
@@ -1210,6 +1221,18 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, this.state.currentVideoId, currentTrack);
     },
 
+    onSeek: function(_, time) {
+
+      if (this.state.cast.isReceiver) {
+        this.skin.updatePlayhead(time).then(() => {
+          if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
+            this.showControlBar();
+          }
+        });
+      }
+
+    },
+
     onSeeked: function() {
       this.state.seeking = false;
       if (this.state.queuedPlayheadUpdate) {
@@ -1218,6 +1241,11 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           this.state.queuedPlayheadUpdate = null;
         }).catch(() => {OO.log('onSeeked: Could not set new state for skin')});
       }
+
+      if (this.state.cast.isReceiver && this.state.playerState === CONSTANTS.STATE.PLAYING) {
+        this.startHideControlBarTimer();
+      }
+
       if (Utils.isIos() && this.state.screenToShow === CONSTANTS.SCREEN.END_SCREEN && this.state.fullscreen) {
         this.state.pauseAnimationDisabled = true;
         this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
@@ -1664,6 +1692,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
       this.state.audioOnly = params.playerType === OO.CONSTANTS.PLAYER_TYPE.AUDIO;
       this.state.cast.showButton = this.isChromecastEnabled(params);
+      this.state.cast.isReceiver = params.chromecast && params.chromecast.isReceiver;
 
       // load player
       this.skin = ReactDOM.render(
@@ -2084,6 +2113,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.VC_PAUSED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.PLAYHEAD_TIME_CHANGED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.SEEK, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SEEKED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.BUFFERED, 'customerUi');

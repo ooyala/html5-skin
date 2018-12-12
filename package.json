@@ -15,6 +15,7 @@
   "main": "html5-skin.js",
   "scripts": {
     "test": "jest",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "docs": "./node_modules/.bin/jsdoc -c ./jsdoc_conf.json",
     "eslint": "git diff --cached --name-only --diff-filter=ACMRTUB | grep .js$ | xargs ./node_modules/.bin/eslint --",
     "eslint:fix": "git diff --cached --name-only --diff-filter=ACMRTUB | grep .js$ | xargs ./node_modules/.bin/eslint -- --fix",
