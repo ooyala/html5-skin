@@ -947,7 +947,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         // set mainVideoElement if not set during video plugin initialization
         if (!this.state.mainVideoMediaType) {
           this.state.mainVideoElement = this.findMainVideoElement(this.state.mainVideoElement);
-        }        
+        }
         this.state.pauseAnimationDisabled = this.state.cast.connected;
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
@@ -2789,7 +2789,14 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.skin.props.skinConfig.responsive.aspectRatio &&
         this.skin.props.skinConfig.responsive.aspectRatio !== 'auto'
       ) {
-        this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
+        if (this.skin.props.skinConfig.responsive.aspectRatio === 'fluid') {
+          let container = this.state.mainVideoContainer[0];
+          let containerWidth = container.clientWidth;
+          let containerHeight = container.clientHeight;
+          this.state.mainVideoAspectRatio = this.calculateAspectRatio(containerWidth, containerHeight);
+        } else {
+          this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
+        }
         this.setAspectRatio();
       }
     },

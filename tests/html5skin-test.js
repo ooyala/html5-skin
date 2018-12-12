@@ -485,6 +485,21 @@ describe('Controller', function() {
       spy.restore();
     });
 
+    it('should update aspect ratio for fluid option configuration', function() {
+      const calculateAspectSpy = sinon.spy(controller, 'calculateAspectRatio');
+      const setAspectSpy = sinon.spy(controller, 'setAspectRatio');
+      controller.skin.props.skinConfig.responsive.aspectRatio = 'fluid';
+      controller.state.mainVideoContainer = [{
+        clientWidth: 640,
+        clientHeight: 480
+      }];
+      controller.updateAspectRatio();
+      expect(calculateAspectSpy.callCount).toBe(1);
+      expect(setAspectSpy.callCount).toBe(1);
+      calculateAspectSpy.restore();
+      setAspectSpy.restore();
+    });
+
     it('should set controlBarVisible to true when video is paused', function() {
       controller.state.controlBarVisible = false;
       controller.state.playerState = CONSTANTS.STATE.PLAYING;
