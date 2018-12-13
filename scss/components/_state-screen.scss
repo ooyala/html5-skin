@@ -1,6 +1,41 @@
 .oo-state-screen-audio {
   height: 100%;
 
+  .oo-live-circle{
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #E83F3F;
+    margin-right: 2px;
+    vertical-align: middle;
+  }
+
+  .oo-live-text {
+    font-size: 11px;
+    color: $white;
+    vertical-align: middle;
+  }
+
+  .oo-live-indicator {
+    -webkit-font-smoothing: antialiased;
+    font-weight: bold;
+    top: -4px;
+    position: relative;
+  }
+
+  .oo-scrubber-bar-right {
+    margin-left: 8px;
+    text-align: right;
+    padding-right: 0px !important;
+    width: 35px;
+  }
+
+  .oo-scrubber-bar-left {
+    margin-right: 8px;
+    width: 35px;
+  }
+
   .oo-state-screen-audio-title {
     @include vendor-prefixes (transition, $fade-up-transition);
     pointer-events: none;

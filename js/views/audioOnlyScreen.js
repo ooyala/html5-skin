@@ -3,6 +3,7 @@
 *********************************************************************/
 const React = require('react');
 const CONSTANTS = require('../constants/constants');
+const Utils = require('../components/utils');
 const ControlBar = require('../components/controlBar');
 const ClassNames = require('classnames');
 
@@ -20,6 +21,7 @@ class AudioOnlyScreen extends React.Component {
       animate: false,
       forceResize: false
     };
+    this.handleLiveClick = this.handleLiveClick.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -34,6 +36,14 @@ class AudioOnlyScreen extends React.Component {
       ) {
       this.setState({ forceResize: true });
     }
+  }
+
+  handleLiveClick(evt) {
+    evt.stopPropagation();
+    evt.cancelBubble = true;
+    evt.preventDefault();
+    this.props.controller.onLiveClick();
+    this.props.controller.seek(this.props.duration);
   }
 
   render() {
@@ -60,18 +70,28 @@ class AudioOnlyScreen extends React.Component {
         : {this.props.contentTree.description}
       </div>
     );
+    const liveText = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT.LIVE,
+      this.props.localizableStrings
+    );
 
-    let scrubberCurrentTime = (<span className="oo-scrubber-bar-current-time">{this.props.playheadTime}</span>);
-    let scrubberDuration =  (<span className="oo-scrubber-bar-duration">{this.props.totalTime}</span>);
+    let timeShift = this.props.currentPlayhead - this.props.duration;
+    let isLiveNow = Math.abs(timeShift) < 1;
+    let scrubberLeft = (<span className="oo-scrubber-bar-left oo-scrubber-bar-current-time">{this.props.playheadTime}</span>);
+    let scrubberRight = (<span className="oo-scrubber-bar-right oo-scrubber-bar-duration">{this.props.totalTime}</span>);
     if (this.props.isLiveStream) {
-      let durationText = this.props.playheadTime;
-      scrubberCurrentTime = null;
-      let timeShift = this.props.currentPlayhead - this.props.duration;
-      let isLiveNow = Math.abs(timeShift) < 1;
-      if (isLiveNow) {
-        durationText = "[LIVE]";
-      }
-      scrubberDuration = (<span className="oo-scrubber-bar-duration">{durationText}</span>);
+      let dvrText = isLiveNow ? "--:--" : this.props.playheadTime;
+      let liveClick = isLiveNow ? null : this.handleLiveClick;
+      const liveClass = ClassNames({
+        'oo-scrubber-bar-left oo-live oo-live-indicator': true,
+        'oo-live-nonclickable': liveClick
+      });
+      scrubberLeft = (
+        <a key={CONSTANTS.CONTROL_BAR_KEYS.LIVE} className={liveClass} ref="LiveButton" onClick={liveClick}>
+        <div className="oo-live-circle" />
+        <span className="oo-live-text">{liveText}</span></a>);
+      scrubberRight = (<span className="oo-scrubber-bar-right oo-scrubber-bar-current-time">{dvrText}</span>);
     }
 
    //TODO: Consider multiple styling options for the control bar. We are restricted to a single row at this moment
@@ -95,12 +115,12 @@ class AudioOnlyScreen extends React.Component {
         </div>
         <div className="oo-interactive-container">
           <div className="oo-scrubber-bar-parent oo-flex-row-parent">
-            {scrubberCurrentTime}
+            {scrubberLeft}
             <ScrubberBar {...this.props}
               audioOnly={true}
               forceResize={this.state.forceResize}
             />
-            {scrubberDuration}
+            {scrubberRight}
           </div>
         </div>
       </div>
