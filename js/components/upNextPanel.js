@@ -24,14 +24,15 @@ var UpNextPanel = createReactClass({
   handleStartUpNextClick: function(event) {
     event.preventDefault();
     // Use the same way as sending out the click event on discovery content
-    var asset = this.props.upNextInfo.upNextData;
-    var eventData = {
+    const asset = this.props.upNextInfo.upNextData;
+    const customData = {
+      source: CONSTANTS.SCREEN.UP_NEXT_SCREEN,
+      countdown: 0,
+      autoplay: true
+    };
+    const eventData = {
       clickedVideo: asset,
-      custom: {
-        source: CONSTANTS.SCREEN.UP_NEXT_SCREEN,
-        countdown: 0,
-        autoplay: true
-      },
+      custom:customData,
       metadata : Utils.getDiscoveryEventData(1, 1, CONSTANTS.UI_TAG.UP_NEXT, asset, customData)
     };
     this.props.controller.sendDiscoveryClickEvent(eventData, false);

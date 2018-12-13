@@ -61,16 +61,17 @@ var DiscoveryPanel = createReactClass({
   },
 
   handleDiscoveryContentClick: function(index) {
-    var currentViewSize = this.props.responsiveView;
-    var videosPerPage = this.props.videosPerPage[currentViewSize];
-    var assetPosition = (index % videosPerPage) + 1;
-    var asset = this.props.discoveryData.relatedVideos[index];
-    var eventData = {
+    const currentViewSize = this.props.responsiveView;
+    const videosPerPage = this.props.videosPerPage[currentViewSize];
+    const assetPosition = (index % videosPerPage) + 1;
+    const asset = this.props.discoveryData.relatedVideos[index];
+    const customData = {
+      source: CONSTANTS.SCREEN.DISCOVERY_SCREEN,
+      autoplay: false
+    };
+    const eventData = {
       clickedVideo: asset,
-      custom: {
-        source: CONSTANTS.SCREEN.DISCOVERY_SCREEN,
-        autoplay: false
-      },
+      custom: customData,
       metadata : Utils.getDiscoveryEventData(assetPosition, videosPerPage, CONSTANTS.UI_TAG.DISCOVERY, asset, customData)
     };
     // TODO: figure out countdown value
@@ -218,7 +219,7 @@ DiscoveryPanel.propTypes = {
     }),
     icons: PropTypes.objectOf(PropTypes.object)
   }),
-  controller: React.PropTypes.shape({
+  controller: PropTypes.shape({
     sendDiscoveryClickEvent: PropTypes.func,
     sendDiscoveryDisplayEvent: PropTypes.func
   })
