@@ -207,7 +207,7 @@ OO = {
       externalPluginSubscription: function() {},
       addDependent: function() {},
       endSeeking: function() {},
-      sendDiscoveryDisplayEventOld: function(a) {},
+      sendDiscoveryDisplayEventRelatedVideos: function(a) {},
       sendDiscoveryDisplayEvent: function(a, b, c, d, e) {},
       togglePlayPause: function() {},
       closeScreen: function(a) {},
@@ -496,7 +496,7 @@ OO = {
     Html5Skin.sendDiscoveryClickEvent({ clickedVideo: { embed_code: true } }, false);
     Html5Skin.sendDiscoveryClickEvent({ clickedVideo: { asset: true } }, false);
 
-    Html5Skin.sendDiscoveryDisplayEventOld(CONSTANTS.SCREEN.DISCOVERY_SCREEN);
+    Html5Skin.sendDiscoveryDisplayEventRelatedVideos(CONSTANTS.SCREEN.DISCOVERY_SCREEN);
     Html5Skin.togglePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY);
     Html5Skin.togglePopover(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS);
     Html5Skin.closeOtherPopovers();

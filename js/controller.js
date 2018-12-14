@@ -912,7 +912,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         // switch from hidden to showing
         if (!this.state.upNextInfo.showing) {
           var upNextEmbedCode = Utils.getPropertyValue(this.state.upNextInfo, "upNextData.embed_code");
-          this.sendDiscoveryDisplayEventOld('endScreen', upNextEmbedCode);
+          this.sendDiscoveryDisplayEventRelatedVideos('endScreen', upNextEmbedCode);
           this.state.discoverySource = CONSTANTS.SCREEN.END_SCREEN;
           var customData = { 'playheadPercent' : currentPlayhead / duration};
           this.sendDiscoveryDisplayEvent(1, 1, CONSTANTS.UI_TAG.UP_NEXT, this.state.upNextInfo.upNextData, customData);
@@ -1023,7 +1023,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
         ) {
           OO.log('Should display DISCOVERY_SCREEN on pause');
-          this.sendDiscoveryDisplayEventOld('pauseScreen');
+          this.sendDiscoveryDisplayEventRelatedVideos('pauseScreen');
           this.state.discoverySource = CONSTANTS.SCREEN.PAUSE_SCREEN;
           this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
           this.addBlur();
@@ -1089,7 +1089,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
       ) {
         OO.log('Should display DISCOVERY_SCREEN on end');
-        this.sendDiscoveryDisplayEventOld('endScreen');
+        this.sendDiscoveryDisplayEventRelatedVideos('endScreen');
         this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
       } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === 'share') {
         this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
@@ -2060,7 +2060,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       // is configured, we wait until the user exits fullscreen and then we display it.
       if (showUpNext && this.state.playerState === CONSTANTS.STATE.END) {
         this.state.forceCountDownTimerOnEndScreen = true;
-        this.sendDiscoveryDisplayEventOld('endScreen');
+        this.sendDiscoveryDisplayEventRelatedVideos('endScreen');
         this.state.discoverySource = CONSTANTS.SCREEN.END_SCREEN;
         this.state.pluginsElement.addClass('oo-overlay-blur');
         this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
@@ -2189,7 +2189,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
             OO.log('finished toggleDiscoveryScreen');
           }.bind(this);
           this.togglePlayPause();
-          this.sendDiscoveryDisplayEventOld('pauseScreen');
+          this.sendDiscoveryDisplayEventRelatedVideos('pauseScreen');
           this.state.discoverySource = CONSTANTS.SCREEN.PAUSE_SCREEN;
           break;
         case CONSTANTS.STATE.PAUSE:
@@ -2199,7 +2199,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
             this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
           }
           else {
-            this.sendDiscoveryDisplayEventOld('pauseScreen');
+            this.sendDiscoveryDisplayEventRelatedVideos('pauseScreen');
             this.state.discoverySource = CONSTANTS.SCREEN.PAUSE_SCREEN;
             this.state.pluginsElement.addClass('oo-overlay-blur');
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
@@ -2211,7 +2211,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
             this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
           }
           else {
-            this.sendDiscoveryDisplayEventOld('endScreen');
+            this.sendDiscoveryDisplayEventRelatedVideos('endScreen');
             this.state.discoverySource = CONSTANTS.SCREEN.END_SCREEN;
             this.state.pluginsElement.addClass('oo-overlay-blur');
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
@@ -2468,13 +2468,18 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       // that is currently shown
       if (asset.embed_code) {
         var eventData = {
-          'metadata' : Utils.getDiscoveryEventData(assetPosition, pageSize, uiTag, asset, customData)
+          metadata : Utils.getDiscoveryEventData(assetPosition, pageSize, uiTag, asset, customData)
         };
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
       }
     },
 
-    sendDiscoveryDisplayEventOld: function(screenName, embedCode) {
+    /**
+     * This event is for compatability with the old thrift analytics pipeline that expects
+     * the discovery display event to contain a single list of all displayed
+     * discovery assets in one event as "relatedVideos".
+     */
+    sendDiscoveryDisplayEventRelatedVideos: function(screenName, embedCode) {
       var relatedVideosData = Utils.getPropertyValue(this.state.discoveryData, 'relatedVideos', []);
       var relatedVideos = relatedVideosData;
 
