@@ -67,7 +67,8 @@ var skinControllerMock = {
     cast: {
       showButton: false,
       connected: false,
-      device: ""
+      device: "",
+      isReceiver: false
     }
   },
   addBlur: function() {},
@@ -83,7 +84,8 @@ var skinControllerMock = {
   publishOverlayRenderingEvent: function() {},
   rewindOrRequestPreviousVideo: () => {},
   requestNextVideo: () => {},
-  togglePlayPause: () => {}
+  togglePlayPause: () => {},
+  onTouchMove: () => {}
 };
 
 var getMockController = function() {
@@ -95,8 +97,13 @@ var getMockController = function() {
 };
 
 describe('Skin', function() {
+  let controller;
+  beforeEach(() => {
+    controller = getMockController();
+  });
+
   it('tests methods', function() {
-    var skinComponent = Enzyme.mount(<Skin />).instance();
+    var skinComponent = Enzyme.mount(<Skin controller={controller}/>).instance();
     skinComponent.handleClickOutsidePlayer();
     skinComponent.updatePlayhead(4,6,8);
     skinComponent.componentWillUnmount();
@@ -379,10 +386,6 @@ describe('Methods tests', function() {
     });
 
     it('handleVrPlayerMouseMove should return correct values', function() {
-      const mockController = {
-        state: {},
-        onTouchMove: function() {}
-      };
 
       const event = {
         preventDefault: function() {},
@@ -390,7 +393,7 @@ describe('Methods tests', function() {
         pageY: 90
       };
 
-      const wrapper = Enzyme.mount(<Skin controller={mockController} />);
+      const wrapper = Enzyme.mount(<Skin controller={getMockController()} />);
       const skinComponent = wrapper.instance();
 
       skinComponent.state.componentWidth = 300;
@@ -531,6 +534,12 @@ describe('Tab Navigation', function() {
 });
 
 describe('Skin', function() {
+  let controller;
+
+  beforeEach(() => {
+      controller = getMockController();
+  });
+
   afterEach(() => {
     OO_setWindowNavigatorProperty('userAgent', '');
   });
@@ -538,9 +547,8 @@ describe('Skin', function() {
   it('tests IE10', function() {
     // set user agent to IE 10
     OO_setWindowNavigatorProperty('userAgent', 'MSIE 10');
-
     // render skin into DOM
-    var wrapper = Enzyme.mount(<Skin />);
+    var wrapper = Enzyme.mount(<Skin controller={controller}/>);
   });
 
   it('tests IE10 START SCREEN', function() {
@@ -549,6 +557,7 @@ describe('Skin', function() {
 
     // render skin into DOM
     var skinComponent = Enzyme.mount(<Skin
+      controller={controller}
       skinConfig={skinConfig}
     />).instance();
     skinComponent.switchComponent({
