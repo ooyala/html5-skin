@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:height="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <script src="//player.ooyala.com/static/v4/production/latest/core.min.js"></script>
@@ -8,18 +8,38 @@
 </head>
 
 <body>
-<div id='container'></div>
+<div id='container' style="width:640px; height:360px; border:solid #ccc 2px">
+    <div id="q"></div>
+</div>
+<div style="position: absolute; bottom: 10px;">
+    <input id="aspectInput">
+    <button id="change">Change Aspect option</button>
+</div>
 <script>
   var playerParam = {
-    "pcode": "5zb2wxOlZcNCe_HVT3a6cawW298X",
-    "playerBrandingId": "26e2e3c1049c4e70ae08a242638b5c40",
+    'pcode': '5zb2wxOlZcNCe_HVT3a6cawW298X',
+    'playerBrandingId': '26e2e3c1049c4e70ae08a242638b5c40',
     'debug':true,
-    "skin": {
-      "config": ""
-    }
+    'skin': {
+      'config': '',
+      'inline': {
+        'responsive': {
+          'aspectRatio': 'auto'
+        }
+      }
+    },
   };
+    const aspectInput = document.getElementById('aspectInput');
+    const changeBtn = document.getElementById('change');
+    changeBtn.addEventListener('click', () => {
+      pp.destroy();
+      playerParam.skin.inline.responsive.aspectRatio = aspectInput.value;
+      window.pp = OO.Player.create('q', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
+      console.log(aspectInput.value)
+    });
+
   OO.ready(function() {
-    window.pp = OO.Player.create('container', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
+    window.pp = OO.Player.create('q', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
   });
 </script>
 
