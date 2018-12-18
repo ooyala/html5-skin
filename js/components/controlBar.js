@@ -317,6 +317,26 @@ var ControlBar = createReactClass({
     this.props.controller.toggleMoreOptionsScreen(this.moreOptionsItems);
   },
 
+  /**
+  * @description Retrieves configuration from server to be applied to audio skin
+  **/
+  getAudioControlsConfig: function() {
+    //We receive location param in desktopContent, instead of audioOnly.
+    //This is necessary to display or not the button, depending on Backlot settings.
+    var defaultConfig = JSON.parse(JSON.stringify(this.props.skinConfig.buttons.audioOnly));
+    this.props.skinConfig.buttons.desktopContent.forEach(item => {
+      if (item.location !== 'none') {
+        return;
+      }
+      defaultConfig.filter(
+        field => field.name !== item.name
+      ).forEach(
+        field => field.location = 'none'
+      );
+      });
+    return defaultConfig;
+  },
+
   populateControlBar: function() {
     var playButtonDetails = Utils.getPlayButtonDetails(this.props.playerState);
     var playIcon = playButtonDetails.icon;
@@ -402,6 +422,8 @@ var ControlBar = createReactClass({
       :
       null;
 
+    var moreOptionsStyle = { 'position': 'relative', 'text-align': 'right'};
+
     // Map of tooltip aligments, which vary depending of the button's order within
     // the control bar. This is populated below.
     var tooltipAlignments = {};
@@ -470,16 +492,18 @@ var ControlBar = createReactClass({
       ),
 
       moreOptions: (
-        <ControlButton
-          {...commonButtonProps}
-          key={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
-          className="oo-more-options"
-          focusId={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
-          ariaHidden={true}
-          icon="ellipsis"
-          tooltip={CONSTANTS.SKIN_TEXT.MORE_OPTIONS}
-          onClick={this.handleMoreOptionsClick}>
-        </ControlButton>
+        <div key={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS} className="oo-more-options oo-control-bar-item">
+          <ControlButton
+            {...commonButtonProps}
+            key={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
+            style={moreOptionsStyle}
+            focusId={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
+            ariaHidden={true}
+            icon="ellipsis"
+            tooltip={CONSTANTS.SKIN_TEXT.MORE_OPTIONS}
+            onClick={this.handleMoreOptionsClick}>
+          </ControlButton>
+        </div>
       ),
 
       quality: (
@@ -555,13 +579,13 @@ var ControlBar = createReactClass({
 
       /**
        * This function returns the chromecast button definition using
-       * the provided button from the sdk (agnostic web component) 
+       * the provided button from the sdk (agnostic web component)
        * @private
        * @return {Object} The button definition
        */
       chromecast: function() {
         return (
-          <div 
+          <div
             key={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
             tooltip={CONSTANTS.SKIN_TEXT.CHROMECAST}
             className="oo-cast oo-control-bar-item">
@@ -745,7 +769,7 @@ var ControlBar = createReactClass({
     if (this.props.controlBarItems) {
       defaultItems = this.props.controlBarItems;
     } else if (this.props.audioOnly) {
-      defaultItems = this.props.skinConfig.buttons.audioOnly;
+      defaultItems = this.getAudioControlsConfig();
     } else {
       defaultItems = this.props.controller.state.isPlayingAd ?
         this.props.skinConfig.buttons.desktopAd : this.props.skinConfig.buttons.desktopContent;
@@ -873,7 +897,7 @@ var ControlBar = createReactClass({
       if (defaultItems[k].name === 'chromecast' && !this.props.controller.state.cast.showButton) {
         continue;
       }
-      
+
       controlBarItems.push(defaultItems[k]);
     }
 
