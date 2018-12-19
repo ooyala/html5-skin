@@ -447,9 +447,6 @@ OO = {
     Html5Skin.state.playerState = CONSTANTS.STATE.START;
     Html5Skin.togglePlayPause();
     Html5Skin.state.playerState = CONSTANTS.STATE.END;
-    Html5Skin.state.isSkipAdClicked = true;
-    Html5Skin.togglePlayPause();
-    Html5Skin.state.isSkipAdClicked = false;
     Html5Skin.togglePlayPause();
     Html5Skin.togglePlayPause();
     Html5Skin.state.playerState = CONSTANTS.STATE.PAUSE;

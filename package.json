@@ -14,7 +14,8 @@
   ],
   "main": "html5-skin.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "docs": "./node_modules/.bin/jsdoc -c ./jsdoc_conf.json",
     "eslint": "git diff --cached --name-only --diff-filter=ACMRTUB | grep .js$ | xargs ./node_modules/.bin/eslint --",
@@ -63,7 +64,7 @@
     "git-rev": "0.2.1",
     "graceful-fs": "^4.1.11",
     "gulp": "^3.9.1",
-    "gulp-connect": "^5.6.1",
+    "gulp-connect": "^5.7.0",
     "gulp-open": "^3.0.1",
     "gulp-rename": "^1.4.0",
     "gulp-replace": "^1.0.0",
@@ -129,7 +130,6 @@
     "testPathIgnorePatterns": [
       "/node_modules/",
       "<rootDir>/tests/controller-test.js"
-    ],
-    "collectCoverage": true
+    ]
   }
 }

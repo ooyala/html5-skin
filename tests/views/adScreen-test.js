@@ -21,7 +21,8 @@ describe('AdScreen', function() {
         volumeState: {
           muted: false
         }
-      }
+      },
+      onAdsClicked: jest.fn(),
     };
     mockSkinConfig = {
       adScreen: {
@@ -147,10 +148,6 @@ describe('AdScreen', function() {
 
   it('test player clicks', function() {
     // Render ad screen into DOM
-    var adsClicked = false;
-    mockController.onAdsClicked = function() {
-      adsClicked = true;
-    };
     mockController.state.accessibilityControlsEnabled = false;
     var wrapper = Enzyme.mount(
       <AdScreen
@@ -162,14 +159,10 @@ describe('AdScreen', function() {
     expect(mockController.state.accessibilityControlsEnabled).toBe(true);
 
     wrapper.find('.oo-ad-panel').simulate('click');
-    expect(adsClicked).toBe(true);
+    expect(mockController.onAdsClicked).toBeCalled();
   });
 
   it('tests ad componentWill*', function() {
-    var adsClicked = false;
-    mockController.onAdsClicked = function() {
-      adsClicked = true;
-    };
     mockController.cancelTimer = function() {};
     mockController.startHideControlBarTimer = function() {};
     mockController.state.accessibilityControlsEnabled = false;
@@ -183,9 +176,6 @@ describe('AdScreen', function() {
         volumeState: {
           muted: false
         }
-      },
-      onAdsClicked: function() {
-        adsClicked = true;
       },
       cancelTimer: function() {},
       startHideControlBarTimer: function() {}

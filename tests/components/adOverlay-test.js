@@ -16,7 +16,10 @@ describe('AdOverlay', function() {
     mockController = {
       state: {
         isMobile: false
-      }
+      },
+      closeNonlinearAd: jest.fn(),
+      onSkipAdClicked: jest.fn(),
+      onAdsClicked: jest.fn(),
     };
     mockSkinConfig = {
       adScreen: {
@@ -54,12 +57,6 @@ describe('AdOverlay', function() {
   });
 
   it('handles a click', function() {
-    var clickSource = '';
-
-    mockController.onAdsClicked= function(source) {
-      clickSource = source;
-    };
-
     var wrapper = Enzyme.mount(
       <AdOverlay
         controller={mockController}
@@ -70,22 +67,10 @@ describe('AdOverlay', function() {
 
     var ad = wrapper.find('a');
     ad.simulate('click');
-    expect(clickSource).toBe(CONSTANTS.AD_CLICK_SOURCE.OVERLAY);
+    expect(mockController.onAdsClicked).toBeCalled();
   });
 
   it('closes', function() {
-    var nonLinearHidden = false;
-    var adSkipped = false;
-
-    mockController.onSkipAdClicked = function() {
-      adSkipped = true;
-    };
-    mockController.onAdsClicked = function(source) {
-    };
-    mockController.closeNonlinearAd = function() {
-      nonLinearHidden = true;
-    };
-
     var wrapper = Enzyme.mount(
       <AdOverlay
         controller={mockController}
@@ -96,23 +81,11 @@ describe('AdOverlay', function() {
 
     var closeBtn = wrapper.find('button.oo-ad-overlay-close-button');
     closeBtn.simulate('click');
-    expect(nonLinearHidden).toBe(true);
-    expect(adSkipped).toBe(true);
+    expect(mockController.closeNonlinearAd).toBeCalled();
+    expect(mockController.onSkipAdClicked).toBeCalled();
   });
 
   it('hides and shows the close button', function() {
-    var nonLinearHidden = false;
-    var adSkipped = false;
-
-    mockController.onSkipAdClicked = function() {
-      adSkipped = true;
-    };
-    mockController.onAdsClicked = function(source) {
-    };
-    mockController.closeNonlinearAd = function() {
-      nonLinearHidden = true;
-    };
-
     var wrapper = Enzyme.mount(
       <AdOverlay
         controller={mockController}

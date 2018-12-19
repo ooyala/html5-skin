@@ -184,7 +184,6 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       errorCode: null,
       isSubscribed: false,
       isPlaybackReadySubscribed: false,
-      isSkipAdClicked: false,
       isInitialPlay: false,
       initialPlayHasOccurred: false,
       isFullScreenSupported: false,
@@ -1497,8 +1496,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    onSkipAdClicked: function(event) {
-      this.state.isSkipAdClicked = true;
+    onSkipAdClicked: function() {
       OO.log('onSkipAdClicked is called');
       this.skin.updatePlayhead(
         this.state.mainVideoPlayhead,
@@ -2235,15 +2233,7 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
           }
           break;
         case CONSTANTS.STATE.END:
-          if (Utils.isAndroid() || Utils.isIos()) {
-            if (this.state.isSkipAdClicked) {
-              this.state.isSkipAdClicked = false;
-            } else {
-              this.mb.publish(OO.EVENTS.REPLAY);
-            }
-          } else {
-            this.mb.publish(OO.EVENTS.REPLAY);
-          }
+          this.mb.publish(OO.EVENTS.REPLAY);
           break;
         case CONSTANTS.STATE.PAUSE:
           this.isNewVrVideo = false;
