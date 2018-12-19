@@ -4,14 +4,18 @@
     <meta charset="utf-8">
     <script src="//player.ooyala.com/static/v4/production/latest/core.min.js"></script>
     <script src="//player.ooyala.com/static/v4/production/latest/video-plugin/main_html5.min.js"></script>
-    <script src="//player.ooyala.com/static/v4/production/latest/video-plugin/bit_wrapper.min.js"></script>
+    <!--<script src="//player.ooyala.com/static/v4/production/latest/video-plugin/bit_wrapper.min.js"></script>-->
 </head>
 
 <body>
-<div id='container' style="width:640px; height:360px; border:solid #ccc 2px">
-    <div id="q"></div>
+<div id='outerContainer' style="width:900px; height:500px; border:solid #ccc 2px">
+    <div id="container"></div>
 </div>
-<div style="position: absolute; bottom: 10px;">
+<div style="position: absolute; bottom: 70px;">
+    <div>
+        <input id="width"><input id="height">
+        <button id="changeResol">Change Outer container dimension</button>
+    </div>
     <input id="aspectInput">
     <button id="change">Change Aspect option</button>
 </div>
@@ -31,15 +35,23 @@
   };
     const aspectInput = document.getElementById('aspectInput');
     const changeBtn = document.getElementById('change');
+    const changeResol = document.getElementById('changeResol');
+    const outerContainer = document.getElementById('outerContainer');
+    const width = document.getElementById('width');
+    const height = document.getElementById('height');
+    changeResol.addEventListener('click', () => {
+      outerContainer.style.width = width.value + 'px';
+      outerContainer.style.height = height.value + 'px';
+    });
     changeBtn.addEventListener('click', () => {
       pp.destroy();
       playerParam.skin.inline.responsive.aspectRatio = aspectInput.value;
-      window.pp = OO.Player.create('q', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
+      window.pp = OO.Player.create('container', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
       console.log(aspectInput.value)
     });
 
   OO.ready(function() {
-    window.pp = OO.Player.create('q', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
+    window.pp = OO.Player.create('container', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', playerParam);
   });
 </script>
 
