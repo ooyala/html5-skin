@@ -2820,9 +2820,9 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
         this.skin.props.skinConfig.responsive.aspectRatio !== 'auto'
       ) {
         if (this.skin.props.skinConfig.responsive.aspectRatio === 'fluid') {
-          let container = this.state.mainVideoContainer[0].parentNode;
-          let containerWidth = container.clientWidth;
-          let containerHeight = container.clientHeight;
+          const container = this.state.mainVideoContainer[0].parentNode;
+          const containerWidth = container.clientWidth;
+          const containerHeight = container.clientHeight;
           this.state.mainVideoAspectRatio = this.calculateAspectRatio(containerWidth, containerHeight);
         } else {
           this.state.mainVideoAspectRatio = this.skin.props.skinConfig.responsive.aspectRatio;
