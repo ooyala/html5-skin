@@ -196,6 +196,45 @@ describe('Utils', function() {
 
   });
 
+  describe('getDiscoveryContext', function() {
+    it('should return ooyalaDiscoveryContext if present', function() {
+      var discoveryAsset = {"id" : "abcd", "ooyalaDiscoveryContext" : { "data": "something", "version" : "1"} };
+      var context = Utils.getDiscoveryContext(discoveryAsset);
+      expect(context.data).toEqual("something");
+      expect(context.version).toEqual("1");
+    });
+    it('should return empty if asset is empty', function() {
+      var context = Utils.getDiscoveryContext(null);
+      expect(context).toEqual({});
+    });
+    it('should return empty if asset neither ooyalaDiscoveryContext or bucketInfo is present', function() {
+      var context = Utils.getDiscoveryContext({"id" : "abcd"});
+      expect(context).toEqual({});
+    });
+    it('should return converted ooyalaDiscoveryContext if bucketInfo is present', function() {
+      var discoveryAsset = {"id" : "abcd", "bucket_info" : '2{"position":0, "encoded": "eyJ0ZXN0IjoiZGF0YSJ9"}' };
+      var decodedExpected = {"test":"data"};
+      var context = Utils.getDiscoveryContext(discoveryAsset);
+      expect(context.data).toEqual(decodedExpected);
+      expect(context.version).toEqual("1");
+    });
+  });
+
+  describe('getDiscoveryEventData', function() {
+    it('should return bundled data for discovery events', function() {
+      var discoveryAsset = {"embed_code" : "abcd", "ooyalaDiscoveryContext" : { "data": "something", "version" : 1} };
+      var customData = {"autoplay": false};
+      var discoveryData = Utils.getDiscoveryEventData(1, 4, "test", discoveryAsset, customData);
+      var expectedAsset = {"embed_code": discoveryAsset.embed_code, "idType":  CONSTANTS.DISCOVERY.ID_TYPE , "ooyalaDiscoveryContext" : { "data": "something", "version" : 1}};
+      expect(discoveryData.assetPosition).toEqual(1);
+      expect(discoveryData.pageSize).toEqual(4);
+      expect(discoveryData.uiTag).toEqual("test");
+      expect(discoveryData.contentSource).toEqual(CONSTANTS.DISCOVERY.SOURCE);
+      expect(discoveryData.asset).toEqual(expectedAsset);
+      expect(discoveryData.customData).toEqual(customData);
+    });
+  });
+
   describe('sortQualitiesByBitrate', function() {
 
     it('should gracefully handle invalid input', function() {

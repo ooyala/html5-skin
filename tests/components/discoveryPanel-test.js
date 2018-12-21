@@ -42,6 +42,8 @@ describe('DiscoveryPanel', function() {
   it('tests displays discovery panel with countdown clock', function() {
     var props = {
       controller: {
+        sendDiscoveryClickEvent: function(a, b) {},
+        sendDiscoveryDisplayEvent: function(a, b, c, d, e) {},
         state: {
           screenToShow: '',
           upNextInfo: {
