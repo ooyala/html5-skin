@@ -38,7 +38,7 @@ class PlaybackSpeedPanel extends React.Component {
       // Get configured values from skin
       this.playbackSpeedOptions = Utils.getPropertyValue(
         this.props.skinConfig,
-        'playbackSpeed',
+        'playbackSpeed.options',
         CONSTANTS.PLAYBACK_SPEED.DEFAULT_OPTIONS
       );
       // Constrain to min and max values and ensure at most 2 decimals
