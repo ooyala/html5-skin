@@ -18,7 +18,9 @@ describe('AdPanel', function() {
       },
       getAdRemainingTime: function() {
         return 0;
-      }
+      },
+      onSkipAdClicked: jest.fn(),
+      onAdsClicked: jest.fn(),
     };
 
     mockSkinConfig = {
@@ -61,19 +63,6 @@ describe('AdPanel', function() {
   });
 
   it('handles clicks', function() {
-    var isSkipAdClicked = false;
-    var learnMoreClicked = false;
-    var clickSource = '';
-
-    mockController.onSkipAdClicked = function() {
-      isSkipAdClicked = true;
-    };
-
-    mockController.onAdsClicked = function(source) {
-      learnMoreClicked = true;
-      clickSource = source;
-    };
-
     currentAdsInfo.currentAdItem.hasClickUrl = true;
 
     var wrapper = Enzyme.mount(
@@ -83,17 +72,13 @@ describe('AdPanel', function() {
         currentAdsInfo={currentAdsInfo}
       />);
 
-    // our callback doesn't get assigned to the click event in testing
-    wrapper.ref('skipButton').props.onButtonClicked({type: 'click',
-      stopPropagation: function() {}
-    });
-    expect(isSkipAdClicked).toBe(true);
+    var skipButton = wrapper.find('.oo-skip-button');
+    skipButton.simulate('click');
+    expect(mockController.onSkipAdClicked).toBeCalled();
 
-    wrapper.ref('learnMoreButton').props.onButtonClicked({type: 'click',
-      stopPropagation: function() {}
-    });
-    expect(learnMoreClicked).toBe(true);
-    expect(clickSource).toBe(CONSTANTS.AD_CLICK_SOURCE.LEARN_MORE_BUTTON);
+    var learnMoreButton = wrapper.find('.oo-learn-more');
+    learnMoreButton.simulate('click');
+    expect(mockController.onAdsClicked).toBeCalled();
   });
 
   it('shows the ad metadata', function() {
