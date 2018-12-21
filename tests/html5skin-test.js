@@ -490,8 +490,10 @@ describe('Controller', function() {
       const setAspectSpy = sinon.spy(controller, 'setAspectRatio');
       controller.skin.props.skinConfig.responsive.aspectRatio = 'fluid';
       controller.state.mainVideoContainer = [{
-        clientWidth: 640,
-        clientHeight: 480
+        parentNode: {
+          clientWidth: 640,
+          clientHeight: 480
+        }
       }];
       controller.updateAspectRatio();
       expect(calculateAspectSpy.callCount).toBe(1);
