@@ -66,12 +66,17 @@
     var playerParams = queryStringToJSON(window.location.search.substring(1));
     var skin = {
       config: playerParams["skin.config"] || "",
-      inline: {
-        shareScreen: {
-          embed: {
-            source: "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/production/latest/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>"
-          }
-        }
+      inline: {}
+    };
+    var inlineSkinParams = JSON.parse(playerParams.inline);
+    if (inlineSkinParams) {
+      for (var key in inlineSkinParams) {
+        skin.inline[key] = inlineSkinParams[key]
+      }
+    }
+    skin.inline.shareScreen = {
+      embed: {
+        source: "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/production/latest/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>"
       }
     };
     playerParams["playerBrandingId"] = playerParams.pbid;
