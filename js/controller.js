@@ -1,7 +1,6 @@
 /** ******************************************************************
  CONTROLLER
  *********************************************************************/
-import '@babel/polyfill';
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Utils = require('./components/utils');
@@ -21,7 +20,7 @@ var Localization = {
   }
 };
 
-OO.plugin('Html5Skin', function(OO, _, $, W) {
+module.exports = function(OO, _, $, W) {
   // Check if the player is at least v4. If not, the skin cannot load.
   var UNSUPPORTED_PLAYER_VERSION = 3;
 
@@ -1785,8 +1784,8 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
 
       //PLAYER-4041: It seems like 'click' events started when a div's pointerEvents is initially 'none' but is changed to
       //'auto' prior to the 'click' event ending will trigger 'click' event listeners on Android. We'll instead listen to
-      //'touchend' and 'touchcancel' on Android.
-      if (OO.isAndroid) {
+      //'touchend' and 'touchcancel' on Android and iOs.
+      if (OO.isAndroid || OO.isIos) {
         this.state.pluginsClickElement.on('touchend touchcancel',
           this.resumePlaybackAfterClickthrough.bind(this)
         );
@@ -2922,4 +2921,4 @@ OO.plugin('Html5Skin', function(OO, _, $, W) {
   };
 
   return Html5Skin;
-});
+};

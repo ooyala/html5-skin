@@ -41,7 +41,7 @@ var devServer = {
 //Build JS
 function buildJS(file, hash, watch, ugly, sourcemap, debug, externalReact) {
   var props ={
-    entries: ['./js/controller.js'],
+    entries: ['./js/index.js'],
     debug: debug,
     transform: [babelify, bulkify],
     cache: {},
