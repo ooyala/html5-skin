@@ -95,6 +95,7 @@
     .oo-skip-button.oo-enabled {
       opacity: 1;
       cursor: pointer;
+      pointer-events: auto;
     }
   }
 }
