@@ -2310,7 +2310,7 @@ module.exports = function(OO, _, $, W) {
      * @param screen The screen to toggle
      * @param {boolean} doNotPause Set to true to avoid pausing when toggling the screen
      */
-    toggleScreen: function(screen, doNotPause) {
+    toggleScreen: function(screen, doNotPause = false) {
       this.isNewVrVideo = false;
       if (this.state.screenToShow === screen) {
         this.closeScreen();

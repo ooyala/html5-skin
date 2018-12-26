@@ -1533,18 +1533,27 @@ describe('Controller', function() {
       expect(controller.state.mainVideoInnerWrapper.hasClass('oo-video-player')).toBe(false);
     });
 
-    it('does not pause the video if toggleScreen was provided a value of true for doNotPause', () => {
-      let spy = sinon.spy(controller.mb, 'publish');
+    it('pauses the video on toggleScreen', () => {
+      const spy = sinon.spy(controller.mb, 'publish');
       controller.createPluginElements();
 
-      controller.toggleScreen(CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN, false);
-      expect(spy.calledWith(OO.EVENTS.PAUSE)).toBe(false);
+      controller.state.playerState = CONSTANTS.STATE.PLAYING;
+      controller.toggleScreen(CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN);
+      expect(spy.calledWith(OO.EVENTS.PAUSE)).toBe(true);
 
       spy.resetHistory();
+      spy.restore();
+    });
 
+    it('does not pause the video if toggleScreen was provided a value of true for doNotPause', () => {
+      const spy = sinon.spy(controller.mb, 'publish');
+      controller.createPluginElements();
+
+      controller.state.playerState = CONSTANTS.STATE.PLAYING;
       controller.toggleScreen(CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN, true);
       expect(spy.calledWith(OO.EVENTS.PAUSE)).toBe(false);
 
+      spy.resetHistory();
       spy.restore();
     });
 
