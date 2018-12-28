@@ -5,15 +5,16 @@ jest
 .dontMock('../../js/components/higher-order/accessibleMenu')
 .dontMock('../../js/components/higher-order/preserveKeyboardFocus');
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Enzyme = require('enzyme');
-var UnmuteIcon = require('../../js/components/unmuteIcon');
-var skinConfig = require('../../config/skin.json');
-var SkipControls = require('../../js/components/skipControls');
-var TextTrackPanel = require('../../js/components/textTrackPanel');
-var Utils = require('../../js/components/utils');
-var CONSTANTS = require('../../js/constants/constants');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const Enzyme = require('enzyme');
+const UnmuteIcon = require('../../js/components/unmuteIcon');
+const skinConfig = require('../../config/skin.json');
+const SkipControls = require('../../js/components/skipControls');
+const TextTrackPanel = require('../../js/components/textTrackPanel');
+const Utils = require('../../js/components/utils');
+const CONSTANTS = require('../../js/constants/constants');
+const Spinner = require('../../js/components/spinner');
 
 const CastPanel = require('../../js/components/castPanel');
 
@@ -629,6 +630,49 @@ describe('PlayingScreen', function() {
     mockController.state.controlBarVisible = true;
     wrapper = renderPlayingScreen();
     expect(wrapper.find(TextTrackPanel).props().isInBackground).toBe(true);
+  });
+
+  describe('Spinner tests', function() {
+    const createPlayingScreen = (buffered, buffering) => {
+      mockController.state.buffering = buffering;
+      return (
+        Enzyme.mount(
+          <PlayingScreen
+            controller={ mockController }
+            skinConfig={ mockSkinConfig }
+            closedCaptionOptions={ {} }
+            responsiveView="md"
+            currentPlayhead={ 0 }
+            handleVrPlayerMouseUp={() => {}}
+            playerState={ CONSTANTS.STATE.PLAYING }
+            totalTime={ "60:00" }
+            playheadTime={ "00:00" }
+            contentTree={ mockController.state.contentTree }
+            buffered={ buffered }
+          />
+        )
+      );
+    };
+
+    it('Spinner should not be shown when buffering is false and buffered !== 0', function(){
+      let wrapper = createPlayingScreen(2, false);
+      expect(wrapper.find(Spinner).length).toBe(0);
+    });
+
+    it('Spinner should not be shown when buffering is false and buffered === null', function(){
+      let wrapper = createPlayingScreen(null, false);
+      expect(wrapper.find(Spinner).length).toBe(0);
+    });
+
+    it('Spinner should be shown when buffered === 0', function(){
+      let wrapper = createPlayingScreen(0, false);
+      expect(wrapper.find(Spinner).length).toBe(1);
+    });
+
+    it('Spinner should be shown when buffering is true even if buffered !== 0', function(){
+      let wrapper = createPlayingScreen(2, true);
+      expect(wrapper.find(Spinner).length).toBe(1);
+    });
   });
 
   it('should cancel auto hide timer when mouse is over skip controls when they mount', function() {

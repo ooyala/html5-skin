@@ -16,6 +16,7 @@ const CONSTANTS = require('./../constants/constants');
 const ViewControlsVr = require('../components/viewControlsVr');
 const withAutoHide = require('./higher-order/withAutoHide.js');
 const CastPanel = require('../components/castPanel');
+const Spinner = require('../components/spinner');
 
 
 /**
@@ -351,6 +352,12 @@ class PauseScreen extends React.Component {
             device={this.props.controller.state.cast.device}
             className={castPanelClass}
           />
+        }
+
+        {
+          this.props.controller.state.buffering || this.props.buffered === 0 ?
+            <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
+           : null
         }
 
         {viewControlsVr}
