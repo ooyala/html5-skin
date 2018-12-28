@@ -437,9 +437,11 @@ class PlayingScreen extends React.Component {
           />
         }
 
-        {this.props.controller.state.buffering ? (
-          <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
-        ) : null}
+        {
+          this.props.controller.state.buffering || this.props.buffered === 0 ?
+            <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
+            : null
+        }
 
         {viewControlsVr}
 
